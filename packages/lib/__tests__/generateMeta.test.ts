@@ -47,7 +47,6 @@ describe("generateMeta", () => {
     responsesCreateMock.mockClear();
     imagesGenerateMock.mockClear();
     OpenAIConstructorMock.mockClear();
-    delete (global as any).__OPENAI_IMPORT_ERROR__;
   });
 
   it("generates metadata and image using OpenAI", async () => {
@@ -184,21 +183,25 @@ describe("generateMeta", () => {
     jest.resetModules();
   });
 
-  it("returns fallback when __OPENAI_IMPORT_ERROR__ is set", async () => {
-    (global as any).__OPENAI_IMPORT_ERROR__ = new Error("fail");
-    const result = await generateMeta({
-      id: "123",
-      title: "Title",
-      description: "Desc",
-    });
-    expect(result).toEqual({
-      title: "Title",
-      description: "Desc",
-      alt: "Title",
-      image: "/og/123.png",
-    });
-    expect(responsesCreateMock).not.toHaveBeenCalled();
-    expect(imagesGenerateMock).not.toHaveBeenCalled();
+  it("returns fallback when __OPENAI_IMPORT_ERROR__ is true", async () => {
+    (globalThis as any).__OPENAI_IMPORT_ERROR__ = true;
+    try {
+      const result = await generateMeta({
+        id: "123",
+        title: "Title",
+        description: "Desc",
+      });
+      expect(result).toEqual({
+        title: "Title",
+        description: "Desc",
+        alt: "Title",
+        image: "/og/123.png",
+      });
+      expect(responsesCreateMock).not.toHaveBeenCalled();
+      expect(imagesGenerateMock).not.toHaveBeenCalled();
+    } finally {
+      delete (globalThis as any).__OPENAI_IMPORT_ERROR__;
+    }
   });
 
   it("returns fallback metadata when no API key in production", async () => {

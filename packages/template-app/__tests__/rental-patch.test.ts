@@ -164,4 +164,91 @@ describe("/api/rental PATCH", () => {
     expect(refundCreate).not.toHaveBeenCalled();
     expect(res.status).toBe(200);
   });
+
+  test("skips additional processing when damage fee is zero", async () => {
+    const markReturned = jest
+      .fn<Promise<{ deposit: number } | null>, [string]>()
+      .mockResolvedValue({ deposit: 0 });
+    const retrieve = jest
+      .fn<Promise<{ payment_intent: string }>, [string, any]>()
+      .mockResolvedValue({ payment_intent: "pi" });
+    const refundCreate = jest.fn();
+    const computeDamageFee = jest.fn(async () => 0);
+    mockStripe({
+      checkout: { sessions: { retrieve } },
+      refunds: { create: refundCreate },
+    });
+    mockRentalRepo({ markReturned });
+    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: async () => ({ coverageIncluded: true }),
+    }));
+
+    const { PATCH } = await import("../src/api/rental/route");
+    const res = await PATCH({
+      json: async () => ({ sessionId: "sess", damage: "none" }),
+    } as any);
+    expect(markReturned).toHaveBeenCalledTimes(1);
+    expect(markReturned).toHaveBeenCalledWith("bcd", "sess");
+    expect(refundCreate).not.toHaveBeenCalled();
+    expect(res.status).toBe(200);
+  });
+
+  test("uses payment_intent object id when refunding", async () => {
+    const markReturned = jest
+      .fn<Promise<{ deposit: number } | null>, [string, string?]>()
+      .mockResolvedValue({ deposit: 100 });
+    const retrieve = jest
+      .fn<Promise<{ payment_intent: { id: string } }>, [string, any]>()
+      .mockResolvedValue({ payment_intent: { id: "pi_obj" } });
+    const refundCreate = jest.fn();
+    const computeDamageFee = jest.fn(async () => 30);
+    mockStripe({
+      checkout: { sessions: { retrieve } },
+      refunds: { create: refundCreate },
+      paymentIntents: { create: jest.fn().mockResolvedValue({ client_secret: undefined }) },
+    });
+    mockRentalRepo({ markReturned });
+    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: async () => ({ coverageIncluded: true }),
+    }));
+
+    const { PATCH } = await import("../src/api/rental/route");
+    const res = await PATCH({
+      json: async () => ({ sessionId: "sess", damage: "scratch" }),
+    } as any);
+    expect(refundCreate).toHaveBeenCalledWith({
+      payment_intent: "pi_obj",
+      amount: 70 * 100,
+    });
+    expect(res.status).toBe(200);
+  });
+
+  test("handles missing refunds.create gracefully", async () => {
+    const markReturned = jest
+      .fn<Promise<{ deposit: number } | null>, [string, string?]>()
+      .mockResolvedValue({ deposit: 100 });
+    const markRefunded = jest.fn();
+    const retrieve = jest
+      .fn<Promise<{ payment_intent: string }>, [string, any]>()
+      .mockResolvedValue({ payment_intent: "pi" });
+    const computeDamageFee = jest.fn(async () => 30);
+    mockStripe({ checkout: { sessions: { retrieve } }, refunds: undefined });
+    mockRentalRepo({ markReturned, markRefunded });
+    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee }));
+    jest.doMock("@platform-core/repositories/shops.server", () => ({
+      __esModule: true,
+      readShop: async () => ({ coverageIncluded: true }),
+    }));
+
+    const { PATCH } = await import("../src/api/rental/route");
+    const res = await PATCH({
+      json: async () => ({ sessionId: "sess", damage: "scratch" }),
+    } as any);
+    expect(res.status).toBe(200);
+    expect(markRefunded).not.toHaveBeenCalled();
+  });
 });

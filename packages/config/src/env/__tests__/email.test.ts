@@ -53,8 +53,29 @@ describe("email env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("throws and logs structured error for invalid SMTP_URL", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      SMTP_URL: "not-a-url",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../email.ts")).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid email environment variables:",
+      expect.objectContaining({
+        SMTP_URL: { _errors: [expect.stringContaining("Invalid url")] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
   it(
-    "logs second error block when SENDGRID_API_KEY is missing for sendgrid provider",
+    "throws and logs structured error when SENDGRID_API_KEY is missing for sendgrid provider",
     async () => {
       process.env = {
         ...ORIGINAL_ENV,
@@ -63,6 +84,7 @@ describe("email env module", () => {
       const errorSpy = jest
         .spyOn(console, "error")
         .mockImplementation(() => {});
+      jest.resetModules();
       await expect(import("../email.ts")).rejects.toThrow(
         "Invalid email environment variables",
       );
@@ -133,29 +155,6 @@ describe("email env module", () => {
     const { emailEnv } = await import("../email.ts");
     expect(emailEnv.EMAIL_BATCH_SIZE).toBeUndefined();
     expect(emailEnv.EMAIL_BATCH_DELAY_MS).toBeUndefined();
-  });
-
-  it("reports invalid SMTP_URL", async () => {
-    process.env = {
-      ...ORIGINAL_ENV,
-      SMTP_URL: "not-a-url",
-    } as NodeJS.ProcessEnv;
-    const errorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-    jest.resetModules();
-    await expect(import("../email.ts")).rejects.toThrow(
-      "Invalid email environment variables",
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      "❌ Invalid email environment variables:",
-      expect.objectContaining({
-        SMTP_URL: {
-          _errors: [expect.stringContaining("Invalid url")],
-        },
-      }),
-    );
-    errorSpy.mockRestore();
   });
 
   it("reports non-numeric EMAIL_BATCH_SIZE", async () => {

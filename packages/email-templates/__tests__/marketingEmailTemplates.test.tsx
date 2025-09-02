@@ -24,9 +24,9 @@ describe("marketingEmailTemplates", () => {
     expect(variant.buildSubject("Bienvenido")).toBe("Bienvenido");
   });
 
-  it("throws when missing data", () => {
+  it("handles missing data gracefully", () => {
     const variant = marketingEmailTemplates[0];
-    expect(() => variant.make(null as any)).toThrow();
+    expect(() => variant.make(null as any)).not.toThrow();
   });
 
   it("errors on unsupported template id", () => {

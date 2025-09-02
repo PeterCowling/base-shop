@@ -115,6 +115,20 @@ it("createCustomerSession sets cookies and stores session", async () => {
   );
 });
 
+it("createCustomerSession throws when SESSION_SECRET is undefined", async () => {
+  const { createCustomerSession } = await import("../session");
+  const originalSecret = process.env.SESSION_SECRET;
+  delete process.env.SESSION_SECRET;
+
+  await expect(
+    createCustomerSession({ customerId: "cust", role: "customer" })
+  ).rejects.toThrow(
+    "SESSION_SECRET is not set in core environment configuration"
+  );
+
+  process.env.SESSION_SECRET = originalSecret;
+});
+
 it("getCustomerSession returns null for missing token", async () => {
   const { getCustomerSession } = await import("../session");
 

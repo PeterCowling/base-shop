@@ -1,3 +1,4 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import { ProductCard } from "../src/components/shop/ProductCard";
 import { CartProvider } from "../src/contexts/CartContext";

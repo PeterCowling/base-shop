@@ -1,4 +1,5 @@
 // packages/platform-core/__tests__/layoutContext.test.tsx
+import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { LayoutProvider, useLayout } from "../src/contexts/LayoutContext";
 

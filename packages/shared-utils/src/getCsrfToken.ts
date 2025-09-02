@@ -1,4 +1,9 @@
-export function getCsrfToken(): string | undefined {
+export function getCsrfToken(req?: Request): string | undefined {
+  if (req) {
+    const headerToken = req.headers.get("x-csrf-token");
+    if (headerToken) return headerToken;
+    return new URL(req.url).searchParams.get("csrf_token") ?? undefined;
+  }
   if (typeof document === "undefined") return undefined;
   let csrfToken =
     document

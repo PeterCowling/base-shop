@@ -17,13 +17,10 @@ const MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 let _secret: string | null = null;
 function getSecret(): string {
   if (_secret) return _secret;
-  const coreEnv = loadCoreEnv();
-  const secret = coreEnv.CART_COOKIE_SECRET;
-  if (!secret) {
-    throw new Error("env.CART_COOKIE_SECRET is required");
-  }
+  const { CART_COOKIE_SECRET: secret } = loadCoreEnv();
+  if (!secret) throw new Error("env.CART_COOKIE_SECRET is required");
   _secret = secret;
-  return _secret;
+  return _secret!; // non‑null assertion to satisfy the string return type
 }
 
 /* ------------------------------------------------------------------

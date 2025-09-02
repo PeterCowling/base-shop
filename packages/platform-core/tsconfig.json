@@ -30,7 +30,13 @@
       "@acme/stripe": ["../stripe/src/index.ts"],
       "@acme/stripe/*": ["../stripe/src/*"],
 
-      "better-sqlite3": ["src/types/better-sqlite3"]
+      "better-sqlite3": ["src/types/better-sqlite3"],
+
+      "@acme/config/env/*": ["../config/src/env/*"],
+      "@acme/i18n/fillLocales": ["../i18n/src/fillLocales.ts"],
+      "@acme/i18n/locales": ["../i18n/src/locales.ts"],
+      "@acme/email-templates": ["../email-templates/src/index.ts"],
+      "@acme/sanity": ["../sanity/src/index.ts"]
     }
   },
   "include": ["src*", "src*.json", "src/**/*", "src/**/*.json"],
@@ -42,7 +48,9 @@
     { "path": "../stripe" },
     { "path": "../types" },
     { "path": "../themes/base" },
-    { "path": "../zod-utils" }
+    { "path": "../zod-utils" },
+    { "path": "../email-templates" },
+    { "path": "../sanity" }
   ],
   "files": ["../../src/types/global.d.ts", "src/prisma.d.ts"]
 }

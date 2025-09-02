@@ -24,7 +24,6 @@ export function useThemeEditor({
 }: Options) {
   const {
     theme,
-    setTheme,
     overrides,
     setOverrides,
     availableThemes,

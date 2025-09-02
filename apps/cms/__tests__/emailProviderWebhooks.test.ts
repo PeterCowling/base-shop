@@ -8,6 +8,11 @@ jest.mock("@platform-core/analytics", () => ({
   trackEvent: jest.fn(),
 }));
 
+jest.mock("@acme/email/analytics", () => ({
+  __esModule: true,
+  mapResendEvent: jest.fn(),
+}));
+
 const ResponseWithJson = Response as unknown as typeof Response & {
   json?: (data: unknown, init?: ResponseInit) => Response;
 };
@@ -19,10 +24,15 @@ if (typeof ResponseWithJson.json !== "function") {
 describe("email provider webhooks", () => {
   const shop = "webhook-shop";
   let trackEvent: jest.Mock;
+  let mapResendEvent: jest.Mock;
 
   beforeEach(() => {
     trackEvent = require("@platform-core/analytics").trackEvent as jest.Mock;
+    mapResendEvent =
+      require("@acme/email/analytics").mapResendEvent as jest.Mock;
     trackEvent.mockReset();
+    mapResendEvent.mockReset();
+    delete process.env.RESEND_WEBHOOK_SECRET;
   });
 
   test("SendGrid events update analytics", async () => {
@@ -73,25 +83,121 @@ describe("email provider webhooks", () => {
     ]);
   });
 
-  test("Resend events update analytics", async () => {
-    const secret = "resend-secret";
-    process.env.RESEND_WEBHOOK_SECRET = secret;
-    const { POST } = await import(
-      "../src/app/api/marketing/email/provider-webhooks/resend/route"
-    );
-    const events = [
-      { type: "email.delivered" },
-      { type: "email.opened" },
-      { type: "email.clicked" },
-      { type: "email.unsubscribed" },
-      { type: "email.bounced" },
-    ];
-    for (const ev of events) {
-      const body = JSON.stringify(ev);
+  describe("Resend webhook", () => {
+    test("missing shop query returns 400", async () => {
+      const secret = "resend-secret";
+      process.env.RESEND_WEBHOOK_SECRET = secret;
+      const body = "{}";
       const sig = crypto
         .createHmac("sha256", secret)
         .update(body)
         .digest("hex");
+      const { POST } = await import(
+        "../src/app/api/marketing/email/provider-webhooks/resend/route"
+      );
+      const req = {
+        nextUrl: new URL("https://example.com"),
+        headers: new Headers({ "x-resend-signature": sig }),
+        text: async () => body,
+      } as unknown as NextRequest;
+      const res = await POST(req);
+      expect(res.status).toBe(400);
+      expect(trackEvent).not.toHaveBeenCalled();
+      expect(mapResendEvent).not.toHaveBeenCalled();
+    });
+
+    test("RESEND_WEBHOOK_SECRET unset returns 401", async () => {
+      const body = "{}";
+      const { POST } = await import(
+        "../src/app/api/marketing/email/provider-webhooks/resend/route"
+      );
+      const req = {
+        nextUrl: new URL(`https://example.com?shop=${shop}`),
+        headers: new Headers({ "x-resend-signature": "sig" }),
+        text: async () => body,
+      } as unknown as NextRequest;
+      const res = await POST(req);
+      expect(res.status).toBe(401);
+      expect(trackEvent).not.toHaveBeenCalled();
+      expect(mapResendEvent).not.toHaveBeenCalled();
+    });
+
+    test("invalid signature returns 400", async () => {
+      const secret = "resend-secret";
+      process.env.RESEND_WEBHOOK_SECRET = secret;
+      const body = "{}";
+      const sig = crypto
+        .createHmac("sha256", "wrong")
+        .update(body)
+        .digest("hex");
+      const { POST } = await import(
+        "../src/app/api/marketing/email/provider-webhooks/resend/route"
+      );
+      const req = {
+        nextUrl: new URL(`https://example.com?shop=${shop}`),
+        headers: new Headers({ "x-resend-signature": sig }),
+        text: async () => body,
+      } as unknown as NextRequest;
+      const res = await POST(req);
+      expect(res.status).toBe(400);
+      expect(trackEvent).not.toHaveBeenCalled();
+      expect(mapResendEvent).not.toHaveBeenCalled();
+    });
+
+    test("invalid signature parse error returns 400", async () => {
+      const secret = "resend-secret";
+      process.env.RESEND_WEBHOOK_SECRET = secret;
+      const body = "{}";
+      const { POST } = await import(
+        "../src/app/api/marketing/email/provider-webhooks/resend/route"
+      );
+      const req = {
+        nextUrl: new URL(`https://example.com?shop=${shop}`),
+        headers: new Headers({ "x-resend-signature": "short" }),
+        text: async () => body,
+      } as unknown as NextRequest;
+      const res = await POST(req);
+      expect(res.status).toBe(400);
+      expect(trackEvent).not.toHaveBeenCalled();
+      expect(mapResendEvent).not.toHaveBeenCalled();
+    });
+
+    test("invalid JSON payload returns 400", async () => {
+      const secret = "resend-secret";
+      process.env.RESEND_WEBHOOK_SECRET = secret;
+      const body = "{";
+      const sig = crypto
+        .createHmac("sha256", secret)
+        .update(body)
+        .digest("hex");
+      const { POST } = await import(
+        "../src/app/api/marketing/email/provider-webhooks/resend/route"
+      );
+      const req = {
+        nextUrl: new URL(`https://example.com?shop=${shop}`),
+        headers: new Headers({ "x-resend-signature": sig }),
+        text: async () => body,
+      } as unknown as NextRequest;
+      const res = await POST(req);
+      expect(res.status).toBe(400);
+      expect(trackEvent).not.toHaveBeenCalled();
+      expect(mapResendEvent).not.toHaveBeenCalled();
+    });
+
+    test("valid payload triggers trackEvent", async () => {
+      const secret = "resend-secret";
+      process.env.RESEND_WEBHOOK_SECRET = secret;
+      const event = { type: "email.delivered" };
+      const mapped = { type: "mapped" };
+      mapResendEvent.mockReturnValue(mapped);
+      const body = JSON.stringify(event);
+      const sig = crypto
+        .createHmac("sha256", secret)
+        .update(body)
+        .digest("hex");
+      const { POST } = await import(
+        "../src/app/api/marketing/email/provider-webhooks/resend/route"
+      );
       const req = {
         nextUrl: new URL(`https://example.com?shop=${shop}`),
         headers: new Headers({ "x-resend-signature": sig }),
@@ -99,14 +205,9 @@ describe("email provider webhooks", () => {
       } as unknown as NextRequest;
       const res = await POST(req);
       expect(res.status).toBe(200);
-    }
-    expect(trackEvent.mock.calls.map((c) => c[1].type)).toEqual([
-      "email_delivered",
-      "email_open",
-      "email_click",
-      "email_unsubscribe",
-      "email_bounce",
-    ]);
+      expect(mapResendEvent).toHaveBeenCalledWith(event);
+      expect(trackEvent).toHaveBeenCalledWith(shop, mapped);
+    });
   });
 });
 

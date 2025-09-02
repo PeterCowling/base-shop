@@ -5,6 +5,7 @@ const { "^@/(.*)$": _unused, ...baseModuleNameMapper } = base.moduleNameMapper;
 /** @type {import('jest').Config} */
 module.exports = {
   ...base,
+  testEnvironment: "jsdom",
   roots: ["<rootDir>/apps/dashboard/src", "<rootDir>/apps/dashboard/__tests__"],
   moduleNameMapper: {
     ...baseModuleNameMapper,

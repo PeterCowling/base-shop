@@ -10,6 +10,7 @@ const {
 /** @type {import('jest').Config} */
 module.exports = {
   ...base,
+  testEnvironment: "jsdom",
   roots: ["<rootDir>/apps/cms/src", "<rootDir>/apps/cms/__tests__"],
   setupFilesAfterEnv: [
     "<rootDir>/apps/cms/jest.setup.polyfills.ts",

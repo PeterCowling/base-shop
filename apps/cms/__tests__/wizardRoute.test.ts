@@ -41,7 +41,10 @@ describe("wizard route", () => {
   it("renders wizard page for admin", async () => {
     jest.resetModules(); // ensure mocks are applied fresh
     await import("../../../test/resetNextMocks");
-
+    // Ensure React is loaded before invoking the server renderer. In some
+    // environments Jest's module cache can be cleared which leaves React
+    // undefined when `react-dom/server` evaluates.
+    await import("react");
     const { renderToStaticMarkup } = await import("react-dom/server");
     const { default: WizardPage } = await import("../src/app/cms/wizard/page");
 

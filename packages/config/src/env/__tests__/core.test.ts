@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
+import { z } from "zod";
 import {
   coreEnvBaseSchema,
   coreEnvSchema,
@@ -119,6 +120,33 @@ describe("core env refinement", () => {
       });
     }
   });
+
+  it("rejects non-boolean *_ENABLED and non-numeric *_INTERVAL_MS values", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      {
+        DEPOSIT_RELEASE_FOO_ENABLED: "yes",
+        REVERSE_LOGISTICS_BAR_INTERVAL_MS: "later",
+        LATE_FEE_BAZ_ENABLED: "maybe",
+      },
+      ctx,
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_FOO_ENABLED"],
+      message: "must be true or false",
+    });
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["REVERSE_LOGISTICS_BAR_INTERVAL_MS"],
+      message: "must be a number",
+    });
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["LATE_FEE_BAZ_ENABLED"],
+      message: "must be true or false",
+    });
+  });
 });
 
 describe("core env defaults", () => {
@@ -228,6 +256,21 @@ describe("core env module", () => {
     expect(coreEnv.CMS_ACCESS_TOKEN).toBe("token1");
   });
 
+  it("invokes loadCoreEnv only once when accessing multiple properties", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = require("../core.js");
+    const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
+    expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+    expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token");
+    expect(mod.coreEnv.SANITY_API_VERSION).toBe("v1");
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+    parseSpy.mockRestore();
+  });
+
   it("logs detailed messages and throws on invalid configuration", () => {
     process.env = {
       ...ORIGINAL_ENV,
@@ -294,6 +337,11 @@ describe("core env module", () => {
 });
 
 describe("loadCoreEnv", () => {
+  const ORIGINAL_ENV = process.env;
+  afterEach(() => {
+    process.env = ORIGINAL_ENV;
+  });
+
   it("throws and logs issues for invalid env values", () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     expect(() =>
@@ -311,6 +359,28 @@ describe("loadCoreEnv", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "  • LATE_FEE_INTERVAL_MS: must be a number",
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws when required variables are invalid", () => {
+    process.env = {
+      CMS_SPACE_URL: "not-a-url",
+      CMS_ACCESS_TOKEN: "",
+      SANITY_API_VERSION: "v1",
+    } as unknown as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => loadCoreEnv(process.env)).toThrow(
+      "Invalid core environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("CMS_SPACE_URL"),
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("CMS_ACCESS_TOKEN"),
     );
     errorSpy.mockRestore();
   });

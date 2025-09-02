@@ -1,6 +1,6 @@
 /* eslint-env jest */
 
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 
 /* ------------------------------------------------------------------ */
 /*  Environment setup                                                 */

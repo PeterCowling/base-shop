@@ -28,7 +28,7 @@ describe("createNewShop", () => {
   it("Successful shop creation with RBAC update for new user", async () => {
     const { createShop } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
-    const { ensureAuthorized } = await import("./common/auth");
+    const { ensureAuthorized } = await import("../common/auth");
 
     const deployResult = { status: "ok" } as any;
     (createShop as jest.Mock).mockResolvedValue(deployResult);
@@ -53,7 +53,7 @@ describe("createNewShop", () => {
   ])("Existing role array vs single role %#", async ({ current, expected }) => {
     const { createShop } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
-    const { ensureAuthorized } = await import("./common/auth");
+    const { ensureAuthorized } = await import("../common/auth");
 
     (createShop as jest.Mock).mockResolvedValue({});
     (readRbac as jest.Mock).mockResolvedValue({
@@ -72,7 +72,7 @@ describe("createNewShop", () => {
   it("Failure writing RBAC → verify rollback deletes created entities and throws", async () => {
     const { createShop } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
-    const { ensureAuthorized } = await import("./common/auth");
+    const { ensureAuthorized } = await import("../common/auth");
     const { prisma } = await import("@platform-core/db");
 
     (createShop as jest.Mock).mockResolvedValue({});
@@ -96,7 +96,7 @@ describe("createNewShop", () => {
   it("Ensure user without id skips RBAC update", async () => {
     const { createShop } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
-    const { ensureAuthorized } = await import("./common/auth");
+    const { ensureAuthorized } = await import("../common/auth");
 
     const deployResult = { status: "ok" } as any;
     (createShop as jest.Mock).mockResolvedValue(deployResult);

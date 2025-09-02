@@ -1,8 +1,6 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import React from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 
 // Some pages pull in heavy server-only modules which can slow down
 // the initial dynamic import. Increase the Jest timeout so the test has
@@ -11,8 +9,10 @@ jest.setTimeout(20_000);
 
 jest.mock("next/link", () => ({
   __esModule: true,
-  default: (props: any) =>
-    React.createElement("a", { href: props.href }, props.children),
+  default: (props: any) => {
+    const React = require("react");
+    return React.createElement("a", { href: props.href }, props.children);
+  },
 }));
 
 async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
@@ -33,6 +33,7 @@ async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
 describe("CMS section index pages", () => {
   it("lists shops with links", async () => {
     await withRepo(async () => {
+      const { renderToStaticMarkup } = await import("react-dom/server");
       const sections = [
         ["products", "products"],
         ["pages", "pages"],
@@ -51,6 +52,7 @@ describe("CMS section index pages", () => {
 
   it("shows message when no shops exist", async () => {
     await withRepo(async (dir) => {
+      const { renderToStaticMarkup } = await import("react-dom/server");
       await fs.rm(path.join(dir, "data", "shops", "foo"), {
         recursive: true,
         force: true,

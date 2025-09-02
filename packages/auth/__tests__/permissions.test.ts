@@ -1,5 +1,5 @@
 import { PERMISSIONS, isPermission } from "../src/types/permissions";
-import { hasPermission } from "../src/permissions";
+import { hasPermission, ROLE_PERMISSIONS } from "../src/permissions";
 
 describe("isPermission", () => {
   for (const perm of PERMISSIONS) {
@@ -41,5 +41,11 @@ describe("hasPermission", () => {
 
   it("viewer cannot view orders", () => {
     expect(hasPermission("viewer", "view_orders")).toBe(false);
+  });
+
+  it("returns false for roles not in ROLE_PERMISSIONS", () => {
+    const unknownRole = "ghost" as any;
+    expect((ROLE_PERMISSIONS as Record<string, unknown>)[unknownRole]).toBeUndefined();
+    expect(hasPermission(unknownRole, "view_products")).toBe(false);
   });
 });

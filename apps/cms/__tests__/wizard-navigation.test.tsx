@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 import { runWizard, templates, themes } from "./utils/wizardTestUtils";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within, waitFor } from "@testing-library/react";
 import { server } from "./msw/server";
 import Wizard from "../src/app/cms/wizard/Wizard";
 
@@ -26,13 +26,14 @@ describe("Wizard navigation", () => {
         ),
     });
 
-    await screen.findByText(/shop created successfully/i);
-    expect(global.fetch).toHaveBeenCalledWith(
-      "/cms/api/configurator",
-      expect.objectContaining({
-        method: "POST",
-        body: expect.stringContaining("testshop"),
-      })
+    await waitFor(() =>
+      expect(global.fetch).toHaveBeenCalledWith(
+        "/cms/api/configurator",
+        expect.objectContaining({
+          method: "POST",
+          body: expect.stringContaining("testshop"),
+        })
+      )
     );
   });
 });

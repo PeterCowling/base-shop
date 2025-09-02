@@ -180,7 +180,10 @@ export default function Wizard({ themes }: WizardProps): React.JSX.Element {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id: shopId }),
               });
-              if (res.ok) setMessage("Shop created successfully");
+              if (res.ok) {
+                const data = await res.json().catch(() => null);
+                setMessage(data?.message ?? "Shop created successfully");
+              }
             } catch {
               /* ignore */
             }

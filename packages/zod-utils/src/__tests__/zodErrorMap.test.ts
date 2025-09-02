@@ -89,5 +89,12 @@ describe("friendly zod error messages", () => {
     expect(result.success).toBe(false);
     expect(result.error.issues[0].message).toBe("Custom error");
   });
+
+  test("default branch uses ctx.defaultError when no message", () => {
+    const schema = z.string().refine(() => false);
+    const result = schema.safeParse("hello");
+    expect(result.success).toBe(false);
+    expect(result.error.issues[0].message).toBe("Invalid value");
+  });
 });
 

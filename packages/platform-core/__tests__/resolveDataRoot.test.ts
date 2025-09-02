@@ -30,6 +30,17 @@ describe("resolveDataRoot", () => {
     expect(existsMock).toHaveBeenCalledWith(expected);
   });
 
+  it("uses DATA_ROOT override when provided", async () => {
+    process.env.DATA_ROOT = "/custom/data";
+    const fs = await import("node:fs");
+    const existsMock = fs.existsSync as jest.MockedFunction<typeof fs.existsSync>;
+    const { resolveDataRoot } = await import("../src/dataRoot");
+    const dir = resolveDataRoot();
+
+    expect(dir).toBe(path.resolve("/custom/data"));
+    expect(existsMock).not.toHaveBeenCalled();
+  });
+
   it("falls back to <cwd>/data/shops when traversal fails", async () => {
     const startDir = path.join("/x", "y", "z");
     const expected = path.resolve(startDir, "data", "shops");

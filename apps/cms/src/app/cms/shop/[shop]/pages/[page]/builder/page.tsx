@@ -2,6 +2,7 @@
 
 import { updatePage } from "@cms/actions/pages.server";
 import { getPages } from "@platform-core/repositories/pages/index.server";
+import type { Page } from "@acme/types";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import type PageBuilderComponent from "@ui/components/cms/PageBuilder";
@@ -25,7 +26,7 @@ export default async function PageBuilderRoute({
   params: Promise<Params>;
 }) {
   const { shop, page: slug } = await params;
-  const pages = await getPages(shop);
+  const pages: Page[] = await getPages(shop);
   const current = pages.find((p) => p.slug === slug);
   if (!current) return notFound();
 

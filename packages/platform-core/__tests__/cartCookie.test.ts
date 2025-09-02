@@ -1,4 +1,3 @@
-// packages/platform-core/__tests__/cartCookie.test.ts
 import {
   asSetCookieHeader,
   CART_COOKIE,
@@ -7,22 +6,28 @@ import {
 } from "../src/cartCookie";
 
 describe("cart cookie helpers", () => {
-  it("encodes and decodes the cart id", () => {
-    const id = "test-id";
-    const encoded = encodeCartCookie(id);
-    expect(decodeCartCookie(encoded)).toBe(id);
+  it("parses valid cookie data", () => {
+    const data = { id: "test" };
+    const encoded = encodeCartCookie(JSON.stringify(data));
+    expect(decodeCartCookie(encoded)).toEqual(data);
   });
 
-  it("decodeCartCookie handles invalid input", () => {
+  it("handles malformed or missing cookie", () => {
     expect(decodeCartCookie("bad" as any)).toBeNull();
     expect(decodeCartCookie(null)).toBeNull();
   });
 
-  it("formats Set-Cookie header", () => {
+  it("sets cookie with expiration", () => {
     const encoded = "value";
-
     expect(asSetCookieHeader(encoded)).toBe(
       `${CART_COOKIE}=${encoded}; Path=/; Max-Age=${60 * 60 * 24 * 30}; SameSite=Strict; Secure; HttpOnly`
+    );
+  });
+
+  it("sets cookie without expiration", () => {
+    const encoded = "value";
+    expect(asSetCookieHeader(encoded, null)).toBe(
+      `${CART_COOKIE}=${encoded}; Path=/; SameSite=Strict; Secure; HttpOnly`
     );
   });
 });

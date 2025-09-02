@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { Chip } from "../components/atoms/Chip";
-import { Tag } from "../components/atoms/Tag";
+import { Chip } from "../src/components/atoms/Chip";
+import { Tag } from "../src/components/atoms/Tag";
 
 describe("Chip", () => {
   it("calls onRemove when remove button clicked", () => {

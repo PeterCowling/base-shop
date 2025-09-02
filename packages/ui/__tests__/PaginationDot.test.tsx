@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { PaginationDot } from "../components/atoms/PaginationDot";
+import { PaginationDot } from "../src/components/atoms/PaginationDot";
 
 describe("PaginationDot", () => {
   it("uses muted background by default", () => {

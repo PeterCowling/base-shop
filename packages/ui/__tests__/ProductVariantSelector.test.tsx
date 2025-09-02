@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { ProductVariantSelector } from "../components/organisms/ProductVariantSelector";
+import { ProductVariantSelector } from "../src/components/organisms/ProductVariantSelector";
 
 describe("ProductVariantSelector", () => {
   it("calls change handlers", () => {

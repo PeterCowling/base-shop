@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { ARViewer } from "../components/atoms/ARViewer";
+import { ARViewer } from "../src/components/atoms/ARViewer";
 
 const scriptSrc =
   "https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js";

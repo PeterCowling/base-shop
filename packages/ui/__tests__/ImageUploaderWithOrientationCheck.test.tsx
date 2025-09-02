@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
-import ImageUploaderWithOrientationCheck from "../components/cms/ImageUploaderWithOrientationCheck";
+import ImageUploaderWithOrientationCheck from "../src/components/cms/ImageUploaderWithOrientationCheck";
 import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";
 
 jest.mock("@ui/hooks/useImageOrientationValidation");

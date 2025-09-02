@@ -205,6 +205,7 @@ describe("generateMeta", () => {
   });
 
   it("returns fallback when __OPENAI_IMPORT_ERROR__ is true", async () => {
+    configEnv.OPENAI_API_KEY = "key";
     (globalThis as any).__OPENAI_IMPORT_ERROR__ = true;
     try {
       const result = await generateMeta({
@@ -220,6 +221,8 @@ describe("generateMeta", () => {
       });
       expect(responsesCreateMock).not.toHaveBeenCalled();
       expect(imagesGenerateMock).not.toHaveBeenCalled();
+      expect(mkdirMock).not.toHaveBeenCalled();
+      expect(writeFileMock).not.toHaveBeenCalled();
     } finally {
       delete (globalThis as any).__OPENAI_IMPORT_ERROR__;
     }

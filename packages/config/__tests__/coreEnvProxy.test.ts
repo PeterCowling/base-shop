@@ -8,10 +8,18 @@ afterEach(() => {
 });
 
 describe("coreEnv proxy", () => {
-  it("supports the has trap", async () => {
+  it("supports proxy traps", async () => {
     process.env = { ...OLD_ENV, NODE_ENV: "test" } as NodeJS.ProcessEnv;
-    const { coreEnv } = await import("../src/env/core");
-    expect("NODE_ENV" in coreEnv).toBe(true);
+    const core = await import("../src/env/core");
+    const spy = jest.spyOn(core, "loadCoreEnv");
+
+    expect("NODE_ENV" in core.coreEnv).toBe(true);
+    expect(Object.keys(core.coreEnv)).toContain("NODE_ENV");
+    const desc = Object.getOwnPropertyDescriptor(core.coreEnv, "NODE_ENV");
+    expect(desc).toBeDefined();
+    expect(desc?.value).toBe("test");
+
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   it("invokes loadCoreEnv during import in production", async () => {

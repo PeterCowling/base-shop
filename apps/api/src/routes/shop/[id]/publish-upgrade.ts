@@ -3,7 +3,7 @@ import path from "path";
 import { spawn } from "child_process";
 import jwt from "jsonwebtoken";
 
-function run(cmd: string, args: string[], cwd: string): Promise<void> {
+export function run(cmd: string, args: string[], cwd: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const proc = spawn(cmd, args, { cwd, stdio: "inherit" });
     proc.on("close", (code) => {

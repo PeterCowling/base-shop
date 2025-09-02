@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { VideoPlayer } from "../components/atoms/VideoPlayer";
+import { VideoPlayer } from "../src/components/atoms/VideoPlayer";
 
 describe("VideoPlayer", () => {
   it("renders video element with provided class names", () => {

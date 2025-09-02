@@ -5,7 +5,7 @@ jest.mock("next/navigation", () => ({
 }));
 
 import { useLayout } from "@platform-core";
-import { AppShell } from "../components/templates/AppShell";
+import { AppShell } from "../src/components/templates/AppShell";
 import { usePathname } from "next/navigation";
 
 function LayoutInfo() {

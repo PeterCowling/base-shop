@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import { Image } from "../components/cms/blocks/atoms";
+import { Image } from "../src/components/cms/blocks/atoms";
 
 describe("Image atom", () => {
   it("renders an img element", () => {

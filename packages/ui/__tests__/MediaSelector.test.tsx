@@ -3,7 +3,7 @@ import { useState } from "react";
 import {
   MediaItem,
   MediaSelector,
-} from "../components/molecules/MediaSelector";
+} from "../src/components/molecules/MediaSelector";
 
 describe("MediaSelector", () => {
   const items: MediaItem[] = [

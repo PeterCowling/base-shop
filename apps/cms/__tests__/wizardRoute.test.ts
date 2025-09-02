@@ -1,3 +1,4 @@
+/** @jest-environment node */
 /* eslint-env jest */
 
 import { ReactNode } from "react";

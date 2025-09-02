@@ -47,7 +47,7 @@ function cacheTtl(): number {
   return Number.isFinite(ttl) && ttl > 0 ? ttl : 60_000;
 }
 
-async function analyticsMTime(shop: string): Promise<number> {
+export async function analyticsMTime(shop: string): Promise<number> {
   const file = path.join(
     DATA_ROOT,
     validateShopName(shop),

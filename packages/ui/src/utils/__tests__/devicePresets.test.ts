@@ -26,4 +26,15 @@ describe("devicePresets data", () => {
       expect(preset.type).toBe(type);
     });
   });
+
+  it("returns the correct preset for a valid type", () => {
+    const expected = devicePresets.find((p) => p.type === "tablet");
+    const preset = getLegacyPreset("tablet");
+    expect(preset).toEqual(expected);
+  });
+
+  it("falls back to the default preset for an unknown type", () => {
+    const preset = getLegacyPreset("unknown" as any);
+    expect(preset).toEqual(devicePresets[0]);
+  });
 });

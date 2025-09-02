@@ -37,6 +37,15 @@ describe("shipping env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("loadShippingEnv parses empty variables", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const env = loadShippingEnv({});
+    expect(env).toEqual({});
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
   it("loadShippingEnv throws on invalid variables", async () => {
     const { loadShippingEnv } = await import("../shipping.ts");
     const errorSpy = jest
@@ -48,6 +57,24 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
+        UPS_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("loadShippingEnv throws on non-string values", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    expect(() =>
+      loadShippingEnv({ TAXJAR_KEY: 1 as any, UPS_KEY: 2 as any }),
+    ).toThrow("Invalid shipping environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        TAXJAR_KEY: { _errors: [expect.any(String)] },
         UPS_KEY: { _errors: [expect.any(String)] },
       }),
     );

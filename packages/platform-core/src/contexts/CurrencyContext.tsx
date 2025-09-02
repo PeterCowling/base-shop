@@ -48,10 +48,14 @@ export function useCurrency() {
     if (!ctx) throw new Error("useCurrency must be inside CurrencyProvider");
     return ctx;
   } catch (err) {
-    // React throws "Invalid hook call" when hooks run outside a component.
-    // Tests invoke this hook directly, so normalize that error into the
+    // React throws different errors when hooks run outside a component.
+    // Tests invoke this hook directly, so normalize those errors into the
     // expected provider usage message.
-    if (err instanceof Error && err.message.includes("Invalid hook call")) {
+    if (
+      err instanceof Error &&
+      (err.message.includes("Invalid hook call") ||
+        err.message.includes("reading 'useContext'"))
+    ) {
       throw new Error("useCurrency must be inside CurrencyProvider");
     }
     throw err;

@@ -1,6 +1,6 @@
+import "../../../../../../test/resetNextMocks";
 import { render, screen } from "@testing-library/react";
 import { Avatar } from "../Avatar";
-import "../../../../../../test/resetNextMocks";
 
 describe("Avatar", () => {
   it("renders an image when src is provided", () => {

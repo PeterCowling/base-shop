@@ -14,9 +14,15 @@ describe("marketingEmailTemplates", () => {
 
     const basicResult = render(basic.make(props));
     expect(basicResult.getByText("Hello")).toBeInTheDocument();
+    expect(basicResult.container.firstChild).not.toHaveClass("text-center");
 
     const centeredResult = render(centered.make(props));
     expect(centeredResult.container.firstChild).toHaveClass("text-center");
+  });
+
+  it("builds subject for centered variant", () => {
+    const centered = marketingEmailTemplates.find((t) => t.id === "centered")!;
+    expect(centered.buildSubject("Hello")).toBe("Hello");
   });
 
   it("builds subjects for i18n headlines", () => {

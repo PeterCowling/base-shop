@@ -1,5 +1,9 @@
 import { formatTimestamp } from "@acme/date-utils";
-import { readSeoAudits } from "@platform-core/repositories/seoAudit.server";
+import type { AnalyticsEvent } from "@acme/types";
+import {
+  readSeoAudits,
+  type SeoAuditEntry,
+} from "@platform-core/repositories/seoAudit.server";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { SeoChart } from "./SeoChart.client";
 
@@ -8,20 +12,29 @@ interface Props {
   shop: string;
 }
 
+interface AuditCompleteEvent extends AnalyticsEvent {
+  timestamp: string;
+  score?: number;
+  success?: boolean;
+}
+
 export default async function SeoProgressPanel({ shop }: Props) {
-  const [audits, events] = await Promise.all([
+  const [audits, events] = (await Promise.all([
     readSeoAudits(shop),
-    listEvents(shop),
-  ]);
+    listEvents(shop) as Promise<AnalyticsEvent[]>,
+  ])) as [SeoAuditEntry[], AnalyticsEvent[]];
 
   const auditEvents = events
-    .filter((e) => e.type === "audit_complete")
+    .filter(
+      (e: AnalyticsEvent): e is AuditCompleteEvent =>
+        e.type === "audit_complete",
+    )
     .slice(-5)
     .reverse();
 
-  const labels = audits.map((a) => formatTimestamp(a.timestamp));
-  const scores = audits.map((a) => a.score);
-  const recs = audits.at(-1)?.recommendations ?? [];
+  const labels = audits.map((a: SeoAuditEntry) => formatTimestamp(a.timestamp));
+  const scores = audits.map((a: SeoAuditEntry) => a.score);
+  const recs: string[] = audits.at(-1)?.recommendations ?? [];
 
   return (
     <div className="space-y-4 text-sm">
@@ -34,7 +47,7 @@ export default async function SeoProgressPanel({ shop }: Props) {
         <div className="space-y-2">
           <h4 className="font-medium">Latest Recommendations</h4>
           <ul className="list-disc pl-5 space-y-1">
-            {recs.map((r) => (
+            {recs.map((r: string) => (
               <li key={r}>{r}</li>
             ))}
           </ul>
@@ -53,10 +66,8 @@ export default async function SeoProgressPanel({ shop }: Props) {
             </thead>
             <tbody>
               {auditEvents.map((e) => (
-                <tr key={e.timestamp as string}>
-                  <td className="pr-2">
-                    {formatTimestamp(e.timestamp as string)}
-                  </td>
+                <tr key={e.timestamp}>
+                  <td className="pr-2">{formatTimestamp(e.timestamp)}</td>
                   <td className="pr-2">
                     {typeof e.score === "number" ? e.score : "–"}
                   </td>

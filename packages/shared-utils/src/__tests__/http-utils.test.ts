@@ -22,6 +22,15 @@ describe('fetchJson', () => {
     await expect(fetchJson('https://example.com', undefined, schema)).resolves.toEqual(data);
   });
 
+  it('returns undefined for empty response', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(''),
+    });
+
+    await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
+  });
+
   it('throws on invalid JSON', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,

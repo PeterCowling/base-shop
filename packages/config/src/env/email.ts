@@ -22,6 +22,13 @@ export const emailEnvSchema = z
         path: ["SENDGRID_API_KEY"],
       });
     }
+    if (env.EMAIL_PROVIDER === "resend" && !env.RESEND_API_KEY) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Required",
+        path: ["RESEND_API_KEY"],
+      });
+    }
   });
 
 const parsed = emailEnvSchema.safeParse(process.env);

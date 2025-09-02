@@ -76,9 +76,11 @@ const baseEnvSchema = z
   })
   .passthrough();
 
-export const coreEnvBaseSchema = authEnvSchema
+export const coreEnvBaseSchema = (
+  authEnvSchema.innerType() as z.AnyZodObject
+)
   .merge(cmsEnvSchema)
-  .merge(emailEnvSchema)
+  .merge(emailEnvSchema.innerType() as z.AnyZodObject)
   .merge(paymentsEnvSchema)
   .merge(shippingEnvSchema)
   .merge(baseEnvSchema);
@@ -121,16 +123,26 @@ export function depositReleaseEnvRefinement(
   }
 }
 
-export const coreEnvSchema = coreEnvBaseSchema.superRefine(
-  depositReleaseEnvRefinement
-);
+export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
+  depositReleaseEnvRefinement(env, ctx);
+
+  const authResult = authEnvSchema.safeParse(env);
+  if (!authResult.success) {
+    authResult.error.issues.forEach((issue) => ctx.addIssue(issue));
+  }
+
+  const emailResult = emailEnvSchema.safeParse(env);
+  if (!emailResult.success) {
+    emailResult.error.issues.forEach((issue) => ctx.addIssue(issue));
+  }
+});
 export type CoreEnv = z.infer<typeof coreEnvSchema>;
 
 export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
   const parsed = coreEnvSchema.safeParse(raw);
   if (!parsed.success) {
     console.error("❌ Invalid core environment variables:");
-    parsed.error.issues.forEach((issue) => {
+    parsed.error.issues.forEach((issue: z.ZodIssue) => {
       const pathArr = (issue.path ?? []) as Array<string | number>;
       const path = pathArr.length ? pathArr.join(".") : "(root)";
       console.error(`  • ${path}: ${issue.message}`);

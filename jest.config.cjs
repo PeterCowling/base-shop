@@ -70,7 +70,11 @@ function resolveReact() {
     const jsxDevRuntime = path.join(reactBase, 'jsx-dev-runtime.js');
     const domClient = path.join(reactDomBase, 'client.js');
 
-    if (fs.existsSync(jsxRuntime) && fs.existsSync(jsxDevRuntime)) {
+    if (
+      fs.existsSync(jsxRuntime) &&
+      fs.existsSync(jsxDevRuntime) &&
+      fs.existsSync(domClient)
+    ) {
       return {
         reactPath: reactBase,
         reactDomPath: reactDomBase,

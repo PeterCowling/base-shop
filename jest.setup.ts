@@ -31,8 +31,20 @@ mutableEnv.SANITY_API_VERSION ||= "2023-01-01";
 
 import "@testing-library/jest-dom";
 import "cross-fetch/polyfill";
+import React from "react";
 import { TextDecoder, TextEncoder } from "node:util";
 import { File } from "node:buffer";
+
+// React 19 renamed its internal export used by react‑dom.  Older builds of
+// react‑dom still expect `__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED`,
+// so alias the new name when necessary to keep tests running.
+if (
+  (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE &&
+  !(React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+) {
+  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED =
+    (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+}
 
 /** Node’s `util` encoders/decoders are required by React-DOM’s server renderer */
 (globalThis as any).TextEncoder ||= TextEncoder;

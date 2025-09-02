@@ -362,6 +362,27 @@ describe("core env module", () => {
     );
     errorSpy.mockRestore();
   });
+
+  it("fails fast in production when deposit vars are invalid", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      NODE_ENV: "production",
+      DEPOSIT_RELEASE_ENABLED: "nope",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../core.js")).rejects.toThrow(
+      "Invalid core environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
+    );
+    errorSpy.mockRestore();
+  });
 });
 
 describe("loadCoreEnv", () => {
@@ -386,13 +407,34 @@ describe("loadCoreEnv", () => {
     errorSpy.mockRestore();
   });
 
-  it("throws and logs issues for invalid env values", () => {
+  it("parses valid deposit, reverse logistics and late fee vars", () => {
+    const env = loadCoreEnv({
+      ...baseEnv,
+      DEPOSIT_RELEASE_ENABLED: "true",
+      DEPOSIT_RELEASE_INTERVAL_MS: "1000",
+      REVERSE_LOGISTICS_ENABLED: "false",
+      REVERSE_LOGISTICS_INTERVAL_MS: "2000",
+      LATE_FEE_ENABLED: "true",
+      LATE_FEE_INTERVAL_MS: "3000",
+    } as unknown as NodeJS.ProcessEnv);
+    expect(env).toMatchObject({
+      DEPOSIT_RELEASE_ENABLED: true,
+      DEPOSIT_RELEASE_INTERVAL_MS: 1000,
+      REVERSE_LOGISTICS_ENABLED: false,
+      REVERSE_LOGISTICS_INTERVAL_MS: 2000,
+      LATE_FEE_ENABLED: true,
+      LATE_FEE_INTERVAL_MS: 3000,
+    });
+  });
+
+  it("logs issues and throws for invalid deposit/reverse/late fee vars", () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     expect(() =>
       loadCoreEnv({
         ...baseEnv,
         DEPOSIT_RELEASE_ENABLED: "yes",
-        DEPOSIT_RELEASE_INTERVAL_MS: "fast",
+        REVERSE_LOGISTICS_ENABLED: "maybe",
+        LATE_FEE_INTERVAL_MS: "soon",
       } as unknown as NodeJS.ProcessEnv),
     ).toThrow("Invalid core environment variables");
     expect(errorSpy).toHaveBeenCalledWith(
@@ -402,7 +444,10 @@ describe("loadCoreEnv", () => {
       "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
     );
     expect(errorSpy).toHaveBeenCalledWith(
-      "  • DEPOSIT_RELEASE_INTERVAL_MS: must be a number",
+      "  • REVERSE_LOGISTICS_ENABLED: must be true or false",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • LATE_FEE_INTERVAL_MS: must be a number",
     );
     errorSpy.mockRestore();
   });

@@ -7,7 +7,7 @@ jest.mock("../PublishLocationSelector", () => ({
   default: () => <div data-testid="publish-selector" />,
 }));
 
-jest.mock("../../hooks/useProductEditorFormState");
+jest.mock("../../../hooks/useProductEditorFormState");
 
 describe("ProductEditorForm", () => {
   it("renders fields and submits via hook", () => {

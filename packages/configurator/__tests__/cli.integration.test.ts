@@ -10,7 +10,7 @@ describe('configurator CLI integration', () => {
     const stub = resolve(__dirname, 'spawnSync.stub.cjs');
     const result = spawnSync(
       'node',
-      ['--require', stub, 'bin/configurator.js', 'dev'],
+      ['--require', stub, 'bin/configurator.cjs', 'dev'],
       {
         cwd: resolve(__dirname, '..'),
         env: {
@@ -34,7 +34,7 @@ describe('configurator CLI integration', () => {
     const stub = resolve(__dirname, 'spawnSync.stub.cjs');
     const result = spawnSync(
       'node',
-      ['--require', stub, 'bin/configurator.js', 'build'],
+      ['--require', stub, 'bin/configurator.cjs', 'build'],
       {
         cwd: resolve(__dirname, '..'),
         env: {
@@ -58,7 +58,7 @@ describe('configurator CLI integration', () => {
     const stub = resolve(__dirname, 'spawnSync.stub.cjs');
     const result = spawnSync(
       'node',
-      ['--require', stub, 'bin/configurator.js', 'deploy'],
+      ['--require', stub, 'bin/configurator.cjs', 'deploy'],
       {
         cwd: resolve(__dirname, '..'),
         env: {

@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import DataTable, { type Column } from "../components/cms/DataTable";
+import DataTable, { type Column } from "../src/components/cms/DataTable";
 
 interface Row {
   name: string;

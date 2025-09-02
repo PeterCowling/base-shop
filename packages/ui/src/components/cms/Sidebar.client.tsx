@@ -101,34 +101,30 @@ function Sidebar({ role, pathname: pathnameProp }: SidebarProps) {
     }
   }, []);
 
+  const handleClick = () => {
+    console.log("step 1: create shop link clicked");
+  };
+
   return (
     <aside className="w-56 shrink-0 border-r border-muted">
       <h1 className="px-4 py-6 text-lg font-semibold tracking-tight">CMS</h1>
       <nav>
         <ul className="flex flex-col gap-1 px-2">
-          {navItems.map(({ href, label, icon, title, fullHref, active }) => {
-            const handleClick =
-              label === "Create Shop"
-                ? () => {
-                    console.log("step 1: create shop link clicked");
-                  }
-                : undefined;
-            return (
-              <li key={href}>
-                <Link href={fullHref} legacyBehavior>
-                  <a
-                    onClick={handleClick}
-                    aria-current={active ? "page" : undefined}
-                    className={`focus-visible:ring-primary flex items-center gap-2 rounded-md px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none ${active ? "bg-primary/10 font-medium" : "hover:bg-muted"}`}
-                    title={title}
-                  >
-                    <span aria-hidden="true">{icon}</span>
-                    {label}
-                  </a>
-                </Link>
-              </li>
-            );
-          })}
+          {navItems.map(({ label, icon, title, fullHref, active }) => (
+            <li key={fullHref}>
+              <Link href={fullHref} legacyBehavior>
+                <a
+                  aria-current={active ? "page" : undefined}
+                  title={title}
+                  className={`focus-visible:ring-primary flex items-center gap-2 rounded-md px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none ${active ? "bg-primary/10 font-medium" : "hover:bg-muted"}`}
+                  {...(label === "Create Shop" ? { onClick: handleClick } : {})}
+                >
+                  <span>{icon}</span>
+                  {label}
+                </a>
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
     </aside>

@@ -5,9 +5,11 @@ const meta: Meta<typeof Sidebar> = {
   component: Sidebar,
   args: {
     role: "admin",
+    pathname: "/cms",
   },
   argTypes: {
     role: { control: "text" },
+    pathname: { control: "text" },
   },
 };
 export default meta;

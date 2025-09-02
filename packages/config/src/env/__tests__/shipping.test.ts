@@ -115,6 +115,23 @@ describe("shipping env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("loadShippingEnv throws on invalid UPS_KEY", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    expect(() =>
+      loadShippingEnv({ UPS_KEY: 123 as unknown as string }),
+    ).toThrow("Invalid shipping environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        UPS_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
   it("loadShippingEnv throws when process.env has invalid variables", async () => {
     // import with a valid env so the eager parse doesn't throw
     process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
@@ -160,7 +177,7 @@ describe("shipping env module", () => {
     errorSpy.mockRestore();
   });
 
-  it("throws on invalid DHL_KEY during eager parse", async () => {
+  it("throws when process.env has invalid DHL_KEY before import", async () => {
     process.env = {
       ...ORIGINAL_ENV,
       DHL_KEY: 123 as unknown as string,

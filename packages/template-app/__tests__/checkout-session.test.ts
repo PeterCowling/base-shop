@@ -146,6 +146,28 @@ test("returns 400 when cart is empty", async () => {
   expect(body.error).toBe("Cart is empty");
 });
 
+test("handles invalid JSON body and returns 400 for missing returnDate", async () => {
+  createCheckoutSessionMock.mockClear();
+  createCheckoutSessionMock.mockImplementationOnce(() => {
+    throw new Error("Invalid returnDate");
+  });
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  mockCart = cart;
+  const cookie = encodeCartCookie("test");
+  const req = createRequest({}, cookie) as any;
+  req.json = async () => {
+    throw new Error("invalid json");
+  };
+  const res = await POST(req);
+  expect(res.status).toBe(400);
+  const body = await res.json();
+  expect(body.error).toMatch(/invalid returnDate/i);
+  const [, opts] = createCheckoutSessionMock.mock.calls[0];
+  expect(opts.returnDate).toBeUndefined();
+});
+
 test("applies coverage fee and waiver", async () => {
   createCheckoutSessionMock.mockClear();
   stripeCreate.mockClear();

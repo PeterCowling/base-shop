@@ -3,6 +3,24 @@ import { jest } from "@jest/globals";
 describe("design tokens preset", () => {
   const assertTokens = (config: any) => {
     expect(config.theme?.extend?.colors?.bg).toBe("hsl(var(--color-bg))");
+    expect(config.theme?.extend?.textColor?.["primary-foreground"]).toBe(
+      "hsl(var(--color-primary-fg))",
+    );
+    expect(config.theme?.extend?.textColor?.["accent-foreground"]).toBe(
+      "hsl(var(--color-accent-fg))",
+    );
+    expect(config.theme?.extend?.textColor?.["danger-foreground"]).toBe(
+      "hsl(var(--color-danger-fg))",
+    );
+    expect(config.theme?.extend?.textColor?.["success-foreground"]).toBe(
+      "hsl(var(--color-success-fg))",
+    );
+    expect(config.theme?.extend?.textColor?.["warning-foreground"]).toBe(
+      "hsl(var(--color-warning-fg))",
+    );
+    expect(config.theme?.extend?.textColor?.["info-foreground"]).toBe(
+      "hsl(var(--color-info-fg))",
+    );
     expect(config.theme?.extend?.fontFamily?.sans).toBe("var(--font-sans)");
     expect(config.theme?.extend?.fontFamily?.mono).toBe("var(--font-mono)");
     expect(config.theme?.extend?.spacing?.["1"]).toBe("var(--space-1)");
@@ -21,10 +39,12 @@ describe("design tokens preset", () => {
     jest.resetModules();
     const preset = (await import("../src/index.ts")).default;
 
+    expect(preset.content).toEqual([]);
     assertTokens(preset);
 
     if (typeof preset === "function") {
       const result = preset();
+      expect(result.content).toEqual([]);
       assertTokens(result);
     }
   });

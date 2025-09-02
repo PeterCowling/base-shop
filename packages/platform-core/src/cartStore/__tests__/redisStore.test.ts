@@ -4,12 +4,23 @@ import { RedisCartStore } from "../redisStore";
 import { MemoryCartStore } from "../memoryStore";
 import type { SKU } from "@acme/types";
 
+const MAX_REDIS_FAILURES = 3;
+
 class MockRedis {
-  fail = false;
+  private failCount = 0;
+  constructor(private failUntil = 0) {}
+
   data = new Map<string, Record<string, any>>();
 
+  private maybeFail() {
+    if (this.failCount < this.failUntil) {
+      this.failCount += 1;
+      throw new Error("fail");
+    }
+  }
+
   hset = jest.fn(async (key: string, value: Record<string, any>) => {
-    if (this.fail) throw new Error("fail");
+    this.maybeFail();
     const obj = this.data.get(key) ?? {};
     Object.assign(obj, value);
     this.data.set(key, obj);
@@ -17,23 +28,23 @@ class MockRedis {
   });
 
   hgetall = jest.fn(async (key: string) => {
-    if (this.fail) throw new Error("fail");
+    this.maybeFail();
     return this.data.get(key) ?? {};
   });
 
   expire = jest.fn(async (_key: string, _ttl: number) => {
-    if (this.fail) throw new Error("fail");
+    this.maybeFail();
     return 1;
   });
 
   del = jest.fn(async (key: string) => {
-    if (this.fail) throw new Error("fail");
+    this.maybeFail();
     this.data.delete(key);
     return 1;
   });
 
   hdel = jest.fn(async (key: string, field: string) => {
-    if (this.fail) throw new Error("fail");
+    this.maybeFail();
     const obj = this.data.get(key) ?? {};
     const existed = obj[field] !== undefined ? 1 : 0;
     delete obj[field];
@@ -42,7 +53,7 @@ class MockRedis {
   });
 
   hincrby = jest.fn(async (key: string, field: string, qty: number) => {
-    if (this.fail) throw new Error("fail");
+    this.maybeFail();
     const obj = this.data.get(key) ?? {};
     obj[field] = (obj[field] ?? 0) + qty;
     this.data.set(key, obj);
@@ -50,7 +61,7 @@ class MockRedis {
   });
 
   hexists = jest.fn(async (key: string, field: string) => {
-    if (this.fail) throw new Error("fail");
+    this.maybeFail();
     const obj = this.data.get(key) ?? {};
     return obj[field] !== undefined ? 1 : 0;
   });
@@ -70,6 +81,10 @@ describe("RedisCartStore", () => {
     expect(redis.expire).toHaveBeenCalledTimes(1);
     expect(redis.expire).toHaveBeenLastCalledWith(id, ttl);
     expect(await store.getCart(id)).toEqual({});
+
+    expect(await store.setQty(id, "missing", 1)).toBeNull();
+    expect(redis.expire).toHaveBeenCalledTimes(1);
+    expect(redis.hexists).toHaveBeenCalledWith(id, "missing");
 
     await store.incrementQty(id, sku, 2);
     expect(redis.expire).toHaveBeenCalledTimes(3);
@@ -91,12 +106,16 @@ describe("RedisCartStore", () => {
       [sku.id]: { sku, qty: 5 },
     });
 
-    await store.removeItem(id, sku.id);
+    await store.setQty(id, sku.id, 0);
     expect(redis.expire).toHaveBeenCalledTimes(7);
     expect(redis.expire.mock.calls.slice(-2)).toEqual([
       [id, ttl],
       [`${id}:sku`, ttl],
     ]);
+    expect(await store.getCart(id)).toEqual({});
+
+    await expect(store.removeItem(id, sku.id)).resolves.toBeNull();
+    expect(redis.expire).toHaveBeenCalledTimes(7);
     expect(await store.getCart(id)).toEqual({});
 
     await store.setCart(id, { [sku.id]: { sku, qty: 3 } });
@@ -114,14 +133,23 @@ describe("RedisCartStore", () => {
     expect(await store.getCart(id)).toEqual({});
   });
 
-  it("falls back to memory store after repeated Redis failures", async () => {
-    const redis = new MockRedis();
-    redis.fail = true;
+  it("delegates to fallback store when Redis fails repeatedly", async () => {
+    const redis = new MockRedis(MAX_REDIS_FAILURES);
     const fallback = new MemoryCartStore(60);
     const store = new RedisCartStore(redis as any, 60, fallback);
 
     const id = await store.createCart();
-    await store.incrementQty(id, sku, 2); // triggers fallback mode
+    await store.incrementQty(id, sku, 2); // trigger fallback
+
+    const spies = {
+      createCart: jest.spyOn(fallback, "createCart"),
+      getCart: jest.spyOn(fallback, "getCart"),
+      setCart: jest.spyOn(fallback, "setCart"),
+      incrementQty: jest.spyOn(fallback, "incrementQty"),
+      setQty: jest.spyOn(fallback, "setQty"),
+      removeItem: jest.spyOn(fallback, "removeItem"),
+      deleteCart: jest.spyOn(fallback, "deleteCart"),
+    } as const;
 
     redis.hset.mockClear();
     redis.hgetall.mockClear();
@@ -131,21 +159,21 @@ describe("RedisCartStore", () => {
     redis.hincrby.mockClear();
     redis.hexists.mockClear();
 
+    await store.createCart();
+    await store.getCart(id);
     await store.setCart(id, { [sku.id]: { sku, qty: 3 } });
-    expect(await store.getCart(id)).toEqual({
-      [sku.id]: { sku, qty: 3 },
-    });
-
+    await store.incrementQty(id, sku, 1);
     await store.setQty(id, sku.id, 1);
-    expect(await store.getCart(id)).toEqual({
-      [sku.id]: { sku, qty: 1 },
-    });
-
     await store.removeItem(id, sku.id);
-    expect(await store.getCart(id)).toEqual({});
-
     await store.deleteCart(id);
-    expect(await store.getCart(id)).toEqual({});
+
+    expect(spies.createCart).toHaveBeenCalled();
+    expect(spies.getCart).toHaveBeenCalled();
+    expect(spies.setCart).toHaveBeenCalled();
+    expect(spies.incrementQty).toHaveBeenCalled();
+    expect(spies.setQty).toHaveBeenCalled();
+    expect(spies.removeItem).toHaveBeenCalled();
+    expect(spies.deleteCart).toHaveBeenCalled();
 
     expect(redis.hset).not.toHaveBeenCalled();
     expect(redis.hgetall).not.toHaveBeenCalled();

@@ -24,7 +24,24 @@ describe("shipping env module", () => {
     });
   });
 
-  it("throws on invalid configuration", async () => {
+  it("loadShippingEnv throws on invalid variables", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    expect(() =>
+      loadShippingEnv({ UPS_KEY: 123 as unknown as string }),
+    ).toThrow("Invalid shipping environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        UPS_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws on invalid configuration during eager parse", async () => {
     process.env = {
       ...ORIGINAL_ENV,
       UPS_KEY: 123 as unknown as string,

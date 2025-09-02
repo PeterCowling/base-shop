@@ -18,11 +18,12 @@ function createStore() {
       const value = jar.get(name);
       return value ? { name, value } : undefined;
     }),
-    set: jest.fn((name: string, value: string) => {
+    set: jest.fn((name: string, value: string, opts?: unknown) => {
       jar.set(name, value);
+      return opts;
     }),
-    delete: jest.fn((name: string) => {
-      jar.delete(name);
+    delete: jest.fn((opts: { name: string }) => {
+      jar.delete(opts.name);
     }),
   };
 }
@@ -92,6 +93,78 @@ describe("session token", () => {
     const token = store.set.mock.calls[0][1];
     store.set(CUSTOMER_SESSION_COOKIE, token + "tampered");
     await expect(getCustomerSession()).resolves.toBeNull();
+  });
+
+  it("creates session with default cookie options", async () => {
+    delete process.env.COOKIE_DOMAIN;
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { createCustomerSession, CUSTOMER_SESSION_COOKIE } = await import(
+      "../src/session"
+    );
+    await createCustomerSession({ customerId: "abc", role: "customer" as Role });
+    const [, , opts] = store.set.mock.calls.find(
+      ([name]) => name === CUSTOMER_SESSION_COOKIE
+    )!;
+    expect(opts).toMatchObject({
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+      path: "/",
+      domain: undefined,
+    });
+  });
+
+  it("creates session with custom cookie attributes", async () => {
+    process.env.COOKIE_DOMAIN = "custom.example";
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { createCustomerSession, CUSTOMER_SESSION_COOKIE } = await import(
+      "../src/session"
+    );
+    await createCustomerSession({ customerId: "abc", role: "customer" as Role });
+    const [, , opts] = store.set.mock.calls.find(
+      ([name]) => name === CUSTOMER_SESSION_COOKIE
+    )!;
+    expect(opts?.domain).toBe("custom.example");
+  });
+
+  it("destroyCustomerSession without cookie clears cookies", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const {
+      destroyCustomerSession,
+      CUSTOMER_SESSION_COOKIE,
+      CSRF_TOKEN_COOKIE,
+    } = await import("../src/session");
+    await destroyCustomerSession();
+    expect(store.delete).toHaveBeenCalledWith({
+      name: CUSTOMER_SESSION_COOKIE,
+      path: "/",
+      domain: "example.com",
+    });
+    expect(store.delete).toHaveBeenCalledWith({
+      name: CSRF_TOKEN_COOKIE,
+      path: "/",
+      domain: "example.com",
+    });
+  });
+
+  it("throws when SESSION_SECRET is missing", async () => {
+    jest.resetModules();
+    delete process.env.SESSION_SECRET;
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: {
+        SESSION_SECRET: undefined,
+        COOKIE_DOMAIN: process.env.COOKIE_DOMAIN,
+      },
+    }));
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { createCustomerSession } = await import("../src/session");
+    await expect(
+      createCustomerSession({ customerId: "abc", role: "customer" as Role })
+    ).rejects.toThrow("SESSION_SECRET is not set");
   });
 });
 

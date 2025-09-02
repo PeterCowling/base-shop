@@ -11,7 +11,7 @@ import { nowIso } from "@date-utils";
 jest.setTimeout(20_000);
 
 /** The shape of the JSON-repository module we import dynamically */
-type JsonRepo = typeof import("../repositories/json.server");
+type JsonRepo = typeof import("../src/repositories/json.server");
 
 /**
  * Creates an isolated temp repo, runs `cb`, then restores CWD.
@@ -35,7 +35,7 @@ async function withRepo(
     PrismaClient: jest.fn().mockImplementation(() => ({})),
   }));
 
-  const repo: JsonRepo = await import("../repositories/json.server");
+  const repo: JsonRepo = await import("../src/repositories/json.server");
   try {
     await cb(repo, "test", dir);
   } finally {

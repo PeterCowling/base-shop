@@ -1,5 +1,13 @@
 import { z } from "zod";
-import { applyFriendlyZodMessages } from "../zodErrorMap";
+import { applyFriendlyZodMessages, friendlyErrorMap } from "../zodErrorMap";
+
+test("applyFriendlyZodMessages sets global error map", () => {
+  const original = z.getErrorMap();
+  expect(original).not.toBe(friendlyErrorMap);
+  applyFriendlyZodMessages();
+  expect(z.getErrorMap()).toBe(friendlyErrorMap);
+  z.setErrorMap(original);
+});
 
 describe("friendly zod error messages", () => {
   const defaultMap = z.getErrorMap();
@@ -24,6 +32,20 @@ describe("friendly zod error messages", () => {
     const result = schema.safeParse(123);
     expect(result.success).toBe(false);
     expect(result.error.issues[0].message).toBe("Expected string");
+  });
+
+  test("invalid_type number", () => {
+    const schema = z.number();
+    const result = schema.safeParse("123");
+    expect(result.success).toBe(false);
+    expect(result.error.issues[0].message).toBe("Expected number");
+  });
+
+  test("invalid_type array", () => {
+    const schema = z.array(z.string());
+    const result = schema.safeParse("not-an-array");
+    expect(result.success).toBe(false);
+    expect(result.error.issues[0].message).toBe("Expected array");
   });
 
   test("invalid_enum_value", () => {

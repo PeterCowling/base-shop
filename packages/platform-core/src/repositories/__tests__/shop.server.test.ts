@@ -2,7 +2,7 @@ jest.mock("../../dataRoot", () => ({
   DATA_ROOT: "/data/root",
 }));
 
-jest.mock("node:fs", () => ({
+jest.mock("fs", () => ({
   promises: {
     readFile: jest.fn(),
     mkdir: jest.fn(),
@@ -20,8 +20,9 @@ jest.mock("../../db", () => ({
   },
 }));
 
-import { promises as fs } from "node:fs";
-import * as path from "node:path";
+import { promises as fs } from "fs";
+import * as path from "path";
+import { shopSchema } from "@acme/types";
 import { prisma } from "../../db";
 import { getShopById, updateShopInRepo } from "../shop.server";
 
@@ -33,13 +34,14 @@ describe("shop repository", () => {
   const writeFile = fs.writeFile as jest.Mock;
   const rename = fs.rename as jest.Mock;
 
-  const shopData = {
+  const rawShopData = {
     id: "shop1",
     name: "Shop",
     catalogFilters: [],
     themeId: "theme",
     filterMappings: {},
   };
+  const shopData = shopSchema.parse(rawShopData);
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -47,14 +49,14 @@ describe("shop repository", () => {
 
   describe("getShopById", () => {
     it("returns shop data from the database", async () => {
-      findUnique.mockResolvedValue({ id: "shop1", data: shopData });
+      findUnique.mockResolvedValue({ id: "shop1", data: rawShopData });
       await expect(getShopById("shop1")).resolves.toEqual(shopData);
       expect(readFile).not.toHaveBeenCalled();
     });
 
     it("falls back to filesystem when the database fails", async () => {
       findUnique.mockRejectedValue(new Error("db error"));
-      readFile.mockResolvedValue(JSON.stringify(shopData));
+      readFile.mockResolvedValue(JSON.stringify(rawShopData));
       await expect(getShopById("shop1")).resolves.toEqual(shopData);
     });
 
@@ -69,7 +71,7 @@ describe("shop repository", () => {
 
   describe("updateShopInRepo", () => {
     beforeEach(() => {
-      findUnique.mockResolvedValue({ id: "shop1", data: shopData });
+      findUnique.mockResolvedValue({ id: "shop1", data: rawShopData });
     });
 
     it("upserts the shop in the database", async () => {

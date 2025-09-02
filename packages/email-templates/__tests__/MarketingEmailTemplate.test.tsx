@@ -56,21 +56,6 @@ describe("MarketingEmailTemplate", () => {
     );
   });
 
-  it.each([
-    [{ ctaLabel: "Only Label" }],
-    [{ ctaHref: "https://example.com" }],
-  ])("omits link when CTA props are incomplete", (ctaProps) => {
-    const { queryByRole } = render(
-      <MarketingEmailTemplate
-        headline="CTA Test"
-        content={<p>content</p>}
-        {...ctaProps}
-      />
-    );
-
-    expect(queryByRole("link")).toBeNull();
-  });
-
   it("omits logo and footer containers when data is missing", () => {
     const { container, queryByAltText } = render(
       <MarketingEmailTemplate headline="No Extras" content={<p>content</p>} />
@@ -80,8 +65,22 @@ describe("MarketingEmailTemplate", () => {
     expect(container.querySelector(".border-t")).toBeNull();
   });
 
-  it("handles missing props without crashing", () => {
-    expect(() => render(<MarketingEmailTemplate {...(null as any)} />)).not.toThrow();
+  it("throws when headline is missing", () => {
+    expect(() => render(<MarketingEmailTemplate content={<p /> } />)).toThrow(
+      "headline and content are required",
+    );
+  });
+
+  it("throws when CTA props are incomplete", () => {
+    expect(() =>
+      render(
+        <MarketingEmailTemplate
+          headline="X"
+          content={<p />}
+          ctaLabel="Only label"
+        />,
+      ),
+    ).toThrow("ctaLabel and ctaHref must both be provided");
   });
 });
 

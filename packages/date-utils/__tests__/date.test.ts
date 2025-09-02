@@ -9,7 +9,7 @@ import {
   parseTargetDate,
   getTimeRemaining,
   formatDuration,
-} from "@acme/date-utils";
+} from "../src";
 
 describe("nowIso", () => {
   test("returns a valid ISO 8601 string near current time", () => {
@@ -56,6 +56,10 @@ describe("calculateRentalDays", () => {
 
   test("floors past dates to one day", () => {
     expect(calculateRentalDays("2024-12-31")).toBe(1);
+  });
+
+  test("defaults to one day when returnDate is missing", () => {
+    expect(calculateRentalDays()).toBe(1);
   });
 
   test("throws on invalid date", () => {
@@ -106,6 +110,10 @@ describe("parseTargetDate", () => {
   test("returns null for invalid input", () => {
     expect(parseTargetDate("invalid")).toBeNull();
   });
+
+  test("returns null when targetDate is undefined", () => {
+    expect(parseTargetDate()).toBeNull();
+  });
 });
 
 describe("getTimeRemaining", () => {
@@ -139,6 +147,14 @@ describe("formatDuration", () => {
 
   test("formats seconds-only durations", () => {
     expect(formatDuration(45 * 1000)).toBe("45s");
+  });
+
+  test("formats zero milliseconds as 0s", () => {
+    expect(formatDuration(0)).toBe("0s");
+  });
+
+  test("treats negative durations as 0s", () => {
+    expect(formatDuration(-5000)).toBe("0s");
   });
 });
 describe("DST transitions", () => {

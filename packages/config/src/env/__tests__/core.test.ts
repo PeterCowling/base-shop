@@ -3,6 +3,7 @@ import {
   coreEnvBaseSchema,
   coreEnvSchema,
   depositReleaseEnvRefinement,
+  loadCoreEnv,
 } from "../core.js";
 
 const schema = coreEnvBaseSchema.superRefine(depositReleaseEnvRefinement);
@@ -165,12 +166,49 @@ describe("core env optional variables", () => {
   });
 });
 
+describe("loadCoreEnv", () => {
+  it("throws and logs issues for malformed env", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadCoreEnv({
+        ...baseEnv,
+        DEPOSIT_RELEASE_ENABLED: "yes",
+        LATE_FEE_INTERVAL_MS: "fast",
+      } as NodeJS.ProcessEnv),
+    ).toThrow("Invalid core environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • LATE_FEE_INTERVAL_MS: must be a number",
+    );
+    errorSpy.mockRestore();
+  });
+});
+
 describe("core env module", () => {
   const ORIGINAL_ENV = process.env;
 
   afterEach(() => {
     jest.resetModules();
     process.env = ORIGINAL_ENV;
+  });
+
+  it("caches parsed env and does not reparse", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      CMS_ACCESS_TOKEN: "token1",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { coreEnv } = await import("../core.js");
+    expect(coreEnv.CMS_ACCESS_TOKEN).toBe("token1");
+    // Mutate process.env to what would be parsed if re-run
+    process.env.CMS_ACCESS_TOKEN = "token2";
+    expect(coreEnv.CMS_ACCESS_TOKEN).toBe("token1");
   });
 
   it("logs detailed messages and throws on invalid configuration", () => {

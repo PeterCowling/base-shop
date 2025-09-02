@@ -27,22 +27,52 @@ describe("Translations context", () => {
     return <span>{t(k)}</span>;
   }
 
-  it("provides messages via context", () => {
+  it("provides messages via context", async () => {
     render(
       <TranslationsProvider messages={{ hello: "Hallo" }}>
         <ShowMessage k="hello" />
       </TranslationsProvider>
     );
-    expect(screen.getByText("Hallo")).toBeInTheDocument();
+    expect(await screen.findByText("Hallo")).toBeInTheDocument();
   });
 
-  it("falls back to the key when missing", () => {
+  it("falls back to the key when missing", async () => {
     render(
       <TranslationsProvider messages={{}}>
         <ShowMessage k="missing" />
       </TranslationsProvider>
     );
-    expect(screen.getByText("missing")).toBeInTheDocument();
+    expect(await screen.findByText("missing")).toBeInTheDocument();
+  });
+});
+
+describe("useTranslations hook", () => {
+  function Hooked({ k }: { k: string }) {
+    const t = useTranslations();
+    return <span>{t(k)}</span>;
+  }
+
+  it("returns translation when present and key when missing", async () => {
+    const { rerender } = render(
+      <TranslationsProvider messages={{ hello: "Hallo" }}>
+        <Hooked k="hello" />
+      </TranslationsProvider>
+    );
+
+    expect(await screen.findByText("Hallo")).toBeInTheDocument();
+
+    rerender(
+      <TranslationsProvider messages={{}}>
+        <Hooked k="hello" />
+      </TranslationsProvider>
+    );
+
+    expect(await screen.findByText("hello")).toBeInTheDocument();
+  });
+
+  it("falls back to key outside a provider", async () => {
+    render(<Hooked k="missing" />);
+    expect(await screen.findByText("missing")).toBeInTheDocument();
   });
 });
 
@@ -57,16 +87,16 @@ describe("Translations integration", () => {
     return <span>{t(k)}</span>;
   }
 
-  it("renders localized string", () => {
+  it("renders localized string", async () => {
     render(
       <TranslationsProvider messages={{ greet: "Hello" }}>
         <Greeting />
       </TranslationsProvider>
     );
-    expect(screen.getByText("Hello")).toBeInTheDocument();
+    expect(await screen.findByText("Hello")).toBeInTheDocument();
   });
 
-  it("updates when locale changes", () => {
+  it("updates when locale changes", async () => {
     const { rerender } = render(
       <TranslationsProvider messages={{ greet: "Hello" }}>
         <Greeting />
@@ -79,10 +109,10 @@ describe("Translations integration", () => {
       </TranslationsProvider>
     );
 
-    expect(screen.getByText("Hallo")).toBeInTheDocument();
+    expect(await screen.findByText("Hallo")).toBeInTheDocument();
   });
 
-  it("nests providers without merging messages", () => {
+  it("nests providers without merging messages", async () => {
     render(
       <TranslationsProvider
         messages={{ greet: "Parent", parentOnly: "Parent" }}
@@ -96,13 +126,13 @@ describe("Translations integration", () => {
       </TranslationsProvider>
     );
 
-    expect(screen.getByText("Child")).toBeInTheDocument();
-    expect(screen.getByText("parentOnly")).toBeInTheDocument();
+    expect(await screen.findByText("Child")).toBeInTheDocument();
+    expect(await screen.findByText("parentOnly")).toBeInTheDocument();
   });
 });
 
 describe("TranslationsProvider memoisation", () => {
-  it("preserves messages reference between renders", () => {
+  it("preserves messages reference between renders", async () => {
     const renderSpy = jest.fn();
     const Child = memo(() => {
       const t = useTranslations();
@@ -126,6 +156,6 @@ describe("TranslationsProvider memoisation", () => {
     );
 
     expect(renderSpy).toHaveBeenCalledTimes(1);
-    expect(screen.getByText("Hallo")).toBeInTheDocument();
+    expect(await screen.findByText("Hallo")).toBeInTheDocument();
   });
 });

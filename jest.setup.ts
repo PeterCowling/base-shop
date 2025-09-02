@@ -35,15 +35,22 @@ import React from "react";
 import { TextDecoder, TextEncoder } from "node:util";
 import { File } from "node:buffer";
 
-// React 19 renamed its internal export used by react‑dom.  Older builds of
-// react‑dom still expect `__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED`,
-// so alias the new name when necessary to keep tests running.
+// React 19 renamed its internal export used by react‑dom.  Depending on which
+// version of React/React‑DOM is installed, either the old `__SECRET_INTERNALS…`
+// or the new `__CLIENT_INTERNALS…` may be missing.  Alias whichever one is
+// absent so that both names resolve to the same object.
 if (
   (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE &&
   !(React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
 ) {
   (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED =
     (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+} else if (
+  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED &&
+  !(React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE
+) {
+  (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE =
+    (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
 }
 
 /** Node’s `util` encoders/decoders are required by React-DOM’s server renderer */

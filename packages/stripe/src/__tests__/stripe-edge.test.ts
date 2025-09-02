@@ -1,5 +1,4 @@
 import Stripe from "stripe";
-import { Miniflare } from "miniflare";
 
 /**
  * Extend Stripe type to access internal helpers for testing.
@@ -11,18 +10,7 @@ type StripeInternal = Stripe & {
 describe("stripe edge client", () => {
   const OLD_ENV = process.env;
 
-  beforeAll(async () => {
-    // Create a Cloudflare Worker-like environment via Miniflare.
-    const mf = new Miniflare();
-    const scope = await mf.getGlobalScope();
-    Object.assign(globalThis, {
-      fetch: scope.fetch,
-      Headers: scope.Headers,
-      Request: scope.Request,
-      Response: scope.Response,
-      FormData: scope.FormData,
-    });
-  });
+  // No special setup required; fetch and other APIs are polyfilled in test setup.
 
   beforeEach(() => {
     jest.resetModules();
@@ -39,13 +27,6 @@ describe("stripe edge client", () => {
   });
 
   it("uses fetch http client and performs request", async () => {
-    const { stripe } = await import("../index");
-    const stripeInternal = stripe as StripeInternal;
-
-    // Ensure our client uses the fetch-based HTTP client.
-    const httpClient = stripeInternal.getApiField("httpClient");
-    expect(httpClient).toHaveProperty("_fetchFn");
-
     // Mock fetch to simulate a successful Stripe API response.
     const fetchSpy = jest
       .spyOn(globalThis, "fetch")
@@ -58,6 +39,13 @@ describe("stripe edge client", () => {
           }
         )
       );
+
+    const { stripe } = await import("../index");
+    const stripeInternal = stripe as StripeInternal;
+
+    // Ensure our client uses the fetch-based HTTP client.
+    const httpClient = stripeInternal.getApiField("httpClient");
+    expect(httpClient).toHaveProperty("_fetchFn");
 
     const customer = await stripeInternal.customers.create();
     expect(customer.id).toBe("cus_test");

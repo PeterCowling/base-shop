@@ -109,7 +109,7 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
         content = (output as { text: string }).text;
       }
       if (content) {
-        data = JSON.parse(content);
+        data = { ...data, ...JSON.parse(content) };
       }
     }
   } catch {

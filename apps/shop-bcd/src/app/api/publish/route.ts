@@ -7,7 +7,7 @@ import { createRequire } from "module";
 // published as a package. Load it via `createRequire` so the build can
 // resolve the CommonJS module without relying on a workspace alias.
 const require = createRequire(import.meta.url);
-const { republishShop } = require("../../../../../../scripts/src/republish-shop.js") as typeof import("../../../../../../scripts/src/republish-shop");
+const { republishShop } = require("../../../../../../scripts/src/republish-shop") as typeof import("../../../../../../scripts/src/republish-shop");
 
 export const runtime = "nodejs";
 

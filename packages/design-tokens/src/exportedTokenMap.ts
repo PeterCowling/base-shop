@@ -1,11 +1,39 @@
+// packages/design-tokens/src/exportedTokenMap.ts
+// Map of design token CSS variables to their corresponding `var(--token)` value.
+//
+// The map should stay in sync with the token definitions in
+// `packages/themes/base/src/tokens.ts`. Each key is a CSS variable name and the
+// value references the variable using the standard `var(--token)` syntax.
+
 export const exportedTokenMap = {
   "--color-bg": "var(--color-bg)",
   "--color-fg": "var(--color-fg)",
-  "--color-border": "var(--color-border)",
+  "--color-primary": "var(--color-primary)",
+  "--color-primary-fg": "var(--color-primary-fg)",
+  "--color-accent": "var(--color-accent)",
+  "--color-accent-fg": "var(--color-accent-fg)",
+  "--color-danger": "var(--color-danger)",
+  "--color-danger-fg": "var(--color-danger-fg)",
+  "--color-success": "var(--color-success)",
+  "--color-success-fg": "var(--color-success-fg)",
+  "--color-warning": "var(--color-warning)",
+  "--color-warning-fg": "var(--color-warning-fg)",
+  "--color-info": "var(--color-info)",
+  "--color-info-fg": "var(--color-info-fg)",
+  "--color-muted": "var(--color-muted)",
   "--font-sans": "var(--font-sans)",
-  "--font-size-base": "var(--font-size-base)",
-  "--font-weight-normal": "var(--font-weight-normal)",
-  "--line-height-base": "var(--line-height-base)",
-};
+  "--font-mono": "var(--font-mono)",
+  "--space-1": "var(--space-1)",
+  "--space-2": "var(--space-2)",
+  "--space-3": "var(--space-3)",
+  "--space-4": "var(--space-4)",
+  "--radius-sm": "var(--radius-sm)",
+  "--radius-md": "var(--radius-md)",
+  "--radius-lg": "var(--radius-lg)",
+  "--shadow-sm": "var(--shadow-sm)",
+  "--shadow-md": "var(--shadow-md)",
+  "--shadow-lg": "var(--shadow-lg)",
+} as const;
 
 export type ExportedTokenMap = typeof exportedTokenMap;
+

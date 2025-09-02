@@ -24,7 +24,7 @@ module.exports = {
     "^@/components/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",
     "^@/i18n/Translations$": "<rootDir>/test/emptyModule.js",
     "^@/(.*)$": "<rootDir>/apps/cms/src/$1",
-    "^packages/config/src/env/core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
+    "^packages/config/src/env/core\\.js$": "<rootDir>/packages/config/src/env/__test__/core.stub.ts",
     "^packages/config/src/env/index\\.js$": "<rootDir>/packages/config/src/env/index.ts",
     "^packages/config/src/env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.ts",
     // TODO: map test-friendly stubs once available

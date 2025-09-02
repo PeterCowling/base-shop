@@ -59,16 +59,24 @@ const tsPaths = tsconfig?.compilerOptions?.paths
  * ──────────────────────────────────────────────────────────────────── */
 function resolveReact() {
   try {
-    // Resolve the root of the locally installed react package.
-    const reactPkg = require.resolve('react/package.json');
+    // Resolve the root of the locally installed react package. Use
+    // `process.cwd()` so packages can supply their own React version
+    // without requiring a top‑level dependency.
+    const reactPkg = require.resolve('react/package.json', {
+      paths: [process.cwd()],
+    });
     const reactBase = path.dirname(reactPkg);
-    const reactDomPkg = require.resolve('react-dom/package.json');
+    const reactDomPkg = require.resolve('react-dom/package.json', {
+      paths: [process.cwd()],
+    });
     const reactDomBase = path.dirname(reactDomPkg);
 
     // Build full paths to runtime files and verify they exist.
     const jsxRuntime = path.join(reactBase, 'jsx-runtime.js');
     const jsxDevRuntime = path.join(reactBase, 'jsx-dev-runtime.js');
-    const domClient = require.resolve('react-dom/client');
+    const domClient = require.resolve('react-dom/client', {
+      paths: [process.cwd()],
+    });
 
     if (
       fs.existsSync(jsxRuntime) &&

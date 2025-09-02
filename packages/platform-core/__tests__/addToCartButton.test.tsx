@@ -5,8 +5,6 @@ import { CartProvider, useCart } from "@platform-core/contexts/CartContext";
 import AddToCartButton from "@platform-core/components/shop/AddToCartButton.client";
 import { PRODUCTS } from "@platform-core/products";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-jest.mock("react", () => jest.requireActual("react"));
-jest.mock("react-dom", () => jest.requireActual("react-dom"));
 
 function Qty() {
   const [state] = useCart();

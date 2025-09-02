@@ -1,2 +1,2 @@
-export declare function getCsrfToken(): string | undefined;
+export declare function getCsrfToken(req?: Request): string | undefined;
 //# sourceMappingURL=getCsrfToken.d.ts.map

@@ -72,6 +72,27 @@ describe("generateMeta", () => {
     });
   });
 
+  it("parses string output from OpenAI", async () => {
+    responsesCreateMock.mockResolvedValueOnce({
+      output: [
+        { content: ['{"title":"S","description":"SD","alt":"SA"}'] },
+      ],
+    });
+
+    const result = await generateMeta({
+      id: "123",
+      title: "Title",
+      description: "Desc",
+    });
+
+    expect(result).toEqual({
+      title: "S",
+      description: "SD",
+      alt: "SA",
+      image: "/og/123.png",
+    });
+  });
+
   it("falls back to defaults when OpenAI returns malformed JSON", async () => {
     responsesCreateMock.mockResolvedValueOnce({
       output: [{ content: [{ text: "not json" }] }],

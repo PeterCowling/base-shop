@@ -35,15 +35,20 @@ import React from "react";
 import { TextDecoder, TextEncoder } from "node:util";
 import { File } from "node:buffer";
 
-// React 19 renamed its internal export used by react‑dom.  Older builds of
+// React 19 renamed its internal export used by react‑dom.  Older builds of
 // react‑dom still expect `__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED`,
-// so alias the new name when necessary to keep tests running.
-if (
-  (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE &&
-  !(React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
-) {
-  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED =
-    (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+// while newer builds require
+// `__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE`.  Ensure
+// both identifiers point at the same object regardless of which one is present
+// so that tests run against either version of React DOM without blowing up.
+const OLD_KEY = "__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED" as const;
+const NEW_KEY =
+  "__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE" as const;
+
+if ((React as any)[NEW_KEY] && !(React as any)[OLD_KEY]) {
+  (React as any)[OLD_KEY] = (React as any)[NEW_KEY];
+} else if ((React as any)[OLD_KEY] && !(React as any)[NEW_KEY]) {
+  (React as any)[NEW_KEY] = (React as any)[OLD_KEY];
 }
 
 /** Node’s `util` encoders/decoders are required by React-DOM’s server renderer */

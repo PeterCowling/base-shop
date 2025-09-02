@@ -107,5 +107,28 @@ describe("auth env module", () => {
     );
     errorSpy.mockRestore();
   });
+
+  it("throws when optional URL is invalid and NEXTAUTH_SECRET is missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      SESSION_SECRET: "session-secret",
+      LOGIN_RATE_LIMIT_REDIS_URL: "not-a-url",
+    } as NodeJS.ProcessEnv;
+    delete process.env.NEXTAUTH_SECRET;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        NEXTAUTH_SECRET: { _errors: [expect.any(String)] },
+        LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
 });
 

@@ -218,5 +218,43 @@ describe("shipping env module", () => {
     );
     errorSpy.mockRestore();
   });
+
+  it("loadShippingEnv logs and throws on numeric UPS_KEY", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    expect(() => loadShippingEnv({ UPS_KEY: 123 } as any)).toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        UPS_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("logs and throws during eager parse when UPS_KEY is non-string", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      UPS_KEY: 123 as unknown as string,
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../shipping.ts")).rejects.toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        UPS_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
 });
 

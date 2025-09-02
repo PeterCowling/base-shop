@@ -1,6 +1,7 @@
 // packages/i18n/__tests__/i18n.test.tsx
 
 import { render, screen } from "@testing-library/react";
+import { memo } from "react";
 import { resolveLocale } from "../src/locales";
 import { TranslationsProvider, useTranslations } from "../src/Translations";
 
@@ -97,5 +98,34 @@ describe("Translations integration", () => {
 
     expect(screen.getByText("Child")).toBeInTheDocument();
     expect(screen.getByText("parentOnly")).toBeInTheDocument();
+  });
+});
+
+describe("TranslationsProvider memoisation", () => {
+  it("preserves messages reference between renders", () => {
+    const renderSpy = jest.fn();
+    const Child = memo(() => {
+      const t = useTranslations();
+      renderSpy();
+      return <span>{t("hello")}</span>;
+    });
+
+    const messages = { hello: "Hallo" };
+    const { rerender } = render(
+      <TranslationsProvider messages={messages}>
+        <Child />
+      </TranslationsProvider>
+    );
+
+    expect(renderSpy).toHaveBeenCalledTimes(1);
+
+    rerender(
+      <TranslationsProvider messages={messages}>
+        <Child />
+      </TranslationsProvider>
+    );
+
+    expect(renderSpy).toHaveBeenCalledTimes(1);
+    expect(screen.getByText("Hallo")).toBeInTheDocument();
   });
 });

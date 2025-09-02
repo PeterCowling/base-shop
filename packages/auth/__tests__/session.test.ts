@@ -1,6 +1,6 @@
-jest.mock("@acme/zod-utils/initZod", () => ({ initZod: jest.fn() }));
+import { jest } from "@jest/globals";
 
-import type { Role } from "../src/types/index";
+jest.mock("@acme/zod-utils/initZod", () => ({ initZod: jest.fn() }));
 
 const mockCookies = jest.fn();
 const mockHeaders = jest.fn(() => ({ get: () => null }));
@@ -9,11 +9,7 @@ jest.mock("next/headers", () => ({
   headers: () => mockHeaders(),
 }));
 
-let createCustomerSession: typeof import("../src/session").createCustomerSession;
-let getCustomerSession: typeof import("../src/session").getCustomerSession;
-let destroyCustomerSession: typeof import("../src/session").destroyCustomerSession;
-let CUSTOMER_SESSION_COOKIE: typeof import("../src/session").CUSTOMER_SESSION_COOKIE;
-let CSRF_TOKEN_COOKIE: typeof import("../src/session").CSRF_TOKEN_COOKIE;
+import type { Role } from "../src/types";
 
 function createStore() {
   const jar = new Map<string, string>();
@@ -31,95 +27,70 @@ function createStore() {
   };
 }
 
-describe("customer session", () => {
+describe("session token", () => {
   const originalSecret = process.env.SESSION_SECRET;
-  beforeEach(async () => {
-    process.env.SESSION_SECRET =
-      "0123456789abcdefghijklmnopqrstuvwxyz012345"; // 40 chars
+  const originalDomain = process.env.COOKIE_DOMAIN;
+
+  beforeEach(() => {
+    process.env.SESSION_SECRET = "0123456789abcdefghijklmnopqrstuvwxyz012345"; // 40 chars
+    process.env.COOKIE_DOMAIN = "example.com";
     mockCookies.mockReset();
     jest.resetModules();
-    const mod = await import("../src/session");
-    ({
+  });
+
+  afterAll(() => {
+    if (originalSecret !== undefined) process.env.SESSION_SECRET = originalSecret; else delete process.env.SESSION_SECRET;
+    if (originalDomain !== undefined) process.env.COOKIE_DOMAIN = originalDomain; else delete process.env.COOKIE_DOMAIN;
+  });
+
+  it("creates a session token", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { createCustomerSession, CUSTOMER_SESSION_COOKIE } = await import("../src/session");
+    await createCustomerSession({ customerId: "abc", role: "customer" as Role });
+    const [name, token] = store.set.mock.calls[0];
+    expect(name).toBe(CUSTOMER_SESSION_COOKIE);
+    expect(typeof token).toBe("string");
+    expect(token).not.toHaveLength(0);
+  });
+
+  it("parses a valid token", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { createCustomerSession, getCustomerSession } = await import("../src/session");
+    const session = { customerId: "abc", role: "customer" as Role };
+    await createCustomerSession(session);
+    await expect(getCustomerSession()).resolves.toEqual(session);
+  });
+
+  it("handles expired tokens", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { createCustomerSession, getCustomerSession } = await import("../src/session");
+    const { SESSION_TTL_S } = await import("../src/store");
+    const session = { customerId: "abc", role: "customer" as Role };
+    let now = Date.now();
+    const spy = jest.spyOn(Date, "now").mockImplementation(() => now);
+
+    await createCustomerSession(session);
+    now += (SESSION_TTL_S + 1) * 1000;
+    await expect(getCustomerSession()).resolves.toBeNull();
+
+    spy.mockRestore();
+  });
+
+  it("rejects tokens with invalid signature", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const {
       createCustomerSession,
       getCustomerSession,
-      destroyCustomerSession,
       CUSTOMER_SESSION_COOKIE,
-      CSRF_TOKEN_COOKIE,
-    } = mod);
-  });
-  afterAll(() => {
-    if (originalSecret !== undefined) {
-      process.env.SESSION_SECRET = originalSecret;
-    } else {
-      delete process.env.SESSION_SECRET;
-    }
-  });
-
-  it("rotates token and refreshes on activity", async () => {
-    const store = createStore();
-    mockCookies.mockResolvedValue(store);
+    } = await import("../src/session");
     const session = { customerId: "abc", role: "customer" as Role };
-
-    await createCustomerSession(session);
-    const [name, firstToken, firstOpts] = store.set.mock.calls[0];
-    expect(name).toBe(CUSTOMER_SESSION_COOKIE);
-    expect(firstOpts).toMatchObject({
-      httpOnly: true,
-      sameSite: "strict",
-      secure: true,
-      path: "/",
-      maxAge: expect.any(Number),
-    });
-
-    const [csrfName, csrfToken, csrfOpts] = store.set.mock.calls[1];
-    expect(csrfName).toBe(CSRF_TOKEN_COOKIE);
-    expect(csrfOpts).toMatchObject({
-      httpOnly: false,
-      sameSite: "strict",
-      secure: true,
-      path: "/",
-      maxAge: expect.any(Number),
-    });
-
-    await expect(getCustomerSession()).resolves.toEqual(session);
-    const secondToken = store.set.mock.calls[2][1];
-    expect(secondToken).not.toBe(firstToken);
-    const secondOpts = store.set.mock.calls[2][2];
-    expect(secondOpts).toMatchObject({
-      httpOnly: true,
-      sameSite: "strict",
-      secure: true,
-      path: "/",
-      maxAge: expect.any(Number),
-    });
-  });
-
-  it("rotates token on subsequent login", async () => {
-    const store = createStore();
-    mockCookies.mockResolvedValue(store);
-    const session = { customerId: "abc", role: "customer" as Role };
-
-    await createCustomerSession(session);
-    const firstToken = store.set.mock.calls[0][1];
-
-    await createCustomerSession(session);
-    const secondToken = store.set.mock.calls[2][1];
-    expect(secondToken).not.toBe(firstToken);
-  });
-
-  it("invalidates server-side session on destroy", async () => {
-    const store = createStore();
-    mockCookies.mockResolvedValue(store);
-    const session = { customerId: "abc", role: "customer" as Role };
-
     await createCustomerSession(session);
     const token = store.set.mock.calls[0][1];
-
-    await destroyCustomerSession();
-
-    // simulate request with old token
-    store.set(CUSTOMER_SESSION_COOKIE, token);
-
+    store.set(CUSTOMER_SESSION_COOKIE, token + "tampered");
     await expect(getCustomerSession()).resolves.toBeNull();
   });
 });

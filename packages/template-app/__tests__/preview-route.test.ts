@@ -179,6 +179,23 @@ test("standard token not accepted as upgrade token", async () => {
   expect(res.status).toBe(401);
 });
 
+test("upgrade token route generates token when authorized", async () => {
+  jest.doMock("@auth", () => ({
+    __esModule: true,
+    requirePermission: jest.fn(),
+  }));
+
+  const { GET } = await import("../src/app/api/preview-token/route");
+  const res = await GET(new Request("http://test?pageId=1") as any);
+
+  expect(res.status).toBe(200);
+  const { token } = (await res.json()) as { token: string };
+  const expected = createHmac("sha256", process.env.UPGRADE_PREVIEW_TOKEN_SECRET!)
+    .update("1")
+    .digest("hex");
+  expect(token).toBe(expected);
+});
+
 test("upgrade token route returns 401 when permission check fails", async () => {
   jest.doMock("@auth", () => ({
     __esModule: true,

@@ -17,6 +17,24 @@ const ts = require('typescript');
 // Prevent Browserslist from resolving config files in temporary Jest paths.
 process.env.BROWSERSLIST = process.env.BROWSERSLIST || 'defaults';
 
+function resolveRoot(value) {
+  if (typeof value === 'string') {
+    return value.startsWith(' /')
+      ? path.join(__dirname, value.slice(2))
+      : value;
+  }
+  if (Array.isArray(value)) {
+    return value.map(resolveRoot);
+  }
+  if (value && typeof value === 'object') {
+    for (const key of Object.keys(value)) {
+      value[key] = resolveRoot(value[key]);
+    }
+    return value;
+  }
+  return value;
+}
+
 /* ──────────────────────────────────────────────────────────────────────
  * 1️⃣  Resolve TypeScript path aliases once to avoid hand‑maintaining 30+ maps
  * ──────────────────────────────────────────────────────────────────── */
@@ -95,7 +113,7 @@ const {
 /* ──────────────────────────────────────────────────────────────────────
  * 3️⃣  Jest configuration proper
  * ──────────────────────────────────────────────────────────────────── */
-module.exports = {
+const config = {
   preset: 'ts-jest/presets/default-esm',
   testEnvironment: 'jsdom',
   transform: {
@@ -181,3 +199,5 @@ module.exports = {
   },
   rootDir: '.', // each workspace already passes --config ../../jest.config.cjs
 };
+
+module.exports = resolveRoot(config);

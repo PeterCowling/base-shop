@@ -2,6 +2,15 @@ import { z } from "zod";
 import { canRead, canWrite, READ_ROLES, WRITE_ROLES } from "../src/rbac";
 import { extendRoles } from "../src/types/roles";
 import * as roles from "../src/types/roles";
+import { requirePermission } from "../src/requirePermission";
+import { getCustomerSession } from "../src/session";
+import type { Role } from "../src/types/index";
+
+jest.mock("../src/session", () => ({
+  getCustomerSession: jest.fn(),
+}));
+
+const mockedGetSession = getCustomerSession as jest.Mock;
 
 const originalRead = [...READ_ROLES];
 const originalWrite = [...WRITE_ROLES];
@@ -23,6 +32,7 @@ describe("canRead", () => {
     ["viewer", true],
     ["bad", false],
     [null, false],
+    [undefined, false],
   ];
 
   for (const [role, expected] of cases) {
@@ -40,6 +50,7 @@ describe("canWrite", () => {
     ["ThemeEditor", true],
     ["viewer", false],
     ["bad", false],
+    [undefined, false],
   ];
 
   for (const [role, expected] of cases) {
@@ -80,4 +91,41 @@ describe("non-string roles", () => {
       expect(canWrite(value)).toBe(false);
     });
   }
+});
+
+describe("requirePermission conditional checks", () => {
+  beforeEach(() => {
+    mockedGetSession.mockReset();
+  });
+
+  it("allows access when the role has the permission", async () => {
+    mockedGetSession.mockResolvedValue({
+      customerId: "1",
+      role: "customer" as Role,
+    });
+
+    await expect(requirePermission("checkout")).resolves.toBeDefined();
+  });
+
+  it("denies access when the role lacks the permission", async () => {
+    mockedGetSession.mockResolvedValue({
+      customerId: "1",
+      role: "viewer" as Role,
+    });
+
+    await expect(requirePermission("checkout")).rejects.toThrow(
+      "Unauthorized"
+    );
+  });
+
+  it("handles undefined roles gracefully", async () => {
+    mockedGetSession.mockResolvedValue({
+      customerId: "1",
+      role: undefined,
+    });
+
+    await expect(requirePermission("checkout")).rejects.toThrow(
+      "Unauthorized"
+    );
+  });
 });

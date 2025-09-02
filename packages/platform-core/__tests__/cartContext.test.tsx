@@ -1,4 +1,5 @@
 // packages/platform-core/__tests__/cartContext.test.tsx
+import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { CartProvider, useCart } from "../src/contexts/CartContext";
 import { PRODUCTS } from "../src/products/index";

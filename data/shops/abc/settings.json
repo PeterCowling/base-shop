@@ -25,7 +25,7 @@
   },
   "seo": {
     "aiCatalog": {
-      "enabled": false,
+      "enabled": true,
       "fields": ["id", "title", "description", "price", "media"],
       "pageSize": 50
     }

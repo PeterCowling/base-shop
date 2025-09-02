@@ -36,6 +36,19 @@ describe("parseJsonBody", () => {
     expect(await result.response.json()).toEqual({ error: "Invalid JSON" });
   });
 
+  it("returns error when body is empty", async () => {
+    const schema = z.object({ x: z.string() }).strict();
+    const req = new Request("http://test", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "",
+    });
+    const result = await parseJsonBody(req, schema, "1mb");
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    expect(await result.response.json()).toEqual({ error: "Invalid JSON" });
+  });
+
   it("returns 413 when body exceeds limit", async () => {
     const schema = z.object({ x: z.string() }).strict();
     const result = await parseJsonBody(makeRequest({ x: "hi" }), schema, "5b");

@@ -66,12 +66,12 @@ describe('fetchJson', () => {
     );
   });
 
-  it('propagates network errors', async () => {
-    (global.fetch as jest.Mock).mockRejectedValue(new Error('Network failure'));
+  it('rethrows network failures from fetch', async () => {
+    const error = new Error('Network failure');
+    (global.fetch as jest.Mock).mockRejectedValueOnce(error);
 
-    await expect(fetchJson('https://example.com')).rejects.toThrow(
-      'Network failure',
-    );
+    await expect(fetchJson('https://example.com')).rejects.toThrow(error);
+    expect(global.fetch).toHaveBeenCalledTimes(1);
   });
 
   it('validates data against provided schema', async () => {

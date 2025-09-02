@@ -6,6 +6,8 @@ jest.mock("@platform-core/repositories/shops.server", () => ({
   getShopSettings: getShopSettingsMock,
 }));
 
+jest.mock("@acme/config/env/core", () => ({ coreEnv: {} }));
+
 describe("getSeo", () => {
   const settings = {
     languages: ["en", "de"],
@@ -69,6 +71,54 @@ describe("getSeo", () => {
         expect.objectContaining({ hrefLang: "de", href: "https://shop.de/de" }),
       ]),
     );
+  });
+
+  it.each([
+    ["/page.jpg", "https://shop.com/page.jpg"],
+    ["https://cdn.example.com/page.jpg", "https://cdn.example.com/page.jpg"],
+  ])("uses pageSeo.image %s over defaults", async (image, expected) => {
+    const { getSeo } = await import("../src/lib/seo");
+    const seo = await getSeo("en", { image });
+    expect(seo.openGraph?.images?.[0]?.url).toBe(expected);
+  });
+
+  it.each([
+    ["/og-image.jpg", "https://shop.com/og-image.jpg"],
+    ["https://cdn.example.com/og-image.jpg", "https://cdn.example.com/og-image.jpg"],
+  ])("uses pageSeo.openGraph.image %s over defaults", async (image, expected) => {
+    const { getSeo } = await import("../src/lib/seo");
+    const seo = await getSeo("en", { openGraph: { image } });
+    expect(seo.openGraph?.images?.[0]?.url).toBe(expected);
+  });
+
+  it("omits locales without canonicalBase from alternate links", async () => {
+    getShopSettingsMock.mockResolvedValueOnce({
+      languages: ["en", "de"],
+      seo: {
+        en: { canonicalBase: "https://shop.com", openGraph: { image: "/default.jpg" } },
+        de: { openGraph: { image: "/default-de.jpg" } },
+      },
+    });
+    const { getSeo } = await import("../src/lib/seo");
+    const seo = await getSeo("en");
+    expect(seo.additionalLinkTags).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ hrefLang: "en", href: "https://shop.com/en" }),
+      ]),
+    );
+    expect(seo.additionalLinkTags.find((l) => l.hrefLang === "de")).toBeUndefined();
+  });
+
+  it("falls back to empty canonical when canonicalBase missing", async () => {
+    getShopSettingsMock.mockResolvedValueOnce({
+      languages: ["en", "de"],
+      seo: { en: {}, de: {} },
+    });
+    const { getSeo } = await import("../src/lib/seo");
+    const seo = await getSeo("en");
+    expect(seo.canonical).toBe("");
+    expect(seo.openGraph?.url).toBeUndefined();
+    expect(seo.additionalLinkTags).toHaveLength(0);
   });
 });
 

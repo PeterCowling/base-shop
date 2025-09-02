@@ -3,25 +3,15 @@ import { jest } from "@jest/globals";
 const lighthouseMock = jest.fn();
 const launchMock = jest.fn();
 
-jest.mock(
-  "lighthouse",
-  () => ({
-    __esModule: true,
-    default: lighthouseMock,
-  }),
-  { virtual: true },
-);
+const lighthouseModule: any = { __esModule: true, default: lighthouseMock };
+const chromeModule: any = {
+  __esModule: true,
+  default: { launch: launchMock },
+};
 
-jest.mock(
-  "chrome-launcher",
-  () => ({
-    __esModule: true,
-    default: {
-      launch: launchMock,
-    },
-  }),
-  { virtual: true },
-);
+jest.mock("lighthouse", () => lighthouseModule, { virtual: true });
+
+jest.mock("chrome-launcher", () => chromeModule, { virtual: true });
 
 jest.mock(
   "lighthouse/core/config/desktop-config.js",
@@ -35,6 +25,8 @@ describe("runSeoAudit", () => {
   afterEach(() => {
     lighthouseMock.mockReset();
     launchMock.mockReset();
+    chromeModule.default.launch = launchMock;
+    lighthouseModule.default = lighthouseMock;
   });
 
   it("returns score and recommendations and closes chrome", async () => {
@@ -66,6 +58,23 @@ describe("runSeoAudit", () => {
       "Lighthouse did not return a result",
     );
     expect(killSpy).toHaveBeenCalled();
+  });
+
+  it("throws when chrome-launcher launch function is not available", async () => {
+    chromeModule.default = {};
+
+    await expect(runSeoAudit("https://example.com")).rejects.toThrow(
+      "chrome-launcher launch function not available",
+    );
+  });
+
+  it("throws when lighthouse import is not a function", async () => {
+    lighthouseModule.default = {};
+    chromeModule.default.launch = launchMock;
+
+    await expect(runSeoAudit("https://example.com")).rejects.toThrow(
+      "lighthouse is not a function",
+    );
   });
 });
 

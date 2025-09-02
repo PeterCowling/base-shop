@@ -2,7 +2,7 @@
 // Orchestrator that ensures the runtime is compatible and delegates to the
 // environment and prompt logic.
 import { ensureRuntime } from "./runtime";
-import { initShop } from "./env";
+import { initShop } from "./initShop";
 
 ensureRuntime();
 

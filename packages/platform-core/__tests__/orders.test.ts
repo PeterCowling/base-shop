@@ -10,23 +10,27 @@ import {
   setReturnStatus,
 } from "../src/orders";
 
-const trackOrder = jest.fn();
-const incrementSubscriptionUsage = jest.fn();
+jest.mock("../src/analytics", () => ({ trackOrder: jest.fn() }));
+jest.mock("../src/subscriptionUsage", () => ({ incrementSubscriptionUsage: jest.fn() }));
+jest.mock("../src/db", () => ({
+  prisma: {
+    rentalOrder: { findMany: jest.fn(), create: jest.fn(), update: jest.fn() },
+    shop: { findUnique: jest.fn() },
+  },
+}));
 
-const prismaMock = {
-  rentalOrder: {
-    findMany: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
-  },
-  shop: {
-    findUnique: jest.fn(),
-  },
+const { trackOrder } = jest.requireMock("../src/analytics") as {
+  trackOrder: jest.Mock;
 };
-
-jest.mock("../src/analytics", () => ({ trackOrder }));
-jest.mock("../src/subscriptionUsage", () => ({ incrementSubscriptionUsage }));
-jest.mock("../src/db", () => ({ prisma: prismaMock }));
+const { incrementSubscriptionUsage } = jest.requireMock(
+  "../src/subscriptionUsage"
+) as { incrementSubscriptionUsage: jest.Mock };
+const { prisma: prismaMock } = jest.requireMock("../src/db") as {
+  prisma: {
+    rentalOrder: { findMany: jest.Mock; create: jest.Mock; update: jest.Mock };
+    shop: { findUnique: jest.Mock };
+  };
+};
 
 describe("orders", () => {
   beforeEach(() => {

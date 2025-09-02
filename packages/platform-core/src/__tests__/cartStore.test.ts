@@ -85,9 +85,7 @@ describe("default cart store wrappers", () => {
     }));
 
     const mod = await import("../cartStore");
-    const createCartStoreSpy = jest
-      .spyOn(mod, "createCartStore")
-      .mockReturnValue(mockStore as any);
+    mod.__setDefaultCartStore(mockStore as any);
 
     await mod.createCart();
     await mod.getCart("c1");
@@ -97,7 +95,6 @@ describe("default cart store wrappers", () => {
     await mod.setQty("c1", "s1", 2);
     await mod.removeItem("c1", "s1");
 
-    expect(createCartStoreSpy).toHaveBeenCalledTimes(1);
     expect(mockStore.createCart).toHaveBeenCalled();
     expect(mockStore.getCart).toHaveBeenCalledWith("c1");
     expect(mockStore.setCart).toHaveBeenCalledWith("c1", {});

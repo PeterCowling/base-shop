@@ -128,6 +128,39 @@ describe("generateMeta", () => {
     jest.resetModules();
   });
 
+  it("returns fallback metadata when OpenAI default export is not a constructor", async () => {
+    jest.resetModules();
+    jest.doMock("openai", () => ({
+      __esModule: true,
+      default: {},
+    }));
+
+    const { generateMeta: gm } = await import("../src/generateMeta");
+    const { promises: fsDynamic } = await import("fs");
+    const writeMock = fsDynamic.writeFile as jest.Mock;
+    const mkdirMockDynamic = fsDynamic.mkdir as jest.Mock;
+
+    const result = await gm({
+      id: "123",
+      title: "Title",
+      description: "Desc",
+    });
+
+    expect(result).toEqual({
+      title: "Title",
+      description: "Desc",
+      alt: "Title",
+      image: "/og/123.png",
+    });
+
+    expect(responsesCreateMock).not.toHaveBeenCalled();
+    expect(imagesGenerateMock).not.toHaveBeenCalled();
+    expect(mkdirMockDynamic).not.toHaveBeenCalled();
+    expect(writeMock).not.toHaveBeenCalled();
+
+    jest.resetModules();
+  });
+
   it("returns fallback when __OPENAI_IMPORT_ERROR__ is set", async () => {
     (global as any).__OPENAI_IMPORT_ERROR__ = new Error("fail");
     const result = await generateMeta({

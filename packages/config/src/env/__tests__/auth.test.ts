@@ -40,12 +40,13 @@ describe("auth env module", () => {
     expect(authEnv.PREVIEW_TOKEN_SECRET).toBeUndefined();
   });
 
-  it("throws on missing or invalid configuration", async () => {
+  it("throws on missing required configuration", async () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "" as unknown as string,
     } as NodeJS.ProcessEnv;
+    delete process.env.NEXTAUTH_SECRET;
+    delete process.env.SESSION_SECRET;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     await expect(import("../auth.ts")).rejects.toThrow(
@@ -55,6 +56,7 @@ describe("auth env module", () => {
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
         NEXTAUTH_SECRET: { _errors: [expect.any(String)] },
+        SESSION_SECRET: { _errors: [expect.any(String)] },
       }),
     );
     errorSpy.mockRestore();

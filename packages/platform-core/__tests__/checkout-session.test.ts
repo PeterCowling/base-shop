@@ -1,7 +1,8 @@
 // packages/platform-core/__tests__/checkout-session.test.ts
 import { PRODUCTS } from "../src/products/index";
 import { createCheckoutSession } from "../src/checkout/session";
-import { calculateRentalDays } from "@acme/date-utils";
+import * as dateUtils from "@acme/date-utils";
+import { getTaxRate } from "../src/tax";
 
 jest.mock("@acme/stripe", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
@@ -32,6 +33,7 @@ const cart = (() => {
 })();
 
 test("creates Stripe session with correct metadata", async () => {
+  stripeCreate.mockReset();
   jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
   stripeCreate.mockResolvedValue({
     id: "sess_test",
@@ -39,7 +41,7 @@ test("creates Stripe session with correct metadata", async () => {
   });
 
   const returnDate = "2025-01-02";
-  const expectedDays = calculateRentalDays(returnDate);
+  const expectedDays = dateUtils.calculateRentalDays(returnDate);
 
   const result = await createCheckoutSession(cart, {
     returnDate,
@@ -55,6 +57,11 @@ test("creates Stripe session with correct metadata", async () => {
   expect(stripeCreate).toHaveBeenCalled();
   const [args, options] = stripeCreate.mock.calls[0];
   expect(args.line_items).toHaveLength(3); // rental, deposit, tax
+  expect(
+    args.line_items.some(
+      (li: any) => li.price_data?.product_data?.name === "Tax"
+    )
+  ).toBe(true);
   expect(args.metadata.rentalDays).toBe(expectedDays.toString());
   expect(args.metadata.client_ip).toBe("203.0.113.1");
   expect(options.headers["Stripe-Client-IP"]).toBe("203.0.113.1");
@@ -72,4 +79,73 @@ test("throws on invalid returnDate", async () => {
       shopId: "shop",
     })
   ).rejects.toThrow(/Invalid returnDate/);
+});
+
+test("throws when rentalDays are non-positive", async () => {
+  jest.spyOn(dateUtils, "calculateRentalDays").mockReturnValueOnce(0);
+  await expect(
+    createCheckoutSession(cart, {
+      returnDate: "2025-01-02",
+      currency: "EUR",
+      taxRegion: "EU",
+      successUrl: "x",
+      cancelUrl: "y",
+      shopId: "shop",
+    })
+  ).rejects.toThrow(/Invalid returnDate/);
+});
+
+test("applies extra values and billing details without tax", async () => {
+  stripeCreate.mockReset();
+  jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  stripeCreate.mockResolvedValue({
+    id: "sess_extra",
+    payment_intent: { client_secret: "cs_extra" },
+  });
+
+  (getTaxRate as jest.Mock).mockResolvedValueOnce(0);
+
+  const lineItemsExtra = [
+    {
+      price_data: {
+        currency: "eur",
+        unit_amount: 500,
+        product_data: { name: "Extra" },
+      },
+      quantity: 1,
+    },
+  ];
+
+  const billingDetails = { name: "Jane" } as any;
+
+  await createCheckoutSession(cart, {
+    returnDate: "2025-01-03",
+    currency: "EUR",
+    taxRegion: "EU",
+    successUrl: "http://test/success",
+    cancelUrl: "http://test/cancelled",
+    shopId: "shop",
+    lineItemsExtra,
+    metadataExtra: { foo: "bar" },
+    subtotalExtra: 5,
+    depositAdjustment: 10,
+    billing_details: billingDetails,
+  });
+
+  const [args] = stripeCreate.mock.calls[0];
+  expect(args.line_items).toHaveLength(3); // rental, deposit, extra
+  expect(
+    args.line_items.some(
+      (li: any) => li.price_data?.product_data?.name === "Extra"
+    )
+  ).toBe(true);
+  expect(
+    args.line_items.some(
+      (li: any) => li.price_data?.product_data?.name === "Tax"
+    )
+  ).toBe(false);
+  expect(args.payment_intent_data.billing_details).toEqual(billingDetails);
+  expect(args.metadata.foo).toBe("bar");
+  expect(args.metadata.subtotal).toBe("25");
+  expect(args.metadata.depositTotal).toBe("110");
 });

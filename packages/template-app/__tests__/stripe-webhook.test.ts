@@ -65,4 +65,30 @@ afterEach(() => jest.resetModules());
       expect(res.status).toBe(400);
       expect(handleStripeWebhook).not.toHaveBeenCalled();
     });
+
+    test("returns 400 when signature header is missing", async () => {
+      const handleStripeWebhook = jest.fn();
+      jest.doMock(
+        "@platform-core/stripe-webhook",
+        () => ({ __esModule: true, handleStripeWebhook }),
+        { virtual: true }
+      );
+      const constructEvent = jest.fn((_: string, sig: string) => {
+        if (!sig) {
+          throw new Error("missing signature");
+        }
+      });
+      jest.doMock("@acme/stripe", () => ({
+        __esModule: true,
+        stripe: { webhooks: { constructEvent } },
+      }));
+
+      const { POST } = await import("../src/api/stripe-webhook/route");
+      const res = await POST({
+        text: async () => "{}",
+        headers: new Headers(),
+      } as any);
+      expect(res.status).toBe(400);
+      expect(handleStripeWebhook).not.toHaveBeenCalled();
+    });
   });

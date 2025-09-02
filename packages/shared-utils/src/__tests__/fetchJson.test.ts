@@ -60,5 +60,16 @@ describe('fetchJson', () => {
       'Internal Server Error',
     );
   });
+
+  it('throws HTTP status code when status text is empty', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: '',
+      text: jest.fn().mockResolvedValue(JSON.stringify({ message: 'oops' })),
+    });
+
+    await expect(fetchJson('https://example.com')).rejects.toThrow('HTTP 500');
+  });
 });
 

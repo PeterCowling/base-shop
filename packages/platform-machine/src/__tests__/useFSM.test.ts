@@ -16,23 +16,23 @@ describe("useFSM", () => {
     expect(result.current).not.toBeNull();
     expect(result.current?.state).toBe("idle");
 
-    let next: string;
+    let nextState: string;
     act(() => {
-      next = result.current!.send("FETCH");
+      nextState = result.current!.send("FETCH");
     });
-    expect(next).toBe("loading");
-    expect(result.current?.state).toBe(next);
+    expect(nextState).toBe("loading");
+    expect(result.current?.state).toBe(nextState);
 
     act(() => {
-      next = result.current!.send("RESOLVE");
+      nextState = result.current!.send("RESOLVE");
     });
-    expect(next).toBe("success");
-    expect(result.current?.state).toBe(next);
+    expect(nextState).toBe("success");
+    expect(result.current?.state).toBe(nextState);
 
     act(() => {
-      next = result.current!.send("UNKNOWN", () => "fallback");
+      nextState = result.current!.send("UNKNOWN", () => "fallback");
     });
-    expect(next).toBe("fallback");
-    expect(result.current?.state).toBe(next);
+    expect(nextState).toBe("fallback");
+    expect(result.current?.state).toBe(nextState);
   });
 });

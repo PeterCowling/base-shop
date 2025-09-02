@@ -68,7 +68,7 @@ function resolveReact() {
     // Build full paths to runtime files and verify they exist.
     const jsxRuntime = path.join(reactBase, 'jsx-runtime.js');
     const jsxDevRuntime = path.join(reactBase, 'jsx-dev-runtime.js');
-    const domClient = require.resolve('react-dom/client');
+    const domClient = path.join(reactDomBase, 'client.js');
 
     if (
       fs.existsSync(jsxRuntime) &&

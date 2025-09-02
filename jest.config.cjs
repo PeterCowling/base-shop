@@ -201,9 +201,8 @@ const config = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'mjs', 'node', 'd.ts'],
   collectCoverage: true,
   coverageDirectory: ' /coverage',
-  coveragePathIgnorePatterns: [' /test/msw/'],
-  coverageReporters: ['text', 'text-summary', 'lcov'],
   coveragePathIgnorePatterns: [
+    ' /test/msw/',
     '<rootDir>/test/msw/server.ts',
     '<rootDir>/test/mswServer.ts',
     '<rootDir>/test/resetNextMocks.ts',
@@ -213,6 +212,7 @@ const config = {
     '<rootDir>/test/polyfills/',
     '<rootDir>/test/__mocks__/',
   ],
+  coverageReporters: ['text', 'text-summary', 'lcov'],
   coverageThreshold: {
     global: {
       lines: 80,

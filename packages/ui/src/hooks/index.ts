@@ -8,3 +8,5 @@ export * from "./useTokenEditor";
 export * from "./usePreviewDevice";
 export * from "./useTokenColors";
 export * from "./useRemoteImageProbe";
+export * from "./useProductInputs";
+export * from "./useProductMediaManager";

@@ -1,0 +1,64 @@
+"use client";
+
+// packages/ui/hooks/useProductMediaManager.tsx
+import { useFileUpload } from "./useFileUpload";
+import { usePublishLocations } from "@platform-core/hooks/usePublishLocations";
+import type { MediaItem } from "@acme/types";
+import { useCallback, useMemo } from "react";
+import type { ProductWithVariants } from "./useProductInputs";
+
+export interface UseProductMediaManagerResult {
+  uploader: React.ReactElement;
+  removeMedia: (index: number) => void;
+  moveMedia: (from: number, to: number) => void;
+}
+
+export function useProductMediaManager(
+  shop: string,
+  publishTargets: readonly string[],
+  setProduct: React.Dispatch<React.SetStateAction<ProductWithVariants>>
+): UseProductMediaManagerResult {
+  const { locations } = usePublishLocations();
+  const requiredOrientation = useMemo(
+    () =>
+      locations.find((l) => l.id === publishTargets[0])?.requiredOrientation ??
+      "landscape",
+    [locations, publishTargets]
+  );
+
+  const { uploader } = useFileUpload({
+    shop,
+    requiredOrientation,
+    onUploaded: (item: MediaItem) =>
+      setProduct((prev: ProductWithVariants) => ({
+        ...prev,
+        media: [...prev.media, item],
+      })),
+  });
+
+  const removeMedia = useCallback(
+    (index: number) => {
+      setProduct((prev: ProductWithVariants) => ({
+        ...prev,
+        media: prev.media.filter((_, i) => i !== index),
+      }));
+    },
+    [setProduct]
+  );
+
+  const moveMedia = useCallback(
+    (from: number, to: number) => {
+      setProduct((prev: ProductWithVariants) => {
+        const gallery = [...prev.media];
+        const [moved] = gallery.splice(from, 1);
+        gallery.splice(to, 0, moved);
+        return { ...prev, media: gallery };
+      });
+    },
+    [setProduct]
+  );
+
+  return { uploader, removeMedia, moveMedia };
+}
+
+export default useProductMediaManager;

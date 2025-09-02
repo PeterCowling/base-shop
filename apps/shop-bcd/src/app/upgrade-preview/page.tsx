@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { exampleProps } from "./example-props";
-import ComponentPreview from "@ui/src/components/ComponentPreview";
+import ComponentPreview from "@ui/components/ComponentPreview";
 
 interface UpgradeComponent {
   file: string;

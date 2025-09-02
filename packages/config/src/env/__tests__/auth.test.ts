@@ -108,6 +108,65 @@ describe("auth env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("parses redis session store with credentials", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+      SESSION_STORE: "redis",
+      UPSTASH_REDIS_REST_URL: "https://example.com",
+      UPSTASH_REDIS_REST_TOKEN: "token",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv).toMatchObject({
+      SESSION_STORE: "redis",
+      UPSTASH_REDIS_REST_URL: "https://example.com",
+      UPSTASH_REDIS_REST_TOKEN: "token",
+    });
+  });
+
+  it("throws when redis session store credentials are missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+      SESSION_STORE: "redis",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
+        UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("parses rate limit redis configuration", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+      LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv).toMatchObject({
+      LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+    });
+  });
+
   it("throws when optional URLs are invalid", async () => {
     process.env = {
       ...ORIGINAL_ENV,

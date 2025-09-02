@@ -1,8 +1,8 @@
 // packages/platform-core/__tests__/addToCartButton.test.tsx
 
-// Use the platform-core CartContext instead of the app-specific alias.
+// Import CartContext directly from source to avoid alias mismatches during tests.
 import React from "react";
-import { CartProvider, useCart } from "@platform-core/contexts/CartContext";
+import { CartProvider, useCart } from "../src/contexts/CartContext";
 import AddToCartButton from "@platform-core/components/shop/AddToCartButton.client";
 import { PRODUCTS } from "@platform-core/products";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";

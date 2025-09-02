@@ -10,6 +10,8 @@ describe("configurator bin", () => {
   beforeEach(() => {
     jest.resetModules();
     spawnSyncMock.mockReset();
+    // Mock a successful child process result
+    spawnSyncMock.mockReturnValue({ status: 0 });
     exitSpy = jest
       .spyOn(process, "exit")
       .mockImplementation(((code?: number) => {}) as any);
@@ -26,7 +28,7 @@ describe("configurator bin", () => {
   });
 
   it("runs the CLI", async () => {
-    await import("../bin/configurator.js");
+    await import("../bin/configurator.cjs");
     expect(spawnSyncMock).toHaveBeenCalledWith("vite", ["dev"], {
       stdio: "inherit",
       shell: true,
@@ -40,7 +42,7 @@ describe("configurator bin", () => {
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
-    await import("../bin/configurator.js");
+    await import("../bin/configurator.cjs");
 
     expect(process.exitCode).toBeUndefined();
     expect(errorSpy).not.toHaveBeenCalled();

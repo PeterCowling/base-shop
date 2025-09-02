@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
-// packages/configurator/bin/configurator.js
+// packages/configurator/bin/configurator.cjs
 
-import { spawnSync } from "node:child_process";
+// Use CommonJS so Jest can execute this file without ESM support
+const { spawnSync } = require("node:child_process");
 
 const required = [
   "STRIPE_SECRET_KEY",

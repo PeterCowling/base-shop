@@ -6,7 +6,7 @@
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "bin": {
-    "configurator": "bin/configurator.js"
+    "configurator": "bin/configurator.cjs"
   },
   "exports": {
     ".": {

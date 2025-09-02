@@ -25,13 +25,19 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       ...config.resolve.alias,
       "@": path.resolve(__dirname, "../template-app/src"),
       "@i18n": path.resolve(__dirname, "../i18n/src"),
-      "drizzle-orm": false,
 
-      // === NEW ALIASES ===
+      // === PACKAGE ALIASES ===
       // Allow imports like "@ui/components/…" to resolve to packages/ui/src
       "@ui": path.resolve(__dirname, "../ui/src"),
       // Allow imports like "@platform-core/components/…" to resolve to packages/platform-core/src
       "@platform-core": path.resolve(__dirname, "../platform-core/src"),
+      // Allow imports like "@shared-utils/..." to resolve to packages/shared-utils/src
+      "@shared-utils": path.resolve(__dirname, "../shared-utils/src"),
+      // (Optional) Support legacy imports from "@ui/src/..."
+      "@ui/src": path.resolve(__dirname, "../ui/src"),
+
+      // Misc.
+      "drizzle-orm": false,
     };
 
     // Map built-in node modules consistently (unchanged)

@@ -124,3 +124,53 @@ describe("getTimeRemaining and formatDuration", () => {
     expect(formatDuration(remaining)).toBe("1d 1h 2m 3s");
   });
 });
+describe("DST transitions", () => {
+  test("accounts for spring forward in New York", () => {
+    const before = parseTargetDate("2025-03-09T00:30:00", "America/New_York")!;
+    const after = parseTargetDate("2025-03-10T00:30:00", "America/New_York")!;
+    const diffHours = (after.getTime() - before.getTime()) / 3600000;
+    expect(diffHours).toBe(23);
+  });
+
+  test("accounts for fall back in New York", () => {
+    const before = parseTargetDate("2025-11-02T00:30:00", "America/New_York")!;
+    const after = parseTargetDate("2025-11-03T00:30:00", "America/New_York")!;
+    const diffHours = (after.getTime() - before.getTime()) / 3600000;
+    expect(diffHours).toBe(25);
+  });
+});
+
+describe("leap year handling", () => {
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date("2024-02-28T00:00:00Z"));
+  });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  test("isoDateInNDays spans leap day", () => {
+    expect(isoDateInNDays(1)).toBe("2024-02-29");
+    expect(isoDateInNDays(2)).toBe("2024-03-01");
+  });
+
+  test("calculateRentalDays counts leap day", () => {
+    expect(calculateRentalDays("2024-03-01")).toBe(2);
+  });
+});
+
+describe("invalid timezone handling", () => {
+  test("parseTargetDate returns null for bad timezone", () => {
+    expect(parseTargetDate("2025-01-01T00:00:00", "Not/A_Zone")).toBeNull();
+  });
+});
+
+describe("locale formatting consistency", () => {
+  test("formatTimestamp round-trips across locales", () => {
+    const ts = "2025-03-03T12:34:56Z";
+    const us = formatTimestamp(ts, "en-US");
+    const de = formatTimestamp(ts, "de-DE");
+    expect(us).not.toBe(de);
+    expect(new Date(us).toISOString()).toBe("2025-03-03T12:34:56.000Z");
+    expect(new Date(de).toISOString()).toBe("2025-03-03T12:34:56.000Z");
+  });
+});

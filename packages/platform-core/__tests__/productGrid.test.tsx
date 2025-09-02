@@ -23,7 +23,7 @@ describe("ProductGrid", () => {
     render(
       <CurrencyProvider>
         <CartProvider>
-          <ProductGrid skus={[PRODUCTS[0], PRODUCTS[1]]} />
+          <ProductGrid skus={[PRODUCTS[0], PRODUCTS[1]]} columns={2} />
         </CartProvider>
       </CurrencyProvider>
     );
@@ -34,7 +34,11 @@ describe("ProductGrid", () => {
     render(
       <CurrencyProvider>
         <CartProvider>
-          <ProductGrid skus={[PRODUCTS[0], PRODUCTS[1]]} columns={2} data-testid="grid" />
+          <ProductGrid
+            skus={[PRODUCTS[0], PRODUCTS[1]]}
+            columns={2}
+            data-testid="grid"
+          />
         </CartProvider>
       </CurrencyProvider>
     );
@@ -42,14 +46,40 @@ describe("ProductGrid", () => {
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(2, minmax(0, 1fr))" });
   });
 
-  it("respects min/max when resized", () => {
+  it("applies viewport counts at breakpoints", () => {
     render(
       <CurrencyProvider>
         <CartProvider>
           <ProductGrid
             skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
-            minItems={1}
-            maxItems={3}
+            desktopItems={3}
+            tabletItems={2}
+            mobileItems={1}
+            data-testid="grid"
+          />
+        </CartProvider>
+      </CurrencyProvider>
+    );
+    const grid = screen.getByTestId("grid") as HTMLElement;
+    Object.defineProperty(grid, "clientWidth", { value: 1200, configurable: true });
+    act(() => resizeCb([] as any));
+    expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(3, minmax(0, 1fr))" });
+    Object.defineProperty(grid, "clientWidth", { value: 800, configurable: true });
+    act(() => resizeCb([] as any));
+    expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(2, minmax(0, 1fr))" });
+    Object.defineProperty(grid, "clientWidth", { value: 500, configurable: true });
+    act(() => resizeCb([] as any));
+    expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(1, minmax(0, 1fr))" });
+  });
+
+  it("clamps to min/max when ideal count is out of bounds", () => {
+    render(
+      <CurrencyProvider>
+        <CartProvider>
+          <ProductGrid
+            skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
+            minItems={2}
+            maxItems={4}
             data-testid="grid"
           />
         </CartProvider>
@@ -58,9 +88,9 @@ describe("ProductGrid", () => {
     const grid = screen.getByTestId("grid") as HTMLElement;
     Object.defineProperty(grid, "clientWidth", { value: 2000, configurable: true });
     act(() => resizeCb([] as any));
-    expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(3, minmax(0, 1fr))" });
-    Object.defineProperty(grid, "clientWidth", { value: 100, configurable: true });
+    expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(4, minmax(0, 1fr))" });
+    Object.defineProperty(grid, "clientWidth", { value: 300, configurable: true });
     act(() => resizeCb([] as any));
-    expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(1, minmax(0, 1fr))" });
+    expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(2, minmax(0, 1fr))" });
   });
 });

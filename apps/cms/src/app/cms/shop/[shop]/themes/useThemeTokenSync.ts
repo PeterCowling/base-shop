@@ -1,0 +1,162 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import { patchShopTheme } from "../../../wizard/services/patchTheme";
+import { savePreviewTokens } from "../../../wizard/previewTokens";
+
+interface Args {
+  shop: string;
+  theme: string;
+  overrides: Record<string, string>;
+  tokensByThemeState: Record<string, Record<string, string>>;
+  setOverrides: (next: Record<string, string>) => void;
+}
+
+export function useThemeTokenSync({
+  shop,
+  theme,
+  overrides,
+  tokensByThemeState,
+  setOverrides,
+}: Args) {
+  const [previewTokens, setPreviewTokens] = useState<Record<string, string>>({
+    ...tokensByThemeState[theme],
+    ...overrides,
+  });
+  const debounceRef = useRef<number | null>(null);
+  const saveDebounceRef = useRef<number | null>(null);
+  const pendingPatchRef = useRef<{
+    overrides: Record<string, string>;
+    defaults: Record<string, string>;
+  }>({ overrides: {}, defaults: {} });
+
+  const mergedTokens = useMemo(
+    () => ({ ...tokensByThemeState[theme], ...overrides }),
+    [theme, tokensByThemeState, overrides],
+  );
+
+  const schedulePreviewUpdate = (tokens: Record<string, string>) => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+    debounceRef.current = window.setTimeout(() => {
+      setPreviewTokens(tokens);
+      savePreviewTokens(tokens);
+    }, 100);
+  };
+
+  const scheduleSave = (
+    overridesPatch: Record<string, string>,
+    defaultsPatch: Record<string, string> = {},
+  ) => {
+    pendingPatchRef.current = {
+      overrides: {
+        ...pendingPatchRef.current.overrides,
+        ...overridesPatch,
+      },
+      defaults: {
+        ...pendingPatchRef.current.defaults,
+        ...defaultsPatch,
+      },
+    };
+    if (saveDebounceRef.current) {
+      clearTimeout(saveDebounceRef.current);
+    }
+    saveDebounceRef.current = window.setTimeout(async () => {
+      const payload = pendingPatchRef.current;
+      pendingPatchRef.current = { overrides: {}, defaults: {} };
+      try {
+        await patchShopTheme(shop, {
+          themeOverrides: payload.overrides,
+          themeDefaults: payload.defaults,
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }, 500);
+  };
+
+  useEffect(() => {
+    schedulePreviewUpdate(mergedTokens);
+  }, [mergedTokens]);
+
+  // Broadcast initial tokens so previews reflect the current theme on mount
+  useEffect(() => {
+    savePreviewTokens(previewTokens);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+      if (saveDebounceRef.current) {
+        clearTimeout(saveDebounceRef.current);
+      }
+    };
+  }, []);
+
+  const handleOverrideChange = (
+    key: string,
+    defaultValue: string,
+  ) => (value: string) => {
+    setOverrides((prev) => {
+      const next = { ...prev } as Record<string, string>;
+      const patch: Record<string, string> = {};
+      if (!value || value === defaultValue) {
+        delete next[key];
+        patch[key] = defaultValue;
+      } else {
+        next[key] = value;
+        patch[key] = value;
+      }
+      scheduleSave(patch);
+      return next;
+    });
+  };
+
+  const handleReset = (key: string) => () => {
+    setOverrides((prev) => {
+      const next = { ...prev } as Record<string, string>;
+      delete next[key];
+      scheduleSave({ [key]: tokensByThemeState[theme][key] });
+      return next;
+    });
+  };
+
+  const handleGroupReset = (keys: string[]) => () => {
+    setOverrides((prev) => {
+      const next = { ...prev } as Record<string, string>;
+      const patch: Record<string, string> = {};
+      keys.forEach((k) => {
+        delete next[k];
+        patch[k] = tokensByThemeState[theme][k];
+      });
+      scheduleSave(patch);
+      return next;
+    });
+  };
+
+  const handleResetAll = () => {
+    if (!window.confirm("Are you sure you want to reset all overrides?")) {
+      return;
+    }
+    const patch: Record<string, string> = {};
+    Object.keys(overrides).forEach((k) => {
+      patch[k] = tokensByThemeState[theme][k];
+    });
+    setOverrides({});
+    scheduleSave(patch);
+  };
+
+  return {
+    previewTokens,
+    mergedTokens,
+    handleOverrideChange,
+    handleReset,
+    handleGroupReset,
+    handleResetAll,
+  };
+}
+

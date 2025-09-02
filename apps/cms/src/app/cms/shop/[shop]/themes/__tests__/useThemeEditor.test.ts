@@ -10,15 +10,25 @@ jest.mock("../../../../wizard/previewTokens", () => ({
   savePreviewTokens: jest.fn(),
 }));
 
-jest.mock("../useThemePresets", () => ({
-  useThemePresets: jest.fn().mockReturnValue({
-    availableThemes: ["base"],
-    tokensByThemeState: { base: { color: "#fff" } },
-    presetThemes: [],
-    presetName: "",
-    setPresetName: jest.fn(),
-    handleSavePreset: jest.fn(),
-    handleDeletePreset: jest.fn(),
+jest.mock("../useThemePresetManager", () => ({
+  useThemePresetManager: jest.fn((args) => {
+    const React = require("react");
+    const [theme, setTheme] = React.useState(args.initialTheme);
+    const [overrides, setOverrides] = React.useState(args.initialOverrides);
+    return {
+      theme,
+      setTheme,
+      overrides,
+      setOverrides,
+      availableThemes: args.themes,
+      tokensByThemeState: args.tokensByTheme,
+      presetThemes: [],
+      presetName: "",
+      setPresetName: jest.fn(),
+      handleSavePreset: jest.fn(),
+      handleDeletePreset: jest.fn(),
+      handleThemeChange: jest.fn(),
+    };
   }),
 }));
 

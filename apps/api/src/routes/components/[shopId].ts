@@ -161,3 +161,5 @@ export const onRequest = async ({
   return Response.json({ components, configDiff });
 };
 
+export { extractSummary, gatherChanges, diffDirectories };
+

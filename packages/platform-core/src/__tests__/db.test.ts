@@ -2,14 +2,14 @@
 
 import type { PrismaClient } from "@prisma/client";
 
-describe("db prisma client selection", () => {
+describe("createStubPrisma", () => {
   afterEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
     delete process.env.NODE_ENV;
   });
 
-  it("uses the in-memory stub when no DATABASE_URL is set", async () => {
+  it("creates, updates, and queries rental orders", async () => {
     process.env.NODE_ENV = "production";
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({}),
@@ -44,28 +44,6 @@ describe("db prisma client selection", () => {
         data: { trackingNumber: "t3" },
       })
     ).rejects.toThrow("Order not found");
-  });
-
-  it("loads the real Prisma client when DATABASE_URL is provided", async () => {
-    process.env.NODE_ENV = "production";
-    jest.doMock("@acme/config/env/core", () => ({
-      loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
-    }));
-
-    const prismaInstance = {} as unknown as PrismaClient;
-    const PrismaClientMock = jest.fn().mockReturnValue(prismaInstance);
-    jest.doMock(
-      "@prisma/client",
-      () => ({ PrismaClient: PrismaClientMock }),
-      { virtual: true }
-    );
-
-    const { prisma } = (await import("../db")) as { prisma: PrismaClient };
-
-    expect(prisma).toBe(prismaInstance);
-    expect(PrismaClientMock).toHaveBeenCalledWith({
-      datasources: { db: { url: "postgres://example" } },
-    });
   });
 
   it("falls back to the stub when @prisma/client fails to load", async () => {

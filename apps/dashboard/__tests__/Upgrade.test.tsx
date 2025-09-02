@@ -64,6 +64,30 @@ describe("Upgrade page", () => {
 
     await screen.findByText("publish failed");
   });
+
+  it("handles component diff fetch failure", async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      text: async () => "fail",
+    });
+
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    render(<Upgrade />);
+
+    await waitFor(() =>
+      expect(errorSpy).toHaveBeenCalledWith(
+        "Failed to load component diff",
+        expect.any(Error)
+      )
+    );
+
+    expect(screen.queryByRole("heading")).not.toBeInTheDocument();
+
+    errorSpy.mockRestore();
+  });
 });
 
 it("restores global.fetch after tests", () => {

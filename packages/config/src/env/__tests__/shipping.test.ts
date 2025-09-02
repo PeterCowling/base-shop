@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
+import { loadShippingEnv } from "../shipping.ts";
 
 describe("shipping env module", () => {
   const ORIGINAL_ENV = process.env;
@@ -36,6 +37,30 @@ describe("shipping env module", () => {
     await expect(import("../shipping.ts")).rejects.toThrow(
       "Invalid shipping environment variables",
     );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        UPS_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+});
+
+describe("loadShippingEnv", () => {
+  it("parses valid env objects", () => {
+    const env = {
+      TAXJAR_KEY: "tax",
+      UPS_KEY: "ups",
+    } as NodeJS.ProcessEnv;
+    expect(loadShippingEnv(env)).toEqual({ TAXJAR_KEY: "tax", UPS_KEY: "ups" });
+  });
+
+  it("logs and throws on invalid env objects", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadShippingEnv({ UPS_KEY: 123 as unknown as string } as NodeJS.ProcessEnv),
+    ).toThrow("Invalid shipping environment variables");
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({

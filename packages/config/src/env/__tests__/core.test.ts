@@ -1,5 +1,10 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
-import { coreEnvBaseSchema, depositReleaseEnvRefinement } from "../core.js";
+import { z } from "zod";
+import {
+  coreEnvBaseSchema,
+  depositReleaseEnvRefinement,
+  loadCoreEnv,
+} from "../core.js";
 
 const schema = coreEnvBaseSchema.superRefine(depositReleaseEnvRefinement);
 
@@ -8,6 +13,32 @@ const baseEnv = {
   CMS_ACCESS_TOKEN: "token",
   SANITY_API_VERSION: "v1",
 };
+
+describe("depositReleaseEnvRefinement", () => {
+  it("flags invalid ENABLED and INTERVAL_MS values", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      {
+        DEPOSIT_RELEASE_FOO_ENABLED: "maybe",
+        DEPOSIT_RELEASE_FOO_INTERVAL_MS: "soon",
+      },
+      ctx,
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: ["DEPOSIT_RELEASE_FOO_ENABLED"],
+        message: "must be true or false",
+      }),
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: ["DEPOSIT_RELEASE_FOO_INTERVAL_MS"],
+        message: "must be a number",
+      }),
+    );
+    expect((ctx.addIssue as jest.Mock).mock.calls).toHaveLength(2);
+  });
+});
 
 describe("core env refinement", () => {
   it("accepts valid custom prefixed variables", () => {
@@ -122,6 +153,50 @@ describe("core env optional variables", () => {
         message: expect.stringContaining("Expected number"),
       });
     }
+  });
+});
+
+describe("loadCoreEnv", () => {
+  it("throws and logs issues for malformed env", () => {
+    const env = {
+      ...baseEnv,
+      DEPOSIT_RELEASE_ENABLED: "yes",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => loadCoreEnv(env)).toThrow(
+      "Invalid core environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
+    );
+    errorSpy.mockRestore();
+  });
+});
+
+describe("coreEnv proxy", () => {
+  const ORIGINAL_ENV = process.env;
+
+  afterEach(() => {
+    jest.resetModules();
+    process.env = ORIGINAL_ENV;
+  });
+
+  it("caches results and parses only once", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = await import("../core.js");
+    const spy = jest.spyOn(mod, "loadCoreEnv");
+    expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+    expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token");
+    // Second access uses cached env
+    expect(mod.coreEnv.SANITY_API_VERSION).toBe("v1");
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 });
 

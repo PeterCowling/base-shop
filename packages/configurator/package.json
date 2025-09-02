@@ -24,6 +24,7 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
+    "test": "jest",
     "lint": "eslint .",
     "prepack": "pnpm run build"
   },

@@ -108,7 +108,7 @@ describe("parseTargetDate", () => {
   });
 });
 
-describe("getTimeRemaining and formatDuration", () => {
+describe("getTimeRemaining", () => {
   beforeEach(() => {
     jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
   });
@@ -117,11 +117,28 @@ describe("getTimeRemaining and formatDuration", () => {
     jest.useRealTimers();
   });
 
-  test("calculates remaining ms and formats", () => {
+  test("returns positive ms for future date", () => {
     const target = new Date("2025-01-02T01:02:03Z");
-    const remaining = getTimeRemaining(target);
-    expect(remaining).toBe((24 * 3600 + 3600 + 120 + 3) * 1000);
-    expect(formatDuration(remaining)).toBe("1d 1h 2m 3s");
+    expect(getTimeRemaining(target)).toBe(
+      (24 * 3600 + 3600 + 120 + 3) * 1000
+    );
+  });
+
+  test("returns negative ms for past date", () => {
+    const target = new Date("2024-12-31T23:59:59Z");
+    expect(getTimeRemaining(target)).toBe(-1000);
+  });
+});
+
+describe("formatDuration", () => {
+  test("formats multi-unit durations", () => {
+    expect(formatDuration((24 * 3600 + 3600 + 120 + 3) * 1000)).toBe(
+      "1d 1h 2m 3s"
+    );
+  });
+
+  test("formats seconds-only durations", () => {
+    expect(formatDuration(45 * 1000)).toBe("45s");
   });
 });
 describe("DST transitions", () => {

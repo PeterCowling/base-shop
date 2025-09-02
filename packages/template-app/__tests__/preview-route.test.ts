@@ -18,7 +18,19 @@ function tokenFor(id: string): string {
   return createHmac("sha256", "testsecret").update(id).digest("hex");
 }
 
+function mockEnv() {
+  jest.doMock("@acme/config/env/core", () => ({
+    __esModule: true,
+    coreEnv: {
+      PREVIEW_TOKEN_SECRET: process.env.PREVIEW_TOKEN_SECRET,
+      UPGRADE_PREVIEW_TOKEN_SECRET: process.env.UPGRADE_PREVIEW_TOKEN_SECRET,
+      NEXT_PUBLIC_SHOP_ID: process.env.NEXT_PUBLIC_SHOP_ID,
+    },
+  }));
+}
+
 test("valid token returns page JSON", async () => {
+  mockEnv();
   const page: Page = {
     id: "1",
     slug: "home",
@@ -46,6 +58,7 @@ test("valid token returns page JSON", async () => {
 });
 
 test("invalid token yields 401", async () => {
+  mockEnv();
   const getPages = jest.fn(async () => []);
   jest.doMock("@platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
@@ -62,6 +75,7 @@ test("invalid token yields 401", async () => {
 });
 
 test("missing token yields 401", async () => {
+  mockEnv();
   const getPages = jest.fn(async () => []);
   jest.doMock("@platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
@@ -77,7 +91,50 @@ test("missing token yields 401", async () => {
   expect(res.status).toBe(401);
 });
 
+test("missing secret yields 401", async () => {
+  const original = process.env.PREVIEW_TOKEN_SECRET;
+  delete process.env.PREVIEW_TOKEN_SECRET;
+  mockEnv();
+  const getPages = jest.fn(async () => []);
+  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+    __esModule: true,
+    getPages,
+  }));
+
+  const { onRequest } = await import("../src/routes/preview/[pageId].ts");
+  const res = await onRequest({
+    params: { pageId: "1" },
+    request: new Request(`http://test?token=${tokenFor("1")}`),
+  } as any);
+
+  expect(res.status).toBe(401);
+  process.env.PREVIEW_TOKEN_SECRET = original;
+});
+
+test("timingSafeEqual error yields 401", async () => {
+  mockEnv();
+  jest.doMock("crypto", () => {
+    const actual = jest.requireActual("node:crypto");
+    return { ...actual, timingSafeEqual: () => { throw new Error("boom"); } };
+  });
+  const getPages = jest.fn(async () => []);
+  jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+    __esModule: true,
+    getPages,
+  }));
+
+  const { onRequest } = await import("../src/routes/preview/[pageId].ts");
+  const res = await onRequest({
+    params: { pageId: "1" },
+    request: new Request(`http://test?token=${tokenFor("1")}`),
+  } as any);
+
+  expect(res.status).toBe(401);
+  jest.dontMock("crypto");
+});
+
 test("valid token with missing page yields 404", async () => {
+  mockEnv();
   const getPages = jest.fn(async () => [] as Page[]);
   jest.doMock("@platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
@@ -96,6 +153,7 @@ test("valid token with missing page yields 404", async () => {
 test("falls back to default shop when NEXT_PUBLIC_SHOP_ID is unset", async () => {
   const original = process.env.NEXT_PUBLIC_SHOP_ID;
   delete process.env.NEXT_PUBLIC_SHOP_ID;
+  mockEnv();
   const getPages = jest.fn(async () => [] as Page[]);
   jest.doMock("@platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
@@ -114,6 +172,7 @@ test("falls back to default shop when NEXT_PUBLIC_SHOP_ID is unset", async () =>
 });
 
 test("valid upgrade token returns page JSON", async () => {
+  mockEnv();
   const page: Page = {
     id: "1",
     slug: "home",
@@ -148,6 +207,7 @@ test("valid upgrade token returns page JSON", async () => {
 });
 
 test("invalid upgrade token yields 401", async () => {
+  mockEnv();
   const getPages = jest.fn(async () => []);
   jest.doMock("@platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
@@ -164,6 +224,7 @@ test("invalid upgrade token yields 401", async () => {
 });
 
 test("standard token not accepted as upgrade token", async () => {
+  mockEnv();
   const getPages = jest.fn(async () => []);
   jest.doMock("@platform-core/repositories/pages/index.server", () => ({
     __esModule: true,
@@ -180,6 +241,7 @@ test("standard token not accepted as upgrade token", async () => {
 });
 
 test("upgrade token route returns 401 when permission check fails", async () => {
+  mockEnv();
   jest.doMock("@auth", () => ({
     __esModule: true,
     requirePermission: jest
@@ -194,6 +256,7 @@ test("upgrade token route returns 401 when permission check fails", async () => 
 });
 
 test("upgrade token route without pageId yields 400", async () => {
+  mockEnv();
   jest.doMock("@auth", () => ({
     __esModule: true,
     requirePermission: jest.fn(),
@@ -208,6 +271,7 @@ test("upgrade token route without pageId yields 400", async () => {
 test("missing upgrade token secret returns 500", async () => {
   const original = process.env.UPGRADE_PREVIEW_TOKEN_SECRET;
   delete process.env.UPGRADE_PREVIEW_TOKEN_SECRET;
+  mockEnv();
   jest.doMock("@auth", () => ({
     __esModule: true,
     requirePermission: jest.fn(),

@@ -18,6 +18,40 @@ describe("chargeLateFeesOnce", () => {
 
     expect(mocks.readOrders).not.toHaveBeenCalled();
   });
+
+  it("charges overdue orders", async () => {
+    const { setupLateFeeTest, NOW } = await import("./helpers/lateFee");
+    const overdueOrder = {
+      id: "1",
+      sessionId: "sess_1",
+      shop: "test",
+      deposit: 0,
+      startedAt: new Date(NOW - 5 * 24 * 60 * 60 * 1000).toISOString(),
+      returnDueDate: new Date(NOW - 4 * 24 * 60 * 60 * 1000).toISOString(),
+    } as any;
+    const mocks = await setupLateFeeTest({ orders: [overdueOrder] });
+    jest.doMock("@acme/config/env/core", () => ({
+      __esModule: true,
+      coreEnv: {},
+      loadCoreEnv: () => ({}),
+    }));
+
+    const { chargeLateFeesOnce } = await import("../src/lateFeeService");
+    try {
+      await chargeLateFeesOnce();
+    } finally {
+      mocks.restore();
+    }
+
+    expect(mocks.stripeCharge).toHaveBeenCalledWith(
+      expect.objectContaining({ amount: 25 * 100, currency: "usd" }),
+    );
+    expect(mocks.markLateFeeCharged).toHaveBeenCalledWith(
+      "test",
+      "sess_1",
+      25,
+    );
+  });
 });
 
 describe("resolveConfig", () => {

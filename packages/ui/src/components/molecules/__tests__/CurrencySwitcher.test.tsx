@@ -1,0 +1,31 @@
+import "@testing-library/jest-dom";
+import { fireEvent, render, screen } from "@testing-library/react";
+import CurrencySwitcher from "../CurrencySwitcher.client";
+
+const setCurrencySpy = jest.fn();
+
+jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
+  useCurrency: () => ["USD", setCurrencySpy] as const,
+}));
+
+describe("CurrencySwitcher", () => {
+  it("calls setCurrency when selecting a new currency and shows it", () => {
+    render(<CurrencySwitcher />);
+
+    const trigger = screen.getByRole("combobox");
+    fireEvent.click(trigger);
+
+    const eurOption = screen.getByRole("option", { name: "EUR" });
+    const usdOption = screen.getByRole("option", { name: "USD" });
+    const gbpOption = screen.getByRole("option", { name: "GBP" });
+
+    expect(eurOption).toBeInTheDocument();
+    expect(usdOption).toBeInTheDocument();
+    expect(gbpOption).toBeInTheDocument();
+
+    fireEvent.click(eurOption);
+
+    expect(setCurrencySpy).toHaveBeenCalledWith("EUR");
+    expect(trigger).toHaveTextContent("EUR");
+  });
+});

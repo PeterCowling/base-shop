@@ -12,14 +12,12 @@ jest.mock("@platform-core/repositories/products.server", () => ({
 }));
 
 jest.mock("@acme/config/env/core", () => ({
-  coreEnv: {
-    get NEXT_PUBLIC_BASE_URL() {
-      return process.env.NEXT_PUBLIC_BASE_URL as string | undefined;
-    },
-    get NEXT_PUBLIC_SHOP_ID() {
-      return process.env.NEXT_PUBLIC_SHOP_ID as string | undefined;
-    },
-  },
+  loadCoreEnv: jest.fn(() => ({
+    NEXT_PUBLIC_BASE_URL: process.env
+      .NEXT_PUBLIC_BASE_URL as string | undefined,
+    NEXT_PUBLIC_SHOP_ID: process.env
+      .NEXT_PUBLIC_SHOP_ID as string | undefined,
+  })),
 }));
 
 const ORIGINAL_ENV = process.env;

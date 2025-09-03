@@ -7,73 +7,62 @@
     "resolveJsonModule": true,
     "paths": {
       "@/*": [
-        "./dist/*",
-        "../ui/dist/src/*",
-        "../i18n/dist/*",
         "./src/*",
         "../ui/src/*",
-        "../i18n/src/*"
+        "../i18n/src/*",
+        "../ui/dist/src/*",
+        "../i18n/dist/*",
+        "./dist/*"
       ],
       "@ui/*": [
-        "../ui/dist/src/*",
-        "../ui/src/*"
+        "../ui/src/*", "../ui/dist/src/*"
       ],
       "@ui/src/*": [
-        "../ui/dist/src/*",
-        "../ui/src/*"
+        "../ui/src/*", "../ui/dist/src/*"
       ],
       "@i18n/*": [
-        "../i18n/dist/*",
-        "../i18n/src/*"
+        "../i18n/src/*", "../i18n/dist/*"
       ],
       "@platform-core": [
-        "../platform-core/dist/index.d.ts",
-        "../platform-core/src/index.ts"
+        "../platform-core/src/index.ts", "../platform-core/dist/index.d.ts"
       ],
       "@platform-core/*": [
-        "../platform-core/dist/*",
-        "../platform-core/src/*"
+        "../platform-core/src/*", "../platform-core/dist/*"
       ],
       "@acme/platform-core": [
-        "../platform-core/dist/index.d.ts",
-        "../platform-core/src/index.ts"
+        "../platform-core/src/index.ts", "../platform-core/dist/index.d.ts"
       ],
       "@acme/platform-core/*": [
-        "../platform-core/dist/*",
-        "../platform-core/src/*"
+        "../platform-core/src/*", "../platform-core/dist/*"
       ],
       "@acme/config": [
-        "../config/dist/index.d.ts",
-        "../config/src/index.ts"
+        "../config/src/index.ts", "../config/dist/index.d.ts"
       ],
       "@acme/config/*": [
-        "../config/dist/*",
         "./src/env/*.ts",
-        "../config/src/*"
+        "../config/src/*",
+        "../config/dist/*"
       ],
       "@auth": [
-        "../auth/dist/index.d.ts",
-        "../auth/dist",
         "../auth/src/index.ts",
-        "../auth/src"
+        "../auth/src",
+        "../auth/dist/index.d.ts",
+        "../auth/dist"
       ],
       "@auth/*": [
-        "../auth/dist/*",
-        "../auth/src/*"
+        "../auth/src/*", "../auth/dist/*"
       ],
       "@date-utils": [
-        "../date-utils/dist/index.d.ts",
-        "../date-utils/dist",
         "../date-utils/src/index.ts",
-        "../date-utils/src"
+        "../date-utils/src",
+        "../date-utils/dist/index.d.ts",
+        "../date-utils/dist"
       ],
       "@date-utils/*": [
-        "../date-utils/dist/*",
-        "../date-utils/src/*"
+        "../date-utils/src/*", "../date-utils/dist/*"
       ],
       "better-sqlite3": [
-        "../platform-core/dist/types/better-sqlite3",
-        "../platform-core/src/types/better-sqlite3"
+        "../platform-core/src/types/better-sqlite3", "../platform-core/dist/types/better-sqlite3"
       ]
     },
     "allowJs": true,

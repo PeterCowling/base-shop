@@ -14,7 +14,8 @@ import { cookies } from "next/headers";
 import { getCustomerSession } from "@auth";
 import { readShop } from "@platform-core/repositories/shops.server";
 import { notFound } from "next/navigation";
-import { coreEnv } from "@acme/config/env/core";
+import { coreEnv, type CoreEnv } from "@acme/config/env/core";
+import type { SubscriptionPlan } from "@acme/types";
 import { nowIso } from "@date-utils";
 import {
   getUserPlan,
@@ -27,16 +28,18 @@ export default async function SwapPage() {
   const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
   const cart: CartState =
     typeof cartId === "string" ? await getCart(cartId) : {};
-    const session = await getCustomerSession();
-    const shopId =
-      (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "shop";
+  const session = await getCustomerSession();
+  const shopId =
+    (coreEnv as CoreEnv).NEXT_PUBLIC_SHOP_ID ?? "shop";
   const shop = await readShop(shopId);
   if (!shop.subscriptionsEnabled) return notFound();
   const planId = session?.customerId
     ? await getUserPlan(shopId, session.customerId)
     : undefined;
   const selectedPlan = planId
-    ? shop.rentalSubscriptions.find((p) => p.id === planId)
+    ? shop.rentalSubscriptions.find(
+        (p: SubscriptionPlan) => p.id === planId,
+      )
     : undefined;
   const month = nowIso().slice(0, 7);
   const remainingSwaps =
@@ -58,12 +61,13 @@ export default async function SwapPage() {
     const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
     const session = await getCustomerSession();
     if (typeof cartId !== "string" || !session?.customerId) return;
-    const shopId = (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "shop";
     const shop = await readShop(shopId);
     if (!shop.subscriptionsEnabled) return;
     const planId = await getUserPlan(shopId, session.customerId);
     const selectedPlan = planId
-      ? shop.rentalSubscriptions.find((p) => p.id === planId)
+      ? shop.rentalSubscriptions.find(
+          (p: SubscriptionPlan) => p.id === planId,
+        )
       : undefined;
     const month = nowIso().slice(0, 7);
     if (!selectedPlan) return;

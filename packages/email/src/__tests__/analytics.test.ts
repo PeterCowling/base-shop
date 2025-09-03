@@ -48,6 +48,26 @@ describe("analytics mapping", () => {
     });
   });
 
+  it("normalizes SendGrid webhook events without category", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapSendGridEvent } = await import("../analytics");
+    const ev = {
+      event: "open",
+      sg_message_id: "msg-3",
+      email: "user@example.com",
+      category: undefined,
+    } as const;
+    expect(mapSendGridEvent(ev)).toEqual({
+      type: "email_open",
+      messageId: "msg-3",
+      recipient: "user@example.com",
+    });
+  });
+
   it("normalizes Resend webhook events with campaign_id", async () => {
     jest.resetModules();
     process.env.CART_COOKIE_SECRET = "secret";
@@ -90,6 +110,45 @@ describe("analytics mapping", () => {
       type: "email_open",
       campaign: "camp2",
       messageId: "m4",
+      recipient: "user@example.com",
+    });
+  });
+
+  it("normalizes Resend webhook events with missing data", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapResendEvent } = await import("../analytics");
+    const ev = {
+      type: "email.opened",
+    };
+    expect(mapResendEvent(ev)).toEqual({
+      type: "email_open",
+      campaign: undefined,
+      messageId: undefined,
+      recipient: undefined,
+    });
+  });
+
+  it("uses recipient when email is missing", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapResendEvent } = await import("../analytics");
+    const ev = {
+      type: "email.opened",
+      data: {
+        recipient: "user@example.com",
+      },
+    };
+    expect(mapResendEvent(ev)).toEqual({
+      type: "email_open",
+      campaign: undefined,
+      messageId: undefined,
       recipient: "user@example.com",
     });
   });

@@ -9,7 +9,7 @@ type ChargeWithInvoice = Stripe.Charge & {
 };
 
 export function extractSessionIdFromCharge(charge: ChargeWithInvoice): string | undefined {
-  if (charge.invoice) return charge.invoice as string;
+  if (typeof charge.invoice === "string") return charge.invoice;
   if (typeof charge.payment_intent !== "string" && charge.payment_intent) {
     const pi = charge.payment_intent as Stripe.PaymentIntent & {
       latest_charge?: string | ChargeWithInvoice | null;

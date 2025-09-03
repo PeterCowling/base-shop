@@ -46,38 +46,58 @@ describe("handleStripeWebhook", () => {
     expect(updateRisk).toHaveBeenCalledWith("test", "ch_1", "elevated", 42);
   });
 
-  test("early fraud warning cancels high risk", async () => {
-    const { handleStripeWebhook } = await import("../src/stripe-webhook");
-    chargesRetrieve.mockResolvedValue({
-      outcome: { risk_level: "highest", risk_score: 90 },
-    } as any);
-    const event: Stripe.Event = {
-      type: "radar.early_fraud_warning.created",
-      data: {
-        object: {
-          charge: "ch_2",
-          risk_level: "highest",
-          risk_score: 90,
-        },
-      },
-    } as any;
-    await handleStripeWebhook("test", event);
-    expect(updateRisk).toHaveBeenCalledWith("test", "ch_2", "highest", 90, true);
-    expect(markRefunded).toHaveBeenCalledWith("test", "ch_2");
+  describe.each([
+    ["string ref", "ch_high"],
+    ["object ref", { id: "ch_high", outcome: { risk_level: "highest", risk_score: 90 } }],
+  ])("early fraud warning cancels high risk when charge is %s", (_label, chargeRef) => {
+    test("", async () => {
+      const { handleStripeWebhook } = await import("../src/stripe-webhook");
+      if (typeof chargeRef === "string") {
+        chargesRetrieve.mockResolvedValue({
+          outcome: { risk_level: "highest", risk_score: 90 },
+        } as any);
+      }
+      const event: Stripe.Event = {
+        type: "radar.early_fraud_warning.created",
+        data: { object: { charge: chargeRef } },
+      } as any;
+      await handleStripeWebhook("test", event);
+      expect(updateRisk).toHaveBeenCalledWith(
+        "test",
+        "ch_high",
+        "highest",
+        90,
+        true
+      );
+      expect(markRefunded).toHaveBeenCalledWith("test", "ch_high");
+    });
   });
 
-  test("early fraud warning logs low risk without refund", async () => {
-    const { handleStripeWebhook } = await import("../src/stripe-webhook");
-    chargesRetrieve.mockResolvedValue({
-      outcome: { risk_level: "elevated", risk_score: 30 },
-    } as any);
-    const event: Stripe.Event = {
-      type: "radar.early_fraud_warning.created",
-      data: { object: { charge: "ch_low" } },
-    } as any;
-    await handleStripeWebhook("test", event);
-    expect(updateRisk).toHaveBeenCalledWith("test", "ch_low", "elevated", 30, true);
-    expect(markRefunded).not.toHaveBeenCalled();
+  describe.each([
+    ["string ref", "ch_low"],
+    ["object ref", { id: "ch_low", outcome: { risk_level: "elevated", risk_score: 30 } }],
+  ])("early fraud warning logs low risk without refund when charge is %s", (_label, chargeRef) => {
+    test("", async () => {
+      const { handleStripeWebhook } = await import("../src/stripe-webhook");
+      if (typeof chargeRef === "string") {
+        chargesRetrieve.mockResolvedValue({
+          outcome: { risk_level: "elevated", risk_score: 30 },
+        } as any);
+      }
+      const event: Stripe.Event = {
+        type: "radar.early_fraud_warning.created",
+        data: { object: { charge: chargeRef } },
+      } as any;
+      await handleStripeWebhook("test", event);
+      expect(updateRisk).toHaveBeenCalledWith(
+        "test",
+        "ch_low",
+        "elevated",
+        30,
+        true
+      );
+      expect(markRefunded).not.toHaveBeenCalled();
+    });
   });
 
   test("review.opened flags order", async () => {

@@ -152,6 +152,47 @@ The scaffolded `.env` also includes generated placeholders for `NEXTAUTH_SECRET`
 
 Apps Script code lives under `apps-script/` and compiles with its own `tsconfig.json`. Next.js projects exclude this folder to avoid type conflicts with DOM typings.
 
+## TypeScript Project References Policy
+
+### Rule 1 – References
+If package A imports package B, then A’s `tsconfig.json` must include:
+
+```json
+{ "references": [{ "path": "../<B>" }] }
+```
+
+### Rule 2 – Provider `tsconfig.json`
+Every provider package must set:
+
+```json
+{
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "rootDir": "src",
+    "outDir": "dist"
+  }
+}
+```
+
+### Rule 3 – Provider `package.json`
+Provider packages must declare their types with:
+
+```json
+{ "types": "dist/index.d.ts" }
+```
+
+### Clean & build
+
+```bash
+pnpm run clean:ts
+pnpm run build:ts
+```
+
+### Troubleshooting TS6305
+Clean `dist/` and `.tsbuildinfo` in both the consumer and provider, rebuild the provider first, then the consumer, and ensure the consumer’s `references` list is correct.
+
 ## Troubleshooting
 
 - If `pnpm run dev` fails with an `array.length` error, run the appropriate Codex command to retrieve detailed failure information.

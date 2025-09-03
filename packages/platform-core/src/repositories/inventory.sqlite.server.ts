@@ -30,9 +30,15 @@ let DatabaseConstructor: any;
 
 async function getDb(shop: string): Promise<Database> {
   if (!DatabaseConstructor) {
-    ({ default: DatabaseConstructor } = await import(
-      /* webpackIgnore: true */ "better-sqlite3"
-    ));
+    try {
+      ({ default: DatabaseConstructor } = await import(
+        /* webpackIgnore: true */ "better-sqlite3",
+      ));
+    } catch {
+      ({ default: DatabaseConstructor } = await import(
+        "../types/better-sqlite3",
+      ));
+    }
   }
   const ctor = DatabaseConstructor!;
   shop = validateShopName(shop);

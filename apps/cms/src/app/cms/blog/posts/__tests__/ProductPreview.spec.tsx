@@ -6,13 +6,15 @@ describe("ProductPreview", () => {
     (global as any).fetch = jest.fn();
   });
 
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
   it("renders product info", async () => {
-    (global as any).fetch.mockResolvedValueOnce(
-      new Response(JSON.stringify({ title: "Test", price: 100 }), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      })
-    );
+    (global as any).fetch.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ title: "Test", price: 100 }),
+    } as Response);
     const onValid = jest.fn();
     render(<ProductPreview slug="t" onValidChange={onValid} />);
     await screen.findByText("Test");

@@ -42,5 +42,31 @@ describe("validateInventoryItems", () => {
     expect(res.success).toBe(false);
     expect(res.error).toMatch(/greater than or equal to 0/i);
   });
+
+  it("returns error for missing sku", () => {
+    const res = validateInventoryItems([
+      {
+        sku: "",
+        productId: "",
+        variantAttributes: {},
+        quantity: 1,
+      } as unknown as InventoryItem,
+    ]);
+    expect(res.success).toBe(false);
+    expect(res.error).toMatch(/SKU is required/i);
+  });
+
+  it("returns error for missing quantity", () => {
+    const res = validateInventoryItems([
+      {
+        sku: "sku1",
+        productId: "sku1",
+        variantAttributes: {},
+        quantity: NaN,
+      } as unknown as InventoryItem,
+    ]);
+    expect(res.success).toBe(false);
+    expect(res.error).toMatch(/Quantity is required/i);
+  });
 });
 

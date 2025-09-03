@@ -7,7 +7,24 @@ import { expandInventoryItem } from "@platform-core/utils/inventory";
  */
 export function validateInventoryItems(items: InventoryItem[]) {
   try {
-    const normalized = items.map((i) => expandInventoryItem(i));
+    for (const item of items) {
+      const errors: string[] = [];
+      if (!item.sku.trim()) errors.push("SKU is required");
+      if (item.quantity === undefined || Number.isNaN(item.quantity)) {
+        errors.push("Quantity is required");
+      }
+      if (errors.length) {
+        return { success: false as const, error: errors.join(", ") };
+      }
+    }
+
+    const cleaned = items.map((i) => ({
+      ...i,
+      variantAttributes: Object.fromEntries(
+        Object.entries(i.variantAttributes ?? {}).filter(([, v]) => v !== ""),
+      ),
+    }));
+    const normalized = cleaned.map((i) => expandInventoryItem(i));
     const parsed = inventoryItemSchema.array().safeParse(normalized);
     if (!parsed.success) {
       return {

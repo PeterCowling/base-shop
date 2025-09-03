@@ -20,53 +20,55 @@ const configSchema = {
 };
 const callOrder = [];
 const init = jest.fn(async () => {
-  await new Promise(resolve => setTimeout(resolve, 10));
+  await Promise.resolve();
   callOrder.push('init');
 });
 const registerPayments = jest.fn(() => callOrder.push('registerPayments'));
 const registerShipping = jest.fn(() => callOrder.push('registerShipping'));
 const registerWidgets = jest.fn(() => callOrder.push('registerWidgets'));
-export default {
-  id: 'good',
-  defaultConfig: { enabled: true },
-  configSchema,
-  init,
-  registerPayments,
-  registerShipping,
-  registerWidgets,
-  callOrder,
+module.exports = {
+  default: {
+    id: 'good',
+    defaultConfig: { enabled: true },
+    configSchema,
+    init,
+    registerPayments,
+    registerShipping,
+    registerWidgets,
+    callOrder,
+  }
 };
 `;
-    await fs.writeFile(path.join(validDir, "index.ts"), pluginCode);
+    await fs.writeFile(path.join(validDir, "index.js"), pluginCode);
     await fs.writeFile(
       path.join(validDir, "package.json"),
-      JSON.stringify({ name: "good", main: "index.ts" })
+      JSON.stringify({ name: "good", main: "index.js" })
     );
     // missing plugin dir (no index.ts)
     const missingDir = path.join(base, "missing");
     await fs.mkdir(missingDir, { recursive: true });
     await fs.writeFile(
       path.join(missingDir, "package.json"),
-      JSON.stringify({ name: "missing", main: "index.ts" })
+      JSON.stringify({ name: "missing", main: "index.js" })
     );
     // plugin that throws
     const badDir = path.join(base, "bad");
     await fs.mkdir(badDir, { recursive: true });
-    await fs.writeFile(path.join(badDir, "index.ts"), "throw new Error('boom')");
+    await fs.writeFile(path.join(badDir, "index.js"), "throw new Error('boom')");
     await fs.writeFile(
       path.join(badDir, "package.json"),
-      JSON.stringify({ name: "bad", main: "index.ts" })
+      JSON.stringify({ name: "bad", main: "index.js" })
     );
     // plugin exporting wrong type
     const wrongDir = path.join(base, "wrong");
     await fs.mkdir(wrongDir, { recursive: true });
     await fs.writeFile(
-      path.join(wrongDir, "index.ts"),
-      "export const notPlugin = {};"
+      path.join(wrongDir, "index.js"),
+      "module.exports = { notPlugin: {} };"
     );
     await fs.writeFile(
       path.join(wrongDir, "package.json"),
-      JSON.stringify({ name: "wrong", main: "index.ts" })
+      JSON.stringify({ name: "wrong", main: "index.js" })
     );
     // link root node_modules so imports resolve
     await fs.symlink(

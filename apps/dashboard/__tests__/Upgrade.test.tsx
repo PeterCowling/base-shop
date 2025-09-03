@@ -77,10 +77,19 @@ describe("Upgrade page", () => {
           ],
         }),
       })
-      .mockResolvedValueOnce({
-        ok: false,
-        text: async () => "publish failed",
-      });
+      .mockImplementationOnce(
+        () =>
+          new Promise((resolve) =>
+            setTimeout(
+              () =>
+                resolve({
+                  ok: false,
+                  text: async () => "publish failed",
+                }),
+              50
+            )
+          )
+      );
 
     render(<Upgrade />);
 
@@ -100,9 +109,11 @@ describe("Upgrade page", () => {
     await user.click(screen.getByLabelText("CompA"));
     expect(screen.getByText("CompA.tsx")).toBeInTheDocument();
 
-    await user.click(
-      screen.getByRole("button", { name: /publish upgrade/i })
-    );
+    const button = screen.getByRole("button", { name: /publish upgrade/i });
+    await user.click(button);
+
+    expect(button).toBeDisabled();
+    expect(button).toHaveTextContent("Publishing...");
 
     await waitFor(() =>
       expect(global.fetch).toHaveBeenLastCalledWith(

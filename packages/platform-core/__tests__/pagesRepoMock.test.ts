@@ -94,12 +94,24 @@ describe("pages repository core logic", () => {
     expect(JSON.parse(files.get(filePath)!)).toEqual([samplePage]);
   });
 
+  it("savePage updates existing page via writePages when prisma fails", async () => {
+    prisma.page.upsert.mockRejectedValue(new Error("db"));
+    prisma.page.findMany.mockRejectedValue(new Error("db"));
+    const filePath = path.join(process.env.DATA_ROOT!, shop, "pages.json");
+    files.set(filePath, JSON.stringify([{ ...samplePage, slug: "old" }]));
+    const updated = { ...samplePage, slug: "new" };
+    await repo.savePage(shop, updated, undefined);
+    expect(fsMock.writeFile).toHaveBeenCalled();
+    expect(JSON.parse(files.get(filePath)!)).toEqual([updated]);
+  });
+
   it("deletePage throws when page not found", async () => {
     prisma.page.deleteMany.mockResolvedValueOnce({ count: 0 });
     prisma.page.findMany.mockRejectedValueOnce(new Error("db"));
     await expect(repo.deletePage(shop, "nope")).rejects.toThrow(
       "Page nope not found in"
     );
+    expect(fsMock.writeFile).not.toHaveBeenCalled();
   });
 
   it("updatePage detects conflicts", async () => {
@@ -123,6 +135,20 @@ describe("pages repository core logic", () => {
     const stored = JSON.parse(files.get(filePath)!)[0];
     expect(stored.slug).toBe("b");
     expect(result.slug).toBe("b");
+  });
+
+  it("updatePage throws when prisma fails and page missing", async () => {
+    prisma.page.update.mockRejectedValue(new Error("db"));
+    prisma.page.findMany.mockRejectedValue(new Error("db"));
+    const previous = { ...samplePage, id: "missing" };
+    const patch = {
+      id: "missing",
+      slug: "b",
+      updatedAt: previous.updatedAt,
+    };
+    await expect(repo.updatePage(shop, patch, previous)).rejects.toThrow(
+      "Page missing not found in"
+    );
   });
 
   it("diffHistory filters malformed lines", async () => {
@@ -149,6 +175,12 @@ describe("pages repository core logic", () => {
     expect(history).toHaveLength(2);
     expect(history[0].diff.slug).toBe("a");
     expect(history[1].diff.slug).toBe("b");
+  });
+
+  it("diffHistory returns empty array when read fails", async () => {
+    fsMock.readFile.mockRejectedValueOnce(new Error("fs"));
+    const history = await repo.diffHistory(shop);
+    expect(history).toEqual([]);
   });
 });
 

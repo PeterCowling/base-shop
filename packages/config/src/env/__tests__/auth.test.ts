@@ -127,6 +127,24 @@ describe("auth env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("fails safeParse for missing required secrets", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({});
+    expect(result.success).toBe(false);
+    expect(result.error.format()).toMatchObject({
+      NEXTAUTH_SECRET: { _errors: [expect.any(String)] },
+      SESSION_SECRET: { _errors: [expect.any(String)] },
+    });
+    expect(() => authEnvSchema.parse({})).toThrow();
+  });
+
   it("throws when SESSION_STORE is invalid", async () => {
     process.env = {
       ...ORIGINAL_ENV,
@@ -172,6 +190,27 @@ describe("auth env module", () => {
       }),
     );
     errorSpy.mockRestore();
+  });
+
+  it("returns errors when redis session store credentials missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+      SESSION_STORE: "redis",
+    });
+    expect(result.success).toBe(false);
+    expect(result.error.format()).toMatchObject({
+      UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
+      UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
+    });
   });
 
   describe("redis session store configuration", () => {
@@ -247,6 +286,46 @@ describe("auth env module", () => {
       });
       expect(errorSpy).not.toHaveBeenCalled();
       errorSpy.mockRestore();
+    });
+  });
+
+  it("returns error when LOGIN_RATE_LIMIT_REDIS_TOKEN missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+      LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
+    });
+    expect(result.success).toBe(false);
+    expect(result.error.format()).toMatchObject({
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: { _errors: [expect.any(String)] },
+    });
+  });
+
+  it("returns error when LOGIN_RATE_LIMIT_REDIS_URL missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+    });
+    expect(result.success).toBe(false);
+    expect(result.error.format()).toMatchObject({
+      LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
     });
   });
 

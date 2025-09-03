@@ -138,6 +138,38 @@ describe("chargeLateFeesOnce", () => {
     });
   });
 
+  it.each([
+    [
+      "customer missing",
+      {
+        customer: undefined,
+        payment_intent: { payment_method: "pm_1" },
+        currency: "usd",
+      },
+    ],
+    [
+      "payment intent as string",
+      { customer: "cus_1", payment_intent: "pi_1", currency: "usd" },
+    ],
+  ])("skips charge when %s", async (_desc, session) => {
+    readdirMock.mockResolvedValue(["s1"]);
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } }),
+    );
+    readOrdersMock.mockResolvedValueOnce([
+      {
+        sessionId: "sess1",
+        returnDueDate: new Date(NOW - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      },
+    ]);
+    stripeRetrieveMock.mockResolvedValueOnce(session as any);
+
+    await service.chargeLateFeesOnce(undefined, "/data");
+
+    expect(stripeChargeMock).not.toHaveBeenCalled();
+    expect(markLateFeeChargedMock).not.toHaveBeenCalled();
+  });
+
   it("logs error when charge fails", async () => {
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockResolvedValueOnce(

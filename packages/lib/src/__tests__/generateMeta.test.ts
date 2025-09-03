@@ -258,9 +258,11 @@ describe("generateMeta", () => {
     const responsesCreate = jest.fn().mockResolvedValue({
       output: [{ content: [{ text: "not json" }] }],
     });
-    const imagesGenerate = jest.fn().mockResolvedValue({
-      data: [{ b64_json: Buffer.from("img").toString("base64") }],
-    });
+    const imagesGenerate = jest
+      .fn()
+      .mockResolvedValue({
+        data: [{}],
+      });
     const OpenAI = jest.fn().mockImplementation(() => ({
       responses: { create: responsesCreate },
       images: { generate: imagesGenerate },
@@ -282,7 +284,7 @@ describe("generateMeta", () => {
       image: `/og/${product.id}.png`,
     });
     expect(mkdirMock).toHaveBeenCalledWith(path.dirname(file), { recursive: true });
-    expect(writeMock).toHaveBeenCalledWith(file, Buffer.from("img"));
+    expect(writeMock).toHaveBeenCalledWith(file, Buffer.from(""));
   });
 
   it("parses metadata when OpenAI returns string content", async () => {

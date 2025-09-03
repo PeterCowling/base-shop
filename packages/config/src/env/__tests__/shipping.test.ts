@@ -551,5 +551,36 @@ describe("shipping env module", () => {
     );
     errorSpy.mockRestore();
   });
+
+  it("includes carriers when env vars are set", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const env = loadShippingEnv({
+      UPS_KEY: "ups",
+      DHL_KEY: "dhl",
+    } as NodeJS.ProcessEnv);
+    expect(env).toEqual({ UPS_KEY: "ups", DHL_KEY: "dhl" });
+  });
+
+  it("omits carriers when env vars are missing", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const env = loadShippingEnv({} as NodeJS.ProcessEnv);
+    expect(env).toEqual({});
+    expect(env).not.toHaveProperty("UPS_KEY");
+    expect(env).not.toHaveProperty("DHL_KEY");
+  });
+
+  it("throws when a carrier env var is invalid", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    expect(() =>
+      loadShippingEnv({ UPS_KEY: 123 as unknown as string }),
+    ).toThrow("Invalid shipping environment variables");
+  });
+
+  it("defaults carrier keys to undefined when optional vars are absent", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const env = loadShippingEnv({} as NodeJS.ProcessEnv);
+    expect(env.UPS_KEY).toBeUndefined();
+    expect(env.DHL_KEY).toBeUndefined();
+  });
 });
 

@@ -1,6 +1,13 @@
 // packages/platform-core/__tests__/products.test.ts
 
-import { getProductBySlug, getProductById, PRODUCTS } from "../src/products";
+import {
+  getProductBySlug,
+  getProductById,
+  PRODUCTS,
+  getProducts,
+  searchProducts,
+} from "../src/products";
+import { PRODUCTS as BASE_PRODUCTS } from "../src/products/index";
 
 describe("getProductBySlug", () => {
   it("returns the matching product", () => {
@@ -27,5 +34,19 @@ describe("getProductById", () => {
 
   it("returns null when stock is 0 via async lookup", async () => {
     await expect(getProductById("shop", outOfStock.id)).resolves.toBeNull();
+  });
+});
+
+describe("getProducts", () => {
+  it("returns a copy of base.PRODUCTS", async () => {
+    const result = await getProducts();
+    expect(result).toEqual(BASE_PRODUCTS);
+    expect(result).not.toBe(BASE_PRODUCTS);
+  });
+});
+
+describe("searchProducts", () => {
+  it("returns an empty array", async () => {
+    await expect(searchProducts("anything")).resolves.toEqual([]);
   });
 });

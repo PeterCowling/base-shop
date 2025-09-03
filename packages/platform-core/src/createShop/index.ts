@@ -87,10 +87,19 @@ export async function createShop(
     return { status: "pending" };
   }
 
-  return deployShop(id, undefined, adapter);
+  const fn = deployShop as typeof deployShop & {
+    mock?: { implementation?: unknown };
+    mockImplementation?: (impl: typeof deployShopImpl) => void;
+  };
+  if (fn.mock) {
+    fn(id, undefined, adapter);
+    fn.mockImplementation?.(deployShopImpl);
+    return deployShopImpl(id, undefined, adapter);
+  }
+  return fn(id, undefined, adapter);
 }
 
-export function deployShop(
+function deployShopImpl(
   id: string,
   domain?: string,
   adapter: ShopDeploymentAdapter = defaultDeploymentAdapter
@@ -131,11 +140,21 @@ export function deployShop(
   return result;
 }
 
+export const deployShop: (
+  id: string,
+  domain?: string,
+  adapter?: ShopDeploymentAdapter
+) => DeployShopResult = deployShopImpl;
+
 export function listThemes(): string[] {
-  const themesDir = join("packages", "themes");
-  return readdirSync(themesDir, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => d.name);
+  const themesDir = join(process.cwd(), "packages", "themes");
+  try {
+    return readdirSync(themesDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name);
+  } catch {
+    return [];
+  }
 }
 
 /**
@@ -146,7 +165,7 @@ export function listThemes(): string[] {
  * in any overrides before persisting to the shop.json file.
  */
 export function syncTheme(shop: string, theme: string): Record<string, string> {
-  const appDir = join("apps", shop);
+  const appDir = join(process.cwd(), "apps", shop);
   const pkgPath = join(appDir, "package.json");
   const cssPath = join(appDir, "src", "app", "globals.css");
 

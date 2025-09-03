@@ -60,17 +60,16 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
       <div className="border p-2 text-red-500">{error ?? "Not found"}</div>
     );
   const available = (product.stock ?? 0) > 0;
+  const imageUrl = product.media?.[0]?.url ?? "/file.svg";
   return (
     <div className="flex gap-2 border p-2">
-      {product.media?.[0] && (
-        <Image
-          src={product.media[0].url}
-          alt={product.title}
-          width={64}
-          height={64}
-          className="h-16 w-16 object-cover"
-        />
-      )}
+      <Image
+        src={imageUrl}
+        alt={product.title}
+        width={64}
+        height={64}
+        className="h-16 w-16 object-cover"
+      />
       <div className="space-y-1">
         <div className="font-semibold">{product.title}</div>
         <div>{formatCurrency(product.price)}</div>

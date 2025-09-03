@@ -112,6 +112,17 @@ describe("SendgridProvider", () => {
       const provider = new SendgridProvider();
       await expect(provider.getCampaignStats("1")).resolves.toEqual(emptyStats);
     });
+
+    it("returns empty stats on JSON parse failure", async () => {
+      process.env.SENDGRID_API_KEY = "sg";
+      global.fetch = jest.fn().mockResolvedValue({
+        json: jest.fn().mockRejectedValue(new Error("bad")),
+      });
+      const { SendgridProvider } = await import("../providers/sendgrid");
+      const { emptyStats } = await import("../stats");
+      const provider = new SendgridProvider();
+      await expect(provider.getCampaignStats("1")).resolves.toEqual(emptyStats);
+    });
   });
 
   describe("createContact", () => {

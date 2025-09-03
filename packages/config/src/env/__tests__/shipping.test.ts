@@ -339,5 +339,52 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalled();
     errorSpy.mockRestore();
   });
+
+  it("eager parse succeeds with valid env", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      TAXJAR_KEY: "tax",
+      UPS_KEY: "ups",
+      DHL_KEY: "dhl",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    const { shippingEnv } = await import("../shipping.ts");
+    expect(shippingEnv).toEqual({
+      TAXJAR_KEY: "tax",
+      UPS_KEY: "ups",
+      DHL_KEY: "dhl",
+    });
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
+  it("loadShippingEnv returns env for valid input", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const env = loadShippingEnv({
+      TAXJAR_KEY: "tax",
+      UPS_KEY: "ups",
+      DHL_KEY: "dhl",
+    });
+    expect(env).toEqual({ TAXJAR_KEY: "tax", UPS_KEY: "ups", DHL_KEY: "dhl" });
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
+  it("loadShippingEnv logs error for invalid input", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => loadShippingEnv({ UPS_KEY: 123 as any })).toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        UPS_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
 });
 

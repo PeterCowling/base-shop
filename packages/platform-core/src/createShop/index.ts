@@ -5,6 +5,7 @@ import {
   readFileSync,
   writeFileSync,
   mkdirSync,
+  statSync,
 } from "fs";
 import { join } from "path";
 import { genSecret } from "@acme/shared-utils";
@@ -21,6 +22,14 @@ import {
   defaultDeploymentAdapter,
   type ShopDeploymentAdapter,
 } from "./deploymentAdapter";
+
+const currentDir = typeof __dirname !== "undefined" ? __dirname : "";
+
+function repoRoot(): string {
+  const cwd = process.cwd();
+  if (existsSync(join(cwd, "packages"))) return cwd;
+  return join(currentDir, "..", "..", "..", "..");
+}
 /**
  * Create a new shop app and seed data.
  * Paths are resolved relative to the repository root.
@@ -147,11 +156,15 @@ export const deployShop: (
 ) => DeployShopResult = deployShopImpl;
 
 export function listThemes(): string[] {
-  const themesDir = join(process.cwd(), "packages", "themes");
+  const themesDir = join(repoRoot(), "packages", "themes");
   try {
-    return readdirSync(themesDir, { withFileTypes: true })
-      .filter((d) => d.isDirectory())
-      .map((d) => d.name);
+    return readdirSync(themesDir).filter((name) => {
+      try {
+        return statSync(join(themesDir, name)).isDirectory();
+      } catch {
+        return false;
+      }
+    });
   } catch {
     return [];
   }
@@ -165,36 +178,43 @@ export function listThemes(): string[] {
  * in any overrides before persisting to the shop.json file.
  */
 export function syncTheme(shop: string, theme: string): Record<string, string> {
-  const appDir = join(process.cwd(), "apps", shop);
-  const pkgPath = join(appDir, "package.json");
-  const cssPath = join(appDir, "src", "app", "globals.css");
+  const root = repoRoot();
+  const pkgPath = join("apps", shop, "package.json");
+  const cssPath = join("apps", shop, "src", "app", "globals.css");
 
+  const cwd = process.cwd();
   try {
-    if (existsSync(pkgPath)) {
-      const pkg = JSON.parse(readFileSync(pkgPath, "utf8")) as {
-        dependencies?: Record<string, string>;
-      };
-      pkg.dependencies ??= {};
-      for (const dep of Object.keys(pkg.dependencies)) {
-        if (dep.startsWith("@themes/")) delete pkg.dependencies[dep];
+    process.chdir(root);
+
+    try {
+      if (existsSync(pkgPath)) {
+        const pkg = JSON.parse(readFileSync(pkgPath, "utf8")) as {
+          dependencies?: Record<string, string>;
+        };
+        pkg.dependencies ??= {};
+        for (const dep of Object.keys(pkg.dependencies)) {
+          if (dep.startsWith("@themes/")) delete pkg.dependencies[dep];
+        }
+        pkg.dependencies[`@themes/${theme}`] = "workspace:*";
+        writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
       }
-      pkg.dependencies[`@themes/${theme}`] = "workspace:*";
-      writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+    } catch {
+      // ignore errors when package.json is missing or invalid
     }
-  } catch {
-    // ignore errors when package.json is missing or invalid
-  }
 
-  try {
-    if (existsSync(cssPath)) {
-      const css = readFileSync(cssPath, "utf8").replace(
-        /@themes\/[^/]+\/tokens.css/,
-        `@themes/${theme}/tokens.css`
-      );
-      writeFileSync(cssPath, css);
+    try {
+      if (existsSync(cssPath)) {
+        const css = readFileSync(cssPath, "utf8").replace(
+          /@themes\/[^/]+\/tokens.css/,
+          `@themes/${theme}/tokens.css`
+        );
+        writeFileSync(cssPath, css);
+      }
+    } catch {
+      // ignore errors when globals.css cannot be read
     }
-  } catch {
-    // ignore errors when globals.css cannot be read
+  } finally {
+    process.chdir(cwd);
   }
 
   return loadTokens(theme);

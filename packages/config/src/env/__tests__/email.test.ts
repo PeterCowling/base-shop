@@ -111,6 +111,25 @@ describe("email env module", () => {
   );
 
   it(
+    "parses resend configuration with valid RESEND_API_KEY",
+    async () => {
+      process.env = {
+        ...ORIGINAL_ENV,
+        EMAIL_PROVIDER: "resend",
+        RESEND_API_KEY: "key",
+      } as NodeJS.ProcessEnv;
+      jest.resetModules();
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      const { emailEnv } = await import("../email.ts");
+      expect(errorSpy).not.toHaveBeenCalled();
+      expect(emailEnv.RESEND_API_KEY).toBe("key");
+      errorSpy.mockRestore();
+    },
+  );
+
+  it(
     "parses sendgrid configuration with valid SENDGRID_API_KEY",
     async () => {
       process.env = {

@@ -1,0 +1,27 @@
+import { extractSessionIdFromCharge } from "../src/stripe-webhook";
+
+describe("extractSessionIdFromCharge", () => {
+  test("returns charge.invoice when present", () => {
+    const charge = { invoice: "cs_inv_1" } as any;
+    expect(extractSessionIdFromCharge(charge)).toBe("cs_inv_1");
+  });
+
+  test("returns invoice from payment_intent.latest_charge", () => {
+    const charge = {
+      payment_intent: {
+        latest_charge: { invoice: "cs_inv_2" },
+      },
+    } as any;
+    expect(extractSessionIdFromCharge(charge)).toBe("cs_inv_2");
+  });
+
+  test("returns undefined when latest_charge lacks invoice", () => {
+    const charge = {
+      payment_intent: {
+        latest_charge: { id: "ch_3" },
+      },
+    } as any;
+    expect(extractSessionIdFromCharge(charge)).toBeUndefined();
+  });
+});
+

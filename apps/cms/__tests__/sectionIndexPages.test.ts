@@ -23,7 +23,9 @@ async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   await fs.mkdir(path.join(shopsDir, "bar"), { recursive: true });
   const cwd = process.cwd();
   process.chdir(dir);
+  const env = process.env;
   jest.resetModules();
+  process.env = env;
   try {
     await cb(dir);
   } finally {

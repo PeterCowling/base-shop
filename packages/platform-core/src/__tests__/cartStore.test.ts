@@ -61,6 +61,18 @@ describe("createCartStore", () => {
     expect(redisCtor).toHaveBeenCalledWith(redisClient, 99, memoryStoreInstance);
     expect(store).toBe(redisStoreInstance);
   });
+
+  it("loads core env only once even if createCartStore is called multiple times", async () => {
+    const loadCoreEnv = jest.fn().mockReturnValue({});
+    jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv }));
+
+    const { createCartStore } = await import("../cartStore");
+
+    createCartStore();
+    createCartStore();
+
+    expect(loadCoreEnv).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("default cart store wrappers", () => {
@@ -107,6 +119,25 @@ describe("default cart store wrappers", () => {
     );
     expect(mockStore.setQty).toHaveBeenCalledWith("c1", "s1", 2);
     expect(mockStore.removeItem).toHaveBeenCalledWith("c1", "s1");
+  });
+
+  it("uses module.exports.createCartStore when available", async () => {
+    const storeInstance = { backend: "spy" } as const;
+    jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
+    const createCartStore = jest
+      .fn()
+      .mockReturnValue(storeInstance as any);
+
+    // Require the module and then override the export on its module object
+    const req = eval("require");
+    const mod = req("../cartStore");
+    req.cache[req.resolve("../cartStore")].exports.createCartStore =
+      createCartStore;
+
+    const store = mod.getDefaultCartStore();
+
+    expect(createCartStore).toHaveBeenCalledTimes(1);
+    expect(store).toBe(storeInstance);
   });
 });
 

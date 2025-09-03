@@ -258,6 +258,15 @@ describe("core env refinement", () => {
     );
     expect(ctx.addIssue).not.toHaveBeenCalled();
   });
+
+  it("ignores DEPOSIT_RELEASE keys without ENABLED or INTERVAL_MS", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      { DEPOSIT_RELEASE_SOMETHING_ELSE: "foo" },
+      ctx,
+    );
+    expect(ctx.addIssue).not.toHaveBeenCalled();
+  });
 });
 
 describe("core env defaults", () => {
@@ -410,6 +419,31 @@ describe("core env sub-schema integration", () => {
     if (!parsed.success) {
       expect(parsed.error.issues).toEqual(
         expect.arrayContaining([
+          expect.objectContaining({
+            path: ["SENDGRID_API_KEY"],
+            message: "Required",
+          }),
+        ]),
+      );
+    }
+  });
+
+  it("propagates issues from auth and email schemas", () => {
+    const parsed = coreEnvSchema.safeParse({
+      ...baseEnv,
+      SESSION_STORE: "redis",
+      UPSTASH_REDIS_REST_URL: "https://example.com",
+      EMAIL_PROVIDER: "sendgrid",
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: ["UPSTASH_REDIS_REST_TOKEN"],
+            message:
+              "UPSTASH_REDIS_REST_TOKEN is required when SESSION_STORE=redis",
+          }),
           expect.objectContaining({
             path: ["SENDGRID_API_KEY"],
             message: "Required",
@@ -752,6 +786,29 @@ describe("core env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("allows proxy operations on valid env", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      NODE_ENV: "development",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = require("../core.js");
+    expect("CMS_SPACE_URL" in mod.coreEnv).toBe(true);
+    expect(Object.keys(mod.coreEnv)).toEqual(
+      expect.arrayContaining([
+        "CMS_SPACE_URL",
+        "CMS_ACCESS_TOKEN",
+        "SANITY_API_VERSION",
+      ]),
+    );
+    const desc = Object.getOwnPropertyDescriptor(
+      mod.coreEnv,
+      "CMS_SPACE_URL",
+    );
+    expect(desc).toMatchObject({ value: "https://example.com" });
+  });
+
   it("throws and logs when using in operator with invalid env", () => {
     process.env = {
       ...ORIGINAL_ENV,
@@ -856,6 +913,20 @@ describe("core env module", () => {
       "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
     );
     errorSpy.mockRestore();
+  });
+
+  it("imports without error in production when env is valid", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      NODE_ENV: "production",
+      CART_COOKIE_SECRET: "secret",
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = await import("../core.js");
+    expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
   });
 });
 

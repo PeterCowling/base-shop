@@ -27,7 +27,7 @@ export function getSavedTheme(): Theme | null {
   }
 }
 
-function getSystemTheme(): Theme {
+export function getSystemTheme(): Theme {
   try {
     return window.matchMedia &&
       window.matchMedia("(prefers-color-scheme: dark)").matches

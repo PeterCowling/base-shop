@@ -187,3 +187,25 @@ The provider’s `package.json` must then point to the generated type declaratio
 ## Notes
 
 See [docs/lighthouse.md](docs/lighthouse.md) for running Lighthouse audits.
+
+## Resolving TS2307: Cannot find module errors
+
+TS2307 occurs when TypeScript can’t locate a module or its type declarations due to misconfigured paths, missing type definitions, or package issues.
+
+- Missing type definitions for third-party packages: installing `@types/your-lib` or creating a `.d.ts` file resolves this.
+- Incorrect import paths for local files: verify the file exists and use the correct relative path without the `.ts`/`.tsx` extension.
+- Misconfigured module resolution: ensure `baseUrl` and `paths` in `tsconfig.json` align with your folder structure.
+- Verify module existence: always check that the module is present locally or in `node_modules`.
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@utils/*": ["src/utils/*"]
+    }
+  }
+}
+```
+
+Remind contributors to install missing type definitions and avoid disabling type checking with `skipLibCheck` unless absolutely necessary.

@@ -18,24 +18,24 @@
     "verbatimModuleSyntax": true,
     "baseUrl": ".",
     "paths": {
-      "@acme/ui": ["types-compat/ui"],
-      "@acme/ui/*": ["types-compat/ui"],
-      "@acme/platform-core": ["src/index.ts"],
-      "@acme/platform-core/*": ["src/*"],
+      "@acme/ui": ["../ui/dist/index.d.ts", "../ui/src/index.ts", "types-compat/ui"],
+      "@acme/ui/*": ["../ui/dist/*", "../ui/src/*"],
+      "@acme/platform-core": ["dist/index.d.ts", "src/index.ts"],
+      "@acme/platform-core/*": ["dist/*", "src/*"],
 
-      "@acme/shared-utils": ["../shared-utils/src/index.ts"],
-      "@acme/shared-utils/*": ["../shared-utils/src/*"],
-      "@acme/date-utils": ["../date-utils/src/index.ts"],
-      "@acme/date-utils/*": ["../date-utils/src/*"],
-      "@acme/stripe": ["../stripe/src/index.ts"],
-      "@acme/stripe/*": ["../stripe/src/*"],
+      "@acme/shared-utils": ["../shared-utils/dist/index.d.ts", "../shared-utils/src/index.ts"],
+      "@acme/shared-utils/*": ["../shared-utils/dist/*", "../shared-utils/src/*"],
+      "@acme/date-utils": ["../date-utils/dist/index.d.ts", "../date-utils/src/index.ts"],
+      "@acme/date-utils/*": ["../date-utils/dist/*", "../date-utils/src/*"],
+      "@acme/stripe": ["../stripe/dist/index.d.ts", "../stripe/src/index.ts"],
+      "@acme/stripe/*": ["../stripe/dist/*", "../stripe/src/*"],
 
-      "better-sqlite3": ["src/types/better-sqlite3"],
+      "better-sqlite3": ["dist/types/better-sqlite3", "src/types/better-sqlite3"],
 
-      "@acme/config/env/*": ["../config/src/env/*"],
-      "@acme/i18n": ["../i18n/src/index.ts"],
-      "@acme/i18n/*": ["../i18n/src/*"],
-      "@acme/email-templates": ["../email-templates/src/index.ts"]
+      "@acme/config/env/*": ["../config/dist/env/*", "../config/src/env/*"],
+      "@acme/i18n": ["../i18n/dist/index.d.ts", "../i18n/src/index.ts"],
+      "@acme/i18n/*": ["../i18n/dist/*", "../i18n/src/*"],
+      "@acme/email-templates": ["../email-templates/dist/index.d.ts", "../email-templates/src/index.ts"]
     }
   },
   "include": ["src*", "src*.json", "src/**/*", "src/**/*.json"],

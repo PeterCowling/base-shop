@@ -18,16 +18,16 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@acme/platform-core": ["../platform-core/dist/index", "../platform-core/src/index"],
+      "@acme/platform-core": ["../platform-core/dist/index.d.ts", "../platform-core/src/index"],
       "@acme/platform-core/*": ["../platform-core/dist/*", "../platform-core/src/*"],
-      "@platform-core": ["../platform-core/dist/index", "../platform-core/src/index"],
+      "@platform-core": ["../platform-core/dist/index.d.ts", "../platform-core/src/index"],
       "@platform-core/*": ["../platform-core/dist/*", "../platform-core/src/*"],
-      "@acme/types": ["../types/dist/index", "../types/src/index"],
+      "@acme/types": ["../types/dist/index.d.ts", "../types/src/index"],
       "@acme/types/*": ["../types/dist/*", "../types/src/*"],
-      "@ui": ["./src/index"],
-      "@ui/*": ["./src/*"],
+      "@ui": ["./dist/index.d.ts", "./src/index"],
+      "@ui/*": ["./dist/*", "./src/*"],
       "@auth": ["types-compat/auth"],
-      "@acme/i18n": ["../i18n/dist/index", "../i18n/src/index"],
+      "@acme/i18n": ["../i18n/dist/index.d.ts", "../i18n/src/index"],
       "@acme/i18n/*": ["../i18n/dist/*", "../i18n/src/*"]
     }
   },

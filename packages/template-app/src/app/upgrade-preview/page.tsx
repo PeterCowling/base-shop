@@ -29,7 +29,7 @@ export default function UpgradePreviewPage() {
         if (Array.isArray(data.pages)) {
           const pageLinks = (
             await Promise.all(
-              data.pages.map(async (id) => {
+              data.pages.map(async (id: string) => {
                 try {
                   const r = await fetch(
                     `/api/preview-token?pageId=${encodeURIComponent(id)}`,

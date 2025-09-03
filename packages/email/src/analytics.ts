@@ -69,12 +69,13 @@ export function mapSendGridEvent(
   const type = typeMap[ev?.event];
   if (!type) return null;
   const campaign = Array.isArray(ev?.category) ? ev.category[0] : ev?.category;
-  return {
+  const result: EmailAnalyticsEvent = {
     type,
-    campaign: campaign || undefined,
     messageId: ev?.sg_message_id,
     recipient: ev?.email,
   };
+  if (campaign) result.campaign = campaign;
+  return result;
 }
 
 /** Map a Resend webhook event to the internal analytics format */

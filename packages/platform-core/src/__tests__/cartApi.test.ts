@@ -87,3 +87,57 @@ describe("cart API POST", () => {
   });
 });
 
+describe("cart API PUT", () => {
+  afterEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  it("uses sku id as key when line has no size", async () => {
+    const sku = { id: "s1", stock: 5, sizes: [] };
+    mockCartCookie();
+    const set = jest.fn();
+    mockCartStore({ setCart: set });
+    jest.doMock("../products", () => ({
+      __esModule: true,
+      getProductById: () => sku,
+      PRODUCTS: [sku],
+    }));
+
+    const { PUT } = await import("../cartApi");
+    const res = await PUT(
+      buildRequest({ lines: [{ sku: { id: sku.id }, qty: 2 }] })
+    );
+    expect(set).toHaveBeenCalledWith("new", {
+      [sku.id]: { sku, size: undefined, qty: 2 },
+    });
+    const data = await res.json();
+    expect(Object.keys(data.cart)).toEqual([sku.id]);
+  });
+
+  it("uses size in key when line has size", async () => {
+    const sku = { id: "s1", stock: 5, sizes: ["M"] };
+    mockCartCookie();
+    const set = jest.fn();
+    mockCartStore({ setCart: set });
+    jest.doMock("../products", () => ({
+      __esModule: true,
+      getProductById: () => sku,
+      PRODUCTS: [sku],
+    }));
+
+    const { PUT } = await import("../cartApi");
+    const res = await PUT(
+      buildRequest({
+        lines: [{ sku: { id: sku.id }, qty: 1, size: "M" }],
+      })
+    );
+    expect(set).toHaveBeenCalledWith("new", {
+      [`${sku.id}:M`]: { sku, size: "M", qty: 1 },
+    });
+    const data = await res.json();
+    expect(Object.keys(data.cart)).toEqual([`${sku.id}:M`]);
+  });
+});
+
+

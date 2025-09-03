@@ -112,6 +112,32 @@ describe("normalizeProviderStats", () => {
       bounced: 5,
     });
   });
+
+  it("returns mapped stats for sendgrid provider", () => {
+    const raw = {
+      delivered: "1",
+      opens: "2",
+    };
+
+    expect(stats.normalizeProviderStats("sendgrid", raw)).toEqual(
+      mapSendGridStats(raw)
+    );
+  });
+
+  it("returns mapped stats for resend provider", () => {
+    const raw = {
+      delivered_count: "1",
+      opened_count: "2",
+    };
+
+    expect(stats.normalizeProviderStats("resend", raw)).toEqual(
+      mapResendStats(raw)
+    );
+  });
+
+  it("returns empty stats for other provider", () => {
+    expect(stats.normalizeProviderStats("other", undefined)).toEqual(emptyStats);
+  });
 });
 describe("normalizeProviderStats real module", () => {
   it("uses actual implementation for unknown providers", () => {

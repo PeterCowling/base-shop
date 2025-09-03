@@ -1,13 +1,13 @@
 // Minimal in-memory stub for `better-sqlite3` used in tests.
-// It implements only the subset of the API exercised by our
-// inventory repository (prepare, exec, transaction, etc.).
-
-type Row = Record<string, unknown>;
+// Implements only the subset of the API exercised by the inventory repository.
 
 class Statement {
-  constructor(private db: Database, private type: string) {}
+  constructor(db, type) {
+    this.db = db;
+    this.type = type;
+  }
 
-  run(...args: unknown[]) {
+  run(...args) {
     switch (this.type) {
       case "replace": {
         const [
@@ -20,7 +20,7 @@ class Statement {
           wearAndTearLimit,
           maintenanceCycle,
         ] = args;
-        const row: Row = {
+        const row = {
           sku,
           productId,
           variantAttributes,
@@ -47,7 +47,6 @@ class Statement {
   }
 
   all() {
-    // Return a minimal row set, mirroring what the tests expect to see
     return Array.from(this.db.rows.values()).map((r) => ({
       sku: r.sku,
       variantAttributes: r.variantAttributes,
@@ -55,28 +54,27 @@ class Statement {
     }));
   }
 
-  get(...args: unknown[]) {
+  get(...args) {
     const [sku, variant] = args;
     return this.db.rows.get(`${sku}|${variant}`);
   }
 }
 
 class Database {
-  static stores = new Map<string, Map<string, Row>>();
-  rows: Map<string, Row>;
+  static stores = new Map();
 
-  constructor(file: string) {
+  constructor(file) {
     if (!Database.stores.has(file)) {
       Database.stores.set(file, new Map());
     }
-    this.rows = Database.stores.get(file)!;
+    this.rows = Database.stores.get(file);
   }
 
-  exec(_sql: string) {
+  exec(_sql) {
     return this;
   }
 
-  prepare(sql: string) {
+  prepare(sql) {
     const normalized = sql.trim().toLowerCase();
     if (normalized.startsWith("select") && normalized.includes("where")) {
       return new Statement(this, "selectOne");
@@ -96,13 +94,11 @@ class Database {
     throw new Error(`Unsupported SQL: ${sql}`);
   }
 
-  transaction<T extends (...args: unknown[]) => unknown>(fn: T) {
-    const wrapped = (
-      ...args: Parameters<T>
-    ): ReturnType<T> => fn(...args) as ReturnType<T>;
-    (wrapped as typeof wrapped & { immediate: typeof wrapped }).immediate = wrapped;
-    return wrapped as typeof wrapped & { immediate: typeof wrapped };
+  transaction(fn) {
+    const wrapped = (...args) => fn(...args);
+    wrapped.immediate = wrapped;
+    return wrapped;
   }
 }
 
-export default Database;
+module.exports = Database;

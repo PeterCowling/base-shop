@@ -36,7 +36,7 @@ async function getDb(shop: string): Promise<Database> {
       ));
     } catch {
       ({ default: DatabaseConstructor } = await import(
-        "../types/better-sqlite3",
+        "../types/better-sqlite3.js",
       ));
     }
   }

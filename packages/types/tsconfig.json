@@ -5,7 +5,7 @@
     "declaration": true,
     "declarationMap": true,
     "noEmit": false,
-    "rootDir": ".",
+    "rootDir": "src",
     "outDir": "dist",
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -15,7 +15,6 @@
     "skipLibCheck": true
   },
   "include": [
-    "index.ts",
     "src/**/*",
     "src/**/*.json"
   ]

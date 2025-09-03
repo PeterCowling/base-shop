@@ -304,30 +304,33 @@ describe("startDepositReleaseService", () => {
     readdir.mockResolvedValue(["shop1"]);
     readOrders.mockResolvedValue([]);
     const err = new Error("boom");
-    const releaseSpy = jest
-      .spyOn(service, "releaseDepositsOnce")
-      .mockRejectedValue(err);
+    const releaseSpy = jest.fn(async () => {
+      throw err;
+    });
     const setSpy = jest
       .spyOn(global, "setInterval")
       .mockImplementation(() => 0 as any);
     const clearSpy = jest
       .spyOn(global, "clearInterval")
       .mockImplementation(() => undefined as any);
-    const logSpy = jest
-      .spyOn(logger, "error")
-      .mockImplementation(() => undefined);
+    const logSpy = jest.fn();
 
-    const stop = await service.startDepositReleaseService();
+    const stop = await service.startDepositReleaseService(
+      {},
+      undefined,
+      releaseSpy,
+      logSpy,
+    );
+    await new Promise((r) => setTimeout(r, 0));
+    expect(releaseSpy).toHaveBeenCalled();
     expect(logSpy).toHaveBeenCalledWith("deposit release failed", {
       shopId: "shop1",
       err,
     });
 
     stop();
-    releaseSpy.mockRestore();
     setSpy.mockRestore();
     clearSpy.mockRestore();
-    logSpy.mockRestore();
   });
 });
 

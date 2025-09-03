@@ -133,6 +133,8 @@ async function resolveConfig(
 export async function startDepositReleaseService(
   configs: Record<string, Partial<DepositReleaseConfig>> = {},
   dataRoot: string = DATA_ROOT,
+  releaseFn: typeof releaseDepositsOnce = releaseDepositsOnce,
+  logFn: typeof logger.error = (msg, meta) => logger.error(msg, meta),
 ): Promise<() => void> {
   const shops = await readdir(dataRoot);
   const timers: NodeJS.Timeout[] = [];
@@ -144,9 +146,9 @@ export async function startDepositReleaseService(
 
       async function run() {
         try {
-          await releaseDepositsOnce(shop, dataRoot);
+          await releaseFn(shop, dataRoot);
         } catch (err) {
-          logger.error("deposit release failed", { shopId: shop, err });
+          logFn("deposit release failed", { shopId: shop, err });
         }
       }
 

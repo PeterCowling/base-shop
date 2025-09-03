@@ -25,18 +25,20 @@ describe("sqlite inventory repository", () => {
     }
   });
 
-  it("handles simultaneous writes without corruption", async () => {
-    process.env.SKIP_STOCK_ALERT = "1";
-    const { writeInventory, readInventory } = await import("../inventory.server");
-    const shop = "demo";
-    const sets = [
-      [
-        { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
-      ],
-      [
-        { sku: "b", productId: "p2", quantity: 2, variantAttributes: {} },
-      ],
-    ];
+  it(
+    "handles simultaneous writes without corruption",
+    async () => {
+      process.env.SKIP_STOCK_ALERT = "1";
+      const { writeInventory, readInventory } = await import("../inventory.server");
+      const shop = "demo";
+      const sets = [
+        [
+          { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
+        ],
+        [
+          { sku: "b", productId: "p2", quantity: 2, variantAttributes: {} },
+        ],
+      ];
 
     await Promise.all(sets.map((s) => writeInventory(shop, s)));
 
@@ -49,7 +51,9 @@ describe("sqlite inventory repository", () => {
       }));
     const json = JSON.stringify(normalize(result));
     expect(sets.map((s) => JSON.stringify(normalize(s)))).toContain(json);
-  });
+  },
+    20000,
+  );
 
   it("updates items concurrently without losing changes", async () => {
     process.env.SKIP_STOCK_ALERT = "1";

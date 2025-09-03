@@ -421,6 +421,45 @@ describe("shipping env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("loadShippingEnv fails when UPS/DHL keys are malformed", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    expect(() =>
+      loadShippingEnv({ UPS_KEY: 123 as any, DHL_KEY: 456 as any }),
+    ).toThrow("Invalid shipping environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        UPS_KEY: { _errors: [expect.any(String)] },
+        DHL_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws during eager parse with invalid UPS/DHL env", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      UPS_KEY: 123 as any,
+      DHL_KEY: 456 as any,
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../shipping.ts")).rejects.toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        UPS_KEY: { _errors: [expect.any(String)] },
+        DHL_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
   it("loadShippingEnv returns object when variables are valid", async () => {
     const { loadShippingEnv } = await import("../shipping.ts");
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});

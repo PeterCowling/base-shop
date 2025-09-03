@@ -6,7 +6,7 @@ import path from "path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { coreEnv as env } from "@acme/config/env/core";
-import type { Coupon } from "@acme/types/src/index";
+import type { Coupon } from "@acme/types";
 
 interface Discount extends Coupon {
   active?: boolean;

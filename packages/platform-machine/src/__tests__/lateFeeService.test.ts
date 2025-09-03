@@ -228,6 +228,15 @@ describe("resolveConfig", () => {
     const cfg = await service.resolveConfig("s1", "/data", { intervalMinutes: 5 });
     expect(cfg).toEqual({ enabled: true, intervalMinutes: 5 });
   });
+
+  it("falls back to core env values when settings file and env vars missing", async () => {
+    readFileMock.mockRejectedValueOnce(new Error("boom"));
+    (coreEnv as any).LATE_FEE_ENABLED = true;
+    (coreEnv as any).LATE_FEE_INTERVAL_MS = 15 * 60 * 1000;
+
+    const cfg = await service.resolveConfig("s1", "/data");
+    expect(cfg).toEqual({ enabled: true, intervalMinutes: 15 });
+  });
 });
 
 describe("startLateFeeService", () => {

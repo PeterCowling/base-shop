@@ -93,6 +93,26 @@ describe("processReverseLogisticsEventsOnce", () => {
     ["available", markAvailable as jest.Mock, reverseLogisticsEvents.available as jest.Mock],
   ];
 
+  it("processes events for all shops when shopId is omitted", async () => {
+    readdirMock
+      .mockResolvedValueOnce(["shop"]) // list shops
+      .mockResolvedValueOnce(["e.json"]); // list events
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ sessionId: "abc", status: "received" })
+    );
+
+    await service.processReverseLogisticsEventsOnce(undefined, "/data");
+
+    expect(markReceived).toHaveBeenCalledWith("shop", "abc");
+    expect(reverseLogisticsEvents.received).toHaveBeenCalledWith(
+      "shop",
+      "abc"
+    );
+    expect(unlinkMock).toHaveBeenCalledWith(
+      path.join("/data", "shop", "reverse-logistics", "e.json")
+    );
+  });
+
   it.each(cases)(
     "handles %s events",
     async (status, mark, evt) => {
@@ -128,6 +148,39 @@ describe("processReverseLogisticsEventsOnce", () => {
     expect(unlinkMock).toHaveBeenCalledWith(
       path.join("/data", "shop", "reverse-logistics", "bad.json")
     );
+  });
+
+  it("skips processing when readdir fails", async () => {
+    readdirMock.mockRejectedValueOnce(new Error("nope"));
+
+    await expect(
+      service.processReverseLogisticsEventsOnce("shop", "/data")
+    ).resolves.toBeUndefined();
+
+    expect(readFileMock).not.toHaveBeenCalled();
+    expect(unlinkMock).not.toHaveBeenCalled();
+  });
+
+  it("swallows unlink errors", async () => {
+    readdirMock.mockResolvedValueOnce(["e.json"]);
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ sessionId: "abc", status: "received" })
+    );
+    unlinkMock.mockRejectedValueOnce(new Error("fail"));
+
+    await expect(
+      service.processReverseLogisticsEventsOnce("shop", "/data")
+    ).resolves.toBeUndefined();
+
+    expect(markReceived).toHaveBeenCalledWith("shop", "abc");
+    expect(reverseLogisticsEvents.received).toHaveBeenCalledWith(
+      "shop",
+      "abc"
+    );
+    expect(unlinkMock).toHaveBeenCalledWith(
+      path.join("/data", "shop", "reverse-logistics", "e.json")
+    );
+    expect(logger.error).not.toHaveBeenCalled();
   });
 });
 

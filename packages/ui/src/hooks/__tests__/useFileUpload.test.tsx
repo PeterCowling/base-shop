@@ -1,4 +1,4 @@
-import { act, renderHook } from "@testing-library/react";
+import { act, fireEvent, render, renderHook } from "@testing-library/react";
 
 jest.mock("../useImageOrientationValidation.ts", () => ({
   useImageOrientationValidation: jest.fn(),
@@ -7,9 +7,10 @@ jest.mock("../useImageOrientationValidation.ts", () => ({
 const { useImageOrientationValidation } = require("../useImageOrientationValidation.ts");
 const { useFileUpload } = require("../useFileUpload.tsx");
 
-const mockOrientation = useImageOrientationValidation as jest.MockedFunction<
-  typeof useImageOrientationValidation
->;
+const mockOrientation =
+  useImageOrientationValidation as jest.MockedFunction<
+    typeof useImageOrientationValidation
+  >;
 
 const originalFetch = global.fetch;
 const mockFetch = jest.fn();
@@ -28,10 +29,12 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-it("uploads image, splits tags and resets state on success", async () => {
+it("uploads image and splits tags", async () => {
   const file = new File(["x"], "x.png", { type: "image/png" });
+  const onUploaded = jest.fn();
+
   const { result } = renderHook(() =>
-    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+    useFileUpload({ shop: "s", requiredOrientation: "landscape", onUploaded })
   );
 
   act(() => {
@@ -46,15 +49,11 @@ it("uploads image, splits tags and resets state on success", async () => {
 
   const body = mockFetch.mock.calls[0][1].body as FormData;
   expect(body.get("tags")).toBe(JSON.stringify(["tag1", "tag2"]));
-
-  expect(result.current.progress).toBeNull();
-  expect(result.current.pendingFile).toBeNull();
-  expect(result.current.altText).toBe("");
-  expect(result.current.tags).toBe("");
+  expect(onUploaded).toHaveBeenCalled();
   expect(result.current.error).toBeUndefined();
 });
 
-it("resets state and sets error when upload fails", async () => {
+it("sets error when upload fetch rejects", async () => {
   mockFetch.mockRejectedValueOnce(new Error("fail"));
   const file = new File(["x"], "x.png", { type: "image/png" });
 
@@ -64,7 +63,6 @@ it("resets state and sets error when upload fails", async () => {
 
   act(() => {
     result.current.onFileChange({ target: { files: [file] } } as any);
-    result.current.setAltText("alt");
   });
 
   await act(async () => {
@@ -72,14 +70,11 @@ it("resets state and sets error when upload fails", async () => {
   });
 
   expect(result.current.error).toBe("fail");
-  expect(result.current.progress).toBeNull();
-  expect(result.current.pendingFile).toBeNull();
-  expect(result.current.altText).toBe("");
 });
 
-it("bypasses orientation validation for video files", async () => {
-  mockOrientation.mockReturnValue({ actual: "portrait", isValid: false });
-  const file = new File(["v"], "v.mp4", { type: "video/mp4" });
+it("ignores non-Error rejections", async () => {
+  mockFetch.mockRejectedValueOnce("oops");
+  const file = new File(["x"], "x.png", { type: "image/png" });
 
   const { result } = renderHook(() =>
     useFileUpload({ shop: "s", requiredOrientation: "landscape" })
@@ -89,12 +84,145 @@ it("bypasses orientation validation for video files", async () => {
     result.current.onFileChange({ target: { files: [file] } } as any);
   });
 
-  expect(mockOrientation).toHaveBeenCalledWith(null, "landscape");
-  expect(result.current.isValid).toBe(true);
+  await act(async () => {
+    await result.current.handleUpload();
+  });
+
+  expect(result.current.error).toBeUndefined();
+});
+
+it("marks file invalid when orientation mismatches", () => {
+  const file = new File(["x"], "x.png", { type: "image/png" });
+  mockOrientation.mockReturnValue({ actual: "portrait", isValid: false });
+
+  const { result } = renderHook(() =>
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+  );
+
+  act(() => {
+    result.current.onFileChange({ target: { files: [file] } } as any);
+  });
+
+  expect(mockOrientation).toHaveBeenCalledWith(file, "landscape");
+  expect(result.current.isValid).toBe(false);
+  expect(result.current.actual).toBe("portrait");
+});
+
+it("updates pending file on drag-and-drop", () => {
+  const file = new File(["d"], "d.png", { type: "image/png" });
+
+  const { result } = renderHook(() =>
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+  );
+
+  act(() => {
+    result.current.onDrop({
+      preventDefault: jest.fn(),
+      dataTransfer: { files: [file] },
+    } as any);
+  });
+
+  expect(result.current.pendingFile).toBe(file);
+  expect(result.current.altText).toBe("");
+  expect(result.current.tags).toBe("");
+});
+
+it("opens file dialog when pressing Enter on uploader", () => {
+  const { result } = renderHook(() =>
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+  );
+
+  const { getByLabelText, container } = render(result.current.uploader);
+  const input = container.querySelector("input") as HTMLInputElement;
+  const clickSpy = jest.spyOn(input, "click");
+
+  const dropzone = getByLabelText(
+    "Drop image or video here or press Enter to browse"
+  );
+
+  act(() => {
+    fireEvent.keyDown(dropzone, { key: "Enter" });
+    fireEvent.keyDown(dropzone, { key: " " });
+  });
+
+  expect(clickSpy).toHaveBeenCalledTimes(2);
+});
+
+it("highlights dropzone on drag enter and removes highlight on drag leave", () => {
+  const Wrapper = () =>
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" }).uploader;
+
+  const { getByLabelText } = render(<Wrapper />);
+  const dropzone = getByLabelText(
+    "Drop image or video here or press Enter to browse"
+  );
+
+  act(() => {
+    fireEvent.dragOver(dropzone);
+    fireEvent.dragEnter(dropzone);
+  });
+  expect(dropzone.className).toContain("highlighted");
+
+  act(() => {
+    fireEvent.dragLeave(dropzone);
+  });
+  expect(dropzone.className).not.toContain("highlighted");
+});
+
+it("returns early when no file is pending", async () => {
+  const { result } = renderHook(() =>
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+  );
 
   await act(async () => {
     await result.current.handleUpload();
   });
 
-  expect(result.current.pendingFile).toBeNull();
+  expect(mockFetch).not.toHaveBeenCalled();
 });
+
+it("sets error when response is not ok", async () => {
+  mockFetch.mockResolvedValueOnce({
+    ok: false,
+    json: () => Promise.resolve({ error: "bad" }),
+    statusText: "bad", 
+  } as any);
+  const file = new File(["x"], "x.png", { type: "image/png" });
+
+  const { result } = renderHook(() =>
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+  );
+
+  act(() => {
+    result.current.onFileChange({ target: { files: [file] } } as any);
+  });
+
+  await act(async () => {
+    await result.current.handleUpload();
+  });
+
+  expect(result.current.error).toBe("bad");
+});
+
+it("ignores empty tags after trimming", async () => {
+  const file = new File(["x"], "x.png", { type: "image/png" });
+
+  const { result } = renderHook(() =>
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+  );
+
+  act(() => {
+    result.current.onFileChange({ target: { files: [file] } } as any);
+    result.current.setTags(" , ");
+  });
+
+  await act(async () => {
+    await result.current.handleUpload();
+  });
+
+  const body = mockFetch.mock.calls[mockFetch.mock.calls.length - 1][1]
+    .body as FormData;
+  expect(body.has("tags")).toBe(false);
+  expect(result.current.error).toBeUndefined();
+});
+

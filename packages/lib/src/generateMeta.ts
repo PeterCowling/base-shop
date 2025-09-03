@@ -88,29 +88,28 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
     input: prompt,
   });
 
-  let data: { title: string; description: string; alt: string } = {
+  const data: { title: string; description: string; alt: string } = {
     title: product.title,
     description: product.description,
     alt: product.title,
   };
   try {
     const first = text.output?.[0];
-    if (first && "content" in first) {
-      const output: unknown = first.content?.[0];
-      let content: string | undefined;
-      if (typeof output === "string") {
-        content = output;
-      } else if (
-        typeof output === "object" &&
-        output !== null &&
-        "text" in output &&
-        typeof (output as { text?: unknown }).text === "string"
-      ) {
-        content = (output as { text: string }).text;
-      }
-      if (content) {
-        data = { ...data, ...JSON.parse(content) };
-      }
+    const output = (first && "content" in first ? first.content?.[0] : undefined) as
+      | string
+      | { text?: unknown }
+      | undefined;
+    const content =
+      typeof output === "string"
+        ? output
+        : typeof output?.text === "string"
+          ? output.text
+          : undefined;
+    if (content) {
+      const parsed = JSON.parse(content) as Partial<GeneratedMeta>;
+      data.title = parsed.title ?? data.title;
+      data.description = parsed.description ?? data.description;
+      data.alt = parsed.alt ?? data.alt;
     }
   } catch {
     // fall back to defaults

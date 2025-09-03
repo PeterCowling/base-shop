@@ -98,20 +98,20 @@
         "packages/auth/src/*"
       ],
       "@platform-core": [
-        "packages/platform-core/dist/index.d.ts",
-        "packages/platform-core/src/index.ts"
+        "packages/platform-core/src/index.ts",
+        "packages/platform-core/dist/index.d.ts"
       ],
       "@platform-core/*": [
-        "packages/platform-core/dist/*",
-        "packages/platform-core/src/*"
+        "packages/platform-core/src/*",
+        "packages/platform-core/dist/*"
       ],
       "@acme/platform-core": [
-        "packages/platform-core/dist/index.d.ts",
-        "packages/platform-core/src/index.ts"
+        "packages/platform-core/src/index.ts",
+        "packages/platform-core/dist/index.d.ts"
       ],
       "@acme/platform-core/*": [
-        "packages/platform-core/dist/*",
-        "packages/platform-core/src/*"
+        "packages/platform-core/src/*",
+        "packages/platform-core/dist/*"
       ],
       "@acme/shared-utils": [
         "packages/shared-utils/dist/index.d.ts",

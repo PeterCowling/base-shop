@@ -186,12 +186,13 @@ describe("auth env module", () => {
     await expect(import("../auth.ts")).rejects.toThrow(
       "Invalid auth environment variables",
     );
-    expect(errorSpy).toHaveBeenCalled();
-    const issues = errorSpy.mock.calls.at(-1)[1];
-    expect(issues).toEqual({
-      UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
-      _errors: [],
-    });
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      {
+        UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
+        _errors: [],
+      },
+    );
     errorSpy.mockRestore();
   });
 
@@ -209,12 +210,13 @@ describe("auth env module", () => {
     await expect(import("../auth.ts")).rejects.toThrow(
       "Invalid auth environment variables",
     );
-    expect(errorSpy).toHaveBeenCalled();
-    const issues = errorSpy.mock.calls.at(-1)[1];
-    expect(issues).toEqual({
-      UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
-      _errors: [],
-    });
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      {
+        UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
+        _errors: [],
+      },
+    );
     errorSpy.mockRestore();
   });
 

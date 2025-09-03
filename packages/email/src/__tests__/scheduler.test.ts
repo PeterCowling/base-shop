@@ -161,24 +161,27 @@ describe("scheduler", () => {
     expect(html).toContain("Rendered");
   });
 
-  test("createCampaign resolves recipients from segment", async () => {
+  test("createCampaign resolves recipients from segment without explicit recipients", async () => {
     (resolveSegment as jest.Mock).mockResolvedValue(["seg@example.com"]);
     const id = await createCampaign({
       shop,
-      recipients: [],
-      segment: "id",
+      segment: "test",
       subject: "Hi",
       body: "<p>Hi</p>",
     });
-    expect(resolveSegment).toHaveBeenCalledWith(shop, "id");
+    expect(resolveSegment).toHaveBeenCalledWith(shop, "test");
+    expect(sendCampaignEmail).toHaveBeenCalledWith({
+      to: "seg@example.com",
+      subject: "Hi",
+      html: expect.any(String),
+    });
     expect(typeof id).toBe("string");
   });
 
-  test("createCampaign rejects when required fields are missing", async () => {
+  test("createCampaign rejects when neither recipients nor segment provided", async () => {
     await expect(
       createCampaign({
         shop,
-        recipients: [],
         subject: "Hi",
         body: "<p>Hi</p>",
       }),

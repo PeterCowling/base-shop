@@ -30,9 +30,17 @@ let DatabaseConstructor: any;
 
 async function getDb(shop: string): Promise<Database> {
   if (!DatabaseConstructor) {
-    ({ default: DatabaseConstructor } = await import(
-      /* webpackIgnore: true */ "better-sqlite3"
-    ));
+    try {
+      ({ default: DatabaseConstructor } = await import(
+        /* webpackIgnore: true */ "better-sqlite3"
+      ));
+    } catch {
+      // Fallback to the lightweight in-memory stub when the real
+      // native module cannot be loaded (e.g. under Jest).
+      ({ default: DatabaseConstructor } = await import(
+        "../types/better-sqlite3"
+      ));
+    }
   }
   const ctor = DatabaseConstructor!;
   shop = validateShopName(shop);

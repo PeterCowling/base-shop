@@ -210,3 +210,20 @@ describe("auto-start", () => {
   });
 });
 
+describe("auto-start (module import)", () => {
+  beforeEach(() => {
+    jest.resetModules();
+  });
+
+  it("logs failures when service startup rejects", async () => {
+    process.env.NODE_ENV = "production";
+    readdir.mockRejectedValueOnce(new Error("nope"));
+    await import("../src/reverseLogisticsService");
+    expect(logError).toHaveBeenCalledWith(
+      "failed to start reverse logistics service",
+      { err: expect.anything() }
+    );
+    process.env.NODE_ENV = "test";
+  });
+});
+

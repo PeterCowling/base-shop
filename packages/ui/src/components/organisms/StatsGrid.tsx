@@ -17,8 +17,8 @@ export function StatsGrid({ items, className, ...props }: StatsGridProps) {
       className={cn("grid gap-4 sm:grid-cols-2 lg:grid-cols-3", className)}
       {...props}
     >
-      {items.map((item) => (
-        <StatCard key={item.label} label={item.label} value={item.value} />
+      {items.map(({ label, value }) => (
+        <StatCard key={label} label={label} value={value} />
       ))}
     </div>
   );

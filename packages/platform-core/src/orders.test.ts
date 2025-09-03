@@ -43,6 +43,45 @@ describe("orders", () => {
     findUniqueSpy.mockRestore();
   });
 
+  it("adds order with due date and risk details", async () => {
+    const shop = "shop-add-risk";
+    const sessionId = "sess-risk";
+    const returnDueDate = "2030-02-03";
+    const riskLevel = "medium";
+    const riskScore = 4;
+    const flaggedForReview = true;
+
+    const order = await addOrder(
+      shop,
+      sessionId,
+      5,
+      undefined,
+      returnDueDate,
+      undefined,
+      riskLevel,
+      riskScore,
+      flaggedForReview,
+    );
+
+    expect(order).toMatchObject({
+      shop,
+      sessionId,
+      returnDueDate,
+      riskLevel,
+      riskScore,
+      flaggedForReview,
+    });
+
+    const stored = await prisma.rentalOrder.findMany({ where: { shop } });
+    expect(stored).toHaveLength(1);
+    expect(stored[0]).toMatchObject({
+      returnDueDate,
+      riskLevel,
+      riskScore,
+      flaggedForReview,
+    });
+  });
+
   it("marks order returned", async () => {
     const shop = "shop-return";
     await prisma.rentalOrder.create({ data: { shop, sessionId: "s1" } });

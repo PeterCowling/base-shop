@@ -1,43 +1,60 @@
-import { promises as fs } from 'fs';
-
-// Mock configuration to provide an API key
-jest.mock('@acme/config', () => ({ env: { OPENAI_API_KEY: 'key' } }));
-
-// Mock filesystem interactions
-jest.mock('fs', () => ({
-  promises: { writeFile: jest.fn(), mkdir: jest.fn() },
-}));
-
-// Set up OpenAI client mocks
-const responsesCreateMock = jest.fn();
-const imagesGenerateMock = jest.fn();
-const OpenAIConstructorMock = jest.fn().mockImplementation(() => ({
-  responses: { create: responsesCreateMock },
-  images: { generate: imagesGenerateMock },
-}));
-
-jest.mock('openai', () => ({ __esModule: true, default: OpenAIConstructorMock }));
+import { jest } from '@jest/globals';
 
 const product = { id: '123', title: 'Title', description: 'Desc' };
 
-beforeEach(() => {
-  responsesCreateMock.mockReset();
-  imagesGenerateMock.mockReset();
-  (fs.writeFile as jest.Mock).mockReset();
-  (fs.mkdir as jest.Mock).mockReset();
-  jest.resetModules();
-});
-
 describe('generateMeta', () => {
   it('returns metadata from OpenAI response when all fields present', async () => {
-    responsesCreateMock.mockResolvedValue({
-      output: [{ content: [{ text: '{"title":"T","description":"D","alt":"A"}' }] }],
+    const responsesCreateMock = jest.fn().mockResolvedValue({
+      output: [
+        { content: [{ text: '{"title":"T","description":"D","alt":"A"}' }] },
+      ],
     });
-    imagesGenerateMock.mockResolvedValue({
+    const imagesGenerateMock = jest.fn().mockResolvedValue({
       data: [{ b64_json: Buffer.from('img').toString('base64') }],
     });
-    const { generateMeta } = await import('../src/generateMeta');
-    const result = await generateMeta(product);
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock('@acme/config', () => ({ env: { OPENAI_API_KEY: 'key' } }));
+      jest.doMock('fs', () => ({ promises: { writeFile: jest.fn(), mkdir: jest.fn() } }));
+      jest.doMock('openai', () => ({
+        __esModule: true,
+        default: jest.fn().mockImplementation(() => ({
+          responses: { create: responsesCreateMock },
+          images: { generate: imagesGenerateMock },
+        })),
+      }), { virtual: true });
+      const { generateMeta } = await import('../src/generateMeta');
+      result = await generateMeta(product);
+    });
+    expect(result).toEqual({
+      title: 'T',
+      description: 'D',
+      alt: 'A',
+      image: '/og/123.png',
+    });
+  });
+
+  it('parses metadata when content is a raw string', async () => {
+    const responsesCreateMock = jest.fn().mockResolvedValue({
+      output: [{ content: ['{"title":"T","description":"D","alt":"A"}'] }],
+    });
+    const imagesGenerateMock = jest.fn().mockResolvedValue({
+      data: [{ b64_json: Buffer.from('img').toString('base64') }],
+    });
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock('@acme/config', () => ({ env: { OPENAI_API_KEY: 'key' } }));
+      jest.doMock('fs', () => ({ promises: { writeFile: jest.fn(), mkdir: jest.fn() } }));
+      jest.doMock('openai', () => ({
+        __esModule: true,
+        default: jest.fn().mockImplementation(() => ({
+          responses: { create: responsesCreateMock },
+          images: { generate: imagesGenerateMock },
+        })),
+      }), { virtual: true });
+      const { generateMeta } = await import('../src/generateMeta');
+      result = await generateMeta(product);
+    });
     expect(result).toEqual({
       title: 'T',
       description: 'D',
@@ -47,14 +64,26 @@ describe('generateMeta', () => {
   });
 
   it('fills missing metadata fields with product defaults', async () => {
-    responsesCreateMock.mockResolvedValue({
+    const responsesCreateMock = jest.fn().mockResolvedValue({
       output: [{ content: [{ text: '{"title":"T"}' }] }],
     });
-    imagesGenerateMock.mockResolvedValue({
+    const imagesGenerateMock = jest.fn().mockResolvedValue({
       data: [{ b64_json: Buffer.from('img').toString('base64') }],
     });
-    const { generateMeta } = await import('../src/generateMeta');
-    const result = await generateMeta(product);
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock('@acme/config', () => ({ env: { OPENAI_API_KEY: 'key' } }));
+      jest.doMock('fs', () => ({ promises: { writeFile: jest.fn(), mkdir: jest.fn() } }));
+      jest.doMock('openai', () => ({
+        __esModule: true,
+        default: jest.fn().mockImplementation(() => ({
+          responses: { create: responsesCreateMock },
+          images: { generate: imagesGenerateMock },
+        })),
+      }), { virtual: true });
+      const { generateMeta } = await import('../src/generateMeta');
+      result = await generateMeta(product);
+    });
     expect(result).toEqual({
       title: 'T',
       description: 'Desc',
@@ -64,14 +93,26 @@ describe('generateMeta', () => {
   });
 
   it('returns product metadata when OpenAI yields empty object', async () => {
-    responsesCreateMock.mockResolvedValue({
+    const responsesCreateMock = jest.fn().mockResolvedValue({
       output: [{ content: [{ text: '{}' }] }],
     });
-    imagesGenerateMock.mockResolvedValue({
+    const imagesGenerateMock = jest.fn().mockResolvedValue({
       data: [{ b64_json: Buffer.from('img').toString('base64') }],
     });
-    const { generateMeta } = await import('../src/generateMeta');
-    const result = await generateMeta(product);
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock('@acme/config', () => ({ env: { OPENAI_API_KEY: 'key' } }));
+      jest.doMock('fs', () => ({ promises: { writeFile: jest.fn(), mkdir: jest.fn() } }));
+      jest.doMock('openai', () => ({
+        __esModule: true,
+        default: jest.fn().mockImplementation(() => ({
+          responses: { create: responsesCreateMock },
+          images: { generate: imagesGenerateMock },
+        })),
+      }), { virtual: true });
+      const { generateMeta } = await import('../src/generateMeta');
+      result = await generateMeta(product);
+    });
     expect(result).toEqual({
       title: 'Title',
       description: 'Desc',

@@ -1,11 +1,10 @@
-import { ProviderError } from "../providers/types";
-
 // Prefix mock variables with `mock` so Jest's hoisted `jest.mock`
 // factory functions can safely reference them.
 let mockSendgridSend: jest.Mock;
 let mockResendSend: jest.Mock;
 let mockSendMail: jest.Mock;
 let mockSanitizeHtml: jest.Mock;
+let mockHasProviderErrorFields: jest.Mock;
 
 jest.mock("nodemailer", () => ({
   __esModule: true,
@@ -27,6 +26,11 @@ jest.mock("../providers/resend", () => ({
   ResendProvider: jest.fn().mockImplementation(() => ({
     send: (...args: any[]) => mockResendSend(...args),
   })),
+}));
+
+jest.mock("../providers/error", () => ({
+  hasProviderErrorFields: (...args: any[]) =>
+    mockHasProviderErrorFields(...args),
 }));
 
 jest.mock("sanitize-html", () => {
@@ -116,12 +120,14 @@ describe("sendCampaignEmail", () => {
 
     it("falls back to alternate provider when primary fails", async () => {
       const timeoutSpy = jest.spyOn(global, "setTimeout");
+      const { ProviderError } = await import("../providers/types");
       mockSendgridSend = jest
         .fn()
         .mockRejectedValue(new ProviderError("fail", false));
       mockResendSend = jest.fn().mockResolvedValue(undefined);
       mockSendMail = jest.fn();
       mockSanitizeHtml = jest.fn((html: string) => html);
+      mockHasProviderErrorFields = jest.fn();
 
       setupEnv();
 
@@ -153,6 +159,7 @@ describe("sendCampaignEmail", () => {
 
     it("retries with exponential backoff on retryable error", async () => {
       const timeoutSpy = jest.spyOn(global, "setTimeout");
+      const { ProviderError } = await import("../providers/types");
       mockSendgridSend = jest
         .fn()
         .mockRejectedValueOnce(new ProviderError("temporary", true))
@@ -161,6 +168,7 @@ describe("sendCampaignEmail", () => {
       mockResendSend = jest.fn();
       mockSendMail = jest.fn();
       mockSanitizeHtml = jest.fn((html: string) => html);
+      mockHasProviderErrorFields = jest.fn();
 
       setupEnv();
 
@@ -186,6 +194,56 @@ describe("sendCampaignEmail", () => {
       timeoutSpy.mockRestore();
     });
 
+    it("stops retrying when provider error indicates non-retryable", async () => {
+      const timeoutSpy = jest.spyOn(global, "setTimeout");
+      mockSendgridSend = jest
+        .fn()
+        .mockRejectedValueOnce({ message: "x", retryable: false })
+        .mockResolvedValueOnce(undefined);
+      mockResendSend = jest.fn().mockResolvedValue(undefined);
+      mockSendMail = jest.fn();
+      mockSanitizeHtml = jest.fn((html: string) => html);
+      mockHasProviderErrorFields = jest.fn().mockReturnValue(true);
+
+      setupEnv();
+
+      const { sendCampaignEmail } = await import("../index");
+      await sendCampaignEmail({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>HTML</p>",
+      });
+
+      expect(mockSendgridSend).toHaveBeenCalledTimes(1);
+      expect(mockResendSend).toHaveBeenCalledTimes(1);
+      expect(timeoutSpy).not.toHaveBeenCalled();
+      timeoutSpy.mockRestore();
+    });
+
+    it("retries when error lacks provider fields", async () => {
+      const timeoutSpy = jest.spyOn(global, "setTimeout");
+      mockSendgridSend = jest.fn().mockRejectedValue({});
+      mockResendSend = jest.fn().mockResolvedValue(undefined);
+      mockSendMail = jest.fn();
+      mockSanitizeHtml = jest.fn((html: string) => html);
+      mockHasProviderErrorFields = jest.fn().mockReturnValue(false);
+
+      setupEnv();
+
+      const { sendCampaignEmail } = await import("../index");
+      await sendCampaignEmail({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>HTML</p>",
+      });
+
+      expect(mockSendgridSend).toHaveBeenCalledTimes(3);
+      expect(timeoutSpy).toHaveBeenCalledWith(expect.any(Function), 100);
+      expect(timeoutSpy).toHaveBeenCalledWith(expect.any(Function), 200);
+      expect(mockResendSend).toHaveBeenCalledTimes(1);
+      timeoutSpy.mockRestore();
+    });
+
   it("throws when EMAIL_PROVIDER is invalid", async () => {
     const originalProvider = process.env.EMAIL_PROVIDER;
     const { sendCampaignEmail } = await import("../index");
@@ -208,11 +266,12 @@ describe("sendCampaignEmail", () => {
     mockResendSend = jest.fn();
     mockSendMail = jest.fn().mockResolvedValue(undefined);
     mockSanitizeHtml = jest.fn((html: string) => html);
+    mockHasProviderErrorFields = jest.fn();
 
     process.env.EMAIL_PROVIDER = "sendgrid";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -225,12 +284,14 @@ describe("sendCampaignEmail", () => {
   });
 
   it("logs provider, campaign, and recipient on failure", async () => {
+    const { ProviderError } = await import("../providers/types");
     mockSendgridSend = jest
       .fn()
       .mockRejectedValue(new ProviderError("fail", false));
     mockResendSend = jest.fn().mockResolvedValue(undefined);
     mockSendMail = jest.fn();
     mockSanitizeHtml = jest.fn((html: string) => html);
+    mockHasProviderErrorFields = jest.fn();
 
     const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 

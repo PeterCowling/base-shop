@@ -277,6 +277,8 @@ describe("generateMeta", () => {
       result = await generateMeta(product);
     });
     const file = path.join(process.cwd(), "public", "og", `${product.id}.png`);
+    expect(responsesCreate).toHaveBeenCalled();
+    expect(imagesGenerate).toHaveBeenCalled();
     expect(result).toEqual({
       title: product.title,
       description: product.description,

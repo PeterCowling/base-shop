@@ -181,6 +181,7 @@ const config = {
     '^@acme/zod-utils/initZod$': ' /test/emptyModule.js',
     '^\\./env/(.*)\\.js$': ' /packages/config/src/env/$1.ts',
     '^\\./(auth|cms|email|core|payments|shipping)\\.js$': ' /packages/config/src/env/$1.ts',
+    '^\\.\\./(auth|cms|email|core|payments|shipping)\\.js$': ' /packages/config/src/env/$1.ts',
     '^@/components/atoms/shadcn$': ' /test/__mocks__/shadcnDialogStub.tsx',
     '^@/i18n/(.*)$': ' /packages/i18n/src/$1',
     '^@/components/(.*)$': ' /test/__mocks__/componentStub.js',

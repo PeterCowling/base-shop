@@ -59,6 +59,8 @@ describe("renderTemplate", () => {
     expect(ceSpy).toHaveBeenCalled();
     expect(iveSpy).toHaveBeenCalled();
     expect(mapSpy).toHaveBeenCalled();
+    expect(__reactShim.Children.map(undefined as any, () => "")).toEqual([]);
+    expect(__reactShim.Children.map(false as any, () => "")).toEqual([]);
 
   });
 
@@ -77,6 +79,20 @@ describe("renderTemplate", () => {
     expect(() => renderTemplate("welcome", {})).toThrow(
       "Unknown template: welcome",
     );
+  });
+
+  it("inserts empty string for missing variables", async () => {
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({ __esModule: true, marketingEmailTemplates: [] }),
+      { virtual: true },
+    );
+    const { registerTemplate, renderTemplate, clearTemplates } = await import(
+      "../templates"
+    );
+    registerTemplate("greet", "<p>{{name}}</p>");
+    expect(renderTemplate("greet", {})).toBe("<p></p>");
+    clearTemplates();
   });
 
   it("renders marketing email template variants", async () => {
@@ -138,6 +154,27 @@ describe("renderTemplate", () => {
     expect(html).toContain('<img src="x"');
     expect(html).not.toContain("onerror");
     expect(html).not.toContain("<script>");
+  });
+
+  it("handles elements with false children", async () => {
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({
+        __esModule: true,
+        marketingEmailTemplates: [
+          {
+            id: "falsechild",
+            label: "FalseChild",
+            buildSubject: (h: string) => h,
+            make: () => React.createElement("div", null, [false]),
+          },
+        ],
+      }),
+      { virtual: true },
+    );
+
+    const { renderTemplate } = await import("../templates");
+    expect(renderTemplate("falsechild", {})).toBe("<div></div>");
   });
 
   it("renders elements using dangerouslySetInnerHTML", async () => {

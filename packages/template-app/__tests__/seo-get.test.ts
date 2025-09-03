@@ -91,6 +91,68 @@ describe("getSeo", () => {
     expect(seo.openGraph?.images?.[0]?.url).toBe(expected);
   });
 
+  it("overrides base title, description and OG URL with pageSeo", async () => {
+    getShopSettingsMock.mockResolvedValueOnce({
+      languages: ["en", "de"],
+      seo: {
+        en: {
+          canonicalBase: "https://shop.com",
+          title: "Base title",
+          description: "Base description",
+          openGraph: {
+            url: "https://shop.com/base-url",
+            image: "/default.jpg",
+          },
+        },
+        de: {
+          canonicalBase: "https://shop.de",
+          openGraph: { image: "/default-de.jpg" },
+        },
+      },
+    });
+    const { getSeo } = await import("../src/lib/seo");
+    const seo = await getSeo("en", {
+      title: "Page title",
+      description: "Page description",
+      openGraph: { url: "https://shop.com/page-url" },
+    });
+    expect(seo.title).toBe("Page title");
+    expect(seo.description).toBe("Page description");
+    expect(seo.openGraph?.url).toBe("https://shop.com/page-url");
+  });
+
+  it("uses base title, description and OG URL when pageSeo lacks them", async () => {
+    getShopSettingsMock.mockResolvedValueOnce({
+      languages: ["en", "de"],
+      seo: {
+        en: {
+          canonicalBase: "https://shop.com",
+          title: "Base title",
+          description: "Base description",
+          openGraph: {
+            url: "https://shop.com/base-url",
+            image: "/default.jpg",
+          },
+        },
+        de: {
+          canonicalBase: "https://shop.de",
+          openGraph: { image: "/default-de.jpg" },
+        },
+      },
+    });
+    const { getSeo } = await import("../src/lib/seo");
+    const seo = await getSeo("en");
+    expect(seo.title).toBe("Base title");
+    expect(seo.description).toBe("Base description");
+    expect(seo.openGraph?.url).toBe("https://shop.com/base-url");
+  });
+
+  it("falls back to default title when none is provided", async () => {
+    const { getSeo } = await import("../src/lib/seo");
+    const seo = await getSeo("en");
+    expect(seo.title).toBe("");
+  });
+
   it("omits locales without canonicalBase from alternate links", async () => {
     getShopSettingsMock.mockResolvedValueOnce({
       languages: ["en", "de"],

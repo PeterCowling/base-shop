@@ -28,7 +28,7 @@ Node versions.
 The email package relies on several environment variables when sending
 campaigns or managing contacts:
 
-- `SENDGRID_API_KEY` – used to send mail via the SendGrid provider
+- `SENDGRID_API_KEY` – optional API key used to send mail via the SendGrid provider
 - `SENDGRID_MARKETING_KEY` – grants access to SendGrid marketing APIs for
   contact and segment management
 - `RESEND_API_KEY` – used by the Resend provider and must include `emails.send`,

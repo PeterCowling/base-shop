@@ -159,6 +159,20 @@ describe("RedisCartStore", () => {
     expect(fallback.removeItem).toHaveBeenCalled();
   });
 
+  it("delegates to fallback and returns its result when delete/expire fail", async () => {
+    const fallback = makeFallback();
+    const expected = { cart: true } as any;
+    fallback.removeItem.mockResolvedValue(expected);
+    const store = new RedisCartStore({} as any, 1, fallback);
+    jest
+      .spyOn(store as any, "exec")
+      .mockResolvedValueOnce(1)
+      .mockResolvedValue(undefined);
+    const result = await store.removeItem("id", "sku");
+    expect(fallback.removeItem).toHaveBeenCalledWith("id", "sku");
+    expect(result).toBe(expected);
+  });
+
   it("returns null when setting qty=0 for missing item and falls back on failure", async () => {
     const fallback = makeFallback();
     const hexists = jest.fn().mockResolvedValueOnce(0);

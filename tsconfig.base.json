@@ -30,21 +30,27 @@
     ],
     "paths": {
       "@acme/platform-machine": [
+        "packages/platform-machine/dist/index.d.ts",
         "packages/platform-machine/src/index.ts"
       ],
       "@acme/platform-machine/*": [
+        "packages/platform-machine/dist/*",
         "packages/platform-machine/src/*"
       ],
       "@acme/ui": [
+        "packages/ui/dist/index.d.ts",
         "packages/ui/src/index.ts"
       ],
       "@acme/ui/*": [
+        "packages/ui/dist/*",
         "packages/ui/src/*"
       ],
       "@ui": [
+        "packages/ui/dist/index.d.ts",
         "packages/ui/src/index.ts"
       ],
       "@ui/*": [
+        "packages/ui/dist/*",
         "packages/ui/src/*"
       ],
       "@cms": [
@@ -54,120 +60,159 @@
         "apps/cms/src/*"
       ],
       "@themes/*": [
+        "packages/themes/*/dist/index.d.ts",
         "packages/themes/*/src"
       ],
       "@acme/lib": [
+        "packages/lib/dist/index.d.ts",
         "packages/lib/src/index.ts"
       ],
       "@acme/lib/*": [
+        "packages/lib/dist/*",
         "packages/lib/src/*"
       ],
       "@i18n": [
+        "packages/i18n/dist/index.d.ts",
         "packages/i18n/src/index.ts"
       ],
       "@i18n/*": [
+        "packages/i18n/dist/*",
         "packages/i18n/src/*"
       ],
       "@acme/i18n": [
+        "packages/i18n/dist/index.d.ts",
         "packages/i18n/src/index.ts"
       ],
       "@acme/i18n/*": [
+        "packages/i18n/dist/*",
         "packages/i18n/src/*"
       ],
       "@auth": [
+        "packages/auth/dist/index.d.ts",
         "packages/auth/src/index.ts"
       ],
       "@auth/*": [
+        "packages/auth/dist/*",
         "packages/auth/src/*"
       ],
       "@platform-core": [
+        "packages/platform-core/dist/index.d.ts",
         "packages/platform-core/src/index.ts"
       ],
       "@platform-core/*": [
+        "packages/platform-core/dist/*",
         "packages/platform-core/src/*"
       ],
       "@acme/platform-core": [
+        "packages/platform-core/dist/index.d.ts",
         "packages/platform-core/src/index.ts"
       ],
       "@acme/platform-core/*": [
+        "packages/platform-core/dist/*",
         "packages/platform-core/src/*"
       ],
       "@acme/shared-utils": [
+        "packages/shared-utils/dist/index.d.ts",
         "packages/shared-utils/src/index.ts"
       ],
       "@acme/shared-utils/*": [
+        "packages/shared-utils/dist/*",
         "packages/shared-utils/src/*"
       ],
       "@shared-utils": [
+        "packages/shared-utils/dist/index.d.ts",
         "packages/shared-utils/src/index.ts"
       ],
       "@shared-utils/*": [
+        "packages/shared-utils/dist/*",
         "packages/shared-utils/src/*"
       ],
       "@acme/email": [
+        "packages/email/dist/index.d.ts",
         "packages/email/src/index.ts"
       ],
       "@acme/email/*": [
+        "packages/email/dist/*",
         "packages/email/src/*"
       ],
       "@acme/email-templates": [
+        "packages/email-templates/dist/index.d.ts",
         "packages/email-templates/src/index.ts"
       ],
       "@acme/email-templates/*": [
+        "packages/email-templates/dist/*",
         "packages/email-templates/src/*"
       ],
       "@acme/stripe": [
+        "packages/stripe/dist/index.d.ts",
         "packages/stripe/src/index.ts"
       ],
       "@acme/stripe/*": [
+        "packages/stripe/dist/*",
         "packages/stripe/src/*"
       ],
       "@acme/sanity": [
+        "packages/sanity/dist/index.d.ts",
         "packages/sanity/src/index.ts"
       ],
       "@acme/sanity/*": [
+        "packages/sanity/dist/*",
         "packages/sanity/src/*"
       ],
       "@acme/date-utils": [
+        "packages/date-utils/dist/index.d.ts",
         "packages/date-utils/src/index.ts"
       ],
       "@acme/date-utils/*": [
+        "packages/date-utils/dist/*",
         "packages/date-utils/src/*"
       ],
       "@date-utils": [
+        "packages/date-utils/dist/index.d.ts",
         "packages/date-utils/src/index.ts"
       ],
       "@date-utils/*": [
+        "packages/date-utils/dist/*",
         "packages/date-utils/src/*"
       ],
       "@acme/config": [
+        "packages/config/dist/index.d.ts",
         "packages/config/src/index.ts"
       ],
       "@acme/config/*": [
+        "packages/config/dist/*",
         "packages/config/src/*"
       ],
       "@acme/configurator": [
+        "packages/configurator/dist/index.d.ts",
         "packages/configurator/src/index.ts"
       ],
       "@acme/configurator/*": [
+        "packages/configurator/dist/*",
         "packages/configurator/src/*"
       ],
       "@acme/next-config": [
+        "packages/next-config/dist/index.d.ts",
         "packages/next-config/src/index.ts"
       ],
       "@acme/next-config/*": [
+        "packages/next-config/dist/*",
         "packages/next-config/src/*"
       ],
       "@acme/tailwind-config": [
+        "packages/tailwind-config/dist/index.d.ts",
         "packages/tailwind-config/src/index.ts"
       ],
       "@acme/tailwind-config/*": [
+        "packages/tailwind-config/dist/*",
         "packages/tailwind-config/src/*"
       ],
       "@acme/zod-utils": [
+        "packages/zod-utils/dist/index.d.ts",
         "packages/zod-utils/src/index.ts"
       ],
       "@acme/zod-utils/*": [
+        "packages/zod-utils/dist/*",
         "packages/zod-utils/src/*"
       ],
       "better-sqlite3": [

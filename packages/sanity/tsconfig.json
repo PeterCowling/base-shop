@@ -8,10 +8,22 @@
     "rootDir": "src",
     "outDir": "dist",
     "paths": {
-      "@platform-core": ["packages/platform-core/src/index.ts"],
-      "@platform-core/*": ["packages/platform-core/src/*"],
-      "@date-utils": ["packages/date-utils/src/index.ts"],
-      "@date-utils/*": ["packages/date-utils/src/*"]
+      "@platform-core": [
+        "packages/platform-core/dist/index.d.ts",
+        "packages/platform-core/src/index.ts"
+      ],
+      "@platform-core/*": [
+        "packages/platform-core/dist/*",
+        "packages/platform-core/src/*"
+      ],
+      "@date-utils": [
+        "packages/date-utils/dist/index.d.ts",
+        "packages/date-utils/src/index.ts"
+      ],
+      "@date-utils/*": [
+        "packages/date-utils/dist/*",
+        "packages/date-utils/src/*"
+      ]
     }
   },
   "include": ["src/**/*"],

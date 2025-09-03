@@ -9,7 +9,7 @@ describe("shippingEnv", () => {
     jest.restoreAllMocks();
   });
 
-  it("parses when optional keys are valid strings", async () => {
+  it("legacy parse returns parsed env when keys are valid strings", async () => {
     process.env = {
       TAXJAR_KEY: "tax",
       UPS_KEY: "ups",
@@ -39,10 +39,18 @@ describe("shippingEnv", () => {
     expect(spy).toHaveBeenCalled();
   });
 
-  it("loadShippingEnv parses valid UPS_KEY", async () => {
+  it("loadShippingEnv parses valid keys", async () => {
     const { loadShippingEnv } = await import("../src/env/shipping");
-    const env = loadShippingEnv({ UPS_KEY: "x" } as NodeJS.ProcessEnv);
-    expect(env).toEqual({ UPS_KEY: "x" });
+    const env = loadShippingEnv({
+      TAXJAR_KEY: "tax",
+      UPS_KEY: "ups",
+      DHL_KEY: "dhl",
+    } as NodeJS.ProcessEnv);
+    expect(env).toEqual({
+      TAXJAR_KEY: "tax",
+      UPS_KEY: "ups",
+      DHL_KEY: "dhl",
+    });
   });
 
   it("loadShippingEnv throws and logs on invalid UPS_KEY", async () => {

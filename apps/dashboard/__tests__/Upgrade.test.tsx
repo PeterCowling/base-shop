@@ -22,6 +22,50 @@ describe("Upgrade page", () => {
     global.fetch = originalFetch;
   });
 
+  it("publishes upgrade successfully", async () => {
+    (global.fetch as jest.Mock)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          core: [
+            { file: "CompA.tsx", componentName: "CompA" },
+            { file: "CompB.tsx", componentName: "CompB" },
+          ],
+        }),
+      })
+      .mockResolvedValueOnce({
+        ok: true,
+        text: async () => "",
+      });
+
+    render(<Upgrade />);
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "/api/shop/shop1/component-diff"
+    );
+
+    await screen.findByText("core");
+
+    const user = userEvent.setup();
+    await user.click(screen.getByLabelText("CompA"));
+
+    await user.click(
+      screen.getByRole("button", { name: /publish upgrade/i })
+    );
+
+    await waitFor(() =>
+      expect(global.fetch).toHaveBeenLastCalledWith(
+        "/api/shop/shop1/publish-upgrade",
+        expect.objectContaining({
+          method: "POST",
+          body: JSON.stringify({ components: ["CompA.tsx"] }),
+        })
+      )
+    );
+
+    await screen.findByText("Upgrade published successfully.");
+  });
+
   it("shows error message when publish fails", async () => {
     (global.fetch as jest.Mock)
       .mockResolvedValueOnce({

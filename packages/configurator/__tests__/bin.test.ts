@@ -62,6 +62,19 @@ describe("configurator bin", () => {
     expect(exitSpy).toHaveBeenCalledWith(2);
   });
 
+  it("falls back to exit code 1 when spawnSync status is undefined", async () => {
+    spawnSyncMock.mockReturnValue({ status: undefined });
+
+    await import("../bin/configurator.cjs");
+
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    expect(spawnSyncMock).toHaveBeenCalledTimes(1);
+    expect(spawnSyncMock).toHaveBeenCalledWith("vite", ["dev"], {
+      stdio: "inherit",
+      shell: true,
+    });
+  });
+
   it("runs build", async () => {
     process.argv = ["node", "configurator", "build"];
 

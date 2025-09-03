@@ -93,9 +93,13 @@ test(
     payment_intent: { client_secret: "cs_test" },
   });
 
-  const sku = PRODUCTS[0];
-  const size = "40";
-  const cart = { [`${sku.id}:${size}`]: { sku, qty: 2, size } };
+  const [sku1, sku2] = PRODUCTS;
+  const size1 = "40";
+  const size2 = "41";
+  const cart = {
+    [`${sku1.id}:${size1}`]: { sku: sku1, qty: 2, size: size1 },
+    [`${sku2.id}:${size2}`]: { sku: sku2, qty: 1, size: size2 },
+  };
   mockCart = cart;
   const cookie = encodeCartCookie("test");
   const returnDate = "2025-01-02";
@@ -127,8 +131,7 @@ test(
   expect(stripeCreate).toHaveBeenCalled();
   const [args, options] = stripeCreate.mock.calls[0];
 
-  expect(args.line_items).toHaveLength(2);
-  expect(args.line_items).toHaveLength(2);
+  expect(args.line_items).toHaveLength(4);
   expect(args.customer).toBe("cus_123");
   expect(args.payment_intent_data.shipping.name).toBe("Jane Doe");
   expect(args.payment_intent_data.billing_details.email).toBe(
@@ -139,8 +142,10 @@ test(
   ).toBe("automatic");
   expect(options.headers["Stripe-Client-IP"]).toBe("203.0.113.1");
   expect(args.metadata.rentalDays).toBe(expectedDays.toString());
-  expect(args.metadata.sizes).toBe(JSON.stringify({ [sku.id]: size }));
-  expect(args.metadata.subtotal).toBe("20");
+  expect(args.metadata.sizes).toBe(
+    JSON.stringify({ [sku1.id]: size1, [sku2.id]: size2 })
+  );
+  expect(args.metadata.subtotal).toBe("30");
   expect(body.clientSecret).toBe("cs_test");
 });
 

@@ -3,7 +3,7 @@
 // packages/ui/hooks/useProductMediaManager.tsx
 import { useFileUpload } from "./useFileUpload";
 import { usePublishLocations } from "@platform-core/hooks/usePublishLocations";
-import type { MediaItem } from "@acme/types";
+import type { ImageOrientation, MediaItem, PublishLocation } from "@acme/types";
 import { useCallback, useMemo } from "react";
 import type { ProductWithVariants } from "./useProductInputs";
 
@@ -21,8 +21,10 @@ export function useProductMediaManager(
   const { locations } = usePublishLocations();
   const requiredOrientation = useMemo(
     () =>
-      locations.find((l) => l.id === publishTargets[0])?.requiredOrientation ??
-      "landscape",
+      locations.find(
+        (l: PublishLocation & { requiredOrientation?: ImageOrientation }) =>
+          l.id === publishTargets[0]
+      )?.requiredOrientation ?? "landscape",
     [locations, publishTargets]
   );
 

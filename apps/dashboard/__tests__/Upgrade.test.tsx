@@ -66,6 +66,27 @@ describe("Upgrade page", () => {
     await screen.findByText("Upgrade published successfully.");
   });
 
+  it("hides selections and publish button when nothing is selected", async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        core: [
+          { file: "CompA.tsx", componentName: "CompA" },
+          { file: "CompB.tsx", componentName: "CompB" },
+        ],
+      }),
+    });
+
+    render(<Upgrade />);
+
+    await screen.findByText("core");
+
+    expect(screen.queryByText("Selected components")).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /publish upgrade/i })
+    ).not.toBeInTheDocument();
+  });
+
   it("shows error message when publish fails", async () => {
     (global.fetch as jest.Mock)
       .mockResolvedValueOnce({

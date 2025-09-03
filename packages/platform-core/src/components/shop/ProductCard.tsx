@@ -12,7 +12,7 @@ interface PriceProps {
   currency?: string;
 }
 
-function Price({ amount, currency }: PriceProps) {
+export function Price({ amount, currency }: PriceProps) {
   const [ctxCurrency] = useCurrency();
   const cur = currency ?? ctxCurrency ?? "EUR";
   return <span>{formatPrice(amount, cur)}</span>;

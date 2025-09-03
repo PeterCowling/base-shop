@@ -7,53 +7,72 @@
     "resolveJsonModule": true,
     "paths": {
       "@/*": [
+        "./dist/*",
+        "../ui/dist/src/*",
+        "../i18n/dist/*",
         "./src/*",
         "../ui/src/*",
         "../i18n/src/*"
       ],
       "@ui/*": [
+        "../ui/dist/src/*",
         "../ui/src/*"
       ],
       "@ui/src/*": [
+        "../ui/dist/src/*",
         "../ui/src/*"
       ],
       "@i18n/*": [
+        "../i18n/dist/*",
         "../i18n/src/*"
       ],
       "@platform-core": [
-        "../platform-core/src/index"
+        "../platform-core/dist/index",
+        "../platform-core/src/index.ts"
       ],
       "@platform-core/*": [
+        "../platform-core/dist/*",
         "../platform-core/src/*"
       ],
       "@acme/platform-core": [
-        "../platform-core/src/index"
+        "../platform-core/dist/index",
+        "../platform-core/src/index.ts"
       ],
       "@acme/platform-core/*": [
+        "../platform-core/dist/*",
         "../platform-core/src/*"
       ],
       "@acme/config": [
-        "../config/dist/index"
+        "../config/dist/index.d.ts",
+        "../config/src/index.ts"
       ],
       "@acme/config/*": [
         "./src/env/*.ts",
-        "../config/dist/*"
+        "../config/dist/*",
+        "../config/src/*"
       ],
       "@auth": [
-        "../auth/src/index",
+        "../auth/dist/index",
+        "../auth/dist",
+        "../auth/src/index.ts",
         "../auth/src"
       ],
       "@auth/*": [
+        "../auth/dist/*",
         "../auth/src/*"
       ],
       "@date-utils": [
-        "../date-utils/src/index",
+        "../date-utils/dist/index",
+        "../date-utils/dist",
+        "../date-utils/src/index.ts",
         "../date-utils/src"
       ],
       "@date-utils/*": [
+        "../date-utils/dist/*",
         "../date-utils/src/*"
       ],
       "better-sqlite3": [
+        "../platform-core/dist/types/better-sqlite3",
         "../platform-core/src/types/better-sqlite3"
       ]
     },

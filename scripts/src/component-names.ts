@@ -72,6 +72,8 @@ export function getComponentNameMap(componentsDir: string): Record<string, strin
         let name = spec;
         if (spec.startsWith("default as ")) {
           name = spec.slice("default as ".length).trim();
+        } else if (spec === "default") {
+          name = path.parse(file).name;
         } else if (spec.includes(" as ")) {
           name = spec.split(/\s+as\s+/)[1];
         }

@@ -1,4 +1,6 @@
 import path from "node:path";
+import fs from "node:fs";
+import os from "node:os";
 import { getComponentNameMap } from "../src/component-names";
 
 describe("component name resolution", () => {
@@ -20,5 +22,14 @@ describe("component name resolution", () => {
       "FormField",
     );
     expect(map["ThemeToggle.tsx"]).toBe("ThemeToggle");
+  });
+
+  it("infers names for default exports without alias", () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "components-"));
+    fs.writeFileSync(path.join(tmp, "index.ts"), 'export { default } from "./Foo";');
+    fs.writeFileSync(path.join(tmp, "Foo.tsx"), "export default function Foo() { return null; }");
+    const map = getComponentNameMap(tmp);
+    expect(map["Foo.tsx"]).toBe("Foo");
+    fs.rmSync(tmp, { recursive: true, force: true });
   });
 });

@@ -37,6 +37,8 @@ jest.mock("@platform-core/repositories/reverseLogisticsEvents.server", () => ({
 
 jest.mock("@platform-core/utils", () => ({ logger: { error: jest.fn() } }));
 
+jest.mock("@acme/config/env/core", () => ({ coreEnv: {} }));
+
 import * as service from "../reverseLogisticsService";
 import {
   markAvailable,
@@ -47,6 +49,7 @@ import {
 } from "@platform-core/repositories/rentalOrders.server";
 import { reverseLogisticsEvents } from "@platform-core/repositories/reverseLogisticsEvents.server";
 import { logger } from "@platform-core/utils";
+import { coreEnv } from "@acme/config/env/core";
 
 describe("writeReverseLogisticsEvent", () => {
   const mkdirMock = mkdir as unknown as jest.Mock;
@@ -133,6 +136,10 @@ describe("resolveConfig", () => {
 
   beforeEach(() => {
     readFileMock.mockReset();
+    delete coreEnv.REVERSE_LOGISTICS_ENABLED;
+    delete coreEnv.REVERSE_LOGISTICS_INTERVAL_MS;
+    delete process.env.REVERSE_LOGISTICS_ENABLED_SHOP;
+    delete process.env.REVERSE_LOGISTICS_INTERVAL_MS_SHOP;
     jest.restoreAllMocks();
   });
 
@@ -148,6 +155,33 @@ describe("resolveConfig", () => {
     expect(cfg).toEqual({ enabled: false, intervalMinutes: 2 });
     delete process.env.REVERSE_LOGISTICS_ENABLED_SHOP;
     delete process.env.REVERSE_LOGISTICS_INTERVAL_MS_SHOP;
+  });
+
+  it("uses coreEnv values when no env or file present", async () => {
+    readFileMock.mockRejectedValueOnce(new Error("missing"));
+    coreEnv.REVERSE_LOGISTICS_ENABLED = true as any;
+    coreEnv.REVERSE_LOGISTICS_INTERVAL_MS = 300000 as any; // 5 minutes
+    const cfg = await service.resolveConfig("shop", "/data");
+    expect(cfg).toEqual({ enabled: true, intervalMinutes: 5 });
+  });
+
+  it("ignores invalid env values", async () => {
+    readFileMock.mockRejectedValueOnce(new Error("missing"));
+    process.env.REVERSE_LOGISTICS_ENABLED_SHOP = "maybe";
+    process.env.REVERSE_LOGISTICS_INTERVAL_MS_SHOP = "abc";
+    const cfg = await service.resolveConfig("shop", "/data");
+    expect(cfg).toEqual({ enabled: true, intervalMinutes: 60 });
+  });
+
+  it("allows override parameters to take precedence", async () => {
+    readFileMock.mockRejectedValueOnce(new Error("missing"));
+    process.env.REVERSE_LOGISTICS_ENABLED_SHOP = "false";
+    process.env.REVERSE_LOGISTICS_INTERVAL_MS_SHOP = "120000";
+    const cfg = await service.resolveConfig("shop", "/data", {
+      enabled: true,
+      intervalMinutes: 10,
+    });
+    expect(cfg).toEqual({ enabled: true, intervalMinutes: 10 });
   });
 });
 
@@ -193,4 +227,53 @@ describe("startReverseLogisticsService", () => {
     clearSpy.mockRestore();
   });
 
+  it("logs and rethrows when listing shops fails", async () => {
+    const err = new Error("boom");
+    readdirMock.mockRejectedValueOnce(err);
+    await expect(
+      service.startReverseLogisticsService({}, "/data"),
+    ).rejects.toBe(err);
+    expect(logger.error).toHaveBeenCalledWith(
+      "failed to start reverse logistics service",
+      { err },
+    );
+  });
+
+  it("logs processor errors and clears timers", async () => {
+    readdirMock.mockResolvedValueOnce(["s1"]);
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({
+        reverseLogisticsService: { enabled: true, intervalMinutes: 1 },
+      }),
+    );
+
+    const processor = jest
+      .fn()
+      .mockRejectedValueOnce(new Error("fail"));
+
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockReturnValue(1 as any);
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+
+    const stop = await service.startReverseLogisticsService(
+      {},
+      "/data",
+      processor,
+    );
+
+    expect(processor).toHaveBeenCalledWith("s1", "/data");
+    expect(logger.error).toHaveBeenCalledWith(
+      "reverse logistics processing failed",
+      { shopId: "s1", err: expect.any(Error) },
+    );
+
+    stop();
+    expect(clearSpy).toHaveBeenCalledWith(1 as any);
+
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+  });
 });

@@ -8,6 +8,14 @@ describe('parseLimit', () => {
 
   it('parses valid size strings', () => {
     expect(parseLimit('10kb')).toBe(10 * 1024);
+    expect(parseLimit('2GB')).toBe(2 * 1024 * 1024 * 1024);
+    expect(parseLimit('512b')).toBe(512);
+  });
+
+  it('accepts uppercase and mixed-case inputs', () => {
+    expect(parseLimit('1MB')).toBe(1 * 1024 * 1024);
+    expect(parseLimit('1mb')).toBe(1 * 1024 * 1024);
+    expect(parseLimit('1Mb')).toBe(1 * 1024 * 1024);
   });
 
   it('throws on invalid strings', () => {

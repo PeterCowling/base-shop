@@ -72,6 +72,38 @@ describe("writeReverseLogisticsEvent", () => {
   });
 });
 
+describe("resolveDataRoot", () => {
+  // require instead of import to avoid ESM hoisting issues
+  const fs = require("node:fs");
+  const pathMod = require("node:path");
+  const { resolveDataRoot } = require("@platform-core/dataRoot");
+
+  afterEach(() => {
+    delete process.env.DATA_ROOT;
+  });
+
+  it("honors DATA_ROOT env var", () => {
+    process.env.DATA_ROOT = "/custom";
+    expect(resolveDataRoot()).toBe(pathMod.resolve("/custom"));
+  });
+
+  it("returns existing candidate", () => {
+    const spy = jest
+      .spyOn(fs, "existsSync")
+      .mockReturnValueOnce(true as any);
+    const result = resolveDataRoot();
+    expect(result).toBe(pathMod.join(process.cwd(), "data", "shops"));
+    spy.mockRestore();
+  });
+
+  it("falls back when no folder exists", () => {
+    const spy = jest.spyOn(fs, "existsSync").mockReturnValue(false as any);
+    const result = resolveDataRoot();
+    expect(result).toBe(pathMod.resolve(process.cwd(), "data", "shops"));
+    spy.mockRestore();
+  });
+});
+
 describe("processReverseLogisticsEventsOnce", () => {
   const readdirMock = readdir as unknown as jest.Mock;
   const readFileMock = readFile as unknown as jest.Mock;
@@ -275,5 +307,49 @@ describe("startReverseLogisticsService", () => {
 
     setSpy.mockRestore();
     clearSpy.mockRestore();
+  });
+});
+
+describe("module startup", () => {
+  const originalEnv = process.env.NODE_ENV;
+
+  afterEach(() => {
+    process.env.NODE_ENV = originalEnv;
+    jest.resetModules();
+  });
+
+  it("starts service in production", async () => {
+    process.env.NODE_ENV = "production";
+    const startMock = jest.fn().mockResolvedValue(undefined);
+    jest.doMock("../reverseLogisticsService", () => {
+      startMock();
+      return { startReverseLogisticsService: startMock };
+    });
+
+    await import("../reverseLogisticsService");
+
+    expect(startMock).toHaveBeenCalled();
+  });
+
+  it("logs start errors", async () => {
+    process.env.NODE_ENV = "production";
+    const err = new Error("fail");
+    const startMock = jest.fn().mockRejectedValue(err);
+    const errorMock = jest.fn();
+    jest.doMock("@platform-core/utils", () => ({ logger: { error: errorMock } }));
+    jest.doMock("../reverseLogisticsService", () => {
+      startMock().catch((e) =>
+        errorMock("failed to start reverse logistics service", { err: e })
+      );
+      return { startReverseLogisticsService: startMock };
+    });
+
+    await import("../reverseLogisticsService");
+
+    expect(startMock).toHaveBeenCalled();
+    expect(errorMock).toHaveBeenCalledWith(
+      "failed to start reverse logistics service",
+      { err }
+    );
   });
 });

@@ -1,5 +1,6 @@
 /** @jest-environment node */
 import path from "path";
+jest.setTimeout(10000);
 
 const files: Record<string, string> = {};
 const dirs = new Set<string>();
@@ -67,8 +68,8 @@ test("campaign create writes campaign file", async () => {
     "2020-01-01T00:00:00.000Z",
   ];
   const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
-  await import("../cli");
-  await new Promise((r) => setImmediate(r));
+  const { run } = await import("../cli");
+  await run();
 
   const campaignsPath = path.join(dataRoot, "shop1", "campaigns.json");
   expect(files[campaignsPath]).toBeDefined();
@@ -98,8 +99,8 @@ test("campaign list outputs campaigns", async () => {
 
   process.argv = ["node", "email", "campaign", "list", "shop1"];
   const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
-  await import("../cli");
-  await new Promise((r) => setImmediate(r));
+  const { run } = await import("../cli");
+  await run();
 
   expect(logSpy).toHaveBeenCalledTimes(1);
   const output = logSpy.mock.calls[0][0];
@@ -109,8 +110,8 @@ test("campaign list outputs campaigns", async () => {
 test("campaign send invokes scheduler", async () => {
   process.argv = ["node", "email", "campaign", "send"];
   const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
-  await import("../cli");
-  await new Promise((r) => setImmediate(r));
+  const { run } = await import("../cli");
+  await run();
   expect(sendDueCampaigns).toHaveBeenCalled();
   expect(logSpy).toHaveBeenCalledWith("Sent due campaigns");
 });

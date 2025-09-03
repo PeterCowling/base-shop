@@ -157,6 +157,18 @@
     },
     {
       "path": "../../scripts"
+    },
+    {
+      "path": "../../packages/config"
+    },
+    {
+      "path": "../../packages/sanity"
+    },
+    {
+      "path": "../../packages/email"
+    },
+    {
+      "path": "../../packages/stripe"
     }
   ]
 }

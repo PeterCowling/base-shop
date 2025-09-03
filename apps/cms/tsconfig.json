@@ -102,6 +102,9 @@
     { "path": "../../packages/config" },
     { "path": "../../packages/i18n" },
     { "path": "../../packages/configurator" },
-    { "path": "../../packages/zod-utils" }
+    { "path": "../../packages/zod-utils" },
+    { "path": "../../packages/telemetry" },
+    { "path": "../../packages/theme" },
+    { "path": "../../packages/plugins/sanity" }
   ]
 }

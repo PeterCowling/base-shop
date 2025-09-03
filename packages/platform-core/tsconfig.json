@@ -48,7 +48,8 @@
     { "path": "../types" },
     { "path": "../themes/base" },
     { "path": "../zod-utils" },
-    { "path": "../email-templates" }
+    { "path": "../email-templates" },
+    { "path": "../plugins/sanity" }
   ],
   "files": ["../../src/types/global.d.ts", "src/prisma.d.ts"]
 }

@@ -128,3 +128,66 @@ describe("updateAggregates persistence", () => {
   });
 });
 
+describe("public tracking functions", () => {
+  const shop = "track-shop";
+  let tmp: string;
+
+  beforeEach(async () => {
+    jest.resetModules();
+    readShop.mockReset();
+    getShopSettings.mockReset();
+    tmp = await fs.mkdtemp(path.join(os.tmpdir(), "analytics-"));
+    process.env.DATA_ROOT = tmp;
+    readShop.mockResolvedValue({ analyticsEnabled: true });
+    getShopSettings.mockResolvedValue({
+      analytics: { provider: "console", enabled: true },
+    });
+  });
+
+  test("trackEvent adds timestamp and delegates to provider", async () => {
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const { trackEvent } = await import("../index");
+    await trackEvent(shop, { type: "page_view", page: "home" });
+    expect(logSpy).toHaveBeenCalledWith(
+      "analytics",
+      expect.objectContaining({
+        type: "page_view",
+        page: "home",
+        timestamp: "2024-01-01T00:00:00.000Z",
+      })
+    );
+    logSpy.mockRestore();
+  });
+
+  test("trackPageView wraps trackEvent", async () => {
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const { trackPageView } = await import("../index");
+    await trackPageView(shop, "home");
+    expect(logSpy).toHaveBeenCalledWith(
+      "analytics",
+      expect.objectContaining({
+        type: "page_view",
+        page: "home",
+        timestamp: "2024-01-01T00:00:00.000Z",
+      })
+    );
+    logSpy.mockRestore();
+  });
+
+  test("trackOrder wraps trackEvent", async () => {
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const { trackOrder } = await import("../index");
+    await trackOrder(shop, "o1", 42);
+    expect(logSpy).toHaveBeenCalledWith(
+      "analytics",
+      expect.objectContaining({
+        type: "order",
+        orderId: "o1",
+        amount: 42,
+        timestamp: "2024-01-01T00:00:00.000Z",
+      })
+    );
+    logSpy.mockRestore();
+  });
+});
+

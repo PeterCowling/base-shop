@@ -56,42 +56,46 @@ function diffSettings(
 export async function getShopSettings(shop: string): Promise<ShopSettings> {
   try {
     const buf = await fs.readFile(settingsPath(shop), "utf8");
-    const parsed = shopSettingsSchema.safeParse(JSON.parse(buf));
+    const parsed = shopSettingsSchema
+      .deepPartial()
+      .safeParse(JSON.parse(buf));
     if (parsed.success) {
+      const data = parsed.data as Partial<ShopSettings>;
       return {
         freezeTranslations: false,
-        ...(parsed.data.analytics ? { analytics: parsed.data.analytics } : {}),
-        currency: parsed.data.currency ?? "EUR",
-        taxRegion: parsed.data.taxRegion ?? "",
-        ...parsed.data,
+        ...(data.analytics ? { analytics: data.analytics } : {}),
+        currency: data.currency ?? "EUR",
+        taxRegion: data.taxRegion ?? "",
+        ...data,
+        languages: data.languages ?? DEFAULT_LANGUAGES,
         depositService: {
           enabled: false,
           intervalMinutes: 60,
-          ...(parsed.data.depositService ?? {}),
+          ...(data.depositService ?? {}),
         },
         reverseLogisticsService: {
           enabled: false,
           intervalMinutes: 60,
-          ...(parsed.data.reverseLogisticsService ?? {}),
+          ...(data.reverseLogisticsService ?? {}),
         },
         returnService: {
           upsEnabled: false,
           bagEnabled: false,
           homePickupEnabled: false,
-          ...(parsed.data.returnService ?? {}),
+          ...(data.returnService ?? {}),
         },
-        premierDelivery: parsed.data.premierDelivery,
+        premierDelivery: data.premierDelivery,
         stockAlert: {
           recipients: [],
-          ...(parsed.data.stockAlert ?? {}),
+          ...(data.stockAlert ?? {}),
         },
         seo: {
-          ...(parsed.data.seo ?? {}),
+          ...(data.seo ?? {}),
           aiCatalog: {
             enabled: true,
             fields: ["id", "title", "description", "price", "media"],
             pageSize: 50,
-            ...((parsed.data.seo ?? {}).aiCatalog ?? {}),
+            ...((data.seo ?? {}).aiCatalog ?? {}),
           },
         },
       } as ShopSettings;

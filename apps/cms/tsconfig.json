@@ -20,47 +20,157 @@
     "paths": {
       "@/*": ["./src/*"],
       "@cms/*": ["./src/*"],
-      "@/components/*": ["../../packages/ui/src/components/*"],
+      "@/components/*": [
+        "../../packages/ui/dist/components/*",
+        "../../packages/ui/src/components/*"
+      ],
       "@/lib/*": [
         "./src/lib/*",
+        "../../packages/ui/dist/lib/*",
         "../../packages/ui/src/lib/*",
+        "../../packages/platform-core/dist/*",
         "../../packages/platform-core/src/*"
       ],
-      "@/contexts/*": ["../../packages/platform-core/src/contexts/*"],
-      "@/i18n/*": ["../../packages/i18n/src/*"],
-      "@i18n": ["../../packages/i18n/src/index.ts"],
-      "@i18n/*": ["../../packages/i18n/src/*"],
-      "@ui/*": ["../../packages/ui/src/*"],
-      "@ui": ["../../packages/ui/src/index.ts"],
-      "@acme/ui": ["../../packages/ui/src/index.ts"],
-      "@acme/ui/*": ["../../packages/ui/src/*"],
-      "@auth": ["../../packages/auth/src/index.ts"],
-      "@auth/*": ["../../packages/auth/src/*"],
-      "@acme/lib": ["../../packages/lib/src/index.ts"],
-      "@acme/lib/*": ["../../packages/lib/src/*"],
-      "@acme/shared-utils": ["../../packages/shared-utils/src/index.ts"],
-      "@acme/shared-utils/*": ["../../packages/shared-utils/src/*"],
-      "@acme/types": ["../../packages/types/src/index.ts"],
-      "@acme/types/*": ["../../packages/types/src/*"],
-      "@shared-utils": ["../../packages/shared-utils/src/index.ts"],
-      "@shared-utils/*": ["../../packages/shared-utils/src/*"],
-      "@date-utils": ["../../packages/date-utils/src/index.ts"],
-      "@date-utils/*": ["../../packages/date-utils/src/*"],
-      "@themes/*": ["../../packages/themes/*/src"],
-      "@platform-core": ["../../packages/platform-core/src/index.ts"],
-      "@platform-core/*": ["../../packages/platform-core/src/*"],
-      "@acme/platform-core": ["../../packages/platform-core/src/index.ts"],
-      "@acme/platform-core/*": ["../../packages/platform-core/src/*"],
-      "@acme/email": ["../../packages/email/src/index.ts"],
-      "@acme/email/*": ["../../packages/email/src/*"],
-      "@acme/email-templates": ["../../packages/email-templates/src/index.ts"],
-      "@acme/email-templates/*": ["../../packages/email-templates/src/*"],
-      "@acme/config": ["../../packages/config/src/index.ts"],
-      "@acme/config/*": ["../../packages/config/src/*"],
-      "@acme/i18n": ["../../packages/i18n/src/index.ts"],
-      "@acme/i18n/*": ["../../packages/i18n/src/*"],
-      "@acme/zod-utils": ["../../packages/zod-utils/src/index.ts"],
-      "@acme/zod-utils/*": ["../../packages/zod-utils/src/*"]
+      "@/contexts/*": [
+        "../../packages/platform-core/dist/contexts/*",
+        "../../packages/platform-core/src/contexts/*"
+      ],
+      "@/i18n/*": [
+        "../../packages/i18n/dist/*",
+        "../../packages/i18n/src/*"
+      ],
+      "@i18n": [
+        "../../packages/i18n/dist/index",
+        "../../packages/i18n/src/index.ts"
+      ],
+      "@i18n/*": [
+        "../../packages/i18n/dist/*",
+        "../../packages/i18n/src/*"
+      ],
+      "@ui/*": [
+        "../../packages/ui/dist/*",
+        "../../packages/ui/src/*"
+      ],
+      "@ui": [
+        "../../packages/ui/dist/index",
+        "../../packages/ui/src/index.ts"
+      ],
+      "@acme/ui": [
+        "../../packages/ui/dist/index",
+        "../../packages/ui/src/index.ts"
+      ],
+      "@acme/ui/*": [
+        "../../packages/ui/dist/*",
+        "../../packages/ui/src/*"
+      ],
+      "@auth": [
+        "../../packages/auth/dist/index",
+        "../../packages/auth/src/index.ts"
+      ],
+      "@auth/*": [
+        "../../packages/auth/dist/*",
+        "../../packages/auth/src/*"
+      ],
+      "@acme/lib": [
+        "../../packages/lib/dist/index",
+        "../../packages/lib/src/index.ts"
+      ],
+      "@acme/lib/*": [
+        "../../packages/lib/dist/*",
+        "../../packages/lib/src/*"
+      ],
+      "@acme/shared-utils": [
+        "../../packages/shared-utils/dist/index",
+        "../../packages/shared-utils/src/index.ts"
+      ],
+      "@acme/shared-utils/*": [
+        "../../packages/shared-utils/dist/*",
+        "../../packages/shared-utils/src/*"
+      ],
+      "@acme/types": [
+        "../../packages/types/dist/index",
+        "../../packages/types/src/index.ts"
+      ],
+      "@acme/types/*": [
+        "../../packages/types/dist/*",
+        "../../packages/types/src/*"
+      ],
+      "@shared-utils": [
+        "../../packages/shared-utils/dist/index",
+        "../../packages/shared-utils/src/index.ts"
+      ],
+      "@shared-utils/*": [
+        "../../packages/shared-utils/dist/*",
+        "../../packages/shared-utils/src/*"
+      ],
+      "@date-utils": [
+        "../../packages/date-utils/dist/index",
+        "../../packages/date-utils/src/index.ts"
+      ],
+      "@date-utils/*": [
+        "../../packages/date-utils/dist/*",
+        "../../packages/date-utils/src/*"
+      ],
+      "@themes/*": [
+        "../../packages/themes/*/dist",
+        "../../packages/themes/*/src"
+      ],
+      "@platform-core": [
+        "../../packages/platform-core/dist/index",
+        "../../packages/platform-core/src/index.ts"
+      ],
+      "@platform-core/*": [
+        "../../packages/platform-core/dist/*",
+        "../../packages/platform-core/src/*"
+      ],
+      "@acme/platform-core": [
+        "../../packages/platform-core/dist/index",
+        "../../packages/platform-core/src/index.ts"
+      ],
+      "@acme/platform-core/*": [
+        "../../packages/platform-core/dist/*",
+        "../../packages/platform-core/src/*"
+      ],
+      "@acme/email": [
+        "../../packages/email/dist/index",
+        "../../packages/email/src/index.ts"
+      ],
+      "@acme/email/*": [
+        "../../packages/email/dist/*",
+        "../../packages/email/src/*"
+      ],
+      "@acme/email-templates": [
+        "../../packages/email-templates/dist/index",
+        "../../packages/email-templates/src/index.ts"
+      ],
+      "@acme/email-templates/*": [
+        "../../packages/email-templates/dist/*",
+        "../../packages/email-templates/src/*"
+      ],
+      "@acme/config": [
+        "../../packages/config/dist/index",
+        "../../packages/config/src/index.ts"
+      ],
+      "@acme/config/*": [
+        "../../packages/config/dist/*",
+        "../../packages/config/src/*"
+      ],
+      "@acme/i18n": [
+        "../../packages/i18n/dist/index",
+        "../../packages/i18n/src/index.ts"
+      ],
+      "@acme/i18n/*": [
+        "../../packages/i18n/dist/*",
+        "../../packages/i18n/src/*"
+      ],
+      "@acme/zod-utils": [
+        "../../packages/zod-utils/dist/index",
+        "../../packages/zod-utils/src/index.ts"
+      ],
+      "@acme/zod-utils/*": [
+        "../../packages/zod-utils/dist/*",
+        "../../packages/zod-utils/src/*"
+      ]
     },
     "module": "ESNext",
     "moduleResolution": "Bundler",

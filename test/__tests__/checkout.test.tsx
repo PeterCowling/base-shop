@@ -2,7 +2,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 process.env.STRIPE_SECRET_KEY = "sk_test_123";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
 
-import CheckoutForm from "../../packages/ui/components/checkout/CheckoutForm";
+import CheckoutForm from "../../packages/ui/src/components/checkout/CheckoutForm";
 import { CurrencyProvider } from "@platform-core/contexts/CurrencyContext";
 import { isoDateInNDays } from "@acme/date-utils";
 import * as sharedUtils from "@acme/shared-utils";
@@ -43,7 +43,7 @@ jest.mock("@stripe/react-stripe-js", () => {
 });
 
 jest.mock("@platform-core/contexts/CurrencyContext", () =>
-  require("./__mocks__/currencyContextMock")
+  require("../__mocks__/currencyContextMock")
 );
 
 beforeEach(() => {

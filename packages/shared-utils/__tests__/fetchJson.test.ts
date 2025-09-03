@@ -66,6 +66,17 @@ describe('fetchJson', () => {
     );
   });
 
+  it('throws HTTP status when status text is empty and response body is not JSON', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: false,
+      status: 418,
+      statusText: '',
+      text: jest.fn().mockResolvedValue('not json'),
+    });
+
+    await expect(fetchJson('https://example.com')).rejects.toThrow('HTTP 418');
+  });
+
   it('propagates network errors', async () => {
     (global.fetch as jest.Mock).mockRejectedValue(new Error('Network failure'));
 

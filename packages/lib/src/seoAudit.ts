@@ -1,5 +1,4 @@
 import type { RunnerResult } from "lighthouse";
-import desktopConfig from "lighthouse/core/config/desktop-config.js";
 
 export interface SeoAuditResult {
   score: number;
@@ -42,11 +41,21 @@ export async function runSeoAudit(url: string): Promise<SeoAuditResult> {
   } catch {
     // ignore; handled below
   }
+  let desktopConfig: any;
+  try {
+    const mod = await import("lighthouse/core/config/desktop-config.js");
+    desktopConfig = (mod as any)?.default ?? mod;
+  } catch {
+    // ignore; handled below
+  }
   if (typeof launch !== "function") {
     throw new Error("chrome-launcher launch function not available");
   }
   if (typeof lighthouseFn !== "function") {
     throw new Error("lighthouse is not a function");
+  }
+  if (!desktopConfig) {
+    throw new Error("lighthouse desktop config not available");
   }
 
   const chrome = await launch({ chromeFlags: ["--headless"] });

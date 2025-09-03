@@ -4,9 +4,19 @@
 import type { PageComponent } from "@acme/types";
 import type { StyleOverrides } from "../../../../../types/src/style/StyleOverrides";
 import { Input } from "../../atoms/shadcn";
-import { track } from "@acme/telemetry";
 import { useTranslations } from "@acme/i18n";
 import useContrastWarnings from "../../../hooks/useContrastWarnings";
+
+type TrackFn = (name: string, payload?: Record<string, unknown>) => void;
+let track: TrackFn = () => {};
+
+import("@acme/telemetry")
+  .then((m) => {
+    track = m.track;
+  })
+  .catch(() => {
+    // telemetry is optional in tests
+  });
 
 interface Props {
   component: PageComponent;

@@ -75,7 +75,7 @@ describe("sendCampaignEmail", () => {
 
     setupEnv();
 
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",
@@ -116,6 +116,34 @@ describe("sendCampaignEmail", () => {
         html: "<p>Hello</p>",
         text: "Hello",
       });
+    });
+
+    it("renders templates before sending", async () => {
+      mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+      mockResendSend = jest.fn();
+      mockSendMail = jest.fn();
+      mockSanitizeHtml = jest.fn((html: string) => html);
+
+      setupEnv();
+
+      const { registerTemplate, sendCampaignEmail } = await import("../index");
+      registerTemplate("welcome", "<p>Hello {{name}}</p>");
+
+      await sendCampaignEmail({
+        to: "to@example.com",
+        subject: "Subject",
+        templateId: "welcome",
+        variables: { name: "Alice" },
+      });
+
+      expect(mockSendgridSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: "to@example.com",
+          subject: "Subject",
+          html: "<p>Hello Alice</p>",
+          text: "Hello Alice",
+        })
+      );
     });
 
     it("falls back to alternate provider when primary fails", async () => {
@@ -246,7 +274,7 @@ describe("sendCampaignEmail", () => {
 
   it("throws when EMAIL_PROVIDER is invalid", async () => {
     const originalProvider = process.env.EMAIL_PROVIDER;
-    const { sendCampaignEmail } = await import("../index");
+    const { sendCampaignEmail } = await import("../send");
     process.env.EMAIL_PROVIDER = "invalid";
     await expect(
       sendCampaignEmail({

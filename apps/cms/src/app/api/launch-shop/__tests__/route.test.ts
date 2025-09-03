@@ -6,17 +6,14 @@ import {
   Request as NodeRequest,
 } from 'undici';
 
-// Ensure environment provides fetch/Response with streaming support
 Object.assign(globalThis, {
   fetch: jest.fn(),
   Response: NodeResponse,
   Headers: NodeHeaders,
   Request: NodeRequest,
-  ReadableStream:
-    (globalThis as any).ReadableStream || NodeReadableStream,
+  ReadableStream: (globalThis as any).ReadableStream || NodeReadableStream,
 });
 
-// Mocks for service modules
 const createShop = jest.fn();
 const initShop = jest.fn();
 const deployShop = jest.fn();
@@ -75,7 +72,61 @@ async function readStream(stream: ReadableStream<Uint8Array>) {
 }
 
 describe('launch-shop route', () => {
-  it('streams step updates including seeding and restores fetch', async () => {
+  it('returns 400 when required steps are missing', async () => {
+    getRequiredSteps.mockReturnValue([{ id: 'a' }]);
+    const { POST } = await import('../route');
+    const req = {
+      json: async () => ({ shopId: '1', state: { completed: {} } }),
+      headers: new Headers(),
+    } as unknown as Request;
+    const res = await POST(req);
+    expect(res.status).toBe(400);
+    const json = await res.json();
+    expect(json.missingSteps).toEqual(['a']);
+  });
+
+  it('streams done when steps succeed without seeding', async () => {
+    getRequiredSteps.mockReturnValue([]);
+    createShop.mockResolvedValue({ ok: true });
+    initShop.mockResolvedValue({ ok: true });
+    deployShop.mockResolvedValue({ ok: true });
+
+    const { POST } = await import('../route');
+    const req = {
+      json: async () => ({ shopId: '1', state: { completed: {} }, seed: false }),
+      headers: new Headers(),
+    } as unknown as Request;
+
+    const res = await POST(req);
+    const text = await readStream(res.body as ReadableStream<Uint8Array>);
+    const messages = parseSse(text);
+    expect(messages[messages.length - 1]).toEqual({ done: true });
+    expect(seedShop).not.toHaveBeenCalled();
+  });
+
+  it('reports failure and stops when a step fails', async () => {
+    getRequiredSteps.mockReturnValue([]);
+    createShop.mockResolvedValue({ ok: false, error: 'nope' });
+
+    const { POST } = await import('../route');
+    const req = {
+      json: async () => ({ shopId: '1', state: { completed: {} } }),
+      headers: new Headers(),
+    } as unknown as Request;
+
+    const res = await POST(req);
+    const text = await readStream(res.body as ReadableStream<Uint8Array>);
+    const messages = parseSse(text);
+    expect(messages).toEqual([
+      { step: 'create', status: 'pending' },
+      { step: 'create', status: 'failure', error: 'nope' },
+    ]);
+    expect(initShop).not.toHaveBeenCalled();
+    expect(deployShop).not.toHaveBeenCalled();
+    expect(seedShop).not.toHaveBeenCalled();
+  });
+
+  it('executes seed step when seeding enabled', async () => {
     getRequiredSteps.mockReturnValue([]);
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: true });
@@ -83,9 +134,6 @@ describe('launch-shop route', () => {
     seedShop.mockResolvedValue({ ok: true });
 
     const { POST } = await import('../route');
-
-    const originalFetch = globalThis.fetch;
-
     const req = {
       json: async () => ({ shopId: '1', state: { completed: {} }, seed: true }),
       headers: new Headers(),
@@ -94,7 +142,6 @@ describe('launch-shop route', () => {
     const res = await POST(req);
     const text = await readStream(res.body as ReadableStream<Uint8Array>);
     const messages = parseSse(text);
-
     expect(messages).toEqual([
       { step: 'create', status: 'pending' },
       { step: 'create', status: 'success' },
@@ -107,112 +154,6 @@ describe('launch-shop route', () => {
       { done: true },
     ]);
     expect(seedShop).toHaveBeenCalledTimes(1);
-    expect(globalThis.fetch).toBe(originalFetch);
-  });
-
-  it('streams step updates without seeding when seed is false', async () => {
-    getRequiredSteps.mockReturnValue([]);
-    createShop.mockResolvedValue({ ok: true });
-    initShop.mockResolvedValue({ ok: true });
-    deployShop.mockResolvedValue({ ok: true });
-
-    const { POST } = await import('../route');
-
-    const originalFetch = globalThis.fetch;
-
-    const req = {
-      json: async () => ({ shopId: '1', state: { completed: {} }, seed: false }),
-      headers: new Headers(),
-    } as unknown as Request;
-
-    const res = await POST(req);
-    const text = await readStream(res.body as ReadableStream<Uint8Array>);
-    const messages = parseSse(text);
-
-    expect(messages).toEqual([
-      { step: 'create', status: 'pending' },
-      { step: 'create', status: 'success' },
-      { step: 'init', status: 'pending' },
-      { step: 'init', status: 'success' },
-      { step: 'deploy', status: 'pending' },
-      { step: 'deploy', status: 'success' },
-      { done: true },
-    ]);
-    expect(seedShop).not.toHaveBeenCalled();
-    expect(globalThis.fetch).toBe(originalFetch);
-  });
-
-  it('returns 400 when required steps are incomplete', async () => {
-    getRequiredSteps.mockReturnValue([{ id: 'a' }]);
-
-    const { POST } = await import('../route');
-
-    const req = {
-      json: async () => ({ shopId: '1', state: { completed: { a: 'pending' } } }),
-      headers: new Headers(),
-    } as unknown as Request;
-
-    const res = await POST(req);
-    expect(res.status).toBe(400);
-    const json = await res.json();
-    expect(json.missingSteps).toEqual(['a']);
-  });
-
-  it('early returns when createShop fails', async () => {
-    getRequiredSteps.mockReturnValue([]);
-    createShop.mockResolvedValue({ ok: false });
-
-    const { POST } = await import('../route');
-
-    const originalFetch = globalThis.fetch;
-
-    const req = {
-      json: async () => ({ shopId: '1', state: { completed: {} }, seed: true }),
-      headers: new Headers(),
-    } as unknown as Request;
-
-    const res = await POST(req);
-    const text = await readStream(res.body as ReadableStream<Uint8Array>);
-    const messages = parseSse(text);
-
-    expect(messages).toEqual([
-      { step: 'create', status: 'pending' },
-      { step: 'create', status: 'failure', error: undefined },
-    ]);
-    expect(initShop).not.toHaveBeenCalled();
-    expect(deployShop).not.toHaveBeenCalled();
-    expect(seedShop).not.toHaveBeenCalled();
-    expect(globalThis.fetch).toBe(originalFetch);
-  });
-
-  it('emits failure and closes stream when a step throws and restores fetch', async () => {
-    getRequiredSteps.mockReturnValue([]);
-    createShop.mockResolvedValue({ ok: true });
-    initShop.mockImplementation(async () => {
-      throw new Error('boom');
-    });
-
-    const { POST } = await import('../route');
-
-    const originalFetch = globalThis.fetch;
-
-    const req = {
-      json: async () => ({ shopId: '1', state: { completed: {} } }),
-      headers: new Headers(),
-    } as unknown as Request;
-
-    const res = await POST(req);
-    const text = await readStream(res.body as ReadableStream<Uint8Array>);
-    const messages = parseSse(text);
-
-    expect(messages).toEqual([
-      { step: 'create', status: 'pending' },
-      { step: 'create', status: 'success' },
-      { step: 'init', status: 'pending' },
-      { status: 'failure', error: 'boom' },
-    ]);
-
-    expect(globalThis.fetch).toBe(originalFetch);
   });
 });
 

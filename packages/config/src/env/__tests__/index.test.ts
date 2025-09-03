@@ -6,23 +6,53 @@ describe("env index module", () => {
 
   afterEach(() => {
     jest.resetModules();
+    jest.dontMock("../cms.js");
+    jest.dontMock("../auth.js");
     process.env = ORIGINAL_ENV;
   });
 
-  it("throws and logs on invalid env", async () => {
+  it("throws and logs on invalid env", () => {
+    jest.doMock("../cms.js", () => {
+      const { z } = require("zod");
+      return {
+        cmsEnvSchema: z.object({
+          CMS_SPACE_URL: z.string().url(),
+          CMS_ACCESS_TOKEN: z.string().min(1),
+          SANITY_API_VERSION: z.string().min(1),
+        }),
+      };
+    });
+    jest.doMock("../auth.js", () => {
+      const { z } = require("zod");
+      const base = z.object({
+        NEXTAUTH_SECRET: z.string().min(1),
+        SESSION_SECRET: z.string().min(1),
+      });
+      return {
+        authEnvSchema: base.superRefine(() => {}),
+      };
+    });
+
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "test",
-      CART_COOKIE_SECRET: "",
+      CMS_SPACE_URL: "nota-url",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2023-10-01",
+      CART_COOKIE_SECRET: "cart-secret",
+      NEXTAUTH_SECRET: "",
+      SESSION_SECRET: "",
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(import("../index.ts")).rejects.toThrow(
+    expect(() => require("../index.ts")).toThrow(
       "Invalid environment variables",
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid environment variables:",
       expect.objectContaining({
-        CART_COOKIE_SECRET: { _errors: [expect.any(String)] },
+        CMS_SPACE_URL: { _errors: [expect.any(String)] },
+        NEXTAUTH_SECRET: { _errors: [expect.any(String)] },
+        SESSION_SECRET: { _errors: [expect.any(String)] },
       }),
     );
     errorSpy.mockRestore();

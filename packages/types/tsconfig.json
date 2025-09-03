@@ -18,7 +18,5 @@
     "src/**/*",
     "src/**/*.json"
   ],
-  "references": [
-    { "path": "../i18n" }
-  ]
+  "references": []
 }

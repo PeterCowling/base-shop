@@ -7,15 +7,23 @@ interface ColorInputProps {
   onChange: (value: string) => void;
 }
 
-function hexToRgb(hex: string): [number, number, number] {
+export function hexToRgb(hex: string): [number, number, number] {
+  let value = hex.replace("#", "");
+  if (value.length === 3) {
+    value = value
+      .split("")
+      .map((c) => c + c)
+      .join("");
+  }
+
   return [
-    parseInt(hex.slice(1, 3), 16),
-    parseInt(hex.slice(3, 5), 16),
-    parseInt(hex.slice(5, 7), 16),
+    parseInt(value.slice(0, 2), 16),
+    parseInt(value.slice(2, 4), 16),
+    parseInt(value.slice(4, 6), 16),
   ];
 }
 
-function hslToRgb(hsl: string): [number, number, number] {
+export function hslToRgb(hsl: string): [number, number, number] {
   const [h, s, l] = hsl
     .split(" ")
     .map((p: string, i: number) =>
@@ -55,11 +63,11 @@ function hslToRgb(hsl: string): [number, number, number] {
   ];
 }
 
-function colorToRgb(color: string): [number, number, number] {
+export function colorToRgb(color: string): [number, number, number] {
   return color.startsWith("#") ? hexToRgb(color) : hslToRgb(color);
 }
 
-function luminance(rgb: [number, number, number]): number {
+export function luminance(rgb: [number, number, number]): number {
   const [r, g, b] = rgb.map((v) => {
     const c = v / 255;
     return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);

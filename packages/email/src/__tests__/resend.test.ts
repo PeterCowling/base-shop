@@ -91,9 +91,11 @@ describe("ResendProvider", () => {
     expect(send).not.toHaveBeenCalled();
   });
 
-  it("getCampaignStats returns fallback on fetch failure", async () => {
+  it("getCampaignStats returns fallback when json rejects", async () => {
     process.env.RESEND_API_KEY = "rs";
-    global.fetch = jest.fn().mockRejectedValueOnce(new Error("fail")) as any;
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      json: jest.fn().mockRejectedValueOnce(new Error("fail")),
+    }) as any;
     const { ResendProvider } = await import("../providers/resend");
     const provider = new ResendProvider();
     const { emptyStats } = await import("../stats");
@@ -119,6 +121,16 @@ describe("ResendProvider", () => {
   it("listSegments returns [] when fetch rejects", async () => {
     process.env.RESEND_API_KEY = "rs";
     global.fetch = jest.fn().mockRejectedValueOnce(new Error("fail")) as any;
+    const { ResendProvider } = await import("../providers/resend");
+    const provider = new ResendProvider();
+    await expect(provider.listSegments()).resolves.toEqual([]);
+  });
+
+  it("listSegments returns [] when json rejects", async () => {
+    process.env.RESEND_API_KEY = "rs";
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      json: jest.fn().mockRejectedValueOnce(new Error("fail")),
+    }) as any;
     const { ResendProvider } = await import("../providers/resend");
     const provider = new ResendProvider();
     await expect(provider.listSegments()).resolves.toEqual([]);

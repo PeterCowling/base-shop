@@ -1,0 +1,95 @@
+import { add, duplicate, move, remove, resize, setGridCols } from "../layout";
+import type { HistoryState, PageComponent } from "@acme/types";
+
+describe("layout helper coordinate and size updates", () => {
+  const init: HistoryState = { past: [], present: [], future: [], gridCols: 12 };
+  const makeComp = (
+    id: string,
+    overrides: Partial<PageComponent> = {},
+  ): PageComponent => ({
+    id,
+    type: "Box",
+    left: "1px",
+    top: "2px",
+    width: "10px",
+    height: "5px",
+    ...overrides,
+  });
+
+  it("add keeps component coordinates and sizes", () => {
+    const a = makeComp("a");
+    const state = add(init, { type: "add", component: a });
+    expect(state.present[0]).toMatchObject({
+      left: "1px",
+      top: "2px",
+      width: "10px",
+      height: "5px",
+    });
+  });
+
+  it("duplicate copies coordinates and sizes", () => {
+    const a = makeComp("a", { width: "15px", height: "20px", left: "3px", top: "4px" });
+    const state = duplicate({ ...init, present: [a] }, { type: "duplicate", id: "a" });
+    const clone = state.present[1];
+    expect(clone).toMatchObject({
+      left: "3px",
+      top: "4px",
+      width: "15px",
+      height: "20px",
+    });
+  });
+
+  it("move does not change coordinates", () => {
+    const a = makeComp("a", { left: "0px", top: "0px", width: "10px", height: "10px" });
+    const b = makeComp("b", { left: "5px", top: "5px", width: "20px", height: "20px" });
+    const state = move(
+      { ...init, present: [a, b] },
+      { type: "move", from: { index: 0 }, to: { index: 1 } },
+    );
+    expect(state.present[1]).toMatchObject({
+      id: "a",
+      left: "0px",
+      top: "0px",
+      width: "10px",
+      height: "10px",
+    });
+    expect(state.present[0]).toMatchObject({
+      id: "b",
+      left: "5px",
+      top: "5px",
+      width: "20px",
+      height: "20px",
+    });
+  });
+
+  it("remove keeps remaining component coordinates", () => {
+    const a = makeComp("a");
+    const b = makeComp("b", { left: "5px" });
+    const state = remove(
+      { ...init, present: [a, b] },
+      { type: "remove", id: "a" },
+    );
+    expect(state.present).toHaveLength(1);
+    expect(state.present[0]).toMatchObject({ id: "b", left: "5px" });
+  });
+
+  it("resize normalizes numeric values", () => {
+    const a = makeComp("a");
+    const state = resize(
+      { ...init, present: [a] },
+      { type: "resize", id: "a", width: "20", height: "30", left: "5", top: "" },
+    );
+    const updated = state.present[0] as PageComponent & Record<string, string | undefined>;
+    expect(updated.width).toBe("20px");
+    expect(updated.height).toBe("30px");
+    expect(updated.left).toBe("5px");
+    // Blank top value leaves existing offset untouched
+    expect(updated.top).toBe("2px");
+  });
+
+  it("setGridCols updates grid column count", () => {
+    const state = setGridCols(init, { type: "set-grid-cols", gridCols: 24 });
+    expect(state.gridCols).toBe(24);
+    expect(state.present).toEqual(init.present);
+  });
+});

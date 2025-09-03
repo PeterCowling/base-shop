@@ -2,7 +2,7 @@
 
 import { spawnSync } from "child_process";
 import { join } from "path";
-import { writeFileSync } from "fs";
+import { writeFileSync, mkdirSync } from "fs";
 
 import type { DeployShopResult } from "./deployTypes";
 
@@ -38,7 +38,9 @@ export class CloudflareDeploymentAdapter implements ShopDeploymentAdapter {
 
   writeDeployInfo(id: string, info: DeployShopResult): void {
     try {
-      const file = join("data", "shops", id, "deploy.json");
+      const dir = join("data", "shops", id);
+      mkdirSync(dir, { recursive: true });
+      const file = join(dir, "deploy.json");
       writeFileSync(file, JSON.stringify(info, null, 2));
     } catch {
       // ignore write errors

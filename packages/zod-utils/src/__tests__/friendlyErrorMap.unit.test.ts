@@ -118,5 +118,19 @@ describe("friendlyErrorMap", () => {
     } as const;
     expect(friendlyErrorMap(issue, ctx).message).toBe("Boom");
   });
+
+  test("default case with ctx default error", () => {
+    const issue = {
+      code: ZodIssueCode.custom,
+      path: [],
+    } as const;
+    const customCtx = {
+      defaultError: "Ctx default message",
+      data: undefined,
+    } as const;
+    expect(friendlyErrorMap(issue, customCtx).message).toBe(
+      "Ctx default message",
+    );
+  });
 });
 

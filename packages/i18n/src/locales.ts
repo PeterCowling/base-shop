@@ -1,6 +1,8 @@
 // packages/i18n/src/locales.ts
-export const LOCALES = ["en", "de", "it"] as const;
-export type Locale = (typeof LOCALES)[number];
+import { LOCALES } from "@acme/types";
+import type { Locale } from "@acme/types";
+export { LOCALES };
+export type { Locale };
 
 export function assertLocales(
   value: unknown

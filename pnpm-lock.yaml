@@ -663,6 +663,10 @@ importers:
         version: 9.30.1(jiti@2.4.2)
 
   packages/i18n:
+    dependencies:
+      '@acme/types':
+        specifier: workspace:*
+        version: link:../types
     devDependencies:
       next:
         specifier: ^15.3.5
@@ -879,10 +883,6 @@ importers:
   packages/themes/dark: {}
 
   packages/types:
-    dependencies:
-      '@acme/i18n':
-        specifier: workspace:*
-        version: link:../i18n
     devDependencies:
       next:
         specifier: ^15.3.5

@@ -56,6 +56,10 @@ describe("sendCampaignEmail", () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";
   };
 
+  beforeEach(() => {
+    jest.useRealTimers();
+  });
+
   afterEach(() => {
     jest.resetModules();
     jest.resetAllMocks();

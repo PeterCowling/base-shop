@@ -15,8 +15,8 @@ import de_ from "@i18n/de.json";
 import it_ from "@i18n/it.json";
 import type { Messages } from "@/types/i18n";
 
-const de = de_ satisfies Messages ? de_ : de_;
-const it = it_ satisfies Messages ? it_ : it_;
+const de = de_ as Messages;
+const it = it_ as Messages;
 
 const MESSAGES: Record<Locale, Messages> = { en, de, it };
 

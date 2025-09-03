@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import StepHomePage from "../src/app/cms/configurator/steps/StepHomePage";
 import { STORAGE_KEY } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
 
@@ -115,7 +115,9 @@ describe("useEffect fetching existing page", () => {
 
   it("shows toast on error", async () => {
     apiRequest.mockResolvedValueOnce({ data: null, error: "load failed" });
-    setup();
+    await act(async () => {
+      setup();
+    });
     await screen.findByText("load failed");
   });
 });
@@ -159,10 +161,14 @@ describe("onSave and onPublish callbacks", () => {
       .mockResolvedValueOnce({ data: { id: "1" }, error: null })
       .mockResolvedValueOnce({ data: null, error: "save error" });
     const props = setup();
-    fireEvent.click(screen.getByText("save"));
+    await act(async () => {
+      fireEvent.click(screen.getByText("save"));
+    });
     await screen.findByText("Draft saved");
     expect(props.setHomePageId).toHaveBeenCalledWith("1");
-    fireEvent.click(screen.getByText("save"));
+    await act(async () => {
+      fireEvent.click(screen.getByText("save"));
+    });
     await screen.findByText("save error");
   });
 
@@ -172,10 +178,14 @@ describe("onSave and onPublish callbacks", () => {
       .mockResolvedValueOnce({ data: { id: "2" }, error: null })
       .mockResolvedValueOnce({ data: null, error: "publish error" });
     const props = setup();
-    fireEvent.click(screen.getByText("publish"));
+    await act(async () => {
+      fireEvent.click(screen.getByText("publish"));
+    });
     await screen.findByText("Page published");
     expect(props.setHomePageId).toHaveBeenCalledWith("2");
-    fireEvent.click(screen.getByText("publish"));
+    await act(async () => {
+      fireEvent.click(screen.getByText("publish"));
+    });
     await screen.findByText("publish error");
   });
 });

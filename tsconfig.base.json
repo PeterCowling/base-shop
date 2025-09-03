@@ -209,6 +209,14 @@
         "packages/tailwind-config/src/*",
         "packages/tailwind-config/dist/*"
       ],
+      "@acme/telemetry": [
+        "packages/telemetry/src/index.ts",
+        "packages/telemetry/dist/index.d.ts"
+      ],
+      "@acme/telemetry/*": [
+        "packages/telemetry/src/*",
+        "packages/telemetry/dist/*"
+      ],
       "@acme/zod-utils": [
         "packages/zod-utils/src/index.ts",
         "packages/zod-utils/dist/index.d.ts"

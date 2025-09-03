@@ -314,9 +314,9 @@ describe("syncCampaignAnalytics", () => {
       trackEvent,
     }));
 
-    const getCampaignStats = jest
-      .fn()
-      .mockRejectedValue(new Error("fail"));
+    const getCampaignStats = jest.fn(() => {
+      throw new Error("fail");
+    });
     jest.doMock("../providers/sendgrid", () => ({
       SendgridProvider: jest.fn().mockImplementation(() => ({
         getCampaignStats,
@@ -355,6 +355,33 @@ describe("syncCampaignAnalytics", () => {
       campaign: "c1",
       ...emptyStats,
     });
+  });
+
+  it("returns early when EMAIL_PROVIDER is unset", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    delete process.env.EMAIL_PROVIDER;
+
+    const trackEvent = jest.fn();
+    jest.doMock("@platform-core/analytics", () => ({
+      __esModule: true,
+      trackEvent,
+    }));
+    jest.doMock("../providers/sendgrid", () => ({
+      SendgridProvider: jest.fn(),
+    }));
+    jest.doMock("../providers/resend", () => ({
+      ResendProvider: jest.fn(),
+    }));
+
+    const getCampaignStore = jest.fn();
+    jest.doMock("../storage", () => ({ __esModule: true, getCampaignStore }));
+
+    const { syncCampaignAnalytics } = await import("../analytics");
+    await syncCampaignAnalytics();
+
+    expect(getCampaignStore).not.toHaveBeenCalled();
+    expect(trackEvent).not.toHaveBeenCalled();
   });
 
   it("exits without tracking when provider is unsupported", async () => {

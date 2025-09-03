@@ -33,14 +33,14 @@ describe("renderTemplate", () => {
                     "section",
                     { "data-idx": i },
                     child,
-                    ReactShim.createElement("span", null, "!"),
-                  ),
-                ),
+                    ReactShim.createElement("span", null, "!")
+                  )
+                )
               ),
           },
         ],
       }),
-      { virtual: true },
+      { virtual: true }
     );
 
     const { renderTemplate, __reactShim } = await import("../templates");
@@ -54,21 +54,20 @@ describe("renderTemplate", () => {
       body: "<p>Test</p>",
     });
     expect(html).toBe(
-      '<div className="outer"><h1>Hi</h1><section data-idx="0"><div><p>Test</p></div><span>!</span></section><section data-idx="1"><p>%%UNSUBSCRIBE%%</p><span>!</span></section></div>',
+      '<div className="outer"><h1>Hi</h1><section data-idx="0"><div><p>Test</p></div><span>!</span></section><section data-idx="1"><p>%%UNSUBSCRIBE%%</p><span>!</span></section></div>'
     );
     expect(ceSpy).toHaveBeenCalled();
     expect(iveSpy).toHaveBeenCalled();
     expect(mapSpy).toHaveBeenCalled();
     expect(__reactShim.Children.map(undefined as any, () => "")).toEqual([]);
     expect(__reactShim.Children.map(false as any, () => "")).toEqual([]);
-
   });
 
   it("registers and clears custom templates", async () => {
     jest.doMock(
       "@acme/email-templates",
       () => ({ __esModule: true, marketingEmailTemplates: [] }),
-      { virtual: true },
+      { virtual: true }
     );
     const { registerTemplate, renderTemplate, clearTemplates } = await import(
       "../templates"
@@ -77,7 +76,7 @@ describe("renderTemplate", () => {
     expect(renderTemplate("welcome", {})).toBe("<p>Hi</p>");
     clearTemplates();
     expect(() => renderTemplate("welcome", {})).toThrow(
-      "Unknown template: welcome",
+      "Unknown template: welcome"
     );
   });
 
@@ -85,7 +84,7 @@ describe("renderTemplate", () => {
     jest.doMock(
       "@acme/email-templates",
       () => ({ __esModule: true, marketingEmailTemplates: [] }),
-      { virtual: true },
+      { virtual: true }
     );
     const { registerTemplate, renderTemplate, clearTemplates } = await import(
       "../templates"
@@ -105,19 +104,18 @@ describe("renderTemplate", () => {
             id: "basic",
             label: "Basic",
             buildSubject: (h: string) => h,
-            make: ({ headline, content, footer }: any) => (
+            make: ({ headline, content, footer }: any) =>
               React.createElement(
                 "div",
                 null,
                 React.createElement("h1", null, headline),
                 content,
-                footer,
-              )
-            ),
+                footer
+              ),
           },
         ],
       }),
-      { virtual: true },
+      { virtual: true }
     );
 
     const { renderTemplate } = await import("../templates");
@@ -140,11 +138,12 @@ describe("renderTemplate", () => {
             id: "basic",
             label: "Basic",
             buildSubject: (h: string) => h,
-            make: ({ content }: any) => React.createElement("div", null, content),
+            make: ({ content }: any) =>
+              React.createElement("div", null, content),
           },
         ],
       }),
-      { virtual: true },
+      { virtual: true }
     );
 
     const { renderTemplate } = await import("../templates");
@@ -170,7 +169,7 @@ describe("renderTemplate", () => {
           },
         ],
       }),
-      { virtual: true },
+      { virtual: true }
     );
 
     const { renderTemplate } = await import("../templates");
@@ -191,16 +190,49 @@ describe("renderTemplate", () => {
               React.createElement(
                 "div",
                 null,
-                React.Children.map([false], () => null),
+                React.Children.map([false], () => null)
               ),
           },
         ],
       }),
-      { virtual: true },
+      { virtual: true }
     );
 
     const { renderTemplate } = await import("../templates");
     expect(renderTemplate("mapnull", {})).toBe("<div></div>");
+  });
+
+  it("renders empty string when Children.map returns undefined", async () => {
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({
+        __esModule: true,
+        marketingEmailTemplates: [
+          {
+            id: "mapundef",
+            label: "MapUndef",
+            buildSubject: (h: string) => h,
+            make: () =>
+              React.createElement(
+                "div",
+                null,
+                React.createElement("span", null, "Hi")
+              ),
+          },
+        ],
+      }),
+      { virtual: true }
+    );
+
+    const { renderTemplate, __reactShim } = await import("../templates");
+    const original = __reactShim.Children.map;
+    __reactShim.Children.map = jest.fn(() => undefined as any);
+
+    try {
+      expect(renderTemplate("mapundef", {})).toBe("<div></div>");
+    } finally {
+      __reactShim.Children.map = original;
+    }
   });
 
   it("renders elements using dangerouslySetInnerHTML", async () => {
@@ -220,7 +252,7 @@ describe("renderTemplate", () => {
           },
         ],
       }),
-      { virtual: true },
+      { virtual: true }
     );
 
     const { renderTemplate } = await import("../templates");
@@ -233,9 +265,24 @@ describe("renderTemplate", () => {
       () => ({
         __esModule: true,
         marketingEmailTemplates: [
-          { id: "null", label: "Null", buildSubject: (h: string) => h, make: () => null },
-          { id: "bool", label: "Bool", buildSubject: (h: string) => h, make: () => true },
-          { id: "num", label: "Num", buildSubject: (h: string) => h, make: () => 123 },
+          {
+            id: "null",
+            label: "Null",
+            buildSubject: (h: string) => h,
+            make: () => null,
+          },
+          {
+            id: "bool",
+            label: "Bool",
+            buildSubject: (h: string) => h,
+            make: () => true,
+          },
+          {
+            id: "num",
+            label: "Num",
+            buildSubject: (h: string) => h,
+            make: () => 123,
+          },
           {
             id: "array",
             label: "Array",
@@ -245,7 +292,12 @@ describe("renderTemplate", () => {
               [React.createElement("p", null, "B")],
             ],
           },
-          { id: "invalid", label: "Invalid", buildSubject: (h: string) => h, make: () => ({}) as any },
+          {
+            id: "invalid",
+            label: "Invalid",
+            buildSubject: (h: string) => h,
+            make: () => ({}) as any,
+          },
           {
             id: "attrs",
             label: "Attrs",
@@ -255,7 +307,7 @@ describe("renderTemplate", () => {
           },
         ],
       }),
-      { virtual: true },
+      { virtual: true }
     );
 
     const { renderTemplate } = await import("../templates");
@@ -265,7 +317,7 @@ describe("renderTemplate", () => {
     expect(renderTemplate("array", {})).toBe("<p>A</p><p>B</p>");
     expect(renderTemplate("invalid", {})).toBe("");
     expect(renderTemplate("attrs", {})).toBe(
-      '<div id="x" className="y">Hi</div>',
+      '<div id="x" className="y">Hi</div>'
     );
   });
 
@@ -273,13 +325,12 @@ describe("renderTemplate", () => {
     jest.doMock(
       "@acme/email-templates",
       () => ({ __esModule: true, marketingEmailTemplates: [] }),
-      { virtual: true },
+      { virtual: true }
     );
 
     const { renderTemplate } = await import("../templates");
     expect(() => renderTemplate("nonexistent", {})).toThrow(
-      "Unknown template: nonexistent",
+      "Unknown template: nonexistent"
     );
   });
 });
-

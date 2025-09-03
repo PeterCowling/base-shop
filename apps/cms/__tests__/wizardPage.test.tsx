@@ -63,11 +63,9 @@ describe("WizardPage", () => {
       // environments Jest’s module cache can be cleared which leaves React
       // undefined when `react-dom/server` evaluates.
       await import("react");
-      // Use the CommonJS build of `react-dom/server`. Loading it via `require`
-      // avoids crashes in environments where the ESM loader is missing the
-      // legacy `exports` object the module expects.
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const { renderToStaticMarkup } = require("react-dom/server");
+      // Load the server renderer via dynamic import so it works in both CJS
+      // and ESM environments.
+      const { renderToStaticMarkup } = await import("react-dom/server");
       const { default: WizardPage } = await import(
         "../src/app/cms/wizard/page"
       );

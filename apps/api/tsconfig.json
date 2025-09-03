@@ -26,5 +26,8 @@
     "**/__tests__/**",
     "**/*.spec.*",
     "**/*.test.*"
+  ],
+  "references": [
+    { "path": "../../packages/lib" }
   ]
 }

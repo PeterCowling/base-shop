@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendCampaignEmail } from "@acme/email";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const { to, subject, body } = (await req.json().catch(() => ({}))) as {
@@ -13,6 +12,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   try {
+    const { sendCampaignEmail } = await import("@acme/email");
     await sendCampaignEmail({ to, subject, html: body });
     return NextResponse.json({ ok: true });
   } catch {

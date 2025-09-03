@@ -28,6 +28,20 @@ describe('parseJsonBody', () => {
     });
   });
 
+  it('returns an error response when json() throws a SyntaxError', async () => {
+    const req = {
+      json: async () => {
+        throw new SyntaxError('Unexpected token');
+      },
+    } as unknown as Request;
+    const result = await parseJsonBody(req, schema, '1mb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({
+      error: 'Invalid JSON',
+    });
+  });
+
   it('falls back to json() for non-string bodies', async () => {
     const req = { json: async () => ({ foo: 'bar' }) } as unknown as Request;
     const result = await parseJsonBody(req, schema, '1mb');

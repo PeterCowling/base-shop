@@ -227,12 +227,15 @@ describe("auth env module", () => {
       LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
       LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
     } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     const { authEnv } = await import("../auth.ts");
     expect(authEnv).toMatchObject({
       LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
       LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
     });
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
   });
 
   it(
@@ -258,6 +261,7 @@ describe("auth env module", () => {
           LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
         }),
       );
+      expect(errorSpy).toHaveBeenCalledTimes(1);
       errorSpy.mockRestore();
     },
   );
@@ -285,6 +289,7 @@ describe("auth env module", () => {
           LOGIN_RATE_LIMIT_REDIS_TOKEN: { _errors: [expect.any(String)] },
         }),
       );
+      expect(errorSpy).toHaveBeenCalledTimes(1);
       errorSpy.mockRestore();
     },
   );

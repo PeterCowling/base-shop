@@ -139,8 +139,10 @@ const config = {
     ],
   },
   transformIgnorePatterns: [
-    // Transpile ESM‑only dependencies that would break under CommonJS
-    '/node_modules/(?!(jose|next-auth|ulid|@upstash/redis|uncrypto)/)',
+    // Transpile ESM‑only dependencies that would break under CommonJS.
+    // Also ensure internal "@acme" workspace packages are transformed so
+    // their ESM builds can run in Jest.
+    '/node_modules/(?!(jose|next-auth|ulid|@upstash/redis|uncrypto|@acme)/)',
   ],
   setupFiles: ['dotenv/config', ' /test/setupFetchPolyfill.ts'],
   setupFilesAfterEnv: [' /jest.setup.ts', ' /test/polyfills/messageChannel.js'],

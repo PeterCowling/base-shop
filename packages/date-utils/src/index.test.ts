@@ -1,4 +1,10 @@
-import { calculateRentalDays, parseTargetDate, formatDuration, isoDateInNDays } from "./index";
+import {
+  calculateRentalDays,
+  parseTargetDate,
+  getTimeRemaining,
+  formatDuration,
+  isoDateInNDays,
+} from "./index";
 
 describe("calculateRentalDays", () => {
   beforeEach(() => {
@@ -33,6 +39,23 @@ describe("parseTargetDate", () => {
   });
   it("returns null for invalid timezones", () => {
     expect(parseTargetDate("2025-01-01T00:00:00", "Invalid/Zone")).toBeNull();
+  });
+});
+
+describe("getTimeRemaining", () => {
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+  it("returns positive milliseconds for future target", () => {
+    const target = new Date("2025-01-01T00:00:10Z");
+    expect(getTimeRemaining(target)).toBe(10000);
+  });
+  it("returns negative milliseconds for past target", () => {
+    const target = new Date("2024-12-31T23:59:50Z");
+    expect(getTimeRemaining(target)).toBe(-10000);
   });
 });
 

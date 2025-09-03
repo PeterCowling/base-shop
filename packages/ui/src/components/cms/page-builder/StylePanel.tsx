@@ -4,7 +4,6 @@
 import type { PageComponent } from "@acme/types";
 import type { StyleOverrides } from "../../../../../types/src/style/StyleOverrides";
 import { Input } from "../../atoms/shadcn";
-import { track } from "@acme/telemetry";
 import { useTranslations } from "@acme/i18n";
 import useContrastWarnings from "../../../hooks/useContrastWarnings";
 
@@ -36,7 +35,9 @@ export default function StylePanel({ component, handleInput }: Props) {
       next.typography = { ...typography, [key]: value };
     }
     handleInput("styles", JSON.stringify(next));
-    track("stylepanel:update", { group, key });
+    void import("@acme/telemetry")
+      .then(({ track }) => track("stylepanel:update", { group, key }))
+      .catch(() => {});
   };
 
   return (

@@ -140,6 +140,7 @@ describe("auth env module", () => {
       UPSTASH_REDIS_REST_URL: "https://example.com",
       UPSTASH_REDIS_REST_TOKEN: "token",
     } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     const { authEnv } = await import("../auth.ts");
     expect(authEnv).toMatchObject({
@@ -147,6 +148,8 @@ describe("auth env module", () => {
       UPSTASH_REDIS_REST_URL: "https://example.com",
       UPSTASH_REDIS_REST_TOKEN: "token",
     });
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
   });
 
   it("throws when redis session store credentials are missing", async () => {
@@ -186,12 +189,13 @@ describe("auth env module", () => {
     await expect(import("../auth.ts")).rejects.toThrow(
       "Invalid auth environment variables",
     );
-    expect(errorSpy).toHaveBeenCalled();
-    const issues = errorSpy.mock.calls.at(-1)[1];
-    expect(issues).toEqual({
-      UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
-      _errors: [],
-    });
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
+      }),
+    );
+    expect(errorSpy).toHaveBeenCalledTimes(1);
     errorSpy.mockRestore();
   });
 
@@ -209,12 +213,13 @@ describe("auth env module", () => {
     await expect(import("../auth.ts")).rejects.toThrow(
       "Invalid auth environment variables",
     );
-    expect(errorSpy).toHaveBeenCalled();
-    const issues = errorSpy.mock.calls.at(-1)[1];
-    expect(issues).toEqual({
-      UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
-      _errors: [],
-    });
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
+      }),
+    );
+    expect(errorSpy).toHaveBeenCalledTimes(1);
     errorSpy.mockRestore();
   });
 

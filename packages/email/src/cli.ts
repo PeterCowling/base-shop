@@ -1,4 +1,3 @@
-#!/usr/bin/env tsx
 import { Command } from "commander";
 import { promises as fs } from "fs";
 import * as fsSync from "fs";

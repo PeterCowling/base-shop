@@ -53,7 +53,28 @@ describe("email env module", () => {
     errorSpy.mockRestore();
   });
 
-  it("throws and logs structured error for invalid SMTP_URL", async () => {
+  it("logs structured error when SENDGRID_API_KEY is missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      EMAIL_PROVIDER: "sendgrid",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../email.ts")).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid email environment variables:",
+      expect.objectContaining({
+        SENDGRID_API_KEY: { _errors: [expect.stringContaining("Required")] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("logs structured error for invalid SMTP_URL", async () => {
     process.env = {
       ...ORIGINAL_ENV,
       SMTP_URL: "not-a-url",
@@ -74,31 +95,8 @@ describe("email env module", () => {
     errorSpy.mockRestore();
   });
 
-  it(
-    "throws and logs error when SENDGRID_API_KEY is missing for sendgrid provider",
-    async () => {
-      process.env = {
-        ...ORIGINAL_ENV,
-        EMAIL_PROVIDER: "sendgrid",
-      } as NodeJS.ProcessEnv;
-      const errorSpy = jest
-        .spyOn(console, "error")
-        .mockImplementation(() => {});
-      jest.resetModules();
-      await expect(import("../email.ts")).rejects.toThrow(
-        "Invalid email environment variables",
-      );
-      expect(errorSpy).toHaveBeenCalledWith(
-        "❌ Invalid email environment variables:",
-        expect.objectContaining({
-          SENDGRID_API_KEY: {
-            _errors: [expect.stringContaining("Required")],
-          },
-        }),
-      );
-      errorSpy.mockRestore();
-    },
-  );
+  // Previous coverage for SENDGRID_API_KEY and SMTP_URL errors has been
+  // consolidated into the dedicated tests above.
 
   it(
     "does not throw when RESEND_API_KEY is missing for resend provider",

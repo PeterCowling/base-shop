@@ -91,4 +91,24 @@ describe("db", () => {
     const orders = await prisma.rentalOrder.findMany({ where: { shop: "s" } });
     expect(orders).toHaveLength(1);
   });
+
+  it("passes DATABASE_URL to PrismaClient", async () => {
+    process.env.NODE_ENV = "production";
+    const databaseUrl = "postgres://from-core-env";
+    jest.doMock("@acme/config/env/core", () => ({
+      loadCoreEnv: () => ({ DATABASE_URL: databaseUrl }),
+    }));
+    const PrismaClientMock = jest.fn().mockImplementation(() => ({}));
+    jest.doMock(
+      "@prisma/client",
+      () => ({ PrismaClient: PrismaClientMock }),
+      { virtual: true }
+    );
+
+    await import("./db");
+
+    expect(PrismaClientMock).toHaveBeenCalledWith({
+      datasources: { db: { url: databaseUrl } },
+    });
+  });
 });

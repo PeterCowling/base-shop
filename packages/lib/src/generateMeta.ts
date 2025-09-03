@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
-import path from "path";
-import { env } from "@acme/config";
+import * as path from "path";
+import { coreEnv as env } from "@acme/config/env/core";
 
 export interface ProductData {
   id: string;
@@ -16,13 +16,12 @@ export interface GeneratedMeta {
 }
 
 /**
- * Generate metadata for a product using an LLM and image model. If the
- * `OPENAI_API_KEY` environment variable is not set or the OpenAI client cannot
- * be loaded, the function falls back to returning the provided product data
- * without attempting any network calls.
+ * Generate metadata for a product using an LLM and image model.  When
+ * the OPENAI_API_KEY environment variable is unset, the function returns
+ * deterministic fallback data rather than hitting the network.
  *
- * Generated images are written to `public/og/<id>.png` and the returned
- * `image` field is the public path.
+ * @param product the product being described
+ * @returns SEO metadata including title, description, alt text and image path
  */
 export async function generateMeta(product: ProductData): Promise<GeneratedMeta> {
   const fallback: GeneratedMeta = {
@@ -32,9 +31,7 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
     image: `/og/${product.id}.png`,
   };
 
-  // When running tests we want to exercise the AI generation path without
-  // incurring the cost of loading the real OpenAI client. Return deterministic
-  // values that mirror the mocked client instead of hitting the network.
+  // In test or when the key is absent, avoid calling the OpenAI API.
   if (!env.OPENAI_API_KEY) {
     if (process.env.NODE_ENV === "test") {
       return {
@@ -47,14 +44,13 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
     return fallback;
   }
 
-  // The official OpenAI SDK has gone through a few export styles. Attempt to
-  // resolve the constructor from either a default export or a named export so
-  // that our code continues to work regardless of the installed version. If we
-  // can't find a usable constructor we simply return the fallback metadata.
-  let OpenAIConstructor: new (init: { apiKey: string }) => {
-    responses: { create: (...args: any[]) => Promise<any> };
-    images: { generate: (...args: any[]) => Promise<any> };
-  };
+  // Resolve the OpenAI constructor from the library to support multiple SDK versions.
+  let OpenAIConstructor:
+    | (new (init: { apiKey: string }) => {
+        responses: { create: (...args: any[]) => Promise<any> };
+        images: { generate: (...args: any[]) => Promise<any> };
+      })
+    | undefined;
   if ((globalThis as any).__OPENAI_IMPORT_ERROR__) {
     return fallback;
   }
@@ -77,9 +73,9 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
     return fallback;
   }
 
-    const client = new OpenAIConstructor({
-      apiKey: env.OPENAI_API_KEY as string,
-    });
+  const client = new OpenAIConstructor({
+    apiKey: env.OPENAI_API_KEY as string,
+  });
 
   const prompt = `Generate SEO metadata for a product as JSON with keys title, description, alt.\n\nTitle: ${product.title}\nDescription: ${product.description}`;
 
@@ -88,11 +84,7 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
     input: prompt,
   });
 
-  const data: { title: string; description: string; alt: string } = {
-    title: product.title,
-    description: product.description,
-    alt: product.title,
-  };
+  const data: GeneratedMeta = { ...fallback };
   try {
     const first = text.output?.[0];
     const output = (first && "content" in first ? first.content?.[0] : undefined) as
@@ -112,9 +104,10 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
       data.alt = parsed.alt ?? data.alt;
     }
   } catch {
-    // fall back to defaults
+    // ignore parse errors and use fallback values
   }
 
+  // Generate a product image.  Save the returned base64 image to /public/og/{id}.png.
   const img = await client.images.generate({
     model: "gpt-image-1",
     prompt: `Generate a 1200x630 social media share image for ${product.title}`,
@@ -126,10 +119,5 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
   await fs.mkdir(path.dirname(file), { recursive: true });
   await fs.writeFile(file, buffer);
 
-  return {
-    title: data.title,
-    description: data.description,
-    alt: data.alt,
-    image: `/og/${product.id}.png`,
-  };
+  return data;
 }

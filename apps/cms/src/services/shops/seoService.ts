@@ -1,3 +1,4 @@
+import { revalidatePath } from "next/cache";
 import type { Locale, ShopSeoFields, ShopSettings } from "@acme/types";
 import { authorize, fetchSettings, persistSettings, fetchDiffHistory } from "./helpers";
 import { parseSeoForm, parseGenerateSeoForm } from "./validation";
@@ -25,20 +26,33 @@ export async function updateSeo(
 
   const current = await fetchSettings(shop);
   const seo = { ...(current.seo ?? {}) } as Record<Locale, ShopSeoFields>;
+  const existing = seo[locale] ?? {};
   seo[locale] = {
+    ...existing,
     title,
     description,
-    image,
-    alt,
-    canonicalBase,
-    openGraph: ogUrl ? { url: ogUrl } : undefined,
-    twitter: twitterCard ? { card: twitterCard } : undefined,
+    ...(image ? { image } : {}),
+    ...(alt ? { alt } : {}),
+    ...(canonicalBase ? { canonicalBase } : {}),
+    ...(ogUrl
+      ? { openGraph: { ...(existing.openGraph ?? {}), url: ogUrl } }
+      : {}),
+    ...(twitterCard
+      ? { twitter: { ...(existing.twitter ?? {}), card: twitterCard } }
+      : {}),
   };
   const updated: ShopSettings = {
     ...current,
     seo,
   };
-  await persistSettings(shop, updated);
+  try {
+    await persistSettings(shop, updated);
+  } catch (err) {
+    console.error(`[updateSeo] failed to persist settings for shop ${shop}`, err);
+    return { errors: { _global: ["Failed to persist settings"] } };
+  }
+
+  revalidatePath(`/cms/shop/${shop}/settings/seo`);
 
   return { settings: updated, warnings };
 }

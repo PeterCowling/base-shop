@@ -56,6 +56,8 @@ describe("email env module", () => {
   it("throws and logs structured error for invalid SMTP_URL", async () => {
     process.env = {
       ...ORIGINAL_ENV,
+      EMAIL_PROVIDER: "sendgrid",
+      SENDGRID_API_KEY: "key",
       SMTP_URL: "not-a-url",
     } as NodeJS.ProcessEnv;
     const errorSpy = jest
@@ -75,7 +77,7 @@ describe("email env module", () => {
   });
 
   it(
-    "does not throw when SENDGRID_API_KEY is missing for sendgrid provider",
+    "throws and logs structured error when SENDGRID_API_KEY is missing for sendgrid provider",
     async () => {
       process.env = {
         ...ORIGINAL_ENV,
@@ -85,9 +87,15 @@ describe("email env module", () => {
         .spyOn(console, "error")
         .mockImplementation(() => {});
       jest.resetModules();
-      const { emailEnv } = await import("../email.ts");
-      expect(errorSpy).not.toHaveBeenCalled();
-      expect(emailEnv).toMatchObject({ EMAIL_PROVIDER: "sendgrid" });
+      await expect(import("../email.ts")).rejects.toThrow(
+        "Invalid email environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid email environment variables:",
+        expect.objectContaining({
+          SENDGRID_API_KEY: { _errors: [expect.stringContaining("Required")] },
+        }),
+      );
       errorSpy.mockRestore();
     },
   );

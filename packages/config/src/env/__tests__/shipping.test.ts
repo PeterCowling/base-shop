@@ -472,5 +472,39 @@ describe("shipping env module", () => {
     expect(errorSpy).not.toHaveBeenCalled();
     errorSpy.mockRestore();
   });
+
+  it("loadShippingEnv logs and throws on numeric UPS_KEY", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => loadShippingEnv({ UPS_KEY: 123 as any })).toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        UPS_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("eager parse fails when DHL_KEY is null", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      DHL_KEY: null as any,
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../shipping.ts")).rejects.toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        DHL_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
 });
 

@@ -451,3 +451,105 @@ describe("auth env module", () => {
   });
 });
 
+describe("authEnvSchema", () => {
+  const ORIGINAL_ENV = process.env;
+
+  afterEach(() => {
+    jest.resetModules();
+    process.env = ORIGINAL_ENV;
+  });
+
+  const baseEnv = {
+    NEXTAUTH_SECRET: "next-secret",
+    SESSION_SECRET: "session-secret",
+  } as const;
+
+  it("errors when redis session store URL is missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({
+      ...baseEnv,
+      SESSION_STORE: "redis",
+      UPSTASH_REDIS_REST_TOKEN: "token",
+    });
+    expect(result.success).toBe(false);
+    expect(result.error.format()).toMatchObject({
+      UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
+    });
+  });
+
+  it("errors when redis session store token is missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({
+      ...baseEnv,
+      SESSION_STORE: "redis",
+      UPSTASH_REDIS_REST_URL: "https://example.com",
+    });
+    expect(result.success).toBe(false);
+    expect(result.error.format()).toMatchObject({
+      UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
+    });
+  });
+
+  it("errors when LOGIN_RATE_LIMIT_REDIS_URL is set without token", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({
+      ...baseEnv,
+      LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
+    });
+    expect(result.success).toBe(false);
+    expect(result.error.format()).toMatchObject({
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: { _errors: [expect.any(String)] },
+    });
+  });
+
+  it("errors when LOGIN_RATE_LIMIT_REDIS_TOKEN is set without URL", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({
+      ...baseEnv,
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+    });
+    expect(result.success).toBe(false);
+    expect(result.error.format()).toMatchObject({
+      LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
+    });
+  });
+
+  it("parses valid redis configuration", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({
+      ...baseEnv,
+      SESSION_STORE: "redis",
+      UPSTASH_REDIS_REST_URL: "https://example.com",
+      UPSTASH_REDIS_REST_TOKEN: "token",
+      LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+    });
+    expect(result.success).toBe(true);
+  });
+});
+

@@ -25,7 +25,8 @@ tsc -b
 ```
 
 ## Common Errors
-TS6305 indicates a missing build output or misconfigured reference. Clean the build and ensure the project reference is configured correctly.
+- **TS6305**: Build outputs are missing or stale. Clean the project (rimraf dist tsconfig.tsbuildinfo) and rebuild.
+- **TS6202**: Circular project references. Update references to remove cycles.
 
 ## CI Expectations
-`pnpm run check:references` and the TypeScript build must pass on a clean clone.
+`pnpm run check:references` and `pnpm run build:ts` must pass on a clean checkout.

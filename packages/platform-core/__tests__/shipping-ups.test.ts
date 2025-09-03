@@ -57,6 +57,26 @@ describe('createReturnLabel', () => {
       }),
     );
   });
+
+  it('falls back when fetch response is not ok', async () => {
+    mockEnv.UPS_KEY = 'ups-key';
+    fetchMock.mockResolvedValue({ ok: false });
+    const result = await createReturnLabel('session');
+    expect(result).toEqual({
+      trackingNumber: '1Z1234567891',
+      labelUrl: 'https://www.ups.com/track?loc=en_US&tracknum=1Z1234567891',
+    });
+  });
+
+  it('falls back when fetch throws', async () => {
+    mockEnv.UPS_KEY = 'ups-key';
+    fetchMock.mockRejectedValue(new Error('network'));
+    const result = await createReturnLabel('session');
+    expect(result).toEqual({
+      trackingNumber: '1Z1234567891',
+      labelUrl: 'https://www.ups.com/track?loc=en_US&tracknum=1Z1234567891',
+    });
+  });
 });
 
 describe('getStatus', () => {

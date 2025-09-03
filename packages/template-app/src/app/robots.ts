@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
-import { coreEnv } from "@acme/config/env/core";
+import { loadCoreEnv } from "@acme/config/env/core";
 
 export default function robots(): MetadataRoute.Robots {
+    const { NEXT_PUBLIC_BASE_URL } = loadCoreEnv();
     const base =
-      (coreEnv.NEXT_PUBLIC_BASE_URL as string | undefined) ||
+      (NEXT_PUBLIC_BASE_URL as string | undefined) ||
       "http://localhost:3000";
   return {
     rules: [

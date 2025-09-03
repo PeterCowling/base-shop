@@ -15,6 +15,7 @@ import {
   prepareOptions,
   createShopOptionsSchema as baseCreateShopOptionsSchema,
   type CreateShopOptions,
+  type PreparedCreateShopOptions,
 } from "./schema";
 import { loadTokens } from "./themeUtils";
 import type { DeployStatusBase, DeployShopResult } from "./deployTypes";
@@ -84,11 +85,13 @@ export async function createShop(
 
   if (prepared.pages.length) {
     await prisma.page.createMany({
-      data: prepared.pages.map((p) => ({
-        shopId: id,
-        slug: p.slug,
-        data: p as unknown,
-      })),
+      data: prepared.pages.map(
+        (p: PreparedCreateShopOptions["pages"][number]) => ({
+          shopId: id,
+          slug: p.slug,
+          data: p,
+        }),
+      ),
     });
   }
 

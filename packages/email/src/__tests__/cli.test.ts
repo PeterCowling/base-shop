@@ -3,7 +3,6 @@ import path from "path";
 jest.setTimeout(10000);
 
 const files: Record<string, string> = {};
-const dirs = new Set<string>();
 
 const fsMock = {
   promises: {
@@ -14,11 +13,9 @@ const fsMock = {
     writeFile: jest.fn(async (p: string, data: string) => {
       files[p] = data;
     }),
-    mkdir: jest.fn(async (p: string) => {
-      dirs.add(p);
-    }),
+    mkdir: jest.fn(async () => {}),
   },
-  existsSync: jest.fn((p: string) => dirs.has(p)),
+  existsSync: jest.fn(() => false),
 };
 
 jest.mock("fs", () => fsMock as unknown, { virtual: true });
@@ -26,19 +23,14 @@ jest.mock("fs", () => fsMock as unknown, { virtual: true });
 const sendDueCampaigns = jest.fn();
 jest.mock("../scheduler", () => ({ sendDueCampaigns }));
 
-const realFs = jest.requireActual("fs") as typeof import("fs");
-function computeDataRoot(): string {
-  let dir = process.cwd();
-  while (true) {
-    const candidate = path.join(dir, "data", "shops");
-    if (realFs.existsSync(candidate)) return candidate;
-    const parent = path.dirname(dir);
-    if (parent === dir) break;
-    dir = parent;
-  }
-  return path.resolve(process.cwd(), "data", "shops");
-}
-const dataRoot = computeDataRoot();
+const { resolveDataRoot } = jest.requireActual("../cli") as {
+  resolveDataRoot: () => string;
+};
+const dataRoot = resolveDataRoot();
+
+test("resolveDataRoot falls back to cwd/data/shops", () => {
+  expect(dataRoot).toBe(path.resolve(process.cwd(), "data", "shops"));
+});
 
 const originalArgv = process.argv.slice();
 
@@ -46,8 +38,6 @@ beforeEach(() => {
   jest.resetModules();
   jest.clearAllMocks();
   for (const k of Object.keys(files)) delete files[k];
-  dirs.clear();
-  dirs.add(dataRoot);
   process.argv = [...originalArgv];
 });
 

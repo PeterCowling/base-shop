@@ -16,7 +16,7 @@ interface Campaign {
   sentAt?: string;
 }
 
-function resolveDataRoot(): string {
+export function resolveDataRoot(): string {
   let dir = process.cwd();
   while (true) {
     const candidate = path.join(dir, "data", "shops");

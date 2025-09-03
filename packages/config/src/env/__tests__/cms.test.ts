@@ -42,27 +42,27 @@ describe("cms env module", () => {
     });
   });
 
-  it("fails when CMS_SPACE_URL is invalid in development", async () => {
-    process.env = {
-      ...ORIGINAL_ENV,
-      NODE_ENV: "development",
-      CMS_SPACE_URL: "not-a-url",
-      CMS_ACCESS_TOKEN: "token",
-      SANITY_API_VERSION: "2024-01-01",
-    } as NodeJS.ProcessEnv;
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    jest.resetModules();
-    await expect(import("../cms.ts")).rejects.toThrow(
-      "Invalid CMS environment variables"
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      "❌ Invalid CMS environment variables:",
-      expect.objectContaining({
-        CMS_SPACE_URL: { _errors: [expect.any(String)] },
-      })
-    );
-    errorSpy.mockRestore();
-  });
+    it("fails when CMS_SPACE_URL is invalid in development", async () => {
+      process.env = {
+        ...ORIGINAL_ENV,
+        NODE_ENV: "development",
+        CMS_SPACE_URL: "not-a-url",
+        CMS_ACCESS_TOKEN: "token",
+        SANITY_API_VERSION: "2024-01-01",
+      } as NodeJS.ProcessEnv;
+      const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+      jest.resetModules();
+      await expect(import("../cms.ts")).rejects.toThrow(
+        "Invalid CMS environment variables"
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid CMS environment variables:",
+        expect.objectContaining({
+          CMS_SPACE_URL: { _errors: [expect.any(String)] },
+        })
+      );
+      errorSpy.mockRestore();
+    });
 
   it("fails when SANITY_API_VERSION is not a string in development", async () => {
     process.env = {
@@ -102,10 +102,9 @@ describe("cms env module", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
-      expect.objectContaining({
-        CMS_SPACE_URL: { _errors: [expect.any(String)] },
-      })
+      { CMS_SPACE_URL: { _errors: [expect.any(String)] }, _errors: [] }
     );
+    expect(errorSpy).toHaveBeenCalledTimes(1);
     errorSpy.mockRestore();
   });
 
@@ -124,10 +123,9 @@ describe("cms env module", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
-      expect.objectContaining({
-        CMS_ACCESS_TOKEN: { _errors: [expect.any(String)] },
-      })
+      { CMS_ACCESS_TOKEN: { _errors: [expect.any(String)] }, _errors: [] }
     );
+    expect(errorSpy).toHaveBeenCalledTimes(1);
     errorSpy.mockRestore();
   });
 
@@ -146,10 +144,9 @@ describe("cms env module", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
-      expect.objectContaining({
-        SANITY_API_VERSION: { _errors: [expect.any(String)] },
-      })
+      { SANITY_API_VERSION: { _errors: [expect.any(String)] }, _errors: [] }
     );
+    expect(errorSpy).toHaveBeenCalledTimes(1);
     errorSpy.mockRestore();
   });
 

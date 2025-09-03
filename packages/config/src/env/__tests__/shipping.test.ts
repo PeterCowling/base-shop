@@ -460,6 +460,51 @@ describe("shipping env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("loadShippingEnv throws when process.env has invalid TAXJAR_KEY", async () => {
+    // import with a valid env so the eager parse doesn't throw
+    process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { loadShippingEnv } = await import("../shipping.ts");
+    process.env = {
+      ...ORIGINAL_ENV,
+      TAXJAR_KEY: 123 as unknown as string,
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    expect(() => loadShippingEnv()).toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        TAXJAR_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws during eager parse when UPS_KEY is invalid", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      UPS_KEY: 123 as unknown as string,
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../shipping.ts")).rejects.toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        UPS_KEY: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
   it("loadShippingEnv returns object when variables are valid", async () => {
     const { loadShippingEnv } = await import("../shipping.ts");
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});

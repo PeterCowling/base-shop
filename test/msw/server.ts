@@ -35,6 +35,8 @@ export const handlers = [
   rest.patch("/cms/api/wizard-progress", (_req, res, ctx) =>
     res(ctx.status(200), ctx.json({}))
   ),
+  // Allow API route tests to hit local handlers without mocking
+  rest.post("*/shop/:id/publish-upgrade", (req) => req.passthrough()),
 ];
 
 export const server = setupServer(...handlers);

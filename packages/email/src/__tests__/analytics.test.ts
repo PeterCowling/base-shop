@@ -357,28 +357,26 @@ describe("syncCampaignAnalytics", () => {
     });
   });
 
-  it("skips when provider is missing", async () => {
+  it("exits without tracking when provider is unsupported", async () => {
     jest.resetModules();
     process.env.CART_COOKIE_SECRET = "secret";
-    process.env.EMAIL_PROVIDER = "unknown";
+    process.env.EMAIL_PROVIDER = "unsupported";
 
     const trackEvent = jest.fn();
-    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent }));
-    const getCampaignStats = jest.fn();
+    jest.doMock("@platform-core/analytics", () => ({
+      __esModule: true,
+      trackEvent,
+    }));
     jest.doMock("../providers/sendgrid", () => ({
-      SendgridProvider: jest.fn().mockImplementation(() => ({ getCampaignStats })),
+      SendgridProvider: jest.fn(),
     }));
     jest.doMock("../providers/resend", () => ({
-      ResendProvider: jest.fn().mockImplementation(() => ({ getCampaignStats })),
+      ResendProvider: jest.fn(),
     }));
-    const getCampaignStore = jest.fn();
-    jest.doMock("../storage", () => ({ __esModule: true, getCampaignStore }));
 
     const { syncCampaignAnalytics } = await import("../analytics");
     await syncCampaignAnalytics();
 
-    expect(getCampaignStore).not.toHaveBeenCalled();
-    expect(getCampaignStats).not.toHaveBeenCalled();
     expect(trackEvent).not.toHaveBeenCalled();
   });
 

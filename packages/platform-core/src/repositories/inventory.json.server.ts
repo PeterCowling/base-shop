@@ -50,11 +50,12 @@ async function read(shop: string): Promise<InventoryItem[]> {
   try {
     const buf = await fs.readFile(inventoryPath(shop), "utf8");
     const raw: RawInventoryItem[] = JSON.parse(buf);
-    return raw.map(({ variant, variantAttributes, ...rest }) =>
-      inventoryItemSchema.parse({
-        ...rest,
-        variantAttributes: variantAttributes ?? variant ?? {},
-      })
+    return raw.map(
+      ({ variant, variantAttributes, ...rest }: RawInventoryItem) =>
+        inventoryItemSchema.parse({
+          ...rest,
+          variantAttributes: variantAttributes ?? variant ?? {},
+        }),
     );
   } catch (err) {
     throw err;
@@ -63,13 +64,13 @@ async function read(shop: string): Promise<InventoryItem[]> {
 
 async function write(shop: string, items: InventoryItem[]): Promise<void> {
   const normalized = inventoryItemSchema.array().parse(
-    items.map((i) => ({
+    items.map((i: InventoryItem) => ({
       ...i,
       variantAttributes: { ...i.variantAttributes },
     }))
   );
   const serialized: RawInventoryItem[] = normalized.map(
-    ({ variantAttributes, ...rest }): RawInventoryItem => ({
+    ({ variantAttributes, ...rest }: InventoryItem): RawInventoryItem => ({
       ...rest,
       ...(Object.keys(variantAttributes).length
         ? { variantAttributes }
@@ -88,7 +89,7 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
     await fs.unlink(lockFile).catch(() => {});
   }
   const hasLowStock = normalized.some(
-    (i) =>
+    (i: InventoryItem) =>
       typeof i.lowStockThreshold === "number" &&
       i.quantity <= i.lowStockThreshold,
   );
@@ -113,11 +114,12 @@ async function update(
     try {
       const buf = await fs.readFile(inventoryPath(shop), "utf8");
       const raw: RawInventoryItem[] = JSON.parse(buf);
-      items = raw.map(({ variant, variantAttributes, ...rest }) =>
-        inventoryItemSchema.parse({
-          ...rest,
-          variantAttributes: variantAttributes ?? variant ?? {},
-        })
+      items = raw.map(
+        ({ variant, variantAttributes, ...rest }: RawInventoryItem) =>
+          inventoryItemSchema.parse({
+            ...rest,
+            variantAttributes: variantAttributes ?? variant ?? {},
+          }),
       );
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code !== "ENOENT") throw err;
@@ -125,7 +127,7 @@ async function update(
 
     const key = variantKey(sku, variantAttributes);
     const idx = items.findIndex(
-      (i) => variantKey(i.sku, i.variantAttributes) === key
+      (i: InventoryItem) => variantKey(i.sku, i.variantAttributes) === key,
     );
     const current = idx === -1 ? undefined : items[idx];
     updated = mutate(current);
@@ -143,13 +145,13 @@ async function update(
     }
 
     normalized = inventoryItemSchema.array().parse(
-      items.map((i) => ({
+      items.map((i: InventoryItem) => ({
         ...i,
         variantAttributes: { ...i.variantAttributes },
-      }))
+      })),
     );
     const serialized: RawInventoryItem[] = normalized.map(
-      ({ variantAttributes, ...rest }): RawInventoryItem => ({
+      ({ variantAttributes, ...rest }: InventoryItem): RawInventoryItem => ({
         ...rest,
         ...(Object.keys(variantAttributes).length
           ? { variantAttributes }
@@ -167,7 +169,7 @@ async function update(
   }
 
   const hasLowStock = normalized.some(
-    (i) =>
+    (i: InventoryItem) =>
       typeof i.lowStockThreshold === "number" &&
       i.quantity <= i.lowStockThreshold,
   );

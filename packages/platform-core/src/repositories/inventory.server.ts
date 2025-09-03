@@ -58,7 +58,7 @@ export async function readInventoryMap(
 ): Promise<Record<string, InventoryItem>> {
   const items = await inventoryRepository.read(shop);
   return Object.fromEntries(
-    items.map((i) => [variantKey(i.sku, i.variantAttributes), i]),
+    items.map((i: InventoryItem) => [variantKey(i.sku, i.variantAttributes), i]),
   );
 }
 

@@ -86,12 +86,12 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
   const normalized = inventoryItemSchema
     .array()
     .parse(
-      items.map((i) => ({
+      items.map((i: InventoryItem) => ({
         ...i,
         variantAttributes: { ...i.variantAttributes },
       })),
     )
-    .map((i) => ({
+    .map((i: InventoryItem) => ({
       sku: i.sku,
       productId: i.productId,
       quantity: i.quantity,

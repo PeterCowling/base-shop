@@ -20,7 +20,10 @@ export async function reserveRentalInventory(
   // verify availability window
   if (
     sku.availability &&
-    !sku.availability.some((window) => from >= window.from && to <= window.to)
+    !sku.availability.some(
+      (window: NonNullable<SKU["availability"]>[number]) =>
+        from >= window.from && to <= window.to,
+    )
   ) {
     return null;
   }
@@ -28,7 +31,7 @@ export async function reserveRentalInventory(
   const limit = sku.wearAndTearLimit ?? Infinity;
   const cycle = sku.maintenanceCycle ?? Infinity;
 
-  const candidate = items.find((item) => {
+  const candidate = items.find((item: InventoryItem) => {
     const wear = item.wearCount ?? 0;
     if (wear >= limit) return false; // item exceeded wear limit
     if (cycle !== Infinity && wear > 0 && wear % cycle === 0) return false; // due for maintenance

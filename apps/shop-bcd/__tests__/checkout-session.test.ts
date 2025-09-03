@@ -62,9 +62,13 @@ test("builds Stripe session with correct items and metadata", async () => {
     payment_intent: { client_secret: "cs_test" },
   });
 
-  const sku = PRODUCTS[0];
-  const size = "40";
-  const cart = { [`${sku.id}:${size}`]: { sku, qty: 2, size } };
+  const [sku1, sku2] = PRODUCTS;
+  const size1 = "40";
+  const size2 = "41";
+  const cart = {
+    [`${sku1.id}:${size1}`]: { sku: sku1, qty: 2, size: size1 },
+    [`${sku2.id}:${size2}`]: { sku: sku2, qty: 1, size: size2 },
+  };
   const cookie = encodeCartCookie(cart as any);
   const returnDate = "2025-01-02";
   const expectedDays = calculateRentalDays(returnDate);
@@ -95,7 +99,7 @@ test("builds Stripe session with correct items and metadata", async () => {
   expect(stripeCreate).toHaveBeenCalled();
   const args = stripeCreate.mock.calls[0][0];
 
-  expect(args.line_items).toHaveLength(3);
+  expect(args.line_items).toHaveLength(5);
   expect(args.payment_intent_data.shipping.name).toBe("Jane Doe");
   expect(args.payment_intent_data.billing_details.email).toBe(
     "jane@example.com"
@@ -106,8 +110,10 @@ test("builds Stripe session with correct items and metadata", async () => {
   expect(args.payment_intent_data.metadata.client_ip).toBe("203.0.113.1");
   expect(args.metadata.client_ip).toBe("203.0.113.1");
   expect(args.metadata.rentalDays).toBe(expectedDays.toString());
-  expect(args.metadata.sizes).toBe(JSON.stringify({ [sku.id]: size }));
-  expect(args.metadata.subtotal).toBe("20");
+  expect(args.metadata.sizes).toBe(
+    JSON.stringify({ [sku1.id]: size1, [sku2.id]: size2 })
+  );
+  expect(args.metadata.subtotal).toBe("30");
   expect(body.clientSecret).toBe("cs_test");
 });
 

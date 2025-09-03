@@ -34,11 +34,14 @@ beforeEach(() => {
   (findCoupon as jest.Mock).mockReset();
 });
 
-const cart = (() => {
-  const sku = PRODUCTS[0];
-  const size = sku.sizes[0];
-  return { [`${sku.id}:${size}`]: { sku, qty: 2, size } } as any;
-})();
+const sku1 = PRODUCTS[0];
+const size1 = sku1.sizes[0];
+const sku2 = PRODUCTS[1];
+const size2 = sku2.sizes[1];
+const cart = {
+  [`${sku1.id}:${size1}`]: { sku: sku1, qty: 2, size: size1 },
+  [`${sku2.id}:${size2}`]: { sku: sku2, qty: 1, size: size2 },
+} as any;
 
 test("creates Stripe session with correct metadata", async () => {
   stripeCreate.mockReset();
@@ -64,7 +67,7 @@ test("creates Stripe session with correct metadata", async () => {
 
   expect(stripeCreate).toHaveBeenCalled();
   const [args, options] = stripeCreate.mock.calls[0];
-  expect(args.line_items).toHaveLength(3); // rental, deposit, tax
+  expect(args.line_items).toHaveLength(5); // two items + tax
   expect(
     args.line_items.some(
       (li: any) => li.price_data?.product_data?.name === "Tax"
@@ -72,6 +75,9 @@ test("creates Stripe session with correct metadata", async () => {
   ).toBe(true);
   expect(args.metadata.rentalDays).toBe(expectedDays.toString());
   expect(args.metadata.client_ip).toBe("203.0.113.1");
+  expect(args.metadata.sizes).toBe(
+    JSON.stringify({ [sku1.id]: size1, [sku2.id]: size2 })
+  );
   expect(options.headers["Stripe-Client-IP"]).toBe("203.0.113.1");
   expect(result.clientSecret).toBe("cs_test");
 });
@@ -140,7 +146,7 @@ test("applies extra values and billing details without tax", async () => {
   });
 
   const [args] = stripeCreate.mock.calls[0];
-  expect(args.line_items).toHaveLength(3); // rental, deposit, extra
+  expect(args.line_items).toHaveLength(5); // rentals, deposits, extra
   expect(
     args.line_items.some(
       (li: any) => li.price_data?.product_data?.name === "Extra"
@@ -153,8 +159,8 @@ test("applies extra values and billing details without tax", async () => {
   ).toBe(false);
   expect(args.payment_intent_data.billing_details).toEqual(billingDetails);
   expect(args.metadata.foo).toBe("bar");
-  expect(args.metadata.subtotal).toBe("25");
-  expect(args.metadata.depositTotal).toBe("110");
+  expect(args.metadata.subtotal).toBe("35");
+  expect(args.metadata.depositTotal).toBe("160");
 });
 
 test("tracks coupon usage when present and not when absent", async () => {

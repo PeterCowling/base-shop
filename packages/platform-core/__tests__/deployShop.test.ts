@@ -21,8 +21,9 @@ describe('deployShop', () => {
   it('writes deploy.json and returns preview url', async () => {
     await withTempDir(async () => {
       const { deployShop } = await import('../src/createShop');
-      const result = deployShop('shopx', 'shop.example.com');
       const file = path.join('data', 'shops', 'shopx', 'deploy.json');
+      fs.mkdirSync(path.dirname(file), { recursive: true });
+      const result = deployShop('shopx', 'shop.example.com');
       const written = JSON.parse(fs.readFileSync(file, 'utf8'));
       expect(written.previewUrl).toContain('shopx');
       expect(result.previewUrl).toContain('shopx');
@@ -47,6 +48,26 @@ describe('deployShop', () => {
       deployShop(id, undefined, adapter);
       const env = fs.readFileSync(envPath, 'utf8');
       expect(env).not.toMatch(/SESSION_SECRET=oldsecret/);
+      expect(env).toMatch(/SESSION_SECRET=[a-f0-9]{64}/);
+    });
+  });
+
+  it('adds SESSION_SECRET when missing from env file', async () => {
+    await withTempDir(async () => {
+      const id = 'shop-env-missing';
+      const appDir = path.join('apps', id);
+      fs.mkdirSync(appDir, { recursive: true });
+      const envPath = path.join(appDir, '.env');
+      fs.writeFileSync(envPath, 'OTHER=1');
+      const adapter = {
+        scaffold: () => {},
+        deploy: () => ({ status: 'success' as const }),
+        writeDeployInfo: () => {},
+      };
+      const { deployShop } = await import('../src/createShop');
+      deployShop(id, undefined, adapter);
+      const env = fs.readFileSync(envPath, 'utf8');
+      expect(env).toMatch(/OTHER=1/);
       expect(env).toMatch(/SESSION_SECRET=[a-f0-9]{64}/);
     });
   });

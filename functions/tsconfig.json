@@ -31,7 +31,7 @@
      */
     "baseUrl": ".",
     "paths": {
-      "@acme/email": ["../packages/email"]
+      "@acme/email": ["../packages/email/src/index.ts", "../packages/email"]
     }
   },
 

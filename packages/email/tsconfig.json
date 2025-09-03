@@ -9,19 +9,17 @@
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
-      "@date-utils": ["../date-utils/dist/index.d.ts", "../date-utils/src/index.ts", "types-compat/date-utils"],
+      "@date-utils": ["../date-utils/src/index.ts", "../date-utils/dist/index.d.ts", "types-compat/date-utils"],
       "@acme/email-templates": [
-        "../email-templates/dist/index.d.ts",
-        "../email-templates/src/index.ts"
+        "../email-templates/src/index.ts", "../email-templates/dist/index.d.ts"
       ],
       "@acme/email-templates/*": [
-        "../email-templates/dist/*",
-        "../email-templates/src/*"
+        "../email-templates/src/*", "../email-templates/dist/*"
       ],
-      "@platform-core": ["../platform-core/dist/index.d.ts", "../platform-core/src/index.ts"],
-      "@platform-core/*": ["../platform-core/dist/*", "../platform-core/src/*"],
-      "@acme/lib": ["../lib/dist/index.d.ts", "../lib/src/index.ts"],
-      "@acme/lib/*": ["../lib/dist/*", "../lib/src/*"]
+      "@platform-core": ["../platform-core/src/index.ts", "../platform-core/dist/index.d.ts"],
+      "@platform-core/*": ["../platform-core/src/*", "../platform-core/dist/*"],
+      "@acme/lib": ["../lib/src/index.ts", "../lib/dist/index.d.ts"],
+      "@acme/lib/*": ["../lib/src/*", "../lib/dist/*"]
     }
   },
   "include": ["src", "types-compat/**/*.d.ts"],

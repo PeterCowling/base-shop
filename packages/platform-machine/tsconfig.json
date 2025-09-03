@@ -25,31 +25,31 @@
      * ---------------------------------------------------------------- */
     "paths": {
       /* this package itself */
-      "@acme/platform-machine": ["packages/platform-machine/dist/index.d.ts", "packages/platform-machine/src/index.ts"],
-      "@acme/platform-machine/*": ["packages/platform-machine/dist/*", "packages/platform-machine/src/*"],
+      "@acme/platform-machine": ["packages/platform-machine/src/index.ts", "packages/platform-machine/dist/index.d.ts"],
+      "@acme/platform-machine/*": ["packages/platform-machine/src/*", "packages/platform-machine/dist/*"],
 
       /* platform core utilities */
-      "@platform-core": ["packages/platform-core/dist/index.d.ts", "packages/platform-core/src/index.ts"],
-      "@platform-core/*": ["packages/platform-core/dist/*", "packages/platform-core/src/*"],
+      "@platform-core": ["packages/platform-core/src/index.ts", "packages/platform-core/dist/index.d.ts"],
+      "@platform-core/*": ["packages/platform-core/src/*", "packages/platform-core/dist/*"],
 
       /* shared lib utilities */
-      "@acme/lib": ["packages/lib/dist/index.d.ts", "packages/lib/src/index.ts"],
-      "@acme/lib/*": ["packages/lib/dist/*", "packages/lib/src/*"],
+      "@acme/lib": ["packages/lib/src/index.ts", "packages/lib/dist/index.d.ts"],
+      "@acme/lib/*": ["packages/lib/src/*", "packages/lib/dist/*"],
 
       /* runtime config helper */
-      "@config": ["packages/config/dist/env/index.d.ts", "packages/config/src/env/index.ts"],
-      "@config/*": ["packages/config/dist/env/*", "packages/config/src/env/*"],
+      "@config": ["packages/config/src/env/index.ts", "packages/config/dist/env/index.d.ts"],
+      "@config/*": ["packages/config/src/env/*", "packages/config/dist/env/*"],
 
-      "@acme/config": ["packages/config/dist/index.d.ts", "packages/config/src/index.ts"],
-      "@acme/config/*": ["packages/config/dist/*", "packages/config/src/*"],
+      "@acme/config": ["packages/config/src/index.ts", "packages/config/dist/index.d.ts"],
+      "@acme/config/*": ["packages/config/src/*", "packages/config/dist/*"],
 
       /* date utilities */
-      "@date-utils": ["packages/date-utils/dist/index.d.ts", "packages/date-utils/src/index.ts"],
-      "@date-utils/*": ["packages/date-utils/dist/*", "packages/date-utils/src/*"],
+      "@date-utils": ["packages/date-utils/src/index.ts", "packages/date-utils/dist/index.d.ts"],
+      "@date-utils/*": ["packages/date-utils/src/*", "packages/date-utils/dist/*"],
 
       /* shared runtime types */
-      "@acme/types": ["packages/types/dist/index.d.ts", "packages/types/src/index.ts"],
-      "@acme/types/*": ["packages/types/dist/*", "packages/types/src/*"]
+      "@acme/types": ["packages/types/src/index.ts", "packages/types/dist/index.d.ts"],
+      "@acme/types/*": ["packages/types/src/*", "packages/types/dist/*"]
     }
   },
 

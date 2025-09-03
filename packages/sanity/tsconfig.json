@@ -10,8 +10,8 @@
     "paths": {
       "@platform-core": ["packages/platform-core/src/index.ts", "packages/platform-core/dist/index.d.ts"],
       "@platform-core/*": ["packages/platform-core/src/*", "packages/platform-core/dist/*"],
-      "@date-utils": ["packages/date-utils/dist/index.d.ts", "packages/date-utils/src/index.ts"],
-      "@date-utils/*": ["packages/date-utils/dist/*", "packages/date-utils/src/*"]
+      "@date-utils": ["packages/date-utils/src/index.ts", "packages/date-utils/dist/index.d.ts"],
+      "@date-utils/*": ["packages/date-utils/src/*", "packages/date-utils/dist/*"]
     }
   },
   "include": ["src/**/*"],

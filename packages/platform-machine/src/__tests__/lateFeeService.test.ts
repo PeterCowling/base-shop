@@ -138,6 +138,35 @@ describe("chargeLateFeesOnce", () => {
     });
   });
 
+  it("defaults currency to usd when session omits it", async () => {
+    readdirMock.mockResolvedValue(["s1"]);
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } }),
+    );
+    readOrdersMock.mockResolvedValueOnce([
+      {
+        sessionId: "sess1",
+        returnDueDate: new Date(NOW - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      },
+    ]);
+    stripeRetrieveMock.mockResolvedValueOnce({
+      customer: "cus_1",
+      payment_intent: { payment_method: "pm_1" },
+    });
+    stripeChargeMock.mockResolvedValueOnce({});
+
+    await service.chargeLateFeesOnce(undefined, "/data");
+
+    expect(stripeChargeMock).toHaveBeenCalledWith({
+      amount: 500,
+      currency: "usd",
+      customer: "cus_1",
+      payment_method: "pm_1",
+      off_session: true,
+      confirm: true,
+    });
+  });
+
   it.each([
     [
       "customer missing",

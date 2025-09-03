@@ -9,17 +9,18 @@ const chromeModule: any = {
   default: { launch: launchMock },
 };
 
+let desktopConfigModule: any = {};
+
 jest.mock("lighthouse", () => lighthouseModule, { virtual: true });
 
 jest.mock("chrome-launcher", () => chromeModule, { virtual: true });
 
 jest.mock(
   "lighthouse/core/config/desktop-config.js",
-  () => ({}),
+  () => desktopConfigModule,
   { virtual: true },
 );
 
-import { runSeoAudit } from "../src/seoAudit";
 
 describe("runSeoAudit", () => {
   afterEach(() => {
@@ -27,6 +28,8 @@ describe("runSeoAudit", () => {
     launchMock.mockReset();
     chromeModule.default.launch = launchMock;
     lighthouseModule.default = lighthouseMock;
+    desktopConfigModule = {};
+    jest.resetModules();
   });
 
   it("returns score and recommendations and closes chrome", async () => {
@@ -42,7 +45,7 @@ describe("runSeoAudit", () => {
         },
       },
     });
-
+    const { runSeoAudit } = await import("../src/seoAudit");
     const result = await runSeoAudit("https://example.com");
 
     expect(result).toEqual({ score: 90, recommendations: ["Bad"] });
@@ -53,7 +56,7 @@ describe("runSeoAudit", () => {
     const killSpy = jest.fn();
     launchMock.mockResolvedValue({ port: 1234, kill: killSpy });
     lighthouseMock.mockResolvedValue(undefined);
-
+    const { runSeoAudit } = await import("../src/seoAudit");
     await expect(runSeoAudit("https://example.com")).rejects.toThrow(
       "Lighthouse did not return a result",
     );
@@ -62,7 +65,7 @@ describe("runSeoAudit", () => {
 
   it("throws when chrome-launcher launch function is not available", async () => {
     chromeModule.default = {};
-
+    const { runSeoAudit } = await import("../src/seoAudit");
     await expect(runSeoAudit("https://example.com")).rejects.toThrow(
       "chrome-launcher launch function not available",
     );
@@ -71,10 +74,28 @@ describe("runSeoAudit", () => {
   it("throws when lighthouse import is not a function", async () => {
     lighthouseModule.default = {};
     chromeModule.default.launch = launchMock;
-
+    const { runSeoAudit } = await import("../src/seoAudit");
     await expect(runSeoAudit("https://example.com")).rejects.toThrow(
       "lighthouse is not a function",
     );
+  });
+
+  it("throws when lighthouse desktop config is not available", async () => {
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock("lighthouse", () => lighthouseModule, { virtual: true });
+      jest.doMock("chrome-launcher", () => chromeModule, { virtual: true });
+      jest.doMock(
+        "lighthouse/core/config/desktop-config.js",
+        () => {
+          throw new Error("missing config");
+        },
+        { virtual: true },
+      );
+      const { runSeoAudit } = await import("../src/seoAudit");
+      await expect(runSeoAudit("https://example.com")).rejects.toThrow(
+        "lighthouse desktop config not available",
+      );
+    });
   });
 });
 

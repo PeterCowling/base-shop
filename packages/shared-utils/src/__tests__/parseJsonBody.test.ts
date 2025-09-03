@@ -93,5 +93,16 @@ describe('parseJsonBody', () => {
     expect(result.response.status).toBe(400);
     await expect(result.response.json()).resolves.toEqual({ foo: ['Expected string, received number'] });
   });
+
+  it('consumes request body stream on parse error', async () => {
+    const req = new Request('http://example.com', {
+      method: 'POST',
+      body: '{"foo": "bar"',
+    });
+
+    const result = await parseJsonBody(req, schema, 1024);
+    expect(result.success).toBe(false);
+    expect(req.bodyUsed).toBe(true);
+  });
 });
 

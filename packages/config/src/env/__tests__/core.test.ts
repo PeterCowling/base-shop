@@ -334,6 +334,46 @@ describe("core env optional variables", () => {
   });
 });
 
+describe("core env sub-schema integration", () => {
+  it("reports missing redis token when SESSION_STORE=redis", () => {
+    const parsed = coreEnvSchema.safeParse({
+      ...baseEnv,
+      SESSION_STORE: "redis",
+      UPSTASH_REDIS_REST_URL: "https://example.com",
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: ["UPSTASH_REDIS_REST_TOKEN"],
+            message:
+              "UPSTASH_REDIS_REST_TOKEN is required when SESSION_STORE=redis",
+          }),
+        ]),
+      );
+    }
+  });
+
+  it("reports missing SENDGRID_API_KEY when EMAIL_PROVIDER=sendgrid", () => {
+    const parsed = coreEnvSchema.safeParse({
+      ...baseEnv,
+      EMAIL_PROVIDER: "sendgrid",
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: ["SENDGRID_API_KEY"],
+            message: "Required",
+          }),
+        ]),
+      );
+    }
+  });
+});
+
 describe("loadCoreEnv", () => {
   it("throws and logs issues for malformed env", () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});

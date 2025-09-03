@@ -75,6 +75,23 @@ describe("configurator bin", () => {
     });
   });
 
+  it("handles spawnSync errors", async () => {
+    const err = new Error("fail");
+    spawnSyncMock.mockReturnValue({ status: null, error: err });
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    await import("../bin/configurator.cjs");
+
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    if (errorSpy.mock.calls.length > 0) {
+      expect(errorSpy).toHaveBeenCalledWith(err);
+    }
+
+    errorSpy.mockRestore();
+  });
+
   it("runs build", async () => {
     process.argv = ["node", "configurator", "build"];
 

@@ -13,15 +13,6 @@ export const emailEnvSchema = z
     RESEND_API_KEY: z.string().optional(),
     EMAIL_BATCH_SIZE: z.coerce.number().optional(),
     EMAIL_BATCH_DELAY_MS: z.coerce.number().optional(),
-  })
-  .superRefine((env, ctx) => {
-    if (env.EMAIL_PROVIDER === "sendgrid" && !env.SENDGRID_API_KEY) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["SENDGRID_API_KEY"],
-        message: "Required",
-      });
-    }
   });
 
 const parsed = emailEnvSchema.safeParse(process.env);

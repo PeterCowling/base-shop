@@ -129,7 +129,7 @@ After running `pnpm create-shop <id>`, the wizard generates `.env` and `.env.tem
 - `DEPOSIT_RELEASE_INTERVAL_MS` – interval in milliseconds for running the refund service
 - `LOG_LEVEL` – controls logging output (`error`, `warn`, `info`, `debug`; defaults to `info`)
 - `EMAIL_PROVIDER` – campaign email provider (`smtp`, `sendgrid`, or `resend`)
-- `SENDGRID_API_KEY` – API key for SendGrid when using the SendGrid provider
+- `SENDGRID_API_KEY` – optional API key for SendGrid when using the SendGrid provider
 - `SENDGRID_MARKETING_KEY` – API key for SendGrid marketing endpoints (contact management and segments)
 - `RESEND_API_KEY` – API key for Resend when using the Resend provider (requires `emails.send`, `contacts.write`, `contacts.read`, and `segments.read` scopes)
 - `SENDGRID_WEBHOOK_PUBLIC_KEY` – public key to verify SendGrid event webhook signatures

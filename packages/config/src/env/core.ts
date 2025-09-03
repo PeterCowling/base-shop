@@ -79,7 +79,7 @@ const baseEnvSchema = z
 export const coreEnvBaseSchema = authEnvSchema
   .innerType()
   .merge(cmsEnvSchema)
-  .merge(emailEnvSchema.innerType())
+  .merge(emailEnvSchema)
   .merge(paymentsEnvSchema)
   .merge(shippingEnvSchema)
   .merge(baseEnvSchema);

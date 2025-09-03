@@ -17,7 +17,7 @@ const CurrencyContext = createContext<
   [Currency, (c: Currency) => void] | undefined
 >(undefined);
 
-function readInitial(): Currency {
+export function readInitial(): Currency {
   if (typeof window === "undefined") return DEFAULT_CURRENCY;
   try {
     const stored = localStorage.getItem(LS_KEY) as Currency | null;

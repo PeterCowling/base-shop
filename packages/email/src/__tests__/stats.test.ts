@@ -113,3 +113,9 @@ describe("normalizeProviderStats", () => {
     });
   });
 });
+describe("normalizeProviderStats real module", () => {
+  it("uses actual implementation for unknown providers", () => {
+    const { normalizeProviderStats, emptyStats } = jest.requireActual("../stats");
+    expect(normalizeProviderStats("unknown", undefined)).toEqual({ ...emptyStats });
+  });
+});

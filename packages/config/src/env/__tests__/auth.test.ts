@@ -172,6 +172,52 @@ describe("auth env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("throws when redis session store token is missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+      SESSION_STORE: "redis",
+      UPSTASH_REDIS_REST_URL: "https://example.com",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalled();
+    const issues = errorSpy.mock.calls.at(-1)[1];
+    expect(issues).toEqual({
+      UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
+      _errors: [],
+    });
+    errorSpy.mockRestore();
+  });
+
+  it("throws when redis session store URL is missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+      SESSION_STORE: "redis",
+      UPSTASH_REDIS_REST_TOKEN: "token",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalled();
+    const issues = errorSpy.mock.calls.at(-1)[1];
+    expect(issues).toEqual({
+      UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
+      _errors: [],
+    });
+    errorSpy.mockRestore();
+  });
+
   it("parses rate limit redis configuration", async () => {
     process.env = {
       ...ORIGINAL_ENV,

@@ -274,6 +274,30 @@ describe("sendCampaignEmail", () => {
       timeoutSpy.mockRestore();
     });
 
+    it("retries when provider error lacks retryable property", async () => {
+      const timeoutSpy = jest.spyOn(global, "setTimeout");
+      mockSendgridSend = jest.fn().mockRejectedValue({ message: "x" });
+      mockResendSend = jest.fn().mockResolvedValue(undefined);
+      mockSendMail = jest.fn();
+      mockSanitizeHtml = jest.fn((html: string) => html);
+      mockHasProviderErrorFields = jest.fn().mockReturnValue(true);
+
+      setupEnv();
+
+      const { sendCampaignEmail } = await import("../index");
+      await sendCampaignEmail({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>HTML</p>",
+      });
+
+      expect(mockSendgridSend).toHaveBeenCalledTimes(3);
+      expect(timeoutSpy).toHaveBeenCalledWith(expect.any(Function), 100);
+      expect(timeoutSpy).toHaveBeenCalledWith(expect.any(Function), 200);
+      expect(mockResendSend).toHaveBeenCalledTimes(1);
+      timeoutSpy.mockRestore();
+    });
+
     it("retries when error lacks provider fields", async () => {
       const timeoutSpy = jest.spyOn(global, "setTimeout");
       mockSendgridSend = jest.fn().mockRejectedValue({});

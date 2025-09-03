@@ -134,6 +134,36 @@ describe("sendCampaignEmail", () => {
     });
   });
 
+  it("calls renderTemplate when templateId is provided", async () => {
+    const nodemailer = require("nodemailer");
+    const createTransportMock = nodemailer.default.createTransport as jest.Mock;
+    const sendMail = jest.fn().mockResolvedValue(undefined);
+    createTransportMock.mockReturnValue({ sendMail });
+    process.env.SMTP_URL = "smtp://test";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const templates = await import("../templates");
+    const renderSpy = jest
+      .spyOn(templates, "renderTemplate")
+      .mockReturnValue("<p>Hi</p>");
+
+    const { sendCampaignEmail } = await import("../send");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      templateId: "welcome",
+    });
+
+    expect(renderSpy).toHaveBeenCalledWith("welcome", {});
+    expect(sendMail).toHaveBeenCalledWith({
+      from: "campaign@example.com",
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>Hi</p>",
+      text: "Hi",
+    });
+  });
+
   it("sanitizes HTML content by default", async () => {
     const nodemailer = require("nodemailer");
     const createTransportMock = nodemailer.default.createTransport as jest.Mock;

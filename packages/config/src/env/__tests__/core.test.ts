@@ -1050,3 +1050,80 @@ describe("loadCoreEnv", () => {
   });
 });
 
+describe("depositReleaseEnvRefinement", () => {
+  it("adds issues for malformed built-in variables", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      {
+        DEPOSIT_RELEASE_ENABLED: "yes",
+        REVERSE_LOGISTICS_INTERVAL_MS: "later",
+        LATE_FEE_ENABLED: "maybe",
+      },
+      ctx,
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_ENABLED"],
+      message: "must be true or false",
+    });
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["REVERSE_LOGISTICS_INTERVAL_MS"],
+      message: "must be a number",
+    });
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["LATE_FEE_ENABLED"],
+      message: "must be true or false",
+    });
+  });
+});
+
+describe("loadCoreEnv logging", () => {
+  it("logs errors for malformed deposit env vars", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadCoreEnv({
+        ...baseEnv,
+        DEPOSIT_RELEASE_ENABLED: "yes",
+        REVERSE_LOGISTICS_INTERVAL_MS: "later",
+      } as unknown as NodeJS.ProcessEnv),
+    ).toThrow("Invalid core environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • DEPOSIT_RELEASE_ENABLED: must be true or false",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "  • REVERSE_LOGISTICS_INTERVAL_MS: must be a number",
+    );
+    errorSpy.mockRestore();
+  });
+});
+
+describe("coreEnv proxy caching", () => {
+  const ORIGINAL_ENV = process.env;
+
+  afterEach(() => {
+    jest.resetModules();
+    process.env = ORIGINAL_ENV;
+  });
+
+  it("invokes loadCoreEnv only once for multiple property reads", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = require("../core.js");
+    const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
+    expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+    expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token");
+    // access again to ensure cached
+    expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+    parseSpy.mockRestore();
+  });
+});
+

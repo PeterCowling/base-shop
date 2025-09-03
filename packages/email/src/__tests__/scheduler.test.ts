@@ -18,12 +18,16 @@ jest.mock("../analytics", () => ({
 jest.mock("../segments", () => ({
   resolveSegment: jest.fn(),
 }));
+jest.mock("../templates", () => ({
+  renderTemplate: jest.fn(),
+}));
 
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { sendCampaignEmail } from "../send";
 import { emitSend } from "../hooks";
 import { syncCampaignAnalytics as fetchCampaignAnalytics } from "../analytics";
 import { resolveSegment } from "../segments";
+import { renderTemplate } from "../templates";
 
 const { setClock, createCampaign, sendDueCampaigns, syncCampaignAnalytics } = scheduler;
 
@@ -75,6 +79,28 @@ describe("scheduler", () => {
     );
   });
 
+  test("filterUnsubscribed returns original list on error", async () => {
+    const past = new Date(now.getTime() - 1000).toISOString();
+    memory[shop] = [
+      {
+        id: "c1",
+        recipients: ["a@example.com", "b@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+    ];
+    (listEvents as jest.Mock).mockRejectedValue(new Error("fail"));
+    await sendDueCampaigns();
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(2);
+    expect((sendCampaignEmail as jest.Mock).mock.calls.map((c) => c[0].to)).toEqual([
+      "a@example.com",
+      "b@example.com",
+    ]);
+  });
+
   test("deliverCampaign inserts tracking pixel and unsubscribe link", async () => {
     await createCampaign({
       shop,
@@ -87,6 +113,40 @@ describe("scheduler", () => {
     expect(html).toContain("Unsubscribe");
     expect(html).toContain(encodeURIComponent("a@example.com"));
     expect(emitSend).toHaveBeenCalledWith(shop, { campaign: expect.any(String) });
+  });
+
+  test("trackedBody rewrites anchor href for click tracking", async () => {
+    await createCampaign({
+      shop,
+      recipients: ["a@example.com"],
+      subject: "Link",
+      body: '<p><a href="https://example.com/page">Link</a> %%UNSUBSCRIBE%%</p>',
+    });
+    const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0].html as string;
+    expect(html).toContain(
+      "/api/marketing/email/click?shop=test-shop&campaign=",
+    );
+    expect(html).toContain(
+      "url=https%3A%2F%2Fexample.com%2Fpage",
+    );
+    expect(html).not.toContain('href="https://example.com/page"');
+  });
+
+  test("deliverCampaign renders templates when templateId provided", async () => {
+    (renderTemplate as jest.Mock).mockReturnValue("<p>Rendered</p>");
+    await createCampaign({
+      shop,
+      recipients: ["a@example.com"],
+      subject: "Hello",
+      body: "<p>Ignored</p>",
+      templateId: "welcome",
+    });
+    expect(renderTemplate).toHaveBeenCalledWith("welcome", {
+      subject: "Hello",
+      body: "<p>Ignored</p>",
+    });
+    const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0].html as string;
+    expect(html).toContain("Rendered");
   });
 
   test("createCampaign resolves recipients from segment", async () => {

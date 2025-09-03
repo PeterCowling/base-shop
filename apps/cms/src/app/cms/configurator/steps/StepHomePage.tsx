@@ -64,7 +64,7 @@ export default function StepHomePage({
       const { data, error } = await apiRequest<Page[]>(
         `/cms/api/pages/${shopId}`,
       );
-      if (data) {
+      if (Array.isArray(data)) {
         const existing: Page | undefined = homePageId
           ? data.find((p) => p.id === homePageId)
           : data.find((p) => p.slug === "");

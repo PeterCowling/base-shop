@@ -95,10 +95,10 @@ describe("formatTimestamp", () => {
 });
 
 describe("parseTargetDate", () => {
-  test("parses ISO string", () => {
-    expect(parseTargetDate("2025-01-01T00:00:00Z")?.toISOString()).toBe(
-      "2025-01-01T00:00:00.000Z"
-    );
+  test("returns Date for valid input without timezone", () => {
+    const result = parseTargetDate("2025-01-01T00:00:00");
+    expect(result).toBeInstanceOf(Date);
+    expect(result?.toISOString()).toBe("2025-01-01T00:00:00.000Z");
   });
 
   test("parses with timezone", () => {

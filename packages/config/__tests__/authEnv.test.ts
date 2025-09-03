@@ -46,4 +46,66 @@ describe("authEnv", () => {
     );
     expect(spy).toHaveBeenCalled();
   });
+
+  it("throws and logs when only LOGIN_RATE_LIMIT_REDIS_URL is set", async () => {
+    process.env = {
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "nextauth",
+      SESSION_SECRET: "session",
+      LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
+    } as NodeJS.ProcessEnv;
+
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    await expect(import("../src/env/auth")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(spy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        LOGIN_RATE_LIMIT_REDIS_TOKEN: { _errors: [expect.any(String)] },
+      }),
+    );
+  });
+
+  it("throws and logs when only LOGIN_RATE_LIMIT_REDIS_TOKEN is set", async () => {
+    process.env = {
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "nextauth",
+      SESSION_SECRET: "session",
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+    } as NodeJS.ProcessEnv;
+
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    await expect(import("../src/env/auth")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(spy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
+      }),
+    );
+  });
+
+  it("parses rate limit redis configuration when URL and token are provided", async () => {
+    process.env = {
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "nextauth",
+      SESSION_SECRET: "session",
+      LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+    } as NodeJS.ProcessEnv;
+
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    const { authEnv } = await import("../src/env/auth");
+
+    expect(authEnv).toMatchObject({
+      LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+    });
+    expect(spy).not.toHaveBeenCalled();
+  });
 });

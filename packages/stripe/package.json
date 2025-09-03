@@ -14,6 +14,7 @@
   },
   "files": ["dist"],
   "scripts": {
+    "prebuild": "pnpm --filter @acme/config run build",
     "build": "tsc -b",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "lint": "eslint ."

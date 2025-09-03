@@ -66,6 +66,17 @@ describe("friendlyErrorMap", () => {
     expect(friendlyErrorMap(issue, ctx).message).toBe("Must have at least 2 items");
   });
 
+  test("too_small number", () => {
+    const issue = {
+      code: ZodIssueCode.too_small,
+      minimum: 3,
+      inclusive: true,
+      type: "number",
+      path: [],
+    } as const;
+    expect(friendlyErrorMap(issue, ctx)).toEqual({ message: ctx.defaultError });
+  });
+
   test("too_big string", () => {
     const issue = {
       code: ZodIssueCode.too_big,
@@ -86,6 +97,17 @@ describe("friendlyErrorMap", () => {
       path: [],
     } as const;
     expect(friendlyErrorMap(issue, ctx).message).toBe("Must have at most 2 items");
+  });
+
+  test("too_big number", () => {
+    const issue = {
+      code: ZodIssueCode.too_big,
+      maximum: 2,
+      inclusive: true,
+      type: "number",
+      path: [],
+    } as const;
+    expect(friendlyErrorMap(issue, ctx)).toEqual({ message: ctx.defaultError });
   });
 
   test("default case with custom message", () => {

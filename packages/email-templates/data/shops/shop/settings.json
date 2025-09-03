@@ -1,0 +1,55 @@
+{
+  "freezeTranslations": false,
+  "currency": "EUR",
+  "taxRegion": "",
+  "languages": [
+    "en",
+    "de",
+    "it"
+  ],
+  "seo": {
+    "aiCatalog": {
+      "enabled": true,
+      "fields": [
+        "id",
+        "title",
+        "description",
+        "price",
+        "media"
+      ],
+      "pageSize": 50
+    },
+    "en": {
+      "title": "t",
+      "description": "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    }
+  },
+  "depositService": {
+    "enabled": false,
+    "intervalMinutes": 60
+  },
+  "reverseLogisticsService": {
+    "enabled": false,
+    "intervalMinutes": 60
+  },
+  "returnService": {
+    "upsEnabled": false,
+    "bagEnabled": false,
+    "homePickupEnabled": false
+  },
+  "stockAlert": {
+    "recipients": []
+  },
+  "luxuryFeatures": {
+    "blog": false,
+    "contentMerchandising": false,
+    "raTicketing": false,
+    "fraudReviewThreshold": 0,
+    "requireStrongCustomerAuth": false,
+    "strictReturnConditions": false,
+    "trackingDashboard": false,
+    "premierDelivery": false
+  },
+  "updatedAt": "",
+  "updatedBy": ""
+}

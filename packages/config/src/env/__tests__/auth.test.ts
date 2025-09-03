@@ -169,7 +169,7 @@ describe("auth env module", () => {
     errorSpy.mockRestore();
   });
 
-  it("throws when redis session store credentials are missing", async () => {
+  it("throws when redis session store credentials are missing", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
@@ -179,16 +179,19 @@ describe("auth env module", () => {
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
-    await expect(import("../auth.ts")).rejects.toThrow(
-      "Invalid auth environment variables",
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      "❌ Invalid auth environment variables:",
-      expect.objectContaining({
-        UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
-        UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
-      }),
-    );
+    try {
+      require("../auth.ts");
+      throw new Error("Expected require to throw");
+    } catch (err) {
+      expect((err as Error).message).toBe("Invalid auth environment variables");
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid auth environment variables:",
+        expect.objectContaining({
+          UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
+          UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
+        }),
+      );
+    }
     errorSpy.mockRestore();
   });
 
@@ -214,7 +217,7 @@ describe("auth env module", () => {
   });
 
   describe("redis session store configuration", () => {
-    it("throws when UPSTASH_REDIS_REST_URL is missing", async () => {
+    it("throws when UPSTASH_REDIS_REST_URL is missing", () => {
       process.env = {
         ...ORIGINAL_ENV,
         NODE_ENV: "production",
@@ -227,19 +230,24 @@ describe("auth env module", () => {
         .spyOn(console, "error")
         .mockImplementation(() => {});
       jest.resetModules();
-      await expect(import("../auth.ts")).rejects.toThrow(
-        "Invalid auth environment variables",
-      );
-      expect(errorSpy).toHaveBeenCalledWith(
-        "❌ Invalid auth environment variables:",
-        expect.objectContaining({
-          UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
-        }),
-      );
+      try {
+        require("../auth.ts");
+        throw new Error("Expected require to throw");
+      } catch (err) {
+        expect((err as Error).message).toBe(
+          "Invalid auth environment variables",
+        );
+        expect(errorSpy).toHaveBeenCalledWith(
+          "❌ Invalid auth environment variables:",
+          expect.objectContaining({
+            UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
+          }),
+        );
+      }
       errorSpy.mockRestore();
     });
 
-    it("throws when UPSTASH_REDIS_REST_TOKEN is missing", async () => {
+    it("throws when UPSTASH_REDIS_REST_TOKEN is missing", () => {
       process.env = {
         ...ORIGINAL_ENV,
         NODE_ENV: "production",
@@ -252,15 +260,20 @@ describe("auth env module", () => {
         .spyOn(console, "error")
         .mockImplementation(() => {});
       jest.resetModules();
-      await expect(import("../auth.ts")).rejects.toThrow(
-        "Invalid auth environment variables",
-      );
-      expect(errorSpy).toHaveBeenCalledWith(
-        "❌ Invalid auth environment variables:",
-        expect.objectContaining({
-          UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
-        }),
-      );
+      try {
+        require("../auth.ts");
+        throw new Error("Expected require to throw");
+      } catch (err) {
+        expect((err as Error).message).toBe(
+          "Invalid auth environment variables",
+        );
+        expect(errorSpy).toHaveBeenCalledWith(
+          "❌ Invalid auth environment variables:",
+          expect.objectContaining({
+            UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
+          }),
+        );
+      }
       errorSpy.mockRestore();
     });
 
@@ -351,7 +364,7 @@ describe("auth env module", () => {
 
   it(
     "throws when LOGIN_RATE_LIMIT_REDIS_TOKEN is set without URL",
-    async () => {
+    () => {
       process.env = {
         ...ORIGINAL_ENV,
         NODE_ENV: "production",
@@ -363,9 +376,14 @@ describe("auth env module", () => {
         .spyOn(console, "error")
         .mockImplementation(() => {});
       jest.resetModules();
-      await expect(import("../auth.ts")).rejects.toThrow(
-        "Invalid auth environment variables",
-      );
+      try {
+        require("../auth.ts");
+        throw new Error("Expected require to throw");
+      } catch (err) {
+        expect((err as Error).message).toBe(
+          "Invalid auth environment variables",
+        );
+      }
       expect(errorSpy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
@@ -379,7 +397,7 @@ describe("auth env module", () => {
 
   it(
     "throws when LOGIN_RATE_LIMIT_REDIS_URL is set without token",
-    async () => {
+    () => {
       process.env = {
         ...ORIGINAL_ENV,
         NODE_ENV: "production",
@@ -391,9 +409,14 @@ describe("auth env module", () => {
         .spyOn(console, "error")
         .mockImplementation(() => {});
       jest.resetModules();
-      await expect(import("../auth.ts")).rejects.toThrow(
-        "Invalid auth environment variables",
-      );
+      try {
+        require("../auth.ts");
+        throw new Error("Expected require to throw");
+      } catch (err) {
+        expect((err as Error).message).toBe(
+          "Invalid auth environment variables",
+        );
+      }
       expect(errorSpy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({

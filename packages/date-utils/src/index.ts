@@ -55,9 +55,15 @@ export function parseTargetDate(
 ): Date | null {
   if (!targetDate) return null;
   try {
-    const date = timezone
-      ? fromZonedTime(targetDate, timezone)
-      : parseISO(targetDate);
+    let date: Date;
+    if (timezone) {
+      date = fromZonedTime(targetDate, timezone);
+    } else {
+      const hasZone = /([zZ]|[+-]\d{2}:\d{2})$/.test(targetDate);
+      date = !hasZone && targetDate.includes("T")
+        ? parseISO(`${targetDate}Z`)
+        : parseISO(targetDate);
+    }
     return Number.isNaN(date.getTime()) ? null : date;
   } catch {
     return null;

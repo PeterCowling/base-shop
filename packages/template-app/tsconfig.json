@@ -27,7 +27,7 @@
         "../i18n/src/*"
       ],
       "@platform-core": [
-        "../platform-core/dist/index",
+        "../platform-core/dist/index.d.ts",
         "../platform-core/src/index.ts"
       ],
       "@platform-core/*": [
@@ -35,7 +35,7 @@
         "../platform-core/src/*"
       ],
       "@acme/platform-core": [
-        "../platform-core/dist/index",
+        "../platform-core/dist/index.d.ts",
         "../platform-core/src/index.ts"
       ],
       "@acme/platform-core/*": [
@@ -47,12 +47,12 @@
         "../config/src/index.ts"
       ],
       "@acme/config/*": [
-        "./src/env/*.ts",
         "../config/dist/*",
+        "./src/env/*.ts",
         "../config/src/*"
       ],
       "@auth": [
-        "../auth/dist/index",
+        "../auth/dist/index.d.ts",
         "../auth/dist",
         "../auth/src/index.ts",
         "../auth/src"
@@ -62,7 +62,7 @@
         "../auth/src/*"
       ],
       "@date-utils": [
-        "../date-utils/dist/index",
+        "../date-utils/dist/index.d.ts",
         "../date-utils/dist",
         "../date-utils/src/index.ts",
         "../date-utils/src"

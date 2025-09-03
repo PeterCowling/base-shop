@@ -12,8 +12,8 @@
     "lib": ["es2022"],
     "baseUrl": ".",
     "paths": {
-      "@acme/config": ["../config/src/index.ts"],
-      "@acme/config/*": ["../config/src/*"]
+      "@acme/config": ["../config/dist/index.d.ts", "../config/src/index.ts"],
+      "@acme/config/*": ["../config/dist/*", "../config/src/*"]
     }
   },
   "include": ["src/**/*"],

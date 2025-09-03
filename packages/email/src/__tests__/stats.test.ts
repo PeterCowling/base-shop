@@ -14,7 +14,12 @@ jest.mock("../stats", () => {
 
 import * as stats from "../stats";
 
-const { mapSendGridStats, mapResendStats, emptyStats } = stats;
+const {
+  mapSendGridStats,
+  mapResendStats,
+  emptyStats,
+  normalizeProviderStats,
+} = stats;
 
 describe("mapSendGridStats", () => {
   it("converts mixed string/number fields", () => {
@@ -62,7 +67,7 @@ describe("normalizeProviderStats", () => {
   });
 
   it("returns empty stats for unknown provider", () => {
-    expect(stats.normalizeProviderStats("unknown", undefined)).toEqual(emptyStats);
+    expect(normalizeProviderStats("unknown", undefined)).toEqual(emptyStats);
   });
 
   it("invokes mapSendGridStats for sendgrid provider", () => {
@@ -142,6 +147,6 @@ describe("normalizeProviderStats", () => {
 describe("normalizeProviderStats real module", () => {
   it("uses actual implementation for unknown providers", () => {
     const { normalizeProviderStats, emptyStats } = jest.requireActual("../stats");
-    expect(normalizeProviderStats("unknown", undefined)).toEqual({ ...emptyStats });
+    expect(normalizeProviderStats("unknown", undefined)).toEqual(emptyStats);
   });
 });

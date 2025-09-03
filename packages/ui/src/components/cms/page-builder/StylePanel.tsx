@@ -7,6 +7,17 @@ import { Input } from "../../atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
 import useContrastWarnings from "../../../hooks/useContrastWarnings";
 
+type TrackFn = (name: string, payload?: Record<string, unknown>) => void;
+let track: TrackFn = () => {};
+
+import("@acme/telemetry")
+  .then((m) => {
+    track = m.track;
+  })
+  .catch(() => {
+    // telemetry is optional in tests
+  });
+
 interface Props {
   component: PageComponent;
   handleInput: <K extends keyof PageComponent>(

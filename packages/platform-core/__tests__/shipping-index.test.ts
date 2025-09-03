@@ -51,6 +51,45 @@ describe('getShippingRate', () => {
     ).rejects.toThrow('Premier delivery not configured');
   });
 
+  it('throws when region is provided without premierDelivery', async () => {
+    await expect(
+      getShippingRate({
+        provider: 'ups',
+        fromPostalCode: '00000',
+        toPostalCode: '99999',
+        weight: 1,
+        region: 'eligible',
+      }),
+    ).rejects.toThrow('Premier delivery not configured');
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('throws when window is provided without premierDelivery', async () => {
+    await expect(
+      getShippingRate({
+        provider: 'ups',
+        fromPostalCode: '00000',
+        toPostalCode: '99999',
+        weight: 1,
+        window: 'morning',
+      }),
+    ).rejects.toThrow('Premier delivery not configured');
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('throws when carrier is provided without premierDelivery', async () => {
+    await expect(
+      getShippingRate({
+        provider: 'ups',
+        fromPostalCode: '00000',
+        toPostalCode: '99999',
+        weight: 1,
+        carrier: 'ups',
+      }),
+    ).rejects.toThrow('Premier delivery not configured');
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it('throws for invalid region', async () => {
     await expect(
       getShippingRate({
@@ -131,6 +170,19 @@ describe('getShippingRate', () => {
         weight: 5,
       }),
     ).rejects.toThrow('Failed to fetch rate from ups');
+  });
+
+  it('returns JSON for valid non-premier request', async () => {
+    mockEnv.UPS_KEY = 'ups-key';
+    const apiResponse = { rate: 10 };
+    fetchMock.mockResolvedValue({ ok: true, json: async () => apiResponse });
+    const result = await getShippingRate({
+      provider: 'ups',
+      fromPostalCode: '11111',
+      toPostalCode: '22222',
+      weight: 5,
+    });
+    expect(result).toEqual(apiResponse);
   });
 });
 

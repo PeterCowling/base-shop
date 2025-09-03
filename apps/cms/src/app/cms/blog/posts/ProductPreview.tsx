@@ -16,7 +16,8 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const controller = new AbortController();
+    const controller =
+      typeof AbortController !== "undefined" ? new AbortController() : null;
     setLoading(true);
     setProduct(null);
     onValidChange?.(false);
@@ -29,7 +30,7 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
         );
 
         const res = await fetch(url.toString(), {
-          signal: controller.signal,
+          signal: controller?.signal,
         });
         if (!res.ok) throw new Error("Failed to load product");
         const data = (await res.json()) as SKU;
@@ -37,19 +38,15 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
         setError(null);
         onValidChange?.(true);
       } catch {
-        if (!controller.signal.aborted) {
-          setError("Failed to load product");
-          onValidChange?.(false);
-        }
+        setError("Failed to load product");
+        onValidChange?.(false);
       } finally {
-        if (!controller.signal.aborted) {
-          setLoading(false);
-        }
+        setLoading(false);
       }
     })();
 
     return () => {
-      controller.abort();
+      controller?.abort();
       onValidChange?.(false);
     };
   }, [slug, onValidChange]);

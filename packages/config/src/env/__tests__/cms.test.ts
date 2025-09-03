@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
+import { createRequire } from "module";
 
 describe("cms env module", () => {
   const ORIGINAL_ENV = process.env;
@@ -334,6 +335,29 @@ describe("cms env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
       { CMS_SPACE_URL: { _errors: [expect.any(String)] }, _errors: [] },
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws when required with an invalid CMS_SPACE_URL in production", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      CMS_SPACE_URL: "not-a-url",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2024-01-01",
+    } as NodeJS.ProcessEnv;
+
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+
+    const req = createRequire(__filename);
+    expect(() => req("../cms.ts")).toThrow("Invalid CMS environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid CMS environment variables:",
+      expect.objectContaining({
+        CMS_SPACE_URL: { _errors: [expect.any(String)] },
+      }),
     );
     errorSpy.mockRestore();
   });

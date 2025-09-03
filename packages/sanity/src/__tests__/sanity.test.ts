@@ -39,11 +39,27 @@ describe('sanity.server', () => {
     jest.clearAllMocks();
   });
 
+  it('fetchPublishedPosts returns posts on success', async () => {
+    const posts = [{ title: 'Post', slug: 'post' }];
+    fetchMock.mockResolvedValue(posts);
+    await expect(fetchPublishedPosts('shop1')).resolves.toEqual(posts);
+    expect(createClientMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
   it('fetchPublishedPosts returns empty array on client error', async () => {
     fetchMock.mockRejectedValue(new Error('fail'));
     await expect(fetchPublishedPosts('shop1')).resolves.toEqual([]);
     expect(createClientMock).toHaveBeenCalledTimes(1);
     expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('fetchPostBySlug returns post on success', async () => {
+    const post = { title: 'Post', slug: 'post' };
+    fetchMock.mockResolvedValue(post);
+    await expect(fetchPostBySlug('shop1', 'post')).resolves.toEqual(post);
+    expect(createClientMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledWith(expect.any(String), { slug: 'post' });
   });
 
   it('fetchPostBySlug returns null on client error', async () => {
@@ -71,5 +87,16 @@ describe('sanity.server', () => {
     expect(patchMock).toHaveBeenCalledWith('p1');
     expect(setMock).toHaveBeenCalled();
     expect(commitMock).toHaveBeenCalled();
+  });
+
+  it('publishQueuedPost returns early when no queued post', async () => {
+    const patchMock = jest.fn();
+    fetchMock.mockResolvedValue({});
+    createClientMock.mockReturnValue({ fetch: fetchMock, patch: patchMock });
+
+    await publishQueuedPost('shop1');
+
+    expect(fetchMock).toHaveBeenCalled();
+    expect(patchMock).not.toHaveBeenCalled();
   });
 });

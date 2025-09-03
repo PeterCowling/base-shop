@@ -39,6 +39,28 @@ describe("SendgridProvider", () => {
     });
   });
 
+  it("defaults text to empty string", async () => {
+    process.env.SENDGRID_API_KEY = "sg";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const { SendgridProvider } = await import("../providers/sendgrid");
+    const provider = new SendgridProvider();
+
+    await provider.send({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+    });
+
+    expect(sgMail.send).toHaveBeenCalledWith({
+      to: "to@example.com",
+      from: "campaign@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+      text: "",
+    });
+  });
+
   it("throws ProviderError when send fails", async () => {
     process.env.SENDGRID_API_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
@@ -62,6 +84,31 @@ describe("SendgridProvider", () => {
     await expect(sendPromise).rejects.toMatchObject({
       message: "boom",
       retryable: false,
+    });
+  });
+
+  it("throws ProviderError with Sendgrid-specific fields", async () => {
+    process.env.SENDGRID_API_KEY = "sg";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const err: any = new Error("boom");
+    err.response = { statusCode: 500 };
+    sgMail.send.mockRejectedValueOnce(err);
+
+    const { SendgridProvider } = await import("../providers/sendgrid");
+    const { ProviderError } = await import("../providers/types");
+    const provider = new SendgridProvider();
+
+    const sendPromise = provider.send({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+    });
+
+    await expect(sendPromise).rejects.toBeInstanceOf(ProviderError);
+    await expect(sendPromise).rejects.toMatchObject({
+      message: "boom",
+      retryable: true,
     });
   });
 
@@ -139,6 +186,18 @@ describe("SendgridProvider", () => {
     it("returns empty string on fetch failure", async () => {
       process.env.SENDGRID_API_KEY = "sg";
       global.fetch = jest.fn().mockRejectedValue(new Error("fail"));
+      const { SendgridProvider } = await import("../providers/sendgrid");
+      const provider = new SendgridProvider();
+      await expect(
+        provider.createContact("user@example.com")
+      ).resolves.toBe("");
+    });
+
+    it("returns empty string when persisted recipients empty", async () => {
+      process.env.SENDGRID_API_KEY = "sg";
+      global.fetch = jest.fn().mockResolvedValue({
+        json: jest.fn().mockResolvedValue({ persisted_recipients: [] }),
+      });
       const { SendgridProvider } = await import("../providers/sendgrid");
       const provider = new SendgridProvider();
       await expect(

@@ -93,17 +93,13 @@ export function depositReleaseEnvRefinement(
     const isReverse = key.startsWith("REVERSE_LOGISTICS_");
     const isLateFee = key.startsWith("LATE_FEE_");
     if (!isDeposit && !isReverse && !isLateFee) continue;
-    if (
-      key === "DEPOSIT_RELEASE_ENABLED" ||
-      key === "DEPOSIT_RELEASE_INTERVAL_MS" ||
-      key === "REVERSE_LOGISTICS_ENABLED" ||
-      key === "REVERSE_LOGISTICS_INTERVAL_MS" ||
-      key === "LATE_FEE_ENABLED" ||
-      key === "LATE_FEE_INTERVAL_MS"
-    )
-      continue;
     if (key.includes("ENABLED")) {
-      if (value !== "true" && value !== "false") {
+      if (
+        value !== "true" &&
+        value !== "false" &&
+        value !== true &&
+        value !== false
+      ) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: [key],
@@ -111,7 +107,8 @@ export function depositReleaseEnvRefinement(
         });
       }
     } else if (key.includes("INTERVAL_MS")) {
-      if (Number.isNaN(Number(value))) {
+      const num = typeof value === "number" ? value : Number(value);
+      if (Number.isNaN(num)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: [key],

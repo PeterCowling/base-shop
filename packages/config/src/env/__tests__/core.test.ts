@@ -182,6 +182,52 @@ describe("core env refinement", () => {
     });
   });
 
+  it("records issues for invalid base deposit, reverse logistics and late fee vars", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      {
+        DEPOSIT_RELEASE_ENABLED: "yes",
+        DEPOSIT_RELEASE_INTERVAL_MS: "soon",
+        REVERSE_LOGISTICS_ENABLED: "maybe",
+        REVERSE_LOGISTICS_INTERVAL_MS: "later",
+        LATE_FEE_ENABLED: "nah",
+        LATE_FEE_INTERVAL_MS: "whenever",
+      },
+      ctx,
+    );
+    expect(ctx.addIssue).toHaveBeenCalledTimes(6);
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_ENABLED"],
+      message: "must be true or false",
+    });
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_INTERVAL_MS"],
+      message: "must be a number",
+    });
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["REVERSE_LOGISTICS_ENABLED"],
+      message: "must be true or false",
+    });
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["REVERSE_LOGISTICS_INTERVAL_MS"],
+      message: "must be a number",
+    });
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["LATE_FEE_ENABLED"],
+      message: "must be true or false",
+    });
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["LATE_FEE_INTERVAL_MS"],
+      message: "must be a number",
+    });
+  });
+
   it("skips base keys and accepts valid custom deposit values", () => {
     const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
     depositReleaseEnvRefinement(
@@ -395,6 +441,41 @@ describe("loadCoreEnv", () => {
     );
     errorSpy.mockRestore();
   });
+
+  it("logs each issue and throws for missing required secrets", async () => {
+    const originalNodeEnv = process.env.NODE_ENV;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    process.env.NODE_ENV = "production";
+    const { loadCoreEnv } = await import("../core.js");
+    expect(() => loadCoreEnv({} as NodeJS.ProcessEnv)).toThrow(
+      "Invalid core environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("CMS_SPACE_URL"),
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("CMS_ACCESS_TOKEN"),
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("SANITY_API_VERSION"),
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("NEXTAUTH_SECRET"),
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("SESSION_SECRET"),
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("CART_COOKIE_SECRET"),
+    );
+    errorSpy.mockRestore();
+    process.env.NODE_ENV = originalNodeEnv;
+    jest.resetModules();
+  });
 });
 
 describe("core env module", () => {
@@ -461,7 +542,14 @@ describe("core env module", () => {
     const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
     expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
     expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token");
-    expect(mod.coreEnv.SANITY_API_VERSION).toBe("v1");
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+    expect(Object.keys(mod.coreEnv)).toEqual(
+      expect.arrayContaining([
+        "CMS_SPACE_URL",
+        "CMS_ACCESS_TOKEN",
+        "SANITY_API_VERSION",
+      ]),
+    );
     expect(parseSpy).toHaveBeenCalledTimes(1);
     parseSpy.mockRestore();
   });

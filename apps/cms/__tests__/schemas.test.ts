@@ -114,4 +114,100 @@ describe("zod schemas", () => {
       premierDelivery: false,
     });
   });
+
+  /* ---------------------------------------------------------------------- */
+  /* jsonRecord                                                             */
+  /* ---------------------------------------------------------------------- */
+
+  it("jsonRecord parses valid JSON strings", () => {
+    const parsed = shopSchema.parse({
+      id: "s1",
+      name: "Shop",
+      themeId: "base",
+      catalogFilters: "",
+      themeOverrides: '{"color":"red"}',
+    });
+
+    expect(parsed.themeOverrides).toEqual({ color: "red" });
+  });
+
+  it("jsonRecord reports invalid JSON", () => {
+    const result = shopSchema.safeParse({
+      id: "s1",
+      name: "Shop",
+      themeId: "base",
+      catalogFilters: "",
+      themeOverrides: "{invalid",
+    });
+
+    expect(result.success).toBe(false);
+    if (result.success) throw new Error("expected failure");
+
+    const err = result.error.flatten().fieldErrors.themeOverrides?.[0];
+    expect(err).toBe("Invalid JSON");
+  });
+
+  it("jsonRecord defaults empty input to an empty object", () => {
+    const parsed = shopSchema.parse({
+      id: "s1",
+      name: "Shop",
+      themeId: "base",
+      catalogFilters: "",
+    });
+
+    expect(parsed.themeOverrides).toEqual({});
+  });
+
+  /* ---------------------------------------------------------------------- */
+  /* catalogFilters                                                          */
+  /* ---------------------------------------------------------------------- */
+
+  it("catalogFilters parses an empty string to an empty array", () => {
+    const parsed = shopSchema.parse({
+      id: "s1",
+      name: "Shop",
+      themeId: "base",
+      catalogFilters: "",
+    });
+
+    expect(parsed.catalogFilters).toEqual([]);
+  });
+
+  it("catalogFilters parses a single value", () => {
+    const parsed = shopSchema.parse({
+      id: "s1",
+      name: "Shop",
+      themeId: "base",
+      catalogFilters: "color",
+    });
+
+    expect(parsed.catalogFilters).toEqual(["color"]);
+  });
+
+  /* ---------------------------------------------------------------------- */
+  /* boolean preprocessors                                                   */
+  /* ---------------------------------------------------------------------- */
+
+  it("boolean preprocessors treat 'off' as false", () => {
+    const parsed = shopSchema.parse({
+      id: "s1",
+      name: "Shop",
+      themeId: "base",
+      catalogFilters: "",
+      blog: "off",
+    });
+
+    expect(parsed.luxuryFeatures.blog).toBe(false);
+  });
+
+  it("boolean preprocessors default undefined to false", () => {
+    const parsed = shopSchema.parse({
+      id: "s1",
+      name: "Shop",
+      themeId: "base",
+      catalogFilters: "",
+    });
+
+    expect(parsed.luxuryFeatures.blog).toBe(false);
+  });
 });

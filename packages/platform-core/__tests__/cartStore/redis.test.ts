@@ -159,6 +159,48 @@ describe("RedisCartStore", () => {
     expect(fallback.removeItem).toHaveBeenCalled();
   });
 
+  it("returns null when setting qty=0 for missing item and falls back on failure", async () => {
+    const fallback = makeFallback();
+    const hexists = jest.fn().mockResolvedValueOnce(0);
+    const store = new RedisCartStore({ hexists } as any, 1, fallback);
+    expect(await store.setQty("id", "sku", 0)).toBeNull();
+    hexists.mockResolvedValueOnce(undefined);
+    await store.setQty("id", "sku", 0);
+    expect(fallback.setQty).toHaveBeenCalledWith("id", "sku", 0);
+  });
+
+  it("returns null when removing non-existent item and falls back on failure", async () => {
+    const fallback = makeFallback();
+    const hdel = jest.fn().mockResolvedValueOnce(0);
+    const store = new RedisCartStore({ hdel } as any, 1, fallback);
+    expect(await store.removeItem("id", "sku")).toBeNull();
+    hdel.mockResolvedValueOnce(undefined);
+    await store.removeItem("id", "sku");
+    expect(fallback.removeItem).toHaveBeenCalledWith("id", "sku");
+  });
+
+  it("sets quantity when item exists and falls back on failure", async () => {
+    const client = new FakeRedis();
+    const fallback = makeFallback();
+    const store = new RedisCartStore(client as any, 1, fallback);
+    const sku = { id: "sku" } as any;
+    const id = await store.createCart();
+    await store.incrementQty(id, sku, 1);
+    const cart = await store.setQty(id, sku.id, 2);
+    expect(cart).toEqual({ [sku.id]: { sku, qty: 2 } });
+    expect(
+      Object.values(fallback).every((fn) => !(fn as jest.Mock).mock.calls.length)
+    ).toBe(true);
+
+    const fallback2 = makeFallback();
+    const hexists = jest.fn().mockResolvedValue(1);
+    const hset = jest.fn().mockResolvedValueOnce(undefined);
+    const expire = jest.fn().mockResolvedValue(1);
+    const store2 = new RedisCartStore({ hexists, hset, expire } as any, 1, fallback2);
+    await store2.setQty("id2", "sku", 3);
+    expect(fallback2.setQty).toHaveBeenCalledWith("id2", "sku", 3);
+  });
+
   it("performs operations successfully when Redis succeeds", async () => {
     const client = new FakeRedis();
     const fallback = makeFallback();

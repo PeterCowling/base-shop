@@ -95,6 +95,7 @@ export async function writeShop(
   shop: string,
   patch: Partial<Shop> & { id: string }
 ): Promise<Shop> {
+  const { readShop } = await import("./shops.server");
   const current = await readShop(shop);
   const themeDefaults = {
     ...(current.themeDefaults ?? {}),

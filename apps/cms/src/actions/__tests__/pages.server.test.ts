@@ -1,10 +1,19 @@
 /** @jest-environment node */
-import { historyStateSchema } from "@acme/types";
-
+const historyStateSchema = { parse: jest.fn((val: any) => val ?? {}) };
 const captureException = jest.fn();
 
+jest.mock("@acme/i18n/src/index", () => ({ LOCALES: ["en", "de"] }), {
+  virtual: true,
+});
+jest.mock(
+  "@acme/types/src/index",
+  () => ({ historyStateSchema }),
+  { virtual: true },
+);
 jest.mock("../common/auth", () => ({
-  ensureAuthorized: jest.fn().mockResolvedValue({ user: { email: "user@example.com" } }),
+  ensureAuthorized: jest
+    .fn()
+    .mockResolvedValue({ user: { email: "user@example.com" } }),
 }));
 
 jest.mock("../pages/service", () => ({
@@ -16,12 +25,12 @@ jest.mock("../pages/service", () => ({
 
 jest.mock("@acme/config", () => ({ env: { NODE_ENV: "test" } }));
 
-jest.mock("@sentry/node", () => ({ captureException }));
+jest.mock("@/utils/sentry.server", () => ({ captureException }));
 
 import { createPage, savePageDraft, updatePage, deletePage } from "../pages.server";
 import * as auth from "../common/auth";
 import * as service from "../pages/service";
-import * as Sentry from "@sentry/node";
+import * as Sentry from "@/utils/sentry.server";
 
 describe("pages.server actions", () => {
   beforeEach(() => {
@@ -100,9 +109,7 @@ describe("pages.server actions", () => {
     fd.set("history", "not-json");
 
     const defaultHistory = historyStateSchema.parse(undefined);
-    const spy = jest
-      .spyOn(historyStateSchema, "parse")
-      .mockImplementation(() => defaultHistory);
+    (historyStateSchema.parse as jest.Mock).mockImplementation(() => defaultHistory);
 
     const result = await savePageDraft("shop", fd);
     expect(result.page?.id).toBe("p2");
@@ -112,7 +119,7 @@ describe("pages.server actions", () => {
       expect.objectContaining({ id: "p2", history: defaultHistory }),
       undefined
     );
-    spy.mockRestore();
+    (historyStateSchema.parse as jest.Mock).mockReset();
   });
 
   it("savePageDraft returns error for invalid components", async () => {
@@ -155,6 +162,22 @@ describe("pages.server actions", () => {
       expect.objectContaining({ id: "p1", slug: "new" }),
       prev
     );
+  });
+
+  it("updatePage validation error", async () => {
+    (service.getPages as jest.Mock).mockResolvedValue([]);
+
+    const fd = new FormData();
+    fd.set("id", "p1");
+    fd.set("updatedAt", "now");
+    fd.set("slug", "");
+    fd.set("status", "draft");
+    fd.set("components", "[]");
+
+    const result = await updatePage("shop", fd);
+    expect(result.errors?.slug[0]).toBe("Slug required");
+    expect(service.updatePage).not.toHaveBeenCalled();
+    expect(Sentry.captureException).toHaveBeenCalled();
   });
 
   it("updatePage propagates errors and captures Sentry", async () => {

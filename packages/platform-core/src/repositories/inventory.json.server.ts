@@ -58,6 +58,7 @@ async function read(shop: string): Promise<InventoryItem[]> {
         }),
     );
   } catch (err) {
+    console.error(`Failed to read inventory for ${shop}`, err);
     throw err;
   }
 }

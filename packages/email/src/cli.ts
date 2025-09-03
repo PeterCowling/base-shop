@@ -1,4 +1,3 @@
-#!/usr/bin/env tsx
 import { Command } from "commander";
 import { promises as fs } from "fs";
 import * as fsSync from "fs";
@@ -49,54 +48,56 @@ async function writeCampaigns(shop: string, items: Campaign[]): Promise<void> {
   await fs.writeFile(campaignsPath(shop), JSON.stringify(items, null, 2), "utf8");
 }
 
-const program = new Command();
-program.name("email").description("Email marketing CLI");
+export async function run(argv = process.argv): Promise<void> {
+  const program = new Command();
+  program.name("email").description("Email marketing CLI");
 
-const campaign = program.command("campaign").description("Manage campaigns");
+  const campaign = program.command("campaign").description("Manage campaigns");
 
-campaign
-  .command("create")
-  .argument("<shop>")
-  .requiredOption("--subject <subject>", "Email subject")
-  .requiredOption("--body <html>", "HTML body")
-  .option("--recipients <emails>", "Comma separated recipient emails")
-  .option("--segment <segment>", "Recipient segment name")
-  .option("--send-at <date>", "ISO send time", () => nowIso())
-  .action(async (shop, options) => {
-    const campaigns = await readCampaigns(shop);
-    const recipients = options.recipients
-      ? String(options.recipients)
-          .split(",")
-          .map((e: string) => e.trim())
-          .filter(Boolean)
-      : [];
-    const item: Campaign = {
-      id: randomUUID(),
-      recipients,
-      subject: options.subject,
-      body: options.body,
-      segment: options.segment ?? null,
-      sendAt: new Date(options.sendAt).toISOString(),
-    };
-    campaigns.push(item);
-    await writeCampaigns(shop, campaigns);
-    console.log(`Created campaign ${item.id}`);
-  });
+  campaign
+    .command("create")
+    .argument("<shop>")
+    .requiredOption("--subject <subject>", "Email subject")
+    .requiredOption("--body <html>", "HTML body")
+    .option("--recipients <emails>", "Comma separated recipient emails")
+    .option("--segment <segment>", "Recipient segment name")
+    .option("--send-at <date>", "ISO send time", () => nowIso())
+    .action(async (shop, options) => {
+      const campaigns = await readCampaigns(shop);
+      const recipients = options.recipients
+        ? String(options.recipients)
+            .split(",")
+            .map((e: string) => e.trim())
+            .filter(Boolean)
+        : [];
+      const item: Campaign = {
+        id: randomUUID(),
+        recipients,
+        subject: options.subject,
+        body: options.body,
+        segment: options.segment ?? null,
+        sendAt: new Date(options.sendAt).toISOString(),
+      };
+      campaigns.push(item);
+      await writeCampaigns(shop, campaigns);
+      console.log(`Created campaign ${item.id}`);
+    });
 
-campaign
-  .command("list")
-  .argument("<shop>")
-  .action(async (shop) => {
-    const campaigns = await readCampaigns(shop);
-    console.log(JSON.stringify(campaigns, null, 2));
-  });
+  campaign
+    .command("list")
+    .argument("<shop>")
+    .action(async (shop) => {
+      const campaigns = await readCampaigns(shop);
+      console.log(JSON.stringify(campaigns, null, 2));
+    });
 
-campaign
-  .command("send")
-  .description("Send due campaigns")
-  .action(async () => {
-    await sendDueCampaigns();
-    console.log("Sent due campaigns");
-  });
+  campaign
+    .command("send")
+    .description("Send due campaigns")
+    .action(async () => {
+      await sendDueCampaigns();
+      console.log("Sent due campaigns");
+    });
 
-program.parseAsync(process.argv);
+  await program.parseAsync(argv);
+}

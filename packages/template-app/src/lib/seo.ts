@@ -33,7 +33,10 @@ export async function getSeo(
   locale: Locale,
   pageSeo: Partial<ExtendedSeoProps> = {}
 ): Promise<NextSeoProps> {
-    const shop = (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "default";
+  const shop =
+    ((coreEnv as { NEXT_PUBLIC_SHOP_ID?: string }).NEXT_PUBLIC_SHOP_ID as
+      | string
+      | undefined) || "default";
   const { getShopSettings } = await import(
     "@platform-core/repositories/shops.server"
   );
@@ -62,12 +65,8 @@ export async function getSeo(
       perLocaleCanonical[l] = `${cBase}/${l}${canonicalPath}`;
     }
   }
-  const alternates: LinkTag[] = Object.entries(perLocaleCanonical).map(
-    ([l, href]) => ({
-      rel: "alternate",
-      hrefLang: l,
-      href,
-    })
+  const alternates: LinkTag[] = Object.entries(perLocaleCanonical).flatMap(
+    ([l, href]) => (href ? [{ rel: "alternate", hrefLang: l, href }] : [])
   );
 
   const imagePath =

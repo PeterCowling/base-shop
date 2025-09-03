@@ -30,7 +30,7 @@ function getProvider(): CampaignProvider | undefined {
   return providers[name];
 }
 
-async function readSegments(shop: string): Promise<SegmentDef[]> {
+export async function readSegments(shop: string): Promise<SegmentDef[]> {
   shop = validateShopName(shop);
   const file = path.join(DATA_ROOT, shop, "segments.json");
   try {

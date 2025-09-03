@@ -27,6 +27,19 @@ jest.mock("../providers/resend", () => ({
 
 jest.mock("@acme/lib", () => ({ validateShopName: (s: string) => s }));
 
+describe("readSegments", () => {
+  beforeEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  it("returns empty array when JSON is an object", async () => {
+    mockReadFile.mockResolvedValue(JSON.stringify({ foo: 1 }));
+    const { readSegments } = await import("../segments");
+    await expect(readSegments("shop1")).resolves.toEqual([]);
+  });
+});
+
 describe("provider functions", () => {
   afterEach(() => {
     jest.resetModules();

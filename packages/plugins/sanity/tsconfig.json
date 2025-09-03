@@ -4,7 +4,7 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "rootDir": ".",
+    "rootDir": "src",
     "outDir": "dist",
     "module": "ESNext",
     "moduleResolution": "Bundler",
@@ -13,7 +13,6 @@
     "strict": true
   },
   "include": [
-    "index.ts",
     "src/**/*",
     "src/**/*.json"
   ],

@@ -1,16 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-  createCampaign,
-  listCampaigns,
-  type Campaign,
-  renderTemplate,
-} from "@acme/email";
+import type { Campaign } from "@acme/email";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const shop = req.nextUrl.searchParams.get("shop");
   if (!shop)
     return NextResponse.json({ error: "Missing shop" }, { status: 400 });
+  const { listCampaigns } = await import("@acme/email");
   const campaigns: Campaign[] = await listCampaigns(shop);
   const events = await listEvents();
   const withMetrics = campaigns.map((c) => {
@@ -52,6 +48,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (!shop || !subject || !body || (list.length === 0 && !segment)) {
     return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
+  const { createCampaign, renderTemplate } = await import("@acme/email");
   let html = body;
   if (templateId) {
     html = renderTemplate(templateId, { subject, body });

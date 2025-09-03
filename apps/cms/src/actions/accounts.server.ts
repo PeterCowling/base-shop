@@ -6,7 +6,6 @@ import type { Role } from "@cms/auth/roles";
 import type { CmsUser } from "@cms/auth/users";
 import argon2 from "argon2";
 import { ulid } from "ulid";
-import { sendEmail } from "@acme/email";
 import { readRbac, writeRbac } from "../lib/server/rbacStore";
 
 export interface PendingUser {
@@ -47,6 +46,7 @@ export async function approveAccount(formData: FormData): Promise<void> {
   db.roles[user.id] = roles.length <= 1 ? (roles[0] as Role) : roles;
   await writeRbac(db);
   delete PENDING_USERS[id];
+  const { sendEmail } = await import("@acme/email");
   await sendEmail(
     user.email,
     "Account approved",

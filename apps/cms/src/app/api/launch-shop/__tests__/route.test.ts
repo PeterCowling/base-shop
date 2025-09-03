@@ -104,7 +104,7 @@ describe('launch-shop route', () => {
     expect(seedShop).not.toHaveBeenCalled();
   });
 
-  it('reports failure and stops when a step fails', async () => {
+  it('reports failure and stops when create step fails', async () => {
     getRequiredSteps.mockReturnValue([]);
     createShop.mockResolvedValue({ ok: false, error: 'nope' });
 
@@ -120,6 +120,106 @@ describe('launch-shop route', () => {
     expect(messages).toEqual([
       { step: 'create', status: 'pending' },
       { step: 'create', status: 'failure', error: 'nope' },
+    ]);
+    expect(initShop).not.toHaveBeenCalled();
+    expect(deployShop).not.toHaveBeenCalled();
+    expect(seedShop).not.toHaveBeenCalled();
+  });
+
+  it('reports failure and stops when init step fails', async () => {
+    getRequiredSteps.mockReturnValue([]);
+    createShop.mockResolvedValue({ ok: true });
+    initShop.mockResolvedValue({ ok: false, error: 'nope' });
+
+    const { POST } = await import('../route');
+    const req = {
+      json: async () => ({ shopId: '1', state: { completed: {} } }),
+      headers: new Headers(),
+    } as unknown as Request;
+
+    const res = await POST(req);
+    const text = await readStream(res.body as ReadableStream<Uint8Array>);
+    const messages = parseSse(text);
+    expect(messages).toEqual([
+      { step: 'create', status: 'pending' },
+      { step: 'create', status: 'success' },
+      { step: 'init', status: 'pending' },
+      { step: 'init', status: 'failure', error: 'nope' },
+    ]);
+    expect(deployShop).not.toHaveBeenCalled();
+    expect(seedShop).not.toHaveBeenCalled();
+  });
+
+  it('reports failure and stops when deploy step fails', async () => {
+    getRequiredSteps.mockReturnValue([]);
+    createShop.mockResolvedValue({ ok: true });
+    initShop.mockResolvedValue({ ok: true });
+    deployShop.mockResolvedValue({ ok: false, error: 'nope' });
+
+    const { POST } = await import('../route');
+    const req = {
+      json: async () => ({ shopId: '1', state: { completed: {} } }),
+      headers: new Headers(),
+    } as unknown as Request;
+
+    const res = await POST(req);
+    const text = await readStream(res.body as ReadableStream<Uint8Array>);
+    const messages = parseSse(text);
+    expect(messages).toEqual([
+      { step: 'create', status: 'pending' },
+      { step: 'create', status: 'success' },
+      { step: 'init', status: 'pending' },
+      { step: 'init', status: 'success' },
+      { step: 'deploy', status: 'pending' },
+      { step: 'deploy', status: 'failure', error: 'nope' },
+    ]);
+    expect(seedShop).not.toHaveBeenCalled();
+  });
+
+  it('reports failure and stops when seed step fails', async () => {
+    getRequiredSteps.mockReturnValue([]);
+    createShop.mockResolvedValue({ ok: true });
+    initShop.mockResolvedValue({ ok: true });
+    deployShop.mockResolvedValue({ ok: true });
+    seedShop.mockResolvedValue({ ok: false, error: 'nope' });
+
+    const { POST } = await import('../route');
+    const req = {
+      json: async () => ({ shopId: '1', state: { completed: {} }, seed: true }),
+      headers: new Headers(),
+    } as unknown as Request;
+
+    const res = await POST(req);
+    const text = await readStream(res.body as ReadableStream<Uint8Array>);
+    const messages = parseSse(text);
+    expect(messages).toEqual([
+      { step: 'create', status: 'pending' },
+      { step: 'create', status: 'success' },
+      { step: 'init', status: 'pending' },
+      { step: 'init', status: 'success' },
+      { step: 'deploy', status: 'pending' },
+      { step: 'deploy', status: 'success' },
+      { step: 'seed', status: 'pending' },
+      { step: 'seed', status: 'failure', error: 'nope' },
+    ]);
+  });
+
+  it('sends failure message when an error is thrown', async () => {
+    getRequiredSteps.mockReturnValue([]);
+    createShop.mockRejectedValue(new Error('boom'));
+
+    const { POST } = await import('../route');
+    const req = {
+      json: async () => ({ shopId: '1', state: { completed: {} } }),
+      headers: new Headers(),
+    } as unknown as Request;
+
+    const res = await POST(req);
+    const text = await readStream(res.body as ReadableStream<Uint8Array>);
+    const messages = parseSse(text);
+    expect(messages).toEqual([
+      { step: 'create', status: 'pending' },
+      { status: 'failure', error: 'boom' },
     ]);
     expect(initShop).not.toHaveBeenCalled();
     expect(deployShop).not.toHaveBeenCalled();

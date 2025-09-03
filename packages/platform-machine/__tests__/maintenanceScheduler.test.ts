@@ -49,6 +49,39 @@ describe("runMaintenanceScan", () => {
       sku: "maint",
     });
   });
+
+  it("ignores items without wearCount", async () => {
+    const readdir = jest.fn().mockResolvedValue(["shop1"]);
+    const readInventory = jest.fn().mockResolvedValue([{ sku: "maint" }]);
+    const readProducts = jest.fn().mockResolvedValue([
+      { sku: "maint", wearAndTearLimit: 5, maintenanceCycle: 3 },
+    ]);
+    const info = jest.fn();
+    const error = jest.fn();
+
+    jest.doMock("fs/promises", () => ({ __esModule: true, readdir }));
+    jest.doMock("@platform-core/repositories/inventory.server", () => ({
+      __esModule: true,
+      readInventory,
+    }));
+    jest.doMock("@platform-core/repositories/products.server", () => ({
+      __esModule: true,
+      readRepo: readProducts,
+    }));
+    jest.doMock("@platform-core/utils", () => ({
+      __esModule: true,
+      logger: { info, error },
+    }));
+
+    const { runMaintenanceScan } = await import(
+      "@acme/platform-machine/maintenanceScheduler"
+    );
+
+    await runMaintenanceScan("/data");
+
+    expect(info).not.toHaveBeenCalled();
+    expect(error).not.toHaveBeenCalled();
+  });
 });
 
 describe("startMaintenanceScheduler", () => {

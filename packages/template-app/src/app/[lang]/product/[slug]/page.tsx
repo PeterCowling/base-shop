@@ -1,6 +1,6 @@
 // packages/template-app/src/app/[lang]/product/[slug]/page.tsx
 
-import { LOCALES } from "@acme/i18n";
+import { LOCALES, type Locale } from "@acme/i18n";
 import { getProductBySlug } from "@platform-core/products";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -10,7 +10,7 @@ import { CleaningInfo } from "../../../../components/CleaningInfo";
 import shop from "../../../../../shop.json";
 
 export async function generateStaticParams() {
-  return LOCALES.flatMap((lang) =>
+  return LOCALES.flatMap((lang: Locale) =>
     ["green-sneaker", "sand-sneaker", "black-sneaker"].map((slug) => ({
       lang,
       slug,

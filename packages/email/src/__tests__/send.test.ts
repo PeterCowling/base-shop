@@ -92,6 +92,32 @@ describe("sendCampaignEmail", () => {
     });
   });
 
+  it("forwards provided text without deriving from HTML", async () => {
+    mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+    mockSanitizeHtml = jest.fn();
+
+    setupEnv();
+
+    const { sendCampaignEmail } = await import("../index");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>Hello <strong>world</strong></p>",
+      text: "Custom text",
+      sanitize: false,
+    });
+
+    expect(mockSanitizeHtml).not.toHaveBeenCalled();
+    expect(mockSendgridSend).toHaveBeenCalledWith({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>Hello <strong>world</strong></p>",
+      text: "Custom text",
+    });
+  });
+
     it("sanitizes HTML and derives text", async () => {
       mockSendgridSend = jest.fn().mockResolvedValue(undefined);
       mockResendSend = jest.fn();

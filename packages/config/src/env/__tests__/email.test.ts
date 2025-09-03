@@ -8,6 +8,55 @@ describe("email env module", () => {
     process.env = ORIGINAL_ENV;
   });
 
+  it("parses full SMTP configuration", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      EMAIL_PROVIDER: "smtp",
+      GMAIL_USER: "user@example.com",
+      GMAIL_PASS: "pass",
+      SMTP_URL: "smtp://smtp.example.com:587",
+      CAMPAIGN_FROM: "no-reply@example.com",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { emailEnv } = await import("../email.ts");
+    expect(emailEnv).toMatchObject({
+      EMAIL_PROVIDER: "smtp",
+      GMAIL_USER: "user@example.com",
+      GMAIL_PASS: "pass",
+      SMTP_URL: "smtp://smtp.example.com:587",
+      CAMPAIGN_FROM: "no-reply@example.com",
+    });
+  });
+
+  it("errors when SENDGRID_API_KEY is missing for sendgrid provider", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      EMAIL_PROVIDER: "sendgrid",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../email.ts")).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid email environment variables:",
+      expect.objectContaining({
+        SENDGRID_API_KEY: { _errors: [expect.stringContaining("Required")] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("defaults to smtp provider when EMAIL_PROVIDER is omitted", async () => {
+    process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
+    delete process.env.EMAIL_PROVIDER;
+    jest.resetModules();
+    const { emailEnv } = await import("../email.ts");
+    expect(emailEnv.EMAIL_PROVIDER).toBe("smtp");
+  });
+
   it("parses valid configuration", async () => {
     process.env = {
       ...ORIGINAL_ENV,

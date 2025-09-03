@@ -176,6 +176,8 @@ const config = {
     '^@acme/config/env/(.*)$': ' /packages/config/src/env/$1.ts',
     '^@acme/config$': ' /packages/config/src/env/index.ts',
     '^@acme/config/(.*)$': ' /packages/config/src/$1',
+    '^@acme/platform-core$': ' /packages/platform-core/src/index.ts',
+    '^@acme/platform-core/(.*)$': ' /packages/platform-core/src/$1',
     '^@acme/platform-machine/src/(.*)$': ' /packages/platform-machine/src/$1',
     '^@acme/plugin-sanity$': ' /test/__mocks__/pluginSanityStub.ts',
     '^@acme/plugin-sanity/(.*)$': ' /test/__mocks__/pluginSanityStub.ts',

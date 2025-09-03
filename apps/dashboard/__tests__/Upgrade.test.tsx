@@ -1,18 +1,20 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import Upgrade from "../src/pages/Upgrade";
-import { useRouter } from "next/router";
 
 jest.mock("next/router", () => ({
   useRouter: jest.fn(),
 }));
 
+const { useRouter } = require("next/router");
+
 const originalFetch = global.fetch;
+let Upgrade: typeof import("../src/pages/Upgrade").default;
 
 describe("Upgrade page", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     (useRouter as jest.Mock).mockReturnValue({ query: { id: "shop1" } });
     global.fetch = jest.fn();
+    ({ default: Upgrade } = await import("../src/pages/Upgrade"));
   });
 
   afterEach(() => {

@@ -26,7 +26,7 @@ describe("ResendProvider", () => {
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
-      text: "Text",
+      // text intentionally undefined to ensure empty string is sent
     });
 
     expect(Resend).toHaveBeenCalledWith("rs");
@@ -35,7 +35,7 @@ describe("ResendProvider", () => {
       to: "to@example.com",
       subject: "Subject",
       html: "<p>HTML</p>",
-      text: "Text",
+      text: "",
     });
   });
 
@@ -100,6 +100,28 @@ describe("ResendProvider", () => {
     const provider = new ResendProvider();
     const { emptyStats } = await import("../stats");
     await expect(provider.getCampaignStats("1")).resolves.toEqual(emptyStats);
+  });
+
+  it("createContact returns empty string when API key missing", async () => {
+    const { ResendProvider } = await import("../providers/resend");
+    const provider = new ResendProvider();
+    global.fetch = jest.fn();
+    await expect(provider.createContact("user@example.com")).resolves.toBe("");
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
+  it("createContact returns id when fetch succeeds", async () => {
+    process.env.RESEND_API_KEY = "rs";
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({
+        json: () => Promise.resolve({ id: "123" }),
+      }) as any;
+    const { ResendProvider } = await import("../providers/resend");
+    const provider = new ResendProvider();
+    await expect(provider.createContact("user@example.com")).resolves.toBe(
+      "123"
+    );
   });
 
   it("createContact returns empty string when fetch rejects", async () => {

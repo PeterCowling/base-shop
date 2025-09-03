@@ -777,6 +777,19 @@ describe("loadCoreEnv", () => {
     process.env = ORIGINAL_ENV;
   });
 
+  it("logs and throws when required env vars are invalid", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadCoreEnv({
+        CMS_SPACE_URL: "not-a-url",
+      } as unknown as NodeJS.ProcessEnv),
+    ).toThrow("Invalid core environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    errorSpy.mockRestore();
+  });
+
   it("returns parsed env on success without logging", () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     const env = loadCoreEnv({

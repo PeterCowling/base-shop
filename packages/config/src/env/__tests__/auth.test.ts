@@ -583,6 +583,48 @@ describe("auth env module", () => {
     errorSpy.mockRestore();
   });
 
+  it("parses redis session store configuration", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+      SESSION_STORE: "redis",
+      UPSTASH_REDIS_REST_URL: "https://example.com",
+      UPSTASH_REDIS_REST_TOKEN: "token",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv).toMatchObject({
+      SESSION_STORE: "redis",
+      UPSTASH_REDIS_REST_URL: "https://example.com",
+      UPSTASH_REDIS_REST_TOKEN: "token",
+    });
+  });
+
+  it("throws when LOGIN_RATE_LIMIT_REDIS_URL is invalid", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "session-secret",
+      LOGIN_RATE_LIMIT_REDIS_URL: "not-a-url",
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
   it("logs error for invalid auth secrets", async () => {
     process.env = {
       ...ORIGINAL_ENV,

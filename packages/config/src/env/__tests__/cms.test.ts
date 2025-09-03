@@ -264,4 +264,77 @@ describe("cms env module", () => {
     );
     errorSpy.mockRestore();
   });
+
+  it("fails safeParse when CMS_SPACE_URL is missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      CMS_SPACE_URL: "https://cms.example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2024-01-01",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { cmsEnvSchema } = await import("../cms.ts");
+
+    const parsed = cmsEnvSchema.safeParse({
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2024-01-01",
+    });
+
+    expect(parsed.success).toBe(false);
+
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => {
+      if (!parsed.success) {
+        console.error(
+          "❌ Invalid CMS environment variables:",
+          parsed.error.format(),
+        );
+        throw new Error("Invalid CMS environment variables");
+      }
+    }).toThrow("Invalid CMS environment variables");
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid CMS environment variables:",
+      { CMS_SPACE_URL: { _errors: [expect.any(String)] }, _errors: [] },
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("fails safeParse when CMS_SPACE_URL is invalid", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      CMS_SPACE_URL: "https://cms.example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2024-01-01",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { cmsEnvSchema } = await import("../cms.ts");
+
+    const parsed = cmsEnvSchema.safeParse({
+      CMS_SPACE_URL: "not-a-url",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2024-01-01",
+    });
+
+    expect(parsed.success).toBe(false);
+
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => {
+      if (!parsed.success) {
+        console.error(
+          "❌ Invalid CMS environment variables:",
+          parsed.error.format(),
+        );
+        throw new Error("Invalid CMS environment variables");
+      }
+    }).toThrow("Invalid CMS environment variables");
+
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid CMS environment variables:",
+      { CMS_SPACE_URL: { _errors: [expect.any(String)] }, _errors: [] },
+    );
+    errorSpy.mockRestore();
+  });
 });

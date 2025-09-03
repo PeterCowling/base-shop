@@ -22,6 +22,28 @@ describe("Upgrade page", () => {
     global.fetch = originalFetch;
   });
 
+  it("hides publish section when nothing selected", async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        core: [
+          { file: "CompA.tsx", componentName: "CompA" },
+        ],
+      }),
+    });
+
+    render(<Upgrade />);
+
+    await screen.findByText("core");
+
+    expect(
+      screen.queryByText(/selected components/i)
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /publish upgrade/i })
+    ).not.toBeInTheDocument();
+  });
+
   it("shows error message when publish fails", async () => {
     (global.fetch as jest.Mock)
       .mockResolvedValueOnce({

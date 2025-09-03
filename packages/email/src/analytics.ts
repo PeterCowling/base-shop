@@ -1,21 +1,21 @@
 import "server-only";
 import { trackEvent } from "@platform-core/analytics";
-import { getCampaignStore } from "./storage";
-import { SendgridProvider } from "./providers/sendgrid";
-import { ResendProvider } from "./providers/resend";
-import type { CampaignProvider } from "./providers/types";
-import { emptyStats, type CampaignStats } from "./stats";
+import { getCampaignStore } from "./storage/index.js";
+import { SendgridProvider } from "./providers/sendgrid.js";
+import { ResendProvider } from "./providers/resend.js";
+import type { CampaignProvider } from "./providers/types.js";
+import { emptyStats, type CampaignStats } from "./stats.js";
 export {
   mapSendGridStats,
   mapResendStats,
   normalizeProviderStats,
   emptyStats,
-} from "./stats";
+} from "./stats.js";
 export type {
   CampaignStats,
   SendGridStatsResponse,
   ResendStatsResponse,
-} from "./stats";
+} from "./stats.js";
 
 export type EmailEventType =
   | "email_delivered"

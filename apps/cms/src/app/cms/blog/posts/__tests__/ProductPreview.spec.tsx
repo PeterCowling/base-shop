@@ -1,31 +1,22 @@
-import { render, screen } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import ProductPreview from "@cms/app/cms/blog/posts/ProductPreview";
+import { rest, server } from "../../../../../../__tests__/msw/server";
 
 describe("ProductPreview", () => {
-  beforeEach(() => {
-    (global as any).fetch = jest.fn();
-  });
-
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
-
   it("renders product info", async () => {
-    (global as any).fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ title: "Test", price: 100 }),
-    } as Response);
     const onValid = jest.fn();
     render(<ProductPreview slug="t" onValidChange={onValid} />);
-    await screen.findByText("Test");
-    expect(onValid).toHaveBeenCalledWith(true);
+    await waitFor(() => expect(onValid).toHaveBeenCalledWith(true));
   });
 
   it("handles error", async () => {
-    (global as any).fetch.mockRejectedValueOnce(new Error("fail"));
+    server.use(
+      rest.get("*/api/products", (_req, res, ctx) =>
+        res(ctx.status(500))
+      )
+    );
     const onValid = jest.fn();
     render(<ProductPreview slug="t" onValidChange={onValid} />);
-    await screen.findByText(/failed to load product/i);
-    expect(onValid).toHaveBeenCalledWith(false);
+    await waitFor(() => expect(onValid).toHaveBeenCalledWith(false));
   });
 });

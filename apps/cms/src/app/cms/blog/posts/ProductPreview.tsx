@@ -21,29 +21,32 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
     setProduct(null);
     onValidChange?.(false);
 
-    fetch(`/api/products?slug=${encodeURIComponent(slug)}`, {
-      signal: controller.signal,
-    })
-      .then((res) => {
+    (async () => {
+      try {
+        const url = new URL(
+          `/api/products?slug=${encodeURIComponent(slug)}`,
+          globalThis.location?.origin ?? "http://localhost"
+        );
+
+        const res = await fetch(url.toString(), {
+          signal: controller.signal,
+        });
         if (!res.ok) throw new Error("Failed to load product");
-        return res.json() as Promise<SKU>;
-      })
-      .then((data) => {
+        const data = (await res.json()) as SKU;
         setProduct(data);
         setError(null);
         onValidChange?.(true);
-      })
-      .catch(() => {
+      } catch {
         if (!controller.signal.aborted) {
           setError("Failed to load product");
           onValidChange?.(false);
         }
-      })
-      .finally(() => {
+      } finally {
         if (!controller.signal.aborted) {
           setLoading(false);
         }
-      });
+      }
+    })();
 
     return () => {
       controller.abort();

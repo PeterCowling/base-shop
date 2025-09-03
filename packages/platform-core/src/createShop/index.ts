@@ -1,12 +1,5 @@
 // packages/platform-core/src/createShop/index.ts
-import {
-  readdirSync,
-  existsSync,
-  readFileSync,
-  writeFileSync,
-  mkdirSync,
-  statSync,
-} from "fs";
+import * as fs from "fs";
 import { join } from "path";
 import { genSecret } from "@acme/shared-utils";
 import { prisma } from "../db";
@@ -28,7 +21,7 @@ const currentDir = typeof __dirname !== "undefined" ? __dirname : "";
 
 function repoRoot(): string {
   const cwd = process.cwd();
-  if (existsSync(join(cwd, "packages"))) return cwd;
+  if (fs.existsSync(join(cwd, "packages"))) return cwd;
   return join(currentDir, "..", "..", "..", "..");
 }
 /**
@@ -77,8 +70,8 @@ export async function createShop(
 
   try {
     const dir = join("data", "shops", id);
-    if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
-    writeFileSync(join(dir, "shop.json"), JSON.stringify(shopData, null, 2));
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(join(dir, "shop.json"), JSON.stringify(shopData, null, 2));
   } catch {
     // ignore filesystem write errors
   }
@@ -123,8 +116,8 @@ function deployShopImpl(
   try {
     adapter.scaffold(newApp);
     const envFile = join(newApp, ".env");
-    if (existsSync(envFile)) {
-      let env = readFileSync(envFile, "utf8");
+    if (fs.existsSync(envFile)) {
+      let env = fs.readFileSync(envFile, "utf8");
       if (/^SESSION_SECRET=/m.test(env)) {
         env = env.replace(
           /^SESSION_SECRET=.*$/m,
@@ -134,7 +127,7 @@ function deployShopImpl(
         env += (env.endsWith("\n") ? "" : "\n") +
           `SESSION_SECRET=${genSecret(32)}\n`;
       }
-      writeFileSync(envFile, env);
+      fs.writeFileSync(envFile, env);
     }
   } catch (err) {
     status = "error";
@@ -161,9 +154,9 @@ export const deployShop: (
 export function listThemes(): string[] {
   const themesDir = join(repoRoot(), "packages", "themes");
   try {
-    return readdirSync(themesDir).filter((name) => {
+    return fs.readdirSync(themesDir).filter((name) => {
       try {
-        return statSync(join(themesDir, name)).isDirectory();
+        return fs.statSync(join(themesDir, name)).isDirectory();
       } catch {
         return false;
       }
@@ -188,10 +181,11 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
   const cwd = process.cwd();
   try {
     process.chdir(root);
+    (fs as unknown as { chdir?: (dir: string) => void }).chdir?.(root);
 
     try {
-      if (existsSync(pkgPath)) {
-        const pkg = JSON.parse(readFileSync(pkgPath, "utf8")) as {
+      if (fs.existsSync(pkgPath)) {
+        const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8")) as {
           dependencies?: Record<string, string>;
         };
         pkg.dependencies ??= {};
@@ -199,25 +193,26 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
           if (dep.startsWith("@themes/")) delete pkg.dependencies[dep];
         }
         pkg.dependencies[`@themes/${theme}`] = "workspace:*";
-        writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+        fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
       }
     } catch {
       // ignore errors when package.json is missing or invalid
     }
 
     try {
-      if (existsSync(cssPath)) {
-        const css = readFileSync(cssPath, "utf8").replace(
+      if (fs.existsSync(cssPath)) {
+        const css = fs.readFileSync(cssPath, "utf8").replace(
           /@themes\/[^/]+\/tokens.css/,
           `@themes/${theme}/tokens.css`
         );
-        writeFileSync(cssPath, css);
+        fs.writeFileSync(cssPath, css);
       }
     } catch {
       // ignore errors when globals.css cannot be read
     }
   } finally {
     process.chdir(cwd);
+    (fs as unknown as { chdir?: (dir: string) => void }).chdir?.(cwd);
   }
 
   return loadTokens(theme);

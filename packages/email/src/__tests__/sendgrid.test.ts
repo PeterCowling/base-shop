@@ -112,6 +112,31 @@ describe("SendgridProvider", () => {
     });
   });
 
+  it("throws retryable ProviderError when error lacks provider fields", async () => {
+    process.env.SENDGRID_API_KEY = "sg";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const err = new Error("boom");
+    sgMail.send.mockRejectedValueOnce(err);
+
+    const { SendgridProvider } = await import("../providers/sendgrid");
+    const { ProviderError } = await import("../providers/types");
+    const provider = new SendgridProvider();
+
+    const promise = provider.send({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+      text: "Text",
+    });
+
+    await expect(promise).rejects.toBeInstanceOf(ProviderError);
+    await expect(promise).rejects.toMatchObject({
+      message: "boom",
+      retryable: true,
+    });
+  });
+
   it("throws when sanity check fails", async () => {
     process.env.SENDGRID_API_KEY = "sg";
     const originalFetch = global.fetch;
@@ -197,6 +222,18 @@ describe("SendgridProvider", () => {
       process.env.SENDGRID_API_KEY = "sg";
       global.fetch = jest.fn().mockResolvedValue({
         json: jest.fn().mockResolvedValue({ persisted_recipients: [] }),
+      });
+      const { SendgridProvider } = await import("../providers/sendgrid");
+      const provider = new SendgridProvider();
+      await expect(
+        provider.createContact("user@example.com")
+      ).resolves.toBe("");
+    });
+
+    it("returns empty string when persisted recipients missing", async () => {
+      process.env.SENDGRID_API_KEY = "sg";
+      global.fetch = jest.fn().mockResolvedValue({
+        json: jest.fn().mockResolvedValue({}),
       });
       const { SendgridProvider } = await import("../providers/sendgrid");
       const provider = new SendgridProvider();

@@ -15,14 +15,15 @@ async function withRepo(
   ) => Promise<void>
 ): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "settings-"));
-  const shopDir = path.join(dir, "data", "shops", "test");
+  const realDir = await fs.realpath(dir);
+  const shopDir = path.join(realDir, "data", "shops", "test");
   await fs.mkdir(shopDir, { recursive: true });
   const cwd = process.cwd();
-  process.chdir(dir);
+  process.chdir(realDir);
   jest.resetModules();
   const repo = await import("../src/repositories/settings.server");
   try {
-    await cb(repo, "test", dir);
+    await cb(repo, "test", realDir);
   } finally {
     process.chdir(cwd);
   }

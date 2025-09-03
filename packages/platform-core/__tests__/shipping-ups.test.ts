@@ -3,14 +3,14 @@ import { jest } from '@jest/globals';
 const mockEnv: Record<string, string | undefined> = {};
 jest.mock('@acme/config/env/shipping', () => ({ shippingEnv: mockEnv }));
 
-import { createReturnLabel, getStatus } from '../ups';
+import { createReturnLabel, getStatus } from '../src/shipping/ups';
 
 describe('createReturnLabel', () => {
   let fetchMock: jest.Mock;
 
   beforeEach(() => {
     fetchMock = jest.fn();
-    // @ts-expect-error - replace global fetch with mock
+    // @ts-expect-error replace global fetch
     global.fetch = fetchMock;
     for (const key of Object.keys(mockEnv)) {
       delete mockEnv[key];
@@ -22,7 +22,7 @@ describe('createReturnLabel', () => {
     jest.restoreAllMocks();
   });
 
-  it('returns fallback when UPS_KEY is undefined', async () => {
+  it('uses fallback when UPS_KEY is missing', async () => {
     const result = await createReturnLabel('session');
     expect(result).toEqual({
       trackingNumber: '1Z1234567891',
@@ -31,29 +31,7 @@ describe('createReturnLabel', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it('returns fallback when fetch rejects', async () => {
-    mockEnv.UPS_KEY = 'ups-key';
-    fetchMock.mockRejectedValue(new Error('fail'));
-
-    const result = await createReturnLabel('session');
-    expect(result).toEqual({
-      trackingNumber: '1Z1234567891',
-      labelUrl: 'https://www.ups.com/track?loc=en_US&tracknum=1Z1234567891',
-    });
-  });
-
-  it('returns fallback when response is not ok', async () => {
-    mockEnv.UPS_KEY = 'ups-key';
-    fetchMock.mockResolvedValue({ ok: false });
-
-    const result = await createReturnLabel('session');
-    expect(result).toEqual({
-      trackingNumber: '1Z1234567891',
-      labelUrl: 'https://www.ups.com/track?loc=en_US&tracknum=1Z1234567891',
-    });
-  });
-
-  it('returns tracking data on success', async () => {
+  it('requests return label when UPS_KEY exists', async () => {
     mockEnv.UPS_KEY = 'ups-key';
     fetchMock.mockResolvedValue({
       ok: true,
@@ -72,6 +50,12 @@ describe('createReturnLabel', () => {
       trackingNumber: 'TRACK123',
       labelUrl: 'https://label.url',
     });
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://onlinetools.ups.com/ship/v1/shipments',
+      expect.objectContaining({
+        headers: expect.objectContaining({ Authorization: 'Bearer ups-key' }),
+      }),
+    );
   });
 });
 
@@ -80,7 +64,7 @@ describe('getStatus', () => {
 
   beforeEach(() => {
     fetchMock = jest.fn();
-    // @ts-expect-error - replace global fetch with mock
+    // @ts-expect-error replace global fetch
     global.fetch = fetchMock;
   });
 

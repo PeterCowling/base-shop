@@ -1,6 +1,7 @@
 // packages/template-app/src/app/[lang]/subscribe/page.tsx
 import { resolveLocale } from "@i18n/locales";
 import { stripe } from "@acme/stripe";
+import type Stripe from "stripe";
 import { coreEnv } from "@acme/config/env/core";
 import { readShop } from "@platform-core/repositories/shops.server";
 import { getCustomerSession } from "@auth";
@@ -9,6 +10,7 @@ import {
   setUserPlan,
 } from "@platform-core/repositories/subscriptionUsage.server";
 import { setStripeSubscriptionId } from "@platform-core/repositories/users";
+import type { SubscriptionPlan } from "@acme/types";
 
 export default async function SubscribePage({
   params,
@@ -17,7 +19,10 @@ export default async function SubscribePage({
 }) {
   const { lang } = await params;
   resolveLocale(lang);
-    const shopId = (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "shop";
+  const shopId =
+    ((coreEnv as { NEXT_PUBLIC_SHOP_ID?: string }).NEXT_PUBLIC_SHOP_ID as
+      | string
+      | undefined) || "shop";
   const shop = await readShop(shopId);
   if (!shop.subscriptionsEnabled) return notFound();
 
@@ -28,13 +33,13 @@ export default async function SubscribePage({
     const session = await getCustomerSession();
     if (!session?.customerId) return;
     const priceId = planId;
-    const sub = await stripe.subscriptions.create({
+    const params: Stripe.SubscriptionCreateParams & { prorate?: boolean } = {
       customer: session.customerId,
       items: [{ price: priceId }],
-      // @ts-expect-error - `prorate` is deprecated but required for this flow
       prorate: true,
       metadata: { userId: session.customerId, shop: shopId },
-    });
+    };
+    const sub = await stripe.subscriptions.create(params);
     await setStripeSubscriptionId(session.customerId, sub.id, shopId);
     await setUserPlan(shopId, session.customerId, planId);
   }
@@ -43,7 +48,7 @@ export default async function SubscribePage({
     <div className="mx-auto flex max-w-4xl flex-col gap-6 p-6">
       <h1 className="text-2xl font-bold">Choose a Plan</h1>
       <form action={selectPlan} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {shop.rentalSubscriptions.map((p) => (
+        {shop.rentalSubscriptions.map((p: SubscriptionPlan) => (
           <label
             key={p.id}
             className="flex cursor-pointer flex-col gap-2 rounded border p-4 hover:border-black"

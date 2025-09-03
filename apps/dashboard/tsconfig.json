@@ -5,8 +5,14 @@
     "rootDir": "../..",
     "paths": {
       "@/*": ["./src/*"],
-      "@acme/types": ["../../packages/types/src/index.ts"],
-      "@acme/types/*": ["../../packages/types/src/*"]
+      "@acme/types": [
+        "../../packages/types/dist/index.d.ts",
+        "../../packages/types/src/index.ts"
+      ],
+      "@acme/types/*": [
+        "../../packages/types/dist/*",
+        "../../packages/types/src/*"
+      ]
     }
   },
   "include": [

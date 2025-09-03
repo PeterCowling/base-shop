@@ -116,6 +116,38 @@ describe("handleStripeWebhook", () => {
     );
   });
 
+  test("review.closed handles string charge ID", async () => {
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    const event: Stripe.Event = {
+      type: "review.closed",
+      data: { object: { charge: "ch_str" } },
+    } as any;
+    await handleStripeWebhook("test", event);
+    expect(updateRisk).toHaveBeenCalledWith(
+      "test",
+      "ch_str",
+      undefined,
+      undefined,
+      false
+    );
+  });
+
+  test("review.closed handles charge object with id", async () => {
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    const event: Stripe.Event = {
+      type: "review.closed",
+      data: { object: { charge: { id: "ch_obj" } } },
+    } as any;
+    await handleStripeWebhook("test", event);
+    expect(updateRisk).toHaveBeenCalledWith(
+      "test",
+      "ch_obj",
+      undefined,
+      undefined,
+      false
+    );
+  });
+
   test("review.closed clears flag and updates risk", async () => {
     const { handleStripeWebhook } = await import("../src/stripe-webhook");
     const event: Stripe.Event = {

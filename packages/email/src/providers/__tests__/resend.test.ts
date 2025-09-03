@@ -111,5 +111,31 @@ describe("ResendProvider", () => {
       expect(global.fetch).not.toHaveBeenCalled();
     });
   });
+
+  describe("createContact", () => {
+    it("returns the new contact id on success", async () => {
+      process.env.RESEND_API_KEY = "rs";
+      global.fetch = jest.fn().mockResolvedValue({
+        json: () => Promise.resolve({ id: "abc" }),
+      }) as any;
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider();
+      await expect(
+        provider.createContact("test@example.com")
+      ).resolves.toBe("abc");
+    });
+
+    it("returns empty string when id missing", async () => {
+      process.env.RESEND_API_KEY = "rs";
+      global.fetch = jest.fn().mockResolvedValue({
+        json: () => Promise.resolve({}),
+      }) as any;
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider();
+      await expect(
+        provider.createContact("test@example.com")
+      ).resolves.toBe("");
+    });
+  });
 });
 

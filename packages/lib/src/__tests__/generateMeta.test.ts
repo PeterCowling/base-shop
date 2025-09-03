@@ -121,6 +121,100 @@ describe("generateMeta", () => {
     expect(mkdirMock).not.toHaveBeenCalled();
   });
 
+  it("falls back with named OpenAI export function", async () => {
+    const writeMock = jest.fn();
+    const mkdirMock = jest.fn();
+    const responsesCreate = jest.fn().mockResolvedValue({
+      output: [{ content: [{ text: "not json" }] }],
+    });
+    const imagesGenerate = jest.fn().mockResolvedValue({
+      data: [{ b64_json: Buffer.from("img").toString("base64") }],
+    });
+    const OpenAI = jest.fn().mockImplementation(() => ({
+      responses: { create: responsesCreate },
+      images: { generate: imagesGenerate },
+    }));
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      const envMock = { OPENAI_API_KEY: "key" };
+      jest.doMock("@acme/config", () => ({ env: envMock }));
+      jest.doMock("fs", () => ({ promises: { writeFile: writeMock, mkdir: mkdirMock } }));
+      jest.doMock("openai", () => ({ __esModule: true, OpenAI }), { virtual: true });
+      const { generateMeta } = await import("../generateMeta");
+      result = await generateMeta(product);
+    });
+    expect(result).toEqual({
+      title: product.title,
+      description: product.description,
+      alt: product.title,
+      image: `/og/${product.id}.png`,
+    });
+  });
+
+  it("falls back with nested default.default export function", async () => {
+    const writeMock = jest.fn();
+    const mkdirMock = jest.fn();
+    const responsesCreate = jest.fn().mockResolvedValue({
+      output: [{ content: [{ text: "not json" }] }],
+    });
+    const imagesGenerate = jest.fn().mockResolvedValue({
+      data: [{ b64_json: Buffer.from("img").toString("base64") }],
+    });
+    const OpenAI = jest.fn().mockImplementation(() => ({
+      responses: { create: responsesCreate },
+      images: { generate: imagesGenerate },
+    }));
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      const envMock = { OPENAI_API_KEY: "key" };
+      jest.doMock("@acme/config", () => ({ env: envMock }));
+      jest.doMock("fs", () => ({ promises: { writeFile: writeMock, mkdir: mkdirMock } }));
+      jest.doMock(
+        "openai",
+        () => ({ __esModule: true, default: { default: OpenAI } }),
+        { virtual: true },
+      );
+      const { generateMeta } = await import("../generateMeta");
+      result = await generateMeta(product);
+    });
+    expect(result).toEqual({
+      title: product.title,
+      description: product.description,
+      alt: product.title,
+      image: `/og/${product.id}.png`,
+    });
+  });
+
+  it("falls back when module exports a function", async () => {
+    const writeMock = jest.fn();
+    const mkdirMock = jest.fn();
+    const responsesCreate = jest.fn().mockResolvedValue({
+      output: [{ content: [{ text: "not json" }] }],
+    });
+    const imagesGenerate = jest.fn().mockResolvedValue({
+      data: [{ b64_json: Buffer.from("img").toString("base64") }],
+    });
+    const OpenAI = jest.fn().mockImplementation(() => ({
+      responses: { create: responsesCreate },
+      images: { generate: imagesGenerate },
+    }));
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      const envMock = { OPENAI_API_KEY: "key" };
+      jest.doMock("@acme/config", () => ({ env: envMock }));
+      jest.doMock("fs", () => ({ promises: { writeFile: writeMock, mkdir: mkdirMock } }));
+      jest.doMock("openai", () => OpenAI, { virtual: true });
+      const { generateMeta } = await import("../generateMeta");
+      result = await generateMeta(product);
+    });
+    expect(result).toEqual({
+      title: product.title,
+      description: product.description,
+      alt: product.title,
+      image: `/og/${product.id}.png`,
+    });
+  });
+
   it("generates metadata and image with OpenAI", async () => {
     const writeMock = jest.fn();
     const mkdirMock = jest.fn();

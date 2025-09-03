@@ -211,6 +211,33 @@ describe("startDepositReleaseService", () => {
     delete process.env.DEPOSIT_RELEASE_ENABLED_SHOP2;
   });
 
+  it("disables service by default when core env disables it", async () => {
+    jest.resetModules();
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: { DEPOSIT_RELEASE_ENABLED: false },
+      loadCoreEnv: () => ({ DEPOSIT_RELEASE_ENABLED: false }),
+    }));
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValue(["shop1"]);
+    readOrders.mockResolvedValue([]);
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 0 as any);
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+
+    const stop = await service.startDepositReleaseService();
+    expect(setSpy).not.toHaveBeenCalled();
+    expect(readOrders).not.toHaveBeenCalled();
+
+    stop();
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+    jest.dontMock("@acme/config/env/core");
+    jest.resetModules();
+  });
+
   it("runs each shop in parallel and schedules timers after initial run", async () => {
     service = await import("@acme/platform-machine");
     readdir.mockResolvedValue(["shop1", "shop2"]);

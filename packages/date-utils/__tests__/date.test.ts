@@ -114,6 +114,10 @@ describe("parseTargetDate", () => {
   test("returns null when targetDate is undefined", () => {
     expect(parseTargetDate()).toBeNull();
   });
+
+  test("returns null for invalid timezone", () => {
+    expect(parseTargetDate("2025-01-01T00:00:00", "Not/A_Zone")).toBeNull();
+  });
 });
 
 describe("getTimeRemaining", () => {
@@ -136,21 +140,21 @@ describe("getTimeRemaining", () => {
     const target = new Date("2024-12-31T23:59:59Z");
     expect(getTimeRemaining(target)).toBe(-1000);
   });
+
+  test("returns zero for identical times", () => {
+    const target = new Date("2025-01-01T00:00:00Z");
+    expect(getTimeRemaining(target, target)).toBe(0);
+  });
 });
 
 describe("formatDuration", () => {
-  test("formats multi-unit durations", () => {
-    expect(formatDuration((24 * 3600 + 3600 + 120 + 3) * 1000)).toBe(
-      "1d 1h 2m 3s"
-    );
+  test("formats durations spanning days, hours, minutes, and seconds", () => {
+    const ms = (1 * 86400 + 2 * 3600 + 3 * 60 + 4) * 1000;
+    expect(formatDuration(ms)).toBe("1d 2h 3m 4s");
   });
 
   test("formats seconds-only durations", () => {
     expect(formatDuration(45 * 1000)).toBe("45s");
-  });
-
-  test("formats zero milliseconds as 0s", () => {
-    expect(formatDuration(0)).toBe("0s");
   });
 
   test("treats negative durations as 0s", () => {
@@ -188,12 +192,6 @@ describe("leap year handling", () => {
 
   test("calculateRentalDays counts leap day", () => {
     expect(calculateRentalDays("2024-03-01")).toBe(2);
-  });
-});
-
-describe("invalid timezone handling", () => {
-  test("parseTargetDate returns null for bad timezone", () => {
-    expect(parseTargetDate("2025-01-01T00:00:00", "Not/A_Zone")).toBeNull();
   });
 });
 

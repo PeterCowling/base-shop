@@ -1,8 +1,18 @@
 import "server-only";
-import { setEmailService } from "@acme/platform-core/services/emailService";
 import { sendEmail } from "./sendEmail";
 
-setEmailService({ sendEmail });
+async function registerEmailService() {
+  try {
+    const { setEmailService } = await import(
+      "@acme/platform-core/services/emailService"
+    );
+    setEmailService({ sendEmail });
+  } catch {
+    // The core email service isn't available in the current environment.
+  }
+}
+
+void registerEmailService();
 
 export type { CampaignOptions } from "./send";
 export { sendCampaignEmail } from "./send";

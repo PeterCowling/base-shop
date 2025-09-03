@@ -26,6 +26,20 @@ describe("payments env", () => {
     expect(paymentsEnv).toEqual(env);
     expect(warnSpy).not.toHaveBeenCalled();
   });
+
+  it("returns provided values without warnings (ts import)", async () => {
+    const env = {
+      STRIPE_SECRET_KEY: "sk_live_123",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
+      STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+    };
+    process.env = env as NodeJS.ProcessEnv;
+    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    jest.resetModules();
+    const { paymentsEnv } = await import("../payments.ts");
+    expect(paymentsEnv).toEqual(env);
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
 });
 
 describe("payments env defaults", () => {
@@ -64,6 +78,23 @@ describe("payments env defaults", () => {
       );
     },
   );
+
+  it("warns and uses schema defaults for malformed variables", () => {
+    process.env = {
+      STRIPE_SECRET_KEY: 123 as unknown as string,
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 456 as unknown as string,
+      STRIPE_WEBHOOK_SECRET: 789 as unknown as string,
+    } as unknown as NodeJS.ProcessEnv;
+    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    jest.resetModules();
+    const { paymentsEnv, paymentsEnvSchema } = require("../payments.js");
+    const defaults = paymentsEnvSchema.parse({});
+    expect(paymentsEnv).toEqual(defaults);
+    expect(warnSpy).toHaveBeenCalledWith(
+      "⚠️ Invalid payments environment variables:",
+      expect.any(Object),
+    );
+  });
 
   it("warns with formatted errors when variables have invalid types", () => {
     process.env = {

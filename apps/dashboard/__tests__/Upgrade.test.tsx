@@ -151,6 +151,17 @@ describe("Upgrade page", () => {
 
     errorSpy.mockRestore();
   });
+
+  it("does not fetch when shop id is missing", () => {
+    (useRouter as jest.Mock).mockReturnValue({ query: {} });
+
+    render(<Upgrade />);
+
+    expect(global.fetch).not.toHaveBeenCalled();
+    expect(
+      screen.queryByRole("button", { name: /publish upgrade/i })
+    ).not.toBeInTheDocument();
+  });
 });
 
 it("restores global.fetch after tests", () => {

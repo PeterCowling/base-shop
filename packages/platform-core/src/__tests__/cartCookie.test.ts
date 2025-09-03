@@ -14,4 +14,14 @@ describe("decodeCartCookie", () => {
 
     warnSpy.mockRestore();
   });
+
+  it("returns original string when payload is plain text", () => {
+    const original = "plain";
+    const parseSpy = jest.spyOn(JSON, "parse");
+    const encoded = encodeCartCookie(original);
+    expect(decodeCartCookie(encoded)).toBe(original);
+    expect(parseSpy).toHaveBeenCalledWith(original);
+    expect(parseSpy.mock.results[0].type).toBe("throw");
+    parseSpy.mockRestore();
+  });
 });

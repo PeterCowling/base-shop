@@ -45,4 +45,27 @@ describe("emailEnv", () => {
     );
     expect(spy).toHaveBeenCalled();
   });
+
+  it("throws and logs when SENDGRID_API_KEY is missing", async () => {
+    process.env = {
+      EMAIL_PROVIDER: "sendgrid",
+    } as NodeJS.ProcessEnv;
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../src/env/email")).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it("parses sendgrid config without logging when key is provided", async () => {
+    process.env = {
+      EMAIL_PROVIDER: "sendgrid",
+      SENDGRID_API_KEY: "sendgrid-key",
+    } as NodeJS.ProcessEnv;
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const { emailEnv } = await import("../src/env/email");
+    expect(emailEnv.EMAIL_PROVIDER).toBe("sendgrid");
+    expect(emailEnv.SENDGRID_API_KEY).toBe("sendgrid-key");
+    expect(spy).not.toHaveBeenCalled();
+  });
 });

@@ -16,9 +16,14 @@ import { useInventoryValidation } from "./useInventoryValidation";
 interface Props {
   shop: string;
   initial: InventoryItem[];
+  /**
+   * Optional callback invoked with validated and normalized inventory items
+   * instead of posting to the API. Primarily used for testing.
+   */
+  onSave?: (items: InventoryItem[]) => void | Promise<void>;
 }
 
-export default function InventoryForm({ shop, initial }: Props) {
+export default function InventoryForm({ shop, initial, onSave }: Props) {
   const [items, setItems] = useState<InventoryItem[]>(() => initial);
   const [attributes, setAttributes] = useState<string[]>(() => {
     const set = new Set<string>();
@@ -44,7 +49,7 @@ export default function InventoryForm({ shop, initial }: Props) {
         const key = field.split(".")[1];
         item.variantAttributes = { ...item.variantAttributes, [key]: value };
       } else if (field === "quantity") {
-        item.quantity = Number(value);
+        item.quantity = value === "" ? NaN : Number(value);
       } else if (field === "lowStockThreshold") {
         item.lowStockThreshold = value === "" ? undefined : Number(value);
       } else if (field === "sku") {
@@ -71,7 +76,7 @@ export default function InventoryForm({ shop, initial }: Props) {
         sku: "",
         productId: "",
         variantAttributes: Object.fromEntries(attributes.map((a) => [a, ""])),
-        quantity: 0,
+        quantity: NaN,
         lowStockThreshold: undefined,
       },
     ]);
@@ -111,6 +116,12 @@ export default function InventoryForm({ shop, initial }: Props) {
       if (!result.success) {
         setStatus("error");
         setError(result.error);
+        return;
+      }
+      if (onSave) {
+        await onSave(result.data);
+        setStatus("saved");
+        setError(null);
         return;
       }
       setStatus("saved");

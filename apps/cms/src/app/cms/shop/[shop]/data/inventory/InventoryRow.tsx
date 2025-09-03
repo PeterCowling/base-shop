@@ -53,7 +53,7 @@ export default function InventoryRow({
         <Input
           type="number"
           min={0}
-          value={item.quantity}
+          value={Number.isNaN(item.quantity) ? "" : item.quantity}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             updateItem(index, "quantity", e.target.value)
           }

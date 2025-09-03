@@ -1,4 +1,4 @@
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor, within } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import { z } from "zod";
 
@@ -92,42 +92,44 @@ describe("InventoryForm", () => {
     );
   });
 
-  it("posts structured data on save", async () => {
-    render(<InventoryForm shop="test" initial={initial} />);
-    fireEvent.change(screen.getByDisplayValue("sku1"), {
+  it("handles row operations and saves normalized data", async () => {
+    const onSave = jest.fn();
+    render(<InventoryForm shop="test" initial={initial} onSave={onSave} />);
+    // initially header + 1 data row
+    expect(screen.getAllByRole("row")).toHaveLength(2);
+    fireEvent.click(screen.getByText("Add row"));
+    // header + 2 data rows
+    expect(screen.getAllByRole("row")).toHaveLength(3);
+    const newRow = screen.getAllByRole("row")[2];
+    fireEvent.change(within(newRow).getAllByRole("textbox")[0], {
       target: { value: "sku2" },
     });
-    fireEvent.change(screen.getByDisplayValue("red"), {
-      target: { value: "blue" },
+    fireEvent.change(within(newRow).getAllByRole("spinbutton")[0], {
+      target: { value: "7" },
     });
+    // remove original row
+    fireEvent.click(screen.getAllByLabelText("delete-row")[0]);
+    expect(screen.getAllByRole("row")).toHaveLength(2);
     fireEvent.click(screen.getByText("Save"));
-    await waitFor(() => expect(fetch).toHaveBeenCalled());
-    expect(fetch).toHaveBeenCalledWith(
-      "/api/data/test/inventory",
+    await waitFor(() => expect(onSave).toHaveBeenCalled());
+    expect(onSave).toHaveBeenCalledWith([
       expect.objectContaining({
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify([
-          {
-            sku: "sku2",
-            productId: "sku2",
-            variantAttributes: { size: "M", color: "blue" },
-            quantity: 5,
-            lowStockThreshold: 2,
-          },
-        ]),
+        sku: "sku2",
+        productId: "sku2",
+        variantAttributes: {},
+        quantity: 7,
       }),
-    );
+    ]);
   });
 
-  it("shows validation errors", async () => {
-    render(<InventoryForm shop="test" initial={initial} />);
-    fireEvent.change(screen.getByDisplayValue("5"), {
-      target: { value: "-1" },
-    });
-    fireEvent.submit(screen.getByText("Save").closest("form")!);
-    await screen.findByText(/greater than or equal to 0/i);
-    expect(fetch).not.toHaveBeenCalled();
+  it("shows validation errors for missing SKU and quantity", async () => {
+    const onSave = jest.fn();
+    render(<InventoryForm shop="test" initial={[]} onSave={onSave} />);
+    fireEvent.click(screen.getByText("Add row"));
+    fireEvent.click(screen.getByText("Save"));
+    const error = await screen.findByText(/SKU is required/i);
+    expect(error).toHaveTextContent(/Quantity is required/i);
+    expect(onSave).not.toHaveBeenCalled();
   });
 });
 

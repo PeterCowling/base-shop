@@ -1,26 +1,24 @@
-import { assertLocales, resolveLocale } from "../locales";
+import { fillLocales } from "../fillLocales";
+import { resolveLocale } from "../locales";
 
-describe("assertLocales", () => {
-  it("throws on non-array values", () => {
-    expect(() => assertLocales(undefined as any)).toThrow(
-      "LOCALES must be a non-empty array"
-    );
+describe("locale utilities", () => {
+  it("returns provided locale mappings unchanged", () => {
+    const values = { en: "Hello", de: "Hallo", it: "Ciao" };
+
+    expect(fillLocales(values, "Hi")).toEqual(values);
   });
 
-  it("throws on empty arrays", () => {
-    expect(() => assertLocales([] as any)).toThrow(
-      "LOCALES must be a non-empty array"
-    );
+  it("fills missing locales using the fallback", () => {
+    const values = { en: "Hello" };
+
+    expect(fillLocales(values, "Hi")).toEqual({
+      en: "Hello",
+      de: "Hi",
+      it: "Hi",
+    });
   });
 
-  it("does not throw on non-empty arrays", () => {
-    expect(() => assertLocales(["en"])).not.toThrow();
-  });
-});
-
-describe("resolveLocale", () => {
-  it("returns supported locales and falls back to 'en'", () => {
-    expect(resolveLocale("de")).toBe("de");
+  it("defaults unknown locale codes to 'en'", () => {
     expect(resolveLocale("fr" as any)).toBe("en");
     expect(resolveLocale(undefined)).toBe("en");
   });

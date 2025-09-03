@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import fsSync, { promises as fs } from "fs";
 import path from "path";
 
-function resolveTemplatesRoot(): string {
+export function resolveTemplatesRoot(): string {
   let dir = process.cwd();
   while (true) {
     const candidate = path.join(

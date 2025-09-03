@@ -81,6 +81,34 @@ describe("recoverAbandonedCarts", () => {
     expect(carts[0].reminded).toBe(true);
     expect(carts[1].reminded).toBeUndefined();
   });
+
+  it("uses supplied now value", async () => {
+    const delay = 60 * 60 * 1000; // 1 hour
+    const customNow = 10_000;
+    const carts: AbandonedCart[] = [
+      {
+        email: "old@example.com",
+        cart: {},
+        updatedAt: customNow - delay - 1,
+      },
+      {
+        email: "fresh@example.com",
+        cart: {},
+        updatedAt: customNow - delay + 1,
+      },
+    ];
+
+    await recoverAbandonedCarts(carts, customNow, delay);
+
+    expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
+    expect(sendCampaignEmailMock).toHaveBeenCalledWith({
+      to: "old@example.com",
+      subject: "You left items in your cart",
+      html: "<p>You left items in your cart.</p>",
+    });
+    expect(carts[0].reminded).toBe(true);
+    expect(carts[1].reminded).toBeUndefined();
+  });
 });
 
 describe("resolveAbandonedCartDelay", () => {
@@ -94,7 +122,7 @@ describe("resolveAbandonedCartDelay", () => {
     delete process.env.ABANDONED_CART_DELAY_MS;
   });
 
-  it("reads delay from settings file", async () => {
+  it("reads delay from settings abandonedCart.delayMs", async () => {
     await fs.writeFile(
       path.join(shopDir, "settings.json"),
       JSON.stringify({ abandonedCart: { delayMs: 12345 } }, null, 2),
@@ -102,6 +130,16 @@ describe("resolveAbandonedCartDelay", () => {
     );
     const delay = await resolveAbandonedCartDelay(shop);
     expect(delay).toBe(12345);
+  });
+
+  it("reads delay from deprecated abandonedCartDelayMs", async () => {
+    await fs.writeFile(
+      path.join(shopDir, "settings.json"),
+      JSON.stringify({ abandonedCartDelayMs: 54321 }, null, 2),
+      "utf8",
+    );
+    const delay = await resolveAbandonedCartDelay(shop);
+    expect(delay).toBe(54321);
   });
 
   it("uses global env override", async () => {
@@ -116,6 +154,22 @@ describe("resolveAbandonedCartDelay", () => {
     process.env[key] = "54321";
     const delay = await resolveAbandonedCartDelay(shop);
     expect(delay).toBe(54321);
+  });
+
+  it("uses global env when shop-specific is invalid", async () => {
+    const key = `ABANDONED_CART_DELAY_MS_${shop.toUpperCase()}`;
+    process.env.ABANDONED_CART_DELAY_MS = "33333";
+    process.env[key] = "not-a-number";
+    const delay = await resolveAbandonedCartDelay(shop);
+    expect(delay).toBe(33333);
+  });
+
+  it("uses shop-specific env when global is invalid", async () => {
+    const key = `ABANDONED_CART_DELAY_MS_${shop.toUpperCase()}`;
+    process.env.ABANDONED_CART_DELAY_MS = "not-a-number";
+    process.env[key] = "44444";
+    const delay = await resolveAbandonedCartDelay(shop);
+    expect(delay).toBe(44444);
   });
 
   it("falls back to default for invalid env values", async () => {

@@ -154,44 +154,31 @@ Apps Script code lives under `apps-script/` and compiles with its own `tsconfig.
 
 ## TypeScript Project References Policy
 
-### Rule 1 – References
-If package A imports package B, then A’s `tsconfig.json` must include:
+Add a project reference whenever package A imports package B. In that case, A’s
+`tsconfig.json` must include:
 
 ```json
 { "references": [{ "path": "../<B>" }] }
 ```
 
-### Rule 2 – Provider `tsconfig.json`
-Every provider package must set:
+Provider packages must enable project references by setting the following
+compiler options in their `tsconfig.json`:
 
 ```json
 {
-  "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "declarationMap": true,
-    "rootDir": "src",
-    "outDir": "dist"
-  }
+  "composite": true,
+  "declaration": true,
+  "declarationMap": true,
+  "rootDir": "src",
+  "outDir": "dist"
 }
 ```
 
-### Rule 3 – Provider `package.json`
-Provider packages must declare their types with:
+The provider’s `package.json` must then point to the generated type declarations:
 
 ```json
 { "types": "dist/index.d.ts" }
 ```
-
-### Clean & build
-
-```bash
-pnpm run clean:ts
-pnpm run build:ts
-```
-
-### Troubleshooting TS6305
-Clean `dist/` and `.tsbuildinfo` in both the consumer and provider, rebuild the provider first, then the consumer, and ensure the consumer’s `references` list is correct.
 
 ## Troubleshooting
 

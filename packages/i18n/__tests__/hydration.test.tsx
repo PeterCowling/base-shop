@@ -1,5 +1,6 @@
 // packages/i18n/__tests__/hydration.test.tsx
 import { hydrateRoot } from "react-dom/client";
+import { renderToString } from "react-dom/server.node";
 import React from "react";
 import { TranslationsProvider, useTranslations } from "../src/Translations";
 
@@ -14,8 +15,6 @@ describe("TranslationsProvider hydration", () => {
   }
 
   it("hydrates without warnings", async () => {
-    const { renderToString } = await import("react-dom/server");
-
     const html = renderToString(
       <TranslationsProvider messages={{ greet: "Hallo" }}>
         <Greeting />

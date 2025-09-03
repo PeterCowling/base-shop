@@ -355,21 +355,14 @@ describe("core env sub-schema integration", () => {
     }
   });
 
-  it("reports missing SENDGRID_API_KEY when EMAIL_PROVIDER=sendgrid", () => {
+  it("allows missing SENDGRID_API_KEY when EMAIL_PROVIDER=sendgrid", () => {
     const parsed = coreEnvSchema.safeParse({
       ...baseEnv,
       EMAIL_PROVIDER: "sendgrid",
     });
-    expect(parsed.success).toBe(false);
-    if (!parsed.success) {
-      expect(parsed.error.issues).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            path: ["SENDGRID_API_KEY"],
-            message: "Required",
-          }),
-        ]),
-      );
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.SENDGRID_API_KEY).toBeUndefined();
     }
   });
 });

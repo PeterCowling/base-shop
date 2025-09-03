@@ -45,6 +45,26 @@ describe("shops repository", () => {
   });
 
   describe("readShop", () => {
+    it("returns shop from Prisma when available", async () => {
+      const dbData = {
+        id: "db-shop",
+        name: "DB Shop",
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+        themeDefaults: { color: "green" },
+        themeOverrides: { color: "blue" },
+      };
+      findUnique.mockResolvedValue({ data: dbData });
+
+      const result = await readShop("db-shop");
+
+      expect(result.name).toBe("DB Shop");
+      expect(result.themeDefaults).toEqual({ color: "green" });
+      expect(readFile).not.toHaveBeenCalled();
+      expect(loadTokens).not.toHaveBeenCalled();
+    });
+
     it("falls back to filesystem when Prisma fails", async () => {
       findUnique.mockRejectedValue(new Error("db fail"));
       const fileData = {
@@ -68,6 +88,7 @@ describe("shops repository", () => {
         "/data/root/shop1/shop.json",
         "utf8",
       );
+      expect(loadTokens).not.toHaveBeenCalled();
     });
 
     it("returns empty shop with defaults when db and fs fail", async () => {

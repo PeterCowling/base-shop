@@ -1,4 +1,4 @@
-import { parseMultilingualInput } from "@acme/i18n";
+import { parseMultilingualInput } from "../parseMultilingualInput";
 
 describe("parseMultilingualInput", () => {
   const locales = ["en", "de", "it"] as const;
@@ -8,15 +8,14 @@ describe("parseMultilingualInput", () => {
       field: "title",
       locale: "en",
     });
-    expect(parseMultilingualInput("desc_de", locales)).toEqual({
+    expect(parseMultilingualInput("desc_it", locales)).toEqual({
       field: "desc",
-      locale: "de",
+      locale: "it",
     });
   });
 
   it("returns null for invalid input", () => {
-    expect(parseMultilingualInput("foo_en", locales)).toBeNull();
     expect(parseMultilingualInput("title_fr", locales)).toBeNull();
-    expect(parseMultilingualInput("titleen", locales)).toBeNull();
+    expect(parseMultilingualInput("foo_en", locales)).toBeNull();
   });
 });

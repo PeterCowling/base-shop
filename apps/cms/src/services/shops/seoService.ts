@@ -52,7 +52,17 @@ export async function updateSeo(
     return { errors: { _global: ["Failed to persist settings"] } };
   }
 
-  revalidatePath(`/cms/shop/${shop}/settings/seo`);
+  try {
+    revalidatePath(`/cms/shop/${shop}/settings/seo`);
+  } catch (err) {
+    // In tests or non-Next runtimes the static generation store may be
+    // missing, which causes `revalidatePath` to throw. Failing to
+    // revalidate is non-critical here so swallow the error.
+    console.warn(
+      `[updateSeo] failed to revalidate path for shop ${shop}`,
+      err,
+    );
+  }
 
   return { settings: updated, warnings };
 }

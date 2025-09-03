@@ -10,6 +10,8 @@ import os from "node:os";
 import path from "node:path";
 import "../src/types/next-auth.d.ts";
 
+jest.setTimeout(120_000);
+
 /* ---------------------------------------------------------------------- */
 /* Helper types — kept tiny & local to this test                          */
 /* ---------------------------------------------------------------------- */

@@ -29,7 +29,7 @@ export default function EditPreviewPage() {
         if (Array.isArray(data.pages)) {
           const pageLinks = (
             await Promise.all(
-              data.pages.map(async (id) => {
+              (data.pages as string[]).map(async (id) => {
                 try {
                   const r = await fetch(
                     `/api/preview-token?pageId=${encodeURIComponent(id)}`,

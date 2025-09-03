@@ -131,3 +131,6 @@ export function renderTemplate(
 
   throw new Error(`Unknown template: ${id}`);
 }
+
+// Export the React reference for testing purposes.
+export { React as __reactShim };

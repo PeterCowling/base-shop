@@ -4,6 +4,7 @@ import * as React from "react";
 describe("renderTemplate", () => {
   afterEach(() => {
     jest.resetModules();
+    jest.dontMock("module");
   });
 
   it("falls back to a React shim when node require fails", async () => {
@@ -12,19 +13,53 @@ describe("renderTemplate", () => {
         throw new Error("mock fail");
       },
     }));
+    let ReactShim: any;
     jest.doMock(
       "@acme/email-templates",
-      () => ({ __esModule: true, marketingEmailTemplates: [] }),
+      () => ({
+        __esModule: true,
+        marketingEmailTemplates: [
+          {
+            id: "complex",
+            label: "Complex",
+            buildSubject: (h: string) => h,
+            make: ({ headline, content, footer }: any) =>
+              ReactShim.createElement(
+                "div",
+                { className: "outer" },
+                ReactShim.createElement("h1", null, headline),
+                ReactShim.Children.map([content, footer], (child, i) =>
+                  ReactShim.createElement(
+                    "section",
+                    { "data-idx": i },
+                    child,
+                    ReactShim.createElement("span", null, "!"),
+                  ),
+                ),
+              ),
+          },
+        ],
+      }),
       { virtual: true },
     );
-    const { registerTemplate, renderTemplate, clearTemplates } = await import(
-      "../templates"
+
+    const { renderTemplate, __reactShim } = await import("../templates");
+    ReactShim = __reactShim;
+    const ceSpy = jest.spyOn(__reactShim, "createElement");
+    const iveSpy = jest.spyOn(__reactShim, "isValidElement");
+    const mapSpy = jest.spyOn(__reactShim.Children, "map");
+
+    const html = renderTemplate("complex", {
+      subject: "Hi",
+      body: "<p>Test</p>",
+    });
+    expect(html).toBe(
+      '<div className="outer"><h1>Hi</h1><section data-idx="0"><div><p>Test</p></div><span>!</span></section><section data-idx="1"><p>%%UNSUBSCRIBE%%</p><span>!</span></section></div>',
     );
-    registerTemplate("welcome", "<p>Hello {{name}}</p>");
-    const html = renderTemplate("welcome", { name: "Ada" });
-    expect(html).toBe("<p>Hello Ada</p>");
-    clearTemplates();
-    jest.dontMock("module");
+    expect(ceSpy).toHaveBeenCalled();
+    expect(iveSpy).toHaveBeenCalled();
+    expect(mapSpy).toHaveBeenCalled();
+
   });
 
   it("registers and clears custom templates", async () => {

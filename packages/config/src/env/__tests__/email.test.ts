@@ -309,4 +309,53 @@ describe("email env module", () => {
     );
     errorSpy.mockRestore();
   });
+
+  it(
+    "logs and throws when SENDGRID_API_KEY is missing for sendgrid provider",
+    async () => {
+      const { SENDGRID_API_KEY: _unused, ...rest } = ORIGINAL_ENV;
+      process.env = {
+        ...rest,
+        EMAIL_PROVIDER: "sendgrid",
+      } as NodeJS.ProcessEnv;
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      jest.resetModules();
+      await expect(import("../email.ts")).rejects.toThrow(
+        "Invalid email environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid email environment variables:",
+        expect.objectContaining({
+          SENDGRID_API_KEY: {
+            _errors: [expect.stringContaining("Required")],
+          },
+        }),
+      );
+      errorSpy.mockRestore();
+    },
+  );
+
+  it(
+    "imports successfully when SENDGRID_API_KEY is present for sendgrid provider",
+    async () => {
+      process.env = {
+        ...ORIGINAL_ENV,
+        EMAIL_PROVIDER: "sendgrid",
+        SENDGRID_API_KEY: "test-key",
+      } as NodeJS.ProcessEnv;
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      jest.resetModules();
+      const { emailEnv } = await import("../email.ts");
+      expect(errorSpy).not.toHaveBeenCalled();
+      expect(emailEnv).toMatchObject({
+        EMAIL_PROVIDER: "sendgrid",
+        SENDGRID_API_KEY: "test-key",
+      });
+      errorSpy.mockRestore();
+    },
+  );
 });

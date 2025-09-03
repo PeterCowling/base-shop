@@ -355,14 +355,21 @@ describe("core env sub-schema integration", () => {
     }
   });
 
-  it("allows missing SENDGRID_API_KEY when EMAIL_PROVIDER=sendgrid", () => {
+  it("requires SENDGRID_API_KEY when EMAIL_PROVIDER=sendgrid", () => {
     const parsed = coreEnvSchema.safeParse({
       ...baseEnv,
       EMAIL_PROVIDER: "sendgrid",
     });
-    expect(parsed.success).toBe(true);
-    if (parsed.success) {
-      expect(parsed.data.SENDGRID_API_KEY).toBeUndefined();
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: ["SENDGRID_API_KEY"],
+            message: "Required",
+          }),
+        ]),
+      );
     }
   });
 });
@@ -768,6 +775,19 @@ describe("loadCoreEnv", () => {
   const ORIGINAL_ENV = process.env;
   afterEach(() => {
     process.env = ORIGINAL_ENV;
+  });
+
+  it("logs and throws when required env vars are invalid", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadCoreEnv({
+        CMS_SPACE_URL: "not-a-url",
+      } as unknown as NodeJS.ProcessEnv),
+    ).toThrow("Invalid core environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    errorSpy.mockRestore();
   });
 
   it("returns parsed env on success without logging", () => {

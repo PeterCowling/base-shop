@@ -1,8 +1,74 @@
 import { describe, expect, it } from "@jest/globals";
 import { z } from "zod";
-import { depositReleaseEnvRefinement } from "../core.js";
+import {
+  coreEnvBaseSchema,
+  depositReleaseEnvRefinement,
+} from "../core.js";
+
+const baseEnv = {
+  CMS_SPACE_URL: "https://example.com",
+  CMS_ACCESS_TOKEN: "token",
+  SANITY_API_VERSION: "v1",
+};
+
+const schema = coreEnvBaseSchema.superRefine(depositReleaseEnvRefinement);
 
 describe("depositReleaseEnvRefinement", () => {
+  it("parses built-in deposit, reverse logistics and late fee vars", () => {
+    const parsed = schema.safeParse({
+      ...baseEnv,
+      DEPOSIT_RELEASE_ENABLED: "true",
+      DEPOSIT_RELEASE_INTERVAL_MS: "1000",
+      REVERSE_LOGISTICS_ENABLED: "false",
+      REVERSE_LOGISTICS_INTERVAL_MS: "2000",
+      LATE_FEE_ENABLED: "true",
+      LATE_FEE_INTERVAL_MS: "3000",
+    });
+    expect(parsed.success).toBe(true);
+  });
+
+  it("reports issues for invalid built-in deposit, reverse logistics and late fee vars", () => {
+    const parsed = schema.safeParse({
+      ...baseEnv,
+      DEPOSIT_RELEASE_ENABLED: "yes",
+      DEPOSIT_RELEASE_INTERVAL_MS: "soon",
+      REVERSE_LOGISTICS_ENABLED: "maybe",
+      REVERSE_LOGISTICS_INTERVAL_MS: "later",
+      LATE_FEE_ENABLED: "nah",
+      LATE_FEE_INTERVAL_MS: "whenever",
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: ["DEPOSIT_RELEASE_ENABLED"],
+            message: "must be true or false",
+          }),
+          expect.objectContaining({
+            path: ["DEPOSIT_RELEASE_INTERVAL_MS"],
+            message: "must be a number",
+          }),
+          expect.objectContaining({
+            path: ["REVERSE_LOGISTICS_ENABLED"],
+            message: "must be true or false",
+          }),
+          expect.objectContaining({
+            path: ["REVERSE_LOGISTICS_INTERVAL_MS"],
+            message: "must be a number",
+          }),
+          expect.objectContaining({
+            path: ["LATE_FEE_ENABLED"],
+            message: "must be true or false",
+          }),
+          expect.objectContaining({
+            path: ["LATE_FEE_INTERVAL_MS"],
+            message: "must be a number",
+          }),
+        ]),
+      );
+    }
+  });
   it("accepts valid ENABLED and INTERVAL_MS values for all prefixes", () => {
     const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
     depositReleaseEnvRefinement(

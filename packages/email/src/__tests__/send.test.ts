@@ -88,6 +88,41 @@ describe("sendCampaignEmail", () => {
     });
   });
 
+  it("uses supplied text without deriving", async () => {
+    mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+    mockSanitizeHtml = jest.fn((html: string) => html);
+
+    setupEnv();
+
+    const html = "<p>Hello <strong>world</strong></p>";
+    const replaceSpy = jest.spyOn(String.prototype, "replace");
+
+    const { sendCampaignEmail } = await import("../index");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html,
+      text: "Custom text",
+      sanitize: false,
+    });
+
+    const htmlReplaceCalls = replaceSpy.mock.instances.filter(
+      (inst) => inst.valueOf() === html
+    );
+    expect(htmlReplaceCalls).toHaveLength(0);
+    expect(mockSanitizeHtml).not.toHaveBeenCalled();
+    expect(mockSendgridSend).toHaveBeenCalledWith({
+      to: "to@example.com",
+      subject: "Subject",
+      html,
+      text: "Custom text",
+    });
+
+    replaceSpy.mockRestore();
+  });
+
     it("sanitizes HTML and derives text", async () => {
       mockSendgridSend = jest.fn().mockResolvedValue(undefined);
       mockResendSend = jest.fn();
@@ -210,9 +245,14 @@ describe("sendCampaignEmail", () => {
     mockSanitizeHtml = jest.fn((html: string) => html);
 
     process.env.EMAIL_PROVIDER = "sendgrid";
+    process.env.SENDGRID_API_KEY = "sg";
+    process.env.RESEND_API_KEY = "rs";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
     const { sendCampaignEmail } = await import("../index");
+
+    delete process.env.SENDGRID_API_KEY;
+    delete process.env.RESEND_API_KEY;
     await sendCampaignEmail({
       to: "to@example.com",
       subject: "Subject",

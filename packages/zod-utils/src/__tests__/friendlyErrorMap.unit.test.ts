@@ -1,4 +1,4 @@
-import { z, ZodIssueCode } from "zod";
+import { z, ZodIssueCode, type ZodIssue } from "zod";
 import { applyFriendlyZodMessages, friendlyErrorMap } from "../zodErrorMap";
 
 describe("applyFriendlyZodMessages", () => {
@@ -15,22 +15,22 @@ describe("friendlyErrorMap", () => {
   const ctx = { defaultError: "Default error", data: undefined } as const;
 
   test("invalid_type missing field", () => {
-    const issue = {
+    const issue: ZodIssue = {
       code: ZodIssueCode.invalid_type,
       expected: "string",
       received: "undefined",
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe("Required");
   });
 
   test("invalid_type wrong type", () => {
-    const issue = {
+    const issue: ZodIssue = {
       code: ZodIssueCode.invalid_type,
       expected: "string",
       received: "number",
       path: [],
-    } as const;
+    };
     expect(friendlyErrorMap(issue, ctx).message).toBe("Expected string");
   });
 

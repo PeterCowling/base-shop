@@ -12,7 +12,9 @@ jest.mock("@acme/date-utils", () => ({
 
 import { prisma } from "../../db";
 import { nowIso } from "@acme/date-utils";
-import { recordEvent, listEvents } from "../reverseLogisticsEvents.server";
+import * as reverseLogistics from "../reverseLogisticsEvents.server";
+
+const { recordEvent, listEvents, reverseLogisticsEvents } = reverseLogistics;
 
 describe("reverse logistics events repository", () => {
   const create = prisma.reverseLogisticsEvent.create as jest.Mock;
@@ -93,5 +95,31 @@ describe("reverse logistics events repository", () => {
         createdAt: "2023-01-02",
       },
     ]);
+  });
+});
+
+describe("reverse logistics event helpers", () => {
+  const create = prisma.reverseLogisticsEvent.create as jest.Mock;
+
+  beforeEach(() => {
+    create.mockClear();
+  });
+
+  it.each([
+    ["received", reverseLogisticsEvents.received],
+    ["cleaning", reverseLogisticsEvents.cleaning],
+    ["repair", reverseLogisticsEvents.repair],
+    ["qa", reverseLogisticsEvents.qa],
+    ["available", reverseLogisticsEvents.available],
+  ])("records %s events", async (name, fn) => {
+    await fn("shop1", "session1", "time");
+    expect(create).toHaveBeenCalledWith({
+      data: {
+        shop: "shop1",
+        sessionId: "session1",
+        event: name,
+        createdAt: "time",
+      },
+    });
   });
 });

@@ -180,6 +180,29 @@ The provider’s `package.json` must then point to the generated type declaratio
 { "types": "dist/index.d.ts" }
 ```
 
+## TSConfig path fallbacks for apps
+
+Every app should map workspace packages to both their built `dist` output and the raw `src` files. This mirrors `apps/shop-bcd` and lets TypeScript resolve imports even when packages haven't been built.
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@acme/lib": [
+        "../../packages/lib/dist/index.d.ts",
+        "../../packages/lib/src/index.ts"
+      ],
+      "@acme/lib/*": [
+        "../../packages/lib/dist/*",
+        "../../packages/lib/src/*"
+      ]
+    }
+  }
+}
+```
+
+Repeat this pattern for any other packages an app consumes to avoid missing module errors when the package hasn't been built yet.
+
 ## Troubleshooting
 
 - If `pnpm run dev` fails with an `array.length` error, run the appropriate Codex command to retrieve detailed failure information.

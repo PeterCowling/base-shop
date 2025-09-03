@@ -99,7 +99,7 @@ describe('getShippingRate', () => {
     ).rejects.toThrow('Premier delivery not configured');
   });
 
-  it('validates region/window for non-premier providers', async () => {
+  it('validates region/window/carrier for non-premier providers', async () => {
     await expect(
       getShippingRate({
         provider: 'ups',
@@ -108,6 +108,7 @@ describe('getShippingRate', () => {
         weight: 5,
         region: 'eligible',
         window: 'morning',
+        carrier: 'ups',
       }),
     ).rejects.toThrow('Premier delivery not configured');
   });
@@ -157,6 +158,20 @@ describe('getShippingRate', () => {
           carrier: 'dhl',
         }),
       ).rejects.toThrow('Carrier not supported');
+    });
+
+    it('returns rate for valid config', async () => {
+      const result = await getShippingRate({
+        ...base,
+        region: 'eligible',
+        window: 'morning',
+        carrier: 'ups',
+      });
+      expect(result).toEqual({
+        rate: 0,
+        surcharge: 5,
+        serviceLabel: 'Premier Delivery',
+      });
     });
   });
 });

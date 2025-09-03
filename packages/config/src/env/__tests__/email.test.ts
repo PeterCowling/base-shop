@@ -33,6 +33,26 @@ describe("email env module", () => {
     errorSpy.mockRestore();
   });
 
+  it(
+    "emits custom issue when SENDGRID_API_KEY is missing for sendgrid provider via safeParse",
+    async () => {
+      process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
+      jest.resetModules();
+      const { emailEnvSchema } = await import("../email.ts");
+      const result = emailEnvSchema.safeParse({ EMAIL_PROVIDER: "sendgrid" });
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.format()).toEqual(
+          expect.objectContaining({
+            SENDGRID_API_KEY: {
+              _errors: [expect.stringContaining("Required")],
+            },
+          }),
+        );
+      }
+    },
+  );
+
   it("throws and logs error for unsupported EMAIL_PROVIDER", async () => {
     process.env = {
       ...ORIGINAL_ENV,
@@ -53,11 +73,9 @@ describe("email env module", () => {
     errorSpy.mockRestore();
   });
 
-  it("throws and logs structured error for invalid SMTP_URL", async () => {
+  it("logs and throws for malformed SMTP_URL", async () => {
     process.env = {
       ...ORIGINAL_ENV,
-      EMAIL_PROVIDER: "sendgrid",
-      SENDGRID_API_KEY: "key",
       SMTP_URL: "not-a-url",
     } as NodeJS.ProcessEnv;
     const errorSpy = jest

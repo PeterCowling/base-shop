@@ -11,7 +11,12 @@ describe("getStructuredData", () => {
       url: "/en/product/eco-runner",
       image: "https://example.com/img.jpg",
       brand: "ACME",
-      offers: { price: 10, priceCurrency: "USD" },
+      offers: {
+        price: 10,
+        priceCurrency: "USD",
+        availability: "InStock",
+        url: "/en/product/eco-runner",
+      },
       aggregateRating: { ratingValue: 4.5, reviewCount: 20 },
     });
     expect(data).toMatchObject({
@@ -21,12 +26,27 @@ describe("getStructuredData", () => {
         "@type": "Offer",
         price: 10,
         priceCurrency: "USD",
+        availability: "InStock",
+        url: "/en/product/eco-runner",
       },
       aggregateRating: {
         "@type": "AggregateRating",
         ratingValue: 4.5,
         reviewCount: 20,
       },
+    });
+  });
+
+  test("builds product schema with multiple images", () => {
+    const data = getStructuredData({
+      type: "Product",
+      name: "Multi",
+      image: ["/img1.jpg", "/img2.jpg"],
+    });
+
+    expect(data).toMatchObject({
+      "@type": "Product",
+      image: ["/img1.jpg", "/img2.jpg"],
     });
   });
 
@@ -42,11 +62,13 @@ describe("getStructuredData", () => {
     const data = getStructuredData({
       type: "WebPage",
       name: "Home",
+      description: "Welcome page",
       url: "/en",
     });
     expect(data).toMatchObject({
       "@type": "WebPage",
       name: "Home",
+      description: "Welcome page",
       url: "/en",
     });
   });

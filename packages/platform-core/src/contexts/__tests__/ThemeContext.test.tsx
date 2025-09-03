@@ -1,5 +1,5 @@
 import { act, render } from "@testing-library/react";
-import { ThemeProvider, getSavedTheme, useTheme } from "../ThemeContext";
+import { ThemeProvider, getSavedTheme, getSystemTheme, useTheme } from "../ThemeContext";
 
 // React 19 requires this flag for `act` to suppress environment warnings
 // when not using a test renderer.
@@ -65,6 +65,17 @@ describe("ThemeContext", () => {
       value: { getItem: jest.fn().mockReturnValue(null) },
     });
     expect(getSavedTheme()).toBeNull();
+  });
+
+  it("falls back to base when matchMedia throws", () => {
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: () => {
+        throw new Error("no media");
+      },
+    });
+
+    expect(getSystemTheme()).toBe("base");
   });
 
   it("uses system matchMedia and reacts to changes", () => {

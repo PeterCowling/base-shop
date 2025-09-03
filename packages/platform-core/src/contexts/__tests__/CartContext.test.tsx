@@ -182,11 +182,25 @@ describe("CartProvider dispatch", () => {
     description: "desc",
   };
 
+  const sku: SKU = {
+    id: "sku1",
+    slug: "sku1",
+    title: "Test",
+    price: 100,
+    deposit: 0,
+    forSale: true,
+    forRental: false,
+    media: [{ url: "img", type: "image" }],
+    sizes: [],
+    description: "desc",
+  };
+
   const originalFetch = global.fetch;
   let dispatch: (action: any) => Promise<void>;
+  let cartState: CartState;
 
   function Capture() {
-    [, dispatch] = useCart();
+    [cartState, dispatch] = useCart();
     return null;
   }
 
@@ -229,6 +243,118 @@ describe("CartProvider dispatch", () => {
     await dispatch({ type: "unknown" } as any);
 
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("adds item and syncs localStorage", async () => {
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ cart: {} }),
+    });
+    const added = { cart: { sku1: { sku, qty: 2 } } };
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => added });
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+
+    await act(async () => {
+      await dispatch({ type: "add", sku, qty: 2 });
+    });
+
+    await waitFor(() => expect(cartState).toEqual(added.cart));
+    expect(localStorage.getItem("cart")).toBe(JSON.stringify(added.cart));
+  });
+
+  it("removes item and syncs localStorage", async () => {
+    const initial = { cart: { sku1: { sku, qty: 1 } } };
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => initial });
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(cartState).toEqual(initial.cart));
+
+    await act(async () => {
+      await dispatch({ type: "remove", id: "sku1" });
+    });
+
+    await waitFor(() => expect(cartState).toEqual({}));
+    expect(localStorage.getItem("cart")).toBe(JSON.stringify({}));
+  });
+
+  it("updates quantity and syncs localStorage", async () => {
+    const initial = { cart: { sku1: { sku, qty: 1 } } };
+    const updated = { cart: { sku1: { sku, qty: 3 } } };
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => initial });
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => updated });
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(cartState).toEqual(initial.cart));
+
+    await act(async () => {
+      await dispatch({ type: "setQty", id: "sku1", qty: 3 });
+    });
+
+    await waitFor(() => expect(cartState).toEqual(updated.cart));
+    expect(localStorage.getItem("cart")).toBe(JSON.stringify(updated.cart));
+  });
+
+  it("throws server error message when response not ok", async () => {
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ error: "bad" }),
+    });
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+
+    await expect(dispatch({ type: "add", sku })).rejects.toThrow("bad");
+  });
+
+  it("throws default error when response json fails", async () => {
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      json: async () => {
+        throw new Error("oops");
+      },
+    });
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+
+    await expect(dispatch({ type: "add", sku })).rejects.toThrow(
+      "Cart update failed"
+    );
   });
 });
 

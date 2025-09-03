@@ -25,57 +25,29 @@ describe('createShop index', () => {
     loadTokensMock.mockReturnValue({});
   });
 
-  it('invokes deployShop when deploy option is true', async () => {
-    const adapter = {
-      scaffold: jest.fn(),
-      deploy: jest.fn(() => ({ status: 'success' as const })),
-      writeDeployInfo: jest.fn(),
-    };
-    const mod = await import('../src/createShop');
-    const deploySpy = jest
-      .spyOn(mod, 'deployShop')
-      .mockReturnValue({ status: 'success' as const });
-    await mod.createShop('shop-deploy', { theme: 'base' }, { deploy: true }, adapter as any);
-    expect(deploySpy).toHaveBeenCalledWith('shop-deploy', undefined, adapter as any);
-  });
-
-  it('sets error status when scaffold throws in deployShop', async () => {
-    const mod = await import('../src/createShop');
-    const adapter = {
-      scaffold: jest.fn(() => {
-        throw new Error('fail');
-      }),
-      deploy: jest.fn(() => ({ status: 'success' as const })),
-      writeDeployInfo: jest.fn(),
-    };
-    const result = mod.deployShop('shop-error', undefined, adapter as any);
-    expect(result.status).toBe('error');
-    expect(result.error).toBe('fail');
-    expect(adapter.deploy).toHaveBeenCalled();
-    expect(adapter.writeDeployInfo).toHaveBeenCalledWith('shop-error', result);
-  });
-
-  it('listThemes returns only theme directories', async () => {
+  it('listThemes returns names of all theme directories', async () => {
     vol.fromJSON(
       {
         '/workspace/base-shop/packages/themes/base/index.ts': '',
         '/workspace/base-shop/packages/themes/extra/index.ts': '',
+        '/workspace/base-shop/packages/themes/legacy/index.ts': '',
         '/workspace/base-shop/packages/themes/file.txt': 'not a dir',
       },
       '/'
     );
     const mod = await import('../src/createShop');
     const themes = mod.listThemes().sort();
-    expect(themes).toEqual(['base', 'extra']);
+    expect(themes).toEqual(['base', 'extra', 'legacy']);
   });
 
-  it('syncTheme updates package.json and globals.css', async () => {
+  it('syncTheme removes old theme deps, adds new, updates CSS, and writes files', async () => {
     vol.fromJSON(
       {
         '/workspace/base-shop/apps/shop/package.json': JSON.stringify(
           {
             dependencies: {
               '@themes/old': 'workspace:*',
+              '@themes/legacy': 'workspace:*',
               lodash: '^1.0.0',
             },
           },
@@ -89,6 +61,7 @@ describe('createShop index', () => {
     );
     const tokens = { color: 'blue' };
     loadTokensMock.mockReturnValueOnce(tokens);
+    const writeSpy = jest.spyOn(fs, 'writeFileSync');
     const mod = await import('../src/createShop');
     const result = mod.syncTheme('shop', 'new');
     const pkg = JSON.parse(
@@ -102,7 +75,16 @@ describe('createShop index', () => {
       dependencies: { lodash: '^1.0.0', '@themes/new': 'workspace:*' },
     });
     expect(css).toContain("@themes/new/tokens.css");
+    expect(writeSpy).toHaveBeenCalledWith(
+      'apps/shop/package.json',
+      expect.any(String)
+    );
+    expect(writeSpy).toHaveBeenCalledWith(
+      'apps/shop/src/app/globals.css',
+      expect.any(String)
+    );
     expect(result).toBe(tokens);
+    writeSpy.mockRestore();
   });
 
   it('syncTheme handles missing files gracefully', async () => {

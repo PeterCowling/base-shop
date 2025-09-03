@@ -1,14 +1,14 @@
 // apps/cms/src/actions/pages.server.ts
 
-import { LOCALES } from "@acme/i18n";
+import { LOCALES } from "@acme/i18n/src/index";
 import { captureException } from "@/utils/sentry.server";
-import type { Locale, Page, HistoryState } from "@acme/types";
-import { historyStateSchema } from "@acme/types";
+import type { Locale, Page, HistoryState } from "@acme/types/src/index";
+import { historyStateSchema } from "@acme/types/src/index";
 import { ulid } from "ulid";
-import { nowIso } from "@acme/date-utils";
+import { nowIso } from "@acme/date-utils/src/index";
 import { formDataToObject } from "../utils/formData";
 
-import { env } from "@acme/config";
+import { coreEnv as env } from "@acme/config/env/core";
 import { ensureAuthorized } from "./common/auth";
 import {
   componentsField,

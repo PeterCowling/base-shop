@@ -1,6 +1,6 @@
 // apps/cms/src/auth/secret.ts
 
-import { env } from "@acme/config";
+import { authEnv as env } from "@acme/config/env/auth";
 
 if (!env.NEXTAUTH_SECRET) {
   throw new Error("NEXTAUTH_SECRET is not set");

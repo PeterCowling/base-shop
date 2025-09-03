@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { env } from "@acme/config";
+import { cmsEnv as env } from "@acme/config/env/cms";
 import { getShopById } from "@platform-core/repositories/shop.server";
 import { getSanityConfig } from "@platform-core/shops";
 import { ensureAuthorized } from "@cms/actions/common/auth";

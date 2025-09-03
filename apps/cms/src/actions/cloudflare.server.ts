@@ -1,7 +1,7 @@
 // apps/cms/src/actions/cloudflare.server.ts
 "use server";
 
-import { env } from "@acme/config";
+import { coreEnv as env } from "@acme/config/env/core";
 import { ensureAuthorized } from "./common/auth";
 
 export async function provisionDomain(

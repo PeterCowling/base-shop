@@ -1,5 +1,5 @@
 // apps/cms/src/actions/setupSanityBlog.ts
-import { env } from "@acme/config";
+import { cmsEnv as env } from "@acme/config/env/cms";
 import { ensureAuthorized } from "./common/auth";
 
 interface SanityCredentials {

@@ -6,7 +6,33 @@ import {
   parseTargetDate,
   getTimeRemaining,
   formatDuration,
+  parseISO,
+  format,
+  fromZonedTime,
 } from "../index";
+
+describe("parseISO and format", () => {
+  it("parses and formats a valid date", () => {
+    const d = parseISO("2025-06-05");
+    expect(format(d, "yyyy-MM-dd")).toBe("2025-06-05");
+  });
+
+  it("returns Invalid Date for bad input", () => {
+    expect(Number.isNaN(parseISO("not-a-date").getTime())).toBe(true);
+  });
+});
+
+describe("fromZonedTime", () => {
+  it("converts zoned time to UTC", () => {
+    const d = fromZonedTime("2025-01-01 00:00:00", "America/New_York");
+    expect(d.toISOString()).toBe("2025-01-01T05:00:00.000Z");
+  });
+
+  it("handles invalid timezones", () => {
+    const d = fromZonedTime("2025-01-01 00:00:00", "Invalid/Zone");
+    expect(Number.isNaN(d.getTime())).toBe(true);
+  });
+});
 
 describe("nowIso", () => {
   it("returns a valid ISO string", () => {
@@ -74,6 +100,11 @@ describe("formatTimestamp", () => {
 describe("parseTargetDate", () => {
   it("parses ISO string", () => {
     expect(parseTargetDate("2025-01-01T00:00:00Z")?.toISOString()).toBe(
+      "2025-01-01T00:00:00.000Z"
+    );
+  });
+  it("defaults to UTC when no timezone or offset provided", () => {
+    expect(parseTargetDate("2025-01-01T00:00:00")?.toISOString()).toBe(
       "2025-01-01T00:00:00.000Z"
     );
   });
@@ -179,6 +210,22 @@ describe("leap year handling", () => {
 describe("invalid timezone handling", () => {
   it("parseTargetDate returns null for bad timezone", () => {
     expect(parseTargetDate("2025-01-01T00:00:00", "Not/A_Zone")).toBeNull();
+  });
+});
+
+describe("parseTargetDate error handling", () => {
+  it("returns null when timezone parsing throws", async () => {
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock("date-fns-tz", () => ({
+        fromZonedTime: () => {
+          throw new Error("boom");
+        },
+      }));
+      const { parseTargetDate: mocked } = await import("../index");
+      expect(
+        mocked("2025-01-01T00:00:00", "America/New_York")
+      ).toBeNull();
+    });
   });
 });
 

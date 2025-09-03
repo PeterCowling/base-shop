@@ -12,7 +12,9 @@
       "@date-utils": ["types-compat/date-utils"],
       "@acme/email-templates": ["../email-templates/dist"],
       "@platform-core": ["../platform-core/src"],
-      "@platform-core/*": ["../platform-core/src/*"]
+      "@platform-core/*": ["../platform-core/src/*"],
+      "@acme/lib": ["../lib/src/index.ts"],
+      "@acme/lib/*": ["../lib/src/*"]
     }
   },
   "include": ["src", "types-compat/**/*.d.ts"],

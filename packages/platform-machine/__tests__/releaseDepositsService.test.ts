@@ -332,6 +332,43 @@ describe("startDepositReleaseService", () => {
     setSpy.mockRestore();
     clearSpy.mockRestore();
   });
+
+  it("defaults to logger.error when releaseFn rejects", async () => {
+    service = await import("@acme/platform-machine");
+    const { logger: freshLogger } = await import("@platform-core/utils");
+    readdir.mockResolvedValue(["shop1"]);
+    readOrders.mockResolvedValue([]);
+    const err = new Error("boom");
+    const releaseSpy = jest.fn(async () => {
+      throw err;
+    });
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 0 as any);
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+    const errorSpy = jest
+      .spyOn(freshLogger, "error")
+      .mockImplementation(() => undefined);
+
+    const stop = await service.startDepositReleaseService(
+      {},
+      undefined,
+      releaseSpy,
+    );
+    await new Promise((r) => setTimeout(r, 0));
+    expect(releaseSpy).toHaveBeenCalled();
+    expect(errorSpy).toHaveBeenCalledWith("deposit release failed", {
+      shopId: "shop1",
+      err,
+    });
+
+    stop();
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+    errorSpy.mockRestore();
+  });
 });
 
 describe("auto-start", () => {

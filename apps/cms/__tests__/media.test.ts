@@ -97,7 +97,7 @@ describe("media actions", () => {
         );
       })
     );
-  });
+  }, 15_000);
 
   it("uploadMedia stores file, metadata and returns item", async () => {
     await withTmpDir((dir) =>

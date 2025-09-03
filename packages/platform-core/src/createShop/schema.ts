@@ -95,7 +95,8 @@ export function prepareOptions(
   id: string,
   opts: CreateShopOptions
 ): PreparedCreateShopOptions {
-  const parsed = createShopOptionsSchema.parse(opts);
+  const parsed: z.infer<typeof createShopOptionsSchema> =
+    createShopOptionsSchema.parse(opts);
   return {
     name: parsed.name ?? id,
     logo: parsed.logo ?? "",

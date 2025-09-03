@@ -75,7 +75,7 @@ describe("email env module", () => {
   });
 
   it(
-    "throws and logs structured error when SENDGRID_API_KEY is missing for sendgrid provider",
+    "does not throw when SENDGRID_API_KEY is missing for sendgrid provider",
     async () => {
       process.env = {
         ...ORIGINAL_ENV,
@@ -85,23 +85,15 @@ describe("email env module", () => {
         .spyOn(console, "error")
         .mockImplementation(() => {});
       jest.resetModules();
-      await expect(import("../email.ts")).rejects.toThrow(
-        "Invalid email environment variables",
-      );
-      expect(errorSpy).toHaveBeenCalledWith(
-        "❌ Invalid email environment variables:",
-        expect.objectContaining({
-          SENDGRID_API_KEY: {
-            _errors: [expect.stringContaining("Required")],
-          },
-        }),
-      );
+      const { emailEnv } = await import("../email.ts");
+      expect(errorSpy).not.toHaveBeenCalled();
+      expect(emailEnv).toMatchObject({ EMAIL_PROVIDER: "sendgrid" });
       errorSpy.mockRestore();
     },
   );
 
   it(
-    "throws an error when RESEND_API_KEY is missing for resend provider",
+    "does not throw when RESEND_API_KEY is missing for resend provider",
     async () => {
       process.env = {
         ...ORIGINAL_ENV,
@@ -110,17 +102,10 @@ describe("email env module", () => {
       const errorSpy = jest
         .spyOn(console, "error")
         .mockImplementation(() => {});
-      await expect(import("../email.ts")).rejects.toThrow(
-        "Invalid email environment variables",
-      );
-      expect(errorSpy).toHaveBeenCalledWith(
-        "❌ Invalid email environment variables:",
-        expect.objectContaining({
-          RESEND_API_KEY: {
-            _errors: [expect.stringContaining("Required")],
-          },
-        }),
-      );
+      jest.resetModules();
+      const { emailEnv } = await import("../email.ts");
+      expect(errorSpy).not.toHaveBeenCalled();
+      expect(emailEnv).toMatchObject({ EMAIL_PROVIDER: "resend" });
       errorSpy.mockRestore();
     },
   );

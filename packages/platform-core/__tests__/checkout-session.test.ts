@@ -3,6 +3,8 @@ import { PRODUCTS } from "../src/products/index";
 import { createCheckoutSession } from "../src/checkout/session";
 import * as dateUtils from "@acme/date-utils";
 import { getTaxRate } from "../src/tax";
+import { findCoupon } from "../src/coupons";
+import { trackEvent } from "../src/analytics";
 
 jest.mock("@acme/stripe", () => ({
   stripe: { checkout: { sessions: { create: jest.fn() } } },
@@ -25,6 +27,12 @@ jest.mock("../src/analytics", () => ({ trackEvent: jest.fn() }));
 
 import { stripe } from "@acme/stripe";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
+
+beforeEach(() => {
+  stripeCreate.mockReset();
+  (trackEvent as jest.Mock).mockReset();
+  (findCoupon as jest.Mock).mockReset();
+});
 
 const cart = (() => {
   const sku = PRODUCTS[0];
@@ -96,7 +104,6 @@ test("throws when rentalDays are non-positive", async () => {
 });
 
 test("applies extra values and billing details without tax", async () => {
-  stripeCreate.mockReset();
   jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
   stripeCreate.mockResolvedValue({
     id: "sess_extra",
@@ -148,4 +155,111 @@ test("applies extra values and billing details without tax", async () => {
   expect(args.metadata.foo).toBe("bar");
   expect(args.metadata.subtotal).toBe("25");
   expect(args.metadata.depositTotal).toBe("110");
+});
+
+test("tracks coupon usage when present and not when absent", async () => {
+  stripeCreate.mockResolvedValue({
+    id: "sess_coupon",
+    payment_intent: { client_secret: "cs_coupon" },
+  });
+
+  (findCoupon as jest.Mock).mockResolvedValueOnce({
+    code: "SAVE10",
+    discountPercent: 10,
+  });
+
+  await createCheckoutSession(cart, {
+    returnDate: "2025-01-02",
+    coupon: "SAVE10",
+    currency: "EUR",
+    taxRegion: "EU",
+    successUrl: "x",
+    cancelUrl: "y",
+    shopId: "shop",
+  });
+
+  expect(trackEvent).toHaveBeenCalledWith("shop", {
+    type: "discount_redeemed",
+    code: "SAVE10",
+  });
+
+  (findCoupon as jest.Mock).mockResolvedValueOnce(null);
+
+  await createCheckoutSession(cart, {
+    returnDate: "2025-01-02",
+    coupon: "SAVE10",
+    currency: "EUR",
+    taxRegion: "EU",
+    successUrl: "x",
+    cancelUrl: "y",
+    shopId: "shop",
+  });
+
+  expect(trackEvent).toHaveBeenCalledTimes(1);
+});
+
+test("includes shipping, billing details and client IP when provided", async () => {
+  stripeCreate.mockResolvedValue({
+    id: "sess_ship",
+    payment_intent: { client_secret: "cs_ship" },
+  });
+
+  const shipping = { name: "John" } as any;
+  const billing = { name: "Jane" } as any;
+
+  await createCheckoutSession(cart, {
+    returnDate: "2025-01-02",
+    currency: "EUR",
+    taxRegion: "EU",
+    successUrl: "x",
+    cancelUrl: "y",
+    shopId: "shop",
+    shipping,
+    billing_details: billing,
+    clientIp: "1.2.3.4",
+  });
+
+  const [args, options] = stripeCreate.mock.calls[0];
+  expect(args.payment_intent_data.shipping).toBe(shipping);
+  expect(args.payment_intent_data.billing_details).toBe(billing);
+  expect(options.headers["Stripe-Client-IP"]).toBe("1.2.3.4");
+});
+
+test("omits optional fields when not provided", async () => {
+  stripeCreate.mockResolvedValue({
+    id: "sess_noopts",
+    payment_intent: { client_secret: "cs_noopts" },
+  });
+
+  await createCheckoutSession(cart, {
+    returnDate: "2025-01-02",
+    currency: "EUR",
+    taxRegion: "EU",
+    successUrl: "x",
+    cancelUrl: "y",
+    shopId: "shop",
+  });
+
+  const [args, options] = stripeCreate.mock.calls[0];
+  expect(args.payment_intent_data.shipping).toBeUndefined();
+  expect(args.payment_intent_data.billing_details).toBeUndefined();
+  expect(options).toBeUndefined();
+});
+
+test("returns undefined clientSecret when payment_intent is string", async () => {
+  stripeCreate.mockResolvedValue({
+    id: "sess_str",
+    payment_intent: "pi_123",
+  });
+
+  const result = await createCheckoutSession(cart, {
+    returnDate: "2025-01-02",
+    currency: "EUR",
+    taxRegion: "EU",
+    successUrl: "x",
+    cancelUrl: "y",
+    shopId: "shop",
+  });
+
+  expect(result.clientSecret).toBeUndefined();
 });

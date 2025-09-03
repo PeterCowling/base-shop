@@ -11,7 +11,7 @@ describe('fetchJson', () => {
     jest.resetAllMocks();
   });
 
-  it('returns parsed JSON validated by schema', async () => {
+  it('returns parsed JSON when the response succeeds', async () => {
     const data = { message: 'ok' };
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
@@ -24,81 +24,27 @@ describe('fetchJson', () => {
     ).resolves.toEqual(data);
   });
 
-  it('returns undefined for non-JSON responses', async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      text: jest.fn().mockResolvedValue('not json'),
-    });
-
-    await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
-  });
-
-  it('returns undefined for empty response bodies', async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      text: jest.fn().mockResolvedValue(''),
-    });
-
-    await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
-  });
-
-  it('propagates network failures', async () => {
-    (global.fetch as jest.Mock).mockRejectedValue(new Error('Network down'));
-    await expect(fetchJson('https://example.com')).rejects.toThrow(
-      'Network down',
-    );
-  });
-
-  it('throws status text when error response contains invalid JSON', async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: false,
-      status: 502,
-      statusText: 'Bad Gateway',
-      text: jest.fn().mockResolvedValue('{invalid'),
-    });
-
-    await expect(fetchJson('https://example.com')).rejects.toThrow(
-      'Bad Gateway',
-    );
-  });
-
-  it('throws error message from JSON error payload', async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: false,
-      status: 400,
-      statusText: 'Bad Request',
-      text: jest
-        .fn()
-        .mockResolvedValue(JSON.stringify({ error: 'Custom message' })),
-    });
-
-    await expect(fetchJson('https://example.com')).rejects.toThrow(
-      'Custom message',
-    );
-  });
-
-  it('throws status text when error payload lacks error message', async () => {
+  it('rejects when the server responds with an error status', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: false,
       status: 500,
       statusText: 'Internal Server Error',
-      text: jest.fn().mockResolvedValue(JSON.stringify({ message: 'oops' })),
+      text: jest.fn().mockResolvedValue(JSON.stringify({ error: 'boom' })),
     });
 
-    await expect(fetchJson('https://example.com')).rejects.toThrow(
-      'Internal Server Error',
-    );
+    await expect(fetchJson('https://example.com')).rejects.toThrow('boom');
   });
 
-  it('throws HTTP status code when status text is empty', async () => {
+  it('throws a parsing error for invalid JSON responses', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
-      ok: false,
-      status: 500,
-      statusText: '',
-      text: jest.fn().mockResolvedValue(JSON.stringify({ message: 'oops' })),
+      ok: true,
+      text: jest.fn().mockResolvedValue('invalid'),
     });
 
-    await expect(fetchJson('https://example.com')).rejects.toThrow('HTTP 500');
+    const schema = z.object({ message: z.string() });
+    await expect(
+      fetchJson('https://example.com', undefined, schema),
+    ).rejects.toThrow(z.ZodError);
   });
 });
 

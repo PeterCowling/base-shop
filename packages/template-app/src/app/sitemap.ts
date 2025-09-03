@@ -1,16 +1,13 @@
 import type { MetadataRoute } from "next";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { readRepo } from "@platform-core/repositories/products.server";
-import { coreEnv } from "@acme/config/env/core";
+import { env } from "@acme/config";
 import type { ProductPublication } from "@acme/types";
 import { nowIso } from "@date-utils";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const base =
-      (coreEnv.NEXT_PUBLIC_BASE_URL as string | undefined) ||
-      "http://localhost:3000";
-    const shop =
-      (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "shop";
+    const base = env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000";
+    const shop = env.NEXT_PUBLIC_SHOP_ID ?? "shop";
   const now = nowIso();
 
   const [settings, products] = await Promise.all([

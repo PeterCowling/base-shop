@@ -52,6 +52,18 @@ describe("scheduler", () => {
     (listEvents as jest.Mock).mockResolvedValue([]);
   });
 
+  test("listCampaigns forwards arguments to the campaign store", async () => {
+    const data: Campaign[] = [];
+    const readCampaigns = jest.fn().mockResolvedValue(data);
+    const getCampaignStore = jest.fn().mockReturnValue({ readCampaigns });
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock("../storage", () => ({ __esModule: true, getCampaignStore }));
+      const { listCampaigns } = await import("../scheduler");
+      await expect(listCampaigns(shop)).resolves.toBe(data);
+      expect(readCampaigns).toHaveBeenCalledWith(shop);
+    });
+  });
+
   test("filterUnsubscribed skips unsubscribed recipients", async () => {
     const past = new Date(now.getTime() - 1000).toISOString();
     memory[shop] = [

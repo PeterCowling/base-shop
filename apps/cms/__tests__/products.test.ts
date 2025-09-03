@@ -4,10 +4,6 @@ import type { ProductPublication } from "@acme/platform-core/products";
 
 // Ensure auth options do not throw on import
 process.env.NEXTAUTH_SECRET = "test-secret";
-jest.mock("next-auth", () => ({
-  getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
-}));
-jest.mock("next/navigation", () => ({ redirect: jest.fn() }));
 
 import fs from "node:fs/promises";
 import os from "node:os";
@@ -26,6 +22,14 @@ async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   const cwd = process.cwd();
   process.chdir(dir);
   jest.resetModules(); // ensure each test gets a fresh module graph
+  // Reapply module mocks after resetting modules
+  jest.doMock("next-auth", () => ({
+    getServerSession: jest.fn().mockResolvedValue({
+      user: { role: "admin" },
+    }),
+  }));
+  jest.doMock("next/navigation", () => ({ redirect: jest.fn() }));
+  jest.doMock("@cms/auth/options", () => ({ authOptions: {} }));
   try {
     await cb(dir);
   } finally {

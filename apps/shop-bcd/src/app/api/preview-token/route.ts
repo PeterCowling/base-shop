@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createHmac } from "crypto";
 import { requirePermission } from "@auth";
-import { env } from "@acme/config";
+import { authEnv as env } from "@acme/config/env/auth";
 
 export const runtime = "nodejs";
 

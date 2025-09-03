@@ -3,7 +3,7 @@
 import type { EventContext } from "@cloudflare/workers-types";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { createHmac, timingSafeEqual } from "crypto";
-import { env } from "@acme/config";
+import { coreEnv as env } from "@acme/config/env/core";
 
 const secret = env.PREVIEW_TOKEN_SECRET;
 const upgradeSecret = env.UPGRADE_PREVIEW_TOKEN_SECRET;

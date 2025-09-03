@@ -5,8 +5,8 @@ import { promises as fs } from "fs";
 import path from "path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { listEvents } from "@platform-core/repositories/analytics.server";
-import { env } from "@acme/config";
-import type { Coupon } from "@acme/types";
+import { coreEnv as env } from "@acme/config/env/core";
+import type { Coupon } from "@acme/types/src/index";
 
 interface Discount extends Coupon {
   active?: boolean;

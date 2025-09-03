@@ -1,10 +1,10 @@
 // apps/shop-bcd/src/app/[lang]/shop/page.tsx
 import { PRODUCTS } from "@platform-core/products";
-import type { SKU } from "@acme/types";
+import type { SKU } from "@acme/types/src/index";
 import type { Metadata } from "next";
 import BlogListing, { type BlogPost } from "@ui/components/cms/blocks/BlogListing";
 import { fetchPublishedPosts } from "@acme/sanity";
-import { env } from "@acme/config";
+import { coreEnv as env } from "@acme/config/env/core";
 import shop from "../../../../shop.json";
 import ShopClient from "./ShopClient.client";
 

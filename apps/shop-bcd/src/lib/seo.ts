@@ -1,8 +1,8 @@
 import type { Locale } from "@i18n/locales";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
-import type { ShopSettings } from "@acme/types";
+import type { ShopSettings } from "@acme/types/src/index";
 import type { NextSeoProps } from "next-seo";
-import { env } from "@acme/config";
+import { coreEnv as env } from "@acme/config/env/core";
 
 interface OpenGraphImageProps {
   image?: string;

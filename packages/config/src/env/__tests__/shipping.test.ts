@@ -582,5 +582,73 @@ describe("shipping env module", () => {
     expect(env.UPS_KEY).toBeUndefined();
     expect(env.DHL_KEY).toBeUndefined();
   });
+
+  it("handles DEFAULT_SHIPPING_ZONE values and defaults", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    expect(
+      loadShippingEnv({ DEFAULT_SHIPPING_ZONE: "eu" }).DEFAULT_SHIPPING_ZONE,
+    ).toBe("eu");
+    expect(
+      loadShippingEnv({ DEFAULT_SHIPPING_ZONE: "international" })
+        .DEFAULT_SHIPPING_ZONE,
+    ).toBe("international");
+    const env = loadShippingEnv({});
+    const zone = env.DEFAULT_SHIPPING_ZONE ?? "domestic";
+    expect(zone).toBe("domestic");
+  });
+
+  it("throws on invalid DEFAULT_SHIPPING_ZONE", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    expect(() =>
+      loadShippingEnv({
+        DEFAULT_SHIPPING_ZONE: "mars" as unknown as "domestic",
+      }),
+    ).toThrow("Invalid shipping environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        DEFAULT_SHIPPING_ZONE: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("applies FREE_SHIPPING_THRESHOLD correctly", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const env = loadShippingEnv({ FREE_SHIPPING_THRESHOLD: "50" });
+    const qualifies = (amount: number) =>
+      env.FREE_SHIPPING_THRESHOLD !== undefined &&
+      amount >= env.FREE_SHIPPING_THRESHOLD;
+    expect(qualifies(49)).toBe(false);
+    expect(qualifies(50)).toBe(true);
+    expect(qualifies(51)).toBe(true);
+  });
+
+  it("handles missing and invalid FREE_SHIPPING_THRESHOLD", async () => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    const env = loadShippingEnv({});
+    const qualifies = (amount: number) =>
+      env.FREE_SHIPPING_THRESHOLD !== undefined &&
+      amount >= env.FREE_SHIPPING_THRESHOLD;
+    expect(env.FREE_SHIPPING_THRESHOLD).toBeUndefined();
+    expect(qualifies(100)).toBe(false);
+
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    expect(() =>
+      loadShippingEnv({ FREE_SHIPPING_THRESHOLD: "abc" as any }),
+    ).toThrow("Invalid shipping environment variables");
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        FREE_SHIPPING_THRESHOLD: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
 });
 

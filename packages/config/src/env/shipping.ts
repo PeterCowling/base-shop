@@ -6,6 +6,10 @@ export const shippingEnvSchema = z.object({
   TAXJAR_KEY: z.string().optional(),
   UPS_KEY: z.string().optional(),
   DHL_KEY: z.string().optional(),
+  DEFAULT_SHIPPING_ZONE: z
+    .enum(["domestic", "eu", "international"])
+    .optional(),
+  FREE_SHIPPING_THRESHOLD: z.coerce.number().nonnegative().optional(),
 });
 
 // ---------- loader (new) ----------

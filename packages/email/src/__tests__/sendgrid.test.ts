@@ -112,6 +112,31 @@ describe("SendgridProvider", () => {
     });
   });
 
+  it("throws non-retryable ProviderError when Sendgrid responds with 400", async () => {
+    process.env.SENDGRID_API_KEY = "sg";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const err: any = new Error("boom");
+    err.response = { statusCode: 400 };
+    sgMail.send.mockRejectedValueOnce(err);
+
+    const { SendgridProvider } = await import("../providers/sendgrid");
+    const { ProviderError } = await import("../providers/types");
+    const provider = new SendgridProvider();
+
+    const sendPromise = provider.send({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+    });
+
+    await expect(sendPromise).rejects.toBeInstanceOf(ProviderError);
+    await expect(sendPromise).rejects.toMatchObject({
+      message: "boom",
+      retryable: false,
+    });
+  });
+
   it("throws retryable ProviderError when error lacks provider fields", async () => {
     process.env.SENDGRID_API_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";

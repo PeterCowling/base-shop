@@ -40,6 +40,17 @@ describe('createShop index', () => {
     expect(themes).toEqual(['base', 'extra', 'legacy']);
   });
 
+  it('listThemes returns empty array when readdir fails', async () => {
+    const readdirSpy = jest
+      .spyOn(fs, 'readdirSync')
+      .mockImplementation(() => {
+        throw new Error('fail');
+      });
+    const mod = await import('../src/createShop');
+    expect(mod.listThemes()).toEqual([]);
+    readdirSpy.mockRestore();
+  });
+
   it('syncTheme removes old theme deps, adds new, updates CSS, and writes files', async () => {
     vol.fromJSON(
       {
@@ -87,16 +98,42 @@ describe('createShop index', () => {
     writeSpy.mockRestore();
   });
 
-  it('syncTheme handles missing files gracefully', async () => {
+  it('syncTheme ignores invalid package.json', async () => {
+    vol.fromJSON(
+      {
+        '/workspace/base-shop/apps/shop/package.json': 'not json',
+        '/workspace/base-shop/apps/shop/src/app/globals.css':
+          "@import '@themes/old/tokens.css';\n",
+      },
+      '/'
+    );
     const mod = await import('../src/createShop');
-    const existsSpy = jest.spyOn(fs, 'existsSync').mockReturnValue(true);
+    expect(() => mod.syncTheme('shop', 'base')).not.toThrow();
+  });
+
+  it('syncTheme ignores unreadable globals.css', async () => {
+    vol.fromJSON(
+      {
+        '/workspace/base-shop/apps/shop/package.json': JSON.stringify(
+          { dependencies: {} },
+          null,
+          2
+        ),
+        '/workspace/base-shop/apps/shop/src/app/globals.css': '',
+      },
+      '/'
+    );
+    const realRead = fs.readFileSync;
     const readSpy = jest
       .spyOn(fs, 'readFileSync')
-      .mockImplementation(() => {
-        throw new Error('missing');
+      .mockImplementation((p: any, enc?: any) => {
+        if (p === '/workspace/base-shop/apps/shop/src/app/globals.css') {
+          throw new Error('missing');
+        }
+        return realRead.call(fs, p, enc);
       });
-    expect(() => mod.syncTheme('shop-missing', 'base')).not.toThrow();
-    existsSpy.mockRestore();
+    const mod = await import('../src/createShop');
+    expect(() => mod.syncTheme('shop', 'base')).not.toThrow();
     readSpy.mockRestore();
   });
 });

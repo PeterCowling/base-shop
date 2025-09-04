@@ -46,6 +46,22 @@ describe('createShop', () => {
     fs.rmSync(path.join('data', 'shops', id), { recursive: true, force: true });
   });
 
+  it('stores sanityBlog configuration when enabled', async () => {
+    const id = 'shop-sanity';
+    const { createShop } = await import('../src/createShop');
+    const sanity = { projectId: 'p', dataset: 'd', token: 't' };
+    const result = await createShop(
+      id,
+      { theme: 'base', sanityBlog: sanity },
+      { deploy: false }
+    );
+    const stored =
+      prismaMock.shop.create.mock.calls[0][0].data.data.sanityBlog;
+    expect(stored).toEqual(sanity);
+    expect(result).toEqual({ status: 'pending' });
+    fs.rmSync(path.join('data', 'shops', id), { recursive: true, force: true });
+  });
+
   it('ignores fs write errors', async () => {
     const id = 'shop-error';
     const { createShop } = await import('../src/createShop');
@@ -56,6 +72,24 @@ describe('createShop', () => {
     expect(result).toEqual({ status: 'pending' });
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
+    fs.rmSync(path.join('data', 'shops', id), { recursive: true, force: true });
+  });
+
+  it('propagates deployment errors when scaffold fails', async () => {
+    const id = 'shop-fail';
+    const adapter = {
+      scaffold: () => {
+        throw new Error('fail');
+      },
+      deploy: jest.fn(() => ({ status: 'success' as const })),
+      writeDeployInfo: jest.fn(),
+    };
+    const { createShop } = await import('../src/createShop');
+    const result = await createShop(id, { theme: 'base' }, undefined, adapter as any);
+    expect(result.status).toBe('error');
+    expect(result.error).toBe('fail');
+    expect(adapter.deploy).toHaveBeenCalled();
+    expect(adapter.writeDeployInfo).toHaveBeenCalledWith(id, result);
     fs.rmSync(path.join('data', 'shops', id), { recursive: true, force: true });
   });
 

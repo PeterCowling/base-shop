@@ -13,6 +13,22 @@ export const cmsEnvSchema = z.object({
   SANITY_API_VERSION: isProd
     ? z.string().min(1)
     : z.string().min(1).default("2021-10-21"),
+  CMS_BASE_URL: z
+    .string()
+    .url()
+    .transform((url) => url.replace(/\/$/, ""))
+    .optional(),
+  CMS_PAGINATION_LIMIT: z.coerce.number().default(100),
+  CMS_DRAFTS_ENABLED: z.coerce.boolean().default(false),
+  CMS_DRAFTS_DISABLED_PATHS: z
+    .string()
+    .default("")
+    .transform((v) => v.split(",").map((s) => s.trim()).filter(Boolean)),
+  CMS_SEARCH_ENABLED: z.coerce.boolean().default(false),
+  CMS_SEARCH_DISABLED_PATHS: z
+    .string()
+    .default("")
+    .transform((v) => v.split(",").map((s) => s.trim()).filter(Boolean)),
 });
 
 const parsed = cmsEnvSchema.safeParse(process.env);

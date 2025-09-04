@@ -1,4 +1,5 @@
 // packages/i18n/__tests__/hydration.test.tsx
+import { renderToString } from "react-dom/server";
 import { hydrateRoot } from "react-dom/client";
 import React from "react";
 import { TranslationsProvider, useTranslations } from "../src/Translations";
@@ -10,19 +11,25 @@ const { act } = React as unknown as { act: (fn: () => void | Promise<void>) => P
 describe("TranslationsProvider hydration", () => {
   function Greeting() {
     const t = useTranslations();
-    return <div>{t("greet")}</div>;
+    return <div>{t("hello")}</div>;
   }
 
   it("hydrates without warnings", async () => {
+    const html = renderToString(
+      <TranslationsProvider messages={{ hello: "Hallo" }}>
+        <Greeting />
+      </TranslationsProvider>
+    );
+
     const container = document.createElement("div");
-    container.innerHTML = "<div>Hallo</div>";
+    container.innerHTML = html;
 
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
 
     await act(async () => {
       hydrateRoot(
         container,
-        <TranslationsProvider messages={{ greet: "Hallo" }}>
+        <TranslationsProvider messages={{ hello: "Hallo" }}>
           <Greeting />
         </TranslationsProvider>
       );

@@ -102,6 +102,80 @@ describe("email env module", () => {
     },
   );
 
+  it("accepts valid sendgrid configuration via safeParse", async () => {
+    process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { emailEnvSchema } = await import("../email.ts");
+    const result = emailEnvSchema.safeParse({
+      EMAIL_PROVIDER: "sendgrid",
+      SENDGRID_API_KEY: "key",
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data).toMatchObject({
+        EMAIL_PROVIDER: "sendgrid",
+        SENDGRID_API_KEY: "key",
+      });
+    }
+  });
+
+  it("accepts valid resend configuration via safeParse", async () => {
+    process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { emailEnvSchema } = await import("../email.ts");
+    const result = emailEnvSchema.safeParse({
+      EMAIL_PROVIDER: "resend",
+      RESEND_API_KEY: "key",
+    });
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data).toMatchObject({
+        EMAIL_PROVIDER: "resend",
+        RESEND_API_KEY: "key",
+      });
+    }
+  });
+
+  it(
+    "applies default smtp provider via safeParse when EMAIL_PROVIDER is omitted",
+    async () => {
+      process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
+      jest.resetModules();
+      const { emailEnvSchema } = await import("../email.ts");
+      const result = emailEnvSchema.safeParse({});
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.EMAIL_PROVIDER).toBe("smtp");
+      }
+    },
+  );
+
+  it(
+    "logs error and throws when SENDGRID_API_KEY is missing for sendgrid provider on import",
+    async () => {
+      process.env = {
+        ...ORIGINAL_ENV,
+        EMAIL_PROVIDER: "sendgrid",
+      } as NodeJS.ProcessEnv;
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      jest.resetModules();
+      await expect(import("../email.ts")).rejects.toThrow(
+        "Invalid email environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid email environment variables:",
+        expect.objectContaining({
+          SENDGRID_API_KEY: {
+            _errors: [expect.stringContaining("Required")],
+          },
+        }),
+      );
+      errorSpy.mockRestore();
+    },
+  );
+
   it("throws and logs error for unsupported EMAIL_PROVIDER", async () => {
     process.env = {
       ...ORIGINAL_ENV,

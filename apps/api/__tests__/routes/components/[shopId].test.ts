@@ -7,13 +7,37 @@ describe("components route", () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "testsecret";
   });
 
+  const sign = (shopId: string, opts: jwt.SignOptions = {}) =>
+    jwt.sign(
+      {},
+      process.env.UPGRADE_PREVIEW_TOKEN_SECRET!,
+      {
+        algorithm: "HS256",
+        audience: "upgrade-preview",
+        issuer: "acme",
+        subject: `shop:${shopId}:upgrade-preview`,
+        expiresIn: "1h",
+        ...opts,
+      },
+    );
+
   it("rejects requests without token", async () => {
     const res = await request(createRequestHandler()).get("/components/abc");
     expect(res.status).toBe(403);
   });
 
   it("rejects requests with invalid token", async () => {
-    const token = jwt.sign({}, "wrongsecret");
+    const token = jwt.sign(
+      {},
+      "wrongsecret",
+      {
+        algorithm: "HS256",
+        audience: "upgrade-preview",
+        issuer: "acme",
+        subject: "shop:abc:upgrade-preview",
+        expiresIn: "1h",
+      },
+    );
     const res = await request(createRequestHandler())
       .get("/components/abc")
       .set("Authorization", `Bearer ${token}`);
@@ -30,7 +54,7 @@ describe("components route", () => {
   });
 
   it("returns components for valid token", async () => {
-    const token = jwt.sign({}, "testsecret");
+    const token = sign("abc");
     const res = await request(createRequestHandler())
       .get("/components/abc")
       .set("Authorization", `Bearer ${token}`);
@@ -39,7 +63,7 @@ describe("components route", () => {
   });
 
   it("returns config diff when requested", async () => {
-    const token = jwt.sign({}, "testsecret");
+    const token = sign("abc");
     const res = await request(createRequestHandler())
       .get("/components/abc?diff")
       .set("Authorization", `Bearer ${token}`);
@@ -48,5 +72,23 @@ describe("components route", () => {
       components: [],
       configDiff: { templates: [], translations: [] },
     });
+  });
+
+  it("rejects token with mismatched subject", async () => {
+    const token = sign("xyz");
+    const res = await request(createRequestHandler())
+      .get("/components/abc")
+      .set("Authorization", `Bearer ${token}`);
+    expect(res.status).toBe(403);
+    expect(res.body).toEqual({ error: "Forbidden" });
+  });
+
+  it("rejects expired token", async () => {
+    const token = sign("abc", { expiresIn: -1 });
+    const res = await request(createRequestHandler())
+      .get("/components/abc")
+      .set("Authorization", `Bearer ${token}`);
+    expect(res.status).toBe(403);
+    expect(res.body).toEqual({ error: "Forbidden" });
   });
 });

@@ -36,7 +36,7 @@ describe('onRequest route', () => {
   });
 
   it('returns components and config diff for valid request', async () => {
-    verify.mockImplementation(() => {});
+    verify.mockImplementation(() => ({ exp: Math.floor(Date.now() / 1000) + 60 }));
     const root = path.resolve(__dirname, '../../../../../../..');
     vol.fromJSON({
       [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
@@ -59,6 +59,16 @@ describe('onRequest route', () => {
         headers: { authorization: 'Bearer good' },
       }),
     });
+    expect(verify).toHaveBeenCalledWith(
+      'good',
+      '',
+      expect.objectContaining({
+        algorithms: ['HS256'],
+        audience: 'upgrade-preview',
+        issuer: 'acme',
+        subject: 'shop:abc:upgrade-preview',
+      }),
+    );
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.components).toEqual([
@@ -77,7 +87,7 @@ describe('onRequest route', () => {
   });
 
   it('returns components only for valid request without diff', async () => {
-    verify.mockImplementation(() => {});
+    verify.mockImplementation(() => ({ exp: Math.floor(Date.now() / 1000) + 60 }));
     const root = path.resolve(__dirname, '../../../../../../..');
     vol.fromJSON({
       [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
@@ -96,6 +106,16 @@ describe('onRequest route', () => {
         headers: { authorization: 'Bearer good' },
       }),
     });
+    expect(verify).toHaveBeenCalledWith(
+      'good',
+      '',
+      expect.objectContaining({
+        algorithms: ['HS256'],
+        audience: 'upgrade-preview',
+        issuer: 'acme',
+        subject: 'shop:abc:upgrade-preview',
+      }),
+    );
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body).toEqual({

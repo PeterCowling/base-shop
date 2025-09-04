@@ -61,3 +61,33 @@ test("snaps to grid units", () => {
     expect.objectContaining({ left: "100px", top: "100px" })
   );
 });
+
+test("removes listeners on unmount", () => {
+  const dispatch = jest.fn();
+  const addSpy = jest.spyOn(window, "addEventListener");
+  const removeSpy = jest.spyOn(window, "removeEventListener");
+  function Wrapper() {
+    const ref = React.useRef<HTMLDivElement>(null);
+    const { startDrag } = useCanvasDrag({
+      componentId: "c1",
+      dispatch,
+      gridCols: 12,
+      containerRef: ref,
+    });
+    return <div ref={ref} onPointerDown={startDrag} data-testid="box" />;
+  }
+  const { getByTestId, unmount } = render(<Wrapper />);
+  const box = getByTestId("box") as HTMLElement;
+  Object.defineProperty(box, "offsetLeft", { value: 0, writable: true });
+  Object.defineProperty(box, "offsetTop", { value: 0, writable: true });
+  Object.defineProperty(box, "offsetWidth", { value: 100, writable: true });
+  Object.defineProperty(box, "offsetHeight", { value: 100, writable: true });
+  fireEvent.pointerDown(box, { clientX: 0, clientY: 0 });
+  const moveHandler = addSpy.mock.calls.find(c => c[0] === "pointermove")?.[1];
+  const upHandler = addSpy.mock.calls.find(c => c[0] === "pointerup")?.[1];
+  unmount();
+  expect(removeSpy).toHaveBeenCalledWith("pointermove", moveHandler);
+  expect(removeSpy).toHaveBeenCalledWith("pointerup", upHandler);
+  addSpy.mockRestore();
+  removeSpy.mockRestore();
+});

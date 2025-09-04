@@ -44,4 +44,22 @@ describe("useFileDrop", () => {
       expect.objectContaining({ type: "add" })
     );
   });
+
+  it("logs errors from onDrop and resets drag state", async () => {
+    const dispatch = jest.fn();
+    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    onDropMock.mockImplementationOnce(() => {
+      throw new Error("fail");
+    });
+    const { result } = renderHook(() =>
+      useFileDrop({ shop: "shop", dispatch })
+    );
+    await act(async () => {
+      result.current.setDragOver(true);
+      await result.current.handleFileDrop({} as any);
+    });
+    expect(consoleSpy).toHaveBeenCalled();
+    expect(result.current.dragOver).toBe(false);
+    consoleSpy.mockRestore();
+  });
 });

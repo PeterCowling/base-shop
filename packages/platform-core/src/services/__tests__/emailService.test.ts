@@ -11,23 +11,25 @@ describe("emailService", () => {
     expect(() => getEmailService()).toThrow("EmailService not registered");
   });
 
-  it("returns the registered service", async () => {
+  it("resolves when the stub sendEmail succeeds", async () => {
     const { setEmailService, getEmailService } = await import("../emailService");
-    const mockService: EmailService = {
-      sendEmail: jest.fn().mockResolvedValue(undefined),
-    };
-    setEmailService(mockService);
-    expect(getEmailService()).toBe(mockService);
+    const stub: EmailService = { sendEmail: jest.fn().mockResolvedValue(undefined) };
+    setEmailService(stub);
+    await expect(
+      getEmailService().sendEmail("to@example.com", "subject", "body"),
+    ).resolves.toBeUndefined();
+    expect(stub.sendEmail).toHaveBeenCalledWith("to@example.com", "subject", "body");
   });
 
-  it("allows replacing the service", async () => {
+  it("propagates rejection when the stub sendEmail rejects", async () => {
     const { setEmailService, getEmailService } = await import("../emailService");
-    const first: EmailService = { sendEmail: jest.fn().mockResolvedValue(undefined) };
-    const second: EmailService = { sendEmail: jest.fn().mockResolvedValue(undefined) };
-    setEmailService(first);
-    expect(getEmailService()).toBe(first);
-    setEmailService(second);
-    expect(getEmailService()).toBe(second);
+    const error = new Error("fail");
+    const stub: EmailService = { sendEmail: jest.fn().mockRejectedValue(error) };
+    setEmailService(stub);
+    await expect(
+      getEmailService().sendEmail("to@example.com", "subject", "body"),
+    ).rejects.toBe(error);
+    expect(stub.sendEmail).toHaveBeenCalledWith("to@example.com", "subject", "body");
   });
 });
 

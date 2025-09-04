@@ -179,19 +179,71 @@ describe("formatDuration", () => {
     expect(formatDuration(-5000)).toBe("0s");
   });
 });
-describe("DST transitions", () => {
-  test("accounts for spring forward in New York", () => {
-    const before = parseTargetDate("2025-03-09T00:30:00", "America/New_York")!;
-    const after = parseTargetDate("2025-03-10T00:30:00", "America/New_York")!;
-    const diffHours = (after.getTime() - before.getTime()) / 3600000;
-    expect(diffHours).toBe(23);
+describe("DST boundaries", () => {
+  describe("spring forward in New York", () => {
+    beforeEach(() => {
+      const systemTime = parseTargetDate(
+        "2025-03-08T00:30:00",
+        "America/New_York"
+      )!;
+      jest.useFakeTimers().setSystemTime(systemTime);
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    test("parseTargetDate yields 23-hour span", () => {
+      const before = parseTargetDate(
+        "2025-03-09T00:30:00",
+        "America/New_York"
+      )!;
+      const after = parseTargetDate(
+        "2025-03-10T00:30:00",
+        "America/New_York"
+      )!;
+      const diffHours = (after.getTime() - before.getTime()) / 3600000;
+      expect(diffHours).toBe(23);
+    });
+
+    test("date helpers cross the missing hour", () => {
+      expect(isoDateInNDays(1)).toBe("2025-03-09");
+      expect(isoDateInNDays(2)).toBe("2025-03-10");
+      expect(calculateRentalDays("2025-03-10")).toBe(2);
+    });
   });
 
-  test("accounts for fall back in New York", () => {
-    const before = parseTargetDate("2025-11-02T00:30:00", "America/New_York")!;
-    const after = parseTargetDate("2025-11-03T00:30:00", "America/New_York")!;
-    const diffHours = (after.getTime() - before.getTime()) / 3600000;
-    expect(diffHours).toBe(25);
+  describe("fall back in New York", () => {
+    beforeEach(() => {
+      const systemTime = parseTargetDate(
+        "2025-11-01T00:30:00",
+        "America/New_York"
+      )!;
+      jest.useFakeTimers().setSystemTime(systemTime);
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    test("parseTargetDate yields 25-hour span", () => {
+      const before = parseTargetDate(
+        "2025-11-02T00:30:00",
+        "America/New_York"
+      )!;
+      const after = parseTargetDate(
+        "2025-11-03T00:30:00",
+        "America/New_York"
+      )!;
+      const diffHours = (after.getTime() - before.getTime()) / 3600000;
+      expect(diffHours).toBe(25);
+    });
+
+    test("date helpers cross the repeated hour", () => {
+      expect(isoDateInNDays(1)).toBe("2025-11-02");
+      expect(isoDateInNDays(2)).toBe("2025-11-03");
+      expect(calculateRentalDays("2025-11-03")).toBe(2);
+    });
   });
 });
 

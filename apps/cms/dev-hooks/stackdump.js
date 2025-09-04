@@ -4,7 +4,15 @@ if (!global.__STACKDUMP_INSTALLED__) {
   global.__STACKDUMP_INSTALLED__ = true;
 
   // Don't monkey‑patch require at all; it creates noise from optional probes.
-  const fmt = (x) => (x && x.stack ? x.stack : String(x));
+  const fmt = (x) => {
+    if (x && x.stack) return x.stack;
+    try {
+      const str = JSON.stringify(x);
+      return typeof str === "string" ? str : String(x);
+    } catch {
+      return String(x);
+    }
+  };
 
   process.on("uncaughtException", (err) => {
     console.error("[dev-hooks] uncaughtException\n", fmt(err));

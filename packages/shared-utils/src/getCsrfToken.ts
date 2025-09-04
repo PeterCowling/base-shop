@@ -1,18 +1,30 @@
 export function getCsrfToken(req?: Request): string | undefined {
   if (req) {
-    const headerToken = req.headers.get("x-csrf-token");
+    const headerToken = req.headers.get("x-csrf-token")?.trim();
     if (headerToken) return headerToken;
-    return new URL(req.url).searchParams.get("csrf_token") ?? undefined;
+    const queryToken = new URL(req.url).searchParams.get("csrf_token")?.trim();
+    if (queryToken) return queryToken;
+    const cookieToken = req.headers
+      .get("cookie")
+      ?.split(";")
+      .map((row) => row.trim())
+      .find((row) => row.startsWith("csrf_token="))
+      ?.split("=")[1]
+      ?.trim();
+    return cookieToken || undefined;
   }
   if (typeof document === "undefined") return undefined;
   let csrfToken =
     document
       .querySelector('meta[name="csrf-token"]')
-      ?.getAttribute("content") ??
+      ?.getAttribute("content")
+      ?.trim() ??
     document.cookie
-      .split("; ")
+      .split(";")
+      .map((row) => row.trim())
       .find((row) => row.startsWith("csrf_token="))
-      ?.split("=")[1];
+      ?.split("=")[1]
+      ?.trim();
   if (!csrfToken) {
     csrfToken = crypto.randomUUID();
     document.cookie = `csrf_token=${csrfToken}; path=/; SameSite=Strict${

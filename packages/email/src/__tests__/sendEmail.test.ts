@@ -46,6 +46,12 @@ describe("sendEmail", () => {
       .spyOn(console, "log")
       .mockImplementation(() => {});
 
+    const infoSpy = jest.fn();
+    jest.doMock("pino", () => ({
+      __esModule: true,
+      default: () => ({ info: infoSpy }),
+    }));
+
     jest.doMock("nodemailer", () => ({
       __esModule: true,
       default: { createTransport: jest.fn() },
@@ -56,6 +62,7 @@ describe("sendEmail", () => {
     await sendEmail("a@b.com", "Hi", "There");
 
     expect(consoleSpy).not.toHaveBeenCalled();
+    expect(infoSpy).toHaveBeenCalledWith({ to: "a@b.com" }, "Email simulated");
 
     consoleSpy.mockRestore();
   });

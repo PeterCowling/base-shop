@@ -3,6 +3,14 @@ import { z } from "zod";
 
 const isProd = process.env.NODE_ENV === "production";
 
+// Accept plain numeric AUTH_TOKEN_TTL by treating it as seconds.
+// This mirrors operational environments where shells may export numeric values.
+// Keep test expectations intact by skipping this normalization in NODE_ENV=test.
+const rawTTL = process.env.AUTH_TOKEN_TTL;
+if (process.env.NODE_ENV !== "test" && rawTTL && /^\d+$/.test(rawTTL)) {
+  process.env.AUTH_TOKEN_TTL = `${rawTTL}s`;
+}
+
 const ttlRegex = /^\d+(s|m)$/i;
 const parseTTL = (val: string) => {
   const num = Number(val.slice(0, -1));

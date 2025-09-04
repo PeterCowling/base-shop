@@ -324,6 +324,41 @@ describe("generateMeta", () => {
     });
   });
 
+  it("falls back when OpenAI returns string content that isn't JSON", async () => {
+    const writeMock = jest.fn();
+    const mkdirMock = jest.fn();
+    const responsesCreate = jest.fn().mockResolvedValue({
+      output: [{ content: ["not json"] }],
+    });
+    const imagesGenerate = jest.fn().mockResolvedValue({
+      data: [{ b64_json: Buffer.from("img").toString("base64") }],
+    });
+    const OpenAI = jest.fn().mockImplementation(() => ({
+      responses: { create: responsesCreate },
+      images: { generate: imagesGenerate },
+    }));
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      const envMock = { OPENAI_API_KEY: "key" };
+      jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
+      jest.doMock("fs", () => ({ promises: { writeFile: writeMock, mkdir: mkdirMock } }));
+      jest.doMock("openai", () => ({ __esModule: true, default: OpenAI }), { virtual: true });
+      const { generateMeta } = await import("../generateMeta");
+      result = await generateMeta(product);
+    });
+    const file = path.join(process.cwd(), "public", "og", `${product.id}.png`);
+    expect(responsesCreate).toHaveBeenCalled();
+    expect(imagesGenerate).toHaveBeenCalled();
+    expect(mkdirMock).toHaveBeenCalledWith(path.dirname(file), { recursive: true });
+    expect(writeMock).toHaveBeenCalledWith(file, Buffer.from("img"));
+    expect(result).toEqual({
+      title: product.title,
+      description: product.description,
+      alt: product.title,
+      image: `/og/${product.id}.png`,
+    });
+  });
+
   it("falls back when OpenAI returns no content", async () => {
     const writeMock = jest.fn();
     const mkdirMock = jest.fn();

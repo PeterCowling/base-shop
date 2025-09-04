@@ -14,5 +14,9 @@ export interface ProxyResponse {
 export function buildResponse(proxyResponse: ProxyResponse): Response {
   const { status, headers, body } = proxyResponse.response;
   const decodedBody = body ? Buffer.from(body, "base64") : null;
-  return new Response(decodedBody, { status, headers: new Headers(headers) });
+  const finalHeaders = new Headers();
+  for (const [key, value] of Object.entries(headers)) {
+    finalHeaders.set(key, value);
+  }
+  return new Response(decodedBody, { status, headers: finalHeaders });
 }

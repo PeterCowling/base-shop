@@ -34,4 +34,27 @@ describe("Avatar", () => {
     expect(img).toHaveClass("rounded-full");
     expect(img).toHaveClass("rounded-none");
   });
+
+  it("parses string dimensions and applies spacing", () => {
+    const nextImage = require("next/image");
+    const spy = jest.spyOn(nextImage, "default");
+
+    render(
+      <Avatar
+        src="/avatar.jpg"
+        alt="User avatar"
+        width="48"
+        height="64"
+        padding="p-4"
+        margin="m-2"
+      />
+    );
+
+    expect(spy.mock.calls[0][0]).toMatchObject({ width: 48, height: 64 });
+
+    const img = screen.getByAltText("User avatar");
+    expect(img).toHaveStyle({ width: "48", height: "64" });
+    expect(img).toHaveClass("p-4");
+    expect(img).toHaveClass("m-2");
+  });
 });

@@ -10,7 +10,10 @@ if (process.env.NODE_ENV !== "test") {
   const rawTTL = process.env.AUTH_TOKEN_TTL;
   if (typeof rawTTL === "string") {
     const trimmed = rawTTL.trim();
-    if (/^\d+$/.test(trimmed)) {
+    if (trimmed === "") {
+      // Treat blank as unset so default applies
+      delete process.env.AUTH_TOKEN_TTL;
+    } else if (/^\d+$/.test(trimmed)) {
       process.env.AUTH_TOKEN_TTL = `${trimmed}s`;
     } else if (/^(\d+)\s*([sm])$/i.test(trimmed)) {
       const [, num, unit] = trimmed.match(/^(\d+)\s*([sm])$/i)!;

@@ -122,7 +122,27 @@ export function depositReleaseEnvRefinement(
 export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
   depositReleaseEnvRefinement(env, ctx);
 
-  const authResult = authEnvSchema.safeParse(env);
+  // Normalize AUTH_TOKEN_TTL before delegating to the auth schema so builds
+  // don't fail if the value is provided as a plain number or contains
+  // incidental whitespace.
+  const envForAuth: Record<string, unknown> = { ...(env as any) };
+  const rawTtl = envForAuth.AUTH_TOKEN_TTL;
+  if (typeof rawTtl === "number") {
+    // Let auth schema default to 15m when undefined
+    delete envForAuth.AUTH_TOKEN_TTL;
+  } else if (typeof rawTtl === "string") {
+    const trimmed = rawTtl.trim();
+    if (trimmed === "") {
+      delete envForAuth.AUTH_TOKEN_TTL;
+    } else if (/^\d+$/.test(trimmed)) {
+      envForAuth.AUTH_TOKEN_TTL = `${trimmed}s`;
+    } else if (/^(\d+)\s*([sm])$/i.test(trimmed)) {
+      const [, num, unit] = trimmed.match(/^(\d+)\s*([sm])$/i)!;
+      envForAuth.AUTH_TOKEN_TTL = `${num}${unit.toLowerCase()}`;
+    }
+  }
+
+  const authResult = authEnvSchema.safeParse(envForAuth);
   if (!authResult.success) {
     authResult.error.issues.forEach((issue) => ctx.addIssue(issue));
   }

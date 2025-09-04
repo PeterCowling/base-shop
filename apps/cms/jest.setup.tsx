@@ -5,6 +5,8 @@
 
 import "@testing-library/jest-dom";
 import "cross-fetch/polyfill";
+import React from "react";
+import * as ReactDOMTestUtils from "react-dom/test-utils";
 import { TextDecoder, TextEncoder } from "node:util";
 
 /* -------------------------------------------------------------------------- */
@@ -25,6 +27,56 @@ Object.assign(process.env, {
 /** Promote WHATWG encoders/decoders so libraries can rely on them */
 (globalThis as any).TextEncoder ||= TextEncoder;
 (globalThis as any).TextDecoder ||= TextDecoder;
+
+// React's testing utilities check this flag to verify that the environment
+// supports `act()` semantics. Setting it silences act warnings and helps
+// React flush updates consistently in tests.
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
+// React 19 may not expose a global `act` helper yet. Testing libraries expect
+// `React.act` to exist, so provide a minimal async-aware stub when missing.
+if (!(React as any).act) {
+  (React as any).act = (callback: () => void | Promise<void>) => {
+    const result = callback();
+    return result && typeof (result as any).then === "function"
+      ? result
+      : Promise.resolve(result);
+  };
+}
+
+// Ensure `react-dom/test-utils` exposes an `act` helper. Newer React canaries
+// sometimes omit this export, so fall back to the `React.act` stub above.
+if (!(ReactDOMTestUtils as any).act) {
+  (ReactDOMTestUtils as any).act = (React as any).act;
+}
+
+// React 19 renamed an internal export used by react-dom. Depending on the
+// exact canary build, either the old `__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED`
+// or the new `__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE`
+// may be missing. Expose whichever alias is absent so test utilities relying on
+// these internals continue to work.
+if (
+  (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE &&
+  !(React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
+) {
+  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED =
+    (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
+} else if (
+  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED &&
+  !(React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE
+) {
+  (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE =
+    (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+}
+
+// JSDOM doesn't implement object URLs. Some hooks rely on these APIs when
+// handling file uploads or generating video thumbnails.
+if (!(URL as any).createObjectURL) {
+  (URL as any).createObjectURL = () => "blob:mock";
+}
+if (!(URL as any).revokeObjectURL) {
+  (URL as any).revokeObjectURL = () => {};
+}
 
 /**
  * React 19’s scheduler uses MessageChannel.  A lightweight stub keeps Jest from

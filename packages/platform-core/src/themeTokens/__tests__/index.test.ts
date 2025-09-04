@@ -21,6 +21,15 @@ describe('loadThemeTokensNode', () => {
     expect(loadThemeTokensNode('base')).toEqual({});
   });
 
+  it('returns empty object when theme string is empty', () => {
+    expect(loadThemeTokensNode('')).toEqual({});
+  });
+
+  it('returns empty object when no candidate files exist', () => {
+    (fs.existsSync as jest.Mock).mockReturnValue(false);
+    expect(loadThemeTokensNode('ghost')).toEqual({});
+  });
+
   it('loads tokens from existing theme file', () => {
     (fs.existsSync as jest.Mock).mockReturnValue(true);
     (fs.readFileSync as jest.Mock).mockReturnValue(
@@ -28,6 +37,15 @@ describe('loadThemeTokensNode', () => {
     );
 
     expect(loadThemeTokensNode('custom')).toEqual({ '--foo': 'bar' });
+  });
+
+  it('surfaces read errors from readFileSync', () => {
+    (fs.existsSync as jest.Mock).mockReturnValue(true);
+    (fs.readFileSync as jest.Mock).mockImplementation(() => {
+      throw new Error('boom');
+    });
+
+    expect(() => loadThemeTokensNode('broken')).toThrow('boom');
   });
 });
 
@@ -75,5 +93,16 @@ describe('loadThemeTokensBrowser', () => {
 
   it('returns base tokens for base theme', async () => {
     await expect(loadThemeTokensBrowser('base')).resolves.toEqual(baseTokens);
+  });
+
+  it('returns base tokens when theme is empty string', async () => {
+    await expect(loadThemeTokensBrowser('')).resolves.toEqual(baseTokens);
+  });
+
+  it('returns base tokens when theme is undefined', async () => {
+    await expect(
+      // Cast undefined to match function signature
+      loadThemeTokensBrowser(undefined as unknown as string)
+    ).resolves.toEqual(baseTokens);
   });
 });

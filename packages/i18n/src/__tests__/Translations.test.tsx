@@ -34,5 +34,24 @@ describe("TranslationsProvider and useTranslations", () => {
     rerender();
     expect(result.current).toBe(first);
   });
+
+  it("updates translations and function identity when messages change", () => {
+    const wrapper = ({ children, messages }: PropsWithChildren<{ messages: Record<string, string> }>) => (
+      <TranslationsProvider messages={messages}>{children}</TranslationsProvider>
+    );
+
+    const { result, rerender } = renderHook(() => useTranslations(), {
+      wrapper,
+      initialProps: { messages: { hello: "Hallo" } },
+    });
+
+    const first = result.current;
+    expect(first("hello")).toBe("Hallo");
+
+    rerender({ messages: { hello: "Salut" } });
+    const second = result.current;
+    expect(second("hello")).toBe("Salut");
+    expect(second).not.toBe(first);
+  });
 });
 

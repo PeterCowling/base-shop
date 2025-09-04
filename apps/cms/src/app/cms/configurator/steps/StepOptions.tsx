@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import { useCallback, useEffect, type ChangeEvent } from "react";
+import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
@@ -18,13 +18,7 @@ import type { ConfiguratorStepProps } from "@/types/configurator";
 
 export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element {
   const { state, update } = useConfigurator();
-  const {
-    shopId,
-    payment,
-    shipping,
-    analyticsProvider,
-    analyticsId,
-  } = state;
+  const { shopId, payment, shipping, analyticsProvider, analyticsId } = state;
   const setPayment = useCallback((v: string[]) => update("payment", v), [update]);
   const setShipping = useCallback((v: string[]) => update("shipping", v), [update]);
   const setAnalyticsProvider = useCallback(
@@ -32,6 +26,27 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
     [update],
   );
   const setAnalyticsId = useCallback((v: string) => update("analyticsId", v), [update]);
+
+  const [selectedAnalyticsProvider, setSelectedAnalyticsProvider] =
+    useState(analyticsProvider);
+  const [analyticsIdValue, setAnalyticsIdValue] = useState(analyticsId);
+
+  const handleAnalyticsProviderChange = useCallback(
+    (v: string) => {
+      const val = v === "none" ? "" : v;
+      setSelectedAnalyticsProvider(val);
+      setAnalyticsProvider(val);
+    },
+    [setAnalyticsProvider],
+  );
+
+  const handleAnalyticsIdChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setAnalyticsIdValue(e.target.value);
+      setAnalyticsId(e.target.value);
+    },
+    [setAnalyticsId],
+  );
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -108,10 +123,8 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
       <div>
         <p className="font-medium">Analytics</p>
         <Select
-          value={analyticsProvider}
-          onValueChange={(v: string) =>
-            setAnalyticsProvider(v === "none" ? "" : v)
-          }
+          value={selectedAnalyticsProvider}
+          onValueChange={handleAnalyticsProviderChange}
         >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select provider" />
@@ -125,13 +138,11 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
             ))}
           </SelectContent>
         </Select>
-        {analyticsProvider === "ga" && (
+        {selectedAnalyticsProvider === "ga" && (
           <Input
             className="mt-2"
-            value={analyticsId}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setAnalyticsId(e.target.value)
-            }
+            value={analyticsIdValue}
+            onChange={handleAnalyticsIdChange}
             placeholder="Measurement ID"
           />
         )}

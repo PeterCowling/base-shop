@@ -8,6 +8,8 @@ import {
   formatTimestamp,
 } from "./index";
 
+process.env.TZ = "Europe/Rome";
+
 describe("calculateRentalDays", () => {
   beforeEach(() => {
     jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
@@ -27,20 +29,43 @@ describe("calculateRentalDays", () => {
   it("throws on invalid date strings", () => {
     expect(() => calculateRentalDays("not-a-date")).toThrow("Invalid returnDate");
   });
+  it("counts leap days", () => {
+    jest.setSystemTime(new Date("2024-02-28T00:00:00Z"));
+    expect(calculateRentalDays("2024-03-01")).toBe(2);
+  });
+  it("throws on invalid ISO strings", () => {
+    expect(() => calculateRentalDays("2025-02-30")).toThrow("Invalid returnDate");
+  });
 });
 
 describe("parseTargetDate", () => {
-  it("parses ISO strings without timezone", () => {
+  it("parses ISO strings with explicit offset", () => {
     expect(parseTargetDate("2025-01-01T00:00:00Z")?.toISOString()).toBe("2025-01-01T00:00:00.000Z");
   });
+  it("assumes UTC when timezone omitted", () => {
+    expect(parseTargetDate("2025-01-01T00:00:00")?.toISOString()).toBe("2025-01-01T00:00:00.000Z");
+  });
   it("parses strings with timezone", () => {
-    expect(parseTargetDate("2025-01-01T00:00:00", "America/New_York")?.toISOString()).toBe("2025-01-01T05:00:00.000Z");
+    expect(
+      parseTargetDate("2025-01-01T00:00:00", "America/New_York")?.toISOString()
+    ).toBe("2025-01-01T05:00:00.000Z");
+  });
+  it("handles DST boundaries", () => {
+    const before = parseTargetDate("2025-03-30T01:30:00", "Europe/Rome")!;
+    const after = parseTargetDate("2025-03-30T03:30:00", "Europe/Rome")!;
+    const diffHours = (after.getTime() - before.getTime()) / 3_600_000;
+    expect(diffHours).toBe(1);
   });
   it("returns null for invalid date strings", () => {
     expect(parseTargetDate("invalid")).toBeNull();
   });
   it("returns null for invalid timezones", () => {
     expect(parseTargetDate("2025-01-01T00:00:00", "Invalid/Zone")).toBeNull();
+  });
+  it("parses past dates resulting in negative deltas", () => {
+    const target = parseTargetDate("2024-12-31T23:00:00Z")!;
+    const now = new Date("2025-01-01T00:00:00Z");
+    expect(getTimeRemaining(target, now)).toBeLessThan(0);
   });
 });
 
@@ -67,6 +92,9 @@ describe("formatDuration", () => {
   });
   it("formats negative durations as zero", () => {
     expect(formatDuration(-5000)).toBe("0s");
+  });
+  it("formats multi-day durations", () => {
+    expect(formatDuration(90061000)).toBe("1d 1h 1m 1s");
   });
 });
 

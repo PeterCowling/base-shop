@@ -1,11 +1,10 @@
 // apps/cms/src/auth/secret.ts
 
-// Allow tests and local development to run without configuring a secret.
-// `NEXTAUTH_SECRET` is still required in production to ensure sessions are
-// cryptographically signed.
-const secret =
-  process.env.NEXTAUTH_SECRET ??
-  (process.env.NODE_ENV === "production" ? undefined : "test-secret");
+import { env } from "@acme/config";
+
+// `NEXTAUTH_SECRET` is required to ensure sessions are cryptographically
+// signed.
+const secret = env.NEXTAUTH_SECRET;
 
 if (!secret) {
   throw new Error("NEXTAUTH_SECRET is not set");

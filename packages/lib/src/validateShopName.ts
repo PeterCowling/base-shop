@@ -1,5 +1,5 @@
 export const SHOP_NAME_RE = /^[a-z0-9_-]+$/i;
-const MAX_SHOP_NAME_LENGTH = 64;
+const MAX_SHOP_NAME_LENGTH = 63;
 
 /** Ensure `shop` contains only safe characters and is within length limits. Returns the trimmed name. */
 export function validateShopName(shop: string): string {

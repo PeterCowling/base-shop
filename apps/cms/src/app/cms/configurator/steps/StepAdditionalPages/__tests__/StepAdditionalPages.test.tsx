@@ -9,29 +9,19 @@ jest.mock(
   require.resolve(
     "../../../../../../../../../test/__mocks__/componentStub.js",
   ),
-  () => {
-  const React = require("react");
-  const PageBuilder = ({ onSave }: any) => (
-    <div>
-      <span>page builder</span>
-      <button onClick={() => onSave(new FormData())}>save builder</button>
-    </div>
-  );
-  return new Proxy(PageBuilder, {
-    get: (_target, prop) => {
-      if (prop === "Button") {
-        return ({ children, ...props }: any) => (
-          <button {...props}>{children}</button>
-        );
-      }
-      if (prop === "Toast") {
-        return ({ message }: any) => <div>{message}</div>;
-      }
-      return PageBuilder;
-    },
-    apply: (target, thisArg, args) => target.apply(thisArg, args),
-  });
-},
+  () => ({
+    __esModule: true,
+    default: ({ onSave }: any) => (
+      <div>
+        <span>page builder</span>
+        <button onClick={() => onSave(new FormData())}>save builder</button>
+      </div>
+    ),
+    Button: ({ children, ...props }: any) => (
+      <button {...props}>{children}</button>
+    ),
+    Toast: ({ message }: any) => <div>{message}</div>,
+  }),
 );
 
 jest.mock("../PageLayoutSelector", () => ({
@@ -71,20 +61,6 @@ jest.mock("../PageMetaForm", () => ({
   ),
 }));
 
-jest.mock(
-  "@/components/cms/PageBuilder",
-  () => ({
-    __esModule: true,
-    default: ({ onSave }: any) => (
-      <div>
-        <span>page builder</span>
-        <button onClick={() => onSave(new FormData())}>save builder</button>
-      </div>
-    ),
-  }),
-  { virtual: true },
-);
-
 jest.mock("../../../hooks/useStepCompletion", () => ({
   __esModule: true,
   default: () => [false, markCompleteMock],
@@ -100,14 +76,18 @@ jest.mock("../../../lib/api", () => ({
 }));
 import { apiRequest } from "../../../lib/api";
 const apiRequestMock = apiRequest as jest.Mock;
-apiRequestMock.mockResolvedValue({ data: { id: "id1" }, error: null });
+apiRequestMock
+  .mockResolvedValueOnce({ data: [], error: null })
+  .mockResolvedValue({ data: { id: "id1" }, error: null });
 
 import StepAdditionalPages from "../StepAdditionalPages";
 
 describe("StepAdditionalPages", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    apiRequestMock.mockResolvedValue({ data: { id: "id1" }, error: null });
+    apiRequestMock
+      .mockResolvedValueOnce({ data: [], error: null })
+      .mockResolvedValue({ data: { id: "id1" }, error: null });
   });
 
   it("adds a page and saves draft", async () => {
@@ -119,7 +99,7 @@ describe("StepAdditionalPages", () => {
         setPages={setPages}
         shopId="shop"
         themeStyle={{}}
-      />,
+      />, 
     );
 
     await user.click(screen.getByRole("button", { name: /add page/i }));
@@ -135,8 +115,8 @@ describe("StepAdditionalPages", () => {
     await user.click(
       screen.getByRole("button", { name: /^add page$/i }),
     );
-    expect(setPages).toHaveBeenCalledTimes(1);
-    const newPages = setPages.mock.calls[0][0];
+    expect(setPages).toHaveBeenCalledTimes(2);
+    const newPages = setPages.mock.calls[1][0];
     expect(newPages).toHaveLength(1);
     expect(newPages[0].slug).toBe("slug");
   });
@@ -150,7 +130,7 @@ describe("StepAdditionalPages", () => {
         setPages={setPages}
         shopId="shop"
         themeStyle={{}}
-      />,
+      />, 
     );
 
     await user.click(screen.getByRole("button", { name: /add page/i }));
@@ -173,7 +153,7 @@ describe("StepAdditionalPages", () => {
         setPages={setPages}
         shopId="shop"
         themeStyle={{}}
-      />,
+      />, 
     );
 
     await user.click(
@@ -183,3 +163,4 @@ describe("StepAdditionalPages", () => {
     expect(pushMock).toHaveBeenCalledWith("/cms/configurator");
   });
 });
+

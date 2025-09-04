@@ -14,7 +14,7 @@ describe('generateMeta', () => {
     });
     let result;
     await jest.isolateModulesAsync(async () => {
-      jest.doMock('@acme/config', () => ({ env: { OPENAI_API_KEY: 'key' } }));
+      jest.doMock('@acme/config/env/core', () => ({ coreEnv: { OPENAI_API_KEY: 'key' } }));
       jest.doMock('fs', () => ({ promises: { writeFile: jest.fn(), mkdir: jest.fn() } }));
       jest.doMock('openai', () => ({
         __esModule: true,
@@ -43,7 +43,7 @@ describe('generateMeta', () => {
     });
     let result;
     await jest.isolateModulesAsync(async () => {
-      jest.doMock('@acme/config', () => ({ env: { OPENAI_API_KEY: 'key' } }));
+      jest.doMock('@acme/config/env/core', () => ({ coreEnv: { OPENAI_API_KEY: 'key' } }));
       jest.doMock('fs', () => ({ promises: { writeFile: jest.fn(), mkdir: jest.fn() } }));
       jest.doMock('openai', () => ({
         __esModule: true,
@@ -72,7 +72,7 @@ describe('generateMeta', () => {
     });
     let result;
     await jest.isolateModulesAsync(async () => {
-      jest.doMock('@acme/config', () => ({ env: { OPENAI_API_KEY: 'key' } }));
+      jest.doMock('@acme/config/env/core', () => ({ coreEnv: { OPENAI_API_KEY: 'key' } }));
       jest.doMock('fs', () => ({ promises: { writeFile: jest.fn(), mkdir: jest.fn() } }));
       jest.doMock('openai', () => ({
         __esModule: true,
@@ -101,7 +101,7 @@ describe('generateMeta', () => {
     });
     let result;
     await jest.isolateModulesAsync(async () => {
-      jest.doMock('@acme/config', () => ({ env: { OPENAI_API_KEY: 'key' } }));
+      jest.doMock('@acme/config/env/core', () => ({ coreEnv: { OPENAI_API_KEY: 'key' } }));
       jest.doMock('fs', () => ({ promises: { writeFile: jest.fn(), mkdir: jest.fn() } }));
       jest.doMock('openai', () => ({
         __esModule: true,

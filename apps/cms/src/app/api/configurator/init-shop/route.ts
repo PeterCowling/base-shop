@@ -8,6 +8,7 @@ import { resolveDataRoot } from "@platform-core/dataRoot";
 import { validateShopName } from "@platform-core/shops";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
+import { writeJsonFile } from "@/lib/server/jsonIO";
 
 /**
  * POST /cms/api/configurator/init-shop
@@ -65,11 +66,7 @@ export async function POST(req: Request) {
       await fs.writeFile(path.join(dir, "products.csv"), buf);
     }
     if (categories) {
-      await fs.writeFile(
-        path.join(dir, "categories.json"),
-        JSON.stringify(categories, null, 2),
-        "utf8"
-      );
+      await writeJsonFile(path.join(dir, "categories.json"), categories);
     }
     return NextResponse.json({ success: true });
   } catch (err) {

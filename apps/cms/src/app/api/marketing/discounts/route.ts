@@ -7,6 +7,7 @@ import { resolveDataRoot } from "@platform-core/dataRoot";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { coreEnv as env } from "@acme/config/env/core";
 import type { Coupon } from "@acme/types";
+import { writeJsonFile } from "@/lib/server/jsonIO";
 
 interface Discount extends Coupon {
   active?: boolean;
@@ -37,8 +38,7 @@ async function readDiscounts(shop: string): Promise<Discount[]> {
 
 async function writeDiscounts(shop: string, discounts: Discount[]): Promise<void> {
   const fp = filePath(shop);
-  await fs.mkdir(path.dirname(fp), { recursive: true });
-  await fs.writeFile(fp, JSON.stringify(discounts, null, 2), "utf8");
+  await writeJsonFile(fp, discounts);
 }
 
 async function requireAdmin() {

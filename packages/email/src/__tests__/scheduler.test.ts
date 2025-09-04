@@ -85,6 +85,7 @@ describe("scheduler", () => {
       { type: "email_unsubscribe", email: "b@example.com" },
     ]);
     await sendDueCampaigns();
+    expect(listEvents).toHaveBeenCalledWith(shop);
     expect(sendCampaignEmail).toHaveBeenCalledTimes(1);
     expect((sendCampaignEmail as jest.Mock).mock.calls[0][0].to).toBe(
       "a@example.com",
@@ -159,6 +160,38 @@ describe("scheduler", () => {
     });
     const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0].html as string;
     expect(html).toContain("Rendered");
+  });
+
+  test("deliverCampaign batches recipients and adds unsubscribe links", async () => {
+    process.env.EMAIL_BATCH_SIZE = "2";
+    process.env.EMAIL_BATCH_DELAY_MS = "10";
+    jest.useFakeTimers();
+    const setTimeoutSpy = jest.spyOn(global, "setTimeout");
+    const recipients = [
+      "a@example.com",
+      "b@example.com",
+      "c@example.com",
+    ];
+    const promise = createCampaign({
+      shop,
+      recipients,
+      subject: "Hello",
+      body: "<p>Hi %%UNSUBSCRIBE%%</p>",
+    });
+    jest.runAllTimers();
+    await promise;
+    jest.useRealTimers();
+    expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 10);
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(recipients.length);
+    recipients.forEach((r, i) => {
+      const html = (sendCampaignEmail as jest.Mock).mock.calls[i][0]
+        .html as string;
+      expect(html).toContain("Unsubscribe");
+      expect(html).toContain(encodeURIComponent(r));
+    });
+    setTimeoutSpy.mockRestore();
+    delete process.env.EMAIL_BATCH_SIZE;
+    delete process.env.EMAIL_BATCH_DELAY_MS;
   });
 
   test("createCampaign resolves recipients from segment without explicit recipients", async () => {

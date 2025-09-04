@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor, act } from "@testing-library/react";
 import StepShopPage from "../src/app/cms/configurator/steps/StepShopPage";
 
 // Router mock
@@ -115,9 +115,13 @@ describe("StepShopPage", () => {
       .mockResolvedValueOnce({ data: null, error: "save error" })
       .mockResolvedValueOnce({ data: null, error: "publish error" });
     renderStep();
-    fireEvent.click(screen.getByText("save"));
+    await act(async () => {
+      fireEvent.click(screen.getByText("save"));
+    });
     await screen.findByText("save error");
-    fireEvent.click(screen.getByText("publish"));
+    await act(async () => {
+      fireEvent.click(screen.getByText("publish"));
+    });
     await screen.findByText("publish error");
   });
 
@@ -131,7 +135,9 @@ describe("StepShopPage", () => {
   it("marks step complete after saving page", async () => {
     apiRequest.mockResolvedValueOnce({ data: { id: "p1" }, error: null });
     renderStep();
-    fireEvent.click(screen.getByText("save"));
+    await act(async () => {
+      fireEvent.click(screen.getByText("save"));
+    });
     await waitFor(() => expect(state.shopPageId).toBe("p1"));
     fireEvent.click(screen.getByText("Next"));
     expect(markStepComplete).toHaveBeenCalledWith("shop-page", "complete");

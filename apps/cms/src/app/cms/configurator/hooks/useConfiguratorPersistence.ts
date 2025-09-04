@@ -13,6 +13,8 @@ import {
   type StepStatus,
 } from "../../wizard/schema";
 
+const LEGACY_STORAGE_KEY = "cms-wizard-progress";
+
 /** Key used to mirror configurator progress in localStorage for preview components. */
 export const STORAGE_KEY = "cms-configurator-progress";
 
@@ -49,13 +51,26 @@ export function useConfiguratorPersistence(
   /* Load persisted state on mount */
   useEffect(() => {
     if (typeof window === "undefined") return;
+    const legacy = localStorage.getItem(LEGACY_STORAGE_KEY);
+    if (legacy && !localStorage.getItem(STORAGE_KEY)) {
+      localStorage.setItem(STORAGE_KEY, legacy);
+      localStorage.removeItem(LEGACY_STORAGE_KEY);
+    }
     fetch("/cms/api/configurator-progress")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
-        if (!json) return;
+        let source = json;
+        if (!source && legacy) {
+          try {
+            source = JSON.parse(legacy);
+          } catch {
+            /* ignore */
+          }
+        }
+        if (!source) return;
         const parsed = configuratorStateSchema.safeParse({
-          ...(json.state ?? json),
-          completed: json.completed ?? {},
+          ...(source.state ?? source),
+          completed: source.completed ?? {},
         });
         if (parsed.success) {
           setState(parsed.data);

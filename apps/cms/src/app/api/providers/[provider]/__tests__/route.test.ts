@@ -28,14 +28,16 @@ function request(path: string) {
 }
 
 describe("GET", () => {
-  it("writes token and redirects to wizard", async () => {
+  it("writes token and redirects to configurator", async () => {
     const res = await GET(request("?shop=s1&code=abc"), {
       params: Promise.resolve({ provider: "stripe" }),
     });
     expect(mkdir).toHaveBeenCalled();
     expect(writeFile).toHaveBeenCalled();
     expect(res.status).toBe(307);
-    expect(res.headers.get("location")).toBe("/cms/wizard?connected=stripe");
+    expect(res.headers.get("location")).toBe(
+      "/cms/configurator?connected=stripe"
+    );
   });
 
   it("redirects for missing code", async () => {

@@ -105,7 +105,7 @@ export default async function CmsDashboardPage() {
           </p>
           {session?.user.role === "admin" && (
             <Link
-              href="/cms/wizard"
+              href="/cms/configurator"
               className="bg-primary hover:bg-primary/90 focus-visible:ring-primary rounded-md px-3 py-2 text-sm text-white focus-visible:ring-2 focus-visible:outline-none"
             >
               Create Shop

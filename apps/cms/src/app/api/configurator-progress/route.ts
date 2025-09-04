@@ -44,13 +44,24 @@ function resolveFile(): string {
   while (true) {
     const candidateDir = path.join(dir, "data", "cms");
     if (fsSync.existsSync(candidateDir)) {
-      return path.join(candidateDir, "configurator-progress.json");
+      const newFile = path.join(candidateDir, "configurator-progress.json");
+      const oldFile = path.join(candidateDir, "wizard-progress.json");
+      if (!fsSync.existsSync(newFile) && fsSync.existsSync(oldFile)) {
+        fsSync.renameSync(oldFile, newFile);
+      }
+      return newFile;
     }
     const parent = path.dirname(dir);
     if (parent === dir) break;
     dir = parent;
   }
-  return path.resolve(process.cwd(), "data", "cms", "configurator-progress.json");
+  const candidateDir = path.resolve(process.cwd(), "data", "cms");
+  const newFile = path.join(candidateDir, "configurator-progress.json");
+  const oldFile = path.join(candidateDir, "wizard-progress.json");
+  if (!fsSync.existsSync(newFile) && fsSync.existsSync(oldFile)) {
+    fsSync.renameSync(oldFile, newFile);
+  }
+  return newFile;
 }
 
 const FILE = resolveFile();

@@ -37,5 +37,5 @@ export async function GET(
     "utf8"
   );
 
-  return NextResponse.redirect(`/cms/wizard?connected=${provider}`);
+  return NextResponse.redirect(`/cms/configurator?connected=${provider}`);
 }

@@ -1,8 +1,18 @@
-// Temporary page used for testing the wizard route. In the real application this
-// route redirects to the configurator, but for unit tests we render a simple
-// placeholder so server rendering can be verified without pulling in the entire
-// configurator implementation.
+import { redirect } from "next/navigation";
 
-export default function WizardPage() {
-  return <h2>Shop Details</h2>;
+export default function WizardRedirect({
+  searchParams,
+}: {
+  searchParams: Record<string, string | string[] | undefined>;
+}) {
+  const params = new URLSearchParams();
+  for (const [key, value] of Object.entries(searchParams)) {
+    if (Array.isArray(value)) {
+      for (const v of value) params.append(key, v);
+    } else if (value !== undefined) {
+      params.append(key, value);
+    }
+  }
+  const query = params.size ? `?${params.toString()}` : "";
+  redirect(`/cms/configurator${query}`);
 }

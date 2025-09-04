@@ -69,6 +69,7 @@ beforeEach(() => {
     get: jest.fn(),
     set: jest.fn(),
     delete: jest.fn(),
+    list: jest.fn(),
   };
   createSessionStore.mockResolvedValue(mockSessionStore);
 });
@@ -165,6 +166,51 @@ describe("session", () => {
     await expect(validateCsrfToken("csrf")).resolves.toBe(true);
     await expect(validateCsrfToken("nope")).resolves.toBe(false);
     await expect(validateCsrfToken(null)).resolves.toBe(false);
+  });
+
+  it("destroyCustomerSession removes cookies and deletes store entry", async () => {
+    const {
+      destroyCustomerSession,
+      CUSTOMER_SESSION_COOKIE,
+      CSRF_TOKEN_COOKIE,
+    } = await import("./session");
+
+    mockCookies.get.mockImplementation((name: string) =>
+      name === CUSTOMER_SESSION_COOKIE ? { value: "tok" } : undefined
+    );
+    unsealData.mockResolvedValue({ sessionId: "sid" });
+
+    await destroyCustomerSession();
+
+    expect(mockSessionStore.delete).toHaveBeenCalledWith("sid");
+    expect(mockCookies.delete).toHaveBeenCalledWith({
+      name: CUSTOMER_SESSION_COOKIE,
+      path: "/",
+      domain: "example.com",
+    });
+    expect(mockCookies.delete).toHaveBeenCalledWith({
+      name: CSRF_TOKEN_COOKIE,
+      path: "/",
+      domain: "example.com",
+    });
+  });
+
+  it("listSessions delegates to the session store", async () => {
+    const { listSessions } = await import("./session");
+
+    const sessions = [{ sessionId: "1" }];
+    mockSessionStore.list.mockResolvedValue(sessions);
+
+    await expect(listSessions("cust")).resolves.toEqual(sessions);
+    expect(mockSessionStore.list).toHaveBeenCalledWith("cust");
+  });
+
+  it("revokeSession delegates to the session store", async () => {
+    const { revokeSession } = await import("./session");
+
+    await revokeSession("sid");
+
+    expect(mockSessionStore.delete).toHaveBeenCalledWith("sid");
   });
 });
 

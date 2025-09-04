@@ -49,7 +49,7 @@ function TestConfigurator() {
 /* -------------------------------------------------------------------------- */
 /*  Tests                                                                     */
 /* -------------------------------------------------------------------------- */
-describe("Wizard progress persistence", () => {
+describe("Configurator progress persistence", () => {
   it("restores progress after a reload", async () => {
     jest.useFakeTimers();
     const { unmount } = render(<TestConfigurator />);

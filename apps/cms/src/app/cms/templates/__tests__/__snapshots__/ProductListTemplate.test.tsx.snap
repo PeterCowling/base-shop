@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductListTemplate renders list of products 1`] = `
+<div>
+  <section>
+    <h2>
+      Featured
+    </h2>
+    <ul>
+      <li>
+        One
+      </li>
+      <li>
+        Two
+      </li>
+    </ul>
+  </section>
+</div>
+`;

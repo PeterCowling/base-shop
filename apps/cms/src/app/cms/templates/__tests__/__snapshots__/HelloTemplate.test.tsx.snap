@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HelloTemplate renders title and body 1`] = `
+<div>
+  <section>
+    <h1>
+      Welcome
+    </h1>
+    <p>
+      Hello world
+    </p>
+  </section>
+</div>
+`;

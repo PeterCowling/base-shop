@@ -90,5 +90,35 @@ describe("env index module", () => {
     expect(merged.safeParse({ FOO: "hello", BAR: 1 }).success).toBe(true);
     expect(merged.safeParse({ FOO: "hello" }).success).toBe(false);
   });
+
+  it("mergeEnvSchemas allows partial optional objects", async () => {
+    const { mergeEnvSchemas } = await import("../index.ts");
+    const schemaA = z.object({ A: z.string().optional() });
+    const schemaB = z.object({ B: z.number().optional() });
+    const merged = mergeEnvSchemas(schemaA, schemaB);
+    expect(merged.safeParse({}).success).toBe(true);
+    expect(merged.safeParse({ A: "x" }).success).toBe(true);
+    expect(merged.safeParse({ B: 1 }).success).toBe(true);
+  });
+
+  it("later schemas override earlier ones", async () => {
+    const { mergeEnvSchemas } = await import("../index.ts");
+    const schemaA = z.object({ FOO: z.string() });
+    const schemaB = z.object({ FOO: z.number().optional() });
+    const merged = mergeEnvSchemas(schemaA, schemaB);
+    expect(merged.safeParse({ FOO: 1 }).success).toBe(true);
+    expect(merged.safeParse({ FOO: "bar" }).success).toBe(false);
+    expect((merged.shape.FOO as any)._def.typeName).toBe("ZodOptional");
+  });
+
+  it("performs shallow merges for nested objects", async () => {
+    const { mergeEnvSchemas } = await import("../index.ts");
+    const schemaA = z.object({ nested: z.object({ a: z.string() }) });
+    const schemaB = z.object({ nested: z.object({ b: z.number() }) });
+    const merged = mergeEnvSchemas(schemaA, schemaB);
+    const nested = merged.shape.nested as z.ZodObject<any>;
+    expect(nested.shape).toHaveProperty("b");
+    expect(nested.shape).not.toHaveProperty("a");
+  });
 });
 

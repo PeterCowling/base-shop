@@ -85,7 +85,7 @@ export type PageInfo = z.infer<typeof pageInfoSchema>; // <- slug & components *
 export const stepStatusSchema = z.enum(["pending", "complete", "skipped"]);
 export type StepStatus = z.infer<typeof stepStatusSchema>;
 
-const wizardStateSchemaBase: z.AnyZodObject = z
+const configuratorStateSchemaBase: z.AnyZodObject = z
   .object({
     /* ------------ Wizard progress & identity ------------ */
     shopId: z.string().optional().default(""),
@@ -155,5 +155,9 @@ const wizardStateSchemaBase: z.AnyZodObject = z
   })
   .strict();
 
-export type WizardState = z.infer<typeof wizardStateSchemaBase>;
-export const wizardStateSchema: z.AnyZodObject = wizardStateSchemaBase;
+export type ConfiguratorState = z.infer<typeof configuratorStateSchemaBase>;
+export const configuratorStateSchema: z.AnyZodObject = configuratorStateSchemaBase;
+
+// Backwards compatibility exports
+export type WizardState = ConfiguratorState;
+export const wizardStateSchema = configuratorStateSchema;

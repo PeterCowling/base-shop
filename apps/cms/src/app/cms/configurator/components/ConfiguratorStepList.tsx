@@ -3,11 +3,11 @@
 
 import Link from "next/link";
 import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
-import type { WizardState } from "../../wizard/schema";
+import type { ConfiguratorState } from "../../wizard/schema";
 import type { ConfiguratorStep } from "../types";
 
 interface Props {
-  state: WizardState;
+  state: ConfiguratorState;
   steps: ConfiguratorStep[];
   skipStep: (id: string) => void;
   resetStep: (id: string) => void;

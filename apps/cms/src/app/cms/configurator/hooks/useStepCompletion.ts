@@ -1,14 +1,13 @@
 import { useConfigurator } from "../ConfiguratorContext";
-import type { WizardState, PageInfo } from "../../wizard/schema";
+import type { ConfiguratorState, PageInfo } from "../../wizard/schema";
 
-type Validator = (state: WizardState) => boolean;
+type Validator = (state: ConfiguratorState) => boolean;
 
 export const validators: Record<string, Validator> = {
   "shop-details": (s) => Boolean(s.shopId && s.storeName),
   theme: (s) => Boolean(s.theme),
   tokens: (s) => Object.keys(s.themeDefaults ?? {}).length > 0,
-  options: (s) =>
-    s.analyticsProvider !== "ga" || Boolean(s.analyticsId),
+  options: (s) => s.analyticsProvider !== "ga" || Boolean(s.analyticsId),
   navigation: (s) => s.navItems.length > 0,
   layout: (s) => Boolean(s.headerPageId && s.footerPageId),
   "home-page": (s) => Boolean(s.homePageId),

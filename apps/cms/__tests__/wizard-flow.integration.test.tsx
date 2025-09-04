@@ -34,7 +34,7 @@ let serverState: any = { state: {}, completed: {} };
 beforeEach(() => {
   serverState = { state: {}, completed: {} };
   (global.fetch as any) = jest.fn((url: string, init?: any) => {
-    if (url === "/cms/api/wizard-progress") {
+    if (url === "/cms/api/configurator-progress") {
       if (init && init.method === "PUT") {
         const body = JSON.parse(init.body as string);
         serverState.state = { ...serverState.state, ...(body.data || {}) };

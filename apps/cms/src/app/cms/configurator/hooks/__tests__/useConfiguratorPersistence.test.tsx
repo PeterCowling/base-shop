@@ -6,8 +6,8 @@ import {
   useConfiguratorPersistence,
 } from "../useConfiguratorPersistence";
 import {
-  wizardStateSchema,
-  type WizardState,
+  configuratorStateSchema,
+  type ConfiguratorState,
 } from "../../../wizard/schema";
 
 describe("useConfiguratorPersistence", () => {
@@ -15,7 +15,9 @@ describe("useConfiguratorPersistence", () => {
   let complete: ((id: string, status: any) => void) | null = null;
 
   function TestComponent(): JSX.Element {
-    const [state, setState] = useState<WizardState>(wizardStateSchema.parse({}));
+    const [state, setState] = useState<ConfiguratorState>(
+      configuratorStateSchema.parse({})
+    );
     const [markStepComplete] = useConfiguratorPersistence(state, setState);
     complete = markStepComplete;
     return (
@@ -62,7 +64,7 @@ describe("useConfiguratorPersistence", () => {
     jest.runOnlyPendingTimers();
     await waitFor(() =>
       expect(fetchMock).toHaveBeenLastCalledWith(
-        "/cms/api/wizard-progress",
+        "/cms/api/configurator-progress",
         expect.objectContaining({
           method: "PUT",
           body: expect.stringContaining("Updated"),
@@ -78,7 +80,7 @@ describe("useConfiguratorPersistence", () => {
 
     await waitFor(() =>
       expect(fetchMock).toHaveBeenCalledWith(
-        "/cms/api/wizard-progress",
+        "/cms/api/configurator-progress",
         expect.objectContaining({
           method: "PATCH",
           body: JSON.stringify({ stepId: "intro", completed: "complete" }),

@@ -144,9 +144,24 @@ describe("getTimeRemaining", () => {
     );
   });
 
+  test("handles targets later on the same day", () => {
+    const target = new Date("2025-01-01T12:00:00Z");
+    expect(getTimeRemaining(target)).toBe(12 * 3600 * 1000);
+  });
+
+  test("handles targets at the next-day boundary", () => {
+    const target = new Date("2025-01-02T00:00:00Z");
+    expect(getTimeRemaining(target)).toBe(24 * 3600 * 1000);
+  });
+
   test("returns negative ms for past date", () => {
     const target = new Date("2024-12-31T23:59:59Z");
     expect(getTimeRemaining(target)).toBe(-1000);
+  });
+
+  test("returns negative ms when target is more than a day in the past", () => {
+    const target = new Date("2024-12-30T00:00:00Z");
+    expect(getTimeRemaining(target)).toBe(-2 * 24 * 3600 * 1000);
   });
 
   test("returns zero for identical times", () => {
@@ -175,8 +190,23 @@ describe("formatDuration", () => {
     expect(formatDuration(ms)).toBe("1d 2h 3m 4s");
   });
 
+  test("formats durations spanning multiple days", () => {
+    const ms = (2 * 86400 + 5 * 3600 + 6 * 60 + 7) * 1000; // 2d 5h 6m 7s
+    expect(formatDuration(ms)).toBe("2d 5h 6m 7s");
+  });
+
+  test("returns 0s for zero duration", () => {
+    expect(formatDuration(0)).toBe("0s");
+  });
+
   test("clamps negative milliseconds to 0s", () => {
     expect(formatDuration(-5000)).toBe("0s");
+  });
+
+  test("clamps durations from past targets to 0s", () => {
+    const now = new Date("2025-01-01T00:00:00Z");
+    const target = new Date("2024-12-30T00:00:00Z");
+    expect(formatDuration(getTimeRemaining(target, now))).toBe("0s");
   });
 });
 describe("DST transitions", () => {

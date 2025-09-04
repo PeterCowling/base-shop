@@ -56,10 +56,7 @@ yarn-error.log*
 # Environment files
 # ---------------------------
 .env*
-!.env.example
-!apps/*/.env.local
-!apps/*/.env.test
-!apps/*/.env.production
+!**/.env.example
 
 # Build outputs (monorepo)
 **/dist/

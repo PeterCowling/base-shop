@@ -52,6 +52,22 @@ describe("flattenInventoryItem", () => {
       quantity: 1,
     });
   });
+
+  it("omits lowStockThreshold when undefined", () => {
+    const item: InventoryItem = {
+      sku: "sku4",
+      productId: "prod4",
+      quantity: 7,
+      variantAttributes: {},
+      lowStockThreshold: undefined,
+    };
+
+    expect(flattenInventoryItem(item)).toEqual({
+      sku: "sku4",
+      productId: "prod4",
+      quantity: 7,
+    });
+  });
 });
 
 describe("expandInventoryItem", () => {
@@ -97,6 +113,34 @@ describe("expandInventoryItem", () => {
       productId: "sku3",
       quantity: 1,
       variantAttributes: {},
+    });
+  });
+
+  it("is idempotent when given a valid InventoryItem", () => {
+    const item: InventoryItem = {
+      sku: "sku6",
+      productId: "prod6",
+      quantity: 4,
+      variantAttributes: { color: "red" },
+      lowStockThreshold: 1,
+    };
+
+    expect(expandInventoryItem(item)).toEqual(item);
+  });
+
+  it("omits lowStockThreshold when provided as an empty string", () => {
+    const raw = {
+      sku: "sku7",
+      quantity: 3,
+      "variant.size": "S",
+      lowStockThreshold: "",
+    };
+
+    expect(expandInventoryItem(raw)).toEqual({
+      sku: "sku7",
+      productId: "sku7",
+      quantity: 3,
+      variantAttributes: { size: "S" },
     });
   });
 

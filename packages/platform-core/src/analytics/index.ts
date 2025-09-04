@@ -192,7 +192,8 @@ async function updateAggregates(
     agg.ai_crawl[day] = (agg.ai_crawl[day] || 0) + 1;
   }
   await fs.mkdir(path.dirname(fp), { recursive: true });
-  await fs.writeFile(fp, JSON.stringify(agg), "utf8");
+  const payload = JSON.stringify(agg ?? {}) ?? "{}";
+  await fs.writeFile(fp, payload, "utf8");
 }
 
 export type AnalyticsAggregates = Aggregates;

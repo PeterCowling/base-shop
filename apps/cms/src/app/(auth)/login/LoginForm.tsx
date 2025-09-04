@@ -6,7 +6,7 @@ import { Button, Input } from "@/components/atoms/shadcn";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
   const router = useRouter();
@@ -30,14 +30,15 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
   }
 
   const [error, setError] = useState<string | null>(null);
+  const [username, setUsername] = useState("");
+  const [pwd, setPwd] = useState("");
+  const formRef = useRef<HTMLFormElement | null>(null);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
+  async function handleSubmit(e?: React.FormEvent | React.MouseEvent) {
+    e?.preventDefault?.();
     setError(null);
-
-    const formData = new FormData(e.currentTarget);
-    const email = (formData.get("username") as string) || "";
-    const password = formData.get("password") as string;
+    const email = username.trim();
+    const password = pwd;
 
     console.log("[LoginForm] submit", { email, callbackUrl });
 
@@ -62,7 +63,7 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
   }
 
   return (
-    <form method="post" onSubmit={handleSubmit} className="space-y-4">
+    <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
       <h1 className="text-2xl font-semibold">Sign in</h1>
 
       <Input
@@ -71,7 +72,8 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
         label="Email"
         placeholder="admin@example.com"
         autoComplete="username"
-        // Ensure high-contrast, visible input text regardless of page theme
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
         className="bg-white text-black dark:bg-white dark:text-black"
         required
       />
@@ -81,14 +83,15 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
         label="Password"
         placeholder="••••••••"
         autoComplete="current-password"
-        // Ensure high-contrast, visible input text while obscured
+        value={pwd}
+        onChange={(e) => setPwd(e.target.value)}
         className="bg-white text-black dark:bg-white dark:text-black"
         required
       />
 
       {error && <span className="block text-sm text-red-500">{error}</span>}
 
-      <Button className="h-12 w-full" type="submit">
+      <Button className="h-12 w-full" type="button" onClick={handleSubmit}>
         Continue
       </Button>
       <p className="mt-4 text-center text-sm">

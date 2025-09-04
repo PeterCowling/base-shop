@@ -80,7 +80,15 @@ async function readDb(): Promise<DB> {
 async function writeDb(db: DB): Promise<void> {
   await fs.mkdir(path.dirname(FILE), { recursive: true });
   const tmp = `${FILE}.${Date.now()}.tmp`;
-  await fs.writeFile(tmp, JSON.stringify(db, null, 2), "utf8");
+  const payload = JSON.stringify(db ?? {}, null, 2) ?? "{}";
+  try {
+    console.log("[configurator-progress] write", {
+      file: FILE,
+      tmp,
+      bytes: Buffer.byteLength(payload, "utf8"),
+    });
+  } catch {}
+  await fs.writeFile(tmp, payload, "utf8");
   await fs.rename(tmp, FILE);
 }
 

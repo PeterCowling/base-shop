@@ -29,10 +29,18 @@ export async function POST(
     const { shopId } = await context.params;
     const dir = path.join(resolveDataRoot(), shopId);
     await fs.mkdir(dir, { recursive: true });
-    const lines = Object.entries(data)
+    const lines = Object.entries(data ?? {})
       .map(([k, v]) => `${k}=${String(v)}`)
       .join("\n");
-    await fs.writeFile(path.join(dir, ".env"), lines, "utf8");
+    const content = lines ?? "";
+    try {
+      console.log("[env] write .env", {
+        shopId,
+        file: path.join(dir, ".env"),
+        bytes: Buffer.byteLength(content, "utf8"),
+      });
+    } catch {}
+    await fs.writeFile(path.join(dir, ".env"), content, "utf8");
     if (
       data.SANITY_PROJECT_ID &&
       data.SANITY_DATASET &&

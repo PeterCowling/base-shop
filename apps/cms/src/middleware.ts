@@ -34,16 +34,27 @@ const ADMIN_PATH_REGEX =
   /^\/cms\/shop\/([^/]+)\/(?:products\/[^/]+\/edit|settings|media(?:\/|$))/;
 
 const securityHeaders = (() => {
+  const isDev = process.env.NODE_ENV !== "production";
+  const directives: Record<string, unknown> = {
+    defaultSrc: "'self'",
+    baseUri: "'self'",
+    objectSrc: "'none'",
+    formAction: "'self'",
+    frameAncestors: "'none'",
+  };
+
+  // In development, relax CSP to allow Next.js dev client features
+  // (react-refresh, eval-based source maps, HMR websockets, etc.).
+  if (isDev) {
+    (directives as any).scriptSrc = ["'self'", "'unsafe-inline'", "'unsafe-eval'"];
+    (directives as any).connectSrc = ["'self'", "ws:", "wss:"];
+    (directives as any).styleSrc = ["'self'", "'unsafe-inline'"];
+    (directives as any).imgSrc = ["'self'", "data:", "blob:"];
+    (directives as any).fontSrc = ["'self'", "data:"];
+  }
+
   const base = createHeadersObject({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: "'self'",
-        baseUri: "'self'",
-        objectSrc: "'none'",
-        formAction: "'self'",
-        frameAncestors: "'none'",
-      },
-    },
+    contentSecurityPolicy: { directives: directives as any },
     forceHTTPSRedirect: [
       true,
       { maxAge: 60 * 60 * 24 * 365, includeSubDomains: true, preload: true },
@@ -103,6 +114,7 @@ export async function middleware(req: NextRequest) {
   /* CSRF protection for mutating API routes */
   if (
     pathname.startsWith("/api") &&
+    !pathname.startsWith("/api/auth") &&
     ["POST", "PUT", "PATCH", "DELETE"].includes(method)
   ) {
     const csrfToken = req.headers.get("x-csrf-token");

@@ -1,10 +1,6 @@
 import { describe, it, afterEach, expect } from "@jest/globals";
 
-const OLD_ENV = process.env;
-
 afterEach(() => {
-  jest.resetModules();
-  process.env = OLD_ENV;
   jest.restoreAllMocks();
 });
 

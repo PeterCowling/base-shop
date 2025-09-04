@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import * as fsSync from "fs";
-import { writeJsonFile } from "@acme/shared-utils";
+import { writeJsonFile } from "@/lib/server/jsonIO";
 import path from "path";
 import {
   configuratorStateSchema,
@@ -87,7 +87,6 @@ async function writeDb(db: unknown): Promise<void> {
   }
   const payload = parsed.data;
   const json = JSON.stringify(payload, null, 2);
-  await fs.mkdir(path.dirname(FILE), { recursive: true });
   const tmp = `${FILE}.${Date.now()}.tmp`;
   try {
     console.log("[configurator-progress] write", {

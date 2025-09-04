@@ -19,9 +19,16 @@ async function ensureDir(shop: string): Promise<void> {
 export async function readCouponRepo(shop: string): Promise<Coupon[]> {
   try {
     const buf = await fs.readFile(filePath(shop), "utf8");
-    return couponSchema.array().parse(JSON.parse(buf));
-  } catch {
-    return [];
+    try {
+      return couponSchema.array().parse(JSON.parse(buf));
+    } catch {
+      return [];
+    }
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+      return [];
+    }
+    throw err;
   }
 }
 

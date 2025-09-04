@@ -36,19 +36,22 @@ describe("TranslationsProvider and useTranslations", () => {
   });
 
   it("updates translations and function identity when messages change", () => {
-    const wrapper = ({ children, messages }: PropsWithChildren<{ messages: Record<string, string> }>) => (
+    // Use a closure variable for messages since the `renderHook` wrapper option
+    // does not support receiving custom props. Updating this variable and
+    // calling `rerender` will trigger the provider to receive the new
+    // messages.
+    let messages: Record<string, string> = { hello: "Hallo" };
+    const wrapper = ({ children }: PropsWithChildren) => (
       <TranslationsProvider messages={messages}>{children}</TranslationsProvider>
     );
 
-    const { result, rerender } = renderHook(() => useTranslations(), {
-      wrapper,
-      initialProps: { messages: { hello: "Hallo" } },
-    });
+    const { result, rerender } = renderHook(() => useTranslations(), { wrapper });
 
     const first = result.current;
     expect(first("hello")).toBe("Hallo");
 
-    rerender({ messages: { hello: "Salut" } });
+    messages = { hello: "Salut" };
+    rerender();
     const second = result.current;
     expect(second("hello")).toBe("Salut");
     expect(second).not.toBe(first);

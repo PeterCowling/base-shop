@@ -30,4 +30,21 @@ describe("history actions", () => {
     expect(branched.present).toEqual([b]);
     expect(branched.future).toEqual([]);
   });
+
+  it("returns same state when committing current present", () => {
+    const first = commit(init, [a]);
+    const result = commit(first, first.present);
+    expect(Object.is(result, first)).toBe(true);
+  });
+
+  it("returns original state on undo with empty past", () => {
+    const result = undo(init);
+    expect(Object.is(result, init)).toBe(true);
+  });
+
+  it("returns original state on redo with empty future", () => {
+    const state = commit(init, [a]);
+    const result = redo(state);
+    expect(Object.is(result, state)).toBe(true);
+  });
 });

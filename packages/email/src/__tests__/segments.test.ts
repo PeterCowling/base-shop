@@ -47,12 +47,18 @@ describe("provider functions", () => {
     delete process.env.EMAIL_PROVIDER;
   });
 
-  it("return safe defaults when EMAIL_PROVIDER is unset", async () => {
-    const { createContact, addToList, listSegments } = await import(
-      "../segments"
-    );
+  it("createContact returns empty string when EMAIL_PROVIDER is unset", async () => {
+    const { createContact } = await import("../segments");
     await expect(createContact("a@example.com")).resolves.toBe("");
+  });
+
+  it("addToList resolves when EMAIL_PROVIDER is unset", async () => {
+    const { addToList } = await import("../segments");
     await expect(addToList("c1", "l1")).resolves.toBeUndefined();
+  });
+
+  it("listSegments returns empty array when EMAIL_PROVIDER is unset", async () => {
+    const { listSegments } = await import("../segments");
     await expect(listSegments()).resolves.toEqual([]);
   });
 
@@ -122,6 +128,10 @@ describe("resolveSegment caching", () => {
     jest.resetModules();
     jest.clearAllMocks();
   });
+  afterEach(() => {
+    delete process.env.SEGMENT_CACHE_TTL;
+    jest.useRealTimers();
+  });
 
   it("returns cached result on repeated calls", async () => {
     process.env.SEGMENT_CACHE_TTL = "1000";
@@ -155,6 +165,47 @@ describe("resolveSegment caching", () => {
     const { resolveSegment } = await import("../segments");
 
     const r1 = await resolveSegment("shop1", "vips");
+    const r2 = await resolveSegment("shop1", "vips");
+
+    expect(r1).toEqual(["a@example.com"]);
+    expect(r2).toEqual(["b@example.com"]);
+    expect(mockListEvents).toHaveBeenCalledTimes(2);
+  });
+
+  it("uses cached data within ttl", async () => {
+    jest.useFakeTimers();
+    process.env.SEGMENT_CACHE_TTL = "1000";
+    mockReadFile.mockResolvedValue(
+      JSON.stringify([{ id: "vips", filters: [] }])
+    );
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    mockListEvents.mockResolvedValue([{ email: "a@example.com" }]);
+    const { resolveSegment } = await import("../segments");
+
+    const r1 = await resolveSegment("shop1", "vips");
+    jest.advanceTimersByTime(500);
+    mockListEvents.mockResolvedValue([{ email: "b@example.com" }]);
+    const r2 = await resolveSegment("shop1", "vips");
+
+    expect(r1).toEqual(["a@example.com"]);
+    expect(r2).toEqual(["a@example.com"]);
+    expect(mockListEvents).toHaveBeenCalledTimes(1);
+  });
+
+  it("refreshes cache after ttl expiry", async () => {
+    jest.useFakeTimers();
+    process.env.SEGMENT_CACHE_TTL = "1000";
+    mockReadFile.mockResolvedValue(
+      JSON.stringify([{ id: "vips", filters: [] }])
+    );
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    mockListEvents
+      .mockResolvedValueOnce([{ email: "a@example.com" }])
+      .mockResolvedValueOnce([{ email: "b@example.com" }]);
+    const { resolveSegment } = await import("../segments");
+
+    const r1 = await resolveSegment("shop1", "vips");
+    jest.advanceTimersByTime(1001);
     const r2 = await resolveSegment("shop1", "vips");
 
     expect(r1).toEqual(["a@example.com"]);

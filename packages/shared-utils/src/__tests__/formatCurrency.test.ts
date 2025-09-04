@@ -50,7 +50,7 @@ describe("formatCurrency", () => {
     }
   );
 
-  it.each(["de-DE", "ja-JP"])(
+  it.each(["de-DE", "fr-FR"])(
     "uses explicit locale %s over default locale",
     (locale) => {
       const minor = 123456; // $1234.56

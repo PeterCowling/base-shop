@@ -5,6 +5,7 @@ import { validateShopName } from "@platform-core/shops";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
+import { writeJsonFile } from "@/lib/server/jsonIO";
 import sharp from "sharp";
 import { ulid } from "ulid";
 import { ensureAuthorized } from "./common/auth";
@@ -41,7 +42,7 @@ async function writeMetadata(
   shop: string,
   data: Record<string, { title?: string; altText?: string; type?: "image" | "video" }>
 ): Promise<void> {
-  await fs.writeFile(metadataPath(shop), JSON.stringify(data, null, 2));
+  await writeJsonFile(metadataPath(shop), data);
 }
 
 /* -------------------------------------------------------------------------- */

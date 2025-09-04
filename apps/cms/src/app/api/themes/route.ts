@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import { themeLibrarySchema, type ThemeLibraryEntry } from "@acme/theme";
+import { writeJsonFile } from "@/lib/server/jsonIO";
 
 const LIB_PATH = path.join(process.cwd(), "data", "themes", "library.json");
 
@@ -15,8 +16,7 @@ async function readLibrary(): Promise<ThemeLibraryEntry[]> {
 }
 
 async function writeLibrary(themes: ThemeLibraryEntry[]) {
-  await fs.mkdir(path.dirname(LIB_PATH), { recursive: true });
-  await fs.writeFile(LIB_PATH, JSON.stringify(themes, null, 2), "utf8");
+  await writeJsonFile(LIB_PATH, themes);
 }
 
 export async function GET() {

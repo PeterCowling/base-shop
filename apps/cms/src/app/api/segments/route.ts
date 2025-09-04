@@ -2,6 +2,7 @@ import "@acme/zod-utils/initZod";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import { promises as fs } from "fs";
+import { writeJsonFile } from "@/lib/server/jsonIO";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
 import { z } from "zod";
@@ -24,8 +25,7 @@ async function readSegments(shop: string): Promise<Segment[]> {
 }
 
 async function writeSegments(shop: string, items: Segment[]): Promise<void> {
-  await fs.mkdir(path.dirname(segmentsPath(shop)), { recursive: true });
-  await fs.writeFile(segmentsPath(shop), JSON.stringify(items, null, 2), "utf8");
+  await writeJsonFile(segmentsPath(shop), items);
 }
 
 export async function GET(req: NextRequest): Promise<NextResponse> {

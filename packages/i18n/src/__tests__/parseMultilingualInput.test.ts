@@ -4,14 +4,14 @@ describe("parseMultilingualInput", () => {
   const locales = ["en", "de", "it"] as const;
 
   it("detects field and locale from name", () => {
-    expect(parseMultilingualInput("title_en", locales)).toEqual({
-      field: "title",
-      locale: "en",
-    });
-    expect(parseMultilingualInput("desc_it", locales)).toEqual({
-      field: "desc",
-      locale: "it",
-    });
+    const tokens = [
+      { name: "title_en", expected: { field: "title", locale: "en" } },
+      { name: "title_it", expected: { field: "title", locale: "it" } },
+    ];
+
+    for (const { name, expected } of tokens) {
+      expect(parseMultilingualInput(name, locales)).toEqual(expected);
+    }
   });
 
   it("returns null for invalid input", () => {
@@ -20,5 +20,12 @@ describe("parseMultilingualInput", () => {
     expect(parseMultilingualInput("title_EN", locales)).toBeNull();
     expect(parseMultilingualInput(" title_en", locales)).toBeNull();
     expect(parseMultilingualInput("title_en ", locales)).toBeNull();
+    expect(parseMultilingualInput("title__en", locales)).toBeNull();
+    expect(parseMultilingualInput("title-en", locales)).toBeNull();
+  });
+
+  it("returns null when locale not in provided list", () => {
+    const partialLocales = ["de", "it"] as const;
+    expect(parseMultilingualInput("title_en", partialLocales)).toBeNull();
   });
 });

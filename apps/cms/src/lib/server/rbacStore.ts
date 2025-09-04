@@ -8,7 +8,7 @@ import { ROLE_PERMISSIONS } from "@auth/permissions";
 import * as fsSync from "fs";
 import { promises as fs } from "fs";
 import * as path from "path";
-import writeJsonFile from "write-json-file";
+import { writeJsonFile } from "@/lib/server/jsonIO";
 import type { Role } from "../../auth/roles";
 
 export interface RbacDB {
@@ -105,6 +105,6 @@ export async function writeRbac(
   }
   await fs.mkdir(path.dirname(FILE), { recursive: true });
   const tmp = `${FILE}.${Date.now()}.tmp`;
-  await writeJsonFile(tmp, db, { indent: 2 });
+  await writeJsonFile(tmp, db);
   await fs.rename(tmp, FILE);
 }

@@ -1,1 +1,2 @@
-export * from './stats.ts';
+// CommonJS re-export for Jest compatibility
+module.exports = require('./stats.ts');

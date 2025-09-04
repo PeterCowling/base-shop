@@ -1,1 +1,2 @@
-export * from './sendgrid.ts';
+// CommonJS re-export for Jest compatibility
+module.exports = require('./sendgrid.ts');

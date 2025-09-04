@@ -1,6 +1,7 @@
 # Advanced Theming
 
 ## Base themes
+
 Selecting a base theme resets overrides and reloads its default tokens:
 
 ```tsx
@@ -15,26 +16,29 @@ const handleThemeChange = (e: ChangeEvent<HTMLSelectElement>) => {
 ```
 
 ## Element overrides
+
 Each override merges with the current theme and updates the preview:
 
 ```tsx
 // apps/cms/src/app/cms/shop/[shop]/themes/ThemeEditor.tsx
-const handleOverrideChange = (key: string, defaultValue: string) => (value: string) => {
-  setOverrides((prev) => {
-    const next = { ...prev };
-    if (!value || value === defaultValue) {
-      delete next[key];
-    } else {
-      next[key] = value;
-    }
-    const merged = { ...tokensByThemeState[theme], ...next };
-    schedulePreviewUpdate(merged);
-    return next;
-  });
-};
+const handleOverrideChange =
+  (key: string, defaultValue: string) => (value: string) => {
+    setOverrides((prev) => {
+      const next = { ...prev };
+      if (!value || value === defaultValue) {
+        delete next[key];
+      } else {
+        next[key] = value;
+      }
+      const merged = { ...tokensByThemeState[theme], ...next };
+      schedulePreviewUpdate(merged);
+      return next;
+    });
+  };
 ```
 
 ## Persistence
+
 Preview tokens are saved to `localStorage` and shop configs persist theme data:
 
 ```tsx
@@ -68,10 +72,10 @@ useEffect(() => {
 ```
 
 ## Live preview
-`WizardPreview` listens for token updates and merges them into its styles:
+
+The configurator preview listens for token updates and merges them into its styles:
 
 ```tsx
-// apps/cms/src/app/cms/wizard/WizardPreview.tsx
 useEffect(() => {
   const handle = () => {
     setThemeStyle((prev) => ({ ...prev, ...loadPreviewTokens() }));

@@ -8,13 +8,13 @@ A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **
 
 Requires **Node.js >=20** and **pnpm 10.12.1**. See [docs/install.md](docs/install.md) for installation instructions and [docs/setup.md](docs/setup.md) for full setup and CI guidance.
 
-Run `pnpm init-shop` to scaffold a new shop. The configurator lists available plugins and, when invoked with `--auto-env`, writes `TODO_*` placeholders for any required environment variables so teams can fill them in later. The previous wizard is deprecated.
+Run `pnpm init-shop` to scaffold a new shop. The configurator lists available plugins and, when invoked with `--auto-env`, writes `TODO_*` placeholders for any required environment variables so teams can fill them in later.
 
 ## Key Features
 
 - Stripe handles deposits via escrow sessions.
 - Returned deposits can be refunded automatically by the deposit release service. See [docs/machine.md](docs/machine.md).
-- Inventory lives in JSON files under data/shops/*/inventory.json.
+- Inventory lives in JSON files under data/shops/\*/inventory.json.
 - Low-stock alerts email the configured recipient (`STOCK_ALERT_RECIPIENT`) when inventory falls below its threshold.
 - Rental pricing matrix defined in data/rental/pricing.json with duration discounts and damage-fee rules.
 - Return logistics options stored in data/return-logistics.json.
@@ -30,7 +30,6 @@ The root middleware applies [next-secure-headers](https://www.npmjs.com/package/
 - **X-Frame-Options** – `DENY` to block iframe embedding.
 - **Referrer-Policy** – `no-referrer`.
 - **X-Content-Type-Options** and **X-Download-Options** – `nosniff` and `noopen`.
-
 
 ## Installation
 
@@ -192,10 +191,7 @@ Every app should map workspace packages to both their built `dist` output and th
         "../../packages/lib/dist/index.d.ts",
         "../../packages/lib/src/index.ts"
       ],
-      "@acme/lib/*": [
-        "../../packages/lib/dist/*",
-        "../../packages/lib/src/*"
-      ]
+      "@acme/lib/*": ["../../packages/lib/dist/*", "../../packages/lib/src/*"]
     }
   }
 }

@@ -11,7 +11,7 @@ To scaffold a shop and immediately start the dev server in one step:
 pnpm quickstart-shop --id demo --theme base --template template-app --auto-plugins --auto-env --presets
 ```
 
-This wraps the `init-shop` configurator, validates the generated `.env`, and runs `pnpm dev` for the new shop. `--auto-plugins` selects all detected payment and shipping providers, `--auto-env` writes placeholder environment variables, and `--presets` applies default navigation, pages, and a GitHub Actions workflow. The earlier wizard is deprecated. You can also provide a configuration file and skip most flags:
+This wraps the `init-shop` configurator, validates the generated `.env`, and runs `pnpm dev` for the new shop. `--auto-plugins` selects all detected payment and shipping providers, `--auto-env` writes placeholder environment variables, and `--presets` applies default navigation, pages, and a GitHub Actions workflow. You can also provide a configuration file and skip most flags:
 
 ```bash
 pnpm quickstart-shop --config ./shop.config.json

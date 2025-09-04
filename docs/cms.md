@@ -17,7 +17,7 @@ The sidebar inside the CMS provides quick access to different sections:
 - **Live** – Opens a list of running shop instances.
 - **RBAC** – (Admin only) Manage user roles.
 - **Account Requests** – (Admin only) Approve new user accounts.
-- **Create Shop** – (Admin only) Launch the wizard for creating a new shop.
+- **Create Shop** – (Admin only) Launch the configurator for creating a new shop.
 
 Links such as **New Product**, **New Page** and **SEO** only appear after picking a shop, otherwise they are hidden.
 
@@ -31,30 +31,35 @@ Certain pages are restricted to users with the `admin` role:
 
 - `/cms/rbac` – user management and role assignment.
 - `/cms/account-requests` – approve pending sign‑ups.
-- `/cms/wizard` – step‑by‑step workflow for creating a new shop.
+- `/cms/configurator` – step‑by‑step workflow for creating a new shop.
 
 Attempting to access these pages without the proper role will redirect back to the CMS dashboard.
 
-## Shop Creation Wizard
+## Shop Configurator
 
-Admins can scaffold and launch a shop directly from the CMS at `/cms/wizard`. The workflow proceeds through these steps:
+Admins can scaffold and launch a shop directly from the CMS at `/cms/configurator`. The configurator guides you through:
 
-1. **Shop details** – provide the shop ID, display name, logo URL, contact email and choose whether it's for sales or rentals.
-2. **Options** – select the starter template and theme.
-3. **Theme tokens** – tweak design tokens to match your brand. See [advanced theming](./theming-advanced.md) for details.
-4. **Navigation** – build the header navigation tree or start from prebuilt presets.
-5. **Page layouts** – configure home, shop, product and checkout pages and any optional additional pages.
-6. **Environment** – supply required environment variables.
-7. **Seed/Import data** – seed example products or import existing data.
-8. **Hosting** – optionally provision CI and deployment settings.
-9. **Summary** – review all selections and launch the shop.
+1. **Shop Details** – provide the shop ID, display name, logo URL, contact email and shop type.
+2. **Theme** – pick a base theme.
+3. **Tokens** – tweak design tokens to match your brand. See [advanced theming](./theming-advanced.md) for details.
+4. **Options** – select the starter template and plugins.
+5. **Navigation** – build the header navigation tree or start from presets.
+6. **Layout** – choose overall page layouts.
+7. **Home Page** – configure the home page layout.
+8. **Checkout Page** – configure the checkout experience.
+9. **Shop Page** – configure the product listing page.
+10. **Product Page** – configure the product detail page.
+11. **Additional Pages** – optionally set up extra pages.
+12. **Environment Variables** – supply required environment variables.
+13. **Summary** – review selections and launch the shop.
+14. _(Optional)_ **Import Data**, **Seed Data** and **Hosting** steps for existing content, sample data and deployment settings.
 
-Progress saves automatically, so returning to `/cms/wizard` resumes from the last completed step.
+Progress saves automatically via the `cms-configurator-progress` key and the `/cms/api/configurator-progress` endpoint. Returning to `/cms/configurator` resumes from the last completed step.
 
-## Wizard Resume & Page Drafts
+## Configurator Resume & Page Drafts
 
-The shop creation wizard now resumes where you left off. If you log in via
-`/login?callbackUrl=/cms/wizard` or return to `/cms/wizard` later, the flow jumps
+The shop configurator now resumes where you left off. If you log in via
+`/login?callbackUrl=/cms/configurator` or return to `/cms/configurator` later, the flow jumps
 to your last completed step so you can continue configuring the shop without
 starting over.
 

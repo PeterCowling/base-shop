@@ -5,6 +5,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import * as fsSync from "fs";
+import { writeJsonFile } from "@acme/shared-utils";
 import path from "path";
 import {
   configuratorStateSchema,
@@ -21,6 +22,8 @@ interface UserRecord {
 interface DB {
   [userId: string]: UserRecord | unknown;
 }
+
+const dbSchema = z.record(z.unknown());
 
 const putBodySchema = z
   .object({
@@ -77,18 +80,23 @@ async function readDb(): Promise<DB> {
   return {};
 }
 
-async function writeDb(db: DB): Promise<void> {
+async function writeDb(db: unknown): Promise<void> {
+  const parsed = dbSchema.safeParse(db ?? {});
+  if (!parsed.success) {
+    throw new TypeError("Invalid DB value");
+  }
+  const payload = parsed.data;
+  const json = JSON.stringify(payload, null, 2);
   await fs.mkdir(path.dirname(FILE), { recursive: true });
   const tmp = `${FILE}.${Date.now()}.tmp`;
-  const payload = JSON.stringify(db ?? {}, null, 2) ?? "{}";
   try {
     console.log("[configurator-progress] write", {
       file: FILE,
       tmp,
-      bytes: Buffer.byteLength(payload, "utf8"),
+      bytes: Buffer.byteLength(json, "utf8"),
     });
   } catch {}
-  await fs.writeFile(tmp, payload, "utf8");
+  await writeJsonFile(tmp, payload);
   await fs.rename(tmp, FILE);
 }
 
@@ -142,6 +150,9 @@ export async function PUT(req: Request): Promise<NextResponse> {
     await writeDb(db);
     return NextResponse.json({ success: true });
   } catch (err) {
+    if (err instanceof TypeError) {
+      return NextResponse.json({ error: err.message }, { status: 500 });
+    }
     return NextResponse.json(
       { error: (err as Error).message },
       { status: 400 }
@@ -175,6 +186,9 @@ export async function PATCH(req: Request): Promise<NextResponse> {
     await writeDb(db);
     return NextResponse.json({ success: true });
   } catch (err) {
+    if (err instanceof TypeError) {
+      return NextResponse.json({ error: err.message }, { status: 500 });
+    }
     return NextResponse.json(
       { error: (err as Error).message },
       { status: 400 }

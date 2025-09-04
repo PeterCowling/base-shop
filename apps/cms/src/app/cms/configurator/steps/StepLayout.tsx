@@ -120,17 +120,20 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
             setHeaderSaving(true);
             setHeaderError(null);
             setHeaderSaved(false);
-            const { data, error } = await apiRequest<{ id: string }>(
-              `/cms/api/page-draft/${shopId}`,
-              { method: "POST", body: fd },
-            );
-            setHeaderSaving(false);
-            if (data) {
-              setHeaderPageId(data.id);
-              setHeaderSaved(true);
-              setToast({ open: true, message: "Header saved" });
-            } else if (error) {
-              setHeaderError(error);
+            try {
+              const { data, error } = await apiRequest<{ id: string }>(
+                `/cms/api/page-draft/${shopId}`,
+                { method: "POST", body: fd },
+              );
+              if (data) {
+                setHeaderPageId(data.id);
+                setHeaderSaved(true);
+                setToast({ open: true, message: "Header saved" });
+              } else if (error) {
+                setHeaderError(error);
+              }
+            } finally {
+              setHeaderSaving(false);
             }
           }}
           onPublish={async () => {}}
@@ -178,17 +181,20 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
             setFooterSaving(true);
             setFooterError(null);
             setFooterSaved(false);
-            const { data, error } = await apiRequest<{ id: string }>(
-              `/cms/api/page-draft/${shopId}`,
-              { method: "POST", body: fd },
-            );
-            setFooterSaving(false);
-            if (data) {
-              setFooterPageId(data.id);
-              setFooterSaved(true);
-              setToast({ open: true, message: "Footer saved" });
-            } else if (error) {
-              setFooterError(error);
+            try {
+              const { data, error } = await apiRequest<{ id: string }>(
+                `/cms/api/page-draft/${shopId}`,
+                { method: "POST", body: fd },
+              );
+              if (data) {
+                setFooterPageId(data.id);
+                setFooterSaved(true);
+                setToast({ open: true, message: "Footer saved" });
+              } else if (error) {
+                setFooterError(error);
+              }
+            } finally {
+              setFooterSaving(false);
             }
           }}
           onPublish={async () => {}}
@@ -218,7 +224,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
           onClick={handleReturn}
           disabled={headerSaving || footerSaving}
         >
-          {headerSaving || footerSaving && (
+          {(headerSaving || footerSaving) && (
             <Spinner className="mr-2 h-4 w-4" />
           )}
           Save & return

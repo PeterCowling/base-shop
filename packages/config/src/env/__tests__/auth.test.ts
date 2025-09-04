@@ -40,6 +40,36 @@ describe("auth env module", () => {
     expect(authEnv.PREVIEW_TOKEN_SECRET).toBeUndefined();
   });
 
+  it("defaults NEXTAUTH_SECRET in development when missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "development",
+      SESSION_SECRET: "session-secret",
+    } as NodeJS.ProcessEnv;
+    delete process.env.NEXTAUTH_SECRET;
+    jest.resetModules();
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv).toMatchObject({
+      NEXTAUTH_SECRET: "dev-nextauth-secret",
+      SESSION_SECRET: "session-secret",
+    });
+  });
+
+  it("defaults SESSION_SECRET in development when missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "development",
+      NEXTAUTH_SECRET: "next-secret",
+    } as NodeJS.ProcessEnv;
+    delete process.env.SESSION_SECRET;
+    jest.resetModules();
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv).toMatchObject({
+      NEXTAUTH_SECRET: "next-secret",
+      SESSION_SECRET: "dev-session-secret",
+    });
+  });
+
   it("throws when secrets are empty in non-production", async () => {
     process.env = {
       ...ORIGINAL_ENV,
@@ -100,6 +130,27 @@ describe("auth env module", () => {
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
         NEXTAUTH_SECRET: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws when SESSION_SECRET is missing in production", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      NEXTAUTH_SECRET: "next-secret",
+    } as NodeJS.ProcessEnv;
+    delete process.env.SESSION_SECRET;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        SESSION_SECRET: { _errors: [expect.any(String)] },
       }),
     );
     errorSpy.mockRestore();
@@ -211,8 +262,16 @@ describe("auth env module", () => {
     });
     expect(result.success).toBe(false);
     expect(result.error.format()).toMatchObject({
-      UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
-      UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
+      UPSTASH_REDIS_REST_URL: {
+        _errors: [
+          "UPSTASH_REDIS_REST_URL is required when SESSION_STORE=redis",
+        ],
+      },
+      UPSTASH_REDIS_REST_TOKEN: {
+        _errors: [
+          "UPSTASH_REDIS_REST_TOKEN is required when SESSION_STORE=redis",
+        ],
+      },
     });
   });
 
@@ -318,7 +377,11 @@ describe("auth env module", () => {
     });
     expect(result.success).toBe(false);
     expect(result.error.format()).toMatchObject({
-      LOGIN_RATE_LIMIT_REDIS_TOKEN: { _errors: [expect.any(String)] },
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: {
+        _errors: [
+          "LOGIN_RATE_LIMIT_REDIS_TOKEN is required when LOGIN_RATE_LIMIT_REDIS_URL is set",
+        ],
+      },
     });
   });
 
@@ -338,7 +401,11 @@ describe("auth env module", () => {
     });
     expect(result.success).toBe(false);
     expect(result.error.format()).toMatchObject({
-      LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
+      LOGIN_RATE_LIMIT_REDIS_URL: {
+        _errors: [
+          "LOGIN_RATE_LIMIT_REDIS_URL is required when LOGIN_RATE_LIMIT_REDIS_TOKEN is set",
+        ],
+      },
     });
   });
 
@@ -387,7 +454,11 @@ describe("auth env module", () => {
       expect(errorSpy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
-          LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
+          LOGIN_RATE_LIMIT_REDIS_URL: {
+            _errors: [
+              "LOGIN_RATE_LIMIT_REDIS_URL is required when LOGIN_RATE_LIMIT_REDIS_TOKEN is set",
+            ],
+          },
         }),
       );
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -420,7 +491,11 @@ describe("auth env module", () => {
       expect(errorSpy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
-          LOGIN_RATE_LIMIT_REDIS_TOKEN: { _errors: [expect.any(String)] },
+          LOGIN_RATE_LIMIT_REDIS_TOKEN: {
+            _errors: [
+              "LOGIN_RATE_LIMIT_REDIS_TOKEN is required when LOGIN_RATE_LIMIT_REDIS_URL is set",
+            ],
+          },
         }),
       );
       expect(errorSpy).toHaveBeenCalledTimes(1);
@@ -680,7 +755,11 @@ describe("authEnvSchema", () => {
     });
     expect(result.success).toBe(false);
     expect(result.error.format()).toMatchObject({
-      UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
+      UPSTASH_REDIS_REST_URL: {
+        _errors: [
+          "UPSTASH_REDIS_REST_URL is required when SESSION_STORE=redis",
+        ],
+      },
     });
   });
 
@@ -698,7 +777,11 @@ describe("authEnvSchema", () => {
     });
     expect(result.success).toBe(false);
     expect(result.error.format()).toMatchObject({
-      UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
+      UPSTASH_REDIS_REST_TOKEN: {
+        _errors: [
+          "UPSTASH_REDIS_REST_TOKEN is required when SESSION_STORE=redis",
+        ],
+      },
     });
   });
 
@@ -715,7 +798,11 @@ describe("authEnvSchema", () => {
     });
     expect(result.success).toBe(false);
     expect(result.error.format()).toMatchObject({
-      LOGIN_RATE_LIMIT_REDIS_TOKEN: { _errors: [expect.any(String)] },
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: {
+        _errors: [
+          "LOGIN_RATE_LIMIT_REDIS_TOKEN is required when LOGIN_RATE_LIMIT_REDIS_URL is set",
+        ],
+      },
     });
   });
 
@@ -732,7 +819,11 @@ describe("authEnvSchema", () => {
     });
     expect(result.success).toBe(false);
     expect(result.error.format()).toMatchObject({
-      LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
+      LOGIN_RATE_LIMIT_REDIS_URL: {
+        _errors: [
+          "LOGIN_RATE_LIMIT_REDIS_URL is required when LOGIN_RATE_LIMIT_REDIS_TOKEN is set",
+        ],
+      },
     });
   });
 

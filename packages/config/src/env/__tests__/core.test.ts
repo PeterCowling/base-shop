@@ -1404,6 +1404,12 @@ describe("loadCoreEnv boolean parsing", () => {
       ["0", true],
       ["yes", true],
       ["no", true],
+      [" TRUE ", true],
+      [" False ", true],
+      [" 1 ", true],
+      ["0 ", true],
+      [" Yes ", true],
+      [" no ", true],
     ])("parses %s", async (input, expected) => {
       process.env = { ...base, OUTPUT_EXPORT: input };
       const { loadCoreEnv } = await import("../core.js");
@@ -1469,8 +1475,8 @@ describe("loadCoreEnv number parsing", () => {
       expect(env.CART_TTL).toBeUndefined();
     });
 
-    it("rejects non-numeric", async () => {
-      process.env = { ...base, CART_TTL: "abc" };
+    it.each(["abc", "NaN"])("rejects %s", async (input) => {
+      process.env = { ...base, CART_TTL: input };
       const { loadCoreEnv } = await import("../core.js");
       expect(() => loadCoreEnv()).toThrow("Invalid core environment variables");
     });
@@ -1496,8 +1502,8 @@ describe("loadCoreEnv number parsing", () => {
       expect(env.DEPOSIT_RELEASE_INTERVAL_MS).toBeUndefined();
     });
 
-    it("rejects non-numeric", async () => {
-      process.env = { ...base, DEPOSIT_RELEASE_INTERVAL_MS: "abc" };
+    it.each(["abc", "NaN"])("rejects %s", async (input) => {
+      process.env = { ...base, DEPOSIT_RELEASE_INTERVAL_MS: input };
       const { loadCoreEnv } = await import("../core.js");
       expect(() => loadCoreEnv()).toThrow("Invalid core environment variables");
     });
@@ -1551,6 +1557,47 @@ describe("NODE_ENV branches", () => {
     await expect(import("../core.js")).rejects.toThrow(
       "Invalid core environment variables",
     );
+  });
+});
+
+describe("coreEnv proxy NODE_ENV behavior", () => {
+  const ORIGINAL_ENV = process.env;
+  const base = {
+    ...baseEnv,
+    NEXTAUTH_SECRET: "next",
+    SESSION_SECRET: "session",
+  } as NodeJS.ProcessEnv;
+
+  afterEach(() => {
+    jest.resetModules();
+    process.env = ORIGINAL_ENV;
+  });
+
+  it.each(["development", "test"]) (
+    "lazy loads in %s",
+    async (env) => {
+      process.env = { ...base, NODE_ENV: env } as NodeJS.ProcessEnv;
+      jest.resetModules();
+      const mod = await import("../core.js");
+      const loadSpy = jest.spyOn(mod, "loadCoreEnv");
+      expect(loadSpy).not.toHaveBeenCalled();
+      expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+      expect(loadSpy).toHaveBeenCalledTimes(1);
+    },
+  );
+
+  it("eager loads in production", async () => {
+    process.env = {
+      ...base,
+      NODE_ENV: "production",
+      CART_COOKIE_SECRET: "secret",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = await import("../core.js");
+    const loadSpy = jest.spyOn(mod, "loadCoreEnv");
+    loadSpy.mockClear();
+    expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+    expect(loadSpy).not.toHaveBeenCalled();
   });
 });
 

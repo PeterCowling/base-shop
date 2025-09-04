@@ -11,11 +11,19 @@ import { useState } from "react";
 export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
   const router = useRouter();
   const search = useSearchParams();
-  const callbackUrl = search.get("callbackUrl") ?? fallbackUrl;
+  let callbackUrl = search.get("callbackUrl") ?? fallbackUrl;
+  // Normalize bad values sometimes seen when links pass literal "null"
+  if (!callbackUrl || callbackUrl === "null" || callbackUrl === "undefined") {
+    callbackUrl = fallbackUrl;
+  }
 
   function absolutify(url: string): string {
     try {
-      return new URL(url, window.location.origin).toString();
+      const abs = new URL(url, window.location.origin);
+      // Force same-origin to avoid open redirects
+      abs.protocol = window.location.protocol;
+      abs.host = window.location.host;
+      return abs.toString();
     } catch {
       return url;
     }
@@ -28,7 +36,7 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
     setError(null);
 
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
+    const email = (formData.get("username") as string) || "";
     const password = formData.get("password") as string;
 
     console.log("[LoginForm] submit", { email, callbackUrl });
@@ -54,23 +62,27 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
   }
 
   return (
-    <form method="post" onSubmit={handleSubmit} className="space-y-4">
+    <form method="get" onSubmit={handleSubmit} className="space-y-4">
       <h1 className="text-2xl font-semibold">Sign in</h1>
 
       <Input
-        name="email"
-        type="email"
+        name="username"
+        type="text"
         label="Email"
-        floatingLabel
-        autoComplete="email"
+        placeholder="admin@example.com"
+        autoComplete="username"
+        // Ensure high-contrast, visible input text regardless of page theme
+        className="bg-white text-black dark:bg-white dark:text-black"
         required
       />
       <Input
         name="password"
         type="password"
         label="Password"
-        floatingLabel
+        placeholder="••••••••"
         autoComplete="current-password"
+        // Ensure high-contrast, visible input text while obscured
+        className="bg-white text-black dark:bg-white dark:text-black"
         required
       />
 

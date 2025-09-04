@@ -1,7 +1,11 @@
-process.env.NEXTAUTH_SECRET ??=
-  "dev-nextauth-secret-32-chars-long-string!";
-process.env.SESSION_SECRET ??=
-  "dev-session-secret-32-chars-long-string!";
+const DEV_NEXTAUTH = "dev-nextauth-secret-32-chars-long-string!";
+const DEV_SESSION = "dev-session-secret-32-chars-long-string!";
+function ensureStrong(name, fallback) {
+  const val = process.env[name];
+  if (!val || val.length < 32) process.env[name] = fallback;
+}
+ensureStrong("NEXTAUTH_SECRET", DEV_NEXTAUTH);
+ensureStrong("SESSION_SECRET", DEV_SESSION);
 process.env.CART_COOKIE_SECRET ??= "dev-cart-secret";
 process.env.CMS_SPACE_URL ??= "https://cms.example.com";
 process.env.CMS_ACCESS_TOKEN ??= "placeholder-token";

@@ -10,7 +10,9 @@ import { logger } from "@acme/shared-utils";
 import { createHeadersObject } from "next-secure-headers";
 import helmet from "helmet";
 import { RateLimiterMemory } from "rate-limiter-flexible";
-import { validateCsrfToken } from "@auth";
+// Avoid importing @auth/session in middleware (Edge) because it pulls in
+// Node-only dependencies like 'crypto' via iron-session. We'll perform a
+// lightweight CSRF check inline using the request cookies instead.
 
 /**
  * JWT payload shape for this CMS.
@@ -104,7 +106,8 @@ export async function middleware(req: NextRequest) {
     ["POST", "PUT", "PATCH", "DELETE"].includes(method)
   ) {
     const csrfToken = req.headers.get("x-csrf-token");
-    if (!(await validateCsrfToken(csrfToken))) {
+    const cookieToken = req.cookies.get("csrf_token")?.value || null;
+    if (!csrfToken || !cookieToken || csrfToken !== cookieToken) {
       logger.warn("csrf failed", { path: pathname });
       return applySecurityHeaders(
         new NextResponse("Forbidden", { status: 403 })

@@ -1,11 +1,11 @@
-import type { WizardState } from "../../cms/wizard/schema";
+import type { ConfiguratorState } from "../../cms/wizard/schema";
 import { getRequiredSteps } from "../../cms/configurator/steps";
 
 export type StepStatus = "pending" | "success" | "failure";
 
 interface LaunchRequest {
   shopId: string;
-  state: WizardState;
+  state: ConfiguratorState;
   seed?: boolean;
 }
 

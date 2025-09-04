@@ -3,7 +3,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { getRequiredSteps } from "../steps";
-import type { WizardState } from "../../wizard/schema";
+import type { ConfiguratorState } from "../../wizard/schema";
 import type { ConfiguratorStep } from "../types";
 
 export type LaunchStepStatus = "idle" | "pending" | "success" | "failure";
@@ -13,7 +13,7 @@ interface Options {
 }
 
 export function useLaunchShop(
-  state: WizardState,
+  state: ConfiguratorState,
   options: Options = {}
 ): {
   launchShop: () => Promise<void>;

@@ -30,15 +30,15 @@ describe("msw handlers", () => {
     expect(json).toEqual([]);
   });
 
-  test("GET /cms/api/wizard-progress", async () => {
-    const res = await fetch("http://localhost/cms/api/wizard-progress");
+  test("GET /cms/api/configurator-progress", async () => {
+    const res = await fetch("http://localhost/cms/api/configurator-progress");
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json).toEqual({ state: {}, completed: {} });
   });
 
-  test("PUT /cms/api/wizard-progress", async () => {
-    const res = await fetch("http://localhost/cms/api/wizard-progress", {
+  test("PUT /cms/api/configurator-progress", async () => {
+    const res = await fetch("http://localhost/cms/api/configurator-progress", {
       method: "PUT",
     });
     expect(res.status).toBe(200);
@@ -46,8 +46,8 @@ describe("msw handlers", () => {
     expect(json).toEqual({});
   });
 
-  test("PATCH /cms/api/wizard-progress", async () => {
-    const res = await fetch("http://localhost/cms/api/wizard-progress", {
+  test("PATCH /cms/api/configurator-progress", async () => {
+    const res = await fetch("http://localhost/cms/api/configurator-progress", {
       method: "PATCH",
     });
     expect(res.status).toBe(200);

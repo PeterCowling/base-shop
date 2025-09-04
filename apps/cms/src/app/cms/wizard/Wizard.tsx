@@ -35,14 +35,14 @@ export default function Wizard({ themes }: WizardProps): React.JSX.Element {
   // Progress helpers
   // --------------------------------------------------------------
   const persist = (data: Record<string, unknown>) =>
-    fetch("/cms/api/wizard-progress", {
+    fetch("/cms/api/configurator-progress", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ data }),
     });
 
   const markComplete = (stepId: string, completed: boolean) =>
-    fetch("/cms/api/wizard-progress", {
+    fetch("/cms/api/configurator-progress", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ stepId, completed: completed ? "complete" : "pending" }),
@@ -55,7 +55,7 @@ export default function Wizard({ themes }: WizardProps): React.JSX.Element {
     let cancelled = false;
     async function load() {
       try {
-        const res = await fetch("/cms/api/wizard-progress");
+        const res = await fetch("/cms/api/configurator-progress");
         const json = res.ok ? await res.json() : null;
         if (cancelled || !json) return;
         if (json.state?.shopId) setShopId(json.state.shopId);

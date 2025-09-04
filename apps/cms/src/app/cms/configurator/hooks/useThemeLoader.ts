@@ -4,7 +4,7 @@
 import { useEffect } from "react";
 import { baseTokens, loadThemeTokens } from "../../wizard/tokenUtils";
 import { useConfigurator } from "../ConfiguratorContext";
-import type { WizardState } from "../../wizard/schema";
+import type { ConfiguratorState } from "../../wizard/schema";
 
 /**
  * Loads theme tokens whenever the selected theme changes and returns the
@@ -17,14 +17,17 @@ export function useThemeLoader(): React.CSSProperties {
   /* On initial mount ensure base tokens exist */
   useEffect(() => {
     if (!themeDefaults || Object.keys(themeDefaults).length === 0) {
-      setState((prev: WizardState) => ({ ...prev, themeDefaults: baseTokens }));
+      setState((prev: ConfiguratorState) => ({
+        ...prev,
+        themeDefaults: baseTokens,
+      }));
     }
   }, [themeDefaults, setState]);
 
   /* Load tokens for selected theme */
   useEffect(() => {
     loadThemeTokens(theme).then((tv) => {
-      setState((prev: WizardState) => ({ ...prev, themeDefaults: tv }));
+      setState((prev: ConfiguratorState) => ({ ...prev, themeDefaults: tv }));
     });
   }, [theme, setState]);
 

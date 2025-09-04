@@ -7,8 +7,8 @@ import {
   useConfiguratorPersistence,
 } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
 import {
-  wizardStateSchema,
-  type WizardState,
+  configuratorStateSchema,
+  type ConfiguratorState,
 } from "../src/app/cms/wizard/schema";
 
 jest.mock("next/navigation", () => ({
@@ -33,7 +33,9 @@ afterEach(() => {
 });
 
 function TestConfigurator() {
-  const [state, setState] = useState<WizardState>(wizardStateSchema.parse({}));
+  const [state, setState] = useState<ConfiguratorState>(
+    configuratorStateSchema.parse({})
+  );
   useConfiguratorPersistence(state, setState);
   return (
     <input

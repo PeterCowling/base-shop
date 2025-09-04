@@ -1,4 +1,4 @@
-// apps/cms/src/app/api/wizard-progress/route.ts
+// apps/cms/src/app/api/configurator-progress/route.ts
 import "@acme/zod-utils/initZod";
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
@@ -7,7 +7,7 @@ import { promises as fs } from "fs";
 import * as fsSync from "fs";
 import path from "path";
 import {
-  wizardStateSchema,
+  configuratorStateSchema,
   stepStatusSchema,
   type StepStatus,
 } from "@cms/app/cms/wizard/schema";
@@ -25,7 +25,7 @@ interface DB {
 const putBodySchema = z
   .object({
     stepId: z.string().nullish(),
-    data: wizardStateSchema.partial().optional(),
+    data: configuratorStateSchema.partial().optional(),
     completed: z
       .union([stepStatusSchema, z.record(stepStatusSchema)])
       .optional(),
@@ -44,13 +44,13 @@ function resolveFile(): string {
   while (true) {
     const candidateDir = path.join(dir, "data", "cms");
     if (fsSync.existsSync(candidateDir)) {
-      return path.join(candidateDir, "wizard-progress.json");
+      return path.join(candidateDir, "configurator-progress.json");
     }
     const parent = path.dirname(dir);
     if (parent === dir) break;
     dir = parent;
   }
-  return path.resolve(process.cwd(), "data", "cms", "wizard-progress.json");
+  return path.resolve(process.cwd(), "data", "cms", "configurator-progress.json");
 }
 
 const FILE = resolveFile();

@@ -9,7 +9,7 @@ import {
 import Link from "next/link";
 import { Button } from "@/components/atoms/shadcn";
 import { Toast, Tooltip } from "@/components/atoms";
-import { wizardStateSchema, type WizardState } from "../wizard/schema";
+import { configuratorStateSchema, type ConfiguratorState } from "../wizard/schema";
 import { useConfiguratorPersistence } from "./hooks/useConfiguratorPersistence";
 import { useLaunchShop } from "./hooks/useLaunchShop";
 import { calculateConfiguratorProgress } from "./lib/progress";
@@ -26,7 +26,9 @@ const stepLinks: Record<string, string> = {
 };
 
 export default function ConfiguratorDashboard() {
-  const [state, setState] = useState<WizardState>(wizardStateSchema.parse({}));
+  const [state, setState] = useState<ConfiguratorState>(
+    configuratorStateSchema.parse({})
+  );
   const [toast, setToast] = useState<{ open: boolean; message: string }>(
     {
       open: false,
@@ -36,17 +38,17 @@ export default function ConfiguratorDashboard() {
   const { setConfiguratorProgress } = useLayout();
 
   const fetchState = useCallback(() => {
-    fetch("/cms/api/wizard-progress")
+    fetch("/cms/api/configurator-progress")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
         if (!json) return;
-        setState((prev: WizardState) => ({
+        setState((prev: ConfiguratorState) => ({
           ...prev,
           ...(json.state ?? json),
           completed: json.completed ?? {},
         }));
       })
-      .catch(() => setState(wizardStateSchema.parse({})));
+      .catch(() => setState(configuratorStateSchema.parse({})));
   }, []);
 
   useEffect(() => {

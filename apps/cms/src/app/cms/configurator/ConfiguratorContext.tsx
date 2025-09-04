@@ -3,8 +3,8 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import {
-  wizardStateSchema,
-  type WizardState,
+  configuratorStateSchema,
+  type ConfiguratorState,
   type StepStatus,
 } from "../wizard/schema";
 import { useConfiguratorPersistence } from "./hooks/useConfiguratorPersistence";
@@ -13,9 +13,12 @@ import { calculateConfiguratorProgress } from "./lib/progress";
 import { useLayout } from "@platform-core/contexts/LayoutContext";
 
 export interface ConfiguratorContextValue {
-  state: WizardState;
-  setState: React.Dispatch<React.SetStateAction<WizardState>>;
-  update: <K extends keyof WizardState>(key: K, value: WizardState[K]) => void;
+  state: ConfiguratorState;
+  setState: React.Dispatch<React.SetStateAction<ConfiguratorState>>;
+  update: <K extends keyof ConfiguratorState>(
+    key: K,
+    value: ConfiguratorState[K]
+  ) => void;
   markStepComplete: (stepId: string, status: StepStatus) => void;
   themeDefaults: Record<string, string>;
   themeOverrides: Record<string, string>;
@@ -34,7 +37,9 @@ export function ConfiguratorProvider({
 }: {
   children: React.ReactNode;
 }): React.JSX.Element {
-  const [state, setState] = useState<WizardState>(wizardStateSchema.parse({}));
+  const [state, setState] = useState<ConfiguratorState>(
+    configuratorStateSchema.parse({})
+  );
   const [dirty, setDirty] = useState(false);
   const { setConfiguratorProgress } = useLayout();
 
@@ -48,18 +53,18 @@ export function ConfiguratorProvider({
     resetDirty
   );
 
-  const update = <K extends keyof WizardState>(
+  const update = <K extends keyof ConfiguratorState>(
     key: K,
-    value: WizardState[K]
+    value: ConfiguratorState[K]
   ) => {
-    setState((prev: WizardState) => ({ ...prev, [key]: value }));
+    setState((prev: ConfiguratorState) => ({ ...prev, [key]: value }));
     setDirty(true);
   };
 
   const setThemeOverrides = (
     v: React.SetStateAction<Record<string, string>>
   ) => {
-    setState((prev: WizardState) => ({
+    setState((prev: ConfiguratorState) => ({
       ...prev,
       themeOverrides:
         typeof v === "function" ? v(prev.themeOverrides) : v,

@@ -8,8 +8,8 @@ import {
   type SetStateAction,
 } from "react";
 import {
-  wizardStateSchema,
-  type WizardState,
+  configuratorStateSchema,
+  type ConfiguratorState,
   type StepStatus,
 } from "../../wizard/schema";
 
@@ -21,7 +21,7 @@ export async function resetConfiguratorProgress(): Promise<void> {
   if (typeof window !== "undefined") {
     localStorage.removeItem(STORAGE_KEY);
     try {
-      await fetch("/cms/api/wizard-progress", {
+      await fetch("/cms/api/configurator-progress", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ stepId: null, data: {}, completed: {} }),
@@ -37,8 +37,8 @@ export async function resetConfiguratorProgress(): Promise<void> {
  * changes. A copy is mirrored to localStorage so the live preview can read it.
  */
 export function useConfiguratorPersistence(
-  state: WizardState,
-  setState: Dispatch<SetStateAction<WizardState>>,
+  state: ConfiguratorState,
+  setState: Dispatch<SetStateAction<ConfiguratorState>>,
   onInvalid?: () => void,
   onSave?: () => void
 ): [
@@ -49,11 +49,11 @@ export function useConfiguratorPersistence(
   /* Load persisted state on mount */
   useEffect(() => {
     if (typeof window === "undefined") return;
-    fetch("/cms/api/wizard-progress")
+    fetch("/cms/api/configurator-progress")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
         if (!json) return;
-        const parsed = wizardStateSchema.safeParse({
+        const parsed = configuratorStateSchema.safeParse({
           ...(json.state ?? json),
           completed: json.completed ?? {},
         });
@@ -88,7 +88,7 @@ export function useConfiguratorPersistence(
       }
       const { completed: _completed, ...data } = state;
       void _completed; // explicitly ignore unused property
-      fetch("/cms/api/wizard-progress", {
+      fetch("/cms/api/configurator-progress", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ stepId: "configurator", data }),
@@ -106,8 +106,8 @@ export function useConfiguratorPersistence(
 
   /* Expose completion helper */
   const markStepComplete = (stepId: string, status: StepStatus) => {
-    let updated: WizardState | null = null;
-    setState((prev: WizardState) => {
+    let updated: ConfiguratorState | null = null;
+    setState((prev: ConfiguratorState) => {
       updated = {
         ...prev,
         completed: { ...prev.completed, [stepId]: status },
@@ -121,7 +121,7 @@ export function useConfiguratorPersistence(
       } catch {
         /* ignore quota */
       }
-      fetch("/cms/api/wizard-progress", {
+      fetch("/cms/api/configurator-progress", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ stepId, completed: status }),

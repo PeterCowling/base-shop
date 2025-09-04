@@ -27,7 +27,7 @@ describe("storageUtils", () => {
     await resetConfiguratorProgress();
     expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
     expect(global.fetch).toHaveBeenCalledWith(
-      "/cms/api/wizard-progress",
+      "/cms/api/configurator-progress",
       expect.objectContaining({ method: "PUT" })
     );
   });

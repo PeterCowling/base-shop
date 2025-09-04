@@ -1,4 +1,5 @@
 import {
+  appendFileSync,
   existsSync,
   readFileSync,
   readdirSync,
@@ -7,6 +8,8 @@ import {
 } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
+
+const SHOP_ID_REGEX = /^[a-z0-9_-]+$/;
 
 function readUpgradeMeta(root: string, id: string): unknown {
   const file = join(root, "data", "shops", id, "upgrade.json");
@@ -63,7 +66,20 @@ function saveHistory(root: string, id: string): void {
   writeFileSync(historyFile, JSON.stringify(history, null, 2));
 }
 
+function auditRepublish(root: string, id: string): void {
+  try {
+    const file = join(root, "data", "shops", id, "audit.log");
+    const entry = { action: "republish", timestamp: new Date().toISOString() };
+    appendFileSync(file, JSON.stringify(entry) + "\n");
+  } catch {
+    // ignore audit errors
+  }
+}
+
 export function republishShop(id: string, root = process.cwd()): void {
+  if (!SHOP_ID_REGEX.test(id)) {
+    throw new Error(`Invalid shop ID: ${id}`);
+  }
   const upgradeFile = join(root, "data", "shops", id, "upgrade.json");
   if (existsSync(upgradeFile)) {
     readUpgradeMeta(root, id);
@@ -82,6 +98,7 @@ export function republishShop(id: string, root = process.cwd()): void {
     unlinkSync(upgradeChanges);
   }
   removeBakFiles(appDir);
+  auditRepublish(root, id);
 }
 
 function main(): void {

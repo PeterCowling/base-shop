@@ -1,32 +1,28 @@
 import { expect } from "@jest/globals";
+import { withEnv } from "../test/utils/withEnv";
 
 describe("emailEnv", () => {
-  const OLD_ENV = process.env;
-
   afterEach(() => {
-    jest.resetModules();
-    process.env = OLD_ENV;
     jest.restoreAllMocks();
   });
 
   it("throws and logs when SMTP_URL is invalid", async () => {
-    process.env = {
-      SMTP_URL: "notaurl",
-    } as NodeJS.ProcessEnv;
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(import("../src/env/email")).rejects.toThrow(
-      "Invalid email environment variables",
-    );
+    await expect(
+      withEnv({ SMTP_URL: "notaurl" }, () => import("../src/env/email")),
+    ).rejects.toThrow("Invalid email environment variables");
     expect(spy).toHaveBeenCalled();
   });
 
   it("parses numeric strings and applies defaults", async () => {
-    process.env = {
-      GMAIL_USER: "a",
-      SMTP_URL: "https://smtp",
-      EMAIL_BATCH_SIZE: "10",
-    } as NodeJS.ProcessEnv;
-    const { emailEnv } = await import("../src/env/email");
+    const { emailEnv } = await withEnv(
+      {
+        GMAIL_USER: "a",
+        SMTP_URL: "https://smtp",
+        EMAIL_BATCH_SIZE: "10",
+      },
+      () => import("../src/env/email"),
+    );
     expect(emailEnv.GMAIL_USER).toBe("a");
     expect(emailEnv.SMTP_URL).toBe("https://smtp");
     expect(emailEnv.EMAIL_BATCH_SIZE).toBe(10);
@@ -34,38 +30,40 @@ describe("emailEnv", () => {
   });
 
   it("throws and logs when EMAIL_BATCH_SIZE is non-numeric", async () => {
-    process.env = {
-      GMAIL_USER: "a",
-      SMTP_URL: "https://smtp",
-      EMAIL_BATCH_SIZE: "abc",
-    } as NodeJS.ProcessEnv;
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(import("../src/env/email")).rejects.toThrow(
-      "Invalid email environment variables",
-    );
+    await expect(
+      withEnv(
+        {
+          GMAIL_USER: "a",
+          SMTP_URL: "https://smtp",
+          EMAIL_BATCH_SIZE: "abc",
+        },
+        () => import("../src/env/email"),
+      ),
+    ).rejects.toThrow("Invalid email environment variables");
     expect(spy).toHaveBeenCalled();
   });
 
   it("throws and logs when SENDGRID_API_KEY is missing", async () => {
-    process.env = {
-      EMAIL_PROVIDER: "sendgrid",
-    } as NodeJS.ProcessEnv;
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(import("../src/env/email")).rejects.toThrow(
-      "Invalid email environment variables",
-    );
+    await expect(
+      withEnv({ EMAIL_PROVIDER: "sendgrid" }, () => import("../src/env/email")),
+    ).rejects.toThrow("Invalid email environment variables");
     expect(spy).toHaveBeenCalled();
   });
 
   it("parses sendgrid config without logging when key is provided", async () => {
-    process.env = {
-      EMAIL_PROVIDER: "sendgrid",
-      SENDGRID_API_KEY: "sendgrid-key",
-    } as NodeJS.ProcessEnv;
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-    const { emailEnv } = await import("../src/env/email");
+    const { emailEnv } = await withEnv(
+      {
+        EMAIL_PROVIDER: "sendgrid",
+        SENDGRID_API_KEY: "sendgrid-key",
+      },
+      () => import("../src/env/email"),
+    );
     expect(emailEnv.EMAIL_PROVIDER).toBe("sendgrid");
     expect(emailEnv.SENDGRID_API_KEY).toBe("sendgrid-key");
     expect(spy).not.toHaveBeenCalled();
   });
 });
+

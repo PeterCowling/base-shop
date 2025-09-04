@@ -1,26 +1,16 @@
-import { expect, describe, it, afterEach } from "@jest/globals";
-
-const OLD_ENV = process.env;
-
-afterEach(() => {
-  jest.resetModules();
-  process.env = OLD_ENV;
-});
+import { expect, describe, it } from "@jest/globals";
 
 describe("coreEnvSchema refinement", () => {
   it("coerces boolean and number strings", async () => {
     const { coreEnvSchema } = await import("../src/env/core");
-    process.env = {
-      ...OLD_ENV,
+    const parsed = coreEnvSchema.parse({
       DEPOSIT_RELEASE_ENABLED: "true",
       DEPOSIT_RELEASE_INTERVAL_MS: "1000",
       REVERSE_LOGISTICS_ENABLED: "false",
       REVERSE_LOGISTICS_INTERVAL_MS: "2000",
       LATE_FEE_ENABLED: "true",
       LATE_FEE_INTERVAL_MS: "3000",
-    } as NodeJS.ProcessEnv;
-
-    const parsed = coreEnvSchema.parse(process.env);
+    } as NodeJS.ProcessEnv);
     expect(parsed.DEPOSIT_RELEASE_ENABLED).toBe(true);
     expect(parsed.DEPOSIT_RELEASE_INTERVAL_MS).toBe(1000);
     expect(parsed.REVERSE_LOGISTICS_ENABLED).toBe(false);
@@ -31,15 +21,12 @@ describe("coreEnvSchema refinement", () => {
 
   it("reports invalid env variables", async () => {
     const { coreEnvSchema } = await import("../src/env/core");
-    process.env = {
-      ...OLD_ENV,
+    const parsed = coreEnvSchema.safeParse({
       DEPOSIT_RELEASE_ENABLED: "notbool",
       REVERSE_LOGISTICS_INTERVAL_MS: "abc",
       LATE_FEE_INTERVAL_MS: "abc",
       DEPOSIT_RELEASE_FOO: "bar",
-    } as NodeJS.ProcessEnv;
-
-    const parsed = coreEnvSchema.safeParse(process.env);
+    } as NodeJS.ProcessEnv);
     expect(parsed.success).toBe(false);
     if (!parsed.success) {
       expect(parsed.error.issues).toEqual(
@@ -90,3 +77,4 @@ describe("coreEnvSchema refinement", () => {
     );
   });
 });
+

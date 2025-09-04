@@ -3,7 +3,7 @@
 import { LOCALES } from "@acme/i18n";
 import { captureException } from "@/utils/sentry.server";
 import type { Locale, Page, HistoryState } from "@acme/types";
-import { historyStateSchema } from "@acme/types";
+import { historyStateSchema } from "@acme/types/src/index";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
 import { formDataToObject } from "../utils/formData";

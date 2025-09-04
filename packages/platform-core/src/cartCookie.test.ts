@@ -29,6 +29,17 @@ describe("cartCookie", () => {
     warnSpy.mockRestore();
   });
 
+  it("warns and returns null for completely invalid signature", () => {
+    const payload = Buffer.from(JSON.stringify({ foo: "bar" }), "utf8").toString(
+      "base64url"
+    );
+    const cookie = `${payload}.deadbeef`;
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    expect(decodeCartCookie(cookie)).toBeNull();
+    expect(warnSpy).toHaveBeenCalledWith("Invalid cart cookie");
+    warnSpy.mockRestore();
+  });
+
   it("warns and returns null for malformed cookie", () => {
     const encoded = encodeCartCookie(JSON.stringify({ foo: "bar" }));
     const truncated = encoded.slice(0, -1);
@@ -75,6 +86,13 @@ describe("cartCookie", () => {
   it("uses default Max-Age when omitted", () => {
     const header = asSetCookieHeader("value");
     expect(header).toMatch(/Max-Age=\d+/);
+  });
+
+  it("throws when getSecret is called without a secret", async () => {
+    jest.resetModules();
+    jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
+    const { __test } = await import("./cartCookie");
+    expect(() => __test.getSecret()).toThrow("env.CART_COOKIE_SECRET is required");
   });
 
   it("throws when secret is missing", async () => {

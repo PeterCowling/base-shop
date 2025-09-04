@@ -91,3 +91,6 @@ export function asSetCookieHeader(
   parts.push("SameSite=Strict", "Secure", "HttpOnly");
   return parts.join("; ");
 }
+
+/** @internal - exposed for testing */
+export const __test = { getSecret };

@@ -58,4 +58,40 @@ describe("usePageBuilderDnD", () => {
     );
     expect(result.current.insertIndex).toBe(0);
   });
+
+  it("moves existing block within canvas", () => {
+    const components = [
+      { id: "a", type: "Text" },
+      { id: "b", type: "Text" },
+    ] as any;
+    const dispatch = jest.fn();
+    const { result } = renderHook(() =>
+      usePageBuilderDnD({
+        components,
+        dispatch,
+        defaults: {},
+        containerTypes: [],
+        selectId: jest.fn(),
+      })
+    );
+
+    act(() =>
+      result.current.handleDragEnd({
+        active: {
+          data: { current: { from: "canvas", index: 0, parentId: undefined } },
+        },
+        over: {
+          id: "canvas",
+          data: { current: {} },
+        },
+      } as any)
+    );
+
+    expect(dispatch).toHaveBeenCalledWith({
+      type: "move",
+      from: { parentId: undefined, index: 0 },
+      to: { parentId: undefined, index: 1 },
+    });
+    expect(result.current.insertIndex).toBeNull();
+  });
 });

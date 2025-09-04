@@ -33,6 +33,11 @@ describe("loadThemeTokensNode", () => {
     const tokens = loadThemeTokensNode("dark");
     expect(tokens).toEqual({});
   });
+
+  it.each(["", "base"])('returns empty object for %s theme', (theme) => {
+    const tokens = loadThemeTokensNode(theme as string);
+    expect(tokens).toEqual({});
+  });
 });
 
 describe("loadThemeTokensBrowser", () => {
@@ -69,6 +74,11 @@ describe("loadThemeTokensBrowser", () => {
 
   it("short-circuits for base theme", async () => {
     const tokens = await loadThemeTokensBrowser("base");
+    expect(tokens).toBe(baseTokens);
+  });
+
+  it("returns base tokens when all imports fail", async () => {
+    const tokens = await loadThemeTokensBrowser("missing-theme");
     expect(tokens).toBe(baseTokens);
   });
 });

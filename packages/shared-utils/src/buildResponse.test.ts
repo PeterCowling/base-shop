@@ -24,5 +24,20 @@ describe('buildResponse', () => {
     expect([...res.headers.entries()]).toEqual([]);
     await expect(res.text()).resolves.toBe('');
   });
+
+  it('creates a Response with JSON body and error status', async () => {
+    const body = { error: 'fail' };
+    const proxy: ProxyResponse = {
+      response: {
+        status: 400,
+        headers: { 'content-type': 'application/json', 'x-test': '1' },
+        body: Buffer.from(JSON.stringify(body)).toString('base64'),
+      },
+    };
+    const res = buildResponse(proxy);
+    expect(res.status).toBe(400);
+    expect(res.headers.get('x-test')).toBe('1');
+    await expect(res.json()).resolves.toEqual(body);
+  });
 });
 

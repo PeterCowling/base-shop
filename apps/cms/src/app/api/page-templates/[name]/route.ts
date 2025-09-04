@@ -33,6 +33,11 @@ export async function GET(
   context: { params: Promise<{ name: string }> }
 ) {
   try {
+    // `resolveTemplatesRoot` is accessed via a dynamic import so tests can
+    // stub the export with `jest.spyOn`.  Directly calling the local function
+    // would bypass the spy because the binding would be captured before the
+    // spy runs.
+    const { resolveTemplatesRoot } = await import("./route");
     const dir = resolveTemplatesRoot();
     const { name } = await context.params;
     const file = path.join(dir, `${name}.json`);

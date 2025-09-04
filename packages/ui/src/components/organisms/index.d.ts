@@ -7,6 +7,7 @@ export { DeliveryScheduler } from "./DeliveryScheduler";
 export { FilterSidebar } from "./FilterSidebar";
 export { Footer } from "./Footer";
 export { Header } from "./Header";
+export { ImageCarousel } from "./ImageCarousel";
 export { LiveChatWidget } from "./LiveChatWidget";
 export { MiniCart } from "./MiniCart.client";
 export { default as OrderSummary } from "./OrderSummary";

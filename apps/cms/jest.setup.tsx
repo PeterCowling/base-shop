@@ -84,15 +84,26 @@ if (!(URL as any).revokeObjectURL) {
  */
 class StubPort {
   onmessage: ((e: MessageEvent) => void) | null = null;
-  postMessage = jest.fn<void, [unknown]>();
+  other?: StubPort;
+  postMessage = jest.fn((data: unknown) => {
+    queueMicrotask(() => this.other?.onmessage?.({ data } as MessageEvent));
+  });
   close = jest.fn<void, []>();
   start = jest.fn<void, []>();
   addEventListener = jest.fn();
   removeEventListener = jest.fn();
 }
+
 (globalThis as any).MessageChannel = class {
-  readonly port1 = new StubPort();
-  readonly port2 = new StubPort();
+  readonly port1: StubPort;
+  readonly port2: StubPort;
+
+  constructor() {
+    this.port1 = new StubPort();
+    this.port2 = new StubPort();
+    this.port1.other = this.port2;
+    this.port2.other = this.port1;
+  }
 };
 
 /**

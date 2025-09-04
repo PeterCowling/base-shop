@@ -1,6 +1,5 @@
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { act, render, fireEvent, screen, waitFor } from "@testing-library/react";
 import React, { useState } from "react";
-import { flushSync } from "react-dom";
 import {
   STORAGE_KEY,
   useConfiguratorPersistence,
@@ -61,7 +60,9 @@ describe("useConfiguratorPersistence", () => {
     fireEvent.change(screen.getByPlaceholderText("store"), {
       target: { value: "Updated" },
     });
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     await waitFor(() =>
       expect(fetchMock).toHaveBeenLastCalledWith(
         "/cms/api/configurator-progress",
@@ -76,7 +77,7 @@ describe("useConfiguratorPersistence", () => {
     fetchMock.mockClear();
     updateListener.mockClear();
 
-    flushSync(() => complete!("intro", "complete"));
+    act(() => complete!("intro", "complete"));
 
     await waitFor(() =>
       expect(fetchMock).toHaveBeenCalledWith(

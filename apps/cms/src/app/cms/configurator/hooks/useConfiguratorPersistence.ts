@@ -106,15 +106,12 @@ export function useConfiguratorPersistence(
 
   /* Expose completion helper */
   const markStepComplete = (stepId: string, status: StepStatus) => {
-    let updated: ConfiguratorState | null = null;
-    setState((prev: ConfiguratorState) => {
-      updated = {
-        ...prev,
-        completed: { ...prev.completed, [stepId]: status },
-      };
-      return updated;
-    });
-    if (typeof window !== "undefined" && updated) {
+    const updated: ConfiguratorState = {
+      ...state,
+      completed: { ...state.completed, [stepId]: status },
+    };
+    setState(updated);
+    if (typeof window !== "undefined") {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
         window.dispatchEvent(new CustomEvent("configurator:update"));

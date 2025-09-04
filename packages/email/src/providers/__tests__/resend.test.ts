@@ -137,5 +137,46 @@ describe("ResendProvider", () => {
       ).resolves.toBe("");
     });
   });
+
+  describe("addToList", () => {
+    it("swallows network failures", async () => {
+      process.env.RESEND_API_KEY = "rs";
+      global.fetch = jest
+        .fn()
+        .mockRejectedValue(new Error("fail")) as any;
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider();
+      await expect(provider.addToList("c1", "l1")).resolves.toBeUndefined();
+    });
+  });
+
+  describe("listSegments", () => {
+    it.each(["data", "segments"]) (
+      "maps API responses from %s", async (key) => {
+        process.env.RESEND_API_KEY = "rs";
+        const payload: any = {
+          [key]: [{ id: "1", name: "Segment", extra: "x" }],
+        };
+        global.fetch = jest.fn().mockResolvedValue({
+          json: () => Promise.resolve(payload),
+        }) as any;
+        const { ResendProvider } = await import("../resend");
+        const provider = new ResendProvider();
+        await expect(provider.listSegments()).resolves.toEqual([
+          { id: "1", name: "Segment" },
+        ]);
+      }
+    );
+
+    it("returns [] on errors", async () => {
+      process.env.RESEND_API_KEY = "rs";
+      global.fetch = jest
+        .fn()
+        .mockRejectedValue(new Error("fail")) as any;
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider();
+      await expect(provider.listSegments()).resolves.toEqual([]);
+    });
+  });
 });
 

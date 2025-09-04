@@ -6,8 +6,28 @@ export const emailEnvSchema = z
     GMAIL_USER: z.string().optional(),
     GMAIL_PASS: z.string().optional(),
     SMTP_URL: z.string().url().optional(),
-    CAMPAIGN_FROM: z.string().optional(),
-    EMAIL_PROVIDER: z.enum(["sendgrid", "resend", "smtp"]).default("smtp"),
+    SMTP_PORT: z
+      .string()
+      .refine((v) => !Number.isNaN(Number(v)), {
+        message: "must be a number",
+      })
+      .transform((v) => Number(v))
+      .optional(),
+    SMTP_SECURE: z
+      .string()
+      .refine((v) => v === "true" || v === "false", {
+        message: "must be true or false",
+      })
+      .transform((v) => v === "true")
+      .optional(),
+    CAMPAIGN_FROM: z
+      .string()
+      .email()
+      .transform((v) => v.toLowerCase())
+      .optional(),
+    EMAIL_PROVIDER: z
+      .enum(["sendgrid", "resend", "smtp", "noop"])
+      .default("smtp"),
     SENDGRID_API_KEY: z.string().optional(),
     SENDGRID_MARKETING_KEY: z.string().optional(),
     RESEND_API_KEY: z.string().optional(),
@@ -19,6 +39,13 @@ export const emailEnvSchema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["SENDGRID_API_KEY"],
+        message: "Required",
+      });
+    }
+    if (env.EMAIL_PROVIDER === "resend" && !env.RESEND_API_KEY) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["RESEND_API_KEY"],
         message: "Required",
       });
     }

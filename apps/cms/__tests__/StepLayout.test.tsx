@@ -71,6 +71,7 @@ describe("StepLayout", () => {
     apiRequest.mockResolvedValueOnce({ data: null, error: "save error" });
     render(<StepLayout />);
     fireEvent.click(screen.getAllByText("save")[0]);
+    await waitFor(() => expect(apiRequest).toHaveBeenCalled());
     await screen.findByText("save error");
   });
 
@@ -83,6 +84,9 @@ describe("StepLayout", () => {
     await waitFor(() => expect(state.headerPageId).toBe("h1"));
     fireEvent.click(screen.getAllByText("save")[1]);
     await waitFor(() => expect(state.footerPageId).toBe("f1"));
+    await waitFor(() =>
+      expect(screen.getByText("Save & return")).not.toBeDisabled(),
+    );
     fireEvent.click(screen.getByText("Save & return"));
     expect(markStepComplete).toHaveBeenCalledWith("layout", "complete");
     expect(pushMock).toHaveBeenCalledWith("/cms/configurator");

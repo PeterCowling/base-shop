@@ -1,1 +1,1 @@
-export * from './resend.ts';
+module.exports = require('./resend.ts');

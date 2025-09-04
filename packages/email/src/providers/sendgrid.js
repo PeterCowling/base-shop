@@ -1,1 +1,1 @@
-export * from './sendgrid.ts';
+module.exports = require('./sendgrid.ts');

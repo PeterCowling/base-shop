@@ -1,1 +1,1 @@
-export * from './stats.ts';
+module.exports = require('./stats.ts');

@@ -328,3 +328,80 @@ describe("payments env defaults", () => {
   );
 });
 
+describe("payment gateway flag", () => {
+  it("uses defaults without warnings when gateway disabled", () => {
+    process.env = {
+      PAYMENTS_GATEWAY: "disabled",
+      STRIPE_SECRET_KEY: "sk_live_123",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
+      STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+    } as NodeJS.ProcessEnv;
+    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    jest.resetModules();
+    const { paymentsEnv } = require("../payments.js");
+    expect(paymentsEnv).toEqual({
+      STRIPE_SECRET_KEY: "sk_test",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
+      STRIPE_WEBHOOK_SECRET: "whsec_test",
+    });
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  it("returns provided test keys when stripe gateway active", () => {
+    process.env = {
+      PAYMENTS_GATEWAY: "stripe",
+      STRIPE_SECRET_KEY: "sk_test_abc",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_abc",
+      STRIPE_WEBHOOK_SECRET: "whsec_test_abc",
+    } as NodeJS.ProcessEnv;
+    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    jest.resetModules();
+    const { paymentsEnv } = require("../payments.js");
+    expect(paymentsEnv).toEqual({
+      STRIPE_SECRET_KEY: "sk_test_abc",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_abc",
+      STRIPE_WEBHOOK_SECRET: "whsec_test_abc",
+    });
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  it("returns provided live keys when stripe gateway active", () => {
+    process.env = {
+      PAYMENTS_GATEWAY: "stripe",
+      STRIPE_SECRET_KEY: "sk_live_abc",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_abc",
+      STRIPE_WEBHOOK_SECRET: "whsec_live_abc",
+    } as NodeJS.ProcessEnv;
+    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    jest.resetModules();
+    const { paymentsEnv } = require("../payments.js");
+    expect(paymentsEnv).toEqual({
+      STRIPE_SECRET_KEY: "sk_live_abc",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_abc",
+      STRIPE_WEBHOOK_SECRET: "whsec_live_abc",
+    });
+    expect(warnSpy).not.toHaveBeenCalled();
+  });
+
+  it("warns and falls back to defaults when stripe gateway active but keys missing", () => {
+    process.env = {
+      PAYMENTS_GATEWAY: "stripe",
+      STRIPE_SECRET_KEY: "",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "",
+      STRIPE_WEBHOOK_SECRET: "",
+    } as NodeJS.ProcessEnv;
+    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    jest.resetModules();
+    const { paymentsEnv } = require("../payments.js");
+    expect(paymentsEnv).toEqual({
+      STRIPE_SECRET_KEY: "sk_test",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
+      STRIPE_WEBHOOK_SECRET: "whsec_test",
+    });
+    expect(warnSpy).toHaveBeenCalledWith(
+      "⚠️ Invalid payments environment variables:",
+      expect.any(Object),
+    );
+  });
+});
+

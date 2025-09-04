@@ -23,6 +23,9 @@ describe("payments env schema", () => {
 
     const parsed = paymentsEnvSchema.safeParse(process.env);
     expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.format()).toHaveProperty("STRIPE_SECRET_KEY");
+    }
     expect(warnSpy).toHaveBeenCalledWith(
       "⚠️ Invalid payments environment variables:",
       expect.any(Object),

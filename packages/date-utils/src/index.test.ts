@@ -4,6 +4,8 @@ import {
   getTimeRemaining,
   formatDuration,
   isoDateInNDays,
+  nowIso,
+  formatTimestamp,
 } from "./index";
 
 describe("calculateRentalDays", () => {
@@ -86,6 +88,29 @@ describe("isoDateInNDays", () => {
     base.setUTCDate(base.getUTCDate() - 1000);
     const expected = base.toISOString().slice(0, 10);
     expect(isoDateInNDays(-1000)).toBe(expected);
+  });
+});
+
+describe("nowIso", () => {
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  });
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+  it("returns current time in ISO format", () => {
+    expect(nowIso()).toBe("2025-01-01T00:00:00.000Z");
+  });
+});
+
+describe("formatTimestamp", () => {
+  it("formats valid ISO timestamp", () => {
+    const ts = "2025-01-01T05:06:07Z";
+    const expected = new Date(ts).toLocaleString("en-US");
+    expect(formatTimestamp(ts, "en-US")).toBe(expected);
+  });
+  it("returns input on invalid timestamp", () => {
+    expect(formatTimestamp("not-a-date", "en-US")).toBe("not-a-date");
   });
 });
 

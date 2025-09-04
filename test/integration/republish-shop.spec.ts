@@ -65,6 +65,7 @@ describe("republish-shop script", () => {
       expect(final.status).toBe("published");
       expect(final.componentVersions).toEqual({ comp: "1.0.0" });
       expect(existsSync(join(dataDir, "upgrade.json"))).toBe(false);
+      expect(existsSync(join(dataDir, "audit.log"))).toBe(true);
     } finally {
       rmSync(tmp, { recursive: true, force: true });
     }
@@ -120,6 +121,7 @@ describe("republish-shop script", () => {
       const final = JSON.parse(readFileSync(join(dataDir, "shop.json"), "utf8"));
       expect(final.status).toBe("published");
       expect(final.componentVersions).toEqual({ comp: "1.0.0" });
+      expect(existsSync(join(dataDir, "audit.log"))).toBe(true);
     } finally {
       rmSync(tmp, { recursive: true, force: true });
     }

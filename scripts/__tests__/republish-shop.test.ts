@@ -6,6 +6,7 @@ const fsMock = {
   readdirSync: jest.fn(),
   unlinkSync: jest.fn(),
   writeFileSync: jest.fn(),
+  appendFileSync: jest.fn(),
 };
 
 const cpMock = {
@@ -141,5 +142,10 @@ describe("republish-shop", () => {
         2
       )
     );
+  });
+
+  it("rejects invalid shop ids", async () => {
+    const { republishShop } = await import("../src/republish-shop");
+    expect(() => republishShop("../bad", root)).toThrow("Invalid shop ID");
   });
 });

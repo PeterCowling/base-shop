@@ -4,6 +4,7 @@ exports.republishShop = republishShop;
 var node_fs_1 = require("node:fs");
 var node_path_1 = require("node:path");
 var node_child_process_1 = require("node:child_process");
+var SHOP_ID_REGEX = /^[a-z0-9_-]+$/;
 function readUpgradeMeta(root, id) {
     var file = (0, node_path_1.join)(root, "data", "shops", id, "upgrade.json");
     return JSON.parse((0, node_fs_1.readFileSync)(file, "utf8"));
@@ -58,8 +59,21 @@ function saveHistory(root, id) {
     history.push(entry);
     (0, node_fs_1.writeFileSync)(historyFile, JSON.stringify(history, null, 2));
 }
+function auditRepublish(root, id) {
+    try {
+        var file = (0, node_path_1.join)(root, "data", "shops", id, "audit.log");
+        var entry = { action: "republish", timestamp: new Date().toISOString() };
+        (0, node_fs_1.appendFileSync)(file, JSON.stringify(entry) + "\n");
+    }
+    catch (_a) {
+        // ignore audit errors
+    }
+}
 function republishShop(id, root) {
     if (root === void 0) { root = process.cwd(); }
+    if (!SHOP_ID_REGEX.test(id)) {
+        throw new Error("Invalid shop ID: ".concat(id));
+    }
     var upgradeFile = (0, node_path_1.join)(root, "data", "shops", id, "upgrade.json");
     var hadUpgradeFile = (0, node_fs_1.existsSync)(upgradeFile);
     if (hadUpgradeFile) {
@@ -79,6 +93,7 @@ function republishShop(id, root) {
         (0, node_fs_1.unlinkSync)(upgradeChanges);
     }
     removeBakFiles(appDir);
+    auditRepublish(root, id);
 }
 function main() {
     var shopId = process.argv[2];

@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 import { requirePermission } from "@auth";
 import { spawnSync } from "child_process";
 
+const SHOP_ID_REGEX = /^[a-z0-9_-]+$/;
+
 export const runtime = "nodejs";
 
 export async function POST() {
@@ -16,6 +18,9 @@ export async function POST() {
   try {
     const raw = await fs.readFile(join(process.cwd(), "shop.json"), "utf8");
     const { id } = JSON.parse(raw) as { id: string };
+    if (!SHOP_ID_REGEX.test(id)) {
+      return NextResponse.json({ error: "Invalid shop ID" }, { status: 400 });
+    }
     const root = join(process.cwd(), "..", "..");
     const res = spawnSync(
       "pnpm",

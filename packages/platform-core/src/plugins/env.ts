@@ -55,10 +55,7 @@ export async function resolvePluginEnvironment({
     ...directories,
   ]);
 
-  const pluginDirs = [...configPlugins, ...plugins].map((p) =>
-    path.resolve(p)
-  );
+  const pluginDirs = [...configPlugins, ...plugins].map((p) => path.resolve(p));
 
   return { searchDirs, pluginDirs };
 }
-

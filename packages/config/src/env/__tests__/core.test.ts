@@ -22,6 +22,134 @@ afterEach(() => {
   jest.resetModules();
 });
 
+describe("requireEnv", () => {
+  const getRequire = async () => (await import("../core.js")).requireEnv as any;
+
+  it("returns value for existing variables", async () => {
+    process.env.REQ = "present";
+    const requireEnv = await getRequire();
+    expect(requireEnv("REQ")).toBe("present");
+  });
+
+  it("throws when variable is missing", async () => {
+    const requireEnv = await getRequire();
+    expect(() => requireEnv("MISSING")).toThrow();
+  });
+
+  it("throws on empty value", async () => {
+    process.env.EMPTY = "";
+    const requireEnv = await getRequire();
+    expect(() => requireEnv("EMPTY")).toThrow();
+  });
+
+  it("throws on whitespace-only value", async () => {
+    process.env.SPACE = "   ";
+    const requireEnv = await getRequire();
+    expect(() => requireEnv("SPACE")).toThrow();
+  });
+});
+
+describe("requireEnv boolean parsing", () => {
+  const getRequire = async () => (await import("../core.js")).requireEnv as any;
+  const cases: Array<[string, boolean]> = [
+    ["true", true],
+    [" false ", false],
+    ["1", true],
+    ["0", false],
+    ["TRUE", true],
+    ["FaLsE", false],
+  ];
+
+  it.each(cases)("parses boolean %s", async (input, expected) => {
+    process.env.BOOL = input;
+    const requireEnv = await getRequire();
+    expect(requireEnv("BOOL", "boolean")).toBe(expected);
+  });
+
+  it.each(["yes", "no"])("rejects boolean %s", async (input) => {
+    process.env.BOOL = input;
+    const requireEnv = await getRequire();
+    expect(() => requireEnv("BOOL", "boolean")).toThrow();
+  });
+});
+
+describe("requireEnv number parsing", () => {
+  const getRequire = async () => (await import("../core.js")).requireEnv as any;
+
+  const valid: Array<[string, number]> = [
+    ["1", 1],
+    ["-2", -2],
+    ["3.14", 3.14],
+    [" 4 ", 4],
+  ];
+
+  it.each(valid)("parses number %s", async (input, expected) => {
+    process.env.NUM = input;
+    const requireEnv = await getRequire();
+    expect(requireEnv("NUM", "number")).toBe(expected);
+  });
+
+  it.each(["NaN", "not-a-number"])(
+    "rejects invalid number %s",
+    async (input) => {
+      process.env.NUM = input;
+      const requireEnv = await getRequire();
+      expect(() => requireEnv("NUM", "number")).toThrow();
+    },
+  );
+});
+
+describe("loadCoreEnv NODE_ENV handling", () => {
+  const base = { ...baseEnv };
+
+  it("handles production", () => {
+    const env = loadCoreEnv({
+      ...base,
+      NODE_ENV: "production",
+      CART_COOKIE_SECRET: "secret",
+    } as NodeJS.ProcessEnv);
+    expect(env.NODE_ENV).toBe("production");
+    expect(env.CART_COOKIE_SECRET).toBe("secret");
+  });
+
+  it.each(["development", "test"])(
+    "defaults secret in %s",
+    (nodeEnv) => {
+      const env = loadCoreEnv({
+        ...base,
+        NODE_ENV: nodeEnv,
+      } as NodeJS.ProcessEnv);
+      expect(env.NODE_ENV).toBe(nodeEnv);
+      expect(env.CART_COOKIE_SECRET).toBe("dev-cart-secret");
+    },
+  );
+});
+
+describe("coreEnv proxy basic ops", () => {
+  it("supports property, in, keys and descriptors", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = require("../core.js");
+    expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+    expect("CMS_ACCESS_TOKEN" in mod.coreEnv).toBe(true);
+    expect(Object.keys(mod.coreEnv)).toEqual(
+      expect.arrayContaining([
+        "CMS_SPACE_URL",
+        "CMS_ACCESS_TOKEN",
+        "SANITY_API_VERSION",
+      ]),
+    );
+    const desc = Object.getOwnPropertyDescriptor(
+      mod.coreEnv,
+      "CMS_SPACE_URL",
+    );
+    expect(desc?.value).toBe("https://example.com");
+  });
+});
+
 describe("core env refinement", () => {
   it("accepts valid custom prefixed variables", () => {
     const parsed = schema.safeParse({

@@ -6,7 +6,6 @@ import { getCsrfToken } from './getCsrfToken';
 
 describe('getCsrfToken', () => {
   const originalLocation = globalThis.location;
-  const originalCrypto = globalThis.crypto;
 
   afterEach(() => {
     if (globalThis.document) {
@@ -15,14 +14,12 @@ describe('getCsrfToken', () => {
       // @ts-ignore
       delete globalThis.document;
     }
-    Object.defineProperty(globalThis, 'location', {
-      value: originalLocation,
-      configurable: true,
-    });
-    Object.defineProperty(globalThis, 'crypto', {
-      value: originalCrypto,
-      configurable: true,
-    });
+    if (originalLocation === undefined) {
+      // @ts-ignore - location might not exist in node environment
+      delete globalThis.location;
+    } else {
+      (globalThis as any).location = originalLocation;
+    }
     jest.restoreAllMocks();
   });
 
@@ -115,10 +112,7 @@ describe('getCsrfToken', () => {
     it('returns token from cookie when present', () => {
       const { window } = new JSDOM('', { url: 'https://example.com' });
       globalThis.document = window.document;
-      Object.defineProperty(globalThis, 'location', {
-        value: window.location,
-        configurable: true,
-      });
+      (globalThis as any).location = window.location;
       globalThis.document.cookie = 'csrf_token=cookie-token';
       expect(getCsrfToken()).toBe('cookie-token');
     });
@@ -126,19 +120,14 @@ describe('getCsrfToken', () => {
     it('generates and stores token when missing', () => {
       const { window } = new JSDOM('', { url: 'https://example.com' });
       globalThis.document = window.document;
-      Object.defineProperty(globalThis, 'location', {
-        value: window.location,
-        configurable: true,
-      });
-      const mockCrypto = { randomUUID: jest.fn().mockReturnValue('generated-token') };
-      Object.defineProperty(globalThis, 'crypto', {
-        value: mockCrypto,
-        configurable: true,
-      });
+      (globalThis as any).location = window.location;
+      const randomUUIDSpy = jest
+        .spyOn(globalThis.crypto, 'randomUUID')
+        .mockReturnValue('generated-token');
       const cookieSpy = jest.spyOn(globalThis.document, 'cookie', 'set');
       const token = getCsrfToken();
       expect(token).toBe('generated-token');
-      expect(mockCrypto.randomUUID).toHaveBeenCalled();
+      expect(randomUUIDSpy).toHaveBeenCalled();
       expect(cookieSpy).toHaveBeenCalledWith(
         'csrf_token=generated-token; path=/; SameSite=Strict; secure'
       );

@@ -8,6 +8,7 @@ import { ROLE_PERMISSIONS } from "@auth/permissions";
 import * as fsSync from "fs";
 import { promises as fs } from "fs";
 import * as path from "path";
+import writeJsonFile from "write-json-file";
 import type { Role } from "../../auth/roles";
 
 export interface RbacDB {
@@ -96,9 +97,14 @@ export async function readRbac(): Promise<RbacDB> {
   return { ...DEFAULT_DB };
 }
 
-export async function writeRbac(db: RbacDB): Promise<void> {
+export async function writeRbac(
+  db: RbacDB | null | undefined
+): Promise<void> {
+  if (db == null) {
+    throw new TypeError("db must be defined");
+  }
   await fs.mkdir(path.dirname(FILE), { recursive: true });
   const tmp = `${FILE}.${Date.now()}.tmp`;
-  await fs.writeFile(tmp, JSON.stringify(db, null, 2), "utf8");
+  await writeJsonFile(tmp, db, { indent: 2 });
   await fs.rename(tmp, FILE);
 }

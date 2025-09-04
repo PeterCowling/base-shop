@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react";
 import useViewport from "../src/components/cms/page-builder/hooks/useViewport";
 import type { DevicePreset } from "@ui/utils/devicePresets";
 
@@ -20,20 +20,23 @@ describe("useViewport", () => {
     orientation: "portrait",
   };
 
+  let rafCallback: FrameRequestCallback;
   beforeEach(() => {
+    jest.useFakeTimers();
     jest
       .spyOn(window, "requestAnimationFrame")
       .mockImplementation((cb: FrameRequestCallback) => {
-        cb(0);
+        rafCallback = cb;
         return 0;
       });
   });
 
   afterEach(() => {
     (window.requestAnimationFrame as jest.Mock).mockRestore();
+    jest.useRealTimers();
   });
 
-  it("updates dimensions when device changes", () => {
+  it("updates dimensions and animates scale when device changes", () => {
     const { result, rerender } = renderHook(
       ({ device }) => useViewport(device),
       { initialProps: { device: desktop } }
@@ -41,11 +44,20 @@ describe("useViewport", () => {
 
     expect(result.current.canvasWidth).toBe(1000);
     expect(result.current.canvasHeight).toBe(800);
+    expect(result.current.scale).toBe(1);
 
-    rerender({ device: tablet });
+    act(() => {
+      rerender({ device: tablet });
+    });
 
     expect(result.current.canvasWidth).toBe(500);
     expect(result.current.canvasHeight).toBe(400);
+    expect(result.current.scale).toBe(2);
+
+    act(() => {
+      rafCallback(0);
+    });
+
     expect(result.current.scale).toBe(1);
   });
 
@@ -62,9 +74,15 @@ describe("useViewport", () => {
       orientation: "landscape" as const,
     };
 
-    rerender({ device: landscape });
+    act(() => {
+      rerender({ device: landscape });
+    });
 
     expect(result.current.canvasWidth).toBe(800);
     expect(result.current.canvasHeight).toBe(1000);
+
+    act(() => {
+      rafCallback(0);
+    });
   });
 });

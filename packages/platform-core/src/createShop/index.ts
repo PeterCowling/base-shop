@@ -18,7 +18,7 @@ import {
 } from "./deploymentAdapter";
 
 function repoRoot(): string {
-  let dir = process.cwd();
+  let dir = typeof __dirname !== "undefined" ? __dirname : process.cwd();
   while (
     !fs.existsSync(join(dir, "packages")) &&
     !fs.existsSync(join(dir, "apps"))

@@ -7,15 +7,13 @@ import path from "path";
 export function resolveTemplatesRoot(): string {
   let dir = process.cwd();
   while (true) {
-    const candidate = path.join(
-      dir,
-      "packages",
-      "ui",
-      "src",
-      "components",
-      "templates"
-    );
-    if (fsSync.existsSync(candidate)) return candidate;
+    const candidates = [
+      path.join(dir, "packages", "ui", "components", "templates"),
+      path.join(dir, "packages", "ui", "src", "components", "templates"),
+    ];
+    for (const candidate of candidates) {
+      if (fsSync.existsSync(candidate)) return candidate;
+    }
     const parent = path.dirname(dir);
     if (parent === dir) break;
     dir = parent;
@@ -24,7 +22,6 @@ export function resolveTemplatesRoot(): string {
     process.cwd(),
     "packages",
     "ui",
-    "src",
     "components",
     "templates"
   );

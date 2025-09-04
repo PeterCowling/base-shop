@@ -1258,3 +1258,277 @@ describe("typed variable helpers", () => {
   });
 });
 
+describe("loadCoreEnv required variable validation", () => {
+  const ORIGINAL_ENV = process.env;
+  const base = {
+    CMS_ACCESS_TOKEN: "token",
+    SANITY_API_VERSION: "v1",
+    NODE_ENV: "production",
+    CART_COOKIE_SECRET: "secret",
+    NEXTAUTH_SECRET: "next", 
+    SESSION_SECRET: "session",
+  } as NodeJS.ProcessEnv;
+
+  afterEach(() => {
+    jest.resetModules();
+    process.env = ORIGINAL_ENV;
+  });
+
+  describe("CMS_SPACE_URL", () => {
+    it.each([
+      ["present", "https://example.com", true],
+      ["missing", undefined, false],
+      ["empty", "", false],
+      ["whitespace", "   ", false],
+      ["invalid", "not-a-url", false],
+    ])("%s", async (_label, value, ok) => {
+      jest.resetModules();
+      process.env.NODE_ENV = "production";
+      process.env.CMS_SPACE_URL = "https://example.com";
+      process.env.CMS_ACCESS_TOKEN = "token";
+      process.env.SANITY_API_VERSION = "v1";
+      process.env.CART_COOKIE_SECRET = "secret";
+      process.env.NEXTAUTH_SECRET = "next";
+      process.env.SESSION_SECRET = "session";
+      const { loadCoreEnv } = await import("../core.js");
+      const env = { ...base } as NodeJS.ProcessEnv;
+      if (value === undefined) delete env.CMS_SPACE_URL;
+      else env.CMS_SPACE_URL = value;
+      const run = () => loadCoreEnv(env);
+      ok
+        ? expect(run).not.toThrow()
+        : expect(run).toThrow("Invalid core environment variables");
+    });
+  });
+
+  describe("CART_COOKIE_SECRET", () => {
+    it.each([
+      ["present", "secret", true],
+      ["missing", undefined, false],
+      ["empty", "", false],
+      ["whitespace", "   ", true],
+    ])("%s", async (_label, value, ok) => {
+      jest.resetModules();
+      process.env.NODE_ENV = "production";
+      process.env.CMS_SPACE_URL = "https://example.com";
+      process.env.CMS_ACCESS_TOKEN = "token";
+      process.env.SANITY_API_VERSION = "v1";
+      process.env.CART_COOKIE_SECRET = "secret";
+      process.env.NEXTAUTH_SECRET = "next";
+      process.env.SESSION_SECRET = "session";
+      const { loadCoreEnv } = await import("../core.js");
+      const env = {
+        ...base,
+        CMS_SPACE_URL: "https://example.com",
+      } as NodeJS.ProcessEnv;
+      if (value === undefined) delete env.CART_COOKIE_SECRET;
+      else env.CART_COOKIE_SECRET = value;
+      const run = () => loadCoreEnv(env);
+      ok
+        ? expect(run).not.toThrow()
+        : expect(run).toThrow("Invalid core environment variables");
+    });
+  });
+});
+
+describe("loadCoreEnv boolean parsing", () => {
+  const ORIGINAL_ENV = process.env;
+  const base = {
+    ...baseEnv,
+    CART_COOKIE_SECRET: "secret",
+    NODE_ENV: "test",
+    NEXTAUTH_SECRET: "next",
+    SESSION_SECRET: "session",
+  } as NodeJS.ProcessEnv;
+
+  afterEach(() => {
+    jest.resetModules();
+    process.env = ORIGINAL_ENV;
+  });
+
+  describe("OUTPUT_EXPORT", () => {
+    it.each([
+      ["true", true],
+      ["false", true],
+      ["1", true],
+      ["0", true],
+      ["yes", true],
+      ["no", true],
+    ])("parses %s", async (input, expected) => {
+      process.env = { ...base, OUTPUT_EXPORT: input };
+      const { loadCoreEnv } = await import("../core.js");
+      const env = loadCoreEnv();
+      expect(env.OUTPUT_EXPORT).toBe(expected);
+    });
+  });
+
+  describe("DEPOSIT_RELEASE_ENABLED", () => {
+    it.each([
+      ["true", true],
+      ["false", false],
+    ])("accepts %s", async (input, expected) => {
+      process.env = { ...base, DEPOSIT_RELEASE_ENABLED: input };
+      const { loadCoreEnv } = await import("../core.js");
+      const env = loadCoreEnv();
+      expect(env.DEPOSIT_RELEASE_ENABLED).toBe(expected);
+    });
+
+    it.each(["1", "0", "yes", "no", " TRUE ", " false "]) (
+      "rejects %s",
+      async (input) => {
+        process.env = { ...base, DEPOSIT_RELEASE_ENABLED: input };
+        const { loadCoreEnv } = await import("../core.js");
+        expect(() => loadCoreEnv()).toThrow("Invalid core environment variables");
+      },
+    );
+  });
+});
+
+describe("loadCoreEnv number parsing", () => {
+  const ORIGINAL_ENV = process.env;
+  const base = {
+    ...baseEnv,
+    CART_COOKIE_SECRET: "secret",
+    NODE_ENV: "test",
+    NEXTAUTH_SECRET: "next",
+    SESSION_SECRET: "session",
+  } as NodeJS.ProcessEnv;
+
+  afterEach(() => {
+    jest.resetModules();
+    process.env = ORIGINAL_ENV;
+  });
+
+  describe("CART_TTL", () => {
+    it.each([
+      ["123", 123],
+      ["1.5", 1.5],
+      ["-2", -2],
+      ["0", 0],
+    ])("parses %s", async (input, expected) => {
+      process.env = { ...base, CART_TTL: input };
+      const { loadCoreEnv } = await import("../core.js");
+      const env = loadCoreEnv();
+      expect(env.CART_TTL).toBe(expected);
+    });
+
+    it("defaults when missing", async () => {
+      process.env = { ...base };
+      const { loadCoreEnv } = await import("../core.js");
+      const env = loadCoreEnv();
+      expect(env.CART_TTL).toBeUndefined();
+    });
+
+    it("rejects non-numeric", async () => {
+      process.env = { ...base, CART_TTL: "abc" };
+      const { loadCoreEnv } = await import("../core.js");
+      expect(() => loadCoreEnv()).toThrow("Invalid core environment variables");
+    });
+  });
+
+  describe("DEPOSIT_RELEASE_INTERVAL_MS", () => {
+    it.each([
+      ["1000", 1000],
+      ["1.5", 1.5],
+      ["-5", -5],
+      ["0", 0],
+    ])("parses %s", async (input, expected) => {
+      process.env = { ...base, DEPOSIT_RELEASE_INTERVAL_MS: input };
+      const { loadCoreEnv } = await import("../core.js");
+      const env = loadCoreEnv();
+      expect(env.DEPOSIT_RELEASE_INTERVAL_MS).toBe(expected);
+    });
+
+    it("defaults when missing", async () => {
+      process.env = { ...base };
+      const { loadCoreEnv } = await import("../core.js");
+      const env = loadCoreEnv();
+      expect(env.DEPOSIT_RELEASE_INTERVAL_MS).toBeUndefined();
+    });
+
+    it("rejects non-numeric", async () => {
+      process.env = { ...base, DEPOSIT_RELEASE_INTERVAL_MS: "abc" };
+      const { loadCoreEnv } = await import("../core.js");
+      expect(() => loadCoreEnv()).toThrow("Invalid core environment variables");
+    });
+  });
+});
+
+describe("NODE_ENV branches", () => {
+  const ORIGINAL_ENV = process.env;
+  const base = {
+    CMS_SPACE_URL: "https://example.com",
+    CMS_ACCESS_TOKEN: "token",
+    SANITY_API_VERSION: "v1",
+    NEXTAUTH_SECRET: "next",
+    SESSION_SECRET: "session",
+  };
+
+  afterEach(() => {
+    jest.resetModules();
+    process.env = ORIGINAL_ENV;
+  });
+
+  it.each(["development", "test"]) (
+    "defaults CART_COOKIE_SECRET in %s",
+    async (env) => {
+      process.env = { ...base, NODE_ENV: env } as NodeJS.ProcessEnv;
+      jest.resetModules();
+      const { loadCoreEnv } = await import("../core.js");
+      const parsed = loadCoreEnv();
+      expect(parsed.CART_COOKIE_SECRET).toBe("dev-cart-secret");
+    },
+  );
+
+  it("requires CART_COOKIE_SECRET in production", async () => {
+    process.env = {
+      ...base,
+      NODE_ENV: "production",
+      CART_COOKIE_SECRET: "secret",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { loadCoreEnv } = await import("../core.js");
+    const env = { ...base, NODE_ENV: "production" } as NodeJS.ProcessEnv;
+    delete env.CART_COOKIE_SECRET;
+    expect(() => loadCoreEnv(env)).toThrow(
+      "Invalid core environment variables",
+    );
+  });
+
+  it("fails fast on invalid env in production", async () => {
+    process.env = { ...base, NODE_ENV: "production" } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    await expect(import("../core.js")).rejects.toThrow(
+      "Invalid core environment variables",
+    );
+  });
+});
+
+describe("loadCoreEnv fallback precedence", () => {
+  const base = {
+    CMS_SPACE_URL: "https://cms.example.com",
+    SANITY_API_VERSION: "v1",
+  };
+
+  it("prefers process.env over .env defaults over code defaults", () => {
+    const dotenvDefaults = { CMS_ACCESS_TOKEN: "from-dotenv" };
+    const explicit = { CMS_ACCESS_TOKEN: "from-process" };
+
+    const withCodeDefault = loadCoreEnv({ ...base } as NodeJS.ProcessEnv);
+    expect(withCodeDefault.CMS_ACCESS_TOKEN).toBe("placeholder-token");
+
+    const withDotenv = loadCoreEnv({
+      ...dotenvDefaults,
+      ...base,
+    } as NodeJS.ProcessEnv);
+    expect(withDotenv.CMS_ACCESS_TOKEN).toBe("from-dotenv");
+
+    const withProcess = loadCoreEnv({
+      ...dotenvDefaults,
+      ...explicit,
+      ...base,
+    } as NodeJS.ProcessEnv);
+    expect(withProcess.CMS_ACCESS_TOKEN).toBe("from-process");
+  });
+});
+

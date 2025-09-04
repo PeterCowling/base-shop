@@ -1,20 +1,33 @@
-import { render } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { ProductGrid, type Product } from "../ProductGrid";
 import "../../../../../../test/resetNextMocks";
 
-function mockResize(width: number) {
+function mockResize(initialWidth: number) {
+  let cb: ResizeObserverCallback;
+  let element: Element;
   (global as any).ResizeObserver = class {
-    cb: ResizeObserverCallback;
-    constructor(cb: ResizeObserverCallback) {
-      this.cb = cb;
+    constructor(callback: ResizeObserverCallback) {
+      cb = callback;
     }
     observe(el: Element) {
-      Object.defineProperty(el, "clientWidth", { value: width, configurable: true });
-      this.cb([{ target: el } as ResizeObserverEntry], this);
+      element = el;
+      Object.defineProperty(el, "clientWidth", {
+        value: initialWidth,
+        configurable: true,
+      });
+      cb([{ target: el } as ResizeObserverEntry], this);
     }
     disconnect() {}
     unobserve() {}
   } as any;
+
+  return (width: number) => {
+    Object.defineProperty(element, "clientWidth", {
+      value: width,
+      configurable: true,
+    });
+    cb([{ target: element } as ResizeObserverEntry], {} as any);
+  };
 }
 
 const products: Product[] = [
@@ -32,26 +45,26 @@ const products: Product[] = [
   },
 ];
 
-describe("ProductGrid viewport counts", () => {
-  it("uses desktopItems for wide containers", () => {
-    mockResize(1200);
+describe("ProductGrid responsive columns", () => {
+  it("clamps column count between minItems and maxItems", () => {
+    const resize = mockResize(100);
     const { container } = render(
-      <ProductGrid
-        products={products}
-        desktopItems={4}
-        tabletItems={2}
-        mobileItems={1}
-        showPrice={false}
-      />
+      <ProductGrid products={products} minItems={2} maxItems={3} showPrice={false} />
     );
-    const grid = container.firstChild as HTMLElement;
+    let grid = container.firstChild as HTMLElement;
     expect(grid.style.gridTemplateColumns).toBe(
-      "repeat(4, minmax(0, 1fr))"
+      "repeat(2, minmax(0, 1fr))"
+    );
+
+    act(() => resize(2000));
+    grid = container.firstChild as HTMLElement;
+    expect(grid.style.gridTemplateColumns).toBe(
+      "repeat(3, minmax(0, 1fr))"
     );
   });
 
-  it("uses mobileItems for narrow containers", () => {
-    mockResize(400);
+  it("uses device breakpoints when provided", () => {
+    const resize = mockResize(1200);
     const { container } = render(
       <ProductGrid
         products={products}
@@ -61,9 +74,42 @@ describe("ProductGrid viewport counts", () => {
         showPrice={false}
       />
     );
-    const grid = container.firstChild as HTMLElement;
+    let grid = container.firstChild as HTMLElement;
+    expect(grid.style.gridTemplateColumns).toBe(
+      "repeat(4, minmax(0, 1fr))"
+    );
+
+    act(() => resize(800));
+    grid = container.firstChild as HTMLElement;
+    expect(grid.style.gridTemplateColumns).toBe(
+      "repeat(2, minmax(0, 1fr))"
+    );
+
+    act(() => resize(400));
+    grid = container.firstChild as HTMLElement;
     expect(grid.style.gridTemplateColumns).toBe(
       "repeat(1, minmax(0, 1fr))"
     );
   });
 });
+
+jest.mock("../../overlays/ProductQuickView", () => ({
+  ProductQuickView: ({ product }: { product: Product }) => (
+    <div data-testid={`quickview-${product.id}`} />
+  ),
+}));
+
+describe("ProductGrid quick view", () => {
+  it("renders button and opens ProductQuickView", async () => {
+    mockResize(1200);
+    render(<ProductGrid products={products} enableQuickView showPrice={false} />);
+
+    const btn = screen.getByLabelText("Quick view A");
+    expect(btn).toBeInTheDocument();
+
+    fireEvent.click(btn);
+    const modal = await screen.findByTestId("quickview-1");
+    expect(modal).toBeInTheDocument();
+  });
+});
+

@@ -34,8 +34,29 @@ describe('getCsrfToken', () => {
       expect(getCsrfToken(req)).toBe('header-token');
     });
 
+    it('is case-insensitive for X-CSRF-Token header', () => {
+      const req = new Request('https://example.com', {
+        headers: { 'X-CsRf-ToKeN': 'mixed-case-token' },
+      });
+      expect(getCsrfToken(req)).toBe('mixed-case-token');
+    });
+
+    it('returns token from cookie when header and query are absent', () => {
+      const req = new Request('https://example.com', {
+        headers: { cookie: 'csrf_token=cookie-token' },
+      });
+      expect(getCsrfToken(req)).toBe('cookie-token');
+    });
+
     it('returns token from query parameter', () => {
       const req = new Request('https://example.com?csrf_token=query-token');
+      expect(getCsrfToken(req)).toBe('query-token');
+    });
+
+    it('query token overrides cookie token', () => {
+      const req = new Request('https://example.com?csrf_token=query-token', {
+        headers: { cookie: 'csrf_token=cookie-token' },
+      });
       expect(getCsrfToken(req)).toBe('query-token');
     });
 
@@ -54,6 +75,23 @@ describe('getCsrfToken', () => {
         headers: { cookie: 'foo=bar' },
       });
       expect(getCsrfToken(req)).toBeUndefined();
+    });
+
+    it('trims surrounding whitespace from tokens', () => {
+      const reqHeader = new Request('https://example.com', {
+        headers: { 'x-csrf-token': '  header-token  ' },
+      });
+      expect(getCsrfToken(reqHeader)).toBe('header-token');
+
+      const reqQuery = new Request(
+        'https://example.com?csrf_token=%20query-token%20'
+      );
+      expect(getCsrfToken(reqQuery)).toBe('query-token');
+
+      const reqCookie = new Request('https://example.com', {
+        headers: { cookie: 'csrf_token= cookie-token ' },
+      });
+      expect(getCsrfToken(reqCookie)).toBe('cookie-token');
     });
 
     it('treats whitespace-only tokens as missing', () => {

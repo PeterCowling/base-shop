@@ -11,6 +11,7 @@ export function resolveTemplatesRoot(): string {
       dir,
       "packages",
       "ui",
+      "src",
       "components",
       "templates"
     );
@@ -23,6 +24,7 @@ export function resolveTemplatesRoot(): string {
     process.cwd(),
     "packages",
     "ui",
+    "src",
     "components",
     "templates"
   );
@@ -33,6 +35,7 @@ export async function GET(
   context: { params: Promise<{ name: string }> }
 ) {
   try {
+    const { resolveTemplatesRoot } = await import("./route");
     const dir = resolveTemplatesRoot();
     const { name } = await context.params;
     const file = path.join(dir, `${name}.json`);

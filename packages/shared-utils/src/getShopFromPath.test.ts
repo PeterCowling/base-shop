@@ -13,8 +13,20 @@ describe("getShopFromPath", () => {
     expect(getShopFromPath("/cms/pages?shop=demo")).toBe("demo");
   });
 
+  it("handles trailing slashes for shop paths", () => {
+    expect(getShopFromPath("/cms/shop/demo/")).toBe("demo");
+    expect(getShopFromPath("/cms/shops/demo/")).toBe("demo");
+  });
+
+  it("handles additional nested segments after the slug", () => {
+    expect(getShopFromPath("/shop/demo/products/123")).toBe("demo");
+    expect(getShopFromPath("/shops/demo/settings/profile")).toBe("demo");
+  });
+
   it("returns undefined when the shop segment is missing", () => {
     expect(getShopFromPath("/cms/foo/bar")).toBeUndefined();
+    expect(getShopFromPath("/cms/foo/bar/")).toBeUndefined();
+    expect(getShopFromPath("/cms/pages?foo=bar")).toBeUndefined();
   });
 
   it("returns undefined when no slug is present", () => {

@@ -61,6 +61,7 @@ describe("shops repository", () => {
 
       expect(result.name).toBe("DB Shop");
       expect(result.themeDefaults).toEqual({ color: "green" });
+      expect(result.themeTokens).toEqual({ color: "blue" });
       expect(readFile).not.toHaveBeenCalled();
       expect(loadTokens).not.toHaveBeenCalled();
     });
@@ -83,12 +84,37 @@ describe("shops repository", () => {
       expect(result.name).toBe("FS Shop");
       expect(result.themeDefaults).toEqual({ color: "red" });
       expect(result.themeOverrides).toEqual({ color: "blue" });
+      expect(result.themeTokens).toEqual({ color: "blue" });
       expect(findUnique).toHaveBeenCalled();
       expect(readFile).toHaveBeenCalledWith(
         "/data/root/shop1/shop.json",
         "utf8",
       );
       expect(loadTokens).not.toHaveBeenCalled();
+    });
+
+    it("falls back to filesystem when Prisma returns null", async () => {
+      findUnique.mockResolvedValue(null);
+      const fileData = {
+        id: "shop-null",
+        name: "FS Null",
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+        themeDefaults: { color: "red" },
+        themeOverrides: { color: "blue" },
+      };
+      readFile.mockResolvedValue(JSON.stringify(fileData));
+
+      const result = await readShop("shop-null");
+
+      expect(result.name).toBe("FS Null");
+      expect(findUnique).toHaveBeenCalled();
+      expect(readFile).toHaveBeenCalledWith(
+        "/data/root/shop-null/shop.json",
+        "utf8",
+      );
+      expect(result.themeTokens).toEqual({ color: "blue" });
     });
 
     it("falls back to filesystem when Prisma returns invalid data", async () => {
@@ -121,8 +147,8 @@ describe("shops repository", () => {
       expect(loadTokens).not.toHaveBeenCalled();
     });
 
-    it("returns empty shop with defaults when db and fs fail", async () => {
-      findUnique.mockRejectedValue(new Error("db fail"));
+    it("returns empty shop with defaults when db returns null and fs fails", async () => {
+      findUnique.mockResolvedValue(null);
       readFile.mockRejectedValue(new Error("fs fail"));
 
       const result = await readShop("missing");
@@ -131,6 +157,8 @@ describe("shops repository", () => {
       expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
       expect(result.themeOverrides).toEqual({});
       expect(result.themeTokens).toEqual({ base: "base", theme: "theme" });
+      expect(result.analyticsEnabled).toBe(false);
+      expect(result.subscriptionsEnabled).toBe(false);
       expect(loadTokens).toHaveBeenCalled();
     });
 

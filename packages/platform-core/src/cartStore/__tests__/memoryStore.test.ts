@@ -31,6 +31,24 @@ describe("MemoryCartStore", () => {
     });
   });
 
+  it("deleteCart removes cart", async () => {
+    const store = new MemoryCartStore(60);
+    await store.setCart("cart", { [sku.id!]: { sku, qty: 1 } });
+    await store.deleteCart("cart");
+    expect(await store.getCart("cart")).toEqual({});
+  });
+
+  it("incrementQty refreshes ttl and appends to existing line", async () => {
+    jest.setSystemTime(0);
+    const store = new MemoryCartStore(1);
+    await store.setCart("cart", { [sku.id!]: { sku, qty: 1 } });
+    jest.setSystemTime(500);
+    const cart = await store.incrementQty("cart", sku, 2);
+    expect(cart).toEqual({ [sku.id!]: { sku, qty: 3 } });
+    jest.setSystemTime(1300);
+    expect(await store.getCart("cart")).toEqual({ [sku.id!]: { sku, qty: 3 } });
+  });
+
   describe("setQty", () => {
     it("returns null when cart expired", async () => {
       jest.setSystemTime(0);
@@ -65,6 +83,15 @@ describe("MemoryCartStore", () => {
       const store = new MemoryCartStore(60);
       await store.setCart("cart", {});
       expect(await store.removeItem("cart", sku.id!)).toBeNull();
+    });
+
+    it("returns null and removes expired cart", async () => {
+      jest.setSystemTime(0);
+      const store = new MemoryCartStore(1);
+      await store.setCart("cart", { [sku.id!]: { sku, qty: 1 } });
+      jest.setSystemTime(2000);
+      expect(await store.removeItem("cart", sku.id!)).toBeNull();
+      expect(await store.getCart("cart")).toEqual({});
     });
   });
 });

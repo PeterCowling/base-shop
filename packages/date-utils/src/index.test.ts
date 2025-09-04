@@ -45,10 +45,31 @@ describe("parseTargetDate", () => {
   it("assumes UTC when timezone omitted", () => {
     expect(parseTargetDate("2025-01-01T00:00:00")?.toISOString()).toBe("2025-01-01T00:00:00.000Z");
   });
+  it("interprets plain dates in local time", () => {
+    expect(parseTargetDate("2025-01-01")?.toISOString()).toBe(
+      "2024-12-31T23:00:00.000Z"
+    );
+  });
   it("parses strings with timezone", () => {
     expect(
       parseTargetDate("2025-01-01T00:00:00", "America/New_York")?.toISOString()
     ).toBe("2025-01-01T05:00:00.000Z");
+  });
+  it("returns null when target date missing", () => {
+    expect(parseTargetDate()).toBeNull();
+  });
+  it("normalizes start and end of day with timezone", () => {
+    const start = parseTargetDate(
+      "2025-01-01T00:00:00",
+      "America/New_York"
+    )!;
+    const end = parseTargetDate(
+      "2025-01-01T23:59:59",
+      "America/New_York"
+    )!;
+    expect(start.toISOString()).toBe("2025-01-01T05:00:00.000Z");
+    expect(end.toISOString()).toBe("2025-01-02T04:59:59.000Z");
+    expect(end.getTime() - start.getTime()).toBe(86_399_000);
   });
   it("handles DST boundaries", () => {
     const before = parseTargetDate("2025-03-30T01:30:00", "Europe/Rome")!;
@@ -84,6 +105,16 @@ describe("getTimeRemaining", () => {
     const target = new Date("2024-12-31T23:59:50Z");
     expect(getTimeRemaining(target)).toBe(-10000);
   });
+  it("returns zero when target equals now", () => {
+    const target = new Date("2025-01-01T00:00:00Z");
+    expect(getTimeRemaining(target)).toBe(0);
+  });
+  it("accounts for DST when spanning days", () => {
+    const now = parseTargetDate("2025-03-09T00:00:00", "America/New_York")!;
+    const target = parseTargetDate("2025-03-10T00:00:00", "America/New_York")!;
+    jest.setSystemTime(now);
+    expect(getTimeRemaining(target)).toBe(23 * 60 * 60 * 1000);
+  });
 });
 
 describe("formatDuration", () => {
@@ -95,6 +126,9 @@ describe("formatDuration", () => {
   });
   it("formats multi-day durations", () => {
     expect(formatDuration(90061000)).toBe("1d 1h 1m 1s");
+  });
+  it("formats exactly one day", () => {
+    expect(formatDuration(24 * 60 * 60 * 1000)).toBe("1d 0h 0m 0s");
   });
 });
 

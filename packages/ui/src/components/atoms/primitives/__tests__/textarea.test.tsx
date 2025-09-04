@@ -3,6 +3,14 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { Textarea } from "../textarea";
 
 describe("Textarea", () => {
+  it("applies wrapper class to outer div", () => {
+    const { container } = render(
+      <Textarea wrapperClassName="custom-wrapper" />
+    );
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper).toHaveClass("custom-wrapper");
+  });
+
   it("renders label above textarea in standard mode", () => {
     const { container } = render(<Textarea label="Notes" />);
     const wrapper = container.firstChild as HTMLElement;

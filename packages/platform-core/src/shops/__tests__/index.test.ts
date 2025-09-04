@@ -20,6 +20,12 @@ describe("validateShopName", () => {
     expect(() => validateShopName("bad name")).toThrow(/Invalid shop name/);
   });
 
+  it("rejects empty or whitespace-only names", () => {
+    for (const invalid of ["", " ", "\n\t"]) {
+      expect(() => validateShopName(invalid)).toThrow(/Invalid shop name/);
+    }
+  });
+
   it("rejects names with special characters", () => {
     for (const invalid of ["bad/name", "bad@name", "bad$name"]) {
       expect(() => validateShopName(invalid)).toThrow(/Invalid shop name/);
@@ -28,6 +34,18 @@ describe("validateShopName", () => {
 });
 
 describe("sanityBlog accessors", () => {
+  it("returns undefined for empty shop", () => {
+    expect(getSanityConfig({} as Shop)).toBeUndefined();
+  });
+
+  it("clones when clearing absent config", () => {
+    const shop: Shop = { other: true };
+    const result = setSanityConfig(shop, undefined);
+    expect(result).not.toBe(shop);
+    expect(result).toEqual(shop);
+    expect("sanityBlog" in result).toBe(false);
+  });
+
   it("adds and removes config", () => {
     const shop: Shop = { other: true };
     const original = { ...shop };
@@ -51,6 +69,18 @@ describe("sanityBlog accessors", () => {
 });
 
 describe("editorialBlog accessors", () => {
+  it("returns undefined for empty shop", () => {
+    expect(getEditorialBlog({} as Shop)).toBeUndefined();
+  });
+
+  it("clones when clearing absent blog", () => {
+    const shop: Shop = { other: true };
+    const result = setEditorialBlog(shop, undefined);
+    expect(result).not.toBe(shop);
+    expect(result).toEqual(shop);
+    expect("editorialBlog" in result).toBe(false);
+  });
+
   it("adds and removes editorial blog", () => {
     const shop: Shop = { other: true };
     const original = { ...shop };
@@ -74,6 +104,18 @@ describe("editorialBlog accessors", () => {
 });
 
 describe("domain accessors", () => {
+  it("returns undefined for empty shop", () => {
+    expect(getDomain({} as Shop)).toBeUndefined();
+  });
+
+  it("clones when clearing absent domain", () => {
+    const shop: Shop = { other: true };
+    const result = setDomain(shop, undefined);
+    expect(result).not.toBe(shop);
+    expect(result).toEqual(shop);
+    expect("domain" in result).toBe(false);
+  });
+
   it("adds and removes domain", () => {
     const shop: Shop = { other: true };
     const original = { ...shop };

@@ -33,7 +33,9 @@ export async function GET(
   context: { params: Promise<{ name: string }> }
 ) {
   try {
-    const dir = resolveTemplatesRoot();
+    const root = (this as { resolveTemplatesRoot?: typeof resolveTemplatesRoot })
+      ?.resolveTemplatesRoot ?? resolveTemplatesRoot;
+    const dir = root();
     const { name } = await context.params;
     const file = path.join(dir, `${name}.json`);
     const buf = await fs.readFile(file, "utf8");

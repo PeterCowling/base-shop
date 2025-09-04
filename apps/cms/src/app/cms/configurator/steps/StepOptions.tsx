@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/atoms/shadcn";
-import { useCallback, useEffect, type ChangeEvent } from "react";
+import { useCallback, useEffect, useState, type ChangeEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
@@ -18,20 +18,27 @@ import type { ConfiguratorStepProps } from "@/types/configurator";
 
 export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element {
   const { state, update } = useConfigurator();
-  const {
-    shopId,
-    payment,
-    shipping,
-    analyticsProvider,
-    analyticsId,
-  } = state;
+  const { shopId, payment, shipping } = state;
+  const [analyticsProvider, setAnalyticsProviderState] = useState(
+    state.analyticsProvider,
+  );
+  const [analyticsId, setAnalyticsIdState] = useState(state.analyticsId);
   const setPayment = useCallback((v: string[]) => update("payment", v), [update]);
   const setShipping = useCallback((v: string[]) => update("shipping", v), [update]);
   const setAnalyticsProvider = useCallback(
-    (v: string) => update("analyticsProvider", v),
+    (v: string) => {
+      setAnalyticsProviderState(v);
+      update("analyticsProvider", v);
+    },
     [update],
   );
-  const setAnalyticsId = useCallback((v: string) => update("analyticsId", v), [update]);
+  const setAnalyticsId = useCallback(
+    (v: string) => {
+      setAnalyticsIdState(v);
+      update("analyticsId", v);
+    },
+    [update],
+  );
 
   const router = useRouter();
   const searchParams = useSearchParams();

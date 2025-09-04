@@ -159,13 +159,10 @@ export const deployShop: (
 export function listThemes(): string[] {
   const themesDir = join(repoRoot(), "packages", "themes");
   try {
-    return fs.readdirSync(themesDir).filter((name) => {
-      try {
-        return fs.statSync(join(themesDir, name)).isDirectory();
-      } catch {
-        return false;
-      }
-    });
+    return fs
+      .readdirSync(themesDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory())
+      .map((d) => d.name);
   } catch {
     return [];
   }

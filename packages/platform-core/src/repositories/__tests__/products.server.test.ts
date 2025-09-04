@@ -63,6 +63,18 @@ describe("products repository", () => {
     expect(writeFile).not.toHaveBeenCalled();
   });
 
+  it("deleteProductFromRepo removes product when present", async () => {
+    const readFile = jest.fn().mockResolvedValue('[{"id":"1"},{"id":"2"}]');
+    const writeFile = jest.fn();
+    const mkdir = jest.fn();
+    const rename = jest.fn();
+    jest.doMock("fs", () => ({ promises: { readFile, writeFile, mkdir, rename } }));
+    const { deleteProductFromRepo } = await import("../products.server");
+    await expect(deleteProductFromRepo(shop, "1")).resolves.toBeUndefined();
+    const written = JSON.parse(writeFile.mock.calls[0][1]);
+    expect(written).toEqual([{ id: "2" }]);
+  });
+
   describe("duplicateProductInRepo", () => {
     it("duplicates product with new id and sku", async () => {
       const product = {

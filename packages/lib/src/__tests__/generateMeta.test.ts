@@ -4,7 +4,26 @@ import path from "path";
 describe("generateMeta", () => {
   const product = { id: "123", title: "Title", description: "Desc" };
 
-  it("returns deterministic metadata in test env without API key", async () => {
+  it.each([
+    {
+      env: "test",
+      expected: {
+        title: "AI title",
+        description: "AI description",
+        alt: "alt",
+        image: `/og/${product.id}.png`,
+      },
+    },
+    {
+      env: "production",
+      expected: {
+        title: product.title,
+        description: product.description,
+        alt: product.title,
+        image: `/og/${product.id}.png`,
+      },
+    },
+  ])("handles missing API key in %s env", async ({ env, expected }) => {
     const writeMock = jest.fn();
     const mkdirMock = jest.fn();
     let result;
@@ -14,47 +33,42 @@ describe("generateMeta", () => {
       jest.doMock("fs", () => ({ promises: { writeFile: writeMock, mkdir: mkdirMock } }));
       jest.doMock("openai", () => { throw new Error("should not import"); }, { virtual: true });
       const originalEnv = process.env.NODE_ENV;
-      process.env.NODE_ENV = "test";
+      process.env.NODE_ENV = env as string;
       const { generateMeta } = await import("../generateMeta");
       result = await generateMeta(product);
       process.env.NODE_ENV = originalEnv;
     });
-    expect(result).toEqual({
-      title: "AI title",
-      description: "AI description",
-      alt: "alt",
-      image: `/og/${product.id}.png`,
-    });
+    expect(result).toEqual(expected);
     expect(writeMock).not.toHaveBeenCalled();
     expect(mkdirMock).not.toHaveBeenCalled();
   });
 
-  it("returns raw metadata when no API key outside tests", async () => {
-    const writeMock = jest.fn();
-    const mkdirMock = jest.fn();
-    let result;
-    await jest.isolateModulesAsync(async () => {
-      const envMock = { OPENAI_API_KEY: undefined } as { OPENAI_API_KEY: string | undefined };
-      jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
-      jest.doMock("fs", () => ({ promises: { writeFile: writeMock, mkdir: mkdirMock } }));
-      jest.doMock("openai", () => { throw new Error("should not import"); }, { virtual: true });
-      const originalEnv = process.env.NODE_ENV;
-      process.env.NODE_ENV = "production";
-      const { generateMeta } = await import("../generateMeta");
-      result = await generateMeta(product);
-      process.env.NODE_ENV = originalEnv;
-    });
-    expect(result).toEqual({
-      title: product.title,
-      description: product.description,
-      alt: product.title,
-      image: `/og/${product.id}.png`,
-    });
-    expect(writeMock).not.toHaveBeenCalled();
-    expect(mkdirMock).not.toHaveBeenCalled();
-  });
-
-  it("falls back when __OPENAI_IMPORT_ERROR__ is set", async () => {
+  it.each([
+    {
+      scenario: "__OPENAI_IMPORT_ERROR__ is set",
+      setup: () => {
+        (globalThis as any).__OPENAI_IMPORT_ERROR__ = true;
+        jest.doMock("openai", () => {
+          throw new Error("should not import");
+        }, { virtual: true });
+      },
+      teardown: () => {
+        delete (globalThis as any).__OPENAI_IMPORT_ERROR__;
+      },
+    },
+    {
+      scenario: "dynamic import rejects",
+      setup: () => {
+        jest.doMock(
+          "openai",
+          () => {
+            throw new Error("boom");
+          },
+          { virtual: true },
+        );
+      },
+    },
+  ])("returns fallback when %s", async ({ setup, teardown }) => {
     const writeMock = jest.fn();
     const mkdirMock = jest.fn();
     let result;
@@ -62,32 +76,10 @@ describe("generateMeta", () => {
       const envMock = { OPENAI_API_KEY: "key" };
       jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
       jest.doMock("fs", () => ({ promises: { writeFile: writeMock, mkdir: mkdirMock } }));
-      (globalThis as any).__OPENAI_IMPORT_ERROR__ = true;
+      setup();
       const { generateMeta } = await import("../generateMeta");
       result = await generateMeta(product);
-      delete (globalThis as any).__OPENAI_IMPORT_ERROR__;
-    });
-    expect(result).toEqual({
-      title: product.title,
-      description: product.description,
-      alt: product.title,
-      image: `/og/${product.id}.png`,
-    });
-    expect(writeMock).not.toHaveBeenCalled();
-    expect(mkdirMock).not.toHaveBeenCalled();
-  });
-
-  it("returns fallback when OpenAI import throws", async () => {
-    const writeMock = jest.fn();
-    const mkdirMock = jest.fn();
-    let result;
-    await jest.isolateModulesAsync(async () => {
-      const envMock = { OPENAI_API_KEY: "key" };
-      jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
-      jest.doMock("fs", () => ({ promises: { writeFile: writeMock, mkdir: mkdirMock } }));
-      jest.doMock("openai", () => { throw new Error("boom"); }, { virtual: true });
-      const { generateMeta } = await import("../generateMeta");
-      result = await generateMeta(product);
+      teardown?.();
     });
     expect(result).toEqual({
       title: product.title,

@@ -82,7 +82,6 @@ describe('parseJsonBody', () => {
       error: 'Payload Too Large',
     });
   });
-
   it('returns 400 for invalid JSON', async () => {
     const req = {
       text: jest.fn().mockResolvedValue('{invalid'),
@@ -120,73 +119,109 @@ describe('parseJsonBody', () => {
     });
   });
 
-  it('parses valid JSON when Content-Type is application/json', async () => {
-    const req = new Request('http://example.com', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ foo: 'bar' }),
+  describe.each(['GET', 'POST'] as const)('%s requests', (method) => {
+    describe('Content-Type handling', () => {
+      const cases = [
+        {
+          label: 'application/json',
+          headers: { 'Content-Type': 'application/json' },
+          ok: true,
+        },
+        { label: 'no Content-Type', headers: {}, ok: true },
+        {
+          label: 'incorrect Content-Type',
+          headers: { 'Content-Type': 'text/plain' },
+          ok: false,
+        },
+        {
+          label: 'application/json with charset',
+          headers: { 'Content-Type': 'application/json; charset=utf-8' },
+          ok: true,
+        },
+      ] as const;
+
+      it.each(cases)('handles %s', async ({ headers, ok }) => {
+        const req = {
+          method,
+          headers: new Headers(headers),
+          text: jest.fn().mockResolvedValue(JSON.stringify({ foo: 'bar' })),
+        } as unknown as Request;
+
+        const result = await parseJsonBody(req, schema, '1kb');
+
+        if (ok) {
+          expect(result).toEqual({ success: true, data: { foo: 'bar' } });
+        } else {
+          expect(result.success).toBe(false);
+          expect(result.response.status).toBe(400);
+          await expect(result.response.json()).resolves.toEqual({
+            error: 'Invalid JSON',
+          });
+        }
+      });
     });
 
-    await expect(parseJsonBody(req, schema, '1kb')).resolves.toEqual({
-      success: true,
-      data: { foo: 'bar' },
-    });
-  });
+    describe('body states', () => {
+      const atLimitData = { foo: 'a'.repeat(10) };
+      const atLimitBody = JSON.stringify(atLimitData);
+      const atLimit = new TextEncoder().encode(atLimitBody).length;
 
-  it('rejects mismatched Content-Type', async () => {
-    const req = new Request('http://example.com', {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify({ foo: 'bar' }),
-    });
+      const cases = [
+        {
+          label: 'empty string',
+          body: '',
+          status: 400,
+          error: { error: 'Invalid JSON' },
+        },
+        {
+          label: 'whitespace-only string',
+          body: '   ',
+          status: 400,
+          error: { error: 'Invalid JSON' },
+        },
+        {
+          label: 'valid JSON',
+          body: JSON.stringify({ foo: 'bar' }),
+          data: { foo: 'bar' },
+        },
+        {
+          label: 'invalid JSON',
+          body: '{invalid',
+          status: 400,
+          error: { error: 'Invalid JSON' },
+        },
+        {
+          label: 'JSON at size limit',
+          body: atLimitBody,
+          limit: atLimit,
+          data: atLimitData,
+        },
+        { label: 'null', body: 'null', status: 400, error: {} },
+        {
+          label: 'undefined',
+          body: undefined,
+          status: 400,
+          error: { error: 'Invalid JSON' },
+        },
+      ] as const;
 
-    const result = await parseJsonBody(req, schema, '1kb');
-    expect(result.success).toBe(false);
-    expect(result.response.status).toBe(400);
-    await expect(result.response.json()).resolves.toEqual({
-      error: 'Invalid JSON',
-    });
-  });
+      it.each(cases)('handles %s', async ({ body, limit = '1kb', data, status, error }) => {
+        const req = {
+          method,
+          headers: new Headers({ 'Content-Type': 'application/json' }),
+          text: jest.fn().mockResolvedValue(body as any),
+        } as unknown as Request;
 
-  it('returns 400 when body is empty', async () => {
-    const req = new Request('http://example.com', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: '',
-    });
+        const result = await parseJsonBody(req, schema, limit);
 
-    const result = await parseJsonBody(req, schema, '1kb');
-    expect(result.success).toBe(false);
-    expect(result.response.status).toBe(400);
-    await expect(result.response.json()).resolves.toEqual({
-      error: 'Invalid JSON',
-    });
-  });
-
-  it('returns 400 when body is undefined', async () => {
-    const req = new Request('http://example.com', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    });
-
-    const result = await parseJsonBody(req, schema, '1kb');
-    expect(result.success).toBe(false);
-    expect(result.response.status).toBe(400);
-    await expect(result.response.json()).resolves.toEqual({
-      error: 'Invalid JSON',
-    });
-  });
-
-  it('accepts Content-Type with charset parameter', async () => {
-    const req = new Request('http://example.com', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      body: JSON.stringify({ foo: 'bar' }),
-    });
-
-    await expect(parseJsonBody(req, schema, '1kb')).resolves.toEqual({
-      success: true,
-      data: { foo: 'bar' },
+        if (data) {
+          expect(result).toEqual({ success: true, data });
+        } else {
+          expect(result.success).toBe(false);
+          expect(result.response.status).toBe(status);
+          await expect(result.response.json()).resolves.toEqual(error);
+        }
+      });
     });
   });
 

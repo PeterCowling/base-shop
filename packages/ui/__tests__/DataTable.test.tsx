@@ -61,6 +61,24 @@ describe("DataTable", () => {
     expect(handleChange).toHaveBeenLastCalledWith([]);
   });
 
+  it("renders without selection when selectable is false", () => {
+    const handleChange = jest.fn();
+    render(
+      <DataTable
+        rows={rows}
+        columns={columns}
+        selectable={false}
+        onSelectionChange={handleChange}
+      />
+    );
+
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+
+    const aliceRow = screen.getByText("Alice").closest("tr") as HTMLElement;
+    fireEvent.click(aliceRow);
+    expect(handleChange).not.toHaveBeenCalled();
+  });
+
   it("applies column widths", () => {
     render(<DataTable rows={rows} columns={columns} />);
     const nameHeader = screen.getByText("Name").closest("th") as HTMLElement;

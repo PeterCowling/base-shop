@@ -12,17 +12,20 @@ export async function readJsonFile<T>(file: string, fallback: T): Promise<T> {
   }
 }
 
-export async function writeJsonFile(file: string, value: any): Promise<void> {
-  if (
-    value === undefined ||
-    typeof value !== "object" ||
-    value === null ||
-    Array.isArray(value)
-  ) {
-    throw new TypeError("Expected value to be a non-null object");
+export async function writeJsonFile(
+  file: string,
+  value: unknown,
+  indent?: number,
+): Promise<void> {
+  if (value === undefined || value === null || typeof value !== "object") {
+    throw new TypeError("Expected value to be a non-null object or array");
   }
 
   await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(file, JSON.stringify(value, null, 2), "utf8");
+  await fs.writeFile(
+    file,
+    JSON.stringify(value, null, indent ?? 2),
+    "utf8",
+  );
 }
 

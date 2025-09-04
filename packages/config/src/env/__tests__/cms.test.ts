@@ -386,4 +386,121 @@ describe("cms env module", () => {
     );
     errorSpy.mockRestore();
   });
+
+  it("normalizes CMS_BASE_URL with trailing slash", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      CMS_SPACE_URL: "https://cms.example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2024-01-01",
+      CMS_BASE_URL: "https://cms.example.com/",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { cmsEnv } = await import("../cms.ts");
+    expect(cmsEnv.CMS_BASE_URL).toBe("https://cms.example.com");
+  });
+
+  it("keeps CMS_BASE_URL without trailing slash", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      CMS_SPACE_URL: "https://cms.example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2024-01-01",
+      CMS_BASE_URL: "https://cms.example.com",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { cmsEnv } = await import("../cms.ts");
+    expect(cmsEnv.CMS_BASE_URL).toBe("https://cms.example.com");
+  });
+
+  it("throws on invalid CMS_BASE_URL", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      CMS_SPACE_URL: "https://cms.example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2024-01-01",
+      CMS_BASE_URL: "not-a-url",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../cms.ts")).rejects.toThrow(
+      "Invalid CMS environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid CMS environment variables:",
+      expect.objectContaining({
+        CMS_BASE_URL: { _errors: [expect.any(String)] },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("uses default pagination limit when unset", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      CMS_SPACE_URL: "https://cms.example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2024-01-01",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { cmsEnv } = await import("../cms.ts");
+    expect(cmsEnv.CMS_PAGINATION_LIMIT).toBe(100);
+  });
+
+  it("overrides pagination limit when provided", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      CMS_SPACE_URL: "https://cms.example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2024-01-01",
+      CMS_PAGINATION_LIMIT: "25",
+    } as unknown as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { cmsEnv } = await import("../cms.ts");
+    expect(cmsEnv.CMS_PAGINATION_LIMIT).toBe(25);
+  });
+
+  it("defaults feature flags to disabled with empty paths", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      CMS_SPACE_URL: "https://cms.example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2024-01-01",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { cmsEnv } = await import("../cms.ts");
+    expect(cmsEnv.CMS_DRAFTS_ENABLED).toBe(false);
+    expect(cmsEnv.CMS_DRAFTS_DISABLED_PATHS).toEqual([]);
+    expect(cmsEnv.CMS_SEARCH_ENABLED).toBe(false);
+    expect(cmsEnv.CMS_SEARCH_DISABLED_PATHS).toEqual([]);
+  });
+
+  it("parses feature flag overrides", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      CMS_SPACE_URL: "https://cms.example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2024-01-01",
+      CMS_DRAFTS_ENABLED: "true",
+      CMS_DRAFTS_DISABLED_PATHS: "/draft1,/draft2",
+      CMS_SEARCH_ENABLED: "true",
+      CMS_SEARCH_DISABLED_PATHS: "/search1",
+    } as unknown as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { cmsEnv } = await import("../cms.ts");
+    expect(cmsEnv.CMS_DRAFTS_ENABLED).toBe(true);
+    expect(cmsEnv.CMS_DRAFTS_DISABLED_PATHS).toEqual([
+      "/draft1",
+      "/draft2",
+    ]);
+    expect(cmsEnv.CMS_SEARCH_ENABLED).toBe(true);
+    expect(cmsEnv.CMS_SEARCH_DISABLED_PATHS).toEqual(["/search1"]);
+  });
 });

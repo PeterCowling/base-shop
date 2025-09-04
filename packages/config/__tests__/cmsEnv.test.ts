@@ -18,7 +18,7 @@ describe("cmsEnv", () => {
     } as NodeJS.ProcessEnv;
 
     const { cmsEnv } = await import("../src/env/cms");
-    expect(cmsEnv).toEqual({
+    expect(cmsEnv).toMatchObject({
       CMS_SPACE_URL: "https://example.com",
       CMS_ACCESS_TOKEN: "token",
       SANITY_API_VERSION: "2023-01-01",
@@ -32,7 +32,7 @@ describe("cmsEnv", () => {
 
     const { cmsEnv } = await import("../src/env/cms");
 
-    expect(cmsEnv).toEqual({
+    expect(cmsEnv).toMatchObject({
       CMS_SPACE_URL: "https://cms.example.com",
       CMS_ACCESS_TOKEN: "placeholder-token",
       SANITY_API_VERSION: "2021-10-21",

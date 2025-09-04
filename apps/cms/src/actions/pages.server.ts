@@ -140,7 +140,7 @@ export async function savePageDraft(
         slug: "",
         status: "draft",
         components,
-        history: history ?? historyStateSchema.parse({}),
+        history: history ?? historyStateSchema.parse(undefined),
         seo: {
           title: emptyTranslated(),
           description: emptyTranslated(),

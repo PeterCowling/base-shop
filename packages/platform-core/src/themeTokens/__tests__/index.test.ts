@@ -32,8 +32,9 @@ describe('loadThemeTokensNode', () => {
 });
 
 describe('loadThemeTokensBrowser', () => {
-  const fancyDir = '/workspace/base-shop/packages/themes/fancy/src';
-  const altDir = '/workspace/base-shop/packages/themes/alt/tailwind-tokens/src';
+  const rootDir = join(__dirname, '../../../../..');
+  const fancyDir = join(rootDir, 'packages/themes/fancy/src');
+  const altDir = join(rootDir, 'packages/themes/alt/tailwind-tokens/src');
 
   beforeAll(() => {
     fs.mkdirSync(fancyDir, { recursive: true });
@@ -49,8 +50,8 @@ describe('loadThemeTokensBrowser', () => {
   });
 
   afterAll(() => {
-    fs.rmSync('/workspace/base-shop/packages/themes/fancy', { recursive: true, force: true });
-    fs.rmSync('/workspace/base-shop/packages/themes/alt', { recursive: true, force: true });
+    fs.rmSync(join(rootDir, 'packages/themes/fancy'), { recursive: true, force: true });
+    fs.rmSync(join(rootDir, 'packages/themes/alt'), { recursive: true, force: true });
   });
 
   it('uses tokens exported from theme package', async () => {

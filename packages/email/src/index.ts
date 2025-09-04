@@ -1,20 +1,17 @@
 import "server-only";
 import { sendEmail } from "./sendEmail";
+import { createRequire } from "module";
 
 try {
-  if (typeof require !== "undefined") {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { setEmailService } = require(
-      "@acme/platform-core/services/emailService"
-    );
-    setEmailService({ sendEmail });
-  } else {
-    void import("@acme/platform-core/services/emailService").then(
-      ({ setEmailService }) => {
-        setEmailService({ sendEmail });
-      }
-    );
-  }
+  const req =
+    typeof require !== "undefined"
+      ? require
+      : createRequire(process.cwd() + "/");
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const { setEmailService } = req(
+    "@acme/platform-core/services/emailService"
+  );
+  setEmailService({ sendEmail });
 } catch {
   // The core email service isn't available in the current environment.
 }

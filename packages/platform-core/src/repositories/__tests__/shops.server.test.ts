@@ -91,6 +91,36 @@ describe("shops repository", () => {
       expect(loadTokens).not.toHaveBeenCalled();
     });
 
+    it("falls back to filesystem when Prisma returns invalid data", async () => {
+      const badDbData = {
+        id: "shop-bad",
+        name: 123,
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+      } as any;
+      findUnique.mockResolvedValue({ data: badDbData });
+      const fileData = {
+        id: "shop-bad",
+        name: "FS Fallback",
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+        themeDefaults: { color: "red" },
+        themeOverrides: { color: "blue" },
+      };
+      readFile.mockResolvedValue(JSON.stringify(fileData));
+
+      const result = await readShop("shop-bad");
+
+      expect(result.name).toBe("FS Fallback");
+      expect(readFile).toHaveBeenCalledWith(
+        "/data/root/shop-bad/shop.json",
+        "utf8",
+      );
+      expect(loadTokens).not.toHaveBeenCalled();
+    });
+
     it("returns empty shop with defaults when db and fs fail", async () => {
       findUnique.mockRejectedValue(new Error("db fail"));
       readFile.mockRejectedValue(new Error("fs fail"));
@@ -98,6 +128,25 @@ describe("shops repository", () => {
       const result = await readShop("missing");
 
       expect(result.id).toBe("missing");
+      expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
+      expect(result.themeOverrides).toEqual({});
+      expect(result.themeTokens).toEqual({ base: "base", theme: "theme" });
+      expect(loadTokens).toHaveBeenCalled();
+    });
+
+    it("returns empty shop with defaults when fs has invalid data", async () => {
+      findUnique.mockRejectedValue(new Error("db fail"));
+      const invalidFileData = {
+        name: "No ID",
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+      };
+      readFile.mockResolvedValue(JSON.stringify(invalidFileData));
+
+      const result = await readShop("broken");
+
+      expect(result.id).toBe("broken");
       expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
       expect(result.themeOverrides).toEqual({});
       expect(result.themeTokens).toEqual({ base: "base", theme: "theme" });

@@ -8,6 +8,18 @@ describe("shipping env module", () => {
     process.env = ORIGINAL_ENV;
   });
 
+  /**
+   * Temporarily sets process.env for the duration of the callback.
+   * The modules are reset so env is re-read on each invocation.
+   */
+  const withEnv = async (
+    env: NodeJS.ProcessEnv,
+    run: (load: () => any) => unknown,
+  ) => {
+    const { loadShippingEnv } = await import("../shipping.ts");
+    return run(() => loadShippingEnv(env));
+  };
+
   it("imports shipping.ts without error when env is valid", async () => {
     process.env = {
       ...ORIGINAL_ENV,
@@ -662,6 +674,58 @@ describe("shipping env module", () => {
       }),
     );
     errorSpy.mockRestore();
+  });
+
+  describe("withEnv helper", () => {
+    describe.each([
+      ["domestic", "domestic"],
+      ["eu", "eu"],
+      ["international", "international"],
+      [undefined, "domestic"],
+    ])("DEFAULT_SHIPPING_ZONE = %s", (zone, expected) => {
+      it(`returns ${expected}`, async () => {
+        await withEnv(
+          zone ? { DEFAULT_SHIPPING_ZONE: zone } : {},
+          (load) => {
+            const env = load();
+            expect(env.DEFAULT_SHIPPING_ZONE ?? "domestic").toBe(expected);
+          },
+        );
+      });
+    });
+
+    it("applies FREE_SHIPPING_THRESHOLD around the limit", async () => {
+      await withEnv({ FREE_SHIPPING_THRESHOLD: "75" }, (load) => {
+        const env = load();
+        const qualifies = (amount: number) =>
+          env.FREE_SHIPPING_THRESHOLD !== undefined &&
+          amount >= env.FREE_SHIPPING_THRESHOLD;
+        expect(qualifies(74)).toBe(false);
+        expect(qualifies(75)).toBe(true);
+        expect(qualifies(76)).toBe(true);
+      });
+    });
+
+    it.each([
+      [{ UPS_KEY: 123 as any }, "UPS_KEY"],
+      [{ DHL_KEY: 456 as any }, "DHL_KEY"],
+      [{ FREE_SHIPPING_THRESHOLD: "abc" }, "FREE_SHIPPING_THRESHOLD"],
+      [{ DEFAULT_SHIPPING_ZONE: "mars" as any }, "DEFAULT_SHIPPING_ZONE"],
+    ])("throws on malformed %s", async (envVars, key) => {
+      await withEnv(envVars as any, (load) => {
+        const errorSpy = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
+        expect(() => load()).toThrow(
+          "Invalid shipping environment variables",
+        );
+        expect(errorSpy).toHaveBeenCalledWith(
+          "❌ Invalid shipping environment variables:",
+          expect.objectContaining({ [key]: { _errors: [expect.any(String)] } }),
+        );
+        errorSpy.mockRestore();
+      });
+    });
   });
 });
 

@@ -35,6 +35,8 @@ jest.mock("@platform-core/repositories/reverseLogisticsEvents.server", () => ({
   },
 }));
 
+const startMock = jest.fn().mockResolvedValue(undefined);
+
 jest.mock("@platform-core/utils", () => ({ logger: { error: jest.fn() } }));
 
 jest.mock("@acme/config/env/core", () => ({ coreEnv: {} }));
@@ -366,18 +368,31 @@ describe("startReverseLogisticsService", () => {
 describe("module startup", () => {
   const originalEnv = process.env.NODE_ENV;
 
-  afterEach(() => {
-    process.env.NODE_ENV = originalEnv;
+  beforeEach(() => {
     jest.resetModules();
+    process.env.NODE_ENV = "production";
+    startMock.mockReset();
+    startMock.mockResolvedValue(undefined);
+    (logger.error as jest.Mock).mockReset();
+
+    jest.mock("../reverseLogisticsService", () => {
+      const originalEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = "test";
+      const actual = jest.requireActual("../reverseLogisticsService");
+      process.env.NODE_ENV = originalEnv;
+      startMock().catch((err) =>
+        logger.error("failed to start reverse logistics service", { err })
+      );
+      return { ...actual, startReverseLogisticsService: startMock };
+    });
+  });
+
+  afterAll(() => {
+    process.env.NODE_ENV = originalEnv;
   });
 
   it("starts service in production", async () => {
-    process.env.NODE_ENV = "production";
-    const startMock = jest.fn().mockResolvedValue(undefined);
-    jest.doMock("../reverseLogisticsService", () => {
-      startMock();
-      return { startReverseLogisticsService: startMock };
-    });
+    startMock.mockResolvedValue(undefined);
 
     await import("../reverseLogisticsService");
 
@@ -385,22 +400,13 @@ describe("module startup", () => {
   });
 
   it("logs start errors", async () => {
-    process.env.NODE_ENV = "production";
     const err = new Error("fail");
-    const startMock = jest.fn().mockRejectedValue(err);
-    const errorMock = jest.fn();
-    jest.doMock("@platform-core/utils", () => ({ logger: { error: errorMock } }));
-    jest.doMock("../reverseLogisticsService", () => {
-      startMock().catch((e) =>
-        errorMock("failed to start reverse logistics service", { err: e })
-      );
-      return { startReverseLogisticsService: startMock };
-    });
+    startMock.mockRejectedValue(err);
 
     await import("../reverseLogisticsService");
 
     expect(startMock).toHaveBeenCalled();
-    expect(errorMock).toHaveBeenCalledWith(
+    expect(logger.error).toHaveBeenCalledWith(
       "failed to start reverse logistics service",
       { err }
     );

@@ -124,18 +124,19 @@ export default function InventoryForm({ shop, initial, onSave }: Props) {
         setError(null);
         return;
       }
-      setStatus("saved");
-      setError(null);
       const res = await fetch(`/api/data/${shop}/inventory`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(result.data),
       });
+      const body = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
         setStatus("error");
         setError(body.error || "Failed to save");
+        return;
       }
+      setStatus("saved");
+      setError(null);
     } catch (err) {
       setStatus("error");
       setError((err as Error).message);

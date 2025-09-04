@@ -45,7 +45,7 @@ The script requires a corresponding `data/shops/<id>/upgrade.json`, runs `pnpm -
 
 ## Preview UI
 
-CMS components fetch the preview endpoint and render changes live. The wizard's preview reads state from `localStorage` so edits appear instantly, and deployments expose a preview URL (`<shop-id>.pages.dev`) written to `deploy.json`.
+CMS components fetch the preview endpoint and render changes live. The configurator preview reads state from `localStorage` so edits appear instantly, and deployments expose a preview URL (`<shop-id>.pages.dev`) written to `deploy.json`.
 
 ## Metadata
 

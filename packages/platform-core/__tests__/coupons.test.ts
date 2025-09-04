@@ -9,16 +9,43 @@ jest.mock("@platform-core/dataRoot", () => ({
   resolveDataRoot: () => tmpDir,
 }));
 
-import { saveCoupons, findCoupon, type StoredCoupon } from "@platform-core/coupons";
+import {
+  saveCoupons,
+  findCoupon,
+  listCoupons,
+  type StoredCoupon,
+} from "@platform-core/coupons";
 
 const shop = "test";
+beforeAll(async () => {
+  tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "coupons-"));
+});
+
 const sample: StoredCoupon[] = [
   { code: "SAVE10", description: "10% off", discountPercent: 10, active: true },
+  { code: "OLD", description: "5% off", discountPercent: 5, active: false },
 ];
+
+describe("listCoupons", () => {
+  it("returns [] when discounts.json is missing", async () => {
+    expect(await listCoupons("missing-shop")).toEqual([]);
+  });
+
+  it("returns [] when discounts.json is not an array", async () => {
+    const badShop = "bad";
+    const shopDir = path.join(tmpDir, badShop);
+    await fs.mkdir(shopDir, { recursive: true });
+    await fs.writeFile(
+      path.join(shopDir, "discounts.json"),
+      JSON.stringify({ nope: true }),
+      "utf8",
+    );
+    expect(await listCoupons(badShop)).toEqual([]);
+  });
+});
 
 describe("findCoupon", () => {
   beforeAll(async () => {
-    tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "coupons-"));
     await saveCoupons(shop, sample);
   });
 
@@ -31,6 +58,10 @@ describe("findCoupon", () => {
     expect(await findCoupon(shop, undefined)).toBeUndefined();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     expect(await findCoupon(shop, null as any)).toBeUndefined();
+  });
+
+  it("ignores inactive coupons", async () => {
+    expect(await findCoupon(shop, sample[1].code)).toBeUndefined();
   });
 
   it("returns undefined for unknown codes", async () => {

@@ -2,7 +2,6 @@
 import "server-only";
 
 import type { RentalOrder } from "@acme/types";
-import type { Prisma } from "@prisma/client";
 import { nowIso } from "@acme/date-utils";
 import { prisma } from "../db";
 
@@ -26,7 +25,7 @@ async function updateStatus(
   try {
     const order = await prisma.rentalOrder.update({
       where: { shop_sessionId: { shop, sessionId } },
-      data: { status, ...extra } as Prisma.RentalOrderUpdateInput,
+      data: { status, ...extra } as any,
     });
     return order as Order;
   } catch {
@@ -68,7 +67,7 @@ export async function markLateFeeCharged(
   try {
     const order = await prisma.rentalOrder.update({
       where: { shop_sessionId: { shop, sessionId } },
-      data: { lateFeeCharged: amount } as Prisma.RentalOrderUpdateInput,
+      data: { lateFeeCharged: amount } as any,
     });
     return order as Order;
   } catch {

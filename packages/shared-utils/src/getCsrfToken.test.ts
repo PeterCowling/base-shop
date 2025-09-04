@@ -38,6 +38,33 @@ describe('getCsrfToken', () => {
       const req = new Request('https://example.com?csrf_token=query-token');
       expect(getCsrfToken(req)).toBe('query-token');
     });
+
+    it('header token overrides query and cookie tokens', () => {
+      const req = new Request('https://example.com?csrf_token=query-token', {
+        headers: {
+          'x-csrf-token': 'header-token',
+          cookie: 'csrf_token=cookie-token',
+        },
+      });
+      expect(getCsrfToken(req)).toBe('header-token');
+    });
+
+    it('returns undefined when no token in header, query, or cookie', () => {
+      const req = new Request('https://example.com', {
+        headers: { cookie: 'foo=bar' },
+      });
+      expect(getCsrfToken(req)).toBeUndefined();
+    });
+
+    it('treats whitespace-only tokens as missing', () => {
+      const req = new Request('https://example.com?csrf_token=%20%20', {
+        headers: {
+          'x-csrf-token': '   ',
+          cookie: 'csrf_token=   ',
+        },
+      });
+      expect(getCsrfToken(req)).toBeUndefined();
+    });
   });
 
   describe('browser', () => {

@@ -51,16 +51,18 @@ describe("normalizeProviderStats", () => {
     );
   });
 
-  it("uses resend mapper for resend provider", () => {
-    const raw = { delivered_count: "1" } as const;
-    expect(normalizeProviderStats("resend", raw)).toEqual(
-      mapResendStats(raw)
-    );
+  it("normalizes resend stats with string counts", () => {
+    expect(
+      normalizeProviderStats("resend", { opened: "2" })
+    ).toEqual({
+      ...emptyStats,
+      opened: 2,
+    });
   });
 
-  it("returns empty stats for unknown provider", () => {
-    expect(normalizeProviderStats("unknown", undefined)).toEqual({
-      ...emptyStats,
-    });
+  it("returns empty stats clone for unsupported provider", () => {
+    const result = normalizeProviderStats("unsupported", { opened: "2" });
+    expect(result).toEqual(emptyStats);
+    expect(result).not.toBe(emptyStats);
   });
 });

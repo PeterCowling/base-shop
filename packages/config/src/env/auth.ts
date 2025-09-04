@@ -29,26 +29,39 @@ const parseTTL = (val: string) => {
   return unit === "m" ? num * 60 : num;
 };
 
+const printableAscii = /^[\x20-\x7E]+$/;
+const strongSecret = z
+  .string()
+  .min(32, { message: "must be at least 32 characters" })
+  .refine((val) => printableAscii.test(val), {
+    message: "must contain only printable ASCII characters",
+  });
+
+const DEV_NEXTAUTH_SECRET = "dev-nextauth-secret-32-chars-long-string!";
+const DEV_SESSION_SECRET = "dev-session-secret-32-chars-long-string!";
+const DEFAULT_TOKEN_AUDIENCE = "base-shop";
+const DEFAULT_TOKEN_ISSUER = "base-shop";
+
 const baseSchema = z.object({
   NEXTAUTH_SECRET: isProd
-    ? z.string().min(1)
-    : z.string().min(1).default("dev-nextauth-secret"),
-  PREVIEW_TOKEN_SECRET: z.string().optional(),
-  UPGRADE_PREVIEW_TOKEN_SECRET: z.string().optional(),
+    ? strongSecret
+    : strongSecret.default(DEV_NEXTAUTH_SECRET),
+  PREVIEW_TOKEN_SECRET: strongSecret.optional(),
+  UPGRADE_PREVIEW_TOKEN_SECRET: strongSecret.optional(),
   SESSION_SECRET: isProd
-    ? z.string().min(1)
-    : z.string().min(1).default("dev-session-secret"),
+    ? strongSecret
+    : strongSecret.default(DEV_SESSION_SECRET),
   COOKIE_DOMAIN: z.string().optional(),
   LOGIN_RATE_LIMIT_REDIS_URL: z.string().url().optional(),
-  LOGIN_RATE_LIMIT_REDIS_TOKEN: z.string().optional(),
+  LOGIN_RATE_LIMIT_REDIS_TOKEN: strongSecret.optional(),
   SESSION_STORE: z.enum(["memory", "redis"]).optional(),
   UPSTASH_REDIS_REST_URL: z.string().url().optional(),
-  UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
+  UPSTASH_REDIS_REST_TOKEN: strongSecret.optional(),
 
   AUTH_PROVIDER: z.enum(["local", "jwt", "oauth"]).default("local"),
-  JWT_SECRET: z.string().min(1).optional(),
+  JWT_SECRET: strongSecret.optional(),
   OAUTH_CLIENT_ID: z.string().min(1).optional(),
-  OAUTH_CLIENT_SECRET: z.string().min(1).optional(),
+  OAUTH_CLIENT_SECRET: strongSecret.optional(),
 
   AUTH_TOKEN_TTL: z
     .preprocess((v) => (typeof v === "number" ? undefined : v), z.string().optional())
@@ -58,8 +71,8 @@ const baseSchema = z.object({
     })
     .transform(parseTTL),
   TOKEN_ALGORITHM: z.enum(["HS256", "RS256"]).default("HS256"),
-  TOKEN_AUDIENCE: z.string().default("base-shop"),
-  TOKEN_ISSUER: z.string().default("base-shop"),
+  TOKEN_AUDIENCE: z.string().min(1).default(DEFAULT_TOKEN_AUDIENCE),
+  TOKEN_ISSUER: z.string().min(1).default(DEFAULT_TOKEN_ISSUER),
   ALLOW_GUEST: z.coerce.boolean().default(false),
   ENFORCE_2FA: z.coerce.boolean().default(false),
 });

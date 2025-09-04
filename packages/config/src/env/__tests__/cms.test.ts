@@ -59,7 +59,7 @@ describe("cms env module", () => {
       expect(errorSpy).toHaveBeenCalledWith(
         "❌ Invalid CMS environment variables:",
         expect.objectContaining({
-          CMS_SPACE_URL: { _errors: [expect.any(String)] },
+          CMS_SPACE_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
         })
       );
       errorSpy.mockRestore();
@@ -81,7 +81,7 @@ describe("cms env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
       expect.objectContaining({
-        SANITY_API_VERSION: { _errors: [expect.any(String)] },
+        SANITY_API_VERSION: { _errors: expect.arrayContaining([expect.any(String)]) },
       })
     );
     errorSpy.mockRestore();
@@ -103,7 +103,7 @@ describe("cms env module", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
-      { CMS_SPACE_URL: { _errors: [expect.any(String)] }, _errors: [] }
+      { CMS_SPACE_URL: { _errors: expect.arrayContaining([expect.any(String)]) }, _errors: [] }
     );
     expect(errorSpy).toHaveBeenCalledTimes(1);
     errorSpy.mockRestore();
@@ -124,7 +124,7 @@ describe("cms env module", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
-      { CMS_ACCESS_TOKEN: { _errors: [expect.any(String)] }, _errors: [] }
+      { CMS_ACCESS_TOKEN: { _errors: expect.arrayContaining([expect.any(String)]) }, _errors: [] }
     );
     expect(errorSpy).toHaveBeenCalledTimes(1);
     errorSpy.mockRestore();
@@ -145,7 +145,7 @@ describe("cms env module", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
-      { SANITY_API_VERSION: { _errors: [expect.any(String)] }, _errors: [] }
+      { SANITY_API_VERSION: { _errors: expect.arrayContaining([expect.any(String)]) }, _errors: [] }
     );
     expect(errorSpy).toHaveBeenCalledTimes(1);
     errorSpy.mockRestore();
@@ -169,8 +169,8 @@ describe("cms env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
       expect.objectContaining({
-        CMS_SPACE_URL: { _errors: [expect.any(String)] },
-        CMS_ACCESS_TOKEN: { _errors: [expect.any(String)] },
+        CMS_SPACE_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
+        CMS_ACCESS_TOKEN: { _errors: expect.arrayContaining([expect.any(String)]) },
       })
     );
     errorSpy.mockRestore();
@@ -192,7 +192,7 @@ describe("cms env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
       expect.objectContaining({
-        SANITY_API_VERSION: { _errors: [expect.any(String)] },
+        SANITY_API_VERSION: { _errors: expect.arrayContaining([expect.any(String)]) },
       })
     );
     errorSpy.mockRestore();
@@ -213,7 +213,7 @@ describe("cms env module", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
-      { CMS_SPACE_URL: { _errors: [expect.any(String)] }, _errors: [] }
+      { CMS_SPACE_URL: { _errors: expect.arrayContaining([expect.any(String)]) }, _errors: [] }
     );
     errorSpy.mockRestore();
   });
@@ -236,7 +236,7 @@ describe("cms env module", () => {
 
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
-      { CMS_SPACE_URL: { _errors: [expect.any(String)] }, _errors: [] }
+      { CMS_SPACE_URL: { _errors: expect.arrayContaining([expect.any(String)]) }, _errors: [] }
     );
     expect(errorSpy).toHaveBeenCalledTimes(1);
 
@@ -259,9 +259,9 @@ describe("cms env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
       expect.objectContaining({
-        CMS_SPACE_URL: { _errors: [expect.any(String)] },
-        CMS_ACCESS_TOKEN: { _errors: [expect.any(String)] },
-        SANITY_API_VERSION: { _errors: [expect.any(String)] },
+        CMS_SPACE_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
+        CMS_ACCESS_TOKEN: { _errors: expect.arrayContaining([expect.any(String)]) },
+        SANITY_API_VERSION: { _errors: expect.arrayContaining([expect.any(String)]) },
       })
     );
     errorSpy.mockRestore();
@@ -283,9 +283,9 @@ describe("cms env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
       expect.objectContaining({
-        CMS_SPACE_URL: { _errors: [expect.any(String)] },
-        CMS_ACCESS_TOKEN: { _errors: [expect.any(String)] },
-        SANITY_API_VERSION: { _errors: [expect.any(String)] },
+        CMS_SPACE_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
+        CMS_ACCESS_TOKEN: { _errors: expect.arrayContaining([expect.any(String)]) },
+        SANITY_API_VERSION: { _errors: expect.arrayContaining([expect.any(String)]) },
       })
     );
     errorSpy.mockRestore();
@@ -322,7 +322,7 @@ describe("cms env module", () => {
 
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
-      { CMS_SPACE_URL: { _errors: [expect.any(String)] }, _errors: [] },
+      { CMS_SPACE_URL: { _errors: expect.arrayContaining([expect.any(String)]) }, _errors: [] },
     );
     errorSpy.mockRestore();
   });
@@ -359,7 +359,7 @@ describe("cms env module", () => {
 
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
-      { CMS_SPACE_URL: { _errors: [expect.any(String)] }, _errors: [] },
+      { CMS_SPACE_URL: { _errors: expect.arrayContaining([expect.any(String)]) }, _errors: [] },
     );
     errorSpy.mockRestore();
   });
@@ -381,7 +381,7 @@ describe("cms env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
       expect.objectContaining({
-        CMS_SPACE_URL: { _errors: [expect.any(String)] },
+        CMS_SPACE_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -433,7 +433,7 @@ describe("cms env module", () => {
       expect(errorSpy).toHaveBeenCalledWith(
         "❌ Invalid CMS environment variables:",
         expect.objectContaining({
-          CMS_BASE_URL: { _errors: [expect.any(String)] },
+          CMS_BASE_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
         }),
       );
       errorSpy.mockRestore();

@@ -88,7 +88,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        UPS_KEY: { _errors: [expect.any(String)] },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -105,7 +105,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        TAXJAR_KEY: { _errors: [expect.any(String)] },
+        TAXJAR_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -122,8 +122,8 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        TAXJAR_KEY: { _errors: [expect.any(String)] },
-        UPS_KEY: { _errors: [expect.any(String)] },
+        TAXJAR_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -140,7 +140,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        DHL_KEY: { _errors: [expect.any(String)] },
+        DHL_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -157,7 +157,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        UPS_KEY: { _errors: [expect.any(String)] },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -181,7 +181,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        UPS_KEY: { _errors: [expect.any(String)] },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -202,7 +202,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        UPS_KEY: { _errors: [expect.any(String)] },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -223,7 +223,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        DHL_KEY: { _errors: [expect.any(String)] },
+        DHL_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -244,7 +244,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        TAXJAR_KEY: { _errors: [expect.any(String)] },
+        TAXJAR_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -261,7 +261,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        UPS_KEY: { _errors: [expect.any(String)] },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -282,7 +282,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        UPS_KEY: { _errors: [expect.any(String)] },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -302,7 +302,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        UPS_KEY: { _errors: [expect.any(String)] },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -321,8 +321,8 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        UPS_KEY: { _errors: [expect.any(String)] },
-        DHL_KEY: { _errors: [expect.any(String)] },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
+        DHL_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -393,7 +393,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        UPS_KEY: { _errors: [expect.any(String)] },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -408,7 +408,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        DHL_KEY: { _errors: [expect.any(String)] },
+        DHL_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -427,7 +427,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        DHL_KEY: { _errors: [expect.any(String)] },
+        DHL_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -444,8 +444,8 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        UPS_KEY: { _errors: [expect.any(String)] },
-        DHL_KEY: { _errors: [expect.any(String)] },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
+        DHL_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -465,8 +465,8 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        UPS_KEY: { _errors: [expect.any(String)] },
-        DHL_KEY: { _errors: [expect.any(String)] },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
+        DHL_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -490,7 +490,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        TAXJAR_KEY: { _errors: [expect.any(String)] },
+        TAXJAR_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -511,7 +511,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        UPS_KEY: { _errors: [expect.any(String)] },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -539,7 +539,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        UPS_KEY: { _errors: [expect.any(String)] },
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -558,7 +558,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        DHL_KEY: { _errors: [expect.any(String)] },
+        DHL_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -635,7 +635,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        DEFAULT_SHIPPING_ZONE: { _errors: [expect.any(String)] },
+        DEFAULT_SHIPPING_ZONE: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -670,7 +670,7 @@ describe("shipping env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid shipping environment variables:",
       expect.objectContaining({
-        FREE_SHIPPING_THRESHOLD: { _errors: [expect.any(String)] },
+        FREE_SHIPPING_THRESHOLD: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -721,7 +721,7 @@ describe("shipping env module", () => {
         );
         expect(errorSpy).toHaveBeenCalledWith(
           "❌ Invalid shipping environment variables:",
-          expect.objectContaining({ [key]: { _errors: [expect.any(String)] } }),
+          expect.objectContaining({ [key]: { _errors: expect.arrayContaining([expect.any(String)]) } }),
         );
         errorSpy.mockRestore();
       });

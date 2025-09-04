@@ -36,6 +36,7 @@ export { ARViewer } from "./ARViewer";
 export { Avatar } from "./Avatar";
 export { Chip } from "./Chip";
 export { ColorSwatch } from "./ColorSwatch";
+export { FileSelector } from "./FileSelector";
 export { Icon } from "./Icon";
 export { LineChart } from "./LineChart";
 export { Loader, Loader as Spinner } from "./Loader";

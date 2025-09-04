@@ -69,6 +69,28 @@ describe("db", () => {
     expect(orders).toHaveLength(1);
   });
 
+  it("uses stub when NODE_ENV=production and no DATABASE_URL", async () => {
+    process.env.NODE_ENV = "production";
+    jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
+    jest.doMock(
+      "@prisma/client",
+      () => {
+        throw new Error("should not load");
+      },
+      { virtual: true }
+    );
+
+    const { prisma } = (await import("./db")) as { prisma: PrismaClient };
+
+    const shop = "prod-shop";
+    expect(await prisma.rentalOrder.findMany({ where: { shop } })).toEqual([]);
+    await prisma.rentalOrder.create({
+      data: { shop, sessionId: "s1", trackingNumber: "t1" },
+    });
+    const orders = await prisma.rentalOrder.findMany({ where: { shop } });
+    expect(orders).toHaveLength(1);
+  });
+
   it("falls back to stub when @prisma/client fails to load", async () => {
     process.env.NODE_ENV = "production";
     process.env.DATABASE_URL = "postgres://example";

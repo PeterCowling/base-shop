@@ -129,7 +129,19 @@ export const onRequest = async ({
 
   const token = authHeader.slice("Bearer ".length);
   try {
-    jwt.verify(token, process.env.UPGRADE_PREVIEW_TOKEN_SECRET ?? "");
+    const payload = jwt.verify(
+      token,
+      process.env.UPGRADE_PREVIEW_TOKEN_SECRET ?? "",
+      {
+        algorithms: ["HS256"],
+        audience: "upgrade-preview",
+        issuer: "acme",
+        subject: `shop:${shopId}:upgrade-preview`,
+      },
+    ) as jwt.JwtPayload;
+    if (typeof payload.exp !== "number") {
+      throw new Error("missing exp");
+    }
   } catch {
     console.warn("invalid token", { shopId });
     return new Response(JSON.stringify({ error: "Forbidden" }), {

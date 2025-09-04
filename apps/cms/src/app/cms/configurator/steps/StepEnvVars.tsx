@@ -5,7 +5,6 @@ import {
   Button,
   Input,
 } from "@/components/atoms/shadcn";
-import { Tooltip } from "@/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 
@@ -211,7 +210,7 @@ export default function StepEnvVars({
             <label key={v.key} className="flex flex-col gap-1">
               <span className="flex items-center gap-1">
                 {v.label}
-                <Tooltip text={v.description}>?</Tooltip>
+                <span title={v.description}>?</span>
               </span>
               <Input
                 type={v.isPublic ? "text" : "password"}

@@ -11,7 +11,6 @@ import {
 } from "@acme/types";
 import { apiRequest } from "../lib/api";
 import { useEffect, useState } from "react";
-import { Toast } from "@/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
@@ -32,6 +31,23 @@ interface Props {
   themeStyle: React.CSSProperties;
   prevStepId?: string;
   nextStepId?: string;
+}
+
+function SimpleToast({
+  open,
+  message,
+  onClose,
+}: {
+  open: boolean;
+  message: string;
+  onClose: () => void;
+}) {
+  if (!open) return null;
+  return (
+    <div onClick={onClose} role="status">
+      {message}
+    </div>
+  );
 }
 
 export default function StepHomePage({
@@ -195,7 +211,7 @@ export default function StepHomePage({
           </Button>
         )}
       </div>
-      <Toast
+      <SimpleToast
         open={toast.open}
         onClose={() => setToast((t) => ({ ...t, open: false }))}
         message={toast.message}

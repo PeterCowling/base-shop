@@ -6,6 +6,58 @@ jest.mock("@acme/zod-utils/initZod", () => ({}));
 process.env.CART_COOKIE_SECRET = "secret";
 
 describe("analytics mapping", () => {
+  it.each([
+    ["delivered", "email_delivered"],
+    ["open", "email_open"],
+    ["click", "email_click"],
+    ["unsubscribe", "email_unsubscribe"],
+    ["bounce", "email_bounce"],
+  ])("maps SendGrid %s events", async (event, type) => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapSendGridEvent } = await import("../analytics");
+    const ev = {
+      event,
+      sg_message_id: "msg",
+      email: "user@example.com",
+    };
+    expect(mapSendGridEvent(ev)).toEqual({
+      type,
+      messageId: "msg",
+      recipient: "user@example.com",
+    });
+  });
+
+  it.each([
+    ["email.delivered", "email_delivered"],
+    ["email.opened", "email_open"],
+    ["email.clicked", "email_click"],
+    ["email.unsubscribed", "email_unsubscribe"],
+    ["email.bounced", "email_bounce"],
+  ])("maps Resend %s events", async (evType, type) => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapResendEvent } = await import("../analytics");
+    const ev = {
+      type: evType,
+      data: {
+        message_id: "m1",
+        email: "user@example.com",
+      },
+    };
+    expect(mapResendEvent(ev)).toEqual({
+      type,
+      campaign: undefined,
+      messageId: "m1",
+      recipient: "user@example.com",
+    });
+  });
   it("normalizes SendGrid webhook events with array category", async () => {
     jest.resetModules();
     process.env.CART_COOKIE_SECRET = "secret";
@@ -270,6 +322,62 @@ describe("syncCampaignAnalytics", () => {
     }));
     jest.doMock("../providers/resend", () => ({
       ResendProvider: jest.fn(),
+    }));
+
+    const memoryStore = {
+      async readCampaigns() {
+        return [
+          {
+            id: "c1",
+            recipients: [],
+            subject: "s",
+            body: "b",
+            sendAt: nowIso(),
+            sentAt: nowIso(),
+          },
+        ];
+      },
+      async listShops() {
+        return ["shop1"];
+      },
+    };
+    const getCampaignStore = jest.fn().mockReturnValue(memoryStore);
+    jest.doMock("../storage", () => ({ __esModule: true, getCampaignStore }));
+
+    const { syncCampaignAnalytics } = await import("../analytics");
+    await syncCampaignAnalytics();
+
+    expect(getCampaignStats).toHaveBeenCalledWith("c1");
+    expect(trackEvent).toHaveBeenCalledWith("shop1", {
+      type: "email_campaign_stats",
+      campaign: "c1",
+      ...stats,
+    });
+  });
+
+  it("uses Resend provider when configured", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    process.env.EMAIL_PROVIDER = "resend";
+
+    const trackEvent = jest.fn().mockResolvedValue(undefined);
+    jest.doMock("@platform-core/analytics", () => ({
+      __esModule: true,
+      trackEvent,
+    }));
+    const stats = {
+      delivered: 1,
+      opened: 2,
+      clicked: 3,
+      unsubscribed: 4,
+      bounced: 5,
+    };
+    const getCampaignStats = jest.fn().mockResolvedValue(stats);
+    jest.doMock("../providers/sendgrid", () => ({
+      SendgridProvider: jest.fn(),
+    }));
+    jest.doMock("../providers/resend", () => ({
+      ResendProvider: jest.fn().mockImplementation(() => ({ getCampaignStats })),
     }));
 
     const memoryStore = {

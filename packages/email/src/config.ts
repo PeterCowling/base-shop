@@ -1,17 +1,18 @@
 import "server-only";
 import { z } from "zod";
 
-const emailSchema = z.string().email();
+const emailSchema = z.string().email().transform((v) => v.toLowerCase());
 
 export function getDefaultSender(): string {
-  const sender = process.env.CAMPAIGN_FROM || process.env.GMAIL_USER;
+  const sender = (process.env.CAMPAIGN_FROM || process.env.GMAIL_USER || "").trim();
   if (!sender) {
     throw new Error(
       "Default sender email is required. Set CAMPAIGN_FROM or GMAIL_USER."
     );
   }
-  if (!emailSchema.safeParse(sender).success) {
+  const parsed = emailSchema.safeParse(sender);
+  if (!parsed.success) {
     throw new Error(`Invalid sender email address: ${sender}`);
   }
-  return sender;
+  return parsed.data;
 }

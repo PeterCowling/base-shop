@@ -119,5 +119,90 @@ describe('parseJsonBody', () => {
       error: 'Invalid JSON',
     });
   });
+
+  it('parses valid JSON when Content-Type is application/json', async () => {
+    const req = new Request('http://example.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ foo: 'bar' }),
+    });
+
+    await expect(parseJsonBody(req, schema, '1kb')).resolves.toEqual({
+      success: true,
+      data: { foo: 'bar' },
+    });
+  });
+
+  it('rejects mismatched Content-Type', async () => {
+    const req = new Request('http://example.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ foo: 'bar' }),
+    });
+
+    const result = await parseJsonBody(req, schema, '1kb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({
+      error: 'Invalid JSON',
+    });
+  });
+
+  it('returns 400 when body is empty', async () => {
+    const req = new Request('http://example.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: '',
+    });
+
+    const result = await parseJsonBody(req, schema, '1kb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({
+      error: 'Invalid JSON',
+    });
+  });
+
+  it('returns 400 when body is undefined', async () => {
+    const req = new Request('http://example.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+    const result = await parseJsonBody(req, schema, '1kb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({
+      error: 'Invalid JSON',
+    });
+  });
+
+  it('accepts Content-Type with charset parameter', async () => {
+    const req = new Request('http://example.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      body: JSON.stringify({ foo: 'bar' }),
+    });
+
+    await expect(parseJsonBody(req, schema, '1kb')).resolves.toEqual({
+      success: true,
+      data: { foo: 'bar' },
+    });
+  });
+
+  it('rejects Content-Type with unsupported parameters', async () => {
+    const req = new Request('http://example.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json; charset=utf-8; gzip' },
+      body: JSON.stringify({ foo: 'bar' }),
+    });
+
+    const result = await parseJsonBody(req, schema, '1kb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({
+      error: 'Invalid JSON',
+    });
+  });
 });
 

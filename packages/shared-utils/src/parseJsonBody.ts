@@ -26,6 +26,24 @@ export async function parseJsonBody<T>(
   schema: ZodSchema<T>,
   limit: string | number,
 ): Promise<ParseJsonResult<T>> {
+  const contentType = req.headers?.get?.("content-type") ?? "";
+  if (contentType) {
+    const [type, ...params] = contentType
+      .split(";")
+      .map((p) => p.trim().toLowerCase());
+    const isJson = type === "application/json";
+    const invalidParams = params.some((p) => !p.startsWith("charset="));
+    if (!isJson || invalidParams) {
+      return {
+        success: false,
+        response: NextResponse.json(
+          { error: "Invalid JSON" },
+          { status: 400 },
+        ),
+      };
+    }
+  }
+
   let json: unknown;
   try {
     const request = req as Request & {

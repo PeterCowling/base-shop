@@ -1,5 +1,5 @@
 import { render, fireEvent, waitFor } from "@testing-library/react";
-import { CurrencyProvider, useCurrency } from "../CurrencyContext";
+import { CurrencyProvider, useCurrency, readInitial } from "../CurrencyContext";
 
 // React 19 requires this flag for `act` to suppress environment warnings
 ;(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
@@ -13,6 +13,17 @@ function Display() {
     </>
   );
 }
+
+describe("readInitial", () => {
+  it("returns default when window is undefined", () => {
+    const originalWindow = global.window;
+    (global as any).window = undefined;
+
+    expect(readInitial()).toBe("EUR");
+
+    (global as any).window = originalWindow;
+  });
+});
 
 describe("CurrencyProvider", () => {
   const LS_KEY = "PREFERRED_CURRENCY";

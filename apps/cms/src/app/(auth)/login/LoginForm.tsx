@@ -54,31 +54,33 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mx-auto mt-40 w-72 space-y-4">
-      <h2 className="text-lg font-semibold">Sign in</h2>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <h1 className="text-2xl font-semibold">Sign in</h1>
 
       <Input
         name="email"
         type="email"
-        placeholder="Email"
+        label="Email"
+        floatingLabel
+        autoComplete="email"
         required
-        className="w-full"
       />
       <Input
         name="password"
         type="password"
-        placeholder="Password"
+        label="Password"
+        floatingLabel
+        autoComplete="current-password"
         required
-        className="w-full"
       />
 
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <span className="block text-sm text-red-500">{error}</span>}
 
-      <Button className="w-full" type="submit">
+      <Button className="h-12 w-full" type="submit">
         Continue
       </Button>
-      <p className="text-center text-sm">
-        <Link href="/signup" className="underline">
+      <p className="mt-4 text-center text-sm">
+        <Link href="/signup" prefetch={false} className="text-blue-500 hover:underline">
           Create new account
         </Link>
       </p>

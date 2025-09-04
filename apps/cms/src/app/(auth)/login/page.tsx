@@ -24,8 +24,12 @@ export default function LoginPage() {
   }, []);
 
   return (
-    <Suspense fallback={null}>
-      <LoginForm fallbackUrl={fallbackUrl} />
-    </Suspense>
+    <div className="min-h-screen bg-black flex items-center justify-center">
+      <Suspense fallback={null}>
+        <div className="w-full max-w-md mx-auto">
+          <LoginForm fallbackUrl={fallbackUrl} />
+        </div>
+      </Suspense>
+    </div>
   );
 }

@@ -44,3 +44,13 @@ export function DialogTitle({ children, ...props }: React.HTMLAttributes<HTMLHea
 export function Button(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return <button {...props} />;
 }
+
+export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
+  return <input {...props} />;
+}
+
+export function Textarea(
+  props: React.TextareaHTMLAttributes<HTMLTextAreaElement>
+) {
+  return <textarea {...props} />;
+}

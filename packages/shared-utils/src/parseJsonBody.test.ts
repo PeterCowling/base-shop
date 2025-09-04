@@ -1,41 +1,53 @@
-import { parseJsonBody } from './parseJsonBody';
 import { z } from 'zod';
+
+import { parseJsonBody, parseLimit } from './parseJsonBody';
+
+describe('parseLimit', () => {
+  it.each([
+    ['1b', 1],
+    ['2kb', 2 * 1024],
+    ['3mb', 3 * 1024 * 1024],
+    ['4gb', 4 * 1024 * 1024 * 1024],
+  ])('parses %s', (input, expected) => {
+    expect(parseLimit(input)).toBe(expected);
+  });
+
+  it('throws on invalid strings', () => {
+    expect(() => parseLimit('10tb')).toThrow('Invalid limit');
+    expect(() => parseLimit('foobar')).toThrow('Invalid limit');
+  });
+});
 
 describe('parseJsonBody', () => {
   const schema = z.object({ foo: z.string() });
 
-  it('parses text body and returns typed data', async () => {
+  it('uses text() when available', async () => {
     const req = {
       text: jest.fn().mockResolvedValue(JSON.stringify({ foo: 'bar' })),
     } as unknown as Request;
 
-    const result = await parseJsonBody(req, schema, '1mb');
+    const result = await parseJsonBody(req, schema, '1kb');
 
     expect(result).toEqual({ success: true, data: { foo: 'bar' } });
-    if (result.success) {
-      const foo: string = result.data.foo;
-      expect(foo).toBe('bar');
-    }
   });
 
-  it('parses json body', async () => {
+  it('falls back to json()', async () => {
     const req = {
       json: jest.fn().mockResolvedValue({ foo: 'bar' }),
     } as unknown as Request;
 
-    await expect(parseJsonBody(req, schema, '1mb')).resolves.toEqual({
+    await expect(parseJsonBody(req, schema, '1kb')).resolves.toEqual({
       success: true,
       data: { foo: 'bar' },
     });
   });
 
-  it('returns 413 when body exceeds limit', async () => {
-    const payload = { foo: 'a'.repeat(11 * 1024) };
+  it('returns 413 when payload exceeds limit', async () => {
     const req = {
-      json: jest.fn().mockResolvedValue(payload),
+      json: jest.fn().mockResolvedValue({ foo: 'a'.repeat(2 * 1024) }),
     } as unknown as Request;
 
-    const result = await parseJsonBody(req, schema, '10kb');
+    const result = await parseJsonBody(req, schema, '1kb');
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(413);
     await expect(result.response.json()).resolves.toEqual({
@@ -48,34 +60,35 @@ describe('parseJsonBody', () => {
       text: jest.fn().mockResolvedValue('{invalid'),
     } as unknown as Request;
 
-    const result = await parseJsonBody(req, schema, 1024);
+    const result = await parseJsonBody(req, schema, '1kb');
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(400);
     await expect(result.response.json()).resolves.toEqual({
       error: 'Invalid JSON',
+    });
+  });
+
+  it('returns 400 when schema validation fails', async () => {
+    const req = {
+      json: jest.fn().mockResolvedValue({ foo: 123 }),
+    } as unknown as Request;
+
+    const result = await parseJsonBody(req, schema, '1kb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({
+      foo: ['Expected string, received number'],
     });
   });
 
   it('returns 400 when no body parser is available', async () => {
     const req = {} as Request;
-    const result = await parseJsonBody(req, schema, 1024);
+
+    const result = await parseJsonBody(req, schema, '1kb');
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(400);
     await expect(result.response.json()).resolves.toEqual({
       error: 'Invalid JSON',
-    });
-  });
-
-  it('returns flattened schema errors', async () => {
-    const req = {
-      json: jest.fn().mockResolvedValue({ foo: 123 }),
-    } as unknown as Request;
-
-    const result = await parseJsonBody(req, schema, 1024);
-    expect(result.success).toBe(false);
-    expect(result.response.status).toBe(400);
-    await expect(result.response.json()).resolves.toEqual({
-      foo: ['Expected string, received number'],
     });
   });
 });

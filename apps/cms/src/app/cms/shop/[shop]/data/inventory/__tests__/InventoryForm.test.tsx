@@ -1,4 +1,4 @@
-import { render, fireEvent, screen, waitFor, within } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor, within, act } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import { z } from "zod";
 
@@ -30,12 +30,27 @@ jest.mock("@acme/types", () => {
       variantAttributes: z.record(z.string()),
       quantity: z.number().int().min(0),
       lowStockThreshold: z.number().int().min(0).optional(),
+      wearCount: z.number().int().min(0).optional(),
+      wearAndTearLimit: z.number().int().min(0).optional(),
+      maintenanceCycle: z.number().int().min(0).optional(),
     })
     .strict();
   return { inventoryItemSchema };
 });
 
 import InventoryForm from "../InventoryForm";
+let capturedUpdateItem: (
+  index: number,
+  field: keyof import("@acme/types").InventoryItem | `variantAttributes.${string}`,
+  value: string,
+) => void;
+jest.mock("../InventoryRow", () => {
+  const Actual = jest.requireActual("../InventoryRow").default;
+  return (props: any) => {
+    capturedUpdateItem = props.updateItem;
+    return <Actual {...props} />;
+  };
+});
 
 describe("InventoryForm", () => {
   const initial = [
@@ -130,6 +145,83 @@ describe("InventoryForm", () => {
     const error = await screen.findByText(/SKU is required/i);
     expect(error).toHaveTextContent(/Quantity is required/i);
     expect(onSave).not.toHaveBeenCalled();
+  });
+
+  it("updates wear fields via updateItem", async () => {
+    const onSave = jest.fn();
+    render(<InventoryForm shop="test" initial={initial} onSave={onSave} />);
+    act(() => {
+      capturedUpdateItem(0, "wearCount", "3");
+      capturedUpdateItem(0, "wearAndTearLimit", "10");
+      capturedUpdateItem(0, "maintenanceCycle", "5");
+    });
+    fireEvent.click(screen.getByText("Save"));
+    await waitFor(() => expect(onSave).toHaveBeenCalled());
+    expect(onSave).toHaveBeenCalledWith([
+      expect.objectContaining({
+        wearCount: 3,
+        wearAndTearLimit: 10,
+        maintenanceCycle: 5,
+      }),
+    ]);
+  });
+
+  it("handles fetch failure on submit", async () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      json: () => Promise.resolve({ error: "Failed" }),
+    });
+    render(<InventoryForm shop="test" initial={initial} />);
+    fireEvent.click(screen.getByText("Save"));
+    expect(await screen.findByText("Failed")).toBeInTheDocument();
+  });
+
+  it("handles fetch failure on import and resets file input", async () => {
+    const clickSpy = jest
+      .spyOn(HTMLInputElement.prototype, "click")
+      .mockImplementation(() => {});
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+      json: () => Promise.resolve({ error: "Import failed" }),
+    });
+    render(<InventoryForm shop="test" initial={initial} />);
+    fireEvent.click(screen.getByText("Import JSON/CSV"));
+    expect(clickSpy).toHaveBeenCalled();
+    const input = document.querySelector(
+      'input[type="file"]',
+    ) as HTMLInputElement;
+    const file = new File(["{}"], "data.json", { type: "application/json" });
+    fireEvent.change(input, { target: { files: [file] } });
+    expect(await screen.findByText("Import failed")).toBeInTheDocument();
+    expect(input.value).toBe("");
+    clickSpy.mockRestore();
+  });
+
+  it("triggers download on export", async () => {
+    (fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      blob: () => Promise.resolve(new Blob(["{}"], { type: "application/json" })),
+    });
+    const click = jest.fn();
+    const originalCreate = document.createElement.bind(document);
+    const createElement = jest
+      .spyOn(document, "createElement")
+      .mockImplementation((tag: string) => {
+        const el = originalCreate(tag) as HTMLElement;
+        if (tag === "a") {
+          (el as HTMLAnchorElement).click = click;
+        }
+        return el;
+      });
+    jest.spyOn(URL, "createObjectURL").mockReturnValue("blob:mock");
+    jest.spyOn(URL, "revokeObjectURL").mockImplementation(() => {});
+    render(<InventoryForm shop="test" initial={initial} />);
+    fireEvent.click(screen.getByText("Export JSON"));
+    await waitFor(() => expect(fetch).toHaveBeenCalled());
+    expect(click).toHaveBeenCalled();
+    createElement.mockRestore();
+    (URL.createObjectURL as jest.Mock).mockRestore();
+    (URL.revokeObjectURL as jest.Mock).mockRestore();
   });
 });
 

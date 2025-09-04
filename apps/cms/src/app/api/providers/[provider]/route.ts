@@ -1,9 +1,9 @@
 import "@acme/zod-utils/initZod";
 import { NextRequest, NextResponse } from "next/server";
-import { promises as fs } from "fs";
 import path from "path";
 import { z } from "zod";
 import { resolveDataRoot } from "@platform-core/dataRoot";
+import { writeJsonFile } from "@cms/lib/server/jsonIO";
 
 const ParamsSchema = z
   .object({ shop: z.string(), code: z.string().optional() })
@@ -30,12 +30,7 @@ export async function GET(
   }
 
   const dir = path.join(resolveDataRoot(), shop);
-  await fs.mkdir(dir, { recursive: true });
-  await fs.writeFile(
-    path.join(dir, `${provider}.json`),
-    JSON.stringify({ token: code }, null, 2),
-    "utf8"
-  );
+  await writeJsonFile(path.join(dir, `${provider}.json`), { token: code });
 
   return NextResponse.redirect(`/cms/configurator?connected=${provider}`);
 }

@@ -6,6 +6,7 @@ import { resolveDataRoot } from "@platform-core/dataRoot";
 import fs from "fs/promises";
 import path from "path";
 import { ensureAuthorized } from "./common/auth";
+import { writeJsonFile } from "@cms/lib/server/jsonIO";
 
 export async function deployShopHosting(
   id: string,
@@ -43,8 +44,7 @@ export async function updateDeployStatus(
     const existing = await fs.readFile(file, "utf8").catch(() => "{}");
     const parsed = JSON.parse(existing) as Record<string, unknown>;
     const updated = { ...parsed, ...data };
-    await fs.mkdir(path.dirname(file), { recursive: true });
-    await fs.writeFile(file, JSON.stringify(updated, null, 2), "utf8");
+    await writeJsonFile(file, updated);
   } catch (err) {
     console.error("Failed to write deploy status", err);
   }

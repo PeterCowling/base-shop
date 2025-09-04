@@ -3,6 +3,7 @@ import { DATA_ROOT } from "@platform-core/dataRoot";
 import { validateShopName } from "@acme/lib";
 import fs from "fs/promises";
 import path from "path";
+import { writeJsonFile } from "@cms/lib/server/jsonIO";
 
 interface Body {
   shop: string;
@@ -28,7 +29,6 @@ export async function POST(req: NextRequest) {
   });
 
   const file = path.join(DATA_ROOT, shop, "seo.json");
-  await fs.mkdir(path.dirname(file), { recursive: true });
   let current: Record<string, unknown> = {};
   try {
     const buf = await fs.readFile(file, "utf8");
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     /* ignore */
   }
   current[body.id] = result;
-  await fs.writeFile(file, JSON.stringify(current, null, 2), "utf8");
+  await writeJsonFile(file, current);
 
   return NextResponse.json(result);
 }

@@ -2,11 +2,11 @@ import "@acme/zod-utils/initZod";
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
-import { promises as fs } from "fs";
 import path from "path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
+import { writeJsonFile } from "@cms/lib/server/jsonIO";
 
 const schema = z
   .object({
@@ -26,14 +26,9 @@ export async function POST(
   try {
     const parsed = await parseJsonBody(req, schema, "1mb");
     if (parsed.success === false) return parsed.response;
-    const { shop } = await context.params;
-    const dir = path.join(resolveDataRoot(), shop);
-    await fs.mkdir(dir, { recursive: true });
-    await fs.writeFile(
-      path.join(dir, "providers.json"),
-      JSON.stringify(parsed.data, null, 2),
-      "utf8"
-    );
+      const { shop } = await context.params;
+      const dir = path.join(resolveDataRoot(), shop);
+      await writeJsonFile(path.join(dir, "providers.json"), parsed.data);
     return NextResponse.json({ success: true });
   } catch (err) {
     return NextResponse.json(

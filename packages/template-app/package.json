@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "next dev -p 3000",
     "build": "next build",
+    "clean": "rimraf dist *.tsbuildinfo",
     "start": "next start -p 3000",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config jest.config.cjs",
     "fix:next-config": "node ./scripts/fix-template-next-config.mjs",

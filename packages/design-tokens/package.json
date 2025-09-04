@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint .",
     "test": "pnpm exec jest --ci --runInBand --config ../../jest.config.cjs"
   }

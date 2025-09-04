@@ -29,29 +29,4 @@ describe("msw handlers", () => {
     const json = await res.json();
     expect(json).toEqual([]);
   });
-
-  test("GET /cms/api/wizard-progress", async () => {
-    const res = await fetch("http://localhost/cms/api/wizard-progress");
-    expect(res.status).toBe(200);
-    const json = await res.json();
-    expect(json).toEqual({ state: {}, completed: {} });
-  });
-
-  test("PUT /cms/api/wizard-progress", async () => {
-    const res = await fetch("http://localhost/cms/api/wizard-progress", {
-      method: "PUT",
-    });
-    expect(res.status).toBe(200);
-    const json = await res.json();
-    expect(json).toEqual({});
-  });
-
-  test("PATCH /cms/api/wizard-progress", async () => {
-    const res = await fetch("http://localhost/cms/api/wizard-progress", {
-      method: "PATCH",
-    });
-    expect(res.status).toBe(200);
-    const json = await res.json();
-    expect(json).toEqual({});
-  });
 });

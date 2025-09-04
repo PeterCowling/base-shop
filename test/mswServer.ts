@@ -6,14 +6,14 @@ import { setupServer } from "msw/node";
  * Handlers can be added in individual tests via `server.use(...)`.
  */
 const handlers = [
-  rest.get("/cms/api/wizard-progress", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({ state: {}, completed: {} }))
+  rest.post("/cms/api/configurator", (_req, res, ctx) =>
+    res(ctx.status(200), ctx.json({ success: true, message: "default handler: OK" }))
   ),
-  rest.put("/cms/api/wizard-progress", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({}))
+  rest.get("/cms/api/configurator/validate-env/:shop", (_req, res, ctx) =>
+    res(ctx.status(200), ctx.json({ success: true }))
   ),
-  rest.patch("/cms/api/wizard-progress", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({}))
+  rest.get("/cms/api/page-templates", (_req, res, ctx) =>
+    res(ctx.status(200), ctx.json([]))
   ),
 ];
 

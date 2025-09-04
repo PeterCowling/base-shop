@@ -75,21 +75,18 @@ beforeEach(() => {
     state: { shopId: "shop" },
     completed: {},
   };
-  global.fetch = jest.fn((url: string, init?: RequestInit) => {
-    if (url === "/cms/api/wizard-progress") {
-      if (init?.method === "PUT") {
-        const body = JSON.parse(init.body as string);
-        serverState.state = { ...serverState.state, ...(body.data ?? {}) };
-        return Promise.resolve({ ok: true, json: async () => ({}) });
-      }
-      if (init?.method === "PATCH") {
-        const body = JSON.parse(init.body as string);
-        serverState.completed[body.stepId] = body.completed;
-        return Promise.resolve({ ok: true, json: async () => ({}) });
-      }
-      return Promise.resolve({ ok: true, json: async () => serverState });
+  global.fetch = jest.fn((_url: string, init?: RequestInit) => {
+    if (init?.method === "PUT") {
+      const body = JSON.parse(init.body as string);
+      serverState.state = { ...serverState.state, ...(body.data ?? {}) };
+      return Promise.resolve({ ok: true, json: async () => ({}) });
     }
-    return Promise.resolve({ ok: true, json: async () => ({}) });
+    if (init?.method === "PATCH") {
+      const body = JSON.parse(init.body as string);
+      serverState.completed[body.stepId] = body.completed;
+      return Promise.resolve({ ok: true, json: async () => ({}) });
+    }
+    return Promise.resolve({ ok: true, json: async () => serverState });
   }) as unknown as jest.Mock;
   Element.prototype.scrollIntoView = jest.fn();
   localStorage.clear();

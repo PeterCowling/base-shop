@@ -2,15 +2,6 @@ import { rest } from "msw";
 import { baseTokens } from "../../src/app/cms/wizard/tokenUtils";
 
 export const handlers = [
-  rest.get("/cms/api/wizard-progress", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({ state: {}, completed: {} }))
-  ),
-  rest.put("/cms/api/wizard-progress", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({}))
-  ),
-  rest.patch("/cms/api/wizard-progress", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({}))
-  ),
   rest.post("/cms/api/configurator", async (_req, res, ctx) =>
     res(
       ctx.status(201),

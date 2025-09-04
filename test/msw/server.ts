@@ -26,15 +26,6 @@ export const handlers = [
   rest.get("/cms/api/page-templates", (_req, res, ctx) =>
     res(ctx.status(200), ctx.json([]))
   ),
-  rest.get("/cms/api/wizard-progress", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({ state: {}, completed: {} }))
-  ),
-  rest.put("/cms/api/wizard-progress", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({}))
-  ),
-  rest.patch("/cms/api/wizard-progress", (_req, res, ctx) =>
-    res(ctx.status(200), ctx.json({}))
-  ),
   // Allow API route tests to hit local handlers without mocking
   rest.post("*/shop/:id/publish-upgrade", (req) => req.passthrough()),
 ];

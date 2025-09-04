@@ -23,7 +23,7 @@ describe("mfa", () => {
     jest.clearAllMocks();
   });
 
-  it("enrollMfa creates a secret, upserts it and returns otpauth URI", async () => {
+  it("enrollMfa(customerId) upserts { enabled:false } and returns { secret, otpauth }", async () => {
     const { enrollMfa } = await import("../mfa");
     generateSecret.mockReturnValue("secret");
     keyuri.mockReturnValue("otpauth");
@@ -40,7 +40,18 @@ describe("mfa", () => {
     expect(result).toEqual({ secret: "secret", otpauth: "otpauth" });
   });
 
-  it("verifyMfa enables record on first valid token", async () => {
+  it("verifyMfa with findUnique → null returns false", async () => {
+    const { verifyMfa } = await import("../mfa");
+    findUnique.mockResolvedValue(null);
+
+    const result = await verifyMfa("cust", "123456");
+
+    expect(verify).not.toHaveBeenCalled();
+    expect(update).not.toHaveBeenCalled();
+    expect(result).toBe(false);
+  });
+
+  it("valid token with enabled:false enables MFA and returns true", async () => {
     const { verifyMfa } = await import("../mfa");
     findUnique.mockResolvedValue({
       customerId: "cust",
@@ -59,7 +70,7 @@ describe("mfa", () => {
     expect(result).toBe(true);
   });
 
-  it("verifyMfa resolves true without updating when already enabled", async () => {
+  it("valid token with enabled:true returns true without update call", async () => {
     const { verifyMfa } = await import("../mfa");
     findUnique.mockResolvedValue({
       customerId: "cust",
@@ -75,7 +86,7 @@ describe("mfa", () => {
     expect(result).toBe(true);
   });
 
-  it("verifyMfa rejects invalid tokens without enabling", async () => {
+  it("invalid token returns false", async () => {
     const { verifyMfa } = await import("../mfa");
     findUnique.mockResolvedValue({
       customerId: "cust",
@@ -91,18 +102,7 @@ describe("mfa", () => {
     expect(result).toBe(false);
   });
 
-  it("verifyMfa returns false when record is missing", async () => {
-    const { verifyMfa } = await import("../mfa");
-    findUnique.mockResolvedValue(null);
-
-    const result = await verifyMfa("cust", "123456");
-
-    expect(verify).not.toHaveBeenCalled();
-    expect(update).not.toHaveBeenCalled();
-    expect(result).toBe(false);
-  });
-
-  it("isMfaEnabled reflects enabled state", async () => {
+  it("isMfaEnabled returns true/false; null record → false", async () => {
     const { isMfaEnabled } = await import("../mfa");
     findUnique.mockResolvedValueOnce({ customerId: "cust", enabled: true });
     await expect(isMfaEnabled("cust")).resolves.toBe(true);

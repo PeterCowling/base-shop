@@ -8,6 +8,12 @@ process.env.SANITY_API_VERSION ??= "2021-10-21";
 // Accept plain numbers from the shell (e.g. 900) by treating them as seconds.
 if (!process.env.AUTH_TOKEN_TTL) {
   process.env.AUTH_TOKEN_TTL = "15m";
-} else if (/^\d+$/.test(process.env.AUTH_TOKEN_TTL)) {
-  process.env.AUTH_TOKEN_TTL = `${process.env.AUTH_TOKEN_TTL}s`;
+} else {
+  const raw = String(process.env.AUTH_TOKEN_TTL).trim();
+  if (/^\d+$/.test(raw)) {
+    process.env.AUTH_TOKEN_TTL = `${raw}s`;
+  } else if (/^(\d+)\s*([sm])$/i.test(raw)) {
+    const [, num, unit] = raw.match(/^(\d+)\s*([sm])$/i);
+    process.env.AUTH_TOKEN_TTL = `${num}${unit.toLowerCase()}`;
+  }
 }

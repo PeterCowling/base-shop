@@ -3,12 +3,20 @@ import { z } from "zod";
 
 const isProd = process.env.NODE_ENV === "production";
 
-// Accept plain numeric AUTH_TOKEN_TTL by treating it as seconds.
-// This mirrors operational environments where shells may export numeric values.
-// Keep test expectations intact by skipping this normalization in NODE_ENV=test.
-const rawTTL = process.env.AUTH_TOKEN_TTL;
-if (process.env.NODE_ENV !== "test" && rawTTL && /^\d+$/.test(rawTTL)) {
-  process.env.AUTH_TOKEN_TTL = `${rawTTL}s`;
+// Normalize AUTH_TOKEN_TTL from the process environment so validation succeeds
+// even if the shell exported a plain number or included stray whitespace.
+// We intentionally skip this in tests to keep existing expectations.
+if (process.env.NODE_ENV !== "test") {
+  const rawTTL = process.env.AUTH_TOKEN_TTL;
+  if (typeof rawTTL === "string") {
+    const trimmed = rawTTL.trim();
+    if (/^\d+$/.test(trimmed)) {
+      process.env.AUTH_TOKEN_TTL = `${trimmed}s`;
+    } else if (/^(\d+)\s*([sm])$/i.test(trimmed)) {
+      const [, num, unit] = trimmed.match(/^(\d+)\s*([sm])$/i)!;
+      process.env.AUTH_TOKEN_TTL = `${num}${unit.toLowerCase()}`;
+    }
+  }
 }
 
 const ttlRegex = /^\d+(s|m)$/i;

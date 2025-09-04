@@ -1,35 +1,87 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
 
-const ORIGINAL_ENV = process.env;
 let warnSpy: jest.SpyInstance;
 
 afterEach(() => {
   warnSpy?.mockRestore();
-  process.env = ORIGINAL_ENV;
-  jest.resetModules();
 });
+
+async function withEnv<T>(
+  env: Record<string, string | undefined>,
+  fn: () => Promise<T> | T,
+): Promise<T> {
+  const previous = process.env;
+  process.env = { ...previous, ...env } as NodeJS.ProcessEnv;
+  for (const key of Object.keys(env)) {
+    if (env[key] === undefined) {
+      delete process.env[key];
+    }
+  }
+  jest.resetModules();
+  try {
+    return await fn();
+  } finally {
+    process.env = previous;
+    jest.resetModules();
+  }
+}
 
 describe("payments env schema", () => {
-  it("warns and falls back to defaults when STRIPE_SECRET_KEY is empty", () => {
-    process.env = {
-      STRIPE_SECRET_KEY: "",
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
-      STRIPE_WEBHOOK_SECRET: "whsec_live_123",
-    } as NodeJS.ProcessEnv;
-
+  it("uses defaults when gateway disabled without warnings", async () => {
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
-    jest.resetModules();
-    const { paymentsEnv, paymentsEnvSchema } = require("../payments.js");
-
-    const parsed = paymentsEnvSchema.safeParse(process.env);
-    expect(parsed.success).toBe(false);
-    if (!parsed.success) {
-      expect(parsed.error.format()).toHaveProperty("STRIPE_SECRET_KEY");
-    }
-    expect(warnSpy).toHaveBeenCalledWith(
-      "⚠️ Invalid payments environment variables:",
-      expect.any(Object),
+    await withEnv(
+      {
+        PAYMENTS_GATEWAY: "disabled",
+        STRIPE_SECRET_KEY: "sk_live_123",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
+        STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+      },
+      async () => {
+        const { paymentsEnv, paymentsEnvSchema } = await import("../payments.js");
+        expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
+        expect(warnSpy).not.toHaveBeenCalled();
+      },
     );
-    expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
+  });
+
+  it.each(["sk_test_abc", "sk_live_abc"])(
+    "parses %s secret key",
+    async (key) => {
+      warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+      await withEnv(
+        {
+          PAYMENTS_GATEWAY: "stripe",
+          STRIPE_SECRET_KEY: key,
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_abc",
+          STRIPE_WEBHOOK_SECRET: "whsec_live_abc",
+        },
+        async () => {
+          const { paymentsEnv } = await import("../payments.js");
+          expect(paymentsEnv.STRIPE_SECRET_KEY).toBe(key);
+          expect(warnSpy).not.toHaveBeenCalled();
+        },
+      );
+    },
+  );
+
+  it("warns when STRIPE_WEBHOOK_SECRET is missing", async () => {
+    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    await withEnv(
+      {
+        PAYMENTS_GATEWAY: "stripe",
+        STRIPE_SECRET_KEY: "sk_live_123",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
+        STRIPE_WEBHOOK_SECRET: "",
+      },
+      async () => {
+        const { paymentsEnv, paymentsEnvSchema } = await import("../payments.js");
+        expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
+        expect(warnSpy).toHaveBeenCalledWith(
+          "⚠️ Invalid payments environment variables:",
+          expect.any(Object),
+        );
+      },
+    );
   });
 });
+

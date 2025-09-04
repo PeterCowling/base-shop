@@ -16,6 +16,10 @@ describe('parseLimit', () => {
     expect(() => parseLimit('10tb')).toThrow('Invalid limit');
     expect(() => parseLimit('foobar')).toThrow('Invalid limit');
   });
+
+  it('returns numeric limits directly', () => {
+    expect(parseLimit(123)).toBe(123);
+  });
 });
 
 describe('parseJsonBody', () => {
@@ -42,9 +46,33 @@ describe('parseJsonBody', () => {
     });
   });
 
+  it('accepts a numeric limit', async () => {
+    const req = {
+      json: jest.fn().mockResolvedValue({ foo: 'bar' }),
+    } as unknown as Request;
+
+    const result = await parseJsonBody(req, schema, 1024);
+
+    expect(result).toEqual({ success: true, data: { foo: 'bar' } });
+  });
+
   it('returns 413 when payload exceeds limit', async () => {
     const req = {
       json: jest.fn().mockResolvedValue({ foo: 'a'.repeat(2 * 1024) }),
+    } as unknown as Request;
+
+    const result = await parseJsonBody(req, schema, '1kb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(413);
+    await expect(result.response.json()).resolves.toEqual({
+      error: 'Payload Too Large',
+    });
+  });
+
+  it('returns 413 when text() payload exceeds limit', async () => {
+    const large = JSON.stringify({ foo: 'a'.repeat(2 * 1024) });
+    const req = {
+      text: jest.fn().mockResolvedValue(large),
     } as unknown as Request;
 
     const result = await parseJsonBody(req, schema, '1kb');

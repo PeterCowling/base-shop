@@ -93,7 +93,7 @@ function prepareNavItems(items: NavItem[]): NavItem[] {
 /** Parse and populate option defaults. */
 export function prepareOptions(
   id: string,
-  opts: CreateShopOptions
+  opts: CreateShopOptions,
 ): PreparedCreateShopOptions {
   const parsed: z.infer<typeof createShopOptionsSchema> =
     createShopOptionsSchema.parse(opts);

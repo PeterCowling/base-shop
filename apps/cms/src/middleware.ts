@@ -7,6 +7,10 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { authSecret } from "./auth/secret";
 import { logger } from "@acme/shared-utils";
+import { createHeadersObject } from "next-secure-headers";
+import helmet from "helmet";
+import { RateLimiterMemory } from "rate-limiter-flexible";
+import { validateCsrfToken } from "@auth";
 
 /**
  * JWT payload shape for this CMS.
@@ -27,18 +31,86 @@ interface CmsToken {
 const ADMIN_PATH_REGEX =
   /^\/cms\/shop\/([^/]+)\/(?:products\/[^/]+\/edit|settings|media(?:\/|$))/;
 
+const securityHeaders = (() => {
+  const base = createHeadersObject({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: "'self'",
+        baseUri: "'self'",
+        objectSrc: "'none'",
+        formAction: "'self'",
+        frameAncestors: "'none'",
+      },
+    },
+    forceHTTPSRedirect: [
+      true,
+      { maxAge: 60 * 60 * 24 * 365, includeSubDomains: true, preload: true },
+    ],
+    frameGuard: "deny",
+    referrerPolicy: "no-referrer",
+    nosniff: "nosniff",
+    noopen: "noopen",
+  });
+
+  const helmetHeaders: Record<string, string> = {};
+  const helmetRes = {
+    setHeader(key: string, value: unknown) {
+      helmetHeaders[key] = Array.isArray(value)
+        ? value.join("; ")
+        : String(value);
+    },
+  };
+
+  helmet.crossOriginOpenerPolicy()(undefined as any, helmetRes as any, () => {});
+  helmet.crossOriginEmbedderPolicy()(undefined as any, helmetRes as any, () => {});
+  helmetHeaders["Permissions-Policy"] =
+    "camera=(), microphone=(), geolocation=()";
+
+  return { ...base, ...helmetHeaders } as Record<string, string>;
+})();
+
+const loginLimiter = new RateLimiterMemory({ points: 5, duration: 60 });
+
+function applySecurityHeaders(res: NextResponse) {
+  for (const [key, value] of Object.entries(securityHeaders)) {
+    res.headers.set(key, value);
+  }
+  return res;
+}
+
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
   logger.info("request", { path: pathname });
 
-  /* Decode JWT */
-  const token = (await getToken({
-    req,
-    // Ensure the secret is treated as a string for JWT decoding
-    secret: authSecret as string,
-  })) as CmsToken | null;
-  const role: Role | null = token?.role ?? null;
-  logger.debug("role", { role });
+  const method = req.method?.toUpperCase() ?? "GET";
+
+  /* Rate limit login/signin endpoints */
+  if (pathname === "/api/login" || pathname === "/api/auth/signin") {
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+    try {
+      await loginLimiter.consume(ip);
+    } catch {
+      logger.warn("rate limit", { ip });
+      return applySecurityHeaders(
+        new NextResponse("Too Many Requests", { status: 429 })
+      );
+    }
+  }
+
+  /* CSRF protection for mutating API routes */
+  if (
+    pathname.startsWith("/api") &&
+    ["POST", "PUT", "PATCH", "DELETE"].includes(method)
+  ) {
+    const csrfToken = req.headers.get("x-csrf-token");
+    if (!(await validateCsrfToken(csrfToken))) {
+      logger.warn("csrf failed", { path: pathname });
+      return applySecurityHeaders(
+        new NextResponse("Forbidden", { status: 403 })
+      );
+    }
+  }
 
   /* Skip static assets, auth endpoints, and login/signup pages */
   if (
@@ -49,8 +121,17 @@ export async function middleware(req: NextRequest) {
     pathname === "/favicon.ico"
   ) {
     logger.debug("skip", { path: pathname });
-    return NextResponse.next();
+    return applySecurityHeaders(NextResponse.next());
   }
+
+  /* Decode JWT */
+  const token = (await getToken({
+    req,
+    // Ensure the secret is treated as a string for JWT decoding
+    secret: authSecret as string,
+  })) as CmsToken | null;
+  const role: Role | null = token?.role ?? null;
+  logger.debug("role", { role });
 
   /* Redirect unauthenticated users to /login */
   if (!role) {
@@ -58,7 +139,7 @@ export async function middleware(req: NextRequest) {
     url.pathname = "/login";
     url.searchParams.set("callbackUrl", pathname);
     logger.info("redirect to login", { path: url.pathname });
-    return NextResponse.redirect(url);
+    return applySecurityHeaders(NextResponse.redirect(url));
   }
 
   /* Enforce read access for CMS routes */
@@ -70,7 +151,7 @@ export async function middleware(req: NextRequest) {
       path: url.pathname,
       shop: matchShop ? matchShop[1] : undefined,
     });
-    return NextResponse.rewrite(url, { status: 403 });
+    return applySecurityHeaders(NextResponse.rewrite(url, { status: 403 }));
   }
 
   /* Block viewers from write routes */
@@ -82,11 +163,11 @@ export async function middleware(req: NextRequest) {
       path: url.pathname,
       shop: match[1],
     });
-    return NextResponse.rewrite(url, { status: 403 });
+    return applySecurityHeaders(NextResponse.rewrite(url, { status: 403 }));
   }
 
   logger.info("allow", { path: pathname });
-  return NextResponse.next();
+  return applySecurityHeaders(NextResponse.next());
 }
 
 export const config = {

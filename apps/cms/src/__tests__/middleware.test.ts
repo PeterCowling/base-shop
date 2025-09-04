@@ -2,14 +2,18 @@ import { NextRequest } from "next/server";
 import { middleware } from "../middleware";
 import { getToken } from "next-auth/jwt";
 import { canRead, canWrite } from "@auth/rbac";
+import { validateCsrfToken } from "@auth";
 
 jest.mock("../auth/secret", () => ({ authSecret: "test-secret" }));
 jest.mock("next-auth/jwt", () => ({ getToken: jest.fn() }));
 jest.mock("@auth/rbac", () => ({ canRead: jest.fn(), canWrite: jest.fn() }));
+jest.mock("@auth", () => ({ validateCsrfToken: jest.fn() }));
 
 const getTokenMock = getToken as jest.MockedFunction<typeof getToken>;
 const canReadMock = canRead as jest.MockedFunction<typeof canRead>;
 const canWriteMock = canWrite as jest.MockedFunction<typeof canWrite>;
+const validateCsrfTokenMock =
+  validateCsrfToken as jest.MockedFunction<typeof validateCsrfToken>;
 
 describe("middleware", () => {
   beforeEach(() => {
@@ -119,6 +123,44 @@ describe("middleware", () => {
     expect(res.headers.get("x-middleware-next")).toBe("1");
     expect(canReadMock).toHaveBeenCalledWith("admin");
     expect(canWriteMock).toHaveBeenCalledWith("admin");
+  });
+
+  it("rejects mutating api requests with invalid csrf token", async () => {
+    validateCsrfTokenMock.mockResolvedValue(false);
+
+    const req = new NextRequest("http://example.com/api/auth/test", {
+      method: "POST",
+      headers: { "x-csrf-token": "bad" },
+    });
+    const res = await middleware(req);
+
+    expect(res.status).toBe(403);
+  });
+
+  it("rate limits repeated login attempts", async () => {
+    validateCsrfTokenMock.mockResolvedValue(true);
+    const headers = {
+      "x-forwarded-for": "1.2.3.4",
+      "x-csrf-token": "token",
+    } as Record<string, string>;
+
+    for (let i = 0; i < 5; i++) {
+      const res = await middleware(
+        new NextRequest("http://example.com/api/auth/signin", {
+          method: "POST",
+          headers,
+        }),
+      );
+      expect(res.status).not.toBe(429);
+    }
+
+    const res = await middleware(
+      new NextRequest("http://example.com/api/auth/signin", {
+        method: "POST",
+        headers,
+      }),
+    );
+    expect(res.status).toBe(429);
   });
 });
 

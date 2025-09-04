@@ -37,6 +37,9 @@ describe('loadThemeTokensBrowser', () => {
   const altDir = join(rootDir, 'packages/themes/alt/tailwind-tokens/src');
 
   beforeAll(() => {
+    const themesDir = join(rootDir, 'packages/themes');
+    // Ensure the base themes directory exists before creating fixtures.
+    fs.mkdirSync(themesDir, { recursive: true });
     fs.mkdirSync(fancyDir, { recursive: true });
     fs.writeFileSync(
       join(fancyDir, 'index.ts'),

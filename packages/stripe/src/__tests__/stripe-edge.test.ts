@@ -8,21 +8,21 @@ type StripeInternal = Stripe & {
 };
 
 describe("stripe edge client", () => {
-  const OLD_ENV = process.env;
+  const OLD_ENV = { ...process.env };
 
   // No special setup required; fetch and other APIs are polyfilled in test setup.
 
   beforeEach(() => {
     jest.resetModules();
-    process.env = {
-      ...OLD_ENV,
-      STRIPE_SECRET_KEY: "sk_test_123",
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_123",
-    } as NodeJS.ProcessEnv;
+    process.env = { ...OLD_ENV } as NodeJS.ProcessEnv;
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: { STRIPE_SECRET_KEY: "sk_test_123" },
+    }));
   });
 
   afterEach(() => {
-    process.env = OLD_ENV;
+    process.env = OLD_ENV as NodeJS.ProcessEnv;
     jest.restoreAllMocks();
   });
 

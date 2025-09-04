@@ -24,9 +24,10 @@ describe("env index module", () => {
     });
     jest.doMock("../auth.js", () => {
       const { z } = require("zod");
+      const strong = z.string().regex(/^[\x20-\x7E]{32,}$/);
       const base = z.object({
-        NEXTAUTH_SECRET: z.string().min(1),
-        SESSION_SECRET: z.string().min(1),
+        NEXTAUTH_SECRET: strong,
+        SESSION_SECRET: strong,
       });
       return {
         authEnvSchema: base.superRefine(() => {}),
@@ -50,9 +51,9 @@ describe("env index module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid environment variables:",
       expect.objectContaining({
-        CMS_SPACE_URL: { _errors: [expect.any(String)] },
-        NEXTAUTH_SECRET: { _errors: [expect.any(String)] },
-        SESSION_SECRET: { _errors: [expect.any(String)] },
+        CMS_SPACE_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
+        NEXTAUTH_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
+        SESSION_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();

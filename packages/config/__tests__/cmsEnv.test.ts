@@ -25,7 +25,12 @@ describe("cmsEnv", () => {
 
   it("uses fallback values in development", async () => {
     const { cmsEnv } = await withEnv(
-      { NODE_ENV: "development" },
+      {
+        NODE_ENV: "development",
+        CMS_SPACE_URL: undefined,
+        CMS_ACCESS_TOKEN: undefined,
+        SANITY_API_VERSION: undefined,
+      },
       () => import("../src/env/cms"),
     );
 
@@ -59,6 +64,8 @@ describe("cmsEnv", () => {
         {
           NODE_ENV: "production",
           CMS_SPACE_URL: "https://example.com",
+          CMS_ACCESS_TOKEN: undefined,
+          SANITY_API_VERSION: undefined,
         },
         () => import("../src/env/cms"),
       ),

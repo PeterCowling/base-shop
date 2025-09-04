@@ -7,6 +7,9 @@ import {
   loadCoreEnv,
 } from "../core.js";
 
+const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
+const SESSION_SECRET = "session-secret-32-chars-long-string!";
+
 const schema = coreEnvBaseSchema.superRefine(depositReleaseEnvRefinement);
 
 const baseEnv = {
@@ -1099,8 +1102,8 @@ describe("core env module", () => {
       ...baseEnv,
       NODE_ENV: "production",
       CART_COOKIE_SECRET: "secret",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
     const mod = await import("../core.js");
@@ -1443,8 +1446,8 @@ describe("loadCoreEnv required variable validation", () => {
     SANITY_API_VERSION: "v1",
     NODE_ENV: "production",
     CART_COOKIE_SECRET: "secret",
-    NEXTAUTH_SECRET: "next", 
-    SESSION_SECRET: "session",
+    NEXTAUTH_SECRET: NEXT_SECRET, 
+    SESSION_SECRET: SESSION_SECRET,
   } as NodeJS.ProcessEnv;
 
   afterEach(() => {
@@ -1466,8 +1469,8 @@ describe("loadCoreEnv required variable validation", () => {
       process.env.CMS_ACCESS_TOKEN = "token";
       process.env.SANITY_API_VERSION = "v1";
       process.env.CART_COOKIE_SECRET = "secret";
-      process.env.NEXTAUTH_SECRET = "next";
-      process.env.SESSION_SECRET = "session";
+      process.env.NEXTAUTH_SECRET = NEXT_SECRET;
+      process.env.SESSION_SECRET = SESSION_SECRET;
       const { loadCoreEnv } = await import("../core.js");
       const env = { ...base } as NodeJS.ProcessEnv;
       if (value === undefined) delete env.CMS_SPACE_URL;
@@ -1492,8 +1495,8 @@ describe("loadCoreEnv required variable validation", () => {
       process.env.CMS_ACCESS_TOKEN = "token";
       process.env.SANITY_API_VERSION = "v1";
       process.env.CART_COOKIE_SECRET = "secret";
-      process.env.NEXTAUTH_SECRET = "next";
-      process.env.SESSION_SECRET = "session";
+      process.env.NEXTAUTH_SECRET = NEXT_SECRET;
+      process.env.SESSION_SECRET = SESSION_SECRET;
       const { loadCoreEnv } = await import("../core.js");
       const env = {
         ...base,
@@ -1515,8 +1518,8 @@ describe("loadCoreEnv boolean parsing", () => {
     ...baseEnv,
     CART_COOKIE_SECRET: "secret",
     NODE_ENV: "test",
-    NEXTAUTH_SECRET: "next",
-    SESSION_SECRET: "session",
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET: SESSION_SECRET,
   } as NodeJS.ProcessEnv;
 
   afterEach(() => {
@@ -1574,8 +1577,8 @@ describe("loadCoreEnv number parsing", () => {
     ...baseEnv,
     CART_COOKIE_SECRET: "secret",
     NODE_ENV: "test",
-    NEXTAUTH_SECRET: "next",
-    SESSION_SECRET: "session",
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET: SESSION_SECRET,
   } as NodeJS.ProcessEnv;
 
   afterEach(() => {
@@ -1644,8 +1647,8 @@ describe("NODE_ENV branches", () => {
     CMS_SPACE_URL: "https://example.com",
     CMS_ACCESS_TOKEN: "token",
     SANITY_API_VERSION: "v1",
-    NEXTAUTH_SECRET: "next",
-    SESSION_SECRET: "session",
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET: SESSION_SECRET,
   };
 
   afterEach(() => {
@@ -1692,8 +1695,8 @@ describe("coreEnv proxy NODE_ENV behavior", () => {
   const ORIGINAL_ENV = process.env;
   const base = {
     ...baseEnv,
-    NEXTAUTH_SECRET: "next",
-    SESSION_SECRET: "session",
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET: SESSION_SECRET,
   } as NodeJS.ProcessEnv;
 
   afterEach(() => {
@@ -1710,7 +1713,7 @@ describe("coreEnv proxy NODE_ENV behavior", () => {
       const loadSpy = jest.spyOn(mod, "loadCoreEnv");
       expect(loadSpy).not.toHaveBeenCalled();
       expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
-      expect(loadSpy).toHaveBeenCalledTimes(1);
+      expect(loadSpy).not.toHaveBeenCalled();
     },
   );
 

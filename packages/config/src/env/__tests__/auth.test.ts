@@ -1,5 +1,13 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
 
+const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
+const SESSION_SECRET = "session-secret-32-chars-long-string!";
+const DEV_NEXT_SECRET = "dev-nextauth-secret-32-chars-long-string!";
+const DEV_SESSION_SECRET = "dev-session-secret-32-chars-long-string!";
+const STRONG_TOKEN = "token-value-32-chars-long-string!!";
+const JWT_SECRET = "jwt-secret-32-chars-long-string!!!";
+const OAUTH_SECRET = "oauth-secret-32-chars-long-string!!";
+
 describe("auth env module", () => {
   const ORIGINAL_ENV = process.env;
 
@@ -12,14 +20,14 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
     const { authEnv } = await import("../auth.ts");
     expect(authEnv).toMatchObject({
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
     });
   });
 
@@ -34,8 +42,8 @@ describe("auth env module", () => {
     jest.resetModules();
     const { authEnv } = await import("../auth.ts");
     expect(authEnv).toMatchObject({
-      NEXTAUTH_SECRET: "dev-nextauth-secret",
-      SESSION_SECRET: "dev-session-secret",
+      NEXTAUTH_SECRET: DEV_NEXT_SECRET,
+      SESSION_SECRET: DEV_SESSION_SECRET,
     });
     expect(authEnv.PREVIEW_TOKEN_SECRET).toBeUndefined();
   });
@@ -44,14 +52,14 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "development",
-      SESSION_SECRET: "session-secret",
+      SESSION_SECRET: SESSION_SECRET,
     } as NodeJS.ProcessEnv;
     delete process.env.NEXTAUTH_SECRET;
     jest.resetModules();
     const { authEnv } = await import("../auth.ts");
     expect(authEnv).toMatchObject({
-      NEXTAUTH_SECRET: "dev-nextauth-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: DEV_NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
     });
   });
 
@@ -59,14 +67,14 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "development",
-      NEXTAUTH_SECRET: "next-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
     } as NodeJS.ProcessEnv;
     delete process.env.SESSION_SECRET;
     jest.resetModules();
     const { authEnv } = await import("../auth.ts");
     expect(authEnv).toMatchObject({
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "dev-session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: DEV_SESSION_SECRET,
     });
   });
 
@@ -85,8 +93,8 @@ describe("auth env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
-        NEXTAUTH_SECRET: { _errors: [expect.any(String)] },
-        SESSION_SECRET: { _errors: [expect.any(String)] },
+        NEXTAUTH_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
+        SESSION_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -107,8 +115,8 @@ describe("auth env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
-        NEXTAUTH_SECRET: { _errors: [expect.any(String)] },
-        SESSION_SECRET: { _errors: [expect.any(String)] },
+        NEXTAUTH_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
+        SESSION_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -118,7 +126,7 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      SESSION_SECRET: "session-secret",
+      SESSION_SECRET: SESSION_SECRET,
     } as NodeJS.ProcessEnv;
     delete process.env.NEXTAUTH_SECRET;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
@@ -129,7 +137,7 @@ describe("auth env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
-        NEXTAUTH_SECRET: { _errors: [expect.any(String)] },
+        NEXTAUTH_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -139,7 +147,7 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
     } as NodeJS.ProcessEnv;
     delete process.env.SESSION_SECRET;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
@@ -150,7 +158,7 @@ describe("auth env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
-        SESSION_SECRET: { _errors: [expect.any(String)] },
+        SESSION_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -171,8 +179,8 @@ describe("auth env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
-        NEXTAUTH_SECRET: { _errors: [expect.any(String)] },
-        SESSION_SECRET: { _errors: [expect.any(String)] },
+        NEXTAUTH_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
+        SESSION_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -182,16 +190,16 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
     const { authEnvSchema } = await import("../auth.ts");
     const result = authEnvSchema.safeParse({});
     expect(result.success).toBe(false);
     expect(result.error.format()).toMatchObject({
-      NEXTAUTH_SECRET: { _errors: [expect.any(String)] },
-      SESSION_SECRET: { _errors: [expect.any(String)] },
+      NEXTAUTH_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
+      SESSION_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
     });
     expect(() => authEnvSchema.parse({})).toThrow();
   });
@@ -200,8 +208,8 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
       SESSION_STORE: "postgres",
     } as NodeJS.ProcessEnv;
     const errorSpy = jest
@@ -214,7 +222,7 @@ describe("auth env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
-        SESSION_STORE: { _errors: [expect.any(String)] },
+        SESSION_STORE: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -224,8 +232,8 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
       SESSION_STORE: "redis",
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
@@ -238,8 +246,8 @@ describe("auth env module", () => {
       expect(errorSpy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
-          UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
-          UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
+          UPSTASH_REDIS_REST_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
+          UPSTASH_REDIS_REST_TOKEN: { _errors: expect.arrayContaining([expect.any(String)]) },
         }),
       );
     }
@@ -250,14 +258,14 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
     const { authEnvSchema } = await import("../auth.ts");
     const result = authEnvSchema.safeParse({
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
       SESSION_STORE: "redis",
     });
     expect(result.success).toBe(false);
@@ -280,10 +288,10 @@ describe("auth env module", () => {
       process.env = {
         ...ORIGINAL_ENV,
         NODE_ENV: "production",
-        NEXTAUTH_SECRET: "next-secret",
-        SESSION_SECRET: "session-secret",
+        NEXTAUTH_SECRET: NEXT_SECRET,
+        SESSION_SECRET: SESSION_SECRET,
         SESSION_STORE: "redis",
-        UPSTASH_REDIS_REST_TOKEN: "token",
+        UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
       } as NodeJS.ProcessEnv;
       const errorSpy = jest
         .spyOn(console, "error")
@@ -299,7 +307,7 @@ describe("auth env module", () => {
         expect(errorSpy).toHaveBeenCalledWith(
           "❌ Invalid auth environment variables:",
           expect.objectContaining({
-            UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
+            UPSTASH_REDIS_REST_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
           }),
         );
       }
@@ -310,8 +318,8 @@ describe("auth env module", () => {
       process.env = {
         ...ORIGINAL_ENV,
         NODE_ENV: "production",
-        NEXTAUTH_SECRET: "next-secret",
-        SESSION_SECRET: "session-secret",
+        NEXTAUTH_SECRET: NEXT_SECRET,
+        SESSION_SECRET: SESSION_SECRET,
         SESSION_STORE: "redis",
         UPSTASH_REDIS_REST_URL: "https://example.com",
       } as NodeJS.ProcessEnv;
@@ -329,7 +337,7 @@ describe("auth env module", () => {
         expect(errorSpy).toHaveBeenCalledWith(
           "❌ Invalid auth environment variables:",
           expect.objectContaining({
-            UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
+            UPSTASH_REDIS_REST_TOKEN: { _errors: expect.arrayContaining([expect.any(String)]) },
           }),
         );
       }
@@ -340,11 +348,11 @@ describe("auth env module", () => {
       process.env = {
         ...ORIGINAL_ENV,
         NODE_ENV: "production",
-        NEXTAUTH_SECRET: "next-secret",
-        SESSION_SECRET: "session-secret",
+        NEXTAUTH_SECRET: NEXT_SECRET,
+        SESSION_SECRET: SESSION_SECRET,
         SESSION_STORE: "redis",
         UPSTASH_REDIS_REST_URL: "https://example.com",
-        UPSTASH_REDIS_REST_TOKEN: "token",
+        UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
       } as NodeJS.ProcessEnv;
       const errorSpy = jest
         .spyOn(console, "error")
@@ -354,7 +362,7 @@ describe("auth env module", () => {
       expect(authEnv).toMatchObject({
         SESSION_STORE: "redis",
         UPSTASH_REDIS_REST_URL: "https://example.com",
-        UPSTASH_REDIS_REST_TOKEN: "token",
+        UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
       });
       expect(errorSpy).not.toHaveBeenCalled();
       errorSpy.mockRestore();
@@ -365,14 +373,14 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
     const { authEnvSchema } = await import("../auth.ts");
     const result = authEnvSchema.safeParse({
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
       LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
     });
     expect(result.success).toBe(false);
@@ -389,15 +397,15 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
     const { authEnvSchema } = await import("../auth.ts");
     const result = authEnvSchema.safeParse({
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
-      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
     });
     expect(result.success).toBe(false);
     expect(result.error.format()).toMatchObject({
@@ -413,17 +421,17 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
       LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
-      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     const { authEnv } = await import("../auth.ts");
     expect(authEnv).toMatchObject({
       LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
-      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
     });
     expect(errorSpy).not.toHaveBeenCalled();
     errorSpy.mockRestore();
@@ -435,9 +443,9 @@ describe("auth env module", () => {
       process.env = {
         ...ORIGINAL_ENV,
         NODE_ENV: "production",
-        NEXTAUTH_SECRET: "next-secret",
-        SESSION_SECRET: "session-secret",
-        LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+        NEXTAUTH_SECRET: NEXT_SECRET,
+        SESSION_SECRET: SESSION_SECRET,
+        LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
       } as NodeJS.ProcessEnv;
       const errorSpy = jest
         .spyOn(console, "error")
@@ -472,8 +480,8 @@ describe("auth env module", () => {
       process.env = {
         ...ORIGINAL_ENV,
         NODE_ENV: "production",
-        NEXTAUTH_SECRET: "next-secret",
-        SESSION_SECRET: "session-secret",
+        NEXTAUTH_SECRET: NEXT_SECRET,
+        SESSION_SECRET: SESSION_SECRET,
         LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
       } as NodeJS.ProcessEnv;
       const errorSpy = jest
@@ -507,8 +515,8 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
       LOGIN_RATE_LIMIT_REDIS_URL: "not-a-url",
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
@@ -519,7 +527,7 @@ describe("auth env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
-        LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
+        LOGIN_RATE_LIMIT_REDIS_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -529,7 +537,7 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      SESSION_SECRET: "session-secret",
+      SESSION_SECRET: SESSION_SECRET,
       LOGIN_RATE_LIMIT_REDIS_URL: "not-a-url",
     } as NodeJS.ProcessEnv;
     delete process.env.NEXTAUTH_SECRET;
@@ -541,8 +549,8 @@ describe("auth env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
-        NEXTAUTH_SECRET: { _errors: [expect.any(String)] },
-        LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
+        NEXTAUTH_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
+        LOGIN_RATE_LIMIT_REDIS_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -552,10 +560,10 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
       SESSION_STORE: "redis",
-      UPSTASH_REDIS_REST_TOKEN: "token",
+      UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
@@ -580,8 +588,8 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
       SESSION_STORE: "redis",
       UPSTASH_REDIS_REST_URL: "https://example.com",
     } as NodeJS.ProcessEnv;
@@ -608,8 +616,8 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
       LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
@@ -635,9 +643,9 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
-      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
@@ -662,18 +670,18 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
       SESSION_STORE: "redis",
       UPSTASH_REDIS_REST_URL: "https://example.com",
-      UPSTASH_REDIS_REST_TOKEN: "token",
+      UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
     const { authEnv } = await import("../auth.ts");
     expect(authEnv).toMatchObject({
       SESSION_STORE: "redis",
       UPSTASH_REDIS_REST_URL: "https://example.com",
-      UPSTASH_REDIS_REST_TOKEN: "token",
+      UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
     });
   });
 
@@ -681,10 +689,10 @@ describe("auth env module", () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
-      NEXTAUTH_SECRET: "next-secret",
-      SESSION_SECRET: "session-secret",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
       LOGIN_RATE_LIMIT_REDIS_URL: "not-a-url",
-      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
@@ -694,7 +702,7 @@ describe("auth env module", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
-        LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
+        LOGIN_RATE_LIMIT_REDIS_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();
@@ -716,10 +724,10 @@ describe("auth env module", () => {
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
         NEXTAUTH_SECRET: {
-          _errors: ["String must contain at least 1 character(s)"],
+          _errors: expect.arrayContaining([expect.any(String)]),
         },
         SESSION_SECRET: {
-          _errors: ["String must contain at least 1 character(s)"],
+          _errors: expect.arrayContaining([expect.any(String)]),
         },
       }),
     );
@@ -737,8 +745,8 @@ describe("authEnvSchema", () => {
   });
 
   const baseEnv = {
-    NEXTAUTH_SECRET: "next-secret",
-    SESSION_SECRET: "session-secret",
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET: SESSION_SECRET,
   } as const;
 
 
@@ -752,7 +760,7 @@ describe("authEnvSchema", () => {
     const result = authEnvSchema.safeParse({
       ...baseEnv,
       SESSION_STORE: "redis",
-      UPSTASH_REDIS_REST_TOKEN: "token",
+      UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
     });
     expect(result.success).toBe(false);
     expect(result.error.format()).toMatchObject({
@@ -816,7 +824,7 @@ describe("authEnvSchema", () => {
     const { authEnvSchema } = await import("../auth.ts");
     const result = authEnvSchema.safeParse({
       ...baseEnv,
-      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
     });
     expect(result.success).toBe(false);
     expect(result.error.format()).toMatchObject({
@@ -839,9 +847,9 @@ describe("authEnvSchema", () => {
       ...baseEnv,
       SESSION_STORE: "redis",
       UPSTASH_REDIS_REST_URL: "https://example.com",
-      UPSTASH_REDIS_REST_TOKEN: "token",
+      UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
       LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
-      LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
     });
     expect(result.success).toBe(true);
   });
@@ -857,8 +865,8 @@ describe("auth providers and tokens", () => {
   });
 
   const baseEnv = {
-    NEXTAUTH_SECRET: "next-secret",
-    SESSION_SECRET: "session-secret",
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET: SESSION_SECRET,
   } as const;
 
   const withEnv = async (
@@ -897,10 +905,10 @@ describe("auth providers and tokens", () => {
 
   it("parses jwt provider when secret present", async () => {
     await withEnv(
-      { AUTH_PROVIDER: "jwt", JWT_SECRET: "jwt-secret" },
+      { AUTH_PROVIDER: "jwt", JWT_SECRET: JWT_SECRET },
       async () => {
         const { authEnv } = await import("../auth.ts");
-        expect(authEnv.JWT_SECRET).toBe("jwt-secret");
+        expect(authEnv.JWT_SECRET).toBe(JWT_SECRET);
       },
     );
   });
@@ -946,12 +954,12 @@ describe("auth providers and tokens", () => {
       {
         AUTH_PROVIDER: "oauth",
         OAUTH_CLIENT_ID: "id",
-        OAUTH_CLIENT_SECRET: "secret",
+        OAUTH_CLIENT_SECRET: OAUTH_SECRET,
       },
       async () => {
         const { authEnv } = await import("../auth.ts");
         expect(authEnv.OAUTH_CLIENT_ID).toBe("id");
-        expect(authEnv.OAUTH_CLIENT_SECRET).toBe("secret");
+        expect(authEnv.OAUTH_CLIENT_SECRET).toBe(OAUTH_SECRET);
       },
     );
   });
@@ -981,7 +989,7 @@ describe("auth providers and tokens", () => {
 
   it("throws when OAUTH_CLIENT_ID missing", async () => {
     await withEnv(
-      { AUTH_PROVIDER: "oauth", OAUTH_CLIENT_SECRET: "secret" },
+      { AUTH_PROVIDER: "oauth", OAUTH_CLIENT_SECRET: OAUTH_SECRET },
       async () => {
         const errorSpy = jest
           .spyOn(console, "error")
@@ -1027,7 +1035,7 @@ describe("auth providers and tokens", () => {
       {
         AUTH_PROVIDER: "oauth",
         OAUTH_CLIENT_ID: "",
-        OAUTH_CLIENT_SECRET: "secret",
+        OAUTH_CLIENT_SECRET: OAUTH_SECRET,
       },
       async () => {
         const errorSpy = jest

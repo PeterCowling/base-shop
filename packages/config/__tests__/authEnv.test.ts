@@ -1,6 +1,12 @@
 import { expect } from "@jest/globals";
 import { withEnv } from "../test/utils/withEnv";
 
+const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
+const SESSION_SECRET = "session-secret-32-chars-long-string!";
+const DEV_NEXT_SECRET = "dev-nextauth-secret-32-chars-long-string!";
+const DEV_SESSION_SECRET = "dev-session-secret-32-chars-long-string!";
+const STRONG_TOKEN = "token-value-32-chars-long-string!!";
+
 describe("authEnv", () => {
   afterEach(() => {
     jest.restoreAllMocks();
@@ -10,12 +16,14 @@ describe("authEnv", () => {
     const { authEnv } = await withEnv(
       {
         NODE_ENV: "development",
+        NEXTAUTH_SECRET: undefined,
+        SESSION_SECRET: undefined,
       },
       () => import("../src/env/auth"),
     );
 
-    expect(authEnv.NEXTAUTH_SECRET).toBe("dev-nextauth-secret");
-    expect(authEnv.SESSION_SECRET).toBe("dev-session-secret");
+    expect(authEnv.NEXTAUTH_SECRET).toBe(DEV_NEXT_SECRET);
+    expect(authEnv.SESSION_SECRET).toBe(DEV_SESSION_SECRET);
   });
 
   it("throws and logs when NEXTAUTH_SECRET is missing in production", async () => {
@@ -25,6 +33,8 @@ describe("authEnv", () => {
       withEnv(
         {
           NODE_ENV: "production",
+          NEXTAUTH_SECRET: undefined,
+          SESSION_SECRET: SESSION_SECRET,
         },
         () => import("../src/env/auth"),
       ),
@@ -39,7 +49,8 @@ describe("authEnv", () => {
       withEnv(
         {
           NODE_ENV: "production",
-          NEXTAUTH_SECRET: "x",
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET: undefined,
         },
         () => import("../src/env/auth"),
       ),
@@ -56,10 +67,10 @@ describe("authEnv", () => {
         withEnv(
           {
             NODE_ENV: "production",
-            NEXTAUTH_SECRET: "nextauth",
-            SESSION_SECRET: "session",
+            NEXTAUTH_SECRET: NEXT_SECRET,
+            SESSION_SECRET: SESSION_SECRET,
             SESSION_STORE: "redis",
-            UPSTASH_REDIS_REST_TOKEN: "token",
+            UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
           },
           () => import("../src/env/auth"),
         ),
@@ -67,7 +78,7 @@ describe("authEnv", () => {
       expect(spy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
-          UPSTASH_REDIS_REST_URL: { _errors: [expect.any(String)] },
+          UPSTASH_REDIS_REST_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
         }),
       );
     },
@@ -82,8 +93,8 @@ describe("authEnv", () => {
         withEnv(
           {
             NODE_ENV: "production",
-            NEXTAUTH_SECRET: "nextauth",
-            SESSION_SECRET: "session",
+            NEXTAUTH_SECRET: NEXT_SECRET,
+            SESSION_SECRET: SESSION_SECRET,
             SESSION_STORE: "redis",
             UPSTASH_REDIS_REST_URL: "https://example.com",
           },
@@ -93,7 +104,7 @@ describe("authEnv", () => {
       expect(spy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
-          UPSTASH_REDIS_REST_TOKEN: { _errors: [expect.any(String)] },
+          UPSTASH_REDIS_REST_TOKEN: { _errors: expect.arrayContaining([expect.any(String)]) },
         }),
       );
     },
@@ -106,8 +117,8 @@ describe("authEnv", () => {
       withEnv(
         {
           NODE_ENV: "production",
-          NEXTAUTH_SECRET: "nextauth",
-          SESSION_SECRET: "session",
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET: SESSION_SECRET,
           LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
         },
         () => import("../src/env/auth"),
@@ -116,7 +127,7 @@ describe("authEnv", () => {
     expect(spy).toHaveBeenCalledWith(
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
-        LOGIN_RATE_LIMIT_REDIS_TOKEN: { _errors: [expect.any(String)] },
+        LOGIN_RATE_LIMIT_REDIS_TOKEN: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
   });
@@ -128,9 +139,9 @@ describe("authEnv", () => {
       withEnv(
         {
           NODE_ENV: "production",
-          NEXTAUTH_SECRET: "nextauth",
-          SESSION_SECRET: "session",
-          LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET: SESSION_SECRET,
+          LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
         },
         () => import("../src/env/auth"),
       ),
@@ -138,7 +149,7 @@ describe("authEnv", () => {
     expect(spy).toHaveBeenCalledWith(
       "❌ Invalid auth environment variables:",
       expect.objectContaining({
-        LOGIN_RATE_LIMIT_REDIS_URL: { _errors: [expect.any(String)] },
+        LOGIN_RATE_LIMIT_REDIS_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
   });
@@ -151,13 +162,13 @@ describe("authEnv", () => {
       const { authEnv } = await withEnv(
         {
           NODE_ENV: "production",
-          NEXTAUTH_SECRET: "nextauth",
-          SESSION_SECRET: "session",
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET: SESSION_SECRET,
           SESSION_STORE: "redis",
           UPSTASH_REDIS_REST_URL: "https://example.com",
-          UPSTASH_REDIS_REST_TOKEN: "token",
+          UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
           LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
-          LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+          LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
         },
         () => import("../src/env/auth"),
       );
@@ -165,9 +176,9 @@ describe("authEnv", () => {
       expect(authEnv).toMatchObject({
         SESSION_STORE: "redis",
         UPSTASH_REDIS_REST_URL: "https://example.com",
-        UPSTASH_REDIS_REST_TOKEN: "token",
+        UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
         LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
-        LOGIN_RATE_LIMIT_REDIS_TOKEN: "token",
+        LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
       });
       expect(spy).not.toHaveBeenCalled();
     },

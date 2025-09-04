@@ -1,6 +1,9 @@
 import { describe, it, afterEach, expect } from "@jest/globals";
 import { withEnv } from "../test/utils/withEnv";
 
+const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
+const SESSION_SECRET = "session-secret-32-chars-long-string!";
+
 afterEach(() => {
   jest.restoreAllMocks();
 });
@@ -24,8 +27,8 @@ describe("coreEnv proxy", () => {
       {
         NODE_ENV: "production",
         CART_COOKIE_SECRET: "secret",
-        NEXTAUTH_SECRET: "nextauth",
-        SESSION_SECRET: "session",
+        NEXTAUTH_SECRET: NEXT_SECRET,
+        SESSION_SECRET: SESSION_SECRET,
         CMS_SPACE_URL: "https://example.com",
         CMS_ACCESS_TOKEN: "token",
         SANITY_API_VERSION: "2023-01-01",

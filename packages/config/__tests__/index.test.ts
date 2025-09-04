@@ -1,6 +1,9 @@
 import { expect } from "@jest/globals";
 import { withEnv } from "../test/utils/withEnv";
 
+const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
+const SESSION_SECRET = "session-secret-32-chars-long-string!";
+
 // Ensure the package's root entry re-exports the compiled core env
 // without throwing "Module not found" for missing compiled files.
 describe("config package entry", () => {
@@ -11,8 +14,8 @@ describe("config package entry", () => {
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
         CART_COOKIE_SECRET: "secret",
         STRIPE_WEBHOOK_SECRET: "whsec",
-        NEXTAUTH_SECRET: "nextauth",
-        SESSION_SECRET: "session",
+        NEXTAUTH_SECRET: NEXT_SECRET,
+        SESSION_SECRET: SESSION_SECRET,
         CMS_SPACE_URL: "https://example.com",
         CMS_ACCESS_TOKEN: "token",
         SANITY_API_VERSION: "2023-01-01",
@@ -32,8 +35,8 @@ describe("config package entry", () => {
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
       CART_COOKIE_SECRET: "secret",
       STRIPE_WEBHOOK_SECRET: "whsec",
-      NEXTAUTH_SECRET: "nextauth",
-      SESSION_SECRET: "session",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
     });
   });
 });

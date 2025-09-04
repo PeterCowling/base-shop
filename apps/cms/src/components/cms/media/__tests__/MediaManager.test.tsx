@@ -1,4 +1,10 @@
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved,
+  act,
+} from "@testing-library/react";
 import MediaManager from "../MediaManager";
 
 describe("MediaManager", () => {
@@ -32,16 +38,19 @@ describe("MediaManager", () => {
     const uploadButton = getByText("Upload");
     fireEvent.click(uploadButton);
 
-    expect(getByText("Uploaded 0/1")).toBeInTheDocument();
+    const progressEl = getByText("Uploaded 0/1");
 
-    resolveFetch!(
-      new Response(
-        JSON.stringify({ url: "new.mp4", type: "video" }),
-        { status: 200, headers: { "Content-Type": "application/json" } }
-      )
+    await act(async () => {
+      resolveFetch!(
+        new Response(
+          JSON.stringify({ url: "new.mp4", type: "video" }),
+          { status: 200, headers: { "Content-Type": "application/json" } }
+        )
+      );
+    });
+    await waitFor(() =>
+      expect(queryByText("Uploaded 0/1")).not.toBeInTheDocument()
     );
-
-    await waitFor(() => expect(queryByText("Uploaded 0/1")).not.toBeInTheDocument());
     await waitFor(() => expect(queryAllByText("Delete").length).toBe(1));
   });
 
@@ -56,10 +65,13 @@ describe("MediaManager", () => {
       />
     );
 
-    fireEvent.click(getByText("Delete"));
+    const deleteButton = getByText("Delete");
+    fireEvent.click(deleteButton);
 
-    await waitFor(() => expect(onDelete).toHaveBeenCalledWith("shop", "old.mp4"));
-    await waitFor(() => expect(queryByText("Delete")).not.toBeInTheDocument());
+    await waitFor(() =>
+      expect(onDelete).toHaveBeenCalledWith("shop", "old.mp4")
+    );
+    await waitForElementToBeRemoved(deleteButton);
   });
 
   it("displays error message when upload fails", async () => {

@@ -13,7 +13,7 @@ import Wizard from "../src/app/cms/wizard/Wizard";
 describe("Wizard validation", () => {
   it("ignores invalid progress state from the server", () => {
     server.use(
-      rest.get("/cms/api/wizard-progress", (_req, res, ctx) =>
+      rest.get("/cms/api/configurator-progress", (_req, res, ctx) =>
         res(ctx.status(200), ctx.body("{bad"))
       )
     );
@@ -29,7 +29,7 @@ describe("Wizard validation", () => {
 
   it("uses defaults when progress fields are missing", async () => {
     server.use(
-      rest.get("/cms/api/wizard-progress", (_req, res, ctx) =>
+      rest.get("/cms/api/configurator-progress", (_req, res, ctx) =>
         res(ctx.status(200), ctx.json({ state: {}, completed: {} }))
       )
     );

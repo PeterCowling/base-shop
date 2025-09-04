@@ -62,7 +62,7 @@ describe("useConfiguratorPersistence", () => {
     jest.runOnlyPendingTimers();
     await waitFor(() =>
       expect(fetchMock).toHaveBeenLastCalledWith(
-        "/cms/api/wizard-progress",
+        "/cms/api/configurator-progress",
         expect.objectContaining({
           method: "PUT",
           body: expect.stringContaining("Updated"),
@@ -78,7 +78,7 @@ describe("useConfiguratorPersistence", () => {
 
     await waitFor(() =>
       expect(fetchMock).toHaveBeenCalledWith(
-        "/cms/api/wizard-progress",
+        "/cms/api/configurator-progress",
         expect.objectContaining({
           method: "PATCH",
           body: JSON.stringify({ stepId: "intro", completed: "complete" }),

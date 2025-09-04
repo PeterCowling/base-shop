@@ -21,7 +21,7 @@ export async function resetConfiguratorProgress(): Promise<void> {
   if (typeof window !== "undefined") {
     localStorage.removeItem(STORAGE_KEY);
     try {
-      await fetch("/cms/api/wizard-progress", {
+      await fetch("/cms/api/configurator-progress", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ stepId: null, data: {}, completed: {} }),
@@ -49,7 +49,7 @@ export function useConfiguratorPersistence(
   /* Load persisted state on mount */
   useEffect(() => {
     if (typeof window === "undefined") return;
-    fetch("/cms/api/wizard-progress")
+    fetch("/cms/api/configurator-progress")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
         if (!json) return;
@@ -88,7 +88,7 @@ export function useConfiguratorPersistence(
       }
       const { completed: _completed, ...data } = state;
       void _completed; // explicitly ignore unused property
-      fetch("/cms/api/wizard-progress", {
+      fetch("/cms/api/configurator-progress", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ stepId: "configurator", data }),
@@ -121,7 +121,7 @@ export function useConfiguratorPersistence(
       } catch {
         /* ignore quota */
       }
-      fetch("/cms/api/wizard-progress", {
+      fetch("/cms/api/configurator-progress", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ stepId, completed: status }),

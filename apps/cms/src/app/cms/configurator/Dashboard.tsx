@@ -35,8 +35,8 @@ export default function ConfiguratorDashboard() {
   );
   const { setConfiguratorProgress } = useLayout();
 
-  const fetchState = useCallback(() => {
-    fetch("/cms/api/wizard-progress")
+    const fetchState = useCallback(() => {
+      fetch("/cms/api/configurator-progress")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
         if (!json) return;

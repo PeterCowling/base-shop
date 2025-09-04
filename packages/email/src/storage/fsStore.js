@@ -1,1 +1,1 @@
-export * from './fsStore.ts';
+module.exports = require('./fsStore.ts');

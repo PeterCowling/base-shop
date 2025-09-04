@@ -1,0 +1,148 @@
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import StepHosting from "../apps/cms/src/app/cms/configurator/steps/StepHosting.tsx";
+
+jest.useFakeTimers();
+
+jest.mock("@/components/atoms/shadcn", () => ({
+  Button: (props: any) => <button {...props} />,
+  Input: (props: any) => <input {...props} />,
+}));
+jest.mock("@/app/cms/wizard/services/deployShop", () => ({
+  getDeployStatus: jest.fn(),
+}));
+jest.mock("@/app/cms/configurator/hooks/useStepCompletion", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+jest.mock("next/navigation", () => ({
+  useRouter: jest.fn(),
+}));
+
+import { getDeployStatus } from "@/app/cms/wizard/services/deployShop";
+import useStepCompletion from "@/app/cms/configurator/hooks/useStepCompletion";
+import { useRouter } from "next/navigation";
+
+const markComplete = jest.fn();
+(useStepCompletion as jest.Mock).mockReturnValue([false, markComplete]);
+const push = jest.fn();
+(useRouter as jest.Mock).mockReturnValue({ push });
+
+
+describe("StepHosting", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("polls getDeployStatus until non-pending", async () => {
+    const mockedGetStatus = getDeployStatus as jest.Mock;
+    const setDeployInfo = jest.fn();
+    mockedGetStatus
+      .mockResolvedValueOnce({ status: "pending", domainStatus: "pending" })
+      .mockResolvedValueOnce({ status: "success", domainStatus: "success" });
+
+    render(
+      <StepHosting
+        shopId="1"
+        domain=""
+        setDomain={jest.fn()}
+        deployResult={null}
+        deployInfo={{ status: "pending", domainStatus: "pending" }}
+        setDeployInfo={setDeployInfo}
+        deploying={false}
+        deploy={jest.fn()}
+      />
+    );
+
+    await act(async () => {
+      await Promise.resolve();
+    });
+
+    expect(mockedGetStatus).toHaveBeenCalledTimes(1);
+    expect(setDeployInfo).toHaveBeenCalledWith({
+      status: "pending",
+      domainStatus: "pending",
+    });
+
+    await act(async () => {
+      jest.advanceTimersByTime(5000);
+      await Promise.resolve();
+    });
+
+    expect(mockedGetStatus).toHaveBeenCalledTimes(2);
+    expect(setDeployInfo).toHaveBeenLastCalledWith({
+      status: "success",
+      domainStatus: "success",
+    });
+
+    await act(async () => {
+      jest.advanceTimersByTime(5000);
+    });
+
+    expect(mockedGetStatus).toHaveBeenCalledTimes(2);
+  });
+
+  it("calls setDomain when domain changes", () => {
+    const setDomain = jest.fn();
+
+    render(
+      <StepHosting
+        shopId="1"
+        domain=""
+        setDomain={setDomain}
+        deployResult={null}
+        deployInfo={null}
+        setDeployInfo={jest.fn()}
+        deploying={false}
+        deploy={jest.fn()}
+      />
+    );
+
+    fireEvent.change(screen.getByPlaceholderText("myshop.example.com"), {
+      target: { value: "new.example.com" },
+    });
+
+    expect(setDomain).toHaveBeenCalledWith("new.example.com");
+  });
+
+  it("deploys, marks complete, redirects and shows deploying text", async () => {
+    let resolveDeploy: () => void;
+    const deploy = jest.fn(
+      () =>
+        new Promise<void>((res) => {
+          resolveDeploy = res;
+        })
+    );
+
+    const props = {
+      shopId: "1",
+      domain: "",
+      setDomain: jest.fn(),
+      deployResult: null,
+      deployInfo: null,
+      setDeployInfo: jest.fn(),
+      deploy,
+    };
+
+    const { rerender } = render(
+      <StepHosting {...props} deploying={false} />
+    );
+
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: "Save & return" }));
+    });
+
+    expect(deploy).toHaveBeenCalled();
+    expect(markComplete).not.toHaveBeenCalled();
+    expect(push).not.toHaveBeenCalled();
+
+    rerender(<StepHosting {...props} deploying={true} />);
+
+    expect(screen.getByRole("button")).toHaveTextContent("Deploying…");
+    expect(screen.getByRole("button")).toBeDisabled();
+
+    resolveDeploy!();
+    await waitFor(() => expect(markComplete).toHaveBeenCalledWith(true));
+    expect(push).toHaveBeenCalledWith("/cms/configurator");
+  });
+});
+

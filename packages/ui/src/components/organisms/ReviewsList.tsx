@@ -104,18 +104,19 @@ export function ReviewsList({
           </Select>
         </div>
       )}
-      {filtered.map((r, i) => (
-        <div key={i} className="rounded-md border p-4">
-          <div className="flex items-center justify-between gap-2">
-            <span className="font-semibold">{r.author}</span>
-            <RatingStars rating={r.rating} />
+      {filtered.length === 0 ? (
+        <p className="text-muted-foreground text-sm">No reviews found.</p>
+      ) : (
+        filtered.map((r, i) => (
+          <div key={i} className="rounded-md border p-4">
+            <div className="flex items-center justify-between gap-2">
+              <span className="font-semibold">{r.author}</span>
+              <RatingStars rating={r.rating} />
+            </div>
+            <p className="mt-2 text-sm">{r.content}</p>
           </div>
-          <p className="mt-2 text-sm">{r.content}</p>
-          {filtered.length === 0 && (
-            <p className="text-muted-foreground text-sm">No reviews found.</p>
-          )}
-        </div>
-      ))}
+        ))
+      )}
     </div>
   );
 }

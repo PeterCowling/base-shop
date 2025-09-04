@@ -84,6 +84,82 @@ describe("sendCampaignEmail", () => {
     expect(mockSendMail).not.toHaveBeenCalled();
   });
 
+  it("sanitizes HTML removing disallowed tags and attributes", async () => {
+    mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    process.env.SENDGRID_API_KEY = "sg";
+
+    const { sendCampaignEmail } = await import("./send");
+
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html:
+        '<div onclick="evil"><script>alert(1)</script><img src="x" onerror="hack" style="color:red"></div>',
+    });
+
+    expect(mockSendgridSend).toHaveBeenCalledTimes(1);
+    const sanitized = mockSendgridSend.mock.calls[0][0].html as string;
+    expect(sanitized).not.toContain("<script");
+    expect(sanitized).not.toContain("onclick");
+    expect(sanitized).not.toContain("onerror");
+    expect(sanitized).toContain('style="color:red"');
+    expect(sanitized).toContain('src="x"');
+  });
+
+  it("derives text content when text is missing", async () => {
+    mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    process.env.SENDGRID_API_KEY = "sg";
+
+    const { sendCampaignEmail } = await import("./send");
+
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>Hello <strong>World</strong></p>",
+      sanitize: false,
+    });
+
+    expect(mockSendgridSend).toHaveBeenCalledTimes(1);
+    const opts = mockSendgridSend.mock.calls[0][0];
+    expect(opts.text).toBe("Hello World");
+  });
+
+  it("caches provider instances across multiple sends", async () => {
+    mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    process.env.SENDGRID_API_KEY = "sg";
+
+    const { sendCampaignEmail } = await import("./send");
+
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "One",
+      html: "<p>HTML</p>",
+      sanitize: false,
+    });
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Two",
+      html: "<p>HTML</p>",
+      sanitize: false,
+    });
+
+    const { SendgridProvider } = await import("./providers/sendgrid");
+    expect(SendgridProvider).toHaveBeenCalledTimes(1);
+    expect(mockSendgridSend).toHaveBeenCalledTimes(2);
+  });
+
   it("retries failing provider then falls back in order", async () => {
     const timeoutSpy = jest.spyOn(global, "setTimeout");
     mockSendgridSend = jest.fn().mockRejectedValue(new ProviderError("fail", true));

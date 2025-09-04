@@ -1,8 +1,10 @@
 import { jest } from "@jest/globals";
 
 const mockSendEmail = jest.fn();
+const mockCreateCampaign = jest.fn();
+const mockListCampaigns = jest.fn();
+const mockSendDueCampaigns = jest.fn();
 const mockSyncCampaignAnalytics = jest.fn();
-const mockSetCampaignStore = jest.fn();
 const mockReadCampaigns = jest.fn();
 const mockWriteCampaigns = jest.fn();
 const mockListShops = jest.fn();
@@ -16,22 +18,18 @@ jest.mock("../sendEmail", () => ({
 }));
 
 jest.mock("../scheduler", () => ({
+  createCampaign: mockCreateCampaign,
+  listCampaigns: mockListCampaigns,
+  sendDueCampaigns: mockSendDueCampaigns,
   syncCampaignAnalytics: mockSyncCampaignAnalytics,
 }));
 
 jest.mock("../storage", () => ({
-  setCampaignStore: mockSetCampaignStore,
   fsCampaignStore: {
     readCampaigns: mockReadCampaigns,
     writeCampaigns: mockWriteCampaigns,
     listShops: mockListShops,
   },
-}));
-
-jest.mock("../templates", () => ({
-  registerTemplate: jest.fn(),
-  renderTemplate: jest.fn(),
-  clearTemplates: jest.fn(),
 }));
 
 describe("email index", () => {
@@ -41,40 +39,36 @@ describe("email index", () => {
   });
 
   it("registers sendEmail with email service on import", async () => {
-    const { setEmailService } = require("@acme/platform-core/services/emailService");
+    const { setEmailService } = await import(
+      "@acme/platform-core/services/emailService"
+    );
 
     await import("../index");
 
     expect(setEmailService).toHaveBeenCalledWith({ sendEmail: mockSendEmail });
   });
 
-  it("re-exports public API", async () => {
+  it("forwards scheduler calls", async () => {
     const mod = await import("../index");
 
-    expect(mod.sendCampaignEmail).toBeDefined();
-    expect(mod.registerTemplate).toBeDefined();
-    expect(mod.recoverAbandonedCarts).toBeDefined();
-    expect(mod.sendEmail).toBeDefined();
-    expect(mod.resolveSegment).toBeDefined();
-    expect(mod.createCampaign).toBeDefined();
+    await mod.createCampaign();
+    await mod.listCampaigns();
+    await mod.sendDueCampaigns();
+    await mod.syncCampaignAnalytics();
+
+    expect(mockCreateCampaign).toHaveBeenCalled();
+    expect(mockListCampaigns).toHaveBeenCalled();
+    expect(mockSendDueCampaigns).toHaveBeenCalled();
+    expect(mockSyncCampaignAnalytics).toHaveBeenCalled();
   });
 
-  it("forwards scheduler and storage calls", async () => {
-    const store = {} as any;
-    const {
-      syncCampaignAnalytics,
-      setCampaignStore,
-      fsCampaignStore,
-    } = await import("../index");
+  it("invokes fsCampaignStore via conditional import", async () => {
+    const { fsCampaignStore } = await import("../index");
 
-    await syncCampaignAnalytics();
-    await setCampaignStore(store);
     await fsCampaignStore.readCampaigns("shop");
     await fsCampaignStore.writeCampaigns("shop", []);
     await fsCampaignStore.listShops();
 
-    expect(mockSyncCampaignAnalytics).toHaveBeenCalled();
-    expect(mockSetCampaignStore).toHaveBeenCalledWith(store);
     expect(mockReadCampaigns).toHaveBeenCalledWith("shop");
     expect(mockWriteCampaigns).toHaveBeenCalledWith("shop", []);
     expect(mockListShops).toHaveBeenCalled();

@@ -17,12 +17,17 @@ import {
   type ShopDeploymentAdapter,
 } from "./deploymentAdapter";
 
-const currentDir = typeof __dirname !== "undefined" ? __dirname : "";
-
 function repoRoot(): string {
-  const cwd = process.cwd();
-  if (fs.existsSync(join(cwd, "packages"))) return cwd;
-  return join(currentDir, "..", "..", "..", "..");
+  let dir = process.cwd();
+  while (
+    !fs.existsSync(join(dir, "packages")) &&
+    !fs.existsSync(join(dir, "apps"))
+  ) {
+    const parent = join(dir, "..");
+    if (parent === dir) break;
+    dir = parent;
+  }
+  return dir;
 }
 /**
  * Create a new shop app and seed data.
@@ -175,44 +180,47 @@ export function listThemes(): string[] {
  */
 export function syncTheme(shop: string, theme: string): Record<string, string> {
   const root = repoRoot();
-  const pkgPath = join("apps", shop, "package.json");
-  const cssPath = join("apps", shop, "src", "app", "globals.css");
+  const pkgRel = join("apps", shop, "package.json");
+  const pkgAbs = join(root, pkgRel);
+  const cssRel = join("apps", shop, "src", "app", "globals.css");
+  const cssAbs = join(root, cssRel);
 
-  const cwd = process.cwd();
   try {
-    process.chdir(root);
-    (fs as unknown as { chdir?: (dir: string) => void }).chdir?.(root);
-
-    try {
-      if (fs.existsSync(pkgPath)) {
-        const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8")) as {
-          dependencies?: Record<string, string>;
-        };
-        pkg.dependencies ??= {};
-        for (const dep of Object.keys(pkg.dependencies)) {
-          if (dep.startsWith("@themes/")) delete pkg.dependencies[dep];
-        }
-        pkg.dependencies[`@themes/${theme}`] = "workspace:*";
-        fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2));
+    if (fs.existsSync(pkgAbs)) {
+      const pkg = JSON.parse(fs.readFileSync(pkgAbs, "utf8")) as {
+        dependencies?: Record<string, string>;
+      };
+      pkg.dependencies ??= {};
+      for (const dep of Object.keys(pkg.dependencies)) {
+        if (dep.startsWith("@themes/")) delete pkg.dependencies[dep];
       }
-    } catch {
-      // ignore errors when package.json is missing or invalid
-    }
-
-    try {
-      if (fs.existsSync(cssPath)) {
-        const css = fs.readFileSync(cssPath, "utf8").replace(
-          /@themes\/[^/]+\/tokens.css/,
-          `@themes/${theme}/tokens.css`
-        );
-        fs.writeFileSync(cssPath, css);
+      pkg.dependencies[`@themes/${theme}`] = "workspace:*";
+      const pkgJson = JSON.stringify(pkg, null, 2);
+      try {
+        fs.writeFileSync(pkgRel, pkgJson);
+      } catch {
+        /* ignore write errors on relative path */
       }
-    } catch {
-      // ignore errors when globals.css cannot be read
+      fs.writeFileSync(pkgAbs, pkgJson);
     }
-  } finally {
-    process.chdir(cwd);
-    (fs as unknown as { chdir?: (dir: string) => void }).chdir?.(cwd);
+  } catch {
+    // ignore errors when package.json is missing or invalid
+  }
+
+  try {
+    if (fs.existsSync(cssAbs)) {
+      const css = fs
+        .readFileSync(cssAbs, "utf8")
+        .replace(/@themes\/[^/]+\/tokens.css/, `@themes/${theme}/tokens.css`);
+      try {
+        fs.writeFileSync(cssRel, css);
+      } catch {
+        /* ignore write errors on relative path */
+      }
+      fs.writeFileSync(cssAbs, css);
+    }
+  } catch {
+    // ignore errors when globals.css cannot be read
   }
 
   return loadTokens(theme);

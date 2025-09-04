@@ -57,22 +57,17 @@ async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
 /*  The actual test                                                           */
 /* -------------------------------------------------------------------------- */
 describe("WizardPage", () => {
-  it("renders placeholder content", async () => {
+  it("redirects to the configurator", async () => {
     await withRepo(async () => {
-      // Ensure React is loaded before invoking the server renderer.  In some
-      // environments Jest’s module cache can be cleared which leaves React
-      // undefined when `react-dom/server` evaluates.
       await import("react");
-      // Load the server renderer via dynamic import so it works in both CJS
-      // and ESM environments.
-      const { renderToStaticMarkup } = await import("react-dom/server");
+      const { redirect } = await import("next/navigation");
       const { default: WizardPage } = await import(
         "../src/app/cms/wizard/page"
       );
 
-      const html = renderToStaticMarkup(await WizardPage());
+      await WizardPage();
 
-      expect(html).toContain("Shop Details");
+      expect(redirect).toHaveBeenCalledWith("/cms/configurator");
     });
   });
 });

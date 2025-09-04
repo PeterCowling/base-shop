@@ -49,6 +49,17 @@ export function useConfiguratorPersistence(
   /* Load persisted state on mount */
   useEffect(() => {
     if (typeof window === "undefined") return;
+    /* Migrate legacy wizard key if present */
+    try {
+      const legacy = localStorage.getItem("cms-wizard-progress");
+      if (legacy && !localStorage.getItem(STORAGE_KEY)) {
+        localStorage.setItem(STORAGE_KEY, legacy);
+      }
+      localStorage.removeItem("cms-wizard-progress");
+    } catch {
+      /* ignore quota */
+    }
+
     fetch("/cms/api/configurator-progress")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {

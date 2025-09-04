@@ -39,15 +39,14 @@ jest.mock("next/navigation", () => ({ redirect: jest.fn() }));
 /* ------------------------------------------------------------------ */
 
 describe("wizard route", () => {
-  it("renders wizard page for admin", async () => {
-    jest.resetModules(); // ensure mocks are applied fresh
+  it("redirects to the configurator", async () => {
+    jest.resetModules();
     await import("../../../test/resetNextMocks");
-    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { redirect } = await import("next/navigation");
     const { default: WizardPage } = await import("../src/app/cms/wizard/page");
 
-    const html = renderToStaticMarkup(await WizardPage());
+    await WizardPage();
 
-    // First step heading should be present in the static markup
-    expect(html).toContain("Shop Details");
+    expect(redirect).toHaveBeenCalledWith("/cms/configurator");
   });
 });

@@ -44,7 +44,16 @@ function resolveFile(): string {
   while (true) {
     const candidateDir = path.join(dir, "data", "cms");
     if (fsSync.existsSync(candidateDir)) {
-      return path.join(candidateDir, "configurator-progress.json");
+      const newPath = path.join(candidateDir, "configurator-progress.json");
+      const legacyPath = path.join(candidateDir, "wizard-progress.json");
+      if (!fsSync.existsSync(newPath) && fsSync.existsSync(legacyPath)) {
+        try {
+          fsSync.renameSync(legacyPath, newPath);
+        } catch {
+          return legacyPath;
+        }
+      }
+      return newPath;
     }
     const parent = path.dirname(dir);
     if (parent === dir) break;

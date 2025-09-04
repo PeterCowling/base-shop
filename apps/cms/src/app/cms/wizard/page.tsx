@@ -1,8 +1,7 @@
-// Temporary page used for testing the wizard route. In the real application this
-// route redirects to the configurator, but for unit tests we render a simple
-// placeholder so server rendering can be verified without pulling in the entire
-// configurator implementation.
+// Legacy wizard route kept for backwards-compatibility. Users hitting
+// `/cms/wizard` should be sent to the new configurator experience.
+import { redirect } from "next/navigation";
 
 export default function WizardPage() {
-  return <h2>Shop Details</h2>;
+  redirect("/cms/configurator");
 }

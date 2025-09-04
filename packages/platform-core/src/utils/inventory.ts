@@ -12,10 +12,20 @@ export interface RawInventoryItem {
   productId?: unknown;
   quantity: unknown;
   lowStockThreshold?: unknown;
+  unit?: unknown;
   variantAttributes?: Record<string, unknown>;
   [key: string]: unknown;
 }
 
+export function normalizeQuantity(
+  qty: unknown,
+  unit: unknown = "unit",
+): number {
+  const num = typeof qty === "string" ? Number(qty) : (qty as number);
+  if (!Number.isFinite(num)) return NaN;
+  const factor = unit === "dozen" ? 12 : unit === "pair" ? 2 : 1;
+  return Math.round(num * factor);
+}
 export function flattenInventoryItem(item: InventoryItem): FlattenedInventoryItem {
   const variants = Object.fromEntries(
     Object.entries(item.variantAttributes).map(([k, v]) => [`variant.${k}`, v])
@@ -45,6 +55,12 @@ export function expandInventoryItem(
   data: RawInventoryItem | InventoryItem
 ): InventoryItem {
   if (isInventoryItem(data)) {
+    if (data.quantity <= 0) {
+      throw new Error("quantity must be greater than 0");
+    }
+    if (data.productId.trim() === "") {
+      throw new Error("productId is required");
+    }
     return inventoryItemSchema.parse(data);
   }
   const {
@@ -52,9 +68,31 @@ export function expandInventoryItem(
     productId,
     quantity,
     lowStockThreshold,
+    unit,
     variantAttributes,
     ...rest
   } = data;
+
+  if (typeof sku !== "string" || sku.trim() === "") {
+    throw new Error("sku is required");
+  }
+  if (
+    productId === undefined ||
+    productId === null ||
+    String(productId).trim() === ""
+  ) {
+    throw new Error("productId is required");
+  }
+
+  const normalizedQuantity = normalizeQuantity(quantity, unit);
+  if (!Number.isFinite(normalizedQuantity) || normalizedQuantity <= 0) {
+    throw new Error("quantity must be greater than 0");
+  }
+
+  const normalizedLowStock =
+    lowStockThreshold !== undefined && lowStockThreshold !== ""
+      ? normalizeQuantity(lowStockThreshold, unit)
+      : undefined;
 
   const attrs =
     typeof variantAttributes === "object" && variantAttributes !== null
@@ -70,13 +108,47 @@ export function expandInventoryItem(
 
   const item = {
     sku: String(sku),
-    productId: productId ? String(productId) : String(sku),
+    productId: String(productId),
     variantAttributes: attrs,
-    quantity: Number(quantity),
-    ...(lowStockThreshold !== undefined && lowStockThreshold !== ""
-      ? { lowStockThreshold: Number(lowStockThreshold) }
+    quantity: normalizedQuantity,
+    ...(normalizedLowStock !== undefined
+      ? { lowStockThreshold: normalizedLowStock }
       : {}),
   };
 
   return inventoryItemSchema.parse(item);
+}
+
+export function computeAvailability(
+  quantity: number,
+  reserved = 0,
+  requested = 0,
+  allowBackorder = false,
+) {
+  const available = Math.max(0, quantity - reserved);
+  const canFulfill = available >= requested || allowBackorder;
+  return { reserved, available, canFulfill };
+}
+
+export function applyInventoryBatch(
+  items: InventoryItem[],
+  updates: { sku: string; delta: number }[],
+) {
+  const map = new Map<string, InventoryItem>();
+  for (const item of items) {
+    map.set(item.sku, { ...item });
+  }
+  for (const u of updates) {
+    const current = map.get(u.sku);
+    if (current) {
+      current.quantity = Math.max(0, current.quantity + u.delta);
+    }
+  }
+  const updated = Array.from(map.values());
+  const lowStock = updated.filter(
+    (i) =>
+      typeof i.lowStockThreshold === "number" &&
+      i.quantity <= i.lowStockThreshold!,
+  );
+  return { updated, lowStock };
 }

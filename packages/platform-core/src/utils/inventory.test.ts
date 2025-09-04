@@ -1,5 +1,10 @@
 // packages/platform-core/src/utils/inventory.test.ts
-import { flattenInventoryItem, expandInventoryItem } from "./inventory";
+import {
+  flattenInventoryItem,
+  expandInventoryItem,
+  computeAvailability,
+  applyInventoryBatch,
+} from "./inventory";
 import type { InventoryItem } from "@acme/types";
 
 describe("flattenInventoryItem", () => {
@@ -90,27 +95,22 @@ describe("expandInventoryItem", () => {
     });
   });
 
-  it("expands items with partial variant attributes and defaults productId", () => {
+  it("throws when productId is missing", () => {
     const raw = {
       sku: "sku2",
       quantity: 3,
       variantAttributes: { size: "L", color: "", material: undefined },
     };
 
-    expect(expandInventoryItem(raw)).toEqual({
-      sku: "sku2",
-      productId: "sku2",
-      quantity: 3,
-      variantAttributes: { size: "L" },
-    });
+    expect(() => expandInventoryItem(raw)).toThrow();
   });
 
   it("expands items with missing variant attributes", () => {
-    const raw = { sku: "sku3", quantity: 1 };
+    const raw = { sku: "sku3", productId: "prod3", quantity: 1 };
 
     expect(expandInventoryItem(raw)).toEqual({
       sku: "sku3",
-      productId: "sku3",
+      productId: "prod3",
       quantity: 1,
       variantAttributes: {},
     });
@@ -131,6 +131,7 @@ describe("expandInventoryItem", () => {
   it("omits lowStockThreshold when provided as an empty string", () => {
     const raw = {
       sku: "sku7",
+      productId: "prod7",
       quantity: 3,
       "variant.size": "S",
       lowStockThreshold: "",
@@ -138,7 +139,7 @@ describe("expandInventoryItem", () => {
 
     expect(expandInventoryItem(raw)).toEqual({
       sku: "sku7",
-      productId: "sku7",
+      productId: "prod7",
       quantity: 3,
       variantAttributes: { size: "S" },
     });
@@ -148,6 +149,7 @@ describe("expandInventoryItem", () => {
     expect(() =>
       expandInventoryItem({
         sku: "sku4",
+        productId: "prod4",
         quantity: "-1",
         variantAttributes: {},
       })
@@ -156,11 +158,97 @@ describe("expandInventoryItem", () => {
     expect(() =>
       expandInventoryItem({
         sku: "sku5",
+        productId: "prod5",
         quantity: "5",
         variantAttributes: {},
         lowStockThreshold: "bad",
       })
     ).toThrow();
+  });
+
+  it("rejects zero quantity", () => {
+    expect(() =>
+      expandInventoryItem({
+        sku: "sku8",
+        productId: "prod8",
+        quantity: 0,
+        variantAttributes: {},
+      }),
+    ).toThrow();
+  });
+
+  it("rejects missing sku or productId", () => {
+    expect(() =>
+      expandInventoryItem({
+        productId: "prod9",
+        quantity: 1,
+        variantAttributes: {},
+      }),
+    ).toThrow();
+
+    expect(() =>
+      expandInventoryItem({
+        sku: "sku9",
+        quantity: 1,
+        variantAttributes: {},
+      }),
+    ).toThrow();
+  });
+
+  it("rounds fractional quantities and converts units", () => {
+    const item = expandInventoryItem({
+      sku: "sku10",
+      productId: "prod10",
+      quantity: "1.5",
+      unit: "dozen",
+      variantAttributes: {},
+    });
+    expect(item.quantity).toBe(18);
+  });
+});
+
+describe("stock calculations", () => {
+  it("computes reserved vs available stock", () => {
+    expect(computeAvailability(10, 4, 2)).toEqual({
+      reserved: 4,
+      available: 6,
+      canFulfill: true,
+    });
+  });
+
+  it("handles backorder scenarios", () => {
+    expect(computeAvailability(5, 5, 1, false).canFulfill).toBe(false);
+    expect(computeAvailability(5, 5, 1, true).canFulfill).toBe(true);
+  });
+});
+
+describe("batch updates and low-stock warnings", () => {
+  it("applies updates and identifies low stock", () => {
+    const items: InventoryItem[] = [
+      {
+        sku: "a",
+        productId: "a",
+        quantity: 5,
+        variantAttributes: {},
+        lowStockThreshold: 2,
+      },
+      {
+        sku: "b",
+        productId: "b",
+        quantity: 1,
+        variantAttributes: {},
+        lowStockThreshold: 1,
+      },
+    ];
+
+    const { updated, lowStock } = applyInventoryBatch(items, [
+      { sku: "a", delta: -4 },
+      { sku: "b", delta: -1 },
+    ]);
+
+    expect(updated.find((i) => i.sku === "a")?.quantity).toBe(1);
+    expect(updated.find((i) => i.sku === "b")?.quantity).toBe(0);
+    expect(lowStock.map((i) => i.sku).sort()).toEqual(["a", "b"]);
   });
 });
 

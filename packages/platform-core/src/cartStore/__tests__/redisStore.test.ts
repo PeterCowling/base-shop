@@ -133,6 +133,135 @@ describe("RedisCartStore", () => {
     expect(await store.getCart(id)).toEqual({});
   });
 
+  describe("single Redis command failures", () => {
+    const ttl = 60;
+    let redis: MockRedis;
+    let fallback: MemoryCartStore;
+    let store: RedisCartStore;
+    beforeEach(() => {
+      redis = new MockRedis();
+      fallback = new MemoryCartStore(ttl);
+      store = new RedisCartStore(redis as any, ttl, fallback);
+    });
+
+    it("falls back on createCart when hset fails once", async () => {
+      const spy = jest.spyOn(fallback, "createCart");
+      redis.hset.mockRejectedValueOnce(new Error("fail"));
+      const id1 = await store.createCart();
+      expect(typeof id1).toBe("string");
+      expect(spy).toHaveBeenCalledTimes(1);
+
+      const id2 = await store.createCart();
+      expect(typeof id2).toBe("string");
+      expect(spy).toHaveBeenCalledTimes(1); // fallback not entered globally
+      expect(redis.hset).toHaveBeenCalledTimes(2);
+    });
+
+    it("falls back on getCart when hgetall fails once", async () => {
+      const id = await store.createCart();
+      const spy = jest.spyOn(fallback, "getCart");
+      redis.hgetall.mockRejectedValueOnce(new Error("fail"));
+      await store.getCart(id);
+      expect(spy).toHaveBeenCalledTimes(1);
+
+      await store.getCart(id);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(redis.hgetall.mock.calls.length).toBeGreaterThan(2);
+    });
+
+    it("falls back on setCart when del fails once", async () => {
+      const id = await store.createCart();
+      const cart = { [sku.id]: { sku, qty: 1 } };
+      const spy = jest.spyOn(fallback, "setCart");
+      redis.del.mockRejectedValueOnce(new Error("fail"));
+      await store.setCart(id, cart);
+      expect(spy).toHaveBeenCalledTimes(1);
+
+      await store.setCart(id, cart);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(redis.del.mock.calls.length).toBeGreaterThan(2);
+    });
+
+    it("falls back on incrementQty when hincrby fails once", async () => {
+      const id = await store.createCart();
+      const spy = jest.spyOn(fallback, "incrementQty");
+      redis.hincrby.mockRejectedValueOnce(new Error("fail"));
+      await store.incrementQty(id, sku, 1);
+      expect(spy).toHaveBeenCalledTimes(1);
+
+      await store.incrementQty(id, sku, 1);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(redis.hincrby.mock.calls.length).toBeGreaterThan(1);
+    });
+
+    it("falls back on setQty when hexists fails once", async () => {
+      const id = await store.createCart();
+      await store.incrementQty(id, sku, 1);
+      const spy = jest.spyOn(fallback, "setQty");
+      redis.hexists.mockRejectedValueOnce(new Error("fail"));
+      await store.setQty(id, sku.id, 2);
+      expect(spy).toHaveBeenCalledTimes(1);
+
+      await store.setQty(id, sku.id, 3);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(redis.hexists.mock.calls.length).toBeGreaterThan(1);
+    });
+
+    it("falls back on removeItem when hdel fails once", async () => {
+      const id = await store.createCart();
+      await store.incrementQty(id, sku, 1);
+      const spy = jest.spyOn(fallback, "removeItem");
+      redis.hdel.mockRejectedValueOnce(new Error("fail"));
+      await store.removeItem(id, sku.id);
+      expect(spy).toHaveBeenCalledTimes(1);
+
+      await store.removeItem(id, sku.id);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(redis.hdel.mock.calls.length).toBeGreaterThan(1);
+    });
+
+    it("falls back on deleteCart when del fails once", async () => {
+      const id = await store.createCart();
+      const spy = jest.spyOn(fallback, "deleteCart");
+      redis.del.mockRejectedValueOnce(new Error("fail"));
+      await store.deleteCart(id);
+      expect(spy).toHaveBeenCalledTimes(1);
+
+      await store.deleteCart(id);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(redis.del.mock.calls.length).toBeGreaterThan(2);
+    });
+  });
+
+  it("skips hset when setCart called with empty cart", async () => {
+    const ttl = 60;
+    const redis = new MockRedis();
+    const fallback = new MemoryCartStore(ttl);
+    const store = new RedisCartStore(redis as any, ttl, fallback);
+    const id = await store.createCart();
+    redis.hset.mockClear();
+    await store.setCart(id, {});
+    expect(redis.hset).not.toHaveBeenCalled();
+  });
+
+  it("returns null when setQty hexists resolves 0", async () => {
+    const ttl = 60;
+    const redis = new MockRedis();
+    const fallback = new MemoryCartStore(ttl);
+    const store = new RedisCartStore(redis as any, ttl, fallback);
+    const id = await store.createCart();
+    await expect(store.setQty(id, "missing", 1)).resolves.toBeNull();
+  });
+
+  it("returns null when removeItem hdel resolves 0", async () => {
+    const ttl = 60;
+    const redis = new MockRedis();
+    const fallback = new MemoryCartStore(ttl);
+    const store = new RedisCartStore(redis as any, ttl, fallback);
+    const id = await store.createCart();
+    await expect(store.removeItem(id, "missing")).resolves.toBeNull();
+  });
+
   it("delegates to fallback store when Redis fails repeatedly", async () => {
     const redis = new MockRedis(MAX_REDIS_FAILURES);
     const fallback = new MemoryCartStore(60);

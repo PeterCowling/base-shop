@@ -34,6 +34,14 @@ export async function parseJsonBody<T>(
     const isJson = type === "application/json";
     const invalidParams = params.some((p) => !p.startsWith("charset="));
     if (!isJson || invalidParams) {
+      const request = req as Request & { text?: () => Promise<string> };
+      if (typeof request.text === "function") {
+        try {
+          await request.text();
+        } catch {
+          // ignore errors while draining the body
+        }
+      }
       return {
         success: false,
         response: NextResponse.json(

@@ -73,6 +73,76 @@ describe("getSeo", () => {
     );
   });
 
+  it("returns relative canonical unchanged", async () => {
+    const { getSeo } = await import("../src/lib/seo");
+    const seo = await getSeo("en", { canonical: "/contact" });
+    expect(seo.canonical).toBe("/contact");
+    expect(seo.openGraph?.url).toBe("https://shop.com/en");
+    expect(seo.additionalLinkTags).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ hrefLang: "en", href: "https://shop.com/en" }),
+        expect.objectContaining({ hrefLang: "de", href: "https://shop.de/de" }),
+      ]),
+    );
+  });
+
+  it.each([
+    ["provided", "Page description", "Page description"],
+    ["empty", "", ""],
+  ])(
+    "uses %s description without trimming",
+    async (_label, input, expected) => {
+      const { getSeo } = await import("../src/lib/seo");
+      const seo = await getSeo("en", { description: input });
+      expect(seo.description).toBe(expected);
+    },
+  );
+
+  it("omits openGraph images when none provided", async () => {
+    getShopSettingsMock.mockResolvedValueOnce({
+      languages: ["en", "de"],
+      seo: {
+        en: { canonicalBase: "https://shop.com" },
+        de: { canonicalBase: "https://shop.de" },
+      },
+    });
+    const { getSeo } = await import("../src/lib/seo");
+    const seo = await getSeo("en");
+    expect(seo.openGraph?.images).toBeUndefined();
+  });
+
+  it("resolves openGraph image string to images array", async () => {
+    const { getSeo } = await import("../src/lib/seo");
+    const seo = await getSeo("en", { openGraph: { image: "/single.jpg" } });
+    expect(seo.openGraph?.images).toEqual([
+      { url: "https://shop.com/single.jpg" },
+    ]);
+  });
+
+  it("resolves openGraph images array", async () => {
+    const { getSeo } = await import("../src/lib/seo");
+    const seo = await getSeo("en", {
+      openGraph: { images: [{ url: "/arr.jpg" }] },
+    });
+    expect(seo.openGraph?.images).toEqual([
+      { url: "https://shop.com/arr.jpg" },
+    ]);
+  });
+
+  it("passes through openGraph type and locales", async () => {
+    const { getSeo } = await import("../src/lib/seo");
+    const seo = await getSeo("en", {
+      openGraph: {
+        type: "article",
+        locale: "fr_FR",
+        alternateLocale: ["de_DE"],
+      },
+    });
+    expect(seo.openGraph?.type).toBe("article");
+    expect(seo.openGraph?.locale).toBe("fr_FR");
+    expect(seo.openGraph?.alternateLocale).toEqual(["de_DE"]);
+  });
+
   it.each([
     ["/page.jpg", "https://shop.com/page.jpg"],
     ["https://cdn.example.com/page.jpg", "https://cdn.example.com/page.jpg"],

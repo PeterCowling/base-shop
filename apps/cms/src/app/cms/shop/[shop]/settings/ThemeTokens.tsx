@@ -23,13 +23,12 @@ export default function ThemeTokens({ shop, tokenRows, info, errors }: Props) {
     <div className="col-span-2 flex flex-col gap-1">
       <div className="flex items-center justify-between">
         <span>Theme Tokens</span>
-        <Button
-          asChild
-          variant="ghost"
+        <Link
+          href={`/cms/shop/${shop}/themes`}
           className="h-auto p-0 text-primary hover:bg-transparent"
         >
-          <Link href={`/cms/shop/${shop}/themes`}>Edit Theme</Link>
-        </Button>
+          Edit Theme
+        </Link>
       </div>
       <table className="mt-2 w-full text-sm">
         <thead>
@@ -62,7 +61,18 @@ export default function ThemeTokens({ shop, tokenRows, info, errors }: Props) {
                 </td>
                 <td className="border-t px-2 py-1">
                   {hasOverride && (
-                    <form action={resetThemeOverride.bind(null, shop, token)}>
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        (
+                          resetThemeOverride as unknown as (
+                            shop: string,
+                            token: string,
+                            formData: FormData,
+                          ) => void
+                        )(shop, token, new FormData());
+                      }}
+                    >
                       <Button
                         type="submit"
                         variant="ghost"

@@ -79,10 +79,10 @@ function Sidebar({ role, pathname: pathnameProp }: SidebarProps) {
               title: "Approve new users",
             },
             {
-              href: "/wizard",
-              label: "Create Shop",
-              icon: "🛍️",
-              title: "Create a new shop",
+              href: "/configurator",
+              label: "New Shop (Configurator)",
+              icon: "🛠️",
+              title: "Launch configurator to create a new shop",
             },
           ]
         : []),
@@ -108,7 +108,7 @@ function Sidebar({ role, pathname: pathnameProp }: SidebarProps) {
   }, []);
 
   const handleClick = () => {
-    console.log("step 1: create shop link clicked");
+    console.log("step 1: configurator link clicked");
   };
 
   return (
@@ -116,14 +116,14 @@ function Sidebar({ role, pathname: pathnameProp }: SidebarProps) {
       <h1 className="px-4 py-6 text-lg font-semibold tracking-tight">CMS</h1>
       <nav>
         <ul className="flex flex-col gap-1 px-2">
-          {navItems.map(({ label, icon, title, fullHref, active }) => (
+          {navItems.map(({ label, icon, title, fullHref, active, href }) => (
             <li key={fullHref}>
               <Link href={fullHref} legacyBehavior>
                 <a
                   aria-current={active ? "page" : undefined}
                   title={title}
                   className={`focus-visible:ring-primary flex items-center gap-2 rounded-md px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none ${active ? "bg-primary/10 font-medium" : "hover:bg-muted"}`}
-                  {...(label === "Create Shop" ? { onClick: handleClick } : {})}
+                  {...(href === "/configurator" ? { onClick: handleClick } : {})}
                 >
                   <span>{icon}</span>
                   {label}

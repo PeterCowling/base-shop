@@ -17,5 +17,8 @@ describe("parseMultilingualInput", () => {
   it("returns null for invalid input", () => {
     expect(parseMultilingualInput("title_fr", locales)).toBeNull();
     expect(parseMultilingualInput("foo_en", locales)).toBeNull();
+    expect(parseMultilingualInput("title_EN", locales)).toBeNull();
+    expect(parseMultilingualInput(" title_en", locales)).toBeNull();
+    expect(parseMultilingualInput("title_en ", locales)).toBeNull();
   });
 });

@@ -847,13 +847,12 @@ describe("authEnvSchema", () => {
 });
 
 describe("auth providers and tokens", () => {
-  const ORIGINAL_ENV = { ...process.env } as NodeJS.ProcessEnv;
-  delete (ORIGINAL_ENV as any).AUTH_TOKEN_TTL;
+  const ORIGINAL_ENV = { ...process.env, AUTH_TOKEN_TTL: "15m" } as NodeJS.ProcessEnv;
 
   afterEach(() => {
     jest.resetModules();
     jest.useRealTimers();
-    process.env = { ...ORIGINAL_ENV };
+    process.env = { ...ORIGINAL_ENV, AUTH_TOKEN_TTL: "15m" } as NodeJS.ProcessEnv;
   });
 
   const baseEnv = {
@@ -861,15 +860,19 @@ describe("auth providers and tokens", () => {
     SESSION_SECRET: "session-secret",
   } as const;
 
-  it("parses defaults for local provider", async () => {
+  it("parses local provider without extra secrets", async () => {
     jest.useFakeTimers().setSystemTime(new Date("2020-01-01T00:00:00Z"));
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
       ...baseEnv,
+      AUTH_PROVIDER: "local",
     } as NodeJS.ProcessEnv;
     const { authEnv } = await import("../auth.ts");
     expect(authEnv.AUTH_PROVIDER).toBe("local");
+    expect(authEnv.JWT_SECRET).toBeUndefined();
+    expect(authEnv.OAUTH_CLIENT_ID).toBeUndefined();
+    expect(authEnv.OAUTH_CLIENT_SECRET).toBeUndefined();
     expect(authEnv.AUTH_TOKEN_TTL).toBe(900);
     expect(authEnv.AUTH_TOKEN_EXPIRES_AT.toISOString()).toBe(
       "2020-01-01T00:15:00.000Z",
@@ -1048,21 +1051,36 @@ describe("auth providers and tokens", () => {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
       ...baseEnv,
-      AUTH_TOKEN_TTL: "30s",
+      AUTH_TOKEN_TTL: "60s",
     } as NodeJS.ProcessEnv;
     const { authEnv } = await import("../auth.ts");
-    expect(authEnv.AUTH_TOKEN_TTL).toBe(30);
+    expect(authEnv.AUTH_TOKEN_TTL).toBe(60);
     expect(authEnv.AUTH_TOKEN_EXPIRES_AT.toISOString()).toBe(
-      "2020-01-01T00:00:30.000Z",
+      "2020-01-01T00:01:00.000Z",
     );
   });
 
-  it("errors on invalid TTL format", async () => {
+  it("parses TTL in minutes", async () => {
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01T00:00:00Z"));
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",
       ...baseEnv,
-      AUTH_TOKEN_TTL: "5h",
+      AUTH_TOKEN_TTL: "15m",
+    } as NodeJS.ProcessEnv;
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv.AUTH_TOKEN_TTL).toBe(900);
+    expect(authEnv.AUTH_TOKEN_EXPIRES_AT.toISOString()).toBe(
+      "2020-01-01T00:15:00.000Z",
+    );
+  });
+
+  it("errors on malformed TTL string", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      AUTH_TOKEN_TTL: "not-a-duration",
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(import("../auth.ts")).rejects.toThrow(
@@ -1079,7 +1097,40 @@ describe("auth providers and tokens", () => {
     errorSpy.mockRestore();
   });
 
-  it("allows whitelisted algorithms", async () => {
+  it("errors on numeric TTL input", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      AUTH_TOKEN_TTL: "123",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        AUTH_TOKEN_TTL: {
+          _errors: expect.arrayContaining([expect.any(String)]),
+        },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("allows HS256 algorithm", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      TOKEN_ALGORITHM: "HS256",
+    } as NodeJS.ProcessEnv;
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv.TOKEN_ALGORITHM).toBe("HS256");
+  });
+
+  it("allows RS256 algorithm", async () => {
     process.env = {
       ...ORIGINAL_ENV,
       NODE_ENV: "production",

@@ -10,7 +10,7 @@ jest.mock('@prisma/client', () => ({
   PrismaClient: jest.fn().mockImplementation(() => ({})),
 }));
 
-describe('init-shop wizard - vault', () => {
+describe('init-shop configurator - vault', () => {
   it('fetches secrets using --vault-cmd', async () => {
     const questions: string[] = [];
     const answers = [

@@ -3,7 +3,7 @@ import path from 'node:path';
 import ts from 'typescript';
 import { runInNewContext } from 'vm';
 
-describe('init-shop wizard - runtime checks', () => {
+describe('init-shop configurator - runtime checks', () => {
   it('exits when Node.js version is below 20', () => {
     const sandbox: any = {
       exports: {},

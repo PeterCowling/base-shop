@@ -11,7 +11,7 @@ To scaffold a shop and immediately start the dev server in one step:
 pnpm quickstart-shop --id demo --theme base --template template-app --auto-plugins --auto-env --presets
 ```
 
-This wraps the `init-shop` wizard, validates the generated `.env`, and runs `pnpm dev` for the new shop. `--auto-plugins` selects all detected payment and shipping providers, `--auto-env` writes placeholder environment variables, and `--presets` applies default navigation, pages, and a GitHub Actions workflow. You can also provide a configuration file and skip most flags:
+This wraps the `init-shop` configurator, validates the generated `.env`, and runs `pnpm dev` for the new shop. `--auto-plugins` selects all detected payment and shipping providers, `--auto-env` writes placeholder environment variables, and `--presets` applies default navigation, pages, and a GitHub Actions workflow. The earlier wizard is deprecated. You can also provide a configuration file and skip most flags:
 
 ```bash
 pnpm quickstart-shop --config ./shop.config.json
@@ -39,12 +39,12 @@ Example `shop.config.json`:
    pnpm setup-ci <id>
    ```
 
-   `init-shop` launches an interactive wizard that asks for the shop ID, display name, logo URL,
+   `init-shop` launches an interactive configurator that asks for the shop ID, display name, logo URL,
    contact email, shop type (`sale` or `rental`), and which theme and template to use. Payment and
    shipping providers are chosen from guided lists of available providers. It then
    scaffolds `apps/shop-<id>` and prompts for environment variables like Stripe keys and CMS
    credentials, writing them directly to `apps/shop-<id>/.env` and generating a matching
-   `.env.template` with the required keys. The wizard validates the environment immediately and
+   `.env.template` with the required keys. The configurator validates the environment immediately and
    can fetch secrets from an external vault by providing `--vault-cmd <cmd>` (the command is invoked
    with each variable name). For scripted setups you can still
    call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and `--contact` to skip those
@@ -66,7 +66,7 @@ Example `shop.config.json`:
    pnpm dev
    ```
 
-   The wizard already validated your environment variables. Rerun `pnpm validate-env <id>` after
+   The configurator already validated your environment variables. Rerun `pnpm validate-env <id>` after
    editing `.env` if you need to re-check. Open http://localhost:3000 to view the site. Pages
    hot-reload on save.
 

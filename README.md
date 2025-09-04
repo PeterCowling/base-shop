@@ -8,7 +8,7 @@ A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **
 
 Requires **Node.js >=20** and **pnpm 10.12.1**. See [docs/install.md](docs/install.md) for installation instructions and [docs/setup.md](docs/setup.md) for full setup and CI guidance.
 
-Run `pnpm init-shop` to scaffold a new shop. The wizard lists available plugins and, when invoked with `--auto-env`, writes `TODO_*` placeholders for any required environment variables so teams can fill them in later.
+Run `pnpm init-shop` to scaffold a new shop. The configurator lists available plugins and, when invoked with `--auto-env`, writes `TODO_*` placeholders for any required environment variables so teams can fill them in later. The previous wizard is deprecated.
 
 ## Key Features
 
@@ -114,7 +114,7 @@ Configuration and usage examples for both are documented in [docs/machine.md](do
 
 # Environment Variables
 
-After running `pnpm create-shop <id>`, the wizard generates `.env` and `.env.template` under `apps/shop-<id>/`, validates the variables, and can pull secrets from an external vault by passing `--vault-cmd <cmd>` (the command receives each variable name). Configure the resulting `.env` with:
+After running `pnpm create-shop <id>`, the CLI generates `.env` and `.env.template` under `apps/shop-<id>/`, validates the variables, and can pull secrets from an external vault by passing `--vault-cmd <cmd>` (the command receives each variable name). Configure the resulting `.env` with:
 
 - `STRIPE_SECRET_KEY` – secret key used by the Stripe server SDK
 - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` – public key for the Stripe client SDK

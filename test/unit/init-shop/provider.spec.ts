@@ -3,7 +3,7 @@ import path from 'node:path';
 import ts from 'typescript';
 import { runInNewContext } from 'vm';
 
-describe('init-shop wizard - providers', () => {
+describe('init-shop configurator - providers', () => {
   it('allows selecting payment and shipping providers', async () => {
     const questions: string[] = [];
     const answers = [

@@ -41,7 +41,7 @@ Example `shop.config.json`:
 pnpm init-shop
 ```
 
-`init-shop` launches an interactive wizard that collects:
+`init-shop` launches an interactive configurator that collects:
 
 - shop ID
 - display name
@@ -55,11 +55,11 @@ pnpm init-shop
 - theme token overrides (`token=value` pairs)
 - environment variables like Stripe keys and CMS credentials
 
-Passing `--defaults` tells the wizard to prefill navigation links and pages
+Passing `--defaults` tells the configurator to prefill navigation links and pages
 from the selected template's `shop.json` when those fields exist. Any missing
 entries fall back to interactive prompts.
 
-After answering the prompts the wizard scaffolds `apps/shop-<id>` and writes your answers to `apps/shop-<id>/.env`.
+After answering the prompts the configurator scaffolds `apps/shop-<id>` and writes your answers to `apps/shop-<id>/.env`.
 
 To skip the theme prompts, provide overrides via flags:
 
@@ -73,15 +73,15 @@ For more extensive customization you could import design tokens from common sour
 
 To populate the new shop with sample data, run `pnpm init-shop --seed`. Use `--seed-full` to also copy `shop.json`, navigation defaults, page templates, and settings. Provide `--pages-template <name>` to copy predefined page layouts (`hero`, `product-grid`, `contact`). Use `pnpm init-shop --defaults` to apply preset nav links and pages from the
 selected template without prompting for them.
-Add `--auto-env` to skip prompts for provider environment variables. The wizard writes
+Add `--auto-env` to skip prompts for provider environment variables. The configurator writes
 `TODO_*` placeholders to the new shop's `.env` file; replace them with real
 secrets before deploying.
 To prefill answers from an existing file, supply `--env-file <path>`.
 Keys in the file are merged before prompting—any variables already present are
 written directly to the generated `.env` and prompts for them are skipped. After
-validation the wizard warns about unused entries or missing required variables.
+validation the configurator warns about unused entries or missing required variables.
 To reuse answers across runs, create `profiles/<name>.json` and run
-`pnpm init-shop --profile <name>`. Profile values prefill the wizard. Combine
+`pnpm init-shop --profile <name>`. Profile values prefill the configurator. Combine
 with `--skip-prompts` to accept defaults for remaining questions and run
 non-interactively.
 
@@ -103,7 +103,7 @@ pnpm create-shop <id> [--type=sale|rental] [--theme=name] [--template=name] [--p
 - `--seed` – copy sample `products.json` and `inventory.json` into the new shop.
 - `--seed-full` – additionally copy `shop.json`, navigation defaults, page templates, and `settings.json`.
 - `--contact` – contact email for the shop.
-- `--config` – path to a JSON or TS file exporting options. Values from the file prefill the wizard and skip prompts.
+- `--config` – path to a JSON or TS file exporting options. Values from the file prefill the configurator and skip prompts.
 
 Example configuration file:
 
@@ -126,7 +126,7 @@ Run with:
 pnpm create-shop demo --config ./shop.config.json
 ```
 
-### Example wizard run
+### Example configurator run
 
 ```bash
 pnpm init-shop
@@ -160,16 +160,16 @@ Scaffolded apps/shop-demo
 
 ## 2. Review environment variables
 
-The wizard captures common environment variables and writes them to `apps/shop-<id>/.env`.
+The configurator captures common environment variables and writes them to `apps/shop-<id>/.env`.
 
-After scaffolding, the wizard writes both `.env` and `.env.template` to `apps/shop-<id>/`.
+After scaffolding, the configurator writes both `.env` and `.env.template` to `apps/shop-<id>/`.
 The template lists all variables required by your chosen providers. If you used `--auto-env`,
 `.env` contains placeholder values like `TODO_API_KEY`. Supplying `--env-file` copies matching keys
 from that file, and `--vault-cmd <cmd>` invokes the given command with each variable name to retrieve
 secrets from an external vault. Placeholders and missing variables must be replaced with real
 credentials before deployment.
 
-The wizard validates the environment immediately. Rerun the check manually any time after editing:
+The configurator validates the environment immediately. Rerun the check manually any time after editing:
 
 ```bash
 pnpm validate-env <id>
@@ -200,7 +200,7 @@ This creates `.github/workflows/shop-<id>.yml` which installs dependencies, runs
 
 Plugins extend the platform with extra payment providers, shipping integrations or storefront widgets. The platform automatically loads any plugin found under `packages/plugins/*`.
 
-During `init-shop` you will be presented with a list of detected plugins. Selected plugins are added to the new shop's `package.json` and the wizard prompts for any required environment variables.
+During `init-shop` you will be presented with a list of detected plugins. Selected plugins are added to the new shop's `package.json` and the configurator prompts for any required environment variables.
 
 To add a plugin manually, place it in the `packages/plugins` directory (e.g. `packages/plugins/paypal`) and export a default plugin object. After restarting the CMS you can enable and configure the plugin under **CMS → Plugins**.
 

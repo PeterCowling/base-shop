@@ -3,7 +3,7 @@ import path from 'node:path';
 import ts from 'typescript';
 import { runInNewContext } from 'vm';
 
-describe('init-shop wizard - env', () => {
+describe('init-shop configurator - env', () => {
   it('collects user input and validates environment', async () => {
     const questions: string[] = [];
     const answers = [

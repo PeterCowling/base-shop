@@ -3,7 +3,7 @@ import path from 'node:path';
 import ts from 'typescript';
 import { runInNewContext } from 'vm';
 
-describe('init-shop wizard - theme', () => {
+describe('init-shop configurator - theme', () => {
   it('supports theme overrides via CLI flags', async () => {
     const questions: string[] = [];
     const answers = [

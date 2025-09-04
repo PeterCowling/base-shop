@@ -1,4 +1,4 @@
-import type { Campaign } from "../types.js";
+import type { Campaign } from "../types";
 
 export interface CampaignStore {
   /**

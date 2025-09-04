@@ -59,6 +59,18 @@ describe("mfa", () => {
     expect(result).toBe(true);
   });
 
+  it("verifyMfa returns true when already enabled", async () => {
+    const { verifyMfa } = await import("./mfa");
+    findUnique.mockResolvedValue({ enabled: true });
+    verify.mockReturnValue(true);
+
+    const result = await verifyMfa("cust", "123456");
+
+    expect(verify).toHaveBeenCalledWith({ token: "123456", secret: undefined });
+    expect(update).not.toHaveBeenCalled();
+    expect(result).toBe(true);
+  });
+
   it("verifyMfa returns false when record missing or token invalid", async () => {
     const { verifyMfa } = await import("./mfa");
 

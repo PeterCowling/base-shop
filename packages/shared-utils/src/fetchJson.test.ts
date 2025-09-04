@@ -24,6 +24,19 @@ describe("fetchJson", () => {
     ).resolves.toEqual({ msg: "hi" });
   });
 
+  it("throws ZodError when response JSON does not match schema", async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(JSON.stringify({ msg: "hi" })),
+    });
+
+    const schema = z.object({ msg: z.number() });
+
+    await expect(
+      fetchJson("https://example.com", undefined, schema)
+    ).rejects.toBeInstanceOf(z.ZodError);
+  });
+
   it("returns undefined when JSON parsing fails", async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,

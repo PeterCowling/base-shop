@@ -21,14 +21,14 @@ describe("formatPrice", () => {
     );
   });
 
-  it.each(["BAD", "US", ""])(
+  it.each(["BAD", "US", ""]) (
     "throws RangeError for invalid currency %s",
     (currency) => {
       expect(() => formatPrice(1, currency as any)).toThrow(RangeError);
     }
   );
 
-  it.each([123.456, 1.005])(
+  it.each([123.456, 1.005]) (
     "rounds fractional amount %p correctly",
     (amount) => {
       const expected = new Intl.NumberFormat(undefined, {
@@ -39,7 +39,7 @@ describe("formatPrice", () => {
     }
   );
 
-  it.each([-1, -123.45])("formats negative amount %p", (amount) => {
+  it.each([-1, -123.45]) ("formats negative amount %p", (amount) => {
     const expected = new Intl.NumberFormat(undefined, {
       style: "currency",
       currency: "USD",
@@ -47,7 +47,7 @@ describe("formatPrice", () => {
     expect(formatPrice(amount)).toBe(expected);
   });
 
-  it.each(["de-DE", "ja-JP"])(
+  it.each(["de-DE", "ja-JP"]) (
     "uses explicit locale %s over default locale",
     (locale) => {
       const amount = 1234.56;
@@ -63,4 +63,34 @@ describe("formatPrice", () => {
       }
     }
   );
+
+  it("throws when Intl.supportedValuesOf excludes the currency", () => {
+    const original = (Intl as any).supportedValuesOf;
+    (Intl as any).supportedValuesOf = () => ["USD", "EUR"];
+    try {
+      expect(() => formatPrice(10, "BTC")).toThrow(RangeError);
+    } finally {
+      if (original) {
+        (Intl as any).supportedValuesOf = original;
+      } else {
+        delete (Intl as any).supportedValuesOf;
+      }
+    }
+  });
+
+  it("formats when Intl.supportedValuesOf is not available", () => {
+    const original = (Intl as any).supportedValuesOf;
+    delete (Intl as any).supportedValuesOf;
+    const amount = 12.34;
+    const expected = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+    }).format(amount);
+    expect(formatPrice(amount, "USD", "en-US")).toBe(expected);
+    if (original) {
+      (Intl as any).supportedValuesOf = original;
+    } else {
+      delete (Intl as any).supportedValuesOf;
+    }
+  });
 });

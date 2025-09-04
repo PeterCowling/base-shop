@@ -14,61 +14,75 @@ const baseEnv = {
 const schema = coreEnvBaseSchema.superRefine(depositReleaseEnvRefinement);
 
 describe("depositReleaseEnvRefinement", () => {
-  it("parses built-in deposit, reverse logistics and late fee vars", () => {
-    const parsed = schema.safeParse({
-      ...baseEnv,
-      DEPOSIT_RELEASE_ENABLED: "true",
-      DEPOSIT_RELEASE_INTERVAL_MS: "1000",
-      REVERSE_LOGISTICS_ENABLED: "false",
-      REVERSE_LOGISTICS_INTERVAL_MS: "2000",
-      LATE_FEE_ENABLED: "true",
-      LATE_FEE_INTERVAL_MS: "3000",
-    });
+  it.each([
+    {
+      env: {
+        DEPOSIT_RELEASE_ENABLED: "true",
+        DEPOSIT_RELEASE_INTERVAL_MS: "1000",
+      },
+    },
+    {
+      env: {
+        REVERSE_LOGISTICS_ENABLED: "false",
+        REVERSE_LOGISTICS_INTERVAL_MS: "2000",
+      },
+    },
+    {
+      env: {
+        LATE_FEE_ENABLED: "true",
+        LATE_FEE_INTERVAL_MS: "3000",
+      },
+    },
+  ])("parses built-in %o vars", ({ env }) => {
+    const parsed = schema.safeParse({ ...baseEnv, ...env });
     expect(parsed.success).toBe(true);
   });
 
-  it("reports issues for invalid built-in deposit, reverse logistics and late fee vars", () => {
-    const parsed = schema.safeParse({
-      ...baseEnv,
-      DEPOSIT_RELEASE_ENABLED: "yes",
-      DEPOSIT_RELEASE_INTERVAL_MS: "soon",
-      REVERSE_LOGISTICS_ENABLED: "maybe",
-      REVERSE_LOGISTICS_INTERVAL_MS: "later",
-      LATE_FEE_ENABLED: "nah",
-      LATE_FEE_INTERVAL_MS: "whenever",
-    });
-    expect(parsed.success).toBe(false);
-    if (!parsed.success) {
-      expect(parsed.error.issues).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            path: ["DEPOSIT_RELEASE_ENABLED"],
-            message: "must be true or false",
-          }),
-          expect.objectContaining({
-            path: ["DEPOSIT_RELEASE_INTERVAL_MS"],
-            message: "must be a number",
-          }),
-          expect.objectContaining({
-            path: ["REVERSE_LOGISTICS_ENABLED"],
-            message: "must be true or false",
-          }),
-          expect.objectContaining({
-            path: ["REVERSE_LOGISTICS_INTERVAL_MS"],
-            message: "must be a number",
-          }),
-          expect.objectContaining({
-            path: ["LATE_FEE_ENABLED"],
-            message: "must be true or false",
-          }),
-          expect.objectContaining({
-            path: ["LATE_FEE_INTERVAL_MS"],
-            message: "must be a number",
-          }),
-        ]),
-      );
-    }
-  });
+  it.each([
+    [
+      { DEPOSIT_RELEASE_ENABLED: "yes" },
+      "DEPOSIT_RELEASE_ENABLED",
+      "must be true or false",
+    ],
+    [
+      { DEPOSIT_RELEASE_INTERVAL_MS: "soon" },
+      "DEPOSIT_RELEASE_INTERVAL_MS",
+      "must be a number",
+    ],
+    [
+      { REVERSE_LOGISTICS_ENABLED: "maybe" },
+      "REVERSE_LOGISTICS_ENABLED",
+      "must be true or false",
+    ],
+    [
+      { REVERSE_LOGISTICS_INTERVAL_MS: "later" },
+      "REVERSE_LOGISTICS_INTERVAL_MS",
+      "must be a number",
+    ],
+    [
+      { LATE_FEE_ENABLED: "nah" },
+      "LATE_FEE_ENABLED",
+      "must be true or false",
+    ],
+    [
+      { LATE_FEE_INTERVAL_MS: "whenever" },
+      "LATE_FEE_INTERVAL_MS",
+      "must be a number",
+    ],
+  ])(
+    "reports issues for invalid built-in %s vars",
+    (env, key, message) => {
+      const parsed = schema.safeParse({ ...baseEnv, ...env });
+      expect(parsed.success).toBe(false);
+      if (!parsed.success) {
+        expect(parsed.error.issues).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({ path: [key], message }),
+          ]),
+        );
+      }
+    },
+  );
   it("accepts valid ENABLED and INTERVAL_MS values for all prefixes", () => {
     const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
     depositReleaseEnvRefinement(

@@ -15,6 +15,13 @@ const baseEnv = {
   SANITY_API_VERSION: "v1",
 };
 
+const ORIGINAL_ENV = { ...process.env };
+
+afterEach(() => {
+  process.env = { ...ORIGINAL_ENV };
+  jest.resetModules();
+});
+
 describe("core env refinement", () => {
   it("accepts valid custom prefixed variables", () => {
     const parsed = schema.safeParse({
@@ -280,6 +287,49 @@ describe("core env defaults", () => {
 });
 
 describe("core env optional variables", () => {
+  it.each([
+    ["1", true],
+    ["", false],
+  ])("coerces OUTPUT_EXPORT=%s to %s", (val, expected) => {
+    const parsed = schema.safeParse({
+      ...baseEnv,
+      OUTPUT_EXPORT: val,
+    });
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.OUTPUT_EXPORT).toBe(expected);
+    }
+  });
+
+  it.each(["development", "test", "production"]) (
+    "accepts NODE_ENV=%s",
+    (value) => {
+      const parsed = schema.safeParse({
+        ...baseEnv,
+        NODE_ENV: value,
+      });
+      expect(parsed.success).toBe(true);
+      if (parsed.success) {
+        expect(parsed.data.NODE_ENV).toBe(value);
+      }
+    },
+  );
+
+  it("rejects invalid NODE_ENV", () => {
+    const parsed = schema.safeParse({
+      ...baseEnv,
+      NODE_ENV: "staging",
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ path: ["NODE_ENV"] }),
+        ]),
+      );
+    }
+  });
+
   it("parses numeric CART_TTL when valid", () => {
     const parsed = schema.safeParse({
       ...baseEnv,

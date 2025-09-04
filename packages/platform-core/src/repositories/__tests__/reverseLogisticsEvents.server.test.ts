@@ -12,9 +12,11 @@ jest.mock("@acme/date-utils", () => ({
 
 import { prisma } from "../../db";
 import { nowIso } from "@acme/date-utils";
-import * as reverseLogistics from "../reverseLogisticsEvents.server";
-
-const { recordEvent, listEvents, reverseLogisticsEvents } = reverseLogistics;
+import {
+  recordEvent,
+  listEvents,
+  reverseLogisticsEvents,
+} from "../reverseLogisticsEvents.server";
 
 describe("reverse logistics events repository", () => {
   const create = prisma.reverseLogisticsEvent.create as jest.Mock;
@@ -30,6 +32,7 @@ describe("reverse logistics events repository", () => {
   it("records event with provided createdAt", async () => {
     await recordEvent("shop1", "session1", "received", "time");
     expect(nowIsoMock).not.toHaveBeenCalled();
+    expect(create).toHaveBeenCalledTimes(1);
     expect(create).toHaveBeenCalledWith({
       data: {
         shop: "shop1",
@@ -43,7 +46,8 @@ describe("reverse logistics events repository", () => {
   it("records event with default createdAt", async () => {
     nowIsoMock.mockReturnValue("mocked");
     await recordEvent("shop1", "session1", "qa");
-    expect(nowIsoMock).toHaveBeenCalled();
+    expect(nowIsoMock).toHaveBeenCalledTimes(1);
+    expect(create).toHaveBeenCalledTimes(1);
     expect(create).toHaveBeenCalledWith({
       data: {
         shop: "shop1",
@@ -55,7 +59,7 @@ describe("reverse logistics events repository", () => {
   });
 
   it("returns events ordered by createdAt", async () => {
-    const events = [
+    const unsortedEvents = [
       {
         id: "2",
         shop: "demo",
@@ -71,30 +75,18 @@ describe("reverse logistics events repository", () => {
         createdAt: "2023-01-01",
       },
     ];
-    findMany.mockResolvedValue(
-      [...events].sort((a, b) => a.createdAt.localeCompare(b.createdAt))
+    const sortedEvents = [...unsortedEvents].sort((a, b) =>
+      a.createdAt.localeCompare(b.createdAt)
     );
+    findMany.mockResolvedValue(sortedEvents);
+
     const result = await listEvents("demo");
+
     expect(findMany).toHaveBeenCalledWith({
       where: { shop: "demo" },
       orderBy: { createdAt: "asc" },
     });
-    expect(result).toEqual([
-      {
-        id: "1",
-        shop: "demo",
-        sessionId: "a",
-        event: "received",
-        createdAt: "2023-01-01",
-      },
-      {
-        id: "2",
-        shop: "demo",
-        sessionId: "b",
-        event: "qa",
-        createdAt: "2023-01-02",
-      },
-    ]);
+    expect(result).toEqual(sortedEvents);
   });
 });
 

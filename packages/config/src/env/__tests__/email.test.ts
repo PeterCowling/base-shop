@@ -9,6 +9,202 @@ describe("email env module", () => {
     process.env = ORIGINAL_ENV;
   });
 
+  const withEnv = async <T>(
+    env: NodeJS.ProcessEnv,
+    fn: () => Promise<T>,
+  ): Promise<T> => {
+    process.env = { ...ORIGINAL_ENV, ...env } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    return fn();
+  };
+
+  describe("withEnv", () => {
+    it.each([
+      {
+        provider: "smtp",
+        env: {
+          EMAIL_PROVIDER: "smtp",
+          SMTP_URL: "smtp://smtp.example.com",
+          SMTP_PORT: "587",
+          SMTP_SECURE: "false",
+          CAMPAIGN_FROM: "from@example.com",
+        },
+        expected: {
+          EMAIL_PROVIDER: "smtp",
+          SMTP_URL: "smtp://smtp.example.com",
+          SMTP_PORT: 587,
+          SMTP_SECURE: false,
+          CAMPAIGN_FROM: "from@example.com",
+        },
+      },
+      {
+        provider: "sendgrid",
+        env: { EMAIL_PROVIDER: "sendgrid", SENDGRID_API_KEY: "sg-key" },
+        expected: {
+          EMAIL_PROVIDER: "sendgrid",
+          SENDGRID_API_KEY: "sg-key",
+        },
+      },
+      {
+        provider: "resend",
+        env: { EMAIL_PROVIDER: "resend", RESEND_API_KEY: "re-key" },
+        expected: {
+          EMAIL_PROVIDER: "resend",
+          RESEND_API_KEY: "re-key",
+        },
+      },
+      { provider: "noop", env: { EMAIL_PROVIDER: "noop" }, expected: { EMAIL_PROVIDER: "noop" } },
+    ])("loads %s provider", async ({ env, expected }) => {
+      await withEnv(env as NodeJS.ProcessEnv, async () => {
+        const { emailEnv } = await import("../email.ts");
+        expect(emailEnv).toMatchObject(expected);
+      });
+    });
+
+    it("parses SMTP_PORT as number", async () => {
+      await withEnv(
+        {
+          EMAIL_PROVIDER: "smtp",
+          SMTP_URL: "smtp://smtp.example.com",
+          SMTP_PORT: "2525",
+          SMTP_SECURE: "true",
+          CAMPAIGN_FROM: "from@example.com",
+        } as NodeJS.ProcessEnv,
+        async () => {
+          const { emailEnv } = await import("../email.ts");
+          expect(emailEnv.SMTP_PORT).toBe(2525);
+        },
+      );
+    });
+
+    it.each([
+      ["true", true],
+      ["false", false],
+      ["1", true],
+      ["0", false],
+      ["yes", true],
+      ["no", false],
+      [" TrUe ", true],
+      [" NO ", false],
+    ])("coerces SMTP_SECURE=%s", async (val, expected) => {
+      await withEnv(
+        {
+          EMAIL_PROVIDER: "smtp",
+          SMTP_URL: "smtp://smtp.example.com",
+          SMTP_PORT: "587",
+          SMTP_SECURE: val,
+          CAMPAIGN_FROM: "from@example.com",
+        } as NodeJS.ProcessEnv,
+        async () => {
+          const { emailEnv } = await import("../email.ts");
+          expect(emailEnv.SMTP_SECURE).toBe(expected);
+        },
+      );
+    });
+
+    it("normalizes CAMPAIGN_FROM to lowercase", async () => {
+      await withEnv(
+        {
+          EMAIL_PROVIDER: "smtp",
+          SMTP_URL: "smtp://smtp.example.com",
+          SMTP_PORT: "587",
+          CAMPAIGN_FROM: " Sender@Example.COM ",
+        } as NodeJS.ProcessEnv,
+        async () => {
+          const { emailEnv } = await import("../email.ts");
+          expect(emailEnv.CAMPAIGN_FROM).toBe("sender@example.com");
+        },
+      );
+    });
+
+    it("throws for invalid CAMPAIGN_FROM", async () => {
+      const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+      await expect(
+        withEnv(
+          {
+            EMAIL_PROVIDER: "smtp",
+            SMTP_URL: "smtp://smtp.example.com",
+            SMTP_PORT: "587",
+            CAMPAIGN_FROM: "not-an-email",
+          } as NodeJS.ProcessEnv,
+          async () => import("../email.ts"),
+        ),
+      ).rejects.toThrow("Invalid email environment variables");
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid email environment variables:",
+        expect.objectContaining({
+          CAMPAIGN_FROM: { _errors: [expect.stringContaining("Invalid email")] },
+        }),
+      );
+      errorSpy.mockRestore();
+    });
+
+    it.each([
+      {
+        provider: "sendgrid",
+        env: { EMAIL_PROVIDER: "sendgrid" },
+        missing: "SENDGRID_API_KEY",
+      },
+      {
+        provider: "resend",
+        env: { EMAIL_PROVIDER: "resend" },
+        missing: "RESEND_API_KEY",
+      },
+    ])("errors when %s key missing", async ({ env, missing }) => {
+      const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+      await expect(
+        withEnv(env as NodeJS.ProcessEnv, async () => import("../email.ts")),
+      ).rejects.toThrow("Invalid email environment variables");
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid email environment variables:",
+        expect.objectContaining({
+          [missing]: { _errors: [expect.stringContaining("Required")] },
+        }),
+      );
+      errorSpy.mockRestore();
+    });
+
+    it.each([
+      {
+        provider: "sendgrid",
+        env: { EMAIL_PROVIDER: "sendgrid", SENDGRID_API_KEY: "sg" },
+      },
+      {
+        provider: "resend",
+        env: { EMAIL_PROVIDER: "resend", RESEND_API_KEY: "re" },
+      },
+    ])("passes when %s key present", async ({ env }) => {
+      await withEnv(env as NodeJS.ProcessEnv, async () => {
+        const { emailEnv } = await import("../email.ts");
+        expect(emailEnv.EMAIL_PROVIDER).toBe(env.EMAIL_PROVIDER);
+      });
+    });
+
+    describe("template base path", () => {
+      it("accepts existing path", async () => {
+        await withEnv(
+          { EMAIL_TEMPLATE_BASE_PATH: __dirname } as NodeJS.ProcessEnv,
+          async () => {
+            expect(
+              fs.existsSync(process.env.EMAIL_TEMPLATE_BASE_PATH!),
+            ).toBe(true);
+          },
+        );
+      });
+
+      it("handles missing path", async () => {
+        await withEnv(
+          { EMAIL_TEMPLATE_BASE_PATH: "./non-existent-path" } as NodeJS.ProcessEnv,
+          async () => {
+            expect(
+              fs.existsSync(process.env.EMAIL_TEMPLATE_BASE_PATH!),
+            ).toBe(false);
+          },
+        );
+      });
+    });
+  });
+
     it("parses full SMTP configuration", async () => {
       process.env = {
         ...ORIGINAL_ENV,
@@ -85,7 +281,7 @@ describe("email env module", () => {
         "❌ Invalid email environment variables:",
         expect.objectContaining({
           SMTP_SECURE: {
-            _errors: [expect.stringContaining("must be true or false")],
+            _errors: [expect.stringContaining("must be a boolean")],
           },
         }),
       );

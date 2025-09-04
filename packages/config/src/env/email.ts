@@ -15,13 +15,15 @@ export const emailEnvSchema = z
       .optional(),
     SMTP_SECURE: z
       .string()
-      .refine((v) => v === "true" || v === "false", {
-        message: "must be true or false",
+      .transform((v) => v.trim().toLowerCase())
+      .refine((v) => ["true", "false", "1", "0", "yes", "no"].includes(v), {
+        message: "must be a boolean",
       })
-      .transform((v) => v === "true")
+      .transform((v) => ["true", "1", "yes"].includes(v))
       .optional(),
     CAMPAIGN_FROM: z
       .string()
+      .trim()
       .email()
       .transform((v) => v.toLowerCase())
       .optional(),

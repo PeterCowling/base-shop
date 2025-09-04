@@ -14,7 +14,8 @@
   },
   "files": ["dist"],
   "scripts": {
-    "build": "tsc -b",
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist *.tsbuildinfo",
     "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "lint": "eslint ."
   },

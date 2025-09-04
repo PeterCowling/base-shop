@@ -9,6 +9,16 @@ function CartDisplay() {
   return <span data-testid="count">{Object.keys(cart).length}</span>;
 }
 
+describe("useCart", () => {
+  it("throws when used outside CartProvider", () => {
+    function Test() {
+      useCart();
+      return null;
+    }
+    expect(() => render(<Test />)).toThrow("useCart must be inside CartProvider");
+  });
+});
+
 describe("CartProvider offline fallback", () => {
   const sku: SKU = {
     id: "sku1",
@@ -313,6 +323,34 @@ describe("CartProvider dispatch", () => {
 
     await waitFor(() => expect(cartState).toEqual(updated.cart));
     expect(localStorage.getItem("cart")).toBe(JSON.stringify(updated.cart));
+  });
+
+  it("continues dispatch when localStorage.setItem throws", async () => {
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
+    const added = { cart: { sku1: { sku, qty: 1 } } };
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => added });
+    const setSpy = jest
+      .spyOn(Storage.prototype, "setItem")
+      .mockImplementation(() => {
+        throw new Error("fail");
+      });
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+
+    await act(async () => {
+      await dispatch({ type: "add", sku });
+    });
+
+    await waitFor(() => expect(cartState).toEqual(added.cart));
+    expect(setSpy).toHaveBeenCalled();
+    setSpy.mockRestore();
   });
 
   it("throws server error message when response not ok", async () => {

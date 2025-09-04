@@ -3,6 +3,13 @@ import { z } from "zod";
 
 const isProd = process.env.NODE_ENV === "production";
 
+const ttlRegex = /^\d+(s|m)$/i;
+const parseTTL = (val: string) => {
+  const num = Number(val.slice(0, -1));
+  const unit = val.slice(-1).toLowerCase();
+  return unit === "m" ? num * 60 : num;
+};
+
 const baseSchema = z.object({
   NEXTAUTH_SECRET: isProd
     ? z.string().min(1)
@@ -18,6 +25,24 @@ const baseSchema = z.object({
   SESSION_STORE: z.enum(["memory", "redis"]).optional(),
   UPSTASH_REDIS_REST_URL: z.string().url().optional(),
   UPSTASH_REDIS_REST_TOKEN: z.string().optional(),
+
+  AUTH_PROVIDER: z.enum(["local", "jwt", "oauth"]).default("local"),
+  JWT_SECRET: z.string().min(1).optional(),
+  OAUTH_CLIENT_ID: z.string().min(1).optional(),
+  OAUTH_CLIENT_SECRET: z.string().min(1).optional(),
+
+  AUTH_TOKEN_TTL: z
+    .preprocess((v) => (typeof v === "number" ? undefined : v), z.string().optional())
+    .default("15m")
+    .refine((val) => ttlRegex.test(val), {
+      message: "AUTH_TOKEN_TTL must be a string like '60s' or '15m'",
+    })
+    .transform(parseTTL),
+  TOKEN_ALGORITHM: z.enum(["HS256", "RS256"]).default("HS256"),
+  TOKEN_AUDIENCE: z.string().default("base-shop"),
+  TOKEN_ISSUER: z.string().default("base-shop"),
+  ALLOW_GUEST: z.coerce.boolean().default(false),
+  ENFORCE_2FA: z.coerce.boolean().default(false),
 });
 
 export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
@@ -60,7 +85,35 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
       });
     }
   }
+
+  if (env.AUTH_PROVIDER === "jwt") {
+    if (!env.JWT_SECRET) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["JWT_SECRET"],
+        message: "JWT_SECRET is required when AUTH_PROVIDER=jwt",
+      });
+    }
+  }
+  if (env.AUTH_PROVIDER === "oauth") {
+    if (!env.OAUTH_CLIENT_ID) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["OAUTH_CLIENT_ID"],
+        message: "OAUTH_CLIENT_ID is required when AUTH_PROVIDER=oauth",
+      });
+    }
+    if (!env.OAUTH_CLIENT_SECRET) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["OAUTH_CLIENT_SECRET"],
+        message: "OAUTH_CLIENT_SECRET is required when AUTH_PROVIDER=oauth",
+      });
+    }
+  }
 });
+
+type ParsedAuthEnv = z.infer<typeof authEnvSchema>;
 
 const parsed = authEnvSchema.safeParse(process.env);
 if (!parsed.success) {
@@ -71,5 +124,11 @@ if (!parsed.success) {
   throw new Error("Invalid auth environment variables");
 }
 
-export const authEnv = parsed.data;
-export type AuthEnv = z.infer<typeof authEnvSchema>;
+export type AuthEnv = ParsedAuthEnv & { AUTH_TOKEN_EXPIRES_AT: Date };
+
+export const authEnv: AuthEnv = {
+  ...parsed.data,
+  AUTH_TOKEN_EXPIRES_AT: new Date(
+    Date.now() + parsed.data.AUTH_TOKEN_TTL * 1000,
+  ),
+};

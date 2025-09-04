@@ -1,18 +1,23 @@
 import "server-only";
 import { sendEmail } from "./sendEmail";
 
-async function registerEmailService() {
-  try {
-    const { setEmailService } = await import(
+try {
+  if (typeof require !== "undefined") {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { setEmailService } = require(
       "@acme/platform-core/services/emailService"
     );
     setEmailService({ sendEmail });
-  } catch {
-    // The core email service isn't available in the current environment.
+  } else {
+    void import("@acme/platform-core/services/emailService").then(
+      ({ setEmailService }) => {
+        setEmailService({ sendEmail });
+      }
+    );
   }
+} catch {
+  // The core email service isn't available in the current environment.
 }
-
-void registerEmailService();
 
 export type { CampaignOptions } from "./send";
 export { sendCampaignEmail } from "./send";

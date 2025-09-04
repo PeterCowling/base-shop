@@ -12,8 +12,21 @@ export function formatCurrency(
   currency = "USD",
   locale?: string
 ): string {
+  const code = currency.toUpperCase();
+
+  if (!/^[A-Z]{3}$/.test(code)) {
+    throw new RangeError(`Invalid currency code: ${currency}`);
+  }
+
+  const supported = (Intl as any).supportedValuesOf?.("currency") as
+    | string[]
+    | undefined;
+  if (supported && !supported.includes(code)) {
+    throw new RangeError(`Invalid currency code: ${currency}`);
+  }
+
   return new Intl.NumberFormat(locale, {
     style: "currency",
-    currency,
+    currency: code,
   }).format(amount / 100);
 }

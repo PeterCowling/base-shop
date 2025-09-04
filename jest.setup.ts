@@ -89,6 +89,19 @@ if (!(URL as any).revokeObjectURL) {
   (URL as any).revokeObjectURL = () => {};
 }
 
+// JSDOM lacks certain DOM APIs used by Radix UI components
+if (typeof Element !== "undefined" && !Element.prototype.scrollIntoView) {
+  Element.prototype.scrollIntoView = () => {};
+}
+if (
+  typeof HTMLElement !== "undefined" &&
+  !HTMLElement.prototype.hasPointerCapture
+) {
+  HTMLElement.prototype.hasPointerCapture = () => false;
+  HTMLElement.prototype.setPointerCapture = () => {};
+  HTMLElement.prototype.releasePointerCapture = () => {};
+}
+
 /**
  * React 19+ uses `MessageChannel` internally for suspense & streaming.
  * Node’s impl can leave ports open, preventing Jest from exiting, so

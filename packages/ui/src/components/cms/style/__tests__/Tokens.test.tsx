@@ -10,7 +10,7 @@ describe("Tokens", () => {
       "--color-fg": "0 0% 0%",
     };
     const handleChange = jest.fn();
-    const { container } = render(
+    const { container, rerender } = render(
       <Tokens tokens={{}} baseTokens={baseTokens} onChange={handleChange} />
     );
 
@@ -54,6 +54,13 @@ describe("Tokens", () => {
       'label[data-token-key="--color-bg"] input'
     ) as HTMLInputElement;
     fireEvent.change(input, { target: { value: "#000000" } });
+    rerender(
+      <Tokens
+        tokens={{ "--color-bg": "0 0% 0%" }}
+        baseTokens={baseTokens}
+        onChange={handleChange}
+      />
+    );
 
     expect(screen.getByText(/Low contrast/)).toBeInTheDocument();
   });

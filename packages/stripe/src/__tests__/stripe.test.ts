@@ -19,14 +19,15 @@ describe("stripe client", () => {
 
   beforeEach(() => {
     jest.resetModules();
-    jest.doMock("@acme/config/env/payments", () => ({
-      paymentsEnv: { STRIPE_SECRET_KEY: "sk_test_123" },
-    }));
     process.env = {
       ...OLD_ENV,
       STRIPE_SECRET_KEY: "sk_test_123",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_123",
+      AUTH_TOKEN_TTL: "15m",
     } as NodeJS.ProcessEnv;
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: { STRIPE_SECRET_KEY: "sk_test_123" },
+    }));
   });
 
   afterEach(() => {
@@ -123,8 +124,8 @@ describe("stripe client", () => {
   it("errors when STRIPE_SECRET_KEY is undefined", async () => {
     delete (process.env as Record<string, string | undefined>).STRIPE_SECRET_KEY;
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-    jest.doMock("@acme/config/env/payments", () => ({
-      paymentsEnv: { STRIPE_SECRET_KEY: undefined },
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: { STRIPE_SECRET_KEY: undefined },
     }));
 
     await expect(
@@ -142,8 +143,8 @@ describe("stripe client", () => {
   it("errors when STRIPE_SECRET_KEY is empty", async () => {
     (process.env as Record<string, string>).STRIPE_SECRET_KEY = "";
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-    jest.doMock("@acme/config/env/payments", () => ({
-      paymentsEnv: { STRIPE_SECRET_KEY: "" },
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: { STRIPE_SECRET_KEY: "" },
     }));
 
     await expect(

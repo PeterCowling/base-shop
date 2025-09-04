@@ -178,7 +178,8 @@ describe("scheduler", () => {
       subject: "Hello",
       body: "<p>Hi %%UNSUBSCRIBE%%</p>",
     });
-    jest.runAllTimers();
+    // Run all scheduled timers, including those added during execution.
+    await jest.runAllTimersAsync();
     await promise;
     jest.useRealTimers();
     expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 10);

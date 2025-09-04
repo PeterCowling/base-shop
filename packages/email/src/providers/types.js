@@ -1,1 +1,1 @@
-export * from './types.ts';
+module.exports = require('./types.ts');

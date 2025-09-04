@@ -268,6 +268,31 @@ describe("resolveConfig", () => {
     });
     expect(cfg).toEqual({ enabled: true, intervalMinutes: 10 });
   });
+
+  it("keeps default enabled when coreEnv flag is null", async () => {
+    readFileMock.mockRejectedValueOnce(new Error("missing"));
+    coreEnv.REVERSE_LOGISTICS_ENABLED = null as any;
+    const cfg = await service.resolveConfig("shop", "/data");
+    expect(cfg).toEqual({ enabled: false, intervalMinutes: 60 });
+  });
+
+  it("keeps default interval when coreEnv interval is null", async () => {
+    readFileMock.mockRejectedValueOnce(new Error("missing"));
+    coreEnv.REVERSE_LOGISTICS_INTERVAL_MS = null as any;
+    const cfg = await service.resolveConfig("shop", "/data");
+    expect(cfg).toEqual({ enabled: false, intervalMinutes: 60 });
+  });
+
+  it("disables service when env enabled is false", async () => {
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({
+        reverseLogisticsService: { enabled: true, intervalMinutes: 5 },
+      })
+    );
+    process.env.REVERSE_LOGISTICS_ENABLED_SHOP = "false";
+    const cfg = await service.resolveConfig("shop", "/data");
+    expect(cfg).toEqual({ enabled: false, intervalMinutes: 5 });
+  });
 });
 
 describe("startReverseLogisticsService", () => {

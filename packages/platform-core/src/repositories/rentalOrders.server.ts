@@ -23,9 +23,10 @@ async function updateStatus(
   extra: Record<string, unknown> = {},
 ): Promise<Order | null> {
   try {
+    const data: Record<string, unknown> = { status, ...extra };
     const order = await prisma.rentalOrder.update({
       where: { shop_sessionId: { shop, sessionId } },
-      data: { status, ...extra } as any,
+      data,
     });
     return order as Order;
   } catch {
@@ -65,9 +66,10 @@ export async function markLateFeeCharged(
   amount: number,
 ): Promise<Order | null> {
   try {
+    const data: Record<string, unknown> = { lateFeeCharged: amount };
     const order = await prisma.rentalOrder.update({
       where: { shop_sessionId: { shop, sessionId } },
-      data: { lateFeeCharged: amount } as any,
+      data,
     });
     return order as Order;
   } catch {

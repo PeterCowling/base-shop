@@ -29,22 +29,28 @@ export type PortInfo = {
 };
 
 async function findPort(shop: string): Promise<PortInfo> {
+  const root = resolveAppsRoot();
+  const appDir = path.join(root, `shop-${shop}`);
+  const pkgPath = path.join(appDir, "package.json");
+
+  // Do not spam logs for shops that don't have individual apps
+  if (!fsSync.existsSync(appDir)) {
+    return { port: null, error: "app not found" };
+  }
+  if (!fsSync.existsSync(pkgPath)) {
+    return { port: null, error: "package.json not found" };
+  }
+
   try {
-    const root = resolveAppsRoot();
-    const pkgPath = path.join(root, `shop-${shop}`, "package.json");
     const pkgRaw = await fs.readFile(pkgPath, "utf8");
     const pkg = JSON.parse(pkgRaw) as { scripts?: Record<string, string> };
-
     const cmd = pkg.scripts?.dev ?? pkg.scripts?.start ?? "";
     const match = cmd.match(/-p\s*(\d+)/);
-
     return { port: match ? parseInt(match[1], 10) : null };
   } catch (error) {
-    console.error(`Failed to determine port for shop ${shop}:`, error);
-    return {
-      port: null,
-      error: error instanceof Error ? error.message : String(error),
-    };
+    // Keep the UI informative without noisy stack traces in dev
+    const message = error instanceof Error ? error.message : String(error);
+    return { port: null, error: message };
   }
 }
 

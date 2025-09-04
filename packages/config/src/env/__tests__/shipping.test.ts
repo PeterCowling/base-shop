@@ -583,18 +583,31 @@ describe("shipping env module", () => {
     expect(env.DHL_KEY).toBeUndefined();
   });
 
-  it("handles DEFAULT_SHIPPING_ZONE values and defaults", async () => {
-    const { loadShippingEnv } = await import("../shipping.ts");
-    expect(
-      loadShippingEnv({ DEFAULT_SHIPPING_ZONE: "eu" }).DEFAULT_SHIPPING_ZONE,
-    ).toBe("eu");
-    expect(
-      loadShippingEnv({ DEFAULT_SHIPPING_ZONE: "international" })
-        .DEFAULT_SHIPPING_ZONE,
-    ).toBe("international");
-    const env = loadShippingEnv({});
-    const zone = env.DEFAULT_SHIPPING_ZONE ?? "domestic";
-    expect(zone).toBe("domestic");
+  describe("DEFAULT_SHIPPING_ZONE selection", () => {
+    it("returns domestic flag when set to domestic", async () => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const env = loadShippingEnv({ DEFAULT_SHIPPING_ZONE: "domestic" });
+      expect(env.DEFAULT_SHIPPING_ZONE).toBe("domestic");
+    });
+
+    it("returns eu flag when set to eu", async () => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const env = loadShippingEnv({ DEFAULT_SHIPPING_ZONE: "eu" });
+      expect(env.DEFAULT_SHIPPING_ZONE).toBe("eu");
+    });
+
+    it("returns international flag when set to international", async () => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const env = loadShippingEnv({ DEFAULT_SHIPPING_ZONE: "international" });
+      expect(env.DEFAULT_SHIPPING_ZONE).toBe("international");
+    });
+
+    it("defaults to domestic when unset", async () => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const env = loadShippingEnv({});
+      const zone = env.DEFAULT_SHIPPING_ZONE ?? "domestic";
+      expect(zone).toBe("domestic");
+    });
   });
 
   it("throws on invalid DEFAULT_SHIPPING_ZONE", async () => {

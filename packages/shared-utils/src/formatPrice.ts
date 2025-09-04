@@ -12,6 +12,13 @@ export function formatPrice(
   currency = "USD",
   locale?: string
 ): string {
+  if (typeof Intl.supportedValuesOf === "function") {
+    const supported = Intl.supportedValuesOf("currency");
+    if (!supported.includes(currency)) {
+      throw new RangeError(`Unsupported currency code: ${currency}`);
+    }
+  }
+
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,

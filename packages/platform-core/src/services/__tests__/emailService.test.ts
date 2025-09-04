@@ -19,5 +19,15 @@ describe("emailService", () => {
     setEmailService(mockService);
     expect(getEmailService()).toBe(mockService);
   });
+
+  it("allows replacing the service", async () => {
+    const { setEmailService, getEmailService } = await import("../emailService");
+    const first: EmailService = { sendEmail: jest.fn().mockResolvedValue(undefined) };
+    const second: EmailService = { sendEmail: jest.fn().mockResolvedValue(undefined) };
+    setEmailService(first);
+    expect(getEmailService()).toBe(first);
+    setEmailService(second);
+    expect(getEmailService()).toBe(second);
+  });
 });
 

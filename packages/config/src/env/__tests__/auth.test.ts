@@ -846,3 +846,294 @@ describe("authEnvSchema", () => {
   });
 });
 
+describe("auth providers and tokens", () => {
+  const ORIGINAL_ENV = { ...process.env } as NodeJS.ProcessEnv;
+  delete (ORIGINAL_ENV as any).AUTH_TOKEN_TTL;
+
+  afterEach(() => {
+    jest.resetModules();
+    jest.useRealTimers();
+    process.env = { ...ORIGINAL_ENV };
+  });
+
+  const baseEnv = {
+    NEXTAUTH_SECRET: "next-secret",
+    SESSION_SECRET: "session-secret",
+  } as const;
+
+  it("parses defaults for local provider", async () => {
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01T00:00:00Z"));
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv.AUTH_PROVIDER).toBe("local");
+    expect(authEnv.AUTH_TOKEN_TTL).toBe(900);
+    expect(authEnv.AUTH_TOKEN_EXPIRES_AT.toISOString()).toBe(
+      "2020-01-01T00:15:00.000Z",
+    );
+    expect(authEnv.TOKEN_ALGORITHM).toBe("HS256");
+    expect(authEnv.TOKEN_AUDIENCE).toBe("base-shop");
+    expect(authEnv.TOKEN_ISSUER).toBe("base-shop");
+    expect(authEnv.ALLOW_GUEST).toBe(false);
+    expect(authEnv.ENFORCE_2FA).toBe(false);
+  });
+
+  it("parses jwt provider when secret present", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      AUTH_PROVIDER: "jwt",
+      JWT_SECRET: "jwt-secret",
+    } as NodeJS.ProcessEnv;
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv.JWT_SECRET).toBe("jwt-secret");
+  });
+
+  it("throws when JWT_SECRET missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      AUTH_PROVIDER: "jwt",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        JWT_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws when JWT_SECRET empty", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      AUTH_PROVIDER: "jwt",
+      JWT_SECRET: "",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        JWT_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("parses oauth provider with credentials", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      AUTH_PROVIDER: "oauth",
+      OAUTH_CLIENT_ID: "id",
+      OAUTH_CLIENT_SECRET: "secret",
+    } as NodeJS.ProcessEnv;
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv.OAUTH_CLIENT_ID).toBe("id");
+    expect(authEnv.OAUTH_CLIENT_SECRET).toBe("secret");
+  });
+
+  it("throws when OAUTH_CLIENT_ID missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      AUTH_PROVIDER: "oauth",
+      OAUTH_CLIENT_SECRET: "secret",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        OAUTH_CLIENT_ID: {
+          _errors: expect.arrayContaining([expect.any(String)]),
+        },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws when OAUTH_CLIENT_SECRET missing", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      AUTH_PROVIDER: "oauth",
+      OAUTH_CLIENT_ID: "id",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        OAUTH_CLIENT_SECRET: {
+          _errors: expect.arrayContaining([expect.any(String)]),
+        },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws when OAUTH_CLIENT_ID empty", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      AUTH_PROVIDER: "oauth",
+      OAUTH_CLIENT_ID: "",
+      OAUTH_CLIENT_SECRET: "secret",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        OAUTH_CLIENT_ID: {
+          _errors: expect.arrayContaining([expect.any(String)]),
+        },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws when OAUTH_CLIENT_SECRET empty", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      AUTH_PROVIDER: "oauth",
+      OAUTH_CLIENT_ID: "id",
+      OAUTH_CLIENT_SECRET: "",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        OAUTH_CLIENT_SECRET: {
+          _errors: expect.arrayContaining([expect.any(String)]),
+        },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("parses TTL in seconds", async () => {
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01T00:00:00Z"));
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      AUTH_TOKEN_TTL: "30s",
+    } as NodeJS.ProcessEnv;
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv.AUTH_TOKEN_TTL).toBe(30);
+    expect(authEnv.AUTH_TOKEN_EXPIRES_AT.toISOString()).toBe(
+      "2020-01-01T00:00:30.000Z",
+    );
+  });
+
+  it("errors on invalid TTL format", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      AUTH_TOKEN_TTL: "5h",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        AUTH_TOKEN_TTL: {
+          _errors: expect.arrayContaining([expect.any(String)]),
+        },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("allows whitelisted algorithms", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      TOKEN_ALGORITHM: "RS256",
+    } as NodeJS.ProcessEnv;
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv.TOKEN_ALGORITHM).toBe("RS256");
+  });
+
+  it("errors on unsupported algorithm", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      TOKEN_ALGORITHM: "none",
+    } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../auth.ts")).rejects.toThrow(
+      "Invalid auth environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        TOKEN_ALGORITHM: {
+          _errors: expect.arrayContaining([expect.any(String)]),
+        },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("parses boolean toggles", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      ALLOW_GUEST: "true",
+      ENFORCE_2FA: "true",
+    } as NodeJS.ProcessEnv;
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv.ALLOW_GUEST).toBe(true);
+    expect(authEnv.ENFORCE_2FA).toBe(true);
+  });
+
+  it("uses memory session store without redis config", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+      SESSION_STORE: "memory",
+    } as NodeJS.ProcessEnv;
+    const { authEnv } = await import("../auth.ts");
+    expect(authEnv.SESSION_STORE).toBe("memory");
+  });
+});
+

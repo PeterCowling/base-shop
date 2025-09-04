@@ -87,6 +87,46 @@ describe("layout helper coordinate and size updates", () => {
     expect(updated.top).toBe("2px");
   });
 
+  it("resize ignores empty string values", () => {
+    const a = makeComp("a", { width: "10px", height: "5px", left: "7px", top: "8px" });
+    const state = resize(
+      { ...init, present: [a] },
+      { type: "resize", id: "a", width: "", height: "", left: "", top: "" },
+    );
+    const updated = state.present[0];
+    expect(updated.width).toBe("10px");
+    expect(updated.height).toBe("5px");
+    expect(updated.left).toBe("7px");
+    expect(updated.top).toBe("8px");
+  });
+
+  it("resize normalizes margin and padding breakpoints", () => {
+    const a = makeComp("a", {
+      marginDesktop: "1px",
+      paddingTablet: "5px",
+    });
+    const state = resize(
+      { ...init, present: [a] },
+      {
+        type: "resize",
+        id: "a",
+        marginDesktop: "",
+        marginTablet: "10",
+        marginMobile: "",
+        paddingDesktop: "12",
+        paddingTablet: "",
+        paddingMobile: "8",
+      },
+    );
+    const updated = state.present[0] as PageComponent & Record<string, string | undefined>;
+    expect(updated.marginDesktop).toBe("1px");
+    expect(updated.marginTablet).toBe("10px");
+    expect(updated.marginMobile).toBeUndefined();
+    expect(updated.paddingDesktop).toBe("12px");
+    expect(updated.paddingTablet).toBe("5px");
+    expect(updated.paddingMobile).toBe("8px");
+  });
+
   it("setGridCols updates grid column count", () => {
     const state = setGridCols(init, { type: "set-grid-cols", gridCols: 24 });
     expect(state.gridCols).toBe(24);

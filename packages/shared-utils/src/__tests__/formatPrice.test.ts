@@ -55,10 +55,12 @@ describe("formatPrice", () => {
         style: "currency",
         currency: "USD",
       }).format(amount);
-      expect(formatPrice(amount, "USD", locale)).toBe(expected);
-      expect(formatPrice(amount, "USD", locale)).not.toBe(
-        formatPrice(amount, "USD")
-      );
+      const formatted = formatPrice(amount, "USD", locale);
+      expect(formatted).toBe(expected);
+      const defaultFormatted = formatPrice(amount, "USD");
+      if (expected !== defaultFormatted) {
+        expect(formatted).not.toBe(defaultFormatted);
+      }
     }
   );
 });

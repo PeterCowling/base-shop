@@ -80,6 +80,14 @@ if (typeof window !== "undefined") {
   (globalThis as any).FormData ||= UndiciFormData;
 }
 
+/** JSDOM doesn't implement object URLs; stub the APIs used in tests */
+if (!(URL as any).createObjectURL) {
+  (URL as any).createObjectURL = () => "blob:mock";
+}
+if (!(URL as any).revokeObjectURL) {
+  (URL as any).revokeObjectURL = () => {};
+}
+
 /**
  * React 19+ uses `MessageChannel` internally for suspense & streaming.
  * Node’s impl can leave ports open, preventing Jest from exiting, so

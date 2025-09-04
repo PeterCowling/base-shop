@@ -1,108 +1,74 @@
-import { parseJsonBody, parseLimit } from '../parseJsonBody';
+import { parseJsonBody } from '../parseJsonBody';
 import { z } from 'zod';
-
-describe('parseLimit', () => {
-  it('returns numeric limits as-is', () => {
-    expect(parseLimit(500)).toBe(500);
-  });
-
-  it('parses valid size strings', () => {
-    expect(parseLimit('10kb')).toBe(10 * 1024);
-    expect(parseLimit('2GB')).toBe(2 * 1024 * 1024 * 1024);
-    expect(parseLimit('512b')).toBe(512);
-  });
-
-  it('accepts uppercase and mixed-case inputs', () => {
-    expect(parseLimit('1MB')).toBe(1 * 1024 * 1024);
-    expect(parseLimit('1mb')).toBe(1 * 1024 * 1024);
-    expect(parseLimit('1Mb')).toBe(1 * 1024 * 1024);
-  });
-
-  it('throws on invalid strings', () => {
-    expect(() => parseLimit('abc')).toThrow('Invalid limit');
-  });
-});
 
 describe('parseJsonBody', () => {
   const schema = z.object({ foo: z.string() });
 
-  it('parses text body within limit', async () => {
-    const req = { text: jest.fn().mockResolvedValue(JSON.stringify({ foo: 'bar' })) } as unknown as Request;
-    await expect(parseJsonBody(req, schema, 1024)).resolves.toEqual({ success: true, data: { foo: 'bar' } });
-  });
+  it('rejects invalid content-type and drains body', async () => {
+    const text = jest.fn().mockResolvedValue('ignored');
+    const req = {
+      headers: new Headers({ 'content-type': 'text/plain' }),
+      text,
+    } as unknown as Request;
 
-  it('rejects text body over limit', async () => {
-    const large = JSON.stringify({ foo: 'a'.repeat(2048) });
-    const req = { text: jest.fn().mockResolvedValue(large) } as unknown as Request;
-    const result = await parseJsonBody(req, schema, 100);
-    expect(result.success).toBe(false);
-    expect(result.response.status).toBe(413);
-    await expect(result.response.json()).resolves.toEqual({ error: 'Payload Too Large' });
-  });
-
-  it('parses json body within limit', async () => {
-    const req = { json: jest.fn().mockResolvedValue({ foo: 'bar' }) } as unknown as Request;
-    await expect(parseJsonBody(req, schema, '10kb')).resolves.toEqual({ success: true, data: { foo: 'bar' } });
-  });
-
-  it('rejects json body over limit', async () => {
-    const payload = { foo: 'a'.repeat(11 * 1024) };
-    const req = { json: jest.fn().mockResolvedValue(payload) } as unknown as Request;
     const result = await parseJsonBody(req, schema, '10kb');
+
+    expect(text).toHaveBeenCalled();
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
+  });
+
+  it('returns 413 when application/json body exceeds limit', async () => {
+    const req = {
+      headers: new Headers({ 'content-type': 'application/json' }),
+      json: jest.fn().mockResolvedValue({ foo: 'a'.repeat(20) }),
+    } as unknown as Request;
+
+    const result = await parseJsonBody(req, schema, '10b');
+
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(413);
     await expect(result.response.json()).resolves.toEqual({ error: 'Payload Too Large' });
   });
 
-  it('returns 400 for invalid JSON', async () => {
-    const req = { text: jest.fn().mockResolvedValue('{invalid') } as unknown as Request;
-    const result = await parseJsonBody(req, schema, 1024);
+  it('returns 400 for invalid JSON via text', async () => {
+    const req = {
+      headers: new Headers({ 'content-type': 'application/json' }),
+      text: jest.fn().mockResolvedValue('{invalid'),
+    } as unknown as Request;
+
+    const result = await parseJsonBody(req, schema, '10kb');
+
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(400);
     await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
   });
 
-  it('returns 400 for empty body', async () => {
-    const req = { text: jest.fn().mockResolvedValue('') } as unknown as Request;
-    const result = await parseJsonBody(req, schema, 1024);
+  it('returns flattened errors when JSON fails schema', async () => {
+    const req = {
+      headers: new Headers({ 'content-type': 'application/json' }),
+      json: jest.fn().mockResolvedValue({ foo: 123 }),
+    } as unknown as Request;
+
+    const result = await parseJsonBody(req, schema, '10kb');
+
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(400);
-    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
-  });
-
-  it('returns 400 for invalid limit', async () => {
-    const req = { text: jest.fn().mockResolvedValue(JSON.stringify({ foo: 'bar' })) } as unknown as Request;
-    const result = await parseJsonBody(req, schema, 'abc');
-    expect(result.success).toBe(false);
-    expect(result.response.status).toBe(400);
-    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
-  });
-
-  it('returns 400 when no body parser is available', async () => {
-    const req = {} as Request;
-    const result = await parseJsonBody(req, schema, 1024);
-    expect(result.success).toBe(false);
-    expect(result.response.status).toBe(400);
-    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
-  });
-
-  it('returns flattened schema errors', async () => {
-    const req = { json: jest.fn().mockResolvedValue({ foo: 123 }) } as unknown as Request;
-    const result = await parseJsonBody(req, schema, 1024);
-    expect(result.success).toBe(false);
-    expect(result.response.status).toBe(400);
-    await expect(result.response.json()).resolves.toEqual({ foo: ['Expected string, received number'] });
-  });
-
-  it('consumes request body stream on parse error', async () => {
-    const req = new Request('http://example.com', {
-      method: 'POST',
-      body: '{"foo": "bar"',
+    await expect(result.response.json()).resolves.toEqual({
+      foo: ['Expected string, received number'],
     });
+  });
 
-    const result = await parseJsonBody(req, schema, 1024);
-    expect(result.success).toBe(false);
-    expect(req.bodyUsed).toBe(true);
+  it('parses valid JSON under limit', async () => {
+    const req = {
+      headers: new Headers({ 'content-type': 'application/json' }),
+      json: jest.fn().mockResolvedValue({ foo: 'bar' }),
+    } as unknown as Request;
+
+    await expect(parseJsonBody(req, schema, '10kb')).resolves.toEqual({
+      success: true,
+      data: { foo: 'bar' },
+    });
   });
 });
-

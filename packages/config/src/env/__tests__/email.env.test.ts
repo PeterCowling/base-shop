@@ -26,8 +26,18 @@ describe("email env provider selection", () => {
     expect(env.RESEND_API_KEY).toBe("re-key");
   });
 
-  it("throws when provider key missing", async () => {
+  it("throws when SENDGRID_API_KEY missing", async () => {
     process.env.EMAIL_PROVIDER = "sendgrid";
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../email.ts")).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it("throws when RESEND_API_KEY missing", async () => {
+    process.env.EMAIL_PROVIDER = "resend";
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(import("../email.ts")).rejects.toThrow(
       "Invalid email environment variables",
@@ -77,6 +87,42 @@ describe("webhook verification toggle", () => {
   });
 });
 
+describe("smtp options", () => {
+  it("rejects non-numeric SMTP_PORT", async () => {
+    process.env.SMTP_PORT = "not-a-number";
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(loadEnv()).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it("parses numeric SMTP_PORT", async () => {
+    process.env.SMTP_PORT = "587";
+    const env = await loadEnv();
+    expect(env.SMTP_PORT).toBe(587);
+  });
+
+  it("rejects invalid SMTP_SECURE", async () => {
+    process.env.SMTP_SECURE = "sometimes";
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(loadEnv()).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it("parses valid SMTP_SECURE values", async () => {
+    process.env.SMTP_SECURE = "true";
+    expect((await loadEnv()).SMTP_SECURE).toBe(true);
+    jest.resetModules();
+    process.env.SMTP_SECURE = "false";
+    expect((await loadEnv()).SMTP_SECURE).toBe(false);
+  });
+});
+
 describe("from address defaults", () => {
   const getDefaultSender = async () =>
     (await import("../../../../email/src/config.ts")).getDefaultSender();
@@ -90,5 +136,11 @@ describe("from address defaults", () => {
   it("uses provided CAMPAIGN_FROM when present", async () => {
     process.env.CAMPAIGN_FROM = "Sender@Example.com";
     expect(await getDefaultSender()).toBe("sender@example.com");
+  });
+
+  it("normalizes CAMPAIGN_FROM in env", async () => {
+    process.env.CAMPAIGN_FROM = "TeST@Example.com";
+    const env = await loadEnv();
+    expect(env.CAMPAIGN_FROM).toBe("test@example.com");
   });
 });

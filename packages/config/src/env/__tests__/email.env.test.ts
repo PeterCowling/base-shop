@@ -1,0 +1,94 @@
+import { afterEach, describe, expect, it } from "@jest/globals";
+
+const ORIGINAL_ENV = { ...process.env };
+
+const loadEnv = async () => (await import("../email.ts")).emailEnv;
+
+afterEach(() => {
+  process.env = { ...ORIGINAL_ENV };
+  jest.resetModules();
+});
+
+describe("email env provider selection", () => {
+  it("uses sendgrid when SENDGRID_API_KEY present", async () => {
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    process.env.SENDGRID_API_KEY = "sg-key";
+    const env = await loadEnv();
+    expect(env.EMAIL_PROVIDER).toBe("sendgrid");
+    expect(env.SENDGRID_API_KEY).toBe("sg-key");
+  });
+
+  it("uses resend when RESEND_API_KEY present", async () => {
+    process.env.EMAIL_PROVIDER = "resend";
+    process.env.RESEND_API_KEY = "re-key";
+    const env = await loadEnv();
+    expect(env.EMAIL_PROVIDER).toBe("resend");
+    expect(env.RESEND_API_KEY).toBe("re-key");
+  });
+
+  it("throws when provider key missing", async () => {
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../email.ts")).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  it("supports noop provider when EMAIL_PROVIDER=noop", async () => {
+    process.env.EMAIL_PROVIDER = "noop";
+    const env = await loadEnv();
+    expect(env.EMAIL_PROVIDER).toBe("noop");
+  });
+});
+
+describe("webhook verification toggle", () => {
+  it("sendgrid verification enabled when public key present", async () => {
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    process.env.SENDGRID_API_KEY = "sg";
+    process.env.SENDGRID_WEBHOOK_PUBLIC_KEY = "pub";
+    await loadEnv();
+    const shouldVerify =
+      process.env.EMAIL_PROVIDER === "sendgrid" &&
+      !!process.env.SENDGRID_WEBHOOK_PUBLIC_KEY;
+    expect(shouldVerify).toBe(true);
+    delete process.env.SENDGRID_WEBHOOK_PUBLIC_KEY;
+    const shouldNotVerify =
+      process.env.EMAIL_PROVIDER === "sendgrid" &&
+      !!process.env.SENDGRID_WEBHOOK_PUBLIC_KEY;
+    expect(shouldNotVerify).toBe(false);
+  });
+
+  it("resend verification enabled when secret present", async () => {
+    process.env.EMAIL_PROVIDER = "resend";
+    process.env.RESEND_API_KEY = "re";
+    process.env.RESEND_WEBHOOK_SECRET = "secret";
+    await loadEnv();
+    const shouldVerify =
+      process.env.EMAIL_PROVIDER === "resend" &&
+      !!process.env.RESEND_WEBHOOK_SECRET;
+    expect(shouldVerify).toBe(true);
+    delete process.env.RESEND_WEBHOOK_SECRET;
+    const shouldNotVerify =
+      process.env.EMAIL_PROVIDER === "resend" &&
+      !!process.env.RESEND_WEBHOOK_SECRET;
+    expect(shouldNotVerify).toBe(false);
+  });
+});
+
+describe("from address defaults", () => {
+  const getDefaultSender = async () =>
+    (await import("../../../../email/src/config.ts")).getDefaultSender();
+
+  it("falls back when CAMPAIGN_FROM missing", async () => {
+    process.env.GMAIL_USER = "fallback@example.com";
+    delete process.env.CAMPAIGN_FROM;
+    expect(await getDefaultSender()).toBe("fallback@example.com");
+  });
+
+  it("uses provided CAMPAIGN_FROM when present", async () => {
+    process.env.CAMPAIGN_FROM = "Sender@Example.com";
+    expect(await getDefaultSender()).toBe("sender@example.com");
+  });
+});

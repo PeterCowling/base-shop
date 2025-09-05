@@ -9,12 +9,18 @@ function Display() {
   return (
     <>
       <span data-testid="currency">{currency}</span>
-      <button onClick={() => setCurrency("GBP")}>change</button>
+      <button onClick={() => setCurrency("USD")}>change</button>
     </>
   );
 }
 
 describe("readInitial", () => {
+  const LS_KEY = "PREFERRED_CURRENCY";
+
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
+
   it("returns default when window is undefined", () => {
     const originalWindow = global.window;
     (global as any).window = undefined;
@@ -22,6 +28,16 @@ describe("readInitial", () => {
     expect(readInitial()).toBe("EUR");
 
     (global as any).window = originalWindow;
+  });
+
+  it("returns stored currency when valid", () => {
+    window.localStorage.setItem(LS_KEY, "USD");
+    expect(readInitial()).toBe("USD");
+  });
+
+  it("defaults when stored currency is invalid", () => {
+    window.localStorage.setItem(LS_KEY, "JPY");
+    expect(readInitial()).toBe("EUR");
   });
 });
 
@@ -86,7 +102,7 @@ describe("CurrencyProvider", () => {
     fireEvent.click(getByText("change"));
 
     await waitFor(() =>
-      expect(setSpy).toHaveBeenLastCalledWith(LS_KEY, "GBP")
+      expect(setSpy).toHaveBeenLastCalledWith(LS_KEY, "USD")
     );
 
     unmount();

@@ -67,6 +67,22 @@ describe("ThemeContext", () => {
     expect(getSavedTheme()).toBeNull();
   });
 
+  it("getSystemTheme returns dark when media matches", () => {
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: () => ({ matches: true }),
+    });
+    expect(getSystemTheme()).toBe("dark");
+  });
+
+  it("getSystemTheme returns base when media does not match", () => {
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      value: () => ({ matches: false }),
+    });
+    expect(getSystemTheme()).toBe("base");
+  });
+
   it("falls back to base when matchMedia throws", () => {
     Object.defineProperty(window, "matchMedia", {
       configurable: true,
@@ -107,10 +123,17 @@ describe("ThemeContext", () => {
 
     expect(getByTestId("theme").textContent).toBe("system");
     expect(document.documentElement.style.colorScheme).toBe("dark");
+    expect(document.documentElement.classList.contains("theme-dark")).toBe(
+      true
+    );
+    expect(setItem).toHaveBeenCalledWith("theme", "system");
 
     act(() => listener({ matches: false } as MediaQueryListEvent));
 
     expect(document.documentElement.style.colorScheme).toBe("light");
+    expect(document.documentElement.classList.contains("theme-dark")).toBe(
+      false
+    );
   });
 
   it("updates when storage event dispatched", () => {

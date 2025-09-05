@@ -4,6 +4,7 @@ import { ProductCard, Price } from "../src/components/shop/ProductCard";
 import { CartProvider } from "../src/contexts/CartContext";
 import { CurrencyProvider } from "../src/contexts/CurrencyContext";
 import type { SKU } from "@acme/types";
+import { PRODUCTS } from "../src/products/index";
 
 describe("ProductCard", () => {
   const originalFetch = global.fetch;
@@ -73,6 +74,21 @@ describe("ProductCard", () => {
     const video = container.querySelector("video");
     expect(video).toBeInTheDocument();
     expect(video).toHaveAttribute("src", "/test.mp4");
+  });
+
+  it("links to product detail page", () => {
+    const sku = PRODUCTS[0];
+    renderCard(sku);
+    const link = screen.getByRole("link");
+    expect(link).toHaveAttribute("href", `../product/${sku.slug}`);
+  });
+
+  it("includes AddToCartButton", () => {
+    const sku = PRODUCTS[0];
+    renderCard(sku);
+    expect(
+      screen.getByRole("button", { name: /add to cart/i })
+    ).toBeInTheDocument();
   });
 });
 

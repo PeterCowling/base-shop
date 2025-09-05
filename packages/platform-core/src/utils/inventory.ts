@@ -55,8 +55,8 @@ export function expandInventoryItem(
   data: RawInventoryItem | InventoryItem
 ): InventoryItem {
   if (isInventoryItem(data)) {
-    if (data.quantity <= 0) {
-      throw new Error("quantity must be greater than 0");
+    if (data.quantity < 0) {
+      throw new Error("quantity must be greater than or equal to 0");
     }
     if (data.productId.trim() === "") {
       throw new Error("productId is required");
@@ -85,8 +85,8 @@ export function expandInventoryItem(
   }
 
   const normalizedQuantity = normalizeQuantity(quantity, unit);
-  if (!Number.isFinite(normalizedQuantity) || normalizedQuantity <= 0) {
-    throw new Error("quantity must be greater than 0");
+  if (!Number.isFinite(normalizedQuantity) || normalizedQuantity < 0) {
+    throw new Error("quantity must be greater than or equal to 0");
   }
 
   const normalizedLowStock =

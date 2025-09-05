@@ -69,7 +69,7 @@ describe("inventory import route - csv", () => {
       });
       expect(res.status).toBe(400);
       const body = await res.json();
-      expect(body.error).toMatch(/greater than 0/);
+      expect(body.error).toMatch(/greater than or equal to 0/);
     });
   });
 });

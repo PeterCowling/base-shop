@@ -31,7 +31,16 @@ async function setup(
 }
 
 describe('pricing utilities', () => {
-  it('convertCurrency with existing/missing rates and same currency', async () => {
+  it('getPricing caches file contents', async () => {
+    const { getPricing, readFile } = await setup();
+    const first = await getPricing();
+    const second = await getPricing();
+    expect(readFile).toHaveBeenCalledTimes(1);
+    expect(first).toBe(second);
+    expect(readFile.mock.calls[0][0]).toContain('pricing.json');
+  });
+
+  it('convertCurrency handles base currency, rounding rules, and missing rates', async () => {
     const { convertCurrency, readFile } = await setup(undefined, {
       base: 'USD',
       rates: { EUR: 0.5 },
@@ -39,8 +48,10 @@ describe('pricing utilities', () => {
 
     await expect(convertCurrency(100, 'USD')).resolves.toBe(100);
     await expect(convertCurrency(100, 'EUR')).resolves.toBe(50);
-    // HALF_EVEN rounding: 101 * 0.5 = 50.5 -> 50
+    await expect(convertCurrency(101.3, 'EUR')).resolves.toBe(51);
+    await expect(convertCurrency(100.8, 'EUR')).resolves.toBe(50);
     await expect(convertCurrency(101, 'EUR')).resolves.toBe(50);
+    await expect(convertCurrency(99, 'EUR')).resolves.toBe(50);
     await expect(convertCurrency(100, 'GBP')).rejects.toThrow(
       'Missing exchange rate for GBP'
     );
@@ -49,25 +60,28 @@ describe('pricing utilities', () => {
     expect(readFile.mock.calls[0][0]).toContain('exchangeRates.json');
   });
 
-  it('applyDurationDiscount ordering logic', async () => {
+  it('applyDurationDiscount sorts discounts and picks largest applicable discount', async () => {
     jest.resetModules();
     const { applyDurationDiscount } = await import('../src/pricing');
     const discounts = [
-      { minDays: 5, rate: 0.5 },
       { minDays: 10, rate: 0.3 },
+      { minDays: 5, rate: 0.5 },
     ];
-    expect(applyDurationDiscount(100, 10, discounts)).toBe(30);
+    expect(applyDurationDiscount(100, 12, discounts)).toBe(30);
     expect(applyDurationDiscount(100, 7, discounts)).toBe(50);
     expect(applyDurationDiscount(100, 3, discounts)).toBe(100);
   });
 
-  it('priceForDays fallback to SKU price and base rate', async () => {
+  it('priceForDays prefers dailyRate then price then base rate', async () => {
     const { priceForDays, readFile } = await setup({
       baseDailyRate: 5,
       durationDiscounts: [],
       damageFees: {},
     });
 
+    await expect(
+      priceForDays({ dailyRate: 8, price: 7 } as any, 3),
+    ).resolves.toBe(24);
     await expect(priceForDays({ price: 7 } as any, 3)).resolves.toBe(21);
     await expect(priceForDays({} as any, 3)).resolves.toBe(15);
 
@@ -75,17 +89,21 @@ describe('pricing utilities', () => {
     expect(readFile.mock.calls[0][0]).toContain('pricing.json');
   });
 
-  it('computeDamageFee for numeric, deposit, unknown kinds, and undefined', async () => {
+  it('computeDamageFee handles kinds, deposit, and coverage codes', async () => {
     const { computeDamageFee, readFile } = await setup({
       baseDailyRate: 0,
       durationDiscounts: [],
-      damageFees: { lost: 'deposit', scratch: 20 },
+      damageFees: { lost: 'deposit', scratch: 20, scuff: 20 },
+      coverage: { scuff: { fee: 5, waiver: 10 } },
     });
 
+    await expect(computeDamageFee(undefined, 50)).resolves.toBe(0);
     await expect(computeDamageFee(30, 50)).resolves.toBe(30);
     await expect(computeDamageFee('lost', 50)).resolves.toBe(50);
+    await expect(computeDamageFee('scratch', 50)).resolves.toBe(20);
+    await expect(computeDamageFee('scuff', 50)).resolves.toBe(20);
+    await expect(computeDamageFee('scuff', 50, ['scuff'])).resolves.toBe(10);
     await expect(computeDamageFee('unknown', 50)).resolves.toBe(0);
-    await expect(computeDamageFee(undefined, 50)).resolves.toBe(0);
 
     expect(readFile).toHaveBeenCalledTimes(1);
     expect(readFile.mock.calls[0][0]).toContain('pricing.json');

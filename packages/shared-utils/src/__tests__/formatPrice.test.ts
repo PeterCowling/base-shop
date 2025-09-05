@@ -93,4 +93,21 @@ describe("formatPrice", () => {
       delete (Intl as any).supportedValuesOf;
     }
   });
+
+  it("formats a zero amount", () => {
+    const expected = new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: "USD",
+    }).format(0);
+    expect(formatPrice(0)).toBe(expected);
+  });
+
+  it("handles currencies with zero fraction digits like JPY", () => {
+    const amount = 123;
+    const expected = new Intl.NumberFormat("ja-JP", {
+      style: "currency",
+      currency: "JPY",
+    }).format(amount);
+    expect(formatPrice(amount, "JPY", "ja-JP")).toBe(expected);
+  });
 });

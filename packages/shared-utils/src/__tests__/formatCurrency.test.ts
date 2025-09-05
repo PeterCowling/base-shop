@@ -95,4 +95,21 @@ describe("formatCurrency", () => {
     }).format(123.45);
     expect(formatCurrency(minor, "EUR", "de-DE")).toBe(expected);
   });
+
+  it("formats a zero value without decimals", () => {
+    const expected = new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: "USD",
+    }).format(0);
+    expect(formatCurrency(0)).toBe(expected);
+  });
+
+  it("supports currencies with no minor units like JPY", () => {
+    const minor = 12300; // represents ¥123
+    const expected = new Intl.NumberFormat("ja-JP", {
+      style: "currency",
+      currency: "JPY",
+    }).format(123);
+    expect(formatCurrency(minor, "JPY", "ja-JP")).toBe(expected);
+  });
 });

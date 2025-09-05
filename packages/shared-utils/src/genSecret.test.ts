@@ -29,6 +29,22 @@ describe('genSecret', () => {
     expect(genSecret()).toBe('00'.repeat(16));
   });
 
+  it('returns expected length and hex characters', () => {
+    const mock = {
+      getRandomValues: (arr: Uint8Array) => {
+        for (let i = 0; i < arr.length; i++) {
+          arr[i] = i;
+        }
+        return arr;
+      },
+    } as Crypto;
+    Object.defineProperty(globalThis, 'crypto', { value: mock });
+    const bytes = 8;
+    const secret = genSecret(bytes);
+    expect(secret).toHaveLength(bytes * 2);
+    expect(secret).toMatch(/^[0-9a-f]+$/);
+  });
+
   it('throws when byte length is negative', () => {
     expect(() => genSecret(-1)).toThrow(RangeError);
   });

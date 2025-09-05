@@ -91,4 +91,23 @@ describe("components route", () => {
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
   });
+
+  it("rejects token without expiration", async () => {
+    const token = jwt.sign(
+      {},
+      process.env.UPGRADE_PREVIEW_TOKEN_SECRET!,
+      {
+        algorithm: "HS256",
+        audience: "upgrade-preview",
+        issuer: "acme",
+        subject: "shop:abc:upgrade-preview",
+        noTimestamp: true,
+      },
+    );
+    const res = await request(createRequestHandler())
+      .get("/components/abc")
+      .set("Authorization", `Bearer ${token}`);
+    expect(res.status).toBe(403);
+    expect(res.body).toEqual({ error: "Forbidden" });
+  });
 });

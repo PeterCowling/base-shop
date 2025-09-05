@@ -11,6 +11,7 @@ class MockRedis {
   constructor(private failUntil = 0) {}
 
   data = new Map<string, Record<string, any>>();
+  ttl = new Map<string, number>();
 
   private maybeFail() {
     if (this.failCount < this.failUntil) {
@@ -29,17 +30,25 @@ class MockRedis {
 
   hgetall = jest.fn(async (key: string) => {
     this.maybeFail();
+    const expires = this.ttl.get(key);
+    if (expires && Date.now() > expires) {
+      this.data.delete(key);
+      this.ttl.delete(key);
+      return {};
+    }
     return this.data.get(key) ?? {};
   });
 
-  expire = jest.fn(async (_key: string, _ttl: number) => {
+  expire = jest.fn(async (key: string, ttl: number) => {
     this.maybeFail();
+    this.ttl.set(key, Date.now() + ttl * 1000);
     return 1;
   });
 
   del = jest.fn(async (key: string) => {
     this.maybeFail();
     this.data.delete(key);
+    this.ttl.delete(key);
     return 1;
   });
 
@@ -155,6 +164,19 @@ describe("RedisCartStore mocks", () => {
     expect(await store.getCart(id)).toEqual({
       [key]: { sku, size: "L", qty: 2 },
     });
+  });
+
+  it("expires carts after TTL", async () => {
+    jest.useFakeTimers();
+    const ttl = 60;
+    const redis = new MockRedis();
+    const fallback = new MemoryCartStore(ttl);
+    const store = new RedisCartStore(redis as any, ttl, fallback);
+    const id = await store.createCart();
+    await store.incrementQty(id, sku, 1);
+    jest.advanceTimersByTime(ttl * 1000 + 1);
+    expect(await store.getCart(id)).toEqual({});
+    jest.useRealTimers();
   });
 });
 

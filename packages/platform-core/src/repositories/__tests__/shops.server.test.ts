@@ -181,6 +181,17 @@ describe("shops repository", () => {
       expect(loadTokens).toHaveBeenCalled();
     });
 
+    it("returns empty shop with defaults when fs returns invalid JSON", async () => {
+      findUnique.mockResolvedValue(null);
+      readFile.mockResolvedValue("not json");
+
+      const result = await readShop("garbled");
+
+      expect(result.id).toBe("garbled");
+      expect(result.themeTokens).toEqual({ base: "base", theme: "theme" });
+      expect(loadTokens).toHaveBeenCalled();
+    });
+
     it("uses default tokens when themeDefaults is empty", async () => {
       findUnique.mockRejectedValue(new Error("db fail"));
       const fileData = {

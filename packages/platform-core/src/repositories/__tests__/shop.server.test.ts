@@ -67,6 +67,14 @@ describe("shop repository", () => {
         "Shop missing not found",
       );
     });
+
+    it("throws when filesystem data is invalid JSON", async () => {
+      findUnique.mockResolvedValue(null);
+      readFile.mockResolvedValue("not json");
+      await expect(getShopById("shop1")).rejects.toThrow(
+        "Shop shop1 not found",
+      );
+    });
   });
 
   describe("updateShopInRepo", () => {
@@ -123,6 +131,15 @@ describe("shop repository", () => {
       ).rejects.toThrow("Shop other not found in shop1");
       expect(upsert).not.toHaveBeenCalled();
       expect(writeFile).not.toHaveBeenCalled();
+    });
+
+    it("propagates filesystem errors during persistence", async () => {
+      upsert.mockRejectedValue(new Error("db fail"));
+      writeFile.mockRejectedValue(new Error("fs fail"));
+      await expect(
+        updateShopInRepo("shop1", { id: "shop1" }),
+      ).rejects.toThrow("fs fail");
+      expect(rename).not.toHaveBeenCalled();
     });
   });
 });

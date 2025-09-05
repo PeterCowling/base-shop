@@ -62,7 +62,9 @@ try {
       } as ReactFallbackElement;
     },
     isValidElement(element: unknown): element is ReactFallbackElement {
-      return typeof element === "object" && element !== null && "type" in (element as any) && "props" in (element as any);
+      if (typeof element !== "object" || element === null) return false;
+      const obj = element as Record<string, unknown>;
+      return "type" in obj && "props" in obj;
     },
     Children: {
       map(children: ReactNode, fn: (child: ReactNode) => string): string[] {

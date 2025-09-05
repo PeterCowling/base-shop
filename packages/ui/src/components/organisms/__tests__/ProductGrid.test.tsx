@@ -2,6 +2,10 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import { ProductGrid, type Product } from "../ProductGrid";
 import "../../../../../../test/resetNextMocks";
 
+jest.mock("@acme/platform-core/contexts/CartContext", () => ({
+  useCart: () => [{}, jest.fn()],
+}));
+
 function mockResize(initialWidth: number) {
   let cb: ResizeObserverCallback;
   let element: Element;

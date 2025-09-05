@@ -18,24 +18,17 @@ import {
 } from "./deploymentAdapter";
 
 function repoRoot(): string {
-  const cwd = process.cwd().replace(/\\/g, "/");
-  const match = cwd.match(/^(.*?)(?:\/(?:packages|apps))(?:\/|$)/);
-  if (match) return match[1];
+  const tryResolve = (p: string): string | null => {
+    const norm = p.replace(/\\/g, "/");
+    const match = norm.match(/^(.*?)(?:\/(?:packages|apps))(?:\/|$)/);
+    return match ? match[1] : null;
+  };
 
-  if (fs.existsSync(join(cwd, "packages")) || fs.existsSync(join(cwd, "apps"))) {
-    return cwd;
-  }
-
-  let dir = typeof __dirname !== "undefined" ? __dirname : cwd;
-  while (
-    !fs.existsSync(join(dir, "packages")) &&
-    !fs.existsSync(join(dir, "apps"))
-  ) {
-    const parent = join(dir, "..");
-    if (parent === dir) break;
-    dir = parent;
-  }
-  return dir;
+  return (
+    tryResolve(process.cwd()) ??
+    tryResolve(typeof __dirname !== "undefined" ? __dirname : process.cwd()) ??
+    process.cwd()
+  );
 }
 /**
  * Create a new shop app and seed data.
@@ -128,9 +121,10 @@ function deployShopImpl(
 
   try {
     adapter.scaffold(newApp);
-    const envFile = join(newApp, ".env");
-    if (fs.existsSync(envFile)) {
-      let env = fs.readFileSync(envFile, "utf8");
+    const envRel = join(newApp, ".env");
+    const envAbs = join(repoRoot(), envRel);
+    if (fs.existsSync(envAbs)) {
+      let env = fs.readFileSync(envAbs, "utf8");
       if (/^SESSION_SECRET=/m.test(env)) {
         env = env.replace(
           /^SESSION_SECRET=.*$/m,
@@ -140,7 +134,12 @@ function deployShopImpl(
         env += (env.endsWith("\n") ? "" : "\n") +
           `SESSION_SECRET=${genSecret(32)}\n`;
       }
-      fs.writeFileSync(envFile, env);
+      try {
+        fs.writeFileSync(envRel, env);
+      } catch {
+        /* ignore write errors on relative path */
+      }
+      fs.writeFileSync(envAbs, env);
     }
   } catch (err) {
     status = "error";

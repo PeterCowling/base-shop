@@ -21,6 +21,9 @@ jest.mock("../segments", () => ({
 jest.mock("../templates", () => ({
   renderTemplate: jest.fn(),
 }));
+jest.mock("@acme/lib", () => ({
+  validateShopName: jest.fn((s: string) => s),
+}));
 
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { sendCampaignEmail } from "../send";
@@ -28,6 +31,7 @@ import { emitSend } from "../hooks";
 import { syncCampaignAnalytics as fetchCampaignAnalytics } from "../analytics";
 import { resolveSegment } from "../segments";
 import { renderTemplate } from "../templates";
+import { validateShopName } from "@acme/lib";
 
 const { setClock, createCampaign, sendDueCampaigns, syncCampaignAnalytics } = scheduler;
 
@@ -35,22 +39,20 @@ describe("scheduler", () => {
   const shop = "test-shop";
   let memory: Record<string, Campaign[]>;
   let now: Date;
+  let readCampaigns: jest.Mock;
+  let writeCampaigns: jest.Mock;
+  let listShops: jest.Mock;
 
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
     memory = {};
-    const store: CampaignStore = {
-      async readCampaigns(s) {
-        return memory[s] || [];
-      },
-      async writeCampaigns(s, items) {
-        memory[s] = items;
-      },
-      async listShops() {
-        return Object.keys(memory);
-      },
-    };
+    readCampaigns = jest.fn(async (s: string) => memory[s] || []);
+    writeCampaigns = jest.fn(async (s: string, items: Campaign[]) => {
+      memory[s] = items;
+    });
+    listShops = jest.fn(async () => Object.keys(memory));
+    const store: CampaignStore = { readCampaigns, writeCampaigns, listShops };
     setCampaignStore(store);
     now = new Date("2020-01-01T00:00:00Z");
     jest.setSystemTime(now);
@@ -60,6 +62,7 @@ describe("scheduler", () => {
 
   afterEach(() => {
     jest.useRealTimers();
+    delete process.env.NEXT_PUBLIC_BASE_URL;
   });
 
   test("listCampaigns forwards arguments to the campaign store", async () => {
@@ -88,7 +91,9 @@ describe("scheduler", () => {
       },
     ];
     (listEvents as jest.Mock).mockResolvedValue([
+      { type: "page_view" },
       { type: "email_unsubscribe", email: "b@example.com" },
+      { type: "signup", email: "c@example.com" },
     ]);
     await sendDueCampaigns();
     expect(listEvents).toHaveBeenCalledWith(shop);
@@ -152,6 +157,57 @@ describe("scheduler", () => {
     expect(html).not.toContain('href="https://example.com/page"');
   });
 
+  test("trackedBody includes base URL for pixel and click tracking", async () => {
+    process.env.NEXT_PUBLIC_BASE_URL = "https://base.example";
+    await createCampaign({
+      shop,
+      recipients: ["a@example.com"],
+      subject: "Hi",
+      body: '<p><a href="https://dest">Go</a> %%UNSUBSCRIBE%%</p>',
+    });
+    const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0]
+      .html as string;
+    expect(html).toContain(
+      'src="https://base.example/api/marketing/email/open?shop=test-shop',
+    );
+    expect(html).toContain(
+      'href="https://base.example/api/marketing/email/click?shop=test-shop',
+    );
+    expect(html).not.toContain('href="https://dest"');
+  });
+
+  test("deliverCampaign validates shop name", async () => {
+    await createCampaign({
+      shop,
+      recipients: ["a@example.com"],
+      subject: "Hi",
+      body: "<p>Hi %%UNSUBSCRIBE%%</p>",
+    });
+    expect(validateShopName).toHaveBeenCalledTimes(2);
+    expect(validateShopName).toHaveBeenNthCalledWith(1, shop);
+    expect(validateShopName).toHaveBeenNthCalledWith(2, shop);
+  });
+
+  test("deliverCampaign rejects invalid shop names", async () => {
+    (validateShopName as jest.Mock).mockImplementation((s: string) => {
+      if (s === "bad*shop") throw new Error("invalid");
+      return s;
+    });
+    const past = new Date(now.getTime() - 1000).toISOString();
+    memory["bad*shop"] = [
+      {
+        id: "bad", 
+        recipients: ["a@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+    ];
+    await expect(sendDueCampaigns()).rejects.toThrow("invalid");
+  });
+
   test("deliverCampaign renders templates when templateId provided", async () => {
     (renderTemplate as jest.Mock).mockReturnValue("<p>Rendered</p>");
     await createCampaign({
@@ -167,6 +223,18 @@ describe("scheduler", () => {
     });
     const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0].html as string;
     expect(html).toContain("Rendered");
+  });
+
+  test("deliverCampaign appends unsubscribe link when placeholder missing", async () => {
+    await createCampaign({
+      shop,
+      recipients: ["a@example.com"],
+      subject: "Hello",
+      body: "<p>Hello world</p>",
+    });
+    const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0].html as string;
+    expect(html).toContain("<p><a href=");
+    expect(html).toContain("Unsubscribe</a></p>");
   });
 
   test(
@@ -191,6 +259,7 @@ describe("scheduler", () => {
       await promise;
       expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 10);
       expect(sendCampaignEmail).toHaveBeenCalledTimes(recipients.length);
+      expect(emitSend).toHaveBeenCalledTimes(recipients.length);
       recipients.forEach((r, i) => {
         const html = (sendCampaignEmail as jest.Mock).mock.calls[i][0]
           .html as string;
@@ -203,6 +272,17 @@ describe("scheduler", () => {
     },
     10000,
   );
+
+  test("createCampaign writes campaign to store", async () => {
+    await createCampaign({
+      shop,
+      recipients: ["a@example.com"],
+      subject: "Hi",
+      body: "<p>Hi</p>",
+    });
+    expect(readCampaigns).toHaveBeenCalledWith(shop);
+    expect(writeCampaigns).toHaveBeenCalledWith(shop, memory[shop]);
+  });
 
   test("createCampaign resolves recipients from segment without explicit recipients", async () => {
     (resolveSegment as jest.Mock).mockResolvedValue(["seg@example.com"]);
@@ -219,6 +299,8 @@ describe("scheduler", () => {
       html: expect.any(String),
     });
     expect(typeof id).toBe("string");
+    const campaign = memory[shop].find((c) => c.id === id)!;
+    expect(campaign.recipients).toEqual(["seg@example.com"]);
   });
 
   test("createCampaign throws when required fields are missing", async () => {
@@ -276,6 +358,63 @@ describe("scheduler", () => {
     expect(sendCampaignEmail).toHaveBeenCalledTimes(2);
     await sendDueCampaigns();
     expect(sendCampaignEmail).toHaveBeenCalledTimes(2);
+  });
+
+  test("deliverCampaign sets sentAt from injected clock", async () => {
+    const fake = new Date("2020-02-02T00:00:00Z");
+    setClock({ now: () => fake });
+    await createCampaign({
+      shop,
+      recipients: ["a@example.com"],
+      subject: "Hi",
+      body: "<p>Hi</p>",
+    });
+    const campaign = memory[shop][0];
+    expect(campaign.sentAt).toBe(fake.toISOString());
+  });
+
+  test("sendDueCampaigns delivers due campaigns per shop", async () => {
+    const past = new Date(now.getTime() - 1000).toISOString();
+    const future = new Date(now.getTime() + 60000).toISOString();
+    memory["shopA"] = [
+      {
+        id: "a1",
+        recipients: ["a1@example.com"],
+        subject: "A1",
+        body: "<p>Hi %%UNSUBSCRIBE%%</p>",
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+      {
+        id: "a2",
+        recipients: ["a2@example.com"],
+        subject: "A2",
+        body: "<p>Hi %%UNSUBSCRIBE%%</p>",
+        segment: null,
+        sendAt: future,
+        templateId: null,
+      },
+    ];
+    memory["shopB"] = [
+      {
+        id: "b1",
+        recipients: ["b1@example.com"],
+        subject: "B1",
+        body: "<p>Hi %%UNSUBSCRIBE%%</p>",
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+    ];
+    await sendDueCampaigns();
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(2);
+    expect(writeCampaigns).toHaveBeenCalledTimes(2);
+    expect(writeCampaigns).toHaveBeenCalledWith("shopA", memory["shopA"]);
+    expect(writeCampaigns).toHaveBeenCalledWith("shopB", memory["shopB"]);
+    expect(memory["shopA"][0].sentAt).toBeDefined();
+    expect(memory["shopA"][1].sentAt).toBeUndefined();
+    expect(memory["shopB"][0].sentAt).toBeDefined();
   });
 
   test("syncCampaignAnalytics delegates to analytics module", async () => {

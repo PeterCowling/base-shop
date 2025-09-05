@@ -1,3 +1,4 @@
+/** @jest-environment node */
 import { readFile, readdir } from "fs/promises";
 
 jest.mock("fs/promises", () => ({
@@ -36,7 +37,8 @@ import { coreEnv } from "@acme/config/env/core";
 
 const readdirMock = readdir as unknown as jest.Mock;
 const readFileMock = readFile as unknown as jest.Mock;
-const stripeRetrieveMock = stripe.checkout.sessions.retrieve as unknown as jest.Mock;
+const stripeRetrieveMock = stripe.checkout.sessions
+  .retrieve as unknown as jest.Mock;
 const stripeChargeMock = stripe.paymentIntents.create as unknown as jest.Mock;
 const readOrdersMock = readOrders as jest.Mock;
 const markLateFeeChargedMock = markLateFeeCharged as jest.Mock;
@@ -77,7 +79,9 @@ describe("chargeLateFeesOnce", () => {
     readFileMock.mockImplementation((p: string) => {
       if (p.endsWith("s1/shop.json"))
         return Promise.resolve(
-          JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } }),
+          JSON.stringify({
+            lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 },
+          })
         );
       if (p.endsWith("s2/shop.json")) return Promise.resolve("{}");
       return Promise.resolve("{}");
@@ -105,7 +109,7 @@ describe("chargeLateFeesOnce", () => {
   it("charges overdue orders and logs success", async () => {
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockResolvedValueOnce(
-      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } }),
+      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
     );
     readOrdersMock.mockResolvedValueOnce([
       {
@@ -141,7 +145,7 @@ describe("chargeLateFeesOnce", () => {
   it("defaults currency to usd when session omits it", async () => {
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockResolvedValueOnce(
-      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } }),
+      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
     );
     readOrdersMock.mockResolvedValueOnce([
       {
@@ -183,7 +187,7 @@ describe("chargeLateFeesOnce", () => {
   ])("skips charge when %s", async (_desc, session) => {
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockResolvedValueOnce(
-      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } }),
+      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
     );
     readOrdersMock.mockResolvedValueOnce([
       {
@@ -202,7 +206,7 @@ describe("chargeLateFeesOnce", () => {
   it("logs error when charge fails", async () => {
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockResolvedValueOnce(
-      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } }),
+      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
     );
     readOrdersMock.mockResolvedValueOnce([
       {
@@ -223,7 +227,11 @@ describe("chargeLateFeesOnce", () => {
 
     expect(loggerErrorMock).toHaveBeenCalledWith(
       "late fee charge failed",
-      expect.objectContaining({ shopId: "s1", sessionId: "sess1", err: expect.any(Error) }),
+      expect.objectContaining({
+        shopId: "s1",
+        sessionId: "sess1",
+        err: expect.any(Error),
+      })
     );
     expect(markLateFeeChargedMock).not.toHaveBeenCalled();
   });
@@ -240,7 +248,7 @@ describe("resolveConfig", () => {
 
   it("uses settings file values", async () => {
     readFileMock.mockResolvedValueOnce(
-      JSON.stringify({ lateFeeService: { enabled: true, intervalMinutes: 30 } }),
+      JSON.stringify({ lateFeeService: { enabled: true, intervalMinutes: 30 } })
     );
 
     const cfg = await service.resolveConfig("s1", "/data");
@@ -249,12 +257,16 @@ describe("resolveConfig", () => {
 
   it("honors precedence of file, env, and overrides", async () => {
     readFileMock.mockResolvedValueOnce(
-      JSON.stringify({ lateFeeService: { enabled: false, intervalMinutes: 10 } }),
+      JSON.stringify({
+        lateFeeService: { enabled: false, intervalMinutes: 10 },
+      })
     );
     process.env.LATE_FEE_ENABLED_S1 = "true";
     process.env.LATE_FEE_INTERVAL_MS_S1 = String(30 * 60 * 1000);
 
-    const cfg = await service.resolveConfig("s1", "/data", { intervalMinutes: 5 });
+    const cfg = await service.resolveConfig("s1", "/data", {
+      intervalMinutes: 5,
+    });
     expect(cfg).toEqual({ enabled: true, intervalMinutes: 5 });
   });
 
@@ -290,18 +302,20 @@ describe("startLateFeeService", () => {
     readFileMock.mockImplementation((p: string) => {
       if (p.endsWith("settings.json"))
         return Promise.resolve(
-          JSON.stringify({ lateFeeService: { enabled: true, intervalMinutes: 1 } }),
+          JSON.stringify({
+            lateFeeService: { enabled: true, intervalMinutes: 1 },
+          })
         );
       if (p.endsWith("shop.json"))
         return Promise.resolve(
-          JSON.stringify({ type: "sale", lateFeePolicy: { feeAmount: 5 } }),
+          JSON.stringify({ type: "sale", lateFeePolicy: { feeAmount: 5 } })
         );
       return Promise.resolve("{}");
     });
 
     await service.startLateFeeService({}, "/data");
 
-    expect((global.setInterval as jest.Mock)).not.toHaveBeenCalled();
+    expect(global.setInterval as jest.Mock).not.toHaveBeenCalled();
   });
 
   it("skips shops without late fee policy", async () => {
@@ -309,7 +323,9 @@ describe("startLateFeeService", () => {
     readFileMock.mockImplementation((p: string) => {
       if (p.endsWith("settings.json"))
         return Promise.resolve(
-          JSON.stringify({ lateFeeService: { enabled: true, intervalMinutes: 1 } }),
+          JSON.stringify({
+            lateFeeService: { enabled: true, intervalMinutes: 1 },
+          })
         );
       if (p.endsWith("shop.json")) return Promise.resolve("{}");
       return Promise.resolve("{}");
@@ -317,7 +333,7 @@ describe("startLateFeeService", () => {
 
     await service.startLateFeeService({}, "/data");
 
-    expect((global.setInterval as jest.Mock)).not.toHaveBeenCalled();
+    expect(global.setInterval as jest.Mock).not.toHaveBeenCalled();
   });
 
   it("schedules runs and allows cleanup", async () => {
@@ -325,11 +341,15 @@ describe("startLateFeeService", () => {
     readFileMock.mockImplementation((p: string) => {
       if (p.endsWith("settings.json"))
         return Promise.resolve(
-          JSON.stringify({ lateFeeService: { enabled: true, intervalMinutes: 1 } }),
+          JSON.stringify({
+            lateFeeService: { enabled: true, intervalMinutes: 1 },
+          })
         );
       if (p.endsWith("shop.json"))
         return Promise.resolve(
-          JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } }),
+          JSON.stringify({
+            lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 },
+          })
         );
       return Promise.resolve("{}");
     });
@@ -349,7 +369,7 @@ describe("startLateFeeService", () => {
     const cleanup = await service.startLateFeeService({}, "/data");
 
     const shopCalls = readFileMock.mock.calls.filter((c) =>
-      c[0].endsWith("s1/shop.json"),
+      c[0].endsWith("s1/shop.json")
     );
     expect(shopCalls.length).toBe(2);
     const timer = (global.setInterval as jest.Mock).mock.results[0].value;
@@ -364,11 +384,13 @@ describe("startLateFeeService", () => {
     readFileMock.mockImplementation((p: string) => {
       if (p.endsWith("settings.json"))
         return Promise.resolve(
-          JSON.stringify({ lateFeeService: { enabled: true, intervalMinutes: 1 } }),
+          JSON.stringify({
+            lateFeeService: { enabled: true, intervalMinutes: 1 },
+          })
         );
       if (p.endsWith("shop.json"))
         return Promise.resolve(
-          JSON.stringify({ lateFeePolicy: { feeAmount: 5 } }),
+          JSON.stringify({ lateFeePolicy: { feeAmount: 5 } })
         );
       return Promise.resolve("{}");
     });
@@ -389,7 +411,11 @@ describe("startLateFeeService", () => {
 
     expect(loggerErrorMock).toHaveBeenCalledWith(
       "late fee charge failed",
-      expect.objectContaining({ shopId: "s1", sessionId: "sess1", err: expect.any(Error) }),
+      expect.objectContaining({
+        shopId: "s1",
+        sessionId: "sess1",
+        err: expect.any(Error),
+      })
     );
   });
 });
@@ -410,7 +436,7 @@ describe("lateFeeService auto-start", () => {
     jest.doMock("../lateFeeService", () => {
       if (process.env.NODE_ENV !== "test") {
         startLateFeeService().catch((err) =>
-          loggerError("failed to start late fee service", { err }),
+          loggerError("failed to start late fee service", { err })
         );
       }
       return { startLateFeeService };
@@ -431,7 +457,7 @@ describe("lateFeeService auto-start", () => {
     jest.doMock("../lateFeeService", () => {
       if (process.env.NODE_ENV !== "test") {
         startLateFeeService().catch((err) =>
-          loggerError("failed to start late fee service", { err }),
+          loggerError("failed to start late fee service", { err })
         );
       }
       return { startLateFeeService };
@@ -442,8 +468,7 @@ describe("lateFeeService auto-start", () => {
     expect(startLateFeeService).toHaveBeenCalledTimes(1);
     expect(loggerError).toHaveBeenCalledWith(
       "failed to start late fee service",
-      { err: error },
+      { err: error }
     );
   });
 });
-

@@ -1,3 +1,4 @@
+/** @jest-environment node */
 import { readdir, readFile } from "node:fs/promises";
 
 jest.mock("node:fs/promises", () => ({
@@ -27,13 +28,17 @@ jest.mock("@acme/config/env/core", () => ({
 
 import * as service from "../releaseDepositsService";
 import { stripe } from "@acme/stripe";
-import { readOrders, markRefunded } from "@platform-core/repositories/rentalOrders.server";
+import {
+  readOrders,
+  markRefunded,
+} from "@platform-core/repositories/rentalOrders.server";
 import { logger } from "@platform-core/utils";
 import { coreEnv } from "@acme/config/env/core";
 
 const readdirMock = readdir as unknown as jest.Mock;
 const readFileMock = readFile as unknown as jest.Mock;
-const stripeRetrieveMock = stripe.checkout.sessions.retrieve as unknown as jest.Mock;
+const stripeRetrieveMock = stripe.checkout.sessions
+  .retrieve as unknown as jest.Mock;
 const stripeRefundMock = stripe.refunds.create as unknown as jest.Mock;
 const readOrdersMock = readOrders as jest.Mock;
 const markRefundedMock = markRefunded as jest.Mock;
@@ -70,17 +75,19 @@ describe("releaseDepositsOnce", () => {
     stripeRetrieveMock.mockResolvedValue({ payment_intent: "pi" });
     const err = new Error("boom");
     stripeRefundMock.mockRejectedValueOnce(err);
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => undefined);
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
 
     await service.releaseDepositsOnce(undefined, "/data");
 
     expect(loggerErrorMock).toHaveBeenCalledWith(
       "failed to release deposit for shop s1",
-      { err },
+      { err }
     );
     expect(consoleSpy).toHaveBeenCalledWith(
       "failed to release deposit for shop s1",
-      err,
+      err
     );
     expect(markRefundedMock).not.toHaveBeenCalled();
 
@@ -98,9 +105,7 @@ describe("resolveConfig precedence", () => {
     delete process.env.DEPOSIT_RELEASE_INTERVAL_MS_SHOP;
     (coreEnv as any).DEPOSIT_RELEASE_ENABLED = undefined;
     (coreEnv as any).DEPOSIT_RELEASE_INTERVAL_MS = undefined;
-    jest
-      .spyOn(service, "releaseDepositsOnce")
-      .mockResolvedValue(undefined);
+    jest.spyOn(service, "releaseDepositsOnce").mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -113,7 +118,7 @@ describe("resolveConfig precedence", () => {
 
   it("env vars override settings file", async () => {
     readFileMock.mockResolvedValueOnce(
-      JSON.stringify({ depositService: { enabled: false, intervalMinutes: 5 } }),
+      JSON.stringify({ depositService: { enabled: false, intervalMinutes: 5 } })
     );
     process.env.DEPOSIT_RELEASE_ENABLED_SHOP = "true";
     process.env.DEPOSIT_RELEASE_INTERVAL_MS_SHOP = "120000";
@@ -134,7 +139,7 @@ describe("resolveConfig precedence", () => {
 
   it("settings file overrides coreEnv", async () => {
     readFileMock.mockResolvedValueOnce(
-      JSON.stringify({ depositService: { enabled: false, intervalMinutes: 5 } }),
+      JSON.stringify({ depositService: { enabled: false, intervalMinutes: 5 } })
     );
     (coreEnv as any).DEPOSIT_RELEASE_ENABLED = true;
     (coreEnv as any).DEPOSIT_RELEASE_INTERVAL_MS = 180000;
@@ -166,7 +171,7 @@ describe("resolveConfig precedence", () => {
 
     const stop = await service.startDepositReleaseService(
       { shop: { enabled: true, intervalMinutes: 7 } },
-      "/data",
+      "/data"
     );
     expect(setSpy).toHaveBeenCalledWith(expect.any(Function), 7 * 60 * 1000);
 
@@ -182,11 +187,9 @@ describe("startDepositReleaseService", () => {
     readdirMock.mockResolvedValue(["shop"]);
     readOrdersMock.mockResolvedValue([]);
     readFileMock.mockResolvedValue(
-      JSON.stringify({ depositService: { enabled: true, intervalMinutes: 1 } }),
+      JSON.stringify({ depositService: { enabled: true, intervalMinutes: 1 } })
     );
-    jest
-      .spyOn(service, "releaseDepositsOnce")
-      .mockResolvedValue(undefined);
+    jest.spyOn(service, "releaseDepositsOnce").mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -211,4 +214,3 @@ describe("startDepositReleaseService", () => {
     clearSpy.mockRestore();
   });
 });
-

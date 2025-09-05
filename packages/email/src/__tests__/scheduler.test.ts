@@ -63,6 +63,8 @@ describe("scheduler", () => {
   afterEach(() => {
     jest.useRealTimers();
     delete process.env.NEXT_PUBLIC_BASE_URL;
+    delete process.env.EMAIL_BATCH_SIZE;
+    delete process.env.EMAIL_BATCH_DELAY_MS;
   });
 
   test("listCampaigns forwards arguments to the campaign store", async () => {
@@ -75,6 +77,26 @@ describe("scheduler", () => {
       await expect(listCampaigns(shop)).resolves.toBe(data);
       expect(readCampaigns).toHaveBeenCalledWith(shop);
     });
+  });
+
+  test("trackedBody rewrites links and appends tracking pixel", async () => {
+    process.env.NEXT_PUBLIC_BASE_URL = "https://base.test";
+    await createCampaign({
+      shop,
+      recipients: ["a@example.com"],
+      subject: "Hi",
+      body: '<a href="https://example.com/a">A</a><a href="/b">B</a>',
+    });
+    const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0].html;
+    expect(html).toContain('url=https%3A%2F%2Fexample.com%2Fa');
+    expect(html).toContain('url=%2Fb');
+    expect(html).toContain(
+      '/api/marketing/email/open?shop=test-shop&campaign='
+    );
+    expect(
+      (html.match(/<a href="https:\/\/base.test\/api\/marketing\/email\/click/g) || [])
+        .length,
+    ).toBe(2);
   });
 
   test("filterUnsubscribed skips unsubscribed recipients", async () => {
@@ -463,6 +485,36 @@ describe("scheduler", () => {
         body: '<p>Hi</p>',
       })
     ).rejects.toThrow('boom');
+  });
+
+  test("deliverCampaign batches recipients and adds unsubscribe link", async () => {
+    process.env.EMAIL_BATCH_SIZE = "2";
+    process.env.EMAIL_BATCH_DELAY_MS = "1000";
+    process.env.NEXT_PUBLIC_BASE_URL = "https://base.test";
+    const past = new Date(now.getTime() - 1000).toISOString();
+    memory[shop] = [
+      {
+        id: "c1",
+        recipients: ["a@example.com", "b@example.com", "c@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+    ];
+    const p = sendDueCampaigns();
+    await jest.advanceTimersByTimeAsync(0);
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(2);
+    const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0].html;
+    expect(html).toContain("Unsubscribe");
+    expect(html).toContain(
+      "https://base.test/api/marketing/email/unsubscribe?shop=test-shop&campaign=c1&email=a%40example.com",
+    );
+    await jest.advanceTimersByTimeAsync(1000);
+    await p;
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(3);
+    expect(memory[shop][0].sentAt).toBeDefined();
   });
 });
 

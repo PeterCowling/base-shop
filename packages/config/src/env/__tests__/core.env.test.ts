@@ -84,15 +84,24 @@ describe("minimal and happy path", () => {
   });
 });
 
-describe("boolean parsing", () => {
+describe("requireEnv", () => {
   const getRequire = async () => (await importCore()).requireEnv;
+
+  it("throws on missing or blank values", async () => {
+    await withEnv({}, async () => {
+      const requireEnv = await getRequire();
+      expect(() => requireEnv("MISSING")).toThrow("MISSING is required");
+      process.env.MISSING = "";
+      expect(() => requireEnv("MISSING")).toThrow("MISSING is required");
+    });
+  });
+
   it.each([
     ["true", true],
-    ["1", true],
-    ["TrUe", true],
     ["false", false],
+    ["1", true],
     ["0", false],
-  ])("parses %s", async (raw, expected) => {
+  ])("parses boolean %s", async (raw, expected) => {
     await withEnv({ BOOL: raw }, async () => {
       const requireEnv = await getRequire();
       expect(requireEnv("BOOL", "boolean")).toBe(expected);
@@ -102,7 +111,18 @@ describe("boolean parsing", () => {
   it("rejects invalid boolean", async () => {
     await withEnv({ BOOL: "no" }, async () => {
       const requireEnv = await getRequire();
-      expect(() => requireEnv("BOOL", "boolean")).toThrow();
+      expect(() => requireEnv("BOOL", "boolean")).toThrow(
+        "BOOL must be a boolean",
+      );
+    });
+  });
+
+  it("rejects invalid number", async () => {
+    await withEnv({ NUM: "abc" }, async () => {
+      const requireEnv = await getRequire();
+      expect(() => requireEnv("NUM", "number")).toThrow(
+        "NUM must be a number",
+      );
     });
   });
 });
@@ -119,6 +139,67 @@ describe("number and url validation", () => {
     await withEnv({ NEXT_PUBLIC_BASE_URL: "not a url" }, async () => {
       const { loadCoreEnv } = await importCore();
       expect(() => loadCoreEnv()).toThrow("Invalid core environment variables");
+    });
+  });
+});
+
+describe("depositReleaseEnvRefinement", () => {
+  it("reports custom errors for invalid ENABLED and INTERVAL_MS values", async () => {
+    await withEnv(
+      {
+        DEPOSIT_RELEASE_FOO_ENABLED: "maybe",
+        DEPOSIT_RELEASE_FOO_INTERVAL_MS: "soon",
+      },
+      async () => {
+        const { loadCoreEnv } = await importCore();
+        const err = jest.spyOn(console, "error").mockImplementation(() => {});
+        expect(() => loadCoreEnv()).toThrow("Invalid core environment variables");
+        const output = err.mock.calls.flat().join("\n");
+        expect(output).toContain(
+          "DEPOSIT_RELEASE_FOO_ENABLED: must be true or false",
+        );
+        expect(output).toContain(
+          "DEPOSIT_RELEASE_FOO_INTERVAL_MS: must be a number",
+        );
+        err.mockRestore();
+      },
+    );
+  });
+});
+
+describe("AUTH_TOKEN_TTL normalization", () => {
+  it("rejects numeric value", async () => {
+    await withEnv({}, async () => {
+      const { loadCoreEnv } = await importCore();
+      expect(() => loadCoreEnv({ AUTH_TOKEN_TTL: 120 } as any)).toThrow(
+        "Invalid core environment variables",
+      );
+    });
+  });
+
+  it("rejects numeric string", async () => {
+    await withEnv({}, async () => {
+      const { loadCoreEnv } = await importCore();
+      expect(() => loadCoreEnv({ AUTH_TOKEN_TTL: "120" } as any)).toThrow(
+        "Invalid core environment variables",
+      );
+    });
+  });
+
+  it("parses string with unit", async () => {
+    await withEnv({}, async () => {
+      const { loadCoreEnv } = await importCore();
+      const env = loadCoreEnv({ AUTH_TOKEN_TTL: "2m" } as any);
+      expect(env.AUTH_TOKEN_TTL).toBe(120);
+    });
+  });
+
+  it("rejects blank string", async () => {
+    await withEnv({}, async () => {
+      const { loadCoreEnv } = await importCore();
+      expect(() => loadCoreEnv({ AUTH_TOKEN_TTL: "   " } as any)).toThrow(
+        "Invalid core environment variables",
+      );
     });
   });
 });
@@ -182,6 +263,17 @@ describe("COOKIE_DOMAIN", () => {
       const { loadCoreEnv } = await importCore();
       const env = loadCoreEnv();
       expect(env.COOKIE_DOMAIN).toBeUndefined();
+    });
+  });
+});
+
+describe("coreEnv caching", () => {
+  it("caches the parsed environment", async () => {
+    await withEnv({ CMS_SPACE_URL: "https://first.example.com" }, async () => {
+      const mod = await importCore();
+      expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://first.example.com");
+      process.env.CMS_SPACE_URL = "https://second.example.com";
+      expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://first.example.com");
     });
   });
 });

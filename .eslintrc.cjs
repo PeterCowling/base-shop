@@ -10,6 +10,7 @@ module.exports = {
     "**/*.d.ts",
     "**/*.test.*",
     "**/*.spec.*",
+    "**/jest.config.*",
   ],
   overrides: [
     {

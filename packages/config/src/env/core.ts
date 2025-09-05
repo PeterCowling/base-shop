@@ -146,7 +146,9 @@ export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
   // Normalize AUTH_TOKEN_TTL before delegating to the auth schema so builds
   // don't fail if the value is provided as a plain number or contains
   // incidental whitespace.
-  const envForAuth: Record<string, unknown> = { ...(env as any) };
+  const envForAuth: Record<string, unknown> = {
+    ...(env as Record<string, unknown>),
+  };
   const rawTtl = envForAuth.AUTH_TOKEN_TTL;
   if (typeof rawTtl === "number") {
     // Let auth schema default to 15m when undefined
@@ -194,11 +196,11 @@ let __cachedCoreEnv: CoreEnv | null = null;
 export const coreEnv: CoreEnv = new Proxy({} as CoreEnv, {
   get: (_t, prop: string) => {
     if (!__cachedCoreEnv) __cachedCoreEnv = loadCoreEnv();
-    return (__cachedCoreEnv as any)[prop];
+    return __cachedCoreEnv![prop as keyof CoreEnv];
   },
   has: (_t, prop: string) => {
     if (!__cachedCoreEnv) __cachedCoreEnv = loadCoreEnv();
-    return prop in (__cachedCoreEnv as any);
+    return prop in __cachedCoreEnv!;
   },
   ownKeys: () => {
     if (!__cachedCoreEnv) __cachedCoreEnv = loadCoreEnv();

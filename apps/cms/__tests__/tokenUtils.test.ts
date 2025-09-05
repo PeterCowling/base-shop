@@ -8,11 +8,10 @@ describe("tokenUtils", () => {
     expect(baseTokens["--color-bg"]).toBeDefined();
   });
 
-  it("returns base tokens for base theme", async () => {
-    await expect(loadThemeTokens("base")).resolves.toEqual(baseTokens);
-  });
-
-  it("falls back to base tokens for unknown theme", async () => {
-    await expect(loadThemeTokens("nope")).resolves.toEqual(baseTokens);
+  it.each([
+    ["base", baseTokens],
+    ["nope", baseTokens],
+  ])("loads tokens for %s theme", async (theme, expected) => {
+    await expect(loadThemeTokens(theme)).resolves.toEqual(expected);
   });
 });

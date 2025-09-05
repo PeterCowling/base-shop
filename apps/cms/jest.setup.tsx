@@ -8,6 +8,7 @@ import "cross-fetch/polyfill";
 import React from "react";
 import * as ReactDOMTestUtils from "react-dom/test-utils";
 import { TextDecoder, TextEncoder } from "node:util";
+import "./__tests__/mocks/external";
 
 /* -------------------------------------------------------------------------- */
 /* 1 ·  ENVIRONMENT VARIABLES                                                 */

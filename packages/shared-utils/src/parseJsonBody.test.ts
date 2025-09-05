@@ -26,12 +26,14 @@ describe('parseJsonBody', () => {
   const schema = z.object({ foo: z.string() });
 
   it('returns 400 for non-JSON content-type', async () => {
+    const text = jest.fn().mockResolvedValue('foo');
     const req = {
       headers: new Headers({ 'Content-Type': 'text/plain' }),
-      text: jest.fn().mockResolvedValue('foo'),
+      text,
     } as unknown as Request;
 
     const result = await parseJsonBody(req, schema, '1kb');
+    expect(text).toHaveBeenCalled();
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(400);
     await expect(result.response.json()).resolves.toEqual({
@@ -40,12 +42,14 @@ describe('parseJsonBody', () => {
   });
 
   it('returns 400 for invalid content-type parameters', async () => {
+    const text = jest.fn().mockResolvedValue(JSON.stringify({ foo: 'bar' }));
     const req = {
       headers: new Headers({ 'Content-Type': 'application/json; foo=bar' }),
-      text: jest.fn().mockResolvedValue(JSON.stringify({ foo: 'bar' })),
+      text,
     } as unknown as Request;
 
     const result = await parseJsonBody(req, schema, '1kb');
+    expect(text).toHaveBeenCalled();
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(400);
     await expect(result.response.json()).resolves.toEqual({
@@ -104,6 +108,18 @@ describe('parseJsonBody', () => {
     } as unknown as Request;
 
     const result = await parseJsonBody(req, schema, '1kb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(413);
+    await expect(result.response.json()).resolves.toEqual({
+      error: 'Payload Too Large',
+    });
+  });
+  it('returns 413 when payload exceeds numeric limit', async () => {
+    const req = {
+      json: jest.fn().mockResolvedValue({ foo: 'a'.repeat(2 * 1024) }),
+    } as unknown as Request;
+
+    const result = await parseJsonBody(req, schema, 1024);
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(413);
     await expect(result.response.json()).resolves.toEqual({

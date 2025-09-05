@@ -13,6 +13,15 @@ describe("getShopFromPath", () => {
     expect(getShopFromPath("/cms/pages?shop=demo")).toBe("demo");
   });
 
+  it("query ?shop= slug overrides path segment", () => {
+    expect(
+      getShopFromPath("/cms/shop/demo/pages?shop=override"),
+    ).toBe("override");
+    expect(
+      getShopFromPath("/cms/shops/demo/pages?shop=override"),
+    ).toBe("override");
+  });
+
   it("handles trailing slashes for shop paths", () => {
     expect(getShopFromPath("/cms/shop/demo/")).toBe("demo");
     expect(getShopFromPath("/cms/shops/demo/")).toBe("demo");

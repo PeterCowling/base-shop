@@ -15,6 +15,7 @@ jest.mock('fs', () => ({ promises: fsMock }));
 
 const pathMock = {
   join: (...parts: string[]) => parts.join('/'),
+  dirname: (p: string) => p.split('/').slice(0, -1).join('/'),
   posix: {
     join: (...parts: string[]) => parts.join('/'),
     normalize: (p: string) => p,

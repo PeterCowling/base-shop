@@ -1,12 +1,24 @@
-import slugify from './slugify';
+import slugify from '../slugify';
 
 describe('slugify', () => {
-  it('creates slugs from plain text', () => {
-    expect(slugify('Hello World')).toBe('hello-world');
+  it('normalizes diacritics', () => {
+    expect(slugify('Crème Brûlée')).toBe('creme-brulee');
   });
 
-  it('handles accents and punctuation', () => {
-    expect(slugify('Crème_brûlée!')).toBe('creme-brulee');
+  it('removes non-word characters', () => {
+    expect(slugify('foo@$%^&*bar')).toBe('foobar');
+  });
+
+  it('collapses whitespace and underscores into single hyphens', () => {
+    expect(slugify('foo__ bar   baz')).toBe('foo-bar-baz');
+  });
+
+  it('trims leading and trailing hyphens', () => {
+    expect(slugify('--foo bar--')).toBe('foo-bar');
+  });
+
+  it('outputs lowercase', () => {
+    expect(slugify('Foo Bar')).toBe('foo-bar');
   });
 });
 

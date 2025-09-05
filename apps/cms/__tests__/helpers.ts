@@ -24,18 +24,18 @@ export async function withTempRepo(cb: (dir: string) => Promise<void>): Promise<
   await fs.mkdir(shopDir, { recursive: true });
   const cwd = process.cwd();
   process.chdir(dir);
-  Object.assign(process.env, {
-    NEXTAUTH_SECRET: "test",
-    SESSION_SECRET: "test",
-    CART_COOKIE_SECRET: "test-cart-secret",
-    STRIPE_SECRET_KEY: "sk",
-    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
-    STRIPE_WEBHOOK_SECRET: "whsec_test",
-    SKIP_STOCK_ALERT: "1",
-    CMS_SPACE_URL: "http://example.com",
-    CMS_ACCESS_TOKEN: "token",
-    SANITY_API_VERSION: "2024-01-01",
-  });
+    Object.assign(process.env, {
+      NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!",
+      SESSION_SECRET: "test-session-secret-32-chars-long-string!",
+      CART_COOKIE_SECRET: "test-cart-secret",
+      STRIPE_SECRET_KEY: "sk",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      STRIPE_WEBHOOK_SECRET: "whsec_test",
+      SKIP_STOCK_ALERT: "1",
+      CMS_SPACE_URL: "http://example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "2024-01-01",
+    });
   jest.resetModules();
   try {
     await cb(dir);

@@ -12,10 +12,14 @@ module.exports = {
   ...base,
   testEnvironment: "jsdom",
   roots: ["<rootDir>/apps/cms/src", "<rootDir>/apps/cms/__tests__"],
+  setupFiles: ["<rootDir>/apps/cms/jest.env.ts"],
+  // Ensure environment variables and polyfills are applied before other setup
+  // files that may import modules requiring them.  `jest.setup.tsx` establishes
+  // auth secrets needed by configuration code, so it must run first.
   setupFilesAfterEnv: [
+    "<rootDir>/apps/cms/jest.setup.tsx",
     "<rootDir>/apps/cms/jest.setup.polyfills.ts",
     "<rootDir>/apps/cms/__tests__/msw/server.ts",
-    "<rootDir>/apps/cms/jest.setup.tsx",
   ],
   moduleNameMapper: {
     ...baseModuleNameMapper,

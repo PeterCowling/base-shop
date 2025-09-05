@@ -9,7 +9,7 @@ if (typeof (Response as any).json !== "function") {
     });
 }
 
-process.env.NEXTAUTH_SECRET = "test-secret";
+process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";
 
 const mockGetPages = jest.fn();
 

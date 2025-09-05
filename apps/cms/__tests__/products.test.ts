@@ -3,7 +3,7 @@
 import type { ProductPublication } from "@acme/platform-core/products";
 
 // Ensure auth options do not throw on import
-process.env.NEXTAUTH_SECRET = "test-secret";
+process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";
 
 import fs from "node:fs/promises";
 import os from "node:os";

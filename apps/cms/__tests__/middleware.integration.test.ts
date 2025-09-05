@@ -19,7 +19,7 @@ jest.mock("@auth/rbac", () => ({
 /* -------------------------------------------------------------------------- */
 jest.mock("@acme/config", () => ({
   __esModule: true,
-  env: { NEXTAUTH_SECRET: "test" },
+  env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!" },
 }));
 
 /* -------------------------------------------------------------------------- */

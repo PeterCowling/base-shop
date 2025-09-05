@@ -19,8 +19,26 @@ const mutableEnv = process.env as unknown as Record<string, string>;
 mutableEnv.NODE_ENV ||= "development"; // relax “edge” runtime checks
 mutableEnv.CART_COOKIE_SECRET ||= "test-cart-secret"; // cart cookie signing
 mutableEnv.STRIPE_WEBHOOK_SECRET ||= "whsec_test"; // dummy Stripe webhook secret
-mutableEnv.NEXTAUTH_SECRET ||= "test-nextauth-secret-32-chars-long-string!";
-mutableEnv.SESSION_SECRET ||= "test-session-secret-32-chars-long-string!";
+// Ensure auth secrets are long enough even if the host environment provides
+// shorter values (e.g. from a `.env` file or CI configuration). Jest's
+// `setupFiles` load `dotenv` before this script runs, so we can't rely on the
+// `||=` operator here because existing but too-short values would remain. If
+// the variable is missing or shorter than 32 characters, replace it with a
+// deterministic test secret.
+const ensureSecret = (key: string, fallback: string) => {
+  const current = process.env[key];
+  if (!current || current.length < 32) {
+    mutableEnv[key] = fallback;
+  }
+};
+ensureSecret(
+  "NEXTAUTH_SECRET",
+  "test-nextauth-secret-32-chars-long-string!",
+);
+ensureSecret(
+  "SESSION_SECRET",
+  "test-session-secret-32-chars-long-string!",
+);
 mutableEnv.CMS_SPACE_URL ||= "https://cms.example.com";
 mutableEnv.CMS_ACCESS_TOKEN ||= "cms-access-token";
 mutableEnv.SANITY_API_VERSION ||= "2023-01-01";

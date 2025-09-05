@@ -13,7 +13,7 @@ jest.mock("fs", () => {
   };
 });
 
-process.env.NEXTAUTH_SECRET = "test-secret";
+process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";
 
 const getServerSession = jest.fn();
 jest.mock("next-auth", () => ({ getServerSession }));

@@ -53,7 +53,9 @@ export function mockShop(tokens: Record<string, string> = {}): void {
     },
   }));
 
-  jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "secret" } }));
+  jest.doMock("@acme/config", () => ({
+    env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!" },
+  }));
   jest.doMock("@platform-core/createShop", () => ({
     syncTheme: jest.fn().mockResolvedValue(tokens),
   }));

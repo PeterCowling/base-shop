@@ -146,7 +146,8 @@
     "next-env.d.ts",
     "src/**/*",
     "src/**/*.json",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "jest.env.ts"
   ],
   "exclude": [
     ".next",

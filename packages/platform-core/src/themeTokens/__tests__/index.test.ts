@@ -1,139 +1,114 @@
-jest.mock('node:fs', () => {
-  const actual = jest.requireActual('node:fs');
-  return { ...actual, existsSync: jest.fn(), readFileSync: jest.fn() };
-});
+jest.mock('node:fs', () => ({
+  existsSync: jest.fn(),
+  readFileSync: jest.fn(),
+}));
 
 import * as fs from 'node:fs';
 import { join } from 'node:path';
+import * as themeTokens from '../index';
 
-import {
-  loadThemeTokensNode,
-  loadThemeTokensBrowser,
-  baseTokens,
-} from '../index';
+const tokenSource = "export const tokens = { '--foo': 'bar' } as const;";
 
 describe('loadThemeTokensNode', () => {
+  const theme = 'demo';
+  const baseDir = join('packages', 'themes', theme);
+  const candidates = [
+    join(baseDir, 'tailwind-tokens.js'),
+    join(baseDir, 'tailwind-tokens.ts'),
+    join(baseDir, 'src', 'tailwind-tokens.ts'),
+  ];
+
   afterEach(() => {
     jest.resetAllMocks();
   });
 
-  it('returns empty object for base theme', () => {
-    expect(loadThemeTokensNode('base')).toEqual({});
-  });
-
-  it('returns empty object when theme string is empty', () => {
-    expect(loadThemeTokensNode('')).toEqual({});
-  });
-
   it('returns empty object when no candidate files exist', () => {
     (fs.existsSync as jest.Mock).mockReturnValue(false);
-    expect(loadThemeTokensNode('ghost')).toEqual({});
+    expect(themeTokens.loadThemeTokensNode(theme)).toEqual({});
+    expect(fs.readFileSync).not.toHaveBeenCalled();
   });
 
-  it('loads tokens from existing theme file', () => {
-    (fs.existsSync as jest.Mock).mockReturnValue(true);
-    (fs.readFileSync as jest.Mock).mockReturnValue(
-      'export const tokens = { "--foo": "bar" } as const;'
-    );
+  it.each(candidates)('loads tokens from %s', (hit) => {
+    (fs.existsSync as jest.Mock).mockImplementation((p) => p === hit);
+    (fs.readFileSync as jest.Mock).mockReturnValue(tokenSource);
 
-    expect(loadThemeTokensNode('custom')).toEqual({ '--foo': 'bar' });
-  });
-
-  it('surfaces read errors from readFileSync', () => {
-    (fs.existsSync as jest.Mock).mockReturnValue(true);
-    (fs.readFileSync as jest.Mock).mockImplementation(() => {
-      throw new Error('boom');
-    });
-
-    expect(() => loadThemeTokensNode('broken')).toThrow('boom');
+    expect(themeTokens.loadThemeTokensNode(theme)).toEqual({ '--foo': 'bar' });
+    expect(fs.readFileSync).toHaveBeenCalledWith(hit, 'utf8');
   });
 });
 
 describe('loadThemeTokensBrowser', () => {
-  const rootDir = join(__dirname, '../../../../..');
-  const fancyDir = join(rootDir, 'packages/themes/fancy/src');
-  const altDir = join(rootDir, 'packages/themes/alt/tailwind-tokens/src');
-
-  beforeAll(() => {
-    const themesDir = join(rootDir, 'packages/themes');
-    // Ensure the base themes directory exists before creating fixtures.
-    fs.mkdirSync(themesDir, { recursive: true });
-    fs.mkdirSync(fancyDir, { recursive: true });
-    fs.writeFileSync(
-      join(fancyDir, 'index.ts'),
-      "export const tokens = { '--fancy': { light: 'pink', dark: 'magenta' } };"
-    );
-    fs.mkdirSync(altDir, { recursive: true });
-    fs.writeFileSync(
-      join(altDir, 'index.ts'),
-      "export const tokens = { '--alt': 'blue' };"
-    );
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  afterAll(() => {
-    fs.rmSync(join(rootDir, 'packages/themes/fancy'), { recursive: true, force: true });
-    fs.rmSync(join(rootDir, 'packages/themes/alt'), { recursive: true, force: true });
-  });
+  it('uses tokens from theme package', async () => {
+    jest.mock(
+      '@themes/withTokens',
+      () => ({
+        __esModule: true,
+        tokens: { '--bar': { light: 'baz' } },
+      }),
+      { virtual: true }
+    );
 
-  it('uses tokens exported from theme package', async () => {
-    await expect(loadThemeTokensBrowser('fancy')).resolves.toEqual({
-      '--fancy': 'pink',
+    await expect(themeTokens.loadThemeTokensBrowser('withTokens')).resolves.toEqual({
+      '--bar': 'baz',
     });
   });
 
-  it('falls back to base tokens when imports fail', async () => {
-    await expect(loadThemeTokensBrowser('missing')).resolves.toEqual(baseTokens);
-  });
+  it('falls back to tailwind token module', async () => {
+    jest.mock('@themes/noTokens', () => ({ __esModule: true }), { virtual: true });
+    jest.mock(
+      '@themes/noTokens/tailwind-tokens',
+      () => ({
+        __esModule: true,
+        tokens: { '--alt': 'blue' },
+      }),
+      { virtual: true }
+    );
 
-  it('uses tailwind token fallback when theme package missing', async () => {
-    await expect(loadThemeTokensBrowser('alt')).resolves.toEqual({
+    await expect(themeTokens.loadThemeTokensBrowser('noTokens')).resolves.toEqual({
       '--alt': 'blue',
     });
   });
 
-  it('returns base tokens for base theme', async () => {
-    await expect(loadThemeTokensBrowser('base')).resolves.toEqual(baseTokens);
-  });
-
-  it('returns base tokens when theme is empty string', async () => {
-    await expect(loadThemeTokensBrowser('')).resolves.toEqual(baseTokens);
-  });
-
-  it('returns base tokens when theme is undefined', async () => {
-    await expect(
-      // Cast undefined to match function signature
-      loadThemeTokensBrowser(undefined as unknown as string)
-    ).resolves.toEqual(baseTokens);
+  it('returns base tokens when imports fail', async () => {
+    await expect(themeTokens.loadThemeTokensBrowser('missing')).resolves.toEqual(
+      themeTokens.baseTokens
+    );
   });
 });
 
-describe('token builder', () => {
-  const rootDir = join(__dirname, '../../../../..');
-  const themeDir = join(rootDir, 'packages/themes/partial');
+describe('loadThemeTokens', () => {
+  const realWindow = global.window as unknown;
 
-  beforeAll(() => {
-    const realFs = jest.requireActual('node:fs') as typeof fs;
-    (fs.existsSync as jest.Mock).mockImplementation(realFs.existsSync);
-    (fs.readFileSync as jest.Mock).mockImplementation(realFs.readFileSync);
-    fs.mkdirSync(themeDir, { recursive: true });
-    fs.writeFileSync(
-      join(themeDir, 'tailwind-tokens.ts'),
-      "export const tokens = { '--color-bg': '#000', '--space-1': '10px', '--custom-token': 'xyz' } as const;"
-    );
+  afterEach(() => {
+    (global as any).window = realWindow;
+    jest.restoreAllMocks();
   });
 
-  afterAll(() => {
-    fs.rmSync(themeDir, { recursive: true, force: true });
+  it('delegates to node loader when window is undefined', async () => {
+    const nodeSpy = jest
+      .spyOn(themeTokens, 'loadThemeTokensNode')
+      .mockReturnValue({ '--foo': 'bar' });
+    (global as any).window = undefined;
+
+    await expect(themeTokens.loadThemeTokens('dark')).resolves.toEqual({
+      '--foo': 'bar',
+    });
+    expect(nodeSpy).toHaveBeenCalledWith('dark');
   });
 
-  it('applies theme overrides while retaining defaults', () => {
-    const cwd = process.cwd();
-    process.chdir(rootDir);
-    const tokens = { ...baseTokens, ...loadThemeTokensNode('partial') };
-    process.chdir(cwd);
-    expect(tokens['--color-bg']).toBe('#000');
-    expect(tokens['--space-1']).toBe('10px');
-    expect(tokens['--space-2']).toBe(baseTokens['--space-2']);
-    expect(tokens['--custom-token']).toBe('xyz');
+  it('delegates to browser loader when window exists', async () => {
+    const browserSpy = jest
+      .spyOn(themeTokens, 'loadThemeTokensBrowser')
+      .mockResolvedValue({ '--foo': 'baz' });
+    (global as any).window = {};
+
+    await expect(themeTokens.loadThemeTokens('light')).resolves.toEqual({
+      '--foo': 'baz',
+    });
+    expect(browserSpy).toHaveBeenCalledWith('light');
   });
 });

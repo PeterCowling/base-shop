@@ -90,5 +90,14 @@ describe("tax", () => {
         calculateTax({ provider: "taxjar", amount: 1, toCountry: "US" })
       ).rejects.toThrow("Failed to calculate tax with taxjar");
     });
+
+    it("converts network errors into custom errors", async () => {
+      loadShippingEnv.mockReturnValue({ TAXJAR_KEY: "abc" });
+      global.fetch = jest.fn().mockRejectedValue(new Error("network"));
+      const { calculateTax } = await import("@platform-core/tax");
+      await expect(
+        calculateTax({ provider: "taxjar", amount: 1, toCountry: "US" })
+      ).rejects.toThrow("Failed to calculate tax with taxjar");
+    });
   });
 });

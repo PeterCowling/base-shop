@@ -36,8 +36,8 @@ describe("requireEnv", () => {
   });
 
   it("parses numbers", () => {
-    process.env.NUM = "42";
-    expect(requireEnv("NUM", "number")).toBe(42);
+    process.env.NUM = "123";
+    expect(requireEnv("NUM", "number")).toBe(123);
   });
 
   it("throws on invalid number", () => {

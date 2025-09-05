@@ -92,5 +92,33 @@ describe("loadCoreEnv", () => {
       "  • REVERSE_LOGISTICS_INTERVAL_MS: must be a number",
     );
   });
+
+  it("throws for blank AUTH_TOKEN_TTL", async () => {
+    const { loadCoreEnv } = await import("../src/env/core");
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadCoreEnv({
+        CMS_SPACE_URL: "https://example.com",
+        CMS_ACCESS_TOKEN: "token",
+        SANITY_API_VERSION: "v1",
+        AUTH_TOKEN_TTL: "  ",
+      } as NodeJS.ProcessEnv),
+    ).toThrow("Invalid core environment variables");
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it("throws for numeric AUTH_TOKEN_TTL without unit", async () => {
+    const { loadCoreEnv } = await import("../src/env/core");
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadCoreEnv({
+        CMS_SPACE_URL: "https://example.com",
+        CMS_ACCESS_TOKEN: "token",
+        SANITY_API_VERSION: "v1",
+        AUTH_TOKEN_TTL: "60",
+      } as NodeJS.ProcessEnv),
+    ).toThrow("Invalid core environment variables");
+    expect(spy).toHaveBeenCalled();
+  });
 });
 

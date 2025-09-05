@@ -20,6 +20,11 @@ describe('getCsrfToken on server', () => {
     expect(getCsrfToken(req)).toBe('123');
   });
 
+  it('returns undefined when no token sources exist', () => {
+    const req = new Request('https://example.com');
+    expect(getCsrfToken(req)).toBeUndefined();
+  });
+
   it('returns undefined without request', () => {
     const originalDocument = globalThis.document;
     const originalRandomUUID = (globalThis.crypto as any).randomUUID;

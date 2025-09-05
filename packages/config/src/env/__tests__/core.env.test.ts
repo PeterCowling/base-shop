@@ -125,6 +125,13 @@ describe("requireEnv", () => {
       );
     });
   });
+
+  it("parses numeric values", async () => {
+    await withEnv({ NUM: "42" }, async () => {
+      const requireEnv = await getRequire();
+      expect(requireEnv("NUM", "number")).toBe(42);
+    });
+  });
 });
 
 describe("number and url validation", () => {
@@ -322,5 +329,36 @@ describe("NODE_ENV branches", () => {
       },
     );
   });
+});
+
+describe("coreEnv extras", () => {
+  it("propagates email schema errors", async () => {
+    await expect(
+      withEnv({ EMAIL_PROVIDER: "sendgrid" }, () => importCore()),
+    ).rejects.toThrow("Invalid email environment variables");
+  });
+
+  it("reloads after jest.resetModules", async () => {
+    await withEnv(
+      { CMS_SPACE_URL: "https://first.example.com" },
+      async () => {
+        const mod1 = await importCore();
+        expect(mod1.coreEnv.CMS_SPACE_URL).toBe(
+          "https://first.example.com",
+        );
+      },
+    );
+
+    await withEnv(
+      { CMS_SPACE_URL: "https://second.example.com" },
+      async () => {
+        const mod2 = await importCore();
+        expect(mod2.coreEnv.CMS_SPACE_URL).toBe(
+          "https://second.example.com",
+        );
+      },
+    );
+  });
+
 });
 

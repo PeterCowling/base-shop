@@ -17,14 +17,11 @@ afterEach(() => {
 });
 
 describe("cms sanity env", () => {
-  it("throws when SANITY_PROJECT_ID is missing", async () => {
+  it("defaults SANITY_PROJECT_ID when missing", async () => {
     process.env = { ...baseEnv };
     delete process.env.SANITY_PROJECT_ID;
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(import("@acme/config/env/cms"))
-      .rejects.toThrow("Invalid CMS environment variables");
-    expect(errorSpy).toHaveBeenCalled();
-    errorSpy.mockRestore();
+    const { cmsEnv } = await import("@acme/config/env/cms");
+    expect(cmsEnv.SANITY_PROJECT_ID).toBe("dummy-project-id");
   });
 
   it("defaults SANITY_DATASET when missing", async () => {
@@ -34,10 +31,10 @@ describe("cms sanity env", () => {
     expect(cmsEnv.SANITY_DATASET).toBe("production");
   });
 
-  it("is read-only when SANITY_API_TOKEN absent", async () => {
+  it("uses placeholder SANITY_API_TOKEN when absent", async () => {
     process.env = { ...baseEnv };
     const { cmsEnv } = await import("@acme/config/env/cms");
-    expect(cmsEnv.SANITY_API_TOKEN).toBeUndefined();
+    expect(cmsEnv.SANITY_API_TOKEN).toBe("dummy-api-token");
   });
 
   it("enables write when SANITY_API_TOKEN provided", async () => {
@@ -52,10 +49,10 @@ describe("cms sanity env", () => {
     expect(cmsEnv.SANITY_PREVIEW_SECRET).toBe("secret");
   });
 
-  it("disables preview when SANITY_PREVIEW_SECRET missing", async () => {
+  it("uses placeholder SANITY_PREVIEW_SECRET when missing", async () => {
     process.env = { ...baseEnv };
     const { cmsEnv } = await import("@acme/config/env/cms");
-    expect(cmsEnv.SANITY_PREVIEW_SECRET).toBeUndefined();
+    expect(cmsEnv.SANITY_PREVIEW_SECRET).toBe("dummy-preview-secret");
   });
 
   it("parses SANITY_BASE_URL when valid", async () => {

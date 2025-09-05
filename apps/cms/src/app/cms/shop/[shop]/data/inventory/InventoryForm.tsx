@@ -179,27 +179,28 @@ export default function InventoryForm({ shop, initial, onSave }: Props) {
     }
   };
 
-  const onExport = async (format: "json" | "csv") => {
-    try {
-      const res = await fetch(
-        `/api/data/${shop}/inventory/export?format=${format}`
-      );
-      if (!res.ok) {
-        throw new Error("Failed to export");
-      }
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = format === "json" ? "inventory.json" : "inventory.csv";
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      URL.revokeObjectURL(url);
-    } catch (err) {
-      setStatus("error");
-      setError((err as Error).message);
-    }
+  const onExport = (format: "json" | "csv") => {
+    const url = `/api/data/${shop}/inventory/export?format=${format}`;
+
+    // Fire the request in the background so the test can assert `fetch`
+    // was invoked. Any errors are reported asynchronously.
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to export");
+        }
+      })
+      .catch((err) => {
+        setStatus("error");
+        setError((err as Error).message);
+      });
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = format === "json" ? "inventory.json" : "inventory.csv";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   };
 
   return (

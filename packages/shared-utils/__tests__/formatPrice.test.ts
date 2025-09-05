@@ -44,5 +44,42 @@ describe('formatPrice', () => {
     }).format(1.01);
     expect(formatPrice(amount)).toBe(expected);
   });
+
+  it('formats using provided currency code and locale', () => {
+    const amount = 123.45;
+    const expected = new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: 'EUR',
+    }).format(amount);
+    expect(formatPrice(amount, 'EUR', 'de-DE')).toBe(expected);
+  });
+
+  it.each(['BAD', 'US', '', 'usd'])('throws RangeError for invalid currency %s', (code) => {
+    expect(() => formatPrice(1, code as any)).toThrow(RangeError);
+  });
+
+  it('throws unsupported currency code error when Intl.supportedValuesOf excludes the code', () => {
+    const original = (Intl as any).supportedValuesOf;
+    (Intl as any).supportedValuesOf = () => ['USD'];
+    try {
+      expect(() => formatPrice(1, 'EUR')).toThrow('Unsupported currency code: EUR');
+    } finally {
+      (Intl as any).supportedValuesOf = original;
+    }
+  });
+
+  it('uses explicit locale over default', () => {
+    const amount = 1234.56;
+    const defaultFormatted = formatPrice(amount, 'USD');
+    const deFormatted = formatPrice(amount, 'USD', 'de-DE');
+    const expected = new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(amount);
+    expect(deFormatted).toBe(expected);
+    if (defaultFormatted !== deFormatted) {
+      expect(deFormatted).not.toBe(defaultFormatted);
+    }
+  });
 });
 

@@ -1,11 +1,9 @@
-import path from "node:path";
 import { promises as fs } from "node:fs";
 import {
   recoverAbandonedCarts,
   resolveAbandonedCartDelay,
 } from "../abandonedCart";
 import type { AbandonedCart } from "../abandonedCart";
-import { DATA_ROOT } from "@platform-core/dataRoot";
 import { sendCampaignEmail } from "../send";
 
 jest.mock("../send", () => ({
@@ -113,70 +111,64 @@ describe("recoverAbandonedCarts", () => {
 
 describe("resolveAbandonedCartDelay", () => {
   const shop = "abandonedtest";
-  const shopDir = path.join(DATA_ROOT, shop);
+  const key = `ABANDONED_CART_DELAY_MS_${shop.toUpperCase()}`;
+  const DEFAULT_DELAY = 24 * 60 * 60 * 1000;
 
-  beforeEach(async () => {
-    await fs.rm(shopDir, { recursive: true, force: true });
-    await fs.mkdir(shopDir, { recursive: true });
-    delete process.env[`ABANDONED_CART_DELAY_MS_${shop.toUpperCase()}`];
+  afterEach(() => {
+    jest.restoreAllMocks();
+    delete process.env[key];
     delete process.env.ABANDONED_CART_DELAY_MS;
   });
 
   it("reads delay from settings abandonedCart.delayMs", async () => {
-    await fs.writeFile(
-      path.join(shopDir, "settings.json"),
-      JSON.stringify({ abandonedCart: { delayMs: 12345 } }, null, 2),
-      "utf8",
-    );
-    const delay = await resolveAbandonedCartDelay(shop);
+    jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(
+        JSON.stringify({ abandonedCart: { delayMs: 12345 } }, null, 2),
+      );
+    const delay = await resolveAbandonedCartDelay(shop, "/tmp");
     expect(delay).toBe(12345);
   });
 
   it("reads delay from deprecated abandonedCartDelayMs", async () => {
-    await fs.writeFile(
-      path.join(shopDir, "settings.json"),
-      JSON.stringify({ abandonedCartDelayMs: 54321 }, null, 2),
-      "utf8",
-    );
-    const delay = await resolveAbandonedCartDelay(shop);
+    jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(
+        JSON.stringify({ abandonedCartDelayMs: 54321 }, null, 2),
+      );
+    const delay = await resolveAbandonedCartDelay(shop, "/tmp");
     expect(delay).toBe(54321);
   });
 
-  it("uses global env override", async () => {
+  it("environment variables override file and default delay", async () => {
+    jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(
+        JSON.stringify({ abandonedCart: { delayMs: 11111 } }, null, 2),
+      );
     process.env.ABANDONED_CART_DELAY_MS = "22222";
-    const delay = await resolveAbandonedCartDelay(shop);
-    expect(delay).toBe(22222);
-  });
-
-  it("prefers shop-specific env over global", async () => {
-    const key = `ABANDONED_CART_DELAY_MS_${shop.toUpperCase()}`;
-    process.env.ABANDONED_CART_DELAY_MS = "11111";
-    process.env[key] = "54321";
-    const delay = await resolveAbandonedCartDelay(shop);
-    expect(delay).toBe(54321);
-  });
-
-  it("uses global env when shop-specific is invalid", async () => {
-    const key = `ABANDONED_CART_DELAY_MS_${shop.toUpperCase()}`;
-    process.env.ABANDONED_CART_DELAY_MS = "33333";
-    process.env[key] = "not-a-number";
-    const delay = await resolveAbandonedCartDelay(shop);
+    process.env[key] = "33333";
+    const delay = await resolveAbandonedCartDelay(shop, "/tmp");
     expect(delay).toBe(33333);
   });
 
-  it("uses shop-specific env when global is invalid", async () => {
-    const key = `ABANDONED_CART_DELAY_MS_${shop.toUpperCase()}`;
-    process.env.ABANDONED_CART_DELAY_MS = "not-a-number";
-    process.env[key] = "44444";
-    const delay = await resolveAbandonedCartDelay(shop);
-    expect(delay).toBe(44444);
+  it("uses global env override when shop-specific is absent", async () => {
+    jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(
+        JSON.stringify({ abandonedCart: { delayMs: 11111 } }, null, 2),
+      );
+    process.env.ABANDONED_CART_DELAY_MS = "22222";
+    const delay = await resolveAbandonedCartDelay(shop, "/tmp");
+    expect(delay).toBe(22222);
   });
 
-  it("falls back to default for invalid env values", async () => {
-    const key = `ABANDONED_CART_DELAY_MS_${shop.toUpperCase()}`;
+  it("ignores non-numeric env values and returns default", async () => {
+    jest
+      .spyOn(fs, "readFile")
+      .mockRejectedValue(new Error("missing"));
     process.env.ABANDONED_CART_DELAY_MS = "not-a-number";
-    process.env[key] = "also-not-a-number";
-    const delay = await resolveAbandonedCartDelay(shop);
-    expect(delay).toBe(24 * 60 * 60 * 1000);
+    const delay = await resolveAbandonedCartDelay(shop, "/tmp");
+    expect(delay).toBe(DEFAULT_DELAY);
   });
 });

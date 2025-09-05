@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals';
+import * as path from 'path';
 
 const product = { id: '123', title: 'Title', description: 'Desc' };
 
@@ -9,13 +10,15 @@ describe('generateMeta', () => {
         { content: [{ text: '{"title":"T","description":"D","alt":"A"}' }] },
       ],
     });
+    const b64 = Buffer.from('img').toString('base64');
     const imagesGenerateMock = jest.fn().mockResolvedValue({
-      data: [{ b64_json: Buffer.from('img').toString('base64') }],
+      data: [{ b64_json: b64 }],
     });
+    const writeFileMock = jest.fn();
     let result;
     await jest.isolateModulesAsync(async () => {
       jest.doMock('@acme/config/env/core', () => ({ coreEnv: { OPENAI_API_KEY: 'key' } }));
-      jest.doMock('fs', () => ({ promises: { writeFile: jest.fn(), mkdir: jest.fn() } }));
+      jest.doMock('fs', () => ({ promises: { writeFile: writeFileMock, mkdir: jest.fn() } }));
       jest.doMock('openai', () => ({
         __esModule: true,
         default: jest.fn().mockImplementation(() => ({
@@ -26,6 +29,8 @@ describe('generateMeta', () => {
       const { generateMeta } = await import('../src/generateMeta');
       result = await generateMeta(product);
     });
+    const expectedPath = path.join(process.cwd(), 'public', 'og', `${product.id}.png`);
+    expect(writeFileMock).toHaveBeenCalledWith(expectedPath, Buffer.from(b64, 'base64'));
     expect(result).toEqual({
       title: 'T',
       description: 'D',
@@ -169,6 +174,55 @@ describe('generateMeta', () => {
       const { generateMeta } = await import('../src/generateMeta');
       result = await generateMeta(product);
     });
+    expect(result).toEqual({
+      title: 'Title',
+      description: 'Desc',
+      alt: 'Title',
+      image: '/og/123.png',
+    });
+  });
+
+  it('returns fallback when __OPENAI_IMPORT_ERROR__ is set', async () => {
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock('@acme/config/env/core', () => ({ coreEnv: { OPENAI_API_KEY: 'key' } }));
+      (globalThis as any).__OPENAI_IMPORT_ERROR__ = true;
+      const { generateMeta } = await import('../src/generateMeta');
+      result = await generateMeta(product);
+      delete (globalThis as any).__OPENAI_IMPORT_ERROR__;
+    });
+    expect(result).toEqual({
+      title: 'Title',
+      description: 'Desc',
+      alt: 'Title',
+      image: '/og/123.png',
+    });
+  });
+
+  it('ignores invalid JSON and keeps fallback metadata', async () => {
+    const responsesCreateMock = jest.fn().mockResolvedValue({
+      output: [{ content: [{ text: 'not json' }] }],
+    });
+    const b64 = Buffer.from('img').toString('base64');
+    const imagesGenerateMock = jest.fn().mockResolvedValue({
+      data: [{ b64_json: b64 }],
+    });
+    const writeFileMock = jest.fn();
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock('@acme/config/env/core', () => ({ coreEnv: { OPENAI_API_KEY: 'key' } }));
+      jest.doMock('fs', () => ({ promises: { writeFile: writeFileMock, mkdir: jest.fn() } }));
+      jest.doMock('openai', () => ({
+        __esModule: true,
+        default: jest.fn().mockImplementation(() => ({
+          responses: { create: responsesCreateMock },
+          images: { generate: imagesGenerateMock },
+        })),
+      }), { virtual: true });
+      const { generateMeta } = await import('../src/generateMeta');
+      result = await generateMeta(product);
+    });
+    expect(writeFileMock).toHaveBeenCalled();
     expect(result).toEqual({
       title: 'Title',
       description: 'Desc',

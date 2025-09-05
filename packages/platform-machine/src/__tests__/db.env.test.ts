@@ -1,3 +1,4 @@
+/** @jest-environment node */
 import { jest } from "@jest/globals";
 
 describe("db env guards", () => {
@@ -30,7 +31,7 @@ describe("db env guards", () => {
             throw new Error("invalid url");
           }),
         }),
-        { virtual: true },
+        { virtual: true }
       );
       await import("@acme/platform-core/db");
     });
@@ -43,11 +44,9 @@ describe("db env guards", () => {
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://ok" }),
       }));
       process.env.NODE_ENV = "production";
-      jest.doMock(
-        "@prisma/client",
-        () => ({ PrismaClient: ctor }),
-        { virtual: true },
-      );
+      jest.doMock("@prisma/client", () => ({ PrismaClient: ctor }), {
+        virtual: true,
+      });
       const { prisma } = await import("@acme/platform-core/db");
       expect(prisma).toBeDefined();
       expect(ctor).toHaveBeenCalledWith({
@@ -63,11 +62,9 @@ describe("db env guards", () => {
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://ok" }),
       }));
       process.env.NODE_ENV = "production";
-      jest.doMock(
-        "@prisma/client",
-        () => ({ PrismaClient: ctor }),
-        { virtual: true },
-      );
+      jest.doMock("@prisma/client", () => ({ PrismaClient: ctor }), {
+        virtual: true,
+      });
       const { prisma } = await import("@acme/platform-core/db");
       const { prisma: again } = await import("@acme/platform-core/db");
       expect(prisma).toBe(again);

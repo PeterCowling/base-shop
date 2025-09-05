@@ -1,3 +1,4 @@
+/** @jest-environment node */
 import { jest } from "@jest/globals";
 
 // Inventory repository
@@ -13,7 +14,7 @@ describe.skip("inventoryRepository", () => {
     const read = jest.fn().mockResolvedValue(["item"]);
     jest.doMock(
       "@acme/platform-core/repositories/inventory.sqlite.server",
-      () => ({ sqliteInventoryRepository: { read } }),
+      () => ({ sqliteInventoryRepository: { read } })
     );
     const { readInventory } = await import(
       "@acme/platform-core/repositories/inventory.server"
@@ -27,7 +28,7 @@ describe.skip("inventoryRepository", () => {
     const read = jest.fn().mockRejectedValue(new Error("fail"));
     jest.doMock(
       "@acme/platform-core/repositories/inventory.json.server",
-      () => ({ jsonInventoryRepository: { read } }),
+      () => ({ jsonInventoryRepository: { read } })
     );
     const { readInventory } = await import(
       "@acme/platform-core/repositories/inventory.server"
@@ -45,9 +46,9 @@ describe.skip("products repository", () => {
   });
 
   it("returns product when found", async () => {
-    jest.spyOn(await import("fs"), "readFile").mockResolvedValue(
-      JSON.stringify([{ id: "p1", row_version: 1 }]) as any,
-    );
+    jest
+      .spyOn(await import("fs"), "readFile")
+      .mockResolvedValue(JSON.stringify([{ id: "p1", row_version: 1 }]) as any);
     const { getProductById } = await import(
       "@acme/platform-core/src/repositories/products.server"
     );
@@ -137,9 +138,9 @@ describe.skip("reverseLogisticsEvents repository", () => {
     const { recordEvent } = await import(
       "@acme/platform-core/src/repositories/reverseLogisticsEvents.server"
     );
-    await expect(
-      recordEvent("shop", "s1", "received", "now"),
-    ).rejects.toThrow("fail");
+    await expect(recordEvent("shop", "s1", "received", "now")).rejects.toThrow(
+      "fail"
+    );
   });
 });
 
@@ -152,9 +153,9 @@ describe.skip("settings repository", () => {
   });
 
   it("falls back to defaults when file missing", async () => {
-    jest.spyOn(await import("fs"), "readFile").mockRejectedValue(
-      new Error("missing"),
-    );
+    jest
+      .spyOn(await import("fs"), "readFile")
+      .mockRejectedValue(new Error("missing"));
     const { getShopSettings } = await import(
       "@acme/platform-core/src/repositories/settings.server"
     );
@@ -210,7 +211,7 @@ describe.skip("shop repository", () => {
       "@acme/platform-core/src/repositories/shop.server"
     );
     await expect(getShopById("unknown")).rejects.toThrow(
-      "Shop unknown not found",
+      "Shop unknown not found"
     );
   });
 

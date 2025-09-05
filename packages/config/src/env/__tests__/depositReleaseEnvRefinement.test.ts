@@ -84,6 +84,49 @@ describe("depositReleaseEnvRefinement", () => {
       }
     },
   );
+
+  it("reports issues for invalid prefixed vars", () => {
+    const parsed = schema.safeParse({
+      ...baseEnv,
+      DEPOSIT_RELEASE_OOPS_ENABLED: "nope",
+      DEPOSIT_RELEASE_OOPS_INTERVAL_MS: "soon",
+      REVERSE_LOGISTICS_OOPS_ENABLED: "nah",
+      REVERSE_LOGISTICS_OOPS_INTERVAL_MS: "later",
+      LATE_FEE_OOPS_ENABLED: "maybe",
+      LATE_FEE_OOPS_INTERVAL_MS: "whenever",
+    });
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: ["DEPOSIT_RELEASE_OOPS_ENABLED"],
+            message: "must be true or false",
+          }),
+          expect.objectContaining({
+            path: ["DEPOSIT_RELEASE_OOPS_INTERVAL_MS"],
+            message: "must be a number",
+          }),
+          expect.objectContaining({
+            path: ["REVERSE_LOGISTICS_OOPS_ENABLED"],
+            message: "must be true or false",
+          }),
+          expect.objectContaining({
+            path: ["REVERSE_LOGISTICS_OOPS_INTERVAL_MS"],
+            message: "must be a number",
+          }),
+          expect.objectContaining({
+            path: ["LATE_FEE_OOPS_ENABLED"],
+            message: "must be true or false",
+          }),
+          expect.objectContaining({
+            path: ["LATE_FEE_OOPS_INTERVAL_MS"],
+            message: "must be a number",
+          }),
+        ]),
+      );
+    }
+  });
   it("accepts valid ENABLED and INTERVAL_MS values for all prefixes", () => {
     const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
     depositReleaseEnvRefinement(

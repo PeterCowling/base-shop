@@ -19,8 +19,13 @@ describe("payments env", () => {
       STRIPE_SECRET_KEY: "sk_live_123",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
       STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+      PAYMENTS_SANDBOX: true,
+      PAYMENTS_CURRENCY: "USD",
     };
-    process.env = env as NodeJS.ProcessEnv;
+    process.env = {
+      ...env,
+      PAYMENTS_SANDBOX: "true",
+    } as unknown as NodeJS.ProcessEnv;
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     jest.resetModules();
     const { paymentsEnv } = require("../payments.js");
@@ -33,8 +38,13 @@ describe("payments env", () => {
       STRIPE_SECRET_KEY: "sk_live_123",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
       STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+      PAYMENTS_SANDBOX: true,
+      PAYMENTS_CURRENCY: "USD",
     };
-    process.env = env as NodeJS.ProcessEnv;
+    process.env = {
+      ...env,
+      PAYMENTS_SANDBOX: "true",
+    } as unknown as NodeJS.ProcessEnv;
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     jest.resetModules();
     const { paymentsEnv } = await import("../payments.ts");
@@ -72,6 +82,8 @@ describe("payments env defaults", () => {
         STRIPE_SECRET_KEY: "sk_test",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
         STRIPE_WEBHOOK_SECRET: "whsec_test",
+        PAYMENTS_SANDBOX: true,
+        PAYMENTS_CURRENCY: "USD",
       });
       expect(warnSpy).toHaveBeenCalledWith(
         "⚠️ Invalid payments environment variables:",
@@ -110,6 +122,8 @@ describe("payments env defaults", () => {
       STRIPE_SECRET_KEY: "sk_test",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
       STRIPE_WEBHOOK_SECRET: "whsec_test",
+      PAYMENTS_SANDBOX: true,
+      PAYMENTS_CURRENCY: "USD",
     });
     expect(warnSpy).toHaveBeenCalledWith(
       "⚠️ Invalid payments environment variables:",
@@ -141,6 +155,8 @@ describe("payments env defaults", () => {
         STRIPE_SECRET_KEY: "sk_test",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
         STRIPE_WEBHOOK_SECRET: "whsec_test",
+        PAYMENTS_SANDBOX: true,
+        PAYMENTS_CURRENCY: "USD",
       });
       expect(warnSpy).toHaveBeenCalledWith(
         "⚠️ Invalid payments environment variables:",
@@ -171,6 +187,8 @@ describe("payments env defaults", () => {
       STRIPE_SECRET_KEY: "sk_test",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
       STRIPE_WEBHOOK_SECRET: "whsec_test",
+      PAYMENTS_SANDBOX: true,
+      PAYMENTS_CURRENCY: "USD",
     });
     expect(warnSpy).toHaveBeenCalledWith(
       "⚠️ Invalid payments environment variables:",
@@ -208,6 +226,8 @@ describe("payments env defaults", () => {
           STRIPE_SECRET_KEY: "sk_test",
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
           STRIPE_WEBHOOK_SECRET: "whsec_test",
+          PAYMENTS_SANDBOX: true,
+          PAYMENTS_CURRENCY: "USD",
         });
         expect(warnSpy).toHaveBeenCalledWith(
           "⚠️ Invalid payments environment variables:",
@@ -252,6 +272,8 @@ describe("payments env defaults", () => {
           STRIPE_SECRET_KEY: "sk_test",
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
           STRIPE_WEBHOOK_SECRET: "whsec_test",
+          PAYMENTS_SANDBOX: true,
+          PAYMENTS_CURRENCY: "USD",
         });
         expect(warnSpy).toHaveBeenCalledWith(
           "⚠️ Invalid payments environment variables:",
@@ -275,6 +297,8 @@ describe("payments env defaults", () => {
         STRIPE_SECRET_KEY: "sk_test",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
         STRIPE_WEBHOOK_SECRET: "whsec_test",
+        PAYMENTS_SANDBOX: true,
+        PAYMENTS_CURRENCY: "USD",
       });
       expect(warnSpy).toHaveBeenCalledWith(
         "⚠️ Invalid payments environment variables:",
@@ -298,6 +322,8 @@ describe("payments env defaults", () => {
         STRIPE_SECRET_KEY: "sk_test",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
         STRIPE_WEBHOOK_SECRET: "whsec_test",
+        PAYMENTS_SANDBOX: true,
+        PAYMENTS_CURRENCY: "USD",
       });
       expect(warnSpy).toHaveBeenCalledWith(
         "⚠️ Invalid payments environment variables:",
@@ -320,6 +346,8 @@ describe("payments env defaults", () => {
         STRIPE_SECRET_KEY: "sk_test",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
         STRIPE_WEBHOOK_SECRET: "whsec_test",
+        PAYMENTS_SANDBOX: true,
+        PAYMENTS_CURRENCY: "USD",
       });
       expect(warnSpy).toHaveBeenCalledWith(
         "⚠️ Invalid payments environment variables:",
@@ -344,6 +372,8 @@ describe("payment gateway flag", () => {
       STRIPE_SECRET_KEY: "sk_test",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
       STRIPE_WEBHOOK_SECRET: "whsec_test",
+      PAYMENTS_SANDBOX: true,
+      PAYMENTS_CURRENCY: "USD",
     });
     expect(warnSpy).not.toHaveBeenCalled();
   });
@@ -362,6 +392,8 @@ describe("payment gateway flag", () => {
       STRIPE_SECRET_KEY: "sk_test_abc",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_abc",
       STRIPE_WEBHOOK_SECRET: "whsec_test_abc",
+      PAYMENTS_SANDBOX: true,
+      PAYMENTS_CURRENCY: "USD",
     });
     expect(warnSpy).not.toHaveBeenCalled();
   });
@@ -380,6 +412,8 @@ describe("payment gateway flag", () => {
       STRIPE_SECRET_KEY: "sk_live_abc",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_abc",
       STRIPE_WEBHOOK_SECRET: "whsec_live_abc",
+      PAYMENTS_SANDBOX: true,
+      PAYMENTS_CURRENCY: "USD",
     });
     expect(warnSpy).not.toHaveBeenCalled();
   });
@@ -398,6 +432,8 @@ describe("payment gateway flag", () => {
       STRIPE_SECRET_KEY: "sk_test",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
       STRIPE_WEBHOOK_SECRET: "whsec_test",
+      PAYMENTS_SANDBOX: true,
+      PAYMENTS_CURRENCY: "USD",
     });
     expect(warnSpy).toHaveBeenCalledWith(
       "⚠️ Invalid payments environment variables:",

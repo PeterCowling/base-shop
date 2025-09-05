@@ -204,3 +204,11 @@ async function sendWithNodemailer(options: CampaignOptions): Promise<void> {
     text: options.text,
   });
 }
+
+export {
+  deriveText,
+  ensureText,
+  loadProvider,
+  sendWithRetry,
+  sendWithNodemailer,
+};

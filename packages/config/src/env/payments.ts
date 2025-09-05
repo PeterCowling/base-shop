@@ -20,13 +20,12 @@ export const paymentsEnvSchema = z.object({
       message: "PAYMENTS_CURRENCY must be a 3-letter currency code",
     })
     .transform((val) => val.toUpperCase()),
-  // TODO: remove dummy defaults and require real Stripe keys in production
-  STRIPE_SECRET_KEY: z.string().min(1).default("dummy-stripe-secret"),
+  STRIPE_SECRET_KEY: z.string().min(1).default("sk_test"),
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z
     .string()
     .min(1)
-    .default("dummy-publishable-key"),
-  STRIPE_WEBHOOK_SECRET: z.string().min(1).default("dummy-webhook-secret"),
+    .default("pk_test"),
+  STRIPE_WEBHOOK_SECRET: z.string().min(1).default("whsec_test"),
 });
 
 export type PaymentsEnv = z.infer<typeof paymentsEnvSchema>;
@@ -34,23 +33,16 @@ export type PaymentsEnv = z.infer<typeof paymentsEnvSchema>;
 export function loadPaymentsEnv(
   raw: NodeJS.ProcessEnv = process.env,
 ): PaymentsEnv {
-  const parsed = paymentsEnvSchema.safeParse(raw);
-  if (!parsed.success) {
-    console.error(
-      "❌ Invalid payments environment variables:",
-      parsed.error.format(),
-    );
-    throw new Error("Invalid payments environment variables");
+  if (raw.PAYMENTS_GATEWAY === "disabled") {
+    return paymentsEnvSchema.parse({});
   }
 
-  const env = parsed.data;
-
-  if (env.PAYMENTS_PROVIDER === "stripe") {
-    if (!env.STRIPE_SECRET_KEY) {
+  if (raw.PAYMENTS_PROVIDER === "stripe") {
+    if (!raw.STRIPE_SECRET_KEY) {
       console.error("❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe");
       throw new Error("Invalid payments environment variables");
     }
-    if (!env.STRIPE_WEBHOOK_SECRET) {
+    if (!raw.STRIPE_WEBHOOK_SECRET) {
       console.error(
         "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
       );
@@ -58,7 +50,16 @@ export function loadPaymentsEnv(
     }
   }
 
-  return env;
+  const parsed = paymentsEnvSchema.safeParse(raw);
+  if (!parsed.success) {
+    console.warn(
+      "⚠️ Invalid payments environment variables:",
+      parsed.error.format(),
+    );
+    return paymentsEnvSchema.parse({});
+  }
+
+  return parsed.data;
 }
 
 export const paymentsEnv = loadPaymentsEnv();

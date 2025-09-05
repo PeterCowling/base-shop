@@ -176,6 +176,7 @@ const config = {
     '^@acme/config/env$': ' /packages/config/src/env/index.ts',
     '^@acme/config/env/core$': ' /packages/config/src/env/core.ts',
     '^@acme/config/env/(.*)$': ' /packages/config/src/env/$1.ts',
+    '^@acme/config/src/(.*)$': ' /packages/config/src/$1',
     '^@acme/config$': ' /packages/config/src/env/index.ts',
     '^@acme/config/(.*)$': ' /packages/config/src/$1',
     '^@acme/platform-core$': ' /packages/platform-core/src/index.ts',

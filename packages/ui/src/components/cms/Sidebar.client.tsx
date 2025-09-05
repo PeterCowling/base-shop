@@ -118,16 +118,15 @@ function Sidebar({ role, pathname: pathnameProp }: SidebarProps) {
         <ul className="flex flex-col gap-1 px-2">
           {navItems.map(({ label, icon, title, fullHref, active, href }) => (
             <li key={fullHref}>
-              <Link href={fullHref} legacyBehavior>
-                <a
-                  aria-current={active ? "page" : undefined}
-                  title={title}
-                  className={`focus-visible:ring-primary flex items-center gap-2 rounded-md px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none ${active ? "bg-primary/10 font-medium" : "hover:bg-muted"}`}
-                  {...(href === "/configurator" ? { onClick: handleClick } : {})}
-                >
-                  <span>{icon}</span>
-                  {label}
-                </a>
+              <Link
+                href={fullHref}
+                aria-current={active ? "page" : undefined}
+                title={title}
+                className={`focus-visible:ring-primary flex items-center gap-2 rounded-md px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none ${active ? "bg-primary/10 font-medium" : "hover:bg-muted"}`}
+                {...(href === "/configurator" ? { onClick: handleClick } : {})}
+              >
+                <span>{icon}</span>
+                {label}
               </Link>
             </li>
           ))}

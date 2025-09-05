@@ -43,3 +43,23 @@ describe("from address", () => {
     expect(env.CAMPAIGN_FROM).toBeUndefined();
   });
 });
+
+describe("smtp coercion", () => {
+  it("coerces port and secure flags", () => {
+    const env = emailEnvSchema.parse({
+      SMTP_PORT: "25",
+      SMTP_SECURE: "Yes",
+    } as any);
+    expect(env.SMTP_PORT).toBe(25);
+    expect(env.SMTP_SECURE).toBe(true);
+  });
+
+  it("rejects invalid smtp values", () => {
+    expect(() =>
+      emailEnvSchema.parse({ SMTP_PORT: "oops" } as any),
+    ).toThrow("must be a number");
+    expect(() =>
+      emailEnvSchema.parse({ SMTP_SECURE: "maybe" } as any),
+    ).toThrow("must be a boolean");
+  });
+});

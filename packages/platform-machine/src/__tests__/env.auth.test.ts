@@ -1,5 +1,6 @@
 import { describe, it, expect } from "@jest/globals";
 import { authEnvSchema } from "@acme/config/env/auth";
+import { withEnv } from "./helpers/env";
 
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
 const SESSION_SECRET = "session-secret-32-chars-long-string!";
@@ -128,5 +129,47 @@ describe("provider selection", () => {
       OAUTH_CLIENT_SECRET: NEXT_SECRET,
     });
     expect(env.AUTH_PROVIDER).toBe("oauth");
+  });
+});
+
+describe("strongSecret validation", () => {
+  it("rejects short secrets", () => {
+    expect(() =>
+      authEnvSchema.parse({
+        ...base,
+        NEXTAUTH_SECRET: "too-short",
+      }),
+    ).toThrow("must be at least 32 characters");
+  });
+
+  it("rejects non-ASCII secrets", () => {
+    expect(() =>
+      authEnvSchema.parse({
+        ...base,
+        NEXTAUTH_SECRET: "a".repeat(31) + "ö",
+      }),
+    ).toThrow("must contain only printable ASCII characters");
+  });
+});
+
+describe("AUTH_TOKEN_TTL normalization", () => {
+  it("normalizes numeric and spaced values", async () => {
+    await withEnv({ AUTH_TOKEN_TTL: "60", NODE_ENV: "development" }, async () => {
+      const mod = await import("@acme/config/env/auth");
+      expect(process.env.AUTH_TOKEN_TTL).toBe("60s");
+      expect(mod.authEnv.AUTH_TOKEN_TTL).toBe(60);
+      const diff = mod.authEnv.AUTH_TOKEN_EXPIRES_AT.getTime() - Date.now();
+      expect(diff).toBeGreaterThan(59_000);
+      expect(diff).toBeLessThan(61_000);
+    });
+
+    await withEnv(
+      { AUTH_TOKEN_TTL: " 5 m ", NODE_ENV: "development" },
+      async () => {
+        const mod = await import("@acme/config/env/auth");
+        expect(process.env.AUTH_TOKEN_TTL).toBe("5m");
+        expect(mod.authEnv.AUTH_TOKEN_TTL).toBe(300);
+      },
+    );
   });
 });

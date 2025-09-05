@@ -30,6 +30,23 @@ describe("shipping env", () => {
     ).toThrow("Invalid shipping environment variables");
   });
 
+  it("splits and normalizes countries", () => {
+    const env = loadShippingEnv({
+      ALLOWED_COUNTRIES: "us, ca , mx",
+      DEFAULT_COUNTRY: " us ",
+    } as any);
+    expect(env.ALLOWED_COUNTRIES).toEqual(["US", "CA", "MX"]);
+    expect(env.DEFAULT_COUNTRY).toBe("US");
+  });
+
+  it("coerces local pickup flag", () => {
+    const env = loadShippingEnv({ LOCAL_PICKUP_ENABLED: "1" } as any);
+    expect(env.LOCAL_PICKUP_ENABLED).toBe(true);
+    expect(() =>
+      loadShippingEnv({ LOCAL_PICKUP_ENABLED: "maybe" } as any),
+    ).toThrow("Invalid shipping environment variables");
+  });
+
   it("omits optional keys when absent", () => {
     const env = loadShippingEnv({} as any);
     expect(env.TAXJAR_KEY).toBeUndefined();

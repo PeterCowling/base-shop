@@ -36,4 +36,12 @@ describe("payments env", () => {
     const on = loadPaymentsEnv({ PAYMENTS_SANDBOX: "true" } as any);
     expect(on.PAYMENTS_SANDBOX).toBe(true);
   });
+
+  it("warns and falls back on invalid currency", () => {
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const env = loadPaymentsEnv({ PAYMENTS_CURRENCY: "usd1" } as any);
+    expect(env.PAYMENTS_CURRENCY).toBe("USD");
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
+  });
 });

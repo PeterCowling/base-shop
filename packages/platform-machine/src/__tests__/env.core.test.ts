@@ -61,6 +61,10 @@ describe("deposit/reverse/late-fee refinement", () => {
       loadCoreEnv({
         DEPOSIT_RELEASE_ENABLED: "maybe",
         DEPOSIT_RELEASE_INTERVAL_MS: "soon",
+        REVERSE_LOGISTICS_ENABLED: "nope",
+        REVERSE_LOGISTICS_INTERVAL_MS: "later",
+        LATE_FEE_ENABLED: "perhaps",
+        LATE_FEE_INTERVAL_MS: "eventually",
       } as any),
     ).toThrow("Invalid core environment variables");
     const output = err.mock.calls.flat().join("\n");
@@ -68,6 +72,14 @@ describe("deposit/reverse/late-fee refinement", () => {
     expect(output).toContain(
       "DEPOSIT_RELEASE_INTERVAL_MS: must be a number",
     );
+    expect(output).toContain(
+      "REVERSE_LOGISTICS_ENABLED: must be true or false",
+    );
+    expect(output).toContain(
+      "REVERSE_LOGISTICS_INTERVAL_MS: must be a number",
+    );
+    expect(output).toContain("LATE_FEE_ENABLED: must be true or false");
+    expect(output).toContain("LATE_FEE_INTERVAL_MS: must be a number");
     err.mockRestore();
   });
 });
@@ -79,6 +91,23 @@ describe("invalid URL", () => {
       loadCoreEnv({ NEXT_PUBLIC_BASE_URL: "not a url" } as any),
     ).toThrow("Invalid core environment variables");
     expect(err).toHaveBeenCalled();
+    err.mockRestore();
+  });
+});
+
+
+describe("nested schema errors", () => {
+  it("bubbles up auth and email issues", () => {
+    const err = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadCoreEnv({
+        AUTH_PROVIDER: "jwt",
+        EMAIL_PROVIDER: "sendgrid",
+      } as any),
+    ).toThrow("Invalid core environment variables");
+    const output = err.mock.calls.flat().join("\n");
+    expect(output).toContain("JWT_SECRET is required when AUTH_PROVIDER=jwt");
+    expect(output).toContain("SENDGRID_API_KEY: Required");
     err.mockRestore();
   });
 });
@@ -99,6 +128,27 @@ describe("coreEnv proxy traps", () => {
           "CMS_SPACE_URL",
         );
         expect(desc?.value).toBe("https://example.com");
+      },
+    );
+  });
+});
+
+describe("coreEnv caching", () => {
+  it("reuses parsed env until modules reset", async () => {
+    await withEnv(
+      { CMS_SPACE_URL: "https://one.example", CMS_ACCESS_TOKEN: "a" },
+      async () => {
+        const mod = await import("@acme/config/env/core");
+        expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://one.example");
+        expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://one.example");
+      },
+    );
+
+    await withEnv(
+      { CMS_SPACE_URL: "https://two.example", CMS_ACCESS_TOKEN: "b" },
+      async () => {
+        const mod = await import("@acme/config/env/core");
+        expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://two.example");
       },
     );
   });

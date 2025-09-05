@@ -136,8 +136,7 @@ export async function startDepositReleaseService(
   releaseFn?: typeof releaseDepositsOnce,
   logFn: typeof logger.error = (msg, meta) => logger.error(msg, meta),
 ): Promise<() => void> {
-  const release =
-    releaseFn ?? (await import("./releaseDepositsService")).releaseDepositsOnce;
+  const release = releaseFn ?? releaseDepositsOnce;
   const shops = await readdir(dataRoot);
   const timers: NodeJS.Timeout[] = [];
 

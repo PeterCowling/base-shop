@@ -107,6 +107,45 @@ describe("recoverAbandonedCarts", () => {
     expect(carts[0].reminded).toBe(true);
     expect(carts[1].reminded).toBeUndefined();
   });
+
+  it("sends emails for multiple eligible carts", async () => {
+    const delay = 24 * 60 * 60 * 1000; // 1 day
+    const now = Date.now();
+    const carts: AbandonedCart[] = [
+      {
+        email: "first@example.com",
+        cart: {},
+        updatedAt: now - delay - 1000,
+      },
+      {
+        email: "second@example.com",
+        cart: {},
+        updatedAt: now - delay - 2000,
+      },
+      {
+        email: "fresh@example.com",
+        cart: {},
+        updatedAt: now - delay + 1000,
+      },
+    ];
+
+    await recoverAbandonedCarts(carts, now, delay);
+
+    expect(sendCampaignEmailMock).toHaveBeenCalledTimes(2);
+    expect(sendCampaignEmailMock).toHaveBeenNthCalledWith(1, {
+      to: "first@example.com",
+      subject: "You left items in your cart",
+      html: "<p>You left items in your cart.</p>",
+    });
+    expect(sendCampaignEmailMock).toHaveBeenNthCalledWith(2, {
+      to: "second@example.com",
+      subject: "You left items in your cart",
+      html: "<p>You left items in your cart.</p>",
+    });
+    expect(carts[0].reminded).toBe(true);
+    expect(carts[1].reminded).toBe(true);
+    expect(carts[2].reminded).toBeUndefined();
+  });
 });
 
 describe("resolveAbandonedCartDelay", () => {
@@ -190,5 +229,19 @@ describe("resolveAbandonedCartDelay", () => {
     process.env.ABANDONED_CART_DELAY_MS = "not-a-number";
     const delay = await resolveAbandonedCartDelay(shop, "/tmp");
     expect(delay).toBe(DEFAULT_DELAY);
+  });
+
+  it("sanitizes shop name when reading env override", async () => {
+    const specialShop = "aband.oned";
+    const specialKey = "ABANDONED_CART_DELAY_MS_ABAND_ONED";
+    jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(
+        JSON.stringify({ abandonedCart: { delayMs: 11111 } }, null, 2),
+      );
+    process.env[specialKey] = "55555";
+    const delay = await resolveAbandonedCartDelay(specialShop, "/tmp");
+    expect(delay).toBe(55555);
+    delete process.env[specialKey];
   });
 });

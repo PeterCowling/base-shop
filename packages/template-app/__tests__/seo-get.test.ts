@@ -119,6 +119,43 @@ describe("getSeo", () => {
     ]);
   });
 
+  it.each([
+    [
+      {
+        title: "Custom",
+        description: "Desc",
+        canonical: "https://shop.com/en/page",
+        openGraph: { image: "/og.jpg" },
+      },
+      {
+        title: "Custom",
+        description: "Desc",
+        canonical: "https://shop.com/en/page",
+        image: "https://shop.com/og.jpg",
+      },
+    ],
+    [
+      {
+        title: "Another",
+        description: "More",
+        openGraph: { images: [{ url: "/img.png" }] },
+      },
+      {
+        title: "Another",
+        description: "More",
+        canonical: "https://shop.com/en",
+        image: "https://shop.com/img.png",
+      },
+    ],
+  ])("generates meta tags for %o", async (input, expected) => {
+    const { getSeo } = await import("../src/lib/seo");
+    const seo = await getSeo("en", input);
+    expect(seo.title).toBe(expected.title);
+    expect(seo.description).toBe(expected.description);
+    expect(seo.canonical).toBe(expected.canonical);
+    expect(seo.openGraph?.images?.[0]?.url).toBe(expected.image);
+  });
+
   it("resolves openGraph images array", async () => {
     const { getSeo } = await import("../src/lib/seo");
     const seo = await getSeo("en", {

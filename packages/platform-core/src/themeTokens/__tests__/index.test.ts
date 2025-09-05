@@ -78,6 +78,26 @@ describe('loadThemeTokensBrowser', () => {
       themeTokens.baseTokens
     );
   });
+
+  it('merges partial overrides with base tokens and tolerates invalid values', async () => {
+    jest.mock(
+      '@themes/partial',
+      () => ({
+        __esModule: true,
+        tokens: {
+          '--color-bg': { light: '123 50% 50%' },
+          '--bogus': { light: 42 as any },
+        },
+      }),
+      { virtual: true }
+    );
+
+    const tokens = await themeTokens.loadThemeTokensBrowser('partial');
+    const merged = { ...themeTokens.baseTokens, ...tokens } as Record<string, any>;
+    expect(merged['--color-bg']).toBe('123 50% 50%');
+    expect(merged['--color-fg']).toBe(themeTokens.baseTokens['--color-fg']);
+    expect(merged['--bogus']).toBe(42);
+  });
 });
 
 describe('loadThemeTokens', () => {

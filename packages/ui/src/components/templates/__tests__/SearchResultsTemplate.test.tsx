@@ -9,6 +9,10 @@ jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["USD", jest.fn()],
 }));
 
+jest.mock("@acme/platform-core/contexts/CartContext", () => ({
+  useCart: () => [{}, jest.fn()],
+}));
+
 const results: SKU[] = [
   {
     id: "1",

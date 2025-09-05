@@ -339,4 +339,10 @@ export declare function encodeCartCookie(value: string): string;
  */
 export declare function decodeCartCookie(raw?: string | null): unknown;
 /** Build the Set-Cookie header value for HTTP responses. */
-export declare function asSetCookieHeader(value: string): string;
+export declare function asSetCookieHeader(
+  value: string,
+  maxAge?: number | null,
+  options?: {
+    domain?: string;
+  }
+): string;

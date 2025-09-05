@@ -5,6 +5,10 @@ import {
   encodeCartCookie,
 } from "../src/cartCookie";
 
+jest.mock("@acme/config/env/core", () => ({
+  loadCoreEnv: () => ({ CART_COOKIE_SECRET: "test-secret" }),
+}));
+
 describe("cart cookie helpers", () => {
   it("parses valid cookie data", () => {
     const data = { id: "test" };
@@ -17,17 +21,17 @@ describe("cart cookie helpers", () => {
     expect(decodeCartCookie(null)).toBeNull();
   });
 
-  it("sets cookie with expiration", () => {
+  it("sets cookie with expiration and domain", () => {
     const encoded = "value";
-    expect(asSetCookieHeader(encoded)).toBe(
-      `${CART_COOKIE}=${encoded}; Path=/; Max-Age=${60 * 60 * 24 * 30}; SameSite=Strict; Secure; HttpOnly`
+    expect(asSetCookieHeader(encoded, 60, { domain: "example.com" })).toBe(
+      `${CART_COOKIE}=${encoded}; Path=/; Max-Age=60; Domain=example.com; SameSite=Lax; Secure; HttpOnly`
     );
   });
 
-  it("sets cookie without expiration", () => {
+  it("sets cookie without expiration or domain", () => {
     const encoded = "value";
     expect(asSetCookieHeader(encoded, null)).toBe(
-      `${CART_COOKIE}=${encoded}; Path=/; SameSite=Strict; Secure; HttpOnly`
+      `${CART_COOKIE}=${encoded}; Path=/; SameSite=Lax; Secure; HttpOnly`
     );
   });
 });

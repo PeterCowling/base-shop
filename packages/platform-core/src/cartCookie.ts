@@ -84,11 +84,13 @@ export function decodeCartCookie(raw?: string | null): unknown {
 /** Build the Set‑Cookie header value for HTTP responses. */
 export function asSetCookieHeader(
   value: string,
-  maxAge: number | null = MAX_AGE
+  maxAge: number | null = MAX_AGE,
+  options: { domain?: string } = {}
 ): string {
   const parts = [`${CART_COOKIE}=${value}`, "Path=/"];
   if (maxAge !== null) parts.push(`Max-Age=${maxAge}`);
-  parts.push("SameSite=Strict", "Secure", "HttpOnly");
+  if (options.domain) parts.push(`Domain=${options.domain}`);
+  parts.push("SameSite=Lax", "Secure", "HttpOnly");
   return parts.join("; ");
 }
 

@@ -25,6 +25,34 @@ describe('parseLimit', () => {
 describe('parseJsonBody', () => {
   const schema = z.object({ foo: z.string() });
 
+  it('returns 400 for non-JSON content-type', async () => {
+    const req = {
+      headers: new Headers({ 'Content-Type': 'text/plain' }),
+      text: jest.fn().mockResolvedValue('foo'),
+    } as unknown as Request;
+
+    const result = await parseJsonBody(req, schema, '1kb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({
+      error: 'Invalid JSON',
+    });
+  });
+
+  it('returns 400 for invalid content-type parameters', async () => {
+    const req = {
+      headers: new Headers({ 'Content-Type': 'application/json; foo=bar' }),
+      text: jest.fn().mockResolvedValue(JSON.stringify({ foo: 'bar' })),
+    } as unknown as Request;
+
+    const result = await parseJsonBody(req, schema, '1kb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({
+      error: 'Invalid JSON',
+    });
+  });
+
   it('uses text() when available', async () => {
     const req = {
       text: jest.fn().mockResolvedValue(JSON.stringify({ foo: 'bar' })),
@@ -109,6 +137,7 @@ describe('parseJsonBody', () => {
   });
 
   it('returns 400 when no body parser is available', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     const req = {} as Request;
 
     const result = await parseJsonBody(req, schema, '1kb');
@@ -117,6 +146,11 @@ describe('parseJsonBody', () => {
     await expect(result.response.json()).resolves.toEqual({
       error: 'Invalid JSON',
     });
+    expect(errorSpy).toHaveBeenCalled();
+    const logged = (errorSpy.mock.calls[0]?.[0] ?? {}) as Error;
+    expect(logged).toBeInstanceOf(Error);
+    expect(logged.message).toBe('No body parser available');
+    errorSpy.mockRestore();
   });
 
   describe.each(['GET', 'POST'] as const)('%s requests', (method) => {

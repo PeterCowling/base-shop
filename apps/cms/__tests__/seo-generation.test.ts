@@ -8,11 +8,6 @@ import { render } from "@testing-library/react";
 jest.mock("next-auth", () => ({
   getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
 }));
-
-jest.mock("@prisma/client", () => ({
-  PrismaClient: jest.fn().mockImplementation(() => ({})),
-}));
-
 const saved: any = {
   languages: ["en"],
   seo: {},

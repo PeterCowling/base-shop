@@ -3,15 +3,6 @@
  * Mocking these modules avoids network and database calls during test runs.
  */
 
-export const prismaMock = {
-  PrismaClient: jest.fn(() => ({
-    $connect: jest.fn(),
-    $disconnect: jest.fn(),
-    $transaction: jest.fn(),
-  })),
-};
-jest.mock("@prisma/client", () => prismaMock);
-
 export const redisMock = jest.fn(() => ({
   get: jest.fn(),
   set: jest.fn(),
@@ -55,7 +46,6 @@ jest.mock("next/cookies", () => nextCookiesMock, { virtual: true });
 
 // Re-export a helper to make it easy for tests to reset mocks when needed.
 export function resetExternalMocks() {
-  prismaMock.PrismaClient.mockClear();
   redisMock.mockClear();
   nodemailerMock.createTransport.mockClear();
   sendGridMock.setApiKey.mockClear();

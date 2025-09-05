@@ -23,6 +23,35 @@ describe("shipping environment parser", () => {
     expect(load({ SHIPPING_PROVIDER: "shippo" }).SHIPPING_PROVIDER).toBe(
       "shippo",
     );
+    expect(load({ SHIPPING_PROVIDER: "ups", UPS_KEY: "key" }).SHIPPING_PROVIDER).toBe(
+      "ups",
+    );
+    expect(load({ SHIPPING_PROVIDER: "dhl", DHL_KEY: "key" }).SHIPPING_PROVIDER).toBe(
+      "dhl",
+    );
+  });
+
+  it("requires carrier keys for ups and dhl", async () => {
+    const load = await getLoader();
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => load({ SHIPPING_PROVIDER: "ups" })).toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(() => load({ SHIPPING_PROVIDER: "dhl" })).toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
+  it("rejects unknown providers", async () => {
+    const load = await getLoader();
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      load({ SHIPPING_PROVIDER: "invalid" as any }),
+    ).toThrow("Invalid shipping environment variables");
+    expect(errorSpy).toHaveBeenCalled();
+    errorSpy.mockRestore();
   });
 
   it("returns parsed data on valid input", async () => {

@@ -36,6 +36,17 @@ export function loadPaymentsEnv(
     return paymentsEnvSchema.parse({});
   }
 
+  if (
+    raw.PAYMENTS_PROVIDER &&
+    raw.PAYMENTS_PROVIDER !== "stripe"
+  ) {
+    console.error(
+      "❌ Unsupported PAYMENTS_PROVIDER:",
+      raw.PAYMENTS_PROVIDER,
+    );
+    throw new Error("Invalid payments environment variables");
+  }
+
   if (raw.PAYMENTS_PROVIDER === "stripe") {
     if (!raw.STRIPE_SECRET_KEY) {
       console.error("❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe");

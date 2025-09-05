@@ -102,7 +102,7 @@ export const coreEnvBaseSchema = authEnvSchema
   .merge(cmsEnvSchema)
   .merge(emailEnvSchema.innerType())
   .merge(paymentsEnvSchema)
-  .merge(shippingEnvSchema)
+  .merge(shippingEnvSchema.innerType())
   .merge(baseEnvSchema);
 
 export function depositReleaseEnvRefinement(

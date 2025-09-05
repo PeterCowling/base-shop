@@ -2,15 +2,18 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
-export const shippingEnvSchema = z.object({
-  TAXJAR_KEY: z.string().optional(),
-  UPS_KEY: z.string().optional(),
-  DHL_KEY: z.string().optional(),
-  SHIPPING_PROVIDER: z.string().optional(),
-  ALLOWED_COUNTRIES: z
-    .string()
-    .optional()
-    .transform((val) =>
+const providers = ["none", "external", "shippo", "ups", "dhl"] as const;
+
+export const shippingEnvSchema = z
+  .object({
+    TAXJAR_KEY: z.string().optional(),
+    UPS_KEY: z.string().optional(),
+    DHL_KEY: z.string().optional(),
+    SHIPPING_PROVIDER: z.enum(providers).optional(),
+    ALLOWED_COUNTRIES: z
+      .string()
+      .optional()
+      .transform((val) =>
       val
         ? val
             .split(",")
@@ -44,7 +47,23 @@ export const shippingEnvSchema = z.object({
     .enum(["domestic", "eu", "international"])
     .optional(),
   FREE_SHIPPING_THRESHOLD: z.coerce.number().nonnegative().optional(),
-});
+  })
+  .superRefine((env, ctx) => {
+    if (env.SHIPPING_PROVIDER === "ups" && !env.UPS_KEY) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["UPS_KEY"],
+        message: "UPS_KEY is required when SHIPPING_PROVIDER=ups",
+      });
+    }
+    if (env.SHIPPING_PROVIDER === "dhl" && !env.DHL_KEY) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["DHL_KEY"],
+        message: "DHL_KEY is required when SHIPPING_PROVIDER=dhl",
+      });
+    }
+  });
 
 // ---------- loader (new) ----------
 export function loadShippingEnv(

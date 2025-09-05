@@ -65,6 +65,12 @@ describe("payments env provider", () => {
     ).rejects.toThrow("Invalid payments environment variables");
     expect(errSpy).toHaveBeenCalled();
   });
+
+  it("rejects unknown PAYMENTS_PROVIDER", async () => {
+    await expect(
+      withEnv({ PAYMENTS_PROVIDER: "paypal" as any }, () => import("../payments")),
+    ).rejects.toThrow("Invalid payments environment variables");
+  });
 });
 
 describe("payments env sandbox flag", () => {

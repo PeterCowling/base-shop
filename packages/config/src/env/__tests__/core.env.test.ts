@@ -172,6 +172,27 @@ describe("depositReleaseEnvRefinement", () => {
       },
     );
   });
+
+  it("validates late fee flags", async () => {
+    await withEnv(
+      { LATE_FEE_ENABLED: "maybe", LATE_FEE_INTERVAL_MS: "soon" },
+      async () => {
+        const { loadCoreEnv } = await importCore();
+        const err = jest.spyOn(console, "error").mockImplementation(() => {});
+        expect(() => loadCoreEnv()).toThrow(
+          "Invalid core environment variables",
+        );
+        const output = err.mock.calls.flat().join("\n");
+        expect(output).toContain(
+          "LATE_FEE_ENABLED: must be true or false",
+        );
+        expect(output).toContain(
+          "LATE_FEE_INTERVAL_MS: must be a number",
+        );
+        err.mockRestore();
+      },
+    );
+  });
 });
 
 describe("AUTH_TOKEN_TTL normalization", () => {
@@ -336,6 +357,18 @@ describe("coreEnv extras", () => {
     await expect(
       withEnv({ EMAIL_PROVIDER: "sendgrid" }, () => importCore()),
     ).rejects.toThrow("Invalid email environment variables");
+  });
+
+  it("propagates auth schema errors", async () => {
+    await expect(
+      withEnv({ AUTH_PROVIDER: "jwt" }, () => importCore()),
+    ).rejects.toThrow("Invalid auth environment variables");
+  });
+
+  it("propagates payments schema errors", async () => {
+    await expect(
+      withEnv({ PAYMENTS_PROVIDER: "stripe" }, () => importCore()),
+    ).rejects.toThrow("Invalid payments environment variables");
   });
 
   it("reloads after jest.resetModules", async () => {

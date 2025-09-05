@@ -212,4 +212,25 @@ describe("cms sanity env", () => {
     );
     errorSpy.mockRestore();
   });
+
+  it.each([
+    [1, true],
+    [0, false],
+  ])("coerces CMS_DRAFTS_ENABLED=%s", async (val, expected) => {
+    const { cmsEnvSchema } = await import("../cms.ts");
+    const result = cmsEnvSchema.safeParse({
+      ...baseEnv,
+      CMS_DRAFTS_ENABLED: val,
+    });
+    expect(result.success).toBe(true);
+    expect(result.data.CMS_DRAFTS_ENABLED).toBe(expected);
+  });
+
+  it("defaults booleans to false", async () => {
+    process.env = { ...baseEnv } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { cmsEnv } = await import("../cms.ts");
+    expect(cmsEnv.CMS_DRAFTS_ENABLED).toBe(false);
+    expect(cmsEnv.CMS_SEARCH_ENABLED).toBe(false);
+  });
 });

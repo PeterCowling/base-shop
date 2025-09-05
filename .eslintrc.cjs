@@ -10,6 +10,7 @@ module.exports = {
     "**/*.d.ts",
     "**/*.test.*",
     "**/*.spec.*",
+    "**/postcss.config.cjs",
   ],
   overrides: [
     {

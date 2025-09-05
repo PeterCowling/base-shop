@@ -52,6 +52,96 @@ describe("chargeLateFeesOnce", () => {
       25,
     );
   });
+
+  it("skips orders already returned or charged", async () => {
+    const { setupLateFeeTest, NOW } = await import("./helpers/lateFee");
+    const orders = [
+      {
+        sessionId: "sess_returned",
+        returnDueDate: new Date(NOW - 5 * 24 * 60 * 60 * 1000).toISOString(),
+        returnReceivedAt: new Date().toISOString(),
+      },
+      {
+        sessionId: "sess_charged",
+        returnDueDate: new Date(NOW - 5 * 24 * 60 * 60 * 1000).toISOString(),
+        lateFeeCharged: 5,
+      },
+    ] as any[];
+    const mocks = await setupLateFeeTest({ orders });
+    jest.doMock("@acme/config/env/core", () => ({
+      __esModule: true,
+      coreEnv: {},
+      loadCoreEnv: () => ({}),
+    }));
+
+    const { chargeLateFeesOnce } = await import("../src/lateFeeService");
+    try {
+      await chargeLateFeesOnce();
+    } finally {
+      mocks.restore();
+    }
+
+    expect(mocks.stripeRetrieve).not.toHaveBeenCalled();
+    expect(mocks.stripeCharge).not.toHaveBeenCalled();
+    expect(mocks.markLateFeeCharged).not.toHaveBeenCalled();
+  });
+
+  it("logs errors when Stripe charge fails", async () => {
+    const { setupLateFeeTest, NOW } = await import("./helpers/lateFee");
+    const overdueOrder = {
+      sessionId: "sess_1",
+      returnDueDate: new Date(NOW - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    } as any;
+    const mocks = await setupLateFeeTest({ orders: [overdueOrder] });
+    const { logger } = await import("@platform-core/utils");
+    jest.doMock("@acme/config/env/core", () => ({
+      __esModule: true,
+      coreEnv: {},
+      loadCoreEnv: () => ({}),
+    }));
+    const err = new Error("boom");
+    mocks.stripeCharge.mockRejectedValueOnce(err);
+
+    const { chargeLateFeesOnce } = await import("../src/lateFeeService");
+    try {
+      await chargeLateFeesOnce();
+    } finally {
+      mocks.restore();
+    }
+
+    expect(logger.error).toHaveBeenCalledWith(
+      "late fee charge failed",
+      expect.objectContaining({ shopId: "test", sessionId: "sess_1", err })
+    );
+    expect(mocks.markLateFeeCharged).not.toHaveBeenCalled();
+  });
+
+  it("does not charge when customer or payment method is missing", async () => {
+    const { setupLateFeeTest, NOW } = await import("./helpers/lateFee");
+    const overdueOrder = {
+      sessionId: "sess_1",
+      returnDueDate: new Date(NOW - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    } as any;
+    const mocks = await setupLateFeeTest({ orders: [overdueOrder] });
+    const { logger } = await import("@platform-core/utils");
+    jest.doMock("@acme/config/env/core", () => ({
+      __esModule: true,
+      coreEnv: {},
+      loadCoreEnv: () => ({}),
+    }));
+    mocks.stripeRetrieve.mockResolvedValueOnce({ currency: "usd" });
+
+    const { chargeLateFeesOnce } = await import("../src/lateFeeService");
+    try {
+      await chargeLateFeesOnce();
+    } finally {
+      mocks.restore();
+    }
+
+    expect(mocks.stripeCharge).not.toHaveBeenCalled();
+    expect(mocks.markLateFeeCharged).not.toHaveBeenCalled();
+    expect(logger.error).not.toHaveBeenCalled();
+  });
 });
 
 describe("resolveConfig", () => {
@@ -343,6 +433,22 @@ describe("auto-start", () => {
     process.env = OLD_ENV;
   });
 
+  it("starts the service on import", async () => {
+    const start = jest.fn().mockResolvedValue(undefined);
+    const error = jest.fn();
+    jest.doMock("../src/lateFeeService", () => {
+      if (process.env.NODE_ENV !== "test") {
+        start().catch((err) => error("failed to start late fee service", { err }));
+      }
+      return { __esModule: true, startLateFeeService: start };
+    });
+
+    await import("../src/lateFeeService");
+
+    expect(start).toHaveBeenCalledTimes(1);
+    expect(error).not.toHaveBeenCalled();
+  });
+
   it("logs errors when service fails to start", async () => {
     const err = new Error("boom");
     const readdir = jest.fn().mockRejectedValue(err);
@@ -367,7 +473,8 @@ describe("auto-start", () => {
     }));
 
     await import("../src/lateFeeService");
-    await new Promise((r) => setTimeout(r, 0));
+    await Promise.resolve();
+    await Promise.resolve();
 
     expect(error).toHaveBeenCalledWith("failed to start late fee service", { err });
   });

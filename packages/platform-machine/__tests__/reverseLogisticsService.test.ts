@@ -184,11 +184,42 @@ describe("startReverseLogisticsService", () => {
     setSpy.mockRestore();
     clearSpy.mockRestore();
   });
+
+  it("logs and rethrows when readdir fails", async () => {
+    service = await import("@acme/platform-machine");
+    const err = new Error("no shops");
+    readdir.mockRejectedValueOnce(err);
+
+    await expect(
+      service.startReverseLogisticsService({}, "/data", jest.fn())
+    ).rejects.toBe(err);
+    expect(logError).toHaveBeenCalledWith(
+      "failed to start reverse logistics service",
+      { err }
+    );
+  });
 });
 
 describe("auto-start", () => {
   beforeEach(() => {
     jest.resetModules();
+  });
+
+  it("starts service on import", async () => {
+    process.env.NODE_ENV = "production";
+    const start = jest.fn().mockResolvedValue(undefined);
+    jest.doMock("@acme/platform-machine/src/reverseLogisticsService", () => {
+      if (process.env.NODE_ENV !== "test") {
+        start().catch((err: unknown) =>
+          logError("failed to start reverse logistics service", { err })
+        );
+      }
+      return { __esModule: true, startReverseLogisticsService: start };
+    });
+    await import("@acme/platform-machine/src/reverseLogisticsService");
+    expect(start).toHaveBeenCalledTimes(1);
+    expect(logError).not.toHaveBeenCalled();
+    process.env.NODE_ENV = "test";
   });
 
   it("invokes service and logs failures", async () => {

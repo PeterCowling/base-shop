@@ -341,6 +341,7 @@ describe("startDepositReleaseService", () => {
       .spyOn(global, "clearInterval")
       .mockImplementation(() => undefined as any);
     const logSpy = jest.fn();
+    const errorSpy = jest.spyOn(logger, "error");
 
     const stop = await service.startDepositReleaseService(
       {},
@@ -354,10 +355,12 @@ describe("startDepositReleaseService", () => {
       shopId: "shop1",
       err,
     });
+    expect(errorSpy).not.toHaveBeenCalled();
 
     stop();
     setSpy.mockRestore();
     clearSpy.mockRestore();
+    errorSpy.mockRestore();
   });
 
   it("defaults to logger.error when releaseFn rejects", async () => {
@@ -396,8 +399,6 @@ describe("startDepositReleaseService", () => {
     clearSpy.mockRestore();
     errorSpy.mockRestore();
   });
-});
-
 describe("auto-start", () => {
   it("auto-starts the service and logs failures", async () => {
     jest.resetModules();

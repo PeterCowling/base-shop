@@ -82,6 +82,49 @@ describe("runMaintenanceScan", () => {
     expect(info).not.toHaveBeenCalled();
     expect(error).not.toHaveBeenCalled();
   });
+
+  it("logs read errors and continues scanning other shops", async () => {
+    const readdir = jest.fn().mockResolvedValue(["shop1", "shop2"]);
+    const readInventory = jest
+      .fn()
+      .mockResolvedValueOnce([])
+      .mockResolvedValueOnce([{ sku: "maint", wearCount: 3 }]);
+    const readProducts = jest
+      .fn()
+      .mockRejectedValueOnce(new Error("fail"))
+      .mockResolvedValueOnce([{ sku: "maint", maintenanceCycle: 3 }]);
+    const info = jest.fn();
+    const error = jest.fn();
+
+    jest.doMock("fs/promises", () => ({ __esModule: true, readdir }));
+    jest.doMock("@platform-core/repositories/inventory.server", () => ({
+      __esModule: true,
+      readInventory,
+    }));
+    jest.doMock("@platform-core/repositories/products.server", () => ({
+      __esModule: true,
+      readRepo: readProducts,
+    }));
+    jest.doMock("@platform-core/utils", () => ({
+      __esModule: true,
+      logger: { info, error },
+    }));
+
+    const { runMaintenanceScan } = await import(
+      "@acme/platform-machine/maintenanceScheduler"
+    );
+
+    await runMaintenanceScan("/data");
+
+    expect(error).toHaveBeenCalledWith("maintenance scan failed", {
+      shopId: "shop1",
+      err: expect.any(Error),
+    });
+    expect(info).toHaveBeenCalledWith("item needs maintenance", {
+      shopId: "shop2",
+      sku: "maint",
+    });
+  });
 });
 
 describe("startMaintenanceScheduler", () => {

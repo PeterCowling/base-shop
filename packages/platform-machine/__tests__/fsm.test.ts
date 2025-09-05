@@ -1,4 +1,4 @@
-import { createFSM } from "./fsm";
+import { createFSM, FSM } from "./fsm";
 
 describe("createFSM", () => {
   it("updates state on valid transitions", () => {
@@ -35,5 +35,15 @@ describe("createFSM", () => {
 
     expect(fallback).toHaveBeenCalledWith("RESOLVE", "idle");
     expect(fsm.state).toBe("idle");
+  });
+
+  it("send throws without transition or fallback", () => {
+    const fsm = new FSM([
+      { from: "idle", event: "FETCH", to: "loading" },
+    ], "idle");
+
+    expect(() => fsm.send("UNKNOWN" as any)).toThrow(
+      "No transition for event UNKNOWN from state idle",
+    );
   });
 });

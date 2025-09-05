@@ -55,6 +55,16 @@ describe("ResendProvider", () => {
         "Resend credentials rejected with status 401"
       );
     });
+
+    it("resolves immediately when sanity check disabled", async () => {
+      process.env.RESEND_API_KEY = "rs";
+      const fetchSpy = jest.spyOn(global, "fetch");
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider();
+      await expect(provider.ready).resolves.toBeUndefined();
+      expect(fetchSpy).not.toHaveBeenCalled();
+      fetchSpy.mockRestore();
+    });
   });
 
   it("resolves on success", async () => {

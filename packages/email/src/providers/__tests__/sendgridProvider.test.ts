@@ -43,6 +43,14 @@ describe("SendgridProvider additional cases", () => {
     await expect(provider.createContact("user@example.com")).resolves.toBe("");
   });
 
+  it("createContact returns empty string without marketing key", async () => {
+    global.fetch = jest.fn();
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await expect(provider.createContact("user@example.com")).resolves.toBe("");
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
   it("createContact returns id on success", async () => {
     process.env.SENDGRID_API_KEY = "key";
     global.fetch = jest.fn().mockResolvedValueOnce({
@@ -59,6 +67,26 @@ describe("SendgridProvider additional cases", () => {
     process.env.SENDGRID_API_KEY = "key";
     global.fetch = jest.fn().mockResolvedValueOnce({
       json: () => Promise.reject(new Error("bad")),
+    }) as any;
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await expect(provider.createContact("user@example.com")).resolves.toBe("");
+  });
+
+  it("createContact returns empty string when persisted recipients empty", async () => {
+    process.env.SENDGRID_API_KEY = "key";
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      json: () => Promise.resolve({ persisted_recipients: [] }),
+    }) as any;
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await expect(provider.createContact("user@example.com")).resolves.toBe("");
+  });
+
+  it("createContact returns empty string when persisted recipients missing", async () => {
+    process.env.SENDGRID_API_KEY = "key";
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      json: () => Promise.resolve({}),
     }) as any;
     const { SendgridProvider } = await import("../sendgrid");
     const provider = new SendgridProvider();
@@ -87,6 +115,14 @@ describe("SendgridProvider additional cases", () => {
     const { SendgridProvider } = await import("../sendgrid");
     const provider = new SendgridProvider();
     await expect(provider.addToList("cid", "lid")).resolves.toBeUndefined();
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
+  it("listSegments returns [] when marketing key missing", async () => {
+    global.fetch = jest.fn();
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await expect(provider.listSegments()).resolves.toEqual([]);
     expect(global.fetch).not.toHaveBeenCalled();
   });
 

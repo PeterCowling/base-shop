@@ -471,5 +471,27 @@ describe("strongSecret validation", () => {
       ),
     ).rejects.toThrow("Invalid auth environment variables");
   });
+
+  it("rejects session secret shorter than 32 characters", async () => {
+    await expect(
+      withEnv(
+        { ...base, NEXTAUTH_SECRET: NEXT_SECRET, SESSION_SECRET: "short" },
+        () => import("../auth"),
+      ),
+    ).rejects.toThrow("Invalid auth environment variables");
+  });
+
+  it("rejects session secret with non-printable characters", async () => {
+    await expect(
+      withEnv(
+        {
+          ...base,
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET: `${"a".repeat(31)}\n`,
+        },
+        () => import("../auth"),
+      ),
+    ).rejects.toThrow("Invalid auth environment variables");
+  });
 });
 

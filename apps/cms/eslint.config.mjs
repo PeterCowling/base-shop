@@ -1,6 +1,9 @@
 import baseConfig from "../../eslint.config.mjs";
 
 const config = [
+  {
+    ignores: ["postcss.config.cjs", "jest.config.cjs"],
+  },
   ...baseConfig,
   {
     files: [

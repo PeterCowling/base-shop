@@ -29,8 +29,8 @@ export const mergeEnvSchemas = <T extends readonly AnyZodObject[]>(
 
 const mergedEnvSchema = mergeEnvSchemas(
   coreEnvBaseSchema,
-  paymentsEnvSchema,
-  shippingEnvSchema
+  paymentsEnvSchema.innerType(),
+  shippingEnvSchema,
 );
 
 export const envSchema = mergedEnvSchema.superRefine(

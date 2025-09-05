@@ -101,7 +101,7 @@ export const coreEnvBaseSchema = authEnvSchema
   .innerType()
   .merge(cmsEnvSchema)
   .merge(emailEnvSchema.innerType())
-  .merge(paymentsEnvSchema)
+  .merge(paymentsEnvSchema.innerType())
   .merge(shippingEnvSchema)
   .merge(baseEnvSchema);
 

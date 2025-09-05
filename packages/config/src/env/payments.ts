@@ -1,37 +1,70 @@
+// packages/config/src/env/payments.ts
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
-export const paymentsEnvSchema = z.object({
-  STRIPE_SECRET_KEY: z.string().min(1).default("sk_test"),
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z
-    .string()
-    .min(1)
-    .default("pk_test"),
-  STRIPE_WEBHOOK_SECRET: z.string().min(1).default("whsec_test"),
-});
-// Allow disabling the payments gateway via an environment flag. When disabled
-// we ignore any provided Stripe keys and fall back to schema defaults without
-// emitting warnings.
-const gateway = process.env.PAYMENTS_GATEWAY;
-const rawEnv =
-  gateway === "disabled"
-    ? {}
-    : {
-        STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
-        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
-          process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-        STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
-      };
+const currencyCode = z
+  .string()
+  .transform((v) => v.toUpperCase())
+  .refine((v) => /^[A-Z]{3}$/.test(v), {
+    message: "invalid currency code",
+  });
 
-const parsed = paymentsEnvSchema.safeParse(rawEnv);
-if (!parsed.success) {
-  console.warn(
-    "⚠️ Invalid payments environment variables:",
-    parsed.error.format(),
-  );
+export const paymentsEnvSchema = z
+  .object({
+    PAYMENTS_PROVIDER: z.enum(["none", "stripe"]).default("none"),
+    PAYMENTS_SANDBOX: z
+      .enum(["true", "false"])
+      .transform((v) => v === "true")
+      .default("true"),
+    NEXT_PUBLIC_CURRENCY: currencyCode.default("USD"),
+    STRIPE_SECRET_KEY: z.string().min(1).default("sk_test"),
+    NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1).default("pk_test"),
+    STRIPE_WEBHOOK_SECRET: z.string().min(1).default("whsec_test"),
+  })
+  .superRefine((env, ctx) => {
+    if (env.PAYMENTS_PROVIDER === "stripe") {
+      if (!env.STRIPE_SECRET_KEY) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["STRIPE_SECRET_KEY"],
+          message: "STRIPE_SECRET_KEY is required when PAYMENTS_PROVIDER=stripe",
+        });
+      }
+      if (!env.STRIPE_WEBHOOK_SECRET) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["STRIPE_WEBHOOK_SECRET"],
+          message:
+            "STRIPE_WEBHOOK_SECRET is required when PAYMENTS_PROVIDER=stripe",
+        });
+      }
+    }
+  });
+
+export type PaymentsEnv = z.infer<typeof paymentsEnvSchema>;
+
+export function loadPaymentsEnv(
+  raw: NodeJS.ProcessEnv = process.env,
+): PaymentsEnv {
+  const parsed = paymentsEnvSchema.safeParse(raw);
+  if (!parsed.success) {
+    console.error(
+      "❌ Invalid payments environment variables:",
+      parsed.error.format(),
+    );
+    throw new Error("Invalid payments environment variables");
+  }
+  return parsed.data;
 }
 
-export const paymentsEnv = parsed.success
-  ? parsed.data
-  : paymentsEnvSchema.parse({});
-export type PaymentsEnv = z.infer<typeof paymentsEnvSchema>;
+const parsed = paymentsEnvSchema.safeParse(process.env);
+if (!parsed.success) {
+  console.error(
+    "❌ Invalid payments environment variables:",
+    parsed.error.format(),
+  );
+  throw new Error("Invalid payments environment variables");
+}
+
+export const paymentsEnv = parsed.data;
+

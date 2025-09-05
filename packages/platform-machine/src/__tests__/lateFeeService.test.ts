@@ -428,6 +428,26 @@ describe("lateFeeService auto-start", () => {
     jest.resetModules();
   });
 
+  it("does not start the service in test environment", async () => {
+    process.env.NODE_ENV = "test";
+    const startLateFeeService = jest.fn().mockResolvedValue(undefined);
+    const loggerError = jest.fn();
+
+    jest.doMock("../lateFeeService", () => {
+      if (process.env.NODE_ENV !== "test") {
+        startLateFeeService().catch((err) =>
+          loggerError("failed to start late fee service", { err })
+        );
+      }
+      return { startLateFeeService };
+    });
+
+    await import("../lateFeeService");
+
+    expect(startLateFeeService).not.toHaveBeenCalled();
+    expect(loggerError).not.toHaveBeenCalled();
+  });
+
   it("starts the service on import", async () => {
     process.env.NODE_ENV = "development";
     const startLateFeeService = jest.fn().mockResolvedValue(undefined);

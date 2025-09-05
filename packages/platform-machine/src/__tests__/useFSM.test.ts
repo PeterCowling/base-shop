@@ -35,4 +35,32 @@ describe("useFSM", () => {
     expect(nextState).toBe("fallback");
     expect(result.current?.state).toBe(nextState);
   });
+
+  it("throws when no transition and no fallback provided", () => {
+    const { result } = renderHook(() =>
+      useFSM<"idle" | "loading", "FETCH" | "UNKNOWN">("idle", [
+        { from: "idle", event: "FETCH", to: "loading" },
+      ]),
+    );
+
+    expect(() => result.current!.send("UNKNOWN")).toThrow(
+      "No transition for event UNKNOWN from state idle",
+    );
+  });
+
+  it("invokes fallback handler with event and state", () => {
+    const fallback = jest.fn().mockReturnValue("fallback");
+    const { result } = renderHook(() =>
+      useFSM<"idle" | "fallback", "UNKNOWN">("idle", []),
+    );
+
+    let next: string;
+    act(() => {
+      next = result.current!.send("UNKNOWN", fallback);
+    });
+
+    expect(fallback).toHaveBeenCalledWith("UNKNOWN", "idle");
+    expect(next).toBe("fallback");
+    expect(result.current?.state).toBe("fallback");
+  });
 });

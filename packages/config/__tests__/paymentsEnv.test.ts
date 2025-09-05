@@ -7,7 +7,7 @@ describe("paymentsEnv", () => {
   });
 
   it("parses valid Stripe keys without warnings", async () => {
-    const spy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     const { paymentsEnv } = await withEnv(
       {
         STRIPE_SECRET_KEY: "sk_test_123",
@@ -22,23 +22,26 @@ describe("paymentsEnv", () => {
       STRIPE_SECRET_KEY: "sk_test_123",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_456",
       STRIPE_WEBHOOK_SECRET: "whsec_789",
+      PAYMENTS_SANDBOX: true,
+      PAYMENTS_CURRENCY: "USD",
     });
   });
 
-  it("falls back to defaults and warns on invalid env", async () => {
-    const spy = jest.spyOn(console, "warn").mockImplementation(() => {});
+  it("throws on invalid env", async () => {
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
 
-    const { paymentsEnv, paymentsEnvSchema } = await withEnv(
-      {
-        STRIPE_SECRET_KEY: "",
-        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_456",
-        STRIPE_WEBHOOK_SECRET: "whsec_789",
-      },
-      () => import("../src/env/payments"),
-    );
+    await expect(
+      withEnv(
+        {
+          STRIPE_SECRET_KEY: "",
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_456",
+          STRIPE_WEBHOOK_SECRET: "whsec_789",
+        },
+        () => import("../src/env/payments"),
+      ),
+    ).rejects.toThrow("Invalid payments environment variables");
 
     expect(spy).toHaveBeenCalled();
-    expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
   });
 });
 

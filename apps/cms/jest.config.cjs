@@ -50,4 +50,18 @@ module.exports = {
     ],
   },
   transformIgnorePatterns: ["/node_modules/(?!(?:@?jose)/)"],
+  collectCoverage: true,
+  coverageReporters: ["text", "lcov"],
+  coveragePathIgnorePatterns: [
+    "/node_modules/",
+    "<rootDir>/apps/cms/src/components/cms/media/",
+  ],
+  coverageThreshold: {
+    global: {
+      statements: 40,
+      branches: 30,
+      functions: 10,
+      lines: 40,
+    },
+  },
 };

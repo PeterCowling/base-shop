@@ -126,7 +126,7 @@ describe('getCsrfToken', () => {
       expect(getCsrfToken()).toBe('cookie-token');
     });
 
-    it('generates and stores token when missing', () => {
+    it('generates and stores token when missing and reuses it', () => {
       const { window } = new JSDOM('', { url: 'https://example.com' });
       globalThis.document = window.document;
       (globalThis as any).location = window.location;
@@ -134,9 +134,12 @@ describe('getCsrfToken', () => {
         .spyOn(globalThis.crypto, 'randomUUID')
         .mockReturnValue('generated-token');
       const cookieSpy = jest.spyOn(globalThis.document, 'cookie', 'set');
-      const token = getCsrfToken();
-      expect(token).toBe('generated-token');
-      expect(randomUUIDSpy).toHaveBeenCalled();
+      const token1 = getCsrfToken();
+      const token2 = getCsrfToken();
+      expect(token1).toBe('generated-token');
+      expect(token2).toBe('generated-token');
+      expect(randomUUIDSpy).toHaveBeenCalledTimes(1);
+      expect(cookieSpy).toHaveBeenCalledTimes(1);
       expect(cookieSpy).toHaveBeenCalledWith(
         'csrf_token=generated-token; path=/; SameSite=Strict; secure'
       );

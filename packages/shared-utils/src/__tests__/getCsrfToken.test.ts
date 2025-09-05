@@ -59,5 +59,21 @@ describe('getCsrfToken', () => {
       );
     }
   );
+
+  it('sets secure cookie attribute when protocol is https', () => {
+    const cookieSpy = jest.spyOn(document, 'cookie', 'set');
+    const mockCrypto = { randomUUID: jest.fn().mockReturnValue('secure-token') };
+    Object.defineProperty(globalThis, 'crypto', { value: mockCrypto, configurable: true });
+    Object.defineProperty(globalThis, 'location', {
+      value: { ...originalLocation, protocol: 'https:' },
+      configurable: true,
+    });
+
+    const token = getCsrfToken();
+    expect(token).toBe('secure-token');
+    expect(cookieSpy).toHaveBeenCalledWith(
+      'csrf_token=secure-token; path=/; SameSite=Strict; secure'
+    );
+  });
 });
 

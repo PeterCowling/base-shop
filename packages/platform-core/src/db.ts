@@ -3,7 +3,7 @@ import { createRequire } from "module";
 import type { PrismaClient } from "./prisma-client";
 
 // Avoid referencing conditional exports from "@prisma/client" directly.
-type PrismaClientCtor = new (...args: any[]) => PrismaClient;
+type PrismaClientCtor = new (...args: unknown[]) => PrismaClient;
 
 const coreEnv = loadCoreEnv();
 type RentalOrderStub = {
@@ -81,9 +81,12 @@ if (process.env.NODE_ENV === "test" || !coreEnv.DATABASE_URL) {
         ? __dirname
         : `${process.cwd()}/package.json`
     );
-    const mod = requirePrisma("@prisma/client");
+    const mod = requirePrisma("@prisma/client") as {
+      PrismaClient?: PrismaClientCtor;
+      default?: { PrismaClient?: PrismaClientCtor };
+    };
     const PrismaClientCtor: PrismaClientCtor | undefined =
-      (mod as any).PrismaClient ?? (mod as any).default?.PrismaClient;
+      mod.PrismaClient ?? mod.default?.PrismaClient;
     if (!PrismaClientCtor) {
       prisma = createStubPrisma();
     } else {

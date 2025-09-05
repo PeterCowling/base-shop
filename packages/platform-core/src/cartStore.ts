@@ -98,12 +98,13 @@ export const getDefaultCartStore = (): CartStore => {
   if (_defaultStore) return _defaultStore;
   // In tests, `createCartStore` is spied via the module export.
   // Access through `module.exports` when available so the spy is hit.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  type ModuleWithCreateCartStore = NodeJS.Module & {
+    exports?: { createCartStore?: typeof createCartStore };
+  };
   const factory =
     typeof module !== "undefined" &&
-    (module as any).exports?.createCartStore
-      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ((module as any).exports.createCartStore as typeof createCartStore)
+    (module as ModuleWithCreateCartStore).exports?.createCartStore
+      ? (module as ModuleWithCreateCartStore).exports.createCartStore
       : createCartStore;
   _defaultStore = factory();
   return _defaultStore;

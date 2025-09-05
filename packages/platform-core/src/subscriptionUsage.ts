@@ -1,14 +1,7 @@
 // packages/platform-core/src/subscriptionUsage.ts
 import "server-only";
 import { prisma } from "./db";
-
-export interface SubscriptionUsage {
-  id: string;
-  shop: string;
-  customerId: string;
-  month: string;
-  shipments: number;
-}
+import type { SubscriptionUsage } from "@acme/types";
 
 export async function getSubscriptionUsage(
   shop: string,

@@ -2,21 +2,7 @@ import "server-only";
 
 import { nowIso } from "@acme/date-utils";
 import { prisma } from "../db";
-
-export type ReverseLogisticsEventName =
-  | "received"
-  | "cleaning"
-  | "repair"
-  | "qa"
-  | "available";
-
-export type ReverseLogisticsEvent = {
-  id: string;
-  shop: string;
-  sessionId: string;
-  event: ReverseLogisticsEventName;
-  createdAt: string;
-};
+import type { ReverseLogisticsEvent, ReverseLogisticsEventName } from "@acme/types";
 
 export async function recordEvent(
   shop: string,

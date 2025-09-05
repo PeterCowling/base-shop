@@ -1,9 +1,5 @@
 import "server-only";
-export interface CustomerProfile {
-    customerId: string;
-    name: string;
-    email: string;
-}
+import type { CustomerProfile } from "@acme/types";
 export declare function getCustomerProfile(customerId: string): Promise<CustomerProfile | null>;
 export declare function updateCustomerProfile(customerId: string, data: {
     name: string;

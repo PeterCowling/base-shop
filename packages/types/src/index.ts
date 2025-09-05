@@ -32,3 +32,7 @@ export * from "./shop-theme";
 export type { StyleOverrides } from "./style/StyleOverrides";
 export * from "./ds";
 export * from "./theme";
+export * from "./SubscriptionUsage";
+export * from "./CustomerProfile";
+export * from "./User";
+export * from "./ReverseLogisticsEvent";

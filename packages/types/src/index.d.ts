@@ -29,3 +29,7 @@ export * from "./settings";
 export * from "./shop-seo";
 export * from "./shop-locale";
 export * from "./shop-theme";
+export * from "./SubscriptionUsage";
+export * from "./CustomerProfile";
+export * from "./User";
+export * from "./ReverseLogisticsEvent";

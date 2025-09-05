@@ -2,7 +2,6 @@ import { loadCoreEnv } from "@acme/config/env/core";
 import { createRequire } from "module";
 import type { PrismaClient } from "./prisma-client";
 
-// Avoid referencing conditional exports from "@prisma/client" directly.
 type PrismaClientCtor = new (...args: unknown[]) => PrismaClient;
 
 const coreEnv = loadCoreEnv();

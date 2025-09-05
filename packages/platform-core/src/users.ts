@@ -1,17 +1,7 @@
 // packages/platform-core/src/users.ts
 import "server-only";
 import { prisma } from "./db";
-
-export interface User {
-  id: string;
-  email: string;
-  passwordHash: string;
-  role: string;
-  resetToken: string | null;
-  resetTokenExpiresAt: Date | null;
-  emailVerified: boolean;
-  stripeSubscriptionId?: string | null;
-}
+import type { User } from "@acme/types";
 
 export async function getUserById(id: string): Promise<User | null> {
   return prisma.user.findUnique({ where: { id } });

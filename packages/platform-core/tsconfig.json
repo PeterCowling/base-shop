@@ -51,5 +51,5 @@
     { "path": "../email-templates" },
     { "path": "../plugins/sanity" }
   ],
-  "files": ["../../src/types/global.d.ts", "src/prisma.d.ts"]
+  "files": ["../../src/types/global.d.ts"]
 }

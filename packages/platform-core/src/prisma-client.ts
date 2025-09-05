@@ -1,3 +1,4 @@
 export interface PrismaClient {
-  [key: string]: unknown;
+  [key: string]: any;
 }
+

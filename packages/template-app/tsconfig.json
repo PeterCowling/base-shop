@@ -90,8 +90,5 @@
     { "path": "../date-utils" },
     { "path": "../i18n" },
     { "path": "../stripe" }
-  ],
-  "files": [
-    "../platform-core/src/prisma.d.ts"
   ]
 }

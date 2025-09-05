@@ -1,4 +1,4 @@
-import { describe, expect, test, beforeEach, jest } from '@jest/globals';
+import { beforeEach, describe, expect, jest, test } from '@jest/globals';
 
 let trackEvent: jest.Mock;
 
@@ -7,36 +7,45 @@ beforeEach(() => {
   jest.clearAllMocks();
   jest.doMock('@platform-core/analytics', () => ({
     __esModule: true,
-    trackEvent: jest.fn(),
+    trackEvent: jest.fn().mockResolvedValue(undefined),
   }));
   trackEvent = require('@platform-core/analytics').trackEvent as jest.Mock;
 });
 
-describe('email hooks analytics', () => {
-  test('tracking with complete analytics context', async () => {
-    const { emitSend } = await import('../src/hooks');
-    await emitSend('shop1', { campaign: 'camp1' });
-    expect(trackEvent).toHaveBeenCalledWith('shop1', {
-      type: 'email_sent',
-      campaign: 'camp1',
-    });
-  });
+describe('email hooks', () => {
+  test.each([
+    ['send', 'onSend', 'emitSend', 'email_sent'],
+    ['open', 'onOpen', 'emitOpen', 'email_open'],
+    ['click', 'onClick', 'emitClick', 'email_click'],
+  ])('invokes %s handlers in parallel and tracks analytics', async (_label, on, emit, type) => {
+    const hooks = await import('../src/hooks');
+    const register = hooks[on as keyof typeof hooks] as (fn: any) => void;
+    const trigger = hooks[emit as keyof typeof hooks] as (shop: string, payload: any) => Promise<void>;
 
-  test('tracking with missing user data to hit fallback branch', async () => {
-    const { emitOpen } = await import('../src/hooks');
-    await emitOpen('shop2', {} as any);
-    expect(trackEvent).toHaveBeenCalledWith('shop2', {
-      type: 'email_open',
-      campaign: undefined,
+    const order: string[] = [];
+    register(async () => {
+      order.push('a:start');
+      await new Promise((res) =>
+        setTimeout(() => {
+          order.push('a:end');
+          res();
+        }, 50),
+      );
     });
-  });
+    register(async () => {
+      order.push('b:start');
+      await new Promise((res) =>
+        setTimeout(() => {
+          order.push('b:end');
+          res();
+        }, 10),
+      );
+    });
 
-  test('unsupported event name path', async () => {
-    const { onSend, emitSend } = await import('../src/hooks');
-    onSend((shop) => trackEvent(shop, { type: 'email_unknown' } as any));
-    trackEvent.mockClear();
-    await emitSend('shop3', { campaign: 'camp3' });
-    expect(trackEvent).toHaveBeenCalledWith('shop3', { type: 'email_unknown' });
+    await trigger('shop', { campaign: 'camp' });
+
+    expect(order).toEqual(['a:start', 'b:start', 'b:end', 'a:end']);
+    expect(trackEvent).toHaveBeenCalledTimes(1);
+    expect(trackEvent).toHaveBeenCalledWith('shop', { type, campaign: 'camp' });
   });
 });
-

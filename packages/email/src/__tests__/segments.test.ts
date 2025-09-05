@@ -25,16 +25,43 @@ jest.mock("../providers/resend", () => ({
   ResendProvider: class {},
 }));
 
-jest.mock("@acme/lib", () => ({ validateShopName: (s: string) => s }));
+jest.mock("@acme/lib", () => ({
+  validateShopName: jest.fn((s: string) => s),
+}));
+
+let validateShopName: jest.Mock;
 
 describe("readSegments", () => {
   beforeEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
+    validateShopName = require("@acme/lib").validateShopName;
   });
 
   it("returns empty array when JSON is an object", async () => {
     mockReadFile.mockResolvedValue(JSON.stringify({ foo: 1 }));
+    const { readSegments } = await import("../segments");
+    await expect(readSegments("shop1")).resolves.toEqual([]);
+  });
+
+  it("returns parsed array and validates shop name", async () => {
+    mockReadFile.mockResolvedValue(
+      JSON.stringify([{ id: "s1", filters: [] }])
+    );
+    const { readSegments } = await import("../segments");
+    const result = await readSegments("shop1");
+    expect(result).toEqual([{ id: "s1", filters: [] }]);
+    expect(validateShopName).toHaveBeenCalledWith("shop1");
+  });
+
+  it("returns empty array on invalid JSON", async () => {
+    mockReadFile.mockResolvedValue("{not json}");
+    const { readSegments } = await import("../segments");
+    await expect(readSegments("shop1")).resolves.toEqual([]);
+  });
+
+  it("returns empty array when readFile fails", async () => {
+    mockReadFile.mockRejectedValue(new Error("fail"));
     const { readSegments } = await import("../segments");
     await expect(readSegments("shop1")).resolves.toEqual([]);
   });
@@ -103,6 +130,30 @@ describe("resolveSegment filters", () => {
   beforeEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
+  });
+
+  it("returns events matching all filters", async () => {
+    mockReadFile.mockResolvedValue(
+      JSON.stringify([
+        {
+          id: "vips",
+          filters: [
+            { field: "plan", value: "gold" },
+            { field: "region", value: "us" },
+          ],
+        },
+      ])
+    );
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    mockListEvents.mockResolvedValue([
+      { email: "a@example.com", plan: "gold", region: "us" },
+      { email: "b@example.com", plan: "gold", region: "eu" },
+      { email: "c@example.com", plan: "silver", region: "us" },
+    ]);
+
+    const { resolveSegment } = await import("../segments");
+    const result = await resolveSegment("shop1", "vips");
+    expect(result).toEqual(["a@example.com"]);
   });
 
   it("ignores events without matching filter fields", async () => {
@@ -210,6 +261,30 @@ describe("resolveSegment caching", () => {
 
     expect(r1).toEqual(["a@example.com"]);
     expect(r2).toEqual(["b@example.com"]);
+    expect(mockListEvents).toHaveBeenCalledTimes(2);
+  });
+
+  it("honors custom ttl value", async () => {
+    jest.useFakeTimers();
+    process.env.SEGMENT_CACHE_TTL = "2000";
+    mockReadFile.mockResolvedValue(
+      JSON.stringify([{ id: "vips", filters: [] }])
+    );
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    mockListEvents
+      .mockResolvedValueOnce([{ email: "a@example.com" }])
+      .mockResolvedValueOnce([{ email: "b@example.com" }]);
+    const { resolveSegment } = await import("../segments");
+
+    const r1 = await resolveSegment("shop1", "vips");
+    jest.advanceTimersByTime(1001);
+    const r2 = await resolveSegment("shop1", "vips");
+    jest.advanceTimersByTime(1000);
+    const r3 = await resolveSegment("shop1", "vips");
+
+    expect(r1).toEqual(["a@example.com"]);
+    expect(r2).toEqual(["a@example.com"]);
+    expect(r3).toEqual(["b@example.com"]);
     expect(mockListEvents).toHaveBeenCalledTimes(2);
   });
 });

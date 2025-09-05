@@ -9,6 +9,10 @@ jest.mock(
   () => require("../../../../../../test/__mocks__/currencyContextMock")
 );
 
+jest.mock("@platform-core/contexts/CartContext", () => ({
+  useCart: () => [{}, jest.fn()],
+}));
+
 jest.mock("../../overlays/ProductQuickView", () => {
   const React = require("react");
   return {

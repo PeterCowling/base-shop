@@ -1,3 +1,4 @@
+/** @jest-environment node */
 import { afterEach, describe, expect, it } from "@jest/globals";
 
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";

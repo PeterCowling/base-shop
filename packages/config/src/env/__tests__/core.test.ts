@@ -1,3 +1,4 @@
+/** @jest-environment node */
 import { afterEach, describe, expect, it } from "@jest/globals";
 import { z } from "zod";
 import {

@@ -53,7 +53,7 @@ describe("settings repository", () => {
     jest.clearAllMocks();
   });
 
-  it("reads existing settings file and defaults optional fields", async () => {
+  it("reads existing settings file and deep merges with defaults", async () => {
     const shop = "shop1";
     const settingsPath = path.join(DATA_ROOT, shop, "settings.json");
     fsMock.__files.set(
@@ -62,6 +62,8 @@ describe("settings repository", () => {
         languages: ["en"],
         depositService: { enabled: true },
         returnService: { upsEnabled: true },
+        stockAlert: { recipients: ["admin@example.com"] },
+        seo: { aiCatalog: { pageSize: 25 } },
       }),
     );
 
@@ -76,11 +78,11 @@ describe("settings repository", () => {
       bagEnabled: false,
       homePickupEnabled: false,
     });
-    expect(result.stockAlert).toEqual({ recipients: [] });
+    expect(result.stockAlert).toEqual({ recipients: ["admin@example.com"] });
     expect(result.seo.aiCatalog).toEqual({
       enabled: true,
       fields: ["id", "title", "description", "price", "media"],
-      pageSize: 50,
+      pageSize: 25,
     });
   });
 
@@ -104,17 +106,27 @@ describe("settings repository", () => {
     });
   });
 
-  it("updates diffHistory only when settings change", async () => {
+  it("does not append history when settings unchanged", async () => {
     const shop = "shop2";
     const settingsPath = path.join(DATA_ROOT, shop, "settings.json");
     fsMock.__files.set(settingsPath, JSON.stringify({ languages: ["en"] }));
 
     const current = await getShopSettings(shop);
     await saveShopSettings(shop, current);
-    expect(appendFileMock).not.toHaveBeenCalled();
 
+    expect(appendFileMock).not.toHaveBeenCalled();
+    expect(fsMock.__files.get(path.join(DATA_ROOT, shop, "settings.history.jsonl"))).toBeUndefined();
+  });
+
+  it("appends diff to history when settings change", async () => {
+    const shop = "shop3";
+    const settingsPath = path.join(DATA_ROOT, shop, "settings.json");
+    fsMock.__files.set(settingsPath, JSON.stringify({ languages: ["en"] }));
+
+    const current = await getShopSettings(shop);
     const changed = { ...current, currency: "USD" };
     await saveShopSettings(shop, changed);
+
     expect(appendFileMock).toHaveBeenCalledTimes(1);
 
     const historyPath = path.join(DATA_ROOT, shop, "settings.history.jsonl");
@@ -125,7 +137,25 @@ describe("settings repository", () => {
     expect(parsed.diff).toEqual({ currency: "USD" });
   });
 
-  it("diffHistory filters malformed JSON lines", async () => {
+  it("diffHistory returns valid entries", async () => {
+    const shop = "hist-valid";
+    const historyPath = path.join(DATA_ROOT, shop, "settings.history.jsonl");
+    fsMock.__files.set(
+      historyPath,
+      [
+        JSON.stringify({ timestamp: "2020-01-01T00:00:00.000Z", diff: { currency: "USD" } }),
+        JSON.stringify({ timestamp: "2020-01-02T00:00:00.000Z", diff: { taxRegion: "EU" } }),
+      ].join("\n"),
+    );
+
+    const history = await diffHistory(shop);
+    expect(history).toEqual([
+      { timestamp: "2020-01-01T00:00:00.000Z", diff: { currency: "USD" } },
+      { timestamp: "2020-01-02T00:00:00.000Z", diff: { taxRegion: "EU" } },
+    ]);
+  });
+
+  it("diffHistory skips malformed JSON lines", async () => {
     const shop = "hist";
     const historyPath = path.join(DATA_ROOT, shop, "settings.history.jsonl");
     fsMock.__files.set(
@@ -144,6 +174,11 @@ describe("settings repository", () => {
       { timestamp: "2020-01-01T00:00:00.000Z", diff: { currency: "USD" } },
       { timestamp: "2020-01-03T00:00:00.000Z", diff: { taxRegion: "EU" } },
     ]);
+  });
+
+  it("diffHistory returns empty array when history file is missing", async () => {
+    const history = await diffHistory("missing-history");
+    expect(history).toEqual([]);
   });
 });
 

@@ -17,7 +17,8 @@
     /* test-specific flags ------------------------------------------- */
     "noEmit": true, // type-check only
     "importsNotUsedAsValues": "remove",
-    "verbatimModuleSyntax": false
+    "verbatimModuleSyntax": false,
+    "outDir": ".ts-jest"
   },
 
   /* ────────────────────────────────────────────────────────────────────

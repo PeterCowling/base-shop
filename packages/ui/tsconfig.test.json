@@ -3,7 +3,8 @@
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "noEmit": true,
-    "rootDir": "."
+    "rootDir": ".",
+    "outDir": "dist"
   },
   "include": ["src/**/*"],
   "exclude": ["__tests__", "**/__tests__/**", "**/*.test.*", "**/*.spec.*"]

@@ -6,6 +6,20 @@ afterEach(() => {
 });
 
 describe("payments env provider", () => {
+  it("returns defaults when PAYMENTS_GATEWAY disabled", async () => {
+    const { paymentsEnv } = await withEnv(
+      { PAYMENTS_GATEWAY: "disabled" },
+      () => import("../payments"),
+    );
+    expect(paymentsEnv).toMatchObject({
+      PAYMENTS_SANDBOX: true,
+      PAYMENTS_CURRENCY: "USD",
+      STRIPE_SECRET_KEY: "sk_test",
+      STRIPE_WEBHOOK_SECRET: "whsec_test",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
+    });
+  });
+
   it("loads stripe config when provider set and keys present", async () => {
     const { paymentsEnv } = await withEnv(
       {

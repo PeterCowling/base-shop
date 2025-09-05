@@ -10,6 +10,12 @@ afterEach(() => {
 });
 
 describe("email env provider selection", () => {
+  it("defaults EMAIL_PROVIDER to smtp", async () => {
+    delete process.env.EMAIL_PROVIDER;
+    const env = await loadEnv();
+    expect(env.EMAIL_PROVIDER).toBe("smtp");
+  });
+
   it("uses sendgrid when SENDGRID_API_KEY present", async () => {
     process.env.EMAIL_PROVIDER = "sendgrid";
     process.env.SENDGRID_API_KEY = "sg-key";

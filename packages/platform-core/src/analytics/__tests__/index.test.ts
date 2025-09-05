@@ -2,7 +2,9 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import * as os from "os";
 
-jest.mock("@acme/date-utils", () => ({ nowIso: () => "2024-01-01T00:00:00.000Z" }));
+jest.mock("@acme/date-utils", () => ({
+  nowIso: () => "2024-01-01T00:00:00.000Z",
+}));
 
 const readShop = jest.fn();
 const getShopSettings = jest.fn();
@@ -48,36 +50,50 @@ describe("trackEvent providers", () => {
 
   test("console provider logs event", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
-    getShopSettings.mockResolvedValue({ analytics: { provider: "console", enabled: true } });
+    getShopSettings.mockResolvedValue({
+      analytics: { provider: "console", enabled: true },
+    });
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
-    expect(logSpy).toHaveBeenCalledWith("analytics", expect.objectContaining({ type: "page_view", page: "home" }));
+    expect(logSpy).toHaveBeenCalledWith(
+      "analytics",
+      expect.objectContaining({ type: "page_view", page: "home" })
+    );
     logSpy.mockRestore();
   });
 
   test("google analytics provider sends event when secrets provided", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
-    getShopSettings.mockResolvedValue({ analytics: { provider: "ga", id: "G-XYZ" } });
+    getShopSettings.mockResolvedValue({
+      analytics: { provider: "ga", id: "G-XYZ" },
+    });
     process.env.GA_API_SECRET = "secret";
     const fetchMock = jest.fn().mockResolvedValue({ ok: true });
     (globalThis.fetch as any) = fetchMock;
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(fetchMock.mock.calls[0][0]).toContain("https://www.google-analytics.com/mp/collect");
+    expect(fetchMock.mock.calls[0][0]).toContain(
+      "https://www.google-analytics.com/mp/collect"
+    );
   });
 
   test("falls back to file provider when GA secrets missing", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
-    getShopSettings.mockResolvedValue({ analytics: { provider: "ga", id: "G-XYZ" } });
+    getShopSettings.mockResolvedValue({
+      analytics: { provider: "ga", id: "G-XYZ" },
+    });
     const fetchMock = jest.fn().mockResolvedValue({ ok: true });
     (globalThis.fetch as any) = fetchMock;
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
     expect(fetchMock).not.toHaveBeenCalled();
-    const content = await fs.readFile(path.join(tmp, shop, "analytics.jsonl"), "utf8");
-    expect(content).toContain("\"type\":\"page_view\"");
+    const content = await fs.readFile(
+      path.join(tmp, shop, "analytics.jsonl"),
+      "utf8"
+    );
+    expect(content).toContain('"type":"page_view"');
   });
 
   test("file provider writes analytics.jsonl by default", async () => {
@@ -85,8 +101,26 @@ describe("trackEvent providers", () => {
     getShopSettings.mockResolvedValue({ analytics: undefined });
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
-    const content = await fs.readFile(path.join(tmp, shop, "analytics.jsonl"), "utf8");
-    expect(content).toContain("\"type\":\"page_view\"");
+    const content = await fs.readFile(
+      path.join(tmp, shop, "analytics.jsonl"),
+      "utf8"
+    );
+    expect(content).toContain('"type":"page_view"');
+  });
+
+  test("file provider is cached", async () => {
+    readShop.mockResolvedValue({ analyticsEnabled: true });
+    getShopSettings.mockResolvedValue({ analytics: undefined });
+    const { trackEvent } = await import("../index");
+    await trackEvent(shop, { type: "page_view", page: "home" });
+    await trackEvent(shop, { type: "page_view", page: "about" });
+    expect(readShop).toHaveBeenCalledTimes(1);
+    expect(getShopSettings).toHaveBeenCalledTimes(1);
+    const content = await fs.readFile(
+      path.join(tmp, shop, "analytics.jsonl"),
+      "utf8"
+    );
+    expect(content.split("\n").filter(Boolean)).toHaveLength(2);
   });
 });
 
@@ -105,26 +139,49 @@ describe("updateAggregates persistence", () => {
   });
 
   test("aggregates are updated for all event types", async () => {
-    const { trackEvent } = await import("../index");
-    await trackEvent(shop, { type: "page_view", page: "home" });
-    await trackEvent(shop, { type: "order", orderId: "o1", amount: 5 });
+    const { trackEvent, trackPageView, trackOrder } = await import("../index");
+    await trackPageView(shop, "home");
+    await trackOrder(shop, "o1", 5);
     await trackEvent(shop, { type: "discount_redeemed", code: "SAVE" });
     await trackEvent(shop, { type: "ai_crawl" });
-    let agg = JSON.parse(await fs.readFile(path.join(tmp, shop, "analytics-aggregates.json"), "utf8"));
+    let agg = JSON.parse(
+      await fs.readFile(
+        path.join(tmp, shop, "analytics-aggregates.json"),
+        "utf8"
+      )
+    );
     expect(agg.page_view["2024-01-01"]).toBe(1);
     expect(agg.order["2024-01-01"]).toEqual({ count: 1, amount: 5 });
     expect(agg.discount_redeemed["2024-01-01"].SAVE).toBe(1);
     expect(agg.ai_crawl["2024-01-01"]).toBe(1);
 
-    await trackEvent(shop, { type: "page_view", page: "about" });
-    await trackEvent(shop, { type: "order", orderId: "o2", amount: 7 });
+    await trackPageView(shop, "about");
+    await trackOrder(shop, "o2", 7);
     await trackEvent(shop, { type: "discount_redeemed", code: "SAVE" });
     await trackEvent(shop, { type: "ai_crawl" });
-    agg = JSON.parse(await fs.readFile(path.join(tmp, shop, "analytics-aggregates.json"), "utf8"));
+    agg = JSON.parse(
+      await fs.readFile(
+        path.join(tmp, shop, "analytics-aggregates.json"),
+        "utf8"
+      )
+    );
     expect(agg.page_view["2024-01-01"]).toBe(2);
     expect(agg.order["2024-01-01"]).toEqual({ count: 2, amount: 12 });
     expect(agg.discount_redeemed["2024-01-01"].SAVE).toBe(2);
     expect(agg.ai_crawl["2024-01-01"]).toBe(2);
+
+    const events = (
+      await fs.readFile(path.join(tmp, shop, "analytics.jsonl"), "utf8")
+    )
+      .trim()
+      .split(/\n+/)
+      .map((l) => JSON.parse(l));
+    expect(events.filter((e) => e.type === "page_view")).toHaveLength(2);
+    expect(events.filter((e) => e.type === "order")).toHaveLength(2);
+    expect(events.filter((e) => e.type === "discount_redeemed")).toHaveLength(
+      2
+    );
+    expect(events.filter((e) => e.type === "ai_crawl")).toHaveLength(2);
   });
 });
 
@@ -190,4 +247,3 @@ describe("public tracking functions", () => {
     logSpy.mockRestore();
   });
 });
-

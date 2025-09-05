@@ -14,12 +14,12 @@ import { ensureAuthorized } from "./common/auth";
 /*  Path helpers                                                              */
 /* -------------------------------------------------------------------------- */
 
-function uploadsDir(shop: string): string {
+export function uploadsDir(shop: string): string {
   shop = validateShopName(shop);
   return path.join(process.cwd(), "public", "uploads", shop);
 }
 
-function metadataPath(shop: string): string {
+export function metadataPath(shop: string): string {
   return path.join(uploadsDir(shop), "metadata.json");
 }
 
@@ -27,7 +27,7 @@ function metadataPath(shop: string): string {
 /*  Metadata helpers                                                          */
 /* -------------------------------------------------------------------------- */
 
-async function readMetadata(
+export async function readMetadata(
   shop: string
 ): Promise<Record<string, { title?: string; altText?: string; type?: "image" | "video" }>> {
   try {
@@ -38,7 +38,7 @@ async function readMetadata(
   }
 }
 
-async function writeMetadata(
+export async function writeMetadata(
   shop: string,
   data: Record<string, { title?: string; altText?: string; type?: "image" | "video" }>
 ): Promise<void> {

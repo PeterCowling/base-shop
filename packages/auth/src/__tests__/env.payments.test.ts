@@ -61,7 +61,7 @@ describe("payments env currency", () => {
 
   it("uses provided currency when set", async () => {
     const { paymentsEnv } = await withEnv(
-      { PAYMENTS_CURRENCY: "eur" },
+      { PAYMENTS_CURRENCY: "EUR" },
       () => import("@acme/config/env/payments"),
     );
     expect(paymentsEnv.PAYMENTS_CURRENCY).toBe("EUR");

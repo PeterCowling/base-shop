@@ -72,7 +72,7 @@ describe("env matrix scenarios", () => {
         EMAIL_PROVIDER: "sendgrid",
         SENDGRID_API_KEY: "sg_key",
         PAYMENTS_SANDBOX: "false",
-        PAYMENTS_CURRENCY: "eur",
+        PAYMENTS_CURRENCY: "EUR",
         SHIPPING_PROVIDER: "external",
         ALLOWED_COUNTRIES: "US, it ,de",
         LOCAL_PICKUP_ENABLED: "true",

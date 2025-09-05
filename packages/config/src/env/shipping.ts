@@ -6,6 +6,40 @@ export const shippingEnvSchema = z.object({
   TAXJAR_KEY: z.string().optional(),
   UPS_KEY: z.string().optional(),
   DHL_KEY: z.string().optional(),
+  SHIPPING_PROVIDER: z.string().optional(),
+  ALLOWED_COUNTRIES: z
+    .string()
+    .optional()
+    .transform((val) =>
+      val
+        ? val
+            .split(",")
+            .map((c) => c.trim().toUpperCase())
+            .filter(Boolean)
+        : undefined,
+    ),
+  LOCAL_PICKUP_ENABLED: z
+    .string()
+    .optional()
+    .refine((v) =>
+      v == null
+        ? true
+        : /^(true|false|1|0)$/i.test(v.trim()),
+    {
+      message: "must be a boolean",
+    })
+    .transform((v) =>
+      v == null ? undefined : /^(true|1)$/i.test(v.trim()),
+    ),
+  DEFAULT_COUNTRY: z
+    .string()
+    .optional()
+    .refine((v) =>
+      v == null ? true : /^[A-Za-z]{2}$/.test(v.trim()),
+    {
+      message: "must be a 2-letter country code",
+    })
+    .transform((v) => (v == null ? undefined : v.trim().toUpperCase())),
   DEFAULT_SHIPPING_ZONE: z
     .enum(["domestic", "eu", "international"])
     .optional(),

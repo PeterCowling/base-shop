@@ -211,6 +211,52 @@ describe("shops repository", () => {
       expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
       expect(loadTokens).toHaveBeenCalledWith("other");
     });
+
+    it("loads theme tokens when defaults are missing", async () => {
+      findUnique.mockResolvedValue({
+        data: {
+          id: "shop-no-defaults",
+          name: "No Defaults",
+          catalogFilters: [],
+          themeId: "base",
+          filterMappings: {},
+          themeOverrides: { color: "blue" },
+        },
+      });
+
+      const result = await readShop("shop-no-defaults");
+
+      expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
+      expect(result.themeOverrides).toEqual({ color: "blue" });
+      expect(result.themeTokens).toEqual({
+        base: "base",
+        theme: "theme",
+        color: "blue",
+      });
+      expect(readFile).not.toHaveBeenCalled();
+      expect(loadTokens).toHaveBeenCalledWith("base");
+    });
+
+    it("sets empty overrides when overrides are missing", async () => {
+      findUnique.mockResolvedValue({
+        data: {
+          id: "shop-no-overrides",
+          name: "No Overrides",
+          catalogFilters: [],
+          themeId: "base",
+          filterMappings: {},
+          themeDefaults: { color: "green" },
+        },
+      });
+
+      const result = await readShop("shop-no-overrides");
+
+      expect(result.themeDefaults).toEqual({ color: "green" });
+      expect(result.themeOverrides).toEqual({});
+      expect(result.themeTokens).toEqual({ color: "green" });
+      expect(readFile).not.toHaveBeenCalled();
+      expect(loadTokens).not.toHaveBeenCalled();
+    });
   });
 
   describe("writeShop", () => {

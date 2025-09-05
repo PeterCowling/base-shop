@@ -181,6 +181,19 @@ describe("shops repository", () => {
       expect(loadTokens).toHaveBeenCalled();
     });
 
+    it("returns empty shop with defaults when fs contains invalid JSON", async () => {
+      findUnique.mockResolvedValue(null);
+      readFile.mockResolvedValue("{bad-json");
+
+      const result = await readShop("invalid-json");
+
+      expect(result.id).toBe("invalid-json");
+      expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
+      expect(result.themeOverrides).toEqual({});
+      expect(result.themeTokens).toEqual({ base: "base", theme: "theme" });
+      expect(loadTokens).toHaveBeenCalled();
+    });
+
     it("uses default tokens when themeDefaults is empty", async () => {
       findUnique.mockRejectedValue(new Error("db fail"));
       const fileData = {

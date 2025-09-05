@@ -39,6 +39,7 @@ export default [
       "**/jest.setup*.{ts,tsx}",
       "**/*.test.{ts,tsx,js,jsx}",
       "**/*.spec.{ts,tsx,js,jsx}",
+      "**/jest.config.*",
     ],
   },
   {

@@ -78,14 +78,19 @@ if (process.env.NODE_ENV === "test" || !coreEnv.DATABASE_URL) {
         ? __dirname
         : `${process.cwd()}/package.json`
     );
-    const { PrismaClient } = requirePrisma(
-      "@prisma/client"
-    ) as typeof import("@prisma/client");
-
-    const databaseUrl = coreEnv.DATABASE_URL;
-    prisma = new PrismaClient({
-      datasources: { db: { url: databaseUrl } },
-    });
+    const mod = requirePrisma("@prisma/client");
+    const PrismaClientCtor:
+      | typeof import("@prisma/client").PrismaClient
+      | undefined =
+      (mod as any).PrismaClient ?? (mod as any).default?.PrismaClient;
+    if (!PrismaClientCtor) {
+      prisma = createStubPrisma();
+    } else {
+      const databaseUrl = coreEnv.DATABASE_URL;
+      prisma = new PrismaClientCtor({
+        datasources: { db: { url: databaseUrl } },
+      });
+    }
   } catch {
     // If Prisma client cannot be loaded, fall back to the in-memory stub
     prisma = createStubPrisma();

@@ -147,6 +147,22 @@ describe("depositReleaseEnvRefinement", () => {
       );
     }
   });
+  it("flags non-boolean ENABLED and accepts numeric INTERVAL_MS values", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      {
+        DEPOSIT_RELEASE_COUNT_ENABLED: 1 as any,
+        DEPOSIT_RELEASE_COUNT_INTERVAL_MS: 5000,
+      },
+      ctx,
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_COUNT_ENABLED"],
+      message: "must be true or false",
+    });
+    expect(ctx.addIssue).toHaveBeenCalledTimes(1);
+  });
   it("accepts valid ENABLED and INTERVAL_MS values for all prefixes", () => {
     const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
     depositReleaseEnvRefinement(

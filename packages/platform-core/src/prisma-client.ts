@@ -1,3 +1,3 @@
-export interface PrismaClient {
-  [key: string]: any;
-}
+import type { PrismaClient as GeneratedPrismaClient } from '@prisma/client';
+
+export type PrismaClient = GeneratedPrismaClient;

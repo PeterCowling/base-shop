@@ -144,13 +144,7 @@ export async function startLateFeeService(
   dataRoot: string = DATA_ROOT,
 ): Promise<() => void> {
   const { readdir, readFile } = await import("fs/promises");
-  let shops: string[];
-  try {
-    shops = await readdir(dataRoot);
-  } catch (err) {
-    logger.error("failed to start late fee service", { err });
-    throw err;
-  }
+  const shops = await readdir(dataRoot);
   const timers: NodeJS.Timeout[] = [];
 
   await Promise.all(
@@ -184,7 +178,9 @@ export async function startLateFeeService(
 
 const nodeEnvKey = "NODE" + "_ENV";
 if (process.env[nodeEnvKey] !== "test") {
-  startLateFeeService().catch((err) => {
-    logger.error("failed to start late fee service", { err });
+  setImmediate(() => {
+    startLateFeeService().catch((err) => {
+      logger.error("failed to start late fee service", { err });
+    });
   });
 }

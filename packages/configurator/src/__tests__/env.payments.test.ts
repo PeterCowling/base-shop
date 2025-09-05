@@ -3,43 +3,76 @@ import { withEnv } from "./envTestUtils";
 
 describe("payments env schema", () => {
   it("defaults to disabled configuration when gateway disabled", async () => {
-    const { paymentsEnv } = await withEnv(
-      {
-        PAYMENTS_GATEWAY: "disabled",
-        STRIPE_SECRET_KEY: "bogus",
-        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "bogus",
-        STRIPE_WEBHOOK_SECRET: "bogus",
-      },
+    const { paymentsEnv, paymentsEnvSchema } = await withEnv(
+      { PAYMENTS_GATEWAY: "disabled" },
       () => import("@acme/config/src/env/payments.ts"),
     );
-    expect(paymentsEnv.STRIPE_SECRET_KEY).toBe("sk_test");
-    expect(paymentsEnv.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY).toBe("pk_test");
-    expect(paymentsEnv.STRIPE_WEBHOOK_SECRET).toBe("whsec_test");
+    expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
   });
 
-  it("returns provided stripe keys when gateway enabled", async () => {
-    const keys = {
+  it("returns provided values for valid stripe config", async () => {
+    const input = {
       PAYMENTS_PROVIDER: "stripe",
       STRIPE_SECRET_KEY: "sk_live_123",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
       STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+      PAYMENTS_CURRENCY: "EUR",
+      PAYMENTS_SANDBOX: "false",
     } as const;
-    const { paymentsEnv } = await withEnv(keys, () =>
+    const { paymentsEnv } = await withEnv(input, () =>
       import("@acme/config/src/env/payments.ts"),
     );
-    expect(paymentsEnv).toEqual(expect.objectContaining(keys));
+    expect(paymentsEnv).toEqual({
+      PAYMENTS_PROVIDER: "stripe",
+      STRIPE_SECRET_KEY: "sk_live_123",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
+      STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+      PAYMENTS_CURRENCY: "EUR",
+      PAYMENTS_SANDBOX: false,
+    });
   });
 
-  it("falls back to defaults when stripe secret missing", async () => {
+  it.each([
+    [
+      "STRIPE_SECRET_KEY",
+      { STRIPE_SECRET_KEY: undefined, STRIPE_WEBHOOK_SECRET: "whsec_live_123" },
+      "❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe",
+    ],
+    [
+      "STRIPE_WEBHOOK_SECRET",
+      { STRIPE_SECRET_KEY: "sk_live_123", STRIPE_WEBHOOK_SECRET: undefined },
+      "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
+    ],
+  ])("throws when %s is missing", async (_name, vars, message) => {
+    const err = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(
+      withEnv(
+        {
+          PAYMENTS_PROVIDER: "stripe",
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
+          ...vars,
+        },
+        () => import("@acme/config/src/env/payments.ts"),
+      ),
+    ).rejects.toThrow("Invalid payments environment variables");
+    expect(err).toHaveBeenCalledWith(message);
+    err.mockRestore();
+  });
+
+  it.each([
+    [{ PAYMENTS_SANDBOX: "yesno" }, "PAYMENTS_SANDBOX"],
+    [{ PAYMENTS_CURRENCY: "usd" }, "PAYMENTS_CURRENCY"],
+  ])("falls back to defaults on invalid %s", async (vars) => {
     const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
-    const { paymentsEnv } = await withEnv(
-      { STRIPE_SECRET_KEY: "" },
+    const { paymentsEnv, paymentsEnvSchema } = await withEnv(
+      vars,
       () => import("@acme/config/src/env/payments.ts"),
     );
-    expect(warn).toHaveBeenCalled();
-    expect(paymentsEnv.STRIPE_SECRET_KEY).toBe("sk_test");
-    expect(paymentsEnv.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY).toBe("pk_test");
-    expect(paymentsEnv.STRIPE_WEBHOOK_SECRET).toBe("whsec_test");
+    expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
+    expect(warn).toHaveBeenCalledWith(
+      "⚠️ Invalid payments environment variables:",
+      expect.any(Object),
+    );
     warn.mockRestore();
   });
 });

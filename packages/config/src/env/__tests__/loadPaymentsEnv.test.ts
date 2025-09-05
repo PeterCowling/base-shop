@@ -36,6 +36,17 @@ describe("loadPaymentsEnv", () => {
     warnSpy.mockRestore();
   });
 
+  it("falls back to defaults on invalid sandbox value", () => {
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const env = loadPaymentsEnv({ PAYMENTS_SANDBOX: "yesno" } as NodeJS.ProcessEnv);
+    expect(env).toEqual(paymentsEnvSchema.parse({}));
+    expect(warnSpy).toHaveBeenCalledWith(
+      "⚠️ Invalid payments environment variables:",
+      expect.any(Object),
+    );
+    warnSpy.mockRestore();
+  });
+
   it.each([
     ["true", true],
     ["1", true],

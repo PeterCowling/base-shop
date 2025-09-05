@@ -5,6 +5,8 @@ const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
 const SESSION_SECRET = "session-secret-32-chars-long-string!";
 const REDIS_URL = "https://example.com";
 const REDIS_TOKEN = "redis-token-32-chars-long-string!";
+const DEV_NEXTAUTH_SECRET = "dev-nextauth-secret-32-chars-long-string!";
+const DEV_SESSION_SECRET = "dev-session-secret-32-chars-long-string!";
 
 function selectStore(env: any): string {
   return (
@@ -362,6 +364,87 @@ describe("authEnv expiry", () => {
     const diff = authEnv.AUTH_TOKEN_EXPIRES_AT.getTime() - start;
     expect(diff).toBeGreaterThanOrEqual(1000);
     expect(diff).toBeLessThan(2000);
+  });
+});
+
+describe("AUTH_TOKEN_TTL parsing", () => {
+  const base = {
+    NODE_ENV: "production",
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET,
+  } as const;
+
+  it.each([
+    ["60", 60],
+    ["2m", 120],
+  ])("converts %s into %d seconds", async (input, expected) => {
+    const { authEnv } = await withEnv(
+      { ...base, AUTH_TOKEN_TTL: input },
+      () => import("../auth"),
+    );
+    expect(authEnv.AUTH_TOKEN_TTL).toBe(expected);
+  });
+
+  it("rejects invalid TTL strings", async () => {
+    await expect(
+      withEnv(
+        { ...base, AUTH_TOKEN_TTL: "1h" },
+        () => import("../auth"),
+      ),
+    ).rejects.toThrow("Invalid auth environment variables");
+  });
+});
+
+describe("development defaults", () => {
+  it("applies dev secrets when NODE_ENV is not production", async () => {
+    const { authEnv } = await withEnv(
+      { NODE_ENV: "development", NEXTAUTH_SECRET: undefined, SESSION_SECRET: undefined },
+      () => import("../auth"),
+    );
+    expect(authEnv.NEXTAUTH_SECRET).toBe(DEV_NEXTAUTH_SECRET);
+    expect(authEnv.SESSION_SECRET).toBe(DEV_SESSION_SECRET);
+  });
+});
+
+describe("required credentials", () => {
+  const base = {
+    NODE_ENV: "production",
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET,
+  } as const;
+
+  it("requires both redis url and token when SESSION_STORE=redis", async () => {
+    await expect(
+      withEnv(
+        { ...base, SESSION_STORE: "redis", UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN },
+        () => import("../auth"),
+      ),
+    ).rejects.toThrow("Invalid auth environment variables");
+
+    await expect(
+      withEnv(
+        { ...base, SESSION_STORE: "redis", UPSTASH_REDIS_REST_URL: REDIS_URL },
+        () => import("../auth"),
+      ),
+    ).rejects.toThrow("Invalid auth environment variables");
+  });
+
+  it("requires JWT_SECRET when AUTH_PROVIDER=jwt", async () => {
+    await expect(
+      withEnv(
+        { ...base, AUTH_PROVIDER: "jwt" },
+        () => import("../auth"),
+      ),
+    ).rejects.toThrow("Invalid auth environment variables");
+  });
+
+  it("requires OAuth credentials when AUTH_PROVIDER=oauth", async () => {
+    await expect(
+      withEnv(
+        { ...base, AUTH_PROVIDER: "oauth" },
+        () => import("../auth"),
+      ),
+    ).rejects.toThrow("Invalid auth environment variables");
   });
 });
 

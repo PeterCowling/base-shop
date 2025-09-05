@@ -13,10 +13,11 @@
     "baseUrl": ".",
     "paths": {
       "@acme/config": ["../config/src/index.ts", "../config/dist/index.d.ts"],
-      "@acme/config/*": ["../config/src/*", "../config/dist/*"]
+      "@acme/config/*": ["../config/src/*", "../config/dist/*"],
+      "@acme/config/src/*": ["../config/src/*"]
     }
   },
   "include": ["src/**/*"],
-  "exclude": ["dist", "__tests__", ".turbo", "node_modules"],
+  "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"],
   "references": [{ "path": "../config" }]
 }

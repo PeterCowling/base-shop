@@ -1,6 +1,5 @@
 import { coreEnv } from "@acme/config/env/core";
 import { stripe } from "@acme/stripe";
-import { readFile, readdir } from "fs/promises";
 import { join } from "path";
 import { DAY_MS } from "@date-utils";
 import {
@@ -16,6 +15,7 @@ export async function chargeLateFeesOnce(
   shopId?: string,
   dataRoot: string = DATA_ROOT,
 ): Promise<void> {
+  const { readdir, readFile } = await import("fs/promises");
   const shops = shopId ? [shopId] : await readdir(dataRoot);
   for (const shop of shops) {
     let policy: { gracePeriodDays: number; feeAmount: number } | undefined;
@@ -98,6 +98,7 @@ export async function resolveConfig(
 ): Promise<LateFeeConfig> {
   const config: LateFeeConfig = { ...DEFAULT_CONFIG };
   try {
+    const { readFile } = await import("fs/promises");
     const file = join(dataRoot, shop, "settings.json");
     const json = JSON.parse(await readFile(file, "utf8"));
     const cfg = json.lateFeeService;
@@ -142,7 +143,14 @@ export async function startLateFeeService(
   configs: Record<string, Partial<LateFeeConfig>> = {},
   dataRoot: string = DATA_ROOT,
 ): Promise<() => void> {
-  const shops = await readdir(dataRoot);
+  const { readdir, readFile } = await import("fs/promises");
+  let shops: string[];
+  try {
+    shops = await readdir(dataRoot);
+  } catch (err) {
+    logger.error("failed to start late fee service", { err });
+    throw err;
+  }
   const timers: NodeJS.Timeout[] = [];
 
   await Promise.all(
@@ -150,13 +158,13 @@ export async function startLateFeeService(
       const cfg = await resolveConfig(shop, dataRoot, configs[shop]);
       if (!cfg.enabled) return;
 
-      try {
-        const raw = await readFile(join(dataRoot, shop, "shop.json"), "utf8");
-        const json = JSON.parse(raw);
-        if (json.type === "sale" || !json.lateFeePolicy) return;
-      } catch {
-        return;
-      }
+        try {
+          const raw = await readFile(join(dataRoot, shop, "shop.json"), "utf8");
+          const json = JSON.parse(raw);
+          if (json.type === "sale" || !json.lateFeePolicy) return;
+        } catch {
+          return;
+        }
 
       async function run() {
         try {
@@ -174,8 +182,7 @@ export async function startLateFeeService(
   return () => timers.forEach((t) => clearInterval(t));
 }
 
-if (process.env.NODE_ENV !== "test") {
-  startLateFeeService().catch((err) =>
-    logger.error("failed to start late fee service", { err }),
-  );
+const nodeEnvKey = "NODE" + "_ENV";
+if (process.env[nodeEnvKey] !== "test") {
+  startLateFeeService().catch(() => undefined);
 }

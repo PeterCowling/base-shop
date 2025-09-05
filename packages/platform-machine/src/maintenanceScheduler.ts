@@ -14,10 +14,17 @@ export async function runMaintenanceScan(
 ): Promise<void> {
   const shops = await readdir(dataRoot);
   for (const shop of shops) {
-    const [inventory, products] = await Promise.all([
-      readInventory(shop),
-      readProducts(shop),
-    ]);
+    let inventory;
+    let products;
+    try {
+      [inventory, products] = await Promise.all([
+        readInventory(shop),
+        readProducts(shop),
+      ]);
+    } catch (err) {
+      logger.error("maintenance scan failed", { shopId: shop, err });
+      continue;
+    }
     const productMap = new Map(products.map((p) => [p.sku, p]));
 
     for (const item of inventory) {

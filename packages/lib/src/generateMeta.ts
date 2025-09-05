@@ -47,25 +47,33 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
   // Resolve the OpenAI constructor from the library to support multiple SDK versions.
   let OpenAIConstructor:
     | (new (init: { apiKey: string }) => {
-        responses: { create: (...args: any[]) => Promise<any> };
-        images: { generate: (...args: any[]) => Promise<any> };
+        responses: { create: (...args: unknown[]) => Promise<unknown> };
+        images: { generate: (...args: unknown[]) => Promise<unknown> };
       })
     | undefined;
-  if ((globalThis as any).__OPENAI_IMPORT_ERROR__) {
+  if ((globalThis as { __OPENAI_IMPORT_ERROR__?: boolean }).__OPENAI_IMPORT_ERROR__) {
     return fallback;
   }
   try {
     const mod = await import("openai");
-    OpenAIConstructor =
-      typeof (mod as any).default === "function"
-        ? (mod as any).default
-        : typeof (mod as any).OpenAI === "function"
-          ? (mod as any).OpenAI
-          : typeof (mod as any).default?.default === "function"
-            ? (mod as any).default.default
+    const record = mod as Record<string, unknown>;
+    const maybeConstructor =
+      typeof record.default === "function"
+        ? record.default
+        : typeof record.OpenAI === "function"
+          ? record.OpenAI
+          : typeof (record.default as Record<string, unknown> | undefined)?.default ===
+              "function"
+            ? (record.default as Record<string, unknown>).default
             : typeof mod === "function"
-              ? (mod as any)
+              ? (mod as unknown)
               : undefined;
+    OpenAIConstructor = maybeConstructor as
+      | (new (init: { apiKey: string }) => {
+          responses: { create: (...args: unknown[]) => Promise<unknown> };
+          images: { generate: (...args: unknown[]) => Promise<unknown> };
+        })
+      | undefined;
   } catch {
     return fallback;
   }
@@ -79,26 +87,26 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
 
   const prompt = `Generate SEO metadata for a product as JSON with keys title, description, alt.\n\nTitle: ${product.title}\nDescription: ${product.description}`;
 
-  const text = await client.responses.create({
+  const text = (await client.responses.create({
     model: "gpt-4o-mini",
     input: prompt,
-  });
+  })) as { output?: Array<Record<string, unknown>> };
 
   const data: GeneratedMeta = { ...fallback };
   try {
     const first = text.output?.[0];
-    const output = (first && "content" in first ? first.content?.[0] : undefined) as
-      | string
-      | { text?: unknown }
-      | undefined;
+    const output =
+      first && typeof first === "object" && "content" in first
+        ? (first.content as unknown[] | undefined)?.[0]
+        : undefined;
     const content =
-      typeof output === "string"
-        ? output
-        : typeof output?.text === "string"
-          ? output.text
-          : undefined;
-    if (content) {
-      const parsed = JSON.parse(content) as Partial<GeneratedMeta>;
+      output && typeof output === "object" &&
+      "text" in (output as Record<string, unknown>)
+        ? ((output as Record<string, unknown>).text as unknown)
+        : output;
+    const parsedText = typeof content === "string" ? content : undefined;
+    if (parsedText) {
+      const parsed = JSON.parse(parsedText) as Partial<GeneratedMeta>;
       data.title = parsed.title ?? data.title;
       data.description = parsed.description ?? data.description;
       data.alt = parsed.alt ?? data.alt;
@@ -108,11 +116,11 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
   }
 
   // Generate a product image.  Save the returned base64 image to /public/og/{id}.png.
-  const img = await client.images.generate({
+  const img = (await client.images.generate({
     model: "gpt-image-1",
     prompt: `Generate a 1200x630 social media share image for ${product.title}`,
     size: "1024x1024",
-  });
+  })) as { data?: Array<{ b64_json?: string }> };
   const b64 = img.data?.[0]?.b64_json ?? "";
   const buffer = Buffer.from(b64, "base64");
   const file = path.join(process.cwd(), "public", "og", `${product.id}.png`);

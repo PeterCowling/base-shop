@@ -16,35 +16,43 @@ export async function runSeoAudit(url: string): Promise<SeoAuditResult> {
   let lighthouseFn: typeof import("lighthouse").default | undefined;
   try {
     const mod = await import("lighthouse");
-    lighthouseFn =
-      typeof (mod as any).default === "function"
-        ? (mod as any).default
-        : typeof (mod as any).default?.default === "function"
-          ? (mod as any).default.default
+    const record = mod as Record<string, unknown>;
+    const defaultRecord = record.default as Record<string, unknown> | undefined;
+    const maybeFn =
+      typeof record.default === "function"
+        ? record.default
+        : typeof defaultRecord?.default === "function"
+          ? defaultRecord.default
           : typeof mod === "function"
-            ? (mod as any)
+            ? (mod as unknown)
             : undefined;
+    lighthouseFn = maybeFn as typeof import("lighthouse").default | undefined;
   } catch {
     // ignore; handled below
   }
   let launch: typeof import("chrome-launcher").launch | undefined;
   try {
     const mod = await import("chrome-launcher");
-    launch =
-      typeof (mod as any).launch === "function"
-        ? (mod as any).launch
-        : typeof (mod as any).default?.launch === "function"
-          ? (mod as any).default.launch
-          : typeof (mod as any).default?.default?.launch === "function"
-            ? (mod as any).default.default.launch
+    const record = mod as Record<string, unknown>;
+    const defaultRecord = record.default as Record<string, unknown> | undefined;
+    const nestedDefault = defaultRecord?.default as Record<string, unknown> | undefined;
+    const maybeLaunch =
+      typeof record.launch === "function"
+        ? record.launch
+        : typeof defaultRecord?.launch === "function"
+          ? defaultRecord.launch
+          : typeof nestedDefault?.launch === "function"
+            ? nestedDefault.launch
             : undefined;
+    launch = maybeLaunch as typeof import("chrome-launcher").launch | undefined;
   } catch {
     // ignore; handled below
   }
-  let desktopConfig: any;
+  let desktopConfig: unknown;
   try {
     const mod = await import("lighthouse/core/config/desktop-config.js");
-    desktopConfig = (mod as any)?.default ?? mod;
+    const record = mod as Record<string, unknown>;
+    desktopConfig = record.default ?? mod;
   } catch {
     // ignore; handled below
   }

@@ -1,22 +1,21 @@
+jest.mock("zod", () => {
+  const actual = jest.requireActual("zod");
+  return {
+    ...actual,
+    z: { ...actual.z, setErrorMap: jest.fn(actual.z.setErrorMap) },
+  };
+});
 import { z, ZodIssueCode, type ZodIssue } from "zod";
 import { applyFriendlyZodMessages, friendlyErrorMap } from "../zodErrorMap";
 
 describe("applyFriendlyZodMessages", () => {
-  test("applies the friendly map to missing strings", () => {
-    const original = z.getErrorMap();
-
-    z.setErrorMap(() => ({ message: "Default message" }));
-    const defaultMsg =
-      z.string().safeParse(undefined).error?.issues[0].message;
-
+  test("sets the global error map", () => {
+    const spy = (z as any).setErrorMap as jest.Mock;
     applyFriendlyZodMessages();
+    expect(spy).toHaveBeenCalledWith(friendlyErrorMap);
     const friendlyMsg =
       z.string().safeParse(undefined).error?.issues[0].message;
-
-    expect(defaultMsg).toBe("Default message");
     expect(friendlyMsg).toBe("Required");
-
-    z.setErrorMap(original);
   });
 });
 

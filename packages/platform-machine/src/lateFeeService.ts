@@ -178,9 +178,7 @@ export async function startLateFeeService(
 
 const nodeEnvKey = "NODE" + "_ENV";
 if (process.env[nodeEnvKey] !== "test") {
-  setImmediate(() => {
-    startLateFeeService().catch((err) => {
-      logger.error("failed to start late fee service", { err });
-    });
+  startLateFeeService().catch((err) => {
+    logger.error("failed to start late fee service", { err });
   });
 }

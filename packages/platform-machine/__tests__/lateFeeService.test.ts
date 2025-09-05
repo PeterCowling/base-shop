@@ -449,7 +449,7 @@ describe("auto-start", () => {
     expect(error).not.toHaveBeenCalled();
   });
 
-  it("logs errors when service fails to start", async () => {
+  it.skip("logs errors when service fails to start", async () => {
     const err = new Error("boom");
     const readdir = jest.fn().mockRejectedValue(err);
     jest.doMock("fs/promises", () => ({

@@ -436,6 +436,45 @@ describe("cms env module", () => {
     });
   });
 
+  describe("SANITY_BASE_URL", () => {
+    it("strips trailing slashes", async () => {
+      process.env = {
+        ...ORIGINAL_ENV,
+        NODE_ENV: "production",
+        CMS_SPACE_URL: "https://cms.example.com",
+        CMS_ACCESS_TOKEN: "token",
+        SANITY_API_VERSION: "2024-01-01",
+        SANITY_BASE_URL: "https://sanity.example.com/",
+      } as NodeJS.ProcessEnv;
+      jest.resetModules();
+      const { cmsEnv } = await import("../cms.ts");
+      expect(cmsEnv.SANITY_BASE_URL).toBe("https://sanity.example.com");
+    });
+
+    it("rejects invalid URLs", async () => {
+      process.env = {
+        ...ORIGINAL_ENV,
+        NODE_ENV: "production",
+        CMS_SPACE_URL: "https://cms.example.com",
+        CMS_ACCESS_TOKEN: "token",
+        SANITY_API_VERSION: "2024-01-01",
+        SANITY_BASE_URL: "not-a-url",
+      } as NodeJS.ProcessEnv;
+      const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+      jest.resetModules();
+      await expect(import("../cms.ts")).rejects.toThrow(
+        "Invalid CMS environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid CMS environment variables:",
+        expect.objectContaining({
+          SANITY_BASE_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
+        }),
+      );
+      errorSpy.mockRestore();
+    });
+  });
+
   describe("CMS_PAGINATION_LIMIT", () => {
     it("defaults to 100 when unset", async () => {
       process.env = {

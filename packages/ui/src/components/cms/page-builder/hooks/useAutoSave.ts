@@ -50,6 +50,7 @@ export default function useAutoSave({
         clearTimeout(saveDebounceRef.current);
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleAutoSave, ...deps]);
 
   return { autoSaveState, handleAutoSave };

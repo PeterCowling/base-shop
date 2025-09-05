@@ -1,7 +1,7 @@
 "use client";
 
 import { DndContext, DragOverlay } from "@dnd-kit/core";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ComponentProps } from "react";
 import { Button } from "../../atoms/shadcn";
 import { Toast } from "../../atoms";
 import PageToolbar from "./PageToolbar";
@@ -25,7 +25,7 @@ interface LayoutProps {
   togglePreview: () => void;
   showPreview: boolean;
   liveMessage: string;
-  dndContext: any;
+  dndContext: ComponentProps<typeof DndContext>;
   frameClass: Record<string, string>;
   viewport: "desktop" | "tablet" | "mobile";
   viewportStyle: CSSProperties;

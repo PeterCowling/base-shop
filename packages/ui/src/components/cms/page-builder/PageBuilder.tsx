@@ -89,7 +89,7 @@ const PageBuilder = memo(function PageBuilder({
     }
   }, [controls.showGrid, controls.device, controls.gridCols]);
 
-  const { formData: _formData, handlePublish, handleSave, autoSaveState } = usePageBuilderSave({
+  const { handlePublish, handleSave, autoSaveState } = usePageBuilderSave({
     page,
     components,
     state,

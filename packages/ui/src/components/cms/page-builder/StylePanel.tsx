@@ -46,9 +46,7 @@ export default function StylePanel({ component, handleInput }: Props) {
       next.typography = { ...typography, [key]: value };
     }
     handleInput("styles", JSON.stringify(next));
-    void import("@acme/telemetry")
-      .then(({ track }) => track("stylepanel:update", { group, key }))
-      .catch(() => {});
+    track("stylepanel:update", { group, key });
   };
 
   return (

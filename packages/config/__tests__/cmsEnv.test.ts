@@ -13,6 +13,8 @@ describe("cmsEnv", () => {
         CMS_SPACE_URL: "https://example.com",
         CMS_ACCESS_TOKEN: "token",
         SANITY_API_VERSION: "2023-01-01",
+        SANITY_PROJECT_ID: "test-project",
+        SANITY_DATASET: "production",
       },
       () => import("../src/env/cms"),
     );
@@ -30,6 +32,8 @@ describe("cmsEnv", () => {
         CMS_SPACE_URL: undefined,
         CMS_ACCESS_TOKEN: undefined,
         SANITY_API_VERSION: undefined,
+        SANITY_PROJECT_ID: undefined,
+        SANITY_DATASET: undefined,
       },
       () => import("../src/env/cms"),
     );

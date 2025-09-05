@@ -3,7 +3,11 @@ import { afterEach, describe, expect, it } from "@jest/globals";
 import { createRequire } from "module";
 
 describe("cms env module", () => {
-  const ORIGINAL_ENV = process.env;
+  const ORIGINAL_ENV = {
+    ...process.env,
+    SANITY_PROJECT_ID: "test-project",
+    SANITY_DATASET: "production",
+  } as NodeJS.ProcessEnv;
 
   afterEach(() => {
     jest.resetModules();

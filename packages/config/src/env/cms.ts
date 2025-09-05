@@ -13,6 +13,17 @@ export const cmsEnvSchema = z.object({
   SANITY_API_VERSION: isProd
     ? z.string().min(1)
     : z.string().min(1).default("2021-10-21"),
+  SANITY_PROJECT_ID: isProd
+    ? z.string().min(1)
+    : z.string().min(1).default("test-project"),
+  SANITY_DATASET: z.string().min(1).default("production"),
+  SANITY_API_TOKEN: z.string().min(1).optional(),
+  SANITY_PREVIEW_SECRET: z.string().min(1).optional(),
+  SANITY_BASE_URL: z
+    .string()
+    .url()
+    .transform((url) => url.replace(/\/$/, ""))
+    .optional(),
   CMS_BASE_URL: z
     .string()
     .url()

@@ -13,6 +13,8 @@ describe("applyFriendlyZodMessages", () => {
     const spy = (z as any).setErrorMap as jest.Mock;
     applyFriendlyZodMessages();
     expect(spy).toHaveBeenCalledWith(friendlyErrorMap);
+    expect(z.getErrorMap()).toBe(friendlyErrorMap);
+
     const friendlyMsg =
       z.string().safeParse(undefined).error?.issues[0].message;
     expect(friendlyMsg).toBe("Required");

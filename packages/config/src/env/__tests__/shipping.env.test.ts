@@ -45,10 +45,21 @@ describe("shipping environment parser", () => {
     });
   });
 
-  it("parses allowed country list", async () => {
-    const load = await getLoader();
-    const env = load({ ALLOWED_COUNTRIES: "US, IT ,de" });
-    expect(env.ALLOWED_COUNTRIES).toEqual(["US", "IT", "DE"]);
+  describe("ALLOWED_COUNTRIES", () => {
+    it("parses and normalizes list", async () => {
+      const load = await getLoader();
+      const env = load({ ALLOWED_COUNTRIES: "US, IT ,de" });
+      expect(env.ALLOWED_COUNTRIES).toEqual(["US", "IT", "DE"]);
+    });
+
+    it("eagerly parses from process.env", async () => {
+      jest.resetModules();
+      process.env = {
+        ALLOWED_COUNTRIES: "us, it ,de",
+      } as NodeJS.ProcessEnv;
+      const { shippingEnv } = await import("../shipping.ts");
+      expect(shippingEnv.ALLOWED_COUNTRIES).toEqual(["US", "IT", "DE"]);
+    });
   });
 
   describe("local pickup toggle", () => {
@@ -65,6 +76,18 @@ describe("shipping environment parser", () => {
       const load = await getLoader();
       const env = load({ LOCAL_PICKUP_ENABLED: input });
       expect(env.LOCAL_PICKUP_ENABLED).toBe(expected);
+    });
+
+    it("throws on invalid values", async () => {
+      const load = await getLoader();
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      expect(() =>
+        load({ LOCAL_PICKUP_ENABLED: "maybe" as any })
+      ).toThrow("Invalid shipping environment variables");
+      expect(errorSpy).toHaveBeenCalled();
+      errorSpy.mockRestore();
     });
   });
 
@@ -91,6 +114,19 @@ describe("shipping environment parser", () => {
       );
       expect(errorSpy).toHaveBeenCalled();
       errorSpy.mockRestore();
+    });
+  });
+
+  describe("loader vs eager parse", () => {
+    it("does not reparse shippingEnv after import", async () => {
+      jest.resetModules();
+      process.env = { DEFAULT_COUNTRY: "us" } as NodeJS.ProcessEnv;
+      const mod = await import("../shipping.ts");
+      expect(mod.shippingEnv.DEFAULT_COUNTRY).toBe("US");
+
+      process.env.DEFAULT_COUNTRY = "ca";
+      expect(mod.shippingEnv.DEFAULT_COUNTRY).toBe("US");
+      expect(mod.loadShippingEnv(process.env).DEFAULT_COUNTRY).toBe("CA");
     });
   });
 });

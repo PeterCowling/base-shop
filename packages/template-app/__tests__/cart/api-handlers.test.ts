@@ -123,6 +123,14 @@ describe("cart API handlers", () => {
   });
 
   describe("PUT", () => {
+    it("returns 400 for malformed body", async () => {
+      mockCartCookie();
+      mockCartStore();
+      const { PUT } = await import("@platform-core/cartApi");
+      const res = await PUT(buildRequest("PUT", "not json"));
+      expect(res.status).toBe(400);
+    });
+
     it("returns 404 for unknown SKU", async () => {
       mockCartCookie();
       mockCartStore();
@@ -144,6 +152,30 @@ describe("cart API handlers", () => {
         buildRequest("PUT", { lines: [{ sku: { id: sku.id }, qty: 1 }] }),
       );
       expect(res.status).toBe(400);
+    });
+
+    it("returns 409 when quantity exceeds stock", async () => {
+      const sku = { id: "s1", stock: 1, sizes: [] };
+      mockCartCookie();
+      mockCartStore();
+      mockProducts({ getProductById: () => sku });
+      const { PUT } = await import("@platform-core/cartApi");
+      const res = await PUT(
+        buildRequest("PUT", { lines: [{ sku: { id: sku.id }, qty: 2 }] }),
+      );
+      expect(res.status).toBe(409);
+    });
+
+    it("returns 404 when cart not found", async () => {
+      const sku = { id: "s1", stock: 5, sizes: [] };
+      mockCartCookie({ decodeCartCookie: () => "c1" });
+      mockCartStore({ getCart: jest.fn(async () => ({})) });
+      mockProducts({ getProductById: () => sku });
+      const { PUT } = await import("@platform-core/cartApi");
+      const res = await PUT(
+        buildRequest("PUT", { lines: [{ sku: { id: sku.id }, qty: 1 }] }, "c1"),
+      );
+      expect(res.status).toBe(404);
     });
 
     it("sets cart and cookie on success", async () => {
@@ -202,16 +234,26 @@ describe("cart API handlers", () => {
       );
       expect(res.status).toBe(200);
       let data = await res.json();
+      expect(res.headers.get("Set-Cookie")).toContain(CART_COOKIE);
       expect(data.cart).toEqual({});
       res = await PATCH(
         buildRequest("PATCH", { id: "bar", qty: 2 }, cookie),
       );
       data = await res.json();
+      expect(res.headers.get("Set-Cookie")).toContain(CART_COOKIE);
       expect(data.cart).toEqual(updated);
     });
   });
 
   describe("DELETE", () => {
+    it("returns 400 for malformed body", async () => {
+      mockCartCookie();
+      mockCartStore();
+      const { DELETE } = await import("@platform-core/cartApi");
+      const res = await DELETE(buildRequest("DELETE", "not json"));
+      expect(res.status).toBe(400);
+    });
+
     it("returns 404 when cart missing", async () => {
       mockCartCookie({ decodeCartCookie: () => null });
       mockCartStore();

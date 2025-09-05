@@ -39,6 +39,12 @@ test("returns 404 for missing item", async () => {
   expect(res.status).toBe(404);
 });
 
+test("returns 404 when cart id missing", async () => {
+  const { idKey } = await createCartWithItem(1);
+  const res = await PATCH(createRequest({ id: idKey, qty: 1 }));
+  expect(res.status).toBe(404);
+});
+
 test("rejects negative or non-integer quantity", async () => {
   const { cartId, idKey } = await createCartWithItem(1);
   let res = await PATCH(

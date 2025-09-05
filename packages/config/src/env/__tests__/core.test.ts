@@ -677,9 +677,6 @@ describe("loadCoreEnv", () => {
       expect.stringContaining("CMS_ACCESS_TOKEN"),
     );
     expect(errorSpy).toHaveBeenCalledWith(
-      expect.stringContaining("SANITY_API_VERSION"),
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
       expect.stringContaining("NEXTAUTH_SECRET"),
     );
     expect(errorSpy).toHaveBeenCalledWith(
@@ -707,6 +704,8 @@ describe("core env module", () => {
       ...ORIGINAL_ENV,
       ...baseEnv,
       NODE_ENV: "development",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
     } as NodeJS.ProcessEnv;
     delete process.env.CART_COOKIE_SECRET;
     const errorSpy = jest

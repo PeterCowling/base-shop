@@ -16,6 +16,6 @@
     "lib": ["es2022"]
   },
   "include": ["src/**/*"],
-  "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"],
+  "exclude": ["dist", "**/__tests__/**", "**/*.test.*", ".turbo", "node_modules"],
   "references": [{ "path": "../zod-utils" }]
 }

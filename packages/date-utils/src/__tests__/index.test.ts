@@ -9,6 +9,9 @@ import {
   parseISO,
   format,
   fromZonedTime,
+  startOfDay,
+  parseDate,
+  formatDate,
 } from "../index";
 
 describe("parseISO and format", () => {
@@ -31,6 +34,50 @@ describe("fromZonedTime", () => {
   it("handles invalid timezones", () => {
     const d = fromZonedTime("2025-01-01 00:00:00", "Invalid/Zone");
     expect(Number.isNaN(d.getTime())).toBe(true);
+  });
+});
+
+describe("startOfDay", () => {
+  it("returns midnight UTC when no timezone", () => {
+    const d = startOfDay("2025-03-03T15:30:00Z");
+    expect(d.toISOString()).toBe("2025-03-03T00:00:00.000Z");
+  });
+
+  it("adjusts for timezone offsets and DST", () => {
+    const d = startOfDay("2025-03-10T12:00:00Z", "America/New_York");
+    // After DST, midnight local is 04:00 UTC
+    expect(d.toISOString()).toBe("2025-03-10T04:00:00.000Z");
+  });
+});
+
+describe("parseDate", () => {
+  it("parses ISO strings", () => {
+    expect(parseDate("2025-03-03T00:00:00Z")?.toISOString()).toBe(
+      "2025-03-03T00:00:00.000Z"
+    );
+  });
+
+  it("parses with timezone", () => {
+    expect(
+      parseDate("2025-03-03T00:00:00", "America/New_York")?.toISOString()
+    ).toBe("2025-03-03T05:00:00.000Z");
+  });
+
+  it("returns null for invalid input", () => {
+    expect(parseDate("not-a-date")).toBeNull();
+  });
+});
+
+describe("formatDate", () => {
+  it("formats dates without timezone", () => {
+    expect(formatDate("2025-03-03T05:06:07Z", "yyyy-MM-dd")).toBe(
+      "2025-03-03"
+    );
+  });
+
+  it("formats dates for a timezone", () => {
+    const d = new Date("2025-03-03T05:06:07Z");
+    expect(formatDate(d, "HH:mm", "America/New_York")).toBe("00:06");
   });
 });
 

@@ -1,5 +1,10 @@
-import { addDays, format, parseISO } from "date-fns";
-import { fromZonedTime } from "date-fns-tz";
+import {
+  addDays,
+  format,
+  parseISO,
+  startOfDay as dfStartOfDay,
+} from "date-fns";
+import { fromZonedTime, formatInTimeZone } from "date-fns-tz";
 
 export { addDays, format, parseISO, fromZonedTime };
 
@@ -40,6 +45,36 @@ export function formatTimestamp(
 ): string {
   const date = new Date(ts);
   return Number.isNaN(date.getTime()) ? ts : date.toLocaleString(locale);
+}
+
+/** Return the start of day for the given date, optionally in a timezone. */
+export function startOfDay(date: Date | string, timezone?: string): Date {
+  const d = typeof date === "string" ? parseISO(date) : date;
+  if (!timezone) return dfStartOfDay(d);
+  const startStr = formatInTimeZone(d, timezone, "yyyy-MM-dd'T'00:00:00XXX");
+  return parseISO(startStr);
+}
+
+/** Parse an ISO string into a Date, returning null on failure. */
+export function parseDate(value: string, timezone?: string): Date | null {
+  try {
+    const date = timezone ? fromZonedTime(value, timezone) : parseISO(value);
+    return Number.isNaN(date.getTime()) ? null : date;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Format a date with an optional timezone using a date-fns style format string.
+ */
+export function formatDate(
+  date: Date | string,
+  fmt = "yyyy-MM-dd",
+  timezone?: string
+): string {
+  const d = typeof date === "string" ? parseISO(date) : date;
+  return timezone ? formatInTimeZone(d, timezone, fmt) : format(d, fmt);
 }
 
 /**

@@ -40,7 +40,12 @@ export async function PUT(req: NextRequest) {
   let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value) as
     | string
     | null;
-  if (!cartId) {
+  if (cartId) {
+    const existing = await getCart(cartId);
+    if (Object.keys(existing).length === 0) {
+      return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+    }
+  } else {
     cartId = await createCart();
   }
 
@@ -52,6 +57,9 @@ export async function PUT(req: NextRequest) {
     }
     if (sku.sizes.length && !line.size) {
       return NextResponse.json({ error: "Size required" }, { status: 400 });
+    }
+    if (line.qty > sku.stock) {
+      return NextResponse.json({ error: "Insufficient stock" }, { status: 409 });
     }
     const key = line.size ? `${sku.id}:${line.size}` : sku.id;
     cart[key] = { sku, size: line.size, qty: line.qty };

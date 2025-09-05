@@ -3,6 +3,7 @@ import {
   createCartWithItem,
   createRequest,
   encodeCartCookie,
+  decodeCartCookie,
 } from "./helpers";
 
 afterEach(() => {
@@ -14,4 +15,6 @@ test("returns cart", async () => {
   const res = await GET(createRequest({}, encodeCartCookie(cartId)));
   const body = await res.json();
   expect(body.cart).toEqual(cart);
+  const encoded = res.headers.get("Set-Cookie")!.split(";")[0].split("=")[1];
+  expect(decodeCartCookie(encoded)).toBe(cartId);
 });

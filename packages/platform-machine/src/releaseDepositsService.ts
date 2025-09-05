@@ -166,11 +166,14 @@ export async function startDepositReleaseService(
 // imported. Production environments can opt-in by explicitly setting an
 // environment variable.
 if (process.env.RUN_DEPOSIT_RELEASE_SERVICE === "true") {
-  void startDepositReleaseService().catch((err) => {
-    // Log via both logger and console so that failures surface in
-    // environments without structured logging.
-    const { logger: log } = require("@platform-core/utils");
-    log.error("failed to start deposit release service", { err });
-    console.error("failed to start deposit release service", err);
-  });
+  (async () => {
+    try {
+      await startDepositReleaseService();
+    } catch (err) {
+      // Log via both logger and console so that failures surface in
+      // environments without structured logging.
+      logger.error("failed to start deposit release service", { err });
+      console.error("failed to start deposit release service", err);
+    }
+  })();
 }

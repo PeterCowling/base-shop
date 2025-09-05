@@ -2,6 +2,7 @@
 import Image from "next/image";
 import * as React from "react";
 import type { SKU } from "@acme/types";
+import { useCart } from "@acme/platform-core/contexts/CartContext";
 import { boxProps } from "../../utils/style";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
@@ -42,6 +43,15 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
   ) => {
     const { classes, style } = boxProps({ width, height, padding, margin });
     const media = product.media?.[0];
+    const [, dispatch] = useCart();
+
+    const handleAdd = () => {
+      if (onAddToCart) {
+        onAddToCart(product);
+      } else {
+        void dispatch({ type: "add", sku: product });
+      }
+    };
     return (
       <div
         ref={ref}
@@ -77,9 +87,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
         {showPrice && product.price != null && (
           <Price amount={product.price} className="font-semibold" />
         )}
-        {onAddToCart && (
-          <Button onClick={() => onAddToCart(product)}>{ctaLabel}</Button>
-        )}
+        <Button onClick={handleAdd}>{ctaLabel}</Button>
       </div>
     );
   }

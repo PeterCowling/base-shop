@@ -47,11 +47,13 @@ describe("SearchBar", () => {
     expect(input).toHaveValue("banana");
   });
 
-  it("triggers onSearch on manual submit", async () => {
+  it("updates value on change and triggers onSearch on submit", async () => {
     const onSearch = jest.fn();
     render(<SearchBar suggestions={[]} onSearch={onSearch} label="Search" />);
     const input = screen.getByRole("searchbox", { name: "Search" });
-    await userEvent.type(input, "hello{Enter}");
+    await userEvent.type(input, "hello");
+    expect(input).toHaveValue("hello");
+    await userEvent.keyboard("{Enter}");
     expect(onSearch).toHaveBeenCalledWith("hello");
   });
 

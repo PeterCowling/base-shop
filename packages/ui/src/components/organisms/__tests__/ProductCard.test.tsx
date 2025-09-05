@@ -1,11 +1,16 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ProductCard } from "../ProductCard";
 import type { SKU } from "@acme/types";
 import "@testing-library/jest-dom";
 import "../../../../../../test/resetNextMocks";
 
+const dispatch = jest.fn();
 jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["USD", jest.fn()],
+}));
+jest.mock("@acme/platform-core/contexts/CartContext", () => ({
+  useCart: () => [{}, dispatch],
 }));
 
 describe("ProductCard", () => {
@@ -23,14 +28,15 @@ describe("ProductCard", () => {
     description: "",
   };
 
-  it("renders product info and handles add to cart", () => {
-    const handleAdd = jest.fn();
-    render(<ProductCard product={product} onAddToCart={handleAdd} />);
+  it("renders product info and dispatches add action", async () => {
+    const user = userEvent.setup();
+    render(<ProductCard product={product} />);
 
+    expect(screen.getByAltText("Test Product")).toBeInTheDocument();
     expect(screen.getByText("Test Product")).toBeInTheDocument();
-    expect(screen.getByText(/\$9\.99/)).toBeInTheDocument();
+    expect(screen.getByText("$9.99")).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: /add to cart/i }));
-    expect(handleAdd).toHaveBeenCalledWith(product);
+    await user.click(screen.getByRole("button", { name: /add to cart/i }));
+    expect(dispatch).toHaveBeenCalledWith({ type: "add", sku: product });
   });
 });

@@ -6,6 +6,8 @@ import {
   markQa,
   markAvailable,
   markLateFeeCharged,
+  readOrders,
+  markRefunded,
 } from "../rentalOrders.server";
 
 jest.mock("@acme/date-utils", () => ({ nowIso: jest.fn() }));
@@ -78,6 +80,47 @@ describe("rental orders status updates", () => {
     await expect(markLateFeeCharged(shop, sessionId, 1)).resolves.toBeNull();
 
     expect(updateMock).toHaveBeenCalledTimes(6);
+  });
+});
+
+describe("rental orders read and refund", () => {
+  const shop = "test-shop";
+  const sessionId = "sess";
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it("readOrders normalizes null values", async () => {
+    jest
+      .spyOn(prisma.rentalOrder, "findMany")
+      .mockResolvedValue([{ id: 1, returnedAt: null }]);
+    await expect(readOrders(shop)).resolves.toEqual([
+      { id: 1, returnedAt: undefined },
+    ]);
+  });
+
+  it("markRefunded returns updated order", async () => {
+    (nowIso as jest.Mock).mockReturnValue("now");
+    const update = jest
+      .spyOn(prisma.rentalOrder, "update")
+      .mockResolvedValue({ id: 1, refundedAt: "now", riskLevel: "low" });
+    await expect(markRefunded(shop, sessionId, "low")).resolves.toEqual({
+      id: 1,
+      refundedAt: "now",
+      riskLevel: "low",
+    });
+    expect(update).toHaveBeenCalledWith({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: { refundedAt: "now", riskLevel: "low" },
+    });
+  });
+
+  it("markRefunded returns null on error", async () => {
+    jest
+      .spyOn(prisma.rentalOrder, "update")
+      .mockRejectedValue(new Error("fail"));
+    await expect(markRefunded(shop, sessionId)).resolves.toBeNull();
   });
 });
 

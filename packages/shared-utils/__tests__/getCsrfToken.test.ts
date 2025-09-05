@@ -23,6 +23,30 @@ describe('getCsrfToken on server', () => {
     expect(getCsrfToken(req)).toBe('query-token');
   });
 
+  it('returns token from cookie when header and query missing', () => {
+    const req = new Request('https://example.com', {
+      headers: { cookie: 'csrf_token=cookie-token; other=1' },
+    });
+    expect(getCsrfToken(req)).toBe('cookie-token');
+  });
+
+  it('prioritizes query parameter over cookie', () => {
+    const req = new Request('https://example.com?csrf_token=query-token', {
+      headers: { cookie: 'csrf_token=cookie-token' },
+    });
+    expect(getCsrfToken(req)).toBe('query-token');
+  });
+
+  it('prioritizes header over query and cookie', () => {
+    const req = new Request('https://example.com?csrf_token=query-token', {
+      headers: {
+        'x-csrf-token': 'header-token',
+        cookie: 'csrf_token=cookie-token',
+      },
+    });
+    expect(getCsrfToken(req)).toBe('header-token');
+  });
+
   it('returns undefined when token missing', () => {
     const req = new Request('https://example.com');
     expect(getCsrfToken(req)).toBeUndefined();

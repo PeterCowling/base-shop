@@ -15,4 +15,10 @@ describe('genSecret', () => {
     const secret = genSecret(8);
     expect(secret).toMatch(/^[0-9a-f]+$/);
   });
+
+  it('generates unique secrets on each call', () => {
+    const a = genSecret();
+    const b = genSecret();
+    expect(a).not.toBe(b);
+  });
 });

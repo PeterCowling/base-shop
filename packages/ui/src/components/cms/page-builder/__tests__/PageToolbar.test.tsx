@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import type { Locale } from "@acme/i18n/locales";
 import PageToolbar from "../PageToolbar";
 import { getLegacyPreset } from "../../../../utils/devicePresets";
+import HistoryControls from "../HistoryControls";
 
 describe("PageToolbar", () => {
   it("responds to keyboard shortcuts", () => {
@@ -127,6 +128,70 @@ describe("PageToolbar", () => {
     expect(
       screen.getByText("Wrong orientation (needs landscape)")
     ).toBeInTheDocument();
+  });
+
+  it("updates state when adding/removing sections with undo/redo", () => {
+    const Wrapper = () => {
+      const [sections, setSections] = React.useState<string[]>([]);
+      const [history, setHistory] = React.useState<string[][]>([]);
+      const [future, setFuture] = React.useState<string[][]>([]);
+
+      const pushState = (next: string[]) => {
+        setHistory((h) => [...h, sections]);
+        setFuture([]);
+        setSections(next);
+      };
+
+      const add = () => pushState([...sections, String(sections.length)]);
+      const remove = () => pushState(sections.slice(0, -1));
+      const undo = () => {
+        setHistory((h) => {
+          if (!h.length) return h;
+          const prev = h[h.length - 1];
+          setFuture((f) => [sections, ...f]);
+          setSections(prev);
+          return h.slice(0, -1);
+        });
+      };
+      const redo = () => {
+        setFuture((f) => {
+          if (!f.length) return f;
+          const next = f[0];
+          setHistory((h) => [...h, sections]);
+          setSections(next);
+          return f.slice(1);
+        });
+      };
+
+      return (
+        <div>
+          <button onClick={add}>Add</button>
+          <button onClick={remove}>Remove</button>
+          <HistoryControls
+            canUndo={history.length > 0}
+            canRedo={future.length > 0}
+            onUndo={undo}
+            onRedo={redo}
+            onSave={jest.fn()}
+            onPublish={jest.fn()}
+            saving={false}
+            publishing={false}
+            autoSaveState="idle"
+          />
+          <div data-testid="count">{sections.length}</div>
+        </div>
+      );
+    };
+
+    render(<Wrapper />);
+    fireEvent.click(screen.getByText("Add"));
+    expect(screen.getByTestId("count").textContent).toBe("1");
+    fireEvent.click(screen.getByText("Undo"));
+    expect(screen.getByTestId("count").textContent).toBe("0");
+    fireEvent.click(screen.getByText("Redo"));
+    expect(screen.getByTestId("count").textContent).toBe("1");
+    fireEvent.click(screen.getByText("Remove"));
+    expect(screen.getByTestId("count").textContent).toBe("0");
   });
 });
 

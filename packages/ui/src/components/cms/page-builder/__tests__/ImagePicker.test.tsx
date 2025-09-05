@@ -1,5 +1,19 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import ImagePicker from "../ImagePicker";
+
+const loadMedia = jest.fn();
+
+jest.mock("../useMediaLibrary", () => ({
+  __esModule: true,
+  default: () => ({
+    media: [{ url: "/img.jpg", altText: "img", type: "image" }],
+    setMedia: jest.fn(),
+    loadMedia,
+    shop: "shop1",
+    loading: false,
+    error: undefined,
+  }),
+}));
 
 jest.mock("@ui/hooks/useFileUpload", () => () => ({
   pendingFile: null,
@@ -13,32 +27,30 @@ jest.mock("@ui/hooks/useFileUpload", () => () => ({
   error: "",
 }));
 
-jest.mock("next/navigation", () => ({
-  usePathname: () => "/cms/shop/abc",
-  useSearchParams: () => new URLSearchParams(),
-}));
 jest.mock("next/image", () => (props: any) => <img {...props} />);
 
 describe("ImagePicker", () => {
-  it("loads media and selects image", async () => {
-    const media = [{ url: "/img.jpg", altText: "img", type: "image" }];
-    const fetchSpy = jest
-      .spyOn(global, "fetch")
-      .mockResolvedValue({ ok: true, json: async () => media } as any);
-
+  it("selects image and calls onSelect", () => {
     const onSelect = jest.fn();
     render(
       <ImagePicker onSelect={onSelect}>
         <button>open</button>
-      </ImagePicker>,
+      </ImagePicker>
     );
-
     fireEvent.click(screen.getByText("open"));
-    await waitFor(() => expect(fetchSpy).toHaveBeenCalled());
-
-    fireEvent.click(await screen.findByAltText("img"));
+    fireEvent.click(screen.getByAltText("img"));
     expect(onSelect).toHaveBeenCalledWith("/img.jpg");
+  });
 
-    fetchSpy.mockRestore();
+  it("search input triggers loadMedia", () => {
+    render(
+      <ImagePicker onSelect={jest.fn()}>
+        <button>open</button>
+      </ImagePicker>
+    );
+    fireEvent.click(screen.getByText("open"));
+    const input = screen.getByPlaceholderText("Search media...");
+    fireEvent.change(input, { target: { value: "cat" } });
+    expect(loadMedia).toHaveBeenLastCalledWith("cat");
   });
 });

@@ -91,12 +91,21 @@ describe('getCsrfToken', () => {
       expect(getCsrfToken(reqCookie)).toBe('cookie-token');
     });
 
-    it('treats whitespace-only tokens as missing', () => {
-      const req = new Request('https://example.com?csrf_token=%20%20', {
-        headers: {
-          'x-csrf-token': '   ',
-          cookie: 'csrf_token=   ',
-        },
+    it('treats whitespace-only header token as missing', () => {
+      const req = new Request('https://example.com', {
+        headers: { 'x-csrf-token': '   ' },
+      });
+      expect(getCsrfToken(req)).toBeUndefined();
+    });
+
+    it('treats whitespace-only query token as missing', () => {
+      const req = new Request('https://example.com?csrf_token=%20%20');
+      expect(getCsrfToken(req)).toBeUndefined();
+    });
+
+    it('treats whitespace-only cookie token as missing', () => {
+      const req = new Request('https://example.com', {
+        headers: { cookie: 'csrf_token=   ' },
       });
       expect(getCsrfToken(req)).toBeUndefined();
     });

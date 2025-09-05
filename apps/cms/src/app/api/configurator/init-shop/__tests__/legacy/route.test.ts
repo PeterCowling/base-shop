@@ -36,14 +36,14 @@ afterEach(() => {
 describe("POST /cms/api/configurator/init-shop", () => {
   it("returns 403 for unauthorized session", async () => {
     getServerSession.mockResolvedValueOnce(null);
-    const { POST } = await import("./route");
+    const { POST } = await import("../../route");
     const res = await POST(new Request("http://localhost"));
     expect(res.status).toBe(403);
   });
 
   it("returns 400 for invalid CSV", async () => {
     getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
-    const { POST } = await import("./route");
+    const { POST } = await import("../../route");
     const res = await POST(buildRequest({ id: "shop1", csv: "notbase64" }));
     expect(res.status).toBe(400);
     expect(writeFileMock).not.toHaveBeenCalled();
@@ -54,7 +54,7 @@ describe("POST /cms/api/configurator/init-shop", () => {
     const csvContent = "sku,price\n1,10\n";
     const csv = Buffer.from(csvContent).toString("base64");
     const categories = ["a", "b"];
-    const { POST } = await import("./route");
+    const { POST } = await import("../../route");
     const res = await POST(buildRequest({ id: "shop1", csv, categories }));
     expect(res.status).toBe(200);
     await res.json();
@@ -77,7 +77,7 @@ describe("POST /cms/api/configurator/init-shop", () => {
   it("returns error when write fails", async () => {
     getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
     writeFileMock.mockRejectedValueOnce(new Error("disk"));
-    const { POST } = await import("./route");
+    const { POST } = await import("../../route");
     const csv = Buffer.from("sku\n").toString("base64");
     const res = await POST(buildRequest({ id: "shop1", csv }));
     expect(res.status).toBe(400);

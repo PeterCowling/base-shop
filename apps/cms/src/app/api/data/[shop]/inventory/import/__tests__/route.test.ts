@@ -15,10 +15,10 @@ jest.mock("@platform-core/repositories/inventory.server", () => ({
   inventoryRepository: { write },
 }));
 
-let POST: typeof import("./route").POST;
+let POST: typeof import("../route").POST;
 
 beforeAll(async () => {
-  ({ POST } = await import("./route"));
+  ({ POST } = await import("../route"));
 });
 
 afterEach(() => {

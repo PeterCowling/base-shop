@@ -9,10 +9,10 @@ jest.mock("@platform-core/repositories/inventory.server", () => ({
   inventoryRepository: { read },
 }));
 
-let GET: typeof import("./route").GET;
+let GET: typeof import("../route").GET;
 
 beforeAll(async () => {
-  ({ GET } = await import("./route"));
+  ({ GET } = await import("../route"));
 });
 
 beforeEach(() => {

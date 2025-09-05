@@ -21,6 +21,23 @@ describe("mapSendGridStats", () => {
       bounced: 5,
     });
   });
+
+  it("handles alternate field names and defaults", () => {
+    const raw = {
+      opened: "2",
+      clicks: "3",
+      unsubscribed: "4",
+      bounced: "5",
+    } as const;
+
+    expect(mapSendGridStats(raw)).toEqual({
+      delivered: 0,
+      opened: 2,
+      clicked: 3,
+      unsubscribed: 4,
+      bounced: 5,
+    });
+  });
 });
 
 describe("mapResendStats", () => {
@@ -40,6 +57,10 @@ describe("mapResendStats", () => {
       unsubscribed: 4,
       bounced: 5,
     });
+  });
+
+  it("returns zeros for missing fields", () => {
+    expect(mapResendStats({})).toEqual(emptyStats);
   });
 });
 

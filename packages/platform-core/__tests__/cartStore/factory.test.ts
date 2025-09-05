@@ -1,5 +1,7 @@
 import { jest } from "@jest/globals";
 
+const STRONG_TOKEN = "strongtokenstrongtokenstrongtoken!!";
+
 const hsetMock = jest.fn();
 const hgetallMock = jest.fn();
 const expireMock = jest.fn();
@@ -49,7 +51,7 @@ describe("createCartStore backend selection", () => {
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "test";
     process.env.CART_COOKIE_SECRET = "test";
     process.env.UPSTASH_REDIS_REST_URL = "https://example.com";
-    process.env.UPSTASH_REDIS_REST_TOKEN = "token";
+    process.env.UPSTASH_REDIS_REST_TOKEN = STRONG_TOKEN;
     const { createCartStore } = await import("../../src/cartStore");
     createCartStore();
     expect(RedisMock).toHaveBeenCalled();

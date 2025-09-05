@@ -1,23 +1,26 @@
 import { act, render, fireEvent, screen, waitFor } from "@testing-library/react";
 import React, { useState } from "react";
-import {
-  STORAGE_KEY,
-  useConfiguratorPersistence,
-} from "../useConfiguratorPersistence";
+import * as persistence from "../useConfiguratorPersistence";
 import {
   configuratorStateSchema,
   type ConfiguratorState,
 } from "../../../wizard/schema";
 
+const { STORAGE_KEY, useConfiguratorPersistence } = persistence;
+
 describe("useConfiguratorPersistence", () => {
   let fetchMock: jest.Mock;
   let complete: ((id: string, status: any) => void) | null = null;
 
-  function TestComponent(): JSX.Element {
+  function TestComponent({ onInvalid }: { onInvalid?: () => void }): JSX.Element {
     const [state, setState] = useState<ConfiguratorState>(
       configuratorStateSchema.parse({})
     );
-    const [markStepComplete] = useConfiguratorPersistence(state, setState);
+    const [markStepComplete] = useConfiguratorPersistence(
+      state,
+      setState,
+      onInvalid
+    );
     complete = markStepComplete;
     return (
       <input
@@ -90,5 +93,18 @@ describe("useConfiguratorPersistence", () => {
     );
     expect(JSON.parse(localStorage.getItem(STORAGE_KEY)!).completed.intro).toBe("complete");
     expect(updateListener).toHaveBeenCalled();
+  });
+
+  it("notifies when persisted state is invalid", async () => {
+    const onInvalid = jest.fn();
+    fetchMock.mockReset().mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ state: { storeName: 123 }, completed: {} }),
+    });
+
+    render(<TestComponent onInvalid={onInvalid} />);
+
+    await waitFor(() => expect(onInvalid).toHaveBeenCalled());
+    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
   });
 });

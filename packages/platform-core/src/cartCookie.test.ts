@@ -88,6 +88,12 @@ describe("cartCookie", () => {
     expect(header).toMatch(/Max-Age=\d+/);
   });
 
+  it("sets Max-Age=0 when clearing the cookie", () => {
+    const header = asSetCookieHeader("gone", 0);
+    expect(header).toContain("Max-Age=0");
+    expect(header.startsWith(`${CART_COOKIE}=gone`)).toBe(true);
+  });
+
   it("throws when getSecret is called without a secret", async () => {
     jest.resetModules();
     jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));

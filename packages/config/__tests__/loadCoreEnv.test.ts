@@ -26,6 +26,22 @@ describe("loadCoreEnv", () => {
     );
   });
 
+  it("logs base schema issue for invalid NODE_ENV", async () => {
+    const { loadCoreEnv } = await import("../src/env/core");
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    expect(() =>
+      loadCoreEnv({ NODE_ENV: "invalid" } as NodeJS.ProcessEnv),
+    ).toThrow("Invalid core environment variables");
+
+    expect(spy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(spy).toHaveBeenCalledWith(
+      expect.stringContaining("NODE_ENV: Invalid enum value"),
+    );
+  });
+
   it("returns parsed env without logging for valid env", async () => {
     const { loadCoreEnv } = await import("../src/env/core");
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});

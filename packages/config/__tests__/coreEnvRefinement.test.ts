@@ -76,6 +76,39 @@ describe("coreEnvSchema refinement", () => {
       }),
     );
   });
+
+  it("collects issues for invalid deposit, reverse and late fee strings", async () => {
+    const { depositReleaseEnvRefinement } = await import("../src/env/core");
+    const ctx = { addIssue: jest.fn() } as any;
+
+    depositReleaseEnvRefinement(
+      {
+        DEPOSIT_RELEASE_ENABLED: "maybe",
+        REVERSE_LOGISTICS_INTERVAL_MS: "abc",
+        LATE_FEE_INTERVAL_MS: {} as any,
+      },
+      ctx,
+    );
+
+    expect(ctx.addIssue).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: ["DEPOSIT_RELEASE_ENABLED"],
+        message: "must be true or false",
+      }),
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: ["REVERSE_LOGISTICS_INTERVAL_MS"],
+        message: "must be a number",
+      }),
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: ["LATE_FEE_INTERVAL_MS"],
+        message: "must be a number",
+      }),
+    );
+  });
 });
 
 
@@ -144,6 +177,40 @@ describe("depositReleaseEnvRefinement via coreEnvSchema", () => {
       expect(parsed.data.REVERSE_LOGISTICS_INTERVAL_MS).toBe(2000);
       expect(parsed.data.LATE_FEE_ENABLED).toBe(true);
       expect(parsed.data.LATE_FEE_INTERVAL_MS).toBe(3000);
+    }
+  });
+});
+
+describe("auth/email schema merge failures", () => {
+  it("forwards auth schema issues", async () => {
+    const { coreEnvSchema } = await import("../src/env/core");
+    const parsed = coreEnvSchema.safeParse({
+      ...baseEnv,
+      AUTH_TOKEN_TTL: "10x",
+    } as NodeJS.ProcessEnv);
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ path: ["AUTH_TOKEN_TTL"] }),
+        ]),
+      );
+    }
+  });
+
+  it("forwards email schema issues", async () => {
+    const { coreEnvSchema } = await import("../src/env/core");
+    const parsed = coreEnvSchema.safeParse({
+      ...baseEnv,
+      EMAIL_PROVIDER: "mailchimp",
+    } as NodeJS.ProcessEnv);
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ path: ["EMAIL_PROVIDER"] }),
+        ]),
+      );
     }
   });
 });

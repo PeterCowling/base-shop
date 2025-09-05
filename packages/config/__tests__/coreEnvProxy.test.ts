@@ -14,12 +14,14 @@ describe("coreEnv proxy", () => {
       { NODE_ENV: "test" },
       () => import("../src/env/core"),
     );
+    const parseSpy = jest.spyOn(core.coreEnvSchema, "safeParse");
 
     expect("NODE_ENV" in core.coreEnv).toBe(true);
     expect(Object.keys(core.coreEnv)).toContain("NODE_ENV");
     const desc = Object.getOwnPropertyDescriptor(core.coreEnv, "NODE_ENV");
     expect(desc).toBeDefined();
     expect(desc?.value).toBe("test");
+    expect(parseSpy).toHaveBeenCalledTimes(1);
   });
 
   it("parses during import in production", async () => {

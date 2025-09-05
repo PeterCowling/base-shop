@@ -75,6 +75,9 @@ describe("calculateRentalDays", () => {
   it("throws on invalid date", () => {
     expect(() => calculateRentalDays("not-a-date")).toThrow("Invalid returnDate");
   });
+  it("throws on impossible calendar dates", () => {
+    expect(() => calculateRentalDays("2025-02-30")).toThrow("Invalid returnDate");
+  });
 });
 
 describe("formatTimestamp", () => {
@@ -84,8 +87,9 @@ describe("formatTimestamp", () => {
     expect(formatted).toContain("2025");
     expect(formatted).not.toBe(ts);
   });
-  it("returns input for invalid timestamp", () => {
-    expect(formatTimestamp("bad")).toBe("bad");
+  it("returns original string for invalid timestamp", () => {
+    const bad = "not-a-date";
+    expect(formatTimestamp(bad)).toBe(bad);
   });
   it("returns input for invalid timestamp with locale", () => {
     expect(formatTimestamp("bad", "en-US")).toBe("bad");
@@ -170,6 +174,18 @@ describe("getTimeRemaining and formatDuration", () => {
   });
   it("formats durations just under a day", () => {
     expect(formatDuration(24 * 60 * 60 * 1000 - 1000)).toBe("23h 59m 59s");
+  });
+  it("formats combined day, hour, minute and second durations", () => {
+    const ms =
+      1 * 24 * 60 * 60 * 1000 +
+      2 * 60 * 60 * 1000 +
+      3 * 60 * 1000 +
+      4 * 1000;
+    expect(formatDuration(ms)).toBe("1d 2h 3m 4s");
+  });
+  it("formats hour, minute and second durations without days", () => {
+    const ms = 1 * 60 * 60 * 1000 + 1 * 60 * 1000 + 1 * 1000;
+    expect(formatDuration(ms)).toBe("1h 1m 1s");
   });
 });
 

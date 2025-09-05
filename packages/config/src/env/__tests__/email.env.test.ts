@@ -61,6 +61,16 @@ describe("email env provider selection", () => {
     const env = await loadEnv();
     expect(env.EMAIL_PROVIDER).toBe("noop");
   });
+
+  it("rejects unknown EMAIL_PROVIDER", async () => {
+    process.env.EMAIL_PROVIDER = "unknown" as any;
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(loadEnv()).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
 });
 
 describe("webhook verification toggle", () => {

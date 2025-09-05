@@ -5,6 +5,7 @@ import "server-only";
 import { pageSchema, type Page } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
+import { Prisma } from "@prisma/client";
 import { prisma } from "../../db";
 import { validateShopName } from "../../shops/index";
 import { DATA_ROOT } from "../../dataRoot";
@@ -118,12 +119,12 @@ export async function savePage(
   try {
     await prisma.page.upsert({
       where: { id: page.id },
-      update: { data: page as unknown as Record<string, unknown>, slug: page.slug },
+      update: { data: page as Prisma.JsonObject, slug: page.slug },
       create: {
         id: page.id,
         shopId: shop,
         slug: page.slug,
-        data: page as unknown as Record<string, unknown>,
+        data: page as Prisma.JsonObject,
       },
     });
   } catch {
@@ -171,7 +172,7 @@ export async function updatePage(
     await prisma.page.update({
       where: { id: patch.id },
       data: {
-        data: updated as unknown as Record<string, unknown>,
+        data: updated as Prisma.JsonObject,
         slug: updated.slug,
       },
     });
@@ -196,10 +197,10 @@ export interface PageDiffEntry {
 }
 
 const entrySchema = z
-    .object({
-      timestamp: z.string().datetime(),
-      diff: (pageSchema as unknown as z.ZodObject<z.ZodRawShape>).partial(),
-    })
+  .object({
+    timestamp: z.string().datetime(),
+    diff: z.object((pageSchema as any).shape).partial(),
+  })
   .strict();
 
 export async function diffHistory(shop: string): Promise<PageDiffEntry[]> {

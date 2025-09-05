@@ -20,17 +20,19 @@ describe("payments env provider", () => {
     expect(paymentsEnv.STRIPE_SECRET_KEY).toBe("sk_live_123");
   });
 
-  it("throws when stripe provider missing key", async () => {
-    const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(
-      withEnv(
-        {
-          PAYMENTS_PROVIDER: "stripe",
-        },
-        () => import("../payments"),
-      ),
-    ).rejects.toThrow("Invalid payments environment variables");
-    expect(errSpy).toHaveBeenCalled();
+  it("provides default stripe keys when missing", async () => {
+    const { paymentsEnv } = await withEnv(
+      {
+        PAYMENTS_PROVIDER: "stripe",
+      },
+      () => import("../payments"),
+    );
+
+    expect(paymentsEnv.STRIPE_SECRET_KEY).toBe("dummy-stripe-secret");
+    expect(paymentsEnv.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY).toBe(
+      "dummy-publishable-key",
+    );
+    expect(paymentsEnv.STRIPE_WEBHOOK_SECRET).toBe("dummy-webhook-secret");
   });
 });
 

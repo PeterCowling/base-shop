@@ -17,6 +17,51 @@ afterEach(() => {
 });
 
 describe("cms sanity env", () => {
+  it("defaults CMS vars in development", async () => {
+    process.env = { NODE_ENV: "development" } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { cmsEnv } = await import("../cms.ts");
+    expect(cmsEnv.CMS_SPACE_URL).toBe("https://cms.example.com");
+    expect(cmsEnv.CMS_ACCESS_TOKEN).toBe("placeholder-token");
+  });
+
+  it("requires CMS vars in production", async () => {
+    process.env = { NODE_ENV: "production" } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../cms.ts")).rejects.toThrow(
+      "Invalid CMS environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid CMS environment variables:",
+      expect.objectContaining({
+        CMS_SPACE_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
+        CMS_ACCESS_TOKEN: {
+          _errors: expect.arrayContaining([expect.any(String)]),
+        },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("defaults SANITY fields when missing", async () => {
+    process.env = { ...baseEnv };
+    delete process.env.SANITY_API_VERSION;
+    delete process.env.SANITY_PROJECT_ID;
+    delete process.env.SANITY_DATASET;
+    delete process.env.SANITY_API_TOKEN;
+    delete process.env.SANITY_PREVIEW_SECRET;
+    jest.resetModules();
+    const { cmsEnv } = await import("../cms.ts");
+    expect(cmsEnv).toMatchObject({
+      SANITY_API_VERSION: "2021-10-21",
+      SANITY_PROJECT_ID: "dummy-project-id",
+      SANITY_DATASET: "production",
+      SANITY_API_TOKEN: "dummy-api-token",
+      SANITY_PREVIEW_SECRET: "dummy-preview-secret",
+    });
+  });
+
   it("defaults SANITY_PROJECT_ID when missing", async () => {
     process.env = { ...baseEnv };
     delete process.env.SANITY_PROJECT_ID;

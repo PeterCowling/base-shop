@@ -1,4 +1,4 @@
-import { assertLocales, resolveLocale } from "../locales";
+import { assertLocales, resolveLocale, LOCALES, locales } from "../locales";
 
 describe("assertLocales", () => {
   it("throws when provided value is not an array", () => {
@@ -26,5 +26,12 @@ describe("resolveLocale", () => {
   it("defaults to 'en' for invalid or undefined locales", () => {
     expect(resolveLocale("fr" as any)).toBe("en");
     expect(resolveLocale(undefined)).toBe("en");
+  });
+});
+
+describe("locale constants", () => {
+  it("exports supported locales", () => {
+    expect(LOCALES).toEqual(["en", "de", "it"]);
+    expect(locales).toBe(LOCALES);
   });
 });

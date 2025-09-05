@@ -22,5 +22,14 @@ describe("fillLocales", () => {
 
     expect(result).toEqual(values);
   });
+
+  it("skips unsupported locales", () => {
+    const result = fillLocales(
+      { en: "Hello", fr: "Bonjour" } as any,
+      "Hi"
+    );
+
+    expect(result).toEqual({ en: "Hello", de: "Hi", it: "Hi" });
+  });
 });
 

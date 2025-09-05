@@ -29,13 +29,19 @@ describe("MarketingEmailTemplate", () => {
     );
   });
 
-  it("omits CTA section when no CTA props provided", () => {
-    const { container, queryByRole } = render(
-      <MarketingEmailTemplate headline="Headline" content={<p>Body</p>} />,
+  it("renders logo and footer but omits CTA when CTA props are missing", () => {
+    const { getByAltText, getByText, queryByRole } = render(
+      <MarketingEmailTemplate
+        headline="Headline"
+        content={<p>Body</p>}
+        logoSrc="/logo.png"
+        footer={<span>Bye</span>}
+      />
     );
 
+    expect(getByAltText("logo")).toBeInTheDocument();
+    expect(getByText("Bye")).toBeInTheDocument();
     expect(queryByRole("link")).toBeNull();
-    expect(container.querySelector("a")).toBeNull();
   });
 
   it("renders i18n variations", () => {

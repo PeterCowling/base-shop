@@ -109,6 +109,21 @@ describe("coreEnvSchema refinement", () => {
       }),
     );
   });
+
+  it("ignores unrelated keys", async () => {
+    const { depositReleaseEnvRefinement } = await import("../src/env/core");
+    const ctx = { addIssue: jest.fn() } as any;
+
+    depositReleaseEnvRefinement(
+      {
+        SOME_OTHER_KEY: "value",
+        DEPOSIT_RELEASE_FOO: "bar",
+      },
+      ctx,
+    );
+
+    expect(ctx.addIssue).not.toHaveBeenCalled();
+  });
 });
 
 

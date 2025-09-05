@@ -35,12 +35,13 @@ describe("coreEnv proxy", () => {
       () => import("../src/env/core"),
     );
     const parseSpy = jest.spyOn(core.coreEnvSchema, "safeParse");
+    expect(parseSpy).not.toHaveBeenCalled();
     const url = core.coreEnv.CMS_SPACE_URL;
+    expect(parseSpy).toHaveBeenCalledTimes(1);
     const token = core.coreEnv.CMS_ACCESS_TOKEN;
+    expect(parseSpy).toHaveBeenCalledTimes(1);
     expect(core.coreEnv.CMS_SPACE_URL).toBe(url);
     expect(core.coreEnv.CMS_ACCESS_TOKEN).toBe(token);
-    expect(core.coreEnv.CMS_SPACE_URL).toBe(url);
-    expect(parseSpy).toHaveBeenCalledTimes(1);
   });
 
   it("parses during import in production", async () => {

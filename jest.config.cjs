@@ -219,7 +219,7 @@ const config = {
   coverageDirectory: ' /coverage',
   coveragePathIgnorePatterns: [
     ' /test/msw/',
-    '<rootDir>/test/msw/server.ts',
+    ' /test/msw/server.ts',
     '<rootDir>/test/mswServer.ts',
     '<rootDir>/test/resetNextMocks.ts',
     '<rootDir>/test/setupFetchPolyfill.ts',
@@ -227,6 +227,8 @@ const config = {
     '<rootDir>/test/reactDomClientShim.ts',
     '<rootDir>/test/polyfills/',
     '<rootDir>/test/__mocks__/',
+    ' /packages/config/src/env/__tests__/',
+    ' /packages/config/src/env/__test__/',
   ],
   coverageReporters: ['text', 'text-summary', 'lcov'],
   coverageThreshold: {

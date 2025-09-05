@@ -45,6 +45,27 @@ describe("db", () => {
     });
   });
 
+  it("throws when updating a nonexistent order", async () => {
+    process.env.NODE_ENV = "test";
+    jest.doMock("@acme/config/env/core", () => ({ loadCoreEnv: () => ({}) }));
+    jest.doMock(
+      "@prisma/client",
+      () => {
+        throw new Error("should not load");
+      },
+      { virtual: true }
+    );
+
+    const { prisma } = (await import("./db")) as { prisma: PrismaClient };
+
+    await expect(
+      prisma.rentalOrder.update({
+        where: { shop_sessionId: { shop: "s", sessionId: "missing" } },
+        data: { trackingNumber: "t1" },
+      })
+    ).rejects.toThrow("Order not found");
+  });
+
   it("uses stub when NODE_ENV=test even with DATABASE_URL", async () => {
     process.env.NODE_ENV = "test";
     process.env.DATABASE_URL = "postgres://example";

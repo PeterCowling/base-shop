@@ -13,7 +13,7 @@ jest.mock("@auth/rbac", () => ({
 // Minimal env config for auth secret
 jest.mock("@acme/config", () => ({
   __esModule: true,
-  env: { NEXTAUTH_SECRET: "test" },
+  env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!" },
 }));
 
 // Mock next-auth token retrieval

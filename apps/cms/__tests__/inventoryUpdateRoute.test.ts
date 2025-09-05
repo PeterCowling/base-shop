@@ -34,13 +34,13 @@ describe("inventory update route", () => {
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
       }));
-      jest.doMock("@acme/config", () => ({
-        env: {
-          NEXTAUTH_SECRET: "s",
-          CART_COOKIE_SECRET: "c",
-          SESSION_SECRET: "s",
-        },
-      }));
+        jest.doMock("@acme/config", () => ({
+          env: {
+            NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!",
+            CART_COOKIE_SECRET: "c",
+            SESSION_SECRET: "test-session-secret-32-chars-long-string!",
+          },
+        }));
       const { writeInventory, readInventory } = await import(
         "@platform-core/repositories/inventory.server",
       );
@@ -80,13 +80,13 @@ describe("inventory update route", () => {
       jest.doMock("next-auth", () => ({
         getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
       }));
-      jest.doMock("@acme/config", () => ({
-        env: {
-          NEXTAUTH_SECRET: "s",
-          CART_COOKIE_SECRET: "c",
-          SESSION_SECRET: "s",
-        },
-      }));
+        jest.doMock("@acme/config", () => ({
+          env: {
+            NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!",
+            CART_COOKIE_SECRET: "c",
+            SESSION_SECRET: "test-session-secret-32-chars-long-string!",
+          },
+        }));
       const { writeInventory, readInventory } = await import(
         "@platform-core/repositories/inventory.server",
       );

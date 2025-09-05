@@ -1,7 +1,7 @@
 /* eslint-env jest */
 
 // Minimal auth config
-process.env.NEXTAUTH_SECRET = "test-secret";
+process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";
 
 jest.mock("../actions/common/auth", () => ({
   ensureAuthorized: jest.fn(),

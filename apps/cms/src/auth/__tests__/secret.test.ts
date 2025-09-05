@@ -25,10 +25,13 @@ describe("auth secret", () => {
   });
 
   it("exports the NEXTAUTH_SECRET value", async () => {
-    (process.env as Record<string, string>).NEXTAUTH_SECRET = "test-secret";
+    (process.env as Record<string, string>).NEXTAUTH_SECRET =
+      "test-nextauth-secret-32-chars-long-string!";
     jest.doMock("@acme/config", () => ({ env: process.env }));
     const { authSecret } = await import("../secret");
-    expect(authSecret).toBe("test-secret");
+    expect(authSecret).toBe(
+      "test-nextauth-secret-32-chars-long-string!",
+    );
   });
 });
 

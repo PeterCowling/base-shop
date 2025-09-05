@@ -54,6 +54,7 @@ function diffSettings(
 }
 
 export async function getShopSettings(shop: string): Promise<ShopSettings> {
+  shop = validateShopName(shop);
   try {
     const buf = await fs.readFile(settingsPath(shop), "utf8");
     const parsed = shopSettingsSchema

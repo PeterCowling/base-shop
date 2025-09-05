@@ -183,6 +183,30 @@ describe("updateAggregates persistence", () => {
     );
     expect(events.filter((e) => e.type === "ai_crawl")).toHaveLength(2);
   });
+
+  test("merges with existing aggregate file", async () => {
+    const aggPath = path.join(tmp, shop, "analytics-aggregates.json");
+    await fs.mkdir(path.dirname(aggPath), { recursive: true });
+    const existing = {
+      page_view: { "2024-01-01": 5 },
+      order: { "2024-01-01": { count: 2, amount: 50 } },
+      discount_redeemed: { "2024-01-01": { SAVE: 1 } },
+      ai_crawl: { "2024-01-01": 3 },
+    };
+    await fs.writeFile(aggPath, JSON.stringify(existing), "utf8");
+
+    const { trackEvent } = await import("../index");
+    await trackEvent(shop, { type: "page_view", page: "home" });
+    await trackEvent(shop, { type: "order", orderId: "o3", amount: 5 });
+    await trackEvent(shop, { type: "discount_redeemed", code: "SAVE" });
+    await trackEvent(shop, { type: "ai_crawl" });
+
+    const agg = JSON.parse(await fs.readFile(aggPath, "utf8"));
+    expect(agg.page_view["2024-01-01"]).toBe(6);
+    expect(agg.order["2024-01-01"]).toEqual({ count: 3, amount: 55 });
+    expect(agg.discount_redeemed["2024-01-01"].SAVE).toBe(2);
+    expect(agg.ai_crawl["2024-01-01"]).toBe(4);
+  });
 });
 
 describe("public tracking functions", () => {

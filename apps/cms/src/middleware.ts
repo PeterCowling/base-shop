@@ -9,6 +9,7 @@ import { authSecret } from "./auth/secret";
 import { logger } from "@acme/shared-utils";
 import { createHeadersObject } from "next-secure-headers";
 import helmet from "helmet";
+import type { IncomingMessage, ServerResponse } from "http";
 // Avoid importing @auth/session in middleware (Edge) because it pulls in
 // Node-only dependencies like 'crypto' via iron-session. We'll perform a
 // lightweight CSRF check inline using the request cookies instead.
@@ -34,7 +35,10 @@ const ADMIN_PATH_REGEX =
 
 const securityHeaders = (() => {
   const isDev = process.env.NODE_ENV !== "production";
-  const directives: Record<string, unknown> = {
+
+  type CspDirectiveValue = string | string[];
+
+  const directives: Record<string, CspDirectiveValue> = {
     defaultSrc: "'self'",
     baseUri: "'self'",
     objectSrc: "'none'",
@@ -45,15 +49,15 @@ const securityHeaders = (() => {
   // In development, relax CSP to allow Next.js dev client features
   // (react-refresh, eval-based source maps, HMR websockets, etc.).
   if (isDev) {
-    (directives as any).scriptSrc = ["'self'", "'unsafe-inline'", "'unsafe-eval'"];
-    (directives as any).connectSrc = ["'self'", "ws:", "wss:"];
-    (directives as any).styleSrc = ["'self'", "'unsafe-inline'"];
-    (directives as any).imgSrc = ["'self'", "data:", "blob:"];
-    (directives as any).fontSrc = ["'self'", "data:"];
+    directives.scriptSrc = ["'self'", "'unsafe-inline'", "'unsafe-eval'"];
+    directives.connectSrc = ["'self'", "ws:", "wss:"];
+    directives.styleSrc = ["'self'", "'unsafe-inline'"];
+    directives.imgSrc = ["'self'", "data:", "blob:"];
+    directives.fontSrc = ["'self'", "data:"];
   }
 
   const base = createHeadersObject({
-    contentSecurityPolicy: { directives: directives as any },
+    contentSecurityPolicy: { directives },
     forceHTTPSRedirect: [
       true,
       { maxAge: 60 * 60 * 24 * 365, includeSubDomains: true, preload: true },
@@ -73,8 +77,16 @@ const securityHeaders = (() => {
     },
   };
 
-  helmet.crossOriginOpenerPolicy()(undefined as any, helmetRes as any, () => {});
-  helmet.crossOriginEmbedderPolicy()(undefined as any, helmetRes as any, () => {});
+  helmet.crossOriginOpenerPolicy()(
+    undefined as unknown as IncomingMessage,
+    helmetRes as unknown as ServerResponse,
+    () => {}
+  );
+  helmet.crossOriginEmbedderPolicy()(
+    undefined as unknown as IncomingMessage,
+    helmetRes as unknown as ServerResponse,
+    () => {}
+  );
   helmetHeaders["Permissions-Policy"] =
     "camera=(), microphone=(), geolocation=()";
 

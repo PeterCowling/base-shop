@@ -21,6 +21,14 @@ describe("ResendProvider", () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";
   }
 
+  it("passes API key to Resend constructor", async () => {
+    process.env.RESEND_API_KEY = "rs";
+    const { Resend } = require("resend");
+    const { ResendProvider } = await import("../resend");
+    new ResendProvider();
+    expect(Resend).toHaveBeenCalledWith("rs");
+  });
+
   it("resolves on success", async () => {
     setupEnv();
     const { send } = require("resend");
@@ -28,6 +36,25 @@ describe("ResendProvider", () => {
     const { ResendProvider } = await import("../resend");
     const provider = new ResendProvider();
     await expect(provider.send(options)).resolves.toBeUndefined();
+  });
+
+  it("warns and skips send when API key missing", async () => {
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+    const { send } = require("resend");
+    const warn = jest
+      .spyOn(console, "warn")
+      .mockImplementation(() => undefined);
+
+    const { ResendProvider } = await import("../resend");
+    const provider = new ResendProvider();
+    await provider.send(options);
+
+    expect(warn).toHaveBeenCalledWith(
+      "Resend API key is not configured; skipping email send",
+    );
+    expect(send).not.toHaveBeenCalled();
+
+    warn.mockRestore();
   });
 
   it("wraps 400 errors as non-retryable ProviderError", async () => {
@@ -89,6 +116,19 @@ describe("ResendProvider", () => {
       );
     });
 
+    it("returns empty stats on JSON parse failure", async () => {
+      process.env.RESEND_API_KEY = "rs";
+      global.fetch = jest.fn().mockResolvedValue({
+        json: jest.fn().mockRejectedValue(new Error("bad")),
+      }) as any;
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider();
+      const { mapResendStats } = await import("../../stats");
+      await expect(provider.getCampaignStats("1")).resolves.toEqual(
+        mapResendStats({}),
+      );
+    });
+
     it("returns empty stats when fetch rejects", async () => {
       process.env.RESEND_API_KEY = "rs";
       global.fetch = jest.fn().mockRejectedValue(new Error("fail")) as any;
@@ -136,9 +176,49 @@ describe("ResendProvider", () => {
         provider.createContact("test@example.com")
       ).resolves.toBe("");
     });
+
+    it("returns empty string when fetch rejects", async () => {
+      process.env.RESEND_API_KEY = "rs";
+      global.fetch = jest.fn().mockRejectedValue(new Error("fail")) as any;
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider();
+      await expect(
+        provider.createContact("test@example.com"),
+      ).resolves.toBe("");
+    });
+
+    it("returns empty string without API key", async () => {
+      global.fetch = jest.fn();
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider();
+      await expect(
+        provider.createContact("test@example.com"),
+      ).resolves.toBe("");
+      expect(global.fetch).not.toHaveBeenCalled();
+    });
   });
 
   describe("addToList", () => {
+    it("adds contact to list when API key present", async () => {
+      process.env.RESEND_API_KEY = "rs";
+      global.fetch = jest.fn().mockResolvedValue({}) as any;
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider();
+      await expect(provider.addToList("c1", "l1")).resolves.toBeUndefined();
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://api.resend.com/segments/l1/contacts",
+        expect.objectContaining({ method: "POST" }),
+      );
+    });
+
+    it("skips when API key missing", async () => {
+      global.fetch = jest.fn();
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider();
+      await expect(provider.addToList("c1", "l1")).resolves.toBeUndefined();
+      expect(global.fetch).not.toHaveBeenCalled();
+    });
+
     it("swallows network failures", async () => {
       process.env.RESEND_API_KEY = "rs";
       global.fetch = jest
@@ -151,6 +231,14 @@ describe("ResendProvider", () => {
   });
 
   describe("listSegments", () => {
+    it("returns [] without API key", async () => {
+      global.fetch = jest.fn();
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider();
+      await expect(provider.listSegments()).resolves.toEqual([]);
+      expect(global.fetch).not.toHaveBeenCalled();
+    });
+
     it.each(["data", "segments"]) (
       "maps API responses from %s", async (key) => {
         process.env.RESEND_API_KEY = "rs";

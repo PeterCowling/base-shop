@@ -61,6 +61,32 @@ describe("SendgridProvider", () => {
     });
   });
 
+  it("warns when API key is missing", async () => {
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+    const warn = jest
+      .spyOn(console, "warn")
+      .mockImplementation(() => undefined);
+
+    sgMail.send.mockResolvedValueOnce(undefined);
+
+    const { SendgridProvider } = await import("../providers/sendgrid");
+    const provider = new SendgridProvider();
+
+    await provider.send({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+      text: "Text",
+    });
+
+    expect(warn).toHaveBeenCalledWith(
+      "Sendgrid API key is not configured; attempting to send email",
+    );
+    expect(sgMail.send).toHaveBeenCalled();
+
+    warn.mockRestore();
+  });
+
   it("throws ProviderError when send fails", async () => {
     process.env.SENDGRID_API_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
@@ -233,7 +259,34 @@ describe("SendgridProvider", () => {
     );
   });
 
+  it("resolves ready immediately when sanity check disabled", async () => {
+    process.env.SENDGRID_API_KEY = "sg";
+    const fetchSpy = jest.spyOn(global, "fetch");
+
+    const { SendgridProvider } = await import("../providers/sendgrid");
+    const provider = new SendgridProvider();
+
+    await expect(provider.ready).resolves.toBeUndefined();
+    expect(fetchSpy).not.toHaveBeenCalled();
+
+    fetchSpy.mockRestore();
+  });
+
   describe("getCampaignStats", () => {
+    it("returns normalized stats on success", async () => {
+      process.env.SENDGRID_API_KEY = "sg";
+      const stats = { delivered: "2", opens: "3", clicks: 1 };
+      global.fetch = jest.fn().mockResolvedValue({
+        json: jest.fn().mockResolvedValue(stats),
+      });
+      const { SendgridProvider } = await import("../providers/sendgrid");
+      const { mapSendGridStats } = await import("../stats");
+      const provider = new SendgridProvider();
+      await expect(provider.getCampaignStats("1")).resolves.toEqual(
+        mapSendGridStats(stats),
+      );
+    });
+
     it("returns empty stats without api key", async () => {
       global.fetch = jest.fn();
       const { SendgridProvider } = await import("../providers/sendgrid");
@@ -265,6 +318,18 @@ describe("SendgridProvider", () => {
   });
 
   describe("createContact", () => {
+    it("returns new contact id on success", async () => {
+      process.env.SENDGRID_API_KEY = "sg";
+      global.fetch = jest.fn().mockResolvedValue({
+        json: jest.fn().mockResolvedValue({ persisted_recipients: ["abc"] }),
+      });
+      const { SendgridProvider } = await import("../providers/sendgrid");
+      const provider = new SendgridProvider();
+      await expect(
+        provider.createContact("user@example.com"),
+      ).resolves.toBe("abc");
+    });
+
     it("returns empty string without marketing key", async () => {
       global.fetch = jest.fn();
       const { SendgridProvider } = await import("../providers/sendgrid");
@@ -311,6 +376,18 @@ describe("SendgridProvider", () => {
   });
 
   describe("addToList", () => {
+    it("adds contact to list on success", async () => {
+      process.env.SENDGRID_API_KEY = "sg";
+      global.fetch = jest.fn().mockResolvedValue({});
+      const { SendgridProvider } = await import("../providers/sendgrid");
+      const provider = new SendgridProvider();
+      await expect(provider.addToList("cid", "lid")).resolves.toBeUndefined();
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://api.sendgrid.com/v3/marketing/lists/lid/contacts",
+        expect.objectContaining({ method: "PUT" }),
+      );
+    });
+
     it("does nothing without marketing key", async () => {
       global.fetch = jest.fn();
       const { SendgridProvider } = await import("../providers/sendgrid");
@@ -329,6 +406,20 @@ describe("SendgridProvider", () => {
   });
 
   describe("listSegments", () => {
+    it("maps segments on success", async () => {
+      process.env.SENDGRID_API_KEY = "sg";
+      global.fetch = jest.fn().mockResolvedValue({
+        json: jest
+          .fn()
+          .mockResolvedValue({ result: [{ id: "1", name: "Segment", extra: "x" }] }),
+      });
+      const { SendgridProvider } = await import("../providers/sendgrid");
+      const provider = new SendgridProvider();
+      await expect(provider.listSegments()).resolves.toEqual([
+        { id: "1", name: "Segment" },
+      ]);
+    });
+
     it("returns empty array without marketing key", async () => {
       global.fetch = jest.fn();
       const { SendgridProvider } = await import("../providers/sendgrid");

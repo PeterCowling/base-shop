@@ -67,14 +67,18 @@ describe("payments env currency", () => {
     expect(paymentsEnv.PAYMENTS_CURRENCY).toBe("EUR");
   });
 
-  it("throws on invalid currency code", async () => {
-    const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(
-      withEnv(
-        { PAYMENTS_CURRENCY: "EU" },
-        () => import("@acme/config/env/payments"),
-      ),
-    ).rejects.toThrow("Invalid payments environment variables");
-    expect(errSpy).toHaveBeenCalled();
+  it("warns and falls back to default currency on invalid code", async () => {
+    await withEnv(
+      { PAYMENTS_CURRENCY: "EU" },
+      async () => {
+        const warnSpy = jest
+          .spyOn(console, "warn")
+          .mockImplementation(() => {});
+        const { paymentsEnv } = await import("@acme/config/env/payments");
+        expect(paymentsEnv.PAYMENTS_CURRENCY).toBe("USD");
+        expect(warnSpy).toHaveBeenCalled();
+        warnSpy.mockRestore();
+      },
+    );
   });
 });

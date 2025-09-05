@@ -120,6 +120,14 @@ describe("resolveAbandonedCartDelay", () => {
     delete process.env.ABANDONED_CART_DELAY_MS;
   });
 
+  it("returns the default delay when no overrides are found", async () => {
+    jest
+      .spyOn(fs, "readFile")
+      .mockRejectedValue(new Error("missing"));
+    const delay = await resolveAbandonedCartDelay(shop, "/tmp");
+    expect(delay).toBe(DEFAULT_DELAY);
+  });
+
   it("reads delay from settings abandonedCart.delayMs", async () => {
     jest
       .spyOn(fs, "readFile")
@@ -161,6 +169,18 @@ describe("resolveAbandonedCartDelay", () => {
     process.env.ABANDONED_CART_DELAY_MS = "22222";
     const delay = await resolveAbandonedCartDelay(shop, "/tmp");
     expect(delay).toBe(22222);
+  });
+
+  it("falls back to global env when shop-specific env is invalid", async () => {
+    jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(
+        JSON.stringify({ abandonedCart: { delayMs: 11111 } }, null, 2),
+      );
+    process.env[key] = "not-a-number";
+    process.env.ABANDONED_CART_DELAY_MS = "44444";
+    const delay = await resolveAbandonedCartDelay(shop, "/tmp");
+    expect(delay).toBe(44444);
   });
 
   it("ignores non-numeric env values and returns default", async () => {

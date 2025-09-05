@@ -43,6 +43,11 @@ describe("date-utils", () => {
       expect(calculateRentalDays(future)).toBe(2);
     });
 
+    it("returns 1 for same-day return", () => {
+      const sameDay = base.toISOString();
+      expect(calculateRentalDays(sameDay)).toBe(1);
+    });
+
     it("throws for past date", () => {
       const past = addDays(base, -1).toISOString();
       expect(() => calculateRentalDays(past)).toThrow(
@@ -61,8 +66,19 @@ describe("date-utils", () => {
       expect(formatTimestamp(ts)).toBe(new Date(ts).toLocaleString());
     });
 
+    it("localizes timestamp for given locale", () => {
+      const ts = "2020-01-01T00:00:00.000Z";
+      expect(formatTimestamp(ts, "de-DE")).toBe(
+        new Date(ts).toLocaleString("de-DE")
+      );
+    });
+
     it("returns original string for invalid timestamp", () => {
       expect(formatTimestamp("invalid")).toBe("invalid");
+    });
+
+    it("returns original string for invalid timestamp with locale", () => {
+      expect(formatTimestamp("invalid", "en-US")).toBe("invalid");
     });
   });
 
@@ -86,12 +102,31 @@ describe("date-utils", () => {
     it("returns null for invalid date", () => {
       expect(parseTargetDate("bad")).toBeNull();
     });
+
+    it('handles "today" and "tomorrow"', () => {
+      jest.useFakeTimers().setSystemTime(new Date("2020-01-01T10:00:00.000Z"));
+      expect(parseTargetDate("today")?.toISOString()).toBe(
+        "2020-01-01T00:00:00.000Z"
+      );
+      expect(parseTargetDate("tomorrow")?.toISOString()).toBe(
+        "2020-01-02T00:00:00.000Z"
+      );
+      jest.useRealTimers();
+    });
   });
 
-  it("getTimeRemaining returns difference in ms", () => {
-    const now = new Date("2020-01-01T00:00:00.000Z");
-    const target = new Date(now.getTime() + 1000);
-    expect(getTimeRemaining(target, now)).toBe(1000);
+  describe("getTimeRemaining", () => {
+    it("returns difference in ms for future target", () => {
+      const now = new Date("2020-01-01T00:00:00.000Z");
+      const target = new Date(now.getTime() + 1000);
+      expect(getTimeRemaining(target, now)).toBe(1000);
+    });
+
+    it("clamps negative durations to zero", () => {
+      const now = new Date("2020-01-02T00:00:00.000Z");
+      const past = new Date("2020-01-01T00:00:00.000Z");
+      expect(getTimeRemaining(past, now)).toBe(0);
+    });
   });
 
   describe("formatDuration", () => {
@@ -102,6 +137,14 @@ describe("date-utils", () => {
       [90_061_000, "1d 1h 1m 1s"],
     ])("formats %d ms", (ms, expected) => {
       expect(formatDuration(ms)).toBe(expected);
+    });
+
+    it("returns 0s for zero milliseconds", () => {
+      expect(formatDuration(0)).toBe("0s");
+    });
+
+    it("clamps negative durations to 0s", () => {
+      expect(formatDuration(-1000)).toBe("0s");
     });
   });
 });

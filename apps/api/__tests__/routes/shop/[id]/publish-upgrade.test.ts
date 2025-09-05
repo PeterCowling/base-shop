@@ -11,6 +11,10 @@ describe("publish-upgrade route", () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "testsecret";
   });
 
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
   it("rejects invalid shop id", async () => {
     const res = await request(createRequestHandler()).post(
       "/shop/ABC/publish-upgrade",
@@ -29,6 +33,15 @@ describe("publish-upgrade route", () => {
     const res = await request(createRequestHandler())
       .post("/shop/abc/publish-upgrade")
       .set("Authorization", "Bearer invalid");
+    expect(res.status).toBe(403);
+    expect(res.body).toEqual({ error: "Forbidden" });
+  });
+
+  it("rejects token signed with wrong secret", async () => {
+    const token = jwt.sign({}, "wrongsecret");
+    const res = await request(createRequestHandler())
+      .post("/shop/abc/publish-upgrade")
+      .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
   });
@@ -100,5 +113,21 @@ describe("publish-upgrade route", () => {
       error:
         "pnpm --filter apps/shop-valid-id build failed with status 1",
     });
+  });
+
+  it("returns 500 when fs throws string error", async () => {
+    const token = jwt.sign({}, process.env.UPGRADE_PREVIEW_TOKEN_SECRET ?? "");
+
+    (fs.readFileSync as jest.Mock).mockImplementation(() => {
+      throw "fail";
+    });
+
+    const res = await request(createRequestHandler())
+      .post("/shop/valid-id/publish-upgrade")
+      .set("Authorization", `Bearer ${token}`)
+      .send({});
+
+    expect(res.status).toBe(500);
+    expect(res.body).toEqual({ error: "fail" });
   });
 });

@@ -2,34 +2,42 @@ import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import PageCanvas from "../src/components/cms/page-builder/PageCanvas";
 
-// mock CanvasItem and Block for controlled rendering
-const CanvasItemMock = jest.fn((props) => (
-  <div role="listitem" data-testid={`item-${props.component.id}`} />
-));
 jest.mock("../src/components/cms/page-builder/CanvasItem", () => ({
   __esModule: true,
-  default: CanvasItemMock,
+  default: jest.fn((props) => (
+    <div role="listitem" data-testid={`item-${props.component.id}`} />
+  )),
 }));
 
-const BlockMock = jest.fn((props) => (
-  <div data-testid={`block-${props.component.id}`} />
-));
 jest.mock("../src/components/cms/page-builder/Block", () => ({
   __esModule: true,
-  default: BlockMock,
+  default: jest.fn((props) => (
+    <div data-testid={`block-${props.component.id}`} />
+  )),
 }));
 
-const GridMock = jest.fn(() => <div data-testid="grid" />);
 jest.mock("../src/components/cms/page-builder/GridOverlay", () => ({
   __esModule: true,
-  default: GridMock,
+  default: jest.fn(() => <div data-testid="grid" />),
 }));
 
-const SnapLineMock = jest.fn(() => <div data-testid="snapline" />);
 jest.mock("../src/components/cms/page-builder/SnapLine", () => ({
   __esModule: true,
-  default: SnapLineMock,
+  default: jest.fn(() => <div data-testid="snapline" />),
 }));
+
+const CanvasItemMock = jest.requireMock(
+  "../src/components/cms/page-builder/CanvasItem"
+).default as jest.Mock;
+const BlockMock = jest.requireMock(
+  "../src/components/cms/page-builder/Block"
+).default as jest.Mock;
+const GridMock = jest.requireMock(
+  "../src/components/cms/page-builder/GridOverlay"
+).default as jest.Mock;
+const SnapLineMock = jest.requireMock(
+  "../src/components/cms/page-builder/SnapLine"
+).default as jest.Mock;
 
 describe("PageCanvas", () => {
   const components: any[] = [{ id: "a", type: "Text" }];
@@ -72,7 +80,7 @@ describe("PageCanvas", () => {
   });
 
   it("renders blocks only when preview is true", () => {
-    render(
+    const { queryByTestId } = render(
       <PageCanvas
         components={components}
         preview
@@ -82,7 +90,7 @@ describe("PageCanvas", () => {
       />
     );
     expect(BlockMock).toHaveBeenCalledTimes(1);
-    expect(CanvasItemMock).not.toHaveBeenCalled();
+    expect(queryByTestId("item-a")).toBeNull();
   });
 
   it("shows grid and snapline when enabled", () => {
@@ -101,4 +109,3 @@ describe("PageCanvas", () => {
     expect(SnapLineMock).toHaveBeenCalled();
   });
 });
-

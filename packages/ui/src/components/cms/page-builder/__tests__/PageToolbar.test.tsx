@@ -2,7 +2,7 @@ import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import type { Locale } from "@acme/i18n/locales";
 import PageToolbar from "../PageToolbar";
-import { getLegacyPreset } from "../../../utils/devicePresets";
+import { getLegacyPreset } from "../../../../utils/devicePresets";
 
 describe("PageToolbar", () => {
   it("responds to keyboard shortcuts", () => {

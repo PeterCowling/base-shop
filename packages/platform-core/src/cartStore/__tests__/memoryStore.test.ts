@@ -125,5 +125,12 @@ describe("MemoryCartStore", () => {
       expect(await store.getCart("cart")).toEqual({});
     });
   });
+
+  it("supports concurrent increments without race conditions", async () => {
+    const store = new MemoryCartStore(60);
+    await Promise.all(Array.from({ length: 5 }, () => store.incrementQty("c", sku, 1)));
+    const cart = await store.getCart("c");
+    expect(cart[sku.id!].qty).toBe(5);
+  });
 });
 

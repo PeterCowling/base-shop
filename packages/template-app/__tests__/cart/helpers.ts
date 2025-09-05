@@ -43,6 +43,18 @@ export async function createCartWithItem(qty = 1) {
   return { cart, cartId, idKey, sku, size };
 }
 
+export function withOutOfStockSku() {
+  const original = TEST_SKU.stock;
+  TEST_SKU.stock = 0;
+  return () => {
+    TEST_SKU.stock = original;
+  };
+}
+
+export function invalidSize() {
+  return "ZZ";
+}
+
 export {
   decodeCartCookie,
   encodeCartCookie,

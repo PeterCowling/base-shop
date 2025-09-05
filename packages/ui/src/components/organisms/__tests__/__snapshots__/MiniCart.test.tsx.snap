@@ -81,7 +81,7 @@ exports[`MiniCart shows cart items and handles quantity changes and removal 1`] 
           >
             <button
               aria-label="Decrease quantity"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium text-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-fg hover:bg-primary/90 px-2 py-1 text-xs"
+              class="inline-flex items-center justify-center rounded-md text-sm font-medium text-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-fg hover:bg-primary/90 h-12 px-4 py-3 px-2 py-1 text-xs"
               data-token="--color-primary"
             >
               -
@@ -93,14 +93,14 @@ exports[`MiniCart shows cart items and handles quantity changes and removal 1`] 
             </span>
             <button
               aria-label="Increase quantity"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium text-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-fg hover:bg-primary/90 px-2 py-1 text-xs"
+              class="inline-flex items-center justify-center rounded-md text-sm font-medium text-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-fg hover:bg-primary/90 h-12 px-4 py-3 px-2 py-1 text-xs"
               data-token="--color-primary"
             >
               +
             </button>
           </div>
           <button
-            class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 px-4 py-2 bg-destructive text-destructive-foreground hover:bg-destructive/90 px-2 py-1 text-xs"
+            class="inline-flex h-12 items-center justify-center rounded-md px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 px-2 py-1 text-xs"
           >
             Remove
           </button>

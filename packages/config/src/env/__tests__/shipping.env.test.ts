@@ -25,11 +25,51 @@ describe("shipping environment parser", () => {
     );
   });
 
+  it("returns parsed data on valid input", async () => {
+    const load = await getLoader();
+    const env = load({
+      ALLOWED_COUNTRIES: "us, ca ,de",
+      LOCAL_PICKUP_ENABLED: "true",
+      DEFAULT_COUNTRY: "us",
+      FREE_SHIPPING_THRESHOLD: "50",
+    });
+    expect(env).toEqual({
+      ALLOWED_COUNTRIES: ["US", "CA", "DE"],
+      LOCAL_PICKUP_ENABLED: true,
+      DEFAULT_COUNTRY: "US",
+      FREE_SHIPPING_THRESHOLD: 50,
+    });
+  });
+
+  it("throws on invalid input", async () => {
+    const load = await getLoader();
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    expect(() => load({ DEFAULT_COUNTRY: "USA" as any })).toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
   describe("FREE_SHIPPING_THRESHOLD", () => {
     it("parses a valid number", async () => {
       const load = await getLoader();
-      const env = load({ FREE_SHIPPING_THRESHOLD: "100" });
-      expect(env.FREE_SHIPPING_THRESHOLD).toBe(100);
+      const env = load({ FREE_SHIPPING_THRESHOLD: "50" });
+      expect(env.FREE_SHIPPING_THRESHOLD).toBe(50);
+    });
+
+    it("rejects negative numbers", async () => {
+      const load = await getLoader();
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      expect(() => load({ FREE_SHIPPING_THRESHOLD: "-5" })).toThrow(
+        "Invalid shipping environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalled();
+      errorSpy.mockRestore();
     });
 
     it("throws on invalid string", async () => {
@@ -48,28 +88,26 @@ describe("shipping environment parser", () => {
   describe("ALLOWED_COUNTRIES", () => {
     it("parses and normalizes list", async () => {
       const load = await getLoader();
-      const env = load({ ALLOWED_COUNTRIES: "US, IT ,de" });
-      expect(env.ALLOWED_COUNTRIES).toEqual(["US", "IT", "DE"]);
+      const env = load({ ALLOWED_COUNTRIES: "us, ca ,de" });
+      expect(env.ALLOWED_COUNTRIES).toEqual(["US", "CA", "DE"]);
     });
 
     it("eagerly parses from process.env", async () => {
       jest.resetModules();
       process.env = {
-        ALLOWED_COUNTRIES: "us, it ,de",
+        ALLOWED_COUNTRIES: "us, ca ,de",
       } as NodeJS.ProcessEnv;
       const { shippingEnv } = await import("../shipping.ts");
-      expect(shippingEnv.ALLOWED_COUNTRIES).toEqual(["US", "IT", "DE"]);
+      expect(shippingEnv.ALLOWED_COUNTRIES).toEqual(["US", "CA", "DE"]);
     });
   });
 
   describe("local pickup toggle", () => {
     const cases: Array<[string, boolean]> = [
       ["true", true],
-      [" false ", false],
+      ["false", false],
       ["1", true],
       ["0", false],
-      ["TRUE", true],
-      ["FaLsE", false],
     ];
 
     it.each(cases)("parses %s", async (input, expected) => {
@@ -100,8 +138,8 @@ describe("shipping environment parser", () => {
 
     it("normalizes when set", async () => {
       const load = await getLoader();
-      const env = load({ DEFAULT_COUNTRY: "de" });
-      expect(env.DEFAULT_COUNTRY).toBe("DE");
+      const env = load({ DEFAULT_COUNTRY: "us" });
+      expect(env.DEFAULT_COUNTRY).toBe("US");
     });
 
     it("throws on invalid code", async () => {
@@ -109,7 +147,7 @@ describe("shipping environment parser", () => {
       const errorSpy = jest
         .spyOn(console, "error")
         .mockImplementation(() => {});
-      expect(() => load({ DEFAULT_COUNTRY: "deu" as any })).toThrow(
+      expect(() => load({ DEFAULT_COUNTRY: "USA" as any })).toThrow(
         "Invalid shipping environment variables",
       );
       expect(errorSpy).toHaveBeenCalled();

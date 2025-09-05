@@ -54,19 +54,22 @@ export async function calculateTax({ provider, ...payload }: TaxCalculationReque
   }
 
   const url = "https://api.taxjar.com/v2/taxes";
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify(payload),
+    });
 
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify(payload),
-  });
+    if (!res.ok) {
+      throw new Error(`Failed to calculate tax with ${provider}`);
+    }
 
-  if (!res.ok) {
+    return res.json();
+  } catch {
     throw new Error(`Failed to calculate tax with ${provider}`);
   }
-
-  return res.json();
 }

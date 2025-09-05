@@ -106,6 +106,18 @@ describe("settings repository", () => {
     });
   });
 
+  it("falls back to defaults when settings fail schema validation", async () => {
+    const shop = "schema-bad";
+    const settingsPath = path.join(DATA_ROOT, shop, "settings.json");
+    fsMock.__files.set(
+      settingsPath,
+      JSON.stringify({ languages: "en" }),
+    );
+    const result = await getShopSettings(shop);
+    expect(result.languages).toEqual(LOCALES);
+    expect(result.currency).toBe("EUR");
+  });
+
   it("does not append history when settings unchanged", async () => {
     const shop = "shop2";
     const settingsPath = path.join(DATA_ROOT, shop, "settings.json");

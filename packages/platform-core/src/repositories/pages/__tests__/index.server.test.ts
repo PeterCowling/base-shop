@@ -63,6 +63,27 @@ describe("getPages", () => {
     expect(res).toEqual([page]);
     expect(fsMock.readFile).toHaveBeenCalled();
   });
+
+  it("returns empty array when both sources have no pages", async () => {
+    prismaMock.page.findMany.mockResolvedValue([]);
+    const res = await repo.getPages(shop);
+    expect(res).toEqual([]);
+  });
+
+  it("returns raw JSON when filesystem data fails schema", async () => {
+    prismaMock.page.findMany.mockRejectedValue(new Error("db"));
+    const raw = [{ bad: "data" }];
+    fsMock.readFile.mockResolvedValue(JSON.stringify(raw));
+    const res = await repo.getPages(shop);
+    expect(res).toEqual(raw);
+  });
+
+  it("returns empty array when filesystem has invalid JSON", async () => {
+    prismaMock.page.findMany.mockRejectedValue(new Error("db"));
+    fsMock.readFile.mockResolvedValue("{bad");
+    const res = await repo.getPages(shop);
+    expect(res).toEqual([]);
+  });
 });
 
 describe("savePage", () => {
@@ -95,6 +116,13 @@ describe("savePage", () => {
 
     expect(fsMock.writeFile).toHaveBeenCalled();
     expect(fsMock.rename).toHaveBeenCalled();
+  });
+
+  it("appends history when page changes", async () => {
+    prismaMock.page.upsert.mockResolvedValue({});
+    const prev = { ...page, slug: "old" } as Page;
+    await repo.savePage(shop, page, prev);
+    expect(fsMock.appendFile).toHaveBeenCalled();
   });
 });
 
@@ -136,6 +164,21 @@ describe("updatePage", () => {
 
     expect(fsMock.writeFile).toHaveBeenCalled();
   });
+
+  it("throws on update conflict", async () => {
+    await expect(
+      repo.updatePage(shop, { id: "1", updatedAt: "other" }, previous)
+    ).rejects.toThrow("Conflict");
+  });
+
+  it("throws when page missing in filesystem fallback", async () => {
+    prismaMock.page.update.mockRejectedValue(new Error("db"));
+    prismaMock.page.findMany.mockRejectedValue(new Error("db"));
+    fsMock.readFile.mockResolvedValue(JSON.stringify([]));
+    await expect(
+      repo.updatePage(shop, { id: "missing", updatedAt: "t" }, previous)
+    ).rejects.toThrow("Page missing");
+  });
 });
 
 describe("deletePage", () => {
@@ -146,6 +189,20 @@ describe("deletePage", () => {
     await expect(repo.deletePage(shop, "1")).rejects.toThrow(
       "Page 1 not found",
     );
+  });
+
+  it("deletes via prisma when record exists", async () => {
+    prismaMock.page.deleteMany.mockResolvedValue({ count: 1 });
+    await expect(repo.deletePage(shop, "1")).resolves.toBeUndefined();
+    expect(fsMock.readFile).not.toHaveBeenCalled();
+  });
+
+  it("falls back to filesystem when prisma fails", async () => {
+    prismaMock.page.deleteMany.mockRejectedValue(new Error("db"));
+    prismaMock.page.findMany.mockRejectedValue(new Error("db"));
+    fsMock.readFile.mockResolvedValue(JSON.stringify([{ id: "1" }]));
+    await repo.deletePage(shop, "1");
+    expect(fsMock.writeFile).toHaveBeenCalled();
   });
 });
 
@@ -167,6 +224,12 @@ describe("diffHistory", () => {
 
     const res = await repo.diffHistory(shop);
     expect(res).toEqual([valid1, valid2]);
+  });
+
+  it("returns empty array when history file missing", async () => {
+    fsMock.readFile.mockRejectedValue(new Error("missing"));
+    const res = await repo.diffHistory(shop);
+    expect(res).toEqual([]);
   });
 });
 

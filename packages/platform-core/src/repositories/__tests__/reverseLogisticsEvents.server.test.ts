@@ -96,6 +96,11 @@ describe("listEvents", () => {
     });
   });
 
+  it("returns empty array when no events exist", async () => {
+    findMany.mockResolvedValue([]);
+    await expect(listEvents("demo")).resolves.toEqual([]);
+  });
+
   it("throws when findMany fails", async () => {
     const error = new Error("boom");
     findMany.mockRejectedValue(error);

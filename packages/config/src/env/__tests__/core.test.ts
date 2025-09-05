@@ -51,6 +51,12 @@ describe("requireEnv", () => {
     const requireEnv = await getRequire();
     expect(() => requireEnv("SPACE")).toThrow();
   });
+
+  it("trims surrounding whitespace", async () => {
+    process.env.TRIM = "  value  ";
+    const requireEnv = await getRequire();
+    expect(requireEnv("TRIM")).toBe("value");
+  });
 });
 
 describe("requireEnv boolean parsing", () => {

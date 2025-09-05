@@ -47,6 +47,18 @@ describe("listCoupons", () => {
     );
     expect(await listCoupons(badShop)).toEqual([]);
   });
+
+  it("returns [] when discounts.json does not contain an array", async () => {
+    const badShop = "object";
+    const shopDir = path.join(tmpDir, badShop);
+    await fs.mkdir(shopDir, { recursive: true });
+    await fs.writeFile(
+      path.join(shopDir, "discounts.json"),
+      JSON.stringify({ foo: "bar" }),
+      "utf8",
+    );
+    expect(await listCoupons(badShop)).toEqual([]);
+  });
 });
 
 describe("saveCoupons", () => {

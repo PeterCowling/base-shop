@@ -1,89 +1,205 @@
 import * as stats from "../stats";
 
-const { mapSendGridStats, mapResendStats, emptyStats, normalizeProviderStats } =
-  stats;
+const sgFields = [
+  "delivered",
+  "opens",
+  "clicks",
+  "unsubscribes",
+  "bounces",
+] as const;
+const sgAlt: Record<(typeof sgFields)[number], string> = {
+  delivered: "delivered",
+  opens: "opened",
+  clicks: "clicked",
+  unsubscribes: "unsubscribed",
+  bounces: "bounced",
+};
+const sgResultKey: Record<
+  (typeof sgFields)[number],
+  keyof stats.CampaignStats
+> = {
+  delivered: "delivered",
+  opens: "opened",
+  clicks: "clicked",
+  unsubscribes: "unsubscribed",
+  bounces: "bounced",
+};
+
+const reFields = [
+  "delivered",
+  "opened",
+  "clicked",
+  "unsubscribed",
+  "bounced",
+] as const;
+const reCount: Record<(typeof reFields)[number], string> = {
+  delivered: "delivered_count",
+  opened: "opened_count",
+  clicked: "clicked_count",
+  unsubscribed: "unsubscribed_count",
+  bounced: "bounced_count",
+};
+const reResultKey: Record<
+  (typeof reFields)[number],
+  keyof stats.CampaignStats
+> = {
+  delivered: "delivered",
+  opened: "opened",
+  clicked: "clicked",
+  unsubscribed: "unsubscribed",
+  bounced: "bounced",
+};
 
 describe("mapSendGridStats", () => {
-  it("converts mixed string/number fields", () => {
-    const raw = {
-      delivered: "1",
-      opens: 2,
-      clicked: "3",
-      unsubscribes: "4",
-      bounces: 5,
-    };
-
-    expect(mapSendGridStats(raw)).toEqual({
+  it("maps numeric and string values for all field combinations", () => {
+    const expected = {
       delivered: 1,
-      opened: 2,
-      clicked: 3,
-      unsubscribed: 4,
-      bounced: 5,
-    });
-  });
-
-  it("handles alternate field names and defaults", () => {
-    const raw = {
-      opened: "2",
-      clicks: "3",
-      unsubscribed: "4",
-      bounced: "5",
+      opened: 1,
+      clicked: 1,
+      unsubscribed: 1,
+      bounced: 1,
     } as const;
 
-    expect(mapSendGridStats(raw)).toEqual({
-      delivered: 0,
-      opened: 2,
-      clicked: 3,
-      unsubscribed: 4,
-      bounced: 5,
+    const total = 1 << sgFields.length;
+    for (let mask = 0; mask < total; mask++) {
+      const raw: Record<string, string | number> = {};
+      sgFields.forEach((field, idx) => {
+        raw[field] = mask & (1 << idx) ? "1" : 1;
+      });
+      expect(stats.mapSendGridStats(raw)).toEqual(expected);
+    }
+  });
+
+  it("maps alternate field names with numeric and string values", () => {
+    const expected = {
+      delivered: 1,
+      opened: 1,
+      clicked: 1,
+      unsubscribed: 1,
+      bounced: 1,
+    } as const;
+
+    const total = 1 << sgFields.length;
+    for (let mask = 0; mask < total; mask++) {
+      const raw: Record<string, string | number> = {};
+      sgFields.forEach((field, idx) => {
+        raw[sgAlt[field]] = mask & (1 << idx) ? "1" : 1;
+      });
+      expect(stats.mapSendGridStats(raw)).toEqual(expected);
+    }
+  });
+
+  it("defaults missing fields to zero", () => {
+    const base: Record<string, string> = {
+      delivered: "1",
+      opens: "1",
+      clicks: "1",
+      unsubscribes: "1",
+      bounces: "1",
+    };
+
+    sgFields.forEach((field) => {
+      const raw = { ...base } as Record<string, string>;
+      delete raw[field];
+      const expected = {
+        delivered: 1,
+        opened: 1,
+        clicked: 1,
+        unsubscribed: 1,
+        bounced: 1,
+      } as Record<keyof stats.CampaignStats, number>;
+      expected[sgResultKey[field]] = 0;
+      expect(stats.mapSendGridStats(raw)).toEqual(expected);
     });
+
+    expect(stats.mapSendGridStats({})).toEqual(stats.emptyStats);
   });
 });
 
 describe("mapResendStats", () => {
-  it("supports *_count and short forms", () => {
-    const raw = {
-      delivered_count: "1",
-      opened: "2",
-      clicked_count: 3,
-      unsubscribed: 4,
-      bounced_count: "5",
-    };
-
-    expect(mapResendStats(raw)).toEqual({
+  it("maps numeric and string values for base field names", () => {
+    const expected = {
       delivered: 1,
-      opened: 2,
-      clicked: 3,
-      unsubscribed: 4,
-      bounced: 5,
-    });
+      opened: 1,
+      clicked: 1,
+      unsubscribed: 1,
+      bounced: 1,
+    } as const;
+
+    const total = 1 << reFields.length;
+    for (let mask = 0; mask < total; mask++) {
+      const raw: Record<string, string | number> = {};
+      reFields.forEach((field, idx) => {
+        raw[field] = mask & (1 << idx) ? "1" : 1;
+      });
+      expect(stats.mapResendStats(raw)).toEqual(expected);
+    }
   });
 
-  it("returns zeros for missing fields", () => {
-    expect(mapResendStats({})).toEqual(emptyStats);
+  it("maps numeric and string values for *_count fields", () => {
+    const expected = {
+      delivered: 1,
+      opened: 1,
+      clicked: 1,
+      unsubscribed: 1,
+      bounced: 1,
+    } as const;
+
+    const total = 1 << reFields.length;
+    for (let mask = 0; mask < total; mask++) {
+      const raw: Record<string, string | number> = {};
+      reFields.forEach((field, idx) => {
+        raw[reCount[field]] = mask & (1 << idx) ? "1" : 1;
+      });
+      expect(stats.mapResendStats(raw)).toEqual(expected);
+    }
+  });
+
+  it("defaults missing fields to zero", () => {
+    const base: Record<string, string> = {
+      delivered: "1",
+      opened: "1",
+      clicked: "1",
+      unsubscribed: "1",
+      bounced: "1",
+    };
+
+    reFields.forEach((field) => {
+      const raw = { ...base } as Record<string, string>;
+      delete raw[field];
+      const expected = {
+        delivered: 1,
+        opened: 1,
+        clicked: 1,
+        unsubscribed: 1,
+        bounced: 1,
+      } as Record<keyof stats.CampaignStats, number>;
+      expected[reResultKey[field]] = 0;
+      expect(stats.mapResendStats(raw)).toEqual(expected);
+    });
+
+    expect(stats.mapResendStats({})).toEqual(stats.emptyStats);
   });
 });
 
 describe("normalizeProviderStats", () => {
   it("uses sendgrid mapper for sendgrid provider", () => {
-    const raw = { delivered: "1" } as const;
-    expect(normalizeProviderStats("sendgrid", raw)).toEqual(
-      mapSendGridStats(raw)
+    const raw = { delivered: "1" };
+    expect(stats.normalizeProviderStats("sendgrid", raw)).toEqual(
+      stats.mapSendGridStats(raw)
     );
   });
 
-  it("normalizes resend stats with string counts", () => {
-    expect(
-      normalizeProviderStats("resend", { opened: "2" })
-    ).toEqual({
-      ...emptyStats,
-      opened: 2,
-    });
+  it("uses resend mapper for resend provider", () => {
+    const raw = { delivered_count: "1" };
+    expect(stats.normalizeProviderStats("resend", raw)).toEqual(
+      stats.mapResendStats(raw)
+    );
   });
 
-  it("returns empty stats clone for unsupported provider", () => {
-    const result = normalizeProviderStats("unsupported", { opened: "2" });
-    expect(result).toEqual(emptyStats);
-    expect(result).not.toBe(emptyStats);
+  it("returns empty stats for unknown provider", () => {
+    const result = stats.normalizeProviderStats("unknown", { delivered: "1" });
+    expect(result).toEqual(stats.emptyStats);
+    expect(result).not.toBe(stats.emptyStats);
   });
 });

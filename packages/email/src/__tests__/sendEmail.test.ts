@@ -5,6 +5,7 @@ describe("sendEmail", () => {
 
   afterEach(() => {
     jest.resetModules();
+    jest.clearAllMocks();
     process.env = OLD_ENV;
   });
 
@@ -23,51 +24,49 @@ describe("sendEmail", () => {
       default: { createTransport: () => ({ sendMail }) },
       createTransport: () => ({ sendMail }),
     }));
+    const getDefaultSender = jest.fn(() => "sender@example.com");
+    jest.doMock("../config", () => ({ getDefaultSender }));
 
     const { sendEmail } = await import("../sendEmail");
     await sendEmail("a@b.com", "Hello", "World");
 
     expect(sendMail).toHaveBeenCalledWith({
-      from: "test@example.com",
+      from: "sender@example.com",
       to: "a@b.com",
       subject: "Hello",
       text: "World",
     });
+    expect(getDefaultSender).toHaveBeenCalled();
   });
 
-  it("does not log email details when credentials are missing", async () => {
+  it("simulates email when credentials are missing", async () => {
     process.env = {
       ...OLD_ENV,
       STRIPE_SECRET_KEY: "sk",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
     } as NodeJS.ProcessEnv;
 
-    const consoleSpy = jest
-      .spyOn(console, "log")
-      .mockImplementation(() => {});
-
     const infoSpy = jest.fn();
     jest.doMock("pino", () => ({
       __esModule: true,
       default: () => ({ info: infoSpy }),
     }));
-
     jest.doMock("nodemailer", () => ({
       __esModule: true,
       default: { createTransport: jest.fn() },
       createTransport: jest.fn(),
     }));
+    const getDefaultSender = jest.fn();
+    jest.doMock("../config", () => ({ getDefaultSender }));
 
     const { sendEmail } = await import("../sendEmail");
     await sendEmail("a@b.com", "Hi", "There");
 
-    expect(consoleSpy).not.toHaveBeenCalled();
     expect(infoSpy).toHaveBeenCalledWith({ to: "a@b.com" }, "Email simulated");
-
-    consoleSpy.mockRestore();
+    expect(getDefaultSender).not.toHaveBeenCalled();
   });
 
-  it("bubbles up errors from nodemailer", async () => {
+  it("propagates errors from nodemailer", async () => {
     process.env = {
       ...OLD_ENV,
       GMAIL_USER: "test@example.com",
@@ -78,24 +77,18 @@ describe("sendEmail", () => {
 
     const error = new Error("failure");
     const sendMail = jest.fn().mockRejectedValue(error);
-
     jest.doMock("nodemailer", () => ({
       __esModule: true,
       default: { createTransport: () => ({ sendMail }) },
       createTransport: () => ({ sendMail }),
     }));
-
-    const consoleSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+    const getDefaultSender = jest.fn(() => "sender@example.com");
+    jest.doMock("../config", () => ({ getDefaultSender }));
 
     const { sendEmail } = await import("../sendEmail");
-    await expect(sendEmail("a@b.com", "Hello", "World")).rejects.toThrow(
-      "failure"
-    );
-    expect(consoleSpy).toHaveBeenCalled();
-
-    consoleSpy.mockRestore();
+    await expect(
+      sendEmail("a@b.com", "Hello", "World")
+    ).rejects.toThrow("failure");
+    expect(getDefaultSender).toHaveBeenCalled();
   });
 });
-

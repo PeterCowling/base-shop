@@ -40,6 +40,8 @@ export default [
       "**/jest.setup*.{ts,tsx}",
       "**/*.test.{ts,tsx,js,jsx}",
       "**/*.spec.{ts,tsx,js,jsx}",
+      "**/jest.config.*",
+      "**/postcss.config.*",
       "packages/config/jest.preset.cjs",
       "apps/api/jest.config.cjs",
       "apps/api/postcss.config.cjs",
@@ -64,12 +66,12 @@ export default [
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-          project: [
-            "./tsconfig.json",
-            "./apps/*/tsconfig.json",
-            "./packages/*/tsconfig.json",
-            "./packages/*/tsconfig.eslint.json",
-          ],
+        project: [
+          "./tsconfig.json",
+          "./apps/*/tsconfig.json",
+          "./packages/*/tsconfig.json",
+          "./packages/*/tsconfig.eslint.json",
+        ],
         projectService: true,
         allowDefaultProject: true,
         sourceType: "module",

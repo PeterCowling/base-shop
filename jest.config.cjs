@@ -184,6 +184,7 @@ const config = {
     '^@acme/platform-core/(.*)$': ' /packages/platform-core/src/$1',
     '^@acme/platform-core/contexts/CurrencyContext$': ' /test/__mocks__/currencyContextMock.tsx',
     '^@acme/platform-machine/src/(.*)$': ' /packages/platform-machine/src/$1',
+    '^@acme/shared-utils/src/(.*)$': ' /packages/shared-utils/src/$1',
     '^@acme/plugin-sanity$': ' /test/__mocks__/pluginSanityStub.ts',
     '^@acme/plugin-sanity/(.*)$': ' /test/__mocks__/pluginSanityStub.ts',
     '^@acme/telemetry$': ' /test/__mocks__/telemetryMock.ts',

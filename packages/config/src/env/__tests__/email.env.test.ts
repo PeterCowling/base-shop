@@ -33,6 +33,8 @@ describe("email env provider selection", () => {
       "Invalid email environment variables",
     );
     expect(spy).toHaveBeenCalled();
+    const err = spy.mock.calls[0][1];
+    expect(err.SENDGRID_API_KEY._errors).toContain("Required");
     spy.mockRestore();
   });
 
@@ -43,6 +45,8 @@ describe("email env provider selection", () => {
       "Invalid email environment variables",
     );
     expect(spy).toHaveBeenCalled();
+    const err = spy.mock.calls[0][1];
+    expect(err.RESEND_API_KEY._errors).toContain("Required");
     spy.mockRestore();
   });
 
@@ -89,7 +93,7 @@ describe("webhook verification toggle", () => {
 
 describe("smtp options", () => {
   it("rejects non-numeric SMTP_PORT", async () => {
-    process.env.SMTP_PORT = "not-a-number";
+    process.env.SMTP_PORT = "abc";
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(loadEnv()).rejects.toThrow(
       "Invalid email environment variables",
@@ -105,7 +109,7 @@ describe("smtp options", () => {
   });
 
   it("rejects invalid SMTP_SECURE", async () => {
-    process.env.SMTP_SECURE = "sometimes";
+    process.env.SMTP_SECURE = "maybe";
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(loadEnv()).rejects.toThrow(
       "Invalid email environment variables",
@@ -114,12 +118,17 @@ describe("smtp options", () => {
     spy.mockRestore();
   });
 
-  it("parses valid SMTP_SECURE values", async () => {
-    process.env.SMTP_SECURE = "true";
-    expect((await loadEnv()).SMTP_SECURE).toBe(true);
-    jest.resetModules();
-    process.env.SMTP_SECURE = "false";
-    expect((await loadEnv()).SMTP_SECURE).toBe(false);
+  it.each([
+    ["true", true],
+    ["1", true],
+    ["yes", true],
+    ["false", false],
+    ["0", false],
+    ["no", false],
+  ])("coerces SMTP_SECURE=%s", async (val, expected) => {
+    process.env.SMTP_SECURE = val as string;
+    const env = await loadEnv();
+    expect(env.SMTP_SECURE).toBe(expected);
   });
 });
 
@@ -138,9 +147,9 @@ describe("from address defaults", () => {
     expect(await getDefaultSender()).toBe("sender@example.com");
   });
 
-  it("normalizes CAMPAIGN_FROM in env", async () => {
-    process.env.CAMPAIGN_FROM = "TeST@Example.com";
+  it("trims and lowercases CAMPAIGN_FROM", async () => {
+    process.env.CAMPAIGN_FROM = " User@Example.COM ";
     const env = await loadEnv();
-    expect(env.CAMPAIGN_FROM).toBe("test@example.com");
+    expect(env.CAMPAIGN_FROM).toBe("user@example.com");
   });
 });

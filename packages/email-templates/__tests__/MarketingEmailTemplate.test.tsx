@@ -27,6 +27,15 @@ describe("MarketingEmailTemplate", () => {
     );
   });
 
+  it("omits CTA section when no CTA props provided", () => {
+    const { container, queryByRole } = render(
+      <MarketingEmailTemplate headline="Headline" content={<p>Body</p>} />,
+    );
+
+    expect(queryByRole("link")).toBeNull();
+    expect(container.querySelector("a")).toBeNull();
+  });
+
   it("renders i18n variations", () => {
     const { getByText } = render(
       <MarketingEmailTemplate
@@ -64,11 +73,19 @@ describe("MarketingEmailTemplate", () => {
     expect(queryByAltText("logo")).toBeNull();
     expect(container.querySelector(".border-t")).toBeNull();
   });
-
-  it("throws when headline is missing", () => {
-    expect(() => render(<MarketingEmailTemplate content={<p /> } />)).toThrow(
+  it("throws when headline is missing or empty", () => {
+    expect(() => render(<MarketingEmailTemplate content={<p />} />)).toThrow(
       "headline and content are required",
     );
+    expect(() =>
+      render(<MarketingEmailTemplate headline="" content={<p />} />),
+    ).toThrow("headline and content are required");
+  });
+
+  it("throws when content is null", () => {
+    expect(() =>
+      render(<MarketingEmailTemplate headline="X" content={null} />),
+    ).toThrow("headline and content are required");
   });
 
   it("throws when CTA props are incomplete", () => {
@@ -78,6 +95,16 @@ describe("MarketingEmailTemplate", () => {
           headline="X"
           content={<p />}
           ctaLabel="Only label"
+        />,
+      ),
+    ).toThrow("ctaLabel and ctaHref must both be provided");
+
+    expect(() =>
+      render(
+        <MarketingEmailTemplate
+          headline="X"
+          content={<p />}
+          ctaHref="/only-href"
         />,
       ),
     ).toThrow("ctaLabel and ctaHref must both be provided");

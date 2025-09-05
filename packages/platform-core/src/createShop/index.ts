@@ -22,6 +22,10 @@ function repoRoot(): string {
   const match = cwd.match(/^(.*?)(?:\/(?:packages|apps))(?:\/|$)/);
   if (match) return match[1];
 
+  if (fs.existsSync(join(cwd, "packages")) || fs.existsSync(join(cwd, "apps"))) {
+    return cwd;
+  }
+
   let dir = typeof __dirname !== "undefined" ? __dirname : cwd;
   while (
     !fs.existsSync(join(dir, "packages")) &&
@@ -164,14 +168,9 @@ export function listThemes(): string[] {
   const themesDir = join(repoRoot(), "packages", "themes");
   try {
     return fs
-      .readdirSync(themesDir)
-      .filter((name) => {
-        try {
-          return fs.statSync(join(themesDir, name)).isDirectory();
-        } catch {
-          return false;
-        }
-      });
+      .readdirSync(themesDir, { withFileTypes: true })
+      .filter((ent) => ent.isDirectory())
+      .map((ent) => ent.name);
   } catch {
     return [];
   }

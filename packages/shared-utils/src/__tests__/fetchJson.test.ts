@@ -100,5 +100,55 @@ describe('fetchJson', () => {
 
     await expect(fetchJson('https://example.com')).rejects.toThrow('HTTP 500');
   });
+
+  it('defaults to GET when no init is provided', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(''),
+    });
+
+    await fetchJson('https://example.com');
+    expect(global.fetch).toHaveBeenCalledWith('https://example.com', undefined);
+  });
+
+  it('supports POST with body and custom headers', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(JSON.stringify({ ok: true })),
+    });
+
+    const schema = z.object({ ok: z.boolean() });
+
+    await expect(
+      fetchJson(
+        'https://example.com',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Custom': 'yes',
+          },
+          body: JSON.stringify({ hi: 'there' }),
+        },
+        schema,
+      ),
+    ).resolves.toEqual({ ok: true });
+
+    expect(global.fetch).toHaveBeenCalledWith('https://example.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Custom': 'yes',
+      },
+      body: JSON.stringify({ hi: 'there' }),
+    });
+  });
+
+  it('forwards AbortError rejections', async () => {
+    const err = new DOMException('aborted', 'AbortError');
+    (global.fetch as jest.Mock).mockRejectedValue(err);
+
+    await expect(fetchJson('https://example.com')).rejects.toBe(err);
+  });
 });
 

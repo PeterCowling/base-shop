@@ -44,7 +44,7 @@ export function formatTimestamp(
   ts: string,
   locale?: string
 ): string {
-  const date = new Date(ts);
+  const date = /^\d+$/.test(ts) ? new Date(Number(ts)) : new Date(ts);
   return Number.isNaN(date.getTime()) ? ts : date.toLocaleString(locale);
 }
 
@@ -93,7 +93,7 @@ export function parseTargetDate(
   try {
     if (targetDate === "today" || targetDate === "tomorrow") {
       const base = targetDate === "today" ? new Date() : addDays(new Date(), 1);
-      return startOfDay(base, timezone);
+      return startOfDay(base, timezone ?? "UTC");
     }
     let date: Date;
     if (timezone) {

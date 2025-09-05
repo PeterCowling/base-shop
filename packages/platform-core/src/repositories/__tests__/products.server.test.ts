@@ -18,6 +18,35 @@ describe("products repository", () => {
     expect(readFile).toHaveBeenCalled();
   });
 
+  it("readRepo returns empty array on JSON parse error", async () => {
+    const readFile = jest.fn().mockResolvedValue("not json");
+    jest.doMock("fs", () => ({ promises: { readFile } }));
+    const { readRepo } = await import("../products.server");
+    await expect(readRepo(shop)).resolves.toEqual([]);
+    expect(readFile).toHaveBeenCalled();
+  });
+
+  it("writeRepo writes catalogue to temp file then renames", async () => {
+    const mkdir = jest.fn();
+    const writeFile = jest.fn();
+    const rename = jest.fn();
+    jest.doMock("fs", () => ({ promises: { mkdir, writeFile, rename } }));
+    const now = 123456;
+    const nowSpy = jest.spyOn(Date, "now").mockReturnValue(now);
+    const { writeRepo } = await import("../products.server");
+    await writeRepo(shop, [{ id: "1" }]);
+    const file = "/tmp/data/demo/products.json";
+    const tmp = `${file}.${now}.tmp`;
+    expect(mkdir).toHaveBeenCalledWith("/tmp/data/demo", { recursive: true });
+    expect(writeFile).toHaveBeenCalledWith(
+      tmp,
+      JSON.stringify([{ id: "1" }], null, 2),
+      "utf8",
+    );
+    expect(rename).toHaveBeenCalledWith(tmp, file);
+    nowSpy.mockRestore();
+  });
+
   describe("updateProductInRepo", () => {
     it("updates product and increments row_version", async () => {
       const readFile = jest

@@ -54,6 +54,10 @@ describe("calculateRentalDays", () => {
     expect(calculateRentalDays("2025-01-03")).toBe(2);
   });
 
+  test("returns one day for same-day rentals", () => {
+    expect(calculateRentalDays("2025-01-01")).toBe(1);
+  });
+
   test("throws when return date is before today", () => {
     expect(() => calculateRentalDays("2024-12-31")).toThrow(
       "returnDate must be in the future",

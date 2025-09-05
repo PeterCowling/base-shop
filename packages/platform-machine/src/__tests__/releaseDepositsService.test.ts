@@ -158,6 +158,25 @@ describe("resolveConfig precedence", () => {
     clearSpy.mockRestore();
   });
 
+  it("falls back to coreEnv values", async () => {
+    readFileMock.mockResolvedValueOnce("{}");
+    (coreEnv as any).DEPOSIT_RELEASE_ENABLED = false;
+    (coreEnv as any).DEPOSIT_RELEASE_INTERVAL_MS = 180000;
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 0 as any);
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+
+    const stop = await service.startDepositReleaseService({}, "/data");
+    expect(setSpy).not.toHaveBeenCalled();
+
+    stop();
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+  });
+
   it("overrides take highest priority", async () => {
     readFileMock.mockResolvedValueOnce("{}");
     process.env.DEPOSIT_RELEASE_ENABLED_SHOP = "false";
@@ -210,6 +229,35 @@ describe("startDepositReleaseService", () => {
     stop();
     expect(clearSpy).toHaveBeenCalledWith(123 as any);
 
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+  });
+
+  it("uses provided log function when release fails", async () => {
+    const err = new Error("boom");
+    (service.releaseDepositsOnce as jest.Mock).mockRejectedValueOnce(err);
+    const logSpy = jest.fn();
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 0 as any);
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+
+    const stop = await service.startDepositReleaseService(
+      {},
+      "/data",
+      undefined,
+      logSpy,
+    );
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(logSpy).toHaveBeenCalledWith("deposit release failed", {
+      shopId: "shop",
+      err,
+    });
+
+    stop();
     setSpy.mockRestore();
     clearSpy.mockRestore();
   });

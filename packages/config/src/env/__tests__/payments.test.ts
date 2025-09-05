@@ -28,14 +28,14 @@ async function withEnv<T>(
 }
 
 describe("payments env schema", () => {
-  it("uses defaults when gateway disabled without warnings", async () => {
+  it("uses defaults when provider is unset without warnings", async () => {
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     await withEnv(
       {
-        PAYMENTS_GATEWAY: "disabled",
-        STRIPE_SECRET_KEY: "sk_live_123",
-        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
-        STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+        PAYMENTS_PROVIDER: undefined,
+        STRIPE_SECRET_KEY: undefined,
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: undefined,
+        STRIPE_WEBHOOK_SECRET: undefined,
       },
       async () => {
         const { paymentsEnv, paymentsEnvSchema } = await import("../payments.js");
@@ -51,7 +51,7 @@ describe("payments env schema", () => {
       warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
       await withEnv(
         {
-          PAYMENTS_GATEWAY: "stripe",
+          PAYMENTS_PROVIDER: "stripe",
           STRIPE_SECRET_KEY: key,
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_abc",
           STRIPE_WEBHOOK_SECRET: "whsec_live_abc",
@@ -65,24 +65,26 @@ describe("payments env schema", () => {
     },
   );
 
-  it("warns when STRIPE_WEBHOOK_SECRET is missing", async () => {
-    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+  it("throws when STRIPE_WEBHOOK_SECRET is missing", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await withEnv(
       {
-        PAYMENTS_GATEWAY: "stripe",
+        PAYMENTS_PROVIDER: "stripe",
         STRIPE_SECRET_KEY: "sk_live_123",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
         STRIPE_WEBHOOK_SECRET: "",
       },
       async () => {
-        const { paymentsEnv, paymentsEnvSchema } = await import("../payments.js");
-        expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
-        expect(warnSpy).toHaveBeenCalledWith(
-          "⚠️ Invalid payments environment variables:",
+        await expect(import("../payments.js")).rejects.toThrow(
+          "Invalid payments environment variables",
+        );
+        expect(errorSpy).toHaveBeenCalledWith(
+          "❌ Invalid payments environment variables:",
           expect.any(Object),
         );
       },
     );
+    errorSpy.mockRestore();
   });
 });
 

@@ -4,7 +4,7 @@ import { MarketingEmailTemplate } from "@acme/email-templates";
 
 describe("MarketingEmailTemplate", () => {
   it("renders full template", () => {
-    const { container, getByText } = render(
+    const { container, getByText, getByAltText } = render(
       <MarketingEmailTemplate
         logoSrc="/logo.png"
         headline="Welcome"
@@ -17,10 +17,12 @@ describe("MarketingEmailTemplate", () => {
 
     expect(getByText("Welcome")).toBeInTheDocument();
     expect(getByText("Hi there")).toBeInTheDocument();
+    expect(getByAltText("logo")).toBeInTheDocument();
     expect(getByText("Click me").closest("a")).toHaveAttribute(
       "href",
       "https://example.com"
     );
+    expect(container.querySelector(".border-t")).not.toBeNull();
     expect(getByText("Bye")).toBeInTheDocument();
     expect(container.firstChild).toHaveClass(
       "mx-auto w-full max-w-xl overflow-hidden rounded-md border text-sm"

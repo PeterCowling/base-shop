@@ -24,16 +24,20 @@ describe("marketingEmailTemplates", () => {
     });
   });
 
-  it("creates MarketingEmailTemplate with correct className", () => {
-    marketingEmailTemplates.forEach((variant) => {
-      const element = variant.make(validProps);
-      expect(element.type).toBe(MarketingEmailTemplate);
-      if (variant.id === "centered") {
-        expect(element.props.className).toBe("text-center");
-      } else {
-        expect(element.props.className).toBeUndefined();
-      }
-    });
+  it("basic variant calls MarketingEmailTemplate", () => {
+    const basic = marketingEmailTemplates.find((v) => v.id === "basic");
+    expect(basic).toBeDefined();
+    const element = basic!.make(validProps);
+    expect(element.type).toBe(MarketingEmailTemplate);
+    expect(element.props.className).toBeUndefined();
+  });
+
+  it("centered variant applies text-center class", () => {
+    const centered = marketingEmailTemplates.find((v) => v.id === "centered");
+    expect(centered).toBeDefined();
+    const element = centered!.make(validProps);
+    expect(element.type).toBe(MarketingEmailTemplate);
+    expect(element.props.className).toBe("text-center");
   });
 
   it("buildSubject returns headline", () => {

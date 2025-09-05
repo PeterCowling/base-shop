@@ -40,6 +40,16 @@ describe("templates registry", () => {
   });
 
   it("renders marketing template with sanitized HTML and default footer", async () => {
+    const make = jest.fn(({ headline, content, footer }: any) =>
+      React.createElement(
+        "div",
+        null,
+        React.createElement("h1", null, headline),
+        content,
+        footer
+      )
+    );
+
     jest.doMock(
       "@acme/email-templates",
       () => ({
@@ -49,14 +59,7 @@ describe("templates registry", () => {
             id: "basic",
             label: "Basic",
             buildSubject: (h: string) => h,
-            make: ({ headline, content, footer }: any) =>
-              React.createElement(
-                "div",
-                null,
-                React.createElement("h1", null, headline),
-                content,
-                footer
-              ),
+            make,
           },
         ],
       }),
@@ -68,11 +71,58 @@ describe("templates registry", () => {
       subject: "Hi",
       body: '<img src="x" onerror="alert(1)"><script>alert(1)</script>',
     });
+    expect(make).toHaveBeenCalledTimes(1);
     expect(html).toContain("<h1>Hi</h1>");
     expect(html).toContain('<img src="x"');
     expect(html).not.toContain("onerror");
     expect(html).not.toContain("<script>");
     expect(html).toContain("%%UNSUBSCRIBE%%");
+  });
+
+  it("falls back to minimal React shim when React is unavailable", async () => {
+    jest.doMock(
+      "react",
+      () => {
+        throw new Error("Cannot find module 'react'");
+      },
+      { virtual: true }
+    );
+
+    const make = jest.fn(({ headline, content, footer }: any) => [
+      { type: "h1", props: { children: headline } },
+      content,
+      footer,
+    ]);
+
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({
+        __esModule: true,
+        marketingEmailTemplates: [
+          {
+            id: "basic",
+            label: "Basic",
+            buildSubject: (h: string) => h,
+            make,
+          },
+        ],
+      }),
+      { virtual: true }
+    );
+
+    const { renderTemplate, __reactShim } = await import("../src/templates");
+
+    const el = __reactShim.createElement("span", null, "hi");
+    expect(__reactShim.isValidElement(el)).toBe(true);
+    expect(__reactShim.Children.map([1, 2], String)).toEqual(["1", "2"]);
+
+    const html = renderTemplate("basic", {
+      subject: "Hi",
+      body: "<strong>ok</strong>",
+    });
+    expect(make).toHaveBeenCalledTimes(1);
+    expect(html).toContain("<h1>Hi</h1>");
+    expect(html).toContain("<strong>ok</strong>");
   });
 
   it("throws for unknown template id", async () => {

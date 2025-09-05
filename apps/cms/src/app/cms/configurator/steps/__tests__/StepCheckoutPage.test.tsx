@@ -32,6 +32,7 @@ jest.mock(
         <button onClick={() => onChange([{ id: "changed" }])}>change</button>
       </div>
     ),
+    Toast: ({ open, message }: any) => (open ? <div>{message}</div> : null),
   }),
   { virtual: true },
 );
@@ -66,15 +67,6 @@ jest.mock(
       ),
     };
   },
-  { virtual: true },
-);
-
-jest.mock(
-  "@/components/atoms",
-  () => ({
-    __esModule: true,
-    Toast: ({ open, message }: any) => (open ? <div>{message}</div> : null),
-  }),
   { virtual: true },
 );
 

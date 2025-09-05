@@ -157,23 +157,30 @@ describe("scheduler", () => {
     expect(html).not.toContain('href="https://example.com/page"');
   });
 
-  test("trackedBody includes base URL for pixel and click tracking", async () => {
+  test("trackedBody includes base URL and tracking wrappers", async () => {
     process.env.NEXT_PUBLIC_BASE_URL = "https://base.example";
     await createCampaign({
       shop,
       recipients: ["a@example.com"],
       subject: "Hi",
-      body: '<p><a href="https://dest">Go</a> %%UNSUBSCRIBE%%</p>',
+      body: '<p><a href="https://dest1">One</a><a href="https://dest2">Two</a> %%UNSUBSCRIBE%%</p>',
     });
     const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0]
       .html as string;
-    expect(html).toContain(
-      'src="https://base.example/api/marketing/email/open?shop=test-shop',
+    expect(html).toMatch(
+      /<img src="https:\/\/base\.example\/api\/marketing\/email\/open\?shop=test-shop&campaign=[^&]+&t=\d+" alt="" style="display:none" width="1" height="1"\/>/,
     );
     expect(html).toContain(
       'href="https://base.example/api/marketing/email/click?shop=test-shop',
     );
-    expect(html).not.toContain('href="https://dest"');
+    expect(html).toContain(
+      'url=https%3A%2F%2Fdest1',
+    );
+    expect(html).toContain(
+      'url=https%3A%2F%2Fdest2',
+    );
+    expect(html).not.toContain('href="https://dest1"');
+    expect(html).not.toContain('href="https://dest2"');
   });
 
   test("deliverCampaign validates shop name", async () => {
@@ -208,21 +215,24 @@ describe("scheduler", () => {
     await expect(sendDueCampaigns()).rejects.toThrow("invalid");
   });
 
-  test("deliverCampaign renders templates when templateId provided", async () => {
+  test("deliverCampaign renders template HTML for every recipient", async () => {
     (renderTemplate as jest.Mock).mockReturnValue("<p>Rendered</p>");
     await createCampaign({
       shop,
-      recipients: ["a@example.com"],
+      recipients: ["a@example.com", "b@example.com"],
       subject: "Hello",
       body: "<p>Ignored</p>",
       templateId: "welcome",
     });
+    expect(renderTemplate).toHaveBeenCalledTimes(1);
     expect(renderTemplate).toHaveBeenCalledWith("welcome", {
       subject: "Hello",
       body: "<p>Ignored</p>",
     });
-    const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0].html as string;
-    expect(html).toContain("Rendered");
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(2);
+    (sendCampaignEmail as jest.Mock).mock.calls.forEach((c) => {
+      expect((c[0].html as string)).toContain("Rendered");
+    });
   });
 
   test("deliverCampaign appends unsubscribe link when placeholder missing", async () => {
@@ -301,6 +311,27 @@ describe("scheduler", () => {
     expect(typeof id).toBe("string");
     const campaign = memory[shop].find((c) => c.id === id)!;
     expect(campaign.recipients).toEqual(["seg@example.com"]);
+  });
+
+  test("deliverCampaign resolves segment once and updates recipients", async () => {
+    (resolveSegment as jest.Mock).mockResolvedValue([
+      "s1@example.com",
+      "s2@example.com",
+    ]);
+    await createCampaign({
+      shop,
+      recipients: ["initial@example.com"],
+      segment: "vip",
+      subject: "Hi",
+      body: "<p>Hi %%UNSUBSCRIBE%%</p>",
+    });
+    expect(resolveSegment).toHaveBeenCalledTimes(1);
+    expect(resolveSegment).toHaveBeenCalledWith(shop, "vip");
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(2);
+    const sentTo = (sendCampaignEmail as jest.Mock).mock.calls.map((c) => c[0].to);
+    expect(sentTo).toEqual(["s1@example.com", "s2@example.com"]);
+    const campaign = memory[shop][0];
+    expect(campaign.recipients).toEqual(["s1@example.com", "s2@example.com"]);
   });
 
   test("createCampaign throws when required fields are missing", async () => {

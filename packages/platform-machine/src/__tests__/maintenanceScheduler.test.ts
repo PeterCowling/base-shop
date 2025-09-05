@@ -76,10 +76,15 @@ describe("startMaintenanceScheduler", () => {
   const readdirMock = readdir as unknown as jest.Mock;
   const errorMock = logger.error as unknown as jest.Mock;
 
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
   afterEach(() => {
     if (timer) {
       clearInterval(timer);
     }
+    jest.useRealTimers();
     jest.clearAllMocks();
   });
 
@@ -94,5 +99,26 @@ describe("startMaintenanceScheduler", () => {
     expect(errorMock).toHaveBeenCalledWith("maintenance scan failed", {
       err: expect.any(Error),
     });
+  });
+
+  it("continues scheduling after initial read error", async () => {
+    readdirMock
+      .mockRejectedValueOnce(new Error("fail"))
+      .mockResolvedValueOnce(["shop1"]);
+    const inventory = readInventory as unknown as jest.Mock;
+    inventory.mockResolvedValueOnce([]);
+    const products = readProducts as unknown as jest.Mock;
+    products.mockResolvedValueOnce([]);
+
+    timer = startMaintenanceScheduler();
+
+    await Promise.resolve();
+    await Promise.resolve();
+
+    jest.advanceTimersByTime(24 * 60 * 60 * 1000);
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(inventory).toHaveBeenCalledTimes(1);
   });
 });

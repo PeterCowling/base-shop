@@ -20,35 +20,61 @@ describe("payments env provider", () => {
     expect(paymentsEnv.STRIPE_SECRET_KEY).toBe("sk_live_123");
   });
 
-  it("provides default stripe keys when missing", async () => {
-    const { paymentsEnv } = await withEnv(
-      {
-        PAYMENTS_PROVIDER: "stripe",
-      },
-      () => import("../payments"),
-    );
+  it("throws when stripe secret key missing", async () => {
+    const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(
+      withEnv(
+        {
+          PAYMENTS_PROVIDER: "stripe",
+          STRIPE_SECRET_KEY: "",
+          STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
+        },
+        () => import("../payments"),
+      ),
+    ).rejects.toThrow("Invalid payments environment variables");
+    expect(errSpy).toHaveBeenCalled();
+  });
 
-    expect(paymentsEnv.STRIPE_SECRET_KEY).toBe("dummy-stripe-secret");
-    expect(paymentsEnv.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY).toBe(
-      "dummy-publishable-key",
-    );
-    expect(paymentsEnv.STRIPE_WEBHOOK_SECRET).toBe("dummy-webhook-secret");
+  it("throws when stripe webhook secret missing", async () => {
+    const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(
+      withEnv(
+        {
+          PAYMENTS_PROVIDER: "stripe",
+          STRIPE_SECRET_KEY: "sk_live_123",
+          STRIPE_WEBHOOK_SECRET: "",
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
+        },
+        () => import("../payments"),
+      ),
+    ).rejects.toThrow("Invalid payments environment variables");
+    expect(errSpy).toHaveBeenCalled();
   });
 });
 
 describe("payments env sandbox flag", () => {
-  it("parses sandbox flag", async () => {
-    const { paymentsEnv: sandbox } = await withEnv(
-      { PAYMENTS_SANDBOX: "true" },
+  it.each([
+    ["true", true],
+    ["1", true],
+    ["false", false],
+    ["0", false],
+  ])("parses %s", async (value, expected) => {
+    const { paymentsEnv } = await withEnv(
+      { PAYMENTS_SANDBOX: value },
       () => import("../payments"),
     );
-    expect(sandbox.PAYMENTS_SANDBOX).toBe(true);
+    expect(paymentsEnv.PAYMENTS_SANDBOX).toBe(expected);
+  });
 
-    const { paymentsEnv: live } = await withEnv(
-      { PAYMENTS_SANDBOX: "false" },
+  it("warns and defaults to true on invalid sandbox", async () => {
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const { paymentsEnv } = await withEnv(
+      { PAYMENTS_SANDBOX: "maybe" },
       () => import("../payments"),
     );
-    expect(live.PAYMENTS_SANDBOX).toBe(false);
+    expect(paymentsEnv.PAYMENTS_SANDBOX).toBe(true);
+    expect(warnSpy).toHaveBeenCalled();
   });
 });
 
@@ -60,20 +86,22 @@ describe("payments env currency", () => {
 
   it("uses provided currency when set", async () => {
     const { paymentsEnv } = await withEnv(
-      { PAYMENTS_CURRENCY: "eur" },
+      { PAYMENTS_CURRENCY: "EUR" },
       () => import("../payments"),
     );
     expect(paymentsEnv.PAYMENTS_CURRENCY).toBe("EUR");
   });
 
-  it("throws on invalid currency code", async () => {
-    const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(
-      withEnv(
-        { PAYMENTS_CURRENCY: "EU" },
+  it.each(["EU", "usd"]) (
+    "warns and defaults on invalid currency %s",
+    async (currency) => {
+      const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+      const { paymentsEnv } = await withEnv(
+        { PAYMENTS_CURRENCY: currency },
         () => import("../payments"),
-      ),
-    ).rejects.toThrow("Invalid payments environment variables");
-    expect(errSpy).toHaveBeenCalled();
-  });
+      );
+      expect(paymentsEnv.PAYMENTS_CURRENCY).toBe("USD");
+      expect(warnSpy).toHaveBeenCalled();
+    },
+  );
 });

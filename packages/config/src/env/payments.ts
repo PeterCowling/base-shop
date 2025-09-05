@@ -16,10 +16,9 @@ export const paymentsEnvSchema = z.object({
   PAYMENTS_CURRENCY: z
     .string()
     .default("USD")
-    .refine((val) => /^[A-Za-z]{3}$/.test(val), {
-      message: "PAYMENTS_CURRENCY must be a 3-letter currency code",
-    })
-    .transform((val) => val.toUpperCase()),
+    .refine((val) => /^[A-Z]{3}$/.test(val), {
+      message: "PAYMENTS_CURRENCY must be a 3-letter uppercase currency code",
+    }),
   STRIPE_SECRET_KEY: z.string().min(1).default("sk_test"),
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z
     .string()

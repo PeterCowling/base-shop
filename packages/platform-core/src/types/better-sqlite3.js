@@ -70,7 +70,7 @@ class Database {
     this.rows = Database.stores.get(file);
   }
 
-  exec(_sql) {
+  exec() {
     return this;
   }
 

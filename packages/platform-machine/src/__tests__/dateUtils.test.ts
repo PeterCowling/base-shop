@@ -120,11 +120,25 @@ describe('parseTargetDate', () => {
   it('returns null for invalid input', () => {
     expect(parseTargetDate('invalid')).toBeNull();
   });
-  it('returns null for keyword "today"', () => {
-    expect(parseTargetDate('today')).toBeNull();
-  });
-  it('returns null for keyword "tomorrow"', () => {
-    expect(parseTargetDate('tomorrow')).toBeNull();
+  describe('keyword handling', () => {
+    beforeEach(() => {
+      jest
+        .useFakeTimers()
+        .setSystemTime(new Date('2025-06-15T10:00:00Z'));
+    });
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+    it('returns start of day for "today"', () => {
+      expect(parseTargetDate('today')?.toISOString()).toBe(
+        '2025-06-15T00:00:00.000Z',
+      );
+    });
+    it('returns start of day for "tomorrow"', () => {
+      expect(parseTargetDate('tomorrow')?.toISOString()).toBe(
+        '2025-06-16T00:00:00.000Z',
+      );
+    });
   });
 });
 
@@ -134,10 +148,10 @@ describe('getTimeRemaining', () => {
     const now = new Date('2025-01-01T00:00:00Z');
     expect(getTimeRemaining(target, now)).toBe(24 * 60 * 60 * 1000);
   });
-  it('returns negative when target is in the past', () => {
+  it('clamps to zero when target is in the past', () => {
     const target = new Date('2024-12-31T23:59:50Z');
     const now = new Date('2025-01-01T00:00:00Z');
-    expect(getTimeRemaining(target, now)).toBeLessThan(0);
+    expect(getTimeRemaining(target, now)).toBe(0);
   });
   it('returns zero when target equals now', () => {
     const now = new Date('2025-01-01T00:00:00Z');

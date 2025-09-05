@@ -18,8 +18,8 @@ export const cmsEnvSchema = z.object({
     ? z.string().min(1)
     : z.string().min(1).default("dummy-project-id"),
   SANITY_DATASET: z.string().min(1).default("production"),
-  SANITY_API_TOKEN: z.string().min(1).default("dummy-api-token"),
-  SANITY_PREVIEW_SECRET: z.string().min(1).default("dummy-preview-secret"),
+  SANITY_API_TOKEN: z.string().min(1).optional(),
+  SANITY_PREVIEW_SECRET: z.string().min(1).optional(),
   SANITY_BASE_URL: z
     .string()
     .url()

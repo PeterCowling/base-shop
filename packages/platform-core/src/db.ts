@@ -1,11 +1,107 @@
 import { loadCoreEnv } from "@acme/config/env/core";
 import { createRequire } from "module";
 import type { PrismaClient } from "./prisma-client";
+import type {
+  Shop,
+  Page,
+  RentalOrder,
+  SubscriptionUsage,
+  CustomerProfile,
+  User,
+  ReverseLogisticsEvent,
+} from "@acme/types";
 
 // Avoid referencing conditional exports from "@prisma/client" directly.
 type PrismaClientCtor = new (...args: unknown[]) => PrismaClient;
 
 const coreEnv = loadCoreEnv();
+
+export interface StubPrismaClient extends PrismaClient {
+  rentalOrder: {
+    findMany(args: { where?: { shop?: string; customerId?: string } }): Promise<RentalOrder[]>;
+    findFirst(args: { where?: Partial<RentalOrder> }): Promise<RentalOrder | null>;
+    findUnique(args: {
+      where:
+        | { shop_sessionId: { shop: string; sessionId: string } }
+        | { shop_trackingNumber: { shop: string; trackingNumber: string } };
+    }): Promise<RentalOrder | null>;
+    create(args: { data: RentalOrder }): Promise<RentalOrder>;
+    createMany(args: { data: RentalOrder[] }): Promise<{ count: number }>;
+    update(args: { where: any; data: Partial<RentalOrder> }): Promise<RentalOrder>;
+    deleteMany(args: { where?: Partial<RentalOrder> }): Promise<{ count: number }>;
+    upsert(args: { where: any; create: RentalOrder; update: Partial<RentalOrder> }): Promise<RentalOrder>;
+  };
+  shop: {
+    findUnique(args: { where: { id: string } }): Promise<{ id: string; data: Shop } | null>;
+    findMany(args: { where?: { id?: string } }): Promise<{ id: string; data: Shop }[]>;
+    create(args: { data: { id: string; data: Shop } }): Promise<{ id: string; data: Shop }>;
+    upsert(args: {
+      where: { id: string };
+      create: { id: string; data: Shop };
+      update: { data: Shop };
+    }): Promise<{ id: string; data: Shop }>;
+    delete(args: { where: { id: string } }): Promise<{ id: string; data: Shop }>;
+  };
+  page: {
+    findMany(args: {
+      where?: { shopId?: string; id?: string; slug?: string };
+    }): Promise<Array<{ id: string; shopId: string; slug: string; data: Page }>>;
+    findUnique(args: { where: { id: string } }): Promise<{
+      id: string;
+      shopId: string;
+      slug: string;
+      data: Page;
+    } | null>;
+    createMany(args: {
+      data: Array<{ shopId: string; slug: string; data: Page }>;
+    }): Promise<{ count: number }>;
+    upsert(args: { where: { id: string }; create: any; update: any }): Promise<any>;
+    update(args: { where: { id: string }; data: any }): Promise<any>;
+    deleteMany(args: {
+      where?: Partial<{ id: string; shopId: string }>;
+    }): Promise<{ count: number }>;
+  };
+  customerProfile: {
+    findUnique(args: { where: { customerId: string } }): Promise<CustomerProfile | null>;
+    findFirst(args: { where?: Partial<CustomerProfile> }): Promise<CustomerProfile | null>;
+    upsert(args: {
+      where: { customerId: string };
+      create: CustomerProfile;
+      update: Partial<CustomerProfile>;
+    }): Promise<CustomerProfile>;
+  };
+  subscriptionUsage: {
+    findUnique(args: {
+      where: {
+        shop_customerId_month: {
+          shop: string;
+          customerId: string;
+          month: string;
+        };
+      };
+    }): Promise<SubscriptionUsage | null>;
+    upsert(args: {
+      where: any;
+      create: SubscriptionUsage;
+      update: Partial<SubscriptionUsage>;
+    }): Promise<SubscriptionUsage>;
+  };
+  user: {
+    findUnique(args: { where: { id?: string; email?: string } }): Promise<User | null>;
+    findMany(args: { where?: Partial<User> }): Promise<User[]>;
+    findFirst(args: { where?: Partial<User> }): Promise<User | null>;
+    create(args: { data: User }): Promise<User>;
+    update(args: { where: { id?: string; email?: string }; data: Partial<User> }): Promise<User>;
+    deleteMany(args: { where?: Partial<User> }): Promise<{ count: number }>;
+  };
+  reverseLogisticsEvent: {
+    create(args: { data: ReverseLogisticsEvent }): Promise<ReverseLogisticsEvent>;
+    findMany(args: {
+      where?: Partial<ReverseLogisticsEvent>;
+      orderBy?: { createdAt: "asc" | "desc" };
+    }): Promise<ReverseLogisticsEvent[]>;
+  };
+}
 
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                    */
@@ -51,14 +147,25 @@ function deleteMatching(arr: Record<string, any>[], where?: Record<string, any>)
 /* Stub Implementation                                                        */
 /* -------------------------------------------------------------------------- */
 
-function createStubPrisma(): PrismaClient {
-  const shops: any[] = [];
-  const pages: any[] = [];
-  const rentalOrders: any[] = [];
-  const subscriptionUsages: any[] = [];
-  const customerProfiles: any[] = [];
-  const users: any[] = [];
-  const reverseLogisticsEvents: any[] = [];
+const shops: { id: string; data: Shop }[] = [];
+const pages: Array<{ id: string; shopId: string; slug: string; data: Page }> = [];
+const rentalOrders: RentalOrder[] = [];
+const subscriptionUsages: SubscriptionUsage[] = [];
+const customerProfiles: CustomerProfile[] = [];
+const users: User[] = [];
+const reverseLogisticsEvents: ReverseLogisticsEvent[] = [];
+
+function resetStubPrisma(): void {
+  shops.length = 0;
+  pages.length = 0;
+  rentalOrders.length = 0;
+  subscriptionUsages.length = 0;
+  customerProfiles.length = 0;
+  users.length = 0;
+  reverseLogisticsEvents.length = 0;
+}
+
+function createStubPrisma(): StubPrismaClient {
 
   const findRentalByUnique = (
     where:
@@ -81,7 +188,7 @@ function createStubPrisma(): PrismaClient {
     rentalOrder: {
       findMany: async ({ where }: { where?: { shop?: string; customerId?: string } }) =>
         rentalOrders.filter((o) => matchesWhere(o, where)),
-      findFirst: async ({ where }: { where?: Record<string, any> }) =>
+      findFirst: async ({ where }: { where?: Partial<RentalOrder> }) =>
         rentalOrders.find((o) => matchesWhere(o, where)) ?? null,
       findUnique: async ({
         where,
@@ -90,45 +197,27 @@ function createStubPrisma(): PrismaClient {
           | { shop_sessionId: { shop: string; sessionId: string } }
           | { shop_trackingNumber: { shop: string; trackingNumber: string } };
       }) => findRentalByUnique(where) ?? null,
-      create: async ({ data }: { data: Record<string, any> }) => {
+      create: async ({ data }: { data: RentalOrder }) => {
         rentalOrders.push({ ...data });
         return data;
       },
-      createMany: async ({ data }: { data: Record<string, any>[] }) => {
+      createMany: async ({ data }: { data: RentalOrder[] }) => {
         data.forEach((d) => rentalOrders.push({ ...d }));
         return { count: data.length };
       },
-      update: async ({
-        where,
-        data,
-      }: {
-        where:
-          | { shop_sessionId: { shop: string; sessionId: string } }
-          | { shop_trackingNumber: { shop: string; trackingNumber: string } };
-        data: Record<string, any>;
-      }) => {
+      update: async ({ where, data }: { where: any; data: Partial<RentalOrder> }) => {
         const order = findRentalByUnique(where);
         if (!order) throw new Error("Order not found");
-        applyUpdate(order, data);
+        applyUpdate(order as any, data as any);
         return order;
       },
-      deleteMany: async ({ where }: { where?: Record<string, any> }) => ({
-        count: deleteMatching(rentalOrders, where),
+      deleteMany: async ({ where }: { where?: Partial<RentalOrder> }) => ({
+        count: deleteMatching(rentalOrders as any, where as any),
       }),
-      upsert: async ({
-        where,
-        create,
-        update,
-      }: {
-        where:
-          | { shop_sessionId: { shop: string; sessionId: string } }
-          | { shop_trackingNumber: { shop: string; trackingNumber: string } };
-        create: Record<string, any>;
-        update: Record<string, any>;
-      }) => {
+      upsert: async ({ where, create, update }: { where: any; create: RentalOrder; update: Partial<RentalOrder> }) => {
         const existing = findRentalByUnique(where);
         if (existing) {
-          applyUpdate(existing, update);
+          applyUpdate(existing as any, update as any);
           return existing;
         }
         const rec = { ...create };
@@ -140,7 +229,9 @@ function createStubPrisma(): PrismaClient {
     shop: {
       findUnique: async ({ where }: { where: { id: string } }) =>
         shops.find((s) => s.id === where.id) ?? null,
-      create: async ({ data }: { data: any }) => {
+      findMany: async ({ where }: { where?: { id?: string } }) =>
+        shops.filter((s) => matchesWhere(s, where)),
+      create: async ({ data }: { data: { id: string; data: Shop } }) => {
         shops.push({ ...data });
         return data;
       },
@@ -150,12 +241,12 @@ function createStubPrisma(): PrismaClient {
         update,
       }: {
         where: { id: string };
-        create: any;
-        update: any;
+        create: { id: string; data: Shop };
+        update: { data: Shop };
       }) => {
         let rec = shops.find((s) => s.id === where.id);
         if (rec) {
-          applyUpdate(rec, update);
+          applyUpdate(rec as any, update as any);
           return rec;
         }
         rec = { ...create };
@@ -171,58 +262,44 @@ function createStubPrisma(): PrismaClient {
     },
 
     page: {
-      findMany: async ({ where }: { where?: Record<string, any> }) =>
+      findMany: async ({ where }: { where?: { shopId?: string; id?: string; slug?: string } }) =>
         pages.filter((p) => matchesWhere(p, where)),
-      createMany: async ({ data }: { data: any[] }) => {
-        data.forEach((d) => pages.push({ ...d }));
+      findUnique: async ({ where }: { where: { id: string } }) =>
+        pages.find((p) => p.id === where.id) ?? null,
+      createMany: async ({ data }: { data: Array<{ shopId: string; slug: string; data: Page }> }) => {
+        data.forEach((d) => pages.push({ id: String(pages.length + 1), ...d }));
         return { count: data.length };
       },
-      upsert: async ({
-        where,
-        create,
-        update,
-      }: {
-        where: { id: string };
-        create: any;
-        update: any;
-      }) => {
-        let rec = pages.find((p) => p.id === where.id);
-        if (rec) {
-          applyUpdate(rec, update);
-          return rec;
+      upsert: async ({ where, create, update }: { where: { id: string }; create: any; update: any }) => {
+        const existing = pages.find((p) => p.id === where.id);
+        if (existing) {
+          applyUpdate(existing as any, update as any);
+          return existing;
         }
-        rec = { ...create };
+        const rec = { ...create } as { id: string; shopId: string; slug: string; data: Page };
         pages.push(rec);
         return rec;
       },
       update: async ({ where, data }: { where: { id: string }; data: any }) => {
         const rec = pages.find((p) => p.id === where.id);
         if (!rec) throw new Error("Page not found");
-        applyUpdate(rec, data);
+        applyUpdate(rec as any, data as any);
         return rec;
       },
-      deleteMany: async ({ where }: { where?: Record<string, any> }) => ({
-        count: deleteMatching(pages, where),
+      deleteMany: async ({ where }: { where?: Partial<{ id: string; shopId: string }> }) => ({
+        count: deleteMatching(pages as any, where as any),
       }),
     },
 
     customerProfile: {
       findUnique: async ({ where }: { where: { customerId: string } }) =>
         customerProfiles.find((p) => p.customerId === where.customerId) ?? null,
-      findFirst: async ({ where }: { where?: Record<string, any> }) =>
+      findFirst: async ({ where }: { where?: Partial<CustomerProfile> }) =>
         customerProfiles.find((p) => matchesWhere(p, where)) ?? null,
-      upsert: async ({
-        where,
-        create,
-        update,
-      }: {
-        where: { customerId: string };
-        create: any;
-        update: any;
-      }) => {
+      upsert: async ({ where, create, update }: { where: { customerId: string }; create: CustomerProfile; update: Partial<CustomerProfile> }) => {
         let rec = customerProfiles.find((p) => p.customerId === where.customerId);
         if (rec) {
-          applyUpdate(rec, update);
+          applyUpdate(rec as any, update as any);
           return rec;
         }
         rec = { ...create };
@@ -244,21 +321,13 @@ function createStubPrisma(): PrismaClient {
           ) ?? null
         );
       },
-      upsert: async ({
-        where,
-        create,
-        update,
-      }: {
-        where: { shop_customerId_month: { shop: string; customerId: string; month: string } };
-        create: any;
-        update: any;
-      }) => {
+      upsert: async ({ where, create, update }: { where: any; create: SubscriptionUsage; update: Partial<SubscriptionUsage> }) => {
         const w = where.shop_customerId_month;
         let rec = subscriptionUsages.find(
           (r) => r.shop === w.shop && r.customerId === w.customerId && r.month === w.month,
         );
         if (rec) {
-          applyUpdate(rec, update);
+          applyUpdate(rec as any, update as any);
           return rec;
         }
         rec = { ...create };
@@ -273,25 +342,33 @@ function createStubPrisma(): PrismaClient {
         if (where.email) return users.find((u) => u.email === where.email) ?? null;
         return null;
       },
-      findFirst: async ({ where }: { where?: Record<string, any> }) =>
+      findMany: async ({ where }: { where?: Partial<User> }) =>
+        users.filter((u) => matchesWhere(u, where)),
+      findFirst: async ({ where }: { where?: Partial<User> }) =>
         users.find((u) => matchesWhere(u, where)) ?? null,
-      create: async ({ data }: { data: any }) => {
+      create: async ({ data }: { data: User }) => {
         users.push({ ...data });
         return data;
       },
-      update: async ({ where, data }: { where: { id?: string; email?: string }; data: any }) => {
+      update: async ({ where, data }: { where: { id?: string; email?: string }; data: Partial<User> }) => {
         const rec = users.find((u) =>
           where.id ? u.id === where.id : where.email ? u.email === where.email : false,
         );
         if (!rec) throw new Error("User not found");
-        applyUpdate(rec, data);
+        applyUpdate(rec as any, data as any);
         return rec;
       },
+      deleteMany: async ({ where }: { where?: Partial<User> }) => ({
+        count: deleteMatching(users as any, where as any),
+      }),
     },
 
     reverseLogisticsEvent: {
-      create: async ({ data }: { data: any }) => {
-        const rec = { id: String(reverseLogisticsEvents.length + 1), ...data };
+      create: async ({ data }: { data: ReverseLogisticsEvent }) => {
+        const rec: ReverseLogisticsEvent = {
+          ...data,
+          id: String(reverseLogisticsEvents.length + 1),
+        };
         reverseLogisticsEvents.push(rec);
         return rec;
       },
@@ -299,7 +376,7 @@ function createStubPrisma(): PrismaClient {
         where,
         orderBy,
       }: {
-        where?: Record<string, any>;
+        where?: Partial<ReverseLogisticsEvent>;
         orderBy?: { createdAt: "asc" | "desc" };
       }) => {
         let res = reverseLogisticsEvents.filter((e) => matchesWhere(e, where));
@@ -310,7 +387,7 @@ function createStubPrisma(): PrismaClient {
         return res;
       },
     },
-  } as unknown as PrismaClient;
+  } as StubPrismaClient;
 }
 
 let prisma: PrismaClient;
@@ -349,4 +426,4 @@ if (
   }
 }
 
-export { prisma };
+export { prisma, resetStubPrisma };

@@ -23,6 +23,18 @@ describe("TranslationsProvider and useTranslations", () => {
     expect(result.current("missing")).toBe("missing");
   });
 
+  it("falls back to default language when key missing", () => {
+    const en = { hello: "Hello", bye: "Goodbye" };
+    const de = { hello: "Hallo" };
+    const messages = { ...en, ...de };
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <TranslationsProvider messages={messages}>{children}</TranslationsProvider>
+    );
+
+    const { result } = renderHook(() => useTranslations(), { wrapper });
+    expect(result.current("bye")).toBe("Goodbye");
+  });
+
   it("memoises translator function when messages remain unchanged", () => {
     const messages = { hello: "Hallo" };
     const wrapper = ({ children }: PropsWithChildren) => (

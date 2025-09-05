@@ -12,7 +12,9 @@ import {
 } from "../src/orders";
 
 jest.mock("../src/analytics", () => ({ trackOrder: jest.fn() }));
-jest.mock("../src/subscriptionUsage", () => ({ incrementSubscriptionUsage: jest.fn() }));
+jest.mock("../src/subscriptionUsage", () => ({
+  incrementSubscriptionUsage: jest.fn(),
+}));
 jest.mock("../src/db", () => ({
   prisma: {
     rentalOrder: { findMany: jest.fn(), create: jest.fn(), update: jest.fn() },
@@ -72,7 +74,7 @@ describe("orders", () => {
         "cust",
         "high",
         1,
-        true,
+        true
       );
       expect(ulidMock).toHaveBeenCalled();
       expect(nowIsoMock).toHaveBeenCalledTimes(2);
@@ -83,7 +85,7 @@ describe("orders", () => {
       expect(incrementSubscriptionUsage).toHaveBeenCalledWith(
         "shop",
         "cust",
-        "2024-01",
+        "2024-01"
       );
       expect(order).toMatchObject({
         id: "ID",
@@ -120,6 +122,22 @@ describe("orders", () => {
       expect(incrementSubscriptionUsage).not.toHaveBeenCalled();
     });
 
+    it("skips subscription usage when disabled", async () => {
+      ulidMock.mockReturnValue("ID");
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.create.mockResolvedValue({});
+      prismaMock.shop.findUnique.mockResolvedValue({
+        data: { subscriptionsEnabled: false },
+      });
+      await addOrder("shop", "sess", 10, undefined, undefined, "cust");
+      expect(prismaMock.shop.findUnique).toHaveBeenCalledWith({
+        select: { data: true },
+        where: { id: "shop" },
+      });
+      expect(trackOrder).toHaveBeenCalledWith("shop", "ID", 10);
+      expect(incrementSubscriptionUsage).not.toHaveBeenCalled();
+    });
+
     it("throws when creation fails", async () => {
       prismaMock.rentalOrder.create.mockRejectedValue(new Error("fail"));
       await expect(addOrder("shop", "sess", 10)).rejects.toThrow("fail");
@@ -140,8 +158,8 @@ describe("orders", () => {
       expect(result).toEqual(mockOrder);
     });
 
-    it("returns null on failure", async () => {
-      prismaMock.rentalOrder.update.mockRejectedValue(new Error("fail"));
+    it("returns null when order not found", async () => {
+      prismaMock.rentalOrder.update.mockResolvedValue(null);
       const result = await markReturned("shop", "sess");
       expect(result).toBeNull();
     });
@@ -165,8 +183,8 @@ describe("orders", () => {
       expect(result).toEqual(mockOrder);
     });
 
-    it("returns null on failure", async () => {
-      prismaMock.rentalOrder.update.mockRejectedValue(new Error("fail"));
+    it("returns null when order not found", async () => {
+      prismaMock.rentalOrder.update.mockResolvedValue(null);
       const result = await markRefunded("shop", "sess");
       expect(result).toBeNull();
     });
@@ -184,8 +202,8 @@ describe("orders", () => {
       expect(result).toEqual(mockOrder);
     });
 
-    it("returns null on failure", async () => {
-      prismaMock.rentalOrder.update.mockRejectedValue(new Error("fail"));
+    it("returns null when order not found", async () => {
+      prismaMock.rentalOrder.update.mockResolvedValue(null);
       const result = await updateRisk("shop", "sess");
       expect(result).toBeNull();
     });
@@ -206,7 +224,9 @@ describe("orders", () => {
 
     it("throws when lookup fails", async () => {
       prismaMock.rentalOrder.findMany.mockRejectedValue(new Error("fail"));
-      await expect(getOrdersForCustomer("shop", "cust")).rejects.toThrow("fail");
+      await expect(getOrdersForCustomer("shop", "cust")).rejects.toThrow(
+        "fail"
+      );
     });
   });
 
@@ -222,8 +242,8 @@ describe("orders", () => {
       expect(result).toEqual(mockOrder);
     });
 
-    it("returns null on failure", async () => {
-      prismaMock.rentalOrder.update.mockRejectedValue(new Error("fail"));
+    it("returns null when order not found", async () => {
+      prismaMock.rentalOrder.update.mockResolvedValue(null);
       const result = await setReturnTracking("shop", "sess", "tn", "url");
       expect(result).toBeNull();
     });

@@ -71,19 +71,33 @@ describe("date-utils integration", () => {
   });
 
   describe("parseTargetDate", () => {
-    it("parses relative keywords and timezones", () => {
+    beforeEach(() => {
       jest.useFakeTimers().setSystemTime(new Date("2025-06-15T10:00:00Z"));
+    });
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
+    it("parses \"today\"", () => {
       expect(parseTargetDate("today")?.toISOString()).toBe(
         "2025-06-15T00:00:00.000Z",
       );
+    });
+
+    it("parses \"tomorrow\"", () => {
       expect(parseTargetDate("tomorrow")?.toISOString()).toBe(
         "2025-06-16T00:00:00.000Z",
       );
+    });
+
+    it("honors timezones", () => {
       expect(
         parseTargetDate("2025-01-01T00:00:00", "America/New_York")?.toISOString(),
       ).toBe("2025-01-01T05:00:00.000Z");
+    });
+
+    it("returns null for invalid input", () => {
       expect(parseTargetDate("invalid")).toBeNull();
-      jest.useRealTimers();
     });
   });
 

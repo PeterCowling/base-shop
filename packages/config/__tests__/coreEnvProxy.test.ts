@@ -24,6 +24,25 @@ describe("coreEnv proxy", () => {
     expect(parseSpy).toHaveBeenCalledTimes(1);
   });
 
+  it("caches parsed env across accesses", async () => {
+    const core = await withEnv(
+      {
+        NODE_ENV: "test",
+        CMS_SPACE_URL: "https://example.com",
+        CMS_ACCESS_TOKEN: "token",
+        SANITY_API_VERSION: "v1",
+      },
+      () => import("../src/env/core"),
+    );
+    const parseSpy = jest.spyOn(core.coreEnvSchema, "safeParse");
+    const url = core.coreEnv.CMS_SPACE_URL;
+    const token = core.coreEnv.CMS_ACCESS_TOKEN;
+    expect(core.coreEnv.CMS_SPACE_URL).toBe(url);
+    expect(core.coreEnv.CMS_ACCESS_TOKEN).toBe(token);
+    expect(core.coreEnv.CMS_SPACE_URL).toBe(url);
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+  });
+
   it("parses during import in production", async () => {
     const core = await withEnv(
       {

@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
 import { z } from "zod";
 import {
   coreEnvBaseSchema,
@@ -15,6 +15,26 @@ const baseEnv = {
 const schema = coreEnvBaseSchema.superRefine(depositReleaseEnvRefinement);
 
 describe("depositReleaseEnvRefinement", () => {
+  it("adds issues for invalid deposit vars", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      {
+        DEPOSIT_RELEASE_ENABLED: "yes",
+        DEPOSIT_RELEASE_INTERVAL_MS: "soon",
+      },
+      ctx,
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_ENABLED"],
+      message: "must be true or false",
+    });
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_INTERVAL_MS"],
+      message: "must be a number",
+    });
+  });
   it.each([
     {
       env: {

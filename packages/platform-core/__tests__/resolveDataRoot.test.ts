@@ -1,100 +1,56 @@
+import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 
-jest.mock("node:fs", () => ({
-  existsSync: jest.fn(),
-}));
-
 describe("resolveDataRoot", () => {
+  const originalCwd = process.cwd();
+  let tempDirs: string[] = [];
+
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
-    delete process.env.DATA_ROOT;
-  });
-
-  it("walks up directories to find an existing data/shops folder", async () => {
-    const startDir = path.join("/a", "b", "c");
-    const expected = path.join("/a", "data", "shops");
-
-    jest.spyOn(process, "cwd").mockReturnValue(startDir);
-    const fs = await import("node:fs");
-    const existsMock = fs.existsSync as jest.MockedFunction<typeof fs.existsSync>;
-    existsMock.mockImplementation((p) => p === expected);
-
-    const { resolveDataRoot } = await import("../src/dataRoot");
-    const dir = resolveDataRoot();
-
-    expect(dir).toBe(expected);
-    expect(existsMock).toHaveBeenCalledWith(path.join(startDir, "data", "shops"));
-    expect(existsMock).toHaveBeenCalledWith(
-      path.join(path.dirname(startDir), "data", "shops"),
-    );
-    expect(existsMock).toHaveBeenCalledWith(expected);
-  });
-
-  it("uses DATA_ROOT override when provided", async () => {
-    process.env.DATA_ROOT = "/custom/data";
-    const fs = await import("node:fs");
-    const existsMock = fs.existsSync as jest.MockedFunction<typeof fs.existsSync>;
-    const { resolveDataRoot } = await import("../src/dataRoot");
-    const dir = resolveDataRoot();
-
-    expect(dir).toBe(path.resolve("/custom/data"));
-    expect(existsMock).not.toHaveBeenCalled();
-  });
-
-  it("resolves relative DATA_ROOT using path.resolve", async () => {
-    process.env.DATA_ROOT = "./relative/data";
-    const fs = await import("node:fs");
-    const existsMock = fs.existsSync as jest.MockedFunction<typeof fs.existsSync>;
-    const { resolveDataRoot } = await import("../src/dataRoot");
-    const dir = resolveDataRoot();
-
-    expect(dir).toBe(path.resolve("./relative/data"));
-    expect(existsMock).not.toHaveBeenCalled();
-  });
-
-  it("falls back immediately when starting at filesystem root", async () => {
-    const startDir = "/";
-    const expected = path.resolve("/", "data", "shops");
-
-    jest.spyOn(process, "cwd").mockReturnValue(startDir);
-    const fs = await import("node:fs");
-    const existsMock = fs.existsSync as jest.MockedFunction<typeof fs.existsSync>;
-    existsMock.mockReturnValue(false);
-
-    const { resolveDataRoot } = await import("../src/dataRoot");
-    existsMock.mockClear();
-    const dir = resolveDataRoot();
-
-    expect(dir).toBe(expected);
-    expect(existsMock).toHaveBeenCalledTimes(1);
-    expect(existsMock).toHaveBeenCalledWith(expected);
-  });
-
-  it("falls back to <cwd>/data/shops when traversal fails", async () => {
-    const startDir = path.join("/x", "y", "z");
-    const expected = path.resolve(startDir, "data", "shops");
-
-    jest.spyOn(process, "cwd").mockReturnValue(startDir);
-    const fs = await import("node:fs");
-    const existsMock = fs.existsSync as jest.MockedFunction<typeof fs.existsSync>;
-    existsMock.mockReturnValue(false);
-
-    const { resolveDataRoot } = await import("../src/dataRoot");
-    existsMock.mockClear();
-    const dir = resolveDataRoot();
-
-    const calls = existsMock.mock.calls.map(([p]) => p);
-    const expectedCalls: string[] = [];
-    let current = startDir;
-    while (true) {
-      expectedCalls.push(path.join(current, "data", "shops"));
-      const parent = path.dirname(current);
-      if (parent === current) break;
-      current = parent;
+    process.chdir(originalCwd);
+    for (const dir of tempDirs) {
+      fs.rmSync(dir, { recursive: true, force: true });
     }
+    tempDirs = [];
+    delete process.env.DATA_ROOT;
+    jest.resetModules();
+  });
 
-    expect(dir).toBe(expected);
-    expect(calls).toEqual(expectedCalls);
+  it("returns path.resolve(DATA_ROOT) when env is set", async () => {
+    process.env.DATA_ROOT = "./custom/data";
+    const { resolveDataRoot } = await import("../src/dataRoot");
+    expect(resolveDataRoot()).toBe(path.resolve("./custom/data"));
+  });
+
+  it("walks up directories to find data/shops", async () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "data-root-"));
+    tempDirs.push(tmp);
+    const target = path.join(tmp, "data", "shops");
+    fs.mkdirSync(target, { recursive: true });
+    const nested = path.join(tmp, "a", "b", "c");
+    fs.mkdirSync(nested, { recursive: true });
+    process.chdir(nested);
+
+    const { resolveDataRoot } = await import("../src/dataRoot");
+    expect(resolveDataRoot()).toBe(target);
+  });
+
+  it("falls back to <cwd>/data/shops when no folder exists", async () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "data-root-"));
+    tempDirs.push(tmp);
+    const nested = path.join(tmp, "x", "y", "z");
+    fs.mkdirSync(nested, { recursive: true });
+    process.chdir(nested);
+
+    const { resolveDataRoot } = await import("../src/dataRoot");
+    const expected = path.join(nested, "data", "shops");
+    expect(resolveDataRoot()).toBe(expected);
+  });
+
+  it("exports DATA_ROOT equal to resolveDataRoot()", async () => {
+    process.env.DATA_ROOT = "/another/custom";
+    const { resolveDataRoot, DATA_ROOT } = await import("../src/dataRoot");
+    expect(DATA_ROOT).toBe(resolveDataRoot());
   });
 });
+

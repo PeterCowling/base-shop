@@ -38,5 +38,20 @@ describe("buildResponse", () => {
     expect(resp.headers.get("x-test")).toBe("1");
     await expect(resp.text()).resolves.toBe("");
   });
+
+  it("parses JSON payloads via res.json()", async () => {
+    const data = { ok: true };
+    const body = Buffer.from(JSON.stringify(data)).toString("base64");
+    const resp = buildResponse({
+      response: {
+        status: 200,
+        headers: { "content-type": "application/json" },
+        body,
+      },
+    });
+
+    expect(resp.status).toBe(200);
+    await expect(resp.json()).resolves.toEqual(data);
+  });
 });
 

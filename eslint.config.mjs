@@ -20,6 +20,7 @@ export default [
       "node_modules/",
       "**/dist/**",
       "packages/auth/dist/",
+      "packages/configurator/bin/**",
       "**/.next/**",
       "**/build/**",
       "**/coverage/**",

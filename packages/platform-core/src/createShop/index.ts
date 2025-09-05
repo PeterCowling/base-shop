@@ -18,7 +18,11 @@ import {
 } from "./deploymentAdapter";
 
 function repoRoot(): string {
-  let dir = typeof __dirname !== "undefined" ? __dirname : process.cwd();
+  const cwd = process.cwd().replace(/\\/g, "/");
+  const match = cwd.match(/^(.*?)(?:\/(?:packages|apps))(?:\/|$)/);
+  if (match) return match[1];
+
+  let dir = typeof __dirname !== "undefined" ? __dirname : cwd;
   while (
     !fs.existsSync(join(dir, "packages")) &&
     !fs.existsSync(join(dir, "apps"))
@@ -160,9 +164,14 @@ export function listThemes(): string[] {
   const themesDir = join(repoRoot(), "packages", "themes");
   try {
     return fs
-      .readdirSync(themesDir, { withFileTypes: true })
-      .filter((d) => d.isDirectory())
-      .map((d) => d.name);
+      .readdirSync(themesDir)
+      .filter((name) => {
+        try {
+          return fs.statSync(join(themesDir, name)).isDirectory();
+        } catch {
+          return false;
+        }
+      });
   } catch {
     return [];
   }

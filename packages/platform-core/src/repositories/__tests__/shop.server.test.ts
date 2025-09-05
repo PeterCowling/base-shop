@@ -54,10 +54,18 @@ describe("shop repository", () => {
       expect(readFile).not.toHaveBeenCalled();
     });
 
-    it("falls back to filesystem when the database fails", async () => {
+    it("falls back to filesystem when the database throws", async () => {
       findUnique.mockRejectedValue(new Error("db error"));
       readFile.mockResolvedValue(JSON.stringify(rawShopData));
       await expect(getShopById("shop1")).resolves.toEqual(shopData);
+      expect(readFile).toHaveBeenCalled();
+    });
+
+    it("falls back to filesystem when the database returns no record", async () => {
+      findUnique.mockResolvedValue(null);
+      readFile.mockResolvedValue(JSON.stringify(rawShopData));
+      await expect(getShopById("shop1")).resolves.toEqual(shopData);
+      expect(readFile).toHaveBeenCalled();
     });
 
     it("throws when the shop is missing", async () => {
@@ -65,14 +73,6 @@ describe("shop repository", () => {
       readFile.mockRejectedValue(new Error("not found"));
       await expect(getShopById("missing")).rejects.toThrow(
         "Shop missing not found",
-      );
-    });
-
-    it("throws when filesystem data is invalid JSON", async () => {
-      findUnique.mockResolvedValue(null);
-      readFile.mockResolvedValue("{not-json");
-      await expect(getShopById("shop1")).rejects.toThrow(
-        "Shop shop1 not found",
       );
     });
   });

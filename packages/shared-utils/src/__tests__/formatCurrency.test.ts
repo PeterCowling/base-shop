@@ -21,7 +21,7 @@ describe("formatCurrency", () => {
     );
   });
 
-  it.each(["BAD", "US", ""]) (
+  it.each(["BAD", "US", "", "usd"]) (
     "throws RangeError for invalid currency %s",
     (currency) => {
       expect(() => formatCurrency(100, currency as any)).toThrow(RangeError);
@@ -65,13 +65,8 @@ describe("formatCurrency", () => {
     }
   );
 
-  it("formats lowercase currency codes", () => {
-    const amount = 100; // $1.00
-    const expected = new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency: "USD",
-    }).format(1);
-    expect(formatCurrency(amount, "usd")).toBe(expected);
+  it("throws RangeError for lowercase currency codes", () => {
+    expect(() => formatCurrency(100, "usd" as any)).toThrow(RangeError);
   });
 
   it("throws RangeError for invalid currency pattern", () => {

@@ -59,6 +59,23 @@ describe("MemoryCartStore", () => {
         [`${sku.id}:${size}`]: { sku, size, qty: 3 },
       });
     });
+
+    it("creates new cart when previous one expired", async () => {
+      jest.setSystemTime(0);
+      const store = new MemoryCartStore(1);
+      await store.incrementQty("cart", sku, 1);
+      jest.setSystemTime(2000);
+      await store.incrementQty("cart", sku, 1);
+      expect(await store.getCart("cart")).toEqual({
+        [sku.id!]: { sku, qty: 1 },
+      });
+      jest.setSystemTime(2500);
+      expect(await store.getCart("cart")).toEqual({
+        [sku.id!]: { sku, qty: 1 },
+      });
+      jest.setSystemTime(3500);
+      expect(await store.getCart("cart")).toEqual({});
+    });
   });
 
   describe("setQty", () => {

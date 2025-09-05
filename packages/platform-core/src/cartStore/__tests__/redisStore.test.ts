@@ -78,6 +78,8 @@ describe("RedisCartStore", () => {
 
     const id = await store.createCart();
     expect(typeof id).toBe("string");
+    expect(redis.hset).toHaveBeenCalledTimes(1);
+    expect(redis.hset).toHaveBeenLastCalledWith(id, {});
     expect(redis.expire).toHaveBeenCalledTimes(1);
     expect(redis.expire).toHaveBeenLastCalledWith(id, ttl);
     expect(await store.getCart(id)).toEqual({});
@@ -263,12 +265,18 @@ describe("RedisCartStore", () => {
   });
 
   it("delegates to fallback store when Redis fails repeatedly", async () => {
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     const redis = new MockRedis(MAX_REDIS_FAILURES);
     const fallback = new MemoryCartStore(60);
     const store = new RedisCartStore(redis as any, 60, fallback);
 
     const id = await store.createCart();
     await store.incrementQty(id, sku, 2); // trigger fallback
+    expect(errorSpy).toHaveBeenCalledWith(
+      "Falling back to MemoryCartStore after repeated Redis failures",
+    );
 
     const spies = {
       createCart: jest.spyOn(fallback, "createCart"),
@@ -311,6 +319,8 @@ describe("RedisCartStore", () => {
     expect(redis.hdel).not.toHaveBeenCalled();
     expect(redis.hincrby).not.toHaveBeenCalled();
     expect(redis.hexists).not.toHaveBeenCalled();
+
+    errorSpy.mockRestore();
   });
 });
 

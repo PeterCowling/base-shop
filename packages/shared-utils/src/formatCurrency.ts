@@ -16,9 +16,11 @@ export function formatCurrency(
     throw new RangeError(`Invalid currency code: ${currency}`);
   }
 
-  const supported = (Intl as any).supportedValuesOf?.("currency") as
-    | string[]
-    | undefined;
+  const supported = (
+    Intl as typeof Intl & {
+      supportedValuesOf?(category: "currency"): string[];
+    }
+  ).supportedValuesOf?.("currency");
   if (supported && !supported.includes(currency)) {
     throw new RangeError(`Invalid currency code: ${currency}`);
   }

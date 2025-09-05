@@ -54,8 +54,10 @@ describe("calculateRentalDays", () => {
     expect(calculateRentalDays("2025-01-03")).toBe(2);
   });
 
-  test("floors past dates to one day", () => {
-    expect(calculateRentalDays("2024-12-31")).toBe(1);
+  test("throws when return date is before today", () => {
+    expect(() => calculateRentalDays("2024-12-31")).toThrow(
+      "returnDate must be in the future",
+    );
   });
 
   test("defaults to one day when returnDate is missing", () => {
@@ -78,6 +80,14 @@ describe("isoDateInNDays", () => {
 
   test("returns ISO date string N days ahead", () => {
     expect(isoDateInNDays(7)).toBe("2025-01-08");
+  });
+
+  test("returns today's date when N is zero", () => {
+    expect(isoDateInNDays(0)).toBe("2025-01-01");
+  });
+
+  test("handles negative offsets", () => {
+    expect(isoDateInNDays(-1)).toBe("2024-12-31");
   });
 });
 
@@ -126,6 +136,17 @@ describe("parseTargetDate", () => {
   test("returns null for invalid timezone", () => {
     expect(parseTargetDate("2025-01-01T00:00:00", "Not/A_Zone")).toBeNull();
   });
+
+  test('parses "today" and "tomorrow" keywords', () => {
+    jest.useFakeTimers().setSystemTime(new Date("2025-06-15T10:00:00Z"));
+    expect(parseTargetDate("today")?.toISOString()).toBe(
+      "2025-06-15T00:00:00.000Z",
+    );
+    expect(parseTargetDate("tomorrow")?.toISOString()).toBe(
+      "2025-06-16T00:00:00.000Z",
+    );
+    jest.useRealTimers();
+  });
 });
 
 describe("getTimeRemaining", () => {
@@ -154,14 +175,14 @@ describe("getTimeRemaining", () => {
     expect(getTimeRemaining(target)).toBe(24 * 3600 * 1000);
   });
 
-  test("returns negative ms for past date", () => {
+  test("returns zero for past dates", () => {
     const target = new Date("2024-12-31T23:59:59Z");
-    expect(getTimeRemaining(target)).toBe(-1000);
+    expect(getTimeRemaining(target)).toBe(0);
   });
 
-  test("returns negative ms when target is more than a day in the past", () => {
+  test("returns zero when target is more than a day in the past", () => {
     const target = new Date("2024-12-30T00:00:00Z");
-    expect(getTimeRemaining(target)).toBe(-2 * 24 * 3600 * 1000);
+    expect(getTimeRemaining(target)).toBe(0);
   });
 
   test("returns zero for identical times", () => {

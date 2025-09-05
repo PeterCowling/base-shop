@@ -46,8 +46,10 @@ describe('calculateRentalDays', () => {
   it('computes days for future return dates', () => {
     expect(calculateRentalDays('2025-01-03')).toBe(2);
   });
-  it('returns 1 for past return dates', () => {
-    expect(calculateRentalDays('2024-12-31')).toBe(1);
+  it('throws for past return dates', () => {
+    expect(() => calculateRentalDays('2024-12-31')).toThrow(
+      'returnDate must be in the future',
+    );
   });
   it('throws on invalid date strings', () => {
     expect(() => calculateRentalDays('invalid')).toThrow('Invalid returnDate');

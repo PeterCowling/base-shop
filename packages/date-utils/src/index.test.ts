@@ -20,8 +20,10 @@ describe("calculateRentalDays", () => {
   it("handles future return dates", () => {
     expect(calculateRentalDays("2025-01-04")).toBe(3);
   });
-  it("floors past return dates to 1", () => {
-    expect(calculateRentalDays("2024-12-25")).toBe(1);
+  it("throws for past return dates", () => {
+    expect(() => calculateRentalDays("2024-12-25")).toThrow(
+      "returnDate must be in the future",
+    );
   });
   it("defaults to 1 when return date missing", () => {
     expect(calculateRentalDays()).toBe(1);
@@ -83,10 +85,10 @@ describe("parseTargetDate", () => {
   it("returns null for invalid timezones", () => {
     expect(parseTargetDate("2025-01-01T00:00:00", "Invalid/Zone")).toBeNull();
   });
-  it("parses past dates resulting in negative deltas", () => {
+  it("clamps past dates to zero", () => {
     const target = parseTargetDate("2024-12-31T23:00:00Z")!;
     const now = new Date("2025-01-01T00:00:00Z");
-    expect(getTimeRemaining(target, now)).toBeLessThan(0);
+    expect(getTimeRemaining(target, now)).toBe(0);
   });
 });
 
@@ -101,9 +103,9 @@ describe("getTimeRemaining", () => {
     const target = new Date("2025-01-01T00:00:10Z");
     expect(getTimeRemaining(target)).toBe(10000);
   });
-  it("returns negative milliseconds for past target", () => {
+  it("returns zero for past targets", () => {
     const target = new Date("2024-12-31T23:59:50Z");
-    expect(getTimeRemaining(target)).toBe(-10000);
+    expect(getTimeRemaining(target)).toBe(0);
   });
   it("returns zero when target equals now", () => {
     const target = new Date("2025-01-01T00:00:00Z");

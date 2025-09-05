@@ -11,14 +11,20 @@ describe("emailService", () => {
     expect(() => getEmailService()).toThrow("EmailService not registered");
   });
 
-  it("resolves when the stub sendEmail succeeds", async () => {
+  it("returns the registered service and sends emails", async () => {
     const { setEmailService, getEmailService } = await import("../emailService");
     const stub: EmailService = { sendEmail: jest.fn().mockResolvedValue(undefined) };
     setEmailService(stub);
+    const svc = getEmailService();
+    expect(svc).toBe(stub);
     await expect(
-      getEmailService().sendEmail("to@example.com", "subject", "body"),
+      svc.sendEmail("to@example.com", "subject", "body"),
     ).resolves.toBeUndefined();
-    expect(stub.sendEmail).toHaveBeenCalledWith("to@example.com", "subject", "body");
+    expect(stub.sendEmail).toHaveBeenCalledWith(
+      "to@example.com",
+      "subject",
+      "body",
+    );
   });
 
   it("propagates rejection when the stub sendEmail rejects", async () => {

@@ -31,6 +31,15 @@ describe('email hooks analytics', () => {
     });
   });
 
+  test('tracking click event', async () => {
+    const { emitClick } = await import('../src/hooks');
+    await emitClick('shop4', { campaign: 'camp4' });
+    expect(trackEvent).toHaveBeenCalledWith('shop4', {
+      type: 'email_click',
+      campaign: 'camp4',
+    });
+  });
+
   test('unsupported event name path', async () => {
     const { onSend, emitSend } = await import('../src/hooks');
     onSend((shop) => trackEvent(shop, { type: 'email_unknown' } as any));

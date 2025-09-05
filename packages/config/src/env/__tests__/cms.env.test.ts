@@ -78,13 +78,20 @@ describe("cms sanity env", () => {
   it("parses CMS_DRAFTS_DISABLED_PATHS and CMS_SEARCH_DISABLED_PATHS", async () => {
     process.env = {
       ...baseEnv,
-      CMS_DRAFTS_DISABLED_PATHS: "/foo, /bar , ,/baz ",
-      CMS_SEARCH_DISABLED_PATHS: "/one ,/two, /three ",
+      CMS_DRAFTS_DISABLED_PATHS: "page1, page2 ,",
+      CMS_SEARCH_DISABLED_PATHS: "page3, page4 , ",
     };
     jest.resetModules();
     const { cmsEnv } = await import("../cms.ts");
-    expect(cmsEnv.CMS_DRAFTS_DISABLED_PATHS).toEqual(["/foo", "/bar", "/baz"]);
-    expect(cmsEnv.CMS_SEARCH_DISABLED_PATHS).toEqual(["/one", "/two", "/three"]);
+    expect(cmsEnv.CMS_DRAFTS_DISABLED_PATHS).toEqual(["page1", "page2"]);
+    expect(cmsEnv.CMS_SEARCH_DISABLED_PATHS).toEqual(["page3", "page4"]);
+  });
+
+  it("coerces CMS_PAGINATION_LIMIT to number", async () => {
+    process.env = { ...baseEnv, CMS_PAGINATION_LIMIT: "25" };
+    jest.resetModules();
+    const { cmsEnv } = await import("../cms.ts");
+    expect(cmsEnv.CMS_PAGINATION_LIMIT).toBe(25);
   });
 
   it("defaults optional env vars when missing", async () => {
@@ -124,6 +131,38 @@ describe("cms sanity env", () => {
       "❌ Invalid CMS environment variables:",
       expect.objectContaining({
         CMS_BASE_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws when CMS_SPACE_URL is invalid", async () => {
+    process.env = { ...baseEnv, CMS_SPACE_URL: "not-a-url" };
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../cms.ts")).rejects.toThrow(
+      "Invalid CMS environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid CMS environment variables:",
+      expect.objectContaining({
+        CMS_SPACE_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws when CMS_ACCESS_TOKEN is empty", async () => {
+    process.env = { ...baseEnv, CMS_ACCESS_TOKEN: "" };
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../cms.ts")).rejects.toThrow(
+      "Invalid CMS environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid CMS environment variables:",
+      expect.objectContaining({
+        CMS_ACCESS_TOKEN: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();

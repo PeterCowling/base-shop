@@ -57,5 +57,24 @@ describe("FilterBar", () => {
     expect((select as HTMLSelectElement).value).toBe("");
     expect((price as HTMLInputElement).value).toBe("");
   });
+
+  it("syncs with external value updates", async () => {
+    const defs: FilterDefinition[] = [
+      { name: "size", label: "Size", type: "select", options: ["39", "40"] },
+    ];
+    const { rerender } = render(
+      <FilterBar definitions={defs} values={{ size: "39" }} onChange={() => {}} />
+    );
+    const select = screen.getByLabelText(/Size/);
+    expect((select as HTMLSelectElement).value).toBe("39");
+
+    rerender(
+      <FilterBar definitions={defs} values={{ size: "40" }} onChange={() => {}} />
+    );
+
+    await waitFor(() => {
+      expect((select as HTMLSelectElement).value).toBe("40");
+    });
+  });
 });
 

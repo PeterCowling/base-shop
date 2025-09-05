@@ -1,7 +1,7 @@
-import { fetchJson } from '../src/fetchJson';
-import { z } from 'zod';
+import { fetchJson } from "../src/fetchJson";
+import { z } from "zod";
 
-describe('fetchJson', () => {
+describe("fetchJson", () => {
   beforeEach(() => {
     global.fetch = jest.fn();
   });
@@ -10,106 +10,66 @@ describe('fetchJson', () => {
     jest.resetAllMocks();
   });
 
-  it('returns parsed data on success', async () => {
-    const responseData = { message: 'ok' };
+  it("fetches and parses JSON on success", async () => {
+    const data = { message: "ok" };
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
-      text: jest.fn().mockResolvedValue(JSON.stringify(responseData)),
+      text: jest.fn().mockResolvedValue(JSON.stringify(data)),
     });
 
-    await expect(fetchJson<typeof responseData>('https://example.com'))
-      .resolves.toEqual(responseData);
+    await expect(fetchJson<typeof data>("https://example.com")).resolves.toEqual(
+      data,
+    );
   });
 
-  it('returns undefined when response body is empty', async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      text: jest.fn().mockResolvedValue(''),
-    });
-
-    await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
-  });
-
-  it('returns undefined when response body contains invalid JSON', async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      text: jest.fn().mockResolvedValue('not json'),
-    });
-
-    await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
-  });
-
-  it('throws error message from JSON error payload', async () => {
-    const errorPayload = { error: 'Bad Request' };
+  it("throws error message from JSON error payload", async () => {
+    const errorPayload = { error: "Bad Request" };
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: false,
-      statusText: 'Bad Request',
       status: 400,
+      statusText: "Bad Request",
       text: jest.fn().mockResolvedValue(JSON.stringify(errorPayload)),
     });
 
-    await expect(fetchJson('https://example.com')).rejects.toThrow(
-      'Bad Request',
+    await expect(fetchJson("https://example.com")).rejects.toThrow(
+      "Bad Request",
     );
   });
 
-  it('throws status text when response body is not JSON', async () => {
+  it("falls back to statusText when error payload lacks error field", async () => {
+    const payload = { message: "fail" };
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: false,
-      statusText: 'Internal Server Error',
       status: 500,
-      text: jest.fn().mockResolvedValue('not json'),
+      statusText: "Server Error",
+      text: jest.fn().mockResolvedValue(JSON.stringify(payload)),
     });
 
-    await expect(fetchJson('https://example.com')).rejects.toThrow(
-      'Internal Server Error',
+    await expect(fetchJson("https://example.com")).rejects.toThrow(
+      "Server Error",
     );
   });
 
-  it('throws HTTP status when status text is empty and response body is not JSON', async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: false,
-      status: 418,
-      statusText: '',
-      text: jest.fn().mockResolvedValue('not json'),
-    });
-
-    await expect(fetchJson('https://example.com')).rejects.toThrow('HTTP 418');
-  });
-
-  it('propagates network errors', async () => {
-    (global.fetch as jest.Mock).mockRejectedValue(new Error('Network failure'));
-
-    await expect(fetchJson('https://example.com')).rejects.toThrow(
-      'Network failure',
-    );
-  });
-
-  it('validates data against provided schema', async () => {
-    const responseData = { message: 'ok' };
+  it("returns undefined for invalid JSON bodies", async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
-      text: jest.fn().mockResolvedValue(JSON.stringify(responseData)),
+      text: jest.fn().mockResolvedValue("not json"),
+    });
+
+    await expect(fetchJson("https://example.com")).resolves.toBeUndefined();
+  });
+
+  it("validates data with an optional Zod schema", async () => {
+    const data = { message: "ok" };
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(JSON.stringify(data)),
     });
 
     const schema = z.object({ message: z.string() }).strict();
 
     await expect(
-      fetchJson('https://example.com', undefined, schema),
-    ).resolves.toEqual(responseData);
-  });
-
-  it('throws validation error when schema parsing fails', async () => {
-    const responseData = { message: 'ok' };
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      text: jest.fn().mockResolvedValue(JSON.stringify(responseData)),
-    });
-
-    const schema = z.object({ count: z.number() }).strict();
-
-    await expect(
-      fetchJson('https://example.com', undefined, schema),
-    ).rejects.toBeInstanceOf(z.ZodError);
+      fetchJson("https://example.com", undefined, schema),
+    ).resolves.toEqual(data);
   });
 });

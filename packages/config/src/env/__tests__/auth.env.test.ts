@@ -113,6 +113,12 @@ describe("auth env session configuration", () => {
 describe("authEnvSchema validation", () => {
   const baseEnv = { NEXTAUTH_SECRET: NEXT_SECRET, SESSION_SECRET };
 
+  it("accepts minimal valid environment", async () => {
+    const { authEnvSchema } = await import("../auth");
+    const result = authEnvSchema.safeParse(baseEnv);
+    expect(result.success).toBe(true);
+  });
+
   it("requires redis url when SESSION_STORE=redis", async () => {
     const { authEnvSchema } = await import("../auth");
     const result = authEnvSchema.safeParse({
@@ -269,44 +275,61 @@ describe("authEnvSchema validation", () => {
 });
 
 describe("AUTH_TOKEN_TTL normalization", () => {
-  it("normalizes plain numbers", async () => {
-    const { authEnv } = await withEnv(
-      {
-        NODE_ENV: "production",
-        NEXTAUTH_SECRET: NEXT_SECRET,
-        SESSION_SECRET,
-        AUTH_TOKEN_TTL: "60",
+  const baseVars = {
+    NODE_ENV: "production",
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET,
+  };
+
+  it("removes blank AUTH_TOKEN_TTL", async () => {
+    await withEnv(
+      { ...baseVars, AUTH_TOKEN_TTL: "" },
+      async () => {
+        await import("../auth");
+        expect(process.env.AUTH_TOKEN_TTL).toBeUndefined();
       },
-      () => import("../auth"),
     );
-    expect(authEnv.AUTH_TOKEN_TTL).toBe(60);
   });
 
-  it("normalizes numbers with units", async () => {
-    const { authEnv } = await withEnv(
-      {
-        NODE_ENV: "production",
-        NEXTAUTH_SECRET: NEXT_SECRET,
-        SESSION_SECRET,
-        AUTH_TOKEN_TTL: "2m",
+  it("appends seconds to numeric AUTH_TOKEN_TTL", async () => {
+    await withEnv(
+      { ...baseVars, AUTH_TOKEN_TTL: "60" },
+      async () => {
+        await import("../auth");
+        expect(process.env.AUTH_TOKEN_TTL).toBe("60s");
       },
-      () => import("../auth"),
     );
-    expect(authEnv.AUTH_TOKEN_TTL).toBe(120);
   });
 
-  it("defaults when AUTH_TOKEN_TTL is blank", async () => {
-    const { authEnv } = await withEnv(
-      {
-        NODE_ENV: "production",
-        NEXTAUTH_SECRET: NEXT_SECRET,
-        SESSION_SECRET,
-        AUTH_TOKEN_TTL: "  ",
+  it.each([
+    ["15m", "15m"],
+    ["30 s", "30s"],
+  ])("normalizes unit string '%s' to '%s'", async (input, output) => {
+    await withEnv(
+      { ...baseVars, AUTH_TOKEN_TTL: input },
+      async () => {
+        await import("../auth");
+        expect(process.env.AUTH_TOKEN_TTL).toBe(output);
       },
-      () => import("../auth"),
     );
-    expect(authEnv.AUTH_TOKEN_TTL).toBe(900);
   });
 });
 
+describe("authEnv expiry", () => {
+  it("sets AUTH_TOKEN_EXPIRES_AT based on AUTH_TOKEN_TTL", async () => {
+    const start = Date.now();
+    const { authEnv } = await withEnv(
+      {
+        NODE_ENV: "production",
+        NEXTAUTH_SECRET: NEXT_SECRET,
+        SESSION_SECRET,
+        AUTH_TOKEN_TTL: "1s",
+      },
+      () => import("../auth"),
+    );
+    const diff = authEnv.AUTH_TOKEN_EXPIRES_AT.getTime() - start;
+    expect(diff).toBeGreaterThanOrEqual(1000);
+    expect(diff).toBeLessThan(2000);
+  });
+});
 

@@ -71,7 +71,8 @@ describe("MediaManager", () => {
     await waitFor(() =>
       expect(onDelete).toHaveBeenCalledWith("shop", "old.mp4")
     );
-    await waitForElementToBeRemoved(deleteButton);
+    // Use a live query so the assertion tracks DOM updates reliably.
+    await waitForElementToBeRemoved(() => queryByText("Delete"));
   });
 
   it("displays error message when upload fails", async () => {

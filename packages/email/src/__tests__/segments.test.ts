@@ -60,6 +60,13 @@ describe("readSegments", () => {
     await expect(readSegments("shop1")).resolves.toEqual([]);
   });
 
+  it("returns empty array when file is missing", async () => {
+    const err = Object.assign(new Error("missing"), { code: "ENOENT" });
+    mockReadFile.mockRejectedValue(err);
+    const { readSegments } = await import("../segments");
+    await expect(readSegments("shop1")).resolves.toEqual([]);
+  });
+
   it("returns empty array when readFile fails", async () => {
     mockReadFile.mockRejectedValue(new Error("fail"));
     const { readSegments } = await import("../segments");
@@ -202,6 +209,7 @@ describe("resolveSegment caching", () => {
   });
 
   it("invalidates cache when analytics events change", async () => {
+    jest.useFakeTimers();
     process.env.SEGMENT_CACHE_TTL = "1000";
     mockReadFile.mockResolvedValue(
       JSON.stringify([{ id: "vips", filters: [] }])
@@ -216,6 +224,7 @@ describe("resolveSegment caching", () => {
     const { resolveSegment } = await import("../segments");
 
     const r1 = await resolveSegment("shop1", "vips");
+    jest.advanceTimersByTime(500);
     const r2 = await resolveSegment("shop1", "vips");
 
     expect(r1).toEqual(["a@example.com"]);

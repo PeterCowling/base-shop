@@ -5,6 +5,11 @@ import { createCustomerSession, validateCsrfToken } from "@auth";
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
+import { RateLimiterMemory } from "rate-limiter-flexible";
+
+export const runtime = "nodejs";
+
+const limiter = new RateLimiterMemory({ points: 5, duration: 60 });
 
 // Mock customer store. In a real application this would be a database or external identity provider.
 const CUSTOMER_STORE: Record<string, { password: string; role: Role }> = {
@@ -35,6 +40,15 @@ async function validateCredentials(
 }
 
 export async function POST(req: Request) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  if (process.env.NODE_ENV !== "test") {
+    try {
+      await limiter.consume(ip);
+    } catch {
+      return NextResponse.json({ error: "Too Many Requests" }, { status: 429 });
+    }
+  }
+
   const parsed = await parseJsonBody<LoginInput>(req, LoginSchema, "1mb");
   if (parsed.success === false) {
     return parsed.response;

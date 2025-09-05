@@ -41,6 +41,7 @@ export default [
       "**/*.test.{ts,tsx,js,jsx}",
       "**/*.spec.{ts,tsx,js,jsx}",
       "packages/config/jest.preset.cjs",
+      "packages/platform-machine/src/releaseDepositsService.ts",
     ],
   },
   {

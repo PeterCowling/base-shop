@@ -18,21 +18,23 @@ import {
   reverseLogisticsEvents,
 } from "../reverseLogisticsEvents.server";
 
-describe("reverse logistics events repository", () => {
-  const create = prisma.reverseLogisticsEvent.create as jest.Mock;
-  const findMany = prisma.reverseLogisticsEvent.findMany as jest.Mock;
-  const nowIsoMock = nowIso as jest.Mock;
+const create = prisma.reverseLogisticsEvent.create as jest.Mock;
+const findMany = prisma.reverseLogisticsEvent.findMany as jest.Mock;
+const nowIsoMock = nowIso as jest.Mock;
 
-  beforeEach(() => {
-    create.mockReset();
-    findMany.mockReset();
-    nowIsoMock.mockClear();
-  });
+beforeEach(() => {
+  create.mockReset();
+  findMany.mockReset();
+  nowIsoMock.mockReset();
+});
 
+describe("recordEvent", () => {
   it("records event with provided createdAt", async () => {
-    await recordEvent("shop1", "session1", "received", "time");
+    create.mockResolvedValue({});
+    await expect(
+      recordEvent("shop1", "session1", "received", "time")
+    ).resolves.toBeUndefined();
     expect(nowIsoMock).not.toHaveBeenCalled();
-    expect(create).toHaveBeenCalledTimes(1);
     expect(create).toHaveBeenCalledWith({
       data: {
         shop: "shop1",
@@ -45,9 +47,9 @@ describe("reverse logistics events repository", () => {
 
   it("records event with default createdAt", async () => {
     nowIsoMock.mockReturnValue("mocked");
+    create.mockResolvedValue({});
     await recordEvent("shop1", "session1", "qa");
     expect(nowIsoMock).toHaveBeenCalledTimes(1);
-    expect(create).toHaveBeenCalledTimes(1);
     expect(create).toHaveBeenCalledWith({
       data: {
         shop: "shop1",
@@ -58,15 +60,18 @@ describe("reverse logistics events repository", () => {
     });
   });
 
+  it("throws when create fails", async () => {
+    const error = new Error("boom");
+    create.mockRejectedValue(error);
+    await expect(
+      recordEvent("shop1", "session1", "received", "time")
+    ).rejects.toThrow(error);
+  });
+});
+
+describe("listEvents", () => {
   it("returns events ordered by createdAt", async () => {
-    const unsortedEvents = [
-      {
-        id: "2",
-        shop: "demo",
-        sessionId: "b",
-        event: "qa",
-        createdAt: "2023-01-02",
-      },
+    const events = [
       {
         id: "1",
         shop: "demo",
@@ -74,28 +79,31 @@ describe("reverse logistics events repository", () => {
         event: "received",
         createdAt: "2023-01-01",
       },
+      {
+        id: "2",
+        shop: "demo",
+        sessionId: "b",
+        event: "qa",
+        createdAt: "2023-01-02",
+      },
     ];
-    const sortedEvents = [...unsortedEvents].sort((a, b) =>
-      a.createdAt.localeCompare(b.createdAt)
-    );
-    findMany.mockResolvedValue(sortedEvents);
+    findMany.mockResolvedValue(events);
 
-    const result = await listEvents("demo");
-
+    await expect(listEvents("demo")).resolves.toEqual(events);
     expect(findMany).toHaveBeenCalledWith({
       where: { shop: "demo" },
       orderBy: { createdAt: "asc" },
     });
-    expect(result).toEqual(sortedEvents);
+  });
+
+  it("throws when findMany fails", async () => {
+    const error = new Error("boom");
+    findMany.mockRejectedValue(error);
+    await expect(listEvents("demo")).rejects.toThrow(error);
   });
 });
 
 describe("reverse logistics event helpers", () => {
-  const create = prisma.reverseLogisticsEvent.create as jest.Mock;
-
-  beforeEach(() => {
-    create.mockClear();
-  });
 
   it.each([
     ["received", reverseLogisticsEvents.received],

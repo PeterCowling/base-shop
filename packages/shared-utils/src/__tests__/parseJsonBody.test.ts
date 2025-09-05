@@ -1,4 +1,4 @@
-import { parseJsonBody } from '../parseJsonBody';
+import { parseJsonBody, parseLimit } from '../parseJsonBody';
 import { z } from 'zod';
 
 describe('parseJsonBody', () => {
@@ -70,5 +70,39 @@ describe('parseJsonBody', () => {
       success: true,
       data: { foo: 'bar' },
     });
+  });
+
+  it('returns 413 when text body exceeds limit', async () => {
+    const largeBody = '{"foo":"' + 'a'.repeat(20) + '"}';
+    const req = {
+      headers: new Headers({ 'content-type': 'application/json' }),
+      text: jest.fn().mockResolvedValue(largeBody),
+    } as unknown as Request;
+
+    const result = await parseJsonBody(req, schema, '10b');
+
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(413);
+    await expect(result.response.json()).resolves.toEqual({ error: 'Payload Too Large' });
+  });
+
+  it('returns 400 when no body parser is available', async () => {
+    const req = {
+      headers: new Headers({ 'content-type': 'application/json' }),
+    } as unknown as Request;
+
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const result = await parseJsonBody(req, schema, '10kb');
+    consoleSpy.mockRestore();
+
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
+  });
+});
+
+describe('parseLimit', () => {
+  it('throws on invalid limit string', () => {
+    expect(() => parseLimit('invalid')).toThrow('Invalid limit');
   });
 });

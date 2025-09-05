@@ -11,6 +11,15 @@ describe("formatCurrency", () => {
     );
   });
 
+  it("falls back to USD when currency is undefined", () => {
+    const expected = new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: "USD",
+    }).format(1);
+    // explicitly pass undefined to exercise default parameter
+    expect(formatCurrency(100, undefined as unknown as string)).toBe(expected);
+  });
+
   it("formats using provided currency code", () => {
     const amount = 12345; // $123.45
     expect(formatCurrency(amount, "EUR", "de-DE")).toBe(

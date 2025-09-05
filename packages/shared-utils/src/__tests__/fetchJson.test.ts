@@ -101,6 +101,16 @@ describe('fetchJson', () => {
     await expect(fetchJson('https://example.com')).rejects.toThrow('HTTP 500');
   });
 
+  it('falls back to HTTP status when statusText is undefined', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: false,
+      status: 404,
+      text: jest.fn().mockResolvedValue(''),
+    });
+
+    await expect(fetchJson('https://example.com')).rejects.toThrow('HTTP 404');
+  });
+
   it('defaults to GET when no init is provided', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,

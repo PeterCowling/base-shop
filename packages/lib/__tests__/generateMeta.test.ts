@@ -199,6 +199,105 @@ describe('generateMeta', () => {
     });
   });
 
+  it('detects OpenAI constructor from named export', async () => {
+    const responsesCreateMock = jest.fn().mockResolvedValue({
+      output: [
+        {
+          content: [
+            JSON.stringify({
+              title: 'LLM Title',
+              description: 'LLM Desc',
+              alt: 'LLM Alt',
+            }),
+          ],
+        },
+      ],
+    });
+    const imagesGenerateMock = jest.fn().mockResolvedValue({
+      data: [{ b64_json: Buffer.from('img').toString('base64') }],
+    });
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock('@acme/config/env/core', () => ({ coreEnv: { OPENAI_API_KEY: 'key' } }));
+      jest.doMock('fs', () => ({ promises: { writeFile: jest.fn(), mkdir: jest.fn() } }));
+      const OpenAI = jest.fn().mockImplementation(() => ({
+        responses: { create: responsesCreateMock },
+        images: { generate: imagesGenerateMock },
+      }));
+      jest.doMock('openai', () => ({ __esModule: true, OpenAI }), { virtual: true });
+      const { generateMeta } = await import('../src/generateMeta');
+      result = await generateMeta(product);
+    });
+    expect(responsesCreateMock).toHaveBeenCalled();
+    expect(imagesGenerateMock).toHaveBeenCalled();
+    expect(result).toEqual({
+      title: 'LLM Title',
+      description: 'LLM Desc',
+      alt: 'LLM Alt',
+      image: '/og/123.png',
+    });
+  });
+
+  it('detects OpenAI constructor from nested default', async () => {
+    const responsesCreateMock = jest.fn().mockResolvedValue({
+      output: [
+        {
+          content: [
+            JSON.stringify({
+              title: 'LLM Title',
+              description: 'LLM Desc',
+              alt: 'LLM Alt',
+            }),
+          ],
+        },
+      ],
+    });
+    const imagesGenerateMock = jest.fn().mockResolvedValue({
+      data: [{ b64_json: Buffer.from('img').toString('base64') }],
+    });
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock('@acme/config/env/core', () => ({ coreEnv: { OPENAI_API_KEY: 'key' } }));
+      jest.doMock('fs', () => ({ promises: { writeFile: jest.fn(), mkdir: jest.fn() } }));
+      const OpenAI = jest.fn().mockImplementation(() => ({
+        responses: { create: responsesCreateMock },
+        images: { generate: imagesGenerateMock },
+      }));
+      jest.doMock(
+        'openai',
+        () => ({ __esModule: true, default: { default: OpenAI } }),
+        { virtual: true },
+      );
+      const { generateMeta } = await import('../src/generateMeta');
+      result = await generateMeta(product);
+    });
+    expect(responsesCreateMock).toHaveBeenCalled();
+    expect(imagesGenerateMock).toHaveBeenCalled();
+    expect(result).toEqual({
+      title: 'LLM Title',
+      description: 'LLM Desc',
+      alt: 'LLM Alt',
+      image: '/og/123.png',
+    });
+  });
+
+  it('falls back when OpenAI constructor missing', async () => {
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock('@acme/config/env/core', () => ({ coreEnv: { OPENAI_API_KEY: 'key' } }));
+      jest.doMock('fs', () => ({ promises: { writeFile: jest.fn(), mkdir: jest.fn() } }));
+      jest.doMock('openai', () => ({ __esModule: true }), { virtual: true });
+      const { generateMeta } = await import('../src/generateMeta');
+      result = await generateMeta(product);
+    });
+    expect(result).toEqual({
+      title: 'Title',
+      description: 'Desc',
+      alt: 'Title',
+      image: '/og/123.png',
+    });
+  });
+
   it('ignores invalid JSON and keeps fallback metadata', async () => {
     const responsesCreateMock = jest.fn().mockResolvedValue({
       output: [{ content: [{ text: 'not json' }] }],

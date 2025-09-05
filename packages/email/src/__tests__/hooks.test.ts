@@ -1,25 +1,82 @@
-import { onOpen, onClick, emitOpen, emitClick } from "../hooks";
+import type { HookPayload } from "../hooks";
 
 jest.mock("@platform-core/analytics", () => ({
   trackEvent: jest.fn(),
 }));
 
-describe("hooks", () => {
-  it("invokes open and click listeners with shop and payload", async () => {
-    const shop = "test-shop";
-    const payload = { campaign: "spring" };
-    const openListener = jest.fn();
-    const clickListener = jest.fn();
+const shop = "test-shop";
+const payload: HookPayload = { campaign: "spring" };
 
-    onOpen(openListener);
-    onClick(clickListener);
+describe.each([
+  ["send", "onSend", "emitSend"],
+  ["open", "onOpen", "emitOpen"],
+  ["click", "onClick", "emitClick"],
+])("%s hooks", (_label, onName, emitName) => {
+  let on: (listener: any) => void;
+  let emit: (shop: string, payload: HookPayload) => Promise<void>;
 
-    await emitOpen(shop, payload);
-    await emitClick(shop, payload);
+  beforeEach(async () => {
+    jest.resetModules();
+    const analytics = await import("@platform-core/analytics");
+    (analytics.trackEvent as jest.Mock).mockClear();
+    const mod = await import("../hooks");
+    on = mod[onName as keyof typeof mod] as typeof on;
+    emit = mod[emitName as keyof typeof mod] as typeof emit;
+  });
 
-    expect(openListener).toHaveBeenCalledTimes(1);
-    expect(openListener).toHaveBeenCalledWith(shop, payload);
-    expect(clickListener).toHaveBeenCalledTimes(1);
-    expect(clickListener).toHaveBeenCalledWith(shop, payload);
+  it("runs all listeners in parallel and waits for completion", async () => {
+    const order: string[] = [];
+    const first = jest.fn(async () => {
+      order.push("a-start");
+      await new Promise((r) => setTimeout(r, 10));
+      order.push("a-end");
+    });
+    const second = jest.fn(async () => {
+      order.push("b-start");
+      await new Promise((r) => setTimeout(r, 10));
+      order.push("b-end");
+    });
+
+    on(first);
+    on(second);
+    const promise = emit(shop, payload);
+
+    expect(order).toEqual(["a-start", "b-start"]);
+    await promise;
+    expect(order.slice(2).sort()).toEqual(["a-end", "b-end"].sort());
+    expect(first).toHaveBeenCalledWith(shop, payload);
+    expect(second).toHaveBeenCalledWith(shop, payload);
+  });
+
+  it("captures listeners registered after emits", async () => {
+    const early = jest.fn();
+    const late = jest.fn();
+    on(early);
+    await emit(shop, payload);
+    on(late);
+    await emit(shop, payload);
+    expect(early).toHaveBeenCalledTimes(2);
+    expect(late).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("default analytics listeners", () => {
+  beforeEach(() => {
+    jest.resetModules();
+  });
+
+  it.each([
+    ["emitSend", "email_sent"],
+    ["emitOpen", "email_open"],
+    ["emitClick", "email_click"],
+  ])("tracks %s events", async (emitName, type) => {
+    const { trackEvent } = await import("@platform-core/analytics");
+    (trackEvent as jest.Mock).mockClear();
+
+    const { [emitName as string]: emit } = await import("../hooks");
+    await emit(shop, payload);
+
+    expect(trackEvent).toHaveBeenCalledTimes(1);
+    expect(trackEvent).toHaveBeenCalledWith(shop, { type, campaign: payload.campaign });
   });
 });

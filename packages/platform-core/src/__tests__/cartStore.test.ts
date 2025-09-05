@@ -1,5 +1,7 @@
 /** @jest-environment node */
 
+const STRONG_TOKEN = "strongtokenstrongtokenstrongtoken!!";
+
 describe("createCartStore", () => {
   afterEach(() => {
     jest.resetModules();
@@ -43,7 +45,7 @@ describe("createCartStore", () => {
     jest.doMock("@acme/config/env/core", () => ({
       loadCoreEnv: () => ({
         UPSTASH_REDIS_REST_URL: "https://example",
-        UPSTASH_REDIS_REST_TOKEN: "token",
+        UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
       }),
     }));
     jest.doMock("@upstash/redis", () => ({
@@ -55,7 +57,7 @@ describe("createCartStore", () => {
 
     expect(RedisClass).toHaveBeenCalledWith({
       url: "https://example",
-      token: "token",
+      token: STRONG_TOKEN,
     });
     expect(memoryCtor).toHaveBeenCalledWith(99);
     expect(redisCtor).toHaveBeenCalledWith(redisClient, 99, memoryStoreInstance);

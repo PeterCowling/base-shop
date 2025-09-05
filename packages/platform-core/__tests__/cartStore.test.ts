@@ -1,6 +1,8 @@
 // packages/platform-core/__tests__/cartStore.test.ts
 import { jest } from "@jest/globals";
 
+const STRONG_TOKEN = "strongtokenstrongtokenstrongtoken!!";
+
 const hsetMock = jest.fn();
 const hgetallMock = jest.fn();
 const expireMock = jest.fn();
@@ -77,7 +79,7 @@ describe("RedisCartStore", () => {
     hincrbyMock.mockClear();
     hexistsMock.mockClear();
     process.env.UPSTASH_REDIS_REST_URL = "http://localhost";
-    process.env.UPSTASH_REDIS_REST_TOKEN = "token";
+    process.env.UPSTASH_REDIS_REST_TOKEN = STRONG_TOKEN;
     process.env.CART_TTL = "1";
   });
 
@@ -127,7 +129,7 @@ describe("createCart backend selection", () => {
   it("uses redis backend when Redis env vars are provided", async () => {
     process.env.CART_TTL = "1";
     process.env.UPSTASH_REDIS_REST_URL = "http://localhost";
-    process.env.UPSTASH_REDIS_REST_TOKEN = "token";
+    process.env.UPSTASH_REDIS_REST_TOKEN = STRONG_TOKEN;
     const { createCart } = await import("../src/cartStore");
     await createCart();
     expect(RedisMock).toHaveBeenCalledTimes(1);

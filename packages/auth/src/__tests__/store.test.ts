@@ -1,5 +1,7 @@
 import { jest } from "@jest/globals";
 
+const STRONG_TOKEN = "strongtokenstrongtokenstrongtoken!!";
+
 const RedisClientMock = jest.fn();
 class RedisSessionStoreMock {}
 
@@ -35,7 +37,7 @@ afterAll(() => {
 describe("createSessionStore", () => {
   it("uses Redis when UPSTASH_REDIS_* env vars are present", async () => {
     process.env.UPSTASH_REDIS_REST_URL = "https://example";
-    process.env.UPSTASH_REDIS_REST_TOKEN = "token";
+    process.env.UPSTASH_REDIS_REST_TOKEN = STRONG_TOKEN;
 
     const { createSessionStore } = await import("../store");
 
@@ -53,7 +55,7 @@ describe("createSessionStore", () => {
 
   it("setSessionStoreFactory overrides default store", async () => {
     process.env.UPSTASH_REDIS_REST_URL = "https://example";
-    process.env.UPSTASH_REDIS_REST_TOKEN = "token";
+    process.env.UPSTASH_REDIS_REST_TOKEN = STRONG_TOKEN;
 
     const { createSessionStore, setSessionStoreFactory } = await import("../store");
     const customStore = {} as any;
@@ -65,7 +67,7 @@ describe("createSessionStore", () => {
 
   it("falls back to MemorySessionStore and logs when Redis instantiation fails", async () => {
     process.env.UPSTASH_REDIS_REST_URL = "https://example";
-    process.env.UPSTASH_REDIS_REST_TOKEN = "token";
+    process.env.UPSTASH_REDIS_REST_TOKEN = STRONG_TOKEN;
 
     const err = new Error("boom");
     RedisClientMock.mockImplementation(() => {

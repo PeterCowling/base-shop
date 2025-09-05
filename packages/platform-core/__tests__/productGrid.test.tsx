@@ -19,7 +19,7 @@ beforeEach(() => {
 });
 
 describe("ProductGrid", () => {
-  it("renders all products", () => {
+  it("renders one ProductCard per SKU", () => {
     render(
       <CurrencyProvider>
         <CartProvider>
@@ -30,20 +30,47 @@ describe("ProductGrid", () => {
     expect(screen.getAllByRole("article").length).toBe(2);
   });
 
-  it("honors explicit column count", () => {
+  it("sorts SKUs alphabetically", () => {
+    const skus = [
+      { ...PRODUCTS[2], id: "c", slug: "c", title: "C item" },
+      { ...PRODUCTS[0], id: "a", slug: "a", title: "A item" },
+      { ...PRODUCTS[1], id: "b", slug: "b", title: "B item" },
+    ];
+    render(
+      <CurrencyProvider>
+        <CartProvider>
+          <ProductGrid skus={skus} columns={3} />
+        </CartProvider>
+      </CurrencyProvider>
+    );
+    const titles = screen
+      .getAllByRole("heading")
+      .map((h) => h.textContent);
+    expect(titles).toEqual(["A item", "B item", "C item"]);
+  });
+
+  it("overrides responsive columns when explicit count provided", () => {
     render(
       <CurrencyProvider>
         <CartProvider>
           <ProductGrid
-            skus={[PRODUCTS[0], PRODUCTS[1]]}
-            columns={2}
+            skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
+            columns={4}
+            desktopItems={3}
+            tabletItems={2}
+            mobileItems={1}
             data-testid="grid"
           />
         </CartProvider>
       </CurrencyProvider>
     );
-    const grid = screen.getByTestId("grid");
-    expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(2, minmax(0, 1fr))" });
+    const grid = screen.getByTestId("grid") as HTMLElement;
+    Object.defineProperty(grid, "clientWidth", { value: 500, configurable: true });
+    act(() => resizeCb([] as any));
+    expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(4, minmax(0, 1fr))" });
+    Object.defineProperty(grid, "clientWidth", { value: 1200, configurable: true });
+    act(() => resizeCb([] as any));
+    expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(4, minmax(0, 1fr))" });
   });
 
   it("applies viewport counts at breakpoints", () => {

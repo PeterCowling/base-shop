@@ -2,11 +2,20 @@ import { z, ZodIssueCode, type ZodIssue } from "zod";
 import { applyFriendlyZodMessages, friendlyErrorMap } from "../zodErrorMap";
 
 describe("applyFriendlyZodMessages", () => {
-  test("registers the friendly error map", () => {
+  test("applies the friendly map to missing strings", () => {
     const original = z.getErrorMap();
-    expect(original).not.toBe(friendlyErrorMap);
+
+    z.setErrorMap(() => ({ message: "Default message" }));
+    const defaultMsg =
+      z.string().safeParse(undefined).error?.issues[0].message;
+
     applyFriendlyZodMessages();
-    expect(z.getErrorMap()).toBe(friendlyErrorMap);
+    const friendlyMsg =
+      z.string().safeParse(undefined).error?.issues[0].message;
+
+    expect(defaultMsg).toBe("Default message");
+    expect(friendlyMsg).toBe("Required");
+
     z.setErrorMap(original);
   });
 });
@@ -27,11 +36,11 @@ describe("friendlyErrorMap", () => {
   test("invalid_type wrong type", () => {
     const issue: ZodIssue = {
       code: ZodIssueCode.invalid_type,
-      expected: "string",
-      received: "number",
+      expected: "number",
+      received: "string",
       path: [],
     };
-    expect(friendlyErrorMap(issue, ctx).message).toBe("Expected string");
+    expect(friendlyErrorMap(issue, ctx).message).toBe("Expected number");
   });
 
   test("invalid_enum_value", () => {
@@ -47,12 +56,12 @@ describe("friendlyErrorMap", () => {
   test("too_small string", () => {
     const issue = {
       code: ZodIssueCode.too_small,
-      minimum: 3,
+      minimum: 5,
       inclusive: true,
       type: "string",
       path: [],
     } as const;
-    expect(friendlyErrorMap(issue, ctx).message).toBe("Must be at least 3 characters");
+    expect(friendlyErrorMap(issue, ctx).message).toBe("Must be at least 5 characters");
   });
 
   test("too_small array", () => {

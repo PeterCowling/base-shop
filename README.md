@@ -134,6 +134,18 @@ After running `pnpm create-shop <id>`, the CLI generates `.env` and `.env.templa
 - `SENDGRID_WEBHOOK_PUBLIC_KEY` – public key to verify SendGrid event webhook signatures
 - `RESEND_WEBHOOK_SECRET` – secret used to verify Resend webhook signatures
 
+### Sanity blog plugin variables
+
+The `cmsEnvSchema` and each app's `.env.production` file include **DO NOT REMOVE** comments with placeholder Sanity credentials:
+
+- `SANITY_PROJECT_ID`
+- `SANITY_API_VERSION`
+- `SANITY_DATASET`
+- `SANITY_API_TOKEN`
+- `SANITY_PREVIEW_SECRET`
+
+These dummy values keep the build working until a real Sanity project is configured. Replace them with production credentials, but do not remove the variables until a feature flag or conditional logic can skip the Sanity setup.
+
 SendGrid and Resend can be configured to POST event webhooks to:
 
 - `/api/marketing/email/provider-webhooks/sendgrid?shop=<SHOP_ID>`

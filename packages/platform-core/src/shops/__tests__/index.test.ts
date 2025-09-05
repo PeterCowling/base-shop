@@ -17,7 +17,7 @@ describe("validateShopName", () => {
   });
 
   it("throws for invalid names", () => {
-    for (const bad of ["bad name", "bad/name", "", " "]) {
+    for (const bad of ["bad name", "bad/name", "bad!name", "bad@name", "", " "]) {
       expect(() => validateShopName(bad)).toThrow(/Invalid shop name/);
     }
   });
@@ -28,6 +28,7 @@ describe("setSanityConfig", () => {
     const base: Shop = { other: true };
     const config: SanityBlogConfig = { projectId: "p", dataset: "d", token: "t" };
 
+    expect(getSanityConfig(base)).toBeUndefined();
     const withConfig = setSanityConfig(base, config);
     expect(withConfig).not.toBe(base);
     expect(getSanityConfig(withConfig)).toEqual(config);
@@ -45,6 +46,7 @@ describe("setEditorialBlog", () => {
     const base: Shop = { other: true };
     const editorial = { enabled: true };
 
+    expect(getEditorialBlog(base)).toBeUndefined();
     const withBlog = setEditorialBlog(base, editorial);
     expect(withBlog).not.toBe(base);
     expect(getEditorialBlog(withBlog)).toEqual(editorial);
@@ -62,6 +64,7 @@ describe("setDomain", () => {
     const base: Shop = { other: true };
     const domain: ShopDomain = { name: "shop.example.com" };
 
+    expect(getDomain(base)).toBeUndefined();
     const withDomain = setDomain(base, domain);
     expect(withDomain).not.toBe(base);
     expect(getDomain(withDomain)).toEqual(domain);

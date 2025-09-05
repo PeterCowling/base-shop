@@ -27,6 +27,10 @@ describe("resolveLocale", () => {
     expect(resolveLocale("fr" as any)).toBe("en");
     expect(resolveLocale(undefined)).toBe("en");
   });
+
+  it("falls back to 'en' for unsupported locales", () => {
+    expect(resolveLocale("jp" as any)).toBe("en");
+  });
 });
 
 describe("locale constants", () => {

@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react";
+import { render, renderHook } from "@testing-library/react";
 import type { PropsWithChildren } from "react";
 import { TranslationsProvider, useTranslations } from "../Translations";
 
@@ -67,6 +67,34 @@ describe("TranslationsProvider and useTranslations", () => {
     const second = result.current;
     expect(second("hello")).toBe("Salut");
     expect(second).not.toBe(first);
+  });
+
+  it("re-renders consumers when messages update", () => {
+    let messages: Record<string, string> = { greet: "Hallo" };
+    const Child = () => {
+      const t = useTranslations();
+      return <span>{t("greet")}</span>;
+    };
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <TranslationsProvider messages={messages}>{children}</TranslationsProvider>
+    );
+
+    const { rerender, getByText } = render(<Child />, { wrapper });
+    getByText("Hallo");
+    messages = { greet: "Salut" };
+    rerender(<Child />);
+    getByText("Salut");
+  });
+
+  it("logs a warning when a key is missing", () => {
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <TranslationsProvider messages={{}}>{children}</TranslationsProvider>
+    );
+    const { result } = renderHook(() => useTranslations(), { wrapper });
+    expect(result.current("unknown")).toBe("unknown");
+    expect(warn).toHaveBeenCalledWith("Missing translation for key: unknown");
+    warn.mockRestore();
   });
 });
 

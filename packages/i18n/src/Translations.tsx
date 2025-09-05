@@ -118,7 +118,11 @@ export function useTranslations(): (key: string) => string {
     (key: string): string => {
       // Use the nullish coalescing operator to fall back to the key itself
       // when no translation exists for a given key.
-      return messages[key] ?? key;
+      if (messages[key] === undefined) {
+        console.warn(`Missing translation for key: ${key}`);
+        return key;
+      }
+      return messages[key];
     },
     [messages]
   );

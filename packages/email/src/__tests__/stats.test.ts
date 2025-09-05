@@ -114,6 +114,21 @@ describe("mapSendGridStats", () => {
 
     expect(stats.mapSendGridStats({})).toEqual(stats.emptyStats);
   });
+
+  it("coerces non-numeric values to zero", () => {
+    const raw = {
+      delivered: "not-a-number",
+      opens: "1",
+      clicks: "NaN",
+    } as Record<string, string>;
+    expect(stats.mapSendGridStats(raw)).toEqual({
+      delivered: 0,
+      opened: 1,
+      clicked: 0,
+      unsubscribed: 0,
+      bounced: 0,
+    });
+  });
 });
 
 describe("mapResendStats", () => {
@@ -179,6 +194,21 @@ describe("mapResendStats", () => {
     });
 
     expect(stats.mapResendStats({})).toEqual(stats.emptyStats);
+  });
+
+  it("coerces non-numeric values to zero", () => {
+    const raw = {
+      delivered: "oops",
+      opened_count: "3",
+      clicked: "NaN",
+    } as Record<string, string>;
+    expect(stats.mapResendStats(raw)).toEqual({
+      delivered: 0,
+      opened: 3,
+      clicked: 0,
+      unsubscribed: 0,
+      bounced: 0,
+    });
   });
 });
 

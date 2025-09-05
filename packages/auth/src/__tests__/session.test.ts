@@ -166,6 +166,21 @@ it("getCustomerSession returns null for malformed token", async () => {
   await expect(getCustomerSession()).resolves.toBeNull();
 });
 
+it("getCustomerSession returns null when session not found", async () => {
+  const { getCustomerSession } = await import("../session");
+
+  mockCookies.get.mockReturnValue({ value: "token" });
+  unsealData.mockResolvedValue({
+    sessionId: "s1",
+    customerId: "cust",
+    role: "customer",
+  });
+  mockSessionStore.get.mockResolvedValue(null);
+
+  await expect(getCustomerSession()).resolves.toBeNull();
+  expect(mockSessionStore.get).toHaveBeenCalledWith("s1");
+});
+
 it("getCustomerSession rotates session id, updates store, and creates csrf when absent", async () => {
   const {
     getCustomerSession,
@@ -234,6 +249,30 @@ it("destroyCustomerSession removes cookies and deletes session", async () => {
     domain: "example.com",
   });
   expect(mockSessionStore.delete).toHaveBeenCalledWith("s1");
+});
+
+it("destroyCustomerSession removes cookies even when session cookie missing", async () => {
+  const {
+    destroyCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+    CSRF_TOKEN_COOKIE,
+  } = await import("../session");
+
+  mockCookies.get.mockReturnValue(undefined);
+
+  await destroyCustomerSession();
+
+  expect(mockSessionStore.delete).not.toHaveBeenCalled();
+  expect(mockCookies.delete).toHaveBeenCalledWith({
+    name: CUSTOMER_SESSION_COOKIE,
+    path: "/",
+    domain: "example.com",
+  });
+  expect(mockCookies.delete).toHaveBeenCalledWith({
+    name: CSRF_TOKEN_COOKIE,
+    path: "/",
+    domain: "example.com",
+  });
 });
 
 it("listSessions delegates to session store", async () => {

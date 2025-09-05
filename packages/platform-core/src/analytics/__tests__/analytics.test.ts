@@ -77,6 +77,7 @@ describe("analytics providers", () => {
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
     const filePath = path.join("/data", shop, "analytics.jsonl");
+    expect(fs.mkdir).toHaveBeenCalledWith(path.dirname(filePath), { recursive: true });
     expect(fs.appendFile).toHaveBeenCalledWith(filePath, expect.any(String), "utf8");
     expect(fs.__files[filePath]).toContain("\"type\":\"page_view\"");
   });
@@ -89,7 +90,30 @@ describe("analytics providers", () => {
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(fetchMock.mock.calls[0][0]).toContain("https://www.google-analytics.com/mp/collect");
+    const [url, opts] = fetchMock.mock.calls[0];
+    expect(url).toContain("measurement_id=G-XYZ");
+    expect(url).toContain("api_secret=secret");
+    expect(opts).toMatchObject({
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+    });
+    expect(JSON.parse(opts.body)).toEqual({
+      client_id: "555",
+      events: [{ name: "page_view", params: { page: "home" } }],
+    });
+  });
+
+  test("caches resolved providers", async () => {
+    readShop.mockResolvedValue({ analyticsEnabled: true });
+    getShopSettings.mockResolvedValue({ analytics: { provider: "console", enabled: true } });
+    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    const { trackEvent } = await import("../index");
+    await trackEvent(shop, { type: "page_view", page: "home" });
+    await trackEvent(shop, { type: "page_view", page: "about" });
+    expect(readShop).toHaveBeenCalledTimes(1);
+    expect(getShopSettings).toHaveBeenCalledTimes(1);
+    expect(logSpy).toHaveBeenCalledTimes(2);
+    logSpy.mockRestore();
   });
 });
 
@@ -116,10 +140,20 @@ describe("trackEvent behavior", () => {
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
     await trackEvent(shop, { type: "order", orderId: "o1", amount: 5 });
+    await trackEvent(shop, { type: "discount_redeemed", code: "SAVE" });
     const aggPath = path.join("/data", shop, "analytics-aggregates.json");
-    const agg = JSON.parse(fs.__files[aggPath]);
+    let agg = JSON.parse(fs.__files[aggPath]);
     expect(agg.page_view["2024-01-01"]).toBe(1);
     expect(agg.order["2024-01-01"]).toEqual({ count: 1, amount: 5 });
+    expect(agg.discount_redeemed["2024-01-01"].SAVE).toBe(1);
+
+    await trackEvent(shop, { type: "page_view", page: "about" });
+    await trackEvent(shop, { type: "order", orderId: "o2", amount: 3 });
+    await trackEvent(shop, { type: "discount_redeemed", code: "SAVE" });
+    agg = JSON.parse(fs.__files[aggPath]);
+    expect(agg.page_view["2024-01-01"]).toBe(2);
+    expect(agg.order["2024-01-01"]).toEqual({ count: 2, amount: 8 });
+    expect(agg.discount_redeemed["2024-01-01"].SAVE).toBe(2);
   });
 
   test("handles network errors gracefully", async () => {

@@ -2,7 +2,6 @@ import {
   render,
   fireEvent,
   waitFor,
-  waitForElementToBeRemoved,
   act,
 } from "@testing-library/react";
 import MediaManager from "../MediaManager";
@@ -71,8 +70,9 @@ describe("MediaManager", () => {
     await waitFor(() =>
       expect(onDelete).toHaveBeenCalledWith("shop", "old.mp4")
     );
-    // Use a live query so the assertion tracks DOM updates reliably.
-    await waitForElementToBeRemoved(() => queryByText("Delete"));
+    await waitFor(() =>
+      expect(queryByText("Delete")).not.toBeInTheDocument()
+    );
   });
 
   it("displays error message when upload fails", async () => {

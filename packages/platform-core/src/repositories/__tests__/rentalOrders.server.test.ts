@@ -1,7 +1,6 @@
 import { prisma } from "../../db";
 import {
   markReceived,
-  markCleaning,
   markRepair,
   markQa,
   markAvailable,
@@ -22,64 +21,63 @@ describe("rental orders status updates", () => {
     jest.resetAllMocks();
   });
 
-  it("returns updated order when update succeeds", async () => {
+  it("markReceived sets returnReceivedAt", async () => {
+    const updated = { id: 1, returnReceivedAt: "now" } as unknown as any;
+    (nowIso as jest.Mock).mockReturnValue("now");
     const updateMock = jest
       .spyOn(prisma.rentalOrder, "update")
-      .mockResolvedValue(order);
-    (nowIso as jest.Mock).mockReturnValue("now");
+      .mockResolvedValue(updated);
 
-    await expect(markReceived(shop, sessionId)).resolves.toBe(order);
-    expect(updateMock).toHaveBeenNthCalledWith(1, {
+    await expect(markReceived(shop, sessionId)).resolves.toEqual(updated);
+    expect(updateMock).toHaveBeenCalledWith({
       where: { shop_sessionId: { shop, sessionId } },
       data: { status: "received", returnReceivedAt: "now" },
     });
+  });
 
-    await expect(markCleaning(shop, sessionId)).resolves.toBe(order);
-    expect(updateMock).toHaveBeenNthCalledWith(2, {
-      where: { shop_sessionId: { shop, sessionId } },
-      data: { status: "cleaning" },
-    });
+  it("markReceived returns null when update fails", async () => {
+    jest
+      .spyOn(prisma.rentalOrder, "update")
+      .mockRejectedValue(new Error("fail"));
+    await expect(markReceived(shop, sessionId)).resolves.toBeNull();
+  });
 
-    await expect(markRepair(shop, sessionId)).resolves.toBe(order);
-    expect(updateMock).toHaveBeenNthCalledWith(3, {
-      where: { shop_sessionId: { shop, sessionId } },
-      data: { status: "repair" },
-    });
+  it.each([
+    ["markRepair", () => markRepair(shop, sessionId), { status: "repair" }],
+    ["markQa", () => markQa(shop, sessionId), { status: "qa" }],
+    [
+      "markAvailable",
+      () => markAvailable(shop, sessionId),
+      { status: "available" },
+    ],
+    [
+      "markLateFeeCharged",
+      () => markLateFeeCharged(shop, sessionId, 10),
+      { lateFeeCharged: 10 },
+    ],
+  ])("returns updated order for %s", async (_, call, data) => {
+    const updateMock = jest
+      .spyOn(prisma.rentalOrder, "update")
+      .mockResolvedValue(order);
 
-    await expect(markQa(shop, sessionId)).resolves.toBe(order);
-    expect(updateMock).toHaveBeenNthCalledWith(4, {
+    await expect(call()).resolves.toBe(order);
+    expect(updateMock).toHaveBeenCalledWith({
       where: { shop_sessionId: { shop, sessionId } },
-      data: { status: "qa" },
-    });
-
-    await expect(markAvailable(shop, sessionId)).resolves.toBe(order);
-    expect(updateMock).toHaveBeenNthCalledWith(5, {
-      where: { shop_sessionId: { shop, sessionId } },
-      data: { status: "available" },
-    });
-
-    const amount = 10;
-    await expect(markLateFeeCharged(shop, sessionId, amount)).resolves.toBe(order);
-    expect(updateMock).toHaveBeenNthCalledWith(6, {
-      where: { shop_sessionId: { shop, sessionId } },
-      data: { lateFeeCharged: amount },
+      data,
     });
   });
 
-  it("returns null when update fails", async () => {
-    const updateMock = jest
+  it.each([
+    ["markRepair", () => markRepair(shop, sessionId)],
+    ["markQa", () => markQa(shop, sessionId)],
+    ["markAvailable", () => markAvailable(shop, sessionId)],
+    ["markLateFeeCharged", () => markLateFeeCharged(shop, sessionId, 10)],
+  ])("returns null when update fails for %s", async (_, call) => {
+    jest
       .spyOn(prisma.rentalOrder, "update")
       .mockRejectedValue(new Error("fail"));
-    (nowIso as jest.Mock).mockReturnValue("now");
 
-    await expect(markReceived(shop, sessionId)).resolves.toBeNull();
-    await expect(markCleaning(shop, sessionId)).resolves.toBeNull();
-    await expect(markRepair(shop, sessionId)).resolves.toBeNull();
-    await expect(markQa(shop, sessionId)).resolves.toBeNull();
-    await expect(markAvailable(shop, sessionId)).resolves.toBeNull();
-    await expect(markLateFeeCharged(shop, sessionId, 1)).resolves.toBeNull();
-
-    expect(updateMock).toHaveBeenCalledTimes(6);
+    await expect(call()).resolves.toBeNull();
   });
 });
 

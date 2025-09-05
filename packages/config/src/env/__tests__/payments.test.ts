@@ -9,7 +9,7 @@ afterEach(() => {
 
 async function withEnv<T>(
   env: Record<string, string | undefined>,
-  fn: () => Promise<T> | T,
+  fn: () => Promise<T> | T
 ): Promise<T> {
   const previous = process.env;
   process.env = { ...previous, ...env } as NodeJS.ProcessEnv;
@@ -38,10 +38,12 @@ describe("payments env schema", () => {
         STRIPE_WEBHOOK_SECRET: undefined,
       },
       async () => {
-        const { paymentsEnv, paymentsEnvSchema } = await import("../payments.js");
+        const { paymentsEnv, paymentsEnvSchema } = await import(
+          "../payments.js"
+        );
         expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
         expect(warnSpy).not.toHaveBeenCalled();
-      },
+      }
     );
   });
 
@@ -60,9 +62,9 @@ describe("payments env schema", () => {
           const { paymentsEnv } = await import("../payments.js");
           expect(paymentsEnv.STRIPE_SECRET_KEY).toBe(key);
           expect(warnSpy).not.toHaveBeenCalled();
-        },
+        }
       );
-    },
+    }
   );
 
   it("throws when STRIPE_WEBHOOK_SECRET is missing", async () => {
@@ -76,15 +78,13 @@ describe("payments env schema", () => {
       },
       async () => {
         await expect(import("../payments.js")).rejects.toThrow(
-          "Invalid payments environment variables",
+          "Invalid payments environment variables"
         );
         expect(errorSpy).toHaveBeenCalledWith(
-          "❌ Invalid payments environment variables:",
-          expect.any(Object),
+          "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe"
         );
-      },
+      }
     );
     errorSpy.mockRestore();
   });
 });
-

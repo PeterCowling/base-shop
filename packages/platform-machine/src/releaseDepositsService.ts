@@ -169,7 +169,8 @@ if (process.env.RUN_DEPOSIT_RELEASE_SERVICE === "true") {
   void startDepositReleaseService().catch((err) => {
     // Log via both logger and console so that failures surface in
     // environments without structured logging.
-    logger.error("failed to start deposit release service", { err });
+    const { logger: log } = require("@platform-core/utils");
+    log.error("failed to start deposit release service", { err });
     console.error("failed to start deposit release service", err);
   });
 }

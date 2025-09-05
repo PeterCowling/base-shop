@@ -97,7 +97,9 @@ describe("POST", () => {
     const file = new File([csv], "inv.csv", { type: "text/csv" });
     const res = await POST(req(file), { params: Promise.resolve({ shop: "s1" }) });
     expect(res.status).toBe(400);
-    await expect(res.json()).resolves.toEqual({ error: expect.stringContaining("quantity must be greater than 0") });
+    await expect(res.json()).resolves.toEqual({
+      error: expect.stringContaining("quantity must be greater than or equal to 0"),
+    });
     expect(write).not.toHaveBeenCalled();
   });
 

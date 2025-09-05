@@ -47,14 +47,16 @@ describe("expandInventoryItem", () => {
     expect(expandInventoryItem(item)).toEqual(item);
   });
 
-  it("throws on InventoryItem with non-positive quantity", () => {
+  it("throws on InventoryItem with negative quantity", () => {
     const item: InventoryItem = {
       sku: "s1",
       productId: "p1",
-      quantity: 0,
+      quantity: -1,
       variantAttributes: {},
     };
-    expect(() => expandInventoryItem(item)).toThrow("quantity must be greater than 0");
+    expect(() => expandInventoryItem(item)).toThrow(
+      "quantity must be greater than or equal to 0",
+    );
   });
 
   it("throws on InventoryItem with empty productId", () => {
@@ -95,15 +97,23 @@ describe("expandInventoryItem", () => {
     expect(() => expandInventoryItem(blank)).toThrow("productId is required");
   });
 
-  it("throws when quantity is zero or non-finite", () => {
-    const zero: RawInventoryItem = { sku: "s1", productId: "p1", quantity: 0 } as any;
+  it("throws when quantity is negative or non-finite", () => {
+    const negative: RawInventoryItem = {
+      sku: "s1",
+      productId: "p1",
+      quantity: -1,
+    } as any;
     const nonFinite: RawInventoryItem = {
       sku: "s1",
       productId: "p1",
       quantity: "abc",
     } as any;
-    expect(() => expandInventoryItem(zero)).toThrow("quantity must be greater than 0");
-    expect(() => expandInventoryItem(nonFinite)).toThrow("quantity must be greater than 0");
+    expect(() => expandInventoryItem(negative)).toThrow(
+      "quantity must be greater than or equal to 0",
+    );
+    expect(() => expandInventoryItem(nonFinite)).toThrow(
+      "quantity must be greater than or equal to 0",
+    );
   });
 
   it("normalizes unit and variant fields", () => {

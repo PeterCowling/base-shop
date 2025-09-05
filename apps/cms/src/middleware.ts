@@ -9,7 +9,6 @@ import { authSecret } from "./auth/secret";
 import { logger } from "@acme/shared-utils";
 import { createHeadersObject } from "next-secure-headers";
 import helmet from "helmet";
-import { RateLimiterMemory } from "rate-limiter-flexible";
 // Avoid importing @auth/session in middleware (Edge) because it pulls in
 // Node-only dependencies like 'crypto' via iron-session. We'll perform a
 // lightweight CSRF check inline using the request cookies instead.
@@ -82,8 +81,6 @@ const securityHeaders = (() => {
   return { ...base, ...helmetHeaders } as Record<string, string>;
 })();
 
-const loginLimiter = new RateLimiterMemory({ points: 5, duration: 60 });
-
 function applySecurityHeaders(res: NextResponse) {
   for (const [key, value] of Object.entries(securityHeaders)) {
     res.headers.set(key, value);
@@ -96,20 +93,6 @@ export async function middleware(req: NextRequest) {
   logger.info("request", { path: pathname });
 
   const method = req.method?.toUpperCase() ?? "GET";
-
-  /* Rate limit login/signin endpoints */
-  if (pathname === "/api/login" || pathname === "/api/auth/signin") {
-    const ip =
-      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-    try {
-      await loginLimiter.consume(ip);
-    } catch {
-      logger.warn("rate limit", { ip });
-      return applySecurityHeaders(
-        new NextResponse("Too Many Requests", { status: 429 })
-      );
-    }
-  }
 
   /* CSRF protection for mutating API routes */
   if (

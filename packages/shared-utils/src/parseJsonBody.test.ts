@@ -153,6 +153,22 @@ describe('parseJsonBody', () => {
     errorSpy.mockRestore();
   });
 
+  it('returns 400 when text() rejects', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const req = {
+      text: jest.fn().mockRejectedValue(new Error('boom')),
+    } as unknown as Request;
+
+    const result = await parseJsonBody(req, schema, '1kb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({
+      error: 'Invalid JSON',
+    });
+    expect(errorSpy).toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
   describe.each(['GET', 'POST'] as const)('%s requests', (method) => {
     describe('Content-Type handling', () => {
       const cases = [

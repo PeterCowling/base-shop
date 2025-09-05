@@ -120,4 +120,60 @@ describe('generateMeta', () => {
       image: '/og/123.png',
     });
   });
+
+  it('returns AI placeholders when API key missing in test env', async () => {
+    let result;
+    const prev = process.env.NODE_ENV;
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock('@acme/config/env/core', () => ({ coreEnv: {} }));
+      process.env.NODE_ENV = 'test';
+      const { generateMeta } = await import('../src/generateMeta');
+      result = await generateMeta(product);
+    });
+    process.env.NODE_ENV = prev;
+    expect(result).toEqual({
+      title: 'AI title',
+      description: 'AI description',
+      alt: 'alt',
+      image: '/og/123.png',
+    });
+  });
+
+  it('falls back to product data when API key missing outside test', async () => {
+    let result;
+    const prev = process.env.NODE_ENV;
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock('@acme/config/env/core', () => ({ coreEnv: {} }));
+      process.env.NODE_ENV = 'development';
+      const { generateMeta } = await import('../src/generateMeta');
+      result = await generateMeta(product);
+    });
+    process.env.NODE_ENV = prev;
+    expect(result).toEqual({
+      title: 'Title',
+      description: 'Desc',
+      alt: 'Title',
+      image: '/og/123.png',
+    });
+  });
+
+  it('falls back when OpenAI import fails', async () => {
+    const fsMocks = { promises: { writeFile: jest.fn(), mkdir: jest.fn() } };
+    let result;
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock('@acme/config/env/core', () => ({ coreEnv: { OPENAI_API_KEY: 'key' } }));
+      jest.doMock('fs', () => fsMocks);
+      jest.doMock('openai', () => {
+        throw new Error('fail');
+      }, { virtual: true });
+      const { generateMeta } = await import('../src/generateMeta');
+      result = await generateMeta(product);
+    });
+    expect(result).toEqual({
+      title: 'Title',
+      description: 'Desc',
+      alt: 'Title',
+      image: '/og/123.png',
+    });
+  });
 });

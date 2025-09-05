@@ -29,6 +29,34 @@ describe("ResendProvider", () => {
     expect(Resend).toHaveBeenCalledWith("rs");
   });
 
+  describe("sanityCheck", () => {
+    it("resolves when credentials accepted", async () => {
+      process.env.RESEND_API_KEY = "rs";
+      global.fetch = jest.fn().mockResolvedValue({ ok: true }) as any;
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider({ sanityCheck: true });
+      await expect(provider.ready).resolves.toBeUndefined();
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://api.resend.com/domains",
+        expect.objectContaining({
+          headers: { Authorization: "Bearer rs" },
+        })
+      );
+    });
+
+    it("rejects when credentials rejected", async () => {
+      process.env.RESEND_API_KEY = "rs";
+      global.fetch = jest
+        .fn()
+        .mockResolvedValue({ ok: false, status: 401 }) as any;
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider({ sanityCheck: true });
+      await expect(provider.ready).rejects.toThrow(
+        "Resend credentials rejected with status 401"
+      );
+    });
+  });
+
   it("resolves on success", async () => {
     setupEnv();
     const { send } = require("resend");
@@ -36,6 +64,18 @@ describe("ResendProvider", () => {
     const { ResendProvider } = await import("../resend");
     const provider = new ResendProvider();
     await expect(provider.send(options)).resolves.toBeUndefined();
+  });
+
+  it("uses default sender address", async () => {
+    setupEnv();
+    const { send } = require("resend");
+    send.mockResolvedValueOnce(undefined);
+    const { ResendProvider } = await import("../resend");
+    const provider = new ResendProvider();
+    await provider.send(options);
+    expect(send).toHaveBeenCalledWith(
+      expect.objectContaining({ from: "campaign@example.com" })
+    );
   });
 
   it("warns and skips send when API key missing", async () => {
@@ -180,6 +220,18 @@ describe("ResendProvider", () => {
     it("returns empty string when fetch rejects", async () => {
       process.env.RESEND_API_KEY = "rs";
       global.fetch = jest.fn().mockRejectedValue(new Error("fail")) as any;
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider();
+      await expect(
+        provider.createContact("test@example.com"),
+      ).resolves.toBe("");
+    });
+
+    it("returns empty string on json failure", async () => {
+      process.env.RESEND_API_KEY = "rs";
+      global.fetch = jest.fn().mockResolvedValue({
+        json: () => Promise.reject(new Error("bad")),
+      }) as any;
       const { ResendProvider } = await import("../resend");
       const provider = new ResendProvider();
       await expect(

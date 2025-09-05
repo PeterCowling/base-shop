@@ -16,6 +16,42 @@ describe("SendgridProvider", () => {
     delete process.env.SENDGRID_API_KEY;
   });
 
+  it("sets API key when provided", async () => {
+    process.env.SENDGRID_API_KEY = "key";
+    const sgMail = require("@sendgrid/mail").default;
+    const { SendgridProvider } = await import("../sendgrid");
+    new SendgridProvider();
+    expect(sgMail.setApiKey).toHaveBeenCalledWith("key");
+  });
+
+  describe("sanityCheck", () => {
+    it("resolves when credentials accepted", async () => {
+      process.env.SENDGRID_API_KEY = "key";
+      global.fetch = jest.fn().mockResolvedValue({ ok: true }) as any;
+      const { SendgridProvider } = await import("../sendgrid");
+      const provider = new SendgridProvider({ sanityCheck: true });
+      await expect(provider.ready).resolves.toBeUndefined();
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://api.sendgrid.com/v3/user/profile",
+        expect.objectContaining({
+          headers: { Authorization: "Bearer key" },
+        })
+      );
+    });
+
+    it("rejects when credentials rejected", async () => {
+      process.env.SENDGRID_API_KEY = "key";
+      global.fetch = jest
+        .fn()
+        .mockResolvedValue({ ok: false, status: 401 }) as any;
+      const { SendgridProvider } = await import("../sendgrid");
+      const provider = new SendgridProvider({ sanityCheck: true });
+      await expect(provider.ready).rejects.toThrow(
+        "Sendgrid credentials rejected with status 401"
+      );
+    });
+  });
+
   it("resolves on success", async () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";
     const sgMail = require("@sendgrid/mail").default;
@@ -23,6 +59,36 @@ describe("SendgridProvider", () => {
     const { SendgridProvider } = await import("../sendgrid");
     const provider = new SendgridProvider();
     await expect(provider.send(options)).resolves.toBeUndefined();
+  });
+
+  it("warns when API key missing", async () => {
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+    const warn = jest
+      .spyOn(console, "warn")
+      .mockImplementation(() => undefined);
+    const sgMail = require("@sendgrid/mail").default;
+    sgMail.send.mockResolvedValueOnce(undefined);
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await provider.send(options);
+    expect(warn).toHaveBeenCalledTimes(1);
+    expect(warn).toHaveBeenCalledWith(
+      "Sendgrid API key is not configured; attempting to send email"
+    );
+    warn.mockRestore();
+  });
+
+  it("uses default sender address", async () => {
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+    process.env.SENDGRID_API_KEY = "key";
+    const sgMail = require("@sendgrid/mail").default;
+    sgMail.send.mockResolvedValueOnce(undefined);
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await provider.send(options);
+    expect(sgMail.send).toHaveBeenCalledWith(
+      expect.objectContaining({ from: "campaign@example.com" })
+    );
   });
 
   it("wraps 400 errors as non-retryable ProviderError", async () => {
@@ -87,6 +153,19 @@ describe("SendgridProvider", () => {
     it("returns empty stats when fetch rejects", async () => {
       process.env.SENDGRID_API_KEY = "key";
       global.fetch = jest.fn().mockRejectedValue(new Error("fail")) as any;
+      const { SendgridProvider } = await import("../sendgrid");
+      const provider = new SendgridProvider();
+      const { mapSendGridStats } = await import("../../stats");
+      await expect(provider.getCampaignStats("1")).resolves.toEqual(
+        mapSendGridStats({})
+      );
+    });
+
+    it("returns empty stats on JSON parse failure", async () => {
+      process.env.SENDGRID_API_KEY = "key";
+      global.fetch = jest.fn().mockResolvedValue({
+        json: () => Promise.reject(new Error("bad")),
+      }) as any;
       const { SendgridProvider } = await import("../sendgrid");
       const provider = new SendgridProvider();
       const { mapSendGridStats } = await import("../../stats");

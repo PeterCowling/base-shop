@@ -43,12 +43,51 @@ describe("SendgridProvider additional cases", () => {
     await expect(provider.createContact("user@example.com")).resolves.toBe("");
   });
 
+  it("createContact returns id on success", async () => {
+    process.env.SENDGRID_API_KEY = "key";
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      json: () => Promise.resolve({ persisted_recipients: ["123"] }),
+    }) as any;
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await expect(
+      provider.createContact("user@example.com")
+    ).resolves.toBe("123");
+  });
+
+  it("createContact returns empty string on invalid json", async () => {
+    process.env.SENDGRID_API_KEY = "key";
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      json: () => Promise.reject(new Error("bad")),
+    }) as any;
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await expect(provider.createContact("user@example.com")).resolves.toBe("");
+  });
+
   it("addToList resolves even when fetch rejects", async () => {
     process.env.SENDGRID_API_KEY = "key";
     global.fetch = jest.fn().mockRejectedValueOnce(new Error("fail")) as any;
     const { SendgridProvider } = await import("../sendgrid");
     const provider = new SendgridProvider();
     await expect(provider.addToList("cid", "lid")).resolves.toBeUndefined();
+  });
+
+  it("addToList sends request when key present", async () => {
+    process.env.SENDGRID_API_KEY = "key";
+    global.fetch = jest.fn().mockResolvedValueOnce({}) as any;
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await expect(provider.addToList("cid", "lid")).resolves.toBeUndefined();
+    expect(global.fetch).toHaveBeenCalled();
+  });
+
+  it("addToList skips when no key", async () => {
+    global.fetch = jest.fn();
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await expect(provider.addToList("cid", "lid")).resolves.toBeUndefined();
+    expect(global.fetch).not.toHaveBeenCalled();
   });
 
   it("listSegments returns [] when fetch rejects", async () => {
@@ -67,6 +106,19 @@ describe("SendgridProvider additional cases", () => {
     const { SendgridProvider } = await import("../sendgrid");
     const provider = new SendgridProvider();
     await expect(provider.listSegments()).resolves.toEqual([]);
+  });
+
+  it("listSegments maps results on success", async () => {
+    process.env.SENDGRID_API_KEY = "key";
+    const payload = { result: [{ id: "1", name: "Segment" }] };
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      json: () => Promise.resolve(payload),
+    }) as any;
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await expect(provider.listSegments()).resolves.toEqual([
+      { id: "1", name: "Segment" },
+    ]);
   });
 });
 

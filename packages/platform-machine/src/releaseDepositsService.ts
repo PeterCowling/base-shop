@@ -163,10 +163,17 @@ export async function startDepositReleaseService(
 }
 
 // Avoid automatically starting the deposit release service when this module is
-// imported.  Production environments can opt-in by explicitly setting an
+// imported. Production environments can opt-in by explicitly setting an
 // environment variable.
 if (process.env.RUN_DEPOSIT_RELEASE_SERVICE === "true") {
-  startDepositReleaseService().catch((err) =>
-    logger.error("failed to start deposit release service", { err }),
-  );
+  void (async () => {
+    try {
+      await startDepositReleaseService();
+    } catch (err) {
+      // Log via both logger and console so that failures surface in
+      // environments without structured logging.
+      logger.error("failed to start deposit release service", { err });
+      console.error("failed to start deposit release service", err);
+    }
+  })();
 }

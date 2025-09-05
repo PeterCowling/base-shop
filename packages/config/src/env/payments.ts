@@ -20,9 +20,13 @@ export const paymentsEnvSchema = z.object({
       message: "PAYMENTS_CURRENCY must be a 3-letter currency code",
     })
     .transform((val) => val.toUpperCase()),
-  STRIPE_SECRET_KEY: z.string().min(1).optional(),
-  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z.string().min(1).optional(),
-  STRIPE_WEBHOOK_SECRET: z.string().min(1).optional(),
+  // TODO: remove dummy defaults and require real Stripe keys in production
+  STRIPE_SECRET_KEY: z.string().min(1).default("dummy-stripe-secret"),
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z
+    .string()
+    .min(1)
+    .default("dummy-publishable-key"),
+  STRIPE_WEBHOOK_SECRET: z.string().min(1).default("dummy-webhook-secret"),
 });
 
 export type PaymentsEnv = z.infer<typeof paymentsEnvSchema>;

@@ -107,7 +107,7 @@ export const getDefaultCartStore = (): CartStore => {
       ? (module as ModuleWithCreateCartStore).exports.createCartStore
       : createCartStore;
   _defaultStore = factory();
-  return _defaultStore;
+  return _defaultStore!;
 };
 
 // Test-only helper to override the lazily created store

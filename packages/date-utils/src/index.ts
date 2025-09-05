@@ -31,7 +31,8 @@ export function calculateRentalDays(returnDate?: string): number {
   const parsed = parseISO(returnDate);
   if (Number.isNaN(parsed.getTime())) throw new Error("Invalid returnDate");
   const diff = Math.ceil((parsed.getTime() - Date.now()) / DAY_MS);
-  return diff > 0 ? diff : 1;
+  if (diff < 0) throw new Error("returnDate must be in the future");
+  return diff === 0 ? 1 : diff;
 }
 
 /**
@@ -90,6 +91,10 @@ export function parseTargetDate(
 ): Date | null {
   if (!targetDate) return null;
   try {
+    if (targetDate === "today" || targetDate === "tomorrow") {
+      const base = targetDate === "today" ? new Date() : addDays(new Date(), 1);
+      return startOfDay(base, timezone);
+    }
     let date: Date;
     if (timezone) {
       date = fromZonedTime(targetDate, timezone);
@@ -109,7 +114,7 @@ export function parseTargetDate(
  * Calculate the remaining time in milliseconds until `target`.
  */
 export function getTimeRemaining(target: Date, now: Date = new Date()): number {
-  return target.getTime() - now.getTime();
+  return Math.max(0, target.getTime() - now.getTime());
 }
 
 /**

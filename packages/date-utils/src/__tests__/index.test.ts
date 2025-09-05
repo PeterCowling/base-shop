@@ -101,6 +101,9 @@ describe("isoDateInNDays", () => {
   it("returns ISO date string N days behind", () => {
     expect(isoDateInNDays(-3)).toBe("2024-12-29");
   });
+  it("returns today's date when offset is zero", () => {
+    expect(isoDateInNDays(0)).toBe("2025-01-01");
+  });
 });
 
 describe("calculateRentalDays", () => {
@@ -113,8 +116,10 @@ describe("calculateRentalDays", () => {
   it("computes positive day difference", () => {
     expect(calculateRentalDays("2025-01-03")).toBe(2);
   });
-  it("returns 1 for past return dates", () => {
-    expect(calculateRentalDays("2024-12-31")).toBe(1);
+  it("throws for past return dates", () => {
+    expect(() => calculateRentalDays("2024-12-31")).toThrow(
+      "returnDate must be in the future",
+    );
   });
   it("defaults to 1 when return date missing", () => {
     expect(calculateRentalDays()).toBe(1);
@@ -178,6 +183,16 @@ describe("parseTargetDate", () => {
       "2025-01-01T05:00:00.000Z"
     );
   });
+  it('handles "today" and "tomorrow" keywords', () => {
+    jest.useFakeTimers().setSystemTime(new Date("2025-06-15T10:00:00Z"));
+    expect(parseTargetDate("today")?.toISOString()).toBe(
+      "2025-06-15T00:00:00.000Z",
+    );
+    expect(parseTargetDate("tomorrow")?.toISOString()).toBe(
+      "2025-06-16T00:00:00.000Z",
+    );
+    jest.useRealTimers();
+  });
 });
 
 describe("getTimeRemaining and formatDuration", () => {
@@ -193,10 +208,10 @@ describe("getTimeRemaining and formatDuration", () => {
     expect(remaining).toBe(5000);
     expect(formatDuration(remaining)).toBe("5s");
   });
-  it("returns negative for past targets", () => {
+  it("returns zero for past targets", () => {
     const target = new Date("2024-12-31T23:59:55Z");
     const remaining = getTimeRemaining(target, base);
-    expect(remaining).toBe(-5000);
+    expect(remaining).toBe(0);
   });
   it("formats negative durations as zero", () => {
     expect(formatDuration(-5000)).toBe("0s");

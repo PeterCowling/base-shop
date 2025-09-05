@@ -43,9 +43,11 @@ describe("date-utils", () => {
       expect(calculateRentalDays(future)).toBe(2);
     });
 
-    it("returns 1 for past date", () => {
+    it("throws for past date", () => {
       const past = addDays(base, -1).toISOString();
-      expect(calculateRentalDays(past)).toBe(1);
+      expect(() => calculateRentalDays(past)).toThrow(
+        "returnDate must be in the future",
+      );
     });
 
     it("throws for invalid date", () => {

@@ -27,11 +27,11 @@ describe('email cli', () => {
     const fs = mockFs();
     fs.existsSync.mockImplementation((p: string) => p === path.join('/root', 'data', 'shops'));
     jest.doMock('fs', () => fs);
-    jest.doMock('./scheduler', () => ({ sendDueCampaigns: jest.fn() }));
+    jest.doMock('../../scheduler', () => ({ sendDueCampaigns: jest.fn() }));
     jest.doMock('@date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
     const cwdSpy = jest.spyOn(process, 'cwd').mockReturnValue('/root/project');
 
-    const { resolveDataRoot } = await import('./cli');
+    const { resolveDataRoot } = await import('../../cli');
     expect(resolveDataRoot()).toBe(path.join('/root', 'data', 'shops'));
 
     cwdSpy.mockRestore();
@@ -42,11 +42,11 @@ describe('email cli', () => {
     fs.existsSync.mockReturnValue(true);
     fs.promises.readFile.mockRejectedValue(new Error('fail'));
     jest.doMock('fs', () => fs);
-    jest.doMock('./scheduler', () => ({ sendDueCampaigns: jest.fn() }));
+    jest.doMock('../../scheduler', () => ({ sendDueCampaigns: jest.fn() }));
     jest.doMock('@date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
     const log = jest.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { run } = await import('./cli');
+    const { run } = await import('../../cli');
     await run(['node', 'cli', 'campaign', 'list', 'shop']);
     expect(log).toHaveBeenCalledWith('[]');
 
@@ -60,11 +60,11 @@ describe('email cli', () => {
     fs.promises.writeFile.mockResolvedValue(undefined as any);
     fs.promises.mkdir.mockResolvedValue(undefined as any);
     jest.doMock('fs', () => fs);
-    jest.doMock('./scheduler', () => ({ sendDueCampaigns: jest.fn() }));
+    jest.doMock('../../scheduler', () => ({ sendDueCampaigns: jest.fn() }));
     jest.doMock('@date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
     const log = jest.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { run } = await import('./cli');
+    const { run } = await import('../../cli');
     await run([
       'node',
       'cli',
@@ -94,11 +94,11 @@ describe('email cli', () => {
     fs.promises.writeFile.mockResolvedValue(undefined as any);
     fs.promises.mkdir.mockResolvedValue(undefined as any);
     jest.doMock('fs', () => fs);
-    jest.doMock('./scheduler', () => ({ sendDueCampaigns: jest.fn() }));
+    jest.doMock('../../scheduler', () => ({ sendDueCampaigns: jest.fn() }));
     jest.doMock('@date-utils', () => ({ nowIso: () => '2020-01-01T00:00:00.000Z' }));
     const log = jest.spyOn(console, 'log').mockImplementation(() => {});
 
-    const { run } = await import('./cli');
+    const { run } = await import('../../cli');
     await run([
       'node',
       'cli',

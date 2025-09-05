@@ -78,3 +78,72 @@ describe("coreEnvSchema refinement", () => {
   });
 });
 
+
+const baseEnv = {
+  CMS_SPACE_URL: "https://example.com",
+  CMS_ACCESS_TOKEN: "token",
+  SANITY_API_VERSION: "v1",
+};
+
+describe("depositReleaseEnvRefinement via coreEnvSchema", () => {
+  it("reports custom issue for invalid DEPOSIT_RELEASE_ENABLED", async () => {
+    const { coreEnvSchema } = await import("../src/env/core");
+    const parsed = coreEnvSchema.safeParse({
+      ...baseEnv,
+      DEPOSIT_RELEASE_ENABLED: "yes",
+    } as NodeJS.ProcessEnv);
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: ["DEPOSIT_RELEASE_ENABLED"],
+            message: "must be true or false",
+          }),
+        ]),
+      );
+    }
+  });
+
+  it.each([
+    ["DEPOSIT_RELEASE_INTERVAL_MS"],
+    ["REVERSE_LOGISTICS_INTERVAL_MS"],
+    ["LATE_FEE_INTERVAL_MS"],
+  ])("reports custom issue for invalid %s", async (key) => {
+    const { coreEnvSchema } = await import("../src/env/core");
+    const parsed = coreEnvSchema.safeParse({
+      ...baseEnv,
+      [key]: "soon",
+    } as Record<string, string>);
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ path: [key], message: "must be a number" }),
+        ]),
+      );
+    }
+  });
+
+  it("parses valid boolean and number strings", async () => {
+    const { coreEnvSchema } = await import("../src/env/core");
+    const parsed = coreEnvSchema.safeParse({
+      ...baseEnv,
+      DEPOSIT_RELEASE_ENABLED: "true",
+      DEPOSIT_RELEASE_INTERVAL_MS: "1000",
+      REVERSE_LOGISTICS_ENABLED: "false",
+      REVERSE_LOGISTICS_INTERVAL_MS: "2000",
+      LATE_FEE_ENABLED: "true",
+      LATE_FEE_INTERVAL_MS: "3000",
+    } as NodeJS.ProcessEnv);
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.DEPOSIT_RELEASE_ENABLED).toBe(true);
+      expect(parsed.data.DEPOSIT_RELEASE_INTERVAL_MS).toBe(1000);
+      expect(parsed.data.REVERSE_LOGISTICS_ENABLED).toBe(false);
+      expect(parsed.data.REVERSE_LOGISTICS_INTERVAL_MS).toBe(2000);
+      expect(parsed.data.LATE_FEE_ENABLED).toBe(true);
+      expect(parsed.data.LATE_FEE_INTERVAL_MS).toBe(3000);
+    }
+  });
+});

@@ -282,5 +282,17 @@ describe("scheduler", () => {
     await syncCampaignAnalytics();
     expect(fetchCampaignAnalytics).toHaveBeenCalled();
   });
+
+  test('createCampaign propagates send errors', async () => {
+    (sendCampaignEmail as jest.Mock).mockRejectedValueOnce(new Error('boom'));
+    await expect(
+      createCampaign({
+        shop,
+        recipients: ['a@example.com'],
+        subject: 'Hi',
+        body: '<p>Hi</p>',
+      })
+    ).rejects.toThrow('boom');
+  });
 });
 

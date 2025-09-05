@@ -90,61 +90,98 @@ describe("trackEvent providers", () => {
   });
 });
 
+
 describe("updateAggregates persistence", () => {
   const shop = "agg-shop";
-  let tmp: string;
+  let store: string | undefined;
+  let readSpy: jest.SpyInstance;
+  let writeSpy: jest.SpyInstance;
+  let mkdirSpy: jest.SpyInstance;
 
   beforeEach(async () => {
     jest.resetModules();
     readShop.mockReset();
     getShopSettings.mockReset();
-    tmp = await fs.mkdtemp(path.join(os.tmpdir(), "analytics-"));
-    process.env.DATA_ROOT = tmp;
-    readShop.mockResolvedValue({ analyticsEnabled: true });
-    getShopSettings.mockResolvedValue({ analytics: undefined });
-  });
-
-  test("aggregates are updated for all event types", async () => {
-    const { trackEvent } = await import("../index");
-    await trackEvent(shop, { type: "page_view", page: "home" });
-    await trackEvent(shop, { type: "order", orderId: "o1", amount: 5 });
-    await trackEvent(shop, { type: "discount_redeemed", code: "SAVE" });
-    await trackEvent(shop, { type: "ai_crawl" });
-    let agg = JSON.parse(await fs.readFile(path.join(tmp, shop, "analytics-aggregates.json"), "utf8"));
-    expect(agg.page_view["2024-01-01"]).toBe(1);
-    expect(agg.order["2024-01-01"]).toEqual({ count: 1, amount: 5 });
-    expect(agg.discount_redeemed["2024-01-01"].SAVE).toBe(1);
-    expect(agg.ai_crawl["2024-01-01"]).toBe(1);
-
-    await trackEvent(shop, { type: "page_view", page: "about" });
-    await trackEvent(shop, { type: "order", orderId: "o2", amount: 7 });
-    await trackEvent(shop, { type: "discount_redeemed", code: "SAVE" });
-    await trackEvent(shop, { type: "ai_crawl" });
-    agg = JSON.parse(await fs.readFile(path.join(tmp, shop, "analytics-aggregates.json"), "utf8"));
-    expect(agg.page_view["2024-01-01"]).toBe(2);
-    expect(agg.order["2024-01-01"]).toEqual({ count: 2, amount: 12 });
-    expect(agg.discount_redeemed["2024-01-01"].SAVE).toBe(2);
-    expect(agg.ai_crawl["2024-01-01"]).toBe(2);
-  });
-});
-
-describe("public tracking functions", () => {
-  const shop = "track-shop";
-  let tmp: string;
-
-  beforeEach(async () => {
-    jest.resetModules();
-    readShop.mockReset();
-    getShopSettings.mockReset();
-    tmp = await fs.mkdtemp(path.join(os.tmpdir(), "analytics-"));
-    process.env.DATA_ROOT = tmp;
+    store = undefined;
+    readSpy = jest
+      .spyOn(fs, "readFile")
+      .mockImplementation(async () => {
+        if (store === undefined) throw new Error("ENOENT");
+        return store;
+      });
+    writeSpy = jest
+      .spyOn(fs, "writeFile")
+      .mockImplementation(async (_p, data) => {
+        store = data as string;
+      });
+    mkdirSpy = jest.spyOn(fs, "mkdir").mockResolvedValue(undefined as any);
+    process.env.DATA_ROOT = "/tmp";
     readShop.mockResolvedValue({ analyticsEnabled: true });
     getShopSettings.mockResolvedValue({
       analytics: { provider: "console", enabled: true },
     });
   });
 
-  test("trackEvent adds timestamp and delegates to provider", async () => {
+  afterEach(() => {
+    readSpy.mockRestore();
+    writeSpy.mockRestore();
+    mkdirSpy.mockRestore();
+  });
+
+  test("aggregates are updated for all event types", async () => {
+    const { trackEvent } = await import("../index");
+    await trackEvent(shop, { type: "page_view", page: "home" });
+    await trackEvent(shop, { type: "order", orderId: "o1", amount: 5 });
+    await trackEvent(shop, { type: "order", orderId: "o2" });
+    await trackEvent(shop, { type: "discount_redeemed", code: "SAVE" });
+    await trackEvent(shop, { type: "ai_crawl" });
+
+    const agg = JSON.parse(store!);
+    expect(agg.page_view["2024-01-01"]).toBe(1);
+    expect(agg.order["2024-01-01"]).toEqual({ count: 2, amount: 5 });
+    expect(agg.discount_redeemed["2024-01-01"].SAVE).toBe(1);
+    expect(agg.ai_crawl["2024-01-01"]).toBe(1);
+  });
+});
+
+describe("public tracking functions", () => {
+  const shop = "track-shop";
+  let store: string | undefined;
+  let readSpy: jest.SpyInstance;
+  let writeSpy: jest.SpyInstance;
+  let mkdirSpy: jest.SpyInstance;
+
+  beforeEach(async () => {
+    jest.resetModules();
+    readShop.mockReset();
+    getShopSettings.mockReset();
+    store = undefined;
+    readSpy = jest
+      .spyOn(fs, "readFile")
+      .mockImplementation(async () => {
+        if (store === undefined) throw new Error("ENOENT");
+        return store;
+      });
+    writeSpy = jest
+      .spyOn(fs, "writeFile")
+      .mockImplementation(async (_p, data) => {
+        store = data as string;
+      });
+    mkdirSpy = jest.spyOn(fs, "mkdir").mockResolvedValue(undefined as any);
+    process.env.DATA_ROOT = "/tmp";
+    readShop.mockResolvedValue({ analyticsEnabled: true });
+    getShopSettings.mockResolvedValue({
+      analytics: { provider: "console", enabled: true },
+    });
+  });
+
+  afterEach(() => {
+    readSpy.mockRestore();
+    writeSpy.mockRestore();
+    mkdirSpy.mockRestore();
+  });
+
+  test("trackEvent adds timestamp, delegates, and updates aggregates", async () => {
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
@@ -156,6 +193,8 @@ describe("public tracking functions", () => {
         timestamp: "2024-01-01T00:00:00.000Z",
       })
     );
+    const agg = JSON.parse(store!);
+    expect(agg.page_view["2024-01-01"]).toBe(1);
     logSpy.mockRestore();
   });
 
@@ -171,6 +210,8 @@ describe("public tracking functions", () => {
         timestamp: "2024-01-01T00:00:00.000Z",
       })
     );
+    const agg = JSON.parse(store!);
+    expect(agg.page_view["2024-01-01"]).toBe(1);
     logSpy.mockRestore();
   });
 
@@ -187,6 +228,8 @@ describe("public tracking functions", () => {
         timestamp: "2024-01-01T00:00:00.000Z",
       })
     );
+    const agg = JSON.parse(store!);
+    expect(agg.order["2024-01-01"]).toEqual({ count: 1, amount: 42 });
     logSpy.mockRestore();
   });
 });

@@ -1,4 +1,4 @@
-import { ProviderError } from "./providers/types";
+import { ProviderError } from "../../providers/types";
 
 let mockSendgridSend: jest.Mock;
 let mockResendSend: jest.Mock;
@@ -13,13 +13,13 @@ jest.mock("nodemailer", () => ({
   },
 }));
 
-jest.mock("./providers/sendgrid", () => ({
+jest.mock("../../providers/sendgrid", () => ({
   SendgridProvider: jest.fn().mockImplementation(() => ({
     send: (...args: any[]) => mockSendgridSend(...args),
   })),
 }));
 
-jest.mock("./providers/resend", () => ({
+jest.mock("../../providers/resend", () => ({
   ResendProvider: jest.fn().mockImplementation(() => ({
     send: (...args: any[]) => mockResendSend(...args),
   })),
@@ -45,7 +45,7 @@ describe("sendCampaignEmail", () => {
     mockResendSend = jest.fn();
     mockSendMail = jest.fn();
 
-    const { sendCampaignEmail } = await import("./send");
+    const { sendCampaignEmail } = await import("../../send");
 
     await expect(
       sendCampaignEmail({
@@ -64,7 +64,7 @@ describe("sendCampaignEmail", () => {
     mockResendSend = jest.fn();
     mockSendMail = jest.fn();
 
-    const { sendCampaignEmail } = await import("./send");
+    const { sendCampaignEmail } = await import("../../send");
 
     process.env.EMAIL_PROVIDER = "unknown";
 
@@ -92,7 +92,7 @@ describe("sendCampaignEmail", () => {
     process.env.EMAIL_PROVIDER = "sendgrid";
     process.env.SENDGRID_API_KEY = "sg";
 
-    const { sendCampaignEmail } = await import("./send");
+    const { sendCampaignEmail } = await import("../../send");
 
     await sendCampaignEmail({
       to: "to@example.com",
@@ -118,7 +118,7 @@ describe("sendCampaignEmail", () => {
     process.env.EMAIL_PROVIDER = "sendgrid";
     process.env.SENDGRID_API_KEY = "sg";
 
-    const { sendCampaignEmail } = await import("./send");
+    const { sendCampaignEmail } = await import("../../send");
 
     await sendCampaignEmail({
       to: "to@example.com",
@@ -140,7 +140,7 @@ describe("sendCampaignEmail", () => {
     process.env.EMAIL_PROVIDER = "sendgrid";
     process.env.SENDGRID_API_KEY = "sg";
 
-    const { sendCampaignEmail } = await import("./send");
+    const { sendCampaignEmail } = await import("../../send");
 
     await sendCampaignEmail({
       to: "to@example.com",
@@ -155,7 +155,7 @@ describe("sendCampaignEmail", () => {
       sanitize: false,
     });
 
-    const { SendgridProvider } = await import("./providers/sendgrid");
+    const { SendgridProvider } = await import("../../providers/sendgrid");
     expect(SendgridProvider).toHaveBeenCalledTimes(1);
     expect(mockSendgridSend).toHaveBeenCalledTimes(2);
   });
@@ -171,7 +171,7 @@ describe("sendCampaignEmail", () => {
     process.env.RESEND_API_KEY = "rs";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("./send");
+    const { sendCampaignEmail } = await import("../../send");
 
     await sendCampaignEmail({
       to: "to@example.com",
@@ -196,7 +196,7 @@ describe("sendCampaignEmail", () => {
     process.env.EMAIL_PROVIDER = "sendgrid";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
 
-    const { sendCampaignEmail } = await import("./send");
+    const { sendCampaignEmail } = await import("../../send");
 
     await sendCampaignEmail({
       to: "to@example.com",

@@ -131,5 +131,13 @@ describe('component helpers', () => {
       vol.fromJSON({ '/a/only.txt': 'hello' });
       expect(diffDirectories('/a', '/b')).toEqual(['only.txt']);
     });
+
+    it('detects when file contents differ', () => {
+      vol.fromJSON({
+        '/a/same.txt': 'one',
+        '/b/same.txt': 'two',
+      });
+      expect(diffDirectories('/a', '/b')).toEqual(['same.txt']);
+    });
   });
 });

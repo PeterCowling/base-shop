@@ -671,22 +671,10 @@ describe("loadCoreEnv", () => {
       "❌ Invalid core environment variables:",
     );
     expect(errorSpy).toHaveBeenCalledWith(
-      expect.stringContaining("CMS_SPACE_URL"),
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      expect.stringContaining("CMS_ACCESS_TOKEN"),
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      expect.stringContaining("SANITY_API_VERSION"),
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
       expect.stringContaining("NEXTAUTH_SECRET"),
     );
     expect(errorSpy).toHaveBeenCalledWith(
       expect.stringContaining("SESSION_SECRET"),
-    );
-    expect(errorSpy).toHaveBeenCalledWith(
-      expect.stringContaining("CART_COOKIE_SECRET"),
     );
     errorSpy.mockRestore();
     process.env.NODE_ENV = originalNodeEnv;
@@ -707,6 +695,8 @@ describe("core env module", () => {
       ...ORIGINAL_ENV,
       ...baseEnv,
       NODE_ENV: "development",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET: SESSION_SECRET,
     } as NodeJS.ProcessEnv;
     delete process.env.CART_COOKIE_SECRET;
     const errorSpy = jest

@@ -15,8 +15,18 @@ jest.mock("../src/routes/shop/[id]/publish-upgrade", () => ({
 import { createRequestHandler } from "./test-utils";
 
 describe("createRequestHandler", () => {
+  let OriginalRequest: typeof Request;
+  let RequestMock: jest.Mock;
+
   beforeEach(() => {
     jest.clearAllMocks();
+    OriginalRequest = global.Request;
+    RequestMock = jest.fn((input: RequestInfo, init?: RequestInit) => new OriginalRequest(input, init));
+    (global as any).Request = RequestMock;
+  });
+
+  afterEach(() => {
+    (global as any).Request = OriginalRequest;
   });
 
   it("joins array header values", async () => {
@@ -34,19 +44,11 @@ describe("createRequestHandler", () => {
     const end = jest.fn();
     const res = { statusCode: 200, setHeader: jest.fn(), end } as unknown as ServerResponse;
 
-    const OriginalRequest = global.Request;
-    const RequestMock = jest.fn((input: RequestInfo, init?: RequestInit) =>
-      new OriginalRequest(input, init),
-    );
-    (global as any).Request = RequestMock;
-
     await handler(req, res);
 
     expect(RequestMock).toHaveBeenCalled();
     const headers = (RequestMock.mock.calls[0][1]!.headers as Headers) || new Headers();
     expect(headers.get("x-multi")).toBe("a,b");
-
-    (global as any).Request = OriginalRequest;
   });
 
   it("uses undefined body when request lacks body", async () => {
@@ -64,18 +66,34 @@ describe("createRequestHandler", () => {
     const end = jest.fn();
     const res = { statusCode: 200, setHeader: jest.fn(), end } as unknown as ServerResponse;
 
-    const OriginalRequest = global.Request;
-    const RequestMock = jest.fn((input: RequestInfo, init?: RequestInit) =>
-      new OriginalRequest(input, init),
-    );
-    (global as any).Request = RequestMock;
-
     await handler(req, res);
 
     expect(RequestMock).toHaveBeenCalled();
     expect(RequestMock.mock.calls[0][1]!.body).toBeUndefined();
+  });
 
-    (global as any).Request = OriginalRequest;
+  it("uses provided body when request has body", async () => {
+    const handler = createRequestHandler();
+
+    const req = new Readable({
+      read() {
+        this.push("hello");
+        this.push(null);
+      },
+    }) as unknown as IncomingMessage;
+    req.url = "/unknown";
+    req.method = "POST";
+    req.headers = {};
+
+    const end = jest.fn();
+    const res = { statusCode: 0, setHeader: jest.fn(), end } as unknown as ServerResponse;
+
+    await handler(req, res);
+
+    expect(RequestMock).toHaveBeenCalled();
+    const body = RequestMock.mock.calls[0][1]!.body as Uint8Array;
+    expect(Buffer.from(body).toString()).toBe("hello");
+    expect(res.statusCode).toBe(404);
   });
 
   it("handles GET /components/:shopId", async () => {

@@ -37,7 +37,7 @@ describe("ResendProvider", () => {
   it("sanityCheck resolves when credentials valid", async () => {
     process.env.RESEND_API_KEY = "rs";
     global.fetch = jest.fn().mockResolvedValue({ ok: true }) as any;
-    const { ResendProvider } = await import("./resend");
+    const { ResendProvider } = await import("../../resend");
     const provider = new ResendProvider({ sanityCheck: true });
     await expect(provider.ready).resolves.toBeUndefined();
     expect(global.fetch).toHaveBeenCalledWith("https://api.resend.com/domains", {
@@ -51,7 +51,7 @@ describe("ResendProvider", () => {
     global.fetch = jest
       .fn()
       .mockResolvedValue({ ok: false, status: 401 }) as any;
-    const { ResendProvider } = await import("./resend");
+    const { ResendProvider } = await import("../../resend");
     const provider = new ResendProvider({ sanityCheck: true });
     await expect(provider.ready).rejects.toThrow(
       "Resend credentials rejected with status 401"
@@ -59,7 +59,7 @@ describe("ResendProvider", () => {
   });
 
   it("send exits early when RESEND_API_KEY missing", async () => {
-    const { ResendProvider } = await import("./resend");
+    const { ResendProvider } = await import("../../resend");
     const provider = new ResendProvider();
     await expect(provider.send(options)).resolves.toBeUndefined();
     expect(mockSend).not.toHaveBeenCalled();
@@ -72,8 +72,8 @@ describe("ResendProvider", () => {
     err.statusCode = 400;
     mockSend.mockRejectedValueOnce(err);
     process.env.CAMPAIGN_FROM = "from@example.com";
-    const { ResendProvider } = await import("./resend");
-    const { ProviderError } = await import("./types");
+    const { ResendProvider } = await import("../../resend");
+    const { ProviderError } = await import("../../types");
     const provider = new ResendProvider();
     const promise = provider.send(options);
     await expect(promise).rejects.toBeInstanceOf(ProviderError);
@@ -87,8 +87,8 @@ describe("ResendProvider", () => {
     err.statusCode = 500;
     mockSend.mockRejectedValueOnce(err);
     process.env.CAMPAIGN_FROM = "from@example.com";
-    const { ResendProvider } = await import("./resend");
-    const { ProviderError } = await import("./types");
+    const { ResendProvider } = await import("../../resend");
+    const { ProviderError } = await import("../../types");
     const provider = new ResendProvider();
     const promise = provider.send(options);
     await expect(promise).rejects.toBeInstanceOf(ProviderError);
@@ -100,8 +100,8 @@ describe("ResendProvider", () => {
     process.env.RESEND_API_KEY = "rs";
     mockSend.mockRejectedValueOnce("boom");
     process.env.CAMPAIGN_FROM = "from@example.com";
-    const { ResendProvider } = await import("./resend");
-    const { ProviderError } = await import("./types");
+    const { ResendProvider } = await import("../../resend");
+    const { ProviderError } = await import("../../types");
     const provider = new ResendProvider();
     const promise = provider.send(options);
     await expect(promise).rejects.toBeInstanceOf(ProviderError);
@@ -116,9 +116,9 @@ describe("ResendProvider", () => {
       global.fetch = jest
         .fn()
         .mockResolvedValue({ json: () => Promise.resolve(stats) }) as any;
-      const { ResendProvider } = await import("./resend");
+      const { ResendProvider } = await import("../../resend");
       const provider = new ResendProvider();
-      const { mapResendStats } = await import("../stats");
+      const { mapResendStats } = await import("../../../stats");
       await expect(provider.getCampaignStats("1")).resolves.toEqual(
         mapResendStats(stats)
       );
@@ -127,9 +127,9 @@ describe("ResendProvider", () => {
     it("returns empty stats on network error", async () => {
       process.env.RESEND_API_KEY = "rs";
       global.fetch = jest.fn().mockRejectedValue(new Error("fail")) as any;
-      const { ResendProvider } = await import("./resend");
+      const { ResendProvider } = await import("../../resend");
       const provider = new ResendProvider();
-      const { mapResendStats } = await import("../stats");
+      const { mapResendStats } = await import("../../../stats");
       await expect(provider.getCampaignStats("1")).resolves.toEqual(
         mapResendStats({})
       );
@@ -142,7 +142,7 @@ describe("ResendProvider", () => {
       global.fetch = jest
         .fn()
         .mockResolvedValue({ json: () => Promise.resolve({ id: "abc" }) }) as any;
-      const { ResendProvider } = await import("./resend");
+      const { ResendProvider } = await import("../../resend");
       const provider = new ResendProvider();
       await expect(provider.createContact("test@example.com")).resolves.toBe(
         "abc"
@@ -154,7 +154,7 @@ describe("ResendProvider", () => {
       global.fetch = jest
         .fn()
         .mockRejectedValue(new Error("fail")) as any;
-      const { ResendProvider } = await import("./resend");
+      const { ResendProvider } = await import("../../resend");
       const provider = new ResendProvider();
       await expect(provider.createContact("test@example.com")).resolves.toBe(
         ""
@@ -166,7 +166,7 @@ describe("ResendProvider", () => {
       global.fetch = jest
         .fn()
         .mockResolvedValue({ json: () => Promise.resolve({}) }) as any;
-      const { ResendProvider } = await import("./resend");
+      const { ResendProvider } = await import("../../resend");
       const provider = new ResendProvider();
       await expect(provider.createContact("test@example.com")).resolves.toBe(
         ""
@@ -181,7 +181,7 @@ describe("ResendProvider", () => {
       global.fetch = jest
         .fn()
         .mockResolvedValue({ json: () => Promise.resolve({ data: segments }) }) as any;
-      const { ResendProvider } = await import("./resend");
+      const { ResendProvider } = await import("../../resend");
       const provider = new ResendProvider();
       await expect(provider.listSegments()).resolves.toEqual(segments);
     });
@@ -194,7 +194,7 @@ describe("ResendProvider", () => {
         .mockResolvedValue(
           { json: () => Promise.resolve({ segments }) }
         ) as any;
-      const { ResendProvider } = await import("./resend");
+      const { ResendProvider } = await import("../../resend");
       const provider = new ResendProvider();
       await expect(provider.listSegments()).resolves.toEqual(segments);
     });
@@ -204,7 +204,7 @@ describe("ResendProvider", () => {
       global.fetch = jest
         .fn()
         .mockRejectedValue(new Error("fail")) as any;
-      const { ResendProvider } = await import("./resend");
+      const { ResendProvider } = await import("../../resend");
       const provider = new ResendProvider();
       await expect(provider.listSegments()).resolves.toEqual([]);
     });

@@ -2,6 +2,8 @@ import { afterEach, describe, expect, it } from "@jest/globals";
 
 const ORIGINAL_ENV = { ...process.env };
 const loadEnv = async () => (await import("@acme/config/env/email")).emailEnv;
+const loadSchema = async () =>
+  (await import("@acme/config/env/email")).emailEnvSchema;
 
 afterEach(() => {
   process.env = { ...ORIGINAL_ENV };
@@ -45,6 +47,98 @@ describe("email provider selection", () => {
     process.env.EMAIL_PROVIDER = "noop";
     const env = await loadEnv();
     expect(env.EMAIL_PROVIDER).toBe("noop");
+  });
+
+  it("supports smtp provider when EMAIL_PROVIDER=smtp", async () => {
+    process.env.EMAIL_PROVIDER = "smtp";
+    const env = await loadEnv();
+    expect(env.EMAIL_PROVIDER).toBe("smtp");
+  });
+});
+
+describe("SMTP configuration", () => {
+  it("coerces SMTP_PORT to a number", async () => {
+    process.env.SMTP_PORT = "587";
+    const env = await loadEnv();
+    expect(env.SMTP_PORT).toBe(587);
+  });
+
+  it("fails when SMTP_PORT is not numeric", async () => {
+    process.env.SMTP_PORT = "not-a-number";
+    await expect(loadEnv()).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+  });
+
+  it.each([
+    ["true", true],
+    ["1", true],
+    ["yes", true],
+    ["FALSE", false],
+    ["0", false],
+  ])("parses SMTP_SECURE=%s", async (value, expected) => {
+    process.env.SMTP_SECURE = value;
+    const env = await loadEnv();
+    expect(env.SMTP_SECURE).toBe(expected);
+  });
+
+  it("fails when SMTP_SECURE is invalid", async () => {
+    process.env.SMTP_SECURE = "maybe";
+    await expect(loadEnv()).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+  });
+});
+
+describe("campaign address normalization", () => {
+  it("lowercases CAMPAIGN_FROM", async () => {
+    process.env.CAMPAIGN_FROM = "MixedCase@Example.COM";
+    const env = await loadEnv();
+    expect(env.CAMPAIGN_FROM).toBe("mixedcase@example.com");
+  });
+});
+
+describe("provider-specific requirements", () => {
+  it("requires SENDGRID_API_KEY when provider is sendgrid", async () => {
+    const schema = await loadSchema();
+    const result = schema.safeParse({ EMAIL_PROVIDER: "sendgrid" });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0]).toMatchObject({
+        path: ["SENDGRID_API_KEY"],
+        message: "Required",
+      });
+    }
+  });
+
+  it("accepts SENDGRID_API_KEY when provider is sendgrid", async () => {
+    const schema = await loadSchema();
+    const result = schema.safeParse({
+      EMAIL_PROVIDER: "sendgrid",
+      SENDGRID_API_KEY: "key",
+    });
+    expect(result.success).toBe(true);
+  });
+
+  it("requires RESEND_API_KEY when provider is resend", async () => {
+    const schema = await loadSchema();
+    const result = schema.safeParse({ EMAIL_PROVIDER: "resend" });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0]).toMatchObject({
+        path: ["RESEND_API_KEY"],
+        message: "Required",
+      });
+    }
+  });
+
+  it("accepts RESEND_API_KEY when provider is resend", async () => {
+    const schema = await loadSchema();
+    const result = schema.safeParse({
+      EMAIL_PROVIDER: "resend",
+      RESEND_API_KEY: "key",
+    });
+    expect(result.success).toBe(true);
   });
 });
 

@@ -41,6 +41,8 @@ export default [
       "**/*.test.{ts,tsx,js,jsx}",
       "**/*.spec.{ts,tsx,js,jsx}",
       "packages/config/jest.preset.cjs",
+      "apps/api/jest.config.cjs",
+      "apps/api/postcss.config.cjs",
     ],
   },
   {

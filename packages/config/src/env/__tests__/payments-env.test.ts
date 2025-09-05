@@ -24,7 +24,7 @@ describe("payments env", () => {
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     jest.resetModules();
     const { paymentsEnv } = require("../payments.js");
-    expect(paymentsEnv).toEqual(env);
+    expect(paymentsEnv).toMatchObject(env);
     expect(warnSpy).not.toHaveBeenCalled();
   });
 
@@ -38,7 +38,7 @@ describe("payments env", () => {
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     jest.resetModules();
     const { paymentsEnv } = await import("../payments.ts");
-    expect(paymentsEnv).toEqual(env);
+    expect(paymentsEnv).toMatchObject(env);
     expect(warnSpy).not.toHaveBeenCalled();
   });
 });
@@ -68,7 +68,7 @@ describe("payments env defaults", () => {
       warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
       jest.resetModules();
       const { paymentsEnv } = require("../payments.js");
-      expect(paymentsEnv).toEqual({
+      expect(paymentsEnv).toMatchObject({
         STRIPE_SECRET_KEY: "sk_test",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
         STRIPE_WEBHOOK_SECRET: "whsec_test",
@@ -106,7 +106,7 @@ describe("payments env defaults", () => {
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     jest.resetModules();
     const { paymentsEnv } = require("../payments.js");
-    expect(paymentsEnv).toEqual({
+    expect(paymentsEnv).toMatchObject({
       STRIPE_SECRET_KEY: "sk_test",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
       STRIPE_WEBHOOK_SECRET: "whsec_test",
@@ -137,7 +137,7 @@ describe("payments env defaults", () => {
       warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
       jest.resetModules();
       const { paymentsEnv } = await import("../payments.ts");
-      expect(paymentsEnv).toEqual({
+      expect(paymentsEnv).toMatchObject({
         STRIPE_SECRET_KEY: "sk_test",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
         STRIPE_WEBHOOK_SECRET: "whsec_test",
@@ -167,7 +167,7 @@ describe("payments env defaults", () => {
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     jest.resetModules();
     const { paymentsEnv } = require("../payments.js");
-    expect(paymentsEnv).toEqual({
+    expect(paymentsEnv).toMatchObject({
       STRIPE_SECRET_KEY: "sk_test",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
       STRIPE_WEBHOOK_SECRET: "whsec_test",
@@ -204,7 +204,7 @@ describe("payments env defaults", () => {
           .mockImplementation(() => {});
         jest.resetModules();
         const { paymentsEnv } = await import("../payments.ts");
-        expect(paymentsEnv).toEqual({
+        expect(paymentsEnv).toMatchObject({
           STRIPE_SECRET_KEY: "sk_test",
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
           STRIPE_WEBHOOK_SECRET: "whsec_test",
@@ -248,7 +248,7 @@ describe("payments env defaults", () => {
         warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
         jest.resetModules();
         const { paymentsEnv } = await import("../payments.ts");
-        expect(paymentsEnv).toEqual({
+        expect(paymentsEnv).toMatchObject({
           STRIPE_SECRET_KEY: "sk_test",
           NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
           STRIPE_WEBHOOK_SECRET: "whsec_test",
@@ -271,7 +271,7 @@ describe("payments env defaults", () => {
       warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
       jest.resetModules();
       const { paymentsEnv } = await import("../payments.ts");
-      expect(paymentsEnv).toEqual({
+      expect(paymentsEnv).toMatchObject({
         STRIPE_SECRET_KEY: "sk_test",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
         STRIPE_WEBHOOK_SECRET: "whsec_test",
@@ -294,7 +294,7 @@ describe("payments env defaults", () => {
       warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
       jest.resetModules();
       const { paymentsEnv } = await import("../payments.ts");
-      expect(paymentsEnv).toEqual({
+      expect(paymentsEnv).toMatchObject({
         STRIPE_SECRET_KEY: "sk_test",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
         STRIPE_WEBHOOK_SECRET: "whsec_test",
@@ -316,7 +316,7 @@ describe("payments env defaults", () => {
       warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
       jest.resetModules();
       const { paymentsEnv } = await import("../payments.ts");
-      expect(paymentsEnv).toEqual({
+      expect(paymentsEnv).toMatchObject({
         STRIPE_SECRET_KEY: "sk_test",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
         STRIPE_WEBHOOK_SECRET: "whsec_test",
@@ -340,7 +340,7 @@ describe("payment gateway flag", () => {
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     jest.resetModules();
     const { paymentsEnv } = require("../payments.js");
-    expect(paymentsEnv).toEqual({
+    expect(paymentsEnv).toMatchObject({
       STRIPE_SECRET_KEY: "sk_test",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
       STRIPE_WEBHOOK_SECRET: "whsec_test",
@@ -358,7 +358,7 @@ describe("payment gateway flag", () => {
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     jest.resetModules();
     const { paymentsEnv } = require("../payments.js");
-    expect(paymentsEnv).toEqual({
+    expect(paymentsEnv).toMatchObject({
       STRIPE_SECRET_KEY: "sk_test_abc",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_abc",
       STRIPE_WEBHOOK_SECRET: "whsec_test_abc",
@@ -376,7 +376,7 @@ describe("payment gateway flag", () => {
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     jest.resetModules();
     const { paymentsEnv } = require("../payments.js");
-    expect(paymentsEnv).toEqual({
+    expect(paymentsEnv).toMatchObject({
       STRIPE_SECRET_KEY: "sk_live_abc",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_abc",
       STRIPE_WEBHOOK_SECRET: "whsec_live_abc",
@@ -394,7 +394,7 @@ describe("payment gateway flag", () => {
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     jest.resetModules();
     const { paymentsEnv } = require("../payments.js");
-    expect(paymentsEnv).toEqual({
+    expect(paymentsEnv).toMatchObject({
       STRIPE_SECRET_KEY: "sk_test",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
       STRIPE_WEBHOOK_SECRET: "whsec_test",

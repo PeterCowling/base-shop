@@ -79,8 +79,7 @@ describe("payments env schema", () => {
           "Invalid payments environment variables",
         );
         expect(errorSpy).toHaveBeenCalledWith(
-          "❌ Invalid payments environment variables:",
-          expect.any(Object),
+          "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
         );
       },
     );

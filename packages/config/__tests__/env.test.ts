@@ -72,9 +72,9 @@ describe("env", () => {
         CMS_ACCESS_TOKEN: "placeholder-token",
         SANITY_API_VERSION: "2021-10-21",
         EMAIL_PROVIDER: "smtp",
-        STRIPE_SECRET_KEY: "dummy-stripe-secret",
-        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "dummy-publishable-key",
-        STRIPE_WEBHOOK_SECRET: "dummy-webhook-secret",
+        STRIPE_SECRET_KEY: "sk_test",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test",
+        STRIPE_WEBHOOK_SECRET: "whsec_test",
       }),
     );
   });

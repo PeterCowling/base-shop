@@ -1,5 +1,4 @@
 // apps/cms/dev-hooks/stackdump.js
-/* eslint-disable no-console */
 if (!global.__STACKDUMP_INSTALLED__) {
   global.__STACKDUMP_INSTALLED__ = true;
 

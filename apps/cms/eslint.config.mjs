@@ -1,6 +1,6 @@
 import baseConfig from "../../eslint.config.mjs";
 
-export default [
+const config = [
   ...baseConfig,
   {
     files: [
@@ -13,3 +13,5 @@ export default [
     },
   },
 ];
+
+export default config;

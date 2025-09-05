@@ -16,6 +16,7 @@ import {
   defaultDeploymentAdapter,
   type ShopDeploymentAdapter,
 } from "./deploymentAdapter";
+import type { Shop } from "@acme/types";
 
 function repoRoot(): string {
   const tryResolve = (p: string): string | null => {
@@ -48,7 +49,7 @@ export async function createShop(
   const themeDefaults = loadTokens(prepared.theme);
   const themeTokens = { ...themeDefaults, ...themeOverrides };
 
-  const shopData = {
+  const shopData: Shop = {
     id,
     name: prepared.name,
     catalogFilters: [],
@@ -68,10 +69,22 @@ export async function createShop(
     enableEditorial: prepared.enableEditorial,
     subscriptionsEnabled: prepared.enableSubscriptions,
     rentalSubscriptions: [],
+    coverageIncluded: true,
+    luxuryFeatures: {
+      blog: false,
+      contentMerchandising: false,
+      raTicketing: false,
+      fraudReviewThreshold: 0,
+      requireStrongCustomerAuth: false,
+      strictReturnConditions: false,
+      trackingDashboard: false,
+      premierDelivery: false,
+    },
+    componentVersions: {},
   };
 
   await prisma.shop.create({
-    data: { id, data: shopData as unknown },
+    data: { id, data: shopData },
   });
 
   try {

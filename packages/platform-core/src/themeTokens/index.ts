@@ -37,7 +37,11 @@ function transpileTokens(filePath: string): TokenMap {
 
 export function loadThemeTokensNode(theme: string): TokenMap {
   if (!theme || theme === "base") return {};
-  const baseDir = join("packages", "themes", theme);
+  // Resolve the workspace root relative to this file so consumers can call
+  // the loader from any package without relying on their current working
+  // directory.
+  const rootDir = join(__dirname, "../../../../..");
+  const baseDir = join(rootDir, "packages", "themes", theme);
   const candidates = [
     join(baseDir, "tailwind-tokens.js"),
     join(baseDir, "tailwind-tokens.ts"),

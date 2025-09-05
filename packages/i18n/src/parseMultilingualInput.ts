@@ -7,9 +7,10 @@ export interface MultilingualField {
 }
 
 export function parseMultilingualInput(
-  name: string,
+  name: unknown,
   locales: readonly Locale[]
 ): MultilingualField | null {
+  if (typeof name !== "string") return null;
   const match = name.match(new RegExp(`^(title|desc)_(${locales.join("|")})$`));
   if (!match) return null;
   const [, field, locale] = match as [unknown, "title" | "desc", Locale];

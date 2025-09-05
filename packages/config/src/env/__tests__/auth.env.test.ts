@@ -338,6 +338,8 @@ describe("AUTH_TOKEN_TTL normalization", () => {
   it.each([
     ["15m", "15m"],
     ["30 s", "30s"],
+    ["45S", "45s"],
+    [" 5 M ", "5m"],
   ])("normalizes unit string '%s' to '%s'", async (input, output) => {
     await withEnv(
       { ...baseVars, AUTH_TOKEN_TTL: input },
@@ -364,6 +366,24 @@ describe("authEnv expiry", () => {
     const diff = authEnv.AUTH_TOKEN_EXPIRES_AT.getTime() - start;
     expect(diff).toBeGreaterThanOrEqual(1000);
     expect(diff).toBeLessThan(2000);
+  });
+
+  it("normalizes TTL before computing expiration", async () => {
+    jest.useFakeTimers().setSystemTime(new Date("2020-01-01T00:00:00Z"));
+    const { authEnv } = await withEnv(
+      {
+        NODE_ENV: "production",
+        NEXTAUTH_SECRET: NEXT_SECRET,
+        SESSION_SECRET,
+        AUTH_TOKEN_TTL: " 2 M ",
+      },
+      () => import("../auth"),
+    );
+    expect(authEnv.AUTH_TOKEN_TTL).toBe(120);
+    expect(authEnv.AUTH_TOKEN_EXPIRES_AT.toISOString()).toBe(
+      "2020-01-01T00:02:00.000Z",
+    );
+    jest.useRealTimers();
   });
 });
 

@@ -87,4 +87,25 @@ describe("payments env schema", () => {
     );
     errorSpy.mockRestore();
   });
+
+  it("throws when STRIPE_SECRET_KEY is missing", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await withEnv(
+      {
+        PAYMENTS_PROVIDER: "stripe",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
+        STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+        STRIPE_SECRET_KEY: undefined,
+      },
+      async () => {
+        await expect(import("../payments.js")).rejects.toThrow(
+          "Invalid payments environment variables"
+        );
+        expect(errorSpy).toHaveBeenCalledWith(
+          "❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe"
+        );
+      }
+    );
+    errorSpy.mockRestore();
+  });
 });

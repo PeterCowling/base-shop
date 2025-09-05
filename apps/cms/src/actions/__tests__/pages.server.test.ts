@@ -5,11 +5,10 @@ const captureException = jest.fn();
 jest.mock("@acme/i18n/src/index", () => ({ LOCALES: ["en", "de"] }), {
   virtual: true,
 });
-jest.mock(
-  "@acme/types/src/index",
-  () => ({ historyStateSchema }),
-  { virtual: true },
-);
+jest.mock("@acme/types", () => ({ historyStateSchema }), { virtual: true });
+jest.mock("@acme/types/src/index", () => ({ historyStateSchema }), {
+  virtual: true,
+});
 jest.mock("../common/auth", () => ({
   ensureAuthorized: jest
     .fn()

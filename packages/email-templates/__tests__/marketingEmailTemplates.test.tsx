@@ -1,45 +1,46 @@
 import * as React from "react";
-import { render } from "@testing-library/react";
-import { marketingEmailTemplates } from "@acme/email-templates";
+import { marketingEmailTemplates, MarketingEmailTemplate } from "@acme/email-templates";
 
 describe("marketingEmailTemplates", () => {
-  const props = {
+  const validProps = {
     headline: "Hello",
-    content: <p>Content</p>,
+    content: <p>Body</p>,
   };
 
-  it("renders provided variants", () => {
-    const basic = marketingEmailTemplates.find((t) => t.id === "basic")!;
-    const centered = marketingEmailTemplates.find((t) => t.id === "centered")!;
-
-    const basicResult = render(basic.make(props));
-    expect(basicResult.getByText("Hello")).toBeInTheDocument();
-    expect(basicResult.container.firstChild).not.toHaveClass("text-center");
-
-    const centeredResult = render(centered.make(props));
-    expect(centeredResult.container.firstChild).toHaveClass("text-center");
+  it("returns empty fragment for missing data", () => {
+    marketingEmailTemplates.forEach((variant) => {
+      const cases: any[] = [
+        undefined,
+        {},
+        { headline: "Hello" },
+        { content: <p /> },
+        { headline: "Hello", content: null },
+      ];
+      cases.forEach((bad) => {
+        const result = variant.make(bad);
+        expect(result.type).toBe(React.Fragment);
+        expect(result.props.children).toBeUndefined();
+      });
+    });
   });
 
-  it("builds subject for centered variant", () => {
-    const centered = marketingEmailTemplates.find((t) => t.id === "centered")!;
-    expect(centered.buildSubject("Hello")).toBe("Hello");
+  it("creates MarketingEmailTemplate with correct className", () => {
+    marketingEmailTemplates.forEach((variant) => {
+      const element = variant.make(validProps);
+      expect(element.type).toBe(MarketingEmailTemplate);
+      if (variant.id === "centered") {
+        expect(element.props.className).toBe("text-center");
+      } else {
+        expect(element.props.className).toBeUndefined();
+      }
+    });
   });
 
-  it("builds subjects for i18n headlines", () => {
-    const variant = marketingEmailTemplates[0];
-    expect(variant.buildSubject("Bienvenido")).toBe("Bienvenido");
-  });
-
-  it("handles missing data gracefully", () => {
-    const variant = marketingEmailTemplates[0];
-    expect(() => variant.make(null as any)).not.toThrow();
-  });
-
-  it("errors on unsupported template id", () => {
-    expect(() => {
-      const unsupported = marketingEmailTemplates.find((t) => t.id === "unknown");
-      unsupported!.make(props);
-    }).toThrow();
+  it("buildSubject returns headline", () => {
+    marketingEmailTemplates.forEach((variant) => {
+      const headline = "Subject";
+      expect(variant.buildSubject(headline)).toBe(headline);
+    });
   });
 });
 

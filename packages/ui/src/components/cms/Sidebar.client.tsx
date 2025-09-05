@@ -99,7 +99,7 @@ function Sidebar({ role, pathname: pathnameProp }: SidebarProps) {
           : pathname.startsWith(fullHref);
       return { ...link, fullHref, active };
     });
-  }, [pathname, role, features.raTicketing]);
+  }, [pathname, role]);
 
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {

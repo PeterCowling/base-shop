@@ -7,16 +7,45 @@ describe("db fallbacks", () => {
     delete process.env.DATABASE_URL;
   });
 
-  it("uses in-memory stub when in test env", async () => {
+  const exerciseStub = async (shop: string, prisma: any) => {
+    await prisma.rentalOrder.create({
+      data: { shop, sessionId: "s1", trackingNumber: "t1" },
+    });
+    await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId: "s1" } },
+      data: { trackingNumber: "t2" },
+    });
+    const orders = await prisma.rentalOrder.findMany({ where: { shop } });
+    expect(orders).toEqual([
+      { shop, sessionId: "s1", trackingNumber: "t2" },
+    ]);
+    await expect(
+      prisma.rentalOrder.update({
+        where: { shop_sessionId: { shop, sessionId: "missing" } },
+        data: { trackingNumber: "t3" },
+      }),
+    ).rejects.toThrow("Order not found");
+  };
+
+  it("uses in-memory stub in test env", async () => {
     await jest.isolateModulesAsync(async () => {
       process.env.NODE_ENV = "test";
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://unused" }),
       }));
       const { prisma } = await import("@acme/platform-core/db");
-      await prisma.rentalOrder.create({ data: { shop: "s1" } });
-      const orders = await prisma.rentalOrder.findMany({});
-      expect(orders).toEqual([{ shop: "s1" }]);
+      await exerciseStub("s1", prisma);
+    });
+  });
+
+  it("uses in-memory stub when DATABASE_URL is undefined", async () => {
+    await jest.isolateModulesAsync(async () => {
+      process.env.NODE_ENV = "production";
+      jest.doMock("@acme/config/env/core", () => ({
+        loadCoreEnv: () => ({}),
+      }));
+      const { prisma } = await import("@acme/platform-core/db");
+      await exerciseStub("s2", prisma);
     });
   });
 
@@ -37,17 +66,29 @@ describe("db fallbacks", () => {
     });
   });
 
-  it("falls back to stub when Prisma client missing", async () => {
+  it("falls back to stub when createRequire throws", async () => {
     await jest.isolateModulesAsync(async () => {
       process.env.NODE_ENV = "production";
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
       }));
-      jest.doMock("@prisma/client", () => ({}), { virtual: true });
+      jest.doMock(
+        "module",
+        () => ({
+          createRequire: () => {
+            throw new Error("cannot load");
+          },
+        }),
+        { virtual: true },
+      );
       const { prisma } = await import("@acme/platform-core/db");
-      await prisma.rentalOrder.create({ data: { shop: "s2" } });
-      const orders = await prisma.rentalOrder.findMany({});
-      expect(orders).toEqual([{ shop: "s2" }]);
+      await prisma.rentalOrder.create({
+        data: { shop: "s3", sessionId: "s3", trackingNumber: "t3" },
+      });
+      const orders = await prisma.rentalOrder.findMany({ where: { shop: "s3" } });
+      expect(orders).toEqual([
+        { shop: "s3", sessionId: "s3", trackingNumber: "t3" },
+      ]);
     });
   });
 });

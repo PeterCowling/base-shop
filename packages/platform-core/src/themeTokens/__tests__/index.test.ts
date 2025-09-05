@@ -106,3 +106,34 @@ describe('loadThemeTokensBrowser', () => {
     ).resolves.toEqual(baseTokens);
   });
 });
+
+describe('token builder', () => {
+  const rootDir = join(__dirname, '../../../../..');
+  const themeDir = join(rootDir, 'packages/themes/partial');
+
+  beforeAll(() => {
+    const realFs = jest.requireActual('node:fs') as typeof fs;
+    (fs.existsSync as jest.Mock).mockImplementation(realFs.existsSync);
+    (fs.readFileSync as jest.Mock).mockImplementation(realFs.readFileSync);
+    fs.mkdirSync(themeDir, { recursive: true });
+    fs.writeFileSync(
+      join(themeDir, 'tailwind-tokens.ts'),
+      "export const tokens = { '--color-bg': '#000', '--space-1': '10px', '--custom-token': 'xyz' } as const;"
+    );
+  });
+
+  afterAll(() => {
+    fs.rmSync(themeDir, { recursive: true, force: true });
+  });
+
+  it('applies theme overrides while retaining defaults', () => {
+    const cwd = process.cwd();
+    process.chdir(rootDir);
+    const tokens = { ...baseTokens, ...loadThemeTokensNode('partial') };
+    process.chdir(cwd);
+    expect(tokens['--color-bg']).toBe('#000');
+    expect(tokens['--space-1']).toBe('10px');
+    expect(tokens['--space-2']).toBe(baseTokens['--space-2']);
+    expect(tokens['--custom-token']).toBe('xyz');
+  });
+});

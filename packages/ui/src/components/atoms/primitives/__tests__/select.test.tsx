@@ -27,11 +27,14 @@ describe("Select", () => {
 
     const user = userEvent.setup();
     await user.click(screen.getByTestId("trigger"));
-    const optionTwo = await screen.findByRole("option", { name: "Two" });
+    let optionTwo = await screen.findByRole("option", { name: "Two" });
     await user.click(optionTwo);
 
     expect(onValueChange).toHaveBeenCalledWith("two");
     expect(onValueChange).toHaveBeenCalledTimes(1);
+
+    await user.click(screen.getByTestId("trigger"));
+    optionTwo = await screen.findByRole("option", { name: "Two" });
     expect(optionTwo.getAttribute("data-state")).toBe("checked");
     expect(optionTwo.querySelector("svg")).not.toBeNull();
   });

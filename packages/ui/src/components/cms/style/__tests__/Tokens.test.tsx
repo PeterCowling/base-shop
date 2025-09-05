@@ -46,7 +46,7 @@ describe("Tokens", () => {
       "--color-fg": "0 0% 0%",
     };
     const handleChange = jest.fn();
-    const { container } = render(
+    const { container, rerender } = render(
       <Tokens tokens={{}} baseTokens={baseTokens} onChange={handleChange} />
     );
 
@@ -62,7 +62,7 @@ describe("Tokens", () => {
       />
     );
 
-    expect(screen.getByText(/Low contrast/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Low contrast/)).toHaveLength(2);
   });
 });
 

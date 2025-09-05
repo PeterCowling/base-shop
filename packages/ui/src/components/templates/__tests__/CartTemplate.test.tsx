@@ -69,7 +69,9 @@ describe("CartTemplate", () => {
 
     const img = container.querySelector("img");
     const video = container.querySelector("video");
-    expect(img).toHaveAttribute("src", expect.stringContaining("/img1.jpg"));
+    expect(
+      decodeURIComponent(img!.getAttribute("src") || "")
+    ).toContain("/img1.jpg");
     expect(video).toHaveAttribute("src", "/vid1.mp4");
 
     const incButtons = screen.getAllByRole("button", { name: "+" });

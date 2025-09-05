@@ -4,9 +4,18 @@ import CurrencySwitcher from "../CurrencySwitcher.client";
 
 const setCurrencySpy = jest.fn();
 
-jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
-  useCurrency: () => ["USD", setCurrencySpy] as const,
-}));
+jest.mock("@acme/platform-core/contexts/CurrencyContext", () => {
+  const React = require("react");
+  return {
+    useCurrency: () => {
+      const [currency, setCurrency] = React.useState("USD");
+      return [currency, (v: string) => {
+        setCurrency(v);
+        setCurrencySpy(v);
+      }] as const;
+    },
+  };
+});
 
 describe("CurrencySwitcher", () => {
   it("calls setCurrency when selecting a new currency and shows it", () => {

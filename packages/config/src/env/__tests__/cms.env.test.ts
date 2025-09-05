@@ -61,11 +61,40 @@ describe("cms sanity env", () => {
     expect(cmsEnv.SANITY_PREVIEW_SECRET).toBe("dummy-preview-secret");
   });
 
-  it("parses SANITY_BASE_URL when valid", async () => {
+  it("strips trailing slash from SANITY_BASE_URL", async () => {
     process.env = { ...baseEnv, SANITY_BASE_URL: "https://sanity.example.com/" };
     jest.resetModules();
     const { cmsEnv } = await import("../cms.ts");
     expect(cmsEnv.SANITY_BASE_URL).toBe("https://sanity.example.com");
+  });
+
+  it("strips trailing slash from CMS_BASE_URL", async () => {
+    process.env = { ...baseEnv, CMS_BASE_URL: "https://cms.example.com/" };
+    jest.resetModules();
+    const { cmsEnv } = await import("../cms.ts");
+    expect(cmsEnv.CMS_BASE_URL).toBe("https://cms.example.com");
+  });
+
+  it("parses CMS_DRAFTS_DISABLED_PATHS and CMS_SEARCH_DISABLED_PATHS", async () => {
+    process.env = {
+      ...baseEnv,
+      CMS_DRAFTS_DISABLED_PATHS: "/foo, /bar , ,/baz ",
+      CMS_SEARCH_DISABLED_PATHS: "/one ,/two, /three ",
+    };
+    jest.resetModules();
+    const { cmsEnv } = await import("../cms.ts");
+    expect(cmsEnv.CMS_DRAFTS_DISABLED_PATHS).toEqual(["/foo", "/bar", "/baz"]);
+    expect(cmsEnv.CMS_SEARCH_DISABLED_PATHS).toEqual(["/one", "/two", "/three"]);
+  });
+
+  it("defaults optional env vars when missing", async () => {
+    process.env = { ...baseEnv };
+    jest.resetModules();
+    const { cmsEnv } = await import("../cms.ts");
+    expect(cmsEnv.SANITY_BASE_URL).toBeUndefined();
+    expect(cmsEnv.CMS_BASE_URL).toBeUndefined();
+    expect(cmsEnv.CMS_DRAFTS_DISABLED_PATHS).toEqual([]);
+    expect(cmsEnv.CMS_SEARCH_DISABLED_PATHS).toEqual([]);
   });
 
   it("throws when SANITY_BASE_URL is invalid", async () => {
@@ -79,6 +108,22 @@ describe("cms sanity env", () => {
       "❌ Invalid CMS environment variables:",
       expect.objectContaining({
         SANITY_BASE_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("throws when CMS_BASE_URL is invalid", async () => {
+    process.env = { ...baseEnv, CMS_BASE_URL: "not-a-url" };
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    await expect(import("../cms.ts")).rejects.toThrow(
+      "Invalid CMS environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid CMS environment variables:",
+      expect.objectContaining({
+        CMS_BASE_URL: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();

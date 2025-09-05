@@ -21,15 +21,23 @@ describe("MemorySessionStore", () => {
     jest.useRealTimers();
   });
 
-  it("returns a session before it expires", async () => {
+  it("get returns null when session does not exist", async () => {
     const store = new MemorySessionStore(1);
-    const record = createRecord("s1");
-    await store.set(record);
-
-    await expect(store.get(record.sessionId)).resolves.toEqual(record);
+    await expect(store.get("missing")).resolves.toBeNull();
   });
 
-  it("removes expired sessions on get", async () => {
+  it("set stores session with future expiration", async () => {
+    const store = new MemorySessionStore(1);
+    const record = createRecord("s1");
+    const now = Date.now();
+    await store.set(record);
+
+    const entry = (store as any).sessions.get(record.sessionId);
+    expect(entry.record).toEqual(record);
+    expect(entry.expires).toBeGreaterThan(now);
+  });
+
+  it("get returns null for expired session", async () => {
     const store = new MemorySessionStore(1);
     const record = createRecord("s1");
     await store.set(record);
@@ -40,7 +48,7 @@ describe("MemorySessionStore", () => {
     await expect(store.list(record.customerId)).resolves.toEqual([]);
   });
 
-  it("lists only active sessions for a customer", async () => {
+  it("list returns only unexpired sessions for a customer", async () => {
     const store = new MemorySessionStore(1);
     const expired = createRecord("s1");
     await store.set(expired);

@@ -26,6 +26,14 @@ describe("products repository", () => {
     expect(readFile).toHaveBeenCalled();
   });
 
+  it("readRepo returns empty array when fs.readFile fails", async () => {
+    const readFile = jest.fn().mockRejectedValue(new Error("EACCES"));
+    jest.doMock("fs", () => ({ promises: { readFile } }));
+    const { readRepo } = await import("../products.server");
+    await expect(readRepo(shop)).resolves.toEqual([]);
+    expect(readFile).toHaveBeenCalled();
+  });
+
   it("writeRepo writes catalogue to temp file then renames", async () => {
     const mkdir = jest.fn();
     const writeFile = jest.fn();
@@ -45,6 +53,27 @@ describe("products repository", () => {
     );
     expect(rename).toHaveBeenCalledWith(tmp, file);
     nowSpy.mockRestore();
+  });
+
+  describe("getProductById", () => {
+    it("returns product when found", async () => {
+      const readFile = jest
+        .fn()
+        .mockResolvedValue('[{"id":"1","row_version":1}]');
+      jest.doMock("fs", () => ({ promises: { readFile } }));
+      const { getProductById } = await import("../products.server");
+      await expect(getProductById(shop, "1")).resolves.toEqual({
+        id: "1",
+        row_version: 1,
+      });
+    });
+
+    it("returns null when product is missing", async () => {
+      const readFile = jest.fn().mockResolvedValue("[]");
+      jest.doMock("fs", () => ({ promises: { readFile } }));
+      const { getProductById } = await import("../products.server");
+      await expect(getProductById(shop, "2")).resolves.toBeNull();
+    });
   });
 
   describe("updateProductInRepo", () => {

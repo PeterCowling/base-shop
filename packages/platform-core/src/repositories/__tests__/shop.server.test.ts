@@ -67,6 +67,14 @@ describe("shop repository", () => {
         "Shop missing not found",
       );
     });
+
+    it("throws when filesystem data is invalid JSON", async () => {
+      findUnique.mockResolvedValue(null);
+      readFile.mockResolvedValue("{not-json");
+      await expect(getShopById("shop1")).rejects.toThrow(
+        "Shop shop1 not found",
+      );
+    });
   });
 
   describe("updateShopInRepo", () => {

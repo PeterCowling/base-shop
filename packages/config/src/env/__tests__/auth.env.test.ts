@@ -274,6 +274,38 @@ describe("authEnvSchema validation", () => {
   });
 });
 
+describe("boolean coercions and defaults", () => {
+  const baseVars = { NEXTAUTH_SECRET: NEXT_SECRET, SESSION_SECRET };
+
+  it.each([
+    [1, true],
+    [0, false],
+  ])("coerces ALLOW_GUEST=%s", async (input, expected) => {
+    const { authEnv } = await withEnv(
+      { ...baseVars, ALLOW_GUEST: input as any },
+      () => import("../auth"),
+    );
+    expect(authEnv.ALLOW_GUEST).toBe(expected);
+  });
+
+  it.each([
+    [1, true],
+    [0, false],
+  ])("coerces ENFORCE_2FA=%s", async (input, expected) => {
+    const { authEnv } = await withEnv(
+      { ...baseVars, ENFORCE_2FA: input as any },
+      () => import("../auth"),
+    );
+    expect(authEnv.ENFORCE_2FA).toBe(expected);
+  });
+
+  it("defaults ALLOW_GUEST and ENFORCE_2FA to false", async () => {
+    const { authEnv } = await withEnv(baseVars, () => import("../auth"));
+    expect(authEnv.ALLOW_GUEST).toBe(false);
+    expect(authEnv.ENFORCE_2FA).toBe(false);
+  });
+});
+
 describe("AUTH_TOKEN_TTL normalization", () => {
   const baseVars = {
     NODE_ENV: "production",

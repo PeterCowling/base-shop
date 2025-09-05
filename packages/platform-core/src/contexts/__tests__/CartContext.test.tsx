@@ -53,6 +53,27 @@ describe("CartProvider initial load", () => {
     expect(setSpy).toHaveBeenCalledWith("cart", JSON.stringify(server.cart));
   });
 
+  it("handles cache write failures gracefully", async () => {
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValue({ ok: true, json: async () => server });
+    jest
+      .spyOn(Storage.prototype, "setItem")
+      .mockImplementation(() => {
+        throw new Error("fail");
+      });
+
+    render(
+      <CartProvider>
+        <CartDisplay />
+      </CartProvider>
+    );
+
+    await waitFor(() =>
+      expect(screen.getByTestId("count").textContent).toBe("1")
+    );
+    expect(localStorage.getItem("cart")).toBeNull();
+  });
+
   it("falls back to cached cart on failure and registers online listener", async () => {
     const fetchMock = global.fetch as jest.Mock;
     fetchMock.mockRejectedValue(new Error("offline"));
@@ -228,6 +249,35 @@ describe("CartProvider offline fallback", () => {
     expect(removeSpy).not.toHaveBeenCalled();
 
     errorSpy.mockRestore();
+  });
+
+  it("retains cached cart when sync response is non-ok", async () => {
+    window.localStorage.setItem("cart", JSON.stringify(mockCart));
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockRejectedValueOnce(new Error("offline"));
+    fetchMock.mockResolvedValueOnce({ ok: false, json: async () => ({}) });
+
+    const removeSpy = jest.spyOn(window, "removeEventListener");
+
+    render(
+      <CartProvider>
+        <CartDisplay />
+      </CartProvider>
+    );
+
+    await waitFor(() =>
+      expect(screen.getByTestId("count").textContent).toBe("1")
+    );
+
+    act(() => {
+      window.dispatchEvent(new Event("online"));
+    });
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+
+    expect(removeSpy).not.toHaveBeenCalled();
+    expect(localStorage.getItem("cart")).toBe(JSON.stringify(mockCart));
+    expect(screen.getByTestId("count").textContent).toBe("1");
   });
 });
 

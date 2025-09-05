@@ -44,6 +44,36 @@ describe("shipping environment parser", () => {
     errorSpy.mockRestore();
   });
 
+  it("reports missing UPS_KEY when provider is ups", async () => {
+    const load = await getLoader();
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => load({ SHIPPING_PROVIDER: "ups" })).toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("reports missing DHL_KEY when provider is dhl", async () => {
+    const load = await getLoader();
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => load({ SHIPPING_PROVIDER: "dhl" })).toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        DHL_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
   it("rejects unknown providers", async () => {
     const load = await getLoader();
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
@@ -121,6 +151,12 @@ describe("shipping environment parser", () => {
       expect(env.ALLOWED_COUNTRIES).toEqual(["US", "CA", "DE"]);
     });
 
+    it("returns undefined for empty string", async () => {
+      const load = await getLoader();
+      const env = load({ ALLOWED_COUNTRIES: "" });
+      expect(env.ALLOWED_COUNTRIES).toBeUndefined();
+    });
+
     it("eagerly parses from process.env", async () => {
       jest.resetModules();
       process.env = {
@@ -143,6 +179,12 @@ describe("shipping environment parser", () => {
       const load = await getLoader();
       const env = load({ LOCAL_PICKUP_ENABLED: input });
       expect(env.LOCAL_PICKUP_ENABLED).toBe(expected);
+    });
+
+    it("is undefined when not set", async () => {
+      const load = await getLoader();
+      const env = load({});
+      expect(env.LOCAL_PICKUP_ENABLED).toBeUndefined();
     });
 
     it("throws on invalid values", async () => {
@@ -179,6 +221,26 @@ describe("shipping environment parser", () => {
       expect(() => load({ DEFAULT_COUNTRY: "USA" as any })).toThrow(
         "Invalid shipping environment variables",
       );
+      expect(errorSpy).toHaveBeenCalled();
+      errorSpy.mockRestore();
+    });
+  });
+
+  describe("DEFAULT_SHIPPING_ZONE", () => {
+    it("accepts valid zones", async () => {
+      const load = await getLoader();
+      const env = load({ DEFAULT_SHIPPING_ZONE: "eu" });
+      expect(env.DEFAULT_SHIPPING_ZONE).toBe("eu");
+    });
+
+    it("rejects invalid zones", async () => {
+      const load = await getLoader();
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      expect(() =>
+        load({ DEFAULT_SHIPPING_ZONE: "mars" as any }),
+      ).toThrow("Invalid shipping environment variables");
       expect(errorSpy).toHaveBeenCalled();
       errorSpy.mockRestore();
     });

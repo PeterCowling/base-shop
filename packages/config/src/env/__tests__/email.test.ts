@@ -265,6 +265,19 @@ describe("email env module", () => {
       expect(emailEnv.SMTP_SECURE).toBe(true);
     });
 
+    it("leaves SMTP_SECURE undefined when not provided", async () => {
+      process.env = {
+        ...ORIGINAL_ENV,
+        EMAIL_PROVIDER: "smtp",
+        SMTP_URL: "smtp://smtp.example.com",
+        SMTP_PORT: "587",
+        CAMPAIGN_FROM: "from@example.com",
+      } as NodeJS.ProcessEnv;
+      jest.resetModules();
+      const { emailEnv } = await import("../email.ts");
+      expect(emailEnv.SMTP_SECURE).toBeUndefined();
+    });
+
     it("rejects invalid SMTP_SECURE value", async () => {
       process.env = {
         ...ORIGINAL_ENV,

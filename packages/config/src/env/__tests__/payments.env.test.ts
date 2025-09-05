@@ -34,7 +34,7 @@ describe("payments env provider", () => {
     expect(paymentsEnv.STRIPE_SECRET_KEY).toBe("sk_live_123");
   });
 
-  it("throws when stripe secret key missing", async () => {
+  it("logs and throws when stripe secret key missing", async () => {
     const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
       withEnv(
@@ -47,10 +47,13 @@ describe("payments env provider", () => {
         () => import("../payments"),
       ),
     ).rejects.toThrow("Invalid payments environment variables");
-    expect(errSpy).toHaveBeenCalled();
+    expect(errSpy).toHaveBeenCalledWith(
+      "❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe",
+    );
+    errSpy.mockRestore();
   });
 
-  it("throws when stripe webhook secret missing", async () => {
+  it("logs and throws when stripe webhook secret missing", async () => {
     const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
       withEnv(
@@ -63,13 +66,22 @@ describe("payments env provider", () => {
         () => import("../payments"),
       ),
     ).rejects.toThrow("Invalid payments environment variables");
-    expect(errSpy).toHaveBeenCalled();
+    expect(errSpy).toHaveBeenCalledWith(
+      "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
+    );
+    errSpy.mockRestore();
   });
 
-  it("rejects unknown PAYMENTS_PROVIDER", async () => {
+  it("logs and rejects unknown PAYMENTS_PROVIDER", async () => {
+    const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
       withEnv({ PAYMENTS_PROVIDER: "paypal" as any }, () => import("../payments")),
     ).rejects.toThrow("Invalid payments environment variables");
+    expect(errSpy).toHaveBeenCalledWith(
+      "❌ Unsupported PAYMENTS_PROVIDER:",
+      "paypal",
+    );
+    errSpy.mockRestore();
   });
 });
 

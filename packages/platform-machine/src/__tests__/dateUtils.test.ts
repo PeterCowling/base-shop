@@ -6,12 +6,19 @@ import {
   parseTargetDate,
   getTimeRemaining,
   formatDuration,
+  DAY_MS,
 } from '@acme/date-utils/src';
 
 describe('nowIso', () => {
   it('returns a valid ISO string', () => {
     const iso = nowIso();
     expect(new Date(iso).toISOString()).toBe(iso);
+  });
+  it('uses mocked Date.now', () => {
+    const fixed = new Date('2025-02-02T03:04:05Z');
+    jest.useFakeTimers().setSystemTime(fixed);
+    expect(nowIso()).toBe(fixed.toISOString());
+    jest.useRealTimers();
   });
 });
 
@@ -23,13 +30,22 @@ describe('isoDateInNDays', () => {
     jest.useRealTimers();
   });
   it('returns today when 0 days are added', () => {
-    expect(isoDateInNDays(0)).toBe('2025-01-01');
+    const iso = isoDateInNDays(0);
+    expect(iso).toBe('2025-01-01');
+    const diff = (new Date(iso + 'T00:00:00Z').getTime() - Date.now()) / DAY_MS;
+    expect(diff).toBe(0);
   });
   it('returns next day when 1 day is added', () => {
-    expect(isoDateInNDays(1)).toBe('2025-01-02');
+    const iso = isoDateInNDays(1);
+    expect(iso).toBe('2025-01-02');
+    const diff = (new Date(iso + 'T00:00:00Z').getTime() - Date.now()) / DAY_MS;
+    expect(diff).toBe(1);
   });
   it('returns previous day when -1 day is added', () => {
-    expect(isoDateInNDays(-1)).toBe('2024-12-31');
+    const iso = isoDateInNDays(-1);
+    expect(iso).toBe('2024-12-31');
+    const diff = (new Date(iso + 'T00:00:00Z').getTime() - Date.now()) / DAY_MS;
+    expect(diff).toBe(-1);
   });
 });
 
@@ -49,6 +65,9 @@ describe('calculateRentalDays', () => {
   it('returns 1 for past return dates', () => {
     expect(calculateRentalDays('2024-12-31')).toBe(1);
   });
+  it('returns 1 for same-day rentals', () => {
+    expect(calculateRentalDays('2025-01-01')).toBe(1);
+  });
   it('throws on invalid date strings', () => {
     expect(() => calculateRentalDays('invalid')).toThrow('Invalid returnDate');
   });
@@ -59,9 +78,18 @@ describe('formatTimestamp', () => {
     const ts = '2025-01-01T05:06:07Z';
     expect(formatTimestamp(ts)).toBe(new Date(ts).toLocaleString());
   });
+  it('formats ISO timestamp for a locale', () => {
+    const ts = '2025-01-01T05:06:07Z';
+    const expected = new Date(ts).toLocaleString('de-DE');
+    expect(formatTimestamp(ts, 'de-DE')).toBe(expected);
+  });
   it('returns original string for invalid timestamp', () => {
     const bad = 'not-a-date';
     expect(formatTimestamp(bad)).toBe(bad);
+  });
+  it('returns original string for invalid timestamp with locale', () => {
+    const bad = 'still-not-a-date';
+    expect(formatTimestamp(bad, 'en-US')).toBe(bad);
   });
 });
 
@@ -90,6 +118,12 @@ describe('parseTargetDate', () => {
   it('returns null for invalid input', () => {
     expect(parseTargetDate('invalid')).toBeNull();
   });
+  it('returns null for keyword "today"', () => {
+    expect(parseTargetDate('today')).toBeNull();
+  });
+  it('returns null for keyword "tomorrow"', () => {
+    expect(parseTargetDate('tomorrow')).toBeNull();
+  });
 });
 
 describe('getTimeRemaining', () => {
@@ -97,6 +131,15 @@ describe('getTimeRemaining', () => {
     const target = new Date('2025-01-02T00:00:00Z');
     const now = new Date('2025-01-01T00:00:00Z');
     expect(getTimeRemaining(target, now)).toBe(24 * 60 * 60 * 1000);
+  });
+  it('returns negative when target is in the past', () => {
+    const target = new Date('2024-12-31T23:59:50Z');
+    const now = new Date('2025-01-01T00:00:00Z');
+    expect(getTimeRemaining(target, now)).toBeLessThan(0);
+  });
+  it('returns zero when target equals now', () => {
+    const now = new Date('2025-01-01T00:00:00Z');
+    expect(getTimeRemaining(now, now)).toBe(0);
   });
 });
 
@@ -115,6 +158,9 @@ describe('formatDuration', () => {
     const ms =
       24 * 60 * 60 * 1000 + 60 * 60 * 1000 + 60 * 1000 + 1000;
     expect(formatDuration(ms)).toBe('1d 1h 1m 1s');
+  });
+  it('clamps negative durations to 0s', () => {
+    expect(formatDuration(-5000)).toBe('0s');
   });
 });
 

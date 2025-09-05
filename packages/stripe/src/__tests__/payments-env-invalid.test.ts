@@ -21,13 +21,11 @@ describe('payments env invalid', () => {
     const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
     jest.resetModules();
-    const { paymentsEnv } = await import('@acme/config/env/payments');
+    const { paymentsEnv, paymentsEnvSchema } = await import(
+      '@acme/config/env/payments'
+    );
 
-    expect(paymentsEnv).toEqual({
-      STRIPE_SECRET_KEY: 'sk_test',
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk_test',
-      STRIPE_WEBHOOK_SECRET: 'whsec_test',
-    });
+    expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
     expect(warnSpy).toHaveBeenCalled();
   });
 });

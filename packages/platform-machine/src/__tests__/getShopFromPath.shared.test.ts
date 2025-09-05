@@ -21,5 +21,10 @@ describe('getShopFromPath', () => {
   it('returns undefined when no shop segment present', () => {
     expect(getShopFromPath('/cms/foo/bar')).toBeUndefined();
   });
+
+  it('treats parameter-like segments as literal slugs', () => {
+    expect(getShopFromPath('/cms/shop/[shop]')).toBe('[shop]');
+    expect(getShopFromPath('/cms/shop/:shop')).toBe(':shop');
+  });
 });
 

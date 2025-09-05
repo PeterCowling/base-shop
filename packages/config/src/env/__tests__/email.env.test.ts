@@ -115,6 +115,8 @@ describe("smtp options", () => {
       "Invalid email environment variables",
     );
     expect(spy).toHaveBeenCalled();
+    const err = spy.mock.calls[0][1];
+    expect(err.SMTP_PORT._errors).toContain("must be a number");
     spy.mockRestore();
   });
 
@@ -125,22 +127,24 @@ describe("smtp options", () => {
   });
 
   it("rejects invalid SMTP_SECURE", async () => {
-    process.env.SMTP_SECURE = "maybe";
+    process.env.SMTP_SECURE = "foo";
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(loadEnv()).rejects.toThrow(
       "Invalid email environment variables",
     );
     expect(spy).toHaveBeenCalled();
+    const err = spy.mock.calls[0][1];
+    expect(err.SMTP_SECURE._errors).toContain("must be a boolean");
     spy.mockRestore();
   });
 
   it.each([
-    ["true", true],
-    ["1", true],
-    ["yes", true],
-    ["false", false],
-    ["0", false],
-    ["no", false],
+    [" true ", true],
+    [" 1 ", true],
+    [" YeS ", true],
+    [" false ", false],
+    [" 0 ", false],
+    [" NO ", false],
   ])("coerces SMTP_SECURE=%s", async (val, expected) => {
     process.env.SMTP_SECURE = val as string;
     const env = await loadEnv();
@@ -167,5 +171,17 @@ describe("from address defaults", () => {
     process.env.CAMPAIGN_FROM = " User@Example.COM ";
     const env = await loadEnv();
     expect(env.CAMPAIGN_FROM).toBe("user@example.com");
+  });
+
+  it("rejects invalid CAMPAIGN_FROM", async () => {
+    process.env.CAMPAIGN_FROM = "not-an-email";
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(loadEnv()).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(spy).toHaveBeenCalled();
+    const err = spy.mock.calls[0][1];
+    expect(err.CAMPAIGN_FROM._errors).toContain("Invalid email");
+    spy.mockRestore();
   });
 });

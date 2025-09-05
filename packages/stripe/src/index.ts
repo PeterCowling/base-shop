@@ -11,7 +11,9 @@ import Stripe from "stripe";
  * • Pins `apiVersion` to Stripe’s latest GA (“2025-06-30.basil”) so typings
  *   and requests stay in sync.
  */
-export const stripe = new Stripe(coreEnv.STRIPE_SECRET_KEY, {
+// Use a dummy fallback for now. TODO: remove fallback once STRIPE_SECRET_KEY is guaranteed.
+const stripeSecret = coreEnv.STRIPE_SECRET_KEY ?? "dummy-stripe-secret";
+export const stripe = new Stripe(stripeSecret, {
   apiVersion: "2025-06-30.basil",
   httpClient: Stripe.createFetchHttpClient(),
 });

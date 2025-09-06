@@ -40,4 +40,20 @@ describe("Checkout success and cancel flows", () => {
     cy.wait("@confirmPayment");
     cy.location("pathname").should("eq", "/en/cancelled");
   });
+
+  it("shows an error when the Stripe network is unavailable", () => {
+    cy.intercept("POST", "https://api.stripe.com/**", {
+      forceNetworkError: true,
+    }).as("confirmPayment");
+
+    cy.visit("/en/checkout");
+    cy.wait("@createSession");
+    cy.contains("button", "Pay").click();
+    cy.wait("@confirmPayment");
+    cy.location("pathname").should("eq", "/en/cancelled");
+    cy.contains("Payment failed");
+
+    cy.visit("/en/checkout");
+    cy.contains("button", "Pay").should("not.be.disabled");
+  });
 });

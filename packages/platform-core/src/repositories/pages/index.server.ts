@@ -5,12 +5,13 @@ import "server-only";
 import { pageSchema, type Page } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { Prisma } from "@prisma/client";
 import { prisma } from "../../db";
 import { validateShopName } from "../../shops/index";
 import { DATA_ROOT } from "../../dataRoot";
 import { nowIso } from "@acme/date-utils";
 import { z } from "zod";
+
+type Json = Record<string, unknown>;
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */
@@ -119,12 +120,12 @@ export async function savePage(
   try {
     await prisma.page.upsert({
       where: { id: page.id },
-      update: { data: page as Prisma.JsonObject, slug: page.slug },
+      update: { data: page as unknown as Json, slug: page.slug },
       create: {
         id: page.id,
         shopId: shop,
         slug: page.slug,
-        data: page as Prisma.JsonObject,
+        data: page as unknown as Json,
       },
     });
   } catch {
@@ -172,7 +173,7 @@ export async function updatePage(
     await prisma.page.update({
       where: { id: patch.id },
       data: {
-        data: updated as Prisma.JsonObject,
+        data: updated as unknown as Json,
         slug: updated.slug,
       },
     });

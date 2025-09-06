@@ -61,6 +61,25 @@ describe("ProductGrid", () => {
     expect(titles).toEqual(["A item", "B item", "C item"]);
   });
 
+  it("uses provided columns when defined", () => {
+    (global as any).ResizeObserver = undefined;
+    render(
+      <CurrencyProvider>
+        <CartProvider>
+          <ProductGrid
+            skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
+            columns={3}
+            data-testid="grid"
+          />
+        </CartProvider>
+      </CurrencyProvider>
+    );
+    const grid = screen.getByTestId("grid") as HTMLElement;
+    expect(grid).toHaveStyle({
+      gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+    });
+  });
+
   it("overrides responsive columns when explicit count provided", () => {
     render(
       <CurrencyProvider>

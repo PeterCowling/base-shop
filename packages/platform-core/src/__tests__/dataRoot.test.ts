@@ -4,8 +4,16 @@ import * as path from "node:path";
 import type { PathLike } from "node:fs";
 
 describe("resolveDataRoot", () => {
+  const originalEnv = process.env.DATA_ROOT;
+  const originalCwd = process.cwd();
+
   afterEach(() => {
-    delete process.env.DATA_ROOT;
+    if (originalEnv === undefined) {
+      delete process.env.DATA_ROOT;
+    } else {
+      process.env.DATA_ROOT = originalEnv;
+    }
+    process.chdir(originalCwd);
     jest.restoreAllMocks();
     jest.resetModules();
   });

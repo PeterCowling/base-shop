@@ -1,9 +1,12 @@
 declare module "@prisma/client" {
   /**
-   * Augment the generated PrismaClient without overwriting the
-   * existing class definition so model delegate types remain intact.
+   * Augment the generated PrismaClient with a permissive index signature so
+   * dynamic string access is allowed at compile time while preserving all
+   * existing delegate method types. Avoids `any` by returning `unknown`,
+   * which callers can safely narrow via user code or helpers.
    */
-  interface PrismaClient<T = any, U = any, V = any> {
-    [key: string]: any;
+  // Do NOT redeclare the class — merge onto the existing interface only.
+  interface PrismaClient {
+    [key: string]: unknown;
   }
 }

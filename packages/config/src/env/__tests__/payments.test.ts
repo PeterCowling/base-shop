@@ -30,6 +30,25 @@ async function withEnv<T>(
 }
 
 describe("payments env", () => {
+  it("uses defaults when provider is unset without warnings", async () => {
+    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    await withEnv(
+      {
+        PAYMENTS_PROVIDER: undefined,
+        STRIPE_SECRET_KEY: undefined,
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: undefined,
+        STRIPE_WEBHOOK_SECRET: undefined,
+      },
+      async () => {
+        const { paymentsEnv, paymentsEnvSchema } = await import(
+          "../payments.js"
+        );
+        expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
+        expect(warnSpy).not.toHaveBeenCalled();
+      },
+    );
+  });
+
   it("returns defaults when gateway is disabled", async () => {
     warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     await withEnv(
@@ -73,6 +92,18 @@ describe("payments env", () => {
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
       STRIPE_WEBHOOK_SECRET: "whsec_live_123",
     };
+
+    it.each(["sk_test_abc", "sk_live_abc"])(
+      "parses %s secret key",
+      async (key) => {
+        warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+        await withEnv({ ...baseEnv, STRIPE_SECRET_KEY: key }, async () => {
+          const { paymentsEnv } = await import("../payments.js");
+          expect(paymentsEnv.STRIPE_SECRET_KEY).toBe(key);
+          expect(warnSpy).not.toHaveBeenCalled();
+        });
+      },
+    );
 
     it.each([
       [

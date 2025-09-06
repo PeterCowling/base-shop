@@ -1,5 +1,5 @@
 import { prepareOptions, createShopOptionsSchema as baseCreateShopOptionsSchema, type CreateShopOptions } from "./schema";
-import type { DeployStatusBase, DeployShopResult } from "./deployTypes";
+import type { DeployShopResult } from "./deployTypes";
 import { type ShopDeploymentAdapter } from "./deploymentAdapter";
 /**
  * Create a new shop app and seed data.
@@ -7,7 +7,9 @@ import { type ShopDeploymentAdapter } from "./deploymentAdapter";
  */
 export declare function createShop(id: string, opts?: CreateShopOptions, options?: {
     deploy?: boolean;
-}, adapter?: ShopDeploymentAdapter): Promise<DeployStatusBase>;
+}, adapter?: ShopDeploymentAdapter): Promise<DeployShopResult | {
+    status: "pending";
+}>;
 export declare function deployShop(id: string, domain?: string, adapter?: ShopDeploymentAdapter): DeployShopResult;
 export declare function listThemes(): string[];
 /**
@@ -17,7 +19,7 @@ export declare function listThemes(): string[];
  * It returns the default token map for the selected theme so callers can merge
  * in any overrides before persisting to the shop.json file.
  */
-export declare function syncTheme(shop: string, theme: string): Record<string, string>;
+export declare function syncTheme(shop: string, theme: string): Record<string, unknown>;
 export declare const createShopOptionsSchema: typeof baseCreateShopOptionsSchema;
 export { prepareOptions };
 export type { CreateShopOptions, PreparedCreateShopOptions, NavItem } from "./schema";

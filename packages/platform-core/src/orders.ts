@@ -66,6 +66,50 @@ export async function addOrder(
   return order;
 }
 
+export async function markFulfilled(
+  shop: string,
+  sessionId: string,
+): Promise<Order> {
+  const order = await (prisma.rentalOrder.update as any)({
+    where: { shop_sessionId: { shop, sessionId } },
+    data: { fulfilledAt: nowIso() },
+  });
+  return order as Order;
+}
+
+export async function markShipped(
+  shop: string,
+  sessionId: string,
+): Promise<Order> {
+  const order = await (prisma.rentalOrder.update as any)({
+    where: { shop_sessionId: { shop, sessionId } },
+    data: { shippedAt: nowIso() },
+  });
+  return order as Order;
+}
+
+export async function markDelivered(
+  shop: string,
+  sessionId: string,
+): Promise<Order> {
+  const order = await (prisma.rentalOrder.update as any)({
+    where: { shop_sessionId: { shop, sessionId } },
+    data: { deliveredAt: nowIso() },
+  });
+  return order as Order;
+}
+
+export async function markCancelled(
+  shop: string,
+  sessionId: string,
+): Promise<Order> {
+  const order = await (prisma.rentalOrder.update as any)({
+    where: { shop_sessionId: { shop, sessionId } },
+    data: { cancelledAt: nowIso() },
+  });
+  return order as Order;
+}
+
 export async function markReturned(
   shop: string,
   sessionId: string,

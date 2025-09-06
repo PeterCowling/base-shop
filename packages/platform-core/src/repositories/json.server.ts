@@ -19,7 +19,7 @@ import type { Shop } from "@acme/types";
 
 export async function readShop(shop: string): Promise<Shop> {
   const mod = await import("./shops.server");
-  return mod.readShop(shop);
+  return await mod.readShop(shop);
 }
 
 // Alias getShopSettings → readSettings so existing callers keep working.

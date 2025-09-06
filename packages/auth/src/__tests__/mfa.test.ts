@@ -39,79 +39,85 @@ describe("mfa", () => {
     expect(keyuri).toHaveBeenCalledWith("cust", "Acme", "secret");
     expect(result).toEqual({ secret: "secret", otpauth: "otpauth" });
   });
+  describe("verifyMfa", () => {
+    it("findUnique → null returns false", async () => {
+      const { verifyMfa } = await import("../mfa");
+      findUnique.mockResolvedValue(null);
 
-  it("verifyMfa with findUnique → null returns false", async () => {
-    const { verifyMfa } = await import("../mfa");
-    findUnique.mockResolvedValue(null);
+      const result = await verifyMfa("cust", "123456");
 
-    const result = await verifyMfa("cust", "123456");
+      expect(verify).not.toHaveBeenCalled();
+      expect(update).not.toHaveBeenCalled();
+      expect(result).toBe(false);
+    });
 
-    expect(verify).not.toHaveBeenCalled();
-    expect(update).not.toHaveBeenCalled();
-    expect(result).toBe(false);
+    it("valid token with enabled:false enables MFA and returns true", async () => {
+      const { verifyMfa } = await import("../mfa");
+      findUnique.mockResolvedValue({
+        customerId: "cust",
+        secret: "secret",
+        enabled: false,
+      });
+      verify.mockReturnValue(true);
+
+      const result = await verifyMfa("cust", "123456");
+
+      expect(verify).toHaveBeenCalledWith({ token: "123456", secret: "secret" });
+      expect(update).toHaveBeenCalledWith({
+        where: { customerId: "cust" },
+        data: { enabled: true },
+      });
+      expect(result).toBe(true);
+    });
+
+    it("valid token with enabled:true returns true without update call", async () => {
+      const { verifyMfa } = await import("../mfa");
+      findUnique.mockResolvedValue({
+        customerId: "cust",
+        secret: "secret",
+        enabled: true,
+      });
+      verify.mockReturnValue(true);
+
+      const result = await verifyMfa("cust", "123456");
+
+      expect(verify).toHaveBeenCalledWith({ token: "123456", secret: "secret" });
+      expect(update).not.toHaveBeenCalled();
+      expect(result).toBe(true);
+    });
+
+    it("invalid token returns false", async () => {
+      const { verifyMfa } = await import("../mfa");
+      findUnique.mockResolvedValue({
+        customerId: "cust",
+        secret: "secret",
+        enabled: false,
+      });
+      verify.mockReturnValue(false);
+
+      const result = await verifyMfa("cust", "000000");
+
+      expect(verify).toHaveBeenCalledWith({ token: "000000", secret: "secret" });
+      expect(update).not.toHaveBeenCalled();
+      expect(result).toBe(false);
+    });
   });
 
-  it("valid token with enabled:false enables MFA and returns true", async () => {
-    const { verifyMfa } = await import("../mfa");
-    findUnique.mockResolvedValue({
-      customerId: "cust",
-      secret: "secret",
-      enabled: false,
+  describe("isMfaEnabled", () => {
+    it("returns true/false based on the enabled flag", async () => {
+      const { isMfaEnabled } = await import("../mfa");
+      findUnique.mockResolvedValueOnce({ customerId: "cust", enabled: true });
+      await expect(isMfaEnabled("cust")).resolves.toBe(true);
+
+      findUnique.mockResolvedValueOnce({ customerId: "cust", enabled: false });
+      await expect(isMfaEnabled("cust")).resolves.toBe(false);
     });
-    verify.mockReturnValue(true);
 
-    const result = await verifyMfa("cust", "123456");
-
-    expect(verify).toHaveBeenCalledWith({ token: "123456", secret: "secret" });
-    expect(update).toHaveBeenCalledWith({
-      where: { customerId: "cust" },
-      data: { enabled: true },
+    it("returns false when the record is missing", async () => {
+      const { isMfaEnabled } = await import("../mfa");
+      findUnique.mockResolvedValue(null);
+      await expect(isMfaEnabled("cust")).resolves.toBe(false);
     });
-    expect(result).toBe(true);
-  });
-
-  it("valid token with enabled:true returns true without update call", async () => {
-    const { verifyMfa } = await import("../mfa");
-    findUnique.mockResolvedValue({
-      customerId: "cust",
-      secret: "secret",
-      enabled: true,
-    });
-    verify.mockReturnValue(true);
-
-    const result = await verifyMfa("cust", "123456");
-
-    expect(verify).toHaveBeenCalledWith({ token: "123456", secret: "secret" });
-    expect(update).not.toHaveBeenCalled();
-    expect(result).toBe(true);
-  });
-
-  it("invalid token returns false", async () => {
-    const { verifyMfa } = await import("../mfa");
-    findUnique.mockResolvedValue({
-      customerId: "cust",
-      secret: "secret",
-      enabled: false,
-    });
-    verify.mockReturnValue(false);
-
-    const result = await verifyMfa("cust", "000000");
-
-    expect(verify).toHaveBeenCalledWith({ token: "000000", secret: "secret" });
-    expect(update).not.toHaveBeenCalled();
-    expect(result).toBe(false);
-  });
-
-  it("isMfaEnabled returns true/false; null record → false", async () => {
-    const { isMfaEnabled } = await import("../mfa");
-    findUnique.mockResolvedValueOnce({ customerId: "cust", enabled: true });
-    await expect(isMfaEnabled("cust")).resolves.toBe(true);
-
-    findUnique.mockResolvedValueOnce({ customerId: "cust", enabled: false });
-    await expect(isMfaEnabled("cust")).resolves.toBe(false);
-
-    findUnique.mockResolvedValueOnce(null);
-    await expect(isMfaEnabled("cust")).resolves.toBe(false);
   });
 });
 

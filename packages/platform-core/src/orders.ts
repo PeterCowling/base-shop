@@ -9,12 +9,14 @@ import { incrementSubscriptionUsage } from "./subscriptionUsage";
 
 export type Order = RentalOrder;
 
-function normalize<T extends object>(order: T): T {
-  const o = { ...order } as any;
-  Object.keys(o).forEach((k) => {
-    if (o[k] === null) o[k] = undefined;
+function normalize<T extends Order>(order: T): T {
+  const o = { ...order } as Record<keyof T, T[keyof T]>;
+  (Object.keys(o) as Array<keyof T>).forEach((k) => {
+    if (o[k] === null) {
+      o[k] = undefined as T[keyof T];
+    }
   });
-  return o;
+  return o as T;
 }
 
 export async function listOrders(shop: string): Promise<Order[]> {

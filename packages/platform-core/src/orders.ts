@@ -7,7 +7,7 @@ import { trackOrder } from "./analytics";
 import { prisma } from "./db";
 import { incrementSubscriptionUsage } from "./subscriptionUsage";
 
-type Order = RentalOrder;
+export type Order = RentalOrder;
 
 type DbRentalOrder = Record<string, unknown>;
 

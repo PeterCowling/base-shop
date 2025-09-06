@@ -56,5 +56,44 @@ describe("/api/orders/[id]", () => {
     const res = await GET({} as any, { params: { id: "missing" } });
     expect(res.status).toBe(404);
   });
+
+  test("GET returns 401 when session missing", async () => {
+    getCustomerSession.mockResolvedValue(null);
+    const res = await GET({} as any, { params: { id: "ord1" } });
+    expect(res.status).toBe(401);
+    await expect(res.json()).resolves.toEqual({ error: "Unauthorized" });
+  });
+
+  test("PATCH returns 401 when session missing", async () => {
+    getCustomerSession.mockResolvedValue(null);
+    const req = { json: async () => ({ status: "cancelled" }) } as any;
+    const res = await PATCH(req, { params: { id: "ord1" } });
+    expect(res.status).toBe(401);
+    await expect(res.json()).resolves.toEqual({ error: "Unauthorized" });
+  });
+
+  test("PATCH returns 400 for invalid status", async () => {
+    const req = { json: async () => ({ status: "unknown" }) } as any;
+    const res = await PATCH(req, { params: { id: "ord1" } });
+    expect(res.status).toBe(400);
+    await expect(res.json()).resolves.toEqual({ error: "Invalid status" });
+  });
+
+  test("GET returns 500 on backend failure", async () => {
+    getOrdersForCustomer.mockRejectedValue(new Error("boom"));
+    const res = await GET({} as any, { params: { id: "ord1" } });
+    expect(res.status).toBe(500);
+    await expect(res.json()).resolves.toEqual({ error: "boom" });
+  });
+
+  test("PATCH returns 500 on backend failure", async () => {
+    markCancelled.mockRejectedValue(new Error("oops"));
+    const req = { json: async () => ({ status: "cancelled" }) } as any;
+    const res = await PATCH(req, { params: { id: "ord1" } });
+    expect(res.status).toBe(500);
+    await expect(res.json()).resolves.toEqual({ error: "oops" });
+  });
+
+  test.todo("PATCH refunds order once backend supports it");
 });
 

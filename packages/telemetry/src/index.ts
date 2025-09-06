@@ -45,8 +45,9 @@ async function flush() {
         body: JSON.stringify(events),
       });
       break;
-    } catch {
+    } catch (err) {
       attempts++;
+      console.error("Failed to send telemetry", err);
       if (attempts >= MAX_RETRIES) {
         BUFFER.unshift(...events); // restore
       }

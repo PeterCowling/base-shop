@@ -5,25 +5,31 @@ import { createHeadersObject } from "next-secure-headers";
 import helmet from "helmet";
 
 export function middleware(request: NextRequest) {
-  const headers = createHeadersObject({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: "'self'",
-        baseUri: "'self'",
-        objectSrc: "'none'",
-        formAction: "'self'",
-        frameAncestors: "'none'",
+  let headers: Record<string, string> = {};
+  try {
+    headers = createHeadersObject({
+      contentSecurityPolicy: {
+        directives: {
+          defaultSrc: "'self'",
+          baseUri: "'self'",
+          objectSrc: "'none'",
+          formAction: "'self'",
+          frameAncestors: "'none'",
+        },
       },
-    },
-    forceHTTPSRedirect: [
-      true,
-      { maxAge: 60 * 60 * 24 * 365, includeSubDomains: true, preload: true },
-    ],
-    frameGuard: "deny",
-    referrerPolicy: "no-referrer",
-    nosniff: "nosniff",
-    noopen: "noopen",
-  });
+      forceHTTPSRedirect: [
+        true,
+        { maxAge: 60 * 60 * 24 * 365, includeSubDomains: true, preload: true },
+      ],
+      frameGuard: "deny",
+      referrerPolicy: "no-referrer",
+      nosniff: "nosniff",
+      noopen: "noopen",
+    });
+  } catch {
+    // If next-secure-headers fails, continue with helmet headers only.
+    headers = {};
+  }
 
   const helmetHeaders: Record<string, string> = {};
   const helmetRes = {

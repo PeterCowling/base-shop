@@ -64,9 +64,13 @@ primary datastore. The schema includes:
   `(shop, customerId, month)` tuple. See
   [docs/subscription-usage.md](docs/subscription-usage.md).
 - `CustomerProfile` and `CustomerMfa` – customer metadata and MFA
-  secrets keyed by `customerId`.
-- `User` – application users with a unique `email`.
-- `ReverseLogisticsEvent` – return tracking events indexed by `shop`.
+  secrets keyed by `customerId`. See
+  [docs/customer-profiles.md](docs/customer-profiles.md) and
+  [docs/mfa.md](docs/mfa.md).
+- `User` – application users with a unique `email`. See
+  [docs/users.md](docs/users.md).
+- `ReverseLogisticsEvent` – return tracking events indexed by `shop`. See
+  [docs/reverse-logistics-events.md](docs/reverse-logistics-events.md).
 
 ## Persistence
 

@@ -264,6 +264,61 @@ describe("orders", () => {
     });
   });
 
+  describe("getOrdersForCustomer history", () => {
+    it("returns normalized history sorted by startedAt", async () => {
+      prismaMock.rentalOrder.findMany.mockResolvedValue([
+        {
+          id: "1",
+          shop: "shop",
+          customerId: "cust",
+          startedAt: "2024-01-01T00:00:00.000Z",
+          fulfilledAt: "2024-01-02T00:00:00.000Z",
+          foo: null,
+        },
+        {
+          id: "2",
+          shop: "shop",
+          customerId: "cust",
+          startedAt: "2024-02-01T00:00:00.000Z",
+          cancelledAt: "2024-02-02T00:00:00.000Z",
+        },
+        {
+          id: "3",
+          shop: "shop",
+          customerId: "cust",
+          startedAt: "2024-03-01T00:00:00.000Z",
+          returnedAt: "2024-03-02T00:00:00.000Z",
+        },
+        {
+          id: "4",
+          shop: "shop",
+          customerId: "cust",
+          startedAt: "2024-04-01T00:00:00.000Z",
+          refundedAt: "2024-04-02T00:00:00.000Z",
+        },
+      ]);
+      const result = await getOrdersForCustomer("shop", "cust");
+      expect(prismaMock.rentalOrder.findMany).toHaveBeenCalledWith({
+        where: { shop: "shop", customerId: "cust" },
+      });
+      expect(result.map((o) => o.id)).toEqual(["1", "2", "3", "4"]);
+      expect(result.map((o) => o.startedAt)).toEqual([
+        "2024-01-01T00:00:00.000Z",
+        "2024-02-01T00:00:00.000Z",
+        "2024-03-01T00:00:00.000Z",
+        "2024-04-01T00:00:00.000Z",
+      ]);
+      expect(result[0].foo).toBeUndefined();
+    });
+
+    it("throws when lookup fails", async () => {
+      prismaMock.rentalOrder.findMany.mockRejectedValue(new Error("fail"));
+      await expect(getOrdersForCustomer("shop", "cust")).rejects.toThrow(
+        "fail",
+      );
+    });
+  });
+
   describe("setReturnTracking", () => {
     it("stores tracking info", async () => {
       const mockOrder = { id: "1" };

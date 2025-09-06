@@ -37,35 +37,38 @@ describe("MemorySessionStore", () => {
     expect(entry.expires).toBeGreaterThan(now);
   });
 
-  it("get returns null for expired session", async () => {
+  it("get returns record before expiry and null after TTL", async () => {
     const store = new MemorySessionStore(1);
     const record = createRecord("s1");
     await store.set(record);
 
+    await expect(store.get(record.sessionId)).resolves.toEqual(record);
+
     jest.advanceTimersByTime(1001);
 
     await expect(store.get(record.sessionId)).resolves.toBeNull();
-    await expect(store.list(record.customerId)).resolves.toEqual([]);
   });
 
-  it("list returns only unexpired sessions for a customer", async () => {
+  it("list returns only unexpired sessions for the specified customerId", async () => {
     const store = new MemorySessionStore(1);
-    const expired = createRecord("s1");
-    await store.set(expired);
+    const first = createRecord("s1");
+    await store.set(first);
 
     jest.advanceTimersByTime(500);
 
-    const active = createRecord("s2");
+    const second = createRecord("s2");
     const otherCustomer = createRecord("s3", "c2");
-    await store.set(active);
+    await store.set(second);
     await store.set(otherCustomer);
+
+    await expect(store.list("c1")).resolves.toEqual([first, second]);
 
     jest.advanceTimersByTime(600);
 
-    await expect(store.list("c1")).resolves.toEqual([active]);
+    await expect(store.list("c1")).resolves.toEqual([second]);
   });
 
-  it("deletes sessions", async () => {
+  it("delete removes existing session", async () => {
     const store = new MemorySessionStore(1);
     const record = createRecord("s1");
     await store.set(record);
@@ -73,6 +76,7 @@ describe("MemorySessionStore", () => {
     await store.delete(record.sessionId);
 
     await expect(store.get(record.sessionId)).resolves.toBeNull();
+    await expect(store.list(record.customerId)).resolves.toEqual([]);
   });
 });
 

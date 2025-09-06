@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
       carrier: body.carrier,
       premierDelivery,
     });
-    return NextResponse.json({ rate });
+    return NextResponse.json(rate);
   } catch (err) {
     return NextResponse.json(
       { error: (err as Error).message },

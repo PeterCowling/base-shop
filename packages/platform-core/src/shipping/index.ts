@@ -1,6 +1,13 @@
 // packages/platform-core/src/shipping/index.ts
 
 import { shippingEnv } from "@acme/config/env/shipping";
+
+export interface ShippingRate {
+  rate: number;
+  surcharge?: number;
+  serviceLabel?: string;
+}
+
 export interface ShippingRateRequest {
   provider: "ups" | "dhl" | "premier-shipping";
   fromPostalCode: string;
@@ -31,7 +38,7 @@ export async function getShippingRate({
   window,
   carrier,
   premierDelivery,
-}: ShippingRateRequest): Promise<unknown> {
+}: ShippingRateRequest): Promise<ShippingRate> {
   if (provider === "premier-shipping") {
     if (!premierDelivery) {
       throw new Error("Premier delivery not configured");
@@ -91,7 +98,12 @@ export async function getShippingRate({
     throw new Error(`Failed to fetch rate from ${provider}`);
   }
 
-  return res.json();
+  const data = await res.json();
+  return {
+    rate: data.rate,
+    surcharge: data.surcharge,
+    serviceLabel: data.serviceLabel,
+  };
 }
 
 export interface TrackingStatusRequest {

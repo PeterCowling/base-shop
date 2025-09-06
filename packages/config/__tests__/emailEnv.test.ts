@@ -52,6 +52,14 @@ describe("emailEnv", () => {
     expect(spy).toHaveBeenCalled();
   });
 
+  it("throws and logs when RESEND_API_KEY is missing", async () => {
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(
+      withEnv({ EMAIL_PROVIDER: "resend" }, () => import("../src/env/email")),
+    ).rejects.toThrow("Invalid email environment variables");
+    expect(spy).toHaveBeenCalled();
+  });
+
   it("parses sendgrid config without logging when key is provided", async () => {
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     const { emailEnv } = await withEnv(

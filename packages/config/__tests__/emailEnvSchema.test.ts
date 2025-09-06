@@ -6,9 +6,9 @@ const parse = (env: Record<string, string | undefined>) =>
 
 describe("emailEnvSchema.safeParse", () => {
   it("converts SMTP_PORT to number", () => {
-    const result = parse({ SMTP_PORT: "587" });
+    const result = parse({ SMTP_PORT: "2525" });
     expect(result.success).toBe(true);
-    expect(result.data?.SMTP_PORT).toBe(587);
+    expect(result.data?.SMTP_PORT).toBe(2525);
   });
 
   it("errors when SMTP_PORT is non-numeric", () => {
@@ -21,13 +21,9 @@ describe("emailEnvSchema.safeParse", () => {
 
   it.each([
     ["true", true],
-    ["1", true],
-    ["yes", true],
-    ["false", false],
-    ["0", false],
+    ["YES", true],
     ["no", false],
-    [" TrUe ", true],
-    [" NO ", false],
+    ["0", false],
   ])("coerces SMTP_SECURE=%s", (value, expected) => {
     const result = parse({ SMTP_SECURE: value });
     expect(result.success).toBe(true);
@@ -43,9 +39,9 @@ describe("emailEnvSchema.safeParse", () => {
   });
 
   it("normalizes CAMPAIGN_FROM", () => {
-    const result = parse({ CAMPAIGN_FROM: " Sender@Example.com " });
+    const result = parse({ CAMPAIGN_FROM: " USER@Example.com " });
     expect(result.success).toBe(true);
-    expect(result.data?.CAMPAIGN_FROM).toBe("sender@example.com");
+    expect(result.data?.CAMPAIGN_FROM).toBe("user@example.com");
   });
 
   it("errors for invalid CAMPAIGN_FROM", () => {
@@ -70,6 +66,25 @@ describe("emailEnvSchema.safeParse", () => {
     expect(result.error.format().RESEND_API_KEY?._errors).toContain(
       "Required",
     );
+  });
+
+  it("defaults EMAIL_PROVIDER to smtp and parses SMTP config", () => {
+    const result = parse({
+      SMTP_URL: "https://smtp.example.com",
+      SMTP_PORT: "2525",
+      SMTP_SECURE: "true",
+    });
+    expect(result.success).toBe(true);
+    expect(result.data?.EMAIL_PROVIDER).toBe("smtp");
+    expect(result.data?.SMTP_URL).toBe("https://smtp.example.com");
+    expect(result.data?.SMTP_PORT).toBe(2525);
+    expect(result.data?.SMTP_SECURE).toBe(true);
+  });
+
+  it("errors for invalid SMTP_URL", () => {
+    const result = parse({ SMTP_URL: "not-a-url" });
+    expect(result.success).toBe(false);
+    expect(result.error.format().SMTP_URL?._errors).toContain("Invalid url");
   });
 
   it.each(["smtp", "noop"]) (

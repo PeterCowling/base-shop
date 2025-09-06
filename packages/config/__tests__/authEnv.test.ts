@@ -216,14 +216,14 @@ describe("authEnv", () => {
 
     it("appends seconds to numeric AUTH_TOKEN_TTL", async () => {
       const { snapshot, authEnv } = await withEnv(
-        { ...baseVars, AUTH_TOKEN_TTL: "60" },
+        { ...baseVars, AUTH_TOKEN_TTL: "10" },
         async () => {
           const mod = await import("../src/env/auth");
           return { snapshot: { ...process.env }, authEnv: mod.authEnv };
         },
       );
-      expect(snapshot.AUTH_TOKEN_TTL).toBe("60s");
-      expect(authEnv.AUTH_TOKEN_TTL).toBe(60);
+      expect(snapshot.AUTH_TOKEN_TTL).toBe("10s");
+      expect(authEnv.AUTH_TOKEN_TTL).toBe(10);
     });
 
     it("trims and normalizes AUTH_TOKEN_TTL with trailing spaces", async () => {
@@ -254,14 +254,18 @@ describe("authEnv", () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
       await expect(
         withEnv(
-          { ...baseVars, AUTH_TOKEN_TTL: "abc" },
+          { ...baseVars, AUTH_TOKEN_TTL: "xyz" },
           () => import("../src/env/auth"),
         ),
       ).rejects.toThrow("Invalid auth environment variables");
       expect(spy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
-          AUTH_TOKEN_TTL: { _errors: expect.arrayContaining([expect.any(String)]) },
+          AUTH_TOKEN_TTL: {
+            _errors: expect.arrayContaining([
+              "AUTH_TOKEN_TTL must be a string like '60s' or '15m'",
+            ]),
+          },
         }),
       );
     });

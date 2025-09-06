@@ -14,6 +14,10 @@ describe('helpers', () => {
   });
 
   describe('extractSummary', () => {
+    it('returns empty string when changelog has only comments and blank lines', () => {
+      const log = '# heading\n\n# another comment\n\n';
+      expect(extractSummary(log)).toBe('');
+    });
     it('returns first non-comment line', () => {
       const log = '# heading\n\nFirst line\nSecond line';
       expect(extractSummary(log)).toBe('First line');

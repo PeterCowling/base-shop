@@ -1,0 +1,191 @@
+import { render, screen, within, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { act } from "react-dom/test-utils";
+import PageBuilder from "../src/components/cms/PageBuilder";
+
+let dndHandlers: any = {};
+
+jest.mock("@dnd-kit/core", () => {
+  const React = require("react");
+  return {
+    DndContext: (props: any) => {
+      dndHandlers = props;
+      return <div>{props.children}</div>;
+    },
+    DragOverlay: ({ children }: any) => <div>{children}</div>,
+    useSensor: () => ({}),
+    useSensors: (...s: any[]) => s,
+    PointerSensor: function PointerSensor() {},
+    KeyboardSensor: function KeyboardSensor() {},
+    useDroppable: () => ({ setNodeRef: jest.fn(), isOver: false }),
+  };
+});
+
+jest.mock("@dnd-kit/sortable", () => ({
+  SortableContext: ({ children }: any) => <div>{children}</div>,
+  rectSortingStrategy: jest.fn(),
+  useSortable: () => ({
+    attributes: {},
+    listeners: {},
+    setNodeRef: jest.fn(),
+    transform: null,
+    isDragging: false,
+  }),
+  arrayMove: (arr: any[], from: number, to: number) => {
+    const copy = arr.slice();
+    const [item] = copy.splice(from, 1);
+    copy.splice(to, 0, item);
+    return copy;
+  },
+  sortableKeyboardCoordinates: jest.fn(),
+}));
+
+jest.mock("@ui/components/cms/page-builder/Palette", () => ({
+  __esModule: true,
+  default: ({ onAdd }: any) => (
+    <button onClick={() => onAdd("Text")}>Add Block</button>
+  ),
+}));
+
+jest.mock("@ui/hooks/useFileUpload", () => ({
+  __esModule: true,
+  default: () => ({ onDrop: jest.fn(), progress: 0, isValid: true }),
+}));
+
+jest.mock("@acme/i18n", () => ({
+  __esModule: true,
+  useTranslations: () => (key: string) => key,
+}));
+
+jest.mock("@acme/i18n/locales", () => ({ locales: ["en"] }));
+
+jest.mock("next/navigation", () => ({ usePathname: () => "/shop" }));
+
+jest.mock("@ui/components/cms/page-builder/CanvasItem", () => ({
+  __esModule: true,
+  default: ({ component, onRemove }: any) => {
+    const overrides = component.styles ? JSON.parse(component.styles) : {};
+    const color = overrides.color?.fg;
+    return (
+      <div role="listitem">
+        <div data-testid={`block-${component.id}`} style={{ color }}>
+          {component.type}
+        </div>
+        <button onClick={onRemove}>×</button>
+      </div>
+    );
+  },
+}));
+
+jest.mock("@ui/components/cms/page-builder/Block", () => ({
+  __esModule: true,
+  default: ({ component }: any) => {
+    const overrides = component.styles ? JSON.parse(component.styles) : {};
+    const color = overrides.color?.fg;
+    return (
+      <div data-testid={`block-${component.id}`} style={{ color }}>
+        {component.type}
+      </div>
+    );
+  },
+}));
+
+jest.mock("@ui/components/cms/blocks", () => ({
+  blockRegistry: {
+    Text: { component: (props: any) => <div {...props} /> },
+  },
+  atomRegistry: {
+    Text: { component: (props: any) => <div {...props} />, previewImage: "" },
+  },
+  moleculeRegistry: {},
+  organismRegistry: {},
+  containerRegistry: {},
+  layoutRegistry: {},
+  overlayRegistry: {},
+}));
+
+describe("PageBuilder integration", () => {
+  it("adds, reorders, deletes blocks and updates styles", async () => {
+    const user = userEvent.setup();
+    let componentsState: any[] = [];
+    const onChange = jest.fn((c) => {
+      componentsState = c;
+    });
+
+    const page = {
+      id: "p1",
+      slug: "slug",
+      updatedAt: "2024-01-01",
+      status: "draft",
+      seo: { title: { en: "" }, description: {} },
+      components: [],
+    } as any;
+
+    render(
+      <PageBuilder
+        page={page}
+        onSave={async () => {}}
+        onPublish={async () => {}}
+        onChange={onChange}
+      />,
+    );
+
+    // Add first block
+    await user.click(screen.getByText("Add Block"));
+    await waitFor(() => expect(componentsState).toHaveLength(1));
+    expect(screen.getAllByRole("listitem")).toHaveLength(1);
+    const firstId = componentsState[0].id;
+
+    // Open style panel and change foreground color
+    await user.click(screen.getByText("Style"));
+    const fgInput = screen.getByLabelText("cms.style.foreground");
+    await user.type(fgInput, "#123456");
+    await act(async () => {});
+    expect(fgInput).toHaveValue("#123456");
+    const blockEl = await screen.findByTestId(`block-${firstId}`);
+    expect(blockEl).toHaveStyle({ color: "#123456" });
+
+    const undo = screen.getByText("Undo");
+    expect(undo).not.toBeDisabled();
+
+    // Add second block
+    await user.click(screen.getByText("Add Block"));
+    await waitFor(() => expect(componentsState).toHaveLength(2));
+    expect(screen.getAllByRole("listitem")).toHaveLength(2);
+    const secondId = componentsState[1].id;
+
+    // Drag second block before first using captured handlers
+    act(() => {
+      dndHandlers.onDragStart({
+        active: {
+          id: secondId,
+          data: { current: { from: "canvas", index: 1, parentId: undefined, type: "Text" } },
+        },
+      });
+      dndHandlers.onDragEnd({
+        active: {
+          id: secondId,
+          data: { current: { from: "canvas", index: 1, parentId: undefined, type: "Text" } },
+        },
+        over: {
+          id: firstId,
+          data: { current: { index: 0, parentId: null } },
+        },
+      });
+    });
+    await waitFor(() => expect(componentsState[0].id).toBe(secondId));
+    expect(screen.getAllByTestId(/block-/)[0]).toHaveAttribute(
+      "data-testid",
+      `block-${secondId}`,
+    );
+
+    // Delete the first block (which is secondId after reorder)
+    const firstItem = screen.getAllByRole("listitem")[0];
+    await user.click(within(firstItem).getByRole("button"));
+    expect(screen.getAllByRole("listitem")).toHaveLength(1);
+
+    // Undo restores deleted block
+    await user.click(undo);
+    expect(screen.getAllByRole("listitem")).toHaveLength(2);
+  });
+});

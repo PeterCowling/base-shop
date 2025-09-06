@@ -1,9 +1,26 @@
 import {
   flattenInventoryItem,
   expandInventoryItem,
+  normalizeQuantity,
+  computeAvailability,
+  applyInventoryBatch,
   type RawInventoryItem,
 } from "../inventory";
 import type { InventoryItem } from "@acme/types";
+
+describe("normalizeQuantity", () => {
+  it("handles pair units", () => {
+    expect(normalizeQuantity(3, "pair")).toBe(6);
+  });
+
+  it("handles dozen units", () => {
+    expect(normalizeQuantity(2, "dozen")).toBe(24);
+  });
+
+  it("returns NaN for invalid values", () => {
+    expect(Number.isNaN(normalizeQuantity("foo"))).toBe(true);
+  });
+});
 
 describe("flattenInventoryItem", () => {
   it("includes lowStockThreshold when provided", () => {
@@ -109,6 +126,103 @@ describe("expandInventoryItem", () => {
     };
 
     expect(() => expandInventoryItem(raw)).toThrow();
+  });
+
+  it("throws when sku is missing", () => {
+    const raw: RawInventoryItem = {
+      productId: "prod8",
+      quantity: "1",
+      variantAttributes: { color: "white" },
+    } as any;
+
+    expect(() => expandInventoryItem(raw)).toThrow();
+  });
+
+  it("throws when productId is missing", () => {
+    const raw: RawInventoryItem = {
+      sku: "sku8",
+      quantity: "1",
+      variantAttributes: { color: "white" },
+    } as any;
+
+    expect(() => expandInventoryItem(raw)).toThrow();
+  });
+
+  it("throws when quantity is missing", () => {
+    const raw: RawInventoryItem = {
+      sku: "sku9",
+      productId: "prod9",
+      variantAttributes: { color: "white" },
+    } as any;
+
+    expect(() => expandInventoryItem(raw)).toThrow();
+  });
+
+  it("throws when lowStockThreshold is invalid", () => {
+    const raw: RawInventoryItem = {
+      sku: "sku10",
+      productId: "prod10",
+      quantity: "1",
+      lowStockThreshold: "-2",
+      variantAttributes: { color: "white" },
+    };
+
+    expect(() => expandInventoryItem(raw)).toThrow();
+  });
+});
+
+describe("computeAvailability", () => {
+  it("accounts for reserved and requested quantities", () => {
+    expect(computeAvailability(10, 2, 5)).toEqual({
+      reserved: 2,
+      available: 8,
+      canFulfill: true,
+    });
+
+    expect(computeAvailability(5, 2, 4)).toEqual({
+      reserved: 2,
+      available: 3,
+      canFulfill: false,
+    });
+  });
+
+  it("allows backorders when enabled", () => {
+    expect(computeAvailability(5, 2, 4, true)).toEqual({
+      reserved: 2,
+      available: 3,
+      canFulfill: true,
+    });
+  });
+});
+
+describe("applyInventoryBatch", () => {
+  it("updates quantities and detects low stock", () => {
+    const items: InventoryItem[] = [
+      {
+        sku: "a",
+        productId: "prodA",
+        quantity: 5,
+        lowStockThreshold: 2,
+        variantAttributes: {},
+      },
+      {
+        sku: "b",
+        productId: "prodB",
+        quantity: 1,
+        variantAttributes: {},
+      },
+    ];
+
+    const { updated, lowStock } = applyInventoryBatch(items, [
+      { sku: "a", delta: -4 },
+      { sku: "b", delta: 3 },
+    ]);
+
+    const itemA = updated.find((i) => i.sku === "a")!;
+    const itemB = updated.find((i) => i.sku === "b")!;
+    expect(itemA.quantity).toBe(1);
+    expect(itemB.quantity).toBe(4);
+    expect(lowStock).toEqual([itemA]);
   });
 });
 

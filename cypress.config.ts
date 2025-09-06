@@ -1,5 +1,6 @@
 // cypress.config.ts
 import { defineConfig } from "cypress";
+import { join } from "node:path";
 
 export default defineConfig({
   e2e: {
@@ -16,7 +17,10 @@ export default defineConfig({
       NEXTAUTH_SECRET:
         process.env.NEXTAUTH_SECRET ||
         "test-nextauth-secret-32-chars-long-string!",
-      TEST_DATA_ROOT: process.env.TEST_DATA_ROOT || "test/data/shops"
+      TEST_DATA_ROOT: join(
+        process.env.TEST_DATA_ROOT || "test/data",
+        "shops"
+      )
     },
     defaultCommandTimeout: 10000
   }

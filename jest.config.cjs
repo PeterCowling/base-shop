@@ -236,6 +236,7 @@ const config = {
     global: {
       lines: 80,
       branches: 80,
+      functions: 80,
     },
   },
   rootDir: '.', // each workspace already passes --config ../../jest.config.cjs

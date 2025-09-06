@@ -11,6 +11,7 @@ import { applyFriendlyZodMessages, friendlyErrorMap } from "../zodErrorMap";
 describe("applyFriendlyZodMessages", () => {
   test("sets the global error map", () => {
     const spy = (z as any).setErrorMap as jest.Mock;
+    const original = z.getErrorMap();
     applyFriendlyZodMessages();
     expect(spy).toHaveBeenCalledWith(friendlyErrorMap);
     expect(z.getErrorMap()).toBe(friendlyErrorMap);
@@ -18,6 +19,24 @@ describe("applyFriendlyZodMessages", () => {
     const friendlyMsg =
       z.string().safeParse(undefined).error?.issues[0].message;
     expect(friendlyMsg).toBe("Required");
+
+    z.setErrorMap(original);
+    spy.mockClear();
+  });
+
+  test("updates error messages globally", () => {
+    const schema = z.object({ name: z.string().min(5) });
+    const original = z.getErrorMap();
+
+    const before = schema.safeParse({ name: "abc" }).error?.issues[0].message;
+    expect(before).toBe("String must contain at least 5 character(s)");
+
+    applyFriendlyZodMessages();
+
+    const after = schema.safeParse({ name: "abc" }).error?.issues[0].message;
+    expect(after).toBe("Must be at least 5 characters");
+
+    z.setErrorMap(original);
   });
 });
 

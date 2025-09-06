@@ -11,6 +11,8 @@ import { DATA_ROOT } from "../../dataRoot";
 import { nowIso } from "@acme/date-utils";
 import { z } from "zod";
 
+const useDb = !!process.env.DATABASE_URL;
+
 type Json = Record<string, unknown>;
 
 /* -------------------------------------------------------------------------- */
@@ -40,6 +42,18 @@ async function writePages(shop: string, pages: Page[]): Promise<void> {
   const tmp = `${pagesPath(shop)}.${Date.now()}.tmp`;
   await fs.writeFile(tmp, JSON.stringify(pages, null, 2), "utf8");
   await fs.rename(tmp, pagesPath(shop));
+}
+
+async function readPagesFromDisk(shop: string): Promise<Page[]> {
+  try {
+    const buf = await fs.readFile(pagesPath(shop), "utf8");
+    const json = JSON.parse(buf);
+    const parsed = pageSchema.array().safeParse(json);
+    if (parsed.success) return parsed.data;
+    return json as Page[];
+  } catch {
+    return [];
+  }
 }
 
 /**
@@ -89,25 +103,13 @@ async function appendHistory(
 
 /** Return all pages for a shop, or an empty array if none exist */
 export async function getPages(shop: string): Promise<Page[]> {
-  try {
-    const rows = await prisma.page.findMany({ where: { shopId: shop } });
-    if (rows.length)
-      return rows.map((r: { data: unknown }) => pageSchema.parse(r.data));
-    return [];
-  } catch {
-    // fall back to filesystem
+  const rows = useDb
+    ? await prisma.page.findMany({ where: { shopId: shop } }).catch(() => [])
+    : [];
+  if (rows.length > 0) {
+    return rows.map((r: { data: unknown }) => pageSchema.parse(r.data));
   }
-  try {
-    const buf = await fs.readFile(pagesPath(shop), "utf8");
-    const json = JSON.parse(buf);
-    const parsed = pageSchema.array().safeParse(json);
-    if (parsed.success) return parsed.data;
-    // If the JSON doesn't conform to the schema, fall back to returning it raw
-    return json as Page[];
-  } catch {
-    // missing file or invalid JSON – treat as no pages
-  }
-  return [];
+  return readPagesFromDisk(shop);
 }
 
 /** Create or overwrite an entire Page record */
@@ -117,39 +119,41 @@ export async function savePage(
   previous?: Page
 ): Promise<Page> {
   const patch = diffPages(previous, page);
-  try {
-    await prisma.page.upsert({
-      where: { id: page.id },
-      update: { data: page as unknown as Json, slug: page.slug },
-      create: {
-        id: page.id,
-        shopId: shop,
-        slug: page.slug,
-        data: page as unknown as Json,
-      },
-    });
-  } catch {
-    // fallback to filesystem
-    const pages = await getPages(shop);
-    const idx = pages.findIndex((p) => p.id === page.id);
-    if (idx === -1) pages.push(page);
-    else pages[idx] = page;
-    await writePages(shop, pages);
+  if (useDb) {
+    try {
+      await prisma.page.upsert({
+        where: { id: page.id },
+        update: { data: page as unknown as Json, slug: page.slug },
+        create: {
+          id: page.id,
+          shopId: shop,
+          slug: page.slug,
+          data: page as unknown as Json,
+        },
+      });
+    } catch {
+      /* ignore db failures */
+    }
   }
+  const pages = await readPagesFromDisk(shop);
+  const idx = pages.findIndex((p) => p.id === page.id);
+  if (idx === -1) pages.push(page);
+  else pages[idx] = page;
+  await writePages(shop, pages);
   await appendHistory(shop, patch);
   return page;
 }
 
 /** Delete a page by ID */
 export async function deletePage(shop: string, id: string): Promise<void> {
-  try {
-    const res = await prisma.page.deleteMany({ where: { id, shopId: shop } });
-    if (res.count === 0) throw new Error("not found");
-    return;
-  } catch {
-    // fallback
+  if (useDb) {
+    try {
+      await prisma.page.deleteMany({ where: { id, shopId: shop } });
+    } catch {
+      /* ignore db failures */
+    }
   }
-  const pages = await getPages(shop);
+  const pages = await readPagesFromDisk(shop);
   const next = pages.filter((p) => p.id !== id);
   if (next.length === pages.length) {
     throw new Error(`Page ${id} not found in ${shop}`);
@@ -169,24 +173,26 @@ export async function updatePage(
   const updated: Page = mergeDefined(previous, patch);
   updated.updatedAt = nowIso();
 
-  try {
-    await prisma.page.update({
-      where: { id: patch.id },
-      data: {
-        data: updated as unknown as Json,
-        slug: updated.slug,
-      },
-    });
-  } catch {
-    // fallback
-    const pages = await getPages(shop);
-    const idx = pages.findIndex((p) => p.id === patch.id);
-    if (idx === -1) {
-      throw new Error(`Page ${patch.id} not found in ${shop}`);
+  if (useDb) {
+    try {
+      await prisma.page.update({
+        where: { id: patch.id },
+        data: {
+          data: updated as unknown as Json,
+          slug: updated.slug,
+        },
+      });
+    } catch {
+      /* ignore db failures */
     }
-    pages[idx] = updated;
-    await writePages(shop, pages);
   }
+  const pages = await readPagesFromDisk(shop);
+  const idx = pages.findIndex((p) => p.id === patch.id);
+  if (idx === -1) {
+    throw new Error(`Page ${patch.id} not found in ${shop}`);
+  }
+  pages[idx] = updated;
+  await writePages(shop, pages);
   const diff = diffPages(previous, updated);
   await appendHistory(shop, diff);
   return updated;

@@ -1,6 +1,6 @@
 import type { CookieValue } from "cypress";
 
-const SECRET = "test-nextauth-secret";
+const SECRET = "test-nextauth-secret-32-chars-long-string!";
 const SHOP = "demo";
 
 function sign(role: string) {

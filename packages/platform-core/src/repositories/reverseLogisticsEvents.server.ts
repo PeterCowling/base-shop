@@ -18,10 +18,10 @@ export async function recordEvent(
 export async function listEvents(
   shop: string
 ): Promise<ReverseLogisticsEvent[]> {
-  return (await prisma.reverseLogisticsEvent.findMany({
+  return await prisma.reverseLogisticsEvent.findMany({
     where: { shop },
     orderBy: { createdAt: "asc" },
-  })) as unknown as ReverseLogisticsEvent[];
+  });
 }
 
 export const reverseLogisticsEvents = {

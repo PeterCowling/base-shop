@@ -17,85 +17,8 @@ type PrismaClientCtor = new (...args: unknown[]) => PrismaClient;
 const coreEnv = loadCoreEnv();
 
 export interface StubPrismaClient extends PrismaClient {
-  rentalOrder: {
-    findMany(args: { where?: { shop?: string; customerId?: string } }): Promise<RentalOrder[]>;
-    findFirst(args: { where?: Partial<RentalOrder> }): Promise<RentalOrder | null>;
-    findUnique(args: {
-      where:
-        | { shop_sessionId: { shop: string; sessionId: string } }
-        | { shop_trackingNumber: { shop: string; trackingNumber: string } };
-    }): Promise<RentalOrder | null>;
-    create(args: { data: RentalOrder }): Promise<RentalOrder>;
-    createMany(args: { data: RentalOrder[] }): Promise<{ count: number }>;
-    update(args: { where: any; data: Partial<RentalOrder> }): Promise<RentalOrder>;
-    deleteMany(args: { where?: Partial<RentalOrder> }): Promise<{ count: number }>;
-    upsert(args: { where: any; create: RentalOrder; update: Partial<RentalOrder> }): Promise<RentalOrder>;
-  };
-  shop: {
-    findUnique(args: { where: { id: string } }): Promise<{ id: string; data: Shop } | null>;
-    findMany(args: { where?: { id?: string } }): Promise<{ id: string; data: Shop }[]>;
-    create(args: { data: { id: string; data: Shop } }): Promise<{ id: string; data: Shop }>;
-    upsert(args: {
-      where: { id: string };
-      create: { id: string; data: Shop };
-      update: { data: Shop };
-    }): Promise<{ id: string; data: Shop }>;
-    delete(args: { where: { id: string } }): Promise<{ id: string; data: Shop }>;
-  };
-  page: {
-    findMany(args: {
-      where?: { shopId?: string; id?: string; slug?: string };
-    }): Promise<Array<{ id: string; shopId: string; slug: string; data: Page }>>;
-    findUnique(args: { where: { id: string } }): Promise<{
-      id: string;
-      shopId: string;
-      slug: string;
-      data: Page;
-    } | null>;
-    createMany(args: {
-      data: Array<{ shopId: string; slug: string; data: Page }>;
-    }): Promise<{ count: number }>;
-    upsert(args: { where: { id: string }; create: any; update: any }): Promise<any>;
-    update(args: { where: { id: string }; data: any }): Promise<any>;
-    deleteMany(args: {
-      where?: Partial<{ id: string; shopId: string }>;
-    }): Promise<{ count: number }>;
-  };
-  customerProfile: {
-    findUnique(args: { where: { customerId: string } }): Promise<CustomerProfile | null>;
-    findFirst(args: { where?: Partial<CustomerProfile> }): Promise<CustomerProfile | null>;
-    upsert(args: {
-      where: { customerId: string };
-      create: CustomerProfile;
-      update: Partial<CustomerProfile>;
-    }): Promise<CustomerProfile>;
-  };
-  subscriptionUsage: {
-    findUnique(args: {
-      where: {
-        shop_customerId_month: {
-          shop: string;
-          customerId: string;
-          month: string;
-        };
-      };
-    }): Promise<SubscriptionUsage | null>;
-    upsert(args: {
-      where: any;
-      create: SubscriptionUsage;
-      update: Partial<SubscriptionUsage>;
-    }): Promise<SubscriptionUsage>;
-  };
-  user: {
-    findUnique(args: { where: { id?: string; email?: string } }): Promise<User | null>;
-    findMany(args: { where?: Partial<User> }): Promise<User[]>;
-    findFirst(args: { where?: Partial<User> }): Promise<User | null>;
-    create(args: { data: User }): Promise<User>;
-    update(args: { where: { id?: string; email?: string }; data: Partial<User> }): Promise<User>;
-    deleteMany(args: { where?: Partial<User> }): Promise<{ count: number }>;
-  };
   reverseLogisticsEvent: {
-    create(args: { data: ReverseLogisticsEvent }): Promise<ReverseLogisticsEvent>;
+    create(args: { data: Omit<ReverseLogisticsEvent, "id"> }): Promise<ReverseLogisticsEvent>;
     findMany(args: {
       where?: Partial<ReverseLogisticsEvent>;
       orderBy?: { createdAt: "asc" | "desc" };
@@ -364,7 +287,7 @@ function createStubPrisma(): StubPrismaClient {
     },
 
     reverseLogisticsEvent: {
-      create: async ({ data }: { data: ReverseLogisticsEvent }) => {
+      create: async ({ data }: { data: Omit<ReverseLogisticsEvent, "id"> }) => {
         const rec: ReverseLogisticsEvent = {
           ...data,
           id: String(reverseLogisticsEvents.length + 1),
@@ -390,7 +313,7 @@ function createStubPrisma(): StubPrismaClient {
   } as StubPrismaClient;
 }
 
-let prisma: PrismaClient;
+let prisma: StubPrismaClient;
 
 if (
   process.env.NODE_ENV === "test" ||
@@ -418,7 +341,7 @@ if (
       const databaseUrl = coreEnv.DATABASE_URL;
       prisma = new PrismaClientCtor({
         datasources: { db: { url: databaseUrl } },
-      });
+      }) as unknown as StubPrismaClient;
     }
   } catch {
     // If Prisma client cannot be loaded, fall back to the in-memory stub

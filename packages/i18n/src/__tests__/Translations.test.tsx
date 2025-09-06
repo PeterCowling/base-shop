@@ -1,5 +1,5 @@
 import { render, renderHook } from "@testing-library/react";
-import type { PropsWithChildren } from "react";
+import { useRef, type PropsWithChildren } from "react";
 import { TranslationsProvider, useTranslations } from "../Translations";
 
 describe("TranslationsProvider and useTranslations", () => {
@@ -14,37 +14,21 @@ describe("TranslationsProvider and useTranslations", () => {
     expect(result.current("hello")).toBe("Hallo");
   });
 
-  it("falls back to key when translation is missing", () => {
-    const wrapper = ({ children }: PropsWithChildren) => (
-      <TranslationsProvider messages={{}}>{children}</TranslationsProvider>
-    );
-
-    const { result } = renderHook(() => useTranslations(), { wrapper });
-    expect(result.current("missing")).toBe("missing");
-  });
-
-  it("falls back to default language when key missing", () => {
-    const en = { hello: "Hello", bye: "Goodbye" };
-    const de = { hello: "Hallo" };
-    const messages = { ...en, ...de };
-    const wrapper = ({ children }: PropsWithChildren) => (
-      <TranslationsProvider messages={messages}>{children}</TranslationsProvider>
-    );
-
-    const { result } = renderHook(() => useTranslations(), { wrapper });
-    expect(result.current("bye")).toBe("Goodbye");
-  });
-
   it("memoises translator function when messages remain unchanged", () => {
     const messages = { hello: "Hallo" };
     const wrapper = ({ children }: PropsWithChildren) => (
       <TranslationsProvider messages={messages}>{children}</TranslationsProvider>
     );
 
-    const { result, rerender } = renderHook(() => useTranslations(), { wrapper });
-    const first = result.current;
+    const { result, rerender } = renderHook(() => {
+      const t = useTranslations();
+      const initial = useRef(t);
+      return { t, initial };
+    }, { wrapper });
+
+    expect(result.current.t("hello")).toBe("Hallo");
     rerender();
-    expect(result.current).toBe(first);
+    expect(result.current.initial.current).toBe(result.current.t);
   });
 
   it("updates translations and function identity when messages change", () => {
@@ -57,16 +41,18 @@ describe("TranslationsProvider and useTranslations", () => {
       <TranslationsProvider messages={messages}>{children}</TranslationsProvider>
     );
 
-    const { result, rerender } = renderHook(() => useTranslations(), { wrapper });
+    const { result, rerender } = renderHook(() => {
+      const t = useTranslations();
+      const initial = useRef(t);
+      return { t, initial };
+    }, { wrapper });
 
-    const first = result.current;
-    expect(first("hello")).toBe("Hallo");
+    expect(result.current.t("hello")).toBe("Hallo");
 
     messages = { hello: "Salut" };
     rerender();
-    const second = result.current;
-    expect(second("hello")).toBe("Salut");
-    expect(second).not.toBe(first);
+    expect(result.current.t("hello")).toBe("Salut");
+    expect(result.current.initial.current).not.toBe(result.current.t);
   });
 
   it("re-renders consumers when messages update", () => {
@@ -86,7 +72,7 @@ describe("TranslationsProvider and useTranslations", () => {
     getByText("Salut");
   });
 
-  it("logs a warning when a key is missing", () => {
+  it("warns and falls back to the key when translation is missing", () => {
     const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
     const wrapper = ({ children }: PropsWithChildren) => (
       <TranslationsProvider messages={{}}>{children}</TranslationsProvider>

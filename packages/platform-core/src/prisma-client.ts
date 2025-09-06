@@ -1,4 +1,4 @@
-import type { PrismaClient as GeneratedPrismaClient } from '@prisma/client';
+import type { PrismaClient as GeneratedPrismaClient } from "@prisma/client";
 
 /**
  * Re-export Prisma's generated type. Importing with `import type`
@@ -6,3 +6,13 @@ import type { PrismaClient as GeneratedPrismaClient } from '@prisma/client';
  * rentalOrder, etc.) without bundling any runtime from '@prisma/client'.
  */
 export type PrismaClient = GeneratedPrismaClient;
+
+/**
+ * Dynamically access a Prisma model delegate with full type safety.
+ */
+export function getModelDelegate<K extends keyof PrismaClient>(
+  client: PrismaClient,
+  model: K
+): PrismaClient[K] {
+  return client[model];
+}

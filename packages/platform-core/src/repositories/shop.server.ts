@@ -22,7 +22,7 @@ async function ensureDir(shop: string): Promise<void> {
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
 }
 
-export async function getShopById<T extends Shop = Shop>(
+export async function getShopById<T extends Shop>(
   shop: string
 ): Promise<T> {
   try {
@@ -46,7 +46,7 @@ export async function getShopById<T extends Shop = Shop>(
   }
 }
 
-export async function updateShopInRepo<T extends Shop = Shop>(
+export async function updateShopInRepo<T extends Shop>(
   shop: string,
   patch: Partial<T> & { id: string }
 ): Promise<T> {

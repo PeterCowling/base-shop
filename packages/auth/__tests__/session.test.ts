@@ -80,6 +80,35 @@ describe("session token", () => {
     spy.mockRestore();
   });
 
+  it("respects overridden SESSION_TTL_S", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+
+    jest.doMock("../src/store", () => {
+      const actual = jest.requireActual("../src/store");
+      const { MemorySessionStore } = jest.requireActual("../src/memoryStore");
+      return {
+        __esModule: true,
+        ...actual,
+        SESSION_TTL_S: 1,
+        createSessionStore: async () => new MemorySessionStore(1),
+      };
+    });
+
+    const { createCustomerSession, getCustomerSession } = await import(
+      "../src/session"
+    );
+    const session = { customerId: "abc", role: "customer" as Role };
+    let now = Date.now();
+    const spy = jest.spyOn(Date, "now").mockImplementation(() => now);
+
+    await createCustomerSession(session);
+    now += 2000;
+    await expect(getCustomerSession()).resolves.toBeNull();
+
+    spy.mockRestore();
+  });
+
   it("rejects tokens with invalid signature", async () => {
     const store = createStore();
     mockCookies.mockResolvedValue(store);

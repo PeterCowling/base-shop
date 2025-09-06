@@ -22,7 +22,11 @@ describe("/api/return", () => {
     const refundCreate = jest.fn<Promise<unknown>, [Stripe.RefundCreateParams]>();
     const markReturned = jest
       .fn<Promise<unknown>, [string, string, number?]>()
-      .mockResolvedValueOnce({})
+      .mockResolvedValueOnce({
+        riskLevel: "low",
+        riskScore: 5,
+        flaggedForReview: true,
+      })
       .mockResolvedValue({});
     const markRefunded = jest.fn();
     const computeDamageFee = jest.fn().mockResolvedValue(20);
@@ -63,7 +67,119 @@ describe("/api/return", () => {
     });
     expect(markReturned).toHaveBeenNthCalledWith(1, "bcd", "sess");
     expect(markReturned).toHaveBeenNthCalledWith(2, "bcd", "sess", 20);
-    expect(markRefunded).toHaveBeenCalledWith("bcd", "sess");
+    expect(markRefunded).toHaveBeenCalledWith("bcd", "sess", "low", 5, true);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ ok: true });
+  });
+
+  test("returns 500 when markRefunded fails", async () => {
+    const retrieve = jest
+      .fn<Promise<Stripe.Checkout.Session>, [string, { expand: string[] }]>()
+      .mockResolvedValue({
+        metadata: { depositTotal: "50" },
+        payment_intent: { id: "pi_123" },
+      } as unknown as Stripe.Checkout.Session);
+    const refundCreate = jest.fn<Promise<unknown>, [Stripe.RefundCreateParams]>();
+    const markReturned = jest
+      .fn<Promise<unknown>, [string, string, number?]>()
+      .mockResolvedValue({
+        riskLevel: "medium",
+        riskScore: 10,
+        flaggedForReview: false,
+      });
+    const markRefunded = jest.fn().mockResolvedValue(null);
+    const computeDamageFee = jest.fn().mockResolvedValue(0);
+
+    jest.doMock(
+      "@acme/stripe",
+      () => ({
+        __esModule: true,
+        stripe: {
+          checkout: { sessions: { retrieve } },
+          refunds: { create: refundCreate },
+        },
+      }),
+      { virtual: true }
+    );
+    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+      __esModule: true,
+      markReturned,
+      markRefunded,
+      addOrder: jest.fn(),
+    }));
+    jest.doMock("@platform-core/pricing", () => ({
+      __esModule: true,
+      computeDamageFee,
+      priceForDays: jest.fn(),
+    }));
+
+    const { POST } = await import("../src/api/return/route");
+    const res = await POST({ json: async () => ({ sessionId: "sess" }) } as any);
+
+    expect(refundCreate).toHaveBeenCalledWith({
+      payment_intent: "pi_123",
+      amount: 50 * 100,
+    });
+    expect(markRefunded).toHaveBeenCalledWith(
+      "bcd",
+      "sess",
+      "medium",
+      10,
+      false,
+    );
+    expect(res.status).toBe(500);
+  });
+
+  test("refunds full deposit and forwards risk info when no damage fee", async () => {
+    const retrieve = jest
+      .fn<Promise<Stripe.Checkout.Session>, [string, { expand: string[] }]>()
+      .mockResolvedValue({
+        metadata: { depositTotal: "50" },
+        payment_intent: { id: "pi_123" },
+      } as unknown as Stripe.Checkout.Session);
+    const refundCreate = jest.fn<Promise<unknown>, [Stripe.RefundCreateParams]>();
+    const markReturned = jest
+      .fn<Promise<unknown>, [string, string, number?]>()
+      .mockResolvedValue({
+        riskLevel: "high",
+        riskScore: 42,
+        flaggedForReview: true,
+      });
+    const markRefunded = jest.fn();
+    const computeDamageFee = jest.fn().mockResolvedValue(0);
+
+    jest.doMock(
+      "@acme/stripe",
+      () => ({
+        __esModule: true,
+        stripe: {
+          checkout: { sessions: { retrieve } },
+          refunds: { create: refundCreate },
+        },
+      }),
+      { virtual: true }
+    );
+    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+      __esModule: true,
+      markReturned,
+      markRefunded,
+      addOrder: jest.fn(),
+    }));
+    jest.doMock("@platform-core/pricing", () => ({
+      __esModule: true,
+      computeDamageFee,
+      priceForDays: jest.fn(),
+    }));
+
+    const { POST } = await import("../src/api/return/route");
+    const res = await POST({ json: async () => ({ sessionId: "sess" }) } as any);
+
+    expect(refundCreate).toHaveBeenCalledWith({
+      payment_intent: "pi_123",
+      amount: 50 * 100,
+    });
+    expect(markReturned).toHaveBeenCalledWith("bcd", "sess");
+    expect(markRefunded).toHaveBeenCalledWith("bcd", "sess", "high", 42, true);
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
   });

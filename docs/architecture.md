@@ -100,10 +100,14 @@ The schema (see `packages/platform-core/prisma/schema.prisma`) defines:
 - `SubscriptionUsage` – monthly shipment counts with a unique
   `(shop, customerId, month)` tuple. See
   [subscription-usage.md](subscription-usage.md).
-- `CustomerProfile` and `CustomerMfa` – customer metadata and MFA
-  secrets keyed by `customerId`.
-- `User` – accounts with a unique `email`.
-- `ReverseLogisticsEvent` – return tracking events indexed by `shop`.
+- [`CustomerProfile`](customer-profiles.md) – stores customer metadata
+  and preferences keyed by `customerId`.
+- [`CustomerMfa`](mfa.md) – holds multi-factor authentication secrets
+  for each customer.
+- [`User`](users.md) – application user accounts identified by unique
+  email addresses.
+- [`ReverseLogisticsEvent`](reverse-logistics-events.md) – logs
+  return-processing milestones for rental items per shop.
 
 The connection string is provided via the `DATABASE_URL` environment
 variable.

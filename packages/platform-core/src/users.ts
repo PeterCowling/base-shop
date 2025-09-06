@@ -3,12 +3,20 @@ import "server-only";
 import { prisma } from "./db";
 import type { User } from "@acme/types";
 
-export async function getUserById(id: string): Promise<User | null> {
-  return prisma.user.findUnique({ where: { id } });
+export async function getUserById(id: string): Promise<User> {
+  const user = await prisma.user.findUnique({ where: { id } });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user;
 }
 
-export async function getUserByEmail(email: string): Promise<User | null> {
-  return prisma.user.findUnique({ where: { email } });
+export async function getUserByEmail(email: string): Promise<User> {
+  const user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user;
 }
 
 export async function createUser({
@@ -42,13 +50,17 @@ export async function setResetToken(
 
 export async function getUserByResetToken(
   token: string,
-): Promise<User | null> {
-  return prisma.user.findFirst({
+): Promise<User> {
+  const user = await prisma.user.findFirst({
     where: {
       resetToken: token,
       resetTokenExpiresAt: { gt: new Date() },
     },
   });
+  if (!user) {
+    throw new Error("User not found");
+  }
+  return user;
 }
 
 export async function updatePassword(

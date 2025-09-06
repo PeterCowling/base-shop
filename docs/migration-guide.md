@@ -37,8 +37,4 @@ Passwords should be hashed before inserting, and any related tables such as
 
 ## Inventory Migration
 
-Inventory currently relies on a local SQLite database. When inventory data
-is moved to another database or service, export the existing SQLite tables
-and import them into the new storage layer using the tooling provided by
-that system. Keep the export handy so the migration can be repeated if the
-target storage changes again.
+Inventory currently uses a local SQLite database as a fallback. When moving inventory data to Prisma or another service, export the existing SQLite tables and import them into the new storage layer using the tooling provided by that system. Keep the export handy so the migration can be repeated if the target storage changes again.

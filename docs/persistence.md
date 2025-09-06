@@ -1,6 +1,6 @@
 # Persistence and `DATA_ROOT`
 
-Many repositories use a simple filesystem backend when a database or remote service isn't configured. Data is stored under a shop‑specific directory rooted at `DATA_ROOT` so the demo and tests work completely offline.
+Prisma with PostgreSQL is the primary datastore. Some repositories offer filesystem fallbacks when a database or remote service isn't configured. Data for these fallbacks is stored under a shop‑specific directory rooted at `DATA_ROOT`, enabling certain demos and tests to run offline.
 
 ## Repositories using the database
 
@@ -14,9 +14,9 @@ The following repositories still read and write JSON or JSONL files under `<DATA
 - `@acme/email` repositories for campaigns, segments and abandoned cart reminders.
 - Background services in `@acme/platform-machine` that log analytics or scheduling data.
 
-The inventory repository continues to rely on a local SQLite database (`inventory.sqlite`).
+The inventory repository currently relies on a local SQLite database (`inventory.sqlite`) as a fallback.
 
-These fallbacks keep the project functional during development before wiring up a real database and make it easy to run the stack without any external dependencies.
+These fallbacks keep parts of the project functional during development or when the database is unreachable.
 
 ## `DATA_ROOT`
 

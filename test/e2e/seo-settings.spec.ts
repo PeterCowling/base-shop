@@ -6,7 +6,8 @@
 
 describe("SEO settings", () => {
   const seoUrl = "/cms/shop/demo/settings/seo";
-  const historyFile = "data/shops/demo/settings.history.jsonl";
+  const dataDir = "test/data/shops";
+  const historyFile = `${dataDir}/demo/settings.history.jsonl`;
 
   it("switch language, edit meta and verify", () => {
     const title = "Cypress Title";

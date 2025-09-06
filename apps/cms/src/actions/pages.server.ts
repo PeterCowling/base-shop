@@ -102,8 +102,6 @@ export async function savePageDraft(
   shop: string,
   formData: FormData
 ): Promise<{ page?: Page; errors?: Record<string, string[]> }> {
-  const session = await ensureAuthorized();
-
   const id = (formData.get("id") as string) || ulid();
   const compStr = formData.get("components");
   const parsedComponents = componentsField.safeParse(
@@ -113,6 +111,8 @@ export async function savePageDraft(
     return { errors: { components: ["Invalid components"] } };
   }
   const components = parsedComponents.data;
+
+  const session = await ensureAuthorized();
 
   let history = undefined;
   const historyStr = formData.get("history");

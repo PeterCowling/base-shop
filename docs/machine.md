@@ -60,6 +60,7 @@ const stop = await startReverseLogisticsService();
 ```
 
 Events are JSON files placed in `data/shops/<id>/reverse-logistics/` with a `sessionId` and `status` field (e.g. `received`, `cleaning`, `repair`, `qa`, or `available`). As the worker processes each file it emits a matching event to the `reverseLogisticsEvents` table, providing an auditable history of lifecycle changes.
+See [reverse logistics events](./reverse-logistics-events.md) for details on the persistence layer and event schema.
 
 Operational dashboards can read from this event log to provide real‑time visibility into how many items are in each stage of the reverse logistics pipeline and to spot bottlenecks.
 

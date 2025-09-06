@@ -25,7 +25,7 @@ describe('parseJsonBody', () => {
       json: jest.fn().mockResolvedValue({ foo: 'a'.repeat(20) }),
     } as unknown as Request;
 
-    const result = await parseJsonBody(req, schema, '10b');
+    const result = await parseJsonBody(req, schema, parseLimit('10b'));
 
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(413);
@@ -39,6 +39,21 @@ describe('parseJsonBody', () => {
     } as unknown as Request;
 
     const result = await parseJsonBody(req, schema, '10kb');
+
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
+  });
+
+  it('returns 400 when reading the body throws', async () => {
+    const req = {
+      headers: new Headers({ 'content-type': 'application/json' }),
+      text: jest.fn().mockRejectedValue(new Error('boom')),
+    } as unknown as Request;
+
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const result = await parseJsonBody(req, schema, '10kb');
+    consoleSpy.mockRestore();
 
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(400);

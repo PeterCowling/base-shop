@@ -13,7 +13,7 @@ export const runtime = "nodejs";
 
 const schema = z
   .object({
-    provider: z.enum(["taxjar"]).default("taxjar"),
+    provider: z.literal("taxjar"),
     amount: z.number(),
     toCountry: z.string(),
     toPostalCode: z.string().optional(),

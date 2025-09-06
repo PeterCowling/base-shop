@@ -25,7 +25,7 @@ pnpm e2e
 
 - Stripe handles deposits via escrow sessions.
 - Returned deposits can be refunded automatically by the deposit release service. See [docs/machine.md](docs/machine.md).
-- Inventory persists through Prisma by default, with legacy fallbacks to JSON files (`data/shops/\*/inventory.json`) or a local SQLite store.
+- Inventory currently persists to JSON files (`data/shops/\*/inventory.json`) or a local SQLite store. A migration to Prisma/PostgreSQL is planned; see [docs/inventory-migration.md](docs/inventory-migration.md).
 - Low-stock alerts email the configured recipient (`STOCK_ALERT_RECIPIENT`) when inventory falls below its threshold.
 - Rental pricing matrix defined in data/rental/pricing.json with duration discounts and damage-fee rules.
 - Return logistics options stored in data/return-logistics.json.
@@ -74,7 +74,7 @@ primary datastore. The schema includes:
 
 ## Persistence
 
-Some repositories retain JSON or SQLite fallbacks under a common `DATA_ROOT`, but Prisma with PostgreSQL is the default datastore. See [docs/persistence.md](docs/persistence.md) for details on these fallbacks and the `DATA_ROOT` environment variable.
+Some repositories retain JSON or SQLite fallbacks under a common `DATA_ROOT`, but Prisma with PostgreSQL is the default datastore. Inventory currently uses these fallbacks; the migration plan lives in [docs/inventory-migration.md](docs/inventory-migration.md). See [docs/persistence.md](docs/persistence.md) for details on these fallbacks and the `DATA_ROOT` environment variable.
 
 ## Contributing
 

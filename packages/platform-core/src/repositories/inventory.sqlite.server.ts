@@ -10,6 +10,11 @@ import * as path from "path";
 import { validateShopName } from "../shops/index";
 import { DATA_ROOT } from "../dataRoot";
 import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
+
+/**
+ * SQLite-backed inventory repository retained for legacy fallback. Prisma is
+ * the authoritative data store.
+ */
 // Avoid direct dependency on better-sqlite3 types to prevent build issues.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Database = any;

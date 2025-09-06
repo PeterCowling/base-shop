@@ -11,6 +11,11 @@ import { DATA_ROOT } from "../../dataRoot";
 import { nowIso } from "@acme/date-utils";
 import { z } from "zod";
 
+/**
+ * Prisma-backed pages repository. The database is the source of truth,
+ * while the filesystem `pages.json` file is kept as a fallback.
+ */
+// Use Prisma when a database connection is configured
 const useDb = !!process.env.DATABASE_URL;
 
 type Json = Record<string, unknown>;
@@ -19,7 +24,7 @@ type Json = Record<string, unknown>;
 /*  Helpers                                                                   */
 /* -------------------------------------------------------------------------- */
 
-/** Absolute path to the pages.json file for a given shop */
+/** Absolute path to the pages.json fallback file for a given shop */
 function pagesPath(shop: string): string {
   shop = validateShopName(shop);
   return path.join(DATA_ROOT, shop, "pages.json");
@@ -36,7 +41,7 @@ async function ensureDir(shop: string): Promise<void> {
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
 }
 
-/** Atomically write the full pages array to disk */
+/** Atomically write the full pages array to the filesystem fallback */
 async function writePages(shop: string, pages: Page[]): Promise<void> {
   await ensureDir(shop);
   const tmp = `${pagesPath(shop)}.${Date.now()}.tmp`;
@@ -44,6 +49,7 @@ async function writePages(shop: string, pages: Page[]): Promise<void> {
   await fs.rename(tmp, pagesPath(shop));
 }
 
+/** Read pages from the filesystem fallback, returning an empty array on failure */
 async function readPagesFromDisk(shop: string): Promise<Page[]> {
   try {
     const buf = await fs.readFile(pagesPath(shop), "utf8");
@@ -101,7 +107,7 @@ async function appendHistory(
 /*  Public API                                                                */
 /* -------------------------------------------------------------------------- */
 
-/** Return all pages for a shop, or an empty array if none exist */
+/** Return all pages for a shop, preferring Prisma but falling back to pages.json */
 export async function getPages(shop: string): Promise<Page[]> {
   const rows = useDb
     ? await prisma.page.findMany({ where: { shopId: shop } }).catch(() => [])
@@ -112,7 +118,7 @@ export async function getPages(shop: string): Promise<Page[]> {
   return readPagesFromDisk(shop);
 }
 
-/** Create or overwrite an entire Page record */
+/** Create or overwrite a page in Prisma, syncing the filesystem fallback */
 export async function savePage(
   shop: string,
   page: Page,
@@ -144,7 +150,7 @@ export async function savePage(
   return page;
 }
 
-/** Delete a page by ID */
+/** Delete a page by ID in Prisma and the filesystem fallback */
 export async function deletePage(shop: string, id: string): Promise<void> {
   if (useDb) {
     try {
@@ -161,7 +167,7 @@ export async function deletePage(shop: string, id: string): Promise<void> {
   await writePages(shop, next);
 }
 
-/** Patch a page. Only defined keys in `patch` are applied. */
+/** Patch a page in Prisma, syncing the filesystem fallback. Only defined keys in `patch` are applied. */
 export async function updatePage(
   shop: string,
   patch: Partial<Page> & { id: string; updatedAt: string },

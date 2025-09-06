@@ -6,6 +6,11 @@ import type {
   InventoryMutateFn,
 } from "./inventory.types";
 
+/**
+ * Resolve the active inventory repository. Prisma will ultimately serve as the
+ * canonical store, while JSON and SQLite backends are kept for legacy
+ * fallback scenarios.
+ */
 let repoPromise: Promise<InventoryRepository> | undefined;
 
 async function getRepo(): Promise<InventoryRepository> {

@@ -7,6 +7,10 @@ import { validateShopName } from "../shops/index";
 import { DATA_ROOT } from "../dataRoot";
 import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
 
+/**
+ * Filesystem-backed inventory repository used as a fallback when Prisma is
+ * unavailable.
+ */
 interface RawInventoryItem {
   sku: string;
   productId: string;

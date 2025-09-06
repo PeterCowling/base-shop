@@ -64,7 +64,7 @@ to your last completed step so you can continue configuring the shop without
 starting over.
 
 When building pages, the **Save** button stores the current state as a draft.
-Draft pages keep `status: "draft"` in `pages.json` until you click **Publish**.
+Draft pages keep `status: "draft"` in the database via Prisma, with `pages.json` used only as a filesystem fallback, until you click **Publish**.
 Edit drafts at `/cms/shop/{shop}/pages/{slug}/builder` or start a new page at
 `/cms/shop/{shop}/pages/new/builder`. A list of pages (including drafts) is
 available via `GET /cms/api/pages/{shop}`.

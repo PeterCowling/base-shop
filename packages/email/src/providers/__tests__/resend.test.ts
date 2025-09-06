@@ -318,6 +318,16 @@ describe("ResendProvider", () => {
       }
     );
 
+    it("returns [] on json failure", async () => {
+      process.env.RESEND_API_KEY = "rs";
+      global.fetch = jest.fn().mockResolvedValue({
+        json: () => Promise.reject(new Error("bad")),
+      }) as any;
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider();
+      await expect(provider.listSegments()).resolves.toEqual([]);
+    });
+
     it("returns [] on errors", async () => {
       process.env.RESEND_API_KEY = "rs";
       global.fetch = jest

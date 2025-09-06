@@ -81,5 +81,24 @@ describe('formatPrice', () => {
       expect(deFormatted).not.toBe(defaultFormatted);
     }
   });
+
+  it('formats currencies with zero fraction digits like JPY', () => {
+    const amount = 123;
+    const expected = new Intl.NumberFormat('ja-JP', {
+      style: 'currency',
+      currency: 'JPY',
+    }).format(amount);
+    expect(formatPrice(amount, 'JPY', 'ja-JP')).toBe(expected);
+  });
+
+  it('delegates to Intl.NumberFormat with provided arguments', () => {
+    const spy = jest.spyOn(Intl, 'NumberFormat');
+    formatPrice(10, 'EUR', 'de-DE');
+    expect(spy).toHaveBeenCalledWith('de-DE', {
+      style: 'currency',
+      currency: 'EUR',
+    });
+    spy.mockRestore();
+  });
 });
 

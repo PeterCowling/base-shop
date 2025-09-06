@@ -5,6 +5,7 @@ describe('parseLimit', () => {
   it('parses limits with units', () => {
     expect(parseLimit('10kb')).toBe(10 * 1024);
     expect(parseLimit('2mb')).toBe(2 * 1024 * 1024);
+    expect(parseLimit('1gb')).toBe(1024 * 1024 * 1024);
   });
 
   it('throws for invalid inputs', () => {
@@ -57,6 +58,20 @@ describe('parseJsonBody', () => {
     const req = new Request('http://test', {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ foo: 'bar' }),
+    });
+    const result = await parseJsonBody(req, schema, '1mb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
+  });
+
+  it('rejects content-type with unexpected parameters', async () => {
+    const req = new Request('http://test', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8; foo=bar',
+      },
       body: JSON.stringify({ foo: 'bar' }),
     });
     const result = await parseJsonBody(req, schema, '1mb');

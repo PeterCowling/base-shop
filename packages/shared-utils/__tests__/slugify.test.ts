@@ -32,4 +32,9 @@ describe('slugify', () => {
     expect(slugify(null)).toBe('');
     expect(slugify(undefined)).toBe('');
   });
+
+  it('lowercases, strips accents and collapses punctuation and spaces', () => {
+    const input = '  Héllo,   Wörld!!  Foo__Bar ';
+    expect(slugify(input)).toBe('hello-world-foo-bar');
+  });
 });

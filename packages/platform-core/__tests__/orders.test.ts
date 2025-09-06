@@ -3,6 +3,8 @@
 import {
   listOrders,
   addOrder,
+  markFulfilled,
+  markShipped,
   markDelivered,
   markCancelled,
   markReturned,
@@ -144,6 +146,54 @@ describe("orders", () => {
       prismaMock.rentalOrder.create.mockRejectedValue(new Error("fail"));
       await expect(addOrder("shop", "sess", 10)).rejects.toThrow("fail");
       expect(trackOrder).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("markFulfilled", () => {
+    it("updates order with fulfillment timestamp", async () => {
+      nowIsoMock.mockReturnValue("now");
+      const mockOrder = { id: "1" };
+      prismaMock.rentalOrder.update.mockResolvedValue(mockOrder);
+      const result = await markFulfilled("shop", "sess");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { fulfilledAt: "now" },
+      });
+      expect(result).toEqual(mockOrder);
+    });
+
+    it("propagates errors", async () => {
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.update.mockRejectedValue(new Error("fail"));
+      await expect(markFulfilled("shop", "sess")).rejects.toThrow("fail");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { fulfilledAt: "now" },
+      });
+    });
+  });
+
+  describe("markShipped", () => {
+    it("updates order with shipment timestamp", async () => {
+      nowIsoMock.mockReturnValue("now");
+      const mockOrder = { id: "1" };
+      prismaMock.rentalOrder.update.mockResolvedValue(mockOrder);
+      const result = await markShipped("shop", "sess");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { shippedAt: "now" },
+      });
+      expect(result).toEqual(mockOrder);
+    });
+
+    it("propagates errors", async () => {
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.update.mockRejectedValue(new Error("fail"));
+      await expect(markShipped("shop", "sess")).rejects.toThrow("fail");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { shippedAt: "now" },
+      });
     });
   });
 

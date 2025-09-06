@@ -89,9 +89,15 @@ function ProductGridInner({
       className={`grid gap-6 ${className ?? ""}`}
       style={{ gridTemplateColumns: `repeat(${columns ?? cols}, minmax(0, 1fr))` }}
     >
-      {sorted.map((sku) => (
-        <ProductCard key={sku.id} sku={sku} />
-      ))}
+      {sorted.length
+        ? sorted.map((sku) => <ProductCard key={sku.id} sku={sku} />)
+        : Array.from({ length: columns ?? cols }).map((_, i) => (
+            <div
+              key={i}
+              data-testid="placeholder"
+              className="h-64 rounded-lg bg-gray-200 animate-pulse"
+            />
+          ))}
     </section>
   );
 }

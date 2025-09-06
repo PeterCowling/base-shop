@@ -55,33 +55,41 @@ describe("subscriptionUsage", () => {
     expect(record).toEqual({ id: "1", shop, customerId, month, shipments: 5 });
   });
 
-  it("uses default count and increments with custom values", async () => {
-    // no existing record throws
+  it("increments by 1 when no count is provided", async () => {
     await expect(
       getSubscriptionUsage(shop, customerId, month),
     ).rejects.toThrow();
 
-    // default increment when no count is provided
     await incrementSubscriptionUsage(shop, customerId, month);
+
     expect(upsertMock).toHaveBeenCalledWith({
       where: { shop_customerId_month: { shop, customerId, month } },
       create: { shop, customerId, month, shipments: 1 },
       update: { shipments: { increment: 1 } },
     });
+    expect(upsertMock).toHaveBeenCalledTimes(1);
+
     expect(await getSubscriptionUsage(shop, customerId, month)).toEqual({
       shop,
       customerId,
       month,
       shipments: 1,
     });
+  });
 
-    // custom increment
+  it("increments by the provided count", async () => {
+    await incrementSubscriptionUsage(shop, customerId, month);
+    upsertMock.mockClear();
+
     await incrementSubscriptionUsage(shop, customerId, month, 2);
-    expect(upsertMock).toHaveBeenLastCalledWith({
+
+    expect(upsertMock).toHaveBeenCalledWith({
       where: { shop_customerId_month: { shop, customerId, month } },
       create: { shop, customerId, month, shipments: 2 },
       update: { shipments: { increment: 2 } },
     });
+    expect(upsertMock).toHaveBeenCalledTimes(1);
+
     expect(await getSubscriptionUsage(shop, customerId, month)).toEqual({
       shop,
       customerId,

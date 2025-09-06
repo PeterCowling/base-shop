@@ -48,4 +48,25 @@ describe('buildResponse', () => {
     expect(res.headers.get('X-Test')).toBe('abc');
     expect(res.headers.get('X-Other')).toBe('def');
   });
+
+  it('decodes body and applies multiple headers', async () => {
+    const json = JSON.stringify({ hello: 'world' });
+    const proxy: ProxyResponse = {
+      response: {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Extra': '42',
+        },
+        body: Buffer.from(json).toString('base64'),
+      },
+    };
+
+    const res = buildResponse(proxy);
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Content-Type')).toBe('application/json');
+    expect(res.headers.get('X-Extra')).toBe('42');
+    await expect(res.text()).resolves.toBe(json);
+  });
 });

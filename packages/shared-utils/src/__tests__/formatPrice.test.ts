@@ -64,11 +64,31 @@ describe("formatPrice", () => {
     }
   );
 
-  it("throws when Intl.supportedValuesOf excludes the currency", () => {
+  it("formats when Intl.supportedValuesOf includes the currency", () => {
     const original = (Intl as any).supportedValuesOf;
     (Intl as any).supportedValuesOf = () => ["USD", "EUR"];
+    const amount = 12.34;
     try {
-      expect(() => formatPrice(10, "BTC")).toThrow(RangeError);
+      const formatted = formatPrice(amount, "USD", "en-GB");
+      const expected = new Intl.NumberFormat("en-GB", {
+        style: "currency",
+        currency: "USD",
+      }).format(amount);
+      expect(formatted).toBe(expected);
+    } finally {
+      if (original) {
+        (Intl as any).supportedValuesOf = original;
+      } else {
+        delete (Intl as any).supportedValuesOf;
+      }
+    }
+  });
+
+  it("throws when Intl.supportedValuesOf excludes the currency", () => {
+    const original = (Intl as any).supportedValuesOf;
+    (Intl as any).supportedValuesOf = () => ["EUR"];
+    try {
+      expect(() => formatPrice(10, "USD")).toThrow(RangeError);
     } finally {
       if (original) {
         (Intl as any).supportedValuesOf = original;

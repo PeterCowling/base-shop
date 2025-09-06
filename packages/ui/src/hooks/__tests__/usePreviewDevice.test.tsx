@@ -1,54 +1,58 @@
-import { renderHook, act } from "@testing-library/react";
-import { usePreviewDevice, PREVIEW_DEVICE_STORAGE_KEY } from "../usePreviewDevice";
-import { useEffect } from "react";
+import { renderHook, act, waitFor } from "@testing-library/react";
+import {
+  usePreviewDevice,
+  PREVIEW_DEVICE_STORAGE_KEY,
+} from "../usePreviewDevice";
 
 describe("usePreviewDevice", () => {
   beforeEach(() => {
-    localStorage.clear();
-    Object.defineProperty(window, "innerWidth", {
-      writable: true,
-      value: 1200,
-    });
+    jest.restoreAllMocks();
   });
 
-  function useResponsivePreview() {
-    const [device, setDevice] = usePreviewDevice("desktop");
-    useEffect(() => {
-      const handler = () => {
-        const w = window.innerWidth;
-        if (w < 768) setDevice("mobile");
-        else if (w < 1024) setDevice("tablet");
-        else setDevice("desktop");
-      };
-      window.addEventListener("resize", handler);
-      handler();
-      return () => window.removeEventListener("resize", handler);
-    }, [setDevice]);
-    return device;
-  }
+  it("defaults to the initial id when no value is stored", () => {
+    jest.spyOn(Storage.prototype, "getItem").mockReturnValue(null);
+    const { result } = renderHook(() => usePreviewDevice("desktop"));
 
-  it("returns device string for breakpoints", () => {
-    const { result } = renderHook(() => useResponsivePreview());
+    expect(result.current[0]).toBe("desktop");
+    expect(window.localStorage.getItem).toHaveBeenCalledWith(
+      PREVIEW_DEVICE_STORAGE_KEY,
+    );
+  });
 
-    expect(result.current).toBe("desktop");
+  it("loads a stored device id", async () => {
+    jest.spyOn(Storage.prototype, "getItem").mockReturnValue("tablet");
+    const setItem = jest
+      .spyOn(Storage.prototype, "setItem")
+      .mockImplementation(() => undefined);
 
+    const { result } = renderHook(() => usePreviewDevice("desktop"));
+
+    await waitFor(() => expect(result.current[0]).toBe("tablet"));
+    expect(setItem).toHaveBeenCalledWith(
+      PREVIEW_DEVICE_STORAGE_KEY,
+      "tablet",
+    );
+  });
+
+  it("continues gracefully when storage access fails", () => {
+    jest
+      .spyOn(Storage.prototype, "getItem")
+      .mockImplementation(() => {
+        throw new Error("denied");
+      });
+    jest
+      .spyOn(Storage.prototype, "setItem")
+      .mockImplementation(() => {
+        throw new Error("denied");
+      });
+
+    const { result } = renderHook(() => usePreviewDevice("desktop"));
+
+    expect(result.current[0]).toBe("desktop");
     act(() => {
-      (window as any).innerWidth = 500;
-      window.dispatchEvent(new Event("resize"));
+      result.current[1]("mobile");
     });
-    expect(result.current).toBe("mobile");
-
-    act(() => {
-      (window as any).innerWidth = 800;
-      window.dispatchEvent(new Event("resize"));
-    });
-    expect(result.current).toBe("tablet");
-
-    act(() => {
-      (window as any).innerWidth = 1300;
-      window.dispatchEvent(new Event("resize"));
-    });
-    expect(result.current).toBe("desktop");
-    expect(localStorage.getItem(PREVIEW_DEVICE_STORAGE_KEY)).toBe("desktop");
+    expect(result.current[0]).toBe("mobile");
   });
 });
+

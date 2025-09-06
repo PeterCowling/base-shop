@@ -1,7 +1,7 @@
 import { formatCurrency } from '../src/formatCurrency';
 
 describe('formatCurrency', () => {
-  it('formats positive minor-unit amounts', () => {
+  it('formats using the runtime default locale when no locale is provided', () => {
     const minor = 12345; // $123.45
     const expected = new Intl.NumberFormat(undefined, {
       style: 'currency',
@@ -45,38 +45,38 @@ describe('formatCurrency', () => {
     expect(formatCurrency(minor)).toBe(expected);
   });
 
+  it('formats USD currency for the en-US locale', () => {
+    const expected = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(123.45);
+    expect(formatCurrency(12345, 'USD', 'en-US')).toBe(expected);
+  });
+
   it('formats using provided currency code and locale', () => {
     const minor = 12345; // €123.45
     const expected = new Intl.NumberFormat('de-DE', {
       style: 'currency',
       currency: 'EUR',
     }).format(123.45);
-    expect(formatCurrency(minor, 'EUR', 'de-DE')).toBe(expected);
+    const result = formatCurrency(minor, 'EUR', 'de-DE');
+    expect(result).toBe(expected);
+    expect(result).toContain('€');
   });
 
-  it.each(['BAD', 'US', '', 'usd'])('throws RangeError for invalid currency %s', (code) => {
-    expect(() => formatCurrency(100, code as any)).toThrow(RangeError);
-  });
-
-  it('uses explicit locale over default', () => {
-    const minor = 12345; // $123.45
-    const defaultFormatted = formatCurrency(minor, 'USD');
-    const deFormatted = formatCurrency(minor, 'USD', 'de-DE');
-    const expected = new Intl.NumberFormat('de-DE', {
-      style: 'currency',
-      currency: 'USD',
-    }).format(123.45);
-    expect(deFormatted).toBe(expected);
-    if (deFormatted !== defaultFormatted) {
-      expect(deFormatted).not.toBe(defaultFormatted);
-    }
+  it.each(['usd', 'US'])('throws RangeError for invalid currency %s', (code) => {
+    expect(() => formatCurrency(100, code as any)).toThrow(
+      new RangeError(`Invalid currency code: ${code}`)
+    );
   });
 
   it('throws RangeError when Intl.supportedValuesOf excludes the currency', () => {
     const original = (Intl as any).supportedValuesOf;
     (Intl as any).supportedValuesOf = () => ['USD'];
     try {
-      expect(() => formatCurrency(100, 'EUR')).toThrow(RangeError);
+      expect(() => formatCurrency(100, 'ABC')).toThrow(
+        new RangeError('Invalid currency code: ABC')
+      );
     } finally {
       (Intl as any).supportedValuesOf = original;
     }

@@ -2,6 +2,7 @@ import type { CookieValue } from "cypress";
 
 const SECRET = "test-nextauth-secret";
 const SHOP = "demo";
+const dataDir = "test/data/shops";
 
 function sign(role: string) {
   return cy
@@ -36,8 +37,8 @@ describe("cms middleware", () => {
       updatedAt: "",
       updatedBy: "",
     };
-    cy.writeFile(`data/shops/${SHOP}/products.json`, [product]);
-    cy.writeFile(`data/shops/${SHOP}/settings.json`, settings);
+    cy.writeFile(`${dataDir}/${SHOP}/products.json`, [product]);
+    cy.writeFile(`${dataDir}/${SHOP}/settings.json`, settings);
   });
 
   beforeEach(() => {

@@ -3,7 +3,8 @@
 describe("Theme editor", () => {
   const shop = "abc";
   const themeUrl = `/cms/shop/${shop}/themes`;
-  const shopFile = `data/shops/${shop}/shop.json`;
+  const dataDir = "test/data/shops";
+  const shopFile = `${dataDir}/${shop}/shop.json`;
 
   it("updates colors and typography and persists", () => {
     // sign in

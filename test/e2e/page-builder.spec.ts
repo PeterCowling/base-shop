@@ -3,6 +3,7 @@
 describe("Page Builder happy path", () => {
   const shopId = "abc";
   const builderUrl = `/cms/shop/${shopId}/pages/home/builder`;
+  const dataDir = "test/data/shops";
 
   it("drags a block, saves draft and publishes", () => {
     // programmatically sign in via NextAuth credentials provider
@@ -47,14 +48,14 @@ describe("Page Builder happy path", () => {
     cy.get("@firstBlock")
       .invoke("text")
       .then((blockType) => {
-        cy.readFile(`data/shops/${shopId}/pages.json`).then((pages) => {
+        cy.readFile(`${dataDir}/${shopId}/pages.json`).then((pages) => {
           const page = pages.find((p: any) => p.slug === "home");
           expect(page.components[0].type).to.equal(blockType.trim());
         });
       });
 
     cy.contains("button", "Publish").click();
-    cy.readFile(`data/shops/${shopId}/pages.json`, { timeout: 10000 }).then(
+    cy.readFile(`${dataDir}/${shopId}/pages.json`, { timeout: 10000 }).then(
       (pages) => {
         const page = pages.find((p: any) => p.slug === "home");
         expect(page.status).to.equal("published");

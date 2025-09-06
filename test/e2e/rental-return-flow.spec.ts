@@ -4,6 +4,7 @@
 
 describe("Rental return flow", () => {
   const shopId = "abc";
+  const dataDir = "test/data/shops";
   const sku = {
     id: "test-sku",
     slug: "test-sku",
@@ -62,7 +63,7 @@ describe("Rental return flow", () => {
     cy.request("POST", "/api/return", { sessionId: "sess_test", damageFee: 0 });
 
     // 4️⃣ verify file contains refunded order
-    cy.readFile(`data/shops/${shopId}/rental_orders.json`).then((orders) => {
+    cy.readFile(`${dataDir}/${shopId}/rental_orders.json`).then((orders) => {
       expect(orders).to.have.length(1);
       expect(orders[0].sessionId).to.equal("sess_test");
       expect(orders[0].refundedAt).to.be.a("string");

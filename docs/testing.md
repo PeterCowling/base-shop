@@ -1,0 +1,40 @@
+# Testing
+
+This guide explains how to run unit and integration tests and how to choose between mocking Prisma calls or using a real database.
+
+## Running tests
+
+### Stubbed Prisma client (`DATABASE_URL` unset)
+
+When `DATABASE_URL` is not defined, the platform swaps Prisma with an in-memory stub. This mode is ideal for fast unit tests that focus on business logic.
+
+Run tests without a database:
+
+```bash
+pnpm test
+```
+
+### Real Prisma client (`DATABASE_URL` set)
+
+Set `DATABASE_URL` to point at a test database to exercise the real Prisma client. This enables end-to-end and integration tests that need actual queries.
+
+```bash
+export DATABASE_URL="postgres://user:password@localhost:5432/base_shop_test"
+pnpm test
+```
+
+## Mocking Prisma vs. using a test database
+
+- **Mock Prisma calls** for isolated unit tests where database access would slow down execution or introduce external dependencies. Mocks let you assert that code calls Prisma with the expected arguments.
+- **Use a test database** for integration tests that rely on real SQL behavior, migrations, or interactions across multiple layers of the application.
+
+## Seeding the database for integration tests
+
+When running integration tests against a real database, ensure the schema is migrated and populated with baseline data:
+
+```bash
+pnpm prisma migrate reset --force
+pnpm tsx packages/platform-core/prisma/seed.ts
+```
+
+Run these commands before `pnpm test` so each test suite starts from a clean, seeded state.

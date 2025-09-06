@@ -40,7 +40,7 @@ describe("requireEnv", () => {
     await withEnv(
       {
         BAD_BOOL: "yes",
-        BAD_NUM: "abc",
+        BAD_NUM: "forty",
       },
       async () => {
         const { requireEnv } = await import("../src/env/core");

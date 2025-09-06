@@ -19,7 +19,9 @@ async function readPresets(shop: string) {
   }
 }
 
-export async function getThemePresets(shop: string) {
+export async function getThemePresets(
+  shop: string,
+): Promise<Record<string, Record<string, string>>> {
   return readPresets(shop);
 }
 
@@ -27,14 +29,17 @@ export async function saveThemePreset(
   shop: string,
   name: string,
   tokens: Record<string, string>,
-) {
+): Promise<void> {
   const presets = await readPresets(shop);
   presets[name] = tokens;
   await fs.mkdir(path.dirname(presetsPath(shop)), { recursive: true });
   await fs.writeFile(presetsPath(shop), JSON.stringify(presets, null, 2), "utf8");
 }
 
-export async function deleteThemePreset(shop: string, name: string) {
+export async function deleteThemePreset(
+  shop: string,
+  name: string,
+): Promise<void> {
   const presets = await readPresets(shop);
   delete presets[name];
   await fs.mkdir(path.dirname(presetsPath(shop)), { recursive: true });

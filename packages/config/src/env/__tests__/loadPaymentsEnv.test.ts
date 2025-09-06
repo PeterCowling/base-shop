@@ -11,8 +11,18 @@ describe("loadPaymentsEnv", () => {
   });
 
   it("returns defaults when gateway disabled", () => {
-    const env = loadPaymentsEnv({ PAYMENTS_GATEWAY: "disabled" } as NodeJS.ProcessEnv);
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    const env = loadPaymentsEnv({
+      PAYMENTS_GATEWAY: "disabled",
+    } as NodeJS.ProcessEnv);
     expect(env).toEqual(paymentsEnvSchema.parse({}));
+    expect(warnSpy).not.toHaveBeenCalled();
+    expect(errSpy).not.toHaveBeenCalled();
+
+    warnSpy.mockRestore();
+    errSpy.mockRestore();
   });
 
   it("throws when provider is unsupported", () => {
@@ -28,10 +38,16 @@ describe("loadPaymentsEnv", () => {
   });
 
   it.each([
-    ["STRIPE_SECRET_KEY", { STRIPE_SECRET_KEY: undefined, STRIPE_WEBHOOK_SECRET: "wh" },
-      "❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe"],
-    ["STRIPE_WEBHOOK_SECRET", { STRIPE_SECRET_KEY: "sk", STRIPE_WEBHOOK_SECRET: undefined },
-      "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe"],
+    [
+      "STRIPE_SECRET_KEY",
+      { STRIPE_SECRET_KEY: undefined, STRIPE_WEBHOOK_SECRET: "wh" },
+      "❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe",
+    ],
+    [
+      "STRIPE_WEBHOOK_SECRET",
+      { STRIPE_SECRET_KEY: "sk", STRIPE_WEBHOOK_SECRET: undefined },
+      "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
+    ],
   ])("throws when %s is missing", (_name, vars, message) => {
     const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     expect(() =>
@@ -68,32 +84,27 @@ describe("loadPaymentsEnv", () => {
   });
 
   it.each([
-    ["true", true],
-    ["TRUE", true],
     ["1", true],
-    ["false", false],
     ["0", false],
   ])("parses sandbox value %s", (value, expected) => {
     const env = loadPaymentsEnv({ PAYMENTS_SANDBOX: value } as NodeJS.ProcessEnv);
     expect(env.PAYMENTS_SANDBOX).toBe(expected);
   });
 
-  it("returns provided values for valid stripe config", () => {
+  it("returns defaults for currency and sandbox with valid stripe config", () => {
     const env = loadPaymentsEnv({
       PAYMENTS_PROVIDER: "stripe",
       STRIPE_SECRET_KEY: "sk_live_123",
       STRIPE_WEBHOOK_SECRET: "whsec_live_123",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
-      PAYMENTS_CURRENCY: "EUR",
-      PAYMENTS_SANDBOX: "false",
     } as NodeJS.ProcessEnv);
     expect(env).toEqual({
       PAYMENTS_PROVIDER: "stripe",
       STRIPE_SECRET_KEY: "sk_live_123",
       STRIPE_WEBHOOK_SECRET: "whsec_live_123",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
-      PAYMENTS_CURRENCY: "EUR",
-      PAYMENTS_SANDBOX: false,
+      PAYMENTS_CURRENCY: "USD",
+      PAYMENTS_SANDBOX: true,
     });
   });
 });

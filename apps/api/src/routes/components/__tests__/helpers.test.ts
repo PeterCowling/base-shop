@@ -19,6 +19,11 @@ describe('component helpers', () => {
       const log = '# heading\n\n  # another comment\n';
       expect(extractSummary(log)).toBe('');
     });
+
+    it('returns first non-comment line', () => {
+      const log = '# heading\n\nFirst change\n# another heading';
+      expect(extractSummary(log)).toBe('First change');
+    });
   });
 
   describe('gatherChanges', () => {

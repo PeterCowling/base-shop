@@ -1,0 +1,9 @@
+[
+  {
+    "sku": "test-a",
+    "productId": "test-a",
+    "variantAttributes": { "size": "S", "color": "green" },
+    "quantity": 3,
+    "lowStockThreshold": 2
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "sku": "demo-a",
+    "productId": "demo-a",
+    "variantAttributes": { "size": "M", "color": "red" },
+    "quantity": 1,
+    "lowStockThreshold": 1
+  },
+  {
+    "sku": "demo-b",
+    "productId": "demo-b",
+    "variantAttributes": { "size": "L", "color": "blue" },
+    "quantity": 2,
+    "lowStockThreshold": 1
+  }
+]

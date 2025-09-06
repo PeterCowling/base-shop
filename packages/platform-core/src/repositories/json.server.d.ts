@@ -8,7 +8,9 @@
  * • diffHistory      – return patch history for settings.json
  * • products.server  – catalogue helpers (read/write/update/delete/…)
  */
-export { readShop } from "./shops.server";
+import type { Shop } from "@acme/types";
+
+export declare function readShop(shop: string): Promise<Shop>;
 export { getShopSettings as readSettings } from "./settings.server";
 export * from "./products.server";
 export * from "./inventory.server";

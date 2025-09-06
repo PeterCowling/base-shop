@@ -1,7 +1,7 @@
 import type { User } from "@acme/types";
 
-export declare function getUserById(id: string): Promise<User | null>;
-export declare function getUserByEmail(email: string): Promise<User | null>;
+export declare function getUserById(id: string): Promise<User>;
+export declare function getUserByEmail(email: string): Promise<User>;
 export declare function createUser({
   id,
   email,
@@ -22,7 +22,7 @@ export declare function setResetToken(
 ): Promise<void>;
 export declare function getUserByResetToken(
   token: string,
-): Promise<User | null>;
+): Promise<User>;
 export declare function updatePassword(
   id: string,
   passwordHash: string,

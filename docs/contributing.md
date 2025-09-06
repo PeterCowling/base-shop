@@ -18,22 +18,9 @@ Create branches from `main` and name them descriptively (e.g., `feat/login-form`
 
 Before submitting changes, run [`pnpm lint`](../package.json#L24) and [`pnpm test`](../package.json#L28) to ensure the codebase is formatted correctly and the test suite passes.
 
-## Testing with Prisma
+## Testing
 
-Tests run with a stubbed Prisma client by default, so `pnpm test` completes
-without requiring a database.
-
-To execute tests against a real Postgres instance, set `DATABASE_URL` and run
-pending migrations before running the tests:
-
-```bash
-export DATABASE_URL=postgres://...
-pnpm prisma migrate deploy
-pnpm test
-```
-
-Mock Prisma calls in unit tests to keep them fast and focused. Use a Postgres
-database for integration tests to verify end-to-end behavior.
+See [testing](./testing.md) for guidance on running tests with Prisma.
 
 ## API documentation
 

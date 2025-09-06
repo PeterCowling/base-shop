@@ -7,8 +7,5 @@ export interface DeployStatusBase {
   error?: string;
 }
 
-export interface DeployShopResult extends DeployStatusBase {
-  status: "success" | "error";
-  previewUrl: string;
-}
+export interface DeployShopResult extends DeployStatusBase {}
 

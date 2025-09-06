@@ -1,24 +1,28 @@
 import slugify from '../slugify';
 
 describe('slugify', () => {
-  it('normalizes diacritics', () => {
-    expect(slugify('Crème Brûlée')).toBe('creme-brulee');
+  it('lowercases and replaces spaces with hyphens', () => {
+    expect(slugify('Hello World')).toBe('hello-world');
   });
 
-  it('removes non-word characters', () => {
-    expect(slugify('foo@$%^&*bar')).toBe('foobar');
+  it('strips accents and punctuation', () => {
+    expect(slugify('Café Déjà Vu!')).toBe('cafe-deja-vu');
   });
 
-  it('collapses whitespace and underscores into single hyphens', () => {
-    expect(slugify('foo__ bar   baz')).toBe('foo-bar-baz');
+  it('removes emojis and non-Latin characters', () => {
+    expect(slugify('Hello 🌍 世界')).toBe('hello');
   });
 
-  it('trims leading and trailing hyphens', () => {
-    expect(slugify('--foo bar--')).toBe('foo-bar');
+  it('handles multiple spaces', () => {
+    expect(slugify('  multiple   spaces  ')).toBe('multiple-spaces');
   });
 
-  it('outputs lowercase', () => {
-    expect(slugify('Foo Bar')).toBe('foo-bar');
+  it('collapses repeated hyphens and trims separators', () => {
+    expect(slugify('--a---b--')).toBe('a-b');
+  });
+
+  it('returns empty string for empty or null input', () => {
+    expect(slugify('')).toBe('');
+    expect(slugify(null)).toBe('');
   });
 });
-

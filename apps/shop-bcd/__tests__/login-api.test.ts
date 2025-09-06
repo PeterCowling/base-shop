@@ -3,6 +3,8 @@ jest.mock("@auth", () => ({
   __esModule: true,
   createCustomerSession: jest.fn(),
   validateCsrfToken: jest.fn(),
+  isMfaEnabled: jest.fn().mockResolvedValue(false),
+  verifyMfa: jest.fn(),
 }));
 
 import { createCustomerSession, validateCsrfToken } from "@auth";
@@ -56,6 +58,21 @@ test("rejects invalid credentials", async () => {
     ),
   );
   expect(res.status).toBe(401);
+  const body = await res.json();
+  expect(body.error).toMatch(/invalid credentials/i);
+});
+
+test("rejects unknown customer without creating session", async () => {
+  (validateCsrfToken as jest.Mock).mockResolvedValue(true);
+  const res = await POST(
+    makeRequest(
+      { customerId: "ghost", password: "pass1234" },
+      { "x-csrf-token": "token" },
+    ),
+  );
+  expect(res.status).toBe(401);
+  expect(createCustomerSession).not.toHaveBeenCalled();
+  expect(res.headers.get("set-cookie")).toBeNull();
   const body = await res.json();
   expect(body.error).toMatch(/invalid credentials/i);
 });

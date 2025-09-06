@@ -65,5 +65,56 @@ describe("ProductGrid", () => {
       "repeat(4, minmax(0, 1fr))"
     );
   });
+
+  it("uses device breakpoints when provided", () => {
+    let resizeCb: ResizeObserverCallback = () => {};
+    // @ts-expect-error jsdom missing ResizeObserver
+    global.ResizeObserver = class {
+      constructor(cb: ResizeObserverCallback) {
+        resizeCb = cb;
+      }
+      observe(el: Element) {
+        Object.defineProperty(el, "clientWidth", {
+          value: 1200,
+          configurable: true,
+        });
+      }
+      disconnect() {}
+    };
+
+    render(
+      <ProductGrid
+        products={products}
+        desktopItems={4}
+        tabletItems={2}
+        mobileItems={1}
+        data-testid="grid"
+      />
+    );
+    const grid = screen.getByTestId("grid") as HTMLElement;
+
+    act(() => resizeCb([]));
+    expect(grid.style.gridTemplateColumns).toBe(
+      "repeat(4, minmax(0, 1fr))"
+    );
+
+    Object.defineProperty(grid, "clientWidth", {
+      value: 800,
+      configurable: true,
+    });
+    act(() => resizeCb([]));
+    expect(grid.style.gridTemplateColumns).toBe(
+      "repeat(2, minmax(0, 1fr))"
+    );
+
+    Object.defineProperty(grid, "clientWidth", {
+      value: 400,
+      configurable: true,
+    });
+    act(() => resizeCb([]));
+    expect(grid.style.gridTemplateColumns).toBe(
+      "repeat(1, minmax(0, 1fr))"
+    );
+  });
 });
 

@@ -21,12 +21,14 @@ jest.mock("next/image", () => ({
 jest.mock("@ui/components/atoms/shadcn", () => {
   const React = require("react");
   const Button = ({ children, ...props }: any) => <button {...props}>{children}</button>;
-  const Select = ({ children }: any) => <div>{children}</div>;
-  const SelectContent = ({ children }: any) => <div>{children}</div>;
-  const SelectItem = ({ children, onSelect }: any) => (
-    <div onClick={onSelect}>{children}</div>
+  const Select = ({ children, ...props }: any) => <div {...props}>{children}</div>;
+  const SelectContent = ({ children, ...props }: any) => <div {...props}>{children}</div>;
+  const SelectItem = ({ children, onSelect, ...props }: any) => (
+    <div onClick={onSelect} {...props}>
+      {children}
+    </div>
   );
-  const SelectTrigger = ({ children }: any) => <div>{children}</div>;
+  const SelectTrigger = ({ children, ...props }: any) => <div {...props}>{children}</div>;
   const SelectValue = ({ placeholder }: any) => <div>{placeholder}</div>;
   return {
     Button,
@@ -121,9 +123,10 @@ describe("StepShopPage", () => {
     (window.localStorage.getItem as jest.Mock).mockReturnValue(JSON.stringify({}));
     const tpl = { name: "fancy", components: [{ type: "hero" } as any], preview: "" };
     const props = renderStep({ pageTemplates: [tpl] });
-    fireEvent.click(screen.getByText("fancy"));
-    expect(screen.getByText("Use fancy template?")).toBeInTheDocument();
-    fireEvent.click(screen.getByText("Confirm"));
+    fireEvent.click(screen.getByTestId("template-fancy"));
+    expect(screen.getByText("Use fancy template?"))
+      .toBeInTheDocument();
+    fireEvent.click(screen.getByTestId("confirm-template"));
     expect(props.setShopLayout).toHaveBeenCalledWith("fancy");
     expect(props.setShopComponents).toHaveBeenCalledWith([
       expect.objectContaining({ type: "hero" }),
@@ -161,9 +164,9 @@ describe("StepShopPage", () => {
 
   it("handles navigation buttons", () => {
     renderStep();
-    fireEvent.click(screen.getByText("Back"));
+    fireEvent.click(screen.getByTestId("back"));
     expect(push).toHaveBeenCalledWith("/cms/configurator/prev");
-    fireEvent.click(screen.getByText("Next"));
+    fireEvent.click(screen.getByTestId("next"));
     expect(markComplete).toHaveBeenCalledWith(true);
     expect(push).toHaveBeenCalledWith("/cms/configurator/next");
   });

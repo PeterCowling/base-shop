@@ -29,6 +29,7 @@ export default function StepSeedData({
       <label className="flex flex-col gap-1">
         <span>Product CSV</span>
         <Input
+          data-cy="product-csv"
           type="file"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setCsvFile(e.target.files?.[0] ?? null)
@@ -38,6 +39,7 @@ export default function StepSeedData({
       <label className="flex flex-col gap-1">
         <span>Categories (comma or newline separated)</span>
         <Input
+          data-cy="categories"
           value={categoriesText}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setCategoriesText(e.target.value)
@@ -48,6 +50,7 @@ export default function StepSeedData({
       {seedResult && <p className="text-sm">{seedResult}</p>}
       <div className="flex justify-end gap-2">
         <Button
+          data-cy="save-return"
           disabled={seeding}
           onClick={async () => {
             await seed();

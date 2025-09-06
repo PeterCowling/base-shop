@@ -194,6 +194,7 @@ export default function StepHomePage({
       <div className="flex justify-between">
         {prevStepId && (
           <Button
+            data-cy="back"
             variant="outline"
             onClick={() => router.push(`/cms/configurator/${prevStepId}`)}
           >
@@ -202,6 +203,7 @@ export default function StepHomePage({
         )}
         {nextStepId && (
           <Button
+            data-cy="next"
             onClick={() => {
               markComplete(true);
               router.push(`/cms/configurator/${nextStepId}`);

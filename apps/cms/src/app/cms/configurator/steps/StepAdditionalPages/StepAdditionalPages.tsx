@@ -143,6 +143,7 @@ export default function StepAdditionalPages({
           />
           <div className="flex justify-between">
             <Button
+              data-cy="cancel-additional-page"
               variant="outline"
               onClick={() => {
                 resetFields();
@@ -152,6 +153,7 @@ export default function StepAdditionalPages({
               Cancel
             </Button>
             <Button
+              data-cy="confirm-add-page"
               onClick={() => {
                 setPages([
                   ...pages,
@@ -173,9 +175,14 @@ export default function StepAdditionalPages({
           </div>
         </div>
       )}
-      {!adding && <Button onClick={() => setAdding(true)}>Add Page</Button>}
+      {!adding && (
+        <Button data-cy="add-page" onClick={() => setAdding(true)}>
+          Add Page
+        </Button>
+      )}
       <div className="flex justify-end">
         <Button
+          data-cy="save-return"
           onClick={() => {
             markComplete(true);
             router.push("/cms/configurator");

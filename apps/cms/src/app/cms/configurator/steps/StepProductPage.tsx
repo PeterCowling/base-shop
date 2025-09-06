@@ -107,6 +107,7 @@ export default function StepProductPage({
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Product Detail Page</h2>
       <Select
+        data-cy="product-layout"
         value={productLayout}
         open={selectOpen}
         onOpenChange={setSelectOpen}
@@ -125,7 +126,11 @@ export default function StepProductPage({
               setPendingTemplate({ name: "blank", components: [], preview: "" });
             }}
           >
-            <button type="button" className="w-full text-left">
+            <button
+              type="button"
+              data-cy="template-blank"
+              className="w-full text-left"
+            >
               Blank
             </button>
           </SelectItem>
@@ -140,7 +145,11 @@ export default function StepProductPage({
                 setPendingTemplate(t);
               }}
             >
-              <button type="button" className="w-full text-left">
+              <button
+                type="button"
+                data-cy={`template-${t.name.replace(/\s+/g, '-')}`}
+                className="w-full text-left"
+              >
                 <div className="flex items-center gap-2">
                   <Image
                     src={t.preview}
@@ -184,12 +193,14 @@ export default function StepProductPage({
           )}
           <DialogFooter>
             <Button
+              data-cy="cancel-template"
               variant="outline"
               onClick={() => setPendingTemplate(null)}
             >
               Cancel
             </Button>
             <Button
+              data-cy="confirm-template"
               onClick={() => {
                 if (!pendingTemplate) return;
                 const layout =
@@ -270,6 +281,7 @@ export default function StepProductPage({
       />
       <div className="flex justify-end">
         <Button
+          data-cy="save-return"
           onClick={() => {
             markComplete(true);
             router.push("/cms/configurator");

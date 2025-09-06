@@ -106,6 +106,7 @@ export default function StepSummary({
           <label className="flex flex-col gap-1">
             <span>Home page title ({l})</span>
             <Input
+              data-cy={`page-title-${l}`}
               value={pageTitle[l]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setPageTitle({ ...pageTitle, [l]: e.target.value })
@@ -122,6 +123,7 @@ export default function StepSummary({
           <label className="flex flex-col gap-1">
             <span>Description ({l})</span>
             <Input
+              data-cy={`page-description-${l}`}
               value={pageDescription[l]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setPageDescription({
@@ -143,6 +145,7 @@ export default function StepSummary({
       <label className="flex flex-col gap-1">
         <span>Social image URL</span>
         <Input
+          data-cy="social-image-url"
           value={socialImage}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setSocialImage(e.target.value)
@@ -161,6 +164,7 @@ export default function StepSummary({
 
       <div className="flex justify-end">
         <Button
+          data-cy="save-return"
           disabled={creating}
           onClick={async () => {
             await submit();

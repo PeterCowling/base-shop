@@ -64,7 +64,7 @@ export default function ThemeEditorForm({
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Select Theme</h2>
 
-      <Select value={theme} onValueChange={onThemeChange}>
+      <Select data-cy="theme-select" value={theme} onValueChange={onThemeChange}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select theme" />
         </SelectTrigger>
@@ -103,6 +103,7 @@ export default function ThemeEditorForm({
                   onClick={() => setPalette(p.name)}
                   className="h-10 w-10 p-0"
                   aria-label={p.name}
+                  data-cy={`palette-${p.name}`}
                 >
                   <div className="flex h-full w-full flex-wrap overflow-hidden rounded">
                     {Object.values(p.colors).map((c, i) => (
@@ -131,7 +132,7 @@ export default function ThemeEditorForm({
         onChange={onTokensChange}
       />
       <div className="flex justify-between">
-        <Button variant="outline" onClick={onReset}>
+        <Button data-cy="reset-theme" variant="outline" onClick={onReset}>
           Reset to defaults
         </Button>
         <DeviceSelector

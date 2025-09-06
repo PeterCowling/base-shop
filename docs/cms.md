@@ -56,6 +56,12 @@ Admins can scaffold and launch a shop directly from the CMS at `/cms/configurato
 13. **Summary** – review selections and launch the shop.
 14. _(Optional)_ **Import Data**, **Seed Data** and **Hosting** steps for existing content, sample data and deployment settings.
 
+### Test selectors
+
+Interactive fields in these steps expose `data-cy` attributes (for example,
+`shop-id` or `save-return`) so tests can target elements via Testing
+Library's `getByTestId` configured for `data-cy`.
+
 Progress saves automatically via the `cms-configurator-progress` key and the `/cms/api/configurator-progress` endpoint. Returning to `/cms/configurator` resumes from the last completed step.
 
 ## Configurator Resume & Page Drafts

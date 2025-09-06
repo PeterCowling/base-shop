@@ -62,6 +62,7 @@ export default function StepHosting({
       <label className="flex flex-col gap-1">
         <span>Custom Domain</span>
         <Input
+          data-cy="custom-domain"
           value={domain}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setDomain(e.target.value)
@@ -97,6 +98,7 @@ export default function StepHosting({
       )}
       <div className="flex justify-end">
         <Button
+          data-cy="save-return"
           disabled={deploying}
           onClick={async () => {
             await deploy();

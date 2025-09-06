@@ -213,6 +213,7 @@ export default function StepEnvVars({
                 <span title={v.description}>?</span>
               </span>
               <Input
+                data-cy={`env-${v.key}`}
                 type={v.isPublic ? "text" : "password"}
                 value={env[v.key] ?? ""}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -230,6 +231,7 @@ export default function StepEnvVars({
         <Button
           type="button"
           variant="ghost"
+          data-cy="toggle-advanced-vars"
           onClick={() => setShowAdvanced((s) => !s)}
         >
           {showAdvanced ? "Hide advanced variables" : "Show advanced variables"}
@@ -237,6 +239,7 @@ export default function StepEnvVars({
       )}
       <div className="flex justify-end">
         <Button
+          data-cy="save-return"
           onClick={() => {
             markComplete(true);
             router.push("/cms/configurator");

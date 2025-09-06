@@ -100,9 +100,16 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
           <div key={p.id} className="flex items-center gap-2 text-sm">
             {p.name}
             {payment.includes(p.id) ? (
-              <Button disabled>Connected</Button>
+              <Button disabled data-cy={`payment-connected-${p.id}`}>
+                Connected
+              </Button>
             ) : (
-              <Button onClick={() => connect(p.id)}>Connect</Button>
+              <Button
+                data-cy={`payment-connect-${p.id}`}
+                onClick={() => connect(p.id)}
+              >
+                Connect
+              </Button>
             )}
           </div>
         ))}
@@ -113,9 +120,16 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
           <div key={p.id} className="flex items-center gap-2 text-sm">
             {p.name}
             {shipping.includes(p.id) ? (
-              <Button disabled>Connected</Button>
+              <Button disabled data-cy={`shipping-connected-${p.id}`}>
+                Connected
+              </Button>
             ) : (
-              <Button onClick={() => connect(p.id)}>Connect</Button>
+              <Button
+                data-cy={`shipping-connect-${p.id}`}
+                onClick={() => connect(p.id)}
+              >
+                Connect
+              </Button>
             )}
           </div>
         ))}
@@ -123,6 +137,7 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
       <div>
         <p className="font-medium">Analytics</p>
         <Select
+          data-cy="analytics-provider"
           value={selectedAnalyticsProvider}
           onValueChange={handleAnalyticsProviderChange}
         >
@@ -140,6 +155,7 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
         </Select>
         {selectedAnalyticsProvider === "ga" && (
           <Input
+            data-cy="analytics-id"
             className="mt-2"
             value={analyticsIdValue}
             onChange={handleAnalyticsIdChange}
@@ -149,6 +165,7 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
       </div>
       <div className="flex justify-end">
         <Button
+          data-cy="save-return"
           onClick={() => {
             markComplete(true);
             router.push("/cms/configurator");

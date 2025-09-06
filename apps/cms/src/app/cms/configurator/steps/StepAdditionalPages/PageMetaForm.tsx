@@ -29,6 +29,7 @@ export default function PageMetaForm({
       <label className="flex flex-col gap-1">
         <span>Slug</span>
         <Input
+          data-cy="additional-page-slug"
           value={slug}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setSlug(e.target.value)
@@ -40,6 +41,7 @@ export default function PageMetaForm({
           <label className="flex flex-col gap-1">
             <span>Title ({l})</span>
             <Input
+              data-cy={`additional-page-title-${l}`}
               value={title[l]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setTitle({ ...title, [l]: e.target.value })
@@ -49,6 +51,7 @@ export default function PageMetaForm({
           <label className="flex flex-col gap-1">
             <span>Description ({l})</span>
             <Input
+              data-cy={`additional-page-desc-${l}`}
               value={desc[l]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setDesc({ ...desc, [l]: e.target.value })
@@ -58,6 +61,7 @@ export default function PageMetaForm({
           <label className="flex flex-col gap-1">
             <span>Image URL ({l})</span>
             <Input
+              data-cy={`additional-page-image-${l}`}
               value={image[l]}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setImage({ ...image, [l]: e.target.value })

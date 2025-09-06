@@ -78,6 +78,7 @@ export default function StepShopPage({
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Shop Page</h2>
       <Select
+        data-cy="shop-layout"
         value={shopLayout}
         open={selectOpen}
         onOpenChange={setSelectOpen}
@@ -96,7 +97,11 @@ export default function StepShopPage({
               setPendingTemplate({ name: "blank", components: [], preview: "" });
             }}
           >
-            <button type="button" className="w-full text-left">
+            <button
+              type="button"
+              data-cy="template-blank"
+              className="w-full text-left"
+            >
               Blank
             </button>
           </SelectItem>
@@ -111,7 +116,11 @@ export default function StepShopPage({
                 setPendingTemplate(t);
               }}
             >
-              <button type="button" className="w-full text-left">
+              <button
+                type="button"
+                data-cy={`template-${t.name.replace(/\s+/g, '-')}`}
+                className="w-full text-left"
+              >
                 <div className="flex items-center gap-2">
                   <Image
                     src={t.preview}
@@ -155,12 +164,14 @@ export default function StepShopPage({
           )}
           <DialogFooter>
             <Button
+              data-cy="cancel-template"
               variant="outline"
               onClick={() => setPendingTemplate(null)}
             >
               Cancel
             </Button>
             <Button
+              data-cy="confirm-template"
               onClick={() => {
                 if (!pendingTemplate) return;
                 const layout =
@@ -258,6 +269,7 @@ export default function StepShopPage({
       <div className="flex justify-between">
         {prevStepId && (
           <Button
+            data-cy="back"
             variant="outline"
             onClick={() => router.push(`/cms/configurator/${prevStepId}`)}
           >
@@ -266,6 +278,7 @@ export default function StepShopPage({
         )}
         {nextStepId && (
           <Button
+            data-cy="next"
             onClick={() => {
               markComplete(true);
               router.push(`/cms/configurator/${nextStepId}`);

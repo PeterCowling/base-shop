@@ -49,6 +49,8 @@ mutableEnv.AUTH_TOKEN_TTL ||= "15m";
 /* -------------------------------------------------------------------------- */
 
 import "@testing-library/jest-dom";
+import { configure } from "@testing-library/react";
+configure({ testIdAttribute: "data-cy" });
 import "cross-fetch/polyfill";
 import React from "react";
 import { TextDecoder, TextEncoder } from "node:util";

@@ -105,6 +105,7 @@ export default function StepNavigation(): React.JSX.Element {
       </div>
       <div className="flex justify-end gap-2">
         <Button
+          data-cy="save-return"
           onClick={() => {
             markComplete(true);
             router.push("/cms/configurator");

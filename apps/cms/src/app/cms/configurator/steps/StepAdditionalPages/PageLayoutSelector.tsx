@@ -23,6 +23,7 @@ export default function PageLayoutSelector({
 }: Props) {
   return (
     <Select
+      data-cy="additional-page-layout"
       value={newPageLayout}
       onValueChange={(val: string) => {
         const layout = val === "blank" ? "" : val;

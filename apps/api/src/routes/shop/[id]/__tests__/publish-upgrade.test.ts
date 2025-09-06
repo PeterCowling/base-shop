@@ -225,6 +225,41 @@ describe("onRequestPost", () => {
     });
   });
 
+  it("returns 500 when deploy command fails", async () => {
+    readFileSync.mockImplementation((file: string) => {
+      if (file.endsWith("package.json")) {
+        return JSON.stringify({ dependencies: { compA: "1.0.0" } });
+      }
+      if (file.endsWith("shop.json")) {
+        return JSON.stringify({ componentVersions: {} });
+      }
+      return "";
+    });
+    spawn
+      .mockImplementationOnce(() => ({
+        on: (_: string, cb: (code: number) => void) => cb(0),
+      }))
+      .mockImplementationOnce(() => ({
+        on: (_: string, cb: (code: number) => void) => cb(1),
+      }));
+
+    const token = jwt.sign({}, "secret");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ components: ["compA"] }),
+      }),
+    });
+
+    const body = await res.json();
+    expect(res.status).toBe(500);
+    expect(body).toEqual({
+      error: `pnpm --filter apps/shop-${id} deploy failed with status 1`,
+    });
+  });
+
   it("returns 500 on unexpected errors", async () => {
     readFileSync.mockImplementation((file: string) => {
       if (file.endsWith("package.json")) {

@@ -22,7 +22,7 @@ function shopPath(shop: string): string {
   return path.join(DATA_ROOT, shop, "shop.json");
 }
 
-async function applyThemeData(data: Shop): Promise<Shop> {
+export async function applyThemeData(data: Shop): Promise<Shop> {
   const defaults =
     Object.keys(data.themeDefaults ?? {}).length > 0
       ? data.themeDefaults!

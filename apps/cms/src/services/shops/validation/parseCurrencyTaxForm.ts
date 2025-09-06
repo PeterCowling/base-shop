@@ -6,7 +6,7 @@ const currencyTaxSchema = z
     currency: z.string().length(3, "Required"),
     taxRegion: z.string().min(1, "Required"),
   })
-  .strict();
+  .strip();
 
 export function parseCurrencyTaxForm(formData: FormData): {
   data?: z.infer<typeof currencyTaxSchema>;

@@ -14,4 +14,12 @@ describe("getShopFromPath", () => {
   it("handles paths with duplicate slashes", () => {
     expect(getShopFromPath("/cms//shop//my-shop//foo")).toBe("my-shop");
   });
+
+  it("prefers query parameter over path segments", () => {
+    expect(getShopFromPath("/cms/shop/my-shop/pages?shop=override")).toBe("override");
+  });
+
+  it("returns undefined when no recognizable shop segment exists", () => {
+    expect(getShopFromPath("/shop-123/product/456")).toBeUndefined();
+  });
 });

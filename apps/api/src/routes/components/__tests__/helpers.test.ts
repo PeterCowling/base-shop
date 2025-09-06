@@ -29,6 +29,16 @@ describe('component helpers', () => {
   describe('gatherChanges', () => {
     const root = '/tmp';
 
+    it('returns empty array when shop.json is missing', () => {
+      vol.fromJSON({
+        [`${root}/packages/foo/package.json`]: JSON.stringify({
+          name: '@acme/foo',
+          version: '1.0.0',
+        }),
+      });
+      expect(gatherChanges('abc', root)).toEqual([]);
+    });
+
     it('returns empty array when shop.json contains invalid JSON', () => {
       vol.fromJSON({
         [`${root}/data/shops/abc/shop.json`]: '{ bad json',

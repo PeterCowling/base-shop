@@ -59,6 +59,15 @@ describe("fetchJson", () => {
     await expect(fetchJson("https://example.com")).resolves.toBeUndefined();
   });
 
+  it("returns undefined for empty response bodies", async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(""),
+    });
+
+    await expect(fetchJson("https://example.com")).resolves.toBeUndefined();
+  });
+
   it("throws statusText when error body isn't valid JSON", async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: false,
@@ -84,5 +93,30 @@ describe("fetchJson", () => {
     await expect(
       fetchJson("https://example.com", undefined, schema),
     ).resolves.toEqual(data);
+  });
+
+  it("throws ZodError when response fails schema validation", async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(JSON.stringify({ message: 123 })),
+    });
+
+    const schema = z.object({ message: z.string() });
+    await expect(
+      fetchJson("https://example.com", undefined, schema),
+    ).rejects.toBeInstanceOf(z.ZodError);
+  });
+
+  it("falls back to HTTP status code when statusText is empty", async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: false,
+      status: 418,
+      statusText: "",
+      text: jest.fn().mockResolvedValue(JSON.stringify({})),
+    });
+
+    await expect(fetchJson("https://example.com")).rejects.toThrow(
+      "HTTP 418",
+    );
   });
 });

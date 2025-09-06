@@ -148,6 +148,27 @@ describe("scheduler", () => {
     ]);
   });
 
+  test(
+    "createCampaign filters unsubscribed recipients using analytics events",
+    async () => {
+      (listEvents as jest.Mock).mockResolvedValueOnce([
+        { type: "email_unsubscribe", email: "b@example.com" },
+      ]);
+      await createCampaign({
+        shop,
+        recipients: ["a@example.com", "b@example.com"],
+        subject: "Hi",
+        body: "<p>Hi %%UNSUBSCRIBE%%</p>",
+      });
+      expect(listEvents).toHaveBeenCalledWith(shop);
+      expect(sendCampaignEmail).toHaveBeenCalledTimes(1);
+      const { to, html } = (sendCampaignEmail as jest.Mock).mock.calls[0][0];
+      expect(to).toBe("a@example.com");
+      expect(html).toContain("Unsubscribe");
+      expect(html).not.toContain("%%UNSUBSCRIBE%%");
+    },
+  );
+
   test("deliverCampaign inserts tracking pixel and unsubscribe link", async () => {
     await createCampaign({
       shop,
@@ -305,6 +326,26 @@ describe("scheduler", () => {
     10000,
   );
 
+  test("createCampaign honors batch size and delay", async () => {
+    process.env.EMAIL_BATCH_SIZE = "1";
+    process.env.EMAIL_BATCH_DELAY_MS = "50";
+    const promise = createCampaign({
+      shop,
+      recipients: ["a@example.com", "b@example.com"],
+      subject: "Hi",
+      body: "<p>Hi %%UNSUBSCRIBE%%</p>",
+    });
+    await jest.advanceTimersByTimeAsync(0);
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(1);
+    await jest.advanceTimersByTimeAsync(49);
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(1);
+    await jest.advanceTimersByTimeAsync(1);
+    await promise;
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(2);
+    delete process.env.EMAIL_BATCH_SIZE;
+    delete process.env.EMAIL_BATCH_DELAY_MS;
+  });
+
   test("createCampaign writes campaign to store", async () => {
     await createCampaign({
       shop,
@@ -333,6 +374,18 @@ describe("scheduler", () => {
     expect(typeof id).toBe("string");
     const campaign = memory[shop].find((c) => c.id === id)!;
     expect(campaign.recipients).toEqual(["seg@example.com"]);
+  });
+
+  test("createCampaign propagates segment resolution errors", async () => {
+    (resolveSegment as jest.Mock).mockRejectedValueOnce(new Error("segfail"));
+    await expect(
+      createCampaign({
+        shop,
+        segment: "bad",
+        subject: "Hi",
+        body: "<p>Hi</p>",
+      }),
+    ).rejects.toThrow("segfail");
   });
 
   test("deliverCampaign resolves segment once and updates recipients", async () => {

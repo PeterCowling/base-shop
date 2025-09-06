@@ -1,7 +1,6 @@
 // packages/platform-core/src/customerProfiles.ts
-import "server-only";
-import { prisma } from "./db";
 import type { CustomerProfile } from "@acme/types";
+import { prisma } from "./db";
 
 export async function getCustomerProfile(customerId: string): Promise<CustomerProfile | null> {
   return prisma.customerProfile.findUnique({ where: { customerId } });

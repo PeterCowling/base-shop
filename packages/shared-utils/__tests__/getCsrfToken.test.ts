@@ -6,45 +6,45 @@ import { getCsrfToken } from '../src/getCsrfToken';
 describe('getCsrfToken on server', () => {
   it('returns token from x-csrf-token header', () => {
     const req = new Request('https://example.com', {
-      headers: { 'x-csrf-token': 'header-token' },
+      headers: { 'x-csrf-token': 'abc' },
     });
-    expect(getCsrfToken(req)).toBe('header-token');
+    expect(getCsrfToken(req)).toBe('abc');
   });
 
   it('prioritizes header token when query parameter is also present', () => {
-    const req = new Request('https://example.com?csrf_token=query-token', {
-      headers: { 'x-csrf-token': 'header-token' },
+    const req = new Request('https://example.com?csrf_token=123', {
+      headers: { 'x-csrf-token': 'abc' },
     });
-    expect(getCsrfToken(req)).toBe('header-token');
+    expect(getCsrfToken(req)).toBe('abc');
   });
 
   it('returns token from query string parameter', () => {
-    const req = new Request('https://example.com?csrf_token=query-token');
-    expect(getCsrfToken(req)).toBe('query-token');
+    const req = new Request('https://example.com?csrf_token=123');
+    expect(getCsrfToken(req)).toBe('123');
   });
 
   it('returns token from cookie when header and query missing', () => {
     const req = new Request('https://example.com', {
-      headers: { cookie: 'csrf_token=cookie-token; other=1' },
+      headers: { cookie: 'session=foo; csrf_token=456' },
     });
-    expect(getCsrfToken(req)).toBe('cookie-token');
+    expect(getCsrfToken(req)).toBe('456');
   });
 
   it('prioritizes query parameter over cookie', () => {
-    const req = new Request('https://example.com?csrf_token=query-token', {
-      headers: { cookie: 'csrf_token=cookie-token' },
+    const req = new Request('https://example.com?csrf_token=123', {
+      headers: { cookie: 'csrf_token=456' },
     });
-    expect(getCsrfToken(req)).toBe('query-token');
+    expect(getCsrfToken(req)).toBe('123');
   });
 
   it('prioritizes header over query and cookie', () => {
-    const req = new Request('https://example.com?csrf_token=query-token', {
+    const req = new Request('https://example.com?csrf_token=123', {
       headers: {
-        'x-csrf-token': 'header-token',
-        cookie: 'csrf_token=cookie-token',
+        'x-csrf-token': 'abc',
+        cookie: 'csrf_token=456',
       },
     });
-    expect(getCsrfToken(req)).toBe('header-token');
+    expect(getCsrfToken(req)).toBe('abc');
   });
 
   it('returns undefined when token missing', () => {

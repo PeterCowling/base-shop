@@ -27,6 +27,10 @@ describe('slugify', () => {
     expect(slugify('Crème Brûlée')).toBe('creme-brulee');
   });
 
+  it('strips accents from multi-word strings', () => {
+    expect(slugify('Café com açúcar')).toBe('cafe-com-acucar');
+  });
+
   it('returns empty string for blank input', () => {
     expect(slugify('')).toBe('');
     expect(slugify('   ')).toBe('');

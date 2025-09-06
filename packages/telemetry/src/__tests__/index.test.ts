@@ -52,5 +52,41 @@ describe("telemetry index", () => {
       mod.__stripPII({ email: "a@b.com", password: "secret", keep: 1 })
     ).toEqual({ keep: 1 });
   });
+
+  test("does not send events when telemetry disabled", async () => {
+    process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "false";
+    process.env.NODE_ENV = "production";
+    const fetchMock = jest.fn();
+    originalFetch = global.fetch;
+    // @ts-ignore
+    global.fetch = fetchMock;
+    const mod = await import("../index");
+    mod.track("evt");
+    await mod.__flush();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  test("scheduled flush logs errors and restores buffer", async () => {
+    process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
+    process.env.NODE_ENV = "production";
+    jest.useFakeTimers();
+    const fetchMock = jest.fn().mockRejectedValue(new Error("fail"));
+    originalFetch = global.fetch;
+    // @ts-ignore
+    global.fetch = fetchMock;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const mod = await import("../index");
+      mod.track("e1");
+      mod.track("e2");
+      await jest.runOnlyPendingTimersAsync();
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+      expect(errorSpy).toHaveBeenCalled();
+      expect(mod.__buffer.map((e) => e.name)).toEqual(["e1", "e2"]);
+    } finally {
+      errorSpy.mockRestore();
+      jest.useRealTimers();
+    }
+  });
 });
 

@@ -66,6 +66,20 @@ describe("parseDate", () => {
   it("returns null for invalid input", () => {
     expect(parseDate("not-a-date")).toBeNull();
   });
+
+  it("returns null when timezone parsing throws", async () => {
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock("date-fns-tz", () => ({
+        fromZonedTime: () => {
+          throw new Error("boom");
+        },
+      }));
+      const { parseDate: mocked } = await import("../index");
+      expect(
+        mocked("2025-01-01T00:00:00", "America/New_York")
+      ).toBeNull();
+    });
+  });
 });
 
 describe("formatDate", () => {

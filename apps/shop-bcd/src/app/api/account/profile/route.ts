@@ -47,11 +47,21 @@ export async function PUT(req: NextRequest) {
     return parsed.response;
   }
 
-  await updateCustomerProfile(
-    session.customerId,
-    parsed.data as { name: string; email: string },
-  );
+  try {
+    await updateCustomerProfile(
+      session.customerId,
+      parsed.data as { name: string; email: string },
+    );
+  } catch (err) {
+    if (err instanceof Error && err.message.startsWith("Conflict")) {
+      return NextResponse.json({ error: err.message }, { status: 409 });
+    }
+    throw err;
+  }
   const profile = await getCustomerProfile(session.customerId);
+  if (!profile) {
+    return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+  }
   return NextResponse.json({ ok: true, profile });
 }
 

@@ -1266,3 +1266,137 @@ describe("auth providers and tokens", () => {
   });
 });
 
+describe("auth schema dependency validation", () => {
+  const ORIGINAL_ENV = { ...process.env } as NodeJS.ProcessEnv;
+
+  afterEach(() => {
+    jest.resetModules();
+    process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
+  });
+
+  const baseEnv = {
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET: SESSION_SECRET,
+  } as const;
+
+  it("requires redis credentials for SESSION_STORE=redis", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({
+      ...baseEnv,
+      SESSION_STORE: "redis",
+    });
+    expect(result.success).toBe(false);
+    expect(result.error.format()).toMatchObject({
+      UPSTASH_REDIS_REST_URL: {
+        _errors: [
+          "UPSTASH_REDIS_REST_URL is required when SESSION_STORE=redis",
+        ],
+      },
+      UPSTASH_REDIS_REST_TOKEN: {
+        _errors: [
+          "UPSTASH_REDIS_REST_TOKEN is required when SESSION_STORE=redis",
+        ],
+      },
+    });
+  });
+
+  it("requires LOGIN_RATE_LIMIT_REDIS_TOKEN when URL provided", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({
+      ...baseEnv,
+      LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
+    });
+    expect(result.success).toBe(false);
+    expect(result.error.format()).toMatchObject({
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: {
+        _errors: [
+          "LOGIN_RATE_LIMIT_REDIS_TOKEN is required when LOGIN_RATE_LIMIT_REDIS_URL is set",
+        ],
+      },
+    });
+  });
+
+  it("requires LOGIN_RATE_LIMIT_REDIS_URL when token provided", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({
+      ...baseEnv,
+      LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
+    });
+    expect(result.success).toBe(false);
+    expect(result.error.format()).toMatchObject({
+      LOGIN_RATE_LIMIT_REDIS_URL: {
+        _errors: [
+          "LOGIN_RATE_LIMIT_REDIS_URL is required when LOGIN_RATE_LIMIT_REDIS_TOKEN is set",
+        ],
+      },
+    });
+  });
+
+  it("requires JWT_SECRET for AUTH_PROVIDER=jwt", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({
+      ...baseEnv,
+      AUTH_PROVIDER: "jwt",
+    });
+    expect(result.success).toBe(false);
+    expect(result.error.format()).toMatchObject({
+      JWT_SECRET: {
+        _errors: [
+          "JWT_SECRET is required when AUTH_PROVIDER=jwt",
+        ],
+      },
+    });
+  });
+
+  it("requires oauth client credentials for AUTH_PROVIDER=oauth", async () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      ...baseEnv,
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { authEnvSchema } = await import("../auth.ts");
+    const result = authEnvSchema.safeParse({
+      ...baseEnv,
+      AUTH_PROVIDER: "oauth",
+    });
+    expect(result.success).toBe(false);
+    expect(result.error.format()).toMatchObject({
+      OAUTH_CLIENT_ID: {
+        _errors: [
+          "OAUTH_CLIENT_ID is required when AUTH_PROVIDER=oauth",
+        ],
+      },
+      OAUTH_CLIENT_SECRET: {
+        _errors: [
+          "OAUTH_CLIENT_SECRET is required when AUTH_PROVIDER=oauth",
+        ],
+      },
+    });
+  });
+});
+

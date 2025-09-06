@@ -1,5 +1,4 @@
-import type { PrismaClient as RealPrismaClient } from '@prisma/client';
-import type { PrismaClient } from './prisma-client';
+import { PrismaClient } from '@prisma/client';
 
 type RentalOrder = {
   shop: string;
@@ -9,7 +8,16 @@ type RentalOrder = {
   [key: string]: any;
 };
 
-function createTestPrismaStub(): PrismaClient {
+function createTestPrismaStub(): Pick<
+  PrismaClient,
+  | 'rentalOrder'
+  | 'shop'
+  | 'page'
+  | 'customerProfile'
+  | 'subscriptionUsage'
+  | 'user'
+  | 'reverseLogisticsEvent'
+> {
   const rentalOrders: RentalOrder[] = [];
   const customerProfiles: { customerId: string; name: string; email: string }[] = [];
 
@@ -41,11 +49,11 @@ function createTestPrismaStub(): PrismaClient {
         Object.assign(order, data);
         return order;
       },
-    },
+    } as PrismaClient['rentalOrder'],
 
     shop: {
       findUnique: async () => ({ data: {} }),
-    },
+    } as PrismaClient['shop'],
 
     page: {
       createMany: async () => {},
@@ -53,7 +61,7 @@ function createTestPrismaStub(): PrismaClient {
       update: async () => ({}),
       deleteMany: async () => ({ count: 0 }),
       upsert: async () => ({}),
-    },
+    } as PrismaClient['page'],
 
     customerProfile: {
       findUnique: async ({ where }: any) =>
@@ -77,39 +85,28 @@ function createTestPrismaStub(): PrismaClient {
         customerProfiles.push(profile);
         return profile;
       },
-    },
+    } as PrismaClient['customerProfile'],
 
     subscriptionUsage: {
       findUnique: async () => null,
       upsert: async () => ({}),
-    },
+    } as PrismaClient['subscriptionUsage'],
 
     user: {
       findUnique: async () => null,
       findFirst: async () => null,
       create: async () => ({}),
       update: async () => ({}),
-    },
+    } as PrismaClient['user'],
 
     reverseLogisticsEvent: {
       create: async () => ({}),
       findMany: async () => [],
-    },
-  } as unknown as PrismaClient;
-}
-
-let prisma: PrismaClient;
-
-if (process.env.DATABASE_URL) {
-  // Import at runtime to avoid bundling in tests
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { PrismaClient: RealClient } = require('@prisma/client') as {
-    PrismaClient: new (...args: any[]) => RealPrismaClient;
+    } as PrismaClient['reverseLogisticsEvent'],
   };
-  prisma = new RealClient() as unknown as PrismaClient;
-} else {
-  prisma = createTestPrismaStub();
 }
+const prisma =
+  process.env.DATABASE_URL ? new PrismaClient() : createTestPrismaStub();
 
 export { prisma };
 

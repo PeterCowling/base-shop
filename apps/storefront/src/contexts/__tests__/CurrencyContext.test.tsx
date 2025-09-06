@@ -12,7 +12,8 @@ function Display() {
   return (
     <>
       <span data-testid="currency">{currency}</span>
-      <button onClick={() => setCurrency("GBP")}>change</button>
+      <button onClick={() => setCurrency("USD")}>usd</button>
+      <button onClick={() => setCurrency("GBP")}>gbp</button>
     </>
   );
 }
@@ -23,6 +24,16 @@ describe("CurrencyContext", () => {
   beforeEach(() => {
     window.localStorage.clear();
     jest.restoreAllMocks();
+  });
+
+  it("defaults to EUR when nothing stored", () => {
+    const { getByTestId, unmount } = render(
+      <CurrencyProvider>
+        <Display />
+      </CurrencyProvider>
+    );
+    expect(getByTestId("currency").textContent).toBe("EUR");
+    unmount();
   });
 
   it("initializes from localStorage when a valid currency is stored", () => {
@@ -45,8 +56,13 @@ describe("CurrencyContext", () => {
       </CurrencyProvider>
     );
 
-    fireEvent.click(getByText("change"));
+    fireEvent.click(getByText("usd"));
+    await waitFor(() => {
+      expect(getByTestId("currency").textContent).toBe("USD");
+      expect(window.localStorage.getItem(LS_KEY)).toBe("USD");
+    });
 
+    fireEvent.click(getByText("gbp"));
     await waitFor(() => {
       expect(getByTestId("currency").textContent).toBe("GBP");
       expect(window.localStorage.getItem(LS_KEY)).toBe("GBP");
@@ -66,5 +82,15 @@ describe("CurrencyContext", () => {
 
     expect(getByTestId("currency").textContent).toBe("EUR");
     unmount();
+  });
+
+  it("throws when useCurrency is called outside provider", () => {
+    function Bare() {
+      useCurrency();
+      return null;
+    }
+    expect(() => render(<Bare />)).toThrow(
+      "useCurrency must be inside CurrencyProvider"
+    );
   });
 });

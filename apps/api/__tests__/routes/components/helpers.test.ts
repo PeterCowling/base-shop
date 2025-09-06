@@ -27,6 +27,25 @@ describe('helpers', () => {
       expect(gatherChanges('abc', root)).toEqual([]);
     });
 
+    it('handles invalid shop.json', () => {
+      vol.fromJSON({ [`${root}/data/shops/abc/shop.json`]: '{oops}' });
+      expect(gatherChanges('abc', root)).toEqual([]);
+    });
+
+    it("skips components with unchanged versions", () => {
+      vol.fromJSON({
+        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+          componentVersions: { '@scope/pkg': '1.0.0' },
+        }),
+        [`${root}/packages/pkg/package.json`]: JSON.stringify({
+          name: '@scope/pkg',
+          version: '1.0.0',
+        }),
+      });
+
+      expect(gatherChanges('abc', root)).toEqual([]);
+    });
+
     it('handles version bumps and changelog summaries', () => {
       vol.fromJSON({
         [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
@@ -47,6 +66,28 @@ describe('helpers', () => {
           to: '1.1.0',
           summary: 'Added feature',
           changelog: path.join('packages', 'pkg', 'CHANGELOG.md'),
+        },
+      ]);
+    });
+
+    it('handles packages without CHANGELOG', () => {
+      vol.fromJSON({
+        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+          componentVersions: { '@scope/pkg': '1.0.0' },
+        }),
+        [`${root}/packages/pkg/package.json`]: JSON.stringify({
+          name: '@scope/pkg',
+          version: '1.1.0',
+        }),
+      });
+
+      expect(gatherChanges('abc', root)).toEqual([
+        {
+          name: '@scope/pkg',
+          from: '1.0.0',
+          to: '1.1.0',
+          summary: '',
+          changelog: '',
         },
       ]);
     });

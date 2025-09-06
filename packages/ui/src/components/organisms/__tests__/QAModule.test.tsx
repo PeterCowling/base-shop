@@ -8,10 +8,13 @@ describe("QAModule", () => {
       <QAModule items={[{ question: "What is X?", answer: "X is Y" }]} />
     );
 
-    expect(screen.getByText("What is X?")).toBeInTheDocument();
-    expect(screen.queryByText("X is Y")).not.toBeInTheDocument();
+    const question = screen.getByText("What is X?");
+    const answer = screen.getByText("X is Y");
 
-    await userEvent.click(screen.getByText("What is X?"));
-    expect(screen.getByText("X is Y")).toBeInTheDocument();
+    expect(question).toBeInTheDocument();
+    expect(answer).not.toBeVisible();
+
+    await userEvent.click(question);
+    expect(answer).toBeVisible();
   });
 });

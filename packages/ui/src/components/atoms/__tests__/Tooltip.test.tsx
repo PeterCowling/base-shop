@@ -12,9 +12,10 @@ describe("Tooltip", () => {
     );
 
     const trigger = screen.getByText("Hover me");
-    expect(screen.queryByText("Info")).toBeNull();
+    const tooltip = screen.getByText("Info");
+    expect(tooltip).toHaveClass("hidden");
     await userEvent.hover(trigger);
-    expect(screen.getByText("Info")).toBeInTheDocument();
+    expect(tooltip).toHaveClass("group-hover:block");
     await userEvent.unhover(trigger);
   });
 });

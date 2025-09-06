@@ -1,12 +1,13 @@
 declare module "@prisma/client" {
   /**
-   * Augment the generated PrismaClient with a permissive index signature so
+   * Augment the generated PrismaClient with an `any` index signature so
    * dynamic string access is allowed at compile time while preserving all
-   * existing delegate method types. Avoids `any` by returning `unknown`,
-   * which callers can safely narrow via user code or helpers.
+   * existing delegate method types. This is intentionally permissive and may
+   * bypass type safety, so callers should narrow results in user code or via
+   * helpers.
    */
   // Do NOT redeclare the class — merge onto the existing interface only.
   interface PrismaClient {
-    [key: string]: unknown;
+    [key: string]: any;
   }
 }

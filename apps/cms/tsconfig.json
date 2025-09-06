@@ -134,6 +134,18 @@
       ],
       "@acme/zod-utils/*": [
         "../../packages/zod-utils/src/*", "../../packages/zod-utils/dist/*"
+      ],
+      "@acme/telemetry": [
+        "../../packages/telemetry/src/index.ts", "../../packages/telemetry/dist/index"
+      ],
+      "@acme/telemetry/*": [
+        "../../packages/telemetry/src/*", "../../packages/telemetry/dist/*"
+      ],
+      "@acme/theme": [
+        "../../packages/theme/src/index.ts", "../../packages/theme/dist/index"
+      ],
+      "@acme/theme/*": [
+        "../../packages/theme/src/*", "../../packages/theme/dist/*"
       ]
     },
     "module": "ESNext",

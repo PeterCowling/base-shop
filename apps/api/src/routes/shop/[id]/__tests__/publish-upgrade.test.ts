@@ -128,38 +128,43 @@ describe("onRequestPost", () => {
     );
   });
 
-  it("locks all dependencies when components are omitted", async () => {
-    readFileSync.mockImplementation((file: string) => {
-      if (file.endsWith("package.json")) {
-        return JSON.stringify({ dependencies: { compA: "1.0.0", compB: "2.0.0" } });
-      }
-      if (file.endsWith("shop.json")) {
-        return JSON.stringify({ componentVersions: {} });
-      }
-      return "";
-    });
-    spawn.mockImplementation(() => ({
-      on: (_: string, cb: (code: number) => void) => cb(0),
-    }));
+  it.each([[{ components: "foo" }], [{}]])(
+    "locks all dependencies when body is %j",
+    async (body: Record<string, unknown>) => {
+      readFileSync.mockImplementation((file: string) => {
+        if (file.endsWith("package.json")) {
+          return JSON.stringify({
+            dependencies: { compA: "1.0.0", compB: "2.0.0" },
+          });
+        }
+        if (file.endsWith("shop.json")) {
+          return JSON.stringify({ componentVersions: {} });
+        }
+        return "";
+      });
+      spawn.mockImplementation(() => ({
+        on: (_: string, cb: (code: number) => void) => cb(0),
+      }));
 
-    const token = jwt.sign({}, "secret");
-    const res = await onRequestPost({
-      params: { id },
-      request: new Request("http://example.com", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: JSON.stringify({}),
-      }),
-    });
+      const token = jwt.sign({}, "secret");
+      const res = await onRequestPost({
+        params: { id },
+        request: new Request("http://example.com", {
+          method: "POST",
+          headers: { Authorization: `Bearer ${token}` },
+          body: JSON.stringify(body),
+        }),
+      });
 
-    expect(res.status).toBe(200);
-    const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
-    expect(written.componentVersions).toEqual({
-      compA: "1.0.0",
-      compB: "2.0.0",
-    });
-    expect(typeof written.lastUpgrade).toBe("string");
-  });
+      expect(res.status).toBe(200);
+      const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
+      expect(written.componentVersions).toEqual({
+        compA: "1.0.0",
+        compB: "2.0.0",
+      });
+      expect(typeof written.lastUpgrade).toBe("string");
+    },
+  );
 
   it("locks all dependencies when body is invalid JSON", async () => {
     readFileSync.mockImplementation((file: string) => {

@@ -21,11 +21,11 @@ const schema = z
   .strict();
 
 export async function POST(req: NextRequest) {
-  const parsed = await parseJsonBody(req, schema, "1mb");
-  if ("response" in parsed) {
+  const parsed = await parseJsonBody<TaxCalculationRequest>(req, schema, "1mb");
+  if (parsed.success === false) {
     return parsed.response;
   }
-  const body: TaxCalculationRequest = parsed.data;
+  const body = parsed.data;
 
   try {
     const tax = await calculateTax(body);

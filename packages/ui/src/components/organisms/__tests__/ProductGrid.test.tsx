@@ -98,15 +98,34 @@ describe("ProductGrid responsive columns", () => {
 });
 
 jest.mock("../../overlays/ProductQuickView", () => ({
-  ProductQuickView: ({ product }: { product: Product }) => (
-    <div data-testid={`quickview-${product.id}`} />
+  ProductQuickView: ({
+    product,
+    onAddToCart,
+  }: {
+    product: Product;
+    onAddToCart: (p: Product) => void;
+  }) => (
+    <div data-testid={`quickview-${product.id}`}>
+      <button
+        data-testid="add-to-cart"
+        onClick={() => onAddToCart(product)}
+      />
+    </div>
   ),
 }));
 
 describe("ProductGrid quick view", () => {
-  it("renders button and opens ProductQuickView", async () => {
+  it("renders ProductQuickView and handles add to cart", async () => {
     mockResize(1200);
-    render(<ProductGrid products={products} enableQuickView showPrice={false} />);
+    const handleAdd = jest.fn();
+    render(
+      <ProductGrid
+        products={products}
+        enableQuickView
+        showPrice={false}
+        onAddToCart={handleAdd}
+      />
+    );
 
     const btn = screen.getByLabelText("Quick view A");
     expect(btn).toBeInTheDocument();
@@ -114,6 +133,9 @@ describe("ProductGrid quick view", () => {
     fireEvent.click(btn);
     const modal = await screen.findByTestId("quickview-1");
     expect(modal).toBeInTheDocument();
+
+    fireEvent.click(screen.getByTestId("add-to-cart"));
+    expect(handleAdd).toHaveBeenCalledWith(products[0]);
   });
 });
 

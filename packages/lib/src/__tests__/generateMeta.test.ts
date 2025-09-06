@@ -58,30 +58,33 @@ describe("generateMeta", () => {
     expect(mkdirMock).not.toHaveBeenCalled();
   });
 
-  it("uses hard-coded meta in test environment", async () => {
-    process.env.NODE_ENV = "test";
-    await jest.isolateModulesAsync(async () => {
-      const envMock = { OPENAI_API_KEY: undefined };
-      jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
-      jest.doMock(
-        "openai",
-        () => {
-          throw new Error("should not import");
-        },
-        { virtual: true },
-      );
-      const { generateMeta } = await import("../generateMeta");
-      const meta = await generateMeta(product);
-      expect(meta).toEqual({
-        title: "AI title",
-        description: "AI description",
-        alt: "alt",
-        image: `/og/${product.id}.png`,
+  it.each([undefined, null])(
+    "uses hard-coded meta in test environment",
+    async (apiKey) => {
+      process.env.NODE_ENV = "test";
+      await jest.isolateModulesAsync(async () => {
+        const envMock = { OPENAI_API_KEY: apiKey };
+        jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
+        jest.doMock(
+          "openai",
+          () => {
+            throw new Error("should not import");
+          },
+          { virtual: true },
+        );
+        const { generateMeta } = await import("../generateMeta");
+        const meta = await generateMeta(product);
+        expect(meta).toEqual({
+          title: "AI title",
+          description: "AI description",
+          alt: "alt",
+          image: `/og/${product.id}.png`,
+        });
       });
-    });
-    expect(writeMock).not.toHaveBeenCalled();
-    expect(mkdirMock).not.toHaveBeenCalled();
-  });
+      expect(writeMock).not.toHaveBeenCalled();
+      expect(mkdirMock).not.toHaveBeenCalled();
+    },
+  );
 
   it("falls back when import error flag is set", async () => {
     process.env.NODE_ENV = "production";

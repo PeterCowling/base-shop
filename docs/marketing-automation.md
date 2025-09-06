@@ -28,9 +28,10 @@ The scheduler will deliver any campaigns whose `sendAt` timestamp has passed.
 
 ## Custom campaign stores
 
-Campaigns are persisted using a filesystem store by default. You can replace
-this storage layer by providing your own implementation of the `CampaignStore`
-interface and registering it with `setCampaignStore`.
+Campaigns use Prisma with PostgreSQL as the default backend. The filesystem
+store remains available only as a fallback. You can replace either storage
+layer by providing your own implementation of the `CampaignStore` interface and
+registering it with `setCampaignStore`.
 
 ```ts
 import { setCampaignStore, type CampaignStore } from "@acme/email";

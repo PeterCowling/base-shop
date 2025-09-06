@@ -42,7 +42,7 @@ describe('inventory repository', () => {
     }
   });
 
-  it('getRepo uses json backend by default and caches the promise', async () => {
+  it('getRepo falls back to the json backend and caches the promise', async () => {
     const mod1 = await import('@acme/platform-core/repositories/inventory.server');
     await mod1.inventoryRepository.read('s1');
     const mod2 = await import('@acme/platform-core/repositories/inventory.server');

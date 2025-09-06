@@ -51,7 +51,7 @@ describe('inventory repository backend selection', () => {
     expect(mockJson.read).not.toHaveBeenCalled();
   });
 
-  it('defaults to JSON repository when INVENTORY_BACKEND is not "sqlite"', async () => {
+  it('falls back to the JSON repository when INVENTORY_BACKEND is not "sqlite"', async () => {
     delete process.env.INVENTORY_BACKEND;
     const { inventoryRepository } = await import('../inventory.server');
     const mutate = jest.fn();

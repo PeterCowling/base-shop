@@ -1,22 +1,20 @@
 # Persistence and `DATA_ROOT`
 
-Many repositories use a simple filesystem backend when a database or remote service isn't configured. Data is stored under a shop-specific directory rooted at `DATA_ROOT` so the demo and tests work completely offline.
+Prisma with PostgreSQL provides the primary data store. For development or
+test scenarios where a database isn't available, certain repositories can
+fall back to a simple filesystem backend rooted at `DATA_ROOT`.
 
 ## Repositories with disk fallbacks
 
-The following repositories read and write JSON or JSONL files under `<DATA_ROOT>/<shop>`:
-
-- `@acme/platform-core` repositories for shops, products, pages, settings, theme presets, analytics and SEO audits.
-- `@acme/email` repositories for campaigns, segments and abandoned cart reminders.
-- Background services in `@acme/platform-machine` that log analytics or scheduling data.
-
-These fallbacks keep the project functional during development before wiring up a real database and make it easy to run the stack without any external dependencies.
+Currently only the `@acme/platform-core` inventory repository reads and
+writes JSON (or SQLite) files under `<DATA_ROOT>/<shop>`. These fallbacks
+are meant to support development before a database is configured.
 
 ## `DATA_ROOT`
 
 `DATA_ROOT` resolves to the root directory that holds per‑shop data files. If the variable is unset, `resolveDataRoot` walks up from the current working directory looking for `data/shops` and falls back to `<cwd>/data/shops`.
 
-Override it to store data elsewhere, isolate test fixtures or run the system offline:
+Override it to store data elsewhere or isolate test fixtures:
 
 ```bash
 DATA_ROOT=/tmp/my-data pnpm dev

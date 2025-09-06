@@ -25,7 +25,9 @@ pnpm e2e
 
 - Stripe handles deposits via escrow sessions.
 - Returned deposits can be refunded automatically by the deposit release service. See [docs/machine.md](docs/machine.md).
-- Inventory lives in JSON files under data/shops/\*/inventory.json.
+- Inventory persists in the Prisma database; a JSON file at
+  `data/shops/\*/inventory.json` remains as a development and test
+  fallback.
 - Low-stock alerts email the configured recipient (`STOCK_ALERT_RECIPIENT`) when inventory falls below its threshold.
 - Rental pricing matrix defined in data/rental/pricing.json with duration discounts and damage-fee rules.
 - Return logistics options stored in data/return-logistics.json.
@@ -70,7 +72,11 @@ primary datastore. The schema includes:
 
 ## Persistence
 
-Several repositories store data as JSON files under a common root so the demo works without a database. See [docs/persistence.md](docs/persistence.md) for details on disk fallbacks and the `DATA_ROOT` environment variable.
+The stack primarily relies on Prisma. A few modules, such as the
+inventory repository, can fall back to JSON files under a common root for
+development and tests. See [docs/persistence.md](docs/persistence.md)
+for details on these disk fallbacks and the `DATA_ROOT` environment
+variable.
 
 ## Contributing
 
@@ -84,7 +90,9 @@ See [docs/upgrade-preview-republish.md](docs/upgrade-preview-republish.md) for g
 
 ### Variant schema
 
-Inventory items live in `data/shops/<shop>/inventory.json` and follow this structure:
+Inventory records are stored in the database. During development the
+repository can fall back to `data/shops/<shop>/inventory.json`, which
+uses this structure:
 
 ```json
 {

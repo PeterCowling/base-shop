@@ -77,5 +77,54 @@ describe("cartCookie helpers", () => {
       `${CART_COOKIE}=value; Path=/; SameSite=Lax; Secure; HttpOnly`
     );
   });
+
+  it("serializes and parses cart state via cookie header", () => {
+    const cart = { "1": 2, "2": 1 };
+    const token = encodeCartCookie(JSON.stringify(cart));
+    const header = asSetCookieHeader(token);
+    expect(header).toContain(`${CART_COOKIE}=${token}`);
+    expect(header).toContain("Path=/");
+    expect(header).toContain("HttpOnly");
+    expect(header).toContain("Max-Age=2592000");
+
+    const cookieHeader = `${CART_COOKIE}=${token}; other=1`;
+    const parsed = cookieHeader
+      .split(";")
+      .map((p) => p.trim())
+      .find((p) => p.startsWith(`${CART_COOKIE}=`))
+      ?.split("=")[1];
+    expect(decodeCartCookie(parsed!)).toEqual(cart);
+  });
+
+  it("returns null for malformed or missing cart cookie in header", () => {
+    const invalid = "not_base64.sig";
+    const cookieHeader = `${CART_COOKIE}=${invalid}; other=1`;
+    const parsed = cookieHeader
+      .split(";")
+      .map((p) => p.trim())
+      .find((p) => p.startsWith(`${CART_COOKIE}=`))
+      ?.split("=")[1];
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    expect(decodeCartCookie(parsed!)).toBeNull();
+    expect(warnSpy).toHaveBeenCalledWith("Invalid cart cookie");
+    warnSpy.mockRestore();
+
+    const noCartCookie = "foo=bar";
+    const missing = noCartCookie
+      .split(";")
+      .map((p) => p.trim())
+      .find((p) => p.startsWith(`${CART_COOKIE}=`))
+      ?.split("=")[1];
+    expect(decodeCartCookie(missing as any)).toBeNull();
+  });
+
+  it("handles signature length mismatch without throwing", () => {
+    const token = encodeCartCookie("payload");
+    const [payload, sig] = token.split(".");
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    expect(decodeCartCookie(`${payload}.${sig.slice(1)}`)).toBeNull();
+    expect(warnSpy).toHaveBeenCalledWith("Invalid cart cookie");
+    warnSpy.mockRestore();
+  });
 });
 

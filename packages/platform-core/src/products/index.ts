@@ -32,7 +32,7 @@ export const PRODUCTS: readonly SKU[] = [
     deposit: 50,
     stock: 2,
     forSale: true,
-    forRental: false,
+    forRental: true,
     media: [{ url: "/shop/sand.jpg", type: "image" }],
     sizes: ["36", "37", "38", "39", "40", "41", "42", "43", "44"],
     description:

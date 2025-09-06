@@ -6,11 +6,8 @@ import { join } from "node:path";
  * Existing shop data will be removed before copying to ensure fresh files.
  */
 export function seedTestData(): void {
-  const root = process.env.TEST_DATA_ROOT;
-  if (!root) {
-    throw new Error("TEST_DATA_ROOT environment variable is required");
-  }
-
+  // Default to "test/data" if TEST_DATA_ROOT is not provided
+  const root = process.env.TEST_DATA_ROOT || "test/data";
   const srcRoot = join("test", "data", "shops");
   const destRoot = join(root, "shops");
 

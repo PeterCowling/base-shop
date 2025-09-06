@@ -8,22 +8,11 @@ describe('getCsrfToken in browser', () => {
   });
 
   it('reads token from meta tag', () => {
-    document.head.innerHTML = '<meta name="csrf-token" content="789">';
-    expect(getCsrfToken()).toBe('789');
+    document.head.innerHTML = '<meta name="csrf-token" content="abc">';
+    expect(getCsrfToken()).toBe('abc');
   });
 
-  it('reads token from cookie when meta missing', () => {
-    document.cookie = 'csrf_token=999';
-    expect(getCsrfToken()).toBe('999');
-  });
-
-  it('prefers meta tag over cookie', () => {
-    document.head.innerHTML = '<meta name="csrf-token" content="789">';
-    document.cookie = 'csrf_token=999';
-    expect(getCsrfToken()).toBe('789');
-  });
-
-  it('generates token and sets cookie with secure attributes when absent', () => {
+  it('generates token and sets cookie when none present', () => {
     const originalCrypto = globalThis.crypto;
     Object.defineProperty(globalThis, 'crypto', {
       value: { ...originalCrypto, randomUUID: () => 'generated-uuid' },

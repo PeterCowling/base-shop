@@ -35,6 +35,29 @@ export const handlers = [
   rest.patch("/cms/api/configurator-progress", (_req, res, ctx) =>
     res(ctx.status(200), ctx.json({}))
   ),
+  rest.post("/cms/api/launch-shop", async (req, res, ctx) => {
+    const body = await req.json();
+    const seed = Boolean(body?.seed);
+    const steps = [
+      { step: "create", status: "success" },
+      { step: "init", status: "success" },
+      ...(seed ? [{ step: "seed", status: "success" }] : []),
+      { step: "deploy", status: "success" },
+    ];
+    const stream = new ReadableStream({
+      start(controller) {
+        steps.forEach((s) =>
+          controller.enqueue(`data: ${JSON.stringify(s)}\n\n`)
+        );
+        controller.close();
+      },
+    });
+    return res(
+      ctx.status(200),
+      ctx.set("Content-Type", "text/event-stream"),
+      ctx.body(stream)
+    );
+  }),
   // Allow API route tests to hit local handlers without mocking
   rest.post("*/shop/:id/publish-upgrade", (req) => req.passthrough()),
 ];

@@ -3,6 +3,27 @@ import "server-only";
 import { promises as fs } from "fs";
 import * as path from "path";
 
+const fileLocks = new Map<string, Promise<void>>();
+
+async function withFileLock<T>(file: string, fn: () => Promise<T>): Promise<T> {
+  const prev = fileLocks.get(file) ?? Promise.resolve();
+  let release: (() => void) | undefined;
+  const current = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  const next = prev.then(() => current);
+  fileLocks.set(file, next);
+  await prev;
+  try {
+    return await fn();
+  } finally {
+    release?.();
+    if (fileLocks.get(file) === next) {
+      fileLocks.delete(file);
+    }
+  }
+}
+
 export async function readJsonFile<T>(file: string, fallback: T): Promise<T> {
   try {
     const buf = await fs.readFile(file, "utf8");
@@ -22,10 +43,14 @@ export async function writeJsonFile(
   }
 
   await fs.mkdir(path.dirname(file), { recursive: true });
+  const tmp = `${file}.${process.pid}.${Date.now()}.tmp`;
   await fs.writeFile(
-    file,
+    tmp,
     JSON.stringify(value, null, indent ?? 2),
     "utf8",
   );
+  await fs.rename(tmp, file);
 }
+
+export { withFileLock };
 

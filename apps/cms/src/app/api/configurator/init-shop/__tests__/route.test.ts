@@ -2,6 +2,7 @@
 
 const mkdirMock = jest.fn();
 const writeFileMock = jest.fn();
+const renameMock = jest.fn();
 
 jest.mock("fs", () => {
   const actual = jest.requireActual("fs") as typeof import("fs");
@@ -11,6 +12,7 @@ jest.mock("fs", () => {
       ...actual.promises,
       mkdir: mkdirMock,
       writeFile: writeFileMock,
+      rename: renameMock,
     },
   };
 });
@@ -68,11 +70,19 @@ describe("init-shop route", () => {
       path.join("/data-root", "shop1", "products.csv"),
       Buffer.from(csvContent)
     );
+    const tempPath = writeFileMock.mock.calls[1][0] as string;
+    expect(tempPath).toMatch(
+      /\/data-root\/shop1\/categories\.json\.\d+\.\d+\.tmp$/,
+    );
     expect(writeFileMock).toHaveBeenNthCalledWith(
       2,
-      path.join("/data-root", "shop1", "categories.json"),
+      tempPath,
       JSON.stringify(categories, null, 2),
       "utf8"
+    );
+    expect(renameMock).toHaveBeenCalledWith(
+      tempPath,
+      path.join("/data-root", "shop1", "categories.json"),
     );
   });
 

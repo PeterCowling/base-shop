@@ -53,5 +53,60 @@ describe("email env", () => {
     );
     expect(emailEnv.EMAIL_PROVIDER).toBe("noop");
   });
+
+  it("defaults provider to smtp and parses smtp config", async () => {
+    const { emailEnv } = await withEnv(
+      {
+        SMTP_URL: "smtp://mail.example.com",
+        SMTP_PORT: "587",
+        SMTP_SECURE: "yes",
+        CAMPAIGN_FROM: "Sender@Example.COM",
+      },
+      () => import("@acme/config/src/env/email.ts"),
+    );
+    expect(emailEnv.EMAIL_PROVIDER).toBe("smtp");
+    expect(emailEnv.SMTP_URL).toBe("smtp://mail.example.com");
+    expect(emailEnv.SMTP_PORT).toBe(587);
+    expect(emailEnv.SMTP_SECURE).toBe(true);
+    expect(emailEnv.CAMPAIGN_FROM).toBe("sender@example.com");
+  });
+
+  it("throws for invalid smtp port", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(
+      withEnv(
+        { SMTP_PORT: "abc" },
+        () => import("@acme/config/src/env/email.ts"),
+      ),
+    ).rejects.toThrow("Invalid email environment variables");
+    const formatted = errorSpy.mock.calls[0][1];
+    expect(formatted.SMTP_PORT?._errors[0]).toBe("must be a number");
+  });
+
+  it("throws for invalid smtp secure flag", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(
+      withEnv(
+        { SMTP_SECURE: "maybe" },
+        () => import("@acme/config/src/env/email.ts"),
+      ),
+    ).rejects.toThrow("Invalid email environment variables");
+    const formatted = errorSpy.mock.calls[0][1];
+    expect(formatted.SMTP_SECURE?._errors[0]).toBe("must be a boolean");
+  });
+
+  it("rejects unsupported provider names", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(
+      withEnv(
+        { EMAIL_PROVIDER: "mailgun" },
+        () => import("@acme/config/src/env/email.ts"),
+      ),
+    ).rejects.toThrow("Invalid email environment variables");
+    const formatted = errorSpy.mock.calls[0][1];
+    expect(formatted.EMAIL_PROVIDER?._errors[0]).toContain(
+      "Invalid enum value",
+    );
+  });
 });
 

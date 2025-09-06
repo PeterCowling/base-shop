@@ -5,6 +5,10 @@ describe('slugify', () => {
     expect(slugify(' Hello World! ')).toBe('hello-world');
   });
 
+  it('replaces underscores with hyphens and drops punctuation', () => {
+    expect(slugify('Hello_World!')).toBe('hello-world');
+  });
+
   it('handles multiple spaces and underscores', () => {
     expect(slugify('multiple   spaces__and___underscores')).toBe(
       'multiple-spaces-and-underscores',

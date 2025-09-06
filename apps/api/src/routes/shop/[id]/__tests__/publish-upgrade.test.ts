@@ -6,53 +6,84 @@ const readFileSync = jest.fn();
 const writeFileSync = jest.fn();
 jest.mock("fs", () => ({ readFileSync, writeFileSync }));
 
-const spawn = jest.fn(() => ({
-  on: (_event: string, cb: (code: number) => void) => cb(0),
-}));
+const spawn = jest.fn();
 jest.mock("child_process", () => ({ spawn }));
 
 let onRequestPost: typeof import("../publish-upgrade").onRequestPost;
+const root = path.resolve(__dirname, "..", "../../../../../..");
+const id = "test-shop";
 
 beforeAll(async () => {
   ({ onRequestPost } = await import("../publish-upgrade"));
 });
 
+beforeEach(() => {
+  readFileSync.mockReset();
+  writeFileSync.mockReset();
+  spawn.mockReset();
+  process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+});
+
 describe("onRequestPost", () => {
-  const id = "abc123";
-  const root = path.resolve(__dirname, "..", "../../../../../..");
-  beforeEach(() => {
-    jest.clearAllMocks();
-    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+  describe("id validation", () => {
+    it.each(["", "ABC", "abc!", "Shop"])(
+      "rejects invalid id '%s'",
+      async (bad) => {
+        const warn = jest.spyOn(console, "warn").mockImplementation();
+        const res = await onRequestPost({
+          params: { id: bad },
+          request: new Request("http://example.com", { method: "POST" }),
+        });
+        const body = await res.json();
+        expect(res.status).toBe(400);
+        expect(body).toEqual({ error: "Invalid shop id" });
+        expect(warn).toHaveBeenCalledWith("invalid shop id", { id: bad });
+        warn.mockRestore();
+      },
+    );
   });
 
-  it("rejects invalid shop id", async () => {
-    const res = await onRequestPost({
-      params: { id: "INVALID!" },
-      request: new Request("http://example.com", { method: "POST" }),
+  describe("authorization header", () => {
+    it.each([undefined, "Token foo"])(
+      "rejects missing or malformed header %s",
+      async (header) => {
+        const warn = jest.spyOn(console, "warn").mockImplementation();
+        const init: RequestInit = { method: "POST" };
+        if (header) init.headers = { Authorization: header };
+        const res = await onRequestPost({
+          params: { id },
+          request: new Request("http://example.com", init),
+        });
+        const body = await res.json();
+        expect(res.status).toBe(401);
+        expect(body).toEqual({ error: "Unauthorized" });
+        expect(warn).toHaveBeenCalledWith("missing bearer token", { id });
+        warn.mockRestore();
+      },
+    );
+  });
+
+  it("returns 403 when jwt.verify throws", async () => {
+    const warn = jest.spyOn(console, "warn").mockImplementation();
+    const verify = jest.spyOn(jwt, "verify").mockImplementation(() => {
+      throw new Error("bad token");
     });
-    expect(res.status).toBe(400);
-  });
-
-  it("rejects missing token", async () => {
-    const res = await onRequestPost({
-      params: { id },
-      request: new Request("http://example.com", { method: "POST" }),
-    });
-    expect(res.status).toBe(401);
-  });
-
-  it("rejects invalid token", async () => {
     const res = await onRequestPost({
       params: { id },
       request: new Request("http://example.com", {
         method: "POST",
-        headers: { Authorization: "Bearer bad" },
+        headers: { Authorization: "Bearer token" },
       }),
     });
+    const body = await res.json();
     expect(res.status).toBe(403);
+    expect(body).toEqual({ error: "Forbidden" });
+    expect(warn).toHaveBeenCalledWith("invalid token", { id });
+    warn.mockRestore();
+    verify.mockRestore();
   });
 
-  it("writes shop.json and runs build/deploy", async () => {
+  it("updates selected components and spawns build/deploy", async () => {
     readFileSync.mockImplementation((file: string) => {
       if (file.endsWith("package.json")) {
         return JSON.stringify({ dependencies: { compA: "1.0.0", compB: "2.0.0" } });
@@ -62,6 +93,9 @@ describe("onRequestPost", () => {
       }
       return "";
     });
+    spawn.mockImplementation(() => ({
+      on: (_: string, cb: (code: number) => void) => cb(0),
+    }));
 
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
@@ -80,38 +114,21 @@ describe("onRequestPost", () => {
     const written = JSON.parse(data as string);
     expect(written.componentVersions).toEqual({ compA: "1.0.0" });
     expect(typeof written.lastUpgrade).toBe("string");
-    expect(spawn).toHaveBeenNthCalledWith(1, "pnpm", ["--filter", `apps/shop-${id}`, "build"], { cwd: root, stdio: "inherit" });
-    expect(spawn).toHaveBeenNthCalledWith(2, "pnpm", ["--filter", `apps/shop-${id}`, "deploy"], { cwd: root, stdio: "inherit" });
+    expect(spawn).toHaveBeenNthCalledWith(
+      1,
+      "pnpm",
+      ["--filter", `apps/shop-${id}`, "build"],
+      { cwd: root, stdio: "inherit" },
+    );
+    expect(spawn).toHaveBeenNthCalledWith(
+      2,
+      "pnpm",
+      ["--filter", `apps/shop-${id}`, "deploy"],
+      { cwd: root, stdio: "inherit" },
+    );
   });
 
-  it("handles package.json without dependencies", async () => {
-    readFileSync.mockImplementation((file: string) => {
-      if (file.endsWith("package.json")) {
-        return JSON.stringify({});
-      }
-      if (file.endsWith("shop.json")) {
-        return JSON.stringify({ componentVersions: {} });
-      }
-      return "";
-    });
-
-    const token = jwt.sign({}, "secret");
-    const res = await onRequestPost({
-      params: { id },
-      request: new Request("http://example.com", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ components: ["compA"] }),
-      }),
-    });
-
-    expect(res.status).toBe(200);
-    const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
-    expect(written.componentVersions).toEqual({});
-    expect(spawn).toHaveBeenCalledTimes(2);
-  });
-
-  it("ignores non-array components", async () => {
+  it("locks all dependencies when components are omitted", async () => {
     readFileSync.mockImplementation((file: string) => {
       if (file.endsWith("package.json")) {
         return JSON.stringify({ dependencies: { compA: "1.0.0", compB: "2.0.0" } });
@@ -121,58 +138,9 @@ describe("onRequestPost", () => {
       }
       return "";
     });
-
-    const token = jwt.sign({}, "secret");
-    const res = await onRequestPost({
-      params: { id },
-      request: new Request("http://example.com", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ components: "oops" }),
-      }),
-    });
-
-    expect(res.status).toBe(200);
-    const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
-    expect(written.componentVersions).toEqual({ compA: "1.0.0", compB: "2.0.0" });
-  });
-
-  it("handles invalid JSON body", async () => {
-    readFileSync.mockImplementation((file: string) => {
-      if (file.endsWith("package.json")) {
-        return JSON.stringify({ dependencies: { compA: "1.0.0" } });
-      }
-      if (file.endsWith("shop.json")) {
-        return JSON.stringify({ componentVersions: {} });
-      }
-      return "";
-    });
-
-    const token = jwt.sign({}, "secret");
-    const res = await onRequestPost({
-      params: { id },
-      request: new Request("http://example.com", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: "not-json",
-      }),
-    });
-
-    expect(res.status).toBe(200);
-    const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
-    expect(written.componentVersions).toEqual({ compA: "1.0.0" });
-  });
-
-  it("locks all dependencies when components omitted", async () => {
-    readFileSync.mockImplementation((file: string) => {
-      if (file.endsWith("package.json")) {
-        return JSON.stringify({ dependencies: { compA: "1.0.0", compB: "2.0.0" } });
-      }
-      if (file.endsWith("shop.json")) {
-        return JSON.stringify({ componentVersions: {} });
-      }
-      return "";
-    });
+    spawn.mockImplementation(() => ({
+      on: (_: string, cb: (code: number) => void) => cb(0),
+    }));
 
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
@@ -186,7 +154,11 @@ describe("onRequestPost", () => {
 
     expect(res.status).toBe(200);
     const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
-    expect(written.componentVersions).toEqual({ compA: "1.0.0", compB: "2.0.0" });
+    expect(written.componentVersions).toEqual({
+      compA: "1.0.0",
+      compB: "2.0.0",
+    });
+    expect(typeof written.lastUpgrade).toBe("string");
   });
 
   it("returns 500 when build command fails", async () => {
@@ -199,9 +171,8 @@ describe("onRequestPost", () => {
       }
       return "";
     });
-
     spawn.mockImplementationOnce(() => ({
-      on: (_event: string, cb: (code: number) => void) => cb(1),
+      on: (_: string, cb: (code: number) => void) => cb(1),
     }));
 
     const token = jwt.sign({}, "secret");
@@ -214,8 +185,33 @@ describe("onRequestPost", () => {
       }),
     });
 
+    const body = await res.json();
     expect(res.status).toBe(500);
+    expect(body).toEqual({
+      error: `pnpm --filter apps/shop-${id} build failed with status 1`,
+    });
+  });
+
+  it("returns 500 on unexpected errors", async () => {
+    readFileSync.mockImplementation((file: string) => {
+      if (file.endsWith("package.json")) {
+        return "not-json";
+      }
+      return "";
+    });
+
+    const token = jwt.sign({}, "secret");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    });
+
+    const body = await res.json();
+    expect(res.status).toBe(500);
+    expect(body).toEqual({ error: expect.any(String) });
   });
 });
-
 

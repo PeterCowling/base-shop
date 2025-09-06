@@ -15,6 +15,8 @@ import { DATA_ROOT } from "../dataRoot";
 import { nowIso } from "@acme/date-utils";
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
 
+export type Settings = ShopSettings;
+
 function settingsPath(shop: string): string {
   shop = validateShopName(shop);
   return path.join(DATA_ROOT, shop, "settings.json");
@@ -39,11 +41,11 @@ function setPatchValue<T extends object, K extends keyof T>(
 }
 
 function diffSettings(
-  oldS: ShopSettings,
-  newS: ShopSettings
-): Partial<ShopSettings> {
-  const patch: Partial<ShopSettings> = {};
-  for (const key of Object.keys(newS) as (keyof ShopSettings)[]) {
+  oldS: Settings,
+  newS: Settings
+): Partial<Settings> {
+  const patch: Partial<Settings> = {};
+  for (const key of Object.keys(newS) as (keyof Settings)[]) {
     const a = JSON.stringify(oldS[key]);
     const b = JSON.stringify(newS[key]);
     if (a !== b) {
@@ -53,7 +55,7 @@ function diffSettings(
   return patch;
 }
 
-export async function getShopSettings(shop: string): Promise<ShopSettings> {
+export async function getShopSettings(shop: string): Promise<Settings> {
   shop = validateShopName(shop);
   try {
     const buf = await fs.readFile(settingsPath(shop), "utf8");
@@ -61,7 +63,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
       .deepPartial()
       .safeParse(JSON.parse(buf));
     if (parsed.success) {
-      const data = parsed.data as Partial<ShopSettings>;
+      const data = parsed.data as Partial<Settings>;
       return {
         freezeTranslations: false,
         ...(data.analytics ? { analytics: data.analytics } : {}),
@@ -99,7 +101,7 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
             ...((data.seo ?? {}).aiCatalog ?? {}),
           },
         },
-      } as ShopSettings;
+      } as Settings;
     }
   } catch {
     // ignore
@@ -134,12 +136,12 @@ export async function getShopSettings(shop: string): Promise<ShopSettings> {
     },
     updatedAt: "",
     updatedBy: "",
-  } as ShopSettings;
+  } as Settings;
 }
 
 export async function saveShopSettings(
   shop: string,
-  settings: ShopSettings
+  settings: Settings
 ): Promise<void> {
   await ensureDir(shop);
   const current = await getShopSettings(shop);
@@ -160,7 +162,7 @@ export async function saveShopSettings(
 
 export interface SettingsDiffEntry {
   timestamp: string;
-  diff: Partial<ShopSettings>;
+  diff: Partial<Settings>;
 }
 
 const entrySchema = z

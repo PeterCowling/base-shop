@@ -495,6 +495,9 @@ importers:
       react-dom:
         specifier: 19.2.0-canary-3fbfb9ba-20250409
         version: 19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409)
+      supertest:
+        specifier: ^6.3.3
+        version: 6.3.4
 
   apps/dashboard: {}
 
@@ -1676,6 +1679,7 @@ packages:
 
   '@cloudflare/next-on-pages@1.13.12':
     resolution: {integrity: sha512-rPy7x9c2+0RDDdJ5o0TeRUwXJ1b7N1epnqF6qKSp5Wz1r9KHOyvaZh1ACoOC6Vu5k9su5WZOgy+8fPLIyrldMQ==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
     hasBin: true
     peerDependencies:
       '@cloudflare/workers-types': ^4.20240208.0

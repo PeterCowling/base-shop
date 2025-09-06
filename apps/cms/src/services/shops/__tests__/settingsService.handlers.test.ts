@@ -80,6 +80,7 @@ describe("settingsService", () => {
       const expected = { ...current, currency: "USD", taxRegion: "US" };
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParseCurrencyTaxForm).toHaveBeenCalledWith(fd);
       expect(mockPersistSettings).toHaveBeenCalledWith("shop", expected);
       expect(result.settings).toEqual(expected);
     });
@@ -92,6 +93,7 @@ describe("settingsService", () => {
       const result = await updateCurrencyAndTax("shop", fd);
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParseCurrencyTaxForm).toHaveBeenCalledWith(fd);
       expect(result).toEqual({ errors });
       expect(mockFetchSettings).not.toHaveBeenCalled();
       expect(mockPersistSettings).not.toHaveBeenCalled();
@@ -114,6 +116,7 @@ describe("settingsService", () => {
       };
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParseDepositForm).toHaveBeenCalledWith(fd);
       expect(mockPersistSettings).toHaveBeenCalledWith("shop", expected);
       expect(result.settings).toEqual(expected);
     });
@@ -126,6 +129,7 @@ describe("settingsService", () => {
       const result = await updateDeposit("shop", fd);
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParseDepositForm).toHaveBeenCalledWith(fd);
       expect(result).toEqual({ errors });
       expect(mockFetchSettings).not.toHaveBeenCalled();
       expect(mockPersistSettings).not.toHaveBeenCalled();
@@ -148,6 +152,7 @@ describe("settingsService", () => {
       };
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParseReverseLogisticsForm).toHaveBeenCalledWith(fd);
       expect(mockPersistSettings).toHaveBeenCalledWith("shop", expected);
       expect(result.settings).toEqual(expected);
     });
@@ -160,6 +165,7 @@ describe("settingsService", () => {
       const result = await updateReverseLogistics("shop", fd);
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParseReverseLogisticsForm).toHaveBeenCalledWith(fd);
       expect(result).toEqual({ errors });
       expect(mockFetchSettings).not.toHaveBeenCalled();
       expect(mockPersistSettings).not.toHaveBeenCalled();
@@ -186,6 +192,7 @@ describe("settingsService", () => {
       };
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParseUpsReturnsForm).toHaveBeenCalledWith(fd);
       expect(mockPersistSettings).toHaveBeenCalledWith("shop", expected);
       expect(result.settings).toEqual(expected);
     });
@@ -198,6 +205,7 @@ describe("settingsService", () => {
       const result = await updateUpsReturns("shop", fd);
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParseUpsReturnsForm).toHaveBeenCalledWith(fd);
       expect(result).toEqual({ errors });
       expect(mockFetchSettings).not.toHaveBeenCalled();
       expect(mockPersistSettings).not.toHaveBeenCalled();
@@ -228,6 +236,7 @@ describe("settingsService", () => {
       };
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParseStockAlertForm).toHaveBeenCalledWith(fd);
       expect(mockPersistSettings).toHaveBeenCalledWith("shop", expected);
       expect(result.settings).toEqual(expected);
     });
@@ -240,6 +249,7 @@ describe("settingsService", () => {
       const result = await updateStockAlert("shop", fd);
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParseStockAlertForm).toHaveBeenCalledWith(fd);
       expect(result).toEqual({ errors });
       expect(mockFetchSettings).not.toHaveBeenCalled();
       expect(mockPersistSettings).not.toHaveBeenCalled();
@@ -275,6 +285,7 @@ describe("settingsService", () => {
       };
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParsePremierDeliveryForm).toHaveBeenCalledWith(fd);
       expect(mockPersistSettings).toHaveBeenCalledWith("shop", expected);
       expect(result.settings).toEqual(expected);
     });
@@ -287,6 +298,7 @@ describe("settingsService", () => {
       const result = await updatePremierDelivery("shop", fd);
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParsePremierDeliveryForm).toHaveBeenCalledWith(fd);
       expect(result).toEqual({ errors });
       expect(mockFetchSettings).not.toHaveBeenCalled();
       expect(mockPersistSettings).not.toHaveBeenCalled();
@@ -312,6 +324,7 @@ describe("settingsService", () => {
       };
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParseAiCatalogForm).toHaveBeenCalledWith(fd);
       expect(mockPersistSettings).toHaveBeenCalledWith("shop", expected);
       expect(result.settings).toEqual(expected);
     });
@@ -324,6 +337,7 @@ describe("settingsService", () => {
       const result = await updateAiCatalog("shop", fd);
 
       expect(mockAuthorize).toHaveBeenCalled();
+      expect(mockParseAiCatalogForm).toHaveBeenCalledWith(fd);
       expect(result).toEqual({ errors });
       expect(mockFetchSettings).not.toHaveBeenCalled();
       expect(mockPersistSettings).not.toHaveBeenCalled();

@@ -5,7 +5,7 @@ export declare function getSubscriptionUsage(
   shop: string,
   customerId: string,
   month: string,
-): Promise<SubscriptionUsage | null>;
+): Promise<SubscriptionUsage>;
 
 export declare function incrementSubscriptionUsage(
   shop: string,

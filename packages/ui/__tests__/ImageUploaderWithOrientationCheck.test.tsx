@@ -54,4 +54,23 @@ describe("ImageUploaderWithOrientationCheck", () => {
     ).toBeInTheDocument();
     expect(container.querySelector("p")?.className).toContain("text-danger");
   });
+
+  it("calls onChange and shows no message when orientation unknown", () => {
+    const file = new File(["a"], "a.png", { type: "image/png" });
+    mockHook.mockReturnValue({ actual: null, isValid: null });
+    const handleChange = jest.fn();
+    const { container } = render(
+      <ImageUploaderWithOrientationCheck
+        file={null}
+        onChange={handleChange}
+        requiredOrientation="landscape"
+      />
+    );
+    const input = container.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+    fireEvent.change(input, { target: { files: [file] } });
+    expect(handleChange).toHaveBeenCalledWith(file);
+    expect(container.querySelector("p")).toBeNull();
+  });
 });

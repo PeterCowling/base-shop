@@ -475,6 +475,12 @@ describe("scheduler", () => {
     expect(fetchCampaignAnalytics).toHaveBeenCalled();
   });
 
+  test('syncCampaignAnalytics handles analytics failures gracefully', async () => {
+    (fetchCampaignAnalytics as jest.Mock).mockRejectedValueOnce(new Error('fail'));
+    await expect(syncCampaignAnalytics()).resolves.toBeUndefined();
+    expect(fetchCampaignAnalytics).toHaveBeenCalled();
+  });
+
   test('createCampaign propagates send errors', async () => {
     (sendCampaignEmail as jest.Mock).mockRejectedValueOnce(new Error('boom'));
     await expect(

@@ -1,7 +1,21 @@
 # Installation
 
-Requires **Node.js >=20** and **pnpm 10.12.1**.
-See [setup](./setup.md) for full setup and CI guidance.
+Requires **Node.js >=20**, **pnpm 10.12.1**, and a `DATABASE_URL` pointing to your
+PostgreSQL instance. See [setup](./setup.md) for full setup and CI guidance.
+
+Create a `.env` file with your database connection string and apply migrations
+before starting:
+
+```env
+DATABASE_URL="postgres://user:password@localhost:5432/shop"
+```
+
+```bash
+pnpm prisma migrate dev
+pnpm tsx packages/platform-core/prisma/seed.ts
+```
+
+If `DATABASE_URL` is unset, the platform falls back to an in-memory test stub.
 
 ## Getting Started
 

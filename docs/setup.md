@@ -4,8 +4,24 @@
 
 - **Node.js** v20 or newer
 - **pnpm** v10 (repo uses pnpm@10.12.1)
+- `DATABASE_URL` in your `.env` pointing to a PostgreSQL database
 
 See [Next.js configuration](./nextjs-config.md) for Cloudflare-specific framework options.
+
+Example `.env` entry:
+
+```env
+DATABASE_URL="postgres://user:password@localhost:5432/shop"
+```
+
+Run migrations and seed data:
+
+```bash
+pnpm prisma migrate dev
+pnpm tsx packages/platform-core/prisma/seed.ts
+```
+
+If `DATABASE_URL` is unset, the platform falls back to an in-memory test stub.
 
 For a one-liner that scaffolds a shop, validates the environment, and starts the dev server:
 

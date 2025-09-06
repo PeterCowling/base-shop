@@ -45,3 +45,50 @@ describe("getReturnBagAndLabel", () => {
   });
 });
 
+describe("getReturnLogistics", () => {
+  afterEach(() => {
+    jest.resetModules();
+    jest.restoreAllMocks();
+  });
+
+  it("caches the parsed configuration", async () => {
+    const cfg = {
+      labelService: "ups",
+      inStore: true,
+      dropOffProvider: "happy-returns",
+      tracking: true,
+      bagType: "reusable",
+      returnCarrier: ["ups"],
+      homePickupZipCodes: ["12345"],
+      mobileApp: true,
+      requireTags: true,
+      allowWear: false,
+    };
+
+    const spy = jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(JSON.stringify(cfg) as any);
+
+    const { getReturnLogistics } = await import("../returnLogistics");
+    const first = await getReturnLogistics();
+    const second = await getReturnLogistics();
+
+    expect(first).toEqual(cfg);
+    expect(second).toBe(first);
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it("throws when return logistics JSON is invalid", async () => {
+    jest.spyOn(fs, "readFile").mockResolvedValue("not-json" as any);
+    const { getReturnLogistics } = await import("../returnLogistics");
+    await expect(getReturnLogistics()).rejects.toBeInstanceOf(SyntaxError);
+  });
+
+  it("propagates read errors", async () => {
+    const err = new Error("missing");
+    jest.spyOn(fs, "readFile").mockRejectedValue(err);
+    const { getReturnLogistics } = await import("../returnLogistics");
+    await expect(getReturnLogistics()).rejects.toBe(err);
+  });
+});
+

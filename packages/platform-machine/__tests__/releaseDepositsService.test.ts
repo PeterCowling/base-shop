@@ -363,6 +363,53 @@ describe("startDepositReleaseService", () => {
     errorSpy.mockRestore();
   });
 
+  it("runs multiple shops without overlap using accelerated intervals", async () => {
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValue(["shop1", "shop2"]);
+    readFile.mockResolvedValue("{}");
+
+    const running: Record<string, boolean> = { shop1: false, shop2: false };
+    const metrics = { memory: [] as number[], durations: [] as number[] };
+    let overlaps = 0;
+
+    const releaseFn = jest.fn(async (shop: string) => {
+      if (running[shop]) overlaps++;
+      running[shop] = true;
+      const start = Date.now();
+      await new Promise((r) => setTimeout(r, 20));
+      metrics.durations.push(Date.now() - start);
+      metrics.memory.push(process.memoryUsage().heapUsed);
+      running[shop] = false;
+    });
+
+    const unhandled: unknown[] = [];
+    const handler = (err: unknown) => unhandled.push(err);
+    process.on("unhandledRejection", handler);
+
+    jest.useFakeTimers();
+    const startPromise = service.startDepositReleaseService(
+      { shop1: { intervalMinutes: 0.001 }, shop2: { intervalMinutes: 0.001 } },
+      undefined,
+      releaseFn,
+    );
+
+    await jest.advanceTimersByTimeAsync(20);
+    const stop = await startPromise;
+    for (let i = 0; i < 4; i++) {
+      await jest.advanceTimersByTimeAsync(60);
+      await jest.advanceTimersByTimeAsync(20);
+    }
+    stop();
+    jest.useRealTimers();
+    process.off("unhandledRejection", handler);
+
+    expect(releaseFn).toHaveBeenCalledTimes(12);
+    expect(overlaps).toBe(0);
+    expect(unhandled).toHaveLength(0);
+    expect(metrics.memory.length).toBe(12);
+    expect(metrics.durations.every((d) => d >= 20)).toBe(true);
+  });
+
   it("defaults to logger.error when releaseFn rejects", async () => {
     service = await import("@acme/platform-machine");
     const { logger: freshLogger } = await import("@platform-core/utils");

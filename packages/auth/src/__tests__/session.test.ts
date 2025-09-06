@@ -312,3 +312,120 @@ it("validateCsrfToken returns false when cookie is missing", async () => {
   await expect(validateCsrfToken("csrf")).resolves.toBe(false);
 });
 
+it("createCustomerSession uses 'unknown' user-agent when header absent", async () => {
+  const {
+    createCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+    CSRF_TOKEN_COOKIE,
+  } = await import("../session");
+
+  mockHeaders.get.mockReturnValue(null);
+  randomUUID.mockReturnValueOnce("session-id").mockReturnValueOnce("csrf-token");
+  sealData.mockResolvedValue("sealed-token");
+
+  await createCustomerSession({ customerId: "cust", role: "customer" });
+
+  expect(mockCookies.set).toHaveBeenCalledWith(
+    CUSTOMER_SESSION_COOKIE,
+    "sealed-token",
+    expect.any(Object)
+  );
+  expect(mockSessionStore.set).toHaveBeenCalledWith(
+    expect.objectContaining({ userAgent: "unknown" })
+  );
+});
+
+it("getCustomerSession does not create csrf token if already present", async () => {
+  const {
+    getCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+    CSRF_TOKEN_COOKIE,
+  } = await import("../session");
+
+  mockCookies.get.mockImplementation((name: string) =>
+    name === CUSTOMER_SESSION_COOKIE
+      ? { value: "token" }
+      : { value: "existing" }
+  );
+  unsealData.mockResolvedValue({
+    sessionId: "old",
+    customerId: "cust",
+    role: "customer",
+  });
+  mockSessionStore.get.mockResolvedValue({ sessionId: "old" });
+  randomUUID.mockReturnValue("new-id");
+  sealData.mockResolvedValue("new-token");
+  mockHeaders.get.mockReturnValue("agent");
+
+  await expect(getCustomerSession()).resolves.toEqual({
+    customerId: "cust",
+    role: "customer",
+  });
+
+  expect(mockCookies.set).toHaveBeenCalledWith(
+    CUSTOMER_SESSION_COOKIE,
+    "new-token",
+    expect.any(Object)
+  );
+  expect(mockCookies.set).not.toHaveBeenCalledWith(
+    CSRF_TOKEN_COOKIE,
+    expect.anything(),
+    expect.anything()
+  );
+  expect(randomUUID).toHaveBeenCalledTimes(1);
+});
+
+it(
+  "destroyCustomerSession skips session store when SESSION_SECRET is undefined",
+  async () => {
+    delete process.env.SESSION_SECRET;
+    const {
+      destroyCustomerSession,
+      CUSTOMER_SESSION_COOKIE,
+      CSRF_TOKEN_COOKIE,
+    } = await import("../session");
+
+    mockCookies.get.mockReturnValue({ value: "token" });
+
+    await destroyCustomerSession();
+
+    expect(unsealData).not.toHaveBeenCalled();
+    expect(mockSessionStore.delete).not.toHaveBeenCalled();
+    expect(mockCookies.delete).toHaveBeenCalledWith({
+      name: CUSTOMER_SESSION_COOKIE,
+      path: "/",
+      domain: "example.com",
+    });
+    expect(mockCookies.delete).toHaveBeenCalledWith({
+      name: CSRF_TOKEN_COOKIE,
+      path: "/",
+      domain: "example.com",
+    });
+  }
+);
+
+it("destroyCustomerSession ignores invalid token", async () => {
+  const {
+    destroyCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+    CSRF_TOKEN_COOKIE,
+  } = await import("../session");
+
+  mockCookies.get.mockReturnValue({ value: "token" });
+  unsealData.mockRejectedValue(new Error("bad"));
+
+  await destroyCustomerSession();
+
+  expect(mockSessionStore.delete).not.toHaveBeenCalled();
+  expect(mockCookies.delete).toHaveBeenCalledWith({
+    name: CUSTOMER_SESSION_COOKIE,
+    path: "/",
+    domain: "example.com",
+  });
+  expect(mockCookies.delete).toHaveBeenCalledWith({
+    name: CSRF_TOKEN_COOKIE,
+    path: "/",
+    domain: "example.com",
+  });
+});
+

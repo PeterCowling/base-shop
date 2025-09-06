@@ -74,7 +74,7 @@ primary datastore. The schema includes:
 
 ## Persistence
 
-Some repositories retain JSON or SQLite fallbacks under a common `DATA_ROOT`, but Prisma with PostgreSQL is the default datastore. See [docs/persistence.md](docs/persistence.md) for details on these fallbacks and the `DATA_ROOT` environment variable.
+Some repositories retain JSON or SQLite fallbacks under a common `DATA_ROOT`, but Prisma with PostgreSQL is the default datastore. Inventory is the notable holdout and still reads from JSON files or a local SQLite database while its Prisma schema is finalized; see [docs/inventory-migration.md](docs/inventory-migration.md) for the plan to move it into the primary database. See [docs/persistence.md](docs/persistence.md) for details on these fallbacks and the `DATA_ROOT` environment variable.
 
 ## Contributing
 

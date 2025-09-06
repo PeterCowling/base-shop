@@ -1,4 +1,7 @@
-import { inventoryItemSchema, type InventoryItem } from "@acme/types";
+import {
+  inventoryItemSchema,
+  type InventoryItem,
+} from "@platform-core/types/inventory";
 import { expandInventoryItem } from "@platform-core/utils/inventory";
 
 /**

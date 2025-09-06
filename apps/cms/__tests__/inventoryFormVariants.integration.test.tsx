@@ -21,7 +21,7 @@ jest.mock(
   { virtual: true }
 );
 
-jest.mock("@acme/types", () => {
+jest.mock("@platform-core/types/inventory", () => {
   const { z } = require("zod");
   const inventoryItemSchema = z
     .object({

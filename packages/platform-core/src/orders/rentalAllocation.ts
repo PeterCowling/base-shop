@@ -1,4 +1,5 @@
-import type { InventoryItem, SKU } from "@acme/types";
+import type { SKU } from "@acme/types";
+import type { InventoryItem } from "../types/inventory";
 import { updateInventoryItem } from "../repositories/inventory.server";
 
 /**

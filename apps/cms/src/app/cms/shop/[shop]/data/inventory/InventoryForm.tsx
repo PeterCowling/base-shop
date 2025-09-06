@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/atoms/shadcn";
-import type { InventoryItem } from "@acme/types";
+import type { InventoryItem } from "@platform-core/types/inventory";
 import { FormEvent, useRef, useState } from "react";
 import InventoryRow from "./InventoryRow";
 import { useInventoryValidation } from "./useInventoryValidation";

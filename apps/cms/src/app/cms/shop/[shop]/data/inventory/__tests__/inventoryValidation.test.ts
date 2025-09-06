@@ -1,7 +1,7 @@
 import { validateInventoryItems } from "../useInventoryValidation";
-import type { InventoryItem } from "@acme/types";
+import type { InventoryItem } from "@platform-core/types/inventory";
 
-jest.mock("@acme/types", () => {
+jest.mock("@platform-core/types/inventory", () => {
   const { z } = require("zod");
   const inventoryItemSchema = z
     .object({

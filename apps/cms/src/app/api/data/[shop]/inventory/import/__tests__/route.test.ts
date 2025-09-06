@@ -1,4 +1,4 @@
-import { inventoryItemSchema } from "@acme/types";
+import { inventoryItemSchema } from "@platform-core/types/inventory";
 
 // Polyfill setImmediate used by fast-csv in the test environment
 (global as any).setImmediate =

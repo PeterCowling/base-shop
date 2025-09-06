@@ -1,6 +1,10 @@
 import "server-only";
 
-import type { InventoryItem } from "@acme/types";
+import {
+  inventoryItemSchema,
+  type InventoryItem,
+  variantKey,
+} from "../types/inventory";
 import type {
   InventoryRepository,
   InventoryMutateFn,
@@ -34,7 +38,8 @@ export const inventoryRepository: InventoryRepository = {
   },
   async write(shop: string, items: InventoryItem[]) {
     const repo = await getRepo();
-    return repo.write(shop, items);
+    const parsed = inventoryItemSchema.array().parse(items);
+    return repo.write(shop, parsed);
   },
   async update(
     shop: string,
@@ -46,17 +51,6 @@ export const inventoryRepository: InventoryRepository = {
     return repo.update(shop, sku, variantAttributes, mutate);
   },
 };
-
-export function variantKey(
-  sku: string,
-  attrs: Record<string, string>,
-): string {
-  const variantPart = Object.entries(attrs)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([k, v]) => `${k}:${v}`)
-    .join("|");
-  return variantPart ? `${sku}#${variantPart}` : sku;
-}
 
 export async function readInventoryMap(
   shop: string,
@@ -72,7 +66,8 @@ export function readInventory(shop: string) {
 }
 
 export function writeInventory(shop: string, items: InventoryItem[]) {
-  return inventoryRepository.write(shop, items);
+  const parsed = inventoryItemSchema.array().parse(items);
+  return inventoryRepository.write(shop, parsed);
 }
 
 export function updateInventoryItem(
@@ -83,3 +78,6 @@ export function updateInventoryItem(
 ) {
   return inventoryRepository.update(shop, sku, variantAttributes, mutate);
 }
+
+export { variantKey };
+export type { InventoryItem };

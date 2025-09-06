@@ -1,4 +1,7 @@
-import { inventoryItemSchema, type InventoryItem } from "@acme/types";
+import {
+  inventoryItemSchema,
+  type InventoryItem,
+} from "../types/inventory";
 
 export type FlattenedInventoryItem = {
   sku: string;

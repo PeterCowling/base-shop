@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import type { InventoryItem } from "@acme/types";
+import type { InventoryItem } from "../src/types/inventory";
 
 async function withRepo(
   backend: "json" | "sqlite",

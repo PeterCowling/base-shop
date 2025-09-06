@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import ProfilePage from "../Profile";
+import { redirect } from "next/navigation";
 
 const getCustomerSession = jest.fn();
 const hasPermission = jest.fn();
@@ -13,8 +14,7 @@ jest.mock("@acme/platform-core/customerProfiles", () => ({
   getCustomerProfile: (...args: any[]) => getCustomerProfile(...args),
 }));
 
-const redirect = jest.fn();
-jest.mock("next/navigation", () => ({ redirect }));
+jest.mock("next/navigation", () => ({ redirect: jest.fn() }));
 
 jest.mock("next/link", () => ({
   __esModule: true,

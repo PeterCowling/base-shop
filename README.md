@@ -12,7 +12,7 @@ Run `pnpm init-shop` to scaffold a new shop. The configurator lists available pl
 
 ### Testing
 
-Cypress fixtures live under `test/data/shops`. Override this path by setting the `TEST_DATA_ROOT` environment variable.
+See [docs/testing.md](docs/testing.md) for comprehensive testing instructions. Cypress fixtures live under `test/data/shops`. Override this path by setting the `TEST_DATA_ROOT` environment variable.
 
 Seed data before running the Cypress suite:
 

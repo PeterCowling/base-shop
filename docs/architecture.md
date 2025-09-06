@@ -1,5 +1,7 @@
 # Architecture
 
+For testing guidance, see [testing](./testing.md).
+
 This project organizes UI code according to a simple five‑layer model loosely based on Atomic Design. Each layer may depend only on layers below it. Higher layers should never be imported by lower layers.
 
 ## Layers

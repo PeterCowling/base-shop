@@ -13,6 +13,8 @@ type Action = {
     type: "setQty";
     id: string;
     qty: number;
+} | {
+    type: "clear";
 };
 type Dispatch = (action: Action) => Promise<void>;
 export declare function CartProvider({ children }: {

@@ -4,7 +4,9 @@ import type { Locale } from "./locales";
  * Load translation messages for a given locale on the server and return a
  * lookup function.
  */
-export async function useTranslations(locale: Locale) {
+export async function useTranslations(
+  locale: Locale
+): Promise<(key: string) => string> {
   const messages = (
     await import(
       /* webpackInclude: /(en|de|it)\.json$/ */

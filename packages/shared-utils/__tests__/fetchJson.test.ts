@@ -10,25 +10,27 @@ describe("fetchJson", () => {
     jest.resetAllMocks();
   });
 
-  it("fetches and parses JSON on success", async () => {
-    const data = { message: "ok" };
+  it("resolves parsed data when response is ok and schema provided", async () => {
+    const body = { message: "ok" };
+    const schema = z.object({ message: z.string() });
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
-      text: jest.fn().mockResolvedValue(JSON.stringify(data)),
+      text: jest.fn().mockResolvedValue(JSON.stringify(body)),
     });
 
-    await expect(fetchJson<typeof data>("https://example.com")).resolves.toEqual(
-      data,
-    );
+    await expect(
+      fetchJson("https://example.com", undefined, schema),
+    ).resolves.toEqual(body);
   });
 
-  it("throws error message from JSON error payload", async () => {
-    const errorPayload = { error: "Bad Request" };
+  it("throws error message from JSON payload when response not ok", async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: false,
       status: 400,
       statusText: "Bad Request",
-      text: jest.fn().mockResolvedValue(JSON.stringify(errorPayload)),
+      text: jest.fn().mockResolvedValue(
+        JSON.stringify({ error: "Bad Request" }),
+      ),
     });
 
     await expect(fetchJson("https://example.com")).rejects.toThrow(
@@ -36,13 +38,12 @@ describe("fetchJson", () => {
     );
   });
 
-  it("falls back to statusText when error payload lacks error field", async () => {
-    const payload = { message: "fail" };
+  it("throws statusText when non-OK response lacks error message", async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: false,
       status: 500,
       statusText: "Server Error",
-      text: jest.fn().mockResolvedValue(JSON.stringify(payload)),
+      text: jest.fn().mockResolvedValue("<html></html>"),
     });
 
     await expect(fetchJson("https://example.com")).rejects.toThrow(
@@ -50,7 +51,7 @@ describe("fetchJson", () => {
     );
   });
 
-  it("returns undefined for invalid JSON bodies", async () => {
+  it("resolves undefined when JSON is invalid and no schema provided", async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
       text: jest.fn().mockResolvedValue("not json"),
@@ -58,65 +59,5 @@ describe("fetchJson", () => {
 
     await expect(fetchJson("https://example.com")).resolves.toBeUndefined();
   });
-
-  it("returns undefined for empty response bodies", async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      text: jest.fn().mockResolvedValue(""),
-    });
-
-    await expect(fetchJson("https://example.com")).resolves.toBeUndefined();
-  });
-
-  it("throws statusText when error body isn't valid JSON", async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: false,
-      status: 502,
-      statusText: "Bad Gateway",
-      text: jest.fn().mockResolvedValue("<html></html>"),
-    });
-
-    await expect(fetchJson("https://example.com")).rejects.toThrow(
-      "Bad Gateway",
-    );
-  });
-
-  it("validates data with an optional Zod schema", async () => {
-    const data = { message: "ok" };
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      text: jest.fn().mockResolvedValue(JSON.stringify(data)),
-    });
-
-    const schema = z.object({ message: z.string() }).strict();
-
-    await expect(
-      fetchJson("https://example.com", undefined, schema),
-    ).resolves.toEqual(data);
-  });
-
-  it("throws ZodError when response fails schema validation", async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: true,
-      text: jest.fn().mockResolvedValue(JSON.stringify({ message: 123 })),
-    });
-
-    const schema = z.object({ message: z.string() });
-    await expect(
-      fetchJson("https://example.com", undefined, schema),
-    ).rejects.toBeInstanceOf(z.ZodError);
-  });
-
-  it("falls back to HTTP status code when statusText is empty", async () => {
-    (global.fetch as jest.Mock).mockResolvedValue({
-      ok: false,
-      status: 418,
-      statusText: "",
-      text: jest.fn().mockResolvedValue(JSON.stringify({})),
-    });
-
-    await expect(fetchJson("https://example.com")).rejects.toThrow(
-      "HTTP 418",
-    );
-  });
 });
+

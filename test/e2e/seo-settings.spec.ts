@@ -6,7 +6,7 @@
 
 describe("SEO settings", () => {
   const seoUrl = "/cms/shop/demo/settings/seo";
-  const dataDir = "test/data/shops";
+  const dataDir = Cypress.env("TEST_DATA_ROOT");
   const historyFile = `${dataDir}/demo/settings.history.jsonl`;
 
   it("switch language, edit meta and verify", () => {

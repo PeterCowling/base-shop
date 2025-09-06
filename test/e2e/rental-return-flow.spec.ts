@@ -4,7 +4,7 @@
 
 describe("Rental return flow", () => {
   const shopId = "abc";
-  const dataDir = "test/data/shops";
+  const dataDir = Cypress.env("TEST_DATA_ROOT");
   const sku = {
     id: "test-sku",
     slug: "test-sku",

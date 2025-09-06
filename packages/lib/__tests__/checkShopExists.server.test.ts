@@ -1,31 +1,30 @@
 import { promises as fs } from 'node:fs';
-
-jest.mock('@platform-core/dataRoot', () => ({
-  resolveDataRoot: jest.fn(() => '/data/root'),
-}));
-
-jest.mock('node:fs', () => ({
-  promises: {
-    stat: jest.fn(),
-  },
-}));
-
-import { checkShopExists } from '../src/checkShopExists.server';
+import os from 'node:os';
+import path from 'node:path';
 
 describe('checkShopExists', () => {
-  const statMock = fs.stat as jest.Mock;
-
-  afterEach(() => {
-    statMock.mockReset();
-  });
-
   it('returns true when directory exists', async () => {
-    statMock.mockResolvedValue({ isDirectory: () => true });
-    await expect(checkShopExists('shop')).resolves.toBe(true);
+    const dataRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'check-shop-'));
+    await fs.mkdir(path.join(dataRoot, 'existing-shop'));
+
+    jest.resetModules();
+    jest.doMock('@acme/platform-core/dataRoot', () => ({ resolveDataRoot: () => dataRoot }));
+    const { checkShopExists } = await import('../src/checkShopExists.server');
+
+    await expect(checkShopExists('existing-shop')).resolves.toBe(true);
+
+    await fs.rm(dataRoot, { recursive: true, force: true });
   });
 
-  it('returns false when directory does not exist', async () => {
-    statMock.mockRejectedValue(new Error('ENOENT'));
-    await expect(checkShopExists('shop')).resolves.toBe(false);
+  it('returns false for non-existent directory', async () => {
+    const dataRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'check-shop-'));
+
+    jest.resetModules();
+    jest.doMock('@acme/platform-core/dataRoot', () => ({ resolveDataRoot: () => dataRoot }));
+    const { checkShopExists } = await import('../src/checkShopExists.server');
+
+    await expect(checkShopExists('missing-shop')).resolves.toBe(false);
+
+    await fs.rm(dataRoot, { recursive: true, force: true });
   });
 });

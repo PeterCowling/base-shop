@@ -166,6 +166,15 @@ it("getCustomerSession returns null for malformed token", async () => {
   await expect(getCustomerSession()).resolves.toBeNull();
 });
 
+it("getCustomerSession returns null when token missing role", async () => {
+  const { getCustomerSession } = await import("../session");
+
+  mockCookies.get.mockReturnValue({ value: "token" });
+  unsealData.mockResolvedValue({ sessionId: "s1", customerId: "cust" });
+
+  await expect(getCustomerSession()).resolves.toBeNull();
+});
+
 it("getCustomerSession returns null when session not found", async () => {
   const { getCustomerSession } = await import("../session");
 
@@ -312,6 +321,16 @@ it("validateCsrfToken returns false when cookie is missing", async () => {
   await expect(validateCsrfToken("csrf")).resolves.toBe(false);
 });
 
+it("validateCsrfToken returns false when token mismatches cookie", async () => {
+  const { validateCsrfToken, CSRF_TOKEN_COOKIE } = await import("../session");
+
+  mockCookies.get.mockImplementation((name: string) =>
+    name === CSRF_TOKEN_COOKIE ? { value: "csrf" } : undefined
+  );
+
+  await expect(validateCsrfToken("different")).resolves.toBe(false);
+});
+
 it("createCustomerSession uses 'unknown' user-agent when header absent", async () => {
   const {
     createCustomerSession,
@@ -386,6 +405,36 @@ it(
     } = await import("../session");
 
     mockCookies.get.mockReturnValue({ value: "token" });
+
+    await destroyCustomerSession();
+
+    expect(unsealData).not.toHaveBeenCalled();
+    expect(mockSessionStore.delete).not.toHaveBeenCalled();
+    expect(mockCookies.delete).toHaveBeenCalledWith({
+      name: CUSTOMER_SESSION_COOKIE,
+      path: "/",
+      domain: "example.com",
+    });
+    expect(mockCookies.delete).toHaveBeenCalledWith({
+      name: CSRF_TOKEN_COOKIE,
+      path: "/",
+      domain: "example.com",
+    });
+  }
+);
+
+it(
+  "destroyCustomerSession removes cookies when SESSION_SECRET missing even with invalid token",
+  async () => {
+    delete process.env.SESSION_SECRET;
+    const {
+      destroyCustomerSession,
+      CUSTOMER_SESSION_COOKIE,
+      CSRF_TOKEN_COOKIE,
+    } = await import("../session");
+
+    mockCookies.get.mockReturnValue({ value: "token" });
+    unsealData.mockRejectedValue(new Error("bad"));
 
     await destroyCustomerSession();
 

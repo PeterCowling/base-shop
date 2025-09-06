@@ -72,7 +72,7 @@ export async function markFulfilled(
   shop: string,
   sessionId: string,
 ): Promise<Order> {
-  const order = await (prisma.rentalOrder.update as any)({
+  const order = await prisma.rentalOrder.update({
     where: { shop_sessionId: { shop, sessionId } },
     data: { fulfilledAt: nowIso() },
   });
@@ -83,7 +83,7 @@ export async function markShipped(
   shop: string,
   sessionId: string,
 ): Promise<Order> {
-  const order = await (prisma.rentalOrder.update as any)({
+  const order = await prisma.rentalOrder.update({
     where: { shop_sessionId: { shop, sessionId } },
     data: { shippedAt: nowIso() },
   });
@@ -94,7 +94,7 @@ export async function markDelivered(
   shop: string,
   sessionId: string,
 ): Promise<Order> {
-  const order = await (prisma.rentalOrder.update as any)({
+  const order = await prisma.rentalOrder.update({
     where: { shop_sessionId: { shop, sessionId } },
     data: { deliveredAt: nowIso() },
   });
@@ -105,7 +105,7 @@ export async function markCancelled(
   shop: string,
   sessionId: string,
 ): Promise<Order> {
-  const order = await (prisma.rentalOrder.update as any)({
+  const order = await prisma.rentalOrder.update({
     where: { shop_sessionId: { shop, sessionId } },
     data: { cancelledAt: nowIso() },
   });

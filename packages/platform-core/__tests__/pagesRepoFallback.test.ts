@@ -67,6 +67,13 @@ describe("pages repository filesystem fallbacks", () => {
 
     const buf = await fs.readFile(path.join(root, shop, "pages.json"), "utf8");
     expect(JSON.parse(buf)).toEqual([page]);
+
+    const history = await fs.readFile(
+      path.join(root, shop, "pages.history.jsonl"),
+      "utf8"
+    );
+    const entry = JSON.parse(history.trim());
+    expect(entry.diff).toEqual(page);
   });
 
   it("deletePage throws when page not found", async () => {
@@ -133,5 +140,13 @@ describe("pages repository filesystem fallbacks", () => {
     const stored = JSON.parse(buf)[0];
     expect(stored.slug).toBe("b");
     expect(result.slug).toBe("b");
+
+    const history = await fs.readFile(
+      path.join(shopDir, "pages.history.jsonl"),
+      "utf8"
+    );
+    const diff = JSON.parse(history.trim()).diff;
+    expect(diff.slug).toBe("b");
+    expect(diff.updatedAt).toBeDefined();
   });
 });

@@ -184,6 +184,81 @@ describe('getShippingRate', () => {
     });
     expect(result).toEqual(apiResponse);
   });
+
+  it('distinguishes free and paid shipping providers', async () => {
+    const free = await getShippingRate({
+      provider: 'premier-shipping',
+      fromPostalCode: '00000',
+      toPostalCode: '99999',
+      weight: 1,
+      region: 'eligible',
+      window: 'morning',
+      carrier: 'ups',
+      premierDelivery: {
+        regions: ['eligible'],
+        windows: ['morning'],
+        carriers: ['ups'],
+      },
+    });
+    expect(free.rate).toBe(0);
+
+    mockEnv.UPS_KEY = 'ups-key';
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ rate: 5 }),
+    });
+    const paid = await getShippingRate({
+      provider: 'ups',
+      fromPostalCode: '12345',
+      toPostalCode: '54321',
+      weight: 1,
+    });
+    expect(paid.rate).toBeGreaterThan(0);
+  });
+
+  it('uses premierDelivery options with non-premier provider', async () => {
+    mockEnv.UPS_KEY = 'ups-key';
+    const apiResponse = { rate: 7, surcharge: 1, serviceLabel: 'Ground' };
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => apiResponse });
+    const result = await getShippingRate({
+      provider: 'ups',
+      fromPostalCode: '11111',
+      toPostalCode: '22222',
+      weight: 2,
+      region: 'eligible',
+      window: 'morning',
+      carrier: 'ups',
+      premierDelivery: {
+        regions: ['eligible'],
+        windows: ['morning'],
+        carriers: ['ups'],
+      },
+    });
+    expect(result).toEqual(apiResponse);
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://onlinetools.ups.com/ship/v1/rating/Rate',
+      expect.any(Object),
+    );
+  });
+
+  it('delegates to DHL when provider is dhl', async () => {
+    mockEnv.DHL_KEY = 'dhl-key';
+    const apiResponse = { rate: 12, surcharge: 2, serviceLabel: 'DHL' };
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => apiResponse });
+    const result = await getShippingRate({
+      provider: 'dhl',
+      fromPostalCode: '11111',
+      toPostalCode: '22222',
+      weight: 3,
+    });
+    expect(result).toEqual(apiResponse);
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://api.dhl.com/rates',
+      expect.objectContaining({
+        headers: expect.objectContaining({ Authorization: 'Bearer dhl-key' }),
+      }),
+    );
+  });
 });
 
 describe('getTrackingStatus', () => {

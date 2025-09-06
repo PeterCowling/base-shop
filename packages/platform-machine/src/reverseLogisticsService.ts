@@ -1,5 +1,5 @@
 import { coreEnv } from "@acme/config/env/core";
-import type { RentalOrder } from "@acme/types";
+import type { ReverseLogisticsEventName } from "@acme/types";
 import {
   markAvailable,
   markCleaning,
@@ -18,7 +18,7 @@ const DATA_ROOT = resolveDataRoot();
 
 interface ReverseLogisticsEvent {
   sessionId: string;
-  status: NonNullable<RentalOrder["status"]>;
+  status: ReverseLogisticsEventName;
 }
 
 export async function writeReverseLogisticsEvent(

@@ -1,6 +1,7 @@
 // packages/auth/src/mfa.ts
 import { authenticator } from "otplib";
 import { prisma } from "@acme/platform-core/db";
+import type { CustomerMfa } from "@acme/types";
 
 export interface MfaEnrollment {
   secret: string;
@@ -22,7 +23,9 @@ export async function verifyMfa(
   customerId: string,
   token: string
 ): Promise<boolean> {
-  const record = await prisma.customerMfa.findUnique({ where: { customerId } });
+  const record: CustomerMfa | null = await prisma.customerMfa.findUnique({
+    where: { customerId },
+  });
   if (!record) return false;
   const valid = authenticator.verify({ token, secret: record.secret });
   if (valid && !record.enabled) {
@@ -35,6 +38,8 @@ export async function verifyMfa(
 }
 
 export async function isMfaEnabled(customerId: string): Promise<boolean> {
-  const record = await prisma.customerMfa.findUnique({ where: { customerId } });
+  const record: CustomerMfa | null = await prisma.customerMfa.findUnique({
+    where: { customerId },
+  });
   return record?.enabled ?? false;
 }

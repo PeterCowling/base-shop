@@ -3,6 +3,8 @@
 import {
   listOrders,
   addOrder,
+  markDelivered,
+  markCancelled,
   markReturned,
   markRefunded,
   updateRisk,
@@ -145,6 +147,34 @@ describe("orders", () => {
     });
   });
 
+  describe("markDelivered", () => {
+    it("updates order with delivery timestamp", async () => {
+      nowIsoMock.mockReturnValue("now");
+      const mockOrder = { id: "1" };
+      prismaMock.rentalOrder.update.mockResolvedValue(mockOrder);
+      const result = await markDelivered("shop", "sess");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { deliveredAt: "now" },
+      });
+      expect(result).toEqual(mockOrder);
+    });
+  });
+
+  describe("markCancelled", () => {
+    it("updates order with cancellation timestamp", async () => {
+      nowIsoMock.mockReturnValue("now");
+      const mockOrder = { id: "1" };
+      prismaMock.rentalOrder.update.mockResolvedValue(mockOrder);
+      const result = await markCancelled("shop", "sess");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { cancelledAt: "now" },
+      });
+      expect(result).toEqual(mockOrder);
+    });
+  });
+
   describe("markReturned", () => {
     it("updates order with return info", async () => {
       nowIsoMock.mockReturnValue("now");
@@ -205,6 +235,10 @@ describe("orders", () => {
     it("returns null when order not found", async () => {
       prismaMock.rentalOrder.update.mockResolvedValue(null);
       const result = await updateRisk("shop", "sess");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: {},
+      });
       expect(result).toBeNull();
     });
   });
@@ -245,6 +279,10 @@ describe("orders", () => {
     it("returns null when order not found", async () => {
       prismaMock.rentalOrder.update.mockResolvedValue(null);
       const result = await setReturnTracking("shop", "sess", "tn", "url");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { trackingNumber: "tn", labelUrl: "url" },
+      });
       expect(result).toBeNull();
     });
   });
@@ -264,6 +302,10 @@ describe("orders", () => {
     it("returns null on failure", async () => {
       prismaMock.rentalOrder.update.mockRejectedValue(new Error("fail"));
       const result = await setReturnStatus("shop", "tn", "status");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_trackingNumber: { shop: "shop", trackingNumber: "tn" } },
+        data: { returnStatus: "status" },
+      });
       expect(result).toBeNull();
     });
   });

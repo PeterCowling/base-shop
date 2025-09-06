@@ -1,5 +1,8 @@
 // cypress.config.ts
 import { defineConfig } from "cypress";
+import { cpSync, mkdirSync, mkdtempSync, rmSync } from "node:fs";
+import { join } from "node:path";
+import os from "node:os";
 
 export default defineConfig({
   e2e: {
@@ -18,6 +21,38 @@ export default defineConfig({
         "test-nextauth-secret-32-chars-long-string!",
       TEST_DATA_ROOT: process.env.TEST_DATA_ROOT || "test/data/shops"
     },
-    defaultCommandTimeout: 10000
+    defaultCommandTimeout: 10000,
+    setupNodeEvents(on, config) {
+      let tempDir: string | null = null;
+
+      on("task", {
+        /**
+         * Create a temporary TEST_DATA_ROOT and seed minimal fixtures.
+         * @param shop shop identifier (e.g. "demo")
+         */
+        "testData:setup"(shop: string) {
+          const root = mkdtempSync(join(os.tmpdir(), "cypress-data-"));
+          const src = join("test", "data", "shops", shop);
+          const dest = join(root, shop);
+          mkdirSync(dest, { recursive: true });
+          ["pages.json", "settings.json"].forEach((file) => {
+            cpSync(join(src, file), join(dest, file));
+          });
+          tempDir = root;
+          return root;
+        },
+
+        /** Remove the temporary TEST_DATA_ROOT created for tests. */
+        "testData:cleanup"() {
+          if (tempDir) {
+            rmSync(tempDir, { recursive: true, force: true });
+            tempDir = null;
+          }
+          return null;
+        }
+      });
+
+      return config;
+    }
   }
 });

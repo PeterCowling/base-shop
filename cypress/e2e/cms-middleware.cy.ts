@@ -2,7 +2,7 @@ import type { CookieValue } from "cypress";
 
 const SECRET = "test-nextauth-secret-32-chars-long-string!";
 const SHOP = "demo";
-const dataDir = Cypress.env("TEST_DATA_ROOT");
+let dataDir: string;
 
 function sign(role: string) {
   return cy
@@ -15,30 +15,41 @@ function sign(role: string) {
 
 describe("cms middleware", () => {
   before(() => {
-    const product = {
-      id: "1",
-      sku: "sku1",
-      title: { en: "Demo" },
-      description: { en: "" },
-      price: 0,
-      currency: "EUR",
-      media: [],
-      status: "draft",
-      shop: SHOP,
-      row_version: 1,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
-    const settings = {
-      languages: ["en"],
-      seo: {},
-      currency: "EUR",
-      taxRegion: "",
-      updatedAt: "",
-      updatedBy: "",
-    };
-    cy.writeFile(`${dataDir}/${SHOP}/products.json`, [product]);
-    cy.writeFile(`${dataDir}/${SHOP}/settings.json`, settings);
+    cy.task("testData:setup", SHOP)
+      .then((dir) => {
+        dataDir = dir as string;
+        Cypress.env("TEST_DATA_ROOT", dir);
+      })
+      .then(() => {
+        const product = {
+          id: "1",
+          sku: "sku1",
+          title: { en: "Demo" },
+          description: { en: "" },
+          price: 0,
+          currency: "EUR",
+          media: [],
+          status: "draft",
+          shop: SHOP,
+          row_version: 1,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString(),
+        };
+        const settings = {
+          languages: ["en"],
+          seo: {},
+          currency: "EUR",
+          taxRegion: "",
+          updatedAt: "",
+          updatedBy: "",
+        };
+        cy.writeFile(`${dataDir}/${SHOP}/products.json`, [product]);
+        cy.writeFile(`${dataDir}/${SHOP}/settings.json`, settings);
+      });
+  });
+
+  after(() => {
+    cy.task("testData:cleanup");
   });
 
   beforeEach(() => {

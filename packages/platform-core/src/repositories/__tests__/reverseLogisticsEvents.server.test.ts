@@ -109,22 +109,17 @@ describe("listEvents", () => {
 });
 
 describe("reverse logistics event helpers", () => {
-
-  it.each([
-    ["received", reverseLogisticsEvents.received],
-    ["cleaning", reverseLogisticsEvents.cleaning],
-    ["repair", reverseLogisticsEvents.repair],
-    ["qa", reverseLogisticsEvents.qa],
-    ["available", reverseLogisticsEvents.available],
-  ])("records %s events", async (name, fn) => {
-    await fn("shop1", "session1", "time");
-    expect(create).toHaveBeenCalledWith({
-      data: {
-        shop: "shop1",
-        sessionId: "session1",
-        event: name,
-        createdAt: "time",
-      },
-    });
+  it("records each event", async () => {
+    for (const [name, fn] of Object.entries(reverseLogisticsEvents)) {
+      await fn("shop1", "session1", "time");
+      expect(create).toHaveBeenLastCalledWith({
+        data: {
+          shop: "shop1",
+          sessionId: "session1",
+          event: name,
+          createdAt: "time",
+        },
+      });
+    }
   });
 });

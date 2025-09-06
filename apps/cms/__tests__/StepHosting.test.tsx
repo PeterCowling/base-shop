@@ -1,5 +1,6 @@
+import React from "react";
 import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
-import StepHosting from "../apps/cms/src/app/cms/configurator/steps/StepHosting.tsx";
+import StepHosting from "../src/app/cms/configurator/steps/StepHosting";
 
 jest.useFakeTimers();
 
@@ -7,13 +8,16 @@ jest.mock("@/components/atoms/shadcn", () => ({
   Button: (props: any) => <button {...props} />,
   Input: (props: any) => <input {...props} />,
 }));
+
 jest.mock("@/app/cms/wizard/services/deployShop", () => ({
   getDeployStatus: jest.fn(),
 }));
+
 jest.mock("@/app/cms/configurator/hooks/useStepCompletion", () => ({
   __esModule: true,
   default: jest.fn(),
 }));
+
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
 }));
@@ -27,6 +31,27 @@ const markComplete = jest.fn();
 const push = jest.fn();
 (useRouter as jest.Mock).mockReturnValue({ push });
 
+function renderWithState() {
+  const Wrapper = () => {
+    const [deployInfo, setDeployInfo] = React.useState({
+      status: "pending",
+      domainStatus: "pending",
+    });
+    return (
+      <StepHosting
+        shopId="1"
+        domain=""
+        setDomain={jest.fn()}
+        deployResult={null}
+        deployInfo={deployInfo}
+        setDeployInfo={setDeployInfo}
+        deploying={false}
+        deploy={jest.fn()}
+      />
+    );
+  };
+  return render(<Wrapper />);
+}
 
 describe("StepHosting", () => {
   beforeEach(() => {
@@ -50,7 +75,7 @@ describe("StepHosting", () => {
         setDeployInfo={setDeployInfo}
         deploying={false}
         deploy={jest.fn()}
-      />
+      />,
     );
 
     await act(async () => {
@@ -94,7 +119,7 @@ describe("StepHosting", () => {
         setDeployInfo={jest.fn()}
         deploying={false}
         deploy={jest.fn()}
-      />
+      />,
     );
 
     fireEvent.change(screen.getByPlaceholderText("myshop.example.com"), {
@@ -104,7 +129,36 @@ describe("StepHosting", () => {
     expect(setDomain).toHaveBeenCalledWith("new.example.com");
   });
 
-  it("deploys, marks complete, redirects and shows deploying text", async () => {
+  it("shows waiting message when deployment is pending", async () => {
+    const mockedGetStatus = getDeployStatus as jest.Mock;
+    mockedGetStatus.mockResolvedValue({ status: "pending", domainStatus: "pending" });
+
+    renderWithState();
+    await waitFor(() => expect(mockedGetStatus).toHaveBeenCalled());
+    expect(screen.getByText("Waiting for domain verification…")).toBeInTheDocument();
+  });
+
+  it("shows success message when deployment completes", async () => {
+    const mockedGetStatus = getDeployStatus as jest.Mock;
+    mockedGetStatus.mockResolvedValue({ status: "success", domainStatus: "success" });
+
+    renderWithState();
+    await waitFor(() => expect(screen.getByText("Deployment complete")).toBeInTheDocument());
+  });
+
+  it("shows error message when deployment fails", async () => {
+    const mockedGetStatus = getDeployStatus as jest.Mock;
+    mockedGetStatus.mockResolvedValue({
+      status: "error",
+      domainStatus: "error",
+      error: "oops",
+    });
+
+    renderWithState();
+    await waitFor(() => expect(screen.getByText("oops")).toBeInTheDocument());
+  });
+
+  it("deploys, marks complete and redirects on save", async () => {
     let resolveDeploy: () => void;
     const deploy = jest.fn(
       () =>
@@ -145,4 +199,3 @@ describe("StepHosting", () => {
     expect(push).toHaveBeenCalledWith("/cms/configurator");
   });
 });
-

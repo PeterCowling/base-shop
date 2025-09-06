@@ -25,6 +25,13 @@ describe("fsCampaignStore error handling", () => {
       .resolves.toEqual([]);
   });
 
+  it("propagates writeFile errors", async () => {
+    jest.spyOn(fs, "writeFile").mockRejectedValue(new Error("fail"));
+    await expect(
+      fsCampaignStore.writeCampaigns("shop", []),
+    ).rejects.toThrow("fail");
+  });
+
   it("returns [] when campaigns.json has invalid JSON", async () => {
     const shop = "invalid-json";
     const file = path.join(DATA_ROOT, shop, "campaigns.json");

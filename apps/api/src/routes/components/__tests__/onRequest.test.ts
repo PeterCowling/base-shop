@@ -57,6 +57,20 @@ describe('onRequest route', () => {
     },
   );
 
+  it('returns 400 when shop id is missing', async () => {
+    validate.mockImplementation(() => {
+      throw new Error('Invalid');
+    });
+    const res = await onRequest({
+      params: {} as any,
+      request: new Request('http://localhost'),
+    });
+    expect(validate).toHaveBeenCalledWith(undefined);
+    expect(res.status).toBe(400);
+    await expect(res.json()).resolves.toEqual({ error: 'Invalid shop id' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid shop id', { id: undefined });
+  });
+
   it('returns 403 when authorization header missing', async () => {
     const res = await onRequest({
       params: { shopId: 'abc' },
@@ -100,6 +114,20 @@ describe('onRequest route', () => {
         subject: 'shop:abc:upgrade-preview',
       }),
     );
+    expect(res.status).toBe(403);
+    await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+  });
+
+  it('returns 403 when token payload lacks numeric exp', async () => {
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
+    verify.mockReturnValue({ exp: 'soon' });
+    const res = await onRequest({
+      params: { shopId: 'abc' },
+      request: new Request('http://localhost', {
+        headers: { authorization: 'Bearer good' },
+      }),
+    });
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
     expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });

@@ -29,8 +29,14 @@ describe('component helpers', () => {
   describe('gatherChanges', () => {
     const root = '/tmp';
 
-    it('handles malformed shop.json gracefully', () => {
-      vol.fromJSON({ [`${root}/data/shops/abc/shop.json`]: '{"componentVersions"' });
+    it('returns empty array when shop.json contains invalid JSON', () => {
+      vol.fromJSON({
+        [`${root}/data/shops/abc/shop.json`]: '{ bad json',
+        [`${root}/packages/foo/package.json`]: JSON.stringify({
+          name: '@acme/foo',
+          version: '1.2.0',
+        }),
+      });
       expect(gatherChanges('abc', root)).toEqual([]);
     });
 

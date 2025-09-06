@@ -60,9 +60,11 @@ describe("user lookup", () => {
     await expect(getUserByEmail("u1@example.com")).resolves.toEqual(user);
   });
 
-  it("returns null when user not found", async () => {
-    await expect(getUserById("missing")).resolves.toBeNull();
-    await expect(getUserByEmail("missing@example.com")).resolves.toBeNull();
+  it("throws when user not found", async () => {
+    await expect(getUserById("missing")).rejects.toThrow("User not found");
+    await expect(getUserByEmail("missing@example.com")).rejects.toThrow(
+      "User not found",
+    );
   });
 
   it("propagates backend errors", async () => {

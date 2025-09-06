@@ -25,6 +25,7 @@ describe("pages repository filesystem fallbacks", () => {
     root = path.join(dir, "shops");
     await fs.mkdir(root, { recursive: true });
     process.env.DATA_ROOT = root;
+    process.env.DATABASE_URL = "postgres://localhost/test";
     repo = await import("../src/repositories/pages/index.server");
   });
 

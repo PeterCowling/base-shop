@@ -1,3 +1,6 @@
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
 import { jest } from '@jest/globals';
 
 const mockPages: any[] = [];
@@ -14,8 +17,12 @@ jest.mock('../src/db', () => ({
   }
 }));
 
+process.env.DATABASE_URL = 'postgres://localhost/test';
+
 describe('pages repository with prisma', () => {
   it('performs CRUD operations through prisma', async () => {
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'pagesrepo-'));
+    process.env.DATA_ROOT = path.join(dir, 'shops');
     const repo = await import('../src/repositories/pages/index.server');
     expect(await repo.getPages('shop1')).toEqual([]);
     const page = { id:'1', slug:'home', status:'draft', components:[], seo:{ title:'Home' }, createdAt:'now', updatedAt:'now', createdBy:'tester' } as any;

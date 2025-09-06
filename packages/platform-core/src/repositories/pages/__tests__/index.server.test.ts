@@ -20,18 +20,19 @@ const prismaMock = {
   },
 };
 
-jest.mock("../../db", () => ({ prisma: prismaMock }));
+jest.mock("../../../db", () => ({ prisma: prismaMock }));
 
-let repo: typeof import("./index.server");
+let repo: typeof import("../index.server");
 const shop = "demo";
 
 beforeAll(async () => {
   process.env.DATA_ROOT = "/data";
-  repo = await import("./index.server");
+  process.env.DATABASE_URL = "postgres://localhost/test";
+  repo = await import("../index.server");
 });
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  jest.resetAllMocks();
 });
 
 describe("getPages", () => {
@@ -104,7 +105,7 @@ describe("savePage", () => {
     await repo.savePage(shop, page, undefined);
 
     expect(prismaMock.page.upsert).toHaveBeenCalled();
-    expect(fsMock.writeFile).not.toHaveBeenCalled();
+    expect(fsMock.writeFile).toHaveBeenCalled();
   });
 
   it("falls back to filesystem on prisma failure", async () => {
@@ -140,6 +141,7 @@ describe("updatePage", () => {
 
   it("writes via prisma", async () => {
     prismaMock.page.update.mockResolvedValue({});
+    fsMock.readFile.mockResolvedValue(JSON.stringify([previous]));
 
     await repo.updatePage(
       shop,
@@ -148,7 +150,7 @@ describe("updatePage", () => {
     );
 
     expect(prismaMock.page.update).toHaveBeenCalled();
-    expect(fsMock.writeFile).not.toHaveBeenCalled();
+    expect(fsMock.writeFile).toHaveBeenCalled();
   });
 
   it("falls back to filesystem on prisma failure", async () => {
@@ -193,8 +195,9 @@ describe("deletePage", () => {
 
   it("deletes via prisma when record exists", async () => {
     prismaMock.page.deleteMany.mockResolvedValue({ count: 1 });
+    fsMock.readFile.mockResolvedValue(JSON.stringify([{ id: "1" }]));
     await expect(repo.deletePage(shop, "1")).resolves.toBeUndefined();
-    expect(fsMock.readFile).not.toHaveBeenCalled();
+    expect(fsMock.writeFile).toHaveBeenCalled();
   });
 
   it("falls back to filesystem when prisma fails", async () => {

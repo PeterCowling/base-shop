@@ -42,6 +42,7 @@ const prisma = {
 jest.mock("../src/db", () => ({ prisma }));
 
 process.env.DATA_ROOT = "/data";
+process.env.DATABASE_URL = "postgres://localhost/test";
 
 let repo: typeof import("../src/repositories/pages/index.server");
 const shop = "mockshop";

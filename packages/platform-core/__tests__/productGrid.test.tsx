@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, fireEvent, waitFor } from "@testing-library/react";
 import { ProductGrid } from "../src/components/shop/ProductGrid";
 import { CartProvider } from "../src/contexts/CartContext";
 import { CurrencyProvider } from "../src/contexts/CurrencyContext";
@@ -184,5 +184,47 @@ describe("ProductGrid", () => {
     );
     unmount();
     expect(disconnectMock).toHaveBeenCalled();
+  });
+
+  it("shows placeholders when no products provided", async () => {
+    await act(async () => {
+      render(
+        <CurrencyProvider>
+          <CartProvider>
+            <ProductGrid skus={[]} columns={3} />
+          </CartProvider>
+        </CurrencyProvider>
+      );
+    });
+    await act(async () => {});
+    const placeholders = screen.getAllByTestId("placeholder");
+    expect(placeholders).toHaveLength(3);
+  });
+
+  it("renders items and triggers card interactions", async () => {
+    const sku = { ...PRODUCTS[0], sizes: [] };
+    await act(async () => {
+      render(
+        <CurrencyProvider>
+          <CartProvider>
+            <ProductGrid skus={[sku]} columns={1} />
+          </CartProvider>
+        </CurrencyProvider>
+      );
+    });
+    await act(async () => {});
+    expect(screen.queryByTestId("placeholder")).toBeNull();
+    const link = screen.getByRole("link", { name: sku.title });
+    expect(link).toHaveAttribute("href", expect.stringContaining(sku.slug));
+    const button = screen.getByRole("button", { name: /add to cart/i });
+    await act(async () => {
+      fireEvent.click(button);
+    });
+    await waitFor(() =>
+      expect(global.fetch).toHaveBeenCalledWith(
+        "/api/cart",
+        expect.objectContaining({ method: "POST" })
+      )
+    );
   });
 });

@@ -203,25 +203,67 @@ describe("authEnv", () => {
     };
 
     it("removes blank AUTH_TOKEN_TTL", async () => {
-      const { snapshot } = await withEnv(
+      const { snapshot, authEnv } = await withEnv(
         { ...baseVars, AUTH_TOKEN_TTL: "" },
         async () => {
-          await import("../src/env/auth");
-          return { snapshot: { ...process.env } };
+          const mod = await import("../src/env/auth");
+          return { snapshot: { ...process.env }, authEnv: mod.authEnv };
         },
       );
       expect(snapshot.AUTH_TOKEN_TTL).toBeUndefined();
+      expect(authEnv.AUTH_TOKEN_TTL).toBe(900);
     });
 
     it("appends seconds to numeric AUTH_TOKEN_TTL", async () => {
-      const { snapshot } = await withEnv(
+      const { snapshot, authEnv } = await withEnv(
         { ...baseVars, AUTH_TOKEN_TTL: "60" },
         async () => {
-          await import("../src/env/auth");
-          return { snapshot: { ...process.env } };
+          const mod = await import("../src/env/auth");
+          return { snapshot: { ...process.env }, authEnv: mod.authEnv };
         },
       );
       expect(snapshot.AUTH_TOKEN_TTL).toBe("60s");
+      expect(authEnv.AUTH_TOKEN_TTL).toBe(60);
+    });
+
+    it("trims and normalizes AUTH_TOKEN_TTL with trailing spaces", async () => {
+      const { snapshot, authEnv } = await withEnv(
+        { ...baseVars, AUTH_TOKEN_TTL: "60 " },
+        async () => {
+          const mod = await import("../src/env/auth");
+          return { snapshot: { ...process.env }, authEnv: mod.authEnv };
+        },
+      );
+      expect(snapshot.AUTH_TOKEN_TTL).toBe("60s");
+      expect(authEnv.AUTH_TOKEN_TTL).toBe(60);
+    });
+
+    it("normalizes AUTH_TOKEN_TTL with spaces before unit", async () => {
+      const { snapshot, authEnv } = await withEnv(
+        { ...baseVars, AUTH_TOKEN_TTL: "5 m" },
+        async () => {
+          const mod = await import("../src/env/auth");
+          return { snapshot: { ...process.env }, authEnv: mod.authEnv };
+        },
+      );
+      expect(snapshot.AUTH_TOKEN_TTL).toBe("5m");
+      expect(authEnv.AUTH_TOKEN_TTL).toBe(300);
+    });
+
+    it("throws and logs on invalid AUTH_TOKEN_TTL values", async () => {
+      const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+      await expect(
+        withEnv(
+          { ...baseVars, AUTH_TOKEN_TTL: "abc" },
+          () => import("../src/env/auth"),
+        ),
+      ).rejects.toThrow("Invalid auth environment variables");
+      expect(spy).toHaveBeenCalledWith(
+        "❌ Invalid auth environment variables:",
+        expect.objectContaining({
+          AUTH_TOKEN_TTL: { _errors: expect.arrayContaining([expect.any(String)]) },
+        }),
+      );
     });
   });
 
@@ -271,7 +313,8 @@ describe("authEnv", () => {
     });
   });
 
-  it("requires JWT_SECRET when AUTH_PROVIDER=jwt", async () => {
+  it("throws and logs when JWT_SECRET is missing for JWT provider", async () => {
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
       withEnv(
         {
@@ -283,9 +326,35 @@ describe("authEnv", () => {
         () => import("../src/env/auth"),
       ),
     ).rejects.toThrow("Invalid auth environment variables");
+    expect(spy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        JWT_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
+      }),
+    );
   });
 
-  it("requires OAuth credentials when AUTH_PROVIDER=oauth", async () => {
+  it("parses JWT credentials when provided", async () => {
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const { authEnv } = await withEnv(
+      {
+        NODE_ENV: "production",
+        NEXTAUTH_SECRET: NEXT_SECRET,
+        SESSION_SECRET,
+        AUTH_PROVIDER: "jwt",
+        JWT_SECRET: STRONG_TOKEN,
+      },
+      () => import("../src/env/auth"),
+    );
+    expect(authEnv).toMatchObject({
+      AUTH_PROVIDER: "jwt",
+      JWT_SECRET: STRONG_TOKEN,
+    });
+    expect(spy).not.toHaveBeenCalled();
+  });
+
+  it("throws and logs when OAUTH_CLIENT_ID is missing", async () => {
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
       withEnv(
         {
@@ -293,10 +362,60 @@ describe("authEnv", () => {
           NEXTAUTH_SECRET: NEXT_SECRET,
           SESSION_SECRET,
           AUTH_PROVIDER: "oauth",
+          OAUTH_CLIENT_SECRET: STRONG_TOKEN,
         },
         () => import("../src/env/auth"),
       ),
     ).rejects.toThrow("Invalid auth environment variables");
+    expect(spy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        OAUTH_CLIENT_ID: { _errors: expect.arrayContaining([expect.any(String)]) },
+      }),
+    );
+  });
+
+  it("throws and logs when OAUTH_CLIENT_SECRET is missing", async () => {
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(
+      withEnv(
+        {
+          NODE_ENV: "production",
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET,
+          AUTH_PROVIDER: "oauth",
+          OAUTH_CLIENT_ID: "client-id",
+        },
+        () => import("../src/env/auth"),
+      ),
+    ).rejects.toThrow("Invalid auth environment variables");
+    expect(spy).toHaveBeenCalledWith(
+      "❌ Invalid auth environment variables:",
+      expect.objectContaining({
+        OAUTH_CLIENT_SECRET: { _errors: expect.arrayContaining([expect.any(String)]) },
+      }),
+    );
+  });
+
+  it("parses OAuth credentials when provided", async () => {
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const { authEnv } = await withEnv(
+      {
+        NODE_ENV: "production",
+        NEXTAUTH_SECRET: NEXT_SECRET,
+        SESSION_SECRET,
+        AUTH_PROVIDER: "oauth",
+        OAUTH_CLIENT_ID: "client-id",
+        OAUTH_CLIENT_SECRET: STRONG_TOKEN,
+      },
+      () => import("../src/env/auth"),
+    );
+    expect(authEnv).toMatchObject({
+      AUTH_PROVIDER: "oauth",
+      OAUTH_CLIENT_ID: "client-id",
+      OAUTH_CLIENT_SECRET: STRONG_TOKEN,
+    });
+    expect(spy).not.toHaveBeenCalled();
   });
 
   it("applies defaults and computes token expiry", async () => {

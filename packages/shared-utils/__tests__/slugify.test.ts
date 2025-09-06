@@ -22,4 +22,14 @@ describe('slugify', () => {
   it('handles diacritics and UTF-8 characters', () => {
     expect(slugify('Crème Brûlée')).toBe('creme-brulee');
   });
+
+  it('returns empty string for blank input', () => {
+    expect(slugify('')).toBe('');
+    expect(slugify('   ')).toBe('');
+  });
+
+  it('handles null and undefined inputs gracefully', () => {
+    expect(slugify(null)).toBe('');
+    expect(slugify(undefined)).toBe('');
+  });
 });

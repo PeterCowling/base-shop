@@ -5,17 +5,29 @@ import { CartProvider } from "../src/contexts/CartContext";
 import { CurrencyProvider } from "../src/contexts/CurrencyContext";
 import { PRODUCTS } from "../src/products/index";
 
-let resizeCb: ResizeObserverCallback;
+let resizeCb: ResizeObserverCallback = () => {};
+let disconnectMock: jest.Mock;
+const originalFetch = global.fetch;
 
 beforeEach(() => {
   // @ts-expect-error ResizeObserver not in jsdom
   global.ResizeObserver = class {
     constructor(cb: ResizeObserverCallback) {
       resizeCb = cb;
+      disconnectMock = jest.fn();
     }
     observe() {}
-    disconnect() {}
+    disconnect() {
+      disconnectMock();
+    }
   };
+  global.fetch = jest
+    .fn()
+    .mockResolvedValue({ ok: true, json: async () => ({ cart: {} }) });
+});
+
+afterEach(() => {
+  global.fetch = originalFetch;
 });
 
 describe("ProductGrid", () => {
@@ -119,5 +131,39 @@ describe("ProductGrid", () => {
     Object.defineProperty(grid, "clientWidth", { value: 300, configurable: true });
     act(() => resizeCb([] as any));
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(2, minmax(0, 1fr))" });
+  });
+
+  it("auto-calculates column count from container width", () => {
+    render(
+      <CurrencyProvider>
+        <CartProvider>
+          <ProductGrid
+            skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
+            minItems={1}
+            maxItems={5}
+            data-testid="grid"
+          />
+        </CartProvider>
+      </CurrencyProvider>
+    );
+    const grid = screen.getByTestId("grid") as HTMLElement;
+    Object.defineProperty(grid, "clientWidth", { value: 800, configurable: true });
+    act(() => resizeCb([] as any));
+    expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(3, minmax(0, 1fr))" });
+    Object.defineProperty(grid, "clientWidth", { value: 100, configurable: true });
+    act(() => resizeCb([] as any));
+    expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(1, minmax(0, 1fr))" });
+  });
+
+  it("disconnects ResizeObserver on unmount", () => {
+    const { unmount } = render(
+      <CurrencyProvider>
+        <CartProvider>
+          <ProductGrid skus={[PRODUCTS[0]]} data-testid="grid" />
+        </CartProvider>
+      </CurrencyProvider>
+    );
+    unmount();
+    expect(disconnectMock).toHaveBeenCalled();
   });
 });

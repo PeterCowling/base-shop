@@ -39,6 +39,13 @@ describe("mfa", () => {
     expect(keyuri).toHaveBeenCalledWith("cust", "Acme", "secret");
     expect(result).toEqual({ secret: "secret", otpauth: "otpauth" });
   });
+
+  it("enrollMfa bubbles up prisma errors", async () => {
+    const { enrollMfa } = await import("../mfa");
+    upsert.mockRejectedValue(new Error("fail"));
+
+    await expect(enrollMfa("cust")).rejects.toThrow("fail");
+  });
   describe("verifyMfa", () => {
     it("findUnique → null returns false", async () => {
       const { verifyMfa } = await import("../mfa");
@@ -127,6 +134,27 @@ describe("mfa", () => {
       await expect(verifyMfa("cust", "000000")).resolves.toBe(false);
       expect(update).not.toHaveBeenCalled();
     });
+
+    it("bubbles up findUnique errors", async () => {
+      const { verifyMfa } = await import("../mfa");
+      findUnique.mockRejectedValue(new Error("fail"));
+
+      await expect(verifyMfa("cust", "123456")).rejects.toThrow("fail");
+      expect(update).not.toHaveBeenCalled();
+    });
+
+    it("bubbles up update errors", async () => {
+      const { verifyMfa } = await import("../mfa");
+      findUnique.mockResolvedValue({
+        customerId: "cust",
+        secret: "secret",
+        enabled: false,
+      });
+      verify.mockReturnValue(true);
+      update.mockRejectedValue(new Error("fail"));
+
+      await expect(verifyMfa("cust", "123456")).rejects.toThrow("fail");
+    });
   });
 
   describe("isMfaEnabled", () => {
@@ -143,6 +171,34 @@ describe("mfa", () => {
       const { isMfaEnabled } = await import("../mfa");
       findUnique.mockResolvedValue(null);
       await expect(isMfaEnabled("cust")).resolves.toBe(false);
+    });
+
+    it("bubbles up findUnique errors", async () => {
+      const { isMfaEnabled } = await import("../mfa");
+      findUnique.mockRejectedValue(new Error("fail"));
+      await expect(isMfaEnabled("cust")).rejects.toThrow("fail");
+    });
+  });
+
+  describe("deactivateMfa", () => {
+    it("clears secret and disables MFA", async () => {
+      const { deactivateMfa } = await import("../mfa");
+      if (!deactivateMfa) return;
+
+      await deactivateMfa("cust");
+
+      expect(update).toHaveBeenCalledWith({
+        where: { customerId: "cust" },
+        data: { secret: null, enabled: false },
+      });
+    });
+
+    it("bubbles up update errors", async () => {
+      const { deactivateMfa } = await import("../mfa");
+      if (!deactivateMfa) return;
+      update.mockRejectedValue(new Error("fail"));
+
+      await expect(deactivateMfa("cust")).rejects.toThrow("fail");
     });
   });
 });

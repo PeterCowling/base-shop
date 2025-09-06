@@ -304,6 +304,17 @@ describe("coreEnv caching", () => {
       expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://first.example.com");
     });
   });
+
+  it("calls loadCoreEnv only once for multiple accesses", async () => {
+    await withEnv({ CMS_SPACE_URL: "https://example.com" }, async () => {
+      const mod = await importCore();
+      const spy = jest.spyOn(mod.coreEnvSchema, "safeParse");
+      mod.coreEnv.NODE_ENV;
+      mod.coreEnv.NODE_ENV;
+      expect(spy).toHaveBeenCalledTimes(1);
+      spy.mockRestore();
+    });
+  });
 });
 
 describe("NODE_ENV branches", () => {
@@ -438,5 +449,36 @@ describe("SESSION_STORE cross-field validation", () => {
         () => importCore(),
       ),
     ).rejects.toThrow("Invalid auth environment variables");
+  });
+});
+
+describe("loadCoreEnv logging", () => {
+  it("logs each invalid path before throwing", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await withEnv({}, async () => {
+      const { loadCoreEnv } = await importCore();
+      expect(() =>
+        loadCoreEnv({
+          CMS_SPACE_URL: "https://example.com",
+          CMS_ACCESS_TOKEN: "token",
+          SANITY_API_VERSION: "v1",
+          EMAIL_PROVIDER: "sendgrid",
+          SESSION_STORE: "redis",
+        } as unknown as NodeJS.ProcessEnv),
+      ).toThrow("Invalid core environment variables");
+    });
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("SENDGRID_API_KEY"),
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("UPSTASH_REDIS_REST_URL"),
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      expect.stringContaining("UPSTASH_REDIS_REST_TOKEN"),
+    );
+    errorSpy.mockRestore();
   });
 });

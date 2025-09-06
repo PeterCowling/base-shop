@@ -18,6 +18,17 @@ describe("requireEnv", () => {
     expect(() => requireEnv("EMPTY")).toThrow("EMPTY is required");
   });
 
+  it("throws when boolean variable is missing or blank", () => {
+    delete process.env.BOOL;
+    expect(() => requireEnv("BOOL", "boolean")).toThrow(
+      "BOOL is required",
+    );
+    process.env.BOOL = "  ";
+    expect(() => requireEnv("BOOL", "boolean")).toThrow(
+      "BOOL is required",
+    );
+  });
+
   it.each([
     ["true", true],
     ["1", true],
@@ -38,6 +49,17 @@ describe("requireEnv", () => {
   it("parses numbers", () => {
     process.env.NUM = "123";
     expect(requireEnv("NUM", "number")).toBe(123);
+  });
+
+  it("throws when number variable is missing or blank", () => {
+    delete process.env.NUM;
+    expect(() => requireEnv("NUM", "number")).toThrow(
+      "NUM is required",
+    );
+    process.env.NUM = " \t";
+    expect(() => requireEnv("NUM", "number")).toThrow(
+      "NUM is required",
+    );
   });
 
   it("throws on invalid number", () => {

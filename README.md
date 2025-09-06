@@ -39,6 +39,10 @@ See [docs/install.md](docs/install.md) for setup and quickstart instructions.
 
 See [docs/architecture.md](docs/architecture.md) for a component layer overview.
 
+## Persistence
+
+Several repositories store data as JSON files under a common root so the demo works without a database. See [docs/persistence.md](docs/persistence.md) for details on disk fallbacks and the `DATA_ROOT` environment variable.
+
 ## Contributing
 
 See [docs/contributing.md](docs/contributing.md) for contribution guidelines.

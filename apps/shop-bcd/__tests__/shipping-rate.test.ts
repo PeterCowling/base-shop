@@ -24,7 +24,7 @@ function makeRequest(body: any) {
 afterEach(() => jest.clearAllMocks());
 
 test("returns shipping rate for valid request", async () => {
-  (getShippingRate as jest.Mock).mockResolvedValue(42);
+  (getShippingRate as jest.Mock).mockResolvedValue({ rate: 42 });
   const res = await POST(
     makeRequest({
       provider: "dhl",

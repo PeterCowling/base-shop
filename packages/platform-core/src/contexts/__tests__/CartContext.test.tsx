@@ -173,6 +173,8 @@ describe("CartProvider offline fallback", () => {
       json: async () => updated,
     });
 
+    const addSpy = jest.spyOn(window, "addEventListener");
+
     let cartState: CartState;
     function Capture() {
       [cartState] = useCart();
@@ -186,6 +188,7 @@ describe("CartProvider offline fallback", () => {
     );
 
     await waitFor(() => expect(cartState).toEqual(mockCart));
+    expect(addSpy).toHaveBeenCalledWith("online", expect.any(Function));
 
     act(() => {
       window.dispatchEvent(new Event("online"));
@@ -392,6 +395,34 @@ describe("CartProvider dispatch", () => {
         body: JSON.stringify({ sku: { id: sku.id }, qty: 1, size: undefined }),
       })
     );
+  });
+
+  it("defaults quantity to 1 when qty omitted", async () => {
+    const fetchMock = global.fetch as jest.Mock;
+    const added = { cart: { sku1: { sku, qty: 1 } } };
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => added });
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+
+    await act(async () => {
+      await dispatch({ type: "add", sku });
+    });
+
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      "/api/cart",
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({ sku: { id: sku.id }, qty: 1, size: undefined }),
+      })
+    );
+    await waitFor(() => expect(cartState).toEqual(added.cart));
   });
 
   it("adds sized item and syncs localStorage", async () => {

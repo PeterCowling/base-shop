@@ -16,7 +16,7 @@ export {
 
 type Order = RentalOrder;
 
-async function updateStatus(
+export async function updateStatus(
   shop: string,
   sessionId: string,
   status: NonNullable<Order["status"]>,
@@ -34,31 +34,40 @@ async function updateStatus(
   }
 }
 
-export const markReceived = (
+export async function markReceived(
   shop: string,
   sessionId: string,
-): Promise<Order | null> =>
-  updateStatus(shop, sessionId, "received", { returnReceivedAt: nowIso() });
+): Promise<Order | null> {
+  return updateStatus(shop, sessionId, "received", { returnReceivedAt: nowIso() });
+}
 
-export const markCleaning = (
+export async function markCleaning(
   shop: string,
   sessionId: string,
-): Promise<Order | null> => updateStatus(shop, sessionId, "cleaning");
+): Promise<Order | null> {
+  return updateStatus(shop, sessionId, "cleaning");
+}
 
-export const markRepair = (
+export async function markRepair(
   shop: string,
   sessionId: string,
-): Promise<Order | null> => updateStatus(shop, sessionId, "repair");
+): Promise<Order | null> {
+  return updateStatus(shop, sessionId, "repair");
+}
 
-export const markQa = (
+export async function markQa(
   shop: string,
   sessionId: string,
-): Promise<Order | null> => updateStatus(shop, sessionId, "qa");
+): Promise<Order | null> {
+  return updateStatus(shop, sessionId, "qa");
+}
 
-export const markAvailable = (
+export async function markAvailable(
   shop: string,
   sessionId: string,
-): Promise<Order | null> => updateStatus(shop, sessionId, "available");
+): Promise<Order | null> {
+  return updateStatus(shop, sessionId, "available");
+}
 
 export async function markLateFeeCharged(
   shop: string,

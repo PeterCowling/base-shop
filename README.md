@@ -74,7 +74,7 @@ primary datastore. The schema includes:
 
 ## Persistence
 
-Some repositories retain JSON or SQLite fallbacks under a common `DATA_ROOT`, but Prisma with PostgreSQL is the default datastore. Inventory currently uses these fallbacks; the migration plan lives in [docs/inventory-migration.md](docs/inventory-migration.md). See [docs/persistence.md](docs/persistence.md) for details on these fallbacks and the `DATA_ROOT` environment variable.
+Some repositories retain JSON or SQLite fallbacks under a common `DATA_ROOT`, but Prisma with PostgreSQL is the default datastore. Inventory stays on these fallbacks to keep demos lightweight and support offline development until a relational schema is ready. The migration plan lives in [docs/inventory-migration.md](docs/inventory-migration.md). See [docs/persistence.md](docs/persistence.md) for details on these fallbacks and the `DATA_ROOT` environment variable.
 
 ## Contributing
 
@@ -85,6 +85,8 @@ See [docs/contributing.md](docs/contributing.md) for contribution guidelines.
 See [docs/upgrade-preview-republish.md](docs/upgrade-preview-republish.md) for guidance on upgrading a shop, previewing changes and republishing. See [docs/edit-preview-republish.md](docs/edit-preview-republish.md) for details on editing components, previewing those edits and republishing. See [docs/upgrade-flow.md](docs/upgrade-flow.md) for version tracking, the diff API, using previews and republishing or rolling back upgrades.
 
 ## Inventory Management
+
+Inventory still reads and writes JSON files (`data/shops/<shop>/inventory.json`) or an optional local SQLite database. This fallback keeps the demo lightweight and offline-friendly until a Prisma/PostgreSQL model is ready. See [docs/inventory-migration.md](docs/inventory-migration.md) for the migration plan.
 
 ### Variant schema
 

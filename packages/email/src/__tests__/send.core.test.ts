@@ -281,6 +281,78 @@ describe("send core helpers", () => {
       expect(provider2Send).toHaveBeenCalledTimes(1);
       expect(mockCreateTransport).toHaveBeenCalledTimes(1);
     });
+
+    it("uses Resend provider when configured", async () => {
+      const resendSend = jest.fn().mockResolvedValue(undefined);
+      ResendProvider.mockImplementation(() => ({ send: resendSend }));
+      await jest.isolateModulesAsync(async () => {
+        process.env.EMAIL_PROVIDER = "resend";
+        process.env.RESEND_API_KEY = "rs";
+        const { sendCampaignEmail } = await import("../send");
+        await sendCampaignEmail({
+          to: "t",
+          subject: "s",
+          html: "<p>h</p>",
+          sanitize: false,
+        });
+      });
+      expect(resendSend).toHaveBeenCalledTimes(1);
+      expect(SendgridProvider).not.toHaveBeenCalled();
+      expect(mockCreateTransport).not.toHaveBeenCalled();
+    });
+
+    it("falls back to Sendgrid when Resend key is missing", async () => {
+      const sendgridSend = jest.fn().mockResolvedValue(undefined);
+      SendgridProvider.mockImplementation(() => ({ send: sendgridSend }));
+      await jest.isolateModulesAsync(async () => {
+        process.env.EMAIL_PROVIDER = "resend";
+        process.env.SENDGRID_API_KEY = "sg";
+        const { sendCampaignEmail } = await import("../send");
+        await sendCampaignEmail({
+          to: "t",
+          subject: "s",
+          html: "<p>h</p>",
+          sanitize: false,
+        });
+      });
+      expect(sendgridSend).toHaveBeenCalledTimes(1);
+      expect(ResendProvider).not.toHaveBeenCalled();
+    });
+
+    it("propagates error when all providers fail", async () => {
+      const { ProviderError } = await import("../providers/types");
+      const providerSend = jest
+        .fn()
+        .mockRejectedValue(new ProviderError("sg fail", false));
+      SendgridProvider.mockImplementation(() => ({ send: providerSend }));
+      mockSendMail.mockRejectedValue(new Error("smtp fail"));
+      const consoleSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      await jest.isolateModulesAsync(async () => {
+        process.env.EMAIL_PROVIDER = "sendgrid";
+        process.env.SENDGRID_API_KEY = "sg";
+        const { sendCampaignEmail } = await import("../send");
+        await expect(
+          sendCampaignEmail({
+            to: "t",
+            subject: "s",
+            html: "<p>h</p>",
+            sanitize: false,
+          })
+        ).rejects.toThrow("smtp fail");
+      });
+      expect(providerSend).toHaveBeenCalledTimes(1);
+      expect(consoleSpy.mock.calls).toEqual(
+        expect.arrayContaining([
+          [
+            "Campaign email send failed",
+            expect.objectContaining({ provider: "sendgrid", recipient: "t" }),
+          ],
+        ])
+      );
+      consoleSpy.mockRestore();
+    });
   });
 
   describe("sendWithRetry", () => {

@@ -1365,6 +1365,54 @@ describe("depositReleaseEnvRefinement", () => {
       message: "must be true or false",
     });
   });
+
+  it("adds issues for malformed custom variables", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      {
+        DEPOSIT_RELEASE_FOO_ENABLED: "yes",
+        LATE_FEE_BAR_INTERVAL_MS: "soon",
+      },
+      ctx,
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_FOO_ENABLED"],
+      message: "must be true or false",
+    });
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["LATE_FEE_BAR_INTERVAL_MS"],
+      message: "must be a number",
+    });
+  });
+});
+
+describe("AUTH_TOKEN_TTL normalization", () => {
+  it.each([
+    [30, undefined],
+    ["30", "30s"],
+    [" 45s ", "45s"],
+    ["5 m", "5m"],
+  ])("normalizes %p to %p", async (input, normalized) => {
+    const { coreEnvSchema } = await import("../core.js");
+    const { authEnvSchema } = await import("../auth.js");
+    const refine = (coreEnvSchema as any)._def.effect.refinement as (
+      env: Record<string, unknown>,
+      ctx: z.RefinementCtx,
+    ) => void;
+    const spy = jest
+      .spyOn(authEnvSchema, "safeParse")
+      .mockReturnValue({ success: true, data: {} } as any);
+    refine({ ...baseEnv, AUTH_TOKEN_TTL: input as any }, { addIssue: () => {} });
+    const arg = spy.mock.calls[0][0] as Record<string, unknown>;
+    if (normalized === undefined) {
+      expect(arg).not.toHaveProperty("AUTH_TOKEN_TTL");
+    } else {
+      expect(arg).toHaveProperty("AUTH_TOKEN_TTL", normalized);
+    }
+    spy.mockRestore();
+  });
 });
 
 describe("loadCoreEnv logging", () => {
@@ -1410,6 +1458,21 @@ describe("coreEnv proxy caching", () => {
     expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token");
     // access again to ensure cached
     expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+    parseSpy.mockRestore();
+  });
+
+  it("caches AUTH_TOKEN_TTL across property reads", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      AUTH_TOKEN_TTL: "60s",
+    } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const mod = require("../core.js");
+    const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
+    expect(mod.coreEnv.AUTH_TOKEN_TTL).toBe(60);
+    expect(mod.coreEnv.AUTH_TOKEN_TTL).toBe(60);
     expect(parseSpy).toHaveBeenCalledTimes(1);
     parseSpy.mockRestore();
   });

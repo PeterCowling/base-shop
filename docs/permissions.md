@@ -15,6 +15,7 @@ This guide lists built-in permissions and their default role mappings.
 | `manage_cart` | customer, admin, ShopAdmin, CatalogManager, ThemeEditor |
 | `view_orders` | customer, admin, ShopAdmin |
 | `manage_orders` | admin, ShopAdmin |
+| `manage_pages` | admin, ShopAdmin |
 | `manage_sessions` | admin, ShopAdmin |
 | `process_returns` | admin, ShopAdmin |
 | `manage_rentals` | admin, ShopAdmin |

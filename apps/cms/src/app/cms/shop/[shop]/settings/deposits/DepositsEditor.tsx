@@ -23,8 +23,11 @@ export default function DepositsEditor({ shop, initial }: Props) {
     e.preventDefault();
     setSaving(true);
 
-    const form = e.currentTarget;
-    const fd = new (form.ownerDocument.defaultView!).FormData(form);
+    const fd = new FormData();
+    if (state.enabled) {
+      fd.set("enabled", "on");
+    }
+    fd.set("intervalMinutes", String(state.intervalMinutes));
     const result = await updateDeposit(shop, fd);
     if (result.errors) {
       setErrors(result.errors);

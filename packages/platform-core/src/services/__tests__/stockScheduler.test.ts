@@ -16,19 +16,23 @@ describe("scheduleStockChecks", () => {
     jest.useRealTimers();
   });
 
-  it("runs checkAndAlert on the specified interval", async () => {
-    const getItems = jest.fn().mockResolvedValue([{ sku: "s" } as any]);
-    const { scheduleStockChecks } = await import("../stockScheduler.server");
+  it(
+    "runs checkAndAlert on the specified interval",
+    async () => {
+      const getItems = jest.fn().mockResolvedValue([{ sku: "s" } as any]);
+      const { scheduleStockChecks } = await import("../stockScheduler.server");
 
-    scheduleStockChecks("shop", getItems, 1000);
+      scheduleStockChecks("shop", getItems, 1000);
 
     await jest.advanceTimersByTimeAsync(1000);
     expect(getItems).toHaveBeenCalledTimes(1);
     expect(checkAndAlert).toHaveBeenCalledWith("shop", [{ sku: "s" }]);
 
-    await jest.advanceTimersByTimeAsync(1000);
-    expect(getItems).toHaveBeenCalledTimes(2);
-  });
+      await jest.advanceTimersByTimeAsync(1000);
+      expect(getItems).toHaveBeenCalledTimes(2);
+    },
+    10_000,
+  );
 
   it("logs errors from checkAndAlert", async () => {
     const err = new Error("boom");
@@ -45,6 +49,20 @@ describe("scheduleStockChecks", () => {
       err,
     );
     consoleError.mockRestore();
+  });
+
+  it("does not accumulate timers over long periods", async () => {
+    const getItems = jest.fn().mockResolvedValue([]);
+    const { scheduleStockChecks } = await import("../stockScheduler.server");
+
+    scheduleStockChecks("shop", getItems, 60 * 60 * 1000); // hourly
+
+    for (let i = 1; i <= 24; i++) {
+      await jest.advanceTimersByTimeAsync(60 * 60 * 1000);
+      expect(getItems).toHaveBeenCalledTimes(i);
+      expect(checkAndAlert).toHaveBeenCalledTimes(i);
+      expect(jest.getTimerCount()).toBe(1);
+    }
   });
 });
 

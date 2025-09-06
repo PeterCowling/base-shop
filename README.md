@@ -39,6 +39,24 @@ See [docs/install.md](docs/install.md) for setup and quickstart instructions.
 
 See [docs/architecture.md](docs/architecture.md) for a component layer overview.
 
+## Database
+
+The project uses [Prisma](https://www.prisma.io/) with PostgreSQL as the
+primary datastore. The schema includes:
+
+- `Shop` – JSON shop configuration.
+- `Page` – per-shop pages tied to a `Shop`.
+- `RentalOrder` – rental lifecycle data with unique constraints on
+  `(shop, sessionId)` and `(shop, trackingNumber)`; indexed by
+  `customerId`. See [docs/orders.md](docs/orders.md).
+- `SubscriptionUsage` – monthly shipment counts with a unique
+  `(shop, customerId, month)` tuple. See
+  [docs/subscription-usage.md](docs/subscription-usage.md).
+- `CustomerProfile` and `CustomerMfa` – customer metadata and MFA
+  secrets keyed by `customerId`.
+- `User` – application users with a unique `email`.
+- `ReverseLogisticsEvent` – return tracking events indexed by `shop`.
+
 ## Persistence
 
 Several repositories store data as JSON files under a common root so the demo works without a database. See [docs/persistence.md](docs/persistence.md) for details on disk fallbacks and the `DATA_ROOT` environment variable.

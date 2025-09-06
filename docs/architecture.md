@@ -86,3 +86,24 @@ graph TD
 ```
 
 Atoms have no internal dependencies. Molecules may depend on atoms; organisms may depend on molecules and atoms; templates may depend on organisms, molecules and atoms; and pages may depend on any UI layer. Keeping this order prevents cyclical dependencies and helps maintain separation of concerns.
+
+## Database
+
+Data is stored in PostgreSQL through [Prisma](https://www.prisma.io/).
+The schema (see `packages/platform-core/prisma/schema.prisma`) defines:
+
+- `Shop` – JSON shop configuration and related `Page` records.
+- `Page` – per-shop pages tied to a `Shop`.
+- `RentalOrder` – rental transactions with unique `(shop, sessionId)`
+  and `(shop, trackingNumber)` plus an index on `customerId`. See
+  [orders.md](orders.md).
+- `SubscriptionUsage` – monthly shipment counts with a unique
+  `(shop, customerId, month)` tuple. See
+  [subscription-usage.md](subscription-usage.md).
+- `CustomerProfile` and `CustomerMfa` – customer metadata and MFA
+  secrets keyed by `customerId`.
+- `User` – accounts with a unique `email`.
+- `ReverseLogisticsEvent` – return tracking events indexed by `shop`.
+
+The connection string is provided via the `DATABASE_URL` environment
+variable.

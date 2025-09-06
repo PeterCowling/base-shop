@@ -27,6 +27,11 @@ jest.mock("../src/db", () => ({
 }));
 jest.mock("ulid", () => ({ ulid: jest.fn(() => "ulid") }));
 jest.mock("@acme/date-utils", () => ({ nowIso: jest.fn(() => "now") }));
+jest.mock("@acme/stripe", () => ({
+  stripe: { refunds: { create: jest.fn() } },
+}));
+
+import { stripe } from "@acme/stripe";
 
 const { trackOrder } = jest.requireMock("../src/analytics") as {
   trackOrder: jest.Mock;
@@ -42,6 +47,7 @@ const { prisma: prismaMock } = jest.requireMock("../src/db") as {
 };
 const ulidMock = jest.requireMock("ulid").ulid as jest.Mock;
 const nowIsoMock = jest.requireMock("@acme/date-utils").nowIso as jest.Mock;
+const stripeRefund = stripe.refunds.create as jest.Mock;
 
 describe("orders", () => {
   beforeEach(() => {
@@ -267,6 +273,40 @@ describe("orders", () => {
       prismaMock.rentalOrder.update.mockResolvedValue(null);
       const result = await markRefunded("shop", "sess");
       expect(result).toBeNull();
+    });
+
+    it("refunds partial amounts via Stripe before marking order", async () => {
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.update.mockResolvedValue({ id: "1", refundedAt: "now" });
+      stripeRefund.mockResolvedValue({ id: "re_1" });
+
+      const process = async () => {
+        const refund = Math.max(10 - 4, 0);
+        await stripeRefund({ payment_intent: "pi", amount: refund * 100 });
+        return markRefunded("shop", "sess");
+      };
+
+      const result = await process();
+      expect(stripeRefund).toHaveBeenCalledWith({ payment_intent: "pi", amount: 6 * 100 });
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { refundedAt: "now" },
+      });
+      expect(result).toEqual({ id: "1", refundedAt: "now" });
+    });
+
+    it("surfaces refund failures and does not update the order", async () => {
+      stripeRefund.mockRejectedValue(new Error("refund failed"));
+
+      const process = async () => {
+        const refund = Math.max(10 - 4, 0);
+        await stripeRefund({ payment_intent: "pi", amount: refund * 100 });
+        return markRefunded("shop", "sess");
+      };
+
+      await expect(process()).rejects.toThrow("refund failed");
+      expect(stripeRefund).toHaveBeenCalledWith({ payment_intent: "pi", amount: 6 * 100 });
+      expect(prismaMock.rentalOrder.update).not.toHaveBeenCalled();
     });
   });
 

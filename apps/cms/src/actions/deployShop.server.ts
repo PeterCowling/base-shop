@@ -5,7 +5,7 @@ import { deployShop, type DeployShopResult } from "@platform-core/createShop";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import fs from "fs/promises";
 import path from "path";
-import { writeJsonFile } from "@/lib/server/jsonIO";
+import { writeJsonFile, withFileLock } from "@/lib/server/jsonIO";
 import { ensureAuthorized } from "./common/auth";
 
 export async function deployShopHosting(
@@ -41,10 +41,12 @@ export async function updateDeployStatus(
   await ensureAuthorized();
   const file = path.join(resolveDataRoot(), id, "deploy.json");
   try {
-    const existing = await fs.readFile(file, "utf8").catch(() => "{}");
-    const parsed = JSON.parse(existing) as Record<string, unknown>;
-    const updated = { ...parsed, ...data };
-    await writeJsonFile(file, updated);
+    await withFileLock(file, async () => {
+      const existing = await fs.readFile(file, "utf8").catch(() => "{}");
+      const parsed = JSON.parse(existing) as Record<string, unknown>;
+      const updated = { ...parsed, ...data };
+      await writeJsonFile(file, updated);
+    });
   } catch (err) {
     console.error("Failed to write deploy status", err);
   }

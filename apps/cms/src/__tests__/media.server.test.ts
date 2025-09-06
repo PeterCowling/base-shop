@@ -10,6 +10,7 @@ const fsMock = {
   readdir: jest.fn(),
   mkdir: jest.fn(),
   unlink: jest.fn(),
+  rename: jest.fn(),
 };
 jest.mock('fs', () => ({ promises: fsMock }));
 
@@ -49,6 +50,7 @@ beforeEach(() => {
   fsMock.readdir.mockResolvedValue([]);
   fsMock.mkdir.mockResolvedValue(undefined);
   fsMock.unlink.mockResolvedValue(undefined);
+  fsMock.rename.mockResolvedValue(undefined);
   ulidMock.mockReturnValue('id123');
 });
 

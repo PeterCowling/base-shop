@@ -146,6 +146,23 @@ describe("recoverAbandonedCarts", () => {
     expect(carts[1].reminded).toBe(true);
     expect(carts[2].reminded).toBeUndefined();
   });
+
+  it("handles an empty cart list without sending emails", async () => {
+    await recoverAbandonedCarts([], Date.now());
+    expect(sendCampaignEmailMock).not.toHaveBeenCalled();
+  });
+
+  it("propagates errors from the email provider and leaves cart untouched", async () => {
+    const now = Date.now();
+    const carts: AbandonedCart[] = [
+      { email: "fail@example.com", cart: {}, updatedAt: now - 25 * 60 * 60 * 1000 },
+    ];
+
+    sendCampaignEmailMock.mockRejectedValueOnce(new Error("boom"));
+
+    await expect(recoverAbandonedCarts(carts, now)).rejects.toThrow("boom");
+    expect(carts[0].reminded).toBeUndefined();
+  });
 });
 
 describe("resolveAbandonedCartDelay", () => {
@@ -163,6 +180,12 @@ describe("resolveAbandonedCartDelay", () => {
     jest
       .spyOn(fs, "readFile")
       .mockRejectedValue(new Error("missing"));
+    const delay = await resolveAbandonedCartDelay(shop, "/tmp");
+    expect(delay).toBe(DEFAULT_DELAY);
+  });
+
+  it("returns the default delay when settings file is invalid", async () => {
+    jest.spyOn(fs, "readFile").mockResolvedValue("oops{not json}");
     const delay = await resolveAbandonedCartDelay(shop, "/tmp");
     expect(delay).toBe(DEFAULT_DELAY);
   });

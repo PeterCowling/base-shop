@@ -174,5 +174,9 @@ export async function sendDueCampaigns(): Promise<void> {
  * Periodically sync campaign analytics for all shops.
  */
 export async function syncCampaignAnalytics(): Promise<void> {
-  await fetchCampaignAnalytics();
+  try {
+    await fetchCampaignAnalytics();
+  } catch {
+    // ignore analytics sync errors to avoid crashing scheduled jobs
+  }
 }

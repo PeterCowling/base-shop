@@ -24,13 +24,15 @@ describe("resolveDataRoot", () => {
     expect(resolveDataRoot()).toBe(path.resolve("/custom/path"));
   });
 
-  it("finds ancestor data/shops directory", async () => {
+  it("prefers outermost data/shops directory", async () => {
     jest.spyOn(process, "cwd").mockReturnValue("/a/b/c");
     jest.doMock("node:fs", () => ({
-      existsSync: (p: PathLike) => p === path.join("/a/b", "data", "shops"),
+      existsSync: (p: PathLike) =>
+        p === path.join("/a", "data", "shops") ||
+        p === path.join("/a/b", "data", "shops"),
     }));
     const { resolveDataRoot } = await import("../dataRoot");
-    expect(resolveDataRoot()).toBe(path.join("/a/b", "data", "shops"));
+    expect(resolveDataRoot()).toBe(path.join("/a", "data", "shops"));
   });
 
   it("falls back to cwd/data/shops when none found", async () => {

@@ -20,9 +20,9 @@ These fallbacks keep parts of the project functional during development or when 
 
 ## `DATA_ROOT`
 
-`DATA_ROOT` resolves to the root directory that holds per‑shop data files. If the variable is unset, `resolveDataRoot` walks up from the current working directory looking for `data/shops` and falls back to `<cwd>/data/shops`.
+`DATA_ROOT` resolves to the root directory that holds per‑shop data files. If the variable is unset, `resolveDataRoot` walks up from the current working directory and selects the outermost `data/shops` directory (typically the one at the repository root). If none is found, it falls back to `<cwd>/data/shops`.
 
-Override it to store data elsewhere, isolate test fixtures or run the system offline:
+Set `DATA_ROOT` to store data elsewhere, isolate test fixtures, or run the system offline:
 
 ```bash
 DATA_ROOT=/tmp/my-data pnpm dev

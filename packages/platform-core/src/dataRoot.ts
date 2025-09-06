@@ -12,15 +12,17 @@ export function resolveDataRoot() {
         return path.resolve(env);
     }
     let dir = process.cwd();
+    let found;
     while (true) {
         const candidate = path.join(dir, "data", "shops");
-        if (fsSync.existsSync(candidate))
-            return candidate;
+        if (fsSync.existsSync(candidate)) {
+            found = candidate;
+        }
         const parent = path.dirname(dir);
         if (parent === dir)
             break;
         dir = parent;
     }
-    return path.resolve(process.cwd(), "data", "shops");
+    return found ?? path.resolve(process.cwd(), "data", "shops");
 }
 export const DATA_ROOT = resolveDataRoot();

@@ -1,5 +1,6 @@
 import "server-only";
 import type { RentalOrder } from "@acme/types";
+
 export type Order = RentalOrder;
 export declare function listOrders(shop: string): Promise<Order[]>;
 export declare const readOrders: typeof listOrders;

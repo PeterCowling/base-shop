@@ -657,5 +657,94 @@ describe("CartProvider dispatch", () => {
       "Cart update failed"
     );
   });
+
+  it("propagates fetch errors when removing", async () => {
+    const initial = { cart: { sku1: { sku, qty: 1 } } };
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => initial });
+    fetchMock.mockRejectedValueOnce(new Error("offline"));
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(cartState).toEqual(initial.cart));
+
+    await expect(dispatch({ type: "remove", id: "sku1" })).rejects.toThrow(
+      "offline"
+    );
+    expect(localStorage.getItem("cart")).toBe(JSON.stringify(initial.cart));
+  });
+
+  it("propagates fetch errors when setting quantity", async () => {
+    const initial = { cart: { sku1: { sku, qty: 1 } } };
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => initial });
+    fetchMock.mockRejectedValueOnce(new Error("offline"));
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(cartState).toEqual(initial.cart));
+
+    await expect(
+      dispatch({ type: "setQty", id: "sku1", qty: 2 })
+    ).rejects.toThrow("offline");
+    expect(localStorage.getItem("cart")).toBe(JSON.stringify(initial.cart));
+  });
+
+  it("removes item even if localStorage.setItem fails", async () => {
+    const initial = { cart: { sku1: { sku, qty: 1 } } };
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => initial });
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
+    const setSpy = jest
+      .spyOn(Storage.prototype, "setItem")
+      .mockImplementation(() => {
+        throw new Error("fail");
+      });
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(cartState).toEqual(initial.cart));
+
+    await act(async () => {
+      await dispatch({ type: "remove", id: "sku1" });
+    });
+
+    await waitFor(() => expect(cartState).toEqual({}));
+    expect(setSpy).toHaveBeenCalled();
+    setSpy.mockRestore();
+  });
+
+  it("ignores error field in successful response", async () => {
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
+    const added = { cart: { sku1: { sku, qty: 1 } }, error: "bad" };
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => added });
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+
+    await act(async () => {
+      await dispatch({ type: "add", sku });
+    });
+
+    await waitFor(() => expect(cartState).toEqual(added.cart));
+  });
 });
 

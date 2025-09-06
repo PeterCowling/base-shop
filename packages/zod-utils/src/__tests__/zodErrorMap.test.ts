@@ -134,13 +134,18 @@ describe("friendlyErrorMap", () => {
 test("applyFriendlyZodMessages sets global error map", () => {
   const original = z.getErrorMap();
   const schema = z.string().min(3);
-
   const before = schema.safeParse("hi");
-  expect(before.error.issues[0].message).not.toBe("Must be at least 3 characters");
+  expect(before.error.issues[0].message).not.toBe(
+    "Must be at least 3 characters",
+  );
 
   applyFriendlyZodMessages();
+  expect(z.getErrorMap()).toBe(friendlyErrorMap);
+
   const after = schema.safeParse("hi");
-  expect(after.error.issues[0].message).toBe("Must be at least 3 characters");
+  expect(after.error.issues[0].message).toBe(
+    "Must be at least 3 characters",
+  );
 
   z.setErrorMap(original);
 });

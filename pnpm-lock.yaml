@@ -809,10 +809,6 @@ importers:
         version: 6.29.1
 
   packages/shared-utils:
-    dependencies:
-      pino:
-        specifier: ^9.9.0
-        version: 9.9.0
     devDependencies:
       next:
         specifier: ^15.3.5

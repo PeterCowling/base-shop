@@ -26,9 +26,7 @@
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "lint": "eslint ."
   },
-  "dependencies": {
-    "pino": "^9.9.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "next": "^15.3.5"
   }

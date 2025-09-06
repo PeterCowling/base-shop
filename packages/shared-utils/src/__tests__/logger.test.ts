@@ -1,63 +1,64 @@
 import { jest } from '@jest/globals';
 
-const pinoInstance = {
-  error: jest.fn(),
-  warn: jest.fn(),
-  info: jest.fn(),
-  debug: jest.fn(),
-};
-
-const pinoMock = jest.fn(() => pinoInstance);
-
-jest.mock('pino', () => ({
-  __esModule: true,
-  default: (...args: unknown[]) => pinoMock(...args),
-}));
-
 describe('logger', () => {
   beforeEach(() => {
     jest.resetModules();
-    pinoMock.mockClear();
-    pinoInstance.error.mockClear();
-    pinoInstance.warn.mockClear();
-    pinoInstance.info.mockClear();
-    pinoInstance.debug.mockClear();
+    jest.restoreAllMocks();
     delete process.env.LOG_LEVEL;
     delete process.env.NODE_ENV;
   });
 
-  it('forwards messages and metadata to the pino instance', async () => {
+  const priorities = { debug: 0, info: 1, warn: 2, error: 3, silent: 4 } as const;
+  const levels = Object.keys(priorities) as Array<keyof typeof priorities>;
+
+  describe.each(levels)("respects LOG_LEVEL=%s", (level) => {
+    it('logs only messages at or above the configured level', async () => {
+      process.env.LOG_LEVEL = level;
+
+      const debugSpy = jest.spyOn(console, 'debug').mockImplementation(() => {});
+      const infoSpy = jest.spyOn(console, 'info').mockImplementation(() => {});
+      const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      const { logger } = await import('../logger');
+
+      logger.debug('debug');
+      logger.info('info');
+      logger.warn('warn');
+      logger.error('error');
+
+      const threshold = priorities[level];
+      expect(debugSpy).toHaveBeenCalledTimes(threshold <= priorities.debug ? 1 : 0);
+      expect(infoSpy).toHaveBeenCalledTimes(threshold <= priorities.info ? 1 : 0);
+      expect(warnSpy).toHaveBeenCalledTimes(threshold <= priorities.warn ? 1 : 0);
+      expect(errorSpy).toHaveBeenCalledTimes(threshold <= priorities.error ? 1 : 0);
+    });
+  });
+
+  it('passes all arguments through to console methods', async () => {
+    const infoSpy = jest.spyOn(console, 'info').mockImplementation(() => {});
     const { logger } = await import('../logger');
-    const meta = { id: 1 };
+    const meta = { foo: 1 };
 
-    logger.error('error message', meta);
-    logger.warn('warn message', meta);
-    logger.info('info message', meta);
-    logger.debug('debug message', meta);
+    logger.info('message', meta);
 
-    expect(pinoInstance.error).toHaveBeenCalledWith(meta, 'error message');
-    expect(pinoInstance.warn).toHaveBeenCalledWith(meta, 'warn message');
-    expect(pinoInstance.info).toHaveBeenCalledWith(meta, 'info message');
-    expect(pinoInstance.debug).toHaveBeenCalledWith(meta, 'debug message');
+    expect(infoSpy).toHaveBeenCalledWith('message', meta);
   });
 
-  it('defaults to info level in production', async () => {
-    process.env.NODE_ENV = 'production';
-    await import('../logger');
-    expect(pinoMock).toHaveBeenCalledWith({ level: 'info' });
-  });
+  it('catches errors thrown by console methods', async () => {
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {
+        throw new Error('fail');
+      });
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
-  it('defaults to debug level when not in production', async () => {
-    process.env.NODE_ENV = 'development';
-    await import('../logger');
-    expect(pinoMock).toHaveBeenCalledWith({ level: 'debug' });
-  });
+    const { logger } = await import('../logger');
 
-  it('uses LOG_LEVEL when provided', async () => {
-    process.env.NODE_ENV = 'production';
-    process.env.LOG_LEVEL = 'warn';
-    await import('../logger');
-    expect(pinoMock).toHaveBeenCalledWith({ level: 'warn' });
+    expect(() => logger.error('oops')).not.toThrow();
+    expect(warnSpy).toHaveBeenCalled();
+
+    errorSpy.mockRestore();
+    warnSpy.mockRestore();
   });
 });
-

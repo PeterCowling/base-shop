@@ -41,6 +41,35 @@ describe("Checkout success and cancel flows", () => {
     cy.location("pathname").should("eq", "/en/cancelled");
   });
 
+  it("allows retry when coupon is invalid", () => {
+    cy.intercept("POST", "https://api.stripe.com/**", {
+      statusCode: 200,
+      body: {},
+    }).as("confirmPayment");
+
+    // Respond with 400 for the first checkout session request
+    cy.intercept(
+      { method: "POST", url: "**/api/checkout-session", times: 1 },
+      { statusCode: 400, body: { error: "Invalid coupon" } }
+    ).as("createSessionFail");
+
+    // Subsequent requests should succeed
+    cy.intercept("POST", "**/api/checkout-session", {
+      statusCode: 200,
+      body: { clientSecret: "cs_test", sessionId: "sess_test" },
+    }).as("createSession");
+
+    cy.visit("/en/checkout");
+    cy.wait("@createSessionFail");
+    cy.contains("Failed to load payment form.").should("be.visible");
+    cy.contains("button", "Retry").should("be.visible").click();
+
+    cy.wait("@createSession");
+    cy.contains("button", "Pay").click();
+    cy.wait("@confirmPayment");
+    cy.location("pathname").should("eq", "/en/success");
+  });
+
   it("shows an error when the Stripe network is unavailable", () => {
     cy.intercept("POST", "https://api.stripe.com/**", {
       forceNetworkError: true,

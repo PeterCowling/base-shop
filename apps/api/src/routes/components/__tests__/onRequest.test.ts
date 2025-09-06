@@ -119,6 +119,58 @@ describe('onRequest route', () => {
     expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
   });
 
+  it('returns 403 when token has wrong audience', async () => {
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
+    verify.mockImplementation(() => {
+      throw new Error('aud');
+    });
+    const res = await onRequest({
+      params: { shopId: 'abc' },
+      request: new Request('http://localhost', {
+        headers: { authorization: 'Bearer wrong-aud' },
+      }),
+    });
+    expect(verify).toHaveBeenCalledWith(
+      'wrong-aud',
+      'secret',
+      expect.objectContaining({
+        algorithms: ['HS256'],
+        audience: 'upgrade-preview',
+        issuer: 'acme',
+        subject: 'shop:abc:upgrade-preview',
+      }),
+    );
+    expect(res.status).toBe(403);
+    await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+  });
+
+  it('returns 403 when token has wrong issuer', async () => {
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
+    verify.mockImplementation(() => {
+      throw new Error('iss');
+    });
+    const res = await onRequest({
+      params: { shopId: 'abc' },
+      request: new Request('http://localhost', {
+        headers: { authorization: 'Bearer wrong-iss' },
+      }),
+    });
+    expect(verify).toHaveBeenCalledWith(
+      'wrong-iss',
+      'secret',
+      expect.objectContaining({
+        algorithms: ['HS256'],
+        audience: 'upgrade-preview',
+        issuer: 'acme',
+        subject: 'shop:abc:upgrade-preview',
+      }),
+    );
+    expect(res.status).toBe(403);
+    await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+  });
+
   it('returns 403 when token payload lacks numeric exp', async () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: 'soon' });

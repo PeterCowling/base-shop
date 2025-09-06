@@ -1,7 +1,5 @@
 // cypress/support/index.ts
 
-/// <reference types="cypress" />
-
 // Prevent tests from failing on uncaught exceptions originating from the app
 Cypress.on("uncaught:exception", (_err, _runnable) => {
   // returning false here prevents Cypress from failing the test

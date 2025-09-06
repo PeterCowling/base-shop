@@ -1,12 +1,13 @@
 declare module "@auth" {
-  export interface CustomerSession {
-    customerId: string;
-    role: string;
-  }
-  export async function getCustomerSession(
+  import type { CustomerSession } from "@acme/auth";
+
+  export type { CustomerSession };
+
+  export function getCustomerSession(
     ...args: any[]
   ): Promise<CustomerSession | null>;
-  export async function requirePermission(
+
+  export function requirePermission(
     ...args: any[]
   ): Promise<CustomerSession>;
 }

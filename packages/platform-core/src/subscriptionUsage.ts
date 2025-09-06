@@ -17,11 +17,13 @@ export async function incrementSubscriptionUsage(
   shop: string,
   customerId: string,
   month: string,
-  count = 1,
+  count?: number,
 ): Promise<void> {
+  const shipments = count ?? 1;
+
   await prisma.subscriptionUsage.upsert({
     where: { shop_customerId_month: { shop, customerId, month } },
-    create: { shop, customerId, month, shipments: count },
-    update: { shipments: { increment: count } },
+    create: { shop, customerId, month, shipments },
+    update: { shipments: { increment: shipments } },
   });
 }

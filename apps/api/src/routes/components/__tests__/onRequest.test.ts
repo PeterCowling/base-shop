@@ -262,4 +262,41 @@ describe('onRequest route', () => {
       configDiff: { templates: ['main.html'], translations: ['en.json'] },
     });
   });
+
+  it('returns empty config diff when diff requested but config directories missing', async () => {
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
+    verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
+    const root = path.resolve(__dirname, '../../../../../../..');
+    vol.fromJSON({
+      [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+        componentVersions: { '@acme/button': '1.0.0' },
+      }),
+      [`${root}/packages/button/package.json`]: JSON.stringify({
+        name: '@acme/button',
+        version: '1.1.0',
+      }),
+      [`${root}/packages/button/CHANGELOG.md`]: '# Changelog\n\nFixed bug\n',
+    });
+
+    const res = await onRequest({
+      params: { shopId: 'abc' },
+      request: new Request('http://localhost?diff=1', {
+        headers: { authorization: 'Bearer good' },
+      }),
+    });
+
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual({
+      components: [
+        {
+          name: '@acme/button',
+          from: '1.0.0',
+          to: '1.1.0',
+          summary: 'Fixed bug',
+          changelog: 'packages/button/CHANGELOG.md',
+        },
+      ],
+      configDiff: { templates: [], translations: [] },
+    });
+  });
 });

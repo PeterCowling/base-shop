@@ -3,12 +3,21 @@ import { formDataToObject } from "../../../utils/formData";
 
 const returnsSchema = z
   .object({
-    enabled: z.preprocess((v) => v === "on", z.boolean()),
+    enabled: z.preprocess(
+      (v) => (v === undefined ? false : v === "on" ? true : v),
+      z.boolean(),
+    ),
     bagEnabled: z
-      .preprocess((v) => v === "on", z.boolean())
+      .preprocess(
+        (v) => (v === undefined ? undefined : v === "on" ? true : v),
+        z.boolean(),
+      )
       .optional(),
     homePickupEnabled: z
-      .preprocess((v) => v === "on", z.boolean())
+      .preprocess(
+        (v) => (v === undefined ? undefined : v === "on" ? true : v),
+        z.boolean(),
+      )
       .optional(),
   })
   .strict();

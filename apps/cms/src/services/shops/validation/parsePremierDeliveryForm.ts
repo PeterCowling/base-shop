@@ -30,7 +30,7 @@ export function parsePremierDeliveryForm(formData: FormData): {
       .map(String)
       .map((v) => v.trim())
       .filter(Boolean),
-    surcharge: formData.get("surcharge"),
+    surcharge: formData.get("surcharge") ?? undefined,
     serviceLabel: formData.get("serviceLabel")?.toString().trim() || undefined,
   };
   const parsed = premierDeliverySchema.safeParse(data);

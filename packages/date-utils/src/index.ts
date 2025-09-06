@@ -1,9 +1,4 @@
-import {
-  addDays,
-  format,
-  parseISO,
-  startOfDay as dfStartOfDay,
-} from "date-fns";
+import { addDays, format, parseISO } from "date-fns";
 import { fromZonedTime, formatInTimeZone } from "date-fns-tz";
 
 export { addDays, format, parseISO, fromZonedTime };
@@ -51,7 +46,9 @@ export function formatTimestamp(
 /** Return the start of day for the given date, optionally in a timezone. */
 export function startOfDay(date: Date | string, timezone?: string): Date {
   const d = typeof date === "string" ? parseISO(date) : date;
-  if (!timezone) return dfStartOfDay(d);
+  if (!timezone) {
+    return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
+  }
   const startStr = formatInTimeZone(d, timezone, "yyyy-MM-dd'T'00:00:00XXX");
   return parseISO(startStr);
 }

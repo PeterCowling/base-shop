@@ -12,6 +12,17 @@ describe('getCsrfToken in browser', () => {
     expect(getCsrfToken()).toBe('abc');
   });
 
+  it('reads token from cookie when meta missing', () => {
+    document.cookie = 'csrf_token=999';
+    expect(getCsrfToken()).toBe('999');
+  });
+
+  it('prefers meta tag over cookie', () => {
+    document.head.innerHTML = '<meta name="csrf-token" content="abc">';
+    document.cookie = 'csrf_token=999';
+    expect(getCsrfToken()).toBe('abc');
+  });
+
   it('generates token and sets cookie when none present', () => {
     const originalCrypto = globalThis.crypto;
     Object.defineProperty(globalThis, 'crypto', {

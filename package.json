@@ -26,7 +26,7 @@
     "lint:all": "eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\"",
     "typecheck": "pnpm -r build && tsc -b tsconfig.json --pretty",
     "test": "CI=true turbo run test",
-    "test:coverage": "CI=true turbo run test --filter=!@acme/next-config -- --coverage && pnpm --filter @acme/next-config run test:coverage",
+    "test:coverage": "CI=true pnpm -r --filter=!@acme/next-config run test -- --coverage && pnpm --filter @acme/next-config run test:coverage",
     "e2e": "TEST_DATA_ROOT=test/data node scripts/src/seed-test-data.ts && start-server-and-test \"sh -c 'pnpm --filter @apps/cms build && pnpm --filter @apps/cms start -- --port 3006'\" http://localhost:3006 \"pnpm exec cypress run\"",
     "e2e:open": "TEST_DATA_ROOT=test/data node scripts/src/seed-test-data.ts && start-server-and-test \"sh -c 'pnpm --filter @apps/cms build && pnpm --filter @apps/cms start -- --port 3006'\" http://localhost:3006 \"pnpm exec cypress open\"",
     "e2e:dashboard": "TEST_DATA_ROOT=test/data node scripts/src/seed-test-data.ts && start-server-and-test \"sh -c 'pnpm --filter @apps/cms build && pnpm --filter @apps/cms start -- --port 3006'\" http://localhost:3006 \"pnpm exec cypress run --spec cypress/e2e/dashboard-signin.cy.ts\"",

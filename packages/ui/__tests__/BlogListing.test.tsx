@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import BlogListing from "../src/components/cms/blocks/BlogListing";
 
 describe("BlogListing", () => {
@@ -16,5 +17,20 @@ describe("BlogListing", () => {
     expect(excerpt).toBeInTheDocument();
     expect(excerpt).toHaveAttribute("data-token", "--color-muted");
     expect(screen.getByText("B")).toBeInTheDocument();
+  });
+
+  it("navigates when shop link is clicked", async () => {
+    render(
+      <BlogListing posts={[{ title: "Shop post", shopUrl: "/shop/story" }]} />
+    );
+    const link = screen.getByRole("link", { name: "Shop the story" });
+    expect(link).toHaveAttribute("href", "/shop/story");
+    let clicked = false;
+    link.addEventListener("click", (e) => {
+      e.preventDefault();
+      clicked = true;
+    });
+    await userEvent.click(link);
+    expect(clicked).toBe(true);
   });
 });

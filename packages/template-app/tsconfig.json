@@ -14,30 +14,23 @@
         "../i18n/dist/*",
         "./dist/*"
       ],
-      "@ui/*": [
-        "../ui/src/*", "../ui/dist/src/*"
-      ],
-      "@ui/src/*": [
-        "../ui/src/*", "../ui/dist/src/*"
-      ],
-      "@i18n/*": [
-        "../i18n/src/*", "../i18n/dist/*"
-      ],
+      "@ui/*": ["../ui/src/*", "../ui/dist/src/*"],
+      "@ui/src/*": ["../ui/src/*", "../ui/dist/src/*"],
+      "@i18n/*": ["../i18n/src/*", "../i18n/dist/*"],
       "@platform-core": [
-        "../platform-core/src/index.ts", "../platform-core/dist/index.d.ts"
+        "../platform-core/src/index.ts",
+        "../platform-core/dist/index.d.ts"
       ],
-      "@platform-core/*": [
-        "../platform-core/src/*", "../platform-core/dist/*"
-      ],
+      "@platform-core/*": ["../platform-core/src/*", "../platform-core/dist/*"],
       "@acme/platform-core": [
-        "../platform-core/src/index.ts", "../platform-core/dist/index.d.ts"
+        "../platform-core/src/index.ts",
+        "../platform-core/dist/index.d.ts"
       ],
       "@acme/platform-core/*": [
-        "../platform-core/src/*", "../platform-core/dist/*"
+        "../platform-core/src/*",
+        "../platform-core/dist/*"
       ],
-      "@acme/config": [
-        "../config/src/index.ts", "../config/dist/index.d.ts"
-      ],
+      "@acme/config": ["../config/src/index.ts", "../config/dist/index.d.ts"],
       "@acme/config/*": [
         "./src/env/*.ts",
         "../config/src/*",
@@ -49,20 +42,17 @@
         "../auth/dist/index.d.ts",
         "../auth/dist"
       ],
-      "@auth/*": [
-        "../auth/src/*", "../auth/dist/*"
-      ],
+      "@auth/*": ["../auth/src/*", "../auth/dist/*"],
       "@date-utils": [
         "../date-utils/src/index.ts",
         "../date-utils/src",
         "../date-utils/dist/index.d.ts",
         "../date-utils/dist"
       ],
-      "@date-utils/*": [
-        "../date-utils/src/*", "../date-utils/dist/*"
-      ],
+      "@date-utils/*": ["../date-utils/src/*", "../date-utils/dist/*"],
       "better-sqlite3": [
-        "../platform-core/src/types/better-sqlite3", "../platform-core/dist/types/better-sqlite3"
+        "../platform-core/src/types/better-sqlite3",
+        "../platform-core/dist/types/better-sqlite3"
       ]
     },
     "allowJs": true,
@@ -81,17 +71,12 @@
     "src/**/*.json",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "references": [
     { "path": "../config" },
     { "path": "../types" },
     { "path": "../date-utils" },
     { "path": "../i18n" },
     { "path": "../stripe" }
-  ],
-  "files": [
-    "../platform-core/src/prisma.d.ts"
   ]
 }

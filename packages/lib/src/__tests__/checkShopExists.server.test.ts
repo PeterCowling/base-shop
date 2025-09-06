@@ -1,30 +1,55 @@
-// @ts-nocheck
-const statMock = jest.fn((p: string) => {
-  if (p.toLowerCase() === "/data/shop") {
-    return Promise.resolve({ isDirectory: () => true });
-  }
-  const err = new Error("not found");
-  err.code = "ENOENT";
-  return Promise.reject(err);
-});
+import path from "node:path";
+import type { PathLike } from "node:fs";
 
-jest.mock("@acme/platform-core/dataRoot", () => ({
-  resolveDataRoot: () => "/data",
+// Mock filesystem stat
+const statMock = jest.fn();
+jest.mock("node:fs", () => ({
+  promises: {
+    stat: (p: PathLike) => statMock(p),
+  },
 }));
 
-jest.mock("node:fs", () => ({
-  promises: { stat: (p: string) => statMock(p) },
+// Mock data root resolution
+const tmpDir = "/tmp";
+jest.mock("@acme/platform-core/dataRoot", () => ({
+  resolveDataRoot: () => tmpDir,
+}));
+
+// Spy on shop name validation
+const validateMock = jest.fn((s: string) => s);
+jest.mock("../validateShopName", () => ({
+  validateShopName: (s: string) => validateMock(s),
 }));
 
 import { checkShopExists } from "../checkShopExists.server";
 
 describe("checkShopExists", () => {
-  it("detects existing shops regardless of case", async () => {
-    await expect(checkShopExists("shop")).resolves.toBe(true);
-    await expect(checkShopExists("Shop")).resolves.toBe(true);
+  beforeEach(() => {
+    jest.clearAllMocks();
+    validateMock.mockImplementation((s: string) => s);
   });
 
-  it("returns false for missing shops", async () => {
+  it("resolves true when the shop directory exists", async () => {
+    statMock.mockResolvedValue({ isDirectory: () => true });
+    await expect(checkShopExists("shop")).resolves.toBe(true);
+    expect(statMock).toHaveBeenCalledWith(path.join(tmpDir, "shop"));
+  });
+
+  it("returns false when fs.stat throws", async () => {
+    const err = new Error("not found") as NodeJS.ErrnoException;
+    err.code = "ENOENT";
+    statMock.mockRejectedValue(err);
     await expect(checkShopExists("missing")).resolves.toBe(false);
   });
+
+  it("validates the shop name and throws for invalid input", async () => {
+    const err = new Error("invalid");
+    validateMock.mockImplementation(() => {
+      throw err;
+    });
+    await expect(checkShopExists("bad!")).rejects.toThrow(err);
+    expect(validateMock).toHaveBeenCalledWith("bad!");
+    expect(statMock).not.toHaveBeenCalled();
+  });
 });
+

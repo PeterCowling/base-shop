@@ -25,6 +25,7 @@ const cart: CartState = {
       description: "",
     },
     qty: 2,
+    size: "M",
   },
   "2": {
     sku: {
@@ -81,5 +82,18 @@ describe("CartTemplate", () => {
     const removeButtons = screen.getAllByRole("button", { name: /remove/i });
     await userEvent.click(removeButtons[1]);
     expect(onRemove).toHaveBeenCalledWith("2");
+  });
+
+  it("renders size badge when size is provided", () => {
+    render(<CartTemplate cart={cart} />);
+    expect(screen.getByText("(M)")).toBeInTheDocument();
+  });
+
+  it("does not render remove column without onRemove", () => {
+    render(<CartTemplate cart={cart} />);
+    expect(
+      screen.queryByRole("button", { name: /remove/i })
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText("Remove")).not.toBeInTheDocument();
   });
 });

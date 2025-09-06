@@ -1,14 +1,20 @@
 # Persistence and `DATA_ROOT`
 
-Many repositories use a simple filesystem backend when a database or remote service isn't configured. Data is stored under a shop-specific directory rooted at `DATA_ROOT` so the demo and tests work completely offline.
+Many repositories use a simple filesystem backend when a database or remote service isn't configured. Data is stored under a shop‑specific directory rooted at `DATA_ROOT` so the demo and tests work completely offline.
+
+## Repositories using the database
+
+The shops and pages repositories in `@acme/platform-core` now persist to the primary database (via Prisma) when a connection is configured. They fall back to JSON files under `<DATA_ROOT>/<shop>` if the database is unavailable.
 
 ## Repositories with disk fallbacks
 
-The following repositories read and write JSON or JSONL files under `<DATA_ROOT>/<shop>`:
+The following repositories still read and write JSON or JSONL files under `<DATA_ROOT>/<shop>`:
 
-- `@acme/platform-core` repositories for shops, products, pages, settings, theme presets, analytics and SEO audits.
+- `@acme/platform-core` repositories for products, settings, theme presets, analytics and SEO audits.
 - `@acme/email` repositories for campaigns, segments and abandoned cart reminders.
 - Background services in `@acme/platform-machine` that log analytics or scheduling data.
+
+The inventory repository continues to rely on a local SQLite database (`inventory.sqlite`).
 
 These fallbacks keep the project functional during development before wiring up a real database and make it easy to run the stack without any external dependencies.
 

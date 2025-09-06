@@ -58,6 +58,7 @@ yarn-error.log*
 .env*
 !**/.env.example
 !apps/cms/.env.production
+!docs/.env.reference.md
 
 # Build outputs (monorepo)
 **/dist/

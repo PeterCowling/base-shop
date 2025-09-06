@@ -40,4 +40,25 @@ describe("Checkout success and cancel flows", () => {
     cy.wait("@confirmPayment");
     cy.location("pathname").should("eq", "/en/cancelled");
   });
+
+  it("allows retry after invalid coupon", () => {
+    cy.intercept("POST", "https://api.stripe.com/**", {
+      statusCode: 200,
+      body: {},
+    }).as("confirmPayment");
+
+    cy.intercept(
+      { method: "POST", url: "**/api/checkout-session", times: 1 },
+      { statusCode: 400, body: { error: "Invalid coupon" } },
+    ).as("createSessionFail");
+
+    cy.visit("/en/checkout");
+    cy.wait("@createSessionFail");
+    cy.contains("Failed to load payment form.").should("be.visible");
+    cy.contains("button", "Retry").click();
+    cy.wait("@createSession");
+    cy.contains("button", "Pay").click();
+    cy.wait("@confirmPayment");
+    cy.location("pathname").should("eq", "/en/success");
+  });
 });

@@ -5,17 +5,17 @@ describe("subscriptionUsage", () => {
     jest.resetModules();
   });
 
-  it("calls findUnique with composite key", async () => {
+  it("calls findUniqueOrThrow with composite key", async () => {
     await jest.isolateModulesAsync(async () => {
-      const findUnique = jest.fn().mockResolvedValue(null);
+      const findUniqueOrThrow = jest.fn().mockResolvedValue({});
       jest.doMock("@acme/platform-core/db", () => ({
-        prisma: { subscriptionUsage: { findUnique } },
+        prisma: { subscriptionUsage: { findUniqueOrThrow } },
       }));
       const { getSubscriptionUsage } = await import(
         "@acme/platform-core/subscriptionUsage"
       );
       await getSubscriptionUsage("shop", "cust", "2023-10");
-      expect(findUnique).toHaveBeenCalledWith({
+      expect(findUniqueOrThrow).toHaveBeenCalledWith({
         where: {
           shop_customerId_month: {
             shop: "shop",

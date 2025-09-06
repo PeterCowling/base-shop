@@ -7,8 +7,8 @@ export async function getSubscriptionUsage(
   shop: string,
   customerId: string,
   month: string,
-): Promise<SubscriptionUsage | null> {
-  return prisma.subscriptionUsage.findUnique({
+): Promise<SubscriptionUsage> {
+  return prisma.subscriptionUsage.findUniqueOrThrow({
     where: { shop_customerId_month: { shop, customerId, month } },
   });
 }

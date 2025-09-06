@@ -1,14 +1,17 @@
 /** @jest-environment node */
 
 jest.mock("../db", () => ({
-  prisma: { subscriptionUsage: { findUnique: jest.fn(), upsert: jest.fn() } },
+  prisma: {
+    subscriptionUsage: { findUniqueOrThrow: jest.fn(), upsert: jest.fn() },
+  },
 }));
 
 import { prisma } from "../db";
 import { getSubscriptionUsage, incrementSubscriptionUsage } from "../subscriptionUsage";
 
 const store: Record<string, any> = {};
-const findUniqueMock = prisma.subscriptionUsage.findUnique as jest.Mock;
+const findUniqueOrThrowMock =
+  prisma.subscriptionUsage.findUniqueOrThrow as jest.Mock;
 const upsertMock = prisma.subscriptionUsage.upsert as jest.Mock;
 
 describe("subscriptionUsage", () => {
@@ -18,12 +21,16 @@ describe("subscriptionUsage", () => {
 
   beforeEach(() => {
     Object.keys(store).forEach((k) => delete store[k]);
-    findUniqueMock.mockReset();
+    findUniqueOrThrowMock.mockReset();
     upsertMock.mockReset();
 
-    findUniqueMock.mockImplementation(({ where }: any) => {
+    findUniqueOrThrowMock.mockImplementation(({ where }: any) => {
       const key = JSON.stringify(where.shop_customerId_month);
-      return store[key] ?? null;
+      const record = store[key];
+      if (!record) {
+        throw new Error("Not found");
+      }
+      return record;
     });
     upsertMock.mockImplementation(({ where, create, update }: any) => {
       const key = JSON.stringify(where.shop_customerId_month);
@@ -42,15 +49,17 @@ describe("subscriptionUsage", () => {
 
     const record = await getSubscriptionUsage(shop, customerId, month);
 
-    expect(findUniqueMock).toHaveBeenCalledWith({
+    expect(findUniqueOrThrowMock).toHaveBeenCalledWith({
       where: { shop_customerId_month: { shop, customerId, month } },
     });
     expect(record).toEqual({ id: "1", shop, customerId, month, shipments: 5 });
   });
 
   it("uses default count and increments with custom values", async () => {
-    // no existing record returns null
-    expect(await getSubscriptionUsage(shop, customerId, month)).toBeNull();
+    // no existing record throws
+    await expect(
+      getSubscriptionUsage(shop, customerId, month),
+    ).rejects.toThrow();
 
     // default increment when no count is provided
     await incrementSubscriptionUsage(shop, customerId, month);

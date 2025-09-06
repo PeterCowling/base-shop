@@ -49,5 +49,42 @@ describe("fillLocales with filesystem", () => {
       bye: { en: "Bye", de: "Bye", it: "Bye" },
     });
   });
+
+  it("applies fallback when default locale file is missing", async () => {
+    readFileMock.mockImplementation(async (file: string) => {
+      if (file.endsWith("de.json")) {
+        return JSON.stringify({ greet: "Hallo" });
+      }
+      const err: NodeJS.ErrnoException = new Error("not found");
+      err.code = "ENOENT";
+      throw err;
+    });
+
+    const translations: Record<string, Partial<Record<Locale, string>>> = {};
+
+    for (const locale of LOCALES) {
+      try {
+        const json = await readFile(`/locales/${locale}.json`, "utf8");
+        const data = JSON.parse(json) as Record<string, string>;
+        for (const [key, value] of Object.entries(data)) {
+          translations[key] ??= {};
+          translations[key][locale] = value;
+        }
+      } catch {
+        /* ignore missing files */
+      }
+    }
+
+    const result = Object.fromEntries(
+      Object.entries(translations).map(([key, map]) => [
+        key,
+        fillLocales(map, "Hi"),
+      ])
+    );
+
+    expect(result).toEqual({
+      greet: { en: "Hi", de: "Hallo", it: "Hi" },
+    });
+  });
 });
 

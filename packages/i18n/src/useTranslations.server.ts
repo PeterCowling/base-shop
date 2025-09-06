@@ -7,12 +7,24 @@ import type { Locale } from "./locales";
 export async function useTranslations(
   locale: Locale
 ): Promise<(key: string) => string> {
-  const messages = (
+  const enMessages = (
     await import(
       /* webpackInclude: /(en|de|it)\.json$/ */
-      `./${locale}.json`
+      `./en.json`
     )
   ).default as Record<string, string>;
+
+  const localeMessages =
+    locale === "en"
+      ? enMessages
+      : (
+          await import(
+            /* webpackInclude: /(en|de|it)\.json$/ */
+            `./${locale}.json`
+          )
+        ).default;
+
+  const messages = { ...enMessages, ...localeMessages } as Record<string, string>;
 
   return (key: string): string => messages[key] ?? key;
 }

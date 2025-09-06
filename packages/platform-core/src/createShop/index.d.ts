@@ -7,9 +7,7 @@ import { type ShopDeploymentAdapter } from "./deploymentAdapter";
  */
 export declare function createShop(id: string, opts?: CreateShopOptions, options?: {
     deploy?: boolean;
-}, adapter?: ShopDeploymentAdapter): Promise<DeployShopResult | {
-    status: "pending";
-}>;
+}, adapter?: ShopDeploymentAdapter): Promise<DeployShopResult>;
 export declare function deployShop(id: string, domain?: string, adapter?: ShopDeploymentAdapter): DeployShopResult;
 export declare function listThemes(): string[];
 /**

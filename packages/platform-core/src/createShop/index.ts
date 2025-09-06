@@ -40,7 +40,7 @@ export async function createShop(
   opts: CreateShopOptions = {} as CreateShopOptions,
   options?: { deploy?: boolean },
   adapter: ShopDeploymentAdapter = defaultDeploymentAdapter
-): Promise<DeployShopResult | { status: "pending" }> {
+): Promise<DeployShopResult> {
   id = validateShopName(id);
 
   const prepared = prepareOptions(id, opts);

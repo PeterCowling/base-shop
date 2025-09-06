@@ -22,17 +22,21 @@ describe("useConfiguratorStep", () => {
 
   it("keeps errors empty and isValid true for valid values", async () => {
     const schema = z.object({ age: z.number().min(18) });
+    const values = { age: 21 };
     const { result } = renderHook(() =>
-      useConfiguratorStep({ stepId: "age", schema, values: { age: 21 } }),
+      useConfiguratorStep({ stepId: "age", schema, values }),
     );
     await waitFor(() => expect(result.current.isValid).toBe(true));
     expect(result.current.errors).toEqual({});
   });
 
   it("returns first error message for invalid values", async () => {
-    const schema = z.object({ age: z.number().min(18, { message: "Too young" }) });
+    const schema = z.object({
+      age: z.number().min(18, { message: "Too young" }),
+    });
+    const values = { age: 10 };
     const { result } = renderHook(() =>
-      useConfiguratorStep({ stepId: "age", schema, values: { age: 10 } }),
+      useConfiguratorStep({ stepId: "age", schema, values }),
     );
     await waitFor(() => expect(result.current.isValid).toBe(false));
     expect(result.current.getError("age")).toBe("Too young");
@@ -40,11 +44,12 @@ describe("useConfiguratorStep", () => {
 
   it("navigates using goNext and goPrev", () => {
     const schema = z.object({});
+    const values = {} as Record<string, never>;
     const { result } = renderHook(() =>
       useConfiguratorStep({
         stepId: "age",
         schema,
-        values: {},
+        values,
         prevStepId: "prev",
         nextStepId: "next",
       }),

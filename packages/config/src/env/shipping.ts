@@ -27,12 +27,12 @@ export const shippingEnvSchema = z
     .refine((v) =>
       v == null
         ? true
-        : /^(true|false|1|0)$/i.test(v.trim()),
+        : /^(true|false|1|0|yes)$/i.test(v.trim()),
     {
       message: "must be a boolean",
     })
     .transform((v) =>
-      v == null ? undefined : /^(true|1)$/i.test(v.trim()),
+      v == null ? undefined : /^(true|1|yes)$/i.test(v.trim()),
     ),
   DEFAULT_COUNTRY: z
     .string()

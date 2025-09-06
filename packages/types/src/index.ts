@@ -23,6 +23,7 @@ export * from "./SubscriptionUsage";
 export * from "./CustomerProfile";
 export * from "./User";
 export * from "./ReverseLogisticsEvent";
+export * from "./CustomerMfa";
 export * from "./Coverage";
 export * from "./upgrade";
 export * from "./ExampleProps";

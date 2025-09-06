@@ -22,7 +22,7 @@ test("logs in valid customer", async () => {
   (validateCsrfToken as jest.Mock).mockResolvedValue(true);
   const res = await POST(
     makeRequest(
-      { customerId: "cust1", password: "pass1" },
+      { customerId: "cust1", password: "pass1234" },
       { "x-csrf-token": "token" },
     ),
   );
@@ -39,7 +39,7 @@ test("rejects invalid CSRF token", async () => {
   (validateCsrfToken as jest.Mock).mockResolvedValue(false);
   const res = await POST(
     makeRequest(
-      { customerId: "cust1", password: "pass1" },
+      { customerId: "cust1", password: "pass1234" },
       { "x-csrf-token": "bad" },
     ),
   );
@@ -64,7 +64,7 @@ test("rejects unauthorized role", async () => {
   (validateCsrfToken as jest.Mock).mockResolvedValue(true);
   const res = await POST(
     makeRequest(
-      { customerId: "admin1", password: "admin" },
+      { customerId: "admin1", password: "admin123" },
       { "x-csrf-token": "token" },
     ),
   );
@@ -81,4 +81,24 @@ test("returns 400 for invalid body", async () => {
     ),
   );
   expect(res.status).toBe(400);
+});
+
+test("rate limits after five rapid requests", async () => {
+  (validateCsrfToken as jest.Mock).mockResolvedValue(true);
+  const originalEnv = process.env.NODE_ENV;
+  process.env.NODE_ENV = "production";
+  try {
+    const body = { customerId: "cust1", password: "pass1234" };
+    const headers = { "x-csrf-token": "token" };
+    for (let i = 0; i < 5; i++) {
+      const res = await POST(makeRequest(body, headers));
+      expect(res.status).toBe(200);
+      await expect(res.json()).resolves.toEqual({ ok: true });
+    }
+    const res6 = await POST(makeRequest(body, headers));
+    expect(res6.status).toBe(429);
+    await expect(res6.json()).resolves.toEqual({ error: "Too Many Requests" });
+  } finally {
+    process.env.NODE_ENV = originalEnv;
+  }
 });

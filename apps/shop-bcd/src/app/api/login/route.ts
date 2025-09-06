@@ -13,9 +13,9 @@ const limiter = new RateLimiterMemory({ points: 5, duration: 60 });
 
 // Mock customer store. In a real application this would be a database or external identity provider.
 const CUSTOMER_STORE: Record<string, { password: string; role: Role }> = {
-  cust1: { password: "pass1", role: "customer" },
-  viewer1: { password: "view", role: "viewer" },
-  admin1: { password: "admin", role: "admin" },
+  cust1: { password: "pass1234", role: "customer" },
+  viewer1: { password: "viewpass", role: "viewer" },
+  admin1: { password: "admin123", role: "admin" },
 };
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];

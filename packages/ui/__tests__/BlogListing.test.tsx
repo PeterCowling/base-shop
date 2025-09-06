@@ -33,4 +33,9 @@ describe("BlogListing", () => {
     await userEvent.click(link);
     expect(clicked).toBe(true);
   });
+
+  it("renders nothing when no posts provided", () => {
+    const { container } = render(<BlogListing posts={[]} />);
+    expect(container).toBeEmptyDOMElement();
+  });
 });

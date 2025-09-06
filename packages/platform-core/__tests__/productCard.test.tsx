@@ -90,6 +90,20 @@ describe("ProductCard", () => {
       screen.getByRole("button", { name: /add to cart/i })
     ).toBeInTheDocument();
   });
+
+  it("displays price using currency from context", () => {
+    window.localStorage.setItem("PREFERRED_CURRENCY", "USD");
+    const sku = {
+      id: "p1",
+      slug: "price",
+      title: "Price test",
+      price: 10,
+      media: [],
+      sizes: [],
+    } as unknown as SKU;
+    renderCard(sku);
+    expect(screen.getByText("$10.00")).toBeInTheDocument();
+  });
 });
 
 describe("Price", () => {

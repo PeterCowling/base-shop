@@ -1,16 +1,53 @@
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { TranslationsProvider, useTranslations } from "../src/Translations";
 import type { ReactNode } from "react";
 
-describe("useTranslations behaviour", () => {
-  it("returns translations, warns on missing keys, and memoises function", () => {
-    let translate: (key: string) => string = () => "";
-    function Consumer({ children }: { children?: ReactNode }) {
-      translate = useTranslations();
+describe("TranslationsProvider and useTranslations", () => {
+  function Show({ tKey }: { tKey: string }): React.JSX.Element {
+    const t = useTranslations();
+    return <span>{t(tKey)}</span>;
+  }
+
+  it("renders an existing translation", () => {
+    render(
+      <TranslationsProvider messages={{ welcome: "Welcome!" }}>
+        <Show tKey="welcome" />
+      </TranslationsProvider>
+    );
+
+    expect(screen.getByText("Welcome!")).toBeInTheDocument();
+  });
+
+  it("falls back to the key and warns when a translation is missing", () => {
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+
+    render(
+      <TranslationsProvider messages={{}}>
+        <Show tKey="welcome" />
+      </TranslationsProvider>
+    );
+
+    expect(screen.getByText("welcome")).toBeInTheDocument();
+    expect(warnSpy).toHaveBeenCalledWith(
+      "Missing translation for key: welcome"
+    );
+
+    warnSpy.mockRestore();
+  });
+
+  it("memoises the translation function and updates when messages change", () => {
+    const record = jest.fn();
+
+    function Consumer({
+      children,
+    }: {
+      children?: ReactNode;
+    }): React.JSX.Element {
+      const t = useTranslations();
+      record(t);
       return <>{children}</>;
     }
 
-    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     const messages = { hello: "Hallo" };
     const { rerender } = render(
       <TranslationsProvider messages={messages}>
@@ -18,26 +55,42 @@ describe("useTranslations behaviour", () => {
       </TranslationsProvider>
     );
 
-    expect(translate("hello")).toBe("Hallo");
-    expect(translate("missing")).toBe("missing");
-    expect(warnSpy).toHaveBeenCalledWith("Missing translation for key: missing");
+    const firstFn = record.mock.calls[0][0];
 
-    const firstFn = translate;
     rerender(
       <TranslationsProvider messages={messages}>
         <Consumer />
       </TranslationsProvider>
     );
-    expect(translate).toBe(firstFn);
+
+    const secondFn = record.mock.calls[1][0];
+    expect(secondFn).toBe(firstFn);
 
     rerender(
       <TranslationsProvider messages={{ hello: "Bonjour" }}>
         <Consumer />
       </TranslationsProvider>
     );
-    expect(translate).not.toBe(firstFn);
-    expect(translate("hello")).toBe("Bonjour");
 
-    warnSpy.mockRestore();
+    const thirdFn = record.mock.calls[2][0];
+    expect(thirdFn).not.toBe(firstFn);
+  });
+
+  it("re-renders consumers with updated translations", () => {
+    const { rerender } = render(
+      <TranslationsProvider messages={{ hello: "Hallo" }}>
+        <Show tKey="hello" />
+      </TranslationsProvider>
+    );
+
+    expect(screen.getByText("Hallo")).toBeInTheDocument();
+
+    rerender(
+      <TranslationsProvider messages={{ hello: "Bonjour" }}>
+        <Show tKey="hello" />
+      </TranslationsProvider>
+    );
+
+    expect(screen.getByText("Bonjour")).toBeInTheDocument();
   });
 });

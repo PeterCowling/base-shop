@@ -5,6 +5,7 @@ import { computeDamageFee } from "@platform-core/pricing";
 import {
   addOrder,
   markReturned,
+  readOrders,
 } from "@platform-core/repositories/rentalOrders.server";
 import { readShop } from "@platform-core/repositories/shops.server";
 
@@ -37,7 +38,9 @@ export async function PATCH(req: NextRequest) {
   const parsed = await parseJsonBody(req, ReturnSchema, "1mb");
   if ("response" in parsed) return parsed.response;
   const { sessionId, damage } = parsed.data;
-  const order = await markReturned("bcd", sessionId);
+
+  const orders = await readOrders("bcd");
+  const order = orders.find((o) => o.sessionId === sessionId);
   if (!order) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
@@ -57,18 +60,37 @@ export async function PATCH(req: NextRequest) {
     coverageCodes,
     shop.coverageIncluded,
   );
-  if (damageFee) {
-    await markReturned("bcd", sessionId, damageFee);
-  }
   const pi =
     typeof session.payment_intent === "string"
       ? session.payment_intent
       : session.payment_intent?.id;
-  if (pi && order.deposit) {
-    const refund = Math.max(order.deposit - damageFee, 0);
+  const refund = pi && order.deposit ? Math.max(order.deposit - damageFee, 0) : 0;
+
+  try {
     if (refund > 0) {
-      await stripe.refunds.create({ payment_intent: pi, amount: refund * 100 });
+      await stripe.refunds.create({ payment_intent: pi!, amount: refund * 100 });
     }
+    let clientSecret: string | undefined;
+    if (damageFee > order.deposit) {
+      const remaining = damageFee - order.deposit;
+      const intent = await stripe.paymentIntents.create({
+        amount: remaining * 100,
+        currency: session.currency ?? "usd",
+        ...(session.customer ? { customer: session.customer as string } : {}),
+        metadata: { sessionId, purpose: "damage_fee" },
+      });
+      clientSecret = intent.client_secret ?? undefined;
+    }
+    await markReturned("bcd", sessionId, damageFee ? damageFee : undefined);
+    return NextResponse.json(
+      { ok: true, ...(clientSecret ? { clientSecret } : {}) },
+      { status: 200 },
+    );
+  } catch (err) {
+    console.error("Failed to process payment", err);
+    return NextResponse.json(
+      { error: "Payment processing failed" },
+      { status: 502 },
+    );
   }
-  return NextResponse.json({ ok: true });
 }

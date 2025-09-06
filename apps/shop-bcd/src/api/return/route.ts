@@ -4,6 +4,7 @@ import { computeDamageFee } from "@platform-core/pricing";
 import {
   markRefunded,
   markReturned,
+  readOrders,
 } from "@platform-core/repositories/rentalOrders.server";
 import { readShop } from "@platform-core/repositories/shops.server";
 
@@ -26,7 +27,8 @@ export async function POST(req: NextRequest) {
   }
   const { sessionId, damage } = parsed.data;
 
-  const order = await markReturned("bcd", sessionId);
+  const orders = await readOrders("bcd");
+  const order = orders.find((o) => o.sessionId === sessionId);
   if (!order) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
@@ -47,19 +49,30 @@ export async function POST(req: NextRequest) {
   const shop = await readShop("bcd");
   const coverageCodes =
     session.metadata?.coverage?.split(",").filter(Boolean) ?? [];
-  const damageFee = await computeDamageFee(
-    damage,
-    deposit,
-    coverageCodes,
-    shop.coverageIncluded,
-  );
-  if (damageFee) {
-    await markReturned("bcd", sessionId, damageFee);
-  }
-  const refund = Math.max(deposit - damageFee, 0);
-  if (refund > 0) {
-    await stripe.refunds.create({ payment_intent: pi, amount: refund * 100 });
-    await markRefunded("bcd", sessionId);
+
+  try {
+    const damageFee = await computeDamageFee(
+      damage,
+      deposit,
+      coverageCodes,
+      shop.coverageIncluded,
+    );
+    const refund = Math.max(deposit - damageFee, 0);
+    if (refund > 0) {
+      await stripe.refunds.create({ payment_intent: pi, amount: refund * 100 });
+      await markRefunded("bcd", sessionId);
+    }
+    await markReturned(
+      "bcd",
+      sessionId,
+      damageFee ? damageFee : undefined,
+    );
+  } catch (err) {
+    console.error("Failed to process refund", err);
+    return NextResponse.json(
+      { error: "Payment processing failed" },
+      { status: 502 },
+    );
   }
 
   return NextResponse.json({ ok: true });

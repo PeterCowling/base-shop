@@ -22,7 +22,9 @@ export default function DepositsEditor({ shop, initial }: Props) {
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSaving(true);
-    const fd = new FormData(e.currentTarget);
+
+    const form = e.currentTarget;
+    const fd = new (form.ownerDocument.defaultView!).FormData(form);
     const result = await updateDeposit(shop, fd);
     if (result.errors) {
       setErrors(result.errors);

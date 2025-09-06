@@ -4,18 +4,25 @@ import userEvent from "@testing-library/user-event";
 import DepositsEditor from "../DepositsEditor";
 
 const parseDepositForm = jest.fn(() => ({ data: { enabled: true, intervalMinutes: 5 } }));
-const updateDeposit = jest.fn(async (_shop: string, formData: FormData) => {
-  parseDepositForm(formData);
-  return { errors: { intervalMinutes: ["Invalid"] } };
-});
 
-jest.mock("@cms/actions/shops.server", () => ({ updateDeposit }));
+jest.mock("@cms/actions/shops.server", () => ({
+  updateDeposit: async (_shop: string, formData: FormData) => {
+    parseDepositForm(formData);
+    return { errors: { intervalMinutes: ["Invalid"] } };
+  },
+}));
 jest.mock("../../../../../../../services/shops/validation", () => ({ parseDepositForm }));
 jest.mock(
   "@ui/components/atoms/shadcn",
   () => ({
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-    Checkbox: (props: any) => <input type="checkbox" {...props} />,
+    Checkbox: ({ onCheckedChange, ...props }: any) => (
+      <input
+        type="checkbox"
+        onChange={(e) => onCheckedChange?.(e.target.checked)}
+        {...props}
+      />
+    ),
     Input: (props: any) => <input {...props} />,
   }),
   { virtual: true },

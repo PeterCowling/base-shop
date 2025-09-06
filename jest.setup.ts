@@ -53,6 +53,7 @@ import "cross-fetch/polyfill";
 import React from "react";
 import { TextDecoder, TextEncoder } from "node:util";
 import { File } from "node:buffer";
+import { webcrypto } from "node:crypto";
 
 // React 19's experimental builds may not yet expose a built‑in `act` helper.
 // Testing libraries still expect `React.act` to exist, so provide a minimal
@@ -88,6 +89,7 @@ if (
 (globalThis as any).TextEncoder ||= TextEncoder;
 (globalThis as any).TextDecoder ||= TextDecoder;
 (globalThis as any).File ||= File;
+(globalThis as any).crypto ||= webcrypto;
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { File: UndiciFile, FormData: UndiciFormData } = require("undici");
 (globalThis as any).File ||= UndiciFile;

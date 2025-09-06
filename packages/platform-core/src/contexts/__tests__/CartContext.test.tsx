@@ -164,20 +164,28 @@ describe("CartProvider offline fallback", () => {
   });
 
   it("syncs cached cart to server when back online", async () => {
+    const updated = { cart: { sku1: { sku, qty: 2 } } };
     window.localStorage.setItem("cart", JSON.stringify(mockCart));
     const fetchMock = global.fetch as jest.Mock;
     fetchMock.mockRejectedValueOnce(new Error("offline"));
-    fetchMock.mockResolvedValue({ ok: true, json: async () => ({ cart: mockCart }) });
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => updated,
+    });
+
+    let cartState: CartState;
+    function Capture() {
+      [cartState] = useCart();
+      return null;
+    }
 
     render(
       <CartProvider>
-        <CartDisplay />
+        <Capture />
       </CartProvider>
     );
 
-    await waitFor(() =>
-      expect(screen.getByTestId("count").textContent).toBe("1")
-    );
+    await waitFor(() => expect(cartState).toEqual(mockCart));
 
     act(() => {
       window.dispatchEvent(new Event("online"));
@@ -189,6 +197,8 @@ describe("CartProvider offline fallback", () => {
         expect.objectContaining({ method: "PUT" })
       )
     );
+    await waitFor(() => expect(cartState).toEqual(updated.cart));
+    expect(localStorage.getItem("cart")).toBe(JSON.stringify(updated.cart));
   });
 
   it("removes online listener after successful sync", async () => {
@@ -382,6 +392,41 @@ describe("CartProvider dispatch", () => {
         body: JSON.stringify({ sku: { id: sku.id }, qty: 1, size: undefined }),
       })
     );
+  });
+
+  it("adds sized item and syncs localStorage", async () => {
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
+    const added = {
+      cart: { sku2: { sku: skuWithSizes, qty: 1, size: "s" } },
+    };
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => added });
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+
+    await act(async () => {
+      await dispatch({ type: "add", sku: skuWithSizes, size: "s" });
+    });
+
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      "/api/cart",
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({
+          sku: { id: skuWithSizes.id },
+          qty: 1,
+          size: "s",
+        }),
+      })
+    );
+    await waitFor(() => expect(cartState).toEqual(added.cart));
+    expect(localStorage.getItem("cart")).toBe(JSON.stringify(added.cart));
   });
 
   it("adds item and syncs localStorage", async () => {

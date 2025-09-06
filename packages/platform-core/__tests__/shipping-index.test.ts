@@ -40,6 +40,24 @@ describe('getShippingRate', () => {
     });
   });
 
+  it('allows carrier when premierDelivery has no carriers list', async () => {
+    const result = await getShippingRate({
+      provider: 'premier-shipping',
+      fromPostalCode: '00000',
+      toPostalCode: '99999',
+      weight: 1,
+      region: 'eligible',
+      window: 'morning',
+      carrier: 'ups',
+      premierDelivery: {
+        regions: ['eligible'],
+        windows: ['morning'],
+        // no carriers array
+      },
+    });
+    expect(result).toEqual({ rate: 0, surcharge: 0, serviceLabel: 'Premier Delivery' });
+  });
+
   it('throws when premierDelivery is missing', async () => {
     await expect(
       getShippingRate({

@@ -14,6 +14,13 @@ if (!globalThis.crypto) {
     value: webcrypto,
   });
 }
+// JSDOM exposes a `window` object separate from `globalThis`.  Libraries like
+// `ulid` look for `window.crypto`, so mirror the polyfill there as well.
+if (typeof window !== "undefined" && !(window as any).crypto) {
+  Object.defineProperty(window, "crypto", {
+    value: webcrypto,
+  });
+}
 
 // Node's test environment may lack FormData, so provide a minimal polyfill
 if (!("FormData" in globalThis)) {

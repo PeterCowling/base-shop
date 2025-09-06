@@ -10,6 +10,17 @@ Requires **Node.js >=20** and **pnpm 10.12.1**. See [docs/install.md](docs/insta
 
 Run `pnpm init-shop` to scaffold a new shop. The configurator lists available plugins and, when invoked with `--auto-env`, writes `TODO_*` placeholders for any required environment variables so teams can fill them in later.
 
+### Testing
+
+Cypress fixtures live under `test/data/shops`. Override this path by setting the `TEST_DATA_ROOT` environment variable.
+
+Seed data before running the Cypress suite:
+
+```bash
+pnpm tsx packages/platform-core/prisma/seed.ts
+pnpm e2e
+```
+
 ## Key Features
 
 - Stripe handles deposits via escrow sessions.

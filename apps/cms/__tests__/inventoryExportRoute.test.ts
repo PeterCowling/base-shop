@@ -1,9 +1,12 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import { flattenInventoryItem } from "@platform-core/utils/inventory";
 import { withTempRepo, mockSessionAndEmail } from "./helpers";
 
 describe("inventory export route", () => {
+  const env = { ...process.env };
   afterEach(() => {
+    process.env = { ...env };
     jest.resetModules();
     jest.resetAllMocks();
   });
@@ -114,4 +117,28 @@ describe("inventory export route", () => {
       ]);
     });
   });
+
+  it.each(["demo", "test"])(
+    "exports %s shop inventory from fixtures",
+    async (shop) => {
+      process.env.INVENTORY_BACKEND = "json";
+      process.env.DATA_ROOT = path.join(__dirname, "data", "shops");
+      mockSessionAndEmail();
+      const route = await import("../src/app/api/data/[shop]/inventory/export/route");
+      const req = new Request("http://test?format=json");
+      const res = await route.GET(req as any, {
+        params: Promise.resolve({ shop }),
+      });
+      expect(res.headers.get("content-type")).toContain("application/json");
+      expect(res.status).toBe(200);
+      const json = await res.json();
+      const buf = await fs.readFile(
+        path.join(process.env.DATA_ROOT!, shop, "inventory.json"),
+        "utf8",
+      );
+      const items = JSON.parse(buf);
+      const expected = items.map((i: any) => flattenInventoryItem(i));
+      expect(json).toEqual(expected);
+    },
+  );
 });

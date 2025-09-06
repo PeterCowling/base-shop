@@ -40,4 +40,35 @@ describe("Checkout success and cancel flows", () => {
     cy.wait("@confirmPayment");
     cy.location("pathname").should("eq", "/en/cancelled");
   });
+
+  it("handles a declined card and allows retry", () => {
+    cy.intercept(
+      { method: "POST", url: "https://api.stripe.com/**", times: 1 },
+      {
+        statusCode: 402,
+        body: { error: { message: "Your card was declined" } },
+      }
+    ).as("declined");
+
+    cy.visit("/en/checkout");
+    cy.wait("@createSession");
+    cy.contains("button", "Pay").click();
+    cy.wait("@declined");
+    cy.location("pathname").should("eq", "/en/cancelled");
+    cy.location("search").should(
+      "eq",
+      "?error=Your%20card%20was%20declined"
+    );
+    cy.contains("Your card was declined");
+
+    cy.intercept("POST", "https://api.stripe.com/**", {
+      statusCode: 200,
+      body: {},
+    }).as("confirmPayment");
+
+    cy.go("back");
+    cy.contains("button", "Pay").click();
+    cy.wait("@confirmPayment");
+    cy.location("pathname").should("eq", "/en/success");
+  });
 });

@@ -12,7 +12,35 @@ module.exports = {
     "**/*.spec.*",
     "**/jest.config.*",
   ],
+  rules: {
+    "no-restricted-imports": [
+      "error",
+      {
+        patterns: [
+          {
+            group: [
+              "**/inventory.json.server",
+              "**/inventory.prisma.server",
+              "**/inventory.stub.server",
+            ],
+            message: "Import inventory repositories via inventory.server.ts façade instead.",
+          },
+        ],
+      },
+    ],
+  },
   overrides: [
+    {
+      files: [
+        "packages/platform-core/src/repositories/inventory.server.ts",
+        "**/__tests__/**",
+        "**/*.test.*",
+        "**/*.spec.*",
+      ],
+      rules: {
+        "no-restricted-imports": "off",
+      },
+    },
     {
       files: [
         "packages/page-builder/**/*.{ts,tsx}",

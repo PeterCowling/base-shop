@@ -208,6 +208,39 @@ export default [
     },
   },
 
+  /* ▸ Prevent direct inventory backend imports */
+  {
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: [
+                "**/inventory.json.server",
+                "**/inventory.prisma.server",
+                "**/inventory.stub.server",
+              ],
+              message:
+                "Import inventory repositories via inventory.server.ts façade instead.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: [
+      "packages/platform-core/src/repositories/inventory.server.ts",
+      "**/__tests__/**",
+      "**/*.test.*",
+      "**/*.spec.*",
+    ],
+    rules: {
+      "no-restricted-imports": "off",
+    },
+  },
+
   /* ▸ Test files relaxations */
 
   /* ▸ Enforce UI component layering */

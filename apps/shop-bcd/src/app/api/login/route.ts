@@ -1,7 +1,12 @@
 // apps/shop-bcd/src/app/login/route.ts
 import "@acme/zod-utils/initZod";
 import { NextResponse } from "next/server";
-import { createCustomerSession, validateCsrfToken } from "@auth";
+import {
+  createCustomerSession,
+  validateCsrfToken,
+  isMfaEnabled,
+  verifyMfa,
+} from "@auth";
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
@@ -71,6 +76,17 @@ export async function POST(req: Request) {
   if (!ALLOWED_ROLES.includes(valid.role)) {
     // Reject elevated roles
     return NextResponse.json({ error: "Unauthorized role" }, { status: 403 });
+  }
+
+  if (await isMfaEnabled(valid.customerId)) {
+    const mfaToken = req.headers.get("x-mfa-token");
+    if (!mfaToken) {
+      return NextResponse.json({ error: "MFA token required" }, { status: 401 });
+    }
+    const ok = await verifyMfa(valid.customerId, mfaToken);
+    if (!ok) {
+      return NextResponse.json({ error: "Invalid MFA token" }, { status: 401 });
+    }
   }
 
   await createCustomerSession(valid);

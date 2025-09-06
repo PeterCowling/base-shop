@@ -11,7 +11,7 @@ import {
   type PreparedCreateShopOptions,
 } from "./schema";
 import { loadTokens } from "./themeUtils";
-import type { DeployStatusBase, DeployShopResult } from "./deployTypes";
+import type { DeployShopResult } from "./deployTypes";
 import {
   defaultDeploymentAdapter,
   type ShopDeploymentAdapter,
@@ -40,7 +40,7 @@ export async function createShop(
   opts: CreateShopOptions = {} as CreateShopOptions,
   options?: { deploy?: boolean },
   adapter: ShopDeploymentAdapter = defaultDeploymentAdapter
-): Promise<DeployStatusBase> {
+): Promise<DeployShopResult | { status: "pending" }> {
   id = validateShopName(id);
 
   const prepared = prepareOptions(id, opts);
@@ -195,7 +195,7 @@ export function listThemes(): string[] {
  * It returns the default token map for the selected theme so callers can merge
  * in any overrides before persisting to the shop.json file.
  */
-export function syncTheme(shop: string, theme: string): Record<string, string> {
+export function syncTheme(shop: string, theme: string): Record<string, unknown> {
   const root = repoRoot();
   const pkgRel = join("apps", shop, "package.json");
   const pkgAbs = join(root, pkgRel);

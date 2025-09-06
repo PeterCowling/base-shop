@@ -13,6 +13,12 @@ export interface ShippingRateRequest {
   fromPostalCode: string;
   toPostalCode: string;
   weight: number;
+  toCountry?: string;
+  dimensions?: {
+    length: number;
+    width: number;
+    height: number;
+  };
   region?: string;
   window?: string;
   carrier?: string;
@@ -34,6 +40,8 @@ export async function getShippingRate({
   fromPostalCode,
   toPostalCode,
   weight,
+  toCountry,
+  dimensions,
   region,
   window,
   carrier,
@@ -73,7 +81,23 @@ export async function getShippingRate({
       throw new Error("Carrier not supported");
     }
   }
-  const apiKey = (shippingEnv as Record<string, string | undefined>)[
+  const env = shippingEnv as Record<string, any>;
+  if (
+    Array.isArray(env.ALLOWED_COUNTRIES) &&
+    toCountry &&
+    !env.ALLOWED_COUNTRIES.includes(toCountry.toUpperCase())
+  ) {
+    throw new Error("Shipping not available to destination");
+  }
+
+  if (
+    typeof env.FREE_SHIPPING_THRESHOLD === "number" &&
+    weight <= env.FREE_SHIPPING_THRESHOLD
+  ) {
+    return { rate: 0, surcharge: 0, serviceLabel: "Free Shipping" };
+  }
+
+  const apiKey = (env as Record<string, string | undefined>)[
     `${provider.toUpperCase()}_KEY`
   ];
   if (!apiKey) {
@@ -91,7 +115,12 @@ export async function getShippingRate({
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
-    body: JSON.stringify({ fromPostalCode, toPostalCode, weight }),
+    body: JSON.stringify({
+      fromPostalCode,
+      toPostalCode,
+      weight,
+      dimensions,
+    }),
   });
 
   if (!res.ok) {
@@ -99,8 +128,20 @@ export async function getShippingRate({
   }
 
   const data = await res.json();
+  let rate = data.rate;
+  const zoneMultipliers: Record<string, number> = {
+    domestic: 1,
+    eu: 1.5,
+    international: 2,
+  };
+  if (
+    typeof env.DEFAULT_SHIPPING_ZONE === "string" &&
+    zoneMultipliers[env.DEFAULT_SHIPPING_ZONE]
+  ) {
+    rate *= zoneMultipliers[env.DEFAULT_SHIPPING_ZONE];
+  }
   return {
-    rate: data.rate,
+    rate,
     surcharge: data.surcharge,
     serviceLabel: data.serviceLabel,
   };

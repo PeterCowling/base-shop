@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 
-const mockEnv: Record<string, string | undefined> = {};
+const mockEnv: Record<string, any> = {};
 jest.mock('@acme/config/env/shipping', () => ({ shippingEnv: mockEnv }));
 
 import { getShippingRate, getTrackingStatus } from '../src/shipping/index';
@@ -183,6 +183,76 @@ describe('getShippingRate', () => {
       weight: 5,
     });
     expect(result).toEqual(apiResponse);
+  });
+
+  it('applies free shipping threshold', async () => {
+    mockEnv.UPS_KEY = 'ups-key';
+    mockEnv.FREE_SHIPPING_THRESHOLD = 10;
+    const result = await getShippingRate({
+      provider: 'ups',
+      fromPostalCode: '11111',
+      toPostalCode: '22222',
+      weight: 5,
+      toCountry: 'US',
+    });
+    expect(result).toEqual({ rate: 0, surcharge: 0, serviceLabel: 'Free Shipping' });
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('applies zone multiplier and includes dimensions', async () => {
+    mockEnv.UPS_KEY = 'ups-key';
+    mockEnv.DEFAULT_SHIPPING_ZONE = 'international';
+    fetchMock.mockResolvedValue({ ok: true, json: async () => ({ rate: 10 }) });
+    const result = await getShippingRate({
+      provider: 'ups',
+      fromPostalCode: '11111',
+      toPostalCode: '22222',
+      weight: 20,
+      toCountry: 'US',
+      dimensions: { length: 10, width: 5, height: 2 },
+    });
+    expect(result).toEqual({ rate: 20, surcharge: undefined, serviceLabel: undefined });
+    expect(fetchMock).toHaveBeenCalledWith(
+      'https://onlinetools.ups.com/ship/v1/rating/Rate',
+      expect.objectContaining({
+        body: JSON.stringify({
+          fromPostalCode: '11111',
+          toPostalCode: '22222',
+          weight: 20,
+          dimensions: { length: 10, width: 5, height: 2 },
+        }),
+      }),
+    );
+  });
+
+  describe('country filtering', () => {
+    it('allows shipping to allowed country', async () => {
+      mockEnv.UPS_KEY = 'ups-key';
+      mockEnv.ALLOWED_COUNTRIES = ['US', 'CA'];
+      fetchMock.mockResolvedValue({ ok: true, json: async () => ({ rate: 7 }) });
+      const result = await getShippingRate({
+        provider: 'ups',
+        fromPostalCode: '11111',
+        toPostalCode: '22222',
+        weight: 15,
+        toCountry: 'US',
+      });
+      expect(result.rate).toBe(7);
+    });
+
+    it('rejects disallowed country', async () => {
+      mockEnv.ALLOWED_COUNTRIES = ['US'];
+      await expect(
+        getShippingRate({
+          provider: 'ups',
+          fromPostalCode: '11111',
+          toPostalCode: '22222',
+          weight: 15,
+          toCountry: 'CA',
+        }),
+      ).rejects.toThrow('Shipping not available to destination');
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
   });
 });
 

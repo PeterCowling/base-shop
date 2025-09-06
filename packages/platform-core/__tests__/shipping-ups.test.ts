@@ -1,6 +1,6 @@
 import { jest } from '@jest/globals';
 
-const mockEnv: Record<string, string | undefined> = {};
+const mockEnv: Record<string, any> = {};
 jest.mock('@acme/config/env/shipping', () => ({ shippingEnv: mockEnv }));
 
 import { createReturnLabel, getStatus } from '../src/shipping/ups';
@@ -61,6 +61,19 @@ describe('createReturnLabel', () => {
   it('falls back when fetch response is not ok', async () => {
     mockEnv.UPS_KEY = 'ups-key';
     fetchMock.mockResolvedValue({ ok: false });
+    const result = await createReturnLabel('session');
+    expect(result).toEqual({
+      trackingNumber: '1Z1234567891',
+      labelUrl: 'https://www.ups.com/track?loc=en_US&tracknum=1Z1234567891',
+    });
+  });
+
+  it('falls back when UPS returns error code', async () => {
+    mockEnv.UPS_KEY = 'ups-key';
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: async () => ({ Fault: { code: 'ERR' } }),
+    });
     const result = await createReturnLabel('session');
     expect(result).toEqual({
       trackingNumber: '1Z1234567891',

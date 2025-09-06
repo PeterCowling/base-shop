@@ -9,6 +9,12 @@ export interface ShippingRateRequest {
     fromPostalCode: string;
     toPostalCode: string;
     weight: number;
+    toCountry?: string;
+    dimensions?: {
+        length: number;
+        width: number;
+        height: number;
+    };
     region?: string;
     window?: string;
     carrier?: string;
@@ -24,7 +30,7 @@ export interface ShippingRateRequest {
  * Fetch a shipping rate from the configured provider.
  * The underlying provider API is called using the respective API key.
  */
-export declare function getShippingRate({ provider, fromPostalCode, toPostalCode, weight, region, window, carrier, premierDelivery, }: ShippingRateRequest): Promise<ShippingRate>;
+export declare function getShippingRate({ provider, fromPostalCode, toPostalCode, weight, toCountry, dimensions, region, window, carrier, premierDelivery, }: ShippingRateRequest): Promise<ShippingRate>;
 export interface TrackingStatusRequest {
     provider: "ups" | "dhl";
     trackingNumber: string;

@@ -2,9 +2,29 @@ import { describe, expect, it, jest } from "@jest/globals";
 import { loadPaymentsEnv, paymentsEnvSchema } from "../payments";
 
 describe("loadPaymentsEnv", () => {
+  it("returns defaults when no provider", () => {
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const env = loadPaymentsEnv({} as NodeJS.ProcessEnv);
+    expect(env).toEqual(paymentsEnvSchema.parse({}));
+    expect(warnSpy).not.toHaveBeenCalled();
+    warnSpy.mockRestore();
+  });
+
   it("returns defaults when gateway disabled", () => {
     const env = loadPaymentsEnv({ PAYMENTS_GATEWAY: "disabled" } as NodeJS.ProcessEnv);
     expect(env).toEqual(paymentsEnvSchema.parse({}));
+  });
+
+  it("throws when provider is unsupported", () => {
+    const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadPaymentsEnv({ PAYMENTS_PROVIDER: "paypal" } as NodeJS.ProcessEnv),
+    ).toThrow("Invalid payments environment variables");
+    expect(errSpy).toHaveBeenCalledWith(
+      "❌ Unsupported PAYMENTS_PROVIDER:",
+      "paypal",
+    );
+    errSpy.mockRestore();
   });
 
   it.each([
@@ -38,7 +58,7 @@ describe("loadPaymentsEnv", () => {
 
   it("falls back to defaults on invalid sandbox value", () => {
     const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
-    const env = loadPaymentsEnv({ PAYMENTS_SANDBOX: "yesno" } as NodeJS.ProcessEnv);
+    const env = loadPaymentsEnv({ PAYMENTS_SANDBOX: "maybe" } as NodeJS.ProcessEnv);
     expect(env).toEqual(paymentsEnvSchema.parse({}));
     expect(warnSpy).toHaveBeenCalledWith(
       "⚠️ Invalid payments environment variables:",
@@ -49,6 +69,7 @@ describe("loadPaymentsEnv", () => {
 
   it.each([
     ["true", true],
+    ["TRUE", true],
     ["1", true],
     ["false", false],
     ["0", false],

@@ -2,10 +2,10 @@ import { fillLocales, LOCALES } from "@acme/i18n";
 
 describe("fillLocales", () => {
   it("fills missing locales using the fallback and keeps provided values", () => {
-    const result = fillLocales({ en: "Hello", de: "Hallo" }, "Ciao");
+    const result = fillLocales({ en: "Hello" }, "Hi");
 
     expect(Object.keys(result)).toEqual([...LOCALES]);
-    expect(result).toEqual({ en: "Hello", de: "Hallo", it: "Ciao" });
+    expect(result).toEqual({ en: "Hello", de: "Hi", it: "Hi" });
   });
 
   it("uses the fallback when no values are provided", () => {

@@ -59,6 +59,19 @@ describe("fetchJson", () => {
     await expect(fetchJson("https://example.com")).resolves.toBeUndefined();
   });
 
+  it("throws statusText when error body isn't valid JSON", async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: false,
+      status: 502,
+      statusText: "Bad Gateway",
+      text: jest.fn().mockResolvedValue("<html></html>"),
+    });
+
+    await expect(fetchJson("https://example.com")).rejects.toThrow(
+      "Bad Gateway",
+    );
+  });
+
   it("validates data with an optional Zod schema", async () => {
     const data = { message: "ok" };
     (global.fetch as jest.Mock).mockResolvedValue({

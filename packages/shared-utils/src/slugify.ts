@@ -5,7 +5,8 @@
  * symbols, collapses whitespace/underscores to hyphens and trims extraneous
  * hyphens from the start and end of the resulting string.
  */
-export default function slugify(str: string): string {
+export default function slugify(str?: string | null): string {
+  if (!str) return "";
   return str
     .normalize("NFKD")
     // Remove diacritical marks

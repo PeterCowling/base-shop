@@ -11,12 +11,9 @@ describe("assertLocales", () => {
   });
 
   it("throws on empty arrays", () => {
-    expect.assertions(1);
-    try {
-      assertLocales([] as any);
-    } catch (err) {
-      expect(err).toBeInstanceOf(Error);
-    }
+    expect(() => assertLocales([] as any)).toThrow(
+      "LOCALES must be a non-empty array"
+    );
   });
 
   it("does not throw on non-empty arrays", () => {
@@ -29,7 +26,7 @@ describe("resolveLocale", () => {
     expect(resolveLocale("de")).toBe("de");
   });
 
-  it("falls back to 'en' for unsupported or undefined values", () => {
+  it("falls back to 'en' for unsupported locales", () => {
     expect(resolveLocale("fr" as any)).toBe("en");
     expect(resolveLocale(undefined)).toBe("en");
   });

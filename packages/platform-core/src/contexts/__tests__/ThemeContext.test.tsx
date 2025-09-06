@@ -181,6 +181,10 @@ describe("ThemeContext", () => {
         <CaptureSetter />
       </ThemeProvider>
     );
+    expect(getByTestId("theme").textContent).toBe("system");
+    expect(document.documentElement.className).toBe("");
+    expect(document.documentElement.style.colorScheme).toBe("light");
+    expect(setItem).toHaveBeenLastCalledWith("theme", "system");
 
     act(() => changeTheme("brandx"));
     expect(getByTestId("theme").textContent).toBe("brandx");
@@ -188,6 +192,7 @@ describe("ThemeContext", () => {
       true
     );
     expect(document.documentElement.style.colorScheme).toBe("light");
+    expect(setItem).toHaveBeenLastCalledWith("theme", "brandx");
 
     act(() => changeTheme("dark"));
     expect(getByTestId("theme").textContent).toBe("dark");
@@ -198,6 +203,7 @@ describe("ThemeContext", () => {
       false
     );
     expect(document.documentElement.style.colorScheme).toBe("dark");
+    expect(setItem).toHaveBeenLastCalledWith("theme", "dark");
   });
 
   it("still renders when localStorage.setItem throws", () => {
@@ -224,5 +230,12 @@ describe("ThemeContext", () => {
     expect(() => render(<ThemeDisplay />)).toThrow(
       "useTheme must be inside ThemeProvider"
     );
+  });
+
+  it("throws when hook invoked directly", () => {
+    const orig = console.error;
+    console.error = () => {};
+    expect(() => useTheme()).toThrow();
+    console.error = orig;
   });
 });

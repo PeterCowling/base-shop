@@ -4,6 +4,8 @@ This document describes how to navigate the in-browser CMS and what each link in
 
 For role and permission details, see the [permission guide](./permissions.md).
 
+Disk-backed repositories allow the CMS to run without an external database. See [persistence](./persistence.md) for how `DATA_ROOT` controls where this data is stored.
+
 ## Sidebar Links
 
 The sidebar inside the CMS provides quick access to different sections:

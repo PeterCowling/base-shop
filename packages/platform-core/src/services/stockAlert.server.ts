@@ -5,7 +5,7 @@ import { DATA_ROOT } from "../dataRoot";
 import { type EmailService, getEmailService } from "./emailService";
 import { promises as fs } from "fs";
 import * as path from "path";
-import type { InventoryItem } from "@acme/types";
+import type { InventoryItem } from "../types/inventory";
 import { z } from "zod";
 import { variantKey } from "../repositories/inventory.server";
 import { getShopSettings } from "../repositories/settings.server";

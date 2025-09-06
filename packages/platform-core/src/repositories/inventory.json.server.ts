@@ -1,6 +1,10 @@
 import "server-only";
 
-import { inventoryItemSchema, type InventoryItem } from "@acme/types";
+import {
+  inventoryItemSchema,
+  type InventoryItem,
+  variantKey,
+} from "../types/inventory";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { validateShopName } from "../shops/index";
@@ -72,7 +76,7 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
     items.map((i: InventoryItem) => ({
       ...i,
       variantAttributes: { ...i.variantAttributes },
-    }))
+    })),
   );
   const serialized: RawInventoryItem[] = normalized.map(
     ({ variantAttributes, ...rest }: InventoryItem): RawInventoryItem => ({
@@ -184,14 +188,6 @@ async function update(
   }
 
   return updated;
-}
-
-function variantKey(sku: string, attrs: Record<string, string>): string {
-  const variantPart = Object.entries(attrs)
-    .sort(([a], [b]) => a.localeCompare(b))
-    .map(([k, v]) => `${k}:${v}`)
-    .join("|");
-  return variantPart ? `${sku}#${variantPart}` : sku;
 }
 
 export const jsonInventoryRepository: InventoryRepository = {

@@ -6,7 +6,7 @@ import {
   applyInventoryBatch,
   type RawInventoryItem,
 } from "../inventory";
-import type { InventoryItem } from "@acme/types";
+import type { InventoryItem } from "../../types/inventory";
 
 describe("normalizeQuantity", () => {
   it("handles pair units", () => {

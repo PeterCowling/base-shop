@@ -1,5 +1,6 @@
 import { stripe } from "@acme/stripe";
-import type { InventoryItem, SKU } from "@acme/types";
+import type { SKU } from "@acme/types";
+import type { InventoryItem } from "@platform-core/types/inventory";
 import { readShop } from "@platform-core/repositories/shops.server";
 import {
   addOrder,

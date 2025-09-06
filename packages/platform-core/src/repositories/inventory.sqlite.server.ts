@@ -1,10 +1,6 @@
 import "server-only";
 
-import {
-  inventoryItemSchema,
-  type InventoryItem,
-  type SerializedInventoryItem,
-} from "@acme/types";
+import { inventoryItemSchema, type InventoryItem } from "../types/inventory";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { validateShopName } from "../shops/index";
@@ -28,6 +24,17 @@ interface SqliteInventoryRow {
   wearCount: number | null;
   wearAndTearLimit: number | null;
   maintenanceCycle: number | null;
+}
+
+interface SerializedInventoryItem {
+  sku: string;
+  productId?: string;
+  quantity: number;
+  variantAttributes?: Record<string, string>;
+  lowStockThreshold?: number;
+  wearCount?: number;
+  wearAndTearLimit?: number;
+  maintenanceCycle?: number;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

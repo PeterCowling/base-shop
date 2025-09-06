@@ -5,7 +5,7 @@ import {
   computeAvailability,
   applyInventoryBatch,
 } from "./inventory";
-import type { InventoryItem } from "@acme/types";
+import type { InventoryItem } from "../../types/inventory";
 
 describe("flattenInventoryItem", () => {
   it("flattens items with full variant attributes", () => {

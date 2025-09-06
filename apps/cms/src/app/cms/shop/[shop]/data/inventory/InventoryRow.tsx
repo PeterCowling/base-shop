@@ -6,7 +6,7 @@ import {
   TableCell,
   TableRow,
 } from "@/components/atoms/shadcn";
-import type { InventoryItem } from "@acme/types";
+import type { InventoryItem } from "@platform-core/types/inventory";
 import type { ChangeEvent } from "react";
 
 interface Props {

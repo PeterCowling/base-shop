@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import os from "node:os";
-import type { InventoryItem } from "@acme/types";
+import type { InventoryItem } from "../../types/inventory";
 
 // Hold mutable repository implementations so we can swap them per test.
 let jsonRepo: any;

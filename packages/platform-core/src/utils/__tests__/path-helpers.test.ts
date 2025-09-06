@@ -1,6 +1,6 @@
 // packages/platform-core/src/utils/path-helpers.test.ts
-import { getShopFromPath } from "./getShopFromPath";
-import { replaceShopInPath } from "./replaceShopInPath";
+import { getShopFromPath } from "../getShopFromPath";
+import { replaceShopInPath } from "../replaceShopInPath";
 
 describe("getShopFromPath", () => {
   it("extracts shop codes from valid paths", () => {
@@ -29,6 +29,7 @@ describe("replaceShopInPath", () => {
 
   it("inserts shop codes when missing", () => {
     expect(replaceShopInPath("/cms/shop", "bravo")).toBe("/cms/shop/bravo");
+    expect(replaceShopInPath("/cms", "bravo")).toBe("/cms/shop/bravo");
     expect(replaceShopInPath(undefined, "bravo")).toBe("/cms/shop/bravo");
   });
 

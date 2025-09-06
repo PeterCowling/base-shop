@@ -260,6 +260,39 @@ describe("onRequestPost", () => {
     });
   });
 
+  it("returns 500 when writing shop file fails", async () => {
+    readFileSync.mockImplementation((file: string) => {
+      if (file.endsWith("package.json")) {
+        return JSON.stringify({ dependencies: { compA: "1.0.0" } });
+      }
+      if (file.endsWith("shop.json")) {
+        return JSON.stringify({ componentVersions: {} });
+      }
+      return "";
+    });
+    writeFileSync.mockImplementation(() => {
+      throw new Error("disk full");
+    });
+    spawn.mockImplementation(() => ({
+      on: (_: string, cb: (code: number) => void) => cb(0),
+    }));
+
+    const token = jwt.sign({}, "secret");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ components: ["compA"] }),
+      }),
+    });
+
+    const body = await res.json();
+    expect(res.status).toBe(500);
+    expect(body).toEqual({ error: "disk full" });
+    expect(spawn).not.toHaveBeenCalled();
+  });
+
   it("returns 500 on unexpected errors", async () => {
     readFileSync.mockImplementation((file: string) => {
       if (file.endsWith("package.json")) {

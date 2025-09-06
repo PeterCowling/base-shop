@@ -185,6 +185,20 @@ describe('onRequest route', () => {
     expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
   });
 
+  it('returns 403 when token payload missing exp', async () => {
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
+    verify.mockReturnValue({});
+    const res = await onRequest({
+      params: { shopId: 'abc' },
+      request: new Request('http://localhost', {
+        headers: { authorization: 'Bearer good' },
+      }),
+    });
+    expect(res.status).toBe(403);
+    await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+  });
+
   it('returns components without config diff when diff not requested', async () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });

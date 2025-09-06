@@ -49,6 +49,17 @@ describe("MemorySessionStore", () => {
     await expect(store.get(record.sessionId)).resolves.toBeNull();
   });
 
+  it("purges expired sessions on access", async () => {
+    const store = new MemorySessionStore(1);
+    const record = createRecord("s1");
+    await store.set(record);
+
+    jest.advanceTimersByTime(1001);
+    await store.get(record.sessionId);
+
+    expect((store as any).sessions.has(record.sessionId)).toBe(false);
+  });
+
   it("list returns only unexpired sessions for the specified customerId", async () => {
     const store = new MemorySessionStore(1);
     const first = createRecord("s1");
@@ -77,6 +88,7 @@ describe("MemorySessionStore", () => {
 
     await expect(store.get(record.sessionId)).resolves.toBeNull();
     await expect(store.list(record.customerId)).resolves.toEqual([]);
+    expect((store as any).sessions.has(record.sessionId)).toBe(false);
   });
 });
 

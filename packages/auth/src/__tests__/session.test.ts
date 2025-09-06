@@ -146,6 +146,16 @@ it("getCustomerSession returns null for invalid token", async () => {
   await expect(getCustomerSession()).resolves.toBeNull();
 });
 
+it("getCustomerSession skips session store when token invalid", async () => {
+  const { getCustomerSession } = await import("../session");
+
+  mockCookies.get.mockReturnValue({ value: "bad" });
+  unsealData.mockRejectedValue(new Error("bad"));
+
+  await expect(getCustomerSession()).resolves.toBeNull();
+  expect(mockSessionStore.get).not.toHaveBeenCalled();
+});
+
 it("getCustomerSession returns null when SESSION_SECRET is undefined", async () => {
   delete process.env.SESSION_SECRET;
   const { getCustomerSession } = await import("../session");

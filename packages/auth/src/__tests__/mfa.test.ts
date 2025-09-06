@@ -101,6 +101,32 @@ describe("mfa", () => {
       expect(update).not.toHaveBeenCalled();
       expect(result).toBe(false);
     });
+
+    it("returns true when verification succeeds", async () => {
+      const { verifyMfa } = await import("../mfa");
+      findUnique.mockResolvedValue({
+        customerId: "cust",
+        secret: "secret",
+        enabled: false,
+      });
+      verify.mockReturnValue(true);
+
+      await expect(verifyMfa("cust", "123456")).resolves.toBe(true);
+      expect(update).toHaveBeenCalled();
+    });
+
+    it("returns false when verification fails", async () => {
+      const { verifyMfa } = await import("../mfa");
+      findUnique.mockResolvedValue({
+        customerId: "cust",
+        secret: "secret",
+        enabled: false,
+      });
+      verify.mockReturnValue(false);
+
+      await expect(verifyMfa("cust", "000000")).resolves.toBe(false);
+      expect(update).not.toHaveBeenCalled();
+    });
   });
 
   describe("isMfaEnabled", () => {

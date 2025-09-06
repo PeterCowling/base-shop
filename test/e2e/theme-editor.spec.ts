@@ -3,7 +3,7 @@
 describe("Theme editor", () => {
   const shop = "abc";
   const themeUrl = `/cms/shop/${shop}/themes`;
-  const dataDir = "test/data/shops";
+  const dataDir = Cypress.env("TEST_DATA_ROOT");
   const shopFile = `${dataDir}/${shop}/shop.json`;
 
   it("updates colors and typography and persists", () => {

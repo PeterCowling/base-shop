@@ -2,7 +2,7 @@ import type { CookieValue } from "cypress";
 
 const SECRET = "test-nextauth-secret-32-chars-long-string!";
 const SHOP = "demo";
-const dataDir = "test/data/shops";
+const dataDir = Cypress.env("TEST_DATA_ROOT");
 
 function sign(role: string) {
   return cy

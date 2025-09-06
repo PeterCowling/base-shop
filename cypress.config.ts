@@ -15,7 +15,8 @@ export default defineConfig({
     env: {
       NEXTAUTH_SECRET:
         process.env.NEXTAUTH_SECRET ||
-        "test-nextauth-secret-32-chars-long-string!"
+        "test-nextauth-secret-32-chars-long-string!",
+      TEST_DATA_ROOT: process.env.TEST_DATA_ROOT || "test/data/shops"
     },
     defaultCommandTimeout: 10000
   }

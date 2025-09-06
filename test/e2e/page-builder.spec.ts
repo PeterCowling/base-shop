@@ -3,7 +3,7 @@
 describe("Page Builder happy path", () => {
   const shopId = "abc";
   const builderUrl = `/cms/shop/${shopId}/pages/home/builder`;
-  const dataDir = "test/data/shops";
+  const dataDir = Cypress.env("TEST_DATA_ROOT");
 
   it("drags a block, saves draft and publishes", () => {
     // programmatically sign in via NextAuth credentials provider

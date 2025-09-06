@@ -146,6 +146,8 @@ Configuration and usage examples for both are documented in [docs/machine.md](do
 
 # Environment Variables
 
+See [environment variable reference](./docs/.env.reference.md) for a comprehensive list and descriptions.
+
 After running `pnpm create-shop <id>`, the CLI generates `.env` and `.env.template` under `apps/shop-<id>/`, validates the variables, and can pull secrets from an external vault by passing `--vault-cmd <cmd>` (the command receives each variable name). Configure the resulting `.env` with:
 
 - `STRIPE_SECRET_KEY` – secret key used by the Stripe server SDK

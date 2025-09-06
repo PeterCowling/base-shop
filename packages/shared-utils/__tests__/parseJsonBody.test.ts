@@ -24,6 +24,48 @@ describe('parseJsonBody', () => {
     });
   }
 
+  it('parses a valid JSON body with numeric values', async () => {
+    const req = new Request('http://test', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ foo: 1 }),
+    });
+    const numericSchema = z.object({ foo: z.number() });
+    await expect(parseJsonBody(req, numericSchema, '1mb')).resolves.toEqual({
+      success: true,
+      data: { foo: 1 },
+    });
+  });
+
+  it('returns an error response for an empty body', async () => {
+    const req = makeRequest('');
+    const result = await parseJsonBody(req, schema, '1mb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
+  });
+
+  it('returns an error response for malformed JSON', async () => {
+    const req = makeRequest('{');
+    const result = await parseJsonBody(req, schema, '1mb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
+  });
+
+  it('rejects requests with mismatched content-type', async () => {
+    const req = new Request('http://test', {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ foo: 'bar' }),
+    });
+    const result = await parseJsonBody(req, schema, '1mb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
+  });
+
+
   it('parses a valid JSON string body', async () => {
     const req = makeRequest(JSON.stringify({ foo: 'bar' }));
     const result = await parseJsonBody(req, schema, '1mb');

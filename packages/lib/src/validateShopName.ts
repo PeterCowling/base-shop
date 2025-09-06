@@ -1,4 +1,4 @@
-export const SHOP_NAME_RE = /^[a-z0-9_-]+$/i;
+export const SHOP_NAME_RE = /^[a-z0-9_-]+$/;
 const MAX_SHOP_NAME_LENGTH = 63;
 
 /** Ensure `shop` contains only safe characters and is within length limits. Returns the trimmed name. */

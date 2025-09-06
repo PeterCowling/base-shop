@@ -98,6 +98,29 @@ describe('helpers', () => {
   });
 
   describe('diffDirectories', () => {
+    it('returns empty diff for identical directories', () => {
+      vol.fromJSON({
+        '/a/same.txt': 'content',
+        '/b/same.txt': 'content',
+        '/a/nested/file.txt': 'hello',
+        '/b/nested/file.txt': 'hello',
+      });
+
+      expect(diffDirectories('/a', '/b')).toEqual([]);
+    });
+
+    it('lists files when one directory is missing', () => {
+      vol.fromJSON({
+        '/a/only.txt': 'one',
+        '/a/nested/file.txt': 'two',
+      });
+
+      const diff = diffDirectories('/a', '/b');
+      expect(diff.sort()).toEqual(
+        ['only.txt', path.join('nested', 'file.txt')].sort(),
+      );
+    });
+
     it('detects added, removed, and modified files', () => {
       vol.fromJSON({
         '/a/only-a.txt': 'A',

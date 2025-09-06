@@ -3,9 +3,16 @@ jest.mock("@auth", () => ({
   __esModule: true,
   createCustomerSession: jest.fn(),
   validateCsrfToken: jest.fn(),
+  isMfaEnabled: jest.fn().mockResolvedValue(false),
+  verifyMfa: jest.fn(),
 }));
 
-import { createCustomerSession, validateCsrfToken } from "@auth";
+import {
+  createCustomerSession,
+  validateCsrfToken,
+  isMfaEnabled,
+  verifyMfa,
+} from "@auth";
 import { POST } from "../src/app/api/login/route";
 
 function makeRequest(body: any, headers: Record<string, string> = {}) {
@@ -22,7 +29,7 @@ test("logs in valid customer", async () => {
   (validateCsrfToken as jest.Mock).mockResolvedValue(true);
   const res = await POST(
     makeRequest(
-      { customerId: "cust1", password: "pass1" },
+      { customerId: "cust1", password: "pass1pass" },
       { "x-csrf-token": "token" },
     ),
   );
@@ -39,7 +46,7 @@ test("rejects invalid CSRF token", async () => {
   (validateCsrfToken as jest.Mock).mockResolvedValue(false);
   const res = await POST(
     makeRequest(
-      { customerId: "cust1", password: "pass1" },
+      { customerId: "cust1", password: "pass1pass" },
       { "x-csrf-token": "bad" },
     ),
   );
@@ -64,7 +71,7 @@ test("rejects unauthorized role", async () => {
   (validateCsrfToken as jest.Mock).mockResolvedValue(true);
   const res = await POST(
     makeRequest(
-      { customerId: "admin1", password: "admin" },
+      { customerId: "admin1", password: "adminadmin" },
       { "x-csrf-token": "token" },
     ),
   );

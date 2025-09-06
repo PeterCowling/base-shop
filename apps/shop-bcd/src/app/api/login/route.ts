@@ -1,7 +1,12 @@
 // apps/shop-bcd/src/app/login/route.ts
 import "@acme/zod-utils/initZod";
 import { NextResponse } from "next/server";
-import { createCustomerSession, validateCsrfToken } from "@auth";
+import {
+  createCustomerSession,
+  validateCsrfToken,
+  isMfaEnabled,
+  verifyMfa,
+} from "@auth";
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
@@ -13,9 +18,9 @@ const limiter = new RateLimiterMemory({ points: 5, duration: 60 });
 
 // Mock customer store. In a real application this would be a database or external identity provider.
 const CUSTOMER_STORE: Record<string, { password: string; role: Role }> = {
-  cust1: { password: "pass1", role: "customer" },
-  viewer1: { password: "view", role: "viewer" },
-  admin1: { password: "admin", role: "admin" },
+  cust1: { password: "pass1pass", role: "customer" },
+  viewer1: { password: "viewview", role: "viewer" },
+  admin1: { password: "adminadmin", role: "admin" },
 };
 
 const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
@@ -24,6 +29,7 @@ export const LoginSchema = z
   .object({
     customerId: z.string(),
     password: z.string().min(8, "Password must be at least 8 characters"),
+    mfaToken: z.string().length(6).optional(),
   })
   .strict();
 export type LoginInput = z.infer<typeof LoginSchema>;
@@ -71,6 +77,13 @@ export async function POST(req: Request) {
   if (!ALLOWED_ROLES.includes(valid.role)) {
     // Reject elevated roles
     return NextResponse.json({ error: "Unauthorized role" }, { status: 403 });
+  }
+
+  if (await isMfaEnabled(valid.customerId)) {
+    const token = parsed.data.mfaToken;
+    if (!token || !(await verifyMfa(valid.customerId, token))) {
+      return NextResponse.json({ error: "Invalid MFA token" }, { status: 401 });
+    }
   }
 
   await createCustomerSession(valid);

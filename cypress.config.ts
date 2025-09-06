@@ -1,5 +1,7 @@
 // cypress.config.ts
 import { defineConfig } from "cypress";
+import { enrollMfa, verifyMfa } from "@auth";
+import { authenticator } from "otplib";
 
 export default defineConfig({
   e2e: {
@@ -18,6 +20,16 @@ export default defineConfig({
         "test-nextauth-secret-32-chars-long-string!",
       TEST_DATA_ROOT: process.env.TEST_DATA_ROOT || "test/data/shops"
     },
-    defaultCommandTimeout: 10000
+    defaultCommandTimeout: 10000,
+    async setupNodeEvents(on) {
+      on("task", {
+        async generateMfaToken(customerId: string) {
+          const { secret } = await enrollMfa(customerId);
+          const first = authenticator.generate(secret);
+          await verifyMfa(customerId, first);
+          return authenticator.generate(secret);
+        }
+      });
+    }
   }
 });

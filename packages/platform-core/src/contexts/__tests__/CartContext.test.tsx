@@ -744,7 +744,91 @@ describe("CartProvider dispatch", () => {
       await dispatch({ type: "add", sku });
     });
 
-    await waitFor(() => expect(cartState).toEqual(added.cart));
+  await waitFor(() => expect(cartState).toEqual(added.cart));
+  });
+});
+
+describe("clear action", () => {
+  const sku: SKU = {
+    id: "sku1",
+    slug: "sku1",
+    title: "Test",
+    price: 100,
+    deposit: 0,
+    forSale: true,
+    forRental: false,
+    media: [{ url: "img", type: "image" }],
+    sizes: [],
+    description: "desc",
+  };
+
+  let dispatch: (action: any) => Promise<void>;
+  let cartState: CartState;
+  function Capture() {
+    [cartState, dispatch] = useCart();
+    return null;
+  }
+
+  const originalFetch = global.fetch;
+
+  beforeEach(() => {
+    window.localStorage.clear();
+    // @ts-expect-error override
+    global.fetch = jest.fn();
+  });
+
+  afterEach(() => {
+    // @ts-expect-error restore
+    global.fetch = originalFetch;
+    jest.restoreAllMocks();
+  });
+
+  it("clears cart and persists state", async () => {
+    const initial = { cart: { sku1: { sku, qty: 1 } } };
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => initial });
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
+    const setSpy = jest.spyOn(Storage.prototype, "setItem");
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(cartState).toEqual(initial.cart));
+
+    await act(async () => {
+      await dispatch({ type: "clear" });
+    });
+
+    await waitFor(() => expect(cartState).toEqual({}));
+    expect(setSpy).toHaveBeenCalledWith("cart", JSON.stringify({}));
+  });
+
+  it("handles localStorage errors when clearing", async () => {
+    const initial = { cart: { sku1: { sku, qty: 1 } } };
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => initial });
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
+    jest.spyOn(Storage.prototype, "setItem").mockImplementation(() => {
+      throw new Error("fail");
+    });
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(cartState).toEqual(initial.cart));
+
+    await act(async () => {
+      await dispatch({ type: "clear" });
+    });
+
+    await waitFor(() => expect(cartState).toEqual({}));
+    expect(localStorage.getItem("cart")).toBeNull();
   });
 });
 

@@ -18,7 +18,8 @@ import {
 type Action =
   | { type: "add"; sku: SKU; size?: string; qty?: number }
   | { type: "remove"; id: string }
-  | { type: "setQty"; id: string; qty: number };
+  | { type: "setQty"; id: string; qty: number }
+  | { type: "clear" };
 
 /* ------------------------------------------------------------------
  * React context
@@ -121,6 +122,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       case "setQty":
         method = "PATCH";
         body = { id: action.id, qty: action.qty };
+        break;
+      case "clear":
+        method = "DELETE";
+        body = {};
         break;
       default:
         return;

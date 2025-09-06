@@ -23,13 +23,13 @@ describe("MapBlock", () => {
   it("renders StoreLocatorMap with correct props when coordinates are numeric", () => {
     const { getByTestId } = render(<MapBlock lat={1} lng={2} zoom={5} />);
     expect(getByTestId("map")).toBeInTheDocument();
-    expect(mockStoreLocatorMap).toHaveBeenCalledWith(
+    expect(mockStoreLocatorMap).toHaveBeenCalledTimes(1);
+    expect(mockStoreLocatorMap.mock.calls[0][0]).toEqual(
       expect.objectContaining({
         locations: [{ lat: 1, lng: 2 }],
         zoom: 5,
         heightClass: "h-full",
-      }),
-      {}
+      })
     );
   });
 

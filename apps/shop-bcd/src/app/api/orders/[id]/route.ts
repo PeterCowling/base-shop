@@ -19,12 +19,16 @@ export async function GET(
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
-  const orders = await getOrdersForCustomer(shop.id, session.customerId);
-  const order = orders.find((o) => o.id === params.id);
-  if (!order) {
-    return NextResponse.json({ error: "Order not found" }, { status: 404 });
+  try {
+    const orders = await getOrdersForCustomer(shop.id, session.customerId);
+    const order = orders.find((o) => o.id === params.id);
+    if (!order) {
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    }
+    return NextResponse.json({ order });
+  } catch (err) {
+    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
   }
-  return NextResponse.json({ order });
 }
 
 export async function PATCH(
@@ -50,10 +54,14 @@ export async function PATCH(
   if (!mutate) {
     return NextResponse.json({ error: "Invalid status" }, { status: 400 });
   }
-  const order = await mutate(shop.id, params.id);
-  if (!order) {
-    return NextResponse.json({ error: "Order not found" }, { status: 404 });
+  try {
+    const order = await mutate(shop.id, params.id);
+    if (!order) {
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    }
+    return NextResponse.json({ order });
+  } catch (err) {
+    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
   }
-  return NextResponse.json({ order });
 }
 

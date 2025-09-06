@@ -81,6 +81,7 @@ export default function StepTheme({
       <div className="flex justify-between">
         {prevStepId && (
           <Button
+            data-cy="back"
             variant="outline"
             onClick={() => router.push(`/cms/configurator/${prevStepId}`)}
           >
@@ -89,6 +90,7 @@ export default function StepTheme({
         )}
         {nextStepId && (
           <Button
+            data-cy="next"
             onClick={() => {
               markComplete(true);
               router.push(`/cms/configurator/${nextStepId}`);

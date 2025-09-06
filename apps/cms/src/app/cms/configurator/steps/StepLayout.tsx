@@ -221,6 +221,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
       {/* Navigation ------------------------------------------------------ */}
       <div className="flex justify-end">
         <Button
+          data-cy="save-return"
           onClick={handleReturn}
           disabled={headerSaving || footerSaving}
         >

@@ -63,14 +63,16 @@ jest.mock("@ui/components/atoms/shadcn", () => {
   const React = require("react");
   return {
     __esModule: true,
-    Button: ({ children, onClick }: any) => (
-      <button onClick={onClick}>{children}</button>
+    Button: ({ children, onClick, ...props }: any) => (
+      <button onClick={onClick} {...props}>{children}</button>
     ),
-    Select: ({ children }: any) => <div>{children}</div>,
-    SelectTrigger: ({ children }: any) => <div>{children}</div>,
-    SelectContent: ({ children }: any) => <div>{children}</div>,
-    SelectItem: ({ children, onSelect }: any) => (
-      <div onClick={(e) => onSelect && onSelect(e)}>{children}</div>
+    Select: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    SelectTrigger: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    SelectContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    SelectItem: ({ children, onSelect, ...props }: any) => (
+      <div onClick={(e) => onSelect && onSelect(e)} {...props}>
+        {children}
+      </div>
     ),
     SelectValue: ({ placeholder }: any) => <div>{placeholder}</div>,
   };
@@ -146,8 +148,8 @@ describe("Template selection", () => {
         { name: "Temp", components: [{ type: "comp" } as any], preview: "" },
       ],
     });
-    fireEvent.click(screen.getByText("Temp"));
-    fireEvent.click(screen.getByText("Confirm"));
+    fireEvent.click(screen.getByTestId("template-Temp"));
+    fireEvent.click(screen.getByTestId("confirm-template"));
     expect(props.setProductLayout).toHaveBeenCalledWith("Temp");
     expect(props.setProductComponents).toHaveBeenCalledWith([
       expect.objectContaining({ type: "comp", id: expect.any(String) }),
@@ -215,7 +217,7 @@ describe("Save & return", () => {
   it("marks complete and navigates", () => {
     apiRequest.mockResolvedValueOnce({ data: [], error: null });
     setup();
-    fireEvent.click(screen.getByText("Save & return"));
+    fireEvent.click(screen.getByTestId("save-return"));
     expect(markComplete).toHaveBeenCalledWith(true);
     expect(pushMock).toHaveBeenCalledWith("/cms/configurator");
   });

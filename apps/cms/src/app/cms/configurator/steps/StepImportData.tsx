@@ -29,6 +29,7 @@ export default function StepImportData({
       <label className="flex flex-col gap-1">
         <span>Products CSV</span>
         <Input
+          data-cy="products-csv"
           type="file"
           accept=".csv"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -37,6 +38,7 @@ export default function StepImportData({
         />
       </label>
       <Textarea
+        data-cy="categories-json"
         label="Categories JSON"
         value={categoriesText}
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
@@ -47,6 +49,7 @@ export default function StepImportData({
       {importResult && <p className="text-sm">{importResult}</p>}
       <div className="flex justify-end gap-2">
         <Button
+          data-cy="save-return"
           disabled={importing}
           onClick={async () => {
             await saveData();

@@ -6,11 +6,11 @@ import StepShopDetails from "../StepShopDetails";
 jest.mock("@ui/components/atoms/shadcn", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
   Input: (props: any) => <input {...props} />,
-  Select: ({ value, onValueChange, children }: any) => (
+  Select: ({ value, onValueChange, children, ...props }: any) => (
     <select
       value={value}
       onChange={(e) => onValueChange(e.target.value)}
-      data-testid="select"
+      {...props}
     >
       {children}
     </select>
@@ -88,33 +88,34 @@ describe("StepShopDetails", () => {
     render(<Wrapper />);
     expect(screen.getAllByText("Required")).toHaveLength(5);
     expect(screen.getByText("Invalid URL")).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /save & return/i })
-    ).toBeDisabled();
+    expect(screen.getByTestId("save-return")).toBeDisabled();
   });
 
   it("removes errors and enables submit when inputs valid", () => {
     render(<Wrapper />);
-    fireEvent.change(screen.getByPlaceholderText("my-shop"), {
+    fireEvent.change(screen.getByTestId("shop-id"), {
       target: { value: "my-shop" },
     });
-    fireEvent.change(screen.getByPlaceholderText("My Store"), {
+    fireEvent.change(screen.getByTestId("store-name"), {
       target: { value: "My Store" },
     });
     fireEvent.change(
-      screen.getByPlaceholderText("https://example.com/logo.png"),
+      screen.getByTestId("logo-url"),
       { target: { value: "https://example.com/logo.png" } }
     );
-    fireEvent.change(screen.getByPlaceholderText("Email or phone"), {
+    fireEvent.change(screen.getByTestId("contact-info"), {
       target: { value: "contact@example.com" },
     });
-    const selects = screen.getAllByTestId("select");
-    fireEvent.change(selects[0], { target: { value: "sale" } });
-    fireEvent.change(selects[1], { target: { value: "default" } });
+    fireEvent.change(screen.getByTestId("shop-type"), {
+      target: { value: "sale" },
+    });
+    fireEvent.change(screen.getByTestId("template"), {
+      target: { value: "default" },
+    });
 
     expect(screen.queryByText("Invalid URL")).not.toBeInTheDocument();
     expect(screen.queryByText("Required")).not.toBeInTheDocument();
-    const button = screen.getByRole("button", { name: /save & return/i });
+    const button = screen.getByTestId("save-return");
     expect(button).toBeEnabled();
     fireEvent.click(button);
     expect(markComplete).toHaveBeenCalledWith(true);

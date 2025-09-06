@@ -113,7 +113,7 @@ describe("StepTheme", () => {
 
   it("marks complete and navigates to next step", () => {
     render(<StepTheme themes={[]} nextStepId="next" /> as any);
-    fireEvent.click(screen.getByText("Next"));
+    fireEvent.click(screen.getByTestId("next"));
     expect(markComplete).toHaveBeenCalledWith(true);
     expect(push).toHaveBeenCalledWith("/cms/configurator/next");
   });

@@ -74,6 +74,7 @@ export default function StepShopDetails({
       <label className="flex flex-col gap-1">
         <span>Shop ID</span>
         <Input
+          data-cy="shop-id"
           value={shopId}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setShopId(e.target.value)}
           placeholder="my-shop"
@@ -85,6 +86,7 @@ export default function StepShopDetails({
       <label className="flex flex-col gap-1">
         <span>Store Name</span>
         <Input
+          data-cy="store-name"
           value={storeName}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setStoreName(e.target.value)}
           placeholder="My Store"
@@ -96,6 +98,7 @@ export default function StepShopDetails({
       <label className="flex flex-col gap-1">
         <span>Logo URL</span>
         <Input
+          data-cy="logo-url"
           value={logo}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLogo(e.target.value)}
           placeholder="https://example.com/logo.png"
@@ -107,6 +110,7 @@ export default function StepShopDetails({
       <label className="flex flex-col gap-1">
         <span>Contact Info</span>
         <Input
+          data-cy="contact-info"
           value={contactInfo}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactInfo(e.target.value)}
           placeholder="Email or phone"
@@ -117,7 +121,7 @@ export default function StepShopDetails({
       </label>
       <label className="flex flex-col gap-1">
         <span>Shop Type</span>
-        <Select value={type} onValueChange={setType}>
+        <Select data-cy="shop-type" value={type} onValueChange={setType}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select type" />
           </SelectTrigger>
@@ -132,7 +136,7 @@ export default function StepShopDetails({
       </label>
       <label className="flex flex-col gap-1">
         <span>Template</span>
-        <Select value={template} onValueChange={setTemplate}>
+        <Select data-cy="template" value={template} onValueChange={setTemplate}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Select template" />
           </SelectTrigger>
@@ -150,6 +154,7 @@ export default function StepShopDetails({
       </label>
       <div className="flex justify-end">
         <Button
+          data-cy="save-return"
           disabled={!isValid}
           onClick={() => {
             markComplete(true);

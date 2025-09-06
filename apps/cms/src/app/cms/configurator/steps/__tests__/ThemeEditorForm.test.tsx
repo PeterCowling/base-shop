@@ -5,8 +5,12 @@ import ThemeEditorForm from "../ThemeEditorForm";
 
 jest.mock("@ui/components/atoms/shadcn", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-  Select: ({ value, onValueChange, children }: any) => (
-    <select data-testid="theme-select" value={value} onChange={(e) => onValueChange(e.target.value)}>
+  Select: ({ value, onValueChange, children, ...props }: any) => (
+    <select
+      value={value}
+      onChange={(e) => onValueChange(e.target.value)}
+      {...props}
+    >
       {children}
     </select>
   ),
@@ -96,7 +100,7 @@ describe("ThemeEditorForm", () => {
     await userEvent.selectOptions(screen.getByTestId("theme-select"), "dark");
     expect(onThemeChange).toHaveBeenCalledWith("dark");
 
-    await userEvent.click(screen.getByRole("button", { name: "low" }));
+    await userEvent.click(screen.getByTestId("palette-low"));
     expect(setPalette).toHaveBeenCalledWith("low");
 
     expect(screen.getByText("Low contrast")).toBeInTheDocument();
@@ -104,7 +108,7 @@ describe("ThemeEditorForm", () => {
     await userEvent.click(screen.getByText("MockStyleEditor"));
     expect(onTokensChange).toHaveBeenCalledWith({ token: "value" });
 
-    await userEvent.click(screen.getByText("Reset to defaults"));
+    await userEvent.click(screen.getByTestId("reset-theme"));
     expect(onReset).toHaveBeenCalled();
 
     await userEvent.click(screen.getByLabelText("device"));

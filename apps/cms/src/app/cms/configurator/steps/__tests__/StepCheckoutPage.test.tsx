@@ -41,13 +41,13 @@ jest.mock(
   "@/components/atoms/shadcn",
   () => {
     const React = require("react");
-    const Select = ({ value, onValueChange, children }: any) => {
+    const Select = ({ value, onValueChange, children, ...props }: any) => {
       const [, content] = React.Children.toArray(children);
       return (
         <select
-          data-testid="layout-select"
           value={value}
           onChange={(e) => onValueChange(e.target.value)}
+          {...props}
         >
           {content?.props.children}
         </select>
@@ -102,7 +102,7 @@ describe("StepCheckoutPage", () => {
   it("maps selected template to components", () => {
     const { setCheckoutLayout, setCheckoutComponents } = renderStep();
     ulidMock.mockReturnValueOnce("id1").mockReturnValueOnce("id2");
-    fireEvent.change(screen.getByTestId("layout-select"), {
+    fireEvent.change(screen.getByTestId("checkout-layout"), {
       target: { value: "tpl2" },
     });
     expect(setCheckoutLayout).toHaveBeenCalledWith("tpl2");
@@ -128,7 +128,7 @@ describe("StepCheckoutPage", () => {
 
   it("marks complete and navigates away", () => {
     renderStep();
-    fireEvent.click(screen.getByText("Save & return"));
+    fireEvent.click(screen.getByTestId("save-return"));
     expect(markComplete).toHaveBeenCalledWith(true);
     expect(pushMock).toHaveBeenCalledWith("/cms/configurator");
   });

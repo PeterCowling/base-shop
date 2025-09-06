@@ -102,7 +102,7 @@ describe("StepAdditionalPages", () => {
       />, 
     );
 
-    await user.click(screen.getByRole("button", { name: /add page/i }));
+    await user.click(screen.getByTestId("add-page"));
     expect(screen.getByText("layout selector")).toBeInTheDocument();
     expect(screen.getByText("meta form")).toBeInTheDocument();
 
@@ -112,9 +112,7 @@ describe("StepAdditionalPages", () => {
     expect(apiRequestMock).toHaveBeenCalled();
     await screen.findByText("Draft saved");
 
-    await user.click(
-      screen.getByRole("button", { name: /^add page$/i }),
-    );
+    await user.click(screen.getByTestId("confirm-add-page"));
     expect(setPages).toHaveBeenCalledTimes(2);
     const newPages = setPages.mock.calls[1][0];
     expect(newPages).toHaveLength(1);
@@ -133,14 +131,14 @@ describe("StepAdditionalPages", () => {
       />, 
     );
 
-    await user.click(screen.getByRole("button", { name: /add page/i }));
+    await user.click(screen.getByTestId("add-page"));
     await user.click(screen.getByRole("button", { name: "fill meta" }));
     expect(screen.getByTestId("slug-display")).toHaveTextContent("slug");
 
-    await user.click(screen.getByRole("button", { name: /cancel/i }));
+    await user.click(screen.getByTestId("cancel-additional-page"));
     expect(screen.queryByText("layout selector")).not.toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /add page/i }));
+    await user.click(screen.getByTestId("add-page"));
     expect(screen.getByTestId("slug-display")).toHaveTextContent("");
   });
 
@@ -156,9 +154,7 @@ describe("StepAdditionalPages", () => {
       />, 
     );
 
-    await user.click(
-      screen.getByRole("button", { name: /save & return/i }),
-    );
+    await user.click(screen.getByTestId("save-return"));
     expect(markCompleteMock).toHaveBeenCalledWith(true);
     expect(pushMock).toHaveBeenCalledWith("/cms/configurator");
   });

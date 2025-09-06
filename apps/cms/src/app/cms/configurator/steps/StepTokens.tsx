@@ -52,6 +52,7 @@ export default function StepTokens(_: ConfiguratorStepProps): React.JSX.Element 
       )}
       <div className="flex justify-end">
         <Button
+          data-cy="save-return"
           onClick={() => {
             markComplete(true);
             router.push("/cms/configurator");

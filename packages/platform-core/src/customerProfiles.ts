@@ -2,8 +2,12 @@
 import type { CustomerProfile } from "@acme/types";
 import { prisma } from "./db";
 
-export async function getCustomerProfile(customerId: string): Promise<CustomerProfile | null> {
-  return prisma.customerProfile.findUnique({ where: { customerId } });
+export async function getCustomerProfile(customerId: string): Promise<CustomerProfile> {
+  const profile = await prisma.customerProfile.findUnique({ where: { customerId } });
+  if (!profile) {
+    throw new Error("Customer profile not found");
+  }
+  return profile;
 }
 
 export async function updateCustomerProfile(

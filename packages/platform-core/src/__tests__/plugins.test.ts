@@ -1,8 +1,8 @@
-import { mkdtemp, writeFile } from "node:fs/promises";
+import { mkdtemp, writeFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 import os from "node:os";
 import { createRequire } from "module";
-import { loadPlugin, initPlugins } from "../plugins";
+import { loadPlugin, initPlugins, loadPlugins } from "../plugins";
 import { logger } from "../utils";
 
 const req = createRequire(__filename);
@@ -44,6 +44,24 @@ describe("plugin loader", () => {
     expect(result).toBeUndefined();
     expect(errSpy).toHaveBeenCalledWith(
       "Plugin module did not export a default Plugin",
+      expect.objectContaining({ plugin: dir })
+    );
+  });
+
+  it("logs error when plugin import fails", async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-throws-"));
+    await writeFile(
+      path.join(dir, "package.json"),
+      JSON.stringify({ name: "throws", main: "index.js" })
+    );
+    await writeFile(path.join(dir, "index.js"), "throw new Error('boom');\n");
+    const errSpy = jest.spyOn(logger, "error").mockImplementation();
+
+    const result = await loadPlugin(dir);
+
+    expect(result).toBeUndefined();
+    expect(errSpy).toHaveBeenCalledWith(
+      "Failed to import plugin entry",
       expect.objectContaining({ plugin: dir })
     );
   });
@@ -92,6 +110,56 @@ describe("plugin loader", () => {
     });
 
     expect((globalThis as any).mergedConfig).toEqual({ a: 1, b: 3, c: 4 });
+  });
+
+  it("warns and continues when reading a directory fails", async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), "plugin-root-"));
+    jest.spyOn(process, "cwd").mockReturnValue(root);
+    await mkdir(path.join(root, "packages", "plugins"), { recursive: true });
+
+    const goodSearch = await mkdtemp(path.join(root, "plugins-search-"));
+    const pluginDir = await mkdtemp(path.join(goodSearch, "plugin-"));
+    await writeFile(
+      path.join(pluginDir, "package.json"),
+      JSON.stringify({ name: "good", main: "index.js" })
+    );
+    await writeFile(
+      path.join(pluginDir, "index.js"),
+      "module.exports = { default: { id: 'good' } };\n"
+    );
+
+    const badSearch = path.join(root, "missing-dir");
+    const warnSpy = jest.spyOn(logger, "warn").mockImplementation();
+
+    const loaded = await loadPlugins({ directories: [badSearch, goodSearch] });
+
+    expect(loaded).toHaveLength(1);
+    expect(loaded[0]?.id).toBe("good");
+    expect(warnSpy).toHaveBeenCalledWith(
+      "Failed to read plugins directory",
+      expect.objectContaining({ directory: badSearch })
+    );
+  });
+
+  it("registers payments, shipping, and widgets on init", async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), "plugin-root-"));
+    jest.spyOn(process, "cwd").mockReturnValue(root);
+    await mkdir(path.join(root, "packages", "plugins"), { recursive: true });
+    const dir = await mkdtemp(path.join(root, "plugin-init-"));
+    await writeFile(
+      path.join(dir, "package.json"),
+      JSON.stringify({ name: "init", main: "index.js" })
+    );
+    await writeFile(
+      path.join(dir, "index.js"),
+      "module.exports = { default: { id: 'init', registerPayments: (r) => r.add('pay', { processPayment: () => {} }), registerShipping: (r) => r.add('ship', { calculateShipping: () => {} }), registerWidgets: (r) => r.add('widget', () => null) } };\n"
+    );
+
+    const manager = await initPlugins({ plugins: [dir], directories: [] });
+
+    expect(manager.payments.get('pay')).toBeDefined();
+    expect(manager.shipping.get('ship')).toBeDefined();
+    expect(manager.widgets.get('widget')).toBeDefined();
   });
 });
 

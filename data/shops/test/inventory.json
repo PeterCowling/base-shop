@@ -1,0 +1,38 @@
+[
+  {
+    "sku": "tee-basic-m",
+    "productId": "tee-basic",
+    "variant": {
+      "size": "M"
+    },
+    "quantity": 10,
+    "lowStockThreshold": 2,
+    "wearAndTearLimit": 20,
+    "maintenanceCycle": 5
+  },
+  {
+    "sku": "sneaker-red-42",
+    "productId": "sneaker-red",
+    "variant": {
+      "size": "42",
+      "color": "red"
+    },
+    "quantity": 4,
+    "lowStockThreshold": 1,
+    "wearAndTearLimit": 15,
+    "maintenanceCycle": 6
+  },
+  {
+    "sku": "jacket-blue-m-cotton",
+    "productId": "jacket-blue",
+    "variant": {
+      "size": "M",
+      "color": "blue",
+      "material": "cotton"
+    },
+    "quantity": 2,
+    "lowStockThreshold": 1,
+    "wearAndTearLimit": 12,
+    "maintenanceCycle": 3
+  }
+]

@@ -1,5 +1,6 @@
-import { enrollMfa, verifyMfa } from "../src/mfa";
+import { enrollMfa, verifyMfa, isMfaEnabled } from "../src/mfa";
 import { authenticator } from "otplib";
+import { prisma } from "@acme/platform-core/db";
 
 jest.mock("@acme/platform-core/db", () => {
   const store = new Map<string, any>();
@@ -38,6 +39,14 @@ describe("mfa", () => {
     jest.restoreAllMocks();
   });
 
+  it("generates unique base32 secrets", async () => {
+    const first = await enrollMfa("user-one");
+    const second = await enrollMfa("user-two");
+    expect(first.secret).toMatch(/^[A-Z2-7]{32}$/);
+    expect(second.secret).toMatch(/^[A-Z2-7]{32}$/);
+    expect(first.secret).not.toBe(second.secret);
+  });
+
   it("verifies valid token", async () => {
     jest
       .spyOn(authenticator, "generateSecret")
@@ -45,6 +54,23 @@ describe("mfa", () => {
     const { secret } = await enrollMfa("user-valid");
     const token = authenticator.generate(secret);
     await expect(verifyMfa("user-valid", token)).resolves.toBe(true);
+    expect(prisma.customerMfa.update).toHaveBeenCalledWith({
+      where: { customerId: "user-valid" },
+      data: { enabled: true },
+    });
+    await expect(isMfaEnabled("user-valid")).resolves.toBe(true);
+  });
+
+  it("does not re-enable when already enabled", async () => {
+    jest
+      .spyOn(authenticator, "generateSecret")
+      .mockReturnValue("ENABLEDSECRET");
+    const { secret } = await enrollMfa("user-repeat");
+    const token = authenticator.generate(secret);
+    await verifyMfa("user-repeat", token);
+    (prisma.customerMfa.update as jest.Mock).mockClear();
+    await expect(verifyMfa("user-repeat", token)).resolves.toBe(true);
+    expect(prisma.customerMfa.update).not.toHaveBeenCalled();
   });
 
   it("fails with wrong code", async () => {
@@ -67,6 +93,11 @@ describe("mfa", () => {
     const token = authenticator.generate(secret);
     jest.setSystemTime(Date.now() + 61_000);
     await expect(verifyMfa("user-expired", token)).resolves.toBe(false);
+  });
+
+  it("returns false when user not enrolled", async () => {
+    await expect(verifyMfa("missing", "123456")).resolves.toBe(false);
+    await expect(isMfaEnabled("missing")).resolves.toBe(false);
   });
 });
 

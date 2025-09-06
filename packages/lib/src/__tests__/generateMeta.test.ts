@@ -312,6 +312,71 @@ describe("generateMeta", () => {
     expect(mkdirMock).not.toHaveBeenCalled();
   });
 
+  it("falls back when default export is not a constructor", async () => {
+    process.env.NODE_ENV = "production";
+    await jest.isolateModulesAsync(async () => {
+      const envMock = { OPENAI_API_KEY: "key" };
+      jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
+      jest.doMock("openai", () => ({ __esModule: true, default: {} }), {
+        virtual: true,
+      });
+      const { generateMeta } = await import("../generateMeta");
+      const meta = await generateMeta(product);
+      expect(meta).toEqual({
+        title: product.title,
+        description: product.description,
+        alt: product.title,
+        image: `/og/${product.id}.png`,
+      });
+    });
+    expect(writeMock).not.toHaveBeenCalled();
+    expect(mkdirMock).not.toHaveBeenCalled();
+  });
+
+  it("falls back when named OpenAI export is not a constructor", async () => {
+    process.env.NODE_ENV = "production";
+    await jest.isolateModulesAsync(async () => {
+      const envMock = { OPENAI_API_KEY: "key" };
+      jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
+      jest.doMock("openai", () => ({ __esModule: true, OpenAI: {} }), {
+        virtual: true,
+      });
+      const { generateMeta } = await import("../generateMeta");
+      const meta = await generateMeta(product);
+      expect(meta).toEqual({
+        title: product.title,
+        description: product.description,
+        alt: product.title,
+        image: `/og/${product.id}.png`,
+      });
+    });
+    expect(writeMock).not.toHaveBeenCalled();
+    expect(mkdirMock).not.toHaveBeenCalled();
+  });
+
+  it("falls back when nested default export is not a constructor", async () => {
+    process.env.NODE_ENV = "production";
+    await jest.isolateModulesAsync(async () => {
+      const envMock = { OPENAI_API_KEY: "key" };
+      jest.doMock("@acme/config/env/core", () => ({ coreEnv: envMock }));
+      jest.doMock(
+        "openai",
+        () => ({ __esModule: true, default: { default: {} } }),
+        { virtual: true },
+      );
+      const { generateMeta } = await import("../generateMeta");
+      const meta = await generateMeta(product);
+      expect(meta).toEqual({
+        title: product.title,
+        description: product.description,
+        alt: product.title,
+        image: `/og/${product.id}.png`,
+      });
+    });
+    expect(writeMock).not.toHaveBeenCalled();
+    expect(mkdirMock).not.toHaveBeenCalled();
+  });
+
   it("overrides only provided fields from AI response", async () => {
     process.env.NODE_ENV = "production";
     const responsesCreate = jest.fn().mockResolvedValue({

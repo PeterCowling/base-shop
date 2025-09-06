@@ -110,6 +110,32 @@ describe("coreEnvSchema refinement", () => {
     );
   });
 
+  it("reports issues for invalid boolean and number values", async () => {
+    const { depositReleaseEnvRefinement } = await import("../src/env/core");
+    const ctx = { addIssue: jest.fn() } as any;
+
+    depositReleaseEnvRefinement(
+      {
+        DEPOSIT_RELEASE_ENABLED: "yes",
+        DEPOSIT_RELEASE_INTERVAL_MS: "abc",
+      },
+      ctx,
+    );
+
+    expect(ctx.addIssue).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: ["DEPOSIT_RELEASE_ENABLED"],
+        message: "must be true or false",
+      }),
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: ["DEPOSIT_RELEASE_INTERVAL_MS"],
+        message: "must be a number",
+      }),
+    );
+  });
+
   it("ignores unrelated keys", async () => {
     const { depositReleaseEnvRefinement } = await import("../src/env/core");
     const ctx = { addIssue: jest.fn() } as any;

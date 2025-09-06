@@ -8,10 +8,10 @@ const baseEnv = {
 
 describe("coreEnvSchema AUTH_TOKEN_TTL normalization", () => {
   it.each([
-    [60, undefined],
-    ["", undefined],
-    ["60", "60s"],
-    ["15 m", "15m"],
+    [30, undefined],
+    ["30", "30s"],
+    [" 45s ", "45s"],
+    ["5 m", "5m"],
   ])("normalizes %p to %p", async (input, normalized) => {
     const { coreEnvSchema } = await import("../src/env/core");
     const { authEnvSchema } = await import("../src/env/auth");

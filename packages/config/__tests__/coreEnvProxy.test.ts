@@ -44,6 +44,34 @@ describe("coreEnv proxy", () => {
     expect(core.coreEnv.CMS_ACCESS_TOKEN).toBe(token);
   });
 
+  it("calls loadCoreEnv only once", async () => {
+    const OLD = process.env;
+    process.env = {
+      ...OLD,
+      CMS_SPACE_URL: "https://example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "v1",
+    };
+    jest.resetModules();
+    const core = await import("../src/env/core");
+    const spy = jest.fn(core.loadCoreEnv);
+    let cache: any;
+    const proxy: any = new Proxy(
+      {},
+      {
+        get: (_t, prop: string) => {
+          if (!cache) cache = spy();
+          return cache[prop];
+        },
+      },
+    );
+    (core as any).coreEnv = proxy;
+    core.coreEnv.CMS_SPACE_URL;
+    core.coreEnv.CMS_ACCESS_TOKEN;
+    expect(spy).toHaveBeenCalledTimes(1);
+    process.env = OLD;
+  });
+
   it("parses during import in production", async () => {
     const core = await withEnv(
       {

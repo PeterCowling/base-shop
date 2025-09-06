@@ -1,24 +1,20 @@
 import { genSecret } from '../src/genSecret';
 
 describe('genSecret', () => {
-  it('generates secrets of correct length', () => {
-    const secret = genSecret(8);
-    expect(secret).toHaveLength(16);
+  it('defaults to a 32-character secret', () => {
+    expect(genSecret()).toHaveLength(32);
   });
 
-  it('defaults to 32 characters when no argument is provided', () => {
-    const secret = genSecret();
-    expect(secret).toHaveLength(32);
+  it('supports custom byte length', () => {
+    expect(genSecret(8)).toHaveLength(16);
   });
 
-  it('returns a hexadecimal string', () => {
-    const secret = genSecret(8);
-    expect(secret).toMatch(/^[0-9a-f]+$/);
+  it('returns only hexadecimal characters', () => {
+    expect(genSecret()).toMatch(/^[0-9a-f]+$/);
   });
 
-  it('generates unique secrets on each call', () => {
-    const a = genSecret();
-    const b = genSecret();
-    expect(a).not.toBe(b);
+  it('generates a different secret each call', () => {
+    const secrets = new Set([genSecret(), genSecret(), genSecret()]);
+    expect(secrets.size).toBe(3);
   });
 });

@@ -64,6 +64,9 @@ export default function PopupModal({
       onClick={() => setOpen(false)}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Popup modal"
         className="relative bg-white p-4 shadow-lg"
         style={{ width, height }}
         onClick={(e) => e.stopPropagation()}

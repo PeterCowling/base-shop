@@ -41,7 +41,7 @@ export default function HeaderClient({
         Base-Shop
       </Link>
 
-      <nav className="flex items-center gap-6">
+      <nav className="flex items-center gap-6" aria-label="Main navigation">
         {nav.map((item) => (
           <Link
             key={item.url}

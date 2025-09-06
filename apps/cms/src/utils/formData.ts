@@ -30,3 +30,14 @@ export function formDataToObject(
 ): Record<string, FormDataEntryValue> {
   return Object.fromEntries(formDataEntries(formData));
 }
+
+export function tryJsonParse<T>(
+  value: FormDataEntryValue | null,
+): T | undefined {
+  if (typeof value !== "string") return undefined;
+  try {
+    return JSON.parse(value) as T;
+  } catch {
+    return undefined;
+  }
+}

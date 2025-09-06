@@ -98,13 +98,10 @@ bindPageComponentSchema(pageComponentSchema);
 
 export const historyStateSchema = z
   .object({
-    past: z.array(z.array(pageComponentSchema)),
-    present: z.array(pageComponentSchema),
-    future: z.array(z.array(pageComponentSchema)),
-    gridCols: z.number().int().min(1).max(24).default(12),
+    step: z.array(z.unknown()).optional(),
   })
-  .strict()
-  .default({ past: [], present: [], future: [], gridCols: 12 });
+  .passthrough()
+  .default({});
 
 export type HistoryState = z.infer<typeof historyStateSchema>;
 

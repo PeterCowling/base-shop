@@ -6,7 +6,7 @@ import type { Locale, Page, HistoryState } from "@acme/types";
 import { historyStateSchema } from "@acme/types/src/index";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
-import { formDataToObject } from "../utils/formData";
+import { formDataToObject, tryJsonParse } from "../utils/formData";
 
 import { coreEnv as env } from "@acme/config/env/core";
 import { ensureAuthorized } from "./common/auth";
@@ -35,16 +35,16 @@ export async function createPage(
 ): Promise<{ page?: Page; errors?: Record<string, string[]> }> {
   const session = await ensureAuthorized();
 
-  // tests can pass an id (e.g. "p1"); otherwise generate a ULID
   const idField = formData.get("id");
-  const id =
-    typeof idField === "string" && idField.trim().length
-      ? idField.trim()
-      : ulid();
-
   const parsed = createSchema.safeParse(formDataToObject(formData));
   if (!parsed.success) {
-    const context = { shop, id };
+    const context = {
+      shop,
+      id:
+        typeof idField === "string" && idField.trim().length
+          ? idField.trim()
+          : undefined,
+    };
     if (env.NODE_ENV === "development") {
       console.warn("[createPage] validation failed", {
         ...context,
@@ -60,6 +60,10 @@ export async function createPage(
     return { errors: fieldErrors as Record<string, string[]> };
   }
   const data = parsed.data;
+  const id =
+    typeof idField === "string" && idField.trim().length
+      ? idField.trim()
+      : ulid();
 
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;
@@ -102,27 +106,25 @@ export async function savePageDraft(
   shop: string,
   formData: FormData
 ): Promise<{ page?: Page; errors?: Record<string, string[]> }> {
-  const id = (formData.get("id") as string) || ulid();
-  const compStr = formData.get("components");
+  const compInput = formData.get("components");
   const parsedComponents = componentsField.safeParse(
-    typeof compStr === "string" ? compStr : undefined
+    typeof compInput === "string" ? compInput : undefined
   );
   if (!parsedComponents.success) {
     return { errors: { components: ["Invalid components"] } };
   }
   const components = parsedComponents.data;
 
-  const session = await ensureAuthorized();
+  const idField = formData.get("id");
+  const id =
+    typeof idField === "string" && idField.trim().length
+      ? idField.trim()
+      : ulid();
 
-  let history = undefined;
-  const historyStr = formData.get("history");
-  if (typeof historyStr === "string") {
-    try {
-      history = historyStateSchema.parse(JSON.parse(historyStr));
-    } catch {
-      /* ignore invalid history */
-    }
-  }
+  const historyInput = tryJsonParse<HistoryState>(formData.get("history"));
+  const history = historyStateSchema.parse(historyInput);
+
+  const session = await ensureAuthorized();
 
   const pages = await getPages(shop);
   const now = nowIso();
@@ -132,7 +134,7 @@ export async function savePageDraft(
     ? {
         ...existing,
         components,
-        ...(history ? { history } : {}),
+        history,
         updatedAt: now,
       }
     : {
@@ -140,7 +142,7 @@ export async function savePageDraft(
         slug: "",
         status: "draft",
         components,
-        history: history ?? historyStateSchema.parse(undefined),
+        history,
         seo: {
           title: emptyTranslated(),
           description: emptyTranslated(),
@@ -189,15 +191,8 @@ export async function updatePage(
   }
   const data = parsed.data;
 
-  let history: HistoryState | undefined;
-  const historyStr = formData.get("history");
-  if (typeof historyStr === "string") {
-    try {
-      history = historyStateSchema.parse(JSON.parse(historyStr));
-    } catch {
-      /* ignore invalid history */
-    }
-  }
+  const historyInput = tryJsonParse<HistoryState>(formData.get("history"));
+  const history = historyStateSchema.parse(historyInput);
 
   const title: Record<Locale, string> = {} as Record<Locale, string>;
   const description: Record<Locale, string> = {} as Record<Locale, string>;
@@ -215,7 +210,7 @@ export async function updatePage(
     status: data.status,
     components: data.components,
     seo: { title, description, image },
-    ...(history ? { history } : {}),
+    history,
   };
 
   const pages = await getPages(shop);

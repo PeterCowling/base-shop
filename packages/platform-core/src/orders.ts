@@ -9,14 +9,12 @@ import { incrementSubscriptionUsage } from "./subscriptionUsage";
 
 export type Order = RentalOrder;
 
-type DbRentalOrder = Record<string, unknown>;
-
-function normalize(order: DbRentalOrder): Order {
-  const o: Record<string, unknown> = { ...order };
+function normalize<T extends object>(order: T): T {
+  const o = { ...order } as any;
   Object.keys(o).forEach((k) => {
     if (o[k] === null) o[k] = undefined;
   });
-  return o as Order;
+  return o;
 }
 
 export async function listOrders(shop: string): Promise<Order[]> {
@@ -51,7 +49,7 @@ export async function addOrder(
     ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
   };
   await prisma.rentalOrder.create({
-    data: order as Record<string, unknown>,
+    data: order,
   });
   await trackOrder(shop, order.id, deposit);
   if (customerId) {
@@ -81,7 +79,7 @@ export async function markReturned(
         ...(typeof damageFee === "number" ? { damageFee } : {}),
       },
     });
-    return order as Order;
+    return order;
   } catch {
     return null;
   }
@@ -104,7 +102,7 @@ export async function markRefunded(
         ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
       },
     });
-    return order as Order;
+    return order;
   } catch {
     return null;
   }
@@ -126,7 +124,7 @@ export async function updateRisk(
         ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
       },
     });
-    return order as Order;
+    return order;
   } catch {
     return null;
   }
@@ -153,7 +151,7 @@ export async function setReturnTracking(
       where: { shop_sessionId: { shop, sessionId } },
       data: { trackingNumber, labelUrl },
     });
-    return order as Order;
+    return order;
   } catch {
     return null;
   }
@@ -169,7 +167,7 @@ export async function setReturnStatus(
       where: { shop_trackingNumber: { shop, trackingNumber } },
       data: { returnStatus },
     });
-    return order as Order;
+    return order;
   } catch {
     return null;
   }

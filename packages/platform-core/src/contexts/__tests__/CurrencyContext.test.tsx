@@ -90,20 +90,25 @@ describe("CurrencyProvider", () => {
     unmount();
   });
 
-  it("updates localStorage when currency changes", async () => {
+  it("provides default and persists currency changes", async () => {
     const setSpy = jest.spyOn(Storage.prototype, "setItem");
 
-    const { getByText, unmount } = render(
+    const { getByTestId, getByText, unmount } = render(
       <CurrencyProvider>
         <Display />
       </CurrencyProvider>
     );
 
+    expect(getByTestId("currency").textContent).toBe("EUR");
+
     fireEvent.click(getByText("change"));
 
-    await waitFor(() =>
-      expect(setSpy).toHaveBeenLastCalledWith(LS_KEY, "USD")
-    );
+    await waitFor(() => {
+      expect(getByTestId("currency").textContent).toBe("USD");
+      expect(setSpy).toHaveBeenLastCalledWith(LS_KEY, "USD");
+    });
+
+    expect(window.localStorage.getItem(LS_KEY)).toBe("USD");
 
     unmount();
   });

@@ -728,5 +728,84 @@ describe("shipping env module", () => {
       });
     });
   });
+
+  describe("provider key requirements", () => {
+    it("reports missing UPS_KEY when SHIPPING_PROVIDER is ups", async () => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+      expect(() => loadShippingEnv({ SHIPPING_PROVIDER: "ups" })).toThrow(
+        "Invalid shipping environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid shipping environment variables:",
+        expect.objectContaining({
+          UPS_KEY: {
+            _errors: [
+              "UPS_KEY is required when SHIPPING_PROVIDER=ups",
+            ],
+          },
+        }),
+      );
+      errorSpy.mockRestore();
+    });
+
+    it("reports missing DHL_KEY when SHIPPING_PROVIDER is dhl", async () => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+      expect(() => loadShippingEnv({ SHIPPING_PROVIDER: "dhl" })).toThrow(
+        "Invalid shipping environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid shipping environment variables:",
+        expect.objectContaining({
+          DHL_KEY: {
+            _errors: [
+              "DHL_KEY is required when SHIPPING_PROVIDER=dhl",
+            ],
+          },
+        }),
+      );
+      errorSpy.mockRestore();
+    });
+  });
+
+  describe("LOCAL_PICKUP_ENABLED parsing", () => {
+    it("parses 'true' to boolean true", async () => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const env = loadShippingEnv({ LOCAL_PICKUP_ENABLED: "true" });
+      expect(env.LOCAL_PICKUP_ENABLED).toBe(true);
+    });
+
+    it("parses 'false' to boolean false", async () => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const env = loadShippingEnv({ LOCAL_PICKUP_ENABLED: "false" });
+      expect(env.LOCAL_PICKUP_ENABLED).toBe(false);
+    });
+
+    it("rejects invalid boolean strings", async () => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+      expect(() =>
+        loadShippingEnv({ LOCAL_PICKUP_ENABLED: "maybe" as any }),
+      ).toThrow("Invalid shipping environment variables");
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid shipping environment variables:",
+        expect.objectContaining({
+          LOCAL_PICKUP_ENABLED: {
+            _errors: [expect.stringContaining("must be a boolean")],
+          },
+        }),
+      );
+      errorSpy.mockRestore();
+    });
+  });
+
+  describe("ALLOWED_COUNTRIES transformation", () => {
+    it("splits comma separated values and uppercases them", async () => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const env = loadShippingEnv({ ALLOWED_COUNTRIES: "us, ca ,mx" });
+      expect(env.ALLOWED_COUNTRIES).toEqual(["US", "CA", "MX"]);
+    });
+  });
 });
 

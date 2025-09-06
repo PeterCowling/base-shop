@@ -17,7 +17,7 @@ export declare function listThemes(): string[];
  * It returns the default token map for the selected theme so callers can merge
  * in any overrides before persisting to the shop.json file.
  */
-export declare function syncTheme(shop: string, theme: string): Record<string, unknown>;
+export declare function syncTheme(shop: string, theme: string): Record<string, string>;
 export declare const createShopOptionsSchema: typeof baseCreateShopOptionsSchema;
 export { prepareOptions };
 export type { CreateShopOptions, PreparedCreateShopOptions, NavItem } from "./schema";

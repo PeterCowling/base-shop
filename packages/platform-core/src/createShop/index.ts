@@ -195,7 +195,7 @@ export function listThemes(): string[] {
  * It returns the default token map for the selected theme so callers can merge
  * in any overrides before persisting to the shop.json file.
  */
-export function syncTheme(shop: string, theme: string): Record<string, unknown> {
+export function syncTheme(shop: string, theme: string): Record<string, string> {
   const root = repoRoot();
   const pkgRel = join("apps", shop, "package.json");
   const pkgAbs = join(root, pkgRel);

@@ -7,13 +7,19 @@ describe("WishlistDrawer", () => {
   it("shows empty state", async () => {
     render(<WishlistDrawer trigger={<button>Open</button>} items={[]} />);
 
-    expect(screen.queryByText(/wishlist/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: /wishlist/i })
+    ).not.toBeInTheDocument();
     await userEvent.click(screen.getByText("Open"));
-    expect(await screen.findByText(/wishlist/i)).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: /wishlist/i })
+    ).toBeInTheDocument();
     expect(screen.getByText(/your wishlist is empty/i)).toBeInTheDocument();
     await userEvent.keyboard("{Escape}");
     await waitFor(() =>
-      expect(screen.queryByText(/wishlist/i)).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole("heading", { name: /wishlist/i })
+      ).not.toBeInTheDocument(),
     );
   });
 

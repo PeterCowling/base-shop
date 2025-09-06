@@ -910,4 +910,56 @@ describe("email env module", () => {
       ).toBe(false);
     });
   });
+
+  describe("provider key requirements", () => {
+    const loadEnv = async () => (await import("../email.ts")).emailEnv;
+
+    it("throws when SENDGRID_API_KEY missing", async () => {
+      process.env = {
+        ...ORIGINAL_ENV,
+        EMAIL_PROVIDER: "sendgrid",
+      } as NodeJS.ProcessEnv;
+      const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+      await expect(loadEnv()).rejects.toThrow(
+        "Invalid email environment variables",
+      );
+      expect(spy).toHaveBeenCalled();
+      const err = spy.mock.calls[0][1];
+      expect(err.SENDGRID_API_KEY._errors).toContain("Required");
+      spy.mockRestore();
+    });
+
+    it("throws when RESEND_API_KEY missing", async () => {
+      process.env = {
+        ...ORIGINAL_ENV,
+        EMAIL_PROVIDER: "resend",
+      } as NodeJS.ProcessEnv;
+      const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+      await expect(loadEnv()).rejects.toThrow(
+        "Invalid email environment variables",
+      );
+      expect(spy).toHaveBeenCalled();
+      const err = spy.mock.calls[0][1];
+      expect(err.RESEND_API_KEY._errors).toContain("Required");
+      spy.mockRestore();
+    });
+
+    it("loads sendgrid provider when key present", async () => {
+      const env = await withEnv(
+        { EMAIL_PROVIDER: "sendgrid", SENDGRID_API_KEY: "sg-key" },
+        async () => loadEnv(),
+      );
+      expect(env.EMAIL_PROVIDER).toBe("sendgrid");
+      expect(env.SENDGRID_API_KEY).toBe("sg-key");
+    });
+
+    it("loads resend provider when key present", async () => {
+      const env = await withEnv(
+        { EMAIL_PROVIDER: "resend", RESEND_API_KEY: "re-key" },
+        async () => loadEnv(),
+      );
+      expect(env.EMAIL_PROVIDER).toBe("resend");
+      expect(env.RESEND_API_KEY).toBe("re-key");
+    });
+  });
 });

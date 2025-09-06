@@ -25,8 +25,7 @@ export async function POST(req: NextRequest) {
   if ("response" in parsed) {
     return parsed.response;
   }
-
-  const body = parsed.data as TaxCalculationRequest;
+  const body: TaxCalculationRequest = parsed.data;
 
   try {
     const tax = await calculateTax(body);

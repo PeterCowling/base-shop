@@ -15,6 +15,10 @@ export interface TaxCalculationRequest {
   toPostalCode?: string;
 }
 
+export interface TaxCalculationResult {
+  tax: number;
+}
+
 let rulesCache: Record<string, number> | null = null;
 
 async function loadRules() {
@@ -45,7 +49,10 @@ export async function getTaxRate(region: string): Promise<number> {
 /**
  * Calculate taxes using the configured provider API.
  */
-export async function calculateTax({ provider, ...payload }: TaxCalculationRequest): Promise<unknown> {
+export async function calculateTax({
+  provider,
+  ...payload
+}: TaxCalculationRequest): Promise<TaxCalculationResult> {
   const apiKey = (shippingEnv as Record<string, string | undefined>)[
     `${provider.toUpperCase()}_KEY`
   ];
@@ -68,7 +75,8 @@ export async function calculateTax({ provider, ...payload }: TaxCalculationReque
       throw new Error(`Failed to calculate tax with ${provider}`);
     }
 
-    return res.json();
+    const data: TaxCalculationResult = await res.json();
+    return data;
   } catch {
     throw new Error(`Failed to calculate tax with ${provider}`);
   }

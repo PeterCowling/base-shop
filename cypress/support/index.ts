@@ -3,7 +3,6 @@
 import "cypress-axe";
 // Enable Mock Service Worker for API mocking in Cypress tests
 import { server } from "../../test/msw/server";
-import "cypress-axe";
 
 // Prevent tests from failing on uncaught exceptions originating from the app
 Cypress.on("uncaught:exception", (_err, _runnable) => {
@@ -17,10 +16,3 @@ after(() => server.close());
 
 // You can add custom Cypress commands here if needed.
 // e.g., Cypress.Commands.add("login", (email, password) => { ... });
-
-Cypress.Commands.overwrite("visit", (originalFn, url, options) =>
-  originalFn(url, options).then((subject) => {
-    cy.injectAxe();
-    return subject;
-  })
-);

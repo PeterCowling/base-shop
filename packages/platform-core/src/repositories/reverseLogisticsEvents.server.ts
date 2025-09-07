@@ -31,10 +31,15 @@ export async function recordEvent(
 export async function listEvents(
   shop: string
 ): Promise<ReverseLogisticsEvent[]> {
-  return await prisma.reverseLogisticsEvent.findMany({
+  const events = await prisma.reverseLogisticsEvent.findMany({
     where: { shop },
     orderBy: { createdAt: "asc" },
   });
+
+  return events.map((evt) => ({
+    ...evt,
+    event: evt.event as ReverseLogisticsEventName,
+  }));
 }
 
 /** Convenience helpers for common reverse logistics events. */

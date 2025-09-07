@@ -9,7 +9,7 @@ import { prisma } from "../../db";
 import { validateShopName } from "../../shops/index";
 import { DATA_ROOT } from "../../dataRoot";
 import { nowIso } from "@acme/date-utils";
-import { z } from "zod";
+import { z, type ZodRawShape } from "zod";
 
 /**
  * Prisma-backed pages repository. The database is the source of truth,
@@ -212,7 +212,7 @@ export interface PageDiffEntry {
 const entrySchema = z
   .object({
     timestamp: z.string().datetime(),
-    diff: z.object((pageSchema as any).shape).partial(),
+    diff: z.object(pageSchema.shape as ZodRawShape).partial(),
   })
   .strict();
 

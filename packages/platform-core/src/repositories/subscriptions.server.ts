@@ -7,12 +7,12 @@ export async function updateSubscriptionPaymentStatus(
   subscriptionId: string,
   status: "succeeded" | "failed",
 ): Promise<void> {
-  await (prisma.user as any).update({
+  await prisma.user.update({
     where: { id: customerId },
     data: {
       stripeSubscriptionId: subscriptionId,
       subscriptionPaymentStatus: status,
-    } as any,
+    },
   });
 }
 

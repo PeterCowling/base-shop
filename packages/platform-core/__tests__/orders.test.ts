@@ -9,6 +9,7 @@ import {
   markCancelled,
   markReturned,
   markRefunded,
+  refundOrder,
   updateRisk,
   getOrdersForCustomer,
   setReturnTracking,
@@ -28,7 +29,10 @@ jest.mock("../src/db", () => ({
 jest.mock("ulid", () => ({ ulid: jest.fn(() => "ulid") }));
 jest.mock("@acme/date-utils", () => ({ nowIso: jest.fn(() => "now") }));
 jest.mock("@acme/stripe", () => ({
-  stripe: { refunds: { create: jest.fn() } },
+  stripe: {
+    refunds: { create: jest.fn() },
+    checkout: { sessions: { retrieve: jest.fn() } },
+  },
 }));
 
 import { stripe } from "@acme/stripe";
@@ -48,6 +52,8 @@ const { prisma: prismaMock } = jest.requireMock("../src/db") as {
 const ulidMock = jest.requireMock("ulid").ulid as jest.Mock;
 const nowIsoMock = jest.requireMock("@acme/date-utils").nowIso as jest.Mock;
 const stripeRefund = stripe.refunds.create as jest.Mock;
+const stripeCheckoutRetrieve =
+  stripe.checkout.sessions.retrieve as jest.Mock;
 
 describe("orders", () => {
   beforeEach(() => {
@@ -330,6 +336,84 @@ describe("orders", () => {
 
       await expect(process()).rejects.toThrow("refund failed");
       expect(stripeRefund).toHaveBeenCalledWith({ payment_intent: "pi", amount: 6 * 100 });
+      expect(prismaMock.rentalOrder.update).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("refundOrder", () => {
+    it("refunds full amount and updates refund total", async () => {
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.findUnique.mockResolvedValue({ id: "1" });
+      stripeCheckoutRetrieve.mockResolvedValue({ payment_intent: "pi" });
+      stripeRefund.mockResolvedValue({ id: "re_1" });
+      prismaMock.rentalOrder.update.mockResolvedValue({
+        id: "1",
+        refundedAt: "now",
+        refundTotal: 10,
+      });
+
+      const result = await refundOrder("shop", "sess", 10);
+
+      expect(prismaMock.rentalOrder.findUnique).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+      });
+      expect(stripeCheckoutRetrieve).toHaveBeenCalledWith("sess", {
+        expand: ["payment_intent"],
+      });
+      expect(stripeRefund).toHaveBeenCalledWith({
+        payment_intent: "pi",
+        amount: 10 * 100,
+      });
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { refundedAt: "now", refundTotal: 10 },
+      });
+      expect(result).toEqual({ id: "1", refundedAt: "now", refundTotal: 10 });
+    });
+
+    it("refunds partial amount and accumulates refund total", async () => {
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.findUnique.mockResolvedValue({
+        id: "1",
+        refundTotal: 4,
+      });
+      stripeCheckoutRetrieve.mockResolvedValue({ payment_intent: "pi" });
+      stripeRefund.mockResolvedValue({ id: "re_1" });
+      prismaMock.rentalOrder.update.mockResolvedValue({
+        id: "1",
+        refundedAt: "now",
+        refundTotal: 10,
+      });
+
+      const result = await refundOrder("shop", "sess", 10);
+
+      expect(stripeRefund).toHaveBeenCalledWith({
+        payment_intent: "pi",
+        amount: 6 * 100,
+      });
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { refundedAt: "now", refundTotal: 10 },
+      });
+      expect(result).toEqual({ id: "1", refundedAt: "now", refundTotal: 10 });
+    });
+
+    it("surfaces Stripe errors without updating the order", async () => {
+      prismaMock.rentalOrder.findUnique.mockResolvedValue({
+        id: "1",
+        refundTotal: 4,
+      });
+      stripeCheckoutRetrieve.mockResolvedValue({ payment_intent: "pi" });
+      stripeRefund.mockRejectedValue(new Error("stripe fail"));
+
+      await expect(refundOrder("shop", "sess", 10)).rejects.toThrow(
+        "stripe fail",
+      );
+
+      expect(stripeRefund).toHaveBeenCalledWith({
+        payment_intent: "pi",
+        amount: 6 * 100,
+      });
       expect(prismaMock.rentalOrder.update).not.toHaveBeenCalled();
     });
   });

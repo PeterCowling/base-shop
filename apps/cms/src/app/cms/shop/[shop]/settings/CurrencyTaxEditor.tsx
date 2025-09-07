@@ -46,9 +46,10 @@ export default function CurrencyTaxEditor({ shop, initial }: Props) {
           name="currency"
           value={state.currency}
           onChange={handleChange}
+          aria-invalid={errors.currency ? true : undefined}
         />
         {errors.currency && (
-          <span className="text-sm text-red-600">
+          <span role="alert" className="text-sm text-red-600">
             {errors.currency.join("; ")}
           </span>
         )}
@@ -59,9 +60,10 @@ export default function CurrencyTaxEditor({ shop, initial }: Props) {
           name="taxRegion"
           value={state.taxRegion}
           onChange={handleChange}
+          aria-invalid={errors.taxRegion ? true : undefined}
         />
         {errors.taxRegion && (
-          <span className="text-sm text-red-600">
+          <span role="alert" className="text-sm text-red-600">
             {errors.taxRegion.join("; ")}
           </span>
         )}

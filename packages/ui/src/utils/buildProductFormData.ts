@@ -16,7 +16,18 @@ export function buildProductFormData(
   });
 
   fd.append("price", String(product.price));
-  fd.append("media", JSON.stringify(product.media));
+
+  // Extract file attachments from media items and append them separately
+  const mediaWithoutFiles = product.media.map((item: any, index: number) => {
+    if (item && item.file instanceof File) {
+      fd.append(`file_${index}`, item.file);
+      const { file, ...rest } = item;
+      return rest;
+    }
+    return item;
+  });
+
+  fd.append("media", JSON.stringify(mediaWithoutFiles));
   fd.append("publish", publishTargets.join(","));
 
   Object.entries(product.variants).forEach(([k, vals]) => {

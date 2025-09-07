@@ -419,6 +419,26 @@ describe("startLateFeeService", () => {
     setSpy.mockRestore();
     clearSpy.mockRestore();
   });
+
+  it("propagates readdir errors without scheduling", async () => {
+    const err = new Error("boom");
+    const readdir = jest.fn().mockRejectedValue(err);
+    jest.doMock("fs/promises", () => ({
+      __esModule: true,
+      readdir,
+      readFile: jest.fn(),
+    }));
+
+    const mod = await import("../src/lateFeeService");
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 111 as any);
+
+    await expect(mod.startLateFeeService()).rejects.toBe(err);
+    expect(setSpy).not.toHaveBeenCalled();
+
+    setSpy.mockRestore();
+  });
 });
 
 describe("auto-start", () => {

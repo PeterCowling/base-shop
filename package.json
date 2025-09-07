@@ -66,7 +66,9 @@
     "clean": "pnpm -r exec rimraf dist build lib *.tsbuildinfo",
     "test:cms": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs",
     "ops:backup-data": "tsx scripts/src/ops/backup-data-root.ts",
-    "stripe:send-test-event": "tsx scripts/stripe-send-test-event.ts"
+    "stripe:send-test-event": "tsx scripts/stripe-send-test-event.ts",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev"
   },
   "dependencies": {
     "@acme/config": "workspace:^",

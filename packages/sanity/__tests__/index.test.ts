@@ -7,6 +7,9 @@ jest.mock('@platform-core/repositories/shop.server', () => ({
 jest.mock('@platform-core/shops', () => ({
   getSanityConfig: jest.fn(),
 }));
+jest.mock('@date-utils', () => ({
+  nowIso: jest.fn(),
+}));
 
 import {
   fetchPublishedPosts,
@@ -16,11 +19,13 @@ import {
 import { createClient } from '@sanity/client';
 import { getShopById } from '@platform-core/repositories/shop.server';
 import { getSanityConfig } from '@platform-core/shops';
+import { nowIso } from '@date-utils';
 
 describe('sanity index', () => {
   const createClientMock = createClient as jest.Mock;
   const getShopByIdMock = getShopById as jest.Mock;
   const getSanityConfigMock = getSanityConfig as jest.Mock;
+  const nowIsoMock = nowIso as jest.Mock;
   let fetchMock: jest.Mock;
 
   beforeEach(() => {
@@ -32,6 +37,7 @@ describe('sanity index', () => {
       dataset: 'ds',
       token: 'tkn',
     });
+    nowIsoMock.mockReturnValue('2020-01-01T00:00:00Z');
   });
 
   afterEach(() => {
@@ -66,8 +72,20 @@ describe('sanity index', () => {
     expect(fetchMock).toHaveBeenCalled();
     expect(patchMock).toHaveBeenCalledWith('p1');
     expect(setMock).toHaveBeenCalledWith(
-      expect.objectContaining({ published: true, publishedAt: expect.any(String) })
+      expect.objectContaining({ published: true, publishedAt: '2020-01-01T00:00:00Z' })
     );
+    expect(nowIsoMock).toHaveBeenCalled();
+    expect(commitMock).toHaveBeenCalled();
+  });
+
+  it('publishQueuedPost swallows commit errors', async () => {
+    const commitMock = jest.fn().mockRejectedValue(new Error('fail'));
+    const setMock = jest.fn().mockReturnValue({ commit: commitMock });
+    const patchMock = jest.fn().mockReturnValue({ set: setMock });
+    fetchMock.mockResolvedValue({ _id: 'p1' });
+    createClientMock.mockReturnValue({ fetch: fetchMock, patch: patchMock });
+
+    await expect(publishQueuedPost('shop1')).resolves.toBeUndefined();
     expect(commitMock).toHaveBeenCalled();
   });
 

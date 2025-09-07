@@ -19,7 +19,7 @@ import type { Prisma } from "@prisma/client";
 // Use Prisma when a database connection is configured
 const useDb = !!process.env.DATABASE_URL;
 
-type Json = Prisma.InputJsonValue;
+type JsonObject = Prisma.InputJsonObject;
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */
@@ -130,12 +130,12 @@ export async function savePage(
     try {
       await prisma.page.upsert({
         where: { id: page.id },
-        update: { data: page as unknown as Json, slug: page.slug },
+        update: { data: page as unknown as JsonObject, slug: page.slug },
         create: {
           id: page.id,
           shopId: shop,
           slug: page.slug,
-          data: page as unknown as Json,
+          data: page as unknown as JsonObject,
         },
       });
     } catch {
@@ -185,7 +185,7 @@ export async function updatePage(
       await prisma.page.update({
         where: { id: patch.id },
         data: {
-          data: updated as unknown as Json,
+          data: updated as unknown as JsonObject,
           slug: updated.slug,
         },
       });

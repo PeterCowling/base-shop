@@ -6,6 +6,7 @@ jest.mock("@platform-core/orders", () => ({
   getOrdersForCustomer: jest.fn(),
   markCancelled: jest.fn(),
   markDelivered: jest.fn(),
+  refundOrder: jest.fn(),
 }));
 
 jest.mock("@auth", () => ({
@@ -16,6 +17,7 @@ const {
   getOrdersForCustomer,
   markCancelled,
   markDelivered,
+  refundOrder,
 } = require("@platform-core/orders");
 const { getCustomerSession } = require("@auth");
 
@@ -94,6 +96,22 @@ describe("/api/orders/[id]", () => {
     await expect(res.json()).resolves.toEqual({ error: "oops" });
   });
 
-  test.todo("PATCH refunds order once backend supports it");
+  test("PATCH refunds order", async () => {
+    refundOrder.mockResolvedValue({ id: "ord1" });
+    const req = { json: async () => ({ status: "refunded", amount: 5 }) } as any;
+    const res = await PATCH(req, { params: { id: "ord1" } });
+    expect(refundOrder).toHaveBeenCalledWith("bcd", "ord1", 5);
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual({ order: { id: "ord1" } });
+  });
+
+  test("PATCH surfaces refund errors", async () => {
+    refundOrder.mockRejectedValue(new Error("stripe fail"));
+    const req = { json: async () => ({ status: "refunded", amount: 5 }) } as any;
+    const res = await PATCH(req, { params: { id: "ord1" } });
+    expect(refundOrder).toHaveBeenCalledWith("bcd", "ord1", 5);
+    expect(res.status).toBe(500);
+    await expect(res.json()).resolves.toEqual({ error: "stripe fail" });
+  });
 });
 

@@ -74,6 +74,37 @@ describe("releaseDepositsOnce", () => {
     expect(markRefunded).toHaveBeenCalledWith("shop1", "sess2");
   });
 
+  it("logs info after refunding a deposit", async () => {
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValue(["shop1"]);
+    readOrders.mockResolvedValue([
+      {
+        sessionId: "s1",
+        returnedAt: "now",
+        deposit: 10,
+        damageFee: 2,
+      },
+    ]);
+    retrieve.mockResolvedValue({ payment_intent: "pi_1" });
+    const logSpy = jest
+      .spyOn(logger, "info")
+      .mockImplementation(() => undefined);
+
+    await service.releaseDepositsOnce();
+
+    expect(createRefund).toHaveBeenCalledTimes(1);
+    expect(createRefund).toHaveBeenCalledWith({
+      payment_intent: "pi_1",
+      amount: 800,
+    });
+    expect(logSpy).toHaveBeenCalledWith("refunded deposit", {
+      shopId: "shop1",
+      sessionId: "s1",
+    });
+
+    logSpy.mockRestore();
+  });
+
   it("handles multiple shops", async () => {
     service = await import("@acme/platform-machine");
     readdir.mockResolvedValue(["shop1", "shop2"]);

@@ -198,6 +198,52 @@ describe("resolveConfig precedence", () => {
     setSpy.mockRestore();
     clearSpy.mockRestore();
   });
+
+  it("falls back to defaults when env vars are invalid", async () => {
+    readFileMock.mockResolvedValueOnce("{}");
+    process.env.DEPOSIT_RELEASE_ENABLED_SHOP = "maybe";
+    process.env.DEPOSIT_RELEASE_INTERVAL_MS_SHOP = "abc";
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 0 as any);
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+
+    const stop = await service.startDepositReleaseService({}, "/data");
+    expect(setSpy).toHaveBeenCalledWith(
+      expect.any(Function),
+      60 * 60 * 1000,
+    );
+
+    stop();
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+  });
+
+  it("uses settings file when env vars are invalid", async () => {
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ depositService: { enabled: true, intervalMinutes: 5 } })
+    );
+    process.env.DEPOSIT_RELEASE_ENABLED_SHOP = "maybe";
+    process.env.DEPOSIT_RELEASE_INTERVAL_MS_SHOP = "abc";
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 0 as any);
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+
+    const stop = await service.startDepositReleaseService({}, "/data");
+    expect(setSpy).toHaveBeenCalledWith(
+      expect.any(Function),
+      5 * 60 * 1000,
+    );
+
+    stop();
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+  });
 });
 
 describe("startDepositReleaseService", () => {
@@ -235,7 +281,7 @@ describe("startDepositReleaseService", () => {
 
   it("uses provided log function when release fails", async () => {
     const err = new Error("boom");
-    (service.releaseDepositsOnce as jest.Mock).mockRejectedValueOnce(err);
+    const failingRelease = jest.fn().mockRejectedValue(err);
     const logSpy = jest.fn();
     const setSpy = jest
       .spyOn(global, "setInterval")
@@ -247,7 +293,7 @@ describe("startDepositReleaseService", () => {
     const stop = await service.startDepositReleaseService(
       {},
       "/data",
-      undefined,
+      failingRelease,
       logSpy,
     );
     await Promise.resolve();

@@ -1,5 +1,11 @@
 /**
  * Load test for rental and return routes.
+ *
+ * Environment variables:
+ *   SHOP_BASE_URL - base URL of the shop service (e.g., http://localhost:3004)
+ *
+ * Session IDs follow the pattern `vu-<VU>-iter-<ITER>`, for example `vu-1-iter-0`.
+ *
  * Usage:
  *   SHOP_BASE_URL=http://localhost:3004 k6 run rental-return.k6.js
  */
@@ -30,17 +36,15 @@ export default function () {
     'rental status 200': (r) => r.status === 200,
   });
 
-  if (Math.random() < 0.5) {
-    const patchRes = http.patch(`${base}/api/rental`, JSON.stringify({ sessionId }), params);
-    check(patchRes, {
-      'patch status 200': (r) => r.status === 200,
-    });
-  } else {
-    const returnRes = http.post(`${base}/api/return`, JSON.stringify({ sessionId }), params);
-    check(returnRes, {
-      'return status 200': (r) => r.status === 200,
-    });
-  }
+  const patchRes = http.patch(`${base}/api/rental`, JSON.stringify({ sessionId }), params);
+  check(patchRes, {
+    'patch status 200': (r) => r.status === 200,
+  });
+
+  const returnRes = http.post(`${base}/api/return`, JSON.stringify({ sessionId }), params);
+  check(returnRes, {
+    'return status 200': (r) => r.status === 200,
+  });
 
   sleep(1);
 }

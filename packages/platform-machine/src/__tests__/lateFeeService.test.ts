@@ -308,8 +308,19 @@ describe("resolveConfig", () => {
     expect(cfg).toEqual({ enabled: true, intervalMinutes: 5 });
   });
 
-  it("falls back to core env values when settings file and env vars missing", async () => {
+  it("ignores invalid env values", async () => {
     readFileMock.mockRejectedValueOnce(new Error("boom"));
+    process.env.LATE_FEE_ENABLED_S1 = "maybe";
+    process.env.LATE_FEE_INTERVAL_MS_S1 = "abc";
+
+    const cfg = await service.resolveConfig("s1", "/data");
+    expect(cfg).toEqual({ enabled: false, intervalMinutes: 60 });
+  });
+
+  it("falls back to core env values when settings file missing and env vars invalid", async () => {
+    readFileMock.mockRejectedValueOnce(new Error("boom"));
+    process.env.LATE_FEE_ENABLED_S1 = "maybe";
+    process.env.LATE_FEE_INTERVAL_MS_S1 = "abc";
     (coreEnv as any).LATE_FEE_ENABLED = true;
     (coreEnv as any).LATE_FEE_INTERVAL_MS = 15 * 60 * 1000;
 

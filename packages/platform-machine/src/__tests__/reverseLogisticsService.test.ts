@@ -92,7 +92,9 @@ describe("resolveDataRoot", () => {
   it("returns existing candidate", () => {
     const spy = jest.spyOn(fs, "existsSync").mockReturnValueOnce(true as any);
     const result = resolveDataRoot();
-    expect(result).toBe(pathMod.join(process.cwd(), "data", "shops"));
+    expect(result).toBe(
+      pathMod.resolve(__dirname, "../../../..", "data", "shops")
+    );
     spy.mockRestore();
   });
 
@@ -185,6 +187,29 @@ describe("processReverseLogisticsEventsOnce", () => {
     );
     expect(unlinkMock).toHaveBeenCalledWith(
       path.join("/data", "shop", "reverse-logistics", "bad.json")
+    );
+  });
+
+  it("ignores unsupported statuses but removes event file", async () => {
+    readdirMock.mockResolvedValueOnce(["e.json"]);
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ sessionId: "abc", status: "bogus" })
+    );
+
+    await service.processReverseLogisticsEventsOnce("shop", "/data");
+
+    expect(markReceived).not.toHaveBeenCalled();
+    expect(markCleaning).not.toHaveBeenCalled();
+    expect(markRepair).not.toHaveBeenCalled();
+    expect(markQa).not.toHaveBeenCalled();
+    expect(markAvailable).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.received).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.cleaning).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.repair).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.qa).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.available).not.toHaveBeenCalled();
+    expect(unlinkMock).toHaveBeenCalledWith(
+      path.join("/data", "shop", "reverse-logistics", "e.json")
     );
   });
 

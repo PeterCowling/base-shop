@@ -2,6 +2,7 @@ import { jest } from '@jest/globals';
 
 let sqliteImportCount = 0;
 let jsonImportCount = 0;
+let prismaImportCount = 0;
 
 const mockSqlite = {
   read: jest.fn(),
@@ -15,24 +16,61 @@ const mockJson = {
   update: jest.fn(),
 };
 
-jest.mock('../inventory.sqlite.server', () => {
-  sqliteImportCount++;
-  return { sqliteInventoryRepository: mockSqlite };
-});
+const mockPrisma = {
+  read: jest.fn(),
+  write: jest.fn(),
+  update: jest.fn(),
+};
+
+jest.mock(
+  '../inventory.sqlite.server',
+  () => {
+    sqliteImportCount++;
+    return { sqliteInventoryRepository: mockSqlite };
+  },
+  { virtual: true },
+);
 
 jest.mock('../inventory.json.server', () => {
   jsonImportCount++;
   return { jsonInventoryRepository: mockJson };
 });
 
+jest.mock('../inventory.prisma.server', () => {
+  prismaImportCount++;
+  return { prismaInventoryRepository: mockPrisma };
+});
+
+jest.mock('../../db', () => ({ prisma: { inventoryItem: {} } }));
+
+jest.mock('../repoResolver', () => ({
+  resolveRepo: async (
+    prismaDelegate: any,
+    prismaModule: any,
+    jsonModule: any,
+  ) => {
+    if (process.env.INVENTORY_BACKEND === 'sqlite') {
+      const mod = await import('../inventory.sqlite.server');
+      return mod.sqliteInventoryRepository;
+    }
+    if (process.env.INVENTORY_BACKEND === 'json') {
+      return await jsonModule();
+    }
+    return await prismaModule();
+  },
+}));
+
 describe('inventory backend', () => {
   const origBackend = process.env.INVENTORY_BACKEND;
+  const origDbUrl = process.env.DATABASE_URL;
 
   beforeEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
     sqliteImportCount = 0;
     jsonImportCount = 0;
+    prismaImportCount = 0;
+    process.env.DATABASE_URL = 'postgres://test';
   });
 
   afterEach(() => {
@@ -41,7 +79,24 @@ describe('inventory backend', () => {
     } else {
       process.env.INVENTORY_BACKEND = origBackend;
     }
+    if (origDbUrl === undefined) {
+      delete process.env.DATABASE_URL;
+    } else {
+      process.env.DATABASE_URL = origDbUrl;
+    }
     jest.restoreAllMocks();
+  });
+
+  it('imports prisma backend once by default', async () => {
+    const { inventoryRepository } = await import('../inventory.server');
+
+    await inventoryRepository.read('shop1');
+    await inventoryRepository.read('shop2');
+
+    expect(prismaImportCount).toBe(1);
+    expect(sqliteImportCount).toBe(0);
+    expect(jsonImportCount).toBe(0);
+    expect(mockPrisma.read).toHaveBeenCalledTimes(2);
   });
 
   it('imports sqlite backend once', async () => {
@@ -53,6 +108,7 @@ describe('inventory backend', () => {
 
     expect(sqliteImportCount).toBe(1);
     expect(jsonImportCount).toBe(0);
+    expect(prismaImportCount).toBe(0);
     expect(mockSqlite.read).toHaveBeenCalledTimes(2);
   });
 
@@ -65,6 +121,7 @@ describe('inventory backend', () => {
 
     expect(jsonImportCount).toBe(1);
     expect(sqliteImportCount).toBe(0);
+    expect(prismaImportCount).toBe(0);
     expect(mockJson.read).toHaveBeenCalledTimes(2);
   });
 

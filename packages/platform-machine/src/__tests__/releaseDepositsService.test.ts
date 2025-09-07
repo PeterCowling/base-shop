@@ -93,6 +93,36 @@ describe("releaseDepositsOnce", () => {
 
     consoleSpy.mockRestore();
   });
+
+  it("refunds when payment_intent is an object", async () => {
+    readdirMock.mockResolvedValue(["shop"]);
+    readOrdersMock.mockResolvedValue([
+      { sessionId: "s1", returnedAt: "now", deposit: 10 },
+    ]);
+    stripeRetrieveMock.mockResolvedValue({ payment_intent: { id: "pi" } });
+
+    await service.releaseDepositsOnce(undefined, "/data");
+
+    expect(stripeRefundMock).toHaveBeenCalledTimes(1);
+    expect(stripeRefundMock).toHaveBeenCalledWith({
+      payment_intent: "pi",
+      amount: 1000,
+    });
+    expect(markRefundedMock).toHaveBeenCalledWith("shop", "s1");
+  });
+
+  it("skips refund when payment_intent missing", async () => {
+    readdirMock.mockResolvedValue(["shop"]);
+    readOrdersMock.mockResolvedValue([
+      { sessionId: "s1", returnedAt: "now", deposit: 10 },
+    ]);
+    stripeRetrieveMock.mockResolvedValue({});
+
+    await service.releaseDepositsOnce(undefined, "/data");
+
+    expect(stripeRefundMock).not.toHaveBeenCalled();
+    expect(markRefundedMock).not.toHaveBeenCalled();
+  });
 });
 
 describe("resolveConfig precedence", () => {
@@ -235,7 +265,7 @@ describe("startDepositReleaseService", () => {
 
   it("uses provided log function when release fails", async () => {
     const err = new Error("boom");
-    (service.releaseDepositsOnce as jest.Mock).mockRejectedValueOnce(err);
+    const releaseMock = jest.fn().mockRejectedValue(err);
     const logSpy = jest.fn();
     const setSpy = jest
       .spyOn(global, "setInterval")
@@ -247,7 +277,7 @@ describe("startDepositReleaseService", () => {
     const stop = await service.startDepositReleaseService(
       {},
       "/data",
-      undefined,
+      releaseMock,
       logSpy,
     );
     await Promise.resolve();

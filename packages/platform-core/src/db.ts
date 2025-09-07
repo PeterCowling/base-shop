@@ -1,5 +1,19 @@
 import { PrismaClient } from '@prisma/client';
 
+/**
+ * Avoid augmenting `PrismaClient` with a permissive index signature.
+ * For dynamic model access, use a typed helper instead:
+ *
+ * ```ts
+ * function getModelDelegate<K extends keyof PrismaClient>(
+ *   client: PrismaClient,
+ *   model: K,
+ * ): PrismaClient[K] {
+ *   return client[model];
+ * }
+ * ```
+ */
+
 type RentalOrder = {
   shop: string;
   sessionId: string;

@@ -22,6 +22,24 @@ Before submitting changes, run [`pnpm lint`](../package.json#L24) and [`pnpm tes
 
 See [testing](./testing.md) for guidance on running tests with Prisma.
 
+## Prisma model access
+
+Avoid extending `PrismaClient` with a permissive string index signature. When a
+model name must be chosen dynamically, use a helper function to keep type
+safety:
+
+```ts
+function getModelDelegate<K extends keyof PrismaClient>(
+  client: PrismaClient,
+  model: K,
+): PrismaClient[K] {
+  return client[model];
+}
+```
+
+This approach prevents the accidental introduction of an `any`-typed index
+signature on the Prisma client.
+
 ## API documentation
 
 Generate API reference docs for all public packages by running:

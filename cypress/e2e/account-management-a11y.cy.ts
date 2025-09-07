@@ -21,6 +21,33 @@ describe('Account management accessibility', () => {
     });
   });
 
+  const viewports = [
+    { name: 'mobile', width: 375, height: 667 },
+    { name: 'tablet', width: 768, height: 1024 },
+    { name: 'desktop', width: 1280, height: 800 }
+  ];
+
+  viewports.forEach(({ name, width, height }) => {
+    it(`Profile form validation is accessible on ${name}`, () => {
+      cy.viewport(width, height);
+      login();
+      cy.visit('/account/profile');
+
+      cy.findByRole('button', { name: /save/i }).click();
+      cy.findByLabelText('Name')
+        .should('have.attr', 'id', 'name')
+        .and('have.attr', 'aria-invalid', 'true');
+      cy.findByLabelText('Email')
+        .should('have.attr', 'id', 'email')
+        .and('have.attr', 'aria-invalid', 'true');
+      cy.findByText('Name is required.').should('have.attr', 'role', 'alert');
+      cy.findByText('Email is required.').should('have.attr', 'role', 'alert');
+
+      cy.injectAxe();
+      cy.checkA11y(undefined, undefined, undefined, true);
+    });
+  });
+
   it('ProfileForm links labels, announces errors, and tabs correctly', () => {
     login();
     cy.visit('/account/profile');

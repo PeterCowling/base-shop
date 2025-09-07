@@ -43,9 +43,12 @@ jest.mock("crypto", () => ({
 let mockSessionStore: any;
 const createSessionStore = jest.fn(async () => mockSessionStore);
 
+let SESSION_TTL_S_MOCK = 3600;
 jest.mock("../store", () => ({
   createSessionStore,
-  SESSION_TTL_S: 3600,
+  get SESSION_TTL_S() {
+    return SESSION_TTL_S_MOCK;
+  },
 }));
 
 const ORIGINAL_ENV = { ...process.env };
@@ -53,6 +56,7 @@ const ORIGINAL_ENV = { ...process.env };
 beforeEach(() => {
   jest.resetModules();
   jest.clearAllMocks();
+  SESSION_TTL_S_MOCK = 3600;
   process.env = {
     ...ORIGINAL_ENV,
     SESSION_SECRET: "secret",
@@ -94,7 +98,7 @@ it("createCustomerSession sets cookies and stores session", async () => {
 
   expect(sealData).toHaveBeenCalledWith(
     { customerId: "cust", role: "customer", sessionId: "session-id" },
-    { password: "secret", ttl: 3600 }
+    { password: "secret", ttl: SESSION_TTL_S_MOCK }
   );
   expect(mockCookies.set).toHaveBeenCalledWith(
     CUSTOMER_SESSION_COOKIE,
@@ -200,6 +204,42 @@ it("getCustomerSession returns null when session not found", async () => {
   expect(mockSessionStore.get).toHaveBeenCalledWith("s1");
 });
 
+it("getCustomerSession returns null when session token expired", async () => {
+  SESSION_TTL_S_MOCK = 1;
+  jest.useFakeTimers();
+  jest.setSystemTime(new Date("2023-01-01T00:00:00Z"));
+  sealData.mockImplementation(async (session) =>
+    JSON.stringify({ session, createdAt: Date.now() })
+  );
+  unsealData.mockImplementation(async (token, { ttl }) => {
+    const data = JSON.parse(token);
+    if (Date.now() - data.createdAt > ttl * 1000) {
+      throw new Error("expired");
+    }
+    return data.session;
+  });
+  const {
+    createCustomerSession,
+    getCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+  } = await import("../session");
+  randomUUID
+    .mockReturnValueOnce("session-id")
+    .mockReturnValueOnce("csrf-token");
+  mockHeaders.get.mockReturnValue("agent");
+  await createCustomerSession({ customerId: "cust", role: "customer" });
+  const token = mockCookies.set.mock.calls.find(
+    ([name]) => name === CUSTOMER_SESSION_COOKIE
+  )[1];
+  mockCookies.get.mockImplementation((name: string) =>
+    name === CUSTOMER_SESSION_COOKIE ? { value: token } : undefined
+  );
+  jest.setSystemTime(new Date(Date.now() + 2000));
+  await expect(getCustomerSession()).resolves.toBeNull();
+  expect(mockSessionStore.get).not.toHaveBeenCalled();
+  jest.useRealTimers();
+});
+
 it("getCustomerSession rotates session id, updates store, and creates csrf when absent", async () => {
   const {
     getCustomerSession,
@@ -237,7 +277,7 @@ it("getCustomerSession rotates session id, updates store, and creates csrf when 
   );
   expect(sealData).toHaveBeenCalledWith(
     { sessionId: "new-id", customerId: "cust", role: "customer" },
-    { password: "secret", ttl: 3600 }
+    { password: "secret", ttl: SESSION_TTL_S_MOCK }
   );
   expect(mockSessionStore.set).toHaveBeenCalledWith(
     expect.objectContaining({ sessionId: "new-id", customerId: "cust" })

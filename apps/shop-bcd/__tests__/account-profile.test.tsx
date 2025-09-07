@@ -54,4 +54,29 @@ describe("/account/profile", () => {
       email: "jane@example.com",
     });
   });
+
+  it("redirects when session token expired", async () => {
+    jest.useFakeTimers();
+    const start = new Date("2023-01-01T00:00:00Z");
+    jest.setSystemTime(start);
+    (getCustomerSession as jest.Mock).mockImplementation(async () => {
+      return Date.now() - start.getTime() > 1000
+        ? null
+        : { customerId: "cust1" };
+    });
+    (getCustomerProfile as jest.Mock).mockResolvedValue({
+      name: "Jane Doe",
+      email: "jane@example.com",
+    });
+
+    await ProfilePage({});
+    expect(redirect).not.toHaveBeenCalled();
+
+    jest.setSystemTime(new Date(start.getTime() + 2000));
+    await ProfilePage({});
+    expect(redirect).toHaveBeenCalledWith(
+      "/login?callbackUrl=%2Faccount%2Fprofile",
+    );
+    jest.useRealTimers();
+  });
 });

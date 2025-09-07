@@ -64,4 +64,24 @@ describe("tracking dashboard", () => {
     expect(sendEmail).toHaveBeenCalled();
     expect(fetch).toHaveBeenCalled();
   });
+
+  test("does not notify when status is unchanged", async () => {
+    const sendEmail = jest.fn();
+    global.fetch = jest
+      .fn<Promise<any>, any>()
+      .mockResolvedValue({ ok: true, json: async () => ({}) } as any) as any;
+    process.env.TWILIO_SID = "sid";
+    process.env.TWILIO_TOKEN = "tok";
+    process.env.TWILIO_FROM = "+111";
+    const { notifyStatusChange } = await import("../src/tracking");
+    await notifyStatusChange(
+      { email: "a@b.com", phone: "+1222" },
+      { id: "1", type: "shipment", provider: "ups", trackingNumber: "1" },
+      "same",
+      "same",
+      { sendEmail },
+    );
+    expect(sendEmail).not.toHaveBeenCalled();
+    expect(fetch).not.toHaveBeenCalled();
+  });
 });

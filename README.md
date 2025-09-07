@@ -280,6 +280,10 @@ Repeat this pattern for any other packages an app consumes to avoid missing modu
 
 - If `pnpm run dev` fails with an `array.length` error, run the appropriate Codex command to retrieve detailed failure information.
 
+## Performance
+
+See [docs/performance-budgets.md](docs/performance-budgets.md) for p95 latency budgets and corresponding k6 thresholds.
+
 ## Notes
 
 See [docs/lighthouse.md](docs/lighthouse.md) for running Lighthouse audits.

@@ -1,5 +1,6 @@
 // cypress/support/index.ts
 
+import "cypress-axe";
 // Enable Mock Service Worker for API mocking in Cypress tests
 import { server } from "../../test/msw/server";
 import "cypress-axe";

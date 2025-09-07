@@ -36,10 +36,30 @@ describe("LoginPage", () => {
           "Content-Type": "application/json",
           "x-csrf-token": "TOKEN",
         },
-        body: JSON.stringify({ customerId: "alice", password: "secret" }),
+        body: JSON.stringify({ customerId: "alice", password: "secret", remember: false }),
       }),
     );
     expect(await screen.findByText("Logged in")).toBeInTheDocument();
+  });
+
+  it("includes remember flag when checked", async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: async () => ({}),
+    });
+
+    render(<LoginPage />);
+    await userEvent.type(screen.getByPlaceholderText("User ID"), "alice");
+    await userEvent.type(screen.getByPlaceholderText("Password"), "secret");
+    await userEvent.click(screen.getByLabelText(/remember/i));
+    await userEvent.click(screen.getByRole("button", { name: /login/i }));
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "/api/login",
+      expect.objectContaining({
+        body: JSON.stringify({ customerId: "alice", password: "secret", remember: true }),
+      }),
+    );
   });
 
   it("shows error message when login fails", async () => {

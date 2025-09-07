@@ -115,6 +115,36 @@ it("createCustomerSession sets cookies and stores session", async () => {
   );
 });
 
+it("createCustomerSession uses extended maxAge when remember is true", async () => {
+  const {
+    createCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+    CSRF_TOKEN_COOKIE,
+  } = await import("../session");
+
+  mockHeaders.get.mockReturnValue("agent");
+  randomUUID
+    .mockReturnValueOnce("session-id")
+    .mockReturnValueOnce("csrf-token");
+  sealData.mockResolvedValue("sealed-token");
+
+  await createCustomerSession(
+    { customerId: "cust", role: "customer" },
+    { remember: true },
+  );
+
+  expect(mockCookies.set).toHaveBeenCalledWith(
+    CUSTOMER_SESSION_COOKIE,
+    "sealed-token",
+    expect.objectContaining({ maxAge: 60 * 60 * 24 * 30 }),
+  );
+  expect(mockCookies.set).toHaveBeenCalledWith(
+    CSRF_TOKEN_COOKIE,
+    "csrf-token",
+    expect.objectContaining({ maxAge: 60 * 60 * 24 * 30 }),
+  );
+});
+
 it("createCustomerSession throws when SESSION_SECRET is undefined", async () => {
   const { createCustomerSession } = await import("../session");
   const originalSecret = process.env.SESSION_SECRET;

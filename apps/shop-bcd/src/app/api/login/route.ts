@@ -29,6 +29,7 @@ export const LoginSchema = z
   .object({
     customerId: z.string(),
     password: z.string().min(8, "Password must be at least 8 characters"),
+    remember: z.boolean().optional(),
   })
   .strict();
 export type LoginInput = z.infer<typeof LoginSchema>;
@@ -89,7 +90,7 @@ export async function POST(req: Request) {
     }
   }
 
-  await createCustomerSession(valid);
+  await createCustomerSession(valid, { remember: parsed.data.remember });
 
   return NextResponse.json({ ok: true });
 }

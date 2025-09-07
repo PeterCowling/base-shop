@@ -22,24 +22,30 @@ interface InternalSession extends CustomerSession {
 
 const sessionStorePromise = createSessionStore();
 
-function cookieOptions() {
+interface CreateSessionOptions {
+  remember?: boolean;
+}
+
+const REMEMBER_ME_TTL_S = 60 * 60 * 24 * 30;
+
+function cookieOptions(maxAge = SESSION_TTL_S) {
   return {
     httpOnly: true,
     sameSite: "strict" as const,
     secure: true,
     path: "/",
-    maxAge: SESSION_TTL_S,
+    maxAge,
     domain: coreEnv.COOKIE_DOMAIN,
   };
 }
 
-function csrfCookieOptions() {
+function csrfCookieOptions(maxAge = SESSION_TTL_S) {
   return {
     httpOnly: false,
     sameSite: "strict" as const,
     secure: true,
     path: "/",
-    maxAge: SESSION_TTL_S,
+    maxAge,
     domain: coreEnv.COOKIE_DOMAIN,
   };
 }
@@ -88,7 +94,10 @@ export async function getCustomerSession(): Promise<CustomerSession | null> {
   return { customerId, role };
 }
 
-export async function createCustomerSession(sessionData: CustomerSession): Promise<void> {
+export async function createCustomerSession(
+  sessionData: CustomerSession,
+  options: CreateSessionOptions = {},
+): Promise<void> {
   const secret = coreEnv.SESSION_SECRET;
   if (!secret) {
     throw new Error("SESSION_SECRET is not set in core environment configuration");
@@ -102,9 +111,10 @@ export async function createCustomerSession(sessionData: CustomerSession): Promi
     password: secret,
     ttl: SESSION_TTL_S,
   });
-  store.set(CUSTOMER_SESSION_COOKIE, token, cookieOptions());
+  const maxAge = options.remember ? REMEMBER_ME_TTL_S : SESSION_TTL_S;
+  store.set(CUSTOMER_SESSION_COOKIE, token, cookieOptions(maxAge));
   const csrf = randomUUID();
-  store.set(CSRF_TOKEN_COOKIE, csrf, csrfCookieOptions());
+  store.set(CSRF_TOKEN_COOKIE, csrf, csrfCookieOptions(maxAge));
   const ua = (await headers()).get("user-agent") ?? "unknown";
   const sessionStore = await sessionStorePromise;
   await sessionStore.set({

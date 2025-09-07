@@ -32,9 +32,24 @@ test("logs in valid customer", async () => {
   expect(createCustomerSession).toHaveBeenCalledWith({
     customerId: "cust1",
     role: "customer",
-  });
+  }, { remember: undefined });
   expect(res.status).toBe(200);
   await expect(res.json()).resolves.toEqual({ ok: true });
+});
+
+test("extends session when remember is true", async () => {
+  (validateCsrfToken as jest.Mock).mockResolvedValue(true);
+  const res = await POST(
+    makeRequest(
+      { customerId: "cust1", password: "pass1234", remember: true },
+      { "x-csrf-token": "token" },
+    ),
+  );
+  expect(createCustomerSession).toHaveBeenCalledWith(
+    { customerId: "cust1", role: "customer" },
+    { remember: true },
+  );
+  expect(res.status).toBe(200);
 });
 
 test("rejects invalid CSRF token", async () => {

@@ -11,9 +11,12 @@ DATABASE_URL="postgres://user:password@localhost:5432/shop"
 ```
 
 ```bash
-pnpm exec prisma migrate dev
+pnpm --filter @acme/platform-core exec prisma migrate dev
+pnpm --filter @acme/platform-core run prisma:generate
 pnpm tsx packages/platform-core/prisma/seed.ts
 ```
+
+`postinstall` runs `prisma generate` automatically.
 
 If `DATABASE_URL` is unset, the platform falls back to an in-memory test stub.
 

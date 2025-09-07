@@ -23,7 +23,7 @@ function normalize<T extends Order>(order: T): T {
 
 export async function listOrders(shop: string): Promise<Order[]> {
   const orders = await prisma.rentalOrder.findMany({ where: { shop } });
-  return orders.map(normalize);
+  return orders.map((order) => normalize(order as Order));
 }
 
 export const readOrders = listOrders;
@@ -78,7 +78,7 @@ export async function markFulfilled(
     where: { shop_sessionId: { shop, sessionId } },
     data: { fulfilledAt: nowIso() },
   });
-  return order as Order;
+  return normalize(order as Order);
 }
 
 export async function markShipped(
@@ -89,7 +89,7 @@ export async function markShipped(
     where: { shop_sessionId: { shop, sessionId } },
     data: { shippedAt: nowIso() },
   });
-  return order as Order;
+  return normalize(order as Order);
 }
 
 export async function markDelivered(
@@ -100,7 +100,7 @@ export async function markDelivered(
     where: { shop_sessionId: { shop, sessionId } },
     data: { deliveredAt: nowIso() },
   });
-  return order as Order;
+  return normalize(order as Order);
 }
 
 export async function markCancelled(
@@ -111,7 +111,7 @@ export async function markCancelled(
     where: { shop_sessionId: { shop, sessionId } },
     data: { cancelledAt: nowIso() },
   });
-  return order as Order;
+  return normalize(order as Order);
 }
 
 export async function markReturned(
@@ -127,7 +127,7 @@ export async function markReturned(
         ...(typeof damageFee === "number" ? { damageFee } : {}),
       },
     });
-    return order;
+    return normalize(order as Order);
   } catch {
     return null;
   }
@@ -150,7 +150,7 @@ export async function markRefunded(
         ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
       },
     });
-    return order;
+    return normalize(order as Order);
   } catch {
     return null;
   }
@@ -199,7 +199,7 @@ export async function refundOrder(
         refundTotal: alreadyRefunded + refundable,
       } as Prisma.RentalOrderUpdateInput,
     });
-    return updated as Order;
+    return normalize(updated as Order);
   } catch {
     return null;
   }
@@ -214,7 +214,7 @@ export async function markNeedsAttention(
       where: { shop_sessionId: { shop, sessionId } },
       data: { flaggedForReview: true },
     });
-    return order as Order;
+    return normalize(order as Order);
   } catch {
     return null;
   }
@@ -236,7 +236,7 @@ export async function updateRisk(
         ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
       },
     });
-    return order;
+    return normalize(order as Order);
   } catch {
     return null;
   }
@@ -249,7 +249,7 @@ export async function getOrdersForCustomer(
   const orders = await prisma.rentalOrder.findMany({
     where: { shop, customerId },
   });
-  return orders.map(normalize);
+  return orders.map((order) => normalize(order as Order));
 }
 
 export async function setReturnTracking(
@@ -263,7 +263,7 @@ export async function setReturnTracking(
       where: { shop_sessionId: { shop, sessionId } },
       data: { trackingNumber, labelUrl },
     });
-    return order;
+    return normalize(order as Order);
   } catch {
     return null;
   }
@@ -279,7 +279,7 @@ export async function setReturnStatus(
       where: { shop_trackingNumber: { shop, trackingNumber } },
       data: { returnStatus },
     });
-    return order;
+    return normalize(order as Order);
   } catch {
     return null;
   }

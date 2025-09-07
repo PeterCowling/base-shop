@@ -32,9 +32,15 @@ function createTestPrismaStub(): Pick<
   | 'subscriptionUsage'
   | 'user'
   | 'reverseLogisticsEvent'
+  | 'customerMfa'
 > {
   const rentalOrders: RentalOrder[] = [];
   const customerProfiles: { customerId: string; name: string; email: string }[] = [];
+  const customerMfas: {
+    customerId: string;
+    secret: string;
+    enabled: boolean;
+  }[] = [];
 
   return {
     rentalOrder: {
@@ -112,6 +118,31 @@ function createTestPrismaStub(): Pick<
         return profile;
       },
     } as unknown as PrismaClient['customerProfile'],
+
+    customerMfa: {
+      upsert: async ({ where, update, create }: any) => {
+        const idx = customerMfas.findIndex(
+          (m) => m.customerId === where.customerId,
+        );
+        if (idx >= 0) {
+          customerMfas[idx] = { ...customerMfas[idx], ...update };
+          return customerMfas[idx];
+        }
+        const record = { ...create };
+        customerMfas.push(record);
+        return record;
+      },
+      findUnique: async ({ where }: any) =>
+        customerMfas.find((m) => m.customerId === where.customerId) || null,
+      update: async ({ where, data }: any) => {
+        const idx = customerMfas.findIndex(
+          (m) => m.customerId === where.customerId,
+        );
+        if (idx < 0) throw new Error('CustomerMfa not found');
+        customerMfas[idx] = { ...customerMfas[idx], ...data };
+        return customerMfas[idx];
+      },
+    } as unknown as PrismaClient['customerMfa'],
 
     subscriptionUsage: {
       findUnique: async () => null,

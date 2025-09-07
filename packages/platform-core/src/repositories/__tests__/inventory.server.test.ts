@@ -6,6 +6,8 @@ import type { InventoryItem } from "../../types/inventory";
 // Hold mutable repository implementations so we can swap them per test.
 let jsonRepo: any;
 let sqliteRepo: any;
+let prismaRepo: any;
+let prismaImportCount = 0;
 
 jest.mock("../inventory.json.server", () => ({
   get jsonInventoryRepository() {
@@ -13,9 +15,39 @@ jest.mock("../inventory.json.server", () => ({
   },
 }));
 
-jest.mock("../inventory.sqlite.server", () => ({
-  get sqliteInventoryRepository() {
-    return sqliteRepo;
+jest.mock(
+  "../inventory.sqlite.server",
+  () => ({
+    get sqliteInventoryRepository() {
+      return sqliteRepo;
+    },
+  }),
+  { virtual: true },
+);
+
+jest.mock("../inventory.prisma.server", () => {
+  prismaImportCount++;
+  return {
+    get prismaInventoryRepository() {
+      return prismaRepo;
+    },
+  };
+});
+
+jest.mock("../repoResolver", () => ({
+  resolveRepo: async (
+    prismaDelegate: any,
+    prismaModule: any,
+    jsonModule: any,
+  ) => {
+    if (process.env.INVENTORY_BACKEND === "sqlite") {
+      const mod = await import("../inventory.sqlite.server");
+      return mod.sqliteInventoryRepository;
+    }
+    if (process.env.INVENTORY_BACKEND === "json") {
+      return await jsonModule();
+    }
+    return await prismaModule();
   },
 }));
 
@@ -78,10 +110,12 @@ describe.each(["json", "sqlite"]) (
       jest.resetModules();
       jsonRepo = createRepo();
       sqliteRepo = createRepo();
+      prismaRepo = createRepo();
+      prismaImportCount = 0;
       if (backend === "sqlite") {
         process.env.INVENTORY_BACKEND = "sqlite";
       } else {
-        delete process.env.INVENTORY_BACKEND;
+        process.env.INVENTORY_BACKEND = "json";
       }
       const mod = await import("../inventory.server");
       variantKey = mod.variantKey;
@@ -185,7 +219,7 @@ describe("inventory repository concurrency", () => {
     async () => {
     jest.resetModules();
     jsonRepo = jest.requireActual("../inventory.json.server").jsonInventoryRepository;
-    sqliteRepo = jest.requireActual("../inventory.sqlite.server").sqliteInventoryRepository;
+    sqliteRepo = jsonRepo;
     process.env.SKIP_STOCK_ALERT = "1";
     const { writeInventory, readInventory, updateInventoryItem } = await import(
       "../inventory.server"

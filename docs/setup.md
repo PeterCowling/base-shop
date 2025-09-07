@@ -18,11 +18,12 @@ Run migrations and seed data:
 
 ```bash
 pnpm --filter @acme/platform-core exec prisma migrate dev
-pnpm --filter @acme/platform-core run prisma:generate
+pnpm --filter @acme/platform-core exec prisma generate
 pnpm tsx packages/platform-core/prisma/seed.ts
 ```
 
 `postinstall` runs `prisma generate` automatically.
+Always invoke Prisma through the `@acme/platform-core` package using `pnpm --filter @acme/platform-core` rather than running it from the repository root.
 
 If `DATABASE_URL` is unset, the platform falls back to an in-memory test stub.
 

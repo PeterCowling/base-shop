@@ -14,13 +14,26 @@ function mockStripe() {
 function mockOrders() {
   const updateRisk = jest.fn();
   const markRefunded = jest.fn();
+  const markNeedsAttention = jest.fn();
   jest.doMock("../orders", () => ({
     __esModule: true,
     addOrder: jest.fn(),
     updateRisk,
     markRefunded,
+    markNeedsAttention,
   }));
-  return { updateRisk, markRefunded };
+  return { updateRisk, markRefunded, markNeedsAttention };
+}
+
+function mockSubscriptions() {
+  const updateSubscriptionPaymentStatus = jest.fn();
+  const syncSubscriptionData = jest.fn();
+  jest.doMock("../repositories/subscriptions.server", () => ({
+    __esModule: true,
+    updateSubscriptionPaymentStatus,
+    syncSubscriptionData,
+  }));
+  return { updateSubscriptionPaymentStatus, syncSubscriptionData };
 }
 
 afterEach(() => {
@@ -32,6 +45,7 @@ describe("extractSessionIdFromCharge", () => {
   it("returns invoice from charge.invoice", async () => {
     mockStripe();
     mockOrders();
+    mockSubscriptions();
     const { extractSessionIdFromCharge } = await import("../stripe-webhook");
     const charge = { id: "ch_1", invoice: "in_123" } as any;
     expect(extractSessionIdFromCharge(charge)).toBe("in_123");
@@ -40,6 +54,7 @@ describe("extractSessionIdFromCharge", () => {
   it("returns invoice from payment_intent.latest_charge", async () => {
     mockStripe();
     mockOrders();
+    mockSubscriptions();
     const { extractSessionIdFromCharge } = await import("../stripe-webhook");
     const charge = {
       id: "ch_2",
@@ -53,6 +68,7 @@ describe("handleStripeWebhook", () => {
   it("updates risk for review.closed charge object", async () => {
     mockStripe();
     const { updateRisk } = mockOrders();
+    mockSubscriptions();
     const { handleStripeWebhook } = await import("../stripe-webhook");
     const event = {
       type: "review.closed",
@@ -78,6 +94,7 @@ describe("handleStripeWebhook", () => {
   it("flags and refunds high-risk early fraud warning", async () => {
     mockStripe();
     const { updateRisk, markRefunded } = mockOrders();
+    mockSubscriptions();
     const { handleStripeWebhook } = await import("../stripe-webhook");
     const event = {
       type: "radar.early_fraud_warning.created",
@@ -99,6 +116,70 @@ describe("handleStripeWebhook", () => {
       true,
     );
     expect(markRefunded).toHaveBeenCalledWith("shop1", "ch_warn");
+  });
+
+  it("marks order needing attention on payment failure", async () => {
+    mockStripe();
+    const { markNeedsAttention } = mockOrders();
+    mockSubscriptions();
+    const { handleStripeWebhook } = await import("../stripe-webhook");
+    const event = {
+      type: "payment_intent.payment_failed",
+      data: {
+        object: {
+          id: "pi_1",
+          latest_charge: { id: "ch_1", invoice: "in_1" },
+        },
+      },
+    } as any;
+    await handleStripeWebhook("shop1", event);
+    expect(markNeedsAttention).toHaveBeenCalledWith("shop1", "in_1");
+  });
+
+  it("updates subscription payment status on invoice events", async () => {
+    mockStripe();
+    mockOrders();
+    const { updateSubscriptionPaymentStatus } = mockSubscriptions();
+    const { handleStripeWebhook } = await import("../stripe-webhook");
+    const invoice = { customer: "cus_1", subscription: "sub_1" } as any;
+    await handleStripeWebhook("shop1", {
+      type: "invoice.payment_succeeded",
+      data: { object: invoice },
+    } as any);
+    expect(updateSubscriptionPaymentStatus).toHaveBeenCalledWith(
+      "cus_1",
+      "sub_1",
+      "succeeded",
+    );
+
+    await handleStripeWebhook("shop1", {
+      type: "invoice.payment_failed",
+      data: { object: invoice },
+    } as any);
+    expect(updateSubscriptionPaymentStatus).toHaveBeenCalledWith(
+      "cus_1",
+      "sub_1",
+      "failed",
+    );
+  });
+
+  it("syncs subscription data on update and delete", async () => {
+    mockStripe();
+    mockOrders();
+    const { syncSubscriptionData } = mockSubscriptions();
+    const { handleStripeWebhook } = await import("../stripe-webhook");
+    const subscription = { id: "sub_1", customer: "cus_1" } as any;
+    await handleStripeWebhook("shop1", {
+      type: "customer.subscription.updated",
+      data: { object: subscription },
+    } as any);
+    expect(syncSubscriptionData).toHaveBeenCalledWith("cus_1", "sub_1");
+
+    await handleStripeWebhook("shop1", {
+      type: "customer.subscription.deleted",
+      data: { object: subscription },
+    } as any);
+    expect(syncSubscriptionData).toHaveBeenCalledWith("cus_1", null);
   });
 });
 

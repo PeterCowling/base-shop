@@ -1,10 +1,12 @@
 import "server-only";
 
+import { prisma } from "../db";
 import {
   inventoryItemSchema,
   type InventoryItem,
   variantKey,
 } from "../types/inventory";
+import { resolveRepo } from "./repoResolver";
 import type {
   InventoryRepository,
   InventoryMutateFn,
@@ -19,14 +21,21 @@ let repoPromise: Promise<InventoryRepository> | undefined;
 
 async function getRepo(): Promise<InventoryRepository> {
   if (!repoPromise) {
-    repoPromise = (async () => {
-      if (process.env.INVENTORY_BACKEND === "sqlite") {
-        const mod = await import("./inventory.sqlite.server");
-        return mod.sqliteInventoryRepository;
-      }
-      const mod = await import("./inventory.json.server");
-      return mod.jsonInventoryRepository;
-    })();
+    repoPromise = resolveRepo(
+      () => (prisma as any).inventoryItem,
+      () =>
+        import("./inventory.prisma.server").then(
+          (m) => m.prismaInventoryRepository,
+        ),
+      () =>
+        import("./inventory.json.server").then(
+          (m) => m.jsonInventoryRepository,
+        ),
+      () =>
+        import("./inventory.sqlite.server").then(
+          (m) => m.sqliteInventoryRepository,
+        ),
+    );
   }
   return repoPromise;
 }

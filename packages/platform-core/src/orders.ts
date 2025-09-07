@@ -154,6 +154,21 @@ export async function markRefunded(
   }
 }
 
+export async function markNeedsAttention(
+  shop: string,
+  sessionId: string,
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: { flaggedForReview: true },
+    });
+    return order as Order;
+  } catch {
+    return null;
+  }
+}
+
 export async function updateRisk(
   shop: string,
   sessionId: string,

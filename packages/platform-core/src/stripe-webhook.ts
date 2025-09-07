@@ -1,8 +1,12 @@
 // packages/platform-core/src/stripe-webhook.ts
 import type Stripe from "stripe";
 import { stripe } from "@acme/stripe";
-import { addOrder, markRefunded, updateRisk } from "./orders";
+import { addOrder, markNeedsAttention, markRefunded, updateRisk } from "./orders";
 import { getShopSettings } from "./repositories/settings.server";
+import {
+  syncSubscriptionData,
+  updateSubscriptionPaymentStatus,
+} from "./repositories/subscriptions.server";
 
 type ChargeWithInvoice = Stripe.Charge & {
   invoice?: string | Stripe.Invoice | null;
@@ -78,6 +82,19 @@ export async function handleStripeWebhook(
       await markRefunded(shop, sessionId);
       break;
     }
+    case "payment_intent.payment_failed": {
+      const pi = data.object as Stripe.PaymentIntent;
+      const latest = pi.latest_charge;
+      const charge =
+        latest && typeof latest !== "string"
+          ? (latest as ChargeWithInvoice)
+          : undefined;
+      const sessionId = charge
+        ? extractSessionIdFromCharge(charge) || charge.id
+        : pi.id;
+      await markNeedsAttention(shop, sessionId);
+      break;
+    }
     case "payment_intent.succeeded": {
       const pi = data.object as Stripe.PaymentIntent;
       const latest = pi.latest_charge;
@@ -88,6 +105,38 @@ export async function handleStripeWebhook(
       if (charge) {
         await persistRiskFromCharge(shop, charge);
       }
+      break;
+    }
+    case "invoice.payment_succeeded":
+    case "invoice.payment_failed": {
+      const invoice = data.object as Stripe.Invoice;
+      const customer = invoice.customer as string | Stripe.Customer | null;
+      const subscription = invoice.subscription as string | Stripe.Subscription | null;
+      const customerId =
+        typeof customer === "string" ? customer : customer?.id;
+      const subscriptionId =
+        typeof subscription === "string" ? subscription : subscription?.id;
+      if (customerId && subscriptionId) {
+        await updateSubscriptionPaymentStatus(
+          customerId,
+          subscriptionId,
+          type === "invoice.payment_succeeded" ? "succeeded" : "failed",
+        );
+      }
+      break;
+    }
+    case "customer.subscription.updated": {
+      const subscription = data.object as Stripe.Subscription;
+      const customer = subscription.customer as string | Stripe.Customer;
+      const customerId = typeof customer === "string" ? customer : customer.id;
+      await syncSubscriptionData(customerId, subscription.id);
+      break;
+    }
+    case "customer.subscription.deleted": {
+      const subscription = data.object as Stripe.Subscription;
+      const customer = subscription.customer as string | Stripe.Customer;
+      const customerId = typeof customer === "string" ? customer : customer.id;
+      await syncSubscriptionData(customerId, null);
       break;
     }
     case "charge.succeeded": {

@@ -14,6 +14,23 @@ async function main() {
     ],
     skipDuplicates: true,
   });
+
+  if (!process.env.SKIP_INVENTORY_SEED) {
+    await prisma.inventoryItem.createMany({
+      data: [
+        {
+          id: "seed-inventory-1",
+          shopId: "seed-shop",
+          sku: "SKU1",
+          productId: "seed-product",
+          quantity: 10,
+          variantAttributes: {},
+          variantKey: "SKU1",
+        },
+      ],
+      skipDuplicates: true,
+    });
+  }
 }
 
 main()

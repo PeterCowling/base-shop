@@ -75,11 +75,11 @@ function createTestPrismaStub(): Pick<
         Object.assign(order, data);
         return order;
       },
-    } as PrismaClient['rentalOrder'],
+    } as unknown as PrismaClient['rentalOrder'],
 
     shop: {
       findUnique: async () => ({ data: {} }),
-    } as PrismaClient['shop'],
+    } as unknown as PrismaClient['shop'],
 
     page: {
       createMany: async () => {},
@@ -87,7 +87,7 @@ function createTestPrismaStub(): Pick<
       update: async () => ({}),
       deleteMany: async () => ({ count: 0 }),
       upsert: async () => ({}),
-    } as PrismaClient['page'],
+    } as unknown as PrismaClient['page'],
 
     customerProfile: {
       findUnique: async ({ where }: any) =>
@@ -111,24 +111,24 @@ function createTestPrismaStub(): Pick<
         customerProfiles.push(profile);
         return profile;
       },
-    } as PrismaClient['customerProfile'],
+    } as unknown as PrismaClient['customerProfile'],
 
     subscriptionUsage: {
       findUnique: async () => null,
       upsert: async () => ({}),
-    } as PrismaClient['subscriptionUsage'],
+    } as unknown as PrismaClient['subscriptionUsage'],
 
     user: {
       findUnique: async () => null,
       findFirst: async () => null,
       create: async () => ({}),
       update: async () => ({}),
-    } as PrismaClient['user'],
+    } as unknown as PrismaClient['user'],
 
     reverseLogisticsEvent: {
       create: async () => ({}),
       findMany: async () => [],
-    } as PrismaClient['reverseLogisticsEvent'],
+    } as unknown as PrismaClient['reverseLogisticsEvent'],
   };
 }
 const prisma =

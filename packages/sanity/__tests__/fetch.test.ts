@@ -54,6 +54,11 @@ describe('fetch helpers', () => {
     expect(fetchMock).toHaveBeenCalledWith(expect.any(String), { slug: 'post' });
   });
 
+  it('fetchPostBySlug returns null when not found', async () => {
+    fetchMock.mockResolvedValue(null);
+    await expect(fetchPostBySlug('shop1', 'post')).resolves.toBeNull();
+  });
+
   it('fetchPostBySlug returns null on failure', async () => {
     fetchMock.mockRejectedValue(new Error('fail'));
     await expect(fetchPostBySlug('shop1', 'post')).resolves.toBeNull();

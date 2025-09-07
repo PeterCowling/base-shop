@@ -11,7 +11,6 @@ export async function updateSubscriptionPaymentStatus(
     where: { id: customerId },
     data: {
       stripeSubscriptionId: subscriptionId,
-      subscriptionPaymentStatus: status,
     },
   });
 }

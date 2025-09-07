@@ -11,6 +11,7 @@ export declare function markDelivered(shop: string, sessionId: string): Promise<
 export declare function markCancelled(shop: string, sessionId: string): Promise<Order>;
 export declare function markReturned(shop: string, sessionId: string, damageFee?: number): Promise<Order | null>;
 export declare function markRefunded(shop: string, sessionId: string, riskLevel?: string, riskScore?: number, flaggedForReview?: boolean): Promise<Order | null>;
+export declare function refundOrder(shop: string, sessionId: string, amount: number): Promise<Order | null>;
 export declare function updateRisk(shop: string, sessionId: string, riskLevel?: string, riskScore?: number, flaggedForReview?: boolean): Promise<Order | null>;
 export declare function getOrdersForCustomer(shop: string, customerId: string): Promise<Order[]>;
 export declare function setReturnTracking(shop: string, sessionId: string, trackingNumber: string, labelUrl: string): Promise<Order | null>;

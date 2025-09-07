@@ -153,6 +153,11 @@ describe('component helpers', () => {
       expect(diffDirectories('/a', '/b')).toEqual(['only.txt']);
     });
 
+    it('detects files present only in second directory', () => {
+      vol.fromJSON({ '/b/only.txt': 'hello' });
+      expect(diffDirectories('/a', '/b')).toEqual(['only.txt']);
+    });
+
     it('detects when file contents differ', () => {
       vol.fromJSON({
         '/a/same.txt': 'one',

@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavigationPreview renders nested menu links 1`] = `
+<nav
+  class="bg-background text-foreground p-4 rounded border"
+  data-token="--color-bg"
+>
+  <ul
+    class="flex gap-4"
+  >
+    <li
+      class="relative group"
+    >
+      <a
+        class="font-medium"
+        data-token="--color-fg"
+        href="/home"
+      >
+        Home
+      </a>
+    </li>
+    <li
+      class="relative group"
+    >
+      <a
+        class="font-medium"
+        data-token="--color-fg"
+        href="/products"
+      >
+        Products
+      </a>
+      <ul
+        class="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border bg-background p-2 shadow-md group-hover:flex"
+        data-token="--color-bg"
+      >
+        <li>
+          <a
+            class="block px-2 py-1 hover:underline"
+            data-token="--color-fg"
+            href="/products/hats"
+          >
+            Hats
+          </a>
+        </li>
+        <li>
+          <a
+            class="block px-2 py-1 hover:underline"
+            data-token="--color-fg"
+            href="/products/shirts"
+          >
+            Shirts
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li
+      class="relative group"
+    >
+      <a
+        class="font-medium"
+        data-token="--color-fg"
+        href="/about"
+      >
+        About
+      </a>
+      <ul
+        class="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border bg-background p-2 shadow-md group-hover:flex"
+        data-token="--color-bg"
+      >
+        <li>
+          <a
+            class="block px-2 py-1 hover:underline"
+            data-token="--color-fg"
+            href="/about/team"
+          >
+            Team
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li
+      class="relative group"
+    >
+      <a
+        class="font-medium"
+        data-token="--color-fg"
+        href="#"
+      >
+        Item
+      </a>
+      <ul
+        class="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border bg-background p-2 shadow-md group-hover:flex"
+        data-token="--color-bg"
+      >
+        <li>
+          <a
+            class="block px-2 py-1 hover:underline"
+            data-token="--color-fg"
+            href="#"
+          >
+            Item
+          </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+`;

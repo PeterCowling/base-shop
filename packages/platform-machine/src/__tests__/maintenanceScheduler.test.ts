@@ -25,6 +25,7 @@ describe("runMaintenanceScan", () => {
   const inventoryMock = readInventory as unknown as jest.Mock;
   const productsMock = readProducts as unknown as jest.Mock;
   const infoMock = logger.info as unknown as jest.Mock;
+  const errorMock = logger.error as unknown as jest.Mock;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -67,6 +68,27 @@ describe("runMaintenanceScan", () => {
     expect(infoMock).toHaveBeenCalledWith("item needs maintenance", {
       shopId: "shop1",
       sku: "sku1",
+    });
+  });
+
+  it("logs an error and continues processing other shops", async () => {
+    readdirMock.mockResolvedValueOnce(["badShop", "goodShop"]);
+    inventoryMock
+      .mockResolvedValueOnce([{ sku: "badSku", wearCount: 1 }])
+      .mockResolvedValueOnce([{ sku: "goodSku", wearCount: 5 }]);
+    productsMock
+      .mockRejectedValueOnce(new Error("fail"))
+      .mockResolvedValueOnce([{ sku: "goodSku", wearAndTearLimit: 3 }]);
+
+    await runMaintenanceScan("/data");
+
+    expect(errorMock).toHaveBeenCalledWith("maintenance scan failed", {
+      shopId: "badShop",
+      err: expect.any(Error),
+    });
+    expect(infoMock).toHaveBeenCalledWith("item needs retirement", {
+      shopId: "goodShop",
+      sku: "goodSku",
     });
   });
 });

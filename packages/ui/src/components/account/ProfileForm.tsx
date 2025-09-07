@@ -17,6 +17,13 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
   const [message, setMessage] = useState<string | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
+  const focusFirstError = (errs: Record<string, string>) => {
+    const first = Object.keys(errs)[0];
+    if (first) {
+      document.getElementById(first)?.focus();
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setErrors((prev) => {
@@ -38,6 +45,7 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
       setErrors(newErrors);
       setStatus("error");
       setMessage("Please fix the errors below.");
+      focusFirstError(newErrors);
       return;
     }
     try {
@@ -54,16 +62,18 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
         const data = await res.json();
         setStatus("error");
         if (res.status === 409) {
-          setErrors({ email: data.error ?? "Email already in use" });
-          setMessage(data.error ?? "Email already in use");
+          const conflict = { email: data.error ?? "Email already in use" };
+          setErrors(conflict);
+          setMessage(conflict.email);
+          focusFirstError(conflict);
         } else if (res.status === 400 && data && typeof data === "object" && !("error" in data)) {
           const fieldErrors = data as Record<string, string[]>;
-          setErrors(
-            Object.fromEntries(
-              Object.entries(fieldErrors).map(([key, value]) => [key, value[0]])
-            )
+          const formatted = Object.fromEntries(
+            Object.entries(fieldErrors).map(([key, value]) => [key, value[0]])
           );
+          setErrors(formatted);
           setMessage("Please fix the errors below.");
+          focusFirstError(formatted);
         } else {
           setMessage(data.error ?? "Update failed");
         }
@@ -92,9 +102,16 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
           onChange={handleChange}
           className="rounded border p-2"
           required
+          aria-invalid={errors.name ? "true" : "false"}
+          aria-describedby={errors.name ? "name-error" : undefined}
         />
         {errors.name && (
-          <p className="text-danger text-sm" data-token="--color-danger">
+          <p
+            id="name-error"
+            className="text-danger text-sm"
+            data-token="--color-danger"
+            role="alert"
+          >
             {errors.name}
           </p>
         )}
@@ -109,9 +126,16 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
           onChange={handleChange}
           className="rounded border p-2"
           required
+          aria-invalid={errors.email ? "true" : "false"}
+          aria-describedby={errors.email ? "email-error" : undefined}
         />
         {errors.email && (
-          <p className="text-danger text-sm" data-token="--color-danger">
+          <p
+            id="email-error"
+            className="text-danger text-sm"
+            data-token="--color-danger"
+            role="alert"
+          >
             {errors.email}
           </p>
         )}
@@ -126,12 +150,12 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
         </span>
       </button>
       {status === "success" && (
-        <p className="text-success" data-token="--color-success">
+        <p className="text-success" data-token="--color-success" role="status">
           {message}
         </p>
       )}
       {status === "error" && (
-        <p className="text-danger" data-token="--color-danger">
+        <p className="text-danger" data-token="--color-danger" role="alert">
           {message}
         </p>
       )}

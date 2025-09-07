@@ -41,7 +41,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
               {logo}
             </a>
           )}
-          <nav className="flex gap-6">
+          <nav className="flex gap-6" aria-label="Main navigation">
           {nav.map((section) => (
             <div key={section.title} className="group relative">
               <a

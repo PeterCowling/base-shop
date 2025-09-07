@@ -12,6 +12,10 @@ type ChargeWithInvoice = Stripe.Charge & {
   invoice?: string | Stripe.Invoice | null;
 };
 
+type InvoiceWithSubscription = Stripe.Invoice & {
+  subscription?: string | Stripe.Subscription | null;
+};
+
 export function extractSessionIdFromCharge(charge: ChargeWithInvoice): string | undefined {
   if (typeof charge.invoice === "string") return charge.invoice;
   if (typeof charge.payment_intent !== "string" && charge.payment_intent) {
@@ -109,9 +113,9 @@ export async function handleStripeWebhook(
     }
     case "invoice.payment_succeeded":
     case "invoice.payment_failed": {
-      const invoice = data.object as Stripe.Invoice;
+      const invoice = data.object as InvoiceWithSubscription;
       const customer = invoice.customer as string | Stripe.Customer | null;
-      const subscription = invoice.subscription as string | Stripe.Subscription | null;
+      const subscription = invoice.subscription;
       const customerId =
         typeof customer === "string" ? customer : customer?.id;
       const subscriptionId =

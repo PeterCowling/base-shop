@@ -1,15 +1,25 @@
 import { buildThemeData, removeThemeToken, mergeThemePatch } from "../theme";
+import { syncTheme } from "@platform-core/createShop";
+import { loadThemeTokens } from "@platform-core/themeTokens";
 
 jest.mock("@platform-core/createShop", () => ({
   syncTheme: jest.fn().mockResolvedValue({ a: "1" }),
 }));
 jest.mock("@platform-core/themeTokens", () => ({
-  baseTokens: {},
+  baseTokens: { base: "z" },
   loadThemeTokens: jest.fn().mockResolvedValue({ a: "0" }),
 }));
 
+const syncThemeMock = syncTheme as jest.MockedFunction<typeof syncTheme>;
+const loadThemeTokensMock =
+  loadThemeTokens as jest.MockedFunction<typeof loadThemeTokens>;
+
 describe("theme service", () => {
-  it("computes theme data", async () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("computes theme data when theme id changes", async () => {
     const form: any = {
       themeOverrides: { b: "2" },
       themeDefaults: {},
@@ -17,7 +27,22 @@ describe("theme service", () => {
     };
     const current: any = { themeId: "t2" };
     const result = await buildThemeData("shop", form, current);
+    expect(syncThemeMock).toHaveBeenCalledWith("shop", "t1");
+    expect(loadThemeTokensMock).not.toHaveBeenCalled();
     expect(result.themeTokens).toEqual({ a: "1", b: "2" });
+  });
+
+  it("loads theme tokens when theme id remains the same", async () => {
+    const form: any = {
+      themeOverrides: { b: "2" },
+      themeDefaults: {},
+      themeId: "t1",
+    };
+    const current: any = { themeId: "t1" };
+    const result = await buildThemeData("shop", form, current);
+    expect(loadThemeTokensMock).toHaveBeenCalledWith("t1");
+    expect(syncThemeMock).not.toHaveBeenCalled();
+    expect(result.themeTokens).toEqual({ base: "z", a: "0", b: "2" });
   });
 
   it("removes theme token", () => {
@@ -30,13 +55,13 @@ describe("theme service", () => {
     expect(result.themeTokens).toEqual({ a: "0", b: "2" });
   });
 
-  it("merges partial theme updates", () => {
+  it("merges partial theme updates removing null or matching overrides", () => {
     const current: any = {
       themeOverrides: { a: "1", b: "2" },
-      themeDefaults: { a: "0", b: "0", c: "3" },
+      themeDefaults: { a: "0", b: "0", c: "3", d: "4" },
     };
-    const patch = mergeThemePatch(current, { b: "4", c: "3" }, {});
+    const patch = mergeThemePatch(current, { b: "4", c: "3", d: null }, {});
     expect(patch.overrides).toEqual({ a: "1", b: "4" });
-    expect(patch.themeTokens).toEqual({ a: "1", b: "4", c: "3" });
+    expect(patch.themeTokens).toEqual({ a: "1", b: "4", c: "3", d: "4" });
   });
 });

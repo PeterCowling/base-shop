@@ -164,6 +164,7 @@
     "cross-env": "^7.0.3",
     "cross-fetch": "^4.1.0",
     "cypress": "^14.5.0",
+    "cypress-axe": "^1.7.0",
     "dotenv": "^17.2.1",
     "eslint": "^9.30.1",
     "eslint-config-next": "15.3.5",

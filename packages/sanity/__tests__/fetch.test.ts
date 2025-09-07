@@ -40,6 +40,7 @@ describe('fetch helpers', () => {
     const posts = [{ title: 'Post', slug: 'post' }];
     fetchMock.mockResolvedValue(posts);
     await expect(fetchPublishedPosts('shop1')).resolves.toEqual(posts);
+    expect(fetchMock.mock.calls[0][0]).toMatchSnapshot();
   });
 
   it('fetchPublishedPosts returns empty array on failure', async () => {
@@ -51,7 +52,8 @@ describe('fetch helpers', () => {
     const post = { title: 'Post', slug: 'post' };
     fetchMock.mockResolvedValue(post);
     await expect(fetchPostBySlug('shop1', 'post')).resolves.toEqual(post);
-    expect(fetchMock).toHaveBeenCalledWith(expect.any(String), { slug: 'post' });
+    expect(fetchMock.mock.calls[0][0]).toMatchSnapshot();
+    expect(fetchMock.mock.calls[0][1]).toEqual({ slug: 'post' });
   });
 
   it('fetchPostBySlug returns null when not found', async () => {

@@ -7,18 +7,18 @@ import { trackOrder } from "./analytics";
 import { prisma } from "./db";
 import { incrementSubscriptionUsage } from "./subscriptionUsage";
 import { stripe } from "@acme/stripe";
-import type { Prisma } from "@prisma/client";
+import type { Prisma, RentalOrder as PrismaRentalOrder } from "@prisma/client";
 
 export type Order = RentalOrder;
 
-function normalize<T extends Order>(order: T): T {
-  const o = { ...order } as Record<keyof T, T[keyof T]>;
-  (Object.keys(o) as Array<keyof T>).forEach((k) => {
+function normalize(order: PrismaRentalOrder): Order {
+  const o = { ...order } as Record<string, unknown>;
+  Object.keys(o).forEach((k) => {
     if (o[k] === null) {
-      o[k] = undefined as T[keyof T];
+      o[k] = undefined;
     }
   });
-  return o as T;
+  return o as Order;
 }
 
 export async function listOrders(shop: string): Promise<Order[]> {
@@ -76,9 +76,9 @@ export async function markFulfilled(
 ): Promise<Order> {
   const order = await prisma.rentalOrder.update({
     where: { shop_sessionId: { shop, sessionId } },
-    data: { fulfilledAt: nowIso() },
+    data: { fulfilledAt: nowIso() } as Prisma.RentalOrderUpdateInput,
   });
-  return order as Order;
+  return normalize(order);
 }
 
 export async function markShipped(
@@ -87,9 +87,9 @@ export async function markShipped(
 ): Promise<Order> {
   const order = await prisma.rentalOrder.update({
     where: { shop_sessionId: { shop, sessionId } },
-    data: { shippedAt: nowIso() },
+    data: { shippedAt: nowIso() } as Prisma.RentalOrderUpdateInput,
   });
-  return order as Order;
+  return normalize(order);
 }
 
 export async function markDelivered(
@@ -98,9 +98,9 @@ export async function markDelivered(
 ): Promise<Order> {
   const order = await prisma.rentalOrder.update({
     where: { shop_sessionId: { shop, sessionId } },
-    data: { deliveredAt: nowIso() },
+    data: { deliveredAt: nowIso() } as Prisma.RentalOrderUpdateInput,
   });
-  return order as Order;
+  return normalize(order);
 }
 
 export async function markCancelled(
@@ -109,9 +109,9 @@ export async function markCancelled(
 ): Promise<Order> {
   const order = await prisma.rentalOrder.update({
     where: { shop_sessionId: { shop, sessionId } },
-    data: { cancelledAt: nowIso() },
+    data: { cancelledAt: nowIso() } as Prisma.RentalOrderUpdateInput,
   });
-  return order as Order;
+  return normalize(order);
 }
 
 export async function markReturned(
@@ -120,14 +120,14 @@ export async function markReturned(
   damageFee?: number
 ): Promise<Order | null> {
   try {
-    const order = await prisma.rentalOrder.update({
-      where: { shop_sessionId: { shop, sessionId } },
-      data: {
-        returnedAt: nowIso(),
-        ...(typeof damageFee === "number" ? { damageFee } : {}),
-      },
-    });
-    return order;
+  const order = await prisma.rentalOrder.update({
+    where: { shop_sessionId: { shop, sessionId } },
+    data: {
+      returnedAt: nowIso(),
+      ...(typeof damageFee === "number" ? { damageFee } : {}),
+    },
+  });
+  return normalize(order);
   } catch {
     return null;
   }
@@ -150,7 +150,7 @@ export async function markRefunded(
         ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
       },
     });
-    return order;
+    return normalize(order);
   } catch {
     return null;
   }
@@ -214,7 +214,7 @@ export async function markNeedsAttention(
       where: { shop_sessionId: { shop, sessionId } },
       data: { flaggedForReview: true },
     });
-    return order as Order;
+    return normalize(order);
   } catch {
     return null;
   }
@@ -236,7 +236,7 @@ export async function updateRisk(
         ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
       },
     });
-    return order;
+    return normalize(order);
   } catch {
     return null;
   }
@@ -263,7 +263,7 @@ export async function setReturnTracking(
       where: { shop_sessionId: { shop, sessionId } },
       data: { trackingNumber, labelUrl },
     });
-    return order;
+    return normalize(order);
   } catch {
     return null;
   }
@@ -279,7 +279,7 @@ export async function setReturnStatus(
       where: { shop_trackingNumber: { shop, trackingNumber } },
       data: { returnStatus },
     });
-    return order;
+    return normalize(order);
   } catch {
     return null;
   }

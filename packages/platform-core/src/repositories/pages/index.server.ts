@@ -6,6 +6,7 @@ import { pageSchema, type Page } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { prisma } from "../../db";
+import type { Prisma } from "@prisma/client";
 import { validateShopName } from "../../shops/index";
 import { DATA_ROOT } from "../../dataRoot";
 import { nowIso } from "@acme/date-utils";
@@ -17,8 +18,6 @@ import { z, type ZodRawShape } from "zod";
  */
 // Use Prisma when a database connection is configured
 const useDb = !!process.env.DATABASE_URL;
-
-type Json = Record<string, unknown>;
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */
@@ -129,12 +128,12 @@ export async function savePage(
     try {
       await prisma.page.upsert({
         where: { id: page.id },
-        update: { data: page as unknown as Json, slug: page.slug },
+        update: { data: page as unknown as Prisma.JsonObject, slug: page.slug },
         create: {
           id: page.id,
           shopId: shop,
           slug: page.slug,
-          data: page as unknown as Json,
+          data: page as unknown as Prisma.JsonObject,
         },
       });
     } catch {
@@ -184,7 +183,7 @@ export async function updatePage(
       await prisma.page.update({
         where: { id: patch.id },
         data: {
-          data: updated as unknown as Json,
+          data: updated as unknown as Prisma.JsonObject,
           slug: updated.slug,
         },
       });

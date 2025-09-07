@@ -23,6 +23,15 @@ type RentalOrder = {
   [key: string]: any;
 };
 
+type InventoryItemDelegate = {
+  findMany(args: any): Promise<any[]>;
+  deleteMany(args: any): Promise<{ count: number }>;
+  createMany(args: any): Promise<{ count: number }>;
+  findUnique(args: any): Promise<any | null>;
+  delete(args: any): Promise<any>;
+  upsert(args: any): Promise<any>;
+};
+
 function createTestPrismaStub(): Pick<
   PrismaClient,
   | 'rentalOrder'
@@ -33,9 +42,8 @@ function createTestPrismaStub(): Pick<
   | 'user'
   | 'reverseLogisticsEvent'
   | 'customerMfa'
-  | 'inventoryItem'
   | '$transaction'
-> {
+> & { inventoryItem: InventoryItemDelegate } {
   const rentalOrders: RentalOrder[] = [];
   const customerProfiles: { customerId: string; name: string; email: string }[] = [];
   const customerMfas: {
@@ -183,7 +191,42 @@ function createTestPrismaStub(): Pick<
         );
         return { count: data.length };
       },
-    } as unknown as PrismaClient['inventoryItem'],
+      findUnique: async ({ where: { shopId_sku_variantKey } }: any) => {
+        const { shopId, sku, variantKey } = shopId_sku_variantKey;
+        return (
+          inventoryItems.find(
+            (i) =>
+              i.shopId === shopId &&
+              i.sku === sku &&
+              i.variantKey === variantKey,
+          ) || null
+        );
+      },
+      delete: async ({ where: { shopId_sku_variantKey } }: any) => {
+        const { shopId, sku, variantKey } = shopId_sku_variantKey;
+        const idx = inventoryItems.findIndex(
+          (i) =>
+            i.shopId === shopId && i.sku === sku && i.variantKey === variantKey,
+        );
+        if (idx < 0) throw new Error('InventoryItem not found');
+        const [removed] = inventoryItems.splice(idx, 1);
+        return removed;
+      },
+      upsert: async ({ where: { shopId_sku_variantKey }, update, create }: any) => {
+        const { shopId, sku, variantKey } = shopId_sku_variantKey;
+        const idx = inventoryItems.findIndex(
+          (i) =>
+            i.shopId === shopId && i.sku === sku && i.variantKey === variantKey,
+        );
+        if (idx >= 0) {
+          inventoryItems[idx] = { ...inventoryItems[idx], ...update };
+          return inventoryItems[idx];
+        }
+        const record = { ...create };
+        inventoryItems.push(record);
+        return record;
+      },
+    } as InventoryItemDelegate,
   } as any;
 
   stub.$transaction = async (fn: (tx: typeof stub) => any) => fn(stub);

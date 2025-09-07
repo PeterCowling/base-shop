@@ -90,7 +90,10 @@ describe("resolveDataRoot", () => {
   });
 
   it("returns existing candidate", () => {
-    const spy = jest.spyOn(fs, "existsSync").mockReturnValueOnce(true as any);
+    const spy = jest
+      .spyOn(fs, "existsSync")
+      .mockReturnValueOnce(true as any)
+      .mockReturnValue(false as any);
     const result = resolveDataRoot();
     expect(result).toBe(pathMod.join(process.cwd(), "data", "shops"));
     spy.mockRestore();
@@ -172,6 +175,25 @@ describe("processReverseLogisticsEventsOnce", () => {
   it("logs and removes file on parse error", async () => {
     readdirMock.mockResolvedValueOnce(["bad.json"]);
     readFileMock.mockResolvedValueOnce("not json");
+
+    await service.processReverseLogisticsEventsOnce("shop", "/data");
+
+    expect(logger.error).toHaveBeenCalledWith(
+      "reverse logistics event failed",
+      {
+        shopId: "shop",
+        file: "bad.json",
+        err: expect.anything(),
+      }
+    );
+    expect(unlinkMock).toHaveBeenCalledWith(
+      path.join("/data", "shop", "reverse-logistics", "bad.json")
+    );
+  });
+
+  it("logs and removes file on read error", async () => {
+    readdirMock.mockResolvedValueOnce(["bad.json"]);
+    readFileMock.mockRejectedValueOnce(new Error("nope"));
 
     await service.processReverseLogisticsEventsOnce("shop", "/data");
 

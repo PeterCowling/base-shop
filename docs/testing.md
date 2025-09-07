@@ -41,3 +41,14 @@ pnpm tsx packages/platform-core/prisma/seed.ts
 ```
 
 Run these commands before `pnpm test` so each test suite starts from a clean, seeded state.
+
+## Load testing
+
+Load tests use [k6](https://k6.io) and are run manually. They are not executed in continuous integration.
+
+To exercise the rental and return flows:
+
+```bash
+cd apps/shop-bcd/load-tests
+SHOP_BASE_URL=http://localhost:3004 k6 run rental-return.k6.js
+```

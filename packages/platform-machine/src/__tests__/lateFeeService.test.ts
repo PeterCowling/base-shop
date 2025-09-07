@@ -74,6 +74,18 @@ describe("chargeLateFeesOnce", () => {
     expect(markLateFeeChargedMock).not.toHaveBeenCalled();
   });
 
+  it("continues when shop policy cannot be loaded", async () => {
+    readdirMock.mockResolvedValue(["s1"]);
+    readFileMock.mockRejectedValueOnce(new Error("boom"));
+
+    await service.chargeLateFeesOnce(undefined, "/data");
+
+    expect(readOrdersMock).not.toHaveBeenCalled();
+    expect(stripeRetrieveMock).not.toHaveBeenCalled();
+    expect(stripeChargeMock).not.toHaveBeenCalled();
+    expect(markLateFeeChargedMock).not.toHaveBeenCalled();
+  });
+
   it("continues processing shops with policy", async () => {
     readdirMock.mockResolvedValue(["s1", "s2"]);
     readFileMock.mockImplementation((p: string) => {
@@ -169,6 +181,32 @@ describe("chargeLateFeesOnce", () => {
       off_session: true,
       confirm: true,
     });
+  });
+
+  it("skips orders already returned, charged, or missing due date", async () => {
+    readdirMock.mockResolvedValue(["s1"]);
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
+    );
+    readOrdersMock.mockResolvedValueOnce([
+      {
+        sessionId: "sess_returned",
+        returnDueDate: new Date(NOW - 2 * 24 * 60 * 60 * 1000).toISOString(),
+        returnReceivedAt: new Date().toISOString(),
+      },
+      {
+        sessionId: "sess_charged",
+        returnDueDate: new Date(NOW - 2 * 24 * 60 * 60 * 1000).toISOString(),
+        lateFeeCharged: 5,
+      },
+      { sessionId: "sess_no_due" },
+    ]);
+
+    await service.chargeLateFeesOnce(undefined, "/data");
+
+    expect(stripeRetrieveMock).not.toHaveBeenCalled();
+    expect(stripeChargeMock).not.toHaveBeenCalled();
+    expect(markLateFeeChargedMock).not.toHaveBeenCalled();
   });
 
   it.each([

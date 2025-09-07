@@ -285,12 +285,27 @@ describe("onRequestPost", () => {
     });
 
     expect(res.status).toBe(200);
-    const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
+    expect(writeFileSync).toHaveBeenCalledTimes(1);
+    const [shopPath, data] = writeFileSync.mock.calls[0];
+    expect(shopPath).toContain(`data/shops/${id}/shop.json`);
+    const written = JSON.parse(data as string);
     expect(written.componentVersions).toEqual({
       compA: "1.0.0",
       compB: "2.0.0",
     });
     expect(typeof written.lastUpgrade).toBe("string");
+    expect(spawn).toHaveBeenNthCalledWith(
+      1,
+      "pnpm",
+      ["--filter", `apps/shop-${id}`, "build"],
+      { cwd: root, stdio: "inherit" },
+    );
+    expect(spawn).toHaveBeenNthCalledWith(
+      2,
+      "pnpm",
+      ["--filter", `apps/shop-${id}`, "deploy"],
+      { cwd: root, stdio: "inherit" },
+    );
   });
 
   it("returns 500 when build command fails", async () => {

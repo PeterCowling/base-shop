@@ -50,6 +50,18 @@ describe('component helpers', () => {
       expect(gatherChanges('abc', root)).toEqual([]);
     });
 
+    it('returns empty array when shop.json lacks componentVersions', () => {
+      vol.fromJSON({
+        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({}),
+        [`${root}/packages/foo/package.json`]: JSON.stringify({
+          name: '@acme/foo',
+          version: '1.2.0',
+        }),
+      });
+      expect(() => gatherChanges('abc', root)).not.toThrow();
+      expect(gatherChanges('abc', root)).toEqual([]);
+    });
+
     it('skips stored components without a package.json', () => {
       vol.fromJSON({
         [`${root}/data/shops/abc/shop.json`]: JSON.stringify({

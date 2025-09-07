@@ -1,33 +1,32 @@
 import "server-only";
 
-import { prisma } from "../db";
 import {
   inventoryItemSchema,
   type InventoryItem,
   variantKey,
 } from "../types/inventory";
-import { resolveRepo } from "./repoResolver";
 import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
 
-/**
- * Resolve the active inventory repository. Prisma is preferred when available
- * while the JSON backend remains for legacy fallback scenarios.
- */
 let repoPromise: Promise<InventoryRepository> | undefined;
 
 async function getRepo(): Promise<InventoryRepository> {
   if (!repoPromise) {
-    repoPromise = resolveRepo(
-      () => (prisma as any).inventoryItem,
-      () =>
-        import("./inventory.prisma.server").then(
-          (m) => m.prismaInventoryRepository,
-        ),
-      () =>
-        import("./inventory.json.server").then(
-          (m) => m.jsonInventoryRepository,
-        ),
-    );
+    const backend = process.env.INVENTORY_BACKEND;
+    if (backend === "sqlite") {
+      repoPromise = Promise.resolve(
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        (require("./inventory." + "sqlite.server") as any)
+          .sqliteInventoryRepository,
+      );
+    } else if (backend === "json") {
+      repoPromise = import("./inventory.json.server").then(
+        (m) => m.jsonInventoryRepository,
+      );
+    } else {
+      repoPromise = import("./inventory.prisma.server").then(
+        (m) => m.prismaInventoryRepository,
+      );
+    }
   }
   return repoPromise;
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import DOMPurify from "dompurify";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createFocusTrap } from "focus-trap";
 
 interface Props {
   width?: string;
@@ -23,6 +24,7 @@ export default function PopupModal({
 }: Props) {
   const [open, setOpen] = useState(trigger === "load" && delay === 0);
   const sanitized = DOMPurify.sanitize(content);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -56,6 +58,22 @@ export default function PopupModal({
     return () => document.removeEventListener("keydown", handleKey);
   }, [open]);
 
+  useEffect(() => {
+    if (!open || !modalRef.current) return;
+    const trap = createFocusTrap(modalRef.current, {
+      escapeDeactivates: false,
+      allowOutsideClick: true,
+      fallbackFocus: modalRef.current,
+      tabbableOptions: {
+        displayCheck: "none",
+      },
+    });
+    trap.activate();
+    return () => {
+      trap.deactivate();
+    };
+  }, [open]);
+
   if (!open) return null;
 
   return (
@@ -70,6 +88,7 @@ export default function PopupModal({
         className="relative bg-white p-4 shadow-lg"
         style={{ width, height }}
         onClick={(e) => e.stopPropagation()}
+        ref={modalRef}
       >
         {content && (
           <div dangerouslySetInnerHTML={{ __html: sanitized }} />

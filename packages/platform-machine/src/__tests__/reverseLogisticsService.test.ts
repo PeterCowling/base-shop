@@ -172,6 +172,29 @@ describe("processReverseLogisticsEventsOnce", () => {
     );
   });
 
+  it("skips unsupported statuses", async () => {
+    readdirMock.mockResolvedValueOnce(["e.json"]);
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ sessionId: "abc", status: "unknown" })
+    );
+
+    await service.processReverseLogisticsEventsOnce("shop", "/data");
+
+    expect(markReceived).not.toHaveBeenCalled();
+    expect(markCleaning).not.toHaveBeenCalled();
+    expect(markRepair).not.toHaveBeenCalled();
+    expect(markQa).not.toHaveBeenCalled();
+    expect(markAvailable).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.received).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.cleaning).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.repair).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.qa).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.available).not.toHaveBeenCalled();
+    expect(unlinkMock).toHaveBeenCalledWith(
+      path.join("/data", "shop", "reverse-logistics", "e.json")
+    );
+  });
+
   it("logs and removes file on parse error", async () => {
     readdirMock.mockResolvedValueOnce(["bad.json"]);
     readFileMock.mockResolvedValueOnce("not json");

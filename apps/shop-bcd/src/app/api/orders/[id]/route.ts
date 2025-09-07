@@ -53,7 +53,7 @@ export async function PATCH(
   if (
     status === "refunded" &&
     amount !== undefined &&
-    typeof amount !== "number"
+    (typeof amount !== "number" || Number.isNaN(amount))
   ) {
     return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
   }

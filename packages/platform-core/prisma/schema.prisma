@@ -8,9 +8,9 @@ datasource db {
 }
 
 model Shop {
-  id   String @id
+  id    String @id
   /// @type {import("../../types/src/Shop").Shop}
-  data Json
+  data  Json
   pages Page[]
 }
 
@@ -23,7 +23,7 @@ model Page {
 }
 
 model RentalOrder {
-  id                 String @id
+  id                 String   @id
   shop               String
   sessionId          String
   deposit            Int
@@ -71,20 +71,40 @@ model CustomerProfile {
 }
 
 model CustomerMfa {
-  customerId String @id
+  customerId String  @id
   secret     String
   enabled    Boolean @default(false)
 }
 
 model User {
-  id           String  @id
-  email        String  @unique
-  passwordHash String
-  role         String
-  resetToken   String?
-  resetTokenExpiresAt DateTime?
-  emailVerified Boolean @default(false)
+  id                   String    @id
+  email                String    @unique
+  passwordHash         String
+  role                 String
+  resetToken           String?
+  resetTokenExpiresAt  DateTime?
+  emailVerified        Boolean   @default(false)
   stripeSubscriptionId String?
+}
+
+model InventoryItem {
+  id                String   @id @default(cuid())
+  shopId            String
+  sku               String
+  productId         String
+  quantity          Int
+  variantAttributes Json
+  lowStockThreshold Int?
+  wearCount         Int?
+  wearAndTearLimit  Int?
+  maintenanceCycle  Int?
+  variantKey        String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([shopId, sku, variantKey])
+  @@index([shopId])
+  @@index([shopId, sku])
 }
 
 model ReverseLogisticsEvent {

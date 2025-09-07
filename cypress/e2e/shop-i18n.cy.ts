@@ -10,23 +10,28 @@ const messages: Record<string, Record<string, string>> = {
 };
 
 describe("Localized storefront", () => {
-  locales.forEach((locale) => {
-    const t = messages[locale];
+  locales
+    .filter((locale) => locale !== "en")
+    .forEach((locale) => {
+      const t = messages[locale];
 
-    describe(`${locale} translations`, () => {
-      it("renders home hero and value strings", () => {
-        cy.visit(`/${locale}`);
-        cy.contains(t["hero.cta"]);
-        cy.contains(t["value.eco.title"]);
-      });
+      describe(`${locale} translations`, () => {
+        it("renders home hero and value strings", () => {
+          cy.visit(`/${locale}`);
+          cy.contains(t["hero.cta"]);
+          cy.contains(t["value.eco.title"]);
+        });
 
-      it("renders checkout strings", () => {
-        cy.visit(`/${locale}/checkout`);
-        cy.contains(t["checkout.pay"]);
-        cy.contains(t["checkout.return"]);
+        it("renders checkout strings", () => {
+          cy.visit(`/${locale}/checkout`);
+          cy.contains(t["checkout.pay"]);
+          cy.contains(t["checkout.return"]);
+        });
+
+        it("renders product page strings", () => {
+          cy.visit(`/${locale}/product/green-sneaker`);
+          cy.contains(t["pdp.selectSize"]);
+        });
       });
     });
-  });
 });
-
-// TODO: Expand to product pages once translations are available

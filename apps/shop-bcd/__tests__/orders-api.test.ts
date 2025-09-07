@@ -6,6 +6,15 @@ jest.mock("@platform-core/orders", () => ({
   getOrdersForCustomer: jest.fn(),
   markCancelled: jest.fn(),
   markDelivered: jest.fn(),
+  markRefunded: jest.fn(),
+}));
+
+jest.mock("@acme/stripe", () => ({
+  __esModule: true,
+  stripe: {
+    checkout: { sessions: { retrieve: jest.fn() } },
+    refunds: { create: jest.fn() },
+  },
 }));
 
 jest.mock("@auth", () => ({
@@ -16,7 +25,9 @@ const {
   getOrdersForCustomer,
   markCancelled,
   markDelivered,
+  markRefunded,
 } = require("@platform-core/orders");
+const { stripe } = require("@acme/stripe");
 const { getCustomerSession } = require("@auth");
 
 beforeEach(() => {
@@ -94,6 +105,61 @@ describe("/api/orders/[id]", () => {
     await expect(res.json()).resolves.toEqual({ error: "oops" });
   });
 
-  test.todo("PATCH refunds order once backend supports it");
+  test("PATCH refunds full deposit", async () => {
+    getOrdersForCustomer.mockResolvedValue([
+      { id: "ord1", deposit: 50, damageFee: 0 },
+    ]);
+    (stripe.checkout.sessions.retrieve as jest.Mock).mockResolvedValue({
+      payment_intent: { id: "pi_123" },
+    });
+    (stripe.refunds.create as jest.Mock).mockResolvedValue({});
+    markRefunded.mockResolvedValue({ id: "ord1" });
+    const req = { json: async () => ({ status: "refunded" }) } as any;
+    const res = await PATCH(req, { params: { id: "ord1" } });
+    expect(stripe.checkout.sessions.retrieve).toHaveBeenCalledWith("ord1", {
+      expand: ["payment_intent"],
+    });
+    expect(stripe.refunds.create).toHaveBeenCalledWith({
+      payment_intent: "pi_123",
+      amount: 50 * 100,
+    });
+    expect(markRefunded).toHaveBeenCalledWith("bcd", "ord1");
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual({ order: { id: "ord1" } });
+  });
+
+  test("PATCH refunds partial deposit", async () => {
+    getOrdersForCustomer.mockResolvedValue([
+      { id: "ord1", deposit: 50, damageFee: 20 },
+    ]);
+    (stripe.checkout.sessions.retrieve as jest.Mock).mockResolvedValue({
+      payment_intent: { id: "pi_123" },
+    });
+    (stripe.refunds.create as jest.Mock).mockResolvedValue({});
+    markRefunded.mockResolvedValue({ id: "ord1" });
+    const req = { json: async () => ({ status: "refunded" }) } as any;
+    const res = await PATCH(req, { params: { id: "ord1" } });
+    expect(stripe.refunds.create).toHaveBeenCalledWith({
+      payment_intent: "pi_123",
+      amount: 30 * 100,
+    });
+    expect(markRefunded).toHaveBeenCalledWith("bcd", "ord1");
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual({ order: { id: "ord1" } });
+  });
+
+  test("PATCH returns 500 when refund fails", async () => {
+    getOrdersForCustomer.mockResolvedValue([
+      { id: "ord1", deposit: 50, damageFee: 0 },
+    ]);
+    (stripe.checkout.sessions.retrieve as jest.Mock).mockResolvedValue({
+      payment_intent: { id: "pi_123" },
+    });
+    (stripe.refunds.create as jest.Mock).mockRejectedValue(new Error("fail"));
+    const req = { json: async () => ({ status: "refunded" }) } as any;
+    const res = await PATCH(req, { params: { id: "ord1" } });
+    expect(res.status).toBe(500);
+    await expect(res.json()).resolves.toEqual({ error: "fail" });
+  });
 });
 

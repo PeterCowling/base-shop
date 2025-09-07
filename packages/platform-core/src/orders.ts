@@ -7,6 +7,7 @@ import { trackOrder } from "./analytics";
 import { prisma } from "./db";
 import { incrementSubscriptionUsage } from "./subscriptionUsage";
 import { stripe } from "@acme/stripe";
+import type { Prisma } from "@prisma/client";
 
 export type Order = RentalOrder;
 
@@ -165,7 +166,8 @@ export async function refundOrder(
   });
   if (!order) return null;
 
-  const alreadyRefunded = (order as any).refundTotal ?? 0;
+  const alreadyRefunded =
+    (order as { refundTotal?: number }).refundTotal ?? 0;
   const refundable = Math.max(amount - alreadyRefunded, 0);
 
   if (refundable > 0) {
@@ -191,7 +193,7 @@ export async function refundOrder(
       data: {
         refundedAt: nowIso(),
         refundTotal: alreadyRefunded + refundable,
-      } as any,
+      } as Prisma.RentalOrderUpdateInput,
     });
     return updated as Order;
   } catch {

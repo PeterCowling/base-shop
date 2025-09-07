@@ -24,9 +24,9 @@ See [testing](./testing.md) for guidance on running tests with Prisma.
 
 ## Prisma model access
 
-Avoid extending `PrismaClient` with a permissive string index signature. When a
-model name must be chosen dynamically, use a helper function to keep type
-safety:
+Avoid adding `[key: string]: unknown` (or any permissive string index
+signature) to `PrismaClient`. When a model name must be chosen dynamically,
+use a typed helper to keep type safety:
 
 ```ts
 function getModelDelegate<K extends keyof PrismaClient>(

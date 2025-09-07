@@ -2,7 +2,8 @@ import { PrismaClient } from '@prisma/client';
 
 /**
  * Avoid augmenting `PrismaClient` with a permissive index signature.
- * For dynamic model access, use a typed helper instead:
+ * For dynamic model access, use a typed helper instead.
+ * See `docs/contributing.md#prisma-model-access` for details:
  *
  * ```ts
  * function getModelDelegate<K extends keyof PrismaClient>(

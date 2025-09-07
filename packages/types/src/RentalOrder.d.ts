@@ -10,6 +10,7 @@ export declare const rentalOrderSchema: z.ZodObject<{
     returnedAt: z.ZodOptional<z.ZodString>;
     returnReceivedAt: z.ZodOptional<z.ZodString>;
     refundedAt: z.ZodOptional<z.ZodString>;
+    refundTotal: z.ZodOptional<z.ZodNumber>;
     /** Optional damage fee deducted from the deposit */
     damageFee: z.ZodOptional<z.ZodNumber>;
     lateFeeCharged: z.ZodOptional<z.ZodNumber>;
@@ -33,6 +34,7 @@ export declare const rentalOrderSchema: z.ZodObject<{
     returnedAt?: string | undefined;
     returnReceivedAt?: string | undefined;
     refundedAt?: string | undefined;
+    refundTotal?: number | undefined;
     damageFee?: number | undefined;
     lateFeeCharged?: number | undefined;
     customerId?: string | undefined;
@@ -54,6 +56,7 @@ export declare const rentalOrderSchema: z.ZodObject<{
     returnedAt?: string | undefined;
     returnReceivedAt?: string | undefined;
     refundedAt?: string | undefined;
+    refundTotal?: number | undefined;
     damageFee?: number | undefined;
     lateFeeCharged?: number | undefined;
     customerId?: string | undefined;

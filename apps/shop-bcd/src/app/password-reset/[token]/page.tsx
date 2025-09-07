@@ -4,8 +4,13 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 
 export default function PasswordResetPage() {
-  const { token } = useParams<{ token: string }>();
+  const params = useParams<{ token: string }>();
+  const token = params?.token;
   const [msg, setMsg] = useState("");
+
+  if (!token) {
+    return null;
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

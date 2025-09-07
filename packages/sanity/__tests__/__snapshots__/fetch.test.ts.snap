@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fetch helpers fetchPublishedPosts returns posts on success 1`] = `"*[_type == \"post\" && defined(slug.current) && published == true && !(_id in path('drafts.**'))]{title, \"slug\": slug.current, excerpt, mainImage, author, categories, products}"`;
+
+exports[`fetch helpers fetchPostBySlug returns post on success 1`] = `"*[_type == \"post\" && slug.current == $slug && published == true][0]{title, \"slug\": slug.current, excerpt, mainImage, author, categories, products, body[]{..., _type == \"productReference\" => { _type, slug }}}"`;

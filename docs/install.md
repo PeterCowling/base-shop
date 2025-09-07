@@ -11,7 +11,7 @@ DATABASE_URL="postgres://user:password@localhost:5432/shop"
 ```
 
 ```bash
-pnpm prisma migrate dev
+pnpm exec prisma migrate dev
 pnpm tsx packages/platform-core/prisma/seed.ts
 ```
 

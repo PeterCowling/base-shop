@@ -33,6 +33,8 @@ function createTestPrismaStub(): Pick<
   | 'user'
   | 'reverseLogisticsEvent'
   | 'customerMfa'
+  | 'inventoryItem'
+  | '$transaction'
 > {
   const rentalOrders: RentalOrder[] = [];
   const customerProfiles: { customerId: string; name: string; email: string }[] = [];
@@ -41,8 +43,9 @@ function createTestPrismaStub(): Pick<
     secret: string;
     enabled: boolean;
   }[] = [];
+  const inventoryItems: { shopId: string; [key: string]: any }[] = [];
 
-  return {
+  const stub = {
     rentalOrder: {
       findMany: async ({ where }: any) =>
         rentalOrders.filter((o) => {
@@ -160,10 +163,35 @@ function createTestPrismaStub(): Pick<
       create: async () => ({}),
       findMany: async () => [],
     } as unknown as PrismaClient['reverseLogisticsEvent'],
-  };
+
+    inventoryItem: {
+      findMany: async ({ where: { shopId } }: any) =>
+        inventoryItems.filter((i) => i.shopId === shopId),
+      deleteMany: async ({ where: { shopId } }: any) => {
+        let count = 0;
+        for (let i = inventoryItems.length - 1; i >= 0; i--) {
+          if (inventoryItems[i].shopId === shopId) {
+            inventoryItems.splice(i, 1);
+            count++;
+          }
+        }
+        return { count };
+      },
+      createMany: async ({ data }: any) => {
+        inventoryItems.push(
+          ...data.map((item: any) => ({ ...item })),
+        );
+        return { count: data.length };
+      },
+    } as unknown as PrismaClient['inventoryItem'],
+  } as any;
+
+  stub.$transaction = async (fn: (tx: typeof stub) => any) => fn(stub);
+
+  return stub;
 }
 const prisma =
   process.env.DATABASE_URL ? new PrismaClient() : createTestPrismaStub();
 
-export { prisma };
+export { prisma, createTestPrismaStub };
 

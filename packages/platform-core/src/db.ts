@@ -44,6 +44,17 @@ function createTestPrismaStub(): Pick<
           if (where.customerId && o.customerId !== where.customerId) return false;
           return true;
         }),
+      findUnique: async ({ where }: any) => {
+        if (where?.shop_sessionId) {
+          const { shop, sessionId } = where.shop_sessionId;
+          return (
+            rentalOrders.find(
+              (o) => o.shop === shop && o.sessionId === sessionId,
+            ) || null
+          );
+        }
+        return null;
+      },
       create: async ({ data }: { data: RentalOrder }) => {
         rentalOrders.push({ ...data });
         return data;

@@ -6,6 +6,7 @@ import type { RentalOrder, Shop } from "@acme/types";
 import { trackOrder } from "./analytics";
 import { prisma } from "./db";
 import { incrementSubscriptionUsage } from "./subscriptionUsage";
+import { stripe } from "@acme/stripe";
 
 export type Order = RentalOrder;
 
@@ -149,6 +150,50 @@ export async function markRefunded(
       },
     });
     return order;
+  } catch {
+    return null;
+  }
+}
+
+export async function refundOrder(
+  shop: string,
+  sessionId: string,
+  amount: number,
+): Promise<Order | null> {
+  const order = await prisma.rentalOrder.findUnique({
+    where: { shop_sessionId: { shop, sessionId } },
+  });
+  if (!order) return null;
+
+  const alreadyRefunded = (order as any).refundTotal ?? 0;
+  const refundable = Math.max(amount - alreadyRefunded, 0);
+
+  if (refundable > 0) {
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+      expand: ["payment_intent"],
+    });
+    const pi =
+      typeof session.payment_intent === "string"
+        ? session.payment_intent
+        : session.payment_intent?.id;
+    if (!pi) {
+      throw new Error("payment_intent missing");
+    }
+    await stripe.refunds.create({
+      payment_intent: pi,
+      amount: refundable * 100,
+    });
+  }
+
+  try {
+    const updated = await prisma.rentalOrder.update({
+      where: { shop_sessionId: { shop, sessionId } },
+      data: {
+        refundedAt: nowIso(),
+        refundTotal: alreadyRefunded + refundable,
+      } as any,
+    });
+    return updated as Order;
   } catch {
     return null;
   }

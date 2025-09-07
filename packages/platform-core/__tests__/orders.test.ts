@@ -275,13 +275,35 @@ describe("orders", () => {
       expect(result).toBeNull();
     });
 
+    it("refunds full amount via Stripe before marking order", async () => {
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.update.mockResolvedValue({ id: "1", refundedAt: "now" });
+      stripeRefund.mockResolvedValue({ id: "re_1" });
+
+      const process = async () => {
+        const deposit = 10;
+        await stripeRefund({ payment_intent: "pi", amount: deposit * 100 });
+        return markRefunded("shop", "sess");
+      };
+
+      const result = await process();
+      expect(stripeRefund).toHaveBeenCalledWith({ payment_intent: "pi", amount: 10 * 100 });
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { refundedAt: "now" },
+      });
+      expect(result).toEqual({ id: "1", refundedAt: "now" });
+    });
+
     it("refunds partial amounts via Stripe before marking order", async () => {
       nowIsoMock.mockReturnValue("now");
       prismaMock.rentalOrder.update.mockResolvedValue({ id: "1", refundedAt: "now" });
       stripeRefund.mockResolvedValue({ id: "re_1" });
 
       const process = async () => {
-        const refund = Math.max(10 - 4, 0);
+        const deposit = 10;
+        const withheld = 4;
+        const refund = Math.max(deposit - withheld, 0);
         await stripeRefund({ payment_intent: "pi", amount: refund * 100 });
         return markRefunded("shop", "sess");
       };
@@ -299,7 +321,9 @@ describe("orders", () => {
       stripeRefund.mockRejectedValue(new Error("refund failed"));
 
       const process = async () => {
-        const refund = Math.max(10 - 4, 0);
+        const deposit = 10;
+        const withheld = 4;
+        const refund = Math.max(deposit - withheld, 0);
         await stripeRefund({ payment_intent: "pi", amount: refund * 100 });
         return markRefunded("shop", "sess");
       };

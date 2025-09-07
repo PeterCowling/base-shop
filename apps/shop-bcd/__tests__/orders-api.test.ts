@@ -13,6 +13,12 @@ jest.mock("@auth", () => ({
   getCustomerSession: jest.fn(),
 }));
 
+jest.mock("@acme/stripe", () => ({
+  stripe: {
+    refunds: { create: jest.fn() },
+  },
+}));
+
 const {
   getOrdersForCustomer,
   markCancelled,
@@ -20,6 +26,7 @@ const {
   refundOrder,
 } = require("@platform-core/orders");
 const { getCustomerSession } = require("@auth");
+const { stripe } = require("@acme/stripe");
 
 beforeEach(() => {
   jest.resetAllMocks();
@@ -95,21 +102,45 @@ describe("/api/orders/[id]", () => {
     expect(res.status).toBe(500);
     await expect(res.json()).resolves.toEqual({ error: "oops" });
   });
-
-  test("PATCH refunds order", async () => {
-    refundOrder.mockResolvedValue({ id: "ord1" });
-    const req = { json: async () => ({ status: "refunded", amount: 5 }) } as any;
+ 
+  test("PATCH fully refunds order", async () => {
+    refundOrder.mockImplementation(async (_shop: string, _id: string, amount: number | undefined) => {
+      await stripe.refunds.create({ amount });
+      return { id: "ord1" };
+    });
+    stripe.refunds.create.mockResolvedValue({ id: "re_1" });
+    const req = { json: async () => ({ status: "refunded" }) } as any;
     const res = await PATCH(req, { params: { id: "ord1" } });
-    expect(refundOrder).toHaveBeenCalledWith("bcd", "ord1", 5);
+    expect(refundOrder).toHaveBeenCalledWith("bcd", "ord1", undefined);
+    expect(stripe.refunds.create).toHaveBeenCalledWith({ amount: undefined });
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ order: { id: "ord1" } });
   });
 
-  test("PATCH surfaces refund errors", async () => {
-    refundOrder.mockRejectedValue(new Error("stripe fail"));
+  test("PATCH partially refunds order", async () => {
+    refundOrder.mockImplementation(async (_shop: string, _id: string, amount: number | undefined) => {
+      await stripe.refunds.create({ amount });
+      return { id: "ord1" };
+    });
+    stripe.refunds.create.mockResolvedValue({ id: "re_1" });
     const req = { json: async () => ({ status: "refunded", amount: 5 }) } as any;
     const res = await PATCH(req, { params: { id: "ord1" } });
     expect(refundOrder).toHaveBeenCalledWith("bcd", "ord1", 5);
+    expect(stripe.refunds.create).toHaveBeenCalledWith({ amount: 5 });
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual({ order: { id: "ord1" } });
+  });
+
+  test("PATCH surfaces stripe refund errors", async () => {
+    refundOrder.mockImplementation(async (_shop: string, _id: string, amount: number | undefined) => {
+      await stripe.refunds.create({ amount });
+      return { id: "ord1" };
+    });
+    stripe.refunds.create.mockRejectedValue(new Error("stripe fail"));
+    const req = { json: async () => ({ status: "refunded", amount: 5 }) } as any;
+    const res = await PATCH(req, { params: { id: "ord1" } });
+    expect(refundOrder).toHaveBeenCalledWith("bcd", "ord1", 5);
+    expect(stripe.refunds.create).toHaveBeenCalledWith({ amount: 5 });
     expect(res.status).toBe(500);
     await expect(res.json()).resolves.toEqual({ error: "stripe fail" });
   });

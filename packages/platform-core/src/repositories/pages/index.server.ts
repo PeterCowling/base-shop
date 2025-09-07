@@ -9,7 +9,8 @@ import { prisma } from "../../db";
 import { validateShopName } from "../../shops/index";
 import { DATA_ROOT } from "../../dataRoot";
 import { nowIso } from "@acme/date-utils";
-import { z, type ZodRawShape } from "zod";
+import { z } from "zod";
+import type { Prisma } from "@prisma/client";
 
 /**
  * Prisma-backed pages repository. The database is the source of truth,
@@ -18,7 +19,7 @@ import { z, type ZodRawShape } from "zod";
 // Use Prisma when a database connection is configured
 const useDb = !!process.env.DATABASE_URL;
 
-type Json = Record<string, unknown>;
+type Json = Prisma.InputJsonValue;
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */
@@ -212,7 +213,7 @@ export interface PageDiffEntry {
 const entrySchema = z
   .object({
     timestamp: z.string().datetime(),
-    diff: z.object(pageSchema.shape as ZodRawShape).partial(),
+    diff: (pageSchema as unknown as z.AnyZodObject).partial(),
   })
   .strict();
 

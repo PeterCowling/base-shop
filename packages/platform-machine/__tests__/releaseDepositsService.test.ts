@@ -478,6 +478,18 @@ describe("startDepositReleaseService", () => {
     errorSpy.mockRestore();
 });
 
+  it("rejects when readdir fails without scheduling timers", async () => {
+    service = await import("@acme/platform-machine");
+    const err = new Error("boom");
+    readdir.mockRejectedValueOnce(err);
+    const setSpy = jest.spyOn(global, "setInterval");
+    await expect(service.startDepositReleaseService()).rejects.toBe(err);
+    expect(setSpy).not.toHaveBeenCalled();
+    setSpy.mockRestore();
+  });
+
+});
+
 describe("auto-start", () => {
   afterEach(() => {
     delete process.env.RUN_DEPOSIT_RELEASE_SERVICE;

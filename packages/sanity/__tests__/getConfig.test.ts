@@ -22,6 +22,22 @@ describe('getConfig', () => {
     jest.clearAllMocks();
   });
 
+  it('rethrows errors from getShopById', async () => {
+    const err = new Error('boom');
+    getShopByIdMock.mockRejectedValue(err);
+
+    await expect(getConfig('shop1')).rejects.toBe(err);
+    expect(getSanityConfigMock).not.toHaveBeenCalled();
+  });
+
+  it('throws when shop is missing Sanity credentials', async () => {
+    getShopByIdMock.mockResolvedValue(undefined);
+    getSanityConfigMock.mockReturnValue(undefined);
+
+    await expect(getConfig('shop1'))
+      .rejects.toThrow('Missing Sanity credentials for shop shop1');
+  });
+
   it('throws a ZodError when token is missing', async () => {
     getSanityConfigMock.mockReturnValue({
       projectId: 'pid',

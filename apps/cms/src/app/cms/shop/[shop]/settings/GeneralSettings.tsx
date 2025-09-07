@@ -26,9 +26,12 @@ export default function GeneralSettings({
           name="name"
           value={info.name}
           onChange={handleChange}
+          aria-invalid={errors.name ? true : undefined}
         />
         {errors.name && (
-          <span className="text-sm text-red-600">{errors.name.join("; ")}</span>
+          <span role="alert" className="text-sm text-red-600">
+            {errors.name.join("; ")}
+          </span>
         )}
       </label>
       <label className="flex flex-col gap-1">
@@ -38,9 +41,12 @@ export default function GeneralSettings({
           name="themeId"
           value={info.themeId}
           onChange={handleChange}
+          aria-invalid={errors.themeId ? true : undefined}
         />
         {errors.themeId && (
-          <span className="text-sm text-red-600">{errors.themeId.join("; ")}</span>
+          <span role="alert" className="text-sm text-red-600">
+            {errors.themeId.join("; ")}
+          </span>
         )}
       </label>
       <fieldset className="col-span-2 flex flex-col gap-1">

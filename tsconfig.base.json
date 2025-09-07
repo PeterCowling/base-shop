@@ -224,10 +224,6 @@
       "@acme/zod-utils/*": [
         "packages/zod-utils/src/*",
         "packages/zod-utils/dist/*"
-      ],
-      "better-sqlite3": [
-        "packages/platform-core/src/types/better-sqlite3",
-        "packages/platform-core/dist/types/better-sqlite3"
       ]
     }
   },

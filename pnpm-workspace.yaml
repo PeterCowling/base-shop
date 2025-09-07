@@ -15,4 +15,3 @@ onlyBuiltDependencies:
   - sharp
   - unrs-resolver
   - workerd
-  - better-sqlite3

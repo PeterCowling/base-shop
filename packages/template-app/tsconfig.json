@@ -49,11 +49,7 @@
         "../date-utils/dist/index.d.ts",
         "../date-utils/dist"
       ],
-      "@date-utils/*": ["../date-utils/src/*", "../date-utils/dist/*"],
-      "better-sqlite3": [
-        "../platform-core/src/types/better-sqlite3",
-        "../platform-core/dist/types/better-sqlite3"
-      ]
+      "@date-utils/*": ["../date-utils/src/*", "../date-utils/dist/*"]
     },
     "allowJs": true,
     "incremental": true,

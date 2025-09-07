@@ -7,15 +7,11 @@ import {
   variantKey,
 } from "../types/inventory";
 import { resolveRepo } from "./repoResolver";
-import type {
-  InventoryRepository,
-  InventoryMutateFn,
-} from "./inventory.types";
+import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
 
 /**
- * Resolve the active inventory repository. Prisma will ultimately serve as the
- * canonical store, while JSON and SQLite backends are kept for legacy
- * fallback scenarios.
+ * Resolve the active inventory repository. Prisma is preferred when available
+ * while the JSON backend remains for legacy fallback scenarios.
  */
 let repoPromise: Promise<InventoryRepository> | undefined;
 
@@ -30,10 +26,6 @@ async function getRepo(): Promise<InventoryRepository> {
       () =>
         import("./inventory.json.server").then(
           (m) => m.jsonInventoryRepository,
-        ),
-      () =>
-        import("./inventory.sqlite.server").then(
-          (m) => m.sqliteInventoryRepository,
         ),
     );
   }

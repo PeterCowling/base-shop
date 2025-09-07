@@ -41,8 +41,6 @@ declare module "react" {
   }
 }
 
-declare module "better-sqlite3";
-
 declare module "validator/lib/isURL" {
   export default function isURL(
     str: string,

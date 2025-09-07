@@ -73,6 +73,7 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
         });
       }
     });
+    await jsonInventoryRepository.write(shop, normalized);
 
     const hasLowStock = normalized.some(
       (i: InventoryItem) =>

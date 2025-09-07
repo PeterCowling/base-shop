@@ -238,6 +238,20 @@ describe("startDepositReleaseService", () => {
     jest.resetModules();
   });
 
+  it("rejects when readdir fails without calling setInterval", async () => {
+    service = await import("@acme/platform-machine");
+    const err = new Error("boom");
+    readdir.mockRejectedValueOnce(err);
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 0 as any);
+
+    await expect(service.startDepositReleaseService()).rejects.toThrow(err);
+    expect(setSpy).not.toHaveBeenCalled();
+
+    setSpy.mockRestore();
+  });
+
   it("runs each shop in parallel and schedules timers after initial run", async () => {
     service = await import("@acme/platform-machine");
     readdir.mockResolvedValue(["shop1", "shop2"]);

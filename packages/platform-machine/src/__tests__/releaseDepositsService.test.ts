@@ -235,7 +235,9 @@ describe("startDepositReleaseService", () => {
 
   it("uses provided log function when release fails", async () => {
     const err = new Error("boom");
-    (service.releaseDepositsOnce as jest.Mock).mockRejectedValueOnce(err);
+    const releaseFn = jest.fn(async () => {
+      throw err;
+    });
     const logSpy = jest.fn();
     const setSpy = jest
       .spyOn(global, "setInterval")
@@ -247,7 +249,7 @@ describe("startDepositReleaseService", () => {
     const stop = await service.startDepositReleaseService(
       {},
       "/data",
-      undefined,
+      releaseFn,
       logSpy,
     );
     await Promise.resolve();

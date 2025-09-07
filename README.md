@@ -89,6 +89,29 @@ See [docs/upgrade-preview-republish.md](docs/upgrade-preview-republish.md) for g
 
 Inventory still reads and writes JSON files (`data/shops/<shop>/inventory.json`) or an optional local SQLite database. This fallback keeps the demo lightweight and offline-friendly until a Prisma/PostgreSQL model is ready. See [docs/inventory-migration.md](docs/inventory-migration.md) for the migration plan.
 
+Set `INVENTORY_BACKEND=json` in your environment to force the JSON backend during local development. Sample fixtures live under `data/shops/demo` and `data/shops/test`.
+
+To verify the data, hit `/api/data/<shop>/inventory/export` in a running app (`?format=csv` is also supported):
+
+```bash
+curl http://localhost:3000/api/data/demo/inventory/export?format=json | jq
+```
+
+Example response:
+
+```json
+[
+  {
+    "sku": "blue-shirt-m",
+    "productId": "blue-shirt",
+    "variant.size": "m",
+    "variant.color": "blue",
+    "quantity": 4,
+    "lowStockThreshold": 2
+  }
+]
+```
+
 ### Variant schema
 
 When using the JSON fallback, inventory items live in `data/shops/<shop>/inventory.json` and follow this structure:

@@ -42,6 +42,10 @@ model RentalOrder {
   returnDueDate      String?
   returnReceivedAt   String?
   lateFeeCharged     Int?
+  fulfilledAt        String?
+  shippedAt          String?
+  deliveredAt        String?
+  cancelledAt        String?
 
   @@unique([shop, sessionId])
   @@unique([shop, trackingNumber])

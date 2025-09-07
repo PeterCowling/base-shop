@@ -16,6 +16,10 @@ export const rentalOrderSchema = z
     /** Optional damage fee deducted from the deposit */
     damageFee: z.number().optional(),
     lateFeeCharged: z.number().optional(),
+    fulfilledAt: z.string().optional(),
+    shippedAt: z.string().optional(),
+    deliveredAt: z.string().optional(),
+    cancelledAt: z.string().optional(),
     customerId: z.string().optional(),
     riskLevel: z.string().optional(),
     riskScore: z.number().optional(),

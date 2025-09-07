@@ -158,20 +158,24 @@ export async function markRefunded(
 
 export async function refundOrder(
   shop: string,
-  sessionId: string,
-  amount: number,
+  id: string,
+  amount?: number,
 ): Promise<Order | null> {
-  const order = await prisma.rentalOrder.findUnique({
-    where: { shop_sessionId: { shop, sessionId } },
-  });
-  if (!order) return null;
+  const order = await prisma.rentalOrder.findUnique({ where: { id } });
+  if (!order || order.shop !== shop) return null;
 
   const alreadyRefunded =
     (order as { refundTotal?: number }).refundTotal ?? 0;
-  const refundable = Math.max(amount - alreadyRefunded, 0);
+  const total =
+    (order as { total?: number }).total ??
+    (order as { deposit?: number }).deposit ??
+    0;
+  const remaining = Math.max(total - alreadyRefunded, 0);
+  const requested = typeof amount === "number" ? amount : remaining;
+  const refundable = Math.min(requested, remaining);
 
   if (refundable > 0) {
-    const session = await stripe.checkout.sessions.retrieve(sessionId, {
+    const session = await stripe.checkout.sessions.retrieve(order.sessionId, {
       expand: ["payment_intent"],
     });
     const pi =
@@ -183,13 +187,13 @@ export async function refundOrder(
     }
     await stripe.refunds.create({
       payment_intent: pi,
-      amount: refundable * 100,
+      amount: Math.round(refundable * 100),
     });
   }
 
   try {
     const updated = await prisma.rentalOrder.update({
-      where: { shop_sessionId: { shop, sessionId } },
+      where: { id },
       data: {
         refundedAt: nowIso(),
         refundTotal: alreadyRefunded + refundable,

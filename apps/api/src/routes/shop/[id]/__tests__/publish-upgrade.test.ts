@@ -128,6 +128,49 @@ describe("onRequestPost", () => {
     );
   });
 
+  it("ignores components not found in package.json dependencies", async () => {
+    readFileSync.mockImplementation((file: string) => {
+      if (file.endsWith("package.json")) {
+        return JSON.stringify({ dependencies: { compA: "1.0.0" } });
+      }
+      if (file.endsWith("shop.json")) {
+        return JSON.stringify({ componentVersions: {} });
+      }
+      return "";
+    });
+    spawn.mockImplementation(() => ({
+      on: (_: string, cb: (code: number) => void) => cb(0),
+    }));
+
+    const token = jwt.sign({}, "secret");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ components: ["compA", "compB"] }),
+      }),
+    });
+
+    expect(res.status).toBe(200);
+    expect(writeFileSync).toHaveBeenCalledTimes(1);
+    const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
+    expect(written.componentVersions).toEqual({ compA: "1.0.0" });
+    expect(typeof written.lastUpgrade).toBe("string");
+    expect(spawn).toHaveBeenNthCalledWith(
+      1,
+      "pnpm",
+      ["--filter", `apps/shop-${id}`, "build"],
+      { cwd: root, stdio: "inherit" },
+    );
+    expect(spawn).toHaveBeenNthCalledWith(
+      2,
+      "pnpm",
+      ["--filter", `apps/shop-${id}`, "deploy"],
+      { cwd: root, stdio: "inherit" },
+    );
+  });
+
   it.each([[{ components: "foo" }], [{}]])(
     "locks all dependencies when body is %j",
     async (body: Record<string, unknown>) => {

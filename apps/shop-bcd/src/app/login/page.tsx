@@ -13,6 +13,7 @@ export default function LoginPage() {
       customerId: (form.elements.namedItem("customerId") as HTMLInputElement)
         .value,
       password: (form.elements.namedItem("password") as HTMLInputElement).value,
+      remember: (form.elements.namedItem("remember") as HTMLInputElement)?.checked ?? false,
     };
     const csrfToken = getCsrfToken();
     const res = await fetch("/api/login", {
@@ -30,6 +31,10 @@ export default function LoginPage() {
     <form onSubmit={handleSubmit} className="space-y-2">
       <input name="customerId" placeholder="User ID" className="border p-1" />
       <input name="password" type="password" placeholder="Password" className="border p-1" />
+      <label className="flex items-center gap-1">
+        <input name="remember" type="checkbox" />
+        <span>Remember me</span>
+      </label>
       <button type="submit" className="border px-2 py-1">Login</button>
       {msg && <p>{msg}</p>}
     </form>

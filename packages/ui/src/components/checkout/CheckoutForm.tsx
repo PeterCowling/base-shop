@@ -123,7 +123,12 @@ function PaymentForm({
   form: UseFormReturn<FormValues>;
   locale: "en" | "de" | "it";
 }) {
-  const { register, handleSubmit } = form;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setFocus,
+  } = form;
   const stripe = useStripe();
   const elements = useElements();
   const t = useTranslations();
@@ -132,28 +137,34 @@ function PaymentForm({
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string>();
 
-  const onSubmit = handleSubmit(async () => {
-    if (!stripe || !elements) return;
-    setProcessing(true);
+  const onSubmit = handleSubmit(
+    async () => {
+      if (!stripe || !elements) return;
+      setProcessing(true);
 
-    const { error } = await stripe.confirmPayment({
-      elements,
-      redirect: "if_required",
-      confirmParams: {
-        return_url: `${window.location.origin}/${locale}/success`,
-      },
-    });
+      const { error } = await stripe.confirmPayment({
+        elements,
+        redirect: "if_required",
+        confirmParams: {
+          return_url: `${window.location.origin}/${locale}/success`,
+        },
+      });
 
-    if (error) {
-      const message = error.message ?? "Payment failed";
-      setError(message);
-      setProcessing(false);
-      const query = new URLSearchParams({ error: message }).toString();
-      router.push(`/${locale}/cancelled?${query}`);
-    } else {
-      router.push(`/${locale}/success`);
+      if (error) {
+        const message = error.message ?? "Payment failed";
+        setError(message);
+        setProcessing(false);
+        const query = new URLSearchParams({ error: message }).toString();
+        router.push(`/${locale}/cancelled?${query}`);
+      } else {
+        router.push(`/${locale}/success`);
+      }
+    },
+    (errs) => {
+      const field = Object.keys(errs)[0];
+      if (field) setFocus(field as keyof FormValues);
     }
-  });
+  );
 
   return (
     <form onSubmit={onSubmit} className="space-y-6">
@@ -161,13 +172,25 @@ function PaymentForm({
         {t("checkout.return")}
         <input
           type="date"
-          {...register("returnDate")}
+          {...register("returnDate", { required: t("checkout.returnDateRequired") })}
           className="block w-full border px-2 py-1"
+          aria-invalid={errors.returnDate ? "true" : "false"}
+          aria-describedby={errors.returnDate ? "returnDate-error" : undefined}
         />
       </label>
       <PaymentElement />
+      {errors.returnDate && (
+        <p
+          id="returnDate-error"
+          className="text-sm text-danger"
+          data-token="--color-danger"
+          role="alert"
+        >
+          {errors.returnDate.message}
+        </p>
+      )}
       {error && (
-        <p className="text-sm text-danger" data-token="--color-danger">
+        <p className="text-sm text-danger" data-token="--color-danger" role="alert">
           {error}
         </p>
       )}

@@ -50,12 +50,10 @@ export async function PATCH(
   } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
-  if (
-    status === "refunded" &&
-    amount !== undefined &&
-    typeof amount !== "number"
-  ) {
-    return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
+  if (status === "refunded" && amount !== undefined) {
+    if (typeof amount !== "number" || Number.isNaN(amount)) {
+      return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
+    }
   }
   const mutate =
     status === "cancelled"
@@ -64,11 +62,9 @@ export async function PATCH(
         ? () => markDelivered(shop.id, params.id)
         : status === "refunded"
           ? () =>
-              refundOrder(
-                shop.id,
-                params.id,
-                typeof amount === "number" ? amount : undefined,
-              )
+              typeof amount === "number"
+                ? refundOrder(shop.id, params.id, amount)
+                : refundOrder(shop.id, params.id)
           : null;
   if (!mutate) {
     return NextResponse.json({ error: "Invalid status" }, { status: 400 });

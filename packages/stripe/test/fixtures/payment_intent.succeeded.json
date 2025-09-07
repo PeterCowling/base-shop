@@ -1,0 +1,15 @@
+{
+  "id": "evt_test_payment_succeeded",
+  "object": "event",
+  "type": "payment_intent.succeeded",
+  "api_version": "2023-10-16",
+  "data": {
+    "object": {
+      "id": "pi_test_succeeded",
+      "object": "payment_intent",
+      "status": "succeeded",
+      "amount": 5000,
+      "currency": "usd"
+    }
+  }
+}

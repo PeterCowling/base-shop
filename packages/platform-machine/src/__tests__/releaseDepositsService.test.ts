@@ -67,6 +67,28 @@ describe("releaseDepositsOnce", () => {
     expect(markRefundedMock).toHaveBeenCalledTimes(2);
   });
 
+  it("handles object and missing payment_intent values", async () => {
+    readdirMock.mockResolvedValue(["shop"]);
+    readOrdersMock.mockResolvedValue([
+      { sessionId: "s1", returnedAt: "now", deposit: 10, damageFee: 2 },
+      { sessionId: "s2", returnedAt: "now", deposit: 10, damageFee: 2 },
+      { sessionId: "s3", returnedAt: "now", deposit: 10, damageFee: 2 },
+    ]);
+    stripeRetrieveMock
+      .mockResolvedValueOnce({ payment_intent: { id: "pi" } })
+      .mockResolvedValueOnce({ payment_intent: {} })
+      .mockResolvedValueOnce({});
+
+    await service.releaseDepositsOnce(undefined, "/data");
+
+    expect(stripeRefundMock).toHaveBeenCalledTimes(1);
+    expect(stripeRefundMock).toHaveBeenCalledWith({
+      payment_intent: "pi",
+      amount: 800,
+    });
+    expect(markRefundedMock).toHaveBeenCalledTimes(1);
+  });
+
   it("logs refund failures", async () => {
     readdirMock.mockResolvedValue(["shop"]);
     readOrdersMock.mockResolvedValue([

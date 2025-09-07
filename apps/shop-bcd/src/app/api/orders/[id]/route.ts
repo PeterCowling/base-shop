@@ -4,6 +4,7 @@ import {
   getOrdersForCustomer,
   markCancelled,
   markDelivered,
+  refundOrder,
 } from "@platform-core/orders";
 import { NextResponse } from "next/server";
 import shop from "../../../../../shop.json";
@@ -40,22 +41,40 @@ export async function PATCH(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
   let status: unknown;
+  let amount: unknown;
   try {
-    ({ status } = (await req.json()) as { status?: string });
+    ({ status, amount } = (await req.json()) as {
+      status?: string;
+      amount?: number;
+    });
   } catch {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
+  if (
+    status === "refunded" &&
+    amount !== undefined &&
+    typeof amount !== "number"
+  ) {
+    return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
+  }
   const mutate =
     status === "cancelled"
-      ? markCancelled
+      ? () => markCancelled(shop.id, params.id)
       : status === "delivered"
-        ? markDelivered
-        : null;
+        ? () => markDelivered(shop.id, params.id)
+        : status === "refunded"
+          ? () =>
+              refundOrder(
+                shop.id,
+                params.id,
+                typeof amount === "number" ? amount : undefined,
+              )
+          : null;
   if (!mutate) {
     return NextResponse.json({ error: "Invalid status" }, { status: 400 });
   }
   try {
-    const order = await mutate(shop.id, params.id);
+    const order = await mutate();
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }

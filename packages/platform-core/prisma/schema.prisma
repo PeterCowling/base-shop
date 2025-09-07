@@ -46,6 +46,8 @@ model RentalOrder {
   shippedAt          String?
   deliveredAt        String?
   cancelledAt        String?
+  refundTotal        Int?
+  status             String?
 
   @@unique([shop, sessionId])
   @@unique([shop, trackingNumber])

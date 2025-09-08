@@ -1,137 +1,88 @@
-jest.mock("../../dataRoot", () => ({
-  DATA_ROOT: "/data/root",
-}));
+import { jest } from "@jest/globals";
 
-jest.mock("fs", () => ({
-  promises: {
-    readFile: jest.fn(),
-    mkdir: jest.fn(),
-    writeFile: jest.fn(),
-    rename: jest.fn(),
+let prismaImportCount = 0;
+let jsonImportCount = 0;
+
+const mockPrisma = {
+  getShopById: jest.fn(),
+  updateShopInRepo: jest.fn(),
+};
+
+const mockJson = {
+  getShopById: jest.fn(),
+  updateShopInRepo: jest.fn(),
+};
+
+jest.mock("../shop.prisma.server", () => {
+  prismaImportCount++;
+  return mockPrisma;
+});
+
+jest.mock("../shop.json.server", () => {
+  jsonImportCount++;
+  return mockJson;
+});
+
+jest.mock("../../db", () => ({ prisma: { shop: {} } }));
+
+const resolveRepoMock = jest.fn(
+  async (_delegate: any, prismaModule: any, jsonModule: any) => {
+    if (process.env.INVENTORY_BACKEND === "json") {
+      return await jsonModule();
+    }
+    return await prismaModule();
   },
-}));
+);
 
-jest.mock("../../db", () => ({
-  prisma: {
-    shop: {
-      findUnique: jest.fn(),
-      upsert: jest.fn(),
-    },
-  },
-}));
+jest.mock("../repoResolver", () => ({ resolveRepo: resolveRepoMock }));
 
-import { promises as fs } from "fs";
-import * as path from "path";
-import { shopSchema } from "@acme/types";
-import { prisma } from "../../db";
-import { getShopById, updateShopInRepo } from "../shop.server";
-
-describe("shop repository", () => {
-  const findUnique = prisma.shop.findUnique as jest.Mock;
-  const upsert = prisma.shop.upsert as jest.Mock;
-  const readFile = fs.readFile as jest.Mock;
-  const mkdir = fs.mkdir as jest.Mock;
-  const writeFile = fs.writeFile as jest.Mock;
-  const rename = fs.rename as jest.Mock;
-
-  const rawShopData = {
-    id: "shop1",
-    name: "Shop",
-    catalogFilters: [],
-    themeId: "theme",
-    filterMappings: {},
-  };
-  const shopData = shopSchema.parse(rawShopData);
+describe("shop repository backend selection", () => {
+  const origBackend = process.env.INVENTORY_BACKEND;
+  const origDbUrl = process.env.DATABASE_URL;
 
   beforeEach(() => {
+    jest.resetModules();
     jest.clearAllMocks();
+    prismaImportCount = 0;
+    jsonImportCount = 0;
+    process.env.DATABASE_URL = "postgres://test";
   });
 
-  describe("getShopById", () => {
-    it("returns shop data from the database", async () => {
-      findUnique.mockResolvedValue({ id: "shop1", data: rawShopData });
-      await expect(getShopById("shop1")).resolves.toEqual(shopData);
-      expect(readFile).not.toHaveBeenCalled();
-    });
-
-    it("falls back to filesystem when the database throws", async () => {
-      findUnique.mockRejectedValue(new Error("db error"));
-      readFile.mockResolvedValue(JSON.stringify(rawShopData));
-      await expect(getShopById("shop1")).resolves.toEqual(shopData);
-      expect(readFile).toHaveBeenCalled();
-    });
-
-    it("falls back to filesystem when the database returns no record", async () => {
-      findUnique.mockResolvedValue(null);
-      readFile.mockResolvedValue(JSON.stringify(rawShopData));
-      await expect(getShopById("shop1")).resolves.toEqual(shopData);
-      expect(readFile).toHaveBeenCalled();
-    });
-
-    it("throws when the shop is missing", async () => {
-      findUnique.mockResolvedValue(null);
-      readFile.mockRejectedValue(new Error("not found"));
-      await expect(getShopById("missing")).rejects.toThrow(
-        "Shop missing not found",
-      );
-    });
+  afterEach(() => {
+    if (origBackend === undefined) {
+      delete process.env.INVENTORY_BACKEND;
+    } else {
+      process.env.INVENTORY_BACKEND = origBackend;
+    }
+    if (origDbUrl === undefined) {
+      delete process.env.DATABASE_URL;
+    } else {
+      process.env.DATABASE_URL = origDbUrl;
+    }
   });
 
-  describe("updateShopInRepo", () => {
-    beforeEach(() => {
-      findUnique.mockResolvedValue({ id: "shop1", data: rawShopData });
-    });
+  it("uses Prisma backend by default", async () => {
+    delete process.env.INVENTORY_BACKEND;
+    const repo = await import("../shop.server");
 
-    it("upserts the shop in the database", async () => {
-      upsert.mockResolvedValue(undefined);
-      const result = await updateShopInRepo("shop1", {
-        id: "shop1",
-        name: "Updated",
-      });
-      expect(result).toEqual({ ...shopData, name: "Updated" });
-      expect(upsert).toHaveBeenCalledWith({
-        where: { id: "shop1" },
-        create: { id: "shop1", data: { ...shopData, name: "Updated" } },
-        update: { data: { ...shopData, name: "Updated" } },
-      });
-      expect(writeFile).not.toHaveBeenCalled();
-      expect(rename).not.toHaveBeenCalled();
-    });
+    await repo.getShopById("shop1");
 
-    it("persists to the filesystem when the database upsert fails", async () => {
-      upsert.mockRejectedValue(new Error("db fail"));
-      const now = 123456;
-      const nowSpy = jest.spyOn(Date, "now").mockReturnValue(now);
+    expect(prismaImportCount).toBe(1);
+    expect(jsonImportCount).toBe(0);
+    expect(mockPrisma.getShopById).toHaveBeenCalled();
+    expect(resolveRepoMock).toHaveBeenCalledTimes(1);
+  });
 
-      const result = await updateShopInRepo("shop1", {
-        id: "shop1",
-        name: "Offline",
-      });
-      expect(result).toEqual({ ...shopData, name: "Offline" });
+  it("uses JSON backend when INVENTORY_BACKEND=json", async () => {
+    process.env.INVENTORY_BACKEND = "json";
+    const repo = await import("../shop.server");
 
-      const file = path.join("/data/root", "shop1", "shop.json");
-      const tmp = `${file}.${now}.tmp`;
+    await repo.getShopById("shop1");
 
-      expect(mkdir).toHaveBeenCalledWith(path.dirname(file), {
-        recursive: true,
-      });
-      expect(writeFile).toHaveBeenCalledWith(
-        tmp,
-        JSON.stringify({ ...shopData, name: "Offline" }, null, 2),
-        "utf8",
-      );
-      expect(rename).toHaveBeenCalledWith(tmp, file);
-
-      nowSpy.mockRestore();
-    });
-
-    it("throws when the patch id does not match", async () => {
-      await expect(
-        updateShopInRepo("shop1", { id: "other" } as any),
-      ).rejects.toThrow("Shop other not found in shop1");
-      expect(upsert).not.toHaveBeenCalled();
-      expect(writeFile).not.toHaveBeenCalled();
-    });
+    expect(jsonImportCount).toBe(1);
+    expect(prismaImportCount).toBe(0);
+    expect(mockJson.getShopById).toHaveBeenCalled();
+    expect(resolveRepoMock).toHaveBeenCalledTimes(1);
   });
 });
 

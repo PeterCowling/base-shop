@@ -1,0 +1,33 @@
+import "server-only";
+
+import { pricingSchema, type PricingMatrix } from "@acme/types";
+import { promises as fs } from "node:fs";
+import * as path from "path";
+import { resolveDataRoot } from "../dataRoot";
+
+function pricingPath(): string {
+  return path.join(resolveDataRoot(), "..", "rental", "pricing.json");
+}
+
+async function read(): Promise<PricingMatrix> {
+  const buf = await fs.readFile(pricingPath(), "utf8");
+  const parsed = pricingSchema.safeParse(JSON.parse(buf));
+  if (!parsed.success) {
+    throw new Error("Invalid pricing data");
+  }
+  return parsed.data;
+}
+
+async function write(data: PricingMatrix): Promise<void> {
+  const file = pricingPath();
+  const tmp = `${file}.${Date.now()}.tmp`;
+  await fs.mkdir(path.dirname(file), { recursive: true });
+  await fs.writeFile(tmp, JSON.stringify(data, null, 2), "utf8");
+  await fs.rename(tmp, file);
+}
+
+export const jsonPricingRepository = {
+  read,
+  write,
+};
+

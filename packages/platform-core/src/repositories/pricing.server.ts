@@ -1,27 +1,41 @@
 import "server-only";
 
-import { pricingSchema, type PricingMatrix } from "@acme/types";
-import { promises as fs } from "node:fs";
-import * as path from "path";
-import { resolveDataRoot } from "../dataRoot";
+import type { PricingMatrix } from "@acme/types";
+import { prisma } from "../db";
+import { resolveRepo } from "./repoResolver";
 
-function pricingPath(): string {
-  return path.join(resolveDataRoot(), "..", "rental", "pricing.json");
+interface PricingRepository {
+  read(): Promise<PricingMatrix>;
+  write(data: PricingMatrix): Promise<void>;
+}
+
+let repoPromise: Promise<PricingRepository> | undefined;
+
+async function getRepo(): Promise<PricingRepository> {
+  if (!repoPromise) {
+    repoPromise = resolveRepo<PricingRepository>(
+      () => (prisma as any).pricing,
+      () =>
+        import("./pricing.prisma.server").then(
+          (m) => m.prismaPricingRepository,
+        ),
+      () =>
+        import("./pricing.json.server").then(
+          (m) => m.jsonPricingRepository,
+        ),
+      { backendEnvVar: "PRICING_BACKEND" },
+    );
+  }
+  return repoPromise;
 }
 
 export async function readPricing(): Promise<PricingMatrix> {
-  const buf = await fs.readFile(pricingPath(), "utf8");
-  const parsed = pricingSchema.safeParse(JSON.parse(buf));
-  if (!parsed.success) {
-    throw new Error("Invalid pricing data");
-  }
-  return parsed.data;
+  const repo = await getRepo();
+  return repo.read();
 }
 
 export async function writePricing(data: PricingMatrix): Promise<void> {
-  const file = pricingPath();
-  const tmp = `${file}.${Date.now()}.tmp`;
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(tmp, JSON.stringify(data, null, 2), "utf8");
-  await fs.rename(tmp, file);
+  const repo = await getRepo();
+  return repo.write(data);
 }
+

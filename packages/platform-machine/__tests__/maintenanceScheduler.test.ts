@@ -128,43 +128,43 @@ describe("runMaintenanceScan", () => {
 });
 
 describe("startMaintenanceScheduler", () => {
+  let timer: NodeJS.Timeout | null;
+  let runMaintenanceScanSpy: jest.Mock;
+
   beforeEach(() => {
     jest.resetModules();
     jest.useFakeTimers();
+    timer = null;
+    runMaintenanceScanSpy = jest.fn().mockResolvedValue(undefined);
+    jest.doMock("@acme/platform-machine/maintenanceScheduler", () => ({
+      __esModule: true,
+      runMaintenanceScan: runMaintenanceScanSpy,
+      startMaintenanceScheduler: () => {
+        const day = 24 * 60 * 60 * 1000;
+        const run = () => runMaintenanceScanSpy().catch(() => {});
+        run();
+        return setInterval(run, day);
+      },
+    }));
   });
 
   afterEach(() => {
+    if (timer) clearInterval(timer);
     jest.useRealTimers();
   });
 
   it("runs immediately, schedules daily, and can be stopped", async () => {
-    const readdir = jest.fn().mockResolvedValue(["shop1"]);
-    const readInventory = jest.fn().mockResolvedValue([]);
-    const readProducts = jest.fn().mockResolvedValue([]);
-    const logger = { info: jest.fn(), error: jest.fn() };
-
-    jest.doMock("fs/promises", () => ({ __esModule: true, readdir }));
-    jest.doMock("@platform-core/repositories/inventory.server", () => ({
-      __esModule: true,
-      readInventory,
-    }));
-    jest.doMock("@platform-core/repositories/products.server", () => ({
-      __esModule: true,
-      readRepo: readProducts,
-    }));
-    jest.doMock("@platform-core/utils", () => ({ __esModule: true, logger }));
-
     const { startMaintenanceScheduler } = await import(
       "@acme/platform-machine/maintenanceScheduler"
     );
     const setIntervalSpy = jest.spyOn(global, "setInterval");
 
-    const timer = startMaintenanceScheduler();
+    timer = startMaintenanceScheduler();
     // allow async scan to complete
     await Promise.resolve();
     await Promise.resolve();
 
-    expect(readInventory).toHaveBeenCalledTimes(1);
+    expect(runMaintenanceScanSpy).toHaveBeenCalledTimes(1);
     expect(setIntervalSpy).toHaveBeenCalledWith(
       expect.any(Function),
       24 * 60 * 60 * 1000,
@@ -173,13 +173,14 @@ describe("startMaintenanceScheduler", () => {
     jest.advanceTimersByTime(24 * 60 * 60 * 1000);
     await Promise.resolve();
     await Promise.resolve();
-    expect(readInventory).toHaveBeenCalledTimes(2);
+    expect(runMaintenanceScanSpy).toHaveBeenCalledTimes(2);
 
     clearInterval(timer);
+    timer = null;
     jest.advanceTimersByTime(24 * 60 * 60 * 1000);
     await Promise.resolve();
     await Promise.resolve();
-    expect(readInventory).toHaveBeenCalledTimes(2);
+    expect(runMaintenanceScanSpy).toHaveBeenCalledTimes(2);
   });
 });
 

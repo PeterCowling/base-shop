@@ -1,26 +1,16 @@
 // packages/platform-core/repositories/shops.server.ts
 import "server-only";
 
-import { shopSchema, type Shop } from "@acme/types";
-import { promises as fs } from "fs";
-import * as path from "path";
-import { prisma } from "../db";
+import type { Shop } from "@acme/types";
 import { defaultFilterMappings } from "../defaultFilterMappings";
-import { validateShopName } from "../shops/index";
-import { DATA_ROOT } from "../dataRoot";
 import { baseTokens, loadThemeTokens } from "../themeTokens/index";
-import { updateShopInRepo } from "./shop.server";
+import { getShopById, updateShopInRepo } from "./shop.server";
 export {
   diffHistory,
   getShopSettings,
   saveShopSettings,
   type SettingsDiffEntry,
 } from "./settings.server";
-
-function shopPath(shop: string): string {
-  shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "shop.json");
-}
 
 export async function applyThemeData(data: Shop): Promise<Shop> {
   const defaults =
@@ -42,22 +32,10 @@ export async function applyThemeData(data: Shop): Promise<Shop> {
 
 export async function readShop(shop: string): Promise<Shop> {
   try {
-    const rec = await prisma.shop.findUnique({ where: { id: shop } });
-    if (rec) {
-      const data = shopSchema.parse(rec.data);
-      return await applyThemeData(data as Shop);
-    }
+    const data = await getShopById<Shop>(shop);
+    return await applyThemeData(data as Shop);
   } catch {
-    // ignore DB errors and fall back to filesystem
-  }
-  try {
-    const buf = await fs.readFile(shopPath(shop), "utf8");
-    const parsed = shopSchema.safeParse(JSON.parse(buf));
-    if (parsed.success && parsed.data.id) {
-      return await applyThemeData(parsed.data as Shop);
-    }
-  } catch {
-    // ignore
+    // fall through to default
   }
   const themeId = "base";
   const empty: Shop = {

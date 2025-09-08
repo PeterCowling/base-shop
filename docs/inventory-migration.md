@@ -16,7 +16,9 @@ This document outlines the strategy for migrating inventory data from existing J
 
 ## Export Strategy
 
-1. **SQLite (historical only)**: If you have legacy SQLite databases, use the `sqlite3` CLI or a Node script with `better-sqlite3` to dump tables to JSON or CSV.
+Current inventory data is sourced from `data/shops/<shop>/inventory.json` files or via Prisma, so a SQLite export is unnecessary for live environments.
+
+1. (Optional) **SQLite dump for historical archives**: If you have legacy SQLite databases, you may dump tables to JSON or CSV using the `sqlite3` CLI or a Node script with `better-sqlite3`.
    ```bash
    sqlite3 data/inventory.db ".mode json" "select * from items;" > inventory-items.json
    ```

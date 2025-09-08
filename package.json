@@ -55,6 +55,7 @@
     "seo:audit": "tsx scripts/seo-audit.ts",
     "validate-env": "ts-node scripts/src/validate-env.ts",
     "inventory": "ts-node scripts/src/inventory.ts",
+    "inventory:check": "tsx scripts/src/inventory/check-inventory.ts",
     "benchmark:loadPlugins": "tsx scripts/benchmark-loadPlugins.ts",
     "quickstart-shop": "ts-node scripts/src/quickstart-shop.ts",
     "check:locales": "ts-node scripts/src/check-locales.ts",

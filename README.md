@@ -91,7 +91,7 @@ Inventory still reads and writes JSON files (`data/shops/<shop>/inventory.json`)
 
 Set `INVENTORY_BACKEND=json` in your environment to force the JSON backend during local development. The SQLite option (`INVENTORY_BACKEND=sqlite`) is legacy and unsuitable for production. Sample fixtures live under `data/shops/demo` and `data/shops/test`.
 
-To verify the data, hit `/api/data/<shop>/inventory/export` in a running app (`?format=csv` is also supported):
+To verify the data, hit `/api/data/<shop>/inventory/export` in a running app (`?format=csv` is also supported) or run `pnpm inventory:check` for a CLI sanity check:
 
 ```bash
 curl http://localhost:3000/api/data/demo/inventory/export?format=json | jq

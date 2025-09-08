@@ -21,6 +21,7 @@ async function getRepo(): Promise<ShopRepo> {
       () => (prisma as any).shop,
       () => import("./shop.prisma.server"),
       () => import("./shop.json.server"),
+      { backendEnvVar: "SHOP_BACKEND" },
     );
   }
   return repoPromise;

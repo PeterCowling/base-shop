@@ -13,7 +13,7 @@ DATABASE_URL="postgres://user:password@localhost:5432/shop"
 ```bash
 pnpm --filter @acme/platform-core exec prisma migrate dev
 pnpm --filter @acme/platform-core run prisma:generate
-pnpm tsx packages/platform-core/prisma/seed.ts
+pnpm --filter @acme/platform-core exec prisma db seed
 ```
 
 `postinstall` runs `prisma generate` automatically.

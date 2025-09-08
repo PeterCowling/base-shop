@@ -48,12 +48,13 @@ jest.mock('../repoResolver', () => ({
     prismaDelegate: any,
     prismaModule: any,
     jsonModule: any,
+    options: any,
   ) => {
-    if (process.env.INVENTORY_BACKEND === 'sqlite') {
-      const mod = await import('../inventory.sqlite.server');
-      return mod.sqliteInventoryRepository;
+    const backend = process.env[options.backendEnvVar];
+    if (backend === 'sqlite' && options.sqliteModule) {
+      return await options.sqliteModule();
     }
-    if (process.env.INVENTORY_BACKEND === 'json') {
+    if (backend === 'json') {
       return await jsonModule();
     }
     return await prismaModule();

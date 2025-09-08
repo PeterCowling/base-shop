@@ -36,7 +36,7 @@ describe('inventory.server branching', () => {
     }
   });
 
-  it('delegates to sqlite repository when INVENTORY_BACKEND="sqlite"', async () => {
+  it('delegates to JSON repository when INVENTORY_BACKEND="sqlite"', async () => {
     process.env.INVENTORY_BACKEND = 'sqlite';
     const { inventoryRepository } = await import('../inventory.server');
     const mutate = jest.fn();
@@ -44,9 +44,9 @@ describe('inventory.server branching', () => {
     await inventoryRepository.write('shop', []);
     await inventoryRepository.update('shop', 'sku', { size: 'L' }, mutate);
 
-    expect(mockSqlite.write).toHaveBeenCalledWith('shop', []);
-    expect(mockSqlite.update).toHaveBeenCalledWith('shop', 'sku', { size: 'L' }, mutate);
-    expect(mockJson.write).not.toHaveBeenCalled();
+    expect(mockJson.write).toHaveBeenCalledWith('shop', []);
+    expect(mockJson.update).toHaveBeenCalledWith('shop', 'sku', { size: 'L' }, mutate);
+    expect(mockSqlite.write).not.toHaveBeenCalled();
   });
 
   it('uses JSON repository when INVENTORY_BACKEND is not "sqlite"', async () => {

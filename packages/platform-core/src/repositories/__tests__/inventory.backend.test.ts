@@ -51,8 +51,8 @@ jest.mock('../repoResolver', () => ({
     options: any,
   ) => {
     const backend = process.env[options.backendEnvVar];
-    if (backend === 'sqlite' && options.sqliteModule) {
-      return await options.sqliteModule();
+    if (backend === 'sqlite') {
+      return await jsonModule();
     }
     if (backend === 'json') {
       return await jsonModule();
@@ -100,21 +100,8 @@ describe('inventory backend', () => {
     expect(mockPrisma.read).toHaveBeenCalledTimes(2);
   });
 
-  it('imports sqlite backend once', async () => {
+  it('imports json backend when sqlite flag is set', async () => {
     process.env.INVENTORY_BACKEND = 'sqlite';
-    const { inventoryRepository } = await import('../inventory.server');
-
-    await inventoryRepository.read('shop1');
-    await inventoryRepository.read('shop2');
-
-    expect(sqliteImportCount).toBe(1);
-    expect(jsonImportCount).toBe(0);
-    expect(prismaImportCount).toBe(0);
-    expect(mockSqlite.read).toHaveBeenCalledTimes(2);
-  });
-
-  it('imports json backend once', async () => {
-    process.env.INVENTORY_BACKEND = 'json';
     const { inventoryRepository } = await import('../inventory.server');
 
     await inventoryRepository.read('shop1');

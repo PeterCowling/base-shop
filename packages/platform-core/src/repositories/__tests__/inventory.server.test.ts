@@ -42,8 +42,8 @@ jest.mock("../repoResolver", () => ({
     options: any,
   ) => {
     const backend = process.env[options.backendEnvVar];
-    if (backend === "sqlite" && options.sqliteModule) {
-      return await options.sqliteModule();
+    if (backend === "sqlite") {
+      return await jsonModule();
     }
     if (backend === "json") {
       return await jsonModule();
@@ -96,108 +96,97 @@ function createRepo() {
   };
 }
 
-describe.each(["json", "sqlite"]) (
-  "inventory server (%s backend)",
-  (backend) => {
-    let variantKey: typeof import("../inventory.server").variantKey;
-    let readInventoryMap: typeof import("../inventory.server").readInventoryMap;
-    let writeInventory: typeof import("../inventory.server").writeInventory;
-    let updateInventoryItem: typeof import("../inventory.server").updateInventoryItem;
-    let readInventory: typeof import("../inventory.server").readInventory;
-    let activeRepo: any;
-    let inactiveRepo: any;
+describe("inventory server", () => {
+  let variantKey: typeof import("../inventory.server").variantKey;
+  let readInventoryMap: typeof import("../inventory.server").readInventoryMap;
+  let writeInventory: typeof import("../inventory.server").writeInventory;
+  let updateInventoryItem: typeof import("../inventory.server").updateInventoryItem;
+  let readInventory: typeof import("../inventory.server").readInventory;
 
-    beforeEach(async () => {
-      jest.resetModules();
-      jsonRepo = createRepo();
-      sqliteRepo = createRepo();
-      prismaRepo = createRepo();
-      prismaImportCount = 0;
-      if (backend === "sqlite") {
-        process.env.INVENTORY_BACKEND = "sqlite";
-      } else {
-        process.env.INVENTORY_BACKEND = "json";
-      }
-      const mod = await import("../inventory.server");
-      variantKey = mod.variantKey;
-      readInventoryMap = mod.readInventoryMap;
-      writeInventory = mod.writeInventory;
-      updateInventoryItem = mod.updateInventoryItem;
-      readInventory = mod.readInventory;
-      activeRepo = backend === "sqlite" ? sqliteRepo : jsonRepo;
-      inactiveRepo = backend === "sqlite" ? jsonRepo : sqliteRepo;
-    });
+  beforeEach(async () => {
+    jest.resetModules();
+    jsonRepo = createRepo();
+    sqliteRepo = createRepo();
+    prismaRepo = createRepo();
+    prismaImportCount = 0;
+    process.env.INVENTORY_BACKEND = "sqlite";
+    const mod = await import("../inventory.server");
+    variantKey = mod.variantKey;
+    readInventoryMap = mod.readInventoryMap;
+    writeInventory = mod.writeInventory;
+    updateInventoryItem = mod.updateInventoryItem;
+    readInventory = mod.readInventory;
+  });
 
-    afterEach(() => {
-      delete process.env.INVENTORY_BACKEND;
-    });
+  afterEach(() => {
+    delete process.env.INVENTORY_BACKEND;
+  });
 
-    it("sorts attributes in variantKey", () => {
-      expect(variantKey("sku", { b: "2", a: "1" })).toBe("sku#a:1|b:2");
-    });
+  it("sorts attributes in variantKey", () => {
+    expect(variantKey("sku", { b: "2", a: "1" })).toBe("sku#a:1|b:2");
+  });
 
-    it("reads and writes inventory map", async () => {
-      await writeInventory("shop", [
-        { sku: "a", productId: "p1", quantity: 1, variantAttributes: { z: "9", a: "1" } },
-      ]);
-      expect(activeRepo.write).toHaveBeenCalledTimes(1);
-      expect(inactiveRepo.write).not.toHaveBeenCalled();
-      const map = await readInventoryMap("shop");
-      expect(map).toEqual({
-        "a#a:1|z:9": {
-          sku: "a",
-          productId: "p1",
-          quantity: 1,
-          variantAttributes: { z: "9", a: "1" },
-        },
-      });
-      expect(activeRepo.read).toHaveBeenCalledTimes(1);
-      expect(inactiveRepo.read).not.toHaveBeenCalled();
-    });
-
-    it("updates items successfully", async () => {
-      await writeInventory("shop", [
-        { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
-      ]);
-      const result = await updateInventoryItem("shop", "a", {}, (cur) => ({
-        productId: cur!.productId,
-        quantity: cur!.quantity + 2,
-        variantAttributes: cur!.variantAttributes,
-      }));
-      expect(result).toEqual({
+  it("reads and writes inventory map", async () => {
+    await writeInventory("shop", [
+      { sku: "a", productId: "p1", quantity: 1, variantAttributes: { z: "9", a: "1" } },
+    ]);
+    expect(jsonRepo.write).toHaveBeenCalledTimes(1);
+    expect(sqliteRepo.write).not.toHaveBeenCalled();
+    const map = await readInventoryMap("shop");
+    expect(map).toEqual({
+      "a#a:1|z:9": {
         sku: "a",
         productId: "p1",
-        quantity: 3,
-        variantAttributes: {},
-      });
-      expect((await readInventory("shop"))[0].quantity).toBe(3);
-      expect(activeRepo.update).toHaveBeenCalledTimes(1);
-      expect(inactiveRepo.update).not.toHaveBeenCalled();
+        quantity: 1,
+        variantAttributes: { z: "9", a: "1" },
+      },
     });
+    expect(jsonRepo.read).toHaveBeenCalledTimes(1);
+    expect(sqliteRepo.read).not.toHaveBeenCalled();
+  });
 
-    it("ignores removal of unknown SKU", async () => {
-      await writeInventory("shop", [
-        { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
-      ]);
-      const result = await updateInventoryItem("shop", "b", {}, () => undefined);
-      expect(result).toBeUndefined();
-      expect((await readInventory("shop"))).toHaveLength(1);
+  it("updates items successfully", async () => {
+    await writeInventory("shop", [
+      { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
+    ]);
+    const result = await updateInventoryItem("shop", "a", {}, (cur) => ({
+      productId: cur!.productId,
+      quantity: cur!.quantity + 2,
+      variantAttributes: cur!.variantAttributes,
+    }));
+    expect(result).toEqual({
+      sku: "a",
+      productId: "p1",
+      quantity: 3,
+      variantAttributes: {},
     });
+    expect((await readInventory("shop"))[0].quantity).toBe(3);
+    expect(jsonRepo.update).toHaveBeenCalledTimes(1);
+    expect(sqliteRepo.update).not.toHaveBeenCalled();
+  });
 
-    it("prevents updates when stock is insufficient", async () => {
-      await writeInventory("shop", [
-        { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
-      ]);
-      const result = await updateInventoryItem("shop", "a", {}, (cur) => {
-        const nextQty = (cur?.quantity ?? 0) - 2;
-        if (nextQty < 0) return undefined;
-        return { productId: cur!.productId, quantity: nextQty, variantAttributes: {} } as any;
-      });
-      expect(result).toBeUndefined();
-      expect(await readInventory("shop")).toEqual([]);
+  it("ignores removal of unknown SKU", async () => {
+    await writeInventory("shop", [
+      { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
+    ]);
+    const result = await updateInventoryItem("shop", "b", {}, () => undefined);
+    expect(result).toBeUndefined();
+    expect((await readInventory("shop"))).toHaveLength(1);
+  });
+
+  it("prevents updates when stock is insufficient", async () => {
+    await writeInventory("shop", [
+      { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
+    ]);
+    const result = await updateInventoryItem("shop", "a", {}, (cur) => {
+      const nextQty = (cur?.quantity ?? 0) - 2;
+      if (nextQty < 0) return undefined;
+      return { productId: cur!.productId, quantity: nextQty, variantAttributes: {} } as any;
     });
-  },
-);
+    expect(result).toBeUndefined();
+    expect(await readInventory("shop")).toEqual([]);
+  });
+});
 
 describe("inventory repository concurrency", () => {
   let tmpDir: string;

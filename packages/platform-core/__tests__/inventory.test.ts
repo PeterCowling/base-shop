@@ -4,7 +4,6 @@ import path from "node:path";
 import type { InventoryItem } from "../src/types/inventory";
 
 async function withRepo(
-  backend: "json" | "sqlite",
   cb: (
     repo: typeof import("../src/repositories/inventory.server"),
     shop: string,
@@ -21,7 +20,6 @@ async function withRepo(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
   process.env.NEXTAUTH_SECRET = "test";
   process.env.SESSION_SECRET = "test";
-  process.env.INVENTORY_BACKEND = backend;
   jest.resetModules();
 
   const repo = await import("../src/repositories/inventory.server");
@@ -29,13 +27,12 @@ async function withRepo(
     await cb(repo, "test", dir);
   } finally {
     process.chdir(cwd);
-    delete process.env.INVENTORY_BACKEND;
   }
 }
 
 describe("inventory repository", () => {
   it("readInventory throws when file missing or invalid", async () => {
-    await withRepo("json", async (repo, shop, dir) => {
+    await withRepo(async (repo, shop, dir) => {
       await expect(repo.readInventory(shop)).rejects.toThrow();
 
       await fs.writeFile(
@@ -57,7 +54,7 @@ describe("inventory repository", () => {
   });
 
   it("writes inventory records with variant attributes", async () => {
-    await withRepo("json", async (repo, shop, dir) => {
+    await withRepo(async (repo, shop, dir) => {
       const items: InventoryItem[] = [
         {
           sku: "sku-1",
@@ -84,7 +81,7 @@ describe("inventory repository", () => {
   });
 
   it("normalizes missing variantAttributes when reading", async () => {
-    await withRepo("json", async (repo, shop, dir) => {
+    await withRepo(async (repo, shop, dir) => {
       const file = path.join(dir, "data", "shops", shop, "inventory.json");
       await fs.writeFile(
         file,
@@ -105,7 +102,7 @@ describe("inventory repository", () => {
   });
 
   it("converts legacy variant field when reading", async () => {
-    await withRepo("json", async (repo, shop, dir) => {
+    await withRepo(async (repo, shop, dir) => {
       const file = path.join(dir, "data", "shops", shop, "inventory.json");
       await fs.writeFile(
         file,
@@ -126,7 +123,7 @@ describe("inventory repository", () => {
   });
 
   it("skips stock alert when disabled", async () => {
-    await withRepo("json", async (repo, shop) => {
+    await withRepo(async (repo, shop) => {
       const items = [
         {
           sku: "sku-1",
@@ -145,7 +142,7 @@ describe("inventory repository", () => {
   });
 
   it("writeInventory throws on invalid items", async () => {
-    await withRepo("json", async (repo, shop) => {
+    await withRepo(async (repo, shop) => {
       const bad = [
         {
           sku: "sku-1",
@@ -160,7 +157,7 @@ describe("inventory repository", () => {
   });
 
   it("writeInventory rejects negative quantity or lowStockThreshold", async () => {
-    await withRepo("json", async (repo, shop) => {
+    await withRepo(async (repo, shop) => {
       jest.doMock("../src/services/stockAlert.server", () => ({
         checkAndAlert: jest.fn(),
       }));
@@ -188,7 +185,7 @@ describe("inventory repository", () => {
   });
 
   it("indexes inventory by sku and variant attributes", async () => {
-    await withRepo("json", async (repo, shop) => {
+    await withRepo(async (repo, shop) => {
       const items = [
         {
           sku: "sku-1",
@@ -213,11 +210,9 @@ describe("inventory repository", () => {
       ).toBe(3);
     });
   });
-});
 
-describe("inventory repository (sqlite)", () => {
   it("updates and returns inventory items", async () => {
-    await withRepo("sqlite", async (repo, shop) => {
+    await withRepo(async (repo, shop) => {
       const first = await repo.updateInventoryItem(shop, "sku-1", {}, () => ({
         sku: "sku-1",
         productId: "p1",

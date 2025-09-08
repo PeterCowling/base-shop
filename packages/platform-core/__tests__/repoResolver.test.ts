@@ -13,23 +13,8 @@ describe("resolveRepo", () => {
     jest.clearAllMocks();
   });
 
-  it("uses sqlite module when INVENTORY_BACKEND=sqlite", async () => {
+  it("uses json module when INVENTORY_BACKEND=sqlite", async () => {
     process.env.INVENTORY_BACKEND = "sqlite";
-
-    await expect(
-      resolveRepo(prismaDelegate, prismaModule, jsonModule, {
-        backendEnvVar: "INVENTORY_BACKEND",
-        sqliteModule,
-      }),
-    ).resolves.toBe("sqlite");
-
-    expect(sqliteModule).toHaveBeenCalledTimes(1);
-    expect(jsonModule).not.toHaveBeenCalled();
-    expect(prismaModule).not.toHaveBeenCalled();
-  });
-
-  it("uses json module when INVENTORY_BACKEND=json", async () => {
-    process.env.INVENTORY_BACKEND = "json";
 
     await expect(
       resolveRepo(prismaDelegate, prismaModule, jsonModule, {

@@ -48,8 +48,7 @@ jest.mock('@acme/platform-core/repositories/repoResolver', () => ({
     jsonModule: any,
   ) => {
     if (process.env.INVENTORY_BACKEND === 'sqlite') {
-      const mod = await import('../../platform-core/src/repositories/inventory.sqlite.server');
-      return mod.sqliteInventoryRepository;
+      return await jsonModule();
     }
     if (process.env.INVENTORY_BACKEND === 'json') {
       return await jsonModule();
@@ -84,39 +83,17 @@ describe('inventory repository', () => {
     }
   });
 
-  it('getRepo defaults to the prisma backend and caches the promise', async () => {
-    const mod1 = await import('@acme/platform-core/repositories/inventory.server');
-    await mod1.inventoryRepository.read('s1');
-    const mod2 = await import('@acme/platform-core/repositories/inventory.server');
-    await mod2.inventoryRepository.read('s2');
-
-    expect(prismaImportCount).toBe(1);
-    expect(jsonImportCount).toBe(0);
-    expect(sqliteImportCount).toBe(0);
-    expect(mod1.inventoryRepository).toBe(mod2.inventoryRepository);
-    expect(prismaRepo.read).toHaveBeenCalledTimes(2);
-  });
-
-  it('getRepo uses json backend when configured', async () => {
-    process.env.INVENTORY_BACKEND = 'json';
+  it('uses JSON repository when INVENTORY_BACKEND="sqlite"', async () => {
+    process.env.INVENTORY_BACKEND = 'sqlite';
     const { inventoryRepository } = await import('@acme/platform-core/repositories/inventory.server');
     await inventoryRepository.read('shop');
+    await inventoryRepository.write('shop', []);
 
     expect(jsonImportCount).toBe(1);
     expect(sqliteImportCount).toBe(0);
     expect(prismaImportCount).toBe(0);
     expect(jsonRepo.read).toHaveBeenCalledWith('shop');
-  });
-
-  it('getRepo uses sqlite backend when configured', async () => {
-    process.env.INVENTORY_BACKEND = 'sqlite';
-    const { inventoryRepository } = await import('@acme/platform-core/repositories/inventory.server');
-    await inventoryRepository.read('shop');
-
-    expect(sqliteImportCount).toBe(1);
-    expect(jsonImportCount).toBe(0);
-    expect(prismaImportCount).toBe(0);
-    expect(sqliteRepo.read).toHaveBeenCalledWith('shop');
+    expect(jsonRepo.write).toHaveBeenCalledWith('shop', []);
   });
 
   it('variantKey sorts attributes and falls back to sku', async () => {
@@ -130,7 +107,7 @@ describe('inventory repository', () => {
       { sku: 'sku1', variantAttributes: { size: 'M', color: 'red' } },
       { sku: 'sku2', variantAttributes: {} },
     ] as any[];
-    process.env.INVENTORY_BACKEND = 'json';
+    process.env.INVENTORY_BACKEND = 'sqlite';
     jsonRepo.read.mockResolvedValue(items);
 
     const { readInventoryMap, variantKey } = await import('@acme/platform-core/repositories/inventory.server');

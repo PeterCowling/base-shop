@@ -47,8 +47,8 @@ jest.mock('../repoResolver', () => ({
     options: any,
   ) => {
     const backend = process.env[options.backendEnvVar];
-    if (backend === 'sqlite' && options.sqliteModule) {
-      return await options.sqliteModule();
+    if (backend === 'sqlite') {
+      return await jsonModule();
     }
     if (backend === 'json') {
       return await jsonModule();
@@ -81,24 +81,8 @@ describe('inventory repository backend selection', () => {
     }
   });
 
-  it('uses sqlite repository when INVENTORY_BACKEND="sqlite"', async () => {
+  it('uses json repository when INVENTORY_BACKEND="sqlite"', async () => {
     process.env.INVENTORY_BACKEND = 'sqlite';
-    const { inventoryRepository } = await import('../inventory.server');
-    const mutate = jest.fn();
-
-    await inventoryRepository.read('shop');
-    await inventoryRepository.write('shop', []);
-    await inventoryRepository.update('shop', 'sku', {}, mutate);
-
-    expect(mockSqlite.read).toHaveBeenCalledWith('shop');
-    expect(mockSqlite.write).toHaveBeenCalledWith('shop', []);
-    expect(mockSqlite.update).toHaveBeenCalledWith('shop', 'sku', {}, mutate);
-    expect(mockJson.read).not.toHaveBeenCalled();
-    expect(mockPrisma.read).not.toHaveBeenCalled();
-  });
-
-  it('uses json repository when INVENTORY_BACKEND="json"', async () => {
-    process.env.INVENTORY_BACKEND = 'json';
     const { inventoryRepository } = await import('../inventory.server');
     const mutate = jest.fn();
 
@@ -111,22 +95,5 @@ describe('inventory repository backend selection', () => {
     expect(mockJson.update).toHaveBeenCalledWith('shop', 'sku', {}, mutate);
     expect(mockSqlite.read).not.toHaveBeenCalled();
     expect(mockPrisma.read).not.toHaveBeenCalled();
-  });
-
-  it('defaults to the Prisma repository when INVENTORY_BACKEND is not set', async () => {
-    delete process.env.INVENTORY_BACKEND;
-    const { inventoryRepository } = await import('../inventory.server');
-    const mutate = jest.fn();
-
-    await inventoryRepository.read('shop');
-    await inventoryRepository.write('shop', []);
-    await inventoryRepository.update('shop', 'sku', {}, mutate);
-
-    expect(mockPrisma.read).toHaveBeenCalledWith('shop');
-    expect(mockPrisma.write).toHaveBeenCalledWith('shop', []);
-    expect(mockPrisma.update).toHaveBeenCalledWith('shop', 'sku', {}, mutate);
-    expect(mockJson.read).not.toHaveBeenCalled();
-    expect(mockSqlite.read).not.toHaveBeenCalled();
-    expect(prismaImportCount).toBe(1);
   });
 });

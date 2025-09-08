@@ -2,7 +2,7 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import os from "node:os";
 
-describe("sqlite inventory repository", () => {
+describe('inventory repository with legacy sqlite flag', () => {
   let tmpDir: string;
   let origCwd: string;
   const origBackend = process.env.INVENTORY_BACKEND;

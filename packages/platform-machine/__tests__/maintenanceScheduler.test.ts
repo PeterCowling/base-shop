@@ -128,12 +128,18 @@ describe("runMaintenanceScan", () => {
 });
 
 describe("startMaintenanceScheduler", () => {
+  let timer: NodeJS.Timeout | undefined;
+
   beforeEach(() => {
     jest.resetModules();
     jest.useFakeTimers();
   });
 
   afterEach(() => {
+    if (timer) {
+      clearInterval(timer);
+      timer = undefined;
+    }
     jest.useRealTimers();
   });
 
@@ -154,12 +160,16 @@ describe("startMaintenanceScheduler", () => {
     }));
     jest.doMock("@platform-core/utils", () => ({ __esModule: true, logger }));
 
-    const { startMaintenanceScheduler } = await import(
+    const scheduler = await import(
       "@acme/platform-machine/maintenanceScheduler"
+    );
+    const runMaintenanceScanSpy = jest.spyOn(
+      scheduler,
+      "runMaintenanceScan",
     );
     const setIntervalSpy = jest.spyOn(global, "setInterval");
 
-    const timer = startMaintenanceScheduler();
+    timer = scheduler.startMaintenanceScheduler();
     // allow async scan to complete
     await Promise.resolve();
     await Promise.resolve();
@@ -176,6 +186,7 @@ describe("startMaintenanceScheduler", () => {
     expect(readInventory).toHaveBeenCalledTimes(2);
 
     clearInterval(timer);
+    timer = undefined;
     jest.advanceTimersByTime(24 * 60 * 60 * 1000);
     await Promise.resolve();
     await Promise.resolve();

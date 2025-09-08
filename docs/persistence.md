@@ -14,7 +14,12 @@ The following repositories still read and write JSON or JSONL files under `<DATA
 - `@acme/email` repositories for campaigns, segments and abandoned cart reminders.
 - Background services in `@acme/platform-machine` that log analytics or scheduling data.
 
-The inventory repository currently relies on a local SQLite database (`inventory.sqlite`) as a fallback.
+The inventory repository currently relies on JSON files (`data/shops/<shop>/inventory.json`) as a fallback.
+
+Set `INVENTORY_BACKEND` to force a specific implementation:
+
+- `json` – read and write `data/shops/<shop>/inventory.json` files.
+- `sqlite` – legacy/no-op option. `inventory.sqlite.server.ts` delegates to the JSON repository.
 
 These fallbacks keep parts of the project functional during development or when the database is unreachable.
 

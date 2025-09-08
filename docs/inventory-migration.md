@@ -33,7 +33,11 @@ This document outlines the strategy for migrating inventory data from existing J
    ```
 
    Pass `--dry-run` to preview changes without writing to the database.
-3. Verify counts with `pnpm tsx scripts/check-inventory.ts` to ensure parity with the original dataset.
+3. Verify counts with `scripts/src/inventory/check-inventory.ts` to ensure parity with the original dataset:
+
+   ```bash
+   pnpm tsx scripts/src/inventory/check-inventory.ts --shop demo
+   ```
 
 ## Tooling
 

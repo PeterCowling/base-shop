@@ -1,6 +1,6 @@
 # Inventory Migration Plan
 
-This document outlines the strategy for migrating inventory data from existing JSON sources to a more consistent storage layer such as Prisma with a PostgreSQL database. Inventory data currently lives in JSON files; there is no live SQLite store. The `.sqlite.server` repository is a no-op proxy that delegates all operations to the JSON implementation.
+This document outlines the strategy for migrating inventory data from existing JSON sources to a more consistent storage layer such as Prisma with a PostgreSQL database. Inventory data currently lives in JSON files; there is no live SQLite store. The `.sqlite.server` repository is a no-op proxy that delegates all operations to the JSON implementation. Every `*.sqlite.server.ts` module simply forwards calls to the JSON repository, so these files can be ignored entirely during the migration.
 
 ## Goals
 

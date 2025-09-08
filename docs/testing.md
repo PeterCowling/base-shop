@@ -37,8 +37,11 @@ When running integration tests against a real database, ensure the schema is mig
 
 ```bash
 pnpm prisma migrate reset --force
-pnpm --filter @acme/platform-core exec prisma db seed
+pnpm prisma db seed
 ```
+
+`pnpm prisma db seed` seeds inventory and orders by default. Run `pnpm prisma db seed -- --skip-inventory` to omit inventory data.
+Inventory fixtures come from `data/shops/*/inventory.json`.
 
 Run these commands before `pnpm test` so each test suite starts from a clean, seeded state.
 

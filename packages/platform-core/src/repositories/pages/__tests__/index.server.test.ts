@@ -75,7 +75,6 @@ const resolveRepoMock = jest.fn(
 jest.mock("../../repoResolver", () => ({ resolveRepo: resolveRepoMock }));
 
 describe("pages repository backend selection", () => {
-  const origInventoryBackend = process.env.INVENTORY_BACKEND;
   const origPagesBackend = process.env.PAGES_BACKEND;
   const origDbUrl = process.env.DATABASE_URL;
 
@@ -90,11 +89,6 @@ describe("pages repository backend selection", () => {
   });
 
   afterEach(() => {
-    if (origInventoryBackend === undefined) {
-      delete process.env.INVENTORY_BACKEND;
-    } else {
-      process.env.INVENTORY_BACKEND = origInventoryBackend;
-    }
     if (origPagesBackend === undefined) {
       delete process.env.PAGES_BACKEND;
     } else {
@@ -134,19 +128,53 @@ describe("pages repository backend selection", () => {
   });
 
   it("PAGES_BACKEND=json switches only pages repo while inventory uses Prisma", async () => {
+    const origInventoryBackend = process.env.INVENTORY_BACKEND;
     delete process.env.INVENTORY_BACKEND;
     process.env.PAGES_BACKEND = "json";
 
-    const pagesRepo = await import("../index.server");
-    await pagesRepo.getPages("shop1");
+    try {
+      const pagesRepo = await import("../index.server");
+      await pagesRepo.getPages("shop1");
 
-    const { inventoryRepository } = await import("../../inventory.server");
-    await inventoryRepository.read("shop1");
+      const { inventoryRepository } = await import("../../inventory.server");
+      await inventoryRepository.read("shop1");
 
-    expect(jsonImportCount).toBe(1);
-    expect(prismaImportCount).toBe(0);
-    expect(inventoryPrismaImportCount).toBe(1);
-    expect(inventoryJsonImportCount).toBe(0);
+      expect(jsonImportCount).toBe(1);
+      expect(prismaImportCount).toBe(0);
+      expect(inventoryPrismaImportCount).toBe(1);
+      expect(inventoryJsonImportCount).toBe(0);
+    } finally {
+      if (origInventoryBackend === undefined) {
+        delete process.env.INVENTORY_BACKEND;
+      } else {
+        process.env.INVENTORY_BACKEND = origInventoryBackend;
+      }
+    }
+  });
+
+  it("INVENTORY_BACKEND=json leaves pages repo on Prisma", async () => {
+    const origInventoryBackend = process.env.INVENTORY_BACKEND;
+    process.env.INVENTORY_BACKEND = "json";
+    delete process.env.PAGES_BACKEND;
+
+    try {
+      const pagesRepo = await import("../index.server");
+      await pagesRepo.getPages("shop1");
+
+      const { inventoryRepository } = await import("../../inventory.server");
+      await inventoryRepository.read("shop1");
+
+      expect(prismaImportCount).toBe(1);
+      expect(jsonImportCount).toBe(0);
+      expect(inventoryJsonImportCount).toBe(1);
+      expect(inventoryPrismaImportCount).toBe(0);
+    } finally {
+      if (origInventoryBackend === undefined) {
+        delete process.env.INVENTORY_BACKEND;
+      } else {
+        process.env.INVENTORY_BACKEND = origInventoryBackend;
+      }
+    }
   });
 
   it("ignores INVENTORY_BACKEND=sqlite and uses Prisma by default", async () => {

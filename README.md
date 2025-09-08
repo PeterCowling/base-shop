@@ -15,10 +15,10 @@ Run `pnpm init-shop` to scaffold a new shop. The configurator lists available pl
 See [docs/testing.md](docs/testing.md) for comprehensive testing instructions. Cypress fixtures live under `test/data/shops`. Override this path by setting the `TEST_DATA_ROOT` environment variable.
 For CMS configurator-specific end-to-end tests, see [docs/testing-configurator.md](docs/testing-configurator.md).
 
-Seed data before running the Cypress suite. This command always seeds minimal base data; no `SKIP_INVENTORY_SEED` env var is needed:
+Seed data before running the Cypress suite. This command always seeds minimal base data. Pass `--skip-inventory` to omit inventory seeding if you only need base data:
 
 ```bash
-pnpm --filter @acme/platform-core exec prisma db seed
+pnpm --filter @acme/platform-core exec prisma db seed --skip-inventory
 pnpm e2e
 ```
 

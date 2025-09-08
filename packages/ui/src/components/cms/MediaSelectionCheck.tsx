@@ -29,7 +29,7 @@ export default function MediaSelectionCheck({
         className,
       )}
     >
-      <CheckIcon className="h-4 w-4" />
+      <CheckIcon aria-hidden className="h-4 w-4" />
     </span>
   );
 }

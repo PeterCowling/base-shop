@@ -1,34 +1,17 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { jest } from "@jest/globals";
 import type { Page, HistoryState } from "@acme/types";
 
-const prisma = {
-  page: {
-    findMany: jest.fn(),
-    upsert: jest.fn(),
-    update: jest.fn(),
-    deleteMany: jest.fn(),
-  },
-};
-
-jest.mock("../../../db", () => ({ prisma }));
-
-describe("pages repository without database", () => {
-  let repo: typeof import("../index.server");
+describe("pages.json.server", () => {
+  let repo: typeof import("../pages.json.server");
   let root: string;
 
   beforeAll(async () => {
-    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "pages-nodb-"));
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "pages-json-"));
     root = path.join(dir, "shops");
     process.env.DATA_ROOT = root;
-    delete process.env.DATABASE_URL;
-    repo = await import("../index.server");
-  });
-
-  beforeEach(() => {
-    jest.clearAllMocks();
+    repo = await import("../pages.json.server");
   });
 
   it("performs CRUD operations using filesystem", async () => {
@@ -48,7 +31,6 @@ describe("pages repository without database", () => {
     let pages = await repo.getPages(shop);
     expect(pages).toHaveLength(1);
     expect(pages[0].createdBy).toBe("tester");
-    expect(prisma.page.upsert).not.toHaveBeenCalled();
 
     const history: HistoryState = {
       past: [],
@@ -65,11 +47,9 @@ describe("pages repository without database", () => {
     pages = await repo.getPages(shop);
     expect(updated.slug).toBe("start");
     expect(pages[0].history).toEqual(history);
-    expect(prisma.page.update).not.toHaveBeenCalled();
 
     await repo.deletePage(shop, page.id);
     pages = await repo.getPages(shop);
     expect(pages).toHaveLength(0);
-    expect(prisma.page.deleteMany).not.toHaveBeenCalled();
   });
 });

@@ -1,29 +1,45 @@
 import "server-only";
 
-import { returnLogisticsSchema, type ReturnLogistics } from "@acme/types";
-import { promises as fs } from "fs";
-import * as path from "path";
-import { resolveDataRoot } from "../dataRoot";
+import type { ReturnLogistics } from "@acme/types";
+import { prisma } from "../db";
+import { resolveRepo } from "./repoResolver";
 
-function logisticsPath(): string {
-  return path.join(resolveDataRoot(), "..", "return-logistics.json");
+type ReturnLogisticsRepo = {
+  readReturnLogistics(): Promise<ReturnLogistics>;
+  writeReturnLogistics(data: ReturnLogistics): Promise<void>;
+};
+
+let repoPromise: Promise<ReturnLogisticsRepo> | undefined;
+
+async function getRepo(): Promise<ReturnLogisticsRepo> {
+  if (!repoPromise) {
+    repoPromise = resolveRepo<ReturnLogisticsRepo>(
+      () => (prisma as any).returnLogistics,
+      () =>
+        import("./returnLogistics.prisma.server").then(
+          (m) => m.prismaReturnLogisticsRepository,
+        ),
+      () =>
+        import("./returnLogistics.json.server").then(
+          (m) => m.jsonReturnLogisticsRepository,
+        ),
+      { backendEnvVar: "RETURN_LOGISTICS_BACKEND" },
+    );
+  }
+  return repoPromise;
 }
 
 export async function readReturnLogistics(): Promise<ReturnLogistics> {
-  const buf = await fs.readFile(logisticsPath(), "utf8");
-  const parsed = returnLogisticsSchema.safeParse(JSON.parse(buf));
-  if (!parsed.success) {
-    throw new Error("Invalid return logistics data");
-  }
-  return parsed.data;
+  const repo = await getRepo();
+  return repo.readReturnLogistics();
 }
 
 export async function writeReturnLogistics(
-  data: ReturnLogistics
+  data: ReturnLogistics,
 ): Promise<void> {
-  const file = logisticsPath();
-  const tmp = `${file}.${Date.now()}.tmp`;
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(tmp, JSON.stringify(data, null, 2), "utf8");
-  await fs.rename(tmp, file);
+  const repo = await getRepo();
+  return repo.writeReturnLogistics(data);
 }
+
+export type { ReturnLogistics };
+

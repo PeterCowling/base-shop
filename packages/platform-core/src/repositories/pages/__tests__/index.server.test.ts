@@ -62,8 +62,10 @@ const resolveRepoMock = jest.fn(
     _delegate: any,
     prismaModule: any,
     jsonModule: any,
+    options: any = {},
   ) => {
-    if (process.env.INVENTORY_BACKEND === "json") {
+    const envVar = options.backendEnvVar ?? "INVENTORY_BACKEND";
+    if (process.env[envVar] === "json") {
       return await jsonModule();
     }
     return await prismaModule();
@@ -73,7 +75,7 @@ const resolveRepoMock = jest.fn(
 jest.mock("../../repoResolver", () => ({ resolveRepo: resolveRepoMock }));
 
 describe("pages repository backend selection", () => {
-  const origBackend = process.env.INVENTORY_BACKEND;
+  const origInventoryBackend = process.env.INVENTORY_BACKEND;
   const origPagesBackend = process.env.PAGES_BACKEND;
   const origDbUrl = process.env.DATABASE_URL;
 
@@ -88,10 +90,10 @@ describe("pages repository backend selection", () => {
   });
 
   afterEach(() => {
-    if (origBackend === undefined) {
+    if (origInventoryBackend === undefined) {
       delete process.env.INVENTORY_BACKEND;
     } else {
-      process.env.INVENTORY_BACKEND = origBackend;
+      process.env.INVENTORY_BACKEND = origInventoryBackend;
     }
     if (origPagesBackend === undefined) {
       delete process.env.PAGES_BACKEND;
@@ -106,7 +108,7 @@ describe("pages repository backend selection", () => {
   });
 
   it("uses Prisma backend by default", async () => {
-    delete process.env.INVENTORY_BACKEND;
+    delete process.env.PAGES_BACKEND;
     const repo = await import("../index.server");
 
     await repo.getPages("shop1");
@@ -118,8 +120,8 @@ describe("pages repository backend selection", () => {
     expect(resolveRepoMock).toHaveBeenCalledTimes(1);
   });
 
-  it("uses JSON backend when INVENTORY_BACKEND=json", async () => {
-    process.env.INVENTORY_BACKEND = "json";
+  it("uses JSON backend when PAGES_BACKEND=json", async () => {
+    process.env.PAGES_BACKEND = "json";
     const repo = await import("../index.server");
 
     await repo.getPages("shop1");
@@ -131,13 +133,18 @@ describe("pages repository backend selection", () => {
     expect(resolveRepoMock).toHaveBeenCalledTimes(1);
   });
 
-  it("setting PAGES_BACKEND does not affect inventory backend", async () => {
+  it("PAGES_BACKEND=json switches only pages repo while inventory uses Prisma", async () => {
     delete process.env.INVENTORY_BACKEND;
     process.env.PAGES_BACKEND = "json";
+
+    const pagesRepo = await import("../index.server");
+    await pagesRepo.getPages("shop1");
 
     const { inventoryRepository } = await import("../../inventory.server");
     await inventoryRepository.read("shop1");
 
+    expect(jsonImportCount).toBe(1);
+    expect(prismaImportCount).toBe(0);
     expect(inventoryPrismaImportCount).toBe(1);
     expect(inventoryJsonImportCount).toBe(0);
   });

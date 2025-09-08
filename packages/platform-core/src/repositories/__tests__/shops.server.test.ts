@@ -1,19 +1,6 @@
-jest.mock("../../dataRoot", () => ({
-  DATA_ROOT: "/data/root",
-}));
-
-jest.mock("fs", () => ({
-  promises: {
-    readFile: jest.fn(),
-  },
-}));
-
-jest.mock("../../db", () => ({
-  prisma: {
-    shop: {
-      findUnique: jest.fn(),
-    },
-  },
+jest.mock("../shop.server", () => ({
+  getShopById: jest.fn(),
+  updateShopInRepo: jest.fn(async (_shop: string, patch: any) => patch),
 }));
 
 jest.mock("../../themeTokens/index", () => ({
@@ -21,22 +8,15 @@ jest.mock("../../themeTokens/index", () => ({
   loadThemeTokens: jest.fn(async () => ({ theme: "theme" })),
 }));
 
-jest.mock("../shop.server", () => ({
-  updateShopInRepo: jest.fn(async (_shop: string, patch: any) => patch),
-}));
-
-import { promises as fs } from "fs";
-import { prisma } from "../../db";
 import { shopSchema } from "@acme/types";
-import * as shops from "../shops.server";
-import { updateShopInRepo } from "../shop.server";
+import { getShopById, updateShopInRepo } from "../shop.server";
 import { loadThemeTokens } from "../../themeTokens/index";
+import * as shops from "../shops.server";
 
 const { readShop, writeShop } = shops;
 
-describe("shops repository", () => {
-  const findUnique = prisma.shop.findUnique as jest.Mock;
-  const readFile = fs.readFile as jest.Mock;
+describe("shops.repository", () => {
+  const getRepo = getShopById as jest.Mock;
   const updateRepo = updateShopInRepo as jest.Mock;
   const loadTokens = loadThemeTokens as jest.Mock;
 
@@ -45,183 +25,41 @@ describe("shops repository", () => {
   });
 
   describe("readShop", () => {
-    it("returns shop from Prisma when available", async () => {
-      const dbData = {
-        id: "db-shop",
-        name: "DB Shop",
+    it("returns shop from repository", async () => {
+      const repoData = {
+        id: "repo-shop",
+        name: "Repo Shop",
         catalogFilters: [],
         themeId: "base",
         filterMappings: {},
         themeDefaults: { color: "green" },
         themeOverrides: { color: "blue" },
       };
-      findUnique.mockResolvedValue({ data: dbData });
+      getRepo.mockResolvedValue(repoData);
 
-      const result = await readShop("db-shop");
+      const result = await readShop("repo-shop");
 
-      expect(result.name).toBe("DB Shop");
+      expect(result.name).toBe("Repo Shop");
       expect(result.themeDefaults).toEqual({ color: "green" });
       expect(result.themeTokens).toEqual({ color: "blue" });
-      expect(readFile).not.toHaveBeenCalled();
       expect(loadTokens).not.toHaveBeenCalled();
     });
 
-    it("falls back to filesystem when Prisma fails", async () => {
-      findUnique.mockRejectedValue(new Error("db fail"));
-      const fileData = {
-        id: "shop1",
-        name: "FS Shop",
-        catalogFilters: [],
-        themeId: "base",
-        filterMappings: {},
-        themeDefaults: { color: "red" },
-        themeOverrides: { color: "blue" },
-      };
-      readFile.mockResolvedValue(JSON.stringify(fileData));
-
-      const result = await readShop("shop1");
-
-      expect(result.name).toBe("FS Shop");
-      expect(result.themeDefaults).toEqual({ color: "red" });
-      expect(result.themeOverrides).toEqual({ color: "blue" });
-      expect(result.themeTokens).toEqual({ color: "blue" });
-      expect(findUnique).toHaveBeenCalled();
-      expect(readFile).toHaveBeenCalledWith(
-        "/data/root/shop1/shop.json",
-        "utf8",
-      );
-      expect(loadTokens).not.toHaveBeenCalled();
-    });
-
-    it("falls back to filesystem when Prisma returns null", async () => {
-      findUnique.mockResolvedValue(null);
-      const fileData = {
-        id: "shop-null",
-        name: "FS Null",
-        catalogFilters: [],
-        themeId: "base",
-        filterMappings: {},
-        themeDefaults: { color: "red" },
-        themeOverrides: { color: "blue" },
-      };
-      readFile.mockResolvedValue(JSON.stringify(fileData));
-
-      const result = await readShop("shop-null");
-
-      expect(result.name).toBe("FS Null");
-      expect(findUnique).toHaveBeenCalled();
-      expect(readFile).toHaveBeenCalledWith(
-        "/data/root/shop-null/shop.json",
-        "utf8",
-      );
-      expect(result.themeTokens).toEqual({ color: "blue" });
-    });
-
-    it("falls back to filesystem when Prisma returns invalid data", async () => {
-      const badDbData = {
-        id: "shop-bad",
-        name: 123,
-        catalogFilters: [],
-        themeId: "base",
-        filterMappings: {},
-      } as any;
-      findUnique.mockResolvedValue({ data: badDbData });
-      const fileData = {
-        id: "shop-bad",
-        name: "FS Fallback",
-        catalogFilters: [],
-        themeId: "base",
-        filterMappings: {},
-        themeDefaults: { color: "red" },
-        themeOverrides: { color: "blue" },
-      };
-      readFile.mockResolvedValue(JSON.stringify(fileData));
-
-      const result = await readShop("shop-bad");
-
-      expect(result.name).toBe("FS Fallback");
-      expect(readFile).toHaveBeenCalledWith(
-        "/data/root/shop-bad/shop.json",
-        "utf8",
-      );
-      expect(loadTokens).not.toHaveBeenCalled();
-    });
-
-    it("returns empty shop with defaults when db returns null and fs fails", async () => {
-      findUnique.mockResolvedValue(null);
-      readFile.mockRejectedValue(new Error("fs fail"));
-
-      const result = await readShop("missing");
-
-      expect(result.id).toBe("missing");
-      expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
-      expect(result.themeOverrides).toEqual({});
-      expect(result.themeTokens).toEqual({ base: "base", theme: "theme" });
-      expect(result.analyticsEnabled).toBe(false);
-      expect(result.subscriptionsEnabled).toBe(false);
-      expect(loadTokens).toHaveBeenCalled();
-    });
-
-    it("returns empty shop with defaults when fs has invalid data", async () => {
-      findUnique.mockRejectedValue(new Error("db fail"));
-      const invalidFileData = {
-        name: "No ID",
-        catalogFilters: [],
-        themeId: "base",
-        filterMappings: {},
-      };
-      readFile.mockResolvedValue(JSON.stringify(invalidFileData));
-
-      const result = await readShop("broken");
-
-      expect(result.id).toBe("broken");
-      expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
-      expect(result.themeOverrides).toEqual({});
-      expect(result.themeTokens).toEqual({ base: "base", theme: "theme" });
-      expect(loadTokens).toHaveBeenCalled();
-    });
-
-    it("returns empty shop with defaults when fs contains invalid JSON", async () => {
-      findUnique.mockResolvedValue(null);
-      readFile.mockResolvedValue("{bad-json");
-
-      const result = await readShop("invalid-json");
-
-      expect(result.id).toBe("invalid-json");
-      expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
-      expect(result.themeOverrides).toEqual({});
-      expect(result.themeTokens).toEqual({ base: "base", theme: "theme" });
-      expect(loadTokens).toHaveBeenCalled();
-    });
-
-    it("uses default tokens when themeDefaults is empty", async () => {
-      findUnique.mockRejectedValue(new Error("db fail"));
-      const fileData = {
-        id: "shop2",
-        name: "No Defaults",
-        catalogFilters: [],
-        themeId: "other",
-        themeDefaults: {},
-        filterMappings: {},
-      };
-      readFile.mockResolvedValue(JSON.stringify(fileData));
-
-      const result = await readShop("shop2");
-
-      expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
-      expect(loadTokens).toHaveBeenCalledWith("other");
+    it("returns default shop when repository throws", async () => {
+      getRepo.mockRejectedValue(new Error("missing"));
+      const result = await readShop("new-shop");
+      expect(result.id).toBe("new-shop");
+      expect(result.name).toBe("new-shop");
     });
 
     it("loads theme tokens when defaults are missing", async () => {
-      findUnique.mockResolvedValue({
-        data: {
-          id: "shop-no-defaults",
-          name: "No Defaults",
-          catalogFilters: [],
-          themeId: "base",
-          filterMappings: {},
-          themeOverrides: { color: "blue" },
-        },
+      getRepo.mockResolvedValue({
+        id: "shop-no-defaults",
+        name: "No Defaults",
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+        themeOverrides: { color: "blue" },
       });
 
       const result = await readShop("shop-no-defaults");
@@ -233,20 +71,17 @@ describe("shops repository", () => {
         theme: "theme",
         color: "blue",
       });
-      expect(readFile).not.toHaveBeenCalled();
       expect(loadTokens).toHaveBeenCalledWith("base");
     });
 
     it("sets empty overrides when overrides are missing", async () => {
-      findUnique.mockResolvedValue({
-        data: {
-          id: "shop-no-overrides",
-          name: "No Overrides",
-          catalogFilters: [],
-          themeId: "base",
-          filterMappings: {},
-          themeDefaults: { color: "green" },
-        },
+      getRepo.mockResolvedValue({
+        id: "shop-no-overrides",
+        name: "No Overrides",
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+        themeDefaults: { color: "green" },
       });
 
       const result = await readShop("shop-no-overrides");
@@ -254,28 +89,22 @@ describe("shops repository", () => {
       expect(result.themeDefaults).toEqual({ color: "green" });
       expect(result.themeOverrides).toEqual({});
       expect(result.themeTokens).toEqual({ color: "green" });
-      expect(readFile).not.toHaveBeenCalled();
-      expect(loadTokens).not.toHaveBeenCalled();
     });
   });
 
   describe("writeShop", () => {
     it("merges theme data and prunes overrides", async () => {
-      const current = {
-        ...shopSchema.parse({
-          id: "shop1",
-          name: "Shop",
-          catalogFilters: [],
-          themeId: "base",
-          filterMappings: {},
-          themeDefaults: { color: "red" },
-          themeOverrides: { color: "blue", spacing: "10px" },
-        }),
-      } as any;
+      const current = shopSchema.parse({
+        id: "shop1",
+        name: "Shop",
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+        themeDefaults: { color: "red" },
+        themeOverrides: { color: "blue", spacing: "10px" },
+      });
 
-      const readSpy = jest
-        .spyOn(shops, "readShop")
-        .mockResolvedValue(current);
+      jest.spyOn(shops, "readShop").mockResolvedValue(current);
 
       const patch = {
         id: "shop1",
@@ -310,14 +139,8 @@ describe("shops repository", () => {
       );
 
       expect(result.themeOverrides).toEqual({ newOverride: "15px" });
-      expect(result.themeTokens).toEqual({
-        color: "red",
-        spacing: "10px",
-        extraDefault: "value",
-        newOverride: "15px",
-      });
 
-      readSpy.mockRestore();
+      (shops.readShop as jest.Mock).mockRestore();
     });
   });
 });

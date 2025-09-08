@@ -4,8 +4,7 @@ import { useState } from "react";
 import { useParams } from "next/navigation";
 
 export default function PasswordResetPage() {
-  const params = useParams<{ token: string }>();
-  const token = params?.token;
+  const token = useParams<{ token: string }>()?.token;
   const [msg, setMsg] = useState("");
 
   if (!token) {

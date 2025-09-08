@@ -6,27 +6,31 @@ import {
   variantKey,
 } from "../types/inventory";
 import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
+import { prisma } from "../db";
+import { resolveRepo } from "./repoResolver";
 
 let repoPromise: Promise<InventoryRepository> | undefined;
 
 async function getRepo(): Promise<InventoryRepository> {
   if (!repoPromise) {
-    const backend = process.env.INVENTORY_BACKEND;
-    if (backend === "sqlite") {
-      repoPromise = Promise.resolve(
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        (require("./inventory." + "sqlite.server") as any)
-          .sqliteInventoryRepository,
-      );
-    } else if (backend === "json") {
-      repoPromise = import("./inventory.json.server").then(
-        (m) => m.jsonInventoryRepository,
-      );
-    } else {
-      repoPromise = import("./inventory.prisma.server").then(
-        (m) => m.prismaInventoryRepository,
-      );
-    }
+    repoPromise = resolveRepo(
+      () => prisma.inventoryItem,
+      () =>
+        import("./inventory.prisma.server").then(
+          (m) => m.prismaInventoryRepository,
+        ),
+      () =>
+        import("./inventory.json.server").then(
+          (m) => m.jsonInventoryRepository,
+        ),
+      {
+        backendEnvVar: "INVENTORY_BACKEND",
+        sqliteModule: () =>
+          import("./inventory.sqlite.server").then(
+            (m) => m.sqliteInventoryRepository,
+          ),
+      },
+    );
   }
   return repoPromise;
 }

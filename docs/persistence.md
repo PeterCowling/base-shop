@@ -21,6 +21,20 @@ Set `INVENTORY_BACKEND` to force a specific implementation:
 - `json` – read and write `data/shops/<shop>/inventory.json` files.
 - `sqlite` – legacy/no-op option. `inventory.sqlite.server.ts` delegates to the JSON repository.
 
+The pages repository falls back to `data/shops/<shop>/pages.json`.
+
+Set `PAGES_BACKEND` to force a specific implementation:
+
+- `json` – read and write `data/shops/<shop>/pages.json` files.
+- `sqlite` – legacy/no-op option that proxies to the JSON repository.
+
+The shops repository falls back to `data/shops/<shop>/shop.json`.
+
+Set `SHOP_BACKEND` to force a specific implementation:
+
+- `json` – read and write `data/shops/<shop>/shop.json` files.
+- `sqlite` – legacy/no-op option that proxies to the JSON repository.
+
 These fallbacks keep parts of the project functional during development or when the database is unreachable.
 
 ## `DATA_ROOT`

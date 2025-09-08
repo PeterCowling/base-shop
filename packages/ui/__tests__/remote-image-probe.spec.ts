@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import useRemoteImageProbe from "../useRemoteImageProbe";
+import useRemoteImageProbe from "../src/hooks/useRemoteImageProbe";
 
 describe("useRemoteImageProbe", () => {
   const originalFetch = global.fetch;

@@ -8,7 +8,7 @@ import {
   waitFor,
 } from "@testing-library/react";
 import { useState } from "react";
-import { useTokenEditor, type TokenMap } from "../useTokenEditor";
+import { useTokenEditor, type TokenMap } from "../src/hooks/useTokenEditor";
 
 class MockFileReader {
   result: string | ArrayBuffer | null = null;

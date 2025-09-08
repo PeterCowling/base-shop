@@ -1,7 +1,7 @@
 import { act, renderHook } from "@testing-library/react";
-import useMediaUpload from "../useMediaUpload";
+import useMediaUpload from "../src/hooks/useMediaUpload";
 
-jest.mock("../useFileUpload.tsx", () => {
+jest.mock("../src/hooks/useFileUpload.tsx", () => {
   const React = require("react");
   return {
     __esModule: true,

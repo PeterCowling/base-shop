@@ -1,11 +1,11 @@
 import { act, renderHook } from "@testing-library/react";
 import type { Locale } from "@acme/i18n";
 import type { ProductPublication } from "@acme/types";
-import * as buildProductFormData from "../../utils/buildProductFormData";
+import * as buildProductFormData from "../src/utils/buildProductFormData";
 import {
   useProductEditorFormState,
   type ProductSaveResult,
-} from "../useProductEditorFormState";
+} from "../src/hooks/useProductEditorFormState";
 
 const product: ProductPublication & { variants: Record<string, string[]> } = {
   id: "p1",

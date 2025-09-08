@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { useImageOrientationValidation } from "../useImageOrientationValidation";
+import { useImageOrientationValidation } from "../src/hooks/useImageOrientationValidation";
 
 class MockImage {
   width = 0;

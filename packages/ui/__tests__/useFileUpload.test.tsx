@@ -1,11 +1,11 @@
 import { act, fireEvent, render, renderHook } from "@testing-library/react";
 
-jest.mock("../useImageOrientationValidation.ts", () => ({
+jest.mock("../src/hooks/useImageOrientationValidation.ts", () => ({
   useImageOrientationValidation: jest.fn(),
 }));
 
-const { useImageOrientationValidation } = require("../useImageOrientationValidation.ts");
-const { useFileUpload } = require("../useFileUpload.tsx");
+const { useImageOrientationValidation } = require("../src/hooks/useImageOrientationValidation.ts");
+const { useFileUpload } = require("../src/hooks/useFileUpload.tsx");
 
 const mockOrientation =
   useImageOrientationValidation as jest.MockedFunction<

@@ -2,7 +2,7 @@ import { renderHook, act, waitFor } from "@testing-library/react";
 import {
   usePreviewDevice,
   PREVIEW_DEVICE_STORAGE_KEY,
-} from "../usePreviewDevice";
+} from "../src/hooks/usePreviewDevice";
 
 describe("usePreviewDevice", () => {
   beforeEach(() => {

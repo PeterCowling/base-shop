@@ -1,18 +1,18 @@
 import React from "react";
 import { renderHook, render, act, fireEvent } from "@testing-library/react";
-import { useProductMediaManager } from "../useProductMediaManager";
-import type { ProductWithVariants } from "../useProductInputs";
+import { useProductMediaManager } from "../src/hooks/useProductMediaManager";
+import type { ProductWithVariants } from "../src/hooks/useProductInputs";
 
 jest.mock("@platform-core/hooks/usePublishLocations", () => ({
   usePublishLocations: jest.fn(),
 }));
 
-jest.mock("../useFileUpload", () => ({
+jest.mock("../src/hooks/useFileUpload", () => ({
   useFileUpload: jest.fn(),
 }));
 
 const { usePublishLocations } = require("@platform-core/hooks/usePublishLocations");
-const { useFileUpload } = require("../useFileUpload");
+const { useFileUpload } = require("../src/hooks/useFileUpload");
 
 const mockUsePublishLocations = usePublishLocations as jest.MockedFunction<
   typeof usePublishLocations

@@ -1,8 +1,8 @@
 import { renderHook } from "@testing-library/react";
-import { useTokenColors } from "../useTokenColors";
-import type { TokenMap } from "../useTokenEditor";
+import { useTokenColors } from "../src/hooks/useTokenColors";
+import type { TokenMap } from "../src/hooks/useTokenEditor";
 
-jest.mock("../../components/cms/ColorInput", () => ({
+jest.mock("../src/components/cms/ColorInput", () => ({
   getContrast: jest.fn(),
   suggestContrastColor: jest.fn(),
 }));
@@ -10,7 +10,7 @@ jest.mock("../../components/cms/ColorInput", () => ({
 import {
   getContrast,
   suggestContrastColor,
-} from "../../components/cms/ColorInput";
+} from "../src/components/cms/ColorInput";
 
 const mockGetContrast =
   getContrast as jest.MockedFunction<typeof getContrast>;

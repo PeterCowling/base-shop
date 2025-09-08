@@ -6,12 +6,12 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import {
   useProductEditorFormState,
   type ProductSaveResult,
-} from "../useProductEditorFormState";
+} from "../src/hooks/useProductEditorFormState";
 
 /* ------------------------------------------------------------------ *
  *  Mock the file-upload and publish-location hooks (no network, no DOM)
  * ------------------------------------------------------------------ */
-jest.mock("../useFileUpload", () => ({
+jest.mock("../src/hooks/useFileUpload", () => ({
   useFileUpload: () => ({
     pendingFile: null,
     altText: "",

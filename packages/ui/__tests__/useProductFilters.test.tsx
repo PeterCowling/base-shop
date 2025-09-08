@@ -4,7 +4,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { useEffect } from "react";
 
 import type { ProductPublication } from "@acme/types";
-import { useProductFilters, type ProductStatus } from "../useProductFilters";
+import { useProductFilters, type ProductStatus } from "../src/hooks/useProductFilters";
 
 /* ------------------------------------------------------------------
  * Test fixtures

@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import { usePreviewDevice, PREVIEW_DEVICE_STORAGE_KEY } from "../usePreviewDevice";
+import { usePreviewDevice, PREVIEW_DEVICE_STORAGE_KEY } from "../src/hooks/usePreviewDevice";
 import { useEffect } from "react";
 
 describe("usePreviewDevice", () => {

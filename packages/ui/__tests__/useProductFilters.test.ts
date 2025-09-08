@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 
-import { useProductFilters } from "../useProductFilters";
+import { useProductFilters } from "../src/hooks/useProductFilters";
 
 type Row = {
   id: string;

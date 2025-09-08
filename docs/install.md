@@ -26,7 +26,7 @@ To skip loading inventory, run:
 pnpm prisma db seed -- --skip-inventory
 ```
 
-`--skip-inventory` replaces the old `SKIP_INVENTORY_SEED` environment variable.
+Use the `--skip-inventory` flag to bypass inventory seeding when needed.
 
 `postinstall` runs `prisma generate` automatically.
 

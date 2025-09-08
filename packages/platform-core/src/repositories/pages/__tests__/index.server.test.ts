@@ -62,8 +62,10 @@ const resolveRepoMock = jest.fn(
     _delegate: any,
     prismaModule: any,
     jsonModule: any,
+    options?: { backendEnvVar?: string },
   ) => {
-    if (process.env.INVENTORY_BACKEND === "json") {
+    const envVar = options?.backendEnvVar ?? "INVENTORY_BACKEND";
+    if (process.env[envVar] === "json") {
       return await jsonModule();
     }
     return await prismaModule();
@@ -106,7 +108,7 @@ describe("pages repository backend selection", () => {
   });
 
   it("uses Prisma backend by default", async () => {
-    delete process.env.INVENTORY_BACKEND;
+    delete process.env.PAGES_BACKEND;
     const repo = await import("../index.server");
 
     await repo.getPages("shop1");
@@ -118,8 +120,8 @@ describe("pages repository backend selection", () => {
     expect(resolveRepoMock).toHaveBeenCalledTimes(1);
   });
 
-  it("uses JSON backend when INVENTORY_BACKEND=json", async () => {
-    process.env.INVENTORY_BACKEND = "json";
+  it("uses JSON backend when PAGES_BACKEND=json", async () => {
+    process.env.PAGES_BACKEND = "json";
     const repo = await import("../index.server");
 
     await repo.getPages("shop1");

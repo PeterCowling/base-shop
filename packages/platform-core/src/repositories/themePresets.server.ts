@@ -1,28 +1,43 @@
 import "server-only";
 
-import { promises as fs } from "fs";
-import * as path from "path";
-import { validateShopName } from "../shops/index";
-import { DATA_ROOT } from "../dataRoot";
+import { prisma } from "../db";
+import { resolveRepo } from "./repoResolver";
 
-function presetsPath(shop: string) {
-  shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "theme-presets.json");
-}
+type ThemePresetRepo = {
+  getThemePresets(shop: string): Promise<Record<string, Record<string, string>>>;
+  saveThemePreset(
+    shop: string,
+    name: string,
+    tokens: Record<string, string>,
+  ): Promise<void>;
+  deleteThemePreset(shop: string, name: string): Promise<void>;
+};
 
-async function readPresets(shop: string) {
-  try {
-    const buf = await fs.readFile(presetsPath(shop), "utf8");
-    return JSON.parse(buf) as Record<string, Record<string, string>>;
-  } catch {
-    return {} as Record<string, Record<string, string>>;
+let repoPromise: Promise<ThemePresetRepo> | undefined;
+
+async function getRepo(): Promise<ThemePresetRepo> {
+  if (!repoPromise) {
+    repoPromise = resolveRepo<ThemePresetRepo>(
+      () => (prisma as any).themePreset,
+      () =>
+        import("./themePresets.prisma.server").then(
+          (m) => m.prismaThemePresetRepository,
+        ),
+      () =>
+        import("./themePresets.json.server").then(
+          (m) => m.jsonThemePresetRepository,
+        ),
+      { backendEnvVar: "THEME_PRESETS_BACKEND" },
+    );
   }
+  return repoPromise;
 }
 
 export async function getThemePresets(
   shop: string,
 ): Promise<Record<string, Record<string, string>>> {
-  return readPresets(shop);
+  const repo = await getRepo();
+  return repo.getThemePresets(shop);
 }
 
 export async function saveThemePreset(
@@ -30,19 +45,14 @@ export async function saveThemePreset(
   name: string,
   tokens: Record<string, string>,
 ): Promise<void> {
-  const presets = await readPresets(shop);
-  presets[name] = tokens;
-  await fs.mkdir(path.dirname(presetsPath(shop)), { recursive: true });
-  await fs.writeFile(presetsPath(shop), JSON.stringify(presets, null, 2), "utf8");
+  const repo = await getRepo();
+  return repo.saveThemePreset(shop, name, tokens);
 }
 
 export async function deleteThemePreset(
   shop: string,
   name: string,
 ): Promise<void> {
-  const presets = await readPresets(shop);
-  delete presets[name];
-  await fs.mkdir(path.dirname(presetsPath(shop)), { recursive: true });
-  await fs.writeFile(presetsPath(shop), JSON.stringify(presets, null, 2), "utf8");
+  const repo = await getRepo();
+  return repo.deleteThemePreset(shop, name);
 }
-

@@ -1,15 +1,10 @@
 // packages/platform-core/repositories/shops.server.ts
 import "server-only";
 
-import { shopSchema, type Shop } from "@acme/types";
-import { promises as fs } from "fs";
-import * as path from "path";
+import type { Shop } from "@acme/types";
 import { prisma } from "../db";
-import { defaultFilterMappings } from "../defaultFilterMappings";
-import { validateShopName } from "../shops/index";
-import { DATA_ROOT } from "../dataRoot";
-import { baseTokens, loadThemeTokens } from "../themeTokens/index";
-import { updateShopInRepo } from "./shop.server";
+import { resolveRepo } from "./repoResolver";
+
 export {
   diffHistory,
   getShopSettings,
@@ -17,104 +12,39 @@ export {
   type SettingsDiffEntry,
 } from "./settings.server";
 
-function shopPath(shop: string): string {
-  shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "shop.json");
+interface ShopsModule {
+  applyThemeData(data: Shop): Promise<Shop>;
+  readShop(shop: string): Promise<Shop>;
+  writeShop(shop: string, patch: Partial<Shop> & { id: string }): Promise<Shop>;
+}
+
+let repoPromise: Promise<ShopsModule> | undefined;
+
+async function getRepo(): Promise<ShopsModule> {
+  if (!repoPromise) {
+    repoPromise = resolveRepo<ShopsModule>(
+      () => prisma.shop,
+      () => import("./shops.prisma.server"),
+      () => import("./shops.json.server"),
+    );
+  }
+  return repoPromise;
 }
 
 export async function applyThemeData(data: Shop): Promise<Shop> {
-  const defaults =
-    Object.keys(data.themeDefaults ?? {}).length > 0
-      ? data.themeDefaults!
-      : {
-          ...baseTokens,
-          ...(await loadThemeTokens(data.themeId)),
-        };
-  const overrides = data.themeOverrides ?? {};
-  return {
-    ...data,
-    themeDefaults: defaults,
-    themeOverrides: overrides,
-    themeTokens: { ...defaults, ...overrides },
-    navigation: data.navigation ?? [],
-  } as Shop;
+  const repo = await getRepo();
+  return repo.applyThemeData(data);
 }
 
 export async function readShop(shop: string): Promise<Shop> {
-  try {
-    const rec = await prisma.shop.findUnique({ where: { id: shop } });
-    if (rec) {
-      const data = shopSchema.parse(rec.data);
-      return await applyThemeData(data as Shop);
-    }
-  } catch {
-    // ignore DB errors and fall back to filesystem
-  }
-  try {
-    const buf = await fs.readFile(shopPath(shop), "utf8");
-    const parsed = shopSchema.safeParse(JSON.parse(buf));
-    if (parsed.success && parsed.data.id) {
-      return await applyThemeData(parsed.data as Shop);
-    }
-  } catch {
-    // ignore
-  }
-  const themeId = "base";
-  const empty: Shop = {
-    id: shop,
-    name: shop,
-    catalogFilters: [],
-    themeId,
-    themeDefaults: {},
-    themeOverrides: {},
-    themeTokens: {},
-    filterMappings: { ...defaultFilterMappings },
-    priceOverrides: {},
-    localeOverrides: {},
-    navigation: [],
-    analyticsEnabled: false,
-    coverageIncluded: true,
-    componentVersions: {},
-    rentalSubscriptions: [],
-    subscriptionsEnabled: false,
-    luxuryFeatures: {
-      blog: false,
-      contentMerchandising: false,
-      raTicketing: false,
-      fraudReviewThreshold: 0,
-      requireStrongCustomerAuth: false,
-      strictReturnConditions: false,
-      trackingDashboard: false,
-      premierDelivery: false,
-    },
-  };
-  return await applyThemeData(empty);
+  const repo = await getRepo();
+  return repo.readShop(shop);
 }
 
 export async function writeShop(
   shop: string,
-  patch: Partial<Shop> & { id: string }
+  patch: Partial<Shop> & { id: string },
 ): Promise<Shop> {
-  const { readShop } = await import("./shops.server");
-  const current = await readShop(shop);
-  const themeDefaults = {
-    ...(current.themeDefaults ?? {}),
-    ...(patch.themeDefaults ?? {}),
-  } as Record<string, string>;
-  const themeOverrides = {
-    ...(current.themeOverrides ?? {}),
-    ...(patch.themeOverrides ?? {}),
-  } as Record<string, string>;
-  for (const [k, v] of Object.entries(themeOverrides)) {
-    if (v == null || v === themeDefaults[k]) delete themeOverrides[k];
-  }
-  const themeTokens = { ...themeDefaults, ...themeOverrides } as Record<string, string>;
-  const updated = await updateShopInRepo<Shop>(shop, {
-    ...patch,
-    id: patch.id,
-    themeDefaults,
-    themeOverrides,
-    themeTokens,
-  });
-  return applyThemeData(updated);
+  const repo = await getRepo();
+  return repo.writeShop(shop, patch);
 }

@@ -22,6 +22,7 @@ async function withRepo(
 
 describe("readShop", () => {
   it("reads from the database and applies theme data", async () => {
+    process.env.DATABASE_URL = "postgres://test";
     jest.resetModules();
     jest.doMock("../src/db", () => ({
       prisma: {
@@ -48,43 +49,7 @@ describe("readShop", () => {
     const result = await readShop("test");
     expect(result.themeDefaults).toEqual({ accent: "red" });
     expect(result.themeTokens).toEqual({ accent: "blue" });
-  });
-
-  it("falls back to filesystem when the database fails", async () => {
-    await withRepo(async (dir) => {
-      const shopFile = path.join(dir, "data", "shops", "test", "shop.json");
-      await fs.writeFile(
-        shopFile,
-        JSON.stringify(
-          {
-            id: "test",
-            name: "Seed",
-            catalogFilters: [],
-            themeId: "base",
-            themeDefaults: { accent: "blue" },
-            themeOverrides: { accent: "green" },
-            filterMappings: {},
-            priceOverrides: {},
-            localeOverrides: {},
-          },
-          null,
-          2,
-        ),
-      );
-
-      jest.doMock("../src/db", () => ({
-        prisma: {
-          shop: {
-            findUnique: jest.fn().mockRejectedValue(new Error("db fail")),
-          },
-        },
-      }));
-
-      const { readShop } = await import("../src/repositories/shops.server");
-      const result = await readShop("test");
-      expect(result.name).toBe("Seed");
-      expect(result.themeTokens).toEqual({ accent: "green" });
-    });
+    delete process.env.DATABASE_URL;
   });
 
   it("returns default shop when file is missing", async () => {

@@ -2,6 +2,8 @@ import { jest } from "@jest/globals";
 
 let prismaImportCount = 0;
 let jsonImportCount = 0;
+let inventoryPrismaImportCount = 0;
+let inventoryJsonImportCount = 0;
 
 const mockPrisma = {
   getPages: jest.fn(),
@@ -19,6 +21,18 @@ const mockJson = {
   diffHistory: jest.fn(),
 };
 
+const mockInventoryPrisma = {
+  read: jest.fn(),
+  write: jest.fn(),
+  update: jest.fn(),
+};
+
+const mockInventoryJson = {
+  read: jest.fn(),
+  write: jest.fn(),
+  update: jest.fn(),
+};
+
 jest.mock("../pages.prisma.server", () => {
   prismaImportCount++;
   return mockPrisma;
@@ -29,25 +43,38 @@ jest.mock("../pages.json.server", () => {
   return mockJson;
 });
 
-jest.mock("../../../db", () => ({ prisma: { page: {} } }));
+jest.mock("../../inventory.prisma.server", () => {
+  inventoryPrismaImportCount++;
+  return { prismaInventoryRepository: mockInventoryPrisma };
+});
+
+jest.mock("../../inventory.json.server", () => {
+  inventoryJsonImportCount++;
+  return { jsonInventoryRepository: mockInventoryJson };
+});
+
+jest.mock("../../../db", () => ({ prisma: { page: {}, inventoryItem: {} } }));
 
 const resolveRepoMock = jest.fn(
   async (
     _delegate: any,
     prismaModule: any,
     jsonModule: any,
+    options: any = {},
   ) => {
-    if (process.env.INVENTORY_BACKEND === "json") {
+    const envVar = options.backendEnvVar ?? "INVENTORY_BACKEND";
+    if (process.env[envVar] === "json") {
       return await jsonModule();
     }
     return await prismaModule();
   },
 );
 
-jest.mock("../repoResolver", () => ({ resolveRepo: resolveRepoMock }));
+jest.mock("../../repoResolver", () => ({ resolveRepo: resolveRepoMock }));
 
 describe("pages repository backend selection", () => {
-  const origBackend = process.env.INVENTORY_BACKEND;
+  const origPagesBackend = process.env.PAGES_BACKEND;
+  const origInventoryBackend = process.env.INVENTORY_BACKEND;
   const origDbUrl = process.env.DATABASE_URL;
 
   beforeEach(() => {
@@ -55,14 +82,21 @@ describe("pages repository backend selection", () => {
     jest.clearAllMocks();
     prismaImportCount = 0;
     jsonImportCount = 0;
+    inventoryPrismaImportCount = 0;
+    inventoryJsonImportCount = 0;
     process.env.DATABASE_URL = "postgres://test";
   });
 
   afterEach(() => {
-    if (origBackend === undefined) {
+    if (origPagesBackend === undefined) {
+      delete process.env.PAGES_BACKEND;
+    } else {
+      process.env.PAGES_BACKEND = origPagesBackend;
+    }
+    if (origInventoryBackend === undefined) {
       delete process.env.INVENTORY_BACKEND;
     } else {
-      process.env.INVENTORY_BACKEND = origBackend;
+      process.env.INVENTORY_BACKEND = origInventoryBackend;
     }
     if (origDbUrl === undefined) {
       delete process.env.DATABASE_URL;
@@ -72,7 +106,7 @@ describe("pages repository backend selection", () => {
   });
 
   it("uses Prisma backend by default", async () => {
-    delete process.env.INVENTORY_BACKEND;
+    delete process.env.PAGES_BACKEND;
     const repo = await import("../index.server");
 
     await repo.getPages("shop1");
@@ -84,8 +118,8 @@ describe("pages repository backend selection", () => {
     expect(resolveRepoMock).toHaveBeenCalledTimes(1);
   });
 
-  it("uses JSON backend when INVENTORY_BACKEND=json", async () => {
-    process.env.INVENTORY_BACKEND = "json";
+  it("uses JSON backend when PAGES_BACKEND=json", async () => {
+    process.env.PAGES_BACKEND = "json";
     const repo = await import("../index.server");
 
     await repo.getPages("shop1");
@@ -95,5 +129,21 @@ describe("pages repository backend selection", () => {
     expect(prismaImportCount).toBe(0);
     expect(mockJson.getPages).toHaveBeenCalledTimes(2);
     expect(resolveRepoMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("PAGES_BACKEND=json switches only the pages repo", async () => {
+    process.env.PAGES_BACKEND = "json";
+    delete process.env.INVENTORY_BACKEND;
+    const pagesRepo = await import("../index.server");
+    const inventoryRepo = await import("../../inventory.server");
+
+    await pagesRepo.getPages("shop1");
+    await inventoryRepo.readInventory("shop1");
+
+    expect(jsonImportCount).toBe(1);
+    expect(prismaImportCount).toBe(0);
+    expect(inventoryPrismaImportCount).toBe(1);
+    expect(inventoryJsonImportCount).toBe(0);
+    expect(resolveRepoMock).toHaveBeenCalledTimes(2);
   });
 });

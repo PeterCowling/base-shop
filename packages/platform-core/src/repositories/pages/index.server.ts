@@ -15,6 +15,7 @@ async function getRepo(): Promise<typeof import("./pages.prisma.server")> {
       () => (prisma as any).page,
       () => import("./pages.prisma.server"),
       () => import("./pages.json.server"),
+      { backendEnvVar: "PAGES_BACKEND" },
     );
   }
   return repoPromise;

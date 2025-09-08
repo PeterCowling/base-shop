@@ -148,4 +148,28 @@ describe("pages repository backend selection", () => {
     expect(inventoryPrismaImportCount).toBe(1);
     expect(inventoryJsonImportCount).toBe(0);
   });
+
+  it("ignores INVENTORY_BACKEND=sqlite and uses Prisma by default", async () => {
+    process.env.INVENTORY_BACKEND = "sqlite";
+    delete process.env.PAGES_BACKEND;
+
+    const repo = await import("../index.server");
+
+    await repo.getPages("shop1");
+
+    expect(prismaImportCount).toBe(1);
+    expect(jsonImportCount).toBe(0);
+  });
+
+  it("uses JSON backend when PAGES_BACKEND=json even if INVENTORY_BACKEND=sqlite", async () => {
+    process.env.INVENTORY_BACKEND = "sqlite";
+    process.env.PAGES_BACKEND = "json";
+
+    const repo = await import("../index.server");
+
+    await repo.getPages("shop1");
+
+    expect(jsonImportCount).toBe(1);
+    expect(prismaImportCount).toBe(0);
+  });
 });

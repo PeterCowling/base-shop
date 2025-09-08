@@ -16,6 +16,18 @@ pnpm --filter @acme/platform-core run prisma:generate
 pnpm --filter @acme/platform-core exec prisma db seed
 ```
 
+### Seeding
+
+`pnpm prisma db seed` loads both inventory and orders, pulling inventory fixtures from `data/shops/*/inventory.json`.
+
+To skip loading inventory, run:
+
+```bash
+pnpm prisma db seed -- --skip-inventory
+```
+
+`--skip-inventory` replaces the old `SKIP_INVENTORY_SEED` environment variable.
+
 `postinstall` runs `prisma generate` automatically.
 
 If `DATABASE_URL` is unset, the platform falls back to an in-memory test stub.

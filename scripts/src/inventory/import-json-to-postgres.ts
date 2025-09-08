@@ -6,6 +6,7 @@ import { prisma } from "@acme/platform-core/db";
 import { variantKey } from "@acme/platform-core/types/inventory";
 
 async function importShop(shopId: string, dryRun: boolean): Promise<void> {
+  const db = prisma as any;
   const filePath = join("data", "shops", shopId, "inventory.json");
   try {
     await stat(filePath);
@@ -33,7 +34,7 @@ async function importShop(shopId: string, dryRun: boolean): Promise<void> {
       variantKey: key,
     };
 
-    const existing = await prisma.inventoryItem.findUnique({
+    const existing = await db.inventoryItem.findUnique({
       where: {
         shopId_sku_variantKey: { shopId, sku: item.sku, variantKey: key },
       },
@@ -52,7 +53,7 @@ async function importShop(shopId: string, dryRun: boolean): Promise<void> {
     if (dryRun) {
       console.log(`[dry-run] upsert ${shopId} ${key}`);
     } else {
-      await prisma.inventoryItem.upsert({
+      await db.inventoryItem.upsert({
         where: {
           shopId_sku_variantKey: { shopId, sku: item.sku, variantKey: key },
         },
@@ -62,7 +63,7 @@ async function importShop(shopId: string, dryRun: boolean): Promise<void> {
     }
   }
 
-  const existingItems = await prisma.inventoryItem.findMany({
+  const existingItems = await db.inventoryItem.findMany({
     where: { shopId },
   });
   for (const ex of existingItems) {
@@ -70,7 +71,7 @@ async function importShop(shopId: string, dryRun: boolean): Promise<void> {
       if (dryRun) {
         console.log(`[dry-run] delete ${shopId} ${ex.variantKey}`);
       } else {
-        await prisma.inventoryItem.delete({ where: { id: ex.id } });
+        await db.inventoryItem.delete({ where: { id: ex.id } });
       }
     }
   }

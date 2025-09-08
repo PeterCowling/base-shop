@@ -1,9 +1,7 @@
 import "server-only";
 
-import { promises as fs } from "fs";
-import * as path from "path";
-import { validateShopName } from "../shops/index";
-import { DATA_ROOT } from "../dataRoot";
+import { prisma } from "../db";
+import { resolveRepo } from "./repoResolver";
 
 export interface SeoAuditEntry {
   timestamp: string;
@@ -11,29 +9,34 @@ export interface SeoAuditEntry {
   recommendations?: string[];
 }
 
-function auditPath(shop: string): string {
-  shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "seo-audits.jsonl");
+type SeoAuditRepo = {
+  readSeoAudits(shop: string): Promise<SeoAuditEntry[]>;
+  appendSeoAudit(shop: string, entry: SeoAuditEntry): Promise<void>;
+};
+
+let repoPromise: Promise<SeoAuditRepo> | undefined;
+
+async function getRepo(): Promise<SeoAuditRepo> {
+  if (!repoPromise) {
+    repoPromise = resolveRepo<SeoAuditRepo>(
+      () => (prisma as any).seoAudit,
+      () => import("./seoAudit.prisma.server") as unknown as Promise<SeoAuditRepo>,
+      () => import("./seoAudit.json.server") as unknown as Promise<SeoAuditRepo>,
+      { backendEnvVar: "SEO_AUDIT_BACKEND" },
+    );
+  }
+  return repoPromise;
 }
 
 export async function readSeoAudits(shop: string): Promise<SeoAuditEntry[]> {
-  try {
-    const buf = await fs.readFile(auditPath(shop), "utf8");
-    return buf
-      .split(/\r?\n/)
-      .filter(Boolean)
-      .map((line) => JSON.parse(line) as SeoAuditEntry);
-  } catch {
-    // ignore file errors
-  }
-  return [];
+  const repo = await getRepo();
+  return repo.readSeoAudits(shop);
 }
 
 export async function appendSeoAudit(
   shop: string,
   entry: SeoAuditEntry,
 ): Promise<void> {
-  const file = auditPath(shop);
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.appendFile(file, JSON.stringify(entry) + "\n", "utf8");
+  const repo = await getRepo();
+  return repo.appendSeoAudit(shop, entry);
 }

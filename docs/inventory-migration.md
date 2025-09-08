@@ -36,7 +36,13 @@ Current inventory data is sourced from `data/shops/<shop>/inventory.json` files 
 
    Pass `--dry-run` to preview changes without writing to the database.
 
-3. Verify counts with `pnpm inventory:check` to ensure parity with the original dataset.
+3. Verify counts using the inventory check script to ensure parity with the original dataset.
+
+   ```bash
+   pnpm tsx scripts/src/inventory/check-inventory.ts --shop demo
+   ```
+
+   You can also run the packaged command `pnpm inventory:check` which invokes the same script.
 
 ## Tooling
 

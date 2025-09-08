@@ -2,6 +2,8 @@ import { jest } from "@jest/globals";
 
 let prismaImportCount = 0;
 let jsonImportCount = 0;
+let inventoryPrismaImportCount = 0;
+let inventoryJsonImportCount = 0;
 
 const mockPrisma = {
   getPages: jest.fn(),
@@ -19,6 +21,18 @@ const mockJson = {
   diffHistory: jest.fn(),
 };
 
+const mockInventoryPrisma = {
+  read: jest.fn(),
+  write: jest.fn(),
+  update: jest.fn(),
+};
+
+const mockInventoryJson = {
+  read: jest.fn(),
+  write: jest.fn(),
+  update: jest.fn(),
+};
+
 jest.mock("../pages.prisma.server", () => {
   prismaImportCount++;
   return mockPrisma;
@@ -29,7 +43,19 @@ jest.mock("../pages.json.server", () => {
   return mockJson;
 });
 
-jest.mock("../../../db", () => ({ prisma: { page: {} } }));
+jest.mock("../../inventory.prisma.server", () => {
+  inventoryPrismaImportCount++;
+  return { prismaInventoryRepository: mockInventoryPrisma };
+});
+
+jest.mock("../../inventory.json.server", () => {
+  inventoryJsonImportCount++;
+  return { jsonInventoryRepository: mockInventoryJson };
+});
+
+jest.mock("../../../db", () => ({
+  prisma: { page: {}, inventoryItem: {} },
+}));
 
 const resolveRepoMock = jest.fn(
   async (
@@ -44,10 +70,11 @@ const resolveRepoMock = jest.fn(
   },
 );
 
-jest.mock("../repoResolver", () => ({ resolveRepo: resolveRepoMock }));
+jest.mock("../../repoResolver", () => ({ resolveRepo: resolveRepoMock }));
 
 describe("pages repository backend selection", () => {
   const origBackend = process.env.INVENTORY_BACKEND;
+  const origPagesBackend = process.env.PAGES_BACKEND;
   const origDbUrl = process.env.DATABASE_URL;
 
   beforeEach(() => {
@@ -55,6 +82,8 @@ describe("pages repository backend selection", () => {
     jest.clearAllMocks();
     prismaImportCount = 0;
     jsonImportCount = 0;
+    inventoryPrismaImportCount = 0;
+    inventoryJsonImportCount = 0;
     process.env.DATABASE_URL = "postgres://test";
   });
 
@@ -63,6 +92,11 @@ describe("pages repository backend selection", () => {
       delete process.env.INVENTORY_BACKEND;
     } else {
       process.env.INVENTORY_BACKEND = origBackend;
+    }
+    if (origPagesBackend === undefined) {
+      delete process.env.PAGES_BACKEND;
+    } else {
+      process.env.PAGES_BACKEND = origPagesBackend;
     }
     if (origDbUrl === undefined) {
       delete process.env.DATABASE_URL;
@@ -95,5 +129,16 @@ describe("pages repository backend selection", () => {
     expect(prismaImportCount).toBe(0);
     expect(mockJson.getPages).toHaveBeenCalledTimes(2);
     expect(resolveRepoMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("setting PAGES_BACKEND does not affect inventory backend", async () => {
+    delete process.env.INVENTORY_BACKEND;
+    process.env.PAGES_BACKEND = "json";
+
+    const { inventoryRepository } = await import("../../inventory.server");
+    await inventoryRepository.read("shop1");
+
+    expect(inventoryPrismaImportCount).toBe(1);
+    expect(inventoryJsonImportCount).toBe(0);
   });
 });

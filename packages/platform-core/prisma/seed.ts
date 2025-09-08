@@ -1,5 +1,11 @@
+import { readFile, readdir } from "node:fs/promises";
+import path from "node:path";
+
 import { prisma } from "../src/db";
 import { nowIso } from "@acme/date-utils";
+import { variantKey } from "../src/types/inventory";
+
+const skipInventory = process.argv.includes("--skip-inventory");
 
 async function main() {
   await prisma.rentalOrder.createMany({
@@ -15,21 +21,52 @@ async function main() {
     skipDuplicates: true,
   });
 
-  if (!process.env.SKIP_INVENTORY_SEED) {
-    await prisma.inventoryItem.createMany({
-      data: [
-        {
-          id: "seed-inventory-1",
-          shopId: "seed-shop",
-          sku: "SKU1",
-          productId: "seed-product",
-          quantity: 10,
-          variantAttributes: {},
-          variantKey: "SKU1",
-        },
-      ],
-      skipDuplicates: true,
-    });
+  if (!skipInventory) {
+    const shopsDir = path.resolve(__dirname, "../../../data/shops");
+    const dirs = await readdir(shopsDir, { withFileTypes: true });
+    const data: any[] = [];
+
+    for (const dir of dirs) {
+      if (!dir.isDirectory()) continue;
+      const shop = dir.name;
+      const file = path.join(shopsDir, shop, "inventory.json");
+      try {
+        const raw = await readFile(file, "utf8");
+        const items = JSON.parse(raw) as Array<{
+          sku: string;
+          productId: string;
+          quantity: number;
+          variant?: Record<string, string>;
+          lowStockThreshold?: number;
+          wearCount?: number;
+          wearAndTearLimit?: number;
+          maintenanceCycle?: number;
+        }>;
+
+        for (const item of items) {
+          const attrs = item.variant ?? {};
+          data.push({
+            id: `${shop}-${item.sku}`,
+            shopId: shop,
+            sku: item.sku,
+            productId: item.productId,
+            quantity: item.quantity,
+            variantAttributes: attrs,
+            variantKey: variantKey(item.sku, attrs),
+            lowStockThreshold: item.lowStockThreshold,
+            wearCount: item.wearCount,
+            wearAndTearLimit: item.wearAndTearLimit,
+            maintenanceCycle: item.maintenanceCycle,
+          });
+        }
+      } catch {
+        // Missing inventory file; skip
+      }
+    }
+
+    if (data.length) {
+      await prisma.inventoryItem.createMany({ data, skipDuplicates: true });
+    }
   }
 }
 

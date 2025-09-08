@@ -26,7 +26,7 @@ pnpm e2e
 
 - Stripe handles deposits via escrow sessions.
 - Returned deposits can be refunded automatically by the deposit release service. See [docs/machine.md](docs/machine.md).
-- Inventory currently persists to JSON files (`data/shops/\*/inventory.json`) or a local SQLite store. A migration to Prisma/PostgreSQL is planned; see [docs/inventory-migration.md](docs/inventory-migration.md).
+- Inventory currently persists to JSON files (`data/shops/*/inventory.json`), which serve as the default offline store when `DATABASE_URL` is unset. A legacy local SQLite backend also exists but should not be used in production. A migration to Prisma/PostgreSQL is planned; see [docs/inventory-migration.md](docs/inventory-migration.md).
 - Low-stock alerts email the configured recipient (`STOCK_ALERT_RECIPIENT`) when inventory falls below its threshold.
 - Rental pricing matrix defined in data/rental/pricing.json with duration discounts and damage-fee rules.
 - Return logistics options stored in data/return-logistics.json.
@@ -87,9 +87,9 @@ See [docs/upgrade-preview-republish.md](docs/upgrade-preview-republish.md) for g
 
 ## Inventory Management
 
-Inventory still reads and writes JSON files (`data/shops/<shop>/inventory.json`) or an optional local SQLite database. This fallback keeps the demo lightweight and offline-friendly until a Prisma/PostgreSQL model is ready. See [docs/inventory-migration.md](docs/inventory-migration.md) for the migration plan.
+Inventory still reads and writes JSON files (`data/shops/<shop>/inventory.json`), the default offline store when `DATABASE_URL` is unset. An optional local SQLite database (`INVENTORY_BACKEND=sqlite`) remains for legacy development but should not be used in production. This fallback keeps the demo lightweight and offline-friendly until a Prisma/PostgreSQL model is ready. See [docs/inventory-migration.md](docs/inventory-migration.md) for the migration plan.
 
-Set `INVENTORY_BACKEND=json` in your environment to force the JSON backend during local development. Sample fixtures live under `data/shops/demo` and `data/shops/test`.
+Set `INVENTORY_BACKEND=json` in your environment to force the JSON backend during local development. The SQLite option (`INVENTORY_BACKEND=sqlite`) is legacy and unsuitable for production. Sample fixtures live under `data/shops/demo` and `data/shops/test`.
 
 To verify the data, hit `/api/data/<shop>/inventory/export` in a running app (`?format=csv` is also supported):
 

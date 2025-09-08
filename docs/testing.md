@@ -37,7 +37,7 @@ When running integration tests against a real database, ensure the schema is mig
 
 ```bash
 pnpm prisma migrate reset --force
-pnpm tsx packages/platform-core/prisma/seed.ts
+pnpm --filter @acme/platform-core exec prisma db seed
 ```
 
 Run these commands before `pnpm test` so each test suite starts from a clean, seeded state.

@@ -4,36 +4,36 @@ Prisma with PostgreSQL is the primary datastore. Some repositories offer filesys
 
 ## Repositories using the database
 
-The shops and pages repositories in `@acme/platform-core` now persist to the primary database (via Prisma) when a connection is configured. They fall back to JSON files under `<DATA_ROOT>/<shop>` if the database is unavailable.
+These repositories default to Prisma when a `DATABASE_URL` is defined. Set the corresponding environment variable to use a filesystem backend instead:
+
+| Repository          | Environment variable        |
+| ------------------- | --------------------------- |
+| Inventory           | `INVENTORY_BACKEND`         |
+| Pages               | `PAGES_BACKEND`             |
+| Shop                | `SHOP_BACKEND`              |
+| Products            | `PRODUCTS_BACKEND`          |
+| Settings            | `SETTINGS_BACKEND`          |
+| Theme presets       | `THEME_PRESETS_BACKEND`     |
+| Analytics           | `ANALYTICS_BACKEND`         |
+| Coupons             | `COUPONS_BACKEND`           |
+| SEO audits          | `SEO_AUDIT_BACKEND`         |
+| Pricing             | `PRICING_BACKEND`           |
+| Return logistics    | `RETURN_LOGISTICS_BACKEND`  |
+| Return authorization| `RETURN_AUTH_BACKEND`       |
+
+Each variable accepts:
+
+- `json` – read and write JSON files under `<DATA_ROOT>/<shop>`.
+- `sqlite` – legacy option that delegates to the JSON repository.
+
+When the variable is unset and `DATABASE_URL` is configured, the repository uses the primary database via Prisma.
 
 ## Repositories with disk fallbacks
 
 The following repositories still read and write JSON or JSONL files under `<DATA_ROOT>/<shop>`:
 
-- `@acme/platform-core` repositories for products, settings, theme presets, analytics and SEO audits.
 - `@acme/email` repositories for campaigns, segments and abandoned cart reminders.
 - Background services in `@acme/platform-machine` that log analytics or scheduling data.
-
-The inventory repository currently relies on JSON files (`data/shops/<shop>/inventory.json`) as a fallback.
-
-Set `INVENTORY_BACKEND` to force a specific implementation:
-
-- `json` – read and write `data/shops/<shop>/inventory.json` files.
-- `sqlite` – legacy/no-op option. `inventory.sqlite.server.ts` delegates to the JSON repository.
-
-The pages repository falls back to `data/shops/<shop>/pages.json`.
-
-Set `PAGES_BACKEND` to force a specific implementation:
-
-- `json` – read and write `data/shops/<shop>/pages.json` files.
-- `sqlite` – legacy/no-op option that proxies to the JSON repository.
-
-The shops repository falls back to `data/shops/<shop>/shop.json`.
-
-Set `SHOP_BACKEND` to force a specific implementation:
-
-- `json` – read and write `data/shops/<shop>/shop.json` files.
-- `sqlite` – legacy/no-op option that proxies to the JSON repository.
 
 These fallbacks keep parts of the project functional during development or when the database is unreachable.
 

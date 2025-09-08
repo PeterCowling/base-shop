@@ -1,49 +1,62 @@
 import "server-only";
 
-import { returnAuthorizationSchema, type ReturnAuthorization } from "@acme/types";
-import { promises as fs } from "fs";
-import * as path from "path";
-import { resolveDataRoot } from "../dataRoot";
-import { z } from "zod";
+import type { ReturnAuthorization } from "@acme/types";
 
-function raPath(): string {
-  return path.join(resolveDataRoot(), "..", "return-authorizations.json");
+import { prisma } from "../db";
+import { resolveRepo } from "./repoResolver";
+
+type ReturnAuthorizationRepo = {
+  readReturnAuthorizations(): Promise<ReturnAuthorization[]>;
+  writeReturnAuthorizations(data: ReturnAuthorization[]): Promise<void>;
+  addReturnAuthorization(ra: ReturnAuthorization): Promise<void>;
+  getReturnAuthorization(
+    raId: string,
+  ): Promise<ReturnAuthorization | undefined>;
+};
+
+let repoPromise: Promise<ReturnAuthorizationRepo> | undefined;
+
+async function getRepo(): Promise<ReturnAuthorizationRepo> {
+  if (!repoPromise) {
+    repoPromise = resolveRepo<ReturnAuthorizationRepo>(
+      () => (prisma as any).returnAuthorization,
+      () =>
+        import("./returnAuthorization.prisma.server").then(
+          (m) => m.prismaReturnAuthorizationRepository,
+        ),
+      () =>
+        import("./returnAuthorization.json.server").then(
+          (m) => m.jsonReturnAuthorizationRepository,
+        ),
+      { backendEnvVar: "RETURN_AUTH_BACKEND" },
+    );
+  }
+  return repoPromise;
 }
 
-const raListSchema = z.array(returnAuthorizationSchema);
-
 export async function readReturnAuthorizations(): Promise<ReturnAuthorization[]> {
-  try {
-    const buf = await fs.readFile(raPath(), "utf8");
-    const parsed = raListSchema.safeParse(JSON.parse(buf));
-    if (parsed.success) return parsed.data;
-  } catch (err) {
-    if ((err as NodeJS.ErrnoException).code !== "ENOENT") throw err;
-  }
-  return [];
+  const repo = await getRepo();
+  return repo.readReturnAuthorizations();
 }
 
 export async function writeReturnAuthorizations(
   data: ReturnAuthorization[],
 ): Promise<void> {
-  const file = raPath();
-  const tmp = `${file}.${Date.now()}.tmp`;
-  await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(tmp, JSON.stringify(data, null, 2), "utf8");
-  await fs.rename(tmp, file);
+  const repo = await getRepo();
+  return repo.writeReturnAuthorizations(data);
 }
 
 export async function addReturnAuthorization(
   ra: ReturnAuthorization,
 ): Promise<void> {
-  const list = await readReturnAuthorizations();
-  list.push(ra);
-  await writeReturnAuthorizations(list);
+  const repo = await getRepo();
+  return repo.addReturnAuthorization(ra);
 }
 
 export async function getReturnAuthorization(
   raId: string,
 ): Promise<ReturnAuthorization | undefined> {
-  const list = await readReturnAuthorizations();
-  return list.find((r) => r.raId === raId);
+  const repo = await getRepo();
+  return repo.getReturnAuthorization(raId);
 }
+

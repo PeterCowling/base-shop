@@ -65,8 +65,8 @@ describe("usePublishLocations", () => {
       hook = usePublishLocations();
       return (
         <div>
-          <span data-testid="names">{hook.locations.map((l) => l.name).join(",")}</span>
-          <button data-testid="reload" onClick={() => hook.reload()} />
+          <span data-cy="names">{hook.locations.map((l) => l.name).join(",")}</span>
+          <button data-cy="reload" onClick={() => hook.reload()} />
         </div>
       );
     }
@@ -91,7 +91,7 @@ describe("usePublishLocations", () => {
 
     function ErrorComponent() {
       const { locations } = usePublishLocations();
-      return <span data-testid="length">{locations.length}</span>;
+      return <span data-cy="length">{locations.length}</span>;
     }
 
     render(<ErrorComponent />);

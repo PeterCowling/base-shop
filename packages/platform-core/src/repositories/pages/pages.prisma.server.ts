@@ -71,7 +71,6 @@ export async function savePage(
   page: Page,
   previous?: Page,
 ): Promise<Page> {
-  const patch = diffPages(previous, page);
   await prisma.page.upsert({
     where: { id: page.id },
     update: { data: page as unknown as JsonObject, slug: page.slug },
@@ -82,7 +81,10 @@ export async function savePage(
       data: page as unknown as JsonObject,
     },
   });
-  await appendHistory(shop, patch);
+  if (previous) {
+    const patch = diffPages(previous, page);
+    await appendHistory(shop, patch);
+  }
   return page;
 }
 

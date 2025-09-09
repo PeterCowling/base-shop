@@ -1,10 +1,13 @@
 // packages/platform-core/repositories/shops.server.ts
 import "server-only";
 
-import type { Shop } from "@acme/types";
+import { promises as fs } from "fs";
+import { shopSchema, type Shop } from "@acme/types";
 import { defaultFilterMappings } from "../defaultFilterMappings";
+import { DATA_ROOT } from "../dataRoot";
+import { prisma } from "../db";
 import { baseTokens, loadThemeTokens } from "../themeTokens/index";
-import { getShopById, updateShopInRepo } from "./shop.server";
+import { updateShopInRepo } from "./shop.server";
 export {
   diffHistory,
   getShopSettings,
@@ -32,11 +35,25 @@ export async function applyThemeData(data: Shop): Promise<Shop> {
 
 export async function readShop(shop: string): Promise<Shop> {
   try {
-    const data = await getShopById<Shop>(shop);
-    return await applyThemeData(data as Shop);
+    const rec = await prisma.shop.findUnique({ where: { id: shop } });
+    if (rec) {
+      const data = shopSchema.parse(rec.data);
+      return await applyThemeData(data as Shop);
+    }
   } catch {
-    // fall through to default
+    // ignore and fall through
   }
+
+  try {
+    const raw = await fs.readFile(`${DATA_ROOT}/${shop}/shop.json`, "utf8");
+    const parsed = shopSchema.safeParse(JSON.parse(raw));
+    if (parsed.success) {
+      return await applyThemeData(parsed.data as Shop);
+    }
+  } catch {
+    // ignore and fall through
+  }
+
   const themeId = "base";
   const empty: Shop = {
     id: shop,

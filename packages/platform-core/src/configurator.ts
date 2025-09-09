@@ -8,6 +8,12 @@ import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { z } from "zod";
 
+// `validateEnvFile` needs access to the module's exports when running under
+// CommonJS so tests can spy on `readEnvFile`. Declare `module` to keep TypeScript
+// happy in both CJS and ESM builds.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+declare const module: any;
+
 // Accept any string key/value pairs. In the full codebase envSchema would
 // include constraints for required environment variables.
 const envSchema = z.record(z.string(), z.string());
@@ -53,11 +59,15 @@ export function validateEnvFile(file: string): void {
   if (!existsSync(file)) {
     throw new Error(`Missing ${file}`);
   }
-  // Access `readEnvFile` through the module's exported API so that tests can
-  // spy on it. Using a local reference prevents Jest from intercepting the
-  // call, which caused the "throws for invalid entries" test to fail.
-  const env = (eval("require")("./configurator") as typeof import("./configurator"))
-    .readEnvFile(file);
+  // Access `readEnvFile` through the module's exported API when possible so
+  // tests can spy on it. In ESM builds `module` is undefined, so fall back to
+  // the local binding.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const read: any =
+    typeof module !== "undefined" && module.exports?.readEnvFile
+      ? module.exports.readEnvFile
+      : readEnvFile;
+  const env = read(file);
   envSchema.parse(env);
 }
 

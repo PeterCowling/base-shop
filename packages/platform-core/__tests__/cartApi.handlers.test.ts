@@ -251,6 +251,7 @@ describe("cart API handlers", () => {
       mockCartStore({
         createCart: jest.fn(),
         setCart: set,
+        getCart: jest.fn(async () => ({ existing: {} })),
       });
       const { PUT } = await import("../src/cartApi");
       const cookie = "cart1";

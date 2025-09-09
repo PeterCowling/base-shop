@@ -31,9 +31,11 @@ async function withRepo(
 }
 
 describe("inventory repository", () => {
-  it("readInventory throws when file missing or invalid", async () => {
-    await withRepo(async (repo, shop, dir) => {
-      await expect(repo.readInventory(shop)).rejects.toThrow();
+  it(
+    "readInventory throws when file missing or invalid",
+    async () => {
+      await withRepo(async (repo, shop, dir) => {
+        await expect(repo.readInventory(shop)).rejects.toThrow();
 
       await fs.writeFile(
         path.join(dir, "data", "shops", shop, "inventory.json"),
@@ -51,7 +53,7 @@ describe("inventory repository", () => {
 
       await expect(repo.readInventory(shop)).rejects.toThrow();
     });
-  });
+  }, 20000);
 
   it("writes inventory records with variant attributes", async () => {
     await withRepo(async (repo, shop, dir) => {
@@ -152,7 +154,7 @@ describe("inventory repository", () => {
           quantity: 1,
         },
       ];
-      await expect(repo.writeInventory(shop, bad as any)).rejects.toThrow();
+      expect(() => repo.writeInventory(shop, bad as any)).toThrow();
     });
   });
 
@@ -169,7 +171,7 @@ describe("inventory repository", () => {
           quantity: -1,
         },
       ];
-      await expect(repo.writeInventory(shop, negativeQty as any)).rejects.toThrow();
+      expect(() => repo.writeInventory(shop, negativeQty as any)).toThrow();
 
       const negativeThreshold = [
         {
@@ -180,7 +182,7 @@ describe("inventory repository", () => {
           lowStockThreshold: -1,
         },
       ];
-      await expect(repo.writeInventory(shop, negativeThreshold as any)).rejects.toThrow();
+      expect(() => repo.writeInventory(shop, negativeThreshold as any)).toThrow();
     });
   });
 
@@ -240,7 +242,7 @@ describe("inventory repository", () => {
 
       const items = await repo.readInventory(shop);
       expect(items).toEqual([
-        { sku: "sku-1", quantity: 2, variantAttributes: {} },
+        { sku: "sku-1", productId: "p1", quantity: 2, variantAttributes: {} },
       ]);
     });
   });

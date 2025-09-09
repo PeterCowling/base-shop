@@ -154,6 +154,11 @@ describe('component helpers', () => {
       ].sort());
     });
 
+    it('returns empty array when directory is empty', () => {
+      vol.fromJSON({}, '/empty');
+      expect(listFiles('/empty')).toEqual([]);
+    });
+
     it('returns empty array when directory does not exist', () => {
       expect(listFiles('/no-such-dir')).toEqual([]);
     });

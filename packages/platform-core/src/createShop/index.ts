@@ -160,32 +160,32 @@ function deployShopImpl(
 
   try {
     adapter.scaffold(newApp);
-      const envRel = join(newApp, ".env");
-      const envAbs = join(repoRoot(), envRel);
-      const envPath = fs.existsSync(envAbs) ? envAbs : envRel;
-      const envFile = fs.existsSync(envRel)
-        ? envRel
-        : fs.existsSync(envAbs)
-        ? envAbs
-        : null;
+    const envRel = join(newApp, ".env");
+    const envAbs = join(repoRoot(), envRel);
+    const candidates = [envRel, envAbs];
 
-      if (envFile) {
-        let env = fs.readFileSync(envFile, "utf8");
-        const secret = `SESSION_SECRET=${genSecret(32)}`;
-        if (/^SESSION_SECRET=/m.test(env)) {
-          env = env.replace(/^SESSION_SECRET=.*$/m, secret);
-        } else {
-          env += (env.endsWith("\n") ? "" : "\n") + secret + "\n";
-        }
-
-        for (const p of new Set([envRel, envAbs])) {
-          try {
-            fs.writeFileSync(p, env);
-          } catch {
-            /* ignore write errors */
-          }
-        }
+    let env = "";
+    for (const p of candidates) {
+      if (fs.existsSync(p)) {
+        env = fs.readFileSync(p, "utf8");
+        break;
       }
+    }
+
+    const secret = `SESSION_SECRET=${genSecret(32)}`;
+    if (/^SESSION_SECRET=/m.test(env)) {
+      env = env.replace(/^SESSION_SECRET=.*$/m, secret);
+    } else {
+      env += (env ? (env.endsWith("\n") ? "" : "\n") : "") + secret + "\n";
+    }
+
+    for (const p of candidates) {
+      try {
+        fs.writeFileSync(p, env);
+      } catch {
+        /* ignore write errors */
+      }
+    }
   } catch (err) {
     status = "error";
     error = (err as Error).message;

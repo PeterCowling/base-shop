@@ -31,7 +31,7 @@ export const Footer = React.forwardRef<HTMLDivElement, FooterProps>(
           width={logo?.width}
           height={logo?.height}
           alt={shopName}
-          textFallback={shopName}
+          fallbackText={shopName}
           className="font-bold"
         />
         <nav className="ml-auto flex gap-4 text-sm">

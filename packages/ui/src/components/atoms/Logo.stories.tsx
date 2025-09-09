@@ -4,7 +4,7 @@ import { Logo } from "./Logo";
 const meta: Meta<typeof Logo> = {
   component: Logo,
   args: {
-    shopName: "Logo",
+    fallbackText: "Logo",
   },
 };
 export default meta;

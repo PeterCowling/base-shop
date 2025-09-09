@@ -2,7 +2,13 @@ import { shippingEnv } from "@acme/config/env/shipping";
 export async function createReturnLabel(
   _sessionId: string,
 ): Promise<{ trackingNumber: string; labelUrl: string }> {
-  const fallback = `1Z${Math.random().toString().slice(2, 12)}`;
+  // Generate a deterministic 10‑digit tracking suffix. `Math.random()` may
+  // omit trailing zeros when converted to a string, so ensure we always pad to
+  // 10 digits.
+  const randomDigits = Math.floor(Math.random() * 1e10)
+    .toString()
+    .padStart(10, "0");
+  const fallback = `1Z${randomDigits}`;
   const fallbackUrl = `https://www.ups.com/track?loc=en_US&tracknum=${fallback}`;
   const apiKey = shippingEnv.UPS_KEY;
   if (!apiKey) {

@@ -1,4 +1,8 @@
-import type { PrismaClient as PrismaClientType } from '@prisma/client';
+// Use a loose PrismaClient type to avoid requiring the heavy @prisma/client
+// dependency during tests. The actual client will be loaded dynamically when
+// available.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type PrismaClientType = any;
 import { createRequire } from 'module';
 import { loadCoreEnv } from '@acme/config/env/core';
 
@@ -235,16 +239,16 @@ function createTestPrismaStub(): Pick<
 
   return stub;
 }
-let PrismaCtor: typeof PrismaClientType | undefined;
+let PrismaCtor: any;
 
-function loadPrismaClient(): typeof PrismaClientType | undefined {
+function loadPrismaClient(): any {
   if (PrismaCtor !== undefined) return PrismaCtor;
   try {
     const moduleUrl = typeof __filename !== 'undefined'
       ? __filename
       : (Function('return import.meta.url')() as string);
     const req = createRequire(moduleUrl);
-    PrismaCtor = (req("@prisma/client") as { PrismaClient: typeof PrismaClientType }).PrismaClient;
+    PrismaCtor = (req("@prisma/client") as { PrismaClient: any }).PrismaClient;
   } catch {
     PrismaCtor = undefined;
   }

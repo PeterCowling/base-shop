@@ -147,26 +147,27 @@ function deployShopImpl(
       const envRel = join(newApp, ".env");
       const envAbs = join(repoRoot(), envRel);
       const envPath = fs.existsSync(envAbs) ? envAbs : envRel;
-      if (fs.existsSync(envPath)) {
-        let env = fs.readFileSync(envPath, "utf8");
-      if (/^SESSION_SECRET=/m.test(env)) {
-        env = env.replace(
-          /^SESSION_SECRET=.*$/m,
-          `SESSION_SECRET=${genSecret(32)}`
-        );
-      } else {
-        env += (env.endsWith("\n") ? "" : "\n") +
-          `SESSION_SECRET=${genSecret(32)}\n`;
-      }
-        try {
-          fs.writeFileSync(envRel, env);
-        } catch {
-          /* ignore write errors on relative path */
+      const envFile = fs.existsSync(envRel)
+        ? envRel
+        : fs.existsSync(envAbs)
+        ? envAbs
+        : null;
+
+      if (envFile) {
+        let env = fs.readFileSync(envFile, "utf8");
+        const secret = `SESSION_SECRET=${genSecret(32)}`;
+        if (/^SESSION_SECRET=/m.test(env)) {
+          env = env.replace(/^SESSION_SECRET=.*$/m, secret);
+        } else {
+          env += (env.endsWith("\n") ? "" : "\n") + secret + "\n";
         }
-        if (envPath !== envRel) {
-          fs.writeFileSync(envPath, env);
-        } else if (fs.existsSync(envAbs)) {
-          fs.writeFileSync(envAbs, env);
+
+        for (const p of new Set([envRel, envAbs])) {
+          try {
+            fs.writeFileSync(p, env);
+          } catch {
+            /* ignore write errors */
+          }
         }
       }
   } catch (err) {

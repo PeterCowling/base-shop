@@ -1,12 +1,14 @@
-import { act, render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor, configure } from "@testing-library/react";
 import { CartProvider, useCart } from "../CartContext";
+
+configure({ testIdAttribute: "data-testid" });
 import type { SKU } from "@acme/types";
 
 type CartState = Record<string, { sku: SKU; qty: number; size?: string }>
 
 function CartDisplay() {
   const [cart] = useCart();
-  return <span data-cy="count">{Object.keys(cart).length}</span>;
+  return <span data-testid="count">{Object.keys(cart).length}</span>;
 }
 
 describe("useCart", () => {

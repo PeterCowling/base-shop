@@ -1,5 +1,17 @@
 import { Readable } from "stream";
 import type { IncomingMessage, ServerResponse } from "http";
+
+const componentsHandlerMock = jest.fn();
+const publishUpgradeMock = jest.fn();
+
+jest.mock("../src/routes/components/[shopId]", () => ({
+  onRequest: componentsHandlerMock,
+}));
+
+jest.mock("../src/routes/shop/[id]/publish-upgrade", () => ({
+  onRequestPost: publishUpgradeMock,
+}));
+
 import { createRequestHandler } from "./test-utils";
 
 describe("createRequestHandler", () => {
@@ -12,7 +24,7 @@ describe("createRequestHandler", () => {
       },
     }) as unknown as IncomingMessage;
     req.url = "/unknown";
-    req.method = "GET";
+    req.method = "POST";
     req.headers = {};
 
     const end = jest.fn();
@@ -26,5 +38,7 @@ describe("createRequestHandler", () => {
 
     expect(res.statusCode).toBe(404);
     expect(end).toHaveBeenCalled();
+    expect(componentsHandlerMock).not.toHaveBeenCalled();
+    expect(publishUpgradeMock).not.toHaveBeenCalled();
   });
 });

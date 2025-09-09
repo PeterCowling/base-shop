@@ -1,4 +1,13 @@
-import { PrismaClient } from '@prisma/client';
+import type { PrismaClient as PrismaClientType } from '@prisma/client';
+
+let PrismaClient: { new (): PrismaClientType } | undefined;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-implied-eval
+  const req = Function('return require')();
+  ({ PrismaClient } = req('@prisma/client'));
+} catch {
+  // `@prisma/client` isn't installed – tests will use the stub.
+}
 
 /**
  * Avoid augmenting `PrismaClient` with a permissive index signature.
@@ -33,7 +42,7 @@ type InventoryItemDelegate = {
 };
 
 function createTestPrismaStub(): Pick<
-  PrismaClient,
+  PrismaClientType,
   | 'rentalOrder'
   | 'shop'
   | 'page'
@@ -92,11 +101,11 @@ function createTestPrismaStub(): Pick<
         Object.assign(order, data);
         return order;
       },
-    } as unknown as PrismaClient['rentalOrder'],
+    } as unknown as PrismaClientType['rentalOrder'],
 
     shop: {
       findUnique: async () => ({ data: {} }),
-    } as unknown as PrismaClient['shop'],
+    } as unknown as PrismaClientType['shop'],
 
     page: {
       createMany: async () => {},
@@ -104,7 +113,7 @@ function createTestPrismaStub(): Pick<
       update: async () => ({}),
       deleteMany: async () => ({ count: 0 }),
       upsert: async () => ({}),
-    } as unknown as PrismaClient['page'],
+    } as unknown as PrismaClientType['page'],
 
     customerProfile: {
       findUnique: async ({ where }: any) =>
@@ -128,7 +137,7 @@ function createTestPrismaStub(): Pick<
         customerProfiles.push(profile);
         return profile;
       },
-    } as unknown as PrismaClient['customerProfile'],
+    } as unknown as PrismaClientType['customerProfile'],
 
     customerMfa: {
       upsert: async ({ where, update, create }: any) => {
@@ -153,24 +162,24 @@ function createTestPrismaStub(): Pick<
         customerMfas[idx] = { ...customerMfas[idx], ...data };
         return customerMfas[idx];
       },
-    } as unknown as PrismaClient['customerMfa'],
+    } as unknown as PrismaClientType['customerMfa'],
 
     subscriptionUsage: {
       findUnique: async () => null,
       upsert: async () => ({}),
-    } as unknown as PrismaClient['subscriptionUsage'],
+    } as unknown as PrismaClientType['subscriptionUsage'],
 
     user: {
       findUnique: async () => null,
       findFirst: async () => null,
       create: async () => ({}),
       update: async () => ({}),
-    } as unknown as PrismaClient['user'],
+    } as unknown as PrismaClientType['user'],
 
     reverseLogisticsEvent: {
       create: async () => ({}),
       findMany: async () => [],
-    } as unknown as PrismaClient['reverseLogisticsEvent'],
+    } as unknown as PrismaClientType['reverseLogisticsEvent'],
 
     inventoryItem: {
       findMany: async ({ where: { shopId } }: any) =>
@@ -234,7 +243,9 @@ function createTestPrismaStub(): Pick<
   return stub;
 }
 const prisma =
-  process.env.DATABASE_URL ? new PrismaClient() : createTestPrismaStub();
+  process.env.DATABASE_URL && PrismaClient
+    ? new PrismaClient()
+    : createTestPrismaStub();
 
 export { prisma, createTestPrismaStub };
 

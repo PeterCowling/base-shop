@@ -6,15 +6,35 @@ import {
   variantKey,
 } from "../types/inventory";
 import type { InventoryRepository, InventoryMutateFn } from "./inventory.types";
-import { prisma } from "../db";
+import { createRequire } from "module";
 import { resolveRepo } from "./repoResolver";
 
 let repoPromise: Promise<InventoryRepository> | undefined;
 
 async function getRepo(): Promise<InventoryRepository> {
   if (!repoPromise) {
+    const moduleUrl =
+      typeof __filename !== "undefined"
+        ? __filename
+        : (Function("return import.meta.url")() as string);
+    const require = createRequire(moduleUrl);
     repoPromise = resolveRepo(
-      () => (prisma as any).inventoryItem,
+      () => {
+        // Skip Prisma if obviously invalid secrets are present
+        if (
+          (process.env.NEXTAUTH_SECRET &&
+            process.env.NEXTAUTH_SECRET.length < 32) ||
+          (process.env.SESSION_SECRET &&
+            process.env.SESSION_SECRET.length < 32)
+        ) {
+          return undefined;
+        }
+        try {
+          return require("../db").prisma.inventoryItem;
+        } catch {
+          return undefined;
+        }
+      },
       () =>
         import("./inventory.prisma.server").then(
           (m) => m.prismaInventoryRepository,

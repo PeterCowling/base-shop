@@ -51,3 +51,7 @@ describe('deployShopImpl', () => {
   });
 });
 
+afterAll(() => {
+  jest.resetModules();
+});
+

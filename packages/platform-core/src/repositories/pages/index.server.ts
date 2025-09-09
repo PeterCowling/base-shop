@@ -30,7 +30,7 @@ export async function getPages(shop: string): Promise<Page[]> {
     return await repo.getPages(shop);
   } catch {
     const jsonRepo = await jsonRepoPromise;
-    repoPromise = Promise.resolve(jsonRepo);
+    repoPromise = undefined;
     return jsonRepo.getPages(shop);
   }
 }
@@ -45,7 +45,7 @@ export async function savePage(
     return await repo.savePage(shop, page, previous);
   } catch {
     const jsonRepo = await jsonRepoPromise;
-    repoPromise = Promise.resolve(jsonRepo);
+    repoPromise = undefined;
     return jsonRepo.savePage(shop, page, previous);
   }
 }
@@ -56,7 +56,7 @@ export async function deletePage(shop: string, id: string): Promise<void> {
     return await repo.deletePage(shop, id);
   } catch {
     const jsonRepo = await jsonRepoPromise;
-    repoPromise = Promise.resolve(jsonRepo);
+    repoPromise = undefined;
     return jsonRepo.deletePage(shop, id);
   }
 }
@@ -71,7 +71,7 @@ export async function updatePage(
     return await repo.updatePage(shop, patch, previous);
   } catch {
     const jsonRepo = await jsonRepoPromise;
-    repoPromise = Promise.resolve(jsonRepo);
+    repoPromise = undefined;
     return jsonRepo.updatePage(shop, patch, previous);
   }
 }
@@ -87,7 +87,7 @@ export async function diffHistory(shop: string): Promise<PageDiffEntry[]> {
     return await repo.diffHistory(shop);
   } catch {
     const jsonRepo = await jsonRepoPromise;
-    repoPromise = Promise.resolve(jsonRepo);
+    repoPromise = undefined;
     return jsonRepo.diffHistory(shop);
   }
 }

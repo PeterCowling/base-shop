@@ -217,7 +217,7 @@ const config = {
   passWithNoTests: true,
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'mjs', 'node', 'd.ts'],
   collectCoverage: true,
-  coverageDirectory: ' /coverage',
+  coverageDirectory: path.join(process.cwd(), 'coverage'),
   coveragePathIgnorePatterns: [
     ' /test/msw/',
     ' /test/msw/server.ts',

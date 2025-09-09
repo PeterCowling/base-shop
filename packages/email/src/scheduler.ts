@@ -33,7 +33,11 @@ function trackedBody(shop: string, id: string, body: string): string {
   );
 }
 
-function unsubscribeUrl(shop: string, campaign: string, recipient: string): string {
+export function unsubscribeUrl(
+  shop: string,
+  campaign: string,
+  recipient: string,
+): string {
   const base = process.env.NEXT_PUBLIC_BASE_URL || "";
   return `${base}/api/marketing/email/unsubscribe?shop=${encodeURIComponent(
     shop,

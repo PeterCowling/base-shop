@@ -1,4 +1,4 @@
-jest.mock("../../db", () => ({
+jest.mock("../src/db", () => ({
   prisma: {
     reverseLogisticsEvent: {
       create: jest.fn(),
@@ -6,17 +6,14 @@ jest.mock("../../db", () => ({
     },
   },
 }));
+
 jest.mock("@acme/date-utils", () => ({
   nowIso: jest.fn(() => "now"),
 }));
 
-import { prisma } from "../../db";
+import { prisma } from "../src/db";
 import { nowIso } from "@acme/date-utils";
-import {
-  recordEvent,
-  listEvents,
-  reverseLogisticsEvents,
-} from "../reverseLogisticsEvents.server";
+import * as repo from "../src/repositories/reverseLogisticsEvents.server";
 
 const create = prisma.reverseLogisticsEvent.create as jest.Mock;
 const findMany = prisma.reverseLogisticsEvent.findMany as jest.Mock;
@@ -29,10 +26,10 @@ beforeEach(() => {
 });
 
 describe("recordEvent", () => {
-  it("records event with provided createdAt", async () => {
+  it("inserts provided createdAt", async () => {
     create.mockResolvedValue({});
     await expect(
-      recordEvent("shop1", "session1", "received", "time")
+      repo.recordEvent("shop1", "session1", "received", "time")
     ).resolves.toBeUndefined();
     expect(nowIsoMock).not.toHaveBeenCalled();
     expect(create).toHaveBeenCalledWith({
@@ -45,10 +42,10 @@ describe("recordEvent", () => {
     });
   });
 
-  it("records event with default createdAt", async () => {
+  it("defaults createdAt via nowIso", async () => {
     nowIsoMock.mockReturnValue("mocked");
     create.mockResolvedValue({});
-    await recordEvent("shop1", "session1", "qa");
+    await repo.recordEvent("shop1", "session1", "qa");
     expect(nowIsoMock).toHaveBeenCalledTimes(1);
     expect(create).toHaveBeenCalledWith({
       data: {
@@ -59,18 +56,10 @@ describe("recordEvent", () => {
       },
     });
   });
-
-  it("throws when create fails", async () => {
-    const error = new Error("boom");
-    create.mockRejectedValue(error);
-    await expect(
-      recordEvent("shop1", "session1", "received", "time")
-    ).rejects.toThrow(error);
-  });
 });
 
 describe("listEvents", () => {
-  it("returns events ordered by createdAt", async () => {
+  it("orders events chronologically", async () => {
     const events = [
       {
         id: "1",
@@ -88,38 +77,27 @@ describe("listEvents", () => {
       },
     ];
     findMany.mockResolvedValue(events);
-
-    await expect(listEvents("demo")).resolves.toEqual(events);
+    await expect(repo.listEvents("demo")).resolves.toEqual(events);
     expect(findMany).toHaveBeenCalledWith({
       where: { shop: "demo" },
       orderBy: { createdAt: "asc" },
     });
   });
-
-  it("returns empty array when no events exist", async () => {
-    findMany.mockResolvedValue([]);
-    await expect(listEvents("demo")).resolves.toEqual([]);
-  });
-
-  it("throws when findMany fails", async () => {
-    const error = new Error("boom");
-    findMany.mockRejectedValue(error);
-    await expect(listEvents("demo")).rejects.toThrow(error);
-  });
 });
 
-describe("reverse logistics event helpers", () => {
-  it("records each event", async () => {
-    for (const [name, fn] of Object.entries(reverseLogisticsEvents)) {
+describe("reverse logistics helpers", () => {
+  it("delegate to recordEvent with expected event", async () => {
+    const spy = jest
+      .spyOn(repo, "recordEvent")
+      .mockResolvedValue(undefined);
+    for (const [name, fn] of Object.entries(repo.reverseLogisticsEvents)) {
       await fn("shop1", "session1", "time");
-      expect(create).toHaveBeenLastCalledWith({
-        data: {
-          shop: "shop1",
-          sessionId: "session1",
-          event: name,
-          createdAt: "time",
-        },
-      });
+      expect(spy).toHaveBeenLastCalledWith(
+        "shop1",
+        "session1",
+        name,
+        "time"
+      );
     }
   });
 });

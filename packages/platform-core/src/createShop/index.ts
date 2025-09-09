@@ -1,6 +1,7 @@
 // packages/platform-core/src/createShop/index.ts
 import * as fs from "fs";
 import { join } from "path";
+import { fileURLToPath } from "url";
 import { genSecret } from "@acme/shared-utils";
 import { prisma } from "../db";
 import { validateShopName } from "../shops";
@@ -25,11 +26,20 @@ function repoRoot(): string {
     return match ? match[1] : null;
   };
 
-  return (
-    tryResolve(process.cwd()) ??
-    tryResolve(typeof __dirname !== "undefined" ? __dirname : process.cwd()) ??
-    process.cwd()
-  );
+  const fromCwd = tryResolve(process.cwd());
+  if (fromCwd) return fromCwd;
+
+  if (typeof __dirname !== "undefined") {
+    const fromDir = tryResolve(__dirname);
+    if (fromDir) return fromDir;
+    const up = join(__dirname, "..", "..", "..");
+    if (fs.existsSync(join(up, "pnpm-workspace.yaml"))) return up;
+  }
+
+  const child = join(process.cwd(), "base-shop");
+  if (fs.existsSync(join(child, "pnpm-workspace.yaml"))) return child;
+
+  return process.cwd();
 }
 /**
  * Create a new shop app and seed data.
@@ -180,9 +190,14 @@ export function listThemes(): string[] {
   const themesDir = join(repoRoot(), "packages", "themes");
   try {
     return fs
-      .readdirSync(themesDir, { withFileTypes: true })
-      .filter((ent) => ent.isDirectory())
-      .map((ent) => ent.name);
+      .readdirSync(themesDir)
+      .filter((name) => {
+        try {
+          return fs.statSync(join(themesDir, name)).isDirectory();
+        } catch {
+          return false;
+        }
+      });
   } catch {
     return [];
   }

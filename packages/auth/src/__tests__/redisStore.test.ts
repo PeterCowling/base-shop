@@ -79,6 +79,20 @@ describe("RedisSessionStore", () => {
     list.forEach((r) => expect(r.createdAt).toBeInstanceOf(Date));
   });
 
+  it("filters out missing sessions when listing", async () => {
+    const recordA = createRecord("a", "cust");
+    (client.smembers as jest.Mock).mockResolvedValue(["a", "b"]);
+    (client.mget as jest.Mock).mockResolvedValue([
+      { ...recordA, createdAt: recordA.createdAt.toISOString() },
+      null,
+    ]);
+
+    const list = await store.list("cust");
+    expect(client.mget).toHaveBeenCalledWith("session:a", "session:b");
+    expect(list).toEqual([recordA]);
+    expect(list[0].createdAt).toBeInstanceOf(Date);
+  });
+
   it("deletes sessions", async () => {
     const record = createRecord("s1");
     await store.set(record);

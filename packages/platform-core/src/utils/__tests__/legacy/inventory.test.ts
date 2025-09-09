@@ -4,7 +4,7 @@ import {
   expandInventoryItem,
   computeAvailability,
   applyInventoryBatch,
-} from "./inventory";
+} from "../../inventory";
 import type { InventoryItem } from "../../types/inventory";
 
 describe("flattenInventoryItem", () => {
@@ -166,15 +166,14 @@ describe("expandInventoryItem", () => {
     ).toThrow();
   });
 
-  it("rejects zero quantity", () => {
-    expect(() =>
-      expandInventoryItem({
-        sku: "sku8",
-        productId: "prod8",
-        quantity: 0,
-        variantAttributes: {},
-      }),
-    ).toThrow();
+  it("allows zero quantity", () => {
+    const item = expandInventoryItem({
+      sku: "sku8",
+      productId: "prod8",
+      quantity: 0,
+      variantAttributes: {},
+    });
+    expect(item.quantity).toBe(0);
   });
 
   it("rejects missing sku or productId", () => {

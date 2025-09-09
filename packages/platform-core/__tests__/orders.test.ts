@@ -50,10 +50,16 @@ const { incrementSubscriptionUsage } = jest.requireMock(
 ) as { incrementSubscriptionUsage: jest.Mock };
 const { prisma: prismaMock } = jest.requireMock("../src/db") as {
   prisma: {
-    rentalOrder: { findMany: jest.Mock; create: jest.Mock; update: jest.Mock };
+    rentalOrder: {
+      findMany: jest.Mock;
+      create: jest.Mock;
+      update: jest.Mock;
+      findUnique: jest.Mock;
+    };
     shop: { findUnique: jest.Mock };
   };
 };
+(prismaMock.rentalOrder as any).findUnique ||= jest.fn();
 const ulidMock = jest.requireMock("ulid").ulid as jest.Mock;
 const nowIsoMock = jest.requireMock("@acme/date-utils").nowIso as jest.Mock;
 const stripeRefund = stripe.refunds.create as jest.Mock;

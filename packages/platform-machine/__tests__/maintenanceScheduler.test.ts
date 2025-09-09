@@ -192,5 +192,29 @@ describe("startMaintenanceScheduler", () => {
     await Promise.resolve();
     expect(readInventory).toHaveBeenCalledTimes(2);
   });
+
+  it("logs errors from failed scans", async () => {
+    const logger = { info: jest.fn(), error: jest.fn() };
+    const errorSpy = jest.spyOn(logger, "error");
+    jest.doMock("@platform-core/utils", () => ({ __esModule: true, logger }));
+
+    const scheduler = await import(
+      "@acme/platform-machine/maintenanceScheduler"
+    );
+    jest
+      .spyOn(scheduler, "runMaintenanceScan")
+      .mockRejectedValue(new Error("fail"));
+
+    timer = scheduler.startMaintenanceScheduler();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(errorSpy).toHaveBeenCalledWith("maintenance scan failed", {
+      err: expect.any(Error),
+    });
+
+    clearInterval(timer);
+    timer = undefined;
+  });
 });
 

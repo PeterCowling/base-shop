@@ -10,6 +10,7 @@ describe("resolveRepo", () => {
   afterEach(() => {
     delete process.env.INVENTORY_BACKEND;
     delete process.env.DATABASE_URL;
+    delete process.env.DB_MODE;
     jest.clearAllMocks();
   });
 
@@ -76,6 +77,35 @@ describe("resolveRepo", () => {
     expect(jsonModule).toHaveBeenCalledTimes(1);
     expect(prismaModule).not.toHaveBeenCalled();
     expect(sqliteModule).not.toHaveBeenCalled();
+  });
+
+  it("uses DB_MODE when repo-specific backend var is unset", async () => {
+    process.env.DB_MODE = "json";
+
+    await expect(
+      resolveRepo(prismaDelegate, prismaModule, jsonModule, {
+        backendEnvVar: "INVENTORY_BACKEND",
+      }),
+    ).resolves.toBe("json");
+
+    expect(jsonModule).toHaveBeenCalledTimes(1);
+    expect(prismaModule).not.toHaveBeenCalled();
+  });
+
+  it("repo-specific backend var overrides DB_MODE", async () => {
+    process.env.DB_MODE = "json";
+    process.env.INVENTORY_BACKEND = "sqlite";
+
+    await expect(
+      resolveRepo(prismaDelegate, prismaModule, jsonModule, {
+        backendEnvVar: "INVENTORY_BACKEND",
+        sqliteModule,
+      }),
+    ).resolves.toBe("json");
+
+    expect(jsonModule).toHaveBeenCalledTimes(1);
+    expect(sqliteModule).not.toHaveBeenCalled();
+    expect(prismaModule).not.toHaveBeenCalled();
   });
 });
 

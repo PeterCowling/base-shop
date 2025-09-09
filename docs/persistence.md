@@ -20,13 +20,15 @@ These repositories default to Prisma when a `DATABASE_URL` is defined. Set the c
 | Pricing             | `PRICING_BACKEND`           |
 | Return logistics    | `RETURN_LOGISTICS_BACKEND`  |
 | Return authorization| `RETURN_AUTH_BACKEND`       |
-Each repository above uses a shared resolver that honors its `*_BACKEND` environment variable to switch between Prisma and filesystem stores.
+Each repository above uses a shared resolver that honors its `*_BACKEND` environment variable to switch between Prisma and filesystem stores. A global `DB_MODE` variable provides a default when a repository‑specific variable is unset.
 
 Each variable accepts:
 
 - `json` – read and write JSON files under `<DATA_ROOT>/<shop>`.
 - `sqlite` – legacy option that delegates to the JSON repository.
 - _unset_ – uses Prisma when `DATABASE_URL` is present; otherwise falls back to JSON.
+
+`DB_MODE` accepts the same values and applies them across all repositories unless overridden by a specific `*_BACKEND` variable.
 
 ## Repositories with disk fallbacks
 

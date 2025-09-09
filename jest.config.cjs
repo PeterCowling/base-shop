@@ -198,6 +198,7 @@ const config = {
     '^\\./providers/sendgrid\\.js$': ' /packages/email/src/providers/sendgrid.ts',
     '^\\./providers/types\\.js$': ' /packages/email/src/providers/types.ts',
     '^\\./stats\\.js$': ' /packages/email/src/stats.ts',
+    '^@prisma/client$': ' /__mocks__/@prisma/client.ts',
     '^@/components/atoms/shadcn$': ' /test/__mocks__/shadcnDialogStub.tsx',
     '^@/i18n/(.*)$': ' /packages/i18n/src/$1',
     '^@/components/(.*)$': ' /test/__mocks__/componentStub.js',

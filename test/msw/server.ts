@@ -58,12 +58,19 @@ export const handlers = [
       ctx.body(stream)
     );
   }),
-  // Allow cart API requests to reach fetch mocks or real network
-  rest.get("*/api/cart", (req) => req.passthrough()),
-  rest.post("*/api/cart", (req) => req.passthrough()),
-  rest.put("*/api/cart", (req) => req.passthrough()),
-  rest.patch("*/api/cart", (req) => req.passthrough()),
-  rest.delete("*/api/cart", (req) => req.passthrough()),
+  // Allow cart API requests to reach fetch mocks or the real network.
+  //
+  // Using relative paths here ensures requests like `/api/cart` – which the
+  // tests issue – are matched correctly.  The previous patterns prefixed with
+  // `*/` failed to match and resulted in MSW treating the calls as unhandled,
+  // causing the CartContext tests to blow up.  By explicitly registering the
+  // relative `/api/cart` routes we let the requests passthrough to any fetch
+  // mocks without triggering MSW's `onUnhandledRequest` errors.
+  rest.get("/api/cart", (req) => req.passthrough()),
+  rest.post("/api/cart", (req) => req.passthrough()),
+  rest.put("/api/cart", (req) => req.passthrough()),
+  rest.patch("/api/cart", (req) => req.passthrough()),
+  rest.delete("/api/cart", (req) => req.passthrough()),
   // Allow API route tests to hit local handlers without mocking
   rest.post("*/shop/:id/publish-upgrade", (req) => req.passthrough()),
 ];

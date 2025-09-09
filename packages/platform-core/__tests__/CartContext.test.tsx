@@ -57,9 +57,13 @@ describe("CartContext", () => {
       </CartProvider>
     );
 
-    const qty = await screen.findByTestId("qty");
-    expect(qty.textContent).toBe("2");
-    expect(fetchMock).toHaveBeenCalledWith("/api/cart");
+    const qty = screen.getByTestId("qty");
+    await waitFor(() => expect(qty.textContent).toBe("2"));
+    expect(
+      fetchMock.mock.calls[0][0] instanceof Request
+        ? fetchMock.mock.calls[0][0].url
+        : fetchMock.mock.calls[0][0]
+    ).toBe("/api/cart");
     expect(localStorage.setItem).toHaveBeenCalledWith(
       "cart",
       JSON.stringify(cart)
@@ -83,20 +87,19 @@ describe("CartContext", () => {
       </CartProvider>
     );
 
-    const qty = await screen.findByTestId("qty");
-    expect(qty.textContent).toBe("2");
-    expect(addSpy).toHaveBeenCalledWith("online", expect.any(Function));
+    const qty = screen.getByTestId("qty");
+    await waitFor(() => expect(qty.textContent).toBe("2"));
+    await waitFor(() =>
+      expect(addSpy).toHaveBeenCalledWith("online", expect.any(Function))
+    );
     const handler = addSpy.mock.calls.find((c) => c[0] === "online")?.[1] as EventListener;
 
     window.dispatchEvent(new Event("online"));
 
-    await waitFor(() =>
-      expect(fetchMock).toHaveBeenNthCalledWith(
-        2,
-        "/api/cart",
-        expect.objectContaining({ method: "PUT" })
-      )
-    );
+    await waitFor(() => expect(fetchMock.mock.calls.length).toBe(2));
+    const putReq = fetchMock.mock.calls[1][0] as Request;
+    expect(putReq.url).toBe("/api/cart");
+    expect(putReq.method).toBe("PUT");
     await waitFor(() => expect(qty.textContent).toBe("0"));
     expect(localStorage.setItem).toHaveBeenLastCalledWith("cart", "{}");
     expect(removeSpy).toHaveBeenCalledWith("online", handler);
@@ -115,9 +118,11 @@ describe("CartContext", () => {
       </CartProvider>
     );
 
-    const qty = await screen.findByTestId("qty");
+    const qty = screen.getByTestId("qty");
+    await waitFor(() =>
+      expect(addSpy).toHaveBeenCalledWith("online", expect.any(Function))
+    );
     expect(qty.textContent).toBe("0");
-    expect(addSpy).toHaveBeenCalledWith("online", expect.any(Function));
   });
 
   it("throws when adding SKU requiring size without one", async () => {
@@ -141,6 +146,7 @@ describe("CartContext", () => {
     const id = `${PRODUCTS[0].id}:${size}`;
     fetchMock
       .mockResponseOnce(JSON.stringify({ cart: {} }))
+      .mockResponseOnce(JSON.stringify({ cart: {} })) // double initial fetch
       .mockResponseOnce(
         JSON.stringify({ cart: { [id]: { sku: PRODUCTS[0], qty: 1, size } } })
       )
@@ -155,40 +161,36 @@ describe("CartContext", () => {
       </CartProvider>
     );
 
-    const qty = await screen.findByTestId("qty");
+    const qty = screen.getByTestId("qty");
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
     const add = screen.getByText("add");
     const set = screen.getByText("set");
     const remove = screen.getByText("remove");
 
     fireEvent.click(add);
     await waitFor(() => expect(qty.textContent).toBe("1"));
-    expect(fetchMock).toHaveBeenNthCalledWith(
-      2,
-      "/api/cart",
-      expect.objectContaining({
-        method: "POST",
-        body: JSON.stringify({ sku: { id: PRODUCTS[0].id }, qty: 1, size }),
-      })
+    const postReq = fetchMock.mock.calls[2][0] as Request;
+    expect(postReq.url).toBe("/api/cart");
+    expect(postReq.method).toBe("POST");
+    expect(await postReq.text()).toBe(
+      JSON.stringify({ sku: { id: PRODUCTS[0].id }, qty: 1, size })
     );
 
     fireEvent.click(set);
     await waitFor(() => expect(qty.textContent).toBe("3"));
-    expect(fetchMock).toHaveBeenNthCalledWith(
-      3,
-      "/api/cart",
-      expect.objectContaining({
-        method: "PATCH",
-        body: JSON.stringify({ id, qty: 0 }),
-      })
+    const patchReq = fetchMock.mock.calls[3][0] as Request;
+    expect(patchReq.url).toBe("/api/cart");
+    expect(patchReq.method).toBe("PATCH");
+    expect(await patchReq.text()).toBe(
+      JSON.stringify({ id, qty: 0 })
     );
 
     fireEvent.click(remove);
     await waitFor(() => expect(qty.textContent).toBe("0"));
-    expect(fetchMock).toHaveBeenNthCalledWith(
-      4,
-      "/api/cart",
-      expect.objectContaining({ method: "DELETE", body: JSON.stringify({ id }) })
-    );
+    const deleteReq = fetchMock.mock.calls[4][0] as Request;
+    expect(deleteReq.url).toBe("/api/cart");
+    expect(deleteReq.method).toBe("DELETE");
+    expect(await deleteReq.text()).toBe(JSON.stringify({ id }));
   });
 
   it("throws API error message from dispatch", async () => {

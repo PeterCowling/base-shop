@@ -4,7 +4,7 @@
  * The utilities here are intentionally small wrappers around Node's `fs`
  * functions so they can be mocked and tested in isolation.
  */
-import { cpSync, existsSync, readFileSync, writeFileSync } from "fs";
+import { cpSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "path";
 
 /**

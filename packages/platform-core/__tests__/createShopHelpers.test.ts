@@ -1,5 +1,5 @@
 // packages/platform-core/__tests__/createShopHelpers.test.ts
-import fs from "fs";
+import fs from "node:fs";
 import { createShopOptionsSchema, prepareOptions } from "../src/createShop/schema";
 import {
   ensureTemplateExists,
@@ -8,7 +8,7 @@ import {
   copyTemplate,
 } from "../src/createShop/fsUtils";
 
-jest.mock("fs");
+jest.mock("node:fs");
 
 const fsMock = fs as jest.Mocked<typeof fs>;
 

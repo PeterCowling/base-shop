@@ -6,7 +6,7 @@ import path from 'path';
 const vol = new Volume();
 const fs = createFsFromVolume(vol);
 
-jest.mock('fs', () => fs);
+jest.mock('node:fs', () => fs);
 
 // mock prisma
 const prismaMock = {

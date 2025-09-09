@@ -2,7 +2,7 @@
 
 import { spawnSync } from "child_process";
 import { join } from "path";
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync, mkdirSync } from "node:fs";
 
 import type { DeployShopResult } from "./deployTypes";
 

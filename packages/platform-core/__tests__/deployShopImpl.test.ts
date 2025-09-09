@@ -5,7 +5,7 @@ import path from 'path';
 const vol = new Volume();
 const fs = createFsFromVolume(vol);
 
-jest.mock('fs', () => fs);
+jest.mock('node:fs', () => fs);
 
 const genSecret = jest.fn(() => 'secret-123');
 jest.mock('@acme/shared-utils', () => ({ genSecret }));

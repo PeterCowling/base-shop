@@ -1,5 +1,5 @@
 // packages/platform-core/src/createShop/index.ts
-import * as fs from "fs";
+import * as fs from "node:fs";
 import { join } from "path";
 import { fileURLToPath } from "url";
 import { genSecret } from "@acme/shared-utils";

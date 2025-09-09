@@ -433,5 +433,18 @@ describe("send core helpers", () => {
       });
     });
   });
+
+  describe("sendCampaignEmail", () => {
+    it("throws when html is missing", async () => {
+      const { sendCampaignEmail } = await import("../send");
+      await expect(
+        sendCampaignEmail({
+          to: "a@b.com",
+          subject: "Hi",
+          sanitize: false,
+        })
+      ).rejects.toThrow("Missing html content for campaign email");
+    });
+  });
 });
 

@@ -187,11 +187,22 @@ describe('onRequest route', () => {
 
   it('returns 403 when token payload missing exp', async () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
-    verify.mockReturnValue({});
+    const { sign, verify: realVerify } = jest.requireActual('jsonwebtoken');
+    verify.mockImplementation(realVerify);
+    const token = sign(
+      {},
+      'secret',
+      {
+        algorithm: 'HS256',
+        audience: 'upgrade-preview',
+        issuer: 'acme',
+        subject: 'shop:abc:upgrade-preview',
+      },
+    );
     const res = await onRequest({
       params: { shopId: 'abc' },
       request: new Request('http://localhost', {
-        headers: { authorization: 'Bearer good' },
+        headers: { authorization: `Bearer ${token}` },
       }),
     });
     expect(res.status).toBe(403);

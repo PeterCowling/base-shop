@@ -58,6 +58,12 @@ export const handlers = [
       ctx.body(stream)
     );
   }),
+  // Allow cart API requests to reach fetch mocks or real network
+  rest.get("*/api/cart", (req) => req.passthrough()),
+  rest.post("*/api/cart", (req) => req.passthrough()),
+  rest.put("*/api/cart", (req) => req.passthrough()),
+  rest.patch("*/api/cart", (req) => req.passthrough()),
+  rest.delete("*/api/cart", (req) => req.passthrough()),
   // Allow API route tests to hit local handlers without mocking
   rest.post("*/shop/:id/publish-upgrade", (req) => req.passthrough()),
 ];

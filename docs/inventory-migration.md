@@ -39,7 +39,7 @@ Current inventory data is sourced from `data/shops/<shop>/inventory.json` files 
 3. Verify counts using the inventory check script to ensure parity with the original dataset.
 
    ```bash
-   pnpm tsx scripts/src/inventory/check-inventory.ts --shop demo
+   pnpm tsx scripts/src/inventory/check-inventory.ts --shop my-shop
    ```
 
    You can also run the packaged command `pnpm inventory:check` which invokes the same script.

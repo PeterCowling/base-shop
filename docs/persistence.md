@@ -26,8 +26,7 @@ Each variable accepts:
 
 - `json` – read and write JSON files under `<DATA_ROOT>/<shop>`.
 - `sqlite` – legacy option that delegates to the JSON repository.
-
-When the variable is unset and `DATABASE_URL` is configured, the repository uses the primary database via Prisma.
+- _unset_ – uses Prisma when `DATABASE_URL` is present; otherwise falls back to JSON.
 
 ## Repositories with disk fallbacks
 

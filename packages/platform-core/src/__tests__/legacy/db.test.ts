@@ -23,7 +23,7 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("./db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
 
     const shop = "stub-shop";
     expect(await prisma.rentalOrder.findMany({ where: { shop } })).toEqual([]);
@@ -72,7 +72,7 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("./db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
 
     await prisma.rentalOrder.create({
       data: {
@@ -124,7 +124,7 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("./db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
 
     await expect(
       prisma.rentalOrder.update({
@@ -147,7 +147,7 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("./db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
 
     await prisma.rentalOrder.create({
       data: {
@@ -184,7 +184,7 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("./db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
 
     const shop = "shop2";
     await prisma.rentalOrder.create({
@@ -205,7 +205,7 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("./db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
 
     const shop = "prod-shop";
     expect(await prisma.rentalOrder.findMany({ where: { shop } })).toEqual([]);
@@ -230,7 +230,7 @@ describe("db", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("./db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
 
     await prisma.rentalOrder.create({
       data: { shop: "s", sessionId: "1", trackingNumber: "t1" },
@@ -250,7 +250,7 @@ describe("db", () => {
     });
     jest.doMock("module", () => ({ createRequire: createRequireMock }));
 
-    const { prisma } = (await import("./db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("../../db")) as { prisma: PrismaClient };
 
     await prisma.rentalOrder.create({
       data: { shop: "s", sessionId: "1", trackingNumber: "t1" },
@@ -271,7 +271,7 @@ describe("db", () => {
       virtual: true,
     });
 
-    await import("./db");
+    await import("../../db");
 
     expect(PrismaClientMock).toHaveBeenCalledWith({
       datasources: { db: { url: databaseUrl } },

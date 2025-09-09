@@ -114,6 +114,14 @@ describe("RedisSessionStore", () => {
     expect(client.mget).not.toHaveBeenCalled();
   });
 
+  it("returns empty array when smembers returns undefined", async () => {
+    (client.smembers as jest.Mock).mockResolvedValue(undefined as any);
+
+    const list = await store.list("cust");
+    expect(list).toEqual([]);
+    expect(client.mget).not.toHaveBeenCalled();
+  });
+
   it("deletes sessions", async () => {
     const record = createRecord("s1");
     await store.set(record);

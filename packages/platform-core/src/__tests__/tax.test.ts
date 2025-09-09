@@ -2,11 +2,19 @@
 
 import { promises as fs } from "fs";
 
+// Preserve the real global fetch so it can be restored after each test.
+// The previous implementation deleted `globalThis.fetch`, which caused
+// MSW's `server.close()` cleanup in `jest.setup.ts` to crash when it
+// attempted to restore the original fetch implementation.
+const realFetch = globalThis.fetch;
+
 // Helper to reset modules and mocks between tests
 function reset() {
   jest.resetModules();
   jest.restoreAllMocks();
-  delete (globalThis as any).fetch;
+  // Rather than deleting `fetch`, reset it to the original implementation
+  // so MSW can safely unpatch it during teardown.
+  (globalThis as any).fetch = realFetch;
 }
 
 describe("tax", () => {

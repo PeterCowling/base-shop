@@ -64,10 +64,10 @@ describe("loadShippingEnv", () => {
           .spyOn(console, "error")
           .mockImplementation(() => {});
         expect(() =>
-          loadShippingEnv({ LOCAL_PICKUP_ENABLED: "Yes" as any })
+          loadShippingEnv({ LOCAL_PICKUP_ENABLED: "maybe" as any })
         ).toThrow("Invalid shipping environment variables");
         expect(() =>
-          loadShippingEnv({ LOCAL_PICKUP_ENABLED: "maybe" as any })
+          loadShippingEnv({ LOCAL_PICKUP_ENABLED: "hello" as any })
         ).toThrow("Invalid shipping environment variables");
         expect(errorSpy).toHaveBeenCalledTimes(2);
         errorSpy.mockRestore();
@@ -127,6 +127,36 @@ describe("loadShippingEnv", () => {
       ).toThrow("Invalid shipping environment variables");
       expect(errorSpy).toHaveBeenCalledTimes(2);
       errorSpy.mockRestore();
+    });
+  });
+
+  describe("provider-specific API keys", () => {
+    it("requires UPS_KEY when provider is ups", async () => {
+      await withEnv({}, async () => {
+        const { loadShippingEnv } = await import(MODULE_PATH);
+        const errorSpy = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
+        expect(() =>
+          loadShippingEnv({ SHIPPING_PROVIDER: "ups" } as any),
+        ).toThrow("Invalid shipping environment variables");
+        expect(errorSpy).toHaveBeenCalled();
+        errorSpy.mockRestore();
+      });
+    });
+
+    it("requires DHL_KEY when provider is dhl", async () => {
+      await withEnv({}, async () => {
+        const { loadShippingEnv } = await import(MODULE_PATH);
+        const errorSpy = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
+        expect(() =>
+          loadShippingEnv({ SHIPPING_PROVIDER: "dhl" } as any),
+        ).toThrow("Invalid shipping environment variables");
+        expect(errorSpy).toHaveBeenCalled();
+        errorSpy.mockRestore();
+      });
     });
   });
 

@@ -9,6 +9,7 @@ jest.mock("fs", () => ({
     readFile: jest.fn(),
     writeFile: jest.fn(),
     mkdir: jest.fn(),
+    rename: jest.fn(),
   },
 }));
 
@@ -16,6 +17,7 @@ const mockedFs = fs as unknown as {
   readFile: jest.Mock;
   writeFile: jest.Mock;
   mkdir: jest.Mock;
+  rename: jest.Mock;
 };
 
 afterEach(() => jest.resetAllMocks());
@@ -49,14 +51,14 @@ describe("writeJsonFile", () => {
   it("writes JSON with 2-space indent by default", async () => {
     mockedFs.mkdir.mockResolvedValueOnce(undefined);
     mockedFs.writeFile.mockResolvedValueOnce(undefined);
+    mockedFs.rename.mockResolvedValueOnce(undefined);
 
     const data = { a: 1 };
     await writeJsonFile("out.json", data);
 
-    expect(mockedFs.writeFile).toHaveBeenCalledWith(
-      "out.json",
-      JSON.stringify(data, null, 2),
-      "utf8",
-    );
+    const [[tmpPath, json, encoding]] = mockedFs.writeFile.mock.calls;
+    expect(json).toBe(JSON.stringify(data, null, 2));
+    expect(encoding).toBe("utf8");
+    expect(mockedFs.rename).toHaveBeenCalledWith(tmpPath, "out.json");
   });
 });

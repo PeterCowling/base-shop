@@ -6,7 +6,7 @@ describe("MarketingEmailTemplate", () => {
   it("renders full template", () => {
     const { container, getByText, getByAltText } = render(
       <MarketingEmailTemplate
-        logoSrc="/logo.png"
+        logo={{ src: "/logo.png" }}
         shopName="Acme"
         headline="Welcome"
         content={<p>Hi there</p>}
@@ -35,7 +35,7 @@ describe("MarketingEmailTemplate", () => {
       <MarketingEmailTemplate
         headline="Headline"
         content={<p>Body</p>}
-        logoSrc="/logo.png"
+        logo={{ src: "/logo.png" }}
         shopName="Acme"
         footer={<span>Bye</span>}
       />

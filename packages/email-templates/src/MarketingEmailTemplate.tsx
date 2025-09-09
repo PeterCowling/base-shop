@@ -1,10 +1,11 @@
 import * as React from "react";
-
-/* eslint-disable @next/next/no-img-element */
+import { Logo, type LogoProps } from "@acme/ui";
 
 export interface MarketingEmailTemplateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
-  logoSrc?: string;
+  /** Props to configure the shop logo */
+  logo?: Omit<LogoProps, "shopName">;
+  /** Name of the shop for alt text or fallback */
   shopName?: string;
   headline: string;
   content: React.ReactNode;
@@ -14,7 +15,7 @@ export interface MarketingEmailTemplateProps
 }
 
 export function MarketingEmailTemplate({
-  logoSrc,
+  logo,
   shopName,
   headline,
   content,
@@ -38,20 +39,16 @@ export function MarketingEmailTemplate({
       className={`mx-auto w-full max-w-xl overflow-hidden rounded-md border text-sm${className ? ` ${className}` : ""}`}
       {...props}
     >
-      {logoSrc && shopName && (
+      {shopName && (
         <div className="bg-muted p-6 text-center" data-token="--color-muted">
-          <img
-            src={logoSrc}
-            alt={shopName}
-            width={40}
-            height={40}
-            style={{ margin: "0 auto", height: "40px", width: "auto" }}
+          <Logo
+            shopName={shopName}
+            alt={logo?.alt ?? shopName}
+            width={logo?.width ?? 40}
+            height={logo?.height ?? 40}
+            className={`mx-auto${logo?.className ? ` ${logo.className}` : ""}`}
+            src={logo?.src}
           />
-        </div>
-      )}
-      {!logoSrc && shopName && (
-        <div className="bg-muted p-6 text-center" data-token="--color-muted">
-          <span className="font-bold">{shopName}</span>
         </div>
       )}
       <div className="space-y-4 p-6">

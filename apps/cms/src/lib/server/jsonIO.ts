@@ -43,13 +43,15 @@ export async function writeJsonFile(
   }
 
   await fs.mkdir(path.dirname(file), { recursive: true });
-  const tmp = `${file}.${process.pid}.${Date.now()}.tmp`;
-  await fs.writeFile(
-    tmp,
-    JSON.stringify(value, null, indent ?? 2),
-    "utf8",
-  );
-  await fs.rename(tmp, file);
+  const data = JSON.stringify(value, null, indent ?? 2);
+
+  if (typeof fs.rename === "function") {
+    const tmp = `${file}.${process.pid}.${Date.now()}.tmp`;
+    await fs.writeFile(tmp, data, "utf8");
+    await fs.rename(tmp, file);
+  } else {
+    await fs.writeFile(file, data, "utf8");
+  }
 }
 
 export { withFileLock };

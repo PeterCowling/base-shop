@@ -1,5 +1,7 @@
 /** @jest-environment node */
 import { withEnv, importFresh } from './envTestUtils';
+import { mkdtemp, writeFile, rm } from 'node:fs/promises';
+import path from 'node:path';
 
 describe('withEnv', () => {
   const KEY = 'TEST_ENV_VAR';
@@ -39,5 +41,24 @@ describe('importFresh', () => {
 
   it('rejects when module cannot be imported', async () => {
     await expect(importFresh('./does-not-exist')).rejects.toThrow();
+  });
+
+  it('resets module state between imports', async () => {
+    const dir = await mkdtemp(path.join(__dirname, 'importFresh-'));
+    const file = path.join(dir, 'counter.cjs');
+    await writeFile(
+      file,
+      'let counter = 0; module.exports.getCount = () => { counter += 1; return counter; };',
+    );
+    const rel = `./${path.basename(dir)}/counter.cjs`;
+    try {
+      const first = await importFresh<{ default: { getCount: () => number } }>(rel);
+      expect(first.default.getCount()).toBe(1);
+      jest.resetModules();
+      const second = await importFresh<{ default: { getCount: () => number } }>(rel);
+      expect(second.default.getCount()).toBe(1);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
   });
 });

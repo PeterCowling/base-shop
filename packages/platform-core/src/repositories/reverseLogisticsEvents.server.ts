@@ -31,10 +31,10 @@ export async function recordEvent(
 export async function listEvents(
   shop: string
 ): Promise<ReverseLogisticsEvent[]> {
-  const events = await prisma.reverseLogisticsEvent.findMany({
+  const events = (await prisma.reverseLogisticsEvent.findMany({
     where: { shop },
     orderBy: { createdAt: "asc" },
-  });
+  })) as ReverseLogisticsEvent[];
 
   return events.map((evt) => ({
     ...evt,
@@ -49,7 +49,7 @@ async function delegate(
   sessionId: string,
   createdAt: string
 ) {
-  const mod = await import("./reverseLogisticsEvents.server.ts");
+  const mod = await import("./reverseLogisticsEvents.server.js");
   return mod.recordEvent(shop, sessionId, event, createdAt);
 }
 

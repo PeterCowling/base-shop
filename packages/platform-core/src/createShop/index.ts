@@ -3,6 +3,7 @@ import * as fs from "fs";
 import { join } from "path";
 import { fileURLToPath } from "url";
 import { genSecret } from "@acme/shared-utils";
+import { randomBytes } from "node:crypto";
 import { prisma } from "../db";
 import { validateShopName } from "../shops";
 import {
@@ -149,14 +150,22 @@ function deployShopImpl(
       const envPath = fs.existsSync(envAbs) ? envAbs : envRel;
       if (fs.existsSync(envPath)) {
         let env = fs.readFileSync(envPath, "utf8");
+      const sessionSecret = (() => {
+        try {
+          return genSecret(32);
+        } catch {
+          return randomBytes(32).toString("hex");
+        }
+      })();
+
       if (/^SESSION_SECRET=/m.test(env)) {
         env = env.replace(
           /^SESSION_SECRET=.*$/m,
-          `SESSION_SECRET=${genSecret(32)}`
+          `SESSION_SECRET=${sessionSecret}`
         );
       } else {
         env += (env.endsWith("\n") ? "" : "\n") +
-          `SESSION_SECRET=${genSecret(32)}\n`;
+          `SESSION_SECRET=${sessionSecret}\n`;
       }
         try {
           fs.writeFileSync(envRel, env);

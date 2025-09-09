@@ -91,6 +91,27 @@ describe("processReverseLogisticsEventsOnce", () => {
     });
   }
 
+  it("skips unknown status events", async () => {
+    readdir.mockResolvedValueOnce(["shop"]).mockResolvedValueOnce(["a.json"]);
+    readFile.mockResolvedValueOnce(
+      JSON.stringify({ sessionId: "s", status: "unhandled" })
+    );
+    await service.processReverseLogisticsEventsOnce(undefined, "/data");
+    expect(markReceived).not.toHaveBeenCalled();
+    expect(markCleaning).not.toHaveBeenCalled();
+    expect(markRepair).not.toHaveBeenCalled();
+    expect(markQa).not.toHaveBeenCalled();
+    expect(markAvailable).not.toHaveBeenCalled();
+    expect(evtReceived).not.toHaveBeenCalled();
+    expect(evtCleaning).not.toHaveBeenCalled();
+    expect(evtRepair).not.toHaveBeenCalled();
+    expect(evtQa).not.toHaveBeenCalled();
+    expect(evtAvailable).not.toHaveBeenCalled();
+    expect(unlink).toHaveBeenCalledWith(
+      "/data/shop/reverse-logistics/a.json"
+    );
+  });
+
   it("continues when events directory is missing", async () => {
     readdir.mockResolvedValueOnce(["shop"]).mockRejectedValueOnce(new Error("nope"));
     await service.processReverseLogisticsEventsOnce(undefined, "/data");

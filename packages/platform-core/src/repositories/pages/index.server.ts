@@ -28,10 +28,10 @@ export async function getPages(shop: string): Promise<Page[]> {
   const repo = await getRepo();
   try {
     return await repo.getPages(shop);
-  } catch {
+  } catch (err) {
     const jsonRepo = await jsonRepoPromise;
     repoPromise = Promise.resolve(jsonRepo);
-    return jsonRepo.getPages(shop);
+    return await jsonRepo.getPages(shop);
   }
 }
 
@@ -43,10 +43,10 @@ export async function savePage(
   const repo = await getRepo();
   try {
     return await repo.savePage(shop, page, previous);
-  } catch {
+  } catch (err) {
     const jsonRepo = await jsonRepoPromise;
     repoPromise = Promise.resolve(jsonRepo);
-    return jsonRepo.savePage(shop, page, previous);
+    return await jsonRepo.savePage(shop, page, previous);
   }
 }
 
@@ -54,10 +54,10 @@ export async function deletePage(shop: string, id: string): Promise<void> {
   const repo = await getRepo();
   try {
     return await repo.deletePage(shop, id);
-  } catch {
+  } catch (err) {
     const jsonRepo = await jsonRepoPromise;
     repoPromise = Promise.resolve(jsonRepo);
-    return jsonRepo.deletePage(shop, id);
+    return await jsonRepo.deletePage(shop, id);
   }
 }
 
@@ -69,10 +69,10 @@ export async function updatePage(
   const repo = await getRepo();
   try {
     return await repo.updatePage(shop, patch, previous);
-  } catch {
+  } catch (err) {
     const jsonRepo = await jsonRepoPromise;
     repoPromise = Promise.resolve(jsonRepo);
-    return jsonRepo.updatePage(shop, patch, previous);
+    return await jsonRepo.updatePage(shop, patch, previous);
   }
 }
 
@@ -85,10 +85,10 @@ export async function diffHistory(shop: string): Promise<PageDiffEntry[]> {
   const repo = await getRepo();
   try {
     return await repo.diffHistory(shop);
-  } catch {
+  } catch (err) {
     const jsonRepo = await jsonRepoPromise;
     repoPromise = Promise.resolve(jsonRepo);
-    return jsonRepo.diffHistory(shop);
+    return await jsonRepo.diffHistory(shop);
   }
 }
 

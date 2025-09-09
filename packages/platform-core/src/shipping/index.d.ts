@@ -43,4 +43,8 @@ export interface TrackingStatus {
  * Implementations call the provider APIs but gracefully fall back on failure.
  */
 export declare function getTrackingStatus({ provider, trackingNumber, }: TrackingStatusRequest): Promise<TrackingStatus>;
-export { createReturnLabel as createUpsReturnLabel, getStatus as getUpsStatus } from "./ups";
+export {
+    createReturnLabel,
+    createReturnLabel as createUpsReturnLabel,
+    getStatus as getUpsStatus
+} from "./ups";

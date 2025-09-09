@@ -322,6 +322,34 @@ describe("resolveSegment filters", () => {
   });
 });
 
+describe("cacheTtl", () => {
+  const originalTtl = process.env.SEGMENT_CACHE_TTL;
+
+  afterEach(() => {
+    if (originalTtl === undefined) delete process.env.SEGMENT_CACHE_TTL;
+    else process.env.SEGMENT_CACHE_TTL = originalTtl;
+    jest.resetModules();
+  });
+
+  it("returns default when ttl is negative", async () => {
+    process.env.SEGMENT_CACHE_TTL = "-1";
+    const { cacheTtl } = await import("../segments");
+    expect(cacheTtl()).toBe(60_000);
+  });
+
+  it("returns default when ttl is zero", async () => {
+    process.env.SEGMENT_CACHE_TTL = "0";
+    const { cacheTtl } = await import("../segments");
+    expect(cacheTtl()).toBe(60_000);
+  });
+
+  it("returns default when ttl is non-numeric", async () => {
+    process.env.SEGMENT_CACHE_TTL = "abc";
+    const { cacheTtl } = await import("../segments");
+    expect(cacheTtl()).toBe(60_000);
+  });
+});
+
 describe("resolveSegment caching", () => {
   beforeEach(() => {
     jest.resetModules();
@@ -444,6 +472,9 @@ describe("resolveSegment events", () => {
     jest.resetModules();
     jest.clearAllMocks();
   });
+  afterEach(() => {
+    delete process.env.SEGMENT_CACHE_TTL;
+  });
 
   it("resolves emails from segment events when no definition exists", async () => {
     mockReadFile.mockResolvedValue("[]");
@@ -475,7 +506,6 @@ describe("resolveSegment events", () => {
     expect(r1).toEqual(["a@example.com"]);
     expect(r2).toEqual(["a@example.com"]);
     expect(mockListEvents).toHaveBeenCalledTimes(1);
-    delete process.env.SEGMENT_CACHE_TTL;
   });
 });
 

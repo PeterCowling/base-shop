@@ -42,7 +42,7 @@ export async function readSegments(shop: string): Promise<SegmentDef[]> {
   }
 }
 
-function cacheTtl(): number {
+export function cacheTtl(): number {
   const ttl = Number(process.env.SEGMENT_CACHE_TTL);
   return Number.isFinite(ttl) && ttl > 0 ? ttl : 60_000;
 }

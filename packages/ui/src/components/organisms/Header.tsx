@@ -50,7 +50,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                 width={logo?.width}
                 height={logo?.height}
                 alt={shopName}
-                textFallback={shopName}
+                fallbackText={shopName}
                 className="font-bold"
               />
             </a>

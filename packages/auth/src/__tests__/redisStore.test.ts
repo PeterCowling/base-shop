@@ -79,6 +79,13 @@ describe("RedisSessionStore", () => {
     list.forEach((r) => expect(r.createdAt).toBeInstanceOf(Date));
   });
 
+  it("returns empty array when no sessions exist", async () => {
+    client.smembers.mockResolvedValue(null as any);
+    const list = await store.list("cust");
+    expect(list).toEqual([]);
+    expect(client.mget).not.toHaveBeenCalled();
+  });
+
   it("deletes sessions", async () => {
     const record = createRecord("s1");
     await store.set(record);

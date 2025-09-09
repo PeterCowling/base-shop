@@ -20,6 +20,7 @@ These repositories default to Prisma when a `DATABASE_URL` is defined. Set the c
 | Pricing             | `PRICING_BACKEND`           |
 | Return logistics    | `RETURN_LOGISTICS_BACKEND`  |
 | Return authorization| `RETURN_AUTH_BACKEND`       |
+Each repository above uses a shared resolver that honors its `*_BACKEND` environment variable to switch between Prisma and filesystem stores.
 
 Each variable accepts:
 

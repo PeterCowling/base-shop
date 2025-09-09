@@ -70,6 +70,13 @@ describe("SMTP configuration", () => {
     );
   });
 
+  it("fails when SMTP_URL is invalid", async () => {
+    process.env.SMTP_URL = "not-a-url";
+    await expect(loadEnv()).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+  });
+
   it.each([
     ["true", true],
     ["1", true],
@@ -84,6 +91,24 @@ describe("SMTP configuration", () => {
 
   it("fails when SMTP_SECURE is invalid", async () => {
     process.env.SMTP_SECURE = "maybe";
+    await expect(loadEnv()).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+  });
+});
+
+describe("batching configuration", () => {
+  it("coerces EMAIL_BATCH_SIZE and EMAIL_BATCH_DELAY_MS to numbers", async () => {
+    process.env.EMAIL_BATCH_SIZE = "10";
+    process.env.EMAIL_BATCH_DELAY_MS = "500";
+    const env = await loadEnv();
+    expect(env.EMAIL_BATCH_SIZE).toBe(10);
+    expect(env.EMAIL_BATCH_DELAY_MS).toBe(500);
+  });
+
+  it("fails when EMAIL_BATCH_SIZE or EMAIL_BATCH_DELAY_MS are not numeric", async () => {
+    process.env.EMAIL_BATCH_SIZE = "ten";
+    process.env.EMAIL_BATCH_DELAY_MS = "five";
     await expect(loadEnv()).rejects.toThrow(
       "Invalid email environment variables",
     );

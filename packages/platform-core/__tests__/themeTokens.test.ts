@@ -17,13 +17,14 @@ describe("loadThemeTokensNode", () => {
       .spyOn(fs, "readFileSync")
       .mockReturnValue("export const tokens = { '--color-bg': '#000' };");
     const tokens = loadThemeTokensNode("dark");
+    const rootDir = join(__dirname, "../../..");
     expect(existsSpy).toHaveBeenNthCalledWith(
       1,
-      join("packages", "themes", "dark", "tailwind-tokens.js"),
+      join(rootDir, "packages", "themes", "dark", "tailwind-tokens.js"),
     );
     expect(existsSpy).toHaveBeenNthCalledWith(
       2,
-      join("packages", "themes", "dark", "tailwind-tokens.ts"),
+      join(rootDir, "packages", "themes", "dark", "tailwind-tokens.ts"),
     );
     expect(tokens["--color-bg"]).toBe("#000");
   });

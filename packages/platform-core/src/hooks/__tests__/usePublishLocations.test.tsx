@@ -65,23 +65,23 @@ describe("usePublishLocations", () => {
       hook = usePublishLocations();
       return (
         <div>
-          <span data-cy="names">{hook.locations.map((l) => l.name).join(",")}</span>
-          <button data-cy="reload" onClick={() => hook.reload()} />
+          <span>{hook.locations.map((l) => l.name).join(",")}</span>
+          <button onClick={() => hook.reload()} />
         </div>
       );
     }
 
     const { rerender } = render(<TestComponent />);
 
-    await waitFor(() => expect(screen.getByTestId("names").textContent).toBe("A"));
+    await screen.findByText("A");
     expect(fetchJsonMock).toHaveBeenCalledTimes(1);
 
     const memoRef = hook.locations;
     rerender(<TestComponent />);
     expect(hook.locations).toBe(memoRef);
 
-    fireEvent.click(screen.getByTestId("reload"));
-    await waitFor(() => expect(screen.getByTestId("names").textContent).toBe("B,C"));
+    fireEvent.click(screen.getByRole("button"));
+    await screen.findByText("B,C");
     expect(fetchJsonMock).toHaveBeenCalledTimes(2);
     expect(hook.locations).not.toBe(memoRef);
   });
@@ -91,11 +91,11 @@ describe("usePublishLocations", () => {
 
     function ErrorComponent() {
       const { locations } = usePublishLocations();
-      return <span data-cy="length">{locations.length}</span>;
+      return <span>{locations.length}</span>;
     }
 
     render(<ErrorComponent />);
-    await waitFor(() => expect(screen.getByTestId("length").textContent).toBe("0"));
+    await screen.findByText("0");
   });
 });
 

@@ -29,6 +29,41 @@ describe("custom hook listeners", () => {
   });
 });
 
+describe("listener errors", () => {
+  it.each([
+    ["onSend", "emitSend"],
+    ["onOpen", "emitOpen"],
+    ["onClick", "emitClick"],
+  ])("rejects when %s listener throws", async (onName, emitName) => {
+    jest.resetModules();
+    const mod = await import("../hooks");
+    const on = mod[onName as keyof typeof mod] as (fn: any) => void;
+    const emit = mod[emitName as keyof typeof mod] as (
+      shop: string,
+      payload: HookPayload,
+    ) => Promise<void>;
+
+    const order: string[] = [];
+    const error = new Error("listener error");
+
+    on(async () => {
+      await new Promise((_, reject) =>
+        setTimeout(() => {
+          order.push("rejected");
+          reject(error);
+        }, 0),
+      );
+    });
+
+    on(async () => {
+      order.push("resolved");
+    });
+
+    await expect(emit(shop, payload)).rejects.toThrow(error);
+    expect(order).toEqual(["resolved", "rejected"]);
+  });
+});
+
 describe("default analytics listeners", () => {
   it.each([
     ["emitSend", "email_sent"],

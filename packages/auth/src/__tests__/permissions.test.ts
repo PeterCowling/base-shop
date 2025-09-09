@@ -8,4 +8,8 @@ describe("hasPermission", () => {
   it("returns false when role lacks permission", () => {
     expect(hasPermission("viewer", "checkout")).toBe(false);
   });
+
+  it("returns false for unknown role", () => {
+    expect(hasPermission("ghost" as any, "view_products")).toBe(false);
+  });
 });

@@ -7,6 +7,7 @@ describe("MarketingEmailTemplate", () => {
     const { container, getByText, getByAltText } = render(
       <MarketingEmailTemplate
         logoSrc="/logo.png"
+        shopName="Acme"
         headline="Welcome"
         content={<p>Hi there</p>}
         ctaLabel="Click me"
@@ -17,7 +18,7 @@ describe("MarketingEmailTemplate", () => {
 
     expect(getByText("Welcome")).toBeInTheDocument();
     expect(getByText("Hi there")).toBeInTheDocument();
-    expect(getByAltText("logo")).toBeInTheDocument();
+    expect(getByAltText("Acme")).toBeInTheDocument();
     expect(getByText("Click me").closest("a")).toHaveAttribute(
       "href",
       "https://example.com"
@@ -35,11 +36,12 @@ describe("MarketingEmailTemplate", () => {
         headline="Headline"
         content={<p>Body</p>}
         logoSrc="/logo.png"
+        shopName="Acme"
         footer={<span>Bye</span>}
       />
     );
 
-    expect(getByAltText("logo")).toBeInTheDocument();
+    expect(getByAltText("Acme")).toBeInTheDocument();
     expect(getByText("Bye")).toBeInTheDocument();
     expect(queryByRole("link")).toBeNull();
   });
@@ -51,6 +53,7 @@ describe("MarketingEmailTemplate", () => {
         content={<p>Hola</p>}
         ctaLabel="Haga clic"
         ctaHref="https://ejemplo.com"
+        shopName="Acme"
       />
     );
 
@@ -65,6 +68,7 @@ describe("MarketingEmailTemplate", () => {
         headline="Class Test"
         content={<p>content</p>}
         className="custom"
+        shopName="Acme"
       />
     );
 
@@ -75,10 +79,10 @@ describe("MarketingEmailTemplate", () => {
 
   it("omits logo and footer containers when data is missing", () => {
     const { container, queryByAltText } = render(
-      <MarketingEmailTemplate headline="No Extras" content={<p>content</p>} />
+      <MarketingEmailTemplate headline="No Extras" content={<p>content</p>} shopName="Acme" />
     );
 
-    expect(queryByAltText("logo")).toBeNull();
+    expect(queryByAltText("Acme")).toBeNull();
     expect(container.querySelector(".border-t")).toBeNull();
   });
   it("throws when headline is missing or empty", () => {

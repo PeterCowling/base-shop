@@ -48,6 +48,19 @@ describe("RedisSessionStore", () => {
     store = new RedisSessionStore(client as any, ttl);
   });
 
+  it("returns null when session is missing", async () => {
+    await expect(store.get("missing")).resolves.toBeNull();
+    expect(client.get).toHaveBeenCalledWith("session:missing");
+    expect(client.get).toHaveBeenCalledTimes(1);
+    expect(client.set).not.toHaveBeenCalled();
+    expect(client.sadd).not.toHaveBeenCalled();
+    expect(client.expire).not.toHaveBeenCalled();
+    expect(client.smembers).not.toHaveBeenCalled();
+    expect(client.mget).not.toHaveBeenCalled();
+    expect(client.srem).not.toHaveBeenCalled();
+    expect(client.del).not.toHaveBeenCalled();
+  });
+
   it("sets session with ttl and registers customer session", async () => {
     const record = createRecord("s1");
     await store.set(record);

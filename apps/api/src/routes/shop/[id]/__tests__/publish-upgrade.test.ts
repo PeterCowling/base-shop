@@ -128,10 +128,10 @@ describe("onRequestPost", () => {
       );
     });
 
-  it("ignores unknown components and still runs build/deploy", async () => {
+  it("ignores missing components and still runs build/deploy", async () => {
     readFileSync.mockImplementation((file: string) => {
       if (file.endsWith("package.json")) {
-        return JSON.stringify({ dependencies: { known: "1.0.0" } });
+        return JSON.stringify({ dependencies: { compA: "1.0.0" } });
       }
       if (file.endsWith("shop.json")) {
         return JSON.stringify({ componentVersions: {} });
@@ -148,14 +148,14 @@ describe("onRequestPost", () => {
       request: new Request("http://example.com", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ components: ["known", "unknown"] }),
+        body: JSON.stringify({ components: ["compA", "missing"] }),
       }),
     });
 
     expect(res.status).toBe(200);
     expect(writeFileSync).toHaveBeenCalledTimes(1);
     const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
-    expect(written.componentVersions).toEqual({ known: "1.0.0" });
+    expect(written.componentVersions).toEqual({ compA: "1.0.0" });
     expect(typeof written.lastUpgrade).toBe("string");
     expect(spawn).toHaveBeenNthCalledWith(
       1,

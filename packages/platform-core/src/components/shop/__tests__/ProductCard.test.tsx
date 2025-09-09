@@ -8,7 +8,7 @@ jest.mock("next/image", () => (props: any) => <img {...props} />);
 // Mock AddToCartButton to avoid context dependencies
 jest.mock("../AddToCartButton.client", () => ({
   __esModule: true,
-  default: () => <button data-testid="add-to-cart" />,
+  default: () => <button data-cy="add-to-cart" />,
 }));
 
 // Mock formatPrice and useCurrency with spies

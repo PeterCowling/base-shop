@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import type { SKU } from "@acme/types";
 
-const addToCartMock = jest.fn(() => <div data-testid="add" />);
+const addToCartMock = jest.fn(() => <div data-cy="add" />);
 
 jest.mock("../src/components/shop/AddToCartButton.client", () => ({
   __esModule: true,

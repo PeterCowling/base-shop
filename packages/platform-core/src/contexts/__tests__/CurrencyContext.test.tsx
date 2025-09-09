@@ -8,7 +8,7 @@ function Display() {
   const [currency, setCurrency] = useCurrency();
   return (
     <>
-      <span data-testid="currency">{currency}</span>
+      <span data-cy="currency">{currency}</span>
       <button onClick={() => setCurrency("USD")}>change</button>
     </>
   );

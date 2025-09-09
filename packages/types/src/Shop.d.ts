@@ -42,10 +42,60 @@ export declare const lateFeeServiceSchema: z.ZodObject<{
     intervalMinutes: number;
 }>;
 export type LateFeeService = z.infer<typeof lateFeeServiceSchema>;
+export declare const shopLogoSchema: z.ZodEffects<z.ZodUnion<[z.ZodString, z.ZodObject<{
+    desktop: z.ZodObject<{
+        landscape: z.ZodOptional<z.ZodString>;
+        portrait: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
+        landscape?: string | undefined;
+        portrait?: string | undefined;
+    }, {
+        landscape?: string | undefined;
+        portrait?: string | undefined;
+    }>;
+    mobile: z.ZodObject<{
+        landscape: z.ZodOptional<z.ZodString>;
+        portrait: z.ZodOptional<z.ZodString>;
+    }, "strip", z.ZodTypeAny, {
+        landscape?: string | undefined;
+        portrait?: string | undefined;
+    }, {
+        landscape?: string | undefined;
+        portrait?: string | undefined;
+    }>;
+}, "strip", z.ZodTypeAny, {
+    desktop?: {
+        landscape?: string | undefined;
+        portrait?: string | undefined;
+    } | undefined;
+    mobile?: {
+        landscape?: string | undefined;
+        portrait?: string | undefined;
+    } | undefined;
+}, {
+    desktop?: {
+        landscape?: string | undefined;
+        portrait?: string | undefined;
+    } | undefined;
+    mobile?: {
+        landscape?: string | undefined;
+        portrait?: string | undefined;
+    } | undefined;
+}>]>, {
+    desktop?: {
+        landscape?: string | undefined;
+        portrait?: string | undefined;
+    } | undefined;
+    mobile?: {
+        landscape?: string | undefined;
+        portrait?: string | undefined;
+    } | undefined;
+}, unknown>;
+export type ShopLogo = z.infer<typeof shopLogoSchema>;
 export declare const shopSchema: z.ZodObject<{
     id: z.ZodString;
     name: z.ZodString;
-    logo: z.ZodOptional<z.ZodString>;
+    logo: z.ZodOptional<typeof shopLogoSchema>;
     contactInfo: z.ZodOptional<z.ZodString>;
     catalogFilters: z.ZodArray<z.ZodString, "many">;
     themeId: z.ZodString;
@@ -228,7 +278,7 @@ export declare const shopSchema: z.ZodObject<{
     }[];
     subscriptionsEnabled: boolean;
     type?: string | undefined;
-    logo?: string | undefined;
+    logo?: ShopLogo | undefined;
     contactInfo?: string | undefined;
     domain?: {
         name: string;
@@ -273,7 +323,7 @@ export declare const shopSchema: z.ZodObject<{
     themeId: string;
     filterMappings: Record<string, string>;
     type?: string | undefined;
-    logo?: string | undefined;
+    logo?: ShopLogo | undefined;
     contactInfo?: string | undefined;
     themeDefaults?: Record<string, string> | undefined;
     themeOverrides?: Record<string, string> | undefined;

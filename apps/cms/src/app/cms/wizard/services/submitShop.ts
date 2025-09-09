@@ -71,7 +71,11 @@ export async function submitShop(
 
   const options = {
     name: storeName || undefined,
-    logo: logo || undefined,
+    logo:
+      Object.values(logo.desktop).some(Boolean) ||
+      Object.values(logo.mobile).some(Boolean)
+        ? logo
+        : undefined,
     contactInfo: contactInfo || undefined,
     type,
     template,

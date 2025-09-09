@@ -1,11 +1,7 @@
 // apps/cms/src/app/cms/wizard/schema.ts
 import { LOCALES } from "@acme/i18n";
 import { fillLocales } from "@i18n/fillLocales";
-import {
-  pageComponentSchema,
-  localeSchema,
-  type Locale,
-} from "@acme/types";
+import { pageComponentSchema, localeSchema, type Locale } from "@acme/types";
 import {
   environmentSettingsSchema,
   providerSettingsSchema,
@@ -31,6 +27,35 @@ function defaultLocaleRecord(
 }
 
 const localeRecordSchema = z.record(localeSchema, z.string());
+
+const logoSchema = z.preprocess(
+  (val) =>
+    typeof val === "string"
+      ? {
+          desktop: { landscape: val, portrait: val },
+          mobile: { landscape: val, portrait: val },
+        }
+      : val,
+  z
+    .object({
+      desktop: z
+        .object({
+          landscape: z.string().default(""),
+          portrait: z.string().default(""),
+        })
+        .default({ landscape: "", portrait: "" }),
+      mobile: z
+        .object({
+          landscape: z.string().default(""),
+          portrait: z.string().default(""),
+        })
+        .default({ landscape: "", portrait: "" }),
+    })
+    .default({
+      desktop: { landscape: "", portrait: "" },
+      mobile: { landscape: "", portrait: "" },
+    }),
+);
 
 /* -------------------------------------------------------------------------- */
 /*  Nav‑item schema (recursive)                                               */
@@ -90,7 +115,10 @@ const configuratorStateSchemaBase: z.AnyZodObject = z
     /* ------------ Wizard progress & identity ------------ */
     shopId: z.string().optional().default(""),
     storeName: z.string().optional().default(""),
-    logo: z.string().optional().default(""),
+    logo: logoSchema.optional().default({
+      desktop: { landscape: "", portrait: "" },
+      mobile: { landscape: "", portrait: "" },
+    }),
     contactInfo: z.string().optional().default(""),
     type: z.enum(["sale", "rental"]).optional().default("sale"),
     completed: z.record(stepStatusSchema).optional().default({}),

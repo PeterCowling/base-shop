@@ -1,5 +1,10 @@
 import type { PageComponent } from "@acme/types";
-import { localeSchema, sanityBlogConfigSchema } from "@acme/types";
+import {
+  localeSchema,
+  sanityBlogConfigSchema,
+  shopLogoSchema,
+  type ShopLogo,
+} from "@acme/types";
 import { upgradeComponentSchema as pageComponentSchema } from "@acme/types";
 import { z } from "zod";
 import { slugify } from "@acme/shared-utils";
@@ -27,7 +32,7 @@ const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
 export const createShopOptionsSchema = z
   .object({
     name: z.string().optional(),
-    logo: z.string().url().optional(),
+    logo: z.union([z.string().url(), shopLogoSchema]).optional(),
     contactInfo: z.string().optional(),
     type: z.enum(["sale", "rental"]).optional(),
     theme: z.string().optional(),
@@ -78,6 +83,7 @@ export type PreparedCreateShopOptions = Required<
   enableEditorial: boolean;
   enableSubscriptions: boolean;
   checkoutPage: PageComponent[];
+  logo: ShopLogo;
 };
 
 function prepareNavItems(items: NavItem[]): NavItem[] {
@@ -97,9 +103,19 @@ export function prepareOptions(
 ): PreparedCreateShopOptions {
   const parsed: z.infer<typeof createShopOptionsSchema> =
     createShopOptionsSchema.parse(opts);
+  const logo: ShopLogo =
+    typeof parsed.logo === "string"
+      ? {
+          desktop: { landscape: parsed.logo, portrait: parsed.logo },
+          mobile: { landscape: parsed.logo, portrait: parsed.logo },
+        }
+      : parsed.logo ?? {
+          desktop: { landscape: "", portrait: "" },
+          mobile: { landscape: "", portrait: "" },
+        };
   return {
     name: parsed.name ?? id,
-    logo: parsed.logo ?? "",
+    logo,
     contactInfo: parsed.contactInfo ?? "",
     type: parsed.type ?? "sale",
     theme: parsed.theme ?? "base",

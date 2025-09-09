@@ -19,7 +19,10 @@ describe("submitShop", () => {
 
   const baseState: any = {
     storeName: "Store",
-    logo: "",
+    logo: {
+      desktop: { landscape: "", portrait: "" },
+      mobile: { landscape: "", portrait: "" },
+    },
     contactInfo: "",
     type: "sale",
     template: "temp",

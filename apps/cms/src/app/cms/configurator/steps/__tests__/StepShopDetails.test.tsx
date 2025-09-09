@@ -23,6 +23,10 @@ jest.mock("@ui/components/atoms/shadcn", () => ({
   SelectValue: () => null,
 }));
 
+jest.mock("@ui", () => ({
+  ImagePicker: ({ children }: any) => <div>{children}</div>,
+}));
+
 // mocks for configurator hook
 const markComplete = jest.fn();
 const push = jest.fn();
@@ -35,10 +39,16 @@ jest.mock("../hooks/useConfiguratorStep", () => ({
     else if (!/^[a-z0-9-]+$/.test(values.id))
       errors.id = "Lowercase letters, numbers, and dashes only";
     if (!values.name) errors.name = "Required";
-    try {
-      new URL(values.logo);
-    } catch {
-      errors.logo = "Invalid URL";
+    for (const [viewport, orientations] of Object.entries(values.logo)) {
+      for (const [orientation, url] of Object.entries(
+        orientations as Record<string, string>,
+      )) {
+        try {
+          new URL(url as string);
+        } catch {
+          errors[`logo.${viewport}.${orientation}`] = "Invalid URL";
+        }
+      }
     }
     if (!values.contactInfo) errors.contactInfo = "Required";
     if (!["sale", "rental"].includes(values.type)) errors.type = "Required";
@@ -56,7 +66,10 @@ jest.mock("../hooks/useConfiguratorStep", () => ({
 function Wrapper() {
   const [shopId, setShopId] = React.useState("");
   const [storeName, setStoreName] = React.useState("");
-  const [logo, setLogo] = React.useState("invalid");
+  const [logo, setLogo] = React.useState({
+    desktop: { landscape: "invalid", portrait: "invalid" },
+    mobile: { landscape: "invalid", portrait: "invalid" },
+  });
   const [contactInfo, setContactInfo] = React.useState("");
   const [type, setType] = React.useState("");
   const [template, setTemplate] = React.useState("");
@@ -87,7 +100,7 @@ describe("StepShopDetails", () => {
   it("shows errors for invalid input and disables submit", () => {
     render(<Wrapper />);
     expect(screen.getAllByText("Required")).toHaveLength(5);
-    expect(screen.getByText("Invalid URL")).toBeInTheDocument();
+    expect(screen.getAllByText("Invalid URL")).toHaveLength(4);
     expect(screen.getByTestId("save-return")).toBeDisabled();
   });
 
@@ -99,10 +112,18 @@ describe("StepShopDetails", () => {
     fireEvent.change(screen.getByTestId("store-name"), {
       target: { value: "My Store" },
     });
-    fireEvent.change(
-      screen.getByTestId("logo-url"),
-      { target: { value: "https://example.com/logo.png" } }
-    );
+    fireEvent.change(screen.getByTestId("logo-desktop-landscape"), {
+      target: { value: "https://example.com/logo.png" },
+    });
+    fireEvent.change(screen.getByTestId("logo-desktop-portrait"), {
+      target: { value: "https://example.com/logo.png" },
+    });
+    fireEvent.change(screen.getByTestId("logo-mobile-landscape"), {
+      target: { value: "https://example.com/logo.png" },
+    });
+    fireEvent.change(screen.getByTestId("logo-mobile-portrait"), {
+      target: { value: "https://example.com/logo.png" },
+    });
     fireEvent.change(screen.getByTestId("contact-info"), {
       target: { value: "contact@example.com" },
     });

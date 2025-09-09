@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@ui/components/atoms/shadcn";
+import { ImagePicker } from "@ui";
 import { useMemo } from "react";
 import { z } from "zod";
 import type { ConfiguratorStepProps } from "@/types/configurator";
@@ -42,7 +43,16 @@ export default function StepShopDetails({
               message: "Lowercase letters, numbers, and dashes only",
             }),
           name: z.string().min(1, "Required"),
-          logo: z.string().url("Invalid URL"),
+          logo: z.object({
+            desktop: z.object({
+              landscape: z.string().url("Invalid URL"),
+              portrait: z.string().url("Invalid URL"),
+            }),
+            mobile: z.object({
+              landscape: z.string().url("Invalid URL"),
+              portrait: z.string().url("Invalid URL"),
+            }),
+          }),
           contactInfo: z.string().min(1, "Required"),
           type: z.enum(["sale", "rental"]),
           template: z.string().min(1, "Required"),
@@ -97,19 +107,53 @@ export default function StepShopDetails({
           <p className="text-sm text-red-600">{getError("name")}</p>
         )}
       </label>
-      <label className="flex flex-col gap-1">
-        <span>Logo URL</span>
-        <Input
-          data-cy="logo-url"
-          data-testid="logo-url"
-          value={logo}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLogo(e.target.value)}
-          placeholder="https://example.com/logo.png"
-        />
-        {getError("logo") && (
-          <p className="text-sm text-red-600">{getError("logo")}</p>
-        )}
-      </label>
+      {([
+        ["desktop", "landscape"],
+        ["desktop", "portrait"],
+        ["mobile", "landscape"],
+        ["mobile", "portrait"],
+      ] as const).map(([viewport, orientation]) => (
+        <label key={`${viewport}-${orientation}`} className="flex flex-col gap-1">
+          <span>{`${viewport} ${orientation}`.replace(/^(\w)/, (s) => s.toUpperCase())}</span>
+          <div className="flex items-center gap-2">
+            <Input
+              data-cy={`logo-${viewport}-${orientation}`}
+              data-testid={`logo-${viewport}-${orientation}`}
+              value={logo[viewport]?.[orientation] ?? ""}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setLogo({
+                  ...logo,
+                  [viewport]: {
+                    ...(logo[viewport] ?? {}),
+                    [orientation]: e.target.value,
+                  },
+                })
+              }
+              placeholder="https://example.com/logo.png"
+            />
+            <ImagePicker
+              onSelect={(url) =>
+                setLogo({
+                  ...logo,
+                  [viewport]: {
+                    ...(logo[viewport] ?? {}),
+                    [orientation]: url,
+                  },
+                })
+              }
+            >
+              <Button type="button" variant="outline">
+                Select
+              </Button>
+            </ImagePicker>
+          </div>
+          {getError(`logo.${viewport}.${orientation}`) && (
+            <p className="text-sm text-red-600">
+              {getError(`logo.${viewport}.${orientation}`)}
+            </p>
+          )}
+        </label>
+      ))}
       <label className="flex flex-col gap-1">
         <span>Contact Info</span>
         <Input

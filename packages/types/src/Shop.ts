@@ -36,11 +36,39 @@ export const lateFeeServiceSchema = z
 
 export type LateFeeService = z.infer<typeof lateFeeServiceSchema>;
 
+export const shopLogoSchema = z.preprocess(
+  (val) =>
+    typeof val === "string"
+      ? {
+          desktop: { landscape: val, portrait: val },
+          mobile: { landscape: val, portrait: val },
+        }
+      : val,
+  z
+    .object({
+      desktop: z
+        .object({
+          landscape: z.string().url().optional(),
+          portrait: z.string().url().optional(),
+        })
+        .default({}),
+      mobile: z
+        .object({
+          landscape: z.string().url().optional(),
+          portrait: z.string().url().optional(),
+        })
+        .default({}),
+    })
+    .partial(),
+);
+
+export type ShopLogo = z.infer<typeof shopLogoSchema>;
+
 export const shopSchema = z
   .object({
     id: z.string(),
     name: z.string(),
-    logo: z.string().optional(),
+    logo: shopLogoSchema.optional(),
     contactInfo: z.string().optional(),
     catalogFilters: z.array(z.string()),
     themeId: z.string(),

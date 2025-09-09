@@ -4,7 +4,7 @@
 
 import { Button, Input } from "@ui/components/atoms/shadcn";
 import { LOCALES } from "@acme/i18n";
-import type { Locale } from "@acme/types";
+import type { Locale, ShopLogo } from "@acme/types";
 import React, { useState } from "react";
 import WizardPreview from "../../wizard/WizardPreview";
 import PreviewDeviceSelector from "../../wizard/PreviewDeviceSelector";
@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 interface Props {
   shopId: string;
   name: string;
-  logo: string;
+  logo: ShopLogo;
   contactInfo: string;
   type: "sale" | "rental";
   template: string;
@@ -76,7 +76,18 @@ export default function StepSummary({
           <b>Store Name:</b> {name}
         </li>
         <li>
-          <b>Logo:</b> {logo || "none"}
+          <b>Logo:</b>{" "}
+          {(() => {
+            const entries: string[] = [];
+            for (const [viewport, orient] of Object.entries(logo)) {
+              for (const [orientation, url] of Object.entries(
+                orient as Record<string, string>,
+              )) {
+                if (url) entries.push(`${viewport}-${orientation}: ${url}`);
+              }
+            }
+            return entries.length ? entries.join(", ") : "none";
+          })()}
         </li>
         <li>
           <b>Contact:</b> {contactInfo || "none"}

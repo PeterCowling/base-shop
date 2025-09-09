@@ -1,4 +1,5 @@
 import type { PageComponent } from "@acme/types";
+import { shopLogoSchema, type ShopLogo } from "@acme/types";
 import { z } from "zod";
 export interface NavItem {
     label: string;
@@ -7,7 +8,7 @@ export interface NavItem {
 }
 export declare const createShopOptionsSchema: z.ZodObject<{
     name: z.ZodOptional<z.ZodString>;
-    logo: z.ZodOptional<z.ZodString>;
+    logo: z.ZodOptional<z.ZodUnion<[z.ZodString, typeof shopLogoSchema]>>;
     contactInfo: z.ZodOptional<z.ZodString>;
     type: z.ZodOptional<z.ZodEnum<["sale", "rental"]>>;
     theme: z.ZodOptional<z.ZodString>;
@@ -206,6 +207,7 @@ export type PreparedCreateShopOptions = Required<Omit<CreateShopOptions, "analyt
     enableEditorial: boolean;
     enableSubscriptions: boolean;
     checkoutPage: PageComponent[];
+    logo: ShopLogo;
 };
 /** Parse and populate option defaults. */
 export declare function prepareOptions(id: string, opts: CreateShopOptions): PreparedCreateShopOptions;

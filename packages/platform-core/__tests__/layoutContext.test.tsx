@@ -13,6 +13,7 @@ function LayoutInfo() {
   const { isMobileNavOpen, breadcrumbs, toggleNav } = useLayout();
   return (
     <div>
+      {/* Use `data-cy` because Testing Library is configured with `testIdAttribute: "data-cy"` */}
       <span data-cy="open">{String(isMobileNavOpen)}</span>
       <span data-cy="breadcrumbs">{breadcrumbs.join("|")}</span>
       <button onClick={toggleNav}>toggle</button>

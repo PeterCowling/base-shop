@@ -130,8 +130,8 @@ describe("loadPluginFromDir and loadPlugins", () => {
       .mockImplementation(async (dir: string) => ({ entryPath: path.join(dir, "index.js"), isModule: false }));
     const importByType = jest.fn(async (entry: string) => {
       const dir = path.dirname(entry);
-      if (dir.includes("valid")) return { default: validPlugin };
       if (dir.includes("invalid")) return { default: invalidPlugin };
+      if (dir.includes("valid")) return { default: validPlugin };
       return {};
     });
     jest.doMock("../src/plugins/resolvers", () => ({ resolvePluginEntry, importByType }));

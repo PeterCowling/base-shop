@@ -177,7 +177,12 @@ function deployShopImpl(
         env += (env.endsWith("\n") ? "" : "\n") + secret + "\n";
       }
 
-      for (const p of new Set([envRel, envAbs])) {
+      // Write both the repository-relative and absolute paths. Some test
+      // environments mock `fs` without a notion of the real working directory,
+      // so also attempt to write using `process.cwd()` to ensure the secret is
+      // persisted where callers expect.
+      const cwdPath = join(process.cwd(), envRel);
+      for (const p of new Set([envRel, envAbs, cwdPath])) {
         try {
           fs.writeFileSync(p, env);
         } catch {

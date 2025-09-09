@@ -9,7 +9,15 @@ import { DATA_ROOT } from "../../dataRoot";
 import { nowIso } from "@acme/date-utils";
 import { z } from "zod";
 import type { Prisma } from "@prisma/client";
-import * as jsonRepo from "./pages.json.server";
+
+let jsonRepoPromise:
+  | Promise<typeof import("./pages.json.server")>
+  | undefined;
+
+async function loadJsonRepo() {
+  jsonRepoPromise ??= import("./pages.json.server");
+  return jsonRepoPromise;
+}
 
 // Helpers
 
@@ -68,6 +76,7 @@ export async function getPages(shop: string): Promise<Page[]> {
     return rows.map((r: { data: unknown }) => pageSchema.parse(r.data));
   } catch (err) {
     console.error(`Failed to read pages for ${shop}`, err);
+    const jsonRepo = await loadJsonRepo();
     return jsonRepo.getPages(shop);
   }
 }
@@ -89,10 +98,13 @@ export async function savePage(
       },
     });
     const patch = diffPages(previous, page);
-    await appendHistory(shop, patch);
+    if (previous) {
+      await appendHistory(shop, patch);
+    }
     return page;
   } catch (err) {
     console.error(`Failed to save page ${page.id} for ${shop}`, err);
+    const jsonRepo = await loadJsonRepo();
     return jsonRepo.savePage(shop, page, previous);
   }
 }
@@ -105,6 +117,7 @@ export async function deletePage(shop: string, id: string): Promise<void> {
     }
   } catch (err) {
     console.error(`Failed to delete page ${id} for ${shop}`, err);
+    const jsonRepo = await loadJsonRepo();
     await jsonRepo.deletePage(shop, id);
   }
 }
@@ -130,10 +143,13 @@ export async function updatePage(
     });
 
     const diff = diffPages(previous, updated);
-    await appendHistory(shop, diff);
+    if (previous) {
+      await appendHistory(shop, diff);
+    }
     return updated;
   } catch (err) {
     console.error(`Failed to update page ${patch.id} for ${shop}`, err);
+    const jsonRepo = await loadJsonRepo();
     return jsonRepo.updatePage(shop, patch, previous);
   }
 }

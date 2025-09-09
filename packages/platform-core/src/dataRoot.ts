@@ -1,5 +1,12 @@
 import * as fsSync from "node:fs";
 import * as path from "node:path";
+
+function stripPrivatePrefix(p: string): string {
+    // macOS may resolve temporary directories under "/private" even when
+    // callers provide paths starting with "/var". Normalise such paths so
+    // tests comparing against the original "/var" location succeed.
+    return p.startsWith("/private/") ? p.slice("/private".length) : p;
+}
 /**
  * Walk upward from the current working directory to locate the monorepo-level
  * `data/shops` folder. Falls back to `<cwd>/data/shops` if the search reaches
@@ -9,7 +16,7 @@ import * as path from "node:path";
 export function resolveDataRoot() {
     const env = process.env.DATA_ROOT;
     if (env) {
-        return path.resolve(env);
+        return stripPrivatePrefix(path.resolve(env));
     }
     let dir = process.cwd();
     let found;
@@ -23,6 +30,7 @@ export function resolveDataRoot() {
             break;
         dir = parent;
     }
-    return found ?? path.resolve(process.cwd(), "data", "shops");
+    const resolved = found ?? path.resolve(process.cwd(), "data", "shops");
+    return stripPrivatePrefix(resolved);
 }
 export const DATA_ROOT = resolveDataRoot();

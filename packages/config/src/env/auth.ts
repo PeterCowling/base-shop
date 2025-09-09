@@ -42,6 +42,20 @@ const DEV_SESSION_SECRET = "dev-session-secret-32-chars-long-string!";
 const DEFAULT_TOKEN_AUDIENCE = "base-shop";
 const DEFAULT_TOKEN_ISSUER = "base-shop";
 
+const booleanFromString = z.preprocess((v) => {
+  if (typeof v === "string") {
+    if (/^(true|1)$/i.test(v)) return true;
+    if (/^(false|0)$/i.test(v)) return false;
+    return v;
+  }
+  if (typeof v === "number") {
+    if (v === 1) return true;
+    if (v === 0) return false;
+    return v;
+  }
+  return v;
+}, z.boolean());
+
 const baseSchema = z.object({
   NEXTAUTH_SECRET: isProd
     ? strongSecret
@@ -73,8 +87,8 @@ const baseSchema = z.object({
   TOKEN_ALGORITHM: z.enum(["HS256", "RS256"]).default("HS256"),
   TOKEN_AUDIENCE: z.string().min(1).default(DEFAULT_TOKEN_AUDIENCE),
   TOKEN_ISSUER: z.string().min(1).default(DEFAULT_TOKEN_ISSUER),
-  ALLOW_GUEST: z.coerce.boolean().default(false),
-  ENFORCE_2FA: z.coerce.boolean().default(false),
+  ALLOW_GUEST: booleanFromString.default(false),
+  ENFORCE_2FA: booleanFromString.default(false),
 });
 
 export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
@@ -147,20 +161,25 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
 
 type ParsedAuthEnv = z.infer<typeof authEnvSchema>;
 
-const parsed = authEnvSchema.safeParse(process.env);
-if (!parsed.success) {
-  console.error(
-    "❌ Invalid auth environment variables:",
-    parsed.error.format(),
-  );
-  throw new Error("Invalid auth environment variables");
-}
-
 export type AuthEnv = ParsedAuthEnv & { AUTH_TOKEN_EXPIRES_AT: Date };
 
-export const authEnv: AuthEnv = {
-  ...parsed.data,
-  AUTH_TOKEN_EXPIRES_AT: new Date(
-    Date.now() + parsed.data.AUTH_TOKEN_TTL * 1000,
-  ),
-};
+export function loadAuthEnv(
+  raw: NodeJS.ProcessEnv = process.env,
+): AuthEnv {
+  const parsed = authEnvSchema.safeParse(raw);
+  if (!parsed.success) {
+    console.error(
+      "❌ Invalid auth environment variables:",
+      parsed.error.format(),
+    );
+    throw new Error("Invalid auth environment variables");
+  }
+  return {
+    ...parsed.data,
+    AUTH_TOKEN_EXPIRES_AT: new Date(
+      Date.now() + parsed.data.AUTH_TOKEN_TTL * 1000,
+    ),
+  };
+}
+
+export const authEnv = loadAuthEnv();

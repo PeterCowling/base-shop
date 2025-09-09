@@ -156,5 +156,59 @@ describe('auth env validation', () => {
     expect(authEnv.AUTH_PROVIDER).toBe('oauth');
     expect(authEnv.OAUTH_CLIENT_ID).toBe('client-id');
   });
+
+  it.each([
+    ['true', true],
+    ['false', false],
+  ])('parses ALLOW_GUEST=%s', async (value, expected) => {
+    const { authEnv } = await withEnv(
+      { NODE_ENV: 'development', ALLOW_GUEST: value },
+      () => import('@acme/config/src/env/auth.ts'),
+    );
+    expect(authEnv.ALLOW_GUEST).toBe(expected);
+  });
+
+  it.each([
+    ['true', true],
+    ['false', false],
+  ])('parses ENFORCE_2FA=%s', async (value, expected) => {
+    const { authEnv } = await withEnv(
+      { NODE_ENV: 'development', ENFORCE_2FA: value },
+      () => import('@acme/config/src/env/auth.ts'),
+    );
+    expect(authEnv.ENFORCE_2FA).toBe(expected);
+  });
+
+  it('throws for invalid ALLOW_GUEST string', async () => {
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+    const { loadAuthEnv } = await import(
+      '@acme/config/src/env/auth.ts'
+    );
+    expect(() =>
+      loadAuthEnv({
+        NODE_ENV: 'development',
+        ALLOW_GUEST: 'maybe',
+      } as any),
+    ).toThrow('Invalid auth environment variables');
+    errorSpy.mockRestore();
+  });
+
+  it('throws for invalid ENFORCE_2FA string', async () => {
+    const errorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+    const { loadAuthEnv } = await import(
+      '@acme/config/src/env/auth.ts'
+    );
+    expect(() =>
+      loadAuthEnv({
+        NODE_ENV: 'development',
+        ENFORCE_2FA: 'maybe',
+      } as any),
+    ).toThrow('Invalid auth environment variables');
+    errorSpy.mockRestore();
+  });
 });
 

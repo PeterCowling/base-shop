@@ -31,6 +31,13 @@ describe("providersByType", () => {
     expect(providersByType("unknown" as any)).toEqual([]);
   });
 
+  it("returns empty array for undefined type without mutating providers", () => {
+    const original = [...providers];
+    const result = providersByType(undefined as any);
+    expect(result).toEqual([]);
+    expect(providers).toEqual(original);
+  });
+
   it("returns new arrays without mutating original providers list", () => {
     const original = [...providers];
     const result = providersByType("payment");

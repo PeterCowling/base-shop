@@ -427,6 +427,41 @@ describe("onRequestPost", () => {
     expect(spawn).not.toHaveBeenCalled();
   });
 
+  it("returns 500 when shop file cannot be parsed", async () => {
+    const invalid = "not-json";
+    readFileSync.mockImplementation((file: string) => {
+      if (file.endsWith("package.json")) {
+        return JSON.stringify({ dependencies: { compA: "1.0.0" } });
+      }
+      if (file.endsWith("shop.json")) {
+        return invalid;
+      }
+      return "";
+    });
+
+    const token = jwt.sign({}, "secret");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ components: ["compA"] }),
+      }),
+    });
+
+    const body = await res.json();
+    let parseMessage = "";
+    try {
+      JSON.parse(invalid);
+    } catch (err) {
+      parseMessage = err instanceof Error ? err.message : String(err);
+    }
+
+    expect(res.status).toBe(500);
+    expect(body).toEqual({ error: parseMessage });
+    expect(spawn).not.toHaveBeenCalled();
+  });
+
   it("returns 500 on unexpected errors", async () => {
     readFileSync.mockImplementation((file: string) => {
       if (file.endsWith("package.json")) {

@@ -31,8 +31,10 @@ describe("pages.json.server", () => {
     let pages = await repo.getPages(shop);
     expect(pages).toHaveLength(1);
     expect(pages[0].createdBy).toBe("tester");
+    let history = await repo.diffHistory(shop);
+    expect(history).toHaveLength(0);
 
-    const history: HistoryState = {
+    const historyState: HistoryState = {
       past: [],
       present: [],
       future: [],
@@ -41,12 +43,14 @@ describe("pages.json.server", () => {
 
     const updated = await repo.updatePage(
       shop,
-      { id: page.id, slug: "start", updatedAt: page.updatedAt, history },
+      { id: page.id, slug: "start", updatedAt: page.updatedAt, history: historyState },
       page,
     );
     pages = await repo.getPages(shop);
     expect(updated.slug).toBe("start");
-    expect(pages[0].history).toEqual(history);
+    expect(pages[0].history).toEqual(historyState);
+    history = await repo.diffHistory(shop);
+    expect(history).toHaveLength(1);
 
     await repo.deletePage(shop, page.id);
     pages = await repo.getPages(shop);

@@ -89,5 +89,13 @@ describe("RedisSessionStore", () => {
     await expect(store.get("s1")).resolves.toBeNull();
     await expect(store.list("c1")).resolves.toEqual([]);
   });
+
+  it("deletes session without customer set when record is missing", async () => {
+    client.get.mockResolvedValueOnce(null);
+    await store.delete("s1");
+
+    expect(client.del).toHaveBeenCalledWith("session:s1");
+    expect(client.srem).not.toHaveBeenCalled();
+  });
 });
 

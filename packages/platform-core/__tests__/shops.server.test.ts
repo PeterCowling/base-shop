@@ -33,8 +33,8 @@ describe("readShop", () => {
           name: "DB",
           catalogFilters: [],
           themeId: "base",
-          themeDefaults: { accent: "red" },
-          themeOverrides: { accent: "blue" },
+          themeDefaults: { "--color-accent": "red" },
+          themeOverrides: { "--color-accent": "blue" },
           filterMappings: {},
           priceOverrides: {},
           localeOverrides: {},
@@ -44,8 +44,8 @@ describe("readShop", () => {
 
       const { readShop } = await import("../src/repositories/shops.server");
       const result = await readShop("test");
-      expect(result.themeDefaults).toEqual({ accent: "red" });
-      expect(result.themeTokens).toEqual({ accent: "blue" });
+      expect(result.themeDefaults).toEqual({ "--color-accent": "red" });
+      expect(result.themeTokens).toEqual({ "--color-accent": "blue" });
     });
   });
 

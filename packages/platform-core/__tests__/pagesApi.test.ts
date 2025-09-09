@@ -1,6 +1,21 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { NextRequest } from "next/server";
+
+// The route under test imports `next-auth`, which in turn pulls in ESM only
+// dependencies like `jose`. Jest tries to parse those modules as CommonJS and
+// crashes with `Unexpected token 'export'`. Mock `next-auth` so the module is
+// never loaded during these tests.
+jest.mock("next-auth", () => ({
+  getServerSession: jest.fn(() =>
+    Promise.resolve({ user: { role: "admin" } })
+  ),
+}));
+
+// ts-jest can take a while to compile the first time in CI, so give the tests
+// a bit more breathing room.
+jest.setTimeout(60_000);
 
 // NextResponse.json relies on the static Response.json helper which isn't
 // provided by the fetch polyfill used by JSDOM. Add a minimal shim so the
@@ -56,7 +71,7 @@ describe("pages API route", () => {
       const { GET } = await import(
         "../../../apps/cms/src/app/api/pages/[shop]/route"
       );
-      const res = await GET(new Request("http://localhost"), {
+      const res = await GET(new NextRequest("http://localhost"), {
         params: { shop: "test" },
       });
       expect(await res.json()).toEqual(pages);
@@ -68,7 +83,7 @@ describe("pages API route", () => {
       const { GET } = await import(
         "../../../apps/cms/src/app/api/pages/[shop]/route"
       );
-      const res = await GET(new Request("http://localhost"), {
+      const res = await GET(new NextRequest("http://localhost"), {
         params: { shop: "test" },
       });
       expect(await res.json()).toEqual([]);

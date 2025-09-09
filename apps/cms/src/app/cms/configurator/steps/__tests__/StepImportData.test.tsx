@@ -32,15 +32,17 @@ describe("StepImportData", () => {
     );
 
     const file = new File(["name"], "products.csv", { type: "text/csv" });
-    const fileInput = screen.getByTestId("products-csv");
+    const fileInput = screen.getByLabelText("Products CSV");
     fireEvent.change(fileInput, { target: { files: [file] } });
     expect(setCsvFile).toHaveBeenCalledWith(file);
 
-    const textarea = screen.getByTestId("categories-json");
+    const textarea = screen.getByPlaceholderText('["Shoes","Accessories"]');
     fireEvent.change(textarea, { target: { value: "{\"a\":1}" } });
     expect(setCategoriesText).toHaveBeenCalledWith("{\"a\":1}");
 
-    await userEvent.click(screen.getByTestId("save-return"));
+    await userEvent.click(
+      screen.getByRole("button", { name: /save & return/i })
+    );
 
     expect(saveData).toHaveBeenCalled();
     await waitFor(() => expect(markComplete).toHaveBeenCalledWith(true));

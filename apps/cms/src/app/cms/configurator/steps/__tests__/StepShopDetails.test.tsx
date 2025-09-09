@@ -23,6 +23,11 @@ jest.mock("@ui/components/atoms/shadcn", () => ({
   SelectValue: () => null,
 }));
 
+jest.mock("@ui/components/cms/page-builder/ImagePicker", () => ({
+  __esModule: true,
+  default: ({ children }: any) => <div>{children}</div>,
+}));
+
 // mocks for configurator hook
 const markComplete = jest.fn();
 const push = jest.fn();
@@ -35,10 +40,12 @@ jest.mock("../hooks/useConfiguratorStep", () => ({
     else if (!/^[a-z0-9-]+$/.test(values.id))
       errors.id = "Lowercase letters, numbers, and dashes only";
     if (!values.name) errors.name = "Required";
-    try {
-      new URL(values.logo);
-    } catch {
-      errors.logo = "Invalid URL";
+    for (const [k, v] of Object.entries(values.logo || {})) {
+      try {
+        if (v) new URL(v);
+      } catch {
+        errors[`logo.${k}`] = "Invalid URL";
+      }
     }
     if (!values.contactInfo) errors.contactInfo = "Required";
     if (!["sale", "rental"].includes(values.type)) errors.type = "Required";
@@ -56,7 +63,9 @@ jest.mock("../hooks/useConfiguratorStep", () => ({
 function Wrapper() {
   const [shopId, setShopId] = React.useState("");
   const [storeName, setStoreName] = React.useState("");
-  const [logo, setLogo] = React.useState("invalid");
+  const [logo, setLogo] = React.useState<Record<string, string>>({
+    "desktop-landscape": "invalid",
+  });
   const [contactInfo, setContactInfo] = React.useState("");
   const [type, setType] = React.useState("");
   const [template, setTemplate] = React.useState("");
@@ -99,10 +108,9 @@ describe("StepShopDetails", () => {
     fireEvent.change(screen.getByTestId("store-name"), {
       target: { value: "My Store" },
     });
-    fireEvent.change(
-      screen.getByTestId("logo-url"),
-      { target: { value: "https://example.com/logo.png" } }
-    );
+    fireEvent.change(screen.getByTestId("logo-desktop-landscape"), {
+      target: { value: "https://example.com/logo.png" },
+    });
     fireEvent.change(screen.getByTestId("contact-info"), {
       target: { value: "contact@example.com" },
     });

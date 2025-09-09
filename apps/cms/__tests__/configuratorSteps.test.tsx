@@ -281,7 +281,7 @@ describe("StepSummary", () => {
       <StepSummary
         shopId="shop"
         name="Shop"
-        logo=""
+        logo={{}}
         contactInfo=""
         type="sale"
         template="tpl"

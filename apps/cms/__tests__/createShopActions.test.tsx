@@ -111,7 +111,7 @@ describe("createNewShop authorization", () => {
 describe("submitShop error handling", () => {
   const baseState: any = {
     storeName: "",
-    logo: "",
+    logo: {},
     contactInfo: "",
     type: "sale",
     template: "",

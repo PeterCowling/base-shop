@@ -14,6 +14,7 @@ import { z } from "zod";
 import type { ConfiguratorStepProps } from "@/types/configurator";
 import useConfiguratorStep from "./hooks/useConfiguratorStep";
 import ShopPreview from "./components/ShopPreview";
+import ImagePicker from "@ui/components/cms/page-builder/ImagePicker";
 
 export default function StepShopDetails({
   shopId,
@@ -42,7 +43,10 @@ export default function StepShopDetails({
               message: "Lowercase letters, numbers, and dashes only",
             }),
           name: z.string().min(1, "Required"),
-          logo: z.string().url("Invalid URL"),
+          logo: z
+            .record(z.string(), z.string().url("Invalid URL"))
+            .optional()
+            .default({}),
           contactInfo: z.string().min(1, "Required"),
           type: z.enum(["sale", "rental"]),
           template: z.string().min(1, "Required"),
@@ -70,7 +74,7 @@ export default function StepShopDetails({
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Shop Details</h2>
-      <ShopPreview logo={logo} shopName={storeName} />
+      <ShopPreview logos={logo} shopName={storeName} />
       <label className="flex flex-col gap-1">
         <span>Shop ID</span>
         <Input
@@ -97,19 +101,35 @@ export default function StepShopDetails({
           <p className="text-sm text-red-600">{getError("name")}</p>
         )}
       </label>
-      <label className="flex flex-col gap-1">
-        <span>Logo URL</span>
-        <Input
-          data-cy="logo-url"
-          data-testid="logo-url"
-          value={logo}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLogo(e.target.value)}
-          placeholder="https://example.com/logo.png"
-        />
-        {getError("logo") && (
-          <p className="text-sm text-red-600">{getError("logo")}</p>
-        )}
-      </label>
+      {([
+        "desktop-landscape",
+        "desktop-portrait",
+        "tablet-landscape",
+        "tablet-portrait",
+        "mobile-landscape",
+        "mobile-portrait",
+      ] as const).map((key) => (
+        <label key={key} className="flex flex-col gap-1">
+          <span className="capitalize">{key.replace("-", " ")} logo</span>
+          <div className="flex items-center gap-2">
+            <Input
+              data-cy={`logo-${key}`}
+              data-testid={`logo-${key}`}
+              value={logo[key] ?? ""}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setLogo({ ...logo, [key]: e.target.value })
+              }
+              placeholder="https://example.com/logo.png"
+            />
+            <ImagePicker onSelect={(url) => setLogo({ ...logo, [key]: url })}>
+              <Button type="button">Select</Button>
+            </ImagePicker>
+          </div>
+          {getError(`logo.${key}`) && (
+            <p className="text-sm text-red-600">{getError(`logo.${key}`)}</p>
+          )}
+        </label>
+      ))}
       <label className="flex flex-col gap-1">
         <span>Contact Info</span>
         <Input

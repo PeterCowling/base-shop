@@ -40,7 +40,7 @@ export const shopSchema = z
   .object({
     id: z.string(),
     name: z.string(),
-    logo: z.string().optional(),
+    logo: z.record(z.string(), z.string().url()).optional(),
     contactInfo: z.string().optional(),
     catalogFilters: z.array(z.string()),
     themeId: z.string(),

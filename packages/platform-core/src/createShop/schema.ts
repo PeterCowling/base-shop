@@ -27,7 +27,9 @@ const navItemSchema: z.ZodType<NavItem> = z.lazy(() =>
 export const createShopOptionsSchema = z
   .object({
     name: z.string().optional(),
-    logo: z.string().url().optional(),
+    logo: z
+      .union([z.string().url(), z.record(z.string(), z.string().url())])
+      .optional(),
     contactInfo: z.string().optional(),
     type: z.enum(["sale", "rental"]).optional(),
     theme: z.string().optional(),
@@ -99,7 +101,10 @@ export function prepareOptions(
     createShopOptionsSchema.parse(opts);
   return {
     name: parsed.name ?? id,
-    logo: parsed.logo ?? "",
+    logo:
+      typeof parsed.logo === "string"
+        ? { "desktop-landscape": parsed.logo }
+        : parsed.logo ?? {},
     contactInfo: parsed.contactInfo ?? "",
     type: parsed.type ?? "sale",
     theme: parsed.theme ?? "base",

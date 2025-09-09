@@ -90,7 +90,15 @@ const configuratorStateSchemaBase: z.AnyZodObject = z
     /* ------------ Wizard progress & identity ------------ */
     shopId: z.string().optional().default(""),
     storeName: z.string().optional().default(""),
-    logo: z.string().optional().default(""),
+    logo: z
+      .union([z.string(), z.record(z.string(), z.string())])
+      .optional()
+      .default({})
+      .transform((val) =>
+        typeof val === "string" && val
+          ? { "desktop-landscape": val }
+          : (val as Record<string, string>)
+      ),
     contactInfo: z.string().optional().default(""),
     type: z.enum(["sale", "rental"]).optional().default("sale"),
     completed: z.record(stepStatusSchema).optional().default({}),

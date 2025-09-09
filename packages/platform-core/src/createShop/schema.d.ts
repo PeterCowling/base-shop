@@ -7,7 +7,7 @@ export interface NavItem {
 }
 export declare const createShopOptionsSchema: z.ZodObject<{
     name: z.ZodOptional<z.ZodString>;
-    logo: z.ZodOptional<z.ZodString>;
+    logo: z.ZodOptional<z.ZodUnion<[z.ZodString, z.ZodRecord<z.ZodString, z.ZodString>]> >;
     contactInfo: z.ZodOptional<z.ZodString>;
     type: z.ZodOptional<z.ZodEnum<["sale", "rental"]>>;
     theme: z.ZodOptional<z.ZodString>;
@@ -134,7 +134,7 @@ export declare const createShopOptionsSchema: z.ZodObject<{
     }[];
     type?: "sale" | "rental" | undefined;
     theme?: string | undefined;
-    logo?: string | undefined;
+    logo?: string | Record<string, string> | undefined;
     contactInfo?: string | undefined;
     template?: string | undefined;
     pageTitle?: Partial<Record<"en" | "de" | "it", string>> | undefined;
@@ -168,7 +168,7 @@ export declare const createShopOptionsSchema: z.ZodObject<{
         image?: Partial<Record<"en" | "de" | "it", string>> | undefined;
     }[] | undefined;
     theme?: string | undefined;
-    logo?: string | undefined;
+    logo?: string | Record<string, string> | undefined;
     contactInfo?: string | undefined;
     template?: string | undefined;
     themeOverrides?: Record<string, string> | undefined;

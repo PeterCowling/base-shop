@@ -4,7 +4,20 @@ import type { Page } from "@acme/types";
 import { prisma } from "../../db";
 import { resolveRepo } from "../repoResolver";
 
-const jsonRepoPromise = import("./pages.json.server");
+// Lazily load the JSON repository only when needed so that importing this
+// module doesn't immediately trigger the JSON backend. This allows tests to
+// assert that the Prisma backend is selected by default without the JSON
+// module being imported.
+let jsonRepoPromise:
+  | Promise<typeof import("./pages.json.server")>
+  | undefined;
+
+async function loadJsonRepo(): Promise<
+  typeof import("./pages.json.server")
+> {
+  jsonRepoPromise ??= import("./pages.json.server");
+  return jsonRepoPromise;
+}
 
 // Lazily resolve the appropriate backend
 type PagesRepo = typeof import("./pages.prisma.server");
@@ -16,7 +29,7 @@ async function getRepo(): Promise<PagesRepo> {
     repoPromise = resolveRepo(
       () => (prisma as any).page,
       () => import("./pages.prisma.server"),
-      () => jsonRepoPromise,
+      () => loadJsonRepo(),
       // Select repository backend via PAGES_BACKEND env variable
       { backendEnvVar: "PAGES_BACKEND" },
     );
@@ -29,7 +42,7 @@ export async function getPages(shop: string): Promise<Page[]> {
   try {
     return await repo.getPages(shop);
   } catch {
-    const jsonRepo = await jsonRepoPromise;
+    const jsonRepo = await loadJsonRepo();
     repoPromise = undefined;
     return jsonRepo.getPages(shop);
   }
@@ -44,7 +57,7 @@ export async function savePage(
   try {
     return await repo.savePage(shop, page, previous);
   } catch {
-    const jsonRepo = await jsonRepoPromise;
+    const jsonRepo = await loadJsonRepo();
     repoPromise = undefined;
     return jsonRepo.savePage(shop, page, previous);
   }
@@ -55,7 +68,7 @@ export async function deletePage(shop: string, id: string): Promise<void> {
   try {
     return await repo.deletePage(shop, id);
   } catch {
-    const jsonRepo = await jsonRepoPromise;
+    const jsonRepo = await loadJsonRepo();
     repoPromise = undefined;
     return jsonRepo.deletePage(shop, id);
   }
@@ -70,7 +83,7 @@ export async function updatePage(
   try {
     return await repo.updatePage(shop, patch, previous);
   } catch {
-    const jsonRepo = await jsonRepoPromise;
+    const jsonRepo = await loadJsonRepo();
     repoPromise = undefined;
     return jsonRepo.updatePage(shop, patch, previous);
   }
@@ -86,7 +99,7 @@ export async function diffHistory(shop: string): Promise<PageDiffEntry[]> {
   try {
     return await repo.diffHistory(shop);
   } catch {
-    const jsonRepo = await jsonRepoPromise;
+    const jsonRepo = await loadJsonRepo();
     repoPromise = undefined;
     return jsonRepo.diffHistory(shop);
   }

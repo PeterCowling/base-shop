@@ -1,5 +1,6 @@
+const resolveRepoMock = jest.fn();
 jest.mock("../repoResolver", () => ({
-  resolveRepo: jest.fn(),
+  resolveRepo: resolveRepoMock,
 }));
 
 import { resolveRepo } from "../repoResolver";

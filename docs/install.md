@@ -18,12 +18,12 @@ pnpm --filter @acme/platform-core exec prisma db seed
 
 ### Seeding
 
-`pnpm prisma db seed` loads both inventory and orders, pulling inventory fixtures from `data/shops/*/inventory.json`.
+`pnpm --filter @acme/platform-core exec prisma db seed` loads both inventory and orders, pulling inventory fixtures from `data/shops/*/inventory.json` and computing `variantKey` for each variant.
 
 To skip loading inventory, run:
 
 ```bash
-pnpm prisma db seed -- --skip-inventory
+pnpm --filter @acme/platform-core exec prisma db seed -- --skip-inventory
 ```
 
 Use the `--skip-inventory` flag to bypass inventory seeding when needed.

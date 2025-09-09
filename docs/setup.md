@@ -19,10 +19,10 @@ Run migrations and seed data:
 ```bash
 pnpm --filter @acme/platform-core exec prisma migrate dev
 pnpm --filter @acme/platform-core run prisma:generate
-pnpm prisma db seed
+pnpm --filter @acme/platform-core exec prisma db seed
 ```
 
-Inventory fixtures come from `data/shops/*/inventory.json`. Run `pnpm prisma db seed -- --skip-inventory` to skip seeding inventory.
+Inventory fixtures come from `data/shops/*/inventory.json` and compute `variantKey` automatically. Run `pnpm --filter @acme/platform-core exec prisma db seed -- --skip-inventory` to skip seeding inventory.
 
 `postinstall` runs `prisma generate` automatically.
 

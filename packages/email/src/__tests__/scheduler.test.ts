@@ -46,6 +46,7 @@ describe("scheduler", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
+    delete process.env.NEXT_PUBLIC_BASE_URL;
     memory = {};
     readCampaigns = jest.fn(async (s: string) => memory[s] || []);
     writeCampaigns = jest.fn(async (s: string, items: Campaign[]) => {
@@ -180,6 +181,8 @@ describe("scheduler", () => {
     expect(html).toMatch(/open\?shop=test-shop&campaign=.*&t=\d+/);
     expect(html).toContain("Unsubscribe");
     expect(html).toContain(encodeURIComponent("a@example.com"));
+    const match = html.match(/href="([^"]+)">Unsubscribe<\/a>/);
+    expect(match?.[1]).toMatch(/^\/api\/marketing\/email\/unsubscribe/);
     expect(emitSend).toHaveBeenCalledWith(shop, { campaign: expect.any(String) });
   });
 

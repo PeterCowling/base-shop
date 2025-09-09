@@ -51,6 +51,28 @@ describe("createRequestHandler", () => {
     expect(headers.get("x-multi")).toBe("a,b");
   });
 
+  it("omits headers with undefined values", async () => {
+    const handler = createRequestHandler();
+
+    const req = new Readable({
+      read() {
+        this.push(null);
+      },
+    }) as unknown as IncomingMessage;
+    req.url = "/unknown";
+    req.method = "GET";
+    req.headers = { "x-empty": undefined } as unknown as IncomingMessage["headers"];
+
+    const end = jest.fn();
+    const res = { statusCode: 200, setHeader: jest.fn(), end } as unknown as ServerResponse;
+
+    await handler(req, res);
+
+    expect(RequestMock).toHaveBeenCalled();
+    const headers = (RequestMock.mock.calls[0][1]!.headers as Headers) || new Headers();
+    expect(headers.has("x-empty")).toBe(false);
+  });
+
   it("uses undefined body when request lacks body", async () => {
     const handler = createRequestHandler();
 

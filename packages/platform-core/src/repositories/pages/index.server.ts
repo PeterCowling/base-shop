@@ -4,17 +4,19 @@ import type { Page } from "@acme/types";
 import { prisma } from "../../db";
 import { resolveRepo } from "../repoResolver";
 
-// Lazily resolve the appropriate backend
-let repoPromise:
-  | Promise<typeof import("./pages.prisma.server")>
-  | undefined;
+const jsonRepoPromise = import("./pages.json.server");
 
-async function getRepo(): Promise<typeof import("./pages.prisma.server")> {
+// Lazily resolve the appropriate backend
+type PagesRepo = typeof import("./pages.prisma.server");
+
+let repoPromise: Promise<PagesRepo> | undefined;
+
+async function getRepo(): Promise<PagesRepo> {
   if (!repoPromise) {
     repoPromise = resolveRepo(
       () => (prisma as any).page,
       () => import("./pages.prisma.server"),
-      () => import("./pages.json.server"),
+      () => jsonRepoPromise,
       // Select repository backend via PAGES_BACKEND env variable
       { backendEnvVar: "PAGES_BACKEND" },
     );
@@ -24,7 +26,13 @@ async function getRepo(): Promise<typeof import("./pages.prisma.server")> {
 
 export async function getPages(shop: string): Promise<Page[]> {
   const repo = await getRepo();
-  return repo.getPages(shop);
+  try {
+    return await repo.getPages(shop);
+  } catch {
+    const jsonRepo = await jsonRepoPromise;
+    repoPromise = Promise.resolve(jsonRepo);
+    return jsonRepo.getPages(shop);
+  }
 }
 
 export async function savePage(
@@ -33,12 +41,24 @@ export async function savePage(
   previous?: Page,
 ): Promise<Page> {
   const repo = await getRepo();
-  return repo.savePage(shop, page, previous);
+  try {
+    return await repo.savePage(shop, page, previous);
+  } catch {
+    const jsonRepo = await jsonRepoPromise;
+    repoPromise = Promise.resolve(jsonRepo);
+    return jsonRepo.savePage(shop, page, previous);
+  }
 }
 
 export async function deletePage(shop: string, id: string): Promise<void> {
   const repo = await getRepo();
-  return repo.deletePage(shop, id);
+  try {
+    return await repo.deletePage(shop, id);
+  } catch {
+    const jsonRepo = await jsonRepoPromise;
+    repoPromise = Promise.resolve(jsonRepo);
+    return jsonRepo.deletePage(shop, id);
+  }
 }
 
 export async function updatePage(
@@ -47,7 +67,13 @@ export async function updatePage(
   previous: Page,
 ): Promise<Page> {
   const repo = await getRepo();
-  return repo.updatePage(shop, patch, previous);
+  try {
+    return await repo.updatePage(shop, patch, previous);
+  } catch {
+    const jsonRepo = await jsonRepoPromise;
+    repoPromise = Promise.resolve(jsonRepo);
+    return jsonRepo.updatePage(shop, patch, previous);
+  }
 }
 
 export interface PageDiffEntry {
@@ -57,6 +83,12 @@ export interface PageDiffEntry {
 
 export async function diffHistory(shop: string): Promise<PageDiffEntry[]> {
   const repo = await getRepo();
-  return repo.diffHistory(shop);
+  try {
+    return await repo.diffHistory(shop);
+  } catch {
+    const jsonRepo = await jsonRepoPromise;
+    repoPromise = Promise.resolve(jsonRepo);
+    return jsonRepo.diffHistory(shop);
+  }
 }
 

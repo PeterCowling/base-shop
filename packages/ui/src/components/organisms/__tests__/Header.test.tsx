@@ -7,7 +7,14 @@ import "../../../../../../test/resetNextMocks";
 describe("Header", () => {
   it("renders navigation and handles search suggestions", async () => {
     const nav = [{ title: "Home", href: "/" }];
-    render(<Header locale="en" nav={nav} searchSuggestions={["apple"]} />);
+    render(
+      <Header
+        locale="en"
+        nav={nav}
+        searchSuggestions={["apple"]}
+        shopName="My Shop"
+      />,
+    );
 
     expect(screen.getByRole("link", { name: "Home" })).toBeInTheDocument();
 

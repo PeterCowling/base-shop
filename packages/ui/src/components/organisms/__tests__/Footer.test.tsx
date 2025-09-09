@@ -3,7 +3,11 @@ import { Footer } from "../Footer";
 
 describe("Footer", () => {
   it("renders children and applies className", () => {
-    render(<Footer className="custom">Content</Footer>);
+    render(
+      <Footer className="custom" shopName="My Shop">
+        Content
+      </Footer>,
+    );
     const footer = screen.getByRole("contentinfo");
     expect(footer).toHaveClass("custom");
   });

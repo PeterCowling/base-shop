@@ -10,6 +10,7 @@ const meta: Meta<typeof Header> = {
       { title: "Shop", href: "#" },
     ],
     searchSuggestions: ["Shoes", "Shirts"],
+    shopName: "My Shop",
   },
 };
 export default meta;

@@ -131,6 +131,34 @@ describe("send helpers", () => {
       expect(setTimeoutSpy).not.toHaveBeenCalled();
       setTimeoutSpy.mockRestore();
     });
+
+    it("fails after reaching maxRetries", async () => {
+      const { sendWithRetry } = await import("../send");
+      const { ProviderError } = await import("../providers/types");
+      const error = new ProviderError("fail", true);
+      const provider = { send: jest.fn().mockRejectedValue(error) };
+      const setTimeoutSpy = jest
+        .spyOn(global, "setTimeout")
+        .mockImplementation((fn: any) => {
+          fn();
+          return 0 as any;
+        });
+
+      await expect(
+        sendWithRetry(
+          provider,
+          {
+            to: "a",
+            subject: "b",
+            html: "<p>x</p>",
+            text: "x",
+          },
+          2
+        )
+      ).rejects.toBe(error);
+      expect(provider.send).toHaveBeenCalledTimes(2);
+      setTimeoutSpy.mockRestore();
+    });
   });
 
   it("sendWithNodemailer forwards options", async () => {

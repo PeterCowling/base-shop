@@ -100,6 +100,7 @@ export async function POST(
         writeStream.on("error", (err) => {
           if (resolved) return;
           resolved = true;
+          void unlink(filePath).catch(() => {});
           reject(err);
         });
 
@@ -119,12 +120,24 @@ export async function POST(
         reject(err);
       });
 
-        if (req.body) {
-          const stream = Readable.fromWeb(
-            req.body as unknown as NodeReadableStream
-          );
-          stream.pipe(busboy);
+      const body = req.body;
+      if (body) {
+        let stream: NodeJS.ReadableStream;
+        if (typeof (body as any).getReader === "function") {
+          stream = Readable.fromWeb(body as unknown as NodeReadableStream);
+        } else if (Buffer.isBuffer(body)) {
+          stream = Readable.from(body);
+        } else if (body instanceof Readable) {
+          stream = body as NodeJS.ReadableStream;
         } else {
+          resolved = true;
+          resolve(
+            NextResponse.json({ error: "Invalid body" }, { status: 400 })
+          );
+          return;
+        }
+        stream.pipe(busboy);
+      } else {
         resolved = true;
         resolve(NextResponse.json({ error: "No body" }, { status: 400 }));
       }

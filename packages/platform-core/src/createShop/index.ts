@@ -25,11 +25,9 @@ function repoRoot(): string {
     return match ? match[1] : null;
   };
 
-  return (
-    tryResolve(process.cwd()) ??
-    tryResolve(typeof __dirname !== "undefined" ? __dirname : process.cwd()) ??
-    process.cwd()
-  );
+  const resolved = tryResolve(process.cwd());
+  if (resolved) return resolved;
+  return process.cwd();
 }
 /**
  * Create a new shop app and seed data.

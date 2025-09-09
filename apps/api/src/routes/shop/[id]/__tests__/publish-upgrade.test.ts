@@ -123,10 +123,10 @@ describe("onRequestPost", () => {
     expect(spawn).toHaveBeenNthCalledWith(
       2,
       "pnpm",
-      ["--filter", `apps/shop-${id}`, "deploy"],
-      { cwd: root, stdio: "inherit" },
-    );
-  });
+        ["--filter", `apps/shop-${id}`, "deploy"],
+        { cwd: root, stdio: "inherit" },
+      );
+    });
 
   it("ignores unknown components and still runs build/deploy", async () => {
     readFileSync.mockImplementation((file: string) => {
@@ -323,12 +323,65 @@ describe("onRequestPost", () => {
     expect(spawn).toHaveBeenNthCalledWith(
       2,
       "pnpm",
+        ["--filter", `apps/shop-${id}`, "deploy"],
+        { cwd: root, stdio: "inherit" },
+      );
+    });
+
+  it("locks all dependencies and runs build/deploy when JSON body is malformed", async () => {
+    readFileSync.mockImplementation((file: string) => {
+      if (file.endsWith("package.json")) {
+        return JSON.stringify({
+          dependencies: { compA: "1.0.0", compB: "2.0.0" },
+        });
+      }
+      if (file.endsWith("shop.json")) {
+        return JSON.stringify({ componentVersions: {} });
+      }
+      return "";
+    });
+    spawn.mockImplementation(() => ({
+      on: (_: string, cb: (code: number) => void) => cb(0),
+    }));
+
+    const token = jwt.sign({}, "secret");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: "not-json",
+      }),
+    });
+
+    expect(res.status).toBe(200);
+    expect(writeFileSync).toHaveBeenCalledTimes(1);
+    const [shopPath, data] = writeFileSync.mock.calls[0];
+    expect(shopPath).toContain(`data/shops/${id}/shop.json`);
+    const written = JSON.parse(data as string);
+    expect(written.componentVersions).toEqual({
+      compA: "1.0.0",
+      compB: "2.0.0",
+    });
+    expect(typeof written.lastUpgrade).toBe("string");
+    expect(spawn).toHaveBeenNthCalledWith(
+      1,
+      "pnpm",
+      ["--filter", `apps/shop-${id}`, "build"],
+      { cwd: root, stdio: "inherit" },
+    );
+    expect(spawn).toHaveBeenNthCalledWith(
+      2,
+      "pnpm",
       ["--filter", `apps/shop-${id}`, "deploy"],
       { cwd: root, stdio: "inherit" },
     );
   });
 
-  it.each(["not-json", "\"{bad"])(
+  it.each(["\"{bad"])(
     "locks all dependencies and runs build/deploy when body is invalid JSON",
     async (badBody) => {
       readFileSync.mockImplementation((file: string) => {

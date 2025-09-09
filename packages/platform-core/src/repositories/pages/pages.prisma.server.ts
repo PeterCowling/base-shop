@@ -81,10 +81,11 @@ export async function savePage(
       data: page as unknown as JsonObject,
     },
   });
-  if (previous) {
-    const patch = diffPages(previous, page);
-    await appendHistory(shop, patch);
+  if (previous === undefined) {
+    return page;
   }
+  const patch = diffPages(previous, page);
+  await appendHistory(shop, patch);
   return page;
 }
 

@@ -1,5 +1,4 @@
 import { coreEnv } from "@acme/config/env/core";
-import { stripe } from "@acme/stripe";
 import {
   markRefunded,
   readOrders,
@@ -11,6 +10,14 @@ import { join } from "path";
 
 const DATA_ROOT = resolveDataRoot();
 
+let stripePromise:
+  | Promise<typeof import("@acme/stripe")["stripe"]>
+  | undefined;
+async function getStripe() {
+  if (!stripePromise) stripePromise = import("@acme/stripe").then((m) => m.stripe);
+  return stripePromise;
+}
+
 export async function releaseDepositsOnce(
   shopId?: string,
   dataRoot: string = DATA_ROOT,
@@ -21,6 +28,7 @@ export async function releaseDepositsOnce(
     for (const order of orders) {
       if (order.returnedAt && !order.refundedAt && order.deposit > 0) {
         try {
+          const stripe = await getStripe();
           const session = await stripe.checkout.sessions.retrieve(
             order.sessionId,
             {

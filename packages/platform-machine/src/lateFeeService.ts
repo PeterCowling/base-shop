@@ -1,5 +1,4 @@
 import { coreEnv } from "@acme/config/env/core";
-import { stripe } from "@acme/stripe";
 import { join } from "path";
 import { DAY_MS } from "@date-utils";
 import {
@@ -11,10 +10,19 @@ import { logger } from "@platform-core/utils";
 
 const DATA_ROOT = resolveDataRoot();
 
+let stripePromise:
+  | Promise<typeof import("@acme/stripe")["stripe"]>
+  | undefined;
+async function getStripe() {
+  if (!stripePromise) stripePromise = import("@acme/stripe").then((m) => m.stripe);
+  return stripePromise;
+}
+
 export async function chargeLateFeesOnce(
   shopId?: string,
   dataRoot: string = DATA_ROOT,
 ): Promise<void> {
+  const stripe = await getStripe();
   const { readdir, readFile } = await import("fs/promises");
   const shops = shopId ? [shopId] : await readdir(dataRoot);
   for (const shop of shops) {

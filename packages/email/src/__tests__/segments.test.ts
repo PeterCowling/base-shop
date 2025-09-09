@@ -96,6 +96,45 @@ describe("provider functions", () => {
     await expect(listSegments()).resolves.toEqual([]);
   });
 
+  it("createContact returns empty string when provider lacks createContact", async () => {
+    jest.doMock("../providers/sendgrid", () => ({
+      SendgridProvider: class {
+        addToList = jest.fn();
+        listSegments = jest.fn().mockResolvedValue([]);
+      },
+    }));
+
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    const { createContact } = await import("../segments");
+    await expect(createContact("user@example.com")).resolves.toBe("");
+  });
+
+  it("addToList resolves when provider lacks addToList", async () => {
+    jest.doMock("../providers/sendgrid", () => ({
+      SendgridProvider: class {
+        createContact = jest.fn().mockResolvedValue("contact-1");
+        listSegments = jest.fn().mockResolvedValue([]);
+      },
+    }));
+
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    const { addToList } = await import("../segments");
+    await expect(addToList("c1", "l1")).resolves.toBeUndefined();
+  });
+
+  it("listSegments returns empty array when provider lacks listSegments", async () => {
+    jest.doMock("../providers/sendgrid", () => ({
+      SendgridProvider: class {
+        createContact = jest.fn().mockResolvedValue("contact-1");
+        addToList = jest.fn();
+      },
+    }));
+
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    const { listSegments } = await import("../segments");
+    await expect(listSegments()).resolves.toEqual([]);
+  });
+
   it("delegates to configured provider", async () => {
     const createContactImpl = jest.fn().mockResolvedValue("contact-1");
     const addToListImpl = jest.fn().mockResolvedValue(undefined);

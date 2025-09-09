@@ -160,6 +160,16 @@ describe('component helpers', () => {
   });
 
   describe('diffDirectories', () => {
+    it('returns empty array when directories are identical', () => {
+      vol.fromJSON({
+        '/a/same.txt': 'hello',
+        '/a/sub/deep.txt': 'world',
+        '/b/same.txt': 'hello',
+        '/b/sub/deep.txt': 'world',
+      });
+      expect(diffDirectories('/a', '/b')).toEqual([]);
+    });
+
     it('detects files present in only one directory', () => {
       vol.fromJSON({ '/a/only.txt': 'hello' });
       expect(diffDirectories('/a', '/b')).toEqual(['only.txt']);

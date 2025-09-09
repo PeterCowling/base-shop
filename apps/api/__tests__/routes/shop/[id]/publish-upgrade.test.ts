@@ -115,6 +115,52 @@ describe("publish-upgrade route", () => {
     });
   });
 
+  it("returns 500 when deploy fails", async () => {
+    const token = jwt.sign({}, process.env.UPGRADE_PREVIEW_TOKEN_SECRET ?? "");
+
+    (fs.readFileSync as jest.Mock).mockImplementation((file) => {
+      const p = String(file);
+      if (p.endsWith("package.json")) {
+        return JSON.stringify({ dependencies: { foo: "1.0.0" } });
+      }
+      if (p.endsWith("shop.json")) {
+        return JSON.stringify({});
+      }
+      return "";
+    });
+    (fs.writeFileSync as jest.Mock).mockImplementation(() => {});
+    (childProcess.spawn as jest.Mock)
+      .mockImplementationOnce(
+        () =>
+          ({
+            on: (_ev, cb) => {
+              cb(0);
+              return undefined as any;
+            },
+          }) as any,
+      )
+      .mockImplementationOnce(
+        () =>
+          ({
+            on: (_ev, cb) => {
+              cb(1);
+              return undefined as any;
+            },
+          }) as any,
+      );
+
+    const res = await request(createRequestHandler())
+      .post("/shop/valid-id/publish-upgrade")
+      .set("Authorization", `Bearer ${token}`)
+      .send({});
+
+    expect(res.status).toBe(500);
+    expect(res.body).toEqual({
+      error:
+        "pnpm --filter apps/shop-valid-id deploy failed with status 1",
+    });
+  });
+
   it("returns 500 when fs throws string error", async () => {
     const token = jwt.sign({}, process.env.UPGRADE_PREVIEW_TOKEN_SECRET ?? "");
 

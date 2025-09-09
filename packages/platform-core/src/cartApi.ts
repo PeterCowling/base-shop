@@ -42,7 +42,7 @@ export async function PUT(req: NextRequest) {
     | null;
   if (cartId) {
     const existing = await getCart(cartId);
-    if (!existing || Object.keys(existing).length === 0) {
+    if (Object.keys(existing ?? {}).length === 0) {
       return NextResponse.json({ error: "Cart not found" }, { status: 404 });
     }
   } else {

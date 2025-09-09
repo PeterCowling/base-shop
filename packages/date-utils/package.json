@@ -12,11 +12,13 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "clean": "rimraf dist *.tsbuildinfo",
-    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs --coverageDirectory ../../coverage/date-utils",
     "lint": "eslint ."
   },
   "dependencies": {

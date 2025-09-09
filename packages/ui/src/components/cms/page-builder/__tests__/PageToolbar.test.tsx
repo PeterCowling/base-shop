@@ -178,7 +178,7 @@ describe("PageToolbar", () => {
             publishing={false}
             autoSaveState="idle"
           />
-          <div data-testid="count">{sections.length}</div>
+          <div data-cy="count">{sections.length}</div>
         </div>
       );
     };

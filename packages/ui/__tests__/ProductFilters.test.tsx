@@ -19,9 +19,9 @@ function Wrapper() {
         onSearchChange={setSearch}
         onStatusChange={setStatus}
       />
-      <p data-testid="search">{search}</p>
-      <p data-testid="status">{status}</p>
-      <p data-testid="count">{filteredRows.length}</p>
+      <p data-cy="search">{search}</p>
+      <p data-cy="status">{status}</p>
+      <p data-cy="count">{filteredRows.length}</p>
       <button onClick={() => {setSearch(""); setStatus("all");}}>Clear</button>
     </div>
   );

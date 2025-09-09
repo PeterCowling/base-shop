@@ -5,10 +5,13 @@
 
 import "@testing-library/jest-dom";
 import "cross-fetch/polyfill";
+import { configure } from "@testing-library/react";
 import React from "react";
 import * as ReactDOMTestUtils from "react-dom/test-utils";
 import { TextDecoder, TextEncoder } from "node:util";
 import "./__tests__/mocks/external";
+
+configure({ testIdAttribute: "data-cy" });
 
 /* -------------------------------------------------------------------------- */
 /* 1 ·  ENVIRONMENT VARIABLES                                                 */

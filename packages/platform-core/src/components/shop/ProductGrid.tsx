@@ -94,7 +94,7 @@ function ProductGridInner({
         : Array.from({ length: columns ?? cols }).map((_, i) => (
             <div
               key={i}
-              data-testid="placeholder"
+              data-cy="placeholder"
               className="h-64 rounded-lg bg-gray-200 animate-pulse"
             />
           ))}

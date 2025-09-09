@@ -16,7 +16,7 @@ function TestComponent() {
 
   return (
     <div>
-      <span data-testid="qty">{line?.qty ?? 0}</span>
+      <span data-cy="qty">{line?.qty ?? 0}</span>
       <button onClick={() => dispatch({ type: "add", sku: PRODUCTS[0], size })}>
         add
       </button>

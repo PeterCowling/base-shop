@@ -69,7 +69,7 @@ describe("ProductGrid", () => {
           <ProductGrid
             skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
             columns={3}
-            data-testid="grid"
+            data-cy="grid"
           />
         </CartProvider>
       </CurrencyProvider>
@@ -90,7 +90,7 @@ describe("ProductGrid", () => {
             desktopItems={3}
             tabletItems={2}
             mobileItems={1}
-            data-testid="grid"
+            data-cy="grid"
           />
         </CartProvider>
       </CurrencyProvider>
@@ -113,7 +113,7 @@ describe("ProductGrid", () => {
             desktopItems={3}
             tabletItems={2}
             mobileItems={1}
-            data-testid="grid"
+            data-cy="grid"
           />
         </CartProvider>
       </CurrencyProvider>
@@ -138,7 +138,7 @@ describe("ProductGrid", () => {
             skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
             minItems={2}
             maxItems={4}
-            data-testid="grid"
+            data-cy="grid"
           />
         </CartProvider>
       </CurrencyProvider>
@@ -160,7 +160,7 @@ describe("ProductGrid", () => {
             skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
             minItems={1}
             maxItems={5}
-            data-testid="grid"
+            data-cy="grid"
           />
         </CartProvider>
       </CurrencyProvider>
@@ -178,7 +178,7 @@ describe("ProductGrid", () => {
     const { unmount } = render(
       <CurrencyProvider>
         <CartProvider>
-          <ProductGrid skus={[PRODUCTS[0]]} data-testid="grid" />
+          <ProductGrid skus={[PRODUCTS[0]]} data-cy="grid" />
         </CartProvider>
       </CurrencyProvider>
     );

@@ -11,7 +11,7 @@ function Qty() {
   const [state] = useCart();
   const size = PRODUCTS[0].sizes[0];
   const id = `${PRODUCTS[0].id}:${size}`;
-  return <span data-testid="qty">{state[id]?.qty ?? 0}</span>;
+  return <span data-cy="qty">{state[id]?.qty ?? 0}</span>;
 }
 
 describe("AddToCartButton", () => {

@@ -7,7 +7,7 @@ import { ThemeProvider, getSavedTheme, getSystemTheme, useTheme } from "../Theme
 
 function ThemeDisplay() {
   const { theme } = useTheme();
-  return <span data-testid="theme">{theme}</span>;
+  return <span data-cy="theme">{theme}</span>;
 }
 
 describe("ThemeContext", () => {

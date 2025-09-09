@@ -9,6 +9,7 @@ import { DATA_ROOT } from "../../dataRoot";
 import { nowIso } from "@acme/date-utils";
 import { z } from "zod";
 import type { Prisma } from "@prisma/client";
+import * as jsonRepo from "./pages.json.server";
 
 // Helpers
 
@@ -62,8 +63,13 @@ function mergeDefined<T extends object>(base: T, patch: Partial<T>): T {
 type JsonObject = Prisma.InputJsonObject;
 
 export async function getPages(shop: string): Promise<Page[]> {
-  const rows = await prisma.page.findMany({ where: { shopId: shop } });
-  return rows.map((r: { data: unknown }) => pageSchema.parse(r.data));
+  try {
+    const rows = await prisma.page.findMany({ where: { shopId: shop } });
+    return rows.map((r: { data: unknown }) => pageSchema.parse(r.data));
+  } catch (err) {
+    console.error(`Failed to read pages for ${shop}`, err);
+    return jsonRepo.getPages(shop);
+  }
 }
 
 export async function savePage(
@@ -71,27 +77,37 @@ export async function savePage(
   page: Page,
   previous?: Page,
 ): Promise<Page> {
-  await prisma.page.upsert({
-    where: { id: page.id },
-    update: { data: page as unknown as JsonObject, slug: page.slug },
-    create: {
-      id: page.id,
-      shopId: shop,
-      slug: page.slug,
-      data: page as unknown as JsonObject,
-    },
-  });
-  if (previous) {
-    const patch = diffPages(previous, page);
-    await appendHistory(shop, patch);
+  try {
+    await prisma.page.upsert({
+      where: { id: page.id },
+      update: { data: page as unknown as JsonObject, slug: page.slug },
+      create: {
+        id: page.id,
+        shopId: shop,
+        slug: page.slug,
+        data: page as unknown as JsonObject,
+      },
+    });
+    if (previous) {
+      const patch = diffPages(previous, page);
+      await appendHistory(shop, patch);
+    }
+    return page;
+  } catch (err) {
+    console.error(`Failed to save page ${page.id} for ${shop}`, err);
+    return jsonRepo.savePage(shop, page, previous);
   }
-  return page;
 }
 
 export async function deletePage(shop: string, id: string): Promise<void> {
-  const res = await prisma.page.deleteMany({ where: { id, shopId: shop } });
-  if (res.count === 0) {
-    throw new Error(`Page ${id} not found in ${shop}`);
+  try {
+    const res = await prisma.page.deleteMany({ where: { id, shopId: shop } });
+    if (res.count === 0) {
+      throw new Error(`Page ${id} not found in ${shop}`);
+    }
+  } catch (err) {
+    console.error(`Failed to delete page ${id} for ${shop}`, err);
+    await jsonRepo.deletePage(shop, id);
   }
 }
 
@@ -106,17 +122,22 @@ export async function updatePage(
   const updated: Page = mergeDefined(previous, patch);
   updated.updatedAt = nowIso();
 
-  await prisma.page.update({
-    where: { id: patch.id },
-    data: {
-      data: updated as unknown as JsonObject,
-      slug: updated.slug,
-    },
-  });
+  try {
+    await prisma.page.update({
+      where: { id: patch.id },
+      data: {
+        data: updated as unknown as JsonObject,
+        slug: updated.slug,
+      },
+    });
 
-  const diff = diffPages(previous, updated);
-  await appendHistory(shop, diff);
-  return updated;
+    const diff = diffPages(previous, updated);
+    await appendHistory(shop, diff);
+    return updated;
+  } catch (err) {
+    console.error(`Failed to update page ${patch.id} for ${shop}`, err);
+    return jsonRepo.updatePage(shop, patch, previous);
+  }
 }
 
 export interface PageDiffEntry {

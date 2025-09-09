@@ -162,28 +162,26 @@ function deployShopImpl(
     adapter.scaffold(newApp);
       const envRel = join(newApp, ".env");
       const envAbs = join(repoRoot(), envRel);
-      const envPath = fs.existsSync(envAbs) ? envAbs : envRel;
-      const envFile = fs.existsSync(envRel)
-        ? envRel
-        : fs.existsSync(envAbs)
-        ? envAbs
-        : null;
 
-      if (envFile) {
-        let env = fs.readFileSync(envFile, "utf8");
-        const secret = `SESSION_SECRET=${genSecret(32)}`;
-        if (/^SESSION_SECRET=/m.test(env)) {
-          env = env.replace(/^SESSION_SECRET=.*$/m, secret);
-        } else {
-          env += (env.endsWith("\n") ? "" : "\n") + secret + "\n";
-        }
+      let env = "";
+      try {
+        env = fs.readFileSync(fs.existsSync(envAbs) ? envAbs : envRel, "utf8");
+      } catch {
+        /* no existing env file */
+      }
 
-        for (const p of new Set([envRel, envAbs])) {
-          try {
-            fs.writeFileSync(p, env);
-          } catch {
-            /* ignore write errors */
-          }
+      const secret = `SESSION_SECRET=${genSecret(32)}`;
+      if (/^SESSION_SECRET=/m.test(env)) {
+        env = env.replace(/^SESSION_SECRET=.*$/m, secret);
+      } else {
+        env += (env.endsWith("\n") ? "" : "\n") + secret + "\n";
+      }
+
+      for (const p of new Set([envRel, envAbs])) {
+        try {
+          fs.writeFileSync(p, env);
+        } catch {
+          /* ignore write errors */
         }
       }
   } catch (err) {

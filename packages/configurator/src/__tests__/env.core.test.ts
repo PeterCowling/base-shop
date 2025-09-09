@@ -59,6 +59,61 @@ describe("deposit-release validation", () => {
   });
 });
 
+describe("reverse logistics and late fee validation", () => {
+  it("reports invalid boolean and number", async () => {
+    await withEnv(
+      {
+        REVERSE_LOGISTICS_ENABLED: "maybe",
+        REVERSE_LOGISTICS_INTERVAL_MS: "later",
+        LATE_FEE_ENABLED: "nah",
+        LATE_FEE_INTERVAL_MS: "soon",
+      },
+      async () => {
+        const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+        const { loadCoreEnv } = await import("@acme/config/env/core");
+        expect(() => loadCoreEnv()).toThrow("Invalid core environment variables");
+        const calls = spy.mock.calls.map((c) => c[0]);
+        expect(calls).toEqual(
+          expect.arrayContaining([
+            expect.stringContaining(
+              "REVERSE_LOGISTICS_ENABLED: must be true or false",
+            ),
+            expect.stringContaining(
+              "REVERSE_LOGISTICS_INTERVAL_MS: must be a number",
+            ),
+            expect.stringContaining(
+              "LATE_FEE_ENABLED: must be true or false",
+            ),
+            expect.stringContaining(
+              "LATE_FEE_INTERVAL_MS: must be a number",
+            ),
+          ]),
+        );
+        spy.mockRestore();
+      },
+    );
+  });
+
+  it("parses valid values", async () => {
+    await withEnv(
+      {
+        REVERSE_LOGISTICS_ENABLED: "true",
+        REVERSE_LOGISTICS_INTERVAL_MS: "1000",
+        LATE_FEE_ENABLED: "false",
+        LATE_FEE_INTERVAL_MS: "4000",
+      },
+      async () => {
+        const { loadCoreEnv } = await import("@acme/config/env/core");
+        const env = loadCoreEnv();
+        expect(env.REVERSE_LOGISTICS_ENABLED).toBe(true);
+        expect(env.REVERSE_LOGISTICS_INTERVAL_MS).toBe(1000);
+        expect(env.LATE_FEE_ENABLED).toBe(false);
+        expect(env.LATE_FEE_INTERVAL_MS).toBe(4000);
+      },
+    );
+  });
+});
+
 describe("requireEnv helper", () => {
   const getRequire = async () => (await import("@acme/config/env/core")).requireEnv;
 

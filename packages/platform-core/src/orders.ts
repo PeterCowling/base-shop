@@ -127,6 +127,7 @@ export async function markReturned(
         ...(typeof damageFee === "number" ? { damageFee } : {}),
       },
     });
+    if (!order) return null;
     return normalize(order as Order);
   } catch {
     return null;
@@ -150,6 +151,7 @@ export async function markRefunded(
         ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
       },
     });
+    if (!order) return null;
     return normalize(order as Order);
   } catch {
     return null;
@@ -158,24 +160,26 @@ export async function markRefunded(
 
 export async function refundOrder(
   shop: string,
-  id: string,
+  sessionId: string,
   amount?: number,
 ): Promise<Order | null> {
-  const order = await prisma.rentalOrder.findUnique({ where: { id } });
-  if (!order || order.shop !== shop) return null;
+  const order = await prisma.rentalOrder.findUnique({
+    where: { shop_sessionId: { shop, sessionId } },
+  });
+  if (!order) return null;
 
   const alreadyRefunded =
     (order as { refundTotal?: number }).refundTotal ?? 0;
   const total =
     (order as { total?: number }).total ??
     (order as { deposit?: number }).deposit ??
-    0;
+    (typeof amount === "number" ? amount : 0);
   const remaining = Math.max(total - alreadyRefunded, 0);
   const requested = typeof amount === "number" ? amount : remaining;
   const refundable = Math.min(requested, remaining);
 
   if (refundable > 0) {
-    const session = await stripe.checkout.sessions.retrieve(order.sessionId, {
+    const session = await stripe.checkout.sessions.retrieve(sessionId, {
       expand: ["payment_intent"],
     });
     const pi =
@@ -193,12 +197,13 @@ export async function refundOrder(
 
   try {
     const updated = await prisma.rentalOrder.update({
-      where: { id },
+      where: { shop_sessionId: { shop, sessionId } },
       data: {
         refundedAt: nowIso(),
         refundTotal: alreadyRefunded + refundable,
       } as Prisma.RentalOrderUpdateInput,
     });
+    if (!updated) return null;
     return normalize(updated as Order);
   } catch {
     return null;
@@ -236,6 +241,7 @@ export async function updateRisk(
         ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
       },
     });
+    if (!order) return null;
     return normalize(order as Order);
   } catch {
     return null;
@@ -263,6 +269,7 @@ export async function setReturnTracking(
       where: { shop_sessionId: { shop, sessionId } },
       data: { trackingNumber, labelUrl },
     });
+    if (!order) return null;
     return normalize(order as Order);
   } catch {
     return null;

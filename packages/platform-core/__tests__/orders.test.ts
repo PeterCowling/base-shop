@@ -22,7 +22,12 @@ jest.mock("../src/subscriptionUsage", () => ({
 }));
 jest.mock("../src/db", () => ({
   prisma: {
-    rentalOrder: { findMany: jest.fn(), create: jest.fn(), update: jest.fn() },
+    rentalOrder: {
+      findMany: jest.fn(),
+      create: jest.fn(),
+      update: jest.fn(),
+      findUnique: jest.fn(),
+    },
     shop: { findUnique: jest.fn() },
   },
 }));

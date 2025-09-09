@@ -123,6 +123,24 @@ describe("resolveConfig", () => {
     delete process.env.REVERSE_LOGISTICS_ENABLED_SHOP;
     delete process.env.REVERSE_LOGISTICS_INTERVAL_MS_SHOP;
   });
+
+  it("falls back to core env values", async () => {
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock("@acme/config/env/core", () => ({
+        coreEnv: {
+          REVERSE_LOGISTICS_ENABLED: true,
+          REVERSE_LOGISTICS_INTERVAL_MS: 120000,
+        },
+      }));
+      const { resolveConfig } = (await import("@acme/platform-machine")) as any;
+      delete process.env.REVERSE_LOGISTICS_ENABLED_SHOP;
+      delete process.env.REVERSE_LOGISTICS_INTERVAL_MS_SHOP;
+      const cfg = await resolveConfig("shop", "/data");
+      expect(cfg).toEqual({ enabled: true, intervalMinutes: 2 });
+    });
+    jest.unmock("@acme/config/env/core");
+    jest.resetModules();
+  });
 });
 
 describe("startReverseLogisticsService", () => {

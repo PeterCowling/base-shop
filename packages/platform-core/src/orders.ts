@@ -26,8 +26,10 @@ function normalize<T extends Order>(order: T): T {
 }
 
 export async function listOrders(shop: string): Promise<Order[]> {
-  const orders = await prisma.rentalOrder.findMany({ where: { shop } });
-  return orders.map((order) => normalize(order as Order));
+  const orders = (await prisma.rentalOrder.findMany({
+    where: { shop },
+  })) as Order[];
+  return orders.map((order) => normalize(order));
 }
 
 export const readOrders = listOrders;
@@ -256,10 +258,10 @@ export async function getOrdersForCustomer(
   shop: string,
   customerId: string
 ): Promise<Order[]> {
-  const orders = await prisma.rentalOrder.findMany({
+  const orders = (await prisma.rentalOrder.findMany({
     where: { shop, customerId },
-  });
-  return orders.map((order) => normalize(order as Order));
+  })) as Order[];
+  return orders.map((order) => normalize(order));
 }
 
 export async function setReturnTracking(

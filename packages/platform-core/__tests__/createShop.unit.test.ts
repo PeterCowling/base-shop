@@ -28,6 +28,9 @@ describe('createShop', () => {
     vol.reset();
     jest.clearAllMocks();
   });
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
   it('validates name, merges overrides, and writes shop.json', async () => {
     const { createShop } = await import('../src/createShop');
@@ -93,6 +96,7 @@ describe('createShop', () => {
     expect(deploySpy).toHaveBeenCalledWith('mocked', undefined, adapter);
     expect(deploySpy.getMockImplementation()).not.toBe(originalImpl);
     expect(result).toEqual({ status: 'success' });
+    deploySpy.mockRestore();
   });
 });
 

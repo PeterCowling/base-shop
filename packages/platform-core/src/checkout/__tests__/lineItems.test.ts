@@ -1,12 +1,12 @@
-import type { CartLine } from "../cart";
+import type { CartLine } from "../../cart";
 
-jest.mock("../pricing", () => ({
+jest.mock("../../pricing", () => ({
   priceForDays: jest.fn(),
   convertCurrency: jest.fn(),
 }));
 
-import { priceForDays, convertCurrency } from "../pricing";
-import { buildLineItemsForItem } from "./lineItems";
+import { priceForDays, convertCurrency } from "../../pricing";
+import { buildLineItemsForItem } from "../lineItems";
 
 const priceForDaysMock = priceForDays as jest.MockedFunction<typeof priceForDays>;
 const convertCurrencyMock = convertCurrency as jest.MockedFunction<typeof convertCurrency>;

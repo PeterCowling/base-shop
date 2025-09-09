@@ -1,4 +1,4 @@
-import { buildCheckoutMetadata } from './metadata';
+import { buildCheckoutMetadata } from '../metadata';
 
 describe('buildCheckoutMetadata', () => {
   const base = {

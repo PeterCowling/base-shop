@@ -2,7 +2,9 @@ import { shippingEnv } from "@acme/config/env/shipping";
 export async function createReturnLabel(
   _sessionId: string,
 ): Promise<{ trackingNumber: string; labelUrl: string }> {
-  const fallback = `1Z${Math.random().toString().slice(2, 12)}`;
+  const fallback = `1Z${Math.floor(Math.random() * 1e10)
+    .toString()
+    .padStart(10, "0")}`;
   const fallbackUrl = `https://www.ups.com/track?loc=en_US&tracknum=${fallback}`;
   const apiKey = shippingEnv.UPS_KEY;
   if (!apiKey) {

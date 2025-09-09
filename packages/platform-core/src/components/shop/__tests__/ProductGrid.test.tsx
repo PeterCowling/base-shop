@@ -3,9 +3,7 @@ import { ProductGrid } from "../ProductGrid";
 
 // Mock ProductCard to simplify rendering
 jest.mock("../ProductCard", () => ({
-  ProductCard: ({ sku }: { sku: any }) => (
-    <div data-cy="sku">{sku.title}</div>
-  ),
+  ProductCard: ({ sku }) => <div data-cy="sku">{sku.title}</div>,
 }));
 
 const makeSku = (id: string, title: string) => ({

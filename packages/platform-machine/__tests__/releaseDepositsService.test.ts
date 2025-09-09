@@ -183,6 +183,47 @@ describe("releaseDepositsOnce", () => {
     logSpy.mockRestore();
   });
 
+  it("logs errors and continues processing remaining orders", async () => {
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValue(["shop1"]);
+    readOrders.mockResolvedValue([
+      { sessionId: "s1", returnedAt: "now", deposit: 10 },
+      { sessionId: "s2", returnedAt: "now", deposit: 10 },
+    ]);
+    retrieve.mockResolvedValue({ payment_intent: "pi_1" });
+    const err = new Error("fail");
+    createRefund
+      .mockRejectedValueOnce(err)
+      .mockResolvedValueOnce({});
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+    const logSpy = jest
+      .spyOn(logger, "error")
+      .mockImplementation(() => undefined);
+
+    await service.releaseDepositsOnce();
+
+    expect(logSpy).toHaveBeenCalledWith(
+      "failed to release deposit for shop1 s1",
+      { err },
+    );
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "failed to release deposit for shop1 s1",
+      err,
+    );
+    expect(createRefund).toHaveBeenCalledTimes(2);
+    expect(createRefund).toHaveBeenNthCalledWith(2, {
+      payment_intent: "pi_1",
+      amount: 1000,
+    });
+    expect(markRefunded).toHaveBeenCalledTimes(1);
+    expect(markRefunded).toHaveBeenCalledWith("shop1", "s2");
+
+    consoleSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
   it("skips orders when no payment intent is returned", async () => {
     service = await import("@acme/platform-machine");
     readdir.mockResolvedValue(["shop1"]);

@@ -4,6 +4,9 @@
 /*  Executed **once** before the Jest environment is ready                    */
 /* -------------------------------------------------------------------------- */
 
+import { jest } from "@jest/globals";
+jest.mock("@prisma/client");
+
 /* -------------------------------------------------------------------------- */
 /* 1.  Environment variables expected by the app while running tests          */
 /* -------------------------------------------------------------------------- */

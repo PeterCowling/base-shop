@@ -88,10 +88,8 @@ export async function savePage(
         data: page as unknown as JsonObject,
       },
     });
-    if (previous) {
-      const patch = diffPages(previous, page);
-      await appendHistory(shop, patch);
-    }
+    const patch = diffPages(previous, page);
+    await appendHistory(shop, patch);
     return page;
   } catch (err) {
     console.error(`Failed to save page ${page.id} for ${shop}`, err);

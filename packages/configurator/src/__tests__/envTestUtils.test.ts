@@ -27,6 +27,20 @@ describe('withEnv', () => {
 
     expect(process.env[KEY]).toBe('original');
   });
+
+  it('restores environment variables after errors', async () => {
+    process.env[KEY] = 'original';
+    const error = new Error('boom');
+
+    await expect(
+      withEnv({ [KEY]: 'temp' }, async () => {
+        expect(process.env[KEY]).toBe('temp');
+        throw error;
+      }),
+    ).rejects.toBe(error);
+
+    expect(process.env[KEY]).toBe('original');
+  });
 });
 
 describe('importFresh', () => {

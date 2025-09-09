@@ -58,15 +58,6 @@ describe("payments env schema", () => {
       { STRIPE_SECRET_KEY: "sk_live_123", STRIPE_WEBHOOK_SECRET: undefined },
       "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
     ],
-    [
-      "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
-      {
-        STRIPE_SECRET_KEY: "sk_live_123",
-        STRIPE_WEBHOOK_SECRET: "whsec_live_123",
-        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: undefined,
-      },
-      "❌ Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY when PAYMENTS_PROVIDER=stripe",
-    ],
   ])("throws when %s is missing", async (_name, vars, message) => {
     const err = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(

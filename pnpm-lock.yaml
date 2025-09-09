@@ -682,6 +682,9 @@ importers:
 
   packages/email-templates:
     dependencies:
+      '@acme/ui':
+        specifier: workspace:*
+        version: link:../ui
       react:
         specifier: 19.2.0-canary-3fbfb9ba-20250409
         version: 19.2.0-canary-3fbfb9ba-20250409

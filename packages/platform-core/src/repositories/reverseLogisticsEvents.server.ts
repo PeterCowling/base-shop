@@ -49,7 +49,7 @@ async function delegate(
   sessionId: string,
   createdAt: string
 ) {
-  const mod = await import("./reverseLogisticsEvents.server");
+  const mod = await import("./reverseLogisticsEvents.server.ts");
   return mod.recordEvent(shop, sessionId, event, createdAt);
 }
 

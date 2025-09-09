@@ -28,8 +28,16 @@ export class MemorySessionStore implements SessionStore {
 
   async list(customerId: string): Promise<SessionRecord[]> {
     const now = Date.now();
-    return Array.from(this.sessions.values())
-      .filter((s) => s.expires > now && s.record.customerId === customerId)
-      .map((s) => s.record);
+    const records: SessionRecord[] = [];
+    for (const [id, { record, expires }] of this.sessions) {
+      if (expires <= now) {
+        this.sessions.delete(id);
+        continue;
+      }
+      if (record.customerId === customerId) {
+        records.push(record);
+      }
+    }
+    return records;
   }
 }

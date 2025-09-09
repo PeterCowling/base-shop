@@ -51,5 +51,24 @@ describe("MemorySessionStore basic operations", () => {
     await store.delete("s1");
     await expect(store.get("s1")).resolves.toBeNull();
   });
+
+  it("lists only active sessions for a customer and purges expired ones", async () => {
+    const store = new MemorySessionStore(1);
+    const expired = createRecord("s-exp", "targetCustomer");
+    await store.set(expired);
+
+    // advance past ttl to expire the first session
+    jest.advanceTimersByTime(1001);
+
+    const active = createRecord("s-act", "targetCustomer");
+    const other = createRecord("s-other", "otherCustomer");
+    await store.set(active);
+    await store.set(other);
+
+    const listed = await store.list("targetCustomer");
+    expect(listed).toEqual([active]);
+    // expired session should be removed from internal map
+    expect((store as any).sessions.has(expired.sessionId)).toBe(false);
+  });
 });
 

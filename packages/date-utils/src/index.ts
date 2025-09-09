@@ -96,10 +96,13 @@ export function parseTargetDate(
     if (timezone) {
       date = fromZonedTime(targetDate, timezone);
     } else {
+      const hasTime = targetDate.includes("T");
       const hasZone = /([zZ]|[+-]\d{2}:\d{2})$/.test(targetDate);
-      date = !hasZone && targetDate.includes("T")
-        ? parseISO(`${targetDate}Z`)
-        : parseISO(targetDate);
+      date = hasTime
+        ? hasZone
+          ? parseISO(targetDate)
+          : parseISO(`${targetDate}Z`)
+        : parseISO(`${targetDate}T00:00:00Z`);
     }
     return Number.isNaN(date.getTime()) ? null : date;
   } catch {

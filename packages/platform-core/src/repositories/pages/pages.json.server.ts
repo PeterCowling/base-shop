@@ -90,13 +90,15 @@ export async function savePage(
   page: Page,
   previous?: Page,
 ): Promise<Page> {
-  const patch = diffPages(previous, page);
   const pages = await readPagesFromDisk(shop);
   const idx = pages.findIndex((p) => p.id === page.id);
   if (idx === -1) pages.push(page);
   else pages[idx] = page;
   await writePages(shop, pages);
-  await appendHistory(shop, patch);
+  if (previous) {
+    const patch = diffPages(previous, page);
+    await appendHistory(shop, patch);
+  }
   return page;
 }
 

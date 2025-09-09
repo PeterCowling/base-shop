@@ -3,16 +3,6 @@ import os from "node:os";
 import path from "node:path";
 import { NextRequest } from "next/server";
 
-// The route under test imports `next-auth`, which in turn pulls in ESM only
-// dependencies like `jose`. Jest tries to parse those modules as CommonJS and
-// crashes with `Unexpected token 'export'`. Mock `next-auth` so the module is
-// never loaded during these tests.
-jest.mock("next-auth", () => ({
-  getServerSession: jest.fn(() =>
-    Promise.resolve({ user: { role: "admin" } })
-  ),
-}));
-
 // ts-jest can take a while to compile the first time in CI, so give the tests
 // a bit more breathing room.
 jest.setTimeout(60_000);
@@ -40,6 +30,15 @@ async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   const cwd = process.cwd();
   process.chdir(dir);
   jest.resetModules();
+  // The route under test imports `next-auth`, which in turn pulls in ESM-only
+  // dependencies like `jose`. Jest tries to parse those modules as CommonJS and
+  // crashes with `Unexpected token 'export'`. Mock `next-auth` so the module is
+  // never loaded during these tests.
+  jest.doMock("next-auth", () => ({
+    getServerSession: jest.fn(() =>
+      Promise.resolve({ user: { role: "admin" } })
+    ),
+  }));
   try {
     await cb(dir);
   } finally {

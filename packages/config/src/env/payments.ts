@@ -52,12 +52,6 @@ export function loadPaymentsEnv(
       console.error("❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe");
       throw new Error("Invalid payments environment variables");
     }
-    if (!raw.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
-      console.error(
-        "❌ Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY when PAYMENTS_PROVIDER=stripe",
-      );
-      throw new Error("Invalid payments environment variables");
-    }
     if (!raw.STRIPE_WEBHOOK_SECRET) {
       console.error(
         "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",

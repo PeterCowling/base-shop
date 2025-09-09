@@ -9,7 +9,10 @@ export interface MfaEnrollment {
 }
 
 export async function enrollMfa(customerId: string): Promise<MfaEnrollment> {
-  const secret = authenticator.generateSecret();
+  // otplib's default secret length yields only 16 base32 characters which
+  // can be too short for some authenticators. Generate 20 bytes instead so
+  // the resulting base32 string is 32 characters long.
+  const secret = authenticator.generateSecret(20);
   await prisma.customerMfa.upsert({
     where: { customerId },
     update: { secret },

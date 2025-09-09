@@ -6,7 +6,7 @@ type CartState = Record<string, { sku: SKU; qty: number; size?: string }>
 
 function CartDisplay() {
   const [cart] = useCart();
-  return <span data-testid="count">{Object.keys(cart).length}</span>;
+  return <span data-cy="count">{Object.keys(cart).length}</span>;
 }
 
 describe("useCart", () => {

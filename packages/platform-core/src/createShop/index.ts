@@ -1,7 +1,6 @@
 // packages/platform-core/src/createShop/index.ts
-import * as fs from "fs";
 import { join } from "path";
-import { fileURLToPath } from "url";
+import { createRequire } from "module";
 import { genSecret } from "@acme/shared-utils";
 import { prisma } from "../db";
 import { validateShopName } from "../shops";
@@ -19,7 +18,13 @@ import {
 } from "./deploymentAdapter";
 import type { Shop } from "@acme/types";
 
+const moduleRequire = typeof require !== "undefined"
+  ? require
+  : createRequire(process.cwd() + "/");
+const getFs = () => moduleRequire("fs") as typeof import("fs");
+
 function repoRoot(): string {
+  const fs = getFs();
   const tryResolve = (p: string): string | null => {
     const norm = p.replace(/\\/g, "/");
     const match = norm.match(/^(.*?)(?:\/(?:packages|apps))(?:\/|$)/);
@@ -51,6 +56,7 @@ export async function createShop(
   options?: { deploy?: boolean },
   adapter: ShopDeploymentAdapter = defaultDeploymentAdapter
 ): Promise<DeployShopResult> {
+  const fs = getFs();
   id = validateShopName(id);
 
   const prepared = prepareOptions(id, opts);
@@ -138,6 +144,7 @@ function deployShopImpl(
   domain?: string,
   adapter: ShopDeploymentAdapter = defaultDeploymentAdapter
 ): DeployShopResult {
+  const fs = getFs();
   const newApp = join("apps", id);
   let status: DeployShopResult["status"] = "success";
   let error: string | undefined;
@@ -192,6 +199,7 @@ export const deployShop: (
 ) => DeployShopResult = deployShopImpl;
 
 export function listThemes(): string[] {
+  const fs = getFs();
   const themesDir = join(repoRoot(), "packages", "themes");
   try {
     return fs
@@ -217,6 +225,7 @@ export function listThemes(): string[] {
  */
 export function syncTheme(shop: string, theme: string): Record<string, string> {
   const root = repoRoot();
+  const fs = getFs();
   const pkgRel = join("apps", shop, "package.json");
   const pkgAbs = join(root, pkgRel);
   const cssRel = join("apps", shop, "src", "app", "globals.css");

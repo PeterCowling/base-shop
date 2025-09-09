@@ -6,7 +6,7 @@ import {
   isoDateInNDays,
   nowIso,
   formatTimestamp,
-} from "./index";
+} from "../../index";
 
 process.env.TZ = "Europe/Rome";
 

@@ -24,7 +24,7 @@ describe("mfa", () => {
   });
 
   it("enrollMfa upserts secret and returns otpauth URI", async () => {
-    const { enrollMfa } = await import("./mfa");
+    const { enrollMfa } = await import("../../mfa");
     generateSecret.mockReturnValue("secret");
     keyuri.mockReturnValue("otpauth");
 
@@ -41,7 +41,7 @@ describe("mfa", () => {
   });
 
   it("verifyMfa enables record on first valid token", async () => {
-    const { verifyMfa } = await import("./mfa");
+    const { verifyMfa } = await import("../../mfa");
     findUnique.mockResolvedValue({
       customerId: "cust",
       secret: "secret",
@@ -60,7 +60,7 @@ describe("mfa", () => {
   });
 
   it("verifyMfa returns true when already enabled", async () => {
-    const { verifyMfa } = await import("./mfa");
+    const { verifyMfa } = await import("../../mfa");
     findUnique.mockResolvedValue({ enabled: true });
     verify.mockReturnValue(true);
 
@@ -72,7 +72,7 @@ describe("mfa", () => {
   });
 
   it("verifyMfa returns false when record missing or token invalid", async () => {
-    const { verifyMfa } = await import("./mfa");
+    const { verifyMfa } = await import("../../mfa");
 
     // Missing record
     findUnique.mockResolvedValueOnce(null);
@@ -92,7 +92,7 @@ describe("mfa", () => {
   });
 
   it("isMfaEnabled returns correct boolean", async () => {
-    const { isMfaEnabled } = await import("./mfa");
+    const { isMfaEnabled } = await import("../../mfa");
     findUnique.mockResolvedValueOnce({ customerId: "cust", enabled: true });
     await expect(isMfaEnabled("cust")).resolves.toBe(true);
 

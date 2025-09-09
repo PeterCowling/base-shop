@@ -43,7 +43,7 @@ jest.mock("crypto", () => ({
 let mockSessionStore: any;
 const createSessionStore = jest.fn(async () => mockSessionStore);
 
-jest.mock("./store", () => ({
+jest.mock("../../store", () => ({
   createSessionStore,
   SESSION_TTL_S: 3600,
 }));
@@ -80,7 +80,7 @@ afterAll(() => {
 
 describe("session", () => {
   it("throws when SESSION_SECRET is missing", async () => {
-    const { createCustomerSession } = await import("./session");
+    const { createCustomerSession } = await import("../../session");
     delete process.env.SESSION_SECRET;
 
     await expect(
@@ -92,7 +92,7 @@ describe("session", () => {
 
   it("returns null for invalid or expired tokens", async () => {
     const { getCustomerSession, CUSTOMER_SESSION_COOKIE } = await import(
-      "./session"
+      "../../session"
     );
 
     // invalid token
@@ -118,7 +118,7 @@ describe("session", () => {
       getCustomerSession,
       CUSTOMER_SESSION_COOKIE,
       CSRF_TOKEN_COOKIE,
-    } = await import("./session");
+    } = await import("../../session");
 
     mockCookies.get.mockImplementation((name: string) =>
       name === CUSTOMER_SESSION_COOKIE ? { value: "tok" } : undefined
@@ -157,7 +157,7 @@ describe("session", () => {
   });
 
   it("validateCsrfToken returns true or false", async () => {
-    const { validateCsrfToken, CSRF_TOKEN_COOKIE } = await import("./session");
+    const { validateCsrfToken, CSRF_TOKEN_COOKIE } = await import("../../session");
 
     mockCookies.get.mockImplementation((name: string) =>
       name === CSRF_TOKEN_COOKIE ? { value: "csrf" } : undefined
@@ -173,7 +173,7 @@ describe("session", () => {
       destroyCustomerSession,
       CUSTOMER_SESSION_COOKIE,
       CSRF_TOKEN_COOKIE,
-    } = await import("./session");
+    } = await import("../../session");
 
     mockCookies.get.mockImplementation((name: string) =>
       name === CUSTOMER_SESSION_COOKIE ? { value: "tok" } : undefined
@@ -196,7 +196,7 @@ describe("session", () => {
   });
 
   it("listSessions delegates to the session store", async () => {
-    const { listSessions } = await import("./session");
+    const { listSessions } = await import("../../session");
 
     const sessions = [{ sessionId: "1" }];
     mockSessionStore.list.mockResolvedValue(sessions);
@@ -206,7 +206,7 @@ describe("session", () => {
   });
 
   it("revokeSession delegates to the session store", async () => {
-    const { revokeSession } = await import("./session");
+    const { revokeSession } = await import("../../session");
 
     await revokeSession("sid");
 

@@ -50,17 +50,14 @@ export async function setResetToken(
 
 export async function getUserByResetToken(
   token: string,
-): Promise<User> {
+): Promise<User | null> {
   const user = await prisma.user.findFirst({
     where: {
       resetToken: token,
       resetTokenExpiresAt: { gt: new Date() },
     },
   });
-  if (!user) {
-    throw new Error("User not found");
-  }
-  return user;
+  return user ?? null;
 }
 
 export async function updatePassword(

@@ -43,20 +43,30 @@ export async function listEvents(
 }
 
 /** Convenience helpers for common reverse logistics events. */
+async function delegate(
+  event: ReverseLogisticsEventName,
+  shop: string,
+  sessionId: string,
+  createdAt: string
+) {
+  const mod = await import("./reverseLogisticsEvents.server");
+  return mod.recordEvent(shop, sessionId, event, createdAt);
+}
+
 export const reverseLogisticsEvents = {
   /** Record that a returned item was received into inventory. */
   received: (shop: string, sessionId: string, createdAt: string = nowIso()) =>
-    recordEvent(shop, sessionId, "received", createdAt),
+    delegate("received", shop, sessionId, createdAt),
   /** Record that an item is being cleaned. */
   cleaning: (shop: string, sessionId: string, createdAt: string = nowIso()) =>
-    recordEvent(shop, sessionId, "cleaning", createdAt),
+    delegate("cleaning", shop, sessionId, createdAt),
   /** Record that an item is undergoing repair. */
   repair: (shop: string, sessionId: string, createdAt: string = nowIso()) =>
-    recordEvent(shop, sessionId, "repair", createdAt),
+    delegate("repair", shop, sessionId, createdAt),
   /** Record that an item is in quality assurance. */
   qa: (shop: string, sessionId: string, createdAt: string = nowIso()) =>
-    recordEvent(shop, sessionId, "qa", createdAt),
+    delegate("qa", shop, sessionId, createdAt),
   /** Record that an item is available for rental again. */
   available: (shop: string, sessionId: string, createdAt: string = nowIso()) =>
-    recordEvent(shop, sessionId, "available", createdAt),
+    delegate("available", shop, sessionId, createdAt),
 };

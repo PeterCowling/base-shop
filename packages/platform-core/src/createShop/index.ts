@@ -1,6 +1,6 @@
 // packages/platform-core/src/createShop/index.ts
 import * as fs from "fs";
-import { join } from "path";
+import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 import { genSecret } from "@acme/shared-utils";
 import { prisma } from "../db";
@@ -20,24 +20,40 @@ import {
 import type { Shop } from "@acme/types";
 
 function repoRoot(): string {
-  const tryResolve = (p: string): string | null => {
+  const findRoot = (p: string): string | null => {
     const norm = p.replace(/\\/g, "/");
     const match = norm.match(/^(.*?)(?:\/(?:packages|apps))(?:\/|$)/);
-    return match ? match[1] : null;
+    return match && match[1] ? match[1] : null;
   };
 
-  const fromCwd = tryResolve(process.cwd());
+  const fromCwd = findRoot(process.cwd());
   if (fromCwd) return fromCwd;
 
-  if (typeof __dirname !== "undefined") {
-    const fromDir = tryResolve(__dirname);
-    if (fromDir) return fromDir;
-    const up = join(__dirname, "..", "..", "..");
-    if (fs.existsSync(join(up, "pnpm-workspace.yaml"))) return up;
+  let moduleUrl: string | undefined;
+  try {
+    // Avoid syntax errors in CommonJS environments.
+    // eslint-disable-next-line no-eval
+    moduleUrl = eval("import.meta.url");
+  } catch {
+    moduleUrl = undefined;
+  }
+  if (moduleUrl) {
+    const fromUrl = findRoot(fileURLToPath(moduleUrl));
+    if (fromUrl) return fromUrl;
   }
 
-  const child = join(process.cwd(), "base-shop");
-  if (fs.existsSync(join(child, "pnpm-workspace.yaml"))) return child;
+  let dir = process.cwd();
+  while (true) {
+    if (
+      fs.existsSync(join(dir, "packages")) ||
+      fs.existsSync(join(dir, "pnpm-workspace.yaml"))
+    ) {
+      return dir;
+    }
+    const parent = dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
+  }
 
   return process.cwd();
 }

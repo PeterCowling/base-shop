@@ -203,6 +203,7 @@ const config = {
     '^@/components/(.*)$': ' /test/__mocks__/componentStub.js',
     '^@/(.*)$': ' /apps/cms/src/$1',
     '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+    '^@prisma/client$': ' /__mocks__/@prisma/client.ts',
     '^server-only$': ' /test/server-only-stub.ts',
     // Use resolved React paths to ensure a single instance across tests
     '^react$': reactPath,

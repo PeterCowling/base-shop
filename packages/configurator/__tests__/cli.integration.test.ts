@@ -4,6 +4,22 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 
 describe('configurator CLI integration', () => {
+  it('exits with code 1 when required env vars are missing', () => {
+    const env = {
+      ...process.env,
+      STRIPE_SECRET_KEY: 'sk',
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk',
+    };
+    delete env.CART_COOKIE_SECRET;
+    const result = spawnSync('node', ['bin/configurator.cjs', 'dev'], {
+      cwd: resolve(__dirname, '..'),
+      env,
+      encoding: 'utf8',
+    });
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain('Missing required environment variables');
+  });
+
   it('delegates to vite dev and exits with code 0', () => {
     const tempDir = mkdtempSync(join(tmpdir(), 'configurator-cli-'));
     const logFile = join(tempDir, 'spawn.json');

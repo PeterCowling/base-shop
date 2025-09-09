@@ -152,6 +152,10 @@ describe("resolveConfig", () => {
           REVERSE_LOGISTICS_ENABLED: true,
           REVERSE_LOGISTICS_INTERVAL_MS: 120000,
         },
+        loadCoreEnv: () => ({
+          REVERSE_LOGISTICS_ENABLED: true,
+          REVERSE_LOGISTICS_INTERVAL_MS: 120000,
+        }),
       }));
       const { resolveConfig } = (await import("@acme/platform-machine")) as any;
       delete process.env.REVERSE_LOGISTICS_ENABLED_SHOP;

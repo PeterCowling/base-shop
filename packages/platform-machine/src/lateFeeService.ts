@@ -110,20 +110,20 @@ export async function resolveConfig(
   } catch {}
 
   const envEnabled = process.env[envKey(shop, "ENABLED")];
-  if (envEnabled !== undefined) {
-    config.enabled = envEnabled !== "false";
-    } else if (
-      coreEnv.LATE_FEE_ENABLED !== undefined &&
-      coreEnv.LATE_FEE_ENABLED !== null
-    ) {
-      config.enabled = coreEnv.LATE_FEE_ENABLED as boolean;
-    }
+  if (envEnabled === "true" || envEnabled === "false") {
+    config.enabled = envEnabled === "true";
+  } else if (
+    coreEnv.LATE_FEE_ENABLED !== undefined &&
+    coreEnv.LATE_FEE_ENABLED !== null
+  ) {
+    config.enabled = coreEnv.LATE_FEE_ENABLED as boolean;
+  }
 
-    const envInterval = process.env[envKey(shop, "INTERVAL_MS")];
-    if (envInterval !== undefined) {
-      const num = Number(envInterval);
-      if (!Number.isNaN(num)) config.intervalMinutes = Math.round(num / 60000);
-    } else if (
+  const envInterval = process.env[envKey(shop, "INTERVAL_MS")];
+  if (envInterval !== undefined) {
+    const num = Number(envInterval);
+    if (!Number.isNaN(num)) config.intervalMinutes = Math.round(num / 60000);
+    else if (
       coreEnv.LATE_FEE_INTERVAL_MS !== undefined &&
       coreEnv.LATE_FEE_INTERVAL_MS !== null
     ) {
@@ -131,6 +131,14 @@ export async function resolveConfig(
         (coreEnv.LATE_FEE_INTERVAL_MS as number) / 60000,
       );
     }
+  } else if (
+    coreEnv.LATE_FEE_INTERVAL_MS !== undefined &&
+    coreEnv.LATE_FEE_INTERVAL_MS !== null
+  ) {
+    config.intervalMinutes = Math.round(
+      (coreEnv.LATE_FEE_INTERVAL_MS as number) / 60000,
+    );
+  }
 
   if (override.enabled !== undefined) config.enabled = override.enabled;
   if (override.intervalMinutes !== undefined)

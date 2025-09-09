@@ -1,6 +1,7 @@
 // packages/platform-core/src/shipping/index.ts
 
 import { shippingEnv } from "@acme/config/env/shipping";
+import { createReturnLabel, getStatus } from "./ups";
 
 export interface ShippingRate {
   rate: number;
@@ -157,4 +158,4 @@ export {
   createReturnLabel,
   createReturnLabel as createUpsReturnLabel,
   getStatus as getUpsStatus,
-} from "./ups";
+};

@@ -171,9 +171,12 @@ describe("onRequestPost", () => {
     );
   });
 
-  it(
-    "locks all dependencies and runs build/deploy when components is not an array",
-    async () => {
+  it.each([
+    ["object", {}],
+    ["string", "foo"],
+  ])(
+    "locks all dependencies and runs build/deploy when components is a %s",
+    async (_type, components) => {
       readFileSync.mockImplementation((file: string) => {
         if (file.endsWith("package.json")) {
           return JSON.stringify({
@@ -195,7 +198,7 @@ describe("onRequestPost", () => {
         request: new Request("http://example.com", {
           method: "POST",
           headers: { Authorization: `Bearer ${token}` },
-          body: JSON.stringify({ components: "foo" }),
+          body: JSON.stringify({ components }),
         }),
       });
 

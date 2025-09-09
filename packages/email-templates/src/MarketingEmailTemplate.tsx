@@ -5,6 +5,7 @@ import * as React from "react";
 export interface MarketingEmailTemplateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
   logoSrc?: string;
+  shopName?: string;
   headline: string;
   content: React.ReactNode;
   ctaLabel?: string;
@@ -14,6 +15,7 @@ export interface MarketingEmailTemplateProps
 
 export function MarketingEmailTemplate({
   logoSrc,
+  shopName,
   headline,
   content,
   ctaLabel,
@@ -36,15 +38,20 @@ export function MarketingEmailTemplate({
       className={`mx-auto w-full max-w-xl overflow-hidden rounded-md border text-sm${className ? ` ${className}` : ""}`}
       {...props}
     >
-      {logoSrc && (
+      {logoSrc && shopName && (
         <div className="bg-muted p-6 text-center" data-token="--color-muted">
           <img
             src={logoSrc}
-            alt="logo"
+            alt={shopName}
             width={40}
             height={40}
             style={{ margin: "0 auto", height: "40px", width: "auto" }}
           />
+        </div>
+      )}
+      {!logoSrc && shopName && (
+        <div className="bg-muted p-6 text-center" data-token="--color-muted">
+          <span className="font-bold">{shopName}</span>
         </div>
       )}
       <div className="space-y-4 p-6">

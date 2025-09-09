@@ -70,7 +70,7 @@ export default function StepShopDetails({
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Shop Details</h2>
-      <ShopPreview logo={logo} storeName={storeName} />
+      <ShopPreview logo={logo} shopName={storeName} />
       <label className="flex flex-col gap-1">
         <span>Shop ID</span>
         <Input

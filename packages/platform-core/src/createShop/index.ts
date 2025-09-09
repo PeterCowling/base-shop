@@ -134,10 +134,11 @@ function deployShopImpl(
 
   try {
     adapter.scaffold(newApp);
-    const envRel = join(newApp, ".env");
-    const envAbs = join(repoRoot(), envRel);
-    if (fs.existsSync(envAbs)) {
-      let env = fs.readFileSync(envAbs, "utf8");
+      const envRel = join(newApp, ".env");
+      const envAbs = join(repoRoot(), envRel);
+      const envPath = fs.existsSync(envAbs) ? envAbs : envRel;
+      if (fs.existsSync(envPath)) {
+        let env = fs.readFileSync(envPath, "utf8");
       if (/^SESSION_SECRET=/m.test(env)) {
         env = env.replace(
           /^SESSION_SECRET=.*$/m,
@@ -147,13 +148,17 @@ function deployShopImpl(
         env += (env.endsWith("\n") ? "" : "\n") +
           `SESSION_SECRET=${genSecret(32)}\n`;
       }
-      try {
-        fs.writeFileSync(envRel, env);
-      } catch {
-        /* ignore write errors on relative path */
+        try {
+          fs.writeFileSync(envRel, env);
+        } catch {
+          /* ignore write errors on relative path */
+        }
+        if (envPath !== envRel) {
+          fs.writeFileSync(envPath, env);
+        } else if (fs.existsSync(envAbs)) {
+          fs.writeFileSync(envAbs, env);
+        }
       }
-      fs.writeFileSync(envAbs, env);
-    }
   } catch (err) {
     status = "error";
     error = (err as Error).message;

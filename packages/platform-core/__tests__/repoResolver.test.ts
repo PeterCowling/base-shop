@@ -9,11 +9,12 @@ describe("resolveRepo", () => {
 
   afterEach(() => {
     delete process.env.INVENTORY_BACKEND;
+    delete process.env.DB_MODE;
     delete process.env.DATABASE_URL;
     jest.clearAllMocks();
   });
 
-  it("uses json module when INVENTORY_BACKEND=sqlite", async () => {
+  it("uses sqlite module when INVENTORY_BACKEND=sqlite", async () => {
     process.env.INVENTORY_BACKEND = "sqlite";
 
     await expect(
@@ -21,11 +22,11 @@ describe("resolveRepo", () => {
         backendEnvVar: "INVENTORY_BACKEND",
         sqliteModule,
       }),
-    ).resolves.toBe("json");
+    ).resolves.toBe("sqlite");
 
-    expect(jsonModule).toHaveBeenCalledTimes(1);
+    expect(sqliteModule).toHaveBeenCalledTimes(1);
     expect(prismaModule).not.toHaveBeenCalled();
-    expect(sqliteModule).not.toHaveBeenCalled();
+    expect(jsonModule).not.toHaveBeenCalled();
   });
 
   it("uses prisma module when DATABASE_URL is set and delegate returns truthy", async () => {
@@ -76,6 +77,37 @@ describe("resolveRepo", () => {
     expect(jsonModule).toHaveBeenCalledTimes(1);
     expect(prismaModule).not.toHaveBeenCalled();
     expect(sqliteModule).not.toHaveBeenCalled();
+  });
+
+  it("uses DB_MODE when repo-specific env is unset", async () => {
+    process.env.DB_MODE = "sqlite";
+
+    await expect(
+      resolveRepo(prismaDelegate, prismaModule, jsonModule, {
+        backendEnvVar: "INVENTORY_BACKEND",
+        sqliteModule,
+      }),
+    ).resolves.toBe("sqlite");
+
+    expect(sqliteModule).toHaveBeenCalledTimes(1);
+    expect(jsonModule).not.toHaveBeenCalled();
+    expect(prismaModule).not.toHaveBeenCalled();
+  });
+
+  it("repo-specific env overrides DB_MODE", async () => {
+    process.env.DB_MODE = "sqlite";
+    process.env.INVENTORY_BACKEND = "json";
+
+    await expect(
+      resolveRepo(prismaDelegate, prismaModule, jsonModule, {
+        backendEnvVar: "INVENTORY_BACKEND",
+        sqliteModule,
+      }),
+    ).resolves.toBe("json");
+
+    expect(jsonModule).toHaveBeenCalledTimes(1);
+    expect(sqliteModule).not.toHaveBeenCalled();
+    expect(prismaModule).not.toHaveBeenCalled();
   });
 });
 

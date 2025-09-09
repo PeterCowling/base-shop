@@ -4,7 +4,7 @@ Prisma with PostgreSQL is the primary datastore. Some repositories offer filesys
 
 ## Repositories using the database
 
-These repositories default to Prisma when a `DATABASE_URL` is defined. Set the corresponding environment variable to use a filesystem backend instead:
+These repositories default to Prisma when a `DATABASE_URL` is defined. Set the corresponding environment variable to use a filesystem backend instead, or set `DB_MODE` to apply a global default that individual `*_BACKEND` variables can override:
 
 | Repository          | Environment variable        |
 | ------------------- | --------------------------- |
@@ -20,7 +20,7 @@ These repositories default to Prisma when a `DATABASE_URL` is defined. Set the c
 | Pricing             | `PRICING_BACKEND`           |
 | Return logistics    | `RETURN_LOGISTICS_BACKEND`  |
 | Return authorization| `RETURN_AUTH_BACKEND`       |
-Each repository above uses a shared resolver that honors its `*_BACKEND` environment variable to switch between Prisma and filesystem stores.
+Each repository above uses a shared resolver that honors its `*_BACKEND` environment variable to switch between Prisma and filesystem stores. When a `*_BACKEND` variable is unset, `resolveRepo` falls back to `DB_MODE` if provided.
 
 Each variable accepts:
 

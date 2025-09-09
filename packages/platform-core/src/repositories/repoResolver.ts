@@ -12,7 +12,9 @@ export async function resolveRepo<T>(
   options: ResolveRepoOptions<T> = {},
 ): Promise<T> {
   const envVarName = options.backendEnvVar ?? "INVENTORY_BACKEND";
-  const backend = envVarName ? process.env[envVarName] : undefined;
+  const backend =
+    (envVarName ? process.env[envVarName] : undefined) ??
+    process.env.DB_MODE;
 
   if (backend === "sqlite" && options.sqliteModule) {
     return await options.sqliteModule();

@@ -82,6 +82,7 @@ export default function StepTheme({
         {prevStepId && (
           <Button
             data-cy="back"
+            data-testid="back"
             variant="outline"
             onClick={() => router.push(`/cms/configurator/${prevStepId}`)}
           >
@@ -91,6 +92,7 @@ export default function StepTheme({
         {nextStepId && (
           <Button
             data-cy="next"
+            data-testid="next"
             onClick={() => {
               markComplete(true);
               router.push(`/cms/configurator/${nextStepId}`);

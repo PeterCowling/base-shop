@@ -53,7 +53,11 @@ export function validateEnvFile(file: string): void {
   if (!existsSync(file)) {
     throw new Error(`Missing ${file}`);
   }
-  const env = readEnvFile(file);
+  // Access `readEnvFile` through the module's exported API so that tests can
+  // spy on it. Using a local reference prevents Jest from intercepting the
+  // call, which caused the "throws for invalid entries" test to fail.
+  const env = (eval("require")("./configurator") as typeof import("./configurator"))
+    .readEnvFile(file);
   envSchema.parse(env);
 }
 
@@ -67,30 +71,40 @@ export function validateShopEnv(shop: string): void {
 
   const env = readEnvFile(envPath);
 
+  let cfg: {
+    paymentProviders?: string[];
+    shippingProviders?: string[];
+    billingProvider?: string;
+    sanityBlog?: unknown;
+  } | undefined;
+
   try {
     const shopCfgPath = join("data", "shops", shop, "shop.json");
     const cfgRaw = readFileSync(shopCfgPath, "utf8");
-    const cfg = JSON.parse(cfgRaw) as {
+    cfg = JSON.parse(cfgRaw) as {
       paymentProviders?: string[];
       shippingProviders?: string[];
       billingProvider?: string;
       sanityBlog?: unknown;
     };
-    const plugins = new Set<string>();
-    cfg.paymentProviders?.forEach((p) => plugins.add(p));
-    cfg.shippingProviders?.forEach((p) => plugins.add(p));
-    if (cfg.billingProvider) plugins.add(cfg.billingProvider);
-    if (cfg.sanityBlog) plugins.add("sanity");
-    for (const id of plugins) {
-      const vars = pluginEnvVars[id];
-      if (!vars) continue;
-      for (const key of vars) {
-        if (!env[key]) {
-          throw new Error(`Missing ${key}`);
-        }
+  } catch {
+    // If the configuration can't be read, skip plugin validation.
+    return;
+  }
+
+  const plugins = new Set<string>();
+  cfg.paymentProviders?.forEach((p) => plugins.add(p));
+  cfg.shippingProviders?.forEach((p) => plugins.add(p));
+  if (cfg.billingProvider) plugins.add(cfg.billingProvider);
+  if (cfg.sanityBlog) plugins.add("sanity");
+
+  for (const id of plugins) {
+    const vars = pluginEnvVars[id];
+    if (!vars) continue;
+    for (const key of vars) {
+      if (!env[key]) {
+        throw new Error(`Missing ${key}`);
       }
     }
-  } catch {
-    // ignore errors when shop configuration cannot be read
   }
 }

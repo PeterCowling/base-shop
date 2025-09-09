@@ -7,7 +7,7 @@ function Display() {
   const { theme, setTheme } = useTheme();
   return (
     <>
-      <span data-testid="theme">{theme}</span>
+      <span data-cy="theme">{theme}</span>
       <button onClick={() => setTheme("dark")}>dark</button>
     </>
   );

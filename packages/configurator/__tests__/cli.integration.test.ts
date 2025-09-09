@@ -20,6 +20,24 @@ describe('configurator CLI integration', () => {
     expect(result.stderr).toContain('Missing required environment variables');
   });
 
+  it('exits with code 1 when an unsupported command is used', () => {
+    const env = {
+      ...process.env,
+      STRIPE_SECRET_KEY: 'sk',
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: 'pk',
+      CART_COOKIE_SECRET: 'secret',
+    };
+    const result = spawnSync('node', ['bin/configurator.cjs', 'foo'], {
+      cwd: resolve(__dirname, '..'),
+      env,
+      encoding: 'utf8',
+    });
+    expect(result.status).toBe(1);
+    expect(result.stdout).toContain(
+      'Usage: pnpm configurator <dev|build|deploy>'
+    );
+  });
+
   it('delegates to vite dev and exits with code 0', () => {
     const tempDir = mkdtempSync(join(tmpdir(), 'configurator-cli-'));
     const logFile = join(tempDir, 'spawn.json');

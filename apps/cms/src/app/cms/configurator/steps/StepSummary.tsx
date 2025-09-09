@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 interface Props {
   shopId: string;
   name: string;
-  logo: string;
+  logo: Record<string, string>;
   contactInfo: string;
   type: "sale" | "rental";
   template: string;
@@ -76,7 +76,7 @@ export default function StepSummary({
           <b>Store Name:</b> {name}
         </li>
         <li>
-          <b>Logo:</b> {logo || "none"}
+          <b>Logo:</b> {logo["desktop-landscape"] || Object.values(logo)[0] || "none"}
         </li>
         <li>
           <b>Contact:</b> {contactInfo || "none"}

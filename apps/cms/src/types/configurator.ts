@@ -5,8 +5,8 @@ export interface ConfiguratorStepProps {
   setShopId: (v: string) => void;
   storeName: string;
   setStoreName: (v: string) => void;
-  logo: string;
-  setLogo: (v: string) => void;
+  logo: Record<string, string>;
+  setLogo: (v: Record<string, string>) => void;
   contactInfo: string;
   setContactInfo: (v: string) => void;
   type: "sale" | "rental";

@@ -19,7 +19,7 @@ describe("submitShop", () => {
 
   const baseState: any = {
     storeName: "Store",
-    logo: "",
+    logo: {},
     contactInfo: "",
     type: "sale",
     template: "temp",

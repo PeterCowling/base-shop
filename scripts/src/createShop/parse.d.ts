@@ -6,7 +6,7 @@ export interface Options {
     payment: string[];
     shipping: string[];
     name?: string;
-    logo?: string;
+    logo?: string | Record<string, string>;
     contactInfo?: string;
     enableSubscriptions?: boolean;
 }

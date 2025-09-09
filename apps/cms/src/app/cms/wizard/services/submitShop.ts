@@ -71,7 +71,12 @@ export async function submitShop(
 
   const options = {
     name: storeName || undefined,
-    logo: logo || undefined,
+    logo:
+      typeof logo === "string"
+        ? logo || undefined
+        : Object.keys(logo).length
+          ? logo
+          : undefined,
     contactInfo: contactInfo || undefined,
     type,
     template,

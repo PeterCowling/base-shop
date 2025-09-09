@@ -1,14 +1,18 @@
 interface ShopPreviewProps {
-  logo: string;
+  logos: Record<string, string>;
   shopName: string;
 }
 
-export default function ShopPreview({ logo, shopName }: ShopPreviewProps) {
+export default function ShopPreview({ logos, shopName }: ShopPreviewProps) {
+  const src =
+    logos["desktop-landscape"] ||
+    Object.values(logos)[0] ||
+    "";
   return (
     <div className="flex items-center gap-2 rounded border p-2">
-      {logo ? (
+      {src ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={logo} alt={shopName} className="h-8 w-8 object-contain" />
+        <img src={src} alt={shopName} className="h-8 w-8 object-contain" />
       ) : (
         <div className="h-8 w-8 bg-gray-200" />
       )}

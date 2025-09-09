@@ -52,8 +52,13 @@ export async function initShop(): Promise<void> {
   const name =
     (config.name as string | undefined) ??
     (skipPrompts ? "" : await prompt("Display name (optional): "));
+  const logoCfg = config.logo as any;
   const logo =
-    (config.logo as string | undefined) ??
+    (typeof logoCfg === "string"
+      ? logoCfg
+      : logoCfg && typeof logoCfg === "object"
+        ? logoCfg["desktop-landscape"] || Object.values(logoCfg)[0]
+        : undefined) ??
     (skipPrompts ? undefined : await promptUrl("Logo URL (optional): "));
   const contact =
     (config.contactInfo as string | undefined) ??
@@ -161,7 +166,7 @@ export async function initShop(): Promise<void> {
   const rawOptions = {
     ...restConfig,
     ...(name && { name }),
-    ...(logo && { logo }),
+    ...(logo && { logo: { "desktop-landscape": logo } }),
     ...(contact && { contactInfo: contact }),
     type,
     theme,

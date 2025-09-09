@@ -45,7 +45,7 @@ export type LateFeeService = z.infer<typeof lateFeeServiceSchema>;
 export declare const shopSchema: z.ZodObject<{
     id: z.ZodString;
     name: z.ZodString;
-    logo: z.ZodOptional<z.ZodString>;
+    logo: z.ZodOptional<z.ZodRecord<z.ZodString, z.ZodString>>;
     contactInfo: z.ZodOptional<z.ZodString>;
     catalogFilters: z.ZodArray<z.ZodString, "many">;
     themeId: z.ZodString;
@@ -228,7 +228,7 @@ export declare const shopSchema: z.ZodObject<{
     }[];
     subscriptionsEnabled: boolean;
     type?: string | undefined;
-    logo?: string | undefined;
+    logo?: Record<string, string> | undefined;
     contactInfo?: string | undefined;
     domain?: {
         name: string;
@@ -273,7 +273,7 @@ export declare const shopSchema: z.ZodObject<{
     themeId: string;
     filterMappings: Record<string, string>;
     type?: string | undefined;
-    logo?: string | undefined;
+    logo?: Record<string, string> | undefined;
     contactInfo?: string | undefined;
     themeDefaults?: Record<string, string> | undefined;
     themeOverrides?: Record<string, string> | undefined;

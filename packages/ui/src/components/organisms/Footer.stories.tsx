@@ -5,6 +5,7 @@ const meta: Meta<typeof Footer> = {
   component: Footer,
   args: {
     children: "Footer content",
+    shopName: "My Shop",
   },
 };
 export default meta;

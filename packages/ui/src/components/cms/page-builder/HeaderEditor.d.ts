@@ -1,7 +1,12 @@
 import type { HeaderComponent } from "@acme/types";
+import type { LogoVariants } from "../../organisms/types";
+interface ExtendedHeaderComponent extends HeaderComponent {
+    logoVariants?: LogoVariants;
+    shopName?: string;
+}
 interface Props {
-    component: HeaderComponent;
-    onChange: (patch: Partial<HeaderComponent>) => void;
+    component: ExtendedHeaderComponent;
+    onChange: (patch: Partial<ExtendedHeaderComponent>) => void;
 }
 export default function HeaderEditor({ component, onChange }: Props): import("react/jsx-runtime").JSX.Element;
 export {};

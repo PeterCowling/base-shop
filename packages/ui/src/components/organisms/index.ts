@@ -32,3 +32,4 @@ export { StickyAddToCartBar } from "./StickyAddToCartBar";
 export { StoreLocatorMap } from "./StoreLocatorMap";
 export { WishlistDrawer } from "./WishlistDrawer";
 export { default as AnnouncementBar } from "./AnnouncementBar";
+export type { LogoVariants, LogoImage, Viewport } from "./types";

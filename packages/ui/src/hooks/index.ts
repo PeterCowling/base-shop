@@ -10,3 +10,4 @@ export * from "./useTokenColors";
 export * from "./useRemoteImageProbe";
 export * from "./useProductInputs";
 export * from "./useProductMediaManager";
+export { default as useViewport } from "./useViewport";

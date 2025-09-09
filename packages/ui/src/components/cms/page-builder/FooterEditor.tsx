@@ -1,20 +1,49 @@
 import type { FooterComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 import { useArrayEditor } from "./useArrayEditor";
+import type { LogoVariants } from "../../organisms/types";
+
+interface ExtendedFooterComponent extends FooterComponent {
+  logoVariants?: LogoVariants;
+  shopName?: string;
+}
 
 interface Props {
-  component: FooterComponent;
-  onChange: (patch: Partial<FooterComponent>) => void;
+  component: ExtendedFooterComponent;
+  onChange: (patch: Partial<ExtendedFooterComponent>) => void;
 }
 
 export default function FooterEditor({ component, onChange }: Props) {
-  const arrayEditor = useArrayEditor<FooterComponent>(onChange);
+  const arrayEditor = useArrayEditor<ExtendedFooterComponent>(onChange);
+  const updateVariant = (viewport: keyof LogoVariants, value: string) => {
+    onChange({
+      logoVariants: {
+        ...component.logoVariants,
+        [viewport]: { src: value },
+      },
+    });
+  };
   return (
     <div className="space-y-2">
       <Input
-        value={component.logo ?? ""}
-        onChange={(e) => onChange({ logo: e.target.value } as Partial<FooterComponent>)}
-        placeholder="logo"
+        value={component.shopName ?? ""}
+        onChange={(e) => onChange({ shopName: e.target.value })}
+        placeholder="shop name"
+      />
+      <Input
+        value={component.logoVariants?.desktop?.src ?? ""}
+        onChange={(e) => updateVariant("desktop", e.target.value)}
+        placeholder="desktop logo"
+      />
+      <Input
+        value={component.logoVariants?.tablet?.src ?? ""}
+        onChange={(e) => updateVariant("tablet", e.target.value)}
+        placeholder="tablet logo"
+      />
+      <Input
+        value={component.logoVariants?.mobile?.src ?? ""}
+        onChange={(e) => updateVariant("mobile", e.target.value)}
+        placeholder="mobile logo"
       />
       {arrayEditor("links", component.links, ["label", "url"])}
     </div>

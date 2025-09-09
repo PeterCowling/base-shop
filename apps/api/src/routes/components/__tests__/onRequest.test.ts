@@ -72,6 +72,7 @@ describe('onRequest route', () => {
   });
 
   it('returns 403 when authorization header missing', async () => {
+    const warnSpy = jest.spyOn(console, 'warn');
     const res = await onRequest({
       params: { shopId: 'abc' },
       request: new Request('http://localhost'),

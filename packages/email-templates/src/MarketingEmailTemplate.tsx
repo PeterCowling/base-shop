@@ -1,10 +1,13 @@
 import * as React from "react";
-
-/* eslint-disable @next/next/no-img-element */
+import { Logo } from "@acme/ui";
 
 export interface MarketingEmailTemplateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "content"> {
-  logoSrc?: string;
+  shopName?: string;
+  logo?: {
+    light?: string;
+    dark?: string;
+  };
   headline: string;
   content: React.ReactNode;
   ctaLabel?: string;
@@ -13,7 +16,8 @@ export interface MarketingEmailTemplateProps
 }
 
 export function MarketingEmailTemplate({
-  logoSrc,
+  shopName,
+  logo,
   headline,
   content,
   ctaLabel,
@@ -30,21 +34,32 @@ export function MarketingEmailTemplate({
   }
 
   const showCta = Boolean(ctaLabel && ctaHref);
+  const hasLogo = Boolean(logo?.light || logo?.dark || shopName);
 
   return (
     <div
       className={`mx-auto w-full max-w-xl overflow-hidden rounded-md border text-sm${className ? ` ${className}` : ""}`}
       {...props}
     >
-      {logoSrc && (
+      {hasLogo && (
         <div className="bg-muted p-6 text-center" data-token="--color-muted">
-          <img
-            src={logoSrc}
-            alt="logo"
-            width={40}
-            height={40}
-            style={{ margin: "0 auto", height: "40px", width: "auto" }}
-          />
+          <picture>
+            {logo?.dark && (
+              <source
+                srcSet={logo.dark}
+                media="(prefers-color-scheme: dark)"
+              />
+            )}
+            <Logo
+              src={logo?.light ?? logo?.dark}
+              alt={shopName ?? ""}
+              textFallback={shopName}
+              width={40}
+              height={40}
+              className="mx-auto"
+              style={{ height: "40px", width: "auto" }}
+            />
+          </picture>
         </div>
       )}
       <div className="space-y-4 p-6">

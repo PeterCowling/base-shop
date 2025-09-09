@@ -6,7 +6,12 @@
     "declarationMap": true,
     "noEmit": false,
     "rootDir": "src",
-    "outDir": "dist"
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@acme/ui": ["../ui/dist/index.d.ts"],
+      "@acme/ui/*": ["../ui/dist/*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"]

@@ -6,7 +6,8 @@ describe("MarketingEmailTemplate", () => {
   it("renders full template", () => {
     const { container, getByText, getByAltText } = render(
       <MarketingEmailTemplate
-        logoSrc="/logo.png"
+        shopName="Acme"
+        logo={{ light: "/logo.png" }}
         headline="Welcome"
         content={<p>Hi there</p>}
         ctaLabel="Click me"
@@ -17,7 +18,7 @@ describe("MarketingEmailTemplate", () => {
 
     expect(getByText("Welcome")).toBeInTheDocument();
     expect(getByText("Hi there")).toBeInTheDocument();
-    expect(getByAltText("logo")).toBeInTheDocument();
+    expect(getByAltText("Acme")).toBeInTheDocument();
     expect(getByText("Click me").closest("a")).toHaveAttribute(
       "href",
       "https://example.com"
@@ -32,14 +33,15 @@ describe("MarketingEmailTemplate", () => {
   it("renders logo and footer but omits CTA when CTA props are missing", () => {
     const { getByAltText, getByText, queryByRole } = render(
       <MarketingEmailTemplate
+        shopName="Acme"
         headline="Headline"
         content={<p>Body</p>}
-        logoSrc="/logo.png"
+        logo={{ light: "/logo.png" }}
         footer={<span>Bye</span>}
       />
     );
 
-    expect(getByAltText("logo")).toBeInTheDocument();
+    expect(getByAltText("Acme")).toBeInTheDocument();
     expect(getByText("Bye")).toBeInTheDocument();
     expect(queryByRole("link")).toBeNull();
   });
@@ -74,11 +76,11 @@ describe("MarketingEmailTemplate", () => {
   });
 
   it("omits logo and footer containers when data is missing", () => {
-    const { container, queryByAltText } = render(
+    const { container, queryByRole } = render(
       <MarketingEmailTemplate headline="No Extras" content={<p>content</p>} />
     );
 
-    expect(queryByAltText("logo")).toBeNull();
+    expect(queryByRole("img")).toBeNull();
     expect(container.querySelector(".border-t")).toBeNull();
   });
   it("throws when headline is missing or empty", () => {

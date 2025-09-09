@@ -1,3 +1,5 @@
+import { Logo } from "@acme/ui";
+
 interface ShopPreviewProps {
   logo: string;
   storeName: string;
@@ -6,12 +8,14 @@ interface ShopPreviewProps {
 export default function ShopPreview({ logo, storeName }: ShopPreviewProps) {
   return (
     <div className="flex items-center gap-2 rounded border p-2">
-      {logo ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={logo} alt="Logo preview" className="h-8 w-8 object-contain" />
-      ) : (
-        <div className="h-8 w-8 bg-gray-200" />
-      )}
+      <Logo
+        src={logo}
+        alt={storeName}
+        textFallback={storeName || "Store Name"}
+        width={32}
+        height={32}
+        className="h-8 w-8 object-contain"
+      />
       <span>{storeName || "Store Name"}</span>
     </div>
   );

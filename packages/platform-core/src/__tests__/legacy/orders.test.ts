@@ -15,10 +15,10 @@ import {
   setReturnStatus,
 } from "../../orders";
 
-const { trackOrder } = jest.requireMock("../../analytics") as { trackOrder: jest.Mock };
-const { incrementSubscriptionUsage } = jest.requireMock("../../subscriptionUsage") as {
-  incrementSubscriptionUsage: jest.Mock;
-};
+const trackOrder: jest.Mock =
+  jest.requireMock("../../analytics").trackOrder;
+const incrementSubscriptionUsage: jest.Mock =
+  jest.requireMock("../../subscriptionUsage").incrementSubscriptionUsage;
 
 describe("orders", () => {
   beforeEach(() => {

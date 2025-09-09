@@ -88,8 +88,48 @@ describe("requireEnv helper", () => {
       expect(() => requireEnv("MISSING", "boolean")).toThrow("MISSING is required");
     });
   });
+
+  it("parses numbers", async () => {
+    await withEnv({ TEST_NUM: "42" }, async () => {
+      const requireEnv = await getRequire();
+      expect(requireEnv("TEST_NUM", "number")).toBe(42);
+    });
+  });
+
+  it("throws for invalid number", async () => {
+    await withEnv({ TEST_NUM: "forty-two" }, async () => {
+      const requireEnv = await getRequire();
+      expect(() => requireEnv("TEST_NUM", "number")).toThrow(
+        "TEST_NUM must be a number",
+      );
+    });
+  });
 });
 
+
+describe("coreEnv lazy loading", () => {
+  it("loads core env only once despite repeated property reads", async () => {
+    await withEnv(
+      {
+        DEPOSIT_RELEASE_ENABLED: "true",
+        DEPOSIT_RELEASE_INTERVAL_MS: "5000",
+        NEXT_PUBLIC_BASE_URL: "https://example.com",
+      },
+      async () => {
+        const mod = await import("@acme/config/env/core");
+        // First access triggers the actual load
+        expect(mod.coreEnv.DEPOSIT_RELEASE_ENABLED).toBe(true);
+        const spy = jest.spyOn(mod, "loadCoreEnv");
+        // Subsequent property reads should use the cached env
+        expect(mod.coreEnv.DEPOSIT_RELEASE_INTERVAL_MS).toBe(5000);
+        expect(mod.coreEnv.NEXT_PUBLIC_BASE_URL).toBe("https://example.com");
+        expect(mod.coreEnv.NEXT_PUBLIC_BASE_URL).toBe("https://example.com");
+        expect(spy).not.toHaveBeenCalled();
+        spy.mockRestore();
+      },
+    );
+  });
+});
 
 describe("NEXT_PUBLIC_BASE_URL validation", () => {
   it("rejects invalid url", async () => {

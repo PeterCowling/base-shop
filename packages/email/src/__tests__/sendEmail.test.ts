@@ -102,6 +102,39 @@ describe("sendEmail", () => {
     expect(getDefaultSender).not.toHaveBeenCalled();
   });
 
+  it("simulates email when only GMAIL_PASS is set", async () => {
+    process.env = {
+      ...OLD_ENV,
+      GMAIL_PASS: "secret",
+      STRIPE_SECRET_KEY: "sk",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      EMAIL_LOG_LEVEL: "info",
+    } as NodeJS.ProcessEnv;
+
+    const infoSpy = jest.fn();
+    const pinoMock = jest.fn(() => ({ info: infoSpy }));
+    jest.doMock("pino", () => ({
+      __esModule: true,
+      default: pinoMock,
+    }));
+    const createTransport = jest.fn();
+    jest.doMock("nodemailer", () => ({
+      __esModule: true,
+      default: { createTransport },
+      createTransport,
+    }));
+    const getDefaultSender = jest.fn();
+    jest.doMock("../config", () => ({ getDefaultSender }));
+
+    const { sendEmail } = await import("../sendEmail");
+    await sendEmail("a@b.com", "Hi", "There");
+
+    expect(createTransport).not.toHaveBeenCalled();
+    expect(infoSpy).toHaveBeenCalledWith({ to: "a@b.com" }, "Email simulated");
+    expect(pinoMock).toHaveBeenCalledWith({ level: "info" });
+    expect(getDefaultSender).not.toHaveBeenCalled();
+  });
+
   it("defaults to silent log level when EMAIL_LOG_LEVEL is not set", async () => {
     process.env = {
       ...OLD_ENV,

@@ -82,6 +82,15 @@ describe("createSessionStore", () => {
     expect(store).toBe(custom);
   });
 
+  it("last setSessionStoreFactory wins", async () => {
+    jest.doMock("@acme/config/env/core", () => ({ coreEnv: {} }));
+    const { createSessionStore, setSessionStoreFactory } = await import("../src/store");
+    setSessionStoreFactory(async () => ({ id: 1 } as any));
+    setSessionStoreFactory(async () => ({ id: 2 } as any));
+    const store = await createSessionStore();
+    expect(store).toEqual({ id: 2 });
+  });
+
   it("logs error and falls back when Redis initialization fails", async () => {
     const err = new Error("boom");
     jest.doMock("@acme/config/env/core", () => ({

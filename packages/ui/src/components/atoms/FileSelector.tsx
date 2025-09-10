@@ -18,7 +18,13 @@ export function FileSelector({ onFilesSelected, multiple = false }: FileSelector
 
   return (
     <div>
-      <input type="file" multiple={multiple} onChange={handleChange} data-testid="file-input" />
+      <input
+        type="file"
+        multiple={multiple}
+        onChange={handleChange}
+        data-cy="file-input"
+        data-testid="file-input"
+      />
       {files.length > 0 && (
         <ul>
           {files.map((file) => (

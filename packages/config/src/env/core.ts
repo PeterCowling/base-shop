@@ -6,6 +6,7 @@ import { cmsEnvSchema } from "./cms.js";
 import { emailEnvSchema } from "./email.js";
 import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
+import { createRequire } from "module";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -97,13 +98,17 @@ export const requireEnv = (
   return val;
 };
 
-export const coreEnvBaseSchema = authEnvSchema
-  .innerType()
+const authInner = authEnvSchema.innerType().omit({ AUTH_TOKEN_TTL: true });
+
+export const coreEnvBaseSchema = authInner
   .merge(cmsEnvSchema)
   .merge(emailEnvSchema.innerType())
   .merge(paymentsEnvSchema)
   .merge(shippingEnvSchema.innerType())
-  .merge(baseEnvSchema);
+  .merge(baseEnvSchema)
+  .extend({
+    AUTH_TOKEN_TTL: z.union([z.string(), z.number()]).optional(),
+  });
 
 export function depositReleaseEnvRefinement(
   env: Record<string, unknown>,
@@ -166,7 +171,10 @@ export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
   }
 
   const authResult = authEnvSchema.safeParse(envForAuth);
-  if (!authResult.success) {
+  if (authResult.success) {
+    (env as Record<string, unknown>).AUTH_TOKEN_TTL =
+      authResult.data.AUTH_TOKEN_TTL;
+  } else {
     authResult.error.issues.forEach((issue) => ctx.addIssue(issue));
   }
 
@@ -193,22 +201,29 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
 
 // Lazy proxy; no import-time parse in dev.
 let __cachedCoreEnv: CoreEnv | null = null;
+const nodeRequire =
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  typeof require !== "undefined" ? require : createRequire(eval("import.meta.url"));
+function getCoreEnv(): CoreEnv {
+  if (!__cachedCoreEnv) {
+    const mod = nodeRequire("./core.js") as typeof import("./core.js");
+    __cachedCoreEnv = mod.loadCoreEnv();
+  }
+  return __cachedCoreEnv;
+}
+
 export const coreEnv: CoreEnv = new Proxy({} as CoreEnv, {
   get: (_t, prop: string) => {
-    if (!__cachedCoreEnv) __cachedCoreEnv = loadCoreEnv();
-    return __cachedCoreEnv![prop as keyof CoreEnv];
+    return getCoreEnv()[prop as keyof CoreEnv];
   },
   has: (_t, prop: string) => {
-    if (!__cachedCoreEnv) __cachedCoreEnv = loadCoreEnv();
-    return prop in __cachedCoreEnv!;
+    return prop in getCoreEnv();
   },
   ownKeys: () => {
-    if (!__cachedCoreEnv) __cachedCoreEnv = loadCoreEnv();
-    return Reflect.ownKeys(__cachedCoreEnv);
+    return Reflect.ownKeys(getCoreEnv());
   },
   getOwnPropertyDescriptor: (_t, prop: string | symbol) => {
-    if (!__cachedCoreEnv) __cachedCoreEnv = loadCoreEnv();
-    return Object.getOwnPropertyDescriptor(__cachedCoreEnv, prop);
+    return Object.getOwnPropertyDescriptor(getCoreEnv(), prop);
   },
 }) as CoreEnv;
 

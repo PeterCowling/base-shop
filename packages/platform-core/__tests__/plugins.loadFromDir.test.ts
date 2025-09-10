@@ -54,6 +54,18 @@ describe("loadPluginFromDir and loadPlugins", () => {
     expect(plugin).toBe(pluginObj);
   });
 
+  it("returns plugin when module exports named plugin", async () => {
+    const resolvePluginEntry = jest
+      .fn()
+      .mockResolvedValue({ entryPath: "/plugin/index.js", isModule: false });
+    const pluginObj = { id: "named" } as any;
+    const importByType = jest.fn().mockResolvedValue({ plugin: pluginObj });
+    jest.doMock("../src/plugins/resolvers", () => ({ resolvePluginEntry, importByType }));
+    const { loadPlugin } = await import("../src/plugins");
+    const plugin = await loadPlugin("/plugin");
+    expect(plugin).toBe(pluginObj);
+  });
+
   it("discovers plugin directories and loads plugins", async () => {
     const resolvePluginEnvironment = jest
       .fn()

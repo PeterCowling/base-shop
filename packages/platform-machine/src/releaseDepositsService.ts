@@ -94,42 +94,52 @@ async function resolveConfig(
   override: Partial<DepositReleaseConfig> = {},
 ): Promise<DepositReleaseConfig> {
   const config: DepositReleaseConfig = { ...DEFAULT_CONFIG };
+  let enabledSpecified = false;
+  let intervalSpecified = false;
 
   try {
     const file = join(dataRoot, shop, "settings.json");
     const json = JSON.parse(await readFile(file, "utf8"));
     const cfg = json.depositService;
     if (cfg) {
-      if (typeof cfg.enabled === "boolean") config.enabled = cfg.enabled;
-      if (typeof cfg.intervalMinutes === "number")
+      if (typeof cfg.enabled === "boolean") {
+        config.enabled = cfg.enabled;
+        enabledSpecified = true;
+      }
+      if (typeof cfg.intervalMinutes === "number") {
         config.intervalMinutes = cfg.intervalMinutes;
+        intervalSpecified = true;
+      }
     }
   } catch {}
 
   const envEnabled = process.env[envKey(shop, "ENABLED")];
-    if (envEnabled !== undefined) {
-      config.enabled = envEnabled !== "false";
-    } else if (
+  if (envEnabled !== undefined) {
+    config.enabled = envEnabled !== "false";
+  } else if (!enabledSpecified) {
+    if (
       coreEnv.DEPOSIT_RELEASE_ENABLED !== undefined &&
-      coreEnv.DEPOSIT_RELEASE_ENABLED !== null &&
-      config.enabled === DEFAULT_CONFIG.enabled
+      coreEnv.DEPOSIT_RELEASE_ENABLED !== null
     ) {
       config.enabled = coreEnv.DEPOSIT_RELEASE_ENABLED as boolean;
     }
+  }
 
   const envInterval = process.env[envKey(shop, "INTERVAL_MS")];
-    if (envInterval !== undefined) {
-      const num = Number(envInterval);
-      if (!Number.isNaN(num)) config.intervalMinutes = Math.round(num / 60000);
-    } else if (
-      coreEnv.DEPOSIT_RELEASE_INTERVAL_MS !== undefined &&
-      coreEnv.DEPOSIT_RELEASE_INTERVAL_MS !== null &&
-      config.intervalMinutes === DEFAULT_CONFIG.intervalMinutes
-    ) {
+  if (envInterval !== undefined) {
+    const num = Number(envInterval);
+    if (!Number.isNaN(num)) {
+      config.intervalMinutes = Math.round(num / 60000);
+    } else if (!intervalSpecified && coreEnv.DEPOSIT_RELEASE_INTERVAL_MS != null) {
       config.intervalMinutes = Math.round(
         (coreEnv.DEPOSIT_RELEASE_INTERVAL_MS as number) / 60000,
       );
     }
+  } else if (!intervalSpecified && coreEnv.DEPOSIT_RELEASE_INTERVAL_MS != null) {
+    config.intervalMinutes = Math.round(
+      (coreEnv.DEPOSIT_RELEASE_INTERVAL_MS as number) / 60000,
+    );
+  }
 
   if (override.enabled !== undefined) config.enabled = override.enabled;
   if (override.intervalMinutes !== undefined)

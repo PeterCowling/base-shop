@@ -15,6 +15,15 @@ describe("SendgridProvider", () => {
     global.fetch = realFetch;
   });
 
+  it("does not set API key when SENDGRID_API_KEY is undefined", async () => {
+    delete process.env.SENDGRID_API_KEY;
+
+    const { SendgridProvider } = await import("../providers/sendgrid");
+    new SendgridProvider();
+
+    expect(sgMail.setApiKey).not.toHaveBeenCalled();
+  });
+
   it("forwards payload to @sendgrid/mail", async () => {
     process.env.SENDGRID_API_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";

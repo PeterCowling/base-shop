@@ -1,5 +1,4 @@
 import { readdir } from "fs/promises";
-import { createRequire } from "module";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { readInventory } from "@platform-core/repositories/inventory.server";
 import { readRepo as readProducts } from "@platform-core/repositories/products.server";
@@ -48,19 +47,8 @@ export async function runMaintenanceScan(
  */
 export function startMaintenanceScheduler(): NodeJS.Timeout {
   const day = 24 * 60 * 60 * 1000;
-  const requireSelf = createRequire(
-    (() => {
-      try {
-        // eslint-disable-next-line no-eval
-        return (0, eval)("import.meta.url");
-      } catch {
-        // @ts-ignore fallback for CommonJS
-        return typeof __filename !== "undefined" ? __filename : "";
-      }
-    })(),
-  );
   const run = () =>
-    (requireSelf(
+    (eval("require")(
       "@acme/platform-machine/maintenanceScheduler",
     ) as typeof import("@acme/platform-machine/maintenanceScheduler")).runMaintenanceScan()
       .catch((err) => logger.error("maintenance scan failed", { err }));

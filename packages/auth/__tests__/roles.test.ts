@@ -61,4 +61,14 @@ describe("extendRoles", () => {
     expect(READ_ROLES).toContain("guest");
     expect(WRITE_ROLES).not.toContain("guest");
   });
+
+  it("ignores existing roles without duplication", () => {
+    extendRoles({ write: ["admin"], read: ["viewer"] });
+
+    expect(WRITE_ROLES).toEqual(originalWrite);
+    expect(READ_ROLES).toEqual(originalRead);
+
+    expect(roles.RoleSchema.safeParse("admin").success).toBe(true);
+    expect(roles.RoleSchema.safeParse("viewer").success).toBe(true);
+  });
 });

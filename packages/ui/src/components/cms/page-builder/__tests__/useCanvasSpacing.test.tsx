@@ -25,7 +25,7 @@ describe("useCanvasSpacing", () => {
       return (
         <div
           ref={ref}
-          data-testid="box"
+          data-cy="box"
           onPointerDown={(e) => hook!.startSpacing(e, "padding", "top")}
         />
       );
@@ -66,7 +66,7 @@ describe("useCanvasSpacing", () => {
       return (
         <div
           ref={ref}
-          data-testid="box"
+          data-cy="box"
           onPointerDown={(e) => hook!.startSpacing(e, "padding", "left")}
         />
       );
@@ -104,7 +104,7 @@ describe("useCanvasSpacing", () => {
       return (
         <div
           ref={ref}
-          data-testid="box"
+          data-cy="box"
           onPointerDown={(e) => hook!.startSpacing(e, "margin", "top")}
         />
       );
@@ -128,4 +128,3 @@ describe("useCanvasSpacing", () => {
     });
   });
 });
-

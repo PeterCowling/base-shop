@@ -158,3 +158,10 @@ test("campaign send invokes scheduler", async () => {
   expect(sendDueCampaigns).toHaveBeenCalled();
   expect(logSpy).toHaveBeenCalledWith("Sent due campaigns");
 });
+
+test("campaign send propagates scheduler errors", async () => {
+  const error = new Error("nope");
+  sendDueCampaigns.mockRejectedValueOnce(error);
+  const { run } = await import("../cli");
+  await expect(run(["node", "email", "campaign", "send"])).rejects.toBe(error);
+});

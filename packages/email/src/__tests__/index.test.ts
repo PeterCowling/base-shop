@@ -7,10 +7,6 @@ const mockReadCampaigns = jest.fn();
 const mockWriteCampaigns = jest.fn();
 const mockListShops = jest.fn();
 
-jest.mock("@acme/platform-core/services/emailService", () => ({
-  setEmailService: jest.fn(),
-}));
-
 jest.mock("../sendEmail", () => ({
   sendEmail: mockSendEmail,
 }));
@@ -40,12 +36,33 @@ describe("email index", () => {
     jest.clearAllMocks();
   });
 
-  it.skip("registers sendEmail with email service on import", async () => {
-    const { setEmailService } = require("@acme/platform-core/services/emailService");
+  it("registers sendEmail with email service on import", async () => {
+    const setEmailService = jest.fn();
+    jest.doMock(
+      "@acme/platform-core/services/emailService",
+      () => ({ setEmailService }),
+      { virtual: true },
+    );
 
     await import("../index");
 
     expect(setEmailService).toHaveBeenCalledWith({ sendEmail: mockSendEmail });
+  });
+
+  it("does not throw if email service module is missing", async () => {
+    jest.unmock("@acme/platform-core/services/emailService");
+    try {
+      // Ensure the module isn't cached so require will attempt to resolve it
+      // and trigger the fallback path in the implementation when absent.
+      const path = require.resolve(
+        "@acme/platform-core/services/emailService",
+      );
+      delete require.cache[path];
+    } catch {
+      // Module is not resolvable in this environment which is acceptable.
+    }
+
+    await expect(import("../index")).resolves.toBeDefined();
   });
 
   it("re-exports public API", async () => {

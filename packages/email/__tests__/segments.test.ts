@@ -114,6 +114,11 @@ describe("cacheTtl", () => {
     process.env.SEGMENT_CACHE_TTL = "-1";
     expect(cacheTtl()).toBe(60000);
   });
+
+  it("returns default when SEGMENT_CACHE_TTL is zero", () => {
+    process.env.SEGMENT_CACHE_TTL = "0";
+    expect(cacheTtl()).toBe(60000);
+  });
 });
 
 describe("segment cache", () => {

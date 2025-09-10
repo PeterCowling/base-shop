@@ -91,6 +91,15 @@ describe("ResendProvider", () => {
     expect(send).not.toHaveBeenCalled();
   });
 
+  it("getCampaignStats returns fallback when fetch rejects", async () => {
+    process.env.RESEND_API_KEY = "rs";
+    global.fetch = jest.fn().mockRejectedValueOnce(new Error("fail")) as any;
+    const { ResendProvider } = await import("../providers/resend");
+    const provider = new ResendProvider();
+    const { emptyStats } = await import("../stats");
+    await expect(provider.getCampaignStats("1")).resolves.toEqual(emptyStats);
+  });
+
   it("getCampaignStats returns fallback when json rejects", async () => {
     process.env.RESEND_API_KEY = "rs";
     global.fetch = jest.fn().mockResolvedValueOnce({

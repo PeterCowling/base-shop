@@ -22,7 +22,7 @@ const products = [
 
 describe("ProductGrid", () => {
   it("renders products with given column count", () => {
-    render(<ProductGrid products={products} columns={2} data-testid="grid" />);
+    render(<ProductGrid products={products} columns={2} data-cy="grid" />);
     expect(screen.getAllByRole("article")).toHaveLength(2);
     expect(screen.getByTestId("grid")).toHaveStyle({
       gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
@@ -45,7 +45,7 @@ describe("ProductGrid", () => {
         products={products}
         minItems={2}
         maxItems={4}
-        data-testid="grid"
+        data-cy="grid"
       />
     );
     const grid = screen.getByTestId("grid") as HTMLElement;
@@ -88,7 +88,7 @@ describe("ProductGrid", () => {
         desktopItems={4}
         tabletItems={2}
         mobileItems={1}
-        data-testid="grid"
+        data-cy="grid"
       />
     );
     const grid = screen.getByTestId("grid") as HTMLElement;

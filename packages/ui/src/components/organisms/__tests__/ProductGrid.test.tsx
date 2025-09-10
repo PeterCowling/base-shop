@@ -105,9 +105,9 @@ jest.mock("../../overlays/ProductQuickView", () => ({
     product: Product;
     onAddToCart: (p: Product) => void;
   }) => (
-    <div data-testid={`quickview-${product.id}`}>
+    <div data-cy={`quickview-${product.id}`}>
       <button
-        data-testid="add-to-cart"
+        data-cy="add-to-cart"
         onClick={() => onAddToCart(product)}
       />
     </div>

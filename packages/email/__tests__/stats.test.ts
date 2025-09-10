@@ -40,10 +40,12 @@ describe("provider stats mapping", () => {
       ...emptyStats,
       delivered: 2,
     });
+    expect(normalizeProviderStats("sendgrid", undefined)).toEqual(emptyStats);
     expect(normalizeProviderStats("resend", { opened: "3" })).toEqual({
       ...emptyStats,
       opened: 3,
     });
+    expect(normalizeProviderStats("resend", undefined)).toEqual(emptyStats);
     expect(normalizeProviderStats("other", { delivered: 99 })).toEqual(emptyStats);
   });
 });

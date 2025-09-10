@@ -72,7 +72,7 @@ function Wrapper({
   }, [search, status, setSearch, setStatus]); // <- added missing deps
 
   return (
-    <span data-testid="ids">{filteredRows.map((p) => p.id).join(",")}</span>
+    <span data-cy="ids">{filteredRows.map((p) => p.id).join(",")}</span>
   );
 }
 

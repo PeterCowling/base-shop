@@ -296,5 +296,46 @@ describe("syncCampaignAnalytics", () => {
       ...stats,
     });
   });
+
+  it("falls back to empty stats when Resend getCampaignStats throws", async () => {
+    jest.resetModules();
+    const trackEvent = jest.fn();
+    jest.doMock("@platform-core/analytics", () => ({
+      __esModule: true,
+      trackEvent,
+    }));
+
+    const getCampaignStats = jest.fn().mockRejectedValue(new Error("boom"));
+    jest.doMock("../src/providers/resend", () => ({
+      ResendProvider: jest.fn().mockImplementation(() => ({ getCampaignStats })),
+    }));
+    jest.doMock("../src/providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+
+    const campaigns = [
+      { id: "c1", recipients: [], subject: "s1", body: "b1", sendAt: "t1", sentAt: "t1" },
+    ];
+    const store = {
+      async listShops() {
+        return ["shop1"];
+      },
+      async readCampaigns() {
+        return campaigns;
+      },
+    };
+    const getCampaignStore = jest.fn().mockReturnValue(store);
+    jest.doMock("../src/storage", () => ({ __esModule: true, getCampaignStore }));
+
+    process.env.EMAIL_PROVIDER = "resend";
+    const { syncCampaignAnalytics, emptyStats } = await import("../src/analytics");
+    await syncCampaignAnalytics();
+
+    expect(getCampaignStats).toHaveBeenCalledTimes(1);
+    expect(trackEvent).toHaveBeenCalledTimes(1);
+    expect(trackEvent).toHaveBeenCalledWith("shop1", {
+      type: "email_campaign_stats",
+      campaign: "c1",
+      ...emptyStats,
+    });
+  });
 });
 

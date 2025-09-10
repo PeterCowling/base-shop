@@ -383,6 +383,39 @@ describe("session token", () => {
     });
   });
 
+  it("destroyCustomerSession clears cookies even when store delete fails", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const error = new Error("boom");
+    const sessionStore = {
+      set: jest.fn(),
+      delete: jest.fn().mockRejectedValue(error),
+    };
+    jest.doMock("../src/store", () => ({
+      __esModule: true,
+      SESSION_TTL_S: 1,
+      createSessionStore: async () => sessionStore,
+    }));
+    const {
+      createCustomerSession,
+      destroyCustomerSession,
+      CUSTOMER_SESSION_COOKIE,
+      CSRF_TOKEN_COOKIE,
+    } = await import("../src/session");
+    await createCustomerSession({ customerId: "abc", role: "customer" as Role });
+    await expect(destroyCustomerSession()).rejects.toThrow(error);
+    expect(store.delete).toHaveBeenCalledWith({
+      name: CUSTOMER_SESSION_COOKIE,
+      path: "/",
+      domain: "example.com",
+    });
+    expect(store.delete).toHaveBeenCalledWith({
+      name: CSRF_TOKEN_COOKIE,
+      path: "/",
+      domain: "example.com",
+    });
+  });
+
   it("destroyCustomerSession clears cookies when SESSION_SECRET missing", async () => {
     await jest.isolateModulesAsync(async () => {
       jest.doMock("@acme/config/env/core", () => ({

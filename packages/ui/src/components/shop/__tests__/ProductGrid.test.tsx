@@ -7,7 +7,7 @@ jest.mock("../../organisms/ProductCard", () => {
   return {
     __esModule: true,
     ProductCard: ({ product, showImage, showPrice, ctaLabel }: any) => (
-      <div data-testid="product-card">
+      <div data-cy="product-card">
         {product.title}-{String(showImage)}-{String(showPrice)}-{ctaLabel}
       </div>
     ),
@@ -19,7 +19,7 @@ jest.mock("../../overlays/ProductQuickView", () => {
   return {
     __esModule: true,
     ProductQuickView: ({ product, open }: any) =>
-      open ? <div data-testid="quick-view">{product.title}</div> : null,
+      open ? <div data-cy="quick-view">{product.title}</div> : null,
   };
 });
 

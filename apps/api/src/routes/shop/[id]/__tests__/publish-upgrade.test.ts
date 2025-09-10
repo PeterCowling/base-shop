@@ -173,7 +173,7 @@ describe("onRequestPost", () => {
 
   it.each([
     ["object", {}],
-    ["string", "foo"],
+    ["string", "not-an-array"],
   ])(
     "locks all dependencies and runs build/deploy when components is a %s",
     async (_type, components) => {
@@ -202,7 +202,9 @@ describe("onRequestPost", () => {
         }),
       });
 
+      const body = await res.json();
       expect(res.status).toBe(200);
+      expect(body).toEqual({ ok: true });
       expect(writeFileSync).toHaveBeenCalledTimes(1);
       const [shopPath, data] = writeFileSync.mock.calls[0];
       expect(shopPath).toContain(`data/shops/${id}/shop.json`);

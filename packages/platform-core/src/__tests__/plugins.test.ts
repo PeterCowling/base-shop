@@ -161,5 +161,49 @@ describe("plugin loader", () => {
     expect(manager.shipping.get('ship')).toBeDefined();
     expect(manager.widgets.get('widget')).toBeDefined();
   });
+
+  it("merges defaultConfig without configSchema and runs registration hooks", async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), "plugin-root-"));
+    jest.spyOn(process, "cwd").mockReturnValue(root);
+    await mkdir(path.join(root, "packages", "plugins"), { recursive: true });
+    const dir = await mkdtemp(path.join(root, "plugin-noschema-"));
+    await writeFile(
+      path.join(dir, "package.json"),
+      JSON.stringify({ name: "noschema", main: "index.js" })
+    );
+    const pluginCode = `
+const callOrder = [];
+module.exports = {
+  default: {
+    id: 'noschema',
+    defaultConfig: { a: 1 },
+    init: (cfg) => { globalThis.mergedConfig = cfg; callOrder.push('init'); },
+    registerPayments: (r) => { callOrder.push('registerPayments'); r.add('pay', { processPayment: () => {} }); },
+    registerShipping: (r) => { callOrder.push('registerShipping'); r.add('ship', { calculateShipping: () => {} }); },
+    registerWidgets: (r) => { callOrder.push('registerWidgets'); r.add('widget', () => null); },
+    callOrder,
+  }
+};
+`;
+    await writeFile(path.join(dir, "index.js"), pluginCode);
+
+    const manager = await initPlugins({
+      plugins: [dir],
+      directories: [],
+      config: { noschema: { b: 2 } },
+    });
+
+    const plugin = manager.getPlugin('noschema')!.plugin as any;
+    expect(plugin.callOrder).toEqual([
+      'init',
+      'registerPayments',
+      'registerShipping',
+      'registerWidgets',
+    ]);
+    expect(manager.payments.get('pay')).toBeDefined();
+    expect(manager.shipping.get('ship')).toBeDefined();
+    expect(manager.widgets.get('widget')).toBeDefined();
+    expect((globalThis as any).mergedConfig).toEqual({ a: 1, b: 2 });
+  });
 });
 

@@ -31,12 +31,13 @@ describe('getShippingRate', () => {
         windows: ['morning'],
         carriers: ['ups'],
         surcharge: 5,
+        serviceLabel: 'Overnight Delivery',
       },
     });
     expect(result).toEqual({
       rate: 0,
       surcharge: 5,
-      serviceLabel: 'Premier Delivery',
+      serviceLabel: 'Overnight Delivery',
     });
   });
 

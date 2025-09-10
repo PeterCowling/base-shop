@@ -102,7 +102,7 @@ export function parseTargetDate(
         ? hasZone
           ? parseISO(targetDate)
           : parseISO(`${targetDate}Z`)
-        : parseISO(`${targetDate}T00:00:00Z`);
+        : parseISO(targetDate);
     }
     return Number.isNaN(date.getTime()) ? null : date;
   } catch {

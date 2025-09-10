@@ -1,4 +1,6 @@
 import type { Role } from "@acme/types";
+import type { Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 
 jest.mock("@acme/shared-utils", () => ({
   logger: {
@@ -145,5 +147,17 @@ describe("session", () => {
 
     expect(result.user).not.toHaveProperty("role");
     expect(logger.debug).toHaveBeenCalledWith("[auth] session role", { role: undefined });
+  });
+});
+
+describe("session callback", () => {
+  it("does not assign role when token lacks it", async () => {
+    const options = createAuthOptions();
+    const sessionCallback = options.callbacks?.session!;
+    const session = { user: {} } as Session & { user: { role?: Role } };
+
+    const result = await sessionCallback({ session, token: {} as JWT });
+
+    expect(result.user.role).toBeUndefined();
   });
 });

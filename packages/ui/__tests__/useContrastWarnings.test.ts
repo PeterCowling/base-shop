@@ -37,6 +37,15 @@ describe("useContrastWarnings", () => {
     expect(result.current).toEqual({ contrast: 3, suggestion: "#123456" });
   });
 
+  it("returns null suggestion when contrast is low but no color suggested", () => {
+    mockGetContrast.mockReturnValue(3);
+    mockSuggestContrastColor.mockReturnValue(null);
+    const { result } = renderHook(() => useContrastWarnings("#000", "#111"));
+    expect(mockGetContrast).toHaveBeenCalledWith("#000", "#111");
+    expect(mockSuggestContrastColor).toHaveBeenCalledWith("#000", "#111");
+    expect(result.current).toEqual({ contrast: 3, suggestion: null });
+  });
+
   it("returns null when colors are missing", () => {
     const { result } = renderHook(() => useContrastWarnings("", "#fff"));
     expect(result.current).toBeNull();

@@ -12,6 +12,7 @@ const {
   markReturned,
   markRefunded,
   refundOrder,
+  markNeedsAttention,
   updateRisk,
   getOrdersForCustomer,
   setReturnTracking,
@@ -527,6 +528,29 @@ describe("orders", () => {
     it("returns null on error", async () => {
       prismaMock.rentalOrder.update.mockRejectedValue(new Error("fail"));
       const result = await updateRisk("shop", "sess");
+      expect(result).toBeNull();
+    });
+  });
+
+  describe("markNeedsAttention", () => {
+    it("flags order for review", async () => {
+      const flagged = { id: "1", flaggedForReview: true };
+      prismaMock.rentalOrder.update.mockResolvedValue(flagged);
+      const result = await markNeedsAttention("shop", "sess");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { flaggedForReview: true },
+      });
+      expect(result).toEqual(flagged);
+    });
+
+    it("returns null when update fails", async () => {
+      prismaMock.rentalOrder.update.mockRejectedValue(new Error("fail"));
+      const result = await markNeedsAttention("shop", "sess");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { flaggedForReview: true },
+      });
       expect(result).toBeNull();
     });
   });

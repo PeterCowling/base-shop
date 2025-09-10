@@ -54,6 +54,24 @@ describe("loadPluginFromDir and loadPlugins", () => {
     expect(plugin).toBe(pluginObj);
   });
 
+  it("returns undefined and logs error when importByType throws", async () => {
+    const resolvePluginEntry = jest
+      .fn()
+      .mockResolvedValue({ entryPath: "/plugin/index.js", isModule: false });
+    const importByType = jest.fn().mockRejectedValue(new Error("boom"));
+    jest.doMock("../src/plugins/resolvers", () => ({ resolvePluginEntry, importByType }));
+    const { logger } = await import("../src/utils");
+    const error = jest.spyOn(logger, "error").mockImplementation(() => {});
+    const { loadPlugin } = await import("../src/plugins");
+    const plugin = await loadPlugin("/plugin");
+    expect(plugin).toBeUndefined();
+    expect(error).toHaveBeenCalledWith(
+      "Failed to import plugin entry",
+      expect.objectContaining({ plugin: "/plugin", entry: "/plugin/index.js", err: expect.any(Error) })
+    );
+    error.mockRestore();
+  });
+
   it("discovers plugin directories and loads plugins", async () => {
     const resolvePluginEnvironment = jest
       .fn()

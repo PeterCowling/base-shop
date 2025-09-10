@@ -3,23 +3,10 @@ import { z } from "zod";
 
 const isProd = process.env.NODE_ENV === "production";
 
-// Normalize AUTH_TOKEN_TTL from the process environment so validation succeeds
-// even if the shell exported a plain number or included stray whitespace.
-// We intentionally skip this in tests to keep existing expectations.
-if (process.env.NODE_ENV !== "test") {
-  const rawTTL = process.env.AUTH_TOKEN_TTL;
-  if (typeof rawTTL === "string") {
-    const trimmed = rawTTL.trim();
-    if (trimmed === "") {
-      // Treat blank as unset so default applies
-      delete process.env.AUTH_TOKEN_TTL;
-    } else if (/^\d+$/.test(trimmed)) {
-      process.env.AUTH_TOKEN_TTL = `${trimmed}s`;
-    } else if (/^(\d+)\s*([sm])$/i.test(trimmed)) {
-      const [, num, unit] = trimmed.match(/^(\d+)\s*([sm])$/i)!;
-      process.env.AUTH_TOKEN_TTL = `${num}${unit.toLowerCase()}`;
-    }
-  }
+// Trim incidental whitespace from AUTH_TOKEN_TTL but otherwise leave the value
+// untouched so validation can surface any issues to the caller.
+if (typeof process.env.AUTH_TOKEN_TTL === "string") {
+  process.env.AUTH_TOKEN_TTL = process.env.AUTH_TOKEN_TTL.trim();
 }
 
 const ttlRegex = /^\d+(s|m)$/i;
@@ -78,7 +65,9 @@ const baseSchema = z.object({
   OAUTH_CLIENT_SECRET: strongSecret.optional(),
 
   AUTH_TOKEN_TTL: z
-    .preprocess((v) => (typeof v === "number" ? undefined : v), z.string().optional())
+    .string()
+    .trim()
+    .optional()
     .default("15m")
     .refine((val) => ttlRegex.test(val), {
       message: "AUTH_TOKEN_TTL must be a string like '60s' or '15m'",
@@ -90,6 +79,8 @@ const baseSchema = z.object({
   ALLOW_GUEST: booleanFromString.default(false),
   ENFORCE_2FA: booleanFromString.default(false),
 });
+
+export const authTokenTtlSchema = baseSchema.shape.AUTH_TOKEN_TTL;
 
 export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
   if (env.SESSION_STORE === "redis") {

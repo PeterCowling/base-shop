@@ -195,60 +195,12 @@ describe("authEnv", () => {
     expect(authEnv.AUTH_TOKEN_TTL).toBe(expected);
   });
 
-  describe("AUTH_TOKEN_TTL normalization", () => {
+  describe("AUTH_TOKEN_TTL validation", () => {
     const baseVars = {
       NODE_ENV: "development",
       NEXTAUTH_SECRET: NEXT_SECRET,
       SESSION_SECRET,
     };
-
-    it("removes blank AUTH_TOKEN_TTL", async () => {
-      const { snapshot, authEnv } = await withEnv(
-        { ...baseVars, AUTH_TOKEN_TTL: "" },
-        async () => {
-          const mod = await import("../src/env/auth");
-          return { snapshot: { ...process.env }, authEnv: mod.authEnv };
-        },
-      );
-      expect(snapshot.AUTH_TOKEN_TTL).toBeUndefined();
-      expect(authEnv.AUTH_TOKEN_TTL).toBe(900);
-    });
-
-    it("appends seconds to numeric AUTH_TOKEN_TTL", async () => {
-      const { snapshot, authEnv } = await withEnv(
-        { ...baseVars, AUTH_TOKEN_TTL: "10" },
-        async () => {
-          const mod = await import("../src/env/auth");
-          return { snapshot: { ...process.env }, authEnv: mod.authEnv };
-        },
-      );
-      expect(snapshot.AUTH_TOKEN_TTL).toBe("10s");
-      expect(authEnv.AUTH_TOKEN_TTL).toBe(10);
-    });
-
-    it("trims and normalizes AUTH_TOKEN_TTL with trailing spaces", async () => {
-      const { snapshot, authEnv } = await withEnv(
-        { ...baseVars, AUTH_TOKEN_TTL: "60 " },
-        async () => {
-          const mod = await import("../src/env/auth");
-          return { snapshot: { ...process.env }, authEnv: mod.authEnv };
-        },
-      );
-      expect(snapshot.AUTH_TOKEN_TTL).toBe("60s");
-      expect(authEnv.AUTH_TOKEN_TTL).toBe(60);
-    });
-
-    it("normalizes AUTH_TOKEN_TTL with spaces before unit", async () => {
-      const { snapshot, authEnv } = await withEnv(
-        { ...baseVars, AUTH_TOKEN_TTL: "5 m" },
-        async () => {
-          const mod = await import("../src/env/auth");
-          return { snapshot: { ...process.env }, authEnv: mod.authEnv };
-        },
-      );
-      expect(snapshot.AUTH_TOKEN_TTL).toBe("5m");
-      expect(authEnv.AUTH_TOKEN_TTL).toBe(300);
-    });
 
     it("throws and logs on invalid AUTH_TOKEN_TTL values", async () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});

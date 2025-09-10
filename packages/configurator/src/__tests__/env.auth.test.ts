@@ -9,16 +9,13 @@ describe('auth env validation', () => {
     jest.restoreAllMocks();
   });
 
-  it('normalises AUTH_TOKEN_TTL values', async () => {
-    const result = await withEnv(
-      { NODE_ENV: 'development', AUTH_TOKEN_TTL: ' 5 m ' },
-      async () => {
-        const mod = await import('@acme/config/src/env/auth.ts');
-        return { ...mod, ttl: process.env.AUTH_TOKEN_TTL };
-      },
-    );
-    expect(result.ttl).toBe('5m');
-    expect(result.authEnv.AUTH_TOKEN_TTL).toBe(300);
+  it('rejects invalid AUTH_TOKEN_TTL values', async () => {
+    await expect(
+      withEnv(
+        { NODE_ENV: 'development', AUTH_TOKEN_TTL: ' 5 m ' },
+        () => import('@acme/config/src/env/auth.ts'),
+      ),
+    ).rejects.toThrow('Invalid auth environment variables');
   });
 
   it('requires both redis credentials when SESSION_STORE=redis (missing token)', async () => {

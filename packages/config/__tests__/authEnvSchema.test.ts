@@ -8,7 +8,7 @@ describe("authEnvSchema.safeParse", () => {
     const result = parse({ AUTH_TOKEN_TTL: 60 });
     expect(result.success).toBe(false);
     expect(result.error.format().AUTH_TOKEN_TTL?._errors).toContain(
-      "AUTH_TOKEN_TTL must be a string like '60s' or '15m'",
+      "Expected string, received number",
     );
   });
 

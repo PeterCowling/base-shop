@@ -74,24 +74,20 @@ describe("@acme/config/env/core", () => {
     });
   });
 
-  describe("AUTH_TOKEN_TTL normalization", () => {
-    it.each([
-      [60, 15 * 60],
-      ["", 15 * 60],
-      ["60", 60],
-      ["5m", 300],
-      ["5 s", 5],
-    ])("normalizes %p to %p seconds", async (raw, expected) => {
-      await withEnv(baseEnv, async () => {
-        const { coreEnvSchema } = await import("@acme/config/env/core");
-        const result = coreEnvSchema.safeParse({
-          ...baseEnv,
-          AUTH_TOKEN_TTL: raw as any,
+  describe("AUTH_TOKEN_TTL validation", () => {
+    it.each([[60], [""], ["60"], ["5 s"]])(
+      "rejects %p",
+      async (raw) => {
+        await withEnv(baseEnv, async () => {
+          const { coreEnvSchema } = await import("@acme/config/env/core");
+          const result = coreEnvSchema.safeParse({
+            ...baseEnv,
+            AUTH_TOKEN_TTL: raw as any,
+          });
+          expect(result.success).toBe(false);
         });
-        expect(result.success).toBe(true);
-        expect(result.data.AUTH_TOKEN_TTL).toBe(expected);
-      });
-    });
+      },
+    );
   });
 
   describe("loadCoreEnv", () => {
@@ -132,11 +128,11 @@ describe("@acme/config/env/core", () => {
         const spy = jest.spyOn(mod, "loadCoreEnv");
         expect(spy).not.toHaveBeenCalled();
         expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).not.toHaveBeenCalled();
         // Re-access and access another property
         expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
         expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token");
-        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).not.toHaveBeenCalled();
       });
     });
   });

@@ -407,30 +407,6 @@ describe("coreEnv extras", () => {
 });
 
 
-describe("AUTH_TOKEN_TTL normalization", () => {
-  const base = {
-    NODE_ENV: "production",
-    CMS_SPACE_URL: "https://example.com",
-    CMS_ACCESS_TOKEN: "token",
-    SANITY_API_VERSION: "v1",
-    NEXTAUTH_SECRET: NEXT_SECRET,
-    SESSION_SECRET,
-  } as const;
-
-  it.each([
-    ["60", 60],
-    ["2 m", 120],
-  ])("normalizes %s", async (ttl, expected) => {
-    await withEnv(
-      { ...base, AUTH_TOKEN_TTL: ttl },
-      async () => {
-        const { loadCoreEnv } = await importCore();
-        const env = loadCoreEnv();
-        expect(env.AUTH_TOKEN_TTL).toBe(expected);
-      },
-    );
-  });
-});
 
 describe("SESSION_STORE cross-field validation", () => {
   const base = {

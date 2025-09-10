@@ -1155,38 +1155,7 @@ describe("auth providers and tokens", () => {
     });
   });
 
-  it("normalizes numeric AUTH_TOKEN_TTL without unit", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2020-01-01T00:00:00Z"));
-    await withEnv({ AUTH_TOKEN_TTL: "60" }, async () => {
-      const { authEnv } = await import("../auth.ts");
-      expect(authEnv.AUTH_TOKEN_TTL).toBe(60);
-      expect(authEnv.AUTH_TOKEN_EXPIRES_AT.toISOString()).toBe(
-        "2020-01-01T00:01:00.000Z",
-      );
-    });
-  });
-
-  it("normalizes AUTH_TOKEN_TTL with whitespace and unit", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2020-01-01T00:00:00Z"));
-    await withEnv({ AUTH_TOKEN_TTL: " 5 m " }, async () => {
-      const { authEnv } = await import("../auth.ts");
-      expect(authEnv.AUTH_TOKEN_TTL).toBe(300);
-      expect(authEnv.AUTH_TOKEN_EXPIRES_AT.toISOString()).toBe(
-        "2020-01-01T00:05:00.000Z",
-      );
-    });
-  });
-
-  it("defaults AUTH_TOKEN_TTL when blank", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2020-01-01T00:00:00Z"));
-    await withEnv({ AUTH_TOKEN_TTL: "   " }, async () => {
-      const { authEnv } = await import("../auth.ts");
-      expect(authEnv.AUTH_TOKEN_TTL).toBe(900);
-      expect(authEnv.AUTH_TOKEN_EXPIRES_AT.toISOString()).toBe(
-        "2020-01-01T00:15:00.000Z",
-      );
-    });
-  });
+  // Normalization tests removed; TTL values without proper units should now cause validation errors.
 
   it("allows HS256 algorithm", async () => {
     await withEnv({ TOKEN_ALGORITHM: "HS256" }, async () => {

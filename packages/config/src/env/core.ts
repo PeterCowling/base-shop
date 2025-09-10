@@ -6,7 +6,6 @@ import { cmsEnvSchema } from "./cms.js";
 import { emailEnvSchema } from "./email.js";
 import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
-import { createRequire } from "module";
 
 const isProd = process.env.NODE_ENV === "production";
 
@@ -107,7 +106,7 @@ export const coreEnvBaseSchema = authInner
   .merge(shippingEnvSchema.innerType())
   .merge(baseEnvSchema)
   .extend({
-    AUTH_TOKEN_TTL: z.union([z.string(), z.number()]).optional(),
+    AUTH_TOKEN_TTL: z.string().optional(),
   });
 
 export function depositReleaseEnvRefinement(
@@ -148,26 +147,11 @@ export function depositReleaseEnvRefinement(
 export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
   depositReleaseEnvRefinement(env, ctx);
 
-  // Normalize AUTH_TOKEN_TTL before delegating to the auth schema so builds
-  // don't fail if the value is provided as a plain number or contains
-  // incidental whitespace.
   const envForAuth: Record<string, unknown> = {
     ...(env as Record<string, unknown>),
   };
-  const rawTtl = envForAuth.AUTH_TOKEN_TTL;
-  if (typeof rawTtl === "number") {
-    // Let auth schema default to 15m when undefined
-    delete envForAuth.AUTH_TOKEN_TTL;
-  } else if (typeof rawTtl === "string") {
-    const trimmed = rawTtl.trim();
-    if (trimmed === "") {
-      delete envForAuth.AUTH_TOKEN_TTL;
-    } else if (/^\d+$/.test(trimmed)) {
-      envForAuth.AUTH_TOKEN_TTL = `${trimmed}s`;
-    } else if (/^(\d+)\s*([sm])$/i.test(trimmed)) {
-      const [, num, unit] = trimmed.match(/^(\d+)\s*([sm])$/i)!;
-      envForAuth.AUTH_TOKEN_TTL = `${num}${unit.toLowerCase()}`;
-    }
+  if (typeof envForAuth.AUTH_TOKEN_TTL === "string") {
+    envForAuth.AUTH_TOKEN_TTL = envForAuth.AUTH_TOKEN_TTL.trim();
   }
 
   const authResult = authEnvSchema.safeParse(envForAuth);
@@ -201,13 +185,9 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
 
 // Lazy proxy; no import-time parse in dev.
 let __cachedCoreEnv: CoreEnv | null = null;
-const nodeRequire =
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  typeof require !== "undefined" ? require : createRequire(eval("import.meta.url"));
 function getCoreEnv(): CoreEnv {
   if (!__cachedCoreEnv) {
-    const mod = nodeRequire("./core.js") as typeof import("./core.js");
-    __cachedCoreEnv = mod.loadCoreEnv();
+    __cachedCoreEnv = loadCoreEnv();
   }
   return __cachedCoreEnv;
 }

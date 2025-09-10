@@ -223,48 +223,12 @@ describe("auth-env", () => {
     });
   });
 
-  describe("AUTH_TOKEN_TTL preprocessing", () => {
+  describe("AUTH_TOKEN_TTL validation", () => {
     const base = {
       NODE_ENV: "development",
       NEXTAUTH_SECRET: NEXT_SECRET,
       SESSION_SECRET,
     } as const;
-
-    it("appends seconds to numeric strings", async () => {
-      const { snapshot, authEnv } = await withEnv(
-        { ...base, AUTH_TOKEN_TTL: "60" },
-        async () => {
-          const mod = await import("../src/env/auth");
-          return { snapshot: { ...process.env }, authEnv: mod.authEnv };
-        },
-      );
-      expect(snapshot.AUTH_TOKEN_TTL).toBe("60s");
-      expect(authEnv.AUTH_TOKEN_TTL).toBe(60);
-    });
-
-    it("parses minute strings", async () => {
-      const { snapshot, authEnv } = await withEnv(
-        { ...base, AUTH_TOKEN_TTL: "2m" },
-        async () => {
-          const mod = await import("../src/env/auth");
-          return { snapshot: { ...process.env }, authEnv: mod.authEnv };
-        },
-      );
-      expect(snapshot.AUTH_TOKEN_TTL).toBe("2m");
-      expect(authEnv.AUTH_TOKEN_TTL).toBe(120);
-    });
-
-    it("defaults when blank", async () => {
-      const { snapshot, authEnv } = await withEnv(
-        { ...base, AUTH_TOKEN_TTL: "" },
-        async () => {
-          const mod = await import("../src/env/auth");
-          return { snapshot: { ...process.env }, authEnv: mod.authEnv };
-        },
-      );
-      expect(snapshot.AUTH_TOKEN_TTL).toBeUndefined();
-      expect(authEnv.AUTH_TOKEN_TTL).toBe(900);
-    });
 
     it("rejects numeric values", async () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});

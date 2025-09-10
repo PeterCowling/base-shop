@@ -308,48 +308,6 @@ describe("boolean coercions and defaults", () => {
   });
 });
 
-describe("AUTH_TOKEN_TTL normalization", () => {
-  const baseVars = {
-    NODE_ENV: "production",
-    NEXTAUTH_SECRET: NEXT_SECRET,
-    SESSION_SECRET,
-  };
-
-  it("removes blank AUTH_TOKEN_TTL", async () => {
-    await withEnv(
-      { ...baseVars, AUTH_TOKEN_TTL: "" },
-      async () => {
-        await import("../auth");
-        expect(process.env.AUTH_TOKEN_TTL).toBeUndefined();
-      },
-    );
-  });
-
-  it("appends seconds to numeric AUTH_TOKEN_TTL", async () => {
-    await withEnv(
-      { ...baseVars, AUTH_TOKEN_TTL: "60" },
-      async () => {
-        await import("../auth");
-        expect(process.env.AUTH_TOKEN_TTL).toBe("60s");
-      },
-    );
-  });
-
-  it.each([
-    ["15m", "15m"],
-    ["30 s", "30s"],
-    ["45S", "45s"],
-    [" 5 M ", "5m"],
-  ])("normalizes unit string '%s' to '%s'", async (input, output) => {
-    await withEnv(
-      { ...baseVars, AUTH_TOKEN_TTL: input },
-      async () => {
-        await import("../auth");
-        expect(process.env.AUTH_TOKEN_TTL).toBe(output);
-      },
-    );
-  });
-});
 
 describe("authEnv expiry", () => {
   it("sets AUTH_TOKEN_EXPIRES_AT based on AUTH_TOKEN_TTL", async () => {
@@ -368,23 +326,7 @@ describe("authEnv expiry", () => {
     expect(diff).toBeLessThan(2000);
   });
 
-  it("normalizes TTL before computing expiration", async () => {
-    jest.useFakeTimers().setSystemTime(new Date("2020-01-01T00:00:00Z"));
-    const { authEnv } = await withEnv(
-      {
-        NODE_ENV: "production",
-        NEXTAUTH_SECRET: NEXT_SECRET,
-        SESSION_SECRET,
-        AUTH_TOKEN_TTL: " 2 M ",
-      },
-      () => import("../auth"),
-    );
-    expect(authEnv.AUTH_TOKEN_TTL).toBe(120);
-    expect(authEnv.AUTH_TOKEN_EXPIRES_AT.toISOString()).toBe(
-      "2020-01-01T00:02:00.000Z",
-    );
-    jest.useRealTimers();
-  });
+  // Removed normalization test; TTL strings must include units without extra spacing.
 });
 
 describe("AUTH_TOKEN_TTL parsing", () => {
@@ -395,7 +337,7 @@ describe("AUTH_TOKEN_TTL parsing", () => {
   } as const;
 
   it.each([
-    ["60", 60],
+    ["60s", 60],
     ["2m", 120],
   ])("converts %s into %d seconds", async (input, expected) => {
     const { authEnv } = await withEnv(
@@ -408,7 +350,7 @@ describe("AUTH_TOKEN_TTL parsing", () => {
   it("rejects invalid TTL strings", async () => {
     await expect(
       withEnv(
-        { ...base, AUTH_TOKEN_TTL: "1h" },
+        { ...base, AUTH_TOKEN_TTL: "60" },
         () => import("../auth"),
       ),
     ).rejects.toThrow("Invalid auth environment variables");

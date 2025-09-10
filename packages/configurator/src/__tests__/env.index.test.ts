@@ -77,7 +77,7 @@ describe("env/index", () => {
     await withEnv(
       {
         NODE_ENV: "development",
-        AUTH_TOKEN_TTL: "10",
+        AUTH_TOKEN_TTL: "10s",
         SESSION_STORE: "redis",
         UPSTASH_REDIS_REST_URL: "https://redis.example.com",
       },

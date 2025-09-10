@@ -1,6 +1,7 @@
 // packages/config/src/env/index.ts
 import "@acme/zod-utils/initZod";
 import { z, type AnyZodObject } from "zod";
+import { authTokenTtlSchema } from "./auth.js";
 import { coreEnvBaseSchema, depositReleaseEnvRefinement } from "./core.js";
 import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
@@ -43,8 +44,22 @@ if (!parsed.success) {
   throw new Error("Invalid environment variables");
 }
 
-export const env = parsed.data;
-export type Env = z.infer<typeof envSchema>;
+const ttlResult = authTokenTtlSchema.safeParse(parsed.data.AUTH_TOKEN_TTL);
+if (!ttlResult.success) {
+  console.error(
+    "❌ Invalid auth environment variables:",
+    ttlResult.error.format(),
+  );
+  throw new Error("Invalid auth environment variables");
+}
+
+export const env = {
+  ...parsed.data,
+  AUTH_TOKEN_TTL: ttlResult.data,
+};
+export type Env = Omit<z.infer<typeof envSchema>, "AUTH_TOKEN_TTL"> & {
+  AUTH_TOKEN_TTL: z.infer<typeof authTokenTtlSchema>;
+};
 
 export * from "./auth.js";
 export * from "./cms.js";

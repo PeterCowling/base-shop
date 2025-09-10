@@ -41,11 +41,16 @@ describe("ResendProvider", () => {
 
   it("resolves when sanity check succeeds", async () => {
     process.env.RESEND_API_KEY = "rs";
-    global.fetch = jest.fn().mockResolvedValue({ ok: true }) as any;
+    const fetchMock = jest.fn().mockResolvedValue({ ok: true }) as any;
+    global.fetch = fetchMock;
     const { ResendProvider } = await import("../providers/resend");
     await expect(
       new ResendProvider({ sanityCheck: true }).ready
     ).resolves.toBeUndefined();
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://api.resend.com/domains",
+      { headers: { Authorization: "Bearer rs" } }
+    );
   });
 
   it("rejects when sanity check fetch fails", async () => {

@@ -78,9 +78,10 @@ describe("settings repository", () => {
       expect(writeSpy).toHaveBeenCalled();
       const tmpPath = (writeSpy.mock.calls[0] as any)[0];
       expect(tmpPath).toMatch(/settings\.json\.\d+\.tmp$/);
+      const { DATA_ROOT } = await import("../src/dataRoot");
       expect(renameSpy).toHaveBeenCalledWith(
         tmpPath,
-        path.join(dir, "data", "shops", shop, "settings.json")
+        path.join(DATA_ROOT, shop, "settings.json")
       );
       expect(appendSpy).toHaveBeenCalled();
 

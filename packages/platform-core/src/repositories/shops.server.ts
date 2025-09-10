@@ -5,9 +5,8 @@ import { promises as fs } from "fs";
 import { shopSchema, type Shop } from "@acme/types";
 import { defaultFilterMappings } from "../defaultFilterMappings";
 import { DATA_ROOT } from "../dataRoot";
-import { prisma } from "../db";
 import { baseTokens, loadThemeTokens } from "../themeTokens/index";
-import { updateShopInRepo } from "./shop.server";
+import { getShopById, updateShopInRepo } from "./shop.server";
 export {
   diffHistory,
   getShopSettings,
@@ -35,11 +34,8 @@ export async function applyThemeData(data: Shop): Promise<Shop> {
 
 export async function readShop(shop: string): Promise<Shop> {
   try {
-    const rec = await prisma.shop.findUnique({ where: { id: shop } });
-    if (rec) {
-      const data = shopSchema.parse(rec.data);
-      return await applyThemeData(data as Shop);
-    }
+    const data = await getShopById<Shop>(shop);
+    return await applyThemeData(data);
   } catch {
     // ignore and fall through
   }

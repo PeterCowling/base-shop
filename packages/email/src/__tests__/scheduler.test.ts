@@ -191,16 +191,16 @@ describe("scheduler", () => {
       shop,
       recipients: ["a@example.com"],
       subject: "Link",
-      body: '<p><a href="https://example.com/page">Link</a> %%UNSUBSCRIBE%%</p>',
+      body: '<p><a href="https://example.com/page?x=1&y=2">Link</a> %%UNSUBSCRIBE%%</p>',
     });
     const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0].html as string;
     expect(html).toContain(
       "/api/marketing/email/click?shop=test-shop&campaign=",
     );
     expect(html).toContain(
-      "url=https%3A%2F%2Fexample.com%2Fpage",
+      "url=https%3A%2F%2Fexample.com%2Fpage%3Fx%3D1%26y%3D2",
     );
-    expect(html).not.toContain('href="https://example.com/page"');
+    expect(html).not.toContain('href="https://example.com/page?x=1&y=2"');
   });
 
   test("trackedBody includes base URL and tracking wrappers", async () => {

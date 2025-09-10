@@ -1,4 +1,4 @@
-import { formatPrice } from '../../formatPrice';
+import { formatPrice } from '../../formatPrice.ts';
 
 describe('formatPrice', () => {
   it('formats using USD by default', () => {

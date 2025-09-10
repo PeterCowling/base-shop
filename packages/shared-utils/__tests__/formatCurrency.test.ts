@@ -1,4 +1,4 @@
-import { formatCurrency } from '../src/formatCurrency';
+import { formatCurrency } from '../src/formatCurrency.ts';
 
 describe('formatCurrency', () => {
   it('formats using the runtime default locale when no locale is provided', () => {

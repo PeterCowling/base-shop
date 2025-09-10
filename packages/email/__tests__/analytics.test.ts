@@ -45,6 +45,23 @@ describe("mapSendGridEvent", () => {
     expect(mapSendGridEvent({ event: "processed" })).toBeNull();
   });
 
+  it("maps category strings to campaigns", async () => {
+    setupMocks();
+    const { mapSendGridEvent } = await import("../src/analytics");
+    const ev = {
+      event: "open",
+      category: "camp1",
+      sg_message_id: "m1",
+      email: "user@example.com",
+    } as const;
+    expect(mapSendGridEvent(ev)).toEqual<EmailAnalyticsEvent>({
+      type: "email_open",
+      campaign: "camp1",
+      messageId: "m1",
+      recipient: "user@example.com",
+    });
+  });
+
   it("uses the first value from category arrays", async () => {
     setupMocks();
     const { mapSendGridEvent } = await import("../src/analytics");

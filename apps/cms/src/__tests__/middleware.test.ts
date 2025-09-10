@@ -30,6 +30,15 @@ describe("middleware", () => {
     expect(res.headers.get("x-middleware-next")).toBe("1");
   });
 
+  it("allows GET api requests without tokens", async () => {
+    const req = new NextRequest("http://example.com/api/test");
+    const res = await middleware(req);
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("x-middleware-next")).toBe("1");
+    expect(getTokenMock).not.toHaveBeenCalled();
+  });
+
   it("redirects unauthenticated requests to /login with callbackUrl", async () => {
     getTokenMock.mockResolvedValue(null);
 

@@ -2,6 +2,32 @@ import { buildMetrics } from "../analytics";
 import type { AnalyticsEvent, AnalyticsAggregates } from "@platform-core/analytics";
 
 describe("buildMetrics", () => {
+  it("returns empty metrics for no events and no aggregates", () => {
+    const metrics = buildMetrics([]);
+
+    const emptySeries = { labels: [], data: [] };
+
+    expect(metrics.traffic).toEqual(emptySeries);
+    expect(metrics.sales).toEqual(emptySeries);
+    expect(metrics.conversion).toEqual(emptySeries);
+    expect(metrics.emailOpens).toEqual(emptySeries);
+    expect(metrics.emailClicks).toEqual(emptySeries);
+    expect(metrics.campaignSales).toEqual(emptySeries);
+    expect(metrics.discountRedemptions).toEqual(emptySeries);
+    expect(metrics.aiCrawl).toEqual(emptySeries);
+    expect(metrics.discountRedemptionsByCode).toEqual({
+      labels: [],
+      datasets: [],
+    });
+    expect(metrics.totals).toEqual({
+      emailOpens: 0,
+      emailClicks: 0,
+      campaignSales: 0,
+      campaignSaleCount: 0,
+      discountRedemptions: 0,
+      aiCrawl: 0,
+    });
+  });
   it("computes metrics from aggregates", () => {
     const aggregates: AnalyticsAggregates = {
       page_view: {

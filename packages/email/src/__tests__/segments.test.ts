@@ -75,10 +75,14 @@ describe("readSegments", () => {
 });
 
 describe("provider functions", () => {
+  const realFetch = global.fetch;
   afterEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
+    global.fetch = realFetch;
     delete process.env.EMAIL_PROVIDER;
+    delete process.env.SENDGRID_API_KEY;
+    delete process.env.SENDGRID_MARKETING_KEY;
   });
 
   it("createContact returns empty string when EMAIL_PROVIDER is unset", async () => {
@@ -94,6 +98,19 @@ describe("provider functions", () => {
   it("listSegments returns empty array when EMAIL_PROVIDER is unset", async () => {
     const { listSegments } = await import("../segments");
     await expect(listSegments()).resolves.toEqual([]);
+  });
+
+  it("createContact calls fetch with marketing key when API key missing", async () => {
+    jest.unmock("../providers/sendgrid");
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      json: () => Promise.resolve({ persisted_recipients: ["id1"] }),
+    }) as any;
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    process.env.SENDGRID_MARKETING_KEY = "mk";
+    delete process.env.SENDGRID_API_KEY;
+    const { createContact } = await import("../segments");
+    await createContact("user@example.com");
+    expect(global.fetch).toHaveBeenCalled();
   });
 
   it("createContact returns empty string when provider lacks createContact", async () => {

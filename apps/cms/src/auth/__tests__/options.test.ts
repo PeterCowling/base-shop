@@ -2,6 +2,15 @@ import { createAuthOptions } from "../options";
 import type { Role } from "@acme/types";
 
 describe("authorize", () => {
+  it("returns null when no credentials provided", async () => {
+    const options = createAuthOptions();
+    const authorize = (options.providers[0] as any).options.authorize as (
+      credentials?: unknown
+    ) => Promise<unknown>;
+
+    await expect(authorize(undefined)).resolves.toBeNull();
+  });
+
   it("throws on plain-text password", async () => {
     const readRbac = jest.fn().mockResolvedValue({
       users: {

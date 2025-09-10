@@ -207,6 +207,26 @@ describe("send core helpers", () => {
       );
     });
 
+    it("surfaces renderTemplate errors", async () => {
+      const err = new Error("render fail");
+      mockRenderTemplate.mockImplementation(() => {
+        throw err;
+      });
+      await jest.isolateModulesAsync(async () => {
+        process.env.EMAIL_PROVIDER = "sendgrid";
+        process.env.SENDGRID_API_KEY = "sg";
+        const { sendCampaignEmail } = await import("../send");
+        await expect(
+          sendCampaignEmail({
+            to: "to@example.com",
+            subject: "Sub",
+            templateId: "welcome",
+            sanitize: false,
+          })
+        ).rejects.toThrow("render fail");
+      });
+    });
+
     it("sanitizes HTML when enabled", async () => {
       const providerSend = jest.fn().mockResolvedValue(undefined);
       SendgridProvider.mockImplementation(() => ({ send: providerSend }));

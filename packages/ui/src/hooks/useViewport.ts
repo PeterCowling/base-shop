@@ -3,6 +3,7 @@ import type { Viewport } from "../components/organisms/types";
 
 const getViewport = (): Viewport => {
   if (typeof window === "undefined") return "desktop";
+  if (typeof window.matchMedia !== "function") return "desktop";
   if (window.matchMedia("(min-width: 1024px)").matches) return "desktop";
   if (window.matchMedia("(min-width: 768px)").matches) return "tablet";
   return "mobile";

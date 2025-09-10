@@ -72,6 +72,9 @@ export function formatDate(
   timezone?: string
 ): string {
   const d = typeof date === "string" ? parseISO(date) : date;
+  if (/[YD]/.test(fmt)) {
+    throw new RangeError("Invalid format pattern");
+  }
   return timezone ? formatInTimeZone(d, timezone, fmt) : format(d, fmt);
 }
 
@@ -102,7 +105,7 @@ export function parseTargetDate(
         ? hasZone
           ? parseISO(targetDate)
           : parseISO(`${targetDate}Z`)
-        : parseISO(targetDate);
+        : parseISO(`${targetDate}T00:00:00Z`);
     }
     return Number.isNaN(date.getTime()) ? null : date;
   } catch {

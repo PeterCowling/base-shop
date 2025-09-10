@@ -29,10 +29,10 @@ describe('shipping index', () => {
         windows: ['AM', 'PM'],
         carriers: ['bike', 'van'],
         surcharge: 4.5,
-        serviceLabel: 'Premier Delivery',
+        serviceLabel: 'Express Delivery',
       },
     });
-    expect(res).toEqual({ rate: 0, surcharge: 4.5, serviceLabel: 'Premier Delivery' });
+    expect(res).toEqual({ rate: 0, surcharge: 4.5, serviceLabel: 'Express Delivery' });
   });
 
   it('validates premier delivery configuration and rejects invalid region/window/carrier', async () => {

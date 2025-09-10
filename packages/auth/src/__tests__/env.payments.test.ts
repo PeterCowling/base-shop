@@ -18,6 +18,7 @@ describe("payments env provider", () => {
         PAYMENTS_PROVIDER: "stripe",
         STRIPE_SECRET_KEY: "sk_live_123",
         STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
       },
       () => import("@acme/config/env/payments"),
     );

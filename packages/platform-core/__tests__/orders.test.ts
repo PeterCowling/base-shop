@@ -474,6 +474,12 @@ describe("orders", () => {
       });
       expect(result).toBeNull();
     });
+
+    it("returns null on error", async () => {
+      prismaMock.rentalOrder.update.mockRejectedValue(new Error("fail"));
+      const result = await updateRisk("shop", "sess");
+      expect(result).toBeNull();
+    });
   });
 
   describe("getOrdersForCustomer", () => {

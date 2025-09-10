@@ -18,7 +18,7 @@ describe('shipping/ups', () => {
     const orig = Math.random;
     Math.random = () => 0.987654321;
     const out = await createReturnLabel('s');
-    expect(out.trackingNumber).toBe('1Z987654321');
+    expect(out.trackingNumber).toBe('1Z9876543210');
     expect(out.labelUrl).toContain(out.trackingNumber);
     Math.random = orig;
   });

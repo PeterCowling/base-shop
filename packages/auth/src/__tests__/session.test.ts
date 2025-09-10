@@ -558,3 +558,34 @@ it("destroyCustomerSession ignores invalid token", async () => {
   });
 });
 
+it("destroyCustomerSession clears cookies when session cookie is malformed", async () => {
+  const {
+    destroyCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+    CSRF_TOKEN_COOKIE,
+  } = await import("../session");
+
+  mockCookies.get.mockReturnValue({ value: "malformed" });
+  unsealData.mockImplementationOnce(async () => {
+    throw new Error("bad");
+  });
+
+  await expect(destroyCustomerSession()).resolves.toBeUndefined();
+
+  expect(unsealData).toHaveBeenCalledWith("malformed", {
+    password: "secret",
+    ttl: SESSION_TTL_S_MOCK,
+  });
+  expect(mockSessionStore.delete).not.toHaveBeenCalled();
+  expect(mockCookies.delete).toHaveBeenCalledWith({
+    name: CUSTOMER_SESSION_COOKIE,
+    path: "/",
+    domain: "example.com",
+  });
+  expect(mockCookies.delete).toHaveBeenCalledWith({
+    name: CSRF_TOKEN_COOKIE,
+    path: "/",
+    domain: "example.com",
+  });
+});
+

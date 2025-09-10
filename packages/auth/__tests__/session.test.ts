@@ -179,6 +179,21 @@ describe("session token", () => {
     });
   });
 
+  it("returns null when session cookie is missing", async () => {
+    jest.resetModules();
+    delete process.env.SESSION_SECRET;
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: {
+        SESSION_SECRET: undefined,
+        COOKIE_DOMAIN: process.env.COOKIE_DOMAIN,
+      },
+    }));
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { getCustomerSession } = await import("../src/session");
+    await expect(getCustomerSession()).resolves.toBeNull();
+  });
+
   it("throws when SESSION_SECRET is missing", async () => {
     jest.resetModules();
     delete process.env.SESSION_SECRET;

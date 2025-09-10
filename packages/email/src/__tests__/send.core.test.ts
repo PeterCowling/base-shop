@@ -226,6 +226,28 @@ describe("send core helpers", () => {
       );
     });
 
+    it("removes style attributes by default", async () => {
+      const providerSend = jest.fn().mockResolvedValue(undefined);
+      SendgridProvider.mockImplementation(() => ({ send: providerSend }));
+      mockSanitizeHtml.mockImplementation((html: string) =>
+        html.replace(/ style=".*?"/g, "")
+      );
+      await jest.isolateModulesAsync(async () => {
+        process.env.EMAIL_PROVIDER = "sendgrid";
+        process.env.SENDGRID_API_KEY = "sg";
+        const { sendCampaignEmail } = await import("../send");
+        await sendCampaignEmail({
+          to: "t",
+          subject: "s",
+          html: '<p style="color:red">Hi</p>',
+        });
+      });
+      expect(mockSanitizeHtml).toHaveBeenCalled();
+      expect(providerSend).toHaveBeenCalledWith(
+        expect.objectContaining({ html: '<p>Hi</p>' })
+      );
+    });
+
     it("throws for invalid EMAIL_PROVIDER", async () => {
       await jest.isolateModulesAsync(async () => {
         const { sendCampaignEmail } = await import("../send");

@@ -16,11 +16,18 @@ jest.mock("../src/send", () => ({
   sendCampaignEmail: jest.fn(),
 }));
 
+jest.mock("../src/analytics", () => ({
+  __esModule: true,
+  syncCampaignAnalytics: jest.fn(),
+}));
+
 let setClock: typeof import("../src/scheduler").setClock;
 let createCampaign: typeof import("../src/scheduler").createCampaign;
 let sendDueCampaigns: typeof import("../src/scheduler").sendDueCampaigns;
+let syncCampaignAnalytics: typeof import("../src/scheduler").syncCampaignAnalytics;
 let mockedSend: jest.Mock;
 let mockListEvents: jest.Mock;
+let mockFetchCampaignAnalytics: jest.Mock;
 
 jest.setTimeout(10000);
 
@@ -46,12 +53,14 @@ describe("scheduler", () => {
     };
     setCampaignStore(store);
     now = new Date("2020-01-01T00:00:00Z");
-    ({ setClock, createCampaign, sendDueCampaigns } = await import("../src/scheduler"));
+    ({ setClock, createCampaign, sendDueCampaigns, syncCampaignAnalytics } = await import("../src/scheduler"));
     ({ sendCampaignEmail: mockedSend } = (await import("../src/send")) as any);
     ({ listEvents: mockListEvents } = (await import("@platform-core/repositories/analytics.server")) as any);
+    ({ syncCampaignAnalytics: mockFetchCampaignAnalytics } = (await import("../src/analytics")) as any);
     setClock({ now: () => now });
     mockedSend.mockResolvedValue(undefined);
     mockListEvents.mockResolvedValue([]);
+    mockFetchCampaignAnalytics.mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -121,5 +130,11 @@ describe("scheduler", () => {
     ).rejects.toThrow("boom");
 
     expect(memory[shop]).toBeUndefined();
+  });
+
+  test("syncCampaignAnalytics handles analytics failures gracefully", async () => {
+    mockFetchCampaignAnalytics.mockRejectedValueOnce(new Error("fail"));
+    await expect(syncCampaignAnalytics()).resolves.toBeUndefined();
+    expect(mockFetchCampaignAnalytics).toHaveBeenCalled();
   });
 });

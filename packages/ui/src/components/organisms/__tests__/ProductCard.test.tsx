@@ -14,6 +14,9 @@ jest.mock("@acme/platform-core/contexts/CartContext", () => ({
 }));
 
 describe("ProductCard", () => {
+  beforeEach(() => {
+    dispatch.mockClear();
+  });
   const product: SKU = {
     id: "1",
     slug: "test-product",
@@ -38,5 +41,42 @@ describe("ProductCard", () => {
 
     await user.click(screen.getByRole("button", { name: /add to cart/i }));
     expect(dispatch).toHaveBeenCalledWith({ type: "add", sku: product });
+  });
+
+  it("renders a video media item", () => {
+    const videoProduct: SKU = {
+      ...product,
+      media: [{ url: "/video.mp4", type: "video" }],
+    };
+    const { container } = render(<ProductCard product={videoProduct} />);
+
+    const video = container.querySelector("video");
+    expect(video).toBeInTheDocument();
+  });
+
+  it("supports layout props and onAddToCart callback", async () => {
+    const user = userEvent.setup();
+    const onAdd = jest.fn();
+    const { container } = render(
+      <ProductCard
+        product={product}
+        onAddToCart={onAdd}
+        showImage={false}
+        showPrice={false}
+        width={100}
+        height={200}
+        padding="p-2"
+      />
+    );
+
+    const card = container.firstChild as HTMLElement;
+    expect(screen.queryByAltText("Test Product")).not.toBeInTheDocument();
+    expect(screen.queryByText("$9.99")).not.toBeInTheDocument();
+    expect(card).toHaveStyle({ width: "100px", height: "200px" });
+    expect(card).toHaveClass("p-2");
+
+    await user.click(screen.getByRole("button", { name: /add to cart/i }));
+    expect(onAdd).toHaveBeenCalledWith(product);
+    expect(dispatch).not.toHaveBeenCalled();
   });
 });

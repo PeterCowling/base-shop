@@ -229,5 +229,35 @@ describe("setupSanityBlog", () => {
     consoleErrorSpy.mockRestore();
     fetchSpy.mockRestore();
   });
+
+  it("returns UNKNOWN_ERROR when listRes.json throws", async () => {
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const fetchSpy = jest
+      .spyOn(global, "fetch" as any)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => {
+          throw new Error("json fail");
+        },
+      });
+
+    const res = await setupSanityBlog(creds, { enabled: true });
+
+    expect(res).toEqual({
+      success: false,
+      error: "json fail",
+      code: "UNKNOWN_ERROR",
+    });
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "[setupSanityBlog]",
+      expect.any(Error),
+    );
+
+    consoleErrorSpy.mockRestore();
+    fetchSpy.mockRestore();
+  });
 });
 

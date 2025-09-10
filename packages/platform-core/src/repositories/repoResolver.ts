@@ -17,7 +17,9 @@ export async function resolveRepo<T>(
     : process.env.DB_MODE;
 
   if (backend === "sqlite") {
-    // SQLite backends currently reuse the JSON repository implementation.
+    if (options.sqliteModule) {
+      return await options.sqliteModule();
+    }
     return await jsonModule();
   }
   if (backend === "json") {

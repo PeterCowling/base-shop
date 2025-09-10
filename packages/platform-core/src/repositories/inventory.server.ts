@@ -45,6 +45,10 @@ async function getRepo(): Promise<InventoryRepository> {
         ),
       {
         backendEnvVar: "INVENTORY_BACKEND",
+        sqliteModule: () =>
+          import("./inventory.sqlite.server").then(
+            (m) => m.sqliteInventoryRepository,
+          ),
       },
     );
   }

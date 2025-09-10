@@ -16,11 +16,17 @@ jest.mock("../src/send", () => ({
   sendCampaignEmail: jest.fn(),
 }));
 
+jest.mock("../src/segments", () => ({
+  __esModule: true,
+  resolveSegment: jest.fn(),
+}));
+
 let setClock: typeof import("../src/scheduler").setClock;
 let createCampaign: typeof import("../src/scheduler").createCampaign;
 let sendDueCampaigns: typeof import("../src/scheduler").sendDueCampaigns;
 let mockedSend: jest.Mock;
 let mockListEvents: jest.Mock;
+let mockResolveSegment: jest.Mock;
 
 jest.setTimeout(10000);
 
@@ -49,9 +55,11 @@ describe("scheduler", () => {
     ({ setClock, createCampaign, sendDueCampaigns } = await import("../src/scheduler"));
     ({ sendCampaignEmail: mockedSend } = (await import("../src/send")) as any);
     ({ listEvents: mockListEvents } = (await import("@platform-core/repositories/analytics.server")) as any);
+    ({ resolveSegment: mockResolveSegment } = (await import("../src/segments")) as any);
     setClock({ now: () => now });
     mockedSend.mockResolvedValue(undefined);
     mockListEvents.mockResolvedValue([]);
+    mockResolveSegment.mockResolvedValue([]);
   });
 
   afterEach(() => {
@@ -121,5 +129,19 @@ describe("scheduler", () => {
     ).rejects.toThrow("boom");
 
     expect(memory[shop]).toBeUndefined();
+  });
+
+  test("resolves segment when recipients missing", async () => {
+    const future = new Date(now.getTime() + 60_000).toISOString();
+    mockResolveSegment.mockResolvedValue(["c@example.com"]);
+    await createCampaign({
+      shop,
+      subject: "Hi",
+      body: "<p>Hi</p>",
+      segment: "all",
+      sendAt: future,
+    });
+    expect(mockResolveSegment).toHaveBeenCalledTimes(1);
+    expect(memory[shop][0].recipients).toEqual(["c@example.com"]);
   });
 });

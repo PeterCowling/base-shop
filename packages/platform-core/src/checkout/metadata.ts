@@ -30,19 +30,26 @@ export const buildCheckoutMetadata = ({
   clientIp?: string;
   sizes?: string;
   extra?: Record<string, string>;
-}) => ({
-  subtotal: subtotal.toString(),
-  depositTotal: depositTotal.toString(),
-  returnDate: returnDate ?? "",
-  rentalDays: rentalDays.toString(),
-  ...(sizes ? { sizes } : {}),
-  customerId: customerId ?? "",
-  discount: discount.toString(),
-  coupon: coupon ?? "",
-  currency,
-  taxRate: taxRate.toString(),
-  taxAmount: taxAmount.toString(),
-  ...(clientIp ? { client_ip: clientIp } : {}),
-  ...(extra ?? {}),
-});
+}) => {
+  const metadata = {
+    subtotal: subtotal.toString(),
+    depositTotal: depositTotal.toString(),
+    returnDate: returnDate ?? "",
+    rentalDays: rentalDays.toString(),
+    ...(sizes ? { sizes } : {}),
+    customerId: customerId ?? "",
+    discount: discount.toString(),
+    coupon: coupon ?? "",
+    currency,
+    taxRate: taxRate.toString(),
+    taxAmount: taxAmount.toString(),
+    ...(clientIp ? { client_ip: clientIp } : {}),
+  };
+
+  // Extra metadata keys are spread last so they can override defaults like `coupon`.
+  return {
+    ...metadata,
+    ...(extra ?? {}),
+  };
+};
 

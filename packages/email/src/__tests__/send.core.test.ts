@@ -156,6 +156,19 @@ describe("send core helpers", () => {
       expect(mockSendgridImport).not.toHaveBeenCalled();
     });
 
+    it("does not late-load Resend provider when API key is set after first call", async () => {
+      await jest.isolateModulesAsync(async () => {
+        const { loadProvider } = await import("../send");
+        const first = await loadProvider("resend");
+        process.env.RESEND_API_KEY = "rs";
+        const second = await loadProvider("resend");
+        expect(first).toBeUndefined();
+        expect(second).toBeUndefined();
+      });
+      expect(ResendProvider).not.toHaveBeenCalled();
+      expect(mockResendImport).not.toHaveBeenCalled();
+    });
+
     it("caches unknown providers as undefined", async () => {
       await jest.isolateModulesAsync(async () => {
         const { loadProvider } = await import("../send");

@@ -33,7 +33,7 @@ export function LineChart({ data, options, className }: LineChartProps) {
       data={data}
       options={options}
       className={className}
-      data-testid="line-chart"
+      data-cy="line-chart"
     />
   );
 }

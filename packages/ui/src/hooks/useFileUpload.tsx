@@ -9,6 +9,7 @@
 
 import type { ChangeEvent, DragEvent, ReactElement, RefObject } from "react";
 import { useCallback, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useImageOrientationValidation } from "./useImageOrientationValidation";
@@ -90,7 +91,7 @@ export function useFileUpload(
   const handleUpload = useCallback(async () => {
     if (!pendingFile) return;
 
-    setProgress({ done: 0, total: 1 });
+    flushSync(() => setProgress({ done: 0, total: 1 }));
 
     const fd = new FormData();
     fd.append("file", pendingFile);

@@ -109,17 +109,17 @@ describe("provider functions", () => {
     await expect(createContact("user@example.com")).resolves.toBe("");
   });
 
-  it("addToList resolves when provider lacks addToList", async () => {
+  it("addToList resolves when provider only implements createContact", async () => {
     jest.doMock("../providers/sendgrid", () => ({
       SendgridProvider: class {
         createContact = jest.fn().mockResolvedValue("contact-1");
-        listSegments = jest.fn().mockResolvedValue([]);
       },
     }));
 
     process.env.EMAIL_PROVIDER = "sendgrid";
-    const { addToList } = await import("../segments");
-    await expect(addToList("c1", "l1")).resolves.toBeUndefined();
+    const { createContact, addToList } = await import("../segments");
+    const id = await createContact("user@example.com");
+    await expect(addToList(id, "l1")).resolves.toBeUndefined();
   });
 
   it("listSegments returns empty array when provider lacks listSegments", async () => {

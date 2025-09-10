@@ -190,6 +190,16 @@ describe("resolveAbandonedCartDelay", () => {
     expect(delay).toBe(DEFAULT_DELAY);
   });
 
+  it("returns the default delay when file delay is non-numeric", async () => {
+    jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(
+        JSON.stringify({ abandonedCart: { delayMs: "oops" } }, null, 2),
+      );
+    const delay = await resolveAbandonedCartDelay(shop, "/tmp");
+    expect(delay).toBe(DEFAULT_DELAY);
+  });
+
   it("reads delay from settings abandonedCart.delayMs", async () => {
     jest
       .spyOn(fs, "readFile")

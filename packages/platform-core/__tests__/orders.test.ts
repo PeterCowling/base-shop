@@ -352,6 +352,17 @@ describe("orders", () => {
   });
 
   describe("refundOrder", () => {
+    it("returns null without calling Stripe when order not found", async () => {
+      prismaMock.rentalOrder.findUnique.mockResolvedValue(null);
+
+      const result = await refundOrder("shop", "sess", 10);
+
+      expect(stripeCheckoutRetrieve).not.toHaveBeenCalled();
+      expect(stripeRefund).not.toHaveBeenCalled();
+      expect(prismaMock.rentalOrder.update).not.toHaveBeenCalled();
+      expect(result).toBeNull();
+    });
+
     it("refunds full amount and updates refund total", async () => {
       nowIsoMock.mockReturnValue("now");
       prismaMock.rentalOrder.findUnique.mockResolvedValue({ id: "1" });

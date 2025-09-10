@@ -109,6 +109,63 @@ describe("updateDeployStatus", () => {
     consoleError.mockRestore();
   });
 
+  it("merges existing data when domain is not provided", async () => {
+    withFileLockMock.mockImplementation(async (_file, cb) => {
+      await cb();
+    });
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ existing: "prop" })
+    );
+    writeJsonFileMock.mockResolvedValue(undefined);
+
+    await updateDeployStatus("shop1", { status: "active" });
+
+    expect(writeJsonFileMock).toHaveBeenCalledWith(
+      path.join("/data", "shop1", "deploy.json"),
+      { existing: "prop", status: "active" }
+    );
+    expect(updateShopInRepoMock).not.toHaveBeenCalled();
+    expect(ensureAuthorizedMock).toHaveBeenCalled();
+  });
+
+  it("merges existing data and updates shop when domain is provided", async () => {
+    withFileLockMock.mockImplementation(async (_file, cb) => {
+      await cb();
+    });
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ existing: "prop", status: "old" })
+    );
+    writeJsonFileMock.mockResolvedValue(undefined);
+    updateShopInRepoMock.mockResolvedValue(undefined);
+
+    await updateDeployStatus("shop1", {
+      status: "new",
+      domain: "shop.example.com",
+      domainStatus: "active",
+      certificateStatus: "valid",
+    });
+
+    expect(writeJsonFileMock).toHaveBeenCalledWith(
+      path.join("/data", "shop1", "deploy.json"),
+      {
+        existing: "prop",
+        status: "new",
+        domain: "shop.example.com",
+        domainStatus: "active",
+        certificateStatus: "valid",
+      }
+    );
+    expect(updateShopInRepoMock).toHaveBeenCalledWith("shop1", {
+      id: "shop1",
+      domain: {
+        name: "shop.example.com",
+        status: "active",
+        certificateStatus: "valid",
+      },
+    });
+    expect(ensureAuthorizedMock).toHaveBeenCalled();
+  });
+
   it("invokes updateShopInRepo when domain provided and handles rejection", async () => {
     withFileLockMock.mockImplementation(async (_file, cb) => {
       await cb();

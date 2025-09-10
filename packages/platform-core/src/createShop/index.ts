@@ -216,15 +216,11 @@ export function listThemes(): string[] {
   const themesDir = join(repoRoot(), "packages", "themes");
   try {
     return fs
-      .readdirSync(themesDir)
-      .filter((name) => {
-        try {
-          return fs.statSync(join(themesDir, name)).isDirectory();
-        } catch {
-          return false;
-        }
-      });
+      .readdirSync(themesDir, { withFileTypes: true })
+      .filter((entry) => entry.isDirectory())
+      .map((entry) => entry.name);
   } catch {
+    // Return an empty array when the themes directory cannot be read
     return [];
   }
 }
@@ -254,12 +250,13 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
       }
       pkg.dependencies[`@themes/${theme}`] = "workspace:*";
       const pkgJson = JSON.stringify(pkg, null, 2);
-      try {
-        fs.writeFileSync(pkgRel, pkgJson);
-      } catch {
-        /* ignore write errors on relative path */
+      for (const p of new Set([pkgRel, pkgAbs])) {
+        try {
+          fs.writeFileSync(p, pkgJson);
+        } catch {
+          /* ignore write errors */
+        }
       }
-      fs.writeFileSync(pkgAbs, pkgJson);
     }
   } catch {
     // ignore errors when package.json is missing or invalid
@@ -270,12 +267,13 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
       const css = fs
         .readFileSync(cssAbs, "utf8")
         .replace(/@themes\/[^/]+\/tokens.css/, `@themes/${theme}/tokens.css`);
-      try {
-        fs.writeFileSync(cssRel, css);
-      } catch {
-        /* ignore write errors on relative path */
+      for (const p of new Set([cssRel, cssAbs])) {
+        try {
+          fs.writeFileSync(p, css);
+        } catch {
+          /* ignore write errors */
+        }
       }
-      fs.writeFileSync(cssAbs, css);
     }
   } catch {
     // ignore errors when globals.css cannot be read

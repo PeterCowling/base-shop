@@ -106,6 +106,35 @@ describe("mapResendEvent", () => {
     });
   });
 
+  it("handles events with only campaign_id", async () => {
+    setupMocks();
+    const { mapResendEvent } = await import("../src/analytics");
+    const ev = {
+      type: "email.delivered",
+      data: {
+        campaign_id: "camp-1",
+      },
+    } as const;
+    expect(mapResendEvent(ev)).toEqual<EmailAnalyticsEvent>({
+      type: "email_delivered",
+      campaign: "camp-1",
+      messageId: undefined,
+      recipient: undefined,
+    });
+  });
+
+  it("handles events without data", async () => {
+    setupMocks();
+    const { mapResendEvent } = await import("../src/analytics");
+    const ev = { type: "email.delivered" } as const;
+    expect(mapResendEvent(ev)).toEqual<EmailAnalyticsEvent>({
+      type: "email_delivered",
+      campaign: undefined,
+      messageId: undefined,
+      recipient: undefined,
+    });
+  });
+
   it("returns null for unknown types", async () => {
     setupMocks();
     const { mapResendEvent } = await import("../src/analytics");

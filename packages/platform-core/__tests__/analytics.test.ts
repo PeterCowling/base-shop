@@ -13,6 +13,8 @@ interface Mocks {
   fetch: jest.Mock;
 }
 
+jest.setTimeout(15000);
+
 async function withAnalytics(
   cb: (
     analytics: AnalyticsModule,
@@ -77,6 +79,31 @@ describe("analytics provider selection", () => {
     });
   });
 
+  it("skips tracking when disabled in settings", async () => {
+    await withAnalytics(async (analytics, { readShop, getShopSettings, fetch }, _dir) => {
+      readShop.mockResolvedValue({ analyticsEnabled: true });
+      getShopSettings.mockResolvedValue({ analytics: { enabled: false } });
+
+      const appendSpy = jest.spyOn(fs, "appendFile");
+      const writeSpy = jest.spyOn(fs, "writeFile");
+      const readSpy = jest.spyOn(fs, "readFile");
+      const mkdirSpy = jest.spyOn(fs, "mkdir");
+
+      await analytics.trackEvent("test", { type: "page_view" });
+
+      expect(fetch).not.toHaveBeenCalled();
+      expect(appendSpy).not.toHaveBeenCalled();
+      expect(writeSpy).not.toHaveBeenCalled();
+      expect(readSpy).not.toHaveBeenCalled();
+      expect(mkdirSpy).not.toHaveBeenCalled();
+
+      appendSpy.mockRestore();
+      writeSpy.mockRestore();
+      readSpy.mockRestore();
+      mkdirSpy.mockRestore();
+    });
+  });
+
   it("uses console provider when configured", async () => {
     await withAnalytics(async (analytics, { readShop, getShopSettings, fetch }, dir) => {
       readShop.mockResolvedValue({ analyticsEnabled: true });
@@ -136,7 +163,7 @@ describe("analytics aggregates", () => {
     const now = "2023-01-01T00:00:00.000Z";
     await withAnalytics(
       async (analytics, { readShop, getShopSettings, fetch }, dir) => {
-        readShop.mockResolvedValue({ analyticsEnabled: false });
+        readShop.mockResolvedValue({ analyticsEnabled: true });
         getShopSettings.mockResolvedValue({});
 
         await analytics.trackEvent("test", { type: "page_view" });

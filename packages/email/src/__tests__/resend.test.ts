@@ -207,6 +207,16 @@ describe("ResendProvider", () => {
     );
   });
 
+  it("createContact returns empty string when json rejects", async () => {
+    process.env.RESEND_API_KEY = "rs";
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      json: jest.fn().mockRejectedValueOnce(new Error("fail")),
+    }) as any;
+    const { ResendProvider } = await import("../providers/resend");
+    const provider = new ResendProvider();
+    await expect(provider.createContact("user@example.com")).resolves.toBe("");
+  });
+
   it("createContact returns empty string when fetch rejects", async () => {
     process.env.RESEND_API_KEY = "rs";
     global.fetch = jest.fn().mockRejectedValueOnce(new Error("fail")) as any;

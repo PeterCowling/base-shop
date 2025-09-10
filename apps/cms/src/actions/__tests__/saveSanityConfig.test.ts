@@ -13,9 +13,14 @@ jest.mock("@platform-core/repositories/shop.server", () => ({
   updateShopInRepo: jest.fn(),
 }));
 
+jest.mock("../setupSanityBlog", () => ({
+  setupSanityBlog: jest.fn(),
+}));
+
 import { saveSanityConfig } from "../saveSanityConfig";
 import { verifyCredentials } from "@acme/plugin-sanity";
 import { getShopById, updateShopInRepo } from "@platform-core/repositories/shop.server";
+import { setupSanityBlog } from "../setupSanityBlog";
 
 describe("saveSanityConfig", () => {
   beforeEach(() => {
@@ -40,6 +45,67 @@ describe("saveSanityConfig", () => {
     expect(res).toEqual({
       error: "Invalid Sanity credentials",
       errorCode: "INVALID_CREDENTIALS",
+    });
+    expect(updateShopInRepo).not.toHaveBeenCalled();
+  });
+
+  it("creates dataset and enables editorial when requested", async () => {
+    (setupSanityBlog as jest.Mock).mockResolvedValue({ success: true });
+    (getShopById as jest.Mock).mockResolvedValue({
+      id: "shop",
+      editorialBlog: { enabled: false },
+      luxuryFeatures: { blog: false },
+    });
+    (updateShopInRepo as jest.Mock).mockResolvedValue({});
+
+    const fetchSpy = jest.spyOn(global, "fetch" as any);
+
+    const fd = new FormData();
+    fd.set("projectId", "p");
+    fd.set("dataset", "d");
+    fd.set("token", "t");
+    fd.set("createDataset", "true");
+    fd.set("enableEditorial", "on");
+
+    const res = await saveSanityConfig("shop", fd);
+
+    expect(setupSanityBlog).toHaveBeenCalledWith(
+      { projectId: "p", dataset: "d", token: "t" },
+      { enabled: true },
+      "public",
+    );
+    expect(updateShopInRepo).toHaveBeenCalledWith(
+      "shop",
+      expect.objectContaining({
+        luxuryFeatures: { blog: true },
+        enableEditorial: true,
+      }),
+    );
+    expect(fetchSpy).not.toHaveBeenCalled();
+    expect(res).toEqual({ message: "Sanity connected" });
+
+    fetchSpy.mockRestore();
+  });
+
+  it("returns error when setupSanityBlog fails", async () => {
+    (setupSanityBlog as jest.Mock).mockResolvedValue({ success: false, code: "XYZ" });
+    (getShopById as jest.Mock).mockResolvedValue({
+      id: "shop",
+      editorialBlog: { enabled: false },
+      luxuryFeatures: { blog: false },
+    });
+
+    const fd = new FormData();
+    fd.set("projectId", "p");
+    fd.set("dataset", "d");
+    fd.set("token", "t");
+    fd.set("createDataset", "true");
+
+    const res = await saveSanityConfig("shop", fd);
+
+    expect(res).toEqual({
+      error: "Failed to setup Sanity blog",
+      errorCode: "XYZ",
     });
     expect(updateShopInRepo).not.toHaveBeenCalled();
   });

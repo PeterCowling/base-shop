@@ -21,6 +21,20 @@ describe("customer profiles", () => {
     jest.clearAllMocks();
   });
 
+  it("returns the profile when found", async () => {
+    const profile = {
+      customerId: "abc",
+      name: "Test",
+      email: "test@example.com",
+    } as any;
+    prisma.customerProfile.findUnique.mockResolvedValue(profile);
+
+    await expect(getCustomerProfile("abc")).resolves.toBe(profile);
+    expect(prisma.customerProfile.findUnique).toHaveBeenCalledWith({
+      where: { customerId: "abc" },
+    });
+  });
+
   it("calls findUnique and throws when profile is missing", async () => {
     prisma.customerProfile.findUnique.mockResolvedValue(null);
     await expect(getCustomerProfile("abc")).rejects.toThrow("Customer profile not found");

@@ -21,7 +21,7 @@ beforeEach(() => {
   readFileSync.mockReset();
   writeFileSync.mockReset();
   spawn.mockReset();
-  process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+  delete process.env.UPGRADE_PREVIEW_TOKEN_SECRET;
 });
 
 describe("onRequestPost", () => {
@@ -63,6 +63,22 @@ describe("onRequestPost", () => {
     );
   });
 
+  it("returns 403 when token provided but secret missing", async () => {
+    const warn = jest.spyOn(console, "warn").mockImplementation();
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: "Bearer token" },
+      }),
+    });
+    const body = await res.json();
+    expect(res.status).toBe(403);
+    expect(body).toEqual({ error: "Forbidden" });
+    expect(warn).toHaveBeenCalledWith("invalid token", { id });
+    warn.mockRestore();
+  });
+
   it("returns 403 when jwt.verify throws", async () => {
     const warn = jest.spyOn(console, "warn").mockImplementation();
     const verify = jest.spyOn(jwt, "verify").mockImplementation(() => {
@@ -96,6 +112,8 @@ describe("onRequestPost", () => {
     spawn.mockImplementation(() => ({
       on: (_: string, cb: (code: number) => void) => cb(0),
     }));
+
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
 
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
@@ -142,6 +160,9 @@ describe("onRequestPost", () => {
       on: (_: string, cb: (code: number) => void) => cb(0),
     }));
 
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
+
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },
@@ -187,6 +208,9 @@ describe("onRequestPost", () => {
       on: (_: string, cb: (code: number) => void) => cb(0),
     }));
 
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
+
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },
@@ -229,6 +253,9 @@ describe("onRequestPost", () => {
     spawn.mockImplementation(() => ({
       on: (_: string, cb: (code: number) => void) => cb(0),
     }));
+
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
 
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
@@ -279,6 +306,9 @@ describe("onRequestPost", () => {
       spawn.mockImplementation(() => ({
         on: (_: string, cb: (code: number) => void) => cb(0),
       }));
+
+      process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
 
       const token = jwt.sign({}, "secret");
       const res = await onRequestPost({
@@ -335,6 +365,9 @@ describe("onRequestPost", () => {
         on: (_: string, cb: (code: number) => void) => cb(0),
       }));
 
+      process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
+
       const token = jwt.sign({}, "secret");
       const res = await onRequestPost({
         params: { id },
@@ -384,6 +417,9 @@ describe("onRequestPost", () => {
       on: (_: string, cb: (code: number) => void) => cb(0),
     }));
 
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
+
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },
@@ -430,6 +466,9 @@ describe("onRequestPost", () => {
     spawn.mockImplementation(() => ({
       on: (_: string, cb: (code: number) => void) => cb(0),
     }));
+
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
 
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
@@ -481,6 +520,9 @@ describe("onRequestPost", () => {
     spawn.mockImplementation(() => ({
       on: (_: string, cb: (code: number) => void) => cb(0),
     }));
+
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
 
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
@@ -535,6 +577,9 @@ describe("onRequestPost", () => {
       on: (_: string, cb: (code: number) => void) => cb(0),
     }));
 
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
+
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },
@@ -573,6 +618,9 @@ describe("onRequestPost", () => {
       spawn.mockImplementation(() => ({
         on: (_: string, cb: (code: number) => void) => cb(0),
       }));
+
+      process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
 
       const token = jwt.sign({}, "secret");
       const res = await onRequestPost({
@@ -623,6 +671,9 @@ describe("onRequestPost", () => {
       on: (_: string, cb: (code: number) => void) => cb(1),
     }));
 
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
+
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },
@@ -658,6 +709,9 @@ describe("onRequestPost", () => {
         on: (_: string, cb: (code: number) => void) => cb(1),
       }));
 
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
+
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },
@@ -692,6 +746,9 @@ describe("onRequestPost", () => {
       on: (_: string, cb: (code: number) => void) => cb(0),
     }));
 
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
+
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },
@@ -719,6 +776,9 @@ describe("onRequestPost", () => {
       }
       return "";
     });
+
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
 
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
@@ -750,6 +810,9 @@ describe("onRequestPost", () => {
       }
       return "";
     });
+
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
 
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({

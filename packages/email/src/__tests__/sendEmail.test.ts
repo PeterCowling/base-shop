@@ -150,11 +150,16 @@ describe("sendEmail", () => {
     const getDefaultSender = jest.fn(() => "sender@example.com");
     jest.doMock("../config", () => ({ getDefaultSender }));
 
+    const errorSpy = jest.spyOn(console, "error").mockImplementation();
+
     const { sendEmail } = await import("../sendEmail");
     await expect(
       sendEmail("a@b.com", "Hello", "World")
     ).rejects.toThrow("failure");
+
+    expect(errorSpy).toHaveBeenCalledWith("Error sending email", error);
     expect(getDefaultSender).toHaveBeenCalled();
+    errorSpy.mockRestore();
   });
 
   it("logs and rethrows when getDefaultSender throws", async () => {

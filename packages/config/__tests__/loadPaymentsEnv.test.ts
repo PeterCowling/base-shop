@@ -48,6 +48,7 @@ describe("loadPaymentsEnv", () => {
       loadPaymentsEnv({
         PAYMENTS_PROVIDER: "stripe",
         STRIPE_SECRET_KEY: "sk",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
       } as NodeJS.ProcessEnv),
     ).toThrow("Invalid payments environment variables");
     expect(spy).toHaveBeenCalledWith(

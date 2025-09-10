@@ -40,6 +40,7 @@ describe("payments env", () => {
         loadPaymentsEnv({
           PAYMENTS_PROVIDER: "stripe",
           STRIPE_SECRET_KEY: "sk",
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
         } as any),
       ).toThrow("Invalid payments environment variables");
       expect(err).toHaveBeenCalledWith(

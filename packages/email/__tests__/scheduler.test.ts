@@ -168,4 +168,19 @@ describe("scheduler", () => {
       "b@example.com",
     ]);
   });
+
+  test("syncCampaignAnalytics resolves when analytics throws", async () => {
+    await jest.isolateModulesAsync(async () => {
+      const mockAnalytics = jest
+        .fn()
+        .mockRejectedValue(new Error("fail"));
+      jest.doMock("../src/analytics", () => ({
+        __esModule: true,
+        syncCampaignAnalytics: mockAnalytics,
+      }));
+      const { syncCampaignAnalytics } = await import("../src/scheduler");
+      await expect(syncCampaignAnalytics()).resolves.toBeUndefined();
+      expect(mockAnalytics).toHaveBeenCalled();
+    });
+  });
 });

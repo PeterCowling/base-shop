@@ -58,19 +58,19 @@ function Wrapper({
   return (
     <form onSubmit={state.handleSubmit}>
       <input
-        data-testid="title-en"
+        data-cy="title-en"
         name="title_en"
         value={state.product.title.en}
         onChange={state.handleChange}
       />
       <input
-        data-testid="price"
+        data-cy="price"
         name="price"
         value={state.product.price}
         onChange={state.handleChange}
       />
       <input
-        data-testid="variant-size"
+        data-cy="variant-size"
         name="variant_size"
         value={state.product.variants.size.join(",")}
         onChange={state.handleChange}

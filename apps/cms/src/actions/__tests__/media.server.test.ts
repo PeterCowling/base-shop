@@ -216,6 +216,20 @@ describe('media.server helpers and actions', () => {
       );
     });
 
+    it('propagates orientation errors from sharp', async () => {
+      sharpToBufferMock.mockRejectedValueOnce(
+        new Error('orientation must be a multiple of 90'),
+      );
+      const formData = new FormData();
+      formData.append(
+        'file',
+        new File(['data'], 'img.jpg', { type: 'image/jpeg' }),
+      );
+      await expect(uploadMedia('shop', formData)).rejects.toThrow(
+        'orientation must be a multiple of 90',
+      );
+    });
+
     it('rejects invalid mime types', async () => {
       const formData = new FormData();
       formData.append('file', new File(['data'], 'doc.txt', { type: 'text/plain' }));

@@ -19,6 +19,13 @@ describe("MemorySessionStore basic operations", () => {
     jest.useRealTimers();
   });
 
+  it("lists no sessions for unknown customers when empty", async () => {
+    const store = new MemorySessionStore(1);
+    const listed = await store.list("customer-1");
+    expect(listed).toEqual([]);
+    expect((store as any).sessions.size).toBe(0);
+  });
+
   it("returns null for unknown keys", async () => {
     const store = new MemorySessionStore(1);
     await expect(store.get("missing")).resolves.toBeNull();

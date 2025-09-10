@@ -117,7 +117,9 @@ describe("rental orders read and refund", () => {
   it("markRefunded returns null on error", async () => {
     jest
       .spyOn(prisma.rentalOrder, "update")
-      .mockRejectedValue(new Error("fail"));
+      .mockImplementation(() => {
+        throw new Error("fail");
+      });
     await expect(markRefunded(shop, sessionId)).resolves.toBeNull();
   });
 });

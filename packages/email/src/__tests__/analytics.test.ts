@@ -120,6 +120,42 @@ describe("analytics mapping", () => {
     });
   });
 
+  it("handles SendGrid events without sg_message_id", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapSendGridEvent } = await import("../analytics");
+    const ev = {
+      event: "open",
+      email: "user@example.com",
+    };
+    expect(mapSendGridEvent(ev)).toEqual({
+      type: "email_open",
+      messageId: undefined,
+      recipient: "user@example.com",
+    });
+  });
+
+  it("handles SendGrid events without email", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapSendGridEvent } = await import("../analytics");
+    const ev = {
+      event: "open",
+      sg_message_id: "msg-4",
+    };
+    expect(mapSendGridEvent(ev)).toEqual({
+      type: "email_open",
+      messageId: "msg-4",
+      recipient: undefined,
+    });
+  });
+
   it("normalizes Resend webhook events with campaign_id", async () => {
     jest.resetModules();
     process.env.CART_COOKIE_SECRET = "secret";

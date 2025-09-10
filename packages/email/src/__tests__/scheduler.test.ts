@@ -714,6 +714,19 @@ describe("scheduler", () => {
     ).rejects.toThrow('boom');
   });
 
+  test('createCampaign rejects when emitSend fails', async () => {
+    (emitSend as jest.Mock).mockRejectedValueOnce(new Error('hook fail'));
+    await expect(
+      createCampaign({
+        shop,
+        recipients: ['a@example.com'],
+        subject: 'Hi',
+        body: '<p>Hi</p>',
+      })
+    ).rejects.toThrow('hook fail');
+    expect(memory[shop]).toBeUndefined();
+  });
+
   test('createCampaign rejects when segment yields no recipients', async () => {
     (resolveSegment as jest.Mock).mockResolvedValue([]);
     await expect(

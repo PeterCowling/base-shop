@@ -349,6 +349,21 @@ describe("resolveSegment filters", () => {
     const result = await resolveSegment("shop1", "vips");
     expect(result.sort()).toEqual(["a@example.com", "b@example.com"].sort());
   });
+
+  it("skips events with non-string emails", async () => {
+    mockReadFile.mockResolvedValue(
+      JSON.stringify([{ id: "seg", filters: [] }])
+    );
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    mockListEvents.mockResolvedValue([
+      { email: 123 },
+      { email: { value: "a@example.com" } },
+    ]);
+
+    const { resolveSegment } = await import("../segments");
+    const result = await resolveSegment("shop1", "seg");
+    expect(result).toEqual([]);
+  });
 });
 
 describe("cacheTtl", () => {

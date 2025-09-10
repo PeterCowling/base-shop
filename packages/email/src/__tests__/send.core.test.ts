@@ -261,6 +261,25 @@ describe("send core helpers", () => {
       );
     });
 
+    it("removes style attributes during sanitization", async () => {
+      const providerSend = jest.fn().mockResolvedValue(undefined);
+      SendgridProvider.mockImplementation(() => ({ send: providerSend }));
+      mockSanitizeHtml.mockImplementation(() => "<p>Hi</p>");
+      await jest.isolateModulesAsync(async () => {
+        process.env.EMAIL_PROVIDER = "sendgrid";
+        process.env.SENDGRID_API_KEY = "sg";
+        const { sendCampaignEmail } = await import("../send");
+        await sendCampaignEmail({
+          to: "t",
+          subject: "s",
+          html: '<p style="color:red">Hi</p>',
+        });
+      });
+      expect(providerSend).toHaveBeenCalledWith(
+        expect.objectContaining({ html: "<p>Hi</p>" })
+      );
+    });
+
     it("does not sanitize HTML when disabled", async () => {
       const providerSend = jest.fn().mockResolvedValue(undefined);
       SendgridProvider.mockImplementation(() => ({ send: providerSend }));

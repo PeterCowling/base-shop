@@ -12,8 +12,8 @@ function LayoutInfo() {
   const { isMobileNavOpen, breadcrumbs, toggleNav } = useLayout();
   return (
     <div>
-      <span data-testid="open">{String(isMobileNavOpen)}</span>
-      <span data-testid="crumbs">{breadcrumbs.join("|")}</span>
+      <span data-cy="open">{String(isMobileNavOpen)}</span>
+      <span data-cy="crumbs">{breadcrumbs.join("|")}</span>
       <button onClick={toggleNav}>toggle</button>
     </div>
   );

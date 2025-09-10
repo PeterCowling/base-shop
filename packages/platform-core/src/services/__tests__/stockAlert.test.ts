@@ -182,7 +182,8 @@ describe("checkAndAlert", () => {
     expect(sendEmail.mock.calls[0][0]).toBe("shop@example.com");
     const body = sendEmail.mock.calls[0][2] as string;
     expect(body).toContain("new");
-    expect(body).not.toContain("old");
+    // Use a word boundary to avoid matching substrings like "threshold"
+    expect(body).not.toMatch(/\bold\b/);
 
     expect(writeFile).toHaveBeenCalledWith(
       expect.stringContaining("shop/stock-alert-log.json"),

@@ -141,7 +141,7 @@ describe('media.server helpers and actions', () => {
       fsMock.readdir.mockRejectedValueOnce(err);
       const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
       await expect(listMedia('shop')).rejects.toThrow('Failed to list media');
-      expect(spy).toHaveBeenCalled();
+      expect(spy).toHaveBeenCalledWith('Failed to list media', err);
       spy.mockRestore();
     });
   });

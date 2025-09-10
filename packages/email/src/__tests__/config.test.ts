@@ -17,6 +17,17 @@ describe("getDefaultSender", () => {
     expect(getDefaultSender()).toBe("sender@example.com");
   });
 
+  it("trims CAMPAIGN_FROM before validating", async () => {
+    process.env = {
+      ...OLD_ENV,
+      CAMPAIGN_FROM: " Sender@Example.Com ",
+    } as NodeJS.ProcessEnv;
+    delete process.env.GMAIL_USER;
+
+    const { getDefaultSender } = await import("../config");
+    expect(getDefaultSender()).toBe("sender@example.com");
+  });
+
   it("uses GMAIL_USER when CAMPAIGN_FROM is absent", async () => {
     process.env = {
       ...OLD_ENV,

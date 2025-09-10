@@ -48,7 +48,7 @@ describe("trackEvent providers", () => {
     await expect(fs.readFile(file, "utf8")).rejects.toBeDefined();
   });
 
-  test("console provider logs event", async () => {
+  test("console provider logs events and is cached", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
     getShopSettings.mockResolvedValue({
       analytics: { provider: "console", enabled: true },
@@ -56,9 +56,17 @@ describe("trackEvent providers", () => {
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
+    await trackEvent(shop, { type: "page_view", page: "about" });
+    expect(readShop).toHaveBeenCalledTimes(1);
+    expect(getShopSettings).toHaveBeenCalledTimes(1);
+    expect(logSpy).toHaveBeenCalledTimes(2);
     expect(logSpy).toHaveBeenCalledWith(
       "analytics",
       expect.objectContaining({ type: "page_view", page: "home" })
+    );
+    expect(logSpy).toHaveBeenCalledWith(
+      "analytics",
+      expect.objectContaining({ type: "page_view", page: "about" })
     );
     logSpy.mockRestore();
   });

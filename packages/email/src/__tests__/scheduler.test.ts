@@ -482,6 +482,29 @@ describe("scheduler", () => {
     expect(campaign.sentAt).toBe(fake.toISOString());
   });
 
+  test("sendDueCampaigns exits early when no shops are returned", async () => {
+    memory[shop] = [
+      {
+        id: "c1",
+        recipients: ["a@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+        segment: null,
+        sendAt: new Date(now.getTime() - 1000).toISOString(),
+        templateId: null,
+      },
+    ];
+
+    listShops.mockResolvedValue([]);
+
+    await sendDueCampaigns();
+
+    expect(listShops).toHaveBeenCalled();
+    expect(readCampaigns).not.toHaveBeenCalled();
+    expect(writeCampaigns).not.toHaveBeenCalled();
+    expect(sendCampaignEmail).not.toHaveBeenCalled();
+  });
+
   test("sendDueCampaigns writes campaigns only when sending due items", async () => {
     const past = new Date(now.getTime() - 1000).toISOString();
     const future = new Date(now.getTime() + 60000).toISOString();

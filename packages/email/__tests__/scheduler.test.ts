@@ -68,6 +68,21 @@ describe("scheduler", () => {
     delete process.env.EMAIL_BATCH_DELAY_MS;
   });
 
+  test("unsubscribeUrl percent-encodes query params", async () => {
+    const { unsubscribeUrl } = await import("../src/scheduler");
+    const specialShop = "shop/? name";
+    const specialCampaign = "camp/aign?&";
+    const recipient = "user+test@example.com";
+    const url = unsubscribeUrl(specialShop, specialCampaign, recipient);
+    expect(url).toBe(
+      `/api/marketing/email/unsubscribe?shop=${encodeURIComponent(
+        specialShop,
+      )}&campaign=${encodeURIComponent(
+        specialCampaign,
+      )}&email=${encodeURIComponent(recipient)}`,
+    );
+  });
+
   test("immediate scheduling vs delayed execution", async () => {
     await createCampaign({
       shop,

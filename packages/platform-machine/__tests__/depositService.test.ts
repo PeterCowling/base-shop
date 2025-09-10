@@ -27,7 +27,7 @@ describe("releaseDepositsOnce", () => {
     const stripeModule = await import("@acme/stripe");
     const stripeRetrieve = jest
       .fn()
-      .mockResolvedValue({ payment_intent: "pi_1" });
+      .mockResolvedValue({ payment_intent: { id: "pi_obj" } });
     const stripeRefund = jest.fn().mockResolvedValue({});
     stripeModule.stripe.checkout.sessions.retrieve = stripeRetrieve as any;
     stripeModule.stripe.refunds.create = stripeRefund as any;
@@ -79,6 +79,11 @@ describe("releaseDepositsOnce", () => {
     const readdir = jest.fn().mockResolvedValue(["test"]);
     jest.doMock("node:fs/promises", () => ({ __esModule: true, readdir }));
 
+    const { logger } = await import("@platform-core/utils");
+    const logSpy = jest
+      .spyOn(logger, "info")
+      .mockImplementation(() => undefined);
+
     const { releaseDepositsOnce } = await import(
       "@acme/platform-machine/releaseDepositsService"
     );
@@ -91,11 +96,17 @@ describe("releaseDepositsOnce", () => {
 
     expect(stripeRefund).toHaveBeenCalledTimes(1);
     expect(stripeRefund).toHaveBeenCalledWith({
-      payment_intent: "pi_1",
+      payment_intent: "pi_obj",
       amount: 8 * 100,
     });
 
     expect(markRefunded).toHaveBeenCalledTimes(1);
     expect(markRefunded).toHaveBeenCalledWith("test", "sess1");
+    expect(logSpy).toHaveBeenCalledWith("refunded deposit", {
+      shopId: "test",
+      sessionId: "sess1",
+    });
+
+    logSpy.mockRestore();
   });
 });

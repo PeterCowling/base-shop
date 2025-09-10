@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const sub = await stripe.subscriptions.cancel(user.stripeSubscriptionId);
+    const sub = await stripe.subscriptions.del(user.stripeSubscriptionId);
     await setStripeSubscriptionId(userId, null, shopId);
     return NextResponse.json({ id: sub.id, status: sub.status });
   } catch (err: unknown) {

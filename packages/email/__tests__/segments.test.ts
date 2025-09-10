@@ -46,6 +46,7 @@ const {
   createContact,
   addToList,
   listSegments,
+  cacheTtl,
 } = require("../src/segments");
 
 const { listEvents } = require("@platform-core/repositories/analytics.server") as {
@@ -100,6 +101,18 @@ describe("analyticsMTime", () => {
   it("falls back to 0 when file missing", async () => {
     fs.stat.mockRejectedValueOnce(new Error("missing"));
     await expect(analyticsMTime("shop")).resolves.toBe(0);
+  });
+});
+
+describe("cacheTtl", () => {
+  it("returns default when SEGMENT_CACHE_TTL is non-numeric", () => {
+    process.env.SEGMENT_CACHE_TTL = "abc";
+    expect(cacheTtl()).toBe(60000);
+  });
+
+  it("returns default when SEGMENT_CACHE_TTL is negative", () => {
+    process.env.SEGMENT_CACHE_TTL = "-1";
+    expect(cacheTtl()).toBe(60000);
   });
 });
 

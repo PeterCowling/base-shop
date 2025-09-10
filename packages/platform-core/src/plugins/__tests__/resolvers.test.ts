@@ -1,8 +1,14 @@
 import { mkdtemp, writeFile } from "node:fs/promises";
+import * as fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { exportsToCandidates, resolvePluginEntry, importByType } from "../resolvers";
 import { logger } from "../../utils";
+
+jest.mock("node:fs/promises", () => ({
+  ...jest.requireActual("node:fs/promises"),
+  readFile: jest.fn(),
+}));
 
 describe("exportsToCandidates", () => {
   const tmp = os.tmpdir();
@@ -64,6 +70,16 @@ describe("resolvePluginEntry", () => {
     const result = await resolvePluginEntry(dir);
     expect(result).toEqual({ entryPath: null, isModule: false });
     expect(spy).toHaveBeenCalled();
+  });
+
+  it("logs error when readFile throws", async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-readfile-error-"));
+    (fs.readFile as jest.Mock).mockRejectedValue(new Error("boom"));
+    const logSpy = jest.spyOn(logger, "error").mockImplementation();
+    const result = await resolvePluginEntry(dir);
+    expect(result).toEqual({ entryPath: null, isModule: false });
+    expect(logSpy).toHaveBeenCalled();
+    logSpy.mockRestore();
   });
 });
 

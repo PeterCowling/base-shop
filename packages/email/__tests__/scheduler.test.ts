@@ -89,6 +89,18 @@ describe("scheduler", () => {
     expect(mockedSend).toHaveBeenCalledTimes(1);
   });
 
+  test("missing fields when no recipients and no segment", async () => {
+    await expect(
+      createCampaign({
+        shop,
+        recipients: [],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+      }),
+    ).rejects.toThrow("Missing fields");
+    expect(memory[shop]).toBeUndefined();
+  });
+
   test("concurrency limit exceeded path", async () => {
     jest.useRealTimers();
     process.env.EMAIL_BATCH_SIZE = "1";

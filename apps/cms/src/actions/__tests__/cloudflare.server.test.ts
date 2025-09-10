@@ -84,6 +84,74 @@ describe("provisionDomain", () => {
     );
   });
 
+  it("skips DNS record fetch when zone lookup returns empty result", async () => {
+    fetchMock
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          result: { verification_data: { cname_target: "cname.pages.dev" } },
+        }),
+      })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ result: [] }) })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          result: { status: "pending", certificate_status: "pending_validation" },
+        }),
+      });
+
+    const result = await provisionDomain("shop", "shop.example.com");
+
+    expect(result).toEqual({
+      status: "pending",
+      certificateStatus: "pending_validation",
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      "https://api.cloudflare.com/client/v4/zones?name=example.com",
+      expect.any(Object)
+    );
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      3,
+      "https://api.cloudflare.com/client/v4/accounts/acc/pages/projects/shop/domains/shop.example.com/verify",
+      expect.objectContaining({ method: "POST" })
+    );
+    expect(
+      fetchMock.mock.calls.some((call) =>
+        (call[0] as string).includes("/dns_records")
+      )
+    ).toBe(false);
+  });
+
+  it("resolves with verify results even if DNS record creation fails", async () => {
+    fetchMock
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          result: { verification_data: { cname_target: "cname.pages.dev" } },
+        }),
+      })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ result: [{ id: "zone1" }] }) })
+      .mockRejectedValueOnce(new Error("dns fail"))
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          result: { status: "active", certificate_status: "valid" },
+        }),
+      });
+
+    const result = await provisionDomain("shop", "shop.example.com");
+
+    expect(result).toEqual({ status: "active", certificateStatus: "valid" });
+    expect(fetchMock).toHaveBeenCalledTimes(4);
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      3,
+      "https://api.cloudflare.com/client/v4/zones/zone1/dns_records",
+      expect.objectContaining({ method: "POST" })
+    );
+  });
+
   it("throws when credentials are missing", async () => {
     mockedEnv.CLOUDFLARE_API_TOKEN = undefined;
     await expect(provisionDomain("shop", "shop.example.com")).rejects.toThrow(

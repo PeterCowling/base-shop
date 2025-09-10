@@ -314,6 +314,24 @@ describe("resolveSegment filters", () => {
     const result = await resolveSegment("shop1", "vips");
     expect(result).toEqual([]);
   });
+
+  it("deduplicates emails from events", async () => {
+    mockReadFile.mockResolvedValue(
+      JSON.stringify([
+        { id: "vips", filters: [{ field: "plan", value: "gold" }] },
+      ])
+    );
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    mockListEvents.mockResolvedValue([
+      { email: "a@example.com", plan: "gold" },
+      { email: "a@example.com", plan: "gold" },
+      { email: "b@example.com", plan: "gold" },
+    ]);
+
+    const { resolveSegment } = await import("../segments");
+    const result = await resolveSegment("shop1", "vips");
+    expect(result.sort()).toEqual(["a@example.com", "b@example.com"].sort());
+  });
 });
 
 describe("cacheTtl", () => {

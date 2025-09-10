@@ -45,4 +45,20 @@ describe("instrumentation register (node)", () => {
       rejection.stack ?? rejection,
     );
   });
+
+  it("coerces string inputs to Error objects", async () => {
+    await register();
+    handlers["uncaughtException"]?.("boom");
+    handlers["unhandledRejection"]?.("fail");
+    expect(consoleErrorSpy).toHaveBeenNthCalledWith(
+      1,
+      "[instrumentation] uncaughtException\n",
+      expect.stringContaining("Error: boom"),
+    );
+    expect(consoleErrorSpy).toHaveBeenNthCalledWith(
+      2,
+      "[instrumentation] unhandledRejection\n",
+      expect.stringContaining("Error: fail"),
+    );
+  });
 });

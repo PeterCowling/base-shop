@@ -18,11 +18,13 @@ describe("theme tokens API", () => {
       join(partialDir, "tailwind-tokens.ts"),
       "export const tokens = { '--color-bg': '#000', '--space-1': '10px' } as const;",
     );
+    fs.existsSync(join(partialDir, "tailwind-tokens.ts"));
     fs.mkdirSync(invalidDir, { recursive: true });
     fs.writeFileSync(
       join(invalidDir, "tailwind-tokens.ts"),
       "export const tokens = { '--color-bg': 'not-a-color' } as const;",
     );
+    fs.existsSync(join(invalidDir, "tailwind-tokens.ts"));
   });
 
   afterAll(() => {

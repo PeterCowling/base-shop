@@ -1,4 +1,5 @@
 import { readdir } from "fs/promises";
+import { createRequire } from "module";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { readInventory } from "@platform-core/repositories/inventory.server";
 import { readRepo as readProducts } from "@platform-core/repositories/products.server";
@@ -47,10 +48,13 @@ export async function runMaintenanceScan(
  */
 export function startMaintenanceScheduler(): NodeJS.Timeout {
   const day = 24 * 60 * 60 * 1000;
+  const require = createRequire(__filename);
   const run = () =>
-    runMaintenanceScan().catch((err) =>
-      logger.error("maintenance scan failed", { err }),
-    );
+    require("./maintenanceScheduler")
+      .runMaintenanceScan()
+      .catch((err: unknown) =>
+        logger.error("maintenance scan failed", { err }),
+      );
   // run immediately then every night
   run();
   return setInterval(run, day);

@@ -18,11 +18,11 @@ describe("resolveDataRoot", () => {
     jest.resetModules();
   });
 
-  it("returns path.resolve(DATA_ROOT) when env is set", async () => {
-    const custom = path.join(os.tmpdir(), "custom-data");
+  it("strips '/private' prefix from DATA_ROOT when set", async () => {
+    const custom = "/private/var/test-data";
     process.env.DATA_ROOT = custom;
     const { resolveDataRoot } = await import("../src/dataRoot");
-    expect(resolveDataRoot()).toBe(path.resolve(custom));
+    expect(resolveDataRoot()).toBe("/var/test-data");
   });
 
   it("walks up directories to find the first data/shops", async () => {

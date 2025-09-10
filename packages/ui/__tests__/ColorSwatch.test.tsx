@@ -4,7 +4,7 @@ import { ColorSwatch } from "../src/components/atoms/ColorSwatch";
 describe("ColorSwatch", () => {
   it("applies background color", () => {
     const { getByTestId } = render(
-      <ColorSwatch color="red" data-testid="swatch" />
+      <ColorSwatch color="red" data-cy="swatch" />
     );
     const el = getByTestId("swatch") as HTMLElement;
     expect(el.style.backgroundColor).toBe("red");
@@ -12,7 +12,7 @@ describe("ColorSwatch", () => {
 
   it("adds ring styles when selected", () => {
     const { getByTestId } = render(
-      <ColorSwatch color="red" selected data-testid="swatch" />
+      <ColorSwatch color="red" selected data-cy="swatch" />
     );
     const el = getByTestId("swatch") as HTMLElement;
     expect(el.className).toContain("ring-2");

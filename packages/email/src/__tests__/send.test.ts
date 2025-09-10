@@ -148,6 +148,30 @@ describe("sendCampaignEmail", () => {
       });
     });
 
+  it("preserves table elements and styles during sanitization", async () => {
+    mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+    mockSanitizeHtml = jest.fn((html: string) => html);
+
+    setupEnv();
+
+    const { sendCampaignEmail } = await import("../index");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: '<table><tr><td style="color:red">x</td></tr></table>',
+    });
+
+    expect(mockSanitizeHtml).toHaveBeenCalled();
+    const sentHtml = (mockSendgridSend.mock.calls[0][0] as { html: string })
+      .html;
+    expect(sentHtml).toContain("<table>");
+    expect(sentHtml).toContain("<tr>");
+    expect(sentHtml).toContain("<td");
+    expect(sentHtml).toContain('style="color:red"');
+  });
+
     it("renders templates before sending", async () => {
       mockSendgridSend = jest.fn().mockResolvedValue(undefined);
       mockResendSend = jest.fn();

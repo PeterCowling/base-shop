@@ -13,9 +13,9 @@ test("computes sibling edge offsets", () => {
     siblingEdgesRef = hooks.siblingEdgesRef;
     return (
       <div>
-        <div data-testid="s1" />
-        <div ref={ref} data-testid="target" />
-        <div data-testid="s2" />
+        <div data-cy="s1" />
+        <div ref={ref} data-cy="target" />
+        <div data-cy="s2" />
       </div>
     );
   }

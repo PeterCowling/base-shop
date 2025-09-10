@@ -24,6 +24,22 @@ describe("templates registry", () => {
     );
   });
 
+  it("uses the most recently registered template markup", async () => {
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({ __esModule: true, marketingEmailTemplates: [] }),
+      { virtual: true }
+    );
+    const { registerTemplate, renderTemplate, clearTemplates } = await import(
+      "../src/templates"
+    );
+    registerTemplate("welcome", "<p>Hi</p>");
+    expect(renderTemplate("welcome", {})).toBe("<p>Hi</p>");
+    registerTemplate("welcome", "<p>Hello</p>");
+    expect(renderTemplate("welcome", {})).toBe("<p>Hello</p>");
+    clearTemplates();
+  });
+
   it("replaces placeholders and inserts empty string for missing variables", async () => {
     jest.doMock(
       "@acme/email-templates",

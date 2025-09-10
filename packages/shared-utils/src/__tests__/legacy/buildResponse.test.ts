@@ -1,4 +1,4 @@
-import { buildResponse, type ProxyResponse } from './buildResponse';
+import { buildResponse, type ProxyResponse } from '../../buildResponse';
 
 describe('buildResponse', () => {
   it('creates a Response with decoded body, status and headers', async () => {

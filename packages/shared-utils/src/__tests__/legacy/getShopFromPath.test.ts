@@ -1,4 +1,4 @@
-import { getShopFromPath } from "./getShopFromPath";
+import { getShopFromPath } from "../../getShopFromPath";
 
 describe("getShopFromPath", () => {
   it("returns the shop slug even with extra slashes", () => {

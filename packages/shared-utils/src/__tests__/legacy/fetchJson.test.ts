@@ -1,4 +1,4 @@
-import { fetchJson } from "./fetchJson";
+import { fetchJson } from "../../fetchJson";
 import { z } from "zod";
 
 describe("fetchJson", () => {

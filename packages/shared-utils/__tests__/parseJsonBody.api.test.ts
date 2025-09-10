@@ -39,6 +39,8 @@ describe('parseJsonBody API route integration', () => {
       method: 'POST',
       body: JSON.stringify({ foo: 'bar' }),
     });
+    // Remove the automatic content-type header set by the Request constructor
+    req.headers.delete('content-type');
     const res = await handler(req);
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ foo: 'bar' });

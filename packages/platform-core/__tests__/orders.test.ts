@@ -232,6 +232,16 @@ describe("orders", () => {
       });
       expect(result).toEqual(mockOrder);
     });
+
+    it("propagates errors", async () => {
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.update.mockRejectedValue(new Error("fail"));
+      await expect(markDelivered("shop", "sess")).rejects.toThrow("fail");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { deliveredAt: "now" },
+      });
+    });
   });
 
   describe("markCancelled", () => {
@@ -245,6 +255,16 @@ describe("orders", () => {
         data: { cancelledAt: "now" },
       });
       expect(result).toEqual(mockOrder);
+    });
+
+    it("propagates errors", async () => {
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.update.mockRejectedValue(new Error("fail"));
+      await expect(markCancelled("shop", "sess")).rejects.toThrow("fail");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { cancelledAt: "now" },
+      });
     });
   });
 

@@ -188,6 +188,19 @@ describe('media.server helpers and actions', () => {
       );
     });
 
+    it('allows upload when metadata lacks dimensions even with required orientation', async () => {
+      sharpMetadataMock.mockResolvedValueOnce({});
+      ulidMock.mockReturnValueOnce('img456');
+      const formData = new FormData();
+      formData.append('file', new File(['data'], 'photo.jpg', { type: 'image/jpeg' }));
+      await expect(uploadMedia('shop', formData, 'landscape')).resolves.toEqual({
+        url: '/uploads/shop/img456.jpg',
+        title: undefined,
+        altText: undefined,
+        type: 'image',
+      });
+    });
+
     it('fails when sharp processing throws', async () => {
       sharpToBufferMock.mockRejectedValueOnce(new Error('fail'));
       const formData = new FormData();

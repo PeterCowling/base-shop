@@ -200,18 +200,6 @@ function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
 }
 
 export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
-  const ttl = raw.AUTH_TOKEN_TTL;
-  if (
-    typeof ttl === "number" ||
-    (typeof ttl === "string" &&
-      (ttl.trim() === "" || /^\d+$/.test(ttl.trim())))
-  ) {
-    console.error("❌ Invalid core environment variables:");
-    console.error(
-      "  • AUTH_TOKEN_TTL: AUTH_TOKEN_TTL must be a string like '60s' or '15m'",
-    );
-    throw new Error("Invalid core environment variables");
-  }
   return parseCoreEnv(raw);
 }
 

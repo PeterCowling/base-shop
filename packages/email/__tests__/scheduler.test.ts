@@ -122,4 +122,28 @@ describe("scheduler", () => {
 
     expect(memory[shop]).toBeUndefined();
   });
+
+  test("rewrites links and tracks opens", async () => {
+    let html = "";
+    mockedSend.mockImplementation(async (opts: { html: string }) => {
+      html = opts.html;
+    });
+
+    const id = await createCampaign({
+      shop,
+      recipients: ["a@example.com"],
+      subject: "Hi",
+      body: '<p><a href="https://example.com">Click me</a></p>',
+    });
+
+    expect(mockedSend).toHaveBeenCalledTimes(1);
+    expect(html).toContain(
+      `/api/marketing/email/open?shop=${shop}&campaign=${id}`,
+    );
+    expect(html).toContain(
+      `href="/api/marketing/email/click?shop=${shop}&campaign=${id}&url=${encodeURIComponent(
+        "https://example.com",
+      )}"`,
+    );
+  });
 });

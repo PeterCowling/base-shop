@@ -53,7 +53,7 @@ test("campaign create writes campaign file", async () => {
     "--body",
     "<p>Hi</p>",
     "--recipients",
-    "a@example.com",
+    "a@example.com, , b@example.com ",
     "--send-at",
     "2020-01-01T00:00:00.000Z",
   ];
@@ -68,7 +68,7 @@ test("campaign create writes campaign file", async () => {
   expect(json[0]).toMatchObject({
     subject: "Hi",
     body: "<p>Hi</p>",
-    recipients: ["a@example.com"],
+    recipients: ["a@example.com", "b@example.com"],
   });
   expect(typeof json[0].sendAt).toBe("string");
   expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/^Created campaign/));

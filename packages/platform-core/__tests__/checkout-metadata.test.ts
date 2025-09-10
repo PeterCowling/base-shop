@@ -56,5 +56,14 @@ describe("buildCheckoutMetadata", () => {
     expect(result).not.toHaveProperty("sizes");
     expect(result).not.toHaveProperty("foo");
   });
+
+  test("allows extra to override defaults", () => {
+    const result = buildCheckoutMetadata({
+      ...base,
+      extra: { coupon: "OVERRIDE" },
+    });
+
+    expect(result.coupon).toBe("OVERRIDE");
+  });
 });
 

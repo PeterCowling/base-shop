@@ -315,6 +315,32 @@ it("getCustomerSession rotates session id, updates store, and creates csrf when 
   expect(mockSessionStore.delete).toHaveBeenCalledWith("old");
 });
 
+it("getCustomerSession stores 'unknown' userAgent when header missing", async () => {
+  const { getCustomerSession, CUSTOMER_SESSION_COOKIE } = await import("../session");
+
+  mockCookies.get.mockImplementation((name: string) =>
+    name === CUSTOMER_SESSION_COOKIE ? { value: "token" } : undefined,
+  );
+  unsealData.mockResolvedValue({
+    sessionId: "old",
+    customerId: "cust",
+    role: "customer",
+  });
+  mockSessionStore.get.mockResolvedValue({ sessionId: "old" });
+  randomUUID.mockReturnValueOnce("new-id").mockReturnValueOnce("new-csrf");
+  sealData.mockResolvedValue("new-token");
+  mockHeaders.get.mockReturnValue(null);
+
+  await expect(getCustomerSession()).resolves.toEqual({
+    customerId: "cust",
+    role: "customer",
+  });
+
+  expect(mockSessionStore.set).toHaveBeenCalledWith(
+    expect.objectContaining({ userAgent: "unknown" }),
+  );
+});
+
 it("destroyCustomerSession removes cookies and deletes session", async () => {
   const {
     destroyCustomerSession,

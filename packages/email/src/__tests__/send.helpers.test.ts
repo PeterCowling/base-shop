@@ -43,8 +43,8 @@ describe("send helpers", () => {
   it("deriveText strips tags and entities", async () => {
     const { deriveText } = await import("../send");
     const html =
-      '<style>.x{}</style><script>alert(1)</script><p>Hello&nbsp;<strong>world</strong>&lt;3 &amp;</p>';
-    expect(deriveText(html)).toBe("Hello world <3 &");
+      '<style>.x{}</style><script>alert(1)</script><p>Hello&nbsp;<strong>world</strong>&lt;3 &amp; &quot;double&quot; and &#39;single&#39;</p>';
+    expect(deriveText(html)).toBe(`Hello world <3 & "double" and 'single'`);
   });
 
   it("ensureText throws when html missing", async () => {

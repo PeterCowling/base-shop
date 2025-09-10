@@ -140,6 +140,24 @@ describe("mapResendEvent", () => {
     });
   });
 
+  it("prefers explicit campaign over campaign_id", async () => {
+    setupMocks();
+    const { mapResendEvent } = await import("../src/analytics");
+    const ev = {
+      type: "email.delivered",
+      data: {
+        campaign: "camp-explicit",
+        campaign_id: "camp-1",
+      },
+    } as const;
+    expect(mapResendEvent(ev)).toEqual<EmailAnalyticsEvent>({
+      type: "email_delivered",
+      campaign: "camp-explicit",
+      messageId: undefined,
+      recipient: undefined,
+    });
+  });
+
   it("handles events without data", async () => {
     setupMocks();
     const { mapResendEvent } = await import("../src/analytics");

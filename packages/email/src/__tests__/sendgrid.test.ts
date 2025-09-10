@@ -313,7 +313,7 @@ describe("SendgridProvider", () => {
 
   describe("createContact", () => {
     it("returns new contact id on success", async () => {
-      process.env.SENDGRID_API_KEY = "sg";
+      process.env.SENDGRID_MARKETING_KEY = "sg";
       global.fetch = jest.fn().mockResolvedValue({
         json: jest.fn().mockResolvedValue({ persisted_recipients: ["abc"] }),
       });
@@ -322,6 +322,10 @@ describe("SendgridProvider", () => {
       await expect(
         provider.createContact("user@example.com"),
       ).resolves.toBe("abc");
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://api.sendgrid.com/v3/marketing/contacts",
+        expect.anything(),
+      );
     });
 
     it("returns empty string without marketing key", async () => {
@@ -335,7 +339,7 @@ describe("SendgridProvider", () => {
     });
 
     it("returns empty string on fetch failure", async () => {
-      process.env.SENDGRID_API_KEY = "sg";
+      process.env.SENDGRID_MARKETING_KEY = "sg";
       global.fetch = jest.fn().mockRejectedValue(new Error("fail"));
       const { SendgridProvider } = await import("../providers/sendgrid");
       const provider = new SendgridProvider();
@@ -345,7 +349,7 @@ describe("SendgridProvider", () => {
     });
 
     it("returns empty string when persisted recipients empty", async () => {
-      process.env.SENDGRID_API_KEY = "sg";
+      process.env.SENDGRID_MARKETING_KEY = "sg";
       global.fetch = jest.fn().mockResolvedValue({
         json: jest.fn().mockResolvedValue({ persisted_recipients: [] }),
       });
@@ -357,7 +361,7 @@ describe("SendgridProvider", () => {
     });
 
     it("returns empty string when persisted recipients missing", async () => {
-      process.env.SENDGRID_API_KEY = "sg";
+      process.env.SENDGRID_MARKETING_KEY = "sg";
       global.fetch = jest.fn().mockResolvedValue({
         json: jest.fn().mockResolvedValue({}),
       });
@@ -371,7 +375,7 @@ describe("SendgridProvider", () => {
 
   describe("addToList", () => {
     it("adds contact to list on success", async () => {
-      process.env.SENDGRID_API_KEY = "sg";
+      process.env.SENDGRID_MARKETING_KEY = "sg";
       global.fetch = jest.fn().mockResolvedValue({});
       const { SendgridProvider } = await import("../providers/sendgrid");
       const provider = new SendgridProvider();
@@ -391,7 +395,7 @@ describe("SendgridProvider", () => {
     });
 
     it("resolves even when fetch fails", async () => {
-      process.env.SENDGRID_API_KEY = "sg";
+      process.env.SENDGRID_MARKETING_KEY = "sg";
       global.fetch = jest.fn().mockRejectedValue(new Error("fail"));
       const { SendgridProvider } = await import("../providers/sendgrid");
       const provider = new SendgridProvider();
@@ -401,7 +405,7 @@ describe("SendgridProvider", () => {
 
   describe("listSegments", () => {
     it("maps segments on success", async () => {
-      process.env.SENDGRID_API_KEY = "sg";
+      process.env.SENDGRID_MARKETING_KEY = "sg";
       global.fetch = jest.fn().mockResolvedValue({
         json: jest
           .fn()
@@ -423,7 +427,7 @@ describe("SendgridProvider", () => {
     });
 
     it("returns empty array on fetch failure", async () => {
-      process.env.SENDGRID_API_KEY = "sg";
+      process.env.SENDGRID_MARKETING_KEY = "sg";
       global.fetch = jest.fn().mockRejectedValue(new Error("fail"));
       const { SendgridProvider } = await import("../providers/sendgrid");
       const provider = new SendgridProvider();

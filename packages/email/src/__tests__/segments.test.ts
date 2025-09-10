@@ -325,6 +325,12 @@ describe("cacheTtl", () => {
     jest.resetModules();
   });
 
+  it("returns custom ttl when set", async () => {
+    process.env.SEGMENT_CACHE_TTL = "5000";
+    const { cacheTtl } = await import("../segments");
+    expect(cacheTtl()).toBe(5000);
+  });
+
   it("returns default when ttl is negative", async () => {
     process.env.SEGMENT_CACHE_TTL = "-1";
     const { cacheTtl } = await import("../segments");

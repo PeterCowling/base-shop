@@ -229,6 +229,10 @@ describe('component helpers', () => {
   });
 
   describe('diffDirectories', () => {
+    it('returns empty array when directories do not exist', () => {
+      expect(diffDirectories('/missing/a', '/missing/b')).toEqual([]);
+    });
+
     it('returns empty array when directories are identical', () => {
       vol.fromJSON({
         '/a/same.txt': 'hello',

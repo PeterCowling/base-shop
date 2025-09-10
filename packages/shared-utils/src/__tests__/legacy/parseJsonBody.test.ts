@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { parseJsonBody, parseLimit } from './parseJsonBody';
+import { parseJsonBody, parseLimit } from '../../parseJsonBody';
 
 describe('parseLimit', () => {
   it.each([

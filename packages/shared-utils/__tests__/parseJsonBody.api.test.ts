@@ -39,6 +39,7 @@ describe('parseJsonBody API route integration', () => {
       method: 'POST',
       body: JSON.stringify({ foo: 'bar' }),
     });
+    req.headers.delete('content-type');
     const res = await handler(req);
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ foo: 'bar' });

@@ -79,6 +79,21 @@ describe("trackEvent providers", () => {
     );
   });
 
+  test("google analytics provider ignores fetch rejections", async () => {
+    readShop.mockResolvedValue({ analyticsEnabled: true });
+    getShopSettings.mockResolvedValue({
+      analytics: { provider: "ga", id: "G-XYZ" },
+    });
+    process.env.GA_API_SECRET = "secret";
+    const fetchMock = jest.fn().mockRejectedValue(new Error("network"));
+    (globalThis.fetch as any) = fetchMock;
+    const { trackEvent } = await import("../index");
+    await expect(
+      trackEvent(shop, { type: "page_view", page: "home" })
+    ).resolves.toBeUndefined();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
   test("falls back to file provider when GA secrets missing", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
     getShopSettings.mockResolvedValue({

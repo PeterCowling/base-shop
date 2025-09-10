@@ -107,6 +107,35 @@ describe("send helpers", () => {
       setTimeoutSpy.mockRestore();
     });
 
+    it("retries primitive rejections and succeeds", async () => {
+      const { sendWithRetry } = await import("../send");
+      const provider = {
+        send: jest
+          .fn()
+          .mockRejectedValueOnce("fail")
+          .mockRejectedValueOnce("fail again")
+          .mockResolvedValueOnce(undefined),
+      };
+      const setTimeoutSpy = jest
+        .spyOn(global, "setTimeout")
+        .mockImplementation((fn: any) => {
+          fn();
+          return 0 as any;
+        });
+
+      await sendWithRetry(provider, {
+        to: "a",
+        subject: "b",
+        html: "<p>x</p>",
+        text: "x",
+      });
+
+      expect(provider.send).toHaveBeenCalledTimes(3);
+      expect(setTimeoutSpy).toHaveBeenNthCalledWith(1, expect.any(Function), 100);
+      expect(setTimeoutSpy).toHaveBeenNthCalledWith(2, expect.any(Function), 200);
+      setTimeoutSpy.mockRestore();
+    });
+
     it("does not retry on non-retryable errors", async () => {
       const { sendWithRetry } = await import("../send");
       const { ProviderError } = await import("../providers/types");

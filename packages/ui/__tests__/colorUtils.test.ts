@@ -1,4 +1,4 @@
-import { hexToRgb, getContrastColor } from "../src/utils/colorUtils";
+import { hexToRgb, getContrastColor, hexToHsl } from "../src/utils/colorUtils";
 
 describe("hexToRgb", () => {
   it("converts 6-digit hex to RGB", () => {
@@ -23,8 +23,26 @@ describe("getContrastColor", () => {
     expect(getContrastColor("#000000")).toBe("#ffffff");
   });
 
+  it("handles high-contrast colors", () => {
+    expect(getContrastColor("#ff0000")).toBe("#ffffff");
+  });
+
   it("throws on invalid hex", () => {
     expect(() => getContrastColor("oops" as any)).toThrow("Invalid hex color");
+  });
+});
+
+describe("hexToHsl", () => {
+  it("converts 6-digit hex to HSL", () => {
+    expect(hexToHsl("#123456")).toBe("210 65% 20%");
+  });
+
+  it("converts 3-digit hex to HSL", () => {
+    expect(hexToHsl("#0f0")).toBe("120 100% 50%");
+  });
+
+  it("handles high-contrast colors", () => {
+    expect(hexToHsl("#ff0000")).toBe("0 100% 50%");
   });
 });
 

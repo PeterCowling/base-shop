@@ -19,15 +19,25 @@ describe("sendEmail", () => {
     } as NodeJS.ProcessEnv;
 
     const sendMail = jest.fn().mockResolvedValue(undefined);
+    const createTransport = jest.fn(() => ({ sendMail }));
     jest.doMock("nodemailer", () => ({
       __esModule: true,
-      default: { createTransport: () => ({ sendMail }) },
-      createTransport: () => ({ sendMail }),
+      default: { createTransport },
+      createTransport,
     }));
     const getDefaultSender = jest.fn(() => "sender@example.com");
     jest.doMock("../config", () => ({ getDefaultSender }));
 
     const { sendEmail } = await import("../sendEmail");
+
+    expect(createTransport).toHaveBeenCalledWith({
+      service: "gmail",
+      auth: {
+        user: "test@example.com",
+        pass: "secret",
+      },
+    });
+
     await sendEmail("a@b.com", "Hello", "World");
 
     expect(sendMail).toHaveBeenCalledWith({

@@ -448,6 +448,16 @@ it("validateCsrfToken returns false when token mismatches cookie", async () => {
   await expect(validateCsrfToken("different")).resolves.toBe(false);
 });
 
+it("validateCsrfToken returns false for empty token", async () => {
+  const { validateCsrfToken, CSRF_TOKEN_COOKIE } = await import("../session");
+
+  mockCookies.get.mockImplementation((name: string) =>
+    name === CSRF_TOKEN_COOKIE ? { value: "csrf" } : undefined
+  );
+
+  await expect(validateCsrfToken("")).resolves.toBe(false);
+});
+
 it("createCustomerSession uses 'unknown' user-agent when header absent", async () => {
   const {
     createCustomerSession,

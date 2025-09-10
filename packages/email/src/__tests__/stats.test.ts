@@ -227,6 +227,18 @@ describe("normalizeProviderStats", () => {
     );
   });
 
+  it("returns empty stats for sendgrid provider when stats undefined", () => {
+    const result = stats.normalizeProviderStats("sendgrid", undefined);
+    expect(result).toEqual(stats.emptyStats);
+    expect(result).not.toBe(stats.emptyStats);
+  });
+
+  it("returns empty stats for resend provider when stats undefined", () => {
+    const result = stats.normalizeProviderStats("resend", undefined);
+    expect(result).toEqual(stats.emptyStats);
+    expect(result).not.toBe(stats.emptyStats);
+  });
+
   it("returns empty stats for unknown provider", () => {
     const result = stats.normalizeProviderStats("unknown", { delivered: "1" });
     expect(result).toEqual(stats.emptyStats);

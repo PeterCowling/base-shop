@@ -5,10 +5,7 @@ import { useProductEditorFormState } from "../../../hooks/useProductEditorFormSt
 jest.mock("../PublishLocationSelector", () => ({
   __esModule: true,
   default: ({ onChange }: { onChange: (ids: string[]) => void }) => (
-    <button
-      data-testid="publish-selector"
-      onClick={() => onChange(["loc1"])}
-    />
+    <button data-cy="publish-selector" onClick={() => onChange(["loc1"])} />
   ),
 }));
 

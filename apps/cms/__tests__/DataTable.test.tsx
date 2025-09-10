@@ -16,7 +16,7 @@ const rows: Row[] = [
 
 const columns: Column<Row>[] = [
   { header: "Name", render: (r) => <span>{r.name}</span> },
-  { header: "Age", render: (r) => <span data-testid={`age-${r.id}`}>{r.age}</span> },
+  { header: "Age", render: (r) => <span data-cy={`age-${r.id}`}>{r.age}</span> },
 ];
 
 describe("DataTable", () => {

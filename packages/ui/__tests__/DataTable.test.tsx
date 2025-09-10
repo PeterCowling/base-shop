@@ -15,7 +15,7 @@ const columns: Column<Row>[] = [
   {
     header: "Name",
     width: "150px",
-    render: (row) => <span data-testid={`name-${row.name}`}>{row.name}</span>,
+    render: (row) => <span data-cy={`name-${row.name}`}>{row.name}</span>,
   },
   { header: "Age", render: (row) => <span>{row.age}</span> },
 ];

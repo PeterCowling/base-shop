@@ -53,6 +53,18 @@ describe("createSessionStore", () => {
     expect(store).toBeInstanceOf(MemorySessionStore);
   });
 
+  it("falls back to MemorySessionStore when SESSION_STORE is invalid", async () => {
+    process.env.SESSION_STORE = "foo";
+    delete process.env.UPSTASH_REDIS_REST_URL;
+    delete process.env.UPSTASH_REDIS_REST_TOKEN;
+
+    const { createSessionStore } = await import("../store");
+    const { MemorySessionStore } = await import("../memoryStore");
+
+    const store = await createSessionStore();
+    expect(store).toBeInstanceOf(MemorySessionStore);
+  });
+
   it("setSessionStoreFactory overrides default store", async () => {
     process.env.UPSTASH_REDIS_REST_URL = "https://example";
     process.env.UPSTASH_REDIS_REST_TOKEN = STRONG_TOKEN;

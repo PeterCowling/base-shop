@@ -5,7 +5,7 @@ jest.mock("../../../organisms/StoreLocatorMap", () => {
   const React = require("react");
   return {
     __esModule: true,
-    StoreLocatorMap: jest.fn(() => <div data-testid="map" />),
+    StoreLocatorMap: jest.fn(() => <div data-cy="map" />),
   };
 });
 

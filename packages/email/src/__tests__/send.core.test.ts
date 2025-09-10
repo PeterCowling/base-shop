@@ -525,6 +525,25 @@ describe("send core helpers", () => {
   });
 
   describe("sendWithNodemailer", () => {
+    it("creates transport with undefined SMTP_URL", async () => {
+      delete process.env.SMTP_URL;
+      const { sendWithNodemailer } = await import("../send");
+      await sendWithNodemailer({
+        to: "to@example.com",
+        subject: "Sub",
+        html: "<p>H</p>",
+        text: "T",
+      });
+      expect(mockCreateTransport).toHaveBeenCalledWith({ url: undefined });
+      expect(mockSendMail).toHaveBeenCalledWith({
+        from: "from@example.com",
+        to: "to@example.com",
+        subject: "Sub",
+        html: "<p>H</p>",
+        text: "T",
+      });
+    });
+
     it("creates transport with SMTP_URL and forwards fields", async () => {
       process.env.SMTP_URL = "smtp://test";
       const { sendWithNodemailer } = await import("../send");

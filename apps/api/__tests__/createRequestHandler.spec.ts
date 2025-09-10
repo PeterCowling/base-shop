@@ -164,6 +164,29 @@ describe("createRequestHandler", () => {
     expect(end).toHaveBeenCalledWith("");
   });
 
+  it("returns 404 for GET /shop/:id/publish-upgrade", async () => {
+    const handler = createRequestHandler();
+
+    const req = new Readable({
+      read() {
+        this.push(null);
+      },
+    }) as unknown as IncomingMessage;
+    req.url = "/shop/abc/publish-upgrade";
+    req.method = "GET";
+    req.headers = {};
+
+    const end = jest.fn();
+    const res = { statusCode: 0, setHeader: jest.fn(), end } as unknown as ServerResponse;
+
+    await handler(req, res);
+
+    expect(res.statusCode).toBe(404);
+    expect(end).toHaveBeenCalledWith();
+    expect(componentsHandlerMock).not.toHaveBeenCalled();
+    expect(publishUpgradeMock).not.toHaveBeenCalled();
+  });
+
   it("returns 404 for unrecognized path", async () => {
     const handler = createRequestHandler();
 

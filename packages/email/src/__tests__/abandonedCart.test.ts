@@ -245,6 +245,18 @@ describe("resolveAbandonedCartDelay", () => {
     expect(delay).toBe(44444);
   });
 
+  it("uses file delay when env overrides are non-numeric", async () => {
+    jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(
+        JSON.stringify({ abandonedCart: { delayMs: 12345 } }, null, 2),
+      );
+    process.env[key] = "not-a-number";
+    process.env.ABANDONED_CART_DELAY_MS = "also-not-a-number";
+    const delay = await resolveAbandonedCartDelay(shop, "/tmp");
+    expect(delay).toBe(12345);
+  });
+
   it("ignores non-numeric env values and returns default", async () => {
     jest
       .spyOn(fs, "readFile")

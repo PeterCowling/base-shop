@@ -135,4 +135,37 @@ describe("scheduler", () => {
 
     expect(memory[shop]).toBeUndefined();
   });
+
+  test("filters out unsubscribed recipients", async () => {
+    mockListEvents.mockResolvedValueOnce([
+      { type: "email_unsubscribe", email: "a@example.com" },
+    ]);
+
+    await createCampaign({
+      shop,
+      recipients: ["a@example.com", "b@example.com"],
+      subject: "Hi",
+      body: "<p>Hi</p>",
+    });
+
+    expect(mockedSend).toHaveBeenCalledTimes(1);
+    expect(mockedSend.mock.calls[0][0].to).toBe("b@example.com");
+  });
+
+  test("falls back to original recipients on listEvents error", async () => {
+    mockListEvents.mockRejectedValueOnce(new Error("oops"));
+
+    await createCampaign({
+      shop,
+      recipients: ["a@example.com", "b@example.com"],
+      subject: "Hi",
+      body: "<p>Hi</p>",
+    });
+
+    expect(mockedSend).toHaveBeenCalledTimes(2);
+    expect(mockedSend.mock.calls.map((c) => c[0].to)).toEqual([
+      "a@example.com",
+      "b@example.com",
+    ]);
+  });
 });

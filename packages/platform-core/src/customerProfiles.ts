@@ -37,7 +37,7 @@ export async function updateCustomerProfile(
       NOT: { customerId },
     },
   });
-  if (existing) {
+  if (existing && existing.customerId !== customerId) {
     throw new Error("Conflict: email already in use");
   }
   return prisma.customerProfile.upsert({

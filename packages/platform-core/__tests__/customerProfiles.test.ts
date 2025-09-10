@@ -51,5 +51,22 @@ describe("customer profiles", () => {
     });
     expect(result).toBe(updated);
   });
+
+  it("upserts when findFirst returns the same customerId", async () => {
+    const existing = { customerId: "abc", email: "same@example.com" } as any;
+    prisma.customerProfile.findFirst.mockResolvedValue(existing);
+    const updated = { customerId: "abc", name: "Name", email: "same@example.com" } as any;
+    prisma.customerProfile.upsert.mockResolvedValue(updated);
+
+    await expect(
+      updateCustomerProfile("abc", { name: "Name", email: "same@example.com" })
+    ).resolves.toBe(updated);
+
+    expect(prisma.customerProfile.upsert).toHaveBeenCalledWith({
+      where: { customerId: "abc" },
+      update: { name: "Name", email: "same@example.com" },
+      create: { customerId: "abc", name: "Name", email: "same@example.com" },
+    });
+  });
 });
 

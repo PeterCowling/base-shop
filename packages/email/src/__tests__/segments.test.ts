@@ -544,6 +544,23 @@ describe("resolveSegment events", () => {
   });
 });
 
+describe("resolveSegment errors", () => {
+  beforeEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  it("rejects when listEvents fails", async () => {
+    mockReadFile.mockResolvedValue("[]");
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    const err = new Error("listEvents error");
+    mockListEvents.mockRejectedValue(err);
+
+    const { resolveSegment } = await import("../segments");
+    await expect(resolveSegment("shop1", "vip")).rejects.toBe(err);
+  });
+});
+
 describe("analyticsMTime", () => {
   beforeEach(() => {
     jest.resetModules();

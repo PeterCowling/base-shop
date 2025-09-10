@@ -94,6 +94,36 @@ describe('onRequest route', () => {
     expect(warnSpy).toHaveBeenCalledWith('missing bearer token', { shopId: 'abc' });
   });
 
+  it('returns 403 when token is empty', async () => {
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
+    verify.mockImplementation((token: string) => {
+      if (!token) {
+        throw new Error('empty');
+      }
+      return { exp: Math.floor(Date.now() / 1000) + 60 };
+    });
+    const res = await onRequest({
+      params: { shopId: 'abc' },
+      request: {
+        headers: { get: () => 'Bearer ' } as any,
+        url: 'http://localhost',
+      } as any,
+    });
+    expect(verify).toHaveBeenCalledWith(
+      '',
+      'secret',
+      expect.objectContaining({
+        algorithms: ['HS256'],
+        audience: 'upgrade-preview',
+        issuer: 'acme',
+        subject: 'shop:abc:upgrade-preview',
+      }),
+    );
+    expect(res.status).toBe(403);
+    await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+  });
+
   it('returns 403 when jwt.verify throws', async () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockImplementation(() => {

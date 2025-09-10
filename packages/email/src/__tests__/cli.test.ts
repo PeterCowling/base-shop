@@ -132,10 +132,9 @@ test("campaign list outputs campaigns", async () => {
 });
 
 test("campaign send invokes scheduler", async () => {
-  process.argv = ["node", "email", "campaign", "send"];
   const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
   const { run } = await import("../cli");
-  await run();
+  await run(["node", "email", "campaign", "send"]);
   expect(sendDueCampaigns).toHaveBeenCalled();
   expect(logSpy).toHaveBeenCalledWith("Sent due campaigns");
 });

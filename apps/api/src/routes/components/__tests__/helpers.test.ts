@@ -54,6 +54,16 @@ describe('component helpers', () => {
       expect(gatherChanges('abc', root)).toEqual([]);
     });
 
+    it('throws error when package.json contains invalid JSON', () => {
+      vol.fromJSON({
+        [`${root}/data/shops/shop/shop.json`]: JSON.stringify({
+          componentVersions: { '@acme/foo': '1.0.0' },
+        }),
+        [`${root}/packages/foo/package.json`]: '{ bad json',
+      });
+      expect(() => gatherChanges('shop', root)).toThrow(SyntaxError);
+    });
+
     it('returns empty array when shop.json lacks componentVersions', () => {
       vol.fromJSON({
         [`${root}/data/shops/abc/shop.json`]: JSON.stringify({}),

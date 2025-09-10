@@ -48,8 +48,12 @@ function ensureText(options: CampaignOptions): CampaignOptions {
 
 const providerCache: Record<string, CampaignProvider | undefined> = {};
 
-async function loadProvider(name: string): Promise<CampaignProvider | undefined> {
-  if (providerCache[name]) return providerCache[name];
+async function loadProvider(
+  name: string
+): Promise<CampaignProvider | undefined> {
+  if (Object.prototype.hasOwnProperty.call(providerCache, name)) {
+    return providerCache[name];
+  }
 
   if (name === "sendgrid") {
     const apiKey = process.env.SENDGRID_API_KEY;
@@ -131,7 +135,7 @@ export async function sendCampaignEmail(
       ]),
       allowedAttributes: {
         ...sanitizeHtml.defaults.allowedAttributes,
-        '*': ["href", "src", "alt", "title", "width", "height", "style"],
+        "*": ["href", "src", "alt", "title", "width", "height", "style"],
       },
     });
   }
@@ -142,7 +146,10 @@ export async function sendCampaignEmail(
       `Unsupported EMAIL_PROVIDER "${primary}". Available providers: ${availableProviders.join(", ")}`
     );
   }
-  const providerOrder = [primary, ...availableProviders.filter((p) => p !== primary)];
+  const providerOrder = [
+    primary,
+    ...availableProviders.filter((p) => p !== primary),
+  ];
   for (const name of providerOrder) {
     const current = await loadProvider(name);
     if (!current) continue;
@@ -168,8 +175,8 @@ async function sendWithRetry(
   options: CampaignOptions,
   maxRetries = 3
 ): Promise<void> {
-    let attempt = 0;
-    while (true) {
+  let attempt = 0;
+  while (true) {
     try {
       await provider.send(options);
       return;
@@ -179,8 +186,8 @@ async function sendWithRetry(
         err instanceof ProviderError
           ? err.retryable
           : hasProviderErrorFields(err)
-          ? err.retryable ?? true
-          : true;
+            ? (err.retryable ?? true)
+            : true;
       if (!retryable || attempt >= maxRetries) {
         throw err;
       }

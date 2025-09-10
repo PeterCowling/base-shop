@@ -37,7 +37,8 @@ jest.mock("sanitize-html", () => {
 });
 
 jest.mock("../providers/error", () => ({
-  hasProviderErrorFields: (...args: any[]) => mockHasProviderErrorFields(...args),
+  hasProviderErrorFields: (...args: any[]) =>
+    mockHasProviderErrorFields(...args),
 }));
 
 jest.mock("nodemailer", () => ({
@@ -74,10 +75,8 @@ describe("send core helpers", () => {
     it("cleans and normalizes HTML", async () => {
       const { deriveText } = await import("../send");
       const html =
-        '<div>  Hello&nbsp;<strong>World</strong><style>.a{}</style><script>alert(1)</script>&amp; &lt;Test&gt; &#39;Quote&#39; &quot;Double&quot; </div>';
-      expect(deriveText(html)).toBe(
-        "Hello World & <Test> 'Quote' \"Double\""
-      );
+        "<div>  Hello&nbsp;<strong>World</strong><style>.a{}</style><script>alert(1)</script>&amp; &lt;Test&gt; &#39;Quote&#39; &quot;Double&quot; </div>";
+      expect(deriveText(html)).toBe("Hello World & <Test> 'Quote' \"Double\"");
     });
 
     it("throws when html is missing", async () => {
@@ -142,6 +141,19 @@ describe("send core helpers", () => {
         expect(mockSendgridImport).not.toHaveBeenCalled();
         expect(mockResendImport).not.toHaveBeenCalled();
       });
+    });
+
+    it("does not late-load providers when API key is set after first call", async () => {
+      await jest.isolateModulesAsync(async () => {
+        const { loadProvider } = await import("../send");
+        const first = await loadProvider("sendgrid");
+        process.env.SENDGRID_API_KEY = "sg";
+        const second = await loadProvider("sendgrid");
+        expect(first).toBeUndefined();
+        expect(second).toBeUndefined();
+      });
+      expect(SendgridProvider).not.toHaveBeenCalled();
+      expect(mockSendgridImport).not.toHaveBeenCalled();
     });
 
     it("caches unknown providers as undefined", async () => {
@@ -260,8 +272,12 @@ describe("send core helpers", () => {
 
     it("falls back to next providers and nodemailer on non-retryable errors", async () => {
       const { ProviderError } = await import("../providers/types");
-      const provider1Send = jest.fn().mockRejectedValue(new ProviderError("x", false));
-      const provider2Send = jest.fn().mockRejectedValue(new ProviderError("y", false));
+      const provider1Send = jest
+        .fn()
+        .mockRejectedValue(new ProviderError("x", false));
+      const provider2Send = jest
+        .fn()
+        .mockRejectedValue(new ProviderError("y", false));
       SendgridProvider.mockImplementation(() => ({ send: provider1Send }));
       ResendProvider.mockImplementation(() => ({ send: provider2Send }));
       await jest.isolateModulesAsync(async () => {
@@ -364,7 +380,11 @@ describe("send core helpers", () => {
       const provider = {
         send: jest.fn().mockRejectedValue(new ProviderError("x", true)),
       };
-      const promise = sendWithRetry(provider as any, { to: "t", subject: "s" }, 4).catch(() => {});
+      const promise = sendWithRetry(
+        provider as any,
+        { to: "t", subject: "s" },
+        4
+      ).catch(() => {});
       await jest.runAllTimersAsync();
       await promise;
       expect(provider.send).toHaveBeenCalledTimes(4);
@@ -381,7 +401,10 @@ describe("send core helpers", () => {
       const { sendWithRetry } = await import("../send");
       const err = { retryable: true };
       const provider = { send: jest.fn().mockRejectedValue(err) };
-      const promise = sendWithRetry(provider as any, { to: "t", subject: "s" }).catch(() => {});
+      const promise = sendWithRetry(provider as any, {
+        to: "t",
+        subject: "s",
+      }).catch(() => {});
       await jest.runAllTimersAsync();
       await promise;
       expect(provider.send).toHaveBeenCalledTimes(3);
@@ -403,7 +426,10 @@ describe("send core helpers", () => {
       mockHasProviderErrorFields.mockReturnValue(false);
       const { sendWithRetry } = await import("../send");
       const provider = { send: jest.fn().mockRejectedValue(new Error("x")) };
-      const promise = sendWithRetry(provider as any, { to: "t", subject: "s" }).catch(() => {});
+      const promise = sendWithRetry(provider as any, {
+        to: "t",
+        subject: "s",
+      }).catch(() => {});
       await jest.runAllTimersAsync();
       await promise;
       expect(provider.send).toHaveBeenCalledTimes(3);
@@ -480,4 +506,3 @@ describe("send core helpers", () => {
     });
   });
 });
-

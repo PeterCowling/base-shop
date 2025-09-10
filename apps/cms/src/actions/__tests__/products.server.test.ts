@@ -42,6 +42,7 @@ import {
 } from '@platform-core/repositories/json.server';
 import { redirect } from 'next/navigation';
 import { captureException } from '@/utils/sentry.server';
+import { productSchema } from '../schemas';
 
 describe('products.server actions', () => {
   const shop = 'shop1';
@@ -144,6 +145,51 @@ describe('products.server actions', () => {
       const result = await updateProduct(shop, fd);
       expect(updateProductInRepo).toHaveBeenCalled();
       expect(result.product?.title.en).toBe('new');
+    });
+
+    it('falls back to empty media array on invalid JSON', async () => {
+      const fd = new FormData();
+      fd.append('id', 'p1');
+      fd.append('price', '10');
+      fd.append('title_en', 'new');
+      fd.append('desc_en', 'new');
+      fd.append('media', 'not json');
+      const result = await updateProduct(shop, fd);
+      const saved = (updateProductInRepo as jest.Mock).mock.calls[0][1];
+      expect(saved.media).toEqual([]);
+      expect(result.product?.media).toEqual([]);
+    });
+
+    it('filters out media entries missing url or type', async () => {
+      const fd = new FormData();
+      fd.append('id', 'p1');
+      fd.append('price', '10');
+      fd.append('title_en', 'new');
+      fd.append('desc_en', 'new');
+      const media = [
+        { url: 'good', type: 'image' },
+        { url: '', type: 'image' },
+        { url: 'bad' },
+      ];
+      fd.append('media', JSON.stringify(media));
+      const spied = jest
+        .spyOn(productSchema, 'safeParse')
+        .mockReturnValueOnce({
+          success: true,
+          data: {
+            id: 'p1',
+            price: 10,
+            title: { en: 'new' },
+            description: { en: 'new' },
+            media,
+          },
+        } as any);
+
+      const result = await updateProduct(shop, fd);
+      const saved = (updateProductInRepo as jest.Mock).mock.calls[0][1];
+      expect(saved.media).toEqual([{ url: 'good', type: 'image' }]);
+      expect(result.product?.media).toEqual([{ url: 'good', type: 'image' }]);
+      spied.mockRestore();
     });
 
     it('throws when unauthorized', async () => {

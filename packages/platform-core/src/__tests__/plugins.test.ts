@@ -141,6 +141,30 @@ describe("plugin loader", () => {
     );
   });
 
+  it("deduplicates overlapping explicit and discovered plugin directories", async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), "plugin-root-"));
+    jest.spyOn(process, "cwd").mockReturnValue(root);
+    const searchDir = path.join(root, "packages", "plugins");
+    await mkdir(searchDir, { recursive: true });
+    const pluginDir = await mkdtemp(path.join(searchDir, "plugin-"));
+    await writeFile(
+      path.join(pluginDir, "package.json"),
+      JSON.stringify({ name: "overlap", main: "index.js" })
+    );
+    await writeFile(
+      path.join(pluginDir, "index.js"),
+      "module.exports = { default: { id: 'overlap' } };\n"
+    );
+
+    const loaded = await loadPlugins({
+      directories: [searchDir],
+      plugins: [pluginDir],
+    });
+
+    expect(loaded).toHaveLength(1);
+    expect(loaded[0]?.id).toBe("overlap");
+  });
+
   it("registers payments, shipping, and widgets on init", async () => {
     const root = await mkdtemp(path.join(os.tmpdir(), "plugin-root-"));
     jest.spyOn(process, "cwd").mockReturnValue(root);

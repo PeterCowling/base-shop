@@ -11,12 +11,14 @@ jest.mock("@platform-core/contexts/LayoutContext", () => ({
 
 // Stub internal components
 jest.mock("@ui/components/cms/Sidebar.client", () => () => (
-  <div data-testid="sidebar">Sidebar</div>
+  /* Use `data-cy` because Testing Library is configured with `testIdAttribute: "data-cy"` */
+  <div data-cy="sidebar">Sidebar</div>
 ));
 jest.mock("@ui/components/cms/TopBar.client", () => () => <div>TopBar</div>);
 jest.mock("@/components/atoms", () => ({
   Progress: ({ value, label }: any) => (
-    <div data-testid="progress">{label} - {value}</div>
+    /* Use `data-cy` because Testing Library is configured with `testIdAttribute: "data-cy"` */
+    <div data-cy="progress">{label} - {value}</div>
   ),
 }));
 

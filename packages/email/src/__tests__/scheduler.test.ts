@@ -612,6 +612,21 @@ describe("scheduler", () => {
     ).rejects.toThrow('boom');
   });
 
+  test('createCampaign rejects when emitSend fails', async () => {
+    (emitSend as jest.Mock).mockRejectedValueOnce(new Error('hookfail'));
+    await expect(
+      createCampaign({
+        shop,
+        recipients: ['a@example.com'],
+        subject: 'Hi',
+        body: '<p>Hi</p>',
+      }),
+    ).rejects.toThrow('hookfail');
+    expect(readCampaigns).not.toHaveBeenCalled();
+    expect(writeCampaigns).not.toHaveBeenCalled();
+    expect(memory[shop]).toBeUndefined();
+  });
+
   test("deliverCampaign batches recipients and adds unsubscribe link", async () => {
     process.env.EMAIL_BATCH_SIZE = "2";
     process.env.EMAIL_BATCH_DELAY_MS = "1000";

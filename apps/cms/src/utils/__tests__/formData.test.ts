@@ -1,6 +1,24 @@
 import { formDataEntries, formDataToObject } from "../formData";
 
 describe("formData helpers", () => {
+  it("uses entries when available", () => {
+    const entries: [string, FormDataEntryValue][] = [
+      ["foo", "bar"],
+      ["baz", "qux"],
+    ];
+    const entriesMock = jest.fn(() => entries);
+    const entriesFormData = {
+      entries: entriesMock,
+    } as unknown as FormData;
+
+    expect(Array.from(formDataEntries(entriesFormData))).toEqual(entries);
+    expect(formDataToObject(entriesFormData)).toEqual({
+      foo: "bar",
+      baz: "qux",
+    });
+    expect(entriesMock).toHaveBeenCalledTimes(2);
+  });
+
   it("uses iterator when available", () => {
     const iteratorFormData = {
       [Symbol.iterator]: function* () {
@@ -35,5 +53,11 @@ describe("formData helpers", () => {
       alpha: "1",
       beta: "2",
     });
+  });
+
+  it("returns empty array when no iterable methods are present", () => {
+    const emptyFormData = {} as unknown as FormData;
+
+    expect(Array.from(formDataEntries(emptyFormData))).toEqual([]);
   });
 });

@@ -557,6 +557,25 @@ describe("scheduler", () => {
     expect(memory["shopB"][0].sentAt).toBeDefined();
   });
 
+  test("sendDueCampaigns skips campaigns already sent", async () => {
+    const past = new Date(now.getTime() - 1000).toISOString();
+    memory[shop] = [
+      {
+        id: "s1",
+        recipients: ["s1@example.com"],
+        subject: "S1",
+        body: "<p>Hi</p>",
+        segment: null,
+        sendAt: past,
+        sentAt: past,
+        templateId: null,
+      },
+    ];
+    await sendDueCampaigns();
+    expect(sendCampaignEmail).not.toHaveBeenCalled();
+    expect(writeCampaigns).not.toHaveBeenCalled();
+  });
+
   test("syncCampaignAnalytics delegates to analytics module", async () => {
     await syncCampaignAnalytics();
     expect(fetchCampaignAnalytics).toHaveBeenCalled();

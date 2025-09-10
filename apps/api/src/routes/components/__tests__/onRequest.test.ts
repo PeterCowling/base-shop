@@ -150,6 +150,33 @@ describe('onRequest route', () => {
     expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
   });
 
+  it('returns 403 when token expired', async () => {
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
+    const { TokenExpiredError } = jest.requireActual('jsonwebtoken');
+    verify.mockImplementation(() => {
+      throw new TokenExpiredError('jwt expired', new Date());
+    });
+    const res = await onRequest({
+      params: { shopId: 'abc' },
+      request: new Request('http://localhost', {
+        headers: { authorization: 'Bearer token' },
+      }),
+    });
+    expect(verify).toHaveBeenCalledWith(
+      'token',
+      'secret',
+      expect.objectContaining({
+        algorithms: ['HS256'],
+        audience: 'upgrade-preview',
+        issuer: 'acme',
+        subject: 'shop:abc:upgrade-preview',
+      }),
+    );
+    expect(res.status).toBe(403);
+    await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+  });
+
   it('returns 403 when token has wrong audience', async () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockImplementation(() => {

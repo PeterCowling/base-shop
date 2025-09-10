@@ -151,6 +151,21 @@ test("campaign list outputs campaigns", async () => {
   expect(JSON.parse(output)).toEqual(campaigns);
 });
 
+test("campaign list outputs [] when file missing", async () => {
+  fsMock.promises.readFile.mockRejectedValueOnce(
+    Object.assign(new Error("ENOENT"), { code: "ENOENT" }),
+  );
+  const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+  const { run } = await import("../cli");
+  await run(["node", "email", "campaign", "list", "shop"]);
+
+  expect(fsMock.promises.readFile).toHaveBeenCalledWith(
+    path.join(dataRoot, "shop", "campaigns.json"),
+    "utf8",
+  );
+  expect(logSpy).toHaveBeenCalledWith("[]");
+});
+
 test("campaign send invokes scheduler", async () => {
   const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
   const { run } = await import("../cli");

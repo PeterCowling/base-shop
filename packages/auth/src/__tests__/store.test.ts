@@ -77,6 +77,15 @@ describe("createSessionStore", () => {
     expect(store).toBe(customStore);
   });
 
+  it("last setSessionStoreFactory wins", async () => {
+    const { createSessionStore, setSessionStoreFactory } = await import("../store");
+    setSessionStoreFactory(async () => ({ id: 1 } as any));
+    setSessionStoreFactory(async () => ({ id: 2 } as any));
+
+    const store = await createSessionStore();
+    expect(store).toEqual({ id: 2 });
+  });
+
   it(
     "falls back to MemorySessionStore and logs when SESSION_STORE=redis but env vars are missing",
     async () => {

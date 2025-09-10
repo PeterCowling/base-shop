@@ -1,3 +1,5 @@
+import { hasProviderErrorFields } from "../providers/error";
+
 jest.mock("resend", () => ({
   Resend: jest.fn().mockImplementation(() => ({})),
 }));
@@ -97,6 +99,18 @@ describe("Campaign providers segmentation", () => {
       expect.any(Object)
     );
     expect(segs).toEqual([{ id: "s2", name: "Seg2" }]);
+  });
+});
+
+describe("hasProviderErrorFields", () => {
+  it("returns true for plain objects", () => {
+    expect(hasProviderErrorFields({})).toBe(true);
+  });
+
+  it("returns false for null, numbers, and strings", () => {
+    for (const value of [null, 123, "abc"] as const) {
+      expect(hasProviderErrorFields(value)).toBe(false);
+    }
   });
 });
 

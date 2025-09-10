@@ -11,4 +11,9 @@ describe("ImageCarousel", () => {
     expect(getByAltText("A")).toBeInTheDocument();
     expect(getByAltText("B")).toBeInTheDocument();
   });
+
+  it("renders null when images array is empty", () => {
+    const { container } = render(<ImageCarousel images={[]} />);
+    expect(container.firstChild).toBeNull();
+  });
 });

@@ -1,7 +1,9 @@
 import "../../../../../../../test/resetNextMocks";
 import * as React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, configure } from "@testing-library/react";
 import { Slot } from "../slot";
+
+configure({ testIdAttribute: "data-testid" });
 
 describe("Slot", () => {
   it("forwards props and ref to child element", () => {

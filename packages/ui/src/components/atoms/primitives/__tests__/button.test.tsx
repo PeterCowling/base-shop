@@ -1,7 +1,9 @@
 import "../../../../../../../test/resetNextMocks";
 import * as React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, configure } from "@testing-library/react";
 import { Button, type ButtonProps } from "../button";
+
+configure({ testIdAttribute: "data-testid" });
 
 describe("Button", () => {
   const cases: Array<{ variant: NonNullable<ButtonProps["variant"]>; className: string; token: string }> = [

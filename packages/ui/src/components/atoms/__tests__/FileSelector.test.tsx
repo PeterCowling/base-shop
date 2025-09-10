@@ -1,6 +1,8 @@
 import "../../../../../../test/resetNextMocks";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, configure } from "@testing-library/react";
 import { FileSelector } from "../FileSelector";
+
+configure({ testIdAttribute: "data-testid" });
 
 describe("FileSelector", () => {
   it("invokes callback and displays selected file names", () => {

@@ -1,6 +1,6 @@
 jest.mock("../src/components/cms/blocks", () => ({
   blockRegistry: {
-    Dummy: { component: () => <div data-testid="inner">content</div> },
+    Dummy: { component: () => <div data-cy="inner">content</div> },
   },
 }));
 

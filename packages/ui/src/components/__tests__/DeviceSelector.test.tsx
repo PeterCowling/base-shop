@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, configure } from "@testing-library/react";
 import DeviceSelector from "../DeviceSelector";
 import { getLegacyPreset, devicePresets } from "../../utils/devicePresets";
+
+configure({ testIdAttribute: "data-testid" });
 
 jest.mock("../atoms/shadcn", () => {
   const React = require("react");

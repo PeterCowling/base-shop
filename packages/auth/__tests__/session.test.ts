@@ -140,6 +140,48 @@ describe("session token", () => {
     await expect(getCustomerSession()).resolves.toBeNull();
   });
 
+  it("returns null when session store lookup fails", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    jest.doMock("../src/store", () => ({
+      __esModule: true,
+      SESSION_TTL_S: 1,
+      createSessionStore: async () => ({
+        get: jest.fn().mockResolvedValue(null),
+        set: jest.fn(),
+        delete: jest.fn(),
+      }),
+    }));
+    const { createCustomerSession, getCustomerSession } = await import(
+      "../src/session"
+    );
+    const session = { customerId: "abc", role: "customer" as Role };
+    await createCustomerSession(session);
+    await expect(getCustomerSession()).resolves.toBeNull();
+  });
+
+  it("returns null when session cookie is missing", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { getCustomerSession } = await import("../src/session");
+    await expect(getCustomerSession()).resolves.toBeNull();
+  });
+
+  it("returns null when SESSION_SECRET is undefined", async () => {
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock("@acme/config/env/core", () => ({
+        coreEnv: {
+          SESSION_SECRET: undefined,
+          COOKIE_DOMAIN: process.env.COOKIE_DOMAIN,
+        },
+      }));
+      const store = createStore();
+      mockCookies.mockResolvedValue(store);
+      const { getCustomerSession } = await import("../src/session");
+      await expect(getCustomerSession()).resolves.toBeNull();
+    });
+  });
+
   it("creates session with default cookie options", async () => {
     delete process.env.COOKIE_DOMAIN;
     const store = createStore();
@@ -250,6 +292,36 @@ describe("session token", () => {
       name: CSRF_TOKEN_COOKIE,
       path: "/",
       domain: "example.com",
+    });
+  });
+
+  it("destroyCustomerSession clears cookies when SESSION_SECRET missing", async () => {
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock("@acme/config/env/core", () => ({
+        coreEnv: {
+          SESSION_SECRET: undefined,
+          COOKIE_DOMAIN: process.env.COOKIE_DOMAIN,
+        },
+      }));
+      const store = createStore();
+      mockCookies.mockResolvedValue(store);
+      const {
+        destroyCustomerSession,
+        CUSTOMER_SESSION_COOKIE,
+        CSRF_TOKEN_COOKIE,
+      } = await import("../src/session");
+      store.set(CUSTOMER_SESSION_COOKIE, "token");
+      await expect(destroyCustomerSession()).resolves.toBeUndefined();
+      expect(store.delete).toHaveBeenCalledWith({
+        name: CUSTOMER_SESSION_COOKIE,
+        path: "/",
+        domain: "example.com",
+      });
+      expect(store.delete).toHaveBeenCalledWith({
+        name: CSRF_TOKEN_COOKIE,
+        path: "/",
+        domain: "example.com",
+      });
     });
   });
 

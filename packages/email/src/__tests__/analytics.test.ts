@@ -241,6 +241,29 @@ describe("analytics mapping", () => {
     });
   });
 
+  it("uses email when both email and recipient are provided", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { mapResendEvent } = await import("../analytics");
+    const ev = {
+      type: "email.opened",
+      data: {
+        email: "user@example.com",
+        recipient: "other@example.com",
+        message_id: "m5",
+      },
+    };
+    expect(mapResendEvent(ev)).toEqual({
+      type: "email_open",
+      campaign: undefined,
+      messageId: "m5",
+      recipient: "user@example.com",
+    });
+  });
+
   it("returns null for unknown SendGrid events", async () => {
     jest.resetModules();
     process.env.CART_COOKIE_SECRET = "secret";

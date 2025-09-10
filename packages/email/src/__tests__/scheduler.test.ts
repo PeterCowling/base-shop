@@ -16,7 +16,7 @@ jest.mock("../analytics", () => ({
   syncCampaignAnalytics: jest.fn().mockResolvedValue(undefined),
 }));
 jest.mock("../segments", () => ({
-  resolveSegment: jest.fn().mockResolvedValue([]),
+  resolveSegment: jest.fn(),
 }));
 jest.mock("../templates", () => ({
   renderTemplate: jest.fn(),
@@ -691,7 +691,7 @@ describe("scheduler", () => {
   });
 
   test('createCampaign rejects when segment yields no recipients', async () => {
-    (resolveSegment as jest.Mock).mockResolvedValueOnce([]);
+    (resolveSegment as jest.Mock).mockResolvedValue([]);
     await expect(
       createCampaign({
         shop,

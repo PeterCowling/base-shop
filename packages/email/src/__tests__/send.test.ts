@@ -284,6 +284,33 @@ describe("sendCampaignEmail", () => {
       expect(mockSendMail).toHaveBeenCalledTimes(1);
     });
 
+    it("falls back to alternate provider when Nodemailer fails", async () => {
+      mockSendMail = jest.fn().mockRejectedValue(new Error("smtp fail"));
+      mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+      mockResendSend = jest.fn().mockResolvedValue(undefined);
+      mockSanitizeHtml = jest.fn((html: string) => html);
+      mockHasProviderErrorFields = jest.fn();
+
+      process.env.EMAIL_PROVIDER = "smtp";
+      process.env.SENDGRID_API_KEY = "sg";
+      process.env.RESEND_API_KEY = "rs";
+      process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+      const { sendCampaignEmail } = await import("../send");
+      await sendCampaignEmail({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>HTML</p>",
+      });
+
+      expect(mockSendMail).toHaveBeenCalledTimes(1);
+      expect(mockSendgridSend).toHaveBeenCalledTimes(1);
+      expect(
+        mockSendMail.mock.invocationCallOrder[0]
+      ).toBeLessThan(mockSendgridSend.mock.invocationCallOrder[0]);
+      expect(mockResendSend).not.toHaveBeenCalled();
+    });
+
     it("retries with exponential backoff on retryable error", async () => {
       const timeoutSpy = jest.spyOn(global, "setTimeout");
       const { ProviderError } = await import("../providers/types");

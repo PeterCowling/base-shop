@@ -150,7 +150,23 @@ export async function sendCampaignEmail(
     primary,
     ...availableProviders.filter((p) => p !== primary),
   ];
+  let lastError: unknown;
   for (const name of providerOrder) {
+    if (name === "smtp") {
+      try {
+        await sendWithNodemailer(optsWithText);
+        return;
+      } catch (err) {
+        console.error("Campaign email send failed", {
+          provider: name,
+          recipient: optsWithText.to,
+          campaignId: optsWithText.campaignId,
+          error: err,
+        });
+        lastError = err;
+        continue;
+      }
+    }
     const current = await loadProvider(name);
     if (!current) continue;
     try {
@@ -163,11 +179,10 @@ export async function sendCampaignEmail(
         campaignId: optsWithText.campaignId,
         error: err,
       });
-      // Try next provider
+      lastError = err;
     }
   }
-
-  await sendWithNodemailer(optsWithText);
+  if (lastError) throw lastError;
 }
 
 async function sendWithRetry(

@@ -81,3 +81,18 @@ describe("default analytics listeners", () => {
     expect(trackEvent).toHaveBeenCalledWith(shop, { type, campaign: payload.campaign });
   });
 });
+
+describe("analytics errors", () => {
+  it.each(["emitSend", "emitOpen", "emitClick"])(
+    "rejects when %s analytics tracking fails",
+    async (emitName) => {
+      jest.resetModules();
+      const error = new Error("trackEvent error");
+      const { trackEvent } = await import("@platform-core/analytics");
+      (trackEvent as jest.Mock).mockRejectedValue(error);
+
+      const { [emitName as string]: emit } = await import("../hooks");
+      await expect(emit(shop, payload)).rejects.toThrow(error);
+    },
+  );
+});

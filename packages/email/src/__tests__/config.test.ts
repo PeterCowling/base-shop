@@ -28,6 +28,17 @@ describe("getDefaultSender", () => {
     expect(getDefaultSender()).toBe("user@example.com");
   });
 
+  it("uses GMAIL_USER when CAMPAIGN_FROM is only whitespace", async () => {
+    process.env = {
+      ...OLD_ENV,
+      CAMPAIGN_FROM: "   ",
+      GMAIL_USER: "User@Example.Com",
+    } as NodeJS.ProcessEnv;
+
+    const { getDefaultSender } = await import("../config");
+    expect(getDefaultSender()).toBe("user@example.com");
+  });
+
   it("throws when sender is missing", async () => {
     process.env = { ...OLD_ENV } as NodeJS.ProcessEnv;
     delete process.env.CAMPAIGN_FROM;

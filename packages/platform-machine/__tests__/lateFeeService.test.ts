@@ -331,6 +331,32 @@ describe("resolveConfig", () => {
     expect(cfg).toEqual({ enabled: true, intervalMinutes: 3 });
   });
 
+  it("uses core interval when env var is invalid", async () => {
+    process.env.LATE_FEE_INTERVAL_MS_SHOP = "abc";
+    const readFile = jest.fn().mockResolvedValue("{}");
+    jest.doMock("fs/promises", () => ({
+      __esModule: true,
+      readFile,
+      readdir: jest.fn(),
+    }));
+    jest.doMock("@platform-core/utils", () => ({
+      __esModule: true,
+      logger: { error: jest.fn(), info: jest.fn() },
+    }));
+    jest.doMock("@acme/config/env/core", () => ({
+      __esModule: true,
+      coreEnv: { LATE_FEE_INTERVAL_MS: 180000 },
+      loadCoreEnv: () => ({ LATE_FEE_INTERVAL_MS: 180000 }),
+    }));
+
+    const mod = await import("../src/lateFeeService");
+    const cfg = await mod.resolveConfig("shop", "/data");
+
+    expect(cfg).toEqual({ enabled: false, intervalMinutes: 3 });
+
+    delete process.env.LATE_FEE_INTERVAL_MS_SHOP;
+  });
+
   it("applies passed overrides", async () => {
     const readFile = jest.fn().mockResolvedValue("{}");
     jest.doMock("fs/promises", () => ({

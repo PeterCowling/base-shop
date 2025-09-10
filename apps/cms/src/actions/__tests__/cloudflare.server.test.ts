@@ -191,5 +191,89 @@ describe("provisionDomain", () => {
     );
     expect(fetchMock).toHaveBeenCalledTimes(4);
   });
+
+  it("defaults cname target when verification data is missing", async () => {
+    fetchMock
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ result: {} }) })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ result: [{ id: "zone1" }] }),
+      })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          result: { status: "active", certificate_status: "valid" },
+        }),
+      });
+
+    await provisionDomain("shop", "shop.example.com");
+
+    expect(fetchMock).toHaveBeenCalledTimes(4);
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      3,
+      "https://api.cloudflare.com/client/v4/zones/zone1/dns_records",
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({
+          type: "CNAME",
+          name: "shop.example.com",
+          content: "shop.pages.dev",
+          ttl: 1,
+        }),
+      })
+    );
+  });
+
+  it("returns default message when add-domain fails without errors", async () => {
+    fetchMock.mockResolvedValueOnce({
+      ok: false,
+      json: async () => ({ errors: [] }),
+    });
+
+    await expect(
+      provisionDomain("shop", "shop.example.com")
+    ).rejects.toThrow("Failed to provision domain");
+  });
+
+  it("returns default message when verification fails without errors", async () => {
+    fetchMock
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          result: { verification_data: { cname_target: "cname.pages.dev" } },
+        }),
+      })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ result: [] }) })
+      .mockResolvedValueOnce({
+        ok: false,
+        json: async () => ({ errors: [] }),
+      });
+
+    await expect(
+      provisionDomain("shop", "shop.example.com")
+    ).rejects.toThrow("Failed to issue certificate");
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
+  it("returns undefined status fields when verify result lacks data", async () => {
+    fetchMock
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          result: { verification_data: { cname_target: "cname.pages.dev" } },
+        }),
+      })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ result: [] }) })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ result: {} }) });
+
+    const result = await provisionDomain("shop", "shop.example.com");
+
+    expect(result).toEqual({
+      status: undefined,
+      certificateStatus: undefined,
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
 });
 

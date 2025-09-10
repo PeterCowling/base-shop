@@ -197,3 +197,73 @@ describe("session token", () => {
   });
 });
 
+describe("session management", () => {
+  it("lists sessions for a customer", async () => {
+    jest.resetModules();
+    const result = [{ sessionId: "1" }];
+    const list = jest.fn().mockResolvedValue(result);
+    jest.doMock("../src/store", () => ({
+      __esModule: true,
+      SESSION_TTL_S: 1,
+      createSessionStore: async () => ({ list }),
+    }));
+    const { listSessions } = await import("../src/session");
+    await expect(listSessions("cust-1")).resolves.toBe(result);
+    expect(list).toHaveBeenCalledWith("cust-1");
+  });
+
+  it("revokes a session id", async () => {
+    jest.resetModules();
+    const del = jest.fn().mockResolvedValue(undefined);
+    jest.doMock("../src/store", () => ({
+      __esModule: true,
+      SESSION_TTL_S: 1,
+      createSessionStore: async () => ({ delete: del }),
+    }));
+    const { revokeSession } = await import("../src/session");
+    await revokeSession("sess-1");
+    expect(del).toHaveBeenCalledWith("sess-1");
+  });
+
+  it("bubbles up revoke errors", async () => {
+    jest.resetModules();
+    const error = new Error("fail");
+    const del = jest.fn().mockRejectedValue(error);
+    jest.doMock("../src/store", () => ({
+      __esModule: true,
+      SESSION_TTL_S: 1,
+      createSessionStore: async () => ({ delete: del }),
+    }));
+    const { revokeSession } = await import("../src/session");
+    await expect(revokeSession("sess-1")).rejects.toThrow(error);
+  });
+});
+
+describe("validateCsrfToken", () => {
+  it("returns true for matching token", async () => {
+    jest.resetModules();
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { validateCsrfToken, CSRF_TOKEN_COOKIE } = await import("../src/session");
+    store.set(CSRF_TOKEN_COOKIE, "token");
+    await expect(validateCsrfToken("token")).resolves.toBe(true);
+  });
+
+  it("returns false for mismatched token", async () => {
+    jest.resetModules();
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { validateCsrfToken, CSRF_TOKEN_COOKIE } = await import("../src/session");
+    store.set(CSRF_TOKEN_COOKIE, "correct");
+    await expect(validateCsrfToken("wrong")).resolves.toBe(false);
+  });
+
+  it("returns false when token is missing", async () => {
+    jest.resetModules();
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { validateCsrfToken } = await import("../src/session");
+    await expect(validateCsrfToken(null)).resolves.toBe(false);
+  });
+});
+

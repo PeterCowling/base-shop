@@ -55,10 +55,17 @@ describe("loadProvider", () => {
     expect(ctor).toHaveBeenCalledTimes(1);
   });
 
-  it("returns undefined when API key is missing", async () => {
+  it("returns undefined when API key is missing and caches the result", async () => {
+    const ctor = jest.fn().mockImplementation(() => ({ send: jest.fn() }));
+    jest.doMock("../src/providers/sendgrid", () => ({ SendgridProvider: ctor }));
+    const { SendgridProvider } = await import("../src/providers/sendgrid");
+    new SendgridProvider();
     const { loadProvider } = await import("../src/send");
-    const provider = await loadProvider("sendgrid");
-    expect(provider).toBeUndefined();
+    const first = await loadProvider("sendgrid");
+    const second = await loadProvider("sendgrid");
+    expect(first).toBeUndefined();
+    expect(second).toBeUndefined();
+    expect(ctor).toHaveBeenCalledTimes(1);
   });
 });
 

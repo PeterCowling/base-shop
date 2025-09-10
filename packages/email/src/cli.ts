@@ -3,7 +3,6 @@ import { promises as fs } from "fs";
 import * as fsSync from "fs";
 import path from "path";
 import { randomUUID } from "crypto";
-import { sendDueCampaigns } from "./scheduler";
 import { nowIso } from "@date-utils";
 
 interface Campaign {
@@ -61,7 +60,7 @@ export async function run(argv = process.argv): Promise<void> {
     .requiredOption("--body <html>", "HTML body")
     .option("--recipients <emails>", "Comma separated recipient emails")
     .option("--segment <segment>", "Recipient segment name")
-    .option("--send-at <date>", "ISO send time", () => nowIso())
+    .option("--send-at <date>", "ISO send time")
     .action(async (shop, options) => {
       const campaigns = await readCampaigns(shop);
       const recipients = options.recipients
@@ -76,7 +75,7 @@ export async function run(argv = process.argv): Promise<void> {
         subject: options.subject,
         body: options.body,
         segment: options.segment ?? null,
-        sendAt: new Date(options.sendAt).toISOString(),
+        sendAt: new Date(options.sendAt ?? nowIso()).toISOString(),
       };
       campaigns.push(item);
       await writeCampaigns(shop, campaigns);
@@ -95,6 +94,7 @@ export async function run(argv = process.argv): Promise<void> {
     .command("send")
     .description("Send due campaigns")
     .action(async () => {
+      const { sendDueCampaigns } = await import("./scheduler");
       await sendDueCampaigns();
       console.log("Sent due campaigns");
     });

@@ -21,7 +21,7 @@ export async function createPost(
   let products: string[] = [];
   try {
     body = JSON.parse(content);
-    products = collectProductSlugs(body);
+    products = collectProductSlugs(body) ?? [];
   } catch {
     body = [];
     products = [];
@@ -31,13 +31,12 @@ export async function createPost(
     .split(",")
     .map((p) => p.trim())
     .filter(Boolean);
-  const existingSlugs = await filterExistingProductSlugs(shopId, [
-    ...products,
-    ...manualProducts,
-  ]);
-  if (existingSlugs) {
-    products = existingSlugs;
-  }
+  const combinedProducts = [...products, ...manualProducts];
+  const existingSlugs = await filterExistingProductSlugs(
+    shopId,
+    combinedProducts,
+  );
+  products = existingSlugs === null ? combinedProducts : existingSlugs;
   const slug = String(formData.get("slug") ?? "");
   const excerpt = String(formData.get("excerpt") ?? "");
   const mainImage = String(formData.get("mainImage") ?? "");

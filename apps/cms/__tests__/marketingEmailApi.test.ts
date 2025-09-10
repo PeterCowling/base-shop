@@ -21,9 +21,11 @@ const coreEnv: Record<string, any> = {};
 jest.doMock("@acme/config", () => ({ __esModule: true, env: coreEnv }), {
   virtual: true,
 });
-jest.doMock("@acme/config/env/core", () => ({ __esModule: true, coreEnv }), {
-  virtual: true,
-});
+jest.doMock(
+  "@acme/config/env/core",
+  () => ({ __esModule: true, loadCoreEnv: () => coreEnv }),
+  { virtual: true },
+);
 
 process.env.CART_COOKIE_SECRET = "secret";
 process.env.STRIPE_SECRET_KEY = "sk_test";

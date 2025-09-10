@@ -22,7 +22,7 @@ describe("PageBuilder resize interactions", () => {
             }
           />
           <div
-            data-testid="target"
+            data-cy="target"
             style={{ width: comp.widthDesktop, height: comp.heightDesktop }}
           />
         </>

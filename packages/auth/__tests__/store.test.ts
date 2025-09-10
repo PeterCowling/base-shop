@@ -30,6 +30,29 @@ describe("createSessionStore", () => {
     });
   });
 
+  it("uses MemorySessionStore when SESSION_STORE=\"memory\" despite credentials", async () => {
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: {
+        SESSION_STORE: "memory",
+        UPSTASH_REDIS_REST_URL: "https://example",
+        UPSTASH_REDIS_REST_TOKEN: "token",
+      },
+    }));
+    const redisCtor = jest.fn();
+    jest.doMock("@upstash/redis", () => ({
+      Redis: class {
+        constructor(opts: unknown) {
+          redisCtor(opts);
+        }
+      },
+    }));
+    const { createSessionStore } = await import("../src/store");
+    const { MemorySessionStore } = await import("../src/memoryStore");
+    const store = await createSessionStore();
+    expect(store).toBeInstanceOf(MemorySessionStore);
+    expect(redisCtor).not.toHaveBeenCalled();
+  });
+
   it("falls back to MemorySessionStore when credentials missing", async () => {
     jest.doMock("@acme/config/env/core", () => ({ coreEnv: {} }));
     const { createSessionStore } = await import("../src/store");

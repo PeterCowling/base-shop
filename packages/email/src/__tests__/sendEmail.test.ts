@@ -44,12 +44,14 @@ describe("sendEmail", () => {
       ...OLD_ENV,
       STRIPE_SECRET_KEY: "sk",
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+      EMAIL_LOG_LEVEL: "info",
     } as NodeJS.ProcessEnv;
 
     const infoSpy = jest.fn();
+    const pinoMock = jest.fn(() => ({ info: infoSpy }));
     jest.doMock("pino", () => ({
       __esModule: true,
-      default: () => ({ info: infoSpy }),
+      default: pinoMock,
     }));
     jest.doMock("nodemailer", () => ({
       __esModule: true,
@@ -63,6 +65,7 @@ describe("sendEmail", () => {
     await sendEmail("a@b.com", "Hi", "There");
 
     expect(infoSpy).toHaveBeenCalledWith({ to: "a@b.com" }, "Email simulated");
+    expect(pinoMock).toHaveBeenCalledWith({ level: "info" });
     expect(getDefaultSender).not.toHaveBeenCalled();
   });
 

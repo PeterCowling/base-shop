@@ -197,5 +197,21 @@ describe("plugins", () => {
     );
     error.mockRestore();
   });
+
+  it("rejects when plugin init throws", async () => {
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "plugin-initfail-"));
+    await fs.writeFile(
+      path.join(dir, "package.json"),
+      JSON.stringify({ name: "initfail", main: "index.js" })
+    );
+    await fs.writeFile(
+      path.join(dir, "index.js"),
+      "module.exports = { default: { id: 'initfail', init: () => { throw new Error('init boom'); } } };\n"
+    );
+    const { initPlugins } = await import("../src/plugins");
+    await expect(
+      initPlugins({ plugins: [dir], directories: [] })
+    ).rejects.toThrow("init boom");
+  });
 });
 

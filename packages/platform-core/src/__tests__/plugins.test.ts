@@ -161,5 +161,24 @@ describe("plugin loader", () => {
     expect(manager.shipping.get('ship')).toBeDefined();
     expect(manager.widgets.get('widget')).toBeDefined();
   });
+
+  it("propagates errors from plugin init", async () => {
+    const root = await mkdtemp(path.join(os.tmpdir(), "plugin-root-"));
+    jest.spyOn(process, "cwd").mockReturnValue(root);
+    await mkdir(path.join(root, "packages", "plugins"), { recursive: true });
+    const dir = await mkdtemp(path.join(root, "plugin-initfail-"));
+    await writeFile(
+      path.join(dir, "package.json"),
+      JSON.stringify({ name: "initfail", main: "index.js" })
+    );
+    await writeFile(
+      path.join(dir, "index.js"),
+      "module.exports = { default: { id: 'initfail', init: () => { throw new Error('init boom'); } } };\n"
+    );
+
+    await expect(
+      initPlugins({ plugins: [dir], directories: [] })
+    ).rejects.toThrow("init boom");
+  });
 });
 

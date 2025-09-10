@@ -1,5 +1,7 @@
 import { createAuthOptions } from "../options";
 import type { Role } from "@acme/types";
+import type { Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
 
 describe("authorize", () => {
   it("throws on plain-text password", async () => {
@@ -47,5 +49,17 @@ describe("authorize", () => {
       role: "admin",
     });
     expect(argonVerify).toHaveBeenCalledWith(hashed, "secret");
+  });
+});
+
+describe("session callback", () => {
+  it("does not assign role when token lacks it", async () => {
+    const options = createAuthOptions();
+    const sessionCallback = options.callbacks?.session!;
+    const session = { user: {} } as Session & { user: { role?: Role } };
+
+    const result = await sessionCallback({ session, token: {} as JWT });
+
+    expect(result.user.role).toBeUndefined();
   });
 });

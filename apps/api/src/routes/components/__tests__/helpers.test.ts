@@ -149,6 +149,28 @@ describe('component helpers', () => {
       ]);
     });
 
+    it('handles changelog with only comments', () => {
+      vol.fromJSON({
+        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+          componentVersions: { '@acme/foo': '1.0.0' },
+        }),
+        [`${root}/packages/foo/package.json`]: JSON.stringify({
+          name: '@acme/foo',
+          version: '2.0.0',
+        }),
+        [`${root}/packages/foo/CHANGELOG.md`]: '# heading\n# another comment\n',
+      });
+      expect(gatherChanges('abc', root)).toEqual([
+        {
+          name: '@acme/foo',
+          from: '1.0.0',
+          to: '2.0.0',
+          summary: '',
+          changelog: 'packages/foo/CHANGELOG.md',
+        },
+      ]);
+    });
+
     it('falls back to stored key and null when pkg.name and old version are missing', () => {
       vol.fromJSON({
         [`${root}/data/shops/abc/shop.json`]: JSON.stringify({

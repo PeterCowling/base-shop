@@ -375,6 +375,28 @@ describe("scheduler", () => {
     delete process.env.EMAIL_BATCH_DELAY_MS;
   });
 
+  test(
+    "createCampaign does not schedule delay when batch delay is zero",
+    async () => {
+      process.env.EMAIL_BATCH_SIZE = "1";
+      process.env.EMAIL_BATCH_DELAY_MS = "0";
+      const setTimeoutSpy = jest.spyOn(global, "setTimeout");
+      const promise = createCampaign({
+        shop,
+        recipients: ["a@example.com", "b@example.com"],
+        subject: "Hi",
+        body: "<p>Hi %%UNSUBSCRIBE%%</p>",
+      });
+      await jest.runAllTimersAsync();
+      await promise;
+      expect(setTimeoutSpy).not.toHaveBeenCalled();
+      setTimeoutSpy.mockRestore();
+      delete process.env.EMAIL_BATCH_SIZE;
+      delete process.env.EMAIL_BATCH_DELAY_MS;
+    },
+    10000,
+  );
+
   test("createCampaign writes campaign to store", async () => {
     await createCampaign({
       shop,

@@ -1,41 +1,9 @@
 // packages/config/src/env/index.ts
 import "@acme/zod-utils/initZod";
-import { z, type AnyZodObject } from "zod";
-import { coreEnvBaseSchema, depositReleaseEnvRefinement } from "./core.js";
-import { paymentsEnvSchema } from "./payments.js";
-import { shippingEnvSchema } from "./shipping.js";
+import { z } from "zod";
+import { coreEnvSchema } from "./core.js";
 
-type UnionToIntersection<U> = (
-  U extends unknown ? (k: U) => void : never
-) extends (k: infer I) => void
-  ? I
-  : never;
-
-type MergedShape<T extends readonly AnyZodObject[]> = UnionToIntersection<
-  {
-    [K in keyof T]: T[K] extends z.ZodObject<infer S extends z.ZodRawShape>
-      ? S
-      : never;
-  }[number]
-> &
-  z.ZodRawShape;
-
-export const mergeEnvSchemas = <T extends readonly AnyZodObject[]>(
-  ...schemas: T
-): z.ZodObject<MergedShape<T>> =>
-  schemas.reduce((acc, s) => acc.merge(s), z.object({})) as z.ZodObject<
-    MergedShape<T>
-  >;
-
-const mergedEnvSchema = mergeEnvSchemas(
-  coreEnvBaseSchema,
-  paymentsEnvSchema,
-  shippingEnvSchema.innerType()
-);
-
-export const envSchema = mergedEnvSchema.superRefine(
-  depositReleaseEnvRefinement
-);
+export const envSchema = coreEnvSchema;
 
 const parsed = envSchema.safeParse(process.env);
 if (!parsed.success) {

@@ -122,10 +122,15 @@ export async function middleware(req: NextRequest) {
     }
   }
 
+  /* Allow API routes to handle authentication and authorization */
+  if (pathname.startsWith("/api")) {
+    logger.debug("api route", { path: pathname });
+    return applySecurityHeaders(NextResponse.next());
+  }
+
   /* Skip static assets, auth endpoints, and login/signup pages */
   if (
     pathname.startsWith("/_next") ||
-    pathname.startsWith("/api/auth") ||
     pathname === "/login" ||
     pathname === "/signup" ||
     pathname === "/favicon.ico"

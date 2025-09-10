@@ -1,6 +1,8 @@
 /** @jest-environment node */
 
-import {
+import * as orders from "../src/orders";
+
+const {
   listOrders,
   addOrder,
   markFulfilled,
@@ -14,7 +16,7 @@ import {
   getOrdersForCustomer,
   setReturnTracking,
   setReturnStatus,
-} from "../src/orders";
+} = orders;
 
 jest.mock("../src/analytics", () => ({ trackOrder: jest.fn() }));
 jest.mock("../src/subscriptionUsage", () => ({
@@ -81,6 +83,17 @@ describe("orders", () => {
         where: { shop: "shop" },
       });
       expect(result[0].foo).toBeUndefined();
+    });
+
+    it("propagates errors without normalization", async () => {
+      const normalizeSpy = jest.spyOn(orders, "normalize");
+      prismaMock.rentalOrder.findMany.mockRejectedValue(new Error("fail"));
+      await expect(listOrders("shop")).rejects.toThrow("fail");
+      expect(prismaMock.rentalOrder.findMany).toHaveBeenCalledWith({
+        where: { shop: "shop" },
+      });
+      expect(normalizeSpy).not.toHaveBeenCalled();
+      normalizeSpy.mockRestore();
     });
   });
 

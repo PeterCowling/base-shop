@@ -230,6 +230,29 @@ describe("provider-dependent operations", () => {
     expect(resend.listSegments).toHaveBeenCalled();
   });
 
+  it("handles provider errors gracefully", async () => {
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    sendgrid.createContact.mockImplementationOnce(async () => {
+      throw new Error("boom");
+    });
+    sendgrid.addToList.mockImplementationOnce(async () => {
+      throw new Error("boom");
+    });
+    sendgrid.listSegments.mockImplementationOnce(async () => {
+      throw new Error("boom");
+    });
+
+    const id = await createContact("err@example.com");
+    await expect(addToList("c", "l")).resolves.toBeUndefined();
+    const segs = await listSegments();
+
+    expect(id).toBe("");
+    expect(segs).toEqual([]);
+    expect(sendgrid.createContact).toHaveBeenCalledWith("err@example.com");
+    expect(sendgrid.addToList).toHaveBeenCalledWith("c", "l");
+    expect(sendgrid.listSegments).toHaveBeenCalled();
+  });
+
   it("no-ops when no provider configured", async () => {
     process.env.EMAIL_PROVIDER = "";
     const id = await createContact("none@example.com");

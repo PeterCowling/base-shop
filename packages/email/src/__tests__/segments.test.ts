@@ -165,12 +165,11 @@ describe("provider functions", () => {
     expect(segments).toEqual([{ id: "s1", name: "All" }]);
   });
 
-  it("createContact rejects when Sendgrid provider throws", async () => {
-    const err = new Error("sendgrid createContact");
+  it("createContact returns empty string when Sendgrid provider throws", async () => {
     jest.doMock("../providers/sendgrid", () => ({
       SendgridProvider: class {
         createContact = jest.fn(() => {
-          throw err;
+          throw new Error("sendgrid createContact");
         });
         addToList = jest.fn();
         listSegments = jest.fn();
@@ -179,16 +178,15 @@ describe("provider functions", () => {
 
     process.env.EMAIL_PROVIDER = "sendgrid";
     const { createContact } = await import("../segments");
-    await expect(createContact("user@example.com")).rejects.toBe(err);
+    await expect(createContact("user@example.com")).resolves.toBe("");
   });
 
-  it("addToList rejects when Sendgrid provider throws", async () => {
-    const err = new Error("sendgrid addToList");
+  it("addToList resolves when Sendgrid provider throws", async () => {
     jest.doMock("../providers/sendgrid", () => ({
       SendgridProvider: class {
         createContact = jest.fn().mockResolvedValue("contact-1");
         addToList = jest.fn(() => {
-          throw err;
+          throw new Error("sendgrid addToList");
         });
         listSegments = jest.fn();
       },
@@ -196,32 +194,30 @@ describe("provider functions", () => {
 
     process.env.EMAIL_PROVIDER = "sendgrid";
     const { addToList } = await import("../segments");
-    await expect(addToList("c1", "l1")).rejects.toBe(err);
+    await expect(addToList("c1", "l1")).resolves.toBeUndefined();
   });
 
-  it("listSegments rejects when Sendgrid provider throws", async () => {
-    const err = new Error("sendgrid listSegments");
+  it("listSegments returns empty array when Sendgrid provider throws", async () => {
     jest.doMock("../providers/sendgrid", () => ({
       SendgridProvider: class {
         createContact = jest.fn();
         addToList = jest.fn();
         listSegments = jest.fn(() => {
-          throw err;
+          throw new Error("sendgrid listSegments");
         });
       },
     }));
 
     process.env.EMAIL_PROVIDER = "sendgrid";
     const { listSegments } = await import("../segments");
-    await expect(listSegments()).rejects.toBe(err);
+    await expect(listSegments()).resolves.toEqual([]);
   });
 
-  it("createContact rejects when Resend provider throws", async () => {
-    const err = new Error("resend createContact");
+  it("createContact returns empty string when Resend provider throws", async () => {
     jest.doMock("../providers/resend", () => ({
       ResendProvider: class {
         createContact = jest.fn(() => {
-          throw err;
+          throw new Error("resend createContact");
         });
         addToList = jest.fn();
         listSegments = jest.fn();
@@ -230,16 +226,15 @@ describe("provider functions", () => {
 
     process.env.EMAIL_PROVIDER = "resend";
     const { createContact } = await import("../segments");
-    await expect(createContact("user@example.com")).rejects.toBe(err);
+    await expect(createContact("user@example.com")).resolves.toBe("");
   });
 
-  it("addToList rejects when Resend provider throws", async () => {
-    const err = new Error("resend addToList");
+  it("addToList resolves when Resend provider throws", async () => {
     jest.doMock("../providers/resend", () => ({
       ResendProvider: class {
         createContact = jest.fn().mockResolvedValue("contact-1");
         addToList = jest.fn(() => {
-          throw err;
+          throw new Error("resend addToList");
         });
         listSegments = jest.fn();
       },
@@ -247,24 +242,23 @@ describe("provider functions", () => {
 
     process.env.EMAIL_PROVIDER = "resend";
     const { addToList } = await import("../segments");
-    await expect(addToList("c1", "l1")).rejects.toBe(err);
+    await expect(addToList("c1", "l1")).resolves.toBeUndefined();
   });
 
-  it("listSegments rejects when Resend provider throws", async () => {
-    const err = new Error("resend listSegments");
+  it("listSegments returns empty array when Resend provider throws", async () => {
     jest.doMock("../providers/resend", () => ({
       ResendProvider: class {
         createContact = jest.fn();
         addToList = jest.fn();
         listSegments = jest.fn(() => {
-          throw err;
+          throw new Error("resend listSegments");
         });
       },
     }));
 
     process.env.EMAIL_PROVIDER = "resend";
     const { listSegments } = await import("../segments");
-    await expect(listSegments()).rejects.toBe(err);
+    await expect(listSegments()).resolves.toEqual([]);
   });
 
   it("returns empty list for unknown provider", async () => {

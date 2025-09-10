@@ -65,7 +65,14 @@ const segmentCache = new Map<string, CacheEntry>();
 
 export async function createContact(email: string): Promise<string> {
   const provider = getProvider();
-  return provider?.createContact ? provider.createContact(email) : "";
+  if (provider?.createContact) {
+    try {
+      return await provider.createContact(email);
+    } catch {
+      return "";
+    }
+  }
+  return "";
 }
 
 export async function addToList(
@@ -73,12 +80,22 @@ export async function addToList(
   listId: string
 ): Promise<void> {
   const provider = getProvider();
-  if (provider?.addToList) await provider.addToList(contactId, listId);
+  if (provider?.addToList)
+    try {
+      await provider.addToList(contactId, listId);
+    } catch {
+      /* noop */
+    }
 }
 
 export async function listSegments(): Promise<{ id: string; name?: string }[]> {
   const provider = getProvider();
-  if (provider?.listSegments) return provider.listSegments();
+  if (provider?.listSegments)
+    try {
+      return await provider.listSegments();
+    } catch {
+      return [];
+    }
   return [];
 }
 

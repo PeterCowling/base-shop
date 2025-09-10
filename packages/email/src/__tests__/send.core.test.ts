@@ -481,11 +481,11 @@ describe("send core helpers", () => {
       expect(provider.send).toHaveBeenCalledTimes(1);
     });
 
-    it("retries up to max attempts when error lacks retryable but has provider fields", async () => {
+    it("retries up to default limit when provider rejects with empty object", async () => {
       jest.useFakeTimers();
       mockHasProviderErrorFields.mockReturnValue(true);
       const { sendWithRetry } = await import("../send");
-      const err = { code: 500 };
+      const err = {};
       const provider = { send: jest.fn().mockRejectedValue(err) };
       const expectation = expect(
         sendWithRetry(provider as any, { to: "t", subject: "s" })

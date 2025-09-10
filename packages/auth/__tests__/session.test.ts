@@ -162,6 +162,92 @@ describe("session token", () => {
     await expect(getCustomerSession()).resolves.toBeNull();
   });
 
+  it("rejects and does not update cookies when sessionStore.set fails", async () => {
+    jest.resetModules();
+    const { sealData } = await import("iron-session");
+    const { SESSION_TTL_S } = jest.requireActual("../src/store");
+    const session = {
+      customerId: "abc",
+      role: "customer" as Role,
+      sessionId: "sess-1",
+    };
+    const token = await sealData(session, {
+      password: process.env.SESSION_SECRET!,
+      ttl: SESSION_TTL_S,
+    });
+    const store = createStore();
+    store.set("customer_session", token);
+    store.set("csrf_token", "csrf");
+    store.set.mockClear();
+    mockCookies.mockResolvedValue(store);
+    const error = new Error("set fail");
+    jest.doMock("../src/store", () => {
+      const actual = jest.requireActual("../src/store");
+      return {
+        __esModule: true,
+        ...actual,
+        createSessionStore: async () => ({
+          get: jest
+            .fn()
+            .mockResolvedValue({
+              sessionId: session.sessionId,
+              customerId: session.customerId,
+              userAgent: "ua",
+              createdAt: new Date(),
+            }),
+          set: jest.fn().mockRejectedValue(error),
+          delete: jest.fn().mockResolvedValue(undefined),
+        }),
+      };
+    });
+    const { getCustomerSession } = await import("../src/session");
+    await expect(getCustomerSession()).rejects.toThrow(error);
+    expect(store.set).not.toHaveBeenCalled();
+  });
+
+  it("rejects and does not update cookies when sessionStore.delete fails", async () => {
+    jest.resetModules();
+    const { sealData } = await import("iron-session");
+    const { SESSION_TTL_S } = jest.requireActual("../src/store");
+    const session = {
+      customerId: "abc",
+      role: "customer" as Role,
+      sessionId: "sess-1",
+    };
+    const token = await sealData(session, {
+      password: process.env.SESSION_SECRET!,
+      ttl: SESSION_TTL_S,
+    });
+    const store = createStore();
+    store.set("customer_session", token);
+    store.set("csrf_token", "csrf");
+    store.set.mockClear();
+    mockCookies.mockResolvedValue(store);
+    const error = new Error("delete fail");
+    jest.doMock("../src/store", () => {
+      const actual = jest.requireActual("../src/store");
+      return {
+        __esModule: true,
+        ...actual,
+        createSessionStore: async () => ({
+          get: jest
+            .fn()
+            .mockResolvedValue({
+              sessionId: session.sessionId,
+              customerId: session.customerId,
+              userAgent: "ua",
+              createdAt: new Date(),
+            }),
+          set: jest.fn().mockResolvedValue(undefined),
+          delete: jest.fn().mockRejectedValue(error),
+        }),
+      };
+    });
+    const { getCustomerSession } = await import("../src/session");
+    await expect(getCustomerSession()).rejects.toThrow(error);
+    expect(store.set).not.toHaveBeenCalled();
+  });
+
   it("returns null when session cookie is missing", async () => {
     const store = createStore();
     mockCookies.mockResolvedValue(store);

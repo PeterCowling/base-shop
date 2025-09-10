@@ -122,6 +122,25 @@ describe("sendCampaignEmail", () => {
     });
   });
 
+  it("does not call Resend when using Sendgrid", async () => {
+    mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+    mockSanitizeHtml = jest.fn((html: string) => html);
+
+    setupEnv();
+
+    const { sendCampaignEmail } = await import("../send");
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+      sanitize: false,
+    });
+
+    expect(mockResendSend).not.toHaveBeenCalled();
+  });
+
     it("sanitizes HTML and derives text", async () => {
       mockSendgridSend = jest.fn().mockResolvedValue(undefined);
       mockResendSend = jest.fn();

@@ -1,4 +1,4 @@
-import { formDataEntries, formDataToObject } from "../formData";
+import { formDataEntries, formDataToObject, tryJsonParse } from "../formData";
 
 describe("formData helpers", () => {
   it("uses iterator when available", () => {
@@ -35,5 +35,24 @@ describe("formData helpers", () => {
       alpha: "1",
       beta: "2",
     });
+  });
+});
+
+describe("tryJsonParse", () => {
+  it("parses valid JSON strings", () => {
+    expect(
+      tryJsonParse<{ foo: string }>("{\"foo\":\"bar\"}"),
+    ).toEqual({ foo: "bar" });
+  });
+
+  it("returns undefined for invalid JSON strings", () => {
+    expect(tryJsonParse("not json")).toBeUndefined();
+  });
+
+  it("returns undefined for non-string values", () => {
+    expect(tryJsonParse<{ foo: string }>(null)).toBeUndefined();
+    expect(
+      tryJsonParse<{ foo: string }>(new File([], "file.txt")),
+    ).toBeUndefined();
   });
 });

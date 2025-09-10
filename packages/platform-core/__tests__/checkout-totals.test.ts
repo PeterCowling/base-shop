@@ -52,5 +52,19 @@ describe("computeTotals", () => {
     expect(convertCurrency).toHaveBeenNthCalledWith(2, 25, "USD");
     expect(convertCurrency).toHaveBeenNthCalledWith(3, 100, "USD");
   });
+
+  it("handles an empty cart", async () => {
+    const { computeTotals, priceForDays, convertCurrency } = await setupMocks();
+
+    const emptyCart: CartState = {};
+    const totals = await computeTotals(emptyCart, 3, 0, "USD");
+
+    expect(totals).toEqual({ subtotal: 0, depositTotal: 0, discount: 0 });
+    expect(priceForDays).not.toHaveBeenCalled();
+    expect(convertCurrency).toHaveBeenCalledTimes(3);
+    expect(convertCurrency).toHaveBeenNthCalledWith(1, 0, "USD");
+    expect(convertCurrency).toHaveBeenNthCalledWith(2, 0, "USD");
+    expect(convertCurrency).toHaveBeenNthCalledWith(3, 0, "USD");
+  });
 });
 

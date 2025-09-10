@@ -108,6 +108,28 @@ describe("scheduler", () => {
     expect(calls[1] - calls[0]).toBeGreaterThanOrEqual(10);
   });
 
+  test("createCampaign replaces unsubscribe token or appends footer", async () => {
+    await createCampaign({
+      shop,
+      recipients: ["a@example.com"],
+      subject: "Hi",
+      body: "<p>Hi %%UNSUBSCRIBE%%</p>",
+    });
+    let html = mockedSend.mock.calls[0][0].html as string;
+    expect(html).toMatch(/<p>Hi <a href="[^"]+">Unsubscribe<\/a><\/p><img/);
+
+    mockedSend.mockClear();
+
+    await createCampaign({
+      shop,
+      recipients: ["b@example.com"],
+      subject: "Hi",
+      body: "<p>Hi</p>",
+    });
+    html = mockedSend.mock.calls[0][0].html as string;
+    expect(html).toMatch(/<p>Hi<\/p><img[^>]*><p><a href="[^"]+">Unsubscribe<\/a><\/p>/);
+  });
+
   test("error thrown inside job handler", async () => {
     mockedSend.mockRejectedValueOnce(new Error("boom"));
 

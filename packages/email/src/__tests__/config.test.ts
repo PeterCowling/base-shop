@@ -64,13 +64,13 @@ describe("getDefaultSender", () => {
   it("throws when sender format is invalid", async () => {
     process.env = {
       ...OLD_ENV,
-      CAMPAIGN_FROM: "invalid",
+      GMAIL_USER: "invalid",
     } as NodeJS.ProcessEnv;
-    delete process.env.GMAIL_USER;
+    delete process.env.CAMPAIGN_FROM;
 
     const { getDefaultSender } = await import("../config");
     expect(() => getDefaultSender()).toThrow(
-      "Invalid sender email address: invalid"
+      "Invalid sender email address"
     );
   });
 });

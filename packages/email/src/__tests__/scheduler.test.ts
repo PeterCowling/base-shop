@@ -641,5 +641,72 @@ describe("scheduler", () => {
     expect(sendCampaignEmail).toHaveBeenCalledTimes(3);
     expect(memory[shop][0].sentAt).toBeDefined();
   });
+
+  test("deliverCampaign encodes tracking URLs with base URL", async () => {
+    process.env.NEXT_PUBLIC_BASE_URL = "https://base.example.com";
+    const shop = "shop/ü? ";
+    const campaignId = "camp &aign/?";
+    const recipient = "user+tag@example.com";
+    const past = new Date(now.getTime() - 1000).toISOString();
+    memory[shop] = [
+      {
+        id: campaignId,
+        recipients: [recipient],
+        subject: "Hi",
+        body: '<a href="https://example.com/a?b=1&c=2">A</a>%%UNSUBSCRIBE%%',
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+    ];
+    await sendDueCampaigns();
+    const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0].html as string;
+    const encodedShop = encodeURIComponent(shop);
+    const encodedId = encodeURIComponent(campaignId);
+    const encodedEmail = encodeURIComponent(recipient);
+    const encodedUrl = encodeURIComponent("https://example.com/a?b=1&c=2");
+    expect(html).toContain(
+      `https://base.example.com/api/marketing/email/open?shop=${encodedShop}&campaign=${encodedId}`,
+    );
+    expect(html).toContain(
+      `https://base.example.com/api/marketing/email/click?shop=${encodedShop}&campaign=${encodedId}&url=${encodedUrl}`,
+    );
+    expect(html).toContain(
+      `https://base.example.com/api/marketing/email/unsubscribe?shop=${encodedShop}&campaign=${encodedId}&email=${encodedEmail}`,
+    );
+  });
+
+  test("deliverCampaign encodes tracking URLs without base URL", async () => {
+    const shop = "shop/ü? ";
+    const campaignId = "camp &aign/?";
+    const recipient = "user+tag@example.com";
+    const past = new Date(now.getTime() - 1000).toISOString();
+    memory[shop] = [
+      {
+        id: campaignId,
+        recipients: [recipient],
+        subject: "Hi",
+        body: '<a href="https://example.com/a?b=1&c=2">A</a>%%UNSUBSCRIBE%%',
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+    ];
+    await sendDueCampaigns();
+    const html = (sendCampaignEmail as jest.Mock).mock.calls[0][0].html as string;
+    const encodedShop = encodeURIComponent(shop);
+    const encodedId = encodeURIComponent(campaignId);
+    const encodedEmail = encodeURIComponent(recipient);
+    const encodedUrl = encodeURIComponent("https://example.com/a?b=1&c=2");
+    expect(html).toContain(
+      `/api/marketing/email/open?shop=${encodedShop}&campaign=${encodedId}`,
+    );
+    expect(html).toContain(
+      `/api/marketing/email/click?shop=${encodedShop}&campaign=${encodedId}&url=${encodedUrl}`,
+    );
+    expect(html).toContain(
+      `/api/marketing/email/unsubscribe?shop=${encodedShop}&campaign=${encodedId}&email=${encodedEmail}`,
+    );
+  });
 });
 

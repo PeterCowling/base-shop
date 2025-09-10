@@ -85,13 +85,15 @@ describe("templates registry", () => {
     const { renderTemplate } = await import("../src/templates");
     const html = renderTemplate("basic", {
       subject: "Hi",
-      body: '<img src="x" onerror="alert(1)"><script>alert(1)</script>',
+      body: '<img src="x" onerror="alert(1)"><span style="color:red">hi</span><script>alert(1)</script>',
     });
     expect(make).toHaveBeenCalledTimes(1);
     expect(html).toContain("<h1>Hi</h1>");
     expect(html).toContain('<img src="x"');
+    expect(html).toContain('<span>hi</span>');
     expect(html).not.toContain("onerror");
     expect(html).not.toContain("<script>");
+    expect(html).not.toContain("style=");
     expect(html).toContain("%%UNSUBSCRIBE%%");
   });
 

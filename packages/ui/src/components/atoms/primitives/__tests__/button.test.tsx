@@ -27,7 +27,7 @@ describe("Button", () => {
     const CustomLink = React.forwardRef<
       HTMLAnchorElement,
       React.AnchorHTMLAttributes<HTMLAnchorElement>
-    >((props, ref) => <a ref={ref} data-cy="custom-link" {...props} />);
+    >((props, ref) => <a ref={ref} data-testid="custom-link" {...props} />);
 
     render(
       <Button asChild>

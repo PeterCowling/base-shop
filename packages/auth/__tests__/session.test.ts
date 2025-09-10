@@ -64,6 +64,22 @@ describe("session token", () => {
     await expect(getCustomerSession()).resolves.toEqual(session);
   });
 
+  it("sets csrf token cookie when missing", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { createCustomerSession, getCustomerSession, CSRF_TOKEN_COOKIE } = await import("../src/session");
+    const session = { customerId: "abc", role: "customer" as Role };
+    await createCustomerSession(session);
+    store.delete({ name: CSRF_TOKEN_COOKIE });
+    store.set.mockClear();
+    await getCustomerSession();
+    expect(store.set).toHaveBeenCalledWith(
+      CSRF_TOKEN_COOKIE,
+      expect.any(String),
+      expect.anything(),
+    );
+  });
+
   it("handles expired tokens", async () => {
     const store = createStore();
     mockCookies.mockResolvedValue(store);

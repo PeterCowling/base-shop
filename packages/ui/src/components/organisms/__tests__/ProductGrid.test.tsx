@@ -67,6 +67,23 @@ describe("ProductGrid responsive columns", () => {
     );
   });
 
+  it("keeps fixed columns when the columns prop is set", () => {
+    const resize = mockResize(300);
+    const { container } = render(
+      <ProductGrid products={products} columns={3} showPrice={false} />
+    );
+    let grid = container.firstChild as HTMLElement;
+    expect(grid.style.gridTemplateColumns).toBe(
+      "repeat(3, minmax(0, 1fr))"
+    );
+
+    act(() => resize(2000));
+    grid = container.firstChild as HTMLElement;
+    expect(grid.style.gridTemplateColumns).toBe(
+      "repeat(3, minmax(0, 1fr))"
+    );
+  });
+
   it("uses device breakpoints when provided", () => {
     const resize = mockResize(1200);
     const { container } = render(

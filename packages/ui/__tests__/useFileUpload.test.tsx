@@ -1,9 +1,16 @@
-import { act, renderHook } from "@testing-library/react";
+import { act, fireEvent, render, renderHook } from "@testing-library/react";
 import useFileUpload from "../src/hooks/useFileUpload";
+import { useImageOrientationValidation } from "../src/hooks/useImageOrientationValidation";
+
+jest.mock("../src/hooks/useImageOrientationValidation");
 
 const originalFetch = global.fetch;
+const mockOrientation = useImageOrientationValidation as jest.Mock;
 
 describe("useFileUpload", () => {
+  beforeEach(() => {
+    mockOrientation.mockReturnValue({ actual: null, isValid: null });
+  });
   afterEach(() => {
     global.fetch = originalFetch;
     jest.resetAllMocks();
@@ -76,6 +83,87 @@ describe("useFileUpload", () => {
     expect(result.current.pendingFile).toBeNull();
     expect(result.current.altText).toBe("");
     expect(result.current.tags).toBe("");
+  });
+
+  it("does not fetch when no file is pending", async () => {
+    global.fetch = jest.fn();
+    const { result } = renderHook(() =>
+      useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+    );
+
+    await act(async () => {
+      await result.current.handleUpload();
+    });
+
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
+  it("handles drag events and drop", () => {
+    const file = new File(["a"], "a.png", { type: "image/png" });
+    const { result } = renderHook(() =>
+      useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+    );
+    const { container, rerender } = render(result.current.uploader);
+
+    fireEvent.dragEnter(container.firstChild!);
+    rerender(result.current.uploader);
+    expect(container.firstChild?.className).toContain("highlighted");
+
+    act(() => {
+      fireEvent.drop(container.firstChild!, {
+        dataTransfer: { files: [file] },
+      });
+    });
+    rerender(result.current.uploader);
+
+    expect(result.current.pendingFile).toBe(file);
+    expect(container.firstChild?.className).not.toContain("highlighted");
+  });
+
+  it("shows orientation warning when mismatched", () => {
+    mockOrientation
+      .mockReturnValueOnce({ actual: null, isValid: null })
+      .mockReturnValue({ actual: "portrait", isValid: false });
+
+    const file = new File(["a"], "a.png", { type: "image/png" });
+    const { result } = renderHook(() =>
+      useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+    );
+    const { getByText, rerender } = render(result.current.uploader);
+
+    act(() => {
+      result.current.onFileChange({ target: { files: [file] } } as any);
+    });
+    rerender(result.current.uploader);
+
+    expect(
+      getByText("Wrong orientation (needs landscape)")
+    ).toBeInTheDocument();
+  });
+
+  it("handles error responses with custom message", async () => {
+    const file = new File(["a"], "a.png", { type: "image/png" });
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        statusText: "nope",
+        json: () => Promise.resolve({ error: "bad" }),
+      })
+    ) as any;
+
+    const { result } = renderHook(() =>
+      useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+    );
+
+    act(() => {
+      result.current.onFileChange({ target: { files: [file] } } as any);
+    });
+
+    await act(async () => {
+      await result.current.handleUpload();
+    });
+
+    expect(result.current.error).toBe("bad");
   });
 });
 

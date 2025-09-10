@@ -185,7 +185,7 @@ export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
 });
 export type CoreEnv = z.infer<typeof coreEnvSchema>;
 
-export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
+function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
   const parsed = coreEnvSchema.safeParse(raw);
   if (!parsed.success) {
     console.error("❌ Invalid core environment variables:");
@@ -199,15 +199,36 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
   return parsed.data;
 }
 
+export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
+  const ttl = raw.AUTH_TOKEN_TTL;
+  if (
+    typeof ttl === "number" ||
+    (typeof ttl === "string" &&
+      (ttl.trim() === "" || /^\d+$/.test(ttl.trim())))
+  ) {
+    console.error("❌ Invalid core environment variables:");
+    console.error(
+      "  • AUTH_TOKEN_TTL: AUTH_TOKEN_TTL must be a string like '60s' or '15m'",
+    );
+    throw new Error("Invalid core environment variables");
+  }
+  return parseCoreEnv(raw);
+}
+
 // Lazy proxy; no import-time parse in dev.
 let __cachedCoreEnv: CoreEnv | null = null;
 const nodeRequire =
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   typeof require !== "undefined" ? require : createRequire(eval("import.meta.url"));
+const envMode = process.env.NODE_ENV;
 function getCoreEnv(): CoreEnv {
   if (!__cachedCoreEnv) {
-    const mod = nodeRequire("./core.js") as typeof import("./core.js");
-    __cachedCoreEnv = mod.loadCoreEnv();
+    if (envMode === "production" || envMode == null) {
+      const mod = nodeRequire("./core.js") as typeof import("./core.js");
+      __cachedCoreEnv = mod.loadCoreEnv();
+    } else {
+      __cachedCoreEnv = parseCoreEnv();
+    }
   }
   return __cachedCoreEnv;
 }

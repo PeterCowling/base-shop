@@ -26,6 +26,19 @@ beforeEach(() => {
 
 describe("onRequestPost", () => {
   describe("id validation", () => {
+    it("rejects missing id", async () => {
+      const warn = jest.spyOn(console, "warn").mockImplementation();
+      const res = await onRequestPost({
+        params: {} as any,
+        request: new Request("http://example.com", { method: "POST" }),
+      });
+      const body = await res.json();
+      expect(res.status).toBe(400);
+      expect(body).toEqual({ error: "Invalid shop id" });
+      expect(warn).toHaveBeenCalledWith("invalid shop id", { id: undefined });
+      warn.mockRestore();
+    });
+
     it.each(["", "ABC", "abc!", "Shop"])(
       "rejects invalid id '%s'",
       async (bad) => {

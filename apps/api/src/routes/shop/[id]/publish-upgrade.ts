@@ -22,7 +22,7 @@ export const onRequestPost = async ({
 }) => {
   try {
     const id = params.id;
-    if (!/^[a-z0-9_-]+$/.test(id)) {
+    if (!id || !/^[a-z0-9_-]+$/.test(id)) {
       console.warn("invalid shop id", { id });
       return new Response(JSON.stringify({ error: "Invalid shop id" }), {
         status: 400,

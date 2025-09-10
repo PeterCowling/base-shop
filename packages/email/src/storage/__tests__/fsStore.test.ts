@@ -1,4 +1,4 @@
-import { promises as fs } from "node:fs";
+import { promises as fs, type Dirent } from "node:fs";
 import path from "node:path";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 import { fsCampaignStore } from "../fsStore";
@@ -23,6 +23,23 @@ describe("fsCampaignStore error handling", () => {
     jest.spyOn(fs, "readdir").mockRejectedValue(new Error("fail"));
     await expect(fsCampaignStore.listShops())
       .resolves.toEqual([]);
+  });
+
+  it("returns only directories when listing shops", async () => {
+    const dir = path.join(DATA_ROOT, "shopDir");
+    const file = path.join(DATA_ROOT, "file.txt");
+    await fs.mkdir(dir, { recursive: true });
+    await fs.writeFile(file, "", "utf8");
+    const dirent = (name: string, isDir: boolean): Dirent => ({
+      name,
+      isDirectory: () => isDir,
+    } as Dirent);
+    jest
+      .spyOn(fs, "readdir")
+      .mockResolvedValue([dirent("shopDir", true), dirent("file.txt", false)]);
+    await expect(fsCampaignStore.listShops()).resolves.toEqual(["shopDir"]);
+    await fs.rm(dir, { recursive: true, force: true });
+    await fs.rm(file, { force: true });
   });
 
   it("propagates writeFile errors", async () => {

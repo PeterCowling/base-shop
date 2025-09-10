@@ -1,4 +1,9 @@
-import { hexToRgb, getContrastColor, hexToHsl } from "../src/utils/colorUtils";
+import {
+  hexToRgb,
+  getContrastColor,
+  hexToHsl,
+  hslToHex,
+} from "../src/utils/colorUtils";
 
 describe("hexToRgb", () => {
   it("converts 6-digit hex to RGB", () => {
@@ -43,6 +48,16 @@ describe("hexToHsl", () => {
 
   it("handles high-contrast colors", () => {
     expect(hexToHsl("#ff0000")).toBe("0 100% 50%");
+  });
+});
+
+describe("hslToHex", () => {
+  it("converts black HSL to hex", () => {
+    expect(hslToHex("0 0% 0%")).toBe("#000000");
+  });
+
+  it("converts red HSL to hex", () => {
+    expect(hslToHex("360 100% 50%")).toBe("#ff0000");
   });
 });
 

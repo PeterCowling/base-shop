@@ -1,5 +1,7 @@
-import { render } from "@testing-library/react";
+import { configure, render } from "@testing-library/react";
 import MediaSelectionCheck from "../MediaSelectionCheck";
+
+configure({ testIdAttribute: "data-testid" });
 
 describe("MediaSelectionCheck", () => {
   it("toggles visibility based on selection", () => {

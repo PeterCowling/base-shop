@@ -71,6 +71,15 @@ describe("plugin resolvers", () => {
     expect(res).toEqual({ entryPath: null, isModule: false });
   });
 
+  it("logs error when readFile throws", async () => {
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "plug-read-"));
+    jest.spyOn(fs, "readFile").mockRejectedValue(new Error("boom"));
+    const err = jest.spyOn(logger, "error").mockImplementation(() => {});
+    const res = await resolvePluginEntry(dir);
+    expect(err).toHaveBeenCalled();
+    expect(res).toEqual({ entryPath: null, isModule: false });
+  });
+
   it("importByType loads mjs and cjs modules", async () => {
     const dir = await fs.mkdtemp(path.join(os.tmpdir(), "plug-"));
     const mjs = path.join(dir, "mod.mjs");

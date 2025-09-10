@@ -21,7 +21,7 @@ test("resizes element", () => {
       gridCols: 12,
       containerRef: ref,
     });
-    return <div ref={ref} onPointerDown={startResize} data-testid="box" />;
+    return <div ref={ref} onPointerDown={startResize} data-cy="box" />;
   }
   const { getByTestId } = render(<Wrapper />);
   const box = getByTestId("box") as HTMLElement;
@@ -52,7 +52,7 @@ test("snaps to grid units", () => {
       gridCols: 4,
       containerRef: ref,
     });
-    return <div ref={ref} onPointerDown={startResize} data-testid="box" />;
+    return <div ref={ref} onPointerDown={startResize} data-cy="box" />;
   }
   const { getByTestId } = render(<Wrapper />);
   const box = getByTestId("box") as HTMLElement;

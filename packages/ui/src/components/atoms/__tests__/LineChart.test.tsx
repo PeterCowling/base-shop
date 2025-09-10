@@ -30,6 +30,7 @@ describe("LineChart", () => {
         options,
         className: "custom",
         "data-cy": "line-chart",
+        "data-testid": "line-chart",
       }),
     );
   });

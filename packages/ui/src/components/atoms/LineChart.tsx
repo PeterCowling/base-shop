@@ -34,6 +34,7 @@ export function LineChart({ data, options, className }: LineChartProps) {
       options={options}
       className={className}
       data-cy="line-chart"
+      data-testid="line-chart"
     />
   );
 }

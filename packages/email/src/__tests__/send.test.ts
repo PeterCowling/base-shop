@@ -215,6 +215,32 @@ describe("sendCampaignEmail", () => {
       timeoutSpy.mockRestore();
     });
 
+    it("falls back to Nodemailer when all providers fail", async () => {
+      const { ProviderError } = await import("../providers/types");
+      mockSendgridSend = jest
+        .fn()
+        .mockRejectedValue(new ProviderError("sg fail", false));
+      mockResendSend = jest
+        .fn()
+        .mockRejectedValue(new ProviderError("rs fail", false));
+      mockSendMail = jest.fn().mockResolvedValue(undefined);
+      mockSanitizeHtml = jest.fn((html: string) => html);
+      mockHasProviderErrorFields = jest.fn();
+
+      setupEnv();
+
+      const { sendCampaignEmail } = await import("../index");
+      await sendCampaignEmail({
+        to: "to@example.com",
+        subject: "Subject",
+        html: "<p>HTML</p>",
+      });
+
+      expect(mockSendgridSend).toHaveBeenCalledTimes(1);
+      expect(mockResendSend).toHaveBeenCalledTimes(1);
+      expect(mockSendMail).toHaveBeenCalledTimes(1);
+    });
+
     it("retries with exponential backoff on retryable error", async () => {
       const timeoutSpy = jest.spyOn(global, "setTimeout");
       const { ProviderError } = await import("../providers/types");

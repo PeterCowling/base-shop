@@ -166,6 +166,7 @@ describe("resolveConfig", () => {
     jest.unmock("@acme/config/env/core");
     jest.resetModules();
   });
+
 });
 
 describe("startReverseLogisticsService", () => {
@@ -193,6 +194,70 @@ describe("startReverseLogisticsService", () => {
     const stop = await service.startReverseLogisticsService({}, "/data", proc);
     expect(proc).toHaveBeenCalledTimes(1);
     expect(proc).toHaveBeenCalledWith("shop1", "/data");
+    expect(setSpy).toHaveBeenCalledTimes(1);
+
+    stop();
+    expect(clearSpy).toHaveBeenCalledWith(123 as any);
+
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+  });
+
+  it("processes disabled shops when forced via configs", async () => {
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValueOnce(["shop"]);
+    readFile.mockResolvedValueOnce(
+      JSON.stringify({ reverseLogisticsService: { enabled: false, intervalMinutes: 1 } })
+    );
+    const proc = jest.fn().mockResolvedValue(undefined);
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation((fn: any, ms?: number) => {
+        expect(ms).toBe(60000);
+        return 123 as any;
+      });
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+
+    const stop = await service.startReverseLogisticsService(
+      { shop: { enabled: true } },
+      "/data",
+      proc,
+    );
+    expect(proc).toHaveBeenCalledWith("shop", "/data");
+    expect(setSpy).toHaveBeenCalledTimes(1);
+
+    stop();
+    expect(clearSpy).toHaveBeenCalledWith(123 as any);
+
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+  });
+
+  it("uses interval override from configs", async () => {
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValueOnce(["shop"]);
+    readFile.mockResolvedValueOnce(
+      JSON.stringify({ reverseLogisticsService: { enabled: true, intervalMinutes: 1 } })
+    );
+    const proc = jest.fn().mockResolvedValue(undefined);
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation((fn: any, ms?: number) => {
+        expect(ms).toBe(300000);
+        return 123 as any;
+      });
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+
+    const stop = await service.startReverseLogisticsService(
+      { shop: { intervalMinutes: 5 } },
+      "/data",
+      proc,
+    );
+    expect(proc).toHaveBeenCalledWith("shop", "/data");
     expect(setSpy).toHaveBeenCalledTimes(1);
 
     stop();

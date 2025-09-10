@@ -168,7 +168,7 @@ describe("DynamicRenderer block registry coverage", () => {
       key,
       {
         component: jest.fn(({ children }: any) => (
-          <div data-testid={key}>{children}</div>
+          <div data-cy={key}>{children}</div>
         )),
       },
     ])

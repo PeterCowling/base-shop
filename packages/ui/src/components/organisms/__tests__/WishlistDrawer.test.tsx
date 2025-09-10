@@ -34,4 +34,18 @@ describe("WishlistDrawer", () => {
     expect(screen.getByText("Item 1")).toBeInTheDocument();
     expect(screen.getByText("Item 2")).toBeInTheDocument();
   });
+
+  it("accepts numeric width", async () => {
+    render(
+      <WishlistDrawer
+        trigger={<button>Open</button>}
+        items={[]}
+        width={320}
+      />
+    );
+
+    await userEvent.click(screen.getByText("Open"));
+    const dialog = await screen.findByRole("dialog");
+    expect(dialog).toHaveStyle({ width: "320px" });
+  });
 });

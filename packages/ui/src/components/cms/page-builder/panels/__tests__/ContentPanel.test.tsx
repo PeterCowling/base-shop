@@ -5,7 +5,7 @@ import ContentPanel from "../ContentPanel";
 jest.mock("../../editorRegistry", () => ({
   __esModule: true,
   default: {
-    Fancy: (props: any) => <div data-testid="fancy">fancy-{props.component.id}</div>,
+    Fancy: (props: any) => <div data-cy="fancy">fancy-{props.component.id}</div>,
   },
 }));
 

@@ -38,6 +38,17 @@ describe("useImageOrientationValidation", () => {
     jest.resetAllMocks();
   });
 
+  it("returns nulls when file is null", async () => {
+    const { result } = renderHook(() =>
+      useImageOrientationValidation(null, "landscape")
+    );
+
+    await waitFor(() =>
+      expect(result.current).toEqual({ actual: null, isValid: null })
+    );
+    expect(global.URL.createObjectURL).not.toHaveBeenCalled();
+  });
+
   it("returns true when image matches orientation", async () => {
     const file = new File(["a"], "landscape.png", { type: "image/png" });
     const { result } = renderHook(() =>
@@ -52,5 +63,25 @@ describe("useImageOrientationValidation", () => {
       useImageOrientationValidation(file, "landscape")
     );
     await waitFor(() => expect(result.current.isValid).toBe(false));
+  });
+
+  it("keeps isValid null when image fails to load", async () => {
+    const file = new File(["a"], "broken.png", { type: "image/png" });
+    class ErrorImage {
+      onload: () => void = () => {};
+      onerror: () => void = () => {};
+      set src(_: string) {
+        this.onerror();
+      }
+    }
+    (global as any).Image = ErrorImage;
+
+    const { result } = renderHook(() =>
+      useImageOrientationValidation(file, "landscape")
+    );
+
+    await waitFor(() => expect(result.current.isValid).toBeNull());
+    expect(result.current.actual).toBeNull();
+    expect(global.URL.revokeObjectURL).toHaveBeenCalled();
   });
 });

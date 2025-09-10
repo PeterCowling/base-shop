@@ -196,21 +196,19 @@ describe("depositReleaseEnvRefinement", () => {
 });
 
 describe("AUTH_TOKEN_TTL normalization", () => {
-  it("rejects numeric value", async () => {
+  it("defaults numeric value", async () => {
     await withEnv({}, async () => {
       const { loadCoreEnv } = await importCore();
-      expect(() => loadCoreEnv({ AUTH_TOKEN_TTL: 120 } as any)).toThrow(
-        "Invalid core environment variables",
-      );
+      const env = loadCoreEnv({ AUTH_TOKEN_TTL: 120 } as any);
+      expect(env.AUTH_TOKEN_TTL).toBe(900);
     });
   });
 
-  it("rejects numeric string", async () => {
+  it("normalizes numeric string", async () => {
     await withEnv({}, async () => {
       const { loadCoreEnv } = await importCore();
-      expect(() => loadCoreEnv({ AUTH_TOKEN_TTL: "120" } as any)).toThrow(
-        "Invalid core environment variables",
-      );
+      const env = loadCoreEnv({ AUTH_TOKEN_TTL: "120" } as any);
+      expect(env.AUTH_TOKEN_TTL).toBe(120);
     });
   });
 
@@ -222,12 +220,11 @@ describe("AUTH_TOKEN_TTL normalization", () => {
     });
   });
 
-  it("rejects blank string", async () => {
+  it("defaults blank string", async () => {
     await withEnv({}, async () => {
       const { loadCoreEnv } = await importCore();
-      expect(() => loadCoreEnv({ AUTH_TOKEN_TTL: "   " } as any)).toThrow(
-        "Invalid core environment variables",
-      );
+      const env = loadCoreEnv({ AUTH_TOKEN_TTL: "   " } as any);
+      expect(env.AUTH_TOKEN_TTL).toBe(900);
     });
   });
 });

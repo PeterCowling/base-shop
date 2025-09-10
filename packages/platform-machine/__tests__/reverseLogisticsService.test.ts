@@ -91,6 +91,21 @@ describe("processReverseLogisticsEventsOnce", () => {
     });
   }
 
+  it("ignores unlink errors", async () => {
+    readdir.mockResolvedValueOnce(["shop"]).mockResolvedValueOnce(["a.json"]);
+    readFile.mockResolvedValueOnce(
+      JSON.stringify({ sessionId: "s", status: "received" })
+    );
+    unlink.mockRejectedValueOnce(new Error("unlink fail"));
+    await expect(
+      service.processReverseLogisticsEventsOnce(undefined, "/data")
+    ).resolves.toBeUndefined();
+    expect(markReceived).toHaveBeenCalledWith("shop", "s");
+    expect(evtReceived).toHaveBeenCalledWith("shop", "s");
+    expect(unlink).toHaveBeenCalledWith("/data/shop/reverse-logistics/a.json");
+    expect(logError).not.toHaveBeenCalled();
+  });
+
   it("skips unknown status events", async () => {
     readdir.mockResolvedValueOnce(["shop"]).mockResolvedValueOnce(["a.json"]);
     readFile.mockResolvedValueOnce(

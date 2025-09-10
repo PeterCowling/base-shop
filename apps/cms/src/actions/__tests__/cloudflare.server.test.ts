@@ -152,6 +152,29 @@ describe("provisionDomain", () => {
     );
   });
 
+  it("returns undefined statuses when verify response is empty", async () => {
+    fetchMock
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          result: { verification_data: { cname_target: "cname.pages.dev" } },
+        }),
+      })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ result: [{ id: "zone1" }] }) })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({}) })
+      .mockResolvedValueOnce({ ok: true, json: () => ({}) });
+
+    const result = await provisionDomain("shop", "shop.example.com");
+
+    expect(result).toEqual({ status: undefined, certificateStatus: undefined });
+    expect(fetchMock).toHaveBeenCalledTimes(4);
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      4,
+      "https://api.cloudflare.com/client/v4/accounts/acc/pages/projects/shop/domains/shop.example.com/verify",
+      expect.objectContaining({ method: "POST" })
+    );
+  });
+
   it("throws when credentials are missing", async () => {
     mockedEnv.CLOUDFLARE_API_TOKEN = undefined;
     await expect(provisionDomain("shop", "shop.example.com")).rejects.toThrow(

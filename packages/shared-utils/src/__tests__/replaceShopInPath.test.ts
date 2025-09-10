@@ -1,4 +1,4 @@
-import { replaceShopInPath } from "./replaceShopInPath";
+import { replaceShopInPath } from "../replaceShopInPath";
 
 describe("replaceShopInPath", () => {
   it("replaces existing shop slug", () => {

@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 import { JSDOM } from 'jsdom';
-import { getCsrfToken } from './getCsrfToken';
+import { getCsrfToken } from '../../getCsrfToken';
 
 describe('getCsrfToken', () => {
   const originalLocation = globalThis.location;

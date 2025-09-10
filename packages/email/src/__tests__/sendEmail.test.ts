@@ -69,6 +69,35 @@ describe("sendEmail", () => {
     expect(getDefaultSender).not.toHaveBeenCalled();
   });
 
+  it("defaults to silent log level when EMAIL_LOG_LEVEL is not set", async () => {
+    process.env = {
+      ...OLD_ENV,
+      STRIPE_SECRET_KEY: "sk",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+    } as NodeJS.ProcessEnv;
+
+    const infoSpy = jest.fn();
+    const pinoMock = jest.fn(() => ({ info: infoSpy }));
+    jest.doMock("pino", () => ({
+      __esModule: true,
+      default: pinoMock,
+    }));
+    jest.doMock("nodemailer", () => ({
+      __esModule: true,
+      default: { createTransport: jest.fn() },
+      createTransport: jest.fn(),
+    }));
+    const getDefaultSender = jest.fn();
+    jest.doMock("../config", () => ({ getDefaultSender }));
+
+    const { sendEmail } = await import("../sendEmail");
+    await sendEmail("a@b.com", "Hi", "There");
+
+    expect(infoSpy).toHaveBeenCalledWith({ to: "a@b.com" }, "Email simulated");
+    expect(pinoMock).toHaveBeenCalledWith({ level: "silent" });
+    expect(getDefaultSender).not.toHaveBeenCalled();
+  });
+
   it("propagates errors from nodemailer", async () => {
     process.env = {
       ...OLD_ENV,

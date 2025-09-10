@@ -63,8 +63,7 @@ const { prisma: prismaMock } = jest.requireMock("../src/db") as {
 const ulidMock = jest.requireMock("ulid").ulid as jest.Mock;
 const nowIsoMock = jest.requireMock("@acme/date-utils").nowIso as jest.Mock;
 const stripeRefund = stripe.refunds.create as jest.Mock;
-const stripeCheckoutRetrieve =
-  stripe.checkout.sessions.retrieve as jest.Mock;
+const stripeCheckoutRetrieve = stripe.checkout.sessions.retrieve as jest.Mock;
 
 describe("orders", () => {
   beforeEach(() => {
@@ -294,7 +293,10 @@ describe("orders", () => {
 
     it("refunds full amount via Stripe before marking order", async () => {
       nowIsoMock.mockReturnValue("now");
-      prismaMock.rentalOrder.update.mockResolvedValue({ id: "1", refundedAt: "now" });
+      prismaMock.rentalOrder.update.mockResolvedValue({
+        id: "1",
+        refundedAt: "now",
+      });
       stripeRefund.mockResolvedValue({ id: "re_1" });
 
       const process = async () => {
@@ -304,7 +306,10 @@ describe("orders", () => {
       };
 
       const result = await process();
-      expect(stripeRefund).toHaveBeenCalledWith({ payment_intent: "pi", amount: 10 * 100 });
+      expect(stripeRefund).toHaveBeenCalledWith({
+        payment_intent: "pi",
+        amount: 10 * 100,
+      });
       expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
         where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
         data: { refundedAt: "now" },
@@ -314,7 +319,10 @@ describe("orders", () => {
 
     it("refunds partial amounts via Stripe before marking order", async () => {
       nowIsoMock.mockReturnValue("now");
-      prismaMock.rentalOrder.update.mockResolvedValue({ id: "1", refundedAt: "now" });
+      prismaMock.rentalOrder.update.mockResolvedValue({
+        id: "1",
+        refundedAt: "now",
+      });
       stripeRefund.mockResolvedValue({ id: "re_1" });
 
       const process = async () => {
@@ -326,7 +334,10 @@ describe("orders", () => {
       };
 
       const result = await process();
-      expect(stripeRefund).toHaveBeenCalledWith({ payment_intent: "pi", amount: 6 * 100 });
+      expect(stripeRefund).toHaveBeenCalledWith({
+        payment_intent: "pi",
+        amount: 6 * 100,
+      });
       expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
         where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
         data: { refundedAt: "now" },
@@ -346,7 +357,10 @@ describe("orders", () => {
       };
 
       await expect(process()).rejects.toThrow("refund failed");
-      expect(stripeRefund).toHaveBeenCalledWith({ payment_intent: "pi", amount: 6 * 100 });
+      expect(stripeRefund).toHaveBeenCalledWith({
+        payment_intent: "pi",
+        amount: 6 * 100,
+      });
       expect(prismaMock.rentalOrder.update).not.toHaveBeenCalled();
     });
   });
@@ -409,6 +423,29 @@ describe("orders", () => {
       expect(result).toEqual({ id: "1", refundedAt: "now", refundTotal: 10 });
     });
 
+    it("skips refund when already fully refunded", async () => {
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.findUnique.mockResolvedValue({
+        id: "1",
+        refundTotal: 10,
+      });
+      prismaMock.rentalOrder.update.mockResolvedValue({
+        id: "1",
+        refundedAt: "now",
+        refundTotal: 10,
+      });
+
+      const result = await refundOrder("shop", "sess", 10);
+
+      expect(stripeCheckoutRetrieve).not.toHaveBeenCalled();
+      expect(stripeRefund).not.toHaveBeenCalled();
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { refundedAt: "now", refundTotal: 10 },
+      });
+      expect(result).toEqual({ id: "1", refundedAt: "now", refundTotal: 10 });
+    });
+
     it("surfaces Stripe errors without updating the order", async () => {
       prismaMock.rentalOrder.findUnique.mockResolvedValue({
         id: "1",
@@ -418,7 +455,7 @@ describe("orders", () => {
       stripeRefund.mockRejectedValue(new Error("stripe fail"));
 
       await expect(refundOrder("shop", "sess", 10)).rejects.toThrow(
-        "stripe fail",
+        "stripe fail"
       );
 
       expect(stripeRefund).toHaveBeenCalledWith({
@@ -523,7 +560,7 @@ describe("orders", () => {
     it("throws when lookup fails", async () => {
       prismaMock.rentalOrder.findMany.mockRejectedValue(new Error("fail"));
       await expect(getOrdersForCustomer("shop", "cust")).rejects.toThrow(
-        "fail",
+        "fail"
       );
     });
   });

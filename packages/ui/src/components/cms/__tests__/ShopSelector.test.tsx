@@ -15,7 +15,7 @@ jest.mock("../../atoms/shadcn", () => {
     __esModule: true,
     Select: ({ value, onValueChange, children }: any) => (
       <select
-        data-testid="shop-select"
+        data-cy="shop-select"
         value={value ?? ""}
         onChange={(e) => onValueChange(e.target.value)}
       >

@@ -76,13 +76,13 @@ describe("onRequestPost", () => {
     );
   });
 
-  it("returns 403 when token provided but secret missing", async () => {
+  it("returns 403 for any bearer token when secret missing", async () => {
     const warn = jest.spyOn(console, "warn").mockImplementation();
     const res = await onRequestPost({
       params: { id },
       request: new Request("http://example.com", {
         method: "POST",
-        headers: { Authorization: "Bearer token" },
+        headers: { Authorization: "Bearer any-token" },
       }),
     });
     const body = await res.json();
@@ -172,7 +172,7 @@ describe("onRequestPost", () => {
     spawn.mockImplementation(() => ({
       on: (_: string, cb: (code: number) => void) => cb(0),
     }));
-
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },

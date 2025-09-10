@@ -1,6 +1,8 @@
 import "../../../../../../test/resetNextMocks";
-import { render, screen } from "@testing-library/react";
+import { render, screen, configure } from "@testing-library/react";
 import { LineChart } from "../LineChart";
+
+configure({ testIdAttribute: "data-testid" });
 
 type LineProps = React.ComponentProps<typeof LineChart>;
 

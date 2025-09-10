@@ -1,7 +1,9 @@
 import "../../../../../../test/resetNextMocks";
-import { render, screen } from "@testing-library/react";
+import { render, screen, configure } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Popover, PopoverContent, PopoverTrigger } from "../Popover";
+
+configure({ testIdAttribute: "data-testid" });
 
 describe("Popover", () => {
   it("opens content when trigger is clicked", async () => {

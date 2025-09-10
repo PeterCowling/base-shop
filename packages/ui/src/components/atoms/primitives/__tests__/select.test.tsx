@@ -1,6 +1,6 @@
 import "../../../../../../../test/resetNextMocks";
 import * as React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, configure } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   Select,
@@ -9,6 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../select";
+
+configure({ testIdAttribute: "data-testid" });
 
 describe("Select", () => {
   it("fires onValueChange and shows indicator on selected item", async () => {

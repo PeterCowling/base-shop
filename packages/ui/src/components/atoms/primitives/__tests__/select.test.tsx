@@ -17,7 +17,7 @@ describe("Select", () => {
     const onValueChange = jest.fn();
     render(
       <Select onValueChange={onValueChange}>
-        <SelectTrigger data-testid="trigger">
+        <SelectTrigger data-cy="trigger">
           <SelectValue placeholder="Pick" />
         </SelectTrigger>
         <SelectContent>

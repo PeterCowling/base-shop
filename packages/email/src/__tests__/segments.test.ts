@@ -494,12 +494,14 @@ describe("resolveSegment events", () => {
     delete process.env.SEGMENT_CACHE_TTL;
   });
 
-  it("resolves emails from segment events when no definition exists", async () => {
+  it("deduplicates emails from segment events when no definition exists", async () => {
     mockReadFile.mockResolvedValue("[]");
     mockStat.mockResolvedValue({ mtimeMs: 1 });
     mockListEvents.mockResolvedValue([
       { email: "a@example.com", type: "segment", segment: "vip" },
+      { email: "a@example.com", type: "segment:vip" },
       { email: "b@example.com", type: "segment:vip" },
+      { email: "b@example.com", type: "segment", segment: "vip" },
       { email: "c@example.com", type: "segment", segment: "other" },
       { email: "d@example.com", type: "segment:other" },
     ]);

@@ -219,10 +219,35 @@ describe("send core helpers", () => {
           subject: "s",
           html: '<p>Hi</p><img src="x" onerror="x"><script>bad()</script>',
         });
-      });
+    });
       expect(mockSanitizeHtml).toHaveBeenCalled();
       expect(providerSend).toHaveBeenCalledWith(
         expect.objectContaining({ html: '<p>Hi</p><img src="x" />' })
+      );
+    });
+
+    it("does not sanitize HTML when disabled", async () => {
+      const providerSend = jest.fn().mockResolvedValue(undefined);
+      SendgridProvider.mockImplementation(() => ({ send: providerSend }));
+      let sanitizeSpy: jest.SpyInstance;
+      await jest.isolateModulesAsync(async () => {
+        const sanitizeModule = await import("sanitize-html");
+        sanitizeSpy = jest.spyOn(sanitizeModule, "default");
+        process.env.EMAIL_PROVIDER = "sendgrid";
+        process.env.SENDGRID_API_KEY = "sg";
+        const { sendCampaignEmail } = await import("../send");
+        await sendCampaignEmail({
+          to: "t",
+          subject: "s",
+          html: '<p>Hi</p><img src="x"><script>bad()</script>',
+          sanitize: false,
+        });
+      });
+      expect(sanitizeSpy!).not.toHaveBeenCalled();
+      expect(providerSend).toHaveBeenCalledWith(
+        expect.objectContaining({
+          html: '<p>Hi</p><img src="x"><script>bad()</script>',
+        })
       );
     });
 

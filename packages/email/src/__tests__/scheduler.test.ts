@@ -152,6 +152,30 @@ describe("scheduler", () => {
   });
 
   test(
+    "sendDueCampaigns marks campaign sent when all recipients unsubscribed",
+    async () => {
+      const past = new Date(now.getTime() - 1000).toISOString();
+      memory[shop] = [
+        {
+          id: "c2",
+          recipients: ["a@example.com"],
+          subject: "Hi",
+          body: "<p>Hi %%UNSUBSCRIBE%%</p>",
+          segment: null,
+          sendAt: past,
+          templateId: null,
+        },
+      ];
+      (listEvents as jest.Mock).mockResolvedValue([
+        { type: "email_unsubscribe", email: "a@example.com" },
+      ]);
+      await sendDueCampaigns();
+      expect(sendCampaignEmail).not.toHaveBeenCalled();
+      expect(memory[shop][0].sentAt).toBeDefined();
+    },
+  );
+
+  test(
     "createCampaign filters unsubscribed recipients using analytics events",
     async () => {
       (listEvents as jest.Mock).mockResolvedValueOnce([

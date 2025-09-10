@@ -77,11 +77,6 @@ export async function getCustomerSession(): Promise<CustomerSession | null> {
     password: secret,
     ttl: SESSION_TTL_S,
   });
-  store.set(CUSTOMER_SESSION_COOKIE, newToken, cookieOptions());
-  if (!store.get(CSRF_TOKEN_COOKIE)) {
-    const csrf = randomUUID();
-    store.set(CSRF_TOKEN_COOKIE, csrf, csrfCookieOptions());
-  }
   const ua = (await headers()).get("user-agent") ?? "unknown";
   await sessionStore.set({
     sessionId: session.sessionId,
@@ -90,6 +85,11 @@ export async function getCustomerSession(): Promise<CustomerSession | null> {
     createdAt: new Date(),
   });
   await sessionStore.delete(oldId);
+  store.set(CUSTOMER_SESSION_COOKIE, newToken, cookieOptions());
+  if (!store.get(CSRF_TOKEN_COOKIE)) {
+    const csrf = randomUUID();
+    store.set(CSRF_TOKEN_COOKIE, csrf, csrfCookieOptions());
+  }
   const { customerId, role } = session;
   return { customerId, role };
 }

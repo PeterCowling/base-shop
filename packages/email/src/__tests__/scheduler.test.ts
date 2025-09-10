@@ -116,6 +116,8 @@ describe("scheduler", () => {
     (listEvents as jest.Mock).mockResolvedValue([
       { type: "page_view" },
       { type: "email_unsubscribe", email: "b@example.com" },
+      // non-string email should be ignored
+      { type: "email_unsubscribe", email: 123 as any },
       { type: "signup", email: "c@example.com" },
     ]);
     await sendDueCampaigns();

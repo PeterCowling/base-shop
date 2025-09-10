@@ -223,6 +223,8 @@ describe("scheduler", () => {
   test("filters out unsubscribed recipients", async () => {
     mockListEvents.mockResolvedValueOnce([
       { type: "email_unsubscribe", email: "a@example.com" },
+      // non-string email should be ignored
+      { type: "email_unsubscribe", email: 123 as any },
     ]);
 
     await createCampaign({

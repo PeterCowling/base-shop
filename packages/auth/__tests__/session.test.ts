@@ -37,6 +37,8 @@ describe("session token", () => {
     process.env.COOKIE_DOMAIN = "example.com";
     mockCookies.mockReset();
     jest.resetModules();
+    // Ensure no lingering mocks from isolate tests
+    jest.unmock("@acme/config/env/core");
   });
 
   afterAll(() => {

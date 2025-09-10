@@ -876,6 +876,31 @@ describe("onRequestPost", () => {
     expect(spawn).not.toHaveBeenCalled();
   });
 
+  it("returns 500 when package.json cannot be read", async () => {
+    readFileSync.mockImplementation((file: string) => {
+      if (file.endsWith("package.json")) {
+        const err = new Error("missing package.json") as NodeJS.ErrnoException;
+        err.code = "ENOENT";
+        throw err;
+      }
+      return "";
+    });
+
+    const token = jwt.sign({}, "secret");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    });
+
+    const body = await res.json();
+    expect(res.status).toBe(500);
+    expect(body).toEqual({ error: expect.any(String) });
+    expect(spawn).not.toHaveBeenCalled();
+  });
+
   it("returns 500 on unexpected errors", async () => {
     readFileSync.mockImplementation((file: string) => {
       if (file.endsWith("package.json")) {

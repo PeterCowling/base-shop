@@ -190,6 +190,26 @@ describe("sendCampaignEmail", () => {
     expect(calledWith.html).toBe("<p>Hello</p>");
   });
 
+  it("does not sanitize html when sanitize is false", async () => {
+    mockSendgridSend = jest.fn().mockResolvedValue(undefined);
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+
+    setupEnv();
+
+    const { sendCampaignEmail } = await import("../src/send");
+
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: '<p>Hello</p><script>alert("x")</script>',
+      sanitize: false,
+    });
+
+    const calledWith = mockSendgridSend.mock.calls[0][0];
+    expect(calledWith.html).toBe('<p>Hello</p><script>alert("x")</script>');
+  });
+
   it("renders template when templateId is provided", async () => {
     mockSendgridSend = jest.fn().mockResolvedValue(undefined);
     mockResendSend = jest.fn();

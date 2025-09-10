@@ -211,8 +211,9 @@ describe('orders', () => {
 
     it('returns null on error', async () => {
       prisma.rentalOrder.update.mockRejectedValueOnce(new Error('fail'));
-      const result = await setReturnTracking('s', 'sess', 'TN', 'url');
-      expect(result).toBeNull();
+      await expect(
+        setReturnTracking('s', 'sess', 'TN', 'url')
+      ).resolves.toBeNull();
     });
   });
 

@@ -398,6 +398,41 @@ describe("startDepositReleaseService", () => {
     delete process.env.DEPOSIT_RELEASE_INTERVAL_MS;
   });
 
+  it("disables shops via configs even when settings enable them", async () => {
+    service = await import("@acme/platform-machine");
+    readdir.mockResolvedValue(["shop1", "shop2"]);
+    readOrders.mockResolvedValue([]);
+    readFile.mockResolvedValue(
+      JSON.stringify({ depositService: { enabled: true, intervalMinutes: 1 } }),
+    );
+
+    const releaseSpy = jest.fn();
+    const setSpy = jest
+      .spyOn(global, "setInterval")
+      .mockImplementation(() => 0 as any);
+    const clearSpy = jest
+      .spyOn(global, "clearInterval")
+      .mockImplementation(() => undefined as any);
+
+    const stop = await service.startDepositReleaseService(
+      { shop1: { enabled: false } },
+      undefined,
+      releaseSpy,
+    );
+    await Promise.resolve();
+
+    expect(releaseSpy).toHaveBeenCalledTimes(1);
+    expect(releaseSpy).toHaveBeenCalledWith("shop2", expect.any(String));
+    expect(releaseSpy).not.toHaveBeenCalledWith("shop1", expect.anything());
+    expect(setSpy).toHaveBeenCalledTimes(1);
+
+    stop();
+    expect(clearSpy).toHaveBeenCalledTimes(1);
+
+    setSpy.mockRestore();
+    clearSpy.mockRestore();
+  });
+
   it("logs an error when releaseDepositsOnce throws", async () => {
     service = await import("@acme/platform-machine");
     readdir.mockResolvedValue(["shop1"]);

@@ -79,6 +79,44 @@ describe("templates registry", () => {
     expect(html).toContain("%%UNSUBSCRIBE%%");
   });
 
+  it("renders marketing template with custom footer", async () => {
+    const make = jest.fn(({ headline, content, footer }: any) =>
+      React.createElement(
+        "div",
+        null,
+        React.createElement("h1", null, headline),
+        content,
+        footer
+      )
+    );
+
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({
+        __esModule: true,
+        marketingEmailTemplates: [
+          {
+            id: "basic",
+            label: "Basic",
+            buildSubject: (h: string) => h,
+            make,
+          },
+        ],
+      }),
+      { virtual: true }
+    );
+
+    const { renderTemplate } = await import("../src/templates");
+    const html = renderTemplate("basic", {
+      subject: "Hi",
+      body: "<p>x</p>",
+      footer: "<span>Bye</span>",
+    });
+    expect(make).toHaveBeenCalledTimes(1);
+    expect(html).toContain("<span>Bye</span>");
+    expect(html).not.toContain("%%UNSUBSCRIBE%%");
+  });
+
   it("falls back to minimal React shim when React is unavailable", async () => {
     jest.doMock(
       "react",

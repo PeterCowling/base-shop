@@ -209,6 +209,22 @@ describe("resolveSegment", () => {
 
     expect(emails.sort()).toEqual(["a@example.com", "b@example.com"]);
   });
+
+  it("ignores events without email addresses", async () => {
+    fs.readFile.mockResolvedValueOnce(
+      JSON.stringify([{ id: "seg4", filters: [] }])
+    );
+
+    listEvents.mockResolvedValue([
+      { email: "valid@example.com" },
+      { plan: "pro" },
+      { email: undefined },
+    ]);
+
+    const emails = await resolveSegment("shop", "seg4");
+
+    expect(emails).toEqual(["valid@example.com"]);
+  });
 });
 
 describe("provider-dependent operations", () => {

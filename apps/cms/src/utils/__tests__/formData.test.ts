@@ -1,4 +1,4 @@
-import { formDataEntries, formDataToObject } from "../formData";
+import { formDataEntries, formDataToObject, tryJsonParse } from "../formData";
 
 describe("formData helpers", () => {
   it("uses entries when available", () => {
@@ -59,5 +59,24 @@ describe("formData helpers", () => {
     const emptyFormData = {} as unknown as FormData;
 
     expect(Array.from(formDataEntries(emptyFormData))).toEqual([]);
+  });
+});
+
+describe("tryJsonParse", () => {
+  it("parses valid JSON strings", () => {
+    expect(
+      tryJsonParse<{ foo: string }>("{\"foo\":\"bar\"}"),
+    ).toEqual({ foo: "bar" });
+  });
+
+  it("returns undefined for invalid JSON strings", () => {
+    expect(tryJsonParse("not json")).toBeUndefined();
+  });
+
+  it("returns undefined for non-string values", () => {
+    expect(tryJsonParse<{ foo: string }>(null)).toBeUndefined();
+    expect(
+      tryJsonParse<{ foo: string }>(new File([], "file.txt")),
+    ).toBeUndefined();
   });
 });

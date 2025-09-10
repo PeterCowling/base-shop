@@ -301,6 +301,16 @@ describe('getTrackingStatus', () => {
     });
   });
 
+  it('returns null when UPS response lacks packageStatus', async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: async () => ({ trackDetails: [{}] }),
+    });
+
+    const result = await getTrackingStatus({ provider: 'ups', trackingNumber: 'abc' });
+    expect(result).toEqual({ status: null, steps: [] });
+  });
+
   it('falls back on network error', async () => {
     fetchMock.mockRejectedValue(new Error('network'));
     const result = await getTrackingStatus({ provider: 'dhl', trackingNumber: '123' });

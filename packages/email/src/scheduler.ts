@@ -84,7 +84,10 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
   recipients = await filterUnsubscribed(shop, recipients);
   const hasPlaceholder = baseHtml.includes("%%UNSUBSCRIBE%%");
   const batchSize = Number(process.env.EMAIL_BATCH_SIZE) || 100;
-  const batchDelay = Number(process.env.EMAIL_BATCH_DELAY_MS) || 1000;
+  const batchDelay =
+    process.env.EMAIL_BATCH_DELAY_MS === undefined
+      ? 1000
+      : Number(process.env.EMAIL_BATCH_DELAY_MS);
   for (let i = 0; i < recipients.length; i += batchSize) {
     const batch = recipients.slice(i, i + batchSize);
     for (const r of batch) {

@@ -8,27 +8,32 @@ afterEach(() => {
 });
 
 describe("auth secret", () => {
-  it("throws when NEXTAUTH_SECRET is missing", async () => {
-    delete (process.env as Record<string, string | undefined>).NEXTAUTH_SECRET;
-    jest.doMock("@acme/config", () => ({ env: process.env }));
-    await expect(import("../secret")).rejects.toThrow(
+  it("throws when NEXTAUTH_SECRET is missing", () => {
+    jest.doMock("@acme/config", () => ({
+      env: { ...process.env, NEXTAUTH_SECRET: undefined },
+    }));
+    expect(() => require("../secret")).toThrow(
       "NEXTAUTH_SECRET is not set",
     );
   });
 
-  it("throws when NEXTAUTH_SECRET is empty", async () => {
-    (process.env as Record<string, string>).NEXTAUTH_SECRET = "";
-    jest.doMock("@acme/config", () => ({ env: process.env }));
-    await expect(import("../secret")).rejects.toThrow(
+  it("throws when NEXTAUTH_SECRET is empty", () => {
+    jest.doMock("@acme/config", () => ({
+      env: { ...process.env, NEXTAUTH_SECRET: "" },
+    }));
+    expect(() => require("../secret")).toThrow(
       "NEXTAUTH_SECRET is not set",
     );
   });
 
-  it("exports the NEXTAUTH_SECRET value", async () => {
-    (process.env as Record<string, string>).NEXTAUTH_SECRET =
-      "test-nextauth-secret-32-chars-long-string!";
-    jest.doMock("@acme/config", () => ({ env: process.env }));
-    const { authSecret } = await import("../secret");
+  it("exports the NEXTAUTH_SECRET value", () => {
+    jest.doMock("@acme/config", () => ({
+      env: {
+        ...process.env,
+        NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!",
+      },
+    }));
+    const { authSecret } = require("../secret");
     expect(authSecret).toBe(
       "test-nextauth-secret-32-chars-long-string!",
     );

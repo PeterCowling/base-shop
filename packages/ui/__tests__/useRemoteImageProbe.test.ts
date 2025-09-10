@@ -31,6 +31,31 @@ describe("useRemoteImageProbe", () => {
     expect(result.current.valid).toBe(true);
   });
 
+  it("sets loading during fetch and resets after success", async () => {
+    let resolveFetch: (value: unknown) => void;
+    const fetchPromise = new Promise((res) => {
+      resolveFetch = res;
+    });
+    mockFetch.mockReturnValueOnce(fetchPromise as any);
+    const { result } = renderHook(() => useRemoteImageProbe());
+
+    let probePromise: Promise<void>;
+    act(() => {
+      probePromise = result.current.probe("http://example.com/image.png");
+    });
+    expect(result.current.loading).toBe(true);
+
+    await act(async () => {
+      resolveFetch({
+        ok: true,
+        headers: { get: () => "image/png" },
+      } as any);
+      await probePromise;
+    });
+
+    expect(result.current.loading).toBe(false);
+  });
+
   it("flags non-image content-types", async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
@@ -42,5 +67,27 @@ describe("useRemoteImageProbe", () => {
     });
     expect(result.current.error).toBe("not-image");
     expect(result.current.valid).toBe(false);
+  });
+
+  it("sets loading during fetch and resets after failure", async () => {
+    let rejectFetch: (reason?: unknown) => void;
+    const fetchPromise = new Promise((_, rej) => {
+      rejectFetch = rej;
+    });
+    mockFetch.mockReturnValueOnce(fetchPromise as any);
+    const { result } = renderHook(() => useRemoteImageProbe());
+
+    let probePromise: Promise<void>;
+    act(() => {
+      probePromise = result.current.probe("http://example.com/fail.png");
+    });
+    expect(result.current.loading).toBe(true);
+
+    await act(async () => {
+      rejectFetch(new Error("network"));
+      await probePromise;
+    });
+
+    expect(result.current.loading).toBe(false);
   });
 });

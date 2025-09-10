@@ -35,7 +35,11 @@ jest.mock('@/lib/server/jsonIO', () => ({ writeJsonFile: writeJsonFileMock }));
 
 import path from 'path';
 import { File } from 'node:buffer';
-import {
+import * as media from '../media.server';
+import { ensureAuthorized } from '../common/auth';
+import { validateShopName } from '@platform-core/shops';
+
+const {
   uploadsDir,
   metadataPath,
   readMetadata,
@@ -43,9 +47,7 @@ import {
   listMedia,
   uploadMedia,
   deleteMedia,
-} from '../media.server';
-import { ensureAuthorized } from '../common/auth';
-import { validateShopName } from '@platform-core/shops';
+} = media;
 
 describe('media.server helpers and actions', () => {
   beforeEach(() => {
@@ -61,6 +63,10 @@ describe('media.server helpers and actions', () => {
     ulidMock.mockReturnValue('id123');
     sharpMetadataMock.mockResolvedValue({ width: 200, height: 100 });
     sharpToBufferMock.mockResolvedValue(Buffer.from('data'));
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('path helpers', () => {
@@ -288,12 +294,14 @@ describe('media.server helpers and actions', () => {
       );
     });
 
-    it('ignores missing files', async () => {
+    it('ignores missing files and does not update metadata', async () => {
       fsMock.unlink.mockRejectedValueOnce(new Error('missing'));
-      fsMock.readFile.mockResolvedValueOnce('{}');
+      jest.spyOn(media, 'readMetadata').mockResolvedValue({});
+      const writeMetadataSpy = jest.spyOn(media, 'writeMetadata');
       await expect(
         deleteMedia('shop', '/uploads/shop/missing.jpg'),
       ).resolves.toBeUndefined();
+      expect(writeMetadataSpy).not.toHaveBeenCalled();
     });
   });
 });

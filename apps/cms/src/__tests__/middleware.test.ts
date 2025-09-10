@@ -200,6 +200,22 @@ describe("middleware", () => {
     expect(res.status).toBe(403);
   });
 
+  it("allows mutating api requests with valid csrf token", async () => {
+    getTokenMock.mockResolvedValue({ role: "admin" } as any);
+
+    const req = new NextRequest("http://example.com/api/test", {
+      method: "POST",
+      headers: {
+        "x-csrf-token": "token",
+        cookie: "csrf_token=token",
+      },
+    });
+    const res = await middleware(req);
+
+    expect(res.headers.get("x-middleware-next")).toBe("1");
+    expect(res.headers.get("Content-Security-Policy")).toBeTruthy();
+  });
+
   it("allows repeated login attempts without rate limiting", async () => {
     const headers = {
       "x-forwarded-for": "1.2.3.4",

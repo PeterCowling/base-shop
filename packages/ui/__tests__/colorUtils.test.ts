@@ -1,4 +1,31 @@
-import { hexToRgb, getContrastColor, hexToHsl } from "../src/utils/colorUtils";
+import {
+  hexToRgb,
+  getContrastColor,
+  hexToHsl,
+  isHex,
+  isHsl,
+} from "../src/utils/colorUtils";
+
+describe("isHex", () => {
+  it("accepts short and long hex colors", () => {
+    expect(isHex("#fff")).toBe(true);
+    expect(isHex("#ffffff")).toBe(true);
+  });
+
+  it("rejects non-hex strings", () => {
+    expect(isHex("not-hex")).toBe(false);
+  });
+});
+
+describe("isHsl", () => {
+  it("accepts valid HSL string", () => {
+    expect(isHsl("0 0% 0%")).toBe(true);
+  });
+
+  it("rejects malformed inputs", () => {
+    expect(isHsl("0 0 0")).toBe(false);
+  });
+});
 
 describe("hexToRgb", () => {
   it("converts 6-digit hex to RGB", () => {

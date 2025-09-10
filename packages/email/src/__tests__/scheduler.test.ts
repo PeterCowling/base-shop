@@ -482,6 +482,37 @@ describe("scheduler", () => {
     expect(campaign.sentAt).toBe(fake.toISOString());
   });
 
+  test("sendDueCampaigns writes campaigns only when sending due items", async () => {
+    const past = new Date(now.getTime() - 1000).toISOString();
+    const future = new Date(now.getTime() + 60000).toISOString();
+    memory[shop] = [
+      {
+        id: "c1",
+        recipients: ["a@example.com"],
+        subject: "Past",
+        body: "<p>Past</p>",
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+      {
+        id: "c2",
+        recipients: ["b@example.com"],
+        subject: "Future",
+        body: "<p>Future</p>",
+        segment: null,
+        sendAt: future,
+        templateId: null,
+      },
+    ];
+
+    await sendDueCampaigns();
+    expect(writeCampaigns).toHaveBeenCalledTimes(1);
+
+    await sendDueCampaigns();
+    expect(writeCampaigns).toHaveBeenCalledTimes(1);
+  });
+
   test("sendDueCampaigns delivers due campaigns per shop", async () => {
     const past = new Date(now.getTime() - 1000).toISOString();
     const future = new Date(now.getTime() + 60000).toISOString();

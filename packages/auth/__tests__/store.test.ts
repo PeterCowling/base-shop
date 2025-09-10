@@ -38,6 +38,16 @@ describe("createSessionStore", () => {
     expect(store).toBeInstanceOf(MemorySessionStore);
   });
 
+  it("falls back to MemorySessionStore when SESSION_STORE is unrecognized", async () => {
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: { SESSION_STORE: "foobar" },
+    }));
+    const { createSessionStore } = await import("../src/store");
+    const { MemorySessionStore } = await import("../src/memoryStore");
+    const store = await createSessionStore();
+    expect(store).toBeInstanceOf(MemorySessionStore);
+  });
+
   it("allows overriding via setSessionStoreFactory", async () => {
     jest.doMock("@acme/config/env/core", () => ({ coreEnv: {} }));
     const { createSessionStore, setSessionStoreFactory } = await import(

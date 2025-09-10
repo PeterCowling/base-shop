@@ -109,8 +109,8 @@ test("campaign create with segment and no recipients", async () => {
 });
 
 test("campaign list outputs campaigns", async () => {
-  const campaignsPath = path.join(dataRoot, "shop1", "campaigns.json");
-  files[campaignsPath] = JSON.stringify([
+  const campaignsPath = path.join(dataRoot, "shop", "campaigns.json");
+  const campaigns = [
     {
       id: "c1",
       recipients: ["a@example.com"],
@@ -119,16 +119,16 @@ test("campaign list outputs campaigns", async () => {
       segment: null,
       sendAt: "2020-01-01T00:00:00.000Z",
     },
-  ]);
+  ];
+  files[campaignsPath] = JSON.stringify(campaigns);
 
-  process.argv = ["node", "email", "campaign", "list", "shop1"];
   const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
   const { run } = await import("../cli");
-  await run();
+  await run(["node", "email", "campaign", "list", "shop"]);
 
   expect(logSpy).toHaveBeenCalledTimes(1);
   const output = logSpy.mock.calls[0][0];
-  expect(JSON.parse(output)).toEqual(JSON.parse(files[campaignsPath]));
+  expect(JSON.parse(output)).toEqual(campaigns);
 });
 
 test("campaign send invokes scheduler", async () => {

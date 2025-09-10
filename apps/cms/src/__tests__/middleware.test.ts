@@ -42,6 +42,17 @@ describe("middleware", () => {
     );
   });
 
+  it("includes security headers on redirect responses", async () => {
+    getTokenMock.mockResolvedValue(null);
+
+    const req = new NextRequest("http://example.com/cms");
+    const res = await middleware(req);
+
+    expect(res.headers.get("Permissions-Policy")).toBe(
+      "camera=(), microphone=(), geolocation=()",
+    );
+  });
+
   it("allows non-CMS paths without invoking canRead", async () => {
     getTokenMock.mockResolvedValue({ role: "viewer" } as any);
 

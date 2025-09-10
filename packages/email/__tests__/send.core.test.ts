@@ -130,6 +130,7 @@ describe("sendWithRetry", () => {
       html: "<p>h</p>",
       text: "h",
     });
+    void promise.catch(() => {});
     await jest.advanceTimersByTimeAsync(100);
     await jest.advanceTimersByTimeAsync(200);
     await expect(promise).rejects.toBe(error);

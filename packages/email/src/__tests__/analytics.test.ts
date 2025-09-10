@@ -58,7 +58,7 @@ describe("analytics mapping", () => {
       recipient: "user@example.com",
     });
   });
-  it("normalizes SendGrid webhook events with array category", async () => {
+  it("normalizes SendGrid webhook events with multi-value array category", async () => {
     jest.resetModules();
     process.env.CART_COOKIE_SECRET = "secret";
     jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent: jest.fn() }));
@@ -69,11 +69,11 @@ describe("analytics mapping", () => {
       event: "open",
       sg_message_id: "msg-1",
       email: "user@example.com",
-      category: ["camp1"],
+      category: ["a", "b"],
     };
     expect(mapSendGridEvent(ev)).toEqual({
       type: "email_open",
-      campaign: "camp1",
+      campaign: "a",
       messageId: "msg-1",
       recipient: "user@example.com",
     });

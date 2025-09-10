@@ -199,6 +199,19 @@ describe("updateAggregates persistence", () => {
     expect(events.filter((e) => e.type === "ai_crawl")).toHaveLength(2);
   });
 
+  test("unknown event type still writes empty aggregates file", async () => {
+    const { trackEvent } = await import("../index");
+    await trackEvent(shop, { type: "custom_event" } as any);
+    const aggPath = path.join(tmp, shop, "analytics-aggregates.json");
+    const agg = JSON.parse(await fs.readFile(aggPath, "utf8"));
+    expect(agg).toEqual({
+      page_view: {},
+      order: {},
+      discount_redeemed: {},
+      ai_crawl: {},
+    });
+  });
+
   test("merges with existing aggregate file", async () => {
     const aggPath = path.join(tmp, shop, "analytics-aggregates.json");
     await fs.mkdir(path.dirname(aggPath), { recursive: true });

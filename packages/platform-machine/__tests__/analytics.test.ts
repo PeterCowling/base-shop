@@ -189,4 +189,17 @@ describe('updateAggregates', () => {
     expect(agg.discount_redeemed['2024-01-01'].SAVE).toBe(1);
     expect(agg.ai_crawl['2024-01-01']).toBe(1);
   });
+
+  test('unknown event type results in empty aggregates file', async () => {
+    const { trackEvent } = await import('@acme/platform-core/analytics');
+    await trackEvent(shop, { type: 'custom_event' } as any);
+    const aggPath = path.join(tmp, shop, 'analytics-aggregates.json');
+    const agg = JSON.parse(await fs.readFile(aggPath, 'utf8'));
+    expect(agg).toEqual({
+      page_view: {},
+      order: {},
+      discount_redeemed: {},
+      ai_crawl: {},
+    });
+  });
 });

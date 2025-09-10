@@ -37,6 +37,10 @@ describe("analytics provider resolution", () => {
     jest.resetModules();
     readShop.mockReset();
     getShopSettings.mockReset();
+    readFile.mockClear();
+    writeFile.mockClear();
+    appendFile.mockClear();
+    mkdir.mockClear();
     files.clear();
     (globalThis.fetch as any) = jest.fn().mockResolvedValue({ ok: true });
     process.env.DATA_ROOT = "/data";
@@ -102,6 +106,7 @@ describe("analytics provider resolution", () => {
     await trackEvent(shop, { type: "page_view", page: "about" });
     expect(readShop).toHaveBeenCalledTimes(1);
     expect(getShopSettings).toHaveBeenCalledTimes(1);
+    expect(appendFile).toHaveBeenCalledTimes(2);
   });
 
   test("updateAggregates increments metrics", async () => {

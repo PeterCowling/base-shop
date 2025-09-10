@@ -74,6 +74,40 @@ test("campaign create writes campaign file", async () => {
   expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/^Created campaign/));
 });
 
+test("campaign create with segment and no recipients", async () => {
+  process.argv = [
+    "node",
+    "email",
+    "campaign",
+    "create",
+    "shop1",
+    "--subject",
+    "Hi",
+    "--body",
+    "<p>Hi</p>",
+    "--segment",
+    "vip",
+    "--send-at",
+    "2020-01-01T00:00:00.000Z",
+  ];
+  const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+  const { run } = await import("../cli");
+  await run();
+
+  const campaignsPath = path.join(dataRoot, "shop1", "campaigns.json");
+  expect(files[campaignsPath]).toBeDefined();
+  const json = JSON.parse(files[campaignsPath]);
+  expect(json).toHaveLength(1);
+  expect(json[0]).toMatchObject({
+    subject: "Hi",
+    body: "<p>Hi</p>",
+    recipients: [],
+    segment: "vip",
+  });
+  expect(typeof json[0].sendAt).toBe("string");
+  expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/^Created campaign/));
+});
+
 test("campaign list outputs campaigns", async () => {
   const campaignsPath = path.join(dataRoot, "shop1", "campaigns.json");
   files[campaignsPath] = JSON.stringify([

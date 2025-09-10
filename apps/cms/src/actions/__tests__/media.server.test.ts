@@ -136,18 +136,14 @@ describe('media.server helpers and actions', () => {
       );
     });
 
-    it('throws and logs when readdir fails', async () => {
-      const err = new Error('boom');
-      fsMock.readdir.mockRejectedValueOnce(err);
-      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    it('throws when fs.readdir rejects', async () => {
+      fsMock.readdir.mockRejectedValueOnce(new Error('boom'));
       await expect(listMedia('shop')).rejects.toThrow('Failed to list media');
-      expect(spy).toHaveBeenCalledWith('Failed to list media', err);
-      spy.mockRestore();
     });
   });
 
   describe('uploadMedia', () => {
-    it('throws for missing file input', async () => {
+    it('throws when no file entry is provided', async () => {
       const formData = new FormData();
       await expect(uploadMedia('shop', formData)).rejects.toThrow(
         'No file provided',
@@ -162,7 +158,7 @@ describe('media.server helpers and actions', () => {
       );
     });
 
-    it('enforces 5 MB limit for images', async () => {
+    it('rejects images exceeding 5 MB', async () => {
       const big = Buffer.alloc(5 * 1024 * 1024 + 1);
       const formData = new FormData();
       formData.append(

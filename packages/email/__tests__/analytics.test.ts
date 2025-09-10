@@ -88,6 +88,24 @@ describe("mapResendEvent", () => {
     });
   });
 
+  it("uses recipient if email is missing", async () => {
+    setupMocks();
+    const { mapResendEvent } = await import("../src/analytics");
+    const ev = {
+      type: "email.delivered",
+      data: {
+        message_id: "r2",
+        recipient: "alt@example.com",
+      },
+    } as const;
+    expect(mapResendEvent(ev)).toEqual<EmailAnalyticsEvent>({
+      type: "email_delivered",
+      campaign: undefined,
+      messageId: "r2",
+      recipient: "alt@example.com",
+    });
+  });
+
   it("returns null for unknown types", async () => {
     setupMocks();
     const { mapResendEvent } = await import("../src/analytics");

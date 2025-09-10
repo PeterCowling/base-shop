@@ -64,6 +64,16 @@ describe("session token", () => {
     await expect(getCustomerSession()).resolves.toEqual(session);
   });
 
+  it("returns null when session cookie is missing", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { getCustomerSession, CUSTOMER_SESSION_COOKIE } = await import(
+      "../src/session"
+    );
+    expect(store.get(CUSTOMER_SESSION_COOKIE)).toBeUndefined();
+    await expect(getCustomerSession()).resolves.toBeNull();
+  });
+
   it("handles expired tokens", async () => {
     const store = createStore();
     mockCookies.mockResolvedValue(store);

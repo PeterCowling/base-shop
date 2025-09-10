@@ -11,7 +11,9 @@ describe("reserveRentalInventory", () => {
   });
 
   it("returns null when outside availability window", async () => {
-    const { reserveRentalInventory } = await import("../src/orders/rentalAllocation");
+    const { reserveRentalInventory } = await import(
+      "../src/orders/rentalAllocation"
+    );
     const repo = await import("../src/repositories/inventory.server");
     const mockUpdate = repo.updateInventoryItem as jest.Mock;
 
@@ -45,14 +47,67 @@ describe("reserveRentalInventory", () => {
       items,
       sku,
       "2024-05-01",
-      "2024-05-02",
+      "2024-05-02"
     );
     expect(result).toBeNull();
     expect(mockUpdate).not.toHaveBeenCalled();
   });
 
+  it("reserves inventory when SKU lacks availability", async () => {
+    const { reserveRentalInventory } = await import(
+      "../src/orders/rentalAllocation"
+    );
+    const repo = await import("../src/repositories/inventory.server");
+    const mockUpdate = repo.updateInventoryItem as jest.Mock;
+
+    const candidate: InventoryItem = {
+      sku: "s1",
+      productId: "p1",
+      quantity: 2,
+      variantAttributes: {},
+      wearCount: 1,
+    };
+
+    const items: InventoryItem[] = [candidate];
+
+    const sku: SKU = {
+      id: "sku-availability",
+      slug: "slug-availability",
+      title: "Test SKU",
+      price: 0,
+      deposit: 0,
+      stock: 1,
+      forSale: false,
+      forRental: true,
+      media: [],
+      sizes: [],
+      description: "",
+    };
+
+    mockUpdate.mockImplementation(async (_shop, _sku, _attrs, mutate) => {
+      return mutate(candidate);
+    });
+
+    const result = await reserveRentalInventory(
+      "shop",
+      items,
+      sku,
+      "2024-05-01",
+      "2024-05-02"
+    );
+
+    expect(mockUpdate).toHaveBeenCalledTimes(1);
+    expect(result).toEqual({
+      ...candidate,
+      quantity: 1,
+      wearCount: 2,
+    });
+  });
+
   it("returns null when wear limit or maintenance cycle disqualifies all items", async () => {
-    const { reserveRentalInventory } = await import("../src/orders/rentalAllocation");
+    const { reserveRentalInventory } = await import(
+      "../src/orders/rentalAllocation"
+    );
     const repo = await import("../src/repositories/inventory.server");
     const mockUpdate = repo.updateInventoryItem as jest.Mock;
 
@@ -94,7 +149,7 @@ describe("reserveRentalInventory", () => {
       items,
       sku,
       "2024-05-11",
-      "2024-05-12",
+      "2024-05-12"
     );
 
     expect(result).toBeNull();
@@ -102,7 +157,9 @@ describe("reserveRentalInventory", () => {
   });
 
   it("decrements quantity and increments wearCount on successful reservation", async () => {
-    const { reserveRentalInventory } = await import("../src/orders/rentalAllocation");
+    const { reserveRentalInventory } = await import(
+      "../src/orders/rentalAllocation"
+    );
     const repo = await import("../src/repositories/inventory.server");
     const mockUpdate = repo.updateInventoryItem as jest.Mock;
 
@@ -141,7 +198,7 @@ describe("reserveRentalInventory", () => {
       items,
       sku,
       "2024-05-11",
-      "2024-05-12",
+      "2024-05-12"
     );
 
     expect(mockUpdate).toHaveBeenCalledTimes(1);
@@ -152,4 +209,3 @@ describe("reserveRentalInventory", () => {
     });
   });
 });
-

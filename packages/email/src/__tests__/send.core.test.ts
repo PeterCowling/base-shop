@@ -432,6 +432,29 @@ describe("send core helpers", () => {
         text: "T",
       });
     });
+
+    it("surfaces sendMail rejections", async () => {
+      process.env.SMTP_URL = "smtp://test";
+      const err = new Error("smtp fail");
+      mockSendMail.mockRejectedValue(err);
+      const { sendWithNodemailer } = await import("../send");
+      await expect(
+        sendWithNodemailer({
+          to: "to@example.com",
+          subject: "Sub",
+          html: "<p>H</p>",
+          text: "T",
+        })
+      ).rejects.toThrow("smtp fail");
+      expect(mockCreateTransport).toHaveBeenCalledWith({ url: "smtp://test" });
+      expect(mockSendMail).toHaveBeenCalledWith({
+        from: "from@example.com",
+        to: "to@example.com",
+        subject: "Sub",
+        html: "<p>H</p>",
+        text: "T",
+      });
+    });
   });
 
   describe("sendCampaignEmail", () => {

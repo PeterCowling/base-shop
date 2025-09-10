@@ -1,5 +1,6 @@
 import { setCampaignStore } from "../src/storage";
 import type { CampaignStore, Campaign } from "../src/storage";
+import { unsubscribeUrl } from "../src/scheduler";
 
 jest.mock("@platform-core/repositories/analytics.server", () => ({
   __esModule: true,
@@ -58,6 +59,7 @@ describe("scheduler", () => {
     jest.useRealTimers();
     delete process.env.EMAIL_BATCH_SIZE;
     delete process.env.EMAIL_BATCH_DELAY_MS;
+    delete process.env.NEXT_PUBLIC_BASE_URL;
   });
 
   test("immediate scheduling vs delayed execution", async () => {
@@ -121,5 +123,20 @@ describe("scheduler", () => {
     ).rejects.toThrow("boom");
 
     expect(memory[shop]).toBeUndefined();
+  });
+
+  test("unsubscribeUrl percent-encodes parameters", () => {
+    process.env.NEXT_PUBLIC_BASE_URL = "https://base.example.com";
+    const specialShop = "shop/ü? ";
+    const specialCampaign = "camp &aign/?";
+    const specialRecipient = "user+tag@example.com";
+    const url = unsubscribeUrl(specialShop, specialCampaign, specialRecipient);
+    expect(url).toBe(
+      `https://base.example.com/api/marketing/email/unsubscribe?shop=${encodeURIComponent(
+        specialShop,
+      )}&campaign=${encodeURIComponent(specialCampaign)}&email=${encodeURIComponent(
+        specialRecipient,
+      )}`,
+    );
   });
 });

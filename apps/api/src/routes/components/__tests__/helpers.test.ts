@@ -15,6 +15,10 @@ describe('component helpers', () => {
   });
 
   describe('extractSummary', () => {
+    it('returns empty string when changelog is empty', () => {
+      expect(extractSummary('')).toBe('');
+    });
+
     it('returns empty string when changelog has only comments', () => {
       const log = '# heading\n\n  # another comment\n';
       expect(extractSummary(log)).toBe('');

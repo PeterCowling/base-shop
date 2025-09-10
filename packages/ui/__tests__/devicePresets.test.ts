@@ -1,4 +1,4 @@
-import { devicePresets } from "../src/utils/devicePresets";
+import { devicePresets, getLegacyPreset } from "../src/utils/devicePresets";
 
 describe("devicePresets", () => {
   it("contains expected viewport dimensions and labels", () => {
@@ -34,6 +34,30 @@ describe("devicePresets", () => {
     // original preset remains unchanged
     expect(devicePresets[0].width).toBe(1280);
     expect(devicePresets[0].height).toBe(800);
+  });
+
+  describe("getLegacyPreset", () => {
+    it.each([
+      ["desktop", "desktop-1280"],
+      ["tablet", "ipad"],
+      ["mobile", "iphone-se"],
+    ] as const)("returns first %s preset", (type, id) => {
+      const expected = devicePresets.find((p) => p.id === id)!;
+      const preset = getLegacyPreset(type);
+
+      expect(preset).toEqual(expected);
+      expect(preset).not.toBe(expected);
+    });
+
+    it("returns copy of devicePresets[0] for invalid type", () => {
+      const preset = getLegacyPreset("invalid" as any);
+
+      expect(preset).toEqual(devicePresets[0]);
+      expect(preset).not.toBe(devicePresets[0]);
+
+      preset.width = 999;
+      expect(devicePresets[0].width).not.toBe(999);
+    });
   });
 });
 

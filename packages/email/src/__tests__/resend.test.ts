@@ -72,6 +72,30 @@ describe("ResendProvider", () => {
     await expect(promise).rejects.toMatchObject({ retryable: false });
   });
 
+  it("wraps primitive rejections in retryable ProviderError", async () => {
+    process.env.RESEND_API_KEY = "rs";
+    process.env.CAMPAIGN_FROM = "from@example.com";
+    send.mockRejectedValueOnce("fail");
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+    const { ResendProvider } = await import("../providers/resend");
+    const provider = new ResendProvider();
+    const promise = provider.send({
+      to: "t@example.com",
+      subject: "s",
+      html: "<p>h</p>",
+      text: "t",
+    });
+    const { ProviderError } = require("../providers/types");
+    await expect(promise).rejects.toBeInstanceOf(ProviderError);
+    await expect(promise).rejects.toMatchObject({
+      message: "Unknown error",
+      retryable: true,
+    });
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+  });
+
   it("logs warning when API key missing", async () => {
     process.env.CAMPAIGN_FROM = "from@example.com";
     const warnSpy = jest

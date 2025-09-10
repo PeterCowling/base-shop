@@ -10,12 +10,14 @@ jest.mock("@platform-core/contexts/LayoutContext", () => ({
 }));
 
 // Stub internal components
+// Use data-cy so getByTestId resolves correctly with the custom testIdAttribute.
 jest.mock("@ui/components/cms/Sidebar.client", () => () => (
   <div data-cy="sidebar">Sidebar</div>
 ));
 jest.mock("@ui/components/cms/TopBar.client", () => () => <div>TopBar</div>);
 jest.mock("@/components/atoms", () => ({
   Progress: ({ value, label }: any) => (
+    // Use data-cy to match Testing Library configuration
     <div data-cy="progress">{label} - {value}</div>
   ),
 }));

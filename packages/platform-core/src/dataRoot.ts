@@ -1,11 +1,13 @@
 import * as fsSync from "node:fs";
 import * as path from "node:path";
 
+const PRIVATE_PREFIX = "/private";
+
 function stripPrivatePrefix(p: string): string {
     // macOS may resolve temporary directories under "/private" even when
     // callers provide paths starting with "/var". Normalise such paths so
     // tests comparing against the original "/var" location succeed.
-    return p.startsWith("/private/") ? p.slice("/private".length) : p;
+    return p.startsWith(`${PRIVATE_PREFIX}/`) ? p.slice(PRIVATE_PREFIX.length) : p;
 }
 /**
  * Walk upward from the current working directory to locate the monorepo-level

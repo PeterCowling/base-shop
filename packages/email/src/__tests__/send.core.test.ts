@@ -388,6 +388,16 @@ describe("send core helpers", () => {
       jest.useRealTimers();
     });
 
+    it("does not retry when error object has retryable false", async () => {
+      const { sendWithRetry } = await import("../send");
+      const err = { retryable: false };
+      const provider = { send: jest.fn().mockRejectedValue(err) };
+      await expect(
+        sendWithRetry(provider as any, { to: "t", subject: "s" })
+      ).rejects.toBe(err);
+      expect(provider.send).toHaveBeenCalledTimes(1);
+    });
+
     it("retries when error lacks retryable flag", async () => {
       jest.useFakeTimers();
       mockHasProviderErrorFields.mockReturnValue(false);

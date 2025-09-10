@@ -36,6 +36,66 @@ describe("DeviceSelector", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "desktop" }));
     expect(setDeviceId).toHaveBeenNthCalledWith(3, getLegacyPreset("desktop").id);
+
+    fireEvent.change(screen.getByRole("combobox"), {
+      target: { value: getLegacyPreset("mobile").id },
+    });
+    expect(setDeviceId).toHaveBeenNthCalledWith(
+      4,
+      getLegacyPreset("mobile").id,
+    );
+  });
+
+  it("toggles active button variant based on deviceId", () => {
+    const setDeviceId = jest.fn();
+    const { rerender } = render(
+      <DeviceSelector
+        deviceId={getLegacyPreset("desktop").id}
+        setDeviceId={setDeviceId}
+      />,
+    );
+
+    expect(
+      screen.getByRole("button", { name: "desktop" }),
+    ).toHaveAttribute("variant", "default");
+    expect(
+      screen.getByRole("button", { name: "tablet" }),
+    ).toHaveAttribute("variant", "outline");
+    expect(
+      screen.getByRole("button", { name: "mobile" }),
+    ).toHaveAttribute("variant", "outline");
+
+    rerender(
+      <DeviceSelector
+        deviceId={getLegacyPreset("tablet").id}
+        setDeviceId={setDeviceId}
+      />,
+    );
+    expect(
+      screen.getByRole("button", { name: "tablet" }),
+    ).toHaveAttribute("variant", "default");
+    expect(
+      screen.getByRole("button", { name: "desktop" }),
+    ).toHaveAttribute("variant", "outline");
+    expect(
+      screen.getByRole("button", { name: "mobile" }),
+    ).toHaveAttribute("variant", "outline");
+
+    rerender(
+      <DeviceSelector
+        deviceId={getLegacyPreset("mobile").id}
+        setDeviceId={setDeviceId}
+      />,
+    );
+    expect(
+      screen.getByRole("button", { name: "mobile" }),
+    ).toHaveAttribute("variant", "default");
+    expect(
+      screen.getByRole("button", { name: "tablet" }),
+    ).toHaveAttribute("variant", "outline");
+    expect(
+      screen.getByRole("button", { name: "desktop" }),
+    ).toHaveAttribute("variant", "outline");
   });
 });
 

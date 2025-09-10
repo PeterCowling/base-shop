@@ -32,11 +32,31 @@ test("resolveDataRoot falls back to cwd/data/shops", () => {
   expect(dataRoot).toBe(path.resolve(process.cwd(), "data", "shops"));
 });
 
+test("resolveDataRoot finds nearest ancestor data/shops", () => {
+  const fs = jest.requireActual("fs") as typeof import("fs");
+  const os = jest.requireActual("os") as typeof import("os");
+  const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "email-cli-"));
+  const ancestor = path.join(tmpDir, "data", "shops");
+  fs.mkdirSync(path.join(ancestor, "nested"), { recursive: true });
+
+  const prev = process.cwd();
+  fsMock.existsSync.mockImplementation(fs.existsSync);
+  try {
+    process.chdir(path.join(ancestor, "nested"));
+    expect(resolveDataRoot()).toBe(ancestor);
+  } finally {
+    process.chdir(prev);
+    fsMock.existsSync.mockImplementation(() => false);
+    fs.rmSync(tmpDir, { recursive: true, force: true });
+  }
+});
+
 const originalArgv = process.argv.slice();
 
 beforeEach(() => {
   jest.resetModules();
   jest.clearAllMocks();
+  fsMock.existsSync.mockImplementation(() => false);
   for (const k of Object.keys(files)) delete files[k];
   process.argv = [...originalArgv];
 });

@@ -305,6 +305,14 @@ describe("orders", () => {
       expect(result).toBeNull();
     });
 
+    it("returns null when update throws", async () => {
+      prismaMock.rentalOrder.update.mockImplementation(() => {
+        throw new Error("fail");
+      });
+      const result = await markRefunded("shop", "sess");
+      expect(result).toBeNull();
+    });
+
     it("refunds full amount via Stripe before marking order", async () => {
       nowIsoMock.mockReturnValue("now");
       prismaMock.rentalOrder.update.mockResolvedValue({

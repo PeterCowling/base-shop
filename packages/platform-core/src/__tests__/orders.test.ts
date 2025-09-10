@@ -93,8 +93,10 @@ describe("orders", () => {
       expect(result?.refundedAt).toBe("now");
     });
 
-    it("returns null when order not found", async () => {
-      prismaMock.rentalOrder.update.mockRejectedValue(new Error("missing"));
+    it("returns null when update throws", async () => {
+      prismaMock.rentalOrder.update.mockImplementation(() => {
+        throw new Error("missing");
+      });
       const result = await markRefunded("shop", "sess");
       expect(result).toBeNull();
     });

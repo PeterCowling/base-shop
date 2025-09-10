@@ -93,12 +93,41 @@ describe("middleware", () => {
     );
   });
 
+  it("blocks viewer roles from media routes", async () => {
+    getTokenMock.mockResolvedValue({ role: "viewer" } as any);
+    canReadMock.mockReturnValue(true);
+    canWriteMock.mockReturnValue(false);
+
+    const req = new NextRequest(
+      "http://example.com/cms/shop/foo/media/images",
+    );
+    const res = await middleware(req);
+
+    expect(res.status).toBe(403);
+    expect(res.headers.get("x-middleware-rewrite")).toBe(
+      "http://example.com/403?shop=foo",
+    );
+  });
+
   it("allows viewer roles with read access on CMS routes", async () => {
     getTokenMock.mockResolvedValue({ role: "viewer" } as any);
     canReadMock.mockReturnValue(true);
     canWriteMock.mockReturnValue(false);
 
     const req = new NextRequest("http://example.com/cms");
+    const res = await middleware(req);
+
+    expect(res.headers.get("x-middleware-next")).toBe("1");
+    expect(canReadMock).toHaveBeenCalledWith("viewer");
+    expect(canWriteMock).toHaveBeenCalledWith("viewer");
+  });
+
+  it("allows viewer roles on media when canWrite is true", async () => {
+    getTokenMock.mockResolvedValue({ role: "viewer" } as any);
+    canReadMock.mockReturnValue(true);
+    canWriteMock.mockReturnValue(true);
+
+    const req = new NextRequest("http://example.com/cms/shop/foo/media");
     const res = await middleware(req);
 
     expect(res.headers.get("x-middleware-next")).toBe("1");

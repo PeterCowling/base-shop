@@ -7,6 +7,10 @@ class MockImage {
   onload: () => void = () => {};
   onerror: () => void = () => {};
   set src(value: string) {
+    if (value === "error-url") {
+      this.onerror();
+      return;
+    }
     if (value === "landscape-url") {
       this.width = 200;
       this.height = 100;
@@ -26,7 +30,11 @@ describe("useImageOrientationValidation", () => {
   beforeEach(() => {
     (global as any).Image = MockImage;
     global.URL.createObjectURL = jest.fn((file: File) => {
-      return file.name.includes("landscape") ? "landscape-url" : "portrait-url";
+      return file.name.includes("landscape")
+        ? "landscape-url"
+        : file.name.includes("error")
+          ? "error-url"
+          : "portrait-url";
     });
     global.URL.revokeObjectURL = jest.fn();
   });
@@ -52,5 +60,29 @@ describe("useImageOrientationValidation", () => {
       useImageOrientationValidation(file, "landscape")
     );
     await waitFor(() => expect(result.current.isValid).toBe(false));
+  });
+
+  it("sets actual to null when image fails to load", async () => {
+    const file = new File(["a"], "error.png", { type: "image/png" });
+    const { result } = renderHook(() =>
+      useImageOrientationValidation(file, "landscape")
+    );
+    await waitFor(() => expect(result.current.actual).toBeNull());
+    expect(result.current.isValid).toBeNull();
+  });
+
+  it("resets state when file becomes null", async () => {
+    const file = new File(["a"], "landscape.png", { type: "image/png" });
+    const { result, rerender } = renderHook(
+      ({ f }) => useImageOrientationValidation(f, "landscape"),
+      { initialProps: { f: file } }
+    );
+
+    await waitFor(() => expect(result.current.isValid).toBe(true));
+
+    rerender({ f: null });
+
+    await waitFor(() => expect(result.current.actual).toBeNull());
+    expect(result.current.isValid).toBeNull();
   });
 });

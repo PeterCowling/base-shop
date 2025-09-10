@@ -16,6 +16,41 @@ jest.mock('argon2', () => ({
 import { approveAccount, requestAccount, listPendingUsers } from '../accounts.server';
 import { readRbac, writeRbac } from '../../lib/server/rbacStore';
 import { sendEmail } from '@acme/email';
+import argon2 from 'argon2';
+
+describe('requestAccount', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('hashes password and returns pending entry', async () => {
+    const form = new FormData();
+    form.set('name', 'Alice');
+    form.set('email', 'alice@example.com');
+    form.set('password', 'secret');
+
+    await requestAccount(form);
+
+    expect(argon2.hash).toHaveBeenCalledWith('secret');
+    const pending = await listPendingUsers();
+    expect(pending).toHaveLength(1);
+    expect(pending[0]).toMatchObject({
+      name: 'Alice',
+      email: 'alice@example.com',
+    });
+
+    // cleanup so subsequent tests are isolated
+    const cleanupForm = new FormData();
+    cleanupForm.set('id', pending[0].id);
+    cleanupForm.append('roles', 'viewer');
+    (readRbac as jest.Mock).mockResolvedValue({
+      users: {},
+      roles: {},
+      permissions: {},
+    });
+    await approveAccount(cleanupForm);
+  });
+});
 
 describe('approveAccount', () => {
   beforeEach(() => {
@@ -31,6 +66,48 @@ describe('approveAccount', () => {
     expect(readRbac).not.toHaveBeenCalled();
     expect(writeRbac).not.toHaveBeenCalled();
     expect(sendEmail).not.toHaveBeenCalled();
+  });
+
+  it('persists user, sends email and removes from pending', async () => {
+    const requestForm = new FormData();
+    requestForm.set('name', 'Alice');
+    requestForm.set('email', 'alice@example.com');
+    requestForm.set('password', 'secret');
+    await requestAccount(requestForm);
+
+    const [pending] = await listPendingUsers();
+    const approveForm = new FormData();
+    approveForm.set('id', pending.id);
+    approveForm.append('roles', 'viewer');
+
+    (readRbac as jest.Mock).mockResolvedValue({
+      users: {},
+      roles: {},
+      permissions: {},
+    });
+
+    await approveAccount(approveForm);
+
+    expect(writeRbac).toHaveBeenCalledWith(
+      expect.objectContaining({
+        users: {
+          [pending.id]: {
+            id: pending.id,
+            name: 'Alice',
+            email: 'alice@example.com',
+          },
+        },
+        roles: { [pending.id]: 'viewer' },
+      })
+    );
+
+    expect(sendEmail).toHaveBeenCalledWith(
+      'alice@example.com',
+      'Account approved',
+      'Your account has been approved'
+    );
+
+    expect(await listPendingUsers()).toHaveLength(0);
   });
 
   it.each([

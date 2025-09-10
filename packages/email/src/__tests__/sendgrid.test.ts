@@ -188,6 +188,42 @@ describe("SendgridProvider", () => {
     });
   });
 
+  it("wraps string rejection in ProviderError", async () => {
+    process.env.SENDGRID_API_KEY = "sg";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    sgMail.send.mockRejectedValueOnce("boom");
+
+    const { SendgridProvider } = await import("../providers/sendgrid");
+    const { ProviderError } = await import("../providers/types");
+    const provider = new SendgridProvider();
+
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+
+    const promise = provider.send({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+      text: "Text",
+    });
+
+    await expect(promise).rejects.toBeInstanceOf(ProviderError);
+    await expect(promise).rejects.toMatchObject({
+      message: "Unknown error",
+      retryable: true,
+    });
+
+    expect(consoleSpy).toHaveBeenCalledWith("Campaign email send failed", {
+      provider: "sendgrid",
+      recipient: "to@example.com",
+      campaignId: undefined,
+    });
+
+    consoleSpy.mockRestore();
+  });
+
   it("wraps object rejection without message in ProviderError", async () => {
     process.env.SENDGRID_API_KEY = "sg";
     process.env.CAMPAIGN_FROM = "campaign@example.com";

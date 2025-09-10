@@ -32,27 +32,25 @@ export function exportsToCandidates(
   try {
     if (typeof exportsField === "string") {
       candidates.push(path.resolve(dir, exportsField));
-      return candidates;
-    }
-    const root = (exportsField as Record<string, unknown>)["."] ?? exportsField;
+    } else {
+      const root = (exportsField as Record<string, unknown>)["."] ?? exportsField;
 
-    if (typeof root === "string") {
-      candidates.push(path.resolve(dir, root));
-      return candidates;
-    }
-
-    if (root && typeof root === "object") {
-      const entryObj = root as Record<string, string>;
-      if (entryObj.import) candidates.push(path.resolve(dir, entryObj.import));
-      if (entryObj.default)
-        candidates.push(path.resolve(dir, entryObj.default));
-      if (entryObj.require)
-        candidates.push(path.resolve(dir, entryObj.require));
+      if (typeof root === "string") {
+        candidates.push(path.resolve(dir, root));
+      } else if (root && typeof root === "object") {
+        const entryObj = root as Record<string, string>;
+        if (entryObj.import)
+          candidates.push(path.resolve(dir, entryObj.import));
+        if (entryObj.default)
+          candidates.push(path.resolve(dir, entryObj.default));
+        if (entryObj.require)
+          candidates.push(path.resolve(dir, entryObj.require));
+      }
     }
   } catch {
     // ignore malformed exports
   }
-  return candidates;
+  return unique(candidates);
 }
 
 export async function resolvePluginEntry(dir: string): Promise<{

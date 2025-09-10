@@ -19,10 +19,10 @@ jest.mock("../../overlays/ProductQuickView", () => {
     __esModule: true,
     ProductQuickView: ({ product, open, onOpenChange }: any) =>
       open ? (
-        <div data-testid="quick-view">
+        <div data-cy="quick-view">
           <span>{product.title}</span>
           <button
-            data-testid="close-quick-view"
+            data-cy="close-quick-view"
             onClick={() => onOpenChange(false)}
           >
             Close

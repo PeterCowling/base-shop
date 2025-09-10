@@ -4,7 +4,7 @@ import type { SKU } from "@acme/types";
 
 jest.mock("../ProductCard", () => ({
   ProductCard: ({ product }: { product: SKU }) => (
-    <div data-testid={`product-${product.id}`} />
+    <div data-cy={`product-${product.id}`} />
   ),
 }));
 

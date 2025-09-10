@@ -151,5 +151,53 @@ describe("reserveRentalInventory", () => {
       wearCount: 2,
     });
   });
+
+  it("returns null when repository update fails", async () => {
+    const { reserveRentalInventory } = await import("../src/orders/rentalAllocation");
+    const repo = await import("../src/repositories/inventory.server");
+    const mockUpdate = repo.updateInventoryItem as jest.Mock;
+
+    const candidate: InventoryItem = {
+      sku: "s1",
+      productId: "p1",
+      quantity: 2,
+      variantAttributes: {},
+      wearCount: 1,
+    };
+
+    const items: InventoryItem[] = [candidate];
+
+    const sku: SKU = {
+      id: "sku-4",
+      slug: "slug-4",
+      title: "Test SKU",
+      price: 0,
+      deposit: 0,
+      stock: 1,
+      forSale: false,
+      forRental: true,
+      media: [],
+      sizes: [],
+      description: "",
+      wearAndTearLimit: 5,
+      maintenanceCycle: 3,
+    };
+
+    mockUpdate.mockImplementation(async (_shop, _sku, _attrs, mutate) => {
+      mutate(candidate);
+      return null;
+    });
+
+    const result = await reserveRentalInventory(
+      "shop",
+      items,
+      sku,
+      "2024-05-11",
+      "2024-05-12",
+    );
+
+    expect(result).toBeNull();
+    expect(mockUpdate).toHaveBeenCalledTimes(1);
+  });
 });
 

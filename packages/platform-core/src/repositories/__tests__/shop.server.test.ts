@@ -43,6 +43,7 @@ describe("shop.server wrapper", () => {
   const originalInventoryBackend = process.env.INVENTORY_BACKEND;
 
   beforeEach(() => {
+    resolveRepoMock.mockReset();
     (resolveRepo as jest.Mock).mockResolvedValue(repo);
     repo.getShopById.mockReset();
     repo.updateShopInRepo.mockReset();

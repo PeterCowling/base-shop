@@ -46,6 +46,7 @@ function repoRoot(): string {
   while (true) {
     if (
       fs.existsSync(join(dir, "packages")) ||
+      fs.existsSync(join(dir, "apps")) ||
       fs.existsSync(join(dir, "pnpm-workspace.yaml"))
     ) {
       return dir;

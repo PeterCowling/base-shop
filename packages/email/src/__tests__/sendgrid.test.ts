@@ -382,6 +382,18 @@ describe("SendgridProvider", () => {
       );
     });
 
+    it("uses marketing key when present", async () => {
+      process.env.SENDGRID_MARKETING_KEY = "mk";
+      global.fetch = jest.fn().mockResolvedValue({});
+      const { SendgridProvider } = await import("../providers/sendgrid");
+      const provider = new SendgridProvider();
+      await expect(provider.addToList("cid", "lid")).resolves.toBeUndefined();
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://api.sendgrid.com/v3/marketing/lists/lid/contacts",
+        expect.objectContaining({ method: "PUT" }),
+      );
+    });
+
     it("does nothing without marketing key", async () => {
       global.fetch = jest.fn();
       const { SendgridProvider } = await import("../providers/sendgrid");

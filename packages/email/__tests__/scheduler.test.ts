@@ -1,5 +1,6 @@
 import { setCampaignStore } from "../src/storage";
 import type { CampaignStore, Campaign } from "../src/storage";
+import { unsubscribeUrl } from "../src/scheduler";
 
 jest.mock("@platform-core/repositories/analytics.server", () => ({
   __esModule: true,
@@ -189,5 +190,18 @@ describe("scheduler", () => {
       "a@example.com",
       "b@example.com",
     ]);
+  });
+
+  test("unsubscribeUrl percent-encodes parameters", () => {
+    delete process.env.NEXT_PUBLIC_BASE_URL;
+    const shop = "shop/ü? ";
+    const campaign = "camp &aign/?";
+    const recipient = "user+tag@example.com";
+    const url = unsubscribeUrl(shop, campaign, recipient);
+    expect(url).toBe(
+      `/api/marketing/email/unsubscribe?shop=${encodeURIComponent(shop)}&campaign=${encodeURIComponent(
+        campaign,
+      )}&email=${encodeURIComponent(recipient)}`,
+    );
   });
 });

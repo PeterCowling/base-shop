@@ -45,6 +45,32 @@ describe("blog config service", () => {
   });
 
   describe("filterExistingProductSlugs", () => {
+    test("returns [] and skips fetch for empty slugs", async () => {
+      const fetchMock = jest.fn();
+      global.fetch = fetchMock as any;
+      await expect(
+        filterExistingProductSlugs("shop", []),
+      ).resolves.toEqual([]);
+      expect(fetchMock).not.toHaveBeenCalled();
+    });
+
+    test("returns [] on non-ok response", async () => {
+      global.fetch = jest.fn().mockResolvedValue({ ok: false }) as any;
+      await expect(
+        filterExistingProductSlugs("shop", ["a"]),
+      ).resolves.toEqual([]);
+    });
+
+    test("returns original slugs when JSON is not an array", async () => {
+      global.fetch = jest.fn().mockResolvedValue({
+        ok: true,
+        json: async () => ({ not: "array" }),
+      }) as any;
+      await expect(
+        filterExistingProductSlugs("shop", ["a", "b"]),
+      ).resolves.toEqual(["a", "b"]);
+    });
+
     test("returns filtered slugs", async () => {
       global.fetch = jest.fn().mockResolvedValue({
         ok: true,

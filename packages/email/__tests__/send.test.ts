@@ -235,6 +235,27 @@ describe("sendCampaignEmail", () => {
     expect(mockSendMail).toHaveBeenCalled();
   });
 
+  it("uses nodemailer when EMAIL_PROVIDER is smtp", async () => {
+    mockSendgridSend = jest.fn();
+    mockResendSend = jest.fn();
+    mockSendMail = jest.fn();
+    process.env.EMAIL_PROVIDER = "smtp";
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+
+    const { sendCampaignEmail } = await import("../src/send");
+
+    await sendCampaignEmail({
+      to: "to@example.com",
+      subject: "Subject",
+      html: "<p>HTML</p>",
+      sanitize: false,
+    });
+
+    expect(mockSendgridSend).not.toHaveBeenCalled();
+    expect(mockResendSend).not.toHaveBeenCalled();
+    expect(mockSendMail).toHaveBeenCalled();
+  });
+
   it("retries alternate provider on failure", async () => {
     const timeoutSpy = jest.spyOn(global, "setTimeout");
     mockSendgridSend = jest

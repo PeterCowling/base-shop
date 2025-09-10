@@ -513,6 +513,13 @@ describe("scheduler", () => {
     expect(writeCampaigns).toHaveBeenCalledTimes(1);
   });
 
+  test("sendDueCampaigns does nothing when there are no shops", async () => {
+    listShops.mockResolvedValue([]);
+    await sendDueCampaigns();
+    expect(sendCampaignEmail).not.toHaveBeenCalled();
+    expect(writeCampaigns).not.toHaveBeenCalled();
+  });
+
   test("sendDueCampaigns delivers due campaigns per shop", async () => {
     const past = new Date(now.getTime() - 1000).toISOString();
     const future = new Date(now.getTime() + 60000).toISOString();

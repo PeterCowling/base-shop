@@ -25,7 +25,7 @@ jest.mock("@/components/atoms/shadcn", () => ({
     <select
       value={value}
       onChange={(e) => onValueChange(e.target.value)}
-      data-testid="select"
+      data-cy="select"
     >
       {children}
     </select>
@@ -44,7 +44,7 @@ jest.mock("@ui/components/atoms/shadcn", () => ({
     <select
       value={value}
       onChange={(e) => onValueChange(e.target.value)}
-      data-testid="select"
+      data-cy="select"
     >
       {children}
     </select>
@@ -115,12 +115,12 @@ jest.mock("../src/app/cms/configurator/steps/ThemeEditorForm", () => ({
 
 jest.mock("@ui/components/cms/StyleEditor", () => ({
   __esModule: true,
-  default: () => <div data-testid="style-editor">editor</div>,
+  default: () => <div data-cy="style-editor">editor</div>,
 }));
 
 jest.mock("../src/app/cms/wizard/WizardPreview", () => ({
   __esModule: true,
-  default: (props: any) => <div data-testid="preview" {...props} />,
+  default: (props: any) => <div data-cy="preview" {...props} />,
 }));
 
 jest.mock("../src/app/cms/wizard/TokenInspector", () => ({

@@ -29,7 +29,10 @@ jest.mock("@ui/components/common/DeviceSelector", () => {
 jest.mock("../src/app/cms/wizard/WizardPreview", () => ({
   __esModule: true,
   default: ({ style, device }: any) => (
-    <div data-testid="preview" style={{ ...style, width: `${device.width}px`, height: `${device.height}px` }} />
+    <div
+      data-cy="preview"
+      style={{ ...style, width: `${device.width}px`, height: `${device.height}px` }}
+    />
   ),
 }));
 

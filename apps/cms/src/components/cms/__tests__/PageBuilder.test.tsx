@@ -4,7 +4,7 @@ import UiPageBuilder from "@ui/components/cms/PageBuilder";
 
 jest.mock("@ui/components/cms/PageBuilder", () => ({
   __esModule: true,
-  default: jest.fn(() => <div data-testid="ui-page-builder" />),
+  default: jest.fn(() => <div data-cy="ui-page-builder" />),
 }));
 
 describe("cms PageBuilder re-export", () => {

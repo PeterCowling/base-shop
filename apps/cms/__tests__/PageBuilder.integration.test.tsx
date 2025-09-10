@@ -68,7 +68,7 @@ jest.mock("@ui/components/cms/page-builder/CanvasItem", () => ({
     const color = overrides.color?.fg;
     return (
       <div role="listitem">
-        <div data-testid={`block-${component.id}`} style={{ color }}>
+        <div data-cy={`block-${component.id}`} style={{ color }}>
           {component.type}
         </div>
         <button onClick={onRemove}>×</button>
@@ -83,7 +83,7 @@ jest.mock("@ui/components/cms/page-builder/Block", () => ({
     const overrides = component.styles ? JSON.parse(component.styles) : {};
     const color = overrides.color?.fg;
     return (
-      <div data-testid={`block-${component.id}`} style={{ color }}>
+      <div data-cy={`block-${component.id}`} style={{ color }}>
         {component.type}
       </div>
     );
@@ -175,7 +175,7 @@ describe("PageBuilder integration", () => {
     });
     await waitFor(() => expect(componentsState[0].id).toBe(secondId));
     expect(screen.getAllByTestId(/block-/)[0]).toHaveAttribute(
-      "data-testid",
+      "data-cy",
       `block-${secondId}`,
     );
 

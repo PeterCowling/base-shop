@@ -128,6 +128,7 @@ export async function createCustomerSession(
 export async function destroyCustomerSession(): Promise<void> {
   const store = await cookies();
   const token = store.get(CUSTOMER_SESSION_COOKIE)?.value;
+  let error: unknown;
   if (token) {
     const secret = coreEnv.SESSION_SECRET;
     if (secret) {
@@ -137,8 +138,14 @@ export async function destroyCustomerSession(): Promise<void> {
           ttl: SESSION_TTL_S,
         });
         const sessionStore = await sessionStorePromise;
-        await sessionStore.delete(session.sessionId);
-      } catch {}
+        try {
+          await sessionStore.delete(session.sessionId);
+        } catch (err) {
+          error = err;
+        }
+      } catch {
+        // ignore invalid tokens
+      }
     }
   }
   store.delete({
@@ -151,6 +158,7 @@ export async function destroyCustomerSession(): Promise<void> {
     path: "/",
     domain: coreEnv.COOKIE_DOMAIN,
   });
+  if (error) throw error;
 }
 
 export async function listSessions(

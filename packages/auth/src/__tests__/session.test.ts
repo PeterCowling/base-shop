@@ -340,6 +340,32 @@ it("destroyCustomerSession removes cookies and deletes session", async () => {
   expect(mockSessionStore.delete).toHaveBeenCalledWith("s1");
 });
 
+it("destroyCustomerSession clears cookies even when store delete fails", async () => {
+  const {
+    destroyCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+    CSRF_TOKEN_COOKIE,
+  } = await import("../session");
+
+  mockCookies.get.mockReturnValue({ value: "token" });
+  unsealData.mockResolvedValue({ sessionId: "s1" });
+  const error = new Error("boom");
+  mockSessionStore.delete.mockRejectedValueOnce(error);
+
+  await expect(destroyCustomerSession()).rejects.toThrow(error);
+
+  expect(mockCookies.delete).toHaveBeenCalledWith({
+    name: CUSTOMER_SESSION_COOKIE,
+    path: "/",
+    domain: "example.com",
+  });
+  expect(mockCookies.delete).toHaveBeenCalledWith({
+    name: CSRF_TOKEN_COOKIE,
+    path: "/",
+    domain: "example.com",
+  });
+});
+
 it("destroyCustomerSession removes cookies even when session cookie missing", async () => {
   const {
     destroyCustomerSession,

@@ -142,6 +142,30 @@ describe('media.server helpers and actions', () => {
       );
     });
 
+    it('returns files without metadata when metadata read fails', async () => {
+      fsMock.readdir.mockResolvedValueOnce(['a.jpg', 'b.jpg']);
+      fsMock.readFile.mockRejectedValueOnce(new Error('fail'));
+      const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      await expect(listMedia('shop')).resolves.toEqual([
+        {
+          url: '/uploads/shop/a.jpg',
+          title: undefined,
+          altText: undefined,
+          type: 'image',
+        },
+        {
+          url: '/uploads/shop/b.jpg',
+          title: undefined,
+          altText: undefined,
+          type: 'image',
+        },
+      ]);
+
+      expect(errorSpy).not.toHaveBeenCalled();
+      errorSpy.mockRestore();
+    });
+
     it('throws when fs.readdir rejects', async () => {
       fsMock.readdir.mockRejectedValueOnce(new Error('boom'));
       await expect(listMedia('shop')).rejects.toThrow('Failed to list media');

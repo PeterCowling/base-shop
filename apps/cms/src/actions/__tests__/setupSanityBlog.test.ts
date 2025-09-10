@@ -156,5 +156,78 @@ describe("setupSanityBlog", () => {
 
     fetchSpy.mockRestore();
   });
+
+  it("returns CATEGORY_SEED_ERROR when category seed fails", async () => {
+    const fetchSpy = jest
+      .spyOn(global, "fetch" as any)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ datasets: [{ name: "blog" }] }),
+      }) // list
+      .mockResolvedValueOnce({ ok: true }) // schema
+      .mockResolvedValueOnce({ ok: false }); // category
+
+    const res = await setupSanityBlog(creds, { enabled: true });
+
+    expect(res).toEqual({
+      success: false,
+      error: "Failed to seed category",
+      code: "CATEGORY_SEED_ERROR",
+    });
+    expect(fetchSpy).toHaveBeenCalledTimes(3);
+
+    fetchSpy.mockRestore();
+  });
+
+  it("logs error when promotion scheduling fails and still succeeds", async () => {
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const fetchSpy = jest
+      .spyOn(global, "fetch" as any)
+      .mockRejectedValueOnce(new Error("net")) // schedule
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ datasets: [{ name: "blog" }] }),
+      }) // list
+      .mockResolvedValueOnce({ ok: true }) // schema
+      .mockResolvedValueOnce({ ok: true }); // category
+
+    const res = await setupSanityBlog(
+      creds,
+      { enabled: true, promoteSchedule: "2024-01-01T00:00:00Z" },
+    );
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "[setupSanityBlog] failed to schedule promotion",
+      expect.any(Error),
+    );
+    expect(fetchSpy).toHaveBeenCalledTimes(4);
+    expect(res).toEqual({ success: true });
+
+    consoleErrorSpy.mockRestore();
+    fetchSpy.mockRestore();
+  });
+
+  it("returns DATASET_LIST_ERROR when list request rejects", async () => {
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const fetchSpy = jest
+      .spyOn(global, "fetch" as any)
+      .mockRejectedValueOnce(new Error("fail"));
+
+    const res = await setupSanityBlog(creds, { enabled: true });
+
+    expect(res).toEqual({
+      success: false,
+      error: "Failed to list datasets",
+      code: "DATASET_LIST_ERROR",
+    });
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+
+    consoleErrorSpy.mockRestore();
+    fetchSpy.mockRestore();
+  });
 });
 

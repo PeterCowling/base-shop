@@ -2,7 +2,7 @@
 /* eslint-env jest */
 
 import { promises as fs } from "fs";
-import { readJsonFile, writeJsonFile } from "../jsonIO";
+import { readJsonFile, writeJsonFile, withFileLock } from "../jsonIO";
 
 jest.mock("fs", () => ({
   promises: {
@@ -60,5 +60,46 @@ describe("writeJsonFile", () => {
     expect(json).toBe(JSON.stringify(data, null, 2));
     expect(encoding).toBe("utf8");
     expect(mockedFs.rename).toHaveBeenCalledWith(tmpPath, "out.json");
+  });
+});
+
+describe("withFileLock", () => {
+  it("serializes calls for the same file", async () => {
+    const events: string[] = [];
+
+    const first = withFileLock("file.json", async () => {
+      events.push("first start");
+      await new Promise((r) => setTimeout(r, 10));
+      events.push("first end");
+    });
+
+    const second = withFileLock("file.json", async () => {
+      events.push("second start");
+      events.push("second end");
+    });
+
+    await Promise.all([first, second]);
+
+    expect(events).toEqual(["first start", "first end", "second start", "second end"]);
+  });
+
+  it("does not block different files", async () => {
+    const events: string[] = [];
+
+    const a = withFileLock("a.json", async () => {
+      events.push("a start");
+      await new Promise((r) => setTimeout(r, 20));
+      events.push("a end");
+    });
+
+    const b = withFileLock("b.json", async () => {
+      events.push("b start");
+      await new Promise((r) => setTimeout(r, 10));
+      events.push("b end");
+    });
+
+    await Promise.all([a, b]);
+
+    expect(events).toEqual(["a start", "b start", "b end", "a end"]);
   });
 });

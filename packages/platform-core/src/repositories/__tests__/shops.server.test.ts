@@ -1,5 +1,4 @@
 jest.mock("../shop.server", () => ({
-  getShopById: jest.fn(),
   updateShopInRepo: jest.fn(async (_shop: string, patch: any) => patch),
 }));
 
@@ -9,19 +8,22 @@ jest.mock("../../themeTokens/index", () => ({
 }));
 
 import { shopSchema } from "@acme/types";
-import { getShopById, updateShopInRepo } from "../shop.server";
+import { updateShopInRepo } from "../shop.server";
 import { loadThemeTokens } from "../../themeTokens/index";
+import { prisma } from "../../db";
 import * as shops from "../shops.server";
 
 const { readShop, writeShop } = shops;
 
 describe("shops.repository", () => {
-  const getRepo = getShopById as jest.Mock;
   const updateRepo = updateShopInRepo as jest.Mock;
   const loadTokens = loadThemeTokens as jest.Mock;
+  let findUnique: jest.SpyInstance;
 
   beforeEach(() => {
+    jest.restoreAllMocks();
     jest.clearAllMocks();
+    findUnique = jest.spyOn(prisma.shop, "findUnique");
   });
 
   describe("readShop", () => {
@@ -35,7 +37,7 @@ describe("shops.repository", () => {
         themeDefaults: { color: "green" },
         themeOverrides: { color: "blue" },
       };
-      getRepo.mockResolvedValue(repoData);
+      findUnique.mockResolvedValue({ data: repoData });
 
       const result = await readShop("repo-shop");
 
@@ -46,20 +48,22 @@ describe("shops.repository", () => {
     });
 
     it("returns default shop when repository throws", async () => {
-      getRepo.mockRejectedValue(new Error("missing"));
+      findUnique.mockRejectedValue(new Error("missing"));
       const result = await readShop("new-shop");
       expect(result.id).toBe("new-shop");
       expect(result.name).toBe("new-shop");
     });
 
     it("loads theme tokens when defaults are missing", async () => {
-      getRepo.mockResolvedValue({
-        id: "shop-no-defaults",
-        name: "No Defaults",
-        catalogFilters: [],
-        themeId: "base",
-        filterMappings: {},
-        themeOverrides: { color: "blue" },
+      findUnique.mockResolvedValue({
+        data: {
+          id: "shop-no-defaults",
+          name: "No Defaults",
+          catalogFilters: [],
+          themeId: "base",
+          filterMappings: {},
+          themeOverrides: { color: "blue" },
+        },
       });
 
       const result = await readShop("shop-no-defaults");
@@ -75,13 +79,15 @@ describe("shops.repository", () => {
     });
 
     it("sets empty overrides when overrides are missing", async () => {
-      getRepo.mockResolvedValue({
-        id: "shop-no-overrides",
-        name: "No Overrides",
-        catalogFilters: [],
-        themeId: "base",
-        filterMappings: {},
-        themeDefaults: { color: "green" },
+      findUnique.mockResolvedValue({
+        data: {
+          id: "shop-no-overrides",
+          name: "No Overrides",
+          catalogFilters: [],
+          themeId: "base",
+          filterMappings: {},
+          themeDefaults: { color: "green" },
+        },
       });
 
       const result = await readShop("shop-no-overrides");

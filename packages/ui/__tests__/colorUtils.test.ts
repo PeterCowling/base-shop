@@ -2,6 +2,7 @@ import {
   hexToRgb,
   getContrastColor,
   hexToHsl,
+  hslToHex,
   isHex,
   isHsl,
 } from "../src/utils/colorUtils";
@@ -70,6 +71,20 @@ describe("hexToHsl", () => {
 
   it("handles high-contrast colors", () => {
     expect(hexToHsl("#ff0000")).toBe("0 100% 50%");
+  });
+});
+
+describe("hslToHex", () => {
+  it("converts black HSL to hex", () => {
+    expect(hslToHex("0 0% 0%")).toBe("#000000");
+  });
+
+  it("converts fully saturated red", () => {
+    expect(hslToHex("360 100% 50%")).toBe("#ff0000");
+  });
+
+  it("converts fully saturated green", () => {
+    expect(hslToHex("120 100% 50%")).toBe("#00ff00");
   });
 });
 

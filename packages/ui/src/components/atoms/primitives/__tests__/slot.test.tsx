@@ -10,7 +10,7 @@ describe("Slot", () => {
     const ref = React.createRef<HTMLDivElement>();
     render(
       <Slot ref={ref} className="forwarded" data-test="passed">
-        <div data-cy="child" />
+        <div data-testid="child" />
       </Slot>
     );
     const child = screen.getByTestId("child");

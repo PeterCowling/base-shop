@@ -39,6 +39,25 @@ describe("ResendProvider", () => {
     });
   });
 
+  it("resolves when sanity check succeeds", async () => {
+    process.env.RESEND_API_KEY = "rs";
+    global.fetch = jest.fn().mockResolvedValue({ ok: true }) as any;
+    const { ResendProvider } = await import("../providers/resend");
+    await expect(
+      new ResendProvider({ sanityCheck: true }).ready
+    ).resolves.toBeUndefined();
+  });
+
+  it("rejects when sanity check fetch fails", async () => {
+    process.env.RESEND_API_KEY = "rs";
+    const err = new Error("fail");
+    global.fetch = jest.fn().mockRejectedValue(err) as any;
+    const { ResendProvider } = await import("../providers/resend");
+    await expect(
+      new ResendProvider({ sanityCheck: true }).ready
+    ).rejects.toBe(err);
+  });
+
   it("throws when sanity check fails", async () => {
     process.env.RESEND_API_KEY = "rs";
     const originalFetch = global.fetch;

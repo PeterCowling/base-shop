@@ -13,24 +13,11 @@ jest.mock("@platform-core/contexts/CartContext", () => ({
   useCart: () => [{}, jest.fn()],
 }));
 
-jest.mock("../../overlays/ProductQuickView", () => {
-  const React = require("react");
-  return {
-    __esModule: true,
-    ProductQuickView: ({ product, open, onOpenChange }: any) =>
-      open ? (
-        <div data-cy="quick-view">
-          <span>{product.title}</span>
-          <button
-            data-cy="close-quick-view"
-            onClick={() => onOpenChange(false)}
-          >
-            Close
-          </button>
-        </div>
-      ) : null,
-  };
-});
+jest.mock(
+  "../../atoms/shadcn",
+  () => require("../../../../../../test/__mocks__/shadcnDialogStub.tsx")
+);
+
 
 function mockResize(width: number) {
   (global as any).ResizeObserver = class {

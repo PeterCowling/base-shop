@@ -131,6 +131,26 @@ describe("middleware", () => {
     expect(res.status).toBe(403);
   });
 
+  it("rejects mutating api requests with csrf cookie but no header", async () => {
+    const req = new NextRequest("http://example.com/api/test", {
+      method: "POST",
+      headers: { cookie: "csrf_token=token" },
+    });
+    const res = await middleware(req);
+
+    expect(res.status).toBe(403);
+  });
+
+  it("rejects mutating api requests with csrf header but no cookie", async () => {
+    const req = new NextRequest("http://example.com/api/test", {
+      method: "POST",
+      headers: { "x-csrf-token": "token" },
+    });
+    const res = await middleware(req);
+
+    expect(res.status).toBe(403);
+  });
+
   it("allows repeated login attempts without rate limiting", async () => {
     const headers = {
       "x-forwarded-for": "1.2.3.4",

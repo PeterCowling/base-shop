@@ -118,7 +118,7 @@ export function useFileUpload(
       if (err instanceof Error) setError(err.message);
     }
 
-    setProgress(null);
+    flushSync(() => setProgress(null));
     setPendingFile(null);
     setAltText("");
     setTags("");

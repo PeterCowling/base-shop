@@ -57,7 +57,7 @@ export function SearchResultsTemplate({
       {filters}
       {isLoading ? (
         <div
-          data-testid="search-results-loading"
+          data-cy="search-results-loading"
           className="grid gap-6"
           style={{
             gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,

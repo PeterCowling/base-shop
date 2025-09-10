@@ -38,7 +38,7 @@ export default function Presets({
 
   if (presetList.length === 0) {
     return (
-      <p className="text-sm text-muted" data-testid="presets-placeholder">
+      <p className="text-sm text-muted" data-cy="presets-placeholder">
         No presets available
       </p>
     );
@@ -49,7 +49,7 @@ export default function Presets({
       <label className="flex items-center gap-2">
         <span>Preset</span>
         <select
-          data-testid="preset-select"
+          data-cy="preset-select"
           className="rounded border p-1"
           defaultValue=""
           onChange={(e) => applyPreset(e.target.value)}
@@ -66,7 +66,7 @@ export default function Presets({
       </label>
       <button
         type="button"
-        data-testid="preset-reset"
+        data-cy="preset-reset"
         className="rounded border px-2 py-1"
         onClick={resetTokens}
       >

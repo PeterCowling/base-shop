@@ -73,22 +73,68 @@ describe("useTokenEditor", () => {
         setTokens((prev) => ({ ...prev, ...t }));
       const hook = useTokenEditor(tokens, {}, handleChange);
       upload = hook.handleUpload; // assigned synchronously
-      return <span data-cy="mono">{hook.monoFonts.join(",")}</span>;
+      return (
+        <>
+          <span data-cy="mono">{hook.monoFonts.join(",")}</span>
+          <span data-cy="sans">{hook.sansFonts.join(",")}</span>
+        </>
+      );
     }
 
     render(<Wrapper />);
-    const file = new File(["a"], "Custom.woff", { type: "font/woff" });
 
+    const monoFile = new File(["a"], "Custom.woff", { type: "font/woff" });
     await act(async () => {
-      upload("mono", { target: { files: [file], value: "" } } as any);
+      upload("mono", { target: { files: [monoFile], value: "" } } as any);
     });
-
     await waitFor(() =>
       expect(document.getElementById("font-Custom")).not.toBeNull()
     );
     expect(latest["--font-src-Custom"]).toBe("data:font/mock");
     expect(latest["--font-mono"]).toBe('"Custom"');
     expect(screen.getByTestId("mono").textContent).toContain('"Custom"');
+
+    const sansFile = new File(["b"], "Fancy.woff", { type: "font/woff" });
+    await act(async () => {
+      upload("sans", { target: { files: [sansFile], value: "" } } as any);
+    });
+    await waitFor(() =>
+      expect(document.getElementById("font-Fancy")).not.toBeNull()
+    );
+    expect(latest["--font-src-Fancy"]).toBe("data:font/mock");
+    expect(latest["--font-sans"]).toBe('"Fancy"');
+    expect(screen.getByTestId("sans").textContent).toContain('"Fancy"');
+  });
+
+  it("setGoogleFont inserts link once and updates tokens", () => {
+    let setGF!: ReturnType<typeof useTokenEditor>["setGoogleFont"]; // !
+    let latest: TokenMap = {};
+
+    function Wrapper() {
+      const [tokens, setTokens] = useState<TokenMap>({});
+      latest = tokens;
+      const handleChange = (t: TokenMap) =>
+        setTokens((prev) => ({ ...prev, ...t }));
+      const hook = useTokenEditor(tokens, {}, handleChange);
+      setGF = hook.setGoogleFont;
+      return null;
+    }
+
+    render(<Wrapper />);
+
+    act(() => setGF("sans", "Inter"));
+    const link = document.getElementById(
+      "google-font-Inter"
+    ) as HTMLLinkElement;
+    expect(link).not.toBeNull();
+    expect(link.href).toBe(
+      "https://fonts.googleapis.com/css2?family=Inter&display=swap"
+    );
+    expect(latest["--font-sans"]).toBe('"Inter", var(--font-sans)');
+
+    act(() => setGF("mono", "Inter"));
+    expect(document.querySelectorAll("#google-font-Inter")).toHaveLength(1);
+    expect(latest["--font-mono"]).toBe('"Inter", var(--font-mono)');
   });
 
   it("addCustomFont appends unique entries", () => {

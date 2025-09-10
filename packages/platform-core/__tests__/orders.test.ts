@@ -549,6 +549,13 @@ describe("orders", () => {
       });
       expect(result).toBeNull();
     });
+
+    it("returns null on error", async () => {
+      prismaMock.rentalOrder.update.mockRejectedValueOnce(new Error("fail"));
+      await expect(
+        setReturnTracking("shop", "sess", "tn", "url")
+      ).resolves.toBeNull();
+    });
   });
 
   describe("setReturnStatus", () => {

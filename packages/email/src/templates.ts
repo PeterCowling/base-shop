@@ -119,7 +119,9 @@ export function renderTemplate(
         headline: params.headline ?? params.subject ?? "",
         content: React.createElement("div", {
           dangerouslySetInnerHTML: {
-            __html: DOMPurify.sanitize(params.body ?? params.content ?? ""),
+            __html: DOMPurify.sanitize(params.body ?? params.content ?? "", {
+              FORBID_ATTR: ["style"],
+            }),
           },
         }),
         footer: React.createElement(

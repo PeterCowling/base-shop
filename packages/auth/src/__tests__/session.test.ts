@@ -149,6 +149,17 @@ it("createCustomerSession uses extended maxAge when remember is true", async () 
   );
 });
 
+it("createCustomerSession propagates store errors without setting cookies", async () => {
+  const { createCustomerSession } = await import("../session");
+
+  mockSessionStore.set.mockRejectedValueOnce(new Error("store fail"));
+
+  await expect(
+    createCustomerSession({ customerId: "cust", role: "customer" })
+  ).rejects.toThrow("store fail");
+  expect(mockCookies.set).not.toHaveBeenCalled();
+});
+
 it("createCustomerSession throws when SESSION_SECRET is undefined", async () => {
   const { createCustomerSession } = await import("../session");
   const originalSecret = process.env.SESSION_SECRET;

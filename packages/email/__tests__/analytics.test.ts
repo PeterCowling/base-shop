@@ -184,6 +184,26 @@ describe("syncCampaignAnalytics", () => {
     expect(trackEvent).not.toHaveBeenCalled();
   });
 
+  it("returns early when EMAIL_PROVIDER is smtp", async () => {
+    jest.resetModules();
+    const trackEvent = jest.fn();
+    jest.doMock("@platform-core/analytics", () => ({
+      __esModule: true,
+      trackEvent,
+    }));
+    jest.doMock("../src/providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../src/providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const getCampaignStore = jest.fn();
+    jest.doMock("../src/storage", () => ({ __esModule: true, getCampaignStore }));
+
+    process.env.EMAIL_PROVIDER = "smtp";
+    const { syncCampaignAnalytics } = await import("../src/analytics");
+    await syncCampaignAnalytics();
+
+    expect(getCampaignStore).not.toHaveBeenCalled();
+    expect(trackEvent).not.toHaveBeenCalled();
+  });
+
   it("sends stats for sent campaigns and falls back to empty stats on failure", async () => {
     jest.resetModules();
     const trackEvent = jest.fn();

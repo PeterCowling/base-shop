@@ -68,6 +68,7 @@ describe("scheduler", () => {
       body: "<p>Hi</p>",
     });
     expect(mockedSend).toHaveBeenCalledTimes(1);
+    expect(memory[shop][0].sentAt).toEqual(expect.any(String));
 
     mockedSend.mockClear();
     const future = new Date(now.getTime() + 60_000).toISOString();

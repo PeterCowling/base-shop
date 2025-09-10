@@ -1,12 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import CmsHeroBanner from "../src/components/cms/blocks/HeroBanner";
 
-const heroMock = jest.fn(() => <div data-testid="hero" />);
+const heroMock = jest.fn(() => <div data-cy="hero" data-testid="hero" />);
 jest.mock("../src/components/home/HeroBanner.client", () => ({
   __esModule: true,
   default: (props: any) => {
     heroMock(props);
-    return <div data-testid="hero" />;
+    return <div data-cy="hero" data-testid="hero" />;
   },
 }));
 

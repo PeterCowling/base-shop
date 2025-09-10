@@ -17,7 +17,7 @@ jest.mock("@cms/app/cms/blog/posts/ProductPreview", () => ({
   __esModule: true,
   default: ({ onValidChange }: any) => {
     onValidChange?.(false);
-    return <div data-testid="product-preview" />;
+    return <div data-cy="product-preview" />;
   },
 }));
 

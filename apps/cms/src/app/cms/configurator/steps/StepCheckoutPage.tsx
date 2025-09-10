@@ -55,7 +55,6 @@ export default function StepCheckoutPage({
       <h2 className="text-xl font-semibold">Checkout Page</h2>
       <Select
         data-cy="checkout-layout"
-        data-testid="checkout-layout"
         value={checkoutLayout}
         onValueChange={(val: string) => {
           const layout = val === "blank" ? "" : val;
@@ -126,7 +125,6 @@ export default function StepCheckoutPage({
       <div className="flex justify-end">
         <Button
           data-cy="save-return"
-          data-testid="save-return"
           onClick={() => {
             markComplete(true);
             router.push("/cms/configurator");

@@ -46,7 +46,7 @@ jest.mock("../PageMetaForm", () => ({
   default: ({ slug, setSlug, setTitle, setDesc, setImage }: any) => (
     <div>
       <span>meta form</span>
-      <span data-testid="slug-display">{slug}</span>
+      <span data-cy="slug-display">{slug}</span>
       <button
         onClick={() => {
           setSlug("slug");

@@ -11,9 +11,9 @@ function TestComponent(): JSX.Element {
   const { update, markStepComplete, state } = useConfigurator();
   return (
     <>
-      <button onClick={() => update("storeName", "My Store")} data-testid="update" />
-      <button onClick={() => markStepComplete("intro", "complete")} data-testid="complete" />
-      <div data-testid="status">{state.completed.intro}</div>
+      <button onClick={() => update("storeName", "My Store")} data-cy="update" />
+      <button onClick={() => markStepComplete("intro", "complete")} data-cy="complete" />
+      <div data-cy="status">{state.completed.intro}</div>
     </>
   );
 }

@@ -141,6 +141,29 @@ describe("createRequestHandler", () => {
     expect(end).toHaveBeenCalledWith("OK");
   });
 
+  it("forwards response headers", async () => {
+    componentsHandlerMock.mockResolvedValueOnce(
+      new Response("OK", { status: 200, headers: { "X-Test": "value" } }),
+    );
+    const handler = createRequestHandler();
+
+    const req = new Readable({
+      read() {
+        this.push(null);
+      },
+    }) as unknown as IncomingMessage;
+    req.url = "/components/abc";
+    req.method = "GET";
+    req.headers = {};
+
+    const end = jest.fn();
+    const res = { statusCode: 0, setHeader: jest.fn(), end } as unknown as ServerResponse;
+
+    await handler(req, res);
+
+    expect(res.setHeader).toHaveBeenCalledWith("x-test", "value");
+  });
+
   it("handles POST /shop/:id/publish-upgrade", async () => {
     publishUpgradeMock.mockResolvedValueOnce(new Response(null, { status: 200 }));
     const handler = createRequestHandler();

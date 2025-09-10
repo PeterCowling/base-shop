@@ -6,6 +6,7 @@ let mockSanitizeHtml: jest.Mock;
 let mockHasProviderErrorFields: jest.Mock;
 let mockCreateTransport: jest.Mock;
 let mockSendMail: jest.Mock;
+let mockGetDefaultSender: jest.Mock;
 
 const mockSendgridImport = jest.fn();
 const mockResendImport = jest.fn();
@@ -49,7 +50,7 @@ jest.mock("nodemailer", () => ({
 }));
 
 jest.mock("../config", () => ({
-  getDefaultSender: () => "from@example.com",
+  getDefaultSender: (...args: any[]) => mockGetDefaultSender(...args),
 }));
 
 describe("send core helpers", () => {
@@ -61,6 +62,7 @@ describe("send core helpers", () => {
     mockCreateTransport = jest.fn(() => ({
       sendMail: (...args: any[]) => mockSendMail(...args),
     }));
+    mockGetDefaultSender = jest.fn(() => "from@example.com");
     SendgridProvider.mockClear();
     ResendProvider.mockClear();
     mockSendgridImport.mockClear();
@@ -490,6 +492,24 @@ describe("send core helpers", () => {
         html: "<p>H</p>",
         text: "T",
       });
+    });
+
+    it("surfaces getDefaultSender errors", async () => {
+      process.env.SMTP_URL = "smtp://test";
+      const err = new Error("sender fail");
+      mockGetDefaultSender.mockImplementation(() => {
+        throw err;
+      });
+      const { sendWithNodemailer } = await import("../send");
+      await expect(
+        sendWithNodemailer({
+          to: "to@example.com",
+          subject: "Sub",
+          html: "<p>H</p>",
+          text: "T",
+        })
+      ).rejects.toThrow("sender fail");
+      expect(mockSendMail).not.toHaveBeenCalled();
     });
   });
 

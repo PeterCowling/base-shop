@@ -91,6 +91,35 @@ describe("ResendProvider", () => {
     expect(send).not.toHaveBeenCalled();
   });
 
+  it("getCampaignStats returns empty stats when API key missing", async () => {
+    global.fetch = jest.fn();
+    const { ResendProvider } = await import("../providers/resend");
+    const { emptyStats } = await import("../stats");
+    const provider = new ResendProvider();
+    await expect(provider.getCampaignStats("1")).resolves.toEqual(emptyStats);
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
+  it("getCampaignStats forwards mapped stats", async () => {
+    process.env.RESEND_API_KEY = "rs";
+    const stats = {
+      delivered: "2",
+      opened_count: "3",
+      clicked: 1,
+      unsubscribed_count: "4",
+      bounced_count: "5",
+    };
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      json: jest.fn().mockResolvedValueOnce(stats),
+    }) as any;
+    const { ResendProvider } = await import("../providers/resend");
+    const { mapResendStats } = await import("../stats");
+    const provider = new ResendProvider();
+    await expect(provider.getCampaignStats("1")).resolves.toEqual(
+      mapResendStats(stats),
+    );
+  });
+
   it("getCampaignStats returns fallback when json rejects", async () => {
     process.env.RESEND_API_KEY = "rs";
     global.fetch = jest.fn().mockResolvedValueOnce({

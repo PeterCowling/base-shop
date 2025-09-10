@@ -141,12 +141,13 @@ export async function getTrackingStatus({
       return { status: null, steps: [] };
     }
     const data = await res.json();
-    const status =
+    const rawStatus =
       provider === "dhl"
         ? data?.shipments?.[0]?.status?.status
         : data?.trackDetails?.[0]?.packageStatus?.statusType;
+    const status = typeof rawStatus === "string" ? rawStatus : null;
     return {
-      status: status ?? null,
+      status,
       steps: status ? [{ label: status, complete: true }] : [],
     };
   } catch {

@@ -421,6 +421,21 @@ describe("send core helpers", () => {
       expect(provider.send).toHaveBeenCalledTimes(1);
     });
 
+    it("retries up to max attempts when error lacks retryable but has provider fields", async () => {
+      jest.useFakeTimers();
+      mockHasProviderErrorFields.mockReturnValue(true);
+      const { sendWithRetry } = await import("../send");
+      const err = { code: 500 };
+      const provider = { send: jest.fn().mockRejectedValue(err) };
+      const expectation = expect(
+        sendWithRetry(provider as any, { to: "t", subject: "s" })
+      ).rejects.toBe(err);
+      await jest.runAllTimersAsync();
+      await expectation;
+      expect(provider.send).toHaveBeenCalledTimes(3);
+      jest.useRealTimers();
+    });
+
     it("retries when error lacks retryable flag", async () => {
       jest.useFakeTimers();
       mockHasProviderErrorFields.mockReturnValue(false);

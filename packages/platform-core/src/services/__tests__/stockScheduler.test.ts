@@ -51,6 +51,25 @@ describe("scheduleStockChecks", () => {
     consoleError.mockRestore();
   });
 
+  it("continues scheduling after failures", async () => {
+    const err = new Error("boom");
+    const getItems = jest.fn().mockResolvedValue([]);
+    checkAndAlert.mockRejectedValueOnce(err);
+    const consoleError = jest.spyOn(console, "error").mockImplementation(() => {});
+    const { scheduleStockChecks } = await import("../stockScheduler.server");
+
+    scheduleStockChecks("shop", getItems, 1000);
+
+    await jest.advanceTimersByTimeAsync(1000);
+    await jest.advanceTimersByTimeAsync(1000);
+    expect(checkAndAlert).toHaveBeenCalledTimes(2);
+    expect(consoleError).toHaveBeenCalledWith(
+      "Scheduled stock check failed",
+      err,
+    );
+    consoleError.mockRestore();
+  });
+
   it("does not accumulate timers over long periods", async () => {
     const getItems = jest.fn().mockResolvedValue([]);
     const { scheduleStockChecks } = await import("../stockScheduler.server");

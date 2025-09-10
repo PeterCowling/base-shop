@@ -32,6 +32,7 @@ describe("createCartStore backend selection", () => {
     delete process.env.SESSION_STORE;
     delete process.env.UPSTASH_REDIS_REST_URL;
     delete process.env.UPSTASH_REDIS_REST_TOKEN;
+    delete process.env.CART_TTL;
   });
 
   it("honors explicit backend=memory", async () => {
@@ -88,6 +89,41 @@ describe("createCartStore backend selection", () => {
     const store = createCartStore();
     expect(store.constructor.name).toBe("MemoryCartStore");
     expect(RedisMock).not.toHaveBeenCalled();
+  });
+
+  it("applies CART_TTL env when ttlSeconds not provided", async () => {
+    process.env.CART_TTL = "123";
+    const { createCartStore } = await import("../../src/cartStore");
+    const store = createCartStore();
+    expect(store.constructor.name).toBe("MemoryCartStore");
+    expect((store as any).ttl).toBe(123);
+  });
+
+  it("ttlSeconds option overrides CART_TTL env", async () => {
+    process.env.CART_TTL = "123";
+    const { createCartStore } = await import("../../src/cartStore");
+    const store = createCartStore({ ttlSeconds: 456 });
+    expect(store.constructor.name).toBe("MemoryCartStore");
+    expect((store as any).ttl).toBe(456);
+  });
+
+  it("uses CART_TTL env when falling back from redis", async () => {
+    process.env.SESSION_STORE = "redis";
+    process.env.CART_TTL = "321";
+    const { createCartStore } = await import("../../src/cartStore");
+    const store = createCartStore();
+    expect(store.constructor.name).toBe("MemoryCartStore");
+    expect((store as any).ttl).toBe(321);
+  });
+
+  it("passes CART_TTL env to redis backend", async () => {
+    process.env.UPSTASH_REDIS_REST_URL = "https://example.com";
+    process.env.UPSTASH_REDIS_REST_TOKEN = STRONG_TOKEN;
+    process.env.CART_TTL = "77";
+    const { createCartStore } = await import("../../src/cartStore");
+    const store = createCartStore();
+    expect(store.constructor.name).toBe("RedisCartStore");
+    expect((store as any).ttl).toBe(77);
   });
 });
 

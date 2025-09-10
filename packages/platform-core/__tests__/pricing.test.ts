@@ -49,6 +49,8 @@ describe("pricing utilities", () => {
     await expect(convertCurrency(100, "USD")).resolves.toBe(100);
     await expect(convertCurrency(101.3, "EUR")).resolves.toBe(51);
     await expect(convertCurrency(100.8, "EUR")).resolves.toBe(50);
+    await expect(convertCurrency(101, "EUR")).resolves.toBe(50);
+    await expect(convertCurrency(103, "EUR")).resolves.toBe(52);
     await expect(convertCurrency(100, "GBP")).rejects.toThrow(
       "Missing exchange rate for GBP"
     );
@@ -115,5 +117,16 @@ describe("pricing utilities", () => {
     });
 
     await expect(computeDamageFee("scuff", 0, [], true)).resolves.toBe(10);
+  });
+
+  it("applies coverage waiver to deposit-based fees", async () => {
+    const { computeDamageFee } = await setup({
+      baseDailyRate: 0,
+      durationDiscounts: [],
+      damageFees: { lost: "deposit" },
+      coverage: { lost: { fee: 5, waiver: 10 } },
+    });
+
+    await expect(computeDamageFee("lost", 50, ["lost"])).resolves.toBe(40);
   });
 });

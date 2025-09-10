@@ -4,7 +4,7 @@ import { variantKey } from "../../repositories/inventory.server";
 const sendEmail = jest.fn();
 const getShopSettings = jest.fn();
 const loadCoreEnv = jest.fn();
-const readFile = jest.fn().mockRejectedValue(new Error("no log"));
+const readFile = jest.fn();
 const writeFile = jest.fn();
 const mkdir = jest.fn();
 const fetchMock = jest.fn().mockResolvedValue({ ok: true } as Response);
@@ -32,6 +32,11 @@ describe("checkAndAlert", () => {
     jest.resetModules();
     jest.clearAllMocks();
     (global.fetch as any) = fetchMock;
+    readFile.mockRejectedValue(new Error("no log"));
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it("sends emails, writes log, and dispatches webhook", async () => {
@@ -108,6 +113,86 @@ describe("checkAndAlert", () => {
     const body = sendEmail.mock.calls[0][2] as string;
     expect(body).toContain("skuA");
     expect(body).not.toContain("skuB");
+  });
+
+  it("logs errors when email or webhook fails", async () => {
+    loadCoreEnv.mockReturnValue({});
+    getShopSettings.mockResolvedValue({
+      stockAlert: {
+        recipients: ["shop@example.com"],
+        webhook: "https://example.com/webhook",
+        threshold: 2,
+      },
+    });
+
+    sendEmail.mockRejectedValueOnce(new Error("email fail"));
+    fetchMock.mockRejectedValueOnce(new Error("webhook fail"));
+    const consoleError = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    const { checkAndAlert } = await import("../stockAlert.server");
+    const item = {
+      sku: "sku1",
+      productId: "p1",
+      variantAttributes: { size: "m" },
+      quantity: 1,
+      lowStockThreshold: 2,
+    };
+    await checkAndAlert("shop", [item]);
+
+    expect(consoleError).toHaveBeenCalledWith(
+      "Failed to send stock alert",
+      expect.any(Error),
+    );
+    expect(consoleError).toHaveBeenCalledWith(
+      "Failed to send stock alert webhook",
+      expect.any(Error),
+    );
+    consoleError.mockRestore();
+  });
+
+  it("suppresses alerts based on existing log and merges new entries", async () => {
+    loadCoreEnv.mockReturnValue({});
+    getShopSettings.mockResolvedValue({
+      stockAlert: { recipients: ["shop@example.com"], threshold: 2 },
+    });
+
+    const keySuppressed = variantKey("old", { size: "s" });
+    const now = 1000;
+    readFile.mockResolvedValueOnce(JSON.stringify({ [keySuppressed]: now }));
+    jest.spyOn(Date, "now").mockReturnValue(now);
+
+    const { checkAndAlert } = await import("../stockAlert.server");
+    const suppressed = {
+      sku: "old",
+      productId: "p1",
+      variantAttributes: { size: "s" },
+      quantity: 1,
+      lowStockThreshold: 2,
+    };
+    const fresh = {
+      sku: "new",
+      productId: "p2",
+      variantAttributes: { size: "m" },
+      quantity: 1,
+      lowStockThreshold: 2,
+    };
+    await checkAndAlert("shop", [suppressed, fresh]);
+
+    expect(sendEmail).toHaveBeenCalledTimes(1);
+    expect(sendEmail.mock.calls[0][0]).toBe("shop@example.com");
+    const body = sendEmail.mock.calls[0][2] as string;
+    expect(body).toContain("new");
+    expect(body).not.toContain("old");
+
+    expect(writeFile).toHaveBeenCalledWith(
+      expect.stringContaining("shop/stock-alert-log.json"),
+      expect.any(String),
+      "utf8",
+    );
+    const logged = JSON.parse(writeFile.mock.calls[0][1]);
+    expect(logged[keySuppressed]).toBe(now);
+    const keyFresh = variantKey("new", { size: "m" });
+    expect(logged[keyFresh]).toBe(now);
   });
 });
 

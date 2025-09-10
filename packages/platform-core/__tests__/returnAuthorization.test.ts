@@ -12,7 +12,9 @@ describe("returnAuthorization", () => {
   });
 
   it("forwards repository results unchanged", async () => {
-    const { listReturnAuthorizations } = await import("../src/returnAuthorization");
+    const { listReturnAuthorizations } = await import(
+      "../src/returnAuthorization"
+    );
     const repo = await import("../src/repositories/returnAuthorization.server");
     const list = [
       { raId: "RA1", orderId: "o1", status: "pending", inspectionNotes: "" },
@@ -23,8 +25,21 @@ describe("returnAuthorization", () => {
     expect(result).toBe(list);
   });
 
+  it("propagates errors from readReturnAuthorizations", async () => {
+    const { listReturnAuthorizations } = await import(
+      "../src/returnAuthorization"
+    );
+    const repo = await import("../src/repositories/returnAuthorization.server");
+    const err = new Error("read failed");
+    (repo.readReturnAuthorizations as jest.Mock).mockRejectedValue(err);
+    await expect(listReturnAuthorizations()).rejects.toBe(err);
+    expect(repo.readReturnAuthorizations).toHaveBeenCalled();
+  });
+
   it("generates an RA-prefixed ID and persists via addReturnAuthorization", async () => {
-    const { createReturnAuthorization } = await import("../src/returnAuthorization");
+    const { createReturnAuthorization } = await import(
+      "../src/returnAuthorization"
+    );
     const repo = await import("../src/repositories/returnAuthorization.server");
     const nowSpy = jest.spyOn(Date, "now").mockReturnValue(123456);
     const ra = await createReturnAuthorization({ orderId: "o1" });

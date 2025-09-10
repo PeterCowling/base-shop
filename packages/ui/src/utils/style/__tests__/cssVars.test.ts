@@ -1,6 +1,10 @@
-import { cssVars } from "../style";
+import { cssVars } from "../cssVars";
 
 describe("cssVars", () => {
+  it("returns empty object for no overrides", () => {
+    expect(cssVars()).toEqual({});
+  });
+
   it("maps color overrides to CSS variables", () => {
     const vars = cssVars({
       color: { bg: "--bg", fg: "--fg", border: "--border" },

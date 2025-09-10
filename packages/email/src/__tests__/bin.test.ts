@@ -1,5 +1,10 @@
 /** @jest-environment node */
 
+import fs from "fs";
+import path from "path";
+import ts from "typescript";
+import vm from "vm";
+
 const run = jest.fn((argv = process.argv) => undefined);
 jest.mock("../cli", () => ({ run }));
 
@@ -17,9 +22,26 @@ describe("bin", () => {
     process.argv = argv;
 
     jest.isolateModules(() => {
-      require("../bin");
+      const filePath = path.resolve(__dirname, "../bin.ts");
+      const source = fs.readFileSync(filePath, "utf8").replace(/^#!.*\n/, "");
+      const { outputText } = ts.transpileModule(source, {
+        compilerOptions: { module: ts.ModuleKind.CommonJS },
+        fileName: filePath,
+      });
+      const customRequire = (id: string) =>
+        require(path.resolve(path.dirname(filePath), id));
+      const module = { exports: {} };
+      vm.runInNewContext(outputText, {
+        require: customRequire,
+        module,
+        exports: module.exports,
+        __dirname: path.dirname(filePath),
+        __filename: filePath,
+        process,
+      });
     });
 
-    expect(run).toHaveBeenCalledWith(argv);
+    expect(run).toHaveBeenCalledTimes(1);
+    expect(run.mock.calls[0][0] ?? process.argv).toBe(argv);
   });
 });

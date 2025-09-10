@@ -17,7 +17,7 @@ describe("resolveDataRoot", () => {
     try {
       process.chdir(nested);
       const resolved = resolveDataRoot();
-      expect(resolved).toBe(shops);
+      expect(await fs.realpath(resolved)).toBe(await fs.realpath(shops));
     } finally {
       process.chdir(original);
       await fs.rm(tmp, { recursive: true, force: true });

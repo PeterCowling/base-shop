@@ -306,14 +306,19 @@ describe("SendgridProvider", () => {
     it("returns normalized stats on success", async () => {
       process.env.SENDGRID_API_KEY = "sg";
       const stats = { delivered: "2", opens: "3", clicks: 1 };
-      global.fetch = jest.fn().mockResolvedValue({
+      const fetch = jest.fn().mockResolvedValue({
         json: jest.fn().mockResolvedValue(stats),
       });
+      global.fetch = fetch;
       const { SendgridProvider } = await import("../providers/sendgrid");
       const { mapSendGridStats } = await import("../stats");
       const provider = new SendgridProvider();
       await expect(provider.getCampaignStats("1")).resolves.toEqual(
         mapSendGridStats(stats),
+      );
+      expect(fetch).toHaveBeenCalledWith(
+        "https://api.sendgrid.com/v3/campaigns/1/stats",
+        { headers: { Authorization: "Bearer sg" } },
       );
     });
 

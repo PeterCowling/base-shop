@@ -43,4 +43,26 @@ describe("useRemoteImageProbe", () => {
     expect(result.current.error).toBe("not-image");
     expect(result.current.valid).toBe(false);
   });
+
+  it("resets valid when url is empty", async () => {
+    const { result } = renderHook(() => useRemoteImageProbe());
+    await act(async () => {
+      await result.current.probe("http://example.com/a.png");
+    });
+    expect(result.current.valid).toBe(true);
+    await act(async () => {
+      await result.current.probe("");
+    });
+    expect(result.current.valid).toBeNull();
+  });
+
+  it("captures fetch errors", async () => {
+    mockFetch.mockRejectedValueOnce(new Error("boom"));
+    const { result } = renderHook(() => useRemoteImageProbe());
+    await act(async () => {
+      await result.current.probe("http://example.com/a.png");
+    });
+    expect(result.current.error).toBe("boom");
+    expect(result.current.valid).toBe(false);
+  });
 });

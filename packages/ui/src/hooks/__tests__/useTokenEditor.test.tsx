@@ -73,7 +73,7 @@ describe("useTokenEditor", () => {
         setTokens((prev) => ({ ...prev, ...t }));
       const hook = useTokenEditor(tokens, {}, handleChange);
       upload = hook.handleUpload; // assigned synchronously
-      return <span data-testid="mono">{hook.monoFonts.join(",")}</span>;
+      return <span data-cy="mono">{hook.monoFonts.join(",")}</span>;
     }
 
     render(<Wrapper />);

@@ -48,6 +48,21 @@ describe.each([
     expect(second).toHaveBeenCalledWith(shop, payload);
   });
 
+  it("rejects when any listener throws", async () => {
+    const error = new Error("fail");
+    const failing = jest.fn(() => {
+      throw error;
+    });
+    const succeeding = jest.fn();
+
+    on(succeeding);
+    on(failing);
+
+    await expect(emit(shop, payload)).rejects.toThrow(error);
+    expect(failing).toHaveBeenCalledWith(shop, payload);
+    expect(succeeding).toHaveBeenCalledWith(shop, payload);
+  });
+
   it("captures listeners registered after emits", async () => {
     const early = jest.fn();
     const late = jest.fn();

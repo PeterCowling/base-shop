@@ -151,6 +151,30 @@ describe("scheduler", () => {
     ]);
   });
 
+  test("filterUnsubscribed keeps recipients when event email is not a string", async () => {
+    const past = new Date(now.getTime() - 1000).toISOString();
+    memory[shop] = [
+      {
+        id: "c1",
+        recipients: ["a@example.com", "b@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+    ];
+    (listEvents as jest.Mock).mockResolvedValue([
+      { type: "email_unsubscribe", email: 123 as any },
+    ]);
+    await sendDueCampaigns();
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(2);
+    expect((sendCampaignEmail as jest.Mock).mock.calls.map((c) => c[0].to)).toEqual([
+      "a@example.com",
+      "b@example.com",
+    ]);
+  });
+
   test(
     "sendDueCampaigns marks campaign sent when all recipients unsubscribed",
     async () => {

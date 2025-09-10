@@ -65,6 +65,32 @@ describe("createSessionStore", () => {
     expect(store).toBe(customStore);
   });
 
+  it(
+    "falls back to MemorySessionStore and logs when SESSION_STORE=redis but env vars are missing",
+    async () => {
+      process.env.SESSION_STORE = "redis";
+
+      const err = new Error("missing env");
+      RedisClientMock.mockImplementation(() => {
+        throw err;
+      });
+      const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+      const { createSessionStore } = await import("../store");
+      const { MemorySessionStore } = await import("../memoryStore");
+
+      const store = await createSessionStore();
+
+      expect(store).toBeInstanceOf(MemorySessionStore);
+      expect(errorSpy).toHaveBeenCalledWith(
+        "Failed to initialize Redis session store",
+        err,
+      );
+
+      errorSpy.mockRestore();
+    },
+  );
+
   it("falls back to MemorySessionStore and logs when Redis instantiation fails", async () => {
     process.env.UPSTASH_REDIS_REST_URL = "https://example";
     process.env.UPSTASH_REDIS_REST_TOKEN = STRONG_TOKEN;

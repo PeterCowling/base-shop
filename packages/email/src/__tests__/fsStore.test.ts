@@ -29,3 +29,17 @@ describe("fsCampaignStore.writeCampaigns", () => {
     );
   });
 });
+
+describe("fsCampaignStore.listShops", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("returns an empty array when readdir fails", async () => {
+    jest
+      .spyOn(fs, "readdir")
+      .mockRejectedValue(new Error("failed to read directory"));
+
+    await expect(fsCampaignStore.listShops()).resolves.toEqual([]);
+  });
+});

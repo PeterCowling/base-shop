@@ -138,6 +138,71 @@ describe("chargeLateFeesOnce", () => {
     expect(mocks.markLateFeeCharged).not.toHaveBeenCalled();
   });
 
+  it("skips charging when payment_intent is a string", async () => {
+    const { setupLateFeeTest, NOW } = await import("./helpers/lateFee");
+    const overdueOrder = {
+      sessionId: "sess_1",
+      returnDueDate: new Date(NOW - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    } as any;
+    const mocks = await setupLateFeeTest({ orders: [overdueOrder] });
+    jest.doMock("@acme/config/env/core", () => ({
+      __esModule: true,
+      coreEnv: {},
+      loadCoreEnv: () => ({}),
+    }));
+    mocks.stripeRetrieve.mockResolvedValueOnce({
+      payment_intent: "pi_1",
+      customer: { id: "cus_1" },
+      currency: "usd",
+    });
+
+    const { chargeLateFeesOnce } = await import("../src/lateFeeService");
+    try {
+      await chargeLateFeesOnce();
+    } finally {
+      mocks.restore();
+    }
+
+    expect(mocks.stripeCharge).not.toHaveBeenCalled();
+    expect(mocks.markLateFeeCharged).not.toHaveBeenCalled();
+  });
+
+  it("charges when payment_intent is object and uses customer.id", async () => {
+    const { setupLateFeeTest, NOW } = await import("./helpers/lateFee");
+    const overdueOrder = {
+      sessionId: "sess_1",
+      returnDueDate: new Date(NOW - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    } as any;
+    const mocks = await setupLateFeeTest({ orders: [overdueOrder] });
+    jest.doMock("@acme/config/env/core", () => ({
+      __esModule: true,
+      coreEnv: {},
+      loadCoreEnv: () => ({}),
+    }));
+    mocks.stripeRetrieve.mockResolvedValueOnce({
+      payment_intent: { payment_method: "pm_1" },
+      customer: { id: "cus_1" },
+      currency: "usd",
+    });
+
+    const { chargeLateFeesOnce } = await import("../src/lateFeeService");
+    try {
+      await chargeLateFeesOnce();
+    } finally {
+      mocks.restore();
+    }
+
+    expect(mocks.stripeCharge).toHaveBeenCalledWith(
+      expect.objectContaining({
+        amount: 25 * 100,
+        currency: "usd",
+        customer: "cus_1",
+        payment_method: "pm_1",
+      })
+    );
+    expect(mocks.markLateFeeCharged).toHaveBeenCalledWith("test", "sess_1", 25);
+  });
+
   it("does not charge when customer or payment method is missing", async () => {
     const { setupLateFeeTest, NOW } = await import("./helpers/lateFee");
     const overdueOrder = {

@@ -94,6 +94,31 @@ describe('onRequest route', () => {
     expect(warnSpy).toHaveBeenCalledWith('missing bearer token', { shopId: 'abc' });
   });
 
+  it('returns 403 when preview token secret missing', async () => {
+    verify.mockImplementation(() => {
+      throw new Error('bad');
+    });
+    const res = await onRequest({
+      params: { shopId: 'abc' },
+      request: new Request('http://localhost', {
+        headers: { authorization: 'Bearer token' },
+      }),
+    });
+    expect(verify).toHaveBeenCalledWith(
+      'token',
+      '',
+      expect.objectContaining({
+        algorithms: ['HS256'],
+        audience: 'upgrade-preview',
+        issuer: 'acme',
+        subject: 'shop:abc:upgrade-preview',
+      }),
+    );
+    expect(res.status).toBe(403);
+    await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+  });
+
   it('returns 403 when token is empty', async () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockImplementation((token: string) => {

@@ -7,7 +7,7 @@ import {
 } from "@acme/platform-core/themeTokens";
 
 describe("theme tokens API", () => {
-  const rootDir = join(__dirname, "../../../../..");
+  const rootDir = join(__dirname, "../../../..");
   const themesDir = join(rootDir, "packages/themes");
   const partialDir = join(themesDir, "partial");
   const invalidDir = join(themesDir, "invalid");

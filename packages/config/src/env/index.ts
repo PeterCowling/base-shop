@@ -5,6 +5,13 @@ import { coreEnvSchema } from "./core.js";
 
 export const envSchema = coreEnvSchema;
 
+export function mergeEnvSchemas(
+  ...schemas: Array<z.ZodObject<any>>
+): z.ZodObject<any> {
+  const shape = Object.assign({}, ...schemas.map((s) => s.shape));
+  return z.object(shape);
+}
+
 const parsed = envSchema.safeParse(process.env);
 if (!parsed.success) {
   console.error("❌ Invalid environment variables:", parsed.error.format());

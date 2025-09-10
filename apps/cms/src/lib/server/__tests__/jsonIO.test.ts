@@ -2,7 +2,7 @@
 /* eslint-env jest */
 
 import { promises as fs } from "fs";
-import { readJsonFile, writeJsonFile } from "../jsonIO";
+import { readJsonFile, writeJsonFile, withFileLock } from "../jsonIO";
 
 jest.mock("fs", () => ({
   promises: {
@@ -23,6 +23,15 @@ const mockedFs = fs as unknown as {
 afterEach(() => jest.resetAllMocks());
 
 describe("readJsonFile", () => {
+  it("returns parsed JSON when file is readable", async () => {
+    const data = { value: 3 };
+    mockedFs.readFile.mockResolvedValueOnce(JSON.stringify(data));
+
+    const result = await readJsonFile("exists.json", { value: 0 });
+
+    expect(result).toEqual(data);
+  });
+
   it("returns fallback when file is missing", async () => {
     const fallback = { value: 1 };
     mockedFs.readFile.mockRejectedValueOnce(new Error("missing"));
@@ -60,5 +69,61 @@ describe("writeJsonFile", () => {
     expect(json).toBe(JSON.stringify(data, null, 2));
     expect(encoding).toBe("utf8");
     expect(mockedFs.rename).toHaveBeenCalledWith(tmpPath, "out.json");
+  });
+
+  it("writes directly when fs.rename is undefined", async () => {
+    const originalRename = mockedFs.rename;
+    mockedFs.rename = undefined as any;
+    mockedFs.mkdir.mockResolvedValueOnce(undefined);
+    mockedFs.writeFile.mockResolvedValueOnce(undefined);
+
+    const data = { b: 2 };
+    await writeJsonFile("direct.json", data);
+
+    expect(mockedFs.writeFile).toHaveBeenCalledWith("direct.json", JSON.stringify(data, null, 2), "utf8");
+    mockedFs.rename = originalRename;
+  });
+
+  it("respects custom indent argument", async () => {
+    mockedFs.mkdir.mockResolvedValueOnce(undefined);
+    mockedFs.writeFile.mockResolvedValueOnce(undefined);
+    mockedFs.rename.mockResolvedValueOnce(undefined);
+
+    const data = { c: 3 };
+    await writeJsonFile("indent.json", data, 4);
+
+    const [[tmpPath, json]] = mockedFs.writeFile.mock.calls;
+    expect(json).toBe(JSON.stringify(data, null, 4));
+    expect(mockedFs.rename).toHaveBeenCalledWith(tmpPath, "indent.json");
+  });
+});
+
+describe("withFileLock", () => {
+  it("runs callbacks sequentially", async () => {
+    const order: string[] = [];
+    let releaseFirst!: () => void;
+
+    const first = withFileLock("file", async () => {
+      order.push("first-start");
+      await new Promise<void>((resolve) => {
+        releaseFirst = resolve;
+      });
+      order.push("first-end");
+    });
+
+    const secondStart = jest.fn(async () => {
+      order.push("second-start");
+      order.push("second-end");
+    });
+
+    const second = withFileLock("file", secondStart);
+
+    await Promise.resolve();
+    expect(secondStart).not.toHaveBeenCalled();
+
+    releaseFirst();
+    await Promise.all([first, second]);
+
+    expect(order).toEqual(["first-start", "first-end", "second-start", "second-end"]);
   });
 });

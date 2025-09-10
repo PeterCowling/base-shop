@@ -133,8 +133,13 @@ export async function updateProduct(
     updated_at: nowIso(),
   };
 
-  const saved = await updateProductInRepo<ProductPublication>(shop, updated);
-  return { product: saved };
+  try {
+    const saved = await updateProductInRepo<ProductPublication>(shop, updated);
+    return { product: saved };
+  } catch (error) {
+    await captureException(error, { extra: { productId: id } });
+    throw error;
+  }
 }
 
 /* -------------------------------------------------------------------------- */

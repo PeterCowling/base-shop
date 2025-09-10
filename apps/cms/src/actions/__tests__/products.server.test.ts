@@ -146,6 +146,21 @@ describe('products.server actions', () => {
       expect(result.product?.title.en).toBe('new');
     });
 
+    it('rethrows repository errors and captures exception', async () => {
+      const error = new Error('repo failure');
+      (updateProductInRepo as jest.Mock).mockRejectedValue(error);
+      const fd = new FormData();
+      fd.append('id', 'p1');
+      fd.append('price', '10');
+      fd.append('title_en', 'new');
+      fd.append('desc_en', 'new');
+      fd.append('media', '[]');
+      await expect(updateProduct(shop, fd)).rejects.toThrow('repo failure');
+      expect(captureException).toHaveBeenCalledWith(error, {
+        extra: { productId: 'p1' },
+      });
+    });
+
     it('throws when unauthorized', async () => {
       (ensureAuthorized as jest.Mock).mockRejectedValue(new Error('unauthorized'));
       await expect(updateProduct(shop, new FormData())).rejects.toThrow('unauthorized');

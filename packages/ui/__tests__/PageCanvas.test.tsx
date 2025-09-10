@@ -5,25 +5,25 @@ import PageCanvas from "../src/components/cms/page-builder/PageCanvas";
 jest.mock("../src/components/cms/page-builder/CanvasItem", () => ({
   __esModule: true,
   default: jest.fn((props) => (
-    <div role="listitem" data-testid={`item-${props.component.id}`} />
+    <div role="listitem" data-cy={`item-${props.component.id}`} />
   )),
 }));
 
 jest.mock("../src/components/cms/page-builder/Block", () => ({
   __esModule: true,
   default: jest.fn((props) => (
-    <div data-testid={`block-${props.component.id}`} />
+    <div data-cy={`block-${props.component.id}`} />
   )),
 }));
 
 jest.mock("../src/components/cms/page-builder/GridOverlay", () => ({
   __esModule: true,
-  default: jest.fn(() => <div data-testid="grid" />),
+  default: jest.fn(() => <div data-cy="grid" />),
 }));
 
 jest.mock("../src/components/cms/page-builder/SnapLine", () => ({
   __esModule: true,
-  default: jest.fn(() => <div data-testid="snapline" />),
+  default: jest.fn(() => <div data-cy="snapline" />),
 }));
 
 const CanvasItemMock = jest.requireMock(

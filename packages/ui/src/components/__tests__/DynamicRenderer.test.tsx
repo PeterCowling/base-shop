@@ -2,11 +2,11 @@ import { render, screen } from "@testing-library/react";
 import type { PageComponent } from "@acme/types";
 
 const ParentComp = jest.fn(({ children }: any) => (
-  <div data-testid="parent">{children}</div>
+  <div data-cy="parent">{children}</div>
 ));
 
 const ChildComp = jest.fn(({ text }: any) => (
-  <div data-testid="child">{text}</div>
+  <div data-cy="child">{text}</div>
 ));
 
 const mockBlockRegistry = {

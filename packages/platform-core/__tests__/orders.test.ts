@@ -427,6 +427,18 @@ describe("orders", () => {
       });
       expect(prismaMock.rentalOrder.update).not.toHaveBeenCalled();
     });
+
+    it("throws when checkout session lacks payment_intent", async () => {
+      prismaMock.rentalOrder.findUnique.mockResolvedValue({ id: "1" });
+      stripeCheckoutRetrieve.mockResolvedValue({});
+
+      await expect(refundOrder("shop", "sess", 10)).rejects.toThrow(
+        "payment_intent missing",
+      );
+
+      expect(stripeRefund).not.toHaveBeenCalled();
+      expect(prismaMock.rentalOrder.update).not.toHaveBeenCalled();
+    });
   });
 
   describe("updateRisk", () => {

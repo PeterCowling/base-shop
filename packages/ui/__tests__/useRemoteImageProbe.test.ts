@@ -18,6 +18,15 @@ describe("useRemoteImageProbe", () => {
     jest.clearAllMocks();
   });
 
+  it("does nothing for empty url", async () => {
+    const { result } = renderHook(() => useRemoteImageProbe());
+    await act(async () => {
+      await result.current.probe("");
+    });
+    expect(mockFetch).not.toHaveBeenCalled();
+    expect(result.current.valid).toBeNull();
+  });
+
   it("marks url valid when content-type is image", async () => {
     const { result } = renderHook(() => useRemoteImageProbe());
     await act(async () => {
@@ -41,6 +50,29 @@ describe("useRemoteImageProbe", () => {
       await result.current.probe("http://example.com/");
     });
     expect(result.current.error).toBe("not-image");
+    expect(result.current.valid).toBe(false);
+  });
+
+  it("flags when fetch response is not ok", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      headers: { get: () => "image/png" },
+    } as any);
+    const { result } = renderHook(() => useRemoteImageProbe());
+    await act(async () => {
+      await result.current.probe("http://example.com/fail.png");
+    });
+    expect(result.current.error).toBe("not-image");
+    expect(result.current.valid).toBe(false);
+  });
+
+  it("surfaces network errors", async () => {
+    mockFetch.mockRejectedValueOnce(new Error("network error"));
+    const { result } = renderHook(() => useRemoteImageProbe());
+    await act(async () => {
+      await result.current.probe("http://example.com/a.png");
+    });
+    expect(result.current.error).toBe("network error");
     expect(result.current.valid).toBe(false);
   });
 });

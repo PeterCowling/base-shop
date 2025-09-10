@@ -587,6 +587,19 @@ describe("scheduler", () => {
     expect(fetchCampaignAnalytics).toHaveBeenCalled();
   });
 
+  test('syncCampaignAnalytics resolves when analytics module throws', async () => {
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock('../analytics', () => ({
+        __esModule: true,
+        syncCampaignAnalytics: jest.fn(() => {
+          throw new Error('fail');
+        }),
+      }));
+      const { syncCampaignAnalytics } = await import('../scheduler');
+      await expect(syncCampaignAnalytics()).resolves.toBeUndefined();
+    });
+  });
+
   test('createCampaign propagates send errors', async () => {
     (sendCampaignEmail as jest.Mock).mockRejectedValueOnce(new Error('boom'));
     await expect(

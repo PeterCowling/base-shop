@@ -1,12 +1,28 @@
 import { render, screen } from "@testing-library/react";
 import FooterBlock from "../src/components/cms/blocks/FooterBlock";
 
+beforeAll(() => {
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: jest.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+      dispatchEvent: jest.fn(),
+    })),
+  });
+});
+
 describe("FooterBlock", () => {
   it("renders links and logo when provided", () => {
     render(
       <FooterBlock
         locale={"en" as any}
-        logo="Brand"
+        shopName="Brand"
         links={[{ label: "About", href: "/about" }]}
       />,
     );

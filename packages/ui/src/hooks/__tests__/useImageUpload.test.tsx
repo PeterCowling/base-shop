@@ -11,7 +11,7 @@ jest.mock("../../components/cms/ImageUploaderWithOrientationCheck", () => {
   return {
     __esModule: true,
     default: jest.fn(({ file }: { file: File | null }) => (
-      <div data-testid="uploader">{file ? file.name : "none"}</div>
+      <div data-cy="uploader">{file ? file.name : "none"}</div>
     )),
   };
 });

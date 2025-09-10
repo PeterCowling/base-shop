@@ -89,11 +89,10 @@ describe("user operations", () => {
     expect(store["u2"].resetTokenExpiresAt).toBeNull();
   });
 
-  it("returns null for expired tokens", async () => {
+  it("throws for expired tokens", async () => {
     await createUser({ id: "u3", email: "u3@example.com", passwordHash: "hash" });
     await setResetToken("u3", "tok", new Date(Date.now() - 1000));
-    const user = await getUserByResetToken("tok");
-    expect(user).toBeNull();
+    await expect(getUserByResetToken("tok")).rejects.toThrow("User not found");
   });
 
   it("returns user when token valid", async () => {

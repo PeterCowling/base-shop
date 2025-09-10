@@ -1,4 +1,4 @@
-import { formatPrice } from "../formatPrice";
+import { formatPrice } from "../formatPrice.ts";
 
 describe("formatPrice", () => {
   it("defaults to USD when currency is omitted", () => {

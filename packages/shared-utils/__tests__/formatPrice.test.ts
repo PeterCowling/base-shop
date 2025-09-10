@@ -1,4 +1,4 @@
-import { formatPrice } from '../src/formatPrice';
+import { formatPrice } from '../src/formatPrice.ts';
 
 describe('formatPrice', () => {
   it('formats positive amounts', () => {

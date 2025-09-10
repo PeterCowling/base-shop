@@ -62,6 +62,23 @@ describe("mapSendGridEvent", () => {
     });
   });
 
+  it("omits campaign when category is missing", async () => {
+    setupMocks();
+    const { mapSendGridEvent } = await import("../src/analytics");
+    const ev = {
+      event: "open",
+      sg_message_id: "m3",
+      email: "user@example.com",
+    } as const;
+    const result = mapSendGridEvent(ev);
+    expect(result).toEqual<EmailAnalyticsEvent>({
+      type: "email_open",
+      messageId: "m3",
+      recipient: "user@example.com",
+    });
+    expect(result).not.toHaveProperty("campaign");
+  });
+
   it("uses the first value from category arrays", async () => {
     setupMocks();
     const { mapSendGridEvent } = await import("../src/analytics");

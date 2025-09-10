@@ -70,6 +70,24 @@ describe("seo service", () => {
     expect(revalidatePath).toHaveBeenCalledWith("/cms/shop/shop/settings/seo");
   });
 
+  it("warns when revalidation fails but returns settings", async () => {
+    (revalidatePath as jest.Mock).mockImplementationOnce(() => {
+      throw new Error("fail");
+    });
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const fd = new FormData();
+    fd.append("locale", "en");
+    fd.append("title", "Title");
+    fd.append("description", "Desc");
+    const result = await updateSeo("shop", fd);
+    expect(warnSpy).toHaveBeenCalledWith(
+      "[updateSeo] failed to revalidate path for shop shop",
+      expect.any(Error),
+    );
+    expect(result.settings).toBeDefined();
+    warnSpy.mockRestore();
+  });
+
   it("returns errors when persistence fails", async () => {
     (persistSettings as jest.Mock).mockRejectedValueOnce(new Error("db"));
     const fd = new FormData();

@@ -1,5 +1,7 @@
+const DATA_ROOT = "/data/shops";
+
 jest.mock("../../dataRoot", () => ({
-  DATA_ROOT: "/data/root",
+  DATA_ROOT,
 }));
 
 const files = new Map<string, string>();
@@ -40,7 +42,7 @@ import {
 } from "../coupons.server";
 
 const shop = "demo";
-const file = path.join("/data/root", shop, "coupons.json");
+const file = path.join(DATA_ROOT, shop, "coupons.json");
 const readFile = fs.readFile as jest.Mock;
 const writeFile = fs.writeFile as jest.Mock;
 const rename = fs.rename as jest.Mock;
@@ -77,7 +79,7 @@ describe("coupon repository", () => {
     const nowSpy = jest.spyOn(Date, "now").mockReturnValue(now);
     await writeCouponRepo(shop, coupons);
     const tmp = `${file}.${now}.tmp`;
-    expect(mkdir).toHaveBeenCalledWith(path.join("/data/root", shop), {
+    expect(mkdir).toHaveBeenCalledWith(path.join(DATA_ROOT, shop), {
       recursive: true,
     });
     expect(writeFile).toHaveBeenCalledWith(
@@ -90,4 +92,19 @@ describe("coupon repository", () => {
     expect(memfs.has(tmp)).toBe(false);
     nowSpy.mockRestore();
   });
+});
+
+it("sanitizes shop name in file path", async () => {
+  jest.clearAllMocks();
+  memfs.clear();
+  jest.doMock("../../shops/index", () => ({
+    validateShopName: () => "evil",
+  }));
+  await jest.isolateModulesAsync(async () => {
+    const { readCouponRepo } = await import("../coupons.server");
+    await expect(readCouponRepo("../evil")).resolves.toEqual([]);
+  });
+  const p = readFile.mock.calls[0][0] as string;
+  expect(p).toBe(path.join(DATA_ROOT, "evil", "coupons.json"));
+  expect(path.relative(DATA_ROOT, p).startsWith("..")).toBe(false);
 });

@@ -37,20 +37,7 @@ function transpileTokens(filePath: string): TokenMap {
 
 export function loadThemeTokensNode(theme: string): TokenMap {
   if (!theme || theme === "base") return {};
-  // Resolve the workspace root relative to this file so consumers can call the
-  // loader from any package without relying on their current working
-  // directory. Jest's runtime can virtualize `__dirname`, so fall back to the
-  // process cwd when resolution fails.
-  const roots = [join(__dirname, "../../../..")];
-  let cwd = process.cwd();
-  while (!existsSync(join(cwd, "pnpm-workspace.yaml"))) {
-    const parent = join(cwd, "..");
-    if (parent === cwd) break;
-    cwd = parent;
-  }
-  roots.push(cwd);
-
-  for (const rootDir of roots) {
+  const tryRoot = (rootDir: string): TokenMap | undefined => {
     const baseDir = join(rootDir, "packages", "themes", theme);
     const candidates = [
       join(baseDir, "tailwind-tokens.js"),
@@ -62,8 +49,25 @@ export function loadThemeTokensNode(theme: string): TokenMap {
         return transpileTokens(file);
       }
     }
+    return undefined;
+  };
+
+  // First, look relative to this file's location. This allows callers to load
+  // tokens without relying on their current working directory.
+  const localRoot = join(__dirname, "../../../..");
+  const localTokens = tryRoot(localRoot);
+  if (localTokens) return localTokens;
+
+  // Fall back to resolving the workspace root from the process cwd. Jest can
+  // virtualize `__dirname`, so this ensures resolution still works.
+  let cwd = process.cwd();
+  while (!existsSync(join(cwd, "pnpm-workspace.yaml"))) {
+    const parent = join(cwd, "..");
+    if (parent === cwd) return {};
+    cwd = parent;
   }
-  return {};
+  const workspaceTokens = tryRoot(cwd);
+  return workspaceTokens ?? {};
 }
 
 export async function loadThemeTokensBrowser(theme: string): Promise<TokenMap> {

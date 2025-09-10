@@ -1,4 +1,4 @@
-import { toggleItem } from './toggleItem';
+import { toggleItem } from '../toggleItem';
 
 describe('toggleItem', () => {
   it('adds item when missing without mutating the original array', () => {

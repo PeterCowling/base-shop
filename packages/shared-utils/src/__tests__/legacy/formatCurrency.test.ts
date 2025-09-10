@@ -1,4 +1,4 @@
-import { formatCurrency } from './formatCurrency';
+import { formatCurrency } from '../../formatCurrency';
 
 describe('formatCurrency', () => {
   it('uses USD and current locale by default', () => {

@@ -27,6 +27,13 @@ jest.mock("@acme/types", () => ({
 }));
 
 jest.mock("@acme/platform-core/repositories/shop.server", () => ({
+  getShopById: jest.fn(async (shop: string) => {
+    const { prisma } = jest.requireMock("@acme/platform-core/db");
+    const { shopSchema } = jest.requireMock("@acme/types");
+    const rec = await prisma.shop.findUnique({ where: { id: shop } });
+    if (!rec) throw new Error(`Shop ${shop} not found`);
+    return shopSchema.parse(rec.data);
+  }),
   updateShopInRepo: jest.fn(async (_shop: string, patch: any) => patch),
 }));
 

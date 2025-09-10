@@ -12,7 +12,9 @@ describe("returnAuthorization", () => {
   });
 
   it("builds RA IDs and delegates to addReturnAuthorization", async () => {
-    const { createReturnAuthorization } = await import("../returnAuthorization");
+    const { createReturnAuthorization } = await import(
+      "../returnAuthorization"
+    );
     const repo = await import("../repositories/returnAuthorization.server");
     const nowSpy = jest.spyOn(Date, "now").mockReturnValue(123456);
     const ra = await createReturnAuthorization({ orderId: "o1" });
@@ -31,5 +33,14 @@ describe("returnAuthorization", () => {
     const result = await listReturnAuthorizations();
     expect(repo.readReturnAuthorizations).toHaveBeenCalled();
     expect(result).toBe(list);
+  });
+
+  it("propagates errors from readReturnAuthorizations", async () => {
+    const { listReturnAuthorizations } = await import("../returnAuthorization");
+    const repo = await import("../repositories/returnAuthorization.server");
+    const err = new Error("read failed");
+    (repo.readReturnAuthorizations as jest.Mock).mockRejectedValue(err);
+    await expect(listReturnAuthorizations()).rejects.toBe(err);
+    expect(repo.readReturnAuthorizations).toHaveBeenCalled();
   });
 });

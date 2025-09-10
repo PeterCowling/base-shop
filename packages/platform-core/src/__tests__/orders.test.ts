@@ -70,10 +70,11 @@ describe("orders", () => {
       expect(remaining).toBe(6);
     });
 
-    it("returns null when order is missing", async () => {
-      prismaMock.rentalOrder.update.mockRejectedValue(new Error("not found"));
-      const result = await markReturned("shop", "sess");
-      expect(result).toBeNull();
+    it("returns null when update throws", async () => {
+      prismaMock.rentalOrder.update.mockImplementation(() => {
+        throw new Error("not found");
+      });
+      await expect(markReturned("shop", "sess")).resolves.toBeNull();
     });
   });
 

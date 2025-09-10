@@ -141,9 +141,10 @@ describe('orders', () => {
     });
 
     it('returns null on error', async () => {
-      prisma.rentalOrder.update.mockRejectedValueOnce(new Error('fail'));
-      const result = await markReturned('s', 'sess');
-      expect(result).toBeNull();
+      prisma.rentalOrder.update.mockImplementationOnce(() => {
+        throw new Error('fail');
+      });
+      await expect(markReturned('s', 'sess')).resolves.toBeNull();
     });
   });
 

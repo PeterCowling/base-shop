@@ -31,6 +31,16 @@ describe("useRemoteImageProbe", () => {
     expect(result.current.valid).toBe(true);
   });
 
+  it("ignores empty url and does not fetch", async () => {
+    const { result } = renderHook(() => useRemoteImageProbe());
+    await act(async () => {
+      await result.current.probe("");
+    });
+    expect(mockFetch).not.toHaveBeenCalled();
+    expect(result.current.error).toBeNull();
+    expect(result.current.valid).toBeNull();
+  });
+
   it("sets loading during fetch and resets after success", async () => {
     let resolveFetch: (value: unknown) => void;
     const fetchPromise = new Promise((res) => {
@@ -69,6 +79,19 @@ describe("useRemoteImageProbe", () => {
     expect(result.current.valid).toBe(false);
   });
 
+  it("handles non-ok responses", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      headers: { get: () => "image/png" },
+    } as any);
+    const { result } = renderHook(() => useRemoteImageProbe());
+    await act(async () => {
+      await result.current.probe("http://example.com/bad.png");
+    });
+    expect(result.current.error).toBe("not-image");
+    expect(result.current.valid).toBe(false);
+  });
+
   it("sets loading during fetch and resets after failure", async () => {
     let rejectFetch: (reason?: unknown) => void;
     const fetchPromise = new Promise((_, rej) => {
@@ -89,5 +112,15 @@ describe("useRemoteImageProbe", () => {
     });
 
     expect(result.current.loading).toBe(false);
+  });
+
+  it("surfaces network errors", async () => {
+    mockFetch.mockRejectedValueOnce(new Error("network"));
+    const { result } = renderHook(() => useRemoteImageProbe());
+    await act(async () => {
+      await result.current.probe("http://example.com/error.png");
+    });
+    expect(result.current.error).toBe("network");
+    expect(result.current.valid).toBe(false);
   });
 });

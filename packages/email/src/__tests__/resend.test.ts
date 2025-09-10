@@ -53,6 +53,17 @@ describe("ResendProvider", () => {
     );
   });
 
+  it("resolves without API key and does not fetch during sanity check", async () => {
+    delete process.env.RESEND_API_KEY;
+    const fetchMock = jest.fn();
+    global.fetch = fetchMock as any;
+    const { ResendProvider } = await import("../providers/resend");
+    await expect(
+      new ResendProvider({ sanityCheck: true }).ready
+    ).resolves.toBeUndefined();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it("rejects when sanity check fetch fails", async () => {
     process.env.RESEND_API_KEY = "rs";
     const err = new Error("fail");

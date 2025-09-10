@@ -45,8 +45,10 @@ describe("email index", () => {
     );
 
     await import("../index");
+    const { sendEmail } = await import("../sendEmail");
 
-    expect(setEmailService).toHaveBeenCalledWith({ sendEmail: mockSendEmail });
+    // The email service should be registered with the sendEmail implementation.
+    expect(setEmailService).toHaveBeenCalledWith({ sendEmail });
   });
 
   it("does not throw if email service module is missing", async () => {

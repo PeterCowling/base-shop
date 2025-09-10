@@ -558,3 +558,31 @@ it("destroyCustomerSession ignores invalid token", async () => {
   });
 });
 
+it("destroyCustomerSession deletes cookies even when SESSION_SECRET undefined", async () => {
+  const {
+    destroyCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+    CSRF_TOKEN_COOKIE,
+  } = await import("../session");
+
+  const env = await import("@acme/config/env/core");
+  Object.defineProperty(env.coreEnv, "SESSION_SECRET", {
+    value: undefined,
+  });
+
+  mockCookies.get.mockReturnValue({ value: "token" });
+
+  await expect(destroyCustomerSession()).resolves.toBeUndefined();
+
+  expect(mockCookies.delete).toHaveBeenCalledWith({
+    name: CUSTOMER_SESSION_COOKIE,
+    path: "/",
+    domain: "example.com",
+  });
+  expect(mockCookies.delete).toHaveBeenCalledWith({
+    name: CSRF_TOKEN_COOKIE,
+    path: "/",
+    domain: "example.com",
+  });
+});
+

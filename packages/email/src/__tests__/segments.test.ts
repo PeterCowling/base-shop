@@ -542,6 +542,22 @@ describe("resolveSegment events", () => {
     expect(r2).toEqual(["a@example.com"]);
     expect(mockListEvents).toHaveBeenCalledTimes(1);
   });
+
+  it("ignores events without string emails", async () => {
+    mockReadFile.mockResolvedValue("[]");
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    mockListEvents.mockResolvedValue([
+      { email: "a@example.com", type: "segment:vip" },
+      { email: undefined, type: "segment:vip" },
+      { type: "segment:vip" },
+      { email: 123, type: "segment:vip" },
+    ]);
+
+    const { resolveSegment } = await import("../segments");
+    const result = await resolveSegment("shop1", "vip");
+
+    expect(result).toEqual(["a@example.com"]);
+  });
 });
 
 describe("resolveSegment errors", () => {

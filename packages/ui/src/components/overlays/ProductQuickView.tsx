@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Dialog, DialogContent } from "../atoms/shadcn";
+import { Dialog, DialogContent, Button } from "../atoms/shadcn";
 import type { SKU } from "@acme/types";
 import { ProductCard } from "../organisms/ProductCard";
 
@@ -48,7 +48,20 @@ export function ProductQuickView({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="p-0" style={style}>
+      <DialogContent
+        className="relative p-0"
+        style={style}
+        data-cy="quick-view"
+      >
+        <Button
+          variant="outline"
+          className="absolute right-2 top-2 px-2 py-1 text-xs"
+          aria-label="Close"
+          data-cy="close-quick-view"
+          onClick={() => onOpenChange(false)}
+        >
+          Close
+        </Button>
         <ProductCard
           product={product}
           onAddToCart={onAddToCart}

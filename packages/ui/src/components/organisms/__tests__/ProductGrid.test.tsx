@@ -8,7 +8,7 @@ jest.mock("@acme/platform-core/contexts/CartContext", () => ({
 
 function mockResize(initialWidth: number) {
   let cb: ResizeObserverCallback;
-  let element: Element;
+  let element: Element | undefined;
   (global as any).ResizeObserver = class {
     constructor(callback: ResizeObserverCallback) {
       cb = callback;
@@ -26,6 +26,7 @@ function mockResize(initialWidth: number) {
   } as any;
 
   return (width: number) => {
+    if (!element) return;
     Object.defineProperty(element, "clientWidth", {
       value: width,
       configurable: true,

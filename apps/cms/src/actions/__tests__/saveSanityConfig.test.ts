@@ -110,6 +110,31 @@ describe("saveSanityConfig", () => {
     expect(updateShopInRepo).not.toHaveBeenCalled();
   });
 
+  it("schedules promotion when request succeeds", async () => {
+    (verifyCredentials as jest.Mock).mockResolvedValue(true);
+    (getShopById as jest.Mock).mockResolvedValue({
+      id: "shop",
+      editorialBlog: { enabled: false },
+      luxuryFeatures: { blog: false },
+    });
+    (updateShopInRepo as jest.Mock).mockResolvedValue({});
+
+    const fetchMock = jest.spyOn(global, "fetch" as any).mockResolvedValue({ ok: true });
+
+    const fd = new FormData();
+    fd.set("projectId", "p");
+    fd.set("dataset", "d");
+    fd.set("token", "t");
+    fd.set("promoteSchedule", "2025-01-01T00:00:00Z");
+
+    const res = await saveSanityConfig("shop", fd);
+
+    expect(fetchMock).toHaveBeenCalled();
+    expect(res).toEqual({ message: "Sanity connected" });
+
+    fetchMock.mockRestore();
+  });
+
   it("logs error and still returns success when promotion scheduling fails", async () => {
     (verifyCredentials as jest.Mock).mockResolvedValue(true);
     (getShopById as jest.Mock).mockResolvedValue({

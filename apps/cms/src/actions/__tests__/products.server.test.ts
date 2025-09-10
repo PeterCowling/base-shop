@@ -146,6 +146,38 @@ describe('products.server actions', () => {
       expect(result.product?.title.en).toBe('new');
     });
 
+    it('falls back to empty array on invalid media JSON', async () => {
+      const fd = new FormData();
+      fd.append('id', 'p1');
+      fd.append('price', '10');
+      fd.append('title_en', 'new');
+      fd.append('desc_en', 'new');
+      fd.append('media', 'not json');
+      const result = await updateProduct(shop, fd);
+      expect(updateProductInRepo).toHaveBeenCalled();
+      expect(result.product?.media).toEqual([]);
+    });
+
+    it('filters media items missing url or type before persistence', async () => {
+      const fd = new FormData();
+      fd.append('id', 'p1');
+      fd.append('price', '10');
+      fd.append('title_en', 'new');
+      fd.append('desc_en', 'new');
+      fd.append(
+        'media',
+        JSON.stringify([
+          { url: 'valid', type: 'image' },
+          { url: '', type: 'image' },
+        ])
+      );
+      const result = await updateProduct(shop, fd);
+      expect(updateProductInRepo).toHaveBeenCalled();
+      expect(result.product?.media).toEqual([
+        { url: 'valid', type: 'image' },
+      ]);
+    });
+
     it('rethrows repository errors and captures exception', async () => {
       const error = new Error('repo failure');
       (updateProductInRepo as jest.Mock).mockRejectedValue(error);

@@ -16,11 +16,17 @@ jest.mock("../src/send", () => ({
   sendCampaignEmail: jest.fn(),
 }));
 
+jest.mock("../src/segments", () => ({
+  __esModule: true,
+  resolveSegment: jest.fn(),
+}));
+
 let setClock: typeof import("../src/scheduler").setClock;
 let createCampaign: typeof import("../src/scheduler").createCampaign;
 let sendDueCampaigns: typeof import("../src/scheduler").sendDueCampaigns;
 let mockedSend: jest.Mock;
 let mockListEvents: jest.Mock;
+let mockResolveSegment: jest.Mock;
 
 jest.setTimeout(10000);
 
@@ -49,9 +55,11 @@ describe("scheduler", () => {
     ({ setClock, createCampaign, sendDueCampaigns } = await import("../src/scheduler"));
     ({ sendCampaignEmail: mockedSend } = (await import("../src/send")) as any);
     ({ listEvents: mockListEvents } = (await import("@platform-core/repositories/analytics.server")) as any);
+    ({ resolveSegment: mockResolveSegment } = (await import("../src/segments")) as any);
     setClock({ now: () => now });
     mockedSend.mockResolvedValue(undefined);
     mockListEvents.mockResolvedValue([]);
+    mockResolveSegment.mockResolvedValue([]);
   });
 
   afterEach(() => {
@@ -134,6 +142,45 @@ describe("scheduler", () => {
     ).rejects.toThrow("boom");
 
     expect(memory[shop]).toBeUndefined();
+  });
+
+  test("adds tracking pixel and rewrites links", async () => {
+    const id = await createCampaign({
+      shop,
+      recipients: ["a@example.com"],
+      subject: "Hi",
+      body: '<p><a href="https://example.com">Link</a></p>',
+    });
+
+    expect(mockedSend).toHaveBeenCalledTimes(1);
+    const html = mockedSend.mock.calls[0][0].html as string;
+    expect(html).toContain(
+      `/api/marketing/email/open?shop=${shop}&campaign=${id}`,
+    );
+    expect(html).toContain(
+      `href="/api/marketing/email/click?shop=${shop}&campaign=${id}&url=${encodeURIComponent(
+        "https://example.com",
+      )}"`,
+    );
+  });
+
+  test("resolves segment when recipients missing", async () => {
+    mockResolveSegment.mockResolvedValue(["a@example.com", "b@example.com"]);
+
+    await createCampaign({
+      shop,
+      recipients: [],
+      segment: "all",
+      subject: "Hi",
+      body: "<p>Hi</p>",
+    });
+
+    expect(mockResolveSegment).toHaveBeenCalledTimes(2);
+    expect(memory[shop][0].recipients).toEqual([
+      "a@example.com",
+      "b@example.com",
+    ]);
+    expect(mockedSend).toHaveBeenCalledTimes(2);
   });
 
   test("filters out unsubscribed recipients", async () => {

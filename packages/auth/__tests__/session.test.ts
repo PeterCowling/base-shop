@@ -64,6 +64,26 @@ describe("session token", () => {
     await expect(getCustomerSession()).resolves.toEqual(session);
   });
 
+  it("returns null when session store misses", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { createCustomerSession } = await import("../src/session");
+    const session = { customerId: "abc", role: "customer" as Role };
+    await createCustomerSession(session);
+
+    jest.resetModules();
+    mockCookies.mockResolvedValue(store);
+    jest.doMock("../src/store", () => ({
+      __esModule: true,
+      SESSION_TTL_S: 1,
+      createSessionStore: async () => ({ get: jest.fn().mockResolvedValue(null) }),
+    }));
+
+    const { getCustomerSession } = await import("../src/session");
+    await expect(getCustomerSession()).resolves.toBeNull();
+    jest.dontMock("../src/store");
+  });
+
   it("handles expired tokens", async () => {
     const store = createStore();
     mockCookies.mockResolvedValue(store);

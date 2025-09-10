@@ -2,7 +2,7 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import MediaFileList from "../MediaFileList";
 
 jest.mock("../MediaFileItem", () => (props: any) => (
-  <div data-testid="media-item" onClick={() => props.onDelete(props.item.url)}>
+  <div data-cy="media-item" onClick={() => props.onDelete(props.item.url)}>
     item
   </div>
 ));

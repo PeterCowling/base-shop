@@ -5,8 +5,8 @@ import { PaymentMethodSelector, type PaymentMethod } from "../PaymentMethodSelec
 
 describe("PaymentMethodSelector", () => {
   const methods: PaymentMethod[] = [
-    { value: "card", label: "Credit Card", icon: <svg data-testid="card-icon" /> },
-    { value: "paypal", label: "PayPal", icon: <svg data-testid="paypal-icon" /> },
+    { value: "card", label: "Credit Card", icon: <svg data-cy="card-icon" /> },
+    { value: "paypal", label: "PayPal", icon: <svg data-cy="paypal-icon" /> },
   ];
 
   function Wrapper({ onChange }: { onChange: (value: string) => void }) {

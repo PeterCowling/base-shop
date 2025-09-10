@@ -144,8 +144,8 @@ describe('shipping index', () => {
     Math.random = () => 0.1234567890;
     const noKey = await createReturnLabel('sess');
     expect(noKey).toEqual({
-      trackingNumber: '1Z123456789',
-      labelUrl: 'https://www.ups.com/track?loc=en_US&tracknum=1Z123456789',
+      trackingNumber: '1Z1234567890',
+      labelUrl: 'https://www.ups.com/track?loc=en_US&tracknum=1Z1234567890',
     });
     Math.random = origRand;
 

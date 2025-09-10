@@ -12,7 +12,8 @@ describe("loadThemeTokensNode", () => {
   it("selects first existing candidate", () => {
     const existsSpy = jest.spyOn(fs, "existsSync");
     existsSpy.mockReturnValueOnce(false); // .js
-    existsSpy.mockReturnValueOnce(true); // .ts
+    existsSpy.mockReturnValueOnce(false); // .ts
+    existsSpy.mockReturnValueOnce(true); // src/tailwind-tokens.ts
     jest
       .spyOn(fs, "readFileSync")
       .mockReturnValue("export const tokens = { '--color-bg': '#000' };");

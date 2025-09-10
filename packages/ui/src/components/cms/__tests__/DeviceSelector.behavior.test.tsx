@@ -27,7 +27,7 @@ function Wrapper({ onToggle }: { onToggle?: () => void }) {
         setDeviceId={handleSetDeviceId}
         toggleOrientation={toggleOrientation}
       />
-      <div data-testid="state">{`${deviceId}-${orientation}`}</div>
+      <div data-cy="state">{`${deviceId}-${orientation}`}</div>
     </>
   );
 }

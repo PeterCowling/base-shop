@@ -200,6 +200,37 @@ describe("sendEmail", () => {
     expect(getDefaultSender).toHaveBeenCalled();
   });
 
+  it("logs and rethrows string errors from nodemailer", async () => {
+    process.env = {
+      ...OLD_ENV,
+      GMAIL_USER: "test@example.com",
+      GMAIL_PASS: "secret",
+      STRIPE_SECRET_KEY: "sk",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+    } as NodeJS.ProcessEnv;
+
+    const error = "fail";
+    const sendMail = jest.fn().mockRejectedValue(error);
+    jest.doMock("nodemailer", () => ({
+      __esModule: true,
+      default: { createTransport: () => ({ sendMail }) },
+      createTransport: () => ({ sendMail }),
+    }));
+    const getDefaultSender = jest.fn(() => "sender@example.com");
+    jest.doMock("../config", () => ({ getDefaultSender }));
+
+    const errorSpy = jest.spyOn(console, "error").mockImplementation();
+
+    const { sendEmail } = await import("../sendEmail");
+    await expect(
+      sendEmail("a@b.com", "Hello", "World")
+    ).rejects.toBe(error);
+
+    expect(errorSpy).toHaveBeenCalledWith("Error sending email", error);
+    expect(getDefaultSender).toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
   it("logs and rethrows when getDefaultSender throws", async () => {
     process.env = {
       ...OLD_ENV,

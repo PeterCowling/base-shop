@@ -16,6 +16,9 @@ type ShopRepo = {
 let repoPromise: Promise<ShopRepo> | undefined;
 
 async function getRepo(): Promise<ShopRepo> {
+  if (process.env.NODE_ENV === "test") {
+    repoPromise = undefined;
+  }
   if (!repoPromise) {
     repoPromise = resolveRepo<ShopRepo>(
       () => (prisma as any).shop,

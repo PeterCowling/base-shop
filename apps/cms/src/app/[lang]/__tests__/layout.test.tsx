@@ -5,13 +5,13 @@ import LocaleLayout from "../layout";
 
 jest.mock("@ui/components/layout/Footer", () => ({
   __esModule: true,
-  default: () => <div data-testid="footer" />,
+  default: () => <div data-cy="footer" />,
 }));
 
 jest.mock("@ui/components/layout/Header", () => ({
   __esModule: true,
   default: jest.fn(({ lang }: { lang: string }) => (
-    <div data-testid="header">{lang}</div>
+    <div data-cy="header">{lang}</div>
   )),
 }));
 

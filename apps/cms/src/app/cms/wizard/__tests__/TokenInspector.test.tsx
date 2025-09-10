@@ -7,7 +7,7 @@ jest.mock("@ui/components/atoms", () => {
   return {
     __esModule: true,
     Button: (props: any) => <button {...props} />,
-    Popover: ({ open, children }: any) => (open ? <div data-testid="popover">{children}</div> : null),
+    Popover: ({ open, children }: any) => (open ? <div data-cy="popover">{children}</div> : null),
     PopoverAnchor: ({ children }: any) => <>{children}</>,
     PopoverContent: ({ children }: any) => <div>{children}</div>,
   };
@@ -18,7 +18,7 @@ describe("TokenInspector", () => {
     const onTokenSelect = jest.fn();
     render(
       <TokenInspector inspectMode onTokenSelect={onTokenSelect}>
-        <div data-testid="preview">
+        <div data-cy="preview">
           <div data-token="token-a">A</div>
           <div data-token="token-b">B</div>
         </div>

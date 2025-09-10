@@ -223,6 +223,26 @@ describe("ResendProvider", () => {
     await expect(provider.addToList("cid", "lid")).resolves.toBeUndefined();
   });
 
+  it("addToList posts correct payload", async () => {
+    process.env.RESEND_API_KEY = "rs";
+    const fetchMock = jest.fn().mockResolvedValue({}) as any;
+    global.fetch = fetchMock;
+    const { ResendProvider } = await import("../providers/resend");
+    const provider = new ResendProvider();
+    await provider.addToList("cid", "lid");
+    expect(fetchMock).toHaveBeenCalledWith(
+      "https://api.resend.com/segments/lid/contacts",
+      {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer rs",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ contact_id: "cid" }),
+      }
+    );
+  });
+
   it("listSegments returns [] when fetch rejects", async () => {
     process.env.RESEND_API_KEY = "rs";
     global.fetch = jest.fn().mockRejectedValueOnce(new Error("fail")) as any;

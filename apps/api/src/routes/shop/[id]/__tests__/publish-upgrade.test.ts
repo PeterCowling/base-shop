@@ -475,6 +475,7 @@ describe("onRequestPost", () => {
     spawn.mockImplementation(() => ({
       on: (_: string, cb: (code: number) => void) => cb(0),
     }));
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
 
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
@@ -879,6 +880,7 @@ describe("onRequestPost", () => {
       }
       return "";
     });
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
 
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
@@ -943,6 +945,7 @@ describe("onRequestPost", () => {
       }
       return "";
     });
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
 
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({

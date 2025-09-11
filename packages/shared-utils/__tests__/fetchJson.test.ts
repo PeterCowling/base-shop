@@ -51,6 +51,25 @@ describe("fetchJson", () => {
     );
   });
 
+  it("rejects when fetch rejects", async () => {
+    const error = new Error("network");
+    (global.fetch as jest.Mock).mockRejectedValue(error);
+
+    await expect(fetchJson("https://example.com")).rejects.toBe(error);
+  });
+
+  it("throws parsing error when JSON invalid and schema provided", async () => {
+    const schema = z.object({ message: z.string() });
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue("not json"),
+    });
+
+    await expect(
+      fetchJson("https://example.com", undefined, schema),
+    ).rejects.toBeInstanceOf(z.ZodError);
+  });
+
   it("resolves undefined when JSON is invalid and no schema provided", async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,

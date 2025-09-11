@@ -149,6 +149,34 @@ describe("authorize", () => {
     });
   });
 
+  it("handles roles provided as arrays", async () => {
+    const hashed = "$argon2id$hashed";
+    const readRbac = jest.fn().mockResolvedValue({
+      users: {
+        "2": { id: "2", email: "array@example.com", password: hashed },
+      },
+      roles: { "2": ["guest"] },
+    });
+    const argonVerify = jest.fn().mockResolvedValue(true);
+    const authorize = getAuthorize({ readRbac, argonVerify });
+
+    const result = await authorize({
+      email: "array@example.com",
+      password: "secret",
+    });
+
+    expect(result).toMatchObject({
+      id: "2",
+      email: "array@example.com",
+      role: "guest",
+    });
+    expect(argonVerify).toHaveBeenCalledWith(hashed, "secret");
+    expect(logger.info).toHaveBeenCalledWith("[auth] login success", {
+      userId: "2",
+      role: "guest",
+    });
+  });
+
   it("throws when hashed password does not match", async () => {
     const hashed = "$argon2id$hashed";
     const readRbac = jest.fn().mockResolvedValue({
@@ -183,6 +211,28 @@ describe("callbacks", () => {
     const session = { user: {} } as Session & { user: { role?: Role } };
     const result = await sessionCb({ session, token: withRole });
     expect(result.user.role).toBe("admin");
+  });
+
+  it("keeps token role when user is absent", async () => {
+    const options = createAuthOptions();
+    const jwtCb = options.callbacks.jwt!;
+
+    const token = { role: "admin" as Role } as JWT & { role?: Role };
+    const result = await jwtCb({ token });
+
+    expect((result as JWT & { role?: Role }).role).toBe("admin");
+  });
+
+  it("assigns guest role in session", async () => {
+    const options = createAuthOptions();
+    const sessionCb = options.callbacks.session!;
+    const session = { user: {} } as Session & { user: { role?: Role } };
+
+    const result = await sessionCb({
+      session,
+      token: { role: "guest" } as JWT & { role: Role },
+    });
+    expect(result.user.role).toBe("guest");
   });
 
   it("leaves role undefined when token lacks it", async () => {

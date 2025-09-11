@@ -82,15 +82,7 @@ export function useFileUpload(
   /* ---------- orientation check ----------------------------------- */
   const isVideo = pendingFile?.type?.startsWith("video/") ?? false;
 
-  function useSkipOrientationValidation() {
-    return { actual: null, isValid: true };
-  }
-
-  const orientationHook = isVideo
-    ? useSkipOrientationValidation
-    : useImageOrientationValidation;
-
-  const { actual: rawActual, isValid: rawValid } = orientationHook(
+  const { actual: rawActual, isValid: rawValid } = useImageOrientationValidation(
     isVideo ? null : pendingFile,
     requiredOrientation,
   );

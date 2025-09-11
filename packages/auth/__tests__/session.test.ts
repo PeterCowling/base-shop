@@ -82,6 +82,18 @@ describe("session token", () => {
     );
   });
 
+  it("does not set csrf token cookie when present", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const { createCustomerSession, getCustomerSession, CSRF_TOKEN_COOKIE } = await import("../src/session");
+    const session = { customerId: "abc", role: "customer" as Role };
+    await createCustomerSession(session);
+    expect(store.get(CSRF_TOKEN_COOKIE)).toBeDefined();
+    store.set.mockClear();
+    await expect(getCustomerSession()).resolves.toEqual(session);
+    expect(store.set.mock.calls.find(([name]) => name === CSRF_TOKEN_COOKIE)).toBeUndefined();
+  });
+
   it("handles expired tokens", async () => {
     const store = createStore();
     mockCookies.mockResolvedValue(store);

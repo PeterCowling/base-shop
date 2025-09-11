@@ -30,7 +30,7 @@ describe("createSessionStore", () => {
     });
   });
 
-  it("uses MemorySessionStore when SESSION_STORE=\"memory\" despite credentials", async () => {
+  it('uses MemorySessionStore when SESSION_STORE="memory" despite credentials', async () => {
     jest.doMock("@acme/config/env/core", () => ({
       coreEnv: {
         SESSION_STORE: "memory",
@@ -61,6 +61,32 @@ describe("createSessionStore", () => {
     expect(store).toBeInstanceOf(MemorySessionStore);
   });
 
+  it('logs error and falls back when SESSION_STORE="redis" without credentials', async () => {
+    const err = new Error("missing creds");
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: { SESSION_STORE: "redis" },
+    }));
+    jest.doMock("@upstash/redis", () => ({
+      Redis: class {
+        constructor() {
+          throw err;
+        }
+      },
+    }));
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const { createSessionStore } = await import("../src/store");
+    const { MemorySessionStore } = await import("../src/memoryStore");
+    const store = await createSessionStore();
+    expect(store).toBeInstanceOf(MemorySessionStore);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "Failed to initialize Redis session store",
+      err
+    );
+    consoleSpy.mockRestore();
+  });
+
   it("falls back to MemorySessionStore when SESSION_STORE is unrecognized", async () => {
     jest.doMock("@acme/config/env/core", () => ({
       coreEnv: { SESSION_STORE: "foobar" },
@@ -84,9 +110,11 @@ describe("createSessionStore", () => {
 
   it("last setSessionStoreFactory wins", async () => {
     jest.doMock("@acme/config/env/core", () => ({ coreEnv: {} }));
-    const { createSessionStore, setSessionStoreFactory } = await import("../src/store");
-    setSessionStoreFactory(async () => ({ id: 1 } as any));
-    setSessionStoreFactory(async () => ({ id: 2 } as any));
+    const { createSessionStore, setSessionStoreFactory } = await import(
+      "../src/store"
+    );
+    setSessionStoreFactory(async () => ({ id: 1 }) as any);
+    setSessionStoreFactory(async () => ({ id: 2 }) as any);
     const store = await createSessionStore();
     expect(store).toEqual({ id: 2 });
   });
@@ -115,7 +143,7 @@ describe("createSessionStore", () => {
     expect(store).toBeInstanceOf(MemorySessionStore);
     expect(consoleSpy).toHaveBeenCalledWith(
       "Failed to initialize Redis session store",
-      err,
+      err
     );
     consoleSpy.mockRestore();
   });

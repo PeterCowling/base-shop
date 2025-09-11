@@ -67,6 +67,10 @@ describe("parseDate", () => {
     expect(parseDate("not-a-date")).toBeNull();
   });
 
+  it("returns null when timezone parsing yields NaN", () => {
+    expect(parseDate("2025-03-03T00:00:00", "Not/A_Zone")).toBeNull();
+  });
+
   it("returns null when timezone parsing throws", async () => {
     await jest.isolateModulesAsync(async () => {
       jest.doMock("date-fns-tz", () => ({

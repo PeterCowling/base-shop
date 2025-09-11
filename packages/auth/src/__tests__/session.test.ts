@@ -296,6 +296,82 @@ it("getCustomerSession rejects when session store get fails", async () => {
   expect(mockSessionStore.delete).not.toHaveBeenCalled();
 });
 
+it("getCustomerSession deletes expired session", async () => {
+  jest.useFakeTimers();
+  jest.setSystemTime(new Date("2023-01-01T00:00:00Z"));
+  const { getCustomerSession, CUSTOMER_SESSION_COOKIE } = await import(
+    "../session",
+  );
+
+  mockCookies.get.mockImplementation((name: string) =>
+    name === CUSTOMER_SESSION_COOKIE ? { value: "token" } : undefined,
+  );
+  unsealData.mockResolvedValue({
+    sessionId: "old",
+    customerId: "cust",
+    role: "customer",
+  });
+  mockSessionStore.get.mockResolvedValue({
+    sessionId: "old",
+    createdAt: new Date(Date.now() - SESSION_TTL_S_MOCK * 1000 - 1000),
+  });
+
+  await expect(getCustomerSession()).resolves.toBeNull();
+  expect(mockSessionStore.delete).toHaveBeenCalledWith("old");
+  jest.useRealTimers();
+});
+
+it("getCustomerSession keeps session when within TTL", async () => {
+  jest.useFakeTimers();
+  jest.setSystemTime(new Date("2023-01-01T00:00:00Z"));
+  const {
+    getCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+    CSRF_TOKEN_COOKIE,
+  } = await import("../session");
+
+  mockCookies.get.mockImplementation((name: string) =>
+    name === CUSTOMER_SESSION_COOKIE ? { value: "token" } : undefined,
+  );
+  unsealData.mockResolvedValue({
+    sessionId: "old",
+    customerId: "cust",
+    role: "customer",
+  });
+  mockSessionStore.get.mockResolvedValue({
+    sessionId: "old",
+    createdAt: new Date(Date.now() - SESSION_TTL_S_MOCK * 1000 + 1000),
+  });
+  randomUUID.mockReturnValueOnce("new-id").mockReturnValueOnce("new-csrf");
+  sealData.mockResolvedValue("new-token");
+  mockHeaders.get.mockReturnValue("agent");
+
+  await expect(getCustomerSession()).resolves.toEqual({
+    customerId: "cust",
+    role: "customer",
+  });
+
+  expect(sealData).toHaveBeenCalledWith(
+    { sessionId: "new-id", customerId: "cust", role: "customer" },
+    { password: "secret", ttl: SESSION_TTL_S_MOCK },
+  );
+  expect(mockSessionStore.set).toHaveBeenCalledWith(
+    expect.objectContaining({ sessionId: "new-id", customerId: "cust" }),
+  );
+  expect(mockSessionStore.delete).toHaveBeenCalledWith("old");
+  expect(mockCookies.set).toHaveBeenCalledWith(
+    CUSTOMER_SESSION_COOKIE,
+    "new-token",
+    expect.any(Object),
+  );
+  expect(mockCookies.set).toHaveBeenCalledWith(
+    CSRF_TOKEN_COOKIE,
+    "new-csrf",
+    expect.any(Object),
+  );
+  jest.useRealTimers();
+});
+
 it("getCustomerSession returns null when session token expired", async () => {
   SESSION_TTL_S_MOCK = 1;
   jest.useFakeTimers();
@@ -347,7 +423,10 @@ it("getCustomerSession rotates session id, updates store, and creates csrf when 
     customerId: "cust",
     role: "customer",
   });
-  mockSessionStore.get.mockResolvedValue({ sessionId: "old" });
+  mockSessionStore.get.mockResolvedValue({
+    sessionId: "old",
+    createdAt: new Date(),
+  });
   randomUUID.mockReturnValueOnce("new-id").mockReturnValueOnce("new-csrf");
   sealData.mockResolvedValue("new-token");
   mockHeaders.get.mockReturnValue("agent");
@@ -392,7 +471,10 @@ it("getCustomerSession rejects when session store set fails without writing cook
     customerId: "cust",
     role: "customer",
   });
-  mockSessionStore.get.mockResolvedValue({ sessionId: "old" });
+  mockSessionStore.get.mockResolvedValue({
+    sessionId: "old",
+    createdAt: new Date(),
+  });
   randomUUID.mockReturnValue("new-id");
   sealData.mockResolvedValue("new-token");
   const error = new Error("set fail");
@@ -427,7 +509,10 @@ it("getCustomerSession propagates delete errors without setting cookies", async 
     customerId: "cust",
     role: "customer",
   });
-  mockSessionStore.get.mockResolvedValue({ sessionId: "old" });
+  mockSessionStore.get.mockResolvedValue({
+    sessionId: "old",
+    createdAt: new Date(),
+  });
   randomUUID.mockReturnValue("new-id");
   sealData.mockResolvedValue("new-token");
   const error = new Error("delete fail");
@@ -453,7 +538,10 @@ it("getCustomerSession stores 'unknown' userAgent when header missing", async ()
     customerId: "cust",
     role: "customer",
   });
-  mockSessionStore.get.mockResolvedValue({ sessionId: "old" });
+  mockSessionStore.get.mockResolvedValue({
+    sessionId: "old",
+    createdAt: new Date(),
+  });
   randomUUID.mockReturnValueOnce("new-id").mockReturnValueOnce("new-csrf");
   sealData.mockResolvedValue("new-token");
   mockHeaders.get.mockReturnValue(null);
@@ -658,7 +746,10 @@ it("getCustomerSession does not create csrf token if already present", async () 
     customerId: "cust",
     role: "customer",
   });
-  mockSessionStore.get.mockResolvedValue({ sessionId: "old" });
+  mockSessionStore.get.mockResolvedValue({
+    sessionId: "old",
+    createdAt: new Date(),
+  });
   randomUUID.mockReturnValue("new-id");
   sealData.mockResolvedValue("new-token");
   mockHeaders.get.mockReturnValue("agent");

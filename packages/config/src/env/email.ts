@@ -2,6 +2,7 @@ import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
 const isProd = process.env.NODE_ENV === "production";
+const isTest = process.env.NODE_ENV === "test";
 
 export const emailEnvSchema = z
   .object({
@@ -61,14 +62,30 @@ export const emailEnvSchema = z
     }
   });
 
-const parsed = emailEnvSchema.safeParse(process.env);
+const parsed = emailEnvSchema.safeParse(
+  isTest
+    ? {
+        EMAIL_FROM: "test@example.com",
+        EMAIL_PROVIDER: "noop",
+        ...process.env,
+      }
+    : process.env
+);
+
 if (!parsed.success) {
-  console.error(
-    "❌ Invalid email environment variables:",
-    parsed.error.format()
-  );
-  throw new Error("Invalid email environment variables");
+  if (!isTest) {
+    console.error(
+      "❌ Invalid email environment variables:",
+      parsed.error.format()
+    );
+    throw new Error("Invalid email environment variables");
+  }
 }
 
-export const emailEnv = parsed.data;
+export const emailEnv = parsed.success
+  ? parsed.data
+  : emailEnvSchema.parse({
+      EMAIL_FROM: "test@example.com",
+      EMAIL_PROVIDER: "noop",
+    });
 export type EmailEnv = z.infer<typeof emailEnvSchema>;

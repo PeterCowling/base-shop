@@ -108,6 +108,21 @@ describe("authOptions (Credentials provider)", () => {
     expect((token as JWT & { role?: string }).role).toBe("viewer");
   });
 
+  it("jwt callback without user leaves token unchanged", async () => {
+    const originalToken = { foo: "bar" } as JWT & { foo: string };
+
+    const returnedToken = await authOptions.callbacks!.jwt!.call(null, {
+      token: originalToken,
+      user: undefined,
+      account: null as Account | null,
+      profile: {} as Profile,
+      isNewUser: false,
+    });
+
+    expect(returnedToken).toBe(originalToken);
+    expect((returnedToken as JWT & { role?: string }).role).toBeUndefined();
+  });
+
   it("session callback exposes role to the client session", async () => {
     const baseSession: Session = {
       user: {} as User,
@@ -128,5 +143,25 @@ describe("authOptions (Credentials provider)", () => {
     expect((session as Session & { user: { role?: string } }).user.role).toBe(
       "admin"
     );
+  });
+
+  it("session callback without token role leaves session.user unmodified", async () => {
+    const baseSession: Session = {
+      user: {} as User,
+      expires: new Date(Date.now() + 86_400_000).toISOString(),
+    };
+    const token = {} as JWT;
+    const dummyUser = { id: "u", email: "x@example.com" } as User;
+
+    const session = await authOptions.callbacks!.session!.call(null, {
+      session: baseSession,
+      token,
+      user: dummyUser,
+      newSession: {} as Record<string, never>,
+      trigger: "update",
+    });
+
+    expect(session).toBe(baseSession);
+    expect("role" in session.user).toBe(false);
   });
 });

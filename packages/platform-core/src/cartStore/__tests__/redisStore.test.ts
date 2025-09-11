@@ -184,6 +184,19 @@ describe("RedisCartStore", () => {
       expect(redis.del.mock.calls.length).toBeGreaterThan(2);
     });
 
+    it("falls back on setCart when expire fails once", async () => {
+      const id = await store.createCart();
+      const cart = { [sku.id]: { sku, qty: 1 } };
+      const spy = jest.spyOn(fallback, "setCart");
+      redis.expire.mockRejectedValueOnce(new Error("fail"));
+      await store.setCart(id, cart);
+      expect(spy).toHaveBeenCalledTimes(1);
+
+      await store.setCart(id, cart);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(redis.expire.mock.calls.length).toBeGreaterThan(2);
+    });
+
     it("falls back on incrementQty when hincrby fails once", async () => {
       const id = await store.createCart();
       const spy = jest.spyOn(fallback, "incrementQty");

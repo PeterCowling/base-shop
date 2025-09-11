@@ -147,6 +147,24 @@ describe("inventory server", () => {
     expect(jsonRepo.update).toHaveBeenCalledTimes(1);
   });
 
+  it("returns undefined when updating unknown SKU", async () => {
+    await writeInventory("shop", [
+      { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
+    ]);
+    const result = await updateInventoryItem("shop", "b", {}, (cur) => {
+      if (!cur) return undefined;
+      return {
+        productId: cur.productId,
+        quantity: cur.quantity + 1,
+        variantAttributes: cur.variantAttributes,
+      } as any;
+    });
+    expect(result).toBeUndefined();
+    expect(await readInventory("shop")).toEqual([
+      { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
+    ]);
+  });
+
   it("ignores removal of unknown SKU", async () => {
     await writeInventory("shop", [
       { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },

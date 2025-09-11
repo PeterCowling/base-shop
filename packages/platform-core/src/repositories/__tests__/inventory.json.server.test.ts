@@ -37,6 +37,30 @@ describe("json inventory repository", () => {
     expect(log).toHaveBeenCalledWith(expect.stringContaining("Failed to read inventory for demo"), err);
   });
 
+  it("loads legacy variant field correctly", async () => {
+    jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(
+        JSON.stringify([
+          {
+            sku: "a",
+            productId: "p",
+            quantity: 1,
+            variant: { size: "M" },
+          },
+        ]),
+      );
+    const items = await jsonInventoryRepository.read("shop");
+    expect(items).toEqual([
+      {
+        sku: "a",
+        productId: "p",
+        quantity: 1,
+        variantAttributes: { size: "M" },
+      },
+    ]);
+  });
+
   it("serializes variantAttributes and triggers stock alert when enabled", async () => {
     const handle = { close: jest.fn().mockResolvedValue(undefined) } as any;
     jest.spyOn(fs, "open").mockResolvedValue(handle);

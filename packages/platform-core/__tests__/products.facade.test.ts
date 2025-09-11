@@ -1,10 +1,25 @@
+import { jest } from '@jest/globals';
+
 const mockProduct = { id: "prod-1", slug: "prod-1", stock: 1 } as any;
 
 jest.mock("../src/products/index", () => ({
   PRODUCTS: [mockProduct],
-  getProductById: jest.fn((id: string) => (id === mockProduct.id ? mockProduct : undefined)),
-  getProductBySlug: jest.fn((slug: string) => (slug === mockProduct.slug ? mockProduct : undefined)),
+  getProductById: jest.fn((id: string) =>
+    id === mockProduct.id ? mockProduct : undefined,
+  ),
+  getProductBySlug: jest.fn((slug: string) =>
+    slug === mockProduct.slug ? mockProduct : undefined,
+  ),
 }));
+
+const serverMocks = {
+  getProductById: jest.fn(async (_shop: string, id: string) =>
+    id === mockProduct.id ? mockProduct : null,
+  ),
+  readRepo: jest.fn(),
+};
+
+jest.mock("../src/repositories/products.server", () => serverMocks);
 
 import { getProductById, getProductBySlug } from "../src/products";
 import * as base from "../src/products/index";
@@ -18,11 +33,18 @@ describe("getProductById overloads", () => {
     const product = getProductById("prod-1");
     expect(product).toEqual(mockProduct);
     expect(base.getProductById).toHaveBeenCalledWith("prod-1");
+    expect(serverMocks.getProductById).not.toHaveBeenCalled();
   });
 
   it("returns product asynchronously", async () => {
-    await expect(getProductById("shop-abc", "prod-1")).resolves.toEqual(mockProduct);
-    expect(base.getProductById).toHaveBeenCalledWith("prod-1");
+    await expect(getProductById("shop-abc", "prod-1")).resolves.toEqual(
+      mockProduct,
+    );
+    expect(serverMocks.getProductById).toHaveBeenCalledWith(
+      "shop-abc",
+      "prod-1",
+    );
+    expect(base.getProductById).not.toHaveBeenCalled();
   });
 
   it("returns null when product missing synchronously", () => {
@@ -33,7 +55,11 @@ describe("getProductById overloads", () => {
 
   it("returns null when product missing asynchronously", async () => {
     await expect(getProductById("shop-abc", "no-exist")).resolves.toBeNull();
-    expect(base.getProductById).toHaveBeenCalledWith("no-exist");
+    expect(serverMocks.getProductById).toHaveBeenCalledWith(
+      "shop-abc",
+      "no-exist",
+    );
+    expect(base.getProductById).not.toHaveBeenCalled();
   });
 
   it("delegates slug lookup to base.getProductBySlug", () => {

@@ -43,7 +43,9 @@ test("resolveDataRoot finds nearest ancestor data/shops", () => {
   fsMock.existsSync.mockImplementation(fs.existsSync);
   try {
     process.chdir(path.join(ancestor, "nested"));
-    expect(resolveDataRoot()).toBe(ancestor);
+    expect(fs.realpathSync(resolveDataRoot())).toBe(
+      fs.realpathSync(ancestor),
+    );
   } finally {
     process.chdir(prev);
     fsMock.existsSync.mockImplementation(() => false);

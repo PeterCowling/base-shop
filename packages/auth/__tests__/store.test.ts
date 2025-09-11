@@ -66,10 +66,15 @@ describe("createSessionStore", () => {
     jest.doMock("@acme/config/env/core", () => ({
       coreEnv: { SESSION_STORE: "redis" },
     }));
+    const redisCtor = jest.fn((opts: any) => {
+      if (!opts?.url || !opts?.token) {
+        throw err;
+      }
+    });
     jest.doMock("@upstash/redis", () => ({
       Redis: class {
-        constructor() {
-          throw err;
+        constructor(opts: unknown) {
+          redisCtor(opts as any);
         }
       },
     }));
@@ -84,6 +89,7 @@ describe("createSessionStore", () => {
       "Failed to initialize Redis session store",
       err
     );
+    expect(redisCtor).toHaveBeenCalledWith({ url: undefined, token: undefined });
     consoleSpy.mockRestore();
   });
 

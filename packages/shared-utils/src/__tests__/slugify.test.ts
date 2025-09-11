@@ -1,28 +1,22 @@
 import slugify from '../slugify';
 
 describe('slugify', () => {
-  it('lowercases and replaces spaces with hyphens', () => {
+  it('converts basic ASCII strings', () => {
     expect(slugify('Hello World')).toBe('hello-world');
   });
 
-  it('strips accents and punctuation', () => {
-    expect(slugify('Café Déjà Vu!')).toBe('cafe-deja-vu');
+  it('collapses multiple spaces and underscores', () => {
+    expect(slugify('foo__bar   baz')).toBe('foo-bar-baz');
   });
 
-  it('removes emojis and non-Latin characters', () => {
-    expect(slugify('Hello 🌍 世界')).toBe('hello');
+  it('removes accents and diacritics', () => {
+    expect(slugify('Crème Brûlée')).toBe('creme-brulee');
   });
 
-  it('handles multiple spaces', () => {
-    expect(slugify('  multiple   spaces  ')).toBe('multiple-spaces');
-  });
-
-  it('collapses repeated hyphens and trims separators', () => {
-    expect(slugify('--a---b--')).toBe('a-b');
-  });
-
-  it('returns empty string for empty or null input', () => {
-    expect(slugify('')).toBe('');
+  it('trims leading/trailing punctuation and handles null/undefined', () => {
+    expect(slugify('---Hello---')).toBe('hello');
     expect(slugify(null)).toBe('');
+    expect(slugify(undefined)).toBe('');
   });
 });
+

@@ -70,6 +70,15 @@ describe("RedisSessionStore", () => {
     expect(client.expire).toHaveBeenCalledWith("customer_sessions:c1", ttl);
   });
 
+  it("rejects when redis set fails and does not touch sets", async () => {
+    const record = createRecord("s1");
+    (client.set as jest.Mock).mockRejectedValue(new Error("set failed"));
+
+    await expect(store.set(record)).rejects.toThrow("set failed");
+    expect(client.sadd).not.toHaveBeenCalled();
+    expect(client.expire).not.toHaveBeenCalled();
+  });
+
   it("retrieves session and hydrates createdAt", async () => {
     const record = createRecord("s1");
     await store.set(record);

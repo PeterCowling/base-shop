@@ -9,6 +9,8 @@ describe("getShopFromPath", () => {
     expect(getShopFromPath("/cms/foo/bar")).toBeUndefined();
     expect(getShopFromPath("/cms/shop")).toBeUndefined();
     expect(getShopFromPath(undefined)).toBeUndefined();
+    expect(getShopFromPath("/shop/")).toBeUndefined();
+    expect(getShopFromPath("/shop?x=1")).toBeUndefined();
   });
 
   it("handles paths with duplicate slashes", () => {
@@ -17,6 +19,10 @@ describe("getShopFromPath", () => {
 
   it("prefers query parameter over path segments", () => {
     expect(getShopFromPath("/cms/shop/my-shop/pages?shop=override")).toBe("override");
+  });
+
+  it("handles plural shops segment", () => {
+    expect(getShopFromPath("/cms/shops/my-shop")).toBe("my-shop");
   });
 
   it("returns undefined when no recognizable shop segment exists", () => {

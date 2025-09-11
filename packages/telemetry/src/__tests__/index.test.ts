@@ -6,6 +6,7 @@ describe("telemetry index", () => {
     jest.clearAllMocks();
     delete process.env.NEXT_PUBLIC_ENABLE_TELEMETRY;
     delete process.env.NEXT_PUBLIC_TELEMETRY_SAMPLE_RATE;
+    delete process.env.NEXT_PUBLIC_TELEMETRY_ENDPOINT;
     delete process.env.NODE_ENV;
     // restore fetch if mocked
     // @ts-ignore
@@ -44,6 +45,23 @@ describe("telemetry index", () => {
     const body = JSON.parse(fetchMock.mock.calls[0][1].body as string);
     expect(body[0].name).toBe("evt");
     expect(mod.__buffer.length).toBe(0);
+  });
+
+  test("uses custom endpoint when provided", async () => {
+    process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
+    process.env.NODE_ENV = "production";
+    process.env.NEXT_PUBLIC_TELEMETRY_ENDPOINT = "/custom-endpoint";
+    const mod = await import("../index");
+    const fetchMock = jest.fn().mockResolvedValue({ ok: true } as any);
+    originalFetch = global.fetch;
+    // @ts-ignore
+    global.fetch = fetchMock;
+    mod.track("evt");
+    await mod.__flush();
+    expect(fetchMock).toHaveBeenCalledWith(
+      "/custom-endpoint",
+      expect.any(Object)
+    );
   });
 
   test("__stripPII removes sensitive keys", async () => {

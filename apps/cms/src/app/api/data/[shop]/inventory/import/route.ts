@@ -21,10 +21,13 @@ export async function POST(
   try {
     const form = await req.formData();
     const file = form.get("file") as unknown;
-    if (!file || typeof (file as Blob).text !== "function") {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
-    }
-    const text = await (file as Blob).text();
+      let text: string;
+      try {
+        if (!file) throw new Error("no file");
+        text = await new Response(file as Blob).text();
+      } catch {
+        return NextResponse.json({ error: "No file provided" }, { status: 400 });
+      }
     let raw: unknown;
     const f = file as File;
     if (f.type === "application/json" || f.name.endsWith(".json")) {

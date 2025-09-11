@@ -72,15 +72,15 @@ export function validateQuery(
 }
 
 export async function getProducts(a?: unknown): Promise<SKU[]> {
-  if (typeof a === "string") {
-    try {
-      const { readRepo } = await import("./repositories/products.server");
-      return await readRepo<SKU>(a);
-    } catch {
-      return [...base.PRODUCTS];
-    }
+  if (typeof a !== "string" || a.trim() === "") {
+    throw new Error("getProducts requires a shop identifier");
   }
-  return [...base.PRODUCTS];
+  try {
+    const { readRepo } = await import("./repositories/products.server");
+    return await readRepo<SKU>(a);
+  } catch {
+    return [...base.PRODUCTS];
+  }
 }
 
 export async function searchProducts(
@@ -88,11 +88,19 @@ export async function searchProducts(
   b?: string,
 ): Promise<SKU[]> {
   if (typeof b === "undefined") {
+    if (a.trim() === "") {
+      throw new Error("searchProducts requires a query string");
+    }
     const q = a.toLowerCase();
     return base.PRODUCTS.filter((p) =>
       (p.title ?? "").toLowerCase().includes(q),
     );
   }
+
+  if (a.trim() === "" || b.trim() === "") {
+    throw new Error("searchProducts requires both shop and query string");
+  }
+
   try {
     const { readRepo } = await import("./repositories/products.server");
     const products = await readRepo<SKU>(a);

@@ -32,4 +32,9 @@ describe("cssVars", () => {
       "--line-height": "var(--line-height)",
     });
   });
+
+  it("ignores missing tokens", () => {
+    const vars = cssVars({ color: {} });
+    expect(vars).toEqual({});
+  });
 });

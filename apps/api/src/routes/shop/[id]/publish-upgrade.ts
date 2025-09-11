@@ -41,8 +41,16 @@ export const onRequestPost = async ({
     }
 
     const token = authHeader.slice("Bearer ".length);
+    const secret = process.env.UPGRADE_PREVIEW_TOKEN_SECRET;
+    if (!secret) {
+      console.warn("invalid token", { id });
+      return new Response(JSON.stringify({ error: "Forbidden" }), {
+        status: 403,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
     try {
-      jwt.verify(token, process.env.UPGRADE_PREVIEW_TOKEN_SECRET ?? "");
+      jwt.verify(token, secret);
     } catch {
       console.warn("invalid token", { id });
       return new Response(JSON.stringify({ error: "Forbidden" }), {

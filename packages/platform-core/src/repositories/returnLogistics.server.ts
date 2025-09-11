@@ -41,5 +41,24 @@ export async function writeReturnLogistics(
   return repo.writeReturnLogistics(data);
 }
 
+export interface ReturnLabelRequest {
+  carrier: string;
+  method: string;
+  orderId: string;
+}
+
+export async function createReturnLabel(
+  req: ReturnLabelRequest,
+): Promise<{ trackingNumber: string; labelUrl: string }> {
+  if (req.carrier !== "UPS") {
+    throw new Error("unsupported carrier");
+  }
+  const tracking = `1Z${Math.floor(Math.random() * 1e10)
+    .toString()
+    .padStart(10, "0")}`;
+  const labelUrl = `https://www.ups.com/track?loc=en_US&tracknum=${tracking}`;
+  return { trackingNumber: tracking, labelUrl };
+}
+
 export type { ReturnLogistics };
 

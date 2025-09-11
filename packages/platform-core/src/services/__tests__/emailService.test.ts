@@ -1,4 +1,10 @@
-import { getEmailService, setEmailService, type EmailService } from "../emailService";
+import {
+  getEmailService,
+  setEmailService,
+  type EmailService,
+  sendSystemEmail,
+} from "../emailService";
+import * as provider from "@acme/email";
 
 describe("emailService", () => {
   it("throws before a service is registered", async () => {
@@ -19,6 +25,32 @@ describe("emailService", () => {
       await getEmailService().sendEmail("to", "subject", "body");
       expect(svc.sendEmail).toHaveBeenCalledWith("to", "subject", "body");
     });
+  });
+});
+
+describe("sendSystemEmail", () => {
+  beforeEach(() => {
+    process.env.EMAIL_PROVIDER = "sendgrid";
+    jest.restoreAllMocks();
+  });
+
+  it("throws on unknown provider", async () => {
+    delete process.env.EMAIL_PROVIDER;
+    await expect(
+      sendSystemEmail({ to: "a@x.com", subject: "Hi", html: "<b>Hi</b>" } as any),
+    ).rejects.toThrow(/provider|config/i);
+  });
+
+  it("delegates to provider on happy path", async () => {
+    jest
+      .spyOn(provider, "sendEmail" as any)
+      .mockResolvedValue({ id: "ok" } as any);
+    const res = await sendSystemEmail({
+      to: "a@x.com",
+      subject: "Hi",
+      html: "<b>Hi</b>",
+    } as any);
+    expect((res as any).id).toBe("ok");
   });
 });
 

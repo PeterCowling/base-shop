@@ -1,5 +1,10 @@
 import "server-only";
 
+import { createRequire } from "module";
+
+const req: NodeRequire =
+  typeof require === "function" ? require : createRequire(process.cwd() + "/");
+
 export interface EmailService {
   sendEmail(to: string, subject: string, body: string): Promise<void>;
 }
@@ -15,4 +20,17 @@ export function getEmailService(): EmailService {
     throw new Error("EmailService not registered");
   }
   return service;
+}
+
+/** Send an email using the system provider configuration. */
+export async function sendSystemEmail(data: {
+  to: string;
+  subject: string;
+  html: string;
+}): Promise<unknown> {
+  if (!process.env.EMAIL_PROVIDER) {
+    throw new Error("Email provider not configured");
+  }
+  const mod: any = req("@acme/email");
+  return mod.sendEmail(data.to, data.subject, data.html);
 }

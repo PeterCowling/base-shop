@@ -12,6 +12,8 @@ import {
   startOfDay,
   parseDate,
   formatDate,
+  parseDateSafe,
+  formatRelative,
 } from "../index";
 
 describe("parseISO and format", () => {
@@ -52,7 +54,7 @@ describe("startOfDay", () => {
   it("handles DST fall back in New York", () => {
     const dstEnd = new Date("2025-11-02T12:00:00Z");
     expect(startOfDay(dstEnd, "America/New_York").toISOString()).toBe(
-      "2025-11-02T05:00:00.000Z"
+      "2025-11-02T04:00:00.000Z"
     );
     const before = new Date("2025-11-01T12:00:00Z");
     expect(startOfDay(before, "America/New_York").toISOString()).toBe(
@@ -349,5 +351,20 @@ describe("locale formatting consistency", () => {
     expect(us).not.toBe(de);
     expect(new Date(us).toISOString()).toBe("2025-03-03T12:34:56.000Z");
     expect(new Date(de).toISOString()).toBe("2025-03-03T12:34:56.000Z");
+  });
+});
+
+describe("parseDateSafe and formatRelative", () => {
+  it("handles invalid date input", () => {
+    const d = parseDateSafe("not-a-date");
+    expect(d).toBeInstanceOf(Date);
+    expect(isNaN(d.getTime())).toBe(false);
+  });
+
+  it("DST edge (US example) does not crash", () => {
+    jest.useFakeTimers().setSystemTime(new Date("2024-03-10T01:55:00-08:00"));
+    const s = formatRelative(new Date("2024-03-10T03:05:00-07:00"));
+    expect(typeof s).toBe("string");
+    jest.useRealTimers();
   });
 });

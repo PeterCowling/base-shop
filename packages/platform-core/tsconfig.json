@@ -43,6 +43,9 @@
       "@acme/stripe": ["../stripe/src/index.ts", "../stripe/dist/index.d.ts"],
       "@acme/stripe/*": ["../stripe/src/*", "../stripe/dist/*"],
 
+      "@acme/email": ["../email/src/index.ts", "../email/dist/index.d.ts"],
+      "@acme/email/*": ["../email/src/*", "../email/dist/*"],
+
       "@acme/config/env/*": ["../config/src/env/*", "../config/dist/env/*"],
       "@acme/i18n": ["../i18n/src/index.ts", "../i18n/dist/index.d.ts"],
       "@acme/i18n/*": ["../i18n/src/*", "../i18n/dist/*"],

@@ -12,7 +12,7 @@ jest.mock("fs", () => ({
   },
 }));
 
-import { readReturnLogistics } from "../returnLogistics.server";
+import { readReturnLogistics, createReturnLabel } from "../returnLogistics.server";
 
 describe("return logistics repository", () => {
   afterEach(() => {
@@ -31,5 +31,22 @@ describe("return logistics repository", () => {
     await expect(readReturnLogistics()).rejects.toThrow(
       "Invalid return logistics data",
     );
+  });
+});
+
+describe("createReturnLabel", () => {
+  it("rejects unsupported carrier", async () => {
+    await expect(
+      createReturnLabel({ carrier: "???", method: "pickup", orderId: "o1" } as any),
+    ).rejects.toThrow(/unsupported/i);
+  });
+
+  it("creates label for supported carrier", async () => {
+    const out = await createReturnLabel({
+      carrier: "UPS",
+      method: "dropoff",
+      orderId: "o1",
+    } as any);
+    expect(out.labelUrl).toMatch(/ups|label|http/i);
   });
 });

@@ -54,12 +54,13 @@ describe("useMediaUpload", () => {
     (URL as any).revokeObjectURL = revokeSpy;
     const { result } = renderHook(() => useMediaUpload({} as any));
 
-    const file = new File([""], "file.txt", { type: "text/plain" });
+    const file = new File([""], "file.pdf", { type: "application/pdf" });
 
     await act(async () => {
       result.current.setPendingFile(file);
     });
 
+    expect(result.current.pendingFile).toBe(file);
     expect(result.current.thumbnail).toBeNull();
     expect(createSpy).not.toHaveBeenCalled();
     expect(revokeSpy).not.toHaveBeenCalled();

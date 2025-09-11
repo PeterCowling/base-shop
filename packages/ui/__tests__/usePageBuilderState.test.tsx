@@ -41,6 +41,92 @@ describe("usePageBuilderState", () => {
     expect(removeItem).toHaveBeenCalledWith("page-builder-history-p1");
   });
 
+  it("uses default state when history prop fails schema parsing", () => {
+    const page = {
+      ...basePage,
+      components: [{ id: "base", type: "Text" }],
+    };
+    const invalidHistory = {
+      past: [],
+      present: [],
+      future: [],
+      gridCols: "bad",
+    } as any;
+    const getItem = jest
+      .spyOn(Storage.prototype, "getItem")
+      .mockReturnValueOnce(null);
+    const setItem = jest.spyOn(Storage.prototype, "setItem");
+
+    const { result } = renderHook(() =>
+      usePageBuilderState({ page, history: invalidHistory })
+    );
+    expect(getItem).toHaveBeenCalledWith("page-builder-history-p1");
+    expect(result.current.state).toEqual({
+      past: [],
+      present: page.components,
+      future: [],
+      gridCols: 12,
+    });
+    expect(setItem).toHaveBeenCalledWith(
+      "page-builder-history-p1",
+      JSON.stringify(result.current.state)
+    );
+  });
+
+  it("uses server history when localStorage is empty", () => {
+    const serverHistory = {
+      past: [],
+      present: [{ id: "h1", type: "Text" }],
+      future: [],
+      gridCols: 12,
+    };
+    const page = {
+      ...basePage,
+      components: [{ id: "base", type: "Text" }],
+      history: serverHistory,
+    };
+    const getItem = jest
+      .spyOn(Storage.prototype, "getItem")
+      .mockReturnValueOnce(null);
+    const setItem = jest.spyOn(Storage.prototype, "setItem");
+
+    const { result } = renderHook(() => usePageBuilderState({ page }));
+    expect(getItem).toHaveBeenCalledWith("page-builder-history-p1");
+    expect(result.current.state).toEqual(serverHistory);
+    expect(result.current.components).toEqual(serverHistory.present);
+    expect(setItem).toHaveBeenCalledWith(
+      "page-builder-history-p1",
+      JSON.stringify(result.current.state)
+    );
+  });
+
+  it("falls back to server history on malformed localStorage JSON", () => {
+    const serverHistory = {
+      past: [],
+      present: [{ id: "h1", type: "Text" }],
+      future: [],
+      gridCols: 12,
+    };
+    const page = {
+      ...basePage,
+      components: [{ id: "base", type: "Text" }],
+      history: serverHistory,
+    };
+    const getItem = jest
+      .spyOn(Storage.prototype, "getItem")
+      .mockReturnValueOnce("{");
+    const setItem = jest.spyOn(Storage.prototype, "setItem");
+
+    const { result } = renderHook(() => usePageBuilderState({ page }));
+    expect(getItem).toHaveBeenCalledWith("page-builder-history-p1");
+    expect(result.current.state).toEqual(serverHistory);
+    expect(result.current.components).toEqual(serverHistory.present);
+    expect(setItem).toHaveBeenCalledWith(
+      "page-builder-history-p1",
+      JSON.stringify(result.current.state)
+    );
+  });
+
   it("updates liveMessage on actions", () => {
     jest.useFakeTimers();
     const { result } = renderHook(() => usePageBuilderState({ page: basePage }));

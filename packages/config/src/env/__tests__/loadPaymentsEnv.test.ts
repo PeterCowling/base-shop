@@ -25,7 +25,7 @@ describe("loadPaymentsEnv", () => {
     errSpy.mockRestore();
   });
 
-  it("throws when provider is unsupported", () => {
+  it("throws when PAYMENTS_PROVIDER is 'paypal'", () => {
     const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     expect(() =>
       loadPaymentsEnv({ PAYMENTS_PROVIDER: "paypal" } as NodeJS.ProcessEnv),
@@ -40,12 +40,29 @@ describe("loadPaymentsEnv", () => {
   it.each([
     [
       "STRIPE_SECRET_KEY",
-      { STRIPE_SECRET_KEY: undefined, STRIPE_WEBHOOK_SECRET: "wh" },
+      {
+        STRIPE_SECRET_KEY: undefined,
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+        STRIPE_WEBHOOK_SECRET: "wh",
+      },
       "❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe",
     ],
     [
+      "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
+      {
+        STRIPE_SECRET_KEY: "sk",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: undefined,
+        STRIPE_WEBHOOK_SECRET: "wh",
+      },
+      "❌ Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY when PAYMENTS_PROVIDER=stripe",
+    ],
+    [
       "STRIPE_WEBHOOK_SECRET",
-      { STRIPE_SECRET_KEY: "sk", STRIPE_WEBHOOK_SECRET: undefined },
+      {
+        STRIPE_SECRET_KEY: "sk",
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+        STRIPE_WEBHOOK_SECRET: undefined,
+      },
       "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
     ],
   ])("throws when %s is missing", (_name, vars, message) => {
@@ -53,7 +70,6 @@ describe("loadPaymentsEnv", () => {
     expect(() =>
       loadPaymentsEnv({
         PAYMENTS_PROVIDER: "stripe",
-        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
         ...vars,
       } as NodeJS.ProcessEnv),
     ).toThrow("Invalid payments environment variables");

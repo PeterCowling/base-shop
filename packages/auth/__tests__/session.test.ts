@@ -40,6 +40,7 @@ describe("session token", () => {
     jest.resetModules();
     // Ensure no lingering mocks from isolate tests
     jest.unmock("@acme/config/env/core");
+    jest.unmock("../src/store");
   });
 
   afterAll(() => {
@@ -88,46 +89,100 @@ describe("session token", () => {
   });
 
   it("defaults user agent to unknown when header missing", async () => {
-    const store = createStore();
-    mockCookies.mockResolvedValue(store);
+    await jest.isolateModulesAsync(async () => {
+      const store = createStore();
+      mockCookies.mockResolvedValue(store);
 
-    const sessionStore = {
-      get: jest.fn(),
-      set: jest.fn(),
-      delete: jest.fn(),
-    };
-
-    jest.doMock("../src/store", () => {
-      const actual = jest.requireActual("../src/store");
-      return {
-        __esModule: true,
-        ...actual,
-        createSessionStore: async () => sessionStore,
+      const sessionStore = {
+        get: jest.fn(),
+        set: jest.fn(),
+        delete: jest.fn(),
       };
+
+      jest.doMock("../src/store", () => {
+        const actual = jest.requireActual("../src/store");
+        return {
+          __esModule: true,
+          ...actual,
+          createSessionStore: async () => sessionStore,
+        };
+      });
+
+      const { createCustomerSession, getCustomerSession } = await import(
+        "../src/session",
+      );
+
+      mockHeaders.mockReturnValue({ get: () => null });
+
+      const session = { customerId: "abc", role: "customer" as Role };
+      await createCustomerSession(session);
+
+      const sessionId = sessionStore.set.mock.calls[0][0].sessionId;
+      sessionStore.get.mockResolvedValue({
+        sessionId,
+        customerId: session.customerId,
+        userAgent: "ua",
+        createdAt: new Date(),
+      });
+
+      sessionStore.set.mockClear();
+
+      await getCustomerSession();
+
+      expect(sessionStore.set).toHaveBeenCalledWith(
+        expect.objectContaining({ userAgent: "unknown" }),
+      );
     });
+  });
 
-    const { createCustomerSession, getCustomerSession } = await import("../src/session");
+  it("rotates session on access", async () => {
+    await jest.isolateModulesAsync(async () => {
+      const store = createStore();
+      mockCookies.mockResolvedValue(store);
 
-    mockHeaders.mockReturnValue({ get: () => null });
+      const sessionStore = {
+        get: jest.fn(),
+        set: jest.fn(),
+        delete: jest.fn(),
+      };
 
-    const session = { customerId: "abc", role: "customer" as Role };
-    await createCustomerSession(session);
+      jest.doMock("../src/store", () => {
+        const actual = jest.requireActual("../src/store");
+        return {
+          __esModule: true,
+          ...actual,
+          createSessionStore: async () => sessionStore,
+        };
+      });
 
-    const sessionId = sessionStore.set.mock.calls[0][0].sessionId;
-    sessionStore.get.mockResolvedValue({
-      sessionId,
-      customerId: session.customerId,
-      userAgent: "ua",
-      createdAt: new Date(),
+      const {
+        createCustomerSession,
+        getCustomerSession,
+        CUSTOMER_SESSION_COOKIE,
+      } = await import("../src/session");
+
+      const session = { customerId: "abc", role: "customer" as Role };
+      await createCustomerSession(session);
+
+      const originalId = sessionStore.set.mock.calls[0][0].sessionId;
+      sessionStore.get.mockResolvedValue({
+        sessionId: originalId,
+        customerId: session.customerId,
+        userAgent: "ua",
+        createdAt: new Date(),
+      });
+      const originalToken = store.set.mock.calls[0][1];
+
+      await getCustomerSession();
+
+      expect(sessionStore.delete).toHaveBeenCalledWith(originalId);
+      const newId = sessionStore.set.mock.calls[1][0].sessionId;
+      expect(newId).not.toBe(originalId);
+
+      const storedToken = store.get(CUSTOMER_SESSION_COOKIE)?.value;
+      expect(storedToken).not.toBe(originalToken);
+      expect(storedToken).toBe(store.set.mock.calls[2][1]);
     });
-
-    sessionStore.set.mockClear();
-
-    await getCustomerSession();
-
-    expect(sessionStore.set).toHaveBeenCalledWith(
-      expect.objectContaining({ userAgent: "unknown" }),
-    );
   });
 
   it("sets csrf token cookie when missing", async () => {

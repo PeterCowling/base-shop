@@ -30,7 +30,7 @@ export async function verifyMfa(
     where: { customerId },
   });
   if (!record) return false;
-  const valid = authenticator.verify({ token, secret: record.secret });
+  const valid = authenticator.verify({ token, secret: record.secret, window: 1 });
   if (valid && !record.enabled) {
     await prisma.customerMfa.update({
       where: { customerId },

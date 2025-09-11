@@ -100,8 +100,13 @@ describe("ConnectForm", () => {
   });
 
   it("invokes deleteSanityConfig on disconnect", () => {
-    render(<ConnectForm shopId="shop" initial={{ projectId: "p", dataset: "blog" }} />);
-    fireEvent.click(screen.getByRole("button", { name: /disconnect/i }));
+    render(
+      <ConnectForm shopId="shop" initial={{ projectId: "p", dataset: "blog" }} />,
+    );
+    const form = screen
+      .getByRole("button", { name: /disconnect/i })
+      .closest("form")!;
+    fireEvent.submit(form);
     expect(deleteSanityConfig).toHaveBeenCalled();
   });
 });

@@ -629,6 +629,20 @@ describe("session management", () => {
     expect(list).toHaveBeenCalledWith("cust-1");
   });
 
+  it("bubbles up list errors", async () => {
+    jest.resetModules();
+    const error = new Error("fail");
+    const list = jest.fn().mockRejectedValue(error);
+    jest.doMock("../src/store", () => ({
+      __esModule: true,
+      SESSION_TTL_S: 1,
+      createSessionStore: async () => ({ list }),
+    }));
+    const { listSessions } = await import("../src/session");
+    await expect(listSessions("cust-1")).rejects.toBe(error);
+    expect(list).toHaveBeenCalledWith("cust-1");
+  });
+
   it("revokes a session id", async () => {
     jest.resetModules();
     const del = jest.fn().mockResolvedValue(undefined);

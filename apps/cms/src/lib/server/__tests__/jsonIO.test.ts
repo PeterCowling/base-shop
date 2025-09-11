@@ -41,7 +41,18 @@ describe("readJsonFile", () => {
     expect(result).toBe(fallback);
   });
 
-  it("returns fallback when JSON cannot be parsed", async () => {
+  it("returns fallback when fs.readFile throws", async () => {
+    const fallback = { value: 9 };
+    mockedFs.readFile.mockImplementationOnce(() => {
+      throw new Error("boom");
+    });
+
+    const result = await readJsonFile("throws.json", fallback);
+
+    expect(result).toBe(fallback);
+  });
+
+  it("returns fallback when fs.readFile returns invalid JSON", async () => {
     const fallback = { value: 2 };
     mockedFs.readFile.mockResolvedValueOnce("not json");
 

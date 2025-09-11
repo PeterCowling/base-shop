@@ -2,6 +2,9 @@
 
 /** Generate a random secret represented as a hexadecimal string. */
 export function genSecret(bytes = 16): string {
+  if (!Number.isInteger(bytes) || bytes < 0) {
+    throw new RangeError("bytes must be a non-negative integer");
+  }
   const envSecret = process.env.GEN_SECRET;
   if (envSecret) return envSecret;
   const cryptoObj = globalThis.crypto;

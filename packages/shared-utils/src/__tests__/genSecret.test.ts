@@ -55,6 +55,10 @@ describe('genSecret', () => {
     expect(() => genSecret(-1)).toThrow(RangeError);
   });
 
+  it('throws when byte length is not an integer', () => {
+    expect(() => genSecret(1.5)).toThrow(RangeError);
+  });
+
   it('uses GEN_SECRET env var when provided', () => {
     const getRandomValues = jest.fn();
     const mock = { getRandomValues } as Crypto;

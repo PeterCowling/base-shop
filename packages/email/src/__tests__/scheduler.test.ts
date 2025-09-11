@@ -330,8 +330,43 @@ describe("scheduler", () => {
         templateId: null,
       },
     ];
-    await expect(sendDueCampaigns()).resolves.toBeUndefined();
+    await expect(sendDueCampaigns()).rejects.toThrow("invalid");
     expect(sendCampaignEmail).not.toHaveBeenCalled();
+  });
+
+  test("sendDueCampaigns aggregates campaign errors", async () => {
+    const past = new Date(now.getTime() - 1000).toISOString();
+    memory[shop] = [
+      {
+        id: "c1",
+        recipients: ["a@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+      {
+        id: "c2",
+        recipients: ["b@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+    ];
+    (sendCampaignEmail as jest.Mock)
+      .mockRejectedValueOnce(new Error("fail1"))
+      .mockRejectedValueOnce(new Error("fail2"));
+    try {
+      await sendDueCampaigns();
+      throw new Error("should throw");
+    } catch (err) {
+      expect(err).toBeInstanceOf(AggregateError);
+      expect((err as AggregateError).errors).toHaveLength(2);
+      expect((err as Error).message).toBe("Failed campaigns: c1, c2");
+    }
   });
 
   test("deliverCampaign renders template HTML for every recipient", async () => {

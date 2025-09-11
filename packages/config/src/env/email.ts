@@ -1,8 +1,11 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
+const isJest = typeof (globalThis as any).jest !== "undefined";
 const isTest =
-  process.env.NODE_ENV === "test" || process.env.JEST_WORKER_ID !== undefined;
+  process.env.NODE_ENV === "test" ||
+  process.env.JEST_WORKER_ID !== undefined ||
+  (isJest && process.env.NODE_ENV !== "production");
 const isProd = process.env.NODE_ENV === "production" && !isTest;
 
 export const emailEnvSchema = z

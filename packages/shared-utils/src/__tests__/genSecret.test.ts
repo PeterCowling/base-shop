@@ -1,10 +1,16 @@
 import { genSecret } from '../genSecret';
 
 describe('genSecret', () => {
-  const original = globalThis.crypto;
+  const originalCrypto = globalThis.crypto;
+  const originalEnv = process.env.GEN_SECRET;
 
   afterEach(() => {
-    Object.defineProperty(globalThis, 'crypto', { value: original });
+    Object.defineProperty(globalThis, 'crypto', { value: originalCrypto });
+    if (originalEnv === undefined) {
+      delete process.env.GEN_SECRET;
+    } else {
+      process.env.GEN_SECRET = originalEnv;
+    }
   });
 
   it('returns deterministic hex string for mocked bytes', () => {
@@ -19,14 +25,14 @@ describe('genSecret', () => {
   });
 
   it('uses 16 bytes by default', () => {
-    const mock = {
-      getRandomValues: (arr: Uint8Array) => {
-        arr.fill(0);
-        return arr;
-      },
-    } as Crypto;
+    const getRandomValues = jest.fn((arr: Uint8Array) => {
+      arr.fill(0);
+      return arr;
+    });
+    const mock = { getRandomValues } as Crypto;
     Object.defineProperty(globalThis, 'crypto', { value: mock });
     expect(genSecret()).toBe('00'.repeat(16));
+    expect(getRandomValues).toHaveBeenCalledWith(expect.any(Uint8Array));
   });
 
   it('returns expected length and hex characters', () => {
@@ -47,5 +53,19 @@ describe('genSecret', () => {
 
   it('throws when byte length is negative', () => {
     expect(() => genSecret(-1)).toThrow(RangeError);
+  });
+
+  it('uses GEN_SECRET env var when provided', () => {
+    const getRandomValues = jest.fn();
+    const mock = { getRandomValues } as Crypto;
+    Object.defineProperty(globalThis, 'crypto', { value: mock });
+    process.env.GEN_SECRET = 'fixed';
+    expect(genSecret()).toBe('fixed');
+    expect(getRandomValues).not.toHaveBeenCalled();
+  });
+
+  it('throws when crypto is unavailable', () => {
+    Object.defineProperty(globalThis, 'crypto', { value: undefined });
+    expect(() => genSecret()).toThrow('crypto.getRandomValues is not available');
   });
 });

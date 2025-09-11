@@ -18,7 +18,9 @@ import { readdir } from "fs/promises";
 import { logger } from "@platform-core/utils";
 import { readInventory } from "@platform-core/repositories/inventory.server";
 import { readRepo as readProducts } from "@platform-core/repositories/products.server";
-import { runMaintenanceScan, startMaintenanceScheduler } from "../maintenanceScheduler";
+import * as scheduler from "../maintenanceScheduler";
+
+const { runMaintenanceScan, startMaintenanceScheduler } = scheduler;
 
 describe("runMaintenanceScan", () => {
   const readdirMock = readdir as unknown as jest.Mock;
@@ -69,6 +71,18 @@ describe("runMaintenanceScan", () => {
       shopId: "shop1",
       sku: "sku1",
     });
+  });
+
+  it("does not log maintenance when wearCount is zero", async () => {
+    readdirMock.mockResolvedValueOnce(["shop1"]);
+    inventoryMock.mockResolvedValueOnce([{ sku: "sku1", wearCount: 0 }]);
+    productsMock.mockResolvedValueOnce([
+      { sku: "sku1", wearAndTearLimit: 10, maintenanceCycle: 2 },
+    ]);
+
+    await runMaintenanceScan("/data");
+
+    expect(infoMock).not.toHaveBeenCalled();
   });
 
   it("logs an error and continues processing other shops", async () => {
@@ -142,5 +156,25 @@ describe("startMaintenanceScheduler", () => {
     await Promise.resolve();
 
     expect(inventory).toHaveBeenCalledTimes(1);
+  });
+
+  it("invokes runMaintenanceScan immediately and on schedule", async () => {
+    const runSpy = jest
+      .spyOn(scheduler, "runMaintenanceScan")
+      .mockResolvedValue(undefined);
+
+    timer = startMaintenanceScheduler();
+
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(runSpy).toHaveBeenCalledTimes(1);
+
+    jest.advanceTimersByTime(24 * 60 * 60 * 1000);
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(runSpy).toHaveBeenCalledTimes(2);
+    runSpy.mockRestore();
   });
 });

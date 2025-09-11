@@ -134,6 +134,12 @@ describe("formatDate", () => {
       RangeError
     );
   });
+
+  test("throws RangeError for unsupported YYYY token", () => {
+    const call = () => formatDate("2025-03-03T00:00:00Z", "YYYY");
+    expect(call).toThrow(RangeError);
+    expect(call).toThrow("Invalid format pattern");
+  });
 });
 
 describe("parseTargetDate", () => {

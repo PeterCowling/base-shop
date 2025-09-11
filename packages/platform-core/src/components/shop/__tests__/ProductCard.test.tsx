@@ -118,5 +118,11 @@ describe("Price", () => {
     render(<Price amount={75} currency="EUR" />);
     expect(formatPriceMock).toHaveBeenCalledWith(75, "EUR");
   });
+
+  it("falls back to EUR when context currency is undefined", () => {
+    useCurrencyMock.mockReturnValue([undefined] as any);
+    render(<Price amount={25} />);
+    expect(formatPriceMock).toHaveBeenCalledWith(25, "EUR");
+  });
 });
 

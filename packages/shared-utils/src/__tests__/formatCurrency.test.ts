@@ -17,6 +17,14 @@ describe("formatCurrency", () => {
     expect(formatCurrency(null as any)).toBe(expected);
   });
 
+  it("formats NaN when amount is NaN", () => {
+    const expected = new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: "USD",
+    }).format(NaN);
+    expect(formatCurrency(NaN as any)).toBe(expected);
+  });
+
   it("defaults to USD when currency is omitted", () => {
     const amount = 12345; // $123.45
     expect(formatCurrency(amount)).toBe(
@@ -112,6 +120,22 @@ describe("formatCurrency", () => {
     }
   });
 
+  it("formats when Intl.supportedValuesOf is absent", () => {
+    const original = (Intl as any).supportedValuesOf;
+    delete (Intl as any).supportedValuesOf;
+    try {
+      const expected = new Intl.NumberFormat(undefined, {
+        style: "currency",
+        currency: "USD",
+      }).format(1);
+      expect(formatCurrency(100)).toBe(expected);
+    } finally {
+      if (original) {
+        (Intl as any).supportedValuesOf = original;
+      }
+    }
+  });
+
   it("formats EUR in German locale", () => {
     const minor = 12345; // 123.45
     const expected = new Intl.NumberFormat("de-DE", {
@@ -136,5 +160,15 @@ describe("formatCurrency", () => {
       currency: "JPY",
     }).format(123);
     expect(formatCurrency(minor, "JPY", "ja-JP")).toBe(expected);
+  });
+
+  it("places currency symbol after amount in fr-FR", () => {
+    const minor = 123456; // 1 234,56 €
+    expect(formatCurrency(minor, "EUR", "fr-FR")).toBe("1\u202f234,56\u00a0€");
+  });
+
+  it("places currency symbol before amount in ja-JP", () => {
+    const minor = 12345600; // ￥123,456
+    expect(formatCurrency(minor, "JPY", "ja-JP")).toBe("￥123,456");
   });
 });

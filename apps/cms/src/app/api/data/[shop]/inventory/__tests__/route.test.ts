@@ -1,0 +1,65 @@
+import { NextRequest } from "next/server";
+
+const getServerSession = jest.fn();
+jest.mock("next-auth", () => ({ getServerSession }));
+jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
+
+const write = jest.fn();
+jest.mock("@platform-core/repositories/inventory.server", () => ({
+  inventoryRepository: { write },
+}));
+
+let POST: typeof import("../route").POST;
+
+beforeAll(async () => {
+  ({ POST } = await import("../route"));
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
+function req(body: unknown) {
+  return new NextRequest("http://test.local", {
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: { "content-type": "application/json" },
+  });
+}
+
+describe("POST", () => {
+  it.each([null, { user: { role: "user" } }])(
+    "returns 403 for session %p",
+    async (session) => {
+      getServerSession.mockResolvedValueOnce(session);
+      const res = await POST(req([]), {
+        params: Promise.resolve({ shop: "s1" }),
+      });
+      expect(res.status).toBe(403);
+      expect(await res.json()).toEqual({ error: "Forbidden" });
+    },
+  );
+
+  it("returns 400 for invalid payload", async () => {
+    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    const res = await POST(
+      req([{ sku: "a", productId: "p1", quantity: -1, variantAttributes: {} }]),
+      { params: Promise.resolve({ shop: "s1" }) },
+    );
+    expect(res.status).toBe(400);
+    expect(write).not.toHaveBeenCalled();
+  });
+
+  it("writes inventory and returns success", async () => {
+    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    const items = [
+      { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
+    ];
+    const res = await POST(req(items), {
+      params: Promise.resolve({ shop: "s1" }),
+    });
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ success: true });
+    expect(write).toHaveBeenCalledWith("s1", items);
+  });
+});

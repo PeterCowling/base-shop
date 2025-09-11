@@ -68,6 +68,15 @@ describe("rbacStore", () => {
     await expect(writeRbac(undefined as any)).rejects.toThrow(TypeError);
   });
 
+  it("writeRbac(null) does not create a file", async () => {
+    await withTempDir(async (dir) => {
+      const { writeRbac } = await import("../rbacStore");
+      const file = path.join(dir, "data", "cms", "users.json");
+      await expect(writeRbac(null as any)).rejects.toThrow(TypeError);
+      await expect(fs.access(file)).rejects.toThrow();
+    });
+  });
+
   it("writeRbac calls fs.rename", async () => {
     await withTempDir(async () => {
       jest.resetModules();

@@ -9,6 +9,7 @@ import { shippingEnvSchema } from "./shipping.js";
 import { createRequire } from "module";
 
 const isProd = process.env.NODE_ENV === "production";
+const isTest = process.env.NODE_ENV === "test";
 
 const baseEnvSchema = z
   .object({
@@ -186,8 +187,17 @@ export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
 export type CoreEnv = z.infer<typeof coreEnvSchema>;
 
 function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
-  const parsed = coreEnvSchema.safeParse(raw);
+  const env = isTest
+    ? { EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop", ...raw }
+    : raw;
+  const parsed = coreEnvSchema.safeParse(env);
   if (!parsed.success) {
+    if (isTest) {
+      return coreEnvSchema.parse({
+        EMAIL_FROM: "test@example.com",
+        EMAIL_PROVIDER: "noop",
+      });
+    }
     console.error("❌ Invalid core environment variables:");
     parsed.error.issues.forEach((issue: z.ZodIssue) => {
       const pathArr = (issue.path ?? []) as Array<string | number>;

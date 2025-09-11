@@ -64,6 +64,42 @@ describe("rbacStore", () => {
     });
   });
 
+  it("resolves existing data/cms directory then falls back when missing", async () => {
+    await withTempDir(async (root) => {
+      const nested = path.join(root, "nested", "dir");
+      await fs.mkdir(nested, { recursive: true });
+      const cmsDir = path.join(root, "data", "cms");
+      await fs.mkdir(cmsDir, { recursive: true });
+      const cwdSpy = jest.spyOn(process, "cwd").mockReturnValue(nested);
+      try {
+        jest.resetModules();
+        let { readRbac, writeRbac } = await import("../rbacStore");
+        const db = await readRbac();
+        await writeRbac(db);
+        await expect(
+          fs.access(path.join(root, "data", "cms", "users.json"))
+        ).resolves.toBeUndefined();
+        await expect(
+          fs.access(path.join(nested, "data", "cms", "users.json"))
+        ).rejects.toThrow();
+
+        await fs.rm(path.join(root, "data"), { recursive: true, force: true });
+        jest.resetModules();
+        ({ readRbac, writeRbac } = await import("../rbacStore"));
+        const db2 = await readRbac();
+        await writeRbac(db2);
+        await expect(
+          fs.access(path.join(nested, "data", "cms", "users.json"))
+        ).resolves.toBeUndefined();
+        await expect(
+          fs.access(path.join(root, "data", "cms", "users.json"))
+        ).rejects.toThrow();
+      } finally {
+        cwdSpy.mockRestore();
+      }
+    });
+  });
+
   it("writeRbac throws TypeError for null or undefined", async () => {
     const { writeRbac } = await import("../rbacStore");
     await expect(writeRbac(null as any)).rejects.toThrow(TypeError);

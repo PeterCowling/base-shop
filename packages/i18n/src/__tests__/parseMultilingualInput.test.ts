@@ -27,6 +27,8 @@ describe("parseMultilingualInput", () => {
     expect(
       parseMultilingualInput({ en: "x", it: "y" } as any, locales)
     ).toBeNull();
+    expect(parseMultilingualInput(null as any, locales)).toBeNull();
+    expect(parseMultilingualInput(undefined as any, locales)).toBeNull();
   });
 
   it("returns null when locale not in provided list", () => {

@@ -72,6 +72,12 @@ describe("hexToHsl", () => {
   it("handles high-contrast colors", () => {
     expect(hexToHsl("#ff0000")).toBe("0 100% 50%");
   });
+
+  it("returns zero hue and saturation for grayscale colors", () => {
+    const [h, s] = hexToHsl("#333333").split(" ");
+    expect(h).toBe("0");
+    expect(s).toBe("0%");
+  });
 });
 
 describe("hslToHex", () => {

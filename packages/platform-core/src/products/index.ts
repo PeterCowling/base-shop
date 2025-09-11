@@ -4,6 +4,24 @@
 /* -------------------------------------------------------------------------- */
 import { type Locale, type SKU } from "@acme/types";
 
+/** Defaults applied to optional SKU fields to avoid `undefined` values */
+const SKU_DEFAULTS: Pick<
+  SKU,
+  | "dailyRate"
+  | "weeklyRate"
+  | "monthlyRate"
+  | "wearAndTearLimit"
+  | "maintenanceCycle"
+  | "availability"
+> = {
+  dailyRate: 0,
+  weeklyRate: 0,
+  monthlyRate: 0,
+  wearAndTearLimit: 0,
+  maintenanceCycle: 0,
+  availability: [],
+};
+
 /* -------------------------------------------------------------------------- */
 /*  Storefront types & helpers                                                */
 /* -------------------------------------------------------------------------- */
@@ -56,13 +74,14 @@ export const PRODUCTS: readonly SKU[] = [
 
 /** Helper to fetch one product (could be remote PIM later) */
 export function getProductBySlug(slug: string): SKU | undefined {
-  return PRODUCTS.find((p) => p.slug === slug);
+  const sku = PRODUCTS.find((p) => p.slug === slug);
+  return sku ? { ...SKU_DEFAULTS, ...sku } : undefined;
 }
 
 /** Lookup a product by SKU id */
 export function getProductById(id: string): SKU | undefined {
   const sku = PRODUCTS.find((p) => p.id === id);
-  return sku && sku.stock > 0 ? sku : undefined;
+  return sku && sku.stock > 0 ? { ...SKU_DEFAULTS, ...sku } : undefined;
 }
 
 /* -------------------------------------------------------------------------- */

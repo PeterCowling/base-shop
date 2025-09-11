@@ -1,6 +1,10 @@
 import { describe, expect, it, jest } from "@jest/globals";
+import { z } from "zod";
 import { withEnv } from "./helpers/env";
-import { loadCoreEnv } from "@acme/config/env/core";
+import {
+  loadCoreEnv,
+  depositReleaseEnvRefinement,
+} from "@acme/config/env/core";
 
 const requireEnvImport = async () => (await import("@acme/config/env/core")).requireEnv;
 
@@ -17,24 +21,33 @@ describe("requireEnv", () => {
     );
   });
 
-  it("throws on invalid values", async () => {
-    await withEnv(
-      { BOOL: "maybe", NUM1: "NaN", NUM2: "abc", STR: "" },
-      async () => {
-        const requireEnv = await requireEnvImport();
-        expect(() => requireEnv("BOOL", "boolean")).toThrow(
-          "BOOL must be a boolean",
-        );
-        expect(() => requireEnv("NUM1", "number")).toThrow(
-          "NUM1 must be a number",
-        );
-        expect(() => requireEnv("NUM2", "number")).toThrow(
-          "NUM2 must be a number",
-        );
-        expect(() => requireEnv("STR")).toThrow("STR is required");
-      },
-    );
+  it("throws when variable is missing", async () => {
+    await withEnv({}, async () => {
+      const requireEnv = await requireEnvImport();
+      expect(() => requireEnv("MISSING")).toThrow("MISSING is required");
+    });
   });
+
+  it("throws on boolean coercion failure", async () => {
+    await withEnv({ FLAG: "maybe" }, async () => {
+      const requireEnv = await requireEnvImport();
+      expect(() => requireEnv("FLAG", "boolean")).toThrow(
+        "FLAG must be a boolean",
+      );
+    });
+  });
+
+  it.each(["NaN", "abc"])(
+    "throws on number parsing errors for %s",
+    async (val) => {
+      await withEnv({ NUM: val }, async () => {
+        const requireEnv = await requireEnvImport();
+        expect(() => requireEnv("NUM", "number")).toThrow(
+          "NUM must be a number",
+        );
+      });
+    },
+  );
 });
 
 describe("deposit/reverse/late-fee refinement", () => {
@@ -81,6 +94,43 @@ describe("deposit/reverse/late-fee refinement", () => {
     expect(output).toContain("LATE_FEE_ENABLED: must be true or false");
     expect(output).toContain("LATE_FEE_INTERVAL_MS: must be a number");
     err.mockRestore();
+  });
+});
+
+describe("depositReleaseEnvRefinement", () => {
+  it("adds issues for bad ENABLED and INTERVAL_MS values", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      {
+        DEPOSIT_RELEASE_BAD_ENABLED: "nope",
+        DEPOSIT_RELEASE_BAD_INTERVAL_MS: "soon",
+      },
+      ctx,
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_BAD_ENABLED"],
+      message: "must be true or false",
+    });
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_BAD_INTERVAL_MS"],
+      message: "must be a number",
+    });
+  });
+});
+
+describe("AUTH_TOKEN_TTL normalization", () => {
+  it.each([
+    [600, 900],
+    ["120", 120],
+    ["2m", 120],
+    ["", 900],
+  ])("normalizes %p", async (input, expected) => {
+    await withEnv({ AUTH_TOKEN_TTL: input as any }, async () => {
+      const env = loadCoreEnv(process.env);
+      expect(env.AUTH_TOKEN_TTL).toBe(expected);
+    });
   });
 });
 
@@ -151,5 +201,47 @@ describe("coreEnv caching", () => {
         expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://two.example");
       },
     );
+  });
+});
+
+describe("coreEnv NODE_ENV behavior", () => {
+  const base = {
+    CMS_SPACE_URL: "https://example.com",
+    CMS_ACCESS_TOKEN: "token",
+    CART_COOKIE_SECRET: "secret",
+  } as NodeJS.ProcessEnv;
+
+  it.each(["development", "test"]) (
+    "lazy loads in %s",
+    async (env) => {
+      await withEnv({ ...base, NODE_ENV: env }, async () => {
+        const mod = await import("@acme/config/env/core");
+        const spy = jest.spyOn(mod, "loadCoreEnv");
+        expect(spy).not.toHaveBeenCalled();
+        expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+        expect(spy).not.toHaveBeenCalled();
+      });
+    },
+  );
+
+  it("eagerly loads and fails fast in production", async () => {
+    await withEnv(
+      { ...base, NODE_ENV: "production", CMS_ACCESS_TOKEN: undefined },
+      async () => {
+        await expect(import("@acme/config/env/core")).rejects.toThrow(
+          "Invalid CMS environment variables",
+        );
+      },
+    );
+  });
+
+  it("eagerly loads in production", async () => {
+    await withEnv({ ...base, NODE_ENV: "production" }, async () => {
+      const mod = await import("@acme/config/env/core");
+      const spy = jest.spyOn(mod, "loadCoreEnv");
+      spy.mockClear();
+      expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+      expect(spy).not.toHaveBeenCalled();
+    });
   });
 });

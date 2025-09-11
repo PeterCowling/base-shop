@@ -83,6 +83,15 @@ describe("components route", () => {
     expect(res.body).toEqual({ error: "Forbidden" });
   });
 
+  it("rejects token with mismatched issuer", async () => {
+    const token = sign("abc", { issuer: "other" });
+    const res = await request(createRequestHandler())
+      .get("/components/abc")
+      .set("Authorization", `Bearer ${token}`);
+    expect(res.status).toBe(403);
+    expect(res.body).toEqual({ error: "Forbidden" });
+  });
+
   it("rejects expired token", async () => {
     const token = sign("abc", { expiresIn: -1 });
     const res = await request(createRequestHandler())

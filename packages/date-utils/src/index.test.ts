@@ -55,13 +55,18 @@ describe('startOfDay, parseDate and formatDate', () => {
     expect(parseDate('2025-03-03T00:00:00Z')?.toISOString()).toBe('2025-03-03T00:00:00.000Z');
     expect(formatDate('2025-03-03T05:06:07Z', 'yyyy-MM-dd')).toBe('2025-03-03');
   });
+
+  it('returns null for invalid strings', () => {
+    expect(parseDate('not-a-date')).toBeNull();
+  });
 });
 
 describe('parseTargetDate', () => {
-  it('supports "today" and "tomorrow"', () => {
+  it('supports "today", "tomorrow" and "yesterday"', () => {
     jest.useFakeTimers().setSystemTime(new Date('2025-06-15T10:00:00Z'));
     expect(parseTargetDate('today')?.toISOString()).toBe('2025-06-15T00:00:00.000Z');
     expect(parseTargetDate('tomorrow')?.toISOString()).toBe('2025-06-16T00:00:00.000Z');
+    expect(parseTargetDate('yesterday')?.toISOString()).toBe('2025-06-14T00:00:00.000Z');
     jest.useRealTimers();
   });
 
@@ -69,6 +74,23 @@ describe('parseTargetDate', () => {
     expect(parseTargetDate('2025-01-01T00:00:00')?.toISOString()).toBe('2025-01-01T00:00:00.000Z');
     expect(parseTargetDate('2025-01-01T00:00:00', 'America/New_York')?.toISOString()).toBe('2025-01-01T05:00:00.000Z');
     expect(parseTargetDate('invalid')).toBeNull();
+  });
+});
+
+describe('DST boundaries', () => {
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2025-03-09T12:00:00Z'));
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it('handles startOfDay and parseTargetDate across DST', () => {
+    const tz = 'America/New_York';
+    expect(startOfDay(new Date(), tz).toISOString()).toBe('2025-03-09T05:00:00.000Z');
+    expect(parseTargetDate('tomorrow', tz)?.toISOString()).toBe('2025-03-10T04:00:00.000Z');
+    expect(parseTargetDate('yesterday', tz)?.toISOString()).toBe('2025-03-08T05:00:00.000Z');
   });
 });
 

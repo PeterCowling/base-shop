@@ -49,8 +49,8 @@ export function startOfDay(date: Date | string, timezone?: string): Date {
   if (!timezone) {
     return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
   }
-  const startStr = formatInTimeZone(d, timezone, "yyyy-MM-dd'T'00:00:00XXX");
-  return parseISO(startStr);
+  const startStr = formatInTimeZone(d, timezone, "yyyy-MM-dd'T'00:00:00");
+  return fromZonedTime(startStr, timezone);
 }
 
 /** Parse an ISO string into a Date, returning null on failure. */
@@ -91,8 +91,13 @@ export function parseTargetDate(
 ): Date | null {
   if (!targetDate) return null;
   try {
-    if (targetDate === "today" || targetDate === "tomorrow") {
-      const base = targetDate === "today" ? new Date() : addDays(new Date(), 1);
+    if (
+      targetDate === "today" ||
+      targetDate === "tomorrow" ||
+      targetDate === "yesterday"
+    ) {
+      const offset = targetDate === "tomorrow" ? 1 : targetDate === "yesterday" ? -1 : 0;
+      const base = addDays(new Date(), offset);
       return startOfDay(base, timezone ?? "UTC");
     }
     let date: Date;

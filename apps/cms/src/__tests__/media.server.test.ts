@@ -75,6 +75,20 @@ describe('listMedia', () => {
     fsMock.readdir.mockRejectedValue(new Error('boom'));
     await expect(listMedia('shop')).rejects.toThrow('Failed to list media');
   });
+
+  it('returns empty metadata when metadata file cannot be read', async () => {
+    fsMock.readdir.mockResolvedValue(['img.jpg']);
+    fsMock.readFile.mockRejectedValue(new Error('nope'));
+    const result = await listMedia('shop');
+    expect(result).toEqual([
+      {
+        url: '/uploads/shop/img.jpg',
+        title: undefined,
+        altText: undefined,
+        type: 'image',
+      },
+    ]);
+  });
 });
 
 describe('uploadMedia', () => {
@@ -121,11 +135,36 @@ describe('uploadMedia', () => {
     expect(sharpMock).not.toHaveBeenCalled();
   });
 
+  it('rejects unsupported file types', async () => {
+    const formData = new FormData();
+    formData.append('file', new File(['txt'], 'note.txt', { type: 'text/plain' }));
+    await expect(uploadMedia('shop', formData)).rejects.toThrow('Invalid file type');
+  });
+
   it('rejects oversized files', async () => {
     const big = Buffer.alloc(5 * 1024 * 1024 + 1);
     const formData = new FormData();
     formData.append('file', new File([big], 'big.jpg', { type: 'image/jpeg' }));
     await expect(uploadMedia('shop', formData)).rejects.toThrow('File too large');
+  });
+
+  it('rejects videos that exceed the size limit', async () => {
+    const big = Buffer.alloc(50 * 1024 * 1024 + 1);
+    const formData = new FormData();
+    formData.append('file', new File([big], 'big.mp4', { type: 'video/mp4' }));
+    await expect(uploadMedia('shop', formData)).rejects.toThrow('File too large');
+  });
+
+  it('fails when sharp throws a non-orientation error', async () => {
+    sharpMock.mockImplementation(() => ({
+      metadata: jest.fn().mockResolvedValue({ width: 200, height: 100 }),
+      toBuffer: jest.fn().mockRejectedValue(new Error('sharp fail')),
+    }));
+    const formData = new FormData();
+    formData.append('file', new File(['img'], 'bad.jpg', { type: 'image/jpeg' }));
+    await expect(uploadMedia('shop', formData)).rejects.toThrow(
+      'Failed to process image',
+    );
   });
 
   it('rejects landscape orientation when portrait is required', async () => {
@@ -167,5 +206,14 @@ describe('deleteMedia', () => {
     expect(fsMock.unlink).toHaveBeenCalled();
     const meta = JSON.parse(fsMock.writeFile.mock.calls[0][1]);
     expect(meta).toEqual({ other: { title: 'o', type: 'image' } });
+  });
+
+  it('does not rewrite metadata when file is absent', async () => {
+    fsMock.readFile.mockResolvedValue(
+      JSON.stringify({ other: { title: 'o', type: 'image' } }),
+    );
+    await deleteMedia('shop', '/uploads/shop/missing.jpg');
+    expect(fsMock.unlink).toHaveBeenCalled();
+    expect(fsMock.writeFile).not.toHaveBeenCalled();
   });
 });

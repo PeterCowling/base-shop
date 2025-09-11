@@ -130,6 +130,32 @@ test("campaign create with segment and no recipients", async () => {
   expect(logSpy).toHaveBeenCalledWith(expect.stringMatching(/^Created campaign/));
 });
 
+test("campaign create rejects when writing fails", async () => {
+  process.argv = [
+    "node",
+    "email",
+    "campaign",
+    "create",
+    "shop1",
+    "--subject",
+    "Hi",
+    "--body",
+    "<p>Hi</p>",
+    "--recipients",
+    "a@example.com",
+    "--send-at",
+    "2020-01-01T00:00:00.000Z",
+  ];
+  const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+  const error = new Error("nope");
+  fsMock.promises.writeFile.mockRejectedValueOnce(error);
+  const { run } = await import("../cli");
+  await expect(run()).rejects.toBe(error);
+  expect(logSpy).not.toHaveBeenCalledWith(
+    expect.stringMatching(/^Created campaign/),
+  );
+});
+
 test("campaign list outputs campaigns", async () => {
   const campaignsPath = path.join(dataRoot, "shop", "campaigns.json");
   const campaigns = [

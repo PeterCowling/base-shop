@@ -13,6 +13,8 @@ import { getProductById } from "@platform-core/products";
 import { cookies } from "next/headers";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { readShop } from "@platform-core/repositories/shops.server";
+import { priceForDays, convertCurrency } from "@platform-core/pricing";
+import { calculateRentalDays, isoDateInNDays } from "@acme/date-utils";
 import * as React from "react";
 
 export const metadata = {
@@ -25,11 +27,14 @@ export const metadata = {
  */
 export default async function CheckoutPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang?: string }>;
+  searchParams?: Promise<{ returnDate?: string }>;
 }) {
   /* ---------- await params ---------- */
   const { lang: rawLang } = await params;
+  const { returnDate: queryReturn } = (await searchParams) ?? {};
   const lang: Locale = resolveLocale(rawLang);
 
   /* ---------- read cart from cookie ---------- */
@@ -52,20 +57,21 @@ export default async function CheckoutPage({
     validatedCart[id] = { sku, qty: line.qty, size: line.size } as CartLine;
   }
 
-  const lines = Object.values(validatedCart);
-  const subtotal = lines.reduce((sum, l) => sum + l.sku.price * l.qty, 0);
-  const deposit = lines.reduce(
-    (sum, l) => sum + (l.sku.deposit ?? 0) * l.qty,
-    0
-  );
-  const total = subtotal + deposit;
-
   const [settings, shop] = await Promise.all([
     getShopSettings("shop"),
     readShop("shop"),
   ]);
+  const currency = (settings.currency ?? "EUR").toUpperCase();
 
   if (shop.type !== "rental") {
+    const lines = Object.values(validatedCart);
+    const subtotal = lines.reduce((sum, l) => sum + l.sku.price * l.qty, 0);
+    const deposit = lines.reduce(
+      (sum, l) => sum + (l.sku.deposit ?? 0) * l.qty,
+      0
+    );
+    const total = subtotal + deposit;
+
     return (
       <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
         <OrderSummary
@@ -77,7 +83,41 @@ export default async function CheckoutPage({
     );
   }
 
-  return <p className="p-8 text-center">Rental checkout not implemented.</p>;
+  const defaultReturn = isoDateInNDays(7);
+  let rentalDays: number;
+  try {
+    rentalDays = calculateRentalDays(queryReturn ?? defaultReturn);
+  } catch {
+    return <p className="p-8 text-center">Invalid return date.</p>;
+  }
+
+  const rentalCart: CartState = {};
+  let subtotal = 0;
+  let deposit = 0;
+  for (const [id, line] of Object.entries(validatedCart)) {
+    const basePrice = await priceForDays(line.sku, rentalDays);
+    const price = await convertCurrency(basePrice, currency);
+    const depBase = line.sku.deposit ?? 0;
+    const dep = await convertCurrency(depBase, currency);
+    subtotal += price * line.qty;
+    deposit += dep * line.qty;
+    rentalCart[id] = {
+      sku: { ...line.sku, price },
+      qty: line.qty,
+      size: line.size,
+    } as CartLine;
+  }
+  const total = subtotal + deposit;
+
+  return (
+    <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
+      <OrderSummary
+        cart={rentalCart}
+        totals={{ subtotal, deposit, total }}
+      />
+      <CheckoutSection locale={lang} taxRegion={settings.taxRegion ?? ""} />
+    </div>
+  );
 }
 
 function CheckoutSection({

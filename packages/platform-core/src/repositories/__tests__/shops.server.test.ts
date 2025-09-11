@@ -13,17 +13,21 @@ import { loadThemeTokens } from "../../themeTokens/index";
 import { prisma } from "../../db";
 import * as shops from "../shops.server";
 
-const { readShop, writeShop } = shops;
+const { readShop, writeShop, listShops } = shops;
 
 describe("shops.repository", () => {
   const updateRepo = updateShopInRepo as jest.Mock;
   const loadTokens = loadThemeTokens as jest.Mock;
   let findUnique: jest.SpyInstance;
+  let findMany: jest.SpyInstance;
+  let count: jest.SpyInstance;
 
   beforeEach(() => {
     jest.restoreAllMocks();
     jest.clearAllMocks();
     findUnique = jest.spyOn(prisma.shop, "findUnique");
+    findMany = jest.spyOn(prisma.shop, "findMany");
+    count = jest.spyOn(prisma.shop, "count");
   });
 
   describe("readShop", () => {
@@ -147,6 +151,30 @@ describe("shops.repository", () => {
       expect(result.themeOverrides).toEqual({ newOverride: "15px" });
 
       (shops.readShop as jest.Mock).mockRestore();
+    });
+  });
+  describe("listShops", () => {
+    it("returns empty list when no shops exist", async () => {
+      count.mockResolvedValue(0);
+      const result = await listShops(1, 5);
+      expect(result).toEqual([]);
+      expect(findMany).not.toHaveBeenCalled();
+    });
+
+    it("clamps page within bounds", async () => {
+      count.mockResolvedValue(5);
+      findMany.mockResolvedValue([]);
+
+      await listShops(0, 2);
+      expect(findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ skip: 0, take: 2 })
+      );
+
+      findMany.mockClear();
+      await listShops(10, 2);
+      expect(findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ skip: 4, take: 2 })
+      );
     });
   });
 });

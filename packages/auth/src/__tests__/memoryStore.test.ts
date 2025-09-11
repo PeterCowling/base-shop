@@ -104,5 +104,29 @@ describe("MemorySessionStore", () => {
     expect(sessions.size).toBe(sizeBefore);
     expect(sessions.has(record.sessionId)).toBe(true);
   });
+
+  it("only retains the latest concurrent set for the same id", async () => {
+    const store = new MemorySessionStore(1);
+    const first = createRecord("s1");
+    const second = { ...createRecord("s1"), userAgent: "agent-2" };
+    const third = { ...createRecord("s1"), userAgent: "agent-3" };
+
+    const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    const sets = [
+      delay(0).then(() => store.set(first)),
+      delay(50).then(() => store.set(second)),
+      delay(100).then(() => store.set(third)),
+    ];
+
+    const all = Promise.all(sets);
+    jest.advanceTimersByTime(100);
+    await all;
+
+    const entry = (store as any).sessions.get("s1");
+    expect((store as any).sessions.size).toBe(1);
+    expect(entry.record).toEqual(third);
+    expect(entry.expires).toBe(Date.now() + 1000);
+  });
 });
 

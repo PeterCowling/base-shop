@@ -175,10 +175,11 @@ function deployShopImpl(
     adapter.scaffold(newApp);
       const envRel = join(newApp, ".env");
       const envAbs = join(repoRoot(), envRel);
+      const envSrc = fs.existsSync(envAbs) ? envAbs : envRel;
 
       let env = "";
       try {
-        env = fs.readFileSync(fs.existsSync(envAbs) ? envAbs : envRel, "utf8");
+        env = fs.readFileSync(envSrc, "utf8");
       } catch {
         /* no existing env file */
       }
@@ -194,7 +195,7 @@ function deployShopImpl(
       // working directory. Some test environments mock `fs` with a different
       // notion of CWD, so attempt both to ensure the secret persists.
       const cwdPath = join(process.cwd(), envRel);
-      for (const p of new Set([envAbs, cwdPath])) {
+      for (const p of new Set([envAbs, cwdPath, envSrc])) {
         try {
           fs.mkdirSync(dirname(p), { recursive: true });
           fs.writeFileSync(p, env);

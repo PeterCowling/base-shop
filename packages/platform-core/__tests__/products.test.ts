@@ -7,6 +7,7 @@ import {
   getProducts,
   validateQuery,
   MAX_LIMIT,
+  ALLOWED_SORTS,
 } from "../src/products";
 import { PRODUCTS as BASE_PRODUCTS, getProductById as baseGetById } from "../src/products/index";
 
@@ -58,5 +59,26 @@ describe("validateQuery pagination", () => {
   it("clamps limit above MAX_LIMIT", () => {
     const { limit } = validateQuery({ limit: MAX_LIMIT + 10 });
     expect(limit).toBe(MAX_LIMIT);
+  });
+});
+
+describe("validateQuery sort and filter", () => {
+  it("accepts valid sort and filters", () => {
+    const { sort, filter } = validateQuery({
+      sort: "price",
+      filter: { brand: "Eco", size: "38" },
+    });
+    expect(sort).toBe("price");
+    expect(filter).toEqual({ brand: "Eco", size: "38" });
+  });
+
+  it("defaults to safe sort and drops unknown filters", () => {
+    const { sort, filter } = validateQuery({
+      // @ts-expect-error test invalid sort
+      sort: "rating",
+      filter: { brand: "Eco", unknown: "x" },
+    });
+    expect(sort).toBe(ALLOWED_SORTS[0]);
+    expect(filter).toEqual({ brand: "Eco" });
   });
 });

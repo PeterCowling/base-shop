@@ -451,7 +451,10 @@ describe("coreEnv extras", () => {
 
   it("propagates email schema errors", async () => {
     await expect(
-      withEnv({ EMAIL_PROVIDER: "sendgrid" }, () => importCore())
+      withEnv(
+        { EMAIL_PROVIDER: "sendgrid", EMAIL_FROM: "from@example.com" },
+        () => importCore(),
+      )
     ).rejects.toThrow("Invalid email environment variables");
   });
 

@@ -21,6 +21,7 @@ describe("env", () => {
         CMS_SPACE_URL: "https://cms.example.com",
         CMS_ACCESS_TOKEN: "token",
         SANITY_API_VERSION: "2023-01-01",
+        EMAIL_FROM: "from@example.com",
         EMAIL_PROVIDER: "sendgrid",
         SENDGRID_API_KEY: "sg-key",
         STRIPE_SECRET_KEY: "sk_live",

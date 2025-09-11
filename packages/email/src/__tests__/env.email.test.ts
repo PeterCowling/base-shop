@@ -10,7 +10,7 @@ describe("email env", () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
       withEnv(
-        { EMAIL_PROVIDER: "sendgrid" },
+        { EMAIL_PROVIDER: "sendgrid", EMAIL_FROM: "from@example.com" },
         () => import("@acme/config/src/env/email.ts"),
       ),
     ).rejects.toThrow("Invalid email environment variables");
@@ -20,7 +20,11 @@ describe("email env", () => {
 
   it("loads when sendgrid api key provided", async () => {
     const { emailEnv } = await withEnv(
-      { EMAIL_PROVIDER: "sendgrid", SENDGRID_API_KEY: "key" },
+      {
+        EMAIL_PROVIDER: "sendgrid",
+        EMAIL_FROM: "from@example.com",
+        SENDGRID_API_KEY: "key",
+      },
       () => import("@acme/config/src/env/email.ts"),
     );
     expect(emailEnv.EMAIL_PROVIDER).toBe("sendgrid");
@@ -30,7 +34,7 @@ describe("email env", () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
       withEnv(
-        { EMAIL_PROVIDER: "resend" },
+        { EMAIL_PROVIDER: "resend", EMAIL_FROM: "from@example.com" },
         () => import("@acme/config/src/env/email.ts"),
       ),
     ).rejects.toThrow("Invalid email environment variables");
@@ -40,7 +44,11 @@ describe("email env", () => {
 
   it("loads when resend api key provided", async () => {
     const { emailEnv } = await withEnv(
-      { EMAIL_PROVIDER: "resend", RESEND_API_KEY: "key" },
+      {
+        EMAIL_PROVIDER: "resend",
+        EMAIL_FROM: "from@example.com",
+        RESEND_API_KEY: "key",
+      },
       () => import("@acme/config/src/env/email.ts"),
     );
     expect(emailEnv.EMAIL_PROVIDER).toBe("resend");

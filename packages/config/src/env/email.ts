@@ -74,30 +74,15 @@ export const emailEnvSchema = z
     }
   });
 
-const parsed = emailEnvSchema.safeParse(
-  isTest
-    ? {
-        EMAIL_FROM: "test@example.com",
-        EMAIL_PROVIDER: "noop",
-        ...process.env,
-      }
-    : process.env
-);
+const parsed = emailEnvSchema.safeParse(process.env);
 
 if (!parsed.success) {
-  if (!isTest) {
-    console.error(
-      "❌ Invalid email environment variables:",
-      parsed.error.format()
-    );
-    throw new Error("Invalid email environment variables");
-  }
+  console.error(
+    "❌ Invalid email environment variables:",
+    parsed.error.format()
+  );
+  throw new Error("Invalid email environment variables");
 }
 
-export const emailEnv = parsed.success
-  ? parsed.data
-  : emailEnvSchema.parse({
-      EMAIL_FROM: "test@example.com",
-      EMAIL_PROVIDER: "noop",
-    });
+export const emailEnv = parsed.data;
 export type EmailEnv = z.infer<typeof emailEnvSchema>;

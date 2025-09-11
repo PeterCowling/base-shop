@@ -164,6 +164,29 @@ describe("createRequestHandler", () => {
     expect(res.setHeader).toHaveBeenCalledWith("x-test", "value");
   });
 
+  it("returns 404 for PUT /components/:shopId", async () => {
+    const handler = createRequestHandler();
+
+    const req = new Readable({
+      read() {
+        this.push(null);
+      },
+    }) as unknown as IncomingMessage;
+    req.url = "/components/abc";
+    req.method = "PUT";
+    req.headers = {};
+
+    const end = jest.fn();
+    const res = { statusCode: 0, setHeader: jest.fn(), end } as unknown as ServerResponse;
+
+    await handler(req, res);
+
+    expect(res.statusCode).toBe(404);
+    expect(end).toHaveBeenCalledWith();
+    expect(componentsHandlerMock).not.toHaveBeenCalled();
+    expect(publishUpgradeMock).not.toHaveBeenCalled();
+  });
+
   it("handles POST /shop/:id/publish-upgrade", async () => {
     publishUpgradeMock.mockResolvedValueOnce(new Response(null, { status: 200 }));
     const handler = createRequestHandler();

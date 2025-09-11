@@ -10,14 +10,23 @@ export const cmsEnvSchema = z.object({
   CMS_ACCESS_TOKEN: isProd
     ? z.string().min(1)
     : z.string().min(1).default("placeholder-token"),
-  // DO NOT REMOVE: required dummy values for the Sanity blog plugin.
-  // Replace these with real credentials and remove defaults once set up.
-  // TODO/DO NOT REMOVE: these dummy defaults are required until a real Sanity project is configured.
-  SANITY_API_VERSION: z.string().min(1).default("2021-10-21"),
-  SANITY_PROJECT_ID: z.string().min(1).default("dummy-project-id"),
-  SANITY_DATASET: z.string().min(1).default("production"),
-  SANITY_API_TOKEN: z.string().min(1).default("dummy-api-token"),
-  SANITY_PREVIEW_SECRET: z.string().min(1).default("dummy-preview-secret"),
+  // Provide dummy Sanity values only in non-production environments.
+  // Real credentials are required when running in production.
+  SANITY_API_VERSION: isProd
+    ? z.string().min(1)
+    : z.string().min(1).default("2021-10-21"),
+  SANITY_PROJECT_ID: isProd
+    ? z.string().min(1)
+    : z.string().min(1).default("dummy-project-id"),
+  SANITY_DATASET: isProd
+    ? z.string().min(1)
+    : z.string().min(1).default("production"),
+  SANITY_API_TOKEN: isProd
+    ? z.string().min(1)
+    : z.string().min(1).default("dummy-api-token"),
+  SANITY_PREVIEW_SECRET: isProd
+    ? z.string().min(1)
+    : z.string().min(1).default("dummy-preview-secret"),
   SANITY_BASE_URL: z
     .string()
     .url()

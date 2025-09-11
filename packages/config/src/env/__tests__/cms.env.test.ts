@@ -7,6 +7,8 @@ const baseEnv = {
   SANITY_API_VERSION: "2024-01-01",
   SANITY_PROJECT_ID: "proj",
   SANITY_DATASET: "dataset",
+  SANITY_API_TOKEN: "token",
+  SANITY_PREVIEW_SECRET: "secret",
 } as NodeJS.ProcessEnv;
 
 const ORIGINAL_ENV = process.env;
@@ -44,13 +46,8 @@ describe("cms sanity env", () => {
     errorSpy.mockRestore();
   });
 
-  it("defaults SANITY fields when missing", async () => {
-    process.env = { ...baseEnv };
-    delete process.env.SANITY_API_VERSION;
-    delete process.env.SANITY_PROJECT_ID;
-    delete process.env.SANITY_DATASET;
-    delete process.env.SANITY_API_TOKEN;
-    delete process.env.SANITY_PREVIEW_SECRET;
+  it("defaults SANITY fields in development", async () => {
+    process.env = { NODE_ENV: "development" } as NodeJS.ProcessEnv;
     jest.resetModules();
     const { cmsEnv } = await import("../cms.ts");
     expect(cmsEnv).toMatchObject({
@@ -62,27 +59,23 @@ describe("cms sanity env", () => {
     });
   });
 
-  it("defaults SANITY_PROJECT_ID when missing", async () => {
+  it("requires SANITY fields in production", async () => {
     process.env = { ...baseEnv };
-    delete process.env.SANITY_PROJECT_ID;
+    delete process.env.SANITY_API_VERSION;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
-    const { cmsEnv } = await import("../cms.ts");
-    expect(cmsEnv.SANITY_PROJECT_ID).toBe("dummy-project-id");
-  });
-
-  it("defaults SANITY_DATASET when missing", async () => {
-    process.env = { ...baseEnv };
-    delete process.env.SANITY_DATASET;
-    jest.resetModules();
-    const { cmsEnv } = await import("../cms.ts");
-    expect(cmsEnv.SANITY_DATASET).toBe("production");
-  });
-
-  it("defaults SANITY_API_TOKEN when missing", async () => {
-    process.env = { ...baseEnv };
-    jest.resetModules();
-    const { cmsEnv } = await import("../cms.ts");
-    expect(cmsEnv.SANITY_API_TOKEN).toBe("dummy-api-token");
+    await expect(import("../cms.ts")).rejects.toThrow(
+      "Invalid CMS environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid CMS environment variables:",
+      expect.objectContaining({
+        SANITY_API_VERSION: {
+          _errors: expect.arrayContaining([expect.any(String)]),
+        },
+      }),
+    );
+    errorSpy.mockRestore();
   });
 
   it("enables write when SANITY_API_TOKEN provided", async () => {
@@ -97,13 +90,6 @@ describe("cms sanity env", () => {
     jest.resetModules();
     const { cmsEnv } = await import("../cms.ts");
     expect(cmsEnv.SANITY_PREVIEW_SECRET).toBe("secret");
-  });
-
-  it("defaults SANITY_PREVIEW_SECRET when missing", async () => {
-    process.env = { ...baseEnv };
-    jest.resetModules();
-    const { cmsEnv } = await import("../cms.ts");
-    expect(cmsEnv.SANITY_PREVIEW_SECRET).toBe("dummy-preview-secret");
   });
 
   it("strips trailing slash from SANITY_BASE_URL", async () => {

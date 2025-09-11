@@ -3,13 +3,17 @@ import { z } from "zod";
 
 const isProd = process.env.NODE_ENV === "production";
 
+const baseEmailFrom = z
+  .string()
+  .trim()
+  .email()
+  .transform((v) => v.toLowerCase());
+
 export const emailEnvSchema = z
   .object({
-    EMAIL_FROM: z
-      .string()
-      .trim()
-      .email()
-      .transform((v) => v.toLowerCase()),
+    EMAIL_FROM: isProd
+      ? baseEmailFrom
+      : baseEmailFrom.default("test@example.com"),
     EMAIL_SENDER_NAME: z.string().optional(),
     GMAIL_USER: z.string().optional(),
     GMAIL_PASS: z.string().optional(),

@@ -179,7 +179,7 @@ export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
   }
 
   const emailResult = emailEnvSchema.safeParse(env);
-  if (!emailResult.success) {
+  if (!emailResult.success && isProd) {
     emailResult.error.issues.forEach((issue) => ctx.addIssue(issue));
   }
 });

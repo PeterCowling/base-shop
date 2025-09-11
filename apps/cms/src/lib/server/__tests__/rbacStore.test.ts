@@ -28,19 +28,22 @@ describe("rbacStore", () => {
     });
   });
 
-  it("readRbac returns defaults when JSON malformed", async () => {
+  it("falls back to defaults when JSON malformed", async () => {
     await withTempDir(async (dir) => {
+      const { readRbac } = await import("../rbacStore");
+      const defaultDb = await readRbac();
       const file = path.join(dir, "data", "cms", "users.json");
       await fs.mkdir(path.dirname(file), { recursive: true });
       await fs.writeFile(file, "{not valid json", "utf8");
-      const { readRbac } = await import("../rbacStore");
       const db = await readRbac();
-      expect(db.permissions.admin).toEqual(ROLE_PERMISSIONS.admin);
+      expect(db).toEqual(defaultDb);
     });
   });
 
-  it("merges new permissions with defaults", async () => {
+  it("merges extra permissions with defaults", async () => {
     await withTempDir(async (dir) => {
+      const { readRbac } = await import("../rbacStore");
+      const defaultDb = await readRbac();
       const extraPerm = "extra_perm" as unknown as Permission;
       const file = path.join(dir, "data", "cms", "users.json");
       await fs.mkdir(path.dirname(file), { recursive: true });
@@ -53,10 +56,9 @@ describe("rbacStore", () => {
         }),
         "utf8"
       );
-      const { readRbac } = await import("../rbacStore");
       const db = await readRbac();
       expect(db.permissions.admin).toEqual([
-        ...ROLE_PERMISSIONS.admin,
+        ...defaultDb.permissions.admin,
         extraPerm,
       ]);
     });

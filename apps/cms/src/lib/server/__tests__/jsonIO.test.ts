@@ -140,6 +140,27 @@ describe("withFileLock", () => {
 
     expect(order).toEqual(["first-start", "first-end", "second-start", "second-end"]);
   });
+
+  it("starts the second task only after the first resolves", async () => {
+    let firstEnd = 0;
+    let secondStart = 0;
+
+    const first = withFileLock("same-file", async () => {
+      await new Promise((r) => setTimeout(r, 20));
+      firstEnd = Date.now();
+    });
+
+    const secondFn = jest.fn(async () => {
+      secondStart = Date.now();
+    });
+
+    const second = withFileLock("same-file", secondFn);
+
+    await Promise.all([first, second]);
+
+    expect(secondFn).toHaveBeenCalledTimes(1);
+    expect(secondStart).toBeGreaterThanOrEqual(firstEnd);
+  });
 });
 
 describe("withFileLock", () => {

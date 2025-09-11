@@ -532,5 +532,14 @@ describe("validateCsrfToken", () => {
     const { validateCsrfToken } = await import("../src/session");
     await expect(validateCsrfToken(null)).resolves.toBe(false);
   });
+
+  it("returns false when csrf cookie is missing", async () => {
+    jest.resetModules();
+    const store = { get: jest.fn(() => undefined) };
+    mockCookies.mockResolvedValue(store);
+    const { validateCsrfToken, CSRF_TOKEN_COOKIE } = await import("../src/session");
+    await expect(validateCsrfToken("token")).resolves.toBe(false);
+    expect(store.get).toHaveBeenCalledWith(CSRF_TOKEN_COOKIE);
+  });
 });
 

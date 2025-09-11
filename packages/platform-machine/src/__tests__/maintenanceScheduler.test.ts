@@ -71,6 +71,18 @@ describe("runMaintenanceScan", () => {
     });
   });
 
+  it("does not log when wear is below thresholds", async () => {
+    readdirMock.mockResolvedValueOnce(["shop1"]);
+    inventoryMock.mockResolvedValueOnce([{ sku: "sku1", wearCount: 3 }]);
+    productsMock.mockResolvedValueOnce([
+      { sku: "sku1", wearAndTearLimit: 10, maintenanceCycle: 5 },
+    ]);
+
+    await runMaintenanceScan("/data");
+
+    expect(infoMock).not.toHaveBeenCalled();
+  });
+
   it("logs an error and continues processing other shops", async () => {
     readdirMock.mockResolvedValueOnce(["badShop", "goodShop"]);
     inventoryMock

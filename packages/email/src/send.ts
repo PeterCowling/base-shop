@@ -3,17 +3,9 @@ import type { CampaignProvider } from "./providers/types";
 import { ProviderError } from "./providers/types";
 import { hasProviderErrorFields } from "./providers/error";
 import { getDefaultSender } from "./config";
-import { z } from "zod";
-
-const emailSchema = z
-  .string()
-  .trim()
-  .email()
-  .transform((v) => v.toLowerCase());
-const subjectSchema = z
-  .string()
-  .trim()
-  .min(1, "Email subject is required");
+import { emailSchema, subjectSchema } from "./validators";
+import { prepareContent } from "./content";
+import { getProviderOrder, loadProvider } from "./providers";
 
 export interface CampaignOptions {
   /** Recipient email address */
@@ -32,71 +24,6 @@ export interface CampaignOptions {
   variables?: Record<string, string>;
   /** Sanitize HTML content before sending. Defaults to true. */
   sanitize?: boolean;
-}
-
-function deriveText(html: string): string {
-  return html
-    .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, "")
-    .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/gi, " ")
-    .replace(/&amp;/gi, "&")
-    .replace(/&lt;/gi, "<")
-    .replace(/&gt;/gi, ">")
-    .replace(/&#39;/gi, "'")
-    .replace(/&quot;/gi, '"')
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-function ensureText(options: CampaignOptions): CampaignOptions {
-  if (!options.html) {
-    throw new Error("Missing html content for campaign email");
-  }
-  if (options.text) return options;
-  return { ...options, text: deriveText(options.html) };
-}
-
-const providerCache: Record<string, CampaignProvider | undefined> = {};
-
-async function loadProvider(
-  name: string
-): Promise<CampaignProvider | undefined> {
-  if (Object.prototype.hasOwnProperty.call(providerCache, name)) {
-    return providerCache[name];
-  }
-
-  if (name === "sendgrid") {
-    const apiKey = process.env.SENDGRID_API_KEY;
-    if (!apiKey) {
-      providerCache[name] = undefined;
-      return undefined;
-    }
-    const { SendgridProvider } = await import("./providers/sendgrid");
-    providerCache[name] = new SendgridProvider();
-  } else if (name === "resend") {
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
-      providerCache[name] = undefined;
-      return undefined;
-    }
-    const { ResendProvider } = await import("./providers/resend");
-    providerCache[name] = new ResendProvider();
-  } else {
-    providerCache[name] = undefined;
-  }
-
-  return providerCache[name];
-}
-
-const availableProviders = ["sendgrid", "resend", "smtp"];
-
-const configuredProvider = process.env.EMAIL_PROVIDER || undefined;
-
-if (configuredProvider && !availableProviders.includes(configuredProvider)) {
-  throw new Error(
-    `Unsupported EMAIL_PROVIDER "${configuredProvider}". Available providers: ${availableProviders.join(", ")}`
-  );
 }
 
 // Read provider preference directly from `process.env` so tests or runtime code
@@ -133,48 +60,8 @@ export async function sendCampaignEmail(
     const { renderTemplate } = await import("./templates");
     opts.html = renderTemplate(opts.templateId, opts.variables ?? {});
   }
-  if (sanitize && opts.html) {
-    const sanitizeHtml = (await import("sanitize-html")).default;
-    opts.html = sanitizeHtml(opts.html, {
-      allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-        "img",
-        "p",
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "br",
-        "span",
-        "div",
-        "ul",
-        "ol",
-        "li",
-        "table",
-        "thead",
-        "tbody",
-        "tr",
-        "td",
-        "th",
-      ]),
-      allowedAttributes: {
-        ...sanitizeHtml.defaults.allowedAttributes,
-        "*": ["href", "src", "alt", "title", "width", "height", "style"],
-      },
-    });
-  }
-  const optsWithText = ensureText(opts);
-  const primary = process.env.EMAIL_PROVIDER || "smtp";
-  if (!availableProviders.includes(primary)) {
-    throw new Error(
-      `Unsupported EMAIL_PROVIDER "${primary}". Available providers: ${availableProviders.join(", ")}`
-    );
-  }
-  const providerOrder = [
-    primary,
-    ...availableProviders.filter((p) => p !== primary),
-  ];
+  const optsWithText = await prepareContent(opts, sanitize);
+  const providerOrder = getProviderOrder();
   let lastError: unknown;
   for (const name of providerOrder) {
     if (name === "smtp") {
@@ -256,9 +143,9 @@ async function sendWithNodemailer(options: CampaignOptions): Promise<void> {
 }
 
 export {
-  deriveText,
-  ensureText,
-  loadProvider,
   sendWithRetry,
   sendWithNodemailer,
 };
+
+export { deriveText, ensureText, prepareContent } from "./content";
+export { loadProvider, getProviderOrder } from "./providers";

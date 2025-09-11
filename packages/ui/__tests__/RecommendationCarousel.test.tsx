@@ -55,4 +55,21 @@ describe("RecommendationCarousel", () => {
     expect(calledUrl.searchParams.get("minItems")).toBe("1");
     expect(calledUrl.searchParams.get("maxItems")).toBe("3");
   });
+
+  it("renders nothing when fetch fails", async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: false,
+    } as unknown as Response);
+    const { container } = render(<RecommendationCarousel endpoint="/api" />);
+    await waitFor(() => expect(container.firstChild).toBeNull());
+  });
+
+  it("returns null when API provides no products", async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => [],
+    } as unknown as Response);
+    const { container } = render(<RecommendationCarousel endpoint="/api" />);
+    await waitFor(() => expect(container.firstChild).toBeNull());
+  });
 });

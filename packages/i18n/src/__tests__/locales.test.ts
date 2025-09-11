@@ -23,13 +23,12 @@ describe("resolveLocale", () => {
     expect(resolveLocale("de")).toBe("de");
   });
 
-  it("defaults to 'en' for invalid or undefined locales", () => {
-    expect(resolveLocale("fr" as any)).toBe("en");
+  it("defaults to 'en' when locale is undefined", () => {
     expect(resolveLocale(undefined)).toBe("en");
   });
 
   it("falls back to 'en' for unsupported locales", () => {
-    expect(resolveLocale("jp" as any)).toBe("en");
+    expect(resolveLocale("fr" as any)).toBe("en");
   });
 });
 

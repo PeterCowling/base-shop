@@ -79,6 +79,25 @@ describe("RedisSessionStore", () => {
     expect(client.expire).not.toHaveBeenCalled();
   });
 
+  it("rejects when redis sadd fails and does not expire", async () => {
+    const record = createRecord("s1");
+    (client.sadd as jest.Mock).mockRejectedValue(new Error("sadd failed"));
+
+    await expect(store.set(record)).rejects.toThrow("sadd failed");
+    expect(client.set).toHaveBeenCalledWith("session:s1", record, { ex: ttl });
+    expect(client.expire).not.toHaveBeenCalled();
+  });
+
+  it("rejects when redis expire fails after prior calls", async () => {
+    const record = createRecord("s1");
+    (client.expire as jest.Mock).mockRejectedValue(new Error("expire failed"));
+
+    await expect(store.set(record)).rejects.toThrow("expire failed");
+    expect(client.set).toHaveBeenCalledWith("session:s1", record, { ex: ttl });
+    expect(client.sadd).toHaveBeenCalledWith("customer_sessions:c1", "s1");
+    expect(client.expire).toHaveBeenCalledWith("customer_sessions:c1", ttl);
+  });
+
   it("retrieves session and hydrates createdAt", async () => {
     const record = createRecord("s1");
     await store.set(record);
@@ -157,6 +176,26 @@ describe("RedisSessionStore", () => {
 
     expect(client.del).toHaveBeenCalledWith("session:id");
     expect(sremSpy).not.toHaveBeenCalled();
+  });
+
+  it("rejects when redis del fails and does not call srem", async () => {
+    const record = createRecord("s1");
+    await store.set(record);
+    (client.del as jest.Mock).mockRejectedValue(new Error("del failed"));
+
+    await expect(store.delete("s1")).rejects.toThrow("del failed");
+    expect(client.del).toHaveBeenCalledWith("session:s1");
+    expect(client.srem).not.toHaveBeenCalled();
+  });
+
+  it("rejects when redis srem fails", async () => {
+    const record = createRecord("s1");
+    await store.set(record);
+    (client.srem as jest.Mock).mockRejectedValue(new Error("srem failed"));
+
+    await expect(store.delete("s1")).rejects.toThrow("srem failed");
+    expect(client.del).toHaveBeenCalledWith("session:s1");
+    expect(client.srem).toHaveBeenCalledWith("customer_sessions:c1", "s1");
   });
 });
 

@@ -20,6 +20,7 @@ process.env.CMS_SPACE_URL = "https://cms.example";
 process.env.CMS_ACCESS_TOKEN = "token";
 process.env.SANITY_API_VERSION = "v1";
 process.env.STRIPE_WEBHOOK_SECRET = "whsec";
+process.env.EMAIL_FROM = "from@example.com";
 
 describe("deploy-shop API route", () => {
   let getServerSession: jest.Mock;

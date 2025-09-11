@@ -7,6 +7,7 @@ export type { Locale, ProductPublication } from "@acme/types";
 // actually contains catalogue data.
 import type { SKU as BaseSKU } from "@acme/types";
 import * as base from "./products/index";
+import { defaultFilterMappings } from "./defaultFilterMappings";
 
 /**
  * Compatibility SKU type that allows optional `sku` field for legacy access.
@@ -48,9 +49,15 @@ export { assertLocale } from "./products/index";
 /** Maximum allowed page size when listing products. */
 export const MAX_LIMIT = 100;
 
+export const ALLOWED_SORTS = ["title", "price"] as const;
+type SortKey = (typeof ALLOWED_SORTS)[number];
+
+type FilterKey = keyof typeof defaultFilterMappings;
+type FilterRecord = Partial<Record<FilterKey, unknown>>;
+
 export interface ProductQueryOptions {
-  sort?: unknown;
-  filter?: unknown;
+  sort?: string;
+  filter?: Record<string, unknown>;
   page?: number;
   limit?: number;
 }
@@ -61,14 +68,34 @@ export interface ProductQueryOptions {
  * Sort and filter are passed through for now, but page and limit are
  * normalized so callers can't request out-of-range values.
  */
-export function validateQuery(
-  opts: ProductQueryOptions = {},
-): Required<Pick<ProductQueryOptions, "page" | "limit">> &
-  Omit<ProductQueryOptions, "page" | "limit"> {
-  const page = Math.max(1, Math.floor(opts.page ?? 1));
-  const limitRaw = Math.floor(opts.limit ?? MAX_LIMIT);
-  const limit = Math.min(MAX_LIMIT, Math.max(1, limitRaw));
-  return { ...opts, page, limit };
+export function validateQuery({
+  sort,
+  filter,
+  page,
+  limit,
+}: ProductQueryOptions = {}): {
+  sort: SortKey;
+  filter: FilterRecord;
+  page: number;
+  limit: number;
+} {
+  const safeSort = ALLOWED_SORTS.includes(sort as SortKey)
+    ? (sort as SortKey)
+    : ALLOWED_SORTS[0];
+
+  const allowedFilters = new Set<FilterKey>(
+    Object.keys(defaultFilterMappings) as FilterKey[],
+  );
+  const safeFilter = Object.fromEntries(
+    Object.entries(filter ?? {}).filter(([key]) =>
+      allowedFilters.has(key as FilterKey),
+    ),
+  ) as FilterRecord;
+
+  const pageNum = Math.max(1, Math.floor(page ?? 1));
+  const limitRaw = Math.floor(limit ?? MAX_LIMIT);
+  const limitNum = Math.min(MAX_LIMIT, Math.max(1, limitRaw));
+  return { sort: safeSort, filter: safeFilter, page: pageNum, limit: limitNum };
 }
 
 export async function getProducts(a?: unknown): Promise<SKU[]> {

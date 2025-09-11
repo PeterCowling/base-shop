@@ -15,10 +15,16 @@ export declare function getProducts(shop?: string): Promise<SKU[]>;
 export declare function searchProducts(query: string): Promise<SKU[]>;
 export declare function searchProducts(shop: string, query: string): Promise<SKU[]>;
 export declare const MAX_LIMIT: number;
+export declare const ALLOWED_SORTS: readonly ["title", "price"];
 export interface ProductQueryOptions {
-    sort?: unknown;
-    filter?: unknown;
+    sort?: string;
+    filter?: Record<string, unknown>;
     page?: number;
     limit?: number;
 }
-export declare function validateQuery(opts?: ProductQueryOptions): Required<Pick<ProductQueryOptions, "page" | "limit">> & Omit<ProductQueryOptions, "page" | "limit">;
+export declare function validateQuery(opts?: ProductQueryOptions): {
+    sort: typeof ALLOWED_SORTS[number];
+    filter: Record<string, unknown>;
+    page: number;
+    limit: number;
+};

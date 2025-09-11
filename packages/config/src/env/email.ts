@@ -9,7 +9,8 @@ export const emailEnvSchema = z
       .string()
       .trim()
       .email()
-      .transform((v) => v.toLowerCase()),
+      .transform((v) => v.toLowerCase())
+      .default("test@example.com"),
     EMAIL_SENDER_NAME: z.string().optional(),
     GMAIL_USER: z.string().optional(),
     GMAIL_PASS: z.string().optional(),

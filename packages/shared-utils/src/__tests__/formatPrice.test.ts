@@ -21,14 +21,14 @@ describe("formatPrice", () => {
     );
   });
 
-  it.each(["BAD", "US", ""]) (
+  it.each(["BAD", "US", ""])(
     "throws RangeError for invalid currency %s",
     (currency) => {
       expect(() => formatPrice(1, currency as any)).toThrow(RangeError);
     }
   );
 
-  it.each([123.456, 1.005]) (
+  it.each([123.456, 1.005])(
     "rounds fractional amount %p correctly",
     (amount) => {
       const expected = new Intl.NumberFormat(undefined, {
@@ -39,7 +39,7 @@ describe("formatPrice", () => {
     }
   );
 
-  it.each([-1, -123.45]) ("formats negative amount %p", (amount) => {
+  it.each([-1, -123.45])("formats negative amount %p", (amount) => {
     const expected = new Intl.NumberFormat(undefined, {
       style: "currency",
       currency: "USD",
@@ -47,7 +47,7 @@ describe("formatPrice", () => {
     expect(formatPrice(amount)).toBe(expected);
   });
 
-  it.each(["de-DE", "ja-JP"]) (
+  it.each(["de-DE", "ja-JP"])(
     "uses explicit locale %s over default locale",
     (locale) => {
       const amount = 1234.56;
@@ -120,6 +120,14 @@ describe("formatPrice", () => {
       currency: "USD",
     }).format(0);
     expect(formatPrice(0)).toBe(expected);
+  });
+
+  it.each([null, undefined])("formats %p as NaN", (value) => {
+    const expected = new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: "USD",
+    }).format(NaN);
+    expect(formatPrice(value as any)).toBe(expected);
   });
 
   it("handles currencies with zero fraction digits like JPY", () => {

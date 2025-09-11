@@ -217,6 +217,14 @@
         "packages/telemetry/src/*",
         "packages/telemetry/dist/*"
       ],
+      "@acme/theme": [
+        "packages/theme/src/index.ts",
+        "packages/theme/dist/index.d.ts"
+      ],
+      "@acme/theme/*": [
+        "packages/theme/src/*",
+        "packages/theme/dist/*"
+      ],
       "@acme/zod-utils": [
         "packages/zod-utils/src/index.ts",
         "packages/zod-utils/dist/index.d.ts"

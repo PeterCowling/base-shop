@@ -38,6 +38,12 @@ describe("useAutoSave state transitions", () => {
     });
 
     expect(result.current.autoSaveState).toBe("saved");
+
+    await act(async () => {
+      jest.advanceTimersByTime(1000);
+    });
+
+    expect(result.current.autoSaveState).toBe("idle");
   });
 
   it("transitions idle -> saving -> error and calls onError on failure", async () => {

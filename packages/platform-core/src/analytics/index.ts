@@ -130,8 +130,8 @@ export async function trackEvent(
   const withTs = { timestamp: nowIso(), ...event };
   if (!(provider instanceof NoopProvider)) {
     await provider.track(withTs);
+    await updateAggregates(shop, withTs);
   }
-  await updateAggregates(shop, withTs);
 }
 
 export async function trackPageView(shop: string, page: string): Promise<void> {

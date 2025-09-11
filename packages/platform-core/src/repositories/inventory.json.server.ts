@@ -197,3 +197,11 @@ export const jsonInventoryRepository: InventoryRepository = {
   write,
   update,
 };
+
+// When running under Jest, expose a spyable version of `update` so tests can
+// verify that the JSON repository was used as a fallback.
+if (typeof (globalThis as any).jest?.fn === "function") {
+  jsonInventoryRepository.update = (globalThis as any).jest.fn(
+    jsonInventoryRepository.update,
+  );
+}

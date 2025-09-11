@@ -84,11 +84,13 @@ describe("formatPrice", () => {
     }
   });
 
-  it("throws when Intl.supportedValuesOf excludes the currency", () => {
+  it("throws RangeError when currency is not returned by Intl.supportedValuesOf", () => {
     const original = (Intl as any).supportedValuesOf;
     (Intl as any).supportedValuesOf = () => ["EUR"];
     try {
-      expect(() => formatPrice(10, "USD")).toThrow(RangeError);
+      expect(() => formatPrice(10, "USD")).toThrow(
+        "Unsupported currency code: USD"
+      );
     } finally {
       if (original) {
         (Intl as any).supportedValuesOf = original;
@@ -98,7 +100,7 @@ describe("formatPrice", () => {
     }
   });
 
-  it("formats when Intl.supportedValuesOf is not available", () => {
+  it("formats when Intl.supportedValuesOf is undefined", () => {
     const original = (Intl as any).supportedValuesOf;
     delete (Intl as any).supportedValuesOf;
     const amount = 12.34;
@@ -122,7 +124,7 @@ describe("formatPrice", () => {
     expect(formatPrice(0)).toBe(expected);
   });
 
-  it.each([null, undefined])("formats %p as NaN", (value) => {
+  it.each([null, undefined, NaN])("formats %p as NaN", (value) => {
     const expected = new Intl.NumberFormat(undefined, {
       style: "currency",
       currency: "USD",

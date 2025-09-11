@@ -1,102 +1,154 @@
-import * as path from "path";
+import { jest } from "@jest/globals";
 
-const DATA_ROOT = path.join("/tmp", "ra-tests");
+const mockJson = {
+  readReturnAuthorizations: jest.fn(async () => []),
+  writeReturnAuthorizations: jest.fn(async () => {}),
+  addReturnAuthorization: jest.fn(async () => {}),
+  getReturnAuthorization: jest.fn(async () => undefined),
+};
 
-jest.mock("../../dataRoot", () => ({
-  resolveDataRoot: () => path.join(DATA_ROOT, "data"),
+const mockPrisma = {
+  readReturnAuthorizations: jest.fn(async () => []),
+  writeReturnAuthorizations: jest.fn(async () => {}),
+  addReturnAuthorization: jest.fn(async () => {}),
+  getReturnAuthorization: jest.fn(async () => undefined),
+};
+
+let prismaDelegate: unknown;
+
+jest.mock("../returnAuthorization.json.server", () => ({
+  jsonReturnAuthorizationRepository: mockJson,
 }));
 
-const files = new Map<string, string>();
+jest.mock("../returnAuthorization.prisma.server", () => ({
+  prismaReturnAuthorizationRepository: mockPrisma,
+}));
 
-jest.mock("fs", () => ({
-  promises: {
-    readFile: jest.fn(async (p: string) => {
-      const data = files.get(p);
-      if (data === undefined) {
-        const err: NodeJS.ErrnoException = new Error("not found");
-        err.code = "ENOENT";
-        throw err;
-      }
-      return data;
-    }),
-    writeFile: jest.fn(async (p: string, data: string) => {
-      files.set(p, data);
-    }),
-    rename: jest.fn(async (tmp: string, dest: string) => {
-      const data = files.get(tmp);
-      if (data === undefined) throw new Error("missing");
-      files.set(dest, data);
-      files.delete(tmp);
-    }),
-    mkdir: jest.fn(async () => {}),
+jest.mock("../../db", () => ({
+  prisma: {
+    get returnAuthorization() {
+      return prismaDelegate;
+    },
   },
 }));
 
-import { promises as fs } from "fs";
-import {
-  readReturnAuthorizations,
-  writeReturnAuthorizations,
-  addReturnAuthorization,
-  getReturnAuthorization,
-} from "../returnAuthorization.server";
-import type { ReturnAuthorization } from "@acme/types";
+describe("returnAuthorization repository backend selection", () => {
+  const origBackend = process.env.RETURN_AUTH_BACKEND;
+  const origDbUrl = process.env.DATABASE_URL;
 
-const raFile = path.join(DATA_ROOT, "return-authorizations.json");
-
-describe("returnAuthorization repository", () => {
-  const sample: ReturnAuthorization = {
-    raId: "RA1",
-    orderId: "O1",
-    status: "pending",
-    inspectionNotes: "",
-  };
+  async function loadRepo() {
+    return await import("../returnAuthorization.server");
+  }
 
   beforeEach(() => {
-    files.clear();
+    jest.resetModules();
     jest.clearAllMocks();
+    prismaDelegate = {};
   });
 
-  describe("readReturnAuthorizations", () => {
-    it("returns parsed list when file exists", async () => {
-      files.set(raFile, JSON.stringify([sample]));
-      const res = await readReturnAuthorizations();
-      expect(res).toEqual([sample]);
-    });
-
-    it("returns empty array when file missing", async () => {
-      const res = await readReturnAuthorizations();
-      expect(res).toEqual([]);
-    });
-
-    it("returns empty array when schema invalid", async () => {
-      files.set(raFile, JSON.stringify([{ bad: true }]));
-      const res = await readReturnAuthorizations();
-      expect(res).toEqual([]);
-    });
-
-    it("throws for invalid JSON", async () => {
-      files.set(raFile, "{not json");
-      await expect(readReturnAuthorizations()).rejects.toThrow();
-    });
+  afterEach(() => {
+    if (origBackend === undefined) {
+      delete process.env.RETURN_AUTH_BACKEND;
+    } else {
+      process.env.RETURN_AUTH_BACKEND = origBackend;
+    }
+    if (origDbUrl === undefined) {
+      delete process.env.DATABASE_URL;
+    } else {
+      process.env.DATABASE_URL = origDbUrl;
+    }
   });
 
-  it("writes authorizations atomically", async () => {
-    await writeReturnAuthorizations([sample]);
-    const tmpWrite = (fs.writeFile as jest.Mock).mock.calls[0][0];
-    expect(tmpWrite).toContain("return-authorizations.json");
-    expect(files.has(tmpWrite)).toBe(false);
-    expect(files.has(raFile)).toBe(true);
-    expect(JSON.parse(files.get(raFile)!)).toEqual([sample]);
+  it("uses JSON repository when RETURN_AUTH_BACKEND='json'", async () => {
+    process.env.RETURN_AUTH_BACKEND = "json";
+    process.env.DATABASE_URL = "postgres://test";
+    prismaDelegate = {};
+    const {
+      readReturnAuthorizations,
+      writeReturnAuthorizations,
+      addReturnAuthorization,
+      getReturnAuthorization,
+    } = await loadRepo();
+
+    await readReturnAuthorizations();
+    await writeReturnAuthorizations([]);
+    await addReturnAuthorization({} as any);
+    await getReturnAuthorization("id");
+
+    expect(mockJson.readReturnAuthorizations).toHaveBeenCalled();
+    expect(mockJson.writeReturnAuthorizations).toHaveBeenCalled();
+    expect(mockJson.addReturnAuthorization).toHaveBeenCalled();
+    expect(mockJson.getReturnAuthorization).toHaveBeenCalled();
+    expect(mockPrisma.readReturnAuthorizations).not.toHaveBeenCalled();
   });
 
-  it("adds and retrieves an authorization", async () => {
-    await addReturnAuthorization(sample);
-    const list = await readReturnAuthorizations();
-    expect(list).toEqual([sample]);
-    const ra = await getReturnAuthorization("RA1");
-    expect(ra).toEqual(sample);
-    const missing = await getReturnAuthorization("RA2");
-    expect(missing).toBeUndefined();
+  it("uses Prisma repository when RETURN_AUTH_BACKEND='prisma'", async () => {
+    process.env.RETURN_AUTH_BACKEND = "prisma";
+    process.env.DATABASE_URL = "postgres://test";
+    prismaDelegate = {};
+    const {
+      readReturnAuthorizations,
+      writeReturnAuthorizations,
+      addReturnAuthorization,
+      getReturnAuthorization,
+    } = await loadRepo();
+
+    await readReturnAuthorizations();
+    await writeReturnAuthorizations([]);
+    await addReturnAuthorization({} as any);
+    await getReturnAuthorization("id");
+
+    expect(mockPrisma.readReturnAuthorizations).toHaveBeenCalled();
+    expect(mockPrisma.writeReturnAuthorizations).toHaveBeenCalled();
+    expect(mockPrisma.addReturnAuthorization).toHaveBeenCalled();
+    expect(mockPrisma.getReturnAuthorization).toHaveBeenCalled();
+    expect(mockJson.readReturnAuthorizations).not.toHaveBeenCalled();
+  });
+
+  it("defaults to Prisma repository when backend not set and delegate exists", async () => {
+    delete process.env.RETURN_AUTH_BACKEND;
+    process.env.DATABASE_URL = "postgres://test";
+    prismaDelegate = {};
+    const {
+      readReturnAuthorizations,
+      writeReturnAuthorizations,
+      addReturnAuthorization,
+      getReturnAuthorization,
+    } = await loadRepo();
+
+    await readReturnAuthorizations();
+    await writeReturnAuthorizations([]);
+    await addReturnAuthorization({} as any);
+    await getReturnAuthorization("id");
+
+    expect(mockPrisma.readReturnAuthorizations).toHaveBeenCalled();
+    expect(mockPrisma.writeReturnAuthorizations).toHaveBeenCalled();
+    expect(mockPrisma.addReturnAuthorization).toHaveBeenCalled();
+    expect(mockPrisma.getReturnAuthorization).toHaveBeenCalled();
+    expect(mockJson.readReturnAuthorizations).not.toHaveBeenCalled();
+  });
+
+  it("falls back to JSON repository when Prisma delegate missing", async () => {
+    delete process.env.RETURN_AUTH_BACKEND;
+    process.env.DATABASE_URL = "postgres://test";
+    prismaDelegate = undefined;
+    const {
+      readReturnAuthorizations,
+      writeReturnAuthorizations,
+      addReturnAuthorization,
+      getReturnAuthorization,
+    } = await loadRepo();
+
+    await readReturnAuthorizations();
+    await writeReturnAuthorizations([]);
+    await addReturnAuthorization({} as any);
+    await getReturnAuthorization("id");
+
+    expect(mockJson.readReturnAuthorizations).toHaveBeenCalled();
+    expect(mockJson.writeReturnAuthorizations).toHaveBeenCalled();
+    expect(mockJson.addReturnAuthorization).toHaveBeenCalled();
+    expect(mockJson.getReturnAuthorization).toHaveBeenCalled();
+    expect(mockPrisma.readReturnAuthorizations).not.toHaveBeenCalled();
   });
 });
 

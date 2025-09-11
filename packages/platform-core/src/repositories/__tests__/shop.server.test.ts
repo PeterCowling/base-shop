@@ -213,7 +213,7 @@ describe("inventory backend unaffected by SHOP_BACKEND", () => {
   });
 
   it("uses Prisma inventory backend when only SHOP_BACKEND is set", async () => {
-    process.env.SHOP_BACKEND = "sqlite";
+    process.env.SHOP_BACKEND = "prisma";
     const { resolveRepo: resolveRepoMock } = await import("../repoResolver");
     (resolveRepoMock as jest.Mock).mockImplementation(
       async (
@@ -268,8 +268,8 @@ describe("shop backend unaffected by INVENTORY_BACKEND", () => {
     }
   });
 
-  it("uses Prisma shop backend when INVENTORY_BACKEND=sqlite", async () => {
-    process.env.INVENTORY_BACKEND = "sqlite";
+  it("uses Prisma shop backend when INVENTORY_BACKEND has non-json value", async () => {
+    process.env.INVENTORY_BACKEND = "other";
     delete process.env.SHOP_BACKEND;
 
     const prismaRepo = {
@@ -300,8 +300,8 @@ describe("shop backend unaffected by INVENTORY_BACKEND", () => {
     expect(jsonRepo.getShopById).not.toHaveBeenCalled();
   });
 
-  it("uses JSON shop backend when SHOP_BACKEND=json even if INVENTORY_BACKEND=sqlite", async () => {
-    process.env.INVENTORY_BACKEND = "sqlite";
+  it("uses JSON shop backend when SHOP_BACKEND=json even if INVENTORY_BACKEND has other value", async () => {
+    process.env.INVENTORY_BACKEND = "other";
     process.env.SHOP_BACKEND = "json";
 
     const prismaRepo = {

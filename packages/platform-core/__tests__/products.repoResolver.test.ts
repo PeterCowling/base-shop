@@ -10,15 +10,6 @@ const jsonRepo: ProductsRepository = {
   duplicate: jest.fn(),
 };
 
-const sqliteRepo: ProductsRepository = {
-  read: jest.fn(),
-  write: jest.fn(),
-  getById: jest.fn(),
-  update: jest.fn(),
-  delete: jest.fn(),
-  duplicate: jest.fn(),
-};
-
 const defaultRepo: ProductsRepository = {
   read: jest.fn(),
   write: jest.fn(),
@@ -33,8 +24,6 @@ jest.mock("../src/repositories/repoResolver", () => ({
     switch (process.env.PRODUCTS_BACKEND) {
       case "json":
         return jsonRepo;
-      case "sqlite":
-        return sqliteRepo;
       default:
         return defaultRepo;
     }
@@ -83,22 +72,6 @@ describe("products repository resolver", () => {
     expect(jsonRepo.delete).toHaveBeenCalledWith("shop", "id");
     expect(jsonRepo.duplicate).toHaveBeenCalledWith("shop", "id");
 
-    expect(sqliteRepo.read).not.toHaveBeenCalled();
-    expect(defaultRepo.read).not.toHaveBeenCalled();
-  });
-
-  it('uses sqlite backend when PRODUCTS_BACKEND="sqlite"', async () => {
-    process.env.PRODUCTS_BACKEND = "sqlite";
-    await invokeAll();
-
-    expect(sqliteRepo.read).toHaveBeenCalledWith("shop");
-    expect(sqliteRepo.write).toHaveBeenCalledWith("shop", []);
-    expect(sqliteRepo.getById).toHaveBeenCalledWith("shop", "id");
-    expect(sqliteRepo.update).toHaveBeenCalledWith("shop", { id: "id", row_version: 1 });
-    expect(sqliteRepo.delete).toHaveBeenCalledWith("shop", "id");
-    expect(sqliteRepo.duplicate).toHaveBeenCalledWith("shop", "id");
-
-    expect(jsonRepo.read).not.toHaveBeenCalled();
     expect(defaultRepo.read).not.toHaveBeenCalled();
   });
 
@@ -114,7 +87,6 @@ describe("products repository resolver", () => {
     expect(defaultRepo.duplicate).toHaveBeenCalledWith("shop", "id");
 
     expect(jsonRepo.read).not.toHaveBeenCalled();
-    expect(sqliteRepo.read).not.toHaveBeenCalled();
   });
 });
 

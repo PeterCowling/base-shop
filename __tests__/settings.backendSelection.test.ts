@@ -42,9 +42,6 @@ jest.mock("../packages/platform-core/src/repositories/repoResolver", () => ({
     if (backend === "json") {
       return await jsonModule();
     }
-    if (process.env.DATABASE_URL?.startsWith("file:")) {
-      return await jsonModule();
-    }
     return await prismaModule();
   },
 }));
@@ -106,17 +103,5 @@ describe("settings repository backend selection", () => {
     expect(prismaImportCount).toBe(1);
   });
 
-  it("falls back to JSON when DATABASE_URL points to SQLite", async () => {
-    delete process.env.SETTINGS_BACKEND;
-    process.env.DATABASE_URL = "file:./dev.db";
-    const repo = await import(
-      "../packages/platform-core/src/repositories/settings.server"
-    );
-
-    await repo.getShopSettings("shop");
-
-    expect(mockJson.getShopSettings).toHaveBeenCalledWith("shop");
-    expect(mockPrisma.getShopSettings).not.toHaveBeenCalled();
-  });
 });
 

@@ -63,15 +63,6 @@ describe("settings repository backend selection", () => {
     expect(mockPrisma.getShopSettings).not.toHaveBeenCalled();
   });
 
-  it('uses JSON repository when SETTINGS_BACKEND="sqlite"', async () => {
-    process.env.SETTINGS_BACKEND = 'sqlite';
-    delete process.env.DATABASE_URL;
-    const { getShopSettings } = await import('../settings.server');
-    await getShopSettings('shop');
-    expect(mockJson.getShopSettings).toHaveBeenCalled();
-    expect(mockPrisma.getShopSettings).not.toHaveBeenCalled();
-  });
-
   it("defaults to the Prisma repository when SETTINGS_BACKEND is not set", async () => {
     delete process.env.SETTINGS_BACKEND;
     const {

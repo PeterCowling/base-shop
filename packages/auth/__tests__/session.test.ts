@@ -380,6 +380,26 @@ describe("session token", () => {
     expect(opts?.domain).toBe("custom.example");
   });
 
+  it("sets short-lived cookies by default", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const {
+      createCustomerSession,
+      CUSTOMER_SESSION_COOKIE,
+      CSRF_TOKEN_COOKIE,
+    } = await import("../src/session");
+    const { SESSION_TTL_S } = await import("../src/store");
+    await createCustomerSession({ customerId: "abc", role: "customer" as Role });
+    const sessionCall = store.set.mock.calls.find(
+      ([name]) => name === CUSTOMER_SESSION_COOKIE,
+    )!;
+    const csrfCall = store.set.mock.calls.find(
+      ([name]) => name === CSRF_TOKEN_COOKIE,
+    )!;
+    expect(sessionCall[2]?.maxAge).toBe(SESSION_TTL_S);
+    expect(csrfCall[2]?.maxAge).toBe(SESSION_TTL_S);
+  });
+
   it("sets long-lived cookies when remember is true", async () => {
     const REMEMBER_ME_TTL_S = 60 * 60 * 24 * 30;
     const store = createStore();

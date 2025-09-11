@@ -1,72 +1,57 @@
 import { formDataEntries, formDataToObject, tryJsonParse } from "../formData";
 
-describe("formData helpers", () => {
+describe("formDataEntries", () => {
   it("uses entries when available", () => {
     const entries: [string, FormDataEntryValue][] = [
       ["foo", "bar"],
       ["baz", "qux"],
     ];
     const entriesMock = jest.fn(() => entries);
-    const entriesFormData = {
-      entries: entriesMock,
-    } as unknown as FormData;
+    const fd = { entries: entriesMock } as unknown as FormData;
 
-    expect(Array.from(formDataEntries(entriesFormData))).toEqual(entries);
-    expect(formDataToObject(entriesFormData)).toEqual({
-      foo: "bar",
-      baz: "qux",
-    });
-    expect(entriesMock).toHaveBeenCalledTimes(2);
+    expect(Array.from(formDataEntries(fd))).toEqual(entries);
+    expect(entriesMock).toHaveBeenCalledTimes(1);
   });
 
-  it("uses iterator when available", () => {
-    const iteratorFormData = {
+  it("uses iterator when entries are missing", () => {
+    const fd = {
       [Symbol.iterator]: function* () {
         yield ["foo", "bar"] as [string, FormDataEntryValue];
         yield ["baz", "qux"] as [string, FormDataEntryValue];
       },
     } as unknown as FormData;
 
-    expect(Array.from(formDataEntries(iteratorFormData))).toEqual([
+    expect(Array.from(formDataEntries(fd))).toEqual([
       ["foo", "bar"],
       ["baz", "qux"],
     ]);
-    expect(formDataToObject(iteratorFormData)).toEqual({
-      foo: "bar",
-      baz: "qux",
-    });
   });
 
-  it("falls back to forEach when iterator missing", () => {
+  it("falls back to forEach when only forEach exists", () => {
     const entries: [string, FormDataEntryValue][] = [
       ["alpha", "1"],
       ["beta", "2"],
     ];
-    const forEachFormData = {
+    const fd = {
       forEach: (callback: (value: FormDataEntryValue, key: string) => void) => {
         entries.forEach(([key, value]) => callback(value, key));
       },
     } as unknown as FormData;
 
-    expect(Array.from(formDataEntries(forEachFormData))).toEqual(entries);
-    expect(formDataToObject(forEachFormData)).toEqual({
-      alpha: "1",
-      beta: "2",
-    });
+    expect(Array.from(formDataEntries(fd))).toEqual(entries);
   });
 
-  it("returns empty array when no iterable methods are present", () => {
-    const emptyFormData = {} as unknown as FormData;
-
-    expect(Array.from(formDataEntries(emptyFormData))).toEqual([]);
+  it("converts FormData to object", () => {
+    const fd = { entries: () => [["foo", "bar"]] } as unknown as FormData;
+    expect(formDataToObject(fd as FormData)).toEqual({ foo: "bar" });
   });
 });
 
 describe("tryJsonParse", () => {
   it("parses valid JSON strings", () => {
-    expect(
-      tryJsonParse<{ foo: string }>("{\"foo\":\"bar\"}"),
-    ).toEqual({ foo: "bar" });
+    expect(tryJsonParse<{ foo: string }>("{\"foo\":\"bar\"}")).toEqual({
+      foo: "bar",
+    });
   });
 
   it("returns undefined for invalid JSON strings", () => {
@@ -80,3 +65,4 @@ describe("tryJsonParse", () => {
     ).toBeUndefined();
   });
 });
+

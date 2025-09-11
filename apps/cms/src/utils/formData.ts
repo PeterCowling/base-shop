@@ -10,18 +10,24 @@ export function formDataEntries(
   formData: FormData,
 ): Iterable<[string, FormDataEntryValue]> {
   const fd = formData as unknown as FormDataLike;
-  if (typeof fd.entries === "function") {
-    return fd.entries();
+  const entriesFn = fd.entries;
+  if (typeof entriesFn === "function") {
+    return entriesFn.call(fd);
   }
-  if (typeof fd[Symbol.iterator] === "function") {
-    return fd[Symbol.iterator]!();
+
+  const iteratorFn = fd[Symbol.iterator];
+  if (typeof iteratorFn === "function") {
+    return iteratorFn.call(fd);
   }
+
   const entries: [string, FormDataEntryValue][] = [];
-  if (typeof fd.forEach === "function") {
-    fd.forEach((value: FormDataEntryValue, key: string) => {
+  const forEachFn = fd.forEach;
+  if (typeof forEachFn === "function") {
+    forEachFn.call(fd, (value: FormDataEntryValue, key: string) => {
       entries.push([key, value]);
     });
   }
+
   return entries;
 }
 

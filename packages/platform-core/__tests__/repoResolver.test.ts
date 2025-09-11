@@ -5,42 +5,13 @@ describe("resolveRepo", () => {
   const prismaDelegate = jest.fn();
   const prismaModule = jest.fn<Promise<string>, []>(() => Promise.resolve("prisma"));
   const jsonModule = jest.fn<Promise<string>, []>(() => Promise.resolve("json"));
-  const sqliteModule = jest.fn<Promise<string>, []>(() => Promise.resolve("sqlite"));
 
   afterEach(() => {
+
     delete process.env.INVENTORY_BACKEND;
     delete process.env.DATABASE_URL;
     delete process.env.DB_MODE;
     jest.clearAllMocks();
-  });
-
-  it("uses sqlite module when INVENTORY_BACKEND=sqlite and sqliteModule provided", async () => {
-    process.env.INVENTORY_BACKEND = "sqlite";
-
-    await expect(
-      resolveRepo(prismaDelegate, prismaModule, jsonModule, {
-        backendEnvVar: "INVENTORY_BACKEND",
-        sqliteModule,
-      }),
-    ).resolves.toBe("sqlite");
-
-    expect(sqliteModule).toHaveBeenCalledTimes(1);
-    expect(jsonModule).not.toHaveBeenCalled();
-    expect(prismaModule).not.toHaveBeenCalled();
-  });
-
-  it("falls back to json when INVENTORY_BACKEND=sqlite but sqliteModule missing", async () => {
-    process.env.INVENTORY_BACKEND = "sqlite";
-
-    await expect(
-      resolveRepo(prismaDelegate, prismaModule, jsonModule, {
-        backendEnvVar: "INVENTORY_BACKEND",
-      }),
-    ).resolves.toBe("json");
-
-    expect(jsonModule).toHaveBeenCalledTimes(1);
-    expect(sqliteModule).not.toHaveBeenCalled();
-    expect(prismaModule).not.toHaveBeenCalled();
   });
 
   it("uses json module when backend is explicitly json", async () => {
@@ -49,26 +20,23 @@ describe("resolveRepo", () => {
     await expect(
       resolveRepo(prismaDelegate, prismaModule, jsonModule, {
         backendEnvVar: "INVENTORY_BACKEND",
-        sqliteModule,
       }),
     ).resolves.toBe("json");
 
     expect(jsonModule).toHaveBeenCalledTimes(1);
     expect(prismaModule).not.toHaveBeenCalled();
-    expect(sqliteModule).not.toHaveBeenCalled();
   });
 
   it("defaults to json when no backend env vars or DATABASE_URL are set", async () => {
     await expect(
       resolveRepo(prismaDelegate, prismaModule, jsonModule, {
         backendEnvVar: "INVENTORY_BACKEND",
-        sqliteModule,
       }),
     ).resolves.toBe("json");
 
     expect(jsonModule).toHaveBeenCalledTimes(1);
     expect(prismaModule).not.toHaveBeenCalled();
-    expect(sqliteModule).not.toHaveBeenCalled();
+    
   });
 
   it("uses prisma module when DATABASE_URL is set and delegate returns truthy", async () => {
@@ -78,13 +46,12 @@ describe("resolveRepo", () => {
     await expect(
       resolveRepo(prismaDelegate, prismaModule, jsonModule, {
         backendEnvVar: "INVENTORY_BACKEND",
-        sqliteModule,
       }),
     ).resolves.toBe("prisma");
 
     expect(prismaModule).toHaveBeenCalledTimes(1);
     expect(jsonModule).not.toHaveBeenCalled();
-    expect(sqliteModule).not.toHaveBeenCalled();
+    
   });
 
   it("falls back to json module when delegate throws", async () => {
@@ -96,13 +63,12 @@ describe("resolveRepo", () => {
     await expect(
       resolveRepo(prismaDelegate, prismaModule, jsonModule, {
         backendEnvVar: "INVENTORY_BACKEND",
-        sqliteModule,
       }),
     ).resolves.toBe("json");
 
     expect(jsonModule).toHaveBeenCalledTimes(1);
     expect(prismaModule).not.toHaveBeenCalled();
-    expect(sqliteModule).not.toHaveBeenCalled();
+    
   });
 
   it("falls back to json module when delegate returns falsy", async () => {
@@ -112,13 +78,11 @@ describe("resolveRepo", () => {
     await expect(
       resolveRepo(prismaDelegate, prismaModule, jsonModule, {
         backendEnvVar: "INVENTORY_BACKEND",
-        sqliteModule,
       }),
     ).resolves.toBe("json");
 
     expect(jsonModule).toHaveBeenCalledTimes(1);
     expect(prismaModule).not.toHaveBeenCalled();
-    expect(sqliteModule).not.toHaveBeenCalled();
   });
 
   it("uses DB_MODE when repo-specific backend var is unset", async () => {
@@ -136,18 +100,16 @@ describe("resolveRepo", () => {
 
   it("repo-specific backend var overrides DB_MODE", async () => {
     process.env.DB_MODE = "json";
-    process.env.INVENTORY_BACKEND = "sqlite";
+    process.env.INVENTORY_BACKEND = "postgres";
 
     await expect(
       resolveRepo(prismaDelegate, prismaModule, jsonModule, {
         backendEnvVar: "INVENTORY_BACKEND",
-        sqliteModule,
       }),
-    ).resolves.toBe("sqlite");
+    ).resolves.toBe("prisma");
 
-    expect(sqliteModule).toHaveBeenCalledTimes(1);
+    expect(prismaModule).toHaveBeenCalledTimes(1);
     expect(jsonModule).not.toHaveBeenCalled();
-    expect(prismaModule).not.toHaveBeenCalled();
   });
 });
 

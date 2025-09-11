@@ -2,7 +2,6 @@ type RepoModule<T> = () => Promise<T>;
 
 export interface ResolveRepoOptions<T> {
   backendEnvVar?: string;
-  sqliteModule?: RepoModule<T>;
 }
 
 export async function resolveRepo<T>(
@@ -16,12 +15,6 @@ export async function resolveRepo<T>(
     ? process.env[envVarName]
     : process.env.DB_MODE;
 
-  if (backend === "sqlite") {
-    if (options.sqliteModule) {
-      return await options.sqliteModule();
-    }
-    return await jsonModule();
-  }
   if (backend === "json") {
     return await jsonModule();
   }

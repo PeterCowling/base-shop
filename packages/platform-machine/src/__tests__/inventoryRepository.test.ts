@@ -1,15 +1,9 @@
 import { jest } from '@jest/globals';
 
 let jsonImportCount = 0;
-let sqliteImportCount = 0;
 let prismaImportCount = 0;
 
 const jsonRepo = {
-  read: jest.fn(),
-  write: jest.fn(),
-  update: jest.fn(),
-};
-const sqliteRepo = {
   read: jest.fn(),
   write: jest.fn(),
   update: jest.fn(),
@@ -25,15 +19,6 @@ jest.mock('@acme/platform-core/repositories/inventory.json.server', () => {
   return { jsonInventoryRepository: jsonRepo };
 });
 
-jest.mock(
-  '../../platform-core/src/repositories/inventory.sqlite.server',
-  () => {
-    sqliteImportCount++;
-    return { sqliteInventoryRepository: sqliteRepo };
-  },
-  { virtual: true },
-);
-
 jest.mock('@acme/platform-core/repositories/inventory.prisma.server', () => {
   prismaImportCount++;
   return { prismaInventoryRepository: prismaRepo };
@@ -47,9 +32,6 @@ jest.mock('@acme/platform-core/repositories/repoResolver', () => ({
     prismaModule: any,
     jsonModule: any,
   ) => {
-    if (process.env.INVENTORY_BACKEND === 'sqlite') {
-      return await jsonModule();
-    }
     if (process.env.INVENTORY_BACKEND === 'json') {
       return await jsonModule();
     }
@@ -65,7 +47,6 @@ describe('inventory repository', () => {
     jest.resetModules();
     jest.clearAllMocks();
     jsonImportCount = 0;
-    sqliteImportCount = 0;
     prismaImportCount = 0;
     process.env.DATABASE_URL = 'postgres://test';
   });
@@ -83,14 +64,13 @@ describe('inventory repository', () => {
     }
   });
 
-  it('uses JSON repository when INVENTORY_BACKEND="sqlite"', async () => {
-    process.env.INVENTORY_BACKEND = 'sqlite';
+  it('uses JSON repository when INVENTORY_BACKEND="json"', async () => {
+    process.env.INVENTORY_BACKEND = 'json';
     const { inventoryRepository } = await import('@acme/platform-core/repositories/inventory.server');
     await inventoryRepository.read('shop');
     await inventoryRepository.write('shop', []);
 
     expect(jsonImportCount).toBe(1);
-    expect(sqliteImportCount).toBe(0);
     expect(prismaImportCount).toBe(0);
     expect(jsonRepo.read).toHaveBeenCalledWith('shop');
     expect(jsonRepo.write).toHaveBeenCalledWith('shop', []);
@@ -107,7 +87,7 @@ describe('inventory repository', () => {
       { sku: 'sku1', variantAttributes: { size: 'M', color: 'red' } },
       { sku: 'sku2', variantAttributes: {} },
     ] as any[];
-    process.env.INVENTORY_BACKEND = 'sqlite';
+    process.env.INVENTORY_BACKEND = 'json';
     jsonRepo.read.mockResolvedValue(items);
 
     const { readInventoryMap, variantKey } = await import('@acme/platform-core/repositories/inventory.server');

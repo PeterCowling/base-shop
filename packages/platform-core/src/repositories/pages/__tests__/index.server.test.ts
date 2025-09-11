@@ -177,8 +177,8 @@ describe("pages repository backend selection", () => {
     }
   });
 
-  it("ignores INVENTORY_BACKEND=sqlite and uses Prisma by default", async () => {
-    process.env.INVENTORY_BACKEND = "sqlite";
+  it("ignores INVENTORY_BACKEND=postgres and uses Prisma by default", async () => {
+    process.env.INVENTORY_BACKEND = "postgres";
     delete process.env.PAGES_BACKEND;
 
     const repo = await import("../index.server");
@@ -189,8 +189,8 @@ describe("pages repository backend selection", () => {
     expect(jsonImportCount).toBe(0);
   });
 
-  it("uses JSON backend when PAGES_BACKEND=json even if INVENTORY_BACKEND=sqlite", async () => {
-    process.env.INVENTORY_BACKEND = "sqlite";
+  it("uses JSON backend when PAGES_BACKEND=json even if INVENTORY_BACKEND=postgres", async () => {
+    process.env.INVENTORY_BACKEND = "postgres";
     process.env.PAGES_BACKEND = "json";
 
     const repo = await import("../index.server");

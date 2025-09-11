@@ -9,21 +9,6 @@ describe.skip("inventoryRepository", () => {
     delete process.env.INVENTORY_BACKEND;
   });
 
-  it("selects sqlite backend when configured", async () => {
-    process.env.INVENTORY_BACKEND = "sqlite";
-    const read = jest.fn().mockResolvedValue(["item"]);
-    jest.doMock(
-      "@acme/platform-core/repositories/inventory.sqlite.server",
-      () => ({ sqliteInventoryRepository: { read } })
-    );
-    const { readInventory } = await import(
-      "@acme/platform-core/repositories/inventory.server"
-    );
-    const items = await readInventory("shop1");
-    expect(read).toHaveBeenCalledWith("shop1");
-    expect(items).toEqual(["item"]);
-  });
-
   it("propagates backend errors", async () => {
     const read = jest.fn().mockRejectedValue(new Error("fail"));
     jest.doMock(

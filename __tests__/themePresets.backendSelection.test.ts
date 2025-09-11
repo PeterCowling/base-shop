@@ -39,9 +39,6 @@ jest.mock("../packages/platform-core/src/repositories/repoResolver", () => ({
     options: any,
   ) => {
     const backend = process.env[options.backendEnvVar];
-    if (backend === "sqlite") {
-      return await jsonModule();
-    }
     if (backend === "json") {
       return await jsonModule();
     }
@@ -90,16 +87,6 @@ describe("themePresets repository backend selection", () => {
       {},
     );
     expect(mockJson.deleteThemePreset).toHaveBeenCalledWith("shop", "name");
-    expect(mockPrisma.getThemePresets).not.toHaveBeenCalled();
-  });
-
-  it('uses JSON repository when THEME_PRESETS_BACKEND="sqlite"', async () => {
-    process.env.THEME_PRESETS_BACKEND = 'sqlite';
-    const repo = await import(
-      '../packages/platform-core/src/repositories/themePresets.server'
-    );
-    await repo.getThemePresets('shop');
-    expect(mockJson.getThemePresets).toHaveBeenCalled();
     expect(mockPrisma.getThemePresets).not.toHaveBeenCalled();
   });
 

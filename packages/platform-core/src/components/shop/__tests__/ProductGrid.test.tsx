@@ -158,6 +158,11 @@ describe("ProductGrid", () => {
     expect(placeholders).toHaveLength(3);
   });
 
+  it("does not render placeholders when skus are provided", () => {
+    render(<ProductGrid skus={skus} columns={3} />);
+    expect(screen.queryByTestId("placeholder")).toBeNull();
+  });
+
   it("shows load more button only when more items are available", async () => {
     function Wrapper() {
       const [count, setCount] = useState(2);
@@ -180,6 +185,21 @@ describe("ProductGrid", () => {
       screen.getByTestId("load-more").click();
     });
     expect(screen.getAllByTestId("sku")).toHaveLength(3);
+    expect(screen.queryByTestId("load-more")).toBeNull();
+  });
+
+  it("hides load more button when all items are visible", () => {
+    function Wrapper() {
+      const [count] = useState(skus.length);
+      const visible = skus.slice(0, count);
+      return (
+        <>
+          <ProductGrid skus={visible} />
+          {count < skus.length && <button data-cy="load-more">Load More</button>}
+        </>
+      );
+    }
+    render(<Wrapper />);
     expect(screen.queryByTestId("load-more")).toBeNull();
   });
 
@@ -210,6 +230,7 @@ describe("ProductGrid", () => {
     }
     render(<FilterWrapper />);
     expect(screen.getAllByTestId("sku")).toHaveLength(3);
+    expect(screen.queryByTestId("active-filter")).toBeNull();
     act(() => {
       screen.getByTestId("filter-red").click();
     });

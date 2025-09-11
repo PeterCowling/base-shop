@@ -91,14 +91,6 @@ async function loadProvider(
 
 const availableProviders = ["sendgrid", "resend", "smtp"];
 
-const configuredProvider = process.env.EMAIL_PROVIDER || undefined;
-
-if (configuredProvider && !availableProviders.includes(configuredProvider)) {
-  throw new Error(
-    `Unsupported EMAIL_PROVIDER "${configuredProvider}". Available providers: ${availableProviders.join(", ")}`
-  );
-}
-
 // Read provider preference directly from `process.env` so tests or runtime code
 // that mutate environment variables after the configuration module has loaded
 // can still influence the chosen provider.

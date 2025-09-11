@@ -66,5 +66,38 @@ describe("stripe client instantiation", () => {
     expect(StripeMock).toHaveBeenCalledWith("sk_new", expect.any(Object));
     expect((mod3.stripe as { key: string }).key).toBe("sk_new");
   });
+
+  it("creates real client when STRIPE_USE_MOCK toggles off", async () => {
+    const StripeCtor = jest.fn().mockImplementation((key: string) => ({ key }));
+    StripeCtor.createFetchHttpClient = jest.fn().mockReturnValue({});
+
+    process.env = {
+      ...OLD_ENV,
+      STRIPE_USE_MOCK: "true",
+    } as NodeJS.ProcessEnv;
+    jest.doMock("stripe", () => ({ __esModule: true, default: StripeCtor }));
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: { STRIPE_SECRET_KEY: undefined },
+    }));
+
+    const { stripe: mockStripe } = await import("../index.ts");
+    expect(StripeCtor).not.toHaveBeenCalled();
+
+    jest.resetModules();
+    StripeCtor.mockClear();
+    process.env = {
+      ...OLD_ENV,
+      STRIPE_USE_MOCK: "false",
+    } as NodeJS.ProcessEnv;
+    jest.doMock("stripe", () => ({ __esModule: true, default: StripeCtor }));
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: { STRIPE_SECRET_KEY: "sk_live" },
+    }));
+
+    const { stripe: realStripe } = await import("../index.ts");
+    expect(StripeCtor).toHaveBeenCalledWith("sk_live", expect.any(Object));
+    expect(realStripe).not.toBe(mockStripe);
+    expect((realStripe as { key: string }).key).toBe("sk_live");
+  });
 });
 

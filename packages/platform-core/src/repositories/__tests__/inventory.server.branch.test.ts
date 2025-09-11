@@ -12,6 +12,12 @@ const mockJson = {
   update: jest.fn(),
 };
 
+const mockPrisma = {
+  read: jest.fn(),
+  write: jest.fn(),
+  update: jest.fn(),
+};
+
 jest.mock('../inventory.sqlite.server', () => ({
   sqliteInventoryRepository: mockSqlite,
 }));
@@ -20,8 +26,15 @@ jest.mock('../inventory.json.server', () => ({
   jsonInventoryRepository: mockJson,
 }));
 
+jest.mock('../inventory.prisma.server', () => ({
+  prismaInventoryRepository: mockPrisma,
+}));
+
 describe('inventory.server branching', () => {
   const origBackend = process.env.INVENTORY_BACKEND;
+  const origDbUrl = process.env.DATABASE_URL;
+  const origNextAuth = process.env.NEXTAUTH_SECRET;
+  const origSession = process.env.SESSION_SECRET;
 
   beforeEach(() => {
     jest.resetModules();
@@ -33,6 +46,21 @@ describe('inventory.server branching', () => {
       delete process.env.INVENTORY_BACKEND;
     } else {
       process.env.INVENTORY_BACKEND = origBackend;
+    }
+    if (origDbUrl === undefined) {
+      delete process.env.DATABASE_URL;
+    } else {
+      process.env.DATABASE_URL = origDbUrl;
+    }
+    if (origNextAuth === undefined) {
+      delete process.env.NEXTAUTH_SECRET;
+    } else {
+      process.env.NEXTAUTH_SECRET = origNextAuth;
+    }
+    if (origSession === undefined) {
+      delete process.env.SESSION_SECRET;
+    } else {
+      process.env.SESSION_SECRET = origSession;
     }
   });
 
@@ -60,6 +88,26 @@ describe('inventory.server branching', () => {
     expect(mockJson.write).toHaveBeenCalledWith('shop', []);
     expect(mockJson.update).toHaveBeenCalledWith('shop', 'sku', {}, mutate);
     expect(mockSqlite.write).not.toHaveBeenCalled();
+  });
+
+  it('uses Prisma repository when DATABASE_URL and secrets are valid', async () => {
+    process.env.DATABASE_URL = 'postgres://test';
+    process.env.NEXTAUTH_SECRET = 'a'.repeat(32);
+    const { inventoryRepository } = await import('../inventory.server');
+
+    await inventoryRepository.read('shop');
+    expect(mockPrisma.read).toHaveBeenCalledWith('shop');
+    expect(mockJson.read).not.toHaveBeenCalled();
+  });
+
+  it('falls back to JSON when NEXTAUTH_SECRET is too short', async () => {
+    process.env.DATABASE_URL = 'postgres://test';
+    process.env.NEXTAUTH_SECRET = 'short';
+    const { inventoryRepository } = await import('../inventory.server');
+
+    await inventoryRepository.read('shop');
+    expect(mockJson.read).toHaveBeenCalled();
+    expect(mockPrisma.read).not.toHaveBeenCalled();
   });
 
   it('variantKey handles attrs', async () => {

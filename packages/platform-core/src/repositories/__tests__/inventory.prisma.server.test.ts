@@ -2,6 +2,10 @@ import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
+jest.mock("../../services/stockAlert.server", () => ({
+  checkAndAlert: jest.fn(),
+}));
+
 describe("prisma inventory repository", () => {
   let dataRoot: string;
 
@@ -113,6 +117,80 @@ describe("prisma inventory repository", () => {
     expect(JSON.parse(file)).toEqual([
       { sku: "b", productId: "p2", quantity: 3 },
     ]);
+  });
+
+  it("alerts when low stock and alerts enabled", async () => {
+    delete process.env.SKIP_STOCK_ALERT;
+    const { checkAndAlert } = await import("../../services/stockAlert.server");
+    const { prismaInventoryRepository } = await import("../inventory.prisma.server");
+
+    const items = [
+      {
+        sku: "a",
+        productId: "p1",
+        quantity: 0,
+        variantAttributes: {},
+        lowStockThreshold: 1,
+      },
+    ];
+
+    await prismaInventoryRepository.write("shop", items);
+    expect(checkAndAlert).toHaveBeenCalledWith("shop", items);
+  });
+
+  it("removes item when mutate returns undefined", async () => {
+    const { prismaInventoryRepository } = await import("../inventory.prisma.server");
+    const { prisma } = await import("../../db");
+
+    await prismaInventoryRepository.write("shop", [
+      { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
+    ]);
+
+    await prismaInventoryRepository.update(
+      "shop",
+      "a",
+      {},
+      () => undefined,
+    );
+
+    const dbItems = await prisma.inventoryItem.findMany({ where: { shopId: "shop" } });
+    expect(dbItems).toEqual([]);
+  });
+
+  it("falls back to JSON update when transaction throws", async () => {
+    const { prismaInventoryRepository } = await import("../inventory.prisma.server");
+    const { jsonInventoryRepository } = await import("../inventory.json.server");
+    const { prisma } = await import("../../db");
+
+    jest
+      .spyOn(prisma, "$transaction")
+      .mockRejectedValueOnce(new Error("fail"));
+
+    const mutate = () => ({
+      productId: "p1",
+      quantity: 2,
+      variantAttributes: {},
+    });
+
+    await prismaInventoryRepository.update("shop", "a", {}, mutate);
+    expect(jsonInventoryRepository.update).toHaveBeenCalledWith(
+      "shop",
+      "a",
+      {},
+      mutate,
+    );
+  });
+
+  it("reads from JSON when prisma model missing", async () => {
+    const { prisma } = await import("../../db");
+    const { jsonInventoryRepository } = await import("../inventory.json.server");
+    const { prismaInventoryRepository } = await import("../inventory.prisma.server");
+
+    // simulate prisma not having inventoryItem model
+    (prisma as any).inventoryItem = undefined;
+    const spy = jest.spyOn(jsonInventoryRepository, "read");
+    await prismaInventoryRepository.read("shop");
+    expect(spy).toHaveBeenCalledWith("shop");
   });
 });
 

@@ -125,6 +125,32 @@ describe('updateUserRoles', () => {
       permissions: {},
     });
   });
+
+  it('persists undefined when roles are omitted', async () => {
+    const db = {
+      users: { u1: { id: 'u1', name: 'User', email: 'u1@example.com', password: 'hash' } },
+      roles: { u1: 'admin' },
+      permissions: {},
+    };
+
+    (readRbac as jest.Mock).mockResolvedValue({
+      users: { ...db.users },
+      roles: { ...db.roles },
+      permissions: {},
+    });
+
+    const form = new FormData();
+    form.set('id', 'u1');
+
+    await updateUserRoles(form);
+
+    expect(writeRbac).toHaveBeenCalledTimes(1);
+    expect(writeRbac).toHaveBeenCalledWith({
+      users: db.users,
+      roles: { u1: undefined },
+      permissions: {},
+    });
+  });
 });
 
 describe('inviteUser', () => {

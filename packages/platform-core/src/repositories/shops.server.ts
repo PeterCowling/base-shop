@@ -15,6 +15,42 @@ export {
   type SettingsDiffEntry,
 } from "./settings.server";
 
+export async function listShops(
+  page = 1,
+  limit = 50,
+): Promise<string[]> {
+  const pageNum = Math.max(1, Math.floor(page));
+  const limitNum = Math.max(1, Math.floor(limit));
+  try {
+    const total = await prisma.shop.count();
+    if (total === 0) return [];
+    const maxPage = Math.max(1, Math.ceil(total / limitNum));
+    const safePage = Math.min(pageNum, maxPage);
+    const rows = await prisma.shop.findMany({
+      select: { id: true },
+      orderBy: { id: "asc" },
+      skip: (safePage - 1) * limitNum,
+      take: limitNum,
+    });
+    return rows.map((r) => r.id);
+  } catch {
+    try {
+      const entries = await fs.readdir(DATA_ROOT, { withFileTypes: true });
+      const dirs = entries
+        .filter((e) => e.isDirectory())
+        .map((e) => e.name)
+        .sort();
+      if (dirs.length === 0) return [];
+      const maxPage = Math.max(1, Math.ceil(dirs.length / limitNum));
+      const safePage = Math.min(pageNum, maxPage);
+      const start = (safePage - 1) * limitNum;
+      return dirs.slice(start, start + limitNum);
+    } catch {
+      return [];
+    }
+  }
+}
+
 export async function applyThemeData(data: Shop): Promise<Shop> {
   const defaults =
     Object.keys(data.themeDefaults ?? {}).length > 0

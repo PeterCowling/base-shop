@@ -132,6 +132,45 @@ describe("DynamicRenderer", () => {
     spy.mockRestore();
   });
 
+  it("merges getRuntimeProps with runtimeData, preferring runtimeData", () => {
+    const renderSpy = jest
+      .spyOn(blockRegistry.ProductGrid, "component")
+      .mockImplementation(({ foo, bar, baz }: any) => (
+        <div>
+          {foo}
+          {bar}
+          {baz}
+        </div>
+      ));
+    const runtimeSpy = jest
+      .spyOn(blockRegistry.ProductGrid, "getRuntimeProps")
+      .mockReturnValue({ foo: "fromRuntimeProps", bar: "keep" });
+
+    const components: PageComponent[] = [
+      { id: "1", type: "ProductGrid" } as any,
+    ];
+
+    render(
+      <DynamicRenderer
+        components={components}
+        locale="en"
+        runtimeData={{ ProductGrid: { foo: "fromRuntimeData", baz: "extra" } }}
+      />
+    );
+
+    expect(renderSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        foo: "fromRuntimeData",
+        bar: "keep",
+        baz: "extra",
+      }),
+      undefined
+    );
+
+    runtimeSpy.mockRestore();
+    renderSpy.mockRestore();
+  });
+
   it("applies style props to wrapper div", () => {
     const components: PageComponent[] = [
       {

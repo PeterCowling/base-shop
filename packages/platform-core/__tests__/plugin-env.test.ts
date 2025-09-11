@@ -61,15 +61,16 @@ describe("resolvePluginEnvironment", () => {
 
   it("merges env vars, config file and options", async () => {
     const root = await fsPromises.mkdtemp(path.join(os.tmpdir(), "ws-"));
-    const workspaceDir = path.join(root, "packages", "plugins");
+    const realRoot = await fsPromises.realpath(root);
+    const workspaceDir = path.join(realRoot, "packages", "plugins");
     await fsPromises.mkdir(workspaceDir, { recursive: true });
-    const start = path.join(root, "a", "b");
+    const start = path.join(realRoot, "a", "b");
     await fsPromises.mkdir(start, { recursive: true });
     process.chdir(start);
 
     process.env.PLUGIN_DIRS = ["/env/one", "/env/two"].join(path.delimiter);
 
-    const cfgPath = path.join(root, "plugins.config.json");
+    const cfgPath = path.join(realRoot, "plugins.config.json");
     await fsPromises.writeFile(
       cfgPath,
       JSON.stringify({
@@ -98,13 +99,14 @@ describe("resolvePluginEnvironment", () => {
 
   it("ignores invalid config files", async () => {
     const root = await fsPromises.mkdtemp(path.join(os.tmpdir(), "ws-"));
-    const workspaceDir = path.join(root, "packages", "plugins");
+    const realRoot = await fsPromises.realpath(root);
+    const workspaceDir = path.join(realRoot, "packages", "plugins");
     await fsPromises.mkdir(workspaceDir, { recursive: true });
-    const start = path.join(root, "a", "b");
+    const start = path.join(realRoot, "a", "b");
     await fsPromises.mkdir(start, { recursive: true });
     process.chdir(start);
 
-    const badCfg = path.join(root, "bad-config.json");
+    const badCfg = path.join(realRoot, "bad-config.json");
     await fsPromises.writeFile(badCfg, "not json");
 
     process.env.PLUGIN_DIRS = "/env/one";

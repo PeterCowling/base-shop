@@ -27,6 +27,20 @@ describe("telemetry index", () => {
     expect(mod.__buffer.length).toBe(1);
   });
 
+  test("track records events at sample rate boundary", async () => {
+    process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
+    process.env.NODE_ENV = "production";
+    process.env.NEXT_PUBLIC_TELEMETRY_SAMPLE_RATE = "0.5";
+    const mod = await import("../index");
+    const rand = jest.spyOn(Math, "random").mockReturnValue(0.5);
+    mod.track("boundary");
+    expect(mod.__buffer.length).toBe(1);
+    rand.mockReturnValue(0.50001);
+    mod.track("boundary+epsilon");
+    expect(mod.__buffer.map((e) => e.name)).toEqual(["boundary"]);
+    rand.mockRestore();
+  });
+
   test("__flush sends buffered events and retries on failure", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
     process.env.NODE_ENV = "production";

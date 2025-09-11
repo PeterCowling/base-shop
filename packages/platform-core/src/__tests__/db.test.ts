@@ -67,5 +67,31 @@ describe("createStubPrisma", () => {
     const orders = await prisma.rentalOrder.findMany({ where: { shop: "s" } });
     expect(orders).toHaveLength(1);
   });
+
+  it("updates rental orders via tracking number and finds missing orders", async () => {
+    process.env.NODE_ENV = "production";
+    jest.doMock("@acme/config/env/core", () => ({
+      loadCoreEnv: () => ({}),
+    }));
+
+    const { prisma } = (await import("../db")) as { prisma: PrismaClient };
+
+    const shop = "stub-shop";
+    await prisma.rentalOrder.create({
+      data: { shop, sessionId: "s1", trackingNumber: "t1" },
+    });
+
+    const updated = await prisma.rentalOrder.update({
+      where: { shop_trackingNumber: { shop, trackingNumber: "t1" } },
+      data: { sessionId: "s2" },
+    });
+    expect(updated.sessionId).toBe("s2");
+
+    expect(
+      await prisma.rentalOrder.findUnique({
+        where: { shop_sessionId: { shop, sessionId: "missing" } },
+      }),
+    ).toBeNull();
+  });
 });
 

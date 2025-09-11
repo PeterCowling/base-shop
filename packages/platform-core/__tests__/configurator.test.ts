@@ -48,6 +48,24 @@ describe("validateEnvFile", () => {
     jest.restoreAllMocks();
     fs.rmSync(tmpDir, { recursive: true, force: true });
   });
+
+  it("falls back to local reader when export is missing", () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "env-"));
+    const envPath = path.join(tmpDir, ".env");
+    fs.writeFileSync(envPath, "FOO=bar\n");
+
+    const original = (configurator as any).readEnvFile;
+    // Remove exported reader to exercise fallback branch
+    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+    delete (configurator as any).readEnvFile;
+
+    try {
+      expect(() => validateEnvFile(envPath)).not.toThrow();
+    } finally {
+      (configurator as any).readEnvFile = original;
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
 });
 
 describe("validateShopEnv", () => {
@@ -105,6 +123,45 @@ describe("validateShopEnv", () => {
     process.chdir(root);
     try {
       expect(() => validateShopEnv(shop)).not.toThrow();
+    } finally {
+      process.chdir(cwd);
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("skips plugin validation when shop config is missing", () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "shop-"));
+    const envDir = path.join(root, "apps", shop);
+    fs.mkdirSync(envDir, { recursive: true });
+    fs.writeFileSync(path.join(envDir, ".env"), "");
+    const cwd = process.cwd();
+    process.chdir(root);
+    try {
+      expect(() => validateShopEnv(shop)).not.toThrow();
+    } finally {
+      process.chdir(cwd);
+      fs.rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("requires sanity plugin variables when enabled", () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), "shop-"));
+    const envDir = path.join(root, "apps", shop);
+    fs.mkdirSync(envDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(envDir, ".env"),
+      ["SANITY_PROJECT_ID=pid", "SANITY_DATASET=dataset"].join("\n"),
+    );
+    const cfgDir = path.join(root, "data", "shops", shop);
+    fs.mkdirSync(cfgDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(cfgDir, "shop.json"),
+      JSON.stringify({ sanityBlog: {} }),
+    );
+    const cwd = process.cwd();
+    process.chdir(root);
+    try {
+      expect(() => validateShopEnv(shop)).toThrow("Missing SANITY_TOKEN");
     } finally {
       process.chdir(cwd);
       fs.rmSync(root, { recursive: true, force: true });

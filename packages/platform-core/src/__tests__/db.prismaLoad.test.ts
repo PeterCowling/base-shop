@@ -35,4 +35,40 @@ describe("loadPrismaClient", () => {
       ]);
     });
   });
+
+  it("caches the Prisma client after first load", async () => {
+    await jest.isolateModulesAsync(async () => {
+      process.env.NODE_ENV = "production";
+      jest.doMock("@acme/config/env/core", () => ({
+        loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
+      }));
+      const requireMock = jest.fn().mockReturnValue({ PrismaClient: class {} });
+      const createRequireMock = jest.fn(() => requireMock);
+      jest.doMock("module", () => ({ createRequire: createRequireMock }));
+
+      const { loadPrismaClient } = await import("../db");
+      loadPrismaClient();
+      loadPrismaClient();
+      expect(createRequireMock).toHaveBeenCalledTimes(1);
+      expect(requireMock).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it("propagates errors from the Prisma constructor", async () => {
+    await jest.isolateModulesAsync(async () => {
+      process.env.NODE_ENV = "production";
+      jest.doMock("@acme/config/env/core", () => ({
+        loadCoreEnv: () => ({ DATABASE_URL: "postgres://example" }),
+      }));
+      class BadPrisma {
+        constructor() {
+          throw new Error("connection failed");
+        }
+      }
+      const requireMock = jest.fn().mockReturnValue({ PrismaClient: BadPrisma });
+      jest.doMock("module", () => ({ createRequire: () => requireMock }));
+
+      await expect(import("../db")).rejects.toThrow("connection failed");
+    });
+  });
 });

@@ -68,6 +68,7 @@ beforeEach(() => {
   mockHeaders.get.mockReset();
   sealData.mockReset();
   unsealData.mockReset();
+  unsealData.mockResolvedValue({});
   randomUUID.mockReset();
   mockSessionStore = {
     get: jest.fn(),
@@ -730,6 +731,31 @@ it("destroyCustomerSession ignores invalid token", async () => {
 
   mockCookies.get.mockReturnValue({ value: "token" });
   unsealData.mockRejectedValue(new Error("bad"));
+
+  await destroyCustomerSession();
+
+  expect(mockSessionStore.delete).not.toHaveBeenCalled();
+  expect(mockCookies.delete).toHaveBeenCalledWith({
+    name: CUSTOMER_SESSION_COOKIE,
+    path: "/",
+    domain: "example.com",
+  });
+  expect(mockCookies.delete).toHaveBeenCalledWith({
+    name: CSRF_TOKEN_COOKIE,
+    path: "/",
+    domain: "example.com",
+  });
+});
+
+it("destroyCustomerSession clears cookies for token missing sessionId", async () => {
+  const {
+    destroyCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+    CSRF_TOKEN_COOKIE,
+  } = await import("../session");
+
+  mockCookies.get.mockReturnValue({ value: "token" });
+  unsealData.mockResolvedValue({});
 
   await destroyCustomerSession();
 

@@ -1,4 +1,5 @@
 import { parseJsonBody, parseLimit } from '../src/parseJsonBody';
+import { Readable } from 'node:stream';
 import { z } from 'zod';
 
 describe('parseLimit', () => {
@@ -109,6 +110,25 @@ describe('parseJsonBody', () => {
     await expect(result.response.json()).resolves.toEqual({
       error: 'Invalid JSON',
     });
+  });
+
+  it('returns an error response when the stream errors before reading', async () => {
+    const stream = new Readable({
+      read() {
+        this.destroy(new Error('boom'));
+      },
+    });
+
+    const req = new Request('http://test', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: stream,
+    });
+
+    const result = await parseJsonBody(req, schema, '1mb');
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
   });
 
   it('falls back to json() for non-string bodies', async () => {

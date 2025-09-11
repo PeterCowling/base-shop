@@ -102,6 +102,21 @@ describe("SendgridProvider", () => {
     );
   });
 
+  it("surfaces getDefaultSender errors", async () => {
+    process.env.SENDGRID_API_KEY = "key";
+    const error = new Error("sender fail");
+    jest.doMock("../../config", () => ({
+      getDefaultSender: () => {
+        throw error;
+      },
+    }));
+    const sgMail = require("@sendgrid/mail").default;
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await expect(provider.send(options)).rejects.toThrow("sender fail");
+    expect(sgMail.send).not.toHaveBeenCalled();
+  });
+
   it("wraps 400 errors as non-retryable ProviderError", async () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";
     const sgMail = require("@sendgrid/mail").default;

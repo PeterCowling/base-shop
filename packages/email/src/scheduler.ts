@@ -174,6 +174,7 @@ export async function createCampaign(opts: {
       await deliverCampaign(shop, campaign);
     } catch (err) {
       console.error(`Failed to deliver campaign ${campaign.id}`, err);
+      throw err;
     }
   }
   const store = getCampaignStore();

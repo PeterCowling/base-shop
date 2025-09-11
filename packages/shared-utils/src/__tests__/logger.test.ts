@@ -41,6 +41,13 @@ describe('logger', () => {
     expect(pinoInstance.debug).toHaveBeenCalledWith(meta, 'debug message');
   });
 
+  it('forwards Error objects to the pino instance', async () => {
+    const { logger } = await import('../logger');
+    const err = new Error('boom');
+    logger.error('msg', err);
+    expect(pinoInstance.error).toHaveBeenCalledWith(err, 'msg');
+  });
+
   it('defaults to info level in production', async () => {
     process.env.NODE_ENV = 'production';
     await import('../logger');

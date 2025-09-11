@@ -28,11 +28,13 @@ interface CreateSessionOptions {
 
 const REMEMBER_ME_TTL_S = 60 * 60 * 24 * 30;
 
+const isProd = process.env.NODE_ENV === "production";
+
 function cookieOptions(maxAge = SESSION_TTL_S) {
   return {
     httpOnly: true,
     sameSite: "strict" as const,
-    secure: true,
+    secure: isProd,
     path: "/",
     maxAge,
     domain: coreEnv.COOKIE_DOMAIN,
@@ -43,7 +45,7 @@ function csrfCookieOptions(maxAge = SESSION_TTL_S) {
   return {
     httpOnly: false,
     sameSite: "strict" as const,
-    secure: true,
+    secure: isProd,
     path: "/",
     maxAge,
     domain: coreEnv.COOKIE_DOMAIN,

@@ -37,6 +37,7 @@ describe("email provider webhooks", () => {
     trackEvent.mockReset();
     mapResendEvent.mockReset();
     delete process.env.RESEND_WEBHOOK_SECRET;
+    delete process.env.SENDGRID_WEBHOOK_PUBLIC_KEY;
   });
 
   test("SendGrid events update analytics", async () => {
@@ -85,6 +86,96 @@ describe("email provider webhooks", () => {
       "email_unsubscribe",
       "email_bounce",
     ]);
+  });
+
+  test("SendGrid missing shop query returns 400", async () => {
+    const body = "[]";
+    const { POST } = await import(
+      "../src/app/api/marketing/email/provider-webhooks/sendgrid/route"
+    );
+    const req = {
+      nextUrl: new URL("https://example.com"),
+      headers: new Headers(),
+      text: async () => body,
+    } as unknown as NextRequest;
+    const res = await POST(req);
+    expect(res.status).toBe(400);
+    expect(trackEvent).not.toHaveBeenCalled();
+  });
+
+  test("SendGrid missing secrets returns 401", async () => {
+    process.env.SENDGRID_WEBHOOK_PUBLIC_KEY = undefined;
+    const body = "[]";
+    const { POST } = await import(
+      "../src/app/api/marketing/email/provider-webhooks/sendgrid/route"
+    );
+    const req = {
+      nextUrl: new URL(`https://example.com?shop=${shop}`),
+      headers: new Headers(),
+      text: async () => body,
+    } as unknown as NextRequest;
+    const res = await POST(req);
+    expect(res.status).toBe(401);
+    expect(trackEvent).not.toHaveBeenCalled();
+  });
+
+  test("SendGrid invalid signature returns 400", async () => {
+    const body = "[]";
+    const timestamp = "123";
+    const kp1 = crypto.generateKeyPairSync("ec", { namedCurve: "P-256" });
+    const kp2 = crypto.generateKeyPairSync("ec", { namedCurve: "P-256" });
+    process.env.SENDGRID_WEBHOOK_PUBLIC_KEY = kp1.publicKey
+      .export({ format: "pem", type: "spki" })
+      .toString();
+    const signature = crypto
+      .createSign("sha256")
+      .update(timestamp + body)
+      .sign(kp2.privateKey)
+      .toString("base64");
+    const { POST } = await import(
+      "../src/app/api/marketing/email/provider-webhooks/sendgrid/route"
+    );
+    const req = {
+      nextUrl: new URL(`https://example.com?shop=${shop}`),
+      headers: new Headers({
+        "x-twilio-email-event-webhook-signature": signature,
+        "x-twilio-email-event-webhook-timestamp": timestamp,
+      }),
+      text: async () => body,
+    } as unknown as NextRequest;
+    const res = await POST(req);
+    expect(res.status).toBe(400);
+    expect(trackEvent).not.toHaveBeenCalled();
+  });
+
+  test("SendGrid invalid payload returns 400", async () => {
+    const body = "{";
+    const timestamp = "123";
+    const { publicKey, privateKey } = crypto.generateKeyPairSync("ec", {
+      namedCurve: "P-256",
+    });
+    process.env.SENDGRID_WEBHOOK_PUBLIC_KEY = publicKey
+      .export({ format: "pem", type: "spki" })
+      .toString();
+    const signature = crypto
+      .createSign("sha256")
+      .update(timestamp + body)
+      .sign(privateKey)
+      .toString("base64");
+    const { POST } = await import(
+      "../src/app/api/marketing/email/provider-webhooks/sendgrid/route"
+    );
+    const req = {
+      nextUrl: new URL(`https://example.com?shop=${shop}`),
+      headers: new Headers({
+        "x-twilio-email-event-webhook-signature": signature,
+        "x-twilio-email-event-webhook-timestamp": timestamp,
+      }),
+      text: async () => body,
+    } as unknown as NextRequest;
+    const res = await POST(req);
+    expect(res.status).toBe(400);
+    expect(trackEvent).not.toHaveBeenCalled();
   });
 
   describe("Resend webhook", () => {

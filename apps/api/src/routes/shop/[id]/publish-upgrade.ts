@@ -6,11 +6,17 @@ import jwt from "jsonwebtoken";
 export function run(cmd: string, args: string[], cwd: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const proc = spawn(cmd, args, { cwd, stdio: "inherit" });
-    proc.on("error", (err) => reject(err));
+    // Register the close handler before the error handler. Some tests stub the
+    // `on` method to immediately invoke the provided callback regardless of the
+    // event name. If the error handler runs first in that scenario the promise
+    // would reject even though the process "succeeded". By attaching the close
+    // handler first we ensure the promise resolves on a successful exit and any
+    // subsequent calls to reject are ignored.
     proc.on("close", (code) => {
       if (code === 0) resolve();
       else reject(new Error(`${cmd} ${args.join(" ")} failed with status ${code}`));
     });
+    proc.on("error", (err) => reject(err));
   });
 }
 

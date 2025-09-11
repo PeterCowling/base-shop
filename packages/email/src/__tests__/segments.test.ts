@@ -583,14 +583,20 @@ describe("resolveSegment errors", () => {
     jest.clearAllMocks();
   });
 
-  it("rejects when listEvents fails", async () => {
+  it("returns empty array when listEvents fails", async () => {
     mockReadFile.mockResolvedValue("[]");
     mockStat.mockResolvedValue({ mtimeMs: 1 });
     const err = new Error("listEvents error");
     mockListEvents.mockRejectedValue(err);
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
 
     const { resolveSegment } = await import("../segments");
-    await expect(resolveSegment("shop1", "vip")).rejects.toBe(err);
+    await expect(resolveSegment("shop1", "vip")).resolves.toEqual([]);
+    expect(spy).toHaveBeenCalledWith(
+      "Failed to list analytics events",
+      err
+    );
+    spy.mockRestore();
   });
 });
 

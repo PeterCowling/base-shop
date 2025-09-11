@@ -118,7 +118,12 @@ export async function resolveSegment(
   const segments = await readSegments(shop);
   const def = segments.find((s) => s.id === id);
 
-  const events: AnalyticsEvent[] = await listEvents(shop);
+  let events: AnalyticsEvent[] = [];
+  try {
+    events = await listEvents(shop);
+  } catch (err) {
+    console.error("Failed to list analytics events", err);
+  }
   const emails = new Set<string>();
 
   if (def) {

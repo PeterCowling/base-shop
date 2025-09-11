@@ -299,7 +299,7 @@ describe("scheduler", () => {
     const past = new Date(now.getTime() - 1000).toISOString();
     memory["bad*shop"] = [
       {
-        id: "bad", 
+        id: "bad",
         recipients: ["a@example.com"],
         subject: "Hi",
         body: "<p>Hi</p>",
@@ -308,7 +308,45 @@ describe("scheduler", () => {
         templateId: null,
       },
     ];
-    await expect(sendDueCampaigns()).rejects.toThrow("invalid");
+    const err = await sendDueCampaigns().catch((e) => e);
+    expect(err).toBeInstanceOf(Error);
+    expect(err).not.toBeInstanceOf(AggregateError);
+    expect(err.message).toBe("invalid");
+  });
+
+  test("sendDueCampaigns aggregates multiple campaign failures", async () => {
+    const past = new Date(now.getTime() - 1000).toISOString();
+    memory[shop] = [
+      {
+        id: "c1",
+        recipients: ["a@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+      {
+        id: "c2",
+        recipients: ["b@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+        segment: null,
+        sendAt: past,
+        templateId: null,
+      },
+    ];
+    const error1 = new Error("e1");
+    const error2 = new Error("e2");
+    (sendCampaignEmail as jest.Mock)
+      .mockRejectedValueOnce(error1)
+      .mockRejectedValueOnce(error2);
+    const err = await sendDueCampaigns().catch((e) => e);
+    expect(err).toBeInstanceOf(AggregateError);
+    expect(err.errors).toEqual([
+      { id: "c1", error: error1 },
+      { id: "c2", error: error2 },
+    ]);
   });
 
   test("deliverCampaign renders template HTML for every recipient", async () => {

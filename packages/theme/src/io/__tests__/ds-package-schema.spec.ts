@@ -1,4 +1,4 @@
-import { parseDsPackage } from "../ds-package-schema";
+import { externalDsSchema, parseDsPackage } from "../ds-package-schema";
 
 describe("ds-package-schema", () => {
   it("parses multiple tokens", () => {
@@ -16,5 +16,10 @@ describe("ds-package-schema", () => {
 
   it("rejects unknown fields", () => {
     expect(() => parseDsPackage({ tokens: { color: "#fff" }, extra: true })).toThrow();
+  });
+
+  it("exposes the underlying zod schema", () => {
+    const result = externalDsSchema.parse({ tokens: { color: "#000" } });
+    expect(result).toEqual({ tokens: { color: "#000" } });
   });
 });

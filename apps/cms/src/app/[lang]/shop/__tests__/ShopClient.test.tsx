@@ -151,14 +151,19 @@ describe("ShopClient filters", () => {
     search = "";
   });
 
-  it("initializes filters from query params and hides non-matching items", () => {
-    search = "?size=M&color=red&maxPrice=1500";
+  it("filters products based on query, size, color, and max price", () => {
     render(<ShopClient skus={skus} />);
 
-    // Initial filter values
-    expect(screen.getByLabelText(/size/i)).toHaveValue("M");
-    expect(screen.getByLabelText(/color/i)).toHaveValue("red");
-    expect(screen.getByLabelText(/max price/i)).toHaveValue(1500);
+    // Apply size, color and price filters
+    fireEvent.change(screen.getByLabelText(/size/i), {
+      target: { value: "M" },
+    });
+    fireEvent.change(screen.getByLabelText(/color/i), {
+      target: { value: "red" },
+    });
+    fireEvent.change(screen.getByLabelText(/max price/i), {
+      target: { value: "1500" },
+    });
 
     // Items filtered by size/color/price
     expect(screen.getByText("Red Shirt")).toBeInTheDocument();
@@ -177,17 +182,40 @@ describe("ShopClient filters", () => {
   });
 
   it("pushes updated query string when filters change", async () => {
-    search = "?size=M&color=red&maxPrice=1500";
     render(<ShopClient skus={skus} />);
     mockPush.mockClear();
 
+    fireEvent.change(screen.getByLabelText(/search products/i), {
+      target: { value: "red" },
+    });
+
+    await waitFor(() =>
+      expect(mockPush).toHaveBeenCalledWith("/shop?q=red")
+    );
+
     fireEvent.change(screen.getByLabelText(/size/i), {
-      target: { value: "L" },
+      target: { value: "M" },
+    });
+
+    await waitFor(() =>
+      expect(mockPush).toHaveBeenCalledWith("/shop?q=red&size=M")
+    );
+
+    fireEvent.change(screen.getByLabelText(/color/i), {
+      target: { value: "red" },
+    });
+
+    await waitFor(() =>
+      expect(mockPush).toHaveBeenCalledWith("/shop?q=red&size=M&color=red")
+    );
+
+    fireEvent.change(screen.getByLabelText(/max price/i), {
+      target: { value: "1500" },
     });
 
     await waitFor(() =>
       expect(mockPush).toHaveBeenCalledWith(
-        "/shop?size=L&color=red&maxPrice=1500"
+        "/shop?q=red&size=M&color=red&maxPrice=1500"
       )
     );
   });

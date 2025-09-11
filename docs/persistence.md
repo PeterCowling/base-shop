@@ -25,7 +25,6 @@ Each repository above uses a shared resolver that honors its `*_BACKEND` environ
 Each variable accepts:
 
 - `json` – read and write JSON files under `<DATA_ROOT>/<shop>`.
-- `sqlite` – legacy option that delegates to the JSON repository.
 - _unset_ – uses Prisma when `DATABASE_URL` is present; otherwise falls back to JSON.
 
 `DB_MODE` accepts the same values and applies them across all repositories unless overridden by a specific `*_BACKEND` variable.

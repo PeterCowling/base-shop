@@ -1,4 +1,4 @@
-import { addDays, format, parseISO } from "date-fns";
+import { addDays, format, parseISO, formatRelative as fnsFormatRelative } from "date-fns";
 import { fromZonedTime, formatInTimeZone } from "date-fns-tz";
 
 export { addDays, format, parseISO, fromZonedTime };
@@ -60,6 +60,21 @@ export function parseDate(value: string, timezone?: string): Date | null {
     return Number.isNaN(date.getTime()) ? null : date;
   } catch {
     return null;
+  }
+}
+
+/** Parse a date but fall back to the current time when invalid. */
+export function parseDateSafe(value?: string | number | Date): Date {
+  try {
+    const date =
+      typeof value === "string"
+        ? parseISO(value)
+        : value instanceof Date
+        ? new Date(value)
+        : new Date(value ?? Date.now());
+    return Number.isNaN(date.getTime()) ? new Date() : date;
+  } catch {
+    return new Date();
   }
 }
 
@@ -138,6 +153,14 @@ export function parseTargetDate(
   } catch {
     return null;
   }
+}
+
+/** Format a date relative to `baseDate` (defaults to now). */
+export function formatRelative(
+  date: Date | number,
+  baseDate: Date = new Date(),
+): string {
+  return fnsFormatRelative(date, baseDate);
 }
 
 /**

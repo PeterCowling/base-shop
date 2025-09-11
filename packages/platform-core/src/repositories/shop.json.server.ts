@@ -50,3 +50,5 @@ export const jsonShopRepository = {
   updateShopInRepo,
 };
 
+export { getShopById as getShopJson };
+

@@ -4,7 +4,7 @@ import { promises as fs } from "fs";
 
 const DATA_ROOT = path.join(os.tmpdir(), "shop-json-tests");
 
-jest.mock("../dataRoot", () => ({ DATA_ROOT }));
+jest.mock("../../dataRoot", () => ({ DATA_ROOT }));
 
 const files = new Map<string, string>();
 
@@ -101,6 +101,27 @@ describe("shop.json.server", () => {
     await expect(
       updateShopInRepo("shop3", { id: "other", name: "x" } as any)
     ).rejects.toThrow(/not found/);
+  });
+
+  it("getShopJson reads existing file", async () => {
+    const shopPath = path.join(DATA_ROOT, "s1", "shop.json");
+    fsMock.__files.set(
+      shopPath,
+      JSON.stringify({
+        id: "s1",
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+      }),
+    );
+    const { getShopJson } = await import("../shop.json.server");
+    const data = await getShopJson("s1");
+    expect(data.id).toBe("s1");
+  });
+
+  it("getShopJson rejects missing file", async () => {
+    const { getShopJson } = await import("../shop.json.server");
+    await expect(getShopJson("nope")).rejects.toThrow(/not found/);
   });
 });
 

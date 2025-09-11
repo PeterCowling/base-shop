@@ -16,19 +16,17 @@ describe("middleware", () => {
     jest.resetAllMocks();
   });
 
-  it.each([
-    "/api/auth/test",
-    "/login",
-    "/signup",
-    "/favicon.ico",
-  ])("returns NextResponse.next for %s", async (path) => {
-    getTokenMock.mockResolvedValue(null);
+  it.each(["/api/auth/test", "/login", "/signup", "/favicon.ico"])(
+    "returns NextResponse.next for %s",
+    async (path) => {
+      getTokenMock.mockResolvedValue(null);
 
-    const req = new NextRequest(`http://example.com${path}`);
-    const res = await middleware(req);
+      const req = new NextRequest(`http://example.com${path}`);
+      const res = await middleware(req);
 
-    expect(res.headers.get("x-middleware-next")).toBe("1");
-  });
+      expect(res.headers.get("x-middleware-next")).toBe("1");
+    }
+  );
 
   it("allows GET api requests without tokens", async () => {
     const req = new NextRequest("http://example.com/api/test");
@@ -47,7 +45,7 @@ describe("middleware", () => {
 
     expect(res.status).toBe(307);
     expect(res.headers.get("location")).toBe(
-      "http://example.com/login?callbackUrl=%2Fcms",
+      "http://example.com/login?callbackUrl=%2Fcms"
     );
   });
 
@@ -58,7 +56,7 @@ describe("middleware", () => {
     const res = await middleware(req);
 
     expect(res.headers.get("Permissions-Policy")).toBe(
-      "camera=(), microphone=(), geolocation=()",
+      "camera=(), microphone=(), geolocation=()"
     );
   });
 
@@ -72,6 +70,19 @@ describe("middleware", () => {
     expect(canReadMock).not.toHaveBeenCalled();
   });
 
+  it("adds security headers for allowed authenticated paths", async () => {
+    getTokenMock.mockResolvedValue({ role: "viewer" } as any);
+
+    const req = new NextRequest("http://example.com/");
+    const res = await middleware(req);
+
+    expect(res.headers.get("x-middleware-next")).toBe("1");
+    expect(res.headers.get("Permissions-Policy")).toBe(
+      "camera=(), microphone=(), geolocation=()"
+    );
+    expect(res.headers.get("Content-Security-Policy")).toBeTruthy();
+  });
+
   it.each(["/_next/static/chunk.js", "/_next"])(
     "returns NextResponse.next for static asset path %s",
     async (path) => {
@@ -83,7 +94,7 @@ describe("middleware", () => {
       expect(res.headers.get("x-middleware-next")).toBe("1");
       expect(canReadMock).not.toHaveBeenCalled();
       expect(canWriteMock).not.toHaveBeenCalled();
-    },
+    }
   );
 
   it("rewrites roles without read access to /403", async () => {
@@ -94,7 +105,9 @@ describe("middleware", () => {
     const res = await middleware(req);
 
     expect(res.status).toBe(403);
-    expect(res.headers.get("x-middleware-rewrite")).toBe("http://example.com/403");
+    expect(res.headers.get("x-middleware-rewrite")).toBe(
+      "http://example.com/403"
+    );
   });
 
   it("blocks viewer roles from write routes", async () => {
@@ -103,13 +116,13 @@ describe("middleware", () => {
     canWriteMock.mockReturnValue(false);
 
     const req = new NextRequest(
-      "http://example.com/cms/shop/test-shop/products/1/edit",
+      "http://example.com/cms/shop/test-shop/products/1/edit"
     );
     const res = await middleware(req);
 
     expect(res.status).toBe(403);
     expect(res.headers.get("x-middleware-rewrite")).toBe(
-      "http://example.com/403?shop=test-shop",
+      "http://example.com/403?shop=test-shop"
     );
   });
 
@@ -118,14 +131,12 @@ describe("middleware", () => {
     canReadMock.mockReturnValue(true);
     canWriteMock.mockReturnValue(false);
 
-    const req = new NextRequest(
-      "http://example.com/cms/shop/foo/media/images",
-    );
+    const req = new NextRequest("http://example.com/cms/shop/foo/media/images");
     const res = await middleware(req);
 
     expect(res.status).toBe(403);
     expect(res.headers.get("x-middleware-rewrite")).toBe(
-      "http://example.com/403?shop=foo",
+      "http://example.com/403?shop=foo"
     );
   });
 
@@ -161,7 +172,7 @@ describe("middleware", () => {
     canWriteMock.mockReturnValue(true);
 
     const req = new NextRequest(
-      "http://example.com/cms/shop/test-shop/products/1/edit",
+      "http://example.com/cms/shop/test-shop/products/1/edit"
     );
     const res = await middleware(req);
 
@@ -227,10 +238,9 @@ describe("middleware", () => {
         new NextRequest("http://example.com/api/auth/signin", {
           method: "POST",
           headers,
-        }),
+        })
       );
       expect(res.status).toBe(200);
     }
   });
 });
-

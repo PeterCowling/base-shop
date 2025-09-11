@@ -4,16 +4,10 @@ jest.mock("../../analytics", () => ({ trackOrder: jest.fn() }));
 jest.mock("../../subscriptionUsage", () => ({ incrementSubscriptionUsage: jest.fn() }));
 
 import { prisma } from "../../db";
-import {
-  addOrder,
-  markReturned,
-  markRefunded,
-  updateRisk,
-  listOrders,
-  getOrdersForCustomer,
-  setReturnTracking,
-  setReturnStatus,
-} from "../../orders";
+import { addOrder, listOrders, getOrdersForCustomer } from "../../orders/creation";
+import { markReturned, setReturnTracking, setReturnStatus } from "../../orders/status";
+import { markRefunded } from "../../orders/refunds";
+import { updateRisk } from "../../orders/risk";
 
 const trackOrder: jest.Mock =
   jest.requireMock("../../analytics").trackOrder;

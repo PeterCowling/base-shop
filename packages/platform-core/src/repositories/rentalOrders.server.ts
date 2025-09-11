@@ -8,11 +8,11 @@ import { prisma } from "../db";
 export {
   listOrders as readOrders,
   addOrder,
-  markReturned,
-  markRefunded,
-  updateRisk,
-  setReturnTracking,
-} from "../orders";
+  getOrdersForCustomer,
+} from "../orders/creation";
+export { markReturned, setReturnTracking } from "../orders/status";
+export { markRefunded } from "../orders/refunds";
+export { updateRisk } from "../orders/risk";
 
 type Order = RentalOrder;
 

@@ -1,7 +1,9 @@
 // packages/platform-core/src/stripe-webhook.ts
 import type Stripe from "stripe";
 import { stripe } from "@acme/stripe";
-import { addOrder, markNeedsAttention, markRefunded, updateRisk } from "./orders";
+import { addOrder } from "./orders/creation";
+import { markRefunded } from "./orders/refunds";
+import { markNeedsAttention, updateRisk } from "./orders/risk";
 import { getShopSettings } from "./repositories/settings.server";
 import {
   syncSubscriptionData,

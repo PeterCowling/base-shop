@@ -13,12 +13,9 @@ const getShopSettings = jest.fn<Promise<any>, [string]>();
 const updateSubscriptionPaymentStatus = jest.fn();
 const syncSubscriptionData = jest.fn();
 
-jest.mock("../src/orders", () => ({
-  addOrder,
-  markRefunded,
-  updateRisk,
-  markNeedsAttention,
-}));
+jest.mock("../src/orders/creation", () => ({ addOrder }));
+jest.mock("../src/orders/refunds", () => ({ markRefunded }));
+jest.mock("../src/orders/risk", () => ({ updateRisk, markNeedsAttention }));
 jest.mock("../src/repositories/settings.server", () => ({
   getShopSettings,
 }));

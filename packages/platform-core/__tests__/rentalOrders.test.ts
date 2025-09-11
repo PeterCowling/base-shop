@@ -2,7 +2,7 @@
 
 jest.mock("../src/analytics", () => ({ trackOrder: jest.fn() }));
 import * as repo from "../src/repositories/rentalOrders.server";
-import { getOrdersForCustomer } from "../src/orders";
+import { getOrdersForCustomer } from "../src/orders/creation";
 
 describe("rental order repository", () => {
   it("returns empty array when no orders exist", async () => {

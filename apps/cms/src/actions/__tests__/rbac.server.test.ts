@@ -132,6 +132,40 @@ describe('inviteUser', () => {
     jest.clearAllMocks();
   });
 
+  it('stores single role as string', async () => {
+    (argon2.hash as jest.Mock).mockResolvedValue('hashed');
+    (ulid as jest.Mock).mockReturnValue('uid123');
+    (readRbac as jest.Mock).mockResolvedValue({
+      users: {},
+      roles: {},
+      permissions: {},
+    });
+
+    const form = new FormData();
+    form.set('name', 'Solo User');
+    form.set('email', 'solo@example.com');
+    form.set('password', 'secret');
+    form.append('roles', 'editor');
+
+    await inviteUser(form);
+
+    expect(writeRbac).toHaveBeenCalledTimes(1);
+    expect(writeRbac).toHaveBeenCalledWith({
+      users: {
+        uid123: {
+          id: 'uid123',
+          name: 'Solo User',
+          email: 'solo@example.com',
+          password: 'hashed',
+        },
+      },
+      roles: { uid123: 'editor' },
+      permissions: {},
+    });
+    const db = (writeRbac as jest.Mock).mock.calls[0][0];
+    expect(typeof db.roles.uid123).toBe('string');
+  });
+
   it('hashes password, assigns roles and persists', async () => {
     (argon2.hash as jest.Mock).mockResolvedValue('hashed');
     (ulid as jest.Mock).mockReturnValue('uid123');

@@ -10,7 +10,8 @@ export const emailEnvSchema = z
       .string()
       .trim()
       .email()
-      .transform((v) => v.toLowerCase()),
+      .transform((v) => v.toLowerCase())
+      .optional(),
     EMAIL_SENDER_NAME: z.string().optional(),
     GMAIL_USER: z.string().optional(),
     GMAIL_PASS: z.string().optional(),
@@ -46,6 +47,13 @@ export const emailEnvSchema = z
     EMAIL_BATCH_DELAY_MS: z.coerce.number().optional(),
   })
   .superRefine((env, ctx) => {
+    if (env.EMAIL_PROVIDER !== "noop" && !env.EMAIL_FROM) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["EMAIL_FROM"],
+        message: "Required",
+      });
+    }
     if (env.EMAIL_PROVIDER === "sendgrid" && !env.SENDGRID_API_KEY) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

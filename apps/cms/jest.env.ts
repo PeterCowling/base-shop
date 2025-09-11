@@ -7,3 +7,5 @@ const ensureSecret = (key: string, fallback: string) => {
 };
 ensureSecret('NEXTAUTH_SECRET', 'test-nextauth-secret-32-chars-long-string!');
 ensureSecret('SESSION_SECRET', 'test-session-secret-32-chars-long-string!');
+mutableEnv.EMAIL_FROM ||= 'noreply@example.com';
+mutableEnv.EMAIL_SENDER_NAME ||= 'Test Sender';

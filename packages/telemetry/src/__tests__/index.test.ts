@@ -7,6 +7,7 @@ describe("telemetry index", () => {
     delete process.env.NEXT_PUBLIC_ENABLE_TELEMETRY;
     delete process.env.NEXT_PUBLIC_TELEMETRY_SAMPLE_RATE;
     delete process.env.NODE_ENV;
+    delete process.env.FORCE_TELEMETRY;
     // restore fetch if mocked
     // @ts-ignore
     if (originalFetch) global.fetch = originalFetch;
@@ -87,6 +88,15 @@ describe("telemetry index", () => {
       errorSpy.mockRestore();
       jest.useRealTimers();
     }
+  });
+
+  test("FORCE_TELEMETRY enables events in development", async () => {
+    process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
+    process.env.NODE_ENV = "development";
+    process.env.FORCE_TELEMETRY = "true";
+    const mod = await import("../index");
+    mod.track("forcedEvent");
+    expect(mod.__buffer.length).toBe(1);
   });
 });
 

@@ -110,6 +110,37 @@ describe("saveSanityConfig", () => {
     expect(updateShopInRepo).not.toHaveBeenCalled();
   });
 
+  it("keeps editorial enabled when form omits enableEditorial", async () => {
+    (verifyCredentials as jest.Mock).mockResolvedValue(true);
+    (getShopById as jest.Mock).mockResolvedValue({
+      id: "shop",
+      editorialBlog: { enabled: true },
+      luxuryFeatures: { blog: true },
+    });
+    (updateShopInRepo as jest.Mock).mockResolvedValue({});
+
+    const fd = new FormData();
+    fd.set("projectId", "p");
+    fd.set("dataset", "d");
+    fd.set("token", "t");
+
+    await saveSanityConfig("shop", fd);
+
+    expect(verifyCredentials).toHaveBeenCalledWith({
+      projectId: "p",
+      dataset: "d",
+      token: "t",
+    });
+    expect(updateShopInRepo).toHaveBeenCalledWith(
+      "shop",
+      expect.objectContaining({
+        luxuryFeatures: { blog: true },
+        enableEditorial: true,
+        editorialBlog: { enabled: true },
+      }),
+    );
+  });
+
   it("schedules promotion when request succeeds", async () => {
     (verifyCredentials as jest.Mock).mockResolvedValue(true);
     (getShopById as jest.Mock).mockResolvedValue({

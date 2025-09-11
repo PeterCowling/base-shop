@@ -38,5 +38,12 @@ describe("auth secret", () => {
       "test-nextauth-secret-32-chars-long-string!",
     );
   });
+
+  it("reads NEXTAUTH_SECRET from process.env", () => {
+    process.env.NEXTAUTH_SECRET = "env-secret-32-characters-long-string!!";
+    jest.doMock("@acme/config", () => ({ env: process.env }));
+    const { authSecret } = require("../secret");
+    expect(authSecret).toBe("env-secret-32-characters-long-string!!");
+  });
 });
 

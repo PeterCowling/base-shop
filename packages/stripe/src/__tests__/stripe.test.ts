@@ -217,6 +217,41 @@ describe("stripe client", () => {
     ).rejects.toMatchObject({ message: "Bad request", statusCode: 400 });
   });
 
+  it("updates payment intent with expected payload", async () => {
+    const { stripe } = await import("../index.ts");
+    const stripeInternal = stripe as StripeInternal;
+
+    let capturedBody = "";
+    let capturedVersion = "";
+    server.use(
+      rest.post(
+        "https://api.stripe.com/v1/payment_intents/pi_123",
+        async (req, res, ctx) => {
+          capturedBody = await req.text();
+          capturedVersion = req.headers.get("stripe-version") ?? "";
+          return res(
+            ctx.status(200),
+            ctx.json({
+              id: "pi_123",
+              object: "payment_intent",
+              metadata: { foo: "bar" },
+            })
+          );
+        }
+      )
+    );
+
+    const paymentIntent = await stripeInternal.paymentIntents.update(
+      "pi_123",
+      { metadata: { foo: "bar" } }
+    );
+
+    expect(paymentIntent.id).toBe("pi_123");
+    expect(capturedVersion).toBe("2025-06-30.basil");
+    const params = new URLSearchParams(capturedBody);
+    expect(params.get("metadata[foo]")).toBe("bar");
+  });
+
   it("constructs webhook events using Stripe helpers", async () => {
     const { stripe } = await import("../index.ts");
     const payload = JSON.stringify({

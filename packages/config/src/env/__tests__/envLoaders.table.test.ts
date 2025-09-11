@@ -136,9 +136,35 @@ describe('core env', () => {
 // ------------ email ------------
 describe('email env', () => {
   describe.each([
-    [{ EMAIL_PROVIDER: 'smtp', CAMPAIGN_FROM: 'from@example.com', SMTP_PORT: '25', SMTP_SECURE: 'true' }],
-    [{ EMAIL_PROVIDER: 'sendgrid', CAMPAIGN_FROM: 'from@example.com', SENDGRID_API_KEY: 'sg', SMTP_PORT: '25', SMTP_SECURE: 'false' }],
-    [{ EMAIL_PROVIDER: 'resend', CAMPAIGN_FROM: 'from@example.com', RESEND_API_KEY: 'rk', SMTP_PORT: '25', SMTP_SECURE: 'no' }],
+    [
+      {
+        EMAIL_PROVIDER: 'smtp',
+        EMAIL_FROM: 'from@example.com',
+        CAMPAIGN_FROM: 'from@example.com',
+        SMTP_PORT: '25',
+        SMTP_SECURE: 'true',
+      },
+    ],
+    [
+      {
+        EMAIL_PROVIDER: 'sendgrid',
+        EMAIL_FROM: 'from@example.com',
+        CAMPAIGN_FROM: 'from@example.com',
+        SENDGRID_API_KEY: 'sg',
+        SMTP_PORT: '25',
+        SMTP_SECURE: 'false',
+      },
+    ],
+    [
+      {
+        EMAIL_PROVIDER: 'resend',
+        EMAIL_FROM: 'from@example.com',
+        CAMPAIGN_FROM: 'from@example.com',
+        RESEND_API_KEY: 'rk',
+        SMTP_PORT: '25',
+        SMTP_SECURE: 'no',
+      },
+    ],
   ])('email loader %j', (env) => {
     it('parses provider settings', async () =>
       withEnv(env as any, async () => {
@@ -153,14 +179,28 @@ describe('email env', () => {
   });
 
   it('requires keys for send providers', async () =>
-    withEnv({ EMAIL_PROVIDER: 'sendgrid', CAMPAIGN_FROM: 'from@example.com' } as any, async () => {
-      await expect(import('../email.ts')).rejects.toThrow('Invalid email environment variables');
-    }));
+    withEnv(
+      {
+        EMAIL_PROVIDER: 'sendgrid',
+        EMAIL_FROM: 'from@example.com',
+        CAMPAIGN_FROM: 'from@example.com',
+      } as any,
+      async () => {
+        await expect(import('../email.ts')).rejects.toThrow('Invalid email environment variables');
+      },
+    ));
 
   it('rejects unknown provider', async () =>
-    withEnv({ EMAIL_PROVIDER: 'mailgun', CAMPAIGN_FROM: 'a@b.com' } as any, async () => {
-      await expect(import('../email.ts')).rejects.toThrow('Invalid email environment variables');
-    }));
+    withEnv(
+      {
+        EMAIL_PROVIDER: 'mailgun',
+        EMAIL_FROM: 'from@example.com',
+        CAMPAIGN_FROM: 'a@b.com',
+      } as any,
+      async () => {
+        await expect(import('../email.ts')).rejects.toThrow('Invalid email environment variables');
+      },
+    ));
 });
 
 // ------------ payments ------------

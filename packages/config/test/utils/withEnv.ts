@@ -4,7 +4,7 @@ export async function withEnv<T>(
 ): Promise<T> {
   const OLD = process.env;
   jest.resetModules();
-  process.env = { ...OLD, EMAIL_FROM: "from@example.com", ...vars };
+  process.env = { ...OLD, ...vars };
   if (!("NODE_ENV" in vars)) {
     delete process.env.NODE_ENV;
   }

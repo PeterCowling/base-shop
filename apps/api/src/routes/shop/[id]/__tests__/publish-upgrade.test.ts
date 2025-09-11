@@ -477,6 +477,8 @@ describe("onRequestPost", () => {
     }));
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
 
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },
@@ -706,7 +708,7 @@ describe("onRequestPost", () => {
     expect(typeof written.lastUpgrade).toBe("string");
   });
 
-  it.each(["\"{bad"])(
+  it.each(["\"{bad", "not-json"])(
     "locks all dependencies and runs build/deploy when body is invalid JSON",
     async (badBody) => {
       readFileSync.mockImplementation((file: string) => {
@@ -738,6 +740,8 @@ describe("onRequestPost", () => {
       });
 
       expect(res.status).toBe(200);
+      const body = await res.json();
+      expect(body).toEqual({ ok: true });
       expect(writeFileSync).toHaveBeenCalledTimes(1);
       const [shopPath, data] = writeFileSync.mock.calls[0];
       expect(shopPath).toContain(`data/shops/${id}/shop.json`);
@@ -882,6 +886,8 @@ describe("onRequestPost", () => {
     });
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
 
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },
@@ -945,6 +951,8 @@ describe("onRequestPost", () => {
       }
       return "";
     });
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
 
     const token = jwt.sign({}, "secret");

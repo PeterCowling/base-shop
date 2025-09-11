@@ -66,6 +66,25 @@ describe("logger", () => {
     expect(pinoMock).toHaveBeenCalledWith({ level: "warn" });
   });
 
+  it("passes Error instances through to pino", async () => {
+    const baseLogger = {
+      error: jest.fn(),
+      warn: jest.fn(),
+      info: jest.fn(),
+      debug: jest.fn(),
+    };
+    pinoMock.mockReturnValue(baseLogger);
+
+    const { logger } = await import("../src/logger");
+
+    logger.error("msg", new Error("boom"));
+
+    const [[errorArg, message]] = baseLogger.error.mock.calls;
+    expect(errorArg).toBeInstanceOf(Error);
+    expect(errorArg.message).toBe("boom");
+    expect(message).toBe("msg");
+  });
+
   it("defaults to info level in production", async () => {
     pinoMock.mockReturnValue({
       error: jest.fn(),

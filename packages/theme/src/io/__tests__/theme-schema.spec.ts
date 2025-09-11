@@ -1,4 +1,4 @@
-import { parseTheme } from "../theme-schema";
+import { parseTheme, themeLibrarySchema } from "../theme-schema";
 
 describe("themeLibrarySchema", () => {
   it("parses valid theme", () => {
@@ -82,5 +82,15 @@ describe("themeLibrarySchema", () => {
         brandColor: "#fff",
       })
     ).toThrow();
+  });
+
+  it("exposes the theme schema for direct use", () => {
+    const theme = themeLibrarySchema.parse({
+      id: "test",
+      name: "Test Theme",
+      brandColor: "#fff",
+      createdBy: "tester",
+    });
+    expect(theme.id).toBe("test");
   });
 });

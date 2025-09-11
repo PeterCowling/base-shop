@@ -145,6 +145,11 @@ describe("calculateRentalDays", () => {
   it("computes positive day difference", () => {
     expect(calculateRentalDays("2025-01-03")).toBe(2);
   });
+  it("handles same-day and partial-day returns", () => {
+    jest.setSystemTime(new Date("2025-01-01T00:00:00Z"));
+    expect(calculateRentalDays("2025-01-01")).toBe(1);
+    expect(calculateRentalDays("2025-01-02T12:00:00")).toBe(2);
+  });
   it("throws for past return dates", () => {
     expect(() => calculateRentalDays("2024-12-31")).toThrow(
       "returnDate must be in the future",

@@ -37,6 +37,8 @@ it("uploads image and splits tags", async () => {
     useFileUpload({ shop: "s", requiredOrientation: "landscape", onUploaded })
   );
 
+  mockOrientation.mockClear();
+
   act(() => {
     result.current.onFileChange({ target: { files: [file] } } as any);
     result.current.setAltText("alt");
@@ -110,12 +112,14 @@ it("marks file invalid when orientation mismatches", () => {
 
 it("skips orientation validation for videos", async () => {
   const file = new File(["v"], "v.mp4", { type: "video/mp4" });
-  mockOrientation.mockReturnValue({ actual: null, isValid: null });
   const onUploaded = jest.fn();
 
   const { result } = renderHook(() =>
     useFileUpload({ shop: "s", requiredOrientation: "landscape", onUploaded })
   );
+
+  await act(async () => {});
+  mockOrientation.mockClear();
 
   act(() => {
     result.current.onFileChange({ target: { files: [file] } } as any);
@@ -123,7 +127,7 @@ it("skips orientation validation for videos", async () => {
     result.current.setTags("tag");
   });
 
-  expect(mockOrientation).toHaveBeenCalledWith(null, "landscape");
+  expect(mockOrientation).not.toHaveBeenCalled();
   expect(result.current.isValid).toBe(true);
   expect(result.current.actual).toBeNull();
 

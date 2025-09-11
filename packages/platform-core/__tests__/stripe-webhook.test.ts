@@ -4,19 +4,27 @@ import type Stripe from "stripe";
 const addOrder = jest.fn();
 const markRefunded = jest.fn();
 const updateRisk = jest.fn();
+const markNeedsAttention = jest.fn();
 const reviewsCreate = jest.fn();
 const piUpdate = jest.fn();
 const chargesRetrieve = jest.fn<Promise<any>, [string]>();
 // getShopSettings normally resolves to shop configuration; type it broadly for tests
 const getShopSettings = jest.fn<Promise<any>, [string]>();
+const updateSubscriptionPaymentStatus = jest.fn();
+const syncSubscriptionData = jest.fn();
 
 jest.mock("../src/orders", () => ({
   addOrder,
   markRefunded,
   updateRisk,
+  markNeedsAttention,
 }));
 jest.mock("../src/repositories/settings.server", () => ({
   getShopSettings,
+}));
+jest.mock("../src/repositories/subscriptions.server", () => ({
+  updateSubscriptionPaymentStatus,
+  syncSubscriptionData,
 }));
 jest.mock("@acme/stripe", () => ({
   stripe: {
@@ -100,6 +108,23 @@ describe("handleStripeWebhook", () => {
     });
   });
 
+  test("early fraud warning refunds when risk_score high without risk_level", async () => {
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    const event: Stripe.Event = {
+      type: "radar.early_fraud_warning.created",
+      data: { object: { charge: { id: "ch_score", outcome: { risk_score: 80 } } } },
+    } as any;
+    await handleStripeWebhook("test", event);
+    expect(updateRisk).toHaveBeenCalledWith(
+      "test",
+      "ch_score",
+      undefined,
+      80,
+      true,
+    );
+    expect(markRefunded).toHaveBeenCalledWith("test", "ch_score");
+  });
+
   test("review.opened flags order", async () => {
     const { handleStripeWebhook } = await import("../src/stripe-webhook");
     const event: Stripe.Event = {
@@ -114,6 +139,16 @@ describe("handleStripeWebhook", () => {
       undefined,
       true
     );
+  });
+
+  test("review.opened handles missing charge", async () => {
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    const event: Stripe.Event = {
+      type: "review.opened",
+      data: { object: { charge: null } },
+    } as any;
+    await handleStripeWebhook("test", event);
+    expect(updateRisk).not.toHaveBeenCalled();
   });
 
   test("review.closed handles string charge ID", async () => {
@@ -171,6 +206,16 @@ describe("handleStripeWebhook", () => {
     );
   });
 
+  test("review.closed handles missing charge", async () => {
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    const event: Stripe.Event = {
+      type: "review.closed",
+      data: { object: { charge: null } },
+    } as any;
+    await handleStripeWebhook("test", event);
+    expect(updateRisk).not.toHaveBeenCalled();
+  });
+
   test("charge.refunded marks order refunded", async () => {
     const { handleStripeWebhook } = await import("../src/stripe-webhook");
     const event: Stripe.Event = {
@@ -196,6 +241,59 @@ describe("handleStripeWebhook", () => {
     } as any;
     await handleStripeWebhook("test", event);
     expect(updateRisk).toHaveBeenCalledWith("test", "ch_pi", "normal", 15);
+  });
+
+  test("payment_intent.payment_failed marks needs attention", async () => {
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    const event: Stripe.Event = {
+      type: "payment_intent.payment_failed",
+      data: {
+        object: {
+          id: "pi_fail",
+          latest_charge: { id: "ch_fail", invoice: "cs_fail" },
+        },
+      },
+    } as any;
+    await handleStripeWebhook("test", event);
+    expect(markNeedsAttention).toHaveBeenCalledWith("test", "cs_fail");
+  });
+
+  test("invoice payment events update subscription status", async () => {
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    const invoice: any = { customer: "cus_1", subscription: "sub_1" };
+    await handleStripeWebhook("test", {
+      type: "invoice.payment_succeeded",
+      data: { object: invoice },
+    } as any);
+    expect(updateSubscriptionPaymentStatus).toHaveBeenCalledWith(
+      "cus_1",
+      "sub_1",
+      "succeeded",
+    );
+    await handleStripeWebhook("test", {
+      type: "invoice.payment_failed",
+      data: { object: invoice },
+    } as any);
+    expect(updateSubscriptionPaymentStatus).toHaveBeenLastCalledWith(
+      "cus_1",
+      "sub_1",
+      "failed",
+    );
+  });
+
+  test("subscription events sync data", async () => {
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    const subscription: any = { id: "sub_1", customer: "cus_1" };
+    await handleStripeWebhook("test", {
+      type: "customer.subscription.updated",
+      data: { object: subscription },
+    } as any);
+    expect(syncSubscriptionData).toHaveBeenCalledWith("cus_1", "sub_1");
+    await handleStripeWebhook("test", {
+      type: "customer.subscription.deleted",
+      data: { object: subscription },
+    } as any);
+    expect(syncSubscriptionData).toHaveBeenLastCalledWith("cus_1", null);
   });
 
   test("checkout.session.completed triggers manual review and 3DS", async () => {

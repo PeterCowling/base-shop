@@ -108,6 +108,37 @@ it("marks file invalid when orientation mismatches", () => {
   expect(result.current.actual).toBe("portrait");
 });
 
+it("skips orientation validation for videos", async () => {
+  const file = new File(["v"], "v.mp4", { type: "video/mp4" });
+  mockOrientation.mockReturnValue({ actual: null, isValid: null });
+  const onUploaded = jest.fn();
+
+  const { result } = renderHook(() =>
+    useFileUpload({ shop: "s", requiredOrientation: "landscape", onUploaded })
+  );
+
+  act(() => {
+    result.current.onFileChange({ target: { files: [file] } } as any);
+    result.current.setAltText("alt");
+    result.current.setTags("tag");
+  });
+
+  expect(mockOrientation).toHaveBeenCalledWith(null, "landscape");
+  expect(result.current.isValid).toBe(true);
+  expect(result.current.actual).toBeNull();
+
+  await act(async () => {
+    await result.current.handleUpload();
+  });
+
+  const body = mockFetch.mock.calls[0][1].body as FormData;
+  expect(body.get("file")).toBe(file);
+  expect(onUploaded).toHaveBeenCalled();
+  expect(result.current.pendingFile).toBeNull();
+  expect(result.current.altText).toBe("");
+  expect(result.current.tags).toBe("");
+});
+
 it("updates pending file on drag-and-drop", () => {
   const file = new File(["d"], "d.png", { type: "image/png" });
 

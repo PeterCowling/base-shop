@@ -4,6 +4,7 @@ import type { Redis } from "@upstash/redis";
 import type { CartState } from "../cart";
 import type { SKU } from "@acme/types";
 import type { CartStore } from "../cartStore";
+import { withFallback, expireBoth } from "./redisHelpers";
 
 const MAX_REDIS_FAILURES = 3;
 
@@ -43,10 +44,15 @@ export class RedisCartStore implements CartStore {
 
   async createCart(): Promise<string> {
     const id = crypto.randomUUID();
-    const ok1 = await this.exec(() => this.client.hset(id, {}));
-    const ok2 = await this.exec(() => this.client.expire(id, this.ttl));
-    if (ok1 === undefined || ok2 === undefined) {
-      return this.fallback.createCart();
+    const fallbackId = await withFallback(
+      [
+        () => this.exec(() => this.client.hset(id, {})),
+        () => this.exec(() => this.client.expire(id, this.ttl)),
+      ],
+      () => this.fallback.createCart()
+    );
+    if (fallbackId !== undefined) {
+      return fallbackId;
     }
     return id;
   }
@@ -81,39 +87,28 @@ export class RedisCartStore implements CartStore {
       qty[lineId] = line.qty;
       lines[lineId] = JSON.stringify({ sku: line.sku, size: line.size });
     }
-    let ok = true;
-    if ((await this.exec(() => this.client.del(id))) === undefined) ok = false;
-    if ((await this.exec(() => this.client.del(this.skuKey(id)))) === undefined)
-      ok = false;
+    const ops = [
+      () => this.exec(() => this.client.del(id)),
+      () => this.exec(() => this.client.del(this.skuKey(id))),
+    ];
     if (Object.keys(qty).length) {
-      if ((await this.exec(() => this.client.hset(id, qty))) === undefined)
-        ok = false;
-      if (
-        (await this.exec(() => this.client.hset(this.skuKey(id), lines))) ===
-        undefined
-      )
-        ok = false;
+      ops.push(
+        () => this.exec(() => this.client.hset(id, qty)),
+        () => this.exec(() => this.client.hset(this.skuKey(id), lines))
+      );
     }
-    if ((await this.exec(() => this.client.expire(id, this.ttl))) === undefined)
-      ok = false;
-    if (
-      (await this.exec(() => this.client.expire(this.skuKey(id), this.ttl))) ===
-      undefined
-    )
-      ok = false;
-    if (!ok) {
-      await this.fallback.setCart(id, cart);
-    }
+    ops.push(
+      ...expireBoth(this.exec.bind(this), this.client, id, this.ttl, this.skuKey(id))
+    );
+    await withFallback(ops, () => this.fallback.setCart(id, cart));
   }
 
   async deleteCart(id: string): Promise<void> {
-    let ok = true;
-    if ((await this.exec(() => this.client.del(id))) === undefined) ok = false;
-    if ((await this.exec(() => this.client.del(this.skuKey(id)))) === undefined)
-      ok = false;
-    if (!ok) {
-      await this.fallback.deleteCart(id);
-    }
+    const ops = [
+      () => this.exec(() => this.client.del(id)),
+      () => this.exec(() => this.client.del(this.skuKey(id))),
+    ];
+    await withFallback(ops, () => this.fallback.deleteCart(id));
   }
 
   async incrementQty(
@@ -123,28 +118,21 @@ export class RedisCartStore implements CartStore {
     size?: string
   ): Promise<CartState> {
     const key = size ? `${sku.id}:${size}` : sku.id;
-    let ok = true;
-    if (
-      (await this.exec(() => this.client.hincrby(id, key, qty))) === undefined
-    )
-      ok = false;
-    if (
-      (await this.exec(() =>
-        this.client.hset(this.skuKey(id), {
-          [key]: JSON.stringify({ sku, size }),
-        })
-      )) === undefined
-    )
-      ok = false;
-    if ((await this.exec(() => this.client.expire(id, this.ttl))) === undefined)
-      ok = false;
-    if (
-      (await this.exec(() => this.client.expire(this.skuKey(id), this.ttl))) ===
-      undefined
-    )
-      ok = false;
-    if (!ok) {
-      return this.fallback.incrementQty(id, sku, qty, size);
+    const ops = [
+      () => this.exec(() => this.client.hincrby(id, key, qty)),
+      () =>
+        this.exec(() =>
+          this.client.hset(this.skuKey(id), {
+            [key]: JSON.stringify({ sku, size }),
+          })
+        ),
+      ...expireBoth(this.exec.bind(this), this.client, id, this.ttl, this.skuKey(id)),
+    ];
+    const fallbackCart = await withFallback(ops, () =>
+      this.fallback.incrementQty(id, sku, qty, size)
+    );
+    if (fallbackCart !== undefined) {
+      return fallbackCart;
     }
     return this.getCart(id);
   }
@@ -159,31 +147,23 @@ export class RedisCartStore implements CartStore {
       return this.fallback.setQty(id, skuId, qty);
     }
     if (!exists) return null;
-    let ok = true;
+    const ops: (() => Promise<any | undefined>)[] = [];
     if (qty === 0) {
-      if ((await this.exec(() => this.client.hdel(id, skuId))) === undefined)
-        ok = false;
-      if (
-        (await this.exec(() => this.client.hdel(this.skuKey(id), skuId))) ===
-        undefined
-      )
-        ok = false;
+      ops.push(
+        () => this.exec(() => this.client.hdel(id, skuId)),
+        () => this.exec(() => this.client.hdel(this.skuKey(id), skuId))
+      );
     } else {
-      if (
-        (await this.exec(() => this.client.hset(id, { [skuId]: qty }))) ===
-        undefined
-      )
-        ok = false;
+      ops.push(() => this.exec(() => this.client.hset(id, { [skuId]: qty })));
     }
-    if ((await this.exec(() => this.client.expire(id, this.ttl))) === undefined)
-      ok = false;
-    if (
-      (await this.exec(() => this.client.expire(this.skuKey(id), this.ttl))) ===
-      undefined
-    )
-      ok = false;
-    if (!ok) {
-      return this.fallback.setQty(id, skuId, qty);
+    ops.push(
+      ...expireBoth(this.exec.bind(this), this.client, id, this.ttl, this.skuKey(id))
+    );
+    const fallbackCart = await withFallback(ops, () =>
+      this.fallback.setQty(id, skuId, qty)
+    );
+    if (fallbackCart !== undefined) {
+      return fallbackCart;
     }
     return this.getCart(id);
   }
@@ -194,23 +174,16 @@ export class RedisCartStore implements CartStore {
       return this.fallback.removeItem(id, skuId);
     }
     if (removed === 0) return null;
-    let ok = true;
-    if (
-      (await this.exec(() => this.client.hdel(this.skuKey(id), skuId))) ===
-      undefined
-    )
-      ok = false;
-    if ((await this.exec(() => this.client.expire(id, this.ttl))) === undefined)
-      ok = false;
-    if (
-      (await this.exec(() => this.client.expire(this.skuKey(id), this.ttl))) ===
-      undefined
-    )
-      ok = false;
-    if (!ok) {
-      return this.fallback.removeItem(id, skuId);
+    const ops = [
+      () => this.exec(() => this.client.hdel(this.skuKey(id), skuId)),
+      ...expireBoth(this.exec.bind(this), this.client, id, this.ttl, this.skuKey(id)),
+    ];
+    const fallbackCart = await withFallback(ops, () =>
+      this.fallback.removeItem(id, skuId)
+    );
+    if (fallbackCart !== undefined) {
+      return fallbackCart;
     }
     return this.getCart(id);
   }
 }
-

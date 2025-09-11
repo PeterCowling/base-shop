@@ -148,11 +148,32 @@ describe("renderTemplate", () => {
 
     const { renderTemplate } = await import("../templates");
     const html = renderTemplate("basic", {
-      body: '<img src="x" onerror="alert(1)"><script>alert(1)</script>',
+      body: '<p style="color:red" onclick="alert(1)">Hi</p><script>alert(1)</script>',
     });
-    expect(html).toContain('<img src="x"');
-    expect(html).not.toContain("onerror");
-    expect(html).not.toContain("<script>");
+    expect(html).toBe('<div><div><p>Hi</p></div></div>');
+  });
+
+  it("uses content param when body missing", async () => {
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({
+        __esModule: true,
+        marketingEmailTemplates: [
+          {
+            id: "basic",
+            label: "Basic",
+            buildSubject: (h: string) => h,
+            make: ({ content }: any) =>
+              React.createElement("div", null, content),
+          },
+        ],
+      }),
+      { virtual: true }
+    );
+
+    const { renderTemplate } = await import("../templates");
+    const html = renderTemplate("basic", { content: "<p>Alt</p>" });
+    expect(html).toBe("<div><div><p>Alt</p></div></div>");
   });
 
   it("handles elements with false children", async () => {

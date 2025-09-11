@@ -126,6 +126,12 @@ describe("smtp options", () => {
     expect(env.SMTP_PORT).toBe(587);
   });
 
+  it("trims and parses SMTP_PORT with surrounding whitespace", async () => {
+    process.env.SMTP_PORT = " 1234 ";
+    const env = await loadEnv();
+    expect(env.SMTP_PORT).toBe(1234);
+  });
+
   it("rejects invalid SMTP_SECURE", async () => {
     process.env.SMTP_SECURE = "foo";
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});

@@ -171,6 +171,19 @@ describe("SendgridProvider", () => {
     });
   });
 
+  it("parses string status codes", async () => {
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+    const sgMail = require("@sendgrid/mail").default;
+    const err = Object.assign(new Error("Upstream"), { status: "502" });
+    sgMail.send.mockRejectedValueOnce(err);
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    const { ProviderError } = require("../types");
+    const promise = provider.send(options);
+    await expect(promise).rejects.toBeInstanceOf(ProviderError);
+    await expect(promise).rejects.toMatchObject({ retryable: true });
+  });
+
   describe("getCampaignStats", () => {
     it("returns normalized stats on success", async () => {
       process.env.SENDGRID_API_KEY = "key";

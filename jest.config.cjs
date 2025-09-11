@@ -218,6 +218,11 @@ const config = {
   testMatch: ['**/?(*.)+(spec|test).ts?(x)'],
   passWithNoTests: true,
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'mjs', 'node', 'd.ts'],
+  collectCoverageFrom: [
+    ' /packages/email/src/**/*.{ts,tsx}',
+    ' /packages/email-templates/src/**/*.{ts,tsx}',
+    ' /packages/config/src/env/email.ts',
+  ],
   collectCoverage: true,
   coverageDirectory: path.join(process.cwd(), 'coverage'),
   coveragePathIgnorePatterns: [

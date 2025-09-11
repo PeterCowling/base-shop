@@ -176,6 +176,19 @@ describe("ResendProvider", () => {
     });
   });
 
+  it("parses string status codes", async () => {
+    setupEnv();
+    const { send } = require("resend");
+    const err = { message: "Upstream", status: "502" };
+    send.mockRejectedValueOnce(err);
+    const { ResendProvider } = await import("../resend");
+    const provider = new ResendProvider();
+    const { ProviderError } = require("../types");
+    const promise = provider.send(options);
+    await expect(promise).rejects.toBeInstanceOf(ProviderError);
+    await expect(promise).rejects.toMatchObject({ retryable: true });
+  });
+
   describe("getCampaignStats", () => {
     it("returns normalized stats on success", async () => {
       process.env.RESEND_API_KEY = "rs";

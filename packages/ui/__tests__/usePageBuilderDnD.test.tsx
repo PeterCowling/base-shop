@@ -116,4 +116,41 @@ describe("usePageBuilderDnD", () => {
     expect(result.current.activeType).toBeNull();
     expect(setSnapPosition).toHaveBeenLastCalledWith(null);
   });
+
+  it("sets insertIndex based on pointer position over component", () => {
+    const components = [
+      { id: "a", type: "Text" },
+      { id: "b", type: "Text" },
+    ] as any;
+    const { result } = renderHook(() =>
+      usePageBuilderDnD({
+        components,
+        dispatch: jest.fn(),
+        defaults: {},
+        containerTypes: [],
+        selectId: jest.fn(),
+        gridSize: 10,
+        canvasRef: { current: { getBoundingClientRect: () => ({ left: 0 }) } } as any,
+        setSnapPosition: jest.fn(),
+      })
+    );
+
+    act(() =>
+      result.current.handleDragMove({
+        over: { id: "a", data: { current: { index: 0 } }, rect: { top: 50, height: 40 } },
+        delta: { x: 0, y: 60 },
+        activatorEvent: { clientX: 0, clientY: 0 },
+      } as any)
+    );
+    expect(result.current.insertIndex).toBe(0);
+
+    act(() =>
+      result.current.handleDragMove({
+        over: { id: "a", data: { current: { index: 0 } }, rect: { top: 50, height: 40 } },
+        delta: { x: 0, y: 80 },
+        activatorEvent: { clientX: 0, clientY: 0 },
+      } as any)
+    );
+    expect(result.current.insertIndex).toBe(1);
+  });
 });

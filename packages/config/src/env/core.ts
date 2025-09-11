@@ -9,7 +9,11 @@ import { shippingEnvSchema } from "./shipping.js";
 import { createRequire } from "module";
 
 const isProd = process.env.NODE_ENV === "production";
-const isTest = process.env.NODE_ENV === "test";
+const isTest =
+  process.env.NODE_ENV === "test" ||
+  process.env.JEST_WORKER_ID !== undefined ||
+  process.env.VITEST !== undefined ||
+  process.env.VITEST_WORKER_ID !== undefined;
 
 const baseEnvSchema = z
   .object({

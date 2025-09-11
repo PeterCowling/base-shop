@@ -36,14 +36,21 @@ describe("AddToCartButton", () => {
     expect(button).toBeDisabled();
   });
 
-  it("shows loading spinner and disables button while dispatching", async () => {
+  it("dispatches add action and shows spinner until complete", async () => {
     jest.useFakeTimers();
     mockDispatch.mockImplementation(
       () => new Promise<void>((res) => setTimeout(res, 100)),
     );
-    render(<AddToCartButton sku={sku} />);
+    render(<AddToCartButton sku={sku} size="M" quantity={2} />);
     const button = screen.getByRole("button", { name: /add to cart/i });
     fireEvent.click(button);
+
+    expect(mockDispatch).toHaveBeenCalledWith({
+      type: "add",
+      sku,
+      size: "M",
+      qty: 2,
+    });
 
     await screen.findByText("Adding...");
     expect(button).toBeDisabled();
@@ -54,6 +61,7 @@ describe("AddToCartButton", () => {
 
     await waitFor(() => expect(button).not.toBeDisabled());
     expect(screen.queryByText("Adding...")).not.toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     jest.useRealTimers();
   });
 
@@ -65,12 +73,14 @@ describe("AddToCartButton", () => {
     expect(await screen.findByRole("alert")).toHaveTextContent("Out of stock");
   });
 
-  it("surfaces error when quantity is below minimum", async () => {
-    mockDispatch.mockRejectedValueOnce(new Error("Invalid quantity"));
+  it("shows error and skips dispatch when quantity is below minimum", async () => {
     render(<AddToCartButton sku={sku} quantity={0} />);
     const button = screen.getByRole("button", { name: /add to cart/i });
     fireEvent.click(button);
-    expect(await screen.findByRole("alert")).toHaveTextContent("Invalid quantity");
+    expect(mockDispatch).not.toHaveBeenCalled();
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Quantity must be at least 1",
+    );
   });
 });
 

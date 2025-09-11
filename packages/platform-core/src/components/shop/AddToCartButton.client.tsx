@@ -27,6 +27,10 @@ export default function AddToCartButton({
 
   async function handleClick() {
     if (disabled) return;
+    if (quantity < 1) {
+      setError("Quantity must be at least 1");
+      return;
+    }
     setAdding(true);
     setError(null);
 

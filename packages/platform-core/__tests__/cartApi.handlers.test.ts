@@ -213,6 +213,35 @@ describe("cart API handlers", () => {
       expect(res.status).toBe(400);
     });
 
+    it("returns 404 when cart cookie not found", async () => {
+      mockCartCookie();
+      mockCartStore({ getCart: jest.fn(async () => ({})) });
+      jest.doMock("../src/products", () => ({
+        __esModule: true,
+        getProductById: jest.fn(),
+        PRODUCTS: [],
+      }));
+      const { PUT } = await import("../src/cartApi");
+      const res = await PUT(buildRequest({ lines: [] }, "cart1"));
+      expect(res.status).toBe(404);
+    });
+
+    it("returns 409 when line exceeds stock", async () => {
+      const sku = { id: "s1", stock: 1, sizes: [] };
+      mockCartCookie();
+      mockCartStore();
+      jest.doMock("../src/products", () => ({
+        __esModule: true,
+        getProductById: () => sku,
+        PRODUCTS: [sku],
+      }));
+      const { PUT } = await import("../src/cartApi");
+      const res = await PUT(
+        buildRequest({ lines: [{ sku: { id: "s1" }, qty: 2 }] })
+      );
+      expect(res.status).toBe(409);
+    });
+
     it("creates cart when cookie missing", async () => {
       const sku = { id: "s1", stock: 5, sizes: [] };
       const updated = { [sku.id]: { sku, qty: 1 } };

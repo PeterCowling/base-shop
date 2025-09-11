@@ -165,6 +165,28 @@ describe("pages.server actions", () => {
     safeParse.mockRestore();
   });
 
+  it("captures and rethrows create service errors", async () => {
+    (service.getPages as jest.Mock).mockResolvedValue([]);
+    const err = new Error("boom");
+    (service.savePage as jest.Mock).mockRejectedValue(err);
+    const parsed: any = {
+      slug: "home",
+      status: "draft",
+      components: [],
+      image: "",
+      title_en: "",
+      title_de: "",
+      desc_en: "",
+      desc_de: "",
+    };
+    const safeParse = jest
+      .spyOn(createSchema, "safeParse")
+      .mockReturnValue({ success: true, data: parsed } as any);
+    await expect(createPage("shop", new FormData())).rejects.toThrow("boom");
+    expect(Sentry.captureException).toHaveBeenCalledWith(err);
+    safeParse.mockRestore();
+  });
+
   /* ---------------------------------------------------------------------- */
   /* savePageDraft                                                          */
   /* ---------------------------------------------------------------------- */

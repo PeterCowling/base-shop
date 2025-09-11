@@ -92,7 +92,7 @@ export async function createPage(
   try {
     const saved = await savePageInService(shop, page, prev);
     return { page: saved };
-  } catch (err) {
+  } catch (err: unknown) {
     await captureException(err);
     throw err;
   }
@@ -156,7 +156,7 @@ export async function savePageDraft(
   try {
     const saved = await savePageInService(shop, page, existing);
     return { page: saved };
-  } catch (err) {
+  } catch (err: unknown) {
     await captureException(err);
     throw err;
   }
@@ -221,7 +221,7 @@ export async function updatePage(
   try {
     const saved = await updatePageInService(shop, patch, previous);
     return { page: saved };
-  } catch (err) {
+  } catch (err: unknown) {
     await captureException(err);
     throw err;
   }
@@ -235,7 +235,7 @@ export async function deletePage(shop: string, id: string): Promise<void> {
   await ensureAuthorized();
   try {
     await deletePageFromService(shop, id);
-  } catch (err) {
+  } catch (err: unknown) {
     await captureException(err);
     throw err;
   }

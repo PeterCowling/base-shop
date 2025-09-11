@@ -11,6 +11,13 @@ export declare function getProductBySlug(slug: string): SKU | null;
  */
 export declare function getProductById(id: string): SKU | null;
 export declare function getProductById(shop: string, id: string): Promise<SKU | null>;
-export declare function getProducts(shop?: string): Promise<SKU[]>;
+interface ProductQuery {
+    sort?: "title" | "price";
+    filter?: Record<string, string>;
+    page?: number;
+    limit?: number;
+}
+export declare function getProducts(params?: ProductQuery): Promise<SKU[]>;
+export declare function getProducts(shop: string, params?: ProductQuery): Promise<SKU[]>;
 export declare function searchProducts(query: string): Promise<SKU[]>;
 export declare function searchProducts(shop: string, query: string): Promise<SKU[]>;

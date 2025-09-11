@@ -87,6 +87,33 @@ describe('getProducts', () => {
     expect(serverMocks.readRepo).toHaveBeenCalledWith('shop');
     expect(list).toEqual(PRODUCTS);
   });
+
+  it('applies valid sort and filter params', async () => {
+    const list = await getProducts({ sort: 'price', filter: { size: '36' } });
+    const expected = [...PRODUCTS]
+      .filter((p) => p.sizes?.includes('36'))
+      .sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
+    expect(list).toEqual(expected);
+  });
+
+  it('defaults sort and ignores unknown filters', async () => {
+    const list = await getProducts({
+      sort: 'unknown' as any,
+      filter: { size: '36', foo: 'bar' },
+    });
+    const expected = [...PRODUCTS]
+      .filter((p) => p.sizes?.includes('36'))
+      .sort((a, b) => (a.title ?? '').localeCompare(b.title ?? ''));
+    expect(list).toEqual(expected);
+  });
+
+  it('ignores unrecognized filters entirely', async () => {
+    const list = await getProducts({ sort: 'price', filter: { foo: 'bar' } });
+    const expected = [...PRODUCTS].sort(
+      (a, b) => (a.price ?? 0) - (b.price ?? 0),
+    );
+    expect(list).toEqual(expected);
+  });
 });
 
 describe('searchProducts', () => {

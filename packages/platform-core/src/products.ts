@@ -45,16 +45,67 @@ export function getProductById(
 
 export { assertLocale } from "./products/index";
 
-export async function getProducts(a?: unknown): Promise<SKU[]> {
+const SORTERS = {
+  title: (a: SKU, b: SKU) => (a.title ?? "").localeCompare(b.title ?? ""),
+  price: (a: SKU, b: SKU) => (a.price ?? 0) - (b.price ?? 0),
+} as const;
+
+const FILTERS: Record<string, (sku: SKU, value: string) => boolean> = {
+  size: (sku, value) => Array.isArray((sku as any).sizes) && (sku as any).sizes.includes(value),
+};
+
+interface ProductQuery {
+  sort?: keyof typeof SORTERS;
+  filter?: Record<string, string>;
+  page?: number;
+  limit?: number;
+}
+
+export async function getProducts(
+  a?: string | ProductQuery,
+  b?: ProductQuery,
+): Promise<SKU[]> {
+  let shop: string | undefined;
+  let params: ProductQuery | undefined;
+
   if (typeof a === "string") {
+    shop = a;
+    params = b;
+  } else {
+    params = a;
+  }
+
+  let products: SKU[];
+  if (shop) {
     try {
       const { readRepo } = await import("./repositories/products.server");
-      return await readRepo<SKU>(a);
+      products = [...(await readRepo<SKU>(shop))];
     } catch {
-      return [...base.PRODUCTS];
+      products = [...base.PRODUCTS];
+    }
+  } else {
+    products = [...base.PRODUCTS];
+  }
+
+  if (params?.filter) {
+    for (const [key, value] of Object.entries(params.filter)) {
+      const fn = FILTERS[key];
+      if (fn) {
+        products = products.filter((p) => fn(p, value));
+      }
     }
   }
-  return [...base.PRODUCTS];
+
+  if (params?.sort) {
+    const sortKey = params.sort in SORTERS ? params.sort : "title";
+    products.sort(SORTERS[sortKey]);
+  }
+
+  const limit = params?.limit ?? products.length;
+  const page = params?.page ?? 1;
+  const start = (page - 1) * limit;
+
+  return products.slice(start, start + limit);
 }
 
 export async function searchProducts(

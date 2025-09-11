@@ -767,19 +767,43 @@ describe("shipping env module", () => {
       );
       errorSpy.mockRestore();
     });
+
+    it("allows ups when UPS_KEY provided", async () => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const env = loadShippingEnv({
+        SHIPPING_PROVIDER: "ups",
+        UPS_KEY: "abc",
+      });
+      expect(env).toMatchObject({ SHIPPING_PROVIDER: "ups", UPS_KEY: "abc" });
+    });
+
+    it("allows dhl when DHL_KEY provided", async () => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const env = loadShippingEnv({
+        SHIPPING_PROVIDER: "dhl",
+        DHL_KEY: "def",
+      });
+      expect(env).toMatchObject({ SHIPPING_PROVIDER: "dhl", DHL_KEY: "def" });
+    });
+
+    it("allows other providers without extra keys", async () => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const env = loadShippingEnv({ SHIPPING_PROVIDER: "shippo" });
+      expect(env.SHIPPING_PROVIDER).toBe("shippo");
+    });
   });
 
   describe("LOCAL_PICKUP_ENABLED parsing", () => {
-    it("parses 'true' to boolean true", async () => {
+    it.each([
+      ["true", true],
+      ["1", true],
+      ["yes", true],
+      ["false", false],
+      ["0", false],
+    ])("coerces %p to %p", async (input, expected) => {
       const { loadShippingEnv } = await import("../shipping.ts");
-      const env = loadShippingEnv({ LOCAL_PICKUP_ENABLED: "true" });
-      expect(env.LOCAL_PICKUP_ENABLED).toBe(true);
-    });
-
-    it("parses 'false' to boolean false", async () => {
-      const { loadShippingEnv } = await import("../shipping.ts");
-      const env = loadShippingEnv({ LOCAL_PICKUP_ENABLED: "false" });
-      expect(env.LOCAL_PICKUP_ENABLED).toBe(false);
+      const env = loadShippingEnv({ LOCAL_PICKUP_ENABLED: input });
+      expect(env.LOCAL_PICKUP_ENABLED).toBe(expected);
     });
 
     it("rejects invalid boolean strings", async () => {
@@ -801,10 +825,41 @@ describe("shipping env module", () => {
   });
 
   describe("ALLOWED_COUNTRIES transformation", () => {
-    it("splits comma separated values and uppercases them", async () => {
+    it.each([
+      ["", undefined],
+      ["US,ca, mx", ["US", "CA", "MX"]],
+    ])("parses %p", async (input, expected) => {
       const { loadShippingEnv } = await import("../shipping.ts");
-      const env = loadShippingEnv({ ALLOWED_COUNTRIES: "us, ca ,mx" });
-      expect(env.ALLOWED_COUNTRIES).toEqual(["US", "CA", "MX"]);
+      const env = loadShippingEnv({ ALLOWED_COUNTRIES: input });
+      expect(env.ALLOWED_COUNTRIES).toEqual(expected as any);
+    });
+  });
+
+  describe("DEFAULT_COUNTRY validation", () => {
+    it.each([
+      ["us", "US"],
+      ["CA", "CA"],
+    ])("accepts %p", async (input, expected) => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const env = loadShippingEnv({ DEFAULT_COUNTRY: input });
+      expect(env.DEFAULT_COUNTRY).toBe(expected);
+    });
+
+    it.each(["USA", "1A", "u"])('rejects %p', async (input) => {
+      const { loadShippingEnv } = await import("../shipping.ts");
+      const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+      expect(() => loadShippingEnv({ DEFAULT_COUNTRY: input as any })).toThrow(
+        "Invalid shipping environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid shipping environment variables:",
+        expect.objectContaining({
+          DEFAULT_COUNTRY: {
+            _errors: [expect.stringContaining("2-letter country code")],
+          },
+        }),
+      );
+      errorSpy.mockRestore();
     });
   });
 });

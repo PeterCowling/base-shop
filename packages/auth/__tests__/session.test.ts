@@ -36,6 +36,7 @@ describe("session token", () => {
     process.env.SESSION_SECRET = "0123456789abcdefghijklmnopqrstuvwxyz012345"; // 40 chars
     process.env.COOKIE_DOMAIN = "example.com";
     mockCookies.mockReset();
+    mockHeaders.mockImplementation(() => ({ get: () => null }));
     jest.resetModules();
     // Ensure no lingering mocks from isolate tests
     jest.unmock("@acme/config/env/core");
@@ -55,6 +56,26 @@ describe("session token", () => {
     expect(name).toBe(CUSTOMER_SESSION_COOKIE);
     expect(typeof token).toBe("string");
     expect(token).not.toHaveLength(0);
+  });
+
+  it("stores user agent on session creation", async () => {
+    await jest.isolateModulesAsync(async () => {
+      const store = createStore();
+      mockCookies.mockResolvedValue(store);
+      mockHeaders.mockImplementation(() => ({ get: () => "CreateUA" }));
+      const set = jest.fn();
+      jest
+        .spyOn(await import("../src/store"), "createSessionStore")
+        .mockResolvedValue({ set } as unknown as { set: typeof set });
+      const { createCustomerSession } = await import("../src/session");
+      await createCustomerSession({ customerId: "abc", role: "customer" as Role });
+      expect(set).toHaveBeenCalledWith({
+        sessionId: expect.any(String),
+        customerId: "abc",
+        userAgent: "CreateUA",
+        createdAt: expect.any(Date),
+      });
+    });
   });
 
   it("parses a valid token", async () => {

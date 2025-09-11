@@ -17,6 +17,9 @@ export async function resolveRepo<T>(
     : process.env.DB_MODE;
 
   if (backend === "sqlite") {
+    if (options.sqliteModule) {
+      return await options.sqliteModule();
+    }
     return await jsonModule();
   }
   if (backend === "json") {

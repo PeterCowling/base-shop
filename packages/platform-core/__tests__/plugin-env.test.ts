@@ -1,6 +1,8 @@
 import fs from "node:fs";
+import * as fsPromises from "node:fs/promises";
 import path from "node:path";
-import { findPluginsDir } from "../src/plugins/env";
+import os from "node:os";
+import { findPluginsDir, resolvePluginEnvironment } from "../src/plugins/env";
 
 describe("findPluginsDir", () => {
   afterEach(() => {
@@ -44,6 +46,79 @@ describe("findPluginsDir", () => {
     });
 
     expect(findPluginsDir(start)).toBe("/packages/plugins");
+  });
+});
+
+describe("resolvePluginEnvironment", () => {
+  const cwd = process.cwd();
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+    delete process.env.PLUGIN_DIRS;
+    delete process.env.PLUGIN_CONFIG;
+    process.chdir(cwd);
+  });
+
+  it("merges env vars, config file and options", async () => {
+    const root = await fsPromises.mkdtemp(path.join(os.tmpdir(), "ws-"));
+    const workspaceDir = path.join(root, "packages", "plugins");
+    await fsPromises.mkdir(workspaceDir, { recursive: true });
+    const start = path.join(root, "a", "b");
+    await fsPromises.mkdir(start, { recursive: true });
+    process.chdir(start);
+
+    process.env.PLUGIN_DIRS = ["/env/one", "/env/two"].join(path.delimiter);
+
+    const cfgPath = path.join(root, "plugins.config.json");
+    await fsPromises.writeFile(
+      cfgPath,
+      JSON.stringify({
+        directories: ["/cfg/dir"],
+        plugins: ["/cfg/plugin"],
+      })
+    );
+
+    const result = await resolvePluginEnvironment({
+      directories: ["/opt/extra"],
+      plugins: ["/opt/plugin"],
+      configFile: cfgPath,
+    });
+
+    expect(result).toEqual({
+      searchDirs: [
+        workspaceDir,
+        "/env/one",
+        "/env/two",
+        "/cfg/dir",
+        "/opt/extra",
+      ],
+      pluginDirs: ["/cfg/plugin", "/opt/plugin"],
+    });
+  });
+
+  it("ignores invalid config files", async () => {
+    const root = await fsPromises.mkdtemp(path.join(os.tmpdir(), "ws-"));
+    const workspaceDir = path.join(root, "packages", "plugins");
+    await fsPromises.mkdir(workspaceDir, { recursive: true });
+    const start = path.join(root, "a", "b");
+    await fsPromises.mkdir(start, { recursive: true });
+    process.chdir(start);
+
+    const badCfg = path.join(root, "bad-config.json");
+    await fsPromises.writeFile(badCfg, "not json");
+
+    process.env.PLUGIN_DIRS = "/env/one";
+
+    const result = await resolvePluginEnvironment({
+      directories: ["/opt/extra"],
+      plugins: ["/opt/plugin"],
+      configFile: badCfg,
+    });
+
+    expect(result).toEqual({
+      searchDirs: [workspaceDir, "/env/one", "/opt/extra"],
+      pluginDirs: ["/opt/plugin"],
+    });
   });
 });
 

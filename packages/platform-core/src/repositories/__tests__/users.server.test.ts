@@ -35,6 +35,19 @@ describe("setStripeSubscriptionId", () => {
     });
   });
 
+  it("sets subscription id to null when provided", async () => {
+    readShopMock.mockResolvedValue({ subscriptionsEnabled: true });
+    updateMock.mockResolvedValue(undefined);
+
+    await setStripeSubscriptionId("user1", null, "shop1");
+
+    expect(readShopMock).toHaveBeenCalledWith("shop1");
+    expect(updateMock).toHaveBeenCalledWith({
+      where: { id: "user1" },
+      data: { stripeSubscriptionId: null },
+    });
+  });
+
   it("skips update when subscriptions disabled", async () => {
     readShopMock.mockResolvedValue({ subscriptionsEnabled: false });
 

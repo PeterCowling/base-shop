@@ -241,6 +241,67 @@ describe("chargeLateFeesOnce", () => {
     expect(markLateFeeChargedMock).not.toHaveBeenCalled();
   });
 
+  it("logs error when session retrieval fails", async () => {
+    readdirMock.mockResolvedValue(["s1"]);
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
+    );
+    readOrdersMock.mockResolvedValueOnce([
+      {
+        sessionId: "sess1",
+        returnDueDate: new Date(NOW - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      },
+    ]);
+    stripeRetrieveMock.mockRejectedValueOnce(new Error("boom"));
+
+    await service.chargeLateFeesOnce(undefined, "/data");
+
+    expect(loggerErrorMock).toHaveBeenCalledWith(
+      "late fee charge failed",
+      expect.objectContaining({
+        shopId: "s1",
+        sessionId: "sess1",
+        err: expect.any(Error),
+      })
+    );
+    expect(stripeChargeMock).not.toHaveBeenCalled();
+    expect(markLateFeeChargedMock).not.toHaveBeenCalled();
+  });
+
+  it("logs error when marking late fee fails", async () => {
+    readdirMock.mockResolvedValue(["s1"]);
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ lateFeePolicy: { gracePeriodDays: 0, feeAmount: 5 } })
+    );
+    readOrdersMock.mockResolvedValueOnce([
+      {
+        sessionId: "sess1",
+        returnDueDate: new Date(NOW - 2 * 24 * 60 * 60 * 1000).toISOString(),
+      },
+    ]);
+    stripeRetrieveMock.mockResolvedValueOnce({
+      customer: "cus_1",
+      payment_intent: { payment_method: "pm_1" },
+      currency: "usd",
+    });
+    stripeChargeMock.mockResolvedValueOnce({});
+    markLateFeeChargedMock.mockRejectedValueOnce(new Error("boom"));
+
+    await service.chargeLateFeesOnce(undefined, "/data");
+
+    expect(stripeChargeMock).toHaveBeenCalledTimes(1);
+    expect(markLateFeeChargedMock).toHaveBeenCalledWith("s1", "sess1", 5);
+    expect(loggerErrorMock).toHaveBeenCalledWith(
+      "late fee charge failed",
+      expect.objectContaining({
+        shopId: "s1",
+        sessionId: "sess1",
+        err: expect.any(Error),
+      })
+    );
+    expect(loggerInfoMock).not.toHaveBeenCalled();
+  });
+
   it("logs error when charge fails", async () => {
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockResolvedValueOnce(

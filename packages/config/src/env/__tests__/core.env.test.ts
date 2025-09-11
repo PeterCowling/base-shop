@@ -261,24 +261,38 @@ describe("depositReleaseEnvRefinement", () => {
 });
 
 describe("AUTH_TOKEN_TTL normalization", () => {
+  const cleanEnv = {
+    SESSION_STORE: undefined,
+    UPSTASH_REDIS_REST_URL: undefined,
+    UPSTASH_REDIS_REST_TOKEN: undefined,
+  } as const;
+
   it("defaults numeric value", async () => {
-    await withEnv({}, async () => {
+    await withEnv(cleanEnv, async () => {
       const { loadCoreEnv } = await importCore();
-      const env = loadCoreEnv({ AUTH_TOKEN_TTL: 120 } as any);
+      const env = loadCoreEnv({ AUTH_TOKEN_TTL: 60 } as any);
       expect(env.AUTH_TOKEN_TTL).toBe(900);
     });
   });
 
   it("normalizes numeric string", async () => {
-    await withEnv({}, async () => {
+    await withEnv(cleanEnv, async () => {
       const { loadCoreEnv } = await importCore();
       const env = loadCoreEnv({ AUTH_TOKEN_TTL: "120" } as any);
       expect(env.AUTH_TOKEN_TTL).toBe(120);
     });
   });
 
+  it("normalizes whitespace string", async () => {
+    await withEnv(cleanEnv, async () => {
+      const { loadCoreEnv } = await importCore();
+      const env = loadCoreEnv({ AUTH_TOKEN_TTL: " 60 " } as any);
+      expect(env.AUTH_TOKEN_TTL).toBe(60);
+    });
+  });
+
   it("parses string with unit", async () => {
-    await withEnv({}, async () => {
+    await withEnv(cleanEnv, async () => {
       const { loadCoreEnv } = await importCore();
       const env = loadCoreEnv({ AUTH_TOKEN_TTL: "2m" } as any);
       expect(env.AUTH_TOKEN_TTL).toBe(120);
@@ -286,7 +300,7 @@ describe("AUTH_TOKEN_TTL normalization", () => {
   });
 
   it("defaults blank string", async () => {
-    await withEnv({}, async () => {
+    await withEnv(cleanEnv, async () => {
       const { loadCoreEnv } = await importCore();
       const env = loadCoreEnv({ AUTH_TOKEN_TTL: "   " } as any);
       expect(env.AUTH_TOKEN_TTL).toBe(900);
@@ -466,6 +480,55 @@ describe("coreEnv extras", () => {
   });
 });
 
+describe("coreEnv proxy traps", () => {
+  it("supports reflection helpers", async () => {
+    await withEnv(
+      {
+        NODE_ENV: "development",
+        CMS_SPACE_URL: undefined,
+        CMS_ACCESS_TOKEN: undefined,
+        SANITY_API_VERSION: undefined,
+        CART_COOKIE_SECRET: undefined,
+        NEXTAUTH_SECRET: undefined,
+        SESSION_SECRET: undefined,
+      },
+      async () => {
+        const { coreEnv } = await importCore();
+        expect("NODE_ENV" in coreEnv).toBe(true);
+        expect("MISSING" in coreEnv).toBe(false);
+        const keys = Object.keys(coreEnv);
+        expect(keys).toContain("NODE_ENV");
+        expect(keys).not.toContain("MISSING");
+        const desc = Object.getOwnPropertyDescriptor(coreEnv, "NODE_ENV");
+        expect(desc?.value).toBe("development");
+      }
+    );
+  });
+});
+
+describe("production fail fast", () => {
+  it("evaluates coreEnv.NODE_ENV eagerly", async () => {
+    const base = {
+      NODE_ENV: "production",
+      CMS_SPACE_URL: "https://example.com",
+      CMS_ACCESS_TOKEN: "token",
+      SANITY_API_VERSION: "v1",
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET,
+      CART_COOKIE_SECRET: "secret",
+    } as const;
+    await withEnv(base, async () => {
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      const { coreEnv } = await importCore();
+      expect(coreEnv.NODE_ENV).toBe("production");
+      expect(errorSpy).not.toHaveBeenCalled();
+      errorSpy.mockRestore();
+    });
+  });
+});
+
 describe("AUTH_TOKEN_TTL normalization", () => {
   const base = {
     NODE_ENV: "production",
@@ -474,6 +537,7 @@ describe("AUTH_TOKEN_TTL normalization", () => {
     SANITY_API_VERSION: "v1",
     NEXTAUTH_SECRET: NEXT_SECRET,
     SESSION_SECRET,
+    CART_COOKIE_SECRET: "secret",
   } as const;
 
   it.each([

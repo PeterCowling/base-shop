@@ -1,43 +1,52 @@
 import { jest } from "@jest/globals";
+import { authenticator } from "otplib";
 
-const generateSecret = jest.fn();
-const keyuri = jest.fn();
-const verify = jest.fn();
+const realKeyuri = authenticator.keyuri;
+const keyuri = jest.spyOn(authenticator, "keyuri");
+const realVerify = authenticator.verify;
+const verify = jest.spyOn(authenticator, "verify");
 
-jest.mock("otplib", () => ({
-  authenticator: { generateSecret, keyuri, verify },
-}));
-
-const upsert = jest.fn();
-const findUnique = jest.fn();
-const update = jest.fn();
+const mockUpsert = jest.fn();
+const mockFindUnique = jest.fn();
+const mockUpdate = jest.fn();
 
 jest.mock("@acme/platform-core/db", () => ({
   prisma: {
-    customerMfa: { upsert, findUnique, update },
+    customerMfa: { upsert: mockUpsert, findUnique: mockFindUnique, update: mockUpdate },
   },
 }));
+
+const upsert = mockUpsert;
+const findUnique = mockFindUnique;
+const update = mockUpdate;
 
 describe("mfa", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    keyuri.mockImplementation((...args) => realKeyuri.apply(authenticator, args));
+    verify.mockImplementation((opts) => realVerify.call(authenticator, opts));
+    mockUpsert.mockReset();
+    mockFindUnique.mockReset();
+    mockUpdate.mockReset();
   });
 
   it("enrollMfa(customerId) upserts { enabled:false } and returns { secret, otpauth }", async () => {
     const { enrollMfa } = await import("../mfa");
-    generateSecret.mockReturnValue("secret");
+    const { authenticator } = await import("otplib");
+    const generateSecretSpy = jest.spyOn(authenticator, "generateSecret");
     keyuri.mockReturnValue("otpauth");
 
     const result = await enrollMfa("cust");
 
-    expect(generateSecret).toHaveBeenCalled();
+    expect(generateSecretSpy).toHaveBeenCalledWith(20);
+    expect(result.secret).toHaveLength(32);
     expect(upsert).toHaveBeenCalledWith({
       where: { customerId: "cust" },
-      update: { secret: "secret" },
-      create: { customerId: "cust", secret: "secret", enabled: false },
+      update: { secret: result.secret },
+      create: { customerId: "cust", secret: result.secret, enabled: false },
     });
-    expect(keyuri).toHaveBeenCalledWith("cust", "Acme", "secret");
-    expect(result).toEqual({ secret: "secret", otpauth: "otpauth" });
+    expect(keyuri).toHaveBeenCalledWith("cust", "Acme", result.secret);
+    expect(result).toEqual({ secret: result.secret, otpauth: "otpauth" });
   });
 
   it("enrollMfa bubbles up prisma errors", async () => {
@@ -47,6 +56,10 @@ describe("mfa", () => {
     await expect(enrollMfa("cust")).rejects.toThrow("fail");
   });
   describe("verifyMfa", () => {
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
     it("findUnique → null returns false", async () => {
       const { verifyMfa } = await import("../mfa");
       findUnique.mockResolvedValue(null);
@@ -69,7 +82,7 @@ describe("mfa", () => {
 
       const result = await verifyMfa("cust", "123456");
 
-      expect(verify).toHaveBeenCalledWith({ token: "123456", secret: "secret" });
+      expect(verify).toHaveBeenCalledWith({ token: "123456", secret: "secret", window: 1 });
       expect(update).toHaveBeenCalledWith({
         where: { customerId: "cust" },
         data: { enabled: true },
@@ -88,7 +101,7 @@ describe("mfa", () => {
 
       const result = await verifyMfa("cust", "123456");
 
-      expect(verify).toHaveBeenCalledWith({ token: "123456", secret: "secret" });
+      expect(verify).toHaveBeenCalledWith({ token: "123456", secret: "secret", window: 1 });
       expect(update).not.toHaveBeenCalled();
       expect(result).toBe(true);
     });
@@ -104,7 +117,7 @@ describe("mfa", () => {
 
       const result = await verifyMfa("cust", "000000");
 
-      expect(verify).toHaveBeenCalledWith({ token: "000000", secret: "secret" });
+      expect(verify).toHaveBeenCalledWith({ token: "000000", secret: "secret", window: 1 });
       expect(update).not.toHaveBeenCalled();
       expect(result).toBe(false);
     });
@@ -169,6 +182,34 @@ describe("mfa", () => {
       update.mockRejectedValue(new Error("fail"));
 
       await expect(verifyMfa("cust", "123456")).rejects.toThrow("fail");
+    });
+
+    it("accepts tokens within a ±1 step window", async () => {
+      const { verifyMfa } = await import("../mfa");
+      findUnique.mockResolvedValue({ customerId: "cust", secret: "secret", enabled: false });
+      verify.mockImplementation(({ token, secret, window }) => {
+        expect(window).toBe(1);
+        return token === "prev" || token === "next";
+      });
+
+      await expect(verifyMfa("cust", "prev")).resolves.toBe(true);
+      await expect(verifyMfa("cust", "next")).resolves.toBe(true);
+
+      expect(verify).toHaveBeenNthCalledWith(1, { token: "prev", secret: "secret", window: 1 });
+      expect(verify).toHaveBeenNthCalledWith(2, { token: "next", secret: "secret", window: 1 });
+    });
+
+    it("rejects tokens outside the ±1 step window", async () => {
+      const { verifyMfa } = await import("../mfa");
+      findUnique.mockResolvedValue({ customerId: "cust", secret: "secret", enabled: false });
+      verify.mockImplementation(({ token, secret, window }) => {
+        expect(window).toBe(1);
+        return token === "prev" || token === "next";
+      });
+
+      await expect(verifyMfa("cust", "far")).resolves.toBe(false);
+
+      expect(verify).toHaveBeenCalledWith({ token: "far", secret: "secret", window: 1 });
     });
   });
 

@@ -45,6 +45,29 @@ describe("useMediaUpload", () => {
     (URL as any).revokeObjectURL = originalRevoke;
   });
 
+  it("ignores non-media files", async () => {
+    const originalCreate = URL.createObjectURL;
+    const originalRevoke = URL.revokeObjectURL;
+    const createSpy = jest.fn();
+    const revokeSpy = jest.fn();
+    (URL as any).createObjectURL = createSpy;
+    (URL as any).revokeObjectURL = revokeSpy;
+    const { result } = renderHook(() => useMediaUpload({} as any));
+
+    const file = new File([""], "file.txt", { type: "text/plain" });
+
+    await act(async () => {
+      result.current.setPendingFile(file);
+    });
+
+    expect(result.current.thumbnail).toBeNull();
+    expect(createSpy).not.toHaveBeenCalled();
+    expect(revokeSpy).not.toHaveBeenCalled();
+
+    (URL as any).createObjectURL = originalCreate;
+    (URL as any).revokeObjectURL = originalRevoke;
+  });
+
   it("creates thumbnail for video when canvas context is available", async () => {
     const originalCreate = URL.createObjectURL;
     const originalRevoke = URL.revokeObjectURL;

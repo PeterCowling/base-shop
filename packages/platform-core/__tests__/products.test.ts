@@ -1,7 +1,19 @@
 // packages/platform-core/__tests__/products.test.ts
 
-import { getProductBySlug, getProductById, PRODUCTS, getProducts } from "../src/products";
-import { PRODUCTS as BASE_PRODUCTS } from "../src/products/index";
+import {
+  getProductBySlug,
+  getProductById,
+  PRODUCTS,
+  getProducts,
+  validateQuery,
+  MAX_LIMIT,
+} from "../src/products";
+import { PRODUCTS as BASE_PRODUCTS, getProductById as baseGetById } from "../src/products/index";
+
+jest.mock("../src/repositories/products.server", () => ({
+  getProductById: jest.fn(async (_shop: string, id: string) => baseGetById(id) ?? null),
+  readRepo: jest.fn(async (_shop: string) => BASE_PRODUCTS),
+}));
 
 describe("getProductBySlug", () => {
   it("returns the matching SKU", () => {
@@ -33,5 +45,18 @@ describe("getProducts", () => {
     expect(first).toEqual(BASE_PRODUCTS);
     expect(first).not.toBe(BASE_PRODUCTS);
     expect(first).not.toBe(second);
+  });
+});
+
+describe("validateQuery pagination", () => {
+  it("clamps page and limit below minimum", () => {
+    const { page, limit } = validateQuery({ page: 0, limit: -5 });
+    expect(page).toBe(1);
+    expect(limit).toBe(1);
+  });
+
+  it("clamps limit above MAX_LIMIT", () => {
+    const { limit } = validateQuery({ limit: MAX_LIMIT + 10 });
+    expect(limit).toBe(MAX_LIMIT);
   });
 });

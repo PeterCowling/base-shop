@@ -45,6 +45,32 @@ export function getProductById(
 
 export { assertLocale } from "./products/index";
 
+/** Maximum allowed page size when listing products. */
+export const MAX_LIMIT = 100;
+
+export interface ProductQueryOptions {
+  sort?: unknown;
+  filter?: unknown;
+  page?: number;
+  limit?: number;
+}
+
+/**
+ * Validate query options for product listings.
+ *
+ * Sort and filter are passed through for now, but page and limit are
+ * normalized so callers can't request out-of-range values.
+ */
+export function validateQuery(
+  opts: ProductQueryOptions = {},
+): Required<Pick<ProductQueryOptions, "page" | "limit">> &
+  Omit<ProductQueryOptions, "page" | "limit"> {
+  const page = Math.max(1, Math.floor(opts.page ?? 1));
+  const limitRaw = Math.floor(opts.limit ?? MAX_LIMIT);
+  const limit = Math.min(MAX_LIMIT, Math.max(1, limitRaw));
+  return { ...opts, page, limit };
+}
+
 export async function getProducts(a?: unknown): Promise<SKU[]> {
   if (typeof a === "string") {
     try {

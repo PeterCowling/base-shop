@@ -14,3 +14,11 @@ export declare function getProductById(shop: string, id: string): Promise<SKU | 
 export declare function getProducts(shop?: string): Promise<SKU[]>;
 export declare function searchProducts(query: string): Promise<SKU[]>;
 export declare function searchProducts(shop: string, query: string): Promise<SKU[]>;
+export declare const MAX_LIMIT: number;
+export interface ProductQueryOptions {
+    sort?: unknown;
+    filter?: unknown;
+    page?: number;
+    limit?: number;
+}
+export declare function validateQuery(opts?: ProductQueryOptions): Required<Pick<ProductQueryOptions, "page" | "limit">> & Omit<ProductQueryOptions, "page" | "limit">;

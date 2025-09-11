@@ -140,5 +140,31 @@ describe("rbacStore", () => {
       expect(match![0]).toMatch(/users\.json\.\d+\.tmp$/);
     });
   });
+
+  it("writeRbac removes temp file when rename fails", async () => {
+    await withTempDir(async () => {
+      jest.resetModules();
+      jest.mock("fs", () => {
+        const actual = jest.requireActual("fs") as typeof import("fs");
+        const err = Object.assign(new Error("EACCES"), { code: "EACCES" });
+        return {
+          ...actual,
+          promises: {
+            ...actual.promises,
+            rename: jest
+              .fn()
+              .mockResolvedValueOnce(undefined)
+              .mockRejectedValueOnce(err),
+          },
+        } as typeof import("fs");
+      });
+      const { readRbac, writeRbac } = await import("../rbacStore");
+      const fsMock = await import("fs");
+      const db = await readRbac();
+      await expect(writeRbac(db)).rejects.toHaveProperty("code", "EACCES");
+      const tmp = (fsMock.promises.rename as jest.Mock).mock.calls[1][0];
+      await expect(fs.access(tmp)).rejects.toThrow();
+    });
+  });
 });
 

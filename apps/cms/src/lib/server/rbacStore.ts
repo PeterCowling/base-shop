@@ -106,5 +106,10 @@ export async function writeRbac(
   await fs.mkdir(path.dirname(FILE), { recursive: true });
   const tmp = `${FILE}.${Date.now()}.tmp`;
   await writeJsonFile(tmp, db);
-  await fs.rename(tmp, FILE);
+  try {
+    await fs.rename(tmp, FILE);
+  } catch (err) {
+    await fs.rm(tmp, { force: true }).catch(() => {});
+    throw err;
+  }
 }

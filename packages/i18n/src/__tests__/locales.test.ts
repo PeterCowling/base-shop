@@ -30,6 +30,10 @@ describe("resolveLocale", () => {
   it("falls back to 'en' for unsupported locales", () => {
     expect(resolveLocale("fr" as any)).toBe("en");
   });
+
+  it("falls back to 'en' for uppercase locales", () => {
+    expect(resolveLocale("DE" as any)).toBe("en");
+  });
 });
 
 describe("locale constants", () => {

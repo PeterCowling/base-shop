@@ -157,6 +157,17 @@ describe('parseJsonBody', () => {
 });
 
 describe('parseLimit', () => {
+  it('returns numeric limits unchanged', () => {
+    expect(parseLimit(123)).toBe(123);
+  });
+
+  it('parses limit strings with units', () => {
+    expect(parseLimit('10b')).toBe(10);
+    expect(parseLimit('10kb')).toBe(10 * 1024);
+    expect(parseLimit('10mb')).toBe(10 * 1024 * 1024);
+    expect(parseLimit('10gb')).toBe(10 * 1024 * 1024 * 1024);
+  });
+
   it('throws on invalid limit string', () => {
     expect(() => parseLimit('invalid')).toThrow('Invalid limit');
   });

@@ -83,4 +83,24 @@ describe("page templates list API route", () => {
       expect(json).toEqual({ error: "boom" });
     });
   });
+
+  it("handles file read errors", async () => {
+    await withTemplates({ home: {} }, async () => {
+      jest.doMock("fs", () => {
+        const actual = jest.requireActual("fs");
+        return {
+          ...actual,
+          promises: {
+            ...actual.promises,
+            readFile: jest.fn().mockRejectedValue(new Error("fail")),
+          },
+        } as typeof actual;
+      });
+      const route = await import("../src/app/api/page-templates/route");
+      const res = await route.GET();
+      const json = await res.json();
+      expect(res.status).toBe(500);
+      expect(json).toEqual({ error: "fail" });
+    });
+  });
 });

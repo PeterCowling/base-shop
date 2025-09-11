@@ -7,22 +7,26 @@ const fs = createFsFromVolume(vol);
 
 jest.mock('fs', () => fs);
 
-// mock database and theme utils
-const prismaMock = {
-  shop: { create: jest.fn(async () => ({})) },
-  page: { createMany: jest.fn(async () => ({})) },
-};
-
-jest.mock('../src/db', () => ({ prisma: prismaMock }));
-
 const loadTokensMock = jest.fn(() => ({}));
 jest.mock('../src/createShop/themeUtils', () => ({ loadTokens: loadTokensMock }));
 
-describe('createShop index', () => {
+describe('fsUtils', () => {
   beforeEach(() => {
     vol.reset();
     jest.clearAllMocks();
     loadTokensMock.mockReturnValue({});
+  });
+
+  it('repoRoot locates workspace marker', async () => {
+    vol.fromJSON(
+      {
+        '/workspace/base-shop/pnpm-workspace.yaml': '',
+        '/workspace/base-shop/packages/.gitkeep': '',
+      },
+      '/'
+    );
+    const mod = await import('../src/createShop/fsUtils');
+    expect(mod.repoRoot()).toBe('/workspace/base-shop');
   });
 
   it('listThemes returns names of all theme directories', async () => {
@@ -35,7 +39,7 @@ describe('createShop index', () => {
       },
       '/'
     );
-    const mod = await import('../src/createShop');
+    const mod = await import('../src/createShop/fsUtils');
     const themes = mod.listThemes().sort();
     expect(themes).toEqual(['base', 'extra', 'legacy']);
   });
@@ -46,7 +50,7 @@ describe('createShop index', () => {
       .mockImplementation(() => {
         throw new Error('fail');
       });
-    const mod = await import('../src/createShop');
+    const mod = await import('../src/createShop/fsUtils');
     expect(mod.listThemes()).toEqual([]);
     readdirSpy.mockRestore();
   });
@@ -73,7 +77,7 @@ describe('createShop index', () => {
     const tokens = { color: 'blue' };
     loadTokensMock.mockReturnValueOnce(tokens);
     const writeSpy = jest.spyOn(fs, 'writeFileSync');
-    const mod = await import('../src/createShop');
+    const mod = await import('../src/createShop/fsUtils');
     const result = mod.syncTheme('shop', 'new');
     const pkg = JSON.parse(
       fs.readFileSync('/workspace/base-shop/apps/shop/package.json', 'utf8')
@@ -107,7 +111,7 @@ describe('createShop index', () => {
       },
       '/'
     );
-    const mod = await import('../src/createShop');
+    const mod = await import('../src/createShop/fsUtils');
     expect(() => mod.syncTheme('shop', 'base')).not.toThrow();
   });
 
@@ -132,9 +136,8 @@ describe('createShop index', () => {
         }
         return realRead.call(fs, p, enc);
       });
-    const mod = await import('../src/createShop');
+    const mod = await import('../src/createShop/fsUtils');
     expect(() => mod.syncTheme('shop', 'base')).not.toThrow();
     readSpy.mockRestore();
   });
 });
-

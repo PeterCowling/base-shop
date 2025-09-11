@@ -25,7 +25,7 @@ describe('deployShopImpl', () => {
       deploy: jest.fn(() => ({ status: 'success' as const })),
       writeDeployInfo: jest.fn(),
     };
-    const { deployShop } = await import('../src/createShop');
+    const { deployShop } = await import('../src/createShop/deploy');
     const result = deployShop('shop', undefined, adapter as any);
     expect(adapter.scaffold).toHaveBeenCalledWith(path.join('apps', 'shop'));
     const envPath = '/workspace/base-shop/apps/shop/.env';
@@ -42,7 +42,7 @@ describe('deployShopImpl', () => {
       deploy: jest.fn(() => ({ status: 'success' as const })),
       writeDeployInfo: jest.fn(),
     };
-    const { deployShop } = await import('../src/createShop');
+    const { deployShop } = await import('../src/createShop/deploy');
     const result = deployShop('boomshop', undefined, adapter as any);
     expect(result.status).toBe('error');
     expect(result.error).toBe('boom');
@@ -54,4 +54,3 @@ describe('deployShopImpl', () => {
 afterAll(() => {
   jest.resetModules();
 });
-

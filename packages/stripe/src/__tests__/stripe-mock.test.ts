@@ -33,8 +33,23 @@ describe("stripe mock", () => {
 
     expect(infoSpy).toHaveBeenCalledWith(
       "[stripe-mock] checkout.sessions.create",
-      expect.anything(),
+      expect.anything()
+    );
+  });
+
+  it("updates payment intent using mock and logs call", async () => {
+    const infoSpy = jest.spyOn(console, "info").mockImplementation(() => {});
+
+    const { stripe } = await import("../index.ts");
+    const paymentIntent = await stripe.paymentIntents.update("pi_123", {
+      amount: 2000,
+    });
+
+    expect(paymentIntent).toMatchObject({ id: "pi_123", amount: 2000 });
+    expect(infoSpy).toHaveBeenCalledWith(
+      "[stripe-mock] paymentIntents.update",
+      "pi_123",
+      { amount: 2000 }
     );
   });
 });
-

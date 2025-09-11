@@ -301,8 +301,10 @@ describe("startDepositReleaseService", () => {
     clearSpy.mockRestore();
   });
 
-  it("uses provided log function when release fails", async () => {
-    const err = new Error("boom");
+  it("logs release failures with provided log function", async () => {
+    const err = Object.assign(new Error("No such checkout session: s1"), {
+      type: "StripeInvalidRequestError",
+    });
     const failingRelease = jest.fn().mockRejectedValue(err);
     const logSpy = jest.fn();
     const setSpy = jest

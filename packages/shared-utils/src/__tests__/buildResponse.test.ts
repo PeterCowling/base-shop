@@ -84,4 +84,33 @@ describe('buildResponse', () => {
     expect(res.headers.get('X-Extra')).toBe('42');
     await expect(res.text()).resolves.toBe(json);
   });
+
+  it('preserves standard headers without adding extras', async () => {
+    const text = 'standard';
+    const proxy: ProxyResponse = {
+      response: {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/plain',
+          'Content-Length': String(text.length),
+        },
+        body: Buffer.from(text).toString('base64'),
+      },
+    };
+
+    const res = buildResponse(proxy);
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get('Content-Type')).toBe('text/plain');
+    expect(res.headers.get('Content-Length')).toBe(String(text.length));
+    const entries = [...res.headers.entries()];
+    expect(entries).toHaveLength(2);
+    expect(entries).toEqual(
+      expect.arrayContaining([
+        ['content-type', 'text/plain'],
+        ['content-length', String(text.length)],
+      ]),
+    );
+    await expect(res.text()).resolves.toBe(text);
+  });
 });

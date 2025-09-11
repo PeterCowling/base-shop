@@ -10,14 +10,14 @@ import { nowIso } from "@date-utils";
 import type { RunnerResult } from "lighthouse";
 import type { Result as AuditResult } from "lighthouse/types/lhr/audit-result.js";
 
-const TRUSTED_HOSTS = new Set(
+export const TRUSTED_HOSTS = new Set(
   (process.env.LIGHTHOUSE_TRUSTED_HOSTS || "localhost")
     .split(",")
     .map((h) => h.trim().toLowerCase())
     .filter(Boolean),
 );
 
-async function runLighthouse(url: string): Promise<SeoAuditEntry> {
+export async function runLighthouse(url: string): Promise<SeoAuditEntry> {
   const { default: lighthouse } = await import("lighthouse");
 
   const flags = {

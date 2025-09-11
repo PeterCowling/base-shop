@@ -10,6 +10,11 @@ if (typeof (Response as any).json !== "function") {
 }
 
 process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";
+// Ensure email environment variables are present for tests that import the
+// email configuration schema. Without these, the config module throws at
+// import time when running in environments that don't set `NODE_ENV=test`.
+process.env.EMAIL_FROM = "test@example.com";
+process.env.EMAIL_PROVIDER = "noop";
 
 const mockGetPages = jest.fn();
 const mockSaveDraft = jest.fn();

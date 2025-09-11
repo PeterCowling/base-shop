@@ -88,6 +88,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
     process.env.EMAIL_BATCH_DELAY_MS === undefined
       ? 1000
       : Number(process.env.EMAIL_BATCH_DELAY_MS);
+  const failures: { recipient: string; error: unknown }[] = [];
   for (let i = 0; i < recipients.length; i += batchSize) {
     const batch = recipients.slice(i, i + batchSize);
     for (const r of batch) {
@@ -102,11 +103,21 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
         html = `${baseHtml}<p><a href="${url}">Unsubscribe</a></p>`;
       }
       const { sendCampaignEmail } = await import("./send");
-      await sendCampaignEmail({
-        to: r,
-        subject: c.subject,
-        html,
-      });
+      try {
+        await sendCampaignEmail({
+          to: r,
+          subject: c.subject,
+          html,
+        });
+      } catch (error) {
+        console.error("Campaign email send failed", {
+          recipient: r,
+          campaignId: c.id,
+          error,
+        });
+        failures.push({ recipient: r, error });
+        continue;
+      }
       const { emitSend } = await import("./hooks");
       await emitSend(shop, { campaign: c.id });
     }
@@ -115,6 +126,13 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
     }
   }
   c.sentAt = clock.now().toISOString();
+  if (failures.length === 1) throw failures[0].error;
+  if (failures.length > 1) {
+    throw new AggregateError(
+      failures.map((f) => f.error),
+      "Failed to send some campaign emails",
+    );
+  }
 }
 
 export async function listCampaigns(shop: string): Promise<Campaign[]> {

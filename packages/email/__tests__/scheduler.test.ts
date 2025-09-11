@@ -112,6 +112,29 @@ describe("scheduler", () => {
     expect(mockedSend).toHaveBeenCalledTimes(1);
   });
 
+  test("executes campaign once due time passes", async () => {
+    const future = new Date(now.getTime() + 60_000).toISOString();
+    memory[shop] = [
+      {
+        id: "c1",
+        recipients: ["a@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+        segment: null,
+        sendAt: future,
+        templateId: null,
+      },
+    ];
+
+    await sendDueCampaigns();
+    expect(mockedSend).not.toHaveBeenCalled();
+
+    await jest.advanceTimersByTimeAsync(60_000);
+    now = new Date(now.getTime() + 60_000);
+    await sendDueCampaigns();
+    expect(mockedSend).toHaveBeenCalledTimes(1);
+  });
+
   test("missing fields when no recipients and no segment", async () => {
     await expect(
       createCampaign({

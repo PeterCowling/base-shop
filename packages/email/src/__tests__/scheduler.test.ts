@@ -175,6 +175,28 @@ describe("scheduler", () => {
     ]);
   });
 
+  test("executes campaign after advancing time", async () => {
+    const future = new Date(Date.now() + 60_000).toISOString();
+    memory[shop] = [
+      {
+        id: "c2",
+        recipients: ["a@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+        segment: null,
+        sendAt: future,
+        templateId: null,
+      },
+    ];
+
+    await sendDueCampaigns();
+    expect(sendCampaignEmail).not.toHaveBeenCalled();
+
+    await jest.advanceTimersByTimeAsync(60_000);
+    await sendDueCampaigns();
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(1);
+  });
+
   test(
     "sendDueCampaigns marks campaign sent when all recipients unsubscribed",
     async () => {

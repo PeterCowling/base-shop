@@ -98,6 +98,11 @@ describe("rental orders read and refund", () => {
     ]);
   });
 
+  it("readOrders returns empty array when no orders found", async () => {
+    jest.spyOn(prisma.rentalOrder, "findMany").mockResolvedValue([]);
+    await expect(readOrders(shop)).resolves.toEqual([]);
+  });
+
   it("markRefunded returns updated order", async () => {
     (nowIso as jest.Mock).mockReturnValue("now");
     const update = jest
@@ -121,6 +126,16 @@ describe("rental orders read and refund", () => {
         throw new Error("fail");
       });
     await expect(markRefunded(shop, sessionId)).resolves.toBeNull();
+  });
+
+  it("markRefunded returns null when update yields no order", async () => {
+    jest.spyOn(prisma.rentalOrder, "update").mockResolvedValue(null);
+    await expect(markRefunded(shop, sessionId)).resolves.toBeNull();
+  });
+
+  it("markReceived returns null when update yields no order", async () => {
+    jest.spyOn(prisma.rentalOrder, "update").mockResolvedValue(null);
+    await expect(markReceived(shop, sessionId)).resolves.toBeNull();
   });
 });
 

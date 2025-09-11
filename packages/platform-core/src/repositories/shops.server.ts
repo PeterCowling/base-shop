@@ -26,13 +26,13 @@ export async function listShops(
     if (total === 0) return [];
     const maxPage = Math.max(1, Math.ceil(total / limitNum));
     const safePage = Math.min(pageNum, maxPage);
-    const rows = await prisma.shop.findMany({
-      select: { id: true },
-      orderBy: { id: "asc" },
-      skip: (safePage - 1) * limitNum,
-      take: limitNum,
-    });
-    return rows.map((r) => r.id);
+      const rows = (await prisma.shop.findMany({
+        select: { id: true },
+        orderBy: { id: "asc" },
+        skip: (safePage - 1) * limitNum,
+        take: limitNum,
+      })) as Array<{ id: string }>;
+      return rows.map((r: { id: string }) => r.id);
   } catch {
     try {
       const entries = await fs.readdir(DATA_ROOT, { withFileTypes: true });

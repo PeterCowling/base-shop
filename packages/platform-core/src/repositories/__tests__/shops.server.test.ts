@@ -12,6 +12,8 @@ import { updateShopInRepo } from "../shop.server";
 import { loadThemeTokens } from "../../themeTokens/index";
 import { prisma } from "../../db";
 import * as shops from "../shops.server";
+import { defaultFilterMappings } from "../../defaultFilterMappings";
+import { promises as fs } from "fs";
 
 const { readShop, writeShop, listShops } = shops;
 
@@ -37,7 +39,7 @@ describe("shops.repository", () => {
         name: "Repo Shop",
         catalogFilters: [],
         themeId: "base",
-        filterMappings: {},
+        filterMappings: { brand: "brand", extra: "x" },
         themeDefaults: { color: "green" },
         themeOverrides: { color: "blue" },
       };
@@ -48,6 +50,7 @@ describe("shops.repository", () => {
       expect(result.name).toBe("Repo Shop");
       expect(result.themeDefaults).toEqual({ color: "green" });
       expect(result.themeTokens).toEqual({ color: "blue" });
+       expect(result.filterMappings).toEqual({ brand: "brand", extra: "x" });
       expect(loadTokens).not.toHaveBeenCalled();
     });
 
@@ -56,6 +59,7 @@ describe("shops.repository", () => {
       const result = await readShop("new-shop");
       expect(result.id).toBe("new-shop");
       expect(result.name).toBe("new-shop");
+      expect(result.filterMappings).toEqual(defaultFilterMappings);
     });
 
     it("loads theme tokens when defaults are missing", async () => {
@@ -175,6 +179,29 @@ describe("shops.repository", () => {
       expect(findMany).toHaveBeenCalledWith(
         expect.objectContaining({ skip: 4, take: 2 })
       );
+    });
+
+    it("returns items from the last page when page equals max", async () => {
+      count.mockResolvedValue(5);
+      findMany.mockResolvedValue([{ id: "shop5" }]);
+      const result = await listShops(3, 2);
+      expect(findMany).toHaveBeenCalledWith(
+        expect.objectContaining({ skip: 4, take: 2 })
+      );
+      expect(result).toEqual(["shop5"]);
+    });
+
+    it("falls back to filesystem when database calls fail", async () => {
+      count.mockRejectedValue(new Error("db down"));
+      jest
+        .spyOn(fs, "readdir")
+        .mockResolvedValue([
+          { isDirectory: () => true, name: "a" },
+          { isDirectory: () => true, name: "b" },
+          { isDirectory: () => true, name: "c" },
+        ] as any);
+      const result = await listShops(2, 2);
+      expect(result).toEqual(["c"]);
     });
   });
 });

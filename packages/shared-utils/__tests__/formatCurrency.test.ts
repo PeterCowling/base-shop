@@ -36,6 +36,17 @@ describe('formatCurrency', () => {
     expect(formatCurrency(minor)).toBe(expected);
   });
 
+  it('formats large values with grouping separators for en-US', () => {
+    const minor = 1_000_000; // $10,000.00
+    const expected = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(10_000);
+    const result = formatCurrency(minor, 'USD', 'en-US');
+    expect(result).toBe(expected);
+    expect(result).toContain(',');
+  });
+
   it('rounds fractional minor units', () => {
     const minor = 199.5; // -> $2.00 after rounding
     const expected = new Intl.NumberFormat(undefined, {
@@ -62,6 +73,20 @@ describe('formatCurrency', () => {
     const result = formatCurrency(minor, 'EUR', 'de-DE');
     expect(result).toBe(expected);
     expect(result).toContain('€');
+  });
+
+  it("places the € symbol after the amount for 'de-DE'", () => {
+    const result = formatCurrency(12345, 'EUR', 'de-DE');
+    expect(result[result.length - 1]).toBe('€');
+  });
+
+  it('formats NaN or null amounts like Intl.NumberFormat', () => {
+    const expected = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(NaN);
+    expect(formatCurrency(NaN, 'USD', 'en-US')).toBe(expected);
+    expect(formatCurrency(null as any, 'USD', 'en-US')).toBe(expected);
   });
 
   it.each(['usd', 'US'])('throws RangeError for invalid currency %s', (code) => {

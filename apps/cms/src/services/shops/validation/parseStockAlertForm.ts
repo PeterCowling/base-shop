@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const stockAlertFormSchema = z
   .object({
-    recipients: z.array(z.string().email()),
+    recipients: z.array(z.string().email()).nonempty(),
     webhook: z.string().url().optional(),
     threshold: z.coerce
       .number()

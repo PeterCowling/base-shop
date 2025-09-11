@@ -245,6 +245,30 @@ it("getCustomerSession returns null when session not found", async () => {
   expect(mockSessionStore.get).toHaveBeenCalledWith("s1");
 });
 
+it("getCustomerSession rejects when session store get fails", async () => {
+  const { getCustomerSession, CUSTOMER_SESSION_COOKIE } = await import(
+    "../session",
+  );
+
+  mockCookies.get.mockImplementation((name: string) =>
+    name === CUSTOMER_SESSION_COOKIE ? { value: "token" } : undefined,
+  );
+  unsealData.mockResolvedValue({
+    sessionId: "s1",
+    customerId: "cust",
+    role: "customer",
+  });
+  const error = new Error("store fail");
+  mockSessionStore.get.mockRejectedValueOnce(error);
+
+  await expect(getCustomerSession()).rejects.toThrow(error);
+  expect(randomUUID).not.toHaveBeenCalled();
+  expect(sealData).not.toHaveBeenCalled();
+  expect(mockCookies.set).not.toHaveBeenCalled();
+  expect(mockSessionStore.set).not.toHaveBeenCalled();
+  expect(mockSessionStore.delete).not.toHaveBeenCalled();
+});
+
 it("getCustomerSession returns null when session token expired", async () => {
   SESSION_TTL_S_MOCK = 1;
   jest.useFakeTimers();

@@ -90,5 +90,19 @@ describe("MemorySessionStore", () => {
     await expect(store.list(record.customerId)).resolves.toEqual([]);
     expect((store as any).sessions.has(record.sessionId)).toBe(false);
   });
+
+  it("delete resolves when session does not exist without modifying sessions map", async () => {
+    const store = new MemorySessionStore(1);
+    const record = createRecord("s1");
+    await store.set(record);
+
+    const sessions = (store as any).sessions;
+    const sizeBefore = sessions.size;
+
+    await expect(store.delete("missing")).resolves.toBeUndefined();
+
+    expect(sessions.size).toBe(sizeBefore);
+    expect(sessions.has(record.sessionId)).toBe(true);
+  });
 });
 

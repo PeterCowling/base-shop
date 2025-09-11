@@ -34,7 +34,8 @@ module.exports = {
     "^packages/config/src/env/core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
     "^packages/config/src/env/index\\.js$": "<rootDir>/packages/config/src/env/index.ts",
     "^packages/config/src/env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.ts",
-    // TODO: map test-friendly stubs once available
+    "^undici$": "<rootDir>/test/__mocks__/undici.ts",
+    "^react-chartjs-2$": "<rootDir>/test/__mocks__/react-chartjs-2.ts",
   },
   transform: {
     "^.+\\.[tj]sx?$": [

@@ -70,6 +70,10 @@ export async function getCustomerSession(): Promise<CustomerSession | null> {
   if (!exists) {
     return null;
   }
+  if (Date.now() - exists.createdAt.getTime() > SESSION_TTL_S * 1000) {
+    await sessionStore.delete(session.sessionId);
+    return null;
+  }
   // rotate on activity
   const oldId = session.sessionId;
   session.sessionId = randomUUID();

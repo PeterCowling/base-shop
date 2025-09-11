@@ -106,6 +106,31 @@ describe("useTokenEditor", () => {
     expect(screen.getByTestId("sans").textContent).toContain('"Fancy"');
   });
 
+  it("handleUpload with no files leaves tokens unchanged", async () => {
+    let upload!: ReturnType<typeof useTokenEditor>["handleUpload"]; // !
+    let latest: TokenMap = { "--font-sans": "system-ui" };
+
+    function Wrapper() {
+      const [tokens, setTokens] = useState<TokenMap>({
+        "--font-sans": "system-ui",
+      });
+      latest = tokens;
+      const handleChange = (t: TokenMap) =>
+        setTokens((prev) => ({ ...prev, ...t }));
+      const hook = useTokenEditor(tokens, {}, handleChange);
+      upload = hook.handleUpload; // assigned synchronously
+      return null;
+    }
+
+    render(<Wrapper />);
+
+    await act(async () => {
+      upload("sans", { target: { files: [] } } as any);
+    });
+
+    expect(latest).toEqual({ "--font-sans": "system-ui" });
+  });
+
   it("setGoogleFont inserts link once and updates tokens", () => {
     let setGF!: ReturnType<typeof useTokenEditor>["setGoogleFont"]; // !
     let latest: TokenMap = {};
@@ -135,6 +160,33 @@ describe("useTokenEditor", () => {
     act(() => setGF("mono", "Inter"));
     expect(document.querySelectorAll("#google-font-Inter")).toHaveLength(1);
     expect(latest["--font-mono"]).toBe('"Inter", var(--font-mono)');
+  });
+
+  it("addCustomFont with empty input does nothing", () => {
+    let add!: () => void; // !
+    let setNF!: (v: string) => void; // !
+    let getSans!: () => string[]; // !
+    let getMono!: () => string[]; // !
+
+    function Wrapper() {
+      const hook = useTokenEditor({}, {}, () => {});
+      add = hook.addCustomFont;
+      setNF = hook.setNewFont;
+      getSans = () => hook.sansFonts;
+      getMono = () => hook.monoFonts;
+      return null;
+    }
+
+    render(<Wrapper />);
+
+    const initialSans = getSans();
+    const initialMono = getMono();
+
+    act(() => setNF(""));
+    act(() => add());
+
+    expect(getSans()).toEqual(initialSans);
+    expect(getMono()).toEqual(initialMono);
   });
 
   it("addCustomFont appends unique entries", () => {

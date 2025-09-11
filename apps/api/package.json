@@ -2,7 +2,8 @@
   "name": "@apps/api",
   "private": true,
   "scripts": {
-    "test": "jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs"
+    "test": "jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs",
+    "coverage": "jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs --coverage"
   },
   "devDependencies": {
     "supertest": "^6.3.3"

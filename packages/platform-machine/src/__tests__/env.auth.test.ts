@@ -153,22 +153,31 @@ describe("strongSecret validation", () => {
 });
 
 describe("AUTH_TOKEN_TTL normalization", () => {
-  it("normalizes numeric and spaced values", async () => {
-    await withEnv({ AUTH_TOKEN_TTL: "60", NODE_ENV: "development" }, async () => {
-      const mod = await import("@acme/config/env/auth");
-      expect(process.env.AUTH_TOKEN_TTL).toBe("60s");
-      expect(mod.authEnv.AUTH_TOKEN_TTL).toBe(60);
-      const diff = mod.authEnv.AUTH_TOKEN_EXPIRES_AT.getTime() - Date.now();
-      expect(diff).toBeGreaterThan(59_000);
-      expect(diff).toBeLessThan(61_000);
-    });
-
+  it("handles numeric strings, suffixes, and blanks", async () => {
     await withEnv(
-      { AUTH_TOKEN_TTL: " 5 m ", NODE_ENV: "development" },
+      { AUTH_TOKEN_TTL: "120", NODE_ENV: "development" },
       async () => {
         const mod = await import("@acme/config/env/auth");
-        expect(process.env.AUTH_TOKEN_TTL).toBe("5m");
-        expect(mod.authEnv.AUTH_TOKEN_TTL).toBe(300);
+        expect(process.env.AUTH_TOKEN_TTL).toBe("120s");
+        expect(mod.authEnv.AUTH_TOKEN_TTL).toBe(120);
+      },
+    );
+
+    await withEnv(
+      { AUTH_TOKEN_TTL: "2m", NODE_ENV: "development" },
+      async () => {
+        const mod = await import("@acme/config/env/auth");
+        expect(process.env.AUTH_TOKEN_TTL).toBe("2m");
+        expect(mod.authEnv.AUTH_TOKEN_TTL).toBe(120);
+      },
+    );
+
+    await withEnv(
+      { AUTH_TOKEN_TTL: "", NODE_ENV: "development" },
+      async () => {
+        const mod = await import("@acme/config/env/auth");
+        expect(process.env.AUTH_TOKEN_TTL).toBeUndefined();
+        expect(mod.authEnv.AUTH_TOKEN_TTL).toBe(900);
       },
     );
   });

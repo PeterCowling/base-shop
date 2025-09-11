@@ -48,3 +48,14 @@ export async function getStatus(tracking: string): Promise<string | null> {
     return null;
   }
 }
+
+export async function getTrackingStatus(tracking: string): Promise<{
+  status: string | null;
+  steps: { label: string; date?: string; complete?: boolean }[];
+}> {
+  const status = await getStatus(tracking);
+  return {
+    status,
+    steps: status ? [{ label: status, complete: true }] : [],
+  };
+}

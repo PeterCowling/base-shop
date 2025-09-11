@@ -20,7 +20,16 @@ export interface TrackingStatus {
  * console.log(status.status);
  * ```
  */
+import { getTrackingStatus as getUpsTrackingStatus } from "./shipping/ups";
+import { getTrackingStatus as getDhlTrackingStatus } from "./shipping/dhl";
+
 export async function getTrackingStatus(arg: { provider: Carrier; trackingNumber: string }): Promise<TrackingStatus> {
-  // TODO: real provider implementations
-  return { status: "unknown", provider: arg.provider, trackingNumber: arg.trackingNumber };
+  const { provider, trackingNumber } = arg;
+  if (provider === "ups") {
+    return getUpsTrackingStatus(trackingNumber);
+  }
+  if (provider === "dhl") {
+    return getDhlTrackingStatus(trackingNumber);
+  }
+  return { status: "unknown", provider, trackingNumber };
 }

@@ -31,28 +31,19 @@ function repoRoot(): string {
     return match && match[1] ? match[1] : null;
   };
 
+  try {
+    const moduleDir =
+      typeof __dirname !== "undefined"
+        ? __dirname
+        : dirname(fileURLToPath(eval("import.meta.url")));
+    const fromModule = findRoot(moduleDir);
+    if (fromModule) return fromModule;
+  } catch {
+    /* ignore */
+  }
+
   const fromCwd = findRoot(process.cwd());
   if (fromCwd) return fromCwd;
-
-  let moduleUrl: string | undefined;
-  try {
-    // Avoid syntax errors in CommonJS environments.
-    // eslint-disable-next-line no-eval
-    moduleUrl = eval("import.meta.url");
-  } catch {
-    moduleUrl = undefined;
-  }
-
-  // Fall back to __dirname when `import.meta.url` is unavailable (e.g. when
-  // transpiled to CommonJS in tests). Cast to `unknown` first so TypeScript
-  // doesn't error in ESM builds where `__dirname` is not defined.
-  if (!moduleUrl && typeof __dirname !== "undefined") {
-    moduleUrl = `file://${__dirname}`;
-  }
-  if (moduleUrl) {
-    const fromUrl = findRoot(fileURLToPath(moduleUrl));
-    if (fromUrl) return fromUrl;
-  }
 
   let dir = process.cwd();
   while (true) {
@@ -226,18 +217,23 @@ export const deployShop: (
 ) => DeployShopResult = deployShopImpl;
 
 export function listThemes(): string[] {
-  const roots = [repoRoot(), process.cwd()];
+  const roots = new Set<string>([repoRoot(), process.cwd()]);
+  try {
+    const modRoot =
+      typeof __dirname !== "undefined"
+        ? join(__dirname, "../../../..")
+        : join(dirname(fileURLToPath(eval("import.meta.url"))), "../../../..");
+    roots.add(modRoot);
+  } catch {
+    /* ignore */
+  }
   for (const root of roots) {
     try {
       const themesDir = join(root, "packages", "themes");
-      const entries = fs.readdirSync(themesDir);
-      return entries.filter((name) => {
-        try {
-          return fs.statSync(join(themesDir, name)).isDirectory();
-        } catch {
-          return false;
-        }
-      });
+      const entries = fs.readdirSync(themesDir, { withFileTypes: true });
+      return entries
+        .filter((e) => e.isDirectory())
+        .map((e) => e.name);
     } catch {
       /* try next root */
     }

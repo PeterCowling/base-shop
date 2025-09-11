@@ -66,6 +66,7 @@ async function read(shop: string): Promise<InventoryItem[]> {
         }),
     );
   } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
     console.error(`Failed to read inventory for ${shop}`, err);
     throw err;
   }
@@ -115,6 +116,7 @@ async function update(
   mutate: InventoryMutateFn
 ): Promise<InventoryItem | undefined> {
   const lockFile = `${inventoryPath(shop)}.lock`;
+  await ensureDir(shop);
   let normalized: InventoryItem[] = [];
   const handle = await acquireLock(lockFile);
   let updated: InventoryItem | undefined;

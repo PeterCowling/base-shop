@@ -1,8 +1,18 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ProductGrid } from "../src/components/organisms/ProductGrid";
 
+jest.mock("../src/components/atoms/shadcn", () =>
+  require("../../../test/__mocks__/shadcnDialogStub.tsx")
+);
+
 jest.mock("../src/components/organisms/ProductCard", () => ({
-  ProductCard: ({ product }: any) => <article>{product.title}</article>,
+  ProductCard: ({ product, onAddToCart }) => (
+    <article>
+      {product.title}
+      <button onClick={() => onAddToCart?.(product)}>Add to cart</button>
+    </article>
+  ),
 }));
 
 const products = [
@@ -115,6 +125,33 @@ describe("ProductGrid", () => {
     expect(grid.style.gridTemplateColumns).toBe(
       "repeat(1, minmax(0, 1fr))"
     );
+  });
+
+  it("toggles quick view via overlay and calls onAddToCart", async () => {
+    const handleAdd = jest.fn();
+    render(
+      <ProductGrid
+        products={products}
+        enableQuickView
+        onAddToCart={handleAdd}
+      />
+    );
+
+    expect(screen.queryByRole("dialog")).toBeNull();
+
+    await userEvent.click(
+      screen.getByRole("button", { name: `Quick view ${products[0].title}` })
+    );
+    const dialog = await screen.findByRole("dialog");
+    expect(dialog).toBeInTheDocument();
+
+    await userEvent.click(
+      within(dialog).getByRole("button", { name: "Add to cart" })
+    );
+    expect(handleAdd).toHaveBeenCalledWith(products[0]);
+
+    await userEvent.click(screen.getByRole("button", { name: "Close" }));
+    expect(screen.queryByRole("dialog")).toBeNull();
   });
 });
 

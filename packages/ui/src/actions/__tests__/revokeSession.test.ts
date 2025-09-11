@@ -63,6 +63,19 @@ describe("revoke", () => {
     expect(revalidatePath).not.toHaveBeenCalled();
   });
 
+  it("returns error when listSessions rejects", async () => {
+    const session = { role: "admin", customerId: "123" };
+    (getCustomerSession as jest.Mock).mockResolvedValue(session);
+    (hasPermission as jest.Mock).mockReturnValue(true);
+    (listSessions as jest.Mock).mockRejectedValue(new Error("boom"));
+
+    const result = await revoke("target");
+
+    expect(listSessions).toHaveBeenCalledWith(session.customerId);
+    expect(result).toEqual({ success: false, error: "Failed to revoke session." });
+    expect(revalidatePath).not.toHaveBeenCalled();
+  });
+
   it("returns error when revokeSession throws", async () => {
     const session = { role: "admin", customerId: "123" };
     (getCustomerSession as jest.Mock).mockResolvedValue(session);

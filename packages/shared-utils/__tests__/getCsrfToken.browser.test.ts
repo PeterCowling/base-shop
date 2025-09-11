@@ -57,4 +57,39 @@ describe('getCsrfToken in browser', () => {
     Object.defineProperty(globalThis, 'location', { value: originalLocation });
     Object.defineProperty(document, 'cookie', originalCookie);
   });
+
+  it('generates token without secure flag on http protocol', () => {
+    const originalCrypto = globalThis.crypto;
+    Object.defineProperty(globalThis, 'crypto', {
+      value: { ...originalCrypto, randomUUID: () => 'generated-uuid' },
+      configurable: true,
+    });
+    const originalLocation = globalThis.location;
+    Object.defineProperty(globalThis, 'location', {
+      value: { protocol: 'http:' },
+      configurable: true,
+    });
+    const originalCookie = Object.getOwnPropertyDescriptor(
+      Document.prototype,
+      'cookie',
+    )!;
+    let cookieValue = '';
+    Object.defineProperty(document, 'cookie', {
+      configurable: true,
+      get: () => cookieValue,
+      set: (v) => {
+        cookieValue = v;
+      },
+    });
+
+    const token = getCsrfToken();
+    expect(token).toBe('generated-uuid');
+    expect(cookieValue).toBe(
+      'csrf_token=generated-uuid; path=/; SameSite=Strict',
+    );
+
+    Object.defineProperty(globalThis, 'crypto', { value: originalCrypto });
+    Object.defineProperty(globalThis, 'location', { value: originalLocation });
+    Object.defineProperty(document, 'cookie', originalCookie);
+  });
 });

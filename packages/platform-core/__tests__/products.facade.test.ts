@@ -6,8 +6,14 @@ jest.mock("../src/products/index", () => ({
   getProductBySlug: jest.fn((slug: string) => (slug === mockProduct.slug ? mockProduct : undefined)),
 }));
 
+jest.mock("../src/repositories/products.server", () => ({
+  getProductById: jest.fn(),
+  readRepo: jest.fn(),
+}));
+
 import { getProductById, getProductBySlug } from "../src/products";
 import * as base from "../src/products/index";
+import * as repo from "../src/repositories/products.server";
 
 describe("getProductById overloads", () => {
   beforeEach(() => {
@@ -21,8 +27,10 @@ describe("getProductById overloads", () => {
   });
 
   it("returns product asynchronously", async () => {
+    const repoMock = repo as jest.Mocked<typeof repo>;
+    repoMock.getProductById.mockResolvedValueOnce(mockProduct);
     await expect(getProductById("shop-abc", "prod-1")).resolves.toEqual(mockProduct);
-    expect(base.getProductById).toHaveBeenCalledWith("prod-1");
+    expect(repoMock.getProductById).toHaveBeenCalledWith("shop-abc", "prod-1");
   });
 
   it("returns null when product missing synchronously", () => {
@@ -32,8 +40,10 @@ describe("getProductById overloads", () => {
   });
 
   it("returns null when product missing asynchronously", async () => {
+    const repoMock = repo as jest.Mocked<typeof repo>;
+    repoMock.getProductById.mockResolvedValueOnce(null);
     await expect(getProductById("shop-abc", "no-exist")).resolves.toBeNull();
-    expect(base.getProductById).toHaveBeenCalledWith("no-exist");
+    expect(repoMock.getProductById).toHaveBeenCalledWith("shop-abc", "no-exist");
   });
 
   it("delegates slug lookup to base.getProductBySlug", () => {

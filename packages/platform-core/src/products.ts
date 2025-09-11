@@ -7,6 +7,10 @@ export type { Locale, ProductPublication } from "@acme/types";
 // actually contains catalogue data.
 import type { SKU as BaseSKU } from "@acme/types";
 import * as base from "./products/index";
+import {
+  getProductById as getProductByIdFromRepo,
+  readRepo,
+} from "./repositories/products.server";
 
 /**
  * Compatibility SKU type that allows optional `sku` field for legacy access.
@@ -35,8 +39,7 @@ export function getProductById(
     // Legacy sync path: look up in local PRODUCTS
     return base.getProductById(a) ?? null;
   }
-  // Async server path is not implemented; fall back to local lookup
-  return Promise.resolve(base.getProductById(b) ?? null);
+  return getProductByIdFromRepo<SKU>(a, b);
 }
 
 // Non-conflicting re-exports are safe:
@@ -44,9 +47,25 @@ export function getProductById(
 
 export { assertLocale } from "./products/index";
 
-export async function getProducts(..._args: unknown[]): Promise<SKU[]> {
+export async function getProducts(shop?: string): Promise<SKU[]> {
+  if (shop) {
+    return readRepo<SKU>(shop);
+  }
   return [...base.PRODUCTS];
 }
-export async function searchProducts(..._args: unknown[]): Promise<SKU[]> {
-  return [];
+
+export async function searchProducts(
+  shopOrQuery: string,
+  maybeQuery?: string,
+): Promise<SKU[]> {
+  const shop = typeof maybeQuery === "string" ? shopOrQuery : undefined;
+  const query = (maybeQuery ?? shopOrQuery).toLowerCase();
+  const list = await getProducts(shop);
+  return list.filter((p) => {
+    const titleValues = Object.values(p.title ?? {});
+    return (
+      titleValues.some((t) => t.toLowerCase().includes(query)) ||
+      p.slug.toLowerCase().includes(query)
+    );
+  });
 }

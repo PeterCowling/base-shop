@@ -7,6 +7,12 @@ import {
   searchProducts,
 } from "@platform-core/products";
 import * as base from "@platform-core/products/index";
+import * as repo from "@platform-core/repositories/products.server";
+
+jest.mock("@platform-core/repositories/products.server", () => ({
+  getProductById: jest.fn(),
+  readRepo: jest.fn(),
+}));
 
 afterEach(() => {
   jest.restoreAllMocks();
@@ -42,17 +48,18 @@ describe("getProductById", () => {
     expect(getProductById(outOfStock.id)).toBeNull();
   });
 
-  it("falls back to base lookup in async path", async () => {
-    const spy = jest.spyOn(base, "getProductById");
+  it("uses server repository in async path", async () => {
+    const repoMock = repo as jest.Mocked<typeof repo>;
+    repoMock.getProductById.mockResolvedValueOnce(inStock);
     await expect(getProductById("shop", inStock.id)).resolves.toEqual(inStock);
-    expect(spy).toHaveBeenCalledWith(inStock.id);
+    expect(repoMock.getProductById).toHaveBeenCalledWith("shop", inStock.id);
   });
 
-  it("resolves null via async path for unknown ids", async () => {
-    const spy = jest.spyOn(base, "getProductById");
-    await expect(getProductById("shop", "missing"))
-      .resolves.toBeNull();
-    expect(spy).toHaveBeenCalledWith("missing");
+  it("resolves null via server repository for unknown ids", async () => {
+    const repoMock = repo as jest.Mocked<typeof repo>;
+    repoMock.getProductById.mockResolvedValueOnce(null);
+    await expect(getProductById("shop", "missing")).resolves.toBeNull();
+    expect(repoMock.getProductById).toHaveBeenCalledWith("shop", "missing");
   });
 });
 

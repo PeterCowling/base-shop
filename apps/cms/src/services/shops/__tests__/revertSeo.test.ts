@@ -12,6 +12,13 @@ describe("revertSeo", () => {
     jest.clearAllMocks();
   });
 
+  it("throws when authorization fails", async () => {
+    (authorize as jest.Mock).mockRejectedValueOnce(new Error("nope"));
+    await expect(revertSeo("shop", "2024-01-01")).rejects.toThrow("nope");
+    expect(fetchDiffHistory).not.toHaveBeenCalled();
+    expect(persistSettings).not.toHaveBeenCalled();
+  });
+
   it("reconstructs settings when timestamp exists", async () => {
     (fetchDiffHistory as jest.Mock).mockResolvedValue([
       { timestamp: "2024-01-01", diff: { languages: ["en"] } },

@@ -175,8 +175,11 @@ describe("provisionDomain", () => {
     );
   });
 
-  it("throws when credentials are missing", async () => {
-    mockedEnv.CLOUDFLARE_API_TOKEN = undefined;
+  it.each([
+    ["CLOUDFLARE_ACCOUNT_ID", () => (mockedEnv.CLOUDFLARE_ACCOUNT_ID = undefined)],
+    ["CLOUDFLARE_API_TOKEN", () => (mockedEnv.CLOUDFLARE_API_TOKEN = undefined)],
+  ])("throws when %s is missing", async (_name, unset) => {
+    unset();
     await expect(provisionDomain("shop", "shop.example.com")).rejects.toThrow(
       "Cloudflare credentials not configured"
     );

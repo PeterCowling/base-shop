@@ -52,16 +52,13 @@ describe("stripe client", () => {
 
     let called = false;
     server.use(
-      rest.post(
-        "https://api.stripe.com/v1/customers",
-        (_req, res, ctx) => {
-          called = true;
-          return res(
-            ctx.status(200),
-            ctx.json({ id: "cus_test", object: "customer" })
-          );
-        }
-      )
+      rest.post("https://api.stripe.com/v1/customers", (_req, res, ctx) => {
+        called = true;
+        return res(
+          ctx.status(200),
+          ctx.json({ id: "cus_test", object: "customer" })
+        );
+      })
     );
 
     const customer = await stripeInternal.customers.create();
@@ -81,16 +78,13 @@ describe("stripe client", () => {
 
     let called = false;
     server.use(
-      rest.post(
-        "https://api.stripe.com/v1/customers",
-        (_req, res, ctx) => {
-          called = true;
-          return res(
-            ctx.status(400),
-            ctx.json({ error: { message: "Invalid request" } })
-          );
-        }
-      )
+      rest.post("https://api.stripe.com/v1/customers", (_req, res, ctx) => {
+        called = true;
+        return res(
+          ctx.status(400),
+          ctx.json({ error: { message: "Invalid request" } })
+        );
+      })
     );
 
     await expect(stripeInternal.customers.create()).rejects.toMatchObject({
@@ -118,13 +112,14 @@ describe("stripe client", () => {
     await expect(
       stripeInternal.paymentIntents.update("pi_123", {
         metadata: { foo: "bar" },
-      }),
+      })
     ).rejects.toThrow("An error occurred with our connection to Stripe");
     expect(fetchSpy).toHaveBeenCalled();
   });
 
   it("errors when STRIPE_SECRET_KEY is undefined", async () => {
-    delete (process.env as Record<string, string | undefined>).STRIPE_SECRET_KEY;
+    delete (process.env as Record<string, string | undefined>)
+      .STRIPE_SECRET_KEY;
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.doMock("@acme/config/env/core", () => ({
       coreEnv: { STRIPE_SECRET_KEY: undefined },
@@ -134,11 +129,11 @@ describe("stripe client", () => {
       import("../index.ts").catch((err) => {
         console.error((err as Error).message);
         throw err;
-      }),
+      })
     ).rejects.toThrow("Neither apiKey nor config.authenticator provided");
 
     expect(spy).toHaveBeenCalledWith(
-      "Neither apiKey nor config.authenticator provided",
+      "Neither apiKey nor config.authenticator provided"
     );
   });
 
@@ -153,11 +148,11 @@ describe("stripe client", () => {
       import("../index.ts").catch((err) => {
         console.error((err as Error).message);
         throw err;
-      }),
+      })
     ).rejects.toThrow("Neither apiKey nor config.authenticator provided");
 
     expect(spy).toHaveBeenCalledWith(
-      "Neither apiKey nor config.authenticator provided",
+      "Neither apiKey nor config.authenticator provided"
     );
   });
 
@@ -243,15 +238,33 @@ describe("stripe client", () => {
       )
     );
 
-    const paymentIntent = await stripeInternal.paymentIntents.update(
-      "pi_123",
-      { metadata: { foo: "bar" } }
-    );
+    const paymentIntent = await stripeInternal.paymentIntents.update("pi_123", {
+      metadata: { foo: "bar" },
+    });
 
     expect(paymentIntent.id).toBe("pi_123");
     expect(capturedVersion).toBe("2025-06-30.basil");
     const params = new URLSearchParams(capturedBody);
     expect(params.get("metadata[foo]")).toBe("bar");
+  });
+
+  it("surfaces API errors when updating payment intent", async () => {
+    const { stripe } = await import("../index.ts");
+    const stripeInternal = stripe as StripeInternal;
+
+    server.use(
+      rest.post(
+        "https://api.stripe.com/v1/payment_intents/pi_123",
+        (_req, res, ctx) =>
+          res(ctx.status(400), ctx.json({ error: { message: "Bad request" } }))
+      )
+    );
+
+    await expect(
+      stripeInternal.paymentIntents.update("pi_123", {
+        metadata: { foo: "bar" },
+      })
+    ).rejects.toMatchObject({ message: "Bad request", statusCode: 400 });
   });
 
   it("constructs webhook events using Stripe helpers", async () => {
@@ -263,7 +276,10 @@ describe("stripe client", () => {
       api_version: "2025-06-30.basil",
     });
     const secret = "whsec_test";
-    const header = stripe.webhooks.generateTestHeaderString({ payload, secret });
+    const header = stripe.webhooks.generateTestHeaderString({
+      payload,
+      secret,
+    });
     const event = stripe.webhooks.constructEvent(payload, header, secret);
 
     expect(event.id).toBe("evt_test");
@@ -282,7 +298,10 @@ describe("stripe client", () => {
       api_version: "2025-06-30.basil",
     });
     const secret = "whsec_test";
-    const header = stripe.webhooks.generateTestHeaderString({ payload, secret });
+    const header = stripe.webhooks.generateTestHeaderString({
+      payload,
+      secret,
+    });
     const tamperedPayload = JSON.stringify({
       id: "evt_test_tampered",
       object: "event",

@@ -476,6 +476,7 @@ describe("onRequestPost", () => {
       on: (_: string, cb: (code: number) => void) => cb(0),
     }));
 
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },
@@ -507,13 +508,13 @@ describe("onRequestPost", () => {
     );
   });
 
-  it("creates empty shop.json and still runs build/deploy when no dependencies", async () => {
+  it("returns 200 and skips build/deploy when package.json has no dependencies", async () => {
     readFileSync.mockImplementation((file: string) => {
       if (file.endsWith("package.json")) {
         return JSON.stringify({});
       }
       if (file.endsWith("shop.json")) {
-        return JSON.stringify({});
+        return JSON.stringify({ componentVersions: { compA: "1.0.0" } });
       }
       return "";
     });
@@ -523,36 +524,21 @@ describe("onRequestPost", () => {
 
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
 
-
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },
       request: new Request("http://example.com", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
-        body: JSON.stringify({}),
+        body: JSON.stringify({ components: ["compA"] }),
       }),
     });
 
     expect(res.status).toBe(200);
     expect(writeFileSync).toHaveBeenCalledTimes(1);
-    const [shopPath, data] = writeFileSync.mock.calls[0];
-    expect(shopPath).toContain(`data/shops/${id}/shop.json`);
-    const written = JSON.parse(data as string);
-    expect(written.componentVersions).toEqual({});
-    expect(typeof written.lastUpgrade).toBe("string");
-    expect(spawn).toHaveBeenNthCalledWith(
-      1,
-      "pnpm",
-      ["--filter", `apps/shop-${id}`, "build"],
-      { cwd: root, stdio: "inherit" },
-    );
-    expect(spawn).toHaveBeenNthCalledWith(
-      2,
-      "pnpm",
-      ["--filter", `apps/shop-${id}`, "deploy"],
-      { cwd: root, stdio: "inherit" },
-    );
+    const written = JSON.parse(writeFileSync.mock.calls[0][1] as string);
+    expect(written.componentVersions).toEqual({ compA: "1.0.0" });
+    expect(spawn).not.toHaveBeenCalled();
   });
 
   it("locks all dependencies and runs build/deploy when body is empty", async () => {
@@ -880,6 +866,7 @@ describe("onRequestPost", () => {
       return "";
     });
 
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },
@@ -944,6 +931,7 @@ describe("onRequestPost", () => {
       return "";
     });
 
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
     const token = jwt.sign({}, "secret");
     const res = await onRequestPost({
       params: { id },

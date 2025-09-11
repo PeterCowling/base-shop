@@ -75,6 +75,12 @@ export const onRequestPost = async ({
     shop.lastUpgrade = new Date().toISOString();
     writeFileSync(shopFile, JSON.stringify(shop, null, 2));
 
+    if (Object.keys(deps).length === 0) {
+      return new Response(JSON.stringify({ ok: true }), {
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
     await run("pnpm", ["--filter", `apps/shop-${id}`, "build"], root);
     await run("pnpm", ["--filter", `apps/shop-${id}`, "deploy"], root);
 

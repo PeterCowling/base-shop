@@ -161,6 +161,22 @@ describe("ResendProvider", () => {
     await expect(promise).rejects.toMatchObject({ retryable: true });
   });
 
+  it("treats Error objects as retryable", async () => {
+    setupEnv();
+    const { send } = require("resend");
+    const err = new Error("network fail");
+    send.mockRejectedValueOnce(err);
+    const { ResendProvider } = await import("../resend");
+    const provider = new ResendProvider();
+    const { ProviderError } = require("../types");
+    const promise = provider.send(options);
+    await expect(promise).rejects.toBeInstanceOf(ProviderError);
+    await expect(promise).rejects.toMatchObject({
+      message: "network fail",
+      retryable: true,
+    });
+  });
+
   it("wraps unexpected errors in ProviderError", async () => {
     setupEnv();
     const { send } = require("resend");

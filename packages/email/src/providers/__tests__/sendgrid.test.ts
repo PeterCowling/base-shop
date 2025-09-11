@@ -156,6 +156,22 @@ describe("SendgridProvider", () => {
     await expect(promise).rejects.toMatchObject({ retryable: true });
   });
 
+  it("treats standard Error as retryable", async () => {
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+    const sgMail = require("@sendgrid/mail").default;
+    const err = new Error("network fail");
+    sgMail.send.mockRejectedValueOnce(err);
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    const { ProviderError } = require("../types");
+    const promise = provider.send(options);
+    await expect(promise).rejects.toBeInstanceOf(ProviderError);
+    await expect(promise).rejects.toMatchObject({
+      message: "network fail",
+      retryable: true,
+    });
+  });
+
   it("wraps unexpected errors in ProviderError", async () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";
     const sgMail = require("@sendgrid/mail").default;

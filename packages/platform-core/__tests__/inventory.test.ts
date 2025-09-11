@@ -143,6 +143,25 @@ describe("inventory repository", () => {
     });
   });
 
+  it("calls checkAndAlert when low stock and SKIP_STOCK_ALERT unset", async () => {
+    await withRepo(async (repo, shop) => {
+      const items = [
+        {
+          sku: "sku-1",
+          productId: "p1",
+          variantAttributes: { size: "m" },
+          quantity: 1,
+          lowStockThreshold: 2,
+        },
+      ];
+      const checkAndAlert = jest.fn();
+      jest.doMock("../src/services/stockAlert.server", () => ({ checkAndAlert }));
+      delete process.env.SKIP_STOCK_ALERT;
+      await repo.writeInventory(shop, items);
+      expect(checkAndAlert).toHaveBeenCalledWith(shop, items);
+    });
+  });
+
   it("writeInventory throws on invalid items", async () => {
     await withRepo(async (repo, shop) => {
       const bad = [
@@ -243,6 +262,47 @@ describe("inventory repository", () => {
       const items = await repo.readInventory(shop);
       expect(items).toEqual([
         { sku: "sku-1", productId: "p1", quantity: 2, variantAttributes: {} },
+      ]);
+    });
+  });
+
+  it("removes inventory items when mutate returns undefined", async () => {
+    await withRepo(async (repo, shop) => {
+      await repo.updateInventoryItem(shop, "sku-1", {}, () => ({
+        sku: "sku-1",
+        productId: "p1",
+        quantity: 1,
+        variantAttributes: {},
+      }));
+      const removed = await repo.updateInventoryItem(shop, "sku-1", {}, () => undefined);
+      expect(removed).toBeUndefined();
+      await expect(repo.readInventory(shop)).resolves.toEqual([]);
+    });
+  });
+
+  it("handles missing inventory file when updating", async () => {
+    await withRepo(async (repo, shop, dir) => {
+      const created = await repo.updateInventoryItem(shop, "sku-1", {}, () => ({
+        sku: "sku-1",
+        productId: "p1",
+        quantity: 1,
+        variantAttributes: {},
+      }));
+      expect(created).toEqual({
+        sku: "sku-1",
+        productId: "p1",
+        quantity: 1,
+        variantAttributes: {},
+      });
+      const buf = await fs.readFile(
+        path.join(dir, "data", "shops", shop, "inventory.json"),
+        "utf8",
+      );
+      expect(JSON.parse(buf)).toEqual([
+        { sku: "sku-1", productId: "p1", quantity: 1 },
+      ]);
+      await expect(repo.readInventory(shop)).resolves.toEqual([
+        { sku: "sku-1", productId: "p1", quantity: 1, variantAttributes: {} },
       ]);
     });
   });

@@ -29,6 +29,17 @@ describe("returnAuthorization", () => {
     nowSpy.mockRestore();
   });
 
+  it("applies default status and inspectionNotes", async () => {
+    const { createReturnAuthorization } = await import("../returnAuthorization");
+    const repo = await import("../repositories/returnAuthorization.server");
+    const nowSpy = jest.spyOn(Date, "now").mockReturnValue(123456);
+    const ra = await createReturnAuthorization({ orderId: "o1" });
+    expect(ra.status).toBe("pending");
+    expect(ra.inspectionNotes).toBe("");
+    expect(repo.addReturnAuthorization).toHaveBeenCalledWith(ra);
+    nowSpy.mockRestore();
+  });
+
   it("delegates to readReturnAuthorizations", async () => {
     const { listReturnAuthorizations } = await import("../returnAuthorization");
     const repo = await import("../repositories/returnAuthorization.server");

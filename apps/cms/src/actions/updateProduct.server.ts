@@ -36,10 +36,16 @@ export async function updateProduct(
     const v = formData.get(`title_${l}`);
     if (typeof v === "string") title[l as Locale] = v;
   });
+  const rawPrice = formData.get("price");
+  const price =
+    typeof rawPrice === "string" && rawPrice.trim() !== ""
+      ? Number(rawPrice)
+      : 0;
+
   const updated: ProductPublication = {
     ...current,
     title,
-    price: Number(formData.get("price")),
+    price,
     row_version: (current.row_version ?? 0) + 1,
   };
 

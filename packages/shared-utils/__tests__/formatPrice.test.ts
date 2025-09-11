@@ -36,6 +36,17 @@ describe('formatPrice', () => {
     expect(formatPrice(amount)).toBe(expected);
   });
 
+  it('formats en-US numbers with comma separators', () => {
+    const amount = 1234567.89;
+    const formatted = formatPrice(amount, 'USD', 'en-US');
+    const expected = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+    }).format(amount);
+    expect(formatted).toBe(expected);
+    expect(formatted).toMatch(/1,234,567\.89/);
+  });
+
   it('rounds to two decimals', () => {
     const amount = 1.005; // should round up to 1.01
     const expected = new Intl.NumberFormat(undefined, {
@@ -52,6 +63,17 @@ describe('formatPrice', () => {
       currency: 'EUR',
     }).format(amount);
     expect(formatPrice(amount, 'EUR', 'de-DE')).toBe(expected);
+  });
+
+  it('places currency symbol after amount for fr-FR locale', () => {
+    const amount = 123.45;
+    const formatted = formatPrice(amount, 'EUR', 'fr-FR');
+    const expected = new Intl.NumberFormat('fr-FR', {
+      style: 'currency',
+      currency: 'EUR',
+    }).format(amount);
+    expect(formatted).toBe(expected);
+    expect(formatted.trim().endsWith('€')).toBe(true);
   });
 
   it.each(['BAD', 'US', '', 'usd'])('throws RangeError for invalid currency %s', (code) => {
@@ -89,6 +111,14 @@ describe('formatPrice', () => {
       currency: 'JPY',
     }).format(amount);
     expect(formatPrice(amount, 'JPY', 'ja-JP')).toBe(expected);
+  });
+
+  it.each([undefined, NaN])('formats %s as NaN', (value) => {
+    const expected = new Intl.NumberFormat(undefined, {
+      style: 'currency',
+      currency: 'USD',
+    }).format(NaN);
+    expect(formatPrice(value as any)).toBe(expected);
   });
 
   it('delegates to Intl.NumberFormat with provided arguments', () => {

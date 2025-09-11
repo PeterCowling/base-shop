@@ -31,7 +31,7 @@ jest.mock('../repoResolver', () => ({
     options: any,
   ) => {
     const backend = process.env[options.backendEnvVar];
-    if (backend === 'json' || backend === 'sqlite') {
+    if (backend === 'json') {
       return await jsonModule();
     }
     return await prismaModule();
@@ -66,14 +66,6 @@ describe('pricing repository backend selection', () => {
 
     expect(mockJson.read).toHaveBeenCalled();
     expect(mockJson.write).toHaveBeenCalled();
-    expect(mockPrisma.read).not.toHaveBeenCalled();
-  });
-
-  it('uses JSON repository when PRICING_BACKEND="sqlite"', async () => {
-    process.env.PRICING_BACKEND = 'sqlite';
-    const { readPricing } = await import('../pricing.server');
-    await readPricing();
-    expect(mockJson.read).toHaveBeenCalled();
     expect(mockPrisma.read).not.toHaveBeenCalled();
   });
 

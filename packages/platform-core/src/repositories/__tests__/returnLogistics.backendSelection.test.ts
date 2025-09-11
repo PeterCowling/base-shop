@@ -31,7 +31,7 @@ jest.mock('../repoResolver', () => ({
     options: any,
   ) => {
     const backend = process.env[options.backendEnvVar];
-    if (backend === 'json' || backend === 'sqlite') {
+    if (backend === 'json') {
       return await jsonModule();
     }
     return await prismaModule();
@@ -87,14 +87,5 @@ describe('return logistics repository backend selection', () => {
     expect(prismaImportCount).toBe(1);
   });
 
-  it('uses JSON repository when RETURN_LOGISTICS_BACKEND="sqlite"', async () => {
-    process.env.RETURN_LOGISTICS_BACKEND = 'sqlite';
-    const { readReturnLogistics } = await import('../returnLogistics.server');
-
-    await readReturnLogistics();
-
-    expect(mockJson.readReturnLogistics).toHaveBeenCalled();
-    expect(mockPrisma.readReturnLogistics).not.toHaveBeenCalled();
-  });
 });
 

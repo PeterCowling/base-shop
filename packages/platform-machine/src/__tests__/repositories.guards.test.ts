@@ -9,12 +9,12 @@ describe.skip("inventoryRepository", () => {
     delete process.env.INVENTORY_BACKEND;
   });
 
-  it("selects sqlite backend when configured", async () => {
-    process.env.INVENTORY_BACKEND = "sqlite";
+  it("selects JSON backend when configured", async () => {
+    process.env.INVENTORY_BACKEND = "json";
     const read = jest.fn().mockResolvedValue(["item"]);
     jest.doMock(
-      "@acme/platform-core/repositories/inventory.sqlite.server",
-      () => ({ sqliteInventoryRepository: { read } })
+      "@acme/platform-core/repositories/inventory.json.server",
+      () => ({ jsonInventoryRepository: { read } })
     );
     const { readInventory } = await import(
       "@acme/platform-core/repositories/inventory.server"

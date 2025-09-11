@@ -41,7 +41,7 @@ jest.mock("../packages/platform-core/src/repositories/repoResolver", () => ({
     options: any,
   ) => {
     const backend = process.env[options.backendEnvVar];
-    if (backend === "json" || backend === "sqlite") {
+    if (backend === "json") {
       return await jsonModule();
     }
     return await prismaModule();
@@ -87,18 +87,6 @@ describe("return authorization repository backend selection", () => {
     expect(mockJson.writeReturnAuthorizations).toHaveBeenCalled();
     expect(mockJson.addReturnAuthorization).toHaveBeenCalled();
     expect(mockJson.getReturnAuthorization).toHaveBeenCalled();
-    expect(mockPrisma.readReturnAuthorizations).not.toHaveBeenCalled();
-  });
-
-  it('uses json repository when RETURN_AUTH_BACKEND="sqlite"', async () => {
-    process.env.RETURN_AUTH_BACKEND = "sqlite";
-    const repo = await import(
-      "../packages/platform-core/src/repositories/returnAuthorization.server",
-    );
-
-    await repo.readReturnAuthorizations();
-
-    expect(mockJson.readReturnAuthorizations).toHaveBeenCalled();
     expect(mockPrisma.readReturnAuthorizations).not.toHaveBeenCalled();
   });
 

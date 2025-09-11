@@ -5,7 +5,6 @@ import type { InventoryItem } from "../../types/inventory";
 
 // Hold mutable repository implementations so we can swap them per test.
 let jsonRepo: any;
-let sqliteRepo: any;
 let prismaRepo: any;
 let prismaImportCount = 0;
 
@@ -14,16 +13,6 @@ jest.mock("../inventory.json.server", () => ({
     return jsonRepo;
   },
 }));
-
-jest.mock(
-  "../inventory.sqlite.server",
-  () => ({
-    get sqliteInventoryRepository() {
-      return sqliteRepo;
-    },
-  }),
-  { virtual: true },
-);
 
 jest.mock("../inventory.prisma.server", () => {
   prismaImportCount++;
@@ -42,9 +31,6 @@ jest.mock("../repoResolver", () => ({
     options: any,
   ) => {
     const backend = process.env[options.backendEnvVar];
-    if (backend === "sqlite") {
-      return await jsonModule();
-    }
     if (backend === "json") {
       return await jsonModule();
     }
@@ -106,10 +92,9 @@ describe("inventory server", () => {
   beforeEach(async () => {
     jest.resetModules();
     jsonRepo = createRepo();
-    sqliteRepo = createRepo();
     prismaRepo = createRepo();
     prismaImportCount = 0;
-    process.env.INVENTORY_BACKEND = "sqlite";
+    process.env.INVENTORY_BACKEND = "json";
     const mod = await import("../inventory.server");
     variantKey = mod.variantKey;
     readInventoryMap = mod.readInventoryMap;
@@ -131,7 +116,6 @@ describe("inventory server", () => {
       { sku: "a", productId: "p1", quantity: 1, variantAttributes: { z: "9", a: "1" } },
     ]);
     expect(jsonRepo.write).toHaveBeenCalledTimes(1);
-    expect(sqliteRepo.write).not.toHaveBeenCalled();
     const map = await readInventoryMap("shop");
     expect(map).toEqual({
       "a#a:1|z:9": {
@@ -142,7 +126,6 @@ describe("inventory server", () => {
       },
     });
     expect(jsonRepo.read).toHaveBeenCalledTimes(1);
-    expect(sqliteRepo.read).not.toHaveBeenCalled();
   });
 
   it("updates items successfully", async () => {
@@ -162,7 +145,6 @@ describe("inventory server", () => {
     });
     expect((await readInventory("shop"))[0].quantity).toBe(3);
     expect(jsonRepo.update).toHaveBeenCalledTimes(1);
-    expect(sqliteRepo.update).not.toHaveBeenCalled();
   });
 
   it("ignores removal of unknown SKU", async () => {
@@ -209,7 +191,6 @@ describe("inventory repository concurrency", () => {
     async () => {
     jest.resetModules();
     jsonRepo = jest.requireActual("../inventory.json.server").jsonInventoryRepository;
-    sqliteRepo = jsonRepo;
     process.env.SKIP_STOCK_ALERT = "1";
     const { writeInventory, readInventory, updateInventoryItem } = await import(
       "../inventory.server"

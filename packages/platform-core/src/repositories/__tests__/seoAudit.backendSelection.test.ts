@@ -29,7 +29,7 @@ jest.mock('../repoResolver', () => ({
     options: any,
   ) => {
     const backend = process.env[options.backendEnvVar];
-    if (backend === 'json' || backend === 'sqlite') {
+    if (backend === 'json') {
       return await jsonModule();
     }
     return await prismaModule();
@@ -58,16 +58,6 @@ describe('seoAudit repository backend selection', () => {
 
     expect(mockJson.readSeoAudits).toHaveBeenCalledWith('shop');
     expect(mockJson.appendSeoAudit).toHaveBeenCalledWith('shop', { timestamp: '', score: 0 });
-    expect(mockPrisma.readSeoAudits).not.toHaveBeenCalled();
-  });
-
-  it('uses JSON repository when SEO_AUDIT_BACKEND="sqlite"', async () => {
-    process.env.SEO_AUDIT_BACKEND = 'sqlite';
-    const { readSeoAudits } = await import('../seoAudit.server');
-
-    await readSeoAudits('shop');
-
-    expect(mockJson.readSeoAudits).toHaveBeenCalled();
     expect(mockPrisma.readSeoAudits).not.toHaveBeenCalled();
   });
 

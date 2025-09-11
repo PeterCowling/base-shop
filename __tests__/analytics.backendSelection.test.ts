@@ -37,9 +37,6 @@ jest.mock("../packages/platform-core/src/repositories/repoResolver", () => ({
     options: any,
   ) => {
     const backend = process.env[options.backendEnvVar];
-    if (backend === "sqlite" && options.sqliteModule) {
-      return await options.sqliteModule();
-    }
     if (backend === "json") {
       return await jsonModule();
     }

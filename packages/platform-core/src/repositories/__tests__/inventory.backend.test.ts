@@ -1,14 +1,7 @@
 import { jest } from '@jest/globals';
 
-let sqliteImportCount = 0;
 let jsonImportCount = 0;
 let prismaImportCount = 0;
-
-const mockSqlite = {
-  read: jest.fn(),
-  write: jest.fn(),
-  update: jest.fn(),
-};
 
 const mockJson = {
   read: jest.fn(),
@@ -21,15 +14,6 @@ const mockPrisma = {
   write: jest.fn(),
   update: jest.fn(),
 };
-
-jest.mock(
-  '../inventory.sqlite.server',
-  () => {
-    sqliteImportCount++;
-    return { sqliteInventoryRepository: mockSqlite };
-  },
-  { virtual: true },
-);
 
 jest.mock('../inventory.json.server', () => {
   jsonImportCount++;
@@ -51,9 +35,6 @@ jest.mock('../repoResolver', () => ({
     options: any,
   ) => {
     const backend = process.env[options.backendEnvVar];
-    if (backend === 'sqlite') {
-      return await jsonModule();
-    }
     if (backend === 'json') {
       return await jsonModule();
     }
@@ -68,7 +49,6 @@ describe('inventory backend', () => {
   beforeEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
-    sqliteImportCount = 0;
     jsonImportCount = 0;
     prismaImportCount = 0;
     process.env.DATABASE_URL = 'postgres://test';
@@ -95,22 +75,8 @@ describe('inventory backend', () => {
     await inventoryRepository.read('shop2');
 
     expect(prismaImportCount).toBe(1);
-    expect(sqliteImportCount).toBe(0);
     expect(jsonImportCount).toBe(0);
     expect(mockPrisma.read).toHaveBeenCalledTimes(2);
-  });
-
-  it('imports json backend when sqlite flag is set', async () => {
-    process.env.INVENTORY_BACKEND = 'sqlite';
-    const { inventoryRepository } = await import('../inventory.server');
-
-    await inventoryRepository.read('shop1');
-    await inventoryRepository.read('shop2');
-
-    expect(jsonImportCount).toBe(1);
-    expect(sqliteImportCount).toBe(0);
-    expect(prismaImportCount).toBe(0);
-    expect(mockJson.read).toHaveBeenCalledTimes(2);
   });
 
   it('variantKey sorts attribute keys', async () => {

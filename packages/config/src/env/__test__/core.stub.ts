@@ -37,7 +37,7 @@ const defaults = {
   EMAIL_PROVIDER: "smtp" as const,
   SMTP_URL: "smtp://localhost:2525",
   NEXT_PUBLIC_BASE_URL: "http://localhost:3000",
-  DATABASE_URL: `file:${path.join(tmp, "db.sqlite")}`,
+  DATABASE_URL: "postgres://user:pass@localhost:5432/db",
   CMS_MEDIA_DIR: path.join(tmp, "cms-media"),
   CART_COOKIE_SECRET: "cart-secret",
   NEXT_PUBLIC_DEFAULT_SHOP: "shop",

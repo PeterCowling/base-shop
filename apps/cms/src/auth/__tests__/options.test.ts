@@ -15,7 +15,7 @@ import { logger } from "@acme/shared-utils";
 import { createAuthOptions } from "../options";
 
 type Authorize = (
-  credentials: { email: string; password: string } | null
+  credentials?: { email: string; password: string } | null
 ) => Promise<unknown>;
 
 const getAuthorize = (overrides: Parameters<typeof createAuthOptions>[0]) => {
@@ -28,11 +28,11 @@ beforeEach(() => {
 });
 
 describe("authorize", () => {
-  it("returns null when credentials are falsy", async () => {
+  it("returns null when credentials are undefined", async () => {
     const readRbac = jest.fn();
     const authorize = getAuthorize({ readRbac });
 
-    await expect(authorize(null)).resolves.toBeNull();
+    await expect(authorize(undefined)).resolves.toBeNull();
     expect(readRbac).not.toHaveBeenCalled();
     expect(logger.debug).toHaveBeenCalledWith("[auth] authorize called");
   });

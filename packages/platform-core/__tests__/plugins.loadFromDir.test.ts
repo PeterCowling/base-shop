@@ -42,6 +42,25 @@ describe("loadPluginFromDir and loadPlugins", () => {
     error.mockRestore();
   });
 
+  it("logs error and returns undefined when import fails", async () => {
+    const resolvePluginEntry = jest
+      .fn()
+      .mockResolvedValue({ entryPath: "/plugin/index.js", isModule: false });
+    const importByType = jest
+      .fn()
+      .mockRejectedValue(new Error("boom"));
+    jest.doMock("../src/plugins/resolvers", () => ({ resolvePluginEntry, importByType }));
+    const { logger } = await import("../src/utils");
+    const error = jest.spyOn(logger, "error").mockImplementation(() => {});
+    const { loadPlugin } = await import("../src/plugins");
+    await expect(loadPlugin("/plugin")).resolves.toBeUndefined();
+    expect(error).toHaveBeenCalledWith(
+      "Failed to import plugin entry",
+      expect.objectContaining({ plugin: "/plugin", entry: "/plugin/index.js", err: expect.any(Error) })
+    );
+    error.mockRestore();
+  });
+
   it("returns plugin when module exports default", async () => {
     const resolvePluginEntry = jest
       .fn()
@@ -162,6 +181,21 @@ describe("loadPluginFromDir and loadPlugins", () => {
       expect.objectContaining({ plugin: "invalid" })
     );
     error.mockRestore();
+  });
+
+  it("bubbles up errors thrown during plugin init", async () => {
+    const throwingPlugin = { id: "bad", init: jest.fn().mockRejectedValue(new Error("kaput")) } as any;
+    const resolvePluginEnvironment = jest
+      .fn()
+      .mockResolvedValue({ searchDirs: [], pluginDirs: ["/bad"] });
+    jest.doMock("../src/plugins/env", () => ({ resolvePluginEnvironment }));
+    const resolvePluginEntry = jest
+      .fn()
+      .mockResolvedValue({ entryPath: "/bad/index.js", isModule: false });
+    const importByType = jest.fn().mockResolvedValue({ default: throwingPlugin });
+    jest.doMock("../src/plugins/resolvers", () => ({ resolvePluginEntry, importByType }));
+    const { initPlugins } = await import("../src/plugins");
+    await expect(initPlugins()).rejects.toThrow("kaput");
   });
 });
 

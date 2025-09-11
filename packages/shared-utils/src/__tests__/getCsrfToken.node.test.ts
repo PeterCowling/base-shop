@@ -27,6 +27,31 @@ describe('getCsrfToken on server', () => {
     expect(getCsrfToken(req)).toBe('cookie-token');
   });
 
+  it('returns undefined when csrf_token cookie is empty or whitespace', () => {
+    const emptyCookieReq = new Request('https://example.com', {
+      headers: { cookie: 'csrf_token=' },
+    });
+    const whitespaceCookieReq = new Request('https://example.com', {
+      headers: { cookie: 'csrf_token=   ' },
+    });
+    expect(getCsrfToken(emptyCookieReq)).toBeUndefined();
+    expect(getCsrfToken(whitespaceCookieReq)).toBeUndefined();
+  });
+
+  it('query token overrides cookie token', () => {
+    const req = new Request('https://example.com?csrf_token=query-token', {
+      headers: { cookie: 'csrf_token=cookie-token' },
+    });
+    expect(getCsrfToken(req)).toBe('query-token');
+  });
+
+  it('ignores path-scoped csrf_token cookies', () => {
+    const req = new Request('https://example.com', {
+      headers: { cookie: 'csrf_token=/foo; csrf_token=cookie-token' },
+    });
+    expect(getCsrfToken(req)).toBe('cookie-token');
+  });
+
   it('returns undefined when token is missing from Request', () => {
     const req = new Request('https://example.com');
     expect(getCsrfToken(req)).toBeUndefined();

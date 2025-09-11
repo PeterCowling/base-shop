@@ -35,8 +35,9 @@ export function getProductById(
     // Legacy sync path: look up in local PRODUCTS
     return base.getProductById(a) ?? null;
   }
-  // Async server path is not implemented; fall back to local lookup
-  return Promise.resolve(base.getProductById(b) ?? null);
+  return import("./repositories/products.server")
+    .then((m) => m.getProductById<SKU>(a, b))
+    .catch(() => base.getProductById(b) ?? null);
 }
 
 // Non-conflicting re-exports are safe:
@@ -44,9 +45,36 @@ export function getProductById(
 
 export { assertLocale } from "./products/index";
 
-export async function getProducts(..._args: unknown[]): Promise<SKU[]> {
+export async function getProducts(a?: unknown): Promise<SKU[]> {
+  if (typeof a === "string") {
+    try {
+      const { readRepo } = await import("./repositories/products.server");
+      return await readRepo<SKU>(a);
+    } catch {
+      return [...base.PRODUCTS];
+    }
+  }
   return [...base.PRODUCTS];
 }
-export async function searchProducts(..._args: unknown[]): Promise<SKU[]> {
-  return [];
+
+export async function searchProducts(
+  a: string,
+  b?: string,
+): Promise<SKU[]> {
+  if (typeof b === "undefined") {
+    const q = a.toLowerCase();
+    return base.PRODUCTS.filter((p) =>
+      (p.title ?? "").toLowerCase().includes(q),
+    );
+  }
+  try {
+    const { readRepo } = await import("./repositories/products.server");
+    const products = await readRepo<SKU>(a);
+    const q = b.toLowerCase();
+    return products.filter((p) =>
+      (p.title ?? "").toLowerCase().includes(q),
+    );
+  } catch {
+    return [];
+  }
 }

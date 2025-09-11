@@ -11,5 +11,6 @@ export declare function getProductBySlug(slug: string): SKU | null;
  */
 export declare function getProductById(id: string): SKU | null;
 export declare function getProductById(shop: string, id: string): Promise<SKU | null>;
-export declare function getProducts(...args: any[]): Promise<SKU[]>;
-export declare function searchProducts(...args: any[]): Promise<SKU[]>;
+export declare function getProducts(shop?: string): Promise<SKU[]>;
+export declare function searchProducts(query: string): Promise<SKU[]>;
+export declare function searchProducts(shop: string, query: string): Promise<SKU[]>;

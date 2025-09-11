@@ -54,6 +54,20 @@ export const PRODUCTS: readonly SKU[] = [
   },
 ];
 
+const SKU_DEFAULTS: SKU = {
+  id: "",
+  slug: "",
+  title: "",
+  price: 0,
+  deposit: 0,
+  stock: 0,
+  forSale: false,
+  forRental: false,
+  media: [],
+  sizes: [],
+  description: "",
+};
+
 /**
  * Runtime validator for {@link SKU} objects.
  * Ensures required fields are present with correct types.
@@ -72,13 +86,13 @@ export function isSKU(data: unknown): data is SKU {
 /** Helper to fetch one product (could be remote PIM later) */
 export function getProductBySlug(slug: string): SKU | undefined {
   const sku = PRODUCTS.find((p) => p.slug === slug);
-  return isSKU(sku) ? sku : undefined;
+  return isSKU(sku) ? { ...SKU_DEFAULTS, ...sku } : undefined;
 }
 
 /** Lookup a product by SKU id */
 export function getProductById(id: string): SKU | undefined {
   const sku = PRODUCTS.find((p) => p.id === id);
-  return isSKU(sku) && sku.stock > 0 ? sku : undefined;
+  return isSKU(sku) && sku.stock > 0 ? { ...SKU_DEFAULTS, ...sku } : undefined;
 }
 
 /* -------------------------------------------------------------------------- */

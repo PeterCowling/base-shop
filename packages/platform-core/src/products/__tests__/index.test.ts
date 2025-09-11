@@ -15,6 +15,26 @@ describe("getProductBySlug", () => {
   it("returns undefined for an unknown slug", () => {
     expect(getProductBySlug("unknown-slug")).toBeUndefined();
   });
+
+  it("fills missing optional fields with defaults", () => {
+    const partialSku: any = {
+      id: "partial-sku",
+      slug: "partial-sku",
+      price: 50,
+      stock: 1,
+    };
+    (PRODUCTS as unknown as any[]).push(partialSku);
+    const product = getProductBySlug("partial-sku");
+    expect(product).toBeDefined();
+    expect(product?.title).toBe("");
+    expect(product?.description).toBe("");
+    expect(product?.media).toEqual([]);
+    expect(product?.sizes).toEqual([]);
+    expect(product?.deposit).toBe(0);
+    expect(product?.forSale).toBe(false);
+    expect(product?.forRental).toBe(false);
+    (PRODUCTS as unknown as any[]).pop();
+  });
 });
 
 describe("getProductById", () => {
@@ -37,6 +57,26 @@ describe("getProductById", () => {
     (PRODUCTS as unknown as any[]).push(invalidSku);
     expect(getProductBySlug("broken-sku")).toBeUndefined();
     expect(getProductById("broken-sku")).toBeUndefined();
+    (PRODUCTS as unknown as any[]).pop();
+  });
+
+  it("fills missing optional fields with defaults", () => {
+    const partialSku: any = {
+      id: "partial-id",
+      slug: "partial-id",
+      price: 50,
+      stock: 1,
+    };
+    (PRODUCTS as unknown as any[]).push(partialSku);
+    const product = getProductById("partial-id");
+    expect(product).toBeDefined();
+    expect(product?.title).toBe("");
+    expect(product?.description).toBe("");
+    expect(product?.media).toEqual([]);
+    expect(product?.sizes).toEqual([]);
+    expect(product?.deposit).toBe(0);
+    expect(product?.forSale).toBe(false);
+    expect(product?.forRental).toBe(false);
     (PRODUCTS as unknown as any[]).pop();
   });
 });

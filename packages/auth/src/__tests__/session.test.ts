@@ -326,6 +326,40 @@ it("getCustomerSession rotates session id, updates store, and creates csrf when 
   expect(mockSessionStore.delete).toHaveBeenCalledWith("old");
 });
 
+it("getCustomerSession rejects when session store update fails", async () => {
+  const {
+    getCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+    CSRF_TOKEN_COOKIE,
+  } = await import("../session");
+
+  mockCookies.get.mockImplementation((name: string) =>
+    name === CUSTOMER_SESSION_COOKIE ? { value: "token" } : undefined,
+  );
+  unsealData.mockResolvedValue({
+    sessionId: "old",
+    customerId: "cust",
+    role: "customer",
+  });
+  mockSessionStore.get.mockResolvedValue({ sessionId: "old" });
+  mockSessionStore.set.mockRejectedValue(new Error("fail"));
+  randomUUID.mockReturnValueOnce("new-id").mockReturnValueOnce("new-csrf");
+  sealData.mockResolvedValue("new-token");
+
+  await expect(getCustomerSession()).rejects.toThrow("fail");
+
+  expect(mockCookies.set).not.toHaveBeenCalledWith(
+    CUSTOMER_SESSION_COOKIE,
+    expect.anything(),
+    expect.anything(),
+  );
+  expect(mockCookies.set).not.toHaveBeenCalledWith(
+    CSRF_TOKEN_COOKIE,
+    expect.anything(),
+    expect.anything(),
+  );
+});
+
 it("getCustomerSession stores 'unknown' userAgent when header missing", async () => {
   const { getCustomerSession, CUSTOMER_SESSION_COOKIE } = await import("../session");
 

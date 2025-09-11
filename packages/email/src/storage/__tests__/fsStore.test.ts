@@ -19,6 +19,12 @@ describe("fsCampaignStore error handling", () => {
       .resolves.toEqual([]);
   });
 
+  it("returns [] when campaigns file missing", async () => {
+    const shop = "missing-file";
+    await fs.rm(path.join(DATA_ROOT, shop), { recursive: true, force: true });
+    await expect(fsCampaignStore.readCampaigns(shop)).resolves.toEqual([]);
+  });
+
   it("returns [] when readdir throws", async () => {
     jest.spyOn(fs, "readdir").mockRejectedValue(new Error("fail"));
     await expect(fsCampaignStore.listShops())
@@ -47,6 +53,14 @@ describe("fsCampaignStore error handling", () => {
     await expect(
       fsCampaignStore.writeCampaigns("shop", []),
     ).rejects.toThrow("fail");
+  });
+
+  it("writes campaigns when directory exists", async () => {
+    const shop = "existing-dir";
+    const dir = path.join(DATA_ROOT, shop);
+    await fs.mkdir(dir, { recursive: true });
+    await expect(fsCampaignStore.writeCampaigns(shop, [])).resolves.toBeUndefined();
+    await fs.rm(dir, { recursive: true, force: true });
   });
 
   it("returns [] when campaigns.json has invalid JSON", async () => {

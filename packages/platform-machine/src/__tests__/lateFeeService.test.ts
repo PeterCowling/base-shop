@@ -385,6 +385,29 @@ describe("startLateFeeService", () => {
     expect(global.setInterval as jest.Mock).not.toHaveBeenCalled();
   });
 
+  it("skips shops when policy fails to load", async () => {
+    readdirMock.mockResolvedValue(["s1"]);
+    readFileMock.mockImplementation((p: string) => {
+      if (p.endsWith("settings.json"))
+        return Promise.resolve(
+          JSON.stringify({
+            lateFeeService: { enabled: true, intervalMinutes: 1 },
+          })
+        );
+      if (p.endsWith("shop.json")) return Promise.reject(new Error("boom"));
+      return Promise.resolve("{}");
+    });
+    const chargeSpy = jest
+      .spyOn(service, "chargeLateFeesOnce")
+      .mockResolvedValue(undefined);
+
+    await service.startLateFeeService({}, "/data");
+
+    expect(chargeSpy).not.toHaveBeenCalled();
+    expect(global.setInterval as jest.Mock).not.toHaveBeenCalled();
+    chargeSpy.mockRestore();
+  });
+
   it("schedules runs and allows cleanup", async () => {
     readdirMock.mockResolvedValue(["s1"]);
     readFileMock.mockImplementation((p: string) => {

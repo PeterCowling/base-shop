@@ -46,6 +46,7 @@ mutableEnv.CMS_SPACE_URL ||= "https://cms.example.com";
 mutableEnv.CMS_ACCESS_TOKEN ||= "cms-access-token";
 mutableEnv.SANITY_API_VERSION ||= "2023-01-01";
 mutableEnv.AUTH_TOKEN_TTL ||= "15m";
+mutableEnv.EMAIL_FROM ||= "no-reply@example.com";
 
 /* -------------------------------------------------------------------------- */
 /* 2.  Polyfills missing from the JSDOM / Node test runtime                    */

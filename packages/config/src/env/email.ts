@@ -5,11 +5,20 @@ const isProd = process.env.NODE_ENV === "production";
 
 export const emailEnvSchema = z
   .object({
-    EMAIL_FROM: z
-      .string()
-      .trim()
-      .email()
-      .transform((v) => v.toLowerCase()),
+    EMAIL_FROM: (
+      isProd
+        ? z
+            .string()
+            .trim()
+            .email()
+            .transform((v) => v.toLowerCase())
+        : z
+            .string()
+            .trim()
+            .email()
+            .transform((v) => v.toLowerCase())
+            .default("no-reply@example.com")
+    ),
     EMAIL_SENDER_NAME: z.string().optional(),
     GMAIL_USER: z.string().optional(),
     GMAIL_PASS: z.string().optional(),

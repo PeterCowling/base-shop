@@ -4,6 +4,11 @@ import fetch, { Headers, Request, Response } from "cross-fetch";
 import { webcrypto } from "node:crypto";
 import React from "react";
 
+// Provide defaults for environment variables required during module import.
+// Tests load this file before app code, ensuring required env values exist.
+const env = process.env as Record<string, string>;
+env.EMAIL_FROM ||= "no-reply@example.com";
+
 if (!globalThis.fetch) {
   Object.assign(globalThis, { fetch, Headers, Request, Response });
 }

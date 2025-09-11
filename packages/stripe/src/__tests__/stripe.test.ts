@@ -217,6 +217,25 @@ describe("stripe client", () => {
     ).rejects.toMatchObject({ message: "Bad request", statusCode: 400 });
   });
 
+  it("surfaces API errors when updating payment intent", async () => {
+    const { stripe } = await import("../index.ts");
+    const stripeInternal = stripe as StripeInternal;
+
+    server.use(
+      rest.post(
+        "https://api.stripe.com/v1/payment_intents/:id",
+        (_req, res, ctx) =>
+          res(ctx.status(400), ctx.json({ error: { message: "Bad request" } }))
+      )
+    );
+
+    await expect(
+      stripeInternal.paymentIntents.update("pi_test", {
+        metadata: { foo: "bar" },
+      })
+    ).rejects.toMatchObject({ message: "Bad request", statusCode: 400 });
+  });
+
   it("constructs webhook events using Stripe helpers", async () => {
     const { stripe } = await import("../index.ts");
     const payload = JSON.stringify({

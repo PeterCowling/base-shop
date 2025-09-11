@@ -1,6 +1,10 @@
 import { type Locale, type SKU } from "@acme/types";
 /** Mock catalogue (3 items) */
 export declare const PRODUCTS: readonly SKU[];
+/**
+ * Runtime validator for {@link SKU} objects.
+ */
+export declare function isSKU(data: unknown): data is SKU;
 /** Helper to fetch one product (could be remote PIM later) */
 export declare function getProductBySlug(slug: string): SKU | undefined;
 /** Lookup a product by SKU id */

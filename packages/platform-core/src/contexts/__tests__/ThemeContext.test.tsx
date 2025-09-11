@@ -161,6 +161,52 @@ describe("ThemeContext", () => {
     expect(setItem).toHaveBeenCalledWith("theme", "dark");
   });
 
+  it("ignores storage events for other keys", () => {
+    Object.defineProperty(window, "localStorage", {
+      configurable: true,
+      value: { getItem: () => "base", setItem: jest.fn() },
+    });
+
+    const { getByTestId } = render(
+      <ThemeProvider>
+        <ThemeDisplay />
+      </ThemeProvider>
+    );
+
+    expect(getByTestId("theme").textContent).toBe("base");
+
+    act(() => {
+      window.dispatchEvent(
+        new StorageEvent("storage", { key: "other", newValue: "dark" })
+      );
+    });
+
+    expect(getByTestId("theme").textContent).toBe("base");
+  });
+
+  it("ignores storage events with null newValue", () => {
+    Object.defineProperty(window, "localStorage", {
+      configurable: true,
+      value: { getItem: () => "base", setItem: jest.fn() },
+    });
+
+    const { getByTestId } = render(
+      <ThemeProvider>
+        <ThemeDisplay />
+      </ThemeProvider>
+    );
+
+    expect(getByTestId("theme").textContent).toBe("base");
+
+    act(() => {
+      window.dispatchEvent(
+        new StorageEvent("storage", { key: "theme", newValue: null })
+      );
+    });
+
+    expect(getByTestId("theme").textContent).toBe("base");
+  });
+
   it("updates DOM when theme changes", () => {
     const setItem = jest.fn();
     Object.defineProperty(window, "localStorage", {

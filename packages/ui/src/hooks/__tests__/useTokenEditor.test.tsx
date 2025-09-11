@@ -131,6 +131,31 @@ describe("useTokenEditor", () => {
     expect(latest).toEqual({ "--font-sans": "system-ui" });
   });
 
+  it("loads existing font tokens on mount", async () => {
+    let getSans!: () => string[]; // !
+    let getMono!: () => string[]; // !
+
+    function Wrapper() {
+      const hook = useTokenEditor(
+        { "--font-src-Test": "data:font/mock" },
+        {},
+        () => {}
+      );
+      getSans = () => hook.sansFonts;
+      getMono = () => hook.monoFonts;
+      return null;
+    }
+
+    render(<Wrapper />);
+
+    await waitFor(() =>
+      expect(document.getElementById("font-Test")).not.toBeNull()
+    );
+
+    expect(getSans()).toContain('"Test"');
+    expect(getMono()).toContain('"Test"');
+  });
+
   it("setGoogleFont inserts link once and updates tokens", () => {
     let setGF!: ReturnType<typeof useTokenEditor>["setGoogleFont"]; // !
     let latest: TokenMap = {};
@@ -187,6 +212,8 @@ describe("useTokenEditor", () => {
 
     expect(getSans()).toEqual(initialSans);
     expect(getMono()).toEqual(initialMono);
+    expect(getSans().filter((f) => f === "")).toHaveLength(0);
+    expect(getMono().filter((f) => f === "")).toHaveLength(0);
   });
 
   it("addCustomFont appends unique entries", () => {

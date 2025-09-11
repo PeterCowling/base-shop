@@ -40,11 +40,33 @@ describe("rbacStore", () => {
     });
   });
 
-  it("merges extra permissions with defaults", async () => {
+  it.each(["roles", "permissions"]) (
+    "returns defaults when JSON omits %s",
+    async (missing) => {
+      await withTempDir(async (dir) => {
+        const { readRbac } = await import("../rbacStore");
+        const defaultDb = await readRbac();
+        const file = path.join(dir, "data", "cms", "users.json");
+        await fs.mkdir(path.dirname(file), { recursive: true });
+        const data: any = { users: defaultDb.users };
+        if (missing === "roles") {
+          data.permissions = defaultDb.permissions;
+        } else {
+          data.roles = defaultDb.roles;
+        }
+        await fs.writeFile(file, JSON.stringify(data), "utf8");
+        const db = await readRbac();
+        expect(db).toEqual(defaultDb);
+      });
+    }
+  );
+
+  it("merges permission arrays uniquely with defaults", async () => {
     await withTempDir(async (dir) => {
       const { readRbac } = await import("../rbacStore");
       const defaultDb = await readRbac();
       const extraPerm = "extra_perm" as unknown as Permission;
+      const duplicate = defaultDb.permissions.admin[0];
       const file = path.join(dir, "data", "cms", "users.json");
       await fs.mkdir(path.dirname(file), { recursive: true });
       await fs.writeFile(
@@ -52,7 +74,7 @@ describe("rbacStore", () => {
         JSON.stringify({
           users: {},
           roles: {},
-          permissions: { admin: [extraPerm] },
+          permissions: { admin: [duplicate, duplicate, extraPerm, extraPerm] },
         }),
         "utf8"
       );
@@ -61,6 +83,9 @@ describe("rbacStore", () => {
         ...defaultDb.permissions.admin,
         extraPerm,
       ]);
+      expect(new Set(db.permissions.admin).size).toBe(
+        db.permissions.admin.length
+      );
     });
   });
 

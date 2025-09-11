@@ -67,6 +67,14 @@ describe("ThemeContext", () => {
     expect(getSavedTheme()).toBeNull();
   });
 
+  it("returns null when localStorage.getItem throws", () => {
+    Object.defineProperty(window, "localStorage", {
+      configurable: true,
+      value: { getItem: jest.fn(() => { throw new Error("fail"); }) },
+    });
+    expect(getSavedTheme()).toBeNull();
+  });
+
   it("getSystemTheme returns dark when media matches", () => {
     Object.defineProperty(window, "matchMedia", {
       configurable: true,
@@ -250,6 +258,43 @@ describe("ThemeContext", () => {
     );
     expect(document.documentElement.style.colorScheme).toBe("dark");
     expect(setItem).toHaveBeenLastCalledWith("theme", "dark");
+  });
+
+  it("removes theme class and uses light scheme when switching to base", () => {
+    const setItem = jest.fn((_, value) => {
+      if (value === "base") {
+        throw new Error("fail");
+      }
+    });
+    Object.defineProperty(window, "localStorage", {
+      configurable: true,
+      value: { getItem: () => "dark", setItem },
+    });
+
+    let changeTheme: (t: any) => void = () => {};
+    function CaptureSetter() {
+      const { setTheme } = useTheme();
+      changeTheme = setTheme;
+      return null;
+    }
+
+    const { getByTestId } = render(
+      <ThemeProvider>
+        <ThemeDisplay />
+        <CaptureSetter />
+      </ThemeProvider>
+    );
+
+    expect(getByTestId("theme").textContent).toBe("dark");
+    expect(document.documentElement.classList.contains("theme-dark")).toBe(true);
+    expect(document.documentElement.style.colorScheme).toBe("dark");
+
+    expect(() => act(() => changeTheme("base"))).not.toThrow();
+
+    expect(getByTestId("theme").textContent).toBe("base");
+    expect(document.documentElement.className).toBe("");
+    expect(document.documentElement.style.colorScheme).toBe("light");
+    expect(setItem).toHaveBeenLastCalledWith("theme", "base");
   });
 
   it("still renders when localStorage.setItem throws", () => {

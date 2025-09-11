@@ -43,6 +43,7 @@ const stripeRefundMock = stripe.refunds.create as unknown as jest.Mock;
 const readOrdersMock = readOrders as jest.Mock;
 const markRefundedMock = markRefunded as jest.Mock;
 const loggerErrorMock = logger.error as jest.Mock;
+const loggerInfoMock = logger.info as jest.Mock;
 
 describe("releaseDepositsOnce", () => {
   beforeEach(() => {
@@ -114,6 +115,84 @@ describe("releaseDepositsOnce", () => {
     expect(markRefundedMock).not.toHaveBeenCalled();
 
     consoleSpy.mockRestore();
+  });
+
+  it("logs session retrieval failures and leaves order unrefunded", async () => {
+    readdirMock.mockResolvedValue(["shop"]);
+    readOrdersMock.mockResolvedValue([
+      { sessionId: "s1", returnedAt: "now", deposit: 10 },
+    ]);
+    const err = new Error("boom");
+    stripeRetrieveMock.mockRejectedValueOnce(err);
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+
+    await service.releaseDepositsOnce(undefined, "/data");
+
+    expect(loggerErrorMock).toHaveBeenCalledWith(
+      "failed to release deposit for shop s1",
+      { err }
+    );
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "failed to release deposit for shop s1",
+      err
+    );
+    expect(stripeRefundMock).not.toHaveBeenCalled();
+    expect(markRefundedMock).not.toHaveBeenCalled();
+
+    consoleSpy.mockRestore();
+  });
+
+  it("logs markRefunded failures and stops further processing", async () => {
+    readdirMock.mockResolvedValue(["shop"]);
+    readOrdersMock.mockResolvedValue([
+      { sessionId: "s1", returnedAt: "now", deposit: 10 },
+    ]);
+    stripeRetrieveMock.mockResolvedValue({ payment_intent: "pi" });
+    const err = new Error("boom");
+    markRefundedMock.mockRejectedValueOnce(err);
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => undefined);
+
+    await service.releaseDepositsOnce(undefined, "/data");
+
+    expect(stripeRefundMock).toHaveBeenCalledTimes(1);
+    expect(loggerErrorMock).toHaveBeenCalledWith(
+      "failed to release deposit for shop s1",
+      { err }
+    );
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "failed to release deposit for shop s1",
+      err
+    );
+    expect(loggerInfoMock).not.toHaveBeenCalled();
+
+    consoleSpy.mockRestore();
+  });
+
+  it("skips orders without return or already refunded", async () => {
+    readdirMock.mockResolvedValue(["shop"]);
+    readOrdersMock.mockResolvedValue([
+      { sessionId: "s1", deposit: 10 },
+      { sessionId: "s2", returnedAt: "now", deposit: 10, refundedAt: "y" },
+    ]);
+
+    await service.releaseDepositsOnce(undefined, "/data");
+
+    expect(stripeRetrieveMock).not.toHaveBeenCalled();
+    expect(stripeRefundMock).not.toHaveBeenCalled();
+    expect(markRefundedMock).not.toHaveBeenCalled();
+  });
+
+  it("processes only specified shop without reading directory", async () => {
+    readOrdersMock.mockResolvedValue([]);
+
+    await service.releaseDepositsOnce("shopA", "/data");
+
+    expect(readdirMock).not.toHaveBeenCalled();
+    expect(readOrdersMock).toHaveBeenCalledWith("shopA");
   });
 });
 

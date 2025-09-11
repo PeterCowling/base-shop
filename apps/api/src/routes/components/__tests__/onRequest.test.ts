@@ -95,25 +95,27 @@ describe('onRequest route', () => {
   });
 
   it('returns 403 when preview token secret missing', async () => {
-    verify.mockImplementation(() => {
-      throw new Error('bad');
-    });
     const res = await onRequest({
       params: { shopId: 'abc' },
       request: new Request('http://localhost', {
         headers: { authorization: 'Bearer token' },
       }),
     });
-    expect(verify).toHaveBeenCalledWith(
-      'token',
-      '',
-      expect.objectContaining({
-        algorithms: ['HS256'],
-        audience: 'upgrade-preview',
-        issuer: 'acme',
-        subject: 'shop:abc:upgrade-preview',
+    expect(verify).not.toHaveBeenCalled();
+    expect(res.status).toBe(403);
+    await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+  });
+
+  it('returns 403 when preview token secret is empty string', async () => {
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = '';
+    const res = await onRequest({
+      params: { shopId: 'abc' },
+      request: new Request('http://localhost', {
+        headers: { authorization: 'Bearer token' },
       }),
-    );
+    });
+    expect(verify).not.toHaveBeenCalled();
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
     expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });

@@ -92,6 +92,26 @@ describe("onRequestPost", () => {
     warn.mockRestore();
   });
 
+  it("returns 403 when secret is empty string", async () => {
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "";
+    const warn = jest.spyOn(console, "warn").mockImplementation();
+    const verify = jest.spyOn(jwt, "verify");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: "Bearer token" },
+      }),
+    });
+    const body = await res.json();
+    expect(res.status).toBe(403);
+    expect(body).toEqual({ error: "Forbidden" });
+    expect(warn).toHaveBeenCalledWith("invalid token", { id });
+    expect(verify).not.toHaveBeenCalled();
+    warn.mockRestore();
+    verify.mockRestore();
+  });
+
   it("returns 403 when jwt.verify throws", async () => {
     const warn = jest.spyOn(console, "warn").mockImplementation();
     const verify = jest.spyOn(jwt, "verify").mockImplementation(() => {

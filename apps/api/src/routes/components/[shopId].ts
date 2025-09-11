@@ -128,10 +128,18 @@ export const onRequest = async ({
   }
 
   const token = authHeader.slice("Bearer ".length);
+  const secret = process.env.UPGRADE_PREVIEW_TOKEN_SECRET;
+  if (!secret) {
+    console.warn("invalid token", { shopId });
+    return new Response(JSON.stringify({ error: "Forbidden" }), {
+      status: 403,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
   try {
     const payload = jwt.verify(
       token,
-      process.env.UPGRADE_PREVIEW_TOKEN_SECRET ?? "",
+      secret,
       {
         algorithms: ["HS256"],
         audience: "upgrade-preview",

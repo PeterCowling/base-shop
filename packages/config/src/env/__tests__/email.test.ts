@@ -78,6 +78,20 @@ describe("email env module", () => {
       );
     });
 
+    it("leaves SMTP_PORT undefined when omitted", async () => {
+      await withEnv(
+        {
+          EMAIL_PROVIDER: "smtp",
+          SMTP_URL: "smtp://smtp.example.com",
+          CAMPAIGN_FROM: "from@example.com",
+        } as NodeJS.ProcessEnv,
+        async () => {
+          const { emailEnv } = await import("../email.ts");
+          expect(emailEnv.SMTP_PORT).toBeUndefined();
+        },
+      );
+    });
+
     it.each([
       ["true", true],
       ["false", false],
@@ -140,44 +154,63 @@ describe("email env module", () => {
       errorSpy.mockRestore();
     });
 
-    it.each([
-      {
-        provider: "sendgrid",
-        env: { EMAIL_PROVIDER: "sendgrid" },
-        missing: "SENDGRID_API_KEY",
-      },
-      {
-        provider: "resend",
-        env: { EMAIL_PROVIDER: "resend" },
-        missing: "RESEND_API_KEY",
-      },
-    ])("errors when %s key missing", async ({ env, missing }) => {
-      const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-      await expect(
-        withEnv(env as NodeJS.ProcessEnv, async () => import("../email.ts")),
-      ).rejects.toThrow("Invalid email environment variables");
-      expect(errorSpy).toHaveBeenCalledWith(
-        "❌ Invalid email environment variables:",
-        expect.objectContaining({
-          [missing]: { _errors: [expect.stringContaining("Required")] },
-        }),
-      );
-      errorSpy.mockRestore();
-    });
+    describe("provider API key validation", () => {
+      const cases = [
+        { provider: "smtp", env: { EMAIL_PROVIDER: "smtp" }, missing: undefined },
+        {
+          provider: "sendgrid",
+          env: { EMAIL_PROVIDER: "sendgrid" },
+          missing: "SENDGRID_API_KEY" as const,
+        },
+        {
+          provider: "resend",
+          env: { EMAIL_PROVIDER: "resend" },
+          missing: "RESEND_API_KEY" as const,
+        },
+        { provider: "noop", env: { EMAIL_PROVIDER: "noop" }, missing: undefined },
+      ];
 
-    it.each([
-      {
-        provider: "sendgrid",
-        env: { EMAIL_PROVIDER: "sendgrid", SENDGRID_API_KEY: "sg" },
-      },
-      {
-        provider: "resend",
-        env: { EMAIL_PROVIDER: "resend", RESEND_API_KEY: "re" },
-      },
-    ])("passes when %s key present", async ({ env }) => {
-      await withEnv(env as NodeJS.ProcessEnv, async () => {
-        const { emailEnv } = await import("../email.ts");
-        expect(emailEnv.EMAIL_PROVIDER).toBe(env.EMAIL_PROVIDER);
+      it.each(cases)("handles %s provider without key", async ({ env, missing }) => {
+        const errorSpy = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
+        const action = withEnv(
+          env as NodeJS.ProcessEnv,
+          async () => import("../email.ts"),
+        );
+        if (missing) {
+          await expect(action).rejects.toThrow(
+            "Invalid email environment variables",
+          );
+          expect(errorSpy).toHaveBeenCalledWith(
+            "❌ Invalid email environment variables:",
+            expect.objectContaining({
+              [missing]: { _errors: [expect.stringContaining("Required")] },
+            }),
+          );
+        } else {
+          await expect(action).resolves.toBeDefined();
+          expect(errorSpy).not.toHaveBeenCalled();
+        }
+        errorSpy.mockRestore();
+      });
+
+      it.each([
+        { provider: "smtp", env: { EMAIL_PROVIDER: "smtp" } },
+        {
+          provider: "sendgrid",
+          env: { EMAIL_PROVIDER: "sendgrid", SENDGRID_API_KEY: "sg" },
+        },
+        {
+          provider: "resend",
+          env: { EMAIL_PROVIDER: "resend", RESEND_API_KEY: "re" },
+        },
+        { provider: "noop", env: { EMAIL_PROVIDER: "noop" } },
+      ])("passes when %s key provided", async ({ env }) => {
+        await withEnv(env as NodeJS.ProcessEnv, async () => {
+          const { emailEnv } = await import("../email.ts");
+          expect(emailEnv.EMAIL_PROVIDER).toBe(env.EMAIL_PROVIDER);
+        });
       });
     });
 

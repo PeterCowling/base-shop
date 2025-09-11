@@ -19,11 +19,19 @@ describe("emailEnvSchema.safeParse", () => {
     );
   });
 
+  it("omits SMTP_PORT when not provided", () => {
+    const result = parse({});
+    expect(result.success).toBe(true);
+    expect(result.data?.SMTP_PORT).toBeUndefined();
+  });
+
   it.each([
     ["true", true],
-    ["YES", true],
-    ["no", false],
+    ["false", false],
+    ["1", true],
     ["0", false],
+    ["yes", true],
+    ["no", false],
   ])("coerces SMTP_SECURE=%s", (value, expected) => {
     const result = parse({ SMTP_SECURE: value });
     expect(result.success).toBe(true);
@@ -52,20 +60,49 @@ describe("emailEnvSchema.safeParse", () => {
     );
   });
 
-  it("requires SENDGRID_API_KEY for sendgrid provider", () => {
-    const result = parse({ EMAIL_PROVIDER: "sendgrid" });
-    expect(result.success).toBe(false);
-    expect(result.error.format().SENDGRID_API_KEY?._errors).toContain(
-      "Required",
-    );
-  });
+  describe("provider requirements", () => {
+    const cases = [
+      { provider: "smtp", env: { EMAIL_PROVIDER: "smtp" }, missing: undefined },
+      {
+        provider: "sendgrid",
+        env: { EMAIL_PROVIDER: "sendgrid" },
+        missing: "SENDGRID_API_KEY" as const,
+      },
+      {
+        provider: "resend",
+        env: { EMAIL_PROVIDER: "resend" },
+        missing: "RESEND_API_KEY" as const,
+      },
+      { provider: "noop", env: { EMAIL_PROVIDER: "noop" }, missing: undefined },
+    ];
 
-  it("requires RESEND_API_KEY for resend provider", () => {
-    const result = parse({ EMAIL_PROVIDER: "resend" });
-    expect(result.success).toBe(false);
-    expect(result.error.format().RESEND_API_KEY?._errors).toContain(
-      "Required",
-    );
+    it.each(cases)("validates %s provider without keys", ({ env, missing }) => {
+      const result = parse(env);
+      if (missing) {
+        expect(result.success).toBe(false);
+        expect(result.error.format()[missing]?._errors).toContain("Required");
+      } else {
+        expect(result.success).toBe(true);
+        expect(result.data?.EMAIL_PROVIDER).toBe(env.EMAIL_PROVIDER);
+      }
+    });
+
+    it.each([
+      { provider: "smtp", env: { EMAIL_PROVIDER: "smtp" } },
+      {
+        provider: "sendgrid",
+        env: { EMAIL_PROVIDER: "sendgrid", SENDGRID_API_KEY: "sg" },
+      },
+      {
+        provider: "resend",
+        env: { EMAIL_PROVIDER: "resend", RESEND_API_KEY: "re" },
+      },
+      { provider: "noop", env: { EMAIL_PROVIDER: "noop" } },
+    ])("parses %s provider when keys supplied", ({ env }) => {
+      const result = parse(env);
+      expect(result.success).toBe(true);
+      expect(result.data?.EMAIL_PROVIDER).toBe(env.EMAIL_PROVIDER);
+    });
   });
 
   it("defaults EMAIL_PROVIDER to smtp and parses SMTP config", () => {
@@ -87,12 +124,4 @@ describe("emailEnvSchema.safeParse", () => {
     expect(result.error.format().SMTP_URL?._errors).toContain("Invalid url");
   });
 
-  it.each(["smtp", "noop"]) (
-    "allows %s provider without API keys",
-    (provider) => {
-      const result = parse({ EMAIL_PROVIDER: provider });
-      expect(result.success).toBe(true);
-      expect(result.data?.EMAIL_PROVIDER).toBe(provider);
-    },
-  );
 });

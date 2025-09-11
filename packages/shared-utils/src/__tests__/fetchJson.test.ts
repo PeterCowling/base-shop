@@ -24,6 +24,18 @@ describe('fetchJson', () => {
     ).resolves.toEqual(data);
   });
 
+  it('throws ZodError when response body does not match schema', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(JSON.stringify({ message: 123 })),
+    });
+
+    const schema = z.object({ message: z.string() });
+    await expect(
+      fetchJson('https://example.com', undefined, schema),
+    ).rejects.toBeInstanceOf(z.ZodError);
+  });
+
   it('returns undefined for non-JSON responses', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
@@ -37,6 +49,15 @@ describe('fetchJson', () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
       text: jest.fn().mockResolvedValue(''),
+    });
+
+    await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
+  });
+
+  it('returns undefined when response text rejects', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockRejectedValue(new Error('boom')),
     });
 
     await expect(fetchJson('https://example.com')).resolves.toBeUndefined();

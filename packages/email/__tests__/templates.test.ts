@@ -51,6 +51,9 @@ describe("templates registry", () => {
     );
     registerTemplate("greet", "<p>{{name}}</p>");
     expect(renderTemplate("greet", { name: "Alice" })).toBe("<p>Alice</p>");
+    expect(
+      renderTemplate("greet", { name: "<strong>Bob</strong>" })
+    ).toBe("<p>&lt;strong&gt;Bob&lt;/strong&gt;</p>");
     expect(renderTemplate("greet", {})).toBe("<p></p>");
     clearTemplates();
   });

@@ -1,5 +1,6 @@
 jest.mock('fs', () => require('memfs').fs);
 
+import fs from 'fs';
 import path from 'path';
 import { vol } from 'memfs';
 import {
@@ -54,6 +55,24 @@ describe('component helpers', () => {
       expect(gatherChanges('abc', root)).toEqual([]);
     });
 
+    it('returns empty array when reading shop.json fails', () => {
+      const shopPath = path.join(root, 'data', 'shops', 'abc', 'shop.json');
+      vol.fromJSON({
+        [shopPath]: JSON.stringify({
+          componentVersions: { '@acme/foo': '1.0.0' },
+        }),
+      });
+      const realRead = fs.readFileSync;
+      const spy = jest.spyOn(fs, 'readFileSync').mockImplementation((file, ...args) => {
+        if (file === shopPath) {
+          throw new Error('boom');
+        }
+        return realRead.call(fs, file, ...args);
+      });
+      expect(gatherChanges('abc', root)).toEqual([]);
+      spy.mockRestore();
+    });
+
     it('throws error when package.json contains invalid JSON', () => {
       vol.fromJSON({
         [`${root}/data/shops/shop/shop.json`]: JSON.stringify({
@@ -62,6 +81,28 @@ describe('component helpers', () => {
         [`${root}/packages/foo/package.json`]: '{ bad json',
       });
       expect(() => gatherChanges('shop', root)).toThrow(SyntaxError);
+    });
+
+    it('propagates errors when reading package.json fails', () => {
+      const pkgPath = path.join(root, 'packages', 'foo', 'package.json');
+      vol.fromJSON({
+        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+          componentVersions: { '@acme/foo': '1.0.0' },
+        }),
+        [pkgPath]: JSON.stringify({
+          name: '@acme/foo',
+          version: '2.0.0',
+        }),
+      });
+      const realRead = fs.readFileSync;
+      const spy = jest.spyOn(fs, 'readFileSync').mockImplementation((file, ...args) => {
+        if (file === pkgPath) {
+          throw new Error('pkg fail');
+        }
+        return realRead.call(fs, file, ...args);
+      });
+      expect(() => gatherChanges('abc', root)).toThrow('pkg fail');
+      spy.mockRestore();
     });
 
     it('returns empty array when shop.json lacks componentVersions', () => {
@@ -73,6 +114,19 @@ describe('component helpers', () => {
         }),
       });
       expect(() => gatherChanges('abc', root)).not.toThrow();
+      expect(gatherChanges('abc', root)).toEqual([]);
+    });
+
+    it('treats null componentVersions as empty object', () => {
+      vol.fromJSON({
+        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+          componentVersions: null,
+        }),
+        [`${root}/packages/foo/package.json`]: JSON.stringify({
+          name: '@acme/foo',
+          version: '1.0.0',
+        }),
+      });
       expect(gatherChanges('abc', root)).toEqual([]);
     });
 

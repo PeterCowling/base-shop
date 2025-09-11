@@ -149,15 +149,29 @@ it("createCustomerSession uses extended maxAge when remember is true", async () 
   );
 });
 
-it("createCustomerSession propagates store errors without setting cookies", async () => {
-  const { createCustomerSession } = await import("../session");
+it("createCustomerSession propagates store errors after setting cookies", async () => {
+  const { createCustomerSession, CUSTOMER_SESSION_COOKIE, CSRF_TOKEN_COOKIE } =
+    await import("../session");
 
+  randomUUID
+    .mockReturnValueOnce("session-id")
+    .mockReturnValueOnce("csrf-token");
+  sealData.mockResolvedValue("sealed-token");
   mockSessionStore.set.mockRejectedValueOnce(new Error("store fail"));
 
   await expect(
     createCustomerSession({ customerId: "cust", role: "customer" })
   ).rejects.toThrow("store fail");
-  expect(mockCookies.set).not.toHaveBeenCalled();
+  expect(mockCookies.set).toHaveBeenCalledWith(
+    CUSTOMER_SESSION_COOKIE,
+    "sealed-token",
+    expect.any(Object),
+  );
+  expect(mockCookies.set).toHaveBeenCalledWith(
+    CSRF_TOKEN_COOKIE,
+    "csrf-token",
+    expect.any(Object),
+  );
 });
 
 it("createCustomerSession throws when SESSION_SECRET is undefined", async () => {
@@ -324,6 +338,35 @@ it("getCustomerSession rotates session id, updates store, and creates csrf when 
     expect.objectContaining({ sessionId: "new-id", customerId: "cust" })
   );
   expect(mockSessionStore.delete).toHaveBeenCalledWith("old");
+});
+
+it("getCustomerSession propagates delete errors without setting cookies", async () => {
+  const {
+    getCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+  } = await import("../session");
+
+  mockCookies.get.mockImplementation((name: string) =>
+    name === CUSTOMER_SESSION_COOKIE ? { value: "token" } : undefined,
+  );
+  unsealData.mockResolvedValue({
+    sessionId: "old",
+    customerId: "cust",
+    role: "customer",
+  });
+  mockSessionStore.get.mockResolvedValue({ sessionId: "old" });
+  randomUUID.mockReturnValue("new-id");
+  sealData.mockResolvedValue("new-token");
+  const error = new Error("delete fail");
+  mockSessionStore.delete.mockRejectedValueOnce(error);
+
+  await expect(getCustomerSession()).rejects.toThrow(error);
+  expect(mockSessionStore.set).toHaveBeenCalledWith(
+    expect.objectContaining({ sessionId: "new-id", customerId: "cust" }),
+  );
+  expect(mockSessionStore.delete).toHaveBeenCalledWith("old");
+  expect(mockCookies.set).not.toHaveBeenCalled();
+  expect(randomUUID).toHaveBeenCalledTimes(1);
 });
 
 it("getCustomerSession stores 'unknown' userAgent when header missing", async () => {

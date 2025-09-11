@@ -157,6 +157,7 @@ const config = {
     '^\\./env/core\\.js$': ' /packages/config/src/env/core.ts',
     '^\\./payments\\.js$': ' /packages/config/src/env/payments.ts',
     '^\\./shipping\\.js$': ' /packages/config/src/env/shipping.ts',
+    '^\\./cms\.schema\\.js$': ' /packages/config/src/env/cms.schema.ts',
     '^\\./foo\\.js$': ' /packages/config/src/env/foo.impl.ts',
     '^\\./foo\\.impl\\.ts$': ' /packages/config/src/env/foo.impl.ts',
     '^@platform-core$': ' /packages/platform-core/src/index.ts',

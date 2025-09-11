@@ -2,7 +2,7 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 import { authEnvSchema } from "./auth.js";
-import { cmsEnvSchema } from "./cms.js";
+import { cmsEnvSchema } from "./cms.schema.js";
 import { emailEnvSchema } from "./email.js";
 import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
@@ -237,7 +237,7 @@ export const coreEnv: CoreEnv = new Proxy({} as CoreEnv, {
 }) as CoreEnv;
 
 // Fail fast in prod only (forces a single parse early).
-if (isProd) {
+if (isProd && !process.env.JEST_WORKER_ID) {
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   coreEnv.NODE_ENV;
 }

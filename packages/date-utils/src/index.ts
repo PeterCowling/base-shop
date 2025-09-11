@@ -101,11 +101,33 @@ export function parseTargetDate(
     } else {
       const hasTime = targetDate.includes("T");
       const hasZone = /([zZ]|[+-]\d{2}:\d{2})$/.test(targetDate);
-      date = hasTime
-        ? hasZone
+      if (hasTime) {
+        date = hasZone
           ? parseISO(targetDate)
-          : parseISO(`${targetDate}Z`)
-        : parseISO(`${targetDate}T00:00:00Z`);
+          : parseISO(`${targetDate}Z`);
+      } else {
+        const parts = targetDate.split("-").map(Number);
+        if (parts.length !== 3) return null;
+        const [year, month, day] = parts;
+        const tz = process.env.TZ;
+        if (tz) {
+          const zoned = fromZonedTime(`${targetDate}T00:00:00`, tz);
+          if (formatInTimeZone(zoned, tz, "yyyy-MM-dd") !== targetDate) {
+            return null;
+          }
+          date = zoned;
+        } else {
+          const local = new Date(year, month - 1, day);
+          if (
+            local.getFullYear() !== year ||
+            local.getMonth() !== month - 1 ||
+            local.getDate() !== day
+          ) {
+            return null;
+          }
+          date = local;
+        }
+      }
     }
     return Number.isNaN(date.getTime()) ? null : date;
   } catch {

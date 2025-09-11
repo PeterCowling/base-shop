@@ -163,7 +163,7 @@ describe("parseTargetDate", () => {
 
   test("parses date-only and zoned strings", () => {
     expect(parseTargetDate("2025-01-01")?.toISOString()).toBe(
-      "2025-01-01T00:00:00.000Z"
+      "2024-12-31T23:00:00.000Z"
     );
     expect(parseTargetDate("2025-01-01T00:00:00Z")?.toISOString()).toBe(
       "2025-01-01T00:00:00.000Z"

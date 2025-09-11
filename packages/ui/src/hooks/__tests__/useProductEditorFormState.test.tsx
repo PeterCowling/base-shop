@@ -56,27 +56,31 @@ function Wrapper({
   const state = useProductEditorFormState(product, locales, onSave);
 
   return (
-    <form onSubmit={state.handleSubmit}>
-      <input
-        data-cy="title-en"
-        name="title_en"
-        value={state.product.title.en}
-        onChange={state.handleChange}
-      />
-      <input
-        data-cy="price"
-        name="price"
-        value={state.product.price}
-        onChange={state.handleChange}
-      />
-      <input
-        data-cy="variant-size"
-        name="variant_size"
-        value={state.product.variants.size.join(",")}
-        onChange={state.handleChange}
-      />
-      <button type="submit">save</button>
-    </form>
+    <>
+      <form onSubmit={state.handleSubmit}>
+        <input
+          data-cy="title-en"
+          name="title_en"
+          value={state.product.title.en}
+          onChange={state.handleChange}
+        />
+        <input
+          data-cy="price"
+          name="price"
+          value={state.product.price}
+          onChange={state.handleChange}
+        />
+        <input
+          data-cy="variant-size"
+          name="variant_size"
+          value={state.product.variants.size.join(",")}
+          onChange={state.handleChange}
+        />
+        <button type="submit">save</button>
+      </form>
+      <pre data-cy="errors">{JSON.stringify(state.errors)}</pre>
+      <div data-cy="saving">{state.saving ? "true" : "false"}</div>
+    </>
   );
 }
 
@@ -102,9 +106,9 @@ describe("useProductEditorFormState", () => {
       "New"
     );
     expect((screen.getByTestId("price") as HTMLInputElement).value).toBe("200");
-    expect(
-      (screen.getByTestId("variant-size") as HTMLInputElement).value
-    ).toBe("xl");
+    expect((screen.getByTestId("variant-size") as HTMLInputElement).value).toBe(
+      "xl"
+    );
   });
 
   it("handleSubmit calls save callback with generated FormData", async () => {
@@ -142,5 +146,23 @@ describe("useProductEditorFormState", () => {
         ["variant_size", "xl"],
       ])
     );
+  });
+
+  it("updates errors and resets saving when save returns errors", async () => {
+    const onSave = jest
+      .fn<Promise<ProductSaveResult>, [FormData]>()
+      .mockResolvedValue({ errors: { price: ["Required"] } });
+
+    render(<Wrapper onSave={onSave} />);
+
+    fireEvent.click(screen.getByText("save"));
+
+    await waitFor(() =>
+      expect(screen.getByTestId("saving").textContent).toBe("false")
+    );
+
+    expect(
+      JSON.parse(screen.getByTestId("errors").textContent || "{}")
+    ).toEqual({ price: ["Required"] });
   });
 });

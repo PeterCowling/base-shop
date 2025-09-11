@@ -26,6 +26,28 @@ describe("returnLogistics json repository", () => {
     expect(spy).toHaveBeenCalledWith(file, "utf8");
   });
 
+  it("reads and parses return logistics data", async () => {
+    const root = "/tmp/shops";
+    jest.doMock("../src/dataRoot", () => ({ resolveDataRoot: () => root }));
+    const { jsonReturnLogisticsRepository } = await import(
+      "../src/repositories/returnLogistics.json.server"
+    );
+    const file = path.join(root, "..", "return-logistics.json");
+    const data = {
+      labelService: "ups",
+      inStore: true,
+      bagType: "reusable",
+      returnCarrier: ["ups"],
+      homePickupZipCodes: ["12345"],
+      requireTags: true,
+      allowWear: false,
+    } as any;
+    await fs.writeFile(file, JSON.stringify(data), "utf8");
+    await expect(
+      jsonReturnLogisticsRepository.readReturnLogistics()
+    ).resolves.toEqual(data);
+  });
+
   it("writes via a temp file then renames", async () => {
     const root = "/tmp/shops";
     jest.doMock("../src/dataRoot", () => ({ resolveDataRoot: () => root }));

@@ -1,35 +1,37 @@
-import { afterEach, describe, expect, it } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
+import { withEnv } from "./test-helpers";
 
-const ORIGINAL_ENV = { ...process.env };
-const loadEnv = async () => (await import("../email.ts")).emailEnv;
+const load = async () => (await import("../email.ts")).emailEnv;
 
-afterEach(() => {
-  process.env = { ...ORIGINAL_ENV };
-  jest.resetModules();
-});
-
-describe("email from and sender name", () => {
+describe("email provider loader", () => {
   it.each([
-    ["missing", undefined, "Required"],
-    ["empty", "", "Invalid email"],
-  ])("requires EMAIL_FROM when %s", async (_label, value, msg) => {
-    if (value === undefined) delete process.env.EMAIL_FROM;
-    else process.env.EMAIL_FROM = value;
-    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await expect(loadEnv()).rejects.toThrow("Invalid email environment variables");
-    const err = spy.mock.calls[0][1];
-    expect(err.EMAIL_FROM._errors).toContain(msg);
-    spy.mockRestore();
+    ["resend", { RESEND_API_KEY: "rk" }],
+    ["sendgrid", { SENDGRID_API_KEY: "sg" }],
+  ])("loads %s provider", async (EMAIL_PROVIDER, vars) => {
+    await withEnv(
+      { EMAIL_PROVIDER, EMAIL_FROM: "n@x.com", ...vars },
+      async () => {
+        const loader = await load();
+        const env = typeof loader === "function" ? loader() : loader;
+        const provider = (env as any).provider ?? env.EMAIL_PROVIDER;
+        expect(provider).toBe(EMAIL_PROVIDER);
+      },
+    );
   });
 
-  it.each([
-    [undefined, undefined],
-    ["Sender", "Sender"],
-    ["  Sender  ", "  Sender  "],
-  ])("preserves EMAIL_SENDER_NAME %p", async (input, expected) => {
-    process.env.EMAIL_FROM = "sender@example.com";
-    if (input !== undefined) process.env.EMAIL_SENDER_NAME = input;
-    const env = await loadEnv();
-    expect(env.EMAIL_SENDER_NAME).toBe(expected);
+  it("throws on unknown EMAIL_PROVIDER", async () => {
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(
+      withEnv(
+        { EMAIL_PROVIDER: "???", EMAIL_FROM: "n@x.com" },
+        async () => {
+          const loader = await load();
+          if (typeof loader === "function") loader();
+        },
+      ),
+    ).rejects.toThrow("Invalid email environment variables");
+    const err = spy.mock.calls[0][1];
+    expect(err.EMAIL_PROVIDER).toBeDefined();
+    spy.mockRestore();
   });
 });

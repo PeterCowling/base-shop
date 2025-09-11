@@ -40,7 +40,13 @@ describe("replaceShopInPath", () => {
 
   it("handles trailing slashes and multiple consecutive slashes", () => {
     expect(replaceShopInPath("/cms//shop//old///", "new")).toBe(
-      "/cms/shop/new"
+      "/cms/shop/new/"
+    );
+  });
+
+  it("preserves simple trailing slash", () => {
+    expect(replaceShopInPath("/cms/shop/old/", "new")).toBe(
+      "/cms/shop/new/"
     );
   });
 });

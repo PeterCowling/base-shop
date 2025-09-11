@@ -1,14 +1,18 @@
-import { mkdtemp, writeFile } from "node:fs/promises";
-import * as fs from "node:fs/promises";
+import { mkdtemp, writeFile } from "fs/promises";
+import * as fs from "fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { exportsToCandidates, resolvePluginEntry, importByType } from "../resolvers";
 import { logger } from "../../utils";
 
-jest.mock("node:fs/promises", () => ({
-  ...jest.requireActual("node:fs/promises"),
-  readFile: jest.fn(),
-}));
+jest.mock("fs/promises", () => {
+  const actual = jest.requireActual("fs/promises");
+  return {
+    ...actual,
+    readFile: jest.fn(actual.readFile),
+    stat: jest.fn(actual.stat),
+  };
+});
 
 describe("exportsToCandidates", () => {
   const tmp = os.tmpdir();
@@ -80,6 +84,28 @@ describe("resolvePluginEntry", () => {
     expect(result).toEqual({ entryPath: null, isModule: false });
     expect(logSpy).toHaveBeenCalled();
     logSpy.mockRestore();
+    (fs.readFile as jest.Mock).mockImplementation(
+      jest.requireActual("fs/promises").readFile
+    );
+  });
+
+  it("flags isModule when first existing candidate is .mjs", async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-mix-"));
+    await writeFile(
+      path.join(dir, "package.json"),
+      JSON.stringify({ main: "index.js", module: "index.mjs" })
+    );
+    const realStat = jest.requireActual("fs/promises").stat;
+    const statMock = fs.stat as jest.MockedFunction<typeof fs.stat>;
+    statMock.mockImplementation(async (p: string) => {
+      if (p.endsWith("index.mjs") || p.endsWith(path.join("dist", "index.js"))) {
+        return { isFile: () => true } as any;
+      }
+      throw Object.assign(new Error("not found"), { code: "ENOENT" });
+    });
+    const result = await resolvePluginEntry(dir);
+    expect(result).toEqual({ entryPath: path.join(dir, "index.mjs"), isModule: true });
+    statMock.mockImplementation(realStat);
   });
 });
 

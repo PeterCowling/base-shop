@@ -44,6 +44,19 @@ describe("useRemoteImageProbe", () => {
     expect(result.current.valid).toBe(false);
   });
 
+  it("handles non-ok responses", async () => {
+    mockFetch.mockResolvedValueOnce({
+      ok: false,
+      headers: { get: () => "image/png" },
+    } as any);
+    const { result } = renderHook(() => useRemoteImageProbe());
+    await act(async () => {
+      await result.current.probe("http://example.com/a.png");
+    });
+    expect(result.current.error).toBe("not-image");
+    expect(result.current.valid).toBe(false);
+  });
+
   it("resets valid when url is empty", async () => {
     const { result } = renderHook(() => useRemoteImageProbe());
     await act(async () => {

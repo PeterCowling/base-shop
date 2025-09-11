@@ -54,15 +54,31 @@ export const PRODUCTS: readonly SKU[] = [
   },
 ];
 
+/**
+ * Runtime validator for {@link SKU} objects.
+ * Ensures required fields are present with correct types.
+ */
+export function isSKU(data: unknown): data is SKU {
+  if (!data || typeof data !== "object") return false;
+  const sku = data as Record<string, unknown>;
+  return (
+    typeof sku.id === "string" &&
+    typeof sku.slug === "string" &&
+    typeof sku.price === "number" &&
+    typeof sku.stock === "number"
+  );
+}
+
 /** Helper to fetch one product (could be remote PIM later) */
 export function getProductBySlug(slug: string): SKU | undefined {
-  return PRODUCTS.find((p) => p.slug === slug);
+  const sku = PRODUCTS.find((p) => p.slug === slug);
+  return isSKU(sku) ? sku : undefined;
 }
 
 /** Lookup a product by SKU id */
 export function getProductById(id: string): SKU | undefined {
   const sku = PRODUCTS.find((p) => p.id === id);
-  return sku && sku.stock > 0 ? sku : undefined;
+  return isSKU(sku) && sku.stock > 0 ? sku : undefined;
 }
 
 /* -------------------------------------------------------------------------- */

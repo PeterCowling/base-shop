@@ -8,8 +8,8 @@ describe("run", () => {
     (childProcess.spawn as jest.Mock).mockImplementation(
       () =>
         ({
-          on: (_ev, cb) => {
-            cb(1);
+          on: (ev, cb) => {
+            if (ev === "close") cb(1);
             return undefined as any;
           },
         }) as any,

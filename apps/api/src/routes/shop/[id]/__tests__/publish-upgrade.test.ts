@@ -123,7 +123,7 @@ describe("onRequestPost", () => {
       return "";
     });
     spawn.mockImplementation(() => ({
-      on: (_: string, cb: (code: number) => void) => cb(0),
+      on: (event: string, cb: any) => { if (event === "close") cb(0); },
     }));
 
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -170,7 +170,7 @@ describe("onRequestPost", () => {
       return "";
     });
     spawn.mockImplementation(() => ({
-      on: (_: string, cb: (code: number) => void) => cb(0),
+      on: (event: string, cb: any) => { if (event === "close") cb(0); },
     }));
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
     const token = jwt.sign({}, "secret");
@@ -216,7 +216,7 @@ describe("onRequestPost", () => {
       return "";
     });
     spawn.mockImplementation(() => ({
-      on: (_: string, cb: (code: number) => void) => cb(0),
+      on: (event: string, cb: any) => { if (event === "close") cb(0); },
     }));
 
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -264,7 +264,7 @@ describe("onRequestPost", () => {
       return "";
     });
     spawn.mockImplementation(() => ({
-      on: (_: string, cb: (code: number) => void) => cb(0),
+      on: (event: string, cb: any) => { if (event === "close") cb(0); },
     }));
 
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -312,7 +312,7 @@ describe("onRequestPost", () => {
       return "";
     });
     spawn.mockImplementation(() => ({
-      on: (_: string, cb: (code: number) => void) => cb(0),
+      on: (event: string, cb: any) => { if (event === "close") cb(0); },
     }));
 
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -365,7 +365,7 @@ describe("onRequestPost", () => {
         return "";
       });
       spawn.mockImplementation(() => ({
-        on: (_: string, cb: (code: number) => void) => cb(0),
+        on: (event: string, cb: any) => { if (event === "close") cb(0); },
       }));
 
       process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -423,7 +423,7 @@ describe("onRequestPost", () => {
         return "";
       });
       spawn.mockImplementation(() => ({
-        on: (_: string, cb: (code: number) => void) => cb(0),
+        on: (event: string, cb: any) => { if (event === "close") cb(0); },
       }));
 
       process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -475,7 +475,7 @@ describe("onRequestPost", () => {
       return "";
     });
     spawn.mockImplementation(() => ({
-      on: (_: string, cb: (code: number) => void) => cb(0),
+      on: (event: string, cb: any) => { if (event === "close") cb(0); },
     }));
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
 
@@ -524,7 +524,7 @@ describe("onRequestPost", () => {
       return "";
     });
     spawn.mockImplementation(() => ({
-      on: (_: string, cb: (code: number) => void) => cb(0),
+      on: (event: string, cb: any) => { if (event === "close") cb(0); },
     }));
 
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -559,7 +559,7 @@ describe("onRequestPost", () => {
       return "";
     });
     spawn.mockImplementation(() => ({
-      on: (_: string, cb: (code: number) => void) => cb(0),
+      on: (event: string, cb: any) => { if (event === "close") cb(0); },
     }));
 
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -613,7 +613,7 @@ describe("onRequestPost", () => {
       return "";
     });
     spawn.mockImplementation(() => ({
-      on: (_: string, cb: (code: number) => void) => cb(0),
+      on: (event: string, cb: any) => { if (event === "close") cb(0); },
     }));
 
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -669,7 +669,7 @@ describe("onRequestPost", () => {
       return "";
     });
     spawn.mockImplementation(() => ({
-      on: (_: string, cb: (code: number) => void) => cb(0),
+      on: (event: string, cb: any) => { if (event === "close") cb(0); },
     }));
 
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -711,7 +711,7 @@ describe("onRequestPost", () => {
         return "";
       });
       spawn.mockImplementation(() => ({
-        on: (_: string, cb: (code: number) => void) => cb(0),
+        on: (event: string, cb: any) => { if (event === "close") cb(0); },
       }));
 
       process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -765,7 +765,7 @@ describe("onRequestPost", () => {
       return "";
     });
     spawn.mockImplementationOnce(() => ({
-      on: (_: string, cb: (code: number) => void) => cb(1),
+      on: (event: string, cb: any) => { if (event === "close") cb(1); },
     }));
 
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -811,10 +811,10 @@ describe("onRequestPost", () => {
     });
     spawn
       .mockImplementationOnce(() => ({
-        on: (_: string, cb: (code: number) => void) => cb(0),
+        on: (event: string, cb: any) => { if (event === "close") cb(0); },
       }))
       .mockImplementationOnce(() => ({
-        on: (_: string, cb: (code: number) => void) => cb(1),
+        on: (event: string, cb: any) => { if (event === "close") cb(1); },
       }));
 
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -851,7 +851,7 @@ describe("onRequestPost", () => {
       throw new Error("disk full");
     });
     spawn.mockImplementation(() => ({
-      on: (_: string, cb: (code: number) => void) => cb(0),
+      on: (event: string, cb: any) => { if (event === "close") cb(0); },
     }));
 
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
@@ -968,6 +968,27 @@ describe("onRequestPost", () => {
     const body = await res.json();
     expect(res.status).toBe(500);
     expect(body).toEqual({ error: expect.any(String) });
+    expect(spawn).not.toHaveBeenCalled();
+  });
+
+  it("returns 500 when a dependency throws a string", async () => {
+    readFileSync.mockImplementation(() => {
+      throw "boom";
+    });
+
+    process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+    const token = jwt.sign({}, "secret");
+    const res = await onRequestPost({
+      params: { id },
+      request: new Request("http://example.com", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+      }),
+    });
+
+    const body = await res.json();
+    expect(res.status).toBe(500);
+    expect(body).toEqual({ error: "boom" });
     expect(spawn).not.toHaveBeenCalled();
   });
 

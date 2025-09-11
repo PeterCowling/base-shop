@@ -53,6 +53,25 @@ describe("payments env provider", () => {
     errSpy.mockRestore();
   });
 
+  it("logs and throws when stripe publishable key missing", async () => {
+    const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(
+      withEnv(
+        {
+          PAYMENTS_PROVIDER: "stripe",
+          STRIPE_SECRET_KEY: "sk_live_123",
+          STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "",
+        },
+        () => import("../payments"),
+      ),
+    ).rejects.toThrow("Invalid payments environment variables");
+    expect(errSpy).toHaveBeenCalledWith(
+      "❌ Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY when PAYMENTS_PROVIDER=stripe",
+    );
+    errSpy.mockRestore();
+  });
+
   it("logs and throws when stripe webhook secret missing", async () => {
     const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
@@ -97,6 +116,11 @@ describe("payments env sandbox flag", () => {
       () => import("../payments"),
     );
     expect(paymentsEnv.PAYMENTS_SANDBOX).toBe(expected);
+  });
+
+  it("defaults to true when PAYMENTS_SANDBOX undefined", async () => {
+    const { paymentsEnv } = await withEnv({}, () => import("../payments"));
+    expect(paymentsEnv.PAYMENTS_SANDBOX).toBe(true);
   });
 
   it("warns and defaults to true on invalid sandbox", async () => {

@@ -61,6 +61,11 @@ describe("mfa", () => {
     await expect(isMfaEnabled("user-valid")).resolves.toBe(true);
   });
 
+  it("returns false when enrolled but not verified", async () => {
+    await enrollMfa("user-unverified");
+    await expect(isMfaEnabled("user-unverified")).resolves.toBe(false);
+  });
+
   it("does not re-enable when already enabled", async () => {
     jest
       .spyOn(authenticator, "generateSecret")

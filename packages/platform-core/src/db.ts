@@ -268,5 +268,5 @@ const prisma: PrismaClientType = useStub
       return new PC({ datasources: { db: { url: DATABASE_URL } } }) as unknown as PrismaClientType;
     })();
 
-export { prisma, createTestPrismaStub };
+export { prisma, createTestPrismaStub, loadPrismaClient };
 

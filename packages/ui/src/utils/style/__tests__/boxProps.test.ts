@@ -26,4 +26,14 @@ describe("boxProps", () => {
     expect(result.classes).toBe("");
     expect(result.style.width).toBe("50%");
   });
+
+  it("drops unknown properties", () => {
+    const result = boxProps({ width: "w-4", foo: "bar" } as any);
+    expect(result).toEqual({ classes: "w-4", style: {} });
+  });
+
+  it("supports responsive utility classes", () => {
+    const result = boxProps({ padding: "md:p-4" });
+    expect(result.classes).toBe("md:p-4");
+  });
 });

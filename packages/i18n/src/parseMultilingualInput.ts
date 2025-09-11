@@ -16,3 +16,24 @@ export function parseMultilingualInput(
   const [, field, locale] = match as [unknown, "title" | "desc", Locale];
   return { field, locale };
 }
+
+/**
+ * Normalize a record of locale strings by trimming values and dropping
+ * entries for unknown locales or empty strings.
+ */
+export default function normalizeMultilingualInput(
+  input: Record<string, unknown>,
+  locales: readonly Locale[]
+): Record<Locale, string> {
+  const result: Record<Locale, string> = {};
+  for (const locale of locales) {
+    const value = input[locale];
+    if (typeof value === "string") {
+      const trimmed = value.trim();
+      if (trimmed) {
+        result[locale] = trimmed;
+      }
+    }
+  }
+  return result;
+}

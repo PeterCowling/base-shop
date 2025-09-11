@@ -94,5 +94,40 @@ describe('createPost', () => {
       }),
     );
   });
+
+  it('returns an error if the slug already exists', async () => {
+    repoSlugExists.mockResolvedValue(true);
+    mockFilterExistingProductSlugs.mockResolvedValue([]);
+
+    const fd = new FormData();
+    fd.set('slug', 'existing');
+
+    const result = await createPost('shop', fd);
+
+    expect(result).toEqual({ error: 'Slug already exists' });
+    expect(repoCreatePost).not.toHaveBeenCalled();
+  });
+
+  it('logs and returns an error when creation fails', async () => {
+    repoSlugExists.mockResolvedValue(false);
+    mockFilterExistingProductSlugs.mockResolvedValue([]);
+    repoCreatePost.mockRejectedValue(new Error('fail'));
+    const consoleError = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    const fd = new FormData();
+    fd.set('title', 't');
+    fd.set('content', '[]');
+
+    const result = await createPost('shop', fd);
+
+    expect(result).toEqual({ error: 'Failed to create post' });
+    expect(consoleError).toHaveBeenCalledWith(
+      'Failed to create post',
+      expect.any(Error),
+    );
+    consoleError.mockRestore();
+  });
 });
 

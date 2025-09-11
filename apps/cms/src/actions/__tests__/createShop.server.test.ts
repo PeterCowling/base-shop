@@ -140,6 +140,39 @@ describe("createNewShop", () => {
     expect(prisma.shop.delete).toHaveBeenCalledWith({ where: { id: "shop1" } });
   });
 
+  it("Logs rollback failure when RBAC write fails", async () => {
+    const { createShop } = await import("@platform-core/createShop");
+    const { readRbac, writeRbac } = await import(
+      "../../lib/server/rbacStore"
+    );
+    const { ensureAuthorized } = await import("../common/auth.ts");
+    const { prisma } = await import("@platform-core/db");
+
+    (createShop as jest.Mock).mockResolvedValue({});
+    (readRbac as jest.Mock).mockResolvedValue({
+      users: {},
+      roles: {},
+      permissions: {},
+    });
+    (ensureAuthorized as jest.Mock).mockResolvedValue({ user: { id: "user1" } });
+    (writeRbac as jest.Mock).mockRejectedValue(new Error("fail"));
+    (prisma.page.deleteMany as jest.Mock).mockRejectedValue(
+      new Error("rollback fail")
+    );
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    await expect(createNewShop("shop1", {} as any)).rejects.toThrow(
+      "Failed to assign ShopAdmin role"
+    );
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Failed to roll back shop creation",
+      expect.any(Error)
+    );
+    consoleErrorSpy.mockRestore();
+  });
+
   it("Ensure user without id skips RBAC update", async () => {
     const { createShop } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");

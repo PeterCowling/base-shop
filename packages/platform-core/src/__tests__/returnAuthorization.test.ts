@@ -29,6 +29,17 @@ describe("returnAuthorization", () => {
     nowSpy.mockRestore();
   });
 
+  it("defaults to pending status and empty inspection notes", async () => {
+    const { createReturnAuthorization } = await import(
+      "../returnAuthorization"
+    );
+    const repo = await import("../repositories/returnAuthorization.server");
+    const ra = await createReturnAuthorization({ orderId: "o1" });
+    expect(ra.status).toBe("pending");
+    expect(ra.inspectionNotes).toBe("");
+    expect(repo.addReturnAuthorization).toHaveBeenCalledWith(ra);
+  });
+
   it("delegates to readReturnAuthorizations", async () => {
     const { listReturnAuthorizations } = await import("../returnAuthorization");
     const repo = await import("../repositories/returnAuthorization.server");

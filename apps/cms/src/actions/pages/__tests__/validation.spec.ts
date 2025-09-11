@@ -28,6 +28,10 @@ describe("pages validation", () => {
       components: "[]",
     });
     expect(res.success).toBe(false);
+    if (!res.success) {
+      expect(res.error.issues[0].message).toBe("Invalid image URL");
+      expect(res.error.issues[0].path).toEqual(["image"]);
+    }
   });
 
   it("requires slug on update", () => {
@@ -38,9 +42,21 @@ describe("pages validation", () => {
       components: "[]",
     });
     expect(res.success).toBe(false);
+    if (!res.success) {
+      expect(res.error.issues[0].message).toBe("Slug required");
+      expect(res.error.issues[0].path).toEqual(["slug"]);
+    }
   });
 
   it("parses components field", () => {
     expect(componentsField.parse("[]")).toEqual([]);
+  });
+
+  it("adds issue for invalid components json", () => {
+    const res = componentsField.safeParse("not json");
+    expect(res.success).toBe(false);
+    if (!res.success) {
+      expect(res.error.issues[0].message).toBe("Invalid components");
+    }
   });
 });

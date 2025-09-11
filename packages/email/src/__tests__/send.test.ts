@@ -284,6 +284,41 @@ describe("sendCampaignEmail", () => {
       expect(mockSendMail).toHaveBeenCalledTimes(1);
     });
 
+    it("propagates Nodemailer error after other providers fail", async () => {
+      const { ProviderError } = await import("../providers/types");
+      const sgError = new ProviderError("sg fail", false);
+      const rsError = new ProviderError("rs fail", false);
+      const smtpError = new Error("smtp fail");
+
+      mockSendgridSend = jest.fn().mockRejectedValue(sgError);
+      mockResendSend = jest.fn().mockRejectedValue(rsError);
+      mockSendMail = jest.fn().mockRejectedValue(smtpError);
+      mockSanitizeHtml = jest.fn((html: string) => html);
+      mockHasProviderErrorFields = jest.fn();
+
+      setupEnv();
+
+      const { sendCampaignEmail } = await import("../send");
+
+      await expect(
+        sendCampaignEmail({
+          to: "to@example.com",
+          subject: "Subject",
+          html: "<p>HTML</p>",
+        })
+      ).rejects.toBe(smtpError);
+
+      expect(mockSendgridSend).toHaveBeenCalledTimes(1);
+      expect(mockResendSend).toHaveBeenCalledTimes(1);
+      expect(mockSendMail).toHaveBeenCalledTimes(1);
+      expect(mockSendgridSend.mock.invocationCallOrder[0]).toBeLessThan(
+        mockResendSend.mock.invocationCallOrder[0]
+      );
+      expect(mockResendSend.mock.invocationCallOrder[0]).toBeLessThan(
+        mockSendMail.mock.invocationCallOrder[0]
+      );
+    });
+
     it("falls back to alternate provider when Nodemailer fails", async () => {
       mockSendMail = jest.fn().mockRejectedValue(new Error("smtp fail"));
       mockSendgridSend = jest.fn().mockResolvedValue(undefined);

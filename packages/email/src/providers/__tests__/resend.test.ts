@@ -11,6 +11,7 @@ describe("ResendProvider", () => {
   afterEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
+    jest.dontMock("../../config");
     global.fetch = realFetch;
     delete process.env.CAMPAIGN_FROM;
     delete process.env.RESEND_API_KEY;

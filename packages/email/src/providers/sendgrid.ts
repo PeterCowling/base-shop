@@ -77,9 +77,17 @@ export class SendgridProvider implements CampaignProvider {
           error,
         });
         const status = hasProviderErrorFields(error)
-          ? error.code ?? error.response?.statusCode ?? error.statusCode
+          ? error.code ??
+            error.response?.statusCode ??
+            error.statusCode ??
+            (typeof (error as any).status !== "undefined"
+              ? (error as any).status
+              : undefined)
           : undefined;
-        const retryable = typeof status !== "number" || status >= 500;
+        const numericStatus =
+          typeof status === "string" ? parseInt(status, 10) : status;
+        const retryable =
+          typeof numericStatus !== "number" || numericStatus >= 500;
         throw new ProviderError(error.message, retryable);
       }
       console.error("Campaign email send failed", {

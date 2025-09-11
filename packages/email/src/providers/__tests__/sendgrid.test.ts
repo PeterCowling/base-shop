@@ -11,6 +11,7 @@ describe("SendgridProvider", () => {
   afterEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
+    jest.dontMock("../../config");
     global.fetch = realFetch;
     delete process.env.CAMPAIGN_FROM;
     delete process.env.SENDGRID_API_KEY;

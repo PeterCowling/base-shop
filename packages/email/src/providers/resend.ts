@@ -77,8 +77,14 @@ export class ResendProvider implements CampaignProvider {
           error: err,
         });
         const status =
-          err.code ?? err.response?.statusCode ?? err.statusCode;
-        const retryable = typeof status !== "number" || status >= 500;
+          err.code ??
+          err.response?.statusCode ??
+          err.statusCode ??
+          (typeof err.status !== "undefined" ? err.status : undefined);
+        const numericStatus =
+          typeof status === "string" ? parseInt(status, 10) : status;
+        const retryable =
+          typeof numericStatus !== "number" || numericStatus >= 500;
         throw new ProviderError(err.message, retryable);
       }
       console.error("Campaign email send failed", {

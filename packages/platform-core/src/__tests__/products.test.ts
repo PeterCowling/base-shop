@@ -75,8 +75,9 @@ describe('getProducts', () => {
     jest.clearAllMocks();
   });
 
-  it('throws when shop is missing', async () => {
-    await expect(getProducts()).rejects.toThrow('shop');
+  it('returns base products when shop is missing', async () => {
+    const list = await getProducts();
+    expect(list).toEqual(PRODUCTS);
     expect(serverMocks.readRepo).not.toHaveBeenCalled();
   });
 

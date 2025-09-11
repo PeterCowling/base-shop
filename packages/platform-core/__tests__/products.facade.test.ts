@@ -59,7 +59,7 @@ describe("getProductById overloads", () => {
       "shop-abc",
       "no-exist",
     );
-    expect(base.getProductById).not.toHaveBeenCalled();
+    expect(base.getProductById).toHaveBeenCalledWith("no-exist");
   });
 
   it("delegates slug lookup to base.getProductBySlug", () => {

@@ -10,8 +10,18 @@ describe("tokenUtils", () => {
 
   it.each([
     ["base", baseTokens],
+    ["", baseTokens],
     ["nope", baseTokens],
-  ])("loads tokens for %s theme", async (theme, expected) => {
+  ])("falls back to base tokens for %s", async (theme, expected) => {
     await expect(loadThemeTokens(theme)).resolves.toEqual(expected);
   });
+
+  it("loads tokens from theme package", async () => {
+    await expect(loadThemeTokens("brandx")).resolves.toEqual({ "--color-bg": "purple" });
+  });
+
+  it("loads tokens from tailwind tokens when theme import fails", async () => {
+    await expect(loadThemeTokens("dummy")).resolves.toEqual({ "--color-bg": "green" });
+  });
 });
+

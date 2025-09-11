@@ -10,17 +10,28 @@ describe("fillLocales", () => {
     }
   });
 
-  it("populates missing locales with the fallback", () => {
-    const result = fillLocales({ en: "Hello" }, "Hi");
+  it("fills a single missing locale with the fallback", () => {
+    const result = fillLocales({ en: "Hello", de: "Hallo" }, "Hi");
 
-    expect(result).toEqual({ en: "Hello", de: "Hi", it: "Hi" });
+    expect(result).toEqual({ en: "Hello", de: "Hallo", it: "Hi" });
   });
 
-  it("leaves existing locales unchanged", () => {
+  it("preserves original values when all locales are provided", () => {
     const values = { en: "Hello", de: "Hallo", it: "Ciao" };
     const result = fillLocales(values, "Hi");
 
     expect(result).toEqual(values);
+  });
+
+  it("creates a shallow copy of provided locale values", () => {
+    const nested = { greeting: "Hello" };
+    const values = { en: nested } as any;
+    const result = fillLocales(values, "Hi") as any;
+
+    nested.greeting = "Hola";
+
+    expect(result.en).toBe(nested);
+    expect(result.en.greeting).toBe("Hola");
   });
 
   it("skips unsupported locales", () => {

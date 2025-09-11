@@ -33,7 +33,7 @@ import {
  * application and should be unique. See {@link TranslationsProvider} for
  * details on how this map is consumed.
  */
-export type Messages = Record<string, string>;
+export type Messages = Record<string, ReactNode>;
 
 /**
  * React context used to share translation messages across the component tree.
@@ -108,21 +108,34 @@ export default TranslationsProvider;
  * @returns A function that resolves a given key to its translated message, or
  *          the key itself if no translation exists.
  */
-export function useTranslations(): (key: string) => string {
+export function useTranslations(): (
+  key: string,
+  vars?: Record<string, ReactNode>
+) => ReactNode {
   const messages = useContext(TContext);
   // Memoise the translation function to keep its identity stable across
   // renders unless the messages map changes. Without this memoisation,
   // consumers that store the translator function in state or pass it as a
   // prop could be triggered to re-render unnecessarily.
   return useCallback(
-    (key: string): string => {
-      // Use the nullish coalescing operator to fall back to the key itself
-      // when no translation exists for a given key.
+    (key: string, vars?: Record<string, ReactNode>): ReactNode => {
       if (messages[key] === undefined) {
         console.warn(`Missing translation for key: ${key}`);
         return key;
       }
-      return messages[key];
+
+      const msg = messages[key];
+      if (typeof msg === "string") {
+        if (vars) {
+          return msg.replace(/\{(.*?)\}/g, (match, name) => {
+            return Object.prototype.hasOwnProperty.call(vars, name)
+              ? String(vars[name])
+              : match;
+          });
+        }
+        return msg;
+      }
+      return msg;
     },
     [messages]
   );

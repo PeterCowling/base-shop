@@ -43,6 +43,11 @@ describe("hasPermission", () => {
     expect(hasPermission("viewer", "view_orders")).toBe(false);
   });
 
+  it("returns false for unknown permissions without throwing", () => {
+    expect(() => hasPermission("viewer", "non_existent_permission")).not.toThrow();
+    expect(hasPermission("viewer", "non_existent_permission")).toBe(false);
+  });
+
   it("returns false for roles not in ROLE_PERMISSIONS", () => {
     const unknownRole = "ghost" as any;
     expect((ROLE_PERMISSIONS as Record<string, unknown>)[unknownRole]).toBeUndefined();

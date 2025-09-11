@@ -216,6 +216,15 @@ describe("middleware", () => {
     expect(res.headers.get("Content-Security-Policy")).toBeTruthy();
   });
 
+  it("allows login without csrf tokens", async () => {
+    const req = new NextRequest("http://example.com/api/auth/login", {
+      method: "POST",
+    });
+    const res = await middleware(req);
+
+    expect(res.status).toBe(200);
+  });
+
   it("allows repeated login attempts without rate limiting", async () => {
     const headers = {
       "x-forwarded-for": "1.2.3.4",

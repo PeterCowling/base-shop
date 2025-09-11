@@ -110,6 +110,28 @@ it("marks file invalid when orientation mismatches", () => {
   expect(result.current.actual).toBe("portrait");
 });
 
+it("aborts upload and reports orientation mismatch", async () => {
+  const file = new File(["x"], "x.png", { type: "image/png" });
+  mockOrientation.mockReturnValue({ actual: "portrait", isValid: false });
+
+  const { result } = renderHook(() =>
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+  );
+
+  act(() => {
+    result.current.onFileChange({ target: { files: [file] } } as any);
+  });
+
+  await act(async () => {
+    await result.current.handleUpload();
+  });
+
+  expect(mockFetch).not.toHaveBeenCalled();
+  expect(result.current.error).toBe(
+    "Image orientation mismatch: expected landscape, got portrait",
+  );
+});
+
 it("skips orientation validation for videos", async () => {
   const file = new File(["v"], "v.mp4", { type: "video/mp4" });
   const onUploaded = jest.fn();

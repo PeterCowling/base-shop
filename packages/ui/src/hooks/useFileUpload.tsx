@@ -101,6 +101,14 @@ export function useFileUpload(
   /* ---------- upload handler -------------------------------------- */
   const handleUpload = useCallback(async () => {
     if (!pendingFile) return;
+    if (isValid === false) {
+      setError(
+        actual
+          ? `Image orientation mismatch: expected ${requiredOrientation}, got ${actual}`
+          : `Image orientation mismatch: expected ${requiredOrientation}`,
+      );
+      return;
+    }
 
     flushSync(() => setProgress({ done: 0, total: 1 }));
 
@@ -215,7 +223,8 @@ export function useFileUpload(
         )}
         {isValid === false && !isVideo && (
           <p className="text-warning mt-2 text-sm">
-            Wrong orientation (needs {requiredOrientation})
+            Orientation mismatch: expected {requiredOrientation}
+            {actual ? `, got ${actual}` : ""}
           </p>
         )}
       </div>

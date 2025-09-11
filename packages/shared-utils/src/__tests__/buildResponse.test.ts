@@ -33,6 +33,21 @@ describe('buildResponse', () => {
     await expect(res.text()).resolves.toBe('');
   });
 
+  it('returns an empty body when body is null', async () => {
+    const proxy: ProxyResponse = {
+      response: {
+        status: 200,
+        headers: { 'X-Test': 'abc' },
+        body: null,
+      },
+    };
+
+    const res = buildResponse(proxy);
+
+    expect(res.status).toBe(200);
+    await expect(res.text()).resolves.toBe('');
+  });
+
   it('copies all headers from the proxy response', async () => {
     const proxy: ProxyResponse = {
       response: {

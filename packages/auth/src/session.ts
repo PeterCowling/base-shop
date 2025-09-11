@@ -137,11 +137,13 @@ export async function destroyCustomerSession(): Promise<void> {
           password: secret,
           ttl: SESSION_TTL_S,
         });
-        const sessionStore = await sessionStorePromise;
-        try {
-          await sessionStore.delete(session.sessionId);
-        } catch (err) {
-          error = err;
+        if (session?.sessionId) {
+          const sessionStore = await sessionStorePromise;
+          try {
+            await sessionStore.delete(session.sessionId);
+          } catch (err) {
+            error = err;
+          }
         }
       } catch {
         // ignore invalid tokens

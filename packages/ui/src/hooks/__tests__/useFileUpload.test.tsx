@@ -108,6 +108,21 @@ it("marks file invalid when orientation mismatches", () => {
   expect(result.current.actual).toBe("portrait");
 });
 
+it("skips orientation validation for videos", () => {
+  const file = new File(["v"], "v.mp4", { type: "video/mp4" });
+
+  const { result } = renderHook(() =>
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+  );
+
+  act(() => {
+    result.current.onFileChange({ target: { files: [file] } } as any);
+  });
+
+  expect(mockOrientation).not.toHaveBeenCalledWith(file, "landscape");
+  expect(result.current.isValid).toBe(true);
+});
+
 it("updates pending file on drag-and-drop", () => {
   const file = new File(["d"], "d.png", { type: "image/png" });
 

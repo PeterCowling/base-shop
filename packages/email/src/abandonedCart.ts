@@ -54,22 +54,31 @@ export interface AbandonedCart {
 /**
  * Send reminder emails for carts that have been inactive for at least a given delay.
  * Carts with `reminded` set to true are ignored. When an email is sent, the
- * record's `reminded` flag is set to true.
+ * record's `reminded` flag is set to true. Any failures are ignored and
+ * returned for optional retries or logging.
  */
 export async function recoverAbandonedCarts(
   carts: AbandonedCart[],
   now: number = Date.now(),
   delayMs: number = DEFAULT_DELAY_MS,
-): Promise<void> {
+): Promise<AbandonedCart[]> {
+  const failed: AbandonedCart[] = [];
+
   for (const record of carts) {
     if (record.reminded) continue;
     if (now - record.updatedAt < delayMs) continue;
 
-    await sendCampaignEmail({
-      to: record.email,
-      subject: "You left items in your cart",
-      html: "<p>You left items in your cart.</p>",
-    });
-    record.reminded = true;
+    try {
+      await sendCampaignEmail({
+        to: record.email,
+        subject: "You left items in your cart",
+        html: "<p>You left items in your cart.</p>",
+      });
+      record.reminded = true;
+    } catch {
+      failed.push(record);
+    }
   }
+
+  return failed;
 }

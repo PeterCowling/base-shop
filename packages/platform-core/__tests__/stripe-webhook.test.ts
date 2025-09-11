@@ -296,6 +296,16 @@ describe("handleStripeWebhook", () => {
     expect(syncSubscriptionData).toHaveBeenLastCalledWith("cus_1", null);
   });
 
+  test("subscription deletion extracts customer id from object", async () => {
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    const subscription: any = { id: "sub_obj", customer: { id: "cus_obj" } };
+    await handleStripeWebhook("test", {
+      type: "customer.subscription.deleted",
+      data: { object: subscription },
+    } as any);
+    expect(syncSubscriptionData).toHaveBeenLastCalledWith("cus_obj", null);
+  });
+
   test("checkout.session.completed triggers manual review and 3DS", async () => {
     getShopSettings.mockResolvedValue({
       luxuryFeatures: {
@@ -346,5 +356,17 @@ describe("handleStripeWebhook", () => {
     expect(reviewsCreate).not.toHaveBeenCalled();
     expect(piUpdate).not.toHaveBeenCalled();
     expect(updateRisk).not.toHaveBeenCalled();
+  });
+
+  test("unhandled event types are ignored", async () => {
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    await handleStripeWebhook("test", {
+      type: "some.random.event",
+      data: { object: {} },
+    } as any);
+    expect(addOrder).not.toHaveBeenCalled();
+    expect(updateRisk).not.toHaveBeenCalled();
+    expect(markRefunded).not.toHaveBeenCalled();
+    expect(markNeedsAttention).not.toHaveBeenCalled();
   });
 });

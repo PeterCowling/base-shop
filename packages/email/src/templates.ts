@@ -11,7 +11,7 @@ import {
 // Use Node's createRequire with the current file path so this works when the
 // code is executed in a CommonJS context (e.g. ts-jest).
 const nodeRequire = createRequire(__filename);
-function renderToStaticMarkup(node: ReactNode): string {
+export function renderToStaticMarkup(node: ReactNode): string {
   if (node === null || node === undefined || typeof node === "boolean") {
     return "";
   }

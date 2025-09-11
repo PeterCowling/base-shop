@@ -116,4 +116,52 @@ describe("usePageBuilderDnD", () => {
     expect(result.current.activeType).toBeNull();
     expect(setSnapPosition).toHaveBeenLastCalledWith(null);
   });
+
+  it("adds palette component into a container with resolved parentId and index", () => {
+    const components = [
+      {
+        id: "container-1",
+        type: "Container",
+        children: [{ id: "child-1", type: "Text" }],
+      },
+    ] as any;
+    const dispatch = jest.fn();
+    const selectId = jest.fn();
+    const { result } = renderHook(() =>
+      usePageBuilderDnD({
+        components,
+        dispatch,
+        defaults: {},
+        containerTypes: [],
+        selectId,
+        gridSize: 10,
+        setSnapPosition: jest.fn(),
+      })
+    );
+
+    act(() =>
+      result.current.handleDragStart({
+        active: { data: { current: { type: "Text" } } },
+      } as any)
+    );
+
+    act(() =>
+      result.current.handleDragEnd({
+        active: {
+          data: { current: { from: "palette", type: "Text" } },
+        },
+        over: { id: "container-container-1", data: { current: {} } },
+      } as any)
+    );
+
+    expect(dispatch).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: "add",
+        parentId: "container-1",
+        index: 1,
+        component: expect.objectContaining({ type: "Text" }),
+      })
+    );
+    expect(selectId).toHaveBeenCalled();
+  });
 });

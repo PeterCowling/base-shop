@@ -21,6 +21,62 @@ describe("useCart", () => {
   });
 });
 
+describe("CartProvider without window", () => {
+  const sku: SKU = {
+    id: "sku1",
+    slug: "sku1",
+    title: "Test",
+    price: 100,
+    deposit: 0,
+    forSale: true,
+    forRental: false,
+    media: [{ url: "img", type: "image" }],
+    sizes: [],
+    description: "desc",
+  };
+
+  let dispatch: (action: any) => Promise<void>;
+
+  function Capture() {
+    [, dispatch] = useCart();
+    return <div data-testid="captured" />;
+  }
+
+  const originalWindow = global.window;
+  const originalFetch = global.fetch;
+
+  beforeEach(() => {
+    // @ts-expect-error override
+    global.window = undefined;
+    // @ts-expect-error override
+    global.fetch = jest
+      .fn()
+      .mockResolvedValue({ ok: true, json: async () => ({ cart: {} }) });
+  });
+
+  afterEach(() => {
+    // @ts-expect-error restore
+    global.window = originalWindow;
+    // @ts-expect-error restore
+    global.fetch = originalFetch;
+    jest.restoreAllMocks();
+  });
+
+  it("renders and dispatch works without window", async () => {
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    expect(screen.getByTestId("captured")).toBeTruthy();
+
+    await act(async () => {
+      await dispatch({ type: "add", sku });
+    });
+  });
+});
+
 describe("CartProvider initial load", () => {
   const sku = { id: "sku123", sizes: [] } as unknown as SKU;
   const server = { cart: { sku123: { qty: 1, sku } } };
@@ -92,6 +148,53 @@ describe("CartProvider initial load", () => {
       expect(screen.getByTestId("count").textContent).toBe("1")
     );
     expect(addSpy).toHaveBeenCalledWith("online", expect.any(Function));
+  });
+
+  it("registers online listener and keeps state empty when fetch fails with no cache", async () => {
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockRejectedValue(new Error("offline"));
+    jest.spyOn(Storage.prototype, "getItem").mockReturnValue(null);
+    const addSpy = jest.spyOn(window, "addEventListener");
+
+    render(
+      <CartProvider>
+        <CartDisplay />
+      </CartProvider>
+    );
+
+    await waitFor(() =>
+      expect(screen.getByTestId("count").textContent).toBe("0")
+    );
+    expect(addSpy).toHaveBeenCalledWith("online", expect.any(Function));
+  });
+
+  it("logs error when cache read fails during sync", async () => {
+    const fetchMock = global.fetch as jest.Mock;
+    fetchMock.mockRejectedValue(new Error("offline"));
+    const getSpy = jest.spyOn(Storage.prototype, "getItem");
+    getSpy.mockReturnValueOnce(JSON.stringify(server.cart));
+    getSpy.mockImplementationOnce(() => {
+      throw new Error("fail");
+    });
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const addSpy = jest.spyOn(window, "addEventListener");
+
+    render(
+      <CartProvider>
+        <CartDisplay />
+      </CartProvider>
+    );
+
+    await waitFor(() =>
+      expect(addSpy).toHaveBeenCalledWith("online", expect.any(Function))
+    );
+
+    await act(async () => {
+      window.dispatchEvent(new Event("online"));
+    });
+
+    expect(errorSpy).toHaveBeenCalled();
+    expect(screen.getByTestId("count").textContent).toBe("1");
   });
 });
 

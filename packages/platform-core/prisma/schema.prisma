@@ -107,6 +107,11 @@ model InventoryItem {
   @@index([shopId, sku])
 }
 
+model ReturnLogistics {
+  id   Int  @id
+  data Json
+}
+
 model ReverseLogisticsEvent {
   id        String @id @default(cuid())
   shop      String

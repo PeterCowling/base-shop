@@ -160,6 +160,18 @@ it("createCustomerSession propagates store errors without setting cookies", asyn
   expect(mockCookies.set).not.toHaveBeenCalled();
 });
 
+it("createCustomerSession propagates seal errors without setting cookies or storing session", async () => {
+  const { createCustomerSession } = await import("../session");
+
+  sealData.mockRejectedValueOnce(new Error("seal fail"));
+
+  await expect(
+    createCustomerSession({ customerId: "cust", role: "customer" })
+  ).rejects.toThrow("seal fail");
+  expect(mockCookies.set).not.toHaveBeenCalled();
+  expect(mockSessionStore.set).not.toHaveBeenCalled();
+});
+
 it("createCustomerSession throws when SESSION_SECRET is undefined", async () => {
   const { createCustomerSession } = await import("../session");
   const originalSecret = process.env.SESSION_SECRET;

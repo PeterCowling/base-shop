@@ -164,6 +164,29 @@ describe("createRequestHandler", () => {
     expect(res.setHeader).toHaveBeenCalledWith("x-test", "value");
   });
 
+  it("returns 404 for GET /components without ID", async () => {
+    const handler = createRequestHandler();
+
+    const req = new Readable({
+      read() {
+        this.push(null);
+      },
+    }) as unknown as IncomingMessage;
+    req.url = "/components";
+    req.method = "GET";
+    req.headers = {};
+
+    const end = jest.fn();
+    const res = { statusCode: 0, setHeader: jest.fn(), end } as unknown as ServerResponse;
+
+    await handler(req, res);
+
+    expect(res.statusCode).toBe(404);
+    expect(end).toHaveBeenCalled();
+    expect(componentsHandlerMock).not.toHaveBeenCalled();
+    expect(publishUpgradeMock).not.toHaveBeenCalled();
+  });
+
   it("handles POST /shop/:id/publish-upgrade", async () => {
     publishUpgradeMock.mockResolvedValueOnce(new Response(null, { status: 200 }));
     const handler = createRequestHandler();

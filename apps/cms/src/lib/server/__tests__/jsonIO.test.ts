@@ -60,6 +60,26 @@ describe("readJsonFile", () => {
 
     expect(result).toBe(fallback);
   });
+
+  it("returns fallback when file is empty", async () => {
+    const fallback = { value: 4 };
+    mockedFs.readFile.mockResolvedValueOnce("");
+
+    const result = await readJsonFile("empty.json", fallback);
+
+    expect(result).toBe(fallback);
+  });
+
+  it("returns fallback when fs.readFile is denied", async () => {
+    const fallback = { value: 5 };
+    const err = new Error("denied");
+    (err as NodeJS.ErrnoException).code = "EACCES";
+    mockedFs.readFile.mockRejectedValueOnce(err);
+
+    const result = await readJsonFile("denied.json", fallback);
+
+    expect(result).toBe(fallback);
+  });
 });
 
 describe("writeJsonFile", () => {

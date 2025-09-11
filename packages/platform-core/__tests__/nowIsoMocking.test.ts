@@ -14,7 +14,7 @@ jest.mock("@date-utils", () => ({ nowIso: jest.fn(() => "2000-01-01T00:00:00.000
 
 describe("nowIso mocking", () => {
   it("uses mocked nowIso in addOrder", async () => {
-    const { addOrder } = await import("../src/orders");
+    const { addOrder } = await import("../src/orders/creation");
     const order = await addOrder("shop", "sess", 10);
     expect(order.startedAt).toBe("2000-01-01T00:00:00.000Z");
   });

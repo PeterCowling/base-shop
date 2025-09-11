@@ -15,11 +15,21 @@ function mockOrders() {
   const updateRisk = jest.fn();
   const markRefunded = jest.fn();
   const markNeedsAttention = jest.fn();
-  jest.doMock("../orders", () => ({
+  jest.doMock("../orders/creation", () => ({
     __esModule: true,
     addOrder: jest.fn(),
-    updateRisk,
+    listOrders: jest.fn(),
+    readOrders: jest.fn(),
+    getOrdersForCustomer: jest.fn(),
+  }));
+  jest.doMock("../orders/refunds", () => ({
+    __esModule: true,
     markRefunded,
+    refundOrder: jest.fn(),
+  }));
+  jest.doMock("../orders/risk", () => ({
+    __esModule: true,
+    updateRisk,
     markNeedsAttention,
   }));
   return { updateRisk, markRefunded, markNeedsAttention };

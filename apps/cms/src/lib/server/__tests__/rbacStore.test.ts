@@ -40,6 +40,52 @@ describe("rbacStore", () => {
     });
   });
 
+  it("returns defaults when roles or permissions missing", async () => {
+    await withTempDir(async (dir) => {
+      const { readRbac } = await import("../rbacStore");
+      const defaultDb = await readRbac();
+      const file = path.join(dir, "data", "cms", "users.json");
+      await fs.mkdir(path.dirname(file), { recursive: true });
+
+      // roles missing
+      await fs.writeFile(
+        file,
+        JSON.stringify({
+          users: {
+            "99": {
+              id: "99",
+              name: "Temp",
+              email: "temp@example.com",
+              password: "pw",
+            },
+          },
+        }),
+        "utf8",
+      );
+      let db = await readRbac();
+      expect(db).toEqual(defaultDb);
+
+      // permissions missing
+      await fs.writeFile(
+        file,
+        JSON.stringify({
+          users: {
+            "99": {
+              id: "99",
+              name: "Temp",
+              email: "temp@example.com",
+              password: "pw",
+            },
+          },
+          roles: { "99": "viewer" },
+        }),
+        "utf8",
+      );
+      db = await readRbac();
+      expect(db).toEqual(defaultDb);
+    });
+  });
+
   it("merges extra permissions with defaults", async () => {
     await withTempDir(async (dir) => {
       const { readRbac } = await import("../rbacStore");
@@ -60,6 +106,41 @@ describe("rbacStore", () => {
       expect(db.permissions.admin).toEqual([
         ...defaultDb.permissions.admin,
         extraPerm,
+      ]);
+    });
+  });
+
+  it("merges unique permissions arrays for existing roles", async () => {
+    await withTempDir(async (dir) => {
+      const { readRbac } = await import("../rbacStore");
+      const defaultDb = await readRbac();
+      const file = path.join(dir, "data", "cms", "users.json");
+      await fs.mkdir(path.dirname(file), { recursive: true });
+
+      const extraAdmin = "extra_admin" as Permission;
+      const extraViewer = "extra_viewer" as Permission;
+
+      await fs.writeFile(
+        file,
+        JSON.stringify({
+          users: {},
+          roles: {},
+          permissions: {
+            admin: [defaultDb.permissions.admin[0], extraAdmin],
+            viewer: [extraViewer, extraViewer],
+          },
+        }),
+        "utf8",
+      );
+
+      const db = await readRbac();
+      expect(db.permissions.admin).toEqual([
+        ...defaultDb.permissions.admin,
+        extraAdmin,
+      ]);
+      expect(db.permissions.viewer).toEqual([
+        ...defaultDb.permissions.viewer,
+        extraViewer,
       ]);
     });
   });

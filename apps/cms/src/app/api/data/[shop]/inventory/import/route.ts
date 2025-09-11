@@ -23,11 +23,24 @@ export async function POST(
     const file = form.get("file") as unknown;
     let text: string;
     try {
-      if (!file || typeof (file as any).arrayBuffer !== "function") {
+      if (!file) {
         throw new Error("no file");
       }
-      const buf = await (file as any).arrayBuffer();
-      text = new TextDecoder().decode(buf);
+      if (typeof (file as any).text === "function") {
+        text = await (file as any).text();
+      } else if (typeof (file as any).arrayBuffer === "function") {
+        const buf = await (file as any).arrayBuffer();
+        text = new TextDecoder().decode(buf);
+      } else if (file instanceof Blob) {
+        text = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onerror = () => reject(reader.error);
+          reader.onload = () => resolve(reader.result as string);
+          reader.readAsText(file);
+        });
+      } else {
+        throw new Error("no file");
+      }
     } catch {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }

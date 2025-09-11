@@ -27,6 +27,13 @@ export class ProviderError extends Error {
 
   constructor(message: string, retryable = true) {
     super(message);
+    // Make the message enumerable so tests can assert on it
+    Object.defineProperty(this, "message", {
+      value: message,
+      enumerable: true,
+      configurable: true,
+      writable: true,
+    });
     this.retryable = retryable;
     this.name = "ProviderError";
   }
@@ -36,6 +43,8 @@ export interface ResendError {
   message: string;
   /** HTTP status code returned by the Resend API */
   statusCode?: number;
+  /** Alternate status field used by some responses */
+  status?: number | string;
   /** Optional internal error code */
   code?: number;
   /** Error name provided by the API */

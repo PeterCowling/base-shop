@@ -1,5 +1,14 @@
 import path from "node:path";
-import { exportsToCandidates } from "../src/plugins/resolvers";
+import os from "node:os";
+import * as fsPromises from "node:fs/promises";
+
+const reqMock = jest.fn();
+jest.mock("module", () => ({ createRequire: () => reqMock }));
+import {
+  exportsToCandidates,
+  resolvePluginEntry,
+  importByType,
+} from "../src/plugins/resolvers";
 
 describe("exportsToCandidates", () => {
   it("returns path for string exports", () => {
@@ -41,5 +50,58 @@ describe("exportsToCandidates", () => {
     };
     const candidates = exportsToCandidates(dir, exportsField);
     expect(candidates).toEqual([path.resolve(dir, "./dist/index.js")]);
+  });
+});
+
+describe("resolvePluginEntry", () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it("picks the first existing candidate", async () => {
+    const dir = await fsPromises.mkdtemp(path.join(os.tmpdir(), "plugin-"));
+    await fsPromises.mkdir(path.join(dir, "dist"));
+    await fsPromises.writeFile(
+      path.join(dir, "package.json"),
+      JSON.stringify({
+        main: "./dist/main.js",
+        module: "./dist/module.js",
+        exports: { ".": { import: "./dist/export.mjs" } },
+      })
+    );
+    await fsPromises.writeFile(path.join(dir, "dist", "module.js"), "");
+    await fsPromises.writeFile(path.join(dir, "dist", "export.mjs"), "");
+
+    const result = await resolvePluginEntry(dir);
+    expect(result).toEqual({
+      entryPath: path.resolve(dir, "dist/module.js"),
+      isModule: false,
+    });
+  });
+
+  it("returns null when package.json cannot be read", async () => {
+    const dir = await fsPromises.mkdtemp(path.join(os.tmpdir(), "plugin-"));
+    const result = await resolvePluginEntry(dir);
+    expect(result).toEqual({ entryPath: null, isModule: false });
+  });
+});
+
+describe("importByType", () => {
+  afterEach(() => {
+    reqMock.mockClear();
+  });
+
+  it("loads ESM modules via import", async () => {
+    const esmPath = path.join(os.tmpdir(), "mod.js");
+    await expect(importByType(esmPath, true)).rejects.toThrow();
+    expect(reqMock).not.toHaveBeenCalled();
+  });
+
+  it("loads CommonJS modules via require", async () => {
+    reqMock.mockReturnValue("cjs");
+    const cjsPath = path.join(os.tmpdir(), "mod.cjs");
+    const mod = await importByType(cjsPath, false);
+    expect(mod).toBe("cjs");
+    expect(reqMock).toHaveBeenCalledWith(cjsPath);
   });
 });

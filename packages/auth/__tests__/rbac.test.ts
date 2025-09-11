@@ -128,4 +128,12 @@ describe("requirePermission conditional checks", () => {
       "Unauthorized"
     );
   });
+
+  it("throws when the session is missing", async () => {
+    mockedGetSession.mockResolvedValue(null);
+
+    await expect(requirePermission("checkout")).rejects.toEqual(
+      new Error("Unauthorized")
+    );
+  });
 });

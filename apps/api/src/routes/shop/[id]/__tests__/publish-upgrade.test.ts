@@ -793,6 +793,17 @@ describe("onRequestPost", () => {
     expect(body).toEqual({
       error: `pnpm --filter apps/shop-${id} build failed with status 1`,
     });
+    expect(spawn).toHaveBeenCalledTimes(1);
+    expect(spawn).toHaveBeenCalledWith(
+      "pnpm",
+      ["--filter", `apps/shop-${id}`, "build"],
+      { cwd: root, stdio: "inherit" },
+    );
+    expect(spawn).not.toHaveBeenCalledWith(
+      "pnpm",
+      ["--filter", `apps/shop-${id}`, "deploy"],
+      { cwd: root, stdio: "inherit" },
+    );
   });
 
   it("returns 500 when deploy command fails", async () => {

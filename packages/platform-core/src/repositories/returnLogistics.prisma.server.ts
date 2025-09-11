@@ -1,17 +1,33 @@
 import "server-only";
 
 import type { ReturnLogistics } from "@acme/types";
-import { jsonReturnLogisticsRepository } from "./returnLogistics.json.server";
+import { returnLogisticsSchema } from "@acme/types";
+import { prisma } from "../db";
 
-// TODO: replace with real Prisma implementation
+const SINGLETON_ID = 1;
+
 export async function readReturnLogistics(): Promise<ReturnLogistics> {
-  return jsonReturnLogisticsRepository.readReturnLogistics();
+  const row = await prisma.returnLogistics.findUnique({
+    where: { id: SINGLETON_ID },
+  });
+  if (!row) {
+    throw new Error("Return logistics not found");
+  }
+  const parsed = returnLogisticsSchema.safeParse(row.data);
+  if (!parsed.success) {
+    throw new Error("Invalid return logistics data");
+  }
+  return parsed.data;
 }
 
 export async function writeReturnLogistics(
   data: ReturnLogistics,
 ): Promise<void> {
-  await jsonReturnLogisticsRepository.writeReturnLogistics(data);
+  await prisma.returnLogistics.upsert({
+    where: { id: SINGLETON_ID },
+    create: { id: SINGLETON_ID, data },
+    update: { data },
+  });
 }
 
 export const prismaReturnLogisticsRepository = {

@@ -50,6 +50,31 @@ describe("usePageBuilderSave", () => {
     expect(onSave.mock.calls[1][0].get("slug")).toBe("about");
   });
 
+  it("clears history when page id changes", () => {
+    const onSave = jest.fn().mockResolvedValue(undefined);
+    const onPublish = jest.fn().mockResolvedValue(undefined);
+    const clearHistory = jest.fn();
+
+    const { rerender } = renderHook(({ page }: any) =>
+      usePageBuilderSave({
+        page,
+        components,
+        state,
+        onSave,
+        onPublish,
+        formDataDeps: [],
+        clearHistory,
+      })
+    , { initialProps: { page: basePage } });
+
+    const newPage = { ...basePage, id: "p2" };
+    act(() => {
+      rerender({ page: newPage });
+    });
+
+    expect(clearHistory).toHaveBeenCalledTimes(1);
+  });
+
   it("publishes and clears history", async () => {
     const onSave = jest.fn().mockResolvedValue(undefined);
     const onPublish = jest.fn().mockResolvedValue(undefined);

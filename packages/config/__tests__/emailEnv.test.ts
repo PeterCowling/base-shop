@@ -73,5 +73,18 @@ describe("emailEnv", () => {
     expect(emailEnv.SENDGRID_API_KEY).toBe("sendgrid-key");
     expect(spy).not.toHaveBeenCalled();
   });
+
+  it("defaults EMAIL_FROM when provider is noop", async () => {
+    const OLD = process.env;
+    jest.resetModules();
+    process.env = { ...OLD, EMAIL_PROVIDER: "noop" } as NodeJS.ProcessEnv;
+    delete process.env.EMAIL_FROM;
+    try {
+      const { emailEnv } = await import("../src/env/email");
+      expect(emailEnv.EMAIL_FROM).toBe("from@example.com");
+    } finally {
+      process.env = OLD;
+    }
+  });
 });
 

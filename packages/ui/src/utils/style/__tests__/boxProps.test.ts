@@ -20,4 +20,10 @@ describe("boxProps", () => {
     expect(result.classes).toBe("");
     expect(result.style).toEqual({ width: 200, height: "100%" });
   });
+
+  it("uses style for percentage width values", () => {
+    const result = boxProps({ width: "50%" });
+    expect(result.classes).toBe("");
+    expect(result.style.width).toBe("50%");
+  });
 });

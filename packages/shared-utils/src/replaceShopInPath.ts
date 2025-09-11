@@ -11,11 +11,17 @@ export function replaceShopInPath(
   shop: string
 ): string {
   if (!pathname) return `/cms/shop/${shop}`;
-  const segments = pathname.split("/").filter(Boolean);
+
+  const [path, query] = pathname.split("?");
+  const segments = path.split("/").filter(Boolean);
   const idx = segments.indexOf("shop");
+
   if (idx >= 0 && idx + 1 < segments.length) {
     segments[idx + 1] = shop;
-    return "/" + segments.join("/");
+    const newPath = "/" + segments.join("/");
+    return query ? `${newPath}?${query}` : newPath;
   }
-  return `/cms/shop/${shop}`;
+
+  const base = `/cms/shop/${shop}`;
+  return query ? `${base}?${query}` : base;
 }

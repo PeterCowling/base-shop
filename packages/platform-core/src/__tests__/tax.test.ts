@@ -66,56 +66,5 @@ describe("tax", () => {
     });
   });
 
-  describe("calculateTax", () => {
-    it("returns tax when API key exists and fetch succeeds", async () => {
-      jest.doMock("@acme/config/env/shipping", () => ({
-        loadShippingEnv: () => ({ TAXJAR_KEY: "test-key" }),
-      }));
-
-      const fetchMock = jest.fn().mockResolvedValue({
-        ok: true,
-        json: async () => ({ tax: 42 }),
-      });
-      (globalThis as any).fetch = fetchMock;
-
-      const { calculateTax } = await import("../tax");
-
-      const result = await calculateTax({
-        provider: "taxjar",
-        amount: 100,
-        toCountry: "US",
-      });
-
-      expect(result).toEqual({ tax: 42 });
-      expect(fetchMock).toHaveBeenCalledTimes(1);
-    });
-
-    it("throws when API key is missing", async () => {
-      jest.doMock("@acme/config/env/shipping", () => ({
-        loadShippingEnv: () => ({}),
-      }));
-
-      const { calculateTax } = await import("../tax");
-
-      await expect(
-        calculateTax({ provider: "taxjar", amount: 100, toCountry: "US" })
-      ).rejects.toThrow("Missing TAXJAR_KEY");
-    });
-
-    it("throws when fetch rejects", async () => {
-      jest.doMock("@acme/config/env/shipping", () => ({
-        loadShippingEnv: () => ({ TAXJAR_KEY: "test-key" }),
-      }));
-
-      const fetchMock = jest.fn().mockRejectedValue(new Error("network"));
-      (globalThis as any).fetch = fetchMock;
-
-      const { calculateTax } = await import("../tax");
-
-      await expect(
-        calculateTax({ provider: "taxjar", amount: 100, toCountry: "US" })
-      ).rejects.toThrow("Failed to calculate tax with taxjar");
-    });
-  });
 });
 

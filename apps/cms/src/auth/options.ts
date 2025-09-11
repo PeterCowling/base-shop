@@ -22,12 +22,14 @@ const secret: string = authSecret as string;
 /*  AuthOptions factory (dependency‑injectable for tests)                     */
 /* -------------------------------------------------------------------------- */
 
-interface Overrides {
+export interface AuthOverrides {
   readRbac?: typeof defaultReadRbac;
   argonVerify?: typeof argon2.verify;
 }
 
-export function createAuthOptions(overrides: Overrides = {}): NextAuthOptions {
+export function createAuthOptions(
+  overrides: AuthOverrides = {}
+): NextAuthOptions {
   const readRbac = overrides.readRbac ?? defaultReadRbac;
   const argonVerify = overrides.argonVerify ?? argon2.verify;
 

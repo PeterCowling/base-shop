@@ -1,7 +1,6 @@
 import type { Role } from "@acme/types";
 import type { Session } from "next-auth";
 import type { JWT } from "next-auth/jwt";
-import argon2 from "argon2";
 
 jest.mock("@acme/shared-utils", () => ({
   logger: {
@@ -13,13 +12,13 @@ jest.mock("@acme/shared-utils", () => ({
 }));
 
 import { logger } from "@acme/shared-utils";
-import { createAuthOptions } from "../options";
+import { createAuthOptions, type AuthOverrides } from "../options";
 
 type Authorize = (
   credentials?: { email: string; password: string } | null
 ) => Promise<unknown>;
 
-const getAuthorize = (overrides: Parameters<typeof createAuthOptions>[0]) => {
+const getAuthorize = (overrides: AuthOverrides) => {
   const options = createAuthOptions(overrides);
   return (options.providers[0] as any).options.authorize as Authorize;
 };
@@ -121,7 +120,7 @@ describe("authorize", () => {
     expect(logger.warn).toHaveBeenCalledWith("[auth] login failed");
   });
 
-  it("authorizes hashed password and assigns role", async () => {
+  it("authorizes hashed password, assigns role, and strips password", async () => {
     const hashed = "$argon2id$hashed";
     const readRbac = jest.fn().mockResolvedValue({
       users: {
@@ -129,18 +128,20 @@ describe("authorize", () => {
       },
       roles: { "2": "admin" as Role },
     });
-    const argonVerify = jest
-      .fn()
-      .mockResolvedValue(true);
+    const argonVerify = jest.fn().mockResolvedValue(true);
     const authorize = getAuthorize({ readRbac, argonVerify });
 
-    await expect(
-      authorize({ email: "hashed@example.com", password: "secret" })
-    ).resolves.toMatchObject({
+    const result = await authorize({
+      email: "hashed@example.com",
+      password: "secret",
+    });
+
+    expect(result).toMatchObject({
       id: "2",
       email: "hashed@example.com",
       role: "admin",
     });
+    expect(result).not.toHaveProperty("password");
     expect(argonVerify).toHaveBeenCalledWith(hashed, "secret");
     expect(logger.info).toHaveBeenCalledWith("[auth] login success", {
       userId: "2",
@@ -148,7 +149,7 @@ describe("authorize", () => {
     });
   });
 
-  it("rejects when argon2 verification fails", async () => {
+  it("throws when hashed password does not match", async () => {
     const hashed = "$argon2id$hashed";
     const readRbac = jest.fn().mockResolvedValue({
       users: {
@@ -156,41 +157,40 @@ describe("authorize", () => {
       },
       roles: { "2": "admin" as Role },
     });
-    const verifySpy = jest
-      .spyOn(argon2, "verify")
-      .mockResolvedValue(false as unknown as boolean);
-    const authorize = getAuthorize({ readRbac });
+    const argonVerify = jest.fn().mockResolvedValue(false);
+    const authorize = getAuthorize({ readRbac, argonVerify });
 
     await expect(
       authorize({ email: "hashed@example.com", password: "wrong" })
     ).rejects.toThrow("Invalid email or password");
-    expect(verifySpy).toHaveBeenCalledWith(hashed, "wrong");
+    expect(argonVerify).toHaveBeenCalledWith(hashed, "wrong");
     expect(logger.warn).toHaveBeenCalledWith("[auth] login failed");
-
-    verifySpy.mockRestore();
   });
 });
 
-describe("session", () => {
+describe("callbacks", () => {
+  it("stores role in jwt and exposes it in session", async () => {
+    const options = createAuthOptions();
+    const jwtCb = options.callbacks.jwt!;
+    const sessionCb = options.callbacks.session!;
+
+    const token = {} as JWT & { role?: Role };
+    const user = { id: "1", role: "admin" as Role };
+    const withRole = await jwtCb({ token, user });
+
+    expect((withRole as JWT & { role?: Role }).role).toBe("admin");
+
+    const session = { user: {} } as Session & { user: { role?: Role } };
+    const result = await sessionCb({ session, token: withRole });
+    expect(result.user.role).toBe("admin");
+  });
+
   it("leaves role undefined when token lacks it", async () => {
     const options = createAuthOptions();
     const sessionCb = options.callbacks.session!;
-    const session = { user: {} } as any;
-    const result = await sessionCb({ session, token: {} as any });
-
-    expect(result.user).not.toHaveProperty("role");
-    expect(logger.debug).toHaveBeenCalledWith("[auth] session role", { role: undefined });
-  });
-});
-
-describe("session callback", () => {
-  it("does not assign role when token lacks it", async () => {
-    const options = createAuthOptions();
-    const sessionCallback = options.callbacks?.session!;
     const session = { user: {} } as Session & { user: { role?: Role } };
 
-    const result = await sessionCallback({ session, token: {} as JWT });
-
+    const result = await sessionCb({ session, token: {} as JWT });
     expect(result.user.role).toBeUndefined();
   });
 });

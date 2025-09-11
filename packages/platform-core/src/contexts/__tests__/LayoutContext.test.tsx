@@ -20,6 +20,37 @@ function TestComponent() {
   );
 }
 
+function ProgressComponent() {
+  const { configuratorProgress, setConfiguratorProgress } = useLayout();
+  const progress = configuratorProgress
+    ? JSON.stringify(configuratorProgress)
+    : "none";
+  return (
+    <div>
+      <span data-testid="progress">{progress}</span>
+      <button
+        data-testid="set-progress"
+        onClick={() =>
+          setConfiguratorProgress({
+            completedRequired: 1,
+            totalRequired: 2,
+            completedOptional: 0,
+            totalOptional: 0,
+          })
+        }
+      >
+        set
+      </button>
+      <button
+        data-testid="clear-progress"
+        onClick={() => setConfiguratorProgress(undefined)}
+      >
+        clear
+      </button>
+    </div>
+  );
+}
+
 describe("LayoutContext", () => {
   const mockPathname = usePathname as jest.MockedFunction<typeof usePathname>;
 
@@ -52,8 +83,10 @@ describe("LayoutContext", () => {
     expect(getByTestId("toggle").textContent).toBe("closed");
 
     fireEvent.click(getByTestId("toggle"));
-
     expect(getByTestId("toggle").textContent).toBe("open");
+
+    fireEvent.click(getByTestId("toggle"));
+    expect(getByTestId("toggle").textContent).toBe("closed");
   });
 
   it("handles SSR with null pathname and still toggles nav", () => {
@@ -69,6 +102,34 @@ describe("LayoutContext", () => {
 
     fireEvent.click(getByTestId("toggle"));
     expect(getByTestId("toggle").textContent).toBe("open");
+
+    fireEvent.click(getByTestId("toggle"));
+    expect(getByTestId("toggle").textContent).toBe("closed");
+  });
+
+  it("sets and clears configurator progress", () => {
+    mockPathname.mockReturnValue(null);
+
+    const { getByTestId } = render(
+      <LayoutProvider>
+        <ProgressComponent />
+      </LayoutProvider>
+    );
+
+    expect(getByTestId("progress").textContent).toBe("none");
+
+    fireEvent.click(getByTestId("set-progress"));
+    expect(getByTestId("progress").textContent).toBe(
+      JSON.stringify({
+        completedRequired: 1,
+        totalRequired: 2,
+        completedOptional: 0,
+        totalOptional: 0,
+      })
+    );
+
+    fireEvent.click(getByTestId("clear-progress"));
+    expect(getByTestId("progress").textContent).toBe("none");
   });
 });
 

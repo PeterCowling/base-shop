@@ -18,15 +18,19 @@ describe("parseMultilingualInput", () => {
     expect(parseMultilingualInput("title_es", locales)).toBeNull();
     expect(parseMultilingualInput("foo_en", locales)).toBeNull();
     expect(parseMultilingualInput("foo", locales)).toBeNull();
+    expect(parseMultilingualInput("title", locales)).toBeNull();
     expect(parseMultilingualInput("title_EN", locales)).toBeNull();
     expect(parseMultilingualInput(" title_en", locales)).toBeNull();
     expect(parseMultilingualInput("title_en ", locales)).toBeNull();
     expect(parseMultilingualInput("title__en", locales)).toBeNull();
     expect(parseMultilingualInput("title-en", locales)).toBeNull();
+    expect(
+      parseMultilingualInput({ en: "x", it: "y" } as any, locales)
+    ).toBeNull();
   });
 
   it("returns null when locale not in provided list", () => {
-    const partialLocales = ["de", "it"] as const;
-    expect(parseMultilingualInput("title_en", partialLocales)).toBeNull();
+    const partialLocales = ["en", "it"] as const;
+    expect(parseMultilingualInput("title_fr", partialLocales)).toBeNull();
   });
 });

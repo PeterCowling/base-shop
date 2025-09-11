@@ -219,11 +219,6 @@ const config = {
   testMatch: ['**/?(*.)+(spec|test).ts?(x)'],
   passWithNoTests: true,
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'mjs', 'node', 'd.ts'],
-  collectCoverageFrom: [
-    ' /packages/email/src/**/*.{ts,tsx}',
-    ' /packages/email-templates/src/**/*.{ts,tsx}',
-    ' /packages/config/src/env/email.ts',
-  ],
   collectCoverage: true,
   coverageDirectory: path.join(process.cwd(), 'coverage'),
   coveragePathIgnorePatterns: [
@@ -239,7 +234,7 @@ const config = {
     ' /packages/config/src/env/__tests__/',
     ' /packages/config/src/env/__test__/',
   ],
-  coverageReporters: ['text', 'text-summary', 'lcov'],
+  coverageReporters: ['text', 'text-summary', 'lcov', 'json'],
   coverageThreshold: {
     global: {
       lines: 80,
@@ -247,7 +242,7 @@ const config = {
       functions: 80,
     },
   },
-  rootDir: '.', // each workspace already passes --config ../../jest.config.cjs
+  rootDir: process.cwd(), // ensure paths resolve relative to each package
 };
 
 module.exports = resolveRoot(config);

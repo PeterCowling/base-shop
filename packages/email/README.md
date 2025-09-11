@@ -57,6 +57,7 @@ startup validation can omit the option.
 
 HTML passed via template parameters such as `body` or `content` is sanitized
 with [DOMPurify](https://github.com/cure53/DOMPurify) before being inserted into
-email markup. This protects against email-borne cross-site scripting (XSS)
-attacks. Avoid injecting unsanitized user content into templates and sanitize
-any custom parameters before rendering.
+email markup. Custom source templates also entity-encode placeholder values to
+prevent HTML injection. The package exports an `escapeHtml` helper for encoding
+untrusted strings, but you should still sanitize any user content before
+rendering templates.

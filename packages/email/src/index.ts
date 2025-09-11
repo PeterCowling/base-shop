@@ -19,6 +19,7 @@ try {
 export type { CampaignOptions } from "./send";
 export { sendCampaignEmail } from "./send";
 export { registerTemplate, renderTemplate, clearTemplates } from "./templates";
+export { escapeHtml } from "./escapeHtml";
 export type { AbandonedCart } from "./abandonedCart";
 export { recoverAbandonedCarts, resolveAbandonedCartDelay } from "./abandonedCart";
 export { sendEmail };

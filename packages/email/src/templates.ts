@@ -7,6 +7,7 @@ import {
   marketingEmailTemplates,
   type MarketingEmailTemplateVariant,
 } from "@acme/email-templates";
+import { escapeHtml } from "./escapeHtml";
 
 // Use Node's createRequire with the current file path so this works when the
 // code is executed in a CommonJS context (e.g. ts-jest).
@@ -106,9 +107,9 @@ export function renderTemplate(
 ): string {
   const source = templates[id];
   if (source) {
-    return source.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) => {
-      return params[key] ?? "";
-    });
+    return source.replace(/\{\{\s*(\w+)\s*\}\}/g, (_, key) =>
+      escapeHtml(params[key] ?? "")
+    );
   }
   const variant = (marketingEmailTemplates as MarketingEmailTemplateVariant[]).find(
     (t) => t.id === id

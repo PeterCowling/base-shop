@@ -224,12 +224,12 @@ async function sendWithRetry(
       attempt++;
       let retryable: boolean;
       if (err instanceof ProviderError) {
-        retryable = err.retryable;
+        retryable = err.retryable !== false;
       } else if (hasProviderErrorFields(err)) {
-        retryable = err.retryable ?? false;
+        retryable = err.retryable !== false;
       } else {
         console.warn("Unrecognized provider error", { error: err });
-        retryable = false;
+        retryable = true;
       }
       if (!retryable || attempt >= maxRetries) {
         throw err;

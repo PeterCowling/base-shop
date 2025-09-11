@@ -518,8 +518,10 @@ describe("send core helpers", () => {
     it("retries when error lacks retryable flag", async () => {
       jest.useFakeTimers();
       mockHasProviderErrorFields.mockReturnValue(false);
+      const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
       const { sendWithRetry } = await import("../send");
-      const provider = { send: jest.fn().mockRejectedValue(new Error("x")) };
+      const error = new Error("x");
+      const provider = { send: jest.fn().mockRejectedValue(error) };
       const promise = sendWithRetry(provider as any, {
         to: "t",
         subject: "s",
@@ -527,6 +529,10 @@ describe("send core helpers", () => {
       await jest.runAllTimersAsync();
       await promise;
       expect(provider.send).toHaveBeenCalledTimes(3);
+      expect(warn).toHaveBeenCalledWith("Unrecognized provider error", {
+        error,
+      });
+      warn.mockRestore();
       jest.useRealTimers();
     });
 

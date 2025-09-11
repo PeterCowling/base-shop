@@ -537,7 +537,7 @@ describe("CartProvider offline fallback", () => {
     expect(removeSpy).toHaveBeenCalledWith("online", handler);
   });
 
-  it("logs error and keeps listener when sync fetch fails", async () => {
+  it("logs error and keeps state and cache when sync fetch fails", async () => {
     window.localStorage.setItem("cart", JSON.stringify(mockCart));
     const fetchMock = global.fetch as jest.Mock;
     fetchMock.mockRejectedValueOnce(new Error("offline"));
@@ -546,6 +546,7 @@ describe("CartProvider offline fallback", () => {
     const addSpy = jest.spyOn(window, "addEventListener");
     const removeSpy = jest.spyOn(window, "removeEventListener");
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const setSpy = jest.spyOn(Storage.prototype, "setItem");
 
     render(
       <CartProvider>
@@ -557,15 +558,21 @@ describe("CartProvider offline fallback", () => {
       expect(addSpy).toHaveBeenCalledWith("online", expect.any(Function))
     );
 
+    expect(screen.getByTestId("count").textContent).toBe("1");
+    expect(localStorage.getItem("cart")).toBe(JSON.stringify(mockCart));
+
     errorSpy.mockClear();
 
-    act(() => {
+    await act(async () => {
       window.dispatchEvent(new Event("online"));
     });
 
     await waitFor(() => expect(errorSpy).toHaveBeenCalledTimes(1));
 
     expect(removeSpy).not.toHaveBeenCalled();
+    expect(setSpy).not.toHaveBeenCalled();
+    expect(screen.getByTestId("count").textContent).toBe("1");
+    expect(localStorage.getItem("cart")).toBe(JSON.stringify(mockCart));
 
     errorSpy.mockRestore();
   });

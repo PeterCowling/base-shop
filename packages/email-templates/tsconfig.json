@@ -8,9 +8,12 @@
     "rootDir": "src",
     "outDir": "dist",
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@acme/ui": ["../ui/dist/index.d.ts", "types-compat/ui"],
+      "@acme/ui/*": ["../ui/dist/*"]
+    }
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "types-compat/**/*.d.ts"],
   "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"]
 }
 

@@ -16,6 +16,13 @@ describe("fillLocales", () => {
     expect(result).toEqual({ en: "Hello", de: "Hallo", it: "Hi" });
   });
 
+  it("replaces nullish locale values with the fallback", () => {
+    const values = { en: null, de: undefined } as any;
+    const result = fillLocales(values, "Hi");
+
+    expect(result).toEqual({ en: "Hi", de: "Hi", it: "Hi" });
+  });
+
   it("preserves original values when all locales are provided", () => {
     const values = { en: "Hello", de: "Hallo", it: "Ciao" };
     const result = fillLocales(values, "Hi");

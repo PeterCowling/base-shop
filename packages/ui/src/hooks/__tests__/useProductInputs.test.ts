@@ -57,6 +57,34 @@ describe("useProductInputs", () => {
     expect(result.current.product.variants.size).toEqual(["m", "l"]);
   });
 
+  it("handleChange updates description field", () => {
+    const { result } = renderHook(() =>
+      useProductInputs({ ...createProduct(), variants: {} }, locales)
+    );
+
+    act(() => {
+      result.current.handleChange({
+        target: { name: "desc_en", value: "New Description" },
+      } as any);
+    });
+
+    expect(result.current.product.description.en).toBe("New Description");
+  });
+
+  it("handleChange sets empty variant array value", () => {
+    const { result } = renderHook(() =>
+      useProductInputs({ ...createProduct(), variants: {} }, locales)
+    );
+
+    act(() => {
+      result.current.handleChange({
+        target: { name: "variant_color", value: "" },
+      } as any);
+    });
+
+    expect(result.current.product.variants.color).toEqual([""]);
+  });
+
   it("addVariantValue and removeVariantValue update variants correctly", () => {
     const { result } = renderHook(() =>
       useProductInputs({ ...createProduct(), variants: {} }, locales)

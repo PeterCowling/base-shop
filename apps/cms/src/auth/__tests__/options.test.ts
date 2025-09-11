@@ -1,6 +1,7 @@
 import type { Role } from "@acme/types";
 import type { Session } from "next-auth";
 import type { JWT } from "next-auth/jwt";
+import argon2 from "argon2";
 
 jest.mock("@acme/shared-utils", () => ({
   logger: {
@@ -28,6 +29,15 @@ beforeEach(() => {
 });
 
 describe("authorize", () => {
+  it("returns null when credentials are null", async () => {
+    const readRbac = jest.fn();
+    const authorize = getAuthorize({ readRbac });
+
+    await expect(authorize(null)).resolves.toBeNull();
+    expect(readRbac).not.toHaveBeenCalled();
+    expect(logger.debug).toHaveBeenCalledWith("[auth] authorize called");
+  });
+
   it("returns null when credentials are undefined", async () => {
     const readRbac = jest.fn();
     const authorize = getAuthorize({ readRbac });
@@ -82,6 +92,25 @@ describe("authorize", () => {
     logSpy.mockRestore();
   });
 
+  it("throws in production when password is not hashed", async () => {
+    const prevEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = "production";
+
+    const readRbac = jest.fn().mockResolvedValue({
+      users: {
+        "2": { id: "2", email: "user@example.com", password: "plain" },
+      },
+      roles: {},
+    });
+    const authorize = getAuthorize({ readRbac });
+
+    await expect(
+      authorize({ email: "user@example.com", password: "plain" })
+    ).rejects.toThrow("Invalid email or password");
+
+    process.env.NODE_ENV = prevEnv;
+  });
+
   it("throws when user is missing", async () => {
     const readRbac = jest.fn().mockResolvedValue({ users: {}, roles: {} });
     const authorize = getAuthorize({ readRbac });
@@ -127,14 +156,18 @@ describe("authorize", () => {
       },
       roles: { "2": "admin" as Role },
     });
-    const argonVerify = jest.fn().mockResolvedValue(false);
-    const authorize = getAuthorize({ readRbac, argonVerify });
+    const verifySpy = jest
+      .spyOn(argon2, "verify")
+      .mockResolvedValue(false as unknown as boolean);
+    const authorize = getAuthorize({ readRbac });
 
     await expect(
       authorize({ email: "hashed@example.com", password: "wrong" })
     ).rejects.toThrow("Invalid email or password");
-    expect(argonVerify).toHaveBeenCalledWith(hashed, "wrong");
+    expect(verifySpy).toHaveBeenCalledWith(hashed, "wrong");
     expect(logger.warn).toHaveBeenCalledWith("[auth] login failed");
+
+    verifySpy.mockRestore();
   });
 });
 

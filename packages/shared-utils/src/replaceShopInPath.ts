@@ -12,8 +12,16 @@ export function replaceShopInPath(
 ): string {
   if (!pathname) return `/cms/shop/${shop}`;
 
-  const [path, query] = pathname.split("?");
-  const trailingSlash = path.endsWith("/");
+  const hasTrailingSlash = pathname.endsWith("/");
+  const [path, q] = pathname.split("?");
+  let query = q;
+  let trailingSlash = path.endsWith("/");
+
+  if (hasTrailingSlash && !trailingSlash) {
+    trailingSlash = true;
+    if (query) query = query.replace(/\/$/, "");
+  }
+
   const segments = path.split("/").filter(Boolean);
   const idx = segments.indexOf("shop");
 

@@ -49,4 +49,10 @@ describe("replaceShopInPath", () => {
       "/cms/shop/new/"
     );
   });
+
+  it("preserves query with trailing slash at end", () => {
+    expect(replaceShopInPath("/cms?page=1/", "new")).toBe(
+      "/cms/shop/new/?page=1"
+    );
+  });
 });

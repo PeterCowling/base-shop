@@ -38,6 +38,13 @@ const baseSku = {
 };
 
 describe("ProductCard media", () => {
+  it("renders no media elements when sku.media is empty", () => {
+    render(<ProductCard sku={baseSku} />);
+    expect(screen.queryByRole("img")).toBeNull();
+    expect(document.querySelector("video")).toBeNull();
+    expect(screen.getByRole("link")).toBeInTheDocument();
+  });
+
   it("renders an Image for image media", () => {
     const sku = { ...baseSku, media: [{ type: "image", url: "/img.jpg" }] };
     render(<ProductCard sku={sku} />);
@@ -50,6 +57,49 @@ describe("ProductCard media", () => {
     const { container } = render(<ProductCard sku={sku} />);
     expect(container.querySelector("video")).toBeInTheDocument();
     expect(screen.queryByRole("img")).toBeNull();
+  });
+});
+
+describe("ProductCard price", () => {
+  beforeEach(() => {
+    formatPriceMock.mockClear();
+  });
+
+  it("omits price when sku.price is undefined", () => {
+    const sku = { ...baseSku, price: undefined as any };
+    const { container } = render(<ProductCard sku={sku} />);
+    expect(container.querySelector(".font-semibold.text-gray-900")).toBeNull();
+    expect(formatPriceMock).not.toHaveBeenCalled();
+  });
+
+  it("omits price when sku.price is null", () => {
+    const sku = { ...baseSku, price: null as any };
+    const { container } = render(<ProductCard sku={sku} />);
+    expect(container.querySelector(".font-semibold.text-gray-900")).toBeNull();
+    expect(formatPriceMock).not.toHaveBeenCalled();
+  });
+});
+
+describe("ProductCard badges", () => {
+  it("shows sale badge when sku.badges.sale is true", () => {
+    const sku = { ...baseSku, badges: { sale: true } };
+    render(<ProductCard sku={sku} />);
+    expect(screen.getByTestId("badge-sale")).toBeInTheDocument();
+    expect(screen.queryByTestId("badge-new")).toBeNull();
+  });
+
+  it("shows new badge when sku.badges.new is true", () => {
+    const sku = { ...baseSku, badges: { new: true } };
+    render(<ProductCard sku={sku} />);
+    expect(screen.getByTestId("badge-new")).toBeInTheDocument();
+    expect(screen.queryByTestId("badge-sale")).toBeNull();
+  });
+
+  it("renders no badges when flags are false", () => {
+    const sku = { ...baseSku, badges: { sale: false, new: false } };
+    render(<ProductCard sku={sku} />);
+    expect(screen.queryByTestId("badge-sale")).toBeNull();
+    expect(screen.queryByTestId("badge-new")).toBeNull();
   });
 });
 

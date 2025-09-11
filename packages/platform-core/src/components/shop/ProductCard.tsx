@@ -18,7 +18,7 @@ export function Price({ amount, currency }: PriceProps) {
   return <span>{formatPrice(amount, cur)}</span>;
 }
 
-function ProductCardInner({ sku }: { sku: SKU }) {
+function ProductCardInner({ sku }: { sku: SKU & { badges?: { sale?: boolean; new?: boolean } } }) {
   return (
     <article className="flex flex-col gap-[var(--space-3)] rounded-lg border p-[var(--space-4)] transition-shadow hover:shadow-md">
       {" "}
@@ -45,10 +45,14 @@ function ProductCardInner({ sku }: { sku: SKU }) {
           )
         )}
       </Link>
+      {sku.badges?.sale && <span data-cy="badge-sale">Sale</span>}
+      {sku.badges?.new && <span data-cy="badge-new">New</span>}
       <h3 className="font-medium">{sku.title}</h3>
-      <div className="font-semibold text-gray-900">
-        <Price amount={sku.price} />
-      </div>
+      {sku.price != null && (
+        <div className="font-semibold text-gray-900">
+          <Price amount={sku.price} />
+        </div>
+      )}
       <AddToCartButton sku={sku} />
     </article>
   );

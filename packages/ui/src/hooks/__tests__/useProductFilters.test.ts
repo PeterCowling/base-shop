@@ -23,6 +23,7 @@ const rows: Row[] = [
     sku: "green",
     status: "archived",
   },
+  { id: "4", title: "Black Shoe", sku: "sku-123", status: "active" },
 ];
 
 describe("useProductFilters", () => {
@@ -38,6 +39,9 @@ describe("useProductFilters", () => {
     act(() => result.current.setSearch("zapato"));
     expect(result.current.filteredRows.map((r) => r.id)).toEqual(["3"]);
 
+    act(() => result.current.setSearch("sku-123"));
+    expect(result.current.filteredRows.map((r) => r.id)).toEqual(["4"]);
+
     act(() => result.current.setSearch("green"));
     expect(result.current.filteredRows.map((r) => r.id)).toEqual(["3"]);
 
@@ -48,7 +52,7 @@ describe("useProductFilters", () => {
   it("switches status between all and specific values", () => {
     const { result } = renderHook(() => useProductFilters(rows));
 
-    expect(result.current.filteredRows.map((r) => r.id)).toEqual(["1", "2", "3"]);
+    expect(result.current.filteredRows.map((r) => r.id)).toEqual(["1", "2", "3", "4"]);
 
     act(() => result.current.setStatus("draft"));
     expect(result.current.filteredRows.map((r) => r.id)).toEqual(["2"]);
@@ -57,10 +61,10 @@ describe("useProductFilters", () => {
     expect(result.current.filteredRows.map((r) => r.id)).toEqual(["3"]);
 
     act(() => result.current.setStatus("active"));
-    expect(result.current.filteredRows.map((r) => r.id)).toEqual(["1"]);
+    expect(result.current.filteredRows.map((r) => r.id)).toEqual(["1", "4"]);
 
     act(() => result.current.setStatus("all"));
-    expect(result.current.filteredRows.map((r) => r.id)).toEqual(["1", "2", "3"]);
+    expect(result.current.filteredRows.map((r) => r.id)).toEqual(["1", "2", "3", "4"]);
   });
 });
 

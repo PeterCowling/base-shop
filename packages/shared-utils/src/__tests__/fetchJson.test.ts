@@ -122,6 +122,19 @@ describe('fetchJson', () => {
     await expect(fetchJson('https://example.com')).rejects.toThrow('HTTP 500');
   });
 
+  it('includes response body when status text is empty and body is plain text', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: '',
+      text: jest.fn().mockResolvedValue('server exploded'),
+    });
+
+    await expect(fetchJson('https://example.com')).rejects.toThrow(
+      'server exploded',
+    );
+  });
+
   it('falls back to HTTP status when statusText is undefined', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: false,

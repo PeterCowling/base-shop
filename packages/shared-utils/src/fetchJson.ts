@@ -6,9 +6,9 @@ export async function fetchJson<T>(
   schema?: z.ZodType<T>
 ): Promise<T> {
   const res = await fetch(input, init);
+  const text = await res.text().catch(() => "");
   let data: unknown;
   try {
-    const text = await res.text();
     data = text ? JSON.parse(text) : undefined;
   } catch {
     data = undefined;
@@ -17,7 +17,9 @@ export async function fetchJson<T>(
     const error = z.object({ error: z.string() }).safeParse(data);
     const message = error.success
       ? error.data.error
-      : res.statusText || `HTTP ${res.status}`;
+      : [res.statusText || `HTTP ${res.status}`, text]
+          .filter(Boolean)
+          .join(": ");
     throw new Error(message);
   }
   return schema ? schema.parse(data) : (data as T);

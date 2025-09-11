@@ -3,6 +3,12 @@ import { z } from "zod";
 
 const isProd = process.env.NODE_ENV === "production";
 
+const boolish = z.preprocess((val) => {
+  if (typeof val === "string") return val === "true" || val === "1";
+  if (typeof val === "number") return val === 1;
+  return val;
+}, z.boolean());
+
 export const cmsEnvSchema = z.object({
   CMS_SPACE_URL: isProd
     ? z.string().url()
@@ -38,12 +44,12 @@ export const cmsEnvSchema = z.object({
     .transform((url) => url.replace(/\/$/, ""))
     .optional(),
   CMS_PAGINATION_LIMIT: z.coerce.number().default(100),
-  CMS_DRAFTS_ENABLED: z.coerce.boolean().default(false),
+  CMS_DRAFTS_ENABLED: boolish.default(false),
   CMS_DRAFTS_DISABLED_PATHS: z
     .string()
     .default("")
     .transform((v) => v.split(",").map((s) => s.trim()).filter(Boolean)),
-  CMS_SEARCH_ENABLED: z.coerce.boolean().default(false),
+  CMS_SEARCH_ENABLED: boolish.default(false),
   CMS_SEARCH_DISABLED_PATHS: z
     .string()
     .default("")

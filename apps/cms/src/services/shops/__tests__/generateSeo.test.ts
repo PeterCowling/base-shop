@@ -73,4 +73,22 @@ describe("generateSeo", () => {
 
     expect(result).toEqual({ generated });
   });
+
+  it("throws when authorization fails", async () => {
+    (authorize as jest.Mock).mockRejectedValueOnce(new Error("nope"));
+    await expect(generateSeo("shop", new FormData())).rejects.toThrow("nope");
+    expect(fetchSettings).not.toHaveBeenCalled();
+    expect(persistSettings).not.toHaveBeenCalled();
+    expect(generateMeta).not.toHaveBeenCalled();
+  });
+
+  it("throws when persisting settings fails", async () => {
+    const fd = new FormData();
+    fd.append("id", "123");
+    fd.append("locale", "en");
+    fd.append("title", "Title");
+    fd.append("description", "Desc");
+    (persistSettings as jest.Mock).mockRejectedValueOnce(new Error("db"));
+    await expect(generateSeo("shop", fd)).rejects.toThrow("db");
+  });
 });

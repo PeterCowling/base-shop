@@ -100,4 +100,13 @@ describe("reverse logistics helpers", () => {
       );
     }
   });
+
+  it("defaults createdAt when omitted", async () => {
+    const spy = jest
+      .spyOn(repo, "recordEvent")
+      .mockResolvedValue(undefined);
+    nowIsoMock.mockReturnValue("ts");
+    await repo.reverseLogisticsEvents.cleaning("shop1", "session1");
+    expect(spy).toHaveBeenCalledWith("shop1", "session1", "cleaning", "ts");
+  });
 });

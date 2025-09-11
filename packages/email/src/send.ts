@@ -3,6 +3,17 @@ import type { CampaignProvider } from "./providers/types";
 import { ProviderError } from "./providers/types";
 import { hasProviderErrorFields } from "./providers/error";
 import { getDefaultSender } from "./config";
+import { z } from "zod";
+
+const emailSchema = z
+  .string()
+  .trim()
+  .email()
+  .transform((v) => v.toLowerCase());
+const subjectSchema = z
+  .string()
+  .trim()
+  .min(1, "Email subject is required");
 
 export interface CampaignOptions {
   /** Recipient email address */
@@ -102,8 +113,22 @@ if (configuredProvider && !availableProviders.includes(configuredProvider)) {
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
-  const { sanitize = true, ...rest } = options;
-  const opts = { ...rest } as CampaignOptions;
+  const { sanitize = true, to, subject, ...rest } = options;
+
+  const parsedTo = emailSchema.safeParse(to);
+  if (!parsedTo.success) {
+    throw new Error(`Invalid recipient email address: ${to}`);
+  }
+  const parsedSubject = subjectSchema.safeParse(subject);
+  if (!parsedSubject.success) {
+    throw new Error("Email subject is required.");
+  }
+
+  const opts = {
+    ...rest,
+    to: parsedTo.data,
+    subject: parsedSubject.data,
+  } as CampaignOptions;
   if (opts.templateId) {
     const { renderTemplate } = await import("./templates");
     opts.html = renderTemplate(opts.templateId, opts.variables ?? {});

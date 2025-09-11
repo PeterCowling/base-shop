@@ -178,13 +178,13 @@ function deployShopImpl(
         env += (env.endsWith("\n") ? "" : "\n") + secret + "\n";
       }
 
-      // Write both the repository-relative and absolute paths. Some test
-      // environments mock `fs` without a notion of the real working directory,
-      // so also attempt to write using `process.cwd()` to ensure the secret is
-      // persisted where callers expect.
+      // Write both the repo-absolute path and a path resolved from the current
+      // working directory. Some test environments mock `fs` with a different
+      // notion of CWD, so attempt both to ensure the secret persists.
       const cwdPath = join(process.cwd(), envRel);
-      for (const p of new Set([envRel, envAbs, cwdPath])) {
+      for (const p of new Set([envAbs, cwdPath])) {
         try {
+          fs.mkdirSync(dirname(p), { recursive: true });
           fs.writeFileSync(p, env);
         } catch {
           /* ignore write errors */
@@ -213,16 +213,20 @@ export const deployShop: (
 ) => DeployShopResult = deployShopImpl;
 
 export function listThemes(): string[] {
-  const themesDir = join(repoRoot(), "packages", "themes");
-  try {
-    return fs
-      .readdirSync(themesDir, { withFileTypes: true })
-      .filter((entry) => entry.isDirectory())
-      .map((entry) => entry.name);
-  } catch {
-    // Return an empty array when the themes directory cannot be read
-    return [];
+  const roots = [repoRoot(), process.cwd()];
+  for (const root of roots) {
+    try {
+      const themesDir = join(root, "packages", "themes");
+      return fs
+        .readdirSync(themesDir, { withFileTypes: true })
+        .filter((entry) => entry.isDirectory())
+        .map((entry) => entry.name);
+    } catch {
+      /* try next root */
+    }
   }
+  // Return an empty array when the themes directory cannot be read
+  return [];
 }
 
 /**
@@ -240,8 +244,13 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
   const cssAbs = join(root, cssRel);
 
   try {
-    if (fs.existsSync(pkgAbs)) {
-      const pkg = JSON.parse(fs.readFileSync(pkgAbs, "utf8")) as {
+    const pkgPath = fs.existsSync(pkgAbs)
+      ? pkgAbs
+      : fs.existsSync(pkgRel)
+      ? pkgRel
+      : null;
+    if (pkgPath) {
+      const pkg = JSON.parse(fs.readFileSync(pkgPath, "utf8")) as {
         dependencies?: Record<string, string>;
       };
       pkg.dependencies ??= {};
@@ -263,9 +272,14 @@ export function syncTheme(shop: string, theme: string): Record<string, string> {
   }
 
   try {
-    if (fs.existsSync(cssAbs)) {
+    const cssPath = fs.existsSync(cssAbs)
+      ? cssAbs
+      : fs.existsSync(cssRel)
+      ? cssRel
+      : null;
+    if (cssPath) {
       const css = fs
-        .readFileSync(cssAbs, "utf8")
+        .readFileSync(cssPath, "utf8")
         .replace(/@themes\/[^/]+\/tokens.css/, `@themes/${theme}/tokens.css`);
       for (const p of new Set([cssRel, cssAbs])) {
         try {

@@ -127,9 +127,10 @@ export async function trackEvent(
   event: AnalyticsEvent
 ): Promise<void> {
   const provider = await resolveProvider(shop);
-  if (provider instanceof NoopProvider) return;
   const withTs = { timestamp: nowIso(), ...event };
-  await provider.track(withTs);
+  if (!(provider instanceof NoopProvider)) {
+    await provider.track(withTs);
+  }
   await updateAggregates(shop, withTs);
 }
 

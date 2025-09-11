@@ -1,4 +1,5 @@
 import { render, screen, waitFor, act } from "@testing-library/react";
+import { useState, useMemo } from "react";
 import { ProductGrid } from "../ProductGrid";
 
 // Mock ProductCard to simplify rendering
@@ -149,6 +150,71 @@ describe("ProductGrid", () => {
       unmount();
     });
     expect(disconnect).toHaveBeenCalled();
+  });
+
+  it("renders placeholders when skus is empty", () => {
+    render(<ProductGrid skus={[]} columns={3} />);
+    const placeholders = screen.getAllByTestId("placeholder");
+    expect(placeholders).toHaveLength(3);
+  });
+
+  it("shows load more button only when more items are available", async () => {
+    function Wrapper() {
+      const [count, setCount] = useState(2);
+      const visible = skus.slice(0, count);
+      return (
+        <>
+          <ProductGrid skus={visible} />
+          {count < skus.length && (
+            <button data-cy="load-more" onClick={() => setCount((c) => c + 1)}>
+              Load More
+            </button>
+          )}
+        </>
+      );
+    }
+    render(<Wrapper />);
+    expect(screen.getByTestId("load-more")).toBeInTheDocument();
+    expect(screen.getAllByTestId("sku")).toHaveLength(2);
+    await act(async () => {
+      screen.getByTestId("load-more").click();
+    });
+    expect(screen.getAllByTestId("sku")).toHaveLength(3);
+    expect(screen.queryByTestId("load-more")).toBeNull();
+  });
+
+  it("filters results and shows active filter indicators", () => {
+    const filterSkus = [
+      makeSku("10", "Red Shirt"),
+      makeSku("11", "Blue Shirt"),
+      makeSku("12", "Red Pants"),
+    ];
+    function FilterWrapper() {
+      const [color, setColor] = useState<string | null>(null);
+      const filtered = useMemo(
+        () =>
+          filterSkus.filter(
+            (s) => !color || s.title.toLowerCase().startsWith(color)
+          ),
+        [color]
+      );
+      return (
+        <>
+          <button data-cy="filter-red" onClick={() => setColor("red")}>
+            Red
+          </button>
+          <ProductGrid skus={filtered} />
+          {color && <span data-cy="active-filter">color: {color}</span>}
+        </>
+      );
+    }
+    render(<FilterWrapper />);
+    expect(screen.getAllByTestId("sku")).toHaveLength(3);
+    act(() => {
+      screen.getByTestId("filter-red").click();
+    });
+    expect(screen.getAllByTestId("sku")).toHaveLength(2);
+    expect(screen.getByTestId("active-filter")).toHaveTextContent("color: red");
   });
 });
 

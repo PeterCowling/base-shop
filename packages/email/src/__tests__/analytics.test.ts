@@ -758,4 +758,27 @@ describe("syncCampaignAnalytics", () => {
 
     await expect(syncCampaignAnalytics()).rejects.toBe(error);
   });
+
+  it("ignores unsupported email provider", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    process.env.EMAIL_PROVIDER = "unsupported";
+    const trackEvent = jest.fn(() => {
+      throw new Error("trackEvent should not be called");
+    });
+    jest.doMock("@platform-core/analytics", () => ({
+      __esModule: true,
+      trackEvent,
+    }));
+    const getCampaignStore = jest.fn(() => {
+      throw new Error("getCampaignStore should not be called");
+    });
+    jest.doMock("../storage", () => ({ __esModule: true, getCampaignStore }));
+    jest.doMock("../providers/sendgrid", () => ({ SendgridProvider: jest.fn() }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+    const { syncCampaignAnalytics } = await import("../analytics");
+    await expect(syncCampaignAnalytics()).resolves.toBeUndefined();
+    expect(trackEvent).not.toHaveBeenCalled();
+    expect(getCampaignStore).not.toHaveBeenCalled();
+  });
 });

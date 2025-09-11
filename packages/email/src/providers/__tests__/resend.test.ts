@@ -56,6 +56,15 @@ describe("ResendProvider", () => {
       );
     });
 
+    it("resolves immediately when API key missing", async () => {
+      const fetchSpy = jest.spyOn(global, "fetch");
+      const { ResendProvider } = await import("../resend");
+      const provider = new ResendProvider({ sanityCheck: true });
+      await expect(provider.ready).resolves.toBeUndefined();
+      expect(fetchSpy).not.toHaveBeenCalled();
+      fetchSpy.mockRestore();
+    });
+
     it("resolves immediately when sanity check disabled", async () => {
       process.env.RESEND_API_KEY = "rs";
       const fetchSpy = jest.spyOn(global, "fetch");

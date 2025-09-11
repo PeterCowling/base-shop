@@ -52,6 +52,15 @@ describe("SendgridProvider", () => {
       );
     });
 
+    it("resolves immediately when API key missing", async () => {
+      const fetchSpy = jest.spyOn(global, "fetch");
+      const { SendgridProvider } = await import("../sendgrid");
+      const provider = new SendgridProvider({ sanityCheck: true });
+      await expect(provider.ready).resolves.toBeUndefined();
+      expect(fetchSpy).not.toHaveBeenCalled();
+      fetchSpy.mockRestore();
+    });
+
     it("resolves immediately when sanity check disabled", async () => {
       process.env.SENDGRID_API_KEY = "key";
       const fetchSpy = jest.spyOn(global, "fetch");

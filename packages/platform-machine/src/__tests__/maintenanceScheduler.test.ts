@@ -18,7 +18,11 @@ import { readdir } from "fs/promises";
 import { logger } from "@platform-core/utils";
 import { readInventory } from "@platform-core/repositories/inventory.server";
 import { readRepo as readProducts } from "@platform-core/repositories/products.server";
-import { runMaintenanceScan, startMaintenanceScheduler } from "../maintenanceScheduler";
+import {
+  runMaintenanceScan,
+  startMaintenanceScheduler,
+} from "../maintenanceScheduler";
+import * as maintenanceScheduler from "../maintenanceScheduler";
 
 describe("runMaintenanceScan", () => {
   const readdirMock = readdir as unknown as jest.Mock;
@@ -83,6 +87,18 @@ describe("runMaintenanceScan", () => {
     expect(infoMock).not.toHaveBeenCalled();
   });
 
+  it("does not log when wear count is zero", async () => {
+    readdirMock.mockResolvedValueOnce(["shop1"]);
+    inventoryMock.mockResolvedValueOnce([{ sku: "sku1", wearCount: 0 }]);
+    productsMock.mockResolvedValueOnce([
+      { sku: "sku1", wearAndTearLimit: 10, maintenanceCycle: 5 },
+    ]);
+
+    await runMaintenanceScan("/data");
+
+    expect(infoMock).not.toHaveBeenCalled();
+  });
+
   it("logs an error and continues processing other shops", async () => {
     readdirMock.mockResolvedValueOnce(["badShop", "goodShop"]);
     inventoryMock
@@ -120,6 +136,28 @@ describe("startMaintenanceScheduler", () => {
     }
     jest.useRealTimers();
     jest.clearAllMocks();
+  });
+
+  it("runs maintenance scan immediately and on schedule", async () => {
+    const runSpy = jest
+      .spyOn(maintenanceScheduler, "runMaintenanceScan")
+      .mockResolvedValueOnce(undefined)
+      .mockResolvedValueOnce(undefined);
+
+    timer = startMaintenanceScheduler();
+
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(runSpy).toHaveBeenCalledTimes(1);
+
+    jest.advanceTimersByTime(24 * 60 * 60 * 1000);
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(runSpy).toHaveBeenCalledTimes(2);
+
+    runSpy.mockRestore();
   });
 
   it("logs an error when runMaintenanceScan throws", async () => {

@@ -22,6 +22,16 @@ describe("requirePermission", () => {
     ).rejects.toThrow("Unauthorized");
   });
 
+  it("propagates errors from getCustomerSession", async () => {
+    const customError = new Error("session failed");
+    getCustomerSession.mockRejectedValue(customError);
+
+    const { requirePermission } = await import("../requirePermission");
+
+    await expect(requirePermission("manage_orders")).rejects.toBe(customError);
+    expect(hasPermission).not.toHaveBeenCalled();
+  });
+
   it("rejects with Unauthorized when permission is missing", async () => {
     getCustomerSession.mockResolvedValue({
       customerId: "cust",

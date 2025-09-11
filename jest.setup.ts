@@ -22,6 +22,7 @@ const mutableEnv = process.env as unknown as Record<string, string>;
 mutableEnv.NODE_ENV ||= "development"; // relax “edge” runtime checks
 mutableEnv.CART_COOKIE_SECRET ||= "test-cart-secret"; // cart cookie signing
 mutableEnv.STRIPE_WEBHOOK_SECRET ||= "whsec_test"; // dummy Stripe webhook secret
+mutableEnv.EMAIL_FROM ||= "test@example.com"; // dummy sender email
 // Ensure auth secrets are long enough even if the host environment provides
 // shorter values (e.g. from a `.env` file or CI configuration). Jest's
 // `setupFiles` load `dotenv` before this script runs, so we can't rely on the

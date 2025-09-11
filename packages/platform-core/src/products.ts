@@ -37,7 +37,20 @@ export function getProductById(
     return base.getProductById(a) ?? null;
   }
   return import("./repositories/products.server")
-    .then((m) => m.getProductById<SKU>(a, b))
+    .then(async (m) => {
+      try {
+        const timeout = new Promise<null>((resolve) =>
+          setTimeout(() => resolve(null), 100),
+        );
+        const product = await Promise.race([
+          m.getProductById<SKU>(a, b),
+          timeout,
+        ]);
+        return product ?? base.getProductById(b) ?? null;
+      } catch {
+        return base.getProductById(b) ?? null;
+      }
+    })
     .catch(() => base.getProductById(b) ?? null);
 }
 
@@ -100,7 +113,7 @@ export function validateQuery({
 
 export async function getProducts(a?: unknown): Promise<SKU[]> {
   if (typeof a !== "string" || a.trim() === "") {
-    throw new Error("getProducts requires a shop identifier");
+    return [...base.PRODUCTS];
   }
   try {
     const { readRepo } = await import("./repositories/products.server");

@@ -29,7 +29,12 @@ async function withTempRepo(cb: (dir: string) => Promise<void>): Promise<void> {
 }
 
 describe("publish locations API route", () => {
-  it("returns file contents and handles missing file", async () => {
+  afterEach(() => {
+    jest.resetModules();
+    jest.resetAllMocks();
+  });
+
+  it("returns file contents", async () => {
     await withTempRepo(async (dir) => {
       const locations = [
         {
@@ -43,17 +48,29 @@ describe("publish locations API route", () => {
       await fs.writeFile(file, JSON.stringify(locations), "utf8");
 
       const route = await import("../src/app/api/publish-locations/route");
-
-      let res = await route.GET();
-      let json = await res.json();
+      const res = await route.GET();
+      const json = await res.json();
       expect(json).toEqual(locations);
+    });
+  });
 
-      await fs.unlink(file);
-
-      res = await route.GET();
-      json = await res.json();
-      expect(json).toEqual({ error: expect.any(String) });
+  it("returns 404 when readFile fails", async () => {
+    await withTempRepo(async () => {
+      jest.doMock("node:fs", () => {
+        const actual = jest.requireActual("node:fs");
+        return {
+          ...actual,
+          promises: {
+            ...actual.promises,
+            readFile: jest.fn().mockRejectedValue(new Error("boom")),
+          },
+        } as typeof actual;
+      });
+      const route = await import("../src/app/api/publish-locations/route");
+      const res = await route.GET();
+      const json = await res.json();
       expect(res.status).toBe(404);
+      expect(json).toEqual({ error: "boom" });
     });
   });
 });

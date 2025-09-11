@@ -12,6 +12,7 @@ if (typeof (Response as any).json !== "function") {
 process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";
 
 const mockGetPages = jest.fn();
+const mockSaveDraft = jest.fn();
 
 function mockAuth() {
   jest.doMock("next-auth", () => ({
@@ -25,6 +26,19 @@ describe("page draft GET route", () => {
   afterEach(() => {
     jest.resetAllMocks();
     jest.resetModules();
+  });
+
+  it("returns 403 for unauthorized access", async () => {
+    jest.doMock("next-auth", () => ({
+      getServerSession: jest.fn().mockResolvedValue(null),
+    }));
+    const route = await import("../src/app/api/page-draft/[shop]/route");
+    const res = await route.GET({} as any, {
+      params: Promise.resolve({ shop: "shop" }),
+    });
+    const json = await res.json();
+    expect(res.status).toBe(403);
+    expect(json).toEqual({ error: "Forbidden" });
   });
 
   it("returns draft content for valid shop", async () => {
@@ -72,5 +86,44 @@ describe("page draft GET route", () => {
     const json = await res.json();
     expect(res.status).toBe(400);
     expect(json.error).toBe("boom");
+  });
+});
+
+describe("page draft POST route", () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+    jest.resetModules();
+  });
+
+  it("returns validation errors", async () => {
+    jest.doMock("@cms/actions/pages.server", () => ({
+      savePageDraft: mockSaveDraft,
+    }));
+    mockSaveDraft.mockResolvedValue({
+      errors: { components: ["Invalid"] },
+    });
+    const route = await import("../src/app/api/page-draft/[shop]/route");
+    const req = { formData: async () => new FormData() } as any;
+    const res = await route.POST(req, {
+      params: Promise.resolve({ shop: "shop" }),
+    });
+    const json = await res.json();
+    expect(res.status).toBe(400);
+    expect(json).toEqual({ errors: { components: ["Invalid"] } });
+  });
+
+  it("saves draft successfully", async () => {
+    jest.doMock("@cms/actions/pages.server", () => ({
+      savePageDraft: mockSaveDraft,
+    }));
+    mockSaveDraft.mockResolvedValue({ page: { id: "p1" } });
+    const route = await import("../src/app/api/page-draft/[shop]/route");
+    const req = { formData: async () => new FormData() } as any;
+    const res = await route.POST(req, {
+      params: Promise.resolve({ shop: "shop" }),
+    });
+    const json = await res.json();
+    expect(res.status).toBe(200);
+    expect(json).toEqual({ id: "p1" });
   });
 });

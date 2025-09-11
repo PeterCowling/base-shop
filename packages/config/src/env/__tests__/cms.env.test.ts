@@ -132,6 +132,34 @@ describe("cms sanity env", () => {
     expect(cmsEnv.CMS_SEARCH_DISABLED_PATHS).toEqual(["page3", "page4"]);
   });
 
+  it("transforms empty string disabled paths to empty arrays", async () => {
+    process.env = { ...baseEnv };
+    jest.resetModules();
+    const { cmsEnvSchema } = await import("../cms.ts");
+    const result = cmsEnvSchema.safeParse({
+      ...baseEnv,
+      CMS_DRAFTS_DISABLED_PATHS: "",
+      CMS_SEARCH_DISABLED_PATHS: "",
+    });
+    expect(result.success).toBe(true);
+    expect(result.data.CMS_DRAFTS_DISABLED_PATHS).toEqual([]);
+    expect(result.data.CMS_SEARCH_DISABLED_PATHS).toEqual([]);
+  });
+
+  it("splits comma-separated disabled path strings", async () => {
+    process.env = { ...baseEnv };
+    jest.resetModules();
+    const { cmsEnvSchema } = await import("../cms.ts");
+    const result = cmsEnvSchema.safeParse({
+      ...baseEnv,
+      CMS_DRAFTS_DISABLED_PATHS: "a,b,c",
+      CMS_SEARCH_DISABLED_PATHS: "a,b,c",
+    });
+    expect(result.success).toBe(true);
+    expect(result.data.CMS_DRAFTS_DISABLED_PATHS).toEqual(["a", "b", "c"]);
+    expect(result.data.CMS_SEARCH_DISABLED_PATHS).toEqual(["a", "b", "c"]);
+  });
+
   it("coerces CMS_PAGINATION_LIMIT to number", async () => {
     process.env = { ...baseEnv, CMS_PAGINATION_LIMIT: "25" };
     jest.resetModules();
@@ -224,6 +252,36 @@ describe("cms sanity env", () => {
     });
     expect(result.success).toBe(true);
     expect(result.data.CMS_DRAFTS_ENABLED).toBe(expected);
+  });
+
+  it.each([
+    ["true", true],
+    ["false", false],
+  ])("coerces CMS_DRAFTS_ENABLED string '%s'", async (val, expected) => {
+    process.env = { ...baseEnv };
+    jest.resetModules();
+    const { cmsEnvSchema } = await import("../cms.ts");
+    const result = cmsEnvSchema.safeParse({
+      ...baseEnv,
+      CMS_DRAFTS_ENABLED: val,
+    });
+    expect(result.success).toBe(true);
+    expect(result.data.CMS_DRAFTS_ENABLED).toBe(expected);
+  });
+
+  it.each([
+    ["true", true],
+    ["false", false],
+  ])("coerces CMS_SEARCH_ENABLED string '%s'", async (val, expected) => {
+    process.env = { ...baseEnv };
+    jest.resetModules();
+    const { cmsEnvSchema } = await import("../cms.ts");
+    const result = cmsEnvSchema.safeParse({
+      ...baseEnv,
+      CMS_SEARCH_ENABLED: val,
+    });
+    expect(result.success).toBe(true);
+    expect(result.data.CMS_SEARCH_ENABLED).toBe(expected);
   });
 
   it("defaults booleans to false", async () => {

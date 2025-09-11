@@ -289,4 +289,46 @@ describe("resolveAbandonedCartDelay", () => {
     expect(delay).toBe(55555);
     delete process.env[specialKey];
   });
+
+  it("handles shop names with spaces", async () => {
+    const spacedShop = "my shop";
+    const spacedKey = "ABANDONED_CART_DELAY_MS_MY_SHOP";
+    jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(
+        JSON.stringify({ abandonedCart: { delayMs: 11111 } }, null, 2),
+      );
+    process.env[spacedKey] = "66666";
+    const delay = await resolveAbandonedCartDelay(spacedShop, "/tmp");
+    expect(delay).toBe(66666);
+    delete process.env[spacedKey];
+  });
+
+  it("handles shop names with hyphens", async () => {
+    const hyphenShop = "my-shop";
+    const hyphenKey = "ABANDONED_CART_DELAY_MS_MY_SHOP";
+    jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(
+        JSON.stringify({ abandonedCart: { delayMs: 11111 } }, null, 2),
+      );
+    process.env[hyphenKey] = "77777";
+    const delay = await resolveAbandonedCartDelay(hyphenShop, "/tmp");
+    expect(delay).toBe(77777);
+    delete process.env[hyphenKey];
+  });
+
+  it("handles shop names with mixed casing", async () => {
+    const mixedShop = "MyShop";
+    const mixedKey = "ABANDONED_CART_DELAY_MS_MYSHOP";
+    jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(
+        JSON.stringify({ abandonedCart: { delayMs: 11111 } }, null, 2),
+      );
+    process.env[mixedKey] = "88888";
+    const delay = await resolveAbandonedCartDelay(mixedShop, "/tmp");
+    expect(delay).toBe(88888);
+    delete process.env[mixedKey];
+  });
 });

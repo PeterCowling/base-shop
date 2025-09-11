@@ -7,9 +7,11 @@ export function getCsrfToken(req?: Request): string | undefined {
     const cookieToken = req.headers
       .get("cookie")
       ?.split(";")
-      .map((row) => row.trim())
-      .find((row) => row.startsWith("csrf_token="))
-      ?.split("=")[1]
+      .map((row) => row.trim().split("="))
+      .find(
+        ([name, value]) =>
+          name === "csrf_token" && value?.trim() && !value.trim().startsWith("/")
+      )?.[1]
       ?.trim();
     return cookieToken || undefined;
   }

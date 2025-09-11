@@ -4,6 +4,7 @@ import { EditorContent, type Editor } from "@tiptap/react";
 import type { DraggableAttributes } from "@dnd-kit/core";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import MenuBar from "./MenuBar";
+import DOMPurify from "dompurify";
 
 interface Guides {
   x: number | null;
@@ -51,6 +52,7 @@ const TextBlockView = ({
   onRemove,
   content,
 }: Props) => {
+  const sanitized = DOMPurify.sanitize(content);
   return (
     <div
       ref={(node) => {
@@ -118,7 +120,7 @@ const TextBlockView = ({
             e.stopPropagation();
             onStartEditing();
           }}
-          dangerouslySetInnerHTML={{ __html: content }}
+          dangerouslySetInnerHTML={{ __html: sanitized }}
         />
       )}
       {selected && (

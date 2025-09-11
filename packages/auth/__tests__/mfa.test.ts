@@ -47,6 +47,11 @@ describe("mfa", () => {
     expect(first.secret).not.toBe(second.secret);
   });
 
+  it("is disabled until token verified", async () => {
+    await enrollMfa("user-pending");
+    await expect(isMfaEnabled("user-pending")).resolves.toBe(false);
+  });
+
   it("verifies valid token", async () => {
     jest
       .spyOn(authenticator, "generateSecret")

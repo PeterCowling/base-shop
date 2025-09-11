@@ -152,7 +152,11 @@ export async function createCampaign(opts: {
     templateId: templateId ?? null,
   };
   if (scheduled <= clock.now()) {
-    await deliverCampaign(shop, campaign);
+    try {
+      await deliverCampaign(shop, campaign);
+    } catch (err) {
+      console.error(`Failed to deliver campaign ${campaign.id}`, err);
+    }
   }
   const store = getCampaignStore();
   const campaigns = await store.readCampaigns(shop);
@@ -165,15 +169,24 @@ export async function sendDueCampaigns(): Promise<void> {
   const store = getCampaignStore();
   const shops = await store.listShops();
   const now = clock.now();
+  const failedCampaigns: string[] = [];
   for (const shop of shops) {
     const campaigns = await store.readCampaigns(shop);
     let changed = false;
     for (const c of campaigns) {
       if (c.sentAt || new Date(c.sendAt) > now) continue;
-      await deliverCampaign(shop, c);
-      changed = true;
+      try {
+        await deliverCampaign(shop, c);
+        changed = true;
+      } catch (err) {
+        console.error(`Failed to deliver campaign ${c.id}`, err);
+        failedCampaigns.push(c.id);
+      }
     }
     if (changed) await store.writeCampaigns(shop, campaigns);
+  }
+  if (failedCampaigns.length > 0) {
+    console.error(`Failed campaigns: ${failedCampaigns.join(", ")}`);
   }
 }
 

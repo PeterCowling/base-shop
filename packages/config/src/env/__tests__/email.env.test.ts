@@ -14,10 +14,20 @@ afterEach(() => {
 });
 
 describe("email env provider selection", () => {
-  it("defaults EMAIL_PROVIDER to smtp", async () => {
+  it("defaults EMAIL_PROVIDER to noop in test env", async () => {
     delete process.env.EMAIL_PROVIDER;
     const env = await loadEnv();
-    expect(env.EMAIL_PROVIDER).toBe("smtp");
+    expect(env.EMAIL_PROVIDER).toBe("noop");
+  });
+
+  it.each([
+    [{ NODE_ENV: "development" }, "noop"],
+    [{ NODE_ENV: "production" }, "smtp"],
+  ])("defaults EMAIL_PROVIDER in %o", async (envVars, expected) => {
+    Object.assign(process.env, envVars);
+    delete process.env.EMAIL_PROVIDER;
+    const env = await loadEnv();
+    expect(env.EMAIL_PROVIDER).toBe(expected);
   });
 
   it("uses sendgrid when SENDGRID_API_KEY present", async () => {

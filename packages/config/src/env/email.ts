@@ -1,6 +1,8 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
+const isProd = process.env.NODE_ENV === "production";
+
 export const emailEnvSchema = z
   .object({
     EMAIL_FROM: z
@@ -35,7 +37,7 @@ export const emailEnvSchema = z
       .optional(),
     EMAIL_PROVIDER: z
       .enum(["sendgrid", "resend", "smtp", "noop"])
-      .default("smtp"),
+      .default(isProd ? "smtp" : "noop"),
     SENDGRID_API_KEY: z.string().optional(),
     SENDGRID_MARKETING_KEY: z.string().optional(),
     RESEND_API_KEY: z.string().optional(),

@@ -33,7 +33,7 @@ function campaignsPath(shop: string): string {
   return path.join(DATA_ROOT, shop, "campaigns.json");
 }
 
-async function readCampaigns(shop: string): Promise<Campaign[]> {
+export async function readCampaigns(shop: string): Promise<Campaign[]> {
   try {
     const buf = await fs.readFile(campaignsPath(shop), "utf8");
     const json = JSON.parse(buf);
@@ -42,7 +42,10 @@ async function readCampaigns(shop: string): Promise<Campaign[]> {
   return [];
 }
 
-async function writeCampaigns(shop: string, items: Campaign[]): Promise<void> {
+export async function writeCampaigns(
+  shop: string,
+  items: Campaign[],
+): Promise<void> {
   await fs.mkdir(path.dirname(campaignsPath(shop)), { recursive: true });
   await fs.writeFile(campaignsPath(shop), JSON.stringify(items, null, 2), "utf8");
 }

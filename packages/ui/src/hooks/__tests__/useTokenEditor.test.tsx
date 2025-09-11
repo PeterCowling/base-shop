@@ -106,6 +106,51 @@ describe("useTokenEditor", () => {
     expect(screen.getByTestId("sans").textContent).toContain('"Fancy"');
   });
 
+  it("handleUpload ignores empty file selections", async () => {
+    let upload!: ReturnType<typeof useTokenEditor>["handleUpload"]; // !
+    let latest: TokenMap = {};
+
+    function Wrapper() {
+      const [tokens, setTokens] = useState<TokenMap>({});
+      latest = tokens;
+      const hook = useTokenEditor(tokens, {}, (t) =>
+        setTokens((prev) => ({ ...prev, ...t }))
+      );
+      upload = hook.handleUpload;
+      return null;
+    }
+
+    render(<Wrapper />);
+    await act(async () => {
+      upload("sans", { target: { files: [], value: "" } } as any);
+    });
+    expect(latest).toEqual({});
+  });
+
+  it("initial font-src tokens create style nodes and update lists", async () => {
+    function Wrapper() {
+      const hook = useTokenEditor(
+        { "--font-src-Test": "data:font/mock" },
+        {},
+        () => {}
+      );
+      return (
+        <>
+          <span data-cy="mono">{hook.monoFonts.join(",")}</span>
+          <span data-cy="sans">{hook.sansFonts.join(",")}</span>
+        </>
+      );
+    }
+
+    render(<Wrapper />);
+
+    await waitFor(() =>
+      expect(document.getElementById("font-Test")).not.toBeNull()
+    );
+    expect(screen.getByTestId("mono").textContent).toContain('"Test"');
+    expect(screen.getByTestId("sans").textContent).toContain('"Test"');
+  });
+
   it("setGoogleFont inserts link once and updates tokens", () => {
     let setGF!: ReturnType<typeof useTokenEditor>["setGoogleFont"]; // !
     let latest: TokenMap = {};
@@ -166,5 +211,33 @@ describe("useTokenEditor", () => {
 
     expect(getSans().filter((f) => f === "Fancy")).toHaveLength(1);
     expect(getMono().filter((f) => f === "Fancy")).toHaveLength(1);
+  });
+
+  it("addCustomFont ignores blank input", () => {
+    let add!: () => void; // !
+    let setNF!: (v: string) => void; // !
+    let getSans!: () => string[]; // !
+    let getMono!: () => string[]; // !
+
+    function Wrapper() {
+      const hook = useTokenEditor({}, {}, () => {});
+      add = hook.addCustomFont;
+      setNF = hook.setNewFont;
+      getSans = () => hook.sansFonts;
+      getMono = () => hook.monoFonts;
+      return null;
+    }
+
+    render(<Wrapper />);
+    const sansBefore = getSans().length;
+    const monoBefore = getMono().length;
+
+    act(() => setNF(""));
+    act(() => add());
+
+    expect(getSans()).toHaveLength(sansBefore);
+    expect(getMono()).toHaveLength(monoBefore);
+    expect(getSans()).not.toContain("");
+    expect(getMono()).not.toContain("");
   });
 });

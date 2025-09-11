@@ -1,17 +1,62 @@
 import { jest } from '@jest/globals';
-import { ReadableStream as NodeReadableStream } from 'node:stream/web';
-import {
-  Response as NodeResponse,
-  Headers as NodeHeaders,
-  Request as NodeRequest,
-} from 'undici';
+import { Headers as NodeHeaders, Request as NodeRequest } from 'undici';
+
+async function readStream(stream: any) {
+  const decoder = new TextDecoder();
+  let result = '';
+  if (typeof stream === 'string') {
+    return stream;
+  }
+  if (typeof stream?.getReader === 'function') {
+    const reader = stream.getReader();
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      result += decoder.decode(value, { stream: true });
+    }
+  } else if (stream && Symbol.asyncIterator in stream) {
+    for await (const chunk of stream) {
+      result +=
+        typeof chunk === 'string'
+          ? chunk
+          : decoder.decode(chunk, { stream: true });
+    }
+  } else if (stream != null) {
+    result += String(stream);
+  }
+  result += decoder.decode();
+  return result;
+}
+
+class TestResponse {
+  body: any;
+  status: number;
+  headers: Headers;
+  constructor(body?: any, init: ResponseInit = {}) {
+    this.body = body;
+    this.status = init.status ?? 200;
+    this.headers = new Headers(init.headers);
+  }
+  static json(data: any, init: ResponseInit = {}) {
+    const headers = new Headers(init.headers);
+    if (!headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json');
+    }
+    return new TestResponse(JSON.stringify(data), { ...init, headers });
+  }
+  async text() {
+    return readStream(this.body);
+  }
+  async json() {
+    return JSON.parse(await this.text());
+  }
+}
 
 Object.assign(globalThis, {
   fetch: jest.fn(),
-  Response: NodeResponse,
+  Response: TestResponse,
   Headers: NodeHeaders,
   Request: NodeRequest,
-  ReadableStream: (globalThis as any).ReadableStream || NodeReadableStream,
 });
 
 const createShop = jest.fn();
@@ -58,19 +103,6 @@ function parseSse(text: string) {
     .map((line) => JSON.parse(line.replace(/^data: /, '')));
 }
 
-async function readStream(stream: ReadableStream<Uint8Array>) {
-  const reader = stream.getReader();
-  const decoder = new TextDecoder();
-  let result = '';
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) break;
-    result += decoder.decode(value, { stream: true });
-  }
-  result += decoder.decode();
-  return result;
-}
-
 describe('launch-shop route', () => {
   it('returns 400 when required steps are missing', async () => {
     getRequiredSteps.mockReturnValue([{ id: 'a' }]);
@@ -98,7 +130,7 @@ describe('launch-shop route', () => {
     } as unknown as Request;
 
     const res = await POST(req);
-    const text = await readStream(res.body as ReadableStream<Uint8Array>);
+    const text = await res.text();
     const messages = parseSse(text);
     expect(messages[messages.length - 1]).toEqual({ done: true });
     expect(seedShop).not.toHaveBeenCalled();
@@ -115,7 +147,7 @@ describe('launch-shop route', () => {
     } as unknown as Request;
 
     const res = await POST(req);
-    const text = await readStream(res.body as ReadableStream<Uint8Array>);
+    const text = await res.text();
     const messages = parseSse(text);
     expect(messages).toEqual([
       { step: 'create', status: 'pending' },
@@ -138,7 +170,7 @@ describe('launch-shop route', () => {
     } as unknown as Request;
 
     const res = await POST(req);
-    const text = await readStream(res.body as ReadableStream<Uint8Array>);
+    const text = await res.text();
     const messages = parseSse(text);
     expect(messages).toEqual([
       { step: 'create', status: 'pending' },
@@ -163,7 +195,7 @@ describe('launch-shop route', () => {
     } as unknown as Request;
 
     const res = await POST(req);
-    const text = await readStream(res.body as ReadableStream<Uint8Array>);
+    const text = await res.text();
     const messages = parseSse(text);
     expect(messages).toEqual([
       { step: 'create', status: 'pending' },
@@ -190,7 +222,7 @@ describe('launch-shop route', () => {
     } as unknown as Request;
 
     const res = await POST(req);
-    const text = await readStream(res.body as ReadableStream<Uint8Array>);
+    const text = await res.text();
     const messages = parseSse(text);
     expect(messages).toEqual([
       { step: 'create', status: 'pending' },
@@ -215,7 +247,7 @@ describe('launch-shop route', () => {
     } as unknown as Request;
 
     const res = await POST(req);
-    const text = await readStream(res.body as ReadableStream<Uint8Array>);
+    const text = await res.text();
     const messages = parseSse(text);
     expect(messages).toEqual([
       { step: 'create', status: 'pending' },
@@ -240,7 +272,7 @@ describe('launch-shop route', () => {
     } as unknown as Request;
 
     const res = await POST(req);
-    const text = await readStream(res.body as ReadableStream<Uint8Array>);
+    const text = await res.text();
     const messages = parseSse(text);
     expect(messages).toEqual([
       { step: 'create', status: 'pending' },

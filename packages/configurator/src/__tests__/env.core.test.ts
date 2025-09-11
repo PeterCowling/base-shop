@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
-const ORIGINAL_ENV = process.env;
+const ORIGINAL_ENV = { ...process.env, EMAIL_FROM: "from@example.com" };
 
 const withEnv = async <T>(env: NodeJS.ProcessEnv, fn: () => Promise<T>): Promise<T> => {
   process.env = { ...ORIGINAL_ENV, ...env } as NodeJS.ProcessEnv;

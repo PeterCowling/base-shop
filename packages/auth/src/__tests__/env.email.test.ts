@@ -3,6 +3,10 @@ import { afterEach, describe, expect, it } from "@jest/globals";
 const ORIGINAL_ENV = { ...process.env };
 const loadEnv = async () => (await import("@acme/config/env/email")).emailEnv;
 
+beforeEach(() => {
+  process.env.EMAIL_FROM = "from@example.com";
+});
+
 afterEach(() => {
   process.env = { ...ORIGINAL_ENV };
   jest.resetModules();

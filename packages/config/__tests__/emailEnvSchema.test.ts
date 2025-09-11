@@ -1,8 +1,11 @@
 import { describe, expect, it } from "@jest/globals";
-import { emailEnvSchema } from "../src/env/email";
+
+process.env.EMAIL_FROM = "from@example.com";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { emailEnvSchema } = require("../src/env/email");
 
 const parse = (env: Record<string, string | undefined>) =>
-  emailEnvSchema.safeParse(env);
+  emailEnvSchema.safeParse({ EMAIL_FROM: "from@example.com", ...env });
 
 describe("emailEnvSchema.safeParse", () => {
   it("converts SMTP_PORT to number", () => {

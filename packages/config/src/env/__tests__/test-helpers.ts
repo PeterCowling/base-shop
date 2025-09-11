@@ -8,6 +8,7 @@ export async function withEnv(
   const originalEnv = { ...process.env };
 
   try {
+    process.env = { ...originalEnv, EMAIL_FROM: "from@example.com" };
     for (const [key, value] of Object.entries(vars)) {
       if (value === undefined) {
         delete process.env[key];

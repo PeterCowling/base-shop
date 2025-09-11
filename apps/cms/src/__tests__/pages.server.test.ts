@@ -1,5 +1,6 @@
 /** @jest-environment node */
 import { historyStateSchema } from "@acme/types";
+import { coreEnv as env } from "@acme/config/env/core";
 
 const captureException = jest.fn();
 
@@ -16,7 +17,7 @@ jest.mock("../actions/pages/service", () => ({
   deletePage: jest.fn(),
 }));
 
-jest.mock("@acme/config", () => ({ env: { NODE_ENV: "test" } }));
+jest.mock("@acme/config/env/core", () => ({ coreEnv: { NODE_ENV: "test" } }));
 
 jest.mock("@/utils/sentry.server", () => ({ captureException }));
 
@@ -31,6 +32,7 @@ import * as service from "../actions/pages/service";
 describe("pages.server", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    env.NODE_ENV = "test";
   });
 
   describe("createPage", () => {
@@ -61,6 +63,36 @@ describe("pages.server", () => {
         expect.objectContaining({ id: "p1", slug: "home" }),
         undefined,
       );
+    });
+
+    it("logs warning in development on validation failure", async () => {
+      env.NODE_ENV = "development";
+      const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+
+      const fd = new FormData();
+      fd.set("slug", "home");
+      fd.set("components", "not-json");
+
+      const result = await createPage("shop", fd);
+      expect(warn).toHaveBeenCalled();
+      expect(captureException).toHaveBeenCalled();
+      expect(result.errors).toBeDefined();
+      expect(service.savePage).not.toHaveBeenCalled();
+      warn.mockRestore();
+    });
+
+    it("captures and rethrows service errors", async () => {
+      (service.getPages as jest.Mock).mockResolvedValue([]);
+      const err = new Error("boom");
+      (service.savePage as jest.Mock).mockRejectedValue(err);
+
+      const fd = new FormData();
+      fd.set("id", "p1");
+      fd.set("slug", "home");
+      fd.set("components", "[]");
+
+      await expect(createPage("shop", fd)).rejects.toThrow("boom");
+      expect(captureException).toHaveBeenCalledWith(err);
     });
   });
 
@@ -125,6 +157,18 @@ describe("pages.server", () => {
         existing,
       );
     });
+
+    it("captures and rethrows service errors", async () => {
+      (service.getPages as jest.Mock).mockResolvedValue([]);
+      const err = new Error("boom");
+      (service.savePage as jest.Mock).mockRejectedValue(err);
+
+      const fd = new FormData();
+      fd.set("components", "[]");
+
+      await expect(savePageDraft("shop", fd)).rejects.toThrow("boom");
+      expect(captureException).toHaveBeenCalledWith(err);
+    });
   });
 
   describe("updatePage", () => {
@@ -187,6 +231,32 @@ describe("pages.server", () => {
         existing,
       );
     });
+
+    it("captures and rethrows service errors", async () => {
+      const existing = {
+        id: "p1",
+        slug: "old",
+        status: "draft",
+        components: [],
+        seo: { title: {}, description: {}, image: {} },
+        createdAt: "now",
+        updatedAt: "now",
+        createdBy: "user",
+      } as any;
+      (service.getPages as jest.Mock).mockResolvedValue([existing]);
+      const err = new Error("boom");
+      (service.updatePage as jest.Mock).mockRejectedValue(err);
+
+      const fd = new FormData();
+      fd.set("id", "p1");
+      fd.set("updatedAt", "now");
+      fd.set("slug", "home");
+      fd.set("status", "draft");
+      fd.set("components", "[]");
+
+      await expect(updatePage("shop", fd)).rejects.toThrow("boom");
+      expect(captureException).toHaveBeenCalledWith(err);
+    });
   });
 
   describe("deletePage", () => {
@@ -195,6 +265,14 @@ describe("pages.server", () => {
 
       await deletePage("shop", "p1");
       expect(service.deletePage).toHaveBeenCalledWith("shop", "p1");
+    });
+
+    it("captures and rethrows service errors", async () => {
+      const err = new Error("boom");
+      (service.deletePage as jest.Mock).mockRejectedValue(err);
+
+      await expect(deletePage("shop", "p1")).rejects.toThrow("boom");
+      expect(captureException).toHaveBeenCalledWith(err);
     });
   });
 });

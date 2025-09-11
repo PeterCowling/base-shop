@@ -24,8 +24,8 @@ export function parseMultilingualInput(
 export default function normalizeMultilingualInput(
   input: Record<string, unknown>,
   locales: readonly Locale[]
-): Record<Locale, string> {
-  const result: Record<Locale, string> = {};
+): Partial<Record<Locale, string>> {
+  const result: Partial<Record<Locale, string>> = {};
   for (const locale of locales) {
     const value = input[locale];
     if (typeof value === "string") {

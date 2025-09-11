@@ -23,13 +23,14 @@ describe("extendRoles", () => {
     const initialReadLength = READ_ROLES.length;
     const initialWriteLength = WRITE_ROLES.length;
 
-    extendRoles({ write: ["editor"] });
+    extendRoles({
+      write: ["editor", "editor"],
+      read: ["auditor", "auditor"],
+    });
 
     expect(isRole("editor")).toBe(true);
     expect(canRead("editor")).toBe(true);
     expect(canWrite("editor")).toBe(true);
-
-    extendRoles({ read: ["auditor"] });
 
     expect(isRole("auditor")).toBe(true);
     expect(canRead("auditor")).toBe(true);
@@ -43,6 +44,9 @@ describe("extendRoles", () => {
     expect(WRITE_ROLES.length).toBe(initialWriteLength + 1);
     expect(new Set(READ_ROLES).size).toBe(READ_ROLES.length);
     expect(new Set(WRITE_ROLES).size).toBe(WRITE_ROLES.length);
+    expect(READ_ROLES.filter((r) => r === "editor")).toHaveLength(1);
+    expect(READ_ROLES.filter((r) => r === "auditor")).toHaveLength(1);
+    expect(WRITE_ROLES.filter((r) => r === "editor")).toHaveLength(1);
   });
 });
 

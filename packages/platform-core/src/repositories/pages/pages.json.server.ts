@@ -95,8 +95,10 @@ export async function savePage(
   if (idx === -1) pages.push(page);
   else pages[idx] = page;
   await writePages(shop, pages);
-  const patch = previous ? diffPages(previous, page) : page;
-  await appendHistory(shop, patch);
+  if (previous) {
+    const patch = diffPages(previous, page);
+    await appendHistory(shop, patch);
+  }
   return page;
 }
 

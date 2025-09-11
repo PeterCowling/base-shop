@@ -120,6 +120,64 @@ it("createCustomerSession sets cookies and stores session", async () => {
   );
 });
 
+describe("cookie flags", () => {
+  it("disables secure cookies in development", async () => {
+    process.env.NODE_ENV = "development";
+    const {
+      createCustomerSession,
+      CUSTOMER_SESSION_COOKIE,
+      CSRF_TOKEN_COOKIE,
+    } = await import("../session");
+
+    mockHeaders.get.mockReturnValue("agent");
+    randomUUID
+      .mockReturnValueOnce("session-id")
+      .mockReturnValueOnce("csrf-token");
+    sealData.mockResolvedValue("sealed-token");
+
+    await createCustomerSession({ customerId: "cust", role: "customer" });
+
+    expect(mockCookies.set).toHaveBeenCalledWith(
+      CUSTOMER_SESSION_COOKIE,
+      "sealed-token",
+      expect.objectContaining({ secure: false, httpOnly: true }),
+    );
+    expect(mockCookies.set).toHaveBeenCalledWith(
+      CSRF_TOKEN_COOKIE,
+      "csrf-token",
+      expect.objectContaining({ secure: false, httpOnly: false }),
+    );
+  });
+
+  it("enables secure cookies in production", async () => {
+    process.env.NODE_ENV = "production";
+    const {
+      createCustomerSession,
+      CUSTOMER_SESSION_COOKIE,
+      CSRF_TOKEN_COOKIE,
+    } = await import("../session");
+
+    mockHeaders.get.mockReturnValue("agent");
+    randomUUID
+      .mockReturnValueOnce("session-id")
+      .mockReturnValueOnce("csrf-token");
+    sealData.mockResolvedValue("sealed-token");
+
+    await createCustomerSession({ customerId: "cust", role: "customer" });
+
+    expect(mockCookies.set).toHaveBeenCalledWith(
+      CUSTOMER_SESSION_COOKIE,
+      "sealed-token",
+      expect.objectContaining({ secure: true, httpOnly: true }),
+    );
+    expect(mockCookies.set).toHaveBeenCalledWith(
+      CSRF_TOKEN_COOKIE,
+      "csrf-token",
+      expect.objectContaining({ secure: true, httpOnly: false }),
+    );
+  });
+});
+
 it("createCustomerSession uses extended maxAge when remember is true", async () => {
   const {
     createCustomerSession,

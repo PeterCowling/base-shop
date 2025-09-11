@@ -9,7 +9,7 @@ State React hooks · CartContext → localStorage –
 Payments Stripe Elements v2025-05-28 ✔ – edge-ready client (stripeServer.ts) NEW
 API Edge Routes: /api/cart (stub) · /api/checkout-session (client-secret) NEW
 Tooling TS 5.8 · ESLint/Prettier · Jest/RTL · Playwright 1.53 · Wrangler –
-Inventory persists through Prisma with JSON or SQLite fallbacks in data/shops/\*/inventory.json
+Inventory persists through Prisma with JSON fallbacks in data/shops/\*/inventory.json
 Inventory items use flexible `variantAttributes` maps with optional `lowStockThreshold`.
 Saving inventory triggers email alerts to `STOCK_ALERT_RECIPIENT` when quantity falls below threshold.
 CMS API supports JSON or CSV import/export; CSV headers map variant attribute keys.

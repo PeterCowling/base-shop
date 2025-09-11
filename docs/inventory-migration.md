@@ -1,6 +1,6 @@
 # Inventory Migration Plan
 
-This document outlines the strategy for migrating inventory data from existing JSON sources to a more consistent storage layer such as Prisma with a PostgreSQL database. Inventory data currently lives in JSON files; there is no live SQLite store. The `.sqlite.server` repository is a no-op proxy that delegates all operations to the JSON implementation. Every `*.sqlite.server.ts` module simply forwards calls to the JSON repository, so these files can be ignored entirely during the migration.
+This document outlines the strategy for migrating inventory data from existing JSON sources to a more consistent storage layer such as Prisma with a PostgreSQL database. Inventory data currently lives in JSON files.
 
 ## Goals
 
@@ -11,19 +11,15 @@ This document outlines the strategy for migrating inventory data from existing J
 ## Prerequisites
 
 - A Prisma schema defining `InventoryItem`, `InventoryLevel`, and related tables
-- Access to the current JSON files (historical SQLite dumps can be exported if available)
+- Access to the current JSON files
 - Node.js environment with `@prisma/client` and CLI tooling installed
 
 ## Export Strategy
 
-Current inventory data is sourced from `data/shops/<shop>/inventory.json` files or via Prisma, so a SQLite export is unnecessary for live environments.
+Current inventory data is sourced from `data/shops/<shop>/inventory.json` files or via Prisma.
 
-1. (Optional) **SQLite dump for historical archives**: If you have legacy SQLite databases, you may dump tables to JSON or CSV using the `sqlite3` CLI or a Node script with `better-sqlite3`.
-   ```bash
-   sqlite3 data/inventory.db ".mode json" "select * from items;" > inventory-items.json
-   ```
-2. **JSON**: Copy existing JSON files from `data/shops/<shop>/inventory.json` and normalize them to match the Prisma schema.
-3. Store exports in a version-controlled `migrations/inventory` directory to allow reruns and auditing.
+1. **JSON**: Copy existing JSON files from `data/shops/<shop>/inventory.json` and normalize them to match the Prisma schema.
+2. Store exports in a version-controlled `migrations/inventory` directory to allow reruns and auditing.
 
 ## Import Strategy
 

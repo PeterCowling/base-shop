@@ -8,9 +8,7 @@ export async function captureException(
   error: unknown,
   context?: CaptureContext,
 ): Promise<void> {
-  if (!sentry) {
-    sentry = await import(/* webpackIgnore: true */ "@sentry/node");
-  }
+  sentry ??= await import(/* webpackIgnore: true */ "@sentry/node");
   if (context) {
     sentry.captureException(error, context);
   } else {

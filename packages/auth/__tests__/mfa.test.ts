@@ -73,6 +73,17 @@ describe("mfa", () => {
     expect(prisma.customerMfa.update).not.toHaveBeenCalled();
   });
 
+  it("throws when update fails", async () => {
+    jest
+      .spyOn(authenticator, "generateSecret")
+      .mockReturnValue("ERRORSECRET");
+    const { secret } = await enrollMfa("user-error");
+    const token = authenticator.generate(secret);
+    const err = new Error("update failed");
+    (prisma.customerMfa.update as jest.Mock).mockRejectedValueOnce(err);
+    await expect(verifyMfa("user-error", token)).rejects.toBe(err);
+  });
+
   it("fails with wrong code", async () => {
     jest
       .spyOn(authenticator, "generateSecret")

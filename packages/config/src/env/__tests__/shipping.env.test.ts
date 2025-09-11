@@ -76,6 +76,32 @@ describe("shipping environment parser", () => {
   });
 
   describe("provider key validation", () => {
+    it("adds an issue when UPS_KEY is missing", () => {
+      const result = shippingEnvSchema.safeParse({ SHIPPING_PROVIDER: "ups" });
+      expect(result.success).toBe(false);
+      expect(result.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: ["UPS_KEY"],
+            message: "UPS_KEY is required when SHIPPING_PROVIDER=ups",
+          }),
+        ]),
+      );
+    });
+
+    it("adds an issue when DHL_KEY is missing", () => {
+      const result = shippingEnvSchema.safeParse({ SHIPPING_PROVIDER: "dhl" });
+      expect(result.success).toBe(false);
+      expect(result.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: ["DHL_KEY"],
+            message: "DHL_KEY is required when SHIPPING_PROVIDER=dhl",
+          }),
+        ]),
+      );
+    });
+
     it("fails when UPS_KEY missing for ups", () => {
       const result = shippingEnvSchema.safeParse({ SHIPPING_PROVIDER: "ups" });
       expect(result.success).toBe(false);
@@ -161,12 +187,30 @@ describe("shipping environment parser", () => {
       expect(env.FREE_SHIPPING_THRESHOLD).toBe(50);
     });
 
+    it("accepts zero", async () => {
+      const load = await getLoader();
+      const env = load({ FREE_SHIPPING_THRESHOLD: "0" });
+      expect(env.FREE_SHIPPING_THRESHOLD).toBe(0);
+    });
+
     it("rejects negative numbers", async () => {
       const load = await getLoader();
       const errorSpy = jest
         .spyOn(console, "error")
         .mockImplementation(() => {});
       expect(() => load({ FREE_SHIPPING_THRESHOLD: "-5" })).toThrow(
+        "Invalid shipping environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalled();
+      errorSpy.mockRestore();
+    });
+
+    it("rejects negative decimals", async () => {
+      const load = await getLoader();
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      expect(() => load({ FREE_SHIPPING_THRESHOLD: "-0.01" })).toThrow(
         "Invalid shipping environment variables",
       );
       expect(errorSpy).toHaveBeenCalled();

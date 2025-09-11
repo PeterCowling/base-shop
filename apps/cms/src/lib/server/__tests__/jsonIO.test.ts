@@ -110,6 +110,27 @@ describe("writeJsonFile", () => {
     expect(json).toBe(JSON.stringify(data, null, 4));
     expect(mockedFs.rename).toHaveBeenCalledWith(tmpPath, "indent.json");
   });
+
+  it("rejects when writeFile fails", async () => {
+    mockedFs.mkdir.mockResolvedValueOnce(undefined);
+    const err = new Error("write fail");
+    mockedFs.writeFile.mockRejectedValueOnce(err);
+
+    await expect(writeJsonFile("fail.json", { d: 4 })).rejects.toBe(err);
+    expect(mockedFs.writeFile).toHaveBeenCalledTimes(1);
+    expect(mockedFs.rename).not.toHaveBeenCalled();
+  });
+
+  it("rejects when rename fails", async () => {
+    mockedFs.mkdir.mockResolvedValueOnce(undefined);
+    mockedFs.writeFile.mockResolvedValueOnce(undefined);
+    const err = new Error("rename fail");
+    mockedFs.rename.mockRejectedValueOnce(err);
+
+    await expect(writeJsonFile("rename.json", { e: 5 })).rejects.toBe(err);
+    expect(mockedFs.writeFile).toHaveBeenCalledTimes(1);
+    expect(mockedFs.rename).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("withFileLock", () => {

@@ -96,6 +96,21 @@ describe("revoke", () => {
     expect(revalidatePath).toHaveBeenCalledWith("/account/sessions");
   });
 
+  it("fails if session does not belong to user", async () => {
+    const session = { customerId: "cust1", role: "customer" };
+    (getCustomerSession as jest.Mock).mockResolvedValue(session);
+    (hasPermission as jest.Mock).mockReturnValue(true);
+    (listSessions as jest.Mock).mockResolvedValue([{ sessionId: "s2" }]);
+    const result = await revoke("s1");
+    expect(hasPermission).toHaveBeenCalledWith(session.role, "manage_sessions");
+    expect(listSessions).toHaveBeenCalledWith(session.customerId);
+    expect(revokeSession).not.toHaveBeenCalled();
+    expect(result).toEqual({
+      success: false,
+      error: "Session does not belong to the user.",
+    });
+  });
+
   it("fails to revoke a session without permission", async () => {
     const session = { customerId: "cust1", role: "viewer" };
     (getCustomerSession as jest.Mock).mockResolvedValue(session);

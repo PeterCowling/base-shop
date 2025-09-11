@@ -188,7 +188,7 @@ export async function sendDueCampaigns(): Promise<void> {
   const store = getCampaignStore();
   const shops = await store.listShops();
   const now = clock.now();
-  const failedCampaigns: string[] = [];
+  const failedCampaigns: { id: string; error: unknown }[] = [];
   for (const shop of shops) {
     const campaigns = await store.readCampaigns(shop);
     let changed = false;
@@ -199,13 +199,21 @@ export async function sendDueCampaigns(): Promise<void> {
         changed = true;
       } catch (err) {
         console.error(`Failed to deliver campaign ${c.id}`, err);
-        failedCampaigns.push(c.id);
+        failedCampaigns.push({ id: c.id, error: err });
       }
     }
     if (changed) await store.writeCampaigns(shop, campaigns);
   }
   if (failedCampaigns.length > 0) {
-    console.error(`Failed campaigns: ${failedCampaigns.join(", ")}`);
+    const ids = failedCampaigns.map((f) => f.id).join(", ");
+    console.error(`Failed campaigns: ${ids}`);
+    if (failedCampaigns.length === 1) {
+      throw failedCampaigns[0].error;
+    }
+    throw new AggregateError(
+      failedCampaigns.map((f) => f.error),
+      `Failed campaigns: ${ids}`,
+    );
   }
 }
 

@@ -143,6 +143,21 @@ describe("mfa", () => {
       expect(update).not.toHaveBeenCalled();
     });
 
+    it("bubbles up verify errors", async () => {
+      const { verifyMfa } = await import("../mfa");
+      findUnique.mockResolvedValue({
+        customerId: "cust",
+        secret: "secret",
+        enabled: false,
+      });
+      verify.mockImplementation(() => {
+        throw new Error("fail");
+      });
+
+      await expect(verifyMfa("cust", "123456")).rejects.toThrow("fail");
+      expect(update).not.toHaveBeenCalled();
+    });
+
     it("bubbles up update errors", async () => {
       const { verifyMfa } = await import("../mfa");
       findUnique.mockResolvedValue({

@@ -21,6 +21,202 @@ describe("useCart", () => {
   });
 });
 
+describe("Cart actions", () => {
+  const sku: SKU = {
+    id: "sku1",
+    slug: "sku1",
+    title: "Test",
+    price: 100,
+    deposit: 0,
+    forSale: true,
+    forRental: false,
+    media: [{ url: "img", type: "image" }],
+    sizes: [],
+    description: "desc",
+  };
+
+  let dispatch: (action: any) => Promise<void>;
+
+  function Consumer() {
+    const [cart, d] = useCart();
+    dispatch = d;
+    return <div data-testid="count">{Object.keys(cart).length}</div>;
+  }
+
+  const originalFetch = global.fetch;
+
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
+
+  afterEach(() => {
+    // @ts-expect-error restore
+    global.fetch = originalFetch;
+    jest.restoreAllMocks();
+  });
+
+  it("adds item and caches cart", async () => {
+    const expected = { sku1: { sku, qty: 1 } } satisfies CartState;
+    // @ts-expect-error override
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: expected }) });
+
+    render(
+      <CartProvider>
+        <Consumer />
+      </CartProvider>
+    );
+
+    await act(async () => {
+      await dispatch({ type: "add", sku });
+    });
+
+    expect(screen.getByTestId("count").textContent).toBe("1");
+    expect(JSON.parse(localStorage.getItem("cart")!)).toEqual(expected);
+  });
+
+  it("throws when size required", async () => {
+    const sizedSku = { ...sku, id: "sku2", sizes: ["M"] };
+    // @ts-expect-error override
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
+
+    render(
+      <CartProvider>
+        <Consumer />
+      </CartProvider>
+    );
+
+    await expect(dispatch({ type: "add", sku: sizedSku })).rejects.toThrow(
+      "Size is required"
+    );
+  });
+
+  it("updates quantity", async () => {
+    const result = { sku1: { sku, qty: 2 } } satisfies CartState;
+    // @ts-expect-error override
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: result }) });
+
+    render(
+      <CartProvider>
+        <Consumer />
+      </CartProvider>
+    );
+
+    await act(async () => {
+      await dispatch({ type: "setQty", id: "sku1", qty: 2 });
+    });
+
+    expect(JSON.parse(localStorage.getItem("cart")!)).toEqual(result);
+  });
+
+  it("throws on setQty server error", async () => {
+    // @ts-expect-error override
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) })
+      .mockResolvedValueOnce({ ok: false, json: async () => ({ error: "msg" }) });
+
+    render(
+      <CartProvider>
+        <Consumer />
+      </CartProvider>
+    );
+
+    await expect(
+      dispatch({ type: "setQty", id: "sku1", qty: 2 })
+    ).rejects.toThrow("msg");
+  });
+
+  it("removes item", async () => {
+    const cartWithItem = { sku1: { sku, qty: 1 } } satisfies CartState;
+    const empty = {} satisfies CartState;
+    // @ts-expect-error override
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: cartWithItem }) })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: empty }) });
+
+    render(
+      <CartProvider>
+        <Consumer />
+      </CartProvider>
+    );
+
+    await act(async () => {
+      await dispatch({ type: "remove", id: "sku1" });
+    });
+
+    expect(screen.getByTestId("count").textContent).toBe("0");
+    expect(JSON.parse(localStorage.getItem("cart")!)).toEqual(empty);
+  });
+
+  it("throws on remove server error", async () => {
+    const cartWithItem = { sku1: { sku, qty: 1 } } satisfies CartState;
+    // @ts-expect-error override
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: cartWithItem }) })
+      .mockResolvedValueOnce({ ok: false, json: async () => ({ error: "msg" }) });
+
+    render(
+      <CartProvider>
+        <Consumer />
+      </CartProvider>
+    );
+
+    await expect(dispatch({ type: "remove", id: "sku1" })).rejects.toThrow(
+      "msg"
+    );
+  });
+
+  it("clears cart", async () => {
+    const cartWithItem = { sku1: { sku, qty: 1 } } satisfies CartState;
+    const empty = {} satisfies CartState;
+    // @ts-expect-error override
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: cartWithItem }) })
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: empty }) });
+
+    render(
+      <CartProvider>
+        <Consumer />
+      </CartProvider>
+    );
+
+    await act(async () => {
+      await dispatch({ type: "clear" });
+    });
+
+    expect(screen.getByTestId("count").textContent).toBe("0");
+    expect(JSON.parse(localStorage.getItem("cart")!)).toEqual(empty);
+  });
+
+  it("throws on clear server error", async () => {
+    const cartWithItem = { sku1: { sku, qty: 1 } } satisfies CartState;
+    // @ts-expect-error override
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: cartWithItem }) })
+      .mockResolvedValueOnce({ ok: false, json: async () => ({ error: "msg" }) });
+
+    render(
+      <CartProvider>
+        <Consumer />
+      </CartProvider>
+    );
+
+    await expect(dispatch({ type: "clear" })).rejects.toThrow("msg");
+  });
+});
+
 describe("CartProvider without window", () => {
   const sku: SKU = {
     id: "sku1",
@@ -37,9 +233,10 @@ describe("CartProvider without window", () => {
 
   let dispatch: (action: any) => Promise<void>;
 
-  function Capture() {
-    [, dispatch] = useCart();
-    return <div data-testid="captured" />;
+  function Consumer() {
+    const [cart, d] = useCart();
+    dispatch = d;
+    return <div data-testid="count">{Object.keys(cart).length}</div>;
   }
 
   const originalWindow = global.window;
@@ -51,7 +248,11 @@ describe("CartProvider without window", () => {
     // @ts-expect-error override
     global.fetch = jest
       .fn()
-      .mockResolvedValue({ ok: true, json: async () => ({ cart: {} }) });
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ cart: { sku1: { sku, qty: 1 } } }),
+      });
   });
 
   afterEach(() => {
@@ -62,18 +263,18 @@ describe("CartProvider without window", () => {
     jest.restoreAllMocks();
   });
 
-  it("renders and dispatch works without window", async () => {
+  it("handles add without window", async () => {
     render(
       <CartProvider>
-        <Capture />
+        <Consumer />
       </CartProvider>
     );
-
-    expect(screen.getByTestId("captured")).toBeTruthy();
 
     await act(async () => {
       await dispatch({ type: "add", sku });
     });
+
+    expect(screen.getByTestId("count").textContent).toBe("1");
   });
 });
 

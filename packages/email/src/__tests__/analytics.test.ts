@@ -414,6 +414,62 @@ describe("syncCampaignAnalytics", () => {
     });
   });
 
+  it("skips campaigns without sentAt", async () => {
+    jest.resetModules();
+    process.env.CART_COOKIE_SECRET = "secret";
+    process.env.EMAIL_PROVIDER = "sendgrid";
+
+    const trackEvent = jest.fn().mockResolvedValue(undefined);
+    jest.doMock("@platform-core/analytics", () => ({
+      __esModule: true,
+      trackEvent,
+    }));
+    const stats = {
+      delivered: 1,
+      opened: 2,
+      clicked: 3,
+      unsubscribed: 4,
+      bounced: 5,
+    };
+    const getCampaignStats = jest.fn().mockResolvedValue(stats);
+    jest.doMock("../providers/sendgrid", () => ({
+      SendgridProvider: jest.fn().mockImplementation(() => ({ getCampaignStats })),
+    }));
+    jest.doMock("../providers/resend", () => ({ ResendProvider: jest.fn() }));
+
+    const memoryStore = {
+      async listShops() {
+        return ["shop1"];
+      },
+      async readCampaigns() {
+        const common = {
+          recipients: [],
+          subject: "s",
+          body: "b",
+          sendAt: nowIso(),
+        };
+        return [
+          { id: "c1", ...common, sentAt: nowIso() },
+          { id: "c2", ...common },
+        ];
+      },
+    };
+    const getCampaignStore = jest.fn().mockReturnValue(memoryStore);
+    jest.doMock("../storage", () => ({ __esModule: true, getCampaignStore }));
+
+    const { syncCampaignAnalytics } = await import("../analytics");
+    await syncCampaignAnalytics();
+
+    expect(getCampaignStats).toHaveBeenCalledTimes(1);
+    expect(getCampaignStats).toHaveBeenCalledWith("c1");
+    expect(trackEvent).toHaveBeenCalledTimes(1);
+    expect(trackEvent).toHaveBeenCalledWith("shop1", {
+      type: "email_campaign_stats",
+      campaign: "c1",
+      ...stats,
+    });
+  });
+
   it("uses Resend provider when configured", async () => {
     jest.resetModules();
     process.env.CART_COOKIE_SECRET = "secret";

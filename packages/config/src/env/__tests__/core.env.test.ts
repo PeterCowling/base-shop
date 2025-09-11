@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
+import { coreEnvSchema } from "../core.ts";
 
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
 const SESSION_SECRET = "session-secret-32-chars-long-string!";
@@ -425,6 +426,15 @@ describe("NODE_ENV branches", () => {
 });
 
 describe("coreEnv extras", () => {
+  it("requires SENDGRID_API_KEY when EMAIL_PROVIDER is sendgrid", () => {
+    const result = coreEnvSchema.safeParse({ EMAIL_PROVIDER: "sendgrid" });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const paths = result.error.issues.map((i) => i.path.join("."));
+      expect(paths).toContain("SENDGRID_API_KEY");
+    }
+  });
+
   it("propagates email schema errors", async () => {
     await expect(
       withEnv({ EMAIL_PROVIDER: "sendgrid" }, () => importCore())

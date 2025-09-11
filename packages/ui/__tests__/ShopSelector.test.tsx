@@ -63,5 +63,58 @@ describe("ShopSelector", () => {
     expect(onChange).toHaveBeenCalledWith("other");
     fetchMock.mockRestore();
   });
+
+  it("shows server error message when fetch not ok", async () => {
+    const fetchMock = jest
+      .spyOn(global, "fetch")
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ error: "Server error" }), {
+          status: 500,
+        })
+      );
+
+    render(<ShopSelector />);
+
+    expect(await screen.findByText("Server error")).toBeInTheDocument();
+    fetchMock.mockRestore();
+  });
+
+  it("shows invalid response error when JSON is not an array", async () => {
+    const fetchMock = jest
+      .spyOn(global, "fetch")
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ foo: "bar" }), { status: 200 })
+      );
+
+    render(<ShopSelector />);
+
+    expect(await screen.findByText("Invalid response")).toBeInTheDocument();
+    fetchMock.mockRestore();
+  });
+
+  it("shows no shops found message when API returns empty array", async () => {
+    const fetchMock = jest
+      .spyOn(global, "fetch")
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify([]), { status: 200 })
+      );
+
+    render(<ShopSelector />);
+
+    expect(await screen.findByText("No shops found.")).toBeInTheDocument();
+    fetchMock.mockRestore();
+  });
+
+  it("falls back to error text when fetch rejects", async () => {
+    const fetchMock = jest
+      .spyOn(global, "fetch")
+      .mockRejectedValueOnce(new Error("Network error"));
+
+    render(<ShopSelector />);
+
+    expect(await screen.findByText("Network error")).toBeInTheDocument();
+    expect(screen.queryByTestId("shop-select")).not.toBeInTheDocument();
+    fetchMock.mockRestore();
+  });
 });
 

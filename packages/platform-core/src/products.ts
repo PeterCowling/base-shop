@@ -45,16 +45,16 @@ export function getProductById(
 
 export { assertLocale } from "./products/index";
 
-export async function getProducts(a?: unknown): Promise<SKU[]> {
-  if (typeof a === "string") {
-    try {
-      const { readRepo } = await import("./repositories/products.server");
-      return await readRepo<SKU>(a);
-    } catch {
-      return [...base.PRODUCTS];
-    }
+export async function getProducts(shop?: string): Promise<SKU[]> {
+  if (!shop) {
+    throw new Error("getProducts requires a shop identifier");
   }
-  return [...base.PRODUCTS];
+  try {
+    const { readRepo } = await import("./repositories/products.server");
+    return await readRepo<SKU>(shop);
+  } catch {
+    return [...base.PRODUCTS];
+  }
 }
 
 export async function searchProducts(
@@ -62,10 +62,19 @@ export async function searchProducts(
   b?: string,
 ): Promise<SKU[]> {
   if (typeof b === "undefined") {
+    if (!a) {
+      throw new Error("searchProducts requires a query string");
+    }
     const q = a.toLowerCase();
     return base.PRODUCTS.filter((p) =>
       (p.title ?? "").toLowerCase().includes(q),
     );
+  }
+  if (!a) {
+    throw new Error("searchProducts requires a shop identifier");
+  }
+  if (!b) {
+    throw new Error("searchProducts requires a query string");
   }
   try {
     const { readRepo } = await import("./repositories/products.server");

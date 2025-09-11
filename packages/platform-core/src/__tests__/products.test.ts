@@ -75,10 +75,10 @@ describe('getProducts', () => {
     jest.clearAllMocks();
   });
 
-  it('returns a copy of all products', async () => {
-    const list = await getProducts();
-    expect(list).toEqual(PRODUCTS);
-    expect(list).not.toBe(PRODUCTS);
+  it('throws when shop identifier is missing', async () => {
+    await expect(getProducts()).rejects.toThrow(
+      'getProducts requires a shop identifier',
+    );
     expect(serverMocks.readRepo).not.toHaveBeenCalled();
   });
 
@@ -99,11 +99,24 @@ describe('searchProducts', () => {
     expect(serverMocks.readRepo).not.toHaveBeenCalled();
   });
 
-    it('delegates to the server when shop is provided', async () => {
-      const product = PRODUCTS[0];
-      await expect(searchProducts('shop', product.title!)).resolves.toEqual([
-        product,
-      ]);
-      expect(serverMocks.readRepo).toHaveBeenCalledWith('shop');
-    });
+  it('throws when query string is missing', async () => {
+    await expect(searchProducts('')).rejects.toThrow(
+      'searchProducts requires a query string',
+    );
   });
+
+  it('throws when shop is provided without a query', async () => {
+    await expect(searchProducts('shop', '')).rejects.toThrow(
+      'searchProducts requires a query string',
+    );
+    expect(serverMocks.readRepo).not.toHaveBeenCalled();
+  });
+
+  it('delegates to the server when shop is provided', async () => {
+    const product = PRODUCTS[0];
+    await expect(searchProducts('shop', product.title!)).resolves.toEqual([
+      product,
+    ]);
+    expect(serverMocks.readRepo).toHaveBeenCalledWith('shop');
+  });
+});

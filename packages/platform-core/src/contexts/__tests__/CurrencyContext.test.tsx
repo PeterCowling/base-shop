@@ -1,3 +1,5 @@
+/** @jest-environment jsdom */
+
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { CurrencyProvider, useCurrency, readInitial } from "../CurrencyContext";

@@ -35,7 +35,10 @@ describe("inventory repository", () => {
     "readInventory throws when file missing or invalid",
     async () => {
       await withRepo(async (repo, shop, dir) => {
-        await expect(repo.readInventory(shop)).rejects.toThrow();
+        // When the inventory file is missing, the repository resolves an empty
+        // list rather than throwing so callers can treat a lack of inventory as
+        // "no items".
+        await expect(repo.readInventory(shop)).resolves.toEqual([]);
 
       await fs.writeFile(
         path.join(dir, "data", "shops", shop, "inventory.json"),

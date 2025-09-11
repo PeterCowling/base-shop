@@ -48,6 +48,17 @@ describe("startOfDay", () => {
     // After DST, midnight local is 04:00 UTC
     expect(d.toISOString()).toBe("2025-03-10T04:00:00.000Z");
   });
+
+  it("handles DST fall back in New York", () => {
+    const dstEnd = new Date("2025-11-02T12:00:00Z");
+    expect(startOfDay(dstEnd, "America/New_York").toISOString()).toBe(
+      "2025-11-02T05:00:00.000Z"
+    );
+    const before = new Date("2025-11-01T12:00:00Z");
+    expect(startOfDay(before, "America/New_York").toISOString()).toBe(
+      "2025-11-01T04:00:00.000Z"
+    );
+  });
 });
 
 describe("parseDate", () => {

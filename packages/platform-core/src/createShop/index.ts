@@ -25,10 +25,20 @@ import type { Shop } from "@acme/types";
 declare var __dirname: string;
 
 function repoRoot(): string {
-  const findRoot = (p: string): string | null => {
-    const norm = p.replace(/\\/g, "/");
-    const match = norm.match(/^(.*?)(?:\/(?:packages|apps))(?:\/|$)/);
-    return match && match[1] ? match[1] : null;
+  const hasMarker = (dir: string): boolean =>
+    fs.existsSync(join(dir, "packages")) ||
+    fs.existsSync(join(dir, "apps")) ||
+    fs.existsSync(join(dir, "pnpm-workspace.yaml"));
+
+  const searchUp = (start: string): string | null => {
+    let dir = start;
+    while (true) {
+      if (hasMarker(dir)) return dir;
+      const parent = dirname(dir);
+      if (parent === dir) break;
+      dir = parent;
+    }
+    return null;
   };
 
   try {
@@ -36,27 +46,25 @@ function repoRoot(): string {
       typeof __dirname !== "undefined"
         ? __dirname
         : dirname(fileURLToPath(eval("import.meta.url")));
-    const fromModule = findRoot(moduleDir);
+    const fromModule = searchUp(moduleDir);
     if (fromModule) return fromModule;
   } catch {
     /* ignore */
   }
 
-  const fromCwd = findRoot(process.cwd());
+  const fromCwd = searchUp(process.cwd());
   if (fromCwd) return fromCwd;
 
-  let dir = process.cwd();
-  while (true) {
-    if (
-      fs.existsSync(join(dir, "packages")) ||
-      fs.existsSync(join(dir, "apps")) ||
-      fs.existsSync(join(dir, "pnpm-workspace.yaml"))
-    ) {
-      return dir;
+  // If the current working directory is above the repo root, scan its
+  // immediate subdirectories for a workspace marker.
+  try {
+    for (const entry of fs.readdirSync(process.cwd(), { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const candidate = join(process.cwd(), entry.name);
+      if (hasMarker(candidate)) return candidate;
     }
-    const parent = dirname(dir);
-    if (parent === dir) break;
-    dir = parent;
+  } catch {
+    /* ignore */
   }
 
   return process.cwd();

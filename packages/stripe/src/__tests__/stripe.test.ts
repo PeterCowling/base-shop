@@ -115,9 +115,11 @@ describe("stripe client", () => {
       .spyOn(httpClient, "_fetchFn")
       .mockRejectedValue(new Error("network down"));
 
-    await expect(stripeInternal.customers.create()).rejects.toThrow(
-      "An error occurred with our connection to Stripe",
-    );
+    await expect(
+      stripeInternal.paymentIntents.update("pi_123", {
+        metadata: { foo: "bar" },
+      }),
+    ).rejects.toThrow("An error occurred with our connection to Stripe");
     expect(fetchSpy).toHaveBeenCalled();
   });
 

@@ -25,7 +25,9 @@ export default function normalizeMultilingualInput(
   input: Record<string, unknown>,
   locales: readonly Locale[]
 ): Partial<Record<Locale, string>> {
-  const result: Partial<Record<Locale, string>> = {};
+  // Start with an empty object and assert the more specific type so that
+  // TypeScript doesn't expect all locale keys to be present upfront.
+  const result = {} as Partial<Record<Locale, string>>;
   for (const locale of locales) {
     const value = input[locale];
     if (typeof value === "string") {

@@ -75,10 +75,8 @@ describe('getProducts', () => {
     jest.clearAllMocks();
   });
 
-  it('returns a copy of all products', async () => {
-    const list = await getProducts();
-    expect(list).toEqual(PRODUCTS);
-    expect(list).not.toBe(PRODUCTS);
+  it('throws when shop is missing', async () => {
+    await expect(getProducts()).rejects.toThrow('shop');
     expect(serverMocks.readRepo).not.toHaveBeenCalled();
   });
 
@@ -94,8 +92,18 @@ describe('searchProducts', () => {
     jest.clearAllMocks();
   });
 
+  it('throws when query is missing', async () => {
+    await expect(searchProducts('')).rejects.toThrow('query');
+    expect(serverMocks.readRepo).not.toHaveBeenCalled();
+  });
+
   it('returns an empty array when query yields no results', async () => {
     await expect(searchProducts('no-match')).resolves.toEqual([]);
+    expect(serverMocks.readRepo).not.toHaveBeenCalled();
+  });
+
+  it('throws when query is missing for shop search', async () => {
+    await expect(searchProducts('shop', '')).rejects.toThrow('query');
     expect(serverMocks.readRepo).not.toHaveBeenCalled();
   });
 

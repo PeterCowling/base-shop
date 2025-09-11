@@ -1,6 +1,22 @@
 import { formatCurrency } from "../formatCurrency.ts";
 
 describe("formatCurrency", () => {
+  it("formats NaN when amount is undefined", () => {
+    const expected = new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: "USD",
+    }).format(NaN);
+    expect(formatCurrency(undefined as any)).toBe(expected);
+  });
+
+  it("formats NaN when amount is null", () => {
+    const expected = new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: "USD",
+    }).format(NaN);
+    expect(formatCurrency(null as any)).toBe(expected);
+  });
+
   it("defaults to USD when currency is omitted", () => {
     const amount = 12345; // $123.45
     expect(formatCurrency(amount)).toBe(

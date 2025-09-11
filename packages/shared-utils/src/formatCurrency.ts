@@ -25,8 +25,10 @@ export function formatCurrency(
     throw new RangeError(`Invalid currency code: ${currency}`);
   }
 
+  const value = amount ?? NaN;
+
   return new Intl.NumberFormat(locale, {
     style: "currency",
     currency,
-  }).format(amount / 100);
+  }).format(value / 100);
 }

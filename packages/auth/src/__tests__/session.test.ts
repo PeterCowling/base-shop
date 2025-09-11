@@ -352,6 +352,42 @@ it("getCustomerSession rotates session id, updates store, and creates csrf when 
   expect(mockSessionStore.delete).toHaveBeenCalledWith("old");
 });
 
+it("getCustomerSession rejects when session store set fails without writing cookies", async () => {
+  const {
+    getCustomerSession,
+    CUSTOMER_SESSION_COOKIE,
+    CSRF_TOKEN_COOKIE,
+  } = await import("../session");
+
+  mockCookies.get.mockImplementation((name: string) =>
+    name === CUSTOMER_SESSION_COOKIE ? { value: "token" } : undefined,
+  );
+  unsealData.mockResolvedValue({
+    sessionId: "old",
+    customerId: "cust",
+    role: "customer",
+  });
+  mockSessionStore.get.mockResolvedValue({ sessionId: "old" });
+  randomUUID.mockReturnValue("new-id");
+  sealData.mockResolvedValue("new-token");
+  const error = new Error("set fail");
+  mockSessionStore.set.mockRejectedValueOnce(error);
+
+  await expect(getCustomerSession()).rejects.toThrow(error);
+  expect(mockSessionStore.delete).not.toHaveBeenCalled();
+  expect(mockCookies.set).not.toHaveBeenCalledWith(
+    CUSTOMER_SESSION_COOKIE,
+    expect.anything(),
+    expect.anything(),
+  );
+  expect(mockCookies.set).not.toHaveBeenCalledWith(
+    CSRF_TOKEN_COOKIE,
+    expect.anything(),
+    expect.anything(),
+  );
+  expect(randomUUID).toHaveBeenCalledTimes(1);
+});
+
 it("getCustomerSession propagates delete errors without setting cookies", async () => {
   const {
     getCustomerSession,

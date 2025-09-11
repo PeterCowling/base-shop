@@ -4,6 +4,9 @@ import fetch, { Headers, Request, Response } from "cross-fetch";
 import { webcrypto } from "node:crypto";
 import React from "react";
 
+const mutableEnv = process.env as Record<string, string>;
+mutableEnv.EMAIL_FROM ||= "test@example.com";
+
 if (!globalThis.fetch) {
   Object.assign(globalThis, { fetch, Headers, Request, Response });
 }

@@ -308,6 +308,17 @@ describe("resolveConfig", () => {
     expect(cfg).toEqual({ enabled: true, intervalMinutes: 5 });
   });
 
+  it("uses file interval when env value invalid", async () => {
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ lateFeeService: { intervalMinutes: 15 } })
+    );
+    process.env.LATE_FEE_INTERVAL_MS_S1 = "abc";
+    (coreEnv as any).LATE_FEE_INTERVAL_MS = 30 * 60 * 1000;
+
+    const cfg = await service.resolveConfig("s1", "/data");
+    expect(cfg).toEqual({ enabled: false, intervalMinutes: 15 });
+  });
+
   it("ignores invalid env values", async () => {
     readFileMock.mockRejectedValueOnce(new Error("boom"));
     process.env.LATE_FEE_ENABLED_S1 = "maybe";

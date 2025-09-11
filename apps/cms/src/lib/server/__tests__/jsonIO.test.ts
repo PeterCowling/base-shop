@@ -63,9 +63,12 @@ describe("readJsonFile", () => {
 });
 
 describe("writeJsonFile", () => {
-  it("throws TypeError for non-object values", async () => {
-    // @ts-expect-error passing string to trigger TypeError
-    await expect(writeJsonFile("file.json", "nope")).rejects.toBeInstanceOf(TypeError);
+  it("throws TypeError when value is null", async () => {
+    await expect(writeJsonFile("file.json", null as any)).rejects.toBeInstanceOf(TypeError);
+  });
+
+  it("throws TypeError when value is primitive", async () => {
+    await expect(writeJsonFile("file.json", 42 as any)).rejects.toBeInstanceOf(TypeError);
   });
 
   it("writes JSON with 2-space indent by default", async () => {

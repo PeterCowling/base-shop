@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 export function run(cmd: string, args: string[], cwd: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const proc = spawn(cmd, args, { cwd, stdio: "inherit" });
+    proc.on("error", (err) => reject(err));
     proc.on("close", (code) => {
       if (code === 0) resolve();
       else reject(new Error(`${cmd} ${args.join(" ")} failed with status ${code}`));

@@ -63,8 +63,8 @@ describe("publish-upgrade route", () => {
     (childProcess.spawn as jest.Mock).mockImplementation(
       () =>
         ({
-          on: (_ev, cb) => {
-            cb(0);
+          on: (ev, cb) => {
+            if (ev === "close") cb(0);
             return undefined as any;
           },
         }) as any,
@@ -98,8 +98,8 @@ describe("publish-upgrade route", () => {
     (childProcess.spawn as jest.Mock).mockImplementation(
       () =>
         ({
-          on: (_ev, cb) => {
-            cb(0);
+          on: (ev, cb) => {
+            if (ev === "close") cb(0);
             return undefined as any;
           },
         }) as any,
@@ -140,8 +140,8 @@ describe("publish-upgrade route", () => {
     (childProcess.spawn as jest.Mock).mockImplementation(
       () =>
         ({
-          on: (_ev, cb) => {
-            cb(0);
+          on: (ev, cb) => {
+            if (ev === "close") cb(0);
             return undefined as any;
           },
         }) as any,
@@ -180,8 +180,8 @@ describe("publish-upgrade route", () => {
     (childProcess.spawn as jest.Mock).mockImplementation(
       () =>
         ({
-          on: (_ev, cb) => {
-            cb(1);
+          on: (ev, cb) => {
+            if (ev === "close") cb(1);
             return undefined as any;
           },
         }) as any,
@@ -217,8 +217,8 @@ describe("publish-upgrade route", () => {
       .mockImplementationOnce(
         () =>
           ({
-            on: (_ev, cb) => {
-              cb(0);
+            on: (ev, cb) => {
+              if (ev === "close") cb(0);
               return undefined as any;
             },
           }) as any,
@@ -226,8 +226,8 @@ describe("publish-upgrade route", () => {
       .mockImplementationOnce(
         () =>
           ({
-            on: (_ev, cb) => {
-              cb(1);
+            on: (ev, cb) => {
+              if (ev === "close") cb(1);
               return undefined as any;
             },
           }) as any,

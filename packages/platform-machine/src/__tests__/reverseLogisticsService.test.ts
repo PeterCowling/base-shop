@@ -157,6 +157,17 @@ describe("processReverseLogisticsEventsOnce", () => {
     );
   });
 
+  it("rejects when listing shops fails", async () => {
+    const err = new Error("nope");
+    readdirMock.mockRejectedValueOnce(err);
+
+    await expect(
+      service.processReverseLogisticsEventsOnce(undefined, "/data")
+    ).rejects.toBe(err);
+    expect(readFileMock).not.toHaveBeenCalled();
+    expect(unlinkMock).not.toHaveBeenCalled();
+  });
+
   it.each(cases)("handles %s events", async (status, mark, evt) => {
     readdirMock.mockResolvedValueOnce(["e.json"]);
     readFileMock.mockResolvedValueOnce(
@@ -230,6 +241,28 @@ describe("processReverseLogisticsEventsOnce", () => {
     );
     expect(unlinkMock).toHaveBeenCalledWith(
       path.join("/data", "shop", "reverse-logistics", "bad.json")
+    );
+  });
+
+  it("logs and removes file on handler error", async () => {
+    readdirMock.mockResolvedValueOnce(["e.json"]);
+    readFileMock.mockResolvedValueOnce(
+      JSON.stringify({ sessionId: "abc", status: "received" })
+    );
+    (markReceived as jest.Mock).mockRejectedValueOnce(new Error("fail"));
+
+    await service.processReverseLogisticsEventsOnce("shop", "/data");
+
+    expect(logger.error).toHaveBeenCalledWith(
+      "reverse logistics event failed",
+      {
+        shopId: "shop",
+        file: "e.json",
+        err: expect.anything(),
+      }
+    );
+    expect(unlinkMock).toHaveBeenCalledWith(
+      path.join("/data", "shop", "reverse-logistics", "e.json")
     );
   });
 
@@ -389,12 +422,15 @@ describe("startReverseLogisticsService", () => {
     clearSpy.mockRestore();
   });
 
-  it("logs and rethrows when listing shops fails", async () => {
+  it("logs and rethrows when readdir fails", async () => {
     const err = new Error("boom");
     readdirMock.mockRejectedValueOnce(err);
+
     await expect(
       service.startReverseLogisticsService({}, "/data")
     ).rejects.toBe(err);
+
+    expect(readdirMock).toHaveBeenCalledWith("/data");
     expect(logger.error).toHaveBeenCalledWith(
       "failed to start reverse logistics service",
       { err }

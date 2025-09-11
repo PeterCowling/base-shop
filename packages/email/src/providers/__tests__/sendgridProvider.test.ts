@@ -51,6 +51,25 @@ describe("SendgridProvider additional cases", () => {
     expect(global.fetch).not.toHaveBeenCalled();
   });
 
+  it("createContact uses marketing key for Authorization header", async () => {
+    process.env.SENDGRID_API_KEY = "key";
+    process.env.SENDGRID_MARKETING_KEY = "mkey";
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      json: () => Promise.resolve({ persisted_recipients: ["id"] }),
+    }) as any;
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await provider.createContact("user@example.com");
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://api.sendgrid.com/v3/marketing/contacts",
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          Authorization: "Bearer mkey",
+        }),
+      })
+    );
+  });
+
   it("createContact returns id on success", async () => {
     process.env.SENDGRID_API_KEY = "key";
     global.fetch = jest.fn().mockResolvedValueOnce({

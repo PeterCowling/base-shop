@@ -552,11 +552,29 @@ it("listSessions delegates to session store", async () => {
   expect(mockSessionStore.list).toHaveBeenCalledWith("cust");
 });
 
+it("listSessions propagates store errors", async () => {
+  const { listSessions } = await import("../session");
+  const error = new Error("list fail");
+  mockSessionStore.list.mockRejectedValueOnce(error);
+
+  await expect(listSessions("cust")).rejects.toThrow(error);
+  expect(mockSessionStore.list).toHaveBeenCalledWith("cust");
+});
+
 it("revokeSession deletes from session store", async () => {
   const { revokeSession } = await import("../session");
 
   await revokeSession("sid");
 
+  expect(mockSessionStore.delete).toHaveBeenCalledWith("sid");
+});
+
+it("revokeSession surfaces store errors", async () => {
+  const { revokeSession } = await import("../session");
+  const error = new Error("delete fail");
+  mockSessionStore.delete.mockRejectedValueOnce(error);
+
+  await expect(revokeSession("sid")).rejects.toThrow(error);
   expect(mockSessionStore.delete).toHaveBeenCalledWith("sid");
 });
 

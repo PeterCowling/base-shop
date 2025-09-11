@@ -299,7 +299,9 @@ describe("onRequestPost", () => {
     );
   });
 
-  it("leaves componentVersions empty when all components are missing and still runs build/deploy", async () => {
+  it(
+    "leaves componentVersions unchanged when all components are unknown and still runs build/deploy",
+    async () => {
     readFileSync.mockImplementation((file: string) => {
       if (file.endsWith("package.json")) {
         return JSON.stringify({ dependencies: { compA: "1.0.0" } });
@@ -322,7 +324,7 @@ describe("onRequestPost", () => {
       request: new Request("http://example.com", {
         method: "POST",
         headers: { Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ components: ["compB"] }),
+        body: JSON.stringify({ components: ["unknown"] }),
       }),
     });
 

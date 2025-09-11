@@ -39,6 +39,14 @@ describe("formatPrice", () => {
     }
   );
 
+  it("rounds values below one cent", () => {
+    const expected = new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: "USD",
+    }).format(0.01);
+    expect(formatPrice(0.005, "USD")).toBe(expected);
+  });
+
   it.each([-1, -123.45])("formats negative amount %p", (amount) => {
     const expected = new Intl.NumberFormat(undefined, {
       style: "currency",
@@ -63,6 +71,10 @@ describe("formatPrice", () => {
       }
     }
   );
+
+  it("applies thousands separators in en-US locale", () => {
+    expect(formatPrice(1234567.89, "USD", "en-US")).toBe("$1,234,567.89");
+  });
 
   it("formats when Intl.supportedValuesOf includes the currency", () => {
     const original = (Intl as any).supportedValuesOf;

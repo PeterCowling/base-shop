@@ -1,10 +1,12 @@
 // packages/shared-utils/src/replaceShopInPath.ts
 
 /**
- * Replace the shop slug in a CMS pathname with a new value.
+ * Replace the shop slug in a pathname with a new value.
  *
- * If the pathname does not contain a shop segment, return
- * `/cms/shop/<shop>` instead.
+ * Supports both CMS paths like `/cms/shop/<id>` and public paths
+ * like `/shops/<id>`. If the pathname does not contain a relevant
+ * segment, CMS paths fall back to `/cms/shop/<shop>` while other
+ * paths are returned unchanged.
  */
 export function replaceShopInPath(
   pathname: string | null | undefined,
@@ -23,16 +25,36 @@ export function replaceShopInPath(
   }
 
   const segments = path.split("/").filter(Boolean);
-  const idx = segments.indexOf("shop");
+  const idxShop = segments.indexOf("shop");
+  const idxShops = segments.indexOf("shops");
 
-  if (idx >= 0 && idx + 1 < segments.length) {
-    segments[idx + 1] = shop;
+  if (idxShop >= 0) {
+    if (idxShop + 1 < segments.length) {
+      segments[idxShop + 1] = shop;
+    } else {
+      segments.push(shop);
+    }
     let newPath = "/" + segments.join("/");
     if (trailingSlash) newPath += "/";
     return query ? `${newPath}?${query}` : newPath;
   }
 
-  let base = `/cms/shop/${shop}`;
-  if (trailingSlash) base += "/";
-  return query ? `${base}?${query}` : base;
+  if (idxShops >= 0) {
+    if (idxShops + 1 < segments.length) {
+      segments[idxShops + 1] = shop;
+    } else {
+      segments.push(shop);
+    }
+    let newPath = "/" + segments.join("/");
+    if (trailingSlash) newPath += "/";
+    return query ? `${newPath}?${query}` : newPath;
+  }
+
+  if (segments[0] === "cms") {
+    let base = `/cms/shop/${shop}`;
+    if (trailingSlash) base += "/";
+    return query ? `${base}?${query}` : base;
+  }
+
+  return pathname;
 }

@@ -1,20 +1,37 @@
-export function getCsrfToken(req?: Request): string | undefined {
+type SimpleReq = { headers?: Record<string, string | undefined>; url?: string };
+
+export function getCsrfToken(req?: Request | SimpleReq): string | undefined {
   if (req) {
-    const headerToken = req.headers.get("x-csrf-token")?.trim();
+    const headers: any = (req as any).headers;
+    const getHeader = typeof headers?.get === "function"
+      ? (name: string) => headers.get(name)
+      : (name: string) => headers?.[name];
+
+    const headerToken = getHeader("x-csrf-token")?.trim();
     if (headerToken) return headerToken;
-    const queryToken = new URL(req.url).searchParams.get("csrf_token")?.trim();
-    if (queryToken) return queryToken;
-    const cookieToken = req.headers
-      .get("cookie")
-      ?.split(";")
-      .map((row) => row.trim().split("="))
+
+    const reqUrl = (req as any).url;
+    if (reqUrl) {
+      const queryToken = new URL(reqUrl, "http://dummy").searchParams
+        .get("csrf_token")
+        ?.trim();
+      if (queryToken) return queryToken;
+    }
+
+    const cookieHeader = getHeader("cookie") ?? "";
+    const cookieToken = cookieHeader
+      .split(";")
+      .map((row: string) => row.trim().split("="))
       .find(
         ([name, value]) =>
-          name === "csrf_token" && value?.trim() && !value.trim().startsWith("/")
+          ["csrf_token", "csrf"].includes(name) &&
+          value?.trim() &&
+          !value.trim().startsWith("/")
       )?.[1]
       ?.trim();
     return cookieToken || undefined;
   }
+
   if (typeof document === "undefined") return undefined;
   let csrfToken =
     document

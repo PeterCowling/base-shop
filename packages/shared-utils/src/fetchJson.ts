@@ -6,21 +6,41 @@ export async function fetchJson<T>(
   schema?: z.ZodType<T>
 ): Promise<T> {
   const res = await fetch(input, init);
+
+  if (res.ok) {
+    let data: unknown;
+    try {
+      if (typeof (res as any).json === "function") {
+        data = await (res as any).json();
+      } else {
+        const text = await res.text();
+        data = text ? JSON.parse(text) : undefined;
+      }
+    } catch {
+      data = undefined;
+    }
+    return schema ? schema.parse(data) : (data as T);
+  }
+
   const text = await res.text().catch(() => "");
-  let data: unknown;
+  let message: string | undefined;
+  let parsed: unknown;
+  let isJson = false;
   try {
-    data = text ? JSON.parse(text) : undefined;
+    parsed = text ? JSON.parse(text) : undefined;
+    isJson = true;
   } catch {
-    data = undefined;
+    parsed = undefined;
   }
-  if (!res.ok) {
-    const error = z.object({ error: z.string() }).safeParse(data);
-    const message = error.success
-      ? error.data.error
-      : [res.statusText || `HTTP ${res.status}`, text]
-          .filter(Boolean)
-          .join(": ");
-    throw new Error(message);
+  const error = z.object({ error: z.string() }).safeParse(parsed);
+  if (error.success) {
+    message = error.data.error;
+  } else if (res.statusText) {
+    message = res.statusText;
+  } else if (!isJson && text) {
+    message = text;
+  } else {
+    message = `HTTP ${res.status}`;
   }
-  return schema ? schema.parse(data) : (data as T);
+  throw new Error(message);
 }

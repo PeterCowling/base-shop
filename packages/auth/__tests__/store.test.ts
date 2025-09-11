@@ -61,6 +61,37 @@ describe("createSessionStore", () => {
     expect(store).toBeInstanceOf(MemorySessionStore);
   });
 
+  it(
+    "logs error and falls back when SESSION_STORE=\"redis\" but credentials missing",
+    async () => {
+      const err = new Error("missing credentials");
+      jest.doMock("@acme/config/env/core", () => ({
+        coreEnv: { SESSION_STORE: "redis" },
+      }));
+      jest.doMock("@upstash/redis", () => ({
+        Redis: class {
+          constructor(opts: { url?: string; token?: string }) {
+            if (!opts.url || !opts.token) {
+              throw err;
+            }
+          }
+        },
+      }));
+      const consoleSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      const { createSessionStore } = await import("../src/store");
+      const { MemorySessionStore } = await import("../src/memoryStore");
+      const store = await createSessionStore();
+      expect(store).toBeInstanceOf(MemorySessionStore);
+      expect(consoleSpy).toHaveBeenCalledWith(
+        "Failed to initialize Redis session store",
+        err,
+      );
+      consoleSpy.mockRestore();
+    },
+  );
+
   it("falls back to MemorySessionStore when SESSION_STORE is unrecognized", async () => {
     jest.doMock("@acme/config/env/core", () => ({
       coreEnv: { SESSION_STORE: "foobar" },

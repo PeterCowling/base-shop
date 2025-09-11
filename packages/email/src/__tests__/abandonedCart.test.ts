@@ -220,6 +220,16 @@ describe("resolveAbandonedCartDelay", () => {
     expect(delay).toBe(54321);
   });
 
+  it("returns default delay when deprecated field is non-numeric", async () => {
+    jest
+      .spyOn(fs, "readFile")
+      .mockResolvedValue(
+        JSON.stringify({ abandonedCartDelayMs: "oops" }, null, 2),
+      );
+    const delay = await resolveAbandonedCartDelay(shop, "/tmp");
+    expect(delay).toBe(DEFAULT_DELAY);
+  });
+
   it("environment variables override file and default delay", async () => {
     jest
       .spyOn(fs, "readFile")

@@ -70,6 +70,24 @@ describe("SendgridProvider additional cases", () => {
     );
   });
 
+  it("createContact falls back to API key when marketing key missing", async () => {
+    process.env.SENDGRID_API_KEY = "key";
+    global.fetch = jest.fn().mockResolvedValueOnce({
+      json: () => Promise.resolve({ persisted_recipients: ["id"] }),
+    }) as any;
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await provider.createContact("user@example.com");
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://api.sendgrid.com/v3/marketing/contacts",
+      expect.objectContaining({
+        headers: expect.objectContaining({
+          Authorization: "Bearer key",
+        }),
+      })
+    );
+  });
+
   it("createContact returns id on success", async () => {
     process.env.SENDGRID_API_KEY = "key";
     global.fetch = jest.fn().mockResolvedValueOnce({

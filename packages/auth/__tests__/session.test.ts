@@ -383,6 +383,48 @@ describe("session token", () => {
     });
   });
 
+  it("destroyCustomerSession removes cookies but skips store delete for corrupted token", async () => {
+    const { sealData } = await import("iron-session");
+    const { SESSION_TTL_S } = jest.requireActual("../src/store");
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+    const valid = await sealData(
+      { customerId: "abc", role: "customer" as Role, sessionId: "sess-1" },
+      {
+        password: process.env.SESSION_SECRET!,
+        ttl: SESSION_TTL_S,
+      },
+    );
+    store.set("customer_session", valid + "corrupt");
+    store.set("csrf_token", "csrf");
+    const sessionStore = { delete: jest.fn() };
+    jest.doMock("../src/store", () => {
+      const actual = jest.requireActual("../src/store");
+      return {
+        __esModule: true,
+        ...actual,
+        createSessionStore: async () => sessionStore,
+      };
+    });
+    const {
+      destroyCustomerSession,
+      CUSTOMER_SESSION_COOKIE,
+      CSRF_TOKEN_COOKIE,
+    } = await import("../src/session");
+    await destroyCustomerSession();
+    expect(sessionStore.delete).not.toHaveBeenCalled();
+    expect(store.delete).toHaveBeenCalledWith({
+      name: CUSTOMER_SESSION_COOKIE,
+      path: "/",
+      domain: "example.com",
+    });
+    expect(store.delete).toHaveBeenCalledWith({
+      name: CSRF_TOKEN_COOKIE,
+      path: "/",
+      domain: "example.com",
+    });
+  });
+
   it("destroyCustomerSession clears cookies even when store delete fails", async () => {
     const store = createStore();
     mockCookies.mockResolvedValue(store);

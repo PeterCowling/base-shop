@@ -17,14 +17,19 @@ describe("TranslationsProvider and useTranslations", () => {
   it("memoises translator function when messages remain unchanged", () => {
     const messages = { hello: "Hallo" };
     const wrapper = ({ children }: PropsWithChildren) => (
-      <TranslationsProvider messages={messages}>{children}</TranslationsProvider>
+      <TranslationsProvider messages={messages}>
+        {children}
+      </TranslationsProvider>
     );
 
-    const { result, rerender } = renderHook(() => {
-      const t = useTranslations();
-      const initial = useRef(t);
-      return { t, initial };
-    }, { wrapper });
+    const { result, rerender } = renderHook(
+      () => {
+        const t = useTranslations();
+        const initial = useRef(t);
+        return { t, initial };
+      },
+      { wrapper }
+    );
 
     expect(result.current.t("hello")).toBe("Hallo");
     rerender();
@@ -38,14 +43,19 @@ describe("TranslationsProvider and useTranslations", () => {
     // messages.
     let messages: Record<string, string> = { hello: "Hallo" };
     const wrapper = ({ children }: PropsWithChildren) => (
-      <TranslationsProvider messages={messages}>{children}</TranslationsProvider>
+      <TranslationsProvider messages={messages}>
+        {children}
+      </TranslationsProvider>
     );
 
-    const { result, rerender } = renderHook(() => {
-      const t = useTranslations();
-      const initial = useRef(t);
-      return { t, initial };
-    }, { wrapper });
+    const { result, rerender } = renderHook(
+      () => {
+        const t = useTranslations();
+        const initial = useRef(t);
+        return { t, initial };
+      },
+      { wrapper }
+    );
 
     expect(result.current.t("hello")).toBe("Hallo");
 
@@ -62,7 +72,9 @@ describe("TranslationsProvider and useTranslations", () => {
       return <span>{t("greet")}</span>;
     };
     const wrapper = ({ children }: PropsWithChildren) => (
-      <TranslationsProvider messages={messages}>{children}</TranslationsProvider>
+      <TranslationsProvider messages={messages}>
+        {children}
+      </TranslationsProvider>
     );
 
     const { rerender, getByText } = render(<Child />, { wrapper });
@@ -82,5 +94,50 @@ describe("TranslationsProvider and useTranslations", () => {
     expect(warn).toHaveBeenCalledWith("Missing translation for key: unknown");
     warn.mockRestore();
   });
-});
 
+  it("interpolates placeholders when variables are provided", () => {
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <TranslationsProvider messages={{ greet: "Hi {name}" }}>
+        {children}
+      </TranslationsProvider>
+    );
+
+    const { result } = renderHook(() => useTranslations(), { wrapper });
+    expect(result.current("greet", { name: "Sam" })).toBe("Hi Sam");
+  });
+
+  it("leaves placeholders intact when variables are missing", () => {
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <TranslationsProvider messages={{ greet: "Hi {name}" }}>
+        {children}
+      </TranslationsProvider>
+    );
+
+    const { result } = renderHook(() => useTranslations(), { wrapper });
+    expect(result.current("greet")).toBe("Hi {name}");
+  });
+
+  it("renders React elements alongside string messages", () => {
+    const Child = () => {
+      const t = useTranslations();
+      return (
+        <div>
+          {t("rich")}
+          <span>{t("plain")}</span>
+        </div>
+      );
+    };
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <TranslationsProvider
+        messages={{ rich: <strong>Hi</strong>, plain: "Hello" }}
+      >
+        {children}
+      </TranslationsProvider>
+    );
+
+    const { getByText } = render(<Child />, { wrapper });
+    const rich = getByText("Hi");
+    expect(rich.tagName).toBe("STRONG");
+    getByText("Hello");
+  });
+});

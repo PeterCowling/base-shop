@@ -39,6 +39,12 @@ describe("pricing repository", () => {
       await expect(readPricing()).resolves.toEqual(validData);
     });
 
+    it("throws 404-like error when file missing", async () => {
+      const err = Object.assign(new Error("missing"), { code: "ENOENT" });
+      readFile.mockRejectedValue(err);
+      await expect(readPricing()).rejects.toMatchObject({ code: "ENOENT" });
+    });
+
     it("throws on invalid JSON", async () => {
       readFile.mockResolvedValue("{}");
       await expect(readPricing()).rejects.toThrow("Invalid pricing data");
@@ -63,6 +69,13 @@ describe("pricing repository", () => {
         "utf8"
       );
       expect(rename).toHaveBeenCalledWith(tmp, file);
+    });
+
+    it("validates structure before writing", async () => {
+      await expect(writePricing({} as any)).rejects.toThrow(
+        "Invalid pricing data",
+      );
+      expect(writeFile).not.toHaveBeenCalled();
     });
   });
 });

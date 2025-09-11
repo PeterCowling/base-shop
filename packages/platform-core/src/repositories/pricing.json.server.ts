@@ -19,10 +19,14 @@ async function read(): Promise<PricingMatrix> {
 }
 
 async function write(data: PricingMatrix): Promise<void> {
+  const parsed = pricingSchema.safeParse(data);
+  if (!parsed.success) {
+    throw new Error("Invalid pricing data");
+  }
   const file = pricingPath();
   const tmp = `${file}.${Date.now()}.tmp`;
   await fs.mkdir(path.dirname(file), { recursive: true });
-  await fs.writeFile(tmp, JSON.stringify(data, null, 2), "utf8");
+  await fs.writeFile(tmp, JSON.stringify(parsed.data, null, 2), "utf8");
   await fs.rename(tmp, file);
 }
 

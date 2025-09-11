@@ -20,7 +20,7 @@ describe('deployShop', () => {
 
   it('writes deploy.json and returns preview url', async () => {
     await withTempDir(async () => {
-      const { deployShop } = await import('../src/createShop');
+      const { deployShop } = await import('../src/createShop/deploy');
       const file = path.join('data', 'shops', 'shopx', 'deploy.json');
       fs.mkdirSync(path.dirname(file), { recursive: true });
       const result = deployShop('shopx', 'shop.example.com');
@@ -44,7 +44,7 @@ describe('deployShop', () => {
         deploy: () => ({ status: 'success' as const }),
         writeDeployInfo: () => {},
       };
-      const { deployShop } = await import('../src/createShop');
+      const { deployShop } = await import('../src/createShop/deploy');
       deployShop(id, undefined, adapter);
       const env = fs.readFileSync(envPath, 'utf8');
       expect(env).not.toMatch(/SESSION_SECRET=oldsecret/);
@@ -64,7 +64,7 @@ describe('deployShop', () => {
         deploy: () => ({ status: 'success' as const }),
         writeDeployInfo: () => {},
       };
-      const { deployShop } = await import('../src/createShop');
+      const { deployShop } = await import('../src/createShop/deploy');
       deployShop(id, undefined, adapter);
       const env = fs.readFileSync(envPath, 'utf8');
       expect(env).toMatch(/OTHER=1/);
@@ -81,7 +81,7 @@ describe('deployShop', () => {
         deploy: jest.fn(() => ({ status: 'success' as const })),
         writeDeployInfo: jest.fn(),
       };
-      const { deployShop } = await import('../src/createShop');
+      const { deployShop } = await import('../src/createShop/deploy');
       const result = deployShop('shop-fail', undefined, adapter);
       expect(result.status).toBe('error');
       expect(result.error).toBe('fail');
@@ -90,4 +90,3 @@ describe('deployShop', () => {
     });
   });
 });
-

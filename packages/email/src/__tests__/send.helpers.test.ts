@@ -78,6 +78,30 @@ describe("send helpers", () => {
     });
   });
 
+  describe("loadProvider cache behavior", () => {
+    it("caches instantiated providers", async () => {
+      process.env.SENDGRID_API_KEY = "sg";
+      const { loadProvider } = await import("../send");
+      const first = await loadProvider("sendgrid");
+      const second = await loadProvider("sendgrid");
+      expect(first).toBe(second);
+      const { SendgridProvider } = await import("../providers/sendgrid");
+      expect(SendgridProvider).toHaveBeenCalledTimes(1);
+    });
+
+    it("caches missing providers", async () => {
+      const { loadProvider } = await import("../send");
+      const first = await loadProvider("unknown");
+      const second = await loadProvider("unknown");
+      expect(first).toBeUndefined();
+      expect(second).toBeUndefined();
+      const { SendgridProvider } = await import("../providers/sendgrid");
+      const { ResendProvider } = await import("../providers/resend");
+      expect(SendgridProvider).not.toHaveBeenCalled();
+      expect(ResendProvider).not.toHaveBeenCalled();
+    });
+  });
+
   describe("sendWithRetry", () => {
     it("retries on retryable errors and succeeds", async () => {
       const { sendWithRetry } = await import("../send");

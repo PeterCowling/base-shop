@@ -272,6 +272,18 @@ describe('component helpers', () => {
       ].sort());
     });
 
+    it('records symlink without recursing into target', () => {
+      vol.fromJSON({
+        '/dir/sub/file.txt': 'a',
+      });
+      fs.symlinkSync('/dir/sub', '/dir/link');
+      const files = listFiles('/dir').sort();
+      expect(files).toEqual([
+        'link',
+        path.join('sub', 'file.txt'),
+      ].sort());
+    });
+
     it('returns empty array when directory is empty', () => {
       vol.fromJSON({}, '/empty');
       expect(listFiles('/empty')).toEqual([]);
@@ -305,6 +317,13 @@ describe('component helpers', () => {
     it('detects files present only in second directory', () => {
       vol.fromJSON({ '/b/only.txt': 'hello' });
       expect(diffDirectories('/a', '/b')).toEqual(['only.txt']);
+    });
+
+    it('detects nested files present only in first directory', () => {
+      vol.fromJSON({ '/a/subdir/file.txt': 'hello' });
+      expect(diffDirectories('/a', '/b')).toEqual([
+        path.join('subdir', 'file.txt'),
+      ]);
     });
 
     it('detects when file contents differ', () => {

@@ -14,6 +14,13 @@ if (typeof ResponseWithJson.json !== "function") {
 }
 
 describe("unsubscribe API", () => {
+  let trackEvent: jest.Mock;
+
+  beforeEach(() => {
+    trackEvent = require("@platform-core/analytics").trackEvent as jest.Mock;
+    trackEvent.mockReset();
+  });
+
   test("records unsubscribe event", async () => {
     const { GET } = await import(
       "../src/app/api/marketing/email/unsubscribe/route"
@@ -31,5 +38,17 @@ describe("unsubscribe API", () => {
       campaign: "c1",
     });
     expect(res.status).toBe(200);
+  });
+
+  test("missing parameters return 400", async () => {
+    const { GET } = await import(
+      "../src/app/api/marketing/email/unsubscribe/route"
+    );
+    const req = {
+      nextUrl: new URL("https://example.com?shop=shop1"),
+    } as unknown as NextRequest;
+    const res = await GET(req);
+    expect(res.status).toBe(400);
+    expect(trackEvent).not.toHaveBeenCalled();
   });
 });

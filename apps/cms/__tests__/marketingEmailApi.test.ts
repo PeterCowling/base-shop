@@ -217,4 +217,88 @@ describe("marketing email API templates", () => {
       body: "<p>Hi</p>",
     });
   });
+
+  test("appends unsubscribe placeholder when no templateId", async () => {
+    const createCampaign = jest.fn().mockResolvedValue("id1");
+    const renderTemplate = jest.fn();
+    jest.doMock("@acme/email", () => ({
+      __esModule: true,
+      createCampaign,
+      renderTemplate,
+      listCampaigns: jest.fn(),
+    }));
+    const { POST } = await import("../src/app/api/marketing/email/route");
+    const res = await POST({
+      json: async () => ({
+        shop,
+        recipients: ["a@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+      }),
+    } as unknown as NextRequest);
+    expect(res.status).toBe(200);
+    expect(renderTemplate).not.toHaveBeenCalled();
+    expect(createCampaign).toHaveBeenCalledWith({
+      shop,
+      recipients: ["a@example.com"],
+      subject: "Hi",
+      body: "<p>Hi</p><p>%%UNSUBSCRIBE%%</p>",
+      segment: undefined,
+      sendAt: undefined,
+      templateId: undefined,
+    });
+  });
+});
+
+describe("marketing email API validation", () => {
+  beforeEach(() => {
+    jest.resetModules();
+  });
+
+  test("GET missing shop returns 400", async () => {
+    const { GET } = await import("../src/app/api/marketing/email/route");
+    const req = { nextUrl: new URL("https://example.com") } as unknown as NextRequest;
+    const res = await GET(req);
+    expect(res.status).toBe(400);
+  });
+
+  test("POST missing required fields returns 400", async () => {
+    const createCampaign = jest.fn();
+    jest.doMock("@acme/email", () => ({
+      __esModule: true,
+      createCampaign,
+      renderTemplate: jest.fn(),
+      listCampaigns: jest.fn(),
+    }));
+    const { POST } = await import("../src/app/api/marketing/email/route");
+    const res = await POST({
+      json: async () => ({
+        recipients: ["a@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+      }),
+    } as unknown as NextRequest);
+    expect(res.status).toBe(400);
+    expect(createCampaign).not.toHaveBeenCalled();
+  });
+
+  test("POST returns 500 when createCampaign fails", async () => {
+    const createCampaign = jest.fn(() => Promise.reject(new Error("fail")));
+    jest.doMock("@acme/email", () => ({
+      __esModule: true,
+      createCampaign,
+      renderTemplate: jest.fn(),
+      listCampaigns: jest.fn(),
+    }));
+    const { POST } = await import("../src/app/api/marketing/email/route");
+    const res = await POST({
+      json: async () => ({
+        shop: "errshop",
+        recipients: ["a@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+      }),
+    } as unknown as NextRequest);
+    expect(res.status).toBe(500);
+  });
 });

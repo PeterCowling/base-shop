@@ -7,6 +7,8 @@ describe('getShopFromPath', () => {
 
   it('extracts the slug from the ?shop query parameter', () => {
     expect(getShopFromPath('/cms?shop=my-shop')).toBe('my-shop');
+    expect(getShopFromPath('?shop=my-shop')).toBe('my-shop');
+    expect(getShopFromPath('/cms/shop/foo?shop=bar')).toBe('bar');
   });
 
   it('extracts the slug from /shop/:slug paths', () => {
@@ -30,8 +32,14 @@ describe('getShopFromPath', () => {
     expect(getShopFromPath('/cms/shop/')).toBeUndefined();
   });
 
-  it('extracts the slug from a full URL with query parameters', () => {
+  it('handles paths with trailing slashes', () => {
+    expect(getShopFromPath('/cms/shop/slug/')).toBe('slug');
+  });
+
+  it('handles full URLs with and without query strings', () => {
+    expect(getShopFromPath('https://host/cms/shop/slug')).toBe('slug');
     expect(getShopFromPath('https://host/cms/shop/slug?foo=1')).toBe('slug');
+    expect(getShopFromPath('https://host/cms?shop=my-shop')).toBe('my-shop');
   });
 });
 

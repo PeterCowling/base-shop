@@ -1,3 +1,4 @@
+import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { CurrencyProvider, useCurrency, readInitial } from "../CurrencyContext";
 
@@ -168,5 +169,16 @@ describe("useCurrency", () => {
     expect(() => render(<Bare />)).toThrow(
       "useCurrency must be inside CurrencyProvider"
     );
+  });
+
+  it("rethrows errors from React.useContext", () => {
+    const customError = new Error("useContext boom");
+    const spy = jest.spyOn(React, "useContext").mockImplementation(() => {
+      throw customError;
+    });
+
+    expect(() => useCurrency()).toThrow(customError);
+
+    spy.mockRestore();
   });
 });

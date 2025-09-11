@@ -21,13 +21,16 @@ export async function POST(
   try {
     const form = await req.formData();
     const file = form.get("file") as unknown;
-      let text: string;
-      try {
-        if (!file) throw new Error("no file");
-        text = await new Response(file as Blob).text();
-      } catch {
-        return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    let text: string;
+    try {
+      if (!file || typeof (file as any).arrayBuffer !== "function") {
+        throw new Error("no file");
       }
+      const buf = await (file as any).arrayBuffer();
+      text = new TextDecoder().decode(buf);
+    } catch {
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    }
     let raw: unknown;
     const f = file as File;
     if (f.type === "application/json" || f.name.endsWith(".json")) {
@@ -36,16 +39,24 @@ export async function POST(
         ? data.map((row: RawInventoryItem) => expandInventoryItem(row))
         : expandInventoryItem(data as RawInventoryItem);
     } else {
-      raw = await new Promise((resolve, reject) => {
-        const rows: unknown[] = [];
+      const rows: RawInventoryItem[] = await new Promise((resolve, reject) => {
+        const collected: RawInventoryItem[] = [];
         Readable.from(text)
           .pipe(parse({ headers: true, ignoreEmpty: true }))
           .on("error", reject)
           .on("data", (row) => {
-            rows.push(expandInventoryItem(row as RawInventoryItem));
+            collected.push(row as RawInventoryItem);
           })
-          .on("end", () => resolve(rows));
+          .on("end", () => resolve(collected));
       });
+      try {
+        raw = rows.map((r) => expandInventoryItem(r));
+      } catch (err) {
+        return NextResponse.json(
+          { error: (err as Error).message },
+          { status: 400 },
+        );
+      }
     }
     const parsed = inventoryItemSchema.array().safeParse(raw);
     if (!parsed.success) {

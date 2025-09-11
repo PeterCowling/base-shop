@@ -24,5 +24,14 @@ describe('getShopFromPath', () => {
   it('returns undefined when there is no shop segment', () => {
     expect(getShopFromPath('/cms/pages')).toBeUndefined();
   });
+
+  it('returns undefined for /cms/shop paths without a slug', () => {
+    expect(getShopFromPath('/cms/shop')).toBeUndefined();
+    expect(getShopFromPath('/cms/shop/')).toBeUndefined();
+  });
+
+  it('extracts the slug from a full URL with query parameters', () => {
+    expect(getShopFromPath('https://host/cms/shop/slug?foo=1')).toBe('slug');
+  });
 });
 

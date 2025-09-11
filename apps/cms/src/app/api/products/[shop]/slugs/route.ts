@@ -15,13 +15,17 @@ export async function POST(
     return NextResponse.json([]);
   }
 
-  const catalogue = await readRepo<ProductPublication>(shop);
-  const wanted = new Set(slugs);
-  const existing: string[] = [];
-  for (const p of catalogue) {
-    const slug = p.sku ?? p.id;
-    if (wanted.has(slug)) existing.push(slug);
-  }
+  try {
+    const catalogue = await readRepo<ProductPublication>(shop);
+    const wanted = new Set(slugs);
+    const existing: string[] = [];
+    for (const p of catalogue) {
+      const slug = p.sku ?? p.id;
+      if (wanted.has(slug)) existing.push(slug);
+    }
 
-  return NextResponse.json(existing);
+    return NextResponse.json(existing);
+  } catch {
+    return NextResponse.json([]);
+  }
 }

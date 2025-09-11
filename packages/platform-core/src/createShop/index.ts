@@ -19,6 +19,11 @@ import {
 } from "./deploymentAdapter";
 import type { Shop } from "@acme/types";
 
+// `__dirname` only exists in CommonJS builds; declare it so TypeScript allows
+// referencing it as a fallback when running tests transpiled to CJS.
+// eslint-disable-next-line no-var
+declare var __dirname: string;
+
 function repoRoot(): string {
   const findRoot = (p: string): string | null => {
     const norm = p.replace(/\\/g, "/");
@@ -36,6 +41,13 @@ function repoRoot(): string {
     moduleUrl = eval("import.meta.url");
   } catch {
     moduleUrl = undefined;
+  }
+
+  // Fall back to __dirname when `import.meta.url` is unavailable (e.g. when
+  // transpiled to CommonJS in tests). Cast to `unknown` first so TypeScript
+  // doesn't error in ESM builds where `__dirname` is not defined.
+  if (!moduleUrl && typeof __dirname !== "undefined") {
+    moduleUrl = `file://${__dirname}`;
   }
   if (moduleUrl) {
     const fromUrl = findRoot(fileURLToPath(moduleUrl));
@@ -217,10 +229,14 @@ export function listThemes(): string[] {
   for (const root of roots) {
     try {
       const themesDir = join(root, "packages", "themes");
-      return fs
-        .readdirSync(themesDir, { withFileTypes: true })
-        .filter((entry) => entry.isDirectory())
-        .map((entry) => entry.name);
+      const entries = fs.readdirSync(themesDir);
+      return entries.filter((name) => {
+        try {
+          return fs.statSync(join(themesDir, name)).isDirectory();
+        } catch {
+          return false;
+        }
+      });
     } catch {
       /* try next root */
     }

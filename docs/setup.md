@@ -108,6 +108,20 @@ non-interactively.
 
 Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages.
 
+### Rental shops
+
+Choosing `rental` as the shop type enables additional workflows:
+
+- Define rental prices in `data/rental/pricing.json` and currency conversion
+  rates in `data/rental/exchangeRates.json`.
+- Set `rentalInventoryAllocation` and any `rentalSubscriptions` in the shop's
+  `shop.json` if you need stock reservations or subscription plans.
+- Configure deposit release by setting `DEPOSIT_RELEASE_ENABLED=true` and
+  `DEPOSIT_RELEASE_INTERVAL_MS` in the generated `.env` file. Run
+  `pnpm release-deposits` to process refunds on demand.
+- Ensure `coverageIncluded` or coverage codes are set in shop settings when
+  offering damage coverage at checkout.
+
 For automated scripts you can still call `pnpm create-shop <id>` with flags:
 
 ```bash

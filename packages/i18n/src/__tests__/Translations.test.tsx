@@ -117,6 +117,28 @@ describe("TranslationsProvider and useTranslations", () => {
     expect(result.current("greet")).toBe("Hi {name}");
   });
 
+  it("leaves placeholders intact when unrelated variables are provided", () => {
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <TranslationsProvider messages={{ greet: "Hi {name}" }}>
+        {children}
+      </TranslationsProvider>
+    );
+
+    const { result } = renderHook(() => useTranslations(), { wrapper });
+    expect(result.current("greet", { unused: "x" })).toBe("Hi {name}");
+  });
+
+  it("interpolates \"undefined\" when a variable is explicitly set to undefined", () => {
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <TranslationsProvider messages={{ greet: "Hi {name}" }}>
+        {children}
+      </TranslationsProvider>
+    );
+
+    const { result } = renderHook(() => useTranslations(), { wrapper });
+    expect(result.current("greet", { name: undefined })).toBe("Hi undefined");
+  });
+
   it("renders React elements alongside string messages", () => {
     const Child = () => {
       const t = useTranslations();

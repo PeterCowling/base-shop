@@ -21,6 +21,7 @@ jest.doMock(rbacStorePath, () => ({
 }));
 
 process.env.CART_COOKIE_SECRET = "test";
+process.env.EMAIL_FROM = "test@example.com";
 
 /* -------------------------------------------------------------------------- */
 /* 2.  Imports                                                                */

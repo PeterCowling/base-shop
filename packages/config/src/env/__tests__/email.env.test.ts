@@ -4,6 +4,10 @@ const ORIGINAL_ENV = { ...process.env };
 
 const loadEnv = async () => (await import("../email.ts")).emailEnv;
 
+beforeEach(() => {
+  process.env.EMAIL_FROM = "from@example.com";
+});
+
 afterEach(() => {
   process.env = { ...ORIGINAL_ENV };
   jest.resetModules();

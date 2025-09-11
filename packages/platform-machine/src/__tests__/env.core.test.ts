@@ -1,10 +1,19 @@
 import { describe, expect, it, jest } from "@jest/globals";
 import { z } from "zod";
 import { withEnv } from "./helpers/env";
-import {
-  loadCoreEnv,
-  depositReleaseEnvRefinement,
-} from "@acme/config/env/core";
+
+process.env.EMAIL_FROM = "from@example.com";
+process.env.CMS_SPACE_URL = "https://example.com";
+process.env.CMS_ACCESS_TOKEN = "token";
+process.env.SANITY_API_VERSION = "v1";
+process.env.SANITY_PROJECT_ID = "project";
+process.env.SANITY_DATASET = "production";
+process.env.SANITY_API_TOKEN = "token";
+process.env.SANITY_PREVIEW_SECRET = "secret";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { loadCoreEnv, depositReleaseEnvRefinement } = require(
+  "@acme/config/env/core"
+);
 
 const requireEnvImport = async () => (await import("@acme/config/env/core")).requireEnv;
 
@@ -59,6 +68,7 @@ describe("deposit/reverse/late-fee refinement", () => {
       REVERSE_LOGISTICS_INTERVAL_MS: "1000",
       LATE_FEE_ENABLED: "true",
       LATE_FEE_INTERVAL_MS: "250",
+      EMAIL_FROM: "from@example.com",
     } as any);
     expect(env.DEPOSIT_RELEASE_ENABLED).toBe(true);
     expect(env.DEPOSIT_RELEASE_INTERVAL_MS).toBe(1000);
@@ -78,6 +88,7 @@ describe("deposit/reverse/late-fee refinement", () => {
         REVERSE_LOGISTICS_INTERVAL_MS: "later",
         LATE_FEE_ENABLED: "perhaps",
         LATE_FEE_INTERVAL_MS: "eventually",
+        EMAIL_FROM: "from@example.com",
       } as any),
     ).toThrow("Invalid core environment variables");
     const output = err.mock.calls.flat().join("\n");
@@ -138,7 +149,10 @@ describe("invalid URL", () => {
   it("fails when NEXT_PUBLIC_BASE_URL is invalid", () => {
     const err = jest.spyOn(console, "error").mockImplementation(() => {});
     expect(() =>
-      loadCoreEnv({ NEXT_PUBLIC_BASE_URL: "not a url" } as any),
+      loadCoreEnv({
+        NEXT_PUBLIC_BASE_URL: "not a url",
+        EMAIL_FROM: "from@example.com",
+      } as any),
     ).toThrow("Invalid core environment variables");
     expect(err).toHaveBeenCalled();
     err.mockRestore();
@@ -153,6 +167,7 @@ describe("nested schema errors", () => {
       loadCoreEnv({
         AUTH_PROVIDER: "jwt",
         EMAIL_PROVIDER: "sendgrid",
+        EMAIL_FROM: "from@example.com",
       } as any),
     ).toThrow("Invalid core environment variables");
     const output = err.mock.calls.flat().join("\n");

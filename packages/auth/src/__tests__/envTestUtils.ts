@@ -5,7 +5,7 @@ export async function withEnv(
   fn: () => Promise<void> | void,
 ): Promise<void> {
   const originalEnv = process.env;
-  process.env = { ...originalEnv };
+  process.env = { ...originalEnv, EMAIL_FROM: "from@example.com" };
 
   try {
     for (const [key, value] of Object.entries(vars)) {

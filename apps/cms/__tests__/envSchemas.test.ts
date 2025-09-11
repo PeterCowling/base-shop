@@ -10,10 +10,15 @@ beforeEach(() => {
     ...ORIGINAL_ENV,
     NEXTAUTH_SECRET,
     SESSION_SECRET,
+    EMAIL_FROM: "from@example.com",
     EMAIL_PROVIDER: "smtp",
     CMS_SPACE_URL: "https://cms.example.com",
     CMS_ACCESS_TOKEN: "token",
     SANITY_API_VERSION: "v1",
+    SANITY_PROJECT_ID: "project",
+    SANITY_DATASET: "production",
+    SANITY_API_TOKEN: "sanity-token",
+    SANITY_PREVIEW_SECRET: "preview",
   } as NodeJS.ProcessEnv;
 });
 
@@ -82,6 +87,7 @@ describe("core env schema", () => {
     SANITY_API_VERSION: "v1",
     NEXTAUTH_SECRET,
     SESSION_SECRET,
+    EMAIL_FROM: "from@example.com",
   } as const;
 
   it("defaults CART_COOKIE_SECRET outside production", async () => {
@@ -147,14 +153,24 @@ describe("email env schema", () => {
     const sendgrid = emailEnvSchema.safeParse({
       EMAIL_PROVIDER: "sendgrid",
       SENDGRID_API_KEY: "key",
+      EMAIL_FROM: "from@example.com",
     });
     expect(sendgrid.success).toBe(true);
-    const missing = emailEnvSchema.safeParse({ EMAIL_PROVIDER: "sendgrid" });
+    const missing = emailEnvSchema.safeParse({
+      EMAIL_PROVIDER: "sendgrid",
+      EMAIL_FROM: "from@example.com",
+    });
     expect(missing.success).toBe(false);
-    const secure = emailEnvSchema.safeParse({ SMTP_SECURE: "YeS" });
+    const secure = emailEnvSchema.safeParse({
+      SMTP_SECURE: "YeS",
+      EMAIL_FROM: "from@example.com",
+    });
     expect(secure.success).toBe(true);
     expect(secure.data?.SMTP_SECURE).toBe(true);
-    const badSecure = emailEnvSchema.safeParse({ SMTP_SECURE: "not" });
+    const badSecure = emailEnvSchema.safeParse({
+      SMTP_SECURE: "not",
+      EMAIL_FROM: "from@example.com",
+    });
     expect(badSecure.success).toBe(false);
   });
 });

@@ -3,6 +3,12 @@ import { z } from "zod";
 
 export const emailEnvSchema = z
   .object({
+    EMAIL_FROM: z
+      .string()
+      .trim()
+      .email()
+      .transform((v) => v.toLowerCase()),
+    EMAIL_SENDER_NAME: z.string().optional(),
     GMAIL_USER: z.string().optional(),
     GMAIL_PASS: z.string().optional(),
     SMTP_URL: z.string().url().optional(),

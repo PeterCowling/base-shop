@@ -5,6 +5,10 @@ const loadEnv = async () => (await import("@acme/config/env/email")).emailEnv;
 const loadSchema = async () =>
   (await import("@acme/config/env/email")).emailEnvSchema;
 
+beforeEach(() => {
+  process.env.EMAIL_FROM = "from@example.com";
+});
+
 afterEach(() => {
   process.env = { ...ORIGINAL_ENV };
   jest.resetModules();
@@ -126,7 +130,10 @@ describe("campaign address normalization", () => {
 describe("provider-specific requirements", () => {
   it("requires SENDGRID_API_KEY when provider is sendgrid", async () => {
     const schema = await loadSchema();
-    const result = schema.safeParse({ EMAIL_PROVIDER: "sendgrid" });
+    const result = schema.safeParse({
+      EMAIL_PROVIDER: "sendgrid",
+      EMAIL_FROM: "from@example.com",
+    });
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues[0]).toMatchObject({
@@ -141,13 +148,17 @@ describe("provider-specific requirements", () => {
     const result = schema.safeParse({
       EMAIL_PROVIDER: "sendgrid",
       SENDGRID_API_KEY: "key",
+      EMAIL_FROM: "from@example.com",
     });
     expect(result.success).toBe(true);
   });
 
   it("requires RESEND_API_KEY when provider is resend", async () => {
     const schema = await loadSchema();
-    const result = schema.safeParse({ EMAIL_PROVIDER: "resend" });
+    const result = schema.safeParse({
+      EMAIL_PROVIDER: "resend",
+      EMAIL_FROM: "from@example.com",
+    });
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.issues[0]).toMatchObject({
@@ -162,6 +173,7 @@ describe("provider-specific requirements", () => {
     const result = schema.safeParse({
       EMAIL_PROVIDER: "resend",
       RESEND_API_KEY: "key",
+      EMAIL_FROM: "from@example.com",
     });
     expect(result.success).toBe(true);
   });

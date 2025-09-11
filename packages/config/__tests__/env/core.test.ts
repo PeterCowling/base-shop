@@ -5,6 +5,7 @@ const baseEnv = {
   CMS_SPACE_URL: "https://example.com",
   CMS_ACCESS_TOKEN: "token",
   SANITY_API_VERSION: "v1",
+  EMAIL_FROM: "from@example.com",
 };
 
 describe("@acme/config/env/core", () => {

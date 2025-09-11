@@ -3,6 +3,15 @@ import { withEnv } from "./envTestUtils";
 
 // AUTH_TOKEN_TTL normalisation
 
+process.env.EMAIL_FROM = "from@example.com";
+process.env.CMS_SPACE_URL = "https://example.com";
+process.env.CMS_ACCESS_TOKEN = "token";
+process.env.SANITY_API_VERSION = "v1";
+process.env.SANITY_PROJECT_ID = "project";
+process.env.SANITY_DATASET = "production";
+process.env.SANITY_API_TOKEN = "token";
+process.env.SANITY_PREVIEW_SECRET = "secret";
+
 describe("AUTH_TOKEN_TTL normalisation", () => {
   afterEach(() => {
     jest.dontMock("@acme/config/env/auth");
@@ -105,6 +114,7 @@ describe("deposit/reverse/late-fee refinement", () => {
       REVERSE_LOGISTICS_CUSTOM_INTERVAL_MS: "2000",
       LATE_FEE_CUSTOM_ENABLED: "true",
       LATE_FEE_CUSTOM_INTERVAL_MS: "3000",
+      EMAIL_FROM: "from@example.com",
     });
     expect(result.success).toBe(true);
   });
@@ -114,6 +124,7 @@ describe("deposit/reverse/late-fee refinement", () => {
     const result = coreEnvSchema.safeParse({
       DEPOSIT_RELEASE_CUSTOM_ENABLED: "maybe",
       DEPOSIT_RELEASE_CUSTOM_INTERVAL_MS: "soon",
+      EMAIL_FROM: "from@example.com",
     });
     expect(result.success).toBe(false);
     const messages = result.error.issues.reduce<Record<string, string>>(

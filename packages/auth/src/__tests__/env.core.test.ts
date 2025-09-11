@@ -1,6 +1,16 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
 
-const ORIGINAL_ENV = process.env;
+const ORIGINAL_ENV = {
+  ...process.env,
+  EMAIL_FROM: "from@example.com",
+  CMS_SPACE_URL: "https://example.com",
+  CMS_ACCESS_TOKEN: "token",
+  SANITY_API_VERSION: "v1",
+  SANITY_PROJECT_ID: "project",
+  SANITY_DATASET: "production",
+  SANITY_API_TOKEN: "token",
+  SANITY_PREVIEW_SECRET: "secret",
+};
 
 const withEnv = async <T>(env: NodeJS.ProcessEnv, fn: () => Promise<T>): Promise<T> => {
   process.env = { ...ORIGINAL_ENV, ...env } as NodeJS.ProcessEnv;

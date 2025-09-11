@@ -2,7 +2,7 @@ describe('env schema validation in API context', () => {
   const OLD_ENV = process.env;
   beforeEach(() => {
     jest.resetModules();
-    process.env = { ...OLD_ENV } as NodeJS.ProcessEnv;
+    process.env = { ...OLD_ENV, EMAIL_FROM: "from@example.com" } as NodeJS.ProcessEnv;
   });
   afterEach(() => {
     process.env = OLD_ENV;

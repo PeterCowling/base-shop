@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it } from "@jest/globals";
 import fs from "node:fs";
 
 describe("email env module", () => {
-  const ORIGINAL_ENV = process.env;
+  const ORIGINAL_ENV = { ...process.env, EMAIL_FROM: "from@example.com" };
 
   afterEach(() => {
     jest.resetModules();
@@ -395,7 +395,10 @@ describe("email env module", () => {
       process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
       jest.resetModules();
       const { emailEnvSchema } = await import("../email.ts");
-      const result = emailEnvSchema.safeParse({ EMAIL_PROVIDER: "sendgrid" });
+      const result = emailEnvSchema.safeParse({
+        EMAIL_PROVIDER: "sendgrid",
+        EMAIL_FROM: "from@example.com",
+      });
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error.format()).toEqual(
@@ -416,6 +419,7 @@ describe("email env module", () => {
       const result = emailEnvSchema.safeParse({
         EMAIL_PROVIDER: "sendgrid",
         SENDGRID_API_KEY: "key",
+        EMAIL_FROM: "from@example.com",
       });
       expect(result.success).toBe(true);
       if (result.success) {
@@ -432,7 +436,10 @@ describe("email env module", () => {
         process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
         jest.resetModules();
         const { emailEnvSchema } = await import("../email.ts");
-        const result = emailEnvSchema.safeParse({ EMAIL_PROVIDER: "resend" });
+        const result = emailEnvSchema.safeParse({
+          EMAIL_PROVIDER: "resend",
+          EMAIL_FROM: "from@example.com",
+        });
         expect(result.success).toBe(false);
         if (!result.success) {
           expect(result.error.format()).toEqual(
@@ -451,6 +458,7 @@ describe("email env module", () => {
     const result = emailEnvSchema.safeParse({
       EMAIL_PROVIDER: "resend",
       RESEND_API_KEY: "key",
+      EMAIL_FROM: "from@example.com",
     });
     expect(result.success).toBe(true);
     if (result.success) {
@@ -467,7 +475,7 @@ describe("email env module", () => {
       process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
       jest.resetModules();
       const { emailEnvSchema } = await import("../email.ts");
-      const result = emailEnvSchema.safeParse({});
+      const result = emailEnvSchema.safeParse({ EMAIL_FROM: "from@example.com" });
       expect(result.success).toBe(true);
       if (result.success) {
         expect(result.data.EMAIL_PROVIDER).toBe("smtp");

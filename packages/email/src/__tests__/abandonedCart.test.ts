@@ -152,7 +152,7 @@ describe("recoverAbandonedCarts", () => {
     expect(sendCampaignEmailMock).not.toHaveBeenCalled();
   });
 
-  it("propagates errors from the email provider and leaves cart untouched", async () => {
+  it("returns failed carts when the email provider errors and leaves cart untouched", async () => {
     const now = Date.now();
     const carts: AbandonedCart[] = [
       { email: "fail@example.com", cart: {}, updatedAt: now - 25 * 60 * 60 * 1000 },
@@ -160,7 +160,8 @@ describe("recoverAbandonedCarts", () => {
 
     sendCampaignEmailMock.mockRejectedValueOnce(new Error("boom"));
 
-    await expect(recoverAbandonedCarts(carts, now)).rejects.toThrow("boom");
+    const failed = await recoverAbandonedCarts(carts, now);
+    expect(failed).toEqual([carts[0]]);
     expect(carts[0].reminded).toBeUndefined();
   });
 });

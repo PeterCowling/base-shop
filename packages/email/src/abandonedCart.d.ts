@@ -13,7 +13,8 @@ export interface AbandonedCart {
 /**
  * Send reminder emails for carts that have been inactive for at least a given delay.
  * Carts with `reminded` set to true are ignored. When an email is sent, the
- * record's `reminded` flag is set to true.
+ * record's `reminded` flag is set to true. Failures are ignored and returned
+ * for optional retries or logging.
  */
-export declare function recoverAbandonedCarts(carts: AbandonedCart[], now?: number, delayMs?: number): Promise<void>;
+export declare function recoverAbandonedCarts(carts: AbandonedCart[], now?: number, delayMs?: number): Promise<AbandonedCart[]>;
 //# sourceMappingURL=abandonedCart.d.ts.map

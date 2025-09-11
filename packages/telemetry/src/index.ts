@@ -66,6 +66,7 @@ function scheduleFlush() {
 export function track(name: string, payload: Record<string, unknown> = {}) {
   if (!ENABLED) return;
   if (Math.random() > SAMPLE_RATE) return;
+  if (typeof navigator !== "undefined" && navigator.onLine === false) return;
   BUFFER.push({ name, payload: stripPII(payload), ts: Date.now() });
   scheduleFlush();
 }

@@ -10,6 +10,9 @@ describe("telemetry index", () => {
     // restore fetch if mocked
     // @ts-ignore
     if (originalFetch) global.fetch = originalFetch;
+    // remove navigator mock
+    // @ts-ignore
+    delete global.navigator;
   });
 
   let originalFetch: typeof fetch | undefined;
@@ -87,6 +90,17 @@ describe("telemetry index", () => {
       errorSpy.mockRestore();
       jest.useRealTimers();
     }
+  });
+
+  test("does not track events when offline", async () => {
+    process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
+    process.env.NODE_ENV = "production";
+    process.env.NEXT_PUBLIC_TELEMETRY_SAMPLE_RATE = "1";
+    const mod = await import("../index");
+    // @ts-ignore
+    global.navigator = { onLine: false };
+    mod.track("offlineEvent");
+    expect(mod.__buffer.length).toBe(0);
   });
 });
 

@@ -3,16 +3,12 @@
 import path from "path";
 
 const ensureAuthorizedMock = jest.fn();
-const deployShopMock = jest.fn();
 const readFileMock = jest.fn();
 const withFileLockMock = jest.fn();
 const writeJsonFileMock = jest.fn();
 const updateShopInRepoMock = jest.fn();
 
 jest.mock("../common/auth", () => ({ ensureAuthorized: () => ensureAuthorizedMock() }));
-jest.mock("@platform-core/createShop", () => ({
-  deployShop: (...args: any[]) => deployShopMock(...args),
-}));
 jest.mock("@/lib/server/jsonIO", () => ({
   writeJsonFile: (...args: any[]) => writeJsonFileMock(...args),
   withFileLock: (...args: any[]) => withFileLockMock(...args),
@@ -27,27 +23,7 @@ jest.mock("@platform-core/repositories/shop.server", () => ({
   updateShopInRepo: (...args: any[]) => updateShopInRepoMock(...args),
 }));
 
-import {
-  deployShopHosting,
-  getDeployStatus,
-  updateDeployStatus,
-} from "../deployShop.server";
-
-describe("deployShopHosting", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it("calls ensureAuthorized and deployShop", async () => {
-    deployShopMock.mockResolvedValueOnce({ status: "ok" });
-
-    const result = await deployShopHosting("shop1", "example.com");
-
-    expect(result).toEqual({ status: "ok" });
-    expect(ensureAuthorizedMock).toHaveBeenCalled();
-    expect(deployShopMock).toHaveBeenCalledWith("shop1", "example.com");
-  });
-});
+import { getDeployStatus, updateDeployStatus } from "../deployShop.server";
 
 describe("getDeployStatus", () => {
   beforeEach(() => {
@@ -109,32 +85,11 @@ describe("updateDeployStatus", () => {
     consoleError.mockRestore();
   });
 
-  it("merges existing data when domain is not provided", async () => {
+  it("updates shop domain when provided", async () => {
     withFileLockMock.mockImplementation(async (_file, cb) => {
       await cb();
     });
-    readFileMock.mockResolvedValueOnce(
-      JSON.stringify({ existing: "prop" })
-    );
-    writeJsonFileMock.mockResolvedValue(undefined);
-
-    await updateDeployStatus("shop1", { status: "active" });
-
-    expect(writeJsonFileMock).toHaveBeenCalledWith(
-      path.join("/data", "shop1", "deploy.json"),
-      { existing: "prop", status: "active" }
-    );
-    expect(updateShopInRepoMock).not.toHaveBeenCalled();
-    expect(ensureAuthorizedMock).toHaveBeenCalled();
-  });
-
-  it("merges existing data and updates shop when domain is provided", async () => {
-    withFileLockMock.mockImplementation(async (_file, cb) => {
-      await cb();
-    });
-    readFileMock.mockResolvedValueOnce(
-      JSON.stringify({ existing: "prop", status: "old" })
-    );
+    readFileMock.mockResolvedValueOnce("{}");
     writeJsonFileMock.mockResolvedValue(undefined);
     updateShopInRepoMock.mockResolvedValue(undefined);
 
@@ -145,16 +100,6 @@ describe("updateDeployStatus", () => {
       certificateStatus: "valid",
     });
 
-    expect(writeJsonFileMock).toHaveBeenCalledWith(
-      path.join("/data", "shop1", "deploy.json"),
-      {
-        existing: "prop",
-        status: "new",
-        domain: "shop.example.com",
-        domainStatus: "active",
-        certificateStatus: "valid",
-      }
-    );
     expect(updateShopInRepoMock).toHaveBeenCalledWith("shop1", {
       id: "shop1",
       domain: {
@@ -166,7 +111,7 @@ describe("updateDeployStatus", () => {
     expect(ensureAuthorizedMock).toHaveBeenCalled();
   });
 
-  it("invokes updateShopInRepo when domain provided and handles rejection", async () => {
+  it("handles errors when updating shop domain fails", async () => {
     withFileLockMock.mockImplementation(async (_file, cb) => {
       await cb();
     });

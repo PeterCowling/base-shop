@@ -30,4 +30,30 @@ describe("listShops", () => {
     spy.mockRestore();
     await fs.rm(dir, { recursive: true, force: true });
   });
+
+  it("logs and rethrows when fs.readdir fails for other reasons", async () => {
+    const dir = await fs.mkdtemp(path.join(os.tmpdir(), "shops-"));
+    const shopsDir = path.join(dir, "data", "shops");
+    await fs.mkdir(shopsDir, { recursive: true });
+
+    const cwdSpy = jest.spyOn(process, "cwd").mockReturnValue(dir);
+    const error = Object.assign(new Error("boom"), { code: "EACCES" });
+    const readSpy = jest.spyOn(fs, "readdir").mockRejectedValue(error);
+    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+    const expectedDir = shopsDir.startsWith("/private/")
+      ? shopsDir.slice("/private".length)
+      : shopsDir;
+
+    await expect(listShops()).rejects.toBe(error);
+    expect(consoleSpy).toHaveBeenCalledWith(
+      `Failed to list shops at ${expectedDir}:`,
+      error,
+    );
+
+    readSpy.mockRestore();
+    consoleSpy.mockRestore();
+    cwdSpy.mockRestore();
+    await fs.rm(dir, { recursive: true, force: true });
+  });
 });

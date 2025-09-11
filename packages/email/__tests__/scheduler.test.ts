@@ -27,6 +27,7 @@ let sendDueCampaigns: typeof import("../src/scheduler").sendDueCampaigns;
 let mockedSend: jest.Mock;
 let mockListEvents: jest.Mock;
 let mockResolveSegment: jest.Mock;
+let mockEmitSend: jest.Mock;
 
 jest.setTimeout(10000);
 
@@ -56,10 +57,12 @@ describe("scheduler", () => {
     ({ sendCampaignEmail: mockedSend } = (await import("../src/send")) as any);
     ({ listEvents: mockListEvents } = (await import("@platform-core/repositories/analytics.server")) as any);
     ({ resolveSegment: mockResolveSegment } = (await import("../src/segments")) as any);
+    ({ emitSend: mockEmitSend } = (await import("../src/hooks")) as any);
     setClock({ now: () => now });
     mockedSend.mockResolvedValue(undefined);
     mockListEvents.mockResolvedValue([]);
     mockResolveSegment.mockResolvedValue([]);
+    mockEmitSend.mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -177,6 +180,21 @@ describe("scheduler", () => {
         body: "<p>Hi</p>",
       })
     ).rejects.toThrow("boom");
+
+    expect(memory[shop]).toBeUndefined();
+  });
+
+  test("createCampaign rejects when emitSend fails", async () => {
+    mockEmitSend.mockRejectedValueOnce(new Error("emit fail"));
+
+    await expect(
+      createCampaign({
+        shop,
+        recipients: ["a@example.com"],
+        subject: "Hi",
+        body: "<p>Hi</p>",
+      }),
+    ).rejects.toThrow("emit fail");
 
     expect(memory[shop]).toBeUndefined();
   });

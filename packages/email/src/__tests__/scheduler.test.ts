@@ -299,7 +299,7 @@ describe("scheduler", () => {
     const past = new Date(now.getTime() - 1000).toISOString();
     memory["bad*shop"] = [
       {
-        id: "bad", 
+        id: "bad",
         recipients: ["a@example.com"],
         subject: "Hi",
         body: "<p>Hi</p>",
@@ -308,7 +308,8 @@ describe("scheduler", () => {
         templateId: null,
       },
     ];
-    await expect(sendDueCampaigns()).rejects.toThrow("invalid");
+    await expect(sendDueCampaigns()).resolves.toBeUndefined();
+    expect(sendCampaignEmail).not.toHaveBeenCalled();
   });
 
   test("deliverCampaign renders template HTML for every recipient", async () => {

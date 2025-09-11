@@ -58,6 +58,16 @@ describe("fsCampaignStore error handling", () => {
       .resolves.toEqual([]);
     await fs.rm(path.join(DATA_ROOT, shop), { recursive: true, force: true });
   });
+
+  it("returns [] when campaigns.json contains a non-array", async () => {
+    const shop = "object-json";
+    const file = path.join(DATA_ROOT, shop, "campaigns.json");
+    await fs.mkdir(path.dirname(file), { recursive: true });
+    await fs.writeFile(file, "{}", "utf8");
+    await expect(fsCampaignStore.readCampaigns(shop))
+      .resolves.toEqual([]);
+    await fs.rm(path.join(DATA_ROOT, shop), { recursive: true, force: true });
+  });
 });
 
 describe("fsCampaignStore persistence", () => {

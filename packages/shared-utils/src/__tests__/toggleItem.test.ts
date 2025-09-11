@@ -28,5 +28,14 @@ describe('toggleItem', () => {
     expect(result).not.toBe(input);
     expect(input).toEqual([1, 2, 2, 3]);
   });
+
+  it('adds item to empty list', () => {
+    const input: string[] = [];
+    const result = toggleItem(input, 'x');
+
+    expect(result).toEqual(['x']);
+    expect(result).not.toBe(input);
+    expect(input).toEqual([]);
+  });
 });
 

@@ -66,6 +66,49 @@ describe("session token", () => {
     await expect(getCustomerSession()).resolves.toEqual(session);
   });
 
+  it("defaults user agent to unknown when header missing", async () => {
+    const store = createStore();
+    mockCookies.mockResolvedValue(store);
+
+    const sessionStore = {
+      get: jest.fn(),
+      set: jest.fn(),
+      delete: jest.fn(),
+    };
+
+    jest.doMock("../src/store", () => {
+      const actual = jest.requireActual("../src/store");
+      return {
+        __esModule: true,
+        ...actual,
+        createSessionStore: async () => sessionStore,
+      };
+    });
+
+    const { createCustomerSession, getCustomerSession } = await import("../src/session");
+
+    mockHeaders.mockReturnValue({ get: () => null });
+
+    const session = { customerId: "abc", role: "customer" as Role };
+    await createCustomerSession(session);
+
+    const sessionId = sessionStore.set.mock.calls[0][0].sessionId;
+    sessionStore.get.mockResolvedValue({
+      sessionId,
+      customerId: session.customerId,
+      userAgent: "ua",
+      createdAt: new Date(),
+    });
+
+    sessionStore.set.mockClear();
+
+    await getCustomerSession();
+
+    expect(sessionStore.set).toHaveBeenCalledWith(
+      expect.objectContaining({ userAgent: "unknown" }),
+    );
+  });
+
   it("sets csrf token cookie when missing", async () => {
     const store = createStore();
     mockCookies.mockResolvedValue(store);

@@ -255,6 +255,34 @@ describe('component helpers', () => {
         },
       ]);
     });
+
+    it('surfaces errors from unreadable package directories', () => {
+      vol.fromJSON({
+        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+          componentVersions: { '@acme/foo': '1.0.0' },
+        }),
+        [`${root}/packages/foo/package.json`]: JSON.stringify({
+          name: '@acme/foo',
+          version: '2.0.0',
+        }),
+      });
+      const fs = require('fs') as typeof import('fs');
+      const origReaddir = fs.readdirSync;
+      const origReadFile = fs.readFileSync;
+      fs.readdirSync = ((dir: any, opts: any) => {
+        if (dir === path.join(root, 'packages', 'foo')) {
+          throw new Error('unreadable');
+        }
+        return origReaddir.call(fs, dir, opts);
+      }) as any;
+      fs.readFileSync = ((file: any, ...args: any[]) => {
+        fs.readdirSync(path.dirname(file));
+        return origReadFile.call(fs, file, ...args);
+      }) as any;
+      expect(() => gatherChanges('abc', root)).toThrow('unreadable');
+      fs.readdirSync = origReaddir;
+      fs.readFileSync = origReadFile;
+    });
   });
 
   describe('listFiles', () => {
@@ -291,6 +319,23 @@ describe('component helpers', () => {
 
     it('returns empty array when directory does not exist', () => {
       expect(listFiles('/no-such-dir')).toEqual([]);
+    });
+
+    it('throws when encountering an unreadable directory', () => {
+      vol.fromJSON({
+        '/dir/file.txt': 'ok',
+        '/dir/secret/hidden.txt': 'nope',
+      });
+      const fs = require('fs') as typeof import('fs');
+      const orig = fs.readdirSync;
+      fs.readdirSync = ((dir: any, opts: any) => {
+        if (dir === '/dir/secret') {
+          throw new Error('forbidden');
+        }
+        return orig.call(fs, dir, opts);
+      }) as any;
+      expect(() => listFiles('/dir')).toThrow('forbidden');
+      fs.readdirSync = orig;
     });
   });
 

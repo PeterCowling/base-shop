@@ -17,11 +17,13 @@ describe("stripe mock", () => {
     process.env = OLD_ENV;
   });
 
-  it("returns mock session and logs call", async () => {
+  it("imports without error and logs mock call", async () => {
     const infoSpy = jest.spyOn(console, "info").mockImplementation(() => {});
 
-    const { stripe } = await import("../index.ts");
+    const importPromise = import("../index.ts");
+    await expect(importPromise).resolves.toBeDefined();
 
+    const { stripe } = await importPromise;
     const session = await stripe.checkout.sessions.create({} as any);
 
     expect(session).toMatchObject({

@@ -5,6 +5,7 @@ import tsPlugin from "@typescript-eslint/eslint-plugin";
 import boundaries from "eslint-plugin-boundaries";
 import importPlugin from "eslint-plugin-import";
 import dsPlugin from "@acme/eslint-plugin-ds";
+import securityPlugin from "eslint-plugin-security";
 import { fixupPluginRules } from "@eslint/compat";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -59,6 +60,15 @@ export default [
 
   /* ▸ Next.js presets (bring in @typescript-eslint plugin once) */
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+  /* ▸ Security rules */
+  {
+    plugins: { security: fixupPluginRules(securityPlugin) },
+    rules: {
+      ...securityPlugin.configs.recommended.rules,
+      "security/detect-object-injection": "off",
+    },
+  },
 
   /* ▸ Your repo-wide TypeScript rules (NO plugins key!) */
   {
@@ -246,6 +256,7 @@ export default [
   /* ▸ Enforce UI component layering */
   {
     files: ["packages/ui/**/*.{ts,tsx}"],
+    plugins: { import: importPlugin },
     rules: {
       "import/no-restricted-paths": [
         "error",

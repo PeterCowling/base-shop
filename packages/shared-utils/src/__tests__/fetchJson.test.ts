@@ -63,19 +63,19 @@ describe('fetchJson', () => {
     await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
   });
 
-  it('propagates network failures', async () => {
+  it('rejects when fetch fails with a network error', async () => {
     (global.fetch as jest.Mock).mockRejectedValue(new Error('Network down'));
     await expect(fetchJson('https://example.com')).rejects.toThrow(
       'Network down',
     );
   });
 
-  it('throws status text when error response contains invalid JSON', async () => {
+  it('throws status text when error response body is plain text', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: false,
       status: 502,
       statusText: 'Bad Gateway',
-      text: jest.fn().mockResolvedValue('{invalid'),
+      text: jest.fn().mockResolvedValue('server exploded'),
     });
 
     await expect(fetchJson('https://example.com')).rejects.toThrow(
@@ -175,7 +175,7 @@ describe('fetchJson', () => {
     });
   });
 
-  it('forwards AbortError rejections', async () => {
+  it('rejects with the same AbortError instance', async () => {
     const err = new DOMException('aborted', 'AbortError');
     (global.fetch as jest.Mock).mockRejectedValue(err);
 

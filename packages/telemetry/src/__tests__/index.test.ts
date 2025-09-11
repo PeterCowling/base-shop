@@ -112,5 +112,21 @@ describe("telemetry index", () => {
     mod.track("forcedEvent");
     expect(mod.__buffer.length).toBe(1);
   });
+
+  test("does not track when navigator is offline", async () => {
+    const originalNavigator = global.navigator;
+    // @ts-ignore
+    global.navigator = { onLine: false };
+    try {
+      process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
+      process.env.NODE_ENV = "production";
+      const mod = await import("../index");
+      mod.track("offlineEvent");
+      expect(mod.__buffer.length).toBe(0);
+    } finally {
+      // @ts-ignore
+      global.navigator = originalNavigator;
+    }
+  });
 });
 

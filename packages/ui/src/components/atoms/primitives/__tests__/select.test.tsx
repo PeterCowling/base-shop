@@ -113,6 +113,77 @@ describe("Select", () => {
     expect(item).toHaveClass("custom");
   });
 
+  it("forwards refs and attributes to subcomponents", async () => {
+    const triggerRef = React.createRef<HTMLButtonElement>();
+    const contentRef = React.createRef<HTMLDivElement>();
+    const labelRef = React.createRef<HTMLDivElement>();
+    const itemRef = React.createRef<HTMLDivElement>();
+    const separatorRef = React.createRef<HTMLDivElement>();
+
+    render(
+      <Select>
+        <SelectTrigger
+          ref={triggerRef}
+          data-testid="trigger"
+          data-foo="trigger"
+        >
+          <SelectValue placeholder="Pick" />
+        </SelectTrigger>
+        <SelectContent
+          ref={contentRef}
+          data-testid="content"
+          data-foo="content"
+        >
+          <SelectGroup>
+            <SelectLabel
+              ref={labelRef}
+              data-testid="label"
+              data-foo="label"
+            >
+              Label
+            </SelectLabel>
+            <SelectItem
+              ref={itemRef}
+              value="one"
+              data-testid="item"
+              data-foo="item"
+            >
+              One
+            </SelectItem>
+          </SelectGroup>
+          <SelectSeparator
+            ref={separatorRef}
+            data-testid="separator"
+            data-foo="separator"
+          />
+        </SelectContent>
+      </Select>
+    );
+
+    const user = userEvent.setup();
+    await user.click(screen.getByTestId("trigger"));
+
+    const content = await screen.findByTestId("content");
+    const label = await screen.findByTestId("label");
+    const item = await screen.findByTestId("item");
+    const separator = await screen.findByTestId("separator");
+
+    expect(triggerRef.current).toBe(screen.getByTestId("trigger"));
+    expect(triggerRef.current).toHaveAttribute("data-foo", "trigger");
+
+    expect(contentRef.current).toBe(content);
+    expect(content).toHaveAttribute("data-foo", "content");
+
+    expect(labelRef.current).toBe(label);
+    expect(label).toHaveAttribute("data-foo", "label");
+
+    expect(itemRef.current).toBe(item);
+    expect(item).toHaveAttribute("data-foo", "item");
+
+    expect(separatorRef.current).toBe(separator);
+    expect(separator).toHaveAttribute("data-foo", "separator");
+  });
+
   it("SelectContent renders in a portal", async () => {
     const { container } = render(
       <Select>

@@ -2,6 +2,7 @@
 import { authenticator } from "otplib";
 import { prisma } from "@acme/platform-core/db";
 import type { CustomerMfa } from "@acme/types";
+import { randomInt } from "crypto";
 
 export interface MfaEnrollment {
   secret: string;
@@ -45,4 +46,20 @@ export async function isMfaEnabled(customerId: string): Promise<boolean> {
     where: { customerId },
   });
   return record?.enabled ?? false;
+}
+
+export interface MfaToken {
+  token: string;
+  expiresAt: Date;
+}
+
+const DEFAULT_MFA_TOKEN_TTL_MS = 60_000;
+
+export function generateMfaToken(ttlMs = DEFAULT_MFA_TOKEN_TTL_MS): MfaToken {
+  const token = randomInt(0, 1_000_000).toString().padStart(6, "0");
+  return { token, expiresAt: new Date(Date.now() + ttlMs) };
+}
+
+export function verifyMfaToken(token: string, data: MfaToken): boolean {
+  return token === data.token && Date.now() < data.expiresAt.getTime();
 }

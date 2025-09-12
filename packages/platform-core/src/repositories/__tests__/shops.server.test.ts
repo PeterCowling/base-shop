@@ -16,7 +16,7 @@ import * as shops from "../shops.server";
 import { defaultFilterMappings } from "../../defaultFilterMappings";
 import { promises as fs } from "fs";
 
-const { readShop, writeShop, listShops } = shops;
+const { readShop, writeShop, listShops, applyThemeData } = shops;
 
 describe("shops.repository", () => {
   const updateRepo = updateShopInRepo as jest.Mock;
@@ -35,6 +35,26 @@ describe("shops.repository", () => {
     findUnique = jest.spyOn(prisma.shop, "findUnique");
     findMany = jest.spyOn(prisma.shop, "findMany");
     count = jest.spyOn(prisma.shop, "count");
+  });
+
+  describe("applyThemeData", () => {
+    it("loads tokens when defaults are empty", async () => {
+      const data = shopSchema.parse({
+        id: "shop-theme",
+        name: "Theme Shop",
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+        themeDefaults: {},
+        themeOverrides: {},
+      });
+
+      const result = await applyThemeData(data);
+
+      expect(loadTokens).toHaveBeenCalledWith("base");
+      expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
+      expect(result.themeTokens).toEqual({ base: "base", theme: "theme" });
+    });
   });
 
   describe("readShop", () => {
@@ -106,6 +126,29 @@ describe("shops.repository", () => {
         expect.stringContaining("/fs-shop/shop.json"),
         "utf8"
       );
+      expect(result.name).toBe("FS Shop");
+    });
+
+    it("falls back when prisma data is invalid", async () => {
+      const fileData = {
+        id: "fs-shop",
+        name: "FS Shop",
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+        themeDefaults: { color: "green" },
+        themeOverrides: { color: "blue" },
+      };
+      getRepo.mockRejectedValue(new Error("missing"));
+      findUnique.mockResolvedValue({ data: { invalid: true } });
+      const readFile = jest
+        .spyOn(fs, "readFile")
+        .mockResolvedValue(JSON.stringify(fileData));
+
+      const result = await readShop("fs-shop");
+
+      expect(findUnique).toHaveBeenCalledWith({ where: { id: "fs-shop" } });
+      expect(readFile).toHaveBeenCalled();
       expect(result.name).toBe("FS Shop");
     });
 
@@ -248,6 +291,40 @@ describe("shops.repository", () => {
 
       (shops.readShop as jest.Mock).mockRestore();
     });
+
+    it("prunes overrides that match defaults or are null", async () => {
+      const current = shopSchema.parse({
+        id: "shop2",
+        name: "Shop",
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+        themeDefaults: { color: "red", spacing: "8px" },
+        themeOverrides: {},
+      });
+
+      jest.spyOn(shops, "readShop").mockResolvedValue(current);
+
+      const patch = {
+        id: "shop2",
+        themeDefaults: { spacing: "10px" },
+        themeOverrides: { color: "red", spacing: null } as any,
+      };
+
+      const result = await writeShop("shop2", patch);
+
+      expect(updateRepo).toHaveBeenCalledWith(
+        "shop2",
+        expect.objectContaining({
+          themeDefaults: { color: "red", spacing: "10px" },
+          themeOverrides: {},
+          themeTokens: { color: "red", spacing: "10px" },
+        })
+      );
+      expect(result.themeOverrides).toEqual({});
+
+      (shops.readShop as jest.Mock).mockRestore();
+    });
   });
   describe("listShops", () => {
     it("returns empty list when no shops exist", async () => {
@@ -294,6 +371,22 @@ describe("shops.repository", () => {
         ] as any);
       const result = await listShops(2, 2);
       expect(result).toEqual(["c"]);
+    });
+
+    it("returns [] when filesystem has no directories", async () => {
+      count.mockRejectedValue(new Error("db down"));
+      jest.spyOn(fs, "readdir").mockResolvedValue([] as any);
+
+      const result = await listShops(1, 5);
+      expect(result).toEqual([]);
+    });
+
+    it("returns [] when filesystem access fails", async () => {
+      count.mockRejectedValue(new Error("db down"));
+      jest.spyOn(fs, "readdir").mockRejectedValue(new Error("no fs"));
+
+      const result = await listShops(1, 5);
+      expect(result).toEqual([]);
     });
   });
 });

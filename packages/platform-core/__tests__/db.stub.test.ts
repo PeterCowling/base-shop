@@ -126,6 +126,43 @@ describe("createTestPrismaStub", () => {
     expect(items).toHaveLength(0);
   });
 
+  it("throws when deleting a nonexistent inventory item", async () => {
+    const db = createTestPrismaStub();
+
+    await expect(
+      db.inventoryItem.delete({
+        where: {
+          shopId_sku_variantKey: { shopId: "s", sku: "sku", variantKey: "v" },
+        },
+      }),
+    ).rejects.toThrow("InventoryItem not found");
+  });
+
+  it(
+    "upserts inventory items, creating when missing and updating when present",
+    async () => {
+      const db = createTestPrismaStub();
+      const where = {
+        shopId_sku_variantKey: { shopId: "s", sku: "sku", variantKey: "v" },
+      };
+
+      const create = { shopId: "s", sku: "sku", variantKey: "v", quantity: 1 };
+      const created = await db.inventoryItem.upsert({
+        where,
+        update: { quantity: 2 },
+        create,
+      });
+      expect(created).toMatchObject(create);
+
+      const updated = await db.inventoryItem.upsert({
+        where,
+        update: { quantity: 5 },
+        create,
+      });
+      expect(updated.quantity).toBe(5);
+    },
+  );
+
   it("supports product CRUD operations", async () => {
     const db = createTestPrismaStub();
     await db.product.createMany({

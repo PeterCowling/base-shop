@@ -6,7 +6,7 @@ import {
   coreEnvSchema,
   depositReleaseEnvRefinement,
   loadCoreEnv,
-} from "../core.js";
+} from "../core.ts";
 
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
 const SESSION_SECRET = "session-secret-32-chars-long-string!";
@@ -27,7 +27,7 @@ afterEach(() => {
 });
 
 describe("requireEnv", () => {
-  const getRequire = async () => (await import("../core.js")).requireEnv as any;
+  const getRequire = async () => (await import("../core.ts")).requireEnv as any;
 
   it("returns value for existing variables", async () => {
     process.env.REQ = "present";
@@ -60,7 +60,7 @@ describe("requireEnv", () => {
 });
 
 describe("requireEnv boolean parsing", () => {
-  const getRequire = async () => (await import("../core.js")).requireEnv as any;
+  const getRequire = async () => (await import("../core.ts")).requireEnv as any;
   const cases: Array<[string, boolean]> = [
     ["true", true],
     [" false ", false],
@@ -84,7 +84,7 @@ describe("requireEnv boolean parsing", () => {
 });
 
 describe("requireEnv number parsing", () => {
-  const getRequire = async () => (await import("../core.js")).requireEnv as any;
+  const getRequire = async () => (await import("../core.ts")).requireEnv as any;
 
   const valid: Array<[string, number]> = [
     ["1", 1],
@@ -142,7 +142,7 @@ describe("coreEnv proxy basic ops", () => {
       ...baseEnv,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const mod = require("../core.js");
+    const mod = require("../core.ts");
     expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
     expect("CMS_ACCESS_TOKEN" in mod.coreEnv).toBe(true);
     expect(Object.keys(mod.coreEnv)).toEqual(
@@ -708,7 +708,7 @@ describe("loadCoreEnv", () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     process.env.NODE_ENV = "production";
-    const { loadCoreEnv } = await import("../core.js");
+    const { loadCoreEnv } = await import("../core.ts");
     expect(() => loadCoreEnv({} as NodeJS.ProcessEnv)).toThrow(
       "Invalid core environment variables",
     );
@@ -748,7 +748,7 @@ describe("core env module", () => {
       .spyOn(console, "error")
       .mockImplementation(() => {});
     jest.resetModules();
-    const { coreEnv } = require("../core.js");
+    const { coreEnv } = require("../core.ts");
     expect(coreEnv.CART_COOKIE_SECRET).toBe("dev-cart-secret");
     expect(errorSpy).not.toHaveBeenCalled();
     errorSpy.mockRestore();
@@ -761,11 +761,14 @@ describe("core env module", () => {
       CMS_ACCESS_TOKEN: "token1",
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const { coreEnv } = await import("../core.js");
-    expect(coreEnv.CMS_ACCESS_TOKEN).toBe("token1");
+    const mod = await import("../core.ts");
+    const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
+    expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token1");
     // Mutate process.env to what would be parsed if re-run
     process.env.CMS_ACCESS_TOKEN = "token2";
-    expect(coreEnv.CMS_ACCESS_TOKEN).toBe("token1");
+    expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token1");
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+    parseSpy.mockRestore();
   });
 
   it("parses lazily on first access and caches result", () => {
@@ -775,7 +778,7 @@ describe("core env module", () => {
       CMS_ACCESS_TOKEN: "token1",
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const mod = require("../core.js");
+    const mod = require("../core.ts");
     // Update after import but before access to ensure lazy parsing.
     process.env.CMS_ACCESS_TOKEN = "token2";
     expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token2");
@@ -789,7 +792,7 @@ describe("core env module", () => {
       ...baseEnv,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const mod = require("../core.js");
+    const mod = require("../core.ts");
     const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
     expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
     expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token");
@@ -811,7 +814,7 @@ describe("core env module", () => {
       ...baseEnv,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const mod = require("../core.js");
+    const mod = require("../core.ts");
     const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
     expect("CMS_SPACE_URL" in mod.coreEnv).toBe(true);
     expect(parseSpy).toHaveBeenCalledTimes(1);
@@ -826,7 +829,7 @@ describe("core env module", () => {
       ...baseEnv,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const mod = require("../core.js");
+    const mod = require("../core.ts");
     const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
     expect(Object.keys(mod.coreEnv)).toEqual(
       expect.arrayContaining([
@@ -847,7 +850,7 @@ describe("core env module", () => {
       ...baseEnv,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const mod = require("../core.js");
+    const mod = require("../core.ts");
     const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
     expect(
       Object.getOwnPropertyDescriptor(mod.coreEnv, "CMS_SPACE_URL")?.value,
@@ -864,7 +867,7 @@ describe("core env module", () => {
       ...baseEnv,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const mod = require("../core.js");
+    const mod = require("../core.ts");
     const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
     expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
     expect("CMS_SPACE_URL" in mod.coreEnv).toBe(true);
@@ -881,6 +884,7 @@ describe("core env module", () => {
       NODE_ENV: "production",
       CART_COOKIE_SECRET: "secret",
     } as NodeJS.ProcessEnv;
+    delete process.env.JEST_WORKER_ID;
     jest.resetModules();
     const mod = await import("../core.ts");
     const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
@@ -896,6 +900,7 @@ describe("core env module", () => {
       NODE_ENV: "production",
       CART_COOKIE_SECRET: "secret",
     } as NodeJS.ProcessEnv;
+    delete process.env.JEST_WORKER_ID;
     jest.resetModules();
     const mod = await import("../core.ts");
     const loadSpy = jest.spyOn(mod, "loadCoreEnv");
@@ -926,7 +931,7 @@ describe("core env module", () => {
       CMS_ACCESS_TOKEN: "token1",
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const mod = await import("../core.js");
+    const mod = await import("../core.ts");
     // Mutate after import; value should remain cached from import-time parse.
     process.env.CMS_ACCESS_TOKEN = "token2";
     expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token1");
@@ -943,7 +948,7 @@ describe("core env module", () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     expect(() => {
-      const mod = require("../core.js");
+      const mod = require("../core.ts");
       // Access a property to trigger validation.
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       mod.coreEnv.CART_COOKIE_SECRET;
@@ -970,7 +975,7 @@ describe("core env module", () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     expect(() => {
-      require("../core.js");
+      require("../core.ts");
     }).toThrow("Invalid core environment variables");
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid core environment variables:",
@@ -991,7 +996,7 @@ describe("core env module", () => {
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
-    expect(() => require("../core.js")).toThrow(
+    expect(() => require("../core.ts")).toThrow(
       "Invalid core environment variables",
     );
     expect(errorSpy).toHaveBeenCalledWith(
@@ -1010,7 +1015,7 @@ describe("core env module", () => {
       NODE_ENV: "development",
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const mod = require("../core.js");
+    const mod = require("../core.ts");
     expect("CMS_SPACE_URL" in mod.coreEnv).toBe(true);
     expect(Object.keys(mod.coreEnv)).toEqual(
       expect.arrayContaining([
@@ -1034,7 +1039,7 @@ describe("core env module", () => {
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
-    const mod = require("../core.js");
+    const mod = require("../core.ts");
     expect(() => {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
       "CMS_SPACE_URL" in mod.coreEnv;
@@ -1056,7 +1061,7 @@ describe("core env module", () => {
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
-    const mod = require("../core.js");
+    const mod = require("../core.ts");
     expect(() => {
       Object.keys(mod.coreEnv);
     }).toThrow("Invalid core environment variables");
@@ -1077,7 +1082,7 @@ describe("core env module", () => {
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
-    const mod = require("../core.js");
+    const mod = require("../core.ts");
     expect(() => {
       Object.getOwnPropertyDescriptor(mod.coreEnv, "CMS_SPACE_URL");
     }).toThrow("Invalid core environment variables");
@@ -1097,9 +1102,10 @@ describe("core env module", () => {
       NODE_ENV: "production",
     } as NodeJS.ProcessEnv;
     delete process.env.CART_COOKIE_SECRET;
+    delete process.env.JEST_WORKER_ID;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
-    await expect(import("../core.js")).rejects.toThrow(
+    await expect(import("../core.ts")).rejects.toThrow(
       "Invalid core environment variables",
     );
     expect(errorSpy).toHaveBeenCalledWith(
@@ -1120,7 +1126,8 @@ describe("core env module", () => {
     } as NodeJS.ProcessEnv;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
-    await expect(import("../core.js")).rejects.toThrow(
+    delete process.env.JEST_WORKER_ID;
+    await expect(import("../core.ts")).rejects.toThrow(
       "Invalid core environment variables",
     );
     expect(errorSpy).toHaveBeenCalledWith(
@@ -1141,8 +1148,9 @@ describe("core env module", () => {
       NEXTAUTH_SECRET: NEXT_SECRET,
       SESSION_SECRET: SESSION_SECRET,
     } as NodeJS.ProcessEnv;
+    delete process.env.JEST_WORKER_ID;
     jest.resetModules();
-    const mod = await import("../core.js");
+    const mod = await import("../core.ts");
     expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
   });
 });
@@ -1395,7 +1403,7 @@ describe("AUTH_TOKEN_TTL normalization", () => {
     [" 45s ", "45s"],
     ["5 m", "5m"],
   ])("normalizes %p to %p", async (input, normalized) => {
-    const { coreEnvSchema } = await import("../core.js");
+    const { coreEnvSchema } = await import("../core.ts");
     const { authEnvSchema } = await import("../auth.js");
     const refine = (coreEnvSchema as any)._def.effect.refinement as (
       env: Record<string, unknown>,
@@ -1452,7 +1460,7 @@ describe("coreEnv proxy caching", () => {
       ...baseEnv,
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const mod = require("../core.js");
+    const mod = require("../core.ts");
     const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
     expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
     expect(mod.coreEnv.CMS_ACCESS_TOKEN).toBe("token");
@@ -1469,7 +1477,7 @@ describe("coreEnv proxy caching", () => {
       AUTH_TOKEN_TTL: "60s",
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const mod = require("../core.js");
+    const mod = require("../core.ts");
     const parseSpy = jest.spyOn(mod.coreEnvSchema, "safeParse");
     expect(mod.coreEnv.AUTH_TOKEN_TTL).toBe(60);
     expect(mod.coreEnv.AUTH_TOKEN_TTL).toBe(60);
@@ -1570,7 +1578,7 @@ describe("loadCoreEnv required variable validation", () => {
       process.env.CART_COOKIE_SECRET = "secret";
       process.env.NEXTAUTH_SECRET = NEXT_SECRET;
       process.env.SESSION_SECRET = SESSION_SECRET;
-      const { loadCoreEnv } = await import("../core.js");
+      const { loadCoreEnv } = await import("../core.ts");
       const env = { ...base } as NodeJS.ProcessEnv;
       if (value === undefined) delete env.CMS_SPACE_URL;
       else env.CMS_SPACE_URL = value;
@@ -1596,7 +1604,7 @@ describe("loadCoreEnv required variable validation", () => {
       process.env.CART_COOKIE_SECRET = "secret";
       process.env.NEXTAUTH_SECRET = NEXT_SECRET;
       process.env.SESSION_SECRET = SESSION_SECRET;
-      const { loadCoreEnv } = await import("../core.js");
+      const { loadCoreEnv } = await import("../core.ts");
       const env = {
         ...base,
         CMS_SPACE_URL: "https://example.com",
@@ -1642,7 +1650,7 @@ describe("loadCoreEnv boolean parsing", () => {
       [" no ", true],
     ])("parses %s", async (input, expected) => {
       process.env = { ...base, OUTPUT_EXPORT: input };
-      const { loadCoreEnv } = await import("../core.js");
+      const { loadCoreEnv } = await import("../core.ts");
       const env = loadCoreEnv();
       expect(env.OUTPUT_EXPORT).toBe(expected);
     });
@@ -1654,7 +1662,7 @@ describe("loadCoreEnv boolean parsing", () => {
       ["false", false],
     ])("accepts %s", async (input, expected) => {
       process.env = { ...base, DEPOSIT_RELEASE_ENABLED: input };
-      const { loadCoreEnv } = await import("../core.js");
+      const { loadCoreEnv } = await import("../core.ts");
       const env = loadCoreEnv();
       expect(env.DEPOSIT_RELEASE_ENABLED).toBe(expected);
     });
@@ -1663,7 +1671,7 @@ describe("loadCoreEnv boolean parsing", () => {
       "rejects %s",
       async (input) => {
         process.env = { ...base, DEPOSIT_RELEASE_ENABLED: input };
-        const { loadCoreEnv } = await import("../core.js");
+        const { loadCoreEnv } = await import("../core.ts");
         expect(() => loadCoreEnv()).toThrow("Invalid core environment variables");
       },
     );
@@ -1693,21 +1701,21 @@ describe("loadCoreEnv number parsing", () => {
       ["0", 0],
     ])("parses %s", async (input, expected) => {
       process.env = { ...base, CART_TTL: input };
-      const { loadCoreEnv } = await import("../core.js");
+      const { loadCoreEnv } = await import("../core.ts");
       const env = loadCoreEnv();
       expect(env.CART_TTL).toBe(expected);
     });
 
     it("defaults when missing", async () => {
       process.env = { ...base };
-      const { loadCoreEnv } = await import("../core.js");
+      const { loadCoreEnv } = await import("../core.ts");
       const env = loadCoreEnv();
       expect(env.CART_TTL).toBeUndefined();
     });
 
     it.each(["abc", "NaN"])("rejects %s", async (input) => {
       process.env = { ...base, CART_TTL: input };
-      const { loadCoreEnv } = await import("../core.js");
+      const { loadCoreEnv } = await import("../core.ts");
       expect(() => loadCoreEnv()).toThrow("Invalid core environment variables");
     });
   });
@@ -1720,21 +1728,21 @@ describe("loadCoreEnv number parsing", () => {
       ["0", 0],
     ])("parses %s", async (input, expected) => {
       process.env = { ...base, DEPOSIT_RELEASE_INTERVAL_MS: input };
-      const { loadCoreEnv } = await import("../core.js");
+      const { loadCoreEnv } = await import("../core.ts");
       const env = loadCoreEnv();
       expect(env.DEPOSIT_RELEASE_INTERVAL_MS).toBe(expected);
     });
 
     it("defaults when missing", async () => {
       process.env = { ...base };
-      const { loadCoreEnv } = await import("../core.js");
+      const { loadCoreEnv } = await import("../core.ts");
       const env = loadCoreEnv();
       expect(env.DEPOSIT_RELEASE_INTERVAL_MS).toBeUndefined();
     });
 
     it.each(["abc", "NaN"])("rejects %s", async (input) => {
       process.env = { ...base, DEPOSIT_RELEASE_INTERVAL_MS: input };
-      const { loadCoreEnv } = await import("../core.js");
+      const { loadCoreEnv } = await import("../core.ts");
       expect(() => loadCoreEnv()).toThrow("Invalid core environment variables");
     });
   });
@@ -1760,7 +1768,7 @@ describe("NODE_ENV branches", () => {
     async (env) => {
       process.env = { ...base, NODE_ENV: env } as NodeJS.ProcessEnv;
       jest.resetModules();
-      const { loadCoreEnv } = await import("../core.js");
+      const { loadCoreEnv } = await import("../core.ts");
       const parsed = loadCoreEnv();
       expect(parsed.CART_COOKIE_SECRET).toBe("dev-cart-secret");
     },
@@ -1773,7 +1781,7 @@ describe("NODE_ENV branches", () => {
       CART_COOKIE_SECRET: "secret",
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const { loadCoreEnv } = await import("../core.js");
+    const { loadCoreEnv } = await import("../core.ts");
     const env = { ...base, NODE_ENV: "production" } as NodeJS.ProcessEnv;
     delete env.CART_COOKIE_SECRET;
     expect(() => loadCoreEnv(env)).toThrow(
@@ -1784,7 +1792,7 @@ describe("NODE_ENV branches", () => {
   it("fails fast on invalid env in production", async () => {
     process.env = { ...base, NODE_ENV: "production" } as NodeJS.ProcessEnv;
     jest.resetModules();
-    await expect(import("../core.js")).rejects.toThrow(
+    await expect(import("../core.ts")).rejects.toThrow(
       "Invalid core environment variables",
     );
   });
@@ -1808,7 +1816,7 @@ describe("coreEnv proxy NODE_ENV behavior", () => {
     async (env) => {
       process.env = { ...base, NODE_ENV: env } as NodeJS.ProcessEnv;
       jest.resetModules();
-      const mod = await import("../core.js");
+      const mod = await import("../core.ts");
       const loadSpy = jest.spyOn(mod, "loadCoreEnv");
       expect(loadSpy).not.toHaveBeenCalled();
       expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
@@ -1823,7 +1831,7 @@ describe("coreEnv proxy NODE_ENV behavior", () => {
       CART_COOKIE_SECRET: "secret",
     } as NodeJS.ProcessEnv;
     jest.resetModules();
-    const mod = await import("../core.js");
+    const mod = await import("../core.ts");
     const loadSpy = jest.spyOn(mod, "loadCoreEnv");
     loadSpy.mockClear();
     expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");

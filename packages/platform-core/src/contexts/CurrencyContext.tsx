@@ -31,7 +31,9 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem(LS_KEY, currency);
+      try {
+        localStorage.setItem(LS_KEY, currency);
+      } catch {}
     }
   }, [currency]);
 

@@ -2,6 +2,10 @@ import { render, fireEvent } from "@testing-library/react";
 import ProductFilters, { statuses } from "../ProductFilters";
 
 describe("ProductFilters", () => {
+  it("has expected statuses", () => {
+    expect(statuses).toEqual(["all", "active", "draft", "archived"]);
+  });
+
   it("renders all statuses", () => {
     const { getByRole } = render(
       <ProductFilters

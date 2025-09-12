@@ -37,4 +37,10 @@ describe("TextToken", () => {
     fireEvent.click(screen.getByText("Reset"));
     expect(setToken).toHaveBeenCalledWith(tokenKey, "hello");
   });
+
+  it("renders without default value", () => {
+    renderToken({ defaultValue: undefined });
+    expect(screen.queryByText(/Default:/)).toBeNull();
+    expect(screen.queryByText("Reset")).toBeNull();
+  });
 });

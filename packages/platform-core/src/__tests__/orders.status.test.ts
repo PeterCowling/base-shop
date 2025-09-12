@@ -1,6 +1,10 @@
 /** @jest-environment node */
 
-import { markReturned } from "../orders/status";
+import {
+  markReturned,
+  setReturnTracking,
+  setReturnStatus,
+} from "../orders/status";
 
 jest.mock("../db", () => ({
   prisma: {
@@ -17,10 +21,25 @@ describe("orders/status", () => {
     jest.clearAllMocks();
   });
 
-  it("sets damage fee and returned timestamp", async () => {
+  it("includes damage fee when provided", async () => {
     const mock = { id: "1", shop: "shop", sessionId: "sess", damageFee: 4, returnedAt: "now" };
     prisma.rentalOrder.update.mockResolvedValue(mock);
     const result = await markReturned("shop", "sess", 4);
+    expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+      where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+      data: { returnedAt: expect.any(String), damageFee: 4 },
+    });
+    expect(result).toEqual(mock);
+  });
+
+  it("omits damage fee when not provided", async () => {
+    const mock = { id: "1", shop: "shop", sessionId: "sess", returnedAt: "now" };
+    prisma.rentalOrder.update.mockResolvedValue(mock);
+    const result = await markReturned("shop", "sess");
+    expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+      where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+      data: { returnedAt: expect.any(String) },
+    });
     expect(result).toEqual(mock);
   });
 
@@ -29,6 +48,42 @@ describe("orders/status", () => {
       throw new Error("not found");
     });
     await expect(markReturned("shop", "sess")).resolves.toBeNull();
+  });
+
+  it("sets return tracking", async () => {
+    const mock = { id: "1", trackingNumber: "trk", labelUrl: "url" };
+    prisma.rentalOrder.update.mockResolvedValue(mock);
+    const result = await setReturnTracking("shop", "sess", "trk", "url");
+    expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+      where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+      data: { trackingNumber: "trk", labelUrl: "url" },
+    });
+    expect(result).toEqual(mock);
+  });
+
+  it("returns null when return tracking update yields null", async () => {
+    prisma.rentalOrder.update.mockResolvedValue(null);
+    const result = await setReturnTracking("shop", "sess", "trk", "url");
+    expect(result).toBeNull();
+  });
+
+  it("sets return status", async () => {
+    const mock = { id: "1", returnStatus: "rec" };
+    prisma.rentalOrder.update.mockResolvedValue(mock);
+    const result = await setReturnStatus("shop", "trk", "rec");
+    expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+      where: { shop_trackingNumber: { shop: "shop", trackingNumber: "trk" } },
+      data: { returnStatus: "rec" },
+    });
+    expect(result).toEqual(mock);
+  });
+
+  it("returns null when return status update throws", async () => {
+    prisma.rentalOrder.update.mockImplementation(() => {
+      throw new Error("fail");
+    });
+    const result = await setReturnStatus("shop", "trk", "rec");
+    expect(result).toBeNull();
   });
 });
 

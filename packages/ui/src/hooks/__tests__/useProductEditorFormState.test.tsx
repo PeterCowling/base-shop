@@ -3,6 +3,7 @@
 import type { ProductPublication } from "@acme/types";
 import type { Locale } from "@acme/i18n";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { useEffect } from "react";
 import {
   useProductEditorFormState,
   type ProductSaveResult,
@@ -50,10 +51,17 @@ const locales: readonly Locale[] = ["en", "de"];
  * ------------------------------------------------------------------ */
 function Wrapper({
   onSave,
+  publishTargets = [],
 }: {
   onSave: (fd: FormData) => Promise<ProductSaveResult>;
+  publishTargets?: string[];
 }) {
   const state = useProductEditorFormState(product, locales, onSave);
+
+  useEffect(() => {
+    state.setPublishTargets(publishTargets);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
@@ -148,6 +156,23 @@ describe("useProductEditorFormState", () => {
     );
   });
 
+  it("handleSubmit includes publish targets in FormData", async () => {
+    const onSave = jest
+      .fn<Promise<ProductSaveResult>, [FormData]>()
+      .mockResolvedValue({ product });
+
+    render(
+      <Wrapper onSave={onSave} publishTargets={["web", "store"]} />
+    );
+
+    fireEvent.click(screen.getByText("save"));
+
+    await waitFor(() => expect(onSave).toHaveBeenCalled());
+
+    const fd = onSave.mock.calls[0]![0];
+    expect(fd.get("publish")).toBe("web,store");
+  });
+
   it("updates errors and resets saving when save returns errors", async () => {
     const onSave = jest
       .fn<Promise<ProductSaveResult>, [FormData]>()
@@ -164,5 +189,30 @@ describe("useProductEditorFormState", () => {
     expect(
       JSON.parse(screen.getByTestId("errors").textContent || "{}")
     ).toEqual({ price: ["Required"] });
+  });
+
+  it("resets errors when save succeeds after previous errors", async () => {
+    const onSave = jest
+      .fn<Promise<ProductSaveResult>, [FormData]>()
+      .mockResolvedValueOnce({ errors: { price: ["Required"] } })
+      .mockResolvedValueOnce({ product });
+
+    render(<Wrapper onSave={onSave} />);
+
+    fireEvent.click(screen.getByText("save"));
+
+    await waitFor(() =>
+      expect(
+        JSON.parse(screen.getByTestId("errors").textContent || "{}")
+      ).toEqual({ price: ["Required"] })
+    );
+
+    fireEvent.click(screen.getByText("save"));
+
+    await waitFor(() =>
+      expect(
+        JSON.parse(screen.getByTestId("errors").textContent || "{}")
+      ).toEqual({})
+    );
   });
 });

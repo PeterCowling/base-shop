@@ -24,10 +24,10 @@ describe("useProductMediaManager", () => {
     jest.clearAllMocks();
   });
 
-  it("adds uploaded media and uses required orientation", () => {
+  it("adds uploaded media and defaults to landscape orientation", () => {
     const media = { url: "/img.png" };
     mockUsePublishLocations.mockReturnValue({
-      locations: [{ id: "loc", requiredOrientation: "portrait" }],
+      locations: [],
       reload: jest.fn(),
     });
     mockUseFileUpload.mockImplementation((opts: any) => ({
@@ -38,12 +38,12 @@ describe("useProductMediaManager", () => {
       const [product, setProduct] = React.useState<ProductWithVariants>({
         media: [],
       } as any);
-      const manager = useProductMediaManager("shop", ["loc"], setProduct);
+      const manager = useProductMediaManager("shop", [], setProduct);
       return { product, ...manager };
     });
 
     expect(mockUseFileUpload).toHaveBeenCalledWith(
-      expect.objectContaining({ requiredOrientation: "portrait" })
+      expect.objectContaining({ requiredOrientation: "landscape" })
     );
 
     const { getByText } = render(result.current.uploader);
@@ -79,6 +79,28 @@ describe("useProductMediaManager", () => {
       result.current.moveMedia(1, 0);
     });
     expect(result.current.product.media).toEqual([item3, item1]);
+  });
+
+  it("moveMedia does nothing when indices are equal", () => {
+    const item1 = { url: "1.png" };
+    const item2 = { url: "2.png" };
+
+    mockUsePublishLocations.mockReturnValue({ locations: [], reload: jest.fn() });
+    mockUseFileUpload.mockReturnValue({ uploader: <div /> });
+
+    const { result } = renderHook(() => {
+      const [product, setProduct] = React.useState<ProductWithVariants>({
+        media: [item1, item2],
+      } as any);
+      const manager = useProductMediaManager("shop", [], setProduct);
+      return { product, ...manager };
+    });
+
+    act(() => {
+      result.current.moveMedia(1, 1);
+    });
+
+    expect(result.current.product.media).toEqual([item1, item2]);
   });
 });
 

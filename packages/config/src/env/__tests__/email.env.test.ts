@@ -54,7 +54,9 @@ describe("email env provider selection", () => {
     );
     expect(spy).toHaveBeenCalled();
     const err = spy.mock.calls[0][1];
-    expect(err.SENDGRID_API_KEY._errors).toContain("Required");
+    expect(err).toMatchObject({
+      SENDGRID_API_KEY: { _errors: ["Required"] },
+    });
     spy.mockRestore();
   });
 
@@ -66,9 +68,32 @@ describe("email env provider selection", () => {
     );
     expect(spy).toHaveBeenCalled();
     const err = spy.mock.calls[0][1];
-    expect(err.RESEND_API_KEY._errors).toContain("Required");
+    expect(err).toMatchObject({
+      RESEND_API_KEY: { _errors: ["Required"] },
+    });
     spy.mockRestore();
   });
+
+  it.each([
+    ["smtp", {}],
+    ["sendgrid", { SENDGRID_API_KEY: "sg-key" }],
+    ["resend", { RESEND_API_KEY: "re-key" }],
+  ])(
+    "requires EMAIL_FROM when provider=%s",
+    async (provider, extras) => {
+      process.env.EMAIL_PROVIDER = provider as string;
+      Object.assign(process.env, extras);
+      delete process.env.EMAIL_FROM;
+      const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+      await expect(loadEnv()).rejects.toThrow(
+        "Invalid email environment variables",
+      );
+      expect(spy).toHaveBeenCalled();
+      const err = spy.mock.calls[0][1];
+      expect(err).toMatchObject({ EMAIL_FROM: { _errors: ["Required"] } });
+      spy.mockRestore();
+    },
+  );
 
   it("supports noop provider when EMAIL_PROVIDER=noop", async () => {
     process.env.EMAIL_PROVIDER = "noop";

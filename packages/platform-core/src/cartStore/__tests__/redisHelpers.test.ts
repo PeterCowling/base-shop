@@ -1,6 +1,12 @@
 import { jest } from "@jest/globals";
 
-import { withFallback, expireBoth } from "../redisHelpers";
+import {
+  withFallback,
+  expireBoth,
+  skuKey,
+  serialize,
+  deserialize,
+} from "../redisHelpers";
 
 describe("redisHelpers", () => {
   it("withFallback calls fallback when an operation fails", async () => {
@@ -39,5 +45,23 @@ describe("redisHelpers", () => {
     const results = await Promise.all(ops.map((op) => op()));
     expect(client.expire).toHaveBeenCalledTimes(2);
     expect(results).toEqual([1, undefined]);
+  });
+
+  it("generates sku key correctly", () => {
+    expect(skuKey("cart1")).toBe("cart1:sku");
+  });
+
+  it("serializes and deserializes values", () => {
+    const value = { a: 1 };
+    const json = serialize(value)!;
+    expect(typeof json).toBe("string");
+    expect(deserialize<typeof value>(json)).toEqual(value);
+  });
+
+  it("handles undefined and null inputs", () => {
+    expect(serialize(undefined)).toBeUndefined();
+    expect(serialize(null)).toBeUndefined();
+    expect(deserialize(undefined)).toBeUndefined();
+    expect(deserialize(null)).toBeUndefined();
   });
 });

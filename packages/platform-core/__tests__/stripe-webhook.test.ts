@@ -4,16 +4,23 @@ import type Stripe from "stripe";
 const addOrder = jest.fn();
 const markRefunded = jest.fn();
 const updateRisk = jest.fn();
+const markNeedsAttention = jest.fn();
 const reviewsCreate = jest.fn();
 const piUpdate = jest.fn();
 const chargesRetrieve = jest.fn<Promise<any>, [string]>();
 // getShopSettings normally resolves to shop configuration; type it broadly for tests
 const getShopSettings = jest.fn<Promise<any>, [string]>();
+const updateSubscriptionPaymentStatus = jest.fn();
+const syncSubscriptionData = jest.fn();
 
 jest.mock("../src/orders/creation", () => ({ addOrder }));
 jest.mock("../src/orders/refunds", () => ({ markRefunded }));
-jest.mock("../src/orders/risk", () => ({ updateRisk }));
+jest.mock("../src/orders/risk", () => ({ updateRisk, markNeedsAttention }));
 jest.mock("../src/repositories/settings.server", () => ({ getShopSettings }));
+jest.mock("../src/repositories/subscriptions.server", () => ({
+  updateSubscriptionPaymentStatus,
+  syncSubscriptionData,
+}));
 jest.mock("@acme/stripe", () => ({
   stripe: {
     reviews: { create: reviewsCreate },
@@ -202,6 +209,67 @@ describe("stripe webhook handlers", () => {
     } as any;
     await handleStripeWebhook("test", event);
     expect(updateRisk).not.toHaveBeenCalled();
+  });
+
+  describe("payment_intent.payment_failed handler", () => {
+    test("marks order needing attention", async () => {
+      const { handleStripeWebhook } = await import("../src/stripe-webhook");
+      const event: Stripe.Event = {
+        type: "payment_intent.payment_failed",
+        data: {
+          object: {
+            id: "pi_1",
+            latest_charge: { id: "ch_1", invoice: "in_1" },
+          },
+        },
+      } as any;
+      await handleStripeWebhook("test", event);
+      expect(markNeedsAttention).toHaveBeenCalledWith("test", "in_1");
+    });
+  });
+
+  describe("invoice payment handlers", () => {
+    test("updates subscription payment status", async () => {
+      const { handleStripeWebhook } = await import("../src/stripe-webhook");
+      const invoice = { customer: "cus_1", subscription: "sub_1" } as any;
+      await handleStripeWebhook("test", {
+        type: "invoice.payment_succeeded",
+        data: { object: invoice },
+      } as any);
+      expect(updateSubscriptionPaymentStatus).toHaveBeenCalledWith(
+        "cus_1",
+        "sub_1",
+        "succeeded",
+      );
+
+      await handleStripeWebhook("test", {
+        type: "invoice.payment_failed",
+        data: { object: invoice },
+      } as any);
+      expect(updateSubscriptionPaymentStatus).toHaveBeenCalledWith(
+        "cus_1",
+        "sub_1",
+        "failed",
+      );
+    });
+  });
+
+  describe("subscription sync handler", () => {
+    test("syncs data on update and delete", async () => {
+      const { handleStripeWebhook } = await import("../src/stripe-webhook");
+      const subscription = { id: "sub_1", customer: "cus_1" } as any;
+      await handleStripeWebhook("test", {
+        type: "customer.subscription.updated",
+        data: { object: subscription },
+      } as any);
+      expect(syncSubscriptionData).toHaveBeenCalledWith("cus_1", "sub_1");
+
+      await handleStripeWebhook("test", {
+        type: "customer.subscription.deleted",
+        data: { object: subscription },
+      } as any);
+      expect(syncSubscriptionData).toHaveBeenCalledWith("cus_1", null);
+    });
   });
   describe("charge.refunded handler", () => {
     test("marks order refunded", async () => {

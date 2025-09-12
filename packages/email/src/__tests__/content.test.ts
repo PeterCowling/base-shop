@@ -1,25 +1,45 @@
-describe("content helpers", () => {
-  it("deriveText strips tags and decodes entities", async () => {
-    const { deriveText } = await import("../content");
-    const html = '<p>Hello&nbsp;<strong>world</strong>&amp;lt;</p><script>1</script>';
-    expect(deriveText(html)).toBe("Hello world<");
+import { jest } from "@jest/globals";
+
+describe("renderTemplate content", () => {
+  afterEach(() => {
+    jest.resetModules();
   });
 
-  it("ensureText derives text when missing", async () => {
-    const { ensureText } = await import("../content");
-    const opts = ensureText({ to: "a", subject: "b", html: "<p>Hi</p>" });
-    expect(opts.text).toBe("Hi");
+  it("replaces placeholders with params", async () => {
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({ __esModule: true, marketingEmailTemplates: [] }),
+      { virtual: true }
+    );
+    const { registerTemplate, renderTemplate, clearTemplates } = await import("../templates");
+    registerTemplate("greet", "<p>Hello {{name}}</p>");
+    expect(renderTemplate("greet", { name: "Alice" })).toBe("<p>Hello Alice</p>");
+    clearTemplates();
   });
 
-  it("prepareContent sanitizes html and derives text", async () => {
-    const { prepareContent } = await import("../content");
-    const opts = await prepareContent({
-      to: "a",
-      subject: "b",
-      html: "<p>Hello</p><script>alert(1)</script>",
-    });
-    expect(opts.html).toBe("<p>Hello</p>");
-    expect(opts.text).toBe("Hello");
+  it("replaces missing placeholders with empty string", async () => {
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({ __esModule: true, marketingEmailTemplates: [] }),
+      { virtual: true }
+    );
+    const { registerTemplate, renderTemplate, clearTemplates } = await import("../templates");
+    registerTemplate("greet", "<p>Hello {{name}}</p>");
+    expect(renderTemplate("greet", {})).toBe("<p>Hello </p>");
+    clearTemplates();
+  });
+
+  it("escapes HTML in placeholders", async () => {
+    jest.doMock(
+      "@acme/email-templates",
+      () => ({ __esModule: true, marketingEmailTemplates: [] }),
+      { virtual: true }
+    );
+    const { registerTemplate, renderTemplate, clearTemplates } = await import("../templates");
+    registerTemplate("greet", "<p>{{name}}</p>");
+    expect(
+      renderTemplate("greet", { name: "<script>alert(1)</script>" })
+    ).toBe("<p>&lt;script&gt;alert(1)&lt;/script&gt;</p>");
+    clearTemplates();
   });
 });
-

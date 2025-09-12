@@ -11,8 +11,10 @@ describe("Textarea", () => {
     expect(wrapper).toHaveClass("custom-wrapper");
   });
 
-  it("renders label above textarea in standard mode", () => {
-    const { container } = render(<Textarea label="Notes" />);
+  it("renders label above textarea in standard mode and merges className", () => {
+    const { container } = render(
+      <Textarea label="Notes" className="custom" />
+    );
     const wrapper = container.firstChild as HTMLElement;
     const [label, textarea] = wrapper.children;
 
@@ -20,6 +22,7 @@ describe("Textarea", () => {
     expect(label).toHaveTextContent("Notes");
     expect(label).toHaveClass("mb-1", "block", "text-sm", "font-medium");
     expect(textarea.tagName).toBe("TEXTAREA");
+    expect(textarea).toHaveClass("min-h-[6rem]", "custom");
   });
 
   it("renders floating label that moves on focus", () => {
@@ -45,6 +48,22 @@ describe("Textarea", () => {
     const error = screen.getByText("Required");
     expect(error).toHaveClass("text-danger");
     expect(error).toHaveAttribute("data-token", "--color-danger");
+  });
+
+  it("calls onFocus and onBlur callbacks", () => {
+    const handleFocus = jest.fn();
+    const handleBlur = jest.fn();
+
+    render(
+      <Textarea onFocus={handleFocus} onBlur={handleBlur} />
+    );
+    const textarea = screen.getByRole("textbox");
+
+    fireEvent.focus(textarea);
+    fireEvent.blur(textarea);
+
+    expect(handleFocus).toHaveBeenCalledTimes(1);
+    expect(handleBlur).toHaveBeenCalledTimes(1);
   });
 
   it("floats label when controlled value is set", () => {

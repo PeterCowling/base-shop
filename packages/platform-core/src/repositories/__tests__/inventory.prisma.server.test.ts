@@ -171,14 +171,10 @@ describe("prisma inventory repository", () => {
       quantity: 2,
       variantAttributes: {},
     });
+    const spy = jest.spyOn(jsonInventoryRepository, "update");
 
     await prismaInventoryRepository.update("shop", "a", {}, mutate);
-    expect(jsonInventoryRepository.update).toHaveBeenCalledWith(
-      "shop",
-      "a",
-      {},
-      mutate,
-    );
+    expect(spy).toHaveBeenCalledWith("shop", "a", {}, mutate);
   });
 
   it("reads from JSON when prisma model missing", async () => {

@@ -133,8 +133,11 @@ describe("clear action", () => {
     const initial = { cart: { sku1: { sku, qty: 1 } } };
     fetchMock.mockResolvedValueOnce({ ok: true, json: async () => initial });
     fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
+    const realSetItem = Storage.prototype.setItem;
     const setSpy = jest.spyOn(Storage.prototype, "setItem");
-    setSpy.mockImplementationOnce(() => undefined); // initial save
+    setSpy.mockImplementationOnce(function (key, value) {
+      return realSetItem.call(this, key, value as any);
+    });
     setSpy.mockImplementationOnce(() => {
       throw new Error("fail");
     });

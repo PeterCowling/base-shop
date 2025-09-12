@@ -3,7 +3,8 @@ import { nowIso } from "@acme/date-utils";
 import { stripe } from "@acme/stripe";
 import { prisma } from "../db";
 import type { Prisma } from "@prisma/client";
-import { Order, normalize } from "./utils";
+import { normalize } from "./utils";
+import type { Order } from "./utils";
 
 export async function markRefunded(
   shop: string,

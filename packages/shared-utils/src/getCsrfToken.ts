@@ -23,7 +23,7 @@ export function getCsrfToken(req?: Request | SimpleReq): string | undefined {
       .split(";")
       .map((row: string) => row.trim().split("="))
       .find(
-        ([name, value]) =>
+        ([name, value]: string[]) =>
           ["csrf_token", "csrf"].includes(name) &&
           value?.trim() &&
           !value.trim().startsWith("/")

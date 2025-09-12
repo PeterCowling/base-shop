@@ -1,7 +1,8 @@
 import "server-only";
 import { nowIso } from "@acme/date-utils";
 import { prisma } from "../db";
-import { Order, normalize } from "./utils";
+import { normalize } from "./utils";
+import type { Order } from "./utils";
 
 export async function markFulfilled(
   shop: string,

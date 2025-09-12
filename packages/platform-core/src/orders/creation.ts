@@ -5,7 +5,8 @@ import type { Shop } from "@acme/types";
 import { trackOrder } from "../analytics";
 import { prisma } from "../db";
 import { incrementSubscriptionUsage } from "../subscriptionUsage";
-import { Order, normalize } from "./utils";
+import { normalize } from "./utils";
+import type { Order } from "./utils";
 
 export async function listOrders(shop: string): Promise<Order[]> {
   const orders = (await prisma.rentalOrder.findMany({

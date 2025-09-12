@@ -9,10 +9,11 @@ describe("StatCard", () => {
     expect(screen.getByText("10")).toBeInTheDocument();
   });
 
-  it("applies custom className", () => {
+  it("applies className to Card element", () => {
     const { container } = render(
-      <StatCard label="Revenue" value="$100" className="custom" />,
+      <StatCard label="Revenue" value="$100" className="my-card" />,
     );
-    expect(container.firstChild).toHaveClass("custom");
+    const card = container.firstElementChild;
+    expect(card).toHaveClass("my-card");
   });
 });

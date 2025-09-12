@@ -18,7 +18,7 @@ describe("sendEmail", () => {
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
     } as NodeJS.ProcessEnv;
 
-    const sendMail = jest.fn().mockResolvedValue(undefined);
+    const sendMail = jest.fn().mockResolvedValue({ messageId: "msg-1" });
     const createTransport = jest.fn(() => ({ sendMail }));
     jest.doMock("nodemailer", () => ({
       __esModule: true,
@@ -38,14 +38,52 @@ describe("sendEmail", () => {
       },
     });
 
-    await sendEmail("a@b.com", "Hello", "World");
+    const id = await sendEmail("a@b.com", "Hello", "World");
 
     expect(sendMail).toHaveBeenCalledWith({
       from: "sender@example.com",
       to: "a@b.com",
       subject: "Hello",
       text: "World",
+      attachments: undefined,
     });
+    expect(id).toBe("msg-1");
+    expect(getDefaultSender).toHaveBeenCalled();
+  });
+
+  it("sends email with attachments and returns message id", async () => {
+    process.env = {
+      ...OLD_ENV,
+      GMAIL_USER: "test@example.com",
+      GMAIL_PASS: "secret",
+      STRIPE_SECRET_KEY: "sk",
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+    } as NodeJS.ProcessEnv;
+
+    const sendMail = jest.fn().mockResolvedValue({ messageId: "msg-2" });
+    const createTransport = jest.fn(() => ({ sendMail }));
+    jest.doMock("nodemailer", () => ({
+      __esModule: true,
+      default: { createTransport },
+      createTransport,
+    }));
+    const getDefaultSender = jest.fn(() => "sender@example.com");
+    jest.doMock("../config", () => ({ getDefaultSender }));
+
+    const { sendEmail } = await import("../sendEmail");
+
+    const attachments = [{ filename: "file.txt", content: "data" }];
+
+    const id = await sendEmail("a@b.com", "Hello", "World", attachments);
+
+    expect(sendMail).toHaveBeenCalledWith({
+      from: "sender@example.com",
+      to: "a@b.com",
+      subject: "Hello",
+      text: "World",
+      attachments,
+    });
+    expect(id).toBe("msg-2");
     expect(getDefaultSender).toHaveBeenCalled();
   });
 

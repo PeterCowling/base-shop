@@ -9,6 +9,8 @@ const ChildComp = jest.fn(({ text }: any) => (
   <div data-cy="child">{text}</div>
 ));
 
+const SimpleComp = jest.fn(() => <div data-cy="simple" />);
+
 const mockBlockRegistry = {
   Parent: {
     component: ParentComp,
@@ -22,6 +24,9 @@ const mockBlockRegistry = {
     getRuntimeProps: (block: any, locale: string) => ({
       text: block.text[locale],
     }),
+  },
+  Simple: {
+    component: SimpleComp,
   },
 };
 
@@ -86,6 +91,55 @@ describe("DynamicRenderer", () => {
       text: "hello",
       custom: "value",
     });
+  });
+
+  it("applies style props to the wrapper div", () => {
+    const components: PageComponent[] = [
+      {
+        id: "1",
+        type: "Simple",
+        width: "100px",
+        height: "200px",
+        margin: "4px",
+        padding: "2px",
+        position: "absolute",
+        top: "10px",
+        left: "20px",
+      } as any,
+    ];
+
+    const { container } = render(
+      <DynamicRenderer components={components} locale="en" />
+    );
+
+    const wrapper = container.firstChild as HTMLDivElement;
+    expect(wrapper).toHaveStyle({
+      width: "100px",
+      height: "200px",
+      margin: "4px",
+      padding: "2px",
+      position: "absolute",
+      top: "10px",
+      left: "20px",
+    });
+  });
+
+  it("renders blocks without getRuntimeProps and no extra props", () => {
+    const components: PageComponent[] = [
+      { id: "1", type: "Simple" } as any,
+    ];
+
+    render(<DynamicRenderer components={components} locale="en" />);
+
+    expect(SimpleComp).toHaveBeenCalled();
+    const props = SimpleComp.mock.calls[0][0];
+    expect(props).toMatchObject({ id: "1", type: "Simple", locale: "en" });
+    expect(Object.keys(props).sort()).toEqual([
+      "children",
+      "id",
+      "locale",
+      "type",
+    ]);
   });
 
   it("merges runtime props and runtimeData and renders child blocks", () => {

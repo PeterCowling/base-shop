@@ -68,6 +68,7 @@ export async function computeDamageFee(
   coverageIncluded = false,
 ): Promise<number> {
   if (kind == null) return 0;
+  const { getPricing } = await import("./index");
   const pricing = await getPricing();
   if (typeof kind === "number") return kind;
   const rule = pricing.damageFees[kind];

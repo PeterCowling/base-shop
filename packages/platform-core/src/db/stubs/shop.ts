@@ -1,5 +1,7 @@
 export function createShopDelegate() {
-  return {
+  const delegate = {
     findUnique: async () => ({ data: {} }),
-  } as any;
+  } as const;
+
+  return delegate as any;
 }

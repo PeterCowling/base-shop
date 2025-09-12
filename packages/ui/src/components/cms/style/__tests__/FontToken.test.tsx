@@ -38,26 +38,26 @@ describe("FontToken", () => {
     expect(setToken).toHaveBeenCalledWith(tokenKey, "Helvetica");
   });
 
-  it("handles reset, upload, and google fonts", () => {
+  it("resets to default value when overridden", () => {
     const setToken = jest.fn();
-    const handleUpload = jest.fn();
-    const setGoogleFont = jest.fn();
-    const { container } = renderToken({
-      value: "Helvetica",
-      isOverridden: true,
-      setToken,
-      handleUpload,
-      setGoogleFont,
-    });
-
+    renderToken({ value: "Helvetica", isOverridden: true, setToken });
     fireEvent.click(screen.getByText("Reset"));
     expect(setToken).toHaveBeenCalledWith(tokenKey, "Arial");
+  });
 
+  it("triggers file upload handler with event", () => {
+    const handleUpload = jest.fn();
+    const { container } = renderToken({ handleUpload });
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     const file = new File(["foo"], "font.woff", { type: "font/woff" });
     fireEvent.change(fileInput, { target: { files: [file] } });
-    expect(handleUpload).toHaveBeenCalled();
+    expect(handleUpload).toHaveBeenCalledWith("sans", expect.any(Object));
+    expect(handleUpload.mock.calls[0][1].target.files[0]).toBe(file);
+  });
 
+  it("invokes setGoogleFont and resets select value", () => {
+    const setGoogleFont = jest.fn();
+    const { container } = renderToken({ setGoogleFont });
     const selects = container.querySelectorAll("select");
     const googleSelect = selects[1] as HTMLSelectElement;
     fireEvent.change(googleSelect, { target: { value: "Roboto" } });

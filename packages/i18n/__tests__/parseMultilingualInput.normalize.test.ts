@@ -2,7 +2,7 @@ import parse from "../src/parseMultilingualInput";
 import { LOCALES } from "../src/locales";
 
 describe("parseMultilingualInput normalization", () => {
-  it("normalizes single-locale input", () => {
+  it("trims whitespace for single-locale input", () => {
     expect(parse({ en: " Hello " }, LOCALES)).toEqual({ en: "Hello" });
   });
 

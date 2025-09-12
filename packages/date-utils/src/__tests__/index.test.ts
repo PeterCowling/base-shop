@@ -110,6 +110,11 @@ describe("formatDate", () => {
     const d = new Date("2025-03-03T05:06:07Z");
     expect(formatDate(d, "HH:mm", "America/New_York")).toBe("00:06");
   });
+
+  it("throws for forbidden Y or D tokens", () => {
+    expect(() => formatDate("2025-03-03T05:06:07Z", "YYYY")).toThrow(RangeError);
+    expect(() => formatDate("2025-03-03T05:06:07Z", "DD")).toThrow(RangeError);
+  });
 });
 
 describe("nowIso", () => {
@@ -228,6 +233,21 @@ describe("parseTargetDate", () => {
       "2025-06-16T00:00:00.000Z",
     );
     jest.useRealTimers();
+  });
+
+  it('handles "yesterday" keyword', () => {
+    jest.useFakeTimers().setSystemTime(new Date("2025-06-15T10:00:00Z"));
+    expect(parseTargetDate("yesterday")?.toISOString()).toBe(
+      "2025-06-14T00:00:00.000Z",
+    );
+    jest.useRealTimers();
+  });
+
+  it("validates date strings against process.env.TZ", () => {
+    const prev = process.env.TZ;
+    process.env.TZ = "UTC";
+    expect(parseTargetDate("2025-02-29")).toBeNull();
+    process.env.TZ = prev;
   });
 });
 
@@ -352,6 +372,12 @@ describe("locale formatting consistency", () => {
     expect(new Date(us).toISOString()).toBe("2025-03-03T12:34:56.000Z");
     expect(new Date(de).toISOString()).toBe("2025-03-03T12:34:56.000Z");
   });
+
+  it("formats numeric string timestamps", () => {
+    const ts = String(Date.UTC(2025, 0, 2, 3, 4, 5));
+    const expected = new Date(Number(ts)).toLocaleString("en-US");
+    expect(formatTimestamp(ts, "en-US")).toBe(expected);
+  });
 });
 
 describe("parseDateSafe and formatRelative", () => {
@@ -359,6 +385,19 @@ describe("parseDateSafe and formatRelative", () => {
     const d = parseDateSafe("not-a-date");
     expect(d).toBeInstanceOf(Date);
     expect(isNaN(d.getTime())).toBe(false);
+  });
+
+  it("parses numeric timestamps", () => {
+    const ts = Date.UTC(2025, 0, 1);
+    const d = parseDateSafe(ts);
+    expect(d.getTime()).toBe(ts);
+  });
+
+  it("clones Date instances", () => {
+    const original = new Date("2025-01-01T00:00:00Z");
+    const d = parseDateSafe(original);
+    expect(d).not.toBe(original);
+    expect(d.toISOString()).toBe("2025-01-01T00:00:00.000Z");
   });
 
   it("DST edge (US example) does not crash", () => {

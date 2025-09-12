@@ -43,7 +43,6 @@ interface CacheEntry {
 
 export class SegmentCache {
   private cache = new Map<string, CacheEntry>();
-  constructor(private ttlMs = cacheTtl()) {}
 
   get(key: string, mtime: number): string[] | undefined {
     const entry = this.cache.get(key);
@@ -53,10 +52,11 @@ export class SegmentCache {
   }
 
   set(key: string, mtime: number, emails: string[]): void {
+    const ttl = cacheTtl();
     this.cache.set(key, {
       emails,
       mtimeMs: mtime,
-      expires: Date.now() + this.ttlMs,
+      expires: Date.now() + ttl,
     });
   }
 }

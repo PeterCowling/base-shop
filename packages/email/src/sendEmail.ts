@@ -48,7 +48,7 @@ export async function sendEmail(
         text: validated.body,
         attachments: validated.attachments,
       });
-      return info.messageId;
+      return info?.messageId;
     } catch (error) {
       console.error("Error sending email", error);
       throw error;

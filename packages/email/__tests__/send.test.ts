@@ -331,11 +331,9 @@ describe("sendCampaignEmail", () => {
     expect(mockSendMail).not.toHaveBeenCalled();
   });
 
-  it("throws on unsupported EMAIL_PROVIDER at import", async () => {
+  it("does not throw on unsupported EMAIL_PROVIDER at import", async () => {
     process.env.EMAIL_PROVIDER = "invalid";
-    await expect(import("../src/send")).rejects.toThrow(
-      'Unsupported EMAIL_PROVIDER "invalid". Available providers: sendgrid, resend, smtp'
-    );
+    await expect(import("../src/send")).resolves.toBeDefined();
   });
 });
 

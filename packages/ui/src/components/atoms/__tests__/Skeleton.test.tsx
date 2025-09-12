@@ -10,7 +10,13 @@ describe("Skeleton", () => {
   });
 
   it("accepts custom className", () => {
-    const { container } = render(<Skeleton className="h-4" />);
-    expect(container.firstChild).toHaveClass("h-4");
+    const { container } = render(<Skeleton className="p-2" />);
+    const div = container.firstChild as HTMLElement;
+    expect(div).toHaveClass(
+      "bg-muted",
+      "animate-pulse",
+      "rounded-md",
+      "p-2",
+    );
   });
 });

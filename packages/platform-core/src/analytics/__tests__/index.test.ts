@@ -305,6 +305,27 @@ describe("public tracking functions", () => {
     logSpy.mockRestore();
   });
 
+  test("trackPageView delegates to trackEvent and persists", async () => {
+    getShopSettings.mockResolvedValue({ analytics: undefined });
+    const { trackPageView } = await import("../index");
+    await trackPageView(shop, "home");
+    const content = await fs.readFile(
+      path.join(tmp, shop, "analytics.jsonl"),
+      "utf8"
+    );
+    const events = content
+      .trim()
+      .split(/\n+/)
+      .map((l) => JSON.parse(l));
+    expect(events).toEqual([
+      {
+        timestamp: "2024-01-01T00:00:00.000Z",
+        type: "page_view",
+        page: "home",
+      },
+    ]);
+  });
+
   test("trackOrder wraps trackEvent", async () => {
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
     const { trackOrder } = await import("../index");

@@ -24,6 +24,8 @@ describe("LineChart", () => {
     const chart = screen.getByTestId("line-chart");
     expect(chart).toBeInTheDocument();
     expect(chart).toHaveClass("custom");
+    expect(chart).toHaveAttribute("data-testid", "line-chart");
+    expect(chart).toHaveAttribute("data-cy", "line-chart");
     expect(lineMock).toHaveBeenCalledWith(
       expect.objectContaining({
         data,

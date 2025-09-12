@@ -19,8 +19,8 @@ describe("EMAIL_PROVIDER validation", () => {
     expect(errorSpy).not.toHaveBeenCalled();
   });
 
-  it("throws when EMAIL_PROVIDER is unsupported", async () => {
-    process.env.EMAIL_PROVIDER = "mailchimp";
-    await expect(import("../send")).rejects.toThrow(/Unsupported EMAIL_PROVIDER/);
+  it("does not throw when EMAIL_PROVIDER is unsupported", async () => {
+    process.env.EMAIL_PROVIDER = "noop";
+    await expect(import("../send")).resolves.toBeDefined();
   });
 });

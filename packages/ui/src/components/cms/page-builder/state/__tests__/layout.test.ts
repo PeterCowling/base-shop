@@ -177,6 +177,24 @@ describe("layout actions", () => {
     expect((state.present[0] as any).foo).toBe("bar");
   });
 
+  it("coerces numeric string fields on nested components", () => {
+    const child = { id: "child", type: "Carousel" } as PageComponent;
+    const parent = { id: "parent", type: "Container", children: [child] } as any;
+    const state = update(
+      { ...init, present: [parent as PageComponent] },
+      {
+        type: "update",
+        id: "child",
+        patch: { minItems: "2", columns: "3" } as any,
+      },
+    );
+    const updated = ((state.present[0] as any).children[0]) as any;
+    expect(updated.minItems).toBe(2);
+    expect(updated.columns).toBe(3);
+    expect(typeof updated.minItems).toBe("number");
+    expect(typeof updated.columns).toBe("number");
+  });
+
   it("preserves offsets when resizing without explicit left/top", () => {
     const comp = {
       id: "abs",

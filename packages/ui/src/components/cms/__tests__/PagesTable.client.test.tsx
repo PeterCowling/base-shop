@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import PagesTable from "../PagesTable.client";
+import * as DataTableModule from "../DataTable";
 import type { Page } from "@acme/types";
 
 describe("PagesTable", () => {
@@ -56,6 +57,25 @@ describe("PagesTable", () => {
         `/cms/shop/${shop}/pages/${p.slug}/builder`
       );
     });
+  });
+
+  it("handles empty pages array", () => {
+    const dataTableSpy = jest.spyOn(DataTableModule, "default");
+
+    render(<PagesTable shop={shop} pages={[]} canWrite />);
+
+    const headers = screen
+      .getAllByRole("columnheader")
+      .map((h) => h.textContent?.trim());
+    expect(headers).toEqual(["Slug", "Status", "Actions"]);
+
+    expect(screen.getByRole("link", { name: "New Page" })).toBeInTheDocument();
+
+    expect(dataTableSpy).toHaveBeenCalled();
+    const props = dataTableSpy.mock.calls[0][0];
+    expect(props.rows).toEqual([]);
+
+    dataTableSpy.mockRestore();
   });
 });
 

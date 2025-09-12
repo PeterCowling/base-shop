@@ -62,6 +62,30 @@ describe("telemetry index", () => {
     expect(mod.__buffer.length).toBe(0);
   });
 
+  test("__flush does nothing when buffer empty", async () => {
+    const mod = await import("../index");
+    const fetchMock = jest.fn();
+    originalFetch = global.fetch;
+    // @ts-ignore
+    global.fetch = fetchMock;
+    await mod.__flush();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  test("__flush restores events when all retries fail", async () => {
+    process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
+    process.env.NODE_ENV = "production";
+    const mod = await import("../index");
+    const fetchMock = jest.fn().mockRejectedValue(new Error("fail"));
+    originalFetch = global.fetch;
+    // @ts-ignore
+    global.fetch = fetchMock;
+    mod.__buffer.push({ name: "evt", payload: { foo: 1 }, ts: Date.now() });
+    await mod.__flush();
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(mod.__buffer.map((e) => e.name)).toEqual(["evt"]);
+  });
+
   test("uses custom endpoint when provided", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
     process.env.NODE_ENV = "production";
@@ -86,6 +110,13 @@ describe("telemetry index", () => {
     ).toEqual({ keep: 1 });
   });
 
+  test("__stripPII filters keys case-insensitively", async () => {
+    const mod = await import("../index");
+    expect(mod.__stripPII({ Email: "a@b.com", ID: 2, keep: true })).toEqual({
+      keep: true,
+    });
+  });
+
   test("does not send events when telemetry disabled", async () => {
     process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "false";
     process.env.NODE_ENV = "production";
@@ -97,6 +128,23 @@ describe("telemetry index", () => {
     mod.track("evt");
     await mod.__flush();
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  test("scheduleFlush only creates a single timer", async () => {
+    process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
+    process.env.NODE_ENV = "production";
+    jest.useFakeTimers();
+    const setTimeoutSpy = jest.spyOn(global, "setTimeout");
+    try {
+      const mod = await import("../index");
+      mod.track("e1");
+      mod.track("e2");
+      expect(setTimeoutSpy).toHaveBeenCalledTimes(1);
+    } finally {
+      setTimeoutSpy.mockRestore();
+      jest.clearAllTimers();
+      jest.useRealTimers();
+    }
   });
 
   test("scheduled flush logs errors and restores buffer", async () => {
@@ -133,8 +181,10 @@ describe("telemetry index", () => {
 
   test("does not track when navigator is offline", async () => {
     const originalNavigator = global.navigator;
-    // @ts-ignore
-    global.navigator = { onLine: false };
+    Object.defineProperty(global, "navigator", {
+      value: { onLine: false },
+      configurable: true,
+    });
     try {
       process.env.NEXT_PUBLIC_ENABLE_TELEMETRY = "true";
       process.env.NODE_ENV = "production";
@@ -142,8 +192,10 @@ describe("telemetry index", () => {
       mod.track("offlineEvent");
       expect(mod.__buffer.length).toBe(0);
     } finally {
-      // @ts-ignore
-      global.navigator = originalNavigator;
+      Object.defineProperty(global, "navigator", {
+        value: originalNavigator,
+        configurable: true,
+      });
     }
   });
 });

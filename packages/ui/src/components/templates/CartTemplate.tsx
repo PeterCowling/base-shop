@@ -83,11 +83,17 @@ export function CartTemplate({
                   </div>
                 </td>
                 <td>
-                  <QuantityInput
-                    value={line.qty}
-                    onChange={(v) => onQtyChange?.(line.id, v)}
-                    className="justify-center"
-                  />
+                  {onQtyChange ? (
+                    <QuantityInput
+                      value={line.qty}
+                      onChange={(v) => onQtyChange(line.id, v)}
+                      className="justify-center"
+                    />
+                  ) : (
+                    <div className="flex justify-center">
+                      <span className="min-w-[2ch] text-center">{line.qty}</span>
+                    </div>
+                  )}
                 </td>
                 <td className="text-right">
                   <Price amount={(line.sku.price ?? 0) * line.qty} />

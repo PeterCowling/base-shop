@@ -1,52 +1,27 @@
 export {};
 
-let service: typeof import("@acme/platform-machine");
-
-const mkdir = jest.fn();
-const writeFile = jest.fn();
-const readdir = jest.fn();
-const readFile = jest.fn();
-const unlink = jest.fn();
-jest.mock("fs/promises", () => ({ mkdir, writeFile, readdir, readFile, unlink }));
-
-const markReceived = jest.fn();
-const markCleaning = jest.fn();
-const markRepair = jest.fn();
-const markQa = jest.fn();
-const markAvailable = jest.fn();
-jest.mock("@platform-core/repositories/rentalOrders.server", () => ({
+import {
+  mkdir,
+  writeFile,
+  readdir,
+  readFile,
+  unlink,
   markReceived,
   markCleaning,
   markRepair,
   markQa,
   markAvailable,
-}));
-
-const evtReceived = jest.fn();
-const evtCleaning = jest.fn();
-const evtRepair = jest.fn();
-const evtQa = jest.fn();
-const evtAvailable = jest.fn();
-jest.mock("@platform-core/repositories/reverseLogisticsEvents.server", () => ({
-  reverseLogisticsEvents: {
-    received: evtReceived,
-    cleaning: evtCleaning,
-    repair: evtRepair,
-    qa: evtQa,
-    available: evtAvailable,
-  },
-}));
-
-const logError = jest.fn();
-jest.mock("@platform-core/utils", () => ({ logger: { error: logError } }));
-
-const randomUUID = jest.fn(() => "uuid");
-jest.mock("crypto", () => ({ randomUUID }));
+  reverseLogisticsEvents,
+  logger,
+  resetReverseLogisticsMocks,
+} from "../src/__tests__/reverseLogisticsTestHelpers";
 
 jest.mock("@platform-core/dataRoot", () => ({ resolveDataRoot: () => "/data" }));
 
+let service: typeof import("@acme/platform-machine");
+
 beforeEach(() => {
-  jest.clearAllMocks();
+  resetReverseLogisticsMocks();
   readFile.mockResolvedValue("{}");
   mkdir.mockResolvedValue(undefined);
   writeFile.mockResolvedValue(undefined);
@@ -71,11 +46,11 @@ describe("processReverseLogisticsEventsOnce", () => {
   });
 
   const map = [
-    ["received", markReceived, evtReceived],
-    ["cleaning", markCleaning, evtCleaning],
-    ["repair", markRepair, evtRepair],
-    ["qa", markQa, evtQa],
-    ["available", markAvailable, evtAvailable],
+    ["received", markReceived, reverseLogisticsEvents.received],
+    ["cleaning", markCleaning, reverseLogisticsEvents.cleaning],
+    ["repair", markRepair, reverseLogisticsEvents.repair],
+    ["qa", markQa, reverseLogisticsEvents.qa],
+    ["available", markAvailable, reverseLogisticsEvents.available],
   ] as const;
 
   for (const [status, mark, evt] of map) {
@@ -101,9 +76,9 @@ describe("processReverseLogisticsEventsOnce", () => {
       service.processReverseLogisticsEventsOnce(undefined, "/data")
     ).resolves.toBeUndefined();
     expect(markReceived).toHaveBeenCalledWith("shop", "s");
-    expect(evtReceived).toHaveBeenCalledWith("shop", "s");
+    expect(reverseLogisticsEvents.received).toHaveBeenCalledWith("shop", "s");
     expect(unlink).toHaveBeenCalledWith("/data/shop/reverse-logistics/a.json");
-    expect(logError).not.toHaveBeenCalled();
+    expect(logger.error).not.toHaveBeenCalled();
   });
 
   it("skips unknown status events", async () => {
@@ -117,11 +92,11 @@ describe("processReverseLogisticsEventsOnce", () => {
     expect(markRepair).not.toHaveBeenCalled();
     expect(markQa).not.toHaveBeenCalled();
     expect(markAvailable).not.toHaveBeenCalled();
-    expect(evtReceived).not.toHaveBeenCalled();
-    expect(evtCleaning).not.toHaveBeenCalled();
-    expect(evtRepair).not.toHaveBeenCalled();
-    expect(evtQa).not.toHaveBeenCalled();
-    expect(evtAvailable).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.received).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.cleaning).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.repair).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.qa).not.toHaveBeenCalled();
+    expect(reverseLogisticsEvents.available).not.toHaveBeenCalled();
     expect(unlink).toHaveBeenCalledWith(
       "/data/shop/reverse-logistics/a.json"
     );
@@ -138,7 +113,7 @@ describe("processReverseLogisticsEventsOnce", () => {
     readdir.mockResolvedValueOnce(["shop"]).mockResolvedValueOnce(["bad.json"]);
     readFile.mockResolvedValueOnce("not json");
     await service.processReverseLogisticsEventsOnce(undefined, "/data");
-    expect(logError).toHaveBeenCalled();
+    expect(logger.error).toHaveBeenCalled();
     expect(unlink).toHaveBeenCalledWith("/data/shop/reverse-logistics/bad.json");
   });
 });
@@ -181,7 +156,6 @@ describe("resolveConfig", () => {
     jest.unmock("@acme/config/env/core");
     jest.resetModules();
   });
-
 });
 
 describe("startReverseLogisticsService", () => {
@@ -298,7 +272,7 @@ describe("startReverseLogisticsService", () => {
 
     const stop = await service.startReverseLogisticsService({}, "/data", proc);
     expect(proc).toHaveBeenCalledWith("shop", "/data");
-    expect(logError).toHaveBeenCalledWith(
+    expect(logger.error).toHaveBeenCalledWith(
       "reverse logistics processing failed",
       { shopId: "shop", err: expect.anything() }
     );
@@ -316,7 +290,7 @@ describe("startReverseLogisticsService", () => {
     await expect(
       service.startReverseLogisticsService({}, "/data", jest.fn())
     ).rejects.toBe(err);
-    expect(logError).toHaveBeenCalledWith(
+    expect(logger.error).toHaveBeenCalledWith(
       "failed to start reverse logistics service",
       { err }
     );
@@ -331,32 +305,32 @@ describe("auto-start", () => {
   it("starts service on import", async () => {
     process.env.NODE_ENV = "production";
     const start = jest.fn().mockResolvedValue(undefined);
-    jest.doMock("@acme/platform-machine/src/reverseLogisticsService", () => {
+    jest.doMock("@acme/platform-machine/src/startReverseLogisticsService", () => {
       if (process.env.NODE_ENV !== "test") {
         start().catch((err: unknown) =>
-          logError("failed to start reverse logistics service", { err })
+          logger.error("failed to start reverse logistics service", { err })
         );
       }
       return { __esModule: true, startReverseLogisticsService: start };
     });
-    await import("@acme/platform-machine/src/reverseLogisticsService");
+    await import("@acme/platform-machine/src/startReverseLogisticsService");
     expect(start).toHaveBeenCalledTimes(1);
-    expect(logError).not.toHaveBeenCalled();
+    expect(logger.error).not.toHaveBeenCalled();
     process.env.NODE_ENV = "test";
   });
 
   it("invokes service and logs failures", async () => {
     process.env.NODE_ENV = "production";
     const start = jest.fn().mockRejectedValue(new Error("fail"));
-    jest.doMock("@acme/platform-machine/src/reverseLogisticsService", () => {
+    jest.doMock("@acme/platform-machine/src/startReverseLogisticsService", () => {
       start().catch((err: unknown) =>
-        logError("failed to start reverse logistics service", { err })
+        logger.error("failed to start reverse logistics service", { err })
       );
       return { __esModule: true, startReverseLogisticsService: start };
     });
-    await import("@acme/platform-machine/src/reverseLogisticsService");
+    await import("@acme/platform-machine/src/startReverseLogisticsService");
     expect(start).toHaveBeenCalled();
-    expect(logError).toHaveBeenCalledWith(
+    expect(logger.error).toHaveBeenCalledWith(
       "failed to start reverse logistics service",
       { err: expect.anything() }
     );
@@ -372,12 +346,22 @@ describe("auto-start (module import)", () => {
   it("logs failures when service startup rejects", async () => {
     process.env.NODE_ENV = "production";
     readdir.mockRejectedValueOnce(new Error("nope"));
-    await import("../src/reverseLogisticsService");
-    expect(logError).toHaveBeenCalledWith(
+    await import("../src/startReverseLogisticsService");
+    expect(logger.error).toHaveBeenCalledWith(
       "failed to start reverse logistics service",
       { err: expect.anything() }
     );
     process.env.NODE_ENV = "test";
   });
+});
+
+afterAll(() => {
+  jest.resetModules();
+  jest.unmock("fs/promises");
+  jest.unmock("@platform-core/repositories/rentalOrders.server");
+  jest.unmock("@platform-core/repositories/reverseLogisticsEvents.server");
+  jest.unmock("@platform-core/utils");
+  jest.unmock("crypto");
+  jest.unmock("@platform-core/dataRoot");
 });
 

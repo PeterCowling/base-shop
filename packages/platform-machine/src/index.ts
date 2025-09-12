@@ -1,12 +1,10 @@
 export * from "./fsm";
 export * from "./releaseDepositsService";
 
-export {
-  writeReverseLogisticsEvent,
-  processReverseLogisticsEventsOnce,
-  resolveConfig,
-  startReverseLogisticsService,
-} from "./reverseLogisticsService";
+export { writeReverseLogisticsEvent } from "./writeReverseLogisticsEvent";
+export { processReverseLogisticsEventsOnce } from "./processReverseLogisticsEventsOnce";
+export { resolveConfig } from "./resolveConfig";
+export { startReverseLogisticsService } from "./startReverseLogisticsService";
 
 export {
   chargeLateFeesOnce,

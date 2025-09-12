@@ -27,3 +27,5 @@ export function createCustomerMfaDelegate() {
     },
   } as any;
 }
+
+export const customerMfaDelegate = createCustomerMfaDelegate();

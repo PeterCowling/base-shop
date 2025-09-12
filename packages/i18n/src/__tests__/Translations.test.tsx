@@ -95,6 +95,18 @@ describe("TranslationsProvider and useTranslations", () => {
     warn.mockRestore();
   });
 
+  it("warns and falls back when missing translation includes variables", () => {
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <TranslationsProvider messages={{}}>{children}</TranslationsProvider>
+    );
+    const { result } = renderHook(() => useTranslations(), { wrapper });
+    // Even with variables provided, the key should be returned and a warning logged
+    expect(result.current("unknown", { name: "Sam" })).toBe("unknown");
+    expect(warn).toHaveBeenCalledWith("Missing translation for key: unknown");
+    warn.mockRestore();
+  });
+
   it("interpolates placeholders when variables are provided", () => {
     const wrapper = ({ children }: PropsWithChildren) => (
       <TranslationsProvider messages={{ greet: "Hi {name}" }}>
@@ -104,6 +116,19 @@ describe("TranslationsProvider and useTranslations", () => {
 
     const { result } = renderHook(() => useTranslations(), { wrapper });
     expect(result.current("greet", { name: "Sam" })).toBe("Hi Sam");
+  });
+
+  it("interpolates provided variables and ignores unused ones", () => {
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <TranslationsProvider messages={{ greet: "Hi {name}" }}>
+        {children}
+      </TranslationsProvider>
+    );
+
+    const { result } = renderHook(() => useTranslations(), { wrapper });
+    expect(result.current("greet", { name: "Sam", extra: "value" })).toBe(
+      "Hi Sam"
+    );
   });
 
   it("leaves placeholders intact when variables are missing", () => {

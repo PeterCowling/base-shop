@@ -21,12 +21,10 @@ jest.mock("@acme/config/env/core", () => ({ coreEnv: { NODE_ENV: "test" } }));
 
 jest.mock("@/utils/sentry.server", () => ({ captureException }));
 
-import {
-  createPage,
-  savePageDraft,
-  updatePage,
-  deletePage,
-} from "../actions/pages.server";
+import { createPage } from "../actions/pages/create";
+import { savePageDraft } from "../actions/pages/draft";
+import { updatePage } from "../actions/pages/update";
+import { deletePage } from "../actions/pages/delete";
 import * as service from "../actions/pages/service";
 
 describe("pages.server", () => {

@@ -101,7 +101,7 @@ describe("page draft POST route", () => {
   });
 
   it("returns validation errors", async () => {
-    jest.doMock("@cms/actions/pages.server", () => ({
+    jest.doMock("@cms/actions/pages/draft", () => ({
       savePageDraft: mockSaveDraft,
     }));
     mockSaveDraft.mockResolvedValue({
@@ -118,7 +118,7 @@ describe("page draft POST route", () => {
   });
 
   it("saves draft successfully", async () => {
-    jest.doMock("@cms/actions/pages.server", () => ({
+    jest.doMock("@cms/actions/pages/draft", () => ({
       savePageDraft: mockSaveDraft,
     }));
     mockSaveDraft.mockResolvedValue({ page: { id: "p1" } });

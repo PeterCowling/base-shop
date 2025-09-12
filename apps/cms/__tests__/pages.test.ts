@@ -35,7 +35,7 @@ describe("page actions", () => {
       const now = "2024-01-01T00:00:00.000Z";
       jest.doMock("@acme/date-utils", () => ({ nowIso: () => now }));
       mockAuth();
-      const { createPage } = await import("../src/actions/pages.server");
+      const { createPage } = await import("../src/actions/pages/create");
 
       const fd = new FormData();
       fd.append("slug", "home");
@@ -76,7 +76,7 @@ describe("page actions", () => {
       } as any;
       await repo.savePage("test", page, undefined);
 
-      const { updatePage } = await import("../src/actions/pages.server");
+      const { updatePage } = await import("../src/actions/pages/update");
       const fd = new FormData();
       fd.append("id", page.id);
       fd.append("updatedAt", page.updatedAt);
@@ -115,7 +115,7 @@ describe("page actions", () => {
       } as any;
       await repo.savePage("test", page, undefined);
 
-      const { updatePage } = await import("../src/actions/pages.server");
+      const { updatePage } = await import("../src/actions/pages/update");
       const history = {
         past: [],
         present: [{ id: "c1", type: "HeroBanner" }],
@@ -160,7 +160,7 @@ describe("page actions", () => {
       } as any;
       await repo.savePage("test", page, undefined);
 
-      const { deletePage } = await import("../src/actions/pages.server");
+      const { deletePage } = await import("../src/actions/pages/delete");
       await deletePage("test", page.id);
 
       const pages = await repo.getPages("test");
@@ -173,7 +173,7 @@ describe("page actions", () => {
       const now = "2024-01-01T00:00:00.000Z";
       jest.doMock("@acme/date-utils", () => ({ nowIso: () => now }));
       mockAuth();
-      const { createPage } = await import("../src/actions/pages.server");
+      const { createPage } = await import("../src/actions/pages/create");
       const fd = new FormData();
       fd.append("slug", "x");
       fd.append("title", "T");

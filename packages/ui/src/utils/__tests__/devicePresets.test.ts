@@ -37,4 +37,14 @@ describe("devicePresets data", () => {
     const preset = getLegacyPreset("unknown" as any);
     expect(preset).toEqual(devicePresets[0]);
   });
+
+  it("all presets use portrait orientation", () => {
+    expect(devicePresets.every((p) => p.orientation === "portrait")).toBe(true);
+  });
+
+  it("getLegacyPreset returns a cloned object", () => {
+    const preset = getLegacyPreset("desktop");
+    preset.width = 1;
+    expect(devicePresets[0].width).not.toBe(1);
+  });
 });

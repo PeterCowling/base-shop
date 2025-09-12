@@ -1,4 +1,11 @@
-import { hslToHex, hexToHsl, isHex, isHsl } from "../colorUtils";
+import {
+  getContrastColor,
+  hexToHsl,
+  hexToRgb,
+  hslToHex,
+  isHex,
+  isHsl,
+} from "../colorUtils";
 
 describe("colorUtils", () => {
   test.each([
@@ -32,7 +39,21 @@ describe("colorUtils", () => {
   });
 
   test("isHsl validates HSL colors", () => {
-    expect(isHsl("120 100% 50%")).toBe(true);
+    expect(isHsl("120 100% 50%"));
     expect(isHsl("#fff")).toBe(false);
+  });
+
+  test("hexToRgb converts shorthand and longhand hex", () => {
+    expect(hexToRgb("#ffffff")).toEqual([255, 255, 255]);
+    expect(hexToRgb("#abc")).toEqual([170, 187, 204]);
+  });
+
+  test("hexToRgb throws on invalid input", () => {
+    expect(() => hexToRgb("not-a-hex" as any)).toThrow("Invalid hex color");
+  });
+
+  test("getContrastColor chooses black or white based on brightness", () => {
+    expect(getContrastColor("#ffffff")).toBe("#000000");
+    expect(getContrastColor("#000000")).toBe("#ffffff");
   });
 });

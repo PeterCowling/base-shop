@@ -36,4 +36,9 @@ describe("boxProps", () => {
     const result = boxProps({ padding: "md:p-4" });
     expect(result.classes).toBe("md:p-4");
   });
+
+  it("mixes class and style when only one dimension uses tailwind", () => {
+    const result = boxProps({ width: "w-4", height: 20 });
+    expect(result).toEqual({ classes: "w-4", style: { height: 20 } });
+  });
 });

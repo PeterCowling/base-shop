@@ -37,4 +37,15 @@ describe("cssVars", () => {
     const vars = cssVars({ color: {} });
     expect(vars).toEqual({});
   });
+
+  it("supports combined color and typography overrides", () => {
+    const vars = cssVars({
+      color: { bg: "--bg" },
+      typography: { fontSize: "--size" },
+    });
+    expect(vars).toEqual({
+      "--color-bg": "var(--bg)",
+      "--font-size": "var(--size)",
+    });
+  });
 });

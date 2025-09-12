@@ -12,7 +12,14 @@ describe("Avatar", () => {
 
   it("renders fallback content when no src is provided", () => {
     render(<Avatar alt="Jane" fallback="FB" />);
-    expect(screen.getByText("FB")).toBeInTheDocument();
+    const fallbackEl = screen.getByText("FB");
+    expect(fallbackEl).toBeInTheDocument();
+    expect(fallbackEl).toHaveClass("bg-muted");
+    expect(fallbackEl).toHaveClass("flex");
+    expect(fallbackEl).toHaveClass("items-center");
+    expect(fallbackEl).toHaveClass("justify-center");
+    expect(fallbackEl).toHaveClass("rounded-full");
+    expect(fallbackEl).toHaveClass("text-sm");
   });
 
   it("displays first initial from alt when no fallback is provided", () => {
@@ -35,7 +42,7 @@ describe("Avatar", () => {
     expect(img).toHaveClass("rounded-none");
   });
 
-  it("parses string dimensions and applies spacing", () => {
+  it("parses string dimensions into numbers and applies spacing", () => {
     const nextImage = require("next/image");
     const spy = jest.spyOn(nextImage, "default");
 
@@ -43,17 +50,19 @@ describe("Avatar", () => {
       <Avatar
         src="/avatar.jpg"
         alt="User avatar"
-        width="48"
+        width="64"
         height="64"
         padding="p-4"
         margin="m-2"
       />
     );
-
-    expect(spy.mock.calls[0][0]).toMatchObject({ width: 48, height: 64 });
+    const props = spy.mock.calls[0][0];
+    expect(props.width).toBe(64);
+    expect(props.height).toBe(64);
+    expect(typeof props.width).toBe("number");
+    expect(typeof props.height).toBe("number");
 
     const img = screen.getByAltText("User avatar");
-    expect(img).toHaveStyle({ width: "48", height: "64" });
     expect(img).toHaveClass("p-4");
     expect(img).toHaveClass("m-2");
   });

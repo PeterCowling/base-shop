@@ -63,6 +63,25 @@ describe('fetchJson', () => {
     await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
   });
 
+  it('returns parsed JSON when response provides json function', async () => {
+    const data = { ok: true };
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: jest.fn().mockResolvedValue(data),
+    });
+
+    await expect(fetchJson('https://example.com')).resolves.toEqual(data);
+  });
+
+  it('returns undefined when response json rejects', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: jest.fn().mockRejectedValue(new Error('boom')),
+    });
+
+    await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
+  });
+
   it('rejects when fetch fails with a network error', async () => {
     (global.fetch as jest.Mock).mockRejectedValue(new Error('Network down'));
     await expect(fetchJson('https://example.com')).rejects.toThrow(

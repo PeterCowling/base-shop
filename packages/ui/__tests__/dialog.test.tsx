@@ -1,5 +1,6 @@
 import * as React from "react";
 import { fireEvent, render, screen, waitFor, configure } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import {
   Dialog,
   DialogContent,
@@ -102,8 +103,8 @@ describe("dialog primitives", () => {
     const overlay = document.querySelector(
       "div[data-state='open'][data-aria-hidden='true']"
     ) as HTMLElement;
-    fireEvent.mouseDown(overlay);
-    fireEvent.mouseUp(overlay);
+    const user = userEvent.setup();
+    await user.click(overlay);
     await waitFor(() =>
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument()
     );

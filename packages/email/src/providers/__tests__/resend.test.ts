@@ -98,6 +98,22 @@ describe("ResendProvider", () => {
     );
   });
 
+  it("sends payload matching Resend API schema", async () => {
+    setupEnv();
+    const { send } = require("resend");
+    send.mockResolvedValueOnce(undefined);
+    const { ResendProvider } = await import("../resend");
+    const provider = new ResendProvider();
+    await provider.send(options);
+    expect(send).toHaveBeenCalledWith({
+      from: "campaign@example.com",
+      to: options.to,
+      subject: options.subject,
+      html: options.html,
+      text: options.text,
+    });
+  });
+
   it("surfaces getDefaultSender errors", async () => {
     process.env.RESEND_API_KEY = "rs";
     const err = new Error("sender fail");

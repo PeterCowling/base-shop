@@ -112,6 +112,23 @@ describe("SendgridProvider", () => {
     );
   });
 
+  it("sends payload matching Sendgrid API schema", async () => {
+    process.env.CAMPAIGN_FROM = "campaign@example.com";
+    process.env.SENDGRID_API_KEY = "key";
+    const sgMail = require("@sendgrid/mail").default;
+    sgMail.send.mockResolvedValueOnce(undefined);
+    const { SendgridProvider } = await import("../sendgrid");
+    const provider = new SendgridProvider();
+    await provider.send(options);
+    expect(sgMail.send).toHaveBeenCalledWith({
+      to: options.to,
+      from: "campaign@example.com",
+      subject: options.subject,
+      html: options.html,
+      text: options.text,
+    });
+  });
+
   it("surfaces getDefaultSender errors", async () => {
     process.env.SENDGRID_API_KEY = "key";
     const error = new Error("sender fail");

@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  DialogDescription,
   DialogTrigger,
 } from "../src/components/atoms/shadcn";
 
@@ -13,6 +14,7 @@ describe("Dialog", () => {
         <DialogTrigger>Open</DialogTrigger>
         <DialogContent className="custom-dialog">
           <DialogTitle>Title</DialogTitle>
+          <DialogDescription>Description</DialogDescription>
         </DialogContent>
       </Dialog>
     );

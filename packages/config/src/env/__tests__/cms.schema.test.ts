@@ -29,6 +29,18 @@ describe("cms env schema", () => {
     expect(parsed.CMS_BASE_URL).toBe("https://cms.example.com");
   });
 
+  it("keeps base urls unchanged when no trailing slashes", async () => {
+    process.env = { NODE_ENV: "development" } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { cmsEnvSchema } = await import("../cms.ts");
+    const parsed = cmsEnvSchema.parse({
+      SANITY_BASE_URL: "https://sanity.example.com",
+      CMS_BASE_URL: "https://cms.example.com",
+    });
+    expect(parsed.SANITY_BASE_URL).toBe("https://sanity.example.com");
+    expect(parsed.CMS_BASE_URL).toBe("https://cms.example.com");
+  });
+
   it("parses disabled path lists", async () => {
     process.env = { NODE_ENV: "development" } as NodeJS.ProcessEnv;
     jest.resetModules();
@@ -39,6 +51,20 @@ describe("cms env schema", () => {
     });
     expect(parsed.CMS_DRAFTS_DISABLED_PATHS).toEqual(["/draft1", "/draft2"]);
     expect(parsed.CMS_SEARCH_DISABLED_PATHS).toEqual(["/search1", "/search2"]);
+  });
+
+  it.each([
+    ["CMS_DRAFTS_ENABLED", "notabool"],
+    ["CMS_DRAFTS_ENABLED", 2],
+    ["CMS_SEARCH_ENABLED", "notabool"],
+    ["CMS_SEARCH_ENABLED", 2],
+  ])("throws when %s is invalid", async (key, value) => {
+    process.env = { NODE_ENV: "development" } as NodeJS.ProcessEnv;
+    jest.resetModules();
+    const { cmsEnvSchema } = await import("../cms.ts");
+    expect(() =>
+      cmsEnvSchema.parse({ [key]: value } as Record<string, unknown>),
+    ).toThrow();
   });
 
   it("validates required fields and urls", async () => {

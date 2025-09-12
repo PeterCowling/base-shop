@@ -38,6 +38,30 @@ describe("layout actions", () => {
     expect(state.present).toEqual([b]);
   });
 
+  it("removes nested component without affecting siblings", () => {
+    const target = { id: "target", type: "Text" } as PageComponent;
+    const sibling = { id: "sibling", type: "Text" } as PageComponent;
+    const parent = {
+      id: "parent",
+      type: "Container",
+      children: [target, sibling],
+    } as any;
+    const other = { id: "other", type: "Image" } as PageComponent;
+    const root = {
+      id: "root",
+      type: "Container",
+      children: [parent, other],
+    } as any;
+    const state = remove(
+      { ...init, present: [root as PageComponent] },
+      { type: "remove", id: "target" },
+    );
+    const result = state.present[0] as any;
+    expect(result.children.map((c: any) => c.id)).toEqual(["parent", "other"]);
+    expect(result.children[0].children).toHaveLength(1);
+    expect(result.children[0].children[0].id).toBe("sibling");
+  });
+
   it("duplicates component with new id", () => {
     const state = duplicate(
       { ...init, present: [a, b] },

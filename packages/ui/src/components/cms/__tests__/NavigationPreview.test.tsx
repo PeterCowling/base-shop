@@ -36,6 +36,14 @@ describe("NavigationPreview", () => {
     });
   });
 
+  it("defaults href to '#' when url is missing", () => {
+    const { getByRole } = render(
+      <NavigationPreview items={[{ id: "1", label: "No URL" }]} />,
+    );
+    const link = getByRole("link", { name: "No URL" });
+    expect(link).toHaveAttribute("href", "#");
+  });
+
   it("renders dropdown menu with child links and tokens", () => {
     const { getByText } = render(<NavigationPreview items={items} />);
     const childLink = getByText("Child");

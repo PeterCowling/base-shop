@@ -1,6 +1,34 @@
 import { formatCurrency } from "../formatCurrency.ts";
 
 describe("formatCurrency", () => {
+  it("rejects malformed currency codes", () => {
+    expect(() => formatCurrency(100, "US" as any)).toThrow(RangeError);
+    expect(() => formatCurrency(100, "usd" as any)).toThrow(RangeError);
+    expect(() => formatCurrency(100, "US1" as any)).toThrow(RangeError);
+  });
+
+  it("throws for unsupported currencies when Intl.supportedValuesOf exists", () => {
+    const original = (Intl as any).supportedValuesOf;
+    (Intl as any).supportedValuesOf = () => ["USD", "EUR"];
+    try {
+      expect(() => formatCurrency(100, "ABC")).toThrow(RangeError);
+    } finally {
+      if (original) {
+        (Intl as any).supportedValuesOf = original;
+      } else {
+        delete (Intl as any).supportedValuesOf;
+      }
+    }
+  });
+
+  it("formats using a valid currency and locale", () => {
+    const minor = 12345; // €123.45
+    const expected = new Intl.NumberFormat("de-DE", {
+      style: "currency",
+      currency: "EUR",
+    }).format(123.45);
+    expect(formatCurrency(minor, "EUR", "de-DE")).toBe(expected);
+  });
   it("formats NaN when amount is undefined", () => {
     const expected = new Intl.NumberFormat(undefined, {
       style: "currency",

@@ -7,5 +7,5 @@ export { CUSTOMER_SESSION_COOKIE, CSRF_TOKEN_COOKIE, getCustomerSession, createC
 export type { CustomerSession } from "./session.js";
 export type { SessionStore, SessionRecord } from "./store.js";
 export { setSessionStoreFactory } from "./store.js";
-export { enrollMfa, verifyMfa, isMfaEnabled, } from "./mfa.js";
+export { enrollMfa, verifyMfa, isMfaEnabled, generateMfaToken, verifyMfaToken, } from "./mfa.js";
 //# sourceMappingURL=index.d.ts.map

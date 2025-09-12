@@ -1,4 +1,10 @@
-import { enrollMfa, verifyMfa, isMfaEnabled } from "../src/mfa";
+import {
+  enrollMfa,
+  verifyMfa,
+  isMfaEnabled,
+  generateMfaToken,
+  verifyMfaToken,
+} from "../src/mfa";
 import { authenticator } from "otplib";
 import { prisma } from "@acme/platform-core/db";
 
@@ -119,6 +125,36 @@ describe("mfa", () => {
   it("returns false when user not enrolled", async () => {
     await expect(verifyMfa("missing", "123456")).resolves.toBe(false);
     await expect(isMfaEnabled("missing")).resolves.toBe(false);
+  });
+});
+
+describe("mfa token", () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+    jest.setSystemTime(new Date("2024-01-01T00:00:00Z"));
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
+  it("generateMfaToken returns token and expiration", () => {
+    const data = generateMfaToken();
+    expect(data.token).toMatch(/^\d{6}$/);
+    expect(data.expiresAt).toBeInstanceOf(Date);
+    expect(data.expiresAt.getTime()).toBeGreaterThan(Date.now());
+  });
+
+  it("verifyMfaToken validates tokens", () => {
+    const data = generateMfaToken();
+    expect(verifyMfaToken(data.token, data)).toBe(true);
+    expect(verifyMfaToken("000000", data)).toBe(false);
+  });
+
+  it("verifyMfaToken respects expiration", () => {
+    const data = generateMfaToken();
+    jest.setSystemTime(data.expiresAt.getTime() + 1);
+    expect(verifyMfaToken(data.token, data)).toBe(false);
   });
 });
 

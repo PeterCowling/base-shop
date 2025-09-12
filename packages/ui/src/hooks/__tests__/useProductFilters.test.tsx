@@ -98,6 +98,16 @@ describe("useProductFilters", () => {
     await waitFor(() =>
       expect(screen.getByTestId("ids").textContent).toBe("1,2,3")
     );
+
+    rerender(<Wrapper search="blue" status="all" />);
+    await waitFor(() =>
+      expect(screen.getByTestId("ids").textContent).toBe("2")
+    );
+
+    rerender(<Wrapper search="  blue  " status="all" />);
+    await waitFor(() =>
+      expect(screen.getByTestId("ids").textContent).toBe("2")
+    );
   });
 
   it("filters by status", async () => {

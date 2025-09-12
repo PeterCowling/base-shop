@@ -631,6 +631,13 @@ describe("scheduler", () => {
     expect(writeCampaigns).toHaveBeenCalledTimes(1);
   });
 
+  test("sendDueCampaigns does nothing with empty campaign store", async () => {
+    memory[shop] = [];
+    await sendDueCampaigns();
+    expect(sendCampaignEmail).not.toHaveBeenCalled();
+    expect(writeCampaigns).not.toHaveBeenCalled();
+  });
+
   test("sendDueCampaigns does nothing when there are no shops", async () => {
     listShops.mockResolvedValue([]);
     await sendDueCampaigns();

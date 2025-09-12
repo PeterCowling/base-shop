@@ -13,6 +13,27 @@ describe("Button", () => {
     { variant: "destructive", className: "bg-destructive", token: "--color-danger" },
   ];
 
+  it("renders with default variant when no props are provided", () => {
+    render(<Button />);
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass("bg-primary");
+    expect(button).toHaveAttribute("data-token", "--color-primary");
+  });
+
+  it("merges provided className with variant styles", () => {
+    render(<Button className="custom-class" />);
+    const button = screen.getByRole("button");
+    expect(button).toHaveClass("bg-primary");
+    expect(button).toHaveClass("custom-class");
+  });
+
+  it("forwards ref to the underlying DOM node", () => {
+    const ref = React.createRef<HTMLButtonElement>();
+    render(<Button ref={ref} />);
+    const button = screen.getByRole("button");
+    expect(ref.current).toBe(button);
+  });
+
   it.each(cases)(
     "renders $variant variant with correct class and token",
     ({ variant, className, token }) => {

@@ -13,7 +13,6 @@ import {
   defaultDeploymentAdapter,
   type ShopDeploymentAdapter,
 } from "./deploymentAdapter";
-import { deployShop, deployShopImpl } from "./deploy";
 import type { Shop } from "@acme/types";
 
 /**
@@ -96,14 +95,19 @@ export async function createShop(
     return { status: "pending" };
   }
 
-  const fn = deployShop as typeof deployShop & {
+  // Load deployment helpers lazily so tests can spy on the exported
+  // `deployShop` function and have this module pick up the mocked
+  // implementation. Importing from `./index` instead of `./deploy` ensures
+  // we reference the same live binding that callers interact with.
+  const mod = await import("./index");
+  const fn = mod.deployShop as typeof mod.deployShop & {
     mock?: { implementation?: unknown };
-    mockImplementation?: (impl: typeof deployShopImpl) => void;
+    mockImplementation?: (impl: typeof mod.deployShopImpl) => void;
   };
   if (fn.mock) {
     fn(id, undefined, adapter);
-    fn.mockImplementation?.(deployShopImpl);
-    return deployShopImpl(id, undefined, adapter);
+    fn.mockImplementation?.(mod.deployShopImpl);
+    return mod.deployShopImpl(id, undefined, adapter);
   }
   return fn(id, undefined, adapter);
 }

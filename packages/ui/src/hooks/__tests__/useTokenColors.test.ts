@@ -35,6 +35,19 @@ describe("useTokenColors", () => {
     expect(result.current).toBeNull();
   });
 
+  it("returns null when contrast meets threshold", () => {
+    mockGetContrast.mockReturnValue(4.5);
+    const tokens = {
+      "--color-fg-primary": "#000000",
+    } as unknown as TokenMap;
+    const { result } = renderHook(() =>
+      useTokenColors("--color-bg-primary", "#ffffff", tokens, {} as TokenMap)
+    );
+    expect(mockGetContrast).toHaveBeenCalledWith("#ffffff", "#000000");
+    expect(mockSuggestContrastColor).not.toHaveBeenCalled();
+    expect(result.current).toBeNull();
+  });
+
   it("pairs --color-fg* with --color-bg*", () => {
     mockGetContrast.mockReturnValue(5);
     const tokens = {

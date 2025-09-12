@@ -6,6 +6,10 @@ describe("parseMultilingualInput normalization", () => {
     expect(parse({ en: " Hello " }, LOCALES)).toEqual({ en: "Hello" });
   });
 
+  it("coerces plain string to the default locale", () => {
+    expect(parse(" Hello ", LOCALES)).toEqual({ [LOCALES[0]]: "Hello" });
+  });
+
   it("handles multiple locales", () => {
     const result = parse({ en: "Hi", de: " Hallo " }, LOCALES);
     expect(result).toEqual({ en: "Hi", de: "Hallo" });

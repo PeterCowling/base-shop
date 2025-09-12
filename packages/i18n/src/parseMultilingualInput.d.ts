@@ -4,3 +4,4 @@ export interface MultilingualField {
     locale: Locale;
 }
 export declare function parseMultilingualInput(name: string, locales: readonly Locale[]): MultilingualField | null;
+export default function normalizeMultilingualInput(input: string | Record<string, unknown>, locales: readonly Locale[]): Partial<Record<Locale, string>>;

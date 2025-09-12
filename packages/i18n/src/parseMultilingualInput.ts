@@ -22,12 +22,19 @@ export function parseMultilingualInput(
  * entries for unknown locales or empty strings.
  */
 export default function normalizeMultilingualInput(
-  input: Record<string, unknown>,
+  input: string | Record<string, unknown>,
   locales: readonly Locale[]
 ): Partial<Record<Locale, string>> {
   // Start with an empty object and assert the more specific type so that
   // TypeScript doesn't expect all locale keys to be present upfront.
   const result = {} as Partial<Record<Locale, string>>;
+  if (typeof input === "string") {
+    const trimmed = input.trim();
+    if (trimmed) {
+      result[locales[0]] = trimmed;
+    }
+    return result;
+  }
   for (const locale of locales) {
     const value = input[locale];
     if (typeof value === "string") {

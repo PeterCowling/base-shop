@@ -29,8 +29,8 @@ describe("Presets", () => {
   it("shows placeholder when no presets are available", async () => {
     jest.resetModules();
     jest.doMock("../presets.json", () => [], { virtual: true });
-    const { default: EmptyPresets } = await import("../Presets");
-    render(<EmptyPresets tokens={{}} baseTokens={{}} onChange={jest.fn()} />);
-    expect(screen.getByTestId("presets-placeholder")).toBeInTheDocument();
+    const { default: Presets } = await import("../Presets");
+    render(<Presets tokens={{}} baseTokens={{}} onChange={jest.fn()} />);
+    expect(screen.getByText("No presets available")).toBeInTheDocument();
   });
 });

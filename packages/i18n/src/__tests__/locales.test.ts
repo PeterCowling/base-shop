@@ -1,16 +1,12 @@
 import { assertLocales, resolveLocale, LOCALES, locales } from "../locales";
 
 describe("assertLocales", () => {
-  it("throws when provided value is not an array", () => {
-    expect(() => assertLocales("nope" as any)).toThrow(
-      "LOCALES must be a non-empty array"
-    );
-  });
-
-  it("throws when provided an empty array", () => {
-    expect(() => assertLocales([])).toThrow(
-      "LOCALES must be a non-empty array"
-    );
+  it("throws when provided an empty array or non-array", () => {
+    for (const value of [[], "nope"]) {
+      expect(() => assertLocales(value as any)).toThrow(
+        "LOCALES must be a non-empty array"
+      );
+    }
   });
 
   it("does not throw for non-empty arrays", () => {
@@ -27,8 +23,8 @@ describe("resolveLocale", () => {
     expect(resolveLocale(undefined)).toBe("en");
   });
 
-  it("falls back to 'en' for unsupported locales", () => {
-    expect(resolveLocale("fr" as any)).toBe("en");
+  it("returns 'en' for unsupported locale 'fr'", () => {
+    expect(resolveLocale("fr")).toBe("en");
   });
 
   it("falls back to 'en' for uppercase locales", () => {

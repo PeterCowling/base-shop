@@ -1,4 +1,4 @@
-import { extractSessionIdFromCharge } from "../src/stripe-webhook";
+import { extractSessionIdFromCharge } from "../src/helpers/risk";
 
 describe("extractSessionIdFromCharge", () => {
   test("returns charge.invoice when present", () => {

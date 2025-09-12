@@ -96,6 +96,16 @@ describe("layout actions", () => {
     expect(state.past).toEqual([[]]);
   });
 
+  it("replaces existing components and clears future", () => {
+    const state = set(
+      { past: [], present: [a], future: [[b]], gridCols: 12 },
+      { type: "set", components: [b] },
+    );
+    expect(state.present).toEqual([b]);
+    expect(state.past).toEqual([[a]]);
+    expect(state.future).toEqual([]);
+  });
+
   it("sets grid columns", () => {
     const state = setGridCols(init, { type: "set-grid-cols", gridCols: 16 });
     expect(state.gridCols).toBe(16);

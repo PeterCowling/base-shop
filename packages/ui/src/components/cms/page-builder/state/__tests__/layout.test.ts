@@ -72,24 +72,51 @@ describe("layout actions", () => {
     expect(dup.type).toBe("Text");
   });
 
-  it("deep clones nested children when duplicating", () => {
-    const child = { id: "child", type: "Text" } as PageComponent;
-    const parent = { id: "parent", type: "Container", children: [child] } as any;
-    const state = duplicate(
-      { ...init, present: [parent as PageComponent] },
-      { type: "duplicate", id: "parent" },
-    );
-    expect(state.present).toHaveLength(2);
-    const orig = state.present[0] as any;
-    const clone = state.present[1] as any;
-    expect(clone.id).not.toBe(orig.id);
-    expect(clone.children[0].id).not.toBe(orig.children[0].id);
-  });
+    it("deep clones nested children when duplicating", () => {
+      const child = { id: "child", type: "Text" } as PageComponent;
+      const parent = { id: "parent", type: "Container", children: [child] } as any;
+      const state = duplicate(
+        { ...init, present: [parent as PageComponent] },
+        { type: "duplicate", id: "parent" },
+      );
+      expect(state.present).toHaveLength(2);
+      const orig = state.present[0] as any;
+      const clone = state.present[1] as any;
+      expect(clone.id).not.toBe(orig.id);
+      expect(clone.children[0].id).not.toBe(orig.children[0].id);
+    });
 
-  it("updates component", () => {
-    const state = update(
-      { ...init, present: [a] },
-      { type: "update", id: "a", patch: { foo: "bar" } },
+    it("duplicates nested components and preserves ancestors", () => {
+      const grandchild = { id: "grandchild", type: "Text" } as PageComponent;
+      const child = {
+        id: "child",
+        type: "Container",
+        children: [grandchild],
+      } as PageComponent;
+      const parent = {
+        id: "parent",
+        type: "Container",
+        children: [child],
+      } as PageComponent;
+      const state = duplicate(
+        { ...init, present: [parent] },
+        { type: "duplicate", id: "child" },
+      );
+      expect(state.present).toHaveLength(1);
+      const resultParent = state.present[0] as any;
+      expect(resultParent.id).toBe("parent");
+      expect(resultParent.children).toHaveLength(2);
+      const [orig, clone] = resultParent.children as any[];
+      expect(orig).toBe(child);
+      expect(clone.id).not.toBe("child");
+      expect(clone.children[0].id).not.toBe(grandchild.id);
+      expect(orig.children[0]).toBe(grandchild);
+    });
+
+    it("updates component", () => {
+      const state = update(
+        { ...init, present: [a] },
+        { type: "update", id: "a", patch: { foo: "bar" } },
     );
     expect((state.present[0] as any).foo).toBe("bar");
   });

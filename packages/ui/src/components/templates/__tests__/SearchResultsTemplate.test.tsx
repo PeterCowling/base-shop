@@ -73,7 +73,8 @@ describe("SearchResultsTemplate", () => {
     expect(screen.getByText("No results found.")).toBeInTheDocument();
   });
 
-  it("renders loading skeleton when isLoading is true", () => {
+  it("renders skeleton placeholders matching maxItems when loading", () => {
+    const maxItems = 4;
     render(
       <SearchResultsTemplate
         suggestions={[]}
@@ -81,13 +82,14 @@ describe("SearchResultsTemplate", () => {
         page={1}
         pageCount={1}
         isLoading
+        maxItems={maxItems}
         query=""
       />
     );
 
-    expect(
-      screen.getByTestId("search-results-loading")
-    ).toBeInTheDocument();
+    const loading = screen.getByTestId("search-results-loading");
+    expect(loading).toBeInTheDocument();
+    expect(loading.childElementCount).toBe(maxItems);
     expect(screen.queryByText("No results found.")).not.toBeInTheDocument();
   });
 
@@ -115,6 +117,24 @@ describe("SearchResultsTemplate", () => {
     );
 
     expect(screen.queryByRole("button", { name: /next/i })).not.toBeInTheDocument();
+  });
+
+  it("fires onPageChange when pagination control is used", async () => {
+    const onPageChange = jest.fn();
+    render(
+      <SearchResultsTemplate
+        suggestions={[]}
+        results={results}
+        page={1}
+        pageCount={3}
+        onPageChange={onPageChange}
+        query=""
+      />
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /next/i }));
+
+    expect(onPageChange).toHaveBeenCalledWith(2);
   });
 
   it("handles query changes via the search callback", async () => {

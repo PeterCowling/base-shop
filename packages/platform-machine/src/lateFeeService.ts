@@ -133,7 +133,6 @@ export async function resolveConfig(
     if (!Number.isNaN(num)) {
       config.intervalMinutes = Math.round(num / 60000);
     } else if (
-      config.intervalMinutes === DEFAULT_CONFIG.intervalMinutes &&
       coreEnv.LATE_FEE_INTERVAL_MS !== undefined &&
       coreEnv.LATE_FEE_INTERVAL_MS !== null
     ) {
@@ -142,7 +141,6 @@ export async function resolveConfig(
       );
     }
   } else if (
-    config.intervalMinutes === DEFAULT_CONFIG.intervalMinutes &&
     coreEnv.LATE_FEE_INTERVAL_MS !== undefined &&
     coreEnv.LATE_FEE_INTERVAL_MS !== null
   ) {

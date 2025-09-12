@@ -73,7 +73,11 @@ export const inventoryRepository: InventoryRepository = {
 export async function readInventoryMap(
   shop: string,
 ): Promise<Record<string, InventoryItem>> {
-  const items = await inventoryRepository.read(shop);
+  let items = await inventoryRepository.read(shop);
+  if (!Array.isArray(items)) {
+    const { jsonInventoryRepository } = await import("./inventory.json.server");
+    items = await jsonInventoryRepository.read(shop);
+  }
   return Object.fromEntries(
     items.map((i: InventoryItem) => [variantKey(i.sku, i.variantAttributes), i]),
   );

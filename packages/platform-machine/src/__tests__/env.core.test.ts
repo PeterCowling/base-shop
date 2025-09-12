@@ -241,22 +241,30 @@ describe("coreEnv NODE_ENV behavior", () => {
 
   it("eagerly loads and fails fast in production", async () => {
     await withEnv(
-      { ...base, NODE_ENV: "production", CMS_ACCESS_TOKEN: undefined },
+      {
+        ...base,
+        NODE_ENV: "production",
+        CMS_ACCESS_TOKEN: undefined,
+        JEST_WORKER_ID: undefined,
+      },
       async () => {
         await expect(import("@acme/config/env/core")).rejects.toThrow(
-          "Invalid CMS environment variables",
+          "Invalid core environment variables",
         );
       },
     );
   });
 
   it("eagerly loads in production", async () => {
-    await withEnv({ ...base, NODE_ENV: "production" }, async () => {
-      const mod = await import("@acme/config/env/core");
-      const spy = jest.spyOn(mod, "loadCoreEnv");
-      spy.mockClear();
-      expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
-      expect(spy).not.toHaveBeenCalled();
-    });
+    await withEnv(
+      { ...base, NODE_ENV: "production", JEST_WORKER_ID: undefined },
+      async () => {
+        const mod = await import("@acme/config/env/core");
+        const spy = jest.spyOn(mod, "loadCoreEnv");
+        spy.mockClear();
+        expect(mod.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+        expect(spy).not.toHaveBeenCalled();
+      },
+    );
   });
 });

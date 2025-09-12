@@ -131,9 +131,32 @@ describe("order status transitions", () => {
       expect(result).toEqual(mockOrder);
     });
 
+    it("updates order without damage fee when not provided", async () => {
+      nowIsoMock.mockReturnValue("now");
+      const mockOrder = createOrder();
+      prismaMock.rentalOrder.update.mockResolvedValue(mockOrder);
+      const result = await markReturned("shop", "sess");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { returnedAt: "now" },
+      });
+      expect(result).toEqual(mockOrder);
+    });
+
     it("returns null when order not found", async () => {
       prismaMock.rentalOrder.update.mockResolvedValue(null);
       const result = await markReturned("shop", "sess");
+      expect(result).toBeNull();
+    });
+
+    it("returns null on error", async () => {
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.update.mockRejectedValue(new Error("fail"));
+      const result = await markReturned("shop", "sess");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { returnedAt: "now" },
+      });
       expect(result).toBeNull();
     });
   });

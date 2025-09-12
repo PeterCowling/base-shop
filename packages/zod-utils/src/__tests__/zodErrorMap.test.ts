@@ -2,41 +2,37 @@ import { z, ZodIssueCode, type ZodIssue } from "zod";
 import { applyFriendlyZodMessages, friendlyErrorMap } from "../zodErrorMap";
 
 describe("friendlyErrorMap", () => {
-  const ctx = { defaultError: "fallback", data: undefined, path: [] };
+  const ctx = { defaultError: "Default error", data: undefined, path: [] } as const;
 
-  test("invalid_type", () => {
-    const issues: ZodIssue[] = [
+  test.each<[{ [k: string]: any }, string]>([
+    [
       {
         code: ZodIssueCode.invalid_type,
         expected: "string",
         received: "undefined",
         path: [],
-      } as unknown as ZodIssue,
+      },
+      "Required",
+    ],
+    [
       {
         code: ZodIssueCode.invalid_type,
         expected: "string",
         received: "number",
         path: [],
-      } as unknown as ZodIssue,
-    ];
-
-    const messages = issues.map((issue) => friendlyErrorMap(issue, ctx).message);
-    expect(messages).toEqual(["Required", "Expected string"]);
-  });
-
-  test("invalid_enum_value", () => {
-    const issue = {
-      code: ZodIssueCode.invalid_enum_value,
-      options: ["a", "b"],
-      received: "c",
-      path: [],
-    } as unknown as ZodIssue;
-
-    expect(friendlyErrorMap(issue, ctx).message).toBe("Invalid value");
-  });
-
-  test("too_small", () => {
-    const issues: ZodIssue[] = [
+      },
+      "Expected string",
+    ],
+    [
+      {
+        code: ZodIssueCode.invalid_enum_value,
+        options: ["a", "b"],
+        received: "c",
+        path: [],
+      },
+      "Invalid value",
+    ],
+    [
       {
         code: ZodIssueCode.too_small,
         type: "string",
@@ -45,7 +41,10 @@ describe("friendlyErrorMap", () => {
         exact: false,
         message: "",
         path: [],
-      } as unknown as ZodIssue,
+      },
+      "Must be at least 3 characters",
+    ],
+    [
       {
         code: ZodIssueCode.too_small,
         type: "array",
@@ -54,28 +53,10 @@ describe("friendlyErrorMap", () => {
         exact: false,
         message: "",
         path: [],
-      } as unknown as ZodIssue,
-      {
-        code: ZodIssueCode.too_small,
-        type: "number",
-        minimum: 1,
-        inclusive: true,
-        exact: false,
-        message: "",
-        path: [],
-      } as unknown as ZodIssue,
-    ];
-
-    const messages = issues.map((issue) => friendlyErrorMap(issue, ctx).message);
-    expect(messages).toEqual([
-      "Must be at least 3 characters",
+      },
       "Must have at least 2 items",
-      ctx.defaultError,
-    ]);
-  });
-
-  test("too_big", () => {
-    const issues: ZodIssue[] = [
+    ],
+    [
       {
         code: ZodIssueCode.too_big,
         type: "string",
@@ -84,7 +65,10 @@ describe("friendlyErrorMap", () => {
         exact: false,
         message: "",
         path: [],
-      } as unknown as ZodIssue,
+      },
+      "Must be at most 5 characters",
+    ],
+    [
       {
         code: ZodIssueCode.too_big,
         type: "array",
@@ -93,41 +77,51 @@ describe("friendlyErrorMap", () => {
         exact: false,
         message: "",
         path: [],
-      } as unknown as ZodIssue,
-      {
-        code: ZodIssueCode.too_big,
-        type: "number",
-        maximum: 1,
-        inclusive: true,
-        exact: false,
-        message: "",
-        path: [],
-      } as unknown as ZodIssue,
-    ];
-
-    const messages = issues.map((issue) => friendlyErrorMap(issue, ctx).message);
-    expect(messages).toEqual([
-      "Must be at most 5 characters",
+      },
       "Must have at most 4 items",
-      ctx.defaultError,
-    ]);
+    ],
+  ])("maps %j to custom message", (issue, expected) => {
+    expect(friendlyErrorMap(issue as ZodIssue, ctx).message).toBe(expected);
   });
 
-  test("unknown issue", () => {
-    const issues: ZodIssue[] = [
-      {
-        code: ZodIssueCode.custom,
-        message: "Custom message",
-        path: [],
-      } as unknown as ZodIssue,
-      {
-        code: ZodIssueCode.custom,
-        path: [],
-      } as unknown as ZodIssue,
-    ];
+  test("too_small returns default message for unhandled types", () => {
+    const issue = {
+      code: ZodIssueCode.too_small,
+      type: "number",
+      minimum: 1,
+      inclusive: true,
+      exact: false,
+      message: "",
+      path: [],
+    } as unknown as ZodIssue;
+    expect(friendlyErrorMap(issue, ctx).message).toBe(ctx.defaultError);
+  });
 
-    const messages = issues.map((issue) => friendlyErrorMap(issue, ctx).message);
-    expect(messages).toEqual(["Custom message", ctx.defaultError]);
+  test("too_big returns default message for unhandled types", () => {
+    const issue = {
+      code: ZodIssueCode.too_big,
+      type: "number",
+      maximum: 1,
+      inclusive: true,
+      exact: false,
+      message: "",
+      path: [],
+    } as unknown as ZodIssue;
+    expect(friendlyErrorMap(issue, ctx).message).toBe(ctx.defaultError);
+  });
+
+  test("falls back to default for unknown codes", () => {
+    const issue = { code: ZodIssueCode.custom, path: [] } as unknown as ZodIssue;
+    expect(friendlyErrorMap(issue, ctx).message).toBe(ctx.defaultError);
+  });
+
+  test("uses provided issue.message when available", () => {
+    const issue = {
+      code: ZodIssueCode.custom,
+      message: "Custom message",
+      path: [],
+    } as unknown as ZodIssue;
+    expect(friendlyErrorMap(issue, ctx).message).toBe("Custom message");
   });
 });
 
@@ -135,7 +129,7 @@ test("applyFriendlyZodMessages sets global error map", () => {
   const original = z.getErrorMap();
   const schema = z.string().min(3);
   const before = schema.safeParse("hi");
-  expect(before.error.issues[0].message).not.toBe(
+  expect(before.error?.issues[0]?.message).not.toBe(
     "Must be at least 3 characters",
   );
 
@@ -143,7 +137,7 @@ test("applyFriendlyZodMessages sets global error map", () => {
   expect(z.getErrorMap()).toBe(friendlyErrorMap);
 
   const after = schema.safeParse("hi");
-  expect(after.error.issues[0].message).toBe(
+  expect(after.error?.issues[0]?.message).toBe(
     "Must be at least 3 characters",
   );
 

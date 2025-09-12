@@ -44,4 +44,32 @@ describe("Input primitive", () => {
     const label = screen.getByText("Email");
     expect(label).toHaveClass("-translate-y-3 text-xs");
   });
+
+  it("fires provided focus and blur callbacks", () => {
+    const handleFocus = jest.fn();
+    const handleBlur = jest.fn();
+
+    render(
+      <Input label="Email" onFocus={handleFocus} onBlur={handleBlur} />
+    );
+
+    const input = screen.getByLabelText("Email");
+    fireEvent.focus(input);
+    fireEvent.blur(input);
+
+    expect(handleFocus).toHaveBeenCalledTimes(1);
+    expect(handleBlur).toHaveBeenCalledTimes(1);
+  });
+
+  it("omits aria-invalid when there is no error", () => {
+    render(<Input label="Email" />);
+    const input = screen.getByLabelText("Email");
+    expect(input).not.toHaveAttribute("aria-invalid");
+  });
+
+  it("allows custom id to override generated id", () => {
+    render(<Input label="Email" id="custom-id" />);
+    const input = screen.getByLabelText("Email");
+    expect(input).toHaveAttribute("id", "custom-id");
+  });
 });

@@ -16,6 +16,17 @@ describe("rentalOrder stub delegate", () => {
     expect(order).toMatchObject({ shop: "s1", sessionId: "sess1", trackingNumber: "t1", customerId: "c1" });
   });
 
+  it("findUnique returns null for absent shop_sessionId", async () => {
+    const prisma = createTestPrismaStub();
+    await prisma.rentalOrder.create({ data: { shop: "s1", sessionId: "1" } });
+
+    const order = await prisma.rentalOrder.findUnique({
+      where: { shop_sessionId: { shop: "s1", sessionId: "missing" } },
+    });
+
+    expect(order).toBeNull();
+  });
+
   it("findMany filters by shop and customerId", async () => {
     const prisma = createTestPrismaStub();
     await prisma.rentalOrder.create({ data: { shop: "s1", sessionId: "1", customerId: "c1" } });
@@ -29,6 +40,14 @@ describe("rentalOrder stub delegate", () => {
     ).toMatchObject([{ shop: "s1", sessionId: "1", customerId: "c1" }]);
   });
 
+  it("findMany with no where returns all orders", async () => {
+    const prisma = createTestPrismaStub();
+    await prisma.rentalOrder.create({ data: { shop: "s1", sessionId: "1" } });
+    await prisma.rentalOrder.create({ data: { shop: "s2", sessionId: "2" } });
+
+    expect(await prisma.rentalOrder.findMany()).toHaveLength(2);
+  });
+
   it("updates orders via shop_sessionId", async () => {
     const prisma = createTestPrismaStub();
     await prisma.rentalOrder.create({ data: { shop: "s1", sessionId: "1" } });
@@ -39,6 +58,18 @@ describe("rentalOrder stub delegate", () => {
     });
 
     expect(updated.trackingNumber).toBe("tn");
+  });
+
+  it("update via shop_sessionId throws when order missing", async () => {
+    const prisma = createTestPrismaStub();
+    await prisma.rentalOrder.create({ data: { shop: "s1", sessionId: "1" } });
+
+    await expect(
+      prisma.rentalOrder.update({
+        where: { shop_sessionId: { shop: "s1", sessionId: "2" } },
+        data: { trackingNumber: "tn" },
+      }),
+    ).rejects.toThrow("Order not found");
   });
 
   it("updates via shop_trackingNumber and errors when order missing", async () => {

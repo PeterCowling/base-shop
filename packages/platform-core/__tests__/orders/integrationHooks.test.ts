@@ -35,6 +35,18 @@ describe("order integration hooks", () => {
       expect(result).toEqual(mockOrder);
     });
 
+    it("persists only refundedAt when risk params are omitted", async () => {
+      nowIsoMock.mockReturnValue("now");
+      const mockOrder = createOrder({ refundedAt: "now" });
+      prismaMock.rentalOrder.update.mockResolvedValue(mockOrder);
+      const result = await markRefunded("shop", "sess");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { refundedAt: "now" },
+      });
+      expect(result).toEqual(mockOrder);
+    });
+
     it("returns null when order not found", async () => {
       prismaMock.rentalOrder.update.mockResolvedValue(null);
       const result = await markRefunded("shop", "sess");
@@ -133,6 +145,26 @@ describe("order integration hooks", () => {
       expect(result).toBeNull();
     });
 
+    it("skips Stripe when order already fully refunded", async () => {
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.findUnique.mockResolvedValue(
+        createOrder({ deposit: 10, refundTotal: 10 })
+      );
+      prismaMock.rentalOrder.update.mockResolvedValue(
+        createOrder({ refundedAt: "now", refundTotal: 10 })
+      );
+
+      const result = await refundOrder("shop", "sess", 10);
+
+      expect(stripeCheckoutRetrieve).not.toHaveBeenCalled();
+      expect(stripeRefund).not.toHaveBeenCalled();
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { refundedAt: "now", refundTotal: 10 },
+      });
+      expect(result).toEqual(createOrder({ refundedAt: "now", refundTotal: 10 }));
+    });
+
     it("refunds full amount and updates refund total", async () => {
       nowIsoMock.mockReturnValue("now");
       prismaMock.rentalOrder.findUnique.mockResolvedValue(createOrder());
@@ -161,6 +193,24 @@ describe("order integration hooks", () => {
       expect(result).toEqual(createOrder({ refundedAt: "now", refundTotal: 10 }));
     });
 
+    it("handles payment_intent objects from checkout session", async () => {
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.findUnique.mockResolvedValue(createOrder());
+      stripeCheckoutRetrieve.mockResolvedValue({ payment_intent: { id: "pi" } });
+      stripeRefund.mockResolvedValue({ id: "re_1" });
+      prismaMock.rentalOrder.update.mockResolvedValue(
+        createOrder({ refundedAt: "now", refundTotal: 10 })
+      );
+
+      const result = await refundOrder("shop", "sess", 10);
+
+      expect(stripeRefund).toHaveBeenCalledWith({
+        payment_intent: "pi",
+        amount: 10 * 100,
+      });
+      expect(result).toEqual(createOrder({ refundedAt: "now", refundTotal: 10 }));
+    });
+
     it("returns null when update fails after refund", async () => {
       nowIsoMock.mockReturnValue("now");
       prismaMock.rentalOrder.findUnique.mockResolvedValue(createOrder());
@@ -179,6 +229,41 @@ describe("order integration hooks", () => {
         data: { refundedAt: "now", refundTotal: 10 },
       });
       expect(result).toBeNull();
+    });
+
+    it("returns null when update resolves null after refund", async () => {
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.findUnique.mockResolvedValue(createOrder());
+      stripeCheckoutRetrieve.mockResolvedValue({ payment_intent: "pi" });
+      stripeRefund.mockResolvedValue({ id: "re_1" });
+      prismaMock.rentalOrder.update.mockResolvedValue(null);
+
+      const result = await refundOrder("shop", "sess", 10);
+      expect(stripeRefund).toHaveBeenCalledWith({
+        payment_intent: "pi",
+        amount: 10 * 100,
+      });
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { refundedAt: "now", refundTotal: 10 },
+      });
+      expect(result).toBeNull();
+    });
+
+    it("propagates Stripe refund errors", async () => {
+      prismaMock.rentalOrder.findUnique.mockResolvedValue(createOrder());
+      stripeCheckoutRetrieve.mockResolvedValue({ payment_intent: "pi" });
+      stripeRefund.mockRejectedValue(new Error("stripe fail"));
+
+      await expect(refundOrder("shop", "sess", 10)).rejects.toThrow(
+        "stripe fail"
+      );
+
+      expect(stripeRefund).toHaveBeenCalledWith({
+        payment_intent: "pi",
+        amount: 10 * 100,
+      });
+      expect(prismaMock.rentalOrder.update).not.toHaveBeenCalled();
     });
 
     it("throws when checkout session lacks payment_intent", async () => {

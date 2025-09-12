@@ -29,5 +29,15 @@ describe("reverseLogisticsEvent stub", () => {
     expect(received).toHaveLength(1);
     expect(received[0]).toMatchObject({ id: "e1", type: "received" });
   });
+
+  it("findMany returns empty array when no events match", async () => {
+    const delegate = createReverseLogisticsEventDelegate();
+
+    await delegate.create({ data: { id: "e1", type: "received" } });
+    await delegate.create({ data: { id: "e2", type: "cleaning" } });
+
+    const none = await delegate.findMany({ where: { type: "shipping" } });
+    expect(none).toHaveLength(0);
+  });
 });
 

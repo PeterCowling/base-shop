@@ -70,6 +70,24 @@ describe("CollectionList", () => {
     );
   });
 
+  it("uses minItems when container is narrow", () => {
+    const { root, setWidth } = setup({ minItems: 2, maxItems: 5 });
+
+    setWidth(100);
+    expect(root.style.gridTemplateColumns).toBe(
+      "repeat(2, minmax(0, 1fr))"
+    );
+  });
+
+  it("clamps to maxItems on wide containers", () => {
+    const { root, setWidth } = setup({ minItems: 1, maxItems: 3 });
+
+    setWidth(2000);
+    expect(root.style.gridTemplateColumns).toBe(
+      "repeat(3, minmax(0, 1fr))"
+    );
+  });
+
   it("falls back to ITEM_WIDTH calculation with min/max clamping", () => {
     const { root, setWidth } = setup({ minItems: 2, maxItems: 4 });
 

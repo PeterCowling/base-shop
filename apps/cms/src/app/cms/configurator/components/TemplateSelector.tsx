@@ -25,6 +25,7 @@ interface Template {
   name: string;
   components: PageComponent[];
   preview: string;
+  disabled?: boolean;
 }
 
 interface Props {
@@ -83,13 +84,19 @@ export default function TemplateSelector({
               key={t.name}
               value={t.name}
               asChild
+              disabled={t.disabled}
               onSelect={(e: React.SyntheticEvent<unknown>) => {
+                if (t.disabled) return;
                 e.preventDefault();
                 setSelectOpen(false);
                 setPendingTemplate(t);
               }}
             >
-              <button type="button" className="w-full text-left">
+              <button
+                type="button"
+                className="w-full text-left"
+                disabled={t.disabled}
+              >
                 <div className="flex items-center gap-2">
                   <Image
                     src={t.preview}

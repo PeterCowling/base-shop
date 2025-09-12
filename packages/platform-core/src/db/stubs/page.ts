@@ -36,3 +36,6 @@ export function createPageDelegate() {
     },
   } as any;
 }
+
+// Instantiate a default delegate instance for convenience in tests
+export const pageDelegate = createPageDelegate();

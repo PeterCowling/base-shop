@@ -103,13 +103,27 @@ describe("ProductCard badges", () => {
   });
 });
 
+describe("ProductCard memoization", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    useCurrencyMock.mockReturnValue(["USD"] as const);
+  });
+
+  it("renders only once when props do not change", () => {
+    const { rerender } = render(<ProductCard sku={baseSku} />);
+    expect(formatPriceMock).toHaveBeenCalledTimes(1);
+    rerender(<ProductCard sku={baseSku} />);
+    expect(formatPriceMock).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe("Price", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     useCurrencyMock.mockReturnValue(["USD"] as const);
   });
 
-  it("uses context currency when none is provided", () => {
+  it("uses context currency when no prop is supplied", () => {
     render(<Price amount={50} />);
     expect(formatPriceMock).toHaveBeenCalledWith(50, "USD");
   });
@@ -119,7 +133,7 @@ describe("Price", () => {
     expect(formatPriceMock).toHaveBeenCalledWith(75, "EUR");
   });
 
-  it("falls back to EUR when context currency is undefined", () => {
+  it("falls back to EUR when context returns undefined", () => {
     useCurrencyMock.mockReturnValue([undefined] as any);
     render(<Price amount={25} />);
     expect(formatPriceMock).toHaveBeenCalledWith(25, "EUR");

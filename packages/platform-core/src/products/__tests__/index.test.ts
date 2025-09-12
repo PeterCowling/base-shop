@@ -6,6 +6,17 @@ import {
   PRODUCTS,
 } from "../index";
 
+describe("PRODUCTS constant", () => {
+  it("contains the expected mock catalogue", () => {
+    expect(PRODUCTS).toHaveLength(3);
+    const [green, sand, black] = PRODUCTS;
+    expect(green.forRental).toBe(false);
+    expect(sand.forRental).toBe(true);
+    expect(black.stock).toBe(0);
+    expect(green.media[0]).toEqual({ url: "/shop/green.jpg", type: "image" });
+  });
+});
+
 describe("getProductBySlug", () => {
   it("returns the matching SKU for a known slug", () => {
     const product = getProductBySlug("green-sneaker");
@@ -97,5 +108,10 @@ describe("isSKU", () => {
   it("rejects objects missing required fields", () => {
     const invalid = { id: "1", slug: "slug", price: "100" } as any;
     expect(isSKU(invalid)).toBe(false);
+  });
+
+  it("rejects non-object values", () => {
+    expect(isSKU(null)).toBe(false);
+    expect(isSKU("sku" as any)).toBe(false);
   });
 });

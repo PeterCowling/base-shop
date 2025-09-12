@@ -52,7 +52,7 @@ export function createInventoryItemDelegate(): InventoryItemDelegate {
         inventoryItems[idx] = { ...inventoryItems[idx], ...update };
         return inventoryItems[idx];
       }
-      const record = { ...create };
+      const record = { ...create, shopId, sku, variantKey };
       inventoryItems.push(record);
       return record;
     },

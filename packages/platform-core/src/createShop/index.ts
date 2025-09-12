@@ -12,8 +12,10 @@ export {
   repoRoot,
   ensureTemplateExists,
   copyTemplate,
+  ensureDir,
   readFile,
   writeFile,
+  writeJSON,
   listThemes,
   syncTheme,
 } from "./fsUtils";

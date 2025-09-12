@@ -85,6 +85,18 @@ describe("MarketingEmailTemplate", () => {
     expect(queryByAltText("Acme")).toBeNull();
     expect(container.querySelector(".border-t")).toBeNull();
   });
+
+  it("does not render header when shopName is missing", () => {
+    const { container } = render(
+      <MarketingEmailTemplate
+        headline="No Shop"
+        content={<p>content</p>}
+        logoSrc="/logo.png"
+      />
+    );
+
+    expect(container.querySelector(".bg-muted.p-6.text-center")).toBeNull();
+  });
   it("throws when headline is missing or empty", () => {
     expect(() => render(<MarketingEmailTemplate content={<p />} />)).toThrow(
       "headline and content are required",

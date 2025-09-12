@@ -31,6 +31,29 @@ describe("createPageDelegate page operations", () => {
     expect(blogPages[0]).toMatchObject({ id: "1", type: "blog" });
   });
 
+  it("findMany supports multiple field filters", async () => {
+    const page = createPageDelegate();
+    await page.createMany({
+      data: [
+        { id: "1", type: "blog", shopId: "s1" },
+        { id: "2", type: "blog", shopId: "s2" },
+        { id: "3", type: "home", shopId: "s1" },
+      ],
+    });
+    const result = await page.findMany({
+      where: { type: "blog", shopId: "s1" },
+    });
+    expect(result).toHaveLength(1);
+    expect(result[0]).toMatchObject({ id: "1", type: "blog", shopId: "s1" });
+  });
+
+  it("findMany returns all when where is undefined", async () => {
+    const page = createPageDelegate();
+    await page.createMany({ data: [{ id: "1" }, { id: "2" }] });
+    const result = await page.findMany({ where: undefined });
+    expect(result).toHaveLength(2);
+  });
+
   it("update modifies existing page", async () => {
     const page = createPageDelegate();
     await page.createMany({ data: [{ id: "1", title: "Old" }] });
@@ -64,6 +87,19 @@ describe("createPageDelegate page operations", () => {
     expect(remaining[0]).toMatchObject({ id: "3" });
   });
 
+  it("deleteMany returns zero count when nothing matches", async () => {
+    const page = createPageDelegate();
+    await page.createMany({
+      data: [{ id: "1", shopId: "s1", type: "blog" }],
+    });
+    const result = await page.deleteMany({
+      where: { shopId: "s2", type: "home" },
+    });
+    expect(result).toMatchObject({ count: 0 });
+    const remaining = await page.findMany();
+    expect(remaining).toHaveLength(1);
+  });
+
   it("upsert updates existing and inserts new records", async () => {
     const page = createPageDelegate();
     await page.createMany({ data: [{ id: "1", title: "Old" }] });
@@ -83,6 +119,17 @@ describe("createPageDelegate page operations", () => {
 
     const all = await page.findMany();
     expect(all).toHaveLength(2);
+  });
+
+  it("upsert creates record when missing without error", async () => {
+    const page = createPageDelegate();
+    await expect(
+      page.upsert({
+        where: { id: "1" },
+        update: { title: "Updated" },
+        create: { id: "1", title: "New" },
+      }),
+    ).resolves.toMatchObject({ id: "1", title: "New" });
   });
 });
 

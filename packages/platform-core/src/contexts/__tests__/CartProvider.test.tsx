@@ -278,11 +278,20 @@ describe("CartProvider offline fallback", () => {
       window.dispatchEvent(new Event("online"));
     });
 
-    await waitFor(() =>
-      expect(fetchMock).toHaveBeenCalledWith(
-        "/api/cart",
-        expect.objectContaining({ method: "PUT" })
-      )
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      "/api/cart",
+      expect.objectContaining({
+        method: "PUT",
+        body: JSON.stringify({
+          lines: [
+            {
+              sku: { id: sku.id },
+              qty: 1,
+            },
+          ],
+        }),
+      })
     );
     await waitFor(() => expect(cartState).toEqual(updated.cart));
     expect(localStorage.getItem("cart")).toBe(JSON.stringify(updated.cart));

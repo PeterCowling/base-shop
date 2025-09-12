@@ -306,7 +306,7 @@ describe("CartProvider dispatch", () => {
     expect(localStorage.getItem("cart")).toBe(JSON.stringify(added.cart));
   });
 
-  it("adds item and syncs localStorage", async () => {
+  it("adds item with correct payload and syncs localStorage", async () => {
     fetchMock.mockResolvedValueOnce({
       ok: true,
       json: async () => ({ cart: {} }),
@@ -326,11 +326,18 @@ describe("CartProvider dispatch", () => {
       await dispatch({ type: "add", sku, qty: 2 });
     });
 
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      "/api/cart",
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({ sku: { id: sku.id }, qty: 2, size: undefined }),
+      })
+    );
     await waitFor(() => expect(cartState).toEqual(added.cart));
     expect(localStorage.getItem("cart")).toBe(JSON.stringify(added.cart));
   });
 
-  it("removes item and syncs localStorage", async () => {
+  it("removes item with correct payload and syncs localStorage", async () => {
     const initial = { cart: { sku1: { sku, qty: 1 } } };
     fetchMock.mockResolvedValueOnce({ ok: true, json: async () => initial });
     fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
@@ -347,11 +354,18 @@ describe("CartProvider dispatch", () => {
       await dispatch({ type: "remove", id: "sku1" });
     });
 
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      "/api/cart",
+      expect.objectContaining({
+        method: "DELETE",
+        body: JSON.stringify({ id: "sku1" }),
+      })
+    );
     await waitFor(() => expect(cartState).toEqual({}));
     expect(localStorage.getItem("cart")).toBe(JSON.stringify({}));
   });
 
-  it("updates quantity and syncs localStorage", async () => {
+  it("updates quantity with correct payload and syncs localStorage", async () => {
     const initial = { cart: { sku1: { sku, qty: 1 } } };
     const updated = { cart: { sku1: { sku, qty: 3 } } };
     fetchMock.mockResolvedValueOnce({ ok: true, json: async () => initial });
@@ -369,6 +383,13 @@ describe("CartProvider dispatch", () => {
       await dispatch({ type: "setQty", id: "sku1", qty: 3 });
     });
 
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      "/api/cart",
+      expect.objectContaining({
+        method: "PATCH",
+        body: JSON.stringify({ id: "sku1", qty: 3 }),
+      })
+    );
     await waitFor(() => expect(cartState).toEqual(updated.cart));
     expect(localStorage.getItem("cart")).toBe(JSON.stringify(updated.cart));
   });

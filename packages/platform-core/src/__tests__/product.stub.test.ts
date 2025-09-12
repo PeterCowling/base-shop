@@ -21,6 +21,24 @@ describe("createProductDelegate", () => {
     await expect(product.findMany({ where: { shopId: "s2" } })).resolves.toHaveLength(1);
   });
 
+  it("persists records created via create", async () => {
+    const product = createProductDelegate();
+    await product.create({ data: { shopId: "s1", id: "p1", title: "a" } });
+
+    await expect(
+      product.findUnique({ where: { shopId_id: { shopId: "s1", id: "p1" } } }),
+    ).resolves.toMatchObject({ shopId: "s1", id: "p1", title: "a" });
+  });
+
+  it("returns empty array for unknown shopId", async () => {
+    const product = createProductDelegate();
+    await product.create({ data: { shopId: "s1", id: "p1" } });
+
+    await expect(
+      product.findMany({ where: { shopId: "missing" } }),
+    ).resolves.toEqual([]);
+  });
+
   it("finds unique products via shopId_id", async () => {
     const product = createProductDelegate();
     await product.createMany({ data: [{ shopId: "s1", id: "p1", title: "t" }] });

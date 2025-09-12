@@ -1,11 +1,25 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { ProductQuickView } from "../ProductQuickView";
 import type { SKU } from "@acme/types";
 import "../../../../../../test/resetNextMocks";
 
 jest.mock("../../organisms/ProductCard", () => ({
-  ProductCard: ({ product }: { product: SKU }) => (
-    <div data-testid={`product-${product.id}`} />
+  ProductCard: ({
+    product,
+    onAddToCart,
+    ...props
+  }: {
+    product: SKU;
+    onAddToCart?: (product: SKU) => void;
+    [key: string]: unknown;
+  }) => (
+    <div {...props}>
+      <div data-testid={`product-${product.id}`} />
+      <button
+        data-cy="add-to-cart"
+        onClick={() => onAddToCart?.(product)}
+      />
+    </div>
   ),
 }));
 
@@ -72,5 +86,29 @@ describe("ProductQuickView", () => {
     expect(closed).toBeNull();
     expect((closed as HTMLElement | null)?.style.width).toBeUndefined();
     expect((closed as HTMLElement | null)?.style.height).toBeUndefined();
+  });
+
+  it("closes via button and handles add to cart", async () => {
+    const handleOpen = jest.fn();
+    const handleAdd = jest.fn();
+
+    render(
+      <ProductQuickView
+        product={product}
+        open={true}
+        onOpenChange={handleOpen}
+        onAddToCart={handleAdd}
+      />
+    );
+
+    const dialog = await screen.findByRole("dialog");
+    expect(dialog.style.width).toBe("");
+    expect(dialog.style.height).toBe("");
+
+    fireEvent.click(screen.getByTestId("close-quick-view"));
+    expect(handleOpen).toHaveBeenCalledWith(false);
+
+    fireEvent.click(screen.getByTestId("add-to-cart"));
+    expect(handleAdd).toHaveBeenCalledWith(product);
   });
 });

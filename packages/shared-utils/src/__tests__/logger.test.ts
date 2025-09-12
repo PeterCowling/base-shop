@@ -45,19 +45,20 @@ describe('logger', () => {
     delete process.env.NODE_ENV;
   });
 
-  it('forwards messages and metadata to the pino instance', async () => {
+  it.each([
+    ['error'],
+    ['warn'],
+    ['info'],
+    ['debug'],
+  ])('%s forwards message and metadata to the pino instance', async (level) => {
     const { logger } = await import('../logger');
     const meta = { id: 1 };
+    const message = `${level} message`;
 
-    logger.error('error message', meta);
-    logger.warn('warn message', meta);
-    logger.info('info message', meta);
-    logger.debug('debug message', meta);
-
-    expect(pinoInstance.error).toHaveBeenCalledWith(meta, 'error message');
-    expect(pinoInstance.warn).toHaveBeenCalledWith(meta, 'warn message');
-    expect(pinoInstance.info).toHaveBeenCalledWith(meta, 'info message');
-    expect(pinoInstance.debug).toHaveBeenCalledWith(meta, 'debug message');
+    // @ts-expect-error - index signature for logger methods
+    logger[level](message, meta);
+    // @ts-expect-error - index signature for pino instance methods
+    expect(pinoInstance[level]).toHaveBeenCalledWith(meta, message);
   });
 
   it('logs plain objects and Error instances appropriately', async () => {
@@ -70,23 +71,14 @@ describe('logger', () => {
     expect(pinoInstance.error).toHaveBeenNthCalledWith(2, err, 'error meta');
   });
 
-  it('defaults to info level in production', async () => {
-    process.env.NODE_ENV = 'production';
+  it.each([
+    [{ NODE_ENV: 'production' }, 'info'],
+    [{ NODE_ENV: 'development' }, 'debug'],
+    [{ NODE_ENV: 'production', LOG_LEVEL: 'warn' }, 'warn'],
+  ])('sets level based on LOG_LEVEL and NODE_ENV', async (env, level) => {
+    Object.assign(process.env, env);
     await import('../logger');
-    expect(pinoMock).toHaveBeenCalledWith({ level: 'info' });
-  });
-
-  it('defaults to debug level when not in production', async () => {
-    process.env.NODE_ENV = 'development';
-    await import('../logger');
-    expect(pinoMock).toHaveBeenCalledWith({ level: 'debug' });
-  });
-
-  it('uses LOG_LEVEL when provided', async () => {
-    process.env.NODE_ENV = 'production';
-    process.env.LOG_LEVEL = 'warn';
-    await import('../logger');
-    expect(pinoMock).toHaveBeenCalledWith({ level: 'warn' });
+    expect(pinoMock).toHaveBeenCalledWith({ level });
   });
 
   it('suppresses debug output when level \u2265 info', async () => {

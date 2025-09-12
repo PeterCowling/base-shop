@@ -194,7 +194,7 @@ describe("settings repository", () => {
   });
 });
 
-describe("getShopSettings via resolved repository", () => {
+describe("settings.server functions via resolved repository", () => {
   const sampleSettings = { languages: ["en"], currency: "USD" } as any;
 
   beforeEach(() => {
@@ -228,6 +228,37 @@ describe("getShopSettings via resolved repository", () => {
     await expect(getShopSettings("missing"))
       .rejects.toThrow("not found");
     expect(repo.getShopSettings).toHaveBeenCalledWith("missing");
+  });
+
+  it("forwards saveShopSettings arguments", async () => {
+    const repo = {
+      getShopSettings: jest.fn(),
+      saveShopSettings: jest.fn().mockResolvedValue(undefined),
+      diffHistory: jest.fn(),
+    };
+    jest.doMock("../repoResolver", () => ({ resolveRepo: jest.fn(() => repo) }));
+    jest.doMock("../../db", () => ({ prisma: { setting: {} } }));
+    const { saveShopSettings } = await import("../settings.server");
+    const settings = { languages: ["en"] } as any;
+    await saveShopSettings("shop", settings);
+    expect(repo.saveShopSettings).toHaveBeenCalledWith("shop", settings);
+  });
+
+  it("forwards diffHistory arguments", async () => {
+    const history = [
+      { timestamp: "2020-01-01T00:00:00.000Z", diff: { currency: "USD" } },
+    ];
+    const repo = {
+      getShopSettings: jest.fn(),
+      saveShopSettings: jest.fn(),
+      diffHistory: jest.fn().mockResolvedValue(history),
+    };
+    jest.doMock("../repoResolver", () => ({ resolveRepo: jest.fn(() => repo) }));
+    jest.doMock("../../db", () => ({ prisma: { setting: {} } }));
+    const { diffHistory } = await import("../settings.server");
+    await expect(diffHistory("shop"))
+      .resolves.toEqual(history);
+    expect(repo.diffHistory).toHaveBeenCalledWith("shop");
   });
 });
 

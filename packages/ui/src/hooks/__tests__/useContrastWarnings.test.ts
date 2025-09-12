@@ -28,6 +28,14 @@ describe("useContrastWarnings", () => {
     expect(mockSuggestContrastColor).not.toHaveBeenCalled();
   });
 
+  it("returns null when contrast equals threshold", () => {
+    mockGetContrast.mockReturnValue(4.5);
+    const { result } = renderHook(() => useContrastWarnings("#000", "#fff"));
+    expect(result.current).toBeNull();
+    expect(mockGetContrast).toHaveBeenCalledWith("#000", "#fff");
+    expect(mockSuggestContrastColor).not.toHaveBeenCalled();
+  });
+
   it("provides suggestion when contrast is low", () => {
     mockGetContrast.mockReturnValue(3);
     mockSuggestContrastColor.mockReturnValue("#123456");
@@ -35,6 +43,15 @@ describe("useContrastWarnings", () => {
     expect(mockGetContrast).toHaveBeenCalledWith("#000", "#111");
     expect(mockSuggestContrastColor).toHaveBeenCalledWith("#000", "#111");
     expect(result.current).toEqual({ contrast: 3, suggestion: "#123456" });
+  });
+
+  it("handles null suggestion from suggestContrastColor", () => {
+    mockGetContrast.mockReturnValue(3);
+    mockSuggestContrastColor.mockReturnValue(null);
+    const { result } = renderHook(() => useContrastWarnings("#000", "#111"));
+    expect(mockGetContrast).toHaveBeenCalledWith("#000", "#111");
+    expect(mockSuggestContrastColor).toHaveBeenCalledWith("#000", "#111");
+    expect(result.current).toEqual({ contrast: 3, suggestion: null });
   });
 
   it("returns null when colors are missing", () => {

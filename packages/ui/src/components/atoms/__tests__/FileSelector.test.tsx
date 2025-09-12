@@ -17,16 +17,21 @@ describe("FileSelector", () => {
     expect(dialogMock).toHaveBeenCalled();
   });
 
-  it("passes selected files to callback", () => {
+  it("calls onFilesSelected with selected files and renders file names", () => {
     const handleSelect = jest.fn();
     render(<FileSelector onFilesSelected={handleSelect} />);
 
     const input = screen.getByTestId("file-input") as HTMLInputElement;
-    const file = new File(["hello"], "hello.txt", { type: "text/plain" });
+    const files = [
+      new File(["hello"], "hello.txt", { type: "text/plain" }),
+      new File(["world"], "world.txt", { type: "text/plain" }),
+    ];
 
-    fireEvent.change(input, { target: { files: [file] } });
+    fireEvent.change(input, { target: { files } });
 
-    expect(handleSelect).toHaveBeenCalledWith([file]);
+    expect(handleSelect).toHaveBeenCalledWith(files);
+    expect(screen.getByText("hello.txt")).toBeInTheDocument();
+    expect(screen.getByText("world.txt")).toBeInTheDocument();
   });
 
   it("respects the multiple prop", () => {

@@ -155,4 +155,18 @@ describe("layout helper coordinate and size updates", () => {
     expect(state.gridCols).toBe(24);
     expect(state.present).toEqual(init.present);
   });
+
+  it("setGridCols leaves history untouched when populated", () => {
+    const state: HistoryState = {
+      past: [[makeComp("p")]],
+      present: [makeComp("c")],
+      future: [[makeComp("f")]],
+      gridCols: 12,
+    };
+    const result = setGridCols(state, { type: "set-grid-cols", gridCols: 24 });
+    expect(result.gridCols).toBe(24);
+    expect(result.past).toBe(state.past);
+    expect(result.present).toBe(state.present);
+    expect(result.future).toBe(state.future);
+  });
 });

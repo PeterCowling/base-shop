@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { devicePresets } from "../../../utils/devicePresets";
 import DeviceSelector from "../DeviceSelector";
 
 describe("DeviceSelector", () => {
@@ -27,6 +28,41 @@ describe("DeviceSelector", () => {
     await userEvent.click(await screen.findByRole("option", { name: "iPad" }));
 
     expect(setDeviceId).toHaveBeenCalledWith("ipad");
+  });
+
+  it("shows all presets and notifies on selection", async () => {
+    const setDeviceId = jest.fn();
+    render(
+      <DeviceSelector
+        deviceId=""
+        orientation="portrait"
+        setDeviceId={setDeviceId}
+        toggleOrientation={jest.fn()}
+      />
+    );
+
+    const trigger = screen.getByLabelText("Device");
+    await userEvent.click(trigger);
+
+    for (const preset of devicePresets) {
+      expect(
+        await screen.findByRole("option", { name: preset.label })
+      ).toBeInTheDocument();
+    }
+
+    await userEvent.keyboard("{Escape}");
+    setDeviceId.mockClear();
+
+    for (const preset of devicePresets) {
+      await userEvent.click(trigger);
+      await userEvent.click(
+        screen.getByRole("option", { name: preset.label })
+      );
+    }
+
+    expect(setDeviceId.mock.calls.map((c) => c[0])).toEqual(
+      devicePresets.map((p) => p.id)
+    );
   });
 
   it("invokes toggleOrientation and rotates icon when landscape", async () => {

@@ -19,6 +19,41 @@ describe("FontSelect", () => {
     expect(screen.getByRole("option", { name: "Helvetica" })).toBeInTheDocument();
   });
 
+  it("applies font family styles to options", () => {
+    render(
+      <FontSelect
+        value={"Arial"}
+        options={options}
+        onChange={jest.fn()}
+        onUpload={jest.fn()}
+      />
+    );
+
+    options.forEach((o) => {
+      expect(screen.getByRole("option", { name: o })).toHaveStyle({ fontFamily: o });
+    });
+  });
+
+  it("selects option based on value prop", () => {
+    render(
+      <FontSelect
+        value={"Helvetica"}
+        options={options}
+        onChange={jest.fn()}
+        onUpload={jest.fn()}
+      />
+    );
+
+    expect(screen.getByRole("option", { name: "Helvetica" })).toHaveProperty(
+      "selected",
+      true,
+    );
+    expect(screen.getByRole("option", { name: "Arial" })).toHaveProperty(
+      "selected",
+      false,
+    );
+  });
+
   it("calls onChange when selecting a font", async () => {
     const handleChange = jest.fn();
     render(

@@ -1,6 +1,7 @@
 import React from "react";
 import { render, act } from "@testing-library/react";
 import CollectionList from "../src/components/cms/blocks/CollectionList";
+import type { CollectionListProps } from "../src/components/cms/blocks/CollectionList";
 import type { Category } from "../src/components/organisms/CategoryCard";
 
 jest.mock("../src/components/organisms/CategoryCard", () => ({
@@ -28,32 +29,64 @@ beforeEach(() => {
   };
 });
 
-describe("CollectionList", () => {
-  it("uses minItems when container is narrow", () => {
-    const { container } = render(
-      <CollectionList collections={collections} minItems={2} maxItems={5} />
-    );
-    const root = container.firstChild as HTMLElement;
-    Object.defineProperty(root, "clientWidth", {
-      value: 100,
-      configurable: true,
-    });
-    act(() => resizeCb([]));
-    expect(root.style.gridTemplateColumns).toBe("repeat(2, minmax(0, 1fr))");
+function setup(props?: Partial<CollectionListProps>) {
+  const { container } = render(
+    <CollectionList collections={collections} {...props} />
+  );
+  const root = container.firstChild as HTMLElement;
+  let width = 0;
+  Object.defineProperty(root, "clientWidth", {
+    get: () => width,
+    configurable: true,
   });
-
-  it("clamps to maxItems on wide containers", () => {
-    const { container } = render(
-      <CollectionList collections={collections} minItems={1} maxItems={3} />
-    );
-    const root = container.firstChild as HTMLElement;
-    Object.defineProperty(root, "clientWidth", {
-      value: 2000,
-      configurable: true,
-    });
+  const setWidth = (w: number) => {
+    width = w;
     act(() => resizeCb([]));
+  };
+  return { root, setWidth };
+}
+
+describe("CollectionList", () => {
+  it("uses desktop, tablet and mobile overrides", () => {
+    const { root, setWidth } = setup({
+      desktopItems: 4,
+      tabletItems: 3,
+      mobileItems: 2,
+    });
+
+    setWidth(1200);
+    expect(root.style.gridTemplateColumns).toBe(
+      "repeat(4, minmax(0, 1fr))"
+    );
+
+    setWidth(800);
     expect(root.style.gridTemplateColumns).toBe(
       "repeat(3, minmax(0, 1fr))"
     );
+
+    setWidth(500);
+    expect(root.style.gridTemplateColumns).toBe(
+      "repeat(2, minmax(0, 1fr))"
+    );
+  });
+
+  it("falls back to ITEM_WIDTH calculation with min/max clamping", () => {
+    const { root, setWidth } = setup({ minItems: 2, maxItems: 4 });
+
+    setWidth(100); // below min
+    expect(root.style.gridTemplateColumns).toBe(
+      "repeat(2, minmax(0, 1fr))"
+    );
+
+    setWidth(800); // within range
+    expect(root.style.gridTemplateColumns).toBe(
+      "repeat(3, minmax(0, 1fr))"
+    );
+
+    setWidth(2000); // above max
+    expect(root.style.gridTemplateColumns).toBe(
+      "repeat(4, minmax(0, 1fr))"
+    );
   });
 });
+

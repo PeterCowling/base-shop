@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import usePageBuilderSave from "../src/components/cms/page-builder/hooks/usePageBuilderSave";
+import usePageBuilderSave from "../hooks/usePageBuilderSave";
 
 describe("usePageBuilderSave", () => {
   const basePage: any = {
@@ -100,7 +100,7 @@ describe("usePageBuilderSave", () => {
     expect(clearHistory).toHaveBeenCalledTimes(1);
   });
 
-  it("calls onAutoSaveError on failure", async () => {
+  it("calls onAutoSaveError on failure and retries", async () => {
     jest.useFakeTimers();
     const onSave = jest
       .fn()

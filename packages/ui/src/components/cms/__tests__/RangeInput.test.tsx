@@ -31,4 +31,13 @@ describe("RangeInput", () => {
     expect(input).toHaveAttribute("min", "10");
     expect(input).toHaveAttribute("max", "100");
   });
+
+  it("renders with provided min and max values", () => {
+    const { container } = render(
+      <RangeInput value="16px" onChange={() => {}} min={10} max={20} />,
+    );
+    const input = container.querySelector("input") as HTMLInputElement;
+    expect(input).toHaveAttribute("min", "10");
+    expect(input).toHaveAttribute("max", "20");
+  });
 });

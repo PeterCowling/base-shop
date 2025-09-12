@@ -4,7 +4,7 @@ import * as pkg from "../index";
 describe("index exports", () => {
   it("exposes startReverseLogisticsService", () => {
     expect(pkg.startReverseLogisticsService).toBe(
-      require("../reverseLogisticsService").startReverseLogisticsService,
+      require("../startReverseLogisticsService").startReverseLogisticsService,
     );
   });
 

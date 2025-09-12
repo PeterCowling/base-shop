@@ -1,73 +1,42 @@
 /** @jest-environment node */
 import path from "node:path";
-import { mkdir, writeFile, readdir, readFile, unlink } from "fs/promises";
-
-jest.mock("fs/promises", () => ({
-  mkdir: jest.fn(),
-  writeFile: jest.fn(),
-  readdir: jest.fn(),
-  readFile: jest.fn(),
-  unlink: jest.fn(),
-}));
-
-jest.mock("crypto", () => ({ randomUUID: () => "uuid" }));
-
-jest.mock("@platform-core/repositories/rentalOrders.server", () => ({
-  markAvailable: jest.fn(),
-  markCleaning: jest.fn(),
-  markQa: jest.fn(),
-  markReceived: jest.fn(),
-  markRepair: jest.fn(),
-}));
-
-jest.mock("@platform-core/repositories/reverseLogisticsEvents.server", () => ({
-  reverseLogisticsEvents: {
-    received: jest.fn(),
-    cleaning: jest.fn(),
-    repair: jest.fn(),
-    qa: jest.fn(),
-    available: jest.fn(),
-  },
-}));
-
-const startMock = jest.fn().mockResolvedValue(undefined);
-
-jest.mock("@platform-core/utils", () => ({ logger: { error: jest.fn() } }));
-
-jest.mock("@acme/config/env/core", () => ({ coreEnv: {} }));
-
-import * as service from "../reverseLogisticsService";
 import {
+  mkdir,
+  writeFile,
+  readdir,
+  readFile,
+  unlink,
   markAvailable,
   markCleaning,
   markQa,
   markReceived,
   markRepair,
-} from "@platform-core/repositories/rentalOrders.server";
-import { reverseLogisticsEvents } from "@platform-core/repositories/reverseLogisticsEvents.server";
-import { logger } from "@platform-core/utils";
+  reverseLogisticsEvents,
+  logger,
+  resetReverseLogisticsMocks,
+} from "./reverseLogisticsTestHelpers";
+
+jest.mock("@acme/config/env/core", () => ({ coreEnv: {} }));
+
+import { writeReverseLogisticsEvent } from "../writeReverseLogisticsEvent";
+import { processReverseLogisticsEventsOnce } from "../processReverseLogisticsEventsOnce";
+import { resolveConfig } from "../resolveConfig";
+import { startReverseLogisticsService } from "../startReverseLogisticsService";
 import { coreEnv } from "@acme/config/env/core";
 
-describe("writeReverseLogisticsEvent", () => {
-  const mkdirMock = mkdir as unknown as jest.Mock;
-  const writeFileMock = writeFile as unknown as jest.Mock;
+const startMock = jest.fn().mockResolvedValue(undefined);
 
+describe("writeReverseLogisticsEvent", () => {
   beforeEach(() => {
-    mkdirMock.mockReset();
-    writeFileMock.mockReset();
+    resetReverseLogisticsMocks();
   });
 
   it("creates directory and writes file", async () => {
-    await service.writeReverseLogisticsEvent(
-      "shop",
-      "sess",
-      "received",
-      "/root"
-    );
-    expect(mkdirMock).toHaveBeenCalledWith("/root/shop/reverse-logistics", {
+    await writeReverseLogisticsEvent("shop", "sess", "received", "/root");
+    expect(mkdir).toHaveBeenCalledWith("/root/shop/reverse-logistics", {
       recursive: true,
     });
-    expect(writeFileMock).toHaveBeenCalledWith(
+    expect(writeFile).toHaveBeenCalledWith(
       "/root/shop/reverse-logistics/uuid.json",
       JSON.stringify({ sessionId: "sess", status: "received" })
     );
@@ -108,30 +77,18 @@ describe("resolveDataRoot", () => {
 });
 
 describe("processReverseLogisticsEventsOnce", () => {
-  const readdirMock = readdir as unknown as jest.Mock;
-  const readFileMock = readFile as unknown as jest.Mock;
-  const unlinkMock = unlink as unknown as jest.Mock;
-
   beforeEach(() => {
-    jest.clearAllMocks();
+    resetReverseLogisticsMocks();
   });
 
   const cases: Array<[string, jest.Mock, jest.Mock]> = [
     [
       "received",
-      markReceived as unknown as jest.Mock,
+      markReceived as jest.Mock,
       reverseLogisticsEvents.received as jest.Mock,
     ],
-    [
-      "cleaning",
-      markCleaning as jest.Mock,
-      reverseLogisticsEvents.cleaning as jest.Mock,
-    ],
-    [
-      "repair",
-      markRepair as jest.Mock,
-      reverseLogisticsEvents.repair as jest.Mock,
-    ],
+    ["cleaning", markCleaning as jest.Mock, reverseLogisticsEvents.cleaning as jest.Mock],
+    ["repair", markRepair as jest.Mock, reverseLogisticsEvents.repair as jest.Mock],
     ["qa", markQa as jest.Mock, reverseLogisticsEvents.qa as jest.Mock],
     [
       "available",
@@ -141,55 +98,55 @@ describe("processReverseLogisticsEventsOnce", () => {
   ];
 
   it("processes events for all shops when shopId is omitted", async () => {
-    readdirMock
+    readdir
       .mockResolvedValueOnce(["shop"]) // list shops
       .mockResolvedValueOnce(["e.json"]); // list events
-    readFileMock.mockResolvedValueOnce(
+    readFile.mockResolvedValueOnce(
       JSON.stringify({ sessionId: "abc", status: "received" })
     );
 
-    await service.processReverseLogisticsEventsOnce(undefined, "/data");
+    await processReverseLogisticsEventsOnce(undefined, "/data");
 
     expect(markReceived).toHaveBeenCalledWith("shop", "abc");
     expect(reverseLogisticsEvents.received).toHaveBeenCalledWith("shop", "abc");
-    expect(unlinkMock).toHaveBeenCalledWith(
+    expect(unlink).toHaveBeenCalledWith(
       path.join("/data", "shop", "reverse-logistics", "e.json")
     );
   });
 
   it("rejects when listing shops fails", async () => {
     const err = new Error("nope");
-    readdirMock.mockRejectedValueOnce(err);
+    readdir.mockRejectedValueOnce(err);
 
     await expect(
-      service.processReverseLogisticsEventsOnce(undefined, "/data")
+      processReverseLogisticsEventsOnce(undefined, "/data")
     ).rejects.toBe(err);
-    expect(readFileMock).not.toHaveBeenCalled();
-    expect(unlinkMock).not.toHaveBeenCalled();
+    expect(readFile).not.toHaveBeenCalled();
+    expect(unlink).not.toHaveBeenCalled();
   });
 
   it.each(cases)("handles %s events", async (status, mark, evt) => {
-    readdirMock.mockResolvedValueOnce(["e.json"]);
-    readFileMock.mockResolvedValueOnce(
+    readdir.mockResolvedValueOnce(["e.json"]);
+    readFile.mockResolvedValueOnce(
       JSON.stringify({ sessionId: "abc", status })
     );
 
-    await service.processReverseLogisticsEventsOnce("shop", "/data");
+    await processReverseLogisticsEventsOnce("shop", "/data");
 
     expect(mark).toHaveBeenCalledWith("shop", "abc");
     expect(evt).toHaveBeenCalledWith("shop", "abc");
-    expect(unlinkMock).toHaveBeenCalledWith(
+    expect(unlink).toHaveBeenCalledWith(
       path.join("/data", "shop", "reverse-logistics", "e.json")
     );
   });
 
   it("skips unsupported statuses", async () => {
-    readdirMock.mockResolvedValueOnce(["e.json"]);
-    readFileMock.mockResolvedValueOnce(
+    readdir.mockResolvedValueOnce(["e.json"]);
+    readFile.mockResolvedValueOnce(
       JSON.stringify({ sessionId: "abc", status: "unknown" })
     );
 
-    await service.processReverseLogisticsEventsOnce("shop", "/data");
+    await processReverseLogisticsEventsOnce("shop", "/data");
 
     expect(markReceived).not.toHaveBeenCalled();
     expect(markCleaning).not.toHaveBeenCalled();
@@ -201,16 +158,16 @@ describe("processReverseLogisticsEventsOnce", () => {
     expect(reverseLogisticsEvents.repair).not.toHaveBeenCalled();
     expect(reverseLogisticsEvents.qa).not.toHaveBeenCalled();
     expect(reverseLogisticsEvents.available).not.toHaveBeenCalled();
-    expect(unlinkMock).toHaveBeenCalledWith(
+    expect(unlink).toHaveBeenCalledWith(
       path.join("/data", "shop", "reverse-logistics", "e.json")
     );
   });
 
   it("logs and removes file on parse error", async () => {
-    readdirMock.mockResolvedValueOnce(["bad.json"]);
-    readFileMock.mockResolvedValueOnce("not json");
+    readdir.mockResolvedValueOnce(["bad.json"]);
+    readFile.mockResolvedValueOnce("not json");
 
-    await service.processReverseLogisticsEventsOnce("shop", "/data");
+    await processReverseLogisticsEventsOnce("shop", "/data");
 
     expect(logger.error).toHaveBeenCalledWith(
       "reverse logistics event failed",
@@ -220,16 +177,16 @@ describe("processReverseLogisticsEventsOnce", () => {
         err: expect.anything(),
       }
     );
-    expect(unlinkMock).toHaveBeenCalledWith(
+    expect(unlink).toHaveBeenCalledWith(
       path.join("/data", "shop", "reverse-logistics", "bad.json")
     );
   });
 
   it("logs and removes file on read error", async () => {
-    readdirMock.mockResolvedValueOnce(["bad.json"]);
-    readFileMock.mockRejectedValueOnce(new Error("nope"));
+    readdir.mockResolvedValueOnce(["bad.json"]);
+    readFile.mockRejectedValueOnce(new Error("nope"));
 
-    await service.processReverseLogisticsEventsOnce("shop", "/data");
+    await processReverseLogisticsEventsOnce("shop", "/data");
 
     expect(logger.error).toHaveBeenCalledWith(
       "reverse logistics event failed",
@@ -239,19 +196,19 @@ describe("processReverseLogisticsEventsOnce", () => {
         err: expect.anything(),
       }
     );
-    expect(unlinkMock).toHaveBeenCalledWith(
+    expect(unlink).toHaveBeenCalledWith(
       path.join("/data", "shop", "reverse-logistics", "bad.json")
     );
   });
 
   it("logs and removes file on handler error", async () => {
-    readdirMock.mockResolvedValueOnce(["e.json"]);
-    readFileMock.mockResolvedValueOnce(
+    readdir.mockResolvedValueOnce(["e.json"]);
+    readFile.mockResolvedValueOnce(
       JSON.stringify({ sessionId: "abc", status: "received" })
     );
     (markReceived as jest.Mock).mockRejectedValueOnce(new Error("fail"));
 
-    await service.processReverseLogisticsEventsOnce("shop", "/data");
+    await processReverseLogisticsEventsOnce("shop", "/data");
 
     expect(logger.error).toHaveBeenCalledWith(
       "reverse logistics event failed",
@@ -261,36 +218,36 @@ describe("processReverseLogisticsEventsOnce", () => {
         err: expect.anything(),
       }
     );
-    expect(unlinkMock).toHaveBeenCalledWith(
+    expect(unlink).toHaveBeenCalledWith(
       path.join("/data", "shop", "reverse-logistics", "e.json")
     );
   });
 
   it("skips processing when readdir fails", async () => {
-    readdirMock.mockRejectedValueOnce(new Error("nope"));
+    readdir.mockRejectedValueOnce(new Error("nope"));
 
     await expect(
-      service.processReverseLogisticsEventsOnce("shop", "/data")
+      processReverseLogisticsEventsOnce("shop", "/data")
     ).resolves.toBeUndefined();
 
-    expect(readFileMock).not.toHaveBeenCalled();
-    expect(unlinkMock).not.toHaveBeenCalled();
+    expect(readFile).not.toHaveBeenCalled();
+    expect(unlink).not.toHaveBeenCalled();
   });
 
   it("swallows unlink errors", async () => {
-    readdirMock.mockResolvedValueOnce(["e.json"]);
-    readFileMock.mockResolvedValueOnce(
+    readdir.mockResolvedValueOnce(["e.json"]);
+    readFile.mockResolvedValueOnce(
       JSON.stringify({ sessionId: "abc", status: "received" })
     );
-    unlinkMock.mockRejectedValueOnce(new Error("fail"));
+    unlink.mockRejectedValueOnce(new Error("fail"));
 
     await expect(
-      service.processReverseLogisticsEventsOnce("shop", "/data")
+      processReverseLogisticsEventsOnce("shop", "/data")
     ).resolves.toBeUndefined();
 
     expect(markReceived).toHaveBeenCalledWith("shop", "abc");
     expect(reverseLogisticsEvents.received).toHaveBeenCalledWith("shop", "abc");
-    expect(unlinkMock).toHaveBeenCalledWith(
+    expect(unlink).toHaveBeenCalledWith(
       path.join("/data", "shop", "reverse-logistics", "e.json")
     );
     expect(logger.error).not.toHaveBeenCalled();
@@ -298,10 +255,8 @@ describe("processReverseLogisticsEventsOnce", () => {
 });
 
 describe("resolveConfig", () => {
-  const readFileMock = readFile as unknown as jest.Mock;
-
   beforeEach(() => {
-    readFileMock.mockReset();
+    resetReverseLogisticsMocks();
     delete coreEnv.REVERSE_LOGISTICS_ENABLED;
     delete coreEnv.REVERSE_LOGISTICS_INTERVAL_MS;
     delete process.env.REVERSE_LOGISTICS_ENABLED_SHOP;
@@ -310,14 +265,14 @@ describe("resolveConfig", () => {
   });
 
   it("applies file, env, and overrides with correct priority", async () => {
-    readFileMock.mockResolvedValueOnce(
+    readFile.mockResolvedValueOnce(
       JSON.stringify({
         reverseLogisticsService: { enabled: false, intervalMinutes: 5 },
       })
     );
     process.env.REVERSE_LOGISTICS_ENABLED_SHOP = "true";
     process.env.REVERSE_LOGISTICS_INTERVAL_MS_SHOP = "120000";
-    const cfg = await service.resolveConfig("shop", "/data", {
+    const cfg = await resolveConfig("shop", "/data", {
       enabled: false,
     });
     expect(cfg).toEqual({ enabled: false, intervalMinutes: 2 });
@@ -326,26 +281,26 @@ describe("resolveConfig", () => {
   });
 
   it("uses coreEnv values when no env or file present", async () => {
-    readFileMock.mockRejectedValueOnce(new Error("missing"));
+    readFile.mockRejectedValueOnce(new Error("missing"));
     coreEnv.REVERSE_LOGISTICS_ENABLED = true as any;
     coreEnv.REVERSE_LOGISTICS_INTERVAL_MS = 300000 as any; // 5 minutes
-    const cfg = await service.resolveConfig("shop", "/data");
+    const cfg = await resolveConfig("shop", "/data");
     expect(cfg).toEqual({ enabled: true, intervalMinutes: 5 });
   });
 
   it("ignores invalid env values", async () => {
-    readFileMock.mockRejectedValueOnce(new Error("missing"));
+    readFile.mockRejectedValueOnce(new Error("missing"));
     process.env.REVERSE_LOGISTICS_ENABLED_SHOP = "maybe";
     process.env.REVERSE_LOGISTICS_INTERVAL_MS_SHOP = "abc";
-    const cfg = await service.resolveConfig("shop", "/data");
+    const cfg = await resolveConfig("shop", "/data");
     expect(cfg).toEqual({ enabled: true, intervalMinutes: 60 });
   });
 
   it("allows override parameters to take precedence", async () => {
-    readFileMock.mockRejectedValueOnce(new Error("missing"));
+    readFile.mockRejectedValueOnce(new Error("missing"));
     process.env.REVERSE_LOGISTICS_ENABLED_SHOP = "false";
     process.env.REVERSE_LOGISTICS_INTERVAL_MS_SHOP = "120000";
-    const cfg = await service.resolveConfig("shop", "/data", {
+    const cfg = await resolveConfig("shop", "/data", {
       enabled: true,
       intervalMinutes: 10,
     });
@@ -353,42 +308,39 @@ describe("resolveConfig", () => {
   });
 
   it("keeps default enabled when coreEnv flag is null", async () => {
-    readFileMock.mockRejectedValueOnce(new Error("missing"));
+    readFile.mockRejectedValueOnce(new Error("missing"));
     coreEnv.REVERSE_LOGISTICS_ENABLED = null as any;
-    const cfg = await service.resolveConfig("shop", "/data");
+    const cfg = await resolveConfig("shop", "/data");
     expect(cfg).toEqual({ enabled: false, intervalMinutes: 60 });
   });
 
   it("keeps default interval when coreEnv interval is null", async () => {
-    readFileMock.mockRejectedValueOnce(new Error("missing"));
+    readFile.mockRejectedValueOnce(new Error("missing"));
     coreEnv.REVERSE_LOGISTICS_INTERVAL_MS = null as any;
-    const cfg = await service.resolveConfig("shop", "/data");
+    const cfg = await resolveConfig("shop", "/data");
     expect(cfg).toEqual({ enabled: false, intervalMinutes: 60 });
   });
 
   it("disables service when env enabled is false", async () => {
-    readFileMock.mockResolvedValueOnce(
+    readFile.mockResolvedValueOnce(
       JSON.stringify({
         reverseLogisticsService: { enabled: true, intervalMinutes: 5 },
       })
     );
     process.env.REVERSE_LOGISTICS_ENABLED_SHOP = "false";
-    const cfg = await service.resolveConfig("shop", "/data");
+    const cfg = await resolveConfig("shop", "/data");
     expect(cfg).toEqual({ enabled: false, intervalMinutes: 5 });
   });
 });
 
 describe("startReverseLogisticsService", () => {
-  const readdirMock = readdir as unknown as jest.Mock;
-  const readFileMock = readFile as unknown as jest.Mock;
-
   beforeEach(() => {
-    jest.clearAllMocks();
+    resetReverseLogisticsMocks();
   });
 
   it("skips disabled configs and schedules enabled shops", async () => {
-    readdirMock.mockResolvedValueOnce(["s1", "s2"]).mockResolvedValue([]);
-    readFileMock
+    readdir.mockResolvedValueOnce(["s1", "s2"]).mockResolvedValue([]);
+    readFile
       .mockResolvedValueOnce(
         JSON.stringify({
           reverseLogisticsService: { enabled: true, intervalMinutes: 1 },
@@ -410,9 +362,9 @@ describe("startReverseLogisticsService", () => {
       .spyOn(global, "clearInterval")
       .mockImplementation(() => undefined as any);
 
-    const stop = await service.startReverseLogisticsService({}, "/data");
+    const stop = await startReverseLogisticsService({}, "/data");
 
-    expect(readdirMock).toHaveBeenCalledWith("/data/s1/reverse-logistics");
+    expect(readdir).toHaveBeenCalledWith("/data/s1/reverse-logistics");
     expect(setSpy).toHaveBeenCalledTimes(1);
 
     stop();
@@ -424,13 +376,13 @@ describe("startReverseLogisticsService", () => {
 
   it("logs and rethrows when readdir fails", async () => {
     const err = new Error("boom");
-    readdirMock.mockRejectedValueOnce(err);
+    readdir.mockRejectedValueOnce(err);
 
     await expect(
-      service.startReverseLogisticsService({}, "/data")
+      startReverseLogisticsService({}, "/data")
     ).rejects.toBe(err);
 
-    expect(readdirMock).toHaveBeenCalledWith("/data");
+    expect(readdir).toHaveBeenCalledWith("/data");
     expect(logger.error).toHaveBeenCalledWith(
       "failed to start reverse logistics service",
       { err }
@@ -438,8 +390,8 @@ describe("startReverseLogisticsService", () => {
   });
 
   it("logs processor errors and clears timers", async () => {
-    readdirMock.mockResolvedValueOnce(["s1"]);
-    readFileMock.mockResolvedValueOnce(
+    readdir.mockResolvedValueOnce(["s1"]);
+    readFile.mockResolvedValueOnce(
       JSON.stringify({
         reverseLogisticsService: { enabled: true, intervalMinutes: 1 },
       })
@@ -452,7 +404,7 @@ describe("startReverseLogisticsService", () => {
       .spyOn(global, "clearInterval")
       .mockImplementation(() => undefined as any);
 
-    const stop = await service.startReverseLogisticsService(
+    const stop = await startReverseLogisticsService(
       {},
       "/data",
       processor
@@ -480,12 +432,12 @@ describe("module startup", () => {
     process.env.NODE_ENV = "production";
     startMock.mockReset();
     startMock.mockResolvedValue(undefined);
-    (logger.error as jest.Mock).mockReset();
+    logger.error.mockReset();
 
-    jest.mock("../reverseLogisticsService", () => {
+    jest.mock("../startReverseLogisticsService", () => {
       const originalEnv = process.env.NODE_ENV;
       process.env.NODE_ENV = "test";
-      const actual = jest.requireActual("../reverseLogisticsService");
+      const actual = jest.requireActual("../startReverseLogisticsService");
       process.env.NODE_ENV = originalEnv;
       startMock().catch((err) =>
         logger.error("failed to start reverse logistics service", { err })
@@ -501,7 +453,7 @@ describe("module startup", () => {
   it("starts service in production", async () => {
     startMock.mockResolvedValue(undefined);
 
-    await import("../reverseLogisticsService");
+    await import("../startReverseLogisticsService");
 
     expect(startMock).toHaveBeenCalled();
   });
@@ -510,7 +462,7 @@ describe("module startup", () => {
     const err = new Error("fail");
     startMock.mockRejectedValue(err);
 
-    await import("../reverseLogisticsService");
+    await import("../startReverseLogisticsService");
 
     expect(startMock).toHaveBeenCalled();
     expect(logger.error).toHaveBeenCalledWith(
@@ -519,3 +471,13 @@ describe("module startup", () => {
     );
   });
 });
+
+afterAll(() => {
+  jest.resetModules();
+  jest.unmock("fs/promises");
+  jest.unmock("@platform-core/repositories/rentalOrders.server");
+  jest.unmock("@platform-core/repositories/reverseLogisticsEvents.server");
+  jest.unmock("@platform-core/utils");
+  jest.unmock("crypto");
+});
+

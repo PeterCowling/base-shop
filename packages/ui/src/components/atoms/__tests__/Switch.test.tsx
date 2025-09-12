@@ -18,4 +18,14 @@ describe("Switch", () => {
     render(<Switch checked />);
     expect(screen.getByRole("checkbox")).toBeChecked();
   });
+
+  it("applies custom className to the label", () => {
+    const { container } = render(<Switch className="my-switch" />);
+    const label = container.querySelector("label");
+    expect(label).toHaveClass("relative");
+    expect(label).toHaveClass("inline-flex");
+    expect(label).toHaveClass("cursor-pointer");
+    expect(label).toHaveClass("items-center");
+    expect(label).toHaveClass("my-switch");
+  });
 });

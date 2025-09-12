@@ -165,6 +165,45 @@ describe("order status transitions", () => {
       const result = await updateRisk("shop", "sess");
       expect(result).toBeNull();
     });
+
+    it("updates only riskLevel when provided", async () => {
+      const mockOrder = createOrder();
+      prismaMock.rentalOrder.update.mockResolvedValue(mockOrder);
+      const result = await updateRisk("shop", "sess", "low");
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { riskLevel: "low" },
+      });
+      expect(result).toEqual(mockOrder);
+    });
+
+    it("updates only riskScore when provided", async () => {
+      const mockOrder = createOrder();
+      prismaMock.rentalOrder.update.mockResolvedValue(mockOrder);
+      const result = await updateRisk("shop", "sess", undefined, 0);
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { riskScore: 0 },
+      });
+      expect(result).toEqual(mockOrder);
+    });
+
+    it("updates only flaggedForReview when provided", async () => {
+      const mockOrder = createOrder();
+      prismaMock.rentalOrder.update.mockResolvedValue(mockOrder);
+      const result = await updateRisk(
+        "shop",
+        "sess",
+        undefined,
+        undefined,
+        false,
+      );
+      expect(prismaMock.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: { flaggedForReview: false },
+      });
+      expect(result).toEqual(mockOrder);
+    });
   });
 
   describe("markNeedsAttention", () => {

@@ -53,6 +53,38 @@ describe("layout actions", () => {
     expect(state.present).toEqual([b, a]);
   });
 
+  it("moves component between parent and root and commits history", () => {
+    const child = { id: "child", type: "Text" } as PageComponent;
+    const parent = { id: "parent", type: "Container", children: [child] } as any;
+    const other = { id: "other", type: "Image" } as PageComponent;
+
+    const state1 = move(
+      { ...init, present: [parent as PageComponent, other] },
+      { type: "move", from: { parentId: "parent", index: 0 }, to: { index: 1 } },
+    );
+
+    expect(state1.present).toEqual([
+      { id: "parent", type: "Container", children: [] },
+      child,
+      other,
+    ]);
+    expect(state1.past).toEqual([[parent, other]]);
+
+    const state2 = move(
+      state1,
+      { type: "move", from: { index: 1 }, to: { parentId: "parent", index: 0 } },
+    );
+
+    expect(state2.present).toEqual([
+      { id: "parent", type: "Container", children: [child] },
+      other,
+    ]);
+    expect(state2.past).toEqual([
+      [parent, other],
+      [{ id: "parent", type: "Container", children: [] }, child, other],
+    ]);
+  });
+
   it("removes component", () => {
     const state = remove(
       { ...init, present: [a, b] },

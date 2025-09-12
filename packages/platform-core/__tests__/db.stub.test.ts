@@ -188,9 +188,14 @@ describe("createTestPrismaStub", () => {
 
   it("supports reverseLogisticsEvent CRUD operations", async () => {
     const db = createTestPrismaStub();
-    await db.reverseLogisticsEvent.create({ data: { id: "e1", type: "t" } });
+    await db.reverseLogisticsEvent.createMany({
+      data: [
+        { id: "e1", type: "t" },
+        { id: "e2", type: "u" },
+      ],
+    });
     const events = await db.reverseLogisticsEvent.findMany({ where: { type: "t" } });
-    expect(events).toHaveLength(1);
+    expect(events).toEqual([{ id: "e1", type: "t" }]);
   });
 
   it("supports shop delegate", async () => {

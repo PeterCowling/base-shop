@@ -20,4 +20,9 @@ describe("parseMultilingualInput normalization", () => {
     const result = parse({ en: "", de: " Hallo " }, LOCALES);
     expect(result).toEqual({ de: "Hallo" });
   });
+
+  it("retains translations for other locales when English is empty", () => {
+    const result = parse({ en: "", it: "Ciao" }, LOCALES);
+    expect(result).toEqual({ it: "Ciao" });
+  });
 });

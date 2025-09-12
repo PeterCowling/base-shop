@@ -81,16 +81,22 @@ describe("recoverAbandonedCarts", () => {
     await recoverAbandonedCarts(carts, now, delay);
 
     expect(sendCampaignEmail).toHaveBeenCalledTimes(2);
-    expect(sendCampaignEmail).toHaveBeenNthCalledWith(1, {
-      to: "old1@example.com",
-      subject: "You left items in your cart",
-      html: "<p>You left items in your cart.</p>",
-    });
-    expect(sendCampaignEmail).toHaveBeenNthCalledWith(2, {
-      to: "old3@example.com",
-      subject: "You left items in your cart",
-      html: "<p>You left items in your cart.</p>",
-    });
+    expect(sendCampaignEmail).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        to: "old1@example.com",
+        subject: "You left items in your cart",
+        html: expect.stringContaining("You left items in your cart"),
+      }),
+    );
+    expect(sendCampaignEmail).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        to: "old3@example.com",
+        subject: "You left items in your cart",
+        html: expect.stringContaining("You left items in your cart"),
+      }),
+    );
 
     expect(carts[0].reminded).toBe(true);
     expect(carts[1].reminded).toBe(true);

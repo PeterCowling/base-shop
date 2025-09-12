@@ -2,7 +2,7 @@ import { fillLocales } from "../fillLocales";
 import { LOCALES } from "../locales";
 
 describe("fillLocales", () => {
-  it("fills all locales with the fallback when no values are provided", () => {
+  it("uses the fallback for all locales when values is undefined", () => {
     const result = fillLocales(undefined, "Hi");
 
     for (const locale of LOCALES) {
@@ -10,10 +10,19 @@ describe("fillLocales", () => {
     }
   });
 
-  it("fills a single missing locale with the fallback", () => {
-    const result = fillLocales({ en: "Hello", de: "Hallo" }, "Hi");
+  it("uses the fallback for all locales when provided values are undefined", () => {
+    const result = fillLocales(
+      { en: undefined, de: undefined, it: undefined } as any,
+      "Hi"
+    );
 
-    expect(result).toEqual({ en: "Hello", de: "Hallo", it: "Hi" });
+    expect(result).toEqual({ en: "Hi", de: "Hi", it: "Hi" });
+  });
+
+  it("mixes provided values with fallbacks for missing locales", () => {
+    const result = fillLocales({ en: "Hello" }, "Hi");
+
+    expect(result).toEqual({ en: "Hello", de: "Hi", it: "Hi" });
   });
 
   it("replaces nullish locale values with the fallback", () => {

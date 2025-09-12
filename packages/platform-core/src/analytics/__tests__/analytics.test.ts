@@ -55,7 +55,7 @@ describe("analytics providers", () => {
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
     expect(fs.appendFile).not.toHaveBeenCalled();
-    expect(fs.writeFile).toHaveBeenCalled();
+    expect(fs.writeFile).not.toHaveBeenCalled();
   });
 
   test("uses console provider when configured", async () => {
@@ -136,7 +136,7 @@ describe("trackEvent behavior", () => {
 
   test("writes aggregates for events", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
-    getShopSettings.mockResolvedValue({ analytics: { provider: "none" } });
+    getShopSettings.mockResolvedValue({ analytics: undefined });
     const { trackEvent } = await import("../index");
     await trackEvent(shop, { type: "page_view", page: "home" });
     await trackEvent(shop, { type: "order", orderId: "o1", amount: 5 });
@@ -165,5 +165,68 @@ describe("trackEvent behavior", () => {
     await expect(trackEvent(shop, { type: "page_view", page: "home" })).resolves.toBeUndefined();
     const aggPath = path.join("/data", shop, "analytics-aggregates.json");
     expect(fs.__files[aggPath]).toBeDefined();
+  });
+});
+
+describe("trackOrder amount handling", () => {
+  const shop = "shop";
+  let fs: any;
+
+  beforeEach(async () => {
+    jest.resetModules();
+    fs = (await import("fs")).promises as any;
+    for (const k of Object.keys(fs.__files)) delete fs.__files[k];
+    fs.writeFile.mockClear();
+    readShop.mockReset();
+    getShopSettings.mockReset();
+    process.env.DATA_ROOT = "/data";
+  });
+
+  test("tracks orders with and without amount", async () => {
+    readShop.mockResolvedValue({ analyticsEnabled: true });
+    getShopSettings.mockResolvedValue({ analytics: undefined });
+    const { trackOrder } = await import("../index");
+    await trackOrder(shop, "o1", 5);
+    await trackOrder(shop, "o2");
+    const aggPath = path.join("/data", shop, "analytics-aggregates.json");
+    const agg = JSON.parse(fs.__files[aggPath]);
+    expect(agg.order["2024-01-01"]).toEqual({ count: 2, amount: 5 });
+  });
+});
+
+describe("updateAggregates edge cases", () => {
+  const shop = "shop";
+  let fs: any;
+
+  beforeEach(async () => {
+    jest.resetModules();
+    fs = (await import("fs")).promises as any;
+    for (const k of Object.keys(fs.__files)) delete fs.__files[k];
+    fs.writeFile.mockClear();
+    readShop.mockReset();
+    getShopSettings.mockReset();
+    process.env.DATA_ROOT = "/data";
+  });
+
+  test("merges existing aggregates and validates fields", async () => {
+    readShop.mockResolvedValue({ analyticsEnabled: true });
+    getShopSettings.mockResolvedValue({ analytics: undefined });
+    const { trackOrder, trackEvent } = await import("../index");
+    const aggPath = path.join("/data", shop, "analytics-aggregates.json");
+    fs.__files[aggPath] = JSON.stringify({
+      page_view: {},
+      order: { "2024-01-01": { count: 1, amount: 5 } },
+      discount_redeemed: { "2024-01-01": { SAVE: 1 } },
+      ai_crawl: {},
+    });
+
+    await trackOrder(shop, "o2");
+    await trackEvent(shop, { type: "discount_redeemed", code: "SAVE" });
+    await trackEvent(shop, { type: "discount_redeemed" });
+
+    const agg = JSON.parse(fs.__files[aggPath]);
+    expect(agg.order["2024-01-01"]).toEqual({ count: 2, amount: 5 });
+    expect(agg.discount_redeemed["2024-01-01"].SAVE).toBe(2);
+    expect(Object.keys(agg.discount_redeemed["2024-01-01"])).toEqual(["SAVE"]);
   });
 });

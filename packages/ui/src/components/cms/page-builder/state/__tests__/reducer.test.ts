@@ -6,6 +6,11 @@ describe("page builder state reducer", () => {
   const b = { id: "b", type: "Image" } as PageComponent;
   const init: HistoryState = { past: [], present: [], future: [], gridCols: 12 };
 
+  it("returns state for unknown action", () => {
+    const result = reducer(init, { type: "unknown" } as any);
+    expect(result).toBe(init);
+  });
+
   it("handles add, undo, and redo", () => {
     const added = reducer(init, { type: "add", component: a });
     expect(added.present).toEqual([a]);

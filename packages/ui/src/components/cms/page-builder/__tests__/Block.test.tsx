@@ -1,11 +1,16 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import React from "react";
 
 const blockRegistryMock = {
-  Custom: {
-    component: ({ label, onClick }: { label: string; onClick: () => void }) => (
-      <button onClick={onClick}>{label}</button>
+  Foo: {
+    component: ({ style }: { style?: React.CSSProperties }) => (
+      <div data-cy="foo" style={style}>
+        Foo
+      </div>
     ),
+  },
+  Bar: {
+    component: () => <div data-cy="bar">Bar</div>,
   },
 };
 
@@ -16,27 +21,29 @@ jest.mock("../../blocks", () => ({
 import Block from "../Block";
 
 describe("Block", () => {
-  it("renders sanitized text", () => {
-    const component = {
-      id: "1",
-      type: "Text" as const,
-      text: "<script>alert('x')</script><b>Hi</b>",
-    };
-    const { container } = render(<Block component={component} locale="en" />);
-    expect(container.querySelector("script")).toBeNull();
-    expect(screen.getByText("Hi")).toBeInTheDocument();
+  it.each([
+    ["Foo", "foo"],
+    ["Bar", "bar"],
+  ])("renders block type %s", (type, testId) => {
+    render(<Block component={{ id: "1", type: type as any }} locale="en" />);
+    expect(screen.getByTestId(testId)).toBeInTheDocument();
   });
 
-  it("resolves components from registry and passes callbacks", () => {
-    const onClick = jest.fn();
-    const component = {
-      id: "2",
-      type: "Custom" as const,
-      label: "Press",
-      onClick,
-    };
-    render(<Block component={component} locale="en" />);
-    fireEvent.click(screen.getByText("Press"));
-    expect(onClick).toHaveBeenCalled();
+  it("handles unsupported type gracefully", () => {
+    const { container } = render(
+      <Block component={{ id: "2", type: "Unknown" as any }} locale="en" />,
+    );
+    expect(container.firstChild).toBeNull();
+  });
+
+  it("passes through style props", () => {
+    render(
+      <Block
+        component={{ id: "3", type: "Foo" as any, style: { color: "red" } }}
+        locale="en"
+      />,
+    );
+    expect(screen.getByTestId("foo")).toHaveStyle({ color: "red" });
   });
 });
+

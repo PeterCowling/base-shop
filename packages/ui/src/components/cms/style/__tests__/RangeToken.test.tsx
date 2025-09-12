@@ -22,6 +22,12 @@ describe("RangeToken", () => {
     expect(screen.queryByText("Reset")).toBeNull();
   });
 
+  it("renders without default value", () => {
+    renderToken({ defaultValue: undefined });
+    expect(screen.queryByText(/Default:/)).toBeNull();
+    expect(screen.queryByText("Reset")).toBeNull();
+  });
+
   it("emits updated value on change", () => {
     const setToken = jest.fn();
     const { container } = renderToken({ setToken });

@@ -124,4 +124,57 @@ describe("Table", () => {
     const cell = container.querySelector("td");
     expect(cell).toHaveClass("px-4", "py-2", "align-middle", "custom-cell");
   });
+
+  it("forwards refs to underlying DOM nodes", () => {
+    const tableRef = React.createRef<HTMLTableElement>();
+    const rowRef = React.createRef<HTMLTableRowElement>();
+    const headRef = React.createRef<HTMLTableCellElement>();
+    const cellRef = React.createRef<HTMLTableCellElement>();
+
+    render(
+      <Table ref={tableRef}>
+        <TableHeader>
+          <TableRow ref={rowRef}>
+            <TableHead ref={headRef}>Head</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell ref={cellRef}>Cell</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    );
+
+    expect(tableRef.current).toBeInstanceOf(HTMLTableElement);
+    expect(rowRef.current).toBeInstanceOf(HTMLTableRowElement);
+    expect(headRef.current).toBe(screen.getByText("Head"));
+    expect(cellRef.current).toBe(screen.getByText("Cell"));
+  });
+
+  it("forwards arbitrary attributes through primitives", () => {
+    render(
+      <Table id="tbl" role="grid">
+        <TableHeader>
+          <TableRow id="row" role="row">
+            <TableHead id="head" role="columnheader">
+              Head
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          <TableRow>
+            <TableCell id="cell" role="gridcell">
+              Cell
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    );
+
+    expect(screen.getByRole("grid")).toHaveAttribute("id", "tbl");
+    expect(screen.getAllByRole("row")[0]).toHaveAttribute("id", "row");
+    expect(screen.getByRole("columnheader")).toHaveAttribute("id", "head");
+    expect(screen.getByRole("gridcell")).toHaveAttribute("id", "cell");
+  });
 });

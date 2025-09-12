@@ -38,6 +38,14 @@ describe("applyFriendlyZodMessages", () => {
 
     z.setErrorMap(original);
   });
+
+  test("is idempotent", () => {
+    const original = z.getErrorMap();
+    applyFriendlyZodMessages();
+    applyFriendlyZodMessages();
+    expect(z.getErrorMap()).toBe(friendlyErrorMap);
+    z.setErrorMap(original);
+  });
 });
 
 describe("friendlyErrorMap", () => {

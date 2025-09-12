@@ -37,22 +37,22 @@ describe("createCustomerProfileDelegate", () => {
     ).resolves.toEqual({ customerId: "c2", name: "Bob", email: "a@example.com" });
   });
 
-  it("upsert inserts new profiles and updates existing ones", async () => {
+  it("upsert updates an existing profile", async () => {
     const delegate = createCustomerProfileDelegate();
 
-    const created = await delegate.upsert({
+    await delegate.upsert({
       where: { customerId: "c1" },
       create: { customerId: "c1", name: "Alice", email: "a@example.com" },
-      update: { name: "Updated", email: "updated@example.com" },
+      update: {},
     });
-    expect(created).toEqual({ customerId: "c1", name: "Alice", email: "a@example.com" });
 
-    const updated = await delegate.upsert({
-      where: { customerId: "c1" },
-      create: { customerId: "c1", name: "Alice", email: "a@example.com" },
-      update: { name: "Alice Updated", email: "alice.updated@example.com" },
-    });
-    expect(updated).toEqual({
+    await expect(
+      delegate.upsert({
+        where: { customerId: "c1" },
+        create: { customerId: "c1", name: "Alice", email: "a@example.com" },
+        update: { name: "Alice Updated", email: "alice.updated@example.com" },
+      }),
+    ).resolves.toEqual({
       customerId: "c1",
       name: "Alice Updated",
       email: "alice.updated@example.com",

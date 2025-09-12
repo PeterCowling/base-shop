@@ -1,6 +1,7 @@
 import "server-only";
 import { prisma } from "../db";
-import { Order, normalize } from "./utils";
+import { normalize } from "./utils";
+import type { Order } from "./utils";
 
 export async function markNeedsAttention(
   shop: string,

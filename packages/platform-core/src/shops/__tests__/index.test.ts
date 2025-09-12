@@ -20,14 +20,24 @@ describe("validateShopName", () => {
     expect(validateShopName("  shop  ")).toBe("shop");
   });
 
+  it("rejects whitespace-only names", () => {
+    for (const bad of ["", " ", "\t", "\n"]) {
+      expect(() => validateShopName(bad)).toThrow(/Invalid shop name/);
+    }
+  });
+
+  it("rejects names with disallowed symbols", () => {
+    for (const bad of ["bad$name", "bad%name", "bad*name"]) {
+      expect(() => validateShopName(bad)).toThrow(/Invalid shop name/);
+    }
+  });
+
   it("throws for invalid names", () => {
     for (const bad of [
       "bad name",
       "bad/name",
       "bad!name",
       "bad@name",
-      "",
-      " ",
     ]) {
       expect(() => validateShopName(bad)).toThrow(/Invalid shop name/);
     }
@@ -76,6 +86,12 @@ describe("setEditorialBlog", () => {
   });
 });
 
+describe("getDomain", () => {
+  it("returns undefined when no domain is set", () => {
+    expect(getDomain({} as Shop)).toBeUndefined();
+  });
+});
+
 describe("setDomain", () => {
   it("adds and removes domain", () => {
     const base: Shop = { other: true };
@@ -92,5 +108,17 @@ describe("setDomain", () => {
     expect(getDomain(cleared)).toBeUndefined();
     expect(cleared).not.toHaveProperty("domain");
     expect(getDomain(withDomain)).toEqual(domain);
+  });
+
+  it("removes existing domain and preserves other fields", () => {
+    const base: Shop = {
+      domain: { name: "old.example.com" },
+      other: "keep",
+    };
+    const cleared = setDomain(base, undefined);
+    expect(cleared).not.toBe(base);
+    expect(getDomain(cleared)).toBeUndefined();
+    expect(cleared).not.toHaveProperty("domain");
+    expect((cleared as Shop).other).toBe("keep");
   });
 });

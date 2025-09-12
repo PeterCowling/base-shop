@@ -28,11 +28,55 @@ describe("fsCampaignStore.writeCampaigns", () => {
       "utf8",
     );
   });
+
+  it("throws when writeFile rejects", async () => {
+    jest.spyOn(fs, "mkdir").mockResolvedValue(undefined as any);
+    const error = new Error("write failed");
+    jest.spyOn(fs, "writeFile").mockRejectedValue(error);
+
+    await expect(fsCampaignStore.writeCampaigns("shop", [])).rejects.toThrow(
+      error,
+    );
+  });
+});
+
+describe("fsCampaignStore.readCampaigns", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("returns an empty array when campaigns.json is missing", async () => {
+    const enoent = Object.assign(new Error("not found"), { code: "ENOENT" });
+    jest.spyOn(fs, "readFile").mockRejectedValue(enoent);
+
+    await expect(fsCampaignStore.readCampaigns("shop"))
+      .resolves.toEqual([]);
+  });
+
+  it("returns an empty array when campaigns.json contains malformed JSON", async () => {
+    jest.spyOn(fs, "readFile").mockResolvedValue("{invalid json");
+
+    await expect(fsCampaignStore.readCampaigns("shop"))
+      .resolves.toEqual([]);
+  });
 });
 
 describe("fsCampaignStore.listShops", () => {
   afterEach(() => {
     jest.restoreAllMocks();
+  });
+
+  it("returns directory names", async () => {
+    jest.spyOn(fs, "readdir").mockResolvedValue([
+      { name: "shop-a", isDirectory: () => true },
+      { name: "file.txt", isDirectory: () => false },
+      { name: "shop-b", isDirectory: () => true },
+    ] as any);
+
+    await expect(fsCampaignStore.listShops()).resolves.toEqual([
+      "shop-a",
+      "shop-b",
+    ]);
   });
 
   it("returns an empty array when readdir fails", async () => {

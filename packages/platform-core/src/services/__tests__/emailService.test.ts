@@ -4,6 +4,11 @@ import {
   type EmailService,
   sendSystemEmail,
 } from "../emailService";
+
+jest.mock("@acme/email", () => ({
+  sendEmail: jest.fn(),
+}));
+
 import * as provider from "@acme/email";
 
 describe("emailService", () => {
@@ -31,7 +36,7 @@ describe("emailService", () => {
 describe("sendSystemEmail", () => {
   beforeEach(() => {
     process.env.EMAIL_PROVIDER = "sendgrid";
-    jest.restoreAllMocks();
+    jest.clearAllMocks();
   });
 
   it("throws on unknown provider", async () => {
@@ -42,14 +47,17 @@ describe("sendSystemEmail", () => {
   });
 
   it("delegates to provider on happy path", async () => {
-    jest
-      .spyOn(provider, "sendEmail" as any)
-      .mockResolvedValue({ id: "ok" } as any);
+    (provider.sendEmail as jest.Mock).mockResolvedValue({ id: "ok" } as any);
     const res = await sendSystemEmail({
       to: "a@x.com",
       subject: "Hi",
       html: "<b>Hi</b>",
     } as any);
+    expect(provider.sendEmail).toHaveBeenCalledWith(
+      "a@x.com",
+      "Hi",
+      "<b>Hi</b>",
+    );
     expect((res as any).id).toBe("ok");
   });
 });

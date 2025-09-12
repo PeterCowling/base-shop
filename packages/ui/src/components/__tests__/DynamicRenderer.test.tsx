@@ -39,7 +39,19 @@ describe("DynamicRenderer", () => {
     jest.clearAllMocks();
   });
 
-  it("logs warning and returns null for unknown block type", () => {
+  it("selects components by type string", () => {
+    const components: PageComponent[] = [
+      { id: "1", type: "Parent" } as any,
+      { id: "2", type: "Child", text: { en: "hi" } } as any,
+    ];
+
+    render(<DynamicRenderer components={components} locale="en" />);
+
+    expect(ParentComp).toHaveBeenCalled();
+    expect(ChildComp).toHaveBeenCalled();
+  });
+
+  it("renders null for unknown block type", () => {
     const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     const components = [{ id: "1", type: "Unknown" } as PageComponent];
 
@@ -52,6 +64,28 @@ describe("DynamicRenderer", () => {
     );
     expect(container).toBeEmptyDOMElement();
     warnSpy.mockRestore();
+  });
+
+  it("passes props through to the rendered component", () => {
+    const components: PageComponent[] = [
+      {
+        id: "1",
+        type: "Child",
+        text: { en: "hello" },
+        custom: "value",
+      } as any,
+    ];
+
+    render(<DynamicRenderer components={components} locale="en" />);
+
+    expect(ChildComp).toHaveBeenCalled();
+    expect(ChildComp.mock.calls[0][0]).toMatchObject({
+      id: "1",
+      type: "Child",
+      locale: "en",
+      text: "hello",
+      custom: "value",
+    });
   });
 
   it("merges runtime props and runtimeData and renders child blocks", () => {

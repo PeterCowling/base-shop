@@ -3,7 +3,10 @@ import { jsonFieldHandler, type ErrorSetter } from '../jsonFieldHandler';
 describe('jsonFieldHandler', () => {
   it('parses valid JSON and clears errors', () => {
     let parsed: any;
-    let errors: Record<string, string[]> = { field: ['Invalid JSON'] };
+    let errors: Record<string, string[]> = {
+      field: ['Invalid JSON'],
+      other: ['Other error'],
+    };
     const setErrors: ErrorSetter = (update) => {
       errors = typeof update === 'function' ? update(errors) : update;
     };
@@ -15,11 +18,11 @@ describe('jsonFieldHandler', () => {
     handler({ target: { value: '{"a":1}' } } as any);
 
     expect(parsed).toEqual({ a: 1 });
-    expect(errors).toEqual({});
+    expect(errors).toEqual({ other: ['Other error'] });
   });
 
   it('sets an error on invalid JSON', () => {
-    let errors: Record<string, string[]> = {};
+    let errors: Record<string, string[]> = { other: ['Other error'] };
     const setErrors: ErrorSetter = (update) => {
       errors = typeof update === 'function' ? update(errors) : update;
     };
@@ -28,6 +31,9 @@ describe('jsonFieldHandler', () => {
 
     handler({ target: { value: 'not json' } } as any);
 
-    expect(errors).toEqual({ field: ['Invalid JSON'] });
+    expect(errors).toEqual({
+      other: ['Other error'],
+      field: ['Invalid JSON'],
+    });
   });
 });

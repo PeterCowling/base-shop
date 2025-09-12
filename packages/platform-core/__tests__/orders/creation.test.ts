@@ -2,10 +2,16 @@
 
 import "./setup";
 import * as orders from "../../src/orders";
-import { prismaMock, trackOrder, incrementSubscriptionUsage, ulidMock, nowIsoMock } from "./setup";
+import {
+  prismaMock,
+  trackOrder,
+  incrementSubscriptionUsage,
+  ulidMock,
+  nowIsoMock,
+} from "./setup";
 import { createOrder } from "./orderFactory";
 
-const { listOrders, addOrder, getOrdersForCustomer } = orders;
+const { listOrders, addOrder, getOrdersForCustomer, readOrders } = orders;
 
 describe("order creation", () => {
   beforeEach(() => {
@@ -30,6 +36,19 @@ describe("order creation", () => {
       expect(prismaMock.rentalOrder.findMany).toHaveBeenCalledWith({
         where: { shop: "shop" },
       });
+    });
+  });
+
+  describe("readOrders alias", () => {
+    it("normalizes null fields", async () => {
+      prismaMock.rentalOrder.findMany.mockResolvedValue([
+        createOrder({ shop: "shop", foo: null }),
+      ]);
+      const result = await readOrders("shop");
+      expect(prismaMock.rentalOrder.findMany).toHaveBeenCalledWith({
+        where: { shop: "shop" },
+      });
+      expect(result[0].foo).toBeUndefined();
     });
   });
 
@@ -105,6 +124,20 @@ describe("order creation", () => {
       prismaMock.shop.findUnique.mockResolvedValue({
         data: { subscriptionsEnabled: false },
       });
+      await addOrder("shop", "sess", 10, undefined, undefined, "cust");
+      expect(prismaMock.shop.findUnique).toHaveBeenCalledWith({
+        select: { data: true },
+        where: { id: "shop" },
+      });
+      expect(trackOrder).toHaveBeenCalledWith("shop", "ID", 10);
+      expect(incrementSubscriptionUsage).not.toHaveBeenCalled();
+    });
+
+    it("skips subscription usage when shop not found", async () => {
+      ulidMock.mockReturnValue("ID");
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.create.mockResolvedValue({});
+      prismaMock.shop.findUnique.mockResolvedValue(null);
       await addOrder("shop", "sess", 10, undefined, undefined, "cust");
       expect(prismaMock.shop.findUnique).toHaveBeenCalledWith({
         select: { data: true },

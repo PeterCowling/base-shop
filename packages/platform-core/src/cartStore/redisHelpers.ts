@@ -28,3 +28,17 @@ export function expireBoth(
     () => exec(() => client.expire(skuKey, ttl)),
   ];
 }
+
+export function skuKey(id: string): string {
+  return `${id}:sku`;
+}
+
+export function serialize<T>(value: T | undefined | null): string | undefined {
+  if (value === undefined || value === null) return undefined;
+  return JSON.stringify(value);
+}
+
+export function deserialize<T>(value: string | undefined | null): T | undefined {
+  if (value === undefined || value === null) return undefined;
+  return JSON.parse(value) as T;
+}

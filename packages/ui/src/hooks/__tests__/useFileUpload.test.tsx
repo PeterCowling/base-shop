@@ -46,9 +46,12 @@ it("uploads image and splits tags", async () => {
   });
 
   await act(async () => {
-    await result.current.handleUpload();
+    const promise = result.current.handleUpload();
+    expect(result.current.progress).toEqual({ done: 0, total: 1 });
+    await promise;
   });
 
+  expect(result.current.progress).toBeNull();
   const body = mockFetch.mock.calls[0][1].body as FormData;
   expect(body.get("tags")).toBe(JSON.stringify(["tag1", "tag2"]));
   expect(onUploaded).toHaveBeenCalled();
@@ -132,6 +135,28 @@ it("aborts upload and reports orientation mismatch", async () => {
   );
 });
 
+it("aborts upload and reports orientation mismatch when actual is null", async () => {
+  const file = new File(["x"], "x.png", { type: "image/png" });
+  mockOrientation.mockReturnValue({ actual: null, isValid: false });
+
+  const { result } = renderHook(() =>
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+  );
+
+  act(() => {
+    result.current.onFileChange({ target: { files: [file] } } as any);
+  });
+
+  await act(async () => {
+    await result.current.handleUpload();
+  });
+
+  expect(mockFetch).not.toHaveBeenCalled();
+  expect(result.current.error).toBe(
+    "Image orientation mismatch: expected landscape",
+  );
+});
+
 it("skips orientation validation for videos", async () => {
   const file = new File(["v"], "v.mp4", { type: "video/mp4" });
   const onUploaded = jest.fn();
@@ -149,7 +174,7 @@ it("skips orientation validation for videos", async () => {
     result.current.setTags("tag");
   });
 
-  expect(mockOrientation).not.toHaveBeenCalled();
+  expect(mockOrientation).toHaveBeenCalledWith(null, "landscape");
   expect(result.current.isValid).toBe(true);
   expect(result.current.actual).toBeNull();
 

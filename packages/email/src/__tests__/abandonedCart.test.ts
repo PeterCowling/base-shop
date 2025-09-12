@@ -42,11 +42,13 @@ describe("recoverAbandonedCarts", () => {
     await recoverAbandonedCarts(carts, now);
 
     expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
-    expect(sendCampaignEmailMock).toHaveBeenCalledWith({
-      to: "old@example.com",
-      subject: "You left items in your cart",
-      html: "<p>You left items in your cart.</p>",
-    });
+    expect(sendCampaignEmailMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: "old@example.com",
+        subject: "You left items in your cart",
+        html: expect.stringContaining("You left items in your cart"),
+      }),
+    );
     expect(carts[0].reminded).toBe(true);
     expect(carts[1].reminded).toBeUndefined();
     expect(carts[2].reminded).toBe(true);
@@ -71,11 +73,13 @@ describe("recoverAbandonedCarts", () => {
     await recoverAbandonedCarts(carts, now, delay);
 
     expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
-    expect(sendCampaignEmailMock).toHaveBeenCalledWith({
-      to: "old@example.com",
-      subject: "You left items in your cart",
-      html: "<p>You left items in your cart.</p>",
-    });
+    expect(sendCampaignEmailMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: "old@example.com",
+        subject: "You left items in your cart",
+        html: expect.stringContaining("You left items in your cart"),
+      }),
+    );
     expect(carts[0].reminded).toBe(true);
     expect(carts[1].reminded).toBeUndefined();
   });
@@ -99,11 +103,13 @@ describe("recoverAbandonedCarts", () => {
     await recoverAbandonedCarts(carts, customNow, delay);
 
     expect(sendCampaignEmailMock).toHaveBeenCalledTimes(1);
-    expect(sendCampaignEmailMock).toHaveBeenCalledWith({
-      to: "old@example.com",
-      subject: "You left items in your cart",
-      html: "<p>You left items in your cart.</p>",
-    });
+    expect(sendCampaignEmailMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: "old@example.com",
+        subject: "You left items in your cart",
+        html: expect.stringContaining("You left items in your cart"),
+      }),
+    );
     expect(carts[0].reminded).toBe(true);
     expect(carts[1].reminded).toBeUndefined();
   });
@@ -132,16 +138,22 @@ describe("recoverAbandonedCarts", () => {
     await recoverAbandonedCarts(carts, now, delay);
 
     expect(sendCampaignEmailMock).toHaveBeenCalledTimes(2);
-    expect(sendCampaignEmailMock).toHaveBeenNthCalledWith(1, {
-      to: "first@example.com",
-      subject: "You left items in your cart",
-      html: "<p>You left items in your cart.</p>",
-    });
-    expect(sendCampaignEmailMock).toHaveBeenNthCalledWith(2, {
-      to: "second@example.com",
-      subject: "You left items in your cart",
-      html: "<p>You left items in your cart.</p>",
-    });
+    expect(sendCampaignEmailMock).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        to: "first@example.com",
+        subject: "You left items in your cart",
+        html: expect.stringContaining("You left items in your cart"),
+      }),
+    );
+    expect(sendCampaignEmailMock).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        to: "second@example.com",
+        subject: "You left items in your cart",
+        html: expect.stringContaining("You left items in your cart"),
+      }),
+    );
     expect(carts[0].reminded).toBe(true);
     expect(carts[1].reminded).toBe(true);
     expect(carts[2].reminded).toBeUndefined();
@@ -150,6 +162,51 @@ describe("recoverAbandonedCarts", () => {
   it("handles an empty cart list without sending emails", async () => {
     await recoverAbandonedCarts([], Date.now());
     expect(sendCampaignEmailMock).not.toHaveBeenCalled();
+  });
+
+  it("builds email content with cart items", async () => {
+    const now = Date.now();
+    const carts: AbandonedCart[] = [
+      {
+        email: "cart@example.com",
+        cart: { items: [{ name: "Widget" }, { name: "Gadget" }] },
+        updatedAt: now - 25 * 60 * 60 * 1000,
+      },
+    ];
+
+    await recoverAbandonedCarts(carts, now);
+
+    expect(sendCampaignEmailMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: "cart@example.com",
+        subject: "You left items in your cart",
+        html: expect.stringContaining("<li>Widget</li>"),
+      }),
+    );
+    expect(
+      sendCampaignEmailMock.mock.calls[0][0].html,
+    ).toContain("<li>Gadget</li>");
+  });
+
+  it("handles empty cart items gracefully", async () => {
+    const now = Date.now();
+    const carts: AbandonedCart[] = [
+      {
+        email: "empty@example.com",
+        cart: { items: [] },
+        updatedAt: now - 25 * 60 * 60 * 1000,
+      },
+    ];
+
+    await recoverAbandonedCarts(carts, now);
+
+    expect(sendCampaignEmailMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        to: "empty@example.com",
+        subject: "You left items in your cart",
+        html: "<p>You left items in your cart.</p>",
+      }),
+    );
   });
 
   it("returns failed carts when the email provider errors and leaves cart untouched", async () => {

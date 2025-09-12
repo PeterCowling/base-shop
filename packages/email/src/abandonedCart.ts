@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { sendCampaignEmail } from "./send";
+import { escapeHtml } from "./escapeHtml";
 import { DATA_ROOT } from "@platform-core/dataRoot";
 
 const DEFAULT_DELAY_MS = 1000 * 60 * 60 * 24;
@@ -51,6 +52,23 @@ export interface AbandonedCart {
   reminded?: boolean;
 }
 
+function buildCartHtml(cart: unknown): string {
+  const items = Array.isArray((cart as any)?.items)
+    ? (cart as any).items
+    : [];
+  if (items.length === 0) return "<p>You left items in your cart.</p>";
+  const list = items
+    .map((item) => {
+      const name =
+        typeof item === "object" && item !== null
+          ? (item as any).name ?? (item as any).title ?? String(item)
+          : String(item);
+      return `<li>${escapeHtml(String(name))}</li>`;
+    })
+    .join("");
+  return `<p>You left items in your cart:</p><ul>${list}</ul>`;
+}
+
 /**
  * Send reminder emails for carts that have been inactive for at least a given delay.
  * Carts with `reminded` set to true are ignored. When an email is sent, the
@@ -72,7 +90,7 @@ export async function recoverAbandonedCarts(
       await sendCampaignEmail({
         to: record.email,
         subject: "You left items in your cart",
-        html: "<p>You left items in your cart.</p>",
+        html: buildCartHtml(record.cart),
       });
       record.reminded = true;
     } catch {

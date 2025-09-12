@@ -142,6 +142,9 @@ describe("ThemeContext", () => {
     expect(document.documentElement.classList.contains("theme-dark")).toBe(
       false
     );
+    expect(getByTestId("theme").textContent).toBe("system");
+    expect(setItem).toHaveBeenCalledWith("theme", "system");
+    expect(setItem).toHaveBeenCalledTimes(2);
   });
 
   it("updates when storage event dispatched", () => {
@@ -158,6 +161,8 @@ describe("ThemeContext", () => {
     );
 
     expect(getByTestId("theme").textContent).toBe("base");
+    expect(document.documentElement.className).toBe("");
+    expect(document.documentElement.style.colorScheme).toBe("light");
 
     act(() => {
       window.dispatchEvent(
@@ -166,6 +171,10 @@ describe("ThemeContext", () => {
     });
 
     expect(getByTestId("theme").textContent).toBe("dark");
+    expect(document.documentElement.classList.contains("theme-dark")).toBe(
+      true
+    );
+    expect(document.documentElement.style.colorScheme).toBe("dark");
     expect(setItem).toHaveBeenCalledWith("theme", "dark");
   });
 
@@ -215,7 +224,7 @@ describe("ThemeContext", () => {
     expect(getByTestId("theme").textContent).toBe("base");
   });
 
-  it("updates DOM when theme changes", () => {
+  it("applies/removes classes and persists to localStorage when theme changes", () => {
     const setItem = jest.fn();
     Object.defineProperty(window, "localStorage", {
       configurable: true,
@@ -258,6 +267,12 @@ describe("ThemeContext", () => {
     );
     expect(document.documentElement.style.colorScheme).toBe("dark");
     expect(setItem).toHaveBeenLastCalledWith("theme", "dark");
+
+    act(() => changeTheme("base"));
+    expect(getByTestId("theme").textContent).toBe("base");
+    expect(document.documentElement.className).toBe("");
+    expect(document.documentElement.style.colorScheme).toBe("light");
+    expect(setItem).toHaveBeenLastCalledWith("theme", "base");
   });
 
   it("removes theme class and uses light scheme when switching to base", () => {

@@ -3,18 +3,20 @@ import { render, screen } from "@testing-library/react";
 import { StockStatus } from "../StockStatus";
 
 describe("StockStatus", () => {
-  it("renders in-stock state", () => {
-    render(<StockStatus inStock />);
+  it("renders in-stock status", () => {
+    render(<StockStatus inStock labelInStock="In stock" />);
     const span = screen.getByText("In stock");
-    expect(span).toHaveAttribute("data-token", "--color-success");
     expect(span).toHaveClass("text-success");
+    expect(span).toHaveAttribute("data-token", "--color-success");
   });
 
-  it("renders out-of-stock state", () => {
-    render(<StockStatus inStock={false} />);
+  it("renders out-of-stock status", () => {
+    render(
+      <StockStatus inStock={false} labelOutOfStock="Out of stock" />,
+    );
     const span = screen.getByText("Out of stock");
-    expect(span).toHaveAttribute("data-token", "--color-danger");
     expect(span).toHaveClass("text-danger");
+    expect(span).toHaveAttribute("data-token", "--color-danger");
   });
 
   it("renders custom labels and classes", () => {
@@ -40,6 +42,7 @@ describe("StockStatus", () => {
       "text-success",
       "custom",
     );
+    expect(inStock).toHaveAttribute("data-token", "--color-success");
 
     const outOfStock = screen.getByText("Unavailable");
     expect(outOfStock).toHaveClass(
@@ -48,5 +51,6 @@ describe("StockStatus", () => {
       "text-danger",
       "custom",
     );
+    expect(outOfStock).toHaveAttribute("data-token", "--color-danger");
   });
 });

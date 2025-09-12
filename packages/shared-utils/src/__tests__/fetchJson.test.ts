@@ -24,6 +24,16 @@ describe('fetchJson', () => {
     ).resolves.toEqual(data);
   });
 
+  it('returns parsed JSON when only text is provided', async () => {
+    const data = { ok: true };
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(JSON.stringify(data)),
+    });
+
+    await expect(fetchJson('https://example.com')).resolves.toEqual(data);
+  });
+
   it('throws ZodError when response body does not match schema', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
@@ -45,6 +55,18 @@ describe('fetchJson', () => {
     await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
   });
 
+  it('throws ZodError for non-JSON responses with schema', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue('not json'),
+    });
+
+    const schema = z.object({ message: z.string() });
+    await expect(
+      fetchJson('https://example.com', undefined, schema),
+    ).rejects.toBeInstanceOf(z.ZodError);
+  });
+
   it('returns undefined for empty response bodies', async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
       ok: true,
@@ -52,6 +74,18 @@ describe('fetchJson', () => {
     });
 
     await expect(fetchJson('https://example.com')).resolves.toBeUndefined();
+  });
+
+  it('throws ZodError on empty body with schema', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      text: jest.fn().mockResolvedValue(''),
+    });
+
+    const schema = z.object({ message: z.string() });
+    await expect(
+      fetchJson('https://example.com', undefined, schema),
+    ).rejects.toBeInstanceOf(z.ZodError);
   });
 
   it('returns undefined when response text rejects', async () => {
@@ -107,6 +141,21 @@ describe('fetchJson', () => {
       ok: false,
       status: 400,
       statusText: 'Bad Request',
+      text: jest
+        .fn()
+        .mockResolvedValue(JSON.stringify({ error: 'Custom message' })),
+    });
+
+    await expect(fetchJson('https://example.com')).rejects.toThrow(
+      'Custom message',
+    );
+  });
+
+  it('uses JSON error message when status text is missing', async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: false,
+      status: 400,
+      statusText: '',
       text: jest
         .fn()
         .mockResolvedValue(JSON.stringify({ error: 'Custom message' })),

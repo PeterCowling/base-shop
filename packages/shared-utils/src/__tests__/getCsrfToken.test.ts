@@ -25,6 +25,25 @@ describe('getCsrfToken', () => {
     expect(getCsrfToken()).toBe('cookie-token');
   });
 
+  it('extracts token from x-csrf-token header', () => {
+    const req = new Request('https://example.com', {
+      headers: { 'x-csrf-token': 'header-token' },
+    });
+    expect(getCsrfToken(req)).toBe('header-token');
+  });
+
+  it('extracts token from query string', () => {
+    const req = new Request('https://example.com?csrf_token=query-token');
+    expect(getCsrfToken(req)).toBe('query-token');
+  });
+
+  it('extracts token from cookie header', () => {
+    const req = new Request('https://example.com', {
+      headers: { cookie: 'csrf_token=cookie-header-token' },
+    });
+    expect(getCsrfToken(req)).toBe('cookie-header-token');
+  });
+
   it('prioritizes meta token over cookie without altering cookie', () => {
     document.head.innerHTML = '<meta name="csrf-token" content="meta-token">';
     document.cookie = 'csrf_token=cookie-token';

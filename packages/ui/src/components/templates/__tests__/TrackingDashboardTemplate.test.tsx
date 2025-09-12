@@ -12,10 +12,22 @@ const records = [
   },
 ];
 
+const stats = [{ label: "Shipments", value: "1" }];
+
 describe("TrackingDashboardTemplate", () => {
-  it("renders records", () => {
-    render(<TrackingDashboardTemplate records={records} />);
+  it("renders records and stats grid", () => {
+    render(
+      <TrackingDashboardTemplate records={records} stats={stats} />,
+    );
     expect(screen.getByText("1")).toBeInTheDocument();
     expect(screen.getByText("Delivered")).toBeInTheDocument();
+    expect(screen.getByText("Shipments")).toBeInTheDocument();
+  });
+
+  it("does not render stats grid when stats array is empty", () => {
+    const { container } = render(
+      <TrackingDashboardTemplate records={records} stats={[]} />,
+    );
+    expect(container.querySelector(".grid")).toBeNull();
   });
 });

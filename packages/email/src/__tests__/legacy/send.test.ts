@@ -28,6 +28,7 @@ jest.mock("../../providers/resend", () => ({
 describe("sendCampaignEmail", () => {
   beforeEach(() => {
     jest.useRealTimers();
+    process.env.EMAIL_PROVIDER = "smtp";
   });
 
   afterEach(() => {

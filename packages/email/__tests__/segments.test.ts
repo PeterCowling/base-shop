@@ -61,7 +61,7 @@ const ORIG_PROVIDER = process.env.EMAIL_PROVIDER;
 const ORIG_TTL = process.env.SEGMENT_CACHE_TTL;
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  jest.resetAllMocks();
   fs.stat.mockResolvedValue({ mtimeMs: 0 });
 });
 

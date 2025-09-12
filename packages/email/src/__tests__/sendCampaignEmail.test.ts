@@ -38,6 +38,7 @@ describe("sendCampaignEmail", () => {
 
     process.env.SMTP_URL = "smtp://test";
     process.env.CAMPAIGN_FROM = "campaign@example.com";
+    process.env.EMAIL_PROVIDER = "smtp";
 
     const { sendCampaignEmail } = await import("../send");
     await sendCampaignEmail({

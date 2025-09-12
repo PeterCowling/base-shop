@@ -250,7 +250,7 @@ describe("send core helpers", () => {
         process.env.SENDGRID_API_KEY = "sg";
         const { sendCampaignEmail } = await import("../send");
         await sendCampaignEmail({
-          to: "t",
+          to: "t@example.com",
           subject: "s",
           html: '<p>Hi</p><img src="x" onerror="x"><script>bad()</script>',
         });
@@ -270,7 +270,7 @@ describe("send core helpers", () => {
         process.env.SENDGRID_API_KEY = "sg";
         const { sendCampaignEmail } = await import("../send");
         await sendCampaignEmail({
-          to: "t",
+          to: "t@example.com",
           subject: "s",
           html: '<p style="color:red">Hi</p>',
         });
@@ -291,7 +291,7 @@ describe("send core helpers", () => {
         process.env.SENDGRID_API_KEY = "sg";
         const { sendCampaignEmail } = await import("../send");
         await sendCampaignEmail({
-          to: "t",
+          to: "t@example.com",
           subject: "s",
           html: '<p>Hi</p><img src="x"><script>bad()</script>',
           sanitize: false,
@@ -311,7 +311,7 @@ describe("send core helpers", () => {
         process.env.EMAIL_PROVIDER = "invalid";
         await expect(
           sendCampaignEmail({
-            to: "a",
+            to: "a@example.com",
             subject: "s",
             html: "<p>h</p>",
             sanitize: false,
@@ -335,7 +335,7 @@ describe("send core helpers", () => {
         process.env.SENDGRID_API_KEY = "sg";
         const { sendCampaignEmail } = await import("../send");
         const promise = sendCampaignEmail({
-          to: "t",
+          to: "t@example.com",
           subject: "s",
           html: "<p>h</p>",
           sanitize: false,
@@ -366,7 +366,7 @@ describe("send core helpers", () => {
         process.env.RESEND_API_KEY = "rs";
         const { sendCampaignEmail } = await import("../send");
         await sendCampaignEmail({
-          to: "t",
+          to: "t@example.com",
           subject: "s",
           html: "<p>h</p>",
           sanitize: false,
@@ -385,7 +385,7 @@ describe("send core helpers", () => {
         process.env.RESEND_API_KEY = "rs";
         const { sendCampaignEmail } = await import("../send");
         await sendCampaignEmail({
-          to: "t",
+          to: "t@example.com",
           subject: "s",
           html: "<p>h</p>",
           sanitize: false,
@@ -404,7 +404,7 @@ describe("send core helpers", () => {
         process.env.SENDGRID_API_KEY = "sg";
         const { sendCampaignEmail } = await import("../send");
         await sendCampaignEmail({
-          to: "t",
+          to: "t@example.com",
           subject: "s",
           html: "<p>h</p>",
           sanitize: false,
@@ -430,7 +430,7 @@ describe("send core helpers", () => {
         const { sendCampaignEmail } = await import("../send");
         await expect(
           sendCampaignEmail({
-            to: "t",
+            to: "t@example.com",
             subject: "s",
             html: "<p>h</p>",
             sanitize: false,
@@ -442,7 +442,7 @@ describe("send core helpers", () => {
         expect.arrayContaining([
           [
             "Campaign email send failed",
-            expect.objectContaining({ provider: "sendgrid", recipient: "t" }),
+            expect.objectContaining({ provider: "sendgrid", recipient: "t@example.com" }),
           ],
         ])
       );
@@ -461,7 +461,7 @@ describe("send core helpers", () => {
       };
       const promise = sendWithRetry(
         provider as any,
-        { to: "t", subject: "s" },
+        { to: "t@example.com", subject: "s" },
         4
       ).catch(() => {});
       await jest.runAllTimersAsync();
@@ -481,7 +481,7 @@ describe("send core helpers", () => {
       const err = { retryable: true };
       const provider = { send: jest.fn().mockRejectedValue(err) };
       const promise = sendWithRetry(provider as any, {
-        to: "t",
+        to: "t@example.com",
         subject: "s",
       }).catch(() => {});
       await jest.runAllTimersAsync();
@@ -495,7 +495,7 @@ describe("send core helpers", () => {
       const err = { retryable: false };
       const provider = { send: jest.fn().mockRejectedValue(err) };
       await expect(
-        sendWithRetry(provider as any, { to: "t", subject: "s" })
+        sendWithRetry(provider as any, { to: "t@example.com", subject: "s" })
       ).rejects.toBe(err);
       expect(provider.send).toHaveBeenCalledTimes(1);
     });
@@ -507,7 +507,7 @@ describe("send core helpers", () => {
       const err = {};
       const provider = { send: jest.fn().mockRejectedValue(err) };
       const expectation = expect(
-        sendWithRetry(provider as any, { to: "t", subject: "s" })
+        sendWithRetry(provider as any, { to: "t@example.com", subject: "s" })
       ).rejects.toBe(err);
       await jest.runAllTimersAsync();
       await expectation;
@@ -523,7 +523,7 @@ describe("send core helpers", () => {
       const error = new Error("x");
       const provider = { send: jest.fn().mockRejectedValue(error) };
       const promise = sendWithRetry(provider as any, {
-        to: "t",
+        to: "t@example.com",
         subject: "s",
       }).catch(() => {});
       await jest.runAllTimersAsync();
@@ -543,7 +543,7 @@ describe("send core helpers", () => {
         send: jest.fn().mockRejectedValue(new ProviderError("x", false)),
       };
       await expect(
-        sendWithRetry(provider as any, { to: "t", subject: "s" })
+        sendWithRetry(provider as any, { to: "t@example.com", subject: "s" })
       ).rejects.toBeInstanceOf(ProviderError);
       expect(provider.send).toHaveBeenCalledTimes(1);
     });

@@ -1,6 +1,6 @@
 // packages/ui/components/atoms/primitives/table.tsx
 
-import type { ComponentProps } from "react";
+import * as React from "react";
 import { cn } from "../../../utils/style";
 
 /**
@@ -8,46 +8,75 @@ import { cn } from "../../../utils/style";
  * Each component forwards props / className so you can style with Tailwind.
  */
 
-export function Table({ className, ...props }: ComponentProps<"table">) {
-  return (
+export type TableProps = React.HTMLAttributes<HTMLTableElement>;
+
+export const Table = React.forwardRef<HTMLTableElement, TableProps>(
+  ({ className, ...props }, ref) => (
     <div className="w-full overflow-x-auto">
       <table
+        ref={ref}
         className={cn("text-foreground w-full text-left text-sm", className)}
         {...props}
       />
     </div>
-  );
-}
+  )
+);
+Table.displayName = "Table";
 
-export function TableHeader({ className, ...props }: ComponentProps<"thead">) {
-  return <thead className={cn("bg-muted/50 border-b", className)} {...props} />;
-}
+export type TableHeaderProps = React.HTMLAttributes<HTMLTableSectionElement>;
 
-export function TableBody({ className, ...props }: ComponentProps<"tbody">) {
-  return <tbody className={cn(className)} {...props} />;
-}
+export const TableHeader = React.forwardRef<
+  HTMLTableSectionElement,
+  TableHeaderProps
+>(({ className, ...props }, ref) => (
+  <thead ref={ref} className={cn("bg-muted/50 border-b", className)} {...props} />
+));
+TableHeader.displayName = "TableHeader";
 
-export function TableRow({ className, ...props }: ComponentProps<"tr">) {
-  return (
+export type TableBodyProps = React.HTMLAttributes<HTMLTableSectionElement>;
+
+export const TableBody = React.forwardRef<HTMLTableSectionElement, TableBodyProps>(
+  ({ className, ...props }, ref) => (
+    <tbody ref={ref} className={cn(className)} {...props} />
+  )
+);
+TableBody.displayName = "TableBody";
+
+export type TableRowProps = React.HTMLAttributes<HTMLTableRowElement>;
+
+export const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
+  ({ className, ...props }, ref) => (
     <tr
+      ref={ref}
       className={cn(
         "hover:bg-muted/25 data-[state=selected]:bg-muted border-b transition-colors",
         className
       )}
       {...props}
     />
-  );
-}
+  )
+);
+TableRow.displayName = "TableRow";
 
-export function TableHead({ className, ...props }: ComponentProps<"th">) {
-  return (
+export type TableHeadProps = React.ThHTMLAttributes<HTMLTableCellElement>;
+
+export const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>(
+  ({ className, ...props }, ref) => (
     <th
+      ref={ref}
       className={cn("text-foreground px-4 py-2 font-semibold", className)}
       {...props}
     />
-  );
-}
+  )
+);
+TableHead.displayName = "TableHead";
 
-export function TableCell({ className, ...props }: ComponentProps<"td">) {
-  return <td className={cn("px-4 py-2 align-middle", className)} {...props} />;
-}
+export type TableCellProps = React.TdHTMLAttributes<HTMLTableCellElement>;
+
+export const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
+  ({ className, ...props }, ref) => (
+    <td ref={ref} className={cn("px-4 py-2 align-middle", className)} {...props} />
+  )
+);
+TableCell.displayName = "TableCell";
+

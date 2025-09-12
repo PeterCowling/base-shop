@@ -1,12 +1,30 @@
-import type { ComponentProps } from "react";
+import * as React from "react";
 /**
  * Basic, unopinionated table primitives (shadcn-ui style).
  * Each component forwards props / className so you can style with Tailwind.
  */
-export declare function Table({ className, ...props }: ComponentProps<"table">): import("react/jsx-runtime").JSX.Element;
-export declare function TableHeader({ className, ...props }: ComponentProps<"thead">): import("react/jsx-runtime").JSX.Element;
-export declare function TableBody({ className, ...props }: ComponentProps<"tbody">): import("react/jsx-runtime").JSX.Element;
-export declare function TableRow({ className, ...props }: ComponentProps<"tr">): import("react/jsx-runtime").JSX.Element;
-export declare function TableHead({ className, ...props }: ComponentProps<"th">): import("react/jsx-runtime").JSX.Element;
-export declare function TableCell({ className, ...props }: ComponentProps<"td">): import("react/jsx-runtime").JSX.Element;
+export type TableProps = React.HTMLAttributes<HTMLTableElement>;
+export declare const Table: React.ForwardRefExoticComponent<
+  TableProps & React.RefAttributes<HTMLTableElement>
+>;
+export type TableHeaderProps = React.HTMLAttributes<HTMLTableSectionElement>;
+export declare const TableHeader: React.ForwardRefExoticComponent<
+  TableHeaderProps & React.RefAttributes<HTMLTableSectionElement>
+>;
+export type TableBodyProps = React.HTMLAttributes<HTMLTableSectionElement>;
+export declare const TableBody: React.ForwardRefExoticComponent<
+  TableBodyProps & React.RefAttributes<HTMLTableSectionElement>
+>;
+export type TableRowProps = React.HTMLAttributes<HTMLTableRowElement>;
+export declare const TableRow: React.ForwardRefExoticComponent<
+  TableRowProps & React.RefAttributes<HTMLTableRowElement>
+>;
+export type TableHeadProps = React.ThHTMLAttributes<HTMLTableCellElement>;
+export declare const TableHead: React.ForwardRefExoticComponent<
+  TableHeadProps & React.RefAttributes<HTMLTableCellElement>
+>;
+export type TableCellProps = React.TdHTMLAttributes<HTMLTableCellElement>;
+export declare const TableCell: React.ForwardRefExoticComponent<
+  TableCellProps & React.RefAttributes<HTMLTableCellElement>
+>;
 //# sourceMappingURL=table.d.ts.map

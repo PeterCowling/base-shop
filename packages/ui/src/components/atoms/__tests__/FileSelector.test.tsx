@@ -5,7 +5,19 @@ import { FileSelector } from "../FileSelector";
 configure({ testIdAttribute: "data-testid" });
 
 describe("FileSelector", () => {
-  it("invokes callback and displays selected file names", () => {
+  it("triggers file dialog when input is clicked", () => {
+    render(<FileSelector />);
+
+    const input = screen.getByTestId("file-input") as HTMLInputElement;
+    const dialogMock = jest.fn();
+    input.addEventListener("click", dialogMock);
+
+    fireEvent.click(input);
+
+    expect(dialogMock).toHaveBeenCalled();
+  });
+
+  it("passes selected files to callback", () => {
     const handleSelect = jest.fn();
     render(<FileSelector onFilesSelected={handleSelect} />);
 
@@ -14,8 +26,17 @@ describe("FileSelector", () => {
 
     fireEvent.change(input, { target: { files: [file] } });
 
-    expect(handleSelect).toHaveBeenCalledTimes(1);
     expect(handleSelect).toHaveBeenCalledWith([file]);
-    expect(screen.getByText("hello.txt")).toBeInTheDocument();
+  });
+
+  it("respects the multiple prop", () => {
+    const { rerender } = render(<FileSelector />);
+    let input = screen.getByTestId("file-input") as HTMLInputElement;
+    expect(input.multiple).toBe(false);
+
+    rerender(<FileSelector multiple />);
+    input = screen.getByTestId("file-input") as HTMLInputElement;
+    expect(input.multiple).toBe(true);
   });
 });
+

@@ -62,11 +62,18 @@ describe("useImageOrientationValidation", () => {
     await waitFor(() => expect(result.current.isValid).toBe(false));
   });
 
-  it("sets actual to null when image fails to load", async () => {
-    const file = new File(["a"], "error.png", { type: "image/png" });
-    const { result } = renderHook(() =>
-      useImageOrientationValidation(file, "landscape")
+  it("resets actual when image load errors", async () => {
+    const good = new File(["a"], "landscape.png", { type: "image/png" });
+    const bad = new File(["a"], "error.png", { type: "image/png" });
+    const { result, rerender } = renderHook(
+      ({ f }) => useImageOrientationValidation(f, "landscape"),
+      { initialProps: { f: good } }
     );
+
+    await waitFor(() => expect(result.current.actual).toBe("landscape"));
+
+    rerender({ f: bad });
+
     await waitFor(() => expect(result.current.actual).toBeNull());
     expect(result.current.isValid).toBeNull();
   });
@@ -78,7 +85,7 @@ describe("useImageOrientationValidation", () => {
       { initialProps: { f: file } }
     );
 
-    await waitFor(() => expect(result.current.isValid).toBe(true));
+    await waitFor(() => expect(result.current.actual).toBe("landscape"));
 
     rerender({ f: null });
 

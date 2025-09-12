@@ -457,6 +457,30 @@ describe("sendCampaignEmail", () => {
       timeoutSpy.mockRestore();
     });
 
+    it("rejects when recipient email is invalid", async () => {
+      const { sendCampaignEmail } = await import("../send");
+
+      await expect(
+        sendCampaignEmail({
+          to: "invalid",
+          subject: "Subject",
+          html: "<p>HTML</p>",
+        })
+      ).rejects.toThrow("Invalid recipient email address: invalid");
+    });
+
+    it("rejects when subject is empty", async () => {
+      const { sendCampaignEmail } = await import("../send");
+
+      await expect(
+        sendCampaignEmail({
+          to: "to@example.com",
+          subject: "   ",
+          html: "<p>HTML</p>",
+        })
+      ).rejects.toThrow("Email subject is required.");
+    });
+
   it("throws when EMAIL_PROVIDER is invalid", async () => {
     const originalProvider = process.env.EMAIL_PROVIDER;
     const { sendCampaignEmail } = await import("../send");

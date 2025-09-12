@@ -24,4 +24,16 @@ describe("RatingStars", () => {
       }
     });
   });
+
+  it("rounds fractional ratings to the nearest star", () => {
+    const rating = 3.2;
+    const size = 24;
+    const { container } = render(<RatingStars rating={rating} size={size} />);
+
+    const filledStars = container.querySelectorAll("svg.fill-yellow-500");
+    const mutedStars = container.querySelectorAll("svg.fill-muted");
+
+    expect(filledStars).toHaveLength(Math.round(rating));
+    expect(mutedStars).toHaveLength(5 - Math.round(rating));
+  });
 });

@@ -39,6 +39,34 @@ describe("ThemeToggle", () => {
     expect(screen.getByText(/dark theme selected/i)).toBeInTheDocument();
   });
 
+  it("cycles through dark → system → base on successive toggles", async () => {
+    const user = userEvent.setup();
+    render(<ThemeToggle />);
+    const button = screen.getByRole("button", { name: /switch to dark theme/i });
+
+    // initial state
+    expect(button).toHaveAttribute("aria-label", "Switch to Dark theme");
+    expect(screen.getByText(/light theme selected/i)).toBeInTheDocument();
+
+    // base -> dark
+    await user.click(button);
+    expect(setThemeMock).toHaveBeenLastCalledWith("dark");
+    expect(button).toHaveAttribute("aria-label", "Switch to System theme");
+    expect(screen.getByText(/dark theme selected/i)).toBeInTheDocument();
+
+    // dark -> system
+    await user.click(button);
+    expect(setThemeMock).toHaveBeenLastCalledWith("system");
+    expect(button).toHaveAttribute("aria-label", "Switch to Light theme");
+    expect(screen.getByText(/system theme selected/i)).toBeInTheDocument();
+
+    // system -> base
+    await user.click(button);
+    expect(setThemeMock).toHaveBeenLastCalledWith("base");
+    expect(button).toHaveAttribute("aria-label", "Switch to Dark theme");
+    expect(screen.getByText(/light theme selected/i)).toBeInTheDocument();
+  });
+
   it.each([
     { key: "Enter", label: /switch to dark theme/i },
     { key: " ", label: /switch to dark theme/i },
@@ -52,5 +80,18 @@ describe("ThemeToggle", () => {
 
     expect(setThemeMock).toHaveBeenCalledWith("dark");
     expect(screen.getByText(/dark theme selected/i)).toBeInTheDocument();
+  });
+
+  it("ignores unrelated keys", async () => {
+    const user = userEvent.setup();
+    render(<ThemeToggle />);
+    const button = screen.getByRole("button", { name: /switch to dark theme/i });
+
+    button.focus();
+    await user.keyboard("{ArrowDown}");
+
+    expect(setThemeMock).not.toHaveBeenCalled();
+    expect(button).toHaveAttribute("aria-label", "Switch to Dark theme");
+    expect(screen.getByText(/light theme selected/i)).toBeInTheDocument();
   });
 });

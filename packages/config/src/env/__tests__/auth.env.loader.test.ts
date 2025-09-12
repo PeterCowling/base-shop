@@ -1,4 +1,5 @@
 import { describe, it, expect } from '@jest/globals';
+import { REDIS_URL, REDIS_TOKEN } from './authEnvTestUtils';
 
 const reload = async () => {
   jest.resetModules();
@@ -50,5 +51,93 @@ describe('config/env/auth', () => {
         'Invalid auth environment variables',
       );
     }));
+
+  it.each([
+    ['60 ', 60],
+    [' 5m ', 300],
+    ['60 s', 60],
+  ])(
+    'normalizes AUTH_TOKEN_TTL %p to %d outside test env',
+    async (raw, expected) =>
+      withEnv({ NODE_ENV: 'development', AUTH_TOKEN_TTL: raw }, async () => {
+        const { loadAuthEnv } = await reload();
+        const env = loadAuthEnv();
+        expect(env.AUTH_TOKEN_TTL).toBe(expected);
+      }),
+  );
+
+  it('requires UPSTASH_REDIS_REST_URL when SESSION_STORE=redis', async () =>
+    withEnv(
+      {
+        NODE_ENV: 'development',
+        SESSION_STORE: 'redis',
+        UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
+      },
+      async () => {
+        await expect(reload()).rejects.toThrow(
+          'Invalid auth environment variables',
+        );
+      },
+    ));
+
+  it('requires UPSTASH_REDIS_REST_TOKEN when SESSION_STORE=redis', async () =>
+    withEnv(
+      {
+        NODE_ENV: 'development',
+        SESSION_STORE: 'redis',
+        UPSTASH_REDIS_REST_URL: REDIS_URL,
+      },
+      async () => {
+        await expect(reload()).rejects.toThrow(
+          'Invalid auth environment variables',
+        );
+      },
+    ));
+
+  it('requires redis credentials when SESSION_STORE=redis', async () =>
+    withEnv(
+      { NODE_ENV: 'development', SESSION_STORE: 'redis' },
+      async () => {
+        await expect(reload()).rejects.toThrow(
+          'Invalid auth environment variables',
+        );
+      },
+    ));
+
+  it(
+    'requires LOGIN_RATE_LIMIT_REDIS_TOKEN when LOGIN_RATE_LIMIT_REDIS_URL is set',
+    async () =>
+      withEnv(
+        { NODE_ENV: 'development', LOGIN_RATE_LIMIT_REDIS_URL: REDIS_URL },
+        async () => {
+          await expect(reload()).rejects.toThrow(
+            'Invalid auth environment variables',
+          );
+        },
+      ),
+  );
+
+  it(
+    'requires LOGIN_RATE_LIMIT_REDIS_URL when LOGIN_RATE_LIMIT_REDIS_TOKEN is set',
+    async () =>
+      withEnv(
+        { NODE_ENV: 'development', LOGIN_RATE_LIMIT_REDIS_TOKEN: REDIS_TOKEN },
+        async () => {
+          await expect(reload()).rejects.toThrow(
+            'Invalid auth environment variables',
+          );
+        },
+      ),
+  );
+
+  it('requires OAuth credentials for oauth provider', async () =>
+    withEnv(
+      { NODE_ENV: 'development', AUTH_PROVIDER: 'oauth' },
+      async () => {
+        await expect(reload()).rejects.toThrow(
+          'Invalid auth environment variables',
+        );
+      },
+    ));
 });
 

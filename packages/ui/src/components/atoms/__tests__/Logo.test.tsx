@@ -5,6 +5,11 @@ import { Logo } from "../Logo";
 import useViewport from "../../../hooks/useViewport";
 jest.mock("../../../hooks/useViewport");
 const mockedUseViewport = useViewport as jest.Mock;
+const sources = {
+  mobile: { src: "/logo-mobile.png", width: 100, height: 50 },
+  tablet: { src: "/logo-tablet.png", width: 150, height: 75 },
+  desktop: { src: "/logo-desktop.png", width: 200, height: 100 },
+};
 
 describe("Logo", () => {
   beforeEach(() => {
@@ -20,24 +25,22 @@ describe("Logo", () => {
     expect(img).toHaveAttribute("alt", "Acme");
   });
 
-  it("selects the correct source for the current viewport", () => {
-    mockedUseViewport.mockReturnValue("mobile");
-    render(
-      <Logo
-        fallbackText="Shop"
-        sources={{
-          mobile: { src: "/logo-mobile.png", width: 100, height: 50 },
-          desktop: { src: "/logo-desktop.png", width: 200, height: 100 },
-        }}
-      />,
-    );
-    const img = screen.getByRole("img");
-    expect(img).toHaveAttribute("src", "/logo-mobile.png");
-    expect(img).toHaveAttribute(
-      "srcset",
-      "/logo-mobile.png 100w, /logo-desktop.png 200w",
-    );
-  });
+  it.each(["mobile", "tablet", "desktop"] as const)(
+    "uses the %s source and updates dimensions",
+    (viewport) => {
+      mockedUseViewport.mockReturnValue(viewport);
+      render(<Logo fallbackText="Shop" sources={sources} />);
+      const img = screen.getByRole("img");
+      const expected = sources[viewport];
+      expect(img).toHaveAttribute("src", expected.src);
+      expect(img).toHaveAttribute(
+        "srcset",
+        "/logo-mobile.png 100w, /logo-tablet.png 150w, /logo-desktop.png 200w",
+      );
+      expect(img).toHaveAttribute("width", expected.width.toString());
+      expect(img).toHaveAttribute("height", expected.height.toString());
+    },
+  );
 
   it("renders fallback text when no source is available", () => {
     render(<Logo fallbackText="Shop" />);

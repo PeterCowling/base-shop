@@ -262,4 +262,53 @@ describe("settings.server functions via resolved repository", () => {
   });
 });
 
+describe("settings.server sequential repository usage", () => {
+  const settings = { languages: ["en"], currency: "USD" } as any;
+  const history = [
+    { timestamp: "2020-01-01T00:00:00.000Z", diff: { currency: "USD" } },
+  ];
+
+  beforeEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  it("delegates sequential calls through a single resolved repo", async () => {
+    const repo = {
+      getShopSettings: jest.fn().mockResolvedValue(settings),
+      saveShopSettings: jest.fn().mockResolvedValue(undefined),
+      diffHistory: jest.fn().mockResolvedValue(history),
+    };
+    const resolveRepo = jest.fn(() => repo);
+    jest.doMock("../repoResolver", () => ({ resolveRepo }));
+    jest.doMock("../../db", () => ({ prisma: { setting: {} } }));
+    const { getShopSettings, saveShopSettings, diffHistory } = await import("../settings.server");
+    const shop = "shop";
+    await expect(getShopSettings(shop)).resolves.toBe(settings);
+    await saveShopSettings(shop, settings);
+    await expect(diffHistory(shop)).resolves.toBe(history);
+    expect(resolveRepo).toHaveBeenCalledTimes(1);
+    expect(repo.getShopSettings).toHaveBeenCalledWith(shop);
+    expect(repo.saveShopSettings).toHaveBeenCalledWith(shop, settings);
+    expect(repo.diffHistory).toHaveBeenCalledWith(shop);
+  });
+
+  it("propagates errors from saveShopSettings", async () => {
+    const error = new Error("save failed");
+    const repo = {
+      getShopSettings: jest.fn(),
+      saveShopSettings: jest.fn().mockRejectedValue(error),
+      diffHistory: jest.fn(),
+    };
+    const resolveRepo = jest.fn(() => repo);
+    jest.doMock("../repoResolver", () => ({ resolveRepo }));
+    jest.doMock("../../db", () => ({ prisma: { setting: {} } }));
+    const { saveShopSettings } = await import("../settings.server");
+    await expect(saveShopSettings("shop", settings)).rejects.toThrow("save failed");
+    expect(resolveRepo).toHaveBeenCalledTimes(1);
+    expect(repo.saveShopSettings).toHaveBeenCalledWith("shop", settings);
+  });
+});
+
+
 

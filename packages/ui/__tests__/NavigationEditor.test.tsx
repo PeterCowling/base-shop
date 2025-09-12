@@ -91,5 +91,37 @@ describe("NavigationEditor", () => {
     // Accessibility check for list items
     expect(screen.getAllByRole("listitem")).toHaveLength(3);
   });
+
+  it("renders nested lists and updates child label", () => {
+    const items: NavItem[] = [
+      {
+        id: "1",
+        label: "Parent",
+        url: "/parent",
+        children: [{ id: "1-1", label: "Child", url: "/child", children: [] }],
+      },
+    ];
+    const onChange = jest.fn();
+    const { container } = render(
+      <NavigationEditor items={items} onChange={onChange} />
+    );
+
+    const nested = container.querySelector("ul ul");
+    expect(nested).toHaveClass("ml-4");
+
+    const childInput = screen.getAllByPlaceholderText("Label")[1];
+    fireEvent.change(childInput, { target: { value: "Updated" } });
+
+    expect(onChange).toHaveBeenCalledWith([
+      {
+        id: "1",
+        label: "Parent",
+        url: "/parent",
+        children: [
+          { id: "1-1", label: "Updated", url: "/child", children: [] },
+        ],
+      },
+    ]);
+  });
 });
 

@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
-import HeroBanner, { type Slide } from "../src/components/home/HeroBanner";
+import HeroBanner, { type Slide } from "../src/components/home/HeroBanner.client";
 
 const translations: Record<string, string> = {};
 
@@ -72,6 +72,21 @@ describe("HeroBanner", () => {
     expect(
       screen.getByRole("link", { name: "Buy A" })
     ).toHaveAttribute("href", "/en/shop");
+  });
+
+  it("falls back to default slides and language when pathname null", () => {
+    Object.assign(translations, {
+      "hero.slide1.headline": "Slide One",
+      "hero.slide3.headline": "Slide Three",
+      "hero.cta": "Shop now",
+    });
+    mockPathname.mockReturnValue(null);
+    render(<HeroBanner slides={[]} />);
+    expect(screen.getByText("Slide One")).toBeInTheDocument();
+    const link = screen.getByRole("link", { name: "Shop now" });
+    expect(link).toHaveAttribute("href", "/en/shop");
+    fireEvent.click(screen.getByRole("button", { name: "Previous slide" }));
+    expect(screen.getByText("Slide Three")).toBeInTheDocument();
   });
 });
 

@@ -41,5 +41,15 @@ describe("ValueProps", () => {
     expect(screen.getByText("Top quality")).toBeInTheDocument();
     expect(screen.queryByText("Eco")).toBeNull();
   });
+
+  it("uses default items when passed an empty array", () => {
+    Object.assign(translations, {
+      "value.eco.title": "Eco",
+      "value.eco.desc": "Eco desc",
+    });
+    render(<ValueProps items={[]} />);
+    expect(screen.getByText("Eco")).toBeInTheDocument();
+    expect(screen.getByText("Eco desc")).toBeInTheDocument();
+  });
 });
 

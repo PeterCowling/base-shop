@@ -52,5 +52,15 @@ describe("ReviewsCarousel", () => {
     expect(screen.getByText(/Great/)).toBeInTheDocument();
     expect(screen.getByText(/Bob/)).toBeInTheDocument();
   });
+
+  it("falls back to defaults when passed an empty array", () => {
+    Object.assign(translations, {
+      "review.anna.quote": "Anna quote",
+      "review.anna.name": "Anna",
+    });
+    render(<ReviewsCarousel reviews={[]} />);
+    expect(screen.getByText(/Anna quote/)).toBeInTheDocument();
+    expect(screen.getByText(/—\s*Anna/)).toBeInTheDocument();
+  });
 });
 

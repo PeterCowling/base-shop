@@ -1,35 +1,36 @@
 import * as path from "path";
 import * as os from "os";
-import { promises as fs } from "fs";
-
 const DATA_ROOT = path.join(os.tmpdir(), "shop-json-tests");
 
 jest.mock("../../dataRoot", () => ({ DATA_ROOT }));
 
-const files = new Map<string, string>();
+jest.mock("fs", () => {
+  const files = new Map<string, string>();
+  return {
+    promises: {
+      readFile: jest.fn(async (p: string) => {
+        const data = files.get(p);
+        if (data === undefined) throw new Error("not found");
+        return data;
+      }),
+      writeFile: jest.fn(async (p: string, data: string) => {
+        files.set(p, data);
+      }),
+      rename: jest.fn(async (tmp: string, dest: string) => {
+        const data = files.get(tmp);
+        if (data === undefined) throw new Error("missing");
+        files.set(dest, data);
+        files.delete(tmp);
+      }),
+      mkdir: jest.fn(async () => {}),
+      __files: files,
+    },
+  };
+});
 
-jest.mock("fs", () => ({
-  promises: {
-    readFile: jest.fn(async (p: string) => {
-      const data = files.get(p);
-      if (data === undefined) throw new Error("not found");
-      return data;
-    }),
-    writeFile: jest.fn(async (p: string, data: string) => {
-      files.set(p, data);
-    }),
-    rename: jest.fn(async (tmp: string, dest: string) => {
-      const data = files.get(tmp);
-      if (data === undefined) throw new Error("missing");
-      files.set(dest, data);
-      files.delete(tmp);
-    }),
-    mkdir: jest.fn(async () => {}),
-    __files: files,
-  },
-}));
+jest.mock("../../shops/index", () => ({ validateShopName: (s: string) => s }));
 
-jest.mock("../shops/index", () => ({ validateShopName: (s: string) => s }));
+import { promises as fs } from "fs";
 
 describe("shop.json.server", () => {
   const fsMock = fs as unknown as typeof fs & { __files: Map<string, string> };
@@ -109,6 +110,7 @@ describe("shop.json.server", () => {
       shopPath,
       JSON.stringify({
         id: "s1",
+        name: "S1",
         catalogFilters: [],
         themeId: "base",
         filterMappings: {},

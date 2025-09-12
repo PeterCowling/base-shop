@@ -85,6 +85,19 @@ describe("useProductInputs", () => {
     expect(result.current.product.variants.color).toEqual([""]);
   });
 
+  it("handleChange ignores unknown fields", () => {
+    const initial = { ...createProduct(), variants: {} };
+    const { result } = renderHook(() => useProductInputs(initial, locales));
+
+    act(() => {
+      result.current.handleChange({
+        target: { name: "unknown_field", value: "some" },
+      } as any);
+    });
+
+    expect(result.current.product).toEqual(initial);
+  });
+
   it("addVariantValue and removeVariantValue update variants correctly", () => {
     const { result } = renderHook(() =>
       useProductInputs({ ...createProduct(), variants: {} }, locales)
@@ -95,17 +108,32 @@ describe("useProductInputs", () => {
         target: { name: "variant_color", value: "red" },
       } as any);
     });
-    expect(result.current.product.variants.color).toEqual(["red"]);
-
     act(() => {
       result.current.addVariantValue("color");
     });
-    expect(result.current.product.variants.color).toEqual(["red", ""]);
+    act(() => {
+      result.current.handleChange({
+        target: { name: "variant_color_1", value: "blue" },
+      } as any);
+    });
+    act(() => {
+      result.current.addVariantValue("color");
+    });
+    act(() => {
+      result.current.handleChange({
+        target: { name: "variant_color_2", value: "green" },
+      } as any);
+    });
+    expect(result.current.product.variants.color).toEqual([
+      "red",
+      "blue",
+      "green",
+    ]);
 
     act(() => {
-      result.current.removeVariantValue("color", 0);
+      result.current.removeVariantValue("color", 1);
     });
-    expect(result.current.product.variants.color).toEqual([""]);
+    expect(result.current.product.variants.color).toEqual(["red", "green"]);
   });
 });
 

@@ -1,7 +1,9 @@
 import * as React from "react";
-import { render, screen } from "@testing-library/react";
+import { configure, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SideNav } from "./SideNav";
+
+configure({ testIdAttribute: "data-testid" });
 
 function TestNav() {
   const [active, setActive] = React.useState("home");

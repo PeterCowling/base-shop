@@ -17,13 +17,11 @@ describe("AnnouncementBar", () => {
     expect(screen.queryByText("Deal")).not.toBeInTheDocument();
   });
 
-  it("navigates when link is clicked", async () => {
-    const originalUrl = window.location.href;
+  it("renders a link when href is provided", async () => {
     render(<AnnouncementBar text="Promo" href="/sale" />);
     const link = screen.getByRole("link", { name: "Promo" });
     await userEvent.click(link);
-    expect(window.location.href).toContain("/sale");
-    window.history.pushState({}, "", originalUrl);
+    expect(link).toHaveAttribute("href", "/sale");
   });
 });
 

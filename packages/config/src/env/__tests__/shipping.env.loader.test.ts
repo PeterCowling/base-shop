@@ -45,17 +45,54 @@ describe('config/env/shipping', () => {
       );
     }));
 
-  it('requires carrier keys', async () => {
-    await withEnv({ SHIPPING_PROVIDER: 'ups' }, async () => {
-      await expect(reload()).rejects.toThrow(
-        'Invalid shipping environment variables',
-      );
-    });
-    await withEnv({ SHIPPING_PROVIDER: 'dhl' }, async () => {
-      await expect(reload()).rejects.toThrow(
-        'Invalid shipping environment variables',
-      );
-    });
+    it('errors when UPS_KEY missing for ups', async () =>
+      withEnv({ SHIPPING_PROVIDER: 'ups' }, async () => {
+        const errorSpy = jest
+          .spyOn(console, 'error')
+          .mockImplementation(() => {});
+        await expect(reload()).rejects.toThrow(
+          'Invalid shipping environment variables',
+        );
+        expect(errorSpy).toHaveBeenCalledWith(
+          '❌ Invalid shipping environment variables:',
+          expect.objectContaining({
+            UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
+          }),
+        );
+        errorSpy.mockRestore();
+      }),
+    );
+
+    it('errors when DHL_KEY missing for dhl', async () =>
+      withEnv({ SHIPPING_PROVIDER: 'dhl' }, async () => {
+        const errorSpy = jest
+          .spyOn(console, 'error')
+          .mockImplementation(() => {});
+        await expect(reload()).rejects.toThrow(
+          'Invalid shipping environment variables',
+        );
+        expect(errorSpy).toHaveBeenCalledWith(
+          '❌ Invalid shipping environment variables:',
+          expect.objectContaining({
+            DHL_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
+          }),
+        );
+        errorSpy.mockRestore();
+      }),
+    );
+
+    it('throws on invalid input to loadShippingEnv', async () =>
+      withEnv({}, async () => {
+        const { loadShippingEnv } = await reload();
+        const errorSpy = jest
+          .spyOn(console, 'error')
+          .mockImplementation(() => {});
+        expect(() =>
+          loadShippingEnv({ DEFAULT_COUNTRY: 'USA' as any }),
+        ).toThrow('Invalid shipping environment variables');
+        expect(errorSpy).toHaveBeenCalled();
+        errorSpy.mockRestore();
+      }),
+    );
   });
-});
 

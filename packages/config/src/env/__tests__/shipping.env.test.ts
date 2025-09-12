@@ -327,6 +327,19 @@ describe("shipping environment parser", () => {
         errorSpy.mockRestore();
       },
     );
+
+    it("throws eagerly when process.env DEFAULT_COUNTRY is invalid", async () => {
+      jest.resetModules();
+      process.env = { DEFAULT_COUNTRY: "USA" } as NodeJS.ProcessEnv;
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
+      await expect(import("../shipping.ts")).rejects.toThrow(
+        "Invalid shipping environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalled();
+      errorSpy.mockRestore();
+    });
   });
 
   describe("DEFAULT_SHIPPING_ZONE", () => {

@@ -31,7 +31,7 @@ describe("DataTable", () => {
     expect(screen.getByText("30")).toBeInTheDocument();
   });
 
-  it("toggles row selection and calls onSelectionChange", () => {
+  it("toggles multiple row selection and calls onSelectionChange", () => {
     const handleChange = jest.fn();
     render(
       <DataTable
@@ -42,23 +42,28 @@ describe("DataTable", () => {
       />
     );
 
-    const aliceRow = screen.getByText("Alice").closest("tr") as HTMLElement;
-    const aliceCheckbox = aliceRow.querySelector(
-      "input[type=checkbox]"
-    ) as HTMLInputElement;
+    const rowElements = screen.getAllByRole("row").slice(1); // skip header row
+    const checkboxes = screen.getAllByRole("checkbox") as HTMLInputElement[];
 
-    expect(aliceRow.getAttribute("data-state")).toBeNull();
-    expect(aliceCheckbox.checked).toBe(false);
+    // select first row
+    fireEvent.click(rowElements[0]);
+    expect(handleChange).toHaveBeenNthCalledWith(1, [rows[0]]);
+    expect(checkboxes[0].checked).toBe(true);
 
-    fireEvent.click(aliceRow);
-    expect(aliceRow.getAttribute("data-state")).toBe("selected");
-    expect(aliceCheckbox.checked).toBe(true);
-    expect(handleChange).toHaveBeenLastCalledWith([rows[0]]);
+    // select second row
+    fireEvent.click(rowElements[1]);
+    expect(handleChange).toHaveBeenNthCalledWith(2, [rows[0], rows[1]]);
+    expect(checkboxes[1].checked).toBe(true);
 
-    fireEvent.click(aliceRow);
-    expect(aliceRow.getAttribute("data-state")).toBeNull();
-    expect(aliceCheckbox.checked).toBe(false);
-    expect(handleChange).toHaveBeenLastCalledWith([]);
+    // deselect first row
+    fireEvent.click(rowElements[0]);
+    expect(handleChange).toHaveBeenNthCalledWith(3, [rows[1]]);
+    expect(checkboxes[0].checked).toBe(false);
+
+    // deselect second row
+    fireEvent.click(rowElements[1]);
+    expect(handleChange).toHaveBeenNthCalledWith(4, []);
+    expect(checkboxes[1].checked).toBe(false);
   });
 
   it("renders without selection when selectable is false", () => {

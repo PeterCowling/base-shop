@@ -783,6 +783,9 @@ importers:
       prisma:
         specifier: 6.14.0
         version: 6.14.0(typescript@5.8.3)
+      react-test-renderer:
+        specifier: 19.2.0-canary-3fbfb9ba-20250409
+        version: 19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409)
 
   packages/platform-machine:
     dependencies:

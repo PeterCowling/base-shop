@@ -145,6 +145,7 @@
   },
   "devDependencies": {
     "@prisma/client": "6.14.0",
-    "prisma": "6.14.0"
+    "prisma": "6.14.0",
+    "react-test-renderer": "19.2.0-canary-3fbfb9ba-20250409"
   }
 }

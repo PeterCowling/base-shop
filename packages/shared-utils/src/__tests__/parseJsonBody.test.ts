@@ -100,6 +100,21 @@ describe('parseJsonBody', () => {
     await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
   });
 
+  it('returns 400 when json parser throws', async () => {
+    const req = {
+      headers: new Headers({ 'content-type': 'application/json' }),
+      json: jest.fn().mockRejectedValue(new Error('boom')),
+    } as unknown as Request;
+
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const result = await parseJsonBody(req, schema, '10kb');
+    consoleSpy.mockRestore();
+
+    expect(result.success).toBe(false);
+    expect(result.response.status).toBe(400);
+    await expect(result.response.json()).resolves.toEqual({ error: 'Invalid JSON' });
+  });
+
   it('returns flattened errors when JSON fails schema', async () => {
     const req = {
       headers: new Headers({ 'content-type': 'application/json' }),
@@ -125,6 +140,22 @@ describe('parseJsonBody', () => {
       success: true,
       data: { foo: 'bar' },
     });
+  });
+
+  it('prefers text parser when both text and json are present', async () => {
+    const text = jest.fn().mockResolvedValue('{"foo":"bar"}');
+    const json = jest.fn();
+    const req = {
+      headers: new Headers({ 'content-type': 'application/json' }),
+      text,
+      json,
+    } as unknown as Request;
+
+    const result = await parseJsonBody(req, schema, '10kb');
+
+    expect(text).toHaveBeenCalled();
+    expect(json).not.toHaveBeenCalled();
+    expect(result).toEqual({ success: true, data: { foo: 'bar' } });
   });
 
   it('returns 413 when text body exceeds limit', async () => {

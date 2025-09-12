@@ -22,4 +22,10 @@ describe("Popover", () => {
     expect(content).toBeInTheDocument();
     expect(content).toHaveClass("p-2");
   });
+
+  it("uses default sideOffset and align props", () => {
+    const element = (PopoverContent as any).render({}, null);
+    expect(element.props.sideOffset).toBe(4);
+    expect(element.props.align).toBe("center");
+  });
 });

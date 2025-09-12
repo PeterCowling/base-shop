@@ -19,7 +19,7 @@ describe("TrackingDashboardTemplate", () => {
     render(
       <TrackingDashboardTemplate records={records} stats={stats} />,
     );
-    expect(screen.getByText("1")).toBeInTheDocument();
+    expect(screen.getAllByText("1")).toHaveLength(2);
     expect(screen.getByText("Delivered")).toBeInTheDocument();
     expect(screen.getByText("Shipments")).toBeInTheDocument();
   });

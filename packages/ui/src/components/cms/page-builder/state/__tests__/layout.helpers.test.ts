@@ -100,6 +100,29 @@ describe("layout helper coordinate and size updates", () => {
     expect(updated.top).toBe("8px");
   });
 
+  it("resize trims whitespace, handles decimals and negatives, and preserves invalid strings", () => {
+    const a = makeComp("a");
+    const state = resize(
+      { ...init, present: [a] },
+      {
+        type: "resize",
+        id: "a",
+        width: " 15 ",
+        height: "1.5",
+        left: " -3",
+        marginDesktop: " foo ",
+      },
+    );
+    const updated = state.present[0] as PageComponent & Record<string, string | undefined>;
+    expect(updated.width).toBe("15px");
+    expect(updated.height).toBe("1.5px");
+    expect(updated.left).toBe("-3px");
+    // top offset not provided so it remains unchanged
+    expect(updated.top).toBe("2px");
+    // non-numeric strings are trimmed but otherwise untouched
+    expect(updated.marginDesktop).toBe("foo");
+  });
+
   it("resize normalizes margin and padding breakpoints", () => {
     const a = makeComp("a", {
       marginDesktop: "1px",

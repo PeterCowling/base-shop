@@ -1,6 +1,6 @@
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { fetchJson } from "@acme/shared-utils";
-import { usePublishLocations } from "./usePublishLocations";
+import { usePublishLocations, loadPublishLocations } from "./usePublishLocations";
 
 jest.mock("@acme/shared-utils", () => ({
   fetchJson: jest.fn(),
@@ -63,5 +63,20 @@ describe("usePublishLocations", () => {
       result.current.reload();
     });
     await waitFor(() => expect(result.current.locations).toEqual(duplicates));
+  });
+});
+
+describe("loadPublishLocations", () => {
+  it("returns fetched locations", async () => {
+    const locations = [
+      { id: "a", name: "A", path: "a", requiredOrientation: "landscape" },
+    ];
+    mockFetchJson.mockResolvedValueOnce(locations);
+    await expect(loadPublishLocations()).resolves.toEqual(locations);
+  });
+
+  it("returns empty array on fetch error", async () => {
+    mockFetchJson.mockRejectedValueOnce(new Error("fail"));
+    await expect(loadPublishLocations()).resolves.toEqual([]);
   });
 });

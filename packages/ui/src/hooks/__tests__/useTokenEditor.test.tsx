@@ -187,6 +187,26 @@ describe("useTokenEditor", () => {
     expect(latest["--font-mono"]).toBe('"Inter", var(--font-mono)');
   });
 
+  it("calling setGoogleFont twice with the same font only inserts one link", () => {
+    let setGF!: ReturnType<typeof useTokenEditor>["setGoogleFont"]; // !
+
+    function Wrapper() {
+      const hook = useTokenEditor({}, {}, () => {});
+      setGF = hook.setGoogleFont;
+      return null;
+    }
+
+    render(<Wrapper />);
+
+    act(() => setGF("sans", "Inter"));
+    act(() => setGF("sans", "Inter"));
+
+    const links = document.head.querySelectorAll(
+      "link#google-font-Inter"
+    );
+    expect(links).toHaveLength(1);
+  });
+
   it("addCustomFont with empty input does nothing", () => {
     let add!: () => void; // !
     let setNF!: (v: string) => void; // !

@@ -13,9 +13,8 @@ describe("Loader", () => {
 
   it("accepts custom size", () => {
     const { container } = render(<Loader size={40} />);
-    const div = container.firstChild as HTMLElement;
-    expect(div).toHaveClass("h-[40px]");
-    expect(div).toHaveClass("w-[40px]");
+    const div = container.firstElementChild as HTMLDivElement;
+    expect(div).toHaveClass("h-[40px] w-[40px]");
   });
 
   it("merges class names", () => {

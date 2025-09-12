@@ -10,6 +10,7 @@ import {
   readFileSync,
   writeFileSync,
   readdirSync,
+  mkdirSync,
 } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
@@ -67,6 +68,15 @@ export function repoRoot(): string {
 }
 
 /**
+ * Ensure a directory exists, creating it recursively when missing.
+ */
+export function ensureDir(path: string): void {
+  if (!existsSync(path)) {
+    mkdirSync(path, { recursive: true });
+  }
+}
+
+/**
  * Copy a template application into a new shop directory.
  *
  * `node_modules` folders are skipped during the copy.
@@ -102,6 +112,13 @@ export function readFile(path: string): string {
  */
 export function writeFile(path: string, content: string): void {
   writeFileSync(path, content);
+}
+
+/**
+ * Write an object to disk as formatted JSON with trailing newline.
+ */
+export function writeJSON(path: string, data: unknown): void {
+  writeFileSync(path, JSON.stringify(data, null, 2) + "\n");
 }
 
 export function listThemes(): string[] {

@@ -215,8 +215,7 @@ export function useFileUpload(
         )}
         {isValid === false && !isVideo && (
           <p className="text-warning mt-2 text-sm">
-            Orientation mismatch: expected {requiredOrientation}
-            {actual ? `, got ${actual}` : ""}
+            Wrong orientation (needs {requiredOrientation})
           </p>
         )}
       </div>

@@ -87,6 +87,20 @@ describe("trackEvent providers", () => {
     );
   });
 
+  test("google analytics provider defaults client_id to 555 when clientId missing", async () => {
+    readShop.mockResolvedValue({ analyticsEnabled: true });
+    getShopSettings.mockResolvedValue({
+      analytics: { provider: "ga", id: "G-XYZ" },
+    });
+    process.env.GA_API_SECRET = "secret";
+    const fetchMock = jest.fn().mockResolvedValue({ ok: true });
+    (globalThis.fetch as any) = fetchMock;
+    const { trackEvent } = await import("../index");
+    await trackEvent(shop, { type: "page_view", page: "home" });
+    const body = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(body.client_id).toBe("555");
+  });
+
   test("google analytics provider ignores fetch rejections", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
     getShopSettings.mockResolvedValue({

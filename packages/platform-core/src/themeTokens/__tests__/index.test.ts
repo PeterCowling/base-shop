@@ -101,6 +101,41 @@ describe('loadThemeTokensBrowser', () => {
       themeTokens.baseTokens
     );
   });
+
+  it.each([
+    ['missing module', 'fallback-missing', undefined],
+    [
+      'module without tokens',
+      'fallback-no-tokens',
+      "export const foo = 'bar';",
+    ],
+  ])(
+    'uses tailwind tokens when %s',
+    async (_label, theme, indexSource) => {
+      const realFs = jest.requireActual('node:fs') as typeof fs;
+      const baseDir = join(
+        __dirname,
+        `../../../../../packages/themes/${theme}`
+      );
+      if (indexSource) {
+        const indexDir = join(baseDir, 'src');
+        realFs.mkdirSync(indexDir, { recursive: true });
+        realFs.writeFileSync(join(indexDir, 'index.ts'), indexSource);
+      }
+      const tailwindDir = join(baseDir, 'tailwind-tokens', 'src');
+      realFs.mkdirSync(tailwindDir, { recursive: true });
+      realFs.writeFileSync(
+        join(tailwindDir, 'index.ts'),
+        "export const tokens = { '--baz': 'qux' } as const;"
+      );
+
+      await expect(themeTokens.loadThemeTokensBrowser(theme)).resolves.toEqual({
+        '--baz': 'qux',
+      });
+
+      realFs.rmSync(baseDir, { recursive: true, force: true });
+    }
+  );
 });
 
 describe('loadThemeTokens', () => {

@@ -22,6 +22,7 @@ describe("readInitial", () => {
 
   beforeEach(() => {
     window.localStorage.clear();
+    jest.restoreAllMocks();
   });
 
   it("returns default when window is undefined", () => {
@@ -40,6 +41,14 @@ describe("readInitial", () => {
 
   it("defaults when stored currency is invalid", () => {
     window.localStorage.setItem(LS_KEY, "JPY");
+    expect(readInitial()).toBe("EUR");
+  });
+
+  it("defaults when localStorage.getItem throws", () => {
+    jest.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+      throw new Error("blocked");
+    });
+
     expect(readInitial()).toBe("EUR");
   });
 });
@@ -153,6 +162,36 @@ describe("CurrencyProvider", () => {
 
     unmount();
   });
+
+  it("handles localStorage write failures", async () => {
+    const setSpy = jest
+      .spyOn(Storage.prototype, "setItem")
+      .mockImplementation(() => {
+        throw new Error("blocked");
+      });
+
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    const { getByText, getByTestId, unmount } = render(
+      <CurrencyProvider>
+        <Display />
+      </CurrencyProvider>
+    );
+
+    fireEvent.click(getByText("change"));
+
+    await waitFor(() => {
+      expect(getByTestId("currency").textContent).toBe("USD");
+      expect(setSpy).toHaveBeenCalledWith(LS_KEY, "USD");
+    });
+
+    expect(window.localStorage.getItem(LS_KEY)).toBeNull();
+
+    consoleSpy.mockRestore();
+    unmount();
+  });
 });
 
 describe("useCurrency", () => {
@@ -160,6 +199,18 @@ describe("useCurrency", () => {
     expect(() => useCurrency()).toThrow(
       "useCurrency must be inside CurrencyProvider"
     );
+  });
+
+  it("normalizes Invalid hook call errors", () => {
+    const spy = jest.spyOn(React, "useContext").mockImplementation(() => {
+      throw new Error("Invalid hook call");
+    });
+
+    expect(() => useCurrency()).toThrow(
+      "useCurrency must be inside CurrencyProvider"
+    );
+
+    spy.mockRestore();
   });
 
   it("throws when a component uses the hook without provider", () => {
@@ -173,7 +224,7 @@ describe("useCurrency", () => {
     );
   });
 
-  it("rethrows errors from React.useContext", () => {
+  it("rethrows unexpected errors from React.useContext", () => {
     const customError = new Error("useContext boom");
     const spy = jest.spyOn(React, "useContext").mockImplementation(() => {
       throw customError;

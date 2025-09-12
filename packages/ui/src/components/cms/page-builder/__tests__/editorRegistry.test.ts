@@ -41,29 +41,35 @@ const expectedKeys = [
 
 describe("editorRegistry", () => {
   it("maps expected keys to lazy components", () => {
+    expect(Object.keys(editorRegistry)).toEqual(expectedKeys);
+
     expectedKeys.forEach((key) => {
       const comp = (editorRegistry as Record<string, any>)[key];
-      expect(comp).toBeDefined();
       expect(comp).toHaveProperty("$$typeof", Symbol.for("react.lazy"));
       expect(typeof (comp as any)._init).toBe("function");
     });
   });
 
-  it("resolves Button editor module", async () => {
-    const button = editorRegistry.Button as unknown as {
+  it("resolves all editor modules", async () => {
+    const entries = Object.values(editorRegistry) as Array<{
       _init: (payload: unknown) => unknown;
       _payload: unknown;
-    };
+    }>;
 
-    let resolved;
-    try {
-      resolved = button._init(button._payload);
-    } catch (promise) {
-      await promise;
-      resolved = button._init(button._payload);
-    }
+    await Promise.all(
+      entries.map(async (editor) => {
+        let resolved;
 
-    expect(resolved).toBeDefined();
+        try {
+          resolved = editor._init(editor._payload);
+        } catch (promise) {
+          await promise;
+          resolved = editor._init(editor._payload);
+        }
+
+        expect(resolved).toBeDefined();
+      })
+    );
   });
 });
 

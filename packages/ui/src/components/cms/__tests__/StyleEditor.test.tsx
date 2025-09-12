@@ -1,9 +1,9 @@
-import { render } from "@testing-library/react";
+import { render, within } from "@testing-library/react";
 import type { TokenMap } from "../../../hooks/useTokenEditor";
 import StyleEditor from "../StyleEditor";
 
-jest.mock("../style/Presets", () => jest.fn(() => null));
-jest.mock("../style/Tokens", () => jest.fn(() => null));
+jest.mock("../style/Presets", () => jest.fn(() => <div>presets</div>));
+jest.mock("../style/Tokens", () => jest.fn(() => <div>tokens</div>));
 
 import Presets from "../style/Presets";
 import Tokens from "../style/Tokens";
@@ -23,7 +23,13 @@ describe("StyleEditor", () => {
       focusToken: "--color-primary",
     };
 
-    render(<StyleEditor {...props} />);
+    const { container } = render(<StyleEditor {...props} />);
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper).toHaveClass("space-y-4");
+
+    const scoped = within(wrapper);
+    expect(scoped.getByText("presets")).toBeInTheDocument();
+    expect(scoped.getByText("tokens")).toBeInTheDocument();
 
     expect(MockPresets).toHaveBeenCalledWith(props, undefined);
     expect(MockTokens).toHaveBeenCalledWith(props, undefined);

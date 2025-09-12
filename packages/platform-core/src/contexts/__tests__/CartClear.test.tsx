@@ -38,7 +38,7 @@ describe("clear action", () => {
     restoreFetch();
   });
 
-  it("clears cart", async () => {
+  it("clears cart with correct payload", async () => {
     const cartWithItem = { sku1: { sku, qty: 1 } } as Record<string, any>;
     const empty = {} as Record<string, any>;
     fetchMock
@@ -56,6 +56,13 @@ describe("clear action", () => {
       await dispatch({ type: "clear" });
     });
 
+    expect(fetchMock).toHaveBeenLastCalledWith(
+      "/api/cart",
+      expect.objectContaining({
+        method: "DELETE",
+        body: JSON.stringify({}),
+      })
+    );
     expect(screen.getByTestId("count").textContent).toBe("0");
     expect(JSON.parse(localStorage.getItem("cart")!)).toEqual(empty);
   });

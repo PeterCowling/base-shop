@@ -6,7 +6,11 @@ import { Button, type ButtonProps } from "../button";
 configure({ testIdAttribute: "data-testid" });
 
 describe("Button", () => {
-  const cases: Array<{ variant: NonNullable<ButtonProps["variant"]>; className: string; token: string }> = [
+  const variantCases: Array<{
+    variant: NonNullable<ButtonProps["variant"]>;
+    className: string;
+    token: string;
+  }> = [
     { variant: "default", className: "bg-primary", token: "--color-primary" },
     { variant: "outline", className: "border-input", token: "--color-accent" },
     { variant: "ghost", className: "hover:bg-accent", token: "--color-accent" },
@@ -34,7 +38,7 @@ describe("Button", () => {
     expect(ref.current).toBe(button);
   });
 
-  it.each(cases)(
+  it.each(variantCases)(
     "renders $variant variant with correct class and token",
     ({ variant, className, token }) => {
       render(<Button variant={variant} />);
@@ -43,6 +47,13 @@ describe("Button", () => {
       expect(button).toHaveAttribute("data-token", token);
     }
   );
+
+  it("honors disabled and forwards attributes", () => {
+    render(<Button disabled aria-label="submit" data-testid="btn" />);
+    const button = screen.getByTestId("btn");
+    expect(button).toBeDisabled();
+    expect(button).toHaveAttribute("aria-label", "submit");
+  });
 
   it("renders custom component when asChild is true", () => {
     const CustomLink = React.forwardRef<

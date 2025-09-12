@@ -10,7 +10,7 @@ describe('toggleItem', () => {
     expect(input).toEqual([1, 2]);
   });
 
-  it('duplicate value is not appended when already present', () => {
+  it('removes an existing item without duplicating', () => {
     const input = [1, 2, 3];
     const result = toggleItem(input, 2);
 
@@ -36,6 +36,16 @@ describe('toggleItem', () => {
     expect(result).toEqual(['x']);
     expect(result).not.toBe(input);
     expect(input).toEqual([]);
+  });
+
+  it('does not mutate the original list', () => {
+    const input = [1, 2, 3];
+    const added = toggleItem(input, 4);
+    const removed = toggleItem(input, 2);
+
+    expect(input).toEqual([1, 2, 3]);
+    expect(added).not.toBe(input);
+    expect(removed).not.toBe(input);
   });
 });
 

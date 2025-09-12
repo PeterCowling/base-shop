@@ -36,7 +36,7 @@ describe("AddToCartButton", () => {
     expect(button).toBeDisabled();
   });
 
-  it("dispatches add action and shows spinner until complete", async () => {
+  it("sets adding true during dispatch and false after resolve", async () => {
     jest.useFakeTimers();
     mockDispatch.mockImplementation(
       () => new Promise<void>((res) => setTimeout(res, 100)),
@@ -65,12 +65,46 @@ describe("AddToCartButton", () => {
     jest.useRealTimers();
   });
 
-  it("renders error message when dispatch fails", async () => {
-    mockDispatch.mockRejectedValueOnce(new Error("Out of stock"));
+  it("sets adding true during dispatch and false after reject", async () => {
+    jest.useFakeTimers();
+    mockDispatch.mockImplementation(
+      () =>
+        new Promise<void>((_, reject) =>
+          setTimeout(() => reject(new Error("Out of stock")), 100),
+        ),
+    );
     render(<AddToCartButton sku={sku} />);
     const button = screen.getByRole("button", { name: /add to cart/i });
     fireEvent.click(button);
+
+    await screen.findByText("Adding...");
+    expect(button).toBeDisabled();
+
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    await waitFor(() => expect(button).not.toBeDisabled());
+    expect(screen.queryByText("Adding...")).not.toBeInTheDocument();
     expect(await screen.findByRole("alert")).toHaveTextContent("Out of stock");
+    jest.useRealTimers();
+  });
+
+  it("clears error and dispatches on retry", async () => {
+    mockDispatch.mockRejectedValueOnce(new Error("Out of stock"));
+    mockDispatch.mockResolvedValueOnce(undefined);
+
+    render(<AddToCartButton sku={sku} />);
+    const button = screen.getByRole("button", { name: /add to cart/i });
+    fireEvent.click(button);
+
+    expect(await screen.findByRole("alert")).toHaveTextContent("Out of stock");
+
+    fireEvent.click(button);
+    expect(mockDispatch).toHaveBeenCalledTimes(2);
+    await waitFor(() =>
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument(),
+    );
   });
 
   it("shows error and skips dispatch when quantity is below minimum", async () => {

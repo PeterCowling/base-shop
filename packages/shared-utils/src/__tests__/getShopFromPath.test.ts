@@ -11,6 +11,11 @@ describe('getShopFromPath', () => {
     expect(getShopFromPath('/cms/shop/foo?shop=bar')).toBe('bar');
   });
 
+  it('prefers the ?shop parameter over path segments', () => {
+    expect(getShopFromPath('/cms/shop/foo?shop=bar')).toBe('bar');
+    expect(getShopFromPath('/cms/shops/foo?shop=bar')).toBe('bar');
+  });
+
   it('extracts the slug from /shop/:slug paths', () => {
     expect(getShopFromPath('/cms/shop/example')).toBe('example');
   });
@@ -23,6 +28,11 @@ describe('getShopFromPath', () => {
     expect(getShopFromPath('/cms//shop//a')).toBe('a');
   });
 
+  it('handles paths with extra segments', () => {
+    expect(getShopFromPath('/cms/shop/example/extra')).toBe('example');
+    expect(getShopFromPath('/cms/shops/example/extra/more')).toBe('example');
+  });
+
   it('returns undefined when there is no shop segment', () => {
     expect(getShopFromPath('/cms/pages')).toBeUndefined();
   });
@@ -30,6 +40,12 @@ describe('getShopFromPath', () => {
   it('returns undefined for /cms/shop paths without a slug', () => {
     expect(getShopFromPath('/cms/shop')).toBeUndefined();
     expect(getShopFromPath('/cms/shop/')).toBeUndefined();
+  });
+
+  it('returns undefined for empty or invalid paths', () => {
+    expect(getShopFromPath('')).toBeUndefined();
+    expect(getShopFromPath('/')).toBeUndefined();
+    expect(getShopFromPath('/cms/shops')).toBeUndefined();
   });
 
   it('handles paths with trailing slashes', () => {

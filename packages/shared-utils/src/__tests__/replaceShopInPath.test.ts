@@ -55,4 +55,20 @@ describe("replaceShopInPath", () => {
       "/cms/shop/new/?page=1"
     );
   });
+
+  it("replaces slug on public path", () => {
+    expect(replaceShopInPath("/shops/old/products", "new")).toBe(
+      "/shops/new/products"
+    );
+  });
+
+  it("preserves query string on public path", () => {
+    expect(replaceShopInPath("/shops/old/products?x=1", "new")).toBe(
+      "/shops/new/products?x=1"
+    );
+  });
+
+  it("returns non-CMS path without shop unchanged", () => {
+    expect(replaceShopInPath("/about", "new")).toBe("/about");
+  });
 });

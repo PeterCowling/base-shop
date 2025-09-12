@@ -26,9 +26,9 @@ export interface CampaignOptions {
   sanitize?: boolean;
 }
 
-// Read provider preference directly from `process.env` so tests or runtime code
+// Provider selection reads `process.env` at call time so tests or runtime code
 // that mutate environment variables after the configuration module has loaded
-// can still influence the chosen provider.
+// can still influence the chosen provider without throwing on import.
 
 /**
  * Send a campaign email using the configured provider.
@@ -41,6 +41,10 @@ export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
   const { sanitize = true, to, subject, ...rest } = options;
+
+  // Determine the provider at send time so module import never throws for an
+  // unsupported EMAIL_PROVIDER value.
+  const providerOrder = getProviderOrder();
 
   const parsedTo = emailSchema.safeParse(to);
   if (!parsedTo.success) {
@@ -61,7 +65,6 @@ export async function sendCampaignEmail(
     opts.html = renderTemplate(opts.templateId, opts.variables ?? {});
   }
   const optsWithText = await prepareContent(opts, sanitize);
-  const providerOrder = getProviderOrder();
   let lastError: unknown;
   for (const name of providerOrder) {
     if (name === "smtp") {

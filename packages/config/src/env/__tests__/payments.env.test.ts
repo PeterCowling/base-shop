@@ -102,6 +102,26 @@ describe("payments env provider", () => {
     );
     errSpy.mockRestore();
   });
+
+  it("logs and throws for unsupported provider even with stripe keys", async () => {
+    const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(
+      withEnv(
+        {
+          PAYMENTS_PROVIDER: "paypal" as any,
+          STRIPE_SECRET_KEY: "sk_live_123",
+          STRIPE_WEBHOOK_SECRET: "whsec_live_123",
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
+        },
+        () => import("../payments"),
+      ),
+    ).rejects.toThrow("Invalid payments environment variables");
+    expect(errSpy).toHaveBeenCalledWith(
+      "❌ Unsupported PAYMENTS_PROVIDER:",
+      "paypal",
+    );
+    errSpy.mockRestore();
+  });
 });
 
 describe("payments env sandbox flag", () => {
@@ -130,7 +150,10 @@ describe("payments env sandbox flag", () => {
       () => import("../payments"),
     );
     expect(paymentsEnv.PAYMENTS_SANDBOX).toBe(true);
-    expect(warnSpy).toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalledWith(
+      "⚠️ Invalid payments environment variables:",
+      expect.any(Object),
+    );
   });
 });
 
@@ -157,7 +180,10 @@ describe("payments env currency", () => {
         () => import("../payments"),
       );
       expect(paymentsEnv.PAYMENTS_CURRENCY).toBe("USD");
-      expect(warnSpy).toHaveBeenCalled();
+      expect(warnSpy).toHaveBeenCalledWith(
+        "⚠️ Invalid payments environment variables:",
+        expect.any(Object),
+      );
     },
   );
 });

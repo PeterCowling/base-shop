@@ -84,8 +84,8 @@ describe("getReturnLogistics", () => {
     await expect(getReturnLogistics()).rejects.toBeInstanceOf(SyntaxError);
   });
 
-  it("propagates read errors", async () => {
-    const err = new Error("missing");
+  it("propagates ENOENT errors", async () => {
+    const err = Object.assign(new Error("missing"), { code: "ENOENT" });
     jest.spyOn(fs, "readFile").mockRejectedValue(err);
     const { getReturnLogistics } = await import("../returnLogistics");
     await expect(getReturnLogistics()).rejects.toBe(err);

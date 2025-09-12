@@ -600,6 +600,156 @@ describe("resolveSegment errors", () => {
   });
 });
 
+describe("resolveSegment filter logic", () => {
+  beforeEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  it("handles numeric thresholds", async () => {
+    mockReadFile.mockResolvedValue(
+      JSON.stringify([
+        {
+          id: "nums",
+          filters: { and: [{ field: "count", op: "gte", value: "5" }] },
+        },
+      ])
+    );
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    mockListEvents.mockResolvedValue([
+      { email: "below@example.com", count: 4 },
+      { email: "at@example.com", count: 5 },
+      { email: "above@example.com", count: 6 },
+    ]);
+
+    const { resolveSegment } = await import("../segments");
+    const result = await resolveSegment("shop1", "nums");
+    expect(result.sort()).toEqual([
+      "at@example.com",
+      "above@example.com",
+    ].sort());
+  });
+
+  it("handles ISO date comparisons", async () => {
+    mockReadFile.mockResolvedValue(
+      JSON.stringify([
+        {
+          id: "dates",
+          filters: {
+            and: [
+              {
+                field: "last",
+                op: "lt",
+                value: "2024-01-01T00:00:00.000Z",
+              },
+            ],
+          },
+        },
+      ])
+    );
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    mockListEvents.mockResolvedValue([
+      {
+        email: "before@example.com",
+        last: "2023-12-31T23:59:59.000Z",
+      },
+      {
+        email: "exact@example.com",
+        last: "2024-01-01T00:00:00.000Z",
+      },
+      {
+        email: "after@example.com",
+        last: "2024-01-01T00:00:01.000Z",
+      },
+    ]);
+
+    const { resolveSegment } = await import("../segments");
+    const result = await resolveSegment("shop1", "dates");
+    expect(result).toEqual(["before@example.com"]);
+  });
+
+  it("matches all when rule set is empty", async () => {
+    mockReadFile.mockResolvedValue(
+      JSON.stringify([{ id: "all", filters: { and: [] } }])
+    );
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    mockListEvents.mockResolvedValue([
+      { email: "a@example.com" },
+      { email: "b@example.com" },
+    ]);
+
+    const { resolveSegment } = await import("../segments");
+    const result = await resolveSegment("shop1", "all");
+    expect(result.sort()).toEqual(["a@example.com", "b@example.com"].sort());
+  });
+
+  it("supports AND and OR groups", async () => {
+    mockReadFile.mockResolvedValue(
+      JSON.stringify([
+        {
+          id: "andSeg",
+          filters: {
+            and: [
+              { field: "purchases", op: "gte", value: "5" },
+              {
+                field: "last",
+                op: "gte",
+                value: "2024-01-01T00:00:00.000Z",
+              },
+            ],
+          },
+        },
+        {
+          id: "orSeg",
+          filters: {
+            or: [
+              { field: "purchases", op: "gte", value: "5" },
+              {
+                field: "last",
+                op: "gte",
+                value: "2024-01-01T00:00:00.000Z",
+              },
+            ],
+          },
+        },
+      ])
+    );
+    mockStat.mockResolvedValue({ mtimeMs: 1 });
+    const events = [
+      {
+        email: "both@example.com",
+        purchases: 6,
+        last: "2024-02-01T00:00:00.000Z",
+      },
+      {
+        email: "purchases@example.com",
+        purchases: 6,
+        last: "2023-12-01T00:00:00.000Z",
+      },
+      {
+        email: "date@example.com",
+        purchases: 1,
+        last: "2024-02-01T00:00:00.000Z",
+      },
+      {
+        email: "none@example.com",
+        purchases: 1,
+        last: "2023-12-01T00:00:00.000Z",
+      },
+    ];
+    mockListEvents.mockResolvedValue(events);
+
+    const { resolveSegment } = await import("../segments");
+    const rAnd = await resolveSegment("shop1", "andSeg");
+    const rOr = await resolveSegment("shop1", "orSeg");
+
+    expect(rAnd).toEqual(["both@example.com"]);
+    expect(rOr.sort()).toEqual(
+      ["both@example.com", "purchases@example.com", "date@example.com"].sort()
+    );
+  });
+});
+
 describe("analyticsMTime", () => {
   beforeEach(() => {
     jest.resetModules();

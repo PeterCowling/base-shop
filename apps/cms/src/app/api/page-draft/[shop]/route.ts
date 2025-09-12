@@ -1,4 +1,4 @@
-import { savePageDraft } from "@cms/actions/pages.server";
+import { savePageDraft } from "@cms/actions/pages/draft";
 import { authOptions } from "@cms/auth/options";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { getServerSession } from "next-auth";

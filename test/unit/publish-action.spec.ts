@@ -40,7 +40,7 @@ describe("publish page action", () => {
     mockAuth();
     mockConfig();
     const { createPage } = await import(
-      "../../apps/cms/src/actions/pages.server"
+      "../../apps/cms/src/actions/pages/create"
     );
     const fd = new FormData();
     fd.append("slug", "home");
@@ -64,7 +64,7 @@ describe("publish page action", () => {
     mockAuth();
     mockConfig();
     const { createPage } = await import(
-      "../../apps/cms/src/actions/pages.server"
+      "../../apps/cms/src/actions/pages/create"
     );
     const fd = new FormData();
     fd.append("slug", "home");

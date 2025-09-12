@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/new/builder/page.tsx
 
-import { createPage } from "@cms/actions/pages.server";
+import { createPage } from "@cms/actions/pages/create";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page } from "@acme/types";
 import dynamic from "next/dynamic";

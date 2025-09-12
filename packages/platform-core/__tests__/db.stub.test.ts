@@ -189,6 +189,24 @@ describe("createTestPrismaStub", () => {
     expect(products).toHaveLength(0);
   });
 
+  it("handles missing product records", async () => {
+    const db = createTestPrismaStub();
+
+    const missing = await db.product.findUnique({ where: { id: "p1" } });
+    expect(missing).toBeNull();
+
+    await expect(
+      db.product.update({
+        where: { shopId_id: { shopId: "s1", id: "p1" } },
+        data: { title: "t" },
+      }),
+    ).rejects.toThrow("Product not found");
+
+    await expect(
+      db.product.delete({ where: { shopId_id: { shopId: "s1", id: "p1" } } }),
+    ).rejects.toThrow("Product not found");
+  });
+
   it("supports page CRUD operations", async () => {
     const db = createTestPrismaStub();
     await db.page.createMany({ data: [{ id: "pg1", shopId: "s1" }] });

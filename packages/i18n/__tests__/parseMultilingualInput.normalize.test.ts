@@ -16,8 +16,13 @@ describe("parseMultilingualInput normalization", () => {
   });
 
   it("ignores invalid locale keys", () => {
-    const result = parse({ en: "Hi", fr: "Salut" }, LOCALES);
+    const input = { en: "Hi", fr: "Salut" };
+    let result;
+    expect(() => {
+      result = parse(input, LOCALES);
+    }).not.toThrow();
     expect(result).toEqual({ en: "Hi" });
+    expect(result).not.toHaveProperty("fr");
   });
 
   it("drops empty strings", () => {

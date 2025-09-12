@@ -1,5 +1,8 @@
 export function createUserDelegate() {
-  const users: any[] = [];
+  const users: any[] = [
+    { id: "user1", email: "u1@test.com" },
+    { id: "user2", email: "u2@test.com" },
+  ];
   const findIdx = (where: any) =>
     users.findIndex((u) => Object.entries(where).every(([k, v]) => u[k] === v));
   return {

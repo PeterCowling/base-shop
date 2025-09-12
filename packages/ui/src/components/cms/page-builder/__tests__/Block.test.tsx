@@ -29,21 +29,61 @@ describe("Block", () => {
     expect(screen.getByTestId(testId)).toBeInTheDocument();
   });
 
-  it("handles unsupported type gracefully", () => {
-    const { container } = render(
-      <Block component={{ id: "2", type: "Unknown" as any }} locale="en" />,
-    );
-    expect(container.firstChild).toBeNull();
-  });
-
   it("passes through style props", () => {
     render(
       <Block
-        component={{ id: "3", type: "Foo" as any, style: { color: "red" } }}
+        component={{ id: "2", type: "Foo" as any, style: { color: "red" } }}
         locale="en"
       />,
     );
     expect(screen.getByTestId("foo")).toHaveStyle({ color: "red" });
+  });
+
+  it("sanitizes text components", () => {
+    const { container } = render(
+      <Block
+        component={{ id: "3", type: "Text" as any, text: '<img src=x onerror="alert(1)">' }}
+        locale="en"
+      />,
+    );
+    expect(container.querySelector("img")).toBeInTheDocument();
+    expect(container.innerHTML).not.toContain("onerror");
+  });
+
+  it("returns null for unknown component type", () => {
+    const { container } = render(
+      <Block component={{ id: "4", type: "Baz" as any }} locale="en" />,
+    );
+    expect(container.firstChild).toBeNull();
+  });
+
+  it("wraps non-button components in anchor when navigating", () => {
+    render(
+      <Block
+        component={{
+          id: "5",
+          type: "Foo" as any,
+          clickAction: "navigate",
+          href: "/foo",
+        }}
+        locale="en"
+      />,
+    );
+    const foo = screen.getByTestId("foo");
+    expect(foo.closest("a")).toHaveAttribute("href", "/foo");
+  });
+
+  it.each([
+    ["fade", "pb-animate-fade"],
+    ["slide", "pb-animate-slide"],
+  ])("applies %s animation class", (animation, className) => {
+    render(
+      <Block
+        component={{ id: "6", type: "Foo" as any, animation: animation as any }}
+        locale="en"
+      />,
+    );
+    expect(screen.getByTestId("foo").parentElement).toHaveClass(className);
   });
 });
 

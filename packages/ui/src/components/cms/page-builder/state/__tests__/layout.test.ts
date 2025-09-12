@@ -22,6 +22,29 @@ describe("layout actions", () => {
     expect(state.past).toEqual([[]]);
   });
 
+  it("adds child at index within parent and records history", () => {
+    const first = { id: "c1", type: "Text" } as PageComponent;
+    const second = { id: "c2", type: "Image" } as PageComponent;
+    const parent = {
+      id: "parent",
+      type: "Container",
+      children: [first, second],
+    } as any;
+    const newChild = { id: "c3", type: "Video" } as PageComponent;
+    const state = add(
+      { ...init, present: [parent as PageComponent] },
+      {
+        type: "add",
+        parentId: "parent",
+        index: 1,
+        component: newChild,
+      },
+    );
+    const children = (state.present[0] as any).children;
+    expect(children).toEqual([first, newChild, second]);
+    expect(state.past[0][0]).toBe(parent);
+  });
+
   it("moves components", () => {
     const state = move(
       { ...init, present: [a, b] },

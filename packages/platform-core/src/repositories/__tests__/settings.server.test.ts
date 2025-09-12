@@ -194,3 +194,41 @@ describe("settings repository", () => {
   });
 });
 
+describe("getShopSettings via resolved repository", () => {
+  const sampleSettings = { languages: ["en"], currency: "USD" } as any;
+
+  beforeEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  it("returns settings provided by resolved repo", async () => {
+    const repo = {
+      getShopSettings: jest.fn().mockResolvedValue(sampleSettings),
+      saveShopSettings: jest.fn(),
+      diffHistory: jest.fn(),
+    };
+    jest.doMock("../repoResolver", () => ({ resolveRepo: jest.fn(() => repo) }));
+    jest.doMock("../../db", () => ({ prisma: { setting: {} } }));
+    const { getShopSettings } = await import("../settings.server");
+    await expect(getShopSettings("shop"))
+      .resolves.toEqual(sampleSettings);
+    expect(repo.getShopSettings).toHaveBeenCalledWith("shop");
+  });
+
+  it("throws when resolved repo reports missing shop", async () => {
+    const repo = {
+      getShopSettings: jest.fn().mockRejectedValue(new Error("not found")),
+      saveShopSettings: jest.fn(),
+      diffHistory: jest.fn(),
+    };
+    jest.doMock("../repoResolver", () => ({ resolveRepo: jest.fn(() => repo) }));
+    jest.doMock("../../db", () => ({ prisma: { setting: {} } }));
+    const { getShopSettings } = await import("../settings.server");
+    await expect(getShopSettings("missing"))
+      .rejects.toThrow("not found");
+    expect(repo.getShopSettings).toHaveBeenCalledWith("missing");
+  });
+});
+
+

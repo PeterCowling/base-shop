@@ -7,22 +7,22 @@ describe("Presets", () => {
 
   it("renders preset selector", () => {
     render(<Presets tokens={tokens} baseTokens={{}} onChange={jest.fn()} />);
-    expect(screen.getByTestId("preset-select")).toBeInTheDocument();
-    expect(screen.getByTestId("preset-reset")).toBeInTheDocument();
+    expect(screen.getByLabelText(/preset/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /default/i })).toBeInTheDocument();
   });
 
   it("applies selected preset and resets tokens", () => {
     const handleChange = jest.fn();
     render(<Presets tokens={tokens} baseTokens={{}} onChange={handleChange} />);
 
-    fireEvent.change(screen.getByTestId("preset-select"), {
+    fireEvent.change(screen.getByLabelText(/preset/i), {
       target: { value: "brand" },
     });
     expect(handleChange).toHaveBeenCalledWith(
       expect.objectContaining({ "--color-primary": "340 82% 52%" })
     );
 
-    fireEvent.click(screen.getByTestId("preset-reset"));
+    fireEvent.click(screen.getByRole("button", { name: /default/i }));
     expect(handleChange).toHaveBeenLastCalledWith({});
   });
 

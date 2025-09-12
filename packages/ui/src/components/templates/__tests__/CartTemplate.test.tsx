@@ -45,6 +45,59 @@ const cart: CartState = {
   },
 };
 
+const cartWithoutMedia: CartState = {
+  "1": {
+    sku: {
+      id: "3",
+      slug: "product-3",
+      title: "Product 3",
+      price: 1500,
+      deposit: 0,
+      stock: 0,
+      forSale: true,
+      forRental: false,
+      sizes: [],
+      description: "",
+    },
+    qty: 1,
+  },
+};
+
+const noDepositCart: CartState = {
+  "1": {
+    sku: {
+      id: "4",
+      slug: "product-4",
+      title: "Product 4",
+      price: 1000,
+      deposit: 0,
+      stock: 0,
+      forSale: true,
+      forRental: false,
+      media: [{ url: "/img4.jpg", type: "image" }],
+      sizes: [],
+      description: "",
+    },
+    qty: 1,
+  },
+  "2": {
+    sku: {
+      id: "5",
+      slug: "product-5",
+      title: "Product 5",
+      price: 2000,
+      deposit: 0,
+      stock: 0,
+      forSale: true,
+      forRental: false,
+      media: [{ url: "/img5.jpg", type: "image" }],
+      sizes: [],
+      description: "",
+    },
+    qty: 2,
+  },
+};
+
 describe("CartTemplate", () => {
   it("renders empty cart message", () => {
     render(<CartTemplate cart={{}} />);
@@ -84,16 +137,29 @@ describe("CartTemplate", () => {
     expect(onRemove).toHaveBeenCalledWith("2");
   });
 
+  it("does not render media when none provided", () => {
+    const { container } = render(<CartTemplate cart={cartWithoutMedia} />);
+    expect(container.querySelector("img")).toBeNull();
+    expect(container.querySelector("video")).toBeNull();
+  });
+
   it("renders size badge when size is provided", () => {
     render(<CartTemplate cart={cart} />);
     expect(screen.getByText("(M)")).toBeInTheDocument();
   });
 
-  it("does not render remove column without onRemove", () => {
+  it("does not render quantity buttons or remove column without callbacks", () => {
     render(<CartTemplate cart={cart} />);
-    expect(
-      screen.queryByRole("button", { name: /remove/i })
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "+" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "-" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /remove/i })).not.toBeInTheDocument();
     expect(screen.queryByText("Remove")).not.toBeInTheDocument();
+  });
+
+  it("shows $0.00 deposit when all SKUs have zero deposits", () => {
+    render(<CartTemplate cart={noDepositCart} />);
+    const depositRow = screen.getByText("Deposit").closest("tr");
+    expect(depositRow).toBeTruthy();
+    expect(depositRow).toHaveTextContent("$0.00");
   });
 });

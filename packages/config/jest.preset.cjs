@@ -23,6 +23,13 @@ module.exports = {
     ...base.moduleNameMapper,
     "^\\.\\./core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
     "^\\.\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.ts",
+    "^\\.\\./depositRelease\\.js$": "<rootDir>/packages/config/src/env/depositRelease.ts",
+    "^\\.\\./reverseLogistics\\.js$": "<rootDir>/packages/config/src/env/reverseLogistics.ts",
+    "^\\.\\./lateFee\\.js$": "<rootDir>/packages/config/src/env/lateFee.ts",
+    "^\\./depositRelease\\.js$": "<rootDir>/packages/config/src/env/depositRelease.ts",
+    "^\\./reverseLogistics\\.js$": "<rootDir>/packages/config/src/env/reverseLogistics.ts",
+    "^\\./lateFee\\.js$": "<rootDir>/packages/config/src/env/lateFee.ts",
+    "^\\./utils\\.js$": "<rootDir>/packages/config/src/env/utils.ts",
   },
   coveragePathIgnorePatterns,
   coverageThreshold: {

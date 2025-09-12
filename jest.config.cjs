@@ -191,8 +191,10 @@ const config = {
     '^@acme/telemetry$': ' /test/__mocks__/telemetryMock.ts',
     '^@acme/zod-utils/initZod$': ' /test/emptyModule.js',
     '^\\./env/(.*)\\.js$': ' /packages/config/src/env/$1.ts',
-    '^\\./(auth|cms|email|core|payments|shipping)\\.js$': ' /packages/config/src/env/$1.ts',
-    '^\\.\\./(auth|cms|email|core|payments|shipping)\\.js$': ' /packages/config/src/env/$1.ts',
+    '^\\./(auth|cms|email|core|payments|shipping|depositRelease|reverseLogistics|lateFee|utils)\\.js$':
+      ' /packages/config/src/env/$1.ts',
+    '^\\.\\./(auth|cms|email|core|payments|shipping|depositRelease|reverseLogistics|lateFee|utils)\\.js$':
+      ' /packages/config/src/env/$1.ts',
     '^\\./fsStore\\.js$': ' /packages/email/src/storage/fsStore.ts',
     '^\\./storage/index\\.js$': ' /packages/email/src/storage/index.ts',
     '^\\./providers/resend\\.js$': ' /packages/email/src/providers/resend.ts',

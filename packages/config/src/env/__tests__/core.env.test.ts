@@ -147,7 +147,7 @@ describe("number and url validation", () => {
   });
 });
 
-describe("depositReleaseEnvRefinement", () => {
+describe("feature env validation", () => {
   it("reports custom errors for invalid ENABLED and INTERVAL_MS values", async () => {
     await withEnv(
       {

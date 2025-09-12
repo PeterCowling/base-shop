@@ -49,7 +49,7 @@ describe("@acme/config/env/core", () => {
     });
   });
 
-  describe("depositReleaseEnvRefinement", () => {
+  describe("feature vars", () => {
     it("validates deposit and reverse logistics variables", async () => {
       await withEnv(baseEnv, async () => {
         const { coreEnvSchema } = await import("@acme/config/env/core");

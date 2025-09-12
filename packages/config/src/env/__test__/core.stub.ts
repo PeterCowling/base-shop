@@ -22,9 +22,6 @@ export const coreEnvSchema = z.object({
 
 export const coreEnvBaseSchema = coreEnvSchema;
 
-// No-op refinement for tests
-export function depositReleaseEnvRefinement(): void {}
-
 const tmp = os.tmpdir();
 const defaults = {
   NEXTAUTH_SECRET: "test-secret",

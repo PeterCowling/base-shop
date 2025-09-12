@@ -44,113 +44,6 @@ describe("coreEnvSchema refinement", () => {
     }
   });
 
-  it("adds issues for malformed prefixed variables", async () => {
-    const { depositReleaseEnvRefinement } = await import("../src/env/core");
-    const ctx = { addIssue: jest.fn() } as any;
-
-    depositReleaseEnvRefinement(
-      {
-        DEPOSIT_RELEASE_FOO_ENABLED: "yes",
-        REVERSE_LOGISTICS_BAR_INTERVAL_MS: "soon",
-        LATE_FEE_BAZ_ENABLED: "maybe",
-      },
-      ctx,
-    );
-
-    expect(ctx.addIssue).toHaveBeenCalledWith(
-      expect.objectContaining({
-        path: ["DEPOSIT_RELEASE_FOO_ENABLED"],
-        message: "must be true or false",
-      }),
-    );
-    expect(ctx.addIssue).toHaveBeenCalledWith(
-      expect.objectContaining({
-        path: ["REVERSE_LOGISTICS_BAR_INTERVAL_MS"],
-        message: "must be a number",
-      }),
-    );
-    expect(ctx.addIssue).toHaveBeenCalledWith(
-      expect.objectContaining({
-        path: ["LATE_FEE_BAZ_ENABLED"],
-        message: "must be true or false",
-      }),
-    );
-  });
-
-  it("collects issues for invalid deposit, reverse and late fee strings", async () => {
-    const { depositReleaseEnvRefinement } = await import("../src/env/core");
-    const ctx = { addIssue: jest.fn() } as any;
-
-    depositReleaseEnvRefinement(
-      {
-        DEPOSIT_RELEASE_ENABLED: "maybe",
-        REVERSE_LOGISTICS_INTERVAL_MS: "abc",
-        LATE_FEE_INTERVAL_MS: {} as any,
-      },
-      ctx,
-    );
-
-    expect(ctx.addIssue).toHaveBeenCalledWith(
-      expect.objectContaining({
-        path: ["DEPOSIT_RELEASE_ENABLED"],
-        message: "must be true or false",
-      }),
-    );
-    expect(ctx.addIssue).toHaveBeenCalledWith(
-      expect.objectContaining({
-        path: ["REVERSE_LOGISTICS_INTERVAL_MS"],
-        message: "must be a number",
-      }),
-    );
-    expect(ctx.addIssue).toHaveBeenCalledWith(
-      expect.objectContaining({
-        path: ["LATE_FEE_INTERVAL_MS"],
-        message: "must be a number",
-      }),
-    );
-  });
-
-  it("reports issues for invalid boolean and number values", async () => {
-    const { depositReleaseEnvRefinement } = await import("../src/env/core");
-    const ctx = { addIssue: jest.fn() } as any;
-
-    depositReleaseEnvRefinement(
-      {
-        DEPOSIT_RELEASE_ENABLED: "yes",
-        DEPOSIT_RELEASE_INTERVAL_MS: "abc",
-      },
-      ctx,
-    );
-
-    expect(ctx.addIssue).toHaveBeenCalledWith(
-      expect.objectContaining({
-        path: ["DEPOSIT_RELEASE_ENABLED"],
-        message: "must be true or false",
-      }),
-    );
-    expect(ctx.addIssue).toHaveBeenCalledWith(
-      expect.objectContaining({
-        path: ["DEPOSIT_RELEASE_INTERVAL_MS"],
-        message: "must be a number",
-      }),
-    );
-  });
-
-  it("ignores unrelated keys", async () => {
-    const { depositReleaseEnvRefinement } = await import("../src/env/core");
-    const ctx = { addIssue: jest.fn() } as any;
-
-    depositReleaseEnvRefinement(
-      {
-        SOME_OTHER_KEY: "value",
-        DEPOSIT_RELEASE_FOO: "bar",
-      },
-      ctx,
-    );
-
-    expect(ctx.addIssue).not.toHaveBeenCalled();
-  });
-});
 
 
 const baseEnv = {
@@ -159,7 +52,7 @@ const baseEnv = {
   SANITY_API_VERSION: "v1",
 };
 
-describe("depositReleaseEnvRefinement via coreEnvSchema", () => {
+describe("feature vars via coreEnvSchema", () => {
   it("reports custom issue for invalid DEPOSIT_RELEASE_ENABLED", async () => {
     const { coreEnvSchema } = await import("../src/env/core");
     const parsed = coreEnvSchema.safeParse({
@@ -172,6 +65,44 @@ describe("depositReleaseEnvRefinement via coreEnvSchema", () => {
         expect.arrayContaining([
           expect.objectContaining({
             path: ["DEPOSIT_RELEASE_ENABLED"],
+            message: "must be true or false",
+          }),
+        ]),
+      );
+    }
+  });
+
+  it("reports custom issue for invalid REVERSE_LOGISTICS_ENABLED", async () => {
+    const { coreEnvSchema } = await import("../src/env/core");
+    const parsed = coreEnvSchema.safeParse({
+      ...baseEnv,
+      REVERSE_LOGISTICS_ENABLED: "maybe",
+    } as NodeJS.ProcessEnv);
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: ["REVERSE_LOGISTICS_ENABLED"],
+            message: "must be true or false",
+          }),
+        ]),
+      );
+    }
+  });
+
+  it("reports custom issue for invalid LATE_FEE_ENABLED", async () => {
+    const { coreEnvSchema } = await import("../src/env/core");
+    const parsed = coreEnvSchema.safeParse({
+      ...baseEnv,
+      LATE_FEE_ENABLED: "perhaps",
+    } as NodeJS.ProcessEnv);
+    expect(parsed.success).toBe(false);
+    if (!parsed.success) {
+      expect(parsed.error.issues).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            path: ["LATE_FEE_ENABLED"],
             message: "must be true or false",
           }),
         ]),

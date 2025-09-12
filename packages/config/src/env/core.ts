@@ -6,10 +6,19 @@ import { cmsEnvSchema } from "./cms.schema.js";
 import { emailEnvSchema } from "./email.js";
 import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
+import {
+  depositReleaseEnvSchema,
+  depositReleaseEnvRefinement,
+} from "./depositRelease.js";
+import {
+  reverseLogisticsEnvSchema,
+  reverseLogisticsEnvRefinement,
+} from "./reverseLogistics.js";
+import { lateFeeEnvSchema, lateFeeEnvRefinement } from "./lateFee.js";
+import { getCoreEnv, parseCoreEnv, requireEnv } from "./utils.js";
 import { createRequire } from "module";
 
 const isProd = process.env.NODE_ENV === "production";
-const isTest = process.env.NODE_ENV === "test";
 
 const baseEnvSchema = z
   .object({
@@ -33,42 +42,6 @@ const baseEnvSchema = z
     LUXURY_FEATURES_REQUIRE_STRONG_CUSTOMER_AUTH: z.coerce.boolean().optional(),
     LUXURY_FEATURES_TRACKING_DASHBOARD: z.coerce.boolean().optional(),
     LUXURY_FEATURES_RETURNS: z.coerce.boolean().optional(),
-    DEPOSIT_RELEASE_ENABLED: z
-      .string()
-      .refine((v) => v === "true" || v === "false", {
-        message: "must be true or false",
-      })
-      .transform((v) => v === "true")
-      .optional(),
-    DEPOSIT_RELEASE_INTERVAL_MS: z
-      .string()
-      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" })
-      .transform((v) => Number(v))
-      .optional(),
-    REVERSE_LOGISTICS_ENABLED: z
-      .string()
-      .refine((v) => v === "true" || v === "false", {
-        message: "must be true or false",
-      })
-      .transform((v) => v === "true")
-      .optional(),
-    REVERSE_LOGISTICS_INTERVAL_MS: z
-      .string()
-      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" })
-      .transform((v) => Number(v))
-      .optional(),
-    LATE_FEE_ENABLED: z
-      .string()
-      .refine((v) => v === "true" || v === "false", {
-        message: "must be true or false",
-      })
-      .transform((v) => v === "true")
-      .optional(),
-    LATE_FEE_INTERVAL_MS: z
-      .string()
-      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" })
-      .transform((v) => Number(v))
-      .optional(),
     OPENAI_API_KEY: z.string().optional(),
     NEXT_PUBLIC_BASE_URL: z.string().url().optional(),
     STOCK_ALERT_RECIPIENTS: z.string().optional(),
@@ -78,27 +51,6 @@ const baseEnvSchema = z
   })
   .passthrough();
 
-export const requireEnv = (
-  key: string,
-  type: "boolean" | "number" | "string" = "string",
-) => {
-  const raw = process.env[key];
-  if (raw == null) throw new Error(`${key} is required`);
-  const val = raw.trim();
-  if (val === "") throw new Error(`${key} is required`);
-  if (type === "boolean") {
-    if (/^(true|1)$/i.test(val)) return true;
-    if (/^(false|0)$/i.test(val)) return false;
-    throw new Error(`${key} must be a boolean`);
-  }
-  if (type === "number") {
-    const num = Number(val);
-    if (!Number.isNaN(num)) return num;
-    throw new Error(`${key} must be a number`);
-  }
-  return val;
-};
-
 const authInner = authEnvSchema.innerType().omit({ AUTH_TOKEN_TTL: true });
 
 export const coreEnvBaseSchema = authInner
@@ -106,48 +58,18 @@ export const coreEnvBaseSchema = authInner
   .merge(emailEnvSchema.innerType())
   .merge(paymentsEnvSchema)
   .merge(shippingEnvSchema.innerType())
+  .merge(depositReleaseEnvSchema)
+  .merge(reverseLogisticsEnvSchema)
+  .merge(lateFeeEnvSchema)
   .merge(baseEnvSchema)
   .extend({
     AUTH_TOKEN_TTL: z.union([z.string(), z.number()]).optional(),
   });
 
-export function depositReleaseEnvRefinement(
-  env: Record<string, unknown>,
-  ctx: z.RefinementCtx
-): void {
-  for (const [key, value] of Object.entries(env)) {
-    const isDeposit = key.startsWith("DEPOSIT_RELEASE_");
-    const isReverse = key.startsWith("REVERSE_LOGISTICS_");
-    const isLateFee = key.startsWith("LATE_FEE_");
-    if (!isDeposit && !isReverse && !isLateFee) continue;
-    if (key.includes("ENABLED")) {
-      if (
-        value !== "true" &&
-        value !== "false" &&
-        value !== true &&
-        value !== false
-      ) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: [key],
-          message: "must be true or false",
-        });
-      }
-    } else if (key.includes("INTERVAL_MS")) {
-      const num = typeof value === "number" ? value : Number(value);
-      if (Number.isNaN(num)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: [key],
-          message: "must be a number",
-        });
-      }
-    }
-  }
-}
-
 export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
   depositReleaseEnvRefinement(env, ctx);
+  reverseLogisticsEnvRefinement(env, ctx);
+  lateFeeEnvRefinement(env, ctx);
 
   // Normalize AUTH_TOKEN_TTL before delegating to the auth schema so builds
   // don't fail if the value is provided as a plain number or contains
@@ -186,63 +108,22 @@ export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
 });
 export type CoreEnv = z.infer<typeof coreEnvSchema>;
 
-function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
-  const env = isTest
-    ? { EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop", ...raw }
-    : raw;
-  const parsed = coreEnvSchema.safeParse(env);
-  if (!parsed.success) {
-    if (isTest) {
-      return coreEnvSchema.parse({
-        EMAIL_FROM: "test@example.com",
-        EMAIL_PROVIDER: "noop",
-      });
-    }
-    console.error("❌ Invalid core environment variables:");
-    parsed.error.issues.forEach((issue: z.ZodIssue) => {
-      const pathArr = (issue.path ?? []) as Array<string | number>;
-      const path = pathArr.length ? pathArr.join(".") : "(root)";
-      console.error(`  • ${path}: ${issue.message}`);
-    });
-    throw new Error("Invalid core environment variables");
-  }
-  return parsed.data;
-}
-
 export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
-  return parseCoreEnv(raw);
-}
-
-// Lazy proxy; no import-time parse in dev.
-let __cachedCoreEnv: CoreEnv | null = null;
-const nodeRequire =
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  typeof require !== "undefined" ? require : createRequire(eval("import.meta.url"));
-const envMode = process.env.NODE_ENV;
-function getCoreEnv(): CoreEnv {
-  if (!__cachedCoreEnv) {
-    if (envMode === "production" || envMode == null) {
-      const mod = nodeRequire("./core.js") as typeof import("./core.js");
-      __cachedCoreEnv = mod.loadCoreEnv();
-    } else {
-      __cachedCoreEnv = parseCoreEnv();
-    }
-  }
-  return __cachedCoreEnv;
+  return parseCoreEnv(coreEnvSchema, raw);
 }
 
 export const coreEnv: CoreEnv = new Proxy({} as CoreEnv, {
   get: (_t, prop: string) => {
-    return getCoreEnv()[prop as keyof CoreEnv];
+    return getCoreEnv(coreEnvSchema)[prop as keyof CoreEnv];
   },
   has: (_t, prop: string) => {
-    return prop in getCoreEnv();
+    return prop in getCoreEnv(coreEnvSchema);
   },
   ownKeys: () => {
-    return Reflect.ownKeys(getCoreEnv());
+    return Reflect.ownKeys(getCoreEnv(coreEnvSchema));
   },
   getOwnPropertyDescriptor: (_t, prop: string | symbol) => {
-    return Object.getOwnPropertyDescriptor(getCoreEnv(), prop);
+    return Object.getOwnPropertyDescriptor(getCoreEnv(coreEnvSchema), prop);
   },
 }) as CoreEnv;
 
@@ -251,3 +132,5 @@ if (isProd && !process.env.JEST_WORKER_ID) {
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   coreEnv.NODE_ENV;
 }
+
+export { requireEnv };

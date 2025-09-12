@@ -19,14 +19,33 @@ describe("useRemoteImageProbe", () => {
   });
 
   it("marks url valid when content-type is image", async () => {
-    const { result } = renderHook(() => useRemoteImageProbe());
-    await act(async () => {
-      await result.current.probe("http://example.com/a.png");
+    let resolveFetch: (value: unknown) => void;
+    const fetchPromise = new Promise((res) => {
+      resolveFetch = res;
     });
+    mockFetch.mockReturnValueOnce(fetchPromise as any);
+    const { result } = renderHook(() => useRemoteImageProbe());
+
+    let probePromise: Promise<void>;
+    act(() => {
+      probePromise = result.current.probe("http://example.com/a.png");
+    });
+
+    expect(result.current.loading).toBe(true);
     expect(mockFetch).toHaveBeenCalledWith(
       "/api/media/probe?url=http%3A%2F%2Fexample.com%2Fa.png",
       { method: "HEAD" }
     );
+
+    await act(async () => {
+      resolveFetch({
+        ok: true,
+        headers: { get: () => "image/png" },
+      } as any);
+      await probePromise;
+    });
+
+    expect(result.current.loading).toBe(false);
     expect(result.current.error).toBeNull();
     expect(result.current.valid).toBe(true);
   });
@@ -70,11 +89,26 @@ describe("useRemoteImageProbe", () => {
   });
 
   it("captures fetch errors", async () => {
-    mockFetch.mockRejectedValueOnce(new Error("boom"));
-    const { result } = renderHook(() => useRemoteImageProbe());
-    await act(async () => {
-      await result.current.probe("http://example.com/a.png");
+    let rejectFetch: (reason?: unknown) => void;
+    const fetchPromise = new Promise((_, rej) => {
+      rejectFetch = rej;
     });
+    mockFetch.mockReturnValueOnce(fetchPromise as any);
+    const { result } = renderHook(() => useRemoteImageProbe());
+
+    let probePromise: Promise<void>;
+    act(() => {
+      probePromise = result.current.probe("http://example.com/a.png");
+    });
+
+    expect(result.current.loading).toBe(true);
+
+    await act(async () => {
+      rejectFetch(new Error("boom"));
+      await probePromise;
+    });
+
+    expect(result.current.loading).toBe(false);
     expect(result.current.error).toBe("boom");
     expect(result.current.valid).toBe(false);
   });

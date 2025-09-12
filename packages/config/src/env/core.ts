@@ -193,10 +193,17 @@ function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
   const parsed = coreEnvSchema.safeParse(env);
   if (!parsed.success) {
     if (isTest) {
-      return coreEnvSchema.parse({
-        EMAIL_FROM: "test@example.com",
-        EMAIL_PROVIDER: "noop",
-      });
+      const onlyMissing = parsed.error.issues.every(
+        (issue) =>
+          issue.code === z.ZodIssueCode.invalid_type &&
+          issue.received === "undefined"
+      );
+      if (onlyMissing) {
+        return coreEnvSchema.parse({
+          EMAIL_FROM: "test@example.com",
+          EMAIL_PROVIDER: "noop",
+        });
+      }
     }
     console.error("❌ Invalid core environment variables:");
     parsed.error.issues.forEach((issue: z.ZodIssue) => {

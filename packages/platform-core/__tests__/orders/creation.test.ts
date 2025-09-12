@@ -97,6 +97,40 @@ describe("order creation", () => {
       });
     });
 
+    it("handles individual optional fields and falsy values", async () => {
+      ulidMock.mockReturnValue("ID");
+      nowIsoMock.mockReturnValue("now");
+      prismaMock.rentalOrder.create.mockResolvedValue({});
+      const order = await addOrder(
+        "shop",
+        "sess",
+        10,
+        "exp",
+        undefined,
+        undefined,
+        "low",
+        0,
+        false,
+      );
+      expect(prismaMock.rentalOrder.create).toHaveBeenCalledWith({
+        data: order,
+      });
+      expect(order).toEqual({
+        id: "ID",
+        sessionId: "sess",
+        shop: "shop",
+        deposit: 10,
+        startedAt: "now",
+        expectedReturnDate: "exp",
+        riskLevel: "low",
+        riskScore: 0,
+        flaggedForReview: false,
+      });
+      expect(trackOrder).toHaveBeenCalledWith("shop", "ID", 10);
+      expect(prismaMock.shop.findUnique).not.toHaveBeenCalled();
+      expect(incrementSubscriptionUsage).not.toHaveBeenCalled();
+    });
+
     it("omits optional fields when not provided and skips subscription usage", async () => {
       ulidMock.mockReturnValue("ID");
       nowIsoMock.mockReturnValue("now");

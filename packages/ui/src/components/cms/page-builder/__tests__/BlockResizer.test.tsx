@@ -15,21 +15,43 @@ describe("BlockResizer", () => {
     expect(container).toBeEmptyDOMElement();
   });
 
-  it("fires resize and spacing callbacks", () => {
+  it("fires startResize on all corner handles", () => {
     const startResize = jest.fn();
+    const { container } = render(
+      <BlockResizer selected startResize={startResize} startSpacing={jest.fn()} />
+    );
+    const corners = Array.from(container.children).slice(0, 4) as HTMLElement[];
+    corners.forEach((corner, idx) => {
+      fireEvent.pointerDown(corner);
+      expect(startResize).toHaveBeenNthCalledWith(
+        idx + 1,
+        expect.objectContaining({ type: "pointerdown" })
+      );
+    });
+  });
+
+  it("fires startSpacing with expected args", () => {
     const startSpacing = jest.fn();
     const { container } = render(
-      <BlockResizer selected startResize={startResize} startSpacing={startSpacing} />
+      <BlockResizer selected startResize={jest.fn()} startSpacing={startSpacing} />
     );
-    const resizeHandle = container.firstChild as HTMLElement;
-    const spacingHandle = container.children[4] as HTMLElement;
-    fireEvent.pointerDown(resizeHandle);
-    fireEvent.pointerDown(spacingHandle);
-    expect(startResize).toHaveBeenCalled();
-    expect(startResize.mock.calls[0][0].type).toBe("pointerdown");
-    const spacingArgs = startSpacing.mock.calls[0];
-    expect(spacingArgs[0].type).toBe("pointerdown");
-    expect(spacingArgs[1]).toBe("margin");
-    expect(spacingArgs[2]).toBe("top");
+    const handles = Array.from(container.children).slice(4) as HTMLElement[];
+    const expected: ["margin" | "padding", "top" | "bottom" | "left" | "right"][] = [
+      ["margin", "top"],
+      ["margin", "bottom"],
+      ["margin", "left"],
+      ["margin", "right"],
+      ["padding", "top"],
+      ["padding", "bottom"],
+      ["padding", "left"],
+      ["padding", "right"],
+    ];
+    handles.forEach((handle, idx) => {
+      fireEvent.pointerDown(handle);
+      const call = startSpacing.mock.calls[idx];
+      expect(call[0].type).toBe("pointerdown");
+      expect(call[1]).toBe(expected[idx][0]);
+      expect(call[2]).toBe(expected[idx][1]);
+    });
   });
 });

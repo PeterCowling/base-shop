@@ -29,6 +29,22 @@ describe("DeviceSelector", () => {
     expect(setDeviceId).toHaveBeenCalledWith("ipad");
   });
 
+  it("does not rotate icon when orientation is portrait", () => {
+    render(
+      <DeviceSelector
+        deviceId="desktop-1280"
+        orientation="portrait"
+        setDeviceId={jest.fn()}
+        toggleOrientation={jest.fn()}
+      />
+    );
+
+    const icon = screen
+      .getByRole("button", { name: "Rotate" })
+      .querySelector("svg");
+    expect(icon).not.toHaveClass("rotate-90");
+  });
+
   it("invokes toggleOrientation and rotates icon when landscape", async () => {
     const toggleOrientation = jest.fn();
     const { rerender } = render(

@@ -46,4 +46,26 @@ describe("WishlistTemplate", () => {
     await userEvent.click(screen.getByRole("button", { name: /remove/i }));
     expect(onRemove).toHaveBeenCalledWith(item);
   });
+
+  it("renders without action buttons when callbacks are missing", () => {
+    render(<WishlistTemplate items={[item]} />);
+
+    expect(
+      screen.queryByRole("button", { name: /add to cart/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: /remove/i }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders a video element when media type is video", () => {
+    const videoItem: WishlistItem = {
+      ...item,
+      id: "2",
+      media: [{ url: "/vid.mp4", type: "video" }],
+    };
+
+    const { container } = render(<WishlistTemplate items={[videoItem]} />);
+    expect(container.querySelector("video")).toBeInTheDocument();
+  });
 });

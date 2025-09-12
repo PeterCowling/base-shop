@@ -16,4 +16,45 @@ describe("NavigationPreview", () => {
     expect(getByText("Parent")).toBeInTheDocument();
     expect(getByText("Child")).toBeInTheDocument();
   });
+
+  it("applies style prop to nav element", () => {
+    const { container } = render(
+      <NavigationPreview items={items} style={{ backgroundColor: "red" }} />,
+    );
+    const nav = container.querySelector("nav");
+    expect(nav).toHaveStyle({ backgroundColor: "red" });
+  });
+
+  it("renders defaults when label or url missing", () => {
+    const { getAllByRole } = render(
+      <NavigationPreview items={[{ id: "1", children: [{ id: "2" }] }]} />,
+    );
+    const links = getAllByRole("link", { name: "Item" });
+    expect(links).toHaveLength(2);
+    links.forEach((link) => {
+      expect(link).toHaveAttribute("href", "#");
+    });
+  });
+
+  it("renders dropdown menu with child links and tokens", () => {
+    const { getByText } = render(<NavigationPreview items={items} />);
+    const childLink = getByText("Child");
+    expect(childLink).toHaveAttribute("data-token", "--color-fg");
+    const dropdown = childLink.closest("ul");
+    expect(dropdown).toHaveAttribute("data-token", "--color-bg");
+    expect(dropdown).toHaveClass(
+      "absolute",
+      "left-0",
+      "top-full",
+      "hidden",
+      "min-w-[8rem]",
+      "flex-col",
+      "rounded-md",
+      "border",
+      "bg-background",
+      "p-2",
+      "shadow-md",
+      "group-hover:flex",
+    );
+  });
 });

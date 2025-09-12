@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-import { updateRisk } from "../orders/risk";
+import { markNeedsAttention, updateRisk } from "../orders/risk";
 
 jest.mock("../db", () => ({
   prisma: {
@@ -17,17 +17,38 @@ describe("orders/risk", () => {
     jest.clearAllMocks();
   });
 
-  it("updates risk fields", async () => {
-    const mock = { id: "1", shop: "shop", sessionId: "sess", riskLevel: "low" };
-    prisma.rentalOrder.update.mockResolvedValue(mock);
-    const result = await updateRisk("shop", "sess", "low", 1, false);
-    expect(result).toEqual(mock);
+  describe("markNeedsAttention", () => {
+    it("returns null on update error", async () => {
+      prisma.rentalOrder.update.mockRejectedValue(new Error("update failed"));
+      const result = await markNeedsAttention("shop", "sess");
+      expect(result).toBeNull();
+    });
   });
 
-  it("returns null for missing order", async () => {
-    prisma.rentalOrder.update.mockRejectedValue(new Error("missing"));
-    const result = await updateRisk("shop", "sess");
-    expect(result).toBeNull();
+  describe("updateRisk", () => {
+    it("returns null on update error", async () => {
+      prisma.rentalOrder.update.mockRejectedValue(new Error("update failed"));
+      const result = await updateRisk("shop", "sess");
+      expect(result).toBeNull();
+    });
+
+    it.each([
+      [{ riskLevel: "low" }, "low", undefined, undefined],
+      [{ riskScore: 5 }, undefined, 5, undefined],
+      [{ flaggedForReview: true }, undefined, undefined, true],
+      [{ flaggedForReview: false }, undefined, undefined, false],
+      [{ riskLevel: "low", riskScore: 5 }, "low", 5, undefined],
+      [{ riskLevel: "low", flaggedForReview: true }, "low", undefined, true],
+      [{ riskScore: 5, flaggedForReview: false }, undefined, 5, false],
+      [{ riskLevel: "low", riskScore: 5, flaggedForReview: true }, "low", 5, true],
+    ])("updates only provided fields %j", async (data, riskLevel, riskScore, flaggedForReview) => {
+      prisma.rentalOrder.update.mockResolvedValue({});
+      await updateRisk("shop", "sess", riskLevel, riskScore, flaggedForReview);
+      expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data,
+      });
+    });
   });
 });
 

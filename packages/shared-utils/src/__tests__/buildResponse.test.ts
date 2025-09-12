@@ -18,6 +18,23 @@ describe('buildResponse', () => {
     await expect(res.text()).resolves.toBe(text);
   });
 
+  it('decodes base64 bodies for error responses', async () => {
+    const text = 'server error';
+    const proxy: ProxyResponse = {
+      response: {
+        status: 500,
+        headers: { 'X-Test': 'abc' },
+        body: Buffer.from(text).toString('base64'),
+      },
+    };
+
+    const res = buildResponse(proxy);
+
+    expect(res.status).toBe(500);
+    expect(res.headers.get('X-Test')).toBe('abc');
+    await expect(res.text()).resolves.toBe(text);
+  });
+
   it('returns an empty body when none is provided', async () => {
     const proxy: ProxyResponse = {
       response: {

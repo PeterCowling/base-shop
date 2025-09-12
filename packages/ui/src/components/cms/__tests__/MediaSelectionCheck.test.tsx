@@ -9,11 +9,15 @@ describe("MediaSelectionCheck", () => {
       <MediaSelectionCheck selected={false} />,
     );
 
-    expect(getByTestId("media-selection-check")).toHaveClass("opacity-0");
+    const getElement = () => getByTestId("media-selection-check");
+
+    expect(getElement()).toHaveClass("opacity-0");
+    expect(getElement()).not.toHaveClass("opacity-100");
 
     rerender(<MediaSelectionCheck selected />);
 
-    expect(getByTestId("media-selection-check")).toHaveClass("opacity-100");
+    expect(getElement()).toHaveClass("opacity-100");
+    expect(getElement()).not.toHaveClass("opacity-0");
   });
 
   it("applies custom class along with visibility class", () => {

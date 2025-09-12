@@ -89,6 +89,44 @@ describe("shop.server wrapper", () => {
     expect(result).toEqual({ id: "shop1", name: "Updated" });
   });
 
+  it("clears repoPromise in test env and forwards params", async () => {
+    const originalNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = "test";
+
+    const repo1 = {
+      getShopById: jest.fn().mockResolvedValue({ id: "shop1" }),
+      updateShopInRepo: jest.fn(),
+    };
+
+    const repo2 = {
+      getShopById: jest.fn(),
+      updateShopInRepo: jest
+        .fn()
+        .mockResolvedValue({ id: "shop1", name: "Updated" }),
+    };
+
+    (resolveRepo as jest.Mock).mockReset();
+    (resolveRepo as jest.Mock)
+      .mockResolvedValueOnce(repo1)
+      .mockResolvedValueOnce(repo2);
+
+    const patch = { id: "shop1", name: "Updated" };
+    const shop = await getShopById("shop1");
+    const updated = await updateShopInRepo("shop1", patch);
+
+    expect(resolveRepo).toHaveBeenCalledTimes(2);
+    expect(repo1.getShopById).toHaveBeenCalledWith("shop1");
+    expect(repo2.updateShopInRepo).toHaveBeenCalledWith("shop1", patch);
+    expect(shop).toEqual({ id: "shop1" });
+    expect(updated).toEqual({ id: "shop1", name: "Updated" });
+
+    if (originalNodeEnv === undefined) {
+      delete process.env.NODE_ENV;
+    } else {
+      process.env.NODE_ENV = originalNodeEnv;
+    }
+  });
+
   it("uses SHOP_BACKEND for shops without affecting inventory", async () => {
     process.env.SHOP_BACKEND = "json";
     jest.resetModules();

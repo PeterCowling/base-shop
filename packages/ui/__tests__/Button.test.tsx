@@ -1,5 +1,7 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { configure, fireEvent, render, screen } from "@testing-library/react";
 import { Button } from "../src/components/atoms/shadcn";
+
+configure({ testIdAttribute: "data-testid" });
 
 describe("Button", () => {
   it("handles click events", () => {
@@ -11,10 +13,26 @@ describe("Button", () => {
     expect(button).toHaveTextContent("Press");
   });
 
-  it("applies destructive variant styling", () => {
+  it("applies base and destructive classes", () => {
     render(<Button variant="destructive">Delete</Button>);
     const button = screen.getByRole("button");
+    expect(button).toHaveClass("inline-flex");
     expect(button).toHaveClass("bg-destructive");
+  });
+
+  it("renders a custom element with Slot when asChild", () => {
+    render(
+      <Button variant="destructive" asChild>
+        <a href="#" data-testid="custom-link">
+          Delete
+        </a>
+      </Button>,
+    );
+    const link = screen.getByTestId("custom-link");
+    expect(link.tagName.toLowerCase()).toBe("a");
+    expect(link).toHaveClass("inline-flex");
+    expect(link).toHaveClass("bg-destructive");
+    expect(screen.queryByRole("button")).toBeNull();
   });
 
   it("supports aria-label for accessibility", () => {

@@ -27,6 +27,11 @@ describe('getCsrfToken on server', () => {
     expect(getCsrfToken(req)).toBe('cookie-token');
   });
 
+  it('accepts SimpleReq objects with csrf cookie', () => {
+    const req = { headers: { cookie: 'csrf=token' } };
+    expect(getCsrfToken(req)).toBe('token');
+  });
+
   it('returns undefined when csrf_token cookie is empty or whitespace', () => {
     const emptyCookieReq = new Request('https://example.com', {
       headers: { cookie: 'csrf_token=' },

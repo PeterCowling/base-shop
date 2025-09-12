@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import DeviceSelector from "../DeviceSelector";
+import { devicePresets } from "../../../utils/devicePresets";
 
 describe("DeviceSelector", () => {
   beforeAll(() => {
@@ -11,6 +12,47 @@ describe("DeviceSelector", () => {
     HTMLElement.prototype.setPointerCapture = () => {};
     // @ts-ignore
     Element.prototype.scrollIntoView = () => {};
+  });
+  it("lists all device presets in the dropdown", async () => {
+    render(
+      <DeviceSelector
+        deviceId={devicePresets[0].id}
+        orientation="portrait"
+        setDeviceId={jest.fn()}
+        toggleOrientation={jest.fn()}
+      />
+    );
+
+    await userEvent.click(screen.getByLabelText("Device"));
+    const options = await screen.findAllByRole("option");
+    const labels = options.map((o) => o.textContent);
+    expect(labels).toEqual(devicePresets.map((p) => p.label));
+  });
+
+  it("calls setDeviceId for each preset option", async () => {
+    for (const preset of devicePresets) {
+      const initialId =
+        preset.id === devicePresets[0].id
+          ? devicePresets[1].id
+          : devicePresets[0].id;
+      const setDeviceId = jest.fn();
+      const { unmount } = render(
+        <DeviceSelector
+          deviceId={initialId}
+          orientation="portrait"
+          setDeviceId={setDeviceId}
+          toggleOrientation={jest.fn()}
+        />
+      );
+
+      await userEvent.click(screen.getByLabelText("Device"));
+      await userEvent.click(
+        await screen.findByRole("option", { name: preset.label })
+      );
+
+      expect(setDeviceId).toHaveBeenCalledWith(preset.id);
+      unmount();
+    }
   });
   it("calls setDeviceId when a new device is selected", async () => {
     const setDeviceId = jest.fn();

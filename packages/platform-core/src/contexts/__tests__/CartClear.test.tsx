@@ -128,4 +128,32 @@ describe("clear action", () => {
     await waitFor(() => expect(cartState).toEqual({}));
     expect(localStorage.getItem("cart")).toBeNull();
   });
+
+  it("resets state if persisting cleared cart fails", async () => {
+    const initial = { cart: { sku1: { sku, qty: 1 } } };
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => initial });
+    fetchMock.mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) });
+    const setSpy = jest.spyOn(Storage.prototype, "setItem");
+    setSpy.mockImplementationOnce(() => undefined); // initial save
+    setSpy.mockImplementationOnce(() => {
+      throw new Error("fail");
+    });
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(cartState).toEqual(initial.cart));
+    expect(localStorage.getItem("cart")).toEqual(JSON.stringify(initial.cart));
+
+    await act(async () => {
+      await dispatch({ type: "clear" });
+    });
+
+    await waitFor(() => expect(cartState).toEqual({}));
+    // localStorage still has old cart since persisting new state failed
+    expect(localStorage.getItem("cart")).toEqual(JSON.stringify(initial.cart));
+  });
 });

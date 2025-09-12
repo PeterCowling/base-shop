@@ -149,7 +149,7 @@ it("skips orientation validation for videos", async () => {
     result.current.setTags("tag");
   });
 
-  expect(mockOrientation).not.toHaveBeenCalled();
+  expect(mockOrientation).toHaveBeenCalledWith(null, "landscape");
   expect(result.current.isValid).toBe(true);
   expect(result.current.actual).toBeNull();
 

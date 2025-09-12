@@ -176,12 +176,24 @@ export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
     (env as Record<string, unknown>).AUTH_TOKEN_TTL =
       authResult.data.AUTH_TOKEN_TTL;
   } else {
-    authResult.error.issues.forEach((issue) => ctx.addIssue(issue));
+    authResult.error.issues.forEach((issue) => {
+      const { code, ...rest } = issue;
+      ctx.addIssue({
+        ...(rest as Record<string, unknown>),
+        code: code ?? z.ZodIssueCode.custom,
+      } as z.ZodIssue);
+    });
   }
 
   const emailResult = emailEnvSchema.safeParse(env);
   if (!emailResult.success) {
-    emailResult.error.issues.forEach((issue) => ctx.addIssue(issue));
+    emailResult.error.issues.forEach((issue) => {
+      const { code, ...rest } = issue;
+      ctx.addIssue({
+        ...(rest as Record<string, unknown>),
+        code: code ?? z.ZodIssueCode.custom,
+      } as z.ZodIssue);
+    });
   }
 });
 export type CoreEnv = z.infer<typeof coreEnvSchema>;

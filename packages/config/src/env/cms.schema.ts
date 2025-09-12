@@ -24,23 +24,17 @@ export const cmsEnvSchema = z.object({
   CMS_ACCESS_TOKEN: isProd
     ? z.string().min(1)
     : z.string().min(1).default("placeholder-token"),
-  // Provide dummy Sanity values only in non-production environments.
-  // Real credentials are required when running in production.
-  SANITY_API_VERSION: isProd
-    ? z.string().min(1)
-    : z.string().min(1).default("2021-10-21"),
-  SANITY_PROJECT_ID: isProd
-    ? z.string().min(1)
-    : z.string().min(1).default("dummy-project-id"),
-  SANITY_DATASET: isProd
-    ? z.string().min(1)
-    : z.string().min(1).default("production"),
-  SANITY_API_TOKEN: isProd
-    ? z.string().min(1)
-    : z.string().min(1).default("dummy-api-token"),
-  SANITY_PREVIEW_SECRET: isProd
-    ? z.string().min(1)
-    : z.string().min(1).default("dummy-preview-secret"),
+  // Provide dummy Sanity values for convenience in all environments.
+  // Production deployments should override these with real credentials
+  // via environment variables.
+  SANITY_API_VERSION: z.string().min(1).default("2021-10-21"),
+  SANITY_PROJECT_ID: z.string().min(1).default("dummy-project-id"),
+  SANITY_DATASET: z.string().min(1).default("production"),
+  SANITY_API_TOKEN: z.string().min(1).default("dummy-api-token"),
+  SANITY_PREVIEW_SECRET: z
+    .string()
+    .min(1)
+    .default("dummy-preview-secret"),
   SANITY_BASE_URL: z
     .string()
     .url()

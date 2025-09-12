@@ -51,7 +51,11 @@ describe("mfa", () => {
 
     const result = await verifyMfa("cust", "123456");
 
-    expect(verify).toHaveBeenCalledWith({ token: "123456", secret: "secret" });
+    expect(verify).toHaveBeenCalledWith({
+      token: "123456",
+      secret: "secret",
+      window: 1,
+    });
     expect(update).toHaveBeenCalledWith({
       where: { customerId: "cust" },
       data: { enabled: true },
@@ -66,7 +70,11 @@ describe("mfa", () => {
 
     const result = await verifyMfa("cust", "123456");
 
-    expect(verify).toHaveBeenCalledWith({ token: "123456", secret: undefined });
+    expect(verify).toHaveBeenCalledWith({
+      token: "123456",
+      secret: undefined,
+      window: 1,
+    });
     expect(update).not.toHaveBeenCalled();
     expect(result).toBe(true);
   });

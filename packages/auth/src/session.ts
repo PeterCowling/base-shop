@@ -28,7 +28,9 @@ interface CreateSessionOptions {
 
 const REMEMBER_ME_TTL_S = 60 * 60 * 24 * 30;
 
-const isProd = process.env.NODE_ENV === "production";
+// Treat all non-development environments (including test) as production
+// for cookie security purposes.
+const isProd = process.env.NODE_ENV !== "development";
 
 function cookieOptions(maxAge = SESSION_TTL_S) {
   return {

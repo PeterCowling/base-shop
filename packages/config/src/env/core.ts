@@ -192,12 +192,6 @@ function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
     : raw;
   const parsed = coreEnvSchema.safeParse(env);
   if (!parsed.success) {
-    if (isTest) {
-      return coreEnvSchema.parse({
-        EMAIL_FROM: "test@example.com",
-        EMAIL_PROVIDER: "noop",
-      });
-    }
     console.error("❌ Invalid core environment variables:");
     parsed.error.issues.forEach((issue: z.ZodIssue) => {
       const pathArr = (issue.path ?? []) as Array<string | number>;
@@ -247,7 +241,7 @@ export const coreEnv: CoreEnv = new Proxy({} as CoreEnv, {
 }) as CoreEnv;
 
 // Fail fast in prod only (forces a single parse early).
-if (isProd && !process.env.JEST_WORKER_ID) {
+if (isProd) {
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   coreEnv.NODE_ENV;
 }

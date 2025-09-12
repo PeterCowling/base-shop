@@ -55,9 +55,11 @@ describe("shop.json.server", () => {
     expect(result.id).toBe("shop1");
   });
 
-  it("throws when shop file missing", async () => {
+  it("throws 'Shop not found' when shop file missing", async () => {
     const { getShopById } = await import("../shop.json.server");
-    await expect(getShopById("missing")).rejects.toThrow(/not found/);
+    await expect(getShopById("missing")).rejects.toThrow(
+      "Shop missing not found",
+    );
   });
 
   it("throws on malformed JSON", async () => {
@@ -80,9 +82,21 @@ describe("shop.json.server", () => {
       })
     );
     const { updateShopInRepo } = await import("../shop.json.server");
-    const updated = await updateShopInRepo("shop2", { id: "shop2", name: "Updated" });
+    const updated = await updateShopInRepo("shop2", {
+      id: "shop2",
+      name: "Updated",
+    });
     expect(updated.name).toBe("Updated");
     expect(fsMock.__files.get(shopPath)).toContain("Updated");
+    expect(fsMock.mkdir).toHaveBeenCalledWith(expect.any(String), {
+      recursive: true,
+    });
+    const tmpPath = (fsMock.writeFile as jest.Mock).mock.calls[0][0];
+    expect(tmpPath).toMatch(/\.tmp$/);
+    expect(fsMock.rename).toHaveBeenCalledWith(tmpPath, shopPath);
+    expect(
+      (fsMock.writeFile as jest.Mock).mock.invocationCallOrder[0],
+    ).toBeLessThan((fsMock.rename as jest.Mock).mock.invocationCallOrder[0]);
   });
 
   it("throws when patch id does not match", async () => {

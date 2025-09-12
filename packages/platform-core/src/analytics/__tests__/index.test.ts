@@ -341,4 +341,15 @@ describe("public tracking functions", () => {
     );
     logSpy.mockRestore();
   });
+
+  test("rejects invalid shop name and validates", async () => {
+    const shops = await import("../../shops");
+    const validateSpy = jest.spyOn(shops, "validateShopName");
+    const { trackEvent } = await import("../index");
+    await expect(
+      trackEvent("bad/shop", { type: "page_view", page: "home" })
+    ).rejects.toThrow(/Invalid shop name/);
+    expect(validateSpy).toHaveBeenCalled();
+    validateSpy.mockRestore();
+  });
 });

@@ -1,6 +1,7 @@
 import "../../../../../../../test/resetNextMocks";
 import * as React from "react";
 import { render, screen, configure } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Slot } from "../slot";
 
 configure({ testIdAttribute: "data-testid" });
@@ -42,5 +43,29 @@ describe("Slot", () => {
     expect(child).toHaveClass("forwarded");
     expect(child).toHaveAttribute("data-test", "original");
     expect(child).toHaveAttribute("data-new", "added");
+  });
+
+  it("handles existing child ref along with Slot ref", () => {
+    const slotRef = React.createRef<HTMLDivElement>();
+    const childRef = React.createRef<HTMLDivElement>();
+    render(
+      <Slot ref={slotRef}>
+        <div data-testid="child" ref={childRef} />
+      </Slot>
+    );
+    const child = screen.getByTestId("child");
+    expect(slotRef.current).toBe(child);
+    expect(childRef.current).toBe(child);
+  });
+
+  it("passes event handlers through to the child", async () => {
+    const handleClick = jest.fn();
+    render(
+      <Slot onClick={handleClick}>
+        <button data-testid="child">child</button>
+      </Slot>
+    );
+    await userEvent.click(screen.getByTestId("child"));
+    expect(handleClick).toHaveBeenCalledTimes(1);
   });
 });

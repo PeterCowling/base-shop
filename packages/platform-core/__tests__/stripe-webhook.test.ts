@@ -1,5 +1,6 @@
 import { jest } from "@jest/globals";
 import type Stripe from "stripe";
+// Consolidated webhook handler tests
 
 const addOrder = jest.fn();
 const markRefunded = jest.fn();

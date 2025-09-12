@@ -72,7 +72,7 @@ describe("rentalOrder stub delegate", () => {
     ).rejects.toThrow("Order not found");
   });
 
-  it("updates via shop_trackingNumber and errors when order missing", async () => {
+  it("updates via shop_trackingNumber and throws on unknown key", async () => {
     const prisma = createTestPrismaStub();
     await prisma.rentalOrder.create({
       data: { shop: "s1", sessionId: "1", trackingNumber: "tn1" },
@@ -86,8 +86,8 @@ describe("rentalOrder stub delegate", () => {
 
     await expect(
       prisma.rentalOrder.update({
-        where: { shop_trackingNumber: { shop: "s1", trackingNumber: "missing" } },
-        data: { customerId: "c3" },
+        where: { shop_customerId: { shop: "s1", customerId: "c2" } },
+        data: { trackingNumber: "tn2" },
       }),
     ).rejects.toThrow("Order not found");
   });

@@ -51,12 +51,8 @@ describe('genSecret', () => {
     expect(secret).toMatch(/^[0-9a-f]+$/);
   });
 
-  it('throws when byte length is negative', () => {
-    expect(() => genSecret(-1)).toThrow(RangeError);
-  });
-
-  it('throws when byte length is not an integer', () => {
-    expect(() => genSecret(1.5)).toThrow(RangeError);
+  it.each([-1, 1.5])('throws for invalid byte length %p', (bytes) => {
+    expect(() => genSecret(bytes as number)).toThrow(RangeError);
   });
 
   it('uses GEN_SECRET env var when provided', () => {
@@ -68,8 +64,8 @@ describe('genSecret', () => {
     expect(getRandomValues).not.toHaveBeenCalled();
   });
 
-  it('throws when crypto is unavailable', () => {
-    Object.defineProperty(globalThis, 'crypto', { value: undefined });
+  it('throws when crypto.getRandomValues is unavailable', () => {
+    Object.defineProperty(globalThis, 'crypto', { value: {} });
     expect(() => genSecret()).toThrow('crypto.getRandomValues is not available');
   });
 });

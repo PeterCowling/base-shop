@@ -2,7 +2,12 @@
 
 import { LOCALES } from "@acme/i18n";
 import { captureException } from "@/utils/sentry.server";
-import type { Locale, Page, HistoryState } from "@acme/types";
+import {
+  historyStateSchema,
+  type Locale,
+  type Page,
+  type HistoryState,
+} from "@acme/types";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
 import { formDataToObject, tryJsonParse } from "../utils/formData";
@@ -28,7 +33,6 @@ async function parseHistory(
   raw: FormDataEntryValue | null
 ): Promise<HistoryState> {
   const historyInput = tryJsonParse<HistoryState>(raw);
-  const { historyStateSchema } = await import("@acme/types");
   return historyStateSchema.parse(historyInput);
 }
 

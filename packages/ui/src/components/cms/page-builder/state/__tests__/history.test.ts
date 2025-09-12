@@ -21,6 +21,15 @@ describe("history actions", () => {
     expect(redone.present).toEqual([a]);
   });
 
+  it("preserves gridCols across commit, undo, and redo", () => {
+    const committed = commit(init, [a]);
+    const undone = undo(committed);
+    const redone = redo(undone);
+    expect(committed.gridCols).toBe(init.gridCols);
+    expect(undone.gridCols).toBe(init.gridCols);
+    expect(redone.gridCols).toBe(init.gridCols);
+  });
+
   it("clears future on new commits after undo", () => {
     const first = commit(init, [a]);
     const second = commit(first, [a, b]);
@@ -31,7 +40,7 @@ describe("history actions", () => {
     expect(branched.future).toEqual([]);
   });
 
-  it("returns same state when committing current present", () => {
+  it("does not allocate new object when committing identical present", () => {
     const first = commit(init, [a]);
     const result = commit(first, first.present);
     expect(Object.is(result, first)).toBe(true);

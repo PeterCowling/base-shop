@@ -14,6 +14,23 @@ const hookMock = {
   formAction: undefined as undefined | ((fd: FormData) => Promise<void>),
 };
 
+const originalError = console.error;
+beforeAll(() => {
+  jest.spyOn(console, "error").mockImplementation((...args) => {
+    if (
+      typeof args[0] === "string" &&
+      args[0].includes("A suspended resource finished loading inside a test")
+    ) {
+      return;
+    }
+    originalError(...args);
+  });
+});
+
+afterAll(() => {
+  (console.error as jest.Mock).mockRestore();
+});
+
 jest.mock("../useSanityConnection", () => {
   const React = require("react");
   return {
@@ -54,14 +71,8 @@ jest.mock("../useSanityConnection", () => {
 jest.mock("react-dom", () => ({
   ...jest.requireActual("react-dom"),
   useFormState: (action: any, initialState: any) => {
-    const React = require("react");
-    const [state, setState] = React.useState(initialState);
-    const formAction = async (formData: any) => {
-      const res = await action(initialState, formData);
-      setState(res);
-      return res;
-    };
-    return [state, formAction];
+    const formAction = async (formData: any) => action(formData);
+    return [initialState, formAction];
   },
   useFormStatus: () => ({ pending: false }),
 }));
@@ -76,12 +87,15 @@ describe("ConnectForm", () => {
 
   it("transitions from credentials to dataset to confirmation", async () => {
     hookMock.formActionImpl = async () => ({ message: "Connected", error: "", errorCode: "" });
-    render(<ConnectForm shopId="shop" />);
+    await act(async () => {
+      render(<ConnectForm shopId="shop" />);
+    });
     fireEvent.click(screen.getByRole("button", { name: /next/i }));
     expect(screen.getByLabelText(/dataset/i)).toBeInTheDocument();
     await act(async () => {
       await hookMock.formAction!(new FormData());
     });
+    await act(async () => {});
     expect(screen.getByText("Connected", { selector: "p" })).toBeInTheDocument();
   });
 
@@ -91,18 +105,23 @@ describe("ConnectForm", () => {
       error: "raw",
       errorCode: "DATASET_LIST_ERROR",
     });
-    render(<ConnectForm shopId="shop" />);
+    await act(async () => {
+      render(<ConnectForm shopId="shop" />);
+    });
     fireEvent.click(screen.getByRole("button", { name: /next/i }));
     await act(async () => {
       await hookMock.formAction!(new FormData());
     });
+    await act(async () => {});
     expect(screen.getByRole("alert")).toHaveTextContent("Failed to list datasets");
   });
 
-  it("invokes deleteSanityConfig on disconnect", () => {
-    render(
-      <ConnectForm shopId="shop" initial={{ projectId: "p", dataset: "blog" }} />,
-    );
+  it("invokes deleteSanityConfig on disconnect", async () => {
+    await act(async () => {
+      render(
+        <ConnectForm shopId="shop" initial={{ projectId: "p", dataset: "blog" }} />,
+      );
+    });
     const form = screen
       .getByRole("button", { name: /disconnect/i })
       .closest("form")!;

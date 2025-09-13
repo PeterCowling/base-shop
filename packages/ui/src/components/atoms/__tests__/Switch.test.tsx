@@ -15,7 +15,7 @@ describe("Switch", () => {
   });
 
   it("supports controlled checked prop", () => {
-    render(<Switch checked />);
+    render(<Switch checked onChange={() => {}} />);
     expect(screen.getByRole("checkbox")).toBeChecked();
   });
 

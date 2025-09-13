@@ -30,13 +30,19 @@ describe("seo service", () => {
   });
 
   it("returns errors for invalid payload without persisting", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     const fd = new FormData();
     fd.append("locale", "en");
     const result = await updateSeo("shop", fd);
+    expect(errorSpy).toHaveBeenCalledWith(
+      "[updateSeo] validation failed for shop shop",
+      expect.any(Object),
+    );
     expect(result.errors).toBeDefined();
     expect(fetchSettings).not.toHaveBeenCalled();
     expect(persistSettings).not.toHaveBeenCalled();
     expect(revalidatePath).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
   });
 
   it("throws when authorization fails", async () => {
@@ -90,12 +96,18 @@ describe("seo service", () => {
 
   it("returns errors when persistence fails", async () => {
     (persistSettings as jest.Mock).mockRejectedValueOnce(new Error("db"));
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     const fd = new FormData();
     fd.append("locale", "en");
     fd.append("title", "t");
     const result = await updateSeo("shop", fd);
+    expect(errorSpy).toHaveBeenCalledWith(
+      "[updateSeo] failed to persist settings for shop shop",
+      expect.any(Error),
+    );
     expect(result.errors).toBeDefined();
     expect(revalidatePath).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
   });
 
   describe("conditional meta updates", () => {

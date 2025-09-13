@@ -2,48 +2,51 @@ import { describe, it, expect } from "@jest/globals";
 import { withEnv } from "../../../test/utils/withEnv";
 import { NEXT_SECRET, SESSION_SECRET } from "./authEnvTestUtils";
 
-describe("AUTH_TOKEN_TTL normalization", () => {
-  const baseVars = {
-    NODE_ENV: "production",
-    NEXTAUTH_SECRET: NEXT_SECRET,
-    SESSION_SECRET,
-  };
+describe.each(["production", "development"]) (
+  "AUTH_TOKEN_TTL normalization (%s)",
+  (NODE_ENV) => {
+    const baseVars = {
+      NODE_ENV,
+      NEXTAUTH_SECRET: NEXT_SECRET,
+      SESSION_SECRET,
+    } as const;
 
-  it("removes blank AUTH_TOKEN_TTL", async () => {
-    await withEnv(
-      { ...baseVars, AUTH_TOKEN_TTL: "" },
-      async () => {
-        await import("../auth");
-        expect(process.env.AUTH_TOKEN_TTL).toBeUndefined();
-      },
-    );
-  });
+    it("removes blank AUTH_TOKEN_TTL", async () => {
+      await withEnv(
+        { ...baseVars, AUTH_TOKEN_TTL: "" },
+        async () => {
+          await import("../auth");
+          expect(process.env.AUTH_TOKEN_TTL).toBeUndefined();
+        },
+      );
+    });
 
-  it("appends seconds to numeric AUTH_TOKEN_TTL", async () => {
-    await withEnv(
-      { ...baseVars, AUTH_TOKEN_TTL: "60" },
-      async () => {
-        await import("../auth");
-        expect(process.env.AUTH_TOKEN_TTL).toBe("60s");
-      },
-    );
-  });
+    it("appends seconds to numeric AUTH_TOKEN_TTL", async () => {
+      await withEnv(
+        { ...baseVars, AUTH_TOKEN_TTL: "60" },
+        async () => {
+          await import("../auth");
+          expect(process.env.AUTH_TOKEN_TTL).toBe("60s");
+        },
+      );
+    });
 
-  it.each([
-    ["15m", "15m"],
-    ["30 s", "30s"],
-    ["45S", "45s"],
-    [" 5 M ", "5m"],
-  ])("normalizes unit string '%s' to '%s'", async (input, output) => {
-    await withEnv(
-      { ...baseVars, AUTH_TOKEN_TTL: input },
-      async () => {
-        await import("../auth");
-        expect(process.env.AUTH_TOKEN_TTL).toBe(output);
-      },
-    );
-  });
-});
+    it.each([
+      ["15m", "15m"],
+      ["30 s", "30s"],
+      ["45S", "45s"],
+      [" 5 M ", "5m"],
+    ])("normalizes unit string '%s' to '%s'", async (input, output) => {
+      await withEnv(
+        { ...baseVars, AUTH_TOKEN_TTL: input },
+        async () => {
+          await import("../auth");
+          expect(process.env.AUTH_TOKEN_TTL).toBe(output);
+        },
+      );
+    });
+  },
+);
 
 describe("authEnv expiry", () => {
   it("sets AUTH_TOKEN_EXPIRES_AT based on AUTH_TOKEN_TTL", async () => {

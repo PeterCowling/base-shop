@@ -40,4 +40,28 @@ describe("RangeInput", () => {
     expect(input).toHaveAttribute("min", "10");
     expect(input).toHaveAttribute("max", "20");
   });
+
+  it("displays min boundary and handles values below it", () => {
+    const handleChange = jest.fn();
+    const { container } = render(
+      <RangeInput value="10px" onChange={handleChange} min={10} max={20} />,
+    );
+    const input = container.querySelector("input") as HTMLInputElement;
+    const span = container.querySelector("span") as HTMLSpanElement;
+    expect(span).toHaveTextContent("10px");
+    fireEvent.change(input, { target: { value: "9" } });
+    expect(handleChange).toHaveBeenCalledWith("9px");
+  });
+
+  it("displays max boundary and handles values above it", () => {
+    const handleChange = jest.fn();
+    const { container } = render(
+      <RangeInput value="20px" onChange={handleChange} min={10} max={20} />,
+    );
+    const input = container.querySelector("input") as HTMLInputElement;
+    const span = container.querySelector("span") as HTMLSpanElement;
+    expect(span).toHaveTextContent("20px");
+    fireEvent.change(input, { target: { value: "21" } });
+    expect(handleChange).toHaveBeenCalledWith("21px");
+  });
 });

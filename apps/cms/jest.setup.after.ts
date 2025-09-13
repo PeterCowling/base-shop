@@ -10,6 +10,7 @@ import React from "react";
 import * as ReactDOMTestUtils from "react-dom/test-utils";
 import { TextDecoder, TextEncoder } from "node:util";
 import "./__tests__/mocks/external";
+import "../../test/resetNextMocks";
 
 configure({ testIdAttribute: "data-cy" });
 
@@ -136,18 +137,8 @@ if (typeof (Response as any).json !== "function") {
 /* 2b ·  LIGHTWEIGHT NEXT.JS MOCKS FOR JSDOM                                  */
 /* -------------------------------------------------------------------------- */
 
-jest.mock("next/image", () => ({
-  __esModule: true,
-  /* eslint-disable react/display-name */
-  default: (props: any) => React.createElement("img", props),
-}));
-
-jest.mock("next/link", () => ({
-  __esModule: true,
-  default: ({ href, children, ...rest }: any) =>
-    // the link wrapper must return an <a> so @testing-library can query it
-    React.createElement("a", { href, ...rest }, children),
-}));
+// Reset Next.js-specific components to lightweight JSDOM-compatible mocks.
+// See `test/resetNextMocks.ts` for implementation details.
 
 jest.mock("next/router", () => ({
   __esModule: true,

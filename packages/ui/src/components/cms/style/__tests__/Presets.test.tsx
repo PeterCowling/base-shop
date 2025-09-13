@@ -26,6 +26,17 @@ describe("Presets", () => {
     expect(handleChange).toHaveBeenLastCalledWith({});
   });
 
+  it("does not trigger onChange for unknown preset", () => {
+    const handleChange = jest.fn();
+    render(<Presets tokens={tokens} baseTokens={{}} onChange={handleChange} />);
+
+    fireEvent.change(screen.getByLabelText(/preset/i), {
+      target: { value: "unknown" },
+    });
+
+    expect(handleChange).not.toHaveBeenCalled();
+  });
+
   it("shows placeholder when no presets are available", async () => {
     jest.resetModules();
     jest.doMock("../presets.json", () => [], { virtual: true });

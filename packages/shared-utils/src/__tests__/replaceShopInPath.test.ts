@@ -23,6 +23,10 @@ describe("replaceShopInPath", () => {
     });
   });
 
+  it("handles empty string", () => {
+    expect(replaceShopInPath("", "new")).toBe("/cms/shop/new");
+  });
+
   it("preserves query parameters", () => {
     expect(replaceShopInPath("/cms/shop?x=1", "new")).toBe(
       "/cms/shop/new?x=1"

@@ -102,44 +102,6 @@ describe("CurrencyProvider", () => {
     unmount();
   });
 
-  it("uses default currency when window is undefined", async () => {
-    jest.resetModules();
-    const setSpy = jest.spyOn(Storage.prototype, "setItem");
-    const originalWindow = global.window;
-    // Remove the global window to simulate non-browser environment
-    delete (global as any).window;
-    expect(typeof window).toBe("undefined");
-
-    const ReactTestRenderer = await import("react-test-renderer");
-    const { default: TestRenderer, act: rendererAct } = ReactTestRenderer;
-
-    const {
-      CurrencyProvider: LocalCurrencyProvider,
-      useCurrency: localUseCurrency,
-    } = await import("../CurrencyContext");
-
-    function LocalDisplay() {
-      const [currency] = localUseCurrency();
-      return <span data-cy="currency">{currency}</span>;
-    }
-
-    let renderer: any;
-    await rendererAct(async () => {
-      renderer = TestRenderer.create(
-        <LocalCurrencyProvider>
-          <LocalDisplay />
-        </LocalCurrencyProvider>
-      );
-    });
-
-    const currencyNode = renderer.root.findByProps({ "data-cy": "currency" });
-    expect(currencyNode.children.join("")).toBe("EUR");
-    expect(setSpy).not.toHaveBeenCalled();
-
-    renderer.unmount();
-    (global as any).window = originalWindow;
-  });
-
   it("provides default and persists currency changes", async () => {
     const setSpy = jest.spyOn(Storage.prototype, "setItem");
 

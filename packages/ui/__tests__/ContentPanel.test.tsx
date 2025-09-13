@@ -9,6 +9,10 @@ jest.mock("../src/components/atoms/shadcn", () => {
     ),
   };
 });
+jest.mock("../src/components/cms/page-builder/editorRegistry", () => ({
+  __esModule: true,
+  default: {},
+}));
 import { render, fireEvent, screen } from "@testing-library/react";
 import ContentPanel from "../src/components/cms/page-builder/panels/ContentPanel";
 import type { PageComponent } from "@acme/types";

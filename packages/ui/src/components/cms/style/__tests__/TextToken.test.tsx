@@ -38,6 +38,18 @@ describe("TextToken", () => {
     expect(setToken).toHaveBeenCalledWith(tokenKey, "hello");
   });
 
+  it("resets to empty string when default value is undefined", () => {
+    const setToken = jest.fn();
+    renderToken({
+      value: "world",
+      defaultValue: undefined,
+      isOverridden: true,
+      setToken,
+    });
+    fireEvent.click(screen.getByText("Reset"));
+    expect(setToken).toHaveBeenCalledWith(tokenKey, "");
+  });
+
   it("renders without default value", () => {
     renderToken({ defaultValue: undefined });
     expect(screen.queryByText(/Default:/)).toBeNull();

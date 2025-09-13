@@ -14,21 +14,41 @@ export default function TestimonialSlider({
 }) {
   const list = testimonials.slice(0, maxItems ?? testimonials.length);
   const [i, setI] = useState(0);
+  const next = () => setI((n) => (n + 1) % list.length);
+  const prev = () => setI((n) => (n - 1 + list.length) % list.length);
+
   useEffect(() => {
     if (!list.length) return;
-    const id = setInterval(
-      () => setI((n) => (n + 1) % list.length),
-      5000
-    );
+    const id = setInterval(next, 5000);
     return () => clearInterval(id);
   }, [list.length]);
 
   if (!list.length || list.length < (minItems ?? 0)) return null;
   const t = list[i % list.length];
   return (
-    <section className="space-y-2 text-center">
+    <section className="relative space-y-2 text-center">
       <blockquote className="italic">{t.quote}</blockquote>
       {t.name && <footer className="text-sm text-muted">— {t.name}</footer>}
+      {list.length > 1 && (
+        <>
+          <button
+            type="button"
+            onClick={prev}
+            aria-label="Previous slide"
+            className="absolute left-2 top-1/2 -translate-y-1/2"
+          >
+            ‹
+          </button>
+          <button
+            type="button"
+            onClick={next}
+            aria-label="Next slide"
+            className="absolute right-2 top-1/2 -translate-y-1/2"
+          >
+            ›
+          </button>
+        </>
+      )}
     </section>
   );
 }

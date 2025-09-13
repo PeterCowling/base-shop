@@ -1,4 +1,4 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, fireEvent } from "@testing-library/react";
 import TestimonialSlider from "../src/components/cms/blocks/TestimonialSlider";
 
 describe("TestimonialSlider", () => {
@@ -43,5 +43,48 @@ describe("TestimonialSlider", () => {
     });
     expect(screen.getByText("Great")).toBeInTheDocument();
     expect(screen.queryByText("Nice")).not.toBeInTheDocument();
+  });
+
+  it("autoplays to next testimonial", () => {
+    render(
+      <TestimonialSlider
+        testimonials={[
+          { quote: "Great", name: "A" },
+          { quote: "Nice", name: "B" },
+        ]}
+      />
+    );
+    expect(screen.getByText("Great")).toBeInTheDocument();
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+    expect(screen.getByText("Nice")).toBeInTheDocument();
+  });
+
+  it("advances with next button", () => {
+    render(
+      <TestimonialSlider
+        testimonials={[
+          { quote: "Great", name: "A" },
+          { quote: "Nice", name: "B" },
+        ]}
+      />
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Next slide" }));
+    expect(screen.getByText("Nice")).toBeInTheDocument();
+  });
+
+  it("goes back with previous button", () => {
+    render(
+      <TestimonialSlider
+        testimonials={[
+          { quote: "Great", name: "A" },
+          { quote: "Nice", name: "B" },
+        ]}
+      />
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Next slide" }));
+    fireEvent.click(screen.getByRole("button", { name: "Previous slide" }));
+    expect(screen.getByText("Great")).toBeInTheDocument();
   });
 });

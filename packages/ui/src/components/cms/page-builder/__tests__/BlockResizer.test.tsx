@@ -10,7 +10,11 @@ if (typeof window !== "undefined" && !(window as any).PointerEvent) {
 describe("BlockResizer", () => {
   it("returns null when not selected", () => {
     const { container } = render(
-      <BlockResizer selected={false} startResize={jest.fn()} startSpacing={jest.fn()} />
+      <BlockResizer
+        selected={false}
+        startResize={jest.fn()}
+        startSpacing={jest.fn()}
+      />
     );
     expect(container).toBeEmptyDOMElement();
   });
@@ -18,7 +22,11 @@ describe("BlockResizer", () => {
   it("fires startResize on all corner handles", () => {
     const startResize = jest.fn();
     const { container } = render(
-      <BlockResizer selected startResize={startResize} startSpacing={jest.fn()} />
+      <BlockResizer
+        selected
+        startResize={startResize}
+        startSpacing={jest.fn()}
+      />
     );
     const corners = Array.from(container.children).slice(0, 4) as HTMLElement[];
     corners.forEach((corner, idx) => {
@@ -30,13 +38,19 @@ describe("BlockResizer", () => {
     });
   });
 
-  it("fires startSpacing with expected args", () => {
+  it("fires startSpacing on all handles with expected args", () => {
     const startSpacing = jest.fn();
     const { container } = render(
-      <BlockResizer selected startResize={jest.fn()} startSpacing={startSpacing} />
+      <BlockResizer
+        selected
+        startResize={jest.fn()}
+        startSpacing={startSpacing}
+      />
     );
     const handles = Array.from(container.children).slice(4) as HTMLElement[];
-    const expected: ["margin" | "padding", "top" | "bottom" | "left" | "right"][] = [
+    const expected: Array<
+      ["margin" | "padding", "top" | "bottom" | "left" | "right"]
+    > = [
       ["margin", "top"],
       ["margin", "bottom"],
       ["margin", "left"],
@@ -48,10 +62,13 @@ describe("BlockResizer", () => {
     ];
     handles.forEach((handle, idx) => {
       fireEvent.pointerDown(handle);
-      const call = startSpacing.mock.calls[idx];
-      expect(call[0].type).toBe("pointerdown");
-      expect(call[1]).toBe(expected[idx][0]);
-      expect(call[2]).toBe(expected[idx][1]);
+      expect(startSpacing).toHaveBeenNthCalledWith(
+        idx + 1,
+        expect.objectContaining({ type: "pointerdown" }),
+        expected[idx][0],
+        expected[idx][1]
+      );
     });
+    expect(startSpacing).toHaveBeenCalledTimes(expected.length);
   });
 });

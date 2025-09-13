@@ -23,12 +23,36 @@ export function Accordion({ items }: AccordionProps) {
     <div className="space-y-2">
       {items.map((item, idx) => {
         const isOpen = open.includes(idx);
+
+        const handleKeyDown = (
+          event: React.KeyboardEvent<HTMLButtonElement>
+        ) => {
+          if (
+            event.key === " " ||
+            event.key === "Enter" ||
+            event.key === "Space" ||
+            event.key === "Spacebar"
+          ) {
+            event.preventDefault();
+            toggle(idx);
+          }
+        };
+
+        const handleClick = (
+          event: React.MouseEvent<HTMLButtonElement>
+        ) => {
+          if (event.detail !== 0) {
+            toggle(idx);
+          }
+        };
+
         return (
           <div key={idx} className="rounded border">
             <button
               type="button"
               aria-expanded={isOpen}
-              onClick={() => toggle(idx)}
+              onClick={handleClick}
+              onKeyDown={handleKeyDown}
               className="flex w-full items-center justify-between p-2 text-left"
             >
               <span>{item.title}</span>

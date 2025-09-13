@@ -21,11 +21,19 @@ jest.mock("@/components/atoms/shadcn", () => {
     Button: ({ children, onClick, ...props }: any) => (
       <button onClick={onClick} {...props}>{children}</button>
     ),
-    Select: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    SelectTrigger: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    SelectContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    SelectItem: ({ children, onSelect, disabled, ...props }: any) => (
-      <div onClick={(e) => !disabled && onSelect && onSelect(e)} {...props}>{children}</div>
+    Select: ({ children, open, onOpenChange, onValueChange, value, ...props }: any) => (
+      <div {...props}>{children}</div>
+    ),
+    SelectTrigger: ({ children, asChild, ...props }: any) => <div {...props}>{children}</div>,
+    SelectContent: ({ children, asChild, ...props }: any) => <div {...props}>{children}</div>,
+    SelectItem: ({ children, onSelect, disabled, asChild, ...props }: any) => (
+      <div
+        onClick={(e) => !disabled && onSelect && onSelect(e)}
+        aria-disabled={disabled}
+        {...props}
+      >
+        {children}
+      </div>
     ),
     SelectValue: ({ placeholder }: any) => <div>{placeholder}</div>,
   };

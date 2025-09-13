@@ -250,7 +250,15 @@ const relativePath = path.relative(workspaceRoot, process.cwd()).replace(/\\/g, 
 if (relativePath) {
   const [scope, ...rest] = relativePath.split('/');
   const subPath = rest.join('/');
-  config.collectCoverageFrom = ['src/**/*.{ts,tsx}'];
+  config.collectCoverageFrom = [
+    'src/**/*.{ts,tsx}',
+    'scripts/**/*.{ts,tsx}',
+    '*.{ts,tsx}',
+    '!**/__tests__/**',
+    '!**/*.d.ts',
+    '!**/*.test.{ts,tsx}',
+    '!**/*.spec.{ts,tsx}',
+  ];
   config.coveragePathIgnorePatterns.push(
     `/${scope}/(?!${subPath})/`,
     scope === 'packages' ? '/apps/' : '/packages/'

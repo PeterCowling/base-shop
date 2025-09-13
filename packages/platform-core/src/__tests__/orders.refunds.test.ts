@@ -134,6 +134,22 @@ describe("orders/refunds", () => {
       expect(stripe.refunds.create).not.toHaveBeenCalled();
     });
 
+    it("returns null when update returns null", async () => {
+      const order = {
+        id: "1",
+        shop: "s",
+        sessionId: "sess",
+        deposit: 0,
+        refundTotal: 0,
+      };
+      prisma.rentalOrder.findUnique.mockResolvedValue(order);
+      prisma.rentalOrder.update.mockResolvedValue(null);
+      const res = await refundOrder("s", "sess");
+      expect(res).toBeNull();
+      expect(stripe.checkout.sessions.retrieve).not.toHaveBeenCalled();
+      expect(stripe.refunds.create).not.toHaveBeenCalled();
+    });
+
     it.each([
       { deposit: 100, refundTotal: 0, amount: undefined, refundable: 100 },
       { deposit: 200, refundTotal: 50, amount: 100, refundable: 100 },

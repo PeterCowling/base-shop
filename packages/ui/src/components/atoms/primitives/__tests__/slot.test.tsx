@@ -58,6 +58,25 @@ describe("Slot", () => {
     expect(childRef.current).toBe(child);
   });
 
+  it("handles function refs along with Slot ref", () => {
+    let slotNode: HTMLDivElement | null = null;
+    let childNode: HTMLDivElement | null = null;
+    const slotRef = (node: HTMLDivElement | null) => {
+      slotNode = node;
+    };
+    const childRef = (node: HTMLDivElement | null) => {
+      childNode = node;
+    };
+    render(
+      <Slot ref={slotRef}>
+        <div data-testid="child" ref={childRef} />
+      </Slot>
+    );
+    const child = screen.getByTestId("child");
+    expect(slotNode).toBe(child);
+    expect(childNode).toBe(child);
+  });
+
   it("passes event handlers through to the child", async () => {
     const handleClick = jest.fn();
     render(

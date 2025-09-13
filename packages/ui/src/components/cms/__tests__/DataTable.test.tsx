@@ -48,6 +48,28 @@ describe("DataTable", () => {
     expect(checkboxes[0].checked).toBe(false);
   });
 
+  it("handles selection without callback", () => {
+    const errorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    render(
+      <DataTable rows={rows} columns={columns} selectable />
+    );
+
+    const rowElements = screen.getAllByRole("row");
+    const checkbox = screen.getAllByRole("checkbox")[0] as HTMLInputElement;
+
+    fireEvent.click(rowElements[1]);
+    expect(checkbox.checked).toBe(true);
+
+    fireEvent.click(checkbox);
+    expect(checkbox.checked).toBe(false);
+
+    expect(errorSpy).not.toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
   it("ignores clicks when not selectable", () => {
     const handleChange = jest.fn();
     render(<DataTable rows={rows} columns={columns} onSelectionChange={handleChange} />);

@@ -1,18 +1,14 @@
 /** @jest-environment node */
 
-import {
-  markReturned,
-  setReturnTracking,
-  setReturnStatus,
-} from "../orders/status";
+import { markReturned, setReturnTracking, setReturnStatus } from "../src/orders/status";
 
-jest.mock("../db", () => ({
+jest.mock("../src/db", () => ({
   prisma: {
     rentalOrder: { update: jest.fn() },
   },
 }));
 
-const { prisma } = jest.requireMock("../db") as {
+const { prisma } = jest.requireMock("../src/db") as {
   prisma: { rentalOrder: { update: jest.Mock } };
 };
 
@@ -43,7 +39,7 @@ describe("orders/status", () => {
     expect(result).toEqual(mock);
   });
 
-  it("returns null when update throws", async () => {
+  it("returns null when markReturned update throws", async () => {
     prisma.rentalOrder.update.mockImplementation(() => {
       throw new Error("not found");
     });
@@ -63,6 +59,14 @@ describe("orders/status", () => {
 
   it("returns null when return tracking update yields null", async () => {
     prisma.rentalOrder.update.mockResolvedValue(null);
+    const result = await setReturnTracking("shop", "sess", "trk", "url");
+    expect(result).toBeNull();
+  });
+
+  it("returns null when return tracking update throws", async () => {
+    prisma.rentalOrder.update.mockImplementation(() => {
+      throw new Error("fail");
+    });
     const result = await setReturnTracking("shop", "sess", "trk", "url");
     expect(result).toBeNull();
   });

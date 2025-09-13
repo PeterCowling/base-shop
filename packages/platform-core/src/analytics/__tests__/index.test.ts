@@ -2,6 +2,8 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import * as os from "os";
 
+jest.setTimeout(10000);
+
 jest.mock("@acme/date-utils", () => ({
   nowIso: () => "2024-01-01T00:00:00.000Z",
 }));
@@ -191,6 +193,12 @@ describe("updateAggregates persistence", () => {
     expect(agg.order["2024-01-01"]).toEqual({ count: 1, amount: 5 });
     expect(agg.discount_redeemed["2024-01-01"].SAVE).toBe(1);
     expect(agg.ai_crawl["2024-01-01"]).toBe(1);
+    expect(Object.keys(agg).sort()).toEqual([
+      "ai_crawl",
+      "discount_redeemed",
+      "order",
+      "page_view",
+    ]);
 
     await trackPageView(shop, "about");
     await trackOrder(shop, "o2", 7);
@@ -206,6 +214,44 @@ describe("updateAggregates persistence", () => {
     expect(agg.order["2024-01-01"]).toEqual({ count: 2, amount: 12 });
     expect(agg.discount_redeemed["2024-01-01"].SAVE).toBe(2);
     expect(agg.ai_crawl["2024-01-01"]).toBe(2);
+    expect(Object.keys(agg).sort()).toEqual([
+      "ai_crawl",
+      "discount_redeemed",
+      "order",
+      "page_view",
+    ]);
+
+    const expectedAgg = JSON.parse(JSON.stringify(agg));
+
+    await trackEvent(shop, { type: "discount_redeemed" } as any);
+    agg = JSON.parse(
+      await fs.readFile(
+        path.join(tmp, shop, "analytics-aggregates.json"),
+        "utf8"
+      )
+    );
+    expect(agg).toEqual(expectedAgg);
+    expect(Object.keys(agg).sort()).toEqual([
+      "ai_crawl",
+      "discount_redeemed",
+      "order",
+      "page_view",
+    ]);
+
+    await trackEvent(shop, { type: "custom_event" } as any);
+    agg = JSON.parse(
+      await fs.readFile(
+        path.join(tmp, shop, "analytics-aggregates.json"),
+        "utf8"
+      )
+    );
+    expect(agg).toEqual(expectedAgg);
+    expect(Object.keys(agg).sort()).toEqual([
+      "ai_crawl",
+      "discount_redeemed",
+      "order",
+      "page_view",
+    ]);
 
     const events = (
       await fs.readFile(path.join(tmp, shop, "analytics.jsonl"), "utf8")
@@ -216,8 +262,9 @@ describe("updateAggregates persistence", () => {
     expect(events.filter((e) => e.type === "page_view")).toHaveLength(2);
     expect(events.filter((e) => e.type === "order")).toHaveLength(2);
     expect(events.filter((e) => e.type === "discount_redeemed")).toHaveLength(
-      2
+      3
     );
+    expect(events.filter((e) => e.type === "custom_event")).toHaveLength(1);
     expect(events.filter((e) => e.type === "ai_crawl")).toHaveLength(2);
   });
 

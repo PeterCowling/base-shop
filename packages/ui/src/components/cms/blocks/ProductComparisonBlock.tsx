@@ -30,7 +30,11 @@ export default function ProductComparisonBlock({ skus = [], attributes }: Props)
             <td className="border px-2 py-1">{sku.title}</td>
             {attributes.map((attr) => (
               <td key={attr} className="border px-2 py-1">
-                {String(sku[attr] ?? "")}
+                {typeof sku[attr] === "boolean"
+                  ? sku[attr]
+                    ? "✓"
+                    : "✕"
+                  : String(sku[attr] ?? "")}
               </td>
             ))}
           </tr>

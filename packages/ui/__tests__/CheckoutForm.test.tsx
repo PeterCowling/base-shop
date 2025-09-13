@@ -8,6 +8,7 @@ const confirmPayment = jest.fn();
 const push = jest.fn();
 const useStripeMock = jest.fn();
 const useElementsMock = jest.fn();
+let consoleError: jest.SpyInstance;
 
 jest.mock("@acme/i18n", () => ({
   useTranslations: () => (key: string) => key,
@@ -50,6 +51,11 @@ beforeEach(() => {
   (RHF.useForm as jest.Mock).mockImplementation(
     (jest.requireActual("react-hook-form") as any).useForm
   );
+  consoleError = jest.spyOn(console, "error").mockImplementation(() => {});
+});
+
+afterEach(() => {
+  consoleError.mockRestore();
 });
 
 describe("CheckoutForm", () => {

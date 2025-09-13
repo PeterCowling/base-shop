@@ -16,6 +16,7 @@ test("computes sibling edge offsets", () => {
         <div data-cy="s1" />
         <div ref={ref} data-cy="target" />
         <div data-cy="s2" />
+        <div data-cy="s3" />
       </div>
     );
   }
@@ -23,6 +24,8 @@ test("computes sibling edge offsets", () => {
   const { getByTestId } = render(<Wrapper />);
   const s1 = getByTestId("s1") as HTMLElement;
   const s2 = getByTestId("s2") as HTMLElement;
+  const s3 = getByTestId("s3") as HTMLElement;
+  const target = getByTestId("target") as HTMLElement;
 
   Object.defineProperty(s1, "offsetLeft", { value: 10, writable: true });
   Object.defineProperty(s1, "offsetTop", { value: 5, writable: true });
@@ -34,10 +37,27 @@ test("computes sibling edge offsets", () => {
   Object.defineProperty(s2, "offsetWidth", { value: 20, writable: true });
   Object.defineProperty(s2, "offsetHeight", { value: 10, writable: true });
 
+  Object.defineProperty(s3, "offsetLeft", { value: 110, writable: true });
+  Object.defineProperty(s3, "offsetTop", { value: 35, writable: true });
+  Object.defineProperty(s3, "offsetWidth", { value: 20, writable: true });
+  Object.defineProperty(s3, "offsetHeight", { value: 15, writable: true });
+
+  // Give the current element its own dimensions which should be ignored
+  Object.defineProperty(target, "offsetLeft", { value: 200, writable: true });
+  Object.defineProperty(target, "offsetTop", { value: 100, writable: true });
+  Object.defineProperty(target, "offsetWidth", { value: 25, writable: true });
+  Object.defineProperty(target, "offsetHeight", { value: 30, writable: true });
+
   computeSiblingEdges();
 
   expect(siblingEdgesRef.current).toEqual({
-    vertical: [10, 50, 60, 80],
-    horizontal: [5, 15, 20, 30],
+    vertical: [10, 50, 60, 80, 110, 130],
+    horizontal: [5, 15, 20, 30, 35, 50],
   });
+
+  // Ensure the current element's edges were not included
+  expect(siblingEdgesRef.current.vertical).not.toContain(200);
+  expect(siblingEdgesRef.current.vertical).not.toContain(225);
+  expect(siblingEdgesRef.current.horizontal).not.toContain(100);
+  expect(siblingEdgesRef.current.horizontal).not.toContain(130);
 });

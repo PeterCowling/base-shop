@@ -28,15 +28,17 @@ describe("PagesTable", () => {
     },
   ];
 
-  it("renders only slug and status columns when read-only", () => {
-    render(<PagesTable shop={shop} pages={pages} canWrite={false} />);
+  it("renders only slug and status columns when canWrite is omitted", () => {
+    render(<PagesTable shop={shop} pages={pages} />);
     const headers = screen
       .getAllByRole("columnheader")
       .map((h) => h.textContent?.trim());
     expect(headers).toEqual(["Slug", "Status"]);
-    expect(screen.queryByText("Actions")).not.toBeInTheDocument();
     expect(
       screen.queryByRole("link", { name: "New Page" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: "Edit" })
     ).not.toBeInTheDocument();
   });
 

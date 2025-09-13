@@ -5,13 +5,13 @@ import ComponentEditor from "../src/components/cms/page-builder/ComponentEditor"
 import type { PageComponent } from "@acme/types";
 
 describe("ComponentEditor", () => {
-  it("updates width, height, margin and padding", () => {
+  it("updates width, height, margin and padding", async () => {
     const component: PageComponent = {
       id: "1",
       type: "Image",
     } as PageComponent;
     const onResize = jest.fn();
-    const { getByLabelText, getAllByText, getByText } = render(
+    const { findByLabelText, findAllByText, getByText } = render(
       <TranslationsProvider messages={en}>
         <ComponentEditor
           component={component}
@@ -20,30 +20,32 @@ describe("ComponentEditor", () => {
         />
       </TranslationsProvider>
     );
-    fireEvent.click(getByText("Layout"));
-    fireEvent.change(getByLabelText("Width (Desktop)", { exact: false }), {
+    await act(async () => {
+      fireEvent.click(getByText("Layout"));
+    });
+    fireEvent.change(await findByLabelText("Width (Desktop)", { exact: false }), {
       target: { value: "200" },
     });
     expect(onResize).toHaveBeenCalledWith({ widthDesktop: "200" });
-    fireEvent.click(getAllByText("Full width")[0]);
+    fireEvent.click((await findAllByText("Full width"))[0]);
     expect(onResize).toHaveBeenCalledWith({ widthDesktop: "100%" });
-    fireEvent.change(getByLabelText("Height (Desktop)", { exact: false }), {
+    fireEvent.change(await findByLabelText("Height (Desktop)", { exact: false }), {
       target: { value: "300" },
     });
     expect(onResize).toHaveBeenCalledWith({ heightDesktop: "300" });
-    fireEvent.click(getAllByText("Full height")[0]);
+    fireEvent.click((await findAllByText("Full height"))[0]);
     expect(onResize).toHaveBeenCalledWith({ heightDesktop: "100%" });
-    fireEvent.change(getByLabelText("Margin (Desktop)", { exact: false }), {
+    fireEvent.change(await findByLabelText("Margin (Desktop)", { exact: false }), {
       target: { value: "10px" },
     });
     expect(onResize).toHaveBeenCalledWith({ marginDesktop: "10px" });
-    fireEvent.change(getByLabelText("Padding (Desktop)", { exact: false }), {
+    fireEvent.change(await findByLabelText("Padding (Desktop)", { exact: false }), {
       target: { value: "5px" },
     });
     expect(onResize).toHaveBeenCalledWith({ paddingDesktop: "5px" });
   });
 
-  it("updates minItems and maxItems", () => {
+  it("updates minItems and maxItems", async () => {
     const component: PageComponent = {
       id: "1",
       type: "ProductCarousel",
@@ -51,23 +53,25 @@ describe("ComponentEditor", () => {
       maxItems: 5,
     } as PageComponent;
     const onChange = jest.fn();
-    const { getByLabelText, getByText } = render(
+    const { findByLabelText, getByText } = render(
       <TranslationsProvider messages={en}>
         <ComponentEditor component={component} onChange={onChange} onResize={() => {}} />
       </TranslationsProvider>
     );
-    fireEvent.click(getByText("Content"));
-    fireEvent.change(getByLabelText("Min Items", { exact: false }), {
+    await act(async () => {
+      fireEvent.click(getByText("Content"));
+    });
+    fireEvent.change(await findByLabelText("Min Items", { exact: false }), {
       target: { value: "2" },
     });
-    fireEvent.change(getByLabelText("Max Items", { exact: false }), {
+    fireEvent.change(await findByLabelText("Max Items", { exact: false }), {
       target: { value: "6" },
     });
     expect(onChange).toHaveBeenCalledWith({ minItems: 2 });
     expect(onChange).toHaveBeenCalledWith({ maxItems: 6 });
   });
 
-  it("clamps minItems and maxItems against each other", () => {
+  it("clamps minItems and maxItems against each other", async () => {
     const component: PageComponent = {
       id: "1",
       type: "ProductCarousel",
@@ -75,17 +79,19 @@ describe("ComponentEditor", () => {
       maxItems: 5,
     } as PageComponent;
     const onChange = jest.fn();
-    const { getByLabelText, getByText } = render(
+    const { findByLabelText, getByText } = render(
       <TranslationsProvider messages={en}>
         <ComponentEditor component={component} onChange={onChange} onResize={() => {}} />
       </TranslationsProvider>
     );
-    fireEvent.click(getByText("Content"));
-    fireEvent.change(getByLabelText("Min Items", { exact: false }), {
+    await act(async () => {
+      fireEvent.click(getByText("Content"));
+    });
+    fireEvent.change(await findByLabelText("Min Items", { exact: false }), {
       target: { value: "6" },
     });
     expect(onChange).toHaveBeenNthCalledWith(1, { minItems: 6, maxItems: 6 });
-    fireEvent.change(getByLabelText("Max Items", { exact: false }), {
+    fireEvent.change(await findByLabelText("Max Items", { exact: false }), {
       target: { value: "0" },
     });
     expect(onChange).toHaveBeenNthCalledWith(2, { maxItems: 0, minItems: 0 });

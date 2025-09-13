@@ -1,4 +1,4 @@
-import { render, waitFor } from "@testing-library/react";
+import { render, waitFor, act } from "@testing-library/react";
 import MediaManager from "../MediaManager";
 
 let libraryProps: any;
@@ -31,7 +31,9 @@ describe("MediaManager", () => {
     const onDelete = jest.fn();
     render(<MediaManager shop="s" initialFiles={initialFiles} onDelete={onDelete} />);
 
-    await libraryProps.onDelete("1");
+    await act(async () => {
+      await libraryProps.onDelete("1");
+    });
 
     expect(onDelete).not.toHaveBeenCalled();
     expect(libraryProps.files).toHaveLength(2);
@@ -42,7 +44,9 @@ describe("MediaManager", () => {
     const onDelete = jest.fn();
     render(<MediaManager shop="s" initialFiles={initialFiles} onDelete={onDelete} />);
 
-    await libraryProps.onDelete("1");
+    await act(async () => {
+      await libraryProps.onDelete("1");
+    });
 
     expect(onDelete).toHaveBeenCalledWith("s", "1");
     await waitFor(() => expect(libraryProps.files).toHaveLength(1));
@@ -53,7 +57,9 @@ describe("MediaManager", () => {
     const onDelete = jest.fn();
     render(<MediaManager shop="s" initialFiles={initialFiles} onDelete={onDelete} />);
 
-    uploadProps.onUploaded({ url: "3", type: "image" });
+    act(() => {
+      uploadProps.onUploaded({ url: "3", type: "image" });
+    });
 
     await waitFor(() => expect(libraryProps.files[0].url).toBe("3"));
     expect(libraryProps.files).toHaveLength(3);
@@ -63,7 +69,9 @@ describe("MediaManager", () => {
     const onDelete = jest.fn();
     render(<MediaManager shop="s" initialFiles={initialFiles} onDelete={onDelete} />);
 
-    libraryProps.onReplace("1", { url: "1b", type: "image" });
+    act(() => {
+      libraryProps.onReplace("1", { url: "1b", type: "image" });
+    });
 
     await waitFor(() => expect(libraryProps.files[0].url).toBe("1b"));
     expect(libraryProps.files[1].url).toBe("2");

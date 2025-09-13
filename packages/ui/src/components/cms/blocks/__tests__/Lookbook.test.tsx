@@ -9,17 +9,27 @@ describe("Lookbook", () => {
 
   it("moves hotspot and reports snapped coordinates", async () => {
     const handleChange = jest.fn();
-    const hotspots = [
-      { sku: "a", x: 10, y: 10 },
-      { sku: "b", x: 50, y: 50 },
+    const items = [
+      {
+        src: "/img.jpg",
+        hotspots: [
+          { sku: "a", x: 10, y: 10 },
+          { sku: "b", x: 50, y: 50 },
+        ],
+      },
+      {
+        src: "/img2.jpg",
+        hotspots: [{ sku: "c", x: 0, y: 0 }],
+      },
     ];
 
     const { container } = render(
-      <Lookbook src="/img.jpg" hotspots={hotspots} onHotspotsChange={handleChange} />
+      <Lookbook items={items} onItemsChange={handleChange} />,
     );
 
     const root = container.firstChild as HTMLDivElement;
-    Object.defineProperty(root, "getBoundingClientRect", {
+    const inner = root.firstChild as HTMLDivElement;
+    Object.defineProperty(inner, "getBoundingClientRect", {
       value: () => ({
         left: 0,
         top: 0,
@@ -48,20 +58,52 @@ describe("Lookbook", () => {
     });
 
     await waitFor(() =>
-      expect(screen.getByTitle("a")).toHaveStyle({ left: "25%", top: "45%" })
+      expect(screen.getByTitle("a")).toHaveStyle({ left: "25%", top: "45%" }),
     );
 
     fireEvent.pointerUp(document, { pointerId: 1 });
 
     expect(handleChange).toHaveBeenCalledWith([
-      { sku: "a", x: 25, y: 45 },
-      { sku: "b", x: 50, y: 50 },
+      {
+        src: "/img.jpg",
+        hotspots: [
+          { sku: "a", x: 25, y: 45 },
+          { sku: "b", x: 50, y: 50 },
+        ],
+      },
+      {
+        src: "/img2.jpg",
+        hotspots: [{ sku: "c", x: 0, y: 0 }],
+      },
     ]);
   });
 
   it("omits image when src is absent", () => {
-    render(<Lookbook hotspots={[]} />);
+    render(<Lookbook items={[{ hotspots: [] }]} />);
     expect(screen.queryByRole("img")).toBeNull();
   });
-});
 
+  it("renders hotspots only for items that include them", () => {
+    const items = [
+      {
+        src: "/with-hotspot.jpg",
+        hotspots: [{ sku: "with", x: 10, y: 10 }],
+      },
+      {
+        src: "/without-hotspot.jpg",
+      },
+    ];
+
+    render(<Lookbook items={items} />);
+
+    // Hotspot from first item is rendered
+    expect(screen.getByTitle("with")).toBeInTheDocument();
+    // Second item has no hotspots
+    expect(screen.queryByTitle("missing")).toBeNull();
+  });
+
+  it("returns null when no items are provided", () => {
+    const { container } = render(<Lookbook items={[]} />);
+    expect(container.firstChild).toBeNull();
+  });
+});

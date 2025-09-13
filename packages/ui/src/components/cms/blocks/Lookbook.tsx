@@ -1,6 +1,11 @@
 "use client";
 
-import { useRef, useState, useEffect, PointerEvent as ReactPointerEvent } from "react";
+import {
+  useRef,
+  useState,
+  useEffect,
+  PointerEvent as ReactPointerEvent,
+} from "react";
 
 export type LookbookHotspot = {
   sku?: string;
@@ -8,50 +13,66 @@ export type LookbookHotspot = {
   y: number; // percentage
 };
 
-interface Props {
+export type LookbookItem = {
   src?: string;
   alt?: string;
   hotspots?: LookbookHotspot[];
-  /** Callback when hotspots are moved. Useful in editors */
-  onHotspotsChange?: (hotspots: LookbookHotspot[]) => void;
+};
+
+interface Props {
+  items?: LookbookItem[];
+  /** Callback when hotspots move. Useful in editors */
+  onItemsChange?: (items: LookbookItem[]) => void;
 }
 
 const SNAP = 5; // percent step for snapping
 
-export default function Lookbook({ src, alt = "", hotspots = [], onHotspotsChange }: Props) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [points, setPoints] = useState<LookbookHotspot[]>(hotspots);
-  const pointsRef = useRef(points);
+export default function Lookbook({ items = [], onItemsChange }: Props) {
+  if (items.length === 0) return null;
+
+  const [list, setList] = useState<LookbookItem[]>(items);
+  const listRef = useRef(list);
+  const containerRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
-    setPoints(hotspots);
-  }, [hotspots]);
+    setList(items);
+  }, [items]);
 
   useEffect(() => {
-    pointsRef.current = points;
-  }, [points]);
+    listRef.current = list;
+  }, [list]);
 
-  const handlePointerDown = (index: number) => (e: ReactPointerEvent<HTMLDivElement>) => {
+  const handlePointerDown = (itemIdx: number, hotspotIdx: number) => (
+    e: ReactPointerEvent<HTMLDivElement>,
+  ) => {
     e.preventDefault();
     e.stopPropagation();
-    const container = containerRef.current;
+    const container = containerRefs.current[itemIdx];
     if (!container) return;
     const rect = container.getBoundingClientRect();
 
     const move = (ev: PointerEvent) => {
       const rawX = ((ev.clientX - rect.left) / rect.width) * 100;
       const rawY = ((ev.clientY - rect.top) / rect.height) * 100;
-      const snap = (v: number) => Math.max(0, Math.min(100, Math.round(v / SNAP) * SNAP));
-      const next = pointsRef.current.map((p, i) =>
-        i === index ? { ...p, x: snap(rawX), y: snap(rawY) } : p,
+      const snap = (v: number) =>
+        Math.max(0, Math.min(100, Math.round(v / SNAP) * SNAP));
+      const next = listRef.current.map((item, i) =>
+        i === itemIdx
+          ? {
+              ...item,
+              hotspots: item.hotspots?.map((p, idx) =>
+                idx === hotspotIdx ? { ...p, x: snap(rawX), y: snap(rawY) } : p,
+              ),
+            }
+          : item,
       );
-      setPoints(next);
+      setList(next);
     };
 
     const up = () => {
       document.removeEventListener("pointermove", move);
       document.removeEventListener("pointerup", up);
-      onHotspotsChange?.(pointsRef.current);
+      onItemsChange?.(listRef.current);
     };
 
     document.addEventListener("pointermove", move);
@@ -59,21 +80,32 @@ export default function Lookbook({ src, alt = "", hotspots = [], onHotspotsChang
   };
 
   return (
-    <div ref={containerRef} className="relative h-full w-full">
-      {src && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt={alt} className="h-full w-full object-cover" />
-      )}
-      {points.map((p, idx) => (
+    <div className="space-y-2">
+      {list.map((item, idx) => (
         <div
           key={idx}
-          onPointerDown={handlePointerDown(idx)}
-          className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-move rounded-full bg-primary"
-          style={{ left: `${p.x}%`, top: `${p.y}%` }}
-          title={p.sku}
-        />
+          ref={(el) => (containerRefs.current[idx] = el)}
+          className="relative h-full w-full"
+        >
+          {item.src && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={item.src}
+              alt={item.alt ?? ""}
+              className="h-full w-full object-cover"
+            />
+          )}
+          {item.hotspots?.map((p, i) => (
+            <div
+              key={i}
+              onPointerDown={handlePointerDown(idx, i)}
+              className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-move rounded-full bg-primary"
+              style={{ left: `${p.x}%`, top: `${p.y}%` }}
+              title={p.sku}
+            />
+          ))}
+        </div>
       ))}
     </div>
   );
 }
-

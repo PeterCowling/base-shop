@@ -13,8 +13,8 @@ describe("PopupModal", () => {
     jest.clearAllMocks();
   });
 
-  it('opens immediately when trigger="load"', () => {
-    render(<PopupModal trigger="load" content="Hello" />);
+  it("opens automatically when autoOpen is true", () => {
+    render(<PopupModal autoOpen content="Hello" />);
 
     expect(screen.getByText("Hello")).toBeInTheDocument();
   });
@@ -45,7 +45,7 @@ describe("PopupModal", () => {
   });
 
   it('closes when overlay is clicked', () => {
-    render(<PopupModal trigger="load" content="Overlay close" />);
+    render(<PopupModal autoOpen content="Overlay close" />);
 
     const overlay = screen.getByText("Overlay close").parentElement?.parentElement!;
     fireEvent.click(overlay);
@@ -54,7 +54,7 @@ describe("PopupModal", () => {
   });
 
   it('closes when close button is clicked', () => {
-    render(<PopupModal trigger="load" content="Button close" />);
+    render(<PopupModal autoOpen content="Button close" />);
 
     const button = screen.getByRole("button", { name: /close/i });
     fireEvent.click(button);
@@ -63,7 +63,7 @@ describe("PopupModal", () => {
   });
 
   it('closes when Escape key is pressed', () => {
-    render(<PopupModal trigger="load" content="Escape close" />);
+    render(<PopupModal autoOpen content="Escape close" />);
 
     fireEvent.keyDown(document, { key: "Escape" });
 
@@ -75,7 +75,7 @@ describe("PopupModal", () => {
     const malicious = '<img src="x" onerror="alert(1)"><script>alert("xss")</script>';
 
     const { container } = render(
-      <PopupModal trigger="load" content={malicious} />,
+      <PopupModal autoOpen content={malicious} />,
     );
 
     expect(spy).toHaveBeenCalledWith(malicious);

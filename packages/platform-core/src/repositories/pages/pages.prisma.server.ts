@@ -116,6 +116,9 @@ export async function deletePage(shop: string, id: string): Promise<void> {
       throw new Error(`Page ${id} not found in ${shop}`);
     }
   } catch (err) {
+    if (err instanceof Error && err.message.includes("not found")) {
+      throw err;
+    }
     console.error(`Failed to delete page ${id} for ${shop}`, err);
     const jsonRepo = await loadJsonRepo();
     await jsonRepo.deletePage(shop, id);

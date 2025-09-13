@@ -86,4 +86,19 @@ describe("FontSelect", () => {
 
     expect(handleUpload).toHaveBeenCalled();
   });
+
+  it("renders empty select when no options are provided", () => {
+    const { container } = render(
+      <FontSelect
+        value={""}
+        options={[]}
+        onChange={jest.fn()}
+        onUpload={jest.fn()}
+      />
+    );
+
+    expect(screen.getByRole("combobox")).toBeInTheDocument();
+    expect(screen.queryAllByRole("option")).toHaveLength(0);
+    expect(container.querySelector('input[type="file"]')).toBeInTheDocument();
+  });
 });

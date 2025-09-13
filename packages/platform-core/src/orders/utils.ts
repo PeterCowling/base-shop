@@ -11,7 +11,7 @@ export function normalize<T extends Order = Order>(order: T | null): T | null {
   const o: T = { ...order };
   (Object.keys(o) as Array<keyof T>).forEach((k) => {
     if (o[k] === null) {
-      o[k] = undefined as T[keyof T];
+      o[k] = undefined!;
     }
   });
   return o;

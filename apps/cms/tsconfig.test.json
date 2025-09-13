@@ -13,12 +13,20 @@
     /* ------------------------------------------------------------------ */
     "noEmit": true,
     "allowJs": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "outDir": ".ts-jest"
   },
 
   /* ------------------------------------------------------------------ */
   /*  Unit-test sources that ts-jest should see                          */
   /* ------------------------------------------------------------------ */
-  "include": ["src/**/*", "__tests__/**/*", "jest.env.ts"],
+  "include": [
+    "src/**/*",
+    "__tests__/**/*",
+    "jest.env.ts",
+    "jest.setup.ts",
+    "jest.setup.after.ts",
+    "jest.setup.polyfills.ts"
+  ],
   "exclude": ["src/lib/__tests__/**"]
 }

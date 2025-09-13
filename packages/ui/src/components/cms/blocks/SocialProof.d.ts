@@ -1,10 +1,17 @@
+import { Testimonial } from "./Testimonials";
+interface RatingProps {
+    rating: number;
+    count?: number;
+}
 interface Props {
     /** URL returning an array of order events */
-    source: string;
+    source?: string;
     /** How often to rotate messages in ms */
     frequency?: number;
+    rating?: RatingProps;
+    testimonials?: Testimonial[];
 }
-/** Display recent order events like "Alice bought X 5 min ago" */
-export default function SocialProof({ source, frequency }: Props): import("react/jsx-runtime").JSX.Element | null;
+export default function SocialProof({ source, frequency, rating, testimonials }: Props): import("react/jsx-runtime").JSX.Element | null;
 export {};
 //# sourceMappingURL=SocialProof.d.ts.map
+

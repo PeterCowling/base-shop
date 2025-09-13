@@ -1,1 +1,2 @@
-{"version":3,"file":"SocialProof.d.ts","sourceRoot":"","sources":["SocialProof.tsx"],"names":[],"mappings":"AAYA,UAAU,KAAK;IACb,6CAA6C;IAC7C,MAAM,EAAE,MAAM,CAAC;IACf,yCAAyC;IACzC,SAAS,CAAC,EAAE,MAAM,CAAC;CACpB;AAED,kEAAkE;AAClE,MAAM,CAAC,OAAO,UAAU,WAAW,CAAC,EAAE,MAAM,EAAE,SAAgB,EAAE,EAAE,KAAK,kDAoCtE"}
+{"version":3,"file":"SocialProof.d.ts","sourceRoot":"","sources":["SocialProof.tsx"],"names":[],"mappings":""}
+

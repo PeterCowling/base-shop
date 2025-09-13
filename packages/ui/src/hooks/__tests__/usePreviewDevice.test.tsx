@@ -35,11 +35,9 @@ describe("usePreviewDevice", () => {
   });
 
   it("falls back to the initial id when storage access throws", () => {
-    jest
-      .spyOn(Storage.prototype, "getItem")
-      .mockImplementation(() => {
-        throw new Error("denied");
-      });
+    jest.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+      throw new Error("denied");
+    });
 
     const { result } = renderHook(() => usePreviewDevice("desktop"));
 
@@ -47,11 +45,9 @@ describe("usePreviewDevice", () => {
   });
 
   it("ignores storage failures", () => {
-    jest
-      .spyOn(Storage.prototype, "getItem")
-      .mockImplementation(() => {
-        throw new Error("denied");
-      });
+    jest.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
+      throw new Error("denied");
+    });
     const setItem = jest
       .spyOn(Storage.prototype, "setItem")
       .mockImplementation(() => {
@@ -98,12 +94,18 @@ describe("usePreviewDevice", () => {
   });
 
   it("persists device id changes", async () => {
+    const setItem = jest.spyOn(Storage.prototype, "setItem");
+
     const { result } = renderHook(() => usePreviewDevice("desktop"));
 
     act(() => {
       result.current[1]("mobile");
     });
 
+    expect(setItem).toHaveBeenCalledWith(
+      PREVIEW_DEVICE_STORAGE_KEY,
+      "mobile",
+    );
     await waitFor(() =>
       expect(localStorage.getItem(PREVIEW_DEVICE_STORAGE_KEY)).toBe("mobile"),
     );

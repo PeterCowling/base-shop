@@ -128,6 +128,14 @@ describe("block editors", () => {
     fireEvent.change(screen.getByPlaceholderText(placeholder), {
       target: { value: "x" },
     });
-    expect(onChange).toHaveBeenCalled();
+    if (_name === "AnnouncementBarEditor") {
+      const url = "https://example.com";
+      fireEvent.change(screen.getByPlaceholderText("link"), {
+        target: { value: url },
+      });
+      expect(onChange).toHaveBeenLastCalledWith({ link: url });
+    } else {
+      expect(onChange).toHaveBeenCalled();
+    }
   });
 });

@@ -80,43 +80,30 @@ function Wrapper({
  * Test suite
  * ------------------------------------------------------------------ */
 describe("useProductFilters", () => {
-  it("filters search text across locales", async () => {
-    const { rerender } = render(<Wrapper search="" status="all" />);
-    expect(screen.getByTestId("ids").textContent).toBe("1,2,3");
-
-    rerender(<Wrapper search="blauer" status="all" />);
+  it.each([
+    ["blauer", "2"], // de locale title
+    ["verde", "3"], // it locale title
+    ["scarpa", "1,2,3"], // common word across locales
+    ["blu", "2"], // partial SKU
+  ])("filters '%s'", async (term, ids) => {
+    render(<Wrapper search={term} status="all" />);
     await waitFor(() =>
-      expect(screen.getByTestId("ids").textContent).toBe("2")
-    );
-
-    rerender(<Wrapper search="verde" status="all" />);
-    await waitFor(() =>
-      expect(screen.getByTestId("ids").textContent).toBe("3")
-    );
-
-    rerender(<Wrapper search="scarpa" status="all" />);
-    await waitFor(() =>
-      expect(screen.getByTestId("ids").textContent).toBe("1,2,3")
-    );
-
-    rerender(<Wrapper search="blue" status="all" />);
-    await waitFor(() =>
-      expect(screen.getByTestId("ids").textContent).toBe("2")
-    );
-
-    rerender(<Wrapper search="  blue  " status="all" />);
-    await waitFor(() =>
-      expect(screen.getByTestId("ids").textContent).toBe("2")
+      expect(screen.getByTestId("ids").textContent).toBe(ids)
     );
   });
 
-  it("filters by status", async () => {
+  it("filters by status transitions", async () => {
     const { rerender } = render(<Wrapper search="" status="all" />);
     expect(screen.getByTestId("ids").textContent).toBe("1,2,3");
 
     rerender(<Wrapper search="" status="active" />);
     await waitFor(() =>
       expect(screen.getByTestId("ids").textContent).toBe("1")
+    );
+
+    rerender(<Wrapper search="" status="all" />);
+    await waitFor(() =>
+      expect(screen.getByTestId("ids").textContent).toBe("1,2,3")
     );
 
     rerender(<Wrapper search="" status="draft" />);

@@ -55,6 +55,9 @@ export function FilterSidebar({
           <DialogPrimitive.Title className="mb-4 text-lg font-semibold">
             Filters
           </DialogPrimitive.Title>
+          <DialogPrimitive.Description className="sr-only">
+            Use filters to refine results
+          </DialogPrimitive.Description>
           <form
             aria-label="Filters"
             className="space-y-4"

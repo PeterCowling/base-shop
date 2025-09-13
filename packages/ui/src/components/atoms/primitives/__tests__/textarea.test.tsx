@@ -25,9 +25,23 @@ describe("Textarea", () => {
     expect(textarea).toHaveClass("min-h-[6rem]", "custom");
   });
 
-  it("renders floating label that moves on focus", () => {
+  it("omits label when floatingLabel is set without label", () => {
+    const { container } = render(<Textarea floatingLabel />);
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper.querySelector("label")).toBeNull();
+  });
+
+  it("renders floating label that toggles on focus and blur", () => {
+    const handleFocus = jest.fn();
+    const handleBlur = jest.fn();
+
     const { container } = render(
-      <Textarea label="Message" floatingLabel />
+      <Textarea
+        label="Message"
+        floatingLabel
+        onFocus={handleFocus}
+        onBlur={handleBlur}
+      />
     );
     const wrapper = container.firstChild as HTMLElement;
     const [textarea, label] = wrapper.children;
@@ -36,7 +50,12 @@ describe("Textarea", () => {
     expect(label).not.toHaveClass("-translate-y-3", "text-xs");
 
     fireEvent.focus(textarea);
+    expect(handleFocus).toHaveBeenCalledTimes(1);
     expect(label).toHaveClass("-translate-y-3", "text-xs");
+
+    fireEvent.blur(textarea);
+    expect(handleBlur).toHaveBeenCalledTimes(1);
+    expect(label).not.toHaveClass("-translate-y-3", "text-xs");
   });
 
   it("applies error class and message", () => {

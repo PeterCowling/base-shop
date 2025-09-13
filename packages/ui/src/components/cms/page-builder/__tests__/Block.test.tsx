@@ -85,5 +85,14 @@ describe("Block", () => {
     );
     expect(screen.getByTestId("foo").parentElement).toHaveClass(className);
   });
+
+  it("does not wrap block or apply animation class when animation is undefined", () => {
+    const { container } = render(
+      <Block component={{ id: "7", type: "Foo" as any }} locale="en" />,
+    );
+    const element = screen.getByTestId("foo");
+    expect(container.firstChild).toBe(element);
+    expect(container.querySelector('[class*="pb-animate-"]')).toBeNull();
+  });
 });
 

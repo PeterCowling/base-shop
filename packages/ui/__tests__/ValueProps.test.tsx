@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import ValueProps from "../src/components/home/ValueProps";
 
 const translations: Record<string, string> = {};
@@ -32,13 +32,32 @@ describe("ValueProps", () => {
     );
   });
 
-  it("renders provided items", () => {
+  it("renders provided items with and without icons/descriptions", () => {
     const items = [
       { icon: "⭐", title: "Quality", desc: "Top quality" },
+      { title: "No Icon", desc: "Text only" } as any,
+      { icon: "🔥", title: "No Desc" } as any,
     ];
     render(<ValueProps items={items} />);
-    expect(screen.getByText("Quality")).toBeInTheDocument();
-    expect(screen.getByText("Top quality")).toBeInTheDocument();
+    const articles = screen.getAllByRole("article");
+    expect(articles).toHaveLength(3);
+
+    expect(within(articles[0]).getByText("⭐")).toBeInTheDocument();
+    expect(within(articles[0]).getByText("Quality")).toBeInTheDocument();
+    expect(within(articles[0]).getByText("Top quality")).toBeInTheDocument();
+
+    expect(within(articles[1]).getByText("No Icon")).toBeInTheDocument();
+    expect(within(articles[1]).getByText("Text only")).toBeInTheDocument();
+    expect(
+      within(articles[1]).getByText("", { selector: "div" })
+    ).toBeEmptyDOMElement();
+
+    expect(within(articles[2]).getByText("🔥")).toBeInTheDocument();
+    expect(within(articles[2]).getByText("No Desc")).toBeInTheDocument();
+    expect(
+      within(articles[2]).getByText("", { selector: "p" })
+    ).toBeEmptyDOMElement();
+
     expect(screen.queryByText("Eco")).toBeNull();
   });
 
@@ -52,4 +71,3 @@ describe("ValueProps", () => {
     expect(screen.getByText("Eco desc")).toBeInTheDocument();
   });
 });
-

@@ -3,6 +3,7 @@ import React from "react";
 import LayoutPanel from "../LayoutPanel";
 
 jest.mock("../../../../atoms/shadcn", () => {
+  const React = require("react");
   let id = 0;
   return {
     __esModule: true,
@@ -16,9 +17,25 @@ jest.mock("../../../../atoms/shadcn", () => {
         </div>
       );
     },
-    Select: ({ children }: any) => <div>{children}</div>,
-    SelectContent: ({ children }: any) => <>{children}</>,
-    SelectItem: ({ children, value }: any) => <div data-value={value}>{children}</div>,
+    Select: ({ children, onValueChange }: any) => (
+      <div>
+        {React.Children.map(children, (child: any) =>
+          React.cloneElement(child, { onValueChange })
+        )}
+      </div>
+    ),
+    SelectContent: ({ children, onValueChange }: any) => (
+      <div>
+        {React.Children.map(children, (child: any) =>
+          React.cloneElement(child, { onValueChange })
+        )}
+      </div>
+    ),
+    SelectItem: ({ children, value, onValueChange }: any) => (
+      <div data-value={value} onClick={() => onValueChange(value)}>
+        {children}
+      </div>
+    ),
     SelectTrigger: ({ children }: any) => <div>{children}</div>,
     SelectValue: ({ placeholder }: any) => <span>{placeholder}</span>,
   };
@@ -127,9 +144,14 @@ describe("LayoutPanel", () => {
     expect(handlers.handleInput).toHaveBeenCalledWith("padding", "global-p");
   });
 
-  test("full size buttons trigger handler for all viewports", () => {
+  test("full size buttons trigger handler for all viewports with 100%", () => {
     render(
-      <LayoutPanel component={{ id: "a", type: "Box" } as any} {...handlers} />
+      <LayoutPanel
+        component={{ id: "a", type: "Box" } as any}
+        handleInput={handlers.handleInput}
+        handleResize={handlers.handleResize}
+        handleFullSize={(field: string) => handlers.handleFullSize(field, "100%")} // pass through value for assertion
+      />
     );
     const vps = ["Desktop", "Tablet", "Mobile"] as const;
     const widthBtns = screen.getAllByText("Full width");
@@ -138,41 +160,61 @@ describe("LayoutPanel", () => {
       fireEvent.click(btn);
       expect(handlers.handleFullSize).toHaveBeenNthCalledWith(
         i + 1,
-        `width${vps[i]}`
+        `width${vps[i]}`,
+        "100%"
       );
     });
     heightBtns.forEach((btn, i) => {
       fireEvent.click(btn);
       expect(handlers.handleFullSize).toHaveBeenNthCalledWith(
         widthBtns.length + i + 1,
-        `height${vps[i]}`
+        `height${vps[i]}`,
+        "100%"
       );
     });
   });
 
-  test("absolute position updates trigger handlers and validation", () => {
+  test("position selection toggles absolute offsets and validates", () => {
     const original = (globalThis as any).CSS.supports;
     (globalThis as any).CSS.supports = (_p: string, v: string) => !v.includes("bad");
-    render(
-      <LayoutPanel
-        component={{
-          id: "a",
-          type: "Box",
-          position: "absolute",
-          top: "bad",
-          left: "bad",
-        } as any}
-        {...handlers}
-      />
-    );
+    const Wrapper = () => {
+      const [component, setComponent] = React.useState({
+        id: "a",
+        type: "Box",
+      } as any);
+      return (
+        <LayoutPanel
+          component={component}
+          handleInput={(field, value) => {
+            setComponent((c: any) => ({ ...c, [field]: value }));
+            handlers.handleInput(field, value);
+          }}
+          handleResize={(field, value) => {
+            setComponent((c: any) => ({ ...c, [field]: value }));
+            handlers.handleResize(field, value);
+          }}
+          handleFullSize={handlers.handleFullSize}
+        />
+      );
+    };
+    render(<Wrapper />);
+
+    expect(screen.queryByLabelText(/Top/)).toBeNull();
+    fireEvent.click(screen.getByText("absolute"));
+    expect(handlers.handleInput).toHaveBeenCalledWith("position", "absolute");
     const top = screen.getByLabelText(/Top/);
     const left = screen.getByLabelText(/Left/);
+    fireEvent.change(top, { target: { value: "bad" } });
+    fireEvent.change(left, { target: { value: "bad" } });
     expect(top.getAttribute("error")).toBe("Invalid top value");
     expect(left.getAttribute("error")).toBe("Invalid left value");
     fireEvent.change(top, { target: { value: "10px" } });
-    expect(handlers.handleResize).toHaveBeenCalledWith("top", "10px");
     fireEvent.change(left, { target: { value: "5px" } });
+    expect(handlers.handleResize).toHaveBeenCalledWith("top", "10px");
     expect(handlers.handleResize).toHaveBeenCalledWith("left", "5px");
+    fireEvent.click(screen.getByText("relative"));
+    expect(handlers.handleInput).toHaveBeenCalledWith("position", "relative");
+    expect(screen.queryByLabelText(/Top/)).toBeNull();
     (globalThis as any).CSS.supports = original;
   });
 

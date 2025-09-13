@@ -22,7 +22,7 @@ coveragePathIgnorePatterns.push(
 module.exports = {
   ...base,
   rootDir: workspaceRoot,
-  collectCoverageFrom: [`${packagePath}/src/**/*.{ts,tsx}`],
+  collectCoverageFrom: [`${packagePath}/src/**/*.{ts,tsx}`, `${packagePath}/middleware.ts`],
   // Use a plain Node environment for configuration tests. These tests don't
   // depend on DOM APIs and running them under jsdom pulls in additional
   // transitive dependencies like `parse5`, which in turn requires the

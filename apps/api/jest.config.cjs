@@ -9,7 +9,11 @@ module.exports = {
   setupFilesAfterEnv: [
     "<rootDir>/apps/api/jest.setup.ts",
   ],
-  collectCoverageFrom: ["apps/api/src/**/*.{ts,tsx}", "!apps/api/src/**/*.d.ts"],
+  collectCoverageFrom: [
+    "apps/api/src/**/*.{ts,tsx}",
+    "apps/api/middleware.ts",
+    "!apps/api/src/**/*.d.ts",
+  ],
   coverageReporters: ["text", "json", "lcov"],
   coverageThreshold: {
     global: {

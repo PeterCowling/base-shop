@@ -221,6 +221,16 @@ const config = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'mjs', 'node', 'd.ts'],
   collectCoverage: true,
   coverageDirectory: path.join(process.cwd(), 'coverage'),
+  collectCoverageFrom: [
+    'src/**/*.{ts,tsx}',
+    'scripts/**/*.{ts,tsx}',
+    'middleware.ts',
+    '*.{ts,tsx}',
+    '!**/__tests__/**',
+    '!**/*.d.ts',
+    '!**/*.test.{ts,tsx}',
+    '!**/*.spec.{ts,tsx}',
+  ],
   coveragePathIgnorePatterns: [
     ' /test/msw/',
     ' /test/msw/server.ts',
@@ -253,6 +263,7 @@ if (relativePath) {
   config.collectCoverageFrom = [
     'src/**/*.{ts,tsx}',
     'scripts/**/*.{ts,tsx}',
+    'middleware.ts',
     '*.{ts,tsx}',
     '!**/__tests__/**',
     '!**/*.d.ts',

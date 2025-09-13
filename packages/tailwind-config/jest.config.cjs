@@ -5,6 +5,9 @@ module.exports = {
   ...baseConfig,
   rootDir: path.resolve(__dirname, "..", ".."),
   roots: ["<rootDir>/packages/tailwind-config"],
-  collectCoverageFrom: ["packages/tailwind-config/src/**/*.{ts,tsx}"],
+  collectCoverageFrom: [
+    "packages/tailwind-config/src/**/*.{ts,tsx}",
+    "packages/tailwind-config/middleware.ts",
+  ],
   coveragePathIgnorePatterns: ["/packages/(?!tailwind-config)/", "/apps/"],
 };

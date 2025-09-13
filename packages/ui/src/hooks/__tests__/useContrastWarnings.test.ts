@@ -12,8 +12,9 @@ import {
 } from "../../components/cms/ColorInput";
 
 const mockGetContrast = getContrast as jest.MockedFunction<typeof getContrast>;
-const mockSuggestContrastColor =
-  suggestContrastColor as jest.MockedFunction<typeof suggestContrastColor>;
+const mockSuggestContrastColor = suggestContrastColor as jest.MockedFunction<
+  typeof suggestContrastColor
+>;
 
 describe("useContrastWarnings", () => {
   beforeEach(() => {
@@ -43,6 +44,7 @@ describe("useContrastWarnings", () => {
     expect(mockGetContrast).toHaveBeenCalledWith("#000", "#111");
     expect(mockSuggestContrastColor).toHaveBeenCalledWith("#000", "#111");
     expect(result.current).toEqual({ contrast: 3, suggestion: "#123456" });
+    expect(result.current?.suggestion).toBe("#123456");
   });
 
   it("handles null suggestion from suggestContrastColor", () => {
@@ -54,9 +56,17 @@ describe("useContrastWarnings", () => {
     expect(result.current).toEqual({ contrast: 3, suggestion: null });
   });
 
-  it("returns null when colors are missing", () => {
+  it("returns null when foreground color is empty", () => {
     const { result } = renderHook(() => useContrastWarnings("", "#fff"));
     expect(result.current).toBeNull();
     expect(mockGetContrast).not.toHaveBeenCalled();
+    expect(mockSuggestContrastColor).not.toHaveBeenCalled();
+  });
+
+  it("returns null when background color is empty", () => {
+    const { result } = renderHook(() => useContrastWarnings("#000", ""));
+    expect(result.current).toBeNull();
+    expect(mockGetContrast).not.toHaveBeenCalled();
+    expect(mockSuggestContrastColor).not.toHaveBeenCalled();
   });
 });

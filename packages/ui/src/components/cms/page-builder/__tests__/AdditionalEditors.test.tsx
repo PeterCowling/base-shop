@@ -98,14 +98,6 @@ describe("additional editors", () => {
       expected: { shopName: "My Shop" },
     },
     {
-      name: "HeaderEditor",
-      Comp: HeaderEditor,
-      component: { type: "Header", logoVariants: {}, shopName: "", nav: [] },
-      getNode: () => screen.getByPlaceholderText("shop name"),
-      fire: (node: HTMLElement) => fireEvent.change(node, { target: { value: "My Shop" } }),
-      expected: { shopName: "My Shop" },
-    },
-    {
       name: "ImageSliderEditor",
       Comp: ImageSliderEditor,
       component: { type: "ImageSlider", slides: [{ src: "", alt: "", caption: "" }] },
@@ -209,6 +201,45 @@ describe("additional editors", () => {
     const node = getNode();
     fire(node);
     expect(onChange).toHaveBeenCalledWith(expected);
+  });
+
+  it("HeaderEditor merges logoVariants inputs", () => {
+    let component = { type: "Header", shopName: "", nav: [] } as any;
+    let rerender: (ui: JSX.Element) => void;
+    const handleChange = jest.fn((patch) => {
+      component = {
+        ...component,
+        ...patch,
+        logoVariants: { ...component.logoVariants, ...patch.logoVariants },
+      };
+      rerender(<HeaderEditor component={component} onChange={handleChange} />);
+    });
+    ({ rerender } = render(<HeaderEditor component={component} onChange={handleChange} />));
+
+    fireEvent.change(screen.getByPlaceholderText("desktop logo"), {
+      target: { value: "desk" },
+    });
+    expect(handleChange).toHaveBeenLastCalledWith({
+      logoVariants: { desktop: { src: "desk" } },
+    });
+
+    fireEvent.change(screen.getByPlaceholderText("tablet logo"), {
+      target: { value: "tab" },
+    });
+    expect(handleChange).toHaveBeenLastCalledWith({
+      logoVariants: { desktop: { src: "desk" }, tablet: { src: "tab" } },
+    });
+
+    fireEvent.change(screen.getByPlaceholderText("mobile logo"), {
+      target: { value: "mob" },
+    });
+    expect(handleChange).toHaveBeenLastCalledWith({
+      logoVariants: {
+        desktop: { src: "desk" },
+        tablet: { src: "tab" },
+        mobile: { src: "mob" },
+      },
+    });
   });
 });
 

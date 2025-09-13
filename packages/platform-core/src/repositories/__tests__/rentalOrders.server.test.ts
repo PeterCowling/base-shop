@@ -44,38 +44,52 @@ describe("rental orders status updates", () => {
     await expect(markReceived(shop, sessionId)).resolves.toBeNull();
   });
 
-  it.each([
-    ["markRepair", () => markRepair(shop, sessionId), { status: "repair" }],
-    ["markQa", () => markQa(shop, sessionId), { status: "qa" }],
-    [
-      "markAvailable",
-      () => markAvailable(shop, sessionId),
-      { status: "available" },
-    ],
-    ["markCleaning", () => markCleaning(shop, sessionId), { status: "cleaning" }],
-  ])("returns updated order for %s", async (_, call, data) => {
-    const updateMock = jest
-      .spyOn(prisma.rentalOrder, "update")
-      .mockResolvedValue(order);
+  describe.each([
+    ["markRepair", markRepair, { status: "repair" }],
+    ["markQa", markQa, { status: "qa" }],
+    ["markAvailable", markAvailable, { status: "available" }],
+  ])("%s", (_, fn, data) => {
+    it("returns updated order", async () => {
+      const updateMock = jest
+        .spyOn(prisma.rentalOrder, "update")
+        .mockResolvedValue(order);
 
-    await expect(call()).resolves.toBe(order);
-    expect(updateMock).toHaveBeenCalledWith({
-      where: { shop_sessionId: { shop, sessionId } },
-      data,
+      await expect(fn(shop, sessionId)).resolves.toBe(order);
+      expect(updateMock).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop, sessionId } },
+        data,
+      });
+    });
+
+    it("returns null when update throws", async () => {
+      jest
+        .spyOn(prisma.rentalOrder, "update")
+        .mockRejectedValue(new Error("fail"));
+
+      await expect(fn(shop, sessionId)).resolves.toBeNull();
     });
   });
 
-  it.each([
-    ["markRepair", () => markRepair(shop, sessionId)],
-    ["markQa", () => markQa(shop, sessionId)],
-    ["markAvailable", () => markAvailable(shop, sessionId)],
-    ["markCleaning", () => markCleaning(shop, sessionId)],
-  ])("returns null when update fails for %s", async (_, call) => {
-    jest
-      .spyOn(prisma.rentalOrder, "update")
-      .mockRejectedValue(new Error("fail"));
+  describe("markCleaning", () => {
+    it("returns updated order", async () => {
+      const updateMock = jest
+        .spyOn(prisma.rentalOrder, "update")
+        .mockResolvedValue(order);
 
-    await expect(call()).resolves.toBeNull();
+      await expect(markCleaning(shop, sessionId)).resolves.toBe(order);
+      expect(updateMock).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop, sessionId } },
+        data: { status: "cleaning" },
+      });
+    });
+
+    it("returns null when update throws", async () => {
+      jest
+        .spyOn(prisma.rentalOrder, "update")
+        .mockRejectedValue(new Error("fail"));
+
+      await expect(markCleaning(shop, sessionId)).resolves.toBeNull();
+    });
   });
 
   it.each([
@@ -88,7 +102,7 @@ describe("rental orders status updates", () => {
     await expect(call()).resolves.toBeNull();
   });
 
-  it("markLateFeeCharged updates with amount", async () => {
+  it("markLateFeeCharged updates with positive amount", async () => {
     const updateMock = jest
       .spyOn(prisma.rentalOrder, "update")
       .mockResolvedValue(order);
@@ -100,7 +114,7 @@ describe("rental orders status updates", () => {
     });
   });
 
-  it("markLateFeeCharged returns null when update fails", async () => {
+  it("markLateFeeCharged returns null when update throws", async () => {
     jest
       .spyOn(prisma.rentalOrder, "update")
       .mockRejectedValue(new Error("fail"));
@@ -108,7 +122,7 @@ describe("rental orders status updates", () => {
     await expect(markLateFeeCharged(shop, sessionId, 10)).resolves.toBeNull();
   });
 
-  it("markLateFeeCharged returns null when update yields no order", async () => {
+  it("markLateFeeCharged returns null when update resolves to null", async () => {
     jest.spyOn(prisma.rentalOrder, "update").mockResolvedValue(null);
 
     await expect(markLateFeeCharged(shop, sessionId, 10)).resolves.toBeNull();

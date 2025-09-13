@@ -5,9 +5,13 @@ if (typeof (Response as any).json !== "function") {
     new Response(JSON.stringify(data), init);
 }
 
+beforeEach(() => {
+  jest.spyOn(console, "error").mockImplementation(() => {});
+});
+
 afterEach(() => {
   jest.resetModules();
-  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
 describe("create-shop API", () => {
@@ -113,7 +117,7 @@ if (typeof (Response as any).json !== "function") {
 
 afterEach(() => {
   jest.resetModules();
-  jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
 describe("publish-locations API", () => {

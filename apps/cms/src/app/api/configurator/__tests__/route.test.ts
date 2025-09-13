@@ -30,7 +30,16 @@ beforeAll(async () => {
   ({ POST } = await import('../route'));
 });
 
+let consoleError: jest.SpyInstance;
+
+beforeEach(() => {
+  consoleError = jest
+    .spyOn(console, 'error')
+    .mockImplementation(() => {});
+});
+
 afterEach(() => {
+  consoleError.mockRestore();
   jest.resetAllMocks();
 });
 
@@ -79,6 +88,10 @@ describe('POST /cms/api/configurator', () => {
     expect(res.status).toBe(403);
     const json = await res.json();
     expect(json).toEqual({ error: 'Forbidden' });
+    expect(consoleError).toHaveBeenCalledWith(
+      'Failed to configure shop',
+      expect.any(Error),
+    );
   });
 
   it('returns 400 when createNewShop throws other errors', async () => {
@@ -88,6 +101,10 @@ describe('POST /cms/api/configurator', () => {
     expect(res.status).toBe(400);
     const json = await res.json();
     expect(json).toEqual({ error: 'boom' });
+    expect(consoleError).toHaveBeenCalledWith(
+      'Failed to configure shop',
+      expect.any(Error),
+    );
   });
 });
 

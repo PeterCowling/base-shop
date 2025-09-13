@@ -90,6 +90,14 @@ describe("AddToCartButton", () => {
     jest.useRealTimers();
   });
 
+  it("shows default error when dispatch rejects without a proper Error", async () => {
+    mockDispatch.mockRejectedValueOnce("oops");
+    render(<AddToCartButton sku={sku} />);
+    const button = screen.getByRole("button", { name: /add to cart/i });
+    fireEvent.click(button);
+    expect(await screen.findByRole("alert")).toHaveTextContent("Unable to add to cart");
+  });
+
   it("clears error and dispatches on retry", async () => {
     mockDispatch.mockRejectedValueOnce(new Error("Out of stock"));
     mockDispatch.mockResolvedValueOnce(undefined);

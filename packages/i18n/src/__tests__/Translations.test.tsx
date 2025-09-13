@@ -1,5 +1,5 @@
 import { render, renderHook } from "@testing-library/react";
-import { useRef, type PropsWithChildren } from "react";
+import { memo, useRef, type PropsWithChildren } from "react";
 import { TranslationsProvider, useTranslations } from "../Translations";
 
 describe("TranslationsProvider and useTranslations", () => {
@@ -113,6 +113,20 @@ describe("TranslationsProvider and useTranslations", () => {
     process.env.NODE_ENV = original;
   });
 
+  it("does not warn outside development mode", () => {
+    const original = process.env.NODE_ENV;
+    process.env.NODE_ENV = "production";
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <TranslationsProvider messages={{}}>{children}</TranslationsProvider>
+    );
+    const { result } = renderHook(() => useTranslations(), { wrapper });
+    expect(result.current("unknown")).toBe("unknown");
+    expect(warn).not.toHaveBeenCalled();
+    warn.mockRestore();
+    process.env.NODE_ENV = original;
+  });
+
   it("interpolates placeholders when variables are provided", () => {
     const wrapper = ({ children }: PropsWithChildren) => (
       <TranslationsProvider messages={{ greet: "Hi {name}" }}>
@@ -148,6 +162,19 @@ describe("TranslationsProvider and useTranslations", () => {
     expect(result.current("greet")).toBe("Hi {name}");
   });
 
+  it("retains placeholders when some variables are absent", () => {
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <TranslationsProvider messages={{ greet: "Hi {name} from {place}" }}>
+        {children}
+      </TranslationsProvider>
+    );
+
+    const { result } = renderHook(() => useTranslations(), { wrapper });
+    expect(result.current("greet", { name: "Sam" })).toBe(
+      "Hi Sam from {place}"
+    );
+  });
+
   it("leaves placeholders intact when unrelated variables are provided", () => {
     const wrapper = ({ children }: PropsWithChildren) => (
       <TranslationsProvider messages={{ greet: "Hi {name}" }}>
@@ -170,6 +197,39 @@ describe("TranslationsProvider and useTranslations", () => {
     expect(result.current("greet", { name: undefined })).toBe("Hi undefined");
   });
 
+  it("preserves context and translator on identical re-renders", () => {
+    const messages = { greet: "Hallo" };
+    const wrapper = ({ children }: PropsWithChildren) => (
+      <TranslationsProvider messages={messages}>{children}</TranslationsProvider>
+    );
+
+    // Translation function identity remains stable
+    const { result, rerender: rerenderHook } = renderHook(
+      () => useTranslations(),
+      { wrapper }
+    );
+    const initialT = result.current;
+    rerenderHook();
+    expect(result.current).toBe(initialT);
+
+    // Consumers are not re-rendered when provider re-renders with same messages
+    const Child = jest.fn(() => {
+      const t = useTranslations();
+      return <span>{t("greet")}</span>;
+    });
+    const MemoChild = memo(Child);
+    const Parent = ({ count }: { count: number }) => (
+      <TranslationsProvider messages={messages}>
+        <MemoChild />
+        <span>{count}</span>
+      </TranslationsProvider>
+    );
+
+    const { rerender } = render(<Parent count={0} />);
+    expect(Child).toHaveBeenCalledTimes(1);
+    rerender(<Parent count={1} />);
+    expect(Child).toHaveBeenCalledTimes(1);
+  });
   it("renders React elements alongside string messages", () => {
     const Child = () => {
       const t = useTranslations();

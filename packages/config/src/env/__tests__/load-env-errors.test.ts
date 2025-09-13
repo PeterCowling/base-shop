@@ -1,4 +1,4 @@
-import { describe, it, expect } from "@jest/globals";
+import { describe, it, expect, jest } from "@jest/globals";
 import { withEnv } from "../../../test/utils/withEnv";
 import { NEXT_SECRET, SESSION_SECRET } from "./authEnvTestUtils";
 
@@ -16,6 +16,9 @@ describe("loadAuthEnv errors", () => {
     expect(() =>
       loadAuthEnv({ NODE_ENV: "production" } as any),
     ).toThrow("Invalid auth environment variables");
-    expect(spy).toHaveBeenCalled();
+    const errorObj = spy.mock.calls[0][1] as Record<string, unknown>;
+    expect(errorObj).toHaveProperty("NEXTAUTH_SECRET");
+    expect(errorObj).toHaveProperty("SESSION_SECRET");
+    spy.mockRestore();
   });
 });

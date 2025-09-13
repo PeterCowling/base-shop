@@ -209,6 +209,44 @@ describe("shops.repository", () => {
       expect(loadTokens).toHaveBeenCalledWith("base");
     });
 
+    it("returns default shop when filesystem JSON is invalid", async () => {
+      getRepo.mockRejectedValue(new Error("missing"));
+      findUnique.mockRejectedValue(new Error("db down"));
+      const readFile = jest
+        .spyOn(fs, "readFile")
+        .mockResolvedValue("not json");
+
+      const result = await readShop("json-error");
+
+      expect(readFile).toHaveBeenCalled();
+      expect(result.id).toBe("json-error");
+      expect(result.name).toBe("json-error");
+      expect(result.filterMappings).toEqual(defaultFilterMappings);
+      expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
+      expect(result.themeOverrides).toEqual({});
+      expect(result.themeTokens).toEqual({ base: "base", theme: "theme" });
+      expect(loadTokens).toHaveBeenCalledWith("base");
+    });
+
+    it("returns default shop when filesystem JSON fails validation", async () => {
+      getRepo.mockRejectedValue(new Error("missing"));
+      findUnique.mockRejectedValue(new Error("db down"));
+      const readFile = jest
+        .spyOn(fs, "readFile")
+        .mockResolvedValue(JSON.stringify({ id: "fs-shop" }));
+
+      const result = await readShop("schema-error");
+
+      expect(readFile).toHaveBeenCalled();
+      expect(result.id).toBe("schema-error");
+      expect(result.name).toBe("schema-error");
+      expect(result.filterMappings).toEqual(defaultFilterMappings);
+      expect(result.themeDefaults).toEqual({ base: "base", theme: "theme" });
+      expect(result.themeOverrides).toEqual({});
+      expect(result.themeTokens).toEqual({ base: "base", theme: "theme" });
+      expect(loadTokens).toHaveBeenCalledWith("base");
+    });
+
     it("loads theme tokens when defaults are missing", async () => {
       getRepo.mockResolvedValue({
         id: "shop-no-defaults",

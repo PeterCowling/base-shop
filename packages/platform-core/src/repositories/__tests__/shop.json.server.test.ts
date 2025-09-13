@@ -28,7 +28,8 @@ jest.mock("fs", () => {
   };
 });
 
-jest.mock("../../shops/index", () => ({ validateShopName: (s: string) => s }));
+const validateShopName = jest.fn((s: string) => s);
+jest.mock("../../shops/index", () => ({ validateShopName }));
 
 import { promises as fs } from "fs";
 
@@ -37,6 +38,7 @@ describe("shop.json.server", () => {
   beforeEach(() => {
     fsMock.__files.clear();
     jest.clearAllMocks();
+    validateShopName.mockImplementation((s: string) => s);
   });
 
   it("reads existing shop file", async () => {
@@ -116,6 +118,33 @@ describe("shop.json.server", () => {
     await expect(
       updateShopInRepo("shop3", { id: "other", name: "x" } as any)
     ).rejects.toThrow(/not found/);
+  });
+
+  it("validates shop name and uses normalized path when updating", async () => {
+    const original = "shopv";
+    const normalized = original.toUpperCase();
+    validateShopName.mockImplementation((s: string) => s.toUpperCase());
+    const shopPath = path.join(DATA_ROOT, normalized, "shop.json");
+    fsMock.__files.set(
+      shopPath,
+      JSON.stringify({
+        id: normalized,
+        name: "Shop V",
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+      }),
+    );
+    const { updateShopInRepo } = await import("../shop.json.server");
+    await updateShopInRepo(original, { id: normalized, name: "Updated" });
+    expect(validateShopName).toHaveBeenCalledWith(original);
+    expect(fsMock.mkdir).toHaveBeenCalledWith(
+      path.join(DATA_ROOT, normalized),
+      { recursive: true },
+    );
+    const tmpPath = (fsMock.writeFile as jest.Mock).mock.calls[0][0];
+    expect(tmpPath).toContain(path.join(DATA_ROOT, normalized, "shop.json"));
+    expect(fsMock.rename).toHaveBeenCalledWith(tmpPath, shopPath);
   });
 
   it("getShopJson reads existing file", async () => {

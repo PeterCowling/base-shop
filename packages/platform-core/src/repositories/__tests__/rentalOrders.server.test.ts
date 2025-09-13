@@ -78,6 +78,16 @@ describe("rental orders status updates", () => {
     await expect(call()).resolves.toBeNull();
   });
 
+  it.each([
+    ["markRepair", () => markRepair(shop, sessionId)],
+    ["markQa", () => markQa(shop, sessionId)],
+    ["markAvailable", () => markAvailable(shop, sessionId)],
+  ])("returns null when update yields null for %s", async (_, call) => {
+    jest.spyOn(prisma.rentalOrder, "update").mockResolvedValue(null);
+
+    await expect(call()).resolves.toBeNull();
+  });
+
   it("markLateFeeCharged updates with amount", async () => {
     const updateMock = jest
       .spyOn(prisma.rentalOrder, "update")
@@ -94,6 +104,12 @@ describe("rental orders status updates", () => {
     jest
       .spyOn(prisma.rentalOrder, "update")
       .mockRejectedValue(new Error("fail"));
+
+    await expect(markLateFeeCharged(shop, sessionId, 10)).resolves.toBeNull();
+  });
+
+  it("markLateFeeCharged returns null when update yields no order", async () => {
+    jest.spyOn(prisma.rentalOrder, "update").mockResolvedValue(null);
 
     await expect(markLateFeeCharged(shop, sessionId, 10)).resolves.toBeNull();
   });
@@ -127,6 +143,12 @@ describe("updateStatus", () => {
     jest
       .spyOn(prisma.rentalOrder, "update")
       .mockRejectedValue(new Error("fail"));
+
+    await expect(updateStatus(shop, sessionId, status)).resolves.toBeNull();
+  });
+
+  it("returns null when update yields no order", async () => {
+    jest.spyOn(prisma.rentalOrder, "update").mockResolvedValue(null);
 
     await expect(updateStatus(shop, sessionId, status)).resolves.toBeNull();
   });

@@ -129,6 +129,29 @@ describe("shops.repository", () => {
       expect(result.name).toBe("FS Shop");
     });
 
+    it("reads from filesystem when Prisma returns null", async () => {
+      const fileData = {
+        id: "fs-shop",
+        name: "FS Shop",
+        catalogFilters: [],
+        themeId: "base",
+        filterMappings: {},
+        themeDefaults: { color: "green" },
+        themeOverrides: { color: "blue" },
+      };
+      getRepo.mockRejectedValue(new Error("missing"));
+      findUnique.mockResolvedValue(null);
+      const readFile = jest
+        .spyOn(fs, "readFile")
+        .mockResolvedValue(JSON.stringify(fileData));
+
+      const result = await readShop("fs-shop");
+
+      expect(findUnique).toHaveBeenCalledWith({ where: { id: "fs-shop" } });
+      expect(readFile).toHaveBeenCalled();
+      expect(result.name).toBe("FS Shop");
+    });
+
     it("falls back when prisma data is invalid", async () => {
       const fileData = {
         id: "fs-shop",

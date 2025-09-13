@@ -35,6 +35,12 @@ describe("boolean coercion", () => {
         withEnv({ ...base, [key]: "" } as any, () => import("../auth")),
       ).rejects.toThrow("Invalid auth environment variables");
     });
+
+    it("errors on unrecognized string", async () => {
+      await expect(
+        withEnv({ ...base, [key]: "notabool" } as any, () => import("../auth")),
+      ).rejects.toThrow("Invalid auth environment variables");
+    });
   });
 });
 
@@ -50,6 +56,35 @@ describe("SESSION_STORE redis requirements", () => {
     [
       "missing url",
       { UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN },
+      ["UPSTASH_REDIS_REST_URL"],
+    ],
+  ])("fails when %s", async (_label, extra, missing) => {
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(
+      withEnv({ ...baseRedis, ...extra }, () => import("../auth")),
+    ).rejects.toThrow("Invalid auth environment variables");
+    const errorObj = spy.mock.calls[0][1] as Record<string, unknown>;
+    for (const key of missing) {
+      expect(errorObj).toHaveProperty(key);
+    }
+    spy.mockRestore();
+  });
+
+  it.each([
+    [
+      "blank token",
+      {
+        UPSTASH_REDIS_REST_URL: REDIS_URL,
+        UPSTASH_REDIS_REST_TOKEN: "",
+      },
+      ["UPSTASH_REDIS_REST_TOKEN"],
+    ],
+    [
+      "blank url",
+      {
+        UPSTASH_REDIS_REST_URL: "",
+        UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
+      },
       ["UPSTASH_REDIS_REST_URL"],
     ],
   ])("fails when %s", async (_label, extra, missing) => {
@@ -90,6 +125,22 @@ describe("login rate limit redis credentials", () => {
       "token only",
       { LOGIN_RATE_LIMIT_REDIS_TOKEN: REDIS_TOKEN },
       ["LOGIN_RATE_LIMIT_REDIS_URL"],
+    ],
+    [
+      "URL blank",
+      {
+        LOGIN_RATE_LIMIT_REDIS_URL: "",
+        LOGIN_RATE_LIMIT_REDIS_TOKEN: REDIS_TOKEN,
+      },
+      ["LOGIN_RATE_LIMIT_REDIS_URL"],
+    ],
+    [
+      "token blank",
+      {
+        LOGIN_RATE_LIMIT_REDIS_URL: REDIS_URL,
+        LOGIN_RATE_LIMIT_REDIS_TOKEN: "",
+      },
+      ["LOGIN_RATE_LIMIT_REDIS_TOKEN"],
     ],
   ])("errors with %s", async (_label, extra, missing) => {
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
@@ -143,6 +194,19 @@ describe("AUTH_PROVIDER variants", () => {
     spy.mockRestore();
   });
 
+  it("errors when JWT_SECRET is blank", async () => {
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(
+      withEnv(
+        { ...base, AUTH_PROVIDER: "jwt", JWT_SECRET: "" },
+        () => import("../auth"),
+      ),
+    ).rejects.toThrow("Invalid auth environment variables");
+    const errorObj = spy.mock.calls[0][1] as Record<string, unknown>;
+    expect(errorObj).toHaveProperty("JWT_SECRET");
+    spy.mockRestore();
+  });
+
   it("accepts jwt provider with secret", async () => {
     await withEnv(
       { ...base, AUTH_PROVIDER: "jwt", JWT_SECRET },
@@ -163,6 +227,22 @@ describe("AUTH_PROVIDER variants", () => {
     [
       "missing client secret",
       { OAUTH_CLIENT_ID: OAUTH_CLIENT_ID },
+      "OAUTH_CLIENT_SECRET",
+    ],
+    [
+      "blank client id",
+      {
+        OAUTH_CLIENT_ID: "",
+        OAUTH_CLIENT_SECRET: OAUTH_CLIENT_SECRET,
+      },
+      "OAUTH_CLIENT_ID",
+    ],
+    [
+      "blank client secret",
+      {
+        OAUTH_CLIENT_ID: OAUTH_CLIENT_ID,
+        OAUTH_CLIENT_SECRET: "",
+      },
       "OAUTH_CLIENT_SECRET",
     ],
   ])("oauth fails when %s", async (_label, extra, missingKey) => {

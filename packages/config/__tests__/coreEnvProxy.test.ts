@@ -44,6 +44,22 @@ describe("coreEnv proxy", () => {
     expect(core.coreEnv.CMS_ACCESS_TOKEN).toBe(token);
   });
 
+  it("uses cache for repeated property access", async () => {
+    const core = await withEnv(
+      {
+        NODE_ENV: "test",
+        CMS_SPACE_URL: "https://example.com",
+        CMS_ACCESS_TOKEN: "token",
+        SANITY_API_VERSION: "v1",
+      },
+      () => import("../src/env/core"),
+    );
+    const parseSpy = jest.spyOn(core.coreEnvSchema, "safeParse");
+    expect(core.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+    expect(core.coreEnv.CMS_SPACE_URL).toBe("https://example.com");
+    expect(parseSpy).toHaveBeenCalledTimes(1);
+  });
+
   it("calls loadCoreEnv only once", async () => {
     const OLD = process.env;
     process.env = {

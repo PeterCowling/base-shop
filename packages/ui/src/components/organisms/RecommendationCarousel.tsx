@@ -47,6 +47,30 @@ export function RecommendationCarousel({
   const [itemsPerSlide, setItemsPerSlide] = React.useState(
     desktopItems ?? minItems
   );
+  const scrollerRef = React.useRef<HTMLDivElement>(null);
+  const autoplayRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
+  const indexRef = React.useRef(0);
+
+  const stopAutoplay = React.useCallback(() => {
+    if (autoplayRef.current) {
+      clearInterval(autoplayRef.current);
+      autoplayRef.current = null;
+    }
+  }, []);
+
+  const startAutoplay = React.useCallback(() => {
+    stopAutoplay();
+    if (!scrollerRef.current || products.length <= 1) return;
+    autoplayRef.current = setInterval(() => {
+      const scroller = scrollerRef.current;
+      if (!scroller) return;
+      indexRef.current = (indexRef.current + 1) % products.length;
+      scroller.scrollTo({
+        left: scroller.clientWidth * indexRef.current,
+        behavior: "smooth",
+      });
+    }, 3000);
+  }, [products.length, stopAutoplay]);
 
   React.useEffect(() => {
     const calculateItems = () => {
@@ -102,11 +126,24 @@ export function RecommendationCarousel({
     [width]
   );
 
+  React.useEffect(() => {
+    startAutoplay();
+    return stopAutoplay;
+  }, [startAutoplay, stopAutoplay]);
+
   if (!products.length) return null;
 
   return (
-    <div className={cn("overflow-hidden", className)} {...props}>
-      <div className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)}>
+    <div
+      className={cn("overflow-hidden", className)}
+      onMouseEnter={stopAutoplay}
+      onMouseLeave={startAutoplay}
+      {...props}
+    >
+      <div
+      ref={scrollerRef}
+        className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)}
+      >
         {products.map((p) => (
           <div key={p.id} style={slideStyle} className="snap-start">
             <ProductCard product={p} className="h-full" />

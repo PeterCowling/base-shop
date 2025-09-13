@@ -19,6 +19,28 @@ describe("reverseLogisticsEvent stub", () => {
     );
   });
 
+  it("createMany stores multiple events", async () => {
+    const delegate = createReverseLogisticsEventDelegate();
+
+    const result = await delegate.createMany({
+      data: [
+        { id: "m1", type: "received" },
+        { id: "m2", type: "repair" },
+      ],
+    });
+
+    expect(result).toEqual({ count: 2 });
+
+    const events = await delegate.findMany({ where: {} });
+    expect(events).toHaveLength(2);
+    expect(events).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ id: "m1", type: "received" }),
+        expect.objectContaining({ id: "m2", type: "repair" }),
+      ]),
+    );
+  });
+
   it("findMany filters by given criteria", async () => {
     const delegate = createReverseLogisticsEventDelegate();
 

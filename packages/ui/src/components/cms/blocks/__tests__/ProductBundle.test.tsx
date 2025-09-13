@@ -5,7 +5,7 @@ configure({ testIdAttribute: "data-testid" });
 
 jest.mock("../../../atoms/Price", () => ({
   Price: ({ amount, className }: { amount: number; className?: string }) => (
-    <span data-cy="price" className={className}>
+    <span data-testid="price" className={className}>
       {amount}
     </span>
   ),

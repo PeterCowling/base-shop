@@ -222,12 +222,14 @@ describe("settings.server functions via resolved repository", () => {
       saveShopSettings: jest.fn(),
       diffHistory: jest.fn(),
     };
-    jest.doMock("../repoResolver", () => ({ resolveRepo: jest.fn(() => repo) }));
+    const resolveRepo = jest.fn(() => repo);
+    jest.doMock("../repoResolver", () => ({ resolveRepo }));
     jest.doMock("../../db", () => ({ prisma: { setting: {} } }));
     const { getShopSettings } = await import("../settings.server");
     await expect(getShopSettings("missing"))
       .rejects.toThrow("not found");
     expect(repo.getShopSettings).toHaveBeenCalledWith("missing");
+    expect(resolveRepo).toHaveBeenCalledTimes(1);
   });
 
   it("forwards saveShopSettings arguments", async () => {
@@ -273,7 +275,7 @@ describe("settings.server sequential repository usage", () => {
     jest.clearAllMocks();
   });
 
-  it("delegates sequential calls through a single resolved repo", async () => {
+  it("delegates repeated calls through a single resolved repo", async () => {
     const repo = {
       getShopSettings: jest.fn().mockResolvedValue(settings),
       saveShopSettings: jest.fn().mockResolvedValue(undefined),
@@ -285,11 +287,17 @@ describe("settings.server sequential repository usage", () => {
     const { getShopSettings, saveShopSettings, diffHistory } = await import("../settings.server");
     const shop = "shop";
     await expect(getShopSettings(shop)).resolves.toBe(settings);
+    await expect(getShopSettings(shop)).resolves.toBe(settings);
+    await saveShopSettings(shop, settings);
     await saveShopSettings(shop, settings);
     await expect(diffHistory(shop)).resolves.toBe(history);
+    await expect(diffHistory(shop)).resolves.toBe(history);
     expect(resolveRepo).toHaveBeenCalledTimes(1);
+    expect(repo.getShopSettings).toHaveBeenCalledTimes(2);
     expect(repo.getShopSettings).toHaveBeenCalledWith(shop);
+    expect(repo.saveShopSettings).toHaveBeenCalledTimes(2);
     expect(repo.saveShopSettings).toHaveBeenCalledWith(shop, settings);
+    expect(repo.diffHistory).toHaveBeenCalledTimes(2);
     expect(repo.diffHistory).toHaveBeenCalledWith(shop);
   });
 

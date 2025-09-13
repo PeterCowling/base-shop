@@ -5,7 +5,8 @@
     "dev": "next dev -p 3004",
     "build": "pnpm exec next build",
     "start": "next start -p 3004",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "dependencies": {
     "@acme/config": "workspace:*",

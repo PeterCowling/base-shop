@@ -96,6 +96,7 @@ export async function setReturnStatus(
       where: { shop_trackingNumber: { shop, trackingNumber } },
       data: { returnStatus },
     });
+    if (!order) return null;
     return normalize(order as Order);
   } catch {
     return null;

@@ -1,5 +1,5 @@
 /* -------------------------------------------------------------------------- */
-/*  apps/cms/jest.setup.ts                                                    */
+/*  apps/cms/jest.setup.after.ts                                             */
 /* -------------------------------------------------------------------------- */
 /* eslint-disable no-underscore-dangle */
 
@@ -139,17 +139,14 @@ if (typeof (Response as any).json !== "function") {
 jest.mock("next/image", () => ({
   __esModule: true,
   /* eslint-disable react/display-name */
-  default: (props: any) => <img {...props} />,
+  default: (props: any) => React.createElement("img", props),
 }));
 
 jest.mock("next/link", () => ({
   __esModule: true,
-  default: ({ href, children, ...rest }: any) => (
+  default: ({ href, children, ...rest }: any) =>
     // the link wrapper must return an <a> so @testing-library can query it
-    <a href={href} {...rest}>
-      {children}
-    </a>
-  ),
+    React.createElement("a", { href, ...rest }, children),
 }));
 
 jest.mock("next/router", () => ({
@@ -162,3 +159,4 @@ jest.mock("next/router", () => ({
     prefetch: jest.fn(),
   }),
 }));
+

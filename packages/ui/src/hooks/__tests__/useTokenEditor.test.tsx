@@ -62,6 +62,26 @@ describe("useTokenEditor", () => {
     render(<Test />);
   });
 
+  it("classifies tokens into colors, fonts, and others", () => {
+    function Test() {
+      const { colors, fonts, others } = useTokenEditor(
+        {
+          "--color-a": "red",
+          "--font-sans": "Arial",
+          "--gap": "1rem",
+        },
+        {},
+        () => {}
+      );
+      expect(colors.map((t) => t.key)).toEqual(["--color-a"]);
+      expect(fonts.map((t) => t.key)).toEqual(["--font-sans"]);
+      expect(others.map((t) => t.key)).toEqual(["--gap"]);
+      return null;
+    }
+
+    render(<Test />);
+  });
+
   it("font upload adds styles and updates font lists", async () => {
     let upload!: ReturnType<typeof useTokenEditor>["handleUpload"]; // !
     let latest: TokenMap = {};

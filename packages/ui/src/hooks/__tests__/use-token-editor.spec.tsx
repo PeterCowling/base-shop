@@ -81,6 +81,26 @@ describe("useTokenEditor", () => {
     expect(getSans()).toContain('"SansFont"');
   });
 
+  it("classifies tokens into colors, fonts, and others", () => {
+    function Wrapper() {
+      const { colors, fonts, others } = useTokenEditor(
+        {
+          "--color-a": "blue",
+          "--font-sans": "Arial",
+          "--gap": "2rem",
+        },
+        {},
+        () => {}
+      );
+      expect(colors.map((t) => t.key)).toEqual(["--color-a"]);
+      expect(fonts.map((t) => t.key)).toEqual(["--font-sans"]);
+      expect(others.map((t) => t.key)).toEqual(["--gap"]);
+      return null;
+    }
+
+    render(<Wrapper />);
+  });
+
   it("addCustomFont handles empty and non-empty newFont", () => {
     let add!: () => void; // !
     let setNF!: (v: string) => void; // !
@@ -110,6 +130,12 @@ describe("useTokenEditor", () => {
 
     expect(getSans()).toContain("Fancy");
     expect(getMono()).toContain("Fancy");
+
+    act(() => setNF("Fancy"));
+    act(() => add());
+
+    expect(getSans().filter((f) => f === "Fancy")).toHaveLength(1);
+    expect(getMono().filter((f) => f === "Fancy")).toHaveLength(1);
   });
 
   it("setGoogleFont injects link and updates tokens/fonts", () => {

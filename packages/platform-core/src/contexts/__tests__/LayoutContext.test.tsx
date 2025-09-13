@@ -107,6 +107,24 @@ describe("LayoutContext", () => {
     expect(getByTestId("toggle").textContent).toBe("closed");
   });
 
+  it("handles root pathname and still toggles nav", () => {
+    mockPathname.mockReturnValue("/");
+
+    const { getByTestId } = render(
+      <LayoutProvider>
+        <TestComponent />
+      </LayoutProvider>
+    );
+
+    expect(getByTestId("crumbs").textContent).toBe(JSON.stringify([]));
+
+    fireEvent.click(getByTestId("toggle"));
+    expect(getByTestId("toggle").textContent).toBe("open");
+
+    fireEvent.click(getByTestId("toggle"));
+    expect(getByTestId("toggle").textContent).toBe("closed");
+  });
+
   it("sets and clears configurator progress", () => {
     mockPathname.mockReturnValue(null);
 

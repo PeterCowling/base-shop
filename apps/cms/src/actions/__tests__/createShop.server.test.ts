@@ -21,8 +21,15 @@ jest.mock("../common/auth.ts", () => ({
 }));
 
 describe("createNewShop", () => {
+  let consoleErrorSpy: jest.SpyInstance;
+
   beforeEach(() => {
     jest.resetAllMocks();
+    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleErrorSpy.mockRestore();
   });
 
   it("Successful shop creation with RBAC update for new user", async () => {
@@ -159,10 +166,6 @@ describe("createNewShop", () => {
     (prisma.page.deleteMany as jest.Mock).mockRejectedValue(
       new Error("rollback fail")
     );
-    const consoleErrorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-
     await expect(createNewShop("shop1", {} as any)).rejects.toThrow(
       "Failed to assign ShopAdmin role"
     );
@@ -170,7 +173,6 @@ describe("createNewShop", () => {
       "Failed to roll back shop creation",
       expect.any(Error)
     );
-    consoleErrorSpy.mockRestore();
   });
 
   it("Ensure user without id skips RBAC update", async () => {

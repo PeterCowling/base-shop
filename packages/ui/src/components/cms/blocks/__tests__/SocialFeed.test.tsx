@@ -2,6 +2,19 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import SocialFeed from "../SocialFeed";
 
 describe("SocialFeed", () => {
+  it.each([
+    ["twitter", "acme", "https://twitframe.com/show?url=https://twitter.com/acme"],
+    ["instagram", "acme", "https://www.instagram.com/acme/embed"],
+  ])("renders %s embed", (platform, account, expectedSrc) => {
+    render(
+      <SocialFeed
+        platform={platform as "twitter" | "instagram"}
+        account={account}
+      />
+    );
+    expect(screen.getByTitle("social-feed")).toHaveAttribute("src", expectedSrc);
+  });
+
   it("shows fallback when iframe fails", async () => {
     render(<SocialFeed platform="twitter" account="acme" />);
     const iframe = screen.getByTitle("social-feed");
@@ -11,6 +24,11 @@ describe("SocialFeed", () => {
         screen.getByText(/unable to load social feed/i)
       ).toBeInTheDocument()
     );
+  });
+
+  it("renders nothing when feed array is empty", () => {
+    const { container } = render(<SocialFeed platform="twitter" />);
+    expect(container).toBeEmptyDOMElement();
   });
 });
 

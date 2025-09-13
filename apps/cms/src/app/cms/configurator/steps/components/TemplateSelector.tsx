@@ -83,13 +83,15 @@ export default function TemplateSelector({
                 className="w-full text-left"
               >
                 <div className="flex items-center gap-2">
-                  <Image
-                    src={t.preview}
-                    alt={`${t.name} preview`}
-                    width={32}
-                    height={32}
-                    className="h-8 w-8 rounded object-cover"
-                  />
+                  {t.preview && (
+                    <Image
+                      src={t.preview}
+                      alt={`${t.name} preview`}
+                      width={32}
+                      height={32}
+                      className="h-8 w-8 rounded object-cover"
+                    />
+                  )}
                   {t.name}
                 </div>
               </button>

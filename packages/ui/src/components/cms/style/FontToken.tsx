@@ -4,7 +4,8 @@ import { FontSelect } from "../index";
 import type { TokenInfo } from "../../../hooks/useTokenEditor";
 import type { ChangeEvent, ReactElement } from "react";
 
-interface FontTokenProps extends TokenInfo {
+interface FontTokenProps extends Omit<TokenInfo, "key"> {
+  tokenKey: string;
   options: string[];
   type: "mono" | "sans";
   googleFonts: string[];
@@ -14,7 +15,7 @@ interface FontTokenProps extends TokenInfo {
 }
 
 export function FontToken({
-  key: tokenKey,
+  tokenKey,
   value,
   defaultValue,
   isOverridden,
@@ -27,7 +28,6 @@ export function FontToken({
 }: FontTokenProps): ReactElement {
   return (
     <label
-      key={tokenKey}
       data-token-key={tokenKey}
       className={`flex flex-col gap-1 text-sm ${
         isOverridden ? "border-l-2 border-l-info pl-2" : ""

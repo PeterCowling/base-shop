@@ -141,11 +141,14 @@ export default function Tokens({
     }
 
     if (info.key.startsWith("--font")) {
-      const options = info.key.includes("mono") ? monoFonts : sansFonts;
-      const type: "mono" | "sans" = info.key.includes("mono") ? "mono" : "sans";
+      const { key: tokenKey, ...rest } = info;
+      const options = tokenKey.includes("mono") ? monoFonts : sansFonts;
+      const type: "mono" | "sans" = tokenKey.includes("mono") ? "mono" : "sans";
       return (
         <FontToken
-          {...info}
+          key={tokenKey}
+          tokenKey={tokenKey}
+          {...rest}
           options={options}
           type={type}
           googleFonts={googleFonts}

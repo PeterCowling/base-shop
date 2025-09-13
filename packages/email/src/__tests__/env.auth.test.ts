@@ -105,12 +105,14 @@ describe("auth env validation", () => {
   });
 
   it("throws for jwt provider without secret", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
       withEnv(
         { NODE_ENV: "development", AUTH_PROVIDER: "jwt" },
         () => import("@acme/config/src/env/auth.ts"),
       ),
     ).rejects.toThrow("Invalid auth environment variables");
+    expect(errorSpy).toHaveBeenCalled();
   });
 
   it("loads for jwt provider with secret", async () => {
@@ -126,6 +128,7 @@ describe("auth env validation", () => {
   });
 
   it("throws for oauth provider missing client id", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
       withEnv(
         {
@@ -136,9 +139,11 @@ describe("auth env validation", () => {
         () => import("@acme/config/src/env/auth.ts"),
       ),
     ).rejects.toThrow("Invalid auth environment variables");
+    expect(errorSpy).toHaveBeenCalled();
   });
 
   it("throws for oauth provider missing client secret", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
       withEnv(
         {
@@ -149,6 +154,7 @@ describe("auth env validation", () => {
         () => import("@acme/config/src/env/auth.ts"),
       ),
     ).rejects.toThrow("Invalid auth environment variables");
+    expect(errorSpy).toHaveBeenCalled();
   });
 
   it("loads when oauth provider has credentials", async () => {

@@ -178,10 +178,15 @@ describe("RedisCartStore", () => {
     let redis: MockRedis;
     let fallback: MemoryCartStore;
     let store: RedisCartStore;
+    let errorSpy: jest.SpiedFunction<typeof console.error>;
     beforeEach(() => {
+      errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
       redis = new MockRedis();
       fallback = new MemoryCartStore(ttl);
       store = new RedisCartStore(redis as any, ttl, fallback);
+    });
+    afterEach(() => {
+      errorSpy.mockRestore();
     });
 
     it("falls back on createCart when hset fails once", async () => {

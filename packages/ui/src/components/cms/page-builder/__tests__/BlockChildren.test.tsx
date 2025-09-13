@@ -46,6 +46,18 @@ describe("BlockChildren", () => {
     expect(container.querySelector("[data-placeholder]")).toBeInTheDocument();
   });
 
+  it("does not show placeholder when isOver is false", () => {
+    const childComponents: PageComponent[] = [
+      { id: "c1", type: "Foo" } as any,
+    ];
+    const { container } = render(
+      <BlockChildren {...createProps({ childComponents, isOver: false })} />
+    );
+    expect(
+      container.querySelector("[data-placeholder]")
+    ).not.toBeInTheDocument();
+  });
+
   it("renders each child as CanvasItem with correct props", () => {
     const dispatch = jest.fn();
     const childComponents: PageComponent[] = [
@@ -76,6 +88,19 @@ describe("BlockChildren", () => {
         locale: "en",
       })
     );
+  });
+
+  it("dispatches remove action when a child onRemove is triggered", () => {
+    const dispatch = jest.fn();
+    const childComponents: PageComponent[] = [
+      { id: "c1", type: "Foo" } as any,
+    ];
+    render(
+      <BlockChildren {...createProps({ childComponents, dispatch })} />
+    );
+    const props = mockCanvasItem.mock.calls[0][0];
+    props.onRemove();
+    expect(dispatch).toHaveBeenCalledWith({ type: "remove", id: "c1" });
   });
 });
 

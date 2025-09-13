@@ -9,6 +9,7 @@ describe("FontToken", () => {
   const renderToken = (props: Partial<React.ComponentProps<typeof FontToken>> = {}) =>
     render(
       FontToken({
+        tokenKey,
         key: tokenKey,
         value: "Arial",
         defaultValue: "Arial",

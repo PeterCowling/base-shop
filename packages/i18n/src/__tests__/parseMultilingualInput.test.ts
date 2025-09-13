@@ -25,8 +25,9 @@ describe("parseMultilingualInput", () => {
     expect(parseMultilingualInput("title__en", locales)).toBeNull();
     expect(parseMultilingualInput("title-en", locales)).toBeNull();
     expect(
-      parseMultilingualInput({ en: "x", it: "y" } as any, locales)
+      parseMultilingualInput({ name: "title_en" } as any, locales)
     ).toBeNull();
+    expect(parseMultilingualInput(123 as any, locales)).toBeNull();
     expect(parseMultilingualInput(null as any, locales)).toBeNull();
     expect(parseMultilingualInput(undefined as any, locales)).toBeNull();
   });

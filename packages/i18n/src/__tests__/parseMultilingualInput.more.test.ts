@@ -36,13 +36,23 @@ describe("normalizeMultilingualInput edge cases", () => {
   const locales = ["en", "it"] as const;
 
   it("populates the first locale from a plain string", () => {
-    expect(normalizeMultilingualInput(" Hello ", locales)).toEqual({
-      en: "Hello",
+    const localLocales = ["it", "en"] as const;
+    expect(normalizeMultilingualInput(" Hello ", localLocales)).toEqual({
+      it: "Hello",
     });
+  });
+
+  it("drops whitespace-only strings", () => {
+    expect(normalizeMultilingualInput("   ", locales)).toEqual({});
   });
 
   it("trims values and drops empty or unknown locales", () => {
     const input = { en: " Hi ", it: "  ", fr: "Bonjour", de: 1 as any };
     expect(normalizeMultilingualInput(input, locales)).toEqual({ en: "Hi" });
+  });
+
+  it("ignores unknown locale keys", () => {
+    const input = { fr: "Bonjour" };
+    expect(normalizeMultilingualInput(input, locales)).toEqual({});
   });
 });

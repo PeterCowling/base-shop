@@ -152,10 +152,27 @@ describe("ProductGrid", () => {
     expect(disconnect).toHaveBeenCalled();
   });
 
+  it("falls back to minItems when ResizeObserver is unavailable", () => {
+    (global as any).ResizeObserver = undefined;
+    const { container } = render(<ProductGrid skus={skus} minItems={2} />);
+    const grid = container.firstChild as HTMLElement;
+    expect(grid.style.gridTemplateColumns).toBe(
+      "repeat(2, minmax(0, 1fr))"
+    );
+  });
+
   it("renders placeholders when skus is empty", () => {
     render(<ProductGrid skus={[]} columns={3} />);
     const placeholders = screen.getAllByTestId("placeholder");
     expect(placeholders).toHaveLength(3);
+  });
+
+  it("computes placeholder count from container width", async () => {
+    mockResizeObserver(500);
+    render(<ProductGrid skus={[]} />);
+    await waitFor(() =>
+      expect(screen.getAllByTestId("placeholder")).toHaveLength(2)
+    );
   });
 
   it("does not render placeholders when skus are provided", () => {

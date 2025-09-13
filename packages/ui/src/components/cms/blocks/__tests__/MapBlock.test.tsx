@@ -5,7 +5,13 @@ jest.mock("../../../organisms/StoreLocatorMap", () => {
   const React = require("react");
   return {
     __esModule: true,
-    StoreLocatorMap: jest.fn(() => <div data-cy="map" />),
+    StoreLocatorMap: jest.fn(({ locations }: any) => (
+      <iframe
+        data-cy="map"
+        src={`https://maps.example/?lat=${locations[0].lat}&lng=${locations[0].lng}`}
+        title="map"
+      />
+    )),
   };
 });
 
@@ -22,12 +28,26 @@ describe("MapBlock", () => {
 
   it("renders StoreLocatorMap with correct props when coordinates are numeric", () => {
     const { getByTestId } = render(<MapBlock lat={1} lng={2} zoom={5} />);
-    expect(getByTestId("map")).toBeInTheDocument();
+    const iframe = getByTestId("map") as HTMLIFrameElement;
+    expect(iframe).toBeInTheDocument();
+    expect(iframe.src).toContain("lat=1");
+    expect(iframe.src).toContain("lng=2");
     expect(mockStoreLocatorMap).toHaveBeenCalledTimes(1);
     expect(mockStoreLocatorMap.mock.calls[0][0]).toEqual(
       expect.objectContaining({
         locations: [{ lat: 1, lng: 2 }],
         zoom: 5,
+        heightClass: "h-full",
+      })
+    );
+  });
+
+  it("renders map without address label", () => {
+    render(<MapBlock lat={3} lng={4} />);
+    expect(mockStoreLocatorMap).toHaveBeenCalledTimes(1);
+    expect(mockStoreLocatorMap.mock.calls[0][0]).toEqual(
+      expect.objectContaining({
+        locations: [{ lat: 3, lng: 4 }],
         heightClass: "h-full",
       })
     );

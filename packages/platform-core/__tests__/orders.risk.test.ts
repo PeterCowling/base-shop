@@ -23,11 +23,31 @@ describe("orders/risk", () => {
       const result = await markNeedsAttention("shop", "sess");
       expect(result).toBeNull();
     });
+
+    it("returns normalized order on success", async () => {
+      prisma.rentalOrder.update.mockResolvedValue({
+        id: "1",
+        flaggedForReview: true,
+        riskLevel: null,
+      });
+      const result = await markNeedsAttention("shop", "sess");
+      expect(result).toEqual({
+        id: "1",
+        flaggedForReview: true,
+        riskLevel: undefined,
+      });
+    });
   });
 
   describe("updateRisk", () => {
     it("returns null on update error", async () => {
       prisma.rentalOrder.update.mockRejectedValue(new Error("update failed"));
+      const result = await updateRisk("shop", "sess");
+      expect(result).toBeNull();
+    });
+
+    it("returns null when update returns null", async () => {
+      prisma.rentalOrder.update.mockResolvedValue(null);
       const result = await updateRisk("shop", "sess");
       expect(result).toBeNull();
     });

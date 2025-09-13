@@ -31,70 +31,82 @@ afterEach(() => {
 });
 
 describe("ProductGrid", () => {
-  it("renders one ProductCard per SKU", () => {
-    render(
-      <CurrencyProvider>
-        <CartProvider>
-          <ProductGrid skus={[PRODUCTS[0], PRODUCTS[1]]} columns={2} />
-        </CartProvider>
-      </CurrencyProvider>
-    );
+  it("renders one ProductCard per SKU", async () => {
+    await act(async () => {
+      render(
+        <CurrencyProvider>
+          <CartProvider>
+            <ProductGrid skus={[PRODUCTS[0], PRODUCTS[1]]} columns={2} />
+          </CartProvider>
+        </CurrencyProvider>
+      );
+    });
+    await act(async () => {});
     expect(screen.getAllByRole("article").length).toBe(2);
   });
 
-  it("sorts SKUs alphabetically", () => {
+  it("sorts SKUs alphabetically", async () => {
     const skus = [
       { ...PRODUCTS[2], id: "c", slug: "c", title: "C item" },
       { ...PRODUCTS[0], id: "a", slug: "a", title: "A item" },
       { ...PRODUCTS[1], id: "b", slug: "b", title: "B item" },
     ];
-    render(
-      <CurrencyProvider>
-        <CartProvider>
-          <ProductGrid skus={skus} columns={3} />
-        </CartProvider>
-      </CurrencyProvider>
-    );
+    await act(async () => {
+      render(
+        <CurrencyProvider>
+          <CartProvider>
+            <ProductGrid skus={skus} columns={3} />
+          </CartProvider>
+        </CurrencyProvider>
+      );
+    });
+    await act(async () => {});
     const titles = screen
       .getAllByRole("heading")
       .map((h) => h.textContent);
     expect(titles).toEqual(["A item", "B item", "C item"]);
   });
 
-  it("uses provided columns when defined", () => {
+  it("uses provided columns when defined", async () => {
     (global as any).ResizeObserver = undefined;
-    render(
-      <CurrencyProvider>
-        <CartProvider>
-          <ProductGrid
-            skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
-            columns={3}
-            data-cy="grid"
-          />
-        </CartProvider>
-      </CurrencyProvider>
-    );
+    await act(async () => {
+      render(
+        <CurrencyProvider>
+          <CartProvider>
+            <ProductGrid
+              skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
+              columns={3}
+              data-cy="grid"
+            />
+          </CartProvider>
+        </CurrencyProvider>
+      );
+    });
+    await act(async () => {});
     const grid = screen.getByTestId("grid") as HTMLElement;
     expect(grid).toHaveStyle({
       gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
     });
   });
 
-  it("overrides responsive columns when explicit count provided", () => {
-    render(
-      <CurrencyProvider>
-        <CartProvider>
-          <ProductGrid
-            skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
-            columns={4}
-            desktopItems={3}
-            tabletItems={2}
-            mobileItems={1}
-            data-cy="grid"
-          />
-        </CartProvider>
-      </CurrencyProvider>
-    );
+  it("overrides responsive columns when explicit count provided", async () => {
+    await act(async () => {
+      render(
+        <CurrencyProvider>
+          <CartProvider>
+            <ProductGrid
+              skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
+              columns={4}
+              desktopItems={3}
+              tabletItems={2}
+              mobileItems={1}
+              data-cy="grid"
+            />
+          </CartProvider>
+        </CurrencyProvider>
+      );
+    });
+    await act(async () => {});
     const grid = screen.getByTestId("grid") as HTMLElement;
     Object.defineProperty(grid, "clientWidth", { value: 500, configurable: true });
     act(() => resizeCb([] as any));
@@ -104,20 +116,23 @@ describe("ProductGrid", () => {
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(4, minmax(0, 1fr))" });
   });
 
-  it("applies viewport counts at breakpoints", () => {
-    render(
-      <CurrencyProvider>
-        <CartProvider>
-          <ProductGrid
-            skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
-            desktopItems={3}
-            tabletItems={2}
-            mobileItems={1}
-            data-cy="grid"
-          />
-        </CartProvider>
-      </CurrencyProvider>
-    );
+  it("applies viewport counts at breakpoints", async () => {
+    await act(async () => {
+      render(
+        <CurrencyProvider>
+          <CartProvider>
+            <ProductGrid
+              skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
+              desktopItems={3}
+              tabletItems={2}
+              mobileItems={1}
+              data-cy="grid"
+            />
+          </CartProvider>
+        </CurrencyProvider>
+      );
+    });
+    await act(async () => {});
     const grid = screen.getByTestId("grid") as HTMLElement;
     Object.defineProperty(grid, "clientWidth", { value: 1200, configurable: true });
     act(() => resizeCb([] as any));
@@ -130,19 +145,22 @@ describe("ProductGrid", () => {
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(1, minmax(0, 1fr))" });
   });
 
-  it("clamps to min/max when ideal count is out of bounds", () => {
-    render(
-      <CurrencyProvider>
-        <CartProvider>
-          <ProductGrid
-            skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
-            minItems={2}
-            maxItems={4}
-            data-cy="grid"
-          />
-        </CartProvider>
-      </CurrencyProvider>
-    );
+  it("clamps to min/max when ideal count is out of bounds", async () => {
+    await act(async () => {
+      render(
+        <CurrencyProvider>
+          <CartProvider>
+            <ProductGrid
+              skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
+              minItems={2}
+              maxItems={4}
+              data-cy="grid"
+            />
+          </CartProvider>
+        </CurrencyProvider>
+      );
+    });
+    await act(async () => {});
     const grid = screen.getByTestId("grid") as HTMLElement;
     Object.defineProperty(grid, "clientWidth", { value: 2000, configurable: true });
     act(() => resizeCb([] as any));
@@ -152,19 +170,22 @@ describe("ProductGrid", () => {
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(2, minmax(0, 1fr))" });
   });
 
-  it("auto-calculates column count from container width", () => {
-    render(
-      <CurrencyProvider>
-        <CartProvider>
-          <ProductGrid
-            skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
-            minItems={1}
-            maxItems={5}
-            data-cy="grid"
-          />
-        </CartProvider>
-      </CurrencyProvider>
-    );
+  it("auto-calculates column count from container width", async () => {
+    await act(async () => {
+      render(
+        <CurrencyProvider>
+          <CartProvider>
+            <ProductGrid
+              skus={[PRODUCTS[0], PRODUCTS[1], PRODUCTS[2]]}
+              minItems={1}
+              maxItems={5}
+              data-cy="grid"
+            />
+          </CartProvider>
+        </CurrencyProvider>
+      );
+    });
+    await act(async () => {});
     const grid = screen.getByTestId("grid") as HTMLElement;
     Object.defineProperty(grid, "clientWidth", { value: 800, configurable: true });
     act(() => resizeCb([] as any));
@@ -174,15 +195,20 @@ describe("ProductGrid", () => {
     expect(grid).toHaveStyle({ gridTemplateColumns: "repeat(1, minmax(0, 1fr))" });
   });
 
-  it("disconnects ResizeObserver on unmount", () => {
-    const { unmount } = render(
-      <CurrencyProvider>
-        <CartProvider>
-          <ProductGrid skus={[PRODUCTS[0]]} data-cy="grid" />
-        </CartProvider>
-      </CurrencyProvider>
-    );
-    unmount();
+  it("disconnects ResizeObserver on unmount", async () => {
+    let unmount: () => void;
+    await act(async () => {
+      const rendered = render(
+        <CurrencyProvider>
+          <CartProvider>
+            <ProductGrid skus={[PRODUCTS[0]]} data-cy="grid" />
+          </CartProvider>
+        </CurrencyProvider>
+      );
+      unmount = rendered.unmount;
+    });
+    await act(async () => {});
+    unmount!();
     expect(disconnectMock).toHaveBeenCalled();
   });
 

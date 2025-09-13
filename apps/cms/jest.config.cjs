@@ -53,7 +53,6 @@ module.exports = {
   coverageReporters: ["text", "lcov"],
   coveragePathIgnorePatterns: [
     "/node_modules/",
-    "<rootDir>/apps/cms/src/components/cms/media/",
   ],
   coverageThreshold: {
     global: {

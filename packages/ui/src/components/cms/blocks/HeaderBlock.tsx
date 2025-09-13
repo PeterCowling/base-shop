@@ -7,9 +7,24 @@ interface Props {
   logoVariants?: LogoVariants;
   shopName: string;
   locale: Locale;
+  showSearch?: boolean;
 }
 
 /** CMS wrapper for the Header organism */
-export default function HeaderBlock({ nav = [], logoVariants, shopName, locale }: Props) {
-  return <Header nav={nav} logoVariants={logoVariants} shopName={shopName} locale={locale} />;
+export default function HeaderBlock({
+  nav = [],
+  logoVariants,
+  shopName,
+  locale,
+  showSearch,
+}: Props) {
+  return (
+    <Header
+      nav={nav}
+      logoVariants={logoVariants}
+      shopName={shopName}
+      locale={locale}
+      showSearch={showSearch}
+    />
+  );
 }

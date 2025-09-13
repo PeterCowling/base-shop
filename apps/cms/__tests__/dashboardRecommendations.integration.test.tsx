@@ -106,6 +106,7 @@ test(
   async () => {
     render(<ConfiguratorDashboard />);
     const link = await screen.findByRole("link", { name: /step b/i });
+    link.addEventListener("click", (e) => e.preventDefault());
     fireEvent.click(link);
     const alert = await screen.findByRole("alert");
     expect(alert).toHaveTextContent(/step a/i);

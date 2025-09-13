@@ -253,16 +253,19 @@ if (relativePath) {
   config.collectCoverageFrom = [
     'src/**/*.{ts,tsx}',
     'scripts/**/*.{ts,tsx}',
+    'functions/**/*.ts',
     '*.{ts,tsx}',
     '!**/__tests__/**',
     '!**/*.d.ts',
     '!**/*.test.{ts,tsx}',
     '!**/*.spec.{ts,tsx}',
   ];
-  config.coveragePathIgnorePatterns.push(
-    `/${scope}/(?!${subPath})/`,
-    scope === 'packages' ? '/apps/' : '/packages/'
-  );
+  const coverageIgnores = [];
+  if (subPath) {
+    coverageIgnores.push(`/${scope}/(?!${subPath})/`);
+  }
+  coverageIgnores.push(scope === 'packages' ? '/apps/' : '/packages/');
+  config.coveragePathIgnorePatterns.push(...coverageIgnores);
 }
 
 module.exports = resolveRoot(config);

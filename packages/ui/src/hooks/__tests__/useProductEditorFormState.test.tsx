@@ -3,7 +3,7 @@
 import type { ProductPublication } from "@acme/types";
 import type { Locale } from "@acme/i18n";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import {
   useProductEditorFormState,
   type ProductSaveResult,
@@ -51,17 +51,19 @@ const locales: readonly Locale[] = ["en", "de"];
  * ------------------------------------------------------------------ */
 function Wrapper({
   onSave,
-  publishTargets = [],
+  publishTargets,
 }: {
   onSave: (fd: FormData) => Promise<ProductSaveResult>;
   publishTargets?: string[];
 }) {
   const state = useProductEditorFormState(product, locales, onSave);
 
+  const targets = useMemo(() => publishTargets ?? [], [publishTargets]);
+
   useEffect(() => {
-    state.setPublishTargets(publishTargets);
+    state.setPublishTargets(targets);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [targets]);
 
   return (
     <>
@@ -85,6 +87,13 @@ function Wrapper({
           onChange={state.handleChange}
         />
         <button type="submit">save</button>
+        <button
+          type="button"
+          data-cy="set-publish"
+          onClick={() => state.setPublishTargets(["web", "store"])}
+        >
+          set publish targets
+        </button>
       </form>
       <pre data-cy="errors">{JSON.stringify(state.errors)}</pre>
       <div data-cy="saving">{state.saving ? "true" : "false"}</div>
@@ -173,6 +182,22 @@ describe("useProductEditorFormState", () => {
     expect(fd.get("publish")).toBe("web,store");
   });
 
+  it("setPublishTargets updates FormData", async () => {
+    const onSave = jest
+      .fn<Promise<ProductSaveResult>, [FormData]>()
+      .mockResolvedValue({ product });
+
+    render(<Wrapper onSave={onSave} />);
+
+    fireEvent.click(screen.getByTestId("set-publish"));
+    fireEvent.click(screen.getByText("save"));
+
+    await waitFor(() => expect(onSave).toHaveBeenCalled());
+
+    const fd = onSave.mock.calls[0]![0];
+    expect(fd.get("publish")).toBe("web,store");
+  });
+
   it("updates errors and resets saving when save returns errors", async () => {
     const onSave = jest
       .fn<Promise<ProductSaveResult>, [FormData]>()
@@ -195,7 +220,9 @@ describe("useProductEditorFormState", () => {
     const onSave = jest
       .fn<Promise<ProductSaveResult>, [FormData]>()
       .mockResolvedValueOnce({ errors: { price: ["Required"] } })
-      .mockResolvedValueOnce({ product });
+      .mockResolvedValueOnce({
+        product: { ...product, title: { ...product.title, en: "Saved" }, price: 150 },
+      });
 
     render(<Wrapper onSave={onSave} />);
 
@@ -213,6 +240,13 @@ describe("useProductEditorFormState", () => {
       expect(
         JSON.parse(screen.getByTestId("errors").textContent || "{}")
       ).toEqual({})
+    );
+
+    expect((screen.getByTestId("title-en") as HTMLInputElement).value).toBe(
+      "Saved"
+    );
+    expect((screen.getByTestId("price") as HTMLInputElement).value).toBe(
+      "150"
     );
   });
 });

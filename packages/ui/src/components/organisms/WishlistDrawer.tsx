@@ -6,6 +6,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from "../atoms/shadcn";
@@ -45,6 +46,9 @@ export function WishlistDrawer({
         )}
       >
         <DialogTitle className="mb-4">Wishlist</DialogTitle>
+        <DialogDescription className="sr-only">
+          Items currently saved to your wishlist
+        </DialogDescription>
         {items.length === 0 ? (
           <p className="text-muted-foreground text-sm">
             Your wishlist is empty.

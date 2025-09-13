@@ -232,12 +232,21 @@ describe("additional editors", () => {
       expected: { autoplay: true },
     },
     {
-      name: "GiftCardEditor",
+      name: "GiftCardEditor denominations",
       Comp: GiftCardEditor,
       component: { type: "GiftCardBlock", denominations: [], description: "" },
       getNode: () => screen.getByPlaceholderText("Amounts (comma separated)"),
-      fire: (node: HTMLElement) => fireEvent.change(node, { target: { value: "10,20" } }),
+      fire: (node: HTMLElement) => fireEvent.change(node, { target: { value: "10, foo, 20" } }),
       expected: { denominations: [10, 20] },
+    },
+    {
+      name: "GiftCardEditor description",
+      Comp: GiftCardEditor,
+      component: { type: "GiftCardBlock", denominations: [], description: "" },
+      getNode: () => screen.getByPlaceholderText("Description"),
+      fire: (node: HTMLElement) =>
+        fireEvent.change(node, { target: { value: "Terms apply" } }),
+      expected: { description: "Terms apply" },
     },
     {
       name: "CollectionListEditor",

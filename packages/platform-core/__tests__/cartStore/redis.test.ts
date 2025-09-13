@@ -11,6 +11,18 @@ import { RedisCartStore } from "../../src/cartStore/redisStore";
 import type { CartStore } from "../../src/cartStore";
 
 describe("RedisCartStore", () => {
+  let consoleErrorSpy: jest.SpiedFunction<typeof console.error>;
+
+  beforeAll(() => {
+    consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+  });
+
+  afterAll(() => {
+    consoleErrorSpy.mockRestore();
+  });
+
   const hsetMock = jest.fn();
   const hgetallMock = jest.fn();
   const expireMock = jest.fn();

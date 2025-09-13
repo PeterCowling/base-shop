@@ -76,5 +76,19 @@ describe("TabsEditor", () => {
     });
     expect(onChange).toHaveBeenCalledWith({ active: 1 });
   });
-});
 
+  it("updates tab label", () => {
+    const onChange = jest.fn();
+    render(
+      <TabsEditor
+        component={{ labels: ["Old"], active: 0 } as any}
+        onChange={onChange}
+      />
+    );
+    fireEvent.change(screen.getByLabelText("Tab 1 Label"), {
+      target: { value: "New" },
+    });
+    expect(onChange).toHaveBeenCalledWith({ labels: ["New"] });
+  });
+
+});

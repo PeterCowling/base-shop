@@ -23,6 +23,20 @@ describe("orders/risk", () => {
       const result = await markNeedsAttention("shop", "sess");
       expect(result).toBeNull();
     });
+
+    it("returns normalized order on success", async () => {
+      prisma.rentalOrder.update.mockResolvedValue({
+        id: "1",
+        flaggedForReview: true,
+        riskLevel: null,
+      });
+      const result = await markNeedsAttention("shop", "sess");
+      expect(result).toEqual({
+        id: "1",
+        flaggedForReview: true,
+        riskLevel: undefined,
+      });
+    });
   });
 
   describe("updateRisk", () => {
@@ -47,6 +61,20 @@ describe("orders/risk", () => {
       expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
         where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
         data,
+      });
+    });
+
+    it("returns updated order with provided fields", async () => {
+      prisma.rentalOrder.update.mockResolvedValue({
+        riskLevel: "high",
+        riskScore: 7,
+        flaggedForReview: true,
+      });
+      const result = await updateRisk("shop", "sess", "high", 7, true);
+      expect(result).toEqual({
+        riskLevel: "high",
+        riskScore: 7,
+        flaggedForReview: true,
       });
     });
   });

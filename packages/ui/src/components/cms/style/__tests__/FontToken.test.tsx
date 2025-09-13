@@ -65,4 +65,14 @@ describe("FontToken", () => {
     expect(setGoogleFont).toHaveBeenCalledWith("sans", "Roboto");
     expect(googleSelect.value).toBe("");
   });
+
+  it("ignores empty google font selection", () => {
+    const setGoogleFont = jest.fn();
+    const { container } = renderToken({ setGoogleFont });
+    const selects = container.querySelectorAll("select");
+    const googleSelect = selects[1] as HTMLSelectElement;
+    fireEvent.change(googleSelect, { target: { value: "" } });
+    expect(setGoogleFont).not.toHaveBeenCalled();
+    expect(googleSelect.value).toBe("");
+  });
 });

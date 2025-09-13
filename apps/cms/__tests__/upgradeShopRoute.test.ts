@@ -20,6 +20,7 @@ describe("upgrade-shop API route", () => {
   let requirePermission: jest.Mock;
   let spawnSync: jest.Mock;
   let chdirSpy: jest.SpyInstance;
+  let consoleErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
     jest.resetModules();
@@ -28,10 +29,12 @@ describe("upgrade-shop API route", () => {
     spawnSync.mockReset();
     requirePermission.mockReset();
     chdirSpy = jest.spyOn(process, "chdir").mockImplementation((_path: string) => {});
+    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
   });
 
   afterEach(() => {
     chdirSpy.mockRestore();
+    consoleErrorSpy.mockRestore();
   });
 
   it("returns 200 and runs upgrade when authorized", async () => {

@@ -120,7 +120,9 @@ export function useTranslations(): (
   return useCallback(
     (key: string, vars?: Record<string, ReactNode>): ReactNode => {
       if (messages[key] === undefined) {
-        console.warn(`Missing translation for key: ${key}`);
+        if (process.env.NODE_ENV === "development") {
+          console.warn(`Missing translation for key: ${key}`);
+        }
         return key;
       }
 

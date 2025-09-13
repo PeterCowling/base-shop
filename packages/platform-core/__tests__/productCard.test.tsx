@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import { ProductCard, Price } from "../src/components/shop/ProductCard";
 import { CartProvider } from "../src/contexts/CartContext";
 import { CurrencyProvider } from "../src/contexts/CurrencyContext";
@@ -21,15 +21,18 @@ describe("ProductCard", () => {
   });
 
   async function renderCard(sku: SKU) {
-    const utils = render(
-      <CurrencyProvider>
-        <CartProvider>
-          <ProductCard sku={sku} />
-        </CartProvider>
-      </CurrencyProvider>
-    );
+    let utils: ReturnType<typeof render>;
+    await act(async () => {
+      utils = render(
+        <CurrencyProvider>
+          <CartProvider>
+            <ProductCard sku={sku} />
+          </CartProvider>
+        </CurrencyProvider>
+      );
+    });
     await screen.findByRole("button", { name: /add to cart/i });
-    return utils;
+    return utils!;
   }
 
   it("skips media when SKU has none", async () => {

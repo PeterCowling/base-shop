@@ -4,8 +4,7 @@ const base = require("../../jest.config.cjs");
 
 const coveragePathIgnorePatterns = (base.coveragePathIgnorePatterns || []).filter(
   (pattern) =>
-    !pattern.includes("/packages/config/src/env/__tests__/") &&
-    !pattern.includes("/packages/config/src/env/__test__/")
+    !pattern.includes("/packages/config/src/env/__tests__/")
 );
 
 /** @type {import('jest').Config} */

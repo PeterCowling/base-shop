@@ -232,7 +232,6 @@ const config = {
     '<rootDir>/test/polyfills/',
     '<rootDir>/test/__mocks__/',
     ' /packages/config/src/env/__tests__/',
-    ' /packages/config/src/env/__test__/',
   ],
   coverageReporters: ['text', 'text-summary', 'lcov', 'json'],
   coverageThreshold: {

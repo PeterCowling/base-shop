@@ -6,6 +6,15 @@ import type { SKU } from "@acme/types";
 
 const MAX_REDIS_FAILURES = 3;
 
+// Silence expected error output from RedisCartStore during tests
+const consoleErrorSpy = jest
+  .spyOn(console, "error")
+  .mockImplementation(() => {});
+
+afterAll(() => {
+  consoleErrorSpy.mockRestore();
+});
+
 class MockRedis {
   private failCount = 0;
   constructor(private failUntil = 0) {}
@@ -32,7 +41,7 @@ class MockRedis {
 
   hset = jest.fn(async (key: string, value: Record<string, any>) => {
     this.maybeFail();
-     this.isExpired(key);
+    this.isExpired(key);
     const obj = this.data.get(key) ?? {};
     Object.assign(obj, value);
     this.data.set(key, obj);
@@ -54,7 +63,7 @@ class MockRedis {
   del = jest.fn(async (key: string) => {
     this.maybeFail();
     this.data.delete(key);
-     this.expires.delete(key);
+    this.expires.delete(key);
     return 1;
   });
 
@@ -193,4 +202,3 @@ describe("RedisCartStore mocks", () => {
     jest.useRealTimers();
   });
 });
-

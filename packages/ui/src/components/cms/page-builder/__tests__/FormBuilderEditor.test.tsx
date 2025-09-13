@@ -97,5 +97,24 @@ describe("FormBuilderEditor", () => {
         },
       ],
     });
+
+    fireEvent.change(
+      screen.getByPlaceholderText("options (comma separated)"),
+      { target: { value: " a, b , ,c,, " } }
+    );
+    expect(onChange).toHaveBeenLastCalledWith({
+      fields: [
+        {
+          type: "select",
+          name: "foo",
+          label: "Foo Label",
+          options: [
+            { label: "a", value: "a" },
+            { label: "b", value: "b" },
+            { label: "c", value: "c" },
+          ],
+        },
+      ],
+    });
   });
 });

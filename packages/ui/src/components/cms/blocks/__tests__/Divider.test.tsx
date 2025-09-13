@@ -5,6 +5,8 @@ describe("Divider", () => {
   it("uses height 1px by default", () => {
     const { container } = render(<Divider />);
     expect(container.firstChild).toHaveStyle({ height: "1px" });
+    expect(container.firstChild).toHaveAttribute("aria-hidden", "true");
+    expect(container.firstChild).toHaveClass("bg-border");
   });
 
   it("applies custom height", () => {

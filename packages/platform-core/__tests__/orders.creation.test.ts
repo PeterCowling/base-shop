@@ -1,10 +1,10 @@
 /** @jest-environment node */
 
-import { addOrder } from "../src/orders";
+import { addOrder, listOrders, getOrdersForCustomer } from "../src/orders";
 
 jest.mock("../src/db", () => ({
   prisma: {
-    rentalOrder: { create: jest.fn() },
+    rentalOrder: { create: jest.fn(), findMany: jest.fn() },
     shop: { findUnique: jest.fn() },
   },
 }));
@@ -23,7 +23,7 @@ jest.mock("@acme/date-utils", () => ({
 
 const { prisma } = jest.requireMock("../src/db") as {
   prisma: {
-    rentalOrder: { create: jest.Mock };
+    rentalOrder: { create: jest.Mock; findMany: jest.Mock };
     shop: { findUnique: jest.Mock };
   };
 };
@@ -33,6 +33,47 @@ const { trackOrder } = jest.requireMock("../src/analytics") as {
 const { incrementSubscriptionUsage } = jest.requireMock(
   "../src/subscriptionUsage",
 ) as { incrementSubscriptionUsage: jest.Mock };
+
+describe("listOrders", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("returns normalized orders for a shop", async () => {
+    prisma.rentalOrder.findMany.mockResolvedValue([
+      { id: "1", shop: "shop", foo: null } as any,
+    ]);
+
+    const result = await listOrders("shop");
+
+    expect(prisma.rentalOrder.findMany).toHaveBeenCalledWith({
+      where: { shop: "shop" },
+    });
+    expect(result).toHaveLength(1);
+    expect((result[0] as any).foo).toBeUndefined();
+  });
+});
+
+describe("getOrdersForCustomer", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("filters by customerId and normalizes results", async () => {
+    prisma.rentalOrder.findMany.mockResolvedValue([
+      { id: "1", shop: "shop", customerId: "cust", foo: null } as any,
+    ]);
+
+    const result = await getOrdersForCustomer("shop", "cust");
+
+    expect(prisma.rentalOrder.findMany).toHaveBeenCalledWith({
+      where: { shop: "shop", customerId: "cust" },
+    });
+    expect(result).toHaveLength(1);
+    expect(result[0].customerId).toBe("cust");
+    expect((result[0] as any).foo).toBeUndefined();
+  });
+});
 
 describe("addOrder", () => {
   beforeEach(() => {

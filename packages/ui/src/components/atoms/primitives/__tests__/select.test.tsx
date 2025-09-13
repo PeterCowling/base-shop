@@ -163,25 +163,31 @@ describe("Select", () => {
     const user = userEvent.setup();
     await user.click(screen.getByTestId("trigger"));
 
+    const trigger = screen.getByTestId("trigger");
     const content = await screen.findByTestId("content");
     const label = await screen.findByTestId("label");
     const item = await screen.findByTestId("item");
     const separator = await screen.findByTestId("separator");
 
-    expect(triggerRef.current).toBe(screen.getByTestId("trigger"));
+    expect(triggerRef.current).toBe(trigger);
     expect(triggerRef.current).toHaveAttribute("data-foo", "trigger");
+    expect(trigger).toHaveClass("border-input");
 
     expect(contentRef.current).toBe(content);
     expect(content).toHaveAttribute("data-foo", "content");
+    expect(content).toHaveClass("bg-popover");
 
     expect(labelRef.current).toBe(label);
     expect(label).toHaveAttribute("data-foo", "label");
+    expect(label).toHaveClass("px-2");
 
     expect(itemRef.current).toBe(item);
     expect(item).toHaveAttribute("data-foo", "item");
+    expect(item).toHaveClass("pl-8");
 
     expect(separatorRef.current).toBe(separator);
     expect(separator).toHaveAttribute("data-foo", "separator");
+    expect(separator).toHaveClass("bg-muted");
   });
 
   it("SelectContent renders in a portal", async () => {

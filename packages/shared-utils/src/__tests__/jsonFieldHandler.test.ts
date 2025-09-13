@@ -30,7 +30,9 @@ describe('jsonFieldHandler', () => {
     const handler = jsonFieldHandler('field', () => {}, setErrors);
 
     handler({ target: { value: 'not json' } } as any);
+    handler({ target: { value: 'still not json' } } as any);
 
+    expect(errors.field).toEqual(['Invalid JSON']);
     expect(errors).toEqual({
       other: ['Other error'],
       field: ['Invalid JSON'],

@@ -45,7 +45,7 @@ describe("Slot", () => {
     expect(child).toHaveAttribute("data-new", "added");
   });
 
-  it("handles existing child ref along with Slot ref", () => {
+  it("supports object refs on the child element", () => {
     const slotRef = React.createRef<HTMLDivElement>();
     const childRef = React.createRef<HTMLDivElement>();
     render(
@@ -58,23 +58,17 @@ describe("Slot", () => {
     expect(childRef.current).toBe(child);
   });
 
-  it("handles function refs along with Slot ref", () => {
-    let slotNode: HTMLDivElement | null = null;
-    let childNode: HTMLDivElement | null = null;
-    const slotRef = (node: HTMLDivElement | null) => {
-      slotNode = node;
-    };
-    const childRef = (node: HTMLDivElement | null) => {
-      childNode = node;
-    };
+  it("supports function refs on the child element", () => {
+    const slotRef = jest.fn();
+    const childRef = jest.fn();
     render(
       <Slot ref={slotRef}>
         <div data-testid="child" ref={childRef} />
       </Slot>
     );
     const child = screen.getByTestId("child");
-    expect(slotNode).toBe(child);
-    expect(childNode).toBe(child);
+    expect(slotRef).toHaveBeenCalledWith(child);
+    expect(childRef).toHaveBeenCalledWith(child);
   });
 
   it("passes event handlers through to the child", async () => {

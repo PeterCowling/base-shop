@@ -130,4 +130,20 @@ describe('buildResponse', () => {
     );
     await expect(res.text()).resolves.toBe(text);
   });
+
+  it('handles undefined body and no headers', async () => {
+    const proxy: ProxyResponse = {
+      response: {
+        status: 200,
+        headers: {},
+        body: undefined,
+      },
+    };
+
+    const res = buildResponse(proxy);
+
+    expect(res.status).toBe(200);
+    expect([...res.headers.entries()]).toHaveLength(0);
+    await expect(res.text()).resolves.toBe('');
+  });
 });

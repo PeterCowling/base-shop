@@ -73,10 +73,12 @@ export function loadShippingEnv(
 ): ShippingEnv {
   const parsed = shippingEnvSchema.safeParse(raw);
   if (!parsed.success) {
-    console.error(
-      "❌ Invalid shipping environment variables:",
-      parsed.error.format()
-    );
+    if (raw === process.env && process.env.NODE_ENV !== "test") {
+      console.error(
+        "❌ Invalid shipping environment variables:",
+        parsed.error.format()
+      );
+    }
     throw new Error("Invalid shipping environment variables");
   }
   return parsed.data;
@@ -85,10 +87,12 @@ export function loadShippingEnv(
 // ---------- existing eager parse (kept for back-compat) ----------
 const parsed = shippingEnvSchema.safeParse(process.env);
 if (!parsed.success) {
-  console.error(
-    "❌ Invalid shipping environment variables:",
-    parsed.error.format()
-  );
+  if (process.env.NODE_ENV !== "test") {
+    console.error(
+      "❌ Invalid shipping environment variables:",
+      parsed.error.format()
+    );
+  }
   throw new Error("Invalid shipping environment variables");
 }
 export const shippingEnv = parsed.data;

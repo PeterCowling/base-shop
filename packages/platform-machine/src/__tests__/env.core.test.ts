@@ -248,9 +248,15 @@ describe("coreEnv NODE_ENV behavior", () => {
         JEST_WORKER_ID: undefined,
       },
       async () => {
+        const errorSpy = jest
+          .spyOn(console, "error")
+          .mockImplementation(() => {});
+
         await expect(import("@acme/config/env/core")).rejects.toThrow(
           "Invalid core environment variables",
         );
+
+        errorSpy.mockRestore();
       },
     );
   });

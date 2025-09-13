@@ -69,6 +69,16 @@ describe("customerProfile delegate", () => {
       create: { customerId: "c1", name: "A2", email: "a@test.com" },
     });
     expect(updated.name).toBe("A2");
+    const created = await d.upsert({
+      where: { customerId: "c3" },
+      update: { name: "C" },
+      create: { customerId: "c3", name: "C", email: "c@test.com" },
+    });
+    expect(created.name).toBe("C");
+    const none = await d.findFirst({
+      where: { email: "c@test.com", NOT: { customerId: "c3" } },
+    });
+    expect(none).toBeNull();
   });
 });
 

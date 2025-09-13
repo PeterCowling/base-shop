@@ -308,6 +308,22 @@ describe("settings.server sequential repository usage", () => {
     expect(resolveRepo).toHaveBeenCalledTimes(1);
     expect(repo.saveShopSettings).toHaveBeenCalledWith("shop", settings);
   });
+
+  it("propagates errors from diffHistory", async () => {
+    const error = new Error("history failed");
+    const repo = {
+      getShopSettings: jest.fn(),
+      saveShopSettings: jest.fn(),
+      diffHistory: jest.fn().mockRejectedValue(error),
+    };
+    const resolveRepo = jest.fn(() => repo);
+    jest.doMock("../repoResolver", () => ({ resolveRepo }));
+    jest.doMock("../../db", () => ({ prisma: { setting: {} } }));
+    const { diffHistory } = await import("../settings.server");
+    await expect(diffHistory("shop")).rejects.toThrow("history failed");
+    expect(resolveRepo).toHaveBeenCalledTimes(1);
+    expect(repo.diffHistory).toHaveBeenCalledWith("shop");
+  });
 });
 
 

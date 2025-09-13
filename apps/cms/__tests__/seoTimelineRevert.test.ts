@@ -65,6 +65,7 @@ describe("SEO revert via timeline", () => {
   it("reverts settings and records history", async () => {
     await withRepo(async (dir) => {
       mockAuth();
+      jest.doMock("next/cache", () => ({ revalidatePath: jest.fn() }));
 
       // Dynamic imports must come *after* jest.doMock + cwd swap
       const actions = await import("../src/actions/shops.server");

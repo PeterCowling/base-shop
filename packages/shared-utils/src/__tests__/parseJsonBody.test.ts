@@ -46,6 +46,18 @@ describe('parseJsonBody', () => {
     });
   });
 
+  it('parses application/json with charset parameter', async () => {
+    const req = {
+      headers: new Headers({ 'content-type': 'application/json; charset=utf-8' }),
+      json: jest.fn().mockResolvedValue({ foo: 'bar' }),
+    } as unknown as Request;
+
+    await expect(parseJsonBody(req, schema, '10kb')).resolves.toEqual({
+      success: true,
+      data: { foo: 'bar' },
+    });
+  });
+
   it('returns 413 when application/json body exceeds limit', async () => {
     const req = {
       headers: new Headers({ 'content-type': 'application/json' }),
@@ -144,6 +156,18 @@ describe('parseJsonBody', () => {
     });
   });
 
+  it('supports numeric limit values', async () => {
+    const req = {
+      headers: new Headers({ 'content-type': 'application/json' }),
+      json: jest.fn().mockResolvedValue({ foo: 'bar' }),
+    } as unknown as Request;
+
+    await expect(parseJsonBody(req, schema, 1000)).resolves.toEqual({
+      success: true,
+      data: { foo: 'bar' },
+    });
+  });
+
   it('prefers text parser when both text and json are present', async () => {
     const text = jest.fn().mockResolvedValue('{"foo":"bar"}');
     const json = jest.fn();
@@ -199,6 +223,10 @@ describe('parseLimit', () => {
     expect(parseLimit('10kb')).toBe(10 * 1024);
     expect(parseLimit('10mb')).toBe(10 * 1024 * 1024);
     expect(parseLimit('10gb')).toBe(10 * 1024 * 1024 * 1024);
+  });
+
+  it('parses uppercase units', () => {
+    expect(parseLimit('5KB')).toBe(5 * 1024);
   });
 
   it('throws on invalid limit string', () => {

@@ -21,10 +21,12 @@ jest.mock("@ui/components/atoms/shadcn", () => {
     Button: ({ children, onClick, ...props }: any) => (
       <button onClick={onClick} {...props}>{children}</button>
     ),
-    Select: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    Select: ({ children, onOpenChange, onValueChange, open, value, ...props }: any) => (
+      <div {...props}>{children}</div>
+    ),
     SelectTrigger: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     SelectContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    SelectItem: ({ children, onSelect, ...props }: any) => (
+    SelectItem: ({ children, onSelect, asChild, ...props }: any) => (
       <div onClick={(e) => onSelect && onSelect(e)} {...props}>{children}</div>
     ),
     SelectValue: ({ placeholder }: any) => <div>{placeholder}</div>,

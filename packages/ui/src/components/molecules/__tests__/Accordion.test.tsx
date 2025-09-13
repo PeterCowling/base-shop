@@ -23,20 +23,44 @@ describe("Accordion", () => {
     });
   });
 
-  it("allows toggling items via click", async () => {
+  it("renders no sections when items array is empty", () => {
+    render(<Accordion items={[]} />);
+    expect(screen.queryAllByRole("button")).toHaveLength(0);
+  });
+
+
+  it("switches header icon on mouse click", async () => {
     render(<Accordion items={items} />);
     const header = screen.getByRole("button", { name: /^Section 1/ });
+    expect(header).toHaveTextContent("Section 1+");
 
     await userEvent.click(header);
     expect(header).toHaveAttribute("aria-expanded", "true");
+    expect(header).toHaveTextContent("Section 1-");
     expect(screen.getByText("Content 1")).toBeInTheDocument();
 
     await userEvent.click(header);
     expect(header).toHaveAttribute("aria-expanded", "false");
+    expect(header).toHaveTextContent("Section 1+");
     expect(screen.queryByText("Content 1")).not.toBeInTheDocument();
   });
 
-  it("toggles multiple sections independently", async () => {
+  it("switches header icon on keyboard Enter and Space", async () => {
+    render(<Accordion items={items} />);
+    const header = screen.getByRole("button", { name: /^Section 1/ });
+    header.focus();
+    expect(header).toHaveTextContent("Section 1+");
+
+    await userEvent.keyboard("{Enter}");
+    expect(header).toHaveAttribute("aria-expanded", "true");
+    expect(header).toHaveTextContent("Section 1-");
+
+    await userEvent.keyboard("{Space}");
+    expect(header).toHaveAttribute("aria-expanded", "false");
+    expect(header).toHaveTextContent("Section 1+");
+  });
+
+  it("opens multiple sections via mouse without affecting others", async () => {
     render(<Accordion items={items} />);
     const first = screen.getByRole("button", { name: /^Section 1/ });
     const third = screen.getByRole("button", { name: /^Section 3/ });
@@ -56,17 +80,23 @@ describe("Accordion", () => {
     expect(screen.getByText("Content 3")).toBeInTheDocument();
   });
 
-  it("supports keyboard interaction on headers", async () => {
+  it("opens multiple sections via keyboard without affecting others", async () => {
     render(<Accordion items={items} />);
-    const header = screen.getByRole("button", { name: /^Section 2/ });
-    header.focus();
+    const first = screen.getByRole("button", { name: /^Section 1/ });
+    const third = screen.getByRole("button", { name: /^Section 3/ });
 
+    first.focus();
     await userEvent.keyboard("{Enter}");
-    expect(header).toHaveAttribute("aria-expanded", "true");
-    expect(screen.getByText("Content 2")).toBeInTheDocument();
+    third.focus();
+    await userEvent.keyboard("{Space}");
 
+    expect(first).toHaveAttribute("aria-expanded", "true");
+    expect(third).toHaveAttribute("aria-expanded", "true");
+
+    first.focus();
     await userEvent.keyboard("{Enter}");
-    expect(header).toHaveAttribute("aria-expanded", "false");
-    expect(screen.queryByText("Content 2")).not.toBeInTheDocument();
+
+    expect(first).toHaveAttribute("aria-expanded", "false");
+    expect(third).toHaveAttribute("aria-expanded", "true");
   });
 });

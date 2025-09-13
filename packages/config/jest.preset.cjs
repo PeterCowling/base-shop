@@ -2,15 +2,27 @@
 const path = require("path");
 const base = require("../../jest.config.cjs");
 
+const workspaceRoot = path.resolve(__dirname, "../..");
+const packagePath = path
+  .relative(workspaceRoot, process.cwd())
+  .replace(/\\/g, "/");
+const [scope, ...rest] = packagePath.split("/");
+const subPath = rest.join("/");
+
 const coveragePathIgnorePatterns = (base.coveragePathIgnorePatterns || []).filter(
   (pattern) =>
     !pattern.includes("/packages/config/src/env/__tests__/")
+);
+coveragePathIgnorePatterns.push(
+  `/${scope}/(?!${subPath})/`,
+  scope === "packages" ? "/apps/" : "/packages/"
 );
 
 /** @type {import('jest').Config} */
 module.exports = {
   ...base,
-  rootDir: path.resolve(__dirname, "../.."),
+  rootDir: workspaceRoot,
+  collectCoverageFrom: [`${packagePath}/src/**/*.{ts,tsx}`],
   // Use a plain Node environment for configuration tests. These tests don't
   // depend on DOM APIs and running them under jsdom pulls in additional
   // transitive dependencies like `parse5`, which in turn requires the

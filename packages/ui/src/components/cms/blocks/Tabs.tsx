@@ -31,6 +31,15 @@ export default function TabsBlock({
             type="button"
             key={i}
             onClick={() => setCurrent(i)}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowRight") {
+                e.preventDefault();
+                setCurrent((i + 1) % labels.length);
+              } else if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                setCurrent((i - 1 + labels.length) % labels.length);
+              }
+            }}
             className={cn(
               "border-b-2 px-3 py-1 text-sm",
               i === safeIndex

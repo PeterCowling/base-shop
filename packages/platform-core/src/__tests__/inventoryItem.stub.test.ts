@@ -42,6 +42,26 @@ describe("createInventoryItemDelegate", () => {
     ).resolves.toHaveLength(1);
   });
 
+  it(
+    "deleteMany for missing shopId returns count 0 and leaves existing items",
+    async () => {
+      const inventory = createInventoryItemDelegate();
+      await inventory.createMany({
+        data: [
+          { shopId: "s2", sku: "c", variantKey: "v1", quantity: 3 },
+          { shopId: "s2", sku: "d", variantKey: "v1", quantity: 4 },
+        ],
+      });
+
+      await expect(
+        inventory.deleteMany({ where: { shopId: "s1" } }),
+      ).resolves.toEqual({ count: 0 });
+      await expect(
+        inventory.findMany({ where: { shopId: "s2" } }),
+      ).resolves.toHaveLength(2);
+    },
+  );
+
   describe("composite key operations", () => {
     it("findUnique honours {shopId, sku, variantKey} and throws when missing", async () => {
       const inventory = createInventoryItemDelegate();

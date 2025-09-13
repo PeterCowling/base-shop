@@ -34,41 +34,69 @@ describe("Table", () => {
     expect(wrapper).toHaveClass("w-full", "overflow-x-auto");
   });
 
-  it("applies custom className to TableHeader", () => {
+  it("merges classes and forwards ref for Table", () => {
+    const ref = React.createRef<HTMLTableElement>();
+    render(
+      <Table ref={ref} className="custom-table">
+        <TableBody />
+      </Table>
+    );
+    expect(ref.current).toBeInstanceOf(HTMLTableElement);
+    expect(ref.current).toHaveClass(
+      "text-foreground",
+      "w-full",
+      "text-left",
+      "text-sm",
+      "custom-table"
+    );
+  });
+
+  it("merges classes and forwards ref for TableHeader", () => {
+    const ref = React.createRef<HTMLTableSectionElement>();
     const { container } = render(
       <table>
-        <TableHeader className="custom-header">
+        <TableHeader ref={ref} className="custom-header">
           <tr />
         </TableHeader>
       </table>
     );
+    expect(ref.current).toBeInstanceOf(HTMLTableSectionElement);
     const header = container.querySelector("thead");
     expect(header).toHaveClass("bg-muted/50", "border-b", "custom-header");
   });
 
-  it("applies custom className to TableBody", () => {
+  it("merges classes and forwards ref for TableBody", () => {
+    const ref = React.createRef<HTMLTableSectionElement>();
     const { container } = render(
       <table>
-        <TableBody className="custom-body">
+        <TableBody ref={ref} className="custom-body">
           <tr />
         </TableBody>
       </table>
     );
+    expect(ref.current).toBeInstanceOf(HTMLTableSectionElement);
     const body = container.querySelector("tbody");
     expect(body).toHaveClass("custom-body");
   });
 
-  it("applies custom className to TableRow", () => {
+  it("merges classes, forwards ref for TableRow, and applies selected state", () => {
+    const ref = React.createRef<HTMLTableRowElement>();
     const { container } = render(
       <table>
         <tbody>
-          <TableRow className="custom-row">
+          <TableRow
+            ref={ref}
+            className="custom-row"
+            data-state="selected"
+          >
             <td />
           </TableRow>
         </tbody>
       </table>
     );
+    expect(ref.current).toBeInstanceOf(HTMLTableRowElement);
     const row = container.querySelector("tr");
+    expect(row).toHaveAttribute("data-state", "selected");
     expect(row).toHaveClass(
       "hover:bg-muted/25",
       "data-[state=selected]:bg-muted",
@@ -78,29 +106,20 @@ describe("Table", () => {
     );
   });
 
-  it("applies selected-state classes when data-state=\"selected\"", () => {
-    const { container } = render(
-      <table>
-        <tbody>
-          <TableRow data-state="selected" />
-        </tbody>
-      </table>
-    );
-    const row = container.querySelector("tr");
-    expect(row).toHaveAttribute("data-state", "selected");
-    expect(row).toHaveClass("data-[state=selected]:bg-muted");
-  });
-
-  it("applies custom className to TableHead", () => {
+  it("merges classes and forwards ref for TableHead", () => {
+    const ref = React.createRef<HTMLTableCellElement>();
     const { container } = render(
       <table>
         <thead>
           <tr>
-            <TableHead className="custom-head">Head</TableHead>
+            <TableHead ref={ref} className="custom-head">
+              Head
+            </TableHead>
           </tr>
         </thead>
       </table>
     );
+    expect(ref.current).toBeInstanceOf(HTMLTableCellElement);
     const head = container.querySelector("th");
     expect(head).toHaveClass(
       "text-foreground",
@@ -111,16 +130,20 @@ describe("Table", () => {
     );
   });
 
-  it("applies custom className to TableCell", () => {
+  it("merges classes and forwards ref for TableCell", () => {
+    const ref = React.createRef<HTMLTableCellElement>();
     const { container } = render(
       <table>
         <tbody>
           <tr>
-            <TableCell className="custom-cell">Cell</TableCell>
+            <TableCell ref={ref} className="custom-cell">
+              Cell
+            </TableCell>
           </tr>
         </tbody>
       </table>
     );
+    expect(ref.current).toBeInstanceOf(HTMLTableCellElement);
     const cell = container.querySelector("td");
     expect(cell).toHaveClass("px-4", "py-2", "align-middle", "custom-cell");
   });

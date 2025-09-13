@@ -14,6 +14,7 @@ describe("prisma inventory repository", () => {
     process.env.DATA_ROOT = dataRoot;
     process.env.SKIP_STOCK_ALERT = "1";
     jest.resetModules();
+    jest.spyOn(console, "error").mockImplementation(() => {});
   });
 
   afterEach(async () => {

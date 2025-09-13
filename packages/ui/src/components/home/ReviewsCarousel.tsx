@@ -20,7 +20,7 @@ export default function ReviewsCarousel({
   const t = useTranslations();
   const [i, setI] = useState(0);
 
-  const list = reviews ?? DEFAULT_REVIEWS;
+  const list = reviews && reviews.length ? reviews : DEFAULT_REVIEWS;
   if (!list.length) return null;
 
   const next = useCallback(

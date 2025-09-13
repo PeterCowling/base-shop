@@ -4,6 +4,16 @@ import en from "@acme/i18n/en.json";
 import ComponentEditor from "../src/components/cms/page-builder/ComponentEditor";
 import type { PageComponent } from "@acme/types";
 
+const handleInput = jest.fn();
+jest.mock("../src/components/cms/page-builder/useComponentInputs", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({ handleInput })),
+}));
+
+beforeEach(() => {
+  handleInput.mockClear();
+});
+
 describe("ComponentEditor", () => {
   it("updates width, height, margin and padding", async () => {
     const component: PageComponent = {
@@ -115,5 +125,38 @@ describe("ComponentEditor", () => {
       fireEvent.click(getByText("Content"));
     });
     expect(await findByLabelText("Label")).toBeInTheDocument();
+  });
+
+  it("returns null when component is null", () => {
+    const { container } = render(
+      <TranslationsProvider messages={en}>
+        <ComponentEditor component={null} onChange={() => {}} onResize={() => {}} />
+      </TranslationsProvider>,
+    );
+    expect(container.firstChild).toBeNull();
+  });
+
+  it("invokes handleInput when editing style and interactions", async () => {
+    const component: PageComponent = { id: "1", type: "Image" } as PageComponent;
+    const { getByText, getByLabelText, findByText } = render(
+      <TranslationsProvider messages={en}>
+        <ComponentEditor component={component} onChange={() => {}} onResize={() => {}} />
+      </TranslationsProvider>,
+    );
+
+    fireEvent.click(getByText("Style"));
+    fireEvent.change(getByLabelText("Foreground"), { target: { value: "#fff" } });
+    expect(handleInput).toHaveBeenCalledWith("styles", expect.any(String));
+
+    fireEvent.click(getByText("Interactions"));
+    const clickTrigger = getByLabelText("Click Action");
+    fireEvent.mouseDown(clickTrigger);
+    fireEvent.click(await findByText("Navigate"));
+    expect(handleInput).toHaveBeenCalledWith("clickAction", "navigate");
+
+    const animationTrigger = getByLabelText("Animation");
+    fireEvent.mouseDown(animationTrigger);
+    fireEvent.click(await findByText("Fade"));
+    expect(handleInput).toHaveBeenCalledWith("animation", "fade");
   });
 });

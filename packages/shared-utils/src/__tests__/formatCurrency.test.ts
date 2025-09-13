@@ -21,6 +21,25 @@ describe("formatCurrency", () => {
     }
   });
 
+  it("formats when Intl.supportedValuesOf lists the currency", () => {
+    const original = (Intl as any).supportedValuesOf;
+    (Intl as any).supportedValuesOf = () => ["USD", "EUR"];
+    try {
+      expect(() => formatCurrency(100, "EUR")).not.toThrow();
+      const expected = new Intl.NumberFormat(undefined, {
+        style: "currency",
+        currency: "EUR",
+      }).format(1);
+      expect(formatCurrency(100, "EUR")).toBe(expected);
+    } finally {
+      if (original) {
+        (Intl as any).supportedValuesOf = original;
+      } else {
+        delete (Intl as any).supportedValuesOf;
+      }
+    }
+  });
+
   it("formats using a valid currency and locale", () => {
     const minor = 12345; // €123.45
     const expected = new Intl.NumberFormat("de-DE", {

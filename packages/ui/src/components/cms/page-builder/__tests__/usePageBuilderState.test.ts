@@ -17,6 +17,31 @@ describe("usePageBuilderState", () => {
     window.localStorage.clear();
   });
 
+  it("falls back to default state for invalid history", () => {
+    const page = {
+      ...basePage,
+      components: [{ id: "c0", type: "Text" }],
+    };
+    const badHistory: any = {
+      past: [],
+      present: [],
+      future: [],
+      // gridCols should be a number; using a string triggers schema fallback
+      gridCols: "invalid",
+    };
+
+    const { result } = renderHook(() =>
+      usePageBuilderState({ page, history: badHistory })
+    );
+
+    expect(result.current.state).toEqual({
+      past: [],
+      present: page.components,
+      future: [],
+      gridCols: 12,
+    });
+  });
+
   it("loads history from localStorage and clears it", () => {
     const history = {
       past: [],
@@ -41,7 +66,7 @@ describe("usePageBuilderState", () => {
     expect(removeItem).toHaveBeenCalledWith("page-builder-history-p1");
   });
 
-  it("updates liveMessage for add and move actions", () => {
+  it("updates liveMessage for add, move, and resize actions", () => {
     jest.useFakeTimers();
     const { result } = renderHook(() => usePageBuilderState({ page: basePage }));
 
@@ -65,6 +90,19 @@ describe("usePageBuilderState", () => {
       })
     );
     expect(result.current.liveMessage).toBe("Block moved");
+    act(() => {
+      jest.runAllTimers();
+    });
+    expect(result.current.liveMessage).toBe("");
+
+    act(() =>
+      result.current.dispatch({
+        type: "resize",
+        id: "c1",
+        width: "100",
+      } as any)
+    );
+    expect(result.current.liveMessage).toBe("Block resized");
     act(() => {
       jest.runAllTimers();
     });

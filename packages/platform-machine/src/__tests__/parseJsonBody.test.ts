@@ -14,6 +14,14 @@ function makeRequest(body: any, headers: HeadersInit = {}, mode: 'text' | 'json'
 describe('parseJsonBody', () => {
   const schema = z.object({ foo: z.string() });
 
+  let consoleSpy: jest.SpyInstance;
+  beforeEach(() => {
+    consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+  });
+  afterEach(() => {
+    consoleSpy.mockRestore();
+  });
+
   it('returns 400 for wrong content-type and drains body', async () => {
     const req = makeRequest('text', { 'Content-Type': 'text/plain' });
     const result = await parseJsonBody(req, schema, '1kb');

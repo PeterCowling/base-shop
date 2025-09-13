@@ -64,8 +64,9 @@ describe('parseJsonBody', () => {
       headers: new Headers({ 'content-type': 'application/json' }),
       text: jest.fn().mockResolvedValue('{invalid'),
     } as unknown as Request;
-
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     const result = await parseJsonBody(req, schema, '10kb');
+    consoleSpy.mockRestore();
 
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(400);
@@ -77,8 +78,9 @@ describe('parseJsonBody', () => {
       headers: new Headers({ 'content-type': 'application/json' }),
       text: jest.fn().mockResolvedValue(''),
     } as unknown as Request;
-
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     const result = await parseJsonBody(req, schema, '10kb');
+    consoleSpy.mockRestore();
 
     expect(result.success).toBe(false);
     expect(result.response.status).toBe(400);

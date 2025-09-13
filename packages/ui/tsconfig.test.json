@@ -4,7 +4,7 @@
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "noEmit": true,
     "rootDir": ".",
-    "outDir": "dist"
+    "outDir": ".ts-jest"
   },
   "include": ["src/**/*", "__tests__/**/*"],
   "exclude": []

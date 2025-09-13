@@ -6,6 +6,12 @@ import {
 
 marketingEmailTemplates.forEach((variant) => {
   describe(`${variant.id} template`, () => {
+    it("returns empty fragment when props are undefined", () => {
+      const result = variant.make(undefined as any);
+      expect(result.type).toBe(React.Fragment);
+      expect(result.props.children).toBeUndefined();
+    });
+
     it("returns empty fragment when headline is missing", () => {
       const result = variant.make({ content: <p /> } as any);
       expect(result.type).toBe(React.Fragment);
@@ -21,6 +27,11 @@ marketingEmailTemplates.forEach((variant) => {
     it("buildSubject echoes the headline", () => {
       const headline = "Subject";
       expect(variant.buildSubject(headline)).toBe(headline);
+    });
+
+    it("returns MarketingEmailTemplate when valid props provided", () => {
+      const element = variant.make({ headline: "Hi", content: <p>Body</p> });
+      expect(element.type).toBe(MarketingEmailTemplate);
     });
   });
 });

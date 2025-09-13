@@ -66,6 +66,9 @@ export async function listMedia(shop: string): Promise<MediaItem[]> {
         type: meta[f]?.type ?? "image",
       }));
   } catch (err) {
+    if ((err as NodeJS.ErrnoException)?.code === "ENOENT") {
+      return [];
+    }
     console.error("Failed to list media", err);
     throw new Error("Failed to list media");
   }

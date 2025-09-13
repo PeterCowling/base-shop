@@ -23,8 +23,12 @@ describe("ButtonEditor", () => {
     });
     expect(handleInput).toHaveBeenNthCalledWith(2, "href", "/home");
 
-    fireEvent.click(screen.getByRole("combobox"));
+    const combobox = screen.getByRole("combobox");
+    fireEvent.click(combobox);
     fireEvent.click(await screen.findByRole("option", { name: "outline" }));
     expect(handleInput).toHaveBeenNthCalledWith(3, "variant", "outline");
+    const hiddenInput = document.querySelector("input");
+    fireEvent.input(hiddenInput!, { target: { value: "" } });
+    expect(handleInput).toHaveBeenNthCalledWith(4, "variant", undefined);
   });
 });

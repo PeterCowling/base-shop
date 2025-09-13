@@ -1,4 +1,6 @@
 import { render, fireEvent, act } from "@testing-library/react";
+import { TranslationsProvider } from "@acme/i18n";
+import en from "@acme/i18n/src/en.json";
 import ComponentEditor from "../src/components/cms/page-builder/ComponentEditor";
 import type { PageComponent } from "@acme/types";
 
@@ -10,11 +12,13 @@ describe("ComponentEditor", () => {
     } as PageComponent;
     const onResize = jest.fn();
     const { getByLabelText, getAllByText, getByText } = render(
-      <ComponentEditor
-        component={component}
-        onChange={() => {}}
-        onResize={onResize}
-      />
+      <TranslationsProvider messages={en}>
+        <ComponentEditor
+          component={component}
+          onChange={() => {}}
+          onResize={onResize}
+        />
+      </TranslationsProvider>
     );
     fireEvent.click(getByText("Layout"));
     fireEvent.change(getByLabelText("Width (Desktop)", { exact: false }), {
@@ -48,7 +52,9 @@ describe("ComponentEditor", () => {
     } as PageComponent;
     const onChange = jest.fn();
     const { getByLabelText, getByText } = render(
-      <ComponentEditor component={component} onChange={onChange} onResize={() => {}} />
+      <TranslationsProvider messages={en}>
+        <ComponentEditor component={component} onChange={onChange} onResize={() => {}} />
+      </TranslationsProvider>
     );
     fireEvent.click(getByText("Content"));
     fireEvent.change(getByLabelText("Min Items", { exact: false }), {
@@ -70,7 +76,9 @@ describe("ComponentEditor", () => {
     } as PageComponent;
     const onChange = jest.fn();
     const { getByLabelText, getByText } = render(
-      <ComponentEditor component={component} onChange={onChange} onResize={() => {}} />
+      <TranslationsProvider messages={en}>
+        <ComponentEditor component={component} onChange={onChange} onResize={() => {}} />
+      </TranslationsProvider>
     );
     fireEvent.click(getByText("Content"));
     fireEvent.change(getByLabelText("Min Items", { exact: false }), {
@@ -89,16 +97,18 @@ describe("ComponentEditor", () => {
       type: "Image",
     } as PageComponent;
     const { findByPlaceholderText, getByText } = render(
-      <ComponentEditor
-        component={component}
-        onChange={() => {}}
-        onResize={() => {}}
-      />
+      <TranslationsProvider messages={en}>
+        <ComponentEditor
+          component={component}
+          onChange={() => {}}
+          onResize={() => {}}
+        />
+      </TranslationsProvider>
     );
     fireEvent.click(getByText("Content"));
-    // Image source field uses translation keys as placeholders
+    // Image source field uses translations as placeholders
     expect(
-      await findByPlaceholderText("cms.image.url")
+      await findByPlaceholderText("Image URL")
     ).toBeInTheDocument();
   });
 });

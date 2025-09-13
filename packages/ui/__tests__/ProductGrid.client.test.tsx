@@ -11,24 +11,35 @@ jest.mock("../src/components/cms/blocks/products/fetchCollection", () => ({
   fetchCollection: jest.fn(),
 }));
 
+let sortFn = (a: any, b: any) => a.title.localeCompare(b.title);
+
 jest.mock("@acme/platform-core/components/shop/ProductGrid", () => ({
-  ProductGrid: ({ skus }: { skus: unknown[] }) => (
-    <div data-testid="grid">{JSON.stringify(skus)}</div>
-  ),
+  ProductGrid: ({ skus }: { skus: any[] }) => {
+    const sorted = [...skus].sort(sortFn);
+    return sorted.length ? (
+      <div data-cy="grid">{JSON.stringify(sorted)}</div>
+    ) : null;
+  },
 }));
 
 import ProductGrid from "../src/components/cms/blocks/ProductGrid.client";
 import { fetchCollection } from "../src/components/cms/blocks/products/fetchCollection";
 
 describe("ProductGrid.client", () => {
-  let setItems: jest.Mock;
+  let setItems: (val: any) => void;
+  let setItemsMock: jest.Mock;
 
   beforeEach(() => {
-    setItems = jest.fn();
-    (React.useState as jest.Mock).mockImplementation((init) => [
-      init,
-      setItems,
-    ]);
+    const realUseState = jest.requireActual("react").useState;
+    setItemsMock = jest.fn();
+    (React.useState as jest.Mock).mockImplementation((init) => {
+      const [state, setState] = realUseState(init);
+      setItems = (val: any) => {
+        setItemsMock(val);
+        return setState(val);
+      };
+      return [state, setItems];
+    });
   });
 
   afterEach(() => {
@@ -47,7 +58,7 @@ describe("ProductGrid.client", () => {
 
     await waitFor(() => {
       expect(fetchCollection).toHaveBeenCalledWith("col");
-      expect(setItems).toHaveBeenCalledWith(fetched);
+      expect(setItemsMock).toHaveBeenCalledWith(fetched);
     });
   });
 
@@ -64,7 +75,7 @@ describe("ProductGrid.client", () => {
       resolve?.([{ id: "3", title: "C" }]);
     });
 
-    expect(setItems).not.toHaveBeenCalled();
+    expect(setItemsMock).not.toHaveBeenCalled();
   });
 
   it("uses provided skus when collectionId is absent", async () => {
@@ -73,8 +84,40 @@ describe("ProductGrid.client", () => {
     render(<ProductGrid skus={skus} />);
 
     await waitFor(() => {
-      expect(setItems).toHaveBeenCalledWith(skus);
+      expect(setItemsMock).toHaveBeenCalledWith(skus);
     });
     expect(fetchCollection).not.toHaveBeenCalled();
+  });
+
+  it("updates grid when sort order changes", async () => {
+    const skus = [
+      { id: "1", title: "B" },
+      { id: "2", title: "A" },
+    ];
+    const { getByTestId } = render(<ProductGrid skus={skus} />);
+
+    expect(getByTestId("grid")).toHaveTextContent(
+      JSON.stringify([
+        { id: "2", title: "A" },
+        { id: "1", title: "B" },
+      ])
+    );
+
+    sortFn = (a: any, b: any) => b.title.localeCompare(a.title);
+    await act(async () => {
+      setItems([...skus]);
+    });
+
+    expect(getByTestId("grid")).toHaveTextContent(
+      JSON.stringify([
+        { id: "1", title: "B" },
+        { id: "2", title: "A" },
+      ])
+    );
+  });
+
+  it("returns null when product list is empty", () => {
+    const { queryByTestId } = render(<ProductGrid skus={[]} />);
+    expect(queryByTestId("grid")).toBeNull();
   });
 });

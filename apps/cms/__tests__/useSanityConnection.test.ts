@@ -1,5 +1,16 @@
 import { renderHook, act } from "@testing-library/react";
+import { startTransition } from "react";
 import { useSanityConnection } from "../src/app/cms/blog/sanity/connect/useSanityConnection";
+
+async function callFormAction(
+  action: (formData: FormData) => Promise<unknown>,
+) {
+  await new Promise<void>((resolve) => {
+    startTransition(() => {
+      action(new FormData()).then(() => resolve());
+    });
+  });
+}
 
 jest.mock("@cms/actions/saveSanityConfig", () => ({
   saveSanityConfig: jest.fn().mockResolvedValue({ message: "ok" }),
@@ -80,7 +91,7 @@ describe("useSanityConnection", () => {
     expect((global.fetch as jest.Mock)).toHaveBeenCalledTimes(1);
     await act(async () => {
       result.current.handleDatasetSubmit();
-      await result.current.formAction(new FormData());
+      await callFormAction(result.current.formAction);
     });
     expect((global.fetch as jest.Mock)).toHaveBeenCalledTimes(2);
   });
@@ -92,7 +103,7 @@ describe("useSanityConnection", () => {
     });
     const { result } = renderHook(() => useSanityConnection("shop"));
     await act(async () => {
-      await result.current.formAction(new FormData());
+      await callFormAction(result.current.formAction);
     });
     expect(result.current.state.error).toBe("bad");
     expect(result.current.state.errorCode).toBe("DATASET_CREATE_ERROR");

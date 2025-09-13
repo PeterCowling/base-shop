@@ -1,8 +1,13 @@
 // apps/cms/src/app/cms/blog/sanity/connect/useSanityConnection.ts
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useFormState } from "react-dom";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useActionState,
+} from "react";
 import { saveSanityConfig } from "@cms/actions/saveSanityConfig";
 import { defaultDataset } from "./constants";
 
@@ -19,7 +24,7 @@ export function useSanityConnection(
   initial?: { projectId: string; dataset: string; token?: string },
 ) {
   const saveAction = saveSanityConfig.bind(null, shopId);
-  const [state, formAction] = useFormState<FormState, FormData>(
+  const [state, formAction] = useActionState<FormState, FormData>(
     async (_prevState: FormState, formData: FormData) =>
       saveAction(formData),
     initialState,

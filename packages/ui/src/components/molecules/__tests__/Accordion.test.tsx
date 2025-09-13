@@ -8,6 +8,7 @@ describe("Accordion", () => {
   const items: AccordionItem[] = [
     { title: "Section 1", content: "Content 1" },
     { title: "Section 2", content: "Content 2" },
+    { title: "Section 3", content: "Content 3" },
   ];
 
   it("renders items closed by default", () => {
@@ -33,6 +34,26 @@ describe("Accordion", () => {
     await userEvent.click(header);
     expect(header).toHaveAttribute("aria-expanded", "false");
     expect(screen.queryByText("Content 1")).not.toBeInTheDocument();
+  });
+
+  it("toggles multiple sections independently", async () => {
+    render(<Accordion items={items} />);
+    const first = screen.getByRole("button", { name: /^Section 1/ });
+    const third = screen.getByRole("button", { name: /^Section 3/ });
+
+    await userEvent.click(first);
+    await userEvent.click(third);
+
+    expect(first).toHaveAttribute("aria-expanded", "true");
+    expect(third).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByText("Content 1")).toBeInTheDocument();
+    expect(screen.getByText("Content 3")).toBeInTheDocument();
+
+    await userEvent.click(first);
+    expect(first).toHaveAttribute("aria-expanded", "false");
+    expect(screen.queryByText("Content 1")).not.toBeInTheDocument();
+    expect(third).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByText("Content 3")).toBeInTheDocument();
   });
 
   it("supports keyboard interaction on headers", async () => {

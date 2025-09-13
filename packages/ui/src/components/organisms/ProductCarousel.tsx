@@ -54,13 +54,22 @@ export function ProductCarousel({
   onAddToCart,
   ...props
 }: ProductCarouselProps) {
+  if (!products.length) return null;
+
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const scrollerRef = React.useRef<HTMLDivElement>(null);
   const [itemsPerSlide, setItemsPerSlide] = React.useState(
     desktopItems ?? minItems
   );
+  const [currentIndex, setCurrentIndex] = React.useState(0);
   const [quickViewProduct, setQuickViewProduct] = React.useState<SKU | null>(
     null
   );
+
+  const prev = () =>
+    setCurrentIndex((i) => (i - 1 + products.length) % products.length);
+  const next = () =>
+    setCurrentIndex((i) => (i + 1) % products.length);
 
   React.useEffect(() => {
     if (!containerRef.current || typeof ResizeObserver === "undefined")
@@ -95,6 +104,15 @@ export function ProductCarousel({
     mobileItems,
   ]);
 
+  React.useEffect(() => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    scroller.scrollTo?.({
+      left: scroller.clientWidth * currentIndex,
+      behavior: "smooth",
+    });
+  }, [currentIndex]);
+
   const width = getSlideWidth(itemsPerSlide);
   const slideStyle = { flex: `0 0 ${width}` } as React.CSSProperties;
   return (
@@ -104,7 +122,11 @@ export function ProductCarousel({
         className={cn("overflow-hidden", className)}
         {...props}
       >
-        <div className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)}>
+        <Button aria-label="Previous" onClick={prev} />
+        <div
+          ref={scrollerRef}
+          className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)}
+        >
           {products.map((p) => (
             <div
               key={p.id}
@@ -125,6 +147,7 @@ export function ProductCarousel({
             </div>
           ))}
         </div>
+        <Button aria-label="Next" onClick={next} />
       </div>
       {enableQuickView && quickViewProduct && (
         <ProductQuickView

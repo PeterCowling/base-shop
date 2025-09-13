@@ -16,6 +16,14 @@ describe('getShopFromPath', () => {
     expect(getShopFromPath('/cms/shops/foo?shop=bar')).toBe('bar');
   });
 
+  it('falls back to the path segment when the ?shop parameter is empty', () => {
+    expect(getShopFromPath('/cms/shop/foo?shop=')).toBe('foo');
+  });
+
+  it('returns undefined when ?shop is empty and no path segment exists', () => {
+    expect(getShopFromPath('?shop=')).toBeUndefined();
+  });
+
   it('extracts the slug from /shop/:slug paths', () => {
     expect(getShopFromPath('/cms/shop/example')).toBe('example');
   });

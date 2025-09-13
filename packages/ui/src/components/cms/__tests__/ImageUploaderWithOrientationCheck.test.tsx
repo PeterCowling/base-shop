@@ -10,10 +10,10 @@ describe("ImageUploaderWithOrientationCheck", () => {
     jest.clearAllMocks();
   });
 
-  it("calls onChange with the selected file and shows failure message", () => {
+  it("calls onChange with the selected file and shows no feedback when orientation is unknown", () => {
     mockUseImageOrientationValidation
       .mockReturnValueOnce({ actual: null, isValid: null })
-      .mockReturnValueOnce({ actual: "landscape", isValid: false });
+      .mockReturnValueOnce({ actual: null, isValid: null });
 
     const handleChange = jest.fn();
     const file = new File(["hello"], "test.png", { type: "image/png" });
@@ -38,11 +38,8 @@ describe("ImageUploaderWithOrientationCheck", () => {
       />
     );
 
-    const feedback = screen.getByText(
-      "Selected image is landscape; please upload a portrait image."
-    );
-    expect(feedback).toBeInTheDocument();
-    expect(feedback).toHaveClass("text-sm text-danger");
+    const feedback = screen.queryByText(/Image orientation|Selected image/);
+    expect(feedback).not.toBeInTheDocument();
   });
 
   it("shows success message when orientation matches", () => {
@@ -66,6 +63,44 @@ describe("ImageUploaderWithOrientationCheck", () => {
     );
     expect(feedback).toBeInTheDocument();
     expect(feedback).toHaveClass("text-sm text-success");
+  });
+
+  it("clears the file and removes feedback", () => {
+    mockUseImageOrientationValidation
+      .mockReturnValueOnce({ actual: "portrait", isValid: true })
+      .mockReturnValueOnce({ actual: null, isValid: null });
+
+    const handleChange = jest.fn();
+    const file = new File(["hello"], "good.png", { type: "image/png" });
+
+    const { container, rerender } = render(
+      <ImageUploaderWithOrientationCheck
+        file={file}
+        onChange={handleChange}
+        requiredOrientation="portrait"
+      />
+    );
+
+    expect(
+      screen.getByText(
+        "Image orientation is portrait; requirement satisfied."
+      )
+    ).toBeInTheDocument();
+
+    const input = container.querySelector("input[type='file']") as HTMLInputElement;
+    fireEvent.change(input, { target: { files: [] } });
+    expect(handleChange).toHaveBeenCalledWith(null);
+
+    rerender(
+      <ImageUploaderWithOrientationCheck
+        file={null}
+        onChange={handleChange}
+        requiredOrientation="portrait"
+      />
+    );
+
+    const feedback = screen.queryByText(/Image orientation|Selected image/);
+    expect(feedback).not.toBeInTheDocument();
   });
 
   it("re-renders only when props change", () => {

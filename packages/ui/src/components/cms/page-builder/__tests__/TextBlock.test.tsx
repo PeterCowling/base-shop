@@ -1,7 +1,7 @@
 import { render } from "@testing-library/react";
 import React from "react";
 
-jest.mock("../TextBlockView", () => jest.fn((props) => <div {...props} />));
+jest.mock("../TextBlockView", () => jest.fn(() => <div />));
 jest.mock("../useLocalizedTextEditor");
 jest.mock("../useBlockTransform");
 
@@ -17,7 +17,7 @@ describe("TextBlock", () => {
   const useBlockTransformMock = useBlockTransform as unknown as jest.Mock;
 
   beforeEach(() => {
-    textBlockViewMock.mockImplementation((props) => <div {...props} />);
+    textBlockViewMock.mockImplementation(() => <div />);
     useBlockTransformMock.mockReturnValue({
       startResize: jest.fn(),
       startDrag: jest.fn(),

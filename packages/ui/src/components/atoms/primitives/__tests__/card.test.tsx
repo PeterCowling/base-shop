@@ -4,11 +4,11 @@ import { render, screen } from "@testing-library/react";
 import { Card, CardContent } from "../card";
 
 describe("Card", () => {
-  it("forwards ref, applies token, and merges className", () => {
+  it("forwards ref, applies data-token, and merges className", () => {
     const ref = React.createRef<HTMLDivElement>();
     const { container } = render(
       <Card ref={ref} className="extra">
-        <CardContent>Content</CardContent>
+        Content
       </Card>
     );
 
@@ -28,7 +28,7 @@ describe("Card", () => {
 });
 
 describe("CardContent", () => {
-  it("forwards ref and merges className", () => {
+  it("applies default padding and forwards ref", () => {
     const ref = React.createRef<HTMLDivElement>();
     const { container } = render(
       <CardContent ref={ref} className="inner" />

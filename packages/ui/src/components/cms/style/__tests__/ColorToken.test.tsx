@@ -18,6 +18,25 @@ describe("ColorToken", () => {
     mockedUseTokenColors.mockReset();
   });
 
+  it("renders without default value", () => {
+    const setToken = jest.fn();
+    mockedUseTokenColors.mockReturnValue(undefined as any);
+    render(
+      <ColorToken
+        tokenKey="--color-bg"
+        value="0 0% 100%"
+        isOverridden={false}
+        tokens={{}}
+        baseTokens={baseTokens}
+        setToken={setToken}
+      />
+    );
+
+    expect(screen.queryByText(/Default:/)).toBeNull();
+    expect(screen.queryByText("Reset")).toBeNull();
+    expect(screen.queryByText(/Low contrast/)).toBeNull();
+  });
+
   it("renders with default value", () => {
     const setToken = jest.fn();
     render(

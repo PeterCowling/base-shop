@@ -1,6 +1,6 @@
 import { render, fireEvent, act } from "@testing-library/react";
 import { TranslationsProvider } from "@acme/i18n";
-import en from "@acme/i18n/src/en.json";
+import en from "@acme/i18n/en.json";
 import ComponentEditor from "../src/components/cms/page-builder/ComponentEditor";
 import type { PageComponent } from "@acme/types";
 

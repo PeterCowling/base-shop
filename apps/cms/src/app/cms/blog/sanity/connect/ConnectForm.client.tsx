@@ -1,8 +1,7 @@
 // apps/cms/src/app/cms/blog/sanity/connect/ConnectForm.client.tsx
 "use client";
 
-import { useFormState } from "react-dom";
-import { useState, useEffect } from "react";
+import { useActionState, useState, useEffect } from "react";
 import { Button } from "@/components/atoms/shadcn";
 import { Toast } from "@ui";
 import { deleteSanityConfig } from "@cms/actions/deleteSanityConfig";
@@ -53,10 +52,10 @@ export default function ConnectForm({ shopId, initial }: Props) {
   } = useSanityConnection(shopId, initial);
 
   const disconnectAction = deleteSanityConfig.bind(null, shopId);
-  const [disconnectState, disconnectFormAction] = useFormState<FormState>(
-    disconnectAction,
-    initialState,
-  );
+  const [disconnectState, disconnectFormAction] = useActionState<
+    FormState,
+    FormData
+  >(disconnectAction, initialState);
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
 

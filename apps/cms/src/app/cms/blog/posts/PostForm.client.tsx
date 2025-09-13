@@ -1,8 +1,7 @@
 // apps/cms/src/app/cms/blog/posts/PostForm.client.tsx
 "use client";
 
-import { useFormState } from "react-dom";
-import { useState, useEffect } from "react";
+import { useActionState, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button, Input, Switch, Textarea, Toast } from "@ui";
 import { slugify } from "@acme/shared-utils";
@@ -42,7 +41,10 @@ interface Props {
 }
 
 function PostFormContent({ action, submitLabel, post }: Props) {
-  const [state, formAction] = useFormState(action, { message: "", error: "" });
+  const [state, formAction] = useActionState<FormState, FormData>(
+    action,
+    { message: "", error: "" },
+  );
   const [title, setTitle] = useState(post?.title ?? "");
   const [slug, setSlug] = useState(post?.slug ?? "");
   const [editSlug, setEditSlug] = useState(false);

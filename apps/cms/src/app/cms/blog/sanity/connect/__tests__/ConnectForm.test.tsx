@@ -53,16 +53,6 @@ jest.mock("../useSanityConnection", () => {
 
 jest.mock("react-dom", () => ({
   ...jest.requireActual("react-dom"),
-  useFormState: (action: any, initialState: any) => {
-    const React = require("react");
-    const [state, setState] = React.useState(initialState);
-    const formAction = async (formData: any) => {
-      const res = await action(initialState, formData);
-      setState(res);
-      return res;
-    };
-    return [state, formAction];
-  },
   useFormStatus: () => ({ pending: false }),
 }));
 

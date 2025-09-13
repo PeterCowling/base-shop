@@ -7,7 +7,8 @@
     "types": ["@testing-library/jest-dom", "jest", "node"],
     /* no JS output for tests */
     "noEmit": true,
-    "rootDir": "."
+    "rootDir": ".",
+    "outDir": ".ts-jest"
   },
 
   "include": ["src/**/*.ts", "src/**/*.tsx", "__tests__/**/*"]

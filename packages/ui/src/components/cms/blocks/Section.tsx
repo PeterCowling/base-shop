@@ -1,11 +1,27 @@
 "use client";
-import type { ReactNode } from "react";
+import type { ReactNode, HTMLAttributes } from "react";
 
-export interface SectionProps {
+export interface SectionProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode;
-  className?: string;
+  /** Padding applied to the section */
+  padding?: string;
+  /** Background color for the section */
+  backgroundColor?: string;
 }
 
-export default function Section({ children, className }: SectionProps) {
-  return <div className={className}>{children}</div>;
+export default function Section({
+  children,
+  padding,
+  backgroundColor,
+  style,
+  ...rest
+}: SectionProps) {
+  return (
+    <div
+      {...rest}
+      style={{ ...style, padding, backgroundColor }}
+    >
+      {children}
+    </div>
+  );
 }

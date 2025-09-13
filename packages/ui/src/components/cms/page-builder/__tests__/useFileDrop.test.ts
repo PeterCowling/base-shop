@@ -2,18 +2,17 @@ import { act, renderHook } from "@testing-library/react";
 import useFileDrop from "../hooks/useFileDrop";
 
 const mockOnDrop = jest.fn();
-let uploaded: ((item: any) => void) | undefined;
 
 jest.mock("../../../../hooks/useFileUpload", () => ({
   __esModule: true,
-  default: (opts: any) => {
-    uploaded = opts.onUploaded;
-    return {
-      onDrop: (...args: any[]) => mockOnDrop(...args),
-      progress: null,
-      isValid: true,
-    };
-  },
+  default: ({ onUploaded }: any) => ({
+    onDrop: (...args: any[]) => {
+      mockOnDrop(...args);
+      onUploaded({ url: "u", altText: "a" } as any);
+    },
+    progress: null,
+    isValid: true,
+  }),
 }));
 
 jest.mock("ulid", () => ({
@@ -23,7 +22,6 @@ jest.mock("ulid", () => ({
 describe("useFileDrop", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    uploaded = undefined;
   });
 
   it("toggles dragOver state", () => {
@@ -43,22 +41,20 @@ describe("useFileDrop", () => {
     expect(result.current.dragOver).toBe(false);
   });
 
-  it("dispatches add action when drop succeeds", () => {
+  it("dispatches Image component when drop succeeds", () => {
     const dispatch = jest.fn();
     const { result } = renderHook(() =>
       useFileDrop({ shop: "shop", dispatch })
     );
 
-    const item = { url: "u", altText: "a" } as any;
-    mockOnDrop.mockImplementation(() => {
-      uploaded?.(item);
-    });
+    const ev = {} as any;
 
     act(() => {
       result.current.setDragOver(true);
-      result.current.handleFileDrop({} as any);
+      result.current.handleFileDrop(ev);
     });
 
+    expect(mockOnDrop).toHaveBeenCalledWith(ev);
     expect(dispatch).toHaveBeenCalledWith({
       type: "add",
       component: {
@@ -71,7 +67,7 @@ describe("useFileDrop", () => {
     expect(result.current.dragOver).toBe(false);
   });
 
-  it("catches errors from onDrop without throwing", () => {
+  it("resets dragOver and logs error when onDrop throws", () => {
     const dispatch = jest.fn();
     const { result } = renderHook(() =>
       useFileDrop({ shop: "s1", dispatch })
@@ -86,14 +82,22 @@ describe("useFileDrop", () => {
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
+    const ev = {} as any;
+
+    act(() => {
+      result.current.setDragOver(true);
+    });
+
     expect(() =>
       act(() => {
-        result.current.handleFileDrop({} as any);
+        result.current.handleFileDrop(ev);
       })
     ).not.toThrow();
 
+    expect(mockOnDrop).toHaveBeenCalledWith(ev);
     expect(consoleError).toHaveBeenCalledWith(error);
     expect(dispatch).not.toHaveBeenCalled();
+    expect(result.current.dragOver).toBe(false);
 
     consoleError.mockRestore();
   });

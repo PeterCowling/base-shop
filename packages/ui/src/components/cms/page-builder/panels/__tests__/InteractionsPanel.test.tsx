@@ -37,7 +37,7 @@ jest.mock("../../../../atoms/shadcn", () => {
 });
 
 describe("InteractionsPanel", () => {
-  test("handles clickAction, href, and animation changes", () => {
+  test("shows Target when navigating and clears href on reset", () => {
     const mockInput = jest.fn();
     function Wrapper() {
       const [component, setComponent] = useState<PageComponent>({
@@ -56,27 +56,58 @@ describe("InteractionsPanel", () => {
 
     render(<Wrapper />);
 
-    const [clickSelect, animationSelect] = screen.getAllByRole("combobox") as HTMLSelectElement[];
-
-    expect(clickSelect.value).toBe("none");
-    expect(animationSelect.value).toBe("none");
+    const [clickSelect] = screen.getAllByRole("combobox") as HTMLSelectElement[];
     expect(screen.queryByLabelText("Target")).toBeNull();
 
     fireEvent.change(clickSelect, { target: { value: "navigate" } });
     expect(mockInput).toHaveBeenNthCalledWith(1, "clickAction", "navigate");
-    expect(screen.getByLabelText("Target")).toBeInTheDocument();
+    const targetInput = screen.getByLabelText("Target");
 
-    fireEvent.change(screen.getByLabelText("Target"), {
+    fireEvent.change(targetInput, {
       target: { value: "https://example.com" },
     });
     expect(mockInput).toHaveBeenNthCalledWith(2, "href", "https://example.com");
 
-    fireEvent.change(animationSelect, { target: { value: "fade" } });
-    expect(mockInput).toHaveBeenNthCalledWith(3, "animation", "fade");
-
     fireEvent.change(clickSelect, { target: { value: "none" } });
-    expect(mockInput).toHaveBeenNthCalledWith(4, "clickAction", undefined);
-    expect(mockInput).toHaveBeenNthCalledWith(5, "href", undefined);
+    expect(mockInput).toHaveBeenNthCalledWith(3, "clickAction", undefined);
+    expect(mockInput).toHaveBeenNthCalledWith(4, "href", undefined);
+    expect(screen.queryByLabelText("Target")).toBeNull();
+  });
+
+  test("updates animation selector values", () => {
+    const mockInput = jest.fn();
+    function Wrapper() {
+      const [component, setComponent] = useState<PageComponent>({
+        id: "c1",
+        type: "Box",
+      } as any);
+      const handleInput = <K extends keyof PageComponent>(
+        field: K,
+        value: PageComponent[K],
+      ) => {
+        mockInput(field, value);
+        setComponent((c) => ({ ...c, [field]: value }));
+      };
+      return <InteractionsPanel component={component} handleInput={handleInput} />;
+    }
+
+    render(<Wrapper />);
+
+    const [, animationSelect] = screen.getAllByRole("combobox") as HTMLSelectElement[];
+
+    expect(animationSelect.value).toBe("none");
+
+    fireEvent.change(animationSelect, { target: { value: "fade" } });
+    expect(mockInput).toHaveBeenNthCalledWith(1, "animation", "fade");
+    expect(animationSelect.value).toBe("fade");
+
+    fireEvent.change(animationSelect, { target: { value: "slide" } });
+    expect(mockInput).toHaveBeenNthCalledWith(2, "animation", "slide");
+    expect(animationSelect.value).toBe("slide");
+
+    fireEvent.change(animationSelect, { target: { value: "none" } });
+    expect(mockInput).toHaveBeenNthCalledWith(3, "animation", undefined);
+    expect(animationSelect.value).toBe("none");
   });
 });
 

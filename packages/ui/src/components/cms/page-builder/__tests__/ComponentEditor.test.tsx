@@ -1,4 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { TranslationsProvider } from "@acme/i18n";
+import en from "@acme/i18n/src/en.json";
 import ComponentEditor from "../ComponentEditor";
 
 describe("ComponentEditor", () => {
@@ -12,11 +14,13 @@ describe("ComponentEditor", () => {
     const onResize = jest.fn();
 
     render(
-      <ComponentEditor
-        component={component}
-        onChange={onChange}
-        onResize={onResize}
-      />
+      <TranslationsProvider messages={en}>
+        <ComponentEditor
+          component={component}
+          onChange={onChange}
+          onResize={onResize}
+        />
+      </TranslationsProvider>
     );
 
     // Update content via the specific editor

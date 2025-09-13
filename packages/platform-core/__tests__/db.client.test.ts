@@ -40,4 +40,34 @@ describe('loadPrismaClient', () => {
       datasources: { db: { url: 'postgres://db' } },
     });
   });
+
+  it('caches the Prisma constructor after first load', async () => {
+    const PrismaClientMock = jest.fn();
+    jest.doMock('@prisma/client', () => ({ PrismaClient: PrismaClientMock }), {
+      virtual: true,
+    });
+
+    const { loadPrismaClient } = await import('../src/db');
+    const first = loadPrismaClient();
+    const second = loadPrismaClient();
+    expect(first).toBe(PrismaClientMock);
+    expect(second).toBe(PrismaClientMock);
+  });
+
+  it('falls back to stub when PrismaClient is missing in production', async () => {
+    process.env.NODE_ENV = 'production';
+    process.env.DATABASE_URL = 'postgres://db';
+    jest.doMock(
+      '@prisma/client',
+      () => {
+        throw new Error('missing');
+      },
+      { virtual: true },
+    );
+
+    const { prisma } = await import('../src/db');
+    await expect(prisma.$transaction((tx: unknown) => tx)).resolves.toHaveProperty(
+      'rentalOrder',
+    );
+  });
 });

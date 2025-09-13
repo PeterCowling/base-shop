@@ -6,9 +6,9 @@ import { join } from "node:path";
  * Existing shop data will be removed before copying to ensure fresh files.
  */
 export function seedTestData(): void {
-  // Default to "test/data" if TEST_DATA_ROOT is not provided
-  const root = process.env.TEST_DATA_ROOT || "test/data";
-  const srcRoot = join("test", "data", "shops");
+  // Default to "__tests__/data" if TEST_DATA_ROOT is not provided
+  const root = process.env.TEST_DATA_ROOT || "__tests__/data";
+  const srcRoot = join("__tests__", "data", "shops");
   const destRoot = join(root, "shops");
 
   mkdirSync(destRoot, { recursive: true });

@@ -19,7 +19,7 @@ export default defineConfig({
       NEXTAUTH_SECRET:
         process.env.NEXTAUTH_SECRET ||
         "test-nextauth-secret-32-chars-long-string!",
-      TEST_DATA_ROOT: process.env.TEST_DATA_ROOT || "test/data/shops"
+      TEST_DATA_ROOT: process.env.TEST_DATA_ROOT || "__tests__/data/shops"
     },
     defaultCommandTimeout: 10000,
     setupNodeEvents(on, config) {
@@ -32,7 +32,7 @@ export default defineConfig({
          */
         "testData:setup"(shop: string) {
           const root = mkdtempSync(join(os.tmpdir(), "cypress-data-"));
-          const src = join("test", "data", "shops", shop);
+          const src = join("__tests__", "data", "shops", shop);
           const dest = join(root, shop);
           mkdirSync(dest, { recursive: true });
           ["pages.json", "settings.json"].forEach((file) => {

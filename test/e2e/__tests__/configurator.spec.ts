@@ -2,7 +2,7 @@
 
 describe("Shop configurator flow", () => {
   const shopId = `config-${Date.now()}`;
-  const dataDir = Cypress.env("TEST_DATA_ROOT") || "test/data/shops";
+  const dataDir = Cypress.env("TEST_DATA_ROOT") || "__tests__/data/shops";
   const shopDir = `${dataDir}/${shopId}`;
 
   before(() => {

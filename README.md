@@ -12,8 +12,8 @@ Run `pnpm init-shop` to scaffold a new shop. The configurator lists available pl
 
 ### Testing
 
-See [docs/testing.md](docs/testing.md) for comprehensive testing instructions. Cypress fixtures live under `test/data/shops`. Override this path by setting the `TEST_DATA_ROOT` environment variable.
-For CMS configurator-specific end-to-end tests, see [docs/testing-configurator.md](docs/testing-configurator.md).
+See [__tests__/docs/testing.md](__tests__/docs/testing.md) for comprehensive testing instructions. Cypress fixtures live under `__tests__/data/shops`. Override this path by setting the `TEST_DATA_ROOT` environment variable.
+For CMS configurator-specific end-to-end tests, see [__tests__/docs/testing-configurator.md](__tests__/docs/testing-configurator.md).
 
 Seed data before running the Cypress suite. The seed script populates minimal base data and inventory by default, loading fixtures from `data/shops/*/inventory.json` and computing `variantKey` for each variant. Use `--skip-inventory` to omit inventory seeding when inventory is already prepared:
 
@@ -95,7 +95,7 @@ See [docs/upgrade-preview-republish.md](docs/upgrade-preview-republish.md) for g
 
 Inventory still reads and writes JSON files (`data/shops/<shop>/inventory.json`), the default offline store when `DATABASE_URL` is unset. This fallback keeps the demo lightweight and offline-friendly until a Prisma/PostgreSQL model is ready. See [docs/inventory-migration.md](docs/inventory-migration.md) for the migration plan.
 
-Set `INVENTORY_BACKEND=json` in your environment to force the JSON backend during local development. Sample fixtures live under `data/shops/demo` and `data/shops/test`.
+Set `INVENTORY_BACKEND=json` in your environment to force the JSON backend during local development. Sample fixtures live under `__tests__/data/shops/demo` and `__tests__/data/shops/test`.
 
 To verify the data, hit `/api/data/<shop>/inventory/export` in a running app (`?format=csv` is also supported) or run `pnpm inventory:check` for a CLI sanity check:
 

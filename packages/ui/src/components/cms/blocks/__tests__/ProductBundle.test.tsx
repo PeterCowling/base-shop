@@ -3,7 +3,9 @@ import { render, screen } from "@testing-library/react";
 
 jest.mock("../../../atoms/Price", () => ({
   Price: ({ amount, className }: { amount: number; className?: string }) => (
-    <span data-testid="price" className={className}>{amount}</span>
+    <span data-cy="price" className={className}>
+      {amount}
+    </span>
   ),
 }));
 

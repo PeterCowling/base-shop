@@ -19,7 +19,8 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "clean": "rimraf dist *.tsbuildinfo",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../../jest.config.cjs"
   },
   "dependencies": {
     "@acme/types": "workspace:*",

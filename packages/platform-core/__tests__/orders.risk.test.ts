@@ -1,0 +1,54 @@
+/** @jest-environment node */
+
+import { markNeedsAttention, updateRisk } from "../src/orders/risk";
+
+jest.mock("../src/db", () => ({
+  prisma: {
+    rentalOrder: { update: jest.fn() },
+  },
+}));
+
+const { prisma } = jest.requireMock("../src/db") as {
+  prisma: { rentalOrder: { update: jest.Mock } };
+};
+
+describe("orders/risk", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe("markNeedsAttention", () => {
+    it("returns null on update error", async () => {
+      prisma.rentalOrder.update.mockRejectedValue(new Error("update failed"));
+      const result = await markNeedsAttention("shop", "sess");
+      expect(result).toBeNull();
+    });
+  });
+
+  describe("updateRisk", () => {
+    it("returns null on update error", async () => {
+      prisma.rentalOrder.update.mockRejectedValue(new Error("update failed"));
+      const result = await updateRisk("shop", "sess");
+      expect(result).toBeNull();
+    });
+
+    it.each([
+      [{ riskLevel: "low" }, "low", undefined, undefined],
+      [{ riskScore: 5 }, undefined, 5, undefined],
+      [{ flaggedForReview: true }, undefined, undefined, true],
+      [{ flaggedForReview: false }, undefined, undefined, false],
+      [{ riskLevel: "low", riskScore: 5 }, "low", 5, undefined],
+      [{ riskLevel: "low", flaggedForReview: true }, "low", undefined, true],
+      [{ riskScore: 5, flaggedForReview: false }, undefined, 5, false],
+      [{ riskLevel: "low", riskScore: 5, flaggedForReview: true }, "low", 5, true],
+    ])("updates only provided fields %j", async (data, riskLevel, riskScore, flaggedForReview) => {
+      prisma.rentalOrder.update.mockResolvedValue({});
+      await updateRisk("shop", "sess", riskLevel, riskScore, flaggedForReview);
+      expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data,
+      });
+    });
+  });
+});
+

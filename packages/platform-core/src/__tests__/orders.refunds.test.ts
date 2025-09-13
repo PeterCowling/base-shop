@@ -50,7 +50,90 @@ describe("orders/refunds", () => {
     expect(result).toBeNull();
   });
 
+  it("passes only riskLevel when provided", async () => {
+    const mock = { id: "1", shop: "shop", sessionId: "sess", refundedAt: "now" };
+    prisma.rentalOrder.update.mockResolvedValue(mock);
+    await markRefunded("shop", "sess", "low");
+    expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+      where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+      data: { refundedAt: expect.any(String), riskLevel: "low" },
+    });
+  });
+
+  it("passes only riskScore when provided", async () => {
+    const mock = { id: "1", shop: "shop", sessionId: "sess", refundedAt: "now" };
+    prisma.rentalOrder.update.mockResolvedValue(mock);
+    await markRefunded("shop", "sess", undefined, 5);
+    expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+      where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+      data: { refundedAt: expect.any(String), riskScore: 5 },
+    });
+  });
+
+  it("passes only flaggedForReview when provided", async () => {
+    const mock = { id: "1", shop: "shop", sessionId: "sess", refundedAt: "now" };
+    prisma.rentalOrder.update.mockResolvedValue(mock);
+    await markRefunded("shop", "sess", undefined, undefined, true);
+    expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+      where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+      data: { refundedAt: expect.any(String), flaggedForReview: true },
+    });
+  });
+
+  it("passes all risk fields when provided", async () => {
+    const mock = {
+      id: "1",
+      shop: "shop",
+      sessionId: "sess",
+      refundedAt: "now",
+    };
+    prisma.rentalOrder.update.mockResolvedValue(mock);
+    await markRefunded("shop", "sess", "high", 7, true);
+    expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+      where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+      data: {
+        refundedAt: expect.any(String),
+        riskLevel: "high",
+        riskScore: 7,
+        flaggedForReview: true,
+      },
+    });
+  });
+
+  it("returns null when update returns null", async () => {
+    prisma.rentalOrder.update.mockResolvedValue(null);
+    const result = await markRefunded("shop", "sess");
+    expect(result).toBeNull();
+  });
+
   describe("refundOrder", () => {
+    it("returns null when order missing", async () => {
+      prisma.rentalOrder.findUnique.mockResolvedValue(null);
+      const res = await refundOrder("s", "sess");
+      expect(res).toBeNull();
+      expect(stripe.checkout.sessions.retrieve).not.toHaveBeenCalled();
+      expect(stripe.refunds.create).not.toHaveBeenCalled();
+      expect(prisma.rentalOrder.update).not.toHaveBeenCalled();
+    });
+
+    it("returns null when update throws", async () => {
+      const order = {
+        id: "1",
+        shop: "s",
+        sessionId: "sess",
+        deposit: 0,
+        refundTotal: 0,
+      };
+      prisma.rentalOrder.findUnique.mockResolvedValue(order);
+      prisma.rentalOrder.update.mockImplementation(() => {
+        throw new Error("db");
+      });
+      const res = await refundOrder("s", "sess");
+      expect(res).toBeNull();
+      expect(stripe.checkout.sessions.retrieve).not.toHaveBeenCalled();
+      expect(stripe.refunds.create).not.toHaveBeenCalled();
+    });
+
     it.each([
       { deposit: 100, refundTotal: 0, amount: undefined, refundable: 100 },
       { deposit: 200, refundTotal: 50, amount: 100, refundable: 100 },

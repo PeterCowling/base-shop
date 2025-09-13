@@ -88,5 +88,34 @@ describe("HeroBanner", () => {
     fireEvent.click(screen.getByRole("button", { name: "Previous slide" }));
     expect(screen.getByText("Slide Three")).toBeInTheDocument();
   });
+
+  it("renders CTA link with locale from pathname", () => {
+    Object.assign(translations, {
+      "hero.slide1.headline": "Slide One",
+      "hero.cta": "Shop now",
+    });
+    mockPathname.mockReturnValue("/fr");
+    render(<HeroBanner />);
+    const link = screen.getByRole("link", { name: "Shop now" });
+    expect(link).toHaveAttribute("href", "/fr/shop");
+  });
+
+  it("skips slides missing image src", () => {
+    const slides: Slide[] = [
+      { src: "", alt: "a", headlineKey: "a.head", ctaKey: "a.cta" },
+      { src: "/b.jpg", alt: "b", headlineKey: "b.head", ctaKey: "b.cta" },
+    ];
+    Object.assign(translations, {
+      "a.head": "Alpha",
+      "a.cta": "Buy A",
+      "b.head": "Beta",
+      "b.cta": "Buy B",
+    });
+
+    render(<HeroBanner slides={slides} />);
+    expect(screen.getByAltText("b")).toBeInTheDocument();
+    expect(screen.queryByAltText("a")).not.toBeInTheDocument();
+    expect(screen.getByText("Beta")).toBeInTheDocument();
+  });
 });
 

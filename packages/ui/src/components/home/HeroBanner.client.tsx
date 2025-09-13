@@ -46,9 +46,13 @@ export default function HeroBanner({
   const safePath = rawPathname ?? "/";
   const langPrefix = safePath.split("/")[1] || "en";
 
+  const sanitizedSlides = (slides.length ? slides : DEFAULT_SLIDES).filter(
+    (s) => s.src
+  );
+  const slideData = sanitizedSlides.length ? sanitizedSlides : DEFAULT_SLIDES;
+
   const [index, setIndex] = useState(0);
 
-  const slideData = slides.length ? slides : DEFAULT_SLIDES;
   const next = useCallback(
     () => setIndex((i) => (i + 1) % slideData.length),
     [slideData.length]

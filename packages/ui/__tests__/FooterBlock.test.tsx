@@ -31,10 +31,23 @@ describe("FooterBlock", () => {
     expect(link).toHaveAttribute("href", "/about");
   });
 
-  it("renders without links when none provided", () => {
+  it("renders with empty link groups", () => {
     const { container } = render(
-      <FooterBlock locale={"en" as any} links={[]} />,
+      <FooterBlock locale={"en" as any} shopName="Brand" linkGroups={[]} />,
     );
     expect(container.querySelector("a")).toBeNull();
+    expect(screen.getByText("Brand")).toBeInTheDocument();
+  });
+
+  it("renders social links when provided", () => {
+    render(
+      <FooterBlock
+        locale={"en" as any}
+        shopName="Brand"
+        socialLinks={{ facebook: "https://facebook.com/example" }}
+      />,
+    );
+    const link = screen.getByRole("link", { name: "facebook" });
+    expect(link).toHaveAttribute("href", "https://facebook.com/example");
   });
 });

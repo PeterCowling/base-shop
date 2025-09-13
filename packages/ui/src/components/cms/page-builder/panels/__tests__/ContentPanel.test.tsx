@@ -2,12 +2,21 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import React from "react";
 import ContentPanel from "../ContentPanel";
 
-jest.mock("../../editorRegistry", () => ({
-  __esModule: true,
-  default: {
-    Fancy: (props: any) => <div data-cy="fancy">fancy-{props.component.id}</div>,
-  },
-}));
+jest.mock("../../editorRegistry", () => {
+  const React = require("react");
+  let resolveFancy: (value: any) => void;
+  const Fancy = React.lazy(
+    () =>
+      new Promise((resolve) => {
+        resolveFancy = resolve;
+      })
+  );
+  return {
+    __esModule: true,
+    default: { Fancy },
+    __resolveFancy: () => resolveFancy,
+  };
+});
 
 describe("ContentPanel", () => {
   const baseHandlers = {
@@ -97,6 +106,40 @@ describe("ContentPanel", () => {
     expect(screen.getAllByText("Must be ≥ 0").length).toBeGreaterThan(0);
   });
 
+  test("shows error when minItems exceeds maxItems", () => {
+    render(
+      <ContentPanel
+        component={{
+          id: "cMinMax",
+          type: "Widget",
+          minItems: 5,
+          maxItems: 3,
+        } as any}
+        {...baseHandlers}
+      />
+    );
+    expect(
+      screen.getByText("Min Items cannot exceed Max Items")
+    ).toBeInTheDocument();
+  });
+
+  test("shows error when maxItems is less than minItems", () => {
+    render(
+      <ContentPanel
+        component={{
+          id: "cMaxMin",
+          type: "Widget",
+          minItems: 5,
+          maxItems: 3,
+        } as any}
+        {...baseHandlers}
+      />
+    );
+    expect(
+      screen.getByText("Max Items cannot be less than Min Items")
+    ).toBeInTheDocument();
+  });
+
   test("shows error when columns are outside min/max range", () => {
     let component = { ...initialComponent };
     const handlers = {
@@ -117,6 +160,34 @@ describe("ContentPanel", () => {
     expect(
       screen.getByText("Columns must be between min and max items")
     ).toBeInTheDocument();
+  });
+
+  test("conditionally renders responsive and column controls", () => {
+    const { rerender } = render(
+      <ContentPanel component={{ id: "cCond", type: "Widget" } as any} {...baseHandlers} />
+    );
+    expect(screen.queryByLabelText("Desktop Items")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Tablet Items")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Mobile Items")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText("Columns")).not.toBeInTheDocument();
+
+    rerender(
+      <ContentPanel
+        component={{
+          id: "cCond",
+          type: "Widget",
+          desktopItems: 3,
+          tabletItems: 2,
+          mobileItems: 1,
+          columns: 2,
+        } as any}
+        {...baseHandlers}
+      />
+    );
+    expect(screen.getByLabelText("Desktop Items")).toBeInTheDocument();
+    expect(screen.getByLabelText("Tablet Items")).toBeInTheDocument();
+    expect(screen.getByLabelText("Mobile Items")).toBeInTheDocument();
+    expect(screen.getByLabelText("Columns")).toBeInTheDocument();
   });
 
   test("passes undefined to handleInput when clearing fields", () => {
@@ -184,13 +255,20 @@ describe("ContentPanel", () => {
     });
   });
 
-  test("loads specific editor or fallback", async () => {
+  test("loads specific editor and shows fallback when loading or missing", async () => {
     const { rerender } = render(
       <ContentPanel
         component={{ id: "c2", type: "Fancy" } as any}
         {...baseHandlers}
       />
     );
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    const resolveFancy = (require("../../editorRegistry") as any).__resolveFancy();
+    resolveFancy({
+      default: (props: any) => (
+        <div data-cy="fancy">fancy-{props.component.id}</div>
+      ),
+    });
     expect(await screen.findByTestId("fancy")).toHaveTextContent("fancy-c2");
 
     rerender(

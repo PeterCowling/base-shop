@@ -21,12 +21,8 @@ describe("loadThemeTokensNode", () => {
     const rootDir = join(__dirname, "../../..");
     const calls = existsSpy.mock.calls.slice(-3);
     expect(calls).toEqual([
-      [
-        join(rootDir, "packages", "themes", "dark", "tailwind-tokens.js"),
-      ],
-      [
-        join(rootDir, "packages", "themes", "dark", "tailwind-tokens.ts"),
-      ],
+      [join(rootDir, "packages", "themes", "dark", "tailwind-tokens.js")],
+      [join(rootDir, "packages", "themes", "dark", "tailwind-tokens.ts")],
       [
         join(
           rootDir,
@@ -34,7 +30,7 @@ describe("loadThemeTokensNode", () => {
           "themes",
           "dark",
           "src",
-          "tailwind-tokens.ts",
+          "tailwind-tokens.ts"
         ),
       ],
     ]);
@@ -47,7 +43,78 @@ describe("loadThemeTokensNode", () => {
     expect(tokens).toEqual({});
   });
 
-  it.each(["", "base"])('returns empty object for %s theme', (theme) => {
+  it("loads tokens from workspace root when local search fails", () => {
+    const rootDir = join(__dirname, "../../..");
+    const cwd = join(rootDir, "packages", "platform-core");
+    const cwdSpy = jest.spyOn(process, "cwd").mockReturnValue(cwd);
+
+    let checkedTokens = false;
+    const existsSpy = jest
+      .spyOn(fs, "existsSync")
+      .mockImplementation((p: fs.PathLike) => {
+        const file = String(p);
+        if (file === join(cwd, "pnpm-workspace.yaml")) return false;
+        if (file === join(rootDir, "packages", "pnpm-workspace.yaml"))
+          return false;
+        if (file === join(rootDir, "pnpm-workspace.yaml")) return true;
+        if (
+          file ===
+          join(rootDir, "packages", "themes", "dark", "tailwind-tokens.js")
+        )
+          return false;
+        if (
+          file ===
+          join(rootDir, "packages", "themes", "dark", "tailwind-tokens.ts")
+        )
+          return false;
+        if (
+          file ===
+          join(
+            rootDir,
+            "packages",
+            "themes",
+            "dark",
+            "src",
+            "tailwind-tokens.ts"
+          )
+        ) {
+          if (!checkedTokens) {
+            checkedTokens = true;
+            return false;
+          }
+          return true;
+        }
+        return false;
+      });
+
+    const readSpy = jest
+      .spyOn(fs, "readFileSync")
+      .mockReturnValue("export const tokens = { '--color-bg': '#111' };");
+
+    try {
+      const tokens = loadThemeTokensNode("dark");
+      expect(tokens).toEqual({ "--color-bg": "#111" });
+    } finally {
+      readSpy.mockRestore();
+      existsSpy.mockRestore();
+      cwdSpy.mockRestore();
+    }
+  });
+
+  it("returns empty object when pnpm-workspace.yaml is missing", () => {
+    const cwdSpy = jest.spyOn(process, "cwd").mockReturnValue("/tmp/fake");
+    const existsSpy = jest.spyOn(fs, "existsSync").mockReturnValue(false);
+
+    try {
+      const tokens = loadThemeTokensNode("dark");
+      expect(tokens).toEqual({});
+    } finally {
+      existsSpy.mockRestore();
+      cwdSpy.mockRestore();
+    }
+  });
+
+  it.each(["", "base"])("returns empty object for %s theme", (theme) => {
     const tokens = loadThemeTokensNode(theme as string);
     expect(tokens).toEqual({});
   });
@@ -63,26 +130,29 @@ describe("loadThemeTokensBrowser", () => {
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(
       join(dir, "index.ts"),
-      "export const tokens = { '--color-bg': { light: '#fff' } };",
+      "export const tokens = { '--color-bg': { light: '#fff' } };"
     );
     const tokens = await loadThemeTokensBrowser("custom");
     expect(tokens["--color-bg"]).toBe("#fff");
-    fs.rmSync(join(__dirname, "../../themes/custom"), { recursive: true, force: true });
+    fs.rmSync(join(__dirname, "../../themes/custom"), {
+      recursive: true,
+      force: true,
+    });
   });
 
   it("falls back to tailwind-tokens when direct import fails", async () => {
-    const dir = join(
-      __dirname,
-      "../../themes/fallback/tailwind-tokens/src",
-    );
+    const dir = join(__dirname, "../../themes/fallback/tailwind-tokens/src");
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(
       join(dir, "index.ts"),
-      "export const tokens = { '--color-bg': '#123' };",
+      "export const tokens = { '--color-bg': '#123' };"
     );
     const tokens = await loadThemeTokensBrowser("fallback");
     expect(tokens["--color-bg"]).toBe("#123");
-    fs.rmSync(join(__dirname, "../../themes/fallback"), { recursive: true, force: true });
+    fs.rmSync(join(__dirname, "../../themes/fallback"), {
+      recursive: true,
+      force: true,
+    });
   });
 
   it("short-circuits for base theme", async () => {
@@ -115,10 +185,13 @@ describe("loadThemeTokens", () => {
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(
       join(dir, "index.ts"),
-      "export const tokens = { '--color-bg': { light: '#def' } };",
+      "export const tokens = { '--color-bg': { light: '#def' } };"
     );
     const tokens = await themeTokens.loadThemeTokens("delegation");
     expect(tokens["--color-bg"]).toBe("#def");
-    fs.rmSync(join(__dirname, "../../themes/delegation"), { recursive: true, force: true });
+    fs.rmSync(join(__dirname, "../../themes/delegation"), {
+      recursive: true,
+      force: true,
+    });
   });
 });

@@ -1,6 +1,6 @@
 import { render, fireEvent, act } from "@testing-library/react";
 import { TranslationsProvider } from "@acme/i18n";
-import en from "@acme/i18n/src/en.json";
+import en from "@acme/i18n/en.json";
 import ComponentEditor from "../src/components/cms/page-builder/ComponentEditor";
 import type { PageComponent } from "@acme/types";
 
@@ -94,9 +94,9 @@ describe("ComponentEditor", () => {
   it("loads specific editor via registry", async () => {
     const component: PageComponent = {
       id: "1",
-      type: "Image",
+      type: "Button",
     } as PageComponent;
-    const { findByPlaceholderText, getByText } = render(
+    const { findByLabelText, getByText } = render(
       <TranslationsProvider messages={en}>
         <ComponentEditor
           component={component}
@@ -105,10 +105,9 @@ describe("ComponentEditor", () => {
         />
       </TranslationsProvider>
     );
-    fireEvent.click(getByText("Content"));
-    // Image source field uses translations as placeholders
-    expect(
-      await findByPlaceholderText("Image URL")
-    ).toBeInTheDocument();
+    await act(async () => {
+      fireEvent.click(getByText("Content"));
+    });
+    expect(await findByLabelText("Label")).toBeInTheDocument();
   });
 });

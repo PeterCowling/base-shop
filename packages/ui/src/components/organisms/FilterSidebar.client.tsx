@@ -46,6 +46,7 @@ export function FilterSidebar({
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className="fixed inset-0 z-40 bg-fg/50" />
         <DialogPrimitive.Content
+          aria-describedby={undefined}
           className={cn(
             widthClass,
             "bg-background fixed inset-y-0 left-0 z-50 border-r p-4 shadow-lg focus:outline-none"

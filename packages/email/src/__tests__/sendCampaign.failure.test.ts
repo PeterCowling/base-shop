@@ -214,7 +214,7 @@ describe('sendCampaignEmail failure paths', () => {
     mockSanitizeHtml.mockImplementation((html: string) => html);
     mockHasProviderErrorFields.mockImplementation();
 
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
     setupEnv();
 

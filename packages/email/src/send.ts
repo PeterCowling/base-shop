@@ -66,13 +66,16 @@ export async function sendCampaignEmail(
   }
   const optsWithText = await prepareContent(opts, sanitize);
   let lastError: unknown;
-  for (const name of providerOrder) {
+  for (let i = 0; i < providerOrder.length; i++) {
+    const name = providerOrder[i];
+    const isLastProvider = i === providerOrder.length - 1;
+    const log = isLastProvider ? console.error : console.warn;
     if (name === "smtp") {
       try {
         await sendWithNodemailer(optsWithText);
         return;
       } catch (err) {
-        console.error("Campaign email send failed", {
+        log("Campaign email send failed", {
           provider: name,
           recipient: optsWithText.to,
           campaignId: optsWithText.campaignId,
@@ -88,7 +91,7 @@ export async function sendCampaignEmail(
       await sendWithRetry(current, optsWithText);
       return;
     } catch (err) {
-      console.error("Campaign email send failed", {
+      log("Campaign email send failed", {
         provider: name,
         recipient: optsWithText.to,
         campaignId: optsWithText.campaignId,

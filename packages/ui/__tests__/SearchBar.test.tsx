@@ -1,5 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import SearchBar from "../src/components/cms/blocks/SearchBar";
+import userEvent from "@testing-library/user-event";
+import SearchBarBlock from "../src/components/cms/blocks/SearchBar";
+import { SearchBar } from "../src/components/molecules/SearchBar";
 
 describe("SearchBar block", () => {
   it("fetches and displays results", async () => {
@@ -10,21 +12,48 @@ describe("SearchBar block", () => {
     // @ts-expect-error
     global.fetch = jest.fn().mockResolvedValue({ json: () => Promise.resolve(results) });
 
-    const { container } = render(<SearchBar placeholder="Search products…" />);
+    const { container } = render(<SearchBarBlock placeholder="Search products…" />);
     const input = screen.getByPlaceholderText("Search products…");
     fireEvent.change(input, { target: { value: "a" } });
 
     await waitFor(() => expect(global.fetch).toHaveBeenCalled());
     const result = await screen.findByText("Alpha");
     expect(result).toBeInTheDocument();
-    expect(container.querySelector("svg")).toHaveAttribute(
-      "data-token",
-      "--color-muted-fg"
-    );
-    expect(result.parentElement?.parentElement).toHaveAttribute(
-      "data-token",
-      "--color-bg"
-    );
+    expect(container.querySelector("svg")).toHaveAttribute("data-token", "--color-muted-fg");
+    expect(result.parentElement?.parentElement).toHaveAttribute("data-token", "--color-bg");
     expect(result.parentElement).toHaveAttribute("data-token", "--color-fg");
   });
 });
+
+describe("SearchBar component", () => {
+  it("renders suggestions from mock results", async () => {
+    render(<SearchBar suggestions={["apple", "banana", "cherry"]} label="Search" />);
+
+    const input = screen.getByRole("searchbox", { name: "Search" });
+    await userEvent.type(input, "a");
+
+    const items = await screen.findAllByRole("option");
+    expect(items).toHaveLength(2);
+    expect(items[0]).toHaveTextContent("apple");
+    expect(items[1]).toHaveTextContent("banana");
+  });
+
+  it("navigates suggestions with keyboard and selects", async () => {
+    const onSelect = jest.fn();
+    render(
+      <SearchBar
+        suggestions={["apple", "banana", "cherry"]}
+        onSelect={onSelect}
+        label="Search"
+      />
+    );
+
+    const input = screen.getByRole("searchbox", { name: "Search" });
+    await userEvent.type(input, "a");
+    await userEvent.keyboard("{ArrowDown}{ArrowDown}{Enter}");
+
+    expect(onSelect).toHaveBeenCalledWith("banana");
+    expect(input).toHaveValue("banana");
+  });
+});
+

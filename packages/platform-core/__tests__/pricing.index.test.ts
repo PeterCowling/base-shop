@@ -33,18 +33,22 @@ async function setup(pricingData = defaultPricing, rateData = defaultRates) {
 }
 
 describe("pricing index", () => {
-  it("convertCurrency handles base currency, missing rate, and bankers rounding ties", async () => {
-    const { convertCurrency } = await setup(undefined, {
-      base: "USD",
-      rates: { EUR: 0.5 },
-    });
-    await expect(convertCurrency(5, "USD")).resolves.toBe(5);
-    await expect(convertCurrency(1, "EUR")).resolves.toBe(0);
-    await expect(convertCurrency(3, "EUR")).resolves.toBe(2);
-    await expect(convertCurrency(1, "GBP")).rejects.toThrow(
-      "Missing exchange rate for GBP",
-    );
-  });
+  it(
+    "convertCurrency handles base currency, missing rate, bankers rounding ties, and floor rounding",
+    async () => {
+      const { convertCurrency } = await setup(undefined, {
+        base: "USD",
+        rates: { EUR: 0.5 },
+      });
+      await expect(convertCurrency(5, "USD")).resolves.toBe(5);
+      await expect(convertCurrency(1, "EUR")).resolves.toBe(0);
+      await expect(convertCurrency(2, "EUR")).resolves.toBe(1);
+      await expect(convertCurrency(3, "EUR")).resolves.toBe(2);
+      await expect(convertCurrency(1, "GBP")).rejects.toThrow(
+        "Missing exchange rate for GBP",
+      );
+    },
+  );
 
   it("applyDurationDiscount selects the appropriate tier", async () => {
     jest.resetModules();
@@ -58,6 +62,18 @@ describe("pricing index", () => {
     expect(applyDurationDiscount(100, 3, discounts)).toBe(100);
   });
 
+  it("priceForDays uses dailyRate when available", async () => {
+    const { priceForDays } = await setup();
+    const sku = { dailyRate: 20 } as any;
+    await expect(priceForDays(sku, 6)).resolves.toBe(96);
+  });
+
+  it("priceForDays falls back to price without dailyRate", async () => {
+    const { priceForDays } = await setup();
+    const sku = { price: 30 } as any;
+    await expect(priceForDays(sku, 6)).resolves.toBe(144);
+  });
+
   it("computeDamageFee handles rule types and coverage", async () => {
     const { computeDamageFee } = await setup();
     await expect(computeDamageFee(undefined, 50)).resolves.toBe(0);
@@ -65,5 +81,8 @@ describe("pricing index", () => {
     await expect(computeDamageFee("lost", 50)).resolves.toBe(50);
     await expect(computeDamageFee("scuff", 50, ["scuff"])).resolves.toBe(10);
     await expect(computeDamageFee("scuff", 50)).resolves.toBe(20);
+    await expect(
+      computeDamageFee("scuff", 50, [], true),
+    ).resolves.toBe(10);
   });
 });

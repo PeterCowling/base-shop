@@ -4,14 +4,21 @@ jest.mock("@auth", () => ({ requirePermission }));
 const execFile = jest.fn();
 jest.mock("child_process", () => ({ execFile }));
 
+let consoleErrorSpy: jest.SpyInstance;
+
 let POST: typeof import("../route").POST;
 
 beforeAll(async () => {
   ({ POST } = await import("../route"));
+  consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 });
 
 beforeEach(() => {
   jest.clearAllMocks();
+});
+
+afterAll(() => {
+  consoleErrorSpy.mockRestore();
 });
 
 describe("POST", () => {
@@ -40,5 +47,6 @@ describe("POST", () => {
     const res = await POST(req(), { params: { shop: "bad" } });
     expect(res.status).toBe(500);
     expect(await res.json()).toEqual({ error: "Rollback failed" });
+    expect(consoleErrorSpy).toHaveBeenCalled();
   });
 });

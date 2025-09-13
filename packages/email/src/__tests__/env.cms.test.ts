@@ -67,6 +67,7 @@ describe("cms env", () => {
   });
 
   it("rejects invalid SANITY_BASE_URL", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
       withEnv(
         {
@@ -80,6 +81,7 @@ describe("cms env", () => {
         () => import("@acme/config/src/env/cms.ts"),
       ),
     ).rejects.toThrow("Invalid CMS environment variables");
+    expect(errorSpy).toHaveBeenCalled();
   });
 
   it("accepts valid SANITY_BASE_URL", async () => {

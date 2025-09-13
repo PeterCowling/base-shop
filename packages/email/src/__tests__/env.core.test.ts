@@ -104,8 +104,14 @@ describe("AUTH_TOKEN_TTL normalisation", () => {
 describe("NEXT_PUBLIC_BASE_URL validation", () => {
   it("rejects invalid url", async () => {
     await withEnv({ NEXT_PUBLIC_BASE_URL: "not a url" }, async () => {
+      const errorSpy = jest
+        .spyOn(console, "error")
+        .mockImplementation(() => {});
       const { loadCoreEnv } = await import("@acme/config/src/env/core.ts");
-      expect(() => loadCoreEnv()).toThrow("Invalid core environment variables");
+      expect(() => loadCoreEnv()).toThrow(
+        "Invalid core environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalled();
     });
   });
 

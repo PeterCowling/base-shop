@@ -104,6 +104,17 @@ describe("setSanityConfig", () => {
       token: "t",
     });
   });
+
+  it("handles undefined when no config exists", () => {
+    const base: Shop = { other: true };
+    const cleared = setSanityConfig(base, undefined);
+    expect(cleared).not.toBe(base);
+    expect(getSanityConfig(cleared)).toBeUndefined();
+    expect(cleared).not.toHaveProperty("sanityBlog");
+    expect((cleared as Shop).other).toBe(true);
+    // Original object remains unchanged
+    expect(getSanityConfig(base)).toBeUndefined();
+  });
 });
 
 describe("setEditorialBlog", () => {
@@ -140,11 +151,25 @@ describe("setEditorialBlog", () => {
     // Original object remains unchanged
     expect(getEditorialBlog(base)).toEqual({ active: true });
   });
+
+  it("handles undefined when no editorial blog exists", () => {
+    const base: Shop = { other: true };
+    const cleared = setEditorialBlog(base, undefined);
+    expect(cleared).not.toBe(base);
+    expect(getEditorialBlog(cleared)).toBeUndefined();
+    expect(cleared).not.toHaveProperty("editorialBlog");
+    expect((cleared as Shop).other).toBe(true);
+  });
 });
 
 describe("getDomain", () => {
   it("returns undefined when no domain is set", () => {
     expect(getDomain({} as Shop)).toBeUndefined();
+  });
+
+  it("returns the domain when one is set", () => {
+    const domain: ShopDomain = { name: "shop.example.com" };
+    expect(getDomain({ domain } as Shop)).toEqual(domain);
   });
 });
 

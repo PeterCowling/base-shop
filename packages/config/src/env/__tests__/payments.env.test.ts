@@ -91,6 +91,12 @@ describe("payments env provider", () => {
     errSpy.mockRestore();
   });
 
+  it("throws when PAYMENTS_PROVIDER is unknown", async () => {
+    await expect(
+      withEnv({ PAYMENTS_PROVIDER: "braintree" as any }, () => import("../payments")),
+    ).rejects.toThrow("Invalid payments environment variables");
+  });
+
   it("logs and rejects unknown PAYMENTS_PROVIDER", async () => {
     const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
@@ -186,4 +192,19 @@ describe("payments env currency", () => {
       );
     },
   );
+});
+
+describe("payments env defaults on invalid config", () => {
+  it("warns and returns defaults when sandbox or currency invalid", async () => {
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const { paymentsEnv, paymentsEnvSchema } = await withEnv(
+      { PAYMENTS_SANDBOX: "maybe", PAYMENTS_CURRENCY: "usd" },
+      () => import("../payments"),
+    );
+    expect(paymentsEnv).toEqual(paymentsEnvSchema.parse({}));
+    expect(warnSpy).toHaveBeenCalledWith(
+      "⚠️ Invalid payments environment variables:",
+      expect.any(Object),
+    );
+  });
 });

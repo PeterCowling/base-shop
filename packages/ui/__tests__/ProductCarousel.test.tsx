@@ -1,5 +1,6 @@
 import React from "react";
-import { render, act } from "@testing-library/react";
+import { render, act, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { ProductCarousel } from "../src/components/organisms/ProductCarousel";
 import type { Product } from "../src/components/organisms/ProductCard";
 
@@ -57,5 +58,37 @@ describe("ProductCarousel", () => {
     const slide = container.querySelector(".snap-start") as HTMLElement;
     const expected = `0 0 ${100 / 3}%`;
     expect(slide.style.flex).toBe(expected);
+  });
+
+  it("navigates with arrows and loops", async () => {
+    const user = userEvent.setup();
+    const { container } = render(<ProductCarousel products={products} />);
+    const scroller = container.querySelector(".flex") as HTMLElement;
+    Object.defineProperty(scroller, "clientWidth", {
+      value: 100,
+      configurable: true,
+    });
+    const scrollTo = jest.fn();
+    // @ts-expect-error jsdom
+    scroller.scrollTo = scrollTo;
+
+    const next = screen.getByRole("button", { name: /next/i });
+    const prev = screen.getByRole("button", { name: /previous/i });
+
+    await user.click(next);
+    expect(scrollTo).toHaveBeenLastCalledWith({ left: 100, behavior: "smooth" });
+
+    for (let i = 1; i < products.length; i++) {
+      await user.click(next);
+    }
+    expect(scrollTo).toHaveBeenLastCalledWith({ left: 0, behavior: "smooth" });
+
+    await user.click(prev);
+    expect(scrollTo).toHaveBeenLastCalledWith({ left: 400, behavior: "smooth" });
+  });
+
+  it("renders null when products array is empty", () => {
+    const { container } = render(<ProductCarousel products={[]} />);
+    expect(container.firstChild).toBeNull();
   });
 });

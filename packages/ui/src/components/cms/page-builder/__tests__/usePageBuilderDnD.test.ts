@@ -2,15 +2,17 @@ import { renderHook, act } from "@testing-library/react";
 import usePageBuilderDnD from "../hooks/usePageBuilderDnD";
 
 describe("usePageBuilderDnD", () => {
-  it("handleDragMove updates insertIndex and snap position", () => {
+  it("handleDragMove determines insertIndex for canvas and blocks and snaps x", () => {
     const setSnapPosition = jest.fn();
     const canvasRef = {
       current: { getBoundingClientRect: () => ({ left: 0 }) },
     } as any;
 
+    const components = [{ id: "a", type: "Text" }];
+
     const { result } = renderHook(() =>
       usePageBuilderDnD({
-        components: [],
+        components,
         dispatch: jest.fn(),
         defaults: {},
         containerTypes: [],
@@ -21,6 +23,7 @@ describe("usePageBuilderDnD", () => {
       })
     );
 
+    // over canvas inserts at end
     act(() =>
       result.current.handleDragMove({
         over: { id: "canvas", data: { current: {} }, rect: { top: 0, height: 0 } },
@@ -28,9 +31,36 @@ describe("usePageBuilderDnD", () => {
         activatorEvent: { clientX: 0, clientY: 0 },
       } as any)
     );
-
-    expect(result.current.insertIndex).toBe(0);
+    expect(result.current.insertIndex).toBe(1);
     expect(setSnapPosition).toHaveBeenLastCalledWith(10);
+
+    // pointer above midpoint of first block
+    act(() =>
+      result.current.handleDragMove({
+        over: {
+          id: "a",
+          data: { current: { index: 0 } },
+          rect: { top: 0, height: 20 },
+        },
+        delta: { x: 0, y: 0 },
+        activatorEvent: { clientX: 0, clientY: 9 },
+      } as any)
+    );
+    expect(result.current.insertIndex).toBe(0);
+
+      // pointer below midpoint of first block
+      act(() =>
+        result.current.handleDragMove({
+          over: {
+            id: "a",
+            data: { current: { index: 0 } },
+            rect: { top: 0, height: 20 },
+          },
+          delta: { x: 0, y: 6 },
+          activatorEvent: { clientX: 0, clientY: 9 },
+        } as any)
+      );
+      expect(result.current.insertIndex).toBe(1);
   });
 
   it("adds new component from the palette", () => {
@@ -63,7 +93,8 @@ describe("usePageBuilderDnD", () => {
     );
 
     const action = dispatch.mock.calls[0][0];
-    expect(action.type).toBe("add");
+    expect(action).toMatchObject({ type: "add", parentId: undefined, index: 0 });
+    expect(action.component.type).toBe("Text");
     expect(selectId).toHaveBeenCalledWith(action.component.id);
   });
 

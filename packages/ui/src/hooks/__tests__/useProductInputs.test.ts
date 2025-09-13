@@ -23,9 +23,10 @@ function createProduct(): ProductPublication {
 const locales: readonly Locale[] = ["en", "de"];
 
 describe("useProductInputs", () => {
-  it("handleChange processes multilingual, price, indexed and comma-separated variant fields", () => {
+  it("handleChange processes multilingual and comma-separated variant fields", () => {
+    const initial = { ...createProduct(), variants: {} };
     const { result } = renderHook(() =>
-      useProductInputs({ ...createProduct(), variants: {} }, locales)
+      useProductInputs(initial, locales)
     );
 
     act(() => {
@@ -37,24 +38,47 @@ describe("useProductInputs", () => {
 
     act(() => {
       result.current.handleChange({
-        target: { name: "price", value: "200" },
-      } as any);
-    });
-    expect(result.current.product.price).toBe(200);
-
-    act(() => {
-      result.current.handleChange({
         target: { name: "variant_color_0", value: "red" },
       } as any);
     });
-    expect(result.current.product.variants.color).toEqual(["red"]);
-
     act(() => {
       result.current.handleChange({
         target: { name: "variant_size", value: "m, l" },
       } as any);
     });
-    expect(result.current.product.variants.size).toEqual(["m", "l"]);
+
+    expect(result.current.product).toEqual({
+      ...initial,
+      title: { en: "New EN", de: "Old DE" },
+      variants: { color: ["red"], size: ["m", "l"] },
+    });
+  });
+
+  it("handleChange updates price with numeric and non-numeric input", () => {
+    const initial = { ...createProduct(), variants: {} };
+    const { result } = renderHook(() =>
+      useProductInputs(initial, locales)
+    );
+
+    act(() => {
+      result.current.handleChange({
+        target: { name: "price", value: "200" },
+      } as any);
+    });
+    expect(result.current.product).toEqual({
+      ...initial,
+      price: 200,
+    });
+
+    act(() => {
+      result.current.handleChange({
+        target: { name: "price", value: "abc" },
+      } as any);
+    });
+    expect(result.current.product.price).toBeNaN();
+    const { price, ...rest } = result.current.product;
+    const { price: _p, ...expectedRest } = { ...initial, variants: {} };
+    expect(rest).toEqual(expectedRest);
   });
 
   it("handleChange updates description field", () => {
@@ -98,14 +122,18 @@ describe("useProductInputs", () => {
     expect(result.current.product).toEqual(initial);
   });
 
-  it("addVariantValue and removeVariantValue update variants correctly", () => {
+  it("addVariantValue/removeVariantValue and indexed variant inputs mutate product", () => {
+    const initial = { ...createProduct(), variants: {} };
     const { result } = renderHook(() =>
-      useProductInputs({ ...createProduct(), variants: {} }, locales)
+      useProductInputs(initial, locales)
     );
 
     act(() => {
+      result.current.addVariantValue("color");
+    });
+    act(() => {
       result.current.handleChange({
-        target: { name: "variant_color", value: "red" },
+        target: { name: "variant_color_0", value: "red" },
       } as any);
     });
     act(() => {
@@ -116,24 +144,18 @@ describe("useProductInputs", () => {
         target: { name: "variant_color_1", value: "blue" },
       } as any);
     });
-    act(() => {
-      result.current.addVariantValue("color");
+    expect(result.current.product).toEqual({
+      ...initial,
+      variants: { color: ["red", "blue"] },
     });
-    act(() => {
-      result.current.handleChange({
-        target: { name: "variant_color_2", value: "green" },
-      } as any);
-    });
-    expect(result.current.product.variants.color).toEqual([
-      "red",
-      "blue",
-      "green",
-    ]);
 
     act(() => {
-      result.current.removeVariantValue("color", 1);
+      result.current.removeVariantValue("color", 0);
     });
-    expect(result.current.product.variants.color).toEqual(["red", "green"]);
+    expect(result.current.product).toEqual({
+      ...initial,
+      variants: { color: ["blue"] },
+    });
   });
 });
 

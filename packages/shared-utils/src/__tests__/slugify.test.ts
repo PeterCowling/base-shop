@@ -25,6 +25,10 @@ describe('slugify', () => {
     expect(slugify('---Hello---')).toBe('hello');
   });
 
+  it('returns empty string when string is only punctuation', () => {
+    expect(slugify('!!!')).toBe('');
+  });
+
   it('returns an empty string for null/undefined input', () => {
     expect(slugify(null)).toBe('');
     // @ts-expect-error Test undefined input

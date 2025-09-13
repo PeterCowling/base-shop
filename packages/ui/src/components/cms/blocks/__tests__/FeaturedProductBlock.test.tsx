@@ -37,4 +37,25 @@ describe("FeaturedProductBlock", () => {
     await userEvent.selectOptions(select, "S");
     expect(button).not.toBeDisabled();
   });
+
+  it("returns null when no product data is provided", () => {
+    const { container } = render(<FeaturedProductBlock />);
+    expect(container.firstChild).toBeNull();
+  });
+
+  it("shows secondary media and badges when available", () => {
+    const skuWithExtras: SKU & { badges?: { sale?: boolean; new?: boolean } } = {
+      ...sku,
+      media: [
+        { url: "/img-primary.jpg", type: "image", altText: "Primary" },
+        { url: "/img-secondary.jpg", type: "image", altText: "Secondary" },
+      ],
+      badges: { sale: true, new: true },
+    };
+    render(<FeaturedProductBlock sku={skuWithExtras} />);
+    expect(screen.getByAltText("Primary")).toBeInTheDocument();
+    expect(screen.getByAltText("Secondary")).toBeInTheDocument();
+    expect(screen.getByTestId("badge-sale")).toBeInTheDocument();
+    expect(screen.getByTestId("badge-new")).toBeInTheDocument();
+  });
 });

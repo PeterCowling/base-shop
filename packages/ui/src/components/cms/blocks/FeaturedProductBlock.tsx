@@ -45,6 +45,7 @@ export default function FeaturedProductBlock({
   if (!product) return null;
 
   const media = product.media?.[0];
+  const secondaryMedia = product.media?.[1];
 
   return (
     <div className="flex flex-col gap-4">
@@ -68,6 +69,28 @@ export default function FeaturedProductBlock({
           )}
         </div>
       )}
+      {secondaryMedia?.url && (
+        <div className="relative aspect-square w-full" data-cy="secondary-media">
+          {secondaryMedia.type === "image" ? (
+            <Image
+              src={secondaryMedia.url}
+              alt={secondaryMedia.altText ?? product.title ?? ""}
+              fill
+              sizes="(min-width: 768px) 50vw, 100vw"
+              className="rounded-md object-cover"
+            />
+          ) : (
+            <video
+              src={secondaryMedia.url}
+              className="h-full w-full rounded-md object-cover"
+              muted
+              playsInline
+            />
+          )}
+        </div>
+      )}
+      {product.badges?.sale && <span data-cy="badge-sale">Sale</span>}
+      {product.badges?.new && <span data-cy="badge-new">New</span>}
       <h3 className="text-xl font-semibold">{product.title}</h3>
       <Price amount={product.price ?? 0} className="text-lg font-medium" />
       <ProductVariantSelector

@@ -45,6 +45,11 @@ describe("startOfDay", () => {
     expect(d.toISOString()).toBe("2025-03-03T00:00:00.000Z");
   });
 
+  it("handles Date objects without timezone", () => {
+    const d = new Date(2025, 2, 10, 12);
+    expect(startOfDay(d).toISOString()).toBe("2025-03-10T00:00:00.000Z");
+  });
+
   it("adjusts for timezone offsets and DST", () => {
     const d = startOfDay("2025-03-10T12:00:00Z", "America/New_York");
     // After DST, midnight local is 04:00 UTC
@@ -249,6 +254,28 @@ describe("parseTargetDate", () => {
     expect(parseTargetDate("2025-02-29")).toBeNull();
     process.env.TZ = prev;
   });
+
+  it("returns null when date string lacks three segments", () => {
+    expect(parseTargetDate("2025-01")).toBeNull();
+  });
+
+  describe("process.env.TZ handling", () => {
+    const prev = process.env.TZ;
+    beforeAll(() => {
+      process.env.TZ = "America/New_York";
+    });
+    afterAll(() => {
+      process.env.TZ = prev;
+    });
+    it("parses valid local date", () => {
+      expect(parseTargetDate("2025-01-05")?.toISOString()).toBe(
+        "2025-01-05T05:00:00.000Z"
+      );
+    });
+    it("returns null for invalid local date", () => {
+      expect(parseTargetDate("2025-02-30")).toBeNull();
+    });
+  });
 });
 
 describe("getTimeRemaining and formatDuration", () => {
@@ -361,6 +388,18 @@ describe("parseTargetDate error handling", () => {
       ).toBeNull();
     });
   });
+
+  it("returns null when timezone parsing yields NaN", async () => {
+    await jest.isolateModulesAsync(async () => {
+      jest.doMock("date-fns-tz", () => ({
+        fromZonedTime: () => new Date(NaN),
+      }));
+      const { parseTargetDate: mocked } = await import("../index");
+      expect(
+        mocked("2025-01-01T00:00:00", "America/New_York")
+      ).toBeNull();
+    });
+  });
 });
 
 describe("locale formatting consistency", () => {
@@ -381,6 +420,22 @@ describe("locale formatting consistency", () => {
 });
 
 describe("parseDateSafe and formatRelative", () => {
+  it("falls back to now when value is undefined", () => {
+    const now = new Date("2025-01-01T00:00:00Z");
+    jest.useFakeTimers().setSystemTime(now);
+    expect(parseDateSafe().toISOString()).toBe("2025-01-01T00:00:00.000Z");
+    jest.useRealTimers();
+  });
+
+  it("falls back to now when given a numeric string", () => {
+    const now = new Date("2025-01-01T00:00:00Z");
+    jest.useFakeTimers().setSystemTime(now);
+    expect(parseDateSafe("1735689600000").toISOString()).toBe(
+      "2025-01-01T00:00:00.000Z"
+    );
+    jest.useRealTimers();
+  });
+
   it("handles invalid date input", () => {
     const d = parseDateSafe("not-a-date");
     expect(d).toBeInstanceOf(Date);

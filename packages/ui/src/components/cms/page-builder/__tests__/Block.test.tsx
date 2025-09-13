@@ -54,6 +54,20 @@ describe("Block", () => {
     expect(container.innerHTML).not.toContain("onerror");
   });
 
+  it("renders locale-specific text when provided a map", () => {
+    render(
+      <Block
+        component={{
+          id: "8",
+          type: "Text" as any,
+          text: { en: "Hello", fr: "Bonjour" },
+        }}
+        locale="fr"
+      />,
+    );
+    expect(screen.getByText("Bonjour")).toBeInTheDocument();
+  });
+
   it("returns null for unknown component type", () => {
     const { container } = render(
       <Block component={{ id: "4", type: "Baz" as any }} locale="en" />,
@@ -94,6 +108,18 @@ describe("Block", () => {
     expect(link.parentElement?.tagName.toLowerCase()).not.toBe("a");
   });
 
+  it("does not wrap or pass href when navigating without href", () => {
+    render(
+      <Block
+        component={{ id: "9", type: "Foo" as any, clickAction: "navigate" }}
+        locale="en"
+      />,
+    );
+    const foo = screen.getByTestId("foo");
+    expect(foo.closest("a")).toBeNull();
+    expect(foo).not.toHaveAttribute("href");
+  });
+
   it.each([
     ["fade", "pb-animate-fade"],
     ["slide", "pb-animate-slide"],
@@ -109,7 +135,10 @@ describe("Block", () => {
 
   it("does not wrap block or apply animation class when animation is undefined", () => {
     const { container } = render(
-      <Block component={{ id: "7", type: "Foo" as any }} locale="en" />,
+      <Block
+        component={{ id: "10", type: "Foo" as any, animation: undefined }}
+        locale="en"
+      />,
     );
     const element = screen.getByTestId("foo");
     expect(container.firstChild).toBe(element);

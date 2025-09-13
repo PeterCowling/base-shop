@@ -36,16 +36,19 @@ describe("colorUtils", () => {
   test("isHex validates hex colors", () => {
     expect(isHex("#fff")).toBe(true);
     expect(isHex("fff")).toBe(false);
+    expect(isHex("#ABCDEF")).toBe(true);
   });
 
   test("isHsl validates HSL colors", () => {
     expect(isHsl("120 100% 50%"));
     expect(isHsl("#fff")).toBe(false);
+    expect(isHsl("120 100 50%" as any)).toBe(false);
   });
 
   test("hexToRgb converts shorthand and longhand hex", () => {
     expect(hexToRgb("#ffffff")).toEqual([255, 255, 255]);
     expect(hexToRgb("#abc")).toEqual([170, 187, 204]);
+    expect(hexToRgb("#ABCDEF")).toEqual([171, 205, 239]);
   });
 
   test("hexToRgb throws on invalid input", () => {
@@ -55,5 +58,11 @@ describe("colorUtils", () => {
   test("getContrastColor chooses black or white based on brightness", () => {
     expect(getContrastColor("#ffffff")).toBe("#000000");
     expect(getContrastColor("#000000")).toBe("#ffffff");
+    expect(getContrastColor("#777777")).toBe("#ffffff");
+  });
+
+  test("hexToHsl handles black and invalid input", () => {
+    expect(hexToHsl("#000000")).toBe("0 0% 0%");
+    expect(() => hexToHsl("bad" as any)).toThrow("Invalid hex color");
   });
 });

@@ -102,5 +102,55 @@ describe("useProductMediaManager", () => {
 
     expect(result.current.product.media).toEqual([item1, item2]);
   });
+
+  it("removeMedia updates product media via setProduct", () => {
+    const item1 = { url: "1.png" };
+    const item2 = { url: "2.png" };
+    const item3 = { url: "3.png" };
+
+    mockUsePublishLocations.mockReturnValue({ locations: [], reload: jest.fn() });
+    mockUseFileUpload.mockReturnValue({ uploader: <div /> });
+
+    let product: ProductWithVariants = { media: [item1, item2, item3] } as any;
+    const setProduct = jest.fn((updater: any) => {
+      product = typeof updater === "function" ? updater(product) : updater;
+    });
+
+    const { result } = renderHook(() =>
+      useProductMediaManager("shop", [], setProduct)
+    );
+
+    act(() => {
+      result.current.removeMedia(1);
+    });
+
+    expect(product.media).toEqual([item1, item3]);
+    expect(setProduct).toHaveBeenCalledTimes(1);
+  });
+
+  it("moveMedia reorders product media via setProduct", () => {
+    const item1 = { url: "1.png" };
+    const item2 = { url: "2.png" };
+    const item3 = { url: "3.png" };
+
+    mockUsePublishLocations.mockReturnValue({ locations: [], reload: jest.fn() });
+    mockUseFileUpload.mockReturnValue({ uploader: <div /> });
+
+    let product: ProductWithVariants = { media: [item1, item2, item3] } as any;
+    const setProduct = jest.fn((updater: any) => {
+      product = typeof updater === "function" ? updater(product) : updater;
+    });
+
+    const { result } = renderHook(() =>
+      useProductMediaManager("shop", [], setProduct)
+    );
+
+    act(() => {
+      result.current.moveMedia(2, 0);
+    });
+
+    expect(product.media).toEqual([item3, item1, item2]);
+    expect(setProduct).toHaveBeenCalledTimes(1);
+  });
 });
 

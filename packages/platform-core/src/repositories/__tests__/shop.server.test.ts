@@ -89,6 +89,23 @@ describe("shop.server wrapper", () => {
     expect(result).toEqual({ id: "shop1", name: "Updated" });
   });
 
+  it("propagates errors from getShopById", async () => {
+    const error = new Error("get failed");
+    repo.getShopById.mockRejectedValue(error);
+    await expect(getShopById("shop1")).rejects.toThrow(error);
+    expect(resolveRepo).toHaveBeenCalled();
+    expect(repo.getShopById).toHaveBeenCalledWith("shop1");
+  });
+
+  it("propagates errors from updateShopInRepo", async () => {
+    const error = new Error("update failed");
+    const patch = { id: "shop1", name: "Updated" };
+    repo.updateShopInRepo.mockRejectedValue(error);
+    await expect(updateShopInRepo("shop1", patch)).rejects.toThrow(error);
+    expect(resolveRepo).toHaveBeenCalled();
+    expect(repo.updateShopInRepo).toHaveBeenCalledWith("shop1", patch);
+  });
+
   it("clears repoPromise in test env and forwards params", async () => {
     const originalNodeEnv = process.env.NODE_ENV;
     process.env.NODE_ENV = "test";

@@ -3,15 +3,21 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import FAQBlock from "../FAQBlock";
 
 describe("FAQBlock", () => {
-  const items = [
+  const items: any[] = [
     { question: "Q1", answer: "A1" },
     { question: "Q2", answer: "A2" },
+    // Item missing an answer should be ignored
+    { question: "Q3" },
   ];
 
-  it("renders accordion items and toggles answers", () => {
+  it("renders multiple entries, skipping those without answers", () => {
     render(<FAQBlock items={items} />);
+    expect(screen.getByText("Q1")).toBeInTheDocument();
+    expect(screen.getByText("Q2")).toBeInTheDocument();
+    // Q3 has no answer and should be skipped
+    expect(screen.queryByText("Q3")).not.toBeInTheDocument();
     const btn = screen.getByRole("button", { name: /Q1/ });
-    fireEvent.click(btn);
+    fireEvent.click(btn, { detail: 1 });
     expect(screen.getByText("A1")).toBeInTheDocument();
   });
 

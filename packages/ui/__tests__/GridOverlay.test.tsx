@@ -7,6 +7,8 @@ describe("GridOverlay", () => {
     { gridCols: 0, expected: 1 },
     { gridCols: -3, expected: 1 },
     { gridCols: 3.7, expected: 3 },
+    { gridCols: NaN, expected: 1 },
+    { gridCols: Infinity, expected: 1 },
   ];
 
   test.each(cases)("renders %s columns", ({ gridCols, expected }) => {

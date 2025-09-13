@@ -126,4 +126,60 @@ describe("core env loader", () => {
       );
     });
   });
+
+  describe("requireEnv error handling", () => {
+    it("throws for invalid boolean", async () => {
+      process.env.FLAG = "maybe";
+      const { requireEnv } = await reload();
+      expect(() => requireEnv("FLAG", "boolean")).toThrow(
+        "FLAG must be a boolean",
+      );
+    });
+
+    it("throws for invalid number", async () => {
+      process.env.NUM = "abc";
+      const { requireEnv } = await reload();
+      expect(() => requireEnv("NUM", "number")).toThrow(
+        "NUM must be a number",
+      );
+    });
+  });
+
+  describe("coreEnvSchema AUTH_TOKEN_TTL normalization", () => {
+    it("defaults numeric values", async () => {
+      const { coreEnvSchema } = await reload();
+      const result = coreEnvSchema.safeParse({
+        ...baseEnv,
+        AUTH_TOKEN_TTL: 123,
+      } as Record<string, unknown>);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.AUTH_TOKEN_TTL).toBe(900);
+      }
+    });
+
+    it("defaults blank strings", async () => {
+      const { coreEnvSchema } = await reload();
+      const result = coreEnvSchema.safeParse({
+        ...baseEnv,
+        AUTH_TOKEN_TTL: "   ",
+      } as Record<string, unknown>);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.AUTH_TOKEN_TTL).toBe(900);
+      }
+    });
+
+    it("parses unit-suffixed strings", async () => {
+      const { coreEnvSchema } = await reload();
+      const result = coreEnvSchema.safeParse({
+        ...baseEnv,
+        AUTH_TOKEN_TTL: "5m",
+      } as Record<string, unknown>);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.AUTH_TOKEN_TTL).toBe(300);
+      }
+    });
+  });
 });

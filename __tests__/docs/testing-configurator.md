@@ -11,14 +11,14 @@ This guide explains how to run the end-to-end configurator test.
 ## Environment variables
 
 - `NEXTAUTH_SECRET` – secret used by NextAuth for session signing.
-- `TEST_DATA_ROOT` – root directory for test fixtures. Defaults to `test/data/shops`.
+- `TEST_DATA_ROOT` – root directory for test fixtures. Defaults to `__tests__/data/shops`.
 
 ## Cleanup
 
 If the test fails, remove any partially created shop data to reset the environment:
 
 ```bash
-rm -rf "${TEST_DATA_ROOT:-test/data}/shops/*"
+rm -rf "${TEST_DATA_ROOT:-__tests__/data}/shops/*"
 ```
 
 Then re-seed fixtures as needed:

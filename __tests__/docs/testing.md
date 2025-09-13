@@ -40,7 +40,7 @@ pnpm --filter @acme/platform-core exec prisma migrate reset --force
 pnpm --filter @acme/platform-core exec prisma db seed
 ```
 
-`pnpm --filter @acme/platform-core exec prisma db seed` seeds inventory and orders by default. Run `pnpm --filter @acme/platform-core exec prisma db seed -- --skip-inventory` to omit inventory data. Inventory fixtures come from `data/shops/*/inventory.json` and compute `variantKey` for each variant.
+`pnpm --filter @acme/platform-core exec prisma db seed` seeds inventory and orders by default. Run `pnpm --filter @acme/platform-core exec prisma db seed -- --skip-inventory` to omit inventory data. Inventory fixtures come from `__tests__/data/shops/*/inventory.json` and compute `variantKey` for each variant.
 
 Run these commands before `pnpm test` so each test suite starts from a clean, seeded state.
 

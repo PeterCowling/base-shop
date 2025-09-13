@@ -20,7 +20,7 @@ Before submitting changes, run [`pnpm lint`](../package.json#L24) and [`pnpm tes
 
 ## Testing
 
-See [testing](./testing.md) for guidance on running tests with Prisma.
+See [testing](../__tests__/docs/testing.md) for guidance on running tests with Prisma.
 
 ## Prisma model access
 

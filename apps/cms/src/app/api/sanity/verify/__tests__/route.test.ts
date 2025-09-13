@@ -29,6 +29,7 @@ describe('POST /api/sanity/verify', () => {
 
   afterEach(() => {
     (global as any).fetch = originalFetch;
+    jest.restoreAllMocks();
     jest.resetAllMocks();
   });
 
@@ -81,6 +82,7 @@ describe('POST /api/sanity/verify', () => {
   });
 
   it('returns 500 when dataset list fails', async () => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     const mockFetch = jest
       .fn()
       .mockResolvedValue(new Response('fail', { status: 500 }));
@@ -99,6 +101,7 @@ describe('POST /api/sanity/verify', () => {
       error: 'Failed to list datasets',
       errorCode: 'DATASET_LIST_ERROR',
     });
+    expect(consoleError).toHaveBeenCalledWith(expect.any(Error));
   });
 });
 

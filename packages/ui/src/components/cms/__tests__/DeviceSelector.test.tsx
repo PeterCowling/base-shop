@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import DeviceSelector from "../DeviceSelector";
 import { devicePresets } from "../../../utils/devicePresets";
+import { useState } from "react";
 
 describe("DeviceSelector", () => {
   beforeAll(() => {
@@ -87,33 +88,39 @@ describe("DeviceSelector", () => {
     expect(icon).not.toHaveClass("rotate-90");
   });
 
-  it("invokes toggleOrientation and rotates icon when landscape", async () => {
+  it("toggles icon rotation immediately when button is clicked", async () => {
     const toggleOrientation = jest.fn();
-    const { rerender } = render(
-      <DeviceSelector
-        deviceId="desktop-1280"
-        orientation="portrait"
-        setDeviceId={jest.fn()}
-        toggleOrientation={toggleOrientation}
-      />
-    );
+    function Wrapper() {
+      const [orientation, setOrientation] = useState<
+        "portrait" | "landscape"
+      >("portrait");
+      const handleToggle = () => {
+        setOrientation((o) => (o === "portrait" ? "landscape" : "portrait"));
+        toggleOrientation();
+      };
+      return (
+        <DeviceSelector
+          deviceId="desktop-1280"
+          orientation={orientation}
+          setDeviceId={jest.fn()}
+          toggleOrientation={handleToggle}
+        />
+      );
+    }
 
-    await userEvent.click(screen.getByRole("button", { name: "Rotate" }));
-    expect(toggleOrientation).toHaveBeenCalled();
+    render(<Wrapper />);
 
-    rerender(
-      <DeviceSelector
-        deviceId="desktop-1280"
-        orientation="landscape"
-        setDeviceId={jest.fn()}
-        toggleOrientation={toggleOrientation}
-      />
-    );
+    const button = screen.getByRole("button", { name: "Rotate" });
+    const icon = button.querySelector("svg");
+    expect(icon).not.toHaveClass("rotate-90");
 
-    const icon = screen
-      .getByRole("button", { name: "Rotate" })
-      .querySelector("svg");
+    await userEvent.click(button);
+    expect(toggleOrientation).toHaveBeenCalledTimes(1);
     expect(icon).toHaveClass("rotate-90");
+
+    await userEvent.click(button);
+    expect(toggleOrientation).toHaveBeenCalledTimes(2);
+    expect(icon).not.toHaveClass("rotate-90");
   });
 });
 

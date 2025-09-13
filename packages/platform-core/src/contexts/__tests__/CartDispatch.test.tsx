@@ -5,6 +5,9 @@ import { clearCartStorage, setupFetchMock } from "./cartTestUtils";
 
 configure({ testIdAttribute: "data-testid" });
 
+// TODO: Refactor CartProvider to accept initial state to avoid network
+// requests and explicit waits in tests.
+
 describe("Cart actions", () => {
   const sku: SKU = {
     id: "sku1",
@@ -50,6 +53,10 @@ describe("Cart actions", () => {
       </CartProvider>
     );
 
+    // TODO: remove when CartProvider supports synchronous init
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    fetchMock.mockClear();
+
     await act(async () => {
       await dispatch({ type: "add", sku });
     });
@@ -68,6 +75,10 @@ describe("Cart actions", () => {
       </CartProvider>
     );
 
+    // TODO: remove when CartProvider supports synchronous init
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    fetchMock.mockClear();
+
     await expect(dispatch({ type: "add", sku: sizedSku })).rejects.toThrow(
       "Size is required"
     );
@@ -84,6 +95,10 @@ describe("Cart actions", () => {
         <Consumer />
       </CartProvider>
     );
+
+    // TODO: remove when CartProvider supports synchronous init
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    fetchMock.mockClear();
 
     await act(async () => {
       await dispatch({ type: "setQty", id: "sku1", qty: 2 });
@@ -103,6 +118,10 @@ describe("Cart actions", () => {
       </CartProvider>
     );
 
+    // TODO: remove when CartProvider supports synchronous init
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    fetchMock.mockClear();
+
     await expect(
       dispatch({ type: "setQty", id: "sku1", qty: 2 })
     ).rejects.toThrow("msg");
@@ -120,6 +139,10 @@ describe("Cart actions", () => {
         <Consumer />
       </CartProvider>
     );
+
+    // TODO: remove when CartProvider supports synchronous init
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    fetchMock.mockClear();
 
     await act(async () => {
       await dispatch({ type: "remove", id: "sku1" });
@@ -140,6 +163,10 @@ describe("Cart actions", () => {
         <Consumer />
       </CartProvider>
     );
+
+    // TODO: remove when CartProvider supports synchronous init
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    fetchMock.mockClear();
 
     await expect(dispatch({ type: "remove", id: "sku1" })).rejects.toThrow(
       "msg"
@@ -200,6 +227,9 @@ describe("CartProvider dispatch", () => {
         <Capture />
       </CartProvider>
     );
+    // TODO: remove when CartProvider supports synchronous init
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled());
+    fetchMock.mockClear();
     await expect(
       dispatch({ type: "add", sku: skuWithSizes })
     ).rejects.toThrow("Size is required");

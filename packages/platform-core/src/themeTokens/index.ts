@@ -79,7 +79,9 @@ export async function loadThemeTokensBrowser(theme: string): Promise<TokenMap> {
     );
     if ("tokens" in mod) {
       return Object.fromEntries(
-        typedEntries((mod as { tokens: ThemeTokenMap }).tokens).map(([k, v]) => [k, v.light])
+        Object.entries(
+          (mod as { tokens: Record<string, string | { light: string }> }).tokens
+        ).map(([k, v]) => [k, typeof v === "string" ? v : v.light])
       ) as TokenMap;
     }
   } catch {

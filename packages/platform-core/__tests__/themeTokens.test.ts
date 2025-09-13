@@ -140,6 +140,21 @@ describe("loadThemeTokensBrowser", () => {
     });
   });
 
+  it("supports string token values", async () => {
+    const dir = join(__dirname, "../../themes/plain/src");
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(
+      join(dir, "index.ts"),
+      "export const tokens = { '--color-bg': '#456' };"
+    );
+    const tokens = await loadThemeTokensBrowser("plain");
+    expect(tokens["--color-bg"]).toBe("#456");
+    fs.rmSync(join(__dirname, "../../themes/plain"), {
+      recursive: true,
+      force: true,
+    });
+  });
+
   it("falls back to tailwind-tokens when direct import fails", async () => {
     const dir = join(__dirname, "../../themes/fallback/tailwind-tokens/src");
     fs.mkdirSync(dir, { recursive: true });

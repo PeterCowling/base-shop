@@ -429,6 +429,20 @@ describe("shops.repository", () => {
       );
     });
 
+    it.each([0, -5])(
+      "clamps limit within bounds (limit=%s)",
+      async (limit) => {
+        count.mockResolvedValue(1);
+        findMany.mockResolvedValue([]);
+
+        await listShops(1, limit);
+
+        expect(findMany).toHaveBeenCalledWith(
+          expect.objectContaining({ skip: 0, take: 1 })
+        );
+      },
+    );
+
     it("returns items from the last page when page equals max", async () => {
       count.mockResolvedValue(5);
       findMany.mockResolvedValue([{ id: "shop5" }]);

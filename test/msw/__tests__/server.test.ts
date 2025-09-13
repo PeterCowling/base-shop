@@ -54,4 +54,18 @@ describe("msw server handlers", () => {
     const json = await res.json();
     expect(json).toEqual({});
   });
+
+  test("GET /api/publish-locations returns sample data", async () => {
+    const res = await fetch("http://localhost/api/publish-locations");
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json).toEqual([
+      {
+        id: "homepage-hero",
+        name: "Homepage hero",
+        path: "homepage/hero",
+        requiredOrientation: "landscape",
+      },
+    ]);
+  });
 });

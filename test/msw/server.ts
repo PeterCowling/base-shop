@@ -58,6 +58,19 @@ export const handlers = [
       ctx.body(stream)
     );
   }),
+  rest.get("/api/publish-locations", (_req, res, ctx) =>
+    res(
+      ctx.status(200),
+      ctx.json([
+        {
+          id: "homepage-hero",
+          name: "Homepage hero",
+          path: "homepage/hero",
+          requiredOrientation: "landscape",
+        },
+      ])
+    )
+  ),
   // Allow cart API requests to reach fetch mocks or the real network.
   //
   // Using relative paths here ensures requests like `/api/cart` – which the

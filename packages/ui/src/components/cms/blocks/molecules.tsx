@@ -2,7 +2,7 @@
 "use client";
 
 import type { Locale } from "@acme/i18n/locales";
-import { memo } from "react";
+import { memo, useState } from "react";
 import type { BlockRegistryEntry } from "./types";
 import type { CategoryCollectionTemplateProps } from "../../templates/CategoryCollectionTemplate";
 import { CategoryCollectionTemplate } from "../../templates/CategoryCollectionTemplate";
@@ -33,14 +33,43 @@ export const NewsletterForm = memo(function NewsletterForm({
   const label =
     typeof submitLabel === "string" ? submitLabel : (submitLabel[locale] ?? "");
 
+  const [value, setValue] = useState("");
+  const [message, setMessage] = useState("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    try {
+      const res = await fetch(action, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: value }),
+      });
+      if (res.ok) {
+        setMessage("Success");
+        setValue("");
+      } else {
+        setMessage("Error");
+      }
+    } catch {
+      setMessage("Error");
+    }
+  }
+
   return (
-    <form action={action} method={method} className="flex gap-2">
+    <form
+      action={action}
+      method={method}
+      className="flex gap-2"
+      onSubmit={handleSubmit}
+    >
       <input
         type="email"
         name="email"
         placeholder={ph}
         className="flex-1 rounded border p-2"
         data-token="--color-bg"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
       />
       <button
         type="submit"
@@ -49,6 +78,7 @@ export const NewsletterForm = memo(function NewsletterForm({
       >
         <span data-token="--color-primary-fg">{label}</span>
       </button>
+      {message && <p role="status">{message}</p>}
     </form>
   );
 });

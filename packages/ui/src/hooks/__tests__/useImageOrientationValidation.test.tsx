@@ -52,6 +52,7 @@ describe("useImageOrientationValidation", () => {
       useImageOrientationValidation(file, "landscape")
     );
     await waitFor(() => expect(result.current.isValid).toBe(true));
+    expect(global.URL.revokeObjectURL).toHaveBeenCalledWith("landscape-url");
   });
 
   it("returns false when image orientation mismatches", async () => {
@@ -60,9 +61,21 @@ describe("useImageOrientationValidation", () => {
       useImageOrientationValidation(file, "landscape")
     );
     await waitFor(() => expect(result.current.isValid).toBe(false));
+    expect(global.URL.revokeObjectURL).toHaveBeenCalledWith("portrait-url");
   });
 
-  it("resets actual when image load errors", async () => {
+  it("returns null values when image fails to load", async () => {
+    const file = new File(["a"], "error.png", { type: "image/png" });
+    const { result } = renderHook(() =>
+      useImageOrientationValidation(file, "landscape")
+    );
+    await waitFor(() =>
+      expect(result.current).toEqual({ actual: null, isValid: null })
+    );
+    expect(global.URL.revokeObjectURL).toHaveBeenCalledWith("error-url");
+  });
+
+  it("resets actual when image load errors after success", async () => {
     const good = new File(["a"], "landscape.png", { type: "image/png" });
     const bad = new File(["a"], "error.png", { type: "image/png" });
     const { result, rerender } = renderHook(
@@ -71,11 +84,14 @@ describe("useImageOrientationValidation", () => {
     );
 
     await waitFor(() => expect(result.current.actual).toBe("landscape"));
+    expect(global.URL.revokeObjectURL).toHaveBeenCalledWith("landscape-url");
 
     rerender({ f: bad });
 
-    await waitFor(() => expect(result.current.actual).toBeNull());
-    expect(result.current.isValid).toBeNull();
+    await waitFor(() =>
+      expect(result.current).toEqual({ actual: null, isValid: null })
+    );
+    expect(global.URL.revokeObjectURL).toHaveBeenCalledWith("error-url");
   });
 
   it("resets state when file becomes null", async () => {

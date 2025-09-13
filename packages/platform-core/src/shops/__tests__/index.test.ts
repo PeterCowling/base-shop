@@ -40,6 +40,12 @@ describe("validateShopName", () => {
     }
   });
 
+  it("throws for names containing punctuation", () => {
+    for (const bad of ["bad:name", "bad?name", "bad#name"]) {
+      expect(() => validateShopName(bad)).toThrow(/Invalid shop name/);
+    }
+  });
+
   it("throws for invalid names", () => {
     for (const bad of [
       "bad name",
@@ -76,6 +82,28 @@ describe("setSanityConfig", () => {
     // Previous object remains unchanged
     expect(getSanityConfig(withConfig)).toEqual(config);
   });
+
+  it("removes existing config when undefined is provided", () => {
+    const base: Shop = {
+      sanityBlog: {
+        projectId: "p",
+        dataset: "d",
+        token: "t",
+      },
+      other: "keep",
+    };
+    const cleared = setSanityConfig(base, undefined);
+    expect(cleared).not.toBe(base);
+    expect(getSanityConfig(cleared)).toBeUndefined();
+    expect(cleared).not.toHaveProperty("sanityBlog");
+    expect((cleared as Shop).other).toBe("keep");
+    // Original object remains unchanged
+    expect(getSanityConfig(base)).toEqual({
+      projectId: "p",
+      dataset: "d",
+      token: "t",
+    });
+  });
 });
 
 describe("setEditorialBlog", () => {
@@ -97,6 +125,20 @@ describe("setEditorialBlog", () => {
     expect(cleared).not.toHaveProperty("editorialBlog");
     // Previous object remains unchanged
     expect(getEditorialBlog(withBlog)).toEqual(editorial);
+  });
+
+  it("removes existing editorial blog when undefined is provided", () => {
+    const base: Shop = {
+      editorialBlog: { active: true },
+      other: "keep",
+    };
+    const cleared = setEditorialBlog(base, undefined);
+    expect(cleared).not.toBe(base);
+    expect(getEditorialBlog(cleared)).toBeUndefined();
+    expect(cleared).not.toHaveProperty("editorialBlog");
+    expect((cleared as Shop).other).toBe("keep");
+    // Original object remains unchanged
+    expect(getEditorialBlog(base)).toEqual({ active: true });
   });
 });
 
@@ -149,5 +191,14 @@ describe("setDomain", () => {
     expect(getDomain(updated)).toEqual(newDomain);
     // Original object remains unchanged
     expect(getDomain(base)).toEqual({ name: "old.example.com" });
+  });
+
+  it("handles undefined when no domain exists", () => {
+    const base: Shop = { other: true };
+    const cleared = setDomain(base, undefined);
+    expect(cleared).not.toBe(base);
+    expect(getDomain(cleared)).toBeUndefined();
+    expect(cleared).not.toHaveProperty("domain");
+    expect((cleared as Shop).other).toBe(true);
   });
 });

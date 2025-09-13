@@ -17,6 +17,15 @@ describe("Button", () => {
     { variant: "destructive", className: "bg-destructive", token: "--color-danger" },
   ];
 
+  const nonDefaultVariantCases = variantCases.filter(
+    ({ variant }) => variant !== "default"
+  );
+
+  const CustomLink = React.forwardRef<
+    HTMLAnchorElement,
+    React.AnchorHTMLAttributes<HTMLAnchorElement>
+  >((props, ref) => <a ref={ref} data-testid="custom-link" {...props} />);
+
   it("renders with default variant when no props are provided", () => {
     render(<Button />);
     const button = screen.getByRole("button");
@@ -55,12 +64,7 @@ describe("Button", () => {
     expect(button).toHaveAttribute("aria-label", "submit");
   });
 
-  it("renders custom component when asChild is true", () => {
-    const CustomLink = React.forwardRef<
-      HTMLAnchorElement,
-      React.AnchorHTMLAttributes<HTMLAnchorElement>
-    >((props, ref) => <a ref={ref} data-testid="custom-link" {...props} />);
-
+  it("renders default variant as custom component when asChild is true", () => {
     render(
       <Button asChild>
         <CustomLink href="#">Click</CustomLink>
@@ -73,5 +77,22 @@ describe("Button", () => {
     expect(link).toHaveClass("bg-primary");
     expect(screen.queryByRole("button")).toBeNull();
   });
+
+  it.each(nonDefaultVariantCases)(
+    "renders $variant variant as child with correct class and token",
+    ({ variant, className, token }) => {
+      render(
+        <Button asChild variant={variant}>
+          <CustomLink href="#">Click</CustomLink>
+        </Button>
+      );
+
+      const link = screen.getByTestId("custom-link");
+      expect(link.tagName).toBe("A");
+      expect(link).toHaveAttribute("data-token", token);
+      expect(link).toHaveClass(className);
+      expect(screen.queryByRole("button")).toBeNull();
+    }
+  );
 });
 

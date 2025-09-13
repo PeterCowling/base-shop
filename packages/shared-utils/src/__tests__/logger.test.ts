@@ -61,6 +61,20 @@ describe('logger', () => {
     expect(pinoInstance[level]).toHaveBeenCalledWith(meta, message);
   });
 
+  it.each([
+    ['error'],
+    ['warn'],
+    ['info'],
+    ['debug'],
+  ])('%s forwards message with empty metadata when omitted', async (level) => {
+    const { logger } = await import('../logger');
+    const message = `${level} only`;
+    // @ts-expect-error - index signature for logger methods
+    logger[level](message);
+    // @ts-expect-error - index signature for pino instance methods
+    expect(pinoInstance[level]).toHaveBeenCalledWith({}, message);
+  });
+
   it('logs plain objects and Error instances appropriately', async () => {
     const { logger } = await import('../logger');
     const obj = { id: 1 };

@@ -26,8 +26,8 @@ module.exports = {
   ],
   moduleNameMapper: {
     ...baseModuleNameMapper,
-    "^packages/config/src/env/cms\\.ts$": "<rootDir>/packages/config/src/env/__test__/cms.stub.ts",
-    "^packages/config/src/env/core\\.ts$": "<rootDir>/packages/config/src/env/__test__/core.stub.ts",
+    "^packages/config/src/env/cms\\.ts$": "<rootDir>/packages/config/src/env/__tests__/cms.stub.ts",
+    "^packages/config/src/env/core\\.ts$": "<rootDir>/packages/config/src/env/__tests__/core.stub.ts",
     "^@/components/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",
     "^@/i18n/Translations$": "<rootDir>/test/emptyModule.js",
     "^@/(.*)$": "<rootDir>/apps/cms/src/$1",

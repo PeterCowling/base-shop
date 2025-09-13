@@ -9,6 +9,14 @@ describe("assertLocales", () => {
     }
   });
 
+  it("throws when provided null or undefined", () => {
+    for (const value of [null, undefined]) {
+      expect(() => assertLocales(value as any)).toThrow(
+        "LOCALES must be a non-empty array"
+      );
+    }
+  });
+
   it("does not throw for non-empty arrays", () => {
     expect(() => assertLocales(["en"] as any)).not.toThrow();
   });
@@ -23,12 +31,9 @@ describe("resolveLocale", () => {
     expect(resolveLocale(undefined)).toBe("en");
   });
 
-  it("returns 'en' for unsupported locale 'fr'", () => {
-    expect(resolveLocale("fr")).toBe("en");
-  });
-
-  it("falls back to 'en' for uppercase locales", () => {
-    expect(resolveLocale("DE" as any)).toBe("en");
+  it("returns 'en' for mixed-case inputs or values not in LOCALES", () => {
+    expect(resolveLocale("eN" as any)).toBe("en");
+    expect(resolveLocale("fr" as any)).toBe("en");
   });
 });
 

@@ -8,6 +8,10 @@ describe("depositReleaseEnvRefinement", () => {
       {
         DEPOSIT_RELEASE_ENABLED: "yes",
         DEPOSIT_RELEASE_INTERVAL_MS: "soon",
+        REVERSE_LOGISTICS_ENABLED: "maybe",
+        REVERSE_LOGISTICS_INTERVAL_MS: "later",
+        LATE_FEE_ENABLED: "perhaps",
+        LATE_FEE_INTERVAL_MS: "never",
       },
       ctx,
     );
@@ -20,6 +24,30 @@ describe("depositReleaseEnvRefinement", () => {
     expect(ctx.addIssue).toHaveBeenCalledWith(
       expect.objectContaining({
         path: ["DEPOSIT_RELEASE_INTERVAL_MS"],
+        message: "must be a number",
+      }),
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: ["REVERSE_LOGISTICS_ENABLED"],
+        message: "must be true or false",
+      }),
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: ["REVERSE_LOGISTICS_INTERVAL_MS"],
+        message: "must be a number",
+      }),
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: ["LATE_FEE_ENABLED"],
+        message: "must be true or false",
+      }),
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith(
+      expect.objectContaining({
+        path: ["LATE_FEE_INTERVAL_MS"],
         message: "must be a number",
       }),
     );

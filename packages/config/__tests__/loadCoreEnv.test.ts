@@ -115,6 +115,26 @@ describe("loadCoreEnv", () => {
     expect(env.AUTH_TOKEN_TTL).toBe(60);
   });
 
+  it("logs and throws when schema parsing fails", async () => {
+    const core = await import("../src/env/core");
+    const parseSpy = jest
+      .spyOn(core.coreEnvSchema, "safeParse")
+      .mockReturnValue({
+        success: false,
+        error: { issues: [{ path: ["FOO"], message: "bad", code: "custom" }] },
+      } as any);
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => core.loadCoreEnv({} as NodeJS.ProcessEnv)).toThrow(
+      "Invalid core environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
+    );
+    expect(errorSpy).toHaveBeenCalledWith("  • FOO: bad");
+    parseSpy.mockRestore();
+    errorSpy.mockRestore();
+  });
+
   it("aggregates issues from auth and email schemas", async () => {
     const { loadCoreEnv } = await import("../src/env/core");
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});

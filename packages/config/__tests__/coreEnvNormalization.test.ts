@@ -10,6 +10,7 @@ describe("coreEnvSchema AUTH_TOKEN_TTL normalization", () => {
   it.each([
     [30, undefined],
     ["30", "30s"],
+    [" 30 ", "30s"],
     [" 45s ", "45s"],
     ["5 m", "5m"],
   ])("normalizes %p to %p", async (input, normalized) => {

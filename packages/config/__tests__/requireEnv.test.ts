@@ -6,6 +6,20 @@ describe("requireEnv", () => {
     jest.restoreAllMocks();
   });
 
+  it("throws when variable is undefined", async () => {
+    await withEnv({}, async () => {
+      const { requireEnv } = await import("../src/env/core");
+      expect(() => requireEnv("MISSING")).toThrow("MISSING is required");
+    });
+  });
+
+  it("throws when variable is empty", async () => {
+    await withEnv({ EMPTY: "   " }, async () => {
+      const { requireEnv } = await import("../src/env/core");
+      expect(() => requireEnv("EMPTY")).toThrow("EMPTY is required");
+    });
+  });
+
   it("converts boolean strings", async () => {
     await withEnv(
       {
@@ -24,6 +38,21 @@ describe("requireEnv", () => {
     );
   });
 
+  it("throws when boolean variable is missing or blank", async () => {
+    await withEnv({ BOOL: "  " }, async () => {
+      const { requireEnv } = await import("../src/env/core");
+      expect(() => requireEnv("BOOL", "boolean")).toThrow(
+        "BOOL is required",
+      );
+    });
+    await withEnv({}, async () => {
+      const { requireEnv } = await import("../src/env/core");
+      expect(() => requireEnv("BOOL", "boolean")).toThrow(
+        "BOOL is required",
+      );
+    });
+  });
+
   it("converts number strings", async () => {
     await withEnv(
       {
@@ -34,6 +63,21 @@ describe("requireEnv", () => {
         expect(requireEnv("NUMERIC", "number")).toBe(42);
       }
     );
+  });
+
+  it("throws when number variable is missing or blank", async () => {
+    await withEnv({ NUM: " \t" }, async () => {
+      const { requireEnv } = await import("../src/env/core");
+      expect(() => requireEnv("NUM", "number")).toThrow(
+        "NUM is required",
+      );
+    });
+    await withEnv({}, async () => {
+      const { requireEnv } = await import("../src/env/core");
+      expect(() => requireEnv("NUM", "number")).toThrow(
+        "NUM is required",
+      );
+    });
   });
 
   it("throws for invalid boolean and number", async () => {
@@ -52,5 +96,12 @@ describe("requireEnv", () => {
         );
       }
     );
+  });
+
+  it("returns trimmed string by default", async () => {
+    await withEnv({ NAME: "  value  " }, async () => {
+      const { requireEnv } = await import("../src/env/core");
+      expect(requireEnv("NAME")).toBe("value");
+    });
   });
 });

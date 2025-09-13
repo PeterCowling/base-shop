@@ -36,6 +36,27 @@ describe("SocialLinks", () => {
     });
   });
 
+  it("opens links in a new window", () => {
+    render(<SocialLinks facebook="https://facebook.com/example" />);
+    expect(
+      screen.getByRole("link", { name: "facebook" })
+    ).toHaveAttribute("target", "_blank");
+  });
+
+  it("does not render links without URL", () => {
+    render(
+      <SocialLinks
+        facebook="https://facebook.com/example"
+        instagram=""
+      />
+    );
+
+    expect(screen.getAllByRole("link")).toHaveLength(1);
+    expect(
+      screen.queryByRole("link", { name: "instagram" })
+    ).not.toBeInTheDocument();
+  });
+
   it("merges provided className", () => {
     const { container } = render(
       <SocialLinks facebook="https://facebook.com/example" className="custom" />

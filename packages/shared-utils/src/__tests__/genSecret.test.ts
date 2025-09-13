@@ -51,6 +51,14 @@ describe('genSecret', () => {
     expect(secret).toMatch(/^[0-9a-f]+$/);
   });
 
+  it('returns empty string when byte length is 0', () => {
+    const getRandomValues = jest.fn(() => new Uint8Array());
+    const mock = { getRandomValues } as Crypto;
+    Object.defineProperty(globalThis, 'crypto', { value: mock });
+    expect(genSecret(0)).toBe('');
+    expect(getRandomValues).toHaveBeenCalledWith(new Uint8Array(0));
+  });
+
   it.each([-1, 1.5])('throws for invalid byte length %p', (bytes) => {
     expect(() => genSecret(bytes as number)).toThrow(RangeError);
   });

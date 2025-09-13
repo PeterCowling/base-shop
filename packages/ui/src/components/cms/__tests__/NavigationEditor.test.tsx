@@ -69,6 +69,30 @@ describe("NavigationEditor", () => {
     ]);
   });
 
+  it("does not call onChange when dropping item at original position", () => {
+    const items: NavItem[] = [
+      { id: "1", label: "Home", url: "/home", children: [] },
+      { id: "2", label: "Blog", url: "/blog", children: [] },
+    ];
+    const onChange = jest.fn();
+    render(<NavigationEditor items={items} onChange={onChange} />);
+
+    act(() => {
+      dndHandlers.onDragStart({ active: { id: "1" } });
+    });
+    act(() => {
+      dndHandlers.onDragOver({
+        active: { id: "1", rect: { current: { translated: { top: 0 } } } },
+        over: { id: "1", rect: { top: 0, height: 10 } },
+      });
+    });
+    act(() => {
+      dndHandlers.onDragEnd({ active: { id: "1" } });
+    });
+
+    expect(onChange).not.toHaveBeenCalled();
+  });
+
   it("deletes a node", () => {
     const items: NavItem[] = [
       { id: "1", label: "Home", url: "/home", children: [] },
@@ -84,6 +108,38 @@ describe("NavigationEditor", () => {
 
     expect(onChange).toHaveBeenCalledWith([
       { id: "2", label: "Blog", url: "/blog", children: [] },
+    ]);
+  });
+
+  it("updates item label via input", () => {
+    const items: NavItem[] = [
+      { id: "1", label: "Home", url: "/home", children: [] },
+    ];
+    const onChange = jest.fn();
+    const { getByDisplayValue } = render(
+      <NavigationEditor items={items} onChange={onChange} />
+    );
+
+    const labelInput = getByDisplayValue("Home") as HTMLInputElement;
+    fireEvent.change(labelInput, { target: { value: "Dashboard" } });
+    expect(onChange).toHaveBeenCalledWith([
+      { id: "1", label: "Dashboard", url: "/home", children: [] },
+    ]);
+  });
+
+  it("updates item url via input", () => {
+    const items: NavItem[] = [
+      { id: "1", label: "Home", url: "/home", children: [] },
+    ];
+    const onChange = jest.fn();
+    const { getByDisplayValue } = render(
+      <NavigationEditor items={items} onChange={onChange} />
+    );
+
+    const urlInput = getByDisplayValue("/home") as HTMLInputElement;
+    fireEvent.change(urlInput, { target: { value: "/dashboard" } });
+    expect(onChange).toHaveBeenCalledWith([
+      { id: "1", label: "Home", url: "/dashboard", children: [] },
     ]);
   });
 
@@ -134,6 +190,33 @@ describe("NavigationEditor", () => {
       el.hasAttribute("data-placeholder")
     );
     expect(placeholderIndex).toBe(2);
+  });
+
+  it("inserts placeholder before item when dragged above midpoint", () => {
+    const items: NavItem[] = [
+      { id: "1", label: "Home", url: "/home", children: [] },
+      { id: "2", label: "Blog", url: "/blog", children: [] },
+      { id: "3", label: "About", url: "/about", children: [] },
+    ];
+    const { container } = render(
+      <NavigationEditor items={items} onChange={() => void 0} />
+    );
+
+    act(() => {
+      dndHandlers.onDragStart({ active: { id: "3" } });
+    });
+    act(() => {
+      dndHandlers.onDragOver({
+        active: { id: "3", rect: { current: { translated: { top: 4 } } } },
+        over: { id: "2", rect: { top: 0, height: 10 } },
+      });
+    });
+
+    const listItems = Array.from(container.querySelector("ul")!.children);
+    const placeholderIndex = listItems.findIndex((el) =>
+      el.hasAttribute("data-placeholder")
+    );
+    expect(placeholderIndex).toBe(1);
   });
 
   it("cleans up insert index after drag end", () => {

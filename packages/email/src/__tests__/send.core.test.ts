@@ -421,7 +421,10 @@ describe("send core helpers", () => {
         .mockRejectedValue(new ProviderError("sg fail", false));
       SendgridProvider.mockImplementation(() => ({ send: providerSend }));
       mockSendMail.mockRejectedValue(new Error("smtp fail"));
-      const consoleSpy = jest
+      const warnSpy = jest
+        .spyOn(console, "warn")
+        .mockImplementation(() => {});
+      const errorSpy = jest
         .spyOn(console, "error")
         .mockImplementation(() => {});
       await jest.isolateModulesAsync(async () => {
@@ -438,7 +441,7 @@ describe("send core helpers", () => {
         ).rejects.toThrow("smtp fail");
       });
       expect(providerSend).toHaveBeenCalledTimes(1);
-      expect(consoleSpy.mock.calls).toEqual(
+      expect(warnSpy.mock.calls).toEqual(
         expect.arrayContaining([
           [
             "Campaign email send failed",
@@ -446,7 +449,16 @@ describe("send core helpers", () => {
           ],
         ])
       );
-      consoleSpy.mockRestore();
+      expect(errorSpy.mock.calls).toEqual(
+        expect.arrayContaining([
+          [
+            "Campaign email send failed",
+            expect.objectContaining({ provider: "smtp", recipient: "t@example.com" }),
+          ],
+        ])
+      );
+      warnSpy.mockRestore();
+      errorSpy.mockRestore();
     });
   });
 

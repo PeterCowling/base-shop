@@ -163,6 +163,8 @@ describe("sendCampaignEmail", () => {
 
   it("retries failing provider then falls back in order", async () => {
     const timeoutSpy = jest.spyOn(global, "setTimeout");
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     mockSendgridSend = jest.fn().mockRejectedValue(new ProviderError("fail", true));
     mockResendSend = jest.fn().mockResolvedValue(undefined);
     mockSendMail = jest.fn();
@@ -186,7 +188,11 @@ describe("sendCampaignEmail", () => {
     expect(timeoutSpy).toHaveBeenNthCalledWith(2, expect.any(Function), 200);
     expect(mockResendSend).toHaveBeenCalledTimes(1);
     expect(mockSendMail).not.toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy).not.toHaveBeenCalled();
     timeoutSpy.mockRestore();
+    warnSpy.mockRestore();
+    errorSpy.mockRestore();
   });
 
   it("falls back to Nodemailer when no provider available", async () => {

@@ -85,6 +85,8 @@ describe("TranslationsProvider and useTranslations", () => {
   });
 
   it("warns and falls back to the key when translation is missing", () => {
+    const original = process.env.NODE_ENV;
+    process.env.NODE_ENV = "development";
     const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
     const wrapper = ({ children }: PropsWithChildren) => (
       <TranslationsProvider messages={{}}>{children}</TranslationsProvider>
@@ -93,9 +95,12 @@ describe("TranslationsProvider and useTranslations", () => {
     expect(result.current("unknown")).toBe("unknown");
     expect(warn).toHaveBeenCalledWith("Missing translation for key: unknown");
     warn.mockRestore();
+    process.env.NODE_ENV = original;
   });
 
   it("warns and falls back when missing translation includes variables", () => {
+    const original = process.env.NODE_ENV;
+    process.env.NODE_ENV = "development";
     const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
     const wrapper = ({ children }: PropsWithChildren) => (
       <TranslationsProvider messages={{}}>{children}</TranslationsProvider>
@@ -105,6 +110,7 @@ describe("TranslationsProvider and useTranslations", () => {
     expect(result.current("unknown", { name: "Sam" })).toBe("unknown");
     expect(warn).toHaveBeenCalledWith("Missing translation for key: unknown");
     warn.mockRestore();
+    process.env.NODE_ENV = original;
   });
 
   it("interpolates placeholders when variables are provided", () => {

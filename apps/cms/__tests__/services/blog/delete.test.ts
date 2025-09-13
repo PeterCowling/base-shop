@@ -30,8 +30,16 @@ describe('deletePost', () => {
 
   it('returns error when repository throws', async () => {
     repoDeletePost.mockRejectedValue(new Error('fail'));
+    const consoleErrorSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
     const result = await deletePost('shop', '123');
     expect(result).toEqual({ error: 'Failed to delete post' });
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Failed to delete post',
+      expect.any(Error),
+    );
+    consoleErrorSpy.mockRestore();
   });
 });
 

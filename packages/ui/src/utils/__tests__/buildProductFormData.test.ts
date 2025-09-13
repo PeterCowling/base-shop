@@ -69,5 +69,23 @@ describe("buildProductFormData", () => {
       ])
     );
   });
+
+  it("handles null media items, multiple publish targets, and empty variants", () => {
+    const file = new File(["hi"], "img.png", { type: "image/png" });
+    const product = {
+      ...baseProduct,
+      media: [null, { id: "3", alt: "third", file }],
+      variants: { size: [undefined as any, ""] },
+    };
+    const fd = buildProductFormData(product, ["loc1", "loc2"], locales);
+
+    expect(fd.get("file_1")).toBe(file);
+    expect(fd.get("file_0")).toBeNull();
+    expect(fd.get("publish")).toBe("loc1,loc2");
+    expect(fd.get("media")).toBe(
+      JSON.stringify([null, { id: "3", alt: "third" }])
+    );
+    expect(fd.get("variant_size")).toBe("");
+  });
 });
 

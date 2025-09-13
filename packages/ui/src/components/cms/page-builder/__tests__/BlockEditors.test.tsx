@@ -129,5 +129,11 @@ describe("block editors", () => {
       target: { value: "x" },
     });
     expect(onChange).toHaveBeenCalled();
+
+    const methodInput = screen.queryByPlaceholderText("method");
+    if (methodInput) {
+      fireEvent.change(methodInput, { target: { value: "post" } });
+      expect(onChange).toHaveBeenCalledWith({ method: "post" });
+    }
   });
 });

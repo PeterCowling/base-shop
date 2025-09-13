@@ -1,0 +1,7 @@
+{
+  "name": "root-tests",
+  "private": true,
+  "scripts": {
+    "test": "jest --config ../jest.config.cjs"
+  }
+}

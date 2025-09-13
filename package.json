@@ -12,7 +12,10 @@
     "packages/*",
     "packages/*/*",
     "apps-script",
-    "packages/plugins/sanity"
+    "packages/plugins/sanity",
+    "functions",
+    "scripts",
+    "__tests__"
   ],
   "scripts": {
     "dev": "turbo run dev --parallel",

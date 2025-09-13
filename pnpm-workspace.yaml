@@ -8,6 +8,9 @@ packages:
   - "packages/*/"
   - "packages/plugins/*"
   - "packages/themes/*" # Include theme packages so @themes/base, etc. resolve
+  - "functions"
+  - "scripts"
+  - "__tests__"
 
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"

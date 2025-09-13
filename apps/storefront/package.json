@@ -1,0 +1,7 @@
+{
+  "name": "@apps/storefront",
+  "private": true,
+  "scripts": {
+    "test": "jest --config ../../jest.config.cjs"
+  }
+}

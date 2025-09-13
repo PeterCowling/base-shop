@@ -61,6 +61,40 @@ describe('loadThemeTokensNode', () => {
     expect(ts.transpileModule).toHaveBeenCalled();
     expect(runInNewContext).toHaveBeenCalledWith(transpiled, expect.any(Object));
   });
+
+  it('loads tokens from workspace root when local tokens are missing', () => {
+    const cwdSpy = jest
+      .spyOn(process, 'cwd')
+      .mockReturnValue(join(rootDir, 'packages', 'platform-core'));
+    let workspaceFound = false;
+    (fs.existsSync as jest.Mock).mockImplementation((p: string) => {
+      if (p === join(rootDir, 'packages', 'platform-core', 'pnpm-workspace.yaml'))
+        return false;
+      if (p === join(rootDir, 'packages', 'pnpm-workspace.yaml')) return false;
+      if (p === join(rootDir, 'pnpm-workspace.yaml')) {
+        workspaceFound = true;
+        return true;
+      }
+      if (candidates.includes(p)) return workspaceFound;
+      return false;
+    });
+    (fs.readFileSync as jest.Mock).mockReturnValue('src');
+    (ts.transpileModule as jest.Mock).mockReturnValue({ outputText: transpiled });
+    (runInNewContext as jest.Mock).mockImplementation((_code, sandbox) => {
+      sandbox.module.exports.tokens = { '--foo': 'bar' };
+    });
+
+    expect(themeTokens.loadThemeTokensNode(theme)).toEqual({ '--foo': 'bar' });
+    cwdSpy.mockRestore();
+  });
+
+  it('returns empty object when pnpm-workspace.yaml is never found', () => {
+    const cwdSpy = jest.spyOn(process, 'cwd').mockReturnValue('/foo/bar');
+    (fs.existsSync as jest.Mock).mockReturnValue(false);
+    expect(themeTokens.loadThemeTokensNode(theme)).toEqual({});
+    expect(fs.readFileSync).not.toHaveBeenCalled();
+    cwdSpy.mockRestore();
+  });
 });
 
 describe('loadThemeTokensBrowser', () => {

@@ -1,6 +1,14 @@
 /** @jest-environment node */
 
-import { markReturned, setReturnTracking, setReturnStatus } from "../src/orders/status";
+import {
+  markCancelled,
+  markDelivered,
+  markFulfilled,
+  markReturned,
+  markShipped,
+  setReturnTracking,
+  setReturnStatus,
+} from "../src/orders/status";
 
 jest.mock("../src/db", () => ({
   prisma: {
@@ -15,6 +23,50 @@ const { prisma } = jest.requireMock("../src/db") as {
 describe("orders/status", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it("marks order fulfilled", async () => {
+    const mock = { id: "1", shop: "shop", sessionId: "sess", fulfilledAt: "now" };
+    prisma.rentalOrder.update.mockResolvedValue(mock);
+    const result = await markFulfilled("shop", "sess");
+    expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+      where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+      data: { fulfilledAt: expect.any(String) },
+    });
+    expect(result).toEqual(mock);
+  });
+
+  it("marks order shipped", async () => {
+    const mock = { id: "1", shop: "shop", sessionId: "sess", shippedAt: "now" };
+    prisma.rentalOrder.update.mockResolvedValue(mock);
+    const result = await markShipped("shop", "sess");
+    expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+      where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+      data: { shippedAt: expect.any(String) },
+    });
+    expect(result).toEqual(mock);
+  });
+
+  it("marks order delivered", async () => {
+    const mock = { id: "1", shop: "shop", sessionId: "sess", deliveredAt: "now" };
+    prisma.rentalOrder.update.mockResolvedValue(mock);
+    const result = await markDelivered("shop", "sess");
+    expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+      where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+      data: { deliveredAt: expect.any(String) },
+    });
+    expect(result).toEqual(mock);
+  });
+
+  it("marks order cancelled", async () => {
+    const mock = { id: "1", shop: "shop", sessionId: "sess", cancelledAt: "now" };
+    prisma.rentalOrder.update.mockResolvedValue(mock);
+    const result = await markCancelled("shop", "sess");
+    expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+      where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+      data: { cancelledAt: expect.any(String) },
+    });
+    expect(result).toEqual(mock);
   });
 
   it("includes damage fee when provided", async () => {
@@ -80,6 +132,12 @@ describe("orders/status", () => {
       data: { returnStatus: "rec" },
     });
     expect(result).toEqual(mock);
+  });
+
+  it("returns null when return status update yields null", async () => {
+    prisma.rentalOrder.update.mockResolvedValue(null);
+    const result = await setReturnStatus("shop", "trk", "rec");
+    expect(result).toBeNull();
   });
 
   it("returns null when return status update throws", async () => {

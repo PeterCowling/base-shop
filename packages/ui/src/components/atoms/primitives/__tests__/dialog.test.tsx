@@ -47,11 +47,13 @@ describe("Dialog", () => {
     expect(content).toHaveClass("bg-background");
   });
 
-  it("forwards refs and merges custom classes on subcomponents", () => {
-    const headerRef = React.createRef<HTMLDivElement>();
-    const footerRef = React.createRef<HTMLDivElement>();
-    const titleRef = React.createRef<HTMLHeadingElement>();
-    const descriptionRef = React.createRef<HTMLParagraphElement>();
+  it(
+    "merges custom classes on DialogHeader, DialogFooter, DialogTitle, and DialogDescription",
+    () => {
+      const headerRef = React.createRef<HTMLDivElement>();
+      const footerRef = React.createRef<HTMLDivElement>();
+      const titleRef = React.createRef<HTMLHeadingElement>();
+      const descriptionRef = React.createRef<HTMLParagraphElement>();
 
     render(
       <Dialog open>
@@ -112,7 +114,7 @@ describe("Dialog", () => {
     expect(description).toHaveClass("text-muted-foreground text-sm");
   });
 
-  it("dismisses when close button is clicked", async () => {
+  it("unmounts when the internal close button is clicked", async () => {
     render(
       <Dialog>
         <DialogTrigger>Open</DialogTrigger>
@@ -126,10 +128,12 @@ describe("Dialog", () => {
     );
 
     const user = userEvent.setup();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+
     await user.click(screen.getByText("Open"));
     expect(screen.getByRole("dialog")).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /close/i }));
-    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
 });

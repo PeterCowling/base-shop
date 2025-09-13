@@ -9,6 +9,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
   Input,
@@ -74,6 +75,9 @@ function ImagePicker({ onSelect, children }: Props) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-xl space-y-4">
         <DialogTitle>Select image</DialogTitle>
+        <DialogDescription className="sr-only">
+          Choose an image from the media library
+        </DialogDescription>
         <div className="flex items-center gap-2">
           <Input
             ref={inputRef}

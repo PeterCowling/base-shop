@@ -1,5 +1,7 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { configure, render, screen } from "@testing-library/react";
+
+configure({ testIdAttribute: "data-testid" });
 
 jest.mock("../../../atoms/Price", () => ({
   Price: ({ amount, className }: { amount: number; className?: string }) => (

@@ -220,6 +220,7 @@ const config = {
   passWithNoTests: true,
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'mjs', 'node', 'd.ts'],
   collectCoverage: true,
+  collectCoverageFrom: ['src/**/*.{ts,tsx}', 'middleware.ts', 'packages/*/middleware.ts'],
   coverageDirectory: path.join(process.cwd(), 'coverage'),
   coveragePathIgnorePatterns: [
     ' /test/msw/',
@@ -250,7 +251,7 @@ const relativePath = path.relative(workspaceRoot, process.cwd()).replace(/\\/g, 
 if (relativePath) {
   const [scope, ...rest] = relativePath.split('/');
   const subPath = rest.join('/');
-  config.collectCoverageFrom = ['src/**/*.{ts,tsx}'];
+  config.collectCoverageFrom = ['src/**/*.{ts,tsx}', 'middleware.ts'];
   config.coveragePathIgnorePatterns.push(
     `/${scope}/(?!${subPath})/`,
     scope === 'packages' ? '/apps/' : '/packages/'

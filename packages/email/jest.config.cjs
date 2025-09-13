@@ -5,7 +5,7 @@ module.exports = {
   ...baseConfig,
   rootDir: path.resolve(__dirname, '..', '..'),
   roots: ['<rootDir>/packages/email'],
-  collectCoverageFrom: ['packages/email/src/**/*.{ts,tsx}'],
+  collectCoverageFrom: ['packages/email/src/**/*.{ts,tsx}', 'packages/email/middleware.ts'],
   coveragePathIgnorePatterns: ['/packages/(?!email)/'],
   moduleNameMapper: {
     ...baseConfig.moduleNameMapper,

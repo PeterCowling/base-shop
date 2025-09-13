@@ -61,9 +61,16 @@ beforeAll(async () => {
   repo = await import("../src/repositories/pages/index.server");
 });
 
+let consoleErrorSpy: jest.SpyInstance;
+
 beforeEach(() => {
   files.clear();
   jest.clearAllMocks();
+  consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+});
+
+afterEach(() => {
+  consoleErrorSpy.mockRestore();
 });
 
 describe("pages repository core logic", () => {

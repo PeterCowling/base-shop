@@ -7,6 +7,10 @@ import {
   type ProductSaveResult,
 } from "../useProductEditorFormState";
 
+jest.mock("@platform-core/hooks/usePublishLocations", () => ({
+  usePublishLocations: () => ({ locations: [], reload: jest.fn() }),
+}));
+
 const product: ProductPublication & { variants: Record<string, string[]> } = {
   id: "p1",
   sku: "sku1",

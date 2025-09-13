@@ -2,7 +2,8 @@ import React from "react";
 
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: (props: any) => React.createElement("img", props),
+  // Omit Next.js-specific props like `fill` to avoid React warnings
+  default: ({ fill, ...props }: any) => React.createElement("img", props),
 }));
 
 jest.mock("next/link", () => ({

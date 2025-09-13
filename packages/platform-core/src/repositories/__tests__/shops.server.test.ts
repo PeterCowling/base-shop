@@ -83,51 +83,69 @@ describe("shops.repository", () => {
       expect(loadTokens).not.toHaveBeenCalled();
     });
 
-    it("falls back to prisma when repository misses a shop", async () => {
-      const repoData = {
-        id: "repo-shop",
-        name: "Repo Shop",
-        catalogFilters: [],
-        themeId: "base",
-        filterMappings: {},
-        themeDefaults: { color: "green" },
-        themeOverrides: { color: "blue" },
-      };
-      getRepo.mockRejectedValue(new Error("missing"));
-      findUnique.mockResolvedValue({ data: repoData });
-      const readFile = jest.spyOn(fs, "readFile");
+    it(
+      "falls back to prisma when repository lookup fails, applying theme tokens and mappings",
+      async () => {
+        const repoData = {
+          id: "repo-shop",
+          name: "Repo Shop",
+          catalogFilters: [],
+          themeId: "base",
+          filterMappings: { brand: "brand" },
+          themeDefaults: { color: "green" },
+          themeOverrides: { color: "blue" },
+        };
+        getRepo.mockRejectedValue(new Error("missing"));
+        findUnique.mockResolvedValue({ data: repoData });
+        const readFile = jest.spyOn(fs, "readFile");
 
-      const result = await readShop("repo-shop");
+        const result = await readShop("repo-shop");
 
-      expect(findUnique).toHaveBeenCalledWith({ where: { id: "repo-shop" } });
-      expect(result.name).toBe("Repo Shop");
-      expect(readFile).not.toHaveBeenCalled();
-    });
+        expect(findUnique).toHaveBeenCalledWith({
+          where: { id: "repo-shop" },
+        });
+        expect(result.name).toBe("Repo Shop");
+        expect(result.filterMappings).toEqual({ brand: "brand" });
+        expect(result.themeDefaults).toEqual({ color: "green" });
+        expect(result.themeOverrides).toEqual({ color: "blue" });
+        expect(result.themeTokens).toEqual({ color: "blue" });
+        expect(loadTokens).not.toHaveBeenCalled();
+        expect(readFile).not.toHaveBeenCalled();
+      },
+    );
 
-    it("reads from filesystem when Prisma fails", async () => {
-      const repoData = {
-        id: "fs-shop",
-        name: "FS Shop",
-        catalogFilters: [],
-        themeId: "base",
-        filterMappings: {},
-        themeDefaults: { color: "green" },
-        themeOverrides: { color: "blue" },
-      };
-      getRepo.mockRejectedValue(new Error("missing"));
-      findUnique.mockRejectedValue(new Error("db down"));
-      const readFile = jest
-        .spyOn(fs, "readFile")
-        .mockResolvedValue(JSON.stringify(repoData));
+    it(
+      "uses filesystem when repository and Prisma fail, applying theme tokens and mappings",
+      async () => {
+        const fileData = {
+          id: "fs-shop",
+          name: "FS Shop",
+          catalogFilters: [],
+          themeId: "base",
+          filterMappings: { brand: "brand" },
+          themeDefaults: { color: "green" },
+          themeOverrides: { color: "blue" },
+        };
+        getRepo.mockRejectedValue(new Error("missing"));
+        findUnique.mockRejectedValue(new Error("db down"));
+        const readFile = jest
+          .spyOn(fs, "readFile")
+          .mockResolvedValue(JSON.stringify(fileData));
 
-      const result = await readShop("fs-shop");
+        const result = await readShop("fs-shop");
 
-      expect(readFile).toHaveBeenCalledWith(
-        expect.stringContaining("/fs-shop/shop.json"),
-        "utf8"
-      );
-      expect(result.name).toBe("FS Shop");
-    });
+        expect(readFile).toHaveBeenCalledWith(
+          expect.stringContaining("/fs-shop/shop.json"),
+          "utf8"
+        );
+        expect(result.name).toBe("FS Shop");
+        expect(result.filterMappings).toEqual({ brand: "brand" });
+        expect(result.themeDefaults).toEqual({ color: "green" });
+        expect(result.themeOverrides).toEqual({ color: "blue" });
+        expect(result.themeTokens).toEqual({ color: "blue" });
+        expect(loadTokens).not.toHaveBeenCalled();
+      },
+    );
 
     it("reads from filesystem when Prisma returns null", async () => {
       const fileData = {
@@ -175,7 +193,7 @@ describe("shops.repository", () => {
       expect(result.name).toBe("FS Shop");
     });
 
-    it("generates default shop when no data exists", async () => {
+    it("returns default shop when all sources fail", async () => {
       getRepo.mockRejectedValue(new Error("missing"));
       findUnique.mockRejectedValue(new Error("db down"));
       jest.spyOn(fs, "readFile").mockRejectedValue(new Error("missing"));
@@ -232,7 +250,7 @@ describe("shops.repository", () => {
   });
 
   describe("writeShop", () => {
-    it("merges theme defaults and overrides before updating repo", async () => {
+    it("merges theme data and calls updateShopInRepo with merged themeTokens", async () => {
       const current = shopSchema.parse({
         id: "shop1",
         name: "Shop",

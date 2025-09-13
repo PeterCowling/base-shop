@@ -44,6 +44,11 @@ describe("readInitial", () => {
     expect(readInitial()).toBe("EUR");
   });
 
+  it("returns default when localStorage returns null", () => {
+    jest.spyOn(Storage.prototype, "getItem").mockReturnValueOnce(null);
+    expect(readInitial()).toBe("EUR");
+  });
+
   it("defaults when localStorage.getItem throws", () => {
     jest.spyOn(Storage.prototype, "getItem").mockImplementation(() => {
       throw new Error("blocked");
@@ -134,6 +139,52 @@ describe("CurrencyProvider", () => {
 
     const currencyNode = renderer.root.findByProps({ "data-cy": "currency" });
     expect(currencyNode.children.join("")).toBe("EUR");
+    expect(setSpy).not.toHaveBeenCalled();
+
+    renderer.unmount();
+    (global as any).window = originalWindow;
+  });
+
+  it("does not persist currency when window is undefined", async () => {
+    jest.resetModules();
+    const setSpy = jest.spyOn(Storage.prototype, "setItem");
+    const originalWindow = global.window;
+    delete (global as any).window;
+
+    const ReactTestRenderer = await import("react-test-renderer");
+    const { default: TestRenderer, act: rendererAct } = ReactTestRenderer;
+
+    const {
+      CurrencyProvider: LocalCurrencyProvider,
+      useCurrency: localUseCurrency,
+    } = await import("../CurrencyContext");
+
+    function LocalDisplay() {
+      const [currency, setCurrency] = localUseCurrency();
+      return (
+        <>
+          <span data-cy="currency">{currency}</span>
+          <button data-cy="change" onClick={() => setCurrency("USD")} />
+        </>
+      );
+    }
+
+    let renderer: any;
+    await rendererAct(async () => {
+      renderer = TestRenderer.create(
+        <LocalCurrencyProvider>
+          <LocalDisplay />
+        </LocalCurrencyProvider>
+      );
+    });
+
+    const changeButton = renderer.root.findByProps({ "data-cy": "change" });
+    await rendererAct(async () => {
+      changeButton.props.onClick();
+    });
+
+    const currencyNode = renderer.root.findByProps({ "data-cy": "currency" });
+    expect(currencyNode.children.join("")).toBe("USD");
     expect(setSpy).not.toHaveBeenCalled();
 
     renderer.unmount();

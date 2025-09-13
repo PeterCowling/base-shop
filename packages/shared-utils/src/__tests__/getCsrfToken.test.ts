@@ -32,8 +32,20 @@ describe('getCsrfToken', () => {
     expect(getCsrfToken(req)).toBe('header-token');
   });
 
+  it('trims whitespace from x-csrf-token header', () => {
+    const req = new Request('https://example.com', {
+      headers: { 'x-csrf-token': '  spaced-token  ' },
+    });
+    expect(getCsrfToken(req)).toBe('spaced-token');
+  });
+
   it('extracts token from query string', () => {
     const req = new Request('https://example.com?csrf_token=query-token');
+    expect(getCsrfToken(req)).toBe('query-token');
+  });
+
+  it('trims whitespace from query string token', () => {
+    const req = new Request('https://example.com?csrf_token=%20query-token%20');
     expect(getCsrfToken(req)).toBe('query-token');
   });
 

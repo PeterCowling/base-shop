@@ -98,9 +98,7 @@ export async function savePage(
       },
     });
     const patch = diffPages(previous, page);
-    if (previous) {
-      await appendHistory(shop, patch);
-    }
+    await appendHistory(shop, patch);
     return page;
   } catch (err) {
     console.error(`Failed to save page ${page.id} for ${shop}`, err);

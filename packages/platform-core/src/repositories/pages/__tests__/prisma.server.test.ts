@@ -65,9 +65,9 @@ describe("pages.prisma.server", () => {
     prismaMock.page.upsert.mockResolvedValue({});
     await repo.savePage(shop, page, undefined);
     expect(prismaMock.page.upsert).toHaveBeenCalled();
-    expect(fsMock.appendFile).not.toHaveBeenCalled();
+    expect(fsMock.appendFile).toHaveBeenCalledTimes(1);
     await repo.savePage(shop, { ...page, slug: "new" }, page);
-    expect(fsMock.appendFile).toHaveBeenCalled();
+    expect(fsMock.appendFile).toHaveBeenCalledTimes(2);
   });
 
   it("updates via prisma and records history", async () => {

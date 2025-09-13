@@ -95,4 +95,17 @@ describe("DeviceSelector", () => {
     fireEvent.change(select, { target: { value: newPreset.id } });
     expect(setDeviceId).toHaveBeenNthCalledWith(4, newPreset.id);
   });
+
+  it("applies active variant to current device", () => {
+    render(<Wrapper />);
+
+    const desktopBtn = screen.getByRole("button", { name: "desktop" });
+    expect(desktopBtn).toHaveAttribute("variant", "default");
+
+    fireEvent.click(screen.getByRole("button", { name: "tablet" }));
+
+    expect(desktopBtn).toHaveAttribute("variant", "outline");
+    const tabletBtn = screen.getByRole("button", { name: "tablet" });
+    expect(tabletBtn).toHaveAttribute("variant", "default");
+  });
 });

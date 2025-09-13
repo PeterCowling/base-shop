@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
+import Button from "../../blocks/Button";
 
 const blockRegistryMock = {
   Foo: {
@@ -11,6 +12,9 @@ const blockRegistryMock = {
   },
   Bar: {
     component: () => <div data-cy="bar">Bar</div>,
+  },
+  Button: {
+    component: Button,
   },
 };
 
@@ -73,13 +77,30 @@ describe("Block", () => {
     expect(foo.closest("a")).toHaveAttribute("href", "/foo");
   });
 
+  it("passes href to button without wrapping in anchor when navigating", () => {
+    render(
+      <Block
+        component={{
+          id: "6",
+          type: "Button" as any,
+          clickAction: "navigate",
+          href: "/bar",
+        }}
+        locale="en"
+      />,
+    );
+    const link = screen.getByRole("link", { name: "Button" });
+    expect(link).toHaveAttribute("href", "/bar");
+    expect(link.parentElement?.tagName.toLowerCase()).not.toBe("a");
+  });
+
   it.each([
     ["fade", "pb-animate-fade"],
     ["slide", "pb-animate-slide"],
   ])("applies %s animation class", (animation, className) => {
     render(
       <Block
-        component={{ id: "6", type: "Foo" as any, animation: animation as any }}
+        component={{ id: "7", type: "Foo" as any, animation: animation as any }}
         locale="en"
       />,
     );

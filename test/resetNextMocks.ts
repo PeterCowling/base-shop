@@ -2,7 +2,7 @@ import React from "react";
 
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: (props: any) => React.createElement("img", props),
+  default: ({ fill, ...props }: any) => React.createElement("img", props),
 }));
 
 jest.mock("next/link", () => ({

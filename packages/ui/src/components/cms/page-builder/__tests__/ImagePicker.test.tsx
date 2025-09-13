@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import ImagePicker from "../ImagePicker";
+import "../../../../../../../test/resetNextMocks";
 
 const loadMedia = jest.fn();
 
@@ -26,8 +27,6 @@ jest.mock("@ui/hooks/useFileUpload", () => () => ({
   handleUpload: jest.fn(),
   error: "",
 }));
-
-jest.mock("next/image", () => (props: any) => <img {...props} />);
 
 describe("ImagePicker", () => {
   it("selects image and calls onSelect", () => {

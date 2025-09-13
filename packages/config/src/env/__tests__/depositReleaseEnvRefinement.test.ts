@@ -266,6 +266,32 @@ describe("depositReleaseEnvRefinement", () => {
     });
   });
 
+  it("adds issue for non-boolean *_ENABLED values", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      { DEPOSIT_RELEASE_FOO_ENABLED: "yes" },
+      ctx,
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_FOO_ENABLED"],
+      message: "must be true or false",
+    });
+  });
+
+  it("adds issue for non-numeric *_INTERVAL_MS values", () => {
+    const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
+    depositReleaseEnvRefinement(
+      { DEPOSIT_RELEASE_FOO_INTERVAL_MS: "soon" },
+      ctx,
+    );
+    expect(ctx.addIssue).toHaveBeenCalledWith({
+      code: z.ZodIssueCode.custom,
+      path: ["DEPOSIT_RELEASE_FOO_INTERVAL_MS"],
+      message: "must be a number",
+    });
+  });
+
   it("ignores unrelated environment keys", () => {
     const ctx = { addIssue: jest.fn() } as unknown as z.RefinementCtx;
     depositReleaseEnvRefinement(

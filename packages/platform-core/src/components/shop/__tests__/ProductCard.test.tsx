@@ -1,9 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { ProductCard, Price } from "../ProductCard";
 import React from "react";
-
-// Mock next/image to render a standard img element
-jest.mock("next/image", () => (props: any) => <img {...props} />);
+import "../../../../../../test/resetNextMocks";
 
 // Mock AddToCartButton to avoid context dependencies
 jest.mock("../AddToCartButton.client", () => ({

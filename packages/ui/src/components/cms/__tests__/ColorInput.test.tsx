@@ -42,8 +42,22 @@ describe("suggestContrastColor", () => {
     }
   });
 
+  it("darkens a lighter color and exits once contrast is sufficient", () => {
+    const reference = "#000000";
+    const suggestion = suggestContrastColor("#ffffff", reference, 4.5);
+    expect(suggestion).toBe("#f2f2f2");
+    if (suggestion) {
+      expect(getContrast(suggestion, reference)).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
   it("returns null after exhausting iteration limit for very high ratios", () => {
     const suggestion = suggestContrastColor("#000000", "#ffffff", 100);
+    expect(suggestion).toBeNull();
+  });
+
+  it("returns null when luminance adjustment exceeds bounds", () => {
+    const suggestion = suggestContrastColor("0 0% 98%", "#000000", 100);
     expect(suggestion).toBeNull();
   });
 

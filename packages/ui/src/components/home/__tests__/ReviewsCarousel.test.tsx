@@ -1,6 +1,6 @@
 import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ReviewsCarousel from "../src/components/home/ReviewsCarousel";
+import ReviewsCarousel from "../ReviewsCarousel";
 
 const translations: Record<string, string> = {};
 
@@ -30,14 +30,14 @@ describe("ReviewsCarousel", () => {
     expect(screen.getByText(/Anna quote/)).toBeInTheDocument();
     expect(container.querySelector("section")).toHaveAttribute(
       "data-token",
-      "--color-muted"
+      "--color-muted",
     );
     expect(
-      screen.getByText(/Anna quote/).closest("blockquote")
+      screen.getByText(/Anna quote/).closest("blockquote"),
     ).toHaveAttribute("data-token", "--color-fg");
     expect(screen.getByText(/—\s*Anna/)).toHaveAttribute(
       "data-token",
-      "--color-muted"
+      "--color-muted",
     );
     act(() => {
       jest.advanceTimersByTime(8000);
@@ -67,15 +67,45 @@ describe("ReviewsCarousel", () => {
   it("renders provided reviews", () => {
     Object.assign(translations, { quote1: "Great", name1: "Bob" });
     render(
-      <ReviewsCarousel reviews={[{ quoteKey: "quote1", nameKey: "name1" }]} />
+      <ReviewsCarousel reviews={[{ quoteKey: "quote1", nameKey: "name1" }]} />,
     );
     expect(screen.getByText(/Great/)).toBeInTheDocument();
     expect(screen.getByText(/Bob/)).toBeInTheDocument();
   });
 
-  it("returns null when no reviews are provided", () => {
-    const { container } = render(<ReviewsCarousel reviews={[]} />);
-    expect(container.firstChild).toBeNull();
+  it("auto advances custom reviews every 8s", async () => {
+    Object.assign(translations, {
+      quote1: "Quote 1",
+      name1: "Name 1",
+      quote2: "Quote 2",
+      name2: "Name 2",
+    });
+
+    const reviews = [
+      { quoteKey: "quote1", nameKey: "name1" },
+      { quoteKey: "quote2", nameKey: "name2" },
+    ];
+
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+
+    render(<ReviewsCarousel reviews={reviews} />);
+    expect(screen.getByText(/Quote 1/)).toBeInTheDocument();
+    act(() => {
+      jest.advanceTimersByTime(8000);
+    });
+    expect(screen.getByText(/Quote 2/)).toBeInTheDocument();
+    await user.click(screen.getByLabelText(/previous review/i));
+    expect(screen.getByText(/Quote 1/)).toBeInTheDocument();
+  });
+
+  it("uses default reviews when an empty array is provided", () => {
+    Object.assign(translations, {
+      "review.anna.quote": "Anna quote",
+      "review.anna.name": "Anna",
+    });
+
+    render(<ReviewsCarousel reviews={[]} />);
+    expect(screen.getByText(/Anna quote/)).toBeInTheDocument();
+    expect(screen.getByText(/—\s*Anna/)).toBeInTheDocument();
   });
 });
-

@@ -131,7 +131,7 @@ const config = {
     '^.+\\.(ts|tsx)$': [
       'ts-jest',
       {
-        tsconfig: ' /tsconfig.test.json',
+        tsconfig: path.join(process.cwd(), 'tsconfig.test.json'),
         useESM: true,
         diagnostics: false,
         babelConfig: false,

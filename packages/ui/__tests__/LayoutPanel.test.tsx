@@ -8,11 +8,15 @@ jest.mock("../src/components/atoms/shadcn", () => {
       </label>
     ),
     Button: ({ children, onClick }: any) => <button onClick={onClick}>{children}</button>,
-    Select: ({ children, ...rest }: any) => <select {...rest}>{children}</select>,
+    // Use simple non-form elements for Select-related mocks to avoid DOM nesting
+    // issues and uncontrolled warnings in tests.
+    Select: ({ children }: any) => <div>{children}</div>,
     SelectTrigger: ({ children }: any) => <div>{children}</div>,
-    SelectValue: ({ placeholder }: any) => <option>{placeholder}</option>,
+    SelectValue: ({ placeholder }: any) => <span>{placeholder}</span>,
     SelectContent: ({ children }: any) => <div>{children}</div>,
-    SelectItem: ({ children, ...rest }: any) => <option {...rest}>{children}</option>,
+    SelectItem: ({ children, onSelect }: any) => (
+      <div onClick={() => onSelect?.()}>{children}</div>
+    ),
   };
 });
 import { render, fireEvent, screen } from "@testing-library/react";

@@ -86,7 +86,14 @@ describe("Textarea", () => {
   });
 
   it("floats label when controlled value is set", () => {
-    render(<Textarea label="Message" floatingLabel value="Hello" />);
+    render(
+      <Textarea
+        label="Message"
+        floatingLabel
+        value="Hello"
+        onChange={() => {}}
+      />
+    );
     const label = screen.getByText("Message");
     expect(label).toHaveClass("-translate-y-3", "text-xs");
   });

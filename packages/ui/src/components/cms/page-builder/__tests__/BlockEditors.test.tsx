@@ -134,6 +134,12 @@ describe("block editors", () => {
         target: { value: url },
       });
       expect(onChange).toHaveBeenLastCalledWith({ link: url });
+    } else if (_name === "ContactFormEditor") {
+      fireEvent.change(screen.getByPlaceholderText("method"), {
+        target: { value: "post" },
+      });
+      expect(onChange).toHaveBeenNthCalledWith(1, { action: "x" });
+      expect(onChange).toHaveBeenNthCalledWith(2, { method: "post" });
     } else {
       expect(onChange).toHaveBeenCalled();
     }

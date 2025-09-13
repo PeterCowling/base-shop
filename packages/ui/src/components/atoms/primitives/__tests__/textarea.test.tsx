@@ -69,6 +69,18 @@ describe("Textarea", () => {
     expect(error).toHaveAttribute("data-token", "--color-danger");
   });
 
+  it("toggles aria-invalid when error prop changes", () => {
+    const { rerender } = render(<Textarea />);
+    const textarea = screen.getByRole("textbox");
+    expect(textarea).not.toHaveAttribute("aria-invalid");
+
+    rerender(<Textarea error="Required" />);
+    expect(screen.getByRole("textbox")).toHaveAttribute("aria-invalid", "true");
+
+    rerender(<Textarea />);
+    expect(screen.getByRole("textbox")).not.toHaveAttribute("aria-invalid");
+  });
+
   it("calls onFocus and onBlur callbacks", () => {
     const handleFocus = jest.fn();
     const handleBlur = jest.fn();
@@ -85,23 +97,25 @@ describe("Textarea", () => {
     expect(handleBlur).toHaveBeenCalledTimes(1);
   });
 
-  it("floats label when controlled value is set", () => {
-    render(
-      <Textarea
-        label="Message"
-        floatingLabel
-        value="Hello"
-        onChange={() => {}}
-      />
-    );
-    const label = screen.getByText("Message");
-    expect(label).toHaveClass("-translate-y-3", "text-xs");
-  });
+  describe("floating label", () => {
+    it("floats label when controlled value is set", () => {
+      render(
+        <Textarea
+          label="Message"
+          floatingLabel
+          value="Hello"
+          onChange={() => {}}
+        />
+      );
+      const label = screen.getByText("Message");
+      expect(label).toHaveClass("-translate-y-3", "text-xs");
+    });
 
-  it("floats label when defaultValue is set", () => {
-    render(<Textarea label="Message" floatingLabel defaultValue="Hi" />);
-    const label = screen.getByText("Message");
-    expect(label).toHaveClass("-translate-y-3", "text-xs");
+    it("floats label when defaultValue is set", () => {
+      render(<Textarea label="Message" floatingLabel defaultValue="Hi" />);
+      const label = screen.getByText("Message");
+      expect(label).toHaveClass("-translate-y-3", "text-xs");
+    });
   });
 });
 

@@ -26,7 +26,7 @@ export class RedisCartStore implements CartStore {
       this.failures = 0;
       return result;
     } catch (err) {
-      console.error("Redis operation failed", err);
+      console.warn("Redis operation failed", err);
       this.failures += 1;
       if (this.failures >= MAX_REDIS_FAILURES) {
         console.error(

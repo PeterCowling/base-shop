@@ -67,8 +67,7 @@ async function read(shop: string): Promise<InventoryItem[]> {
     );
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
-    console.error(`Failed to read inventory for ${shop}`, err);
-    throw err;
+    throw new Error(`Failed to read inventory for ${shop}`, { cause: err });
   }
 }
 

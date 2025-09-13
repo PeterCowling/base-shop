@@ -106,6 +106,9 @@ describe("ShopSelector", () => {
   });
 
   it("falls back to error text when fetch rejects", async () => {
+    const consoleErrorMock = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     const fetchMock = jest
       .spyOn(global, "fetch")
       .mockRejectedValueOnce(new Error("Network error"));
@@ -115,6 +118,7 @@ describe("ShopSelector", () => {
     expect(await screen.findByText("Network error")).toBeInTheDocument();
     expect(screen.queryByTestId("shop-select")).not.toBeInTheDocument();
     fetchMock.mockRestore();
+    consoleErrorMock.mockRestore();
   });
 });
 

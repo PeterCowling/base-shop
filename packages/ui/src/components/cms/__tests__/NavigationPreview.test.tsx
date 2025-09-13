@@ -44,6 +44,14 @@ describe("NavigationPreview", () => {
     expect(link).toHaveAttribute("href", "#");
   });
 
+  it("does not render nested list for items without children", () => {
+    const { getByText } = render(
+      <NavigationPreview items={[{ id: "1", label: "Solo", url: "/solo" }]} />,
+    );
+    const listItem = getByText("Solo").closest("li");
+    expect(listItem?.querySelector("ul")).toBeNull();
+  });
+
   it("renders dropdown menu with child links and tokens", () => {
     const { getByText } = render(<NavigationPreview items={items} />);
     const childLink = getByText("Child");

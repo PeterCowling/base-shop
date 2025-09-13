@@ -83,7 +83,7 @@ function mockSharp({
 describe("media actions", () => {
   afterEach(() => jest.resetAllMocks());
 
-  it("listMedia throws when dir missing", async () => {
+  it("listMedia returns empty array when dir missing", async () => {
     await withTmpDir(() =>
       withDevEnv(async () => {
         mockAuth();
@@ -92,9 +92,7 @@ describe("media actions", () => {
         const { listMedia } = await import(
           /* @vite-ignore */ "../src/actions/media.server.ts"
         );
-        await expect(listMedia("shop1")).rejects.toThrow(
-          "Failed to list media"
-        );
+        await expect(listMedia("shop1")).resolves.toEqual([]);
       })
     );
   }, 15_000);

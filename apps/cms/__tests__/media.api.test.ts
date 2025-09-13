@@ -27,6 +27,7 @@ describe("media route", () => {
   });
 
   it("POST returns 400 when upload fails", async () => {
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.doMock("@cms/actions/media.server", () => ({
       listMedia: jest.fn(),
       deleteMedia: jest.fn(),
@@ -44,6 +45,7 @@ describe("media route", () => {
     const res = await POST(req);
     expect(res.status).toBe(400);
     await expect(res.json()).resolves.toEqual({ error: "Upload failed" });
+    spy.mockRestore();
   });
 
   it("DELETE without shop or file returns 400", async () => {

@@ -15,9 +15,45 @@ jest.mock("next/navigation", () => ({
   useSearchParams: () => useSearchParams(),
 }));
 
+function mockFetchSuccess(data: unknown) {
+  // @ts-expect-error
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: async () => data,
+  });
+}
+
+function mockFetchError(statusText: string) {
+  // @ts-expect-error
+  global.fetch = jest.fn().mockResolvedValue({
+    ok: false,
+    statusText,
+  });
+}
+
 describe("useMediaLibrary", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it("resolves shop from pathname", () => {
+    getShopFromPath.mockReturnValue("s1");
+    usePathname.mockReturnValue("/s1");
+    useSearchParams.mockReturnValue(new URLSearchParams());
+
+    const { result } = renderHook(() => useMediaLibrary());
+
+    expect(result.current.shop).toBe("s1");
+  });
+
+  it("falls back to shopId query param", () => {
+    getShopFromPath.mockReturnValue(undefined);
+    usePathname.mockReturnValue("/");
+    useSearchParams.mockReturnValue(new URLSearchParams("shopId=s2"));
+
+    const { result } = renderHook(() => useMediaLibrary());
+
+    expect(result.current.shop).toBe("s2");
   });
 
   it("loadMedia is a no-op when shop is undefined", async () => {
@@ -45,11 +81,7 @@ describe("useMediaLibrary", () => {
     useSearchParams.mockReturnValue(new URLSearchParams());
 
     const items = [{ id: "1" } as any];
-    // @ts-expect-error
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: async () => items,
-    });
+    mockFetchSuccess(items);
 
     const { result } = renderHook(() => useMediaLibrary());
 
@@ -67,11 +99,7 @@ describe("useMediaLibrary", () => {
     usePathname.mockReturnValue("/s1");
     useSearchParams.mockReturnValue(new URLSearchParams());
 
-    // @ts-expect-error
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({ foo: "bar" }),
-    });
+    mockFetchSuccess({ foo: "bar" });
 
     const { result } = renderHook(() => useMediaLibrary());
 
@@ -89,11 +117,7 @@ describe("useMediaLibrary", () => {
     usePathname.mockReturnValue("/s1");
     useSearchParams.mockReturnValue(new URLSearchParams());
 
-    // @ts-expect-error
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: false,
-      statusText: "bad",
-    });
+    mockFetchError("bad");
 
     const { result } = renderHook(() => useMediaLibrary());
 

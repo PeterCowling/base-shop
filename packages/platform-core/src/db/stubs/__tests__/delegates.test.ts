@@ -169,6 +169,7 @@ describe("product delegate", () => {
     expect(
       await d.findUnique({ where: { shopId_id: { shopId: "s9", id: "p1" } } })
     ).toBeNull();
+    expect(await d.findUnique({ where: { id: "p1" } })).toBeNull();
     const updated = await d.update({
       where: { shopId_id: { shopId: "s1", id: "p1" } },
       data: { name: "aa" },
@@ -190,6 +191,11 @@ describe("product delegate", () => {
     ).rejects.toThrow("Product not found");
     const delMany = await d.deleteMany({ where: { shopId: "s1" } });
     expect(delMany.count).toBe(2);
+    expect(await d.findMany({ where: { shopId: "s1" } })).toHaveLength(0);
+    await d.create({ data: { id: "p5", shopId: "s3", name: "e" } });
+    const delShop3 = await d.deleteMany({ where: { shopId: "s3" } });
+    expect(delShop3.count).toBe(1);
+    expect(await d.findMany({ where: { shopId: "s3" } })).toHaveLength(0);
   });
 });
 

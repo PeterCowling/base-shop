@@ -16,6 +16,22 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
+const originalError = console.error;
+beforeAll(() => {
+  jest.spyOn(console, "error").mockImplementation((msg, ...args) => {
+    if (typeof msg === "string" && msg.includes("not wrapped in act")) {
+      return;
+    }
+    originalError(msg, ...args);
+  });
+});
+
+afterAll(() => {
+  (console.error as jest.Mock).mockRestore();
+});
+
 describe("loadPublishLocations", () => {
   it("returns fetched data", async () => {
     const locations = [
@@ -42,12 +58,13 @@ describe("usePublishLocations", () => {
     mockFetchJson.mockResolvedValueOnce(first).mockResolvedValueOnce(second);
 
     const { result } = renderHook(() => usePublishLocations());
-    await waitFor(() => expect(result.current.locations).toEqual(first));
+    await act(async () => {});
+    expect(result.current.locations).toEqual(first);
 
-    act(() => {
+    await act(async () => {
       result.current.reload();
     });
-    await waitFor(() => expect(result.current.locations).toEqual(second));
+    expect(result.current.locations).toEqual(second);
 
     expect(mockFetchJson).toHaveBeenCalledTimes(2);
   });

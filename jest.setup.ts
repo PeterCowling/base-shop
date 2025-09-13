@@ -4,6 +4,8 @@
 /*  Executed **once** before the Jest environment is ready                    */
 /* -------------------------------------------------------------------------- */
 
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
 import { jest } from "@jest/globals";
 jest.mock("@prisma/client");
 
@@ -55,10 +57,14 @@ mutableEnv.EMAIL_PROVIDER ||= "noop";
 /* -------------------------------------------------------------------------- */
 
 import "@testing-library/jest-dom";
-import { configure } from "@testing-library/react";
+// Use require so that the global IS_REACT_ACT_ENVIRONMENT is set before modules load
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { configure } = require("@testing-library/react");
 configure({ testIdAttribute: "data-cy" });
-import "cross-fetch/polyfill";
-import React from "react";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require("cross-fetch/polyfill");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const React = require("react");
 import { TextDecoder, TextEncoder } from "node:util";
 import { File } from "node:buffer";
 import { webcrypto } from "node:crypto";

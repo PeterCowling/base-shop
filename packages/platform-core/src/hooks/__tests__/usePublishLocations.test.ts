@@ -8,6 +8,22 @@ jest.mock("@acme/shared-utils", () => ({
 
 const mockFetchJson = fetchJson as jest.MockedFunction<typeof fetchJson>;
 
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
+const originalError = console.error;
+beforeAll(() => {
+  jest.spyOn(console, "error").mockImplementation((msg, ...args) => {
+    if (typeof msg === "string" && msg.includes("not wrapped in act")) {
+      return;
+    }
+    originalError(msg, ...args);
+  });
+});
+
+afterAll(() => {
+  (console.error as jest.Mock).mockRestore();
+});
+
 afterEach(() => {
   jest.clearAllMocks();
 });
@@ -35,17 +51,18 @@ describe("usePublishLocations", () => {
       .mockResolvedValueOnce(third);
 
     const { result } = renderHook(() => usePublishLocations());
-    await waitFor(() => expect(result.current.locations).toEqual(first));
+    await act(async () => {});
+    expect(result.current.locations).toEqual(first);
 
-    act(() => {
+    await act(async () => {
       result.current.reload();
     });
-    await waitFor(() => expect(result.current.locations).toEqual(second));
+    expect(result.current.locations).toEqual(second);
 
-    act(() => {
+    await act(async () => {
       result.current.reload();
     });
-    await waitFor(() => expect(result.current.locations).toEqual(third));
+    expect(result.current.locations).toEqual(third);
   });
 
   it("handles duplicates", async () => {
@@ -57,12 +74,13 @@ describe("usePublishLocations", () => {
     mockFetchJson.mockResolvedValueOnce(base).mockResolvedValueOnce(duplicates);
 
     const { result } = renderHook(() => usePublishLocations());
-    await waitFor(() => expect(result.current.locations).toEqual(base));
+    await act(async () => {});
+    expect(result.current.locations).toEqual(base);
 
-    act(() => {
+    await act(async () => {
       result.current.reload();
     });
-    await waitFor(() => expect(result.current.locations).toEqual(duplicates));
+    expect(result.current.locations).toEqual(duplicates);
   });
 });
 

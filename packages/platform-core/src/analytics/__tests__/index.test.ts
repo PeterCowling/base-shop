@@ -36,6 +36,21 @@ describe("trackEvent providers", () => {
     await expect(fs.readFile(file, "utf8")).rejects.toBeDefined();
   });
 
+  test("analytics disabled returns early without provider or aggregates", async () => {
+    readShop.mockResolvedValue({ analyticsEnabled: false });
+    const fetchMock = globalThis.fetch as jest.Mock;
+    const { trackEvent } = await import("../index");
+    await expect(
+      trackEvent(shop, { type: "page_view", page: "home" })
+    ).resolves.toBeUndefined();
+    expect(getShopSettings).not.toHaveBeenCalled();
+    expect(fetchMock).not.toHaveBeenCalled();
+    const file = path.join(tmp, shop, "analytics.jsonl");
+    await expect(fs.readFile(file, "utf8")).rejects.toBeDefined();
+    const aggFile = path.join(tmp, shop, "analytics-aggregates.json");
+    await expect(fs.readFile(aggFile, "utf8")).rejects.toBeDefined();
+  });
+
   test("analytics provider 'none' uses Noop provider and is cached", async () => {
     readShop.mockResolvedValue({ analyticsEnabled: true });
     getShopSettings.mockResolvedValue({ analytics: { provider: "none" } });
@@ -121,6 +136,22 @@ describe("trackEvent providers", () => {
     getShopSettings.mockResolvedValue({
       analytics: { provider: "ga", id: "G-XYZ" },
     });
+    const fetchMock = jest.fn().mockResolvedValue({ ok: true });
+    (globalThis.fetch as any) = fetchMock;
+    const { trackEvent } = await import("../index");
+    await trackEvent(shop, { type: "page_view", page: "home" });
+    expect(fetchMock).not.toHaveBeenCalled();
+    const content = await fs.readFile(
+      path.join(tmp, shop, "analytics.jsonl"),
+      "utf8"
+    );
+    expect(content).toContain('"type":"page_view"');
+  });
+
+  test("falls back to file provider when GA id missing", async () => {
+    readShop.mockResolvedValue({ analyticsEnabled: true });
+    getShopSettings.mockResolvedValue({ analytics: { provider: "ga" } });
+    process.env.GA_API_SECRET = "secret";
     const fetchMock = jest.fn().mockResolvedValue({ ok: true });
     (globalThis.fetch as any) = fetchMock;
     const { trackEvent } = await import("../index");

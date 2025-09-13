@@ -76,6 +76,15 @@ describe("ProductCard price", () => {
     expect(container.querySelector(".font-semibold.text-gray-900")).toBeNull();
     expect(formatPriceMock).not.toHaveBeenCalled();
   });
+
+  it("renders price when sku.price is 0", () => {
+    const sku = { ...baseSku, price: 0 };
+    const { container } = render(<ProductCard sku={sku} />);
+    const priceEl = container.querySelector(".font-semibold.text-gray-900");
+    expect(priceEl).toBeInTheDocument();
+    expect(priceEl).toHaveTextContent("0 USD");
+    expect(formatPriceMock).toHaveBeenCalledWith(0, "USD");
+  });
 });
 
 describe("ProductCard badges", () => {
@@ -98,6 +107,13 @@ describe("ProductCard badges", () => {
     render(<ProductCard sku={sku} />);
     expect(screen.queryByTestId("badge-sale")).toBeNull();
     expect(screen.queryByTestId("badge-new")).toBeNull();
+  });
+
+  it("shows sale and new badges when both flags are true", () => {
+    const sku = { ...baseSku, badges: { sale: true, new: true } };
+    render(<ProductCard sku={sku} />);
+    expect(screen.getByTestId("badge-sale")).toBeInTheDocument();
+    expect(screen.getByTestId("badge-new")).toBeInTheDocument();
   });
 });
 

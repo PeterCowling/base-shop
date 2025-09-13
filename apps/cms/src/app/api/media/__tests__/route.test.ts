@@ -16,8 +16,16 @@ beforeAll(async () => {
   ({ GET, POST, DELETE } = await import("../route"));
 });
 
+beforeEach(() => {
+  jest.spyOn(console, "error").mockImplementation(() => {});
+});
+
 afterEach(() => {
   jest.resetAllMocks();
+});
+
+afterAll(() => {
+  jest.restoreAllMocks();
 });
 
 describe("media route", () => {

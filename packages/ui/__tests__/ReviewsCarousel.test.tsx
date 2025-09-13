@@ -1,4 +1,5 @@
 import { render, screen, act } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import ReviewsCarousel from "../src/components/home/ReviewsCarousel";
 
 const translations: Record<string, string> = {};
@@ -44,6 +45,25 @@ describe("ReviewsCarousel", () => {
     expect(screen.getByText(/Luca quote/)).toBeInTheDocument();
   });
 
+  it("allows navigating reviews with next and previous controls", async () => {
+    Object.assign(translations, {
+      "review.anna.quote": "Anna quote",
+      "review.anna.name": "Anna",
+      "review.luca.quote": "Luca quote",
+      "review.luca.name": "Luca",
+    });
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+
+    render(<ReviewsCarousel />);
+    expect(screen.getByText(/Anna quote/)).toBeInTheDocument();
+
+    await user.click(screen.getByLabelText(/next review/i));
+    expect(screen.getByText(/Luca quote/)).toBeInTheDocument();
+
+    await user.click(screen.getByLabelText(/previous review/i));
+    expect(screen.getByText(/Anna quote/)).toBeInTheDocument();
+  });
+
   it("renders provided reviews", () => {
     Object.assign(translations, { quote1: "Great", name1: "Bob" });
     render(
@@ -53,14 +73,9 @@ describe("ReviewsCarousel", () => {
     expect(screen.getByText(/Bob/)).toBeInTheDocument();
   });
 
-  it("falls back to defaults when passed an empty array", () => {
-    Object.assign(translations, {
-      "review.anna.quote": "Anna quote",
-      "review.anna.name": "Anna",
-    });
-    render(<ReviewsCarousel reviews={[]} />);
-    expect(screen.getByText(/Anna quote/)).toBeInTheDocument();
-    expect(screen.getByText(/—\s*Anna/)).toBeInTheDocument();
+  it("returns null when no reviews are provided", () => {
+    const { container } = render(<ReviewsCarousel reviews={[]} />);
+    expect(container.firstChild).toBeNull();
   });
 });
 

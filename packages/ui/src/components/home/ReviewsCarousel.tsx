@@ -13,16 +13,22 @@ const DEFAULT_REVIEWS: Review[] = [
 ];
 
 export default function ReviewsCarousel({
-  reviews = DEFAULT_REVIEWS,
+  reviews,
 }: {
   reviews?: Review[];
 }) {
   const t = useTranslations();
   const [i, setI] = useState(0);
 
-  const list = reviews.length ? reviews : DEFAULT_REVIEWS;
+  const list = reviews ?? DEFAULT_REVIEWS;
+  if (!list.length) return null;
+
   const next = useCallback(
     () => setI((n) => (n + 1) % list.length),
+    [list.length]
+  );
+  const prev = useCallback(
+    () => setI((n) => (n - 1 + list.length) % list.length),
     [list.length]
   );
   useEffect(() => {
@@ -43,6 +49,22 @@ export default function ReviewsCarousel({
         </blockquote>
         <div className="font-semibold text-muted" data-token="--color-muted">
           — {t(nameKey)}
+        </div>
+        <div className="mt-8 flex justify-center gap-4">
+          <button
+            aria-label="Previous review"
+            className="px-2"
+            onClick={prev}
+          >
+            ‹
+          </button>
+          <button
+            aria-label="Next review"
+            className="px-2"
+            onClick={next}
+          >
+            ›
+          </button>
         </div>
       </div>
     </section>

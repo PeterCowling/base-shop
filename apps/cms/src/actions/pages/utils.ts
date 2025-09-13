@@ -37,7 +37,11 @@ export async function reportError(
   context?: Record<string, unknown>
 ): Promise<void> {
   try {
-    await captureException(err, context ? { extra: context } : undefined);
+    if (context) {
+      await captureException(err, { extra: context });
+    } else {
+      await captureException(err);
+    }
   } catch {
     /* ignore sentry failure */
   }

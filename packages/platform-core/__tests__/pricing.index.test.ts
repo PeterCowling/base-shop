@@ -33,17 +33,32 @@ async function setup(pricingData = defaultPricing, rateData = defaultRates) {
 }
 
 describe("pricing index", () => {
-  it("convertCurrency handles base currency, missing rate, and bankers rounding ties", async () => {
-    const { convertCurrency } = await setup(undefined, {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("getPricing caches file reads", async () => {
+    const { getPricing, readFile } = await setup();
+    await getPricing();
+    expect(readFile).toHaveBeenCalledTimes(1);
+    await getPricing();
+    expect(readFile).toHaveBeenCalledTimes(1);
+  });
+
+  it("convertCurrency handles base currency, missing rate, bankers rounding ties, and caches exchange rates", async () => {
+    const { convertCurrency, readFile } = await setup(undefined, {
       base: "USD",
       rates: { EUR: 0.5 },
     });
     await expect(convertCurrency(5, "USD")).resolves.toBe(5);
+    expect(readFile).toHaveBeenCalledTimes(1);
     await expect(convertCurrency(1, "EUR")).resolves.toBe(0);
+    expect(readFile).toHaveBeenCalledTimes(1);
     await expect(convertCurrency(3, "EUR")).resolves.toBe(2);
     await expect(convertCurrency(1, "GBP")).rejects.toThrow(
       "Missing exchange rate for GBP",
     );
+    expect(readFile).toHaveBeenCalledTimes(1);
   });
 
   it("applyDurationDiscount selects the appropriate tier", async () => {

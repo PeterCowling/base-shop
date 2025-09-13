@@ -17,20 +17,29 @@ describe("usePageBuilderSave", () => {
     const onPublish = jest.fn().mockResolvedValue(undefined);
     const clearHistory = jest.fn();
 
-    const { result, rerender } = renderHook(({ page }: any) =>
-      usePageBuilderSave({
-        page,
-        components,
-        state,
-        onSave,
-        onPublish,
-        formDataDeps: [],
-        clearHistory,
-      })
-    , { initialProps: { page: basePage } });
+    const { result, rerender } = renderHook(
+      ({ page }: any) =>
+        usePageBuilderSave({
+          page,
+          components,
+          state,
+          onSave,
+          onPublish,
+          formDataDeps: [],
+          clearHistory,
+        }),
+      { initialProps: { page: basePage } }
+    );
 
     const fd = result.current.formData;
     expect(fd.get("id")).toBe("p1");
+    expect(fd.get("updatedAt")).toBe("2024-01-01");
+    expect(fd.get("slug")).toBe("home");
+    expect(fd.get("status")).toBe("draft");
+    expect(fd.get("title")).toBe(JSON.stringify(basePage.seo.title));
+    expect(fd.get("description")).toBe(
+      JSON.stringify(basePage.seo.description)
+    );
     expect(fd.get("components")).toBe(JSON.stringify(components));
     expect(fd.get("history")).toBe(JSON.stringify(state));
 
@@ -55,17 +64,19 @@ describe("usePageBuilderSave", () => {
     const onPublish = jest.fn().mockResolvedValue(undefined);
     const clearHistory = jest.fn();
 
-    const { rerender } = renderHook(({ page }: any) =>
-      usePageBuilderSave({
-        page,
-        components,
-        state,
-        onSave,
-        onPublish,
-        formDataDeps: [],
-        clearHistory,
-      })
-    , { initialProps: { page: basePage } });
+    const { rerender } = renderHook(
+      ({ page }: any) =>
+        usePageBuilderSave({
+          page,
+          components,
+          state,
+          onSave,
+          onPublish,
+          formDataDeps: [],
+          clearHistory,
+        }),
+      { initialProps: { page: basePage } }
+    );
 
     const newPage = { ...basePage, id: "p2" };
     act(() => {
@@ -98,6 +109,47 @@ describe("usePageBuilderSave", () => {
 
     expect(onPublish).toHaveBeenCalledTimes(1);
     expect(clearHistory).toHaveBeenCalledTimes(1);
+    expect(onPublish.mock.invocationCallOrder[0]).toBeLessThan(
+      clearHistory.mock.invocationCallOrder[0]
+    );
+  });
+
+  it("exposes autoSaveState from useAutoSave", async () => {
+    jest.useFakeTimers();
+    const onSave = jest.fn().mockResolvedValue(undefined);
+    const onPublish = jest.fn().mockResolvedValue(undefined);
+    const clearHistory = jest.fn();
+
+    const { result, rerender } = renderHook(
+      ({ deps }: any) =>
+        usePageBuilderSave({
+          page: basePage,
+          components,
+          state,
+          onSave,
+          onPublish,
+          formDataDeps: deps,
+          clearHistory,
+        }),
+      { initialProps: { deps: [0] } }
+    );
+
+    expect(result.current.autoSaveState).toBe("idle");
+
+    rerender({ deps: [1] });
+    await act(async () => {
+      jest.advanceTimersByTime(2000);
+    });
+
+    expect(onSave).toHaveBeenCalledWith(expect.any(FormData));
+    expect(result.current.autoSaveState).toBe("saved");
+
+    await act(async () => {
+      jest.advanceTimersByTime(1000);
+    });
+
+    expect(result.current.autoSaveState).toBe("idle");
+    jest.useRealTimers();
   });
 
   it("calls onAutoSaveError on failure and retries", async () => {
@@ -110,18 +162,20 @@ describe("usePageBuilderSave", () => {
     const clearHistory = jest.fn();
     const onAutoSaveError = jest.fn();
 
-    const { rerender } = renderHook(({ deps }: any) =>
-      usePageBuilderSave({
-        page: basePage,
-        components,
-        state,
-        onSave,
-        onPublish,
-        formDataDeps: deps,
-        onAutoSaveError,
-        clearHistory,
-      })
-    , { initialProps: { deps: [0] } });
+    const { rerender, result } = renderHook(
+      ({ deps }: any) =>
+        usePageBuilderSave({
+          page: basePage,
+          components,
+          state,
+          onSave,
+          onPublish,
+          formDataDeps: deps,
+          onAutoSaveError,
+          clearHistory,
+        }),
+      { initialProps: { deps: [0] } }
+    );
 
     rerender({ deps: [1] });
     await act(async () => {
@@ -129,10 +183,15 @@ describe("usePageBuilderSave", () => {
     });
 
     expect(onAutoSaveError).toHaveBeenCalledTimes(1);
+    expect(result.current.autoSaveState).toBe("error");
     const retry = onAutoSaveError.mock.calls[0][0];
     await act(async () => retry());
     expect(onSave).toHaveBeenCalledTimes(2);
+    expect(result.current.autoSaveState).toBe("saved");
+    await act(async () => {
+      jest.advanceTimersByTime(1000);
+    });
+    expect(result.current.autoSaveState).toBe("idle");
     jest.useRealTimers();
   });
 });
-

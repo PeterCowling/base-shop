@@ -105,22 +105,33 @@ export async function resolveConfig(
   override: Partial<LateFeeConfig> = {},
 ): Promise<LateFeeConfig> {
   const config: LateFeeConfig = { ...DEFAULT_CONFIG };
+  let hasFileEnabled = false;
+  let hasFileInterval = false;
   try {
     const { readFile } = await import("fs/promises");
     const file = join(dataRoot, shop, "settings.json");
     const json = JSON.parse(await readFile(file, "utf8"));
     const cfg = json.lateFeeService;
     if (cfg) {
-      if (typeof cfg.enabled === "boolean") config.enabled = cfg.enabled;
-      if (typeof cfg.intervalMinutes === "number")
+      if (typeof cfg.enabled === "boolean") {
+        config.enabled = cfg.enabled;
+        hasFileEnabled = true;
+      }
+      if (typeof cfg.intervalMinutes === "number") {
         config.intervalMinutes = cfg.intervalMinutes;
+        hasFileInterval = true;
+      }
     }
   } catch {}
 
   const envEnabled = process.env[envKey(shop, "ENABLED")];
   if (envEnabled === "true" || envEnabled === "false") {
     config.enabled = envEnabled === "true";
+  } else if (envEnabled === undefined) {
+    if (coreEnv.LATE_FEE_ENABLED !== undefined && coreEnv.LATE_FEE_ENABLED !== null)
+      config.enabled = coreEnv.LATE_FEE_ENABLED as boolean;
   } else if (
+    !hasFileEnabled &&
     coreEnv.LATE_FEE_ENABLED !== undefined &&
     coreEnv.LATE_FEE_ENABLED !== null
   ) {
@@ -133,6 +144,7 @@ export async function resolveConfig(
     if (!Number.isNaN(num)) {
       config.intervalMinutes = Math.round(num / 60000);
     } else if (
+      !hasFileInterval &&
       coreEnv.LATE_FEE_INTERVAL_MS !== undefined &&
       coreEnv.LATE_FEE_INTERVAL_MS !== null
     ) {

@@ -52,6 +52,8 @@ describe("clear action", () => {
       </CartProvider>
     );
 
+    await waitFor(() => expect(cartState).toEqual(cartWithItem));
+
     await act(async () => {
       await dispatch({ type: "clear" });
     });
@@ -79,6 +81,8 @@ describe("clear action", () => {
         <CartDisplay />
       </CartProvider>
     );
+
+    await waitFor(() => expect(cartState).toEqual(cartWithItem));
 
     await expect(dispatch({ type: "clear" })).rejects.toThrow("msg");
   });

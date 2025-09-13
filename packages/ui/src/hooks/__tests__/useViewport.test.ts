@@ -40,21 +40,20 @@ describe("useViewport", () => {
     expect(result.current).toBe("desktop");
   });
 
-  it("returns 'tablet' for tablet width", () => {
-    mockMatchMedia(800);
+  it.each([
+    [800, "tablet"],
+    [500, "mobile"],
+  ])("width %i returns '%s'", (width, expected) => {
+    mockMatchMedia(width as number);
     const { result } = renderHook(() => useViewport());
-    expect(result.current).toBe("tablet");
+    expect(result.current).toBe(expected);
   });
 
-  it("returns 'mobile' for mobile width", () => {
-    mockMatchMedia(500);
-    const { result } = renderHook(() => useViewport());
-    expect(result.current).toBe("mobile");
-  });
-
-  it("defaults to 'desktop' when matchMedia is unsupported", () => {
-    // @ts-expect-error
-    delete window.matchMedia;
+  it("defaults to 'desktop' when matchMedia returns undefined", () => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: undefined,
+    });
     const { result } = renderHook(() => useViewport());
     expect(result.current).toBe("desktop");
   });

@@ -80,5 +80,23 @@ describe("settings repository backend selection", () => {
     expect(mockPrisma.diffHistory).toHaveBeenCalledWith("shop");
     expect(mockJson.getShopSettings).not.toHaveBeenCalled();
   });
+
+  it("falls back to the Prisma repository when SETTINGS_BACKEND is unknown", async () => {
+    process.env.SETTINGS_BACKEND = "unknown";
+    const {
+      getShopSettings,
+      saveShopSettings,
+      diffHistory,
+    } = await import("../settings.server");
+
+    await getShopSettings("shop");
+    await saveShopSettings("shop", {} as any);
+    await diffHistory("shop");
+
+    expect(mockPrisma.getShopSettings).toHaveBeenCalledWith("shop");
+    expect(mockPrisma.saveShopSettings).toHaveBeenCalledWith("shop", {});
+    expect(mockPrisma.diffHistory).toHaveBeenCalledWith("shop");
+    expect(mockJson.getShopSettings).not.toHaveBeenCalled();
+  });
 });
 

@@ -1,7 +1,9 @@
 import React from "react";
 jest.mock("next/image", () => ({
     __esModule: true,
-    default: (props) => React.createElement("img", props),
+    // Strip Next.js specific props that aren't valid on a normal `<img>` to
+    // avoid React warnings during tests.
+    default: ({ unoptimized, priority, fill, ...rest }) => React.createElement("img", rest),
 }));
 jest.mock("next/link", () => ({
     __esModule: true,

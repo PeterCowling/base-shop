@@ -12,7 +12,7 @@ export async function markNeedsAttention(
       where: { shop_sessionId: { shop, sessionId } },
       data: { flaggedForReview: true },
     });
-    return normalize(order as Order);
+    return order ? normalize(order as Order) : null;
   } catch {
     return null;
   }
@@ -34,8 +34,7 @@ export async function updateRisk(
         ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
       },
     });
-    if (!order) return null;
-    return normalize(order as Order);
+    return order ? normalize(order as Order) : null;
   } catch {
     return null;
   }

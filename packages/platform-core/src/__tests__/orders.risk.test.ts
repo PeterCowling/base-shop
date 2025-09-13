@@ -46,6 +46,12 @@ describe("orders/risk", () => {
       expect(result).toBeNull();
     });
 
+    it("returns null when update returns null", async () => {
+      prisma.rentalOrder.update.mockResolvedValue(null);
+      const result = await updateRisk("shop", "sess");
+      expect(result).toBeNull();
+    });
+
     it.each([
       [{ riskLevel: "low" }, "low", undefined, undefined],
       [{ riskScore: 5 }, undefined, 5, undefined],

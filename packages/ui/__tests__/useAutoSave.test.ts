@@ -10,7 +10,7 @@ describe("useAutoSave state transitions", () => {
     jest.useRealTimers();
   });
 
-  it("transitions idle -> saving -> saved on success", async () => {
+  it("debounces before saving and transitions idle -> saving -> saved -> idle", async () => {
     let resolveSave: () => void;
     const onSave = jest.fn(
       () => new Promise<void>((resolve) => {
@@ -18,16 +18,24 @@ describe("useAutoSave state transitions", () => {
       })
     );
     const formData = new FormData();
-    const { result, rerender } = renderHook(({ deps }) =>
-      useAutoSave({ onSave, formData, deps })
-    , { initialProps: { deps: [0] } });
+    const { result, rerender } = renderHook(
+      ({ deps }) => useAutoSave({ onSave, formData, deps }),
+      { initialProps: { deps: [0] } }
+    );
 
     expect(result.current.autoSaveState).toBe("idle");
 
     rerender({ deps: [1] });
 
+    // verify onSave is not called before debounce period elapses
     await act(async () => {
-      jest.advanceTimersByTime(2000);
+      jest.advanceTimersByTime(1000);
+    });
+    expect(onSave).not.toHaveBeenCalled();
+    expect(result.current.autoSaveState).toBe("idle");
+
+    await act(async () => {
+      jest.advanceTimersByTime(1000);
     });
 
     expect(result.current.autoSaveState).toBe("saving");
@@ -63,8 +71,14 @@ describe("useAutoSave state transitions", () => {
 
     rerender({ deps: [1] });
 
+    // Ensure debounce delay before save
     await act(async () => {
-      jest.advanceTimersByTime(2000);
+      jest.advanceTimersByTime(1000);
+    });
+    expect(onSave).not.toHaveBeenCalled();
+
+    await act(async () => {
+      jest.advanceTimersByTime(1000);
     });
 
     expect(result.current.autoSaveState).toBe("saving");

@@ -134,6 +134,14 @@ describe("formatPrice", () => {
     expect(formatPrice(0)).toBe(expected);
   });
 
+  it("formats NaN amount", () => {
+    const expected = new Intl.NumberFormat(undefined, {
+      style: "currency",
+      currency: "USD",
+    }).format(NaN);
+    expect(formatPrice(NaN)).toBe(expected);
+  });
+
   it.each([null, undefined])("formats %p as NaN", (value) => {
     const expected = new Intl.NumberFormat(undefined, {
       style: "currency",

@@ -21,9 +21,11 @@ jest.mock("next/image", () => ({
 jest.mock("@ui/components/atoms/shadcn", () => {
   const React = require("react");
   const Button = ({ children, ...props }: any) => <button {...props}>{children}</button>;
-  const Select = ({ children, ...props }: any) => <div {...props}>{children}</div>;
+  const Select = ({ children, open, onOpenChange, onValueChange, value, ...props }: any) => (
+    <div {...props}>{children}</div>
+  );
   const SelectContent = ({ children, ...props }: any) => <div {...props}>{children}</div>;
-  const SelectItem = ({ children, onSelect, ...props }: any) => (
+  const SelectItem = ({ children, onSelect, asChild, ...props }: any) => (
     <div onClick={onSelect} {...props}>
       {children}
     </div>

@@ -23,12 +23,18 @@ jest.mock('child_process', () => ({
 }));
 
 let POST: typeof import('../route').POST;
+let consoleErrorSpy: jest.SpyInstance;
 
 beforeAll(async () => {
   ({ POST } = await import('../route'));
 });
 
+beforeEach(() => {
+  consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+});
+
 afterEach(() => {
+  consoleErrorSpy.mockRestore();
   jest.resetAllMocks();
 });
 

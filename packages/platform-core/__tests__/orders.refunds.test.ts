@@ -50,6 +50,27 @@ describe("orders/refunds", () => {
       const result = await markRefunded("shop", "sess");
       expect(result).toBeNull();
     });
+
+    it("passes risk fields to update", async () => {
+      const mock = { id: "1", shop: "shop", sessionId: "sess", refundedAt: "now" };
+      prisma.rentalOrder.update.mockResolvedValue(mock);
+      await markRefunded("shop", "sess", "low", 5, true);
+      expect(prisma.rentalOrder.update).toHaveBeenCalledWith({
+        where: { shop_sessionId: { shop: "shop", sessionId: "sess" } },
+        data: {
+          refundedAt: expect.any(String),
+          riskLevel: "low",
+          riskScore: 5,
+          flaggedForReview: true,
+        },
+      });
+    });
+
+    it("returns null when update resolves null", async () => {
+      prisma.rentalOrder.update.mockResolvedValue(null);
+      const result = await markRefunded("shop", "sess");
+      expect(result).toBeNull();
+    });
   });
 
   describe("refundOrder", () => {

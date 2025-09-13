@@ -106,4 +106,20 @@ describe("pricing index", () => {
       computeDamageFee("scuff", 50, [], true),
     ).resolves.toBe(10);
   });
+
+  it('computeDamageFee uses deposit when rule is "deposit"', async () => {
+    const { computeDamageFee } = await setup();
+    await expect(computeDamageFee("lost", 75)).resolves.toBe(75);
+  });
+
+  it('computeDamageFee ignores invalid coverage codes', async () => {
+    const pricing = {
+      ...defaultPricing,
+      damageFees: { ...defaultPricing.damageFees, scratch: 25 },
+    };
+    const { computeDamageFee } = await setup(pricing);
+    await expect(
+      computeDamageFee("scratch", 50, ["scratch"]),
+    ).resolves.toBe(25);
+  });
 });

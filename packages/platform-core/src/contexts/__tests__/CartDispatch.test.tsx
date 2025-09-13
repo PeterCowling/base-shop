@@ -575,4 +575,55 @@ describe("CartProvider dispatch", () => {
 
     await waitFor(() => expect(cartState).toEqual(added.cart));
   });
+
+  it("uses qty 1 by default when adding", async () => {
+    fetchMock
+      .mockResolvedValueOnce({ ok: true, json: async () => ({ cart: {} }) })
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ cart: { sku1: { sku, qty: 1 } } }),
+      });
+
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
+    fetchMock.mockClear();
+
+    await act(async () => {
+      await dispatch({ type: "add", sku });
+    });
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [, options] = fetchMock.mock.calls[0] as [string, RequestInit];
+    expect(options.method).toBe("POST");
+    expect(JSON.parse(options.body as string)).toEqual({
+      sku: { id: sku.id },
+      qty: 1,
+    });
+    await waitFor(() =>
+      expect(cartState).toEqual({ sku1: { sku, qty: 1 } })
+    );
+  });
+
+  it("ignores unknown actions", async () => {
+    render(
+      <CartProvider>
+        <Capture />
+      </CartProvider>
+    );
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalled());
+    fetchMock.mockClear();
+
+    await act(async () => {
+      await dispatch({ type: "unknown" } as any);
+    });
+
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(cartState).toEqual({});
+  });
 });

@@ -53,14 +53,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
         throw new Error("Cart fetch failed");
       } catch (err) {
         console.error(err);
+        let cached: string | null = null;
         try {
-          const cached = localStorage.getItem(STORAGE_KEY);
+          cached = localStorage.getItem(STORAGE_KEY);
           if (cached) {
             setState(JSON.parse(cached) as CartState);
           }
         } catch {
           /* noop */
         }
+
+        if (!cached) return;
 
         sync = async () => {
           try {

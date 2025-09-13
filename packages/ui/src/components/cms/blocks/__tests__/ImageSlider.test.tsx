@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import ImageSlider from "../ImageSlider";
 
 describe("ImageSlider", () => {
@@ -14,7 +14,7 @@ describe("ImageSlider", () => {
     expect(screen.getByAltText("a")).toBeInTheDocument();
   });
 
-  it("advances to next slide", () => {
+  it("navigates next and previous slides", () => {
     render(
       <ImageSlider
         slides={[
@@ -25,6 +25,25 @@ describe("ImageSlider", () => {
     );
     fireEvent.click(screen.getByRole("button", { name: /next slide/i }));
     expect(screen.getByAltText("b")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /previous slide/i }));
+    expect(screen.getByAltText("a")).toBeInTheDocument();
+  });
+
+  it("autoplays to next slide after interval", () => {
+    jest.useFakeTimers();
+    render(
+      <ImageSlider
+        slides={[
+          { src: "/a.jpg", alt: "a" },
+          { src: "/b.jpg", alt: "b" },
+        ]}
+      />
+    );
+    act(() => {
+      jest.advanceTimersByTime(5000);
+    });
+    expect(screen.getByAltText("b")).toBeInTheDocument();
+    jest.useRealTimers();
   });
 
   it("returns null when below minItems", () => {

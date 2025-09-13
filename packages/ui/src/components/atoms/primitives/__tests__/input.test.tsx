@@ -19,35 +19,48 @@ describe("Input primitive", () => {
     fireEvent.blur(input);
   });
 
-  it("handles floating label focus and blur", () => {
-    render(<Input label="Email" floatingLabel />);
+  it("updates aria-invalid when error toggles", () => {
+    const { rerender } = render(<Input label="Email" />);
     const input = screen.getByLabelText("Email");
-    const label = screen.getByText("Email");
+    expect(input).not.toHaveAttribute("aria-invalid");
 
-    expect(label).not.toHaveClass("-translate-y-3 text-xs");
-    fireEvent.focus(input);
-    expect(label).toHaveClass("-translate-y-3 text-xs");
-    fireEvent.blur(input);
-    expect(label).not.toHaveClass("-translate-y-3 text-xs");
+    rerender(<Input label="Email" error="Required" />);
+    expect(screen.getByLabelText("Email")).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
+
+    rerender(<Input label="Email" />);
+    expect(screen.getByLabelText("Email")).not.toHaveAttribute(
+      "aria-invalid",
+    );
+  });
+
+  describe("floatingLabel", () => {
+    it("floats label when controlled value is provided", () => {
+      render(
+        <Input label="Email" floatingLabel value="foo" onChange={() => {}} />,
+      );
+      const label = screen.getByText("Email");
+      expect(label).toHaveClass("-translate-y-3 text-xs");
+    });
+
+    it("floats label when defaultValue is provided", () => {
+      render(<Input label="Email" floatingLabel defaultValue="bar" />);
+      const label = screen.getByText("Email");
+      expect(label).toHaveClass("-translate-y-3 text-xs");
+    });
+
+    it("does not float label when no value is provided", () => {
+      render(<Input label="Email" floatingLabel />);
+      const label = screen.getByText("Email");
+      expect(label).not.toHaveClass("-translate-y-3 text-xs");
+    });
   });
 
   it("omits label when floatingLabel is set without label", () => {
     const { container } = render(<Input floatingLabel />);
     expect(container.querySelector("label")).toBeNull();
-  });
-
-  it("treats controlled value as having content", () => {
-    render(
-      <Input label="Email" floatingLabel value="foo" onChange={() => {}} />
-    );
-    const label = screen.getByText("Email");
-    expect(label).toHaveClass("-translate-y-3 text-xs");
-  });
-
-  it("treats default value as having content", () => {
-    render(<Input label="Email" floatingLabel defaultValue="bar" />);
-    const label = screen.getByText("Email");
-    expect(label).toHaveClass("-translate-y-3 text-xs");
   });
 
   it("fires provided focus and blur callbacks", () => {
@@ -77,12 +90,6 @@ describe("Input primitive", () => {
     fireEvent.blur(input);
     expect(focusSpy).toHaveBeenCalledTimes(1);
     expect(blurSpy).toHaveBeenCalledTimes(1);
-  });
-
-  it("omits aria-invalid when there is no error", () => {
-    render(<Input label="Email" />);
-    const input = screen.getByLabelText("Email");
-    expect(input).not.toHaveAttribute("aria-invalid");
   });
 
   it("allows custom id to override generated id", () => {

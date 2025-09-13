@@ -100,10 +100,16 @@ describe("additional editors", () => {
     {
       name: "HeaderEditor",
       Comp: HeaderEditor,
-      component: { type: "Header", logoVariants: {}, shopName: "", nav: [] },
-      getNode: () => screen.getByPlaceholderText("shop name"),
-      fire: (node: HTMLElement) => fireEvent.change(node, { target: { value: "My Shop" } }),
-      expected: { shopName: "My Shop" },
+      component: {
+        type: "Header",
+        logoVariants: {},
+        shopName: "",
+        nav: [{ label: "Home", url: "/" }],
+      },
+      getNode: () => screen.getByPlaceholderText("label"),
+      fire: (node: HTMLElement) =>
+        fireEvent.change(node, { target: { value: "About" } }),
+      expected: { nav: [{ label: "About", url: "/" }] },
     },
     {
       name: "ImageSliderEditor",

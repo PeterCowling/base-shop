@@ -75,6 +75,25 @@ describe("shipping environment parser", () => {
     errorSpy.mockRestore();
   });
 
+  it("invokes ctx.addIssue and logs when DHL_KEY missing", async () => {
+    const load = await getLoader();
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() => load({ SHIPPING_PROVIDER: "dhl" })).toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        DHL_KEY: {
+          _errors: [
+            "DHL_KEY is required when SHIPPING_PROVIDER=dhl",
+          ],
+        },
+      }),
+    );
+    errorSpy.mockRestore();
+  });
+
   describe("provider key validation", () => {
     it("adds an issue when UPS_KEY is missing", () => {
       const result = shippingEnvSchema.safeParse({ SHIPPING_PROVIDER: "ups" });
@@ -149,6 +168,26 @@ describe("shipping environment parser", () => {
       load({ SHIPPING_PROVIDER: "invalid" as any }),
     ).toThrow("Invalid shipping environment variables");
     expect(errorSpy).toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+
+  it("throws eagerly when DHL_KEY missing for dhl provider", async () => {
+    jest.resetModules();
+    process.env = { SHIPPING_PROVIDER: "dhl" } as NodeJS.ProcessEnv;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(import("../shipping.ts")).rejects.toThrow(
+      "Invalid shipping environment variables",
+    );
+    expect(errorSpy).toHaveBeenCalledWith(
+      "❌ Invalid shipping environment variables:",
+      expect.objectContaining({
+        DHL_KEY: {
+          _errors: [
+            "DHL_KEY is required when SHIPPING_PROVIDER=dhl",
+          ],
+        },
+      }),
+    );
     errorSpy.mockRestore();
   });
 

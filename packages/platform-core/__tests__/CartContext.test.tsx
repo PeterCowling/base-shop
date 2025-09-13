@@ -2,7 +2,7 @@
 import React from "react";
 import fetchMock from "jest-fetch-mock";
 import "jest-localstorage-mock";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { CartProvider, useCart } from "../src/contexts/CartContext";
 import { PRODUCTS } from "../src/products/index";
 
@@ -42,6 +42,7 @@ beforeEach(() => {
   fetchMock.resetMocks();
   localStorage.clear();
   jest.restoreAllMocks();
+  jest.spyOn(console, "error").mockImplementation(() => {});
 });
 
 describe("CartContext", () => {
@@ -94,7 +95,9 @@ describe("CartContext", () => {
     );
     const handler = addSpy.mock.calls.find((c) => c[0] === "online")?.[1] as EventListener;
 
-    window.dispatchEvent(new Event("online"));
+    act(() => {
+      window.dispatchEvent(new Event("online"));
+    });
 
     await waitFor(() => expect(fetchMock.mock.calls.length).toBe(2));
     const putReq = fetchMock.mock.calls[1][0] as Request;
@@ -234,10 +237,7 @@ describe("CartContext", () => {
       useCart();
       return null;
     }
-    const orig = console.error;
-    console.error = () => {};
     expect(() => render(<Naked />)).toThrow("inside CartProvider");
-    console.error = orig;
   });
 });
 

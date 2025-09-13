@@ -3,7 +3,7 @@ import type { PageComponent } from "@acme/types";
 import PageSidebar from "../src/components/cms/page-builder/PageSidebar";
 
 describe("PageSidebar", () => {
-  it("dispatches correct actions for edits and duplication", () => {
+  it("dispatches correct actions for edits and duplication", async () => {
     const component: PageComponent = {
       id: "c1",
       type: "ProductCarousel",
@@ -11,7 +11,7 @@ describe("PageSidebar", () => {
       maxItems: 5,
     } as PageComponent;
     const dispatch = jest.fn();
-    const { getByText, getByLabelText } = render(
+    const { getByText, findByLabelText } = render(
       <PageSidebar
         components={[component]}
         selectedId={component.id}
@@ -21,7 +21,7 @@ describe("PageSidebar", () => {
 
     // onResize
     fireEvent.click(getByText("Layout"));
-    fireEvent.change(getByLabelText("Width (Desktop)", { exact: false }), {
+    fireEvent.change(await findByLabelText("Width (Desktop)", { exact: false }), {
       target: { value: "200" },
     });
     expect(dispatch).toHaveBeenCalledWith({
@@ -33,7 +33,7 @@ describe("PageSidebar", () => {
 
     // onChange
     fireEvent.click(getByText("Content"));
-    fireEvent.change(getByLabelText("Min Items", { exact: false }), {
+    fireEvent.change(await findByLabelText("Min Items", { exact: false }), {
       target: { value: "2" },
     });
     expect(dispatch).toHaveBeenCalledWith({

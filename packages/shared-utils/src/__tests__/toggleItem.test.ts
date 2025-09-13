@@ -47,5 +47,16 @@ describe('toggleItem', () => {
     expect(added).not.toBe(input);
     expect(removed).not.toBe(input);
   });
+
+  it('adds duplicate objects when references differ', () => {
+    const input = [{ a: 1 }];
+    const result = toggleItem(input, { a: 1 });
+
+    expect(result).toEqual([{ a: 1 }, { a: 1 }]);
+    expect(result).not.toBe(input);
+    expect(result[0]).toBe(input[0]);
+    expect(result[1]).not.toBe(input[0]);
+    expect(input).toEqual([{ a: 1 }]);
+  });
 });
 

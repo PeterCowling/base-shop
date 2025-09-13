@@ -5,7 +5,7 @@ jest.mock("../../../organisms/Header", () => {
   const React = require("react");
   return {
     __esModule: true,
-    Header: jest.fn((props) => <div data-testid="header" {...props} />),
+    Header: jest.fn(() => <div data-testid="header" />),
   };
 });
 

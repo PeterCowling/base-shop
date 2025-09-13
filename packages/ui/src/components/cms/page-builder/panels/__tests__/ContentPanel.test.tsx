@@ -152,6 +152,38 @@ describe("ContentPanel", () => {
     );
   });
 
+  test("forwards undefined to onChange when clearing numeric field", () => {
+    const handlers = {
+      onChange: jest.fn(),
+      handleInput: (field: any, value: any) => {
+        handlers.onChange({ [field]: value });
+      },
+    };
+
+    render(
+      <ContentPanel
+        component={{
+          id: "cClear2",
+          type: "Widget",
+          minItems: 1,
+          maxItems: 2,
+        } as any}
+        {...handlers}
+      />
+    );
+
+    fireEvent.change(screen.getByLabelText("Min Items"), {
+      target: { value: "abc" },
+    });
+    fireEvent.change(screen.getByLabelText("Min Items"), {
+      target: { value: "" },
+    });
+
+    expect(handlers.onChange).toHaveBeenLastCalledWith({
+      minItems: undefined,
+    });
+  });
+
   test("loads specific editor or fallback", async () => {
     const { rerender } = render(
       <ContentPanel

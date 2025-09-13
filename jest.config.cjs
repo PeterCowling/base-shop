@@ -250,11 +250,13 @@ const relativePath = path.relative(workspaceRoot, process.cwd()).replace(/\\/g, 
 if (relativePath) {
   const [scope, ...rest] = relativePath.split('/');
   const subPath = rest.join('/');
-  config.collectCoverageFrom = ['src/**/*.{ts,tsx}'];
-  config.coveragePathIgnorePatterns.push(
-    `/${scope}/(?!${subPath})/`,
-    scope === 'packages' ? '/apps/' : '/packages/'
-  );
+  config.collectCoverageFrom = ['src/**/*.{ts,tsx}', 'functions/**/*.ts'];
+
+  const ignorePatterns = [scope === 'packages' ? '/apps/' : '/packages/'];
+  if (scope !== 'functions') {
+    ignorePatterns.unshift(`/${scope}/(?!${subPath})/`);
+  }
+  config.coveragePathIgnorePatterns.push(...ignorePatterns);
 }
 
 module.exports = resolveRoot(config);

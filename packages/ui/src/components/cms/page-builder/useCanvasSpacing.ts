@@ -24,7 +24,7 @@ interface Overlay {
   height: number;
 }
 
-function parseSpacing(value?: string): [number, number, number, number] {
+export function parseSpacing(value?: string): [number, number, number, number] {
   if (!value) return [0, 0, 0, 0];
   const parts = value
     .split(/\s+/)

@@ -92,10 +92,14 @@ describe("orders/status", () => {
   });
 
   it("returns null when markReturned update throws", async () => {
-    prisma.rentalOrder.update.mockImplementation(() => {
-      throw new Error("not found");
-    });
+    prisma.rentalOrder.update.mockRejectedValue(new Error("not found"));
     await expect(markReturned("shop", "sess")).resolves.toBeNull();
+  });
+
+  it("returns null when markReturned update yields null and damage fee undefined", async () => {
+    prisma.rentalOrder.update.mockResolvedValue(null);
+    const result = await markReturned("shop", "sess", undefined);
+    expect(result).toBeNull();
   });
 
   it("sets return tracking", async () => {
@@ -116,11 +120,8 @@ describe("orders/status", () => {
   });
 
   it("returns null when return tracking update throws", async () => {
-    prisma.rentalOrder.update.mockImplementation(() => {
-      throw new Error("fail");
-    });
-    const result = await setReturnTracking("shop", "sess", "trk", "url");
-    expect(result).toBeNull();
+    prisma.rentalOrder.update.mockRejectedValue(new Error("fail"));
+    await expect(setReturnTracking("shop", "sess", "trk", "url")).resolves.toBeNull();
   });
 
   it("sets return status", async () => {
@@ -141,11 +142,8 @@ describe("orders/status", () => {
   });
 
   it("returns null when return status update throws", async () => {
-    prisma.rentalOrder.update.mockImplementation(() => {
-      throw new Error("fail");
-    });
-    const result = await setReturnStatus("shop", "trk", "rec");
-    expect(result).toBeNull();
+    prisma.rentalOrder.update.mockRejectedValue(new Error("fail"));
+    await expect(setReturnStatus("shop", "trk", "rec")).resolves.toBeNull();
   });
 });
 

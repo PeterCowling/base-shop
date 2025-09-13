@@ -192,6 +192,22 @@ describe("additional editors", () => {
       expected: { endpoint: "api" },
     },
     {
+      name: "RecommendationCarouselEditor tabletItems",
+      Comp: RecommendationCarouselEditor,
+      component: { type: "RecommendationCarousel", endpoint: "", desktopItems: 0, tabletItems: 0, mobileItems: 0 },
+      getNode: () => screen.getByLabelText("Tablet Items"),
+      fire: (node: HTMLElement) => fireEvent.change(node, { target: { value: "2" } }),
+      expected: { tabletItems: 2 },
+    },
+    {
+      name: "RecommendationCarouselEditor mobileItems",
+      Comp: RecommendationCarouselEditor,
+      component: { type: "RecommendationCarousel", endpoint: "", desktopItems: 0, tabletItems: 0, mobileItems: 0 },
+      getNode: () => screen.getByLabelText("Mobile Items"),
+      fire: (node: HTMLElement) => fireEvent.change(node, { target: { value: "3" } }),
+      expected: { mobileItems: 3 },
+    },
+    {
       name: "SearchBarEditor",
       Comp: SearchBarEditor,
       component: { type: "SearchBar", placeholder: "", limit: undefined },

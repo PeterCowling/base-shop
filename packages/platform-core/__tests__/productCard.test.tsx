@@ -20,17 +20,19 @@ describe("ProductCard", () => {
     global.fetch = originalFetch;
   });
 
-  function renderCard(sku: SKU) {
-    return render(
+  async function renderCard(sku: SKU) {
+    const utils = render(
       <CurrencyProvider>
         <CartProvider>
           <ProductCard sku={sku} />
         </CartProvider>
       </CurrencyProvider>
     );
+    await screen.findByRole("button", { name: /add to cart/i });
+    return utils;
   }
 
-  it("skips media when SKU has none", () => {
+  it("skips media when SKU has none", async () => {
     const sku = {
       id: "n1",
       slug: "no-media",
@@ -40,7 +42,7 @@ describe("ProductCard", () => {
       sizes: [],
     } as unknown as SKU;
 
-    const { container } = renderCard(sku);
+    const { container } = await renderCard(sku);
     expect(container.querySelector("img")).toBeNull();
     expect(container.querySelector("video")).toBeNull();
   });
@@ -55,12 +57,12 @@ describe("ProductCard", () => {
       sizes: [],
     } as unknown as SKU;
 
-    renderCard(sku);
+    await renderCard(sku);
     const img = await screen.findByAltText("Image media");
     expect(img).toBeInTheDocument();
   });
 
-  it("renders first media item as video", () => {
+  it("renders first media item as video", async () => {
     const sku = {
       id: "v1",
       slug: "video-media",
@@ -70,28 +72,28 @@ describe("ProductCard", () => {
       sizes: [],
     } as unknown as SKU;
 
-    const { container } = renderCard(sku);
+    const { container } = await renderCard(sku);
     const video = container.querySelector("video");
     expect(video).toBeInTheDocument();
     expect(video).toHaveAttribute("src", "/test.mp4");
   });
 
-  it("links to product detail page", () => {
+  it("links to product detail page", async () => {
     const sku = PRODUCTS[0];
-    renderCard(sku);
+    await renderCard(sku);
     const link = screen.getByRole("link");
     expect(link).toHaveAttribute("href", `../product/${sku.slug}`);
   });
 
-  it("includes AddToCartButton", () => {
+  it("includes AddToCartButton", async () => {
     const sku = PRODUCTS[0];
-    renderCard(sku);
+    await renderCard(sku);
     expect(
       screen.getByRole("button", { name: /add to cart/i })
     ).toBeInTheDocument();
   });
 
-  it("displays price using currency from context", () => {
+  it("displays price using currency from context", async () => {
     window.localStorage.setItem("PREFERRED_CURRENCY", "USD");
     const sku = {
       id: "p1",
@@ -101,7 +103,7 @@ describe("ProductCard", () => {
       media: [],
       sizes: [],
     } as unknown as SKU;
-    renderCard(sku);
+    await renderCard(sku);
     expect(screen.getByText("$10.00")).toBeInTheDocument();
   });
 });

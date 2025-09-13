@@ -116,11 +116,14 @@ describe("updatePost", () => {
 
   it("surfaces repository update errors", async () => {
     const { getConfig, filterExistingProductSlugs } = await import(
-      "../../config"
+      "../../config",
     );
     const { updatePost: repoUpdatePost, slugExists } = await import(
-      "@platform-core/repositories/blog.server"
+      "@platform-core/repositories/blog.server",
     );
+    const consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
 
     const config = { id: "config" } as any;
     getConfig.mockResolvedValue(config);
@@ -138,6 +141,11 @@ describe("updatePost", () => {
 
     expect(repoUpdatePost).toHaveBeenCalled();
     expect(result).toEqual({ error: "Failed to update post" });
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      "Failed to update post",
+      error,
+    );
+    consoleErrorSpy.mockRestore();
   });
 });
 

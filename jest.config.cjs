@@ -244,4 +244,17 @@ const config = {
   rootDir: process.cwd(), // ensure paths resolve relative to each package
 };
 
+// Limit coverage collection to the current workspace package/app
+const workspaceRoot = __dirname;
+const relativePath = path.relative(workspaceRoot, process.cwd()).replace(/\\/g, '/');
+if (relativePath) {
+  const [scope, ...rest] = relativePath.split('/');
+  const subPath = rest.join('/');
+  config.collectCoverageFrom = ['src/**/*.{ts,tsx}'];
+  config.coveragePathIgnorePatterns.push(
+    `/${scope}/(?!${subPath})/`,
+    scope === 'packages' ? '/apps/' : '/packages/'
+  );
+}
+
 module.exports = resolveRoot(config);

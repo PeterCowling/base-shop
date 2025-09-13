@@ -15,6 +15,10 @@ import FeaturedProductEditor from "../FeaturedProductEditor";
 import FormBuilderEditor from "../FormBuilderEditor";
 import ProductBundleEditor from "../ProductBundleEditor";
 
+jest.mock("@acme/i18n", () => ({
+  useTranslations: () => (key: string) => key,
+}));
+
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
   default: ({ children }: any) => <>{children}</>,

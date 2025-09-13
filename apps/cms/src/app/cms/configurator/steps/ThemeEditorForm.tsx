@@ -70,7 +70,7 @@ export default function ThemeEditorForm({
         </SelectTrigger>
         <SelectContent>
           {themes.map((t) => (
-            <SelectItem key={t} value={t}>
+            <SelectItem key={t} value={t} textValue={t}>
               <div className="flex items-center gap-2">
                 <Image
                   src={`/themes/${t}.svg`}

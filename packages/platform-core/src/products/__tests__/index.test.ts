@@ -58,6 +58,18 @@ describe("getProductById", () => {
     expect(getProductById("black-sneaker")).toBeUndefined();
   });
 
+  it("returns undefined when stock is negative", () => {
+    const negativeSku: any = {
+      id: "negative-sku",
+      slug: "negative-sku",
+      price: 50,
+      stock: -1,
+    };
+    (PRODUCTS as unknown as any[]).push(negativeSku);
+    expect(getProductById("negative-sku")).toBeUndefined();
+    (PRODUCTS as unknown as any[]).pop();
+  });
+
   it("returns undefined when SKU validation fails", () => {
     const invalidSku: any = {
       id: "broken-sku",
@@ -105,9 +117,17 @@ describe("isSKU", () => {
     expect(isSKU(valid)).toBe(true);
   });
 
-  it("rejects objects missing required fields", () => {
-    const invalid = { id: "1", slug: "slug", price: "100" } as any;
-    expect(isSKU(invalid)).toBe(false);
+  it.each([
+    ["missing id", { slug: "slug", price: 100, stock: 1 }],
+    ["non-string id", { id: 1, slug: "slug", price: 100, stock: 1 }],
+    ["missing slug", { id: "1", price: 100, stock: 1 }],
+    ["non-string slug", { id: "1", slug: 2, price: 100, stock: 1 }],
+    ["missing price", { id: "1", slug: "slug", stock: 1 }],
+    ["non-number price", { id: "1", slug: "slug", price: "100", stock: 1 }],
+    ["missing stock", { id: "1", slug: "slug", price: 100 }],
+    ["non-number stock", { id: "1", slug: "slug", price: 100, stock: "1" }],
+  ])("rejects SKU with %s", (_, invalid) => {
+    expect(isSKU(invalid as any)).toBe(false);
   });
 
   it("rejects non-object values", () => {

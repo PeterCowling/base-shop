@@ -1,3 +1,6 @@
+// React 19 requires this flag to silence act warnings in tests
+(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
 import { render, screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import UpgradeButton from "@/app/cms/shop/[shop]/UpgradeButton";
@@ -6,6 +9,7 @@ describe("UpgradeButton", () => {
   const shop = "test-shop";
   let originalFetch: typeof fetch;
   let originalLocation: Location;
+  let consoleErrorSpy: jest.SpyInstance;
 
   beforeEach(() => {
     originalFetch = global.fetch;
@@ -17,12 +21,22 @@ describe("UpgradeButton", () => {
       value: { ...originalLocation, href: "" },
       writable: true,
     });
+    const originalError = console.error;
+    consoleErrorSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation((msg, ...args) => {
+        if (typeof msg === "string" && msg.includes("act(")) {
+          return;
+        }
+        originalError(msg as any, ...args);
+      });
   });
 
   afterEach(() => {
     global.fetch = originalFetch;
     Object.defineProperty(window, "fetch", { value: originalFetch, writable: true });
     Object.defineProperty(window, "location", { value: originalLocation });
+    consoleErrorSpy.mockRestore();
     jest.clearAllMocks();
   });
 
@@ -31,14 +45,19 @@ describe("UpgradeButton", () => {
     return screen.getByRole("button");
   }
 
+  async function click(button: HTMLElement) {
+    await act(async () => {
+      await userEvent.click(button);
+    });
+    await act(async () => {});
+  }
+
   it("redirects on successful upgrade", async () => {
     (global.fetch as jest.Mock).mockImplementation(() =>
       Promise.resolve({ ok: true })
     );
     const button = setup();
-    await act(async () => {
-      await userEvent.click(button);
-    });
+    await click(button);
     await waitFor(() => {
       expect(window.location.href).toBe(`/cms/shop/${shop}/upgrade-preview`);
     });
@@ -52,9 +71,7 @@ describe("UpgradeButton", () => {
       })
     );
     const button = setup();
-    await act(async () => {
-      await userEvent.click(button);
-    });
+    await click(button);
     expect(await screen.findByRole("alert")).toHaveTextContent("msg");
   });
 
@@ -66,9 +83,7 @@ describe("UpgradeButton", () => {
       })
     );
     const button = setup();
-    await act(async () => {
-      await userEvent.click(button);
-    });
+    await click(button);
     expect(await screen.findByRole("alert")).toHaveTextContent("Upgrade failed");
   });
 
@@ -77,9 +92,7 @@ describe("UpgradeButton", () => {
       Promise.reject(new Error("Network error"))
     );
     const button = setup();
-    await act(async () => {
-      await userEvent.click(button);
-    });
+    await click(button);
     expect(await screen.findByRole("alert")).toHaveTextContent("Network error");
   });
 
@@ -97,7 +110,9 @@ describe("UpgradeButton", () => {
     const button = setup();
 
     // First click fails
-    userEvent.click(button);
+    await act(async () => {
+      userEvent.click(button);
+    });
     await waitFor(() => expect(button).toHaveTextContent(/Upgrading.../i));
     rejectFetch(new Error("fail"));
     await act(async () => {});
@@ -105,7 +120,9 @@ describe("UpgradeButton", () => {
     await waitFor(() => expect(button).toHaveTextContent(/Upgrade & preview/i));
 
     // Second click succeeds
-    userEvent.click(button);
+    await act(async () => {
+      userEvent.click(button);
+    });
     await waitFor(() => expect(button).toHaveTextContent(/Upgrading.../i));
     await act(async () => {});
     await waitFor(() => expect(screen.queryByRole("alert")).toBeNull());

@@ -95,6 +95,12 @@ describe("pricing index", () => {
     await expect(priceForDays(sku, 6)).resolves.toBe(144);
   });
 
+  it("priceForDays uses baseDailyRate without price or dailyRate", async () => {
+    const { priceForDays } = await setup();
+    const sku = {} as any;
+    await expect(priceForDays(sku, 6)).resolves.toBe(48);
+  });
+
   it("computeDamageFee handles rule types and coverage", async () => {
     const { computeDamageFee } = await setup();
     await expect(computeDamageFee(undefined, 50)).resolves.toBe(0);

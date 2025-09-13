@@ -15,17 +15,23 @@ describe("Checkbox", () => {
     expect(checkbox).toHaveAttribute("data-state", "checked");
   });
 
-  it("calls onCheckedChange when toggled", async () => {
+  it("calls onCheckedChange and updates indicator through toggle cycle", async () => {
     const onCheckedChange = jest.fn();
     render(<Checkbox onCheckedChange={onCheckedChange} />);
-    const user = userEvent.setup();
     const checkbox = screen.getByRole("checkbox");
+    const user = userEvent.setup();
+
+    expect(checkbox.querySelector("svg")).toBeNull();
 
     await user.click(checkbox);
-    await user.click(checkbox);
-
+    expect(checkbox).toHaveAttribute("data-state", "checked");
     expect(onCheckedChange).toHaveBeenNthCalledWith(1, true);
+    expect(checkbox.querySelector("svg")).not.toBeNull();
+
+    await user.click(checkbox);
+    expect(checkbox).toHaveAttribute("data-state", "unchecked");
     expect(onCheckedChange).toHaveBeenNthCalledWith(2, false);
+    expect(checkbox.querySelector("svg")).toBeNull();
   });
 
   it("merges custom className", () => {

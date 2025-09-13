@@ -65,6 +65,14 @@ describe("shop.json.server", () => {
     );
   });
 
+  it("rethrows 'Shop <id> not found' when fs.readFile fails", async () => {
+    const { getShopById } = await import("../shop.json.server");
+    (fsMock.readFile as jest.Mock).mockRejectedValueOnce(new Error("boom"));
+    await expect(getShopById("boomshop")).rejects.toThrow(
+      "Shop boomshop not found",
+    );
+  });
+
   it("throws on malformed JSON", async () => {
     const shopPath = path.join(DATA_ROOT, "bad", "shop.json");
     fsMock.__files.set(shopPath, "{not json");
@@ -91,11 +99,12 @@ describe("shop.json.server", () => {
     });
     expect(updated.name).toBe("Updated");
     expect(fsMock.__files.get(shopPath)).toContain("Updated");
-    expect(fsMock.mkdir).toHaveBeenCalledWith(expect.any(String), {
+    expect(fsMock.mkdir).toHaveBeenCalledWith(path.dirname(shopPath), {
       recursive: true,
     });
     const tmpPath = (fsMock.writeFile as jest.Mock).mock.calls[0][0];
     expect(tmpPath).toMatch(/\.tmp$/);
+    expect(tmpPath).toContain(path.join(DATA_ROOT, "shop2", "shop.json"));
     expect(fsMock.rename).toHaveBeenCalledWith(tmpPath, shopPath);
     expect(
       (fsMock.writeFile as jest.Mock).mock.invocationCallOrder[0],

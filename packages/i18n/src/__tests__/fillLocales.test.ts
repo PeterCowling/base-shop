@@ -32,6 +32,13 @@ describe("fillLocales", () => {
     expect(result).toEqual({ en: "Hi", de: "Hi", it: "Hi" });
   });
 
+  it("does not replace empty strings with the fallback", () => {
+    const values = { en: "" } as any;
+    const result = fillLocales(values, "Hi");
+
+    expect(result).toEqual({ en: "", de: "Hi", it: "Hi" });
+  });
+
   it("preserves original values when all locales are provided", () => {
     const values = { en: "Hello", de: "Hallo", it: "Ciao" };
     const result = fillLocales(values, "Hi");
@@ -50,13 +57,23 @@ describe("fillLocales", () => {
     expect(result.en.greeting).toBe("Hola");
   });
 
-  it("skips unsupported locales", () => {
+  it("returns a new object instance", () => {
+    const values = { en: "Hello" } as any;
+    const result = fillLocales(values, "Hi");
+
+    expect(result).toEqual({ en: "Hello", de: "Hi", it: "Hi" });
+    expect(result).not.toBe(values);
+  });
+
+  it("ignores keys outside LOCALES", () => {
     const result = fillLocales(
-      { en: "Hello", fr: "Bonjour" } as any,
+      { en: "Hello", fr: "Bonjour", es: "Hola" } as any,
       "Hi"
     );
 
     expect(result).toEqual({ en: "Hello", de: "Hi", it: "Hi" });
+    expect(result).not.toHaveProperty("fr");
+    expect(result).not.toHaveProperty("es");
   });
 });
 

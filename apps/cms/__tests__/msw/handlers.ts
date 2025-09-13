@@ -25,6 +25,9 @@ export const handlers = [
     // For tests we reuse base tokens regardless of theme name
     return res(ctx.status(200), ctx.json(baseTokens));
   }),
+  rest.get("/cms/api/pages/:shopId", (_req, res, ctx) =>
+    res(ctx.status(200), ctx.json([]))
+  ),
   rest.get("/cms/api/products/slug/:slug", (_req, res, ctx) =>
     res(
       ctx.status(200),

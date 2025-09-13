@@ -9,11 +9,11 @@ describe("VideoBlock", () => {
     expect(video).toHaveAttribute("src", "movie.mp4");
   });
 
-  it("supports autoplay", () => {
+  it("applies autoplay and muted attributes", () => {
     const { container } = render(<VideoBlock src="movie.mp4" autoplay />);
-    const video = container.querySelector("video") as HTMLVideoElement;
-    expect(video.autoplay).toBe(true);
-    expect(video.muted).toBe(true);
+    const video = container.querySelector("video");
+    expect(video).toHaveAttribute("autoplay");
+    expect(video).toHaveAttribute("muted");
   });
 
   it("plays when play is called", () => {

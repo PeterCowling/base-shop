@@ -31,6 +31,11 @@ describe("Input primitive", () => {
     expect(label).not.toHaveClass("-translate-y-3 text-xs");
   });
 
+  it("omits label when floatingLabel is set without label", () => {
+    const { container } = render(<Input floatingLabel />);
+    expect(container.querySelector("label")).toBeNull();
+  });
+
   it("treats controlled value as having content", () => {
     render(
       <Input label="Email" floatingLabel value="foo" onChange={() => {}} />
@@ -59,6 +64,19 @@ describe("Input primitive", () => {
 
     expect(handleFocus).toHaveBeenCalledTimes(1);
     expect(handleBlur).toHaveBeenCalledTimes(1);
+  });
+
+  it("handles focus and blur without custom callbacks", () => {
+    render(<Input label="Email" />);
+    const input = screen.getByLabelText("Email");
+    const focusSpy = jest.fn();
+    const blurSpy = jest.fn();
+    input.addEventListener("focus", focusSpy);
+    input.addEventListener("blur", blurSpy);
+    fireEvent.focus(input);
+    fireEvent.blur(input);
+    expect(focusSpy).toHaveBeenCalledTimes(1);
+    expect(blurSpy).toHaveBeenCalledTimes(1);
   });
 
   it("omits aria-invalid when there is no error", () => {

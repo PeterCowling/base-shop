@@ -77,6 +77,30 @@ it("sets error when upload fetch rejects", async () => {
   expect(result.current.error).toBe("fail");
 });
 
+it("renders error message when upload fetch rejects", async () => {
+  mockFetch.mockRejectedValueOnce(new Error("fail"));
+  const file = new File(["x"], "x.png", { type: "image/png" });
+
+  const { result, rerender: rerenderHook } = renderHook(() =>
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+  );
+  const { getByText, rerender } = render(result.current.uploader);
+
+  act(() => {
+    result.current.onFileChange({ target: { files: [file] } } as any);
+  });
+  rerenderHook();
+  rerender(result.current.uploader);
+
+  await act(async () => {
+    await result.current.handleUpload();
+  });
+  rerenderHook();
+  rerender(result.current.uploader);
+
+  expect(getByText("fail")).toBeInTheDocument();
+});
+
 it("ignores non-Error rejections", async () => {
   mockFetch.mockRejectedValueOnce("oops");
   const file = new File(["x"], "x.png", { type: "image/png" });
@@ -157,6 +181,39 @@ it("aborts upload and reports orientation mismatch when actual is null", async (
   );
 });
 
+it("shows warning and blocks upload when orientation validation fails", async () => {
+  const file = new File(["x"], "x.png", { type: "image/png" });
+  mockOrientation.mockReturnValue({ actual: "portrait", isValid: false });
+
+  const { result, rerender: rerenderHook } = renderHook(() =>
+    useFileUpload({ shop: "s", requiredOrientation: "landscape" })
+  );
+  const { getByText, rerender } = render(result.current.uploader);
+
+  act(() => {
+    result.current.onFileChange({ target: { files: [file] } } as any);
+  });
+  rerenderHook();
+  rerender(result.current.uploader);
+
+  expect(
+    getByText("Wrong orientation (needs landscape)")
+  ).toBeInTheDocument();
+
+  await act(async () => {
+    await result.current.handleUpload();
+  });
+  rerenderHook();
+  rerender(result.current.uploader);
+
+  expect(mockFetch).not.toHaveBeenCalled();
+  expect(
+    getByText(
+      "Image orientation mismatch: expected landscape, got portrait",
+    ),
+  ).toBeInTheDocument();
+});
+
 it("skips orientation validation for videos", async () => {
   const file = new File(["v"], "v.mp4", { type: "video/mp4" });
   const onUploaded = jest.fn();
@@ -197,6 +254,8 @@ it("updates pending file on drag-and-drop", () => {
     useFileUpload({ shop: "s", requiredOrientation: "landscape" })
   );
 
+  mockOrientation.mockClear();
+
   act(() => {
     result.current.onDrop({
       preventDefault: jest.fn(),
@@ -207,6 +266,7 @@ it("updates pending file on drag-and-drop", () => {
   expect(result.current.pendingFile).toBe(file);
   expect(result.current.altText).toBe("");
   expect(result.current.tags).toBe("");
+  expect(mockOrientation).toHaveBeenCalledWith(file, "landscape");
 });
 
 it("opens file dialog when pressing Enter on uploader", () => {

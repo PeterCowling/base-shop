@@ -16,6 +16,14 @@ describe("validateShopName", () => {
     expect(validateShopName("shop-name_123")).toBe("shop-name_123");
   });
 
+  it("accepts uppercase characters", () => {
+    expect(validateShopName("Valid_Name")).toBe("Valid_Name");
+  });
+
+  it("rejects mixed invalid input", () => {
+    expect(() => validateShopName("Invalid Name!")).toThrow(/Invalid shop name/);
+  });
+
   it("trims leading and trailing whitespace", () => {
     expect(validateShopName("  shop  ")).toBe("shop");
   });
@@ -58,11 +66,14 @@ describe("setSanityConfig", () => {
     expect(withConfig).not.toBe(base);
     expect(getSanityConfig(withConfig)).toEqual(config);
     expect(withConfig).toHaveProperty("sanityBlog", config);
+    // Original object remains unchanged
+    expect(getSanityConfig(base)).toBeUndefined();
 
     const cleared = setSanityConfig(withConfig, undefined);
     expect(cleared).not.toBe(withConfig);
     expect(getSanityConfig(cleared)).toBeUndefined();
     expect(cleared).not.toHaveProperty("sanityBlog");
+    // Previous object remains unchanged
     expect(getSanityConfig(withConfig)).toEqual(config);
   });
 });
@@ -77,11 +88,14 @@ describe("setEditorialBlog", () => {
     expect(withBlog).not.toBe(base);
     expect(getEditorialBlog(withBlog)).toEqual(editorial);
     expect(withBlog).toHaveProperty("editorialBlog", editorial);
+    // Original object remains unchanged
+    expect(getEditorialBlog(base)).toBeUndefined();
 
     const cleared = setEditorialBlog(withBlog, undefined);
     expect(cleared).not.toBe(withBlog);
     expect(getEditorialBlog(cleared)).toBeUndefined();
     expect(cleared).not.toHaveProperty("editorialBlog");
+    // Previous object remains unchanged
     expect(getEditorialBlog(withBlog)).toEqual(editorial);
   });
 });
@@ -102,11 +116,14 @@ describe("setDomain", () => {
     expect(withDomain).not.toBe(base);
     expect(getDomain(withDomain)).toEqual(domain);
     expect(withDomain).toHaveProperty("domain", domain);
+    // Original object remains unchanged
+    expect(getDomain(base)).toBeUndefined();
 
     const cleared = setDomain(withDomain, undefined);
     expect(cleared).not.toBe(withDomain);
     expect(getDomain(cleared)).toBeUndefined();
     expect(cleared).not.toHaveProperty("domain");
+    // Previous object remains unchanged
     expect(getDomain(withDomain)).toEqual(domain);
   });
 
@@ -120,5 +137,17 @@ describe("setDomain", () => {
     expect(getDomain(cleared)).toBeUndefined();
     expect(cleared).not.toHaveProperty("domain");
     expect((cleared as Shop).other).toBe("keep");
+    // Original object remains unchanged
+    expect(getDomain(base)).toEqual({ name: "old.example.com" });
+  });
+
+  it("replaces existing domain when a new one is provided", () => {
+    const base: Shop = { domain: { name: "old.example.com" } };
+    const newDomain: ShopDomain = { name: "new.example.com" };
+    const updated = setDomain(base, newDomain);
+    expect(updated).not.toBe(base);
+    expect(getDomain(updated)).toEqual(newDomain);
+    // Original object remains unchanged
+    expect(getDomain(base)).toEqual({ name: "old.example.com" });
   });
 });

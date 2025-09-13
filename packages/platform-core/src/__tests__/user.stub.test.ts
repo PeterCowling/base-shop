@@ -29,6 +29,16 @@ describe("createUserDelegate", () => {
     ).resolves.toBeNull();
   });
 
+  it("findFirst supports NOT filters", async () => {
+    const user = createUserDelegate();
+    await user.create({ data: { id: "1", email: "h@example.com" } });
+    await user.create({ data: { id: "2", email: "h@example.com" } });
+
+    await expect(
+      user.findFirst({ where: { email: "h@example.com", NOT: { id: "1" } } }),
+    ).resolves.toEqual({ id: "2", email: "h@example.com" });
+  });
+
   it("update succeeds and throws on missing user", async () => {
     const user = createUserDelegate();
     const data = { id: "1", email: "c@example.com" };
@@ -41,6 +51,11 @@ describe("createUserDelegate", () => {
     await expect(
       user.update({ where: { id: "missing" }, data: { email: "e@example.com" } }),
     ).rejects.toThrow("User not found");
+
+    await expect(user.findUnique({ where: { id: "1" } })).resolves.toEqual({
+      id: "1",
+      email: "d@example.com",
+    });
   });
 
   it("create then update preserves unrelated fields", async () => {

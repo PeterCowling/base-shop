@@ -4,7 +4,11 @@ export function createUserDelegate() {
     { id: "user2", email: "u2@test.com" },
   ];
   const findIdx = (where: any) =>
-    users.findIndex((u) => Object.entries(where).every(([k, v]) => u[k] === v));
+    users.findIndex((u) => {
+      const { NOT, ...rest } = where || {};
+      if (NOT && Object.entries(NOT).some(([k, v]) => u[k] === v)) return false;
+      return Object.entries(rest).every(([k, v]) => u[k] === v);
+    });
   return {
     findUnique: async ({ where }: any) => {
       const idx = findIdx(where);

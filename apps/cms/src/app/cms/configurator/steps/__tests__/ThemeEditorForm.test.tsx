@@ -15,7 +15,9 @@ jest.mock("@ui/components/atoms/shadcn", () => ({
     </select>
   ),
   SelectContent: ({ children }: any) => <>{children}</>,
-  SelectItem: ({ value, children }: any) => <option value={value}>{children}</option>,
+  SelectItem: ({ value, textValue }: any) => (
+    <option value={value}>{textValue}</option>
+  ),
   SelectTrigger: ({ children }: any) => <>{children}</>,
   SelectValue: () => null,
 }));

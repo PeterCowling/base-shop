@@ -7,6 +7,7 @@ import {
 } from "@testing-library/react";
 import Tokens from "../Tokens";
 import Presets from "../Presets";
+import * as tokenEditor from "../../../../hooks/useTokenEditor";
 import type { TokenMap } from "../../../../hooks/useTokenEditor";
 
 afterEach(() => {
@@ -112,6 +113,82 @@ describe("Tokens", () => {
         JSON.parse(localStorage.getItem("token-group-state") as string)
       ).toMatchObject({ font: false })
     );
+  });
+
+  it.each([
+    {
+      name: "throws",
+      impl: () => {
+        throw new Error("fail");
+      },
+    },
+    { name: "returns invalid JSON", impl: () => "not-json" },
+  ])(
+    "defaults groups open when localStorage.getItem %s",
+    ({ impl }) => {
+      const baseTokens: TokenMap = {
+        "--color-bg": "0 0% 100%",
+        "--font-sans": "system-ui",
+      };
+      const spy = jest
+        .spyOn(window.localStorage.__proto__, "getItem")
+        .mockImplementation(impl as never);
+      const { container } = render(
+        <Tokens tokens={{}} baseTokens={baseTokens} onChange={jest.fn()} />
+      );
+      expect(
+        container.querySelector('label[data-token-key="--color-bg"]')
+      ).toBeTruthy();
+      expect(
+        container.querySelector('label[data-token-key="--font-sans"]')
+      ).toBeTruthy();
+      spy.mockRestore();
+    }
+  );
+
+  it("toggles group visibility when header clicked", () => {
+    const baseTokens: TokenMap = {
+      "--color-bg": "0 0% 100%",
+      "--font-sans": "system-ui",
+    };
+    const { container } = render(
+      <Tokens tokens={{}} baseTokens={baseTokens} onChange={jest.fn()} />
+    );
+
+    const button = screen.getByRole("button", { name: /Font/ });
+    expect(
+      container.querySelector('label[data-token-key="--font-sans"]')
+    ).toBeTruthy();
+
+    fireEvent.click(button);
+    expect(
+      container.querySelector('label[data-token-key="--font-sans"]')
+    ).toBeNull();
+
+    fireEvent.click(button);
+    expect(
+      container.querySelector('label[data-token-key="--font-sans"]')
+    ).toBeTruthy();
+  });
+
+  it("adds custom font and clears input", () => {
+    const baseTokens: TokenMap = { "--font-sans": "system-ui" };
+    const hookSpy = jest.spyOn(tokenEditor, "useTokenEditor");
+    render(<Tokens tokens={{}} baseTokens={baseTokens} onChange={jest.fn()} />);
+    const addFontSpy = jest.spyOn(
+      hookSpy.mock.results[0].value,
+      "addCustomFont"
+    );
+
+    const input = screen.getByPlaceholderText("Add font stack") as HTMLInputElement;
+    fireEvent.change(input, { target: { value: "Comic Sans" } });
+    fireEvent.click(screen.getByRole("button", { name: "Add" }));
+
+    expect(addFontSpy).toHaveBeenCalled();
+    expect(input.value).toBe("");
+
+    hookSpy.mockRestore();
+    addFontSpy.mockRestore();
   });
 
   it("scrolls focused token into view with temporary highlight", () => {

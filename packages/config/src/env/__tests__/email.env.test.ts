@@ -110,6 +110,26 @@ describe("email env provider selection", () => {
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
   });
+  
+  it("normalizes EMAIL_FROM", async () => {
+    process.env.EMAIL_FROM = " USER@Example.COM ";
+    const env = await loadEnv();
+    expect(env.EMAIL_FROM).toBe("user@example.com");
+  });
+
+  it("requires EMAIL_FROM when default provider is smtp", async () => {
+    process.env.NODE_ENV = "production";
+    delete process.env.EMAIL_PROVIDER;
+    delete process.env.EMAIL_FROM;
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(loadEnv()).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(spy).toHaveBeenCalled();
+    const err = spy.mock.calls[0][1];
+    expect(err).toMatchObject({ EMAIL_FROM: { _errors: ["Required"] } });
+    spy.mockRestore();
+  });
 });
 
 describe("webhook verification toggle", () => {
@@ -194,6 +214,36 @@ describe("smtp options", () => {
     process.env.SMTP_SECURE = val as string;
     const env = await loadEnv();
     expect(env.SMTP_SECURE).toBe(expected);
+  });
+
+  it("logs error when SMTP_PORT is invalid", async () => {
+    process.env.SMTP_PORT = "abc";
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(loadEnv()).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(spy).toHaveBeenCalled();
+    expect(spy.mock.calls[0][0]).toBe(
+      "❌ Invalid email environment variables:",
+    );
+    const err = spy.mock.calls[0][1];
+    expect(err.SMTP_PORT._errors).toContain("must be a number");
+    spy.mockRestore();
+  });
+
+  it("logs error when SMTP_SECURE is invalid", async () => {
+    process.env.SMTP_SECURE = "foo";
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expect(loadEnv()).rejects.toThrow(
+      "Invalid email environment variables",
+    );
+    expect(spy).toHaveBeenCalled();
+    expect(spy.mock.calls[0][0]).toBe(
+      "❌ Invalid email environment variables:",
+    );
+    const err = spy.mock.calls[0][1];
+    expect(err.SMTP_SECURE._errors).toContain("must be a boolean");
+    spy.mockRestore();
   });
 });
 

@@ -6,6 +6,7 @@ import {
   Button,
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -94,6 +95,9 @@ export function LiveChatWidget({
         {" "}
         <DialogHeader>
           <DialogTitle>How can we help?</DialogTitle>
+          <DialogDescription className="sr-only">
+            Chat with our support team
+          </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-2 overflow-y-auto py-2">
           {messages.map((m, i) => (

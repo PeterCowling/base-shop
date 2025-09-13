@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitFor, act } from "@testing-library/react";
+import { render, waitFor, act, fireEvent } from "@testing-library/react";
 import { RecommendationCarousel } from "../src/components/organisms/RecommendationCarousel";
 import type { SKU } from "@acme/types";
 
@@ -71,5 +71,37 @@ describe("RecommendationCarousel", () => {
     } as unknown as Response);
     const { container } = render(<RecommendationCarousel endpoint="/api" />);
     await waitFor(() => expect(container.firstChild).toBeNull());
+  });
+
+  it("pauses autoplay on hover and resumes afterward", async () => {
+    jest.useFakeTimers();
+    const { container } = render(<RecommendationCarousel endpoint="/api" />);
+    await waitFor(() => expect(container.querySelector(".flex")).toBeTruthy());
+    const scroller = container.querySelector(".flex") as HTMLDivElement;
+    const scrollSpy = jest.fn();
+    Object.defineProperty(scroller, "scrollTo", { value: scrollSpy });
+
+    act(() => {
+      jest.advanceTimersByTime(3000);
+    });
+    expect(scrollSpy).toHaveBeenCalledTimes(1);
+
+    const outer = container.firstChild as HTMLElement;
+    act(() => {
+      fireEvent.mouseEnter(outer);
+    });
+    act(() => {
+      jest.advanceTimersByTime(3000);
+    });
+    expect(scrollSpy).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      fireEvent.mouseLeave(outer);
+    });
+    act(() => {
+      jest.advanceTimersByTime(3000);
+    });
+    expect(scrollSpy).toHaveBeenCalledTimes(2);
+    jest.useRealTimers();
   });
 });

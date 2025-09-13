@@ -11,7 +11,7 @@ export function boxProps({ width, height, padding, margin }: BoxOptions) {
   const style: React.CSSProperties = {};
 
   if (width !== undefined) {
-    if (typeof width === "string" && width.startsWith("w-")) {
+    if (typeof width === "string" && (width.startsWith("w-") || width.includes(":w-"))) {
       classes.push(width);
     } else {
       style.width = width;
@@ -19,7 +19,7 @@ export function boxProps({ width, height, padding, margin }: BoxOptions) {
   }
 
   if (height !== undefined) {
-    if (typeof height === "string" && height.startsWith("h-")) {
+    if (typeof height === "string" && (height.startsWith("h-") || height.includes(":h-"))) {
       classes.push(height);
     } else {
       style.height = height;

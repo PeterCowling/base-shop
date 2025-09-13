@@ -36,4 +36,21 @@ describe("reverseLogisticsEvent delegate", () => {
       { id: "e1", type: "received", shop: "s1" },
     ]);
   });
+
+  it("findMany filters by multiple fields", async () => {
+    const delegate = createReverseLogisticsEventDelegate();
+    await delegate.createMany({
+      data: [
+        { id: "e1", type: "received", trackingNumber: "tn1" },
+        { id: "e2", type: "received", trackingNumber: "tn2" },
+        { id: "e3", type: "cleaning", trackingNumber: "tn1" },
+      ],
+    });
+    const filtered = await delegate.findMany({
+      where: { type: "received", trackingNumber: "tn1" },
+    });
+    expect(filtered).toEqual([
+      { id: "e1", type: "received", trackingNumber: "tn1" },
+    ]);
+  });
 });

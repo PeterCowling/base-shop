@@ -33,6 +33,19 @@ async function setup(pricingData = defaultPricing, rateData = defaultRates) {
 }
 
 describe("pricing index", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+    jest.resetModules();
+  });
+
+  it("getPricing caches file reads", async () => {
+    const { getPricing, readFile } = await setup();
+    await getPricing();
+    expect(readFile).toHaveBeenCalledTimes(1);
+    await getPricing();
+    expect(readFile).toHaveBeenCalledTimes(1);
+  });
+
   it(
     "convertCurrency handles base currency, missing rate, bankers rounding ties, and floor rounding",
     async () => {
@@ -49,6 +62,14 @@ describe("pricing index", () => {
       );
     },
   );
+
+  it("convertCurrency caches exchange rates", async () => {
+    const { convertCurrency, readFile } = await setup();
+    await convertCurrency(1, "USD");
+    expect(readFile).toHaveBeenCalledTimes(1);
+    await convertCurrency(1, "USD");
+    expect(readFile).toHaveBeenCalledTimes(1);
+  });
 
   it("applyDurationDiscount selects the appropriate tier", async () => {
     jest.resetModules();

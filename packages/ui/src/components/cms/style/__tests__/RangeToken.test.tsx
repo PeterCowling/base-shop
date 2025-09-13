@@ -42,4 +42,16 @@ describe("RangeToken", () => {
     fireEvent.click(screen.getByText("Reset"));
     expect(setToken).toHaveBeenCalledWith(tokenKey, "8px");
   });
+
+  it("resets with no default value", () => {
+    const setToken = jest.fn();
+    renderToken({
+      value: "12px",
+      defaultValue: undefined,
+      isOverridden: true,
+      setToken,
+    });
+    fireEvent.click(screen.getByText("Reset"));
+    expect(setToken).toHaveBeenCalledWith(tokenKey, "");
+  });
 });

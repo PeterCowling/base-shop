@@ -97,7 +97,12 @@ function loadPrismaClient():
   return PrismaCtor;
 }
 
-const { DATABASE_URL } = loadCoreEnv();
+let DATABASE_URL: string | undefined;
+try {
+  ({ DATABASE_URL } = loadCoreEnv());
+} catch {
+  DATABASE_URL = undefined;
+}
 const useStub = process.env.NODE_ENV === "test" || !DATABASE_URL;
 
 const prisma: PrismaClientType = useStub

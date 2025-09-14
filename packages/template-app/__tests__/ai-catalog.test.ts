@@ -9,16 +9,11 @@ jest.mock("@platform-core/repositories/products.server", () => ({
 jest.mock("@platform-core/analytics", () => ({
   trackEvent: jest.fn(),
 }));
-jest.mock("@acme/config/env/core", () => ({
-  coreEnv: { NEXT_PUBLIC_SHOP_ID: "abc" },
-}));
-
 import { GET } from "../src/app/api/ai/catalog/route";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { readRepo } from "@platform-core/repositories/products.server";
 import { trackEvent } from "@platform-core/analytics";
 import { PRODUCTS } from "@platform-core/products";
-import { coreEnv } from "@acme/config/env/core";
 
 const getShopSettingsMock = jest.mocked(getShopSettings);
 const readRepoMock = jest.mocked(readRepo);
@@ -73,8 +68,8 @@ describe("AI catalogue API", () => {
   });
 
   test("uses default shop when env ID missing", async () => {
-    const original = coreEnv.NEXT_PUBLIC_SHOP_ID;
-    (coreEnv as any).NEXT_PUBLIC_SHOP_ID = undefined;
+    const original = process.env.NEXT_PUBLIC_SHOP_ID;
+    delete process.env.NEXT_PUBLIC_SHOP_ID;
     const res = await GET(createRequest("http://localhost/api/ai/catalog"));
     expect(res.status).toBe(200);
     expect(getShopSettingsMock).toHaveBeenCalledWith("default");
@@ -84,7 +79,7 @@ describe("AI catalogue API", () => {
       status: 200,
       items: 1,
     });
-    (coreEnv as any).NEXT_PUBLIC_SHOP_ID = original;
+    process.env.NEXT_PUBLIC_SHOP_ID = original;
   });
 
   test("falls back to static products when repo empty", async () => {

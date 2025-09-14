@@ -5,7 +5,6 @@ import { readRepo } from "@platform-core/repositories/products.server";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { trackEvent } from "@platform-core/analytics";
 import type { ProductPublication, SKU } from "@acme/types";
-import { coreEnv } from "@acme/config/env/core";
 
 const DEFAULT_FIELDS = ["id", "title", "description", "price", "media"] as const;
 type Field = (typeof DEFAULT_FIELDS)[number];
@@ -18,7 +17,7 @@ function parseIntOr(val: string | null, def: number): number {
 }
 
 export async function GET(req: NextRequest) {
-    const shop = (coreEnv.NEXT_PUBLIC_SHOP_ID as string | undefined) || "default";
+  const shop = process.env.NEXT_PUBLIC_SHOP_ID || "default";
   const settings = await getShopSettings(shop);
   const ai = settings.seo?.aiCatalog;
   if (!ai?.enabled) {

@@ -45,7 +45,7 @@ function createTestPrismaStub(): Pick<
   | 'reverseLogisticsEvent'
   | 'customerMfa'
   | '$transaction'
-> & { inventoryItem: InventoryItemDelegate } {
+  > & { inventoryItem: InventoryItemDelegate } {
   const stub = {
     rentalOrder: createRentalOrderDelegate() as unknown as PrismaClientType['rentalOrder'],
     shop: createShopDelegate() as unknown as PrismaClientType['shop'],
@@ -57,22 +57,40 @@ function createTestPrismaStub(): Pick<
     reverseLogisticsEvent: createReverseLogisticsEventDelegate() as unknown as PrismaClientType['reverseLogisticsEvent'],
     product: createProductDelegate() as unknown as PrismaClientType['product'],
     inventoryItem: createInventoryItemDelegate(),
-  } as any;
+  } as unknown as Pick<
+    PrismaClientType,
+    | 'rentalOrder'
+    | 'shop'
+    | 'page'
+    | 'customerProfile'
+    | 'subscriptionUsage'
+    | 'user'
+    | 'reverseLogisticsEvent'
+    | 'customerMfa'
+    | '$transaction'
+  > & { inventoryItem: InventoryItemDelegate };
 
-  stub.$transaction = async (fn: (tx: typeof stub) => any) => fn(stub);
+  stub.$transaction = async <T>(fn: (tx: typeof stub) => T): Promise<T> =>
+    fn(stub);
 
   return stub;
 }
-let PrismaCtor: any;
+let PrismaCtor: (new (...args: unknown[]) => PrismaClientType) | undefined;
 
-function loadPrismaClient(): any {
+function loadPrismaClient():
+  | (new (...args: unknown[]) => PrismaClientType)
+  | undefined {
   if (PrismaCtor !== undefined) return PrismaCtor;
   try {
     const moduleUrl = typeof __filename !== 'undefined'
       ? __filename
       : (Function('return import.meta.url')() as string);
     const req = createRequire(moduleUrl);
-    PrismaCtor = (req("@prisma/client") as { PrismaClient: any }).PrismaClient;
+    PrismaCtor = (
+      req("@prisma/client") as {
+        PrismaClient: new (...args: unknown[]) => PrismaClientType;
+      }
+    ).PrismaClient;
   } catch {
     PrismaCtor = undefined;
   }

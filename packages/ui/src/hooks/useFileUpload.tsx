@@ -133,7 +133,16 @@ export function useFileUpload(
     setPendingFile(null);
     setAltText("");
     setTags("");
-  }, [pendingFile, altText, tags, shop, requiredOrientation, onUploaded]);
+  }, [
+    pendingFile,
+    altText,
+    tags,
+    shop,
+    requiredOrientation,
+    onUploaded,
+    actual,
+    isValid,
+  ]);
 
   /* ---------- drag-and-drop & picker ------------------------------ */
   const onDrop = useCallback((e: DragEvent<HTMLDivElement>) => {

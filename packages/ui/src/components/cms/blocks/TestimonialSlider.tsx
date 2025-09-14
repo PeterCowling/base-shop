@@ -19,7 +19,10 @@ export default function TestimonialSlider({
 
   useEffect(() => {
     if (!list.length) return;
-    const id = setInterval(next, 5000);
+    const id = setInterval(
+      () => setI((n) => (n + 1) % list.length),
+      5000,
+    );
     return () => clearInterval(id);
   }, [list.length]);
 

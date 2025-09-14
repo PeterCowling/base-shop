@@ -54,8 +54,6 @@ export function ProductCarousel({
   onAddToCart,
   ...props
 }: ProductCarouselProps) {
-  if (!products.length) return null;
-
   const containerRef = React.useRef<HTMLDivElement>(null);
   const scrollerRef = React.useRef<HTMLDivElement>(null);
   const [itemsPerSlide, setItemsPerSlide] = React.useState(
@@ -112,6 +110,8 @@ export function ProductCarousel({
       behavior: "smooth",
     });
   }, [currentIndex]);
+
+  if (!products.length) return null;
 
   const width = getSlideWidth(itemsPerSlide);
   const slideStyle = { flex: `0 0 ${width}` } as React.CSSProperties;

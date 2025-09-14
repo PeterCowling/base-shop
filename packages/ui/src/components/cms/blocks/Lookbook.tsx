@@ -28,8 +28,6 @@ interface Props {
 const SNAP = 5; // percent step for snapping
 
 export default function Lookbook({ items = [], onItemsChange }: Props) {
-  if (items.length === 0) return null;
-
   const [list, setList] = useState<LookbookItem[]>(items);
   const listRef = useRef(list);
   const containerRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -41,6 +39,8 @@ export default function Lookbook({ items = [], onItemsChange }: Props) {
   useEffect(() => {
     listRef.current = list;
   }, [list]);
+
+  if (items.length === 0) return null;
 
   const handlePointerDown = (itemIdx: number, hotspotIdx: number) => (
     e: ReactPointerEvent<HTMLDivElement>,

@@ -8,7 +8,10 @@ export function resize(state: HistoryState, action: ResizeAction): HistoryState 
     if (v === undefined) return undefined;
     const trimmed = v.trim();
     if (trimmed === "") return undefined;
-    return /^-?\d+(\.\d+)?$/.test(trimmed) ? `${trimmed}px` : trimmed;
+    const num = Number(trimmed);
+    return !Number.isNaN(num) && String(num) === trimmed
+      ? `${trimmed}px`
+      : trimmed;
   };
   const patch: {
     width?: string;

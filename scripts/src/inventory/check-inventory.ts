@@ -23,12 +23,15 @@ async function checkShop(shopId: string): Promise<boolean> {
     jsonKeys.add(`${item.sku}|${key}`);
   }
 
-  const dbItems = await prisma.inventoryItem.findMany({
-    where: { shopId },
-    select: { sku: true, variantKey: true },
-  });
+  const dbItems: Array<{ sku: string; variantKey: string }> =
+    await prisma.inventoryItem.findMany({
+      where: { shopId },
+      select: { sku: true, variantKey: true },
+    });
 
-  const dbKeys = new Set(dbItems.map((i) => `${i.sku}|${i.variantKey}`));
+  const dbKeys = new Set<string>(
+    dbItems.map((i) => `${i.sku}|${i.variantKey}`),
+  );
 
   const missing = [...jsonKeys].filter((k) => !dbKeys.has(k));
   const extra = [...dbKeys].filter((k) => !jsonKeys.has(k));

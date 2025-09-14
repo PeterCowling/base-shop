@@ -13,7 +13,7 @@ const searchSchema = z
   .object({
     q: z.string().optional(),
     slug: z.string().optional(),
-    shop: z.string().default("abc"),
+    shop: z.string().default("bcd"),
   })
   .strict();
 

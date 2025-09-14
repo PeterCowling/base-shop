@@ -17,21 +17,21 @@ describe("publish-upgrade route", () => {
 
   it("rejects invalid shop id", async () => {
     const res = await request(createRequestHandler()).post(
-      "/shop/ABC/publish-upgrade",
+      "/shop/BCD/publish-upgrade",
     );
     expect(res.status).toBe(400);
   });
 
   it("requires bearer token", async () => {
     const res = await request(createRequestHandler()).post(
-      "/shop/abc/publish-upgrade",
+      "/shop/bcd/publish-upgrade",
     );
     expect(res.status).toBe(401);
   });
 
   it("rejects invalid bearer token", async () => {
     const res = await request(createRequestHandler())
-      .post("/shop/abc/publish-upgrade")
+      .post("/shop/bcd/publish-upgrade")
       .set("Authorization", "Bearer invalid");
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
@@ -40,7 +40,7 @@ describe("publish-upgrade route", () => {
   it("rejects token signed with wrong secret", async () => {
     const token = jwt.sign({}, "wrongsecret");
     const res = await request(createRequestHandler())
-      .post("/shop/abc/publish-upgrade")
+      .post("/shop/bcd/publish-upgrade")
       .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });

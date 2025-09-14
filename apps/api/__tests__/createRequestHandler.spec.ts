@@ -127,7 +127,7 @@ describe("createRequestHandler", () => {
         this.push(null);
       },
     }) as unknown as IncomingMessage;
-    req.url = "/components/abc";
+    req.url = "/components/bcd";
     req.method = "GET";
     req.headers = { authorization: "Bearer token" } as unknown as IncomingMessage["headers"];
 
@@ -152,7 +152,7 @@ describe("createRequestHandler", () => {
         this.push(null);
       },
     }) as unknown as IncomingMessage;
-    req.url = "/components/abc";
+    req.url = "/components/bcd";
     req.method = "GET";
     req.headers = {};
 
@@ -195,7 +195,7 @@ describe("createRequestHandler", () => {
         this.push(null);
       },
     }) as unknown as IncomingMessage;
-    req.url = "/components/abc";
+    req.url = "/components/bcd";
     req.method = "PUT";
     req.headers = {};
 
@@ -219,7 +219,7 @@ describe("createRequestHandler", () => {
         this.push(null);
       },
     }) as unknown as IncomingMessage;
-    req.url = "/shop/abc/publish-upgrade";
+    req.url = "/shop/bcd/publish-upgrade";
     req.method = "POST";
     req.headers = {};
 
@@ -241,7 +241,7 @@ describe("createRequestHandler", () => {
         this.push(null);
       },
     }) as unknown as IncomingMessage;
-    req.url = "/shop/abc/publish-upgrade";
+    req.url = "/shop/bcd/publish-upgrade";
     req.method = "GET";
     req.headers = {};
 

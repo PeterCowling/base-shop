@@ -16,40 +16,40 @@ describe('onRequest authorization', () => {
   });
 
   it('returns 403 when authorization header missing', async () => {
-    const res = await onRequest(createContext({ shopId: 'abc' }));
+    const res = await onRequest(createContext({ shopId: 'bcd' }));
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('missing bearer token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('missing bearer token', { shopId: 'bcd' });
   });
 
   it('returns 403 when authorization not bearer', async () => {
     const res = await onRequest(
-      createContext({ shopId: 'abc', authorization: 'Token token' }),
+      createContext({ shopId: 'bcd', authorization: 'Token token' }),
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('missing bearer token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('missing bearer token', { shopId: 'bcd' });
   });
 
   it('returns 403 when preview token secret missing', async () => {
     const res = await onRequest(
-      createContext({ shopId: 'abc', authorization: 'Bearer token' }),
+      createContext({ shopId: 'bcd', authorization: 'Bearer token' }),
     );
     expect(verify).not.toHaveBeenCalled();
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when preview token secret is empty string', async () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = '';
     const res = await onRequest(
-      createContext({ shopId: 'abc', authorization: 'Bearer token' }),
+      createContext({ shopId: 'bcd', authorization: 'Bearer token' }),
     );
     expect(verify).not.toHaveBeenCalled();
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when token is empty', async () => {
@@ -61,7 +61,7 @@ describe('onRequest authorization', () => {
       return { exp: Math.floor(Date.now() / 1000) + 60 };
     });
     const res = await onRequest({
-      params: { shopId: 'abc' },
+      params: { shopId: 'bcd' },
       request: {
         headers: { get: () => 'Bearer ' },
         url: 'http://localhost',
@@ -74,12 +74,12 @@ describe('onRequest authorization', () => {
         algorithms: ['HS256'],
         audience: 'upgrade-preview',
         issuer: 'acme',
-        subject: 'shop:abc:upgrade-preview',
+        subject: 'shop:bcd:upgrade-preview',
       }),
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when jwt.verify throws', async () => {
@@ -88,7 +88,7 @@ describe('onRequest authorization', () => {
       throw new Error('bad');
     });
     const res = await onRequest(
-      createContext({ shopId: 'abc', authorization: 'Bearer token' }),
+      createContext({ shopId: 'bcd', authorization: 'Bearer token' }),
     );
     expect(verify).toHaveBeenCalledWith(
       'token',
@@ -97,12 +97,12 @@ describe('onRequest authorization', () => {
         algorithms: ['HS256'],
         audience: 'upgrade-preview',
         issuer: 'acme',
-        subject: 'shop:abc:upgrade-preview',
+        subject: 'shop:bcd:upgrade-preview',
       }),
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when token expired', async () => {
@@ -112,12 +112,12 @@ describe('onRequest authorization', () => {
       throw new TokenExpiredError('jwt expired', new Date());
     });
     const res = await onRequest(
-      createContext({ shopId: 'abc', authorization: 'Bearer token' }),
+      createContext({ shopId: 'bcd', authorization: 'Bearer token' }),
     );
     expect(verify).toHaveBeenCalled();
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when token has wrong audience', async () => {
@@ -126,7 +126,7 @@ describe('onRequest authorization', () => {
       throw new Error('aud');
     });
     const res = await onRequest(
-      createContext({ shopId: 'abc', authorization: 'Bearer wrong-aud' }),
+      createContext({ shopId: 'bcd', authorization: 'Bearer wrong-aud' }),
     );
     expect(verify).toHaveBeenCalledWith(
       'wrong-aud',
@@ -135,12 +135,12 @@ describe('onRequest authorization', () => {
         algorithms: ['HS256'],
         audience: 'upgrade-preview',
         issuer: 'acme',
-        subject: 'shop:abc:upgrade-preview',
+        subject: 'shop:bcd:upgrade-preview',
       }),
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when token has wrong issuer', async () => {
@@ -149,7 +149,7 @@ describe('onRequest authorization', () => {
       throw new Error('iss');
     });
     const res = await onRequest(
-      createContext({ shopId: 'abc', authorization: 'Bearer wrong-iss' }),
+      createContext({ shopId: 'bcd', authorization: 'Bearer wrong-iss' }),
     );
     expect(verify).toHaveBeenCalledWith(
       'wrong-iss',
@@ -158,23 +158,23 @@ describe('onRequest authorization', () => {
         algorithms: ['HS256'],
         audience: 'upgrade-preview',
         issuer: 'acme',
-        subject: 'shop:abc:upgrade-preview',
+        subject: 'shop:bcd:upgrade-preview',
       }),
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when token payload lacks numeric exp', async () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: 'soon' });
     const res = await onRequest(
-      createContext({ shopId: 'abc', authorization: 'Bearer good' }),
+      createContext({ shopId: 'bcd', authorization: 'Bearer good' }),
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when token payload missing exp', async () => {
@@ -182,10 +182,10 @@ describe('onRequest authorization', () => {
     verify.mockImplementation(jest.requireActual('jsonwebtoken').verify);
     const token = createToken({}, 'secret');
     const res = await onRequest(
-      createContext({ shopId: 'abc', authorization: `Bearer ${token}` }),
+      createContext({ shopId: 'bcd', authorization: `Bearer ${token}` }),
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 });

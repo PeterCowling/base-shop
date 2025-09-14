@@ -28,17 +28,17 @@ describe('helpers', () => {
     const root = '/root';
 
     it('handles missing shop.json', () => {
-      expect(gatherChanges('abc', root)).toEqual([]);
+      expect(gatherChanges('bcd', root)).toEqual([]);
     });
 
     it('handles invalid shop.json', () => {
-      vol.fromJSON({ [`${root}/data/shops/abc/shop.json`]: '{oops}' });
-      expect(gatherChanges('abc', root)).toEqual([]);
+      vol.fromJSON({ [`${root}/data/shops/bcd/shop.json`]: '{oops}' });
+      expect(gatherChanges('bcd', root)).toEqual([]);
     });
 
     it("skips components with unchanged versions", () => {
       vol.fromJSON({
-        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+        [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
           componentVersions: { '@scope/pkg': '1.0.0' },
         }),
         [`${root}/packages/pkg/package.json`]: JSON.stringify({
@@ -47,12 +47,12 @@ describe('helpers', () => {
         }),
       });
 
-      expect(gatherChanges('abc', root)).toEqual([]);
+      expect(gatherChanges('bcd', root)).toEqual([]);
     });
 
     it('handles version bumps and changelog summaries', () => {
       vol.fromJSON({
-        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+        [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
           componentVersions: { '@scope/pkg': '1.0.0' },
         }),
         [`${root}/packages/pkg/package.json`]: JSON.stringify({
@@ -62,7 +62,7 @@ describe('helpers', () => {
         [`${root}/packages/pkg/CHANGELOG.md`]: '# Changelog\n\nAdded feature\nMore',
       });
 
-      const changes = gatherChanges('abc', root);
+      const changes = gatherChanges('bcd', root);
       expect(changes).toEqual([
         {
           name: '@scope/pkg',
@@ -76,7 +76,7 @@ describe('helpers', () => {
 
     it('handles packages without CHANGELOG', () => {
       vol.fromJSON({
-        [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+        [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
           componentVersions: { '@scope/pkg': '1.0.0' },
         }),
         [`${root}/packages/pkg/package.json`]: JSON.stringify({
@@ -85,7 +85,7 @@ describe('helpers', () => {
         }),
       });
 
-      expect(gatherChanges('abc', root)).toEqual([
+      expect(gatherChanges('bcd', root)).toEqual([
         {
           name: '@scope/pkg',
           from: '1.0.0',

@@ -3,7 +3,7 @@
 // This spec creates a rental order end-to-end and verifies it is refunded.
 
 describe("Rental return flow", () => {
-  const shopId = "abc";
+  const shopId = "bcd";
   const dataDir = Cypress.env("TEST_DATA_ROOT");
   const sku = {
     id: "test-sku",

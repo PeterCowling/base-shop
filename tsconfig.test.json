@@ -42,7 +42,6 @@
     { "path": "./packages/platform-machine/tsconfig.test.json" },
     { "path": "./packages/tailwind-config/tsconfig.test.json" },
     { "path": "./packages/template-app/tsconfig.test.json" },
-    { "path": "./packages/themes/abc/tsconfig.test.json" },
     { "path": "./packages/themes/base/tsconfig.test.json" },
     { "path": "./packages/themes/bcd/tsconfig.test.json" },
     { "path": "./packages/themes/brandx/tsconfig.test.json" },

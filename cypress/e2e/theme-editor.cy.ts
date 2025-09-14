@@ -1,7 +1,7 @@
 import path from "path";
 
 describe("Theme editor flow", () => {
-  const shopId = "abc";
+  const shopId = "bcd";
   const shopPath = path.join("data", "shops", shopId, "shop.json");
   let original: unknown;
 

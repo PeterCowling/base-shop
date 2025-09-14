@@ -1,7 +1,7 @@
 // test/e2e/rbac-restrictions.spec.ts
 
 describe("RBAC restrictions", () => {
-  const shopId = "abc";
+  const shopId = "bcd";
 
   function signIn(email: string, password: string, callbackUrl: string) {
     cy.request("/api/auth/csrf").then(({ body }) => {

@@ -1,7 +1,7 @@
 // test/e2e/theme-editor.spec.ts
 
 describe("Theme editor", () => {
-  const shop = "abc";
+  const shop = "bcd";
   const themeUrl = `/cms/shop/${shop}/themes`;
   const dataDir = Cypress.env("TEST_DATA_ROOT");
   const shopFile = `${dataDir}/${shop}/shop.json`;

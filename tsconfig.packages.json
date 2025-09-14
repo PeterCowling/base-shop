@@ -21,7 +21,6 @@
     { "path": "packages/platform-machine" },
     { "path": "packages/lib" },
     { "path": "packages/themes/base" },
-    { "path": "packages/themes/abc" },
     { "path": "packages/themes/bcd" },
     { "path": "packages/config" },
     { "path": "packages/email" },

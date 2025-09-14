@@ -12,36 +12,36 @@ describe('onRequest authorization failures', () => {
   });
 
   it('returns 403 when authorization header missing', async () => {
-    const res = await onRequest(createRequest({ shopId: 'abc' }));
+    const res = await onRequest(createRequest({ shopId: 'bcd' }));
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('missing bearer token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('missing bearer token', { shopId: 'bcd' });
   });
 
   it('returns 403 when authorization not bearer', async () => {
     const res = await onRequest(
-      createRequest({ shopId: 'abc', headers: { authorization: 'Token token' } }),
+      createRequest({ shopId: 'bcd', headers: { authorization: 'Token token' } }),
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('missing bearer token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('missing bearer token', { shopId: 'bcd' });
   });
 
   it('returns 403 when preview token secret missing', async () => {
-    const res = await onRequest(createRequest({ shopId: 'abc', token: 'token' }));
+    const res = await onRequest(createRequest({ shopId: 'bcd', token: 'token' }));
     expect(verify).not.toHaveBeenCalled();
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when preview token secret is empty string', async () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = '';
-    const res = await onRequest(createRequest({ shopId: 'abc', token: 'token' }));
+    const res = await onRequest(createRequest({ shopId: 'bcd', token: 'token' }));
     expect(verify).not.toHaveBeenCalled();
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when token is empty', async () => {
@@ -52,7 +52,7 @@ describe('onRequest authorization failures', () => {
       }
       return { exp: Math.floor(Date.now() / 1000) + 60 };
     });
-    const res = await onRequest(createRequest({ shopId: 'abc', token: '' }));
+    const res = await onRequest(createRequest({ shopId: 'bcd', token: '' }));
     expect(verify).toHaveBeenCalledWith(
       '',
       'secret',
@@ -60,12 +60,12 @@ describe('onRequest authorization failures', () => {
         algorithms: ['HS256'],
         audience: 'upgrade-preview',
         issuer: 'acme',
-        subject: 'shop:abc:upgrade-preview',
+        subject: 'shop:bcd:upgrade-preview',
       }),
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when jwt.verify throws', async () => {
@@ -73,7 +73,7 @@ describe('onRequest authorization failures', () => {
     verify.mockImplementation(() => {
       throw new Error('bad');
     });
-    const res = await onRequest(createRequest({ shopId: 'abc', token: 'token' }));
+    const res = await onRequest(createRequest({ shopId: 'bcd', token: 'token' }));
     expect(verify).toHaveBeenCalledWith(
       'token',
       'secret',
@@ -81,12 +81,12 @@ describe('onRequest authorization failures', () => {
         algorithms: ['HS256'],
         audience: 'upgrade-preview',
         issuer: 'acme',
-        subject: 'shop:abc:upgrade-preview',
+        subject: 'shop:bcd:upgrade-preview',
       }),
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when token expired', async () => {
@@ -95,7 +95,7 @@ describe('onRequest authorization failures', () => {
     verify.mockImplementation(() => {
       throw new TokenExpiredError('jwt expired', new Date());
     });
-    const res = await onRequest(createRequest({ shopId: 'abc', token: 'token' }));
+    const res = await onRequest(createRequest({ shopId: 'bcd', token: 'token' }));
     expect(verify).toHaveBeenCalledWith(
       'token',
       'secret',
@@ -103,12 +103,12 @@ describe('onRequest authorization failures', () => {
         algorithms: ['HS256'],
         audience: 'upgrade-preview',
         issuer: 'acme',
-        subject: 'shop:abc:upgrade-preview',
+        subject: 'shop:bcd:upgrade-preview',
       }),
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when token has wrong audience', async () => {
@@ -116,7 +116,7 @@ describe('onRequest authorization failures', () => {
     verify.mockImplementation(() => {
       throw new Error('aud');
     });
-    const res = await onRequest(createRequest({ shopId: 'abc', token: 'wrong-aud' }));
+    const res = await onRequest(createRequest({ shopId: 'bcd', token: 'wrong-aud' }));
     expect(verify).toHaveBeenCalledWith(
       'wrong-aud',
       'secret',
@@ -124,12 +124,12 @@ describe('onRequest authorization failures', () => {
         algorithms: ['HS256'],
         audience: 'upgrade-preview',
         issuer: 'acme',
-        subject: 'shop:abc:upgrade-preview',
+        subject: 'shop:bcd:upgrade-preview',
       }),
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when token has wrong issuer', async () => {
@@ -137,7 +137,7 @@ describe('onRequest authorization failures', () => {
     verify.mockImplementation(() => {
       throw new Error('iss');
     });
-    const res = await onRequest(createRequest({ shopId: 'abc', token: 'wrong-iss' }));
+    const res = await onRequest(createRequest({ shopId: 'bcd', token: 'wrong-iss' }));
     expect(verify).toHaveBeenCalledWith(
       'wrong-iss',
       'secret',
@@ -145,21 +145,21 @@ describe('onRequest authorization failures', () => {
         algorithms: ['HS256'],
         audience: 'upgrade-preview',
         issuer: 'acme',
-        subject: 'shop:abc:upgrade-preview',
+        subject: 'shop:bcd:upgrade-preview',
       }),
     );
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when token payload lacks numeric exp', async () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: 'soon' });
-    const res = await onRequest(createRequest({ shopId: 'abc', token: 'good' }));
+    const res = await onRequest(createRequest({ shopId: 'bcd', token: 'good' }));
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 
   it('returns 403 when token payload missing exp', async () => {
@@ -173,12 +173,12 @@ describe('onRequest authorization failures', () => {
         algorithm: 'HS256',
         audience: 'upgrade-preview',
         issuer: 'acme',
-        subject: 'shop:abc:upgrade-preview',
+        subject: 'shop:bcd:upgrade-preview',
       },
     );
-    const res = await onRequest(createRequest({ shopId: 'abc', token }));
+    const res = await onRequest(createRequest({ shopId: 'bcd', token }));
     expect(res.status).toBe(403);
     await expect(res.json()).resolves.toEqual({ error: 'Forbidden' });
-    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'abc' });
+    expect(warnSpy).toHaveBeenCalledWith('invalid token', { shopId: 'bcd' });
   });
 });

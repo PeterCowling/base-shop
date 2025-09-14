@@ -917,8 +917,6 @@ importers:
         specifier: 3.25.73
         version: 3.25.73
 
-  packages/themes/abc: {}
-
   packages/themes/base: {}
 
   packages/themes/bcd: {}

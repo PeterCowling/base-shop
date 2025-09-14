@@ -130,7 +130,7 @@ describe("core env schema", () => {
       ...base,
       NODE_ENV: "production",
       CART_COOKIE_SECRET: "secret",
-      DEPOSIT_RELEASE_INTERVAL_MS: "abc",
+      DEPOSIT_RELEASE_INTERVAL_MS: "notnum",
     });
     expect(badNum.success).toBe(false);
   });
@@ -229,7 +229,7 @@ describe("shipping env schema", () => {
     });
     expect(badBool.success).toBe(false);
     const badNum = shippingEnvSchema.safeParse({
-      FREE_SHIPPING_THRESHOLD: "abc",
+      FREE_SHIPPING_THRESHOLD: "notnum",
     });
     expect(badNum.success).toBe(false);
     const badZone = shippingEnvSchema.safeParse({

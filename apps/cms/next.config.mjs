@@ -49,7 +49,6 @@ const nextConfig = {
 
   // Transpile workspace packages that ship TS/modern syntax
   transpilePackages: [
-    "@themes/abc",
     "@themes/base",
     "@themes/bcd",
     "@themes/brandx",

@@ -137,7 +137,7 @@ describe("products repository", () => {
     it("duplicates product with new id and sku", async () => {
       const product = {
         id: "1",
-        sku: "abc",
+        sku: "bcd",
         row_version: 3,
         status: "published",
         created_at: "old",
@@ -154,7 +154,7 @@ describe("products repository", () => {
       const copy = await duplicateProductInRepo(shop, "1");
       expect(copy).toMatchObject({
         id: "new-id",
-        sku: "abc-copy",
+        sku: "bcd-copy",
         status: "draft",
         row_version: 1,
         created_at: "2020-01-01T00:00:00Z",

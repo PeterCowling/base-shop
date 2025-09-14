@@ -39,7 +39,7 @@ describe("onRequestPost", () => {
       warn.mockRestore();
     });
 
-    it.each(["", "ABC", "abc!", "Shop"])(
+    it.each(["", "BCD", "bcd!", "Shop"])(
       "rejects invalid id '%s'",
       async (bad) => {
         const warn = jest.spyOn(console, "warn").mockImplementation();

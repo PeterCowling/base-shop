@@ -22,7 +22,7 @@ describe("components route", () => {
     );
 
   it("rejects requests without token", async () => {
-    const res = await request(createRequestHandler()).get("/components/abc");
+    const res = await request(createRequestHandler()).get("/components/bcd");
     expect(res.status).toBe(403);
   });
 
@@ -34,12 +34,12 @@ describe("components route", () => {
         algorithm: "HS256",
         audience: "upgrade-preview",
         issuer: "acme",
-        subject: "shop:abc:upgrade-preview",
+        subject: "shop:bcd:upgrade-preview",
         expiresIn: "1h",
       },
     );
     const res = await request(createRequestHandler())
-      .get("/components/abc")
+      .get("/components/bcd")
       .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
@@ -54,18 +54,18 @@ describe("components route", () => {
   });
 
   it("returns components for valid token", async () => {
-    const token = sign("abc");
+    const token = sign("bcd");
     const res = await request(createRequestHandler())
-      .get("/components/abc")
+      .get("/components/bcd")
       .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ components: [] });
   });
 
   it("returns config diff when requested", async () => {
-    const token = sign("abc");
+    const token = sign("bcd");
     const res = await request(createRequestHandler())
-      .get("/components/abc?diff")
+      .get("/components/bcd?diff")
       .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
@@ -77,34 +77,34 @@ describe("components route", () => {
   it("rejects token with mismatched subject", async () => {
     const token = sign("xyz");
     const res = await request(createRequestHandler())
-      .get("/components/abc")
+      .get("/components/bcd")
       .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
   });
 
   it("rejects token with mismatched audience", async () => {
-    const token = sign("abc", { audience: "other" });
+    const token = sign("bcd", { audience: "other" });
     const res = await request(createRequestHandler())
-      .get("/components/abc")
+      .get("/components/bcd")
       .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
   });
 
   it("rejects token with mismatched issuer", async () => {
-    const token = sign("abc", { issuer: "other" });
+    const token = sign("bcd", { issuer: "other" });
     const res = await request(createRequestHandler())
-      .get("/components/abc")
+      .get("/components/bcd")
       .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
   });
 
   it("rejects expired token", async () => {
-    const token = sign("abc", { expiresIn: -1 });
+    const token = sign("bcd", { expiresIn: -1 });
     const res = await request(createRequestHandler())
-      .get("/components/abc")
+      .get("/components/bcd")
       .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
@@ -118,12 +118,12 @@ describe("components route", () => {
         algorithm: "HS256",
         audience: "upgrade-preview",
         issuer: "acme",
-        subject: "shop:abc:upgrade-preview",
+        subject: "shop:bcd:upgrade-preview",
         noTimestamp: true,
       },
     );
     const res = await request(createRequestHandler())
-      .get("/components/abc")
+      .get("/components/bcd")
       .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });

@@ -3,9 +3,9 @@ import { getShopFromPath } from "../src/utils/getShopFromPath";
 
 describe("getShopFromPath", () => {
   it("extracts shop slug from typical cms paths", () => {
-    expect(getShopFromPath("/cms/shop/abc")).toBe("abc");
-    expect(getShopFromPath("/cms/shop/abc/products")).toBe("abc");
-    expect(getShopFromPath("/cms/shop/abc/pages/new")).toBe("abc");
+    expect(getShopFromPath("/cms/shop/bcd")).toBe("bcd");
+    expect(getShopFromPath("/cms/shop/bcd/products")).toBe("bcd");
+    expect(getShopFromPath("/cms/shop/bcd/pages/new")).toBe("bcd");
   });
 
   it("returns undefined when no shop segment present", () => {

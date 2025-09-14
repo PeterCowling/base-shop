@@ -30,7 +30,7 @@ describe("parseDepositForm", () => {
 
     const fdNaN = new FormData();
     fdNaN.set("enabled", "on");
-    fdNaN.set("intervalMinutes", "abc");
+    fdNaN.set("intervalMinutes", "invalid");
     const nanResult = parseDepositForm(fdNaN);
     expect(nanResult.errors?.intervalMinutes).toBeTruthy();
   });

@@ -29,7 +29,7 @@ function request(path: string) {
 
 describe("GET", () => {
   it("writes token and redirects to configurator", async () => {
-    const res = await GET(request("?shop=s1&code=abc"), {
+    const res = await GET(request("?shop=s1&code=xyz"), {
       params: Promise.resolve({ provider: "stripe" }),
     });
     expect(mkdir).toHaveBeenCalled();
@@ -60,7 +60,7 @@ describe("GET", () => {
   it("throws when mkdir fails", async () => {
     mkdir.mockRejectedValue(new Error("denied"));
     await expect(
-      GET(request("?shop=s1&code=abc"), {
+      GET(request("?shop=s1&code=xyz"), {
         params: Promise.resolve({ provider: "stripe" }),
       }),
     ).rejects.toThrow("denied");
@@ -69,7 +69,7 @@ describe("GET", () => {
   it("throws on write error", async () => {
     writeFile.mockRejectedValue(new Error("disk"));
     await expect(
-      GET(request("?shop=s1&code=abc"), {
+      GET(request("?shop=s1&code=xyz"), {
         params: Promise.resolve({ provider: "stripe" }),
       }),
     ).rejects.toThrow("disk");

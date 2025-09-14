@@ -4,6 +4,9 @@ import fs from "node:fs";
 import path from "node:path";
 import ts from "typescript";
 import type { Role } from "@auth/types/roles";
+import { republishShop } from "../../../../../../scripts/src/republish-shop";
+
+jest.setTimeout(15000);
 
 const mockCookies = { get: jest.fn(), set: jest.fn(), delete: jest.fn() };
 jest.mock("next/headers", () => ({
@@ -34,6 +37,10 @@ jest.mock("fs", () => {
   };
 });
 
+const mockedFs = jest.requireMock("fs") as {
+  promises: { readFile: jest.Mock; rm: jest.Mock };
+};
+
 jest.mock("../../../../../../scripts/src/republish-shop", () => ({
   republishShop: jest.fn(),
 }), { virtual: true });
@@ -48,7 +55,7 @@ async function setSession(role: Role): Promise<void> {
 }
 
 afterEach(() => {
-  jest.resetModules();
+  jest.clearAllMocks();
 });
 
 function loadRoute() {
@@ -79,6 +86,28 @@ describe("POST /api/publish RBAC", () => {
     const res = await POST();
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ status: "ok" });
+    expect(mockedFs.promises.rm).toHaveBeenCalledWith(
+      expect.stringContaining(path.join("data", "shops", "shop-1", "upgrade.json")),
+      { force: true }
+    );
+  });
+});
+
+describe("POST /api/publish errors", () => {
+  it.each<[
+    string,
+    () => void
+  ]>([
+    ["readFile", () => mockedFs.promises.readFile.mockRejectedValueOnce(new Error("fail"))],
+    ["republishShop", () => (republishShop as jest.Mock).mockImplementationOnce(() => { throw new Error("fail"); })],
+    ["rm", () => mockedFs.promises.rm.mockRejectedValueOnce(new Error("fail"))],
+  ])("returns 500 when %s throws", async (_label, setup) => {
+    const { POST } = loadRoute();
+    await setSession("ShopAdmin");
+    setup();
+    const res = await POST();
+    expect(res.status).toBe(500);
+    await expect(res.json()).resolves.toEqual({ error: "Publish failed" });
   });
 });
 

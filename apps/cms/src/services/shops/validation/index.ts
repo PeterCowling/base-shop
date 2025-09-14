@@ -3,6 +3,7 @@ export * from "./parseSeoForm";
 export * from "./parseGenerateSeoForm";
 export * from "./parseCurrencyTaxForm";
 export * from "./parseDepositForm";
+export * from "./parseLateFeeForm";
 export * from "./parseReverseLogisticsForm";
 export * from "./parseUpsReturnsForm";
 export * from "./parsePremierDeliveryForm";

@@ -11,6 +11,7 @@ import {
   setFreezeTranslations as serviceSetFreezeTranslations,
   updateCurrencyAndTax as serviceUpdateCurrencyAndTax,
   updateDeposit as serviceUpdateDeposit,
+  updateLateFee as serviceUpdateLateFee,
   updateReverseLogistics as serviceUpdateReverseLogistics,
   updateUpsReturns as serviceUpdateUpsReturns,
   updatePremierDelivery as serviceUpdatePremierDelivery,
@@ -63,6 +64,10 @@ export async function updateCurrencyAndTax(
 
 export async function updateDeposit(shop: string, formData: FormData) {
   return serviceUpdateDeposit(shop, formData);
+}
+
+export async function updateLateFee(shop: string, formData: FormData) {
+  return serviceUpdateLateFee(shop, formData);
 }
 
 export async function updateReverseLogistics(shop: string, formData: FormData) {

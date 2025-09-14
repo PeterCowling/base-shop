@@ -2,6 +2,7 @@ import {
   parseAiCatalogForm,
   parseCurrencyTaxForm,
   parseDepositForm,
+  parseLateFeeForm,
   parseGenerateSeoForm,
   parsePremierDeliveryForm,
   parseReverseLogisticsForm,
@@ -68,6 +69,25 @@ describe("parseDepositForm", () => {
     fd.set("enabled", "on");
     fd.set("intervalMinutes", "0");
     const result = parseDepositForm(fd);
+    expect(result.errors?.intervalMinutes).toBeDefined();
+  });
+});
+
+describe("parseLateFeeForm", () => {
+  it("parses valid data", () => {
+    const fd = new FormData();
+    fd.set("enabled", "on");
+    fd.set("intervalMinutes", "5");
+    const result = parseLateFeeForm(fd);
+    expect(result.data).toBeDefined();
+    expect(result.errors).toBeUndefined();
+  });
+
+  it("returns errors for invalid data", () => {
+    const fd = new FormData();
+    fd.set("enabled", "on");
+    fd.set("intervalMinutes", "0");
+    const result = parseLateFeeForm(fd);
     expect(result.errors?.intervalMinutes).toBeDefined();
   });
 });

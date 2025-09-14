@@ -43,7 +43,7 @@ export const options = {
   },
 };
 
-export default function () {
+export default function checkoutSessionLoadTest() {
   const res = http.post(
     `${__ENV.API_BASE_URL}/api/checkout-session`,
     JSON.stringify({ currency: 'EUR', taxRegion: 'EU' }),

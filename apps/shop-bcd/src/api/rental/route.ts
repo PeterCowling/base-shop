@@ -8,6 +8,7 @@ import {
   readOrders,
 } from "@platform-core/repositories/rentalOrders.server";
 import { readShop } from "@platform-core/repositories/shops.server";
+import type { RentalOrder } from "@acme/types";
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -40,10 +41,10 @@ export async function PATCH(req: NextRequest) {
   const { sessionId, damage } = parsed.data;
 
   let alreadyReturned = false;
-  let order: any;
+  let order: RentalOrder | undefined;
   if (typeof readOrders === "function") {
     const orders = await readOrders("bcd");
-    order = orders.find((o: any) => o.sessionId === sessionId);
+    order = orders.find((o) => o.sessionId === sessionId);
   } else {
     order = await markReturned("bcd", sessionId);
     alreadyReturned = true;

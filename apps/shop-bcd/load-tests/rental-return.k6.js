@@ -26,7 +26,7 @@ export const options = {
   },
 };
 
-export default function () {
+export default function rentalReturnLoadTest() {
   const base = __ENV.SHOP_BASE_URL;
   const sessionId = `vu-${__VU}-iter-${__ITER}`;
   const params = { headers: { 'Content-Type': 'application/json' } };

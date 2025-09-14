@@ -8,6 +8,14 @@ const mockUseParams = jest.fn();
 const mockCreateDraft = jest.fn();
 const mockFinalize = jest.fn();
 
+function deferred<T>() {
+  let resolve: (value: T) => void;
+  const promise = new Promise<T>((res) => {
+    resolve = res;
+  });
+  return { promise, resolve: resolve! };
+}
+
 const mockSpec = { layout: "default", sections: [], hero: "", cta: "" };
 
 const SpecFormMock = jest.fn(({ onNext }: any) => (
@@ -58,15 +66,18 @@ describe("NewWizardPage", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockUseParams.mockReturnValue({ shop });
-    mockCreateDraft.mockResolvedValue({ id: "draft-1" });
   });
 
   it("renders SpecForm initially and switches to PreviewPane on next", async () => {
     render(<NewWizardPage />);
     expect(screen.getByTestId("spec-form")).toBeInTheDocument();
 
+    const draft = deferred<{ id: string }>();
+    mockCreateDraft.mockReturnValueOnce(draft.promise);
+
     await act(async () => {
       await userEvent.click(screen.getByTestId("next"));
+      draft.resolve({ id: "draft-1" });
     });
 
     expect(mockCreateDraft).toHaveBeenCalledWith({ shop, spec: mockSpec });
@@ -76,8 +87,12 @@ describe("NewWizardPage", () => {
   it("calls finalize with shop and draftId on confirm", async () => {
     render(<NewWizardPage />);
 
+    const draft = deferred<{ id: string }>();
+    mockCreateDraft.mockReturnValueOnce(draft.promise);
+
     await act(async () => {
       await userEvent.click(screen.getByTestId("next"));
+      draft.resolve({ id: "draft-1" });
     });
 
     await act(async () => {

@@ -31,6 +31,9 @@ export async function sendSystemEmail(data: {
   if (!process.env.EMAIL_PROVIDER) {
     throw new Error("Email provider not configured");
   }
-  const mod: any = req("@acme/email");
+  type EmailModule = {
+    sendEmail(to: string, subject: string, html: string): Promise<unknown>;
+  };
+  const mod = req("@acme/email") as EmailModule;
   return mod.sendEmail(data.to, data.subject, data.html);
 }

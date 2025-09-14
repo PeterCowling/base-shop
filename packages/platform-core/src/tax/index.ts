@@ -25,6 +25,7 @@ async function loadRules() {
   if (rulesCache) return rulesCache;
   const file = path.join(resolveDataRoot(), "..", "tax", "rules.json");
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const buf = await fs.readFile(file, "utf8");
     rulesCache = JSON.parse(buf) as Record<string, number>;
   } catch (err: unknown) {

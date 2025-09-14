@@ -3,6 +3,7 @@ import { authorize, fetchSettings, persistSettings } from "./helpers";
 import {
   parseCurrencyTaxForm,
   parseDepositForm,
+  parseLateFeeForm,
   parseReverseLogisticsForm,
   parseUpsReturnsForm,
   parsePremierDeliveryForm,
@@ -54,6 +55,27 @@ export async function updateDeposit(
   const updated: ShopSettings = {
     ...current,
     depositService: {
+      enabled: data.enabled,
+      intervalMinutes: data.intervalMinutes,
+    },
+  };
+  await persistSettings(shop, updated);
+  return { settings: updated };
+}
+
+export async function updateLateFee(
+  shop: string,
+  formData: FormData,
+): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
+  await authorize();
+  const { data, errors } = parseLateFeeForm(formData);
+  if (!data) {
+    return { errors };
+  }
+  const current = await fetchSettings(shop);
+  const updated: ShopSettings = {
+    ...current,
+    lateFeeService: {
       enabled: data.enabled,
       intervalMinutes: data.intervalMinutes,
     },

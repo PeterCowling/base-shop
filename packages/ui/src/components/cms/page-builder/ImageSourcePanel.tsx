@@ -76,7 +76,7 @@ function ImageSourcePanel({ src, alt, onChange }: Props) {
         <Input
           value={url}
           onChange={handleUrl}
-          placeholder={t("cms.image.url")}
+          placeholder={t("cms.image.url") as string}
           className="flex-1"
         />
         <ImagePicker onSelect={handleSelect}>
@@ -96,7 +96,7 @@ function ImageSourcePanel({ src, alt, onChange }: Props) {
       <Input
         value={altText}
         onChange={handleAlt}
-        placeholder={t("cms.image.alt")}
+        placeholder={t("cms.image.alt") as string}
         disabled={decorative}
       />
       <label className="flex items-center gap-2 text-sm">

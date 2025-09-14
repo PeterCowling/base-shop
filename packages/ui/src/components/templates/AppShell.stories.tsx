@@ -16,11 +16,11 @@ export default meta;
 
 export const Default: StoryObj<typeof AppShell> = {
   render: () => (
-    <AppShell
-      header={<Header locale="en">Header</Header>}
-      sideNav={<SideNav>Nav</SideNav>}
-      footer={<Footer>Footer</Footer>}
-    >
+      <AppShell
+        header={<Header locale="en" shopName="Demo">Header</Header>}
+        sideNav={<SideNav>Nav</SideNav>}
+        footer={<Footer shopName="Demo">Footer</Footer>}
+      >
       <Content>Content</Content>
     </AppShell>
   ),

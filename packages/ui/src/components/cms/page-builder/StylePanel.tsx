@@ -54,19 +54,19 @@ export default function StylePanel({ component, handleInput }: Props) {
       <Input
         label={t("cms.style.foreground")}
         value={color.fg ?? ""}
-        placeholder={t("cms.style.colorPlaceholder")}
+        placeholder={t("cms.style.colorPlaceholder") as string}
         onChange={(e) => update("color", "fg", e.target.value)}
       />
       <Input
         label={t("cms.style.background")}
         value={color.bg ?? ""}
-        placeholder={t("cms.style.colorPlaceholder")}
+        placeholder={t("cms.style.colorPlaceholder") as string}
         onChange={(e) => update("color", "bg", e.target.value)}
       />
       <Input
         label={t("cms.style.border")}
         value={color.border ?? ""}
-        placeholder={t("cms.style.colorPlaceholder")}
+        placeholder={t("cms.style.colorPlaceholder") as string}
         onChange={(e) => update("color", "border", e.target.value)}
       />
       <Input

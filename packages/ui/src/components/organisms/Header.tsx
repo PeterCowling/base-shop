@@ -26,11 +26,22 @@ export interface HeaderProps extends React.HTMLAttributes<HTMLElement> {
   logoVariants?: LogoVariants;
   /** Shop name for text fallback */
   shopName: string;
+  /** Whether to display the search bar */
+  showSearch?: boolean;
 }
 
 export const Header = React.forwardRef<HTMLElement, HeaderProps>(
   (
-    { nav = [], searchSuggestions = [], locale, logoVariants, shopName, className, ...props },
+    {
+      nav = [],
+      searchSuggestions = [],
+      locale,
+      logoVariants,
+      shopName,
+      showSearch = true,
+      className,
+      ...props
+    },
     ref,
   ) => {
     const viewport = useViewport();
@@ -87,9 +98,11 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
           </div>
 
           <div className="flex flex-1 justify-end gap-4">
-            <div className="max-w-xs flex-1">
-              <SearchBar suggestions={searchSuggestions} label="Search products" />
-            </div>
+            {showSearch && (
+              <div className="max-w-xs flex-1">
+                <SearchBar suggestions={searchSuggestions} label="Search products" />
+              </div>
+            )}
             <LanguageSwitcher current={locale} />
           </div>
         </div>

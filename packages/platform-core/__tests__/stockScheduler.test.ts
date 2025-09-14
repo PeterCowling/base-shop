@@ -1,6 +1,6 @@
 import { jest } from "@jest/globals";
 
-const checkAndAlert = jest.fn();
+const checkAndAlert = jest.fn().mockResolvedValue([]);
 jest.mock("../src/services/stockAlert.server", () => ({
   checkAndAlert,
 }));
@@ -42,6 +42,20 @@ describe("scheduleStockChecks", () => {
     );
 
     consoleError.mockRestore();
+  });
+
+  it("exposes status information", async () => {
+    const mockGetItems = jest.fn().mockResolvedValue([]);
+    const { scheduleStockChecks, getStockCheckStatus } = await import(
+      "../src/services/stockScheduler.server"
+    );
+
+    scheduleStockChecks("shop", mockGetItems, 100);
+    await jest.advanceTimersByTimeAsync(100);
+
+    const status = getStockCheckStatus("shop");
+    expect(status?.intervalMs).toBe(100);
+    expect(status?.history).toHaveLength(1);
   });
 });
 

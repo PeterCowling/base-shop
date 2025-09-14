@@ -107,6 +107,14 @@ export default async function SettingsPage({
       </p>
       <p className="mb-4 text-sm">
         <Link
+          href={`/cms/shop/${shop}/settings/stock-scheduler`}
+          className="text-primary underline"
+        >
+          Stock scheduler settings
+        </Link>
+      </p>
+      <p className="mb-4 text-sm">
+        <Link
           href={`/cms/shop/${shop}/settings/maintenance-scan`}
           className="text-primary underline"
         >

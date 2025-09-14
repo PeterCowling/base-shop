@@ -21,14 +21,12 @@ describe("UpgradeButton", () => {
       value: { ...originalLocation, href: "" },
       writable: true,
     });
-    const originalError = console.error;
     consoleErrorSpy = jest
       .spyOn(console, "error")
-      .mockImplementation((msg, ...args) => {
+      .mockImplementation((msg) => {
         if (typeof msg === "string" && msg.includes("act(")) {
           return;
         }
-        originalError(msg as any, ...args);
       });
   });
 

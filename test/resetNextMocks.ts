@@ -13,6 +13,6 @@ jest.mock("next/image", () => ({
 
 jest.mock("next/link", () => ({
   __esModule: true,
-  default: ({ href, children, ...rest }: any) =>
+  default: ({ href, prefetch, children, ...rest }: any) =>
     React.createElement("a", { href, ...rest }, children),
 }));

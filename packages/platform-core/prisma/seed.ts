@@ -1,5 +1,6 @@
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
+import type { Prisma } from "@prisma/client";
 
 import { prisma } from "../src/db";
 import { nowIso } from "@acme/date-utils";
@@ -24,13 +25,14 @@ async function main() {
   if (!skipInventory) {
     const shopsDir = path.resolve(__dirname, "../../../data/shops");
     const dirs = await readdir(shopsDir, { withFileTypes: true });
-    const data: any[] = [];
+    const data: Prisma.InventoryItemCreateManyInput[] = [];
 
     for (const dir of dirs) {
       if (!dir.isDirectory()) continue;
       const shop = dir.name;
       const file = path.join(shopsDir, shop, "inventory.json");
       try {
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
         const raw = await readFile(file, "utf8");
         const items = JSON.parse(raw) as Array<{
           sku: string;

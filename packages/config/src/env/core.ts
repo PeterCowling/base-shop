@@ -7,9 +7,12 @@ import { emailEnvSchema } from "./email.js";
 import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
 import { createRequire } from "module";
-
-const isProd = process.env.NODE_ENV === "production";
-const isTest = process.env.NODE_ENV === "test";
+const isJest = typeof (globalThis as any).jest !== "undefined";
+const isTest =
+  process.env.NODE_ENV === "test" ||
+  process.env.JEST_WORKER_ID !== undefined ||
+  (isJest && process.env.NODE_ENV !== "production");
+const isProd = process.env.NODE_ENV === "production" && !isTest;
 
 const baseEnvSchema = z
   .object({
@@ -217,12 +220,14 @@ function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
         });
       }
     }
-    console.error("❌ Invalid core environment variables:");
-    parsed.error.issues.forEach((issue: z.ZodIssue) => {
-      const pathArr = (issue.path ?? []) as Array<string | number>;
-      const path = pathArr.length ? pathArr.join(".") : "(root)";
-      console.error(`  • ${path}: ${issue.message}`);
-    });
+    if (!isTest) {
+      console.error("❌ Invalid core environment variables:");
+      parsed.error.issues.forEach((issue: z.ZodIssue) => {
+        const pathArr = (issue.path ?? []) as Array<string | number>;
+        const path = pathArr.length ? pathArr.join(".") : "(root)";
+        console.error(`  • ${path}: ${issue.message}`);
+      });
+    }
     throw new Error("Invalid core environment variables");
   }
   return parsed.data;

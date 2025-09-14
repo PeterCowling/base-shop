@@ -1,12 +1,17 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
-const isProd = process.env.NODE_ENV === "production";
+const isJest = typeof (globalThis as any).jest !== "undefined";
+const isTest =
+  process.env.NODE_ENV === "test" ||
+  process.env.JEST_WORKER_ID !== undefined ||
+  (isJest && process.env.NODE_ENV !== "production");
+const isProd = process.env.NODE_ENV === "production" && !isTest;
 
 // Normalize AUTH_TOKEN_TTL from the process environment so validation succeeds
 // even if the shell exported a plain number or included stray whitespace.
 // We intentionally skip this in tests to keep existing expectations.
-if (process.env.NODE_ENV !== "test") {
+if (!isTest) {
   const rawTTL = process.env.AUTH_TOKEN_TTL;
   if (typeof rawTTL === "string") {
     const trimmed = rawTTL.trim();
@@ -168,10 +173,12 @@ export function loadAuthEnv(
 ): AuthEnv {
   const parsed = authEnvSchema.safeParse(raw);
   if (!parsed.success) {
-    console.error(
-      "❌ Invalid auth environment variables:",
-      parsed.error.format(),
-    );
+    if (!isTest) {
+      console.error(
+        "❌ Invalid auth environment variables:",
+        parsed.error.format(),
+      );
+    }
     throw new Error("Invalid auth environment variables");
   }
   return {

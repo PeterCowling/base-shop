@@ -1,7 +1,6 @@
 import "@testing-library/jest-dom";
-import React from "react";
+import React, { act } from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
 
 const updateReverseLogistics = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({ updateReverseLogistics }));

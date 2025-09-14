@@ -80,6 +80,8 @@ export async function loadPlugins({
 
   for (const dir of searchDirs) {
     try {
+      // The directories come from trusted configuration.
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
       const entries = await readdir(dir, { withFileTypes: true });
       for (const entry of entries) {
         if (entry.isDirectory()) {

@@ -1,6 +1,3 @@
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-
 jest.mock("next-auth", () => ({ getServerSession: jest.fn() }));
 jest.mock("next/navigation", () => ({ redirect: jest.fn() }));
 
@@ -11,6 +8,8 @@ describe("IndexPage", () => {
   });
 
   it("redirects to /cms when a session exists", async () => {
+    const { getServerSession } = await import("next-auth");
+    const { redirect } = await import("next/navigation");
     (getServerSession as jest.Mock).mockResolvedValueOnce({ user: { id: "1" } });
     const { default: IndexPage } = await import("./page");
     await IndexPage();
@@ -18,6 +17,8 @@ describe("IndexPage", () => {
   });
 
   it("redirects to /login when no session exists", async () => {
+    const { getServerSession } = await import("next-auth");
+    const { redirect } = await import("next/navigation");
     (getServerSession as jest.Mock).mockResolvedValueOnce(null);
     const { default: IndexPage } = await import("./page");
     await IndexPage();

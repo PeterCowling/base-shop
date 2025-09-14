@@ -10,7 +10,7 @@ let repoPromise: Promise<CouponsRepository> | undefined;
 async function getRepo(): Promise<CouponsRepository> {
   if (!repoPromise) {
     repoPromise = resolveRepo<CouponsRepository>(
-      () => (prisma as any).coupon,
+      () => (prisma as { coupon?: unknown }).coupon,
       () =>
         import("./coupons.prisma.server").then(
           (m) => m.prismaCouponsRepository,

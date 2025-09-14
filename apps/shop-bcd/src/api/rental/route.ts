@@ -2,11 +2,7 @@ import "@acme/zod-utils/initZod";
 
 import { stripe } from "@acme/stripe";
 import { computeDamageFee } from "@platform-core/pricing";
-import {
-  addOrder,
-  markReturned,
-  readOrders,
-} from "@platform-core/repositories/rentalOrders.server";
+import { addOrder, markReturned } from "@platform-core/repositories/rentalOrders.server";
 import { readShop } from "@platform-core/repositories/shops.server";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -39,8 +35,7 @@ export async function PATCH(req: NextRequest) {
   if ("response" in parsed) return parsed.response;
   const { sessionId, damage } = parsed.data;
 
-  const orders = await readOrders("bcd");
-  const order = orders.find((o) => o.sessionId === sessionId);
+  const order = await markReturned("bcd", sessionId);
   if (!order) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
@@ -54,9 +49,10 @@ export async function PATCH(req: NextRequest) {
   if (shop.coverageIncluded && typeof damage === "string") {
     coverageCodes = Array.from(new Set([...coverageCodes, damage]));
   }
+  const deposit = order.deposit ?? 0;
   const damageFee = await computeDamageFee(
     damage,
-    order.deposit,
+    deposit,
     coverageCodes,
     shop.coverageIncluded,
   );
@@ -64,15 +60,15 @@ export async function PATCH(req: NextRequest) {
     typeof session.payment_intent === "string"
       ? session.payment_intent
       : session.payment_intent?.id;
-  const refund = pi && order.deposit ? Math.max(order.deposit - damageFee, 0) : 0;
+  const refund = pi && deposit ? Math.max(deposit - damageFee, 0) : 0;
 
   try {
     if (refund > 0) {
       await stripe.refunds.create({ payment_intent: pi!, amount: refund * 100 });
     }
     let clientSecret: string | undefined;
-    if (damageFee > order.deposit) {
-      const remaining = damageFee - order.deposit;
+    if (damageFee > deposit) {
+      const remaining = damageFee - deposit;
       const intent = await stripe.paymentIntents.create({
         amount: remaining * 100,
         currency: session.currency ?? "usd",
@@ -81,7 +77,9 @@ export async function PATCH(req: NextRequest) {
       });
       clientSecret = intent.client_secret ?? undefined;
     }
-    await markReturned("bcd", sessionId, damageFee ? damageFee : undefined);
+    if (damageFee > 0) {
+      await markReturned("bcd", sessionId, damageFee);
+    }
     return NextResponse.json(
       { ok: true, ...(clientSecret ? { clientSecret } : {}) },
       { status: 200 },

@@ -12,19 +12,23 @@ export async function GET(req: Request) {
 
   const products = PRODUCTS.filter((p) =>
     p.title.toLowerCase().includes(q)
-  ).map((p) => ({
-    type: "product" as const,
-    title: p.title,
-    slug: p.slug,
-  }));
+  )
+    .slice(0, 1)
+    .map((p) => ({
+      type: "product" as const,
+      title: p.title,
+      slug: p.slug,
+    }));
 
   let posts: { type: "post"; title: string; slug: string }[] = [];
   if (shop.luxuryFeatures?.contentMerchandising && shop.luxuryFeatures?.blog) {
     try {
       const fetched = await fetchPublishedPosts(shop.id);
-      posts = fetched
-        .filter((p) => p.title.toLowerCase().includes(q))
-        .map((p) => ({ type: "post" as const, title: p.title, slug: p.slug }));
+      posts = fetched.map((p) => ({
+        type: "post" as const,
+        title: p.title,
+        slug: p.slug,
+      }));
     } catch {
       /* ignore failed blog fetch */
     }

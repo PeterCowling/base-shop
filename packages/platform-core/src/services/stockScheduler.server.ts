@@ -3,6 +3,19 @@ import "server-only";
 import type { InventoryItem } from "../types/inventory";
 import { checkAndAlert } from "./stockAlert.server";
 
+interface HistoryEntry {
+  timestamp: number;
+  alerts: number;
+}
+
+interface StockCheckStatus {
+  intervalMs: number;
+  lastRun?: number;
+  history: HistoryEntry[];
+}
+
+const schedules = new Map<string, { timer: NodeJS.Timeout; status: StockCheckStatus }>();
+
 /**
  * Periodically runs {@link checkAndAlert} for a shop.
  * @param shop The shop identifier.
@@ -17,13 +30,35 @@ export function scheduleStockChecks(
   shop: string,
   getItems: () => Promise<InventoryItem[]>,
   intervalMs = 60 * 60 * 1000,
-): void {
-  setInterval(async () => {
+): StockCheckStatus {
+  const existing = schedules.get(shop);
+  if (existing?.timer) {
+    clearInterval(existing.timer);
+  }
+  const status: StockCheckStatus = existing?.status ?? {
+    intervalMs,
+    history: [],
+  };
+  status.intervalMs = intervalMs;
+
+  const run = async () => {
     try {
       const items = await getItems();
-      await checkAndAlert(shop, items);
+      const lowItems = await checkAndAlert(shop, items);
+      const ts = Date.now();
+      status.lastRun = ts;
+      status.history.push({ timestamp: ts, alerts: lowItems.length });
+      if (status.history.length > 10) status.history.shift();
     } catch (err) {
       console.error("Scheduled stock check failed", err);
     }
-  }, intervalMs);
+  };
+
+  const timer = setInterval(run, intervalMs);
+  schedules.set(shop, { timer, status });
+  return status;
+}
+
+export function getStockCheckStatus(shop: string): StockCheckStatus | undefined {
+  return schedules.get(shop)?.status;
 }

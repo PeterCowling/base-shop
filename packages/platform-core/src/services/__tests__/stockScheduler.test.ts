@@ -1,6 +1,6 @@
 import { jest } from "@jest/globals";
 
-const checkAndAlert = jest.fn();
+const checkAndAlert = jest.fn().mockResolvedValue([]);
 
 jest.mock("../stockAlert.server", () => ({
   checkAndAlert,
@@ -24,9 +24,9 @@ describe("scheduleStockChecks", () => {
 
       scheduleStockChecks("shop", getItems, 1000);
 
-    await jest.advanceTimersByTimeAsync(1000);
-    expect(getItems).toHaveBeenCalledTimes(1);
-    expect(checkAndAlert).toHaveBeenCalledWith("shop", [{ sku: "s" }]);
+      await jest.advanceTimersByTimeAsync(1000);
+      expect(getItems).toHaveBeenCalledTimes(1);
+      expect(checkAndAlert).toHaveBeenCalledWith("shop", [{ sku: "s" }]);
 
       await jest.advanceTimersByTimeAsync(1000);
       expect(getItems).toHaveBeenCalledTimes(2);
@@ -82,6 +82,22 @@ describe("scheduleStockChecks", () => {
       expect(checkAndAlert).toHaveBeenCalledTimes(i);
       expect(jest.getTimerCount()).toBe(1);
     }
+  });
+
+  it("tracks last run and history", async () => {
+    const getItems = jest.fn().mockResolvedValue([]);
+    const { scheduleStockChecks, getStockCheckStatus } = await import(
+      "../stockScheduler.server"
+    );
+
+    scheduleStockChecks("shop", getItems, 1000);
+    await jest.advanceTimersByTimeAsync(1000);
+
+    const status = getStockCheckStatus("shop");
+    expect(status?.intervalMs).toBe(1000);
+    expect(status?.lastRun).toBeDefined();
+    expect(status?.history).toHaveLength(1);
+    expect(status?.history[0].alerts).toBe(0);
   });
 });
 

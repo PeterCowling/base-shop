@@ -1,4 +1,5 @@
 // packages/template-app/scripts/verify-template-next-config.mjs
+/* eslint-disable security/detect-non-literal-fs-filename */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";

@@ -68,5 +68,11 @@
     "types-compat",
     "types-compat.qrcode.d.ts"
   ],
-  "exclude": ["__tests__", "**/__tests__/**", "**/*.test.*", "**/*.spec.*"]
+  "exclude": [
+    "__tests__",
+    "**/__tests__/**",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "**/*.stories.*"
+  ]
 }

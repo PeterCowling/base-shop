@@ -4,5 +4,10 @@ import { destroyCustomerSession } from "@auth";
 
 export async function GET(req: Request) {
   await destroyCustomerSession();
-  return NextResponse.redirect(new URL("/", req.url));
+  return new NextResponse(null, {
+    status: 307,
+    headers: {
+      location: "/",
+    },
+  });
 }

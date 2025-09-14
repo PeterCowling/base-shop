@@ -1,7 +1,7 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
-const isJest = typeof (globalThis as any).jest !== "undefined";
+const isJest = typeof (globalThis as { jest?: unknown }).jest !== "undefined";
 const isTest =
   process.env.NODE_ENV === "test" ||
   process.env.JEST_WORKER_ID !== undefined ||

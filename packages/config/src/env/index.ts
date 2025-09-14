@@ -1,14 +1,15 @@
 // packages/config/src/env/index.ts
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
+import type { AnyZodObject, ZodRawShape } from "zod";
 import { coreEnvSchema } from "./core.js";
 
 export const envSchema = coreEnvSchema;
 
 export function mergeEnvSchemas(
-  ...schemas: Array<z.ZodObject<any>>
-): z.ZodObject<any> {
-  const shape = Object.assign({}, ...schemas.map((s) => s.shape));
+  ...schemas: Array<AnyZodObject>
+): AnyZodObject {
+  const shape: ZodRawShape = Object.assign({}, ...schemas.map((s) => s.shape));
   return z.object(shape);
 }
 

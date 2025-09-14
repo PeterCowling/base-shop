@@ -33,10 +33,13 @@ test("valid token returns page JSON", async () => {
     __esModule: true,
     getPages,
   }));
-  jest.doMock("@acme/config", () => ({
-    __esModule: true,
-    env: { PREVIEW_TOKEN_SECRET: "testsecret", NEXT_PUBLIC_SHOP_ID: "shop" },
-  }));
+  jest.doMock("@acme/config/env/core", () => {
+    const env = {
+      PREVIEW_TOKEN_SECRET: "testsecret",
+      NEXT_PUBLIC_SHOP_ID: "shop",
+    };
+    return { __esModule: true, coreEnv: env, loadCoreEnv: () => env };
+  });
 
   const { onRequest } = await import("../../src/routes/preview/[pageId]");
   const res = await onRequest({
@@ -54,10 +57,13 @@ test("missing page yields 404", async () => {
     __esModule: true,
     getPages,
   }));
-  jest.doMock("@acme/config", () => ({
-    __esModule: true,
-    env: { PREVIEW_TOKEN_SECRET: "testsecret", NEXT_PUBLIC_SHOP_ID: "shop" },
-  }));
+  jest.doMock("@acme/config/env/core", () => {
+    const env = {
+      PREVIEW_TOKEN_SECRET: "testsecret",
+      NEXT_PUBLIC_SHOP_ID: "shop",
+    };
+    return { __esModule: true, coreEnv: env, loadCoreEnv: () => env };
+  });
 
   const { onRequest } = await import("../../src/routes/preview/[pageId]");
   const res = await onRequest({
@@ -74,10 +80,13 @@ test("invalid token yields 401", async () => {
     __esModule: true,
     getPages,
   }));
-  jest.doMock("@acme/config", () => ({
-    __esModule: true,
-    env: { PREVIEW_TOKEN_SECRET: "testsecret", NEXT_PUBLIC_SHOP_ID: "shop" },
-  }));
+  jest.doMock("@acme/config/env/core", () => {
+    const env = {
+      PREVIEW_TOKEN_SECRET: "testsecret",
+      NEXT_PUBLIC_SHOP_ID: "shop",
+    };
+    return { __esModule: true, coreEnv: env, loadCoreEnv: () => env };
+  });
 
   const { onRequest } = await import("../../src/routes/preview/[pageId]");
   const res = await onRequest({

@@ -26,10 +26,10 @@ export function ProductGallery({
   className,
   ...props
 }: ProductGalleryProps) {
+  const [index, setIndex] = React.useState(0);
   if (media.length === 0) {
     return null;
   }
-  const [index, setIndex] = React.useState(0);
   const item = media[index];
 
   /* ------------------------------------------------------------------ *

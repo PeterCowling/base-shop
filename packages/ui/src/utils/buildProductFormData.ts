@@ -1,6 +1,9 @@
 // packages/ui/utils/buildProductFormData.ts
 import type { Locale } from "@acme/i18n";
+import type { MediaItem } from "@acme/types";
 import type { ProductWithVariants } from "../hooks/useProductInputs";
+
+type MediaWithFile = MediaItem & { file?: File; [key: string]: unknown };
 
 export function buildProductFormData(
   product: ProductWithVariants,
@@ -18,14 +21,16 @@ export function buildProductFormData(
   fd.append("price", String(product.price));
 
   // Extract file attachments from media items and append them separately
-  const mediaWithoutFiles = product.media.map((item: any, index: number) => {
-    if (item && item.file instanceof File) {
-      fd.append(`file_${index}`, item.file);
-      const { file, ...rest } = item;
+  const mediaWithoutFiles = product.media.map(
+    (item: MediaWithFile, index: number): Omit<MediaWithFile, "file"> => {
+      if (item.file instanceof File) {
+        fd.append(`file_${index}`, item.file);
+      }
+      const { file: _file, ...rest } = item;
+      void _file;
       return rest;
-    }
-    return item;
-  });
+    },
+  );
 
   fd.append("media", JSON.stringify(mediaWithoutFiles));
   fd.append("publish", publishTargets.join(","));

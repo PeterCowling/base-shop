@@ -21,7 +21,6 @@ export default function ReviewsCarousel({
   const [i, setI] = useState(0);
 
   const list = reviews && reviews.length ? reviews : DEFAULT_REVIEWS;
-  if (!list.length) return null;
 
   const next = useCallback(
     () => setI((n) => (n + 1) % list.length),
@@ -32,11 +31,13 @@ export default function ReviewsCarousel({
     [list.length]
   );
   useEffect(() => {
+    if (!list.length) return;
     const id = setInterval(next, 8000);
     return () => clearInterval(id);
-  }, [next]);
+  }, [list.length, next]);
 
-  const { nameKey, quoteKey } = list[i];
+  if (!list.length) return null;
+  const { nameKey, quoteKey } = list[i % list.length];
 
   return (
     <section className="bg-muted py-16" data-token="--color-muted">

@@ -1,12 +1,23 @@
 export const HEX_RE = /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6})$/;
-export const HSL_RE = /^\d+(?:\.\d+)?\s+\d+(?:\.\d+)?%\s+\d+(?:\.\d+)?%$/;
 
 export function isHex(value: string): boolean {
   return HEX_RE.test(value);
 }
 
 export function isHsl(value: string): boolean {
-  return HSL_RE.test(value);
+  const parts = value.trim().split(/\s+/);
+  if (parts.length !== 3) return false;
+  const [h, s, l] = parts;
+  const hNum = Number(h);
+  const sNum = parseFloat(s);
+  const lNum = parseFloat(l);
+  return (
+    Number.isFinite(hNum) &&
+    s.endsWith("%") &&
+    l.endsWith("%") &&
+    Number.isFinite(sNum) &&
+    Number.isFinite(lNum)
+  );
 }
 
 export function hslToHex(hsl: string): string {
@@ -44,10 +55,12 @@ export function hexToRgb(hex: string): [number, number, number] {
   ];
 }
 
-export function getContrastColor(hex: string): "#000000" | "#ffffff" {
+export function getContrastColor(
+  hex: string,
+): "var(--color-fg)" | "var(--color-bg)" {
   const [r, g, b] = hexToRgb(hex);
   const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-  return brightness > 186 ? "#000000" : "#ffffff";
+  return brightness > 186 ? "var(--color-fg)" : "var(--color-bg)";
 }
 
 export function hexToHsl(hex: string): string {

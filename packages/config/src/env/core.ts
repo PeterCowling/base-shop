@@ -204,7 +204,12 @@ export type CoreEnv = z.infer<typeof coreEnvSchema>;
 function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
   const env = isTest
     ? { EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop", ...raw }
-    : raw;
+    : {
+        ...raw,
+        ...(raw.EMAIL_FROM || raw.EMAIL_PROVIDER
+          ? {}
+          : { EMAIL_PROVIDER: "noop" }),
+      };
   const parsed = coreEnvSchema.safeParse(env);
   if (!parsed.success) {
     if (isTest) {

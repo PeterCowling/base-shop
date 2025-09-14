@@ -34,7 +34,6 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
       fallbackText,
       width = 32,
       height = 32,
-      srcSet,
       sizes,
       ...props
     },
@@ -45,15 +44,6 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
     const imageSrc = responsive?.src ?? src;
     const imageWidth = responsive?.width ?? width;
     const imageHeight = responsive?.height ?? height;
-
-    const computedSrcSet =
-      srcSet ??
-      (sources
-        ? Object.values(sources)
-            .filter((s) => s.width)
-            .map((s) => `${s.src} ${s.width}w`)
-            .join(", ")
-        : undefined);
 
     const altText = alt ?? fallbackText;
 
@@ -71,7 +61,6 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
         alt={altText}
         width={imageWidth}
         height={imageHeight}
-        srcSet={computedSrcSet}
         sizes={sizes}
         className={cn(widthClass, heightClass, className)}
         {...props}

@@ -84,7 +84,9 @@ export default function Lookbook({ items = [], onItemsChange }: Props) {
       {list.map((item, idx) => (
         <div
           key={idx}
-          ref={(el) => (containerRefs.current[idx] = el)}
+          ref={(el) => {
+            containerRefs.current[idx] = el;
+          }}
           className="relative h-full w-full"
         >
           {item.src && (

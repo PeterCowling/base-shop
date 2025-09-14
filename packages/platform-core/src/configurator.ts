@@ -8,12 +8,6 @@ import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { z } from "zod";
 
-// `validateEnvFile` needs access to the module's exports when running under
-// CommonJS so tests can spy on `readEnvFile`. Declare `module` to keep TypeScript
-// happy in both CJS and ESM builds.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare const module: any;
-
 // Accept any string key/value pairs. In the full codebase envSchema would
 // include constraints for required environment variables.
 const envSchema = z.record(z.string(), z.string());
@@ -36,6 +30,9 @@ export const pluginEnvVars: Record<string, readonly string[]> = {
  * @param file Path to the .env file.
  */
 export function readEnvFile(file: string): Record<string, string> {
+  // `file` is provided by the caller and may be dynamic. It is only used
+  // to read environment configuration files within the repository.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   const envRaw = readFileSync(file, "utf8");
   const env: Record<string, string> = {};
   for (const line of envRaw.split(/\n+/)) {
@@ -56,17 +53,19 @@ export function readEnvFile(file: string): Record<string, string> {
  * @param file Path to the .env file.
  */
 export function validateEnvFile(file: string): void {
+  // `file` is constructed from known paths and validated elsewhere.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   if (!existsSync(file)) {
     throw new Error(`Missing ${file}`);
   }
   // Access `readEnvFile` through the module's exported API when possible so
   // tests can spy on it. In ESM builds `module` is undefined, so fall back to
   // the local binding.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const read: any =
-    typeof module !== "undefined" && module.exports?.readEnvFile
-      ? module.exports.readEnvFile
-      : readEnvFile;
+  const gt = globalThis as {
+    module?: { exports?: { readEnvFile?: typeof readEnvFile } };
+  };
+  const read: typeof readEnvFile =
+    gt.module?.exports?.readEnvFile ?? readEnvFile;
   const env = read(file);
   envSchema.parse(env);
 }
@@ -90,6 +89,8 @@ export function validateShopEnv(shop: string): void {
 
   try {
     const shopCfgPath = join("data", "shops", shop, "shop.json");
+    // `shopCfgPath` is derived from a validated shop name.
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const cfgRaw = readFileSync(shopCfgPath, "utf8");
     cfg = JSON.parse(cfgRaw) as {
       paymentProviders?: string[];

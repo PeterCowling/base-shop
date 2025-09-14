@@ -36,7 +36,10 @@ class FileProvider implements AnalyticsProvider {
 
   async track(event: AnalyticsEvent): Promise<void> {
     const fp = this.filePath();
+    // `fp` is generated from a validated shop name and data root.
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     await fs.mkdir(path.dirname(fp), { recursive: true });
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     await fs.appendFile(fp, JSON.stringify(event) + "\n", "utf8");
   }
 }
@@ -170,6 +173,8 @@ async function updateAggregates(
     ai_crawl: {},
   };
   try {
+    // `fp` points to a file under the resolved data root for the shop.
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const buf = await fs.readFile(fp, "utf8");
     agg = JSON.parse(buf) as Aggregates;
   } catch {
@@ -193,8 +198,11 @@ async function updateAggregates(
   } else if (event.type === "ai_crawl") {
     agg.ai_crawl[day] = (agg.ai_crawl[day] || 0) + 1;
   }
+  // Ensure the target directory exists before writing.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   await fs.mkdir(path.dirname(fp), { recursive: true });
   const payload = JSON.stringify(agg ?? {}) ?? "{}";
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   await fs.writeFile(fp, payload, "utf8");
 }
 

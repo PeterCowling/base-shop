@@ -5,6 +5,7 @@ import type { CartState } from "../cart";
 import type { SKU } from "@acme/types";
 import type { CartStore } from "../cartStore";
 import { withFallback, expireBoth } from "./redisHelpers";
+import type { AsyncOp } from "./redisHelpers";
 
 const MAX_REDIS_FAILURES = 3;
 
@@ -87,7 +88,7 @@ export class RedisCartStore implements CartStore {
       qty[lineId] = line.qty;
       lines[lineId] = JSON.stringify({ sku: line.sku, size: line.size });
     }
-    const ops = [
+    const ops: AsyncOp[] = [
       () => this.exec(() => this.client.del(id)),
       () => this.exec(() => this.client.del(this.skuKey(id))),
     ];
@@ -104,7 +105,7 @@ export class RedisCartStore implements CartStore {
   }
 
   async deleteCart(id: string): Promise<void> {
-    const ops = [
+    const ops: AsyncOp[] = [
       () => this.exec(() => this.client.del(id)),
       () => this.exec(() => this.client.del(this.skuKey(id))),
     ];
@@ -147,7 +148,7 @@ export class RedisCartStore implements CartStore {
       return this.fallback.setQty(id, skuId, qty);
     }
     if (!exists) return null;
-    const ops: (() => Promise<any | undefined>)[] = [];
+    const ops: AsyncOp[] = [];
     if (qty === 0) {
       ops.push(
         () => this.exec(() => this.client.hdel(id, skuId)),

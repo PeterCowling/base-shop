@@ -4,7 +4,7 @@ import { ThemeProvider, useTheme } from "../../../../../packages/platform-core/s
 function Toggle() {
   const { theme, setTheme } = useTheme();
   return (
-    <button onClick={() => setTheme(theme === "dark" ? "base" : "dark")} data-testid="toggle">
+    <button onClick={() => setTheme(theme === "dark" ? "base" : "dark")} data-cy="toggle">
       {theme}
     </button>
   );

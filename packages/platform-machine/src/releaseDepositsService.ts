@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename -- Paths are derived from internal configuration */
 import { coreEnv } from "@acme/config/env/core";
 import {
   markRefunded,

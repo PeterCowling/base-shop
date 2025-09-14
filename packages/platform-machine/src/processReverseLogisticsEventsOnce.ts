@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename -- Paths are derived from internal configuration */
 import { markAvailable, markCleaning, markQa, markReceived, markRepair } from "@platform-core/repositories/rentalOrders.server";
 import { reverseLogisticsEvents } from "@platform-core/repositories/reverseLogisticsEvents.server";
 import { resolveDataRoot } from "@platform-core/dataRoot";

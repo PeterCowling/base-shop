@@ -7,9 +7,13 @@ export type CustomerProfile = {
 export function createCustomerProfileDelegate() {
   const customerProfiles: CustomerProfile[] = [];
   return {
-    findUnique: async ({ where }: any) =>
+    findUnique: async ({ where }: { where: { customerId: string } }): Promise<CustomerProfile | null> =>
       customerProfiles.find((p) => p.customerId === where.customerId) || null,
-    findFirst: async ({ where }: any) => {
+    findFirst: async ({
+      where,
+    }: {
+      where?: { email?: string; NOT?: { customerId?: string } };
+    }): Promise<CustomerProfile | null> => {
       const email = where?.email;
       const notCustomerId = where?.NOT?.customerId;
       return (
@@ -18,7 +22,15 @@ export function createCustomerProfileDelegate() {
         ) || null
       );
     },
-    upsert: async ({ where, update, create }: any) => {
+    upsert: async ({
+      where,
+      update,
+      create,
+    }: {
+      where: { customerId: string };
+      update: Partial<CustomerProfile>;
+      create: CustomerProfile;
+    }): Promise<CustomerProfile> => {
       const idx = customerProfiles.findIndex((p) => p.customerId === where.customerId);
       if (idx >= 0) {
         customerProfiles[idx] = { ...customerProfiles[idx], ...update };
@@ -28,5 +40,5 @@ export function createCustomerProfileDelegate() {
       customerProfiles.push(profile);
       return profile;
     },
-  } as any;
+  };
 }

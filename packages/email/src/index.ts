@@ -7,7 +7,6 @@ try {
     typeof require !== "undefined"
       ? require
       : createRequire(process.cwd() + "/");
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { setEmailService } = req(
     "@acme/platform-core/services/emailService"
   );

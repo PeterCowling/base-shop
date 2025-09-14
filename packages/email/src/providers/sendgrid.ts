@@ -76,14 +76,14 @@ export class SendgridProvider implements CampaignProvider {
           campaignId: options.campaignId,
           error,
         });
-        const status = hasProviderErrorFields(error)
-          ? error.code ??
+        let status: number | string | undefined;
+        if (hasProviderErrorFields(error)) {
+          status =
+            error.code ??
             error.response?.statusCode ??
             error.statusCode ??
-            (typeof (error as any).status !== "undefined"
-              ? (error as any).status
-              : undefined)
-          : undefined;
+            error.status;
+        }
         const numericStatus =
           typeof status === "string" ? parseInt(status, 10) : status;
         const retryable =

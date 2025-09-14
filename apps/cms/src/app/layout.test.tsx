@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { renderToStaticMarkup } from "react-dom/server";
 import { Geist, Geist_Mono } from "next/font/google";
 import React from "react";
 
@@ -27,24 +27,30 @@ describe("RootLayout", () => {
   it("applies Geist fonts and wraps children with providers", async () => {
     const { default: RootLayout } = await import("./layout");
 
-    render(
+    const markup = renderToStaticMarkup(
       <RootLayout>
         <span>child content</span>
       </RootLayout>
     );
 
+    const dom = new DOMParser().parseFromString(markup, "text/html");
+
     // Verify fonts are applied to the html element
     const geistSans = Geist({ subsets: ["latin"], variable: "--font-geist-sans" });
     const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
-    expect(document.documentElement).toHaveClass(geistSans.variable);
-    expect(document.documentElement).toHaveClass(geistMono.variable);
+    expect(dom.documentElement.classList.contains(geistSans.variable)).toBe(
+      true,
+    );
+    expect(dom.documentElement.classList.contains(geistMono.variable)).toBe(
+      true,
+    );
 
     // Ensure children are wrapped with CurrencyProvider and CartProvider
-    const currency = screen.getByTestId("currency-provider");
-    const cart = screen.getByTestId("cart-provider");
-    expect(currency).toContainElement(cart);
-    expect(cart).toContainElement(screen.getByText("child content"));
+    const currency = dom.querySelector('[data-cy="currency-provider"]');
+    const cart = dom.querySelector('[data-cy="cart-provider"]');
+    expect(currency?.contains(cart as Node)).toBe(true);
+    expect(cart?.textContent).toBe("child content");
   });
 });
 

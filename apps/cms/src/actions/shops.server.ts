@@ -16,10 +16,12 @@ import {
   updatePremierDelivery as serviceUpdatePremierDelivery,
   updateAiCatalog as serviceUpdateAiCatalog,
   updateStockAlert as serviceUpdateStockAlert,
+  updateStockScheduler as serviceUpdateStockScheduler,
   resetThemeOverride as serviceResetThemeOverride,
   type Shop,
   type ShopSettings,
 } from "../services/shops";
+import { getStockCheckHistory as serviceGetStockCheckHistory } from "@acme/platform-core/services/stockScheduler.server";
 
 export async function updateShop(
   shop: string,
@@ -77,6 +79,10 @@ export async function updateStockAlert(shop: string, formData: FormData) {
   return serviceUpdateStockAlert(shop, formData);
 }
 
+export async function updateStockScheduler(shop: string, formData: FormData) {
+  return serviceUpdateStockScheduler(shop, formData);
+}
+
 export async function updatePremierDelivery(
   shop: string,
   formData: FormData,
@@ -86,6 +92,10 @@ export async function updatePremierDelivery(
 
 export async function updateAiCatalog(shop: string, formData: FormData) {
   return serviceUpdateAiCatalog(shop, formData);
+}
+
+export async function getStockCheckHistory(shop: string) {
+  return serviceGetStockCheckHistory(shop);
 }
 
 export async function resetThemeOverride(shop: string, token: string) {

@@ -102,6 +102,11 @@
       "import": "./dist/repositories/*.js",
       "default": "./dist/repositories/*.js"
     },
+    "./services/*": {
+      "types": "./dist/services/*.d.ts",
+      "import": "./dist/services/*.js",
+      "default": "./dist/services/*.js"
+    },
     "./createShop": {
       "types": "./dist/createShop/index.d.ts",
       "import": "./dist/createShop/index.js",

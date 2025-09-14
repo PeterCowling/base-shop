@@ -59,7 +59,8 @@ describe("checkAndAlert", () => {
       quantity: 1,
       lowStockThreshold: 2,
     };
-    await checkAndAlert("shop", [item]);
+    const count = await checkAndAlert("shop", [item]);
+    expect(count).toBe(1);
 
     expect(sendEmail).toHaveBeenCalledWith(
       "shop@example.com",
@@ -102,7 +103,8 @@ describe("checkAndAlert", () => {
         quantity: 6,
       },
     ];
-    await checkAndAlert("shop", items);
+    const count = await checkAndAlert("shop", items);
+    expect(count).toBe(1);
 
     expect(sendEmail).toHaveBeenCalledTimes(2);
     const recipients = sendEmail.mock.calls.map((c) => c[0]);
@@ -137,7 +139,8 @@ describe("checkAndAlert", () => {
       quantity: 1,
       lowStockThreshold: 2,
     };
-    await checkAndAlert("shop", [item]);
+    const count = await checkAndAlert("shop", [item]);
+    expect(count).toBe(1);
 
     expect(consoleError).toHaveBeenCalledWith(
       "Failed to send stock alert",
@@ -176,7 +179,8 @@ describe("checkAndAlert", () => {
       quantity: 1,
       lowStockThreshold: 2,
     };
-    await checkAndAlert("shop", [suppressed, fresh]);
+    const count = await checkAndAlert("shop", [suppressed, fresh]);
+    expect(count).toBe(1);
 
     expect(sendEmail).toHaveBeenCalledTimes(1);
     expect(sendEmail.mock.calls[0][0]).toBe("shop@example.com");

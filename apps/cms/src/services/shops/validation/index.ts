@@ -8,3 +8,4 @@ export * from "./parseUpsReturnsForm";
 export * from "./parsePremierDeliveryForm";
 export * from "./parseAiCatalogForm";
 export * from "./parseStockAlertForm";
+export * from "./parseStockSchedulerForm";

@@ -25,7 +25,7 @@ describe("stock alerts", () => {
     const { checkAndAlert } = await import(
       "../src/services/stockAlert.server"
     );
-    await checkAndAlert("shop", [
+    const count = await checkAndAlert("shop", [
       {
         sku: "sku-1",
         productId: "p1",
@@ -34,6 +34,8 @@ describe("stock alerts", () => {
         lowStockThreshold: 2,
       },
     ], { sendEmail });
+
+    expect(count).toBe(1);
 
     expect(sendEmail).toHaveBeenCalledTimes(1);
     const [to, subject, body] = sendEmail.mock.calls[0];
@@ -50,7 +52,7 @@ describe("stock alerts", () => {
     const { checkAndAlert } = await import(
       "../src/services/stockAlert.server"
     );
-    await checkAndAlert("shop", [
+    const count = await checkAndAlert("shop", [
       {
         sku: "sku-1",
         productId: "p1",
@@ -67,6 +69,8 @@ describe("stock alerts", () => {
       },
     ], { sendEmail });
 
+    expect(count).toBe(1);
+
     expect(sendEmail).toHaveBeenCalledTimes(1);
     expect(sendEmail).toHaveBeenCalledWith(
       "alert@example.com",
@@ -81,7 +85,7 @@ describe("stock alerts", () => {
     const { checkAndAlert } = await import(
       "../src/services/stockAlert.server"
     );
-    await checkAndAlert("shop", [
+    const count = await checkAndAlert("shop", [
       {
         sku: "sku-1",
         productId: "p1",
@@ -90,6 +94,8 @@ describe("stock alerts", () => {
         lowStockThreshold: 2,
       },
     ], { sendEmail });
+
+    expect(count).toBe(0);
 
     expect(sendEmail).not.toHaveBeenCalled();
   });
@@ -101,7 +107,7 @@ describe("stock alerts", () => {
     const { checkAndAlert } = await import(
       "../src/services/stockAlert.server"
     );
-    await checkAndAlert("shop", [
+    const count = await checkAndAlert("shop", [
       {
         sku: "sku-1",
         productId: "p1",
@@ -110,6 +116,8 @@ describe("stock alerts", () => {
         lowStockThreshold: 2,
       },
     ], { sendEmail });
+
+    expect(count).toBe(0);
 
     expect(sendEmail).not.toHaveBeenCalled();
   });
@@ -129,17 +137,20 @@ describe("stock alerts", () => {
       lowStockThreshold: 2,
     };
 
-    await checkAndAlert("shop", [item], { sendEmail });
+    let count = await checkAndAlert("shop", [item], { sendEmail });
+    expect(count).toBe(1);
     expect(sendEmail).toHaveBeenCalledTimes(1);
     sendEmail.mockClear();
 
     // Same variant again should be suppressed
-    await checkAndAlert("shop", [item], { sendEmail });
+    count = await checkAndAlert("shop", [item], { sendEmail });
+    expect(count).toBe(0);
     expect(sendEmail).not.toHaveBeenCalled();
 
     // Different variant of same SKU should trigger
     const otherVariant = { ...item, variantAttributes: { size: "l" } };
-    await checkAndAlert("shop", [otherVariant], { sendEmail });
+    count = await checkAndAlert("shop", [otherVariant], { sendEmail });
+    expect(count).toBe(1);
     expect(sendEmail).toHaveBeenCalledTimes(1);
   });
 
@@ -152,7 +163,7 @@ describe("stock alerts", () => {
     const { checkAndAlert } = await import(
       "../src/services/stockAlert.server"
     );
-    await checkAndAlert("shop", [
+    const count = await checkAndAlert("shop", [
       {
         sku: "sku-1",
         productId: "p1",
@@ -161,6 +172,8 @@ describe("stock alerts", () => {
         lowStockThreshold: 2,
       },
     ], { sendEmail });
+
+    expect(count).toBe(1);
 
     expect(sendEmail).toHaveBeenCalledTimes(1);
     expect(consoleError).toHaveBeenCalledWith(

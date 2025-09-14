@@ -2,6 +2,39 @@ import "server-only";
 
 import type { InventoryItem } from "../types/inventory";
 import { checkAndAlert } from "./stockAlert.server";
+import { promises as fs } from "fs";
+import * as path from "path";
+import { DATA_ROOT } from "../dataRoot";
+
+interface HistoryEntry {
+  runAt: number;
+  alertCount: number;
+}
+
+const HISTORY_FILE = "stock-check-history.json";
+
+async function readHistory(shop: string): Promise<HistoryEntry[]> {
+  try {
+    const p = path.join(DATA_ROOT, shop, HISTORY_FILE);
+    const buf = await fs.readFile(p, "utf8");
+    const parsed = JSON.parse(buf);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+async function appendHistory(shop: string, entry: HistoryEntry) {
+  const history = await readHistory(shop);
+  history.push(entry);
+  const p = path.join(DATA_ROOT, shop, HISTORY_FILE);
+  await fs.mkdir(path.dirname(p), { recursive: true });
+  await fs.writeFile(p, JSON.stringify(history.slice(-20), null, 2), "utf8");
+}
+
+export async function getStockCheckHistory(shop: string) {
+  return readHistory(shop);
+}
 
 /**
  * Periodically runs {@link checkAndAlert} for a shop.
@@ -21,7 +54,8 @@ export function scheduleStockChecks(
   setInterval(async () => {
     try {
       const items = await getItems();
-      await checkAndAlert(shop, items);
+      const alertCount = await checkAndAlert(shop, items);
+      await appendHistory(shop, { runAt: Date.now(), alertCount: alertCount ?? 0 });
     } catch (err) {
       console.error("Scheduled stock check failed", err);
     }

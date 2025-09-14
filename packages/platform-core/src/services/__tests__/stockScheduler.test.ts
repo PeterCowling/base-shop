@@ -1,6 +1,6 @@
 import { jest } from "@jest/globals";
 
-const checkAndAlert = jest.fn();
+const checkAndAlert = jest.fn().mockResolvedValue(0);
 
 jest.mock("../stockAlert.server", () => ({
   checkAndAlert,

@@ -615,6 +615,13 @@ export declare const shopSettingsSchema: z.ZodObject<{
         enabled: boolean;
         intervalMinutes: number;
     }>>;
+    stockCheckService: z.ZodOptional<z.ZodObject<{
+        intervalMinutes: z.ZodNumber;
+    }, "strict", z.ZodTypeAny, {
+        intervalMinutes: number;
+    }, {
+        intervalMinutes: number;
+    }>>;
     lateFeeService: z.ZodOptional<z.ZodObject<{
         enabled: z.ZodBoolean;
         intervalMinutes: z.ZodNumber;
@@ -772,6 +779,9 @@ export declare const shopSettingsSchema: z.ZodObject<{
         enabled: boolean;
         intervalMinutes: number;
     } | undefined;
+    stockCheckService?: {
+        intervalMinutes: number;
+    } | undefined;
     lateFeeService?: {
         enabled: boolean;
         intervalMinutes: number;
@@ -845,6 +855,9 @@ export declare const shopSettingsSchema: z.ZodObject<{
     } | undefined;
     reverseLogisticsService?: {
         enabled: boolean;
+        intervalMinutes: number;
+    } | undefined;
+    stockCheckService?: {
         intervalMinutes: number;
     } | undefined;
     lateFeeService?: {

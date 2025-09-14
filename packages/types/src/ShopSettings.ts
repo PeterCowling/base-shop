@@ -64,6 +64,12 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    stockCheckService: z
+      .object({
+        intervalMinutes: z.number().int().positive(),
+      })
+      .strict()
+      .optional(),
     lateFeeService: lateFeeServiceSchema.optional(),
     returnService: z
       .object({

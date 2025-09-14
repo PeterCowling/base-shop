@@ -37,7 +37,7 @@ export async function checkAndAlert(
   shop: string,
   items: InventoryItem[],
   email: EmailService = getEmailService(),
-): Promise<void> {
+): Promise<number> {
   const settings = await getShopSettings(shop);
   const envRecipients =
     (coreEnv.STOCK_ALERT_RECIPIENTS as string | undefined) ??
@@ -53,7 +53,7 @@ export async function checkAndAlert(
     settings.stockAlert?.threshold ??
     (coreEnv.STOCK_ALERT_DEFAULT_THRESHOLD as number | undefined);
 
-  if (recipients.length === 0 && !webhook) return;
+  if (recipients.length === 0 && !webhook) return 0;
 
   const log = await readLog(shop);
   const now = Date.now();
@@ -73,7 +73,7 @@ export async function checkAndAlert(
       return !last || last < suppressBefore;
     });
 
-  if (lowItems.length === 0) return;
+  if (lowItems.length === 0) return 0;
 
   const lines = lowItems.map((i) => {
     const attrs = Object.entries(i.variantAttributes)
@@ -110,4 +110,5 @@ export async function checkAndAlert(
     log[variantKey(item.sku, item.variantAttributes)] = now;
   }
   await writeLog(shop, log);
+  return lowItems.length;
 }

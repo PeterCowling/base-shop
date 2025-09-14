@@ -8,6 +8,7 @@ import {
   parsePremierDeliveryForm,
   parseAiCatalogForm,
   parseStockAlertForm,
+  parseStockSchedulerForm,
 } from "./validation";
 
 export function getSettings(shop: string) {
@@ -122,6 +123,24 @@ export async function updateStockAlert(
       webhook: data.webhook,
       threshold: data.threshold,
     },
+  };
+  await persistSettings(shop, updated);
+  return { settings: updated };
+}
+
+export async function updateStockScheduler(
+  shop: string,
+  formData: FormData,
+): Promise<{ settings?: ShopSettings; errors?: Record<string, string[]> }> {
+  await authorize();
+  const { data, errors } = parseStockSchedulerForm(formData);
+  if (!data) {
+    return { errors };
+  }
+  const current = await fetchSettings(shop);
+  const updated: ShopSettings = {
+    ...current,
+    stockCheckService: { intervalMinutes: data.intervalMinutes },
   };
   await persistSettings(shop, updated);
   return { settings: updated };

@@ -11,6 +11,16 @@ import { fileTypeFromBuffer } from "file-type/core";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { validateShopName } from "@platform-core/shops";
 
+function isWebReadableStream(
+  stream: unknown,
+): stream is NodeReadableStream {
+  return (
+    typeof stream === "object" &&
+    stream !== null &&
+    typeof (stream as NodeReadableStream).getReader === "function"
+  );
+}
+
 const MAX_SIZE = 5 * 1024 * 1024; // 5MB
 
 export async function POST(
@@ -123,8 +133,8 @@ export async function POST(
       const body = req.body;
       if (body) {
         let stream: NodeJS.ReadableStream;
-        if (typeof (body as any).getReader === "function") {
-          stream = Readable.fromWeb(body as unknown as NodeReadableStream);
+        if (isWebReadableStream(body)) {
+          stream = Readable.fromWeb(body);
         } else if (Buffer.isBuffer(body)) {
           stream = Readable.from(body);
         } else if (body instanceof Readable) {

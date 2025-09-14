@@ -2,17 +2,23 @@ import { render, screen } from "@testing-library/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import React from "react";
 
+// Mock the next/font/google module to provide deterministic font variables
+jest.mock("next/font/google", () => ({
+  Geist: (opts: { variable: string }) => ({ variable: opts.variable }),
+  Geist_Mono: (opts: { variable: string }) => ({ variable: opts.variable }),
+}));
+
 // Mock the context providers to expose DOM markers for assertions
 jest.mock("@/contexts/CurrencyContext", () => ({
   CurrencyProvider: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="currency-provider">{children}</div>
+    <div data-cy="currency-provider">{children}</div>
   ),
   useCurrency: () => ["EUR", jest.fn()],
 }));
 
 jest.mock("@/contexts/CartContext", () => ({
   CartProvider: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="cart-provider">{children}</div>
+    <div data-cy="cart-provider">{children}</div>
   ),
   useCart: () => [{}, jest.fn()],
 }));

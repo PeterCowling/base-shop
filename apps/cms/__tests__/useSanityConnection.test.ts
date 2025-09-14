@@ -2,12 +2,10 @@ import { renderHook, act } from "@testing-library/react";
 import { startTransition } from "react";
 import { useSanityConnection } from "../src/app/cms/blog/sanity/connect/useSanityConnection";
 
-async function callFormAction(
-  action: (formData: FormData) => Promise<unknown>,
-) {
+async function callFormAction(action: (formData: FormData) => unknown) {
   await new Promise<void>((resolve) => {
     startTransition(() => {
-      action(new FormData()).then(() => resolve());
+      Promise.resolve(action(new FormData())).then(() => resolve());
     });
   });
 }

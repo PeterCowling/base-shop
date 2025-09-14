@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { fetchPostBySlug, type PortableBlock } from "@acme/sanity";
+import { type PortableBlock } from "@acme/sanity";
 import { BlogPortableText } from "@platform-core/components/blog/BlogPortableText";
 import type { Shop } from "@acme/types";
 import shopJson from "../../../../../shop.json";
@@ -13,10 +13,13 @@ export default async function BlogPostPage({
   params: { lang: string; slug: string };
 }) {
   if (!shop.luxuryFeatures.blog) {
-    notFound();
+    return notFound();
   }
+  const { fetchPostBySlug } = await import("@acme/sanity");
   const post = await fetchPostBySlug(shop.id, params.slug);
-  if (!post) notFound();
+  if (!post) {
+    return notFound();
+  }
   return (
     <article className="space-y-4">
       {shop.editorialBlog?.promoteSchedule && (

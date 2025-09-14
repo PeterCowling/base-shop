@@ -11,10 +11,7 @@ export interface ProductsRepository {
     shop: string,
     patch: Partial<T> & { id: string },
   ): Promise<T>;
-  delete<T extends { id: string } = ProductPublication>(
-    shop: string,
-    id: string,
-  ): Promise<void>;
+  delete(shop: string, id: string): Promise<void>;
   duplicate<T extends ProductPublication = ProductPublication>(
     shop: string,
     id: string,

@@ -5,12 +5,12 @@ import type { ProductPublication } from "../products/index";
 import type { ProductsRepository } from "./products.types";
 import { jsonProductsRepository } from "./products.json.server";
 
-function toProduct(record: any): ProductPublication {
+function toProduct(record: unknown): ProductPublication {
   return record as ProductPublication;
 }
 
 async function read<T = ProductPublication>(shop: string): Promise<T[]> {
-  const db = prisma as any;
+  const db = prisma;
   if (!db.product) {
     return jsonProductsRepository.read<T>(shop);
   }
@@ -27,7 +27,7 @@ async function getById<T extends { id: string } = ProductPublication>(
   shop: string,
   id: string,
 ): Promise<T | null> {
-  const db = prisma as any;
+  const db = prisma;
   if (!db.product) {
     return jsonProductsRepository.getById<T>(shop, id);
   }

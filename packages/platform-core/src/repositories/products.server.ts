@@ -10,7 +10,7 @@ let repoPromise: Promise<ProductsRepository> | undefined;
 async function getRepo(): Promise<ProductsRepository> {
   if (!repoPromise) {
     repoPromise = resolveRepo(
-      () => (prisma as any).product,
+      () => prisma.product,
       () =>
         import("./products.prisma.server").then(
           (m) => m.prismaProductsRepository,
@@ -54,9 +54,10 @@ export async function updateProductInRepo<
   return repo.update(shop, patch);
 }
 
-export async function deleteProductFromRepo<
-  T extends { id: string } = ProductPublication,
->(shop: string, id: string): Promise<void> {
+export async function deleteProductFromRepo(
+  shop: string,
+  id: string,
+): Promise<void> {
   const repo = await getRepo();
   return repo.delete(shop, id);
 }

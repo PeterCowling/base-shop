@@ -30,6 +30,7 @@ afterEach(() => {
 describe("auth env schema", () => {
   it("fails when session secret missing in production", async () => {
     process.env.NODE_ENV = "production";
+    delete process.env.JEST_WORKER_ID;
     jest.resetModules();
     const { authEnvSchema } = await import("@acme/config/env/auth");
     const result = authEnvSchema.safeParse({
@@ -49,6 +50,7 @@ describe("auth env schema", () => {
 
   it("coerces booleans and rejects invalid TTL", async () => {
     process.env.NODE_ENV = "production";
+    delete process.env.JEST_WORKER_ID;
     jest.resetModules();
     const { authEnvSchema } = await import("@acme/config/env/auth");
     const ok = authEnvSchema.safeParse({
@@ -68,6 +70,7 @@ describe("auth env schema", () => {
 
   it("requires redis credentials when SESSION_STORE=redis", async () => {
     process.env.NODE_ENV = "production";
+    delete process.env.JEST_WORKER_ID;
     jest.resetModules();
     const { authEnvSchema } = await import("@acme/config/env/auth");
     const result = authEnvSchema.safeParse({
@@ -100,6 +103,7 @@ describe("core env schema", () => {
 
   it("requires CART_COOKIE_SECRET in production", async () => {
     process.env.NODE_ENV = "production";
+    delete process.env.JEST_WORKER_ID;
     process.env.CART_COOKIE_SECRET = "secret";
     jest.resetModules();
     const { coreEnvSchema } = await import("@acme/config/env/core");

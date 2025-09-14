@@ -1,6 +1,7 @@
 import "server-only";
 
 import type { AnalyticsAggregates, AnalyticsEvent } from "../analytics";
+import type { PrismaClient } from "@prisma/client";
 import { prisma } from "../db";
 import { resolveRepo } from "./repoResolver";
 
@@ -14,7 +15,10 @@ let repoPromise: Promise<AnalyticsRepository> | undefined;
 async function getRepo(): Promise<AnalyticsRepository> {
   if (!repoPromise) {
     repoPromise = resolveRepo<AnalyticsRepository>(
-      () => (prisma as any).analyticsEvent,
+      () =>
+        (
+          prisma as PrismaClient & { analyticsEvent?: unknown }
+        ).analyticsEvent,
       () =>
         import("./analytics.prisma.server").then(
           (m) => m.prismaAnalyticsRepository,

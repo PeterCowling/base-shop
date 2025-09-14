@@ -33,7 +33,7 @@ export const Slot = React.forwardRef<HTMLElement, SlotProps>(
               ).current = node;
             }
           },
-        }
+        } as any,
       );
     }
     return null;

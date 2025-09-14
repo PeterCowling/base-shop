@@ -1,7 +1,7 @@
 // packages/email/src/sendEmail.ts
 
 import "server-only";
-import nodemailer, { type SendMailOptions } from "nodemailer";
+import nodemailer from "nodemailer";
 import pino from "pino";
 import { z } from "zod";
 import { getDefaultSender } from "./config";
@@ -35,7 +35,7 @@ export async function sendEmail(
   to: string,
   subject: string,
   body: string,
-  attachments?: SendMailOptions["attachments"]
+  attachments?: unknown
 ): Promise<string | undefined> {
   const validated = emailSchema.parse({ to, subject, body, attachments });
 

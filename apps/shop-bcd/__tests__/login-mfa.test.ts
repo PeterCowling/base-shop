@@ -51,10 +51,10 @@ test("logs in when MFA token valid", async () => {
     ),
   );
   expect(verifyMfa).toHaveBeenCalledWith("cust1", "123456");
-  expect(createCustomerSession).toHaveBeenCalledWith({
-    customerId: "cust1",
-    role: "customer",
-  });
+  expect(createCustomerSession).toHaveBeenCalledWith(
+    { customerId: "cust1", role: "customer" },
+    { remember: undefined },
+  );
   expect(res.status).toBe(200);
   await expect(res.json()).resolves.toEqual({ ok: true });
 });

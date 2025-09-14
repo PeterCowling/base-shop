@@ -9,6 +9,7 @@ import { vol } from 'memfs';
 import jwt from 'jsonwebtoken';
 import { validateShopName } from '@acme/lib';
 import { onRequest } from '../[shopId]';
+import { logger } from '@acme/shared-utils';
 
 export const verify = jwt.verify as jest.Mock;
 export const validate = validateShopName as jest.Mock;
@@ -21,7 +22,7 @@ export function setup() {
   verify.mockReset();
   validate.mockReset().mockImplementation((s: string) => s);
   delete process.env.UPGRADE_PREVIEW_TOKEN_SECRET;
-  return jest.spyOn(console, 'warn').mockImplementation(() => {});
+  return jest.spyOn(logger, 'warn').mockImplementation(() => {});
 }
 
 export function createRequest({

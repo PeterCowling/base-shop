@@ -5,6 +5,7 @@ import { existsSync, readFileSync, readdirSync } from "fs";
 import path from "path";
 import jwt from "jsonwebtoken";
 import { validateShopName } from "@acme/lib";
+import { logger } from "@acme/shared-utils";
 
 interface ComponentChange {
   name: string;
@@ -111,7 +112,7 @@ export const onRequest = async ({
   try {
     shopId = validateShopName(params.shopId);
   } catch {
-    console.warn("invalid shop id", { id: params.shopId });
+    logger.warn("invalid shop id", { id: params.shopId });
     return new Response(JSON.stringify({ error: "Invalid shop id" }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
@@ -120,7 +121,7 @@ export const onRequest = async ({
 
   const authHeader = request.headers.get("authorization") || "";
   if (!authHeader.startsWith("Bearer ")) {
-    console.warn("missing bearer token", { shopId });
+    logger.warn("missing bearer token", { shopId });
     return new Response(JSON.stringify({ error: "Forbidden" }), {
       status: 403,
       headers: { "Content-Type": "application/json" },
@@ -130,7 +131,7 @@ export const onRequest = async ({
   const token = authHeader.slice("Bearer ".length);
   const secret = process.env.UPGRADE_PREVIEW_TOKEN_SECRET;
   if (!secret) {
-    console.warn("invalid token", { shopId });
+    logger.warn("invalid token", { shopId });
     return new Response(JSON.stringify({ error: "Forbidden" }), {
       status: 403,
       headers: { "Content-Type": "application/json" },
@@ -151,7 +152,7 @@ export const onRequest = async ({
       throw new Error("missing exp");
     }
   } catch {
-    console.warn("invalid token", { shopId });
+    logger.warn("invalid token", { shopId });
     return new Response(JSON.stringify({ error: "Forbidden" }), {
       status: 403,
       headers: { "Content-Type": "application/json" },

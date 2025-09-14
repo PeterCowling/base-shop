@@ -2,6 +2,7 @@ import { readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { spawn } from "child_process";
 import jwt from "jsonwebtoken";
+import { logger } from "@acme/shared-utils";
 
 export function run(cmd: string, args: string[], cwd: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -30,7 +31,7 @@ export const onRequestPost = async ({
   try {
     const id = params.id;
     if (!id || !/^[a-z0-9_-]+$/.test(id)) {
-      console.warn("invalid shop id", { id });
+      logger.warn("invalid shop id", { id });
       return new Response(JSON.stringify({ error: "Invalid shop id" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
@@ -39,7 +40,7 @@ export const onRequestPost = async ({
 
     const authHeader = request.headers.get("authorization") || "";
     if (!authHeader.startsWith("Bearer ")) {
-      console.warn("missing bearer token", { id });
+      logger.warn("missing bearer token", { id });
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
         headers: { "Content-Type": "application/json" },
@@ -49,7 +50,7 @@ export const onRequestPost = async ({
     const token = authHeader.slice("Bearer ".length);
     const secret = process.env.UPGRADE_PREVIEW_TOKEN_SECRET;
     if (!secret) {
-      console.warn("invalid token", { id });
+      logger.warn("invalid token", { id });
       return new Response(JSON.stringify({ error: "Forbidden" }), {
         status: 403,
         headers: { "Content-Type": "application/json" },
@@ -58,7 +59,7 @@ export const onRequestPost = async ({
     try {
       jwt.verify(token, secret);
     } catch {
-      console.warn("invalid token", { id });
+      logger.warn("invalid token", { id });
       return new Response(JSON.stringify({ error: "Forbidden" }), {
         status: 403,
         headers: { "Content-Type": "application/json" },

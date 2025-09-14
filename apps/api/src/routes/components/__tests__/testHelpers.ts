@@ -5,6 +5,7 @@ jest.mock('@acme/lib', () => ({ validateShopName: jest.fn((s: string) => s) }));
 import jwt from 'jsonwebtoken';
 import { vol } from 'memfs';
 import { validateShopName } from '@acme/lib';
+import { logger } from '@acme/shared-utils';
 
 export const verify = jwt.verify as jest.Mock;
 export const validate = validateShopName as jest.Mock;
@@ -17,7 +18,7 @@ export function setup() {
 }
 
 export function createWarnSpy() {
-  return jest.spyOn(console, 'warn').mockImplementation(() => {});
+  return jest.spyOn(logger, 'warn').mockImplementation(() => {});
 }
 
 export function createContext(

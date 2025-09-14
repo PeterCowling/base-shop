@@ -23,12 +23,12 @@ describe('performance benchmarks', () => {
 
   function setupFixture(count: number) {
     const files: Record<string, string> = {
-      [`${root}/data/shops/abc/shop.json`]: JSON.stringify({ componentVersions: {} }),
+      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({ componentVersions: {} }),
     };
     for (let i = 0; i < count; i++) {
-      files[`${root}/apps/shop-abc/src/templates/file${i}.html`] = 'app';
+      files[`${root}/apps/shop-bcd/src/templates/file${i}.html`] = 'app';
       files[`${root}/packages/template-app/src/templates/file${i}.html`] = 'template';
-      files[`${root}/apps/shop-abc/src/translations/file${i}.json`] = '{}';
+      files[`${root}/apps/shop-bcd/src/translations/file${i}.json`] = '{}';
       files[`${root}/packages/template-app/src/translations/file${i}.json`] = '{}';
     }
     vol.fromJSON(files);
@@ -36,7 +36,7 @@ describe('performance benchmarks', () => {
 
   it('diffDirectories with thousands of files', async () => {
     setupFixture(2000);
-    const dirA = path.join(root, 'apps', 'shop-abc', 'src', 'templates');
+    const dirA = path.join(root, 'apps', 'shop-bcd', 'src', 'templates');
     const dirB = path.join(root, 'packages', 'template-app', 'src', 'templates');
     const startSingle = performance.now();
     diffDirectories(dirA, dirB);
@@ -68,7 +68,7 @@ describe('performance benchmarks', () => {
     const start = performance.now();
     await Promise.all(
       Array.from({ length: 10 }).map(() =>
-        onRequest({ params: { shopId: 'abc' }, request: req }),
+        onRequest({ params: { shopId: 'bcd' }, request: req }),
       ),
     );
     const concurrent = performance.now() - start;

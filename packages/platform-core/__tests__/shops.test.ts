@@ -5,7 +5,7 @@ import {
   validateShopName,
 } from "../src/shops";
 import { baseTokens } from "../src/themeTokens";
-import { tokens as abcTokens } from "../../themes/abc/src/tailwind-tokens";
+import { tokens as bcdTokens } from "../../themes/bcd/src/tailwind-tokens";
 import { tokens as darkTokens } from "../../themes/dark/src/tailwind-tokens";
 import type { Shop } from "@acme/types";
 
@@ -55,7 +55,7 @@ describe("sanity blog accessors", () => {
 describe("theme overrides", () => {
   it("merges overrides with base tokens", () => {
     const overrides = { "--color-bg": "255 0% 50%" };
-    const defaults = { ...baseTokens, ...abcTokens };
+    const defaults = { ...baseTokens, ...bcdTokens };
     const merged = { ...defaults, ...overrides };
     expect(merged["--color-bg"]).toBe("255 0% 50%");
     // token missing from theme overrides falls back to base token

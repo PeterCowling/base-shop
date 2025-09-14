@@ -183,7 +183,6 @@
     { "path": "../../packages/types" },
     { "path": "../../packages/date-utils" },
     { "path": "../../packages/themes/base" },
-    { "path": "../../packages/themes/abc" },
     { "path": "../../packages/themes/bcd" },
     { "path": "../../packages/email" },
     { "path": "../../packages/email-templates" },

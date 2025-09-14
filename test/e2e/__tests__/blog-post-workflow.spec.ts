@@ -1,7 +1,7 @@
 // test/e2e/blog-post-workflow.spec.ts
 
 describe("Blog post workflow", () => {
-  const shopId = "abc";
+  const shopId = "bcd";
   const baseUrl = `/cms/blog/posts?shopId=${shopId}`;
 
   beforeEach(() => {

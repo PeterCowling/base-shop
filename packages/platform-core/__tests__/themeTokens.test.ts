@@ -186,12 +186,12 @@ describe("loadThemeTokens", () => {
     jest.spyOn(fs, "existsSync").mockReturnValue(true);
     jest
       .spyOn(fs, "readFileSync")
-      .mockReturnValue("export const tokens = { '--color-bg': '#abc' };");
+      .mockReturnValue("export const tokens = { '--color-bg': '#bcd' };");
     const original = global.window;
     // @ts-expect-error - simulate Node environment
     delete global.window;
     const tokens = await themeTokens.loadThemeTokens("dark");
-    expect(tokens["--color-bg"]).toBe("#abc");
+    expect(tokens["--color-bg"]).toBe("#bcd");
     global.window = original;
   });
 

@@ -25,7 +25,7 @@ describe("CMS access control", () => {
     cy.visit("/cms/pages");
     cy.contains("Choose a shop").should("be.visible");
 
-    cy.visit("/cms/shop/abc/settings");
+    cy.visit("/cms/shop/bcd/settings");
     cy.contains("403 – Access denied").should("be.visible");
   });
 
@@ -40,13 +40,13 @@ describe("CMS access control", () => {
           csrfToken: body.csrfToken,
           email: "admin@example.com",
           password: "admin",
-          callbackUrl: "/cms/shop/abc/settings",
+          callbackUrl: "/cms/shop/bcd/settings",
         },
       });
     });
 
-    cy.visit("/cms/shop/abc/settings");
-    cy.contains("Settings – abc").should("be.visible");
+    cy.visit("/cms/shop/bcd/settings");
+    cy.contains("Settings – bcd").should("be.visible");
     cy.contains("403 – Access denied").should("not.exist");
   });
 });

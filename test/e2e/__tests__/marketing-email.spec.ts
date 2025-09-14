@@ -47,7 +47,7 @@ describe("CMS marketing email templates", () => {
   });
 
   it("page builder loads templates and renders blocks", () => {
-    const shopId = "abc";
+    const shopId = "bcd";
     cy.visit(`/cms/shop/${shopId}/pages/home/builder`);
     cy.wait("@pageTemplates");
     cy.get("aside .cursor-grab", { timeout: 10000 }).should(

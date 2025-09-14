@@ -57,9 +57,9 @@ describe("RedisCartStore", () => {
     expect(hsetMock).toHaveBeenCalledWith(expect.any(String), {});
     expect(expireMock).toHaveBeenCalledWith(expect.any(String), 1);
 
-    await store.setCart("abc", { test: 1 } as any);
-    expect(expireMock).toHaveBeenCalledWith("abc", 1);
-    expect(expireMock).toHaveBeenLastCalledWith("abc:sku", 1);
+    await store.setCart("bcd", { test: 1 } as any);
+    expect(expireMock).toHaveBeenCalledWith("bcd", 1);
+    expect(expireMock).toHaveBeenLastCalledWith("bcd:sku", 1);
   });
   const makeFallback = (): jest.Mocked<CartStore> => ({
     createCart: jest.fn().mockResolvedValue("fb"),

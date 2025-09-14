@@ -1,7 +1,7 @@
 // test/e2e/page-builder.spec.ts
 
 describe("Page Builder happy path", () => {
-  const shopId = "abc";
+  const shopId = "bcd";
   const builderUrl = `/cms/shop/${shopId}/pages/home/builder`;
   const dataDir = Cypress.env("TEST_DATA_ROOT");
 

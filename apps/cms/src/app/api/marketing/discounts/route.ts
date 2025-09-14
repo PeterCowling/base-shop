@@ -18,7 +18,7 @@ function getShop(req: NextRequest): string {
   const fromQuery = searchParams.get("shop");
   if (fromQuery) return fromQuery;
   return (
-    (env.NEXT_PUBLIC_DEFAULT_SHOP as string | undefined) ?? "abc"
+    (env.NEXT_PUBLIC_DEFAULT_SHOP as string | undefined) ?? "bcd"
   );
 }
 

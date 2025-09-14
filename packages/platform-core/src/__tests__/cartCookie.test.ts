@@ -60,7 +60,7 @@ describe("cartCookie helpers", () => {
     const token = encodeCartCookie("payload");
     const [, sig] = token.split(".");
     expect(decodeCartCookie(undefined)).toBeNull();
-    expect(decodeCartCookie("abc")).toBeNull();
+    expect(decodeCartCookie("bcd")).toBeNull();
     expect(decodeCartCookie(`.${sig}`)).toBeNull();
   });
 

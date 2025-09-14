@@ -3,14 +3,14 @@ import { parseGenerateSeoForm } from "../parseGenerateSeoForm";
 describe("parseGenerateSeoForm", () => {
   it("parses valid form data", () => {
     const fd = new FormData();
-    fd.set("id", "abc");
+    fd.set("id", "bcd");
     fd.set("locale", "en");
     fd.set("title", "My title");
     fd.set("description", "desc");
 
     const result = parseGenerateSeoForm(fd);
     expect(result.data).toEqual({
-      id: "abc",
+      id: "bcd",
       locale: "en",
       title: "My title",
       description: "desc",

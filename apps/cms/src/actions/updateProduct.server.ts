@@ -13,13 +13,13 @@ import type { Locale } from "@acme/types";
  * Server Action: patch an existing product (optimistic locking).
  *
  * Phase-0 assumption:
- *   – always operate on shop "abc" (hard-coded here);
+ *   – always operate on shop "bcd" (hard-coded here);
  *   – multi-store routing / RBAC will replace this constant later.
  */
 export async function updateProduct(
   formData: FormData
 ): Promise<ProductPublication> {
-  const SHOP = "abc"; // ↞ align with ProductEditPage
+  const SHOP = "bcd"; // ↞ align with ProductEditPage
 
   /* ------------------------------------------------------------------ */
   /*  Load current snapshot                                             */

@@ -294,7 +294,7 @@ describe('getTrackingStatus', () => {
       }),
     });
 
-    const result = await getTrackingStatus({ provider: 'ups', trackingNumber: 'abc' });
+    const result = await getTrackingStatus({ provider: 'ups', trackingNumber: 'bcd' });
     expect(result).toEqual({
       status: 'Shipped',
       steps: [{ label: 'Shipped', complete: true }],
@@ -307,7 +307,7 @@ describe('getTrackingStatus', () => {
       json: async () => ({ trackDetails: [{}] }),
     });
 
-    const result = await getTrackingStatus({ provider: 'ups', trackingNumber: 'abc' });
+    const result = await getTrackingStatus({ provider: 'ups', trackingNumber: 'bcd' });
     expect(result).toEqual({ status: null, steps: [] });
   });
 
@@ -319,7 +319,7 @@ describe('getTrackingStatus', () => {
 
   it('falls back on non-ok response', async () => {
     fetchMock.mockResolvedValue({ ok: false });
-    const result = await getTrackingStatus({ provider: 'ups', trackingNumber: 'abc' });
+    const result = await getTrackingStatus({ provider: 'ups', trackingNumber: 'bcd' });
     expect(result).toEqual({ status: null, steps: [] });
   });
 

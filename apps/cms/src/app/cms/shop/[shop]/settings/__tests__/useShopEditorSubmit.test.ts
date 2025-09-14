@@ -38,7 +38,7 @@ describe("useShopEditorSubmit", () => {
 
   it("validates mappings", async () => {
     const filter = { rows: [{ key: "", value: "" }], setRows: jest.fn() } as any;
-    const price = { rows: [{ key: "en", value: "abc" }], setRows: jest.fn() } as any;
+    const price = { rows: [{ key: "en", value: "bad" }], setRows: jest.fn() } as any;
     const locale = { rows: [{ key: "k", value: "xx" }], setRows: jest.fn() } as any;
     const setInfo = jest.fn();
     const setTrackingProviders = jest.fn();

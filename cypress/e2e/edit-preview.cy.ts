@@ -1,5 +1,5 @@
 describe("edit preview page", () => {
-  const shopId = "abc";
+  const shopId = "bcd";
   const changeFile = `apps/shop-${shopId}/upgrade-changes.json`;
 
   before(() => {

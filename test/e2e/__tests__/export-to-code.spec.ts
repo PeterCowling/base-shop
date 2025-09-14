@@ -1,7 +1,7 @@
 // test/e2e/export-to-code.spec.ts
 
 describe("Export to Code page", () => {
-  const shopId = "abc";
+  const shopId = "bcd";
   const pageId = "home";
   const exportUrl = `/cms/shop/${shopId}/pages/${pageId}/export`;
 

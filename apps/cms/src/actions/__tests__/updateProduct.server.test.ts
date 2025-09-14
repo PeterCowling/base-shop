@@ -33,8 +33,8 @@ describe('updateProduct', () => {
 
     const updated = await updateProduct(fd);
 
-    expect(getProductById).toHaveBeenCalledWith('abc', 'p1');
-    expect(updateProductInRepo).toHaveBeenCalledWith('abc', expect.any(Object));
+    expect(getProductById).toHaveBeenCalledWith('bcd', 'p1');
+    expect(updateProductInRepo).toHaveBeenCalledWith('bcd', expect.any(Object));
     expect(updated.price).toBe(200);
     expect(updated.title.en).toBe('New EN');
     expect(updated.title.de).toBe('New DE');
@@ -95,7 +95,7 @@ describe('updateProduct', () => {
     const fd = new FormData();
     fd.append('id', 'missing');
 
-    await expect(updateProduct(fd)).rejects.toThrow('Product missing not found in shop abc');
+    await expect(updateProduct(fd)).rejects.toThrow('Product missing not found in shop bcd');
   });
 });
 

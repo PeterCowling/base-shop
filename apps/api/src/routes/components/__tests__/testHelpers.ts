@@ -29,7 +29,7 @@ export function createContext(
       ? opts.shopId === undefined
         ? ({} as any)
         : { shopId: opts.shopId }
-      : { shopId: 'abc' };
+      : { shopId: 'bcd' };
   const headers = authorization ? { authorization } : undefined;
   return {
     params,
@@ -43,7 +43,7 @@ export function createToken(payload: object, secret: string) {
     algorithm: 'HS256',
     audience: 'upgrade-preview',
     issuer: 'acme',
-    subject: 'shop:abc:upgrade-preview',
+    subject: 'shop:bcd:upgrade-preview',
   });
 }
 

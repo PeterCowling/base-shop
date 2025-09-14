@@ -19,9 +19,9 @@ describe('onRequest id validation', () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
     const res = await onRequest(
-      createContext({ shopId: 'abc', authorization: 'Bearer good' }),
+      createContext({ shopId: 'bcd', authorization: 'Bearer good' }),
     );
-    expect(validate).toHaveBeenCalledWith('abc');
+    expect(validate).toHaveBeenCalledWith('bcd');
     expect(res.status).toBe(200);
   });
 

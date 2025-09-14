@@ -14,8 +14,8 @@ describe('onRequest successful responses', () => {
   it('calls validateShopName with provided shop id', async () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
-    const res = await onRequest(createRequest({ shopId: 'abc', token: 'good' }));
-    expect(validate).toHaveBeenCalledWith('abc');
+    const res = await onRequest(createRequest({ shopId: 'bcd', token: 'good' }));
+    expect(validate).toHaveBeenCalledWith('bcd');
     expect(res.status).toBe(200);
   });
 
@@ -23,7 +23,7 @@ describe('onRequest successful responses', () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
     vol.fromJSON({
-      [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/button': '1.0.0' },
       }),
       [`${root}/packages/button/package.json`]: JSON.stringify({
@@ -32,7 +32,7 @@ describe('onRequest successful responses', () => {
       }),
       [`${root}/packages/button/CHANGELOG.md`]: '# Changelog\n\nFixed bug\n',
     });
-    const res = await onRequest(createRequest({ shopId: 'abc', token: 'good' }));
+    const res = await onRequest(createRequest({ shopId: 'bcd', token: 'good' }));
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({
       components: [
@@ -52,7 +52,7 @@ describe('onRequest successful responses', () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
     vol.fromJSON({
-      [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/button': '1.0.0' },
       }),
       [`${root}/packages/button/package.json`]: JSON.stringify({
@@ -60,12 +60,12 @@ describe('onRequest successful responses', () => {
         version: '1.1.0',
       }),
       [`${root}/packages/button/CHANGELOG.md`]: '# Changelog\n\nFixed bug\n',
-      [`${root}/apps/shop-abc/src/templates/main.html`]: 'app',
+      [`${root}/apps/shop-bcd/src/templates/main.html`]: 'app',
       [`${root}/packages/template-app/src/templates/main.html`]: 'template',
-      [`${root}/apps/shop-abc/src/translations/en.json`]: '{}',
+      [`${root}/apps/shop-bcd/src/translations/en.json`]: '{}',
       [`${root}/packages/template-app/src/translations/en.json`]: '{"foo":"bar"}',
     });
-    const res = await onRequest(createRequest({ shopId: 'abc', token: 'good' }));
+    const res = await onRequest(createRequest({ shopId: 'bcd', token: 'good' }));
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json).toEqual({
@@ -86,7 +86,7 @@ describe('onRequest successful responses', () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
     vol.fromJSON({
-      [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/button': '1.0.0' },
       }),
       [`${root}/packages/button/package.json`]: JSON.stringify({
@@ -94,13 +94,13 @@ describe('onRequest successful responses', () => {
         version: '1.1.0',
       }),
       [`${root}/packages/button/CHANGELOG.md`]: '# Changelog\n\nFixed bug\n',
-      [`${root}/apps/shop-abc/src/templates/main.html`]: 'app',
+      [`${root}/apps/shop-bcd/src/templates/main.html`]: 'app',
       [`${root}/packages/template-app/src/templates/main.html`]: 'template',
-      [`${root}/apps/shop-abc/src/translations/en.json`]: '{}',
+      [`${root}/apps/shop-bcd/src/translations/en.json`]: '{}',
       [`${root}/packages/template-app/src/translations/en.json`]: '{"foo":"bar"}',
     });
     const res = await onRequest(
-      createRequest({ shopId: 'abc', token: 'good', url: 'http://localhost?diff=1' }),
+      createRequest({ shopId: 'bcd', token: 'good', url: 'http://localhost?diff=1' }),
     );
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({
@@ -121,7 +121,7 @@ describe('onRequest successful responses', () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
     vol.fromJSON({
-      [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/button': '1.0.0' },
       }),
       [`${root}/packages/button/package.json`]: JSON.stringify({
@@ -129,17 +129,17 @@ describe('onRequest successful responses', () => {
         version: '1.1.0',
       }),
       [`${root}/packages/button/CHANGELOG.md`]: '# Changelog\\n\\nFixed bug\\n',
-      [`${root}/apps/shop-abc/src/templates/app-only.html`]: 'app',
-      [`${root}/apps/shop-abc/src/templates/shared.html`]: 'same',
+      [`${root}/apps/shop-bcd/src/templates/app-only.html`]: 'app',
+      [`${root}/apps/shop-bcd/src/templates/shared.html`]: 'same',
       [`${root}/packages/template-app/src/templates/template-only.html`]: 'tpl',
       [`${root}/packages/template-app/src/templates/shared.html`]: 'same',
-      [`${root}/apps/shop-abc/src/translations/app-only.json`]: '{}',
-      [`${root}/apps/shop-abc/src/translations/common.json`]: '{}',
+      [`${root}/apps/shop-bcd/src/translations/app-only.json`]: '{}',
+      [`${root}/apps/shop-bcd/src/translations/common.json`]: '{}',
       [`${root}/packages/template-app/src/translations/template-only.json`]: '{}',
       [`${root}/packages/template-app/src/translations/common.json`]: '{}',
     });
     const res = await onRequest(
-      createRequest({ shopId: 'abc', token: 'good', url: 'http://localhost?diff=1' }),
+      createRequest({ shopId: 'bcd', token: 'good', url: 'http://localhost?diff=1' }),
     );
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({
@@ -163,7 +163,7 @@ describe('onRequest successful responses', () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
     vol.fromJSON({
-      [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/button': '1.1.0' },
       }),
       [`${root}/packages/button/package.json`]: JSON.stringify({
@@ -171,13 +171,13 @@ describe('onRequest successful responses', () => {
         version: '1.1.0',
       }),
       [`${root}/packages/button/CHANGELOG.md`]: '# Changelog\\n\\nNothing changed\\n',
-      [`${root}/apps/shop-abc/src/templates/main.html`]: 'same',
+      [`${root}/apps/shop-bcd/src/templates/main.html`]: 'same',
       [`${root}/packages/template-app/src/templates/main.html`]: 'same',
-      [`${root}/apps/shop-abc/src/translations/en.json`]: '{"foo":"bar"}',
+      [`${root}/apps/shop-bcd/src/translations/en.json`]: '{"foo":"bar"}',
       [`${root}/packages/template-app/src/translations/en.json`]: '{"foo":"bar"}',
     });
     const res = await onRequest(
-      createRequest({ shopId: 'abc', token: 'good', url: 'http://localhost?diff=1' }),
+      createRequest({ shopId: 'bcd', token: 'good', url: 'http://localhost?diff=1' }),
     );
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({
@@ -190,7 +190,7 @@ describe('onRequest successful responses', () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
     vol.fromJSON({
-      [`${root}/data/shops/abc/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/button': '1.0.0' },
       }),
       [`${root}/packages/button/package.json`]: JSON.stringify({
@@ -200,7 +200,7 @@ describe('onRequest successful responses', () => {
       [`${root}/packages/button/CHANGELOG.md`]: '# Changelog\n\nFixed bug\n',
     });
     const res = await onRequest(
-      createRequest({ shopId: 'abc', token: 'good', url: 'http://localhost?diff=1' }),
+      createRequest({ shopId: 'bcd', token: 'good', url: 'http://localhost?diff=1' }),
     );
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({

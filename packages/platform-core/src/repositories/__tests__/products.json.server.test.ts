@@ -11,7 +11,7 @@ describe("jsonProductsRepository", () => {
   it("duplicates product with fresh id, sku suffix, draft status and timestamps", async () => {
     const product = {
       id: "1",
-      sku: "abc",
+      sku: "bcd",
       status: "published",
       row_version: 3,
       created_at: "old",
@@ -31,7 +31,7 @@ describe("jsonProductsRepository", () => {
     expect(copy).toEqual({
       ...product,
       id: "new-id",
-      sku: "abc-copy",
+      sku: "bcd-copy",
       status: "draft",
       row_version: 1,
       created_at: "2020-01-01T00:00:00Z",

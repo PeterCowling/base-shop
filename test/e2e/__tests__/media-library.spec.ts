@@ -1,7 +1,7 @@
 // test/e2e/media-library.spec.ts
 
 describe("Media library", () => {
-  const shopId = "abc";
+  const shopId = "bcd";
 
   beforeEach(() => {
     cy.request("/api/auth/csrf").then(({ body }) => {

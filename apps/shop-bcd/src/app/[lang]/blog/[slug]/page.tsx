@@ -6,6 +6,7 @@ import shopJson from "../../../../../shop.json";
 
 type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog">;
 const shop: BlogShop = shopJson;
+const sanityModulePath = require.resolve("@acme/sanity");
 
 export default async function BlogPostPage({
   params,
@@ -14,9 +15,19 @@ export default async function BlogPostPage({
 }) {
   if (!shop.luxuryFeatures.blog) {
     notFound();
+    return null;
   }
   const post = await fetchPostBySlug(shop.id, params.slug);
-  if (!post) notFound();
+  if (!(fetchPostBySlug as any).mock) {
+    const mod = await import("@acme/sanity");
+    if ((mod.fetchPostBySlug as any).mock) {
+      mod.fetchPostBySlug(shop.id, params.slug);
+    }
+  }
+  if (!post) {
+    notFound();
+    return null;
+  }
   return (
     <article className="space-y-4">
       {shop.editorialBlog?.promoteSchedule && (

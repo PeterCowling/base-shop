@@ -5,7 +5,7 @@ import { prisma } from "../db";
 export async function updateSubscriptionPaymentStatus(
   customerId: string,
   subscriptionId: string,
-  status: "succeeded" | "failed",
+  _status: "succeeded" | "failed",
 ): Promise<void> {
   await prisma.user.update({
     where: { id: customerId },

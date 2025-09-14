@@ -9,7 +9,10 @@ const {
 
 /** @type {import('jest').Config} */
 module.exports = {
+  // Reuse the base Jest preset, but override coverage settings for CMS
   ...base,
+  // Run tests from the workspace root so relative paths resolve correctly
+  rootDir: path.resolve(__dirname, "..", ".."),
   testEnvironment: "jsdom",
   roots: ["<rootDir>/apps/cms/src", "<rootDir>/apps/cms/__tests__"],
   setupFiles: [
@@ -49,11 +52,17 @@ module.exports = {
     ],
   },
   transformIgnorePatterns: ["/node_modules/(?!(?:@?jose)/)"],
+  // Collect coverage only from the CMS source code; exclude declarations and tests.
   collectCoverage: true,
-  coverageReporters: ["text", "lcov"],
-  coveragePathIgnorePatterns: [
-    "/node_modules/",
+  collectCoverageFrom: [
+    "apps/cms/src/**/*.{ts,tsx}",
+    "!apps/cms/src/**/*.d.ts",
+    "!apps/cms/src/**/?(*.)+(spec|test).{ts,tsx}",
+    "!apps/cms/src/**/__tests__/**",
   ],
+  coverageReporters: ["text", "lcov"],
+  // Preserve the base coverage ignore patterns to avoid instrumenting other packages/apps
+  coveragePathIgnorePatterns: base.coveragePathIgnorePatterns,
   coverageThreshold: {
     global: {
       statements: 40,

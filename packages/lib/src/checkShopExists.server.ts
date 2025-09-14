@@ -17,6 +17,8 @@ const DATA_ROOT = resolveDataRoot();
 export async function checkShopExists(shop: string): Promise<boolean> {
   const sanitized = validateShopName(shop);
   try {
+    // The shop name is validated above, so joining with DATA_ROOT is safe.
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const stat = await fs.stat(path.join(DATA_ROOT, sanitized));
     return stat.isDirectory();
   } catch {

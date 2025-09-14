@@ -123,8 +123,11 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
   })) as { data?: Array<{ b64_json?: string }> };
   const b64 = img.data?.[0]?.b64_json ?? "";
   const buffer = Buffer.from(b64, "base64");
-  const file = path.join(process.cwd(), "public", "og", `${product.id}.png`);
+  const safeId = product.id.replace(/[^a-z0-9_-]/gi, "");
+  const file = path.join(process.cwd(), "public", "og", `${safeId}.png`);
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   await fs.mkdir(path.dirname(file), { recursive: true });
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   await fs.writeFile(file, buffer);
 
   return data;

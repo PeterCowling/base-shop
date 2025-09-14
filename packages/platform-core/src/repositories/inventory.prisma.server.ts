@@ -6,33 +6,49 @@ import {
   type InventoryItem,
   variantKey,
 } from "../types/inventory";
+// eslint-disable-next-line no-restricted-imports
 import { jsonInventoryRepository } from "./inventory.json.server";
 import type {
   InventoryRepository,
   InventoryMutateFn,
 } from "./inventory.types";
 
-function toInventoryItem(record: any): InventoryItem {
+interface InventoryItemModel {
+  findMany(args: unknown): Promise<unknown[]>;
+  deleteMany(args: unknown): Promise<unknown>;
+  createMany(args: unknown): Promise<unknown>;
+  findUnique(args: unknown): Promise<unknown | null>;
+  delete(args: unknown): Promise<unknown>;
+  upsert(args: unknown): Promise<unknown>;
+}
+
+interface InventoryDb {
+  inventoryItem?: InventoryItemModel;
+  $transaction<T>(fn: (tx: InventoryDb) => Promise<T>): Promise<T>;
+}
+
+function toInventoryItem(record: unknown): InventoryItem {
+  const r = record as Record<string, unknown>;
   return inventoryItemSchema.parse({
-    sku: record.sku,
-    productId: record.productId,
-    quantity: record.quantity,
-    variantAttributes: record.variantAttributes ?? {},
-    ...(record.lowStockThreshold !== null
-      ? { lowStockThreshold: record.lowStockThreshold }
+    sku: r.sku,
+    productId: r.productId,
+    quantity: r.quantity,
+    variantAttributes: (r.variantAttributes as Record<string, string> | undefined) ?? {},
+    ...(r.lowStockThreshold !== null
+      ? { lowStockThreshold: r.lowStockThreshold }
       : {}),
-    ...(record.wearCount !== null ? { wearCount: record.wearCount } : {}),
-    ...(record.wearAndTearLimit !== null
-      ? { wearAndTearLimit: record.wearAndTearLimit }
+    ...(r.wearCount !== null ? { wearCount: r.wearCount } : {}),
+    ...(r.wearAndTearLimit !== null
+      ? { wearAndTearLimit: r.wearAndTearLimit }
       : {}),
-    ...(record.maintenanceCycle !== null
-      ? { maintenanceCycle: record.maintenanceCycle }
+    ...(r.maintenanceCycle !== null
+      ? { maintenanceCycle: r.maintenanceCycle }
       : {}),
   });
 }
 
 async function read(shop: string): Promise<InventoryItem[]> {
-  const db = prisma as any;
+  const db = prisma as InventoryDb;
   if (!db.inventoryItem) {
     return jsonInventoryRepository.read(shop);
   }
@@ -48,16 +64,16 @@ async function read(shop: string): Promise<InventoryItem[]> {
 }
 
 async function write(shop: string, items: InventoryItem[]): Promise<void> {
-  const db = prisma as any;
+  const db = prisma as InventoryDb;
   if (!db.inventoryItem) {
     return jsonInventoryRepository.write(shop, items);
   }
   const normalized = inventoryItemSchema.array().parse(items);
   try {
-    await db.$transaction(async (tx: any) => {
-      await tx.inventoryItem.deleteMany({ where: { shopId: shop } });
+    await db.$transaction(async (tx) => {
+      await tx.inventoryItem!.deleteMany({ where: { shopId: shop } });
       if (normalized.length) {
-        await tx.inventoryItem.createMany({
+        await tx.inventoryItem!.createMany({
           data: normalized.map((i: InventoryItem) => ({
             shopId: shop,
             sku: i.sku,
@@ -95,25 +111,25 @@ async function update(
   variantAttributes: Record<string, string>,
   mutate: InventoryMutateFn,
 ): Promise<InventoryItem | undefined> {
-  const db = prisma as any;
+  const db = prisma as InventoryDb;
   if (!db.inventoryItem) {
     return jsonInventoryRepository.update(shop, sku, variantAttributes, mutate);
   }
   const key = variantKey(sku, variantAttributes);
   try {
-    const result = await db.$transaction(async (tx: any) => {
-      const record = await tx.inventoryItem.findUnique({
+    const result = await db.$transaction(async (tx) => {
+      const record = await tx.inventoryItem!.findUnique({
         where: { shopId_sku_variantKey: { shopId: shop, sku, variantKey: key } },
       });
       const current = record ? toInventoryItem(record) : undefined;
       const updated = mutate(current);
       if (updated === undefined) {
         if (record) {
-          await tx.inventoryItem.delete({
+          await tx.inventoryItem!.delete({
             where: { shopId_sku_variantKey: { shopId: shop, sku, variantKey: key } },
           });
         }
-        const remaining = await tx.inventoryItem.findMany({ where: { shopId: shop } });
+        const remaining = await tx.inventoryItem!.findMany({ where: { shopId: shop } });
         return { updated: undefined, all: remaining.map(toInventoryItem) };
       }
       const nextItem = inventoryItemSchema.parse({
@@ -122,7 +138,7 @@ async function update(
         sku,
         variantAttributes,
       });
-      await tx.inventoryItem.upsert({
+      await tx.inventoryItem!.upsert({
         where: { shopId_sku_variantKey: { shopId: shop, sku, variantKey: key } },
         update: {
           productId: nextItem.productId,
@@ -147,7 +163,7 @@ async function update(
           variantKey: key,
         },
       });
-      const remaining = await tx.inventoryItem.findMany({ where: { shopId: shop } });
+      const remaining = await tx.inventoryItem!.findMany({ where: { shopId: shop } });
       return { updated: nextItem, all: remaining.map(toInventoryItem) };
     });
 

@@ -26,13 +26,13 @@ let repoPromise: Promise<PagesRepo> | undefined;
 
 async function getRepo(): Promise<PagesRepo> {
   if (!repoPromise) {
-    repoPromise = resolveRepo(
-      () => (prisma as any).page,
-      () => import("./pages.prisma.server"),
-      () => loadJsonRepo(),
-      // Select repository backend via PAGES_BACKEND env variable
-      { backendEnvVar: "PAGES_BACKEND" },
-    );
+      repoPromise = resolveRepo(
+        () => (prisma as { page?: unknown }).page,
+        () => import("./pages.prisma.server"),
+        () => loadJsonRepo(),
+        // Select repository backend via PAGES_BACKEND env variable
+        { backendEnvVar: "PAGES_BACKEND" },
+      );
   }
   return repoPromise;
 }

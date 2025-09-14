@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename */
 import "server-only";
 
 import { pageSchema, type Page } from "@acme/types";

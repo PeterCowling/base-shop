@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename */
 import "server-only";
 
 import { pricingSchema, type PricingMatrix } from "@acme/types";

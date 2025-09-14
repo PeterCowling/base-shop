@@ -8,7 +8,7 @@ import { tryJsonParse } from "../../utils/formData";
 import { captureException } from "@/utils/sentry.server";
 
 export function mapLocales(
-  data: Record<string, any>
+  data: Record<string, string | undefined>
 ): {
   title: Record<Locale, string>;
   description: Record<Locale, string>;

@@ -10,6 +10,24 @@ import {
 import { parse } from "fast-csv";
 import { Readable } from "stream";
 
+function hasText(value: unknown): value is { text: () => Promise<string> } {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof (value as { text?: unknown }).text === "function"
+  );
+}
+
+function hasArrayBuffer(
+  value: unknown,
+): value is { arrayBuffer: () => Promise<ArrayBuffer> } {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof (value as { arrayBuffer?: unknown }).arrayBuffer === "function"
+  );
+}
+
 export async function POST(
   req: NextRequest,
   context: { params: Promise<{ shop: string }> }
@@ -20,33 +38,29 @@ export async function POST(
   }
   try {
     const form = await req.formData();
-    const file = form.get("file") as unknown;
+    const file = form.get("file");
+    if (!file) {
+      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+    }
     let text: string;
-    try {
-      if (!file) {
-        throw new Error("no file");
-      }
-      if (typeof (file as any).text === "function") {
-        text = await (file as any).text();
-      } else if (typeof (file as any).arrayBuffer === "function") {
-        const buf = await (file as any).arrayBuffer();
-        text = new TextDecoder().decode(buf);
-      } else if (file instanceof Blob) {
-        text = await new Promise<string>((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onerror = () => reject(reader.error);
-          reader.onload = () => resolve(reader.result as string);
-          reader.readAsText(file);
-        });
-      } else {
-        throw new Error("no file");
-      }
-    } catch {
+    if (hasText(file)) {
+      text = await file.text();
+    } else if (hasArrayBuffer(file)) {
+      const buf = await file.arrayBuffer();
+      text = new TextDecoder().decode(buf);
+    } else if (file instanceof Blob) {
+      text = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(reader.error);
+        reader.onload = () => resolve(reader.result as string);
+        reader.readAsText(file);
+      });
+    } else {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
     let raw: unknown;
-    const f = file as File;
-    if (f.type === "application/json" || f.name.endsWith(".json")) {
+    const f = file as { type?: string; name?: string };
+    if (f.type === "application/json" || f.name?.endsWith(".json")) {
       const data = JSON.parse(text);
       raw = Array.isArray(data)
         ? data.map((row: RawInventoryItem) => expandInventoryItem(row))

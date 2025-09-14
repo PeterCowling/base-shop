@@ -24,6 +24,7 @@ export function resolveDataRoot() {
     let found;
     while (true) {
         const candidate = path.join(dir, "data", "shops");
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
         if (fsSync.existsSync(candidate)) {
             found = candidate;
         }

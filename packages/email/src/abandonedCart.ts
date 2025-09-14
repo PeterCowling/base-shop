@@ -53,15 +53,15 @@ export interface AbandonedCart {
 }
 
 function buildCartHtml(cart: unknown): string {
-  const items = Array.isArray((cart as any)?.items)
-    ? (cart as any).items
-    : [];
+  const cartWithItems = cart as { items?: unknown[] };
+  const items = Array.isArray(cartWithItems.items) ? cartWithItems.items : [];
   if (items.length === 0) return "<p>You left items in your cart.</p>";
   const list = items
-    .map((item: any) => {
+    .map((item) => {
+      const obj = item as { name?: unknown; title?: unknown };
       const name =
         typeof item === "object" && item !== null
-          ? (item as any).name ?? (item as any).title ?? String(item)
+          ? obj.name ?? obj.title ?? String(item)
           : String(item);
       return `<li>${escapeHtml(String(name))}</li>`;
     })

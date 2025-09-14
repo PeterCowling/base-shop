@@ -3,7 +3,6 @@ import { listEvents } from "@platform-core/repositories/analytics.server";
 import type { AnalyticsEvent } from "@platform-core/analytics";
 import { readSegments, analyticsMTime, SegmentCache, cacheTtl } from "./storage";
 import { matches } from "./filters";
-import type { SegmentDef } from "./filters";
 import { createContact, addToList, listSegments } from "./providers";
 
 export { createContact, addToList, listSegments };

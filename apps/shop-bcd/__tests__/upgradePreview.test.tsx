@@ -6,10 +6,10 @@ describe("upgrade preview page", () => {
   beforeEach(() => {
     global.__UPGRADE_MOCKS__ = {
       "@ui/components/molecules/Breadcrumbs": () => (
-        <div data-testid="new-comp">new-breadcrumbs</div>
+        <div data-cy="new-comp">new-breadcrumbs</div>
       ),
       "@ui/components/molecules/Breadcrumbs.bak": () => (
-        <div data-testid="old-comp">old-breadcrumbs</div>
+        <div data-cy="old-comp">old-breadcrumbs</div>
       ),
     };
   });

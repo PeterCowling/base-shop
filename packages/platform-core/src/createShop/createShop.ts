@@ -1,4 +1,3 @@
-import * as fs from "fs";
 import { join } from "path";
 import { prisma } from "../db";
 import { validateShopName } from "../shops";
@@ -13,6 +12,7 @@ import {
   defaultDeploymentAdapter,
   type ShopDeploymentAdapter,
 } from "./deploymentAdapter";
+import { ensureDir, writeJSON } from "./fsUtils";
 import type { Shop } from "@acme/types";
 
 /**
@@ -73,8 +73,8 @@ export async function createShop(
 
   try {
     const dir = join("data", "shops", id);
-    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(join(dir, "shop.json"), JSON.stringify(shopData, null, 2));
+    ensureDir(dir);
+    writeJSON(join(dir, "shop.json"), shopData);
   } catch {
     // ignore filesystem write errors
   }

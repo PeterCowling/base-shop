@@ -1,4 +1,3 @@
-import * as fs from "fs";
 import { dirname, join } from "path";
 import { genSecret } from "@acme/shared-utils";
 import type { DeployShopResult } from "./deployTypes";
@@ -6,7 +5,13 @@ import {
   defaultDeploymentAdapter,
   type ShopDeploymentAdapter,
 } from "./deploymentAdapter";
-import { repoRoot } from "./fsUtils";
+import {
+  repoRoot,
+  fileExists,
+  readFile,
+  ensureDir,
+  writeFile,
+} from "./fsUtils";
 
 export function deployShopImpl(
   id: string,
@@ -21,11 +26,11 @@ export function deployShopImpl(
     adapter.scaffold(newApp);
     const envRel = join(newApp, ".env");
     const envAbs = join(repoRoot(), envRel);
-    const envSrc = fs.existsSync(envAbs) ? envAbs : envRel;
+    const envSrc = fileExists(envAbs) ? envAbs : envRel;
 
     let env = "";
     try {
-      env = fs.readFileSync(envSrc, "utf8");
+      env = readFile(envSrc);
     } catch {
       /* no existing env file */
     }
@@ -43,8 +48,8 @@ export function deployShopImpl(
     const cwdPath = join(process.cwd(), envRel);
     for (const p of new Set([envAbs, cwdPath, envSrc])) {
       try {
-        fs.mkdirSync(dirname(p), { recursive: true });
-        fs.writeFileSync(p, env);
+        ensureDir(dirname(p));
+        writeFile(p, env);
       } catch {
         /* ignore write errors */
       }

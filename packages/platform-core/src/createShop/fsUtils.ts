@@ -68,6 +68,13 @@ export function repoRoot(): string {
 }
 
 /**
+ * Check if a file or directory exists.
+ */
+export function fileExists(path: string): boolean {
+  return existsSync(path);
+}
+
+/**
  * Ensure a directory exists, creating it recursively when missing.
  */
 export function ensureDir(path: string): void {

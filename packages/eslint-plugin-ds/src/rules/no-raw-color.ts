@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- rule uses loose node typing */
 import type { Rule } from "eslint";
 
-const HEX_COLOR = /#(?:[0-9a-fA-F]{3,4}){1,2}\b/;
+// Matches hex colors like #RGB, #RGBA, #RRGGBB, or #RRGGBBAA
+const HEX_COLOR =
+  /#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\b/;
 
 const rule: Rule.RuleModule = {
   meta: {

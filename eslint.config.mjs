@@ -33,6 +33,7 @@ export default [
       "apps/*/src/**/*.d.ts",
       "apps/*/src/**/*.js.map",
       "scripts/**/*.js",
+      "packages/config/test/**",
       "**/__tests__/**",
       "**/__mocks__/**",
       "**/*.test.*",

@@ -7,7 +7,7 @@ import { emailEnvSchema } from "./email.js";
 import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
 import { createRequire } from "module";
-const isJest = typeof (globalThis as any).jest !== "undefined";
+const isJest = typeof (globalThis as { jest?: unknown }).jest !== "undefined";
 const isTest =
   process.env.NODE_ENV === "test" ||
   process.env.JEST_WORKER_ID !== undefined ||
@@ -240,7 +240,6 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
 // Lazy proxy; no import-time parse in dev.
 let __cachedCoreEnv: CoreEnv | null = null;
 const nodeRequire =
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   typeof require !== "undefined" ? require : createRequire(eval("import.meta.url"));
 const envMode = process.env.NODE_ENV;
 function getCoreEnv(): CoreEnv {

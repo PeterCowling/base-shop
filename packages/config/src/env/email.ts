@@ -73,8 +73,14 @@ export const emailEnvSchema = z
       });
     }
   });
-
-const parsed = emailEnvSchema.safeParse(process.env);
+const rawEnv: NodeJS.ProcessEnv = {
+  ...process.env,
+  EMAIL_PROVIDER:
+    process.env.EMAIL_FROM || process.env.EMAIL_PROVIDER
+      ? process.env.EMAIL_PROVIDER
+      : "noop",
+};
+const parsed = emailEnvSchema.safeParse(rawEnv);
 
 if (!parsed.success) {
   if (!isTest) {

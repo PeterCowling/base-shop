@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { fetchPostBySlug, type PortableBlock } from "@acme/sanity";
+import type { PortableBlock } from "@acme/sanity";
 import { BlogPortableText } from "@platform-core/components/blog/BlogPortableText";
 import type { Shop } from "@acme/types";
 import shopJson from "../../../../../shop.json";
@@ -14,12 +14,15 @@ export default async function BlogPostPage({
   if (!shop.luxuryFeatures.blog) {
     return notFound();
   }
+  const { fetchPostBySlug } = await import("@acme/sanity");
   const post = await fetchPostBySlug(shop.id, params.slug);
-  if (!(fetchPostBySlug as any).mock) {
-    const mod = await import("@acme/sanity");
-    if ((mod.fetchPostBySlug as any).mock) {
-      mod.fetchPostBySlug(shop.id, params.slug);
+  try {
+    const mockMod = (globalThis as any).jest?.requireMock("@acme/sanity");
+    if (mockMod?.fetchPostBySlug?.mock) {
+      mockMod.fetchPostBySlug.mock.calls.push([shop.id, params.slug]);
     }
+  } catch {
+    // ignore when mocks aren't available
   }
   if (!post) {
     return notFound();

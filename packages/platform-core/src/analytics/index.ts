@@ -9,7 +9,16 @@ import { getShopSettings, readShop } from "../repositories/shops.server";
 import { validateShopName } from "../shops";
 
 
-const coreEnv = loadCoreEnv();
+let _coreEnv: ReturnType<typeof loadCoreEnv> | null = null;
+function getCoreEnv() {
+  if (_coreEnv) return _coreEnv;
+  try {
+    _coreEnv = loadCoreEnv();
+  } catch {
+    _coreEnv = {} as ReturnType<typeof loadCoreEnv>;
+  }
+  return _coreEnv;
+}
 export type { AnalyticsEvent };
 
 export interface AnalyticsProvider {
@@ -109,7 +118,7 @@ async function resolveProvider(shop: string): Promise<AnalyticsProvider> {
   if (analytics?.provider === "ga") {
     const measurementId = analytics.id;
     const apiSecret = (
-      process.env.GA_API_SECRET ?? coreEnv.GA_API_SECRET
+      process.env.GA_API_SECRET ?? getCoreEnv().GA_API_SECRET
     ) as string | undefined;
     if (measurementId && apiSecret) {
       const p = new GoogleAnalyticsProvider(

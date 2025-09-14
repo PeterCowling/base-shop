@@ -11,10 +11,13 @@ export function parseMultilingualInput(
   locales: readonly Locale[]
 ): MultilingualField | null {
   if (typeof name !== "string") return null;
-  const match = name.match(new RegExp(`^(title|desc)_(${locales.join("|")})$`));
-  if (!match) return null;
-  const [, field, locale] = match as [unknown, "title" | "desc", Locale];
-  return { field, locale };
+  const parts = name.split("_");
+  if (parts.length !== 2) return null;
+  const [field, locale] = parts as [string, string];
+  if ((field === "title" || field === "desc") && locales.includes(locale as Locale)) {
+    return { field: field as "title" | "desc", locale: locale as Locale };
+  }
+  return null;
 }
 
 /**

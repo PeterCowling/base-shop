@@ -12,7 +12,6 @@ export async function updateShop(
   const current = await fetchShop(shop);
   const { data, errors } = parseShopForm(formData);
   if (!data) {
-    console.warn(`[updateShop] validation failed for shop ${shop}`, errors);
     return { errors };
   }
   if (current.id !== data.id) throw new Error(`Shop ${data.id} not found in ${shop}`);

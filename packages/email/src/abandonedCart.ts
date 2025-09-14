@@ -58,7 +58,7 @@ function buildCartHtml(cart: unknown): string {
     : [];
   if (items.length === 0) return "<p>You left items in your cart.</p>";
   const list = items
-    .map((item) => {
+    .map((item: any) => {
       const name =
         typeof item === "object" && item !== null
           ? (item as any).name ?? (item as any).title ?? String(item)

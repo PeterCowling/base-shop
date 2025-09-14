@@ -172,7 +172,7 @@ function PaymentForm({
         {t("checkout.return")}
         <input
           type="date"
-          {...register("returnDate", { required: t("checkout.returnDateRequired") })}
+          {...register("returnDate", { required: t("checkout.returnDateRequired") as string })}
           className="block w-full border px-2 py-1"
           aria-invalid={errors.returnDate ? "true" : "false"}
           aria-describedby={errors.returnDate ? "returnDate-error" : undefined}

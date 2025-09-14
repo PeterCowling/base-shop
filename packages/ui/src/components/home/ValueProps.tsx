@@ -31,7 +31,7 @@ function ValuePropsInner({ items = [] }: { items?: ValuePropItem[] }) {
     <section className="mx-auto grid max-w-6xl gap-2 px-4 py-4 sm:grid-cols-3">
       {" "}
       {data.map(({ icon, title, desc }) => (
-        <article key={title} className="text-center">
+        <article key={String(title)} className="text-center">
           <div className="mb-4 text-4xl">{icon}</div>
           <h3 className="mb-2 text-xl font-semibold">{title}</h3>
           <p className="text-muted" data-token="--color-muted">{desc}</p>

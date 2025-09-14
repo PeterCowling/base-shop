@@ -28,7 +28,15 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const profile = await getCustomerProfile(session.customerId);
+  let profile;
+  try {
+    profile = await getCustomerProfile(session.customerId);
+  } catch (err) {
+    if (err instanceof Error && err.message === "Customer profile not found") {
+      return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+    }
+    throw err;
+  }
   if (!profile) {
     return NextResponse.json({ error: "Profile not found" }, { status: 404 });
   }
@@ -58,7 +66,15 @@ export async function PUT(req: NextRequest) {
     }
     throw err;
   }
-  const profile = await getCustomerProfile(session.customerId);
+  let profile;
+  try {
+    profile = await getCustomerProfile(session.customerId);
+  } catch (err) {
+    if (err instanceof Error && err.message === "Customer profile not found") {
+      return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+    }
+    throw err;
+  }
   if (!profile) {
     return NextResponse.json({ error: "Profile not found" }, { status: 404 });
   }

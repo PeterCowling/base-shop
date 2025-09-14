@@ -1,4 +1,5 @@
 // apps/shop-bcd/__tests__/blog-pages.test.tsx
+import { render, screen } from "@testing-library/react";
 
 afterEach(() => {
   jest.resetModules();
@@ -59,27 +60,35 @@ describe("Blog listing page", () => {
 
 describe("Blog post page", () => {
   test("renders post when found", async () => {
-    jest.mock("@acme/sanity", () => ({
+    const fetchPostBySlug = jest.fn().mockResolvedValue({
+      title: "Hello",
+      slug: "hello",
+      excerpt: "",
+      body: [],
+    });
+    jest.doMock("@acme/sanity", () => ({
       __esModule: true,
-      fetchPostBySlug: jest.fn().mockResolvedValue({
-        title: "Hello",
-        slug: "hello",
-        excerpt: "",
-        body: [],
-      }),
+      fetchPostBySlug,
     }));
-    jest.mock("@platform-core/components/blog/BlogPortableText", () => ({
+    jest.doMock("@platform-core/components/blog/BlogPortableText", () => ({
       BlogPortableText: jest.fn(() => null),
     }));
+    jest.doMock("../shop.json", () => ({
+      id: "bcd",
+      luxuryFeatures: { blog: true },
+      editorialBlog: {},
+    }));
+    const notFound = jest.fn();
+    jest.doMock("next/navigation", () => ({ notFound }));
     const { default: BlogPostPage } = await import(
       "../src/app/[lang]/blog/[slug]/page"
     );
     const res = await BlogPostPage({
       params: { lang: "en", slug: "hello" },
     } as any);
-    const { fetchPostBySlug } = await import("@acme/sanity");
-    expect((fetchPostBySlug as jest.Mock)).toHaveBeenCalledWith("bcd", "hello");
-    expect(res.type).toBe("article");
+    expect(notFound).not.toHaveBeenCalled();
+    render(res);
+    expect(screen.getByRole("heading", { name: "Hello" })).toBeInTheDocument();
   });
 
   test("notFound when blog disabled", async () => {
@@ -88,7 +97,7 @@ describe("Blog post page", () => {
       luxuryFeatures: { blog: false },
       editorialBlog: {},
     }));
-    jest.mock("@acme/sanity", () => ({
+    jest.doMock("@acme/sanity", () => ({
       __esModule: true,
       fetchPostBySlug: jest.fn(),
     }));
@@ -104,7 +113,7 @@ describe("Blog post page", () => {
   });
 
   test("notFound when post missing", async () => {
-    jest.mock("@acme/sanity", () => ({
+    jest.doMock("@acme/sanity", () => ({
       __esModule: true,
       fetchPostBySlug: jest.fn().mockResolvedValue(null),
     }));
@@ -115,5 +124,35 @@ describe("Blog post page", () => {
     );
     await BlogPostPage({ params: { lang: "en", slug: "missing" } } as any);
     expect(notFound).toHaveBeenCalled();
+  });
+
+  test("renders promote schedule when configured", async () => {
+    jest.doMock("@acme/sanity", () => ({
+      __esModule: true,
+      fetchPostBySlug: jest.fn().mockResolvedValue({
+        title: "Hello",
+        slug: "hello",
+        excerpt: "",
+        body: [],
+      }),
+    }));
+    jest.doMock("@platform-core/components/blog/BlogPortableText", () => ({
+      BlogPortableText: jest.fn(() => null),
+    }));
+    jest.doMock("../shop.json", () => ({
+      id: "bcd",
+      luxuryFeatures: { blog: true },
+      editorialBlog: { promoteSchedule: "2025-05-01" },
+    }));
+    const { default: BlogPostPage } = await import(
+      "../src/app/[lang]/blog/[slug]/page"
+    );
+    const element = await BlogPostPage({
+      params: { lang: "en", slug: "hello" },
+    } as any);
+    render(element);
+    expect(
+      screen.getByText("Daily Edit scheduled for 2025-05-01")
+    ).toBeInTheDocument();
   });
 });

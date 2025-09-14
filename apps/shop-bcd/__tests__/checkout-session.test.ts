@@ -1,5 +1,5 @@
 // apps/shop-bcd/__tests__/checkout-session.test.ts
-import { encodeCartCookie } from "@platform-core/cartCookie";
+import { encodeCartCookie, decodeCartCookie } from "@platform-core/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { calculateRentalDays } from "@acme/date-utils";
 import { POST } from "../src/api/checkout-session/route";
@@ -34,10 +34,15 @@ jest.mock("@platform-core/cartCookie", () => ({
   // The real decodeCartCookie returns the raw string value of the cookie
   // (after signature verification). Our tests only need to simulate a
   // valid cookie, so the mocked implementation simply echoes back the
-  // provided raw string. This ensures the route under test performs the
-  // JSON.parse call itself and doesn't mistakenly see an empty cart.
-  decodeCartCookie: (raw: string | null) => raw ?? null,
+  // provided raw string. Using a jest.fn here lets individual tests
+  // override the behavior to exercise error paths.
+  decodeCartCookie: jest.fn((raw: string | null) => raw ?? null),
 }));
+
+afterEach(() => {
+  (decodeCartCookie as jest.Mock).mockImplementation((raw: string | null) => raw ?? null);
+  jest.clearAllMocks();
+});
 
 function createRequest(
   body: any,
@@ -127,5 +132,63 @@ test("responds with 400 on invalid returnDate", async () => {
   expect(res.status).toBe(400);
   const body = await res.json();
   expect(body.error).toMatch(/invalid/i);
+});
+
+test("responds with 400 when cart is empty", async () => {
+  (decodeCartCookie as jest.Mock).mockReturnValueOnce(null);
+  const req = createRequest({}, "");
+  const res = await POST(req);
+  expect(res.status).toBe(400);
+  expect(await res.json()).toEqual({ error: "Cart is empty" });
+});
+
+test("handles decodeCartCookie throwing", async () => {
+  (decodeCartCookie as jest.Mock).mockImplementationOnce(() => {
+    throw new Error("bad cookie");
+  });
+  const req = createRequest({}, "broken");
+  const res = await POST(req);
+  expect(res.status).toBe(400);
+});
+
+test("accepts cart object from decodeCartCookie", async () => {
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  (decodeCartCookie as jest.Mock).mockReturnValueOnce({
+    [`${sku.id}:${size}`]: { sku, qty: 1, size },
+  });
+  const spy = jest
+    .spyOn(await import("@platform-core/checkout/session"), "createCheckoutSession")
+    .mockResolvedValueOnce({ id: "sess" } as any);
+  const req = createRequest({}, "ignored");
+  const res = await POST(req);
+  expect(res.status).toBe(200);
+  spy.mockRestore();
+});
+
+test("responds with 400 on invalid request body", async () => {
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  const cookie = encodeCartCookie(cart as any);
+  const req = createRequest({ shipping: "invalid" }, cookie);
+  const res = await POST(req);
+  expect(res.status).toBe(400);
+});
+
+test("responds with 502 when session creation fails", async () => {
+  const sku = PRODUCTS[0];
+  const size = sku.sizes[0];
+  const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
+  const cookie = encodeCartCookie(cart as any);
+  const spy = jest
+    .spyOn(await import("@platform-core/checkout/session"), "createCheckoutSession")
+    .mockRejectedValueOnce(new Error("boom"));
+  const req = createRequest({}, cookie);
+  const res = await POST(req);
+  expect(res.status).toBe(502);
+  const body = await res.json();
+  expect(body.error).toBe("Checkout failed");
+  spy.mockRestore();
 });
 

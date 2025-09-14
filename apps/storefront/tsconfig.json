@@ -1,0 +1,26 @@
+{
+  "extends": "@acme/config/tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "../..",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@acme/platform-core": [
+        "../../packages/platform-core/src/index.ts", "../../packages/platform-core/dist/index.d.ts"
+      ],
+      "@acme/platform-core/*": [
+        "../../packages/platform-core/src/*", "../../packages/platform-core/dist/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules"
+  ],
+  "references": [
+    { "path": "../../packages/platform-core" }
+  ]
+}

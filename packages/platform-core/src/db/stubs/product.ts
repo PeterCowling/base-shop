@@ -1,9 +1,25 @@
-export function createProductDelegate() {
-  const products: { shopId: string; [key: string]: any }[] = [];
+export type Product = { shopId: string; id?: string; [key: string]: unknown };
+
+interface ProductDelegate {
+  findMany(args: { where: { shopId: string } }): Promise<Product[]>;
+  deleteMany(args: { where: { shopId: string } }): Promise<{ count: number }>;
+  createMany(args: { data: Product[] }): Promise<{ count: number }>;
+  findUnique(args: { where: { shopId_id: { shopId: string; id: string } } }): Promise<Product | null>;
+  update(args: {
+    where: { shopId_id: { shopId: string; id: string } };
+    data: Partial<Product>;
+  }): Promise<Product>;
+  delete(args: { where: { shopId_id: { shopId: string; id: string } } }): Promise<Product>;
+  create(args: { data: Product }): Promise<Product>;
+}
+
+export function createProductDelegate(): ProductDelegate {
+  const products: Product[] = [];
   return {
-    findMany: async ({ where: { shopId } }: any) =>
-      products.filter((p) => p.shopId === shopId),
-    deleteMany: async ({ where: { shopId } }: any) => {
+    async findMany({ where: { shopId } }) {
+      return products.filter((p) => p.shopId === shopId);
+    },
+    async deleteMany({ where: { shopId } }) {
       let count = 0;
       for (let i = products.length - 1; i >= 0; i--) {
         if (products[i].shopId === shopId) {
@@ -13,18 +29,18 @@ export function createProductDelegate() {
       }
       return { count };
     },
-    createMany: async ({ data }: any) => {
-      products.push(...data.map((d: any) => ({ ...d })));
+    async createMany({ data }) {
+      products.push(...data.map((d) => ({ ...d })));
       return { count: data.length };
     },
-    findUnique: async ({ where }: any) => {
+    async findUnique({ where }) {
       if (where?.shopId_id) {
         const { shopId, id } = where.shopId_id;
         return products.find((p) => p.shopId === shopId && p.id === id) || null;
       }
       return null;
     },
-    update: async ({ where: { shopId_id }, data }: any) => {
+    async update({ where: { shopId_id }, data }) {
       const idx = products.findIndex(
         (p) => p.shopId === shopId_id.shopId && p.id === shopId_id.id,
       );
@@ -32,7 +48,7 @@ export function createProductDelegate() {
       products[idx] = { ...products[idx], ...data };
       return products[idx];
     },
-    delete: async ({ where: { shopId_id } }: any) => {
+    async delete({ where: { shopId_id } }) {
       const idx = products.findIndex(
         (p) => p.shopId === shopId_id.shopId && p.id === shopId_id.id,
       );
@@ -40,9 +56,9 @@ export function createProductDelegate() {
       const [removed] = products.splice(idx, 1);
       return removed;
     },
-    create: async ({ data }: any) => {
+    async create({ data }) {
       products.push({ ...data });
       return data;
     },
-  } as any;
+  } satisfies ProductDelegate;
 }

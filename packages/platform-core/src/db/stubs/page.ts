@@ -1,20 +1,37 @@
-export function createPageDelegate() {
-  const pages: any[] = [];
-  const match = (obj: any, where: any = {}) =>
+export type PageRecord = Record<string, unknown>;
+type Where = Partial<PageRecord>;
+
+interface PageDelegate {
+  createMany(args: { data: PageRecord[] }): Promise<{ count: number }>;
+  findMany(args?: { where?: Where }): Promise<PageRecord[]>;
+  update(args: { where: Where; data: Partial<PageRecord> }): Promise<PageRecord>;
+  deleteMany(args: { where: Where }): Promise<{ count: number }>;
+  upsert(args: {
+    where: Where;
+    update: Partial<PageRecord>;
+    create: PageRecord;
+  }): Promise<PageRecord>;
+}
+
+export function createPageDelegate(): PageDelegate {
+  const pages: PageRecord[] = [];
+  const match = (obj: PageRecord, where: Where = {}) =>
     Object.entries(where).every(([k, v]) => obj[k] === v);
   return {
-    createMany: async ({ data }: any) => {
-      pages.push(...data.map((d: any) => ({ ...d })));
+    async createMany({ data }) {
+      pages.push(...data.map((d) => ({ ...d })));
       return { count: data.length };
     },
-    findMany: async ({ where }: any = {}) => pages.filter((p) => match(p, where)),
-    update: async ({ where, data }: any) => {
+    async findMany({ where }: { where?: Where } = {}) {
+      return pages.filter((p) => match(p, where));
+    },
+    async update({ where, data }) {
       const idx = pages.findIndex((p) => match(p, where));
       if (idx < 0) throw new Error("Page not found");
       pages[idx] = { ...pages[idx], ...data };
       return pages[idx];
     },
-    deleteMany: async ({ where }: any) => {
+    async deleteMany({ where }) {
       let count = 0;
       for (let i = pages.length - 1; i >= 0; i--) {
         if (match(pages[i], where)) {
@@ -24,7 +41,7 @@ export function createPageDelegate() {
       }
       return { count };
     },
-    upsert: async ({ where, update, create }: any) => {
+    async upsert({ where, update, create }) {
       const idx = pages.findIndex((p) => match(p, where));
       if (idx >= 0) {
         pages[idx] = { ...pages[idx], ...update };
@@ -34,7 +51,7 @@ export function createPageDelegate() {
       pages.push(record);
       return record;
     },
-  } as any;
+  } satisfies PageDelegate;
 }
 
 // Instantiate a default delegate instance for convenience in tests

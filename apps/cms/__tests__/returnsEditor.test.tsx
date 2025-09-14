@@ -1,13 +1,18 @@
 import "@testing-library/jest-dom";
-import React from "react";
+import React, { act } from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
 
 const updateUpsReturns = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({ updateUpsReturns }));
 jest.mock("@/components/atoms/shadcn", () => ({
   Button: (props: any) => <button {...props} />,
-  Checkbox: (props: any) => <input type="checkbox" {...props} />,
+  Checkbox: ({ onCheckedChange, ...props }: any) => (
+    <input
+      type="checkbox"
+      onChange={(e) => onCheckedChange?.((e.target as HTMLInputElement).checked)}
+      {...props}
+    />
+  ),
 }));
 
 import ReturnsEditor from "../src/app/cms/shop/[shop]/settings/returns/ReturnsEditor";

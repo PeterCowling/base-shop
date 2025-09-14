@@ -83,5 +83,44 @@ describe("layouts schemas", () => {
       tabsComponentSchema.safeParse({ id: "t2", type: "Tabs", active: "a" } as any).success
     ).toBe(false);
   });
+
+  describe("child component parsing", () => {
+    const childSchema = z.object({ id: z.string(), type: z.literal("Child") });
+    const child = { id: "c1", type: "Child" } as const;
+
+    it("parses Section children with the bound schema", () => {
+      bindPageComponentSchema(childSchema);
+      expect(
+        sectionComponentSchema.parse({
+          id: "s3",
+          type: "Section",
+          children: [child],
+        })
+      ).toEqual({ id: "s3", type: "Section", children: [child] });
+    });
+
+    it("parses MultiColumn children with the bound schema", () => {
+      bindPageComponentSchema(childSchema);
+      expect(
+        multiColumnComponentSchema.parse({
+          id: "m4",
+          type: "MultiColumn",
+          children: [child],
+        })
+      ).toEqual({ id: "m4", type: "MultiColumn", children: [child] });
+    });
+
+    it("parses Tabs children with the bound schema", () => {
+      bindPageComponentSchema(childSchema);
+      expect(
+        tabsComponentSchema.parse({
+          id: "t4",
+          type: "Tabs",
+          labels: [],
+          children: [child],
+        })
+      ).toEqual({ id: "t4", type: "Tabs", labels: [], children: [child] });
+    });
+  });
 });
 

@@ -87,7 +87,7 @@ export async function parseJsonBody<T>(
     } else {
       throw new Error("No body parser available");
     }
-  } catch (err: unknown) {
+  } catch {
     return {
       success: false,
       response: NextResponse.json(

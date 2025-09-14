@@ -2,15 +2,20 @@ type SimpleReq = { headers?: Record<string, string | undefined>; url?: string };
 
 export function getCsrfToken(req?: Request | SimpleReq): string | undefined {
   if (req) {
-    const headers: any = (req as any).headers;
-    const getHeader = typeof headers?.get === "function"
-      ? (name: string) => headers.get(name)
-      : (name: string) => headers?.[name];
+    const headers = (
+      req as unknown as {
+        headers?: Headers | Record<string, string | undefined>;
+      }
+    ).headers;
+    const getHeader = typeof (headers as Headers)?.get === "function"
+      ? (name: string) => (headers as Headers).get(name) ?? undefined
+      : (name: string) =>
+          (headers as Record<string, string | undefined>)?.[name];
 
     const headerToken = getHeader("x-csrf-token")?.trim();
     if (headerToken) return headerToken;
 
-    const reqUrl = (req as any).url;
+    const reqUrl = (req as unknown as { url?: string }).url;
     if (reqUrl) {
       const queryToken = new URL(reqUrl, "http://dummy").searchParams
         .get("csrf_token")

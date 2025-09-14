@@ -19,7 +19,7 @@ let repoPromise: Promise<SettingsRepo> | undefined;
 async function getRepo(): Promise<SettingsRepo> {
   if (!repoPromise) {
     repoPromise = resolveRepo<SettingsRepo>(
-      () => (prisma as any).setting,
+      () => (prisma as { setting?: unknown }).setting,
       () =>
         import("./settings.prisma.server").then(
           (m) => m.prismaSettingsRepository,

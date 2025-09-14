@@ -19,9 +19,11 @@ let repoPromise: Promise<SeoAuditRepo> | undefined;
 async function getRepo(): Promise<SeoAuditRepo> {
   if (!repoPromise) {
     repoPromise = resolveRepo<SeoAuditRepo>(
-      () => (prisma as any).seoAudit,
-      () => import("./seoAudit.prisma.server") as unknown as Promise<SeoAuditRepo>,
-      () => import("./seoAudit.json.server") as unknown as Promise<SeoAuditRepo>,
+      () => (prisma as { seoAudit?: unknown }).seoAudit,
+      () =>
+        import("./seoAudit.prisma.server") as unknown as Promise<SeoAuditRepo>,
+      () =>
+        import("./seoAudit.json.server") as unknown as Promise<SeoAuditRepo>,
       { backendEnvVar: "SEO_AUDIT_BACKEND" },
     );
   }

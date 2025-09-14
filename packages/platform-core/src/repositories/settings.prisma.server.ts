@@ -69,7 +69,7 @@ export async function diffHistory(
     });
     return rows.map((r: { timestamp: string; diff: unknown }) => ({
       timestamp: r.timestamp,
-      diff: r.diff as any,
+      diff: shopSettingsSchema.partial().parse(r.diff),
     }));
   } catch {
     return jsonSettingsRepository.diffHistory(shop);

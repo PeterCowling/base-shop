@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename -- Paths are derived from internal configuration */
 import { readdir } from "fs/promises";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { readInventory } from "@platform-core/repositories/inventory.server";

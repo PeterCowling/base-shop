@@ -7,7 +7,7 @@ export type Order = RentalOrder;
 // When given a falsy value (e.g. `null`), return it directly so callers can
 // surface "not found" conditions instead of an empty object.
 export function normalize<T extends Order>(order: T): T;
-export function normalize<T extends Order>(order: null): null;
+export function normalize(order: null): null;
 export function normalize<T extends Order>(order: T | null): T | null {
   if (!order) return order;
   const o: T = { ...order };

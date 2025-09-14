@@ -1,17 +1,22 @@
+import type { ReverseLogisticsEvent } from "@acme/types";
+
 export function createReverseLogisticsEventDelegate() {
-  const events: any[] = [];
+  const events: ReverseLogisticsEvent[] = [];
   return {
-    create: async ({ data }: any) => {
+    async create({ data }: { data: ReverseLogisticsEvent }) {
       events.push({ ...data });
       return data;
     },
-    createMany: async ({ data }: any) => {
-      events.push(...data.map((e: any) => ({ ...e })));
+    async createMany({ data }: { data: ReverseLogisticsEvent[] }) {
+      events.push(...data.map((e) => ({ ...e })));
       return { count: data.length };
     },
-    findMany: async ({ where }: any = {}) =>
-      events.filter((e) =>
-        Object.entries(where).every(([k, v]) => e[k] === v),
-      ),
-  } as any;
+    async findMany({ where }: { where?: Partial<ReverseLogisticsEvent> } = {}) {
+      return events.filter((e) =>
+        Object.entries(where ?? {}).every(
+          ([k, v]) => e[k as keyof ReverseLogisticsEvent] === v,
+        ),
+      );
+    },
+  };
 }

@@ -1,7 +1,13 @@
-export function createShopDelegate() {
-  const delegate = {
-    findUnique: async () => ({ data: {} }),
-  } as const;
+export interface ShopDelegate {
+  findUnique: () => Promise<{ data: Record<string, unknown> }>;
+}
 
-  return delegate as any;
+export function createShopDelegate(): ShopDelegate {
+  const delegate: ShopDelegate = {
+    async findUnique() {
+      return { data: {} };
+    },
+  };
+
+  return delegate;
 }

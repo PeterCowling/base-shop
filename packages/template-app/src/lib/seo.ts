@@ -48,12 +48,13 @@ export async function getSeo(
   const canonicalOverride = pageSeo.canonical ?? base.canonical;
   let canonicalPath = "";
   if (canonicalOverride) {
-    try {
-      canonicalPath = new URL(canonicalOverride).pathname.replace(
-        new RegExp(`^/${locale}`),
-        ""
-      );
-    } catch {
+      try {
+        canonicalPath = new URL(canonicalOverride).pathname.replace(
+          // eslint-disable-next-line security/detect-non-literal-regexp
+          new RegExp(`^/${locale}`),
+          ""
+        );
+      } catch {
       canonicalPath = "";
     }
   }

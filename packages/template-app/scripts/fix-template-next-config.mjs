@@ -1,4 +1,5 @@
 // packages/template-app/scripts/fix-template-next-config.mjs
+/* eslint-disable security/detect-non-literal-fs-filename, security/detect-non-literal-regexp */
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";

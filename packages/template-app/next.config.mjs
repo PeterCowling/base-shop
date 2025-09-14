@@ -19,7 +19,7 @@ import "./dev-defaults.mjs";
 import sharedConfig from "@acme/next-config/next.config.mjs";
 
 /** @type {import('next').NextConfig} */
-export default {
+const nextConfig = {
   // Spread the settings from the shared config to preserve its behaviour.
   ...sharedConfig,
   typescript: {
@@ -36,3 +36,5 @@ export default {
     "@acme/zod-utils", // needed by @acme/config/env/auth.ts
   ],
 };
+
+export default nextConfig;

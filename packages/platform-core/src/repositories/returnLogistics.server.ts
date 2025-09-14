@@ -14,7 +14,7 @@ let repoPromise: Promise<ReturnLogisticsRepo> | undefined;
 async function getRepo(): Promise<ReturnLogisticsRepo> {
   if (!repoPromise) {
     repoPromise = resolveRepo<ReturnLogisticsRepo>(
-      () => (prisma as any).returnLogistics,
+      () => (prisma as { returnLogistics?: unknown }).returnLogistics,
       () =>
         import("./returnLogistics.prisma.server").then(
           (m) => m.prismaReturnLogisticsRepository,

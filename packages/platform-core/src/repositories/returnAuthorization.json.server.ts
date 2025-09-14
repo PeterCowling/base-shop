@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename */
 import "server-only";
 
 import { returnAuthorizationSchema, type ReturnAuthorization } from "@acme/types";

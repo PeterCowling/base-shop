@@ -19,7 +19,7 @@ let repoPromise: Promise<ReturnAuthorizationRepo> | undefined;
 async function getRepo(): Promise<ReturnAuthorizationRepo> {
   if (!repoPromise) {
     repoPromise = resolveRepo<ReturnAuthorizationRepo>(
-      () => (prisma as any).returnAuthorization,
+      () => (prisma as { returnAuthorization?: unknown }).returnAuthorization,
       () =>
         import("./returnAuthorization.prisma.server").then(
           (m) => m.prismaReturnAuthorizationRepository,

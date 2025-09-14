@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename */
 import "server-only";
 
 import { returnLogisticsSchema, type ReturnLogistics } from "@acme/types";

@@ -1,6 +1,6 @@
 type RepoModule<T> = () => Promise<T>;
 
-export interface ResolveRepoOptions<T> {
+export interface ResolveRepoOptions {
   backendEnvVar?: string;
 }
 
@@ -8,7 +8,7 @@ export async function resolveRepo<T>(
   prismaDelegate: () => unknown | undefined,
   prismaModule: RepoModule<T>,
   jsonModule: RepoModule<T>,
-  options: ResolveRepoOptions<T> = {},
+  options: ResolveRepoOptions = {},
 ): Promise<T> {
   const envVarName = options.backendEnvVar ?? "INVENTORY_BACKEND";
   const backend = envVarName && process.env[envVarName]

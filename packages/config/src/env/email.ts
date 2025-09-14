@@ -77,10 +77,12 @@ export const emailEnvSchema = z
 const parsed = emailEnvSchema.safeParse(process.env);
 
 if (!parsed.success) {
-  console.error(
-    "❌ Invalid email environment variables:",
-    parsed.error.format()
-  );
+  if (!isTest) {
+    console.error(
+      "❌ Invalid email environment variables:",
+      parsed.error.format()
+    );
+  }
   throw new Error("Invalid email environment variables");
 }
 

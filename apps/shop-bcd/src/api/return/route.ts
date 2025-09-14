@@ -7,6 +7,7 @@ import {
   readOrders,
 } from "@platform-core/repositories/rentalOrders.server";
 import shop from "../../../shop.json";
+import type { RentalOrder } from "@acme/types";
 
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -28,10 +29,10 @@ export async function POST(req: NextRequest) {
   const { sessionId, damage } = parsed.data;
 
   let alreadyReturned = false;
-  let initial: any;
+  let initial: RentalOrder | undefined;
   if (typeof readOrders === "function") {
     const orders = await readOrders("bcd");
-    initial = orders.find((o: any) => o.sessionId === sessionId);
+    initial = orders.find((o) => o.sessionId === sessionId);
   } else {
     initial = await markReturned("bcd", sessionId);
     alreadyReturned = true;

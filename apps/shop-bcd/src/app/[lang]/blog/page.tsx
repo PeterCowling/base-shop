@@ -20,7 +20,7 @@ export default async function BlogPage({ params }: { params: { lang: string } })
       ? `/${params.lang}/product/${p.products[0]}`
       : undefined,
   }));
-  const listing = BlogListing({ posts: items }, {} as any);
+  const listing = <BlogListing posts={items} />;
   return (
     <>
       {shop.editorialBlog?.promoteSchedule && (

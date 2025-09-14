@@ -22,7 +22,7 @@ export const options = {
   },
 };
 
-export default function () {
+export default function ordersLoadTest() {
   const base = __ENV.API_BASE_URL;
   const params = {
     headers: {
@@ -44,7 +44,7 @@ export default function () {
         'tracking status ok or 404': (r) => r.status === 200 || r.status === 404,
       });
     }
-  } catch (_) {
+  } catch {
     // ignore JSON parse errors
   }
 

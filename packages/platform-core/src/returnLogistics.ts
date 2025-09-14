@@ -9,7 +9,7 @@ let cached: ReturnLogistics | null = null;
 export async function getReturnLogistics(): Promise<ReturnLogistics> {
   if (cached) return cached;
   const file = path.join(resolveDataRoot(), "..", "return-logistics.json");
-  const buf = await fs.readFile(file, "utf8");
+  const buf = await fs.readFile(file, "utf8"); // eslint-disable-line security/detect-non-literal-fs-filename
   cached = returnLogisticsSchema.parse(JSON.parse(buf));
   return cached;
 }

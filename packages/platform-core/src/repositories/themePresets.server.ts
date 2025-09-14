@@ -3,6 +3,8 @@ import "server-only";
 import { prisma } from "../db";
 import { resolveRepo } from "./repoResolver";
 
+type PrismaWithThemePreset = { themePreset?: unknown };
+
 type ThemePresetRepo = {
   getThemePresets(shop: string): Promise<Record<string, Record<string, string>>>;
   saveThemePreset(
@@ -18,7 +20,7 @@ let repoPromise: Promise<ThemePresetRepo> | undefined;
 async function getRepo(): Promise<ThemePresetRepo> {
   if (!repoPromise) {
     repoPromise = resolveRepo<ThemePresetRepo>(
-      () => (prisma as any).themePreset,
+      () => (prisma as PrismaWithThemePreset).themePreset,
       () =>
         import("./themePresets.prisma.server").then(
           (m) => m.prismaThemePresetRepository,

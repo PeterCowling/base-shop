@@ -2,12 +2,14 @@ import { jest } from "@jest/globals";
 import path from "path";
 import jwt from "jsonwebtoken";
 
-const readFileSync = jest.fn();
-const writeFileSync = jest.fn();
-jest.mock("fs", () => ({ readFileSync, writeFileSync }));
+jest.mock("@acme/shared-utils", () => ({ logger: { warn: jest.fn() } }));
+import { logger } from "@acme/shared-utils";
 
-const spawn = jest.fn();
-jest.mock("child_process", () => ({ spawn }));
+jest.mock("fs", () => ({ readFileSync: jest.fn(), writeFileSync: jest.fn() }));
+import { readFileSync, writeFileSync } from "fs";
+
+jest.mock("child_process", () => ({ spawn: jest.fn() }));
+import { spawn } from "child_process";
 
 let onRequestPost: typeof import("../publish-upgrade").onRequestPost;
 const root = path.resolve(__dirname, "..", "../../../../../..");
@@ -27,7 +29,8 @@ beforeEach(() => {
 describe("onRequestPost", () => {
   describe("id validation", () => {
     it("rejects missing id", async () => {
-      const warn = jest.spyOn(console, "warn").mockImplementation();
+      const warn = logger.warn as jest.Mock;
+      warn.mockImplementation(() => {});
       const res = await onRequestPost({
         params: {} as any,
         request: new Request("http://example.com", { method: "POST" }),
@@ -36,13 +39,14 @@ describe("onRequestPost", () => {
       expect(res.status).toBe(400);
       expect(body).toEqual({ error: "Invalid shop id" });
       expect(warn).toHaveBeenCalledWith("invalid shop id", { id: undefined });
-      warn.mockRestore();
+      warn.mockReset();
     });
 
     it.each(["", "BCD", "bcd!", "Shop"])(
       "rejects invalid id '%s'",
       async (bad) => {
-        const warn = jest.spyOn(console, "warn").mockImplementation();
+        const warn = logger.warn as jest.Mock;
+        warn.mockImplementation(() => {});
         const res = await onRequestPost({
           params: { id: bad },
           request: new Request("http://example.com", { method: "POST" }),
@@ -51,7 +55,7 @@ describe("onRequestPost", () => {
         expect(res.status).toBe(400);
         expect(body).toEqual({ error: "Invalid shop id" });
         expect(warn).toHaveBeenCalledWith("invalid shop id", { id: bad });
-        warn.mockRestore();
+        warn.mockReset();
       }
     );
   });
@@ -60,7 +64,8 @@ describe("onRequestPost", () => {
     it.each([undefined, "Token foo"])(
       "rejects missing or malformed header %s",
       async (header) => {
-        const warn = jest.spyOn(console, "warn").mockImplementation();
+        const warn = logger.warn as jest.Mock;
+        warn.mockImplementation(() => {});
         const init: RequestInit = { method: "POST" };
         if (header) init.headers = { Authorization: header };
         const res = await onRequestPost({
@@ -71,13 +76,14 @@ describe("onRequestPost", () => {
         expect(res.status).toBe(401);
         expect(body).toEqual({ error: "Unauthorized" });
         expect(warn).toHaveBeenCalledWith("missing bearer token", { id });
-        warn.mockRestore();
+        warn.mockReset();
       }
     );
   });
 
   it("returns 403 for any bearer token when secret missing", async () => {
-    const warn = jest.spyOn(console, "warn").mockImplementation();
+    const warn = logger.warn as jest.Mock;
+    warn.mockImplementation(() => {});
     const res = await onRequestPost({
       params: { id },
       request: new Request("http://example.com", {
@@ -89,12 +95,13 @@ describe("onRequestPost", () => {
     expect(res.status).toBe(403);
     expect(body).toEqual({ error: "Forbidden" });
     expect(warn).toHaveBeenCalledWith("invalid token", { id });
-    warn.mockRestore();
+    warn.mockReset();
   });
 
   it("returns 403 when secret is empty string", async () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "";
-    const warn = jest.spyOn(console, "warn").mockImplementation();
+    const warn = logger.warn as jest.Mock;
+    warn.mockImplementation(() => {});
     const verify = jest.spyOn(jwt, "verify");
     const res = await onRequestPost({
       params: { id },
@@ -108,12 +115,13 @@ describe("onRequestPost", () => {
     expect(body).toEqual({ error: "Forbidden" });
     expect(warn).toHaveBeenCalledWith("invalid token", { id });
     expect(verify).not.toHaveBeenCalled();
-    warn.mockRestore();
+    warn.mockReset();
     verify.mockRestore();
   });
 
   it("returns 403 when jwt.verify throws", async () => {
-    const warn = jest.spyOn(console, "warn").mockImplementation();
+    const warn = logger.warn as jest.Mock;
+    warn.mockImplementation(() => {});
     const verify = jest.spyOn(jwt, "verify").mockImplementation(() => {
       throw new Error("bad token");
     });
@@ -128,7 +136,7 @@ describe("onRequestPost", () => {
     expect(res.status).toBe(403);
     expect(body).toEqual({ error: "Forbidden" });
     expect(warn).toHaveBeenCalledWith("invalid token", { id });
-    warn.mockRestore();
+    warn.mockReset();
     verify.mockRestore();
   });
 

@@ -9,7 +9,7 @@ const shop: BlogShop = shopJson;
 
 export default async function BlogPage({ params }: { params: { lang: string } }) {
   if (!shop.luxuryFeatures.blog) {
-    notFound();
+    return notFound();
   }
   const posts = await fetchPublishedPosts(shop.id);
   const items = posts.map((p) => ({
@@ -20,6 +20,7 @@ export default async function BlogPage({ params }: { params: { lang: string } })
       ? `/${params.lang}/product/${p.products[0]}`
       : undefined,
   }));
+  const listing = BlogListing({ posts: items }, {} as any);
   return (
     <>
       {shop.editorialBlog?.promoteSchedule && (
@@ -27,7 +28,7 @@ export default async function BlogPage({ params }: { params: { lang: string } })
           Daily Edit scheduled for {shop.editorialBlog.promoteSchedule}
         </div>
       )}
-      <BlogListing posts={items} />
+      {listing}
     </>
   );
 }

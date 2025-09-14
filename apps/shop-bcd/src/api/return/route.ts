@@ -4,6 +4,7 @@ import { computeDamageFee } from "@platform-core/pricing";
 import {
   markRefunded,
   markReturned,
+  readOrders,
 } from "@platform-core/repositories/rentalOrders.server";
 import shop from "../../../shop.json";
 
@@ -26,7 +27,15 @@ export async function POST(req: NextRequest) {
   }
   const { sessionId, damage } = parsed.data;
 
-  const initial = await markReturned("bcd", sessionId);
+  let alreadyReturned = false;
+  let initial: any;
+  if (typeof readOrders === "function") {
+    const orders = await readOrders("bcd");
+    initial = orders.find((o: any) => o.sessionId === sessionId);
+  } else {
+    initial = await markReturned("bcd", sessionId);
+    alreadyReturned = true;
+  }
   if (!initial) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
@@ -34,7 +43,7 @@ export async function POST(req: NextRequest) {
   const session = await stripe.checkout.sessions.retrieve(sessionId, {
     expand: ["payment_intent"],
   });
-  const deposit = Number(session.metadata?.depositTotal ?? 0);
+  const deposit = Number(session.metadata?.depositTotal ?? initial.deposit ?? 0);
   const pi =
     typeof session.payment_intent === "string"
       ? session.payment_intent
@@ -70,6 +79,9 @@ export async function POST(req: NextRequest) {
           { status: 500 },
         );
       }
+    }
+    if (!alreadyReturned) {
+      await markReturned("bcd", sessionId);
     }
     if (damageFee > 0) {
       await markReturned("bcd", sessionId, damageFee);

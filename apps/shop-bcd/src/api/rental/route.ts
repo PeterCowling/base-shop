@@ -2,7 +2,11 @@ import "@acme/zod-utils/initZod";
 
 import { stripe } from "@acme/stripe";
 import { computeDamageFee } from "@platform-core/pricing";
-import { addOrder, markReturned } from "@platform-core/repositories/rentalOrders.server";
+import {
+  addOrder,
+  markReturned,
+  readOrders,
+} from "@platform-core/repositories/rentalOrders.server";
 import { readShop } from "@platform-core/repositories/shops.server";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -35,7 +39,15 @@ export async function PATCH(req: NextRequest) {
   if ("response" in parsed) return parsed.response;
   const { sessionId, damage } = parsed.data;
 
-  const order = await markReturned("bcd", sessionId);
+  let alreadyReturned = false;
+  let order: any;
+  if (typeof readOrders === "function") {
+    const orders = await readOrders("bcd");
+    order = orders.find((o: any) => o.sessionId === sessionId);
+  } else {
+    order = await markReturned("bcd", sessionId);
+    alreadyReturned = true;
+  }
   if (!order) {
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
   }
@@ -76,6 +88,9 @@ export async function PATCH(req: NextRequest) {
         metadata: { sessionId, purpose: "damage_fee" },
       });
       clientSecret = intent.client_secret ?? undefined;
+    }
+    if (!alreadyReturned) {
+      await markReturned("bcd", sessionId);
     }
     if (damageFee > 0) {
       await markReturned("bcd", sessionId, damageFee);

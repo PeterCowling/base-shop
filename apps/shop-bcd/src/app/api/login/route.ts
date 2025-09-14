@@ -90,15 +90,7 @@ export async function POST(req: Request) {
     }
   }
 
-  const sessionOptions =
-    parsed.data.remember !== undefined
-      ? { remember: parsed.data.remember }
-      : undefined;
-  if (sessionOptions) {
-    await createCustomerSession(valid, sessionOptions);
-  } else {
-    await createCustomerSession(valid);
-  }
+  await createCustomerSession(valid, { remember: parsed.data.remember });
 
   return NextResponse.json({ ok: true });
 }

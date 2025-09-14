@@ -15,13 +15,15 @@ type ShopRepo = {
 
 let repoPromise: Promise<ShopRepo> | undefined;
 
+type PrismaWithShop = { shop?: unknown };
+
 async function getRepo(): Promise<ShopRepo> {
   if (process.env.NODE_ENV === "test") {
     repoPromise = undefined;
   }
   if (!repoPromise) {
     repoPromise = resolveRepo<ShopRepo>(
-      () => (prisma as any).shop,
+      () => (prisma as PrismaWithShop).shop,
       () => import("./shop.prisma.server"),
       () => import("./shop.json.server"),
       { backendEnvVar: "SHOP_BACKEND" },

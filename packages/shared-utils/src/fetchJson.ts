@@ -10,8 +10,12 @@ export async function fetchJson<T>(
   if (res.ok) {
     let data: unknown;
     try {
-      if (typeof (res as any).json === "function") {
-        data = await (res as any).json();
+      type JsonCapableResponse = Response & {
+        json?: () => Promise<unknown>;
+      };
+      const resWithJson = res as JsonCapableResponse;
+      if (typeof resWithJson.json === "function") {
+        data = await resWithJson.json();
       } else {
         const text = await res.text();
         data = text ? JSON.parse(text) : undefined;

@@ -11,12 +11,16 @@ jest.mock("next/headers", () => ({
   cookies: jest.fn(() => mockCookies),
 }));
 
-jest.mock("@acme/config/env/core", () => ({
-  coreEnv: {
+jest.mock("@acme/config/env/core", () => {
+  const env = {
     SESSION_SECRET: "test-session-secret-32-chars-long-string!",
     COOKIE_DOMAIN: "example.com",
-  },
-}));
+  };
+  return {
+    coreEnv: env,
+    loadCoreEnv: () => env,
+  };
+});
 
 jest.mock("fs", () => {
   const actual = jest.requireActual("fs");

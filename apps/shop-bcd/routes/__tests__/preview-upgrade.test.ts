@@ -7,6 +7,20 @@ process.env.PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "upgradesecret";
 process.env.NEXT_PUBLIC_SHOP_ID = "shop";
 
+jest.mock("@acme/config/env/core", () => {
+  const env = {
+    PREVIEW_TOKEN_SECRET: "testsecret",
+    UPGRADE_PREVIEW_TOKEN_SECRET: "upgradesecret",
+    NEXT_PUBLIC_SHOP_ID: "shop",
+  };
+  return { coreEnv: env, loadCoreEnv: () => env };
+});
+
+jest.mock("@acme/config/env/auth", () => {
+  const env = { UPGRADE_PREVIEW_TOKEN_SECRET: "upgradesecret" };
+  return { authEnv: env, loadAuthEnv: () => env };
+});
+
 if (typeof (Response as any).json !== "function") {
   (Response as any).json = (data: unknown, init?: ResponseInit) =>
     new Response(JSON.stringify(data), init);
@@ -35,10 +49,6 @@ test("valid upgrade token returns page JSON", async () => {
     getPages,
   }));
   jest.doMock("@auth", () => ({ __esModule: true, requirePermission: jest.fn() }));
-  jest.doMock("@acme/config", () => ({
-    __esModule: true,
-    env: { UPGRADE_PREVIEW_TOKEN_SECRET: "upgradesecret" },
-  }));
 
   const { GET: tokenGET } = await import(
     "../../src/app/api/preview-token/route"

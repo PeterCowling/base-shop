@@ -9,7 +9,8 @@ jest.mock("@/components/DynamicRenderer", () => ({
 
 jest.mock("@ui/src/components/DeviceSelector", () => ({
   __esModule: true,
-  default: (props: any) => <div data-cy="selector" {...props} />,
+  // Ignore incoming props to avoid passing test-only values to the DOM
+  default: () => <div data-cy="selector" />,
 }));
 
 jest.mock("@ui/utils/devicePresets", () => ({

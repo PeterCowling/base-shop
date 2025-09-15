@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ProductGrid from "./ProductGrid";
-import { PRODUCTS } from "@acme/platform-core/products";
+import { PRODUCTS } from "@acme/platform-core/products/index";
 
 const meta: Meta<typeof ProductGrid> = {
   component: ProductGrid,

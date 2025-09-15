@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import type { SKU } from "@acme/types";
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
-import { PRODUCTS } from "@acme/platform-core/products";
+import { PRODUCTS } from "@acme/platform-core/products/index";
 import { fetchCollection } from "./products/fetchCollection";
 import { Price } from "../../atoms/Price";
 import { ProductVariantSelector } from "../../organisms/ProductVariantSelector";

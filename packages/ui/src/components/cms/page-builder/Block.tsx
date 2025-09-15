@@ -3,8 +3,21 @@ import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
 import DOMPurify from "dompurify";
 import { memo, type ComponentType } from "react";
-import "./animations.css";
 import { blockRegistry } from "../blocks";
+
+const ANIMATION_STYLE_ID = "pb-animations";
+function injectAnimations() {
+  if (typeof document === "undefined") return;
+  if (document.getElementById(ANIMATION_STYLE_ID)) return;
+  const style = document.createElement("style");
+  style.id = ANIMATION_STYLE_ID;
+  style.textContent = `@keyframes pb-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pb-slide { from { transform: translateY(1rem); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.pb-animate-fade { animation: pb-fade 0.5s ease both; }
+.pb-animate-slide { animation: pb-slide 0.5s ease both; }`;
+  document.head.appendChild(style);
+}
+injectAnimations();
 
 function Block({ component, locale }: { component: PageComponent; locale: Locale }) {
   if (component.type === "Text") {

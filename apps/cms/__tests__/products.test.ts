@@ -1,6 +1,6 @@
 // apps/cms/__tests__/products.test.ts
 
-import type { ProductPublication } from "@acme/platform-core/products";
+import type { ProductPublication } from "@acme/platform-core/products/index";
 
 // Ensure auth options do not throw on import
 process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";

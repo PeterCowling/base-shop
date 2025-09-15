@@ -18,8 +18,8 @@ export function mapLocales(
   const description: Record<Locale, string> = {} as Record<Locale, string>;
   const image: Record<Locale, string> = {} as Record<Locale, string>;
   LOCALES.forEach((l) => {
-    title[l] = data[`title_${l}`];
-    description[l] = data[`desc_${l}`];
+    title[l] = data[`title_${l}`] ?? "";
+    description[l] = data[`desc_${l}`] ?? "";
     image[l] = data.image ?? "";
   });
   return { title, description, image };

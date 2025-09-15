@@ -5,6 +5,12 @@
 import { scheduleStockChecks, getStockCheckStatus } from "@platform-core/services/stockScheduler.server";
 import { readInventory } from "@platform-core/repositories/inventory.server";
 
+interface StockCheckStatus {
+  intervalMs: number;
+  lastRun?: number;
+  history: { timestamp: number; alerts: number }[];
+}
+
 export async function updateStockScheduler(shop: string, formData: FormData) {
   const intervalStr = formData.get("intervalMs");
   const intervalMs = Number(intervalStr);
@@ -12,6 +18,6 @@ export async function updateStockScheduler(shop: string, formData: FormData) {
   scheduleStockChecks(shop, () => readInventory(shop), intervalMs);
 }
 
-export async function getSchedulerStatus(shop: string) {
-  return getStockCheckStatus(shop);
+export async function getSchedulerStatus(shop: string): Promise<StockCheckStatus | undefined> {
+  return getStockCheckStatus(shop) as StockCheckStatus | undefined;
 }

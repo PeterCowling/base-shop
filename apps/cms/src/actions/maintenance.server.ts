@@ -20,7 +20,7 @@ export async function updateMaintenanceSchedule(formData: FormData) {
   const initial = startMaintenanceScheduler();
   clearInterval(initial);
   const run = () =>
-    runMaintenanceScan().catch((err) =>
+    runMaintenanceScan().catch((err: unknown) =>
       logger.error("maintenance scan failed", { err }),
     );
   timer = setInterval(run, freq);

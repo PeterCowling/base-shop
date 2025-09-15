@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { useProductFilters } from "../../../hooks/useProductFilters";
-import { PRODUCTS } from "@acme/platform-core/products";
+import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
 
 type FilterSku = SKU & { id: string; title: string };

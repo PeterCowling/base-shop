@@ -17,13 +17,13 @@ jest.mock("../../../organisms/ProductCarousel", () => ({
   ),
 }));
 
-jest.mock("@acme/platform-core/products", () => ({
+jest.mock("@acme/platform-core/products/index", () => ({
   PRODUCTS: [{ id: "mock" }],
 }));
 
 import CmsProductCarousel, { getRuntimeProps } from "../ProductCarousel";
 import { fetchCollection } from "../products/fetchCollection";
-import { PRODUCTS } from "@acme/platform-core/products";
+import { PRODUCTS } from "@acme/platform-core/products/index";
 
 describe("CmsProductCarousel", () => {
   let setProducts: jest.Mock;

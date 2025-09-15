@@ -9,7 +9,7 @@ jest.mock("../../../organisms/RecommendationCarousel", () => {
   };
 });
 
-jest.mock("@acme/platform-core/products", () => ({
+jest.mock("@acme/platform-core/products/index", () => ({
   PRODUCTS: [{ id: "1" }, { id: "2" }],
 }));
 

@@ -11,7 +11,7 @@ jest.mock("../../../atoms/Price", () => ({
   ),
 }));
 
-jest.mock("@acme/platform-core/products", () => ({
+jest.mock("@acme/platform-core/products/index", () => ({
   PRODUCTS: [
     { id: "1", title: "A", price: 10 },
     { id: "2", title: "B", price: 15 },
@@ -20,7 +20,7 @@ jest.mock("@acme/platform-core/products", () => ({
 }));
 
 import ProductBundle, { getRuntimeProps } from "../ProductBundle";
-import { PRODUCTS } from "@acme/platform-core/products";
+import { PRODUCTS } from "@acme/platform-core/products/index";
 
 describe("ProductBundle", () => {
   it("returns null when skus is missing or empty", () => {

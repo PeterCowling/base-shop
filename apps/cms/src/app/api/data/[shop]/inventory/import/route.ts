@@ -48,7 +48,7 @@ export async function POST(
     } else if (hasArrayBuffer(file)) {
       const buf = await file.arrayBuffer();
       text = new TextDecoder().decode(buf);
-    } else if (file instanceof Blob) {
+    } else if (typeof file === "object" && (file as any) instanceof Blob) {
       text = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
         reader.onerror = () => reject(reader.error);

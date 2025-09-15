@@ -105,6 +105,12 @@
       "@acme/platform-core/*": [
         "../../packages/platform-core/src/*", "../../packages/platform-core/dist/*"
       ],
+      "@acme/platform-machine": [
+        "../../packages/platform-machine/src/index.ts", "../../packages/platform-machine/dist/index"
+      ],
+      "@acme/platform-machine/*": [
+        "../../packages/platform-machine/src/*", "../../packages/platform-machine/dist/*"
+      ],
       "@acme/email": [
         "../../packages/email/src/index.ts", "../../packages/email/dist/index"
       ],
@@ -177,6 +183,7 @@
   "references": [
     { "path": "../../packages/ui" },
     { "path": "../../packages/platform-core" },
+    { "path": "../../packages/platform-machine" },
     { "path": "../../packages/auth" },
     { "path": "../../packages/lib" },
     { "path": "../../packages/shared-utils" },

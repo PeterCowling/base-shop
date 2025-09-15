@@ -163,7 +163,7 @@ export async function deleteProduct(shop: string, id: string): Promise<void> {
   "use server";
   await ensureAuthorized();
 
-  await deleteProductFromRepo<ProductPublication>(shop, id);
+  await deleteProductFromRepo(shop, id);
   redirect(`/cms/shop/${shop}/products`);
 }
 

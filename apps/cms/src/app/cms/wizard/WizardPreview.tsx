@@ -114,9 +114,9 @@ const WizardPreview = forwardRef<HTMLDivElement, Props>(function WizardPreview(
     >
       <TranslationsProvider messages={enMessages}>
         <AppShell
-          header={<Header locale="en" />}
+          header={<Header locale="en" shopName="" />}
           sideNav={<SideNav />}
-          footer={<Footer />}
+          footer={<Footer shopName="" />}
         >
           {components.map((c) => (
             <Block key={c.id} component={c} />

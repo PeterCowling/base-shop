@@ -114,7 +114,7 @@ export async function POST(req: Request) {
     }
   })();
 
-  return new Response(readable, {
+  return new Response(readable as any, {
     headers: {
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",

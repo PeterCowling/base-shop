@@ -10,10 +10,15 @@
     "baseUrl": ".",
     "paths": {
       "@acme/ui": ["../ui/dist/index.d.ts", "types-compat/ui"],
-      "@acme/ui/*": ["../ui/dist/*"]
+      "@acme/ui/*": ["../ui/dist/*"],
+      "@acme/types": ["../types/src/index", "../types/dist/index.d.ts"],
+      "@acme/types/*": ["../types/src/*", "../types/dist/*"]
     }
   },
   "include": ["src/**/*", "types-compat/**/*.d.ts"],
-  "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"]
+  "exclude": ["dist", "**/__tests__/**", ".turbo", "node_modules"],
+  "references": [
+    { "path": "../types" }
+  ]
 }
 

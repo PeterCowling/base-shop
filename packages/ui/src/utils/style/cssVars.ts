@@ -1,4 +1,4 @@
-import type { StyleOverrides } from "../../../../types/src/style/StyleOverrides";
+import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 
 export function cssVars(overrides?: StyleOverrides): Record<string, string> {
   if (!overrides) return {};

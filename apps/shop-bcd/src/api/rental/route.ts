@@ -46,7 +46,7 @@ export async function PATCH(req: NextRequest) {
     const orders = await readOrders("bcd");
     order = orders.find((o) => o.sessionId === sessionId);
   } else {
-    order = await markReturned("bcd", sessionId);
+    order = (await markReturned("bcd", sessionId)) ?? undefined;
     alreadyReturned = true;
   }
   if (!order) {

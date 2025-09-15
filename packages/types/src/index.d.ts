@@ -34,3 +34,6 @@ export * from "./settings";
 export * from "./shop-seo";
 export * from "./shop-locale";
 export * from "./shop-theme";
+export type { StyleOverrides } from "./style/StyleOverrides";
+export * from "./ds";
+export * from "./theme";

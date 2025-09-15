@@ -23,8 +23,10 @@ const DeviceSelector = ({ setDeviceId }: any) => (
 jest.mock("@ui/components/DeviceSelector", () => ({ __esModule: true, default: (props: any) => DeviceSelector(props) }));
 
 // Stub DynamicRenderer so we can detect render
-const DynamicRenderer = jest.fn(() => <div data-cy="dynamic" />);
-jest.mock("@ui/components/DynamicRenderer", () => ({ __esModule: true, default: (props: any) => DynamicRenderer(props) }));
+jest.mock("@ui/components/DynamicRenderer", () => ({
+  __esModule: true,
+  default: (props: any) => <div data-cy="dynamic" {...props} />,
+}));
 
 describe("PreviewClient", () => {
   it("changes width and height when a different device is selected and renders DynamicRenderer", async () => {

@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
   const { sessionId, damage } = parsed.data;
 
   let alreadyReturned = false;
-  let initial: RentalOrder | undefined;
+  let initial: RentalOrder | null | undefined;
   if (typeof readOrders === "function") {
     const orders = await readOrders("bcd");
     initial = orders.find((o) => o.sessionId === sessionId);

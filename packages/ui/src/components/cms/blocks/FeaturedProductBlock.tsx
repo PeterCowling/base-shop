@@ -9,8 +9,12 @@ import { fetchCollection } from "./products/fetchCollection";
 import { Price } from "../../atoms/Price";
 import { ProductVariantSelector } from "../../organisms/ProductVariantSelector";
 
+type FeaturedProduct = SKU & {
+  badges?: { sale?: boolean; new?: boolean };
+};
+
 export interface FeaturedProductBlockProps {
-  sku?: SKU;
+  sku?: FeaturedProduct;
   collectionId?: string;
 }
 
@@ -22,7 +26,7 @@ export default function FeaturedProductBlock({
   sku,
   collectionId,
 }: FeaturedProductBlockProps) {
-  const [product, setProduct] = useState<SKU | null>(sku ?? null);
+  const [product, setProduct] = useState<FeaturedProduct | null>(sku ?? null);
   const [size, setSize] = useState<string | undefined>();
   const [quantity, setQuantity] = useState(1);
 
@@ -31,7 +35,7 @@ export default function FeaturedProductBlock({
     const load = async () => {
       if (collectionId) {
         const fetched = await fetchCollection(collectionId);
-        if (!cancelled) setProduct(fetched[0] ?? null);
+        if (!cancelled) setProduct((fetched[0] as FeaturedProduct) ?? null);
       } else {
         setProduct(sku ?? null);
       }

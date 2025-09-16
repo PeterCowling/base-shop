@@ -6,7 +6,12 @@ const isTest =
   process.env.NODE_ENV === "test" ||
   process.env.JEST_WORKER_ID !== undefined ||
   (isJest && process.env.NODE_ENV !== "production");
-const isProd = process.env.NODE_ENV === "production" && !isTest;
+const nextPhase = process.env.NEXT_PHASE?.toLowerCase();
+// Next.js sets NEXT_PHASE=phase-production-build during `next build`.
+// Allow development defaults in that phase so the bundle can compile without real secrets.
+const isNextProductionBuildPhase = nextPhase === "phase-production-build";
+const isProd =
+  process.env.NODE_ENV === "production" && !isTest && !isNextProductionBuildPhase;
 
 // Normalize AUTH_TOKEN_TTL from the process environment so validation succeeds
 // even if the shell exported a plain number or included stray whitespace.

@@ -101,6 +101,20 @@ const nextConfig = {
       "react-dom/server": REACT_DOM_SERVER,
     };
 
+    if (config.resolve.alias["oidc-token-hash"] === undefined) {
+      try {
+        const nextAuthEntry = require.resolve("next-auth");
+        const nextAuthRequire = createRequire(nextAuthEntry);
+        const resolvedOidcTokenHash = realpathSync(
+          nextAuthRequire.resolve("oidc-token-hash"),
+        );
+
+        config.resolve.alias["oidc-token-hash"] = resolvedOidcTokenHash;
+      } catch {
+        // next-auth is optional for some builds; skip aliasing when absent.
+      }
+    }
+
     if (!isServer) {
       config.resolve.alias["@sentry/node"] = false;
       config.resolve.alias["@sentry/opentelemetry"] = false;

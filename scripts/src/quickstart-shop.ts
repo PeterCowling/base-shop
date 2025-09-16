@@ -110,6 +110,20 @@ async function main(): Promise<void> {
   } as unknown as CreateShopOptions;
 
   const prefixedId = `shop-${shopId}`;
+
+  const buildResult = spawnSync("pnpm", ["-r", "build"], {
+    stdio: "inherit",
+  });
+
+  if (buildResult.error) {
+    console.error("Failed to run pnpm -r build:", buildResult.error.message);
+    process.exit(1);
+  }
+
+  if (buildResult.status !== 0) {
+    process.exit(buildResult.status ?? 1);
+  }
+
   try {
     await createShopAndSeed(
       prefixedId,

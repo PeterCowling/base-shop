@@ -114,7 +114,8 @@ export async function POST(req: Request) {
     }
   })();
 
-  return new Response(readable as any, {
+  const stream = readable as unknown as ReadableStream<Uint8Array>;
+  return new Response(stream, {
     headers: {
       "Content-Type": "text/event-stream",
       "Cache-Control": "no-cache",

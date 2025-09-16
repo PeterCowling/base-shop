@@ -28,6 +28,10 @@ function hasArrayBuffer(
   );
 }
 
+function isBlob(value: unknown): value is Blob {
+  return typeof Blob !== "undefined" && value instanceof Blob;
+}
+
 export async function POST(
   req: NextRequest,
   context: { params: Promise<{ shop: string }> }
@@ -48,7 +52,7 @@ export async function POST(
     } else if (hasArrayBuffer(file)) {
       const buf = await file.arrayBuffer();
       text = new TextDecoder().decode(buf);
-    } else if (typeof file === "object" && (file as any) instanceof Blob) {
+    } else if (isBlob(file)) {
       text = await new Promise<string>((resolve, reject) => {
         const reader = new FileReader();
         reader.onerror = () => reject(reader.error);

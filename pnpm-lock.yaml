@@ -49,6 +49,9 @@ importers:
       '@acme/zod-utils':
         specifier: workspace:^
         version: link:packages/zod-utils
+      '@babel/runtime':
+        specifier: ^7.27.6
+        version: 7.27.6
       '@cloudflare/next-on-pages':
         specifier: ^1.13.12
         version: 1.13.12(@cloudflare/workers-types@4.20250704.0)(vercel@44.2.11(@swc/core@1.12.9)(rollup@4.44.1))(wrangler@4.23.0(@cloudflare/workers-types@4.20250704.0))
@@ -61,6 +64,9 @@ importers:
       '@dnd-kit/utilities':
         specifier: ^3.2.2
         version: 3.2.2(react@19.2.0-canary-3fbfb9ba-20250409)
+      '@panva/hkdf':
+        specifier: ^1.2.1
+        version: 1.2.1
       '@portabletext/editor':
         specifier: ^2.3.1
         version: 2.3.1(@sanity/schema@4.3.0(@types/react@19.1.8))(@sanity/types@4.3.0(@types/react@19.1.8))(@types/react@19.1.8)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(rxjs@7.8.2)
@@ -121,15 +127,24 @@ importers:
       chart.js:
         specifier: ^4.5.0
         version: 4.5.0
+      cookie:
+        specifier: ^0.7.2
+        version: 0.7.2
       fast-csv:
         specifier: ^5.0.5
         version: 5.0.5
+      fast-redact:
+        specifier: ^3.5.0
+        version: 3.5.0
       helmet:
         specifier: ^8.1.0
         version: 8.1.0
       identity-obj-proxy:
         specifier: ^3.0.0
         version: 3.0.0
+      jose:
+        specifier: ^4.15.9
+        version: 4.15.9
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
@@ -154,6 +169,15 @@ importers:
       openai:
         specifier: ^4.104.0
         version: 4.104.0(ws@8.18.3)(zod@3.25.73)
+      openid-client:
+        specifier: ^5.7.1
+        version: 5.7.1
+      preact:
+        specifier: ^10.26.9
+        version: 10.26.9
+      preact-render-to-string:
+        specifier: ^5.2.6
+        version: 5.2.6(preact@10.26.9)
       rate-limiter-flexible:
         specifier: ^7.2.0
         version: 7.2.0
@@ -184,6 +208,9 @@ importers:
       ulid:
         specifier: ^3.0.1
         version: 3.0.1
+      uuid:
+        specifier: ^8.3.2
+        version: 8.3.2
       zod:
         specifier: 3.25.73
         version: 3.25.73

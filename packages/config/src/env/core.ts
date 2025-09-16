@@ -6,7 +6,6 @@ import { cmsEnvSchema } from "./cms.schema.js";
 import { emailEnvSchema } from "./email.js";
 import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
-import { createRequire } from "module";
 const isJest = typeof (globalThis as { jest?: unknown }).jest !== "undefined";
 const isTest =
   process.env.NODE_ENV === "test" ||
@@ -244,27 +243,29 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
 
 // Lazy proxy; no import-time parse in dev.
 let __cachedCoreEnv: CoreEnv | null = null;
-const nodeRequire =
-  typeof require !== "undefined"
-    ? require
-    : createRequire(import.meta.url);
+const nodeRequire: NodeJS.Require | null =
+  typeof require === "function" ? require : null;
 const envMode = process.env.NODE_ENV;
 function getCoreEnv(): CoreEnv {
   if (!__cachedCoreEnv) {
     if (envMode === "production" || envMode == null) {
-      try {
-        const mod = nodeRequire("./core.js") as typeof import("./core.js");
-        __cachedCoreEnv = mod.loadCoreEnv();
-      } catch (error) {
-        const code =
-          typeof error === "object" && error && "code" in error
-            ? (error as { code?: unknown }).code
-            : undefined;
-        if (code === "MODULE_NOT_FOUND" || code === "ERR_MODULE_NOT_FOUND") {
-          __cachedCoreEnv = parseCoreEnv();
-        } else {
-          throw error;
+      if (nodeRequire) {
+        try {
+          const mod = nodeRequire("./core.js") as typeof import("./core.js");
+          __cachedCoreEnv = mod.loadCoreEnv();
+        } catch (error) {
+          const code =
+            typeof error === "object" && error && "code" in error
+              ? (error as { code?: unknown }).code
+              : undefined;
+          if (code === "MODULE_NOT_FOUND" || code === "ERR_MODULE_NOT_FOUND") {
+            __cachedCoreEnv = parseCoreEnv();
+          } else {
+            throw error;
+          }
         }
+      } else {
+        __cachedCoreEnv = parseCoreEnv();
       }
     } else {
       __cachedCoreEnv = parseCoreEnv();

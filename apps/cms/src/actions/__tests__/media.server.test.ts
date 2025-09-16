@@ -35,19 +35,13 @@ jest.mock('@/lib/server/jsonIO', () => ({ writeJsonFile: writeJsonFileMock }));
 
 import path from 'path';
 import { File } from 'node:buffer';
-import * as media from '../media.server';
+import * as mediaActions from '../media.server';
+import * as mediaHelpers from '../media.helpers';
 import { ensureAuthorized } from '../common/auth';
 import { validateShopName } from '@platform-core/shops';
 
-const {
-  uploadsDir,
-  metadataPath,
-  readMetadata,
-  writeMetadata,
-  listMedia,
-  uploadMedia,
-  deleteMedia,
-} = media;
+const { listMedia, uploadMedia, deleteMedia } = mediaActions;
+const { uploadsDir, metadataPath, readMetadata, writeMetadata } = mediaHelpers;
 
 describe('media.server helpers and actions', () => {
   beforeEach(() => {
@@ -347,8 +341,8 @@ describe('media.server helpers and actions', () => {
 
     it('ignores missing files and does not update metadata', async () => {
       fsMock.unlink.mockRejectedValueOnce(new Error('missing'));
-      jest.spyOn(media, 'readMetadata').mockResolvedValue({});
-      const writeMetadataSpy = jest.spyOn(media, 'writeMetadata');
+      jest.spyOn(mediaHelpers, 'readMetadata').mockResolvedValue({});
+      const writeMetadataSpy = jest.spyOn(mediaHelpers, 'writeMetadata');
       await expect(
         deleteMedia('shop', '/uploads/shop/missing.jpg'),
       ).resolves.toBeUndefined();

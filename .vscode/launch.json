@@ -2,6 +2,36 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch: Next.js CMS (dev, logs in Debug Console)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/apps/cms/node_modules/next/dist/bin/next",
+      "args": ["dev", "-p", "3006"],
+      "cwd": "${workspaceFolder}/apps/cms",
+      "env": {
+        "NODE_OPTIONS": "--enable-source-maps --trace-uncaught"
+      },
+      "autoAttachChildProcesses": true,
+      "sourceMaps": true,
+      "smartStep": true,
+      "console": "internalConsole",
+      "internalConsoleOptions": "openOnSessionStart",
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/**/node_modules/**"
+      ],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/apps/cms/.next/**/*.js",
+        "${workspaceFolder}/**/*.js",
+        "${workspaceFolder}/**/*.cjs",
+        "${workspaceFolder}/**/*.mjs"
+      ]
+    },
+    {
       "name": "Attach: Next.js main (9229)",
       "type": "node",
       "request": "attach",

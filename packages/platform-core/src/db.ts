@@ -75,6 +75,29 @@ function createTestPrismaStub(): Pick<
 
   return stub;
 }
+type RequireFn = ReturnType<typeof createRequire>;
+
+function resolveRequire(): RequireFn | undefined {
+  const globalRequire = (globalThis as { require?: unknown }).require;
+  if (typeof globalRequire === "function") {
+    return globalRequire as RequireFn;
+  }
+
+  if (typeof __filename === "string") {
+    try {
+      return createRequire(__filename);
+    } catch {
+      // ignore and fall back to cwd based resolution
+    }
+  }
+
+  try {
+    return createRequire(process.cwd() + "/");
+  } catch {
+    return undefined;
+  }
+}
+
 let PrismaCtor: (new (...args: unknown[]) => PrismaClientType) | undefined;
 
 function loadPrismaClient():
@@ -82,13 +105,11 @@ function loadPrismaClient():
   | undefined {
   if (PrismaCtor !== undefined) return PrismaCtor;
   try {
-    const moduleIdentifier = typeof __filename !== 'undefined'
-      ? __filename
-      : new URL(
-          './db.ts',
-          Function('return import.meta.url')() as string,
-        );
-    const req = createRequire(moduleIdentifier);
+    const req = resolveRequire();
+    if (!req) {
+      PrismaCtor = undefined;
+      return PrismaCtor;
+    }
     PrismaCtor = (
       req("@prisma/client") as {
         PrismaClient: new (...args: unknown[]) => PrismaClientType;

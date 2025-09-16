@@ -245,13 +245,27 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
 // Lazy proxy; no import-time parse in dev.
 let __cachedCoreEnv: CoreEnv | null = null;
 const nodeRequire =
-  typeof require !== "undefined" ? require : createRequire(eval("import.meta.url"));
+  typeof require !== "undefined"
+    ? require
+    : createRequire(import.meta.url);
 const envMode = process.env.NODE_ENV;
 function getCoreEnv(): CoreEnv {
   if (!__cachedCoreEnv) {
     if (envMode === "production" || envMode == null) {
-      const mod = nodeRequire("./core.js") as typeof import("./core.js");
-      __cachedCoreEnv = mod.loadCoreEnv();
+      try {
+        const mod = nodeRequire("./core.js") as typeof import("./core.js");
+        __cachedCoreEnv = mod.loadCoreEnv();
+      } catch (error) {
+        const code =
+          typeof error === "object" && error && "code" in error
+            ? (error as { code?: unknown }).code
+            : undefined;
+        if (code === "MODULE_NOT_FOUND" || code === "ERR_MODULE_NOT_FOUND") {
+          __cachedCoreEnv = parseCoreEnv();
+        } else {
+          throw error;
+        }
+      }
     } else {
       __cachedCoreEnv = parseCoreEnv();
     }

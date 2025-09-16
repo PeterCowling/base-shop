@@ -1,0 +1,83 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach: Next.js main (9229)",
+      "type": "node",
+      "request": "attach",
+      "address": "127.0.0.1",
+      "port": 9229,
+      "protocol": "inspector",
+      "cwd": "${workspaceFolder}/apps/cms",
+      "sourceMaps": true,
+      "smartStep": true,
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/**/node_modules/**"
+      ],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**",
+        "!**/.next/**"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/**/*.js",
+        "${workspaceFolder}/**/*.cjs",
+        "${workspaceFolder}/**/*.mjs"
+      ]
+    },
+    {
+      "name": "Attach: Next.js router (9230)",
+      "type": "node",
+      "request": "attach",
+      "address": "127.0.0.1",
+      "port": 9230,
+      "protocol": "inspector",
+      "cwd": "${workspaceFolder}/apps/cms",
+      "sourceMaps": true,
+      "smartStep": true,
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/**/node_modules/**"
+      ],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**",
+        "!**/.next/**"
+      ],
+      "outFiles": [
+        "${workspaceFolder}/**/*.js",
+        "${workspaceFolder}/**/*.cjs",
+        "${workspaceFolder}/**/*.mjs"
+      ]
+    },
+    {
+      "name": "Attach: Pick Node Process",
+      "type": "node",
+      "request": "attach",
+      "processId": "${command:PickProcess}",
+      "cwd": "${workspaceFolder}/apps/cms",
+      "sourceMaps": true,
+      "smartStep": true,
+      "skipFiles": [
+        "<node_internals>/**",
+        "${workspaceFolder}/**/node_modules/**"
+      ],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/**",
+        "!**/node_modules/**",
+        "!**/.next/**"
+      ]
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Attach: Next.js (both servers)",
+      "configurations": [
+        "Attach: Next.js main (9229)",
+        "Attach: Next.js router (9230)"
+      ],
+      "stopAll": true
+    }
+  ]
+}

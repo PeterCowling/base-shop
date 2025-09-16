@@ -92,7 +92,8 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
   const startTour = useCallback(() => setRunTour(true), []);
 
   const [showGrid, setShowGrid] = useState(false);
-  const gridCols = state.gridCols;
+  const gridCols =
+    typeof state.gridCols === "number" ? state.gridCols : 12;
   const toggleGrid = useCallback(() => {
     setShowGrid((g) => !g);
     dispatch({ type: "set-grid-cols", gridCols });

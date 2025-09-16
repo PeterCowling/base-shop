@@ -3,7 +3,11 @@ import type { Locale } from "@acme/i18n";
 import type { MediaItem } from "@acme/types";
 import type { ProductWithVariants } from "../hooks/useProductInputs";
 
-type MediaWithFile = MediaItem & { file?: File; [key: string]: unknown };
+type MediaWithFile = MediaItem & { file?: File };
+
+function hasFileProperty(item: MediaItem): item is MediaWithFile {
+  return "file" in item;
+}
 
 export function buildProductFormData(
   product: ProductWithVariants,
@@ -22,10 +26,15 @@ export function buildProductFormData(
 
   // Extract file attachments from media items and append them separately
   const mediaWithoutFiles = product.media.map(
-    (item: MediaWithFile, index: number): Omit<MediaWithFile, "file"> => {
+    (item: MediaItem, index: number): MediaItem => {
+      if (!hasFileProperty(item)) {
+        return item;
+      }
+
       if (item.file instanceof File) {
         fd.append(`file_${index}`, item.file);
       }
+
       const { file: _file, ...rest } = item;
       void _file;
       return rest;

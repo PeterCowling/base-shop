@@ -1,5 +1,12 @@
 "use client";
-import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+  type Reducer,
+} from "react";
 import type { Page, PageComponent, HistoryState } from "@acme/types";
 import { historyStateSchema, reducer, type Action } from "../state";
 
@@ -32,7 +39,11 @@ export function usePageBuilderState({
     []
   );
 
-  const [state, rawDispatch] = useReducer(reducer, undefined, (): HistoryState => {
+  const typedReducer: Reducer<HistoryState, Action> = reducer;
+  const [state, rawDispatch] = useReducer(
+    typedReducer,
+    undefined,
+    (): HistoryState => {
     const initial = migrate(page.components);
     const fromServer = history ?? page.history;
     const parsedServer = fromServer
@@ -59,7 +70,10 @@ export function usePageBuilderState({
     }
   });
 
-  const typedState = useMemo(() => historyStateSchema.parse(state), [state]);
+  const typedState = useMemo<HistoryState>(
+    () => historyStateSchema.parse(state),
+    [state]
+  );
   const components = typedState.present;
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [liveMessage, setLiveMessage] = useState("");

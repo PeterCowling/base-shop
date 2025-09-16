@@ -96,14 +96,28 @@ export type PageComponent = z.infer<typeof pageComponentSchema>;
 
 bindPageComponentSchema(pageComponentSchema);
 
+export interface HistoryState {
+  past: PageComponent[][];
+  present: PageComponent[];
+  future: PageComponent[][];
+  gridCols: number;
+  [key: string]: unknown;
+}
+
+const pageComponentHistoryStackSchema = z.array(pageComponentSchema);
+const pageComponentHistoryTimelineSchema = z.array(
+  pageComponentHistoryStackSchema
+);
+
 export const historyStateSchema = z
   .object({
-    step: z.array(z.unknown()).optional(),
+    past: pageComponentHistoryTimelineSchema.default([]),
+    present: pageComponentHistoryStackSchema.default([]),
+    future: pageComponentHistoryTimelineSchema.default([]),
+    gridCols: z.number().int().min(1).max(24).default(12),
   })
   .passthrough()
-  .default({});
-
-export type HistoryState = z.infer<typeof historyStateSchema>;
+  .default({ past: [], present: [], future: [], gridCols: 12 }) as unknown as z.ZodType<HistoryState>;
 
 export interface Page {
   id: string;

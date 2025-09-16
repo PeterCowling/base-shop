@@ -1,4 +1,5 @@
 // apps/cms/next.config.mjs
+import { existsSync, realpathSync } from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -103,6 +104,44 @@ const nextConfig = {
     if (!isServer) {
       config.resolve.alias["@sentry/node"] = false;
       config.resolve.alias["@sentry/opentelemetry"] = false;
+    }
+
+    const sharedUtilsPinoSymlink = path.resolve(
+      __dirname,
+      "../../packages/shared-utils/node_modules/pino",
+    );
+
+    // Turbopack keeps `resolve.symlinks` disabled for better pnpm support, but
+    // that prevents it from following the symlinked copy of `pino` to the
+    // virtual store. Manually alias the runtime dependencies so both the Edge
+    // and Node bundles can resolve them without needing to mutate pnpm's lock
+    // file during development.
+
+    if (existsSync(sharedUtilsPinoSymlink)) {
+      const pinoRealDir = realpathSync(sharedUtilsPinoSymlink);
+      const pinoDepsRoot = path.dirname(pinoRealDir);
+      const pinoRuntimeDeps = [
+        "atomic-sleep",
+        "fast-redact",
+        "on-exit-leak-free",
+        "pino-abstract-transport",
+        "pino-std-serializers",
+        "process-warning",
+        "quick-format-unescaped",
+        "real-require",
+        "safe-stable-stringify",
+        "sonic-boom",
+        "thread-stream",
+      ];
+
+      for (const dep of pinoRuntimeDeps) {
+        if (config.resolve.alias[dep] !== undefined) continue;
+
+        const candidate = path.join(pinoDepsRoot, dep);
+        if (existsSync(candidate)) {
+          config.resolve.alias[dep] = candidate;
+        }
+      }
     }
 
     // Map node: built-ins consistently

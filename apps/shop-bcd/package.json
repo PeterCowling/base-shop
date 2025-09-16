@@ -15,6 +15,7 @@
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/sanity": "workspace:*",
+    "@acme/shared-utils": "workspace:*",
     "@acme/stripe": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/template-app": "workspace:*",

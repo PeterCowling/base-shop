@@ -547,6 +547,9 @@ importers:
       '@acme/sanity':
         specifier: workspace:*
         version: link:../../packages/sanity
+      '@acme/shared-utils':
+        specifier: workspace:*
+        version: link:../../packages/shared-utils
       '@acme/stripe':
         specifier: workspace:*
         version: link:../../packages/stripe

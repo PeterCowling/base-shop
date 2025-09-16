@@ -34,6 +34,18 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       "@ui/src": path.resolve(__dirname, "../ui/src"),
       // Allow imports like "@platform-core/components/…" to resolve to packages/platform-core/src
       "@platform-core": path.resolve(__dirname, "../platform-core/src"),
+      "@acme/config": path.resolve(__dirname, "../config/src"),
+      "@acme/date-utils": path.resolve(__dirname, "../date-utils/src"),
+      "@acme/email": path.resolve(__dirname, "../email/src"),
+      "@acme/email-templates": path.resolve(__dirname, "../email-templates/src"),
+      "@acme/design-tokens": path.resolve(__dirname, "../design-tokens/src"),
+      "@acme/sanity": path.resolve(__dirname, "../sanity/src"),
+      "@acme/lib": path.resolve(__dirname, "../lib/src"),
+      "@acme/stripe": path.resolve(__dirname, "../stripe/src"),
+      "@acme/tailwind-config": path.resolve(__dirname, "../tailwind-config/src"),
+      "@acme/zod-utils": path.resolve(__dirname, "../zod-utils/src"),
+      // Allow imports using the published package name to resolve without a build
+      "@acme/shared-utils": path.resolve(__dirname, "../shared-utils/src"),
       // Allow imports like "@shared-utils" to resolve to packages/shared-utils/src
       "@shared-utils": path.resolve(__dirname, "../shared-utils/src"),
     };

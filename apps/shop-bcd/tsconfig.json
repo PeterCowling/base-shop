@@ -18,6 +18,15 @@
       "@ui/src/*": [
         "../../packages/ui/src/*", "../../packages/ui/dist/src/*"
       ],
+      "@acme/ui": [
+        "../../packages/ui/dist/index",
+        "../../packages/ui/dist",
+        "../../packages/ui/src/index.ts",
+        "../../packages/ui/src"
+      ],
+      "@acme/ui/*": [
+        "../../packages/ui/dist/*", "../../packages/ui/src/*"
+      ],
       "@i18n": [
         "../../packages/i18n/src/index.ts", "../../packages/i18n/dist/index"
       ],
@@ -29,6 +38,15 @@
       ],
       "@acme/i18n/*": [
         "../../packages/i18n/src/*", "../../packages/i18n/dist/*"
+      ],
+      "@acme/config": [
+        "../../packages/config/src/index.ts",
+        "../../packages/config/src",
+        "../../packages/config/dist/index",
+        "../../packages/config/dist"
+      ],
+      "@acme/config/*": [
+        "../../packages/config/src/*", "../../packages/config/dist/*"
       ],
       "@platform-core": [
         "../../packages/platform-core/src/index.ts", "../../packages/platform-core/dist/index"
@@ -60,6 +78,43 @@
       "@date-utils/*": [
         "../../packages/date-utils/src/*", "../../packages/date-utils/dist/*"
       ],
+      "@acme/date-utils": [
+        "../../packages/date-utils/src/index.ts",
+        "../../packages/date-utils/src",
+        "../../packages/date-utils/dist/index",
+        "../../packages/date-utils/dist"
+      ],
+      "@acme/date-utils/*": [
+        "../../packages/date-utils/src/*", "../../packages/date-utils/dist/*"
+      ],
+      "@acme/email": [
+        "../../packages/email/src/index.ts",
+        "../../packages/email/src",
+        "../../packages/email/dist/index",
+        "../../packages/email/dist"
+      ],
+      "@acme/email/*": [
+        "../../packages/email/src/*", "../../packages/email/dist/*"
+      ],
+      "@acme/lib": [
+        "../../packages/lib/src/index.ts",
+        "../../packages/lib/src",
+        "../../packages/lib/dist/index",
+        "../../packages/lib/dist"
+      ],
+      "@acme/lib/*": [
+        "../../packages/lib/src/*", "../../packages/lib/dist/*"
+      ],
+      "@acme/email-templates": [
+        "../../packages/email-templates/src/index.ts",
+        "../../packages/email-templates/src",
+        "../../packages/email-templates/dist/index",
+        "../../packages/email-templates/dist"
+      ],
+      "@acme/email-templates/*": [
+        "../../packages/email-templates/src/*",
+        "../../packages/email-templates/dist/*"
+      ],
       "@shared-utils": [
         "../../packages/shared-utils/src/index.ts",
         "../../packages/shared-utils/src",
@@ -67,6 +122,15 @@
         "../../packages/shared-utils/dist"
       ],
       "@shared-utils/*": [
+        "../../packages/shared-utils/src/*", "../../packages/shared-utils/dist/*"
+      ],
+      "@acme/shared-utils": [
+        "../../packages/shared-utils/src/index.ts",
+        "../../packages/shared-utils/src",
+        "../../packages/shared-utils/dist/index",
+        "../../packages/shared-utils/dist"
+      ],
+      "@acme/shared-utils/*": [
         "../../packages/shared-utils/src/*", "../../packages/shared-utils/dist/*"
       ],
       "@scripts": [
@@ -86,6 +150,33 @@
       ],
       "@acme/types/*": [
         "../../packages/types/src/*", "../../packages/types/dist/*"
+      ],
+      "@acme/sanity": [
+        "../../packages/sanity/src/index.ts",
+        "../../packages/sanity/src",
+        "../../packages/sanity/dist/index",
+        "../../packages/sanity/dist"
+      ],
+      "@acme/sanity/*": [
+        "../../packages/sanity/src/*", "../../packages/sanity/dist/*"
+      ],
+      "@acme/stripe": [
+        "../../packages/stripe/src/index.ts",
+        "../../packages/stripe/src",
+        "../../packages/stripe/dist/index",
+        "../../packages/stripe/dist"
+      ],
+      "@acme/stripe/*": [
+        "../../packages/stripe/src/*", "../../packages/stripe/dist/*"
+      ],
+      "@acme/zod-utils": [
+        "../../packages/zod-utils/src/index.ts",
+        "../../packages/zod-utils/src",
+        "../../packages/zod-utils/dist/index",
+        "../../packages/zod-utils/dist"
+      ],
+      "@acme/zod-utils/*": [
+        "../../packages/zod-utils/src/*", "../../packages/zod-utils/dist/*"
       ]
     },
     "module": "ESNext",
@@ -154,6 +245,12 @@
     },
     {
       "path": "../../packages/stripe"
+    },
+    {
+      "path": "../../packages/lib"
+    },
+    {
+      "path": "../../packages/email-templates"
     }
   ]
 }

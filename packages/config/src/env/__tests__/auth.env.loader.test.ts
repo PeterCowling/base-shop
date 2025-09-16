@@ -1,5 +1,10 @@
 import { describe, it, expect, jest } from '@jest/globals';
-import { REDIS_URL, REDIS_TOKEN } from './authEnvTestUtils';
+import {
+  DEV_NEXTAUTH_SECRET,
+  DEV_SESSION_SECRET,
+  REDIS_URL,
+  REDIS_TOKEN,
+} from './authEnvTestUtils';
 
 const JWT_SECRET = 'jwt-secret-32-chars-long-string!!!';
 const OAUTH_CLIENT_ID = 'client-id';
@@ -49,6 +54,20 @@ describe('config/env/auth', () => {
         'Invalid auth environment variables',
       );
     }));
+
+  it('allows dev defaults during Next production build phase', async () =>
+    withEnv(
+      {
+        NODE_ENV: 'production',
+        NEXT_PHASE: 'phase-production-build',
+      },
+      async () => {
+        const { loadAuthEnv } = await reload();
+        const env = loadAuthEnv();
+        expect(env.NEXTAUTH_SECRET).toBe(DEV_NEXTAUTH_SECRET);
+        expect(env.SESSION_SECRET).toBe(DEV_SESSION_SECRET);
+      },
+    ));
 
   it('requires JWT_SECRET for jwt provider', async () =>
     withEnv({ NODE_ENV: 'development', AUTH_PROVIDER: 'jwt' }, async () => {

@@ -82,10 +82,13 @@ function loadPrismaClient():
   | undefined {
   if (PrismaCtor !== undefined) return PrismaCtor;
   try {
-    const moduleUrl = typeof __filename !== 'undefined'
+    const moduleIdentifier = typeof __filename !== 'undefined'
       ? __filename
-      : (Function('return import.meta.url')() as string);
-    const req = createRequire(moduleUrl);
+      : new URL(
+          './db.ts',
+          Function('return import.meta.url')() as string,
+        );
+    const req = createRequire(moduleIdentifier);
     PrismaCtor = (
       req("@prisma/client") as {
         PrismaClient: new (...args: unknown[]) => PrismaClientType;

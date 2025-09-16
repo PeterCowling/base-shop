@@ -5,45 +5,14 @@ import { validateShopName } from "@platform-core/shops";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { writeJsonFile } from "@/lib/server/jsonIO";
 import sharp from "sharp";
 import { ulid } from "ulid";
 import { ensureAuthorized } from "./common/auth";
-
-/* -------------------------------------------------------------------------- */
-/*  Path helpers                                                              */
-/* -------------------------------------------------------------------------- */
-
-export function uploadsDir(shop: string): string {
-  shop = validateShopName(shop);
-  return path.join(process.cwd(), "public", "uploads", shop);
-}
-
-export function metadataPath(shop: string): string {
-  return path.join(uploadsDir(shop), "metadata.json");
-}
-
-/* -------------------------------------------------------------------------- */
-/*  Metadata helpers                                                          */
-/* -------------------------------------------------------------------------- */
-
-export async function readMetadata(
-  shop: string
-): Promise<Record<string, { title?: string; altText?: string; type?: "image" | "video" }>> {
-  try {
-    const data = await fs.readFile(metadataPath(shop), "utf8");
-    return JSON.parse(data);
-  } catch {
-    return {};
-  }
-}
-
-export async function writeMetadata(
-  shop: string,
-  data: Record<string, { title?: string; altText?: string; type?: "image" | "video" }>
-): Promise<void> {
-  await writeJsonFile(metadataPath(shop), data);
-}
+import {
+  readMetadata,
+  uploadsDir,
+  writeMetadata,
+} from "./media.helpers";
 
 /* -------------------------------------------------------------------------- */
 /*  List                                                                      */

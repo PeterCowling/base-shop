@@ -1,5 +1,5 @@
 // apps/cms/next.config.mjs
-import { existsSync, realpathSync } from "node:fs";
+import { existsSync, readdirSync, realpathSync } from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -24,6 +24,40 @@ process.env.SANITY_API_VERSION ??= "2021-10-21";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const PNPM_VIRTUAL_STORE = path.resolve(__dirname, "../../node_modules/.pnpm");
+
+const resolveFromPnpmStore = (pkg, subpath) => {
+  if (!existsSync(PNPM_VIRTUAL_STORE)) return null;
+  let entries = [];
+  try {
+    entries = readdirSync(PNPM_VIRTUAL_STORE, { withFileTypes: true });
+  } catch {
+    return null;
+  }
+
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+    if (!entry.name.startsWith(`${pkg}@`)) continue;
+
+    const candidate = path.join(
+      PNPM_VIRTUAL_STORE,
+      entry.name,
+      "node_modules",
+      pkg,
+      subpath,
+    );
+
+    if (existsSync(candidate)) return candidate;
+  }
+
+  return null;
+};
+
+const ENTITIES_DECODE_PATH =
+  resolveFromPnpmStore("entities", "dist/commonjs/decode.js") ?? "entities/lib/decode.js";
+const ENTITIES_ESCAPE_PATH =
+  resolveFromPnpmStore("entities", "dist/commonjs/escape.js") ?? "entities/lib/escape.js";
 
 // Resolve concrete entry files once so every build target uses the same instance.
 const REACT_INDEX = require.resolve("react");
@@ -84,13 +118,16 @@ const nextConfig = {
     }
 
     config.resolve ||= {};
-    config.resolve.symlinks = false; // pnpm friendliness
+    // Allow webpack to follow pnpm's symlinks so nested dependencies resolve correctly.
+    config.resolve.symlinks = true;
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
       "@": path.resolve(__dirname, "src"),
       "drizzle-orm": false,
-      "entities/decode": "entities/lib/decode.js",
-      "entities/escape": "entities/lib/escape.js",
+      "entities/decode": ENTITIES_DECODE_PATH,
+      "entities/lib/decode.js": ENTITIES_DECODE_PATH,
+      "entities/escape": ENTITIES_ESCAPE_PATH,
+      "entities/lib/escape.js": ENTITIES_ESCAPE_PATH,
 
       // EXACT-MATCH ALIASES — do NOT shadow subpaths like `react/jsx-runtime`
       react$: REACT_INDEX,

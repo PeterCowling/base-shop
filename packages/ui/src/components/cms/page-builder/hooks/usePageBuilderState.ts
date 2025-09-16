@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 import type { Page, PageComponent, HistoryState } from "@acme/types";
 import { historyStateSchema, reducer, type Action } from "../state";
 
@@ -59,7 +59,8 @@ export function usePageBuilderState({
     }
   });
 
-  const components = state.present;
+  const typedState = useMemo(() => historyStateSchema.parse(state), [state]);
+  const components = typedState.present;
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [liveMessage, setLiveMessage] = useState("");
 
@@ -86,9 +87,9 @@ export function usePageBuilderState({
   useEffect(() => {
     onChange?.(components);
     if (typeof window !== "undefined") {
-      localStorage.setItem(storageKey, JSON.stringify(state));
+      localStorage.setItem(storageKey, JSON.stringify(typedState));
     }
-  }, [components, onChange, state, storageKey]);
+  }, [components, onChange, storageKey, typedState]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {

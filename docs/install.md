@@ -76,7 +76,7 @@ Example `shop.config.json`:
    shipping providers are chosen from guided lists of available providers. It then
    scaffolds `apps/shop-<id>` and prompts for environment variables like Stripe keys and CMS
    credentials, writing them directly to `apps/shop-<id>/.env` and generating a matching
-   `.env.template` with the required keys. The configurator validates the environment immediately and
+   `.env.template` with the required keys. See [plugin environment variables](./plugins.md) for provider-specific keys. The configurator validates the environment immediately and
    can fetch secrets from an external vault by providing `--vault-cmd <cmd>` (the command is invoked
    with each variable name). For scripted setups you can still
    call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and `--contact` to skip those

@@ -1,6 +1,16 @@
 import { execSync } from "node:child_process";
 import { prompt, selectProviders } from "../utils/prompts";
-import type { PluginMeta, } from "../utils/providers";
+import type { PluginMeta } from "../utils/providers";
+
+const PLUGIN_DOC_PATH = "docs/plugins.md";
+
+function formatPluginName(id: string): string {
+  return id
+    .split("-")
+    .filter((segment) => segment.length > 0)
+    .map((segment) => segment[0].toUpperCase() + segment.slice(1))
+    .join(" ");
+}
 
 interface CollectPluginEnvParams {
   payment: string[];
@@ -23,7 +33,9 @@ interface CollectPluginEnvResult {
   unusedEnvFileKeys: string[];
 }
 
-export async function collectPluginEnv(params: CollectPluginEnvParams): Promise<CollectPluginEnvResult> {
+export async function collectPluginEnv(
+  params: CollectPluginEnvParams,
+): Promise<CollectPluginEnvResult> {
   const {
     payment,
     shipping,
@@ -37,7 +49,10 @@ export async function collectPluginEnv(params: CollectPluginEnvParams): Promise<
     skipPrompts,
   } = params;
 
-  const pluginMap = new Map<string, { packageName?: string; envVars: readonly string[] }>();
+  const pluginMap = new Map<
+    string,
+    { packageName?: string; envVars: readonly string[] }
+  >();
   for (const m of [...paymentMeta, ...shippingMeta, ...allPluginMeta]) {
     pluginMap.set(m.id, { packageName: m.packageName, envVars: m.envVars });
   }
@@ -56,6 +71,8 @@ export async function collectPluginEnv(params: CollectPluginEnvParams): Promise<
   const envVars: Record<string, string> = {};
   const requiredEnvKeys = new Set<string>();
   const usedEnvFileKeys = new Set<string>();
+  const remindedAboutDocs = new Set<string>();
+
   for (const id of selectedPlugins) {
     const vars = pluginMap.get(id)?.envVars ?? [];
     for (const key of vars) {
@@ -67,21 +84,32 @@ export async function collectPluginEnv(params: CollectPluginEnvParams): Promise<
       }
       if (vaultCmd) {
         try {
-          const val = execSync(`${vaultCmd} ${key}`, { encoding: "utf8" }).trim();
+          const val = execSync(`${vaultCmd} ${key}`, {
+            encoding: "utf8",
+          }).trim();
           if (val) {
             envVars[key] = val;
             continue;
           }
         } catch {}
       }
-      if (autoEnv || skipPrompts) {
-        envVars[key] = `TODO_${key}`;
-      } else {
+      if (!autoEnv && !skipPrompts) {
+        if (!remindedAboutDocs.has(id)) {
+          const friendlyName = formatPluginName(id) || id;
+          console.log(
+            `Refer to ${PLUGIN_DOC_PATH}#${id}-plugin for guidance on ${friendlyName} credentials.`,
+          );
+          remindedAboutDocs.add(id);
+        }
         envVars[key] = await prompt(`${key}: `, "");
+      } else {
+        envVars[key] = `TODO_${key}`;
       }
     }
   }
-  const unusedEnvFileKeys = Object.keys(envFileVars).filter((k) => !usedEnvFileKeys.has(k));
+  const unusedEnvFileKeys = Object.keys(envFileVars).filter(
+    (k) => !usedEnvFileKeys.has(k),
+  );
 
   return {
     selectedPlugins,

@@ -55,3 +55,34 @@ const manager = await initPlugins({
 
 The relevant configuration object (or the plugin's `defaultConfig`) is passed to
 all registration hooks.
+
+## Environment Variables
+
+The `init-shop` configurator collects credentials for optional plugins when you enable them. Use the references below to prepare the required environment variables before running the wizard or to fill in placeholders after scaffolding a shop.
+
+### PayPal Plugin
+
+- Package: `@acme/plugin-paypal`
+- Type: Payment provider
+- Required environment variables:
+  - `PAYPAL_CLIENT_ID`
+  - `PAYPAL_SECRET`
+- Source: [packages/plugins/paypal/README.md](../packages/plugins/paypal/README.md)
+
+### Premier Shipping Plugin
+
+- Package: `@acme/plugin-premier-shipping`
+- Type: Shipping provider
+- Required environment variables: _None_
+- Source: [packages/plugins/premier-shipping/README.md](../packages/plugins/premier-shipping/README.md)
+
+### Sanity Plugin
+
+- Package: `@acme/plugin-sanity`
+- Type: CMS integration
+- Required environment variables:
+  - `SANITY_PROJECT_ID`
+  - `SANITY_DATASET`
+  - `SANITY_TOKEN`
+- Source: [packages/plugins/sanity/README.md](../packages/plugins/sanity/README.md)
+

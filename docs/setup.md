@@ -4,7 +4,7 @@
 
 - **Node.js** v20 or newer
 - **pnpm** v10 (repo uses pnpm@10.12.1)
-- `DATABASE_URL` in your `.env` pointing to a PostgreSQL database. See [environment variable reference](./.env.reference.md) for the full list of required keys.
+- `DATABASE_URL` in your `.env` pointing to a PostgreSQL database. See [environment variable reference](./.env.reference.md) for the full list of required keys and [plugin environment variables](./plugins.md) for provider credentials.
 
 See [Next.js configuration](./nextjs-config.md) for Cloudflare-specific framework options.
 

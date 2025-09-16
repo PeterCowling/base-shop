@@ -123,6 +123,14 @@ const nextConfig = {
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
       "@": path.resolve(__dirname, "src"),
+      "@acme/configurator": path.resolve(
+        __dirname,
+        "../../packages/configurator/src",
+      ),
+      "@acme/configurator/providers": path.resolve(
+        __dirname,
+        "../../packages/configurator/src/providers.ts",
+      ),
       "drizzle-orm": false,
       "entities/decode": ENTITIES_DECODE_PATH,
       "entities/lib/decode.js": ENTITIES_DECODE_PATH,

@@ -36,6 +36,8 @@ pnpm quickstart-shop --id demo --theme base --template template-app --auto-plugi
 
 `--auto-plugins` selects any detected provider plugins, `--auto-env` populates required environment variables with placeholders, and `--presets` applies default navigation, pages, and a GitHub Actions workflow.
 
+`quickstart-shop` runs `pnpm -r build` automatically before seeding or launching the dev server, so you don't need to build the workspace ahead of time.
+
 Add `--seed` to copy sample products and inventory. Use `--seed-full` to also copy `shop.json`, navigation defaults, page templates, and settings so the shop is immediately populated. Pass `--pages-template <name>` to apply predefined page layouts (`hero`, `product-grid`, `contact`). The script also accepts `--config <file>` to prefill options and skip prompts:
 
 ```bash

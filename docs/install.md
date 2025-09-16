@@ -46,6 +46,9 @@ This wraps the `init-shop` configurator, validates the generated `.env`, and run
 pnpm quickstart-shop --config ./shop.config.json
 ```
 
+`quickstart-shop` automatically builds the workspace (`pnpm -r build`) before seeding data or starting the dev server, so you can
+run it without a manual build step.
+
 Example `shop.config.json`:
 
 ```json

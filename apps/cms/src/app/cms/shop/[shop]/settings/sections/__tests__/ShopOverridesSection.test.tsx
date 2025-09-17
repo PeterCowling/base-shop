@@ -30,6 +30,14 @@ jest.mock(
   "@ui/components",
   () => {
     const React = require("react");
+    const {
+      Card,
+      CardContent,
+      Accordion,
+      AccordionItem,
+      AccordionTrigger,
+      AccordionContent,
+    } = require("@/components/atoms/shadcn");
 
     const SelectContent = Object.assign(
       ({ children, ...props }: any) => <div {...props}>{children}</div>,
@@ -139,6 +147,12 @@ jest.mock(
     );
 
     return {
+      Card,
+      CardContent,
+      Accordion,
+      AccordionItem,
+      AccordionTrigger,
+      AccordionContent,
       Button,
       FormField,
       Input,

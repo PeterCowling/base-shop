@@ -5,6 +5,8 @@ import { render, screen, fireEvent } from "@testing-library/react";
 const updateReverseLogistics = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({ updateReverseLogistics }));
 jest.mock("@/components/atoms/shadcn", () => ({
+  Card: (props: any) => <div {...props} />,
+  CardContent: (props: any) => <div {...props} />,
   Button: (props: any) => <button {...props} />,
   Checkbox: (props: any) => <input type="checkbox" {...props} />,
   Input: (props: any) => <input {...props} />,

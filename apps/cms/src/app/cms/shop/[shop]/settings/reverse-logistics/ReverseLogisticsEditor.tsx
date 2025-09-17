@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState, type FormEvent } from "react";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
@@ -29,20 +29,51 @@ export default function ReverseLogisticsEditor({ shop, initial }: Props) {
     intervalMinutes: String(initial.intervalMinutes ?? 60),
   });
 
-  const { saving, errors, handleSubmit, toast, toastClassName, closeToast } =
-    useSettingsSaveForm<ReverseLogisticsResult>({
-      action: (formData) => updateReverseLogistics(shop, formData),
-      successMessage: "Reverse logistics updated.",
-      errorMessage: "Unable to update reverse logistics settings.",
-      onSuccess: (result) => {
-        const next = result.settings?.reverseLogisticsService;
-        if (!next) return;
-        setState({
-          enabled: next.enabled,
-          intervalMinutes: String(next.intervalMinutes),
-        });
-      },
-    });
+  const {
+    saving,
+    errors,
+    setErrors,
+    submit,
+    toast,
+    toastClassName,
+    closeToast,
+    announceError,
+  } = useSettingsSaveForm<ReverseLogisticsResult>({
+    action: (formData) => updateReverseLogistics(shop, formData),
+    successMessage: "Reverse logistics updated.",
+    errorMessage: "Unable to update reverse logistics settings.",
+    onSuccess: (result) => {
+      const next = result.settings?.reverseLogisticsService;
+      if (!next) return;
+      setState({
+        enabled: next.enabled,
+        intervalMinutes: String(next.intervalMinutes),
+      });
+    },
+  });
+
+  const handleSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const intervalInput = formData.get("intervalMinutes");
+      const interval =
+        typeof intervalInput === "string" ? intervalInput.trim() : "";
+      const intervalValue = Number(interval);
+
+      if (!interval || Number.isNaN(intervalValue) || intervalValue <= 0) {
+        const message = "Interval must be greater than zero.";
+        setErrors({ intervalMinutes: [message] });
+        announceError(message);
+        return;
+      }
+
+      formData.set("intervalMinutes", interval);
+      setErrors({});
+      await submit(formData);
+    },
+    [announceError, setErrors, submit],
+  );
 
   return (
     <>

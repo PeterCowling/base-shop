@@ -12,17 +12,36 @@ const updateUpsReturns = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({
   updateUpsReturns: (...args: any[]) => updateUpsReturns(...args),
 }));
+jest.mock("@/components/atoms", () => ({
+  Toast: ({ open, message, role = "status", onClose, className }: any) => {
+    if (!open) return null;
+    return (
+      <div role={role} className={className}>
+        <span>{message}</span>
+        {onClose ? (
+          <button type="button" onClick={onClose}>
+            ×
+          </button>
+        ) : null}
+      </div>
+    );
+  },
+  Switch: ({ onChange, ...props }: any) => (
+    <input
+      type="checkbox"
+      onChange={(event) => onChange?.(event)}
+      {...props}
+    />
+  ),
+  Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
+}));
+
 jest.mock(
   "@/components/atoms/shadcn",
   () => ({
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-    Checkbox: ({ onCheckedChange, ...props }: any) => (
-      <input
-        type="checkbox"
-        onChange={(e) => onCheckedChange?.(e.target.checked)}
-        {...props}
-      />
-    ),
+    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
   }),
   { virtual: true },
 );
@@ -32,7 +51,7 @@ describe("ReturnsEditor", () => {
     jest.clearAllMocks();
   });
 
-  it("submits toggles and surfaces validation errors", async () => {
+  it("submits toggles, surfaces validation errors, and announces failure", async () => {
     updateUpsReturns.mockResolvedValue({ errors: { enabled: ["Required"] } });
 
     const { container } = render(
@@ -55,12 +74,40 @@ describe("ReturnsEditor", () => {
     expect(fd.get("homePickupEnabled")).toBe("on");
 
     expect(await screen.findByText("Required")).toBeInTheDocument();
+    const errorToast = await screen.findByRole("status");
+    expect(errorToast).toHaveTextContent("Unable to update return options.");
 
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
-  it("applies server state on success", async () => {
+  it("requires enabling at least one return option before submitting", async () => {
+    const { container } = render(
+      <ReturnsEditor
+        shop="lux"
+        initial={{ upsEnabled: false, bagEnabled: false, homePickupEnabled: false }}
+      />,
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /save/i }));
+
+    expect(updateUpsReturns).not.toHaveBeenCalled();
+
+    const toast = await screen.findByRole("status");
+    expect(toast).toHaveTextContent(
+      "Select at least one return option before saving.",
+    );
+
+    const inlineErrors = screen
+      .getAllByText("Select at least one return option before saving.")
+      .filter((element) => !toast.contains(element));
+    expect(inlineErrors.length).toBeGreaterThanOrEqual(1);
+
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("applies server state on success and announces completion", async () => {
     updateUpsReturns.mockResolvedValue({
       settings: {
         returnService: {
@@ -86,5 +133,8 @@ describe("ReturnsEditor", () => {
       expect(bag).toBeChecked();
       expect(pickup).not.toBeChecked();
     });
+
+    const toast = await screen.findByRole("status");
+    expect(toast).toHaveTextContent("Return options updated.");
   });
 });

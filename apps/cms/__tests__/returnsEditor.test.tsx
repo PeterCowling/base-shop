@@ -4,15 +4,26 @@ import { render, screen, fireEvent } from "@testing-library/react";
 
 const updateUpsReturns = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({ updateUpsReturns }));
-jest.mock("@/components/atoms/shadcn", () => ({
-  Button: (props: any) => <button {...props} />,
-  Checkbox: ({ onCheckedChange, ...props }: any) => (
+jest.mock("@/components/atoms", () => ({
+  Toast: ({ open, message, role = "status" }: any) =>
+    open ? (
+      <div role={role}>
+        <span>{message}</span>
+      </div>
+    ) : null,
+  Switch: ({ onChange, ...props }: any) => (
     <input
       type="checkbox"
-      onChange={(e) => onCheckedChange?.((e.target as HTMLInputElement).checked)}
+      onChange={(event) => onChange?.(event)}
       {...props}
     />
   ),
+  Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
+}));
+jest.mock("@/components/atoms/shadcn", () => ({
+  Button: (props: any) => <button {...props} />,
+  Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
 }));
 
 import ReturnsEditor from "../src/app/cms/shop/[shop]/settings/returns/ReturnsEditor";
@@ -40,11 +51,14 @@ describe("ReturnsEditor", () => {
     );
     const save = screen.getByRole("button", { name: /save/i });
     const form = save.closest("form")!;
+    const returnsToggle = screen.getByLabelText("UPS returns");
+    fireEvent.click(returnsToggle);
+
     await act(async () => {
       fireEvent.submit(form);
     });
     expect(updateUpsReturns).toHaveBeenCalledWith("s1", expect.any(FormData));
-    expect(screen.getByLabelText("Enable UPS returns")).toBeChecked();
-    expect(screen.getByLabelText("Provide return bags")).toBeChecked();
+    expect(screen.getByLabelText("UPS returns")).toBeChecked();
+    expect(screen.getByLabelText("Return bags")).toBeChecked();
   });
 });

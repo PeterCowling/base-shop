@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState, type ChangeEvent, type FormEvent } from "react";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
@@ -10,6 +10,8 @@ import { updateDeposit } from "@cms/actions/shops.server";
 import { ErrorChips } from "../components/ErrorChips";
 import { ServiceToggleField } from "../components/ServiceToggleField";
 import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
+
+const INTERVAL_ERROR_MESSAGE = "Enter an interval of at least one minute.";
 
 type DepositState = {
   enabled: boolean;
@@ -29,8 +31,16 @@ export default function DepositsEditor({ shop, initial }: Props) {
     intervalMinutes: String(initial.intervalMinutes ?? 60),
   });
 
-  const { saving, errors, handleSubmit, toast, toastClassName, closeToast } =
-    useSettingsSaveForm<DepositResult>({
+  const {
+    saving,
+    errors,
+    setErrors,
+    submit,
+    toast,
+    toastClassName,
+    closeToast,
+    announceError,
+  } = useSettingsSaveForm<DepositResult>({
       action: (formData) => updateDeposit(shop, formData),
       successMessage: "Deposit service updated.",
       errorMessage: "Unable to update deposit service.",
@@ -44,6 +54,63 @@ export default function DepositsEditor({ shop, initial }: Props) {
       },
     });
 
+  const handleEnabledChange = useCallback(
+    (checked: boolean) => {
+      setState((current) => ({ ...current, enabled: checked }));
+      if (errors.enabled?.length) {
+        setErrors((current) => {
+          const next = { ...current };
+          delete next.enabled;
+          return next;
+        });
+      }
+    },
+    [errors.enabled, setErrors],
+  );
+
+  const handleIntervalChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setState((current) => ({
+        ...current,
+        intervalMinutes: value,
+      }));
+
+      if (errors.intervalMinutes?.length) {
+        setErrors((current) => {
+          const next = { ...current };
+          delete next.intervalMinutes;
+          return next;
+        });
+      }
+    },
+    [errors.intervalMinutes, setErrors],
+  );
+
+  const handleSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const rawInterval = formData.get("intervalMinutes");
+      const intervalValue =
+        typeof rawInterval === "string" && rawInterval.trim().length > 0
+          ? Number(rawInterval)
+          : Number.NaN;
+
+      if (Number.isNaN(intervalValue) || intervalValue < 1) {
+        setErrors((current) => ({
+          ...current,
+          intervalMinutes: [INTERVAL_ERROR_MESSAGE],
+        }));
+        announceError(INTERVAL_ERROR_MESSAGE);
+        return;
+      }
+
+      void submit(formData);
+    },
+    [announceError, setErrors, submit],
+  );
+
   return (
     <>
       <Card className="border border-border/60">
@@ -55,9 +122,7 @@ export default function DepositsEditor({ shop, initial }: Props) {
               label="Deposit release"
               description="Enable automatic deposit releases at the cadence below."
               checked={state.enabled}
-              onChange={(checked) =>
-                setState((current) => ({ ...current, enabled: checked }))
-              }
+              onChange={handleEnabledChange}
               errors={errors.enabled}
             />
 
@@ -73,12 +138,7 @@ export default function DepositsEditor({ shop, initial }: Props) {
                 type="number"
                 min="1"
                 value={state.intervalMinutes}
-                onChange={(event) =>
-                  setState((current) => ({
-                    ...current,
-                    intervalMinutes: event.target.value,
-                  }))
-                }
+                onChange={handleIntervalChange}
               />
             </FormField>
 

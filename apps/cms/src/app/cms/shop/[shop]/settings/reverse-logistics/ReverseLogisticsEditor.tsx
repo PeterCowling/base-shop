@@ -9,7 +9,7 @@ import { updateReverseLogistics } from "@cms/actions/shops.server";
 
 import { ErrorChips } from "../components/ErrorChips";
 import { ServiceToggleField } from "../components/ServiceToggleField";
-import { useServiceEditorForm } from "../hooks/useServiceEditorForm";
+import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
 
 type ReverseLogisticsState = {
   enabled: boolean;
@@ -30,7 +30,7 @@ export default function ReverseLogisticsEditor({ shop, initial }: Props) {
   });
 
   const { saving, errors, handleSubmit, toast, toastClassName, closeToast } =
-    useServiceEditorForm<ReverseLogisticsResult>({
+    useSettingsSaveForm<ReverseLogisticsResult>({
       action: (formData) => updateReverseLogistics(shop, formData),
       successMessage: "Reverse logistics updated.",
       errorMessage: "Unable to update reverse logistics settings.",

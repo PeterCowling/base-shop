@@ -7,7 +7,7 @@ import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 import { updateUpsReturns } from "@cms/actions/shops.server";
 
 import { ServiceToggleField } from "../components/ServiceToggleField";
-import { useServiceEditorForm } from "../hooks/useServiceEditorForm";
+import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
 
 type ReturnsState = {
   upsEnabled: boolean;
@@ -26,7 +26,7 @@ export default function ReturnsEditor({ shop, initial }: Props) {
   const [state, setState] = useState<ReturnsState>(initial);
 
   const { saving, errors, handleSubmit, toast, toastClassName, closeToast } =
-    useServiceEditorForm<ReturnsResult>({
+    useSettingsSaveForm<ReturnsResult>({
       action: (formData) => updateUpsReturns(shop, formData),
       successMessage: "Return options updated.",
       errorMessage: "Unable to update return options.",

@@ -9,7 +9,7 @@ import { updateDeposit } from "@cms/actions/shops.server";
 
 import { ErrorChips } from "../components/ErrorChips";
 import { ServiceToggleField } from "../components/ServiceToggleField";
-import { useServiceEditorForm } from "../hooks/useServiceEditorForm";
+import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
 
 type DepositState = {
   enabled: boolean;
@@ -30,7 +30,7 @@ export default function DepositsEditor({ shop, initial }: Props) {
   });
 
   const { saving, errors, handleSubmit, toast, toastClassName, closeToast } =
-    useServiceEditorForm<DepositResult>({
+    useSettingsSaveForm<DepositResult>({
       action: (formData) => updateDeposit(shop, formData),
       successMessage: "Deposit service updated.",
       errorMessage: "Unable to update deposit service.",

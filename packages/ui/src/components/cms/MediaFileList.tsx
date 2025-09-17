@@ -12,11 +12,12 @@ interface Props {
   shop: string;
   onDelete: (url: string) => void;
   onReplace: (oldUrl: string, item: MediaItem) => void;
-  onSelect?: (item: WithUrl) => void;
-  onOpenDetails?: (item: WithUrl) => void;
+  onSelect?: (item: WithUrl | null) => void;
   onBulkToggle?: (item: WithUrl, selected: boolean) => void;
   selectionEnabled?: boolean;
   isItemSelected?: (item: WithUrl) => boolean;
+  isDeleting?: (item: WithUrl) => boolean;
+  isReplacing?: (item: WithUrl) => boolean;
 }
 
 export default function MediaFileList({
@@ -25,10 +26,11 @@ export default function MediaFileList({
   onDelete,
   onReplace,
   onSelect,
-  onOpenDetails,
   onBulkToggle,
   selectionEnabled = false,
   isItemSelected,
+  isDeleting,
+  isReplacing,
 }: Props) {
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -40,10 +42,11 @@ export default function MediaFileList({
           onDelete={onDelete}
           onReplace={onReplace}
           onSelect={onSelect}
-          onOpenDetails={onOpenDetails}
           onBulkToggle={onBulkToggle}
           selectionEnabled={selectionEnabled}
           selected={isItemSelected?.(item) ?? false}
+          deleting={isDeleting?.(item)}
+          replacing={isReplacing?.(item)}
         />
       ))}
     </div>

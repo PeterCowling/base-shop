@@ -21,11 +21,13 @@ interface LibraryProps {
   shop: string;
   onDelete: (url: string) => void;
   onReplace: (oldUrl: string, item: MediaItem) => void;
-  onSelect?: (item: WithUrl) => void;
-  onOpenDetails?: (item: WithUrl) => void;
+  onSelect?: (item: WithUrl | null) => void;
   onBulkToggle?: (item: WithUrl, selected: boolean) => void;
   selectionEnabled?: boolean;
   isItemSelected?: (item: WithUrl) => boolean;
+  selectedUrl?: string;
+  isDeleting?: (item: WithUrl) => boolean;
+  isReplacing?: (item: WithUrl) => boolean;
   emptyLibraryMessage?: string;
   emptyResultsMessage?: string;
 }
@@ -36,10 +38,12 @@ export default function Library({
   onDelete,
   onReplace,
   onSelect,
-  onOpenDetails,
   onBulkToggle,
   selectionEnabled = false,
   isItemSelected,
+  selectedUrl,
+  isDeleting,
+  isReplacing,
   emptyLibraryMessage = "Upload media to get started.",
   emptyResultsMessage = "No media matches your filters.",
 }: LibraryProps): ReactElement {
@@ -61,6 +65,13 @@ export default function Library({
 
   const showResultsList = filteredFiles.length > 0;
   const showEmptyLibrary = files.length === 0;
+
+  const derivedIsItemSelected = useMemo(() => {
+    if (isItemSelected) return isItemSelected;
+    if (!selectedUrl) return undefined;
+    return (item: WithUrl) => item.url === selectedUrl;
+  }, [isItemSelected, selectedUrl]);
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -95,10 +106,11 @@ export default function Library({
           onDelete={onDelete}
           onReplace={onReplace}
           onSelect={onSelect}
-          onOpenDetails={onOpenDetails}
           onBulkToggle={onBulkToggle}
           selectionEnabled={selectionEnabled}
-          isItemSelected={isItemSelected}
+          isItemSelected={derivedIsItemSelected}
+          isDeleting={isDeleting}
+          isReplacing={isReplacing}
         />
       ) : (
         <div

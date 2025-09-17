@@ -6,6 +6,8 @@ jest.mock("../MediaFileItem", () => (props: any) => (
   <div
     data-cy="media-item"
     data-selected={props.selected ? "true" : "false"}
+    data-deleting={props.deleting ? "true" : "false"}
+    data-replacing={props.replacing ? "true" : "false"}
     onClick={() => props.onSelect?.(props.item)}
   >
     <button type="button" onClick={() => props.onDelete(props.item.url)}>
@@ -82,5 +84,28 @@ describe("MediaFileList", () => {
 
     fireEvent.click(screen.getByTestId("bulk"));
     expect(onBulkToggle).toHaveBeenCalledWith(files[0], true);
+  });
+
+  it("derives deletion and replacement states from predicates", () => {
+    const files = [
+      { url: "1", type: "image" },
+      { url: "2", type: "image" },
+    ];
+    render(
+      <MediaFileList
+        files={files}
+        shop="s"
+        onDelete={jest.fn()}
+        onReplace={jest.fn()}
+        isDeleting={(item) => item.url === "1"}
+        isReplacing={(item) => item.url === "2"}
+      />
+    );
+
+    const items = screen.getAllByTestId("media-item");
+    expect(items[0]).toHaveAttribute("data-deleting", "true");
+    expect(items[0]).toHaveAttribute("data-replacing", "false");
+    expect(items[1]).toHaveAttribute("data-deleting", "false");
+    expect(items[1]).toHaveAttribute("data-replacing", "true");
   });
 });

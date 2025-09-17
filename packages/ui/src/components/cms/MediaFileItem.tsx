@@ -41,11 +41,12 @@ interface Props {
   shop: string;
   onDelete: (url: string) => void;
   onReplace: (oldUrl: string, item: MediaItem) => void;
-  onSelect?: (item: MediaItem & { url: string }) => void;
-  onOpenDetails?: (item: MediaItem & { url: string }) => void;
+  onSelect?: (item: MediaItem & { url: string } | null) => void;
   onBulkToggle?: (item: MediaItem & { url: string }, selected: boolean) => void;
   selectionEnabled?: boolean;
   selected?: boolean;
+  deleting?: boolean;
+  replacing?: boolean;
 }
 
 type UploadTimer = ReturnType<typeof setInterval> | undefined;
@@ -71,10 +72,11 @@ export default function MediaFileItem({
   onDelete,
   onReplace,
   onSelect,
-  onOpenDetails,
   onBulkToggle,
   selectionEnabled = false,
   selected = false,
+  deleting = false,
+  replacing = false,
 }: Props): ReactElement {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -126,7 +128,8 @@ export default function MediaFileItem({
       (item as MediaItem & { isReplacing?: boolean }).isReplacing
   );
 
-  const showReplacementOverlay = uploading || externalReplacing;
+  const showReplacementOverlay = uploading || externalReplacing || replacing;
+  const actionsDisabled = deleting || showReplacementOverlay;
   const progressValue = uploading
     ? uploadProgress
     : typeof externalProgress === "number"
@@ -134,11 +137,13 @@ export default function MediaFileItem({
       : undefined;
 
   const handleSelect = () => {
+    if (actionsDisabled) return;
     onSelect?.(item);
   };
 
   const handlePreviewKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!onSelect) return;
+    if (actionsDisabled) return;
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       onSelect(item);
@@ -214,16 +219,19 @@ export default function MediaFileItem({
   };
 
   const handleBulkToggle = (checked: CheckedState) => {
+    if (actionsDisabled) return;
     onBulkToggle?.(item, checked === true || checked === "indeterminate");
   };
 
   const handleOpenDetails = (event?: React.MouseEvent) => {
     event?.stopPropagation();
-    onOpenDetails?.(item);
+    if (actionsDisabled) return;
+    onSelect?.(item);
   };
 
   const handleReplaceRequest = (event?: React.MouseEvent) => {
     event?.stopPropagation();
+    if (actionsDisabled) return;
     fileInputRef.current?.click();
   };
 
@@ -239,14 +247,17 @@ export default function MediaFileItem({
         selected && "ring-2 ring-primary"
       )}
       data-selected={selected}
+      data-deleting={deleting || undefined}
+      data-replacing={showReplacementOverlay || undefined}
     >
       <div className="relative">
         <div
           role={onSelect ? "button" : undefined}
-          tabIndex={onSelect ? 0 : undefined}
-          onClick={onSelect ? handleSelect : undefined}
+          tabIndex={onSelect && !actionsDisabled ? 0 : undefined}
+          onClick={onSelect && !actionsDisabled ? handleSelect : undefined}
           onKeyDown={handlePreviewKeyDown}
           className="relative aspect-[4/3] w-full overflow-hidden"
+          aria-disabled={actionsDisabled || undefined}
         >
           {item.type === "video" ? (
             <video
@@ -288,6 +299,7 @@ export default function MediaFileItem({
                 checked={selected}
                 onCheckedChange={handleBulkToggle}
                 aria-label={selected ? "Deselect media" : "Select media"}
+                disabled={actionsDisabled}
               />
             </div>
           ) : null}
@@ -300,22 +312,36 @@ export default function MediaFileItem({
                   className="h-9 w-9 rounded-full p-0"
                   aria-label="Media actions"
                   onClick={(event) => event.stopPropagation()}
+                  disabled={actionsDisabled}
                 >
                   <DotsHorizontalIcon className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                {onOpenDetails ? (
-                  <DropdownMenuItem onSelect={() => onOpenDetails(item)}>
+                {onSelect ? (
+                  <DropdownMenuItem
+                    onSelect={() => {
+                      if (!actionsDisabled) onSelect(item);
+                    }}
+                    disabled={actionsDisabled}
+                  >
                     View details
                   </DropdownMenuItem>
                 ) : null}
-                <DropdownMenuItem onSelect={() => handleReplaceRequest()}>
+                <DropdownMenuItem
+                  onSelect={() => handleReplaceRequest()}
+                  disabled={actionsDisabled}
+                >
                   Replace
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={() => onDelete(item.url)}>
+                <DropdownMenuItem
+                  onSelect={() => {
+                    if (!actionsDisabled) onDelete(item.url);
+                  }}
+                  disabled={actionsDisabled}
+                >
                   Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -323,11 +349,12 @@ export default function MediaFileItem({
           </div>
 
           <div className="absolute inset-x-3 bottom-3 z-20 flex items-center justify-between gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
-            {onOpenDetails ? (
+            {onSelect ? (
               <Button
                 variant="outline"
                 className="h-9 flex-1 rounded-md text-sm"
                 onClick={handleOpenDetails}
+                disabled={actionsDisabled}
               >
                 Open details
               </Button>
@@ -338,8 +365,10 @@ export default function MediaFileItem({
                 className="h-9 rounded-md px-3 text-sm"
                 onClick={(event) => {
                   event.stopPropagation();
+                  if (actionsDisabled) return;
                   onSelect(item);
                 }}
+                disabled={actionsDisabled}
               >
                 Select
               </Button>
@@ -364,6 +393,17 @@ export default function MediaFileItem({
                   {uploadError}
                 </p>
               ) : null}
+            </div>
+          ) : null}
+
+          {deleting && !showReplacementOverlay ? (
+            <div
+              className="bg-background/90 text-center absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 p-4 backdrop-blur"
+              data-token="--color-bg"
+            >
+              <p className="text-sm font-medium" data-token="--color-fg">
+                Deleting asset...
+              </p>
             </div>
           ) : null}
         </div>
@@ -396,6 +436,7 @@ export default function MediaFileItem({
         accept="image/*,video/*"
         className="hidden"
         onChange={handleFileChange}
+        disabled={actionsDisabled}
       />
     </Card>
   );

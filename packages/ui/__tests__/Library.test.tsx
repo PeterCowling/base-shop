@@ -9,20 +9,33 @@ jest.mock("@ui/components/atoms/shadcn", () => {
     SelectItem: ({ children, ...rest }: any) => <option {...rest}>{children}</option>,
   };
 });
-jest.mock("../src/components/cms/MediaFileList", () => ({
-  __esModule: true,
-  default: ({ files, onDelete }: any) => (
+const mockMediaFileList = jest.fn(
+  ({ files, onDelete, isItemSelected }: any) => (
     <div>
       {files.map((f: any) => (
         <button key={f.url} onClick={() => onDelete(f.url)}>
           Delete
         </button>
       ))}
+      {isItemSelected ? (
+        <div data-testid="selection-state">
+          {files.map((f: any) => String(isItemSelected(f))).join(",")}
+        </div>
+      ) : null}
     </div>
-  ),
+  )
+);
+
+jest.mock("../src/components/cms/MediaFileList", () => ({
+  __esModule: true,
+  default: (props: any) => mockMediaFileList(props),
 }));
 import { render, fireEvent, screen } from "@testing-library/react";
 import Library from "../src/components/cms/media/Library";
+
+beforeEach(() => {
+  mockMediaFileList.mockClear();
+});
 
 test("filters files by search", () => {
   render(
@@ -41,4 +54,25 @@ test("filters files by search", () => {
     target: { value: "dog" },
   });
   expect(screen.getAllByText("Delete")).toHaveLength(1);
+});
+
+test("derives selection helper from selectedUrl", () => {
+  render(
+    <Library
+      files={[
+        { url: "/a.jpg" } as any,
+        { url: "/dog.jpg" } as any,
+      ]}
+      shop="s"
+      onDelete={() => {}}
+      onReplace={() => {}}
+      selectedUrl="/dog.jpg"
+    />
+  );
+
+  expect(mockMediaFileList).toHaveBeenCalledTimes(1);
+  const props = mockMediaFileList.mock.calls[0][0];
+  expect(props.isItemSelected).toBeInstanceOf(Function);
+  expect(props.isItemSelected({ url: "/dog.jpg" })).toBe(true);
+  expect(props.isItemSelected({ url: "/a.jpg" })).toBe(false);
 });

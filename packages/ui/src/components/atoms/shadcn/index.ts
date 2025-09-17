@@ -33,3 +33,5 @@ export {
 export { Textarea, type TextareaProps } from "../primitives/textarea";
 export { Button, type ButtonProps } from "./Button";
 export { Accordion, type AccordionItem } from "../../molecules/Accordion";
+export { Progress, type ProgressProps } from "../Progress";
+export { Tag, type TagProps } from "../Tag";

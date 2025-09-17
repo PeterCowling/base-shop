@@ -7,4 +7,6 @@ export { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "
 export { Textarea, type TextareaProps } from "../primitives/textarea";
 export { Button, type ButtonProps } from "./Button";
 export { Accordion, type AccordionItem } from "../../molecules/Accordion";
+export { Progress, type ProgressProps } from "../Progress";
+export { Tag, type TagProps } from "../Tag";
 //# sourceMappingURL=index.d.ts.map

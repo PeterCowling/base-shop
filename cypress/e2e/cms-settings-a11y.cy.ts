@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom/client';
 describe('CMS settings forms accessibility', () => {
   it('GeneralSettings inputs are labelled and errors announced', () => {
     cy.visit('about:blank').then(async (win) => {
-      const { default: GeneralSettings } = await import('../../apps/cms/src/app/cms/shop/[shop]/settings/GeneralSettings');
+      const { default: ShopIdentitySection } = await import('../../apps/cms/src/app/cms/shop/[shop]/settings/sections/ShopIdentitySection');
       const Wrapper = () => {
         const [info, setInfo] = React.useState({
           name: '',
@@ -53,7 +53,7 @@ describe('CMS settings forms accessibility', () => {
               setErrors({ name: ['Required'], themeId: ['Required'] });
             }}
           >
-            <GeneralSettings
+            <ShopIdentitySection
               info={info}
               errors={errors}
               onInfoChange={handleInfoChange}

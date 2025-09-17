@@ -15,8 +15,6 @@ import { Toast } from "@/components/atoms";
 import type { Shop } from "@acme/types";
 import { type ReactNode } from "react";
 
-import SEOSettings from "./SEOSettings";
-import ThemeTokens from "./ThemeTokens";
 import {
   ShopIdentitySection,
   type ShopIdentitySectionErrors,
@@ -26,12 +24,16 @@ import {
   type ShopOverridesSectionErrors,
   ShopProvidersSection,
   type ShopProvidersSectionErrors,
+  ShopSeoSection,
+  type ShopSeoSectionErrors,
+  ShopThemeSection,
+  type ShopThemeSectionErrors,
 } from "./sections";
 import { useShopEditorForm } from "./useShopEditorForm";
 
-export { default as GeneralSettings } from "./GeneralSettings";
-export { default as SEOSettings } from "./SEOSettings";
-export { default as ThemeTokens } from "./ThemeTokens";
+export { default as GeneralSettings } from "./sections/ShopIdentitySection";
+export { default as SEOSettings } from "./sections/ShopSeoSection";
+export { default as ThemeTokens } from "./sections/ShopThemeSection";
 
 interface Props {
   shop: string;
@@ -43,13 +45,13 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
   const form = useShopEditorForm({ shop, initial, initialTrackingProviders });
   const {
     info,
-    setInfo,
     errors,
     tokenRows,
     saving,
     identity,
     providers,
     overrides,
+    seo,
     localization,
     toast,
     closeToast,
@@ -107,6 +109,21 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
       ? { localeOverrides: errors.localeOverrides }
       : undefined;
 
+  const seoErrors: ShopSeoSectionErrors | undefined = errors.catalogFilters
+    ? { catalogFilters: errors.catalogFilters }
+    : undefined;
+
+  const themeErrors: ShopThemeSectionErrors | undefined = (() => {
+    const result: ShopThemeSectionErrors = {};
+    if (errors.themeDefaults) {
+      result.themeDefaults = errors.themeDefaults;
+    }
+    if (errors.themeOverrides) {
+      result.themeOverrides = errors.themeOverrides;
+    }
+    return Object.keys(result).length > 0 ? result : undefined;
+  })();
+
   const toastClassName =
     toast.status === "error"
       ? "bg-destructive text-destructive-foreground"
@@ -131,7 +148,14 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
       key: "seo",
       title: "SEO",
       description: "Configure catalog filters for storefront metadata.",
-      render: () => <SEOSettings info={info} setInfo={setInfo} errors={errors} />,
+      render: () => (
+        <ShopSeoSection
+          catalogFilters={seo.catalogFilters}
+          onCatalogFiltersChange={seo.setCatalogFilters}
+          errors={seoErrors}
+        />
+      ),
+      wrapWithCard: false,
     },
     {
       key: "providers",
@@ -152,7 +176,13 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
       title: "Theme tokens",
       description: "Compare overrides with defaults and reset individual tokens.",
       render: () => (
-        <ThemeTokens shop={shop} tokenRows={tokenRows} info={info} errors={errors} />
+        <ShopThemeSection
+          shop={shop}
+          tokenRows={tokenRows}
+          themeDefaults={info.themeDefaults}
+          themeOverrides={info.themeOverrides}
+          errors={themeErrors}
+        />
       ),
     },
     {

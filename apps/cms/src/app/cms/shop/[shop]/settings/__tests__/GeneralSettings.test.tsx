@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
-import GeneralSettings from "../GeneralSettings";
+import ShopIdentitySection from "../sections/ShopIdentitySection";
 
 jest.mock(
   "@/components/atoms/shadcn",
@@ -20,7 +20,7 @@ jest.mock(
   { virtual: true },
 );
 
-describe("GeneralSettings", () => {
+describe("ShopIdentitySection", () => {
   const baseInfo = {
     name: "Test Shop",
     themeId: "theme1",
@@ -38,7 +38,7 @@ describe("GeneralSettings", () => {
 
   it("renders initial values", () => {
     render(
-      <GeneralSettings
+      <ShopIdentitySection
         info={baseInfo}
         errors={{}}
         onInfoChange={jest.fn()}
@@ -48,13 +48,17 @@ describe("GeneralSettings", () => {
 
     expect(screen.getByLabelText("Shop name")).toHaveValue("Test Shop");
     expect(screen.getByLabelText("Theme preset")).toHaveValue("theme1");
-    expect(screen.getByLabelText("Enable blog")).toBeChecked();
-    expect(screen.getByLabelText("RA ticketing")).toBeChecked();
+    expect(
+      screen.getByRole("checkbox", { name: /Enable blog/ }),
+    ).toBeChecked();
+    expect(
+      screen.getByRole("checkbox", { name: /RA ticketing/ }),
+    ).toBeChecked();
   });
 
   it("surfaces validation errors with alerts", () => {
     render(
-      <GeneralSettings
+      <ShopIdentitySection
         info={baseInfo}
         errors={{ name: ["Required"], themeId: ["Invalid"] }}
         onInfoChange={jest.fn()}
@@ -62,8 +66,8 @@ describe("GeneralSettings", () => {
       />,
     );
 
-    expect(screen.getByRole("alert", { name: "Required" })).toBeInTheDocument();
-    expect(screen.getByRole("alert", { name: "Invalid" })).toBeInTheDocument();
+    expect(screen.getByText("Required")).toHaveAttribute("role", "alert");
+    expect(screen.getByText("Invalid")).toHaveAttribute("role", "alert");
     const nameInput = screen.getByLabelText("Shop name");
     const themeInput = screen.getByLabelText("Theme preset");
     expect(nameInput).toHaveAttribute("aria-invalid", "true");
@@ -74,7 +78,7 @@ describe("GeneralSettings", () => {
     const handleInfoChange = jest.fn();
     const handleLuxuryChange = jest.fn();
     render(
-      <GeneralSettings
+      <ShopIdentitySection
         info={baseInfo}
         errors={{}}
         onInfoChange={handleInfoChange}
@@ -87,7 +91,9 @@ describe("GeneralSettings", () => {
     });
     expect(handleInfoChange).toHaveBeenCalledWith("name", "Updated Shop");
 
-    fireEvent.click(screen.getByLabelText("Content merchandising"));
+    fireEvent.click(
+      screen.getByRole("checkbox", { name: /Content merchandising/ }),
+    );
     expect(handleLuxuryChange).toHaveBeenCalledWith(
       "contentMerchandising",
       true,

@@ -22,7 +22,9 @@ export default function LayoutClient({
       <div
         className={cn(
           "relative z-10 h-full w-72 shrink-0 border-r border-white/10 bg-slate-950/80 text-white backdrop-blur-xl transition-transform duration-300",
-          isMobileNavOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
+          isMobileNavOpen
+            ? "block translate-x-0"
+            : "hidden -translate-x-full sm:translate-x-0 sm:block"
         )}
       >
         <Sidebar
@@ -44,7 +46,7 @@ export default function LayoutClient({
               }
               label={
                 configuratorProgress.totalOptional
-                  ? `${configuratorProgress.completedRequired}/${configuratorProgress.totalRequired} required · ${configuratorProgress.completedOptional}/${configuratorProgress.totalOptional} optional`
+                  ? `${configuratorProgress.completedRequired}/${configuratorProgress.totalRequired} required, ${configuratorProgress.completedOptional}/${configuratorProgress.totalOptional} optional`
                   : `${configuratorProgress.completedRequired}/${configuratorProgress.totalRequired} required`
               }
             />

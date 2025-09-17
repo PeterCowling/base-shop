@@ -46,24 +46,23 @@ describe("EmailMarketingPage form", () => {
 
     render(<EmailMarketingPage />);
 
-    fireEvent.change(screen.getByPlaceholderText("Shop"), {
-      target: { value: "s1" },
-    });
-    fireEvent.change(screen.getByPlaceholderText("Recipients (comma separated)"), {
+    const shopField = await screen.findByLabelText(/Shop/i);
+    fireEvent.change(shopField, { target: { value: "s1" } });
+    fireEvent.change(screen.getByLabelText(/Recipients/i), {
       target: { value: "a@example.com" },
     });
-    fireEvent.change(screen.getByPlaceholderText("Subject"), {
+    fireEvent.change(screen.getByLabelText(/Subject/i), {
       target: { value: "Hello" },
     });
-    fireEvent.change(screen.getByPlaceholderText("HTML body"), {
+    fireEvent.change(screen.getByLabelText(/HTML body/i), {
       target: { value: "<p>Hi</p>" },
     });
 
     await act(async () => {
-      fireEvent.click(screen.getByText("Send"));
+      fireEvent.click(screen.getByRole("button", { name: /queue campaign/i }));
     });
 
-    await screen.findByText("Queued");
+    await screen.findByText("Campaign queued for delivery.");
 
     const postCall = fetchMock.mock.calls.find(
       ([url, options]) =>
@@ -101,14 +100,21 @@ describe("EmailMarketingPage form", () => {
 
     render(<EmailMarketingPage />);
 
-    fireEvent.change(screen.getByPlaceholderText("Shop"), {
-      target: { value: "s1" },
+    const shopField = await screen.findByLabelText(/Shop/i);
+    fireEvent.change(shopField, { target: { value: "s1" } });
+    fireEvent.change(screen.getByLabelText(/Recipients/i), {
+      target: { value: "a@example.com" },
     });
-    // leave subject and recipients empty to trigger validation error
+    fireEvent.change(screen.getByLabelText(/Subject/i), {
+      target: { value: "Hello" },
+    });
+    fireEvent.change(screen.getByLabelText(/HTML body/i), {
+      target: { value: "<p>Hi</p>" },
+    });
     await act(async () => {
-      fireEvent.click(screen.getByText("Send"));
+      fireEvent.click(screen.getByRole("button", { name: /queue campaign/i }));
     });
 
-    await screen.findByText("Failed");
+    await screen.findByText("Failed to queue campaign.");
   });
 });

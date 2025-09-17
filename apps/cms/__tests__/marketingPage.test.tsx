@@ -42,7 +42,10 @@ describe("MarketingPage", () => {
     const Page = (await import("../src/app/cms/marketing/page")).default;
     render(await Page());
 
-    expect(screen.getByText("Campaign Analytics")).toBeInTheDocument();
+    expect(screen.getByText("Marketing workspace")).toBeInTheDocument();
+    expect(
+      screen.getByText("Recent campaign performance"),
+    ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "c1" })).toHaveAttribute(
       "href",
       "/cms/dashboard/shop1?campaign=c1",
@@ -64,7 +67,9 @@ describe("MarketingPage", () => {
     const Page = (await import("../src/app/cms/marketing/page")).default;
     render(await Page());
 
-    expect(screen.queryByText("Campaign Analytics")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("Recent campaign performance"),
+    ).not.toBeInTheDocument();
   });
 });
 

@@ -1,49 +1,73 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { Toast } from "@ui/components/atoms";
+import type { ActionResult, ActionStatus } from "../components/actionResult";
+import CampaignSender, {
+  type CampaignSenderProps,
+} from "../marketing/components/CampaignSender";
+
+type ToastState = { open: boolean; status: ActionStatus; message: string };
+
+const defaultToast: ToastState = { open: false, status: "success", message: "" };
 
 export default function CampaignPage() {
-  const [to, setTo] = useState("");
-  const [subject, setSubject] = useState("");
-  const [body, setBody] = useState("");
-  const [status, setStatus] = useState<string | null>(null);
+  const [toast, setToast] = useState<ToastState>(defaultToast);
 
-  async function send(e: React.FormEvent) {
-    e.preventDefault();
-    setStatus(null);
-    const res = await fetch("/api/campaigns", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ to, subject, body }),
-    });
-    if (res.ok) setStatus("Sent");
-    else setStatus("Failed");
-  }
+  const showToast = useCallback((result: ActionResult) => {
+    setToast({ open: true, status: result.status, message: result.message });
+  }, []);
+
+  const closeToast = useCallback(() => {
+    setToast((current) => ({ ...current, open: false }));
+  }, []);
+
+  const toastClassName = useMemo(() => {
+    return toast.status === "error"
+      ? "bg-destructive text-destructive-foreground"
+      : "bg-success text-success-fg";
+  }, [toast.status]);
+
+  const sendCampaign = useCallback<CampaignSenderProps["sendCampaign"]>(
+    async (payload) => {
+      try {
+        const res = await fetch("/api/campaigns", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ to: payload.to, subject: payload.subject, body: payload.body }),
+        });
+        if (res.ok) {
+          return { status: "success", message: "Campaign sent." } satisfies ActionResult;
+        }
+        let message = "Unable to send campaign.";
+        try {
+          const json = (await res.json()) as { error?: string };
+          if (json.error) message = json.error;
+        } catch {}
+        return { status: "error", message } satisfies ActionResult;
+      } catch (error) {
+        return {
+          status: "error",
+          message:
+            error instanceof Error
+              ? error.message
+              : "Network error while sending campaign.",
+        } satisfies ActionResult;
+      }
+    },
+    [],
+  );
 
   return (
-    <form onSubmit={send} className="space-y-2 p-4">
-      <input
-        className="border p-2 w-full"
-        placeholder="Recipient"
-        value={to}
-        onChange={(e) => setTo(e.target.value)}
+    <div className="space-y-6 p-6">
+      <CampaignSender sendCampaign={sendCampaign} onNotify={showToast} />
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        onClose={closeToast}
+        className={toastClassName}
+        role="status"
       />
-      <input
-        className="border p-2 w-full"
-        placeholder="Subject"
-        value={subject}
-        onChange={(e) => setSubject(e.target.value)}
-      />
-      <textarea
-        className="border p-2 w-full h-40"
-        placeholder="HTML body"
-        value={body}
-        onChange={(e) => setBody(e.target.value)}
-      />
-      <button className="border px-4 py-2" type="submit">
-        Send
-      </button>
-      {status && <p>{status}</p>}
-    </form>
+    </div>
   );
 }

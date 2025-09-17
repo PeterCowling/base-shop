@@ -96,23 +96,18 @@ export default async function ShopOrdersPage({
             <div className="space-y-4">
               <Progress value={readiness} label={`${readiness}% of orders on schedule`} />
               <div className="flex flex-wrap items-center gap-3">
-                <Button
-                  asChild
-                  className="h-11 rounded-xl bg-emerald-500 px-5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-400"
+                <Link
+                  href={`/cms/shop/${shop}/settings/returns`}
+                  className="inline-flex h-11 items-center rounded-xl bg-emerald-500 px-5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200"
                 >
-                  <Link href={`/cms/shop/${shop}/settings/returns`}>
-                    Review return policies
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  className="h-11 rounded-xl border-white/30 px-5 text-sm font-semibold text-white hover:bg-white/10"
+                  Review return policies
+                </Link>
+                <Link
+                  href={`/cms/shop/${shop}/data/return-logistics`}
+                  className="inline-flex h-11 items-center rounded-xl border border-white/30 px-5 text-sm font-semibold text-white transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                 >
-                  <Link href={`/cms/shop/${shop}/data/return-logistics`}>
-                    Open logistics data
-                  </Link>
-                </Button>
+                  Open logistics data
+                </Link>
               </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -163,7 +158,7 @@ export default async function ShopOrdersPage({
                 {totalOrders} total orders
               </Tag>
             </div>
-            <div className="grid gap-3">
+            <ul className="grid gap-3" role="list">
               {orders.map((order) => {
                 const expected = order.expectedReturnDate
                   ? new Date(order.expectedReturnDate)
@@ -173,89 +168,115 @@ export default async function ShopOrdersPage({
                   : false;
                 const riskLevel = order.riskLevel ?? "Unknown";
                 const riskScore = typeof order.riskScore === "number" ? order.riskScore : "N/A";
+                const riskLevelLower = riskLevel.toString().toLowerCase();
+                const highlight =
+                  order.flaggedForReview || riskLevelLower === "high" || isOverdue;
 
                 return (
-                  <Card
+                  <li
                     key={order.id ?? order.sessionId}
                     className={cn(
-                      "border border-white/10 bg-white/5 text-white",
-                      order.flaggedForReview && "border-rose-400/40 bg-rose-500/10",
-                      isOverdue && "border-amber-400/40 bg-amber-500/10"
+                      "list-none rounded-2xl border border-transparent",
+                      highlight && "border-red-500 bg-red-50"
                     )}
                   >
-                    <CardContent className="space-y-3 px-5 py-5">
-                      <div className="flex flex-wrap items-start justify-between gap-3">
-                        <div className="space-y-1">
-                          <div className="text-sm font-semibold">
-                            Order {order.id ?? "unknown"}
-                          </div>
-                          <p className="text-xs text-white/70">
-                            Session: {order.sessionId ?? "—"}
-                          </p>
-                        </div>
-                        <div className="flex flex-wrap items-center gap-2">
-                          {order.flaggedForReview && (
-                            <Tag variant="warning" className="bg-rose-500/20 text-rose-100">
-                              Flagged for review
-                            </Tag>
-                          )}
-                          <Tag
-                            variant={riskLevel.toLowerCase() === "high" ? "destructive" : "default"}
-                            className={cn(
-                              "bg-white/15 text-white",
-                              riskLevel.toLowerCase() === "high" && "bg-rose-500/30 text-rose-100"
-                            )}
-                          >
-                            Risk: {riskLevel}
-                          </Tag>
-                          <Tag className="bg-white/10 text-white/80" variant="default">
-                            Score: {riskScore}
-                          </Tag>
-                        </div>
-                      </div>
-                      {expected && Number.isFinite(expected.getTime()) && (
-                        <p className="text-sm text-white/80">
-                          Expected return: {expected.toLocaleDateString()} {" "}
-                          {isOverdue && <span className="text-amber-200">(overdue)</span>}
-                        </p>
+                    <Card
+                      className={cn(
+                        "border border-white/10 bg-white/5 text-white",
+                        order.flaggedForReview && "border-rose-400/40 bg-rose-500/10",
+                        isOverdue && "border-amber-400/40 bg-amber-500/10"
                       )}
-                      <div className="text-sm text-white/70">
-                        Flagged: {order.flaggedForReview ? "Yes" : "No"}
-                      </div>
-                      <div className="flex flex-wrap gap-3">
-                        <form action={returnAction}>
-                          <input type="hidden" name="sessionId" value={order.sessionId ?? ""} />
-                          <Button
-                            type="submit"
-                            variant="outline"
-                            className="h-9 rounded-lg border-white/30 bg-white/10 text-white hover:bg-white/20"
-                          >
-                            Mark returned
-                          </Button>
-                        </form>
-                        <form action={refundAction}>
-                          <input type="hidden" name="sessionId" value={order.sessionId ?? ""} />
-                          <Button
-                            type="submit"
-                            variant="ghost"
-                            className="h-9 rounded-lg text-white hover:bg-white/10"
-                          >
-                            Refund order
-                          </Button>
-                        </form>
-                      </div>
-                    </CardContent>
-                  </Card>
+                    >
+                      <CardContent className="space-y-3 px-5 py-5">
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                          <div className="space-y-1">
+                            <div className="text-sm font-semibold">
+                              Order: {order.id ?? "unknown"}
+                            </div>
+                            <p className="text-xs text-white/70">
+                              Session: {order.sessionId ?? "—"}
+                            </p>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-2">
+                            {order.flaggedForReview && (
+                              <Tag variant="warning" className="bg-rose-500/20 text-rose-100">
+                                Flagged for review
+                              </Tag>
+                            )}
+                            <Tag
+                              variant={riskLevelLower === "high" ? "destructive" : "default"}
+                              className={cn(
+                                "bg-white/15 text-white",
+                                riskLevelLower === "high" && "bg-rose-500/30 text-rose-100"
+                              )}
+                            >
+                              Risk Level: {riskLevel}
+                            </Tag>
+                            <Tag className="bg-white/10 text-white/80" variant="default">
+                              Risk Score: {riskScore}
+                            </Tag>
+                          </div>
+                        </div>
+                        <p className="text-sm text-white/80">
+                          {order.expectedReturnDate ? (
+                            <>
+                              Return: {order.expectedReturnDate}
+                              {expected && Number.isFinite(expected.getTime()) && (
+                                <span
+                                  aria-hidden="true"
+                                  className="ml-2 text-white/70"
+                                >
+                                  ({expected.toLocaleDateString()})
+                                </span>
+                              )}
+                              {isOverdue && (
+                                <span className="text-amber-200"> (overdue)</span>
+                              )}
+                            </>
+                          ) : (
+                            <>Return: —</>
+                          )}
+                        </p>
+                        <div className="text-sm text-white/70">
+                          Flagged for Review: {order.flaggedForReview ? "Yes" : "No"}
+                        </div>
+                        <div className="flex flex-wrap gap-3">
+                          <form action={returnAction}>
+                            <input type="hidden" name="sessionId" value={order.sessionId ?? ""} />
+                            <Button
+                              type="submit"
+                              variant="outline"
+                              className="h-9 rounded-lg border-white/30 bg-white/10 text-white hover:bg-white/20"
+                            >
+                              Mark returned
+                            </Button>
+                          </form>
+                          <form action={refundAction}>
+                            <input type="hidden" name="sessionId" value={order.sessionId ?? ""} />
+                            <Button
+                              type="submit"
+                              variant="ghost"
+                              className="h-9 rounded-lg text-white hover:bg-white/10"
+                            >
+                              Refund order
+                            </Button>
+                          </form>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </li>
                 );
               })}
               {orders.length === 0 && (
-                <Card className="border border-white/10 bg-white/5 text-white">
-                  <CardContent className="px-6 py-8 text-center text-sm text-white/70">
-                    No orders found for this shop yet.
-                  </CardContent>
-                </Card>
+                <li className="list-none">
+                  <Card className="border border-white/10 bg-white/5 text-white">
+                    <CardContent className="px-6 py-8 text-center text-sm text-white/70">
+                      No orders found for this shop yet.
+                    </CardContent>
+                  </Card>
+                </li>
               )}
-            </div>
+            </ul>
           </CardContent>
         </Card>
       </section>

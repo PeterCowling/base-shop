@@ -1,4 +1,3 @@
-import { ReactElement } from "react";
 import type { MediaItem } from "@acme/types";
 interface Props {
     shop: string;
@@ -9,6 +8,8 @@ interface Props {
      */
     onDelete: (shop: string, src: string) => void | Promise<void>;
 }
-declare function MediaManagerBase({ shop, initialFiles, onDelete, }: Props): ReactElement;
-declare const _default: import("react").MemoExoticComponent<typeof MediaManagerBase>;
+export interface MediaManagerHandle {
+    focusUploader: () => void;
+}
+declare const _default: import("react").MemoExoticComponent<import("react").ForwardRefExoticComponent<Props & import("react").RefAttributes<MediaManagerHandle>>>;
 export default _default;

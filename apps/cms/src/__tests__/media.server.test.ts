@@ -11,6 +11,7 @@ const fsMock = {
   mkdir: jest.fn(),
   unlink: jest.fn(),
   rename: jest.fn(),
+  stat: jest.fn(),
 };
 jest.mock('fs', () => ({ promises: fsMock }));
 
@@ -39,7 +40,12 @@ const ulidMock = jest.fn();
 jest.mock('ulid', () => ({ ulid: ulidMock }));
 
 import { File } from 'node:buffer';
-import { listMedia, uploadMedia, deleteMedia } from '../actions/media.server';
+import {
+  listMedia,
+  uploadMedia,
+  deleteMedia,
+  getMediaOverview,
+} from '../actions/media.server';
 import { ensureAuthorized } from '../actions/common/auth';
 
 beforeEach(() => {
@@ -51,6 +57,7 @@ beforeEach(() => {
   fsMock.mkdir.mockResolvedValue(undefined);
   fsMock.unlink.mockResolvedValue(undefined);
   fsMock.rename.mockResolvedValue(undefined);
+  fsMock.stat.mockResolvedValue({ size: 0, mtime: new Date("2024-01-01T00:00:00Z") });
   ulidMock.mockReturnValue('id123');
 });
 
@@ -61,6 +68,14 @@ describe('listMedia', () => {
       JSON.stringify({
         'img.jpg': { title: 'Image', altText: 'Alt', type: 'image' },
         'vid.mp4': { title: 'Video', type: 'video' },
+      }),
+    );
+    const now = new Date('2024-01-01T10:00:00Z');
+    const later = new Date('2024-01-02T10:00:00Z');
+    fsMock.stat.mockImplementation((filePath: string) =>
+      Promise.resolve({
+        size: filePath.endsWith('img.jpg') ? 111 : 222,
+        mtime: filePath.endsWith('img.jpg') ? later : now,
       }),
     );
 
@@ -88,6 +103,56 @@ describe('listMedia', () => {
         type: 'image',
       },
     ]);
+  });
+});
+
+describe('getMediaOverview', () => {
+  it('returns aggregated stats with recent uploads', async () => {
+    const newer = new Date('2024-02-02T12:00:00Z');
+    const older = new Date('2024-02-01T08:30:00Z');
+    fsMock.readdir.mockResolvedValue(['recent.jpg', 'old.mp4', 'metadata.json']);
+    fsMock.readFile.mockResolvedValue(
+      JSON.stringify({
+        'recent.jpg': { title: 'New', altText: 'Newest', type: 'image' },
+        'old.mp4': { title: 'Old clip', type: 'video' },
+      }),
+    );
+    fsMock.stat.mockImplementation((filePath: string) => {
+      if (filePath.endsWith('recent.jpg')) {
+        return Promise.resolve({ size: 1024, mtime: newer });
+      }
+      return Promise.resolve({ size: 2048, mtime: older });
+    });
+
+    const overview = await getMediaOverview('shop');
+    expect(overview.totalBytes).toBe(3072);
+    expect(overview.files).toHaveLength(2);
+    expect(overview.recentUploads).toHaveLength(2);
+    expect(overview.recentUploads[0]).toMatchObject({
+      url: '/uploads/shop/recent.jpg',
+      bytes: 1024,
+      uploadedAt: newer.toISOString(),
+    });
+    expect(overview.recentUploads[1]).toMatchObject({
+      url: '/uploads/shop/old.mp4',
+      bytes: 2048,
+      uploadedAt: older.toISOString(),
+    });
+    expect(overview.limits).toBeNull();
+  });
+
+  it('returns empty stats when directory is missing', async () => {
+    const error = new Error('missing');
+    (error as NodeJS.ErrnoException).code = 'ENOENT';
+    fsMock.readdir.mockRejectedValue(error);
+
+    const overview = await getMediaOverview('shop');
+    expect(overview).toEqual({
+      files: [],
+      totalBytes: 0,
+      recentUploads: [],
+      limits: null,
+    });
   });
 });
 

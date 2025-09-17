@@ -13,6 +13,7 @@ const fsMock = {
   mkdir: jest.fn(),
   readdir: jest.fn(),
   unlink: jest.fn(),
+  stat: jest.fn(),
 };
 jest.mock('fs', () => ({ promises: fsMock }));
 
@@ -53,6 +54,10 @@ describe('media.server helpers and actions', () => {
     fsMock.mkdir.mockResolvedValue(undefined);
     fsMock.readdir.mockResolvedValue([]);
     fsMock.unlink.mockResolvedValue(undefined);
+    fsMock.stat.mockResolvedValue({
+      size: 0,
+      mtime: new Date('2024-01-01T00:00:00Z'),
+    });
     writeJsonFileMock.mockResolvedValue(undefined);
     ulidMock.mockReturnValue('id123');
     sharpMetadataMock.mockResolvedValue({ width: 200, height: 100 });

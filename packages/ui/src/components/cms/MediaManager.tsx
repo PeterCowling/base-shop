@@ -1,7 +1,15 @@
 // packages/ui/src/components/cms/MediaManager.tsx
 "use client";
 
-import { memo, ReactElement, useCallback, useState } from "react";
+import {
+  forwardRef,
+  memo,
+  ReactElement,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import type { MediaItem } from "@acme/types";
 import Library from "./media/Library";
 import UploadPanel from "./media/UploadPanel";
@@ -21,20 +29,41 @@ interface Props {
   onDelete: (shop: string, src: string) => void | Promise<void>;
 }
 
+export interface MediaManagerHandle {
+  focusUploader: () => void;
+}
+
 /* -------------------------------------------------------------------------- */
 /*  Component                                                                 */
 /* -------------------------------------------------------------------------- */
 
-function MediaManagerBase({
-  shop,
-  initialFiles,
-  onDelete,
-}: Props): ReactElement {
+const MediaManagerBase = forwardRef<MediaManagerHandle, Props>(function MediaManagerBase(
+  { shop, initialFiles, onDelete },
+  ref
+): ReactElement {
   const [files, setFiles] = useState<MediaItem[]>(initialFiles);
+  const uploaderRef = useRef<HTMLDivElement | null>(null);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      focusUploader: () => {
+        const element = uploaderRef.current;
+        if (!element) return;
+
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
+        try {
+          element.focus({ preventScroll: true });
+        } catch {
+          element.focus();
+        }
+      },
+    }),
+    []
+  );
 
   const handleDelete = useCallback(
     async (src: string) => {
-       
       if (!confirm("Delete this image?")) return;
       await onDelete(shop, src);
       setFiles((prev) => prev.filter((f) => f.url !== src));
@@ -58,7 +87,11 @@ function MediaManagerBase({
 
   return (
     <div className="space-y-6">
-      <UploadPanel shop={shop} onUploaded={handleUploaded} />
+      <UploadPanel
+        shop={shop}
+        onUploaded={handleUploaded}
+        focusRef={uploaderRef}
+      />
       <Library
         files={files}
         shop={shop}
@@ -67,7 +100,7 @@ function MediaManagerBase({
       />
     </div>
   );
-}
+});
 
 /* -------------------------------------------------------------------------- */
 /*  Export                                                                    */

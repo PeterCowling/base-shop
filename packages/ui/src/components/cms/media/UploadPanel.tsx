@@ -5,14 +5,19 @@ import Image from "next/image";
 import { Input } from "../../atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
-import { ChangeEvent, ReactElement, useState } from "react";
+import { ChangeEvent, ReactElement, Ref, useState } from "react";
 
 interface UploadPanelProps {
   shop: string;
   onUploaded: (item: MediaItem) => void;
+  focusRef?: Ref<HTMLDivElement>;
 }
 
-export default function UploadPanel({ shop, onUploaded }: UploadPanelProps): ReactElement {
+export default function UploadPanel({
+  shop,
+  onUploaded,
+  focusRef,
+}: UploadPanelProps): ReactElement {
   const [dragActive, setDragActive] = useState(false);
   const feedbackId = "media-upload-feedback";
 
@@ -43,6 +48,7 @@ export default function UploadPanel({ shop, onUploaded }: UploadPanelProps): Rea
   return (
     <div className="space-y-2">
       <div
+        ref={focusRef}
         tabIndex={0}
         role="button"
         aria-label="Drop image or video here or press Enter to browse"

@@ -10,6 +10,12 @@ jest.mock(
       <button {...props}>{children}</button>
     ),
     Input: (props: ComponentProps<"input">) => <input {...props} />,
+    Card: ({ children, ...props }: ComponentProps<"div">) => (
+      <div {...props}>{children}</div>
+    ),
+    CardContent: ({ children, ...props }: ComponentProps<"div">) => (
+      <div {...props}>{children}</div>
+    ),
     Table: ({ children }: ComponentProps<"table">) => <table>{children}</table>,
     TableBody: ({ children }: ComponentProps<"tbody">) => <tbody>{children}</tbody>,
     TableCell: ({ children, ...props }: ComponentProps<"td">) => (

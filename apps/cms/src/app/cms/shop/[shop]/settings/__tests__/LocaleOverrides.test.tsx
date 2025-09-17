@@ -1,30 +1,38 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
-import LocaleOverrides from "../LocaleOverrides";
+import ShopLocalizationSection from "../sections/ShopLocalizationSection";
 
 jest.mock(
   "@/components/atoms/shadcn",
   () => ({
+    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardContent: ({ children, ...props }: any) => (
+      <div {...props}>{children}</div>
+    ),
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
     Input: (props: any) => <input {...props} />,
   }),
   { virtual: true },
 );
 
-describe("LocaleOverrides", () => {
+describe("ShopLocalizationSection", () => {
   it("handles overrides and displays errors", () => {
     const addOverride = jest.fn();
     const updateOverride = jest.fn();
     const removeOverride = jest.fn();
 
     render(
-      <LocaleOverrides
-        overrides={[{ key: "title", value: "en" }]}
-        addOverride={addOverride}
-        updateOverride={updateOverride}
-        removeOverride={removeOverride}
+      <ShopLocalizationSection
+        mappings={[]}
+        onAddMapping={jest.fn()}
+        onUpdateMapping={jest.fn()}
+        onRemoveMapping={jest.fn()}
+        localeOverrides={[{ key: "title", value: "en" }]}
+        onAddLocaleOverride={addOverride}
+        onUpdateLocaleOverride={updateOverride}
+        onRemoveLocaleOverride={removeOverride}
         errors={{ localeOverrides: ["must not be empty"] }}
-      />, 
+      />,
     );
 
     expect(screen.getByDisplayValue("en")).toBeInTheDocument();

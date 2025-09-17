@@ -3,18 +3,23 @@
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
 import type { Shop } from "@acme/types";
-import GeneralSettings from "./GeneralSettings";
 import SEOSettings from "./SEOSettings";
 import ThemeTokens from "./ThemeTokens";
-import FilterMappings from "./FilterMappings";
-import PriceOverrides from "./PriceOverrides";
-import ProviderSelect from "./ProviderSelect";
-import LocaleOverrides from "./LocaleOverrides";
+import {
+  ShopIdentitySection,
+  ShopLocalizationSection,
+  ShopOverridesSection,
+  ShopProvidersSection,
+} from "./sections";
 import { useShopEditorForm } from "./useShopEditorForm";
 
-export { default as GeneralSettings } from "./GeneralSettings";
 export { default as SEOSettings } from "./SEOSettings";
 export { default as ThemeTokens } from "./ThemeTokens";
+
+type LuxuryFeatureToggleKey = Exclude<
+  keyof Shop["luxuryFeatures"],
+  "fraudReviewThreshold"
+>;
 
 interface Props {
   shop: string;
@@ -49,45 +54,70 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
     onSubmit,
   } = form;
 
+  const handleLuxuryFeatureToggle = (
+    feature: LuxuryFeatureToggleKey,
+    value: boolean,
+  ) => {
+    setInfo((prev) => ({
+      ...prev,
+      luxuryFeatures: {
+        ...prev.luxuryFeatures,
+        [feature]: value,
+      },
+    }));
+  };
+
+  const handleFraudReviewThresholdChange = (value: number) => {
+    setInfo((prev) => ({
+      ...prev,
+      luxuryFeatures: {
+        ...prev.luxuryFeatures,
+        fraudReviewThreshold: value,
+      },
+    }));
+  };
+
+  const handleTrackingProvidersChange = (providers: string[]) => {
+    setTrackingProviders(providers);
+  };
+
   return (
     <form
       onSubmit={onSubmit}
       className="@container grid max-w-md gap-4 @sm:grid-cols-2"
     >
       <Input type="hidden" name="id" value={info.id} />
-      <GeneralSettings
-      info={info}
-      setInfo={setInfo}
-      errors={errors}
-      handleChange={handleChange}
+      <ShopIdentitySection
+        info={info}
+        errors={errors}
+        onInfoChange={handleChange}
+        onLuxuryFeatureToggle={handleLuxuryFeatureToggle}
+        onFraudReviewThresholdChange={handleFraudReviewThresholdChange}
       />
       <SEOSettings info={info} setInfo={setInfo} errors={errors} />
-      <ProviderSelect
+      <ShopProvidersSection
         trackingProviders={trackingProviders}
-        setTrackingProviders={setTrackingProviders}
-        errors={errors}
         shippingProviders={shippingProviders}
+        errors={errors}
+        onTrackingChange={handleTrackingProvidersChange}
       />
       <ThemeTokens shop={shop} tokenRows={tokenRows} info={info} errors={errors} />
-      <FilterMappings
+      <ShopLocalizationSection
         mappings={filterMappings}
-        addMapping={addFilterMapping}
-        updateMapping={updateFilterMapping}
-        removeMapping={removeFilterMapping}
+        onAddMapping={addFilterMapping}
+        onUpdateMapping={updateFilterMapping}
+        onRemoveMapping={removeFilterMapping}
+        localeOverrides={localeOverrides}
+        onAddLocaleOverride={addLocaleOverride}
+        onUpdateLocaleOverride={updateLocaleOverride}
+        onRemoveLocaleOverride={removeLocaleOverride}
         errors={errors}
       />
-      <PriceOverrides
+      <ShopOverridesSection
         overrides={priceOverrides}
-        addOverride={addPriceOverride}
-        updateOverride={updatePriceOverride}
-        removeOverride={removePriceOverride}
-        errors={errors}
-      />
-      <LocaleOverrides
-        overrides={localeOverrides}
-        addOverride={addLocaleOverride}
-        updateOverride={updateLocaleOverride}
-        removeOverride={removeLocaleOverride}
+        onAddOverride={addPriceOverride}
+        onUpdateOverride={updatePriceOverride}
+        onRemoveOverride={removePriceOverride}
         errors={errors}
       />
       <Button className="bg-primary text-white" disabled={saving} type="submit">

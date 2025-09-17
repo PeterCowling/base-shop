@@ -1,10 +1,20 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import ProviderSelect from "@/app/cms/shop/[shop]/settings/ProviderSelect";
+import ShopProvidersSection from "../sections/ShopProvidersSection";
 import type { Provider } from "@acme/configurator/providers";
 
-describe("ProviderSelect", () => {
+jest.mock(
+  "@/components/atoms/shadcn",
+  () => ({
+    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardContent: ({ children, ...props }: any) => (
+      <div {...props}>{children}</div>
+    ),
+  }),
+  { virtual: true },
+);
+
+describe("ShopProvidersSection", () => {
   const shippingProviders: Provider[] = [
     { id: "ups", name: "UPS", type: "shipping" },
     { id: "dhl", name: "DHL", type: "shipping" },
@@ -14,11 +24,11 @@ describe("ProviderSelect", () => {
   it("calls setTrackingProviders with selected options", async () => {
     const setTrackingProviders = jest.fn();
     render(
-      <ProviderSelect
+      <ShopProvidersSection
         trackingProviders={[]}
-        setTrackingProviders={setTrackingProviders}
         errors={{}}
         shippingProviders={shippingProviders}
+        onTrackingChange={setTrackingProviders}
       />
     );
 
@@ -33,11 +43,11 @@ describe("ProviderSelect", () => {
 
   it("renders error message when errors provided", () => {
     render(
-      <ProviderSelect
+      <ShopProvidersSection
         trackingProviders={[]}
-        setTrackingProviders={jest.fn()}
         errors={{ trackingProviders: ["Required"] }}
         shippingProviders={shippingProviders}
+        onTrackingChange={jest.fn()}
       />
     );
 

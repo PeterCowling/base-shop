@@ -1,11 +1,15 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
 import React, { useState, ChangeEvent } from "react";
-import GeneralSettings from "../GeneralSettings";
+import ShopIdentitySection from "../sections/ShopIdentitySection";
 
 jest.mock(
   "@/components/atoms/shadcn",
   () => ({
+    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardContent: ({ children, ...props }: any) => (
+      <div {...props}>{children}</div>
+    ),
     Input: (props: any) => <input {...props} />,
     Checkbox: ({ checked, onCheckedChange, ...props }: any) => (
       <input
@@ -19,7 +23,7 @@ jest.mock(
   { virtual: true },
 );
 
-describe("GeneralSettings", () => {
+describe("ShopIdentitySection", () => {
   const initialInfo = {
     name: "Test Shop",
     themeId: "theme1",
@@ -36,11 +40,12 @@ describe("GeneralSettings", () => {
 
   it("renders initial values", () => {
     render(
-      <GeneralSettings
+      <ShopIdentitySection
         info={initialInfo}
-        setInfo={jest.fn()}
         errors={{}}
-        handleChange={jest.fn()}
+        onInfoChange={jest.fn()}
+        onLuxuryFeatureToggle={jest.fn()}
+        onFraudReviewThresholdChange={jest.fn()}
       />,
     );
 
@@ -52,14 +57,15 @@ describe("GeneralSettings", () => {
 
   it("displays validation errors", () => {
     render(
-      <GeneralSettings
+      <ShopIdentitySection
         info={initialInfo}
-        setInfo={jest.fn()}
         errors={{
           name: ["Required"],
           themeId: ["Invalid"],
         }}
-        handleChange={jest.fn()}
+        onInfoChange={jest.fn()}
+        onLuxuryFeatureToggle={jest.fn()}
+        onFraudReviewThresholdChange={jest.fn()}
       />,
     );
 
@@ -83,11 +89,28 @@ describe("GeneralSettings", () => {
             onSave(info);
           }}
         >
-          <GeneralSettings
+          <ShopIdentitySection
             info={info}
-            setInfo={setInfo}
             errors={{}}
-            handleChange={handleChange}
+            onInfoChange={handleChange}
+            onLuxuryFeatureToggle={(feature, value) =>
+              setInfo((prev) => ({
+                ...prev,
+                luxuryFeatures: {
+                  ...prev.luxuryFeatures,
+                  [feature]: value,
+                },
+              }))
+            }
+            onFraudReviewThresholdChange={(value) =>
+              setInfo((prev) => ({
+                ...prev,
+                luxuryFeatures: {
+                  ...prev.luxuryFeatures,
+                  fraudReviewThreshold: value,
+                },
+              }))
+            }
           />
           <button type="submit">Save</button>
         </form>

@@ -1,30 +1,34 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
-import PriceOverrides from "../PriceOverrides";
+import ShopOverridesSection from "../sections/ShopOverridesSection";
 
 jest.mock(
   "@/components/atoms/shadcn",
   () => ({
+    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardContent: ({ children, ...props }: any) => (
+      <div {...props}>{children}</div>
+    ),
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
     Input: (props: any) => <input {...props} />,
   }),
   { virtual: true },
 );
 
-describe("PriceOverrides", () => {
+describe("ShopOverridesSection", () => {
   it("handles overrides and displays errors", () => {
     const addOverride = jest.fn();
     const updateOverride = jest.fn();
     const removeOverride = jest.fn();
 
     render(
-      <PriceOverrides
+      <ShopOverridesSection
         overrides={[{ key: "en", value: "10" }]}
-        addOverride={addOverride}
-        updateOverride={updateOverride}
-        removeOverride={removeOverride}
+        onAddOverride={addOverride}
+        onUpdateOverride={updateOverride}
+        onRemoveOverride={removeOverride}
         errors={{ priceOverrides: ["must not be empty"] }}
-      />, 
+      />,
     );
 
     expect(screen.getByDisplayValue("en")).toBeInTheDocument();

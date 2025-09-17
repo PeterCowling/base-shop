@@ -1,6 +1,6 @@
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import UpgradePreviewClient from "../UpgradePreviewClient";
 
 jest.mock("@ui/components/ComponentPreview", () => ({ component }: any) => (
@@ -20,8 +20,9 @@ describe("UpgradePreviewClient", () => {
     jest.resetAllMocks();
   });
 
-  it("renders fetched component previews", async () => {
+  it("renders fetched component previews with summary", async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
       json: async () => ({
         components: [
           {
@@ -42,18 +43,54 @@ describe("UpgradePreviewClient", () => {
 
     render(<UpgradePreviewClient shop={shop} />);
 
+    expect(
+      await screen.findByText("2 components ready for review.")
+    ).toBeInTheDocument();
     expect(await screen.findByTestId("preview-CompA")).toBeInTheDocument();
     expect(await screen.findByTestId("preview-CompB")).toBeInTheDocument();
   });
 
   it("shows message when no components", async () => {
     (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
       json: async () => ({ components: [] }),
     });
 
     render(<UpgradePreviewClient shop={shop} />);
 
+    expect(
+      await screen.findByText("You're all caught up—no component updates detected.")
+    ).toBeInTheDocument();
     expect(await screen.findByText("No changes to preview.")).toBeInTheDocument();
+  });
+
+  it("shows skeleton state while loading", async () => {
+    jest.useFakeTimers();
+    (global.fetch as jest.Mock).mockImplementation(
+      () =>
+        new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({
+              ok: true,
+              json: async () => ({ components: [] }),
+            });
+          }, 1000);
+        })
+    );
+
+    render(<UpgradePreviewClient shop={shop} />);
+
+    expect(screen.getAllByTestId("upgrade-skeleton")).toHaveLength(3);
+    expect(screen.getByTestId("summary-skeleton")).toBeInTheDocument();
+
+    await act(async () => {
+      jest.runAllTimers();
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByTestId("summary-skeleton")).toBeNull();
+    });
+    jest.useRealTimers();
   });
 
   it("logs error when fetch fails", async () => {
@@ -67,6 +104,9 @@ describe("UpgradePreviewClient", () => {
 
     await waitFor(() => {
       expect(consoleErrorSpy).toHaveBeenCalled();
+      expect(
+        screen.getByText("We couldn't load the latest upgrade preview. Try again or refresh the page.")
+      ).toBeInTheDocument();
     });
 
     consoleErrorSpy.mockRestore();

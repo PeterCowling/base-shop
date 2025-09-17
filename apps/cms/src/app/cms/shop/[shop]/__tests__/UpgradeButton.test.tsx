@@ -40,7 +40,7 @@ describe("UpgradeButton", () => {
 
   function setup() {
     render(<UpgradeButton shop={shop} />);
-    return screen.getByRole("button");
+    return screen.getByRole("button", { name: /upgrade & preview/i });
   }
 
   async function click(button: HTMLElement) {
@@ -56,6 +56,7 @@ describe("UpgradeButton", () => {
     );
     const button = setup();
     await click(button);
+    expect(await screen.findByText(/Upgrade ready! Redirecting to preview…/i)).toBeInTheDocument();
     await waitFor(() => {
       expect(window.location.href).toBe(`/cms/shop/${shop}/upgrade-preview`);
     });
@@ -70,7 +71,7 @@ describe("UpgradeButton", () => {
     );
     const button = setup();
     await click(button);
-    expect(await screen.findByRole("alert")).toHaveTextContent("msg");
+    expect(await screen.findByText("msg")).toBeInTheDocument();
   });
 
   it("shows default error when server lacks message", async () => {
@@ -82,7 +83,7 @@ describe("UpgradeButton", () => {
     );
     const button = setup();
     await click(button);
-    expect(await screen.findByRole("alert")).toHaveTextContent("Upgrade failed");
+    expect(await screen.findByText("Upgrade failed")).toBeInTheDocument();
   });
 
   it("handles network errors", async () => {
@@ -91,7 +92,7 @@ describe("UpgradeButton", () => {
     );
     const button = setup();
     await click(button);
-    expect(await screen.findByRole("alert")).toHaveTextContent("Network error");
+    expect(await screen.findByText("Network error")).toBeInTheDocument();
   });
 
   it("toggles loading and resets error between attempts", async () => {
@@ -111,19 +112,19 @@ describe("UpgradeButton", () => {
     await act(async () => {
       userEvent.click(button);
     });
-    await waitFor(() => expect(button).toHaveTextContent(/Upgrading.../i));
+    await waitFor(() => expect(button).toHaveTextContent(/Preparing preview…/i));
     rejectFetch(new Error("fail"));
     await act(async () => {});
-    expect(await screen.findByRole("alert")).toHaveTextContent("fail");
+    expect(await screen.findByText("fail")).toBeInTheDocument();
     await waitFor(() => expect(button).toHaveTextContent(/Upgrade & preview/i));
 
     // Second click succeeds
     await act(async () => {
       userEvent.click(button);
     });
-    await waitFor(() => expect(button).toHaveTextContent(/Upgrading.../i));
+    await waitFor(() => expect(button).toHaveTextContent(/Preparing preview…/i));
     await act(async () => {});
-    await waitFor(() => expect(screen.queryByRole("alert")).toBeNull());
+    await waitFor(() => expect(screen.queryByText("fail")).toBeNull());
     await waitFor(() => {
       expect(window.location.href).toBe(`/cms/shop/${shop}/upgrade-preview`);
     });

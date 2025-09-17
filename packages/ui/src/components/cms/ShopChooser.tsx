@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { track } from "@acme/telemetry";
-import { Button, Card, CardContent } from "../atoms/shadcn";
+import { Card, CardContent } from "../atoms/shadcn";
 import { Tag } from "../atoms";
 import { cn } from "../../utils/style";
 
@@ -160,29 +160,25 @@ export default function ShopChooser({
                       </p>
                     </div>
 
-                    <Button
-                      asChild
-                      variant="outline"
+                    <Link
+                      href={href}
+                      data-cy="shop-chooser-cta"
+                      aria-labelledby={cardTitleId}
+                      aria-describedby={descriptionId}
+                      onClick={() =>
+                        handleTrack(
+                          card.analyticsEventName,
+                          card.analyticsPayload?.(shop)
+                        )
+                      }
                       className={cn(
-                        "mt-auto h-11 w-full rounded-xl border-white/30 bg-white/10 text-sm font-semibold text-white shadow-sm transition hover:bg-white/20 focus-visible:ring-white/60",
+                        "mt-auto inline-flex h-11 w-full items-center justify-center rounded-xl border border-white/30 bg-white/10 text-sm font-semibold text-white shadow-sm transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
                         card.ctaClassName
                       )}
                     >
-                      <Link
-                        href={href}
-                        data-cy="shop-chooser-cta"
-                        aria-labelledby={cardTitleId}
-                        aria-describedby={descriptionId}
-                        onClick={() =>
-                          handleTrack(
-                            card.analyticsEventName,
-                            card.analyticsPayload?.(shop)
-                          )
-                        }
-                      >
-                        {resolvedCtaLabel}
-                      </Link>
-                    </Button>
+                      <span className="sr-only">{shop}</span>
+                      <span aria-hidden="true">{resolvedCtaLabel}</span>
+                    </Link>
                   </article>
                 </li>
               );
@@ -201,23 +197,19 @@ export default function ShopChooser({
               </h3>
               <p className="text-sm text-white/70">{emptyState.description}</p>
             </div>
-            <Button
-              asChild
-              className="h-11 w-full rounded-xl bg-emerald-500 text-sm font-semibold text-white shadow-md shadow-emerald-500/30 transition hover:bg-emerald-400 focus-visible:ring-emerald-200"
+            <Link
+              href={emptyState.ctaHref}
+              data-cy="shop-chooser-empty-cta"
+              onClick={() =>
+                handleTrack(
+                  emptyState.analyticsEventName,
+                  emptyState.analyticsPayload
+                )
+              }
+              className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-emerald-500 text-sm font-semibold text-white shadow-md shadow-emerald-500/30 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200"
             >
-              <Link
-                href={emptyState.ctaHref}
-                data-cy="shop-chooser-empty-cta"
-                onClick={() =>
-                  handleTrack(
-                    emptyState.analyticsEventName,
-                    emptyState.analyticsPayload
-                  )
-                }
-              >
-                {emptyState.ctaLabel}
-              </Link>
-            </Button>
+              {emptyState.ctaLabel}
+            </Link>
           </div>
         )}
       </CardContent>

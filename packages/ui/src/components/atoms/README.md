@@ -1,50 +1,71 @@
 # Atoms
 
-Small building blocks used throughout the UI.
+Small, reusable building blocks that power most UI layers in the design system.
 
-Shadcn-based primitives live in a sibling directory named `atoms/shadcn`. These wrappers expose the original shadcn/ui look and feel while fitting into our Atomic Design layers. Import them directly when you need the stock shadcn styles:
+Shadcn-based primitives live in [`atoms/shadcn`](./shadcn/README.md). They
+re-export the original shadcn/ui components with our typings so you can opt in
+to their baseline styling when needed.
 
 ```ts
 import { Button } from "@/components/atoms/shadcn";
 
+// or mix in our in-house atoms
+import { StatCard } from "@/components/atoms";
 ```
 
-If you need an in-house atom alongside a shadcn wrapper, alias the
-wrapper so its origin is obvious:
+When both variants are present in the same module, alias the shadcn import so
+its provenance remains clear:
 
 ```ts
-import { Button } from "@/components/atoms";
 import { Button as ShButton } from "@/components/atoms/shadcn";
 ```
 
-In-house atoms continue to live in this folder.
+Most atoms extend a native element (`HTMLDivElement`, `HTMLSpanElement`, …) so
+layout, spacing and accessibility attributes can be passed through via
+`className`, `aria-*` attributes, `onClick` handlers and similar props.
 
-All atoms should accept optional layout props. Use `width`, `height`, `padding` and
-`margin` to adjust their sizing or spacing. Values may be Tailwind classes
-(e.g. `w-8`) or numeric pixel values where supported.
+## Usage patterns
 
-Available components:
+- Import atoms from `@/components/atoms` inside apps and templates.
+- Co-locate styling tweaks with consumers by passing Tailwind classes through
+  `className` instead of modifying the component source.
+- Many visual atoms (e.g. `StatCard`, `ProductBadge`) accept `children` or
+  explicit props such as `label`/`value`. Prefer these documented props over
+  re-implementing bespoke UI in downstream apps.
 
-- `StatCard`
-- `LineChart`
-- `ProductBadge`
-  `RatingStars`
-- `StockStatus`
-- `ColorSwatch`
-- `Price`
-- `Avatar`
-- `Logo`
-- `Radio`
-- `Switch`
-- `Tag`
-- `Skeleton`
-- `Loader`
-- `Tooltip`
-- `Toast`
-- `PaginationDot`
-- `Icon`
-- `Popover`
-- `Chip`
-- `ARViewer`
-- `VideoPlayer`
-- `ZoomImage`
+## Component reference
+
+| Component | Key props | Example |
+| --- | --- | --- |
+| `StatCard` | `label: string`, `value: ReactNode`, `className?` | ```tsx
+<StatCard label="Revenue" value="$12k" className="bg-card" />
+``` |
+| `Price` | `amount: number`, `currency?: string` – defaults to the active currency context | ```tsx
+<Price amount={12900} currency="USD" className="text-2xl" />
+``` |
+| `LineChart` | `data: ChartData<'line'>`, `options?: ChartOptions<'line'>` | ```tsx
+<LineChart data={trendData} options={{ plugins: { legend: { display: false } } }} />
+``` |
+| `Tooltip` | `content: ReactNode`, render-prop children to anchor the tooltip | ```tsx
+<Tooltip content="Copied!">
+  <button type="button">Copy code</button>
+</Tooltip>
+``` |
+| `Loader` | `size?: number` (defaults to `20`) plus standard div attributes. Pair with off-screen text for accessibility. | ```tsx
+<div className="flex items-center gap-2" aria-live="polite">
+  <Loader size={28} />
+  <span className="sr-only">Fetching recommendations</span>
+</div>
+``` |
+
+Additional atoms follow the same pattern—props are intentionally narrow and
+pass-through HTML attributes allow fine-grained control. Inspect the component
+source or Storybook stories for less-common variants such as
+`ARViewer`, `ZoomImage` or the toast primitives.
+
+## Storybook examples
+
+Every atom ships with a Storybook story under `Atoms/*`. These stories
+demonstrate baseline configuration and common variations (loading, hover,
+accessibility states). Launch Storybook with `pnpm --filter @acme/ui storybook`
+to explore the playground and copy example code snippets.

@@ -1,32 +1,52 @@
 # Templates
 
-Shared page-level layouts used across apps. Currently includes:
+Shared page-level layouts that compose atoms, molecules and organisms into
+complete experiences. Templates wire up data slots, orchestrate context
+providers and expose configuration hooks so apps can swap in bespoke content.
 
-- `AppShell` – flex layout with slots for header, side navigation and footer. It
-  automatically wraps children with `LayoutProvider` so breadcrumbs and mobile
-  navigation state are available via `useLayout()`.
-  - `DashboardTemplate` – basic stats overview.
-- `AnalyticsDashboardTemplate` – stats, line chart and table for dashboards.
-- `ProductGalleryTemplate` – grid or carousel listing of products. Supports
-  `minItems` and `maxItems` to control the responsive number of items per row or
-  slide.
-- `ProductDetailTemplate` – hero-style view for a single product.
-- `FeaturedProductTemplate` – showcase layout for highlighting a product.
-- `ProductComparisonTemplate` – side-by-side view of multiple products.
-- `HomepageTemplate` – layout with hero and recommendation slots.
-- `CartTemplate` – editable list of cart items with totals.
-- `CategoryCollectionTemplate` – grid of category cards.
-- `SearchResultsTemplate` – search bar with optional filters and paginated
-  product results. Accepts `minItems` and `maxItems` to adjust the responsive
-  product grid and an `isLoading` prop to display a loading skeleton.
-- `CheckoutTemplate` – multi-step layout for collecting checkout information.
-- `OrderConfirmationTemplate` – summary of purchased items and totals.
-- `WishlistTemplate` – list of saved items with add-to-cart and remove actions.
-- `AccountDashboardTemplate` – overview of user details, stats and order list.
-- `StoreLocatorTemplate` – map view with a list of store locations.
-- `LiveShoppingEventTemplate` – live video with chat and product highlights.
-- `LoyaltyHubTemplate` – dashboard for customer loyalty stats and history.
-- `Error404Template` – simple page not found layout.
-- `Error500Template` – generic server error page.
-- `OrderTrackingTemplate` – progress tracker for shipping status.
-- `ProductMediaGalleryTemplate` – gallery view focused on media assets.
+## Usage
+
+```tsx
+import { AppShell, DashboardTemplate } from "@/components/templates";
+import { Header, Footer, SideNav } from "@/components/organisms";
+
+export default function DashboardPage() {
+  return (
+    <AppShell
+      header={<Header locale="en" shopName="Acme" />}
+      sideNav={<SideNav />}
+      footer={<Footer shopName="Acme" />}
+    >
+      <DashboardTemplate stats={stats} />
+    </AppShell>
+  );
+}
+```
+
+`AppShell` wraps children with the shared `ThemeProvider` and `LayoutProvider` so
+breadcrumbs, mobile navigation and tokens are available via `useLayout()` and
+`useTheme()`.
+
+## Template reference
+
+| Template | Purpose & key props |
+| --- | --- |
+| `AppShell` | Page chrome with header, side navigation and footer slots. Accepts `className` overrides and renders children inside a responsive main area. Automatically wires `ThemeProvider` and `LayoutProvider`. |
+| `DashboardTemplate` / `AnalyticsDashboardTemplate` | Dashboard layouts that expect a `stats: StatItem[]` array plus optional chart/table data. Pair with `StatsGrid` or analytics organisms for detail panes. |
+| `ProductDetailTemplate` | Hero layout for a single `product: SKU`. Supports optional `badges`, `onAddToCart` callback and custom `ctaLabel`. Automatically renders media, pricing and description blocks. |
+| `SearchResultsTemplate` | Search landing page with `suggestions`, `results`, pagination details and optional filters. Accepts `minItems`/`maxItems` to control grid density and `isLoading` to show skeletons. |
+| `CheckoutTemplate` | Multi-step checkout workflow. Provide `steps: { label; content }[]`, optionally `initialStep`, and respond to `onStepChange`/`onComplete` callbacks. |
+| `ProductGalleryTemplate` / `RecommendationCarouselTemplate` | Catalog browsing layouts that forward `minItems`/`maxItems` and device-specific props to the underlying carousel/grid organisms. |
+| `OrderConfirmationTemplate`, `CartTemplate`, `WishlistTemplate` | Post-purchase and account flows that accept line items, totals and callback handlers for editing cart state. |
+
+Additional templates such as `StoreLocatorTemplate`, `LiveShoppingEventTemplate`,
+`LoyaltyHubTemplate`, `OrderTrackingTemplate` and error pages (`Error404Template`,
+`Error500Template`) provide specialised shells for their respective workflows. In
+each case the API mirrors the underlying organisms—pass data via named props and
+attach event handlers for interactivity.
+
+## Examples
+
+Storybook groups templates under `Templates/*`. These stories demonstrate the
+expected data shapes (sample SKUs, analytics stats, streaming metadata). Use
+them as a reference when supplying props from the CMS or storefront apps.

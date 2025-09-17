@@ -64,6 +64,32 @@ Library's `getByTestId` configured for `data-cy`.
 
 Progress saves automatically via the `cms-configurator-progress` key and the `/cms/api/configurator-progress` endpoint. Returning to `/cms/configurator` resumes from the last completed step.
 
+## Upgrade & rollback workflows
+
+Each shop dashboard (`/cms/shop/{shop}`) surfaces quick actions for the
+templating workflow:
+
+- **Upgrade & preview** triggers the `/api/upgrade-shop` endpoint. The CMS runs
+  `pnpm ts-node scripts/src/upgrade-shop.ts <shop>` on the server, stages the
+  latest template components and redirects to
+  `/cms/shop/{shop}/upgrade-preview` when successful. The upgrade preview page
+  summarises component changes (new vs. updated) and renders each entry with
+  sample props via `@ui/components/ComponentPreview`. When a package exposes a
+  changelog the preview lists it alongside the component so reviewers can open
+  the markdown file directly from the CMS. Use the CLI republish flow documented
+  in [upgrade-preview-republish](./upgrade-preview-republish.md) after confirming
+  the preview looks correct.
+- **View upgrade steps** simply surfaces a toast explaining that the background
+  job keeps running—useful if a review takes longer than expected.
+- **Rollback to previous version** calls `/api/shop/{shop}/rollback`, which
+  executes `pnpm ts-node scripts/src/rollback-shop.ts <shop>` and restores the
+  last published template snapshot. A toast confirms when the request is queued.
+
+Permissions mirror the underlying routes: `manage_pages` is required to stage
+upgrades or open the preview, while `manage_orders` is needed to trigger the
+rollback. Users without the necessary permission see a `401` response and the UI
+displays a failure toast.
+
 ## Configurator Resume & Page Drafts
 
 The shop configurator now resumes where you left off. If you log in via

@@ -22,6 +22,9 @@ interface Props {
     selected?: boolean;
     deleting?: boolean;
     replacing?: boolean;
+    disabled?: boolean;
+    onReplaceSuccess?: (newItem: MediaItem) => void;
+    onReplaceError?: (message: string) => void;
 }
-export default function MediaFileItem({ item, shop, onDelete, onReplace, onSelect, onBulkToggle, selectionEnabled, selected, deleting, replacing, }: Props): import("react/jsx-runtime").JSX.Element;
+export default function MediaFileItem({ item, shop, onDelete, onReplace, onSelect, onBulkToggle, selectionEnabled, selected, deleting, replacing, disabled, onReplaceSuccess, onReplaceError, }: Props): import("react/jsx-runtime").JSX.Element;
 export {};

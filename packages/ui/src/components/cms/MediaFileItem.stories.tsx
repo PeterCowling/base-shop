@@ -63,5 +63,13 @@ export const ReplacingInProgress: Story = {
       tags: ["catalog"],
     },
     selectionEnabled: true,
+    replacing: true,
+  },
+};
+
+export const Deleting: Story = {
+  args: {
+    deleting: true,
+    selectionEnabled: true,
   },
 };

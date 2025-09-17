@@ -26,7 +26,27 @@ export const RadioGroup = createPrimitive("RadioGroup");
 export const SubTrigger = createPrimitive("SubTrigger");
 export const SubContent = createPrimitive("SubContent");
 export const Content = createPrimitive("Content");
-export const Item = createPrimitive("Item");
+const ItemPrimitive = React.forwardRef<HTMLElement, AnyProps>(function Item(
+  { children, onSelect, onClick, ...props },
+  ref
+) {
+  return (
+    <div
+      ref={ref}
+      data-radix-mock="Item"
+      onClick={(event) => {
+        onSelect?.(event);
+        onClick?.(event);
+      }}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+});
+
+ItemPrimitive.displayName = "Item";
+export const Item = ItemPrimitive;
 export const CheckboxItem = createPrimitive("CheckboxItem");
 export const RadioItem = createPrimitive("RadioItem");
 export const ItemIndicator = createPrimitive("ItemIndicator");

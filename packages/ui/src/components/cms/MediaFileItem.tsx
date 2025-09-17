@@ -28,6 +28,7 @@ import {
   Progress,
   Tag,
 } from "../atoms/shadcn";
+import { Spinner } from "../atoms";
 import { cn } from "../../utils/style";
 
 interface Props {
@@ -47,6 +48,9 @@ interface Props {
   selected?: boolean;
   deleting?: boolean;
   replacing?: boolean;
+  disabled?: boolean;
+  onReplaceSuccess?: (newItem: MediaItem) => void;
+  onReplaceError?: (message: string) => void;
 }
 
 type UploadTimer = ReturnType<typeof setInterval> | undefined;
@@ -77,6 +81,9 @@ export default function MediaFileItem({
   selected = false,
   deleting = false,
   replacing = false,
+  disabled = false,
+  onReplaceSuccess,
+  onReplaceError,
 }: Props): ReactElement {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -129,7 +136,9 @@ export default function MediaFileItem({
   );
 
   const showReplacementOverlay = uploading || externalReplacing || replacing;
-  const actionsDisabled = deleting || showReplacementOverlay;
+  const actionsDisabled = disabled || deleting || showReplacementOverlay;
+  const deleteInProgress = deleting;
+  const replaceInProgress = showReplacementOverlay && !deleting;
   const progressValue = uploading
     ? uploadProgress
     : typeof externalProgress === "number"
@@ -178,6 +187,10 @@ export default function MediaFileItem({
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    if (disabled) {
+      event.target.value = "";
+      return;
+    }
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) return;
@@ -203,11 +216,13 @@ export default function MediaFileItem({
       finishUploadProgress();
       await onDelete(item.url);
       onReplace(item.url, data);
+      onReplaceSuccess?.(data);
     } catch (error) {
       clearTimer();
       setUploadProgress(0);
       errorMessage = (error as Error).message ?? "Replacement failed";
       setUploadError(errorMessage);
+      if (errorMessage) onReplaceError?.(errorMessage);
     } finally {
       const delay = errorMessage ? 2000 : 400;
       setTimeout(() => {
@@ -239,6 +254,20 @@ export default function MediaFileItem({
     item.type === "video"
       ? `Video preview for ${previewAlt || name}`
       : `Image preview for ${previewAlt || name}`;
+
+  const renderLoadingContent = (label: string, loading: boolean, status?: string) => {
+    if (!loading) return label;
+    const srText = status ?? `${label}…`;
+    return (
+      <>
+        <Spinner className="h-4 w-4" aria-hidden="true" />
+        <span className="sr-only">{srText}</span>
+      </>
+    );
+  };
+
+  const statusMessage = deleteInProgress ? "Deleting media…" : "Replacing media…";
+  const actionsLoading = deleteInProgress || replaceInProgress;
 
   return (
     <Card
@@ -308,13 +337,18 @@ export default function MediaFileItem({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
+                  type="button"
                   variant="ghost"
-                  className="h-9 w-9 rounded-full p-0"
+                  className="h-9 w-9 rounded-full p-0 flex items-center justify-center"
                   aria-label="Media actions"
                   onClick={(event) => event.stopPropagation()}
                   disabled={actionsDisabled}
                 >
-                  <DotsHorizontalIcon className="h-4 w-4" />
+                  {actionsLoading ? (
+                    renderLoadingContent("Actions", true, statusMessage)
+                  ) : (
+                    <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
+                  )}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
@@ -332,17 +366,22 @@ export default function MediaFileItem({
                 <DropdownMenuItem
                   onSelect={() => handleReplaceRequest()}
                   disabled={actionsDisabled}
+                  aria-label="Replace media"
+                  className="flex items-center gap-2"
                 >
-                  Replace
+                  {renderLoadingContent("Replace", replaceInProgress, "Replacing media…")}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onSelect={() => {
+                    if (deleteInProgress) return;
                     if (!actionsDisabled) onDelete(item.url);
                   }}
                   disabled={actionsDisabled}
+                  aria-label="Delete media"
+                  className="flex items-center gap-2"
                 >
-                  Delete
+                  {renderLoadingContent("Delete", deleteInProgress, "Deleting media…")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -351,26 +390,30 @@ export default function MediaFileItem({
           <div className="absolute inset-x-3 bottom-3 z-20 flex items-center justify-between gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
             {onSelect ? (
               <Button
+                type="button"
                 variant="outline"
-                className="h-9 flex-1 rounded-md text-sm"
+                className="h-9 flex-1 rounded-md text-sm flex items-center justify-center gap-2"
                 onClick={handleOpenDetails}
                 disabled={actionsDisabled}
+                aria-label="Open details"
               >
-                Open details
+                {renderLoadingContent("Open details", actionsLoading, statusMessage)}
               </Button>
             ) : null}
             {onSelect ? (
               <Button
+                type="button"
                 variant="ghost"
-                className="h-9 rounded-md px-3 text-sm"
+                className="h-9 rounded-md px-3 text-sm flex items-center justify-center gap-2"
                 onClick={(event) => {
                   event.stopPropagation();
                   if (actionsDisabled) return;
                   onSelect(item);
                 }}
                 disabled={actionsDisabled}
+                aria-label="Select media"
               >
-                Select
+                {renderLoadingContent("Select", actionsLoading, statusMessage)}
               </Button>
             ) : null}
           </div>

@@ -23,6 +23,10 @@ export const buildNumberMapping = (rows: MappingRow[]): Record<string, number> =
       .filter(([k, v]) => k && !Number.isNaN(v)),
   );
 
+export const SUPPORTED_LOCALES = ["en", "de", "it"] as const;
+
+export type ShopEditorErrors = Record<string, string[]>;
+
 interface Args {
   shop: string;
   filterMappings: MappingRowsController;
@@ -41,13 +45,12 @@ export function useShopEditorSubmit({
   setTrackingProviders,
 }: Args) {
   const [saving, setSaving] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [errors, setErrors] = useState<ShopEditorErrors>({});
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSaving(true);
-    const validationErrors: Record<string, string[]> = {};
-    const allowedLocales = ["en", "de", "it"];
+    const validationErrors: ShopEditorErrors = {};
     if (filterMappings.rows.some(({ key, value }) => !key.trim() || !value.trim())) {
       validationErrors.filterMappings = [
         "All filter mappings must have key and value",
@@ -64,7 +67,8 @@ export function useShopEditorSubmit({
     }
     if (
       localeOverrides.rows.some(
-        ({ key, value }) => !key.trim() || !allowedLocales.includes(value),
+        ({ key, value }) =>
+          !key.trim() || !SUPPORTED_LOCALES.includes(value as (typeof SUPPORTED_LOCALES)[number]),
       )
     ) {
       validationErrors.localeOverrides = [

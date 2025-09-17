@@ -4,16 +4,24 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 describe('CMS settings forms accessibility', () => {
-  it('GeneralSettings inputs are labelled and errors announced', () => {
+  it('IdentitySection inputs are labelled and errors announced', () => {
     cy.visit('about:blank').then(async (win) => {
-      const { default: GeneralSettings } = await import('../../apps/cms/src/app/cms/shop/[shop]/settings/GeneralSettings');
+      const { default: IdentitySection } = await import('../../apps/cms/src/app/cms/shop/[shop]/settings/sections/IdentitySection');
       const Wrapper = () => {
-        const [info, setInfo] = React.useState({ name: '', themeId: '', luxuryFeatures: {} as any });
+        const [values, setValues] = React.useState({
+          name: '',
+          themeId: '',
+          luxuryFeatures: {
+            blog: false,
+            contentMerchandising: false,
+            raTicketing: false,
+            fraudReviewThreshold: 0,
+            requireStrongCustomerAuth: false,
+            strictReturnConditions: false,
+            trackingDashboard: false,
+          },
+        });
         const [errors, setErrors] = React.useState<Record<string, string[]>>({});
-        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          const { name, value, type, checked } = e.target;
-          setInfo((prev: any) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
-        };
         return (
           <form
             onSubmit={(e) => {
@@ -21,7 +29,23 @@ describe('CMS settings forms accessibility', () => {
               setErrors({ name: ['Required'], themeId: ['Required'] });
             }}
           >
-            <GeneralSettings info={info} setInfo={setInfo} errors={errors} handleChange={handleChange} />
+            <IdentitySection
+              values={values as any}
+              errors={errors as any}
+              onNameChange={(value) => setValues((prev) => ({ ...prev, name: value }))}
+              onThemeIdChange={(value) =>
+                setValues((prev) => ({ ...prev, themeId: value }))
+              }
+              onLuxuryFeatureChange={(feature, value) =>
+                setValues((prev) => ({
+                  ...prev,
+                  luxuryFeatures: {
+                    ...prev.luxuryFeatures,
+                    [feature]: value,
+                  },
+                }))
+              }
+            />
             <button type="submit">Save</button>
           </form>
         );

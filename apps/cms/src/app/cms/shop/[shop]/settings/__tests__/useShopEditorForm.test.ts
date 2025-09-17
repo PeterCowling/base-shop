@@ -1,8 +1,10 @@
 import { renderHook, act } from "@testing-library/react";
 import useShopEditorForm from "../useShopEditorForm";
 
+const mockSubmit = jest.fn(() => ({ saving: false, errors: {}, onSubmit: jest.fn() }));
+
 jest.mock("@acme/configurator/providers", () => ({
-  providersByType: jest.fn(() => []),
+  providersByType: jest.fn(() => [{ id: "ups", name: "UPS", type: "shipping" }]),
 }));
 
 jest.mock("@/hooks/useMappingRows", () => jest.fn((rows: any[]) => ({
@@ -10,11 +12,13 @@ jest.mock("@/hooks/useMappingRows", () => jest.fn((rows: any[]) => ({
   add: jest.fn(),
   update: jest.fn(),
   remove: jest.fn(),
+  setRows: jest.fn(),
 })));
 
 jest.mock("../useShopEditorSubmit", () => ({
   __esModule: true,
-  default: jest.fn(() => ({ saving: false, errors: {}, onSubmit: jest.fn() })),
+  SUPPORTED_LOCALES: ["en", "de"],
+  default: (...args: any[]) => mockSubmit(...args),
 }));
 
 describe("useShopEditorForm", () => {
@@ -22,26 +26,30 @@ describe("useShopEditorForm", () => {
     id: "s1",
     name: "Shop",
     themeId: "theme",
+    catalogFilters: ["color"],
     filterMappings: [],
     priceOverrides: [],
     localeOverrides: [],
+    luxuryFeatures: {
+      blog: false,
+      contentMerchandising: false,
+      raTicketing: false,
+      fraudReviewThreshold: 0,
+      requireStrongCustomerAuth: false,
+      strictReturnConditions: false,
+      trackingDashboard: false,
+      premierDelivery: false,
+    },
+    themeDefaults: { color: "#fff" },
+    themeOverrides: {},
   };
   const initialTracking = ["ups"];
 
-  it("initial form state matches defaults", () => {
-    const { result } = renderHook(() =>
-      useShopEditorForm({
-        shop: "s1",
-        initial: initialShop,
-        initialTrackingProviders: initialTracking,
-      }),
-    );
-
-    expect(result.current.info).toEqual(initialShop);
-    expect(result.current.trackingProviders).toEqual(initialTracking);
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it("updateField modifies state", () => {
+  it("returns grouped section props", () => {
     const { result } = renderHook(() =>
       useShopEditorForm({
         shop: "s1",
@@ -50,16 +58,14 @@ describe("useShopEditorForm", () => {
       }),
     );
 
-    act(() => {
-      result.current.handleChange({
-        target: { name: "name", value: "New Shop" },
-      } as any);
-    });
-
-    expect(result.current.info.name).toBe("New Shop");
+    expect(result.current.identity.values.name).toBe("Shop");
+    expect(result.current.localization.catalogFilters.value).toBe("color");
+    expect(result.current.providers.selected).toEqual(initialTracking);
+    expect(result.current.overrides.shop).toBe("s1");
+    expect(result.current.form.id).toBe("s1");
   });
 
-  it("resetForm restores defaults", () => {
+  it("updates identity values when handlers are invoked", () => {
     const { result } = renderHook(() =>
       useShopEditorForm({
         shop: "s1",
@@ -69,19 +75,16 @@ describe("useShopEditorForm", () => {
     );
 
     act(() => {
-      result.current.handleChange({
-        target: { name: "name", value: "New Shop" },
-      } as any);
-      result.current.setTrackingProviders(["dhl"]);
+      result.current.identity.onNameChange("Updated");
     });
+
+    expect(result.current.identity.values.name).toBe("Updated");
 
     act(() => {
-      result.current.setInfo(initialShop);
-      result.current.setTrackingProviders(initialTracking);
+      result.current.providers.onToggle("ups", false);
     });
 
-    expect(result.current.info).toEqual(initialShop);
-    expect(result.current.trackingProviders).toEqual(initialTracking);
+    expect(result.current.providers.selected).toEqual([]);
   });
 });
 

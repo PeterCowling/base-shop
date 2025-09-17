@@ -1,20 +1,14 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/ShopEditor.tsx
 
 "use client";
-import { Button, Input } from "@/components/atoms/shadcn";
-import type { Shop } from "@acme/types";
-import GeneralSettings from "./GeneralSettings";
-import SEOSettings from "./SEOSettings";
-import ThemeTokens from "./ThemeTokens";
-import FilterMappings from "./FilterMappings";
-import PriceOverrides from "./PriceOverrides";
-import ProviderSelect from "./ProviderSelect";
-import LocaleOverrides from "./LocaleOverrides";
-import { useShopEditorForm } from "./useShopEditorForm";
 
-export { default as GeneralSettings } from "./GeneralSettings";
-export { default as SEOSettings } from "./SEOSettings";
-export { default as ThemeTokens } from "./ThemeTokens";
+import { Accordion, Button, Input } from "@ui";
+import type { Shop } from "@acme/types";
+import IdentitySection from "./sections/IdentitySection";
+import LocalizationSection from "./sections/LocalizationSection";
+import ProvidersSection from "./sections/ProvidersSection";
+import OverridesSection from "./sections/OverridesSection";
+import { useShopEditorForm } from "./useShopEditorForm";
 
 interface Props {
   shop: string;
@@ -23,75 +17,37 @@ interface Props {
 }
 
 export default function ShopEditor({ shop, initial, initialTrackingProviders }: Props) {
-  const form = useShopEditorForm({ shop, initial, initialTrackingProviders });
-  const {
-    info,
-    setInfo,
-    trackingProviders,
-    setTrackingProviders,
-    errors,
-    tokenRows,
-    saving,
-    filterMappings,
-    addFilterMapping,
-    updateFilterMapping,
-    removeFilterMapping,
-    priceOverrides,
-    addPriceOverride,
-    updatePriceOverride,
-    removePriceOverride,
-    localeOverrides,
-    addLocaleOverride,
-    updateLocaleOverride,
-    removeLocaleOverride,
-    handleChange,
-    shippingProviders,
-    onSubmit,
-  } = form;
+  const { identity, localization, providers, overrides, form } = useShopEditorForm({
+    shop,
+    initial,
+    initialTrackingProviders,
+  });
+
+  const accordionItems = [
+    {
+      title: "Identity",
+      content: <IdentitySection {...identity} />,
+    },
+    {
+      title: "Localization",
+      content: <LocalizationSection {...localization} />,
+    },
+    {
+      title: "Providers",
+      content: <ProvidersSection {...providers} />,
+    },
+    {
+      title: "Overrides",
+      content: <OverridesSection {...overrides} />,
+    },
+  ];
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="@container grid max-w-md gap-4 @sm:grid-cols-2"
-    >
-      <Input type="hidden" name="id" value={info.id} />
-      <GeneralSettings
-      info={info}
-      setInfo={setInfo}
-      errors={errors}
-      handleChange={handleChange}
-      />
-      <SEOSettings info={info} setInfo={setInfo} errors={errors} />
-      <ProviderSelect
-        trackingProviders={trackingProviders}
-        setTrackingProviders={setTrackingProviders}
-        errors={errors}
-        shippingProviders={shippingProviders}
-      />
-      <ThemeTokens shop={shop} tokenRows={tokenRows} info={info} errors={errors} />
-      <FilterMappings
-        mappings={filterMappings}
-        addMapping={addFilterMapping}
-        updateMapping={updateFilterMapping}
-        removeMapping={removeFilterMapping}
-        errors={errors}
-      />
-      <PriceOverrides
-        overrides={priceOverrides}
-        addOverride={addPriceOverride}
-        updateOverride={updatePriceOverride}
-        removeOverride={removePriceOverride}
-        errors={errors}
-      />
-      <LocaleOverrides
-        overrides={localeOverrides}
-        addOverride={addLocaleOverride}
-        updateOverride={updateLocaleOverride}
-        removeOverride={removeLocaleOverride}
-        errors={errors}
-      />
-      <Button className="bg-primary text-white" disabled={saving} type="submit">
-        {saving ? "Saving…" : "Save"}
+    <form onSubmit={form.onSubmit} className="space-y-4">
+      <Input type="hidden" name="id" value={form.id} />
+      <Accordion items={accordionItems} />
+      <Button disabled={form.saving} type="submit">
+        {form.saving ? "Saving…" : "Save"}
       </Button>
     </form>
   );

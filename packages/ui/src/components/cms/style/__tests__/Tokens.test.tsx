@@ -173,12 +173,20 @@ describe("Tokens", () => {
 
   it("adds custom font and clears input", () => {
     const baseTokens: TokenMap = { "--font-sans": "system-ui" };
-    const hookSpy = jest.spyOn(tokenEditor, "useTokenEditor");
+    const realHook = tokenEditor.useTokenEditor;
+    const addFontSpy = jest.fn();
+    const hookSpy = jest
+      .spyOn(tokenEditor, "useTokenEditor")
+      .mockImplementation((tokens, defaults, onChange) => {
+        const result = realHook(tokens, defaults, onChange);
+        const wrapped = (...args: Parameters<typeof result.addCustomFont>) => {
+          addFontSpy(...args);
+          return result.addCustomFont(...args);
+        };
+        return { ...result, addCustomFont: wrapped };
+      });
+
     render(<Tokens tokens={{}} baseTokens={baseTokens} onChange={jest.fn()} />);
-    const addFontSpy = jest.spyOn(
-      hookSpy.mock.results[0].value,
-      "addCustomFont"
-    );
 
     const input = screen.getByPlaceholderText("Add font stack") as HTMLInputElement;
     fireEvent.change(input, { target: { value: "Comic Sans" } });
@@ -188,7 +196,6 @@ describe("Tokens", () => {
     expect(input.value).toBe("");
 
     hookSpy.mockRestore();
-    addFontSpy.mockRestore();
   });
 
   it("scrolls focused token into view with temporary highlight", () => {

@@ -3,6 +3,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ChangeEvent,
 } from "react";
@@ -70,6 +71,11 @@ export function useTokenEditor(
   const [monoFonts, setMonoFonts] = useState<string[]>([...defaultMonoFonts]);
   const [googleFonts] = useState<string[]>(googleFontList);
   const [newFont, setNewFont] = useState("");
+  const newFontRef = useRef(newFont);
+
+  useEffect(() => {
+    newFontRef.current = newFont;
+  }, [newFont]);
 
   useEffect(() => {
     Object.entries(tokens).forEach(([k, v]) => {
@@ -113,11 +119,12 @@ export function useTokenEditor(
   );
 
   const addCustomFont = useCallback(() => {
-    if (!newFont.trim()) return;
-    setSansFonts((f) => (f.includes(newFont) ? f : [...f, newFont]));
-    setMonoFonts((f) => (f.includes(newFont) ? f : [...f, newFont]));
+    const value = newFontRef.current;
+    if (!value.trim()) return;
+    setSansFonts((f) => (f.includes(value) ? f : [...f, value]));
+    setMonoFonts((f) => (f.includes(value) ? f : [...f, value]));
     setNewFont("");
-  }, [newFont]);
+  }, [setSansFonts, setMonoFonts, setNewFont]);
 
   const loadGoogleFont = useCallback((name: string) => {
     const id = `google-font-${name}`;

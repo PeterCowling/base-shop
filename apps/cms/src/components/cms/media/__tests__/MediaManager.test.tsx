@@ -3,6 +3,7 @@ import {
   fireEvent,
   waitFor,
   act,
+  screen,
 } from "@testing-library/react";
 import MediaManager from "../MediaManager";
 
@@ -38,6 +39,7 @@ describe("MediaManager", () => {
     fireEvent.click(uploadButton);
 
     const progressEl = getByText("Uploaded 0/1");
+    expect(progressEl).toBeInTheDocument();
 
     await act(async () => {
       resolveFetch!(
@@ -50,13 +52,15 @@ describe("MediaManager", () => {
     await waitFor(() =>
       expect(queryByText("Uploaded 0/1")).not.toBeInTheDocument()
     );
-    await waitFor(() => expect(queryAllByText("Delete").length).toBe(1));
+    await waitFor(() =>
+      expect(screen.getAllByText("new.mp4").length).toBeGreaterThan(0)
+    );
   });
 
   it("calls onDelete when confirming deletion", async () => {
     window.confirm = jest.fn(() => true);
     const onDelete = jest.fn().mockResolvedValue(undefined);
-    const { getByText, queryByText } = render(
+    const { getByLabelText } = render(
       <MediaManager
         shop="shop"
         initialFiles={[{ url: "old.mp4", type: "video" }]}
@@ -64,14 +68,17 @@ describe("MediaManager", () => {
       />
     );
 
-    const deleteButton = getByText("Delete");
+    const trigger = getByLabelText("Media actions");
+    fireEvent.pointerDown(trigger);
+    fireEvent.keyDown(trigger, { key: "Enter" });
+    const deleteButton = await screen.findByText("Delete");
     fireEvent.click(deleteButton);
 
     await waitFor(() =>
       expect(onDelete).toHaveBeenCalledWith("shop", "old.mp4")
     );
     await waitFor(() =>
-      expect(queryByText("Delete")).not.toBeInTheDocument()
+      expect(screen.queryByText("Delete")).not.toBeInTheDocument()
     );
   });
 

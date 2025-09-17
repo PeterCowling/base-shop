@@ -46,11 +46,13 @@ export default function MaintenanceSchedulerEditor() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const value = Number(formData.get("frequency"));
-    if (!value || value <= 0) {
+
+    if (!Number.isFinite(value) || value <= 0) {
       setErrors({ frequency: ["Enter a frequency greater than zero."] });
       announceError("Frequency must be at least 1 millisecond.");
       return;
     }
+    formData.set("frequency", String(value));
     void submit(formData);
   };
 
@@ -62,7 +64,6 @@ export default function MaintenanceSchedulerEditor() {
             <FormField
               label="Scan frequency (ms)"
               htmlFor="maintenance-frequency"
-              error={<ErrorChips errors={errors.frequency} />}
               className="gap-3"
             >
               <Input
@@ -73,6 +74,7 @@ export default function MaintenanceSchedulerEditor() {
                 value={frequency}
                 onChange={handleChange}
               />
+              <ErrorChips errors={errors.frequency} />
               <p className="text-xs text-muted-foreground">
                 Configure how often the automated maintenance scan should run.
               </p>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
@@ -9,7 +9,7 @@ import { updateReverseLogistics } from "@cms/actions/shops.server";
 
 import { ErrorChips } from "../components/ErrorChips";
 import { ServiceToggleField } from "../components/ServiceToggleField";
-import { useServiceEditorForm } from "../hooks/useServiceEditorForm";
+import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
 
 type ReverseLogisticsState = {
   enabled: boolean;
@@ -29,20 +29,75 @@ export default function ReverseLogisticsEditor({ shop, initial }: Props) {
     intervalMinutes: String(initial.intervalMinutes ?? 60),
   });
 
-  const { saving, errors, handleSubmit, toast, toastClassName, closeToast } =
-    useServiceEditorForm<ReverseLogisticsResult>({
-      action: (formData) => updateReverseLogistics(shop, formData),
-      successMessage: "Reverse logistics updated.",
-      errorMessage: "Unable to update reverse logistics settings.",
-      onSuccess: (result) => {
-        const next = result.settings?.reverseLogisticsService;
-        if (!next) return;
-        setState({
-          enabled: next.enabled,
-          intervalMinutes: String(next.intervalMinutes),
-        });
-      },
+  const {
+    saving,
+    errors,
+    setErrors,
+    submit,
+    toast,
+    toastClassName,
+    closeToast,
+    announceError,
+  } = useSettingsSaveForm<ReverseLogisticsResult>({
+    action: (formData) => updateReverseLogistics(shop, formData),
+    successMessage: "Reverse logistics updated.",
+    errorMessage: "Unable to update reverse logistics settings.",
+    onSuccess: (result) => {
+      const next = result.settings?.reverseLogisticsService;
+      if (!next) return;
+      setState({
+        enabled: next.enabled,
+        intervalMinutes: String(next.intervalMinutes),
+      });
+    },
+  });
+
+  const handleEnabledChange = (checked: boolean) => {
+    setState((current) => ({ ...current, enabled: checked }));
+    setErrors((current) => {
+      if (!current.enabled) {
+        return current;
+      }
+      const next = { ...current };
+      delete next.enabled;
+      return next;
     });
+  };
+
+  const handleIntervalChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setState((current) => ({ ...current, intervalMinutes: value }));
+    setErrors((current) => {
+      if (!current.intervalMinutes) {
+        return current;
+      }
+      const next = { ...current };
+      delete next.intervalMinutes;
+      return next;
+    });
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const rawInterval = formData.get("intervalMinutes");
+    const intervalValue =
+      typeof rawInterval === "string" && rawInterval.trim() !== ""
+        ? Number(rawInterval)
+        : NaN;
+
+    if (!Number.isFinite(intervalValue) || intervalValue <= 0) {
+      const intervalError = "Enter an interval greater than zero.";
+      setErrors((current) => ({
+        ...current,
+        intervalMinutes: [intervalError],
+      }));
+      announceError("Interval must be at least 1 minute.");
+      return;
+    }
+
+    void submit(formData);
+  };
 
   return (
     <>
@@ -55,9 +110,7 @@ export default function ReverseLogisticsEditor({ shop, initial }: Props) {
               label="Reverse logistics"
               description="Automate return-to-vendor and refurbishment workflows."
               checked={state.enabled}
-              onChange={(checked) =>
-                setState((current) => ({ ...current, enabled: checked }))
-              }
+              onChange={handleEnabledChange}
               errors={errors.enabled}
             />
 
@@ -73,12 +126,7 @@ export default function ReverseLogisticsEditor({ shop, initial }: Props) {
                 type="number"
                 min="1"
                 value={state.intervalMinutes}
-                onChange={(event) =>
-                  setState((current) => ({
-                    ...current,
-                    intervalMinutes: event.target.value,
-                  }))
-                }
+                onChange={handleIntervalChange}
               />
             </FormField>
 

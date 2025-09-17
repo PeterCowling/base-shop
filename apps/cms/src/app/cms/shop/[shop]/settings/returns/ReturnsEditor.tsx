@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState, type FormEvent } from "react";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";
@@ -25,21 +25,68 @@ interface Props {
 export default function ReturnsEditor({ shop, initial }: Props) {
   const [state, setState] = useState<ReturnsState>(initial);
 
-  const { saving, errors, handleSubmit, toast, toastClassName, closeToast } =
-    useSettingsSaveForm<ReturnsResult>({
-      action: (formData) => updateUpsReturns(shop, formData),
-      successMessage: "Return options updated.",
-      errorMessage: "Unable to update return options.",
-      onSuccess: (result) => {
-        const next = result.settings?.returnService;
-        if (!next) return;
-        setState({
-          upsEnabled: next.upsEnabled,
-          bagEnabled: next.bagEnabled ?? false,
-          homePickupEnabled: next.homePickupEnabled ?? false,
-        });
-      },
-    });
+  const {
+    saving,
+    errors,
+    setErrors,
+    handleSubmit: handleServerSubmit,
+    toast,
+    toastClassName,
+    closeToast,
+    announceError,
+  } = useSettingsSaveForm<ReturnsResult>({
+    action: (formData) => updateUpsReturns(shop, formData),
+    successMessage: "Return options updated.",
+    errorMessage: "Unable to update return options.",
+    onSuccess: (result) => {
+      const next = result.settings?.returnService;
+      if (!next) return;
+      setState({
+        upsEnabled: next.upsEnabled,
+        bagEnabled: next.bagEnabled ?? false,
+        homePickupEnabled: next.homePickupEnabled ?? false,
+      });
+    },
+  });
+
+  const requireReturnOptionMessage =
+    "Select at least one return option before saving.";
+
+  const handleSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      if (!state.upsEnabled && !state.bagEnabled && !state.homePickupEnabled) {
+        setErrors((current) => ({
+          ...current,
+          enabled: [requireReturnOptionMessage],
+        }));
+        announceError(requireReturnOptionMessage);
+        return;
+      }
+
+      setErrors((current) => {
+        if (!current.enabled) {
+          return current;
+        }
+
+        const next = { ...current };
+        delete next.enabled;
+        return next;
+      });
+
+      return handleServerSubmit(event);
+    },
+    [
+      announceError,
+      handleServerSubmit,
+      setErrors,
+      state.bagEnabled,
+      state.homePickupEnabled,
+      state.upsEnabled,
+      requireReturnOptionMessage,
+    ],
+  );
 
   return (
     <>
@@ -56,6 +103,7 @@ export default function ReturnsEditor({ shop, initial }: Props) {
                 setState((current) => ({ ...current, upsEnabled: checked }))
               }
               errors={errors.enabled}
+              disabled={saving}
             />
 
             <ServiceToggleField
@@ -67,6 +115,8 @@ export default function ReturnsEditor({ shop, initial }: Props) {
               onChange={(checked) =>
                 setState((current) => ({ ...current, bagEnabled: checked }))
               }
+              errors={errors.bagEnabled}
+              disabled={saving}
             />
 
             <ServiceToggleField
@@ -81,6 +131,8 @@ export default function ReturnsEditor({ shop, initial }: Props) {
                   homePickupEnabled: checked,
                 }))
               }
+              errors={errors.homePickupEnabled}
+              disabled={saving}
             />
 
             <div className="flex justify-end">

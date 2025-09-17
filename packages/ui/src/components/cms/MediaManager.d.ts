@@ -1,5 +1,10 @@
 import { ReactElement } from "react";
 import type { MediaItem } from "@acme/types";
+import MediaDetailsPanel from "./media/MediaDetailsPanel";
+export type {
+    MediaDetailsFormValues,
+    MediaDetailsPanelProps,
+} from "./media/MediaDetailsPanel";
 interface Props {
     shop: string;
     initialFiles: MediaItem[];
@@ -17,4 +22,5 @@ declare function MediaManagerBase({
     uploaderTargetId,
 }: Props): ReactElement;
 declare const _default: import("react").MemoExoticComponent<typeof MediaManagerBase>;
+export { MediaDetailsPanel };
 export default _default;

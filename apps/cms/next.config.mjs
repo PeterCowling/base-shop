@@ -6,6 +6,47 @@ import { fileURLToPath } from "node:url";
 
 const require = createRequire(import.meta.url);
 
+let hashGuardApplied = false;
+function ensureSafeWebpackHash(webpack) {
+  if (hashGuardApplied) return;
+  const util = webpack?.util;
+  if (!util?.createHash) return;
+
+  const guardPrototypeChain = (hash) => {
+    if (!hash || typeof hash !== "object") return;
+    let proto = hash;
+    const seen = new Set();
+    while (proto && proto !== Object.prototype) {
+      if (seen.has(proto)) break;
+      seen.add(proto);
+      const desc = Object.getOwnPropertyDescriptor(proto, "update");
+      if (desc?.value && typeof desc.value === "function" && !desc.value.__safeGuarded) {
+        const originalUpdate = desc.value;
+        const wrapped = function safeUpdate(data, encoding) {
+          if (data === undefined) return this;
+          return originalUpdate.call(this, data, encoding);
+        };
+        wrapped.__safeGuarded = true;
+        Object.defineProperty(proto, "update", { ...desc, value: wrapped });
+      }
+      proto = Object.getPrototypeOf(proto);
+    }
+  };
+
+  try {
+    guardPrototypeChain(util.createHash("xxhash64"));
+  } catch {
+    /* ignore */
+  }
+  try {
+    guardPrototypeChain(util.createHash("sha256"));
+  } catch {
+    /* ignore */
+  }
+
+  hashGuardApplied = true;
+}
+
 // Provide strong development defaults compatible with tightened validation
 const DEV_NEXTAUTH = "dev-nextauth-secret-32-chars-long-string!";
 const DEV_SESSION = "dev-session-secret-32-chars-long-string!";
@@ -107,14 +148,24 @@ const nextConfig = {
     remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
 
-  webpack: (config, { dev, isServer }) => {
-    // Stable hashing (avoid wasm hasher path)
+  webpack: (config, { dev, isServer, webpack }) => {
+    ensureSafeWebpackHash(webpack);
     config.output ||= {};
-    config.output.hashFunction = "sha256";
+    // Webpack feeds `undefined` segments into the chunk hasher in dev; fall back
+    // to its tolerant default so compilation doesn't explode with crypto errors.
+    config.output.hashFunction = "xxhash64";
 
-    // In dev, keep it deterministic while we iron out config/build issues
     if (dev) {
-      config.cache = false;
+      // Re-enable persistent caching so navigation between steps isn't throttled by
+      // 60s recompiles on every edit. The hash guard above keeps the cache stable.
+      const cacheDir = path.join(__dirname, ".next", "cache", "webpack");
+      config.cache = {
+        type: "filesystem",
+        cacheDirectory: cacheDir,
+        buildDependencies: {
+          config: [__filename],
+        },
+      };
     }
 
     config.resolve ||= {};

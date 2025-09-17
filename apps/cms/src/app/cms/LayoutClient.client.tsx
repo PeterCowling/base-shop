@@ -4,6 +4,8 @@ import Sidebar from "@ui/components/cms/Sidebar.client";
 import TopBar from "@ui/components/cms/TopBar.client";
 import type { ReactNode } from "react";
 import { Progress } from "@/components/atoms";
+import { resetConfiguratorProgress } from "@/app/cms/configurator/hooks/useConfiguratorPersistence";
+import { cn } from "@ui/utils/style";
 
 export default function LayoutClient({
   role,
@@ -13,35 +15,46 @@ export default function LayoutClient({
   children: ReactNode;
 }) {
   const { isMobileNavOpen, configuratorProgress } = useLayout();
+
   return (
-    <div className="flex h-screen w-screen overflow-hidden">
+    <div className="relative flex min-h-screen bg-slate-950">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,163,255,0.15),_transparent_55%)]" />
       <div
-        className={`${
-          isMobileNavOpen ? "block" : "hidden"
-        } absolute z-20 h-full sm:static sm:block`}
+        className={cn(
+          "relative z-10 h-full w-72 shrink-0 border-r border-white/10 bg-slate-950/80 text-white backdrop-blur-xl transition-transform duration-300",
+          isMobileNavOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
+        )}
       >
-        <Sidebar role={role} />
+        <Sidebar
+          role={role}
+          onConfiguratorStartNew={() => {
+            void resetConfiguratorProgress();
+          }}
+        />
       </div>
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="relative z-10 flex flex-1 flex-col">
         <TopBar />
         {configuratorProgress && (
-          <div className="border-b border-muted px-4 py-2">
+          <div className="border-b border-white/10 bg-slate-900/50 px-6 py-3 backdrop-blur">
             <Progress
               value={
                 (configuratorProgress.completedRequired /
                   configuratorProgress.totalRequired) *
                 100
               }
-              label={`${configuratorProgress.completedRequired}/${configuratorProgress.totalRequired} required${
+              label={
                 configuratorProgress.totalOptional
-                  ? `, ${configuratorProgress.completedOptional}/${configuratorProgress.totalOptional} optional`
-                  : ""
-              }`}
+                  ? `${configuratorProgress.completedRequired}/${configuratorProgress.totalRequired} required · ${configuratorProgress.completedOptional}/${configuratorProgress.totalOptional} optional`
+                  : `${configuratorProgress.completedRequired}/${configuratorProgress.totalRequired} required`
+              }
             />
           </div>
         )}
-        <main className="@container flex-1 overflow-y-auto p-6">
-          {children}
+        <main className="relative flex-1 overflow-y-auto">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(59,130,246,0.08),_transparent_45%)]" />
+          <div className="relative mx-auto w-full max-w-6xl px-6 py-10">
+            {children}
+          </div>
         </main>
       </div>
     </div>

@@ -7,7 +7,7 @@ import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { memo } from "react";
-import { Button } from "../atoms/shadcn";
+import { Button, Card } from "../atoms/shadcn";
 import Breadcrumbs from "./Breadcrumbs.client";
 import ShopSelector from "./ShopSelector";
 
@@ -24,48 +24,64 @@ function TopBarInner() {
   const showNewPage = shop && last === "pages";
 
   return (
-    <header className="bg-background/60 flex items-center justify-between gap-3 border-b border-muted px-4 py-2 backdrop-blur">
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" className="sm:hidden" onClick={toggleNav}>
-          <span className="sr-only">Toggle navigation</span>☰
-        </Button>
-        <Link
-          href="/cms"
-          className="focus-visible:ring-primary rounded-md px-3 py-2 text-sm hover:bg-muted focus-visible:ring-2 focus-visible:outline-none"
-        >
-          Home
-        </Link>
-        <Breadcrumbs />
-        <ShopSelector />
+    <header className="relative z-10 border-b border-white/10 bg-slate-950/60 px-6 py-3 text-white backdrop-blur-xl">
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,_rgba(79,70,229,0.25),_rgba(244,114,182,0.12))] opacity-60" />
+      <div className="relative flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-1 items-center gap-3">
+          <Button
+            variant="ghost"
+            className="h-9 w-9 shrink-0 rounded-lg border border-white/20 bg-white/10 text-white sm:hidden"
+            onClick={toggleNav}
+          >
+            <span className="sr-only">Toggle navigation</span>
+            ☰
+          </Button>
+          <Link
+            href="/cms"
+            className="rounded-lg border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white transition hover:bg-white/20"
+          >
+            Dashboard
+          </Link>
+          <Breadcrumbs />
+          <div className="hidden sm:flex">
+            <ShopSelector />
+          </div>
+        </div>
+        <div className="flex flex-wrap items-center gap-2 text-sm">
+          {showNewProduct && (
+            <Button asChild className="h-9 rounded-lg bg-emerald-500 px-3 py-2 text-white hover:bg-emerald-400">
+              <Link href={`/cms/shop/${shop}/products/new`}>New product</Link>
+            </Button>
+          )}
+          {showNewPage && (
+            <Button asChild className="h-9 rounded-lg bg-sky-500 px-3 py-2 text-white hover:bg-sky-400">
+              <Link href={`/cms/shop/${shop}/pages/new/builder`}>New page</Link>
+            </Button>
+          )}
+          <Button
+            variant="outline"
+            className="h-9 rounded-lg border-white/30 text-white hover:bg-white/10"
+            onClick={() => router.refresh()}
+          >
+            Refresh
+          </Button>
+          <Button
+            variant="ghost"
+            className="h-9 rounded-lg text-white hover:bg-white/10"
+            onClick={() =>
+              signOut({ redirect: false }).then(() => router.push("/login"))
+            }
+          >
+            Sign out
+          </Button>
+        </div>
       </div>
-      <div className="flex items-center gap-2">
-        {showNewProduct && (
-          <Link
-            href={`/cms/shop/${shop}/products/new`}
-            className="bg-primary hover:bg-primary/90 rounded-md px-3 py-2 text-sm text-primary-fg"
-          >
-            New product
-          </Link>
-        )}
-        {showNewPage && (
-          <Link
-            href={`/cms/shop/${shop}/pages/new/builder`}
-            className="bg-primary hover:bg-primary/90 rounded-md px-3 py-2 text-sm text-primary-fg"
-          >
-            New page
-          </Link>
-        )}
-        <Button variant="outline" onClick={() => router.refresh()}>
-          Refresh
-        </Button>
-        <Button
-          variant="ghost"
-          onClick={() =>
-            signOut({ redirect: false }).then(() => router.push("/login"))
-          }
-        >
-          Sign&nbsp;out
-        </Button>
+      <div className="mt-3 flex flex-wrap items-center gap-3 sm:hidden">
+        <Card className="w-full border-white/10 bg-white/5">
+          <div className="px-3 py-2 text-xs text-white/70">
+            <ShopSelector />
+          </div>
+        </Card>
       </div>
     </header>
   );

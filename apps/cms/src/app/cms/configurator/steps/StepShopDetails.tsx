@@ -9,29 +9,64 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@ui/components/atoms/shadcn";
-import { useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { z } from "zod";
 import type { ConfiguratorStepProps } from "@/types/configurator";
 import useConfiguratorStep from "./hooks/useConfiguratorStep";
 import ShopPreview from "./components/ShopPreview";
 import ImagePicker from "@ui/components/cms/page-builder/ImagePicker";
+import { ConfiguratorContext } from "../ConfiguratorContext";
+import type { ConfiguratorState } from "../../wizard/schema";
 
-export default function StepShopDetails({
-  shopId,
-  setShopId,
-  storeName,
-  setStoreName,
-  logo,
-  setLogo,
-  contactInfo,
-  setContactInfo,
-  type,
-  setType,
-  template,
-  setTemplate,
-  templates,
-  errors = {},
-}: ConfiguratorStepProps): React.JSX.Element {
+export default function StepShopDetails(
+  props: ConfiguratorStepProps,
+): React.JSX.Element {
+  const configurator = useContext(ConfiguratorContext);
+
+  const fallbackState: Pick<ConfiguratorState, "shopId" | "storeName" | "logo" | "contactInfo" | "type" | "template"> = {
+    shopId: "",
+    storeName: "",
+    logo: {},
+    contactInfo: "",
+    type: "sale",
+    template: "",
+  };
+
+  const state = configurator?.state ?? fallbackState;
+  type Updater = <K extends keyof ConfiguratorState>(
+    key: K,
+    value: ConfiguratorState[K],
+  ) => void;
+  const noopUpdater: Updater = () => undefined;
+  const updateField: Updater = configurator?.update ?? noopUpdater;
+  const {
+    shopId = state.shopId ?? "",
+    setShopId = (value: string) => updateField("shopId", value),
+    storeName = state.storeName ?? "",
+    setStoreName = (value: string) => updateField("storeName", value),
+    logo: logoProp = state.logo,
+    setLogo = (value: Record<string, string>) => updateField("logo", value),
+    contactInfo = state.contactInfo ?? "",
+    setContactInfo = (value: string) => updateField("contactInfo", value),
+    type = state.type ?? "sale",
+    setType = (value: "sale" | "rental") => updateField("type", value),
+    template = state.template ?? "",
+    setTemplate = (value: string) => updateField("template", value),
+    templates = [],
+    errors = {},
+  } = props as Partial<ConfiguratorStepProps>;
+
+  const logoRecord =
+    typeof logoProp === "string" && logoProp
+      ? { "desktop-landscape": logoProp }
+      : { ...(logoProp ?? {}) };
+
+  const templateOptions = templates.length
+    ? templates
+    : template
+      ? [template]
+      : ["default"];
+
   const schema = useMemo(
     () =>
       z
@@ -62,7 +97,7 @@ export default function StepShopDetails({
       values: {
         id: shopId,
         name: storeName,
-        logo,
+        logo: logoRecord,
         contactInfo,
         type,
         template,
@@ -74,7 +109,7 @@ export default function StepShopDetails({
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Shop Details</h2>
-      <ShopPreview logos={logo} shopName={storeName} />
+      <ShopPreview logos={logoRecord} shopName={storeName} />
       <label className="flex flex-col gap-1">
         <span>Shop ID</span>
         <Input
@@ -112,13 +147,15 @@ export default function StepShopDetails({
           <div className="flex items-center gap-2">
             <Input
               data-cy={`logo-${key}`}
-              value={logo[key] ?? ""}
+              value={logoRecord[key] ?? ""}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setLogo({ ...logo, [key]: e.target.value })
+                setLogo({ ...logoRecord, [key]: e.target.value })
               }
               placeholder="https://example.com/logo.png"
             />
-            <ImagePicker onSelect={(url) => setLogo({ ...logo, [key]: url })}>
+            <ImagePicker
+              onSelect={(url) => setLogo({ ...logoRecord, [key]: url })}
+            >
               <Button type="button">Select</Button>
             </ImagePicker>
           </div>
@@ -161,7 +198,7 @@ export default function StepShopDetails({
             <SelectValue placeholder="Select template" />
           </SelectTrigger>
           <SelectContent>
-            {templates.map((t) => (
+            {templateOptions.map((t) => (
               <SelectItem key={t} value={t}>
                 {t}
               </SelectItem>

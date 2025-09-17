@@ -30,9 +30,10 @@ export default function InventoryRow({
   deleteRow,
 }: Props) {
   return (
-    <TableRow key={index}>
-      <TableCell>
+    <TableRow key={index} className="border-white/5 bg-white/5 text-white/90">
+      <TableCell className="min-w-[10rem]">
         <Input
+          className="border-white/10 bg-slate-900/70 text-white shadow-inner"
           value={item.sku}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             updateItem(index, "sku", e.target.value)
@@ -40,8 +41,9 @@ export default function InventoryRow({
         />
       </TableCell>
       {attributes.map((attr) => (
-        <TableCell key={attr}>
+        <TableCell key={attr} className="min-w-[8rem]">
           <Input
+            className="border-white/10 bg-slate-900/70 text-white shadow-inner"
             value={item.variantAttributes[attr] ?? ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               updateItem(index, `variantAttributes.${attr}`, e.target.value)
@@ -51,6 +53,7 @@ export default function InventoryRow({
       ))}
       <TableCell>
         <Input
+          className="border-white/10 bg-slate-900/70 text-white shadow-inner"
           type="number"
           min={0}
           value={Number.isNaN(item.quantity) ? "" : item.quantity}
@@ -61,6 +64,7 @@ export default function InventoryRow({
       </TableCell>
       <TableCell>
         <Input
+          className="border-white/10 bg-slate-900/70 text-white shadow-inner"
           type="number"
           min={0}
           value={item.lowStockThreshold ?? ""}
@@ -72,6 +76,8 @@ export default function InventoryRow({
       <TableCell>
         <Button
           type="button"
+          variant="ghost"
+          className="h-9 rounded-lg px-3 text-xs text-white hover:bg-white/10"
           onClick={() => deleteRow(index)}
           aria-label="delete-row"
         >
@@ -81,4 +87,3 @@ export default function InventoryRow({
     </TableRow>
   );
 }
-

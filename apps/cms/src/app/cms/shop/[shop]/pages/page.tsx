@@ -4,10 +4,14 @@ import { canWrite } from "@auth";
 import { authOptions } from "@cms/auth/options";
 import { checkShopExists } from "@acme/lib";
 import { getPages } from "@platform-core/repositories/pages/index.server";
+import type { Page } from "@acme/types";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import PagesClient from "./PagesClient";
+import { Card, CardContent } from "@/components/atoms/shadcn";
+import { Tag } from "@ui/components/atoms";
+import { cn } from "@ui/utils/style";
 
 export const revalidate = 0;
 
@@ -27,12 +31,90 @@ export default async function PagesPage({
     getPages(shop),
   ]);
   const writable = canWrite(session?.user.role);
+  const resolveStatus = (page: Page) => {
+    const raw = (page as unknown as { status?: unknown }).status;
+    return typeof raw === "string" ? raw : "";
+  };
+  const totalPages = initial.length;
+  const publishedPages = initial.filter((page) => resolveStatus(page) === "published").length;
+  const draftPages = initial.filter((page) => resolveStatus(page) === "draft").length;
+  const archivedPages = initial.filter((page) => resolveStatus(page) === "archived").length;
+
+  const quickStats = [
+    {
+      label: "Published",
+      value: String(publishedPages),
+      caption: "Live on storefront",
+      accent: "bg-emerald-500/20 text-emerald-200",
+    },
+    {
+      label: "Draft",
+      value: String(draftPages),
+      caption: "Still in progress",
+      accent: "bg-amber-500/20 text-amber-200",
+    },
+    {
+      label: "Archived",
+      value: String(archivedPages),
+      caption: "Hidden from navigation",
+      accent: "bg-slate-500/20 text-slate-200",
+    },
+  ];
+
   return (
-    <div>
-      <h2 className="mb-4 text-xl font-semibold">Pages – {shop}</h2>
-      <Suspense fallback={<p>Loading pages…</p>}>
-        <PagesClient shop={shop} initial={initial} canWrite={writable} />
-      </Suspense>
+    <div className="space-y-8 text-white">
+      <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950 shadow-xl">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(250,204,21,0.2),_transparent_55%)]" />
+        <div className="relative space-y-4 px-6 py-7">
+          <Tag variant="default" className="bg-white/10 text-white/70">
+            Pages · {shop}
+          </Tag>
+          <h1 className="text-3xl font-semibold md:text-4xl">
+            Curate every page that shapes your storefront narrative
+          </h1>
+          <p className="text-sm text-white/70">
+            Manage hero stories, campaign landing pages, and evergreen content from one creative workspace.
+          </p>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {quickStats.map((stat) => (
+              <div
+                key={stat.label}
+                className={cn(
+                  "rounded-2xl border border-white/10 px-4 py-3 backdrop-blur",
+                  stat.accent
+                )}
+              >
+                <p className="text-xs font-semibold uppercase tracking-wide text-white/70">
+                  {stat.label}
+                </p>
+                <p className="text-xl font-semibold text-white">{stat.value}</p>
+                <p className="text-xs text-white/70">{stat.caption}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <Card className="border border-white/10 bg-slate-950/70 shadow-lg">
+          <CardContent className="space-y-4 px-6 py-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 text-white">
+              <div>
+                <h2 className="text-lg font-semibold">Page library</h2>
+                <p className="text-sm text-white/70">
+                  Launch campaign landing pages, update evergreen content, or archive what no longer fits.
+                </p>
+              </div>
+              <Tag variant="default" className="bg-white/10 text-white/70">
+                {totalPages} total pages
+              </Tag>
+            </div>
+            <Suspense fallback={<p className="text-sm text-white/60">Loading pages…</p>}>
+              <PagesClient shop={shop} initial={initial} canWrite={writable} />
+            </Suspense>
+          </CardContent>
+        </Card>
+      </section>
     </div>
   );
 }

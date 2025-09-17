@@ -2,6 +2,8 @@
 
 import {
   Button,
+  Card,
+  CardContent,
   Table,
   TableBody,
   TableHead,
@@ -12,6 +14,8 @@ import type { InventoryItem } from "@platform-core/types/inventory";
 import { FormEvent, useRef, useState } from "react";
 import InventoryRow from "./InventoryRow";
 import { useInventoryValidation } from "./useInventoryValidation";
+import { Tag } from "@ui/components/atoms";
+import { cn } from "@ui/utils/style";
 
 interface Props {
   shop: string;
@@ -203,74 +207,131 @@ export default function InventoryForm({ shop, initial, onSave }: Props) {
     a.remove();
   };
 
+  const statusLabel = status === "saved" ? "Inventory saved" : status === "error" ? "Needs attention" : "Draft";
+  const statusVariant = status === "saved" ? "success" : status === "error" ? "destructive" : "default";
+
   return (
-    <form onSubmit={onSubmit} className="space-y-4">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>SKU</TableHead>
-            {attributes.map((attr) => (
-              <TableHead key={attr}>
-                {attr}
-                <Button
-                  type="button"
-                  onClick={() => deleteAttribute(attr)}
-                  aria-label={`delete-attr-${attr}`}
-                >
-                  Delete
-                </Button>
-              </TableHead>
-            ))}
-            <TableHead>Quantity</TableHead>
-            <TableHead>Low stock threshold</TableHead>
-            <TableHead></TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {items.map((item, idx) => (
-            <InventoryRow
-              key={idx}
-              item={item}
-              index={idx}
-              attributes={attributes}
-              updateItem={updateItem}
-              deleteRow={deleteRow}
-            />
-          ))}
-        </TableBody>
-      </Table>
-      <Button type="button" onClick={addRow}>
-        Add row
-      </Button>
-      <Button type="button" onClick={addAttribute}>
-        Add attribute
-      </Button>
-      {status === "saved" && (
-        <p className="text-sm text-green-600">Saved!</p>
-      )}
-      {status === "error" && error && (
-        <p className="text-sm text-red-600">{error}</p>
-      )}
-      <div className="space-x-2">
-        <Button type="submit">Save</Button>
-        <Button type="button" onClick={onImport}>
-          Import JSON/CSV
-        </Button>
-        <Button type="button" onClick={() => onExport("json")}>
-          Export JSON
-        </Button>
-        <Button type="button" onClick={() => onExport("csv")}>
-          Export CSV
+    <form onSubmit={onSubmit} className="space-y-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <Tag
+            variant={statusVariant}
+            className={cn(
+              "rounded-lg border border-white/10 bg-white/10 text-xs font-medium",
+              status === "saved" && "bg-emerald-500/20 text-emerald-100",
+              status === "error" && "bg-rose-500/20 text-rose-100"
+            )}
+          >
+            {statusLabel}
+          </Tag>
+          {status === "error" && error ? (
+            <span className="text-sm text-rose-200">{error}</span>
+          ) : null}
+          {status === "saved" && (
+            <span className="text-sm text-emerald-200">The latest changes are safe.</span>
+          )}
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button
+            type="button"
+            onClick={addRow}
+            className="h-9 rounded-lg bg-emerald-500 px-3 text-xs font-semibold text-white shadow-sm hover:bg-emerald-400"
+          >
+            Add row
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="h-9 rounded-lg border-white/30 px-3 text-xs text-white hover:bg-white/10"
+            onClick={addAttribute}
+          >
+            Add attribute
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            className="h-9 rounded-lg text-xs text-white hover:bg-white/10"
+            onClick={onImport}
+          >
+            Import JSON/CSV
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            className="h-9 rounded-lg text-xs text-white hover:bg-white/10"
+            onClick={() => onExport("json")}
+          >
+            Export JSON
+          </Button>
+          <Button
+            type="button"
+            variant="ghost"
+            className="h-9 rounded-lg text-xs text-white hover:bg-white/10"
+            onClick={() => onExport("csv")}
+          >
+            Export CSV
+          </Button>
+          <input
+            ref={fileInput}
+            type="file"
+            accept=".json,.csv"
+            className="hidden"
+            onChange={onFile}
+          />
+        </div>
+      </div>
+
+      <Card className="border border-white/10 bg-white/5 text-white">
+        <CardContent className="px-0 py-0">
+          <Table className="text-white">
+            <TableHeader className="bg-white/10">
+              <TableRow className="text-xs uppercase tracking-wide text-white/70">
+                <TableHead className="text-white">SKU</TableHead>
+                {attributes.map((attr) => (
+                  <TableHead key={attr} className="text-white">
+                    <div className="flex items-center justify-between gap-2">
+                      <span>{attr}</span>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        className="h-7 rounded-lg px-2 text-xs text-white/70 hover:bg-white/10"
+                        onClick={() => deleteAttribute(attr)}
+                        aria-label={`delete-attr-${attr}`}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  </TableHead>
+                ))}
+                <TableHead className="text-white">Quantity</TableHead>
+                <TableHead className="text-white">Low stock threshold</TableHead>
+                <TableHead className="text-white">&nbsp;</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.map((item, idx) => (
+                <InventoryRow
+                  key={idx}
+                  item={item}
+                  index={idx}
+                  attributes={attributes}
+                  updateItem={updateItem}
+                  deleteRow={deleteRow}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Button
+          type="submit"
+          className="h-10 rounded-xl bg-emerald-500 px-5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-400"
+        >
+          Save inventory
         </Button>
       </div>
-      <input
-        ref={fileInput}
-        type="file"
-        accept=".json,.csv"
-        className="hidden"
-        onChange={onFile}
-      />
     </form>
   );
 }
-

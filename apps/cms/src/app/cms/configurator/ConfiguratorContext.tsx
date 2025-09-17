@@ -31,6 +31,7 @@ export interface ConfiguratorContextValue {
 }
 
 const ConfiguratorContext = createContext<ConfiguratorContextValue | null>(null);
+export { ConfiguratorContext };
 
 export function ConfiguratorProvider({
   children,
@@ -115,4 +116,3 @@ export function useConfigurator(): ConfiguratorContextValue {
     throw new Error("useConfigurator must be used within ConfiguratorProvider");
   return ctx;
 }
-

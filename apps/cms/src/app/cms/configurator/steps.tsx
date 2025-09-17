@@ -19,80 +19,176 @@ import Link from "next/link";
 import type { StepStatus } from "../wizard/schema";
 import { cn } from "@ui/utils/style";
 import { Tooltip } from "@/components/atoms";
-import type { ConfiguratorStep } from "./types";
+import type { ConfiguratorStep, ConfiguratorStepTrack } from "./types";
 import type { ConfiguratorStepProps } from "@/types/configurator";
 
+export const stepTrackMeta: Record<ConfiguratorStepTrack, {
+  label: string;
+  description: string;
+  pillClass: string;
+  accentClass: string;
+}> = {
+  foundation: {
+    label: "Foundation",
+    description: "Brand setup, compliance, and the fundamentals that every shop needs.",
+    pillClass: "bg-blue-500/10 text-blue-600",
+    accentClass: "bg-blue-500",
+  },
+  experience: {
+    label: "Experience",
+    description: "Design how shoppers explore, interact, and fall in love with your products.",
+    pillClass: "bg-purple-500/10 text-purple-600",
+    accentClass: "bg-purple-500",
+  },
+  operations: {
+    label: "Operations",
+    description: "Wire up integrations, environments, and go-live readiness.",
+    pillClass: "bg-amber-500/10 text-amber-600",
+    accentClass: "bg-amber-500",
+  },
+  growth: {
+    label: "Growth",
+    description: "Optional boosters that accelerate content, experimentation, and scale.",
+    pillClass: "bg-emerald-500/10 text-emerald-600",
+    accentClass: "bg-emerald-500",
+  },
+};
+
 const stepList: ConfiguratorStep[] = [
-  { id: "shop-details", label: "Shop Details", component: StepShopDetails },
-  { id: "theme", label: "Theme", component: StepTheme },
-  { id: "tokens", label: "Tokens", component: StepTokens },
-  { id: "options", label: "Options", component: StepOptions },
+  {
+    id: "shop-details",
+    label: "Shop Details",
+    description: "Set your brand essentials, contact information, and launch-ready metadata.",
+    icon: "🧭",
+    track: "foundation",
+    component: StepShopDetails,
+  },
+  {
+    id: "theme",
+    label: "Theme",
+    description: "Choose the base theme that defines the tone and feel of your storefront.",
+    icon: "🎨",
+    track: "experience",
+    component: StepTheme,
+  },
+  {
+    id: "tokens",
+    label: "Design Tokens",
+    description: "Fine-tune colors, typography, and spacing so every surface feels on brand.",
+    icon: "🪄",
+    track: "experience",
+    component: StepTokens,
+  },
+  {
+    id: "options",
+    label: "Shop Options",
+    description: "Enable core capabilities like fulfillment, pricing rules, and policies.",
+    icon: "⚙️",
+    track: "foundation",
+    component: StepOptions,
+  },
   {
     id: "navigation",
     label: "Navigation",
+    description: "Design the primary navigation so shoppers always know where to go next.",
+    icon: "🗺️",
+    track: "experience",
     component: StepNavigation as unknown as React.ComponentType<ConfiguratorStepProps>,
   },
   {
     id: "layout",
     label: "Layout",
+    description: "Compose responsive sections and scaffolding that power every page.",
+    icon: "📐",
+    track: "experience",
     component: StepLayout as unknown as React.ComponentType<ConfiguratorStepProps>,
     recommended: ["navigation"],
   },
   {
     id: "home-page",
     label: "Home Page",
+    description: "Showcase featured collections, hero content, and campaigns on your landing page.",
+    icon: "🏠",
+    track: "experience",
     component: StepHomePage as unknown as React.ComponentType<ConfiguratorStepProps>,
     recommended: ["layout"],
   },
   {
     id: "checkout-page",
-    label: "Checkout Page",
+    label: "Checkout",
+    description: "Craft a high-trust checkout flow with clear steps and reassuring details.",
+    icon: "💳",
+    track: "experience",
     component: StepCheckoutPage as unknown as React.ComponentType<ConfiguratorStepProps>,
     recommended: ["layout"],
   },
   {
     id: "shop-page",
-    label: "Shop Page",
+    label: "Catalog",
+    description: "Curate filters, merchandising modules, and product discovery for your shop page.",
+    icon: "🛍️",
+    track: "experience",
     component: StepShopPage as unknown as React.ComponentType<ConfiguratorStepProps>,
     recommended: ["layout"],
   },
   {
     id: "product-page",
-    label: "Product Page",
+    label: "Product Detail",
+    description: "Tell the product story with galleries, feature highlights, and conversion tactics.",
+    icon: "📄",
+    track: "experience",
     component: StepProductPage as unknown as React.ComponentType<ConfiguratorStepProps>,
     recommended: ["shop-page"],
   },
   {
     id: "additional-pages",
-    label: "Additional Pages",
+    label: "Content Pages",
+    description: "Plan supporting content such as FAQ, About, and policy pages.",
+    icon: "📚",
+    track: "growth",
     component: StepAdditionalPages as unknown as React.ComponentType<ConfiguratorStepProps>,
     recommended: ["layout"],
   },
   {
     id: "env-vars",
-    label: "Environment Variables",
+    label: "Environment",
+    description: "Securely connect providers, analytics, and third-party services.",
+    icon: "🔐",
+    track: "operations",
     component: StepEnvVars as unknown as React.ComponentType<ConfiguratorStepProps>,
   },
   {
     id: "summary",
-    label: "Summary",
+    label: "Review & Publish",
+    description: "Double-check every decision before handing the keys to your launch team.",
+    icon: "🧾",
+    track: "operations",
     component: StepSummary as unknown as React.ComponentType<ConfiguratorStepProps>,
   },
   {
     id: "import-data",
     label: "Import Data",
+    description: "Bring in existing catalog data, assets, and content from other systems.",
+    icon: "⬇️",
+    track: "growth",
     component: StepImportData as unknown as React.ComponentType<ConfiguratorStepProps>,
     optional: true,
   },
   {
     id: "seed-data",
-    label: "Seed Data",
+    label: "Seed Demo Content",
+    description: "Generate sample products and pages to test ideas before go-live.",
+    icon: "🌱",
+    track: "growth",
     component: StepSeedData as unknown as React.ComponentType<ConfiguratorStepProps>,
     optional: true,
   },
   {
     id: "hosting",
-    label: "Hosting",
+    label: "Hosting & Delivery",
+    description: "Choose deployment targets, edge regions, and performance presets.",
+    icon: "🚀",
+    track: "operations",
     component: StepHosting as unknown as React.ComponentType<ConfiguratorStepProps>,
     optional: true,
   },
@@ -183,4 +279,3 @@ export function ConfiguratorProgress({
     </ol>
   );
 }
-

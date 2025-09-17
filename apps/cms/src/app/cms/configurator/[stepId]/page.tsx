@@ -2,13 +2,14 @@ import { ConfiguratorProvider } from "../ConfiguratorContext";
 import StepPage from "./step-page";
 
 interface PageProps {
-  params: { stepId: string };
+  params: Promise<{ stepId: string }>;
 }
 
-export default function ConfiguratorStepPage({ params }: PageProps) {
+export default async function ConfiguratorStepPage({ params }: PageProps) {
+  const { stepId } = await params;
   return (
     <ConfiguratorProvider>
-      <StepPage stepId={params.stepId} />
+      <StepPage stepId={stepId} />
     </ConfiguratorProvider>
   );
 }

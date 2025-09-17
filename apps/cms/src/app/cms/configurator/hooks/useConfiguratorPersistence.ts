@@ -30,6 +30,12 @@ export async function resetConfiguratorProgress(): Promise<void> {
       });
     } catch {
       /* ignore network errors */
+    } finally {
+      try {
+        window.dispatchEvent(new CustomEvent("configurator:update"));
+      } catch {
+        /* ignore */
+      }
     }
   }
 }

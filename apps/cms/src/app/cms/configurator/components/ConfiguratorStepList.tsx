@@ -2,9 +2,18 @@
 "use client";
 
 import Link from "next/link";
-import { CheckCircledIcon, CircleIcon } from "@radix-ui/react-icons";
+import {
+  ArrowRightIcon,
+  CheckCircledIcon,
+  CircleIcon,
+  ResetIcon,
+} from "@radix-ui/react-icons";
+import { Button, Card, CardContent } from "@/components/atoms/shadcn";
+import { Tag } from "@ui/components/atoms";
 import type { ConfiguratorState } from "../../wizard/schema";
 import type { ConfiguratorStep } from "../types";
+import { stepTrackMeta } from "../steps";
+import { cn } from "@ui/utils/style";
 
 interface Props {
   state: ConfiguratorState;
@@ -14,6 +23,127 @@ interface Props {
   onStepClick: (step: ConfiguratorStep) => void;
 }
 
+type TagVariant = "default" | "success" | "warning" | "destructive";
+
+const statusCopy: Record<string, { label: string; variant: TagVariant }> = {
+  complete: { label: "Complete", variant: "success" },
+  skipped: { label: "Skipped", variant: "warning" },
+  pending: { label: "Pending", variant: "default" },
+};
+
+function StepCard({
+  step,
+  status,
+  pendingRecommendations,
+  onOpen,
+  onReset,
+  onSkip,
+}: {
+  step: ConfiguratorStep;
+  status: "complete" | "pending" | "skipped";
+  pendingRecommendations: string[];
+  onOpen: () => void;
+  onReset: () => void;
+  onSkip: () => void;
+}): React.JSX.Element {
+  const trackMeta = step.track ? stepTrackMeta[step.track] : undefined;
+  const statusStyles = statusCopy[status];
+  const accentClass = trackMeta?.accentClass ?? "bg-primary";
+  const hasRecommendations = pendingRecommendations.length > 0;
+
+  return (
+    <Card
+      className={cn(
+        "relative overflow-hidden border border-border/60 transition-all hover:border-primary/50",
+        status === "complete" && "border-success/50"
+      )}
+    >
+      <CardContent className="flex flex-col gap-4">
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex items-start gap-3">
+            <span className="mt-1 text-2xl" aria-hidden>
+              {step.icon ?? "🧩"}
+            </span>
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <h4 className="text-base font-semibold text-foreground">
+                  {step.label}
+                </h4>
+                {step.optional && (
+                  <Tag className="bg-muted text-muted-foreground" variant="default">
+                    Optional
+                  </Tag>
+                )}
+              </div>
+              {trackMeta ? (
+                <span
+                  className={cn(
+                    "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
+                    trackMeta.pillClass
+                  )}
+                >
+                  {trackMeta.label}
+                </span>
+              ) : null}
+              {step.description && (
+                <p className="text-sm text-muted-foreground">{step.description}</p>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-col items-end gap-2">
+            <Tag variant={statusStyles.variant}>{statusStyles.label}</Tag>
+            {status === "complete" ? (
+              <CheckCircledIcon className="h-5 w-5 text-success" aria-hidden />
+            ) : (
+              <CircleIcon className="h-5 w-5 text-muted-foreground" aria-hidden />
+            )}
+          </div>
+        </div>
+
+        {hasRecommendations && (
+          <div className="rounded-lg border border-warning/40 bg-warning/10 p-3 text-sm text-warning-fg">
+            <p className="font-medium">Recommended before tackling this step</p>
+            <ul className="list-disc pl-5">
+              {pendingRecommendations.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className="flex flex-wrap items-center gap-2">
+          <Button asChild className="h-10 px-4 text-sm" variant={status === "complete" ? "outline" : "default"}>
+            <Link href={"/cms/configurator/" + step.id} onClick={onOpen}>
+              {status === "complete" ? "Review step" : "Continue step"}
+              <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden />
+            </Link>
+          </Button>
+          {status === "complete" || status === "skipped" ? (
+            <Button
+              type="button"
+              variant="ghost"
+              className="h-10 px-3 text-sm"
+              onClick={onReset}
+            >
+              <ResetIcon className="mr-2 h-4 w-4" aria-hidden /> Reset
+            </Button>
+          ) : step.optional ? (
+            <Button
+              type="button"
+              variant="ghost"
+              className="h-10 px-3 text-sm"
+              onClick={onSkip}
+            >
+              Skip for now
+            </Button>
+          ) : null}
+        </div>
+      </CardContent>
+      <span className={cn("pointer-events-none absolute inset-x-4 bottom-0 h-1 rounded-full", accentClass)} />
+    </Card>
+  );
+}
+
 export function ConfiguratorStepList({
   state,
   steps,
@@ -21,105 +151,84 @@ export function ConfiguratorStepList({
   resetStep,
   onStepClick,
 }: Props): React.JSX.Element {
+  const requiredSteps = steps.filter((step) => !step.optional);
+  const optionalSteps = steps.filter((step) => step.optional);
+
+  const requiredCompleted = requiredSteps.filter(
+    (step) => state.completed?.[step.id] === "complete"
+  ).length;
+  const optionalCompleted = optionalSteps.filter(
+    (step) => state.completed?.[step.id] === "complete"
+  ).length;
+  const requiredSummary = requiredSteps.length
+    ? String(requiredCompleted) + "/" + String(requiredSteps.length) + " complete"
+    : "0 complete";
+  const optionalSummary = optionalSteps.length
+    ? String(optionalCompleted) + "/" + String(optionalSteps.length) + " complete"
+    : "0 complete";
+
+  const renderSection = (
+    sectionSteps: ConfiguratorStep[],
+    options: { title: string; description: string; summary: string }
+  ) => (
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+            {options.title}
+          </h3>
+          <p className="text-sm text-muted-foreground/80">{options.description}</p>
+        </div>
+        <Tag className="bg-muted text-muted-foreground" variant="default">
+          {options.summary}
+        </Tag>
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+        {sectionSteps.map((step) => {
+          const statusRaw = state.completed?.[step.id];
+          const status = (statusRaw ?? "pending") as "complete" | "pending" | "skipped";
+          const pendingRecommendations = (step.recommended ?? [])
+            .map((id) => steps.find((s) => s.id === id))
+            .filter(
+              (recommendedStep): recommendedStep is ConfiguratorStep =>
+                Boolean(recommendedStep)
+            )
+            .filter(
+              (recommendedStep) => state.completed?.[recommendedStep.id] !== "complete"
+            )
+            .map((recommendedStep) => recommendedStep.label);
+
+          return (
+            <StepCard
+              key={step.id}
+              step={step}
+              status={status}
+              pendingRecommendations={pendingRecommendations}
+              onOpen={() => onStepClick(step)}
+              onReset={() => resetStep(step.id)}
+              onSkip={() => skipStep(step.id)}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+
   return (
-    <>
-      <h3 className="mb-2 font-medium">Required</h3>
-      <ul className="mb-6 space-y-2">
-        {steps
-          .filter((s) => !s.optional)
-          .map((step) => {
-            const status = state?.completed?.[step.id];
-            const completed = status === "complete";
-            return (
-              <li key={step.id} className="flex items-center gap-2">
-                {completed ? (
-                  <CheckCircledIcon className="h-4 w-4 text-green-600" />
-                ) : (
-                  <CircleIcon className="h-4 w-4 text-gray-400" />
-                )}
-                <div className="flex items-center gap-1">
-                  <Link
-                    href={`/cms/configurator/${step.id}`}
-                    className="underline"
-                    onClick={() => onStepClick(step)}
-                  >
-                    {step.label}
-                  </Link>
-                </div>
-                <span className="text-xs text-gray-500">
-                  {completed ? "Done" : "Pending"}
-                </span>
-                {completed && (
-                  <button
-                    type="button"
-                    onClick={() => resetStep(step.id)}
-                    className="text-xs underline"
-                  >
-                    Reset
-                  </button>
-                )}
-              </li>
-            );
-          })}
-      </ul>
-      {steps.some((s) => s.optional) && (
-        <>
-          <h3 className="mb-2 font-medium">Optional</h3>
-          <ul className="mb-6 space-y-2">
-            {steps
-              .filter((s) => s.optional)
-              .map((step) => {
-                const status = state?.completed?.[step.id];
-                const completed = status === "complete";
-                const skipped = status === "skipped";
-                return (
-                  <li key={step.id} className="flex items-center gap-2">
-                    {completed ? (
-                      <CheckCircledIcon className="h-4 w-4 text-green-600" />
-                    ) : (
-                      <CircleIcon className="h-4 w-4 text-gray-400" />
-                    )}
-                    <div className="flex items-center gap-1">
-                      <Link
-                        href={`/cms/configurator/${step.id}`}
-                        className="underline"
-                        onClick={() => onStepClick(step)}
-                      >
-                        {step.label}
-                      </Link>
-                      <span className="text-xs italic text-gray-500">
-                        (Optional)
-                      </span>
-                    </div>
-                    <span className="text-xs text-gray-500">
-                      {completed ? "Done" : skipped ? "Skipped" : "Pending"}
-                    </span>
-                    {completed || skipped ? (
-                      <button
-                        type="button"
-                        onClick={() => resetStep(step.id)}
-                        className="text-xs underline"
-                      >
-                        Reset
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => skipStep(step.id)}
-                        className="text-xs underline"
-                      >
-                        Skip
-                      </button>
-                    )}
-                  </li>
-                );
-              })}
-          </ul>
-        </>
-      )}
-    </>
+    <div className="space-y-10">
+      {renderSection(requiredSteps, {
+        title: "Essential milestones",
+        description: "Complete these steps to achieve launch readiness.",
+        summary: requiredSummary,
+      })}
+      {optionalSteps.length > 0 &&
+        renderSection(optionalSteps, {
+          title: "Momentum boosters",
+          description: "Optional enhancements that add polish and speed to your rollout.",
+          summary: optionalSummary,
+        })}
+    </div>
   );
 }
 
 export default ConfiguratorStepList;
-

@@ -4,7 +4,10 @@ import { getShopFromPath } from "@acme/shared-utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { features } from "@acme/platform-core/features";
-import { memo, useEffect, useMemo } from "react";
+import { memo, useMemo } from "react";
+import { Button, Card, CardContent } from "../atoms/shadcn";
+import { Tag } from "../atoms";
+import { cn } from "@ui/utils/style";
 
 interface NavigationLink {
   href: string;
@@ -16,9 +19,14 @@ interface NavigationLink {
 interface SidebarProps {
   role?: string;
   pathname?: string;
+  onConfiguratorStartNew?: () => void | Promise<void>;
 }
 
-function Sidebar({ role, pathname: pathnameProp }: SidebarProps) {
+function Sidebar({
+  role,
+  pathname: pathnameProp,
+  onConfiguratorStartNew,
+}: SidebarProps) {
   const routerPathname = usePathname();
 
   const pathname = useMemo(
@@ -101,37 +109,89 @@ function Sidebar({ role, pathname: pathnameProp }: SidebarProps) {
     });
   }, [pathname, role]);
 
-  useEffect(() => {
-    if (process.env.NODE_ENV === "development") {
-      console.log("sidebar rendered on client");
+  const handleConfiguratorClick = () => {
+    try {
+      const result = onConfiguratorStartNew?.();
+      if (result && typeof result.then === "function") {
+        result.catch(() => {
+          /* swallow reset errors so navigation still continues */
+        });
+      }
+    } catch {
+      /* ignore reset errors */
     }
-  }, []);
-
-  const handleClick = () => {
-    console.log("step 1: configurator link clicked");
   };
 
   return (
-    <aside className="w-56 shrink-0 border-r border-muted">
-      <h1 className="px-4 py-6 text-lg font-semibold tracking-tight">CMS</h1>
-      <nav>
-        <ul className="flex flex-col gap-1 px-2">
-          {navItems.map(({ label, icon, title, fullHref, active, href }) => (
-            <li key={fullHref}>
+    <aside className="flex h-full w-full flex-col gap-6 px-5 py-6 text-sm">
+      <div className="space-y-2">
+        <Tag variant="default" className="bg-white/10 text-white/80">
+          Control Center
+        </Tag>
+        <h1 className="text-2xl font-semibold tracking-tight">Base Shop CMS</h1>
+        <p className="text-xs text-white/60">
+          Configure storefronts, orchestrate launches, and monitor activity from one hub.
+        </p>
+        <Button
+          className="mt-3 w-full justify-center bg-white/10 text-white hover:bg-white/20"
+          onClick={handleConfiguratorClick}
+          asChild
+        >
+          <Link href="/cms/configurator">Launch Configurator</Link>
+        </Button>
+      </div>
+
+      <Card className="border-white/10 bg-white/5 text-white">
+        <CardContent className="space-y-4 px-4 py-5">
+          <div className="flex items-center justify-between text-xs uppercase tracking-wide text-white/50">
+            <span>Main navigation</span>
+            <span>Explore</span>
+          </div>
+          <nav className="space-y-1">
+            {navItems.map(({ label, icon, title, fullHref, active, href }) => (
               <Link
+                key={fullHref}
                 href={fullHref}
                 aria-current={active ? "page" : undefined}
                 title={title}
-                className={`focus-visible:ring-primary flex items-center gap-2 rounded-md px-3 py-2 text-sm focus-visible:ring-2 focus-visible:outline-none ${active ? "bg-primary/10 font-medium" : "hover:bg-muted"}`}
-                {...(href === "/configurator" ? { onClick: handleClick } : {})}
+                onClick={href === "/configurator" ? handleConfiguratorClick : undefined}
+                className={cn(
+                  "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors",
+                  active
+                    ? "bg-white/15 text-white"
+                    : "text-white/70 hover:bg-white/10 hover:text-white"
+                )}
               >
-                <span>{icon}</span>
-                {label}
+                <span className="text-lg" aria-hidden>
+                  {icon}
+                </span>
+                <span className="flex-1 font-medium">{label}</span>
+                {active && (
+                  <span className="h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+                )}
               </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+            ))}
+          </nav>
+        </CardContent>
+      </Card>
+
+      <div className="mt-auto space-y-3 text-xs text-white/60">
+        <Card className="border-white/10 bg-white/5">
+          <CardContent className="space-y-2 px-4 py-4">
+            <h2 className="text-sm font-semibold text-white">Need a hand?</h2>
+            <p>Visit the docs or ping the platform team for support.</p>
+            <div className="flex gap-2">
+              <Button asChild variant="outline" className="h-9 flex-1 border-white/30 text-white">
+                <Link href="/docs">Docs</Link>
+              </Button>
+              <Button asChild className="h-9 flex-1 bg-white/10 text-white hover:bg-white/20">
+                <Link href="/cms/support">Support</Link>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+        <p>Build version 1.0.0 · Crafted with care for the Base Shop team.</p>
+      </div>
     </aside>
   );
 }

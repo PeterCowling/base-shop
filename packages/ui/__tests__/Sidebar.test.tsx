@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Sidebar from "../src/components/cms/Sidebar.client";
 
 describe("Sidebar", () => {
@@ -28,5 +28,19 @@ describe("Sidebar", () => {
   it("hides Theme link for viewers", () => {
     render(<Sidebar pathname="/cms/shop/abc" role="viewer" />);
     expect(screen.queryByText("Theme")).toBeNull();
+  });
+
+  it("notifies when starting a new configurator", () => {
+    const handler = jest.fn();
+    render(
+      <Sidebar
+        pathname="/cms"
+        role="admin"
+        onConfiguratorStartNew={handler}
+      />,
+    );
+    const link = screen.getByText("New Shop (Configurator)");
+    fireEvent.click(link);
+    expect(handler).toHaveBeenCalledTimes(1);
   });
 });

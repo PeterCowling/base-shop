@@ -19,6 +19,7 @@ interface Props {
    * Implemented in – and supplied by – the host application (e.g. `apps/cms`).
    */
   onDelete: (shop: string, src: string) => void | Promise<void>;
+  uploaderTargetId?: string;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -29,6 +30,7 @@ function MediaManagerBase({
   shop,
   initialFiles,
   onDelete,
+  uploaderTargetId,
 }: Props): ReactElement {
   const [files, setFiles] = useState<MediaItem[]>(initialFiles);
 
@@ -58,7 +60,11 @@ function MediaManagerBase({
 
   return (
     <div className="space-y-6">
-      <UploadPanel shop={shop} onUploaded={handleUploaded} />
+      <UploadPanel
+        shop={shop}
+        onUploaded={handleUploaded}
+        focusTargetId={uploaderTargetId}
+      />
       <Library
         files={files}
         shop={shop}

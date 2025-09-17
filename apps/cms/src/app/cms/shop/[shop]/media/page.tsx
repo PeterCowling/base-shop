@@ -1,10 +1,10 @@
 // apps/cms/src/app/cms/shop/[shop]/media/page.tsx
 
-import { deleteMedia, listMedia } from "@cms/actions/media.server";
+import { deleteMedia, getMediaOverview } from "@cms/actions/media.server";
 import { checkShopExists } from "@acme/lib";
 import MediaManager from "@ui/components/cms/MediaManager";
 import { notFound } from "next/navigation";
-import type { MediaItem } from "@acme/types";
+import MediaOverviewHero from "./components/MediaOverviewHero";
 
 interface Params {
   shop: string;
@@ -21,12 +21,25 @@ export default async function MediaPage({
 
   if (!(await checkShopExists(shop))) return notFound();
 
-  const files: MediaItem[] = await listMedia(shop);
+  const overview = await getMediaOverview(shop);
+  const { files, totalBytes, recentUploads } = overview;
+  const uploaderTargetId = "media-manager-uploader";
 
   return (
-    <div>
-      <h2 className="mb-4 text-xl font-semibold">Media – {shop}</h2>
-      <MediaManager shop={shop} initialFiles={files} onDelete={deleteMedia} />
+    <div className="space-y-6">
+      <MediaOverviewHero
+        shop={shop}
+        totalBytes={totalBytes}
+        assetCount={files.length}
+        recentUploads={recentUploads}
+        uploaderTargetId={uploaderTargetId}
+      />
+      <MediaManager
+        shop={shop}
+        initialFiles={files}
+        onDelete={deleteMedia}
+        uploaderTargetId={uploaderTargetId}
+      />
     </div>
   );
 }

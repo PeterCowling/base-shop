@@ -1,5 +1,29 @@
 import React, { createContext, useContext } from "react";
 
+export function Card({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div {...props}>
+      {children}
+    </div>
+  );
+}
+
+export function CardContent({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div {...props}>
+      {children}
+    </div>
+  );
+}
+
+export function Progress({ value = 0, ...props }: React.HTMLAttributes<HTMLDivElement> & { value?: number }) {
+  return (
+    <div role="progressbar" aria-valuenow={value} {...props}>
+      {props.children}
+    </div>
+  );
+}
+
 interface DialogContextValue {
   open: boolean;
   onOpenChange: (open: boolean) => void;

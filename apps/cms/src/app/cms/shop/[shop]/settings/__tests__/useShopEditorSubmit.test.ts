@@ -64,6 +64,9 @@ describe("useShopEditorSubmit", () => {
     expect(result.current.errors).toHaveProperty("filterMappings");
     expect(result.current.errors).toHaveProperty("priceOverrides");
     expect(result.current.errors).toHaveProperty("localeOverrides");
+    expect(result.current.toast.open).toBe(true);
+    expect(result.current.toast.status).toBe("error");
+    expect(result.current.toast.message).toBe("Please fix the highlighted errors.");
     const { updateShop } = require("@cms/actions/shops.server");
     expect(updateShop).not.toHaveBeenCalled();
   });

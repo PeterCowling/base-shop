@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import type { Shop } from "@acme/types";
 import { shopSchema } from "@cms/actions/schemas";
 import { updateShop } from "@cms/actions/shops.server";
@@ -32,6 +32,14 @@ interface Args {
   setTrackingProviders: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
+type ToastStatus = "success" | "error";
+
+interface ToastState {
+  open: boolean;
+  status: ToastStatus;
+  message: string;
+}
+
 export function useShopEditorSubmit({
   shop,
   filterMappings,
@@ -42,6 +50,26 @@ export function useShopEditorSubmit({
 }: Args) {
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+
+  const [toast, setToast] = useState<ToastState>({
+    open: false,
+    status: "success",
+    message: "",
+  });
+
+  const toastClassName = useMemo(() => {
+    return toast.status === "error"
+      ? "bg-destructive text-destructive-foreground"
+      : "bg-success text-success-fg";
+  }, [toast.status]);
+
+  const closeToast = () => {
+    setToast((current) => ({ ...current, open: false }));
+  };
+
+  const showToast = (status: ToastStatus, message: string) => {
+    setToast({ open: true, status, message });
+  };
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,6 +101,7 @@ export function useShopEditorSubmit({
     }
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      showToast("error", "Please fix the highlighted errors.");
       setSaving(false);
       return;
     }
@@ -105,39 +134,51 @@ export function useShopEditorSubmit({
     });
     if (!parsed.success) {
       setErrors(parsed.error.flatten().fieldErrors);
+      showToast("error", "Unable to save shop settings.");
       setSaving(false);
       return;
     }
-    const result = await updateShop(shop, fd);
-    if (result.errors) {
-      setErrors(result.errors);
-    } else if (result.shop) {
-      setInfo(result.shop);
-      setTrackingProviders(fd.getAll("trackingProviders") as string[]);
-      filterMappings.setRows(
-        Object.entries(result.shop.filterMappings ?? {}).map(([key, value]) => ({
-          key,
-          value: String(value),
-        })),
-      );
-      priceOverrides.setRows(
-        Object.entries(result.shop.priceOverrides ?? {}).map(([key, value]) => ({
-          key,
-          value: String(value),
-        })),
-      );
-      localeOverrides.setRows(
-        Object.entries(result.shop.localeOverrides ?? {}).map(([key, value]) => ({
-          key,
-          value: String(value),
-        })),
-      );
-      setErrors({});
+    try {
+      const result = await updateShop(shop, fd);
+      if (result.errors) {
+        setErrors(result.errors);
+        showToast("error", "Unable to save shop settings.");
+      } else if (result.shop) {
+        setInfo(result.shop);
+        setTrackingProviders(fd.getAll("trackingProviders") as string[]);
+        filterMappings.setRows(
+          Object.entries(result.shop.filterMappings ?? {}).map(([key, value]) => ({
+            key,
+            value: String(value),
+          })),
+        );
+        priceOverrides.setRows(
+          Object.entries(result.shop.priceOverrides ?? {}).map(([key, value]) => ({
+            key,
+            value: String(value),
+          })),
+        );
+        localeOverrides.setRows(
+          Object.entries(result.shop.localeOverrides ?? {}).map(([key, value]) => ({
+            key,
+            value: String(value),
+          })),
+        );
+        setErrors({});
+        showToast("success", "Shop settings saved.");
+      }
+    } catch (error) {
+      const message =
+        error instanceof Error && error.message
+          ? error.message
+          : "Unable to save shop settings.";
+      showToast("error", message);
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
-  return { saving, errors, onSubmit } as const;
+  return { saving, errors, onSubmit, toast, toastClassName, closeToast } as const;
 }
 
 export default useShopEditorSubmit;

@@ -3,7 +3,7 @@
 
 import type { PageComponent } from "@acme/types";
 import { memo } from "react";
-import { Accordion } from "../../atoms/shadcn";
+import { LegacyAccordion } from "../../atoms/shadcn";
 import LayoutPanel from "./panels/LayoutPanel";
 import ContentPanel from "./panels/ContentPanel";
 import InteractionsPanel from "./panels/InteractionsPanel";
@@ -41,7 +41,7 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
   if (!component) return null;
 
   return (
-    <Accordion
+    <LegacyAccordion
       items={[
         {
           title: "Layout",

@@ -30,14 +30,15 @@ export function useShopEditorForm({
   const priceOverrides = useMappingRows(initial.priceOverrides);
   const localeOverrides = useMappingRows(initial.localeOverrides);
 
-  const { saving, errors, onSubmit } = useShopEditorSubmit({
-    shop,
-    filterMappings: filterMappings as MappingRowsController,
-    priceOverrides: priceOverrides as MappingRowsController,
-    localeOverrides: localeOverrides as MappingRowsController,
-    setInfo,
-    setTrackingProviders,
-  });
+  const { saving, errors, onSubmit, toast, toastClassName, closeToast } =
+    useShopEditorSubmit({
+      shop,
+      filterMappings: filterMappings as MappingRowsController,
+      priceOverrides: priceOverrides as MappingRowsController,
+      localeOverrides: localeOverrides as MappingRowsController,
+      setInfo,
+      setTrackingProviders,
+    });
 
   const shippingProviders = providersByType("shipping");
 
@@ -74,6 +75,9 @@ export function useShopEditorForm({
     tokenRows,
     shippingProviders,
     onSubmit,
+    toast,
+    toastClassName,
+    closeToast,
   } as const;
 }
 

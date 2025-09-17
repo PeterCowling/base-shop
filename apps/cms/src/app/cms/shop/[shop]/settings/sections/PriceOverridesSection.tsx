@@ -1,39 +1,35 @@
-// apps/cms/src/app/cms/shop/[shop]/settings/PriceOverrides.tsx
 "use client";
+
 import { Button, Input } from "@/components/atoms/shadcn";
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
+import type { MappingRow } from "@/hooks/useMappingRows";
 
-interface Row {
-  key: string;
-  value: string;
-}
-
-interface Props {
-  overrides: Row[];
+interface PriceOverridesSectionProps {
+  overrides: MappingRow[];
   addOverride: () => void;
   updateOverride: (index: number, field: "key" | "value", value: string) => void;
   removeOverride: (index: number) => void;
   errors: Record<string, string[]>;
 }
 
-export default function PriceOverrides({
+export default function PriceOverridesSection({
   overrides,
   addOverride,
   updateOverride,
   removeOverride,
   errors,
-}: Props) {
+}: PriceOverridesSectionProps) {
   return (
     <div className="flex flex-col gap-1">
       <span>Price Overrides</span>
-      {overrides.map((row, idx) => (
-        <div key={idx} className="flex items-center gap-2">
+      {overrides.map((row, index) => (
+        <div key={index} className="flex items-center gap-2">
           <Input
             name="priceOverridesKey"
             value={row.key}
             placeholder="Locale"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              updateOverride(idx, "key", e.target.value)
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              updateOverride(index, "key", event.target.value)
             }
           />
           <Input
@@ -41,11 +37,11 @@ export default function PriceOverrides({
             name="priceOverridesValue"
             value={row.value}
             placeholder="Price"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              updateOverride(idx, "value", e.target.value)
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              updateOverride(index, "value", event.target.value)
             }
           />
-          <Button type="button" onClick={() => removeOverride(idx)}>
+          <Button type="button" onClick={() => removeOverride(index)}>
             Remove
           </Button>
         </div>
@@ -61,4 +57,3 @@ export default function PriceOverrides({
     </div>
   );
 }
-

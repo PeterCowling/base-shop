@@ -14,10 +14,10 @@ jest.mock("@cms/actions/shops.server", () => ({
   resetThemeOverride,
 }));
 
-import ThemeTokens from "../ThemeTokens";
+import ThemeTokensSection from "../sections/ThemeTokensSection";
 import { mapThemeTokenRows } from "../tableMappers";
 
-describe("ThemeTokens", () => {
+describe("ThemeTokensSection", () => {
   it("renders values, highlights changes, resets overrides, and serializes info", () => {
     const tokenRows = mapThemeTokenRows(
       {
@@ -36,7 +36,7 @@ describe("ThemeTokens", () => {
     } as any;
 
     const { getByText, getAllByText, container } = render(
-      <ThemeTokens
+      <ThemeTokensSection
         shop="shop1"
         tokenRows={tokenRows}
         info={info}

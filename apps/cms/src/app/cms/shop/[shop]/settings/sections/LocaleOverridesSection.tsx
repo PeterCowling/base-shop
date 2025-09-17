@@ -1,46 +1,42 @@
-// apps/cms/src/app/cms/shop/[shop]/settings/LocaleOverrides.tsx
 "use client";
+
 import { Button, Input } from "@/components/atoms/shadcn";
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
+import type { MappingRow } from "@/hooks/useMappingRows";
 
-interface Row {
-  key: string;
-  value: string;
-}
-
-interface Props {
-  overrides: Row[];
+interface LocaleOverridesSectionProps {
+  overrides: MappingRow[];
   addOverride: () => void;
   updateOverride: (index: number, field: "key" | "value", value: string) => void;
   removeOverride: (index: number) => void;
   errors: Record<string, string[]>;
 }
 
-export default function LocaleOverrides({
+export default function LocaleOverridesSection({
   overrides,
   addOverride,
   updateOverride,
   removeOverride,
   errors,
-}: Props) {
+}: LocaleOverridesSectionProps) {
   return (
     <div className="flex flex-col gap-1">
       <span>Locale Overrides</span>
-      {overrides.map((row, idx) => (
-        <div key={idx} className="flex items-center gap-2">
+      {overrides.map((row, index) => (
+        <div key={index} className="flex items-center gap-2">
           <Input
             name="localeOverridesKey"
             value={row.key}
             placeholder="Field"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              updateOverride(idx, "key", e.target.value)
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              updateOverride(index, "key", event.target.value)
             }
           />
           <select
             name="localeOverridesValue"
             value={row.value}
-            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-              updateOverride(idx, "value", e.target.value)
+            onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+              updateOverride(index, "value", event.target.value)
             }
             className="border p-2"
           >
@@ -49,7 +45,7 @@ export default function LocaleOverrides({
             <option value="de">de</option>
             <option value="it">it</option>
           </select>
-          <Button type="button" onClick={() => removeOverride(idx)}>
+          <Button type="button" onClick={() => removeOverride(index)}>
             Remove
           </Button>
         </div>
@@ -65,4 +61,3 @@ export default function LocaleOverrides({
     </div>
   );
 }
-

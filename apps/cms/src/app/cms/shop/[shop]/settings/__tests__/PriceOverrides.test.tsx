@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
-import PriceOverrides from "../PriceOverrides";
+import PriceOverridesSection from "../sections/PriceOverridesSection";
 
 jest.mock(
   "@/components/atoms/shadcn",
@@ -11,14 +11,14 @@ jest.mock(
   { virtual: true },
 );
 
-describe("PriceOverrides", () => {
+describe("PriceOverridesSection", () => {
   it("handles overrides and displays errors", () => {
     const addOverride = jest.fn();
     const updateOverride = jest.fn();
     const removeOverride = jest.fn();
 
     render(
-      <PriceOverrides
+      <PriceOverridesSection
         overrides={[{ key: "en", value: "10" }]}
         addOverride={addOverride}
         updateOverride={updateOverride}

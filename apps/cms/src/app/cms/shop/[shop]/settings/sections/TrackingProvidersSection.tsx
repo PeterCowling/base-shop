@@ -1,23 +1,25 @@
-// apps/cms/src/app/cms/shop/[shop]/settings/ProviderSelect.tsx
 "use client";
-import { ChangeEvent, Dispatch, SetStateAction } from "react";
-import type { Provider } from "@acme/configurator/providers";
 
-interface Props {
+import type { Provider } from "@acme/configurator/providers";
+import type { Dispatch, SetStateAction, ChangeEvent } from "react";
+
+interface TrackingProvidersSectionProps {
   trackingProviders: string[];
   setTrackingProviders: Dispatch<SetStateAction<string[]>>;
   errors: Record<string, string[]>;
   shippingProviders: Provider[];
 }
 
-export default function ProviderSelect({
+export default function TrackingProvidersSection({
   trackingProviders,
   setTrackingProviders,
   errors,
   shippingProviders,
-}: Props) {
-  const handleTracking = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selected = Array.from(e.target.selectedOptions).map((o) => o.value);
+}: TrackingProvidersSectionProps) {
+  const handleTracking = (event: ChangeEvent<HTMLSelectElement>) => {
+    const selected = Array.from(event.target.selectedOptions).map(
+      (option) => option.value,
+    );
     setTrackingProviders(selected);
   };
 
@@ -31,9 +33,9 @@ export default function ProviderSelect({
         onChange={handleTracking}
         className="border p-2"
       >
-        {shippingProviders.map((p) => (
-          <option key={p.id} value={p.id}>
-            {p.name}
+        {shippingProviders.map((provider) => (
+          <option key={provider.id} value={provider.id}>
+            {provider.name}
           </option>
         ))}
       </select>
@@ -45,4 +47,3 @@ export default function ProviderSelect({
     </label>
   );
 }
-

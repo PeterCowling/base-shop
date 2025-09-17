@@ -1,20 +1,20 @@
-// apps/cms/src/app/cms/shop/[shop]/settings/SEOSettings.tsx
 "use client";
+
 import { Input } from "@/components/atoms/shadcn";
 import type { Shop } from "@acme/types";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 
-interface Props {
+interface SEOSectionProps {
   info: Shop;
   setInfo: Dispatch<SetStateAction<Shop>>;
   errors: Record<string, string[]>;
 }
 
-export default function SEOSettings({ info, setInfo, errors }: Props) {
-  const handleFilters = (e: ChangeEvent<HTMLInputElement>) => {
-    setInfo((prev) => ({
-      ...prev,
-      catalogFilters: e.target.value.split(/,\s*/),
+export default function SEOSection({ info, setInfo, errors }: SEOSectionProps) {
+  const handleFilters = (event: ChangeEvent<HTMLInputElement>) => {
+    setInfo((previous) => ({
+      ...previous,
+      catalogFilters: event.target.value.split(/,\s*/),
     }));
   };
 

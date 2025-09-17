@@ -1,4 +1,3 @@
-// apps/cms/src/app/cms/shop/[shop]/settings/ThemeTokens.tsx
 "use client";
 
 import { Button } from "@/components/atoms/shadcn";
@@ -10,21 +9,26 @@ import {
   createThemeTokenColumns,
   themeTokenRowClassName,
   type ThemeTokenRow,
-} from "./tableMappers";
+} from "../tableMappers";
 
-interface Props {
+interface ThemeTokensSectionProps {
   shop: string;
   tokenRows: ThemeTokenRow[];
   info: Shop;
   errors: Record<string, string[]>;
 }
 
-export default function ThemeTokens({ shop, tokenRows, info, errors }: Props) {
+export default function ThemeTokensSection({
+  shop,
+  tokenRows,
+  info,
+  errors,
+}: ThemeTokensSectionProps) {
   const columns = createThemeTokenColumns({
     onReset: ({ token }) => (
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
+        onSubmit={(event) => {
+          event.preventDefault();
           (
             resetThemeOverride as unknown as (
               shop: string,

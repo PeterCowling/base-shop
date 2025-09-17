@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ProviderSelect from "@/app/cms/shop/[shop]/settings/ProviderSelect";
+import TrackingProvidersSection from "../sections/TrackingProvidersSection";
 import type { Provider } from "@acme/configurator/providers";
 
-describe("ProviderSelect", () => {
+describe("TrackingProvidersSection", () => {
   const shippingProviders: Provider[] = [
     { id: "ups", name: "UPS", type: "shipping" },
     { id: "dhl", name: "DHL", type: "shipping" },
@@ -14,7 +14,7 @@ describe("ProviderSelect", () => {
   it("calls setTrackingProviders with selected options", async () => {
     const setTrackingProviders = jest.fn();
     render(
-      <ProviderSelect
+      <TrackingProvidersSection
         trackingProviders={[]}
         setTrackingProviders={setTrackingProviders}
         errors={{}}
@@ -33,7 +33,7 @@ describe("ProviderSelect", () => {
 
   it("renders error message when errors provided", () => {
     render(
-      <ProviderSelect
+      <TrackingProvidersSection
         trackingProviders={[]}
         setTrackingProviders={jest.fn()}
         errors={{ trackingProviders: ["Required"] }}

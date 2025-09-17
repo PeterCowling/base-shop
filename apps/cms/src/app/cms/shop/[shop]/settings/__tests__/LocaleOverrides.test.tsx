@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
-import LocaleOverrides from "../LocaleOverrides";
+import LocaleOverridesSection from "../sections/LocaleOverridesSection";
 
 jest.mock(
   "@/components/atoms/shadcn",
@@ -11,14 +11,14 @@ jest.mock(
   { virtual: true },
 );
 
-describe("LocaleOverrides", () => {
+describe("LocaleOverridesSection", () => {
   it("handles overrides and displays errors", () => {
     const addOverride = jest.fn();
     const updateOverride = jest.fn();
     const removeOverride = jest.fn();
 
     render(
-      <LocaleOverrides
+      <LocaleOverridesSection
         overrides={[{ key: "title", value: "en" }]}
         addOverride={addOverride}
         updateOverride={updateOverride}

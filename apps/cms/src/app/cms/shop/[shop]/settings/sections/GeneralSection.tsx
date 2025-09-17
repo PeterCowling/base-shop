@@ -1,22 +1,22 @@
-// apps/cms/src/app/cms/shop/[shop]/settings/GeneralSettings.tsx
 "use client";
-import { Input, Checkbox } from "@/components/atoms/shadcn";
+
+import { Checkbox, Input } from "@/components/atoms/shadcn";
 import type { Shop } from "@acme/types";
 import type { ChangeEvent, Dispatch, SetStateAction } from "react";
 
-interface Props {
+interface GeneralSectionProps {
   info: Shop;
   setInfo: Dispatch<SetStateAction<Shop>>;
   errors: Record<string, string[]>;
-  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function GeneralSettings({
+export default function GeneralSection({
   info,
   setInfo,
   errors,
   handleChange,
-}: Props) {
+}: GeneralSectionProps) {
   return (
     <>
       <label className="flex flex-col gap-1">
@@ -56,12 +56,12 @@ export default function GeneralSettings({
             <Checkbox
               name="blog"
               checked={info.luxuryFeatures.blog ?? false}
-              onCheckedChange={(v: boolean) =>
-                setInfo((prev) => ({
-                  ...prev,
+              onCheckedChange={(value: boolean) =>
+                setInfo((previous) => ({
+                  ...previous,
                   luxuryFeatures: {
-                    ...prev.luxuryFeatures,
-                    blog: Boolean(v),
+                    ...previous.luxuryFeatures,
+                    blog: Boolean(value),
                   },
                 }))
               }
@@ -72,12 +72,12 @@ export default function GeneralSettings({
             <Checkbox
               name="contentMerchandising"
               checked={info.luxuryFeatures.contentMerchandising ?? false}
-              onCheckedChange={(v: boolean) =>
-                setInfo((prev) => ({
-                  ...prev,
+              onCheckedChange={(value: boolean) =>
+                setInfo((previous) => ({
+                  ...previous,
                   luxuryFeatures: {
-                    ...prev.luxuryFeatures,
-                    contentMerchandising: Boolean(v),
+                    ...previous.luxuryFeatures,
+                    contentMerchandising: Boolean(value),
                   },
                 }))
               }
@@ -88,12 +88,12 @@ export default function GeneralSettings({
             <Checkbox
               name="raTicketing"
               checked={info.luxuryFeatures.raTicketing ?? false}
-              onCheckedChange={(v: boolean) =>
-                setInfo((prev) => ({
-                  ...prev,
+              onCheckedChange={(value: boolean) =>
+                setInfo((previous) => ({
+                  ...previous,
                   luxuryFeatures: {
-                    ...prev.luxuryFeatures,
-                    raTicketing: Boolean(v),
+                    ...previous.luxuryFeatures,
+                    raTicketing: Boolean(value),
                   },
                 }))
               }
@@ -106,12 +106,12 @@ export default function GeneralSettings({
               type="number"
               name="fraudReviewThreshold"
               value={info.luxuryFeatures.fraudReviewThreshold}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setInfo((prev) => ({
-                  ...prev,
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                setInfo((previous) => ({
+                  ...previous,
                   luxuryFeatures: {
-                    ...prev.luxuryFeatures,
-                    fraudReviewThreshold: Number(e.target.value),
+                    ...previous.luxuryFeatures,
+                    fraudReviewThreshold: Number(event.target.value),
                   },
                 }))
               }
@@ -121,12 +121,12 @@ export default function GeneralSettings({
             <Checkbox
               name="requireStrongCustomerAuth"
               checked={info.luxuryFeatures.requireStrongCustomerAuth}
-              onCheckedChange={(v: boolean) =>
-                setInfo((prev) => ({
-                  ...prev,
+              onCheckedChange={(value: boolean) =>
+                setInfo((previous) => ({
+                  ...previous,
                   luxuryFeatures: {
-                    ...prev.luxuryFeatures,
-                    requireStrongCustomerAuth: Boolean(v),
+                    ...previous.luxuryFeatures,
+                    requireStrongCustomerAuth: Boolean(value),
                   },
                 }))
               }
@@ -137,12 +137,12 @@ export default function GeneralSettings({
             <Checkbox
               name="strictReturnConditions"
               checked={info.luxuryFeatures.strictReturnConditions}
-              onCheckedChange={(v: boolean) =>
-                setInfo((prev) => ({
-                  ...prev,
+              onCheckedChange={(value: boolean) =>
+                setInfo((previous) => ({
+                  ...previous,
                   luxuryFeatures: {
-                    ...prev.luxuryFeatures,
-                    strictReturnConditions: Boolean(v),
+                    ...previous.luxuryFeatures,
+                    strictReturnConditions: Boolean(value),
                   },
                 }))
               }
@@ -153,12 +153,12 @@ export default function GeneralSettings({
             <Checkbox
               name="trackingDashboard"
               checked={info.luxuryFeatures.trackingDashboard}
-              onCheckedChange={(v: boolean) =>
-                setInfo((prev) => ({
-                  ...prev,
+              onCheckedChange={(value: boolean) =>
+                setInfo((previous) => ({
+                  ...previous,
                   luxuryFeatures: {
-                    ...prev.luxuryFeatures,
-                    trackingDashboard: Boolean(v),
+                    ...previous.luxuryFeatures,
+                    trackingDashboard: Boolean(value),
                   },
                 }))
               }

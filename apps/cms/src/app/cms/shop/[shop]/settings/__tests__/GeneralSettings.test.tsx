@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
 import React, { useState, ChangeEvent } from "react";
-import GeneralSettings from "../GeneralSettings";
+import GeneralSection from "../sections/GeneralSection";
 
 jest.mock(
   "@/components/atoms/shadcn",
@@ -19,7 +19,7 @@ jest.mock(
   { virtual: true },
 );
 
-describe("GeneralSettings", () => {
+describe("GeneralSection", () => {
   const initialInfo = {
     name: "Test Shop",
     themeId: "theme1",
@@ -36,7 +36,7 @@ describe("GeneralSettings", () => {
 
   it("renders initial values", () => {
     render(
-      <GeneralSettings
+      <GeneralSection
         info={initialInfo}
         setInfo={jest.fn()}
         errors={{}}
@@ -52,7 +52,7 @@ describe("GeneralSettings", () => {
 
   it("displays validation errors", () => {
     render(
-      <GeneralSettings
+      <GeneralSection
         info={initialInfo}
         setInfo={jest.fn()}
         errors={{
@@ -83,7 +83,7 @@ describe("GeneralSettings", () => {
             onSave(info);
           }}
         >
-          <GeneralSettings
+          <GeneralSection
             info={info}
             setInfo={setInfo}
             errors={{}}

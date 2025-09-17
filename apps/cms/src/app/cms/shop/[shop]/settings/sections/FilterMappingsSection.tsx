@@ -1,50 +1,46 @@
-// apps/cms/src/app/cms/shop/[shop]/settings/FilterMappings.tsx
 "use client";
+
 import { Button, Input } from "@/components/atoms/shadcn";
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
+import type { MappingRow } from "@/hooks/useMappingRows";
 
-interface Row {
-  key: string;
-  value: string;
-}
-
-interface Props {
-  mappings: Row[];
+interface FilterMappingsSectionProps {
+  mappings: MappingRow[];
   addMapping: () => void;
   updateMapping: (index: number, field: "key" | "value", value: string) => void;
   removeMapping: (index: number) => void;
   errors: Record<string, string[]>;
 }
 
-export default function FilterMappings({
+export default function FilterMappingsSection({
   mappings,
   addMapping,
   updateMapping,
   removeMapping,
   errors,
-}: Props) {
+}: FilterMappingsSectionProps) {
   return (
     <div className="flex flex-col gap-1">
       <span>Filter Mappings</span>
-      {mappings.map((row, idx) => (
-        <div key={idx} className="flex items-center gap-2">
+      {mappings.map((row, index) => (
+        <div key={index} className="flex items-center gap-2">
           <Input
             name="filterMappingsKey"
             value={row.key}
             placeholder="Filter"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              updateMapping(idx, "key", e.target.value)
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              updateMapping(index, "key", event.target.value)
             }
           />
           <Input
             name="filterMappingsValue"
             value={row.value}
             placeholder="Mapping"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              updateMapping(idx, "value", e.target.value)
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              updateMapping(index, "value", event.target.value)
             }
           />
-          <Button type="button" onClick={() => removeMapping(idx)}>
+          <Button type="button" onClick={() => removeMapping(index)}>
             Remove
           </Button>
         </div>
@@ -60,4 +56,3 @@ export default function FilterMappings({
     </div>
   );
 }
-

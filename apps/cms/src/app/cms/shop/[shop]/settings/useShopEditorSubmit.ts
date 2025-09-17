@@ -1,12 +1,39 @@
 import { FormEvent, useState } from "react";
+import type { ChangeEvent } from "react";
 import type { Shop } from "@acme/types";
 import { shopSchema } from "@cms/actions/schemas";
 import { updateShop } from "@cms/actions/shops.server";
 import type { MappingRow } from "@/hooks/useMappingRows";
+import type { ThemeTokenRow } from "./tableMappers";
 
 export interface MappingRowsController {
-  rows: MappingRow[];
-  setRows: React.Dispatch<React.SetStateAction<MappingRow[]>>;
+  readonly rows: MappingRow[];
+  readonly setRows: React.Dispatch<React.SetStateAction<MappingRow[]>>;
+  readonly add: () => void;
+  readonly update: (index: number, field: "key" | "value", value: string) => void;
+  readonly remove: (index: number) => void;
+}
+
+export interface ShopEditorIdentitySection {
+  readonly info: Shop;
+  readonly setInfo: React.Dispatch<React.SetStateAction<Shop>>;
+  readonly handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
+}
+
+export interface ShopEditorLocalizationSection {
+  readonly priceOverrides: MappingRowsController;
+  readonly localeOverrides: MappingRowsController;
+}
+
+export interface ShopEditorProvidersSection {
+  readonly shippingProviders: string[];
+  readonly trackingProviders: string[];
+  readonly setTrackingProviders: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+export interface ShopEditorOverridesSection {
+  readonly filterMappings: MappingRowsController;
+  readonly tokenRows: ThemeTokenRow[];
 }
 
 export const buildStringMapping = (rows: MappingRow[]): Record<string, string> =>
@@ -25,20 +52,18 @@ export const buildNumberMapping = (rows: MappingRow[]): Record<string, number> =
 
 interface Args {
   shop: string;
-  filterMappings: MappingRowsController;
-  priceOverrides: MappingRowsController;
-  localeOverrides: MappingRowsController;
-  setInfo: React.Dispatch<React.SetStateAction<Shop>>;
-  setTrackingProviders: React.Dispatch<React.SetStateAction<string[]>>;
+  identity: ShopEditorIdentitySection;
+  localization: ShopEditorLocalizationSection;
+  providers: ShopEditorProvidersSection;
+  overrides: ShopEditorOverridesSection;
 }
 
 export function useShopEditorSubmit({
   shop,
-  filterMappings,
-  priceOverrides,
-  localeOverrides,
-  setInfo,
-  setTrackingProviders,
+  identity,
+  localization,
+  providers,
+  overrides,
 }: Args) {
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
@@ -48,13 +73,17 @@ export function useShopEditorSubmit({
     setSaving(true);
     const validationErrors: Record<string, string[]> = {};
     const allowedLocales = ["en", "de", "it"];
-    if (filterMappings.rows.some(({ key, value }) => !key.trim() || !value.trim())) {
+    if (
+      overrides.filterMappings.rows.some(
+        ({ key, value }) => !key.trim() || !value.trim(),
+      )
+    ) {
       validationErrors.filterMappings = [
         "All filter mappings must have key and value",
       ];
     }
     if (
-      priceOverrides.rows.some(
+      localization.priceOverrides.rows.some(
         ({ key, value }) => !key.trim() || value === "" || isNaN(Number(value)),
       )
     ) {
@@ -63,7 +92,7 @@ export function useShopEditorSubmit({
       ];
     }
     if (
-      localeOverrides.rows.some(
+      localization.localeOverrides.rows.some(
         ({ key, value }) => !key.trim() || !allowedLocales.includes(value),
       )
     ) {
@@ -79,9 +108,9 @@ export function useShopEditorSubmit({
 
     const fd = new FormData(e.currentTarget);
 
-    const filterMappingsObj = buildStringMapping(filterMappings.rows);
-    const priceOverridesObj = buildNumberMapping(priceOverrides.rows);
-    const localeOverridesObj = buildStringMapping(localeOverrides.rows);
+    const filterMappingsObj = buildStringMapping(overrides.filterMappings.rows);
+    const priceOverridesObj = buildNumberMapping(localization.priceOverrides.rows);
+    const localeOverridesObj = buildStringMapping(localization.localeOverrides.rows);
 
     const entries = Array.from(
       (fd as unknown as Iterable<[string, string]>),
@@ -112,21 +141,21 @@ export function useShopEditorSubmit({
     if (result.errors) {
       setErrors(result.errors);
     } else if (result.shop) {
-      setInfo(result.shop);
-      setTrackingProviders(fd.getAll("trackingProviders") as string[]);
-      filterMappings.setRows(
+      identity.setInfo(result.shop);
+      providers.setTrackingProviders(fd.getAll("trackingProviders") as string[]);
+      overrides.filterMappings.setRows(
         Object.entries(result.shop.filterMappings ?? {}).map(([key, value]) => ({
           key,
           value: String(value),
         })),
       );
-      priceOverrides.setRows(
+      localization.priceOverrides.setRows(
         Object.entries(result.shop.priceOverrides ?? {}).map(([key, value]) => ({
           key,
           value: String(value),
         })),
       );
-      localeOverrides.setRows(
+      localization.localeOverrides.setRows(
         Object.entries(result.shop.localeOverrides ?? {}).map(([key, value]) => ({
           key,
           value: String(value),

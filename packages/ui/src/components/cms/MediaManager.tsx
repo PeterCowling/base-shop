@@ -8,6 +8,7 @@ import MediaDetailsPanel, {
 } from "./media/MediaDetailsPanel";
 import Library from "./media/Library";
 import UploadPanel from "./media/UploadPanel";
+import { Toast } from "../atoms";
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
@@ -30,6 +31,14 @@ interface Props {
     fields: MediaDetailsFormValues
   ) => MediaItem | Promise<MediaItem>;
   uploaderTargetId?: string;
+}
+
+type ToastStatus = "success" | "error";
+
+interface ToastState {
+  open: boolean;
+  message: string;
+  status: ToastStatus;
 }
 
 function hasUrl(item: MediaItem): item is MediaItemWithUrl {
@@ -56,20 +65,45 @@ function MediaManagerBase({
   );
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const [metadataPending, setMetadataPending] = useState(false);
+  const [toast, setToast] = useState<ToastState>({
+    open: false,
+    message: "",
+    status: "success",
+  });
 
   const selectedItem = useMemo(() => {
     if (!selectedUrl) return null;
     return files.find((file) => file.url === selectedUrl) ?? null;
   }, [files, selectedUrl]);
 
+  const showToast = useCallback((message: string, status: ToastStatus) => {
+    setToast({ open: true, message, status });
+  }, []);
+
+  const closeToast = useCallback(() => {
+    setToast((current) => ({ ...current, open: false }));
+  }, []);
+
+  const toastClassName = useMemo(() => {
+    return toast.status === "error"
+      ? "bg-destructive text-destructive-foreground"
+      : "bg-success text-success-fg";
+  }, [toast.status]);
+
   const handleDelete = useCallback(
     async (src: string) => {
       if (!confirm("Delete this image?")) return;
-      await onDelete(shop, src);
-      setFiles((prev) => prev.filter((f) => f.url !== src));
-      setSelectedUrl((prev) => (prev === src ? null : prev));
+      try {
+        await onDelete(shop, src);
+        setFiles((prev) => prev.filter((f) => f.url !== src));
+        setSelectedUrl((prev) => (prev === src ? null : prev));
+        showToast("Media deleted.", "success");
+      } catch (error) {
+        console.error("Failed to delete media", error);
+        showToast("Failed to delete media.", "error");
+      }
     },
-    [onDelete, shop]
+    [onDelete, shop, showToast]
   );
 
   const handleUploaded = useCallback((item: MediaItem) => {
@@ -103,6 +137,7 @@ function MediaManagerBase({
         const updated = await onMetadataUpdate(shop, currentUrl, fields);
         if (!hasUrl(updated)) {
           console.error("Updated media item is missing a URL", updated);
+          showToast("Failed to update media metadata.", "error");
           return;
         }
 
@@ -113,14 +148,16 @@ function MediaManagerBase({
               : file
           )
         );
-        setSelectedUrl(updated.url);
+        setSelectedUrl(null);
+        showToast("Media details saved.", "success");
       } catch (error) {
         console.error("Failed to update media metadata", error);
+        showToast("Failed to update media metadata.", "error");
       } finally {
         setMetadataPending(false);
       }
     },
-    [onMetadataUpdate, selectedItem, shop]
+    [onMetadataUpdate, selectedItem, shop, showToast]
   );
 
   const handleCloseDetails = useCallback(() => {
@@ -128,29 +165,39 @@ function MediaManagerBase({
   }, []);
 
   return (
-    <div className="space-y-6">
-      <UploadPanel
-        shop={shop}
-        onUploaded={handleUploaded}
-        focusTargetId={uploaderTargetId}
-      />
-      <Library
-        files={files}
-        shop={shop}
-        onDelete={handleDelete}
-        onReplace={handleReplace}
-        onSelect={handleSelect}
-      />
-      {selectedItem ? (
-        <MediaDetailsPanel
-          open
-          item={selectedItem}
-          pending={metadataPending}
-          onSubmit={handleMetadataSubmit}
-          onClose={handleCloseDetails}
+    <>
+      <div className="space-y-6">
+        <UploadPanel
+          shop={shop}
+          onUploaded={handleUploaded}
+          focusTargetId={uploaderTargetId}
         />
-      ) : null}
-    </div>
+        <Library
+          files={files}
+          shop={shop}
+          onDelete={handleDelete}
+          onReplace={handleReplace}
+          onSelect={handleSelect}
+        />
+        {selectedItem ? (
+          <MediaDetailsPanel
+            open
+            item={selectedItem}
+            pending={metadataPending}
+            onSubmit={handleMetadataSubmit}
+            onClose={handleCloseDetails}
+          />
+        ) : null}
+      </div>
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        onClose={closeToast}
+        className={toastClassName}
+        role="status"
+        data-variant={toast.status}
+      />
+    </>
   );
 }
 

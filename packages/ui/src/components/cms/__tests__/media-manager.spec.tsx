@@ -99,6 +99,7 @@ describe("MediaManager", () => {
 
     act(() => {
       libraryProps.onReplace("1", { url: "1b", type: "image" });
+      libraryProps.onReplaceSuccess({ url: "1b", type: "image" });
     });
 
     await waitFor(() => expect(libraryProps.files[0].url).toBe("1b"));

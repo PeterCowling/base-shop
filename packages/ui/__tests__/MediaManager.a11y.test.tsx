@@ -25,7 +25,14 @@ const MediaManager = require("@ui/components/cms/MediaManager").default;
 
 describe("MediaManager accessibility", () => {
   it("links drop zone to live feedback region", () => {
-    render(<MediaManager shop="s" initialFiles={[]} onDelete={jest.fn()} />);
+    render(
+      <MediaManager
+        shop="s"
+        initialFiles={[]}
+        onDelete={jest.fn()}
+        onMetadataUpdate={jest.fn()}
+      />
+    );
     const dropzone = screen.getByRole("button", {
       name: /drop image or video/i,
     });

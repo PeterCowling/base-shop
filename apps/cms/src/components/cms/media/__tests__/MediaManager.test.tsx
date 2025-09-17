@@ -4,6 +4,75 @@ import {
   waitFor,
   act,
 } from "@testing-library/react";
+import type { MediaItem } from "@acme/types";
+
+jest.mock("@ui/components/atoms/shadcn", () => {
+  const React = require("react");
+  const passthrough = (tag = "div") =>
+    React.forwardRef(({ asChild: _asChild, ...props }: any, ref: any) =>
+      React.createElement(tag, { ref, ...props })
+    );
+  return {
+    Input: passthrough("input"),
+    Textarea: passthrough("textarea"),
+    Button: passthrough("button"),
+    Card: passthrough("div"),
+    CardContent: passthrough("div"),
+    Checkbox: React.forwardRef((props: any, ref: any) => (
+      <input ref={ref} type="checkbox" {...props} />
+    )),
+    Progress: passthrough(),
+    Tag: ({ children, ...rest }: any) => <span {...rest}>{children}</span>,
+    DropdownMenu: ({ children }: any) => <div>{children}</div>,
+    DropdownMenuTrigger: ({ children, asChild, ...rest }: any) => {
+      if (asChild && React.isValidElement(children)) {
+        return React.cloneElement(children, rest);
+      }
+      return (
+        <button type="button" {...rest}>
+          {children}
+        </button>
+      );
+    },
+    DropdownMenuContent: ({ children, asChild: _asChild, ...rest }: any) => (
+      <div {...rest}>{children}</div>
+    ),
+    DropdownMenuItem: ({
+      children,
+      onSelect,
+      asChild: _asChild,
+      ...rest
+    }: any) => (
+      <div
+        role="menuitem"
+        tabIndex={0}
+        onClick={(event) => onSelect?.(event)}
+        {...rest}
+      >
+        {children}
+      </div>
+    ),
+    DropdownMenuLabel: ({ children }: any) => <div>{children}</div>,
+    DropdownMenuSeparator: () => <hr />,
+    Select: passthrough(),
+    SelectTrigger: passthrough(),
+    SelectValue: ({ placeholder }: any) => <span>{placeholder}</span>,
+    SelectContent: passthrough(),
+    SelectItem: ({ children, onSelect, asChild: _asChild, ...rest }: any) => (
+      <div onClick={(event) => onSelect?.(event)} {...rest}>
+        {children}
+      </div>
+    ),
+    Dialog: ({ children, asChild: _asChild, ...rest }: any) => (
+      <div {...rest}>{children}</div>
+    ),
+    DialogContent: passthrough(),
+    DialogHeader: ({ children }: any) => <div>{children}</div>,
+    DialogTitle: ({ children }: any) => <div>{children}</div>,
+    DialogDescription: ({ children }: any) => <div>{children}</div>,
+    DialogFooter: ({ children }: any) => <div>{children}</div>,
+  };
+});
 import MediaManager from "../MediaManager";
 
 describe("MediaManager", () => {
@@ -27,7 +96,12 @@ describe("MediaManager", () => {
     ) as any;
 
     const { getByLabelText, getByText, queryByText, queryAllByText } = render(
-      <MediaManager shop="shop" initialFiles={[]} onDelete={onDelete} />
+      <MediaManager
+        shop="shop"
+        initialFiles={[]}
+        onDelete={onDelete}
+        onMetadataUpdate={jest.fn()}
+      />
     );
 
     const dropzone = getByLabelText(/drop image or video here/i);
@@ -36,8 +110,6 @@ describe("MediaManager", () => {
 
     const uploadButton = getByText("Upload");
     fireEvent.click(uploadButton);
-
-    const progressEl = getByText("Uploaded 0/1");
 
     await act(async () => {
       resolveFetch!(
@@ -56,14 +128,16 @@ describe("MediaManager", () => {
   it("calls onDelete when confirming deletion", async () => {
     window.confirm = jest.fn(() => true);
     const onDelete = jest.fn().mockResolvedValue(undefined);
-    const { getByText, queryByText } = render(
+    const { getByText, getByRole, queryByText } = render(
       <MediaManager
         shop="shop"
         initialFiles={[{ url: "old.mp4", type: "video" }]}
         onDelete={onDelete}
+        onMetadataUpdate={jest.fn()}
       />
     );
 
+    fireEvent.click(getByRole("button", { name: "Media actions" }));
     const deleteButton = getByText("Delete");
     fireEvent.click(deleteButton);
 
@@ -85,7 +159,12 @@ describe("MediaManager", () => {
     ) as any;
 
     const { getByLabelText, getByText, findByText } = render(
-      <MediaManager shop="shop" initialFiles={[]} onDelete={onDelete} />
+      <MediaManager
+        shop="shop"
+        initialFiles={[]}
+        onDelete={onDelete}
+        onMetadataUpdate={jest.fn()}
+      />
     );
 
     const dropzone = getByLabelText(/drop image or video here/i);
@@ -95,5 +174,60 @@ describe("MediaManager", () => {
     fireEvent.click(getByText("Upload"));
 
     await findByText("Upload failed");
+  });
+
+  it("submits metadata updates when saving details", async () => {
+    const onDelete = jest.fn();
+    const onMetadataUpdate = jest
+      .fn<
+        (
+          shop: string,
+          url: string,
+          fields: { title: string; altText: string; tags: string[] }
+        ) => Promise<MediaItem>
+      >()
+      .mockImplementation(async (_shop, url, fields) => ({
+        url,
+        type: "video",
+        ...fields,
+      }));
+
+    const { getByText, findByLabelText, findByRole } = render(
+      <MediaManager
+        shop="shop"
+        initialFiles={[
+          {
+            url: "old.mp4",
+            type: "video",
+            title: "Old title",
+            altText: "Old alt",
+            tags: [],
+          },
+        ]}
+        onDelete={onDelete}
+        onMetadataUpdate={onMetadataUpdate}
+      />
+    );
+
+    fireEvent.click(getByText("Open details"));
+
+    const titleInput = await findByLabelText("Title");
+    const altInput = await findByLabelText("Alt text");
+    const tagsInput = await findByLabelText("Tags");
+
+    fireEvent.change(titleInput, { target: { value: "New title" } });
+    fireEvent.change(altInput, { target: { value: "New alt text" } });
+    fireEvent.change(tagsInput, { target: { value: "featured, hero" } });
+
+    const saveButton = await findByRole("button", { name: "Save" });
+    fireEvent.click(saveButton);
+
+    await waitFor(() =>
+      expect(onMetadataUpdate).toHaveBeenCalledWith("shop", "old.mp4", {
+        title: "New title",
+        altText: "New alt text",
+        tags: ["featured", "hero"],
+      })
+    );
   });
 });

@@ -29,7 +29,14 @@ describe("MediaManager", () => {
   it("does nothing when deletion is not confirmed", async () => {
     window.confirm = jest.fn(() => false);
     const onDelete = jest.fn();
-    render(<MediaManager shop="s" initialFiles={initialFiles} onDelete={onDelete} />);
+    render(
+      <MediaManager
+        shop="s"
+        initialFiles={initialFiles}
+        onDelete={onDelete}
+        onMetadataUpdate={jest.fn()}
+      />
+    );
 
     await act(async () => {
       await libraryProps.onDelete("1");
@@ -42,7 +49,14 @@ describe("MediaManager", () => {
   it("deletes item when confirmed", async () => {
     window.confirm = jest.fn(() => true);
     const onDelete = jest.fn();
-    render(<MediaManager shop="s" initialFiles={initialFiles} onDelete={onDelete} />);
+    render(
+      <MediaManager
+        shop="s"
+        initialFiles={initialFiles}
+        onDelete={onDelete}
+        onMetadataUpdate={jest.fn()}
+      />
+    );
 
     await act(async () => {
       await libraryProps.onDelete("1");
@@ -55,7 +69,14 @@ describe("MediaManager", () => {
 
   it("adds uploaded items", async () => {
     const onDelete = jest.fn();
-    render(<MediaManager shop="s" initialFiles={initialFiles} onDelete={onDelete} />);
+    render(
+      <MediaManager
+        shop="s"
+        initialFiles={initialFiles}
+        onDelete={onDelete}
+        onMetadataUpdate={jest.fn()}
+      />
+    );
 
     act(() => {
       uploadProps.onUploaded({ url: "3", type: "image" });
@@ -67,7 +88,14 @@ describe("MediaManager", () => {
 
   it("replaces existing items", async () => {
     const onDelete = jest.fn();
-    render(<MediaManager shop="s" initialFiles={initialFiles} onDelete={onDelete} />);
+    render(
+      <MediaManager
+        shop="s"
+        initialFiles={initialFiles}
+        onDelete={onDelete}
+        onMetadataUpdate={jest.fn()}
+      />
+    );
 
     act(() => {
       libraryProps.onReplace("1", { url: "1b", type: "image" });

@@ -1,6 +1,10 @@
 // apps/cms/src/app/cms/shop/[shop]/media/page.tsx
 
-import { deleteMedia, getMediaOverview } from "@cms/actions/media.server";
+import {
+  deleteMedia,
+  getMediaOverview,
+  updateMediaMetadata,
+} from "@cms/actions/media.server";
 import { checkShopExists } from "@acme/lib";
 import MediaManager from "@ui/components/cms/MediaManager";
 import { notFound } from "next/navigation";
@@ -38,6 +42,7 @@ export default async function MediaPage({
         shop={shop}
         initialFiles={files}
         onDelete={deleteMedia}
+        onMetadataUpdate={updateMediaMetadata}
         uploaderTargetId={uploaderTargetId}
       />
     </div>

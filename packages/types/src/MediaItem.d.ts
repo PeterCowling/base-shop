@@ -4,4 +4,6 @@ export interface MediaItem {
     altText?: string;
     tags?: string[];
     type: "image" | "video";
+    uploadedAt?: string;
+    size?: number;
 }

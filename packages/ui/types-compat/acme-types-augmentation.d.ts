@@ -7,6 +7,9 @@ declare module "@acme/types" {
     alt?: string;
     width?: number;
     height?: number;
+    tags?: string[];
+    uploadedAt?: string;
+    size?: number;
     [k: string]: any;
   }
   export type ImageOrientation = "landscape" | "portrait" | "square" | string;

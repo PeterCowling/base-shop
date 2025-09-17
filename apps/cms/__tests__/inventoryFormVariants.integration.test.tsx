@@ -9,6 +9,16 @@ jest.mock(
       Button: ({ children, ...props }: any) => (
         <button {...props}>{children}</button>
       ),
+      Card: ({ children, ...props }: any) => (
+        <div {...props} data-component="card">
+          {children}
+        </div>
+      ),
+      CardContent: ({ children, ...props }: any) => (
+        <div {...props} data-component="card-content">
+          {children}
+        </div>
+      ),
       Input: ({ ...props }: any) => <input {...props} />,
       Table: ({ children }: any) => <table>{children}</table>,
       TableBody: ({ children }: any) => <tbody>{children}</tbody>,
@@ -62,7 +72,7 @@ describe("InventoryForm integration", () => {
       },
     ];
     render(<InventoryForm shop="test" initial={initial} />);
-    fireEvent.click(screen.getByText("Save"));
+    fireEvent.click(screen.getByRole("button", { name: /save inventory/i }));
     await waitFor(() => expect(fetch).toHaveBeenCalled());
     expect(fetch).toHaveBeenCalledWith(
       "/api/data/test/inventory",

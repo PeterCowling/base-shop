@@ -1,30 +1,39 @@
-// apps/cms/src/app/cms/shop/[shop]/settings/ThemeTokens.tsx
 "use client";
 
 import { Button } from "@/components/atoms/shadcn";
 import { resetThemeOverride } from "@cms/actions/shops.server";
-import type { Shop } from "@acme/types";
 import Link from "next/link";
 import DataTable from "@ui/components/cms/DataTable";
 import {
   createThemeTokenColumns,
   themeTokenRowClassName,
   type ThemeTokenRow,
-} from "./tableMappers";
+} from "../tableMappers";
 
-interface Props {
-  shop: string;
-  tokenRows: ThemeTokenRow[];
-  info: Shop;
-  errors: Record<string, string[]>;
+export type ShopThemeSectionErrors = Partial<
+  Record<"themeDefaults" | "themeOverrides", string[]>
+>;
+
+export interface ShopThemeSectionProps {
+  readonly shop: string;
+  readonly tokenRows: ThemeTokenRow[];
+  readonly themeDefaults?: Record<string, unknown> | null;
+  readonly themeOverrides?: Record<string, unknown> | null;
+  readonly errors?: ShopThemeSectionErrors;
 }
 
-export default function ThemeTokens({ shop, tokenRows, info, errors }: Props) {
+export default function ShopThemeSection({
+  shop,
+  tokenRows,
+  themeDefaults,
+  themeOverrides,
+  errors,
+}: ShopThemeSectionProps) {
   const columns = createThemeTokenColumns({
     onReset: ({ token }) => (
       <form
-        onSubmit={(e) => {
-          e.preventDefault();
+        onSubmit={(event) => {
+          event.preventDefault();
           (
             resetThemeOverride as unknown as (
               shop: string,
@@ -45,10 +54,13 @@ export default function ThemeTokens({ shop, tokenRows, info, errors }: Props) {
     ),
   });
 
+  const defaultsError = errors?.themeDefaults?.join("; ");
+  const overridesError = errors?.themeOverrides?.join("; ");
+
   return (
     <div className="col-span-2 flex flex-col gap-1">
       <div className="flex items-center justify-between">
-        <span>Theme Tokens</span>
+        <span>Theme tokens</span>
         <Link
           href={`/cms/shop/${shop}/themes`}
           className="h-auto p-0 text-primary hover:bg-transparent"
@@ -64,23 +76,23 @@ export default function ThemeTokens({ shop, tokenRows, info, errors }: Props) {
       <input
         type="hidden"
         name="themeDefaults"
-        value={JSON.stringify(info.themeDefaults ?? {})}
+        value={JSON.stringify(themeDefaults ?? {})}
       />
       <input
         type="hidden"
         name="themeOverrides"
-        value={JSON.stringify(info.themeOverrides ?? {})}
+        value={JSON.stringify(themeOverrides ?? {})}
       />
-      {errors.themeDefaults && (
-        <span className="text-sm text-red-600">
-          {errors.themeDefaults.join("; ")}
+      {defaultsError ? (
+        <span className="text-sm text-destructive" role="alert">
+          {defaultsError}
         </span>
-      )}
-      {errors.themeOverrides && (
-        <span className="text-sm text-red-600">
-          {errors.themeOverrides.join("; ")}
+      ) : null}
+      {overridesError ? (
+        <span className="text-sm text-destructive" role="alert">
+          {overridesError}
         </span>
-      )}
+      ) : null}
     </div>
   );
 }

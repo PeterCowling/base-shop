@@ -98,6 +98,13 @@ export function useShopEditorForm({
     handleLuxuryFeatureChange(feature, checked as Shop["luxuryFeatures"][K]);
   };
 
+  const handleCatalogFiltersChange = (filters: string[]) => {
+    setInfo((prev) => ({
+      ...prev,
+      catalogFilters: filters,
+    }));
+  };
+
   const tokenRows = useMemo(
     () => mapThemeTokenRows(info.themeDefaults ?? {}, info.themeOverrides ?? {}),
     [info.themeDefaults, info.themeOverrides],
@@ -127,6 +134,11 @@ export function useShopEditorForm({
     handleCheckboxChange,
     handleLuxuryFeatureChange,
   };
+
+  const seo = {
+    catalogFilters: info.catalogFilters,
+    setCatalogFilters: handleCatalogFiltersChange,
+  } as const;
 
   const localization: ShopEditorLocalizationSection = {
     priceOverrides,
@@ -190,6 +202,7 @@ export function useShopEditorForm({
     localization,
     providers: providersState,
     overrides,
+    seo,
     onSubmit,
   } as const;
 }

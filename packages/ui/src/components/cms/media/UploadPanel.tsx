@@ -5,18 +5,21 @@ import Image from "next/image";
 import { Input } from "../../atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
-import { ChangeEvent, ReactElement, useState } from "react";
+import { ChangeEvent, ReactElement, useEffect, useState } from "react";
+import { Spinner } from "../../atoms";
 
 interface UploadPanelProps {
   shop: string;
   onUploaded: (item: MediaItem) => void;
   focusTargetId?: string;
+  onUploadError?: (message: string) => void;
 }
 
 export default function UploadPanel({
   shop,
   onUploaded,
   focusTargetId,
+  onUploadError,
 }: UploadPanelProps): ReactElement {
   const [dragActive, setDragActive] = useState(false);
   const feedbackId = "media-upload-feedback";
@@ -44,6 +47,12 @@ export default function UploadPanel({
     onUploaded,
   });
   const isVideo = pendingFile?.type?.startsWith("video/") ?? false;
+  const isUploading = Boolean(progress);
+
+  useEffect(() => {
+    if (error === undefined) return;
+    onUploadError?.(error);
+  }, [error, onUploadError]);
 
   return (
     <div className="space-y-2">
@@ -136,9 +145,20 @@ export default function UploadPanel({
                 />
                 <button
                   onClick={handleUpload}
+                  type="button"
                   className="rounded bg-primary px-2 text-sm text-primary-fg"
+                  disabled={isUploading}
                 >
-                  Upload
+                  {isUploading ? (
+                    <span className="flex items-center gap-2">
+                      <Spinner className="h-4 w-4" />
+                      <span className="sr-only" aria-live="polite" aria-atomic="true">
+                        Uploading…
+                      </span>
+                    </span>
+                  ) : (
+                    "Upload"
+                  )}
                 </button>
               </div>
             )}

@@ -101,6 +101,14 @@ function normalizeTagsForStorage(
   return cleaned.length ? cleaned : [];
 }
 
+async function bufferFromFile(file: File): Promise<Buffer> {
+  if (typeof file.arrayBuffer === "function") {
+    return Buffer.from(await file.arrayBuffer());
+  }
+
+  return Buffer.from(await new Response(file).arrayBuffer());
+}
+
 async function toMediaItem(
   shop: string,
   dir: string,
@@ -222,7 +230,7 @@ export async function uploadMedia(
     const maxSize = 5 * 1024 * 1024; // 5 MB
     if (file.size > maxSize) throw new Error("File too large");
 
-    buffer = Buffer.from(await new Response(file).arrayBuffer());
+    buffer = await bufferFromFile(file);
     const { width, height } = await sharp(buffer).metadata();
 
     if (
@@ -256,7 +264,7 @@ export async function uploadMedia(
     type = "video";
     const maxSize = 50 * 1024 * 1024; // 50 MB
     if (file.size > maxSize) throw new Error("File too large");
-    buffer = Buffer.from(await new Response(file).arrayBuffer());
+    buffer = await bufferFromFile(file);
   } else {
     throw new Error("Invalid file type");
   }
@@ -272,7 +280,7 @@ export async function uploadMedia(
   const filename = `${ulid()}${ext}`;
   await fs.writeFile(path.join(dir, filename), buffer);
 
-  const size = buffer.length;
+  const size = buffer.byteLength || file.size;
   const uploadedAt = new Date().toISOString();
 
   const meta = await readMetadata(safeShop);

@@ -6,7 +6,21 @@ jest.mock("@platform-core/repositories/analytics.server", () => ({
   listEvents: (...args: unknown[]) => listEventsMock(...args),
 }));
 
-import { render, screen } from "@testing-library/react";
+jest.mock("@/components/atoms/shadcn", () => ({
+  Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+  Table: ({ children, ...props }: any) => (
+    <table {...props}>{children}</table>
+  ),
+  TableHeader: ({ children, ...props }: any) => <thead {...props}>{children}</thead>,
+  TableBody: ({ children, ...props }: any) => <tbody {...props}>{children}</tbody>,
+  TableRow: ({ children, ...props }: any) => <tr {...props}>{children}</tr>,
+  TableHead: ({ children, ...props }: any) => <th {...props}>{children}</th>,
+  TableCell: ({ children, ...props }: any) => <td {...props}>{children}</td>,
+}));
+
+import { render, screen, within } from "@testing-library/react";
 import AiFeedPanel from "../src/app/cms/shop/[shop]/settings/seo/AiFeedPanel";
 
 beforeEach(() => {
@@ -30,13 +44,16 @@ describe("AiFeedPanel", () => {
     const ui = await AiFeedPanel({ shop: "s1" });
     render(ui);
 
-    const items = screen.getAllByRole("listitem");
-    expect(items).toHaveLength(5);
-    expect(items[0].textContent).toContain("s7");
-    expect(items[4].textContent).toContain("s3");
+    const table = screen.getByRole("table");
+    const rows = within(table).getAllByRole("row").slice(1); // skip header
+    expect(rows).toHaveLength(5);
+    expect(rows[0].textContent).toContain("s7");
+    expect(rows[4].textContent).toContain("s3");
     expect(screen.queryByText("old1")).not.toBeInTheDocument();
     expect(screen.queryByText("other shop")).not.toBeInTheDocument();
     expect(screen.queryByText("wrong type")).not.toBeInTheDocument();
+    expect(screen.getByText(/queue status/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /refresh feed/i })).toBeInTheDocument();
   });
 
   it("shows empty state when no events exist", async () => {
@@ -48,7 +65,7 @@ describe("AiFeedPanel", () => {
     expect(
       screen.getByText("No AI feed activity yet.")
     ).toBeInTheDocument();
-    expect(screen.queryByRole("list")).not.toBeInTheDocument();
+    expect(screen.queryByRole("table")).not.toBeInTheDocument();
   });
 });
 

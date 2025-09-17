@@ -6,7 +6,7 @@ import userEvent from "@testing-library/user-event";
 const mockUpdateAiCatalog = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({ updateAiCatalog: mockUpdateAiCatalog }));
 jest.mock("@/components/atoms/shadcn", () => ({
-  Button: (props: any) => <button {...props} />,
+  Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
   Checkbox: ({ onCheckedChange, ...props }: any) => (
     <input
       type="checkbox"
@@ -15,6 +15,8 @@ jest.mock("@/components/atoms/shadcn", () => ({
     />
   ),
   Input: (props: any) => <input {...props} />,
+  Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
 }));
 
 import AiCatalogSettings from "../src/app/cms/shop/[shop]/settings/seo/AiCatalogSettings";
@@ -46,7 +48,7 @@ describe("AiCatalogSettings", () => {
     await user.clear(sizeInput);
     await user.type(sizeInput, "20");
 
-    await user.click(screen.getByRole("button", { name: /save/i }));
+    await user.click(screen.getByRole("button", { name: /save settings/i }));
 
     await waitFor(() =>
       expect(mockUpdateAiCatalog).toHaveBeenCalledWith("s1", expect.any(FormData)),
@@ -59,6 +61,7 @@ describe("AiCatalogSettings", () => {
 
     expect(screen.getByRole("checkbox", { name: "title" })).toBeChecked();
     expect(sizeInput).toHaveValue(20);
+    expect(screen.getByText(/queue status/i)).toBeInTheDocument();
   });
 
   it("renders server errors", async () => {
@@ -77,12 +80,28 @@ describe("AiCatalogSettings", () => {
     );
 
     const user = userEvent.setup();
-    await user.click(screen.getByRole("button", { name: /save/i }));
+    await user.click(screen.getByRole("button", { name: /save settings/i }));
 
     await waitFor(() => expect(mockUpdateAiCatalog).toHaveBeenCalled());
 
     expect(screen.getByText("Select at least one")).toBeInTheDocument();
     expect(screen.getByText("Invalid size")).toBeInTheDocument();
+  });
+
+  it("shows quick action state", async () => {
+    render(
+      <AiCatalogSettings
+        shop="s1"
+        initial={{ enabled: true, fields: ["id"], pageSize: 10 }}
+      />,
+    );
+
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: /queue crawl/i }));
+
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: /queue crawl/i })).toBeEnabled(),
+    );
   });
 });
 

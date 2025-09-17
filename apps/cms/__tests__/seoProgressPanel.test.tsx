@@ -12,6 +12,17 @@ jest.mock("@platform-core/repositories/analytics.server", () => ({
   listEvents: (...a: unknown[]) => listEventsMock(...a),
 }));
 
+jest.mock("@/components/atoms/shadcn", () => ({
+  Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+  Table: ({ children, ...props }: any) => <table {...props}>{children}</table>,
+  TableHeader: ({ children, ...props }: any) => <thead {...props}>{children}</thead>,
+  TableBody: ({ children, ...props }: any) => <tbody {...props}>{children}</tbody>,
+  TableRow: ({ children, ...props }: any) => <tr {...props}>{children}</tr>,
+  TableHead: ({ children, ...props }: any) => <th {...props}>{children}</th>,
+  TableCell: ({ children, ...props }: any) => <td {...props}>{children}</td>,
+}));
+
 import { render, screen, within } from "@testing-library/react";
 import SeoProgressPanel from "../src/app/cms/shop/[shop]/settings/seo/SeoProgressPanel";
 

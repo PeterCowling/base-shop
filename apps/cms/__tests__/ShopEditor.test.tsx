@@ -7,6 +7,20 @@ jest.mock(
   "@/components/atoms/shadcn",
   () => {
     return {
+      Accordion: ({ items }: any) => (
+        <div>
+          {items.map((item: any, index: number) => (
+            <div key={index}>
+              <button type="button">{item.title}</button>
+              <div>{item.content}</div>
+            </div>
+          ))}
+        </div>
+      ),
+      Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+      CardContent: ({ children, ...props }: any) => (
+        <div {...props}>{children}</div>
+      ),
       Button: ({ asChild, children, ...props }: any) => (
         <button {...props}>{children}</button>
       ),
@@ -53,7 +67,12 @@ describe("ShopEditor", () => {
       <ShopEditor shop="shop" initial={initial} initialTrackingProviders={[]} />,
     );
 
-    fireEvent.click(screen.getByText(/add mapping/i));
+    fireEvent.click(
+      screen.getByRole("button", { name: /filter mappings/i }),
+    );
+    fireEvent.click(
+      await screen.findByRole("button", { name: /add mapping/i }),
+    );
     fireEvent.click(screen.getByRole("button", { name: /save/i }));
 
     expect(

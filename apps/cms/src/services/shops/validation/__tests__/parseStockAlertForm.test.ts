@@ -14,6 +14,20 @@ describe("parseStockAlertForm", () => {
     });
   });
 
+  it("parses recipients appended as array values", () => {
+    const fd = new FormData();
+    fd.append("recipients", "a@example.com");
+    fd.append("recipients", "b@example.com ");
+    fd.set("threshold", "2");
+
+    const result = parseStockAlertForm(fd);
+    expect(result.data).toEqual({
+      recipients: ["a@example.com", "b@example.com"],
+      threshold: 2,
+      webhook: undefined,
+    });
+  });
+
   it("handles optional webhook", () => {
     const fd = new FormData();
     fd.set("recipients", "a@example.com");

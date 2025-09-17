@@ -1,14 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState, type FormEvent } from "react";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input, Textarea } from "@/components/atoms/shadcn";
 import { FormField } from "@ui/components/molecules";
 import { updateStockAlert } from "@cms/actions/shops.server";
+import { parseStockAlertForm } from "@cms/services/shops/validation";
 
 import { ErrorChips } from "../components/ErrorChips";
-import { useServiceEditorForm } from "../hooks/useServiceEditorForm";
+import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
 
 type StockAlertState = {
   recipients: string;
@@ -30,24 +31,70 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
     threshold: initial.threshold === undefined ? "" : String(initial.threshold),
   });
 
-  const { saving, errors, handleSubmit, toast, toastClassName, closeToast } =
-    useServiceEditorForm<StockAlertResult>({
-      action: (formData) => updateStockAlert(shop, formData),
-      successMessage: "Stock alert settings saved.",
-      errorMessage: "Unable to update stock alerts.",
-      onSuccess: (result) => {
-        const next = result.settings?.stockAlert;
-        if (!next) return;
-        setState({
-          recipients: next.recipients.join(", "),
-          webhook: next.webhook ?? "",
-          threshold:
-            next.threshold === undefined || next.threshold === null
-              ? ""
-              : String(next.threshold),
-        });
-      },
-    });
+  const {
+    saving,
+    errors,
+    setErrors,
+    submit,
+    toast,
+    toastClassName,
+    closeToast,
+    announceError,
+  } = useSettingsSaveForm<StockAlertResult>({
+    action: (formData) => updateStockAlert(shop, formData),
+    successMessage: "Stock alert settings saved.",
+    errorMessage: "Unable to update stock alerts.",
+    onSuccess: (result) => {
+      const next = result.settings?.stockAlert;
+      if (!next) return;
+      setState({
+        recipients: next.recipients.join(", "),
+        webhook: next.webhook ?? "",
+        threshold:
+          next.threshold === undefined || next.threshold === null
+            ? ""
+            : String(next.threshold),
+      });
+    },
+  });
+
+  const handleSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      const { data, errors: validationErrors } = parseStockAlertForm(formData);
+
+      if (!data) {
+        const fieldErrors = validationErrors ?? {};
+        setErrors(fieldErrors);
+
+        const message = fieldErrors.recipients?.length
+          ? "Enter valid recipient email addresses separated by commas."
+          : fieldErrors.threshold?.length
+            ? "Enter a default threshold of at least 1."
+            : "Please fix the errors before saving.";
+
+        announceError(message);
+        return;
+      }
+
+      setErrors({});
+
+      const normalizedFormData = new FormData();
+      data.recipients.forEach((recipient) => {
+        normalizedFormData.append("recipients", recipient);
+      });
+      if (data.webhook) {
+        normalizedFormData.set("webhook", data.webhook);
+      }
+      if (typeof data.threshold === "number") {
+        normalizedFormData.set("threshold", data.threshold.toString());
+      }
+
+      await submit(normalizedFormData);
+    },
+    [announceError, setErrors, submit],
+  );
 
   return (
     <>

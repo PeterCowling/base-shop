@@ -1,17 +1,24 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { axe, toHaveNoViolations } from "jest-axe";
+
 import LateFeesEditor from "../LateFeesEditor";
 
-const parseLateFeeForm = jest.fn(() => ({ data: { enabled: true, intervalMinutes: 5 } }));
+expect.extend(toHaveNoViolations);
+
+const parseLateFeeForm = jest.fn(() => ({
+  data: { enabled: true, intervalMinutes: 5 },
+}));
+
+const updateLateFee = jest.fn();
 
 jest.mock("@cms/actions/shops.server", () => ({
-  updateLateFee: async (_shop: string, formData: FormData) => {
-    parseLateFeeForm(formData);
-    return { errors: { intervalMinutes: ["Invalid"] } };
-  },
+  updateLateFee: (...args: any[]) => updateLateFee(...args),
 }));
-jest.mock("../../../../../../../services/shops/validation", () => ({ parseLateFeeForm }));
+jest.mock("../../../../../../../services/shops/validation", () => ({
+  parseLateFeeForm,
+}));
 jest.mock(
   "@ui/components/atoms/shadcn",
   () => ({
@@ -29,8 +36,19 @@ jest.mock(
 );
 
 describe("LateFeesEditor", () => {
-  it("submits updated values and shows validation errors", async () => {
-    render(<LateFeesEditor shop="s1" initial={{ enabled: false, intervalMinutes: 1 }} />);
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("submits updated values, surfaces validation errors, and passes accessibility checks", async () => {
+    updateLateFee.mockImplementation(async (_shop: string, formData: FormData) => {
+      parseLateFeeForm(formData);
+      return { errors: { intervalMinutes: ["Invalid"] } };
+    });
+
+    const { container } = render(
+      <LateFeesEditor shop="s1" initial={{ enabled: false, intervalMinutes: 1 }} />,
+    );
 
     await userEvent.click(screen.getByRole("checkbox"));
     const interval = screen.getByRole("spinbutton");
@@ -44,5 +62,36 @@ describe("LateFeesEditor", () => {
     expect(fd.get("intervalMinutes")).toBe("5");
 
     expect(await screen.findByText("Invalid")).toBeInTheDocument();
+
+    const results = await axe(container);
+    expect(results).toHaveNoViolations();
+  });
+
+  it("persists server updates on success", async () => {
+    updateLateFee.mockImplementation(async (_shop: string, formData: FormData) => {
+      parseLateFeeForm(formData);
+      return {
+        settings: {
+          lateFeeService: { enabled: true, intervalMinutes: 12 },
+        },
+      };
+    });
+
+    render(
+      <LateFeesEditor shop="s1" initial={{ enabled: false, intervalMinutes: 2 }} />,
+    );
+
+    await userEvent.click(screen.getByRole("checkbox"));
+    const interval = screen.getByRole("spinbutton");
+    await userEvent.clear(interval);
+    await userEvent.type(interval, "9");
+    await userEvent.click(screen.getByRole("button", { name: /save/i }));
+
+    await waitFor(() => {
+      expect(screen.getByRole("checkbox")).toBeChecked();
+      expect(screen.getByRole("spinbutton")).toHaveValue(12);
+    });
+
+    expect(parseLateFeeForm).toHaveBeenCalledTimes(1);
   });
 });

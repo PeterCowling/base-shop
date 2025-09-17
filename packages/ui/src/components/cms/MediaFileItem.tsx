@@ -28,6 +28,7 @@ import {
   Progress,
   Tag,
 } from "../atoms/shadcn";
+import { Spinner } from "../atoms";
 import { cn } from "../../utils/style";
 
 interface Props {
@@ -39,13 +40,17 @@ interface Props {
    */
   item: MediaItem & { url: string };
   shop: string;
-  onDelete: (url: string) => void;
-  onReplace: (oldUrl: string, item: MediaItem) => void;
+  onDelete: (url: string) => Promise<void> | void;
+  onReplace: (oldUrl: string) => void;
+  onReplaceSuccess?: (oldUrl: string, item: MediaItem) => void;
+  onReplaceError?: (oldUrl: string, error: Error) => void;
   onSelect?: (item: MediaItem & { url: string }) => void;
   onOpenDetails?: (item: MediaItem & { url: string }) => void;
   onBulkToggle?: (item: MediaItem & { url: string }, selected: boolean) => void;
   selectionEnabled?: boolean;
   selected?: boolean;
+  isDeleting?: boolean;
+  isReplacing?: boolean;
 }
 
 type UploadTimer = ReturnType<typeof setInterval> | undefined;
@@ -70,11 +75,15 @@ export default function MediaFileItem({
   shop: _shop,
   onDelete,
   onReplace,
+  onReplaceSuccess,
+  onReplaceError,
   onSelect,
   onOpenDetails,
   onBulkToggle,
   selectionEnabled = false,
   selected = false,
+  isDeleting = false,
+  isReplacing = false,
 }: Props): ReactElement {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -126,7 +135,7 @@ export default function MediaFileItem({
       (item as MediaItem & { isReplacing?: boolean }).isReplacing
   );
 
-  const showReplacementOverlay = uploading || externalReplacing;
+  const showReplacementOverlay = uploading || externalReplacing || isReplacing;
   const progressValue = uploading
     ? uploadProgress
     : typeof externalProgress === "number"
@@ -179,6 +188,7 @@ export default function MediaFileItem({
 
     setUploadError(null);
     setUploading(true);
+    onReplace?.(item.url);
     beginUploadProgress();
     let errorMessage: string | null = null;
     try {
@@ -197,12 +207,13 @@ export default function MediaFileItem({
       }
       finishUploadProgress();
       await onDelete(item.url);
-      onReplace(item.url, data);
+      onReplaceSuccess?.(item.url, data);
     } catch (error) {
       clearTimer();
       setUploadProgress(0);
       errorMessage = (error as Error).message ?? "Replacement failed";
       setUploadError(errorMessage);
+      onReplaceError?.(item.url, error as Error);
     } finally {
       const delay = errorMessage ? 2000 : 400;
       setTimeout(() => {
@@ -364,6 +375,17 @@ export default function MediaFileItem({
                   {uploadError}
                 </p>
               ) : null}
+            </div>
+          ) : null}
+          {isDeleting ? (
+            <div
+              className="bg-background/90 text-center absolute inset-0 z-40 flex flex-col items-center justify-center gap-3 p-4 backdrop-blur"
+              data-token="--color-bg"
+            >
+              <Spinner className="h-6 w-6" />
+              <p className="text-sm font-medium" data-token="--color-fg">
+                Deleting asset...
+              </p>
             </div>
           ) : null}
         </div>

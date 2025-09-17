@@ -7,6 +7,8 @@ export interface UseFileUploadOptions {
     requiredOrientation: ImageOrientation;
     /** Callback fired when the upload succeeds */
     onUploaded?: (item: MediaItem) => void;
+    /** Callback fired when the upload fails */
+    onError?: (error: Error) => void;
 }
 export interface UploadProgress {
     done: number;

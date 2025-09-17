@@ -19,13 +19,18 @@ type WithUrl = MediaItem & { url: string };
 interface LibraryProps {
   files: WithUrl[];
   shop: string;
-  onDelete: (url: string) => void;
-  onReplace: (oldUrl: string, item: MediaItem) => void;
+  onDelete: (url: string) => Promise<void> | void;
+  onReplace: (oldUrl: string) => void;
+  onReplaceSuccess?: (oldUrl: string, item: MediaItem) => void;
+  onReplaceError?: (oldUrl: string, error: Error) => void;
   onSelect?: (item: WithUrl) => void;
   onOpenDetails?: (item: WithUrl) => void;
   onBulkToggle?: (item: WithUrl, selected: boolean) => void;
   selectionEnabled?: boolean;
   isItemSelected?: (item: WithUrl) => boolean;
+  selectedUrl?: string | null;
+  isDeleting?: (url: string) => boolean;
+  isReplacing?: (url: string) => boolean;
   emptyLibraryMessage?: string;
   emptyResultsMessage?: string;
 }
@@ -35,11 +40,16 @@ export default function Library({
   shop,
   onDelete,
   onReplace,
+  onReplaceSuccess,
+  onReplaceError,
   onSelect,
   onOpenDetails,
   onBulkToggle,
   selectionEnabled = false,
   isItemSelected,
+  selectedUrl = null,
+  isDeleting,
+  isReplacing,
   emptyLibraryMessage = "Upload media to get started.",
   emptyResultsMessage = "No media matches your filters.",
 }: LibraryProps): ReactElement {
@@ -89,17 +99,23 @@ export default function Library({
       </div>
 
       {showResultsList ? (
-        <MediaFileList
-          files={filteredFiles}
-          shop={shop}
-          onDelete={onDelete}
-          onReplace={onReplace}
-          onSelect={onSelect}
-          onOpenDetails={onOpenDetails}
-          onBulkToggle={onBulkToggle}
-          selectionEnabled={selectionEnabled}
-          isItemSelected={isItemSelected}
-        />
+          <MediaFileList
+            files={filteredFiles}
+            shop={shop}
+            onDelete={onDelete}
+            onReplace={onReplace}
+            onReplaceSuccess={onReplaceSuccess}
+            onReplaceError={onReplaceError}
+            onSelect={onSelect}
+            onOpenDetails={onOpenDetails}
+            onBulkToggle={onBulkToggle}
+            selectionEnabled={selectionEnabled}
+            isItemSelected={
+              isItemSelected ?? ((item) => (selectedUrl ? item.url === selectedUrl : false))
+            }
+            isDeleting={isDeleting}
+            isReplacing={isReplacing}
+          />
       ) : (
         <div
           className="bg-muted text-muted-foreground flex min-h-[200px] flex-col items-center justify-center gap-2 rounded-lg p-8 text-center"

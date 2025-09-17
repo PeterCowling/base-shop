@@ -25,6 +25,8 @@ export interface UseFileUploadOptions {
   requiredOrientation: ImageOrientation;
   /** Callback fired when the upload succeeds */
   onUploaded?: (item: MediaItem) => void;
+  /** Callback fired when the upload fails */
+  onError?: (error: Error) => void;
 }
 
 export interface UploadProgress {
@@ -67,7 +69,7 @@ export interface UseFileUploadResult {
 export function useFileUpload(
   options: UseFileUploadOptions
 ): UseFileUploadResult {
-  const { shop, requiredOrientation, onUploaded } = options;
+  const { shop, requiredOrientation, onUploaded, onError } = options;
 
   /* ---------- state ------------------------------------------------ */
   const [pendingFile, setPendingFile] = useState<File | null>(null);
@@ -126,7 +128,14 @@ export function useFileUpload(
       onUploaded?.(data as MediaItem);
       setError(undefined);
     } catch (err) {
-      if (err instanceof Error) setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+        onError?.(err);
+      } else {
+        const fallback = new Error("Upload failed");
+        setError(fallback.message);
+        onError?.(fallback);
+      }
     }
 
     flushSync(() => setProgress(null));

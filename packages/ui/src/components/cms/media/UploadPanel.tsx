@@ -10,9 +10,14 @@ import { ChangeEvent, ReactElement, useState } from "react";
 interface UploadPanelProps {
   shop: string;
   onUploaded: (item: MediaItem) => void;
+  onUploadError?: (message: string) => void;
 }
 
-export default function UploadPanel({ shop, onUploaded }: UploadPanelProps): ReactElement {
+export default function UploadPanel({
+  shop,
+  onUploaded,
+  onUploadError,
+}: UploadPanelProps): ReactElement {
   const [dragActive, setDragActive] = useState(false);
   const feedbackId = "media-upload-feedback";
 
@@ -37,6 +42,7 @@ export default function UploadPanel({ shop, onUploaded }: UploadPanelProps): Rea
     shop,
     requiredOrientation: REQUIRED_ORIENTATION,
     onUploaded,
+    onError: (error) => onUploadError?.(error.message ?? "Upload failed"),
   });
   const isVideo = pendingFile?.type?.startsWith("video/") ?? false;
 

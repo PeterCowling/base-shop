@@ -10,8 +10,10 @@ interface Props {
         url: string;
     };
     shop: string;
-    onDelete: (url: string) => void;
-    onReplace: (oldUrl: string, item: MediaItem) => void;
+    onDelete: (url: string) => Promise<void> | void;
+    onReplace: (oldUrl: string) => void;
+    onReplaceSuccess?: (oldUrl: string, item: MediaItem) => void;
+    onReplaceError?: (oldUrl: string, error: Error) => void;
     onSelect?: (item: MediaItem & {
         url: string;
     }) => void;
@@ -23,6 +25,8 @@ interface Props {
     }, selected: boolean) => void;
     selectionEnabled?: boolean;
     selected?: boolean;
+    isDeleting?: boolean;
+    isReplacing?: boolean;
 }
-export default function MediaFileItem({ item, shop, onDelete, onReplace, onSelect, onOpenDetails, onBulkToggle, selectionEnabled, selected, }: Props): import("react/jsx-runtime").JSX.Element;
+export default function MediaFileItem({ item, shop, onDelete, onReplace, onReplaceSuccess, onReplaceError, onSelect, onOpenDetails, onBulkToggle, selectionEnabled, selected, isDeleting, isReplacing, }: Props): import("react/jsx-runtime").JSX.Element;
 export {};

@@ -1,6 +1,10 @@
 // apps/cms/src/app/cms/shop/[shop]/media/page.tsx
 
-import { deleteMedia, listMedia } from "@cms/actions/media.server";
+import {
+  deleteMedia,
+  listMedia,
+  updateMediaMetadata,
+} from "@cms/actions/media.server";
 import { checkShopExists } from "@acme/lib";
 import MediaManager from "@ui/components/cms/MediaManager";
 import { notFound } from "next/navigation";
@@ -26,7 +30,12 @@ export default async function MediaPage({
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Media – {shop}</h2>
-      <MediaManager shop={shop} initialFiles={files} onDelete={deleteMedia} />
+      <MediaManager
+        shop={shop}
+        initialFiles={files}
+        onDelete={deleteMedia}
+        onMetadataUpdate={updateMediaMetadata}
+      />
     </div>
   );
 }

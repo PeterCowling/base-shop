@@ -13,17 +13,24 @@ jest.mock("@cms/actions/shops.server", () => ({
 }));
 jest.mock("../../../../../../../services/shops/validation", () => ({ parseDepositForm }));
 jest.mock(
-  "@ui/components/atoms/shadcn",
+  "@/components/atoms/shadcn",
   () => ({
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-    Checkbox: ({ onCheckedChange, ...props }: any) => (
-      <input
-        type="checkbox"
-        onChange={(e) => onCheckedChange?.(e.target.checked)}
-        {...props}
-      />
-    ),
+    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     Input: (props: any) => <input {...props} />,
+  }),
+  { virtual: true },
+);
+
+jest.mock(
+  "@/components/atoms",
+  () => ({
+    Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
+    Switch: ({ onChange, ...props }: any) => (
+      <input type="checkbox" onChange={onChange} {...props} />
+    ),
+    Toast: ({ open, message }: any) => (open ? <div>{message}</div> : null),
   }),
   { virtual: true },
 );

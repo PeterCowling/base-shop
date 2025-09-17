@@ -1,8 +1,13 @@
 "use client";
 
-import { Button, Checkbox, Input } from "@/components/atoms/shadcn";
+import { useState } from "react";
+import { Toast, Switch } from "@/components/atoms";
+import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
+import { FormField } from "@ui/components/molecules";
 import { updateReverseLogistics } from "@cms/actions/shops.server";
-import { useState, type ChangeEvent, type FormEvent } from "react";
+
+import { ErrorChip } from "../components/ErrorChip";
+import { toastStyles, useServiceEditorForm } from "../hooks/useServiceEditorForm";
 
 interface Props {
   shop: string;
@@ -10,59 +15,95 @@ interface Props {
 }
 
 export default function ReverseLogisticsEditor({ shop, initial }: Props) {
-  const [state, setState] = useState(initial);
-  const [saving, setSaving] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [form, setForm] = useState(initial);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setState((s) => ({ ...s, [name]: Number(value) }));
+  const { saving, errors, toast, closeToast, handleSubmit, setErrors } =
+    useServiceEditorForm({
+      submit: (formData) => updateReverseLogistics(shop, formData),
+      successMessage: "Reverse logistics updated.",
+      errorMessage: "Fix the highlighted fields to save reverse logistics.",
+      onSuccess: (result) => {
+        const latest = result?.settings?.reverseLogisticsService;
+        if (latest) {
+          setForm(latest);
+        }
+      },
+    });
+
+  const updateEnabled = (checked: boolean) => {
+    setForm((previous) => ({ ...previous, enabled: checked }));
   };
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSaving(true);
-    const fd = new FormData(e.currentTarget);
-    const result = await updateReverseLogistics(shop, fd);
-    if (result.errors) {
-      setErrors(result.errors);
-    } else if (result.settings?.reverseLogisticsService) {
-      setState(result.settings.reverseLogisticsService);
-      setErrors({});
+  const updateInterval = (value: string) => {
+    setForm((previous) => ({ ...previous, intervalMinutes: Number(value) }));
+    if (errors.intervalMinutes) {
+      setErrors((current) => {
+        const next = { ...current };
+        delete next.intervalMinutes;
+        return next;
+      });
     }
-    setSaving(false);
   };
 
   return (
-    <form onSubmit={onSubmit} className="grid max-w-md gap-4">
-      <label className="flex items-center gap-2">
-        <Checkbox
-          name="enabled"
-          checked={state.enabled}
-          onChange={() => {}}
-          onClick={() =>
-            setState((s) => ({ ...s, enabled: !s.enabled }))
-          }
-        />
-        <span>Enable reverse logistics service</span>
-      </label>
-      <label className="flex flex-col gap-1">
-        <span>Interval (minutes)</span>
-        <Input
-          type="number"
-          name="intervalMinutes"
-          value={state.intervalMinutes}
-          onChange={handleChange}
-        />
-        {errors.intervalMinutes && (
-          <span className="text-sm text-red-600">
-            {errors.intervalMinutes.join("; ")}
-          </span>
-        )}
-      </label>
-      <Button className="bg-primary text-white" disabled={saving} type="submit">
-        {saving ? "Saving…" : "Save"}
-      </Button>
-    </form>
+    <>
+      <Card className="max-w-xl">
+        <CardContent className="space-y-6 p-6">
+          <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+            <FormField
+              label="Reverse logistics"
+              htmlFor="reverse-logistics-enabled"
+              error={<ErrorChip error={errors.enabled} />}
+            >
+              <div className="flex items-start justify-between rounded-md border border-border bg-muted/40 p-4">
+                <div className="space-y-1 pr-4">
+                  <p className="text-sm font-medium text-foreground">
+                    Enable service
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Queue outbound carriers to retrieve return packages on a schedule.
+                  </p>
+                </div>
+                <Switch
+                  id="reverse-logistics-enabled"
+                  name="enabled"
+                  checked={form.enabled}
+                  onChange={(event) => updateEnabled(event.target.checked)}
+                />
+              </div>
+            </FormField>
+            <FormField
+              label="Check interval"
+              htmlFor="reverse-logistics-interval"
+              error={<ErrorChip error={errors.intervalMinutes} />}
+            >
+              <Input
+                id="reverse-logistics-interval"
+                name="intervalMinutes"
+                type="number"
+                inputMode="numeric"
+                min={1}
+                value={form.intervalMinutes}
+                onChange={(event) => updateInterval(event.target.value)}
+              />
+              <p className="text-xs text-muted-foreground">
+                Interval in minutes between collection batches. Minimum value is 1 minute.
+              </p>
+            </FormField>
+            <div className="flex justify-end">
+              <Button type="submit" disabled={saving}>
+                {saving ? "Saving…" : "Save reverse logistics"}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        className={toastStyles[toast.status]}
+        onClose={closeToast}
+      />
+    </>
   );
 }

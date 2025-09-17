@@ -1,8 +1,13 @@
 "use client";
 
-import { Button, Checkbox, Input } from "@ui/components/atoms/shadcn";
+import { useState } from "react";
+import { Toast, Switch } from "@/components/atoms";
+import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
+import { FormField } from "@ui/components/molecules";
 import { updateDeposit } from "@cms/actions/shops.server";
-import { useState, type ChangeEvent, type FormEvent } from "react";
+
+import { ErrorChip } from "../components/ErrorChip";
+import { toastStyles, useServiceEditorForm } from "../hooks/useServiceEditorForm";
 
 interface Props {
   shop: string;
@@ -10,64 +15,96 @@ interface Props {
 }
 
 export default function DepositsEditor({ shop, initial }: Props) {
-  const [state, setState] = useState(initial);
-  const [saving, setSaving] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [form, setForm] = useState(initial);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setState((s) => ({ ...s, [name]: Number(value) }));
+  const { saving, errors, toast, closeToast, handleSubmit, setErrors } =
+    useServiceEditorForm({
+      submit: (formData) => updateDeposit(shop, formData),
+      successMessage: "Deposit release updated.",
+      errorMessage: "Fix the highlighted fields to save deposits.",
+      onSuccess: (result) => {
+        const latest = result?.settings?.depositService;
+        if (latest) {
+          setForm(latest);
+        }
+      },
+    });
+
+  const toggleEnabled = (checked: boolean) => {
+    setForm((previous) => ({ ...previous, enabled: checked }));
   };
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSaving(true);
-
-    const fd = new FormData();
-    if (state.enabled) {
-      fd.set("enabled", "on");
+  const updateInterval = (value: string) => {
+    setForm((previous) => ({ ...previous, intervalMinutes: Number(value) }));
+    if (errors.intervalMinutes) {
+      setErrors((current) => {
+        const next = { ...current };
+        delete next.intervalMinutes;
+        return next;
+      });
     }
-    fd.set("intervalMinutes", String(state.intervalMinutes));
-    const result = await updateDeposit(shop, fd);
-    if (result.errors) {
-      setErrors(result.errors);
-    } else if (result.settings?.depositService) {
-      setState(result.settings.depositService);
-      setErrors({});
-    }
-    setSaving(false);
   };
 
   return (
-    <form onSubmit={onSubmit} className="grid max-w-md gap-4">
-      <label className="flex items-center gap-2">
-        <Checkbox
-          name="enabled"
-          checked={state.enabled}
-          onCheckedChange={(v: boolean) =>
-            setState((s) => ({ ...s, enabled: Boolean(v) }))
-          }
-        />
-        <span>Enable deposit release service</span>
-      </label>
-      <label className="flex flex-col gap-1">
-        <span>Interval (minutes)</span>
-        <Input
-          type="number"
-          name="intervalMinutes"
-          value={state.intervalMinutes}
-          onChange={handleChange}
-        />
-        {errors.intervalMinutes && (
-          <span className="text-sm text-red-600">
-            {errors.intervalMinutes.join("; ")}
-          </span>
-        )}
-      </label>
-      <Button className="bg-primary text-white" disabled={saving} type="submit">
-        {saving ? "Saving…" : "Save"}
-      </Button>
-    </form>
+    <>
+      <Card className="max-w-xl">
+        <CardContent className="space-y-6 p-6">
+          <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+            <FormField
+              label="Deposit release"
+              htmlFor="deposit-enabled"
+              error={<ErrorChip error={errors.enabled} />}
+            >
+              <div className="flex items-start justify-between rounded-md border border-border bg-muted/40 p-4">
+                <div className="space-y-1 pr-4">
+                  <p className="text-sm font-medium text-foreground">
+                    Enable service
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Automatically release held deposits after each review cycle.
+                  </p>
+                </div>
+                <Switch
+                  id="deposit-enabled"
+                  name="enabled"
+                  checked={form.enabled}
+                  onChange={(event) => toggleEnabled(event.target.checked)}
+                />
+              </div>
+            </FormField>
+            <FormField
+              label="Release interval"
+              htmlFor="deposit-interval"
+              error={<ErrorChip error={errors.intervalMinutes} />}
+            >
+              <Input
+                id="deposit-interval"
+                name="intervalMinutes"
+                type="number"
+                inputMode="numeric"
+                min={1}
+                value={form.intervalMinutes}
+                onChange={(event) => updateInterval(event.target.value)}
+              />
+              <p className="text-xs text-muted-foreground">
+                Interval in minutes between deposit release checks. Minimum value is 1 minute.
+              </p>
+            </FormField>
+            <div className="flex justify-end">
+              <Button type="submit" disabled={saving}>
+                {saving ? "Saving…" : "Save deposit settings"}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        className={toastStyles[toast.status]}
+        onClose={closeToast}
+      />
+    </>
   );
 }
 

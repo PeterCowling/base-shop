@@ -1,8 +1,13 @@
 "use client";
 
-import { Button, Input } from "@/components/atoms/shadcn";
+import { useState, type ChangeEvent } from "react";
+import { Toast } from "@/components/atoms";
+import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
+import { FormField } from "@ui/components/molecules";
 import { updateStockAlert } from "@cms/actions/shops.server";
-import { useState, type ChangeEvent, type FormEvent } from "react";
+
+import { ErrorChip } from "../components/ErrorChip";
+import { toastStyles, useServiceEditorForm } from "../hooks/useServiceEditorForm";
 
 interface Props {
   shop: string;
@@ -10,81 +15,113 @@ interface Props {
 }
 
 export default function StockAlertsEditor({ shop, initial }: Props) {
-  const [state, setState] = useState({
+  const [form, setForm] = useState({
     recipients: initial.recipients.join(", "),
     webhook: initial.webhook ?? "",
     threshold: initial.threshold ? String(initial.threshold) : "",
   });
-  const [saving, setSaving] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string[]>>({});
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setState((s) => ({ ...s, [name]: value }));
-  };
+  const { saving, errors, toast, closeToast, handleSubmit, setErrors } =
+    useServiceEditorForm({
+      submit: (formData) => updateStockAlert(shop, formData),
+      successMessage: "Stock alerts updated.",
+      errorMessage: "Fix the highlighted fields to save stock alerts.",
+      onSuccess: (result) => {
+        const alert = result?.settings?.stockAlert;
+        if (alert) {
+          setForm({
+            recipients: alert.recipients.join(", "),
+            webhook: alert.webhook ?? "",
+            threshold: alert.threshold ? String(alert.threshold) : "",
+          });
+        }
+      },
+    });
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSaving(true);
-    const fd = new FormData(e.currentTarget);
-    const result = await updateStockAlert(shop, fd);
-    if (result.errors) {
-      setErrors(result.errors);
-    } else if (result.settings?.stockAlert) {
-      setState({
-        recipients: result.settings.stockAlert.recipients.join(", "),
-        webhook: result.settings.stockAlert.webhook ?? "",
-        threshold: result.settings.stockAlert.threshold
-          ? String(result.settings.stockAlert.threshold)
-          : "",
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setForm((previous) => ({ ...previous, [name]: value }));
+    if (errors[name]) {
+      setErrors((current) => {
+        const next = { ...current };
+        delete next[name];
+        return next;
       });
-      setErrors({});
     }
-    setSaving(false);
   };
 
   return (
-    <form onSubmit={onSubmit} className="grid max-w-md gap-4">
-      <label className="flex flex-col gap-1">
-        <span>Recipients (comma-separated)</span>
-        <Input
-          name="recipients"
-          value={state.recipients}
-          onChange={handleChange}
-        />
-        {errors.recipients && (
-          <span className="text-sm text-red-600">
-            {errors.recipients.join("; ")}
-          </span>
-        )}
-      </label>
-      <label className="flex flex-col gap-1">
-        <span>Webhook URL</span>
-        <Input name="webhook" value={state.webhook} onChange={handleChange} />
-        {errors.webhook && (
-          <span className="text-sm text-red-600">
-            {errors.webhook.join("; ")}
-          </span>
-        )}
-      </label>
-      <label className="flex flex-col gap-1">
-        <span>Default Threshold</span>
-        <Input
-          type="number"
-          name="threshold"
-          value={state.threshold}
-          onChange={handleChange}
-        />
-        {errors.threshold && (
-          <span className="text-sm text-red-600">
-            {errors.threshold.join("; ")}
-          </span>
-        )}
-      </label>
-      <Button className="bg-primary text-white" disabled={saving} type="submit">
-        {saving ? "Saving…" : "Save"}
-      </Button>
-    </form>
+    <>
+      <Card className="max-w-xl">
+        <CardContent className="space-y-6 p-6">
+          <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+            <FormField
+              label="Recipients"
+              htmlFor="stock-alert-recipients"
+              error={<ErrorChip error={errors.recipients} />}
+            >
+              <Input
+                id="stock-alert-recipients"
+                name="recipients"
+                value={form.recipients}
+                onChange={handleChange}
+                placeholder="alerts@example.com, ops@example.com"
+                autoComplete="off"
+              />
+              <p className="text-xs text-muted-foreground">
+                Use comma separation to notify multiple inboxes.
+              </p>
+            </FormField>
+            <FormField
+              label="Webhook URL"
+              htmlFor="stock-alert-webhook"
+              error={<ErrorChip error={errors.webhook} />}
+            >
+              <Input
+                id="stock-alert-webhook"
+                name="webhook"
+                value={form.webhook}
+                onChange={handleChange}
+                placeholder="https://hooks.example.com/stock"
+              />
+              <p className="text-xs text-muted-foreground">
+                Optional callback invoked in tandem with emails. Leave blank to skip webhooks.
+              </p>
+            </FormField>
+            <FormField
+              label="Default threshold"
+              htmlFor="stock-alert-threshold"
+              error={<ErrorChip error={errors.threshold} />}
+            >
+              <Input
+                id="stock-alert-threshold"
+                name="threshold"
+                type="number"
+                inputMode="numeric"
+                min={1}
+                value={form.threshold}
+                onChange={handleChange}
+                placeholder="5"
+              />
+              <p className="text-xs text-muted-foreground">
+                Alert when stock falls below this quantity. Leave empty to disable default alerts.
+              </p>
+            </FormField>
+            <div className="flex justify-end">
+              <Button type="submit" disabled={saving}>
+                {saving ? "Saving…" : "Save stock alerts"}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        className={toastStyles[toast.status]}
+        onClose={closeToast}
+      />
+    </>
   );
 }
 

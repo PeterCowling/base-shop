@@ -23,17 +23,25 @@ function ComponentStub(props) {
     return React.createElement(
       "ul",
       null,
-      props.shops.map((shop) =>
-        React.createElement(
+      props.shops.map((shop) => {
+        const href = props.card.href(shop);
+        const title = resolveValue(props.card.title, shop) || shop;
+        const description = resolveValue(props.card.description, shop) || "";
+        const ctaLabel = resolveValue(props.card.ctaLabel, shop) || href;
+
+        return React.createElement(
           "li",
           { key: shop },
+          React.createElement("h3", null, title),
+          description ? React.createElement("p", null, description) : null,
           React.createElement(
             "a",
-            { href: props.card.href(shop) },
-            resolveValue(props.card.ctaLabel, shop) || props.card.href(shop)
+            { href, "data-cy": "shop-chooser-cta" },
+            React.createElement("span", { className: "sr-only" }, shop),
+            React.createElement("span", { "aria-hidden": "true" }, ctaLabel)
           )
-        )
-      )
+        );
+      })
     );
   }
 

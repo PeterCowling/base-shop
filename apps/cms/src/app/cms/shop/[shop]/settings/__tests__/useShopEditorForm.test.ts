@@ -29,6 +29,7 @@ describe("useShopEditorForm", () => {
     id: "s1",
     name: "Shop",
     themeId: "theme",
+    catalogFilters: ["color", "material"],
     luxuryFeatures: {
       blog: false,
       contentMerchandising: false,
@@ -142,6 +143,12 @@ describe("useShopEditorForm", () => {
     expect(result.current.overrides.filterMappings.rows).toEqual(
       result.current.filterMappings,
     );
+    expect(result.current.seo.catalogFilters).toEqual([
+      "color",
+      "material",
+    ]);
+    expect(typeof result.current.seo.setCatalogFilters).toBe("function");
+    expect(result.current.overrides.tokenRows).toBe(result.current.tokenRows);
 
     expect(result.current.toast).toBe(submitState.toast);
     expect(result.current.errors).toBe(submitState.errors);
@@ -163,6 +170,18 @@ describe("useShopEditorForm", () => {
         initialTrackingProviders: initialTracking,
       }),
     );
+
+    expect(result.current.identity.handleTextChange).toBe(
+      result.current.handleTextChange,
+    );
+
+    act(() => {
+      result.current.handleChange({
+        target: { name: "name", value: "Renamed Shop" },
+      } as any);
+    });
+    expect(result.current.info.name).toBe("Renamed Shop");
+    expect(result.current.identity.info.name).toBe("Renamed Shop");
 
     act(() => {
       result.current.identity.handleTextChange("name", "Updated Shop");
@@ -224,5 +243,11 @@ describe("useShopEditorForm", () => {
         result.current.overrides.filterMappings as unknown as MockMappingController
       ).update,
     ).toHaveBeenCalledWith(1, "key", "size");
+
+    act(() => {
+      result.current.seo.setCatalogFilters(["brand"]);
+    });
+    expect(result.current.info.catalogFilters).toEqual(["brand"]);
+    expect(result.current.seo.catalogFilters).toEqual(["brand"]);
   });
 });

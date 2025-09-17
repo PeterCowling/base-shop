@@ -19,14 +19,25 @@ jest.mock("@cms/actions/shops.server", () => ({
 jest.mock("../../../../../../../services/shops/validation", () => ({
   parseDepositForm,
 }));
+jest.mock("@/components/atoms", () => ({
+  Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
+  Toast: ({ open, message, role = "status", ...props }: any) =>
+    open ? (
+      <div role={role} {...props}>
+        {message}
+      </div>
+    ) : null,
+}));
 jest.mock(
-  "@ui/components/atoms/shadcn",
+  "@/components/atoms/shadcn",
   () => ({
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     Checkbox: ({ onCheckedChange, ...props }: any) => (
       <input
         type="checkbox"
-        onChange={(e) => onCheckedChange?.(e.target.checked)}
+        onChange={(event) => onCheckedChange?.(event.target.checked)}
         {...props}
       />
     ),
@@ -40,7 +51,26 @@ describe("DepositsEditor", () => {
     jest.clearAllMocks();
   });
 
-  it("submits updated values, surfaces validation errors, and passes accessibility checks", async () => {
+  it("prevents submission when the interval is missing, surfaces a chip, and announces a toast", async () => {
+    render(
+      <DepositsEditor shop="s1" initial={{ enabled: true, intervalMinutes: 10 }} />,
+    );
+
+    const interval = screen.getByRole("spinbutton");
+    await userEvent.clear(interval);
+    await userEvent.click(screen.getByRole("button", { name: /save/i }));
+
+    const message = "Enter an interval of at least 1 minute.";
+    const chip = await screen.findByText(message, { selector: "span" });
+    expect(chip).toBeInTheDocument();
+
+    const toast = await screen.findByRole("status");
+    expect(toast).toHaveTextContent(message);
+
+    expect(updateDeposit).not.toHaveBeenCalled();
+  });
+
+  it("submits updated values, surfaces validation errors, and announces an error toast", async () => {
     updateDeposit.mockImplementation(async (_shop: string, formData: FormData) => {
       parseDepositForm(formData);
       return { errors: { intervalMinutes: ["Invalid"] } };
@@ -63,11 +93,14 @@ describe("DepositsEditor", () => {
 
     expect(await screen.findByText("Invalid")).toBeInTheDocument();
 
+    const toast = await screen.findByRole("status");
+    expect(toast).toHaveTextContent("Unable to update deposit service.");
+
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
-  it("persists server updates on success", async () => {
+  it("persists server updates on success and announces a success toast", async () => {
     updateDeposit.mockImplementation(async (_shop: string, formData: FormData) => {
       parseDepositForm(formData);
       return {
@@ -93,5 +126,8 @@ describe("DepositsEditor", () => {
     });
 
     expect(parseDepositForm).toHaveBeenCalledTimes(1);
+
+    const toast = await screen.findByRole("status");
+    expect(toast).toHaveTextContent("Deposit service updated.");
   });
 });

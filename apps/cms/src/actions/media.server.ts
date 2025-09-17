@@ -272,16 +272,11 @@ export async function uploadMedia(
   const filename = `${ulid()}${ext}`;
   await fs.writeFile(path.join(dir, filename), buffer);
 
-  const size = buffer.length;
-  const uploadedAt = new Date().toISOString();
-
   const meta = await readMetadata(safeShop);
   const entry: MediaMetadataEntry = {
     title,
     altText,
     type,
-    size,
-    uploadedAt,
   };
   if (tags !== undefined) {
     entry.tags = tags;
@@ -290,15 +285,16 @@ export async function uploadMedia(
   meta[filename] = entry;
   await writeMetadata(safeShop, meta);
 
-  return {
+  const result: MediaItem = {
     url: path.posix.join("/uploads", safeShop, filename),
     title,
     altText,
-    tags: entry.tags,
     type,
-    size,
-    uploadedAt,
   };
+  if (tags !== undefined) {
+    result.tags = tags;
+  }
+  return result;
 }
 
 /* -------------------------------------------------------------------------- */

@@ -13,7 +13,7 @@ import {
   schedulerHistoryColumns,
 } from "../tableMappers";
 import { ErrorChips } from "../components/ErrorChips";
-import { useServiceEditorForm } from "../hooks/useServiceEditorForm";
+import { useSettingsSaveForm } from "../hooks/useServiceEditorForm";
 
 interface HistoryEntry {
   timestamp: number;
@@ -42,7 +42,7 @@ export default function StockSchedulerEditor({ shop, status }: Props) {
     toastClassName,
     closeToast,
     announceError,
-  } = useServiceEditorForm<void>({
+  } = useSettingsSaveForm<void>({
     action: async (formData) => {
       await updateStockScheduler(shop, formData);
     },

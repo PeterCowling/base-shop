@@ -48,6 +48,8 @@ export interface UseServiceEditorFormOptions<TResult> {
   extractErrors?: ExtractErrors<TResult>;
 }
 
+export type UseSettingsSaveFormOptions<TResult> = UseServiceEditorFormOptions<TResult>;
+
 export function useServiceEditorForm<TResult>({
   action,
   onSuccess,
@@ -152,6 +154,12 @@ export function useServiceEditorForm<TResult>({
     announceSuccess,
     announceError,
   };
+}
+
+export function useSettingsSaveForm<TResult>(
+  options: UseSettingsSaveFormOptions<TResult>,
+) {
+  return useServiceEditorForm<TResult>(options);
 }
 
 export default useServiceEditorForm;

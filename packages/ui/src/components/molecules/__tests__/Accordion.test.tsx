@@ -2,10 +2,10 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Accordion } from "../Accordion";
-import type { AccordionItem } from "../Accordion";
+import type { AccordionItemConfig } from "../Accordion";
 
 describe("Accordion", () => {
-  const items: AccordionItem[] = [
+  const items: AccordionItemConfig[] = [
     { title: "Section 1", content: "Content 1" },
     { title: "Section 2", content: "Content 2" },
     { title: "Section 3", content: "Content 3" },

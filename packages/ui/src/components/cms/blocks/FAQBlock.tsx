@@ -1,5 +1,8 @@
 // packages/ui/components/cms/blocks/FAQBlock.tsx
-import { Accordion, type AccordionItem } from "../../molecules/Accordion";
+import {
+  Accordion,
+  type AccordionItemConfig,
+} from "../../molecules/Accordion";
 
 interface FAQItem {
   question: string;
@@ -20,7 +23,7 @@ export default function FAQBlock({
   const filtered = items.filter(({ question, answer }) => question && answer);
   const list = filtered.slice(0, maxItems ?? filtered.length);
   if (!list.length || list.length < (minItems ?? 0)) return null;
-  const accItems: AccordionItem[] = list.map(({ question, answer }) => ({
+  const accItems: AccordionItemConfig[] = list.map(({ question, answer }) => ({
     title: question,
     content: answer,
   }));

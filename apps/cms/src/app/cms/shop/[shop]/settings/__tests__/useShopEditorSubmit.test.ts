@@ -37,19 +37,44 @@ describe("useShopEditorSubmit", () => {
   });
 
   it("validates mappings", async () => {
-    const filter = { rows: [{ key: "", value: "" }], setRows: jest.fn() } as any;
-    const price = { rows: [{ key: "en", value: "bad" }], setRows: jest.fn() } as any;
-    const locale = { rows: [{ key: "k", value: "xx" }], setRows: jest.fn() } as any;
-    const setInfo = jest.fn();
-    const setTrackingProviders = jest.fn();
+    const filter = {
+      rows: [{ key: "", value: "" }],
+      setRows: jest.fn(),
+      add: jest.fn(),
+      update: jest.fn(),
+      remove: jest.fn(),
+    } as any;
+    const price = {
+      rows: [{ key: "en", value: "bad" }],
+      setRows: jest.fn(),
+      add: jest.fn(),
+      update: jest.fn(),
+      remove: jest.fn(),
+    } as any;
+    const locale = {
+      rows: [{ key: "k", value: "xx" }],
+      setRows: jest.fn(),
+      add: jest.fn(),
+      update: jest.fn(),
+      remove: jest.fn(),
+    } as any;
+    const identity = {
+      info: { id: "s1", name: "Shop", themeId: "theme" } as any,
+      setInfo: jest.fn(),
+      handleChange: jest.fn(),
+    };
+    const providers = {
+      shippingProviders: [],
+      trackingProviders: [],
+      setTrackingProviders: jest.fn(),
+    };
     const { result } = renderHook(() =>
       useShopEditorSubmit({
         shop: "s1",
-        filterMappings: filter,
-        priceOverrides: price,
-        localeOverrides: locale,
-        setInfo,
-        setTrackingProviders,
+        identity,
+        localization: { priceOverrides: price, localeOverrides: locale },
+        providers,
+        overrides: { filterMappings: filter, tokenRows: [] },
       }),
     );
 
@@ -64,6 +89,8 @@ describe("useShopEditorSubmit", () => {
     expect(result.current.errors).toHaveProperty("filterMappings");
     expect(result.current.errors).toHaveProperty("priceOverrides");
     expect(result.current.errors).toHaveProperty("localeOverrides");
+    expect(result.current.toast.open).toBe(true);
+    expect(result.current.toast.status).toBe("error");
     const { updateShop } = require("@cms/actions/shops.server");
     expect(updateShop).not.toHaveBeenCalled();
   });

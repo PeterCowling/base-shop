@@ -49,6 +49,12 @@ export {
 } from "../primitives/table";
 export { Textarea, type TextareaProps } from "../primitives/textarea";
 export { Button, type ButtonProps } from "./Button";
-export { Accordion, type AccordionItem } from "../../molecules/Accordion";
+export {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+  type AccordionItemConfig,
+} from "../../molecules/Accordion";
 export { Progress, type ProgressProps } from "../Progress";
 export { Tag, type TagProps } from "../Tag";

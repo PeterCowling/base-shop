@@ -7,16 +7,14 @@ jest.mock(
   "@/components/atoms/shadcn",
   () => {
     return {
-      Accordion: ({ items }: any) => (
-        <div>
-          {items.map((item: any, index: number) => (
-            <div key={index}>
-              <button type="button">{item.title}</button>
-              <div>{item.content}</div>
-            </div>
-          ))}
-        </div>
+      Accordion: ({ children }: any) => <div>{children}</div>,
+      AccordionItem: ({ children }: any) => <div>{children}</div>,
+      AccordionTrigger: ({ children, ...props }: any) => (
+        <button type="button" {...props}>
+          {children}
+        </button>
       ),
+      AccordionContent: ({ children }: any) => <div>{children}</div>,
       Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
       CardContent: ({ children, ...props }: any) => (
         <div {...props}>{children}</div>
@@ -38,6 +36,19 @@ jest.mock("@cms/actions/shops.server", () => ({
   updateShop: jest.fn(),
   resetThemeOverride: jest.fn(),
 }));
+
+jest.mock(
+  "../src/app/cms/shop/[shop]/settings/sections/IdentitySection",
+  () => () => <div data-testid="identity-section" />,
+);
+jest.mock(
+  "../src/app/cms/shop/[shop]/settings/sections/ProvidersSection",
+  () => () => <div data-testid="providers-section" />,
+);
+jest.mock(
+  "../src/app/cms/shop/[shop]/settings/sections/LocalizationSection",
+  () => () => <div data-testid="localization-section" />,
+);
 
 describe("ShopEditor", () => {
   it("shows error for invalid mapping and prevents submission", async () => {
@@ -68,10 +79,10 @@ describe("ShopEditor", () => {
     );
 
     fireEvent.click(
-      screen.getByRole("button", { name: /filter mappings/i }),
+      screen.getByRole("button", { name: /^Filter mappings$/i }),
     );
     fireEvent.click(
-      await screen.findByRole("button", { name: /add mapping/i }),
+      await screen.findByRole("button", { name: /add filter mapping/i }),
     );
     fireEvent.click(screen.getByRole("button", { name: /save/i }));
 

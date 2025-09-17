@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useCallback, useMemo, useState } from "react";
 import type { ChangeEvent } from "react";
 import type { Shop } from "@acme/types";
 import { shopSchema } from "@cms/actions/schemas";
@@ -67,6 +67,38 @@ export function useShopEditorSubmit({
 }: Args) {
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [toast, setToast] = useState<{
+    open: boolean;
+    status: "success" | "error";
+    message: string;
+  }>({ open: false, status: "success", message: "" });
+
+  const closeToast = useCallback(() => {
+    setToast((current) => ({ ...current, open: false }));
+  }, []);
+
+  const toastClassName = useMemo(() => {
+    return toast.status === "error"
+      ? "bg-destructive text-destructive-foreground"
+      : "bg-success text-success-fg";
+  }, [toast.status]);
+
+  const announceToast = useCallback(
+    (status: "success" | "error", message: string) => {
+      setToast({ open: true, status, message });
+    },
+    [],
+  );
+
+  const announceError = useCallback(
+    (message: string) => announceToast("error", message),
+    [announceToast],
+  );
+
+  const announceSuccess = useCallback(
+    (message: string) => announceToast("success", message),
+    [announceToast],
+  );
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -102,6 +134,7 @@ export function useShopEditorSubmit({
     }
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      announceError("Unable to save shop settings.");
       setSaving(false);
       return;
     }
@@ -134,39 +167,66 @@ export function useShopEditorSubmit({
     });
     if (!parsed.success) {
       setErrors(parsed.error.flatten().fieldErrors);
+      announceError("Unable to save shop settings.");
       setSaving(false);
       return;
     }
-    const result = await updateShop(shop, fd);
-    if (result.errors) {
-      setErrors(result.errors);
-    } else if (result.shop) {
-      identity.setInfo(result.shop);
-      providers.setTrackingProviders(fd.getAll("trackingProviders") as string[]);
-      overrides.filterMappings.setRows(
-        Object.entries(result.shop.filterMappings ?? {}).map(([key, value]) => ({
-          key,
-          value: String(value),
-        })),
-      );
-      localization.priceOverrides.setRows(
-        Object.entries(result.shop.priceOverrides ?? {}).map(([key, value]) => ({
-          key,
-          value: String(value),
-        })),
-      );
-      localization.localeOverrides.setRows(
-        Object.entries(result.shop.localeOverrides ?? {}).map(([key, value]) => ({
-          key,
-          value: String(value),
-        })),
-      );
-      setErrors({});
+    try {
+      const result = await updateShop(shop, fd);
+      if (result.errors) {
+        setErrors(result.errors);
+        announceError("Unable to save shop settings.");
+      } else if (result.shop) {
+        identity.setInfo(result.shop);
+        providers.setTrackingProviders(
+          fd.getAll("trackingProviders") as string[],
+        );
+        overrides.filterMappings.setRows(
+          Object.entries(result.shop.filterMappings ?? {}).map(
+            ([key, value]) => ({
+              key,
+              value: String(value),
+            }),
+          ),
+        );
+        localization.priceOverrides.setRows(
+          Object.entries(result.shop.priceOverrides ?? {}).map(
+            ([key, value]) => ({
+              key,
+              value: String(value),
+            }),
+          ),
+        );
+        localization.localeOverrides.setRows(
+          Object.entries(result.shop.localeOverrides ?? {}).map(
+            ([key, value]) => ({
+              key,
+              value: String(value),
+            }),
+          ),
+        );
+        setErrors({});
+        announceSuccess("Shop settings saved.");
+      } else {
+        announceError("Unable to save shop settings.");
+      }
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Unable to save shop settings.";
+      announceError(message);
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
-  return { saving, errors, onSubmit } as const;
+  return {
+    saving,
+    errors,
+    onSubmit,
+    toast,
+    toastClassName,
+    closeToast,
+  } as const;
 }
 
 export default useShopEditorSubmit;

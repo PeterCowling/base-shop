@@ -67,13 +67,14 @@ export function useShopEditorForm({
     tokenRows,
   };
 
-  const { saving, errors, onSubmit } = useShopEditorSubmit({
-    shop,
-    identity,
-    localization,
-    providers: providersState,
-    overrides,
-  });
+  const { saving, errors, onSubmit, toast, toastClassName, closeToast } =
+    useShopEditorSubmit({
+      shop,
+      identity,
+      localization,
+      providers: providersState,
+      overrides,
+    });
 
   return {
     info,
@@ -102,6 +103,9 @@ export function useShopEditorForm({
     providers: providersState,
     overrides,
     onSubmit,
+    toast,
+    toastClassName,
+    closeToast,
   } as const;
 }
 

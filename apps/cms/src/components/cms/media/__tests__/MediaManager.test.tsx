@@ -12,6 +12,96 @@ jest.mock("@ui/components/atoms/shadcn", () => {
     React.forwardRef(({ asChild: _asChild, ...props }: any, ref: any) =>
       React.createElement(tag, { ref, ...props })
     );
+
+  const DialogContext = React.createContext<{
+    open: boolean;
+    setOpen: (next: boolean) => void;
+  }>({
+    open: false,
+    setOpen: () => {},
+  });
+
+  const Dialog = ({
+    children,
+    open,
+    defaultOpen,
+    onOpenChange,
+  }: any) => {
+    const [internalOpen, setInternalOpen] = React.useState(
+      defaultOpen ?? false
+    );
+    const isControlled = open !== undefined;
+    const resolvedOpen = isControlled ? open : internalOpen;
+
+    const setOpen = (next: boolean) => {
+      if (!isControlled) {
+        setInternalOpen(next);
+      }
+      onOpenChange?.(next);
+    };
+
+    return React.createElement(
+      DialogContext.Provider,
+      { value: { open: resolvedOpen, setOpen } },
+      children
+    );
+  };
+
+  const DialogContent = React.forwardRef(
+    ({ children, ...props }: any, ref: any) => {
+      const { open } = React.useContext(DialogContext);
+      if (!open) return null;
+      return React.createElement("div", { ref, ...props }, children);
+    }
+  );
+
+  const SelectContext = React.createContext<{
+    onValueChange?: (value: any) => void;
+  }>({});
+
+  const Select = ({ children, onValueChange }: any) =>
+    React.createElement(
+      SelectContext.Provider,
+      { value: { onValueChange } },
+      children
+    );
+
+  const SelectTrigger = React.forwardRef(
+    ({ children, asChild, ...props }: any, ref: any) => {
+      if (asChild && React.isValidElement(children)) {
+        return React.cloneElement(children, { ref, ...props });
+      }
+      return React.createElement(
+        "button",
+        { type: "button", ref, ...props },
+        children
+      );
+    }
+  );
+
+  const SelectContent = ({ children, ...props }: any) =>
+    React.createElement("div", { ...props }, children);
+
+  const SelectItem = ({ children, value, onSelect, ...props }: any) => {
+    const { onValueChange } = React.useContext(SelectContext);
+    return React.createElement(
+      "div",
+      {
+        role: "option",
+        tabIndex: 0,
+        onClick: (event: any) => {
+          onValueChange?.(value);
+          onSelect?.(event);
+        },
+        ...props,
+      },
+      children
+    );
+  };
+
+  const SelectValue = ({ placeholder }: any) =>
+    React.createElement("span", null, placeholder);
+
   return {
     Input: passthrough("input"),
     Textarea: passthrough("textarea"),
@@ -54,19 +144,13 @@ jest.mock("@ui/components/atoms/shadcn", () => {
     ),
     DropdownMenuLabel: ({ children }: any) => <div>{children}</div>,
     DropdownMenuSeparator: () => <hr />,
-    Select: passthrough(),
-    SelectTrigger: passthrough(),
-    SelectValue: ({ placeholder }: any) => <span>{placeholder}</span>,
-    SelectContent: passthrough(),
-    SelectItem: ({ children, onSelect, asChild: _asChild, ...rest }: any) => (
-      <div onClick={(event) => onSelect?.(event)} {...rest}>
-        {children}
-      </div>
-    ),
-    Dialog: ({ children, asChild: _asChild, ...rest }: any) => (
-      <div {...rest}>{children}</div>
-    ),
-    DialogContent: passthrough(),
+    Select,
+    SelectTrigger,
+    SelectValue,
+    SelectContent,
+    SelectItem,
+    Dialog,
+    DialogContent,
     DialogHeader: ({ children }: any) => <div>{children}</div>,
     DialogTitle: ({ children }: any) => <div>{children}</div>,
     DialogDescription: ({ children }: any) => <div>{children}</div>,
@@ -95,7 +179,7 @@ describe("MediaManager", () => {
         })
     ) as any;
 
-    const { getByLabelText, getByText, queryByText, queryAllByText } = render(
+    const { getByLabelText, getByText, queryByText, queryAllByRole } = render(
       <MediaManager
         shop="shop"
         initialFiles={[]}
@@ -122,13 +206,14 @@ describe("MediaManager", () => {
     await waitFor(() =>
       expect(queryByText("Uploaded 0/1")).not.toBeInTheDocument()
     );
-    await waitFor(() => expect(queryAllByText("Delete").length).toBe(1));
+    await waitFor(() =>
+      expect(queryAllByRole("menuitem", { name: "Delete media" })).toHaveLength(1)
+    );
   });
 
   it("calls onDelete when confirming deletion", async () => {
-    window.confirm = jest.fn(() => true);
     const onDelete = jest.fn().mockResolvedValue(undefined);
-    const { getByText, getByRole, queryByText } = render(
+    const { getByRole, queryByRole, queryAllByRole } = render(
       <MediaManager
         shop="shop"
         initialFiles={[{ url: "old.mp4", type: "video" }]}
@@ -138,14 +223,19 @@ describe("MediaManager", () => {
     );
 
     fireEvent.click(getByRole("button", { name: "Media actions" }));
-    const deleteButton = getByText("Delete");
-    fireEvent.click(deleteButton);
+    fireEvent.click(getByRole("menuitem", { name: "Delete media" }));
+
+    const confirmDeleteButton = getByRole("button", { name: "Delete" });
+    fireEvent.click(confirmDeleteButton);
 
     await waitFor(() =>
       expect(onDelete).toHaveBeenCalledWith("shop", "old.mp4")
     );
     await waitFor(() =>
-      expect(queryByText("Delete")).not.toBeInTheDocument()
+      expect(queryByRole("button", { name: "Delete" })).not.toBeInTheDocument()
+    );
+    await waitFor(() =>
+      expect(queryAllByRole("menuitem", { name: "Delete media" })).toHaveLength(0)
     );
   });
 

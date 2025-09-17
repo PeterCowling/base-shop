@@ -26,7 +26,7 @@ describe("EmailMarketingPage sanitization", () => {
   it("cleans preview body HTML", async () => {
     render(<EmailMarketingPage />);
 
-    const textarea = screen.getByPlaceholderText("HTML body");
+    const textarea = await screen.findByLabelText(/HTML body/i);
     fireEvent.change(textarea, {
       target: {
         value: '<img alt="malicious" src="x" onerror="alert(1)" />',

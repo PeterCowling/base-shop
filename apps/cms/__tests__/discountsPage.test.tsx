@@ -67,15 +67,18 @@ describe("DiscountsPage", () => {
     render(<DiscountsPage />);
 
     // initial empty state
-    expect(await screen.findByText("No discounts.")).toBeInTheDocument();
+    expect(
+      await screen.findByText("No discounts have been configured yet."),
+    ).toBeInTheDocument();
 
     // create a discount
-    await user.type(screen.getByPlaceholderText("Code"), "SAVE10");
-    await user.type(screen.getByPlaceholderText("Description"), "10% off");
-    const percent = screen.getByPlaceholderText("Discount %");
+    const codeField = await screen.findByLabelText(/Code/i);
+    await user.type(codeField, "SAVE10");
+    await user.type(screen.getByLabelText(/Internal note/i), "10% off");
+    const percent = screen.getByLabelText(/Discount %/i);
     await user.clear(percent);
     await user.type(percent, "10");
-    await user.click(screen.getByRole("button", { name: "Create" }));
+    await user.click(screen.getByRole("button", { name: "Save discount" }));
 
     expect(await screen.findByText("SAVE10")).toBeInTheDocument();
 
@@ -85,7 +88,9 @@ describe("DiscountsPage", () => {
 
     // delete the discount
     await user.click(screen.getByRole("button", { name: "Delete" }));
-    expect(await screen.findByText("No discounts.")).toBeInTheDocument();
+    expect(
+      await screen.findByText("No discounts have been configured yet."),
+    ).toBeInTheDocument();
   });
 });
 

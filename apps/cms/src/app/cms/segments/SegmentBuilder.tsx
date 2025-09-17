@@ -1,83 +1,70 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { Toast } from "@ui/components/atoms";
+import type { ActionResult, ActionStatus } from "../components/actionResult";
+import SegmentDesigner, {
+  type SegmentDesignerProps,
+} from "../marketing/components/SegmentDesigner";
 
-interface Filter {
-  value: string;
-}
+type ToastState = { open: boolean; status: ActionStatus; message: string };
+
+const defaultToast: ToastState = { open: false, status: "success", message: "" };
 
 export default function SegmentBuilder() {
-  const [shop, setShop] = useState("");
-  const [id, setId] = useState("");
-  const [filters, setFilters] = useState<Filter[]>([{ value: "" }]);
-  const [status, setStatus] = useState<string | null>(null);
+  const [toast, setToast] = useState<ToastState>(defaultToast);
 
-  function updateFilter(idx: number, value: string) {
-    setFilters((prev) => prev.map((f, i) => (i === idx ? { value } : f)));
-  }
+  const showToast = useCallback((result: ActionResult) => {
+    setToast({ open: true, status: result.status, message: result.message });
+  }, []);
 
-  function addFilter() {
-    setFilters((prev) => [...prev, { value: "" }]);
-  }
+  const closeToast = useCallback(() => {
+    setToast((current) => ({ ...current, open: false }));
+  }, []);
 
-  async function save(e: React.FormEvent) {
-    e.preventDefault();
-    setStatus(null);
+  const toastClassName = useMemo(() => {
+    return toast.status === "error"
+      ? "bg-destructive text-destructive-foreground"
+      : "bg-success text-success-fg";
+  }, [toast.status]);
+
+  const saveSegment = useCallback<SegmentDesignerProps["saveSegment"]>(async (payload) => {
     try {
-      const body = {
-        shop,
-        id,
-        filters: filters
-          .filter((f) => f.value)
-          .map((f) => ({ field: "type", value: f.value })),
-      };
       const res = await fetch("/api/segments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify(payload),
       });
-      setStatus(res.ok ? "Saved" : "Failed");
       if (res.ok) {
-        setId("");
-        setFilters([{ value: "" }]);
+        return { status: "success", message: "Segment saved." } satisfies ActionResult;
       }
-    } catch {
-      setStatus("Failed");
+      let message = "Unable to save segment.";
+      try {
+        const json = (await res.json()) as { error?: string };
+        if (json.error) message = json.error;
+      } catch {}
+      return { status: "error", message } satisfies ActionResult;
+    } catch (error) {
+      return {
+        status: "error",
+        message:
+          error instanceof Error
+            ? error.message
+            : "Network error while saving segment.",
+      } satisfies ActionResult;
     }
-  }
+  }, []);
 
   return (
-    <form onSubmit={save} className="space-y-2">
-      <input
-        className="w-full border p-2"
-        placeholder="Shop"
-        value={shop}
-        onChange={(e) => setShop(e.target.value)}
+    <div className="space-y-6 p-6">
+      <SegmentDesigner saveSegment={saveSegment} onNotify={showToast} />
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        onClose={closeToast}
+        className={toastClassName}
+        role="status"
       />
-      <input
-        className="w-full border p-2"
-        placeholder="Segment ID"
-        value={id}
-        onChange={(e) => setId(e.target.value)}
-      />
-      {filters.map((f, i) => (
-        <input
-          key={i}
-          className="w-full border p-2"
-          placeholder="Event type"
-          value={f.value}
-          onChange={(e) => updateFilter(i, e.target.value)}
-        />
-      ))}
-      <div className="flex gap-2">
-        <button type="button" className="border px-4 py-2" onClick={addFilter}>
-          Add filter
-        </button>
-        <button type="submit" className="border px-4 py-2">
-          Save
-        </button>
-      </div>
-      {status && <p>{status}</p>}
-    </form>
+    </div>
   );
 }

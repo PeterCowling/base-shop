@@ -11,21 +11,23 @@ describe("SegmentBuilder", () => {
     global.fetch = jest.fn().mockResolvedValue({ ok: true }) as any;
     render(<SegmentBuilder />);
 
-    expect(screen.getAllByPlaceholderText(/Event type/i)).toHaveLength(1);
+    expect(screen.getAllByLabelText(/Field/i)).toHaveLength(1);
     fireEvent.click(screen.getByRole("button", { name: /add filter/i }));
-    expect(screen.getAllByPlaceholderText(/Event type/i)).toHaveLength(2);
+    expect(screen.getAllByLabelText(/Field/i)).toHaveLength(2);
 
-    fireEvent.change(screen.getByPlaceholderText(/Shop/i), {
-      target: { value: "shop" },
-    });
-    fireEvent.change(screen.getByPlaceholderText(/Segment ID/i), {
+    const shopInput = await screen.findByLabelText(/Shop/i);
+    fireEvent.change(shopInput, { target: { value: "shop" } });
+    fireEvent.change(screen.getByLabelText(/Segment ID/i), {
       target: { value: "vip" },
     });
-    fireEvent.change(screen.getAllByPlaceholderText(/Event type/i)[0], {
+    fireEvent.change(screen.getByLabelText(/Name/i), {
+      target: { value: "VIP" },
+    });
+    fireEvent.change(screen.getAllByLabelText(/Value/i)[0], {
       target: { value: "purchase" },
     });
 
-    fireEvent.click(screen.getByRole("button", { name: /save/i }));
+    fireEvent.click(screen.getByRole("button", { name: /save segment/i }));
 
     expect(global.fetch).toHaveBeenCalledWith(
       "/api/segments",
@@ -35,23 +37,37 @@ describe("SegmentBuilder", () => {
         body: JSON.stringify({
           shop: "shop",
           id: "vip",
+          name: "VIP",
           filters: [{ field: "type", value: "purchase" }],
         }),
       })
     );
 
-    await screen.findByText("Saved");
-    expect(screen.getByPlaceholderText(/Segment ID/i)).toHaveValue("");
-    expect(screen.getAllByPlaceholderText(/Event type/i)).toHaveLength(1);
-    expect(screen.getByPlaceholderText(/Event type/i)).toHaveValue("");
+    await screen.findByText("Segment saved.");
+    expect(screen.getByLabelText(/Segment ID/i)).toHaveValue("");
+    expect(screen.getByLabelText(/Name/i)).toHaveValue("");
+    expect(screen.getAllByLabelText(/Field/i)).toHaveLength(1);
+    expect(screen.getAllByLabelText(/Value/i)[0]).toHaveValue("");
   });
 
   it("shows Failed status on network error", async () => {
     global.fetch = jest.fn().mockRejectedValue(new Error("fail")) as any;
     render(<SegmentBuilder />);
 
-    fireEvent.click(screen.getByRole("button", { name: /save/i }));
+    const shopInput = await screen.findByLabelText(/Shop/i);
+    fireEvent.change(shopInput, { target: { value: "shop" } });
+    fireEvent.change(screen.getByLabelText(/Segment ID/i), {
+      target: { value: "vip" },
+    });
+    fireEvent.change(screen.getByLabelText(/Name/i), {
+      target: { value: "VIP" },
+    });
+    fireEvent.change(screen.getAllByLabelText(/Value/i)[0], {
+      target: { value: "purchase" },
+    });
 
-    await screen.findByText("Failed");
+    fireEvent.click(screen.getByRole("button", { name: /save segment/i }));
+
+    await screen.findByText("fail");
   });
 });

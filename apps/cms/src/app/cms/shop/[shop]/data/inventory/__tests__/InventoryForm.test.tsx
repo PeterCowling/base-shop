@@ -6,6 +6,12 @@ jest.mock(
   "@/components/atoms/shadcn",
   () => ({
     __esModule: true,
+    Card: ({ children, ...props }: ComponentProps<"div">) => (
+      <div {...props}>{children}</div>
+    ),
+    CardContent: ({ children, ...props }: ComponentProps<"div">) => (
+      <div {...props}>{children}</div>
+    ),
     Button: ({ children, ...props }: ComponentProps<"button">) => (
       <button {...props}>{children}</button>
     ),
@@ -87,7 +93,7 @@ describe("InventoryForm", () => {
     fireEvent.change(screen.getAllByRole("textbox")[3], {
       target: { value: "cotton" },
     });
-    fireEvent.click(screen.getByText("Save"));
+    fireEvent.click(screen.getByRole("button", { name: /Save inventory/i }));
     await waitFor(() => expect(fetch).toHaveBeenCalled());
     expect(fetch).toHaveBeenCalledWith(
       "/api/data/test/inventory",
@@ -125,7 +131,7 @@ describe("InventoryForm", () => {
     // remove original row
     fireEvent.click(screen.getAllByLabelText("delete-row")[0]);
     expect(screen.getAllByRole("row")).toHaveLength(2);
-    fireEvent.click(screen.getByText("Save"));
+    fireEvent.click(screen.getByRole("button", { name: /Save inventory/i }));
     await waitFor(() => expect(onSave).toHaveBeenCalled());
     expect(onSave).toHaveBeenCalledWith([
       expect.objectContaining({
@@ -141,7 +147,7 @@ describe("InventoryForm", () => {
     const onSave = jest.fn();
     render(<InventoryForm shop="test" initial={[]} onSave={onSave} />);
     fireEvent.click(screen.getByText("Add row"));
-    fireEvent.click(screen.getByText("Save"));
+    fireEvent.click(screen.getByRole("button", { name: /Save inventory/i }));
     const error = await screen.findByText(/SKU is required/i);
     expect(error).toHaveTextContent(/Quantity is required/i);
     expect(onSave).not.toHaveBeenCalled();
@@ -155,7 +161,7 @@ describe("InventoryForm", () => {
       capturedUpdateItem(0, "wearAndTearLimit", "10");
       capturedUpdateItem(0, "maintenanceCycle", "5");
     });
-    fireEvent.click(screen.getByText("Save"));
+    fireEvent.click(screen.getByRole("button", { name: /Save inventory/i }));
     await waitFor(() => expect(onSave).toHaveBeenCalled());
     expect(onSave).toHaveBeenCalledWith([
       expect.objectContaining({
@@ -172,7 +178,7 @@ describe("InventoryForm", () => {
       json: () => Promise.resolve({ error: "Failed" }),
     });
     render(<InventoryForm shop="test" initial={initial} />);
-    fireEvent.click(screen.getByText("Save"));
+    fireEvent.click(screen.getByRole("button", { name: /Save inventory/i }));
     expect(await screen.findByText("Failed")).toBeInTheDocument();
   });
 

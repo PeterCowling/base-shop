@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen, within } from "@testing-library/react";
+import React from "react";
 
 // Mock dependencies before importing the page
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
@@ -10,6 +11,11 @@ const mockReadShop = jest.fn();
 jest.mock("@platform-core/repositories/json.server", () => ({
   readSettings: (...args: any[]) => mockReadSettings(...args),
   readShop: (...args: any[]) => mockReadShop(...args),
+}));
+jest.mock("@/components/atoms/shadcn", () => ({
+  Button: ({ children }: any) => <>{children}</>,
+  Card: ({ children }: any) => <div>{children}</div>,
+  CardContent: ({ children }: any) => <div>{children}</div>,
 }));
 jest.mock("next-auth", () => ({ getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }) }));
 jest.mock("next/dynamic", () => () => () => null);
@@ -36,6 +42,18 @@ describe("Shop settings page", () => {
 
     const Page = await SettingsPage({ params: Promise.resolve({ shop: "s1" }) });
     render(Page);
+
+    expect(
+      screen.getByRole("heading", { level: 1, name: /s1/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /configure services/i })
+    ).toHaveAttribute("href", "#service-editors");
+    expect(
+      screen.getByRole("link", { name: /review theme tokens/i })
+    ).toHaveAttribute("href", "#theme-tokens");
+    expect(screen.getByText("Search & discovery")).toBeInTheDocument();
+    expect(screen.getByText("Reverse logistics")).toBeInTheDocument();
 
     const bgRow = screen.getByText("--color-bg").closest("tr")!;
     expect(within(bgRow).getByText("#ffffff")).toBeInTheDocument();

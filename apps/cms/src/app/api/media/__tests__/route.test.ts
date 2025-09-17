@@ -1,19 +1,25 @@
 const listMedia = jest.fn();
 const uploadMedia = jest.fn();
 const deleteMediaAction = jest.fn();
+const updateMediaMetadataAction = jest.fn();
+const getMediaOverview = jest.fn();
 
 jest.mock("@cms/actions/media.server", () => ({
   listMedia,
   uploadMedia,
   deleteMedia: deleteMediaAction,
+  updateMediaMetadata: updateMediaMetadataAction,
+  getMediaOverview,
 }));
 
 let GET: typeof import("../route").GET;
 let POST: typeof import("../route").POST;
 let DELETE: typeof import("../route").DELETE;
+let PATCH: typeof import("../route").PATCH;
+let PUT: typeof import("../route").PUT;
 
 beforeAll(async () => {
-  ({ GET, POST, DELETE } = await import("../route"));
+  ({ GET, POST, DELETE, PATCH, PUT } = await import("../route"));
 });
 
 beforeEach(() => {
@@ -43,6 +49,24 @@ describe("media route", () => {
       expect(res.status).toBe(200);
       expect(await res.json()).toEqual(files);
       expect(listMedia).toHaveBeenCalledWith("s1");
+    });
+
+    it("returns overview when summary is requested", async () => {
+      const overview = {
+        files: [],
+        totalBytes: 10,
+        imageCount: 1,
+        videoCount: 0,
+        recentUploads: [],
+      };
+      getMediaOverview.mockResolvedValue(overview);
+      const res = await GET(
+        new Request("http://test.local/api/media?shop=s1&summary=true")
+      );
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual(overview);
+      expect(getMediaOverview).toHaveBeenCalledWith("s1");
+      expect(listMedia).not.toHaveBeenCalled();
     });
 
     it("returns 500 when listMedia throws", async () => {
@@ -112,6 +136,89 @@ describe("media route", () => {
       );
       expect(res.status).toBe(400);
       expect(await res.json()).toEqual({ error: "del fail" });
+    });
+  });
+
+  describe("PATCH", () => {
+    it("returns 400 when shop is missing", async () => {
+      const res = await PATCH(
+        new Request("http://test.local/api/media", { method: "PATCH" })
+      );
+      expect(res.status).toBe(400);
+      expect(updateMediaMetadataAction).not.toHaveBeenCalled();
+    });
+
+    it("returns 400 when file is missing", async () => {
+      const res = await PATCH(
+        new Request("http://test.local/api/media?shop=s1", {
+          method: "PATCH",
+          body: JSON.stringify({ title: "a" }),
+        })
+      );
+      expect(res.status).toBe(400);
+      expect(updateMediaMetadataAction).not.toHaveBeenCalled();
+    });
+
+    it("updates metadata", async () => {
+      const item = { url: "/uploads/s1/a.jpg" };
+      updateMediaMetadataAction.mockResolvedValue(item);
+      const res = await PATCH(
+        new Request("http://test.local/api/media?shop=s1", {
+          method: "PATCH",
+          body: JSON.stringify({
+            file: "/uploads/s1/a.jpg",
+            title: "New",
+            tags: ["hero", "primary"],
+          }),
+        })
+      );
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual(item);
+      expect(updateMediaMetadataAction).toHaveBeenCalledWith("s1", "/uploads/s1/a.jpg", {
+        title: "New",
+        tags: ["hero", "primary"],
+      });
+    });
+
+    it("rejects invalid tags payload", async () => {
+      const res = await PATCH(
+        new Request("http://test.local/api/media?shop=s1", {
+          method: "PATCH",
+          body: JSON.stringify({
+            file: "/uploads/s1/a.jpg",
+            tags: { bad: true },
+          }),
+        })
+      );
+      expect(res.status).toBe(400);
+      expect(updateMediaMetadataAction).not.toHaveBeenCalled();
+    });
+
+    it("returns 400 when update fails", async () => {
+      updateMediaMetadataAction.mockRejectedValue(new Error("update fail"));
+      const res = await PATCH(
+        new Request("http://test.local/api/media?shop=s1", {
+          method: "PATCH",
+          body: JSON.stringify({ file: "/uploads/s1/a.jpg" }),
+        })
+      );
+      expect(res.status).toBe(400);
+      expect(await res.json()).toEqual({ error: "update fail" });
+    });
+
+    it("supports PUT alias", async () => {
+      const item = { url: "/uploads/s1/b.jpg" };
+      updateMediaMetadataAction.mockResolvedValue(item);
+      const req = new Request("http://test.local/api/media?shop=s1", {
+        method: "PUT",
+        body: JSON.stringify({ file: "/uploads/s1/b.jpg", altText: "alt" }),
+      });
+      const res = await PUT(req);
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual(item);
+      expect(updateMediaMetadataAction).toHaveBeenCalledWith("s1", "/uploads/s1/b.jpg", {
+        altText: "alt",
+      });
     });
   });
 });

@@ -10,12 +10,14 @@ interface Props {
   shop: string;
   initialProduct: ProductPublication & { variants?: Record<string, string[]> };
   languages: readonly Locale[];
+  formId?: string;
 }
 
 export default function ProductEditor({
   shop,
   initialProduct,
   languages,
+  formId = "product-editor-form",
 }: Props) {
   const onSave = (fd: FormData) => updateProduct(shop, fd);
   return (
@@ -23,6 +25,7 @@ export default function ProductEditor({
       product={{ ...initialProduct, variants: initialProduct.variants ?? {} }}
       onSave={onSave}
       locales={languages}
+      formId={formId}
     />
   );
 }

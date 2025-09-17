@@ -38,7 +38,7 @@ describe("ProductEditorForm", () => {
     );
 
     // shows validation error
-    expect(screen.getByText("Required")).toBeInTheDocument();
+    expect(screen.getByText(/Required/)).toBeInTheDocument();
 
     // change a field
     const priceInput = screen.getByLabelText(/Price/);

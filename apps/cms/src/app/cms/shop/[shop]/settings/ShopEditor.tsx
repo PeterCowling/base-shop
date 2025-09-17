@@ -28,6 +28,10 @@ import {
   type ShopProvidersSectionErrors,
 } from "./sections";
 import { useShopEditorForm } from "./useShopEditorForm";
+import type {
+  MappingListFieldErrors,
+  MappingListFieldRowErrors,
+} from "./components/MappingListField";
 
 export { default as GeneralSettings } from "./GeneralSettings";
 export { default as SEOSettings } from "./SEOSettings";
@@ -92,20 +96,71 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
       ? { trackingProviders: errors.trackingProviders }
       : undefined;
 
+  const buildMappingListErrors = (
+    field: "filterMappings" | "priceOverrides" | "localeOverrides",
+  ): MappingListFieldErrors | undefined => {
+    const general = errors[field];
+    const rowEntries = new Map<number, MappingListFieldRowErrors>();
+    const dotPattern = new RegExp(
+      `^${field}\\.(\\d+)(?:\\.(key|value|general))?$`,
+    );
+    const bracketPattern = new RegExp(
+      `^${field}\\[(\\d+)](?:\\.(key|value|general))?$`,
+    );
+
+    for (const [errorKey, messages] of Object.entries(errors)) {
+      const dotMatch = errorKey.match(dotPattern);
+      const bracketMatch = errorKey.match(bracketPattern);
+      const match = dotMatch ?? bracketMatch;
+      if (!match) {
+        continue;
+      }
+
+      const index = Number(match[1]);
+      if (Number.isNaN(index)) {
+        continue;
+      }
+
+      const fieldName = (match[2] as "key" | "value" | "general" | undefined) ??
+        "general";
+      const current = rowEntries.get(index) ?? {};
+
+      if (fieldName === "general") {
+        rowEntries.set(index, { ...current, general: messages });
+      } else {
+        rowEntries.set(index, { ...current, [fieldName]: messages });
+      }
+    }
+
+    const rows =
+      rowEntries.size > 0
+        ? Array.from(rowEntries.entries())
+            .sort(([left], [right]) => left - right)
+            .map(([, value]) => value)
+        : undefined;
+
+    if (!general && !rows) {
+      return undefined;
+    }
+
+    return { general, rows };
+  };
+
   const overridesErrors: ShopOverridesSectionErrors = {};
-  if (errors.filterMappings) {
-    overridesErrors.filterMappings = errors.filterMappings;
+  const filterMappingErrors = buildMappingListErrors("filterMappings");
+  const priceOverrideErrors = buildMappingListErrors("priceOverrides");
+  if (filterMappingErrors) {
+    overridesErrors.filterMappings = filterMappingErrors;
   }
-  if (errors.priceOverrides) {
-    overridesErrors.priceOverrides = errors.priceOverrides;
+  if (priceOverrideErrors) {
+    overridesErrors.priceOverrides = priceOverrideErrors;
   }
   const overridesSectionErrors =
     Object.keys(overridesErrors).length > 0 ? overridesErrors : undefined;
 
+  const localeOverrideErrors = buildMappingListErrors("localeOverrides");
   const localizationErrors: ShopLocalizationSectionErrors | undefined =
-    errors.localeOverrides
-      ? { localeOverrides: errors.localeOverrides }
-      : undefined;
+    localeOverrideErrors ? { localeOverrides: localeOverrideErrors } : undefined;
 
   const toastClassName =
     toast.status === "error"

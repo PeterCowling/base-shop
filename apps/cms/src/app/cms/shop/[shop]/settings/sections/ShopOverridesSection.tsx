@@ -5,16 +5,17 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Button,
   Card,
   CardContent,
-  Input,
 } from "@/components/atoms/shadcn";
-import { FormField } from "@ui/components/molecules";
 import type { MappingRowsController } from "../useShopEditorSubmit";
 
+import MappingListField, {
+  type MappingListFieldErrors,
+} from "../components/MappingListField";
+
 export type ShopOverridesSectionErrors = Partial<
-  Record<"filterMappings" | "priceOverrides", string[]>
+  Record<"filterMappings" | "priceOverrides", MappingListFieldErrors>
 >;
 
 export interface ShopOverridesSectionProps {
@@ -23,156 +24,59 @@ export interface ShopOverridesSectionProps {
   readonly errors?: ShopOverridesSectionErrors;
 }
 
-function formatError(messages?: string[]) {
-  return messages && messages.length > 0 ? messages.join("; ") : undefined;
-}
-
 export default function ShopOverridesSection({
   filterMappings,
   priceOverrides,
   errors,
 }: ShopOverridesSectionProps) {
-  const filterError = formatError(errors?.filterMappings);
-  const priceError = formatError(errors?.priceOverrides);
-  const filterErrorId = filterError ? "filter-mappings-error" : undefined;
-  const priceErrorId = priceError ? "price-overrides-error" : undefined;
-
   const filterContent = (
-    <div className="space-y-4">
-      {filterMappings.rows.length === 0 ? (
-        <p className="text-sm text-muted-foreground">
-          No filter mappings configured. Add mappings to translate storefront
-          facets into catalog attributes.
-        </p>
-      ) : (
-        filterMappings.rows.map((row, index) => {
-          const keyId = `filter-mapping-key-${index}`;
-          const valueId = `filter-mapping-value-${index}`;
-          return (
-            <div
-              key={keyId}
-              className="grid gap-4 sm:grid-cols-[2fr,2fr,auto] sm:items-end"
-            >
-              <FormField label="Filter key" htmlFor={keyId}>
-                <Input
-                  id={keyId}
-                  name="filterMappingsKey"
-                  value={row.key}
-                  onChange={(event) =>
-                    filterMappings.update(index, "key", event.target.value)
-                  }
-                  placeholder="color"
-                  aria-describedby={filterErrorId}
-                />
-              </FormField>
-              <FormField label="Catalog attribute" htmlFor={valueId}>
-                <Input
-                  id={valueId}
-                  name="filterMappingsValue"
-                  value={row.value}
-                  onChange={(event) =>
-                    filterMappings.update(index, "value", event.target.value)
-                  }
-                  placeholder="attributes.color"
-                  aria-describedby={filterErrorId}
-                />
-              </FormField>
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => filterMappings.remove(index)}
-              >
-                Remove
-              </Button>
-            </div>
-          );
-        })
-      )}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <Button
-          type="button"
-          onClick={filterMappings.add}
-          className="w-full sm:w-auto"
-        >
-          Add filter mapping
-        </Button>
-        {filterError ? (
-          <p id={filterErrorId} className="text-sm text-destructive" role="alert">
-            {filterError}
-          </p>
-        ) : null}
-      </div>
-    </div>
+    <MappingListField
+      controller={filterMappings}
+      idPrefix="filter-mapping"
+      keyField={{
+        field: "key",
+        label: "Filter key",
+        name: "filterMappingsKey",
+        placeholder: "color",
+      }}
+      valueField={{
+        field: "value",
+        label: "Catalog attribute",
+        name: "filterMappingsValue",
+        placeholder: "attributes.color",
+      }}
+      emptyMessage="No filter mappings configured. Add mappings to translate storefront facets into catalog attributes."
+      addButtonLabel="Add filter mapping"
+      removeButtonLabel="Remove"
+      errors={errors?.filterMappings}
+      rowClassName="sm:grid-cols-[2fr,2fr,auto]"
+    />
   );
 
   const priceContent = (
-    <div className="space-y-4">
-      {priceOverrides.rows.length === 0 ? (
-        <p className="text-sm text-muted-foreground">
-          No price overrides defined. Configure overrides to adjust pricing for
-          specific locales.
-        </p>
-      ) : (
-        priceOverrides.rows.map((row, index) => {
-          const keyId = `price-override-key-${index}`;
-          const valueId = `price-override-value-${index}`;
-          return (
-            <div
-              key={keyId}
-              className="grid gap-4 sm:grid-cols-[2fr,1fr,auto] sm:items-end"
-            >
-              <FormField label="Locale" htmlFor={keyId}>
-                <Input
-                  id={keyId}
-                  name="priceOverridesKey"
-                  value={row.key}
-                  onChange={(event) =>
-                    priceOverrides.update(index, "key", event.target.value)
-                  }
-                  placeholder="en-GB"
-                  aria-describedby={priceErrorId}
-                />
-              </FormField>
-              <FormField label="Override (minor units)" htmlFor={valueId}>
-                <Input
-                  id={valueId}
-                  type="number"
-                  inputMode="numeric"
-                  name="priceOverridesValue"
-                  value={row.value}
-                  onChange={(event) =>
-                    priceOverrides.update(index, "value", event.target.value)
-                  }
-                  placeholder="12000"
-                  aria-describedby={priceErrorId}
-                />
-              </FormField>
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => priceOverrides.remove(index)}
-              >
-                Remove
-              </Button>
-            </div>
-          );
-        })
-      )}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <Button
-          type="button"
-          onClick={priceOverrides.add}
-          className="w-full sm:w-auto"
-        >
-          Add price override
-        </Button>
-        {priceError ? (
-          <p id={priceErrorId} className="text-sm text-destructive" role="alert">
-            {priceError}
-          </p>
-        ) : null}
-      </div>
-    </div>
+    <MappingListField
+      controller={priceOverrides}
+      idPrefix="price-override"
+      keyField={{
+        field: "key",
+        label: "Locale",
+        name: "priceOverridesKey",
+        placeholder: "en-GB",
+      }}
+      valueField={{
+        field: "value",
+        label: "Override (minor units)",
+        name: "priceOverridesValue",
+        placeholder: "12000",
+        type: "number",
+        inputMode: "numeric",
+      }}
+      emptyMessage="No price overrides defined. Configure overrides to adjust pricing for specific locales."
+      addButtonLabel="Add price override"
+      removeButtonLabel="Remove"
+      errors={errors?.priceOverrides}
+      rowClassName="sm:grid-cols-[2fr,1fr,auto]"
+    />
   );
 
   return (

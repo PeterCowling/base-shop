@@ -14,7 +14,17 @@ jest.mock("@platform-core/repositories/pricing.server", () => ({
 jest.mock(
   "@ui/components/atoms/shadcn",
   () => ({
+    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+    Checkbox: ({ onCheckedChange, ...props }: any) => (
+      <input
+        type="checkbox"
+        onChange={(event) => onCheckedChange?.(event.target.checked)}
+        {...props}
+      />
+    ),
+    Input: (props: any) => <input {...props} />,
     Textarea: (props: any) => <textarea {...props} />,
   }),
   { virtual: true },
@@ -62,7 +72,7 @@ describe("PricingForm", () => {
       "/api/data/s1/rental/pricing",
       expect.objectContaining({ method: "POST" })
     );
-    expect(await screen.findByText("Saved!")).toBeInTheDocument();
+    expect(await screen.findByText("Pricing saved")).toBeInTheDocument();
   });
 
   it("shows error for invalid JSON", async () => {
@@ -79,6 +89,8 @@ describe("PricingForm", () => {
     );
     render(await Page({ params: Promise.resolve({ shop: "s1" }) }));
 
+    fireEvent.click(screen.getByRole("tab", { name: /advanced json/i }));
+
     const textarea = screen.getByRole("textbox");
     fireEvent.change(textarea, { target: { value: "{invalid" } });
 
@@ -87,7 +99,7 @@ describe("PricingForm", () => {
     });
 
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(await screen.findByText(/expected/i)).toBeInTheDocument();
+    expect(await screen.findByText(/expected/i, { selector: "p" })).toBeInTheDocument();
   });
 
   it("shows error for schema violation", async () => {
@@ -104,6 +116,8 @@ describe("PricingForm", () => {
     );
     render(await Page({ params: Promise.resolve({ shop: "s1" }) }));
 
+    fireEvent.click(screen.getByRole("tab", { name: /advanced json/i }));
+
     const textarea = screen.getByRole("textbox");
     fireEvent.change(textarea, {
       target: { value: JSON.stringify({ baseDailyRate: "ten" }) },
@@ -114,7 +128,7 @@ describe("PricingForm", () => {
     });
 
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(await screen.findByText(/expected number/i)).toBeInTheDocument();
+    expect(await screen.findByText(/expected number/i, { selector: "p" })).toBeInTheDocument();
   });
 });
 

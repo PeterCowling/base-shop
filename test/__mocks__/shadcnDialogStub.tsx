@@ -79,6 +79,21 @@ export function Textarea(
   return <textarea {...props} />;
 }
 
+export function Checkbox({
+  onCheckedChange,
+  ...props
+}: React.ComponentPropsWithoutRef<"input"> & {
+  onCheckedChange?: (checked: boolean) => void;
+}) {
+  return (
+    <input
+      type="checkbox"
+      onChange={(event) => onCheckedChange?.(event.target.checked)}
+      {...props}
+    />
+  );
+}
+
 // Minimal Select primitives for tests that use shadcn Select
 // These are intentionally simplified and only support the patterns used in tests.
 type AnyProps = Record<string, any>;

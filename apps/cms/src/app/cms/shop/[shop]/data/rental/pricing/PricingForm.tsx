@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  Button,
-  Card,
-  CardContent,
-  Checkbox,
-  Input,
-  Textarea,
-} from "@/components/atoms/shadcn";
+import { Button, Card, CardContent, Checkbox, Input, Textarea } from "@/components/atoms/shadcn";
 import { Toast, Tag } from "@/components/atoms";
 import {
   coverageCodeSchema,
@@ -16,14 +9,7 @@ import {
   type PricingMatrix,
 } from "@acme/types";
 import { cn } from "@ui/utils/style";
-import {
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-  type ChangeEvent,
-  type FormEvent,
-} from "react";
+import { useCallback, useMemo, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 
 interface Props {
   shop: string;
@@ -378,13 +364,31 @@ export default function PricingForm({ shop, initial }: Props) {
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setStatus("saving");
-    const result = buildPricingFromForm();
-    if (!result.success) {
-      setFieldErrors(result.errors);
-      setStatus("error");
-      emitToast("Fix validation issues before saving.");
-      return;
+    let result: ValidationResult;
+
+    if (activeTab === "json") {
+      const parsed = parseJsonDraft();
+      if (!parsed.success) {
+        setJsonError(parsed.errors.json ?? "JSON is invalid");
+        setStatus("error");
+        emitToast(parsed.errors.json ?? "JSON could not be parsed.");
+        return;
+      }
+      result = parsed;
+      hydrateFromMatrix(parsed.data);
+      setJsonError(null);
+    } else {
+      const built = buildPricingFromForm();
+      if (!built.success) {
+        setFieldErrors(built.errors);
+        setStatus("error");
+        emitToast("Fix validation issues before saving.");
+        return;
+      }
+      result = built;
     }
+
+    setFieldErrors({});
     try {
       const response = await fetch(`/api/data/${shop}/rental/pricing`, {
         method: "POST",
@@ -396,7 +400,6 @@ export default function PricingForm({ shop, initial }: Props) {
         throw new Error(body.error || "Failed to save pricing");
       }
       setStatus("saved");
-      setFieldErrors({});
       setJsonDraft(JSON.stringify(result.data, null, 2));
       emitToast("Pricing saved");
     } catch (err) {

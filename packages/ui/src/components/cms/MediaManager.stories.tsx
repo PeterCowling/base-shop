@@ -12,6 +12,11 @@ const meta: Meta<typeof MediaManager> = {
     shop: "demo",
     initialFiles: files,
     onDelete: () => alert("delete"),
+    onMetadataUpdate: async (_shop, url, fields) => ({
+      url,
+      type: "image",
+      ...fields,
+    }),
   },
   argTypes: {
     shop: { control: "text" },

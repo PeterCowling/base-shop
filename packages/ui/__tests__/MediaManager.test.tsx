@@ -3,13 +3,71 @@ jest.mock("@cms/actions/media.server", () => ({
 }));
 jest.mock("@ui/components/atoms/shadcn", () => {
   const React = require("react");
+  const passthrough = (tag = "div") =>
+    React.forwardRef(({ asChild: _asChild, ...props }: any, ref: any) =>
+      React.createElement(tag, { ref, ...props })
+    );
   return {
-    Input: React.forwardRef((props, ref) => <input ref={ref} {...props} />),
+    Input: passthrough("input"),
+    Textarea: passthrough("textarea"),
+    Button: passthrough("button"),
+    Card: passthrough("div"),
+    CardContent: passthrough("div"),
+    Checkbox: React.forwardRef((props: any, ref: any) => (
+      <input ref={ref} type="checkbox" {...props} />
+    )),
+    Progress: passthrough(),
+    Tag: ({ children, ...rest }: any) => <span {...rest}>{children}</span>,
+    DropdownMenu: ({ children }: any) => <div>{children}</div>,
+    DropdownMenuTrigger: ({ children, asChild, ...rest }: any) => {
+      if (asChild && React.isValidElement(children)) {
+        return React.cloneElement(children, rest);
+      }
+      return (
+        <button type="button" {...rest}>
+          {children}
+        </button>
+      );
+    },
+    DropdownMenuContent: ({ children, asChild: _asChild, ...rest }: any) => (
+      <div {...rest}>{children}</div>
+    ),
+    DropdownMenuItem: ({
+      children,
+      onSelect,
+      asChild: _asChild,
+      ...rest
+    }: any) => (
+      <div
+        role="menuitem"
+        tabIndex={0}
+        onClick={(event) => onSelect?.(event)}
+        {...rest}
+      >
+        {children}
+      </div>
+    ),
+    DropdownMenuLabel: ({ children }: any) => <div>{children}</div>,
+    DropdownMenuSeparator: () => <hr />,
     Select: ({ children, ...rest }: any) => <select {...rest}>{children}</select>,
-    SelectTrigger: ({ children }: any) => <div>{children}</div>,
+    SelectTrigger: ({ children, asChild: _asChild, ...rest }: any) => (
+      <div {...rest}>{children}</div>
+    ),
     SelectValue: ({ placeholder }: any) => <option>{placeholder}</option>,
     SelectContent: ({ children }: any) => <div>{children}</div>,
-    SelectItem: ({ children, ...rest }: any) => <option {...rest}>{children}</option>,
+    SelectItem: ({ children, ...rest }: any) => (
+      <option {...rest}>{children}</option>
+    ),
+    Dialog: ({ children, onOpenChange, open, asChild: _asChild, ...rest }: any) => (
+      <div {...rest} data-open={open ? "true" : undefined}>
+        {children}
+      </div>
+    ),
+    DialogContent: passthrough(),
+    DialogHeader: ({ children }: any) => <div>{children}</div>,
+    DialogTitle: ({ children }: any) => <div>{children}</div>,
+    DialogDescription: ({ children }: any) => <div>{children}</div>,
+    DialogFooter: ({ children }: any) => <div>{children}</div>,
   };
 });
 import { deleteMedia } from "@cms/actions/media.server";
@@ -23,10 +81,16 @@ const mockHook = useImageOrientationValidation as jest.MockedFunction<
   typeof useImageOrientationValidation
 >;
 const mockDelete = deleteMedia as jest.MockedFunction<typeof deleteMedia>;
+const mockMetadataUpdate = jest.fn();
 
 beforeEach(() => {
   mockHook.mockReturnValue({ actual: null, isValid: null });
   mockDelete.mockResolvedValue(undefined as any);
+  mockMetadataUpdate.mockReset();
+  mockMetadataUpdate.mockImplementation(async (_shop: string, url: string) => ({
+    url,
+    type: "image",
+  }));
   global.fetch = jest.fn().mockResolvedValue({
     ok: true,
     json: async () => ({ url: "/new.png", altText: "a", type: "image" }),
@@ -43,6 +107,7 @@ describe("MediaManager", () => {
         shop="s"
         initialFiles={[{ url: "/img.jpg", type: "image" } as any]}
         onDelete={mockDelete}
+        onMetadataUpdate={mockMetadataUpdate}
       />
     );
     fireEvent.click(screen.getByText("Delete"));
@@ -55,7 +120,12 @@ describe("MediaManager", () => {
     mockHook.mockReturnValue({ actual: "landscape", isValid: true });
     const file = new File(["a"], "a.png", { type: "image/png" });
     render(
-      <MediaManager shop="s" initialFiles={[]} onDelete={mockDelete} />
+      <MediaManager
+        shop="s"
+        initialFiles={[]}
+        onDelete={mockDelete}
+        onMetadataUpdate={mockMetadataUpdate}
+      />
     );
     const drop = screen.getByText(
       "Drop image or video here or click to upload"
@@ -79,6 +149,7 @@ describe("MediaManager", () => {
           { url: "/dog.jpg", altText: "Dog", type: "image" } as any,
         ]}
         onDelete={mockDelete}
+        onMetadataUpdate={mockMetadataUpdate}
       />
     );
     expect(screen.getAllByText("Delete")).toHaveLength(2);

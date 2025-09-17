@@ -3,6 +3,16 @@
 
 import { memo, ReactElement, useCallback, useMemo, useState } from "react";
 import type { MediaItem } from "@acme/types";
+import { Spinner, Toast } from "../atoms";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../atoms/shadcn";
 import MediaDetailsPanel, {
   type MediaDetailsFormValues,
 } from "./media/MediaDetailsPanel";
@@ -56,21 +66,63 @@ function MediaManagerBase({
   );
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const [metadataPending, setMetadataPending] = useState(false);
+  const [dialogDeleteUrl, setDialogDeleteUrl] = useState<string | null>(null);
+  const [deletePending, setDeletePending] = useState(false);
+  const [toast, setToast] = useState<{
+    open: boolean;
+    variant: "success" | "error";
+    message: string;
+  }>({ open: false, variant: "success", message: "" });
 
   const selectedItem = useMemo(() => {
     if (!selectedUrl) return null;
     return files.find((file) => file.url === selectedUrl) ?? null;
   }, [files, selectedUrl]);
 
-  const handleDelete = useCallback(
-    async (src: string) => {
-      if (!confirm("Delete this image?")) return;
-      await onDelete(shop, src);
-      setFiles((prev) => prev.filter((f) => f.url !== src));
-      setSelectedUrl((prev) => (prev === src ? null : prev));
+  const deletingUrl = deletePending ? dialogDeleteUrl : null;
+
+  const showToast = useCallback(
+    (variant: "success" | "error", message: string) => {
+      setToast({ open: true, variant, message });
     },
-    [onDelete, shop]
+    []
   );
+
+  const closeToast = useCallback(() => {
+    setToast((current) => ({ ...current, open: false }));
+  }, []);
+
+  const handleRequestDelete = useCallback((src: string) => {
+    setDialogDeleteUrl(src);
+  }, []);
+
+  const handleCancelDelete = useCallback(() => {
+    if (deletePending) return;
+    setDialogDeleteUrl(null);
+  }, [deletePending]);
+
+  const handleConfirmDelete = useCallback(async () => {
+    if (!dialogDeleteUrl) return;
+
+    const targetUrl = dialogDeleteUrl;
+    setDeletePending(true);
+    try {
+      await onDelete(shop, targetUrl);
+      setFiles((prev) => prev.filter((f) => f.url !== targetUrl));
+      setSelectedUrl((prev) => (prev === targetUrl ? null : prev));
+      showToast("success", "Media deleted.");
+      setDialogDeleteUrl(null);
+    } catch (error) {
+      console.error("Failed to delete media item", error);
+      const message =
+        error instanceof Error
+          ? error.message || "Failed to delete media item."
+          : "Failed to delete media item.";
+      showToast("error", message);
+    } finally {
+      setDeletePending(false);
+    }
+  }, [dialogDeleteUrl, onDelete, shop, showToast]);
 
   const handleUploaded = useCallback((item: MediaItem) => {
     if (!hasUrl(item)) {
@@ -127,30 +179,104 @@ function MediaManagerBase({
     setSelectedUrl(null);
   }, []);
 
+  const deleteDialogFileName = useMemo(() => {
+    if (!dialogDeleteUrl) return null;
+    try {
+      return decodeURIComponent(dialogDeleteUrl.split("/").pop() ?? dialogDeleteUrl);
+    } catch {
+      return dialogDeleteUrl;
+    }
+  }, [dialogDeleteUrl]);
+
   return (
-    <div className="space-y-6">
-      <UploadPanel
-        shop={shop}
-        onUploaded={handleUploaded}
-        focusTargetId={uploaderTargetId}
+    <>
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        onClose={closeToast}
+        className={
+          toast.variant === "error"
+            ? "bg-destructive text-destructive-foreground"
+            : "bg-success text-success-fg"
+        }
       />
-      <Library
-        files={files}
-        shop={shop}
-        onDelete={handleDelete}
-        onReplace={handleReplace}
-        onSelect={handleSelect}
-      />
-      {selectedItem ? (
-        <MediaDetailsPanel
-          open
-          item={selectedItem}
-          pending={metadataPending}
-          onSubmit={handleMetadataSubmit}
-          onClose={handleCloseDetails}
+      <Dialog
+        open={Boolean(dialogDeleteUrl)}
+        onOpenChange={(open) => {
+          if (!open) handleCancelDelete();
+        }}
+      >
+        <DialogContent
+          onEscapeKeyDown={deletePending ? (event) => event.preventDefault() : undefined}
+          onPointerDownOutside={
+            deletePending ? (event) => event.preventDefault() : undefined
+          }
+          className="max-w-md"
+        >
+          <DialogHeader className="space-y-2 text-left">
+            <DialogTitle>Delete media</DialogTitle>
+            <DialogDescription className="text-left text-sm text-muted-foreground">
+              Are you sure you want to delete
+              {" "}
+              <span className="font-medium text-foreground">
+                {deleteDialogFileName ?? "this media file"}
+              </span>
+              ? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleCancelDelete}
+              disabled={deletePending}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleConfirmDelete}
+              disabled={deletePending || !dialogDeleteUrl}
+              aria-label="Delete media"
+            >
+              {deletePending ? (
+                <>
+                  <Spinner className="h-4 w-4" aria-hidden="true" />
+                  <span className="sr-only">Deleting media…</span>
+                </>
+              ) : (
+                "Delete media"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <div className="space-y-6">
+        <UploadPanel
+          shop={shop}
+          onUploaded={handleUploaded}
+          focusTargetId={uploaderTargetId}
         />
-      ) : null}
-    </div>
+        <Library
+          files={files}
+          shop={shop}
+          onDelete={handleRequestDelete}
+          onReplace={handleReplace}
+          onSelect={handleSelect}
+          isDeleting={(item) => deletingUrl === item.url}
+        />
+        {selectedItem ? (
+          <MediaDetailsPanel
+            open
+            item={selectedItem}
+            pending={metadataPending}
+            onSubmit={handleMetadataSubmit}
+            onClose={handleCloseDetails}
+          />
+        ) : null}
+      </div>
+    </>
   );
 }
 

@@ -9,8 +9,18 @@ import type { MediaItem } from "@acme/types";
 jest.mock("@ui/components/atoms/shadcn", () => {
   const React = require("react");
   const passthrough = (tag = "div") =>
-    React.forwardRef(({ asChild: _asChild, ...props }: any, ref: any) =>
-      React.createElement(tag, { ref, ...props })
+    React.forwardRef(
+      (
+        {
+          asChild: _asChild,
+          onPointerDownOutside: _onPointerDownOutside,
+          onEscapeKeyDown: _onEscapeKeyDown,
+          onOpenChange: _onOpenChange,
+          onValueChange: _onValueChange,
+          ...props
+        }: any,
+        ref: any
+      ) => React.createElement(tag, { ref, ...props })
     );
   return {
     Input: passthrough("input"),
@@ -77,11 +87,8 @@ import MediaManager from "../MediaManager";
 
 describe("MediaManager", () => {
   const originalFetch = global.fetch;
-  const originalConfirm = window.confirm;
-
   afterEach(() => {
     global.fetch = originalFetch;
-    window.confirm = originalConfirm;
     jest.clearAllMocks();
   });
 
@@ -126,7 +133,6 @@ describe("MediaManager", () => {
   });
 
   it("calls onDelete when confirming deletion", async () => {
-    window.confirm = jest.fn(() => true);
     const onDelete = jest.fn().mockResolvedValue(undefined);
     const { getByText, getByRole, queryByText } = render(
       <MediaManager
@@ -140,6 +146,7 @@ describe("MediaManager", () => {
     fireEvent.click(getByRole("button", { name: "Media actions" }));
     const deleteButton = getByText("Delete");
     fireEvent.click(deleteButton);
+    fireEvent.click(getByRole("button", { name: "Delete media" }));
 
     await waitFor(() =>
       expect(onDelete).toHaveBeenCalledWith("shop", "old.mp4")

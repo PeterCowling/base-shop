@@ -1,4 +1,4 @@
-import { render, waitFor, act } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, act } from "@testing-library/react";
 import MediaManager from "../MediaManager";
 
 let libraryProps: any;
@@ -19,15 +19,11 @@ describe("MediaManager", () => {
     { url: "1", type: "image" },
     { url: "2", type: "image" },
   ];
-  const originalConfirm = window.confirm;
-
   afterEach(() => {
-    window.confirm = originalConfirm;
     jest.clearAllMocks();
   });
 
   it("does nothing when deletion is not confirmed", async () => {
-    window.confirm = jest.fn(() => false);
     const onDelete = jest.fn();
     render(
       <MediaManager
@@ -42,13 +38,15 @@ describe("MediaManager", () => {
       await libraryProps.onDelete("1");
     });
 
+    const cancelButton = await screen.findByRole("button", { name: "Cancel" });
+    fireEvent.click(cancelButton);
+
     expect(onDelete).not.toHaveBeenCalled();
-    expect(libraryProps.files).toHaveLength(2);
+    await waitFor(() => expect(libraryProps.files).toHaveLength(2));
   });
 
   it("deletes item when confirmed", async () => {
-    window.confirm = jest.fn(() => true);
-    const onDelete = jest.fn();
+    const onDelete = jest.fn().mockResolvedValue(undefined);
     render(
       <MediaManager
         shop="s"
@@ -62,7 +60,12 @@ describe("MediaManager", () => {
       await libraryProps.onDelete("1");
     });
 
-    expect(onDelete).toHaveBeenCalledWith("s", "1");
+    const confirmButton = await screen.findByRole("button", {
+      name: "Delete media",
+    });
+    fireEvent.click(confirmButton);
+
+    await waitFor(() => expect(onDelete).toHaveBeenCalledWith("s", "1"));
     await waitFor(() => expect(libraryProps.files).toHaveLength(1));
     expect(libraryProps.files.find((f: any) => f.url === "1")).toBeUndefined();
   });

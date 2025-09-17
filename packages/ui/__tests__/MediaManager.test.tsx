@@ -4,8 +4,18 @@ jest.mock("@cms/actions/media.server", () => ({
 jest.mock("@ui/components/atoms/shadcn", () => {
   const React = require("react");
   const passthrough = (tag = "div") =>
-    React.forwardRef(({ asChild: _asChild, ...props }: any, ref: any) =>
-      React.createElement(tag, { ref, ...props })
+    React.forwardRef(
+      (
+        {
+          asChild: _asChild,
+          onPointerDownOutside: _onPointerDownOutside,
+          onEscapeKeyDown: _onEscapeKeyDown,
+          onOpenChange: _onOpenChange,
+          onValueChange: _onValueChange,
+          ...props
+        }: any,
+        ref: any
+      ) => React.createElement(tag, { ref, ...props })
     );
   return {
     Input: passthrough("input"),
@@ -101,7 +111,6 @@ beforeEach(() => {
 
 describe("MediaManager", () => {
   it("deletes file when confirmed", async () => {
-    (global as any).confirm = jest.fn(() => true);
     render(
       <MediaManager
         shop="s"
@@ -111,6 +120,7 @@ describe("MediaManager", () => {
       />
     );
     fireEvent.click(screen.getByText("Delete"));
+    fireEvent.click(screen.getByRole("button", { name: "Delete media" }));
     await waitFor(() =>
       expect(mockDelete).toHaveBeenCalledWith("s", "/img.jpg")
     );

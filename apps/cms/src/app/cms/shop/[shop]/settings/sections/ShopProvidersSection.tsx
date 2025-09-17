@@ -53,7 +53,11 @@ export default function ShopProvidersSection({
           label="Tracking providers"
           error={
             errorMessage ? (
-              <span id={errorId} role="alert">
+              <span
+                id={errorId}
+                role="alert"
+                aria-label={errorMessage}
+              >
                 {errorMessage}
               </span>
             ) : undefined

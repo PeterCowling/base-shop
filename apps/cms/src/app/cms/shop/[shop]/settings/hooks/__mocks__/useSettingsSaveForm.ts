@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, type FormEvent } from "react";
 
 import type {
   UseSettingsSaveFormOptions,
@@ -95,6 +95,15 @@ export const useSettingsSaveForm = <TResult,>(
     [announceError, announceSuccess, options],
   );
 
+  const handleSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+      return submit(formData);
+    },
+    [submit],
+  );
+
   const toastClassName = useMemo(() => {
     return toast.status === "error"
       ? "mock-error-toast"
@@ -106,6 +115,7 @@ export const useSettingsSaveForm = <TResult,>(
     errors,
     setErrors,
     submit,
+    handleSubmit,
     toast,
     toastClassName,
     closeToast,

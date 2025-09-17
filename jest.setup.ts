@@ -68,6 +68,7 @@ const React = require("react");
 import { TextDecoder, TextEncoder } from "node:util";
 import { File } from "node:buffer";
 import { webcrypto } from "node:crypto";
+import "./test/polyfills/form-request-submit";
 
 // React 19's experimental builds may not yet expose a built‑in `act` helper.
 // Testing libraries still expect `React.act` to exist, so provide a minimal
@@ -123,6 +124,9 @@ if (!(URL as any).revokeObjectURL) {
   (URL as any).revokeObjectURL = () => {};
 }
 
+// JSDOM 20 (used by Jest 29) does not yet implement `form.requestSubmit()`.
+// Polyfill the browser behavior so submit buttons trigger the form's submit
+// event instead of throwing a "not implemented" error during tests.
 // JSDOM lacks certain DOM APIs used by Radix UI components
 if (typeof Element !== "undefined" && !Element.prototype.scrollIntoView) {
   Element.prototype.scrollIntoView = () => {};

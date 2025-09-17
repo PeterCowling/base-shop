@@ -1,9 +1,19 @@
-import { render, fireEvent, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
 import MediaFileItem from "../MediaFileItem";
 
 describe("MediaFileItem", () => {
+  const baseItem = {
+    url: "http://example.com/image.jpg",
+    type: "image" as const,
+    altText: "Alt text",
+    tags: ["featured", "homepage"],
+    size: 12_288,
+  };
+
   beforeEach(() => {
-    // @ts-ignore
+    // @ts-expect-error — tests control fetch
     global.fetch = jest.fn();
   });
 
@@ -11,94 +21,146 @@ describe("MediaFileItem", () => {
     (global.fetch as jest.Mock).mockReset();
   });
 
-  const item = { url: "http://example.com/image.jpg", type: "image" } as const;
-
-  it("calls onDelete when Delete clicked", () => {
+  it("calls onDelete when the dropdown action is selected", async () => {
     const onDelete = jest.fn();
-    const { getByText } = render(
-      <MediaFileItem item={item} shop="shop" onDelete={onDelete} onReplace={jest.fn()} />
+    const user = userEvent.setup();
+    render(
+      <MediaFileItem
+        item={baseItem}
+        shop="shop"
+        onDelete={onDelete}
+        onReplace={jest.fn()}
+      />
     );
 
-    fireEvent.click(getByText("Delete"));
-    expect(onDelete).toHaveBeenCalledWith(item.url);
+    await user.click(screen.getByRole("button", { name: /media actions/i }));
+    await user.click(await screen.findByText("Delete"));
+
+    expect(onDelete).toHaveBeenCalledWith(baseItem.url);
   });
 
-  it("uploads replacement and calls callbacks", async () => {
+  it("uploads a replacement file and forwards callbacks", async () => {
+    jest.useFakeTimers();
     const onDelete = jest.fn().mockResolvedValue(undefined);
     const onReplace = jest.fn();
-    (global.fetch as jest.Mock)
-      // fetch existing file
-      .mockResolvedValueOnce(new Response(new Blob(["file"], { type: "image/jpeg" })))
-      // upload response
-      .mockResolvedValueOnce(
-        new Response(
-          JSON.stringify({ url: "http://example.com/new.jpg", type: "image" }),
-          { status: 200, headers: { "Content-Type": "application/json" } }
-        )
-      );
-
-    const { getByText, getByPlaceholderText } = render(
-      <MediaFileItem item={item} shop="shop" onDelete={onDelete} onReplace={onReplace} />
+    const replacement = { url: "http://example.com/new.jpg", type: "image" };
+    (global.fetch as jest.Mock).mockResolvedValue(
+      new Response(JSON.stringify(replacement), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      })
     );
-
-    fireEvent.click(getByText("Edit"));
-    fireEvent.change(getByPlaceholderText("Alt text"), { target: { value: "alt" } });
-    fireEvent.click(getByText("Save"));
-
-    await waitFor(() => expect(onReplace).toHaveBeenCalled());
-    expect(onDelete).toHaveBeenCalledWith(item.url);
-  });
-
-  it("stops saving and stays in edit mode when upload fails", async () => {
-    const onDelete = jest.fn();
-    const onReplace = jest.fn();
-    (global.fetch as jest.Mock)
-      .mockResolvedValueOnce(new Response(new Blob(["file"], { type: "image/jpeg" })))
-      .mockRejectedValueOnce(new Error("upload failed"));
-
-    const { getByText, getByPlaceholderText } = render(
-      <MediaFileItem item={item} shop="shop" onDelete={onDelete} onReplace={onReplace} />
-    );
-
-    fireEvent.click(getByText("Edit"));
-    fireEvent.change(getByPlaceholderText("Alt text"), { target: { value: "alt" } });
-    fireEvent.click(getByText("Save"));
-
-    await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(2));
-
-    expect(getByText("Save")).not.toBeDisabled();
-    expect(getByText("Cancel")).toBeInTheDocument();
-    expect(onDelete).not.toHaveBeenCalled();
-    expect(onReplace).not.toHaveBeenCalled();
-  });
-
-  it("renders a video element when item type is video", () => {
-    const videoItem = {
-      url: "http://example.com/video.mp4",
-      type: "video",
-    } as const;
 
     const { container } = render(
-      <MediaFileItem item={videoItem} shop="shop" onDelete={jest.fn()} onReplace={jest.fn()} />
+      <MediaFileItem
+        item={baseItem}
+        shop="shop"
+        onDelete={onDelete}
+        onReplace={onReplace}
+      />
     );
 
-    expect(container.querySelector("video")).toBeInTheDocument();
+    const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+    const file = new File(["hello"], "hello.png", { type: "image/png" });
+
+    await act(async () => {
+      fireEvent.change(fileInput, { target: { files: [file] } });
+    });
+
+    await waitFor(() => expect(onReplace).toHaveBeenCalled());
+    expect(onReplace).toHaveBeenCalledWith(baseItem.url, replacement);
+    expect(onDelete).toHaveBeenCalledWith(baseItem.url);
+
+    act(() => {
+      jest.runAllTimers();
+    });
+    jest.useRealTimers();
   });
 
-  it("displays alt text and tags when present", () => {
-    const tagged = {
-      url: "http://example.com/image.jpg",
-      type: "image",
-      altText: "an image",
-      tags: ["foo", "bar"],
-    } as const;
-
-    const { getByText, queryByPlaceholderText } = render(
-      <MediaFileItem item={tagged} shop="shop" onDelete={jest.fn()} onReplace={jest.fn()} />
+  it("renders multi-select controls and notifies when toggled", () => {
+    const onBulkToggle = jest.fn();
+    render(
+      <MediaFileItem
+        item={baseItem}
+        shop="shop"
+        onDelete={jest.fn()}
+        onReplace={jest.fn()}
+        selectionEnabled
+        selected={false}
+        onBulkToggle={onBulkToggle}
+      />
     );
 
-    expect(getByText("an image")).toBeInTheDocument();
-    expect(getByText("foo, bar")).toBeInTheDocument();
-    expect(queryByPlaceholderText("Alt text")).toBeNull();
+    const checkbox = screen.getByRole("checkbox");
+    fireEvent.click(checkbox);
+
+    expect(onBulkToggle).toHaveBeenCalledWith(baseItem, true);
+  });
+
+  it("calls onOpenDetails when the overlay button is pressed", () => {
+    const onOpenDetails = jest.fn();
+    render(
+      <MediaFileItem
+        item={baseItem}
+        shop="shop"
+        onDelete={jest.fn()}
+        onReplace={jest.fn()}
+        onOpenDetails={onOpenDetails}
+      />
+    );
+
+    fireEvent.click(screen.getByText("Open details"));
+    expect(onOpenDetails).toHaveBeenCalledWith(baseItem);
+  });
+
+  it("exposes a select button when onSelect is provided", () => {
+    const onSelect = jest.fn();
+    render(
+      <MediaFileItem
+        item={baseItem}
+        shop="shop"
+        onDelete={jest.fn()}
+        onReplace={jest.fn()}
+        onSelect={onSelect}
+      />
+    );
+
+    fireEvent.click(screen.getByText("Select"));
+    expect(onSelect).toHaveBeenCalledWith(baseItem);
+  });
+
+  it("shows external replacement progress", () => {
+    const replacingItem = {
+      ...baseItem,
+      status: "replacing",
+      replaceProgress: 45,
+    };
+    render(
+      <MediaFileItem
+        item={replacingItem}
+        shop="shop"
+        onDelete={jest.fn()}
+        onReplace={jest.fn()}
+      />
+    );
+
+    expect(screen.getByText(/replacing asset/i)).toBeInTheDocument();
+    expect(screen.getByText("45%"))
+      .toBeInTheDocument();
+  });
+
+  it("renders tags and file size badges", () => {
+    render(
+      <MediaFileItem
+        item={baseItem}
+        shop="shop"
+        onDelete={jest.fn()}
+        onReplace={jest.fn()}
+      />
+    );
+
+    expect(screen.getByText("featured")).toBeInTheDocument();
+    expect(screen.getByText("homepage")).toBeInTheDocument();
+    expect(screen.getByText(/12 KB/)).toBeInTheDocument();
   });
 });

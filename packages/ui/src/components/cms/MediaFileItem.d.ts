@@ -12,6 +12,17 @@ interface Props {
     shop: string;
     onDelete: (url: string) => void;
     onReplace: (oldUrl: string, item: MediaItem) => void;
+    onSelect?: (item: MediaItem & {
+        url: string;
+    }) => void;
+    onOpenDetails?: (item: MediaItem & {
+        url: string;
+    }) => void;
+    onBulkToggle?: (item: MediaItem & {
+        url: string;
+    }, selected: boolean) => void;
+    selectionEnabled?: boolean;
+    selected?: boolean;
 }
-export default function MediaFileItem({ item, shop, onDelete, onReplace, }: Props): import("react/jsx-runtime").JSX.Element;
+export default function MediaFileItem({ item, shop, onDelete, onReplace, onSelect, onOpenDetails, onBulkToggle, selectionEnabled, selected, }: Props): import("react/jsx-runtime").JSX.Element;
 export {};

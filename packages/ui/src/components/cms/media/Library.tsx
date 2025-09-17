@@ -1,6 +1,9 @@
 // packages/ui/src/components/cms/media/Library.tsx
 "use client";
 
+import type { MediaItem } from "@acme/types";
+import { ChangeEvent, ReactElement, useMemo, useState } from "react";
+
 import {
   Input,
   Select,
@@ -9,15 +12,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../atoms/shadcn";
-import type { MediaItem } from "@acme/types";
-import { ChangeEvent, ReactElement, useMemo, useState } from "react";
 import MediaFileList from "../MediaFileList";
 
+type WithUrl = MediaItem & { url: string };
+
 interface LibraryProps {
-  files: MediaItem[];
+  files: WithUrl[];
   shop: string;
   onDelete: (url: string) => void;
   onReplace: (oldUrl: string, item: MediaItem) => void;
+  onSelect?: (item: WithUrl) => void;
+  onOpenDetails?: (item: WithUrl) => void;
+  onBulkToggle?: (item: WithUrl, selected: boolean) => void;
+  selectionEnabled?: boolean;
+  isItemSelected?: (item: WithUrl) => boolean;
+  emptyLibraryMessage?: string;
+  emptyResultsMessage?: string;
 }
 
 export default function Library({
@@ -25,6 +35,13 @@ export default function Library({
   shop,
   onDelete,
   onReplace,
+  onSelect,
+  onOpenDetails,
+  onBulkToggle,
+  selectionEnabled = false,
+  isItemSelected,
+  emptyLibraryMessage = "Upload media to get started.",
+  emptyResultsMessage = "No media matches your filters.",
 }: LibraryProps): ReactElement {
   const [query, setQuery] = useState("");
   const [tag, setTag] = useState("");
@@ -42,19 +59,21 @@ export default function Library({
     return matchesQuery && matchesTag;
   });
 
+  const showResultsList = filteredFiles.length > 0;
+  const showEmptyLibrary = files.length === 0;
   return (
     <div className="space-y-6">
-      <div className="flex gap-2">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Input
           type="search"
           placeholder="Search media..."
           value={query}
           onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
-          className="flex-1"
+          className="w-full flex-1"
         />
         {allTags.length > 0 && (
           <Select value={tag} onValueChange={setTag}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="sm:w-[180px]">
               <SelectValue placeholder="All tags" />
             </SelectTrigger>
             <SelectContent>
@@ -68,13 +87,32 @@ export default function Library({
           </Select>
         )}
       </div>
-      {filteredFiles.length > 0 && (
+
+      {showResultsList ? (
         <MediaFileList
           files={filteredFiles}
           shop={shop}
           onDelete={onDelete}
           onReplace={onReplace}
+          onSelect={onSelect}
+          onOpenDetails={onOpenDetails}
+          onBulkToggle={onBulkToggle}
+          selectionEnabled={selectionEnabled}
+          isItemSelected={isItemSelected}
         />
+      ) : (
+        <div
+          className="bg-muted text-muted-foreground flex min-h-[200px] flex-col items-center justify-center gap-2 rounded-lg p-8 text-center"
+          data-token="--color-muted"
+          data-token-fg="--color-muted-fg"
+        >
+          <p className="text-sm font-medium text-fg" data-token="--color-fg">
+            {showEmptyLibrary ? "No media yet" : "No results"}
+          </p>
+          <p className="text-xs text-muted-foreground" data-token="--color-muted-fg">
+            {showEmptyLibrary ? emptyLibraryMessage : emptyResultsMessage}
+          </p>
+        </div>
       )}
     </div>
   );

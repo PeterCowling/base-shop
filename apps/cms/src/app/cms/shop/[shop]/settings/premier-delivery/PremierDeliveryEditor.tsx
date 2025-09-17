@@ -103,10 +103,9 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
   const carrierErrors = useMemo(() => errors.carriers, [errors.carriers]);
 
   return (
-    <>
-      <Card className="border border-border/60">
-        <CardContent className="space-y-6 p-6">
-          <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+    <Card className="border border-border/60">
+      <CardContent className="space-y-6 p-6">
+        <form className="space-y-6" onSubmit={handleSubmit} noValidate>
             <div className="grid gap-6 sm:grid-cols-2">
               <FormField
                 label="Service label"
@@ -206,15 +205,14 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
               </Button>
             </div>
           </form>
+          <Toast
+            open={toast.open}
+            message={toast.message}
+            onClose={closeToast}
+            className={toastClassName}
+            role="status"
+          />
         </CardContent>
       </Card>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={closeToast}
-        className={toastClassName}
-        role="status"
-      />
-    </>
   );
 }

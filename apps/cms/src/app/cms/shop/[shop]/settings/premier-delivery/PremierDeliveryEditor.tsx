@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState, type FormEvent } from "react";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
@@ -9,7 +9,7 @@ import { updatePremierDelivery } from "@cms/actions/shops.server";
 
 import { ErrorChips } from "../components/ErrorChips";
 import { StringCollectionField } from "../components/StringCollectionField";
-import { useServiceEditorForm } from "../hooks/useServiceEditorForm";
+import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
 
 type PremierDeliveryState = {
   serviceLabel: string;
@@ -52,11 +52,11 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
   const {
     saving,
     errors,
-    handleSubmit,
+    submit,
     toast,
     toastClassName,
-    closeToast,
-  } = useServiceEditorForm<PremierDeliveryResult>({
+    dismissToast,
+  } = useSettingsSaveForm<PremierDeliveryResult>({
     action: (formData) => updatePremierDelivery(shop, formData),
     successMessage: "Premier delivery settings saved.",
     errorMessage: "Unable to update premier delivery settings.",
@@ -101,6 +101,36 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
   const regionErrors = useMemo(() => errors.regions, [errors.regions]);
   const windowErrors = useMemo(() => errors.windows, [errors.windows]);
   const carrierErrors = useMemo(() => errors.carriers, [errors.carriers]);
+
+  const handleSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+
+      const formData = new FormData();
+      const serviceLabel = state.serviceLabel.trim();
+      const surcharge = state.surcharge.trim();
+
+      formData.set("serviceLabel", serviceLabel);
+      formData.set("surcharge", surcharge === "" ? "" : surcharge);
+
+      const trimmedRegions = state.regions
+        .map((value) => value.trim())
+        .filter((value) => value.length > 0);
+      const trimmedWindows = state.windows
+        .map((value) => value.trim())
+        .filter((value) => value.length > 0);
+      const trimmedCarriers = state.carriers
+        .map((value) => value.trim())
+        .filter((value) => value.length > 0);
+
+      trimmedRegions.forEach((value) => formData.append("regions", value));
+      trimmedWindows.forEach((value) => formData.append("windows", value));
+      trimmedCarriers.forEach((value) => formData.append("carriers", value));
+
+      return submit(formData);
+    },
+    [state, submit],
+  );
 
   return (
     <>
@@ -211,7 +241,7 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
       <Toast
         open={toast.open}
         message={toast.message}
-        onClose={closeToast}
+        onClose={dismissToast}
         className={toastClassName}
         role="status"
       />

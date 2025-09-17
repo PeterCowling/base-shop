@@ -43,10 +43,12 @@ describe("PremierDeliveryEditor", () => {
     const regionInput = screen.getAllByRole("textbox", { name: /regions/i })[0];
     await userEvent.clear(regionInput);
     await userEvent.type(regionInput, "Paris");
+    await userEvent.click(screen.getByRole("button", { name: /add region/i }));
 
     const windowInput = screen.getAllByRole("textbox", { name: /windows/i })[0];
     await userEvent.clear(windowInput);
     await userEvent.type(windowInput, "10-12");
+    await userEvent.click(screen.getByRole("button", { name: /add window/i }));
 
     await userEvent.click(screen.getByRole("button", { name: /save/i }));
 
@@ -54,6 +56,8 @@ describe("PremierDeliveryEditor", () => {
     const fd = updatePremierDelivery.mock.calls[0][1] as FormData;
     expect(fd.getAll("regions")).toEqual(["Paris"]);
     expect(fd.getAll("windows")).toEqual(["10-12"]);
+    expect(fd.getAll("carriers")).toEqual([]);
+    expect(fd.has("surcharge")).toBe(false);
 
     expect(await screen.findByText("Too few regions")).toBeInTheDocument();
 

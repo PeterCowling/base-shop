@@ -18,6 +18,8 @@ interface Props {
   isItemSelected?: (item: WithUrl) => boolean;
   isDeleting?: (item: WithUrl) => boolean;
   isReplacing?: (item: WithUrl) => boolean;
+  onReplaceSuccess?: (newItem: MediaItem) => void;
+  onReplaceError?: (message: string) => void;
 }
 
 export default function MediaFileList({
@@ -31,6 +33,8 @@ export default function MediaFileList({
   isItemSelected,
   isDeleting,
   isReplacing,
+  onReplaceSuccess,
+  onReplaceError,
 }: Props) {
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -47,6 +51,8 @@ export default function MediaFileList({
           selected={isItemSelected?.(item) ?? false}
           deleting={isDeleting?.(item)}
           replacing={isReplacing?.(item)}
+          onReplaceSuccess={onReplaceSuccess}
+          onReplaceError={onReplaceError}
         />
       ))}
     </div>

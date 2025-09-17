@@ -17,6 +17,8 @@ interface LibraryProps {
     isReplacing?: (item: WithUrl) => boolean;
     emptyLibraryMessage?: string;
     emptyResultsMessage?: string;
+    onReplaceSuccess?: (newItem: MediaItem) => void;
+    onReplaceError?: (message: string) => void;
 }
-export default function Library({ files, shop, onDelete, onReplace, onSelect, onBulkToggle, selectionEnabled, isItemSelected, selectedUrl, isDeleting, isReplacing, emptyLibraryMessage, emptyResultsMessage, }: LibraryProps): ReactElement;
+export default function Library({ files, shop, onDelete, onReplace, onSelect, onBulkToggle, selectionEnabled, isItemSelected, selectedUrl, isDeleting, isReplacing, emptyLibraryMessage, emptyResultsMessage, onReplaceSuccess, onReplaceError, }: LibraryProps): ReactElement;
 export {};

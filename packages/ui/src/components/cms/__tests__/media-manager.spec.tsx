@@ -1,4 +1,4 @@
-import { render, waitFor, act } from "@testing-library/react";
+import { render, waitFor, act, screen } from "@testing-library/react";
 import MediaManager from "../MediaManager";
 
 let libraryProps: any;
@@ -84,6 +84,25 @@ describe("MediaManager", () => {
 
     await waitFor(() => expect(libraryProps.files[0].url).toBe("3"));
     expect(libraryProps.files).toHaveLength(3);
+    expect(libraryProps.selectedUrl).toBe("3");
+    expect(screen.getByText("Media uploaded.")).toBeInTheDocument();
+  });
+
+  it("shows upload errors in a toast", () => {
+    render(
+      <MediaManager
+        shop="s"
+        initialFiles={initialFiles}
+        onDelete={jest.fn()}
+        onMetadataUpdate={jest.fn()}
+      />
+    );
+
+    act(() => {
+      uploadProps.onUploadError("nope");
+    });
+
+    expect(screen.getByText("nope")).toBeInTheDocument();
   });
 
   it("replaces existing items", async () => {
@@ -101,8 +120,18 @@ describe("MediaManager", () => {
       libraryProps.onReplace("1", { url: "1b", type: "image" });
     });
 
+    expect(libraryProps.isReplacing?.({ url: "1", type: "image" })).toBe(true);
+
+    act(() => {
+      libraryProps.onReplaceSuccess({ url: "1b", type: "image" });
+    });
+
     await waitFor(() => expect(libraryProps.files[0].url).toBe("1b"));
     expect(libraryProps.files[1].url).toBe("2");
+    expect(
+      libraryProps.isReplacing?.({ url: "1b", type: "image" }) ?? false
+    ).toBe(false);
+    expect(screen.getByText("Media replaced.")).toBeInTheDocument();
   });
 });
 

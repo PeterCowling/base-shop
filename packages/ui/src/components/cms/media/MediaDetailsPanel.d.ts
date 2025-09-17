@@ -12,11 +12,11 @@ export interface MediaDetailsFormValues {
 }
 
 export interface MediaDetailsPanelProps {
-  open: boolean;
-  item: MediaItemWithUrl;
-  pending: boolean;
-  onSubmit: (fields: MediaDetailsFormValues) => void | Promise<void>;
-  onClose: () => void;
+    open: boolean;
+    item: MediaItemWithUrl;
+    loading: boolean;
+    onSubmit: (fields: MediaDetailsFormValues) => void | Promise<void>;
+    onClose: () => void;
 }
 
 export default function MediaDetailsPanel(props: MediaDetailsPanelProps): ReactElement;

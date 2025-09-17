@@ -3,6 +3,7 @@
 
 import { memo, ReactElement, useCallback, useMemo, useState } from "react";
 import type { MediaItem } from "@acme/types";
+import { Toast } from "../atoms";
 import MediaDetailsPanel, {
   type MediaDetailsFormValues,
 } from "./media/MediaDetailsPanel";
@@ -14,6 +15,12 @@ import UploadPanel from "./media/UploadPanel";
 /* -------------------------------------------------------------------------- */
 
 type MediaItemWithUrl = MediaItem & { url: string };
+
+type ToastState = {
+  open: boolean;
+  message: string;
+  variant: "info" | "success" | "error";
+};
 
 interface Props {
   shop: string;
@@ -56,6 +63,12 @@ function MediaManagerBase({
   );
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
   const [metadataPending, setMetadataPending] = useState(false);
+  const [replacingUrl, setReplacingUrl] = useState<string | null>(null);
+  const [toast, setToast] = useState<ToastState>({
+    open: false,
+    message: "",
+    variant: "info",
+  });
 
   const selectedItem = useMemo(() => {
     if (!selectedUrl) return null;
@@ -75,18 +88,96 @@ function MediaManagerBase({
   const handleUploaded = useCallback((item: MediaItem) => {
     if (!hasUrl(item)) {
       console.error("Uploaded media item is missing a URL", item);
+      setToast({
+        open: true,
+        message: "Uploaded media item is missing a URL.",
+        variant: "error",
+      });
       return;
     }
-    setFiles((prev) => [item, ...prev]);
+
+    setFiles((prev) => [item, ...prev.filter((file) => file.url !== item.url)]);
+    setSelectedUrl(item.url);
+    setToast({
+      open: true,
+      message: "Media uploaded.",
+      variant: "success",
+    });
+  }, []);
+
+  const handleUploadError = useCallback((message: string) => {
+    console.error("Failed to upload media", message);
+    setToast({
+      open: true,
+      message: message || "Failed to upload media.",
+      variant: "error",
+    });
   }, []);
 
   const handleReplace = useCallback((oldUrl: string, item: MediaItem) => {
     if (!hasUrl(item)) {
       console.error("Replacement media item is missing a URL", item);
+      setToast({
+        open: true,
+        message: "Replacement media item is missing a URL.",
+        variant: "error",
+      });
       return;
     }
-    setFiles((prev) => prev.map((f) => (f.url === oldUrl ? item : f)));
-    setSelectedUrl((prev) => (prev === oldUrl ? item.url : prev));
+
+    setReplacingUrl(oldUrl);
+  }, []);
+
+  const handleReplaceSuccess = useCallback(
+    (newItem: MediaItem) => {
+      if (!replacingUrl) {
+        console.error("Replacement completed without a pending item", newItem);
+        setToast({
+          open: true,
+          message: "Replacement finished but no media was pending.",
+          variant: "error",
+        });
+        return;
+      }
+
+      if (!hasUrl(newItem)) {
+        console.error("Replacement media item is missing a URL", newItem);
+        setToast({
+          open: true,
+          message: "Replacement media item is missing a URL.",
+          variant: "error",
+        });
+        setReplacingUrl(null);
+        return;
+      }
+
+      const oldUrl = replacingUrl;
+      setFiles((prev) =>
+        prev.map((file) =>
+          file.url === oldUrl
+            ? ({ ...file, ...newItem } as MediaItemWithUrl)
+            : file
+        )
+      );
+      setSelectedUrl((prev) => (prev === oldUrl ? newItem.url : prev));
+      setToast({
+        open: true,
+        message: "Media replaced.",
+        variant: "success",
+      });
+      setReplacingUrl(null);
+    },
+    [replacingUrl]
+  );
+
+  const handleReplaceError = useCallback((message: string) => {
+    console.error("Failed to replace media", message);
+    setReplacingUrl(null);
+    setToast({
+      open: true,
+      message: message || "Failed to replace media.",
+      variant: "error",
+    });
   }, []);
 
   const handleSelect = useCallback((item: MediaItemWithUrl | null) => {
@@ -102,8 +193,7 @@ function MediaManagerBase({
       try {
         const updated = await onMetadataUpdate(shop, currentUrl, fields);
         if (!hasUrl(updated)) {
-          console.error("Updated media item is missing a URL", updated);
-          return;
+          throw new Error("Updated media item is missing a URL.");
         }
 
         setFiles((prev) =>
@@ -114,8 +204,22 @@ function MediaManagerBase({
           )
         );
         setSelectedUrl(updated.url);
+        setToast({
+          open: true,
+          message: "Media details updated.",
+          variant: "success",
+        });
       } catch (error) {
         console.error("Failed to update media metadata", error);
+        const message =
+          error instanceof Error && error.message
+            ? error.message
+            : "Failed to update media metadata.";
+        setToast({
+          open: true,
+          message,
+          variant: "error",
+        });
       } finally {
         setMetadataPending(false);
       }
@@ -133,6 +237,7 @@ function MediaManagerBase({
         shop={shop}
         onUploaded={handleUploaded}
         focusTargetId={uploaderTargetId}
+        onUploadError={handleUploadError}
       />
       <Library
         files={files}
@@ -140,16 +245,28 @@ function MediaManagerBase({
         onDelete={handleDelete}
         onReplace={handleReplace}
         onSelect={handleSelect}
+        selectedUrl={selectedUrl ?? undefined}
+        isReplacing={
+          replacingUrl ? (file) => file.url === replacingUrl : undefined
+        }
+        onReplaceSuccess={handleReplaceSuccess}
+        onReplaceError={handleReplaceError}
       />
       {selectedItem ? (
         <MediaDetailsPanel
           open
           item={selectedItem}
-          pending={metadataPending}
+          loading={metadataPending}
           onSubmit={handleMetadataSubmit}
           onClose={handleCloseDetails}
         />
       ) : null}
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        variant={toast.variant}
+        onClose={() => setToast((t) => ({ ...t, open: false }))}
+      />
     </div>
   );
 }

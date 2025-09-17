@@ -14,6 +14,15 @@ describe("Toast", () => {
     expect(container.firstChild).toBeNull();
   });
 
+  it("applies variant styles", () => {
+    const { container } = render(
+      <Toast open message="Uploaded" variant="success" />
+    );
+
+    expect(container.firstChild).toHaveAttribute("data-token", "--color-success");
+    expect(container.firstChild).toHaveClass("bg-success");
+  });
+
   it("calls onClose when dismiss button clicked", async () => {
     const handleClose = jest.fn();
     render(<Toast open message="Saved" onClose={handleClose} />);

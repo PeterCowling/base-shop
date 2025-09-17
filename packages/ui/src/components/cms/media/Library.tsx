@@ -30,6 +30,8 @@ interface LibraryProps {
   isReplacing?: (item: WithUrl) => boolean;
   emptyLibraryMessage?: string;
   emptyResultsMessage?: string;
+  onReplaceSuccess?: (newItem: MediaItem) => void;
+  onReplaceError?: (message: string) => void;
 }
 
 export default function Library({
@@ -46,6 +48,8 @@ export default function Library({
   isReplacing,
   emptyLibraryMessage = "Upload media to get started.",
   emptyResultsMessage = "No media matches your filters.",
+  onReplaceSuccess,
+  onReplaceError,
 }: LibraryProps): ReactElement {
   const [query, setQuery] = useState("");
   const [tag, setTag] = useState("");
@@ -111,6 +115,8 @@ export default function Library({
           isItemSelected={derivedIsItemSelected}
           isDeleting={isDeleting}
           isReplacing={isReplacing}
+          onReplaceSuccess={onReplaceSuccess}
+          onReplaceError={onReplaceError}
         />
       ) : (
         <div

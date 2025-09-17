@@ -34,7 +34,7 @@ export interface MediaDetailsFormValues {
 export interface MediaDetailsPanelProps {
   open: boolean;
   item: MediaItemWithUrl;
-  pending: boolean;
+  loading: boolean;
   onSubmit: (fields: MediaDetailsFormValues) => void | Promise<void>;
   onClose: () => void;
 }
@@ -68,7 +68,7 @@ function getFileName(url: string): string {
 export default function MediaDetailsPanel({
   open,
   item,
-  pending,
+  loading,
   onSubmit,
   onClose,
 }: MediaDetailsPanelProps): ReactElement {
@@ -176,8 +176,8 @@ export default function MediaDetailsPanel({
             </div>
           </div>
           <DialogFooter className="border-t pt-4">
-            <Button type="submit" disabled={pending} className="min-w-[120px]">
-              {pending ? (
+            <Button type="submit" disabled={loading} className="min-w-[120px]">
+              {loading ? (
                 <span className="flex items-center gap-2">
                   <Spinner className="h-4 w-4" />
                   <span aria-live="polite" aria-atomic="true">

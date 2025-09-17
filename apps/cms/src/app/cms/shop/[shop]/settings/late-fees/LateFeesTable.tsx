@@ -1,3 +1,5 @@
+import DataTable from "@ui/components/cms/DataTable";
+import { lateFeeColumns, mapLateFeeRows } from "../tableMappers";
 import { readOrders } from "@platform-core/repositories/rentalOrders.server";
 
 export default async function LateFeesTable({ shop }: { shop: string }) {
@@ -6,22 +8,12 @@ export default async function LateFeesTable({ shop }: { shop: string }) {
   if (charges.length === 0) {
     return <p className="text-sm">No late fees charged.</p>;
   }
+
+  const rows = mapLateFeeRows(charges);
+
   return (
-    <table className="mt-4 w-full text-left text-sm">
-      <thead>
-        <tr>
-          <th className="pr-4">Order</th>
-          <th className="pr-4">Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        {charges.map((o) => (
-          <tr key={o.sessionId}>
-            <td className="pr-4">{o.sessionId}</td>
-            <td>${o.lateFeeCharged?.toFixed(2)}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="mt-4">
+      <DataTable rows={rows} columns={lateFeeColumns} />
+    </div>
   );
 }

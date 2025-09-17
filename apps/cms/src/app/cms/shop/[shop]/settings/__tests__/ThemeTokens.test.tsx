@@ -15,14 +15,21 @@ jest.mock("@cms/actions/shops.server", () => ({
 }));
 
 import ThemeTokens from "../ThemeTokens";
+import { mapThemeTokenRows } from "../tableMappers";
 
 describe("ThemeTokens", () => {
   it("renders values, highlights changes, resets overrides, and serializes info", () => {
-    const tokenRows = [
-      { token: "color-primary", defaultValue: "#fff", overrideValue: "#000" },
-      { token: "spacing", defaultValue: "4", overrideValue: "4" },
-      { token: "font", defaultValue: "Arial" },
-    ];
+    const tokenRows = mapThemeTokenRows(
+      {
+        "color-primary": "#fff",
+        spacing: "4",
+        font: "Arial",
+      },
+      {
+        "color-primary": "#000",
+        spacing: "4",
+      },
+    );
     const info = {
       themeDefaults: { "color-primary": "#fff", spacing: "4", font: "Arial" },
       themeOverrides: { "color-primary": "#000", spacing: "4" },

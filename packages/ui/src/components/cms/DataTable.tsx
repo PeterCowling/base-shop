@@ -2,6 +2,7 @@
 
 import { ReactNode, useState } from "react";
 import { toggleItem } from "@acme/shared-utils";
+import { cn } from "../../utils/style";
 import {
   Table,
   TableBody,
@@ -23,6 +24,7 @@ export interface DataTableProps<T> {
   /** Enable checkbox row selection */
   selectable?: boolean;
   onSelectionChange?: (rows: T[]) => void;
+  rowClassName?: (row: T, index: number) => string | undefined;
 }
 
 export default function DataTable<T>({
@@ -30,6 +32,7 @@ export default function DataTable<T>({
   columns,
   selectable = false,
   onSelectionChange,
+  rowClassName,
 }: DataTableProps<T>) {
   const [selected, setSelected] = useState<number[]>([]);
 
@@ -40,8 +43,8 @@ export default function DataTable<T>({
   };
 
   return (
-    <div className="overflow-x-auto">
-      <Table className="min-w-full">
+    <div className="w-full overflow-x-auto">
+      <Table className="min-w-full w-full">
         <TableHeader>
           <TableRow>
             {selectable && <TableHead className="w-4" />}
@@ -59,7 +62,10 @@ export default function DataTable<T>({
               key={i}
               data-state={selected.includes(i) ? "selected" : undefined}
               onClick={selectable ? () => toggle(i) : undefined}
-              className={selectable ? "cursor-pointer" : undefined}
+              className={cn(
+                selectable ? "cursor-pointer" : undefined,
+                rowClassName?.(row, i),
+              )}
             >
               {selectable && (
                 <TableCell className="w-4">

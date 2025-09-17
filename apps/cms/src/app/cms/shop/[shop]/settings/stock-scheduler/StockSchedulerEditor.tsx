@@ -4,7 +4,12 @@
 
 import { Button, Input } from "@/components/atoms/shadcn";
 import { updateStockScheduler } from "@cms/actions/stockScheduler.server";
-import { useState, type FormEvent, type ChangeEvent } from "react";
+import DataTable from "@ui/components/cms/DataTable";
+import {
+  mapSchedulerHistoryRows,
+  schedulerHistoryColumns,
+} from "../tableMappers";
+import { useMemo, useState, type FormEvent, type ChangeEvent } from "react";
 
 interface HistoryEntry {
   timestamp: number;
@@ -19,6 +24,11 @@ interface Props {
 export default function StockSchedulerEditor({ shop, status }: Props) {
   const [interval, setInterval] = useState(String(status.intervalMs));
   const [saving, setSaving] = useState(false);
+
+  const historyRows = useMemo(
+    () => mapSchedulerHistoryRows(status.history),
+    [status.history],
+  );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInterval(e.target.value);
@@ -55,30 +65,12 @@ export default function StockSchedulerEditor({ shop, status }: Props) {
       </div>
       <div>
         <h3 className="mt-4 font-medium">Recent Checks</h3>
-        {status.history.length === 0 ? (
+        {historyRows.length === 0 ? (
           <p className="text-sm text-muted-foreground">No checks yet.</p>
         ) : (
-          <table className="mt-2 text-sm">
-            <thead>
-              <tr>
-                <th className="pr-4 text-left">Time</th>
-                <th className="text-left">Alerts</th>
-              </tr>
-            </thead>
-            <tbody>
-              {status.history
-                .slice()
-                .reverse()
-                .map((h) => (
-                  <tr key={h.timestamp}>
-                    <td className="pr-4">
-                      {new Date(h.timestamp).toLocaleString()}
-                    </td>
-                    <td>{h.alerts}</td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+          <div className="mt-2">
+            <DataTable rows={historyRows} columns={schedulerHistoryColumns} />
+          </div>
         )}
       </div>
     </div>

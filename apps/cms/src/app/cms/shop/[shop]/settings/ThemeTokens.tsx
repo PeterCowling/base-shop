@@ -1,24 +1,50 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/ThemeTokens.tsx
 "use client";
+
 import { Button } from "@/components/atoms/shadcn";
 import { resetThemeOverride } from "@cms/actions/shops.server";
 import type { Shop } from "@acme/types";
 import Link from "next/link";
-
-interface TokenRow {
-  token: string;
-  defaultValue: string;
-  overrideValue?: string;
-}
+import DataTable from "@ui/components/cms/DataTable";
+import {
+  createThemeTokenColumns,
+  themeTokenRowClassName,
+  type ThemeTokenRow,
+} from "./tableMappers";
 
 interface Props {
   shop: string;
-  tokenRows: TokenRow[];
+  tokenRows: ThemeTokenRow[];
   info: Shop;
   errors: Record<string, string[]>;
 }
 
 export default function ThemeTokens({ shop, tokenRows, info, errors }: Props) {
+  const columns = createThemeTokenColumns({
+    onReset: ({ token }) => (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          (
+            resetThemeOverride as unknown as (
+              shop: string,
+              token: string,
+              formData: FormData,
+            ) => void
+          )(shop, token, new FormData());
+        }}
+      >
+        <Button
+          type="submit"
+          variant="ghost"
+          className="h-auto p-0 text-primary hover:bg-transparent"
+        >
+          Reset
+        </Button>
+      </form>
+    ),
+  });
+
   return (
     <div className="col-span-2 flex flex-col gap-1">
       <div className="flex items-center justify-between">
@@ -30,64 +56,11 @@ export default function ThemeTokens({ shop, tokenRows, info, errors }: Props) {
           Edit Theme
         </Link>
       </div>
-      <table className="mt-2 w-full text-sm">
-        <thead>
-          <tr className="text-left">
-            <th className="px-2 py-1">Token</th>
-            <th className="px-2 py-1">Values</th>
-            <th className="px-2 py-1">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tokenRows.map(({ token, defaultValue, overrideValue }) => {
-            const hasOverride = overrideValue !== undefined;
-            const changed = hasOverride && overrideValue !== defaultValue;
-            return (
-              <tr key={token} className={changed ? "bg-yellow-50" : undefined}>
-                <td className="border-t px-2 py-1 font-medium">{token}</td>
-                <td className="border-t px-2 py-1">
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-1">
-                      <span className="font-mono">{defaultValue}</span>
-                      <span className="text-xs text-muted-foreground">default</span>
-                    </div>
-                    {hasOverride && (
-                      <div className="flex items-center gap-1">
-                        <span className="font-mono">{overrideValue}</span>
-                        <span className="text-xs text-muted-foreground">override</span>
-                      </div>
-                    )}
-                  </div>
-                </td>
-                <td className="border-t px-2 py-1">
-                  {hasOverride && (
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        (
-                          resetThemeOverride as unknown as (
-                            shop: string,
-                            token: string,
-                            formData: FormData,
-                          ) => void
-                        )(shop, token, new FormData());
-                      }}
-                    >
-                      <Button
-                        type="submit"
-                        variant="ghost"
-                        className="h-auto p-0 text-primary hover:bg-transparent"
-                      >
-                        Reset
-                      </Button>
-                    </form>
-                  )}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <DataTable
+        rows={tokenRows}
+        columns={columns}
+        rowClassName={themeTokenRowClassName}
+      />
       <input
         type="hidden"
         name="themeDefaults"

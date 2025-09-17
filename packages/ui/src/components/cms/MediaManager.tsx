@@ -280,6 +280,18 @@ function MediaManagerBase({
     });
   }, [setFiles, setReplacingUrl, setSelectedUrl, setToast]);
 
+  const handleReplaceSuccess = useCallback((item: MediaItem) => {
+    if (!hasUrl(item)) {
+      console.error("Replacement media item is missing a URL", item);
+      return;
+    }
+    setSelectedUrl(item.url);
+  }, []);
+
+  const handleReplaceError = useCallback((message: string) => {
+    console.error("Failed to replace media item", message);
+  }, []);
+
   const handleSelect = useCallback((item: MediaItemWithUrl | null) => {
     setSelectedUrl(item?.url ?? null);
   }, [setSelectedUrl]);
@@ -341,6 +353,8 @@ function MediaManagerBase({
         shop={shop}
         onDelete={handleDelete}
         onReplace={handleReplace}
+        onReplaceSuccess={handleReplaceSuccess}
+        onReplaceError={handleReplaceError}
         onSelect={handleSelect}
       />
       {selectedItem ? (

@@ -8,6 +8,8 @@ interface Props {
     shop: string;
     onDelete: (url: string) => void;
     onReplace: (oldUrl: string, item: MediaItem) => void;
+    onReplaceSuccess?: (item: MediaItem) => void;
+    onReplaceError?: (message: string) => void;
     onSelect?: (item: WithUrl | null) => void;
     onBulkToggle?: (item: WithUrl, selected: boolean) => void;
     selectionEnabled?: boolean;
@@ -15,5 +17,5 @@ interface Props {
     isDeleting?: (item: WithUrl) => boolean;
     isReplacing?: (item: WithUrl) => boolean;
 }
-export default function MediaFileList({ files, shop, onDelete, onReplace, onSelect, onBulkToggle, selectionEnabled, isItemSelected, isDeleting, isReplacing, }: Props): import("react/jsx-runtime").JSX.Element;
+export default function MediaFileList({ files, shop, onDelete, onReplace, onReplaceSuccess, onReplaceError, onSelect, onBulkToggle, selectionEnabled, isItemSelected, isDeleting, isReplacing, }: Props): import("react/jsx-runtime").JSX.Element;
 export {};

@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import UploadPanel from "../UploadPanel";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 
@@ -97,6 +97,33 @@ describe("UploadPanel", () => {
     expect(setTags).toHaveBeenCalledWith("t1,t2");
     fireEvent.click(screen.getByText("Upload"));
     expect(handleUpload).toHaveBeenCalled();
+  });
+
+  it("disables the upload button and shows a spinner while uploading", () => {
+    setupMock({
+      progress: { done: 0, total: 1 },
+    });
+    render(<UploadPanel shop="shop" onUploaded={jest.fn()} />);
+    const uploadingButton = screen.getByRole("button", { name: /uploading/i });
+    expect(uploadingButton).toBeDisabled();
+    expect(screen.getByText("Uploading…")).toBeInTheDocument();
+  });
+
+  it("calls onUploadError when the hook reports an error", async () => {
+    setupMock({
+      error: "Upload failed",
+    });
+    const onUploadError = jest.fn();
+    render(
+      <UploadPanel
+        shop="shop"
+        onUploaded={jest.fn()}
+        onUploadError={onUploadError}
+      />
+    );
+    await waitFor(() => {
+      expect(onUploadError).toHaveBeenCalledWith("Upload failed");
+    });
   });
 });
 

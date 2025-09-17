@@ -3,16 +3,22 @@
 
 import Image from "next/image";
 import { Input } from "../../atoms/shadcn";
+import { Spinner } from "../../atoms";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
-import { ChangeEvent, ReactElement, useState } from "react";
+import { ChangeEvent, ReactElement, useEffect, useState } from "react";
 
 interface UploadPanelProps {
   shop: string;
   onUploaded: (item: MediaItem) => void;
+  onUploadError?: (message: string) => void;
 }
 
-export default function UploadPanel({ shop, onUploaded }: UploadPanelProps): ReactElement {
+export default function UploadPanel({
+  shop,
+  onUploaded,
+  onUploadError,
+}: UploadPanelProps): ReactElement {
   const [dragActive, setDragActive] = useState(false);
   const feedbackId = "media-upload-feedback";
 
@@ -39,6 +45,12 @@ export default function UploadPanel({ shop, onUploaded }: UploadPanelProps): Rea
     onUploaded,
   });
   const isVideo = pendingFile?.type?.startsWith("video/") ?? false;
+  const isUploading = Boolean(progress);
+
+  useEffect(() => {
+    if (!error || !onUploadError) return;
+    onUploadError(error);
+  }, [error, onUploadError]);
 
   return (
     <div className="space-y-2">
@@ -130,9 +142,18 @@ export default function UploadPanel({ shop, onUploaded }: UploadPanelProps): Rea
                 />
                 <button
                   onClick={handleUpload}
-                  className="rounded bg-primary px-2 text-sm text-primary-fg"
+                  type="button"
+                  disabled={isUploading}
+                  className="inline-flex items-center justify-center gap-2 rounded bg-primary px-2 text-sm text-primary-fg disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  Upload
+                  {isUploading ? (
+                    <>
+                      <Spinner className="h-4 w-4" />
+                      <span className="sr-only">Uploading…</span>
+                    </>
+                  ) : (
+                    "Upload"
+                  )}
                 </button>
               </div>
             )}

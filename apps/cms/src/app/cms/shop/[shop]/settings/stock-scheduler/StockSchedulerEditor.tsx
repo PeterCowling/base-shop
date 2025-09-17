@@ -53,24 +53,27 @@ export default function StockSchedulerEditor({ shop, status }: Props) {
 
   const handleIntervalChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInterval(event.target.value);
-    if (errors.intervalMs?.length) {
-      setErrors((current) => {
-        const next = { ...current };
-        delete next.intervalMs;
-        return next;
-      });
+    if (!errors.intervalMs?.length) {
+      return;
     }
+    setErrors(({ intervalMs: _interval, ...rest }) => rest);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const value = Number(formData.get("intervalMs"));
-    if (!value || value <= 0) {
+    const rawInterval = formData.get("intervalMs");
+    const numericInterval = Number(rawInterval);
+    const hasValidInterval =
+      Number.isFinite(numericInterval) && numericInterval > 0;
+
+    if (!hasValidInterval) {
       setErrors({ intervalMs: ["Enter an interval greater than zero."] });
       announceError("Interval must be at least 1 millisecond.");
       return;
     }
+
+    formData.set("intervalMs", numericInterval.toString());
     void submit(formData);
   };
 

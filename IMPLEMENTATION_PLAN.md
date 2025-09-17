@@ -83,3 +83,7 @@ Lighthouse ≥ 90 on checkout (iframe excluded). dev
 Merge branch feat/checkout → CI preview. dev
 
 Once merged we move to Sprint 6 (Blog pipeline).
+
+6 · QA Coverage Addendum
+- Added RTL + jest-axe suites for all service editors (deposits, late fees, reverse logistics, returns, stock alerts/scheduler, maintenance scheduler, premier delivery) under `apps/cms/src/app/cms/shop/[shop]/settings/**/__tests__` to cover happy/error paths and validation chips.
+- Exercised new SEO quick actions (AI catalog + audit panels) including toast announcements; all audited UIs passed axe checks with the new assertions.

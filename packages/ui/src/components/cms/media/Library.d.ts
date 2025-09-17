@@ -8,13 +8,15 @@ interface LibraryProps {
     shop: string;
     onDelete: (url: string) => void;
     onReplace: (oldUrl: string, item: MediaItem) => void;
-    onSelect?: (item: WithUrl) => void;
-    onOpenDetails?: (item: WithUrl) => void;
+    onSelect?: (item: WithUrl | null) => void;
     onBulkToggle?: (item: WithUrl, selected: boolean) => void;
     selectionEnabled?: boolean;
     isItemSelected?: (item: WithUrl) => boolean;
+    selectedUrl?: string;
+    isDeleting?: (item: WithUrl) => boolean;
+    isReplacing?: (item: WithUrl) => boolean;
     emptyLibraryMessage?: string;
     emptyResultsMessage?: string;
 }
-export default function Library({ files, shop, onDelete, onReplace, onSelect, onOpenDetails, onBulkToggle, selectionEnabled, isItemSelected, emptyLibraryMessage, emptyResultsMessage, }: LibraryProps): ReactElement;
+export default function Library({ files, shop, onDelete, onReplace, onSelect, onBulkToggle, selectionEnabled, isItemSelected, selectedUrl, isDeleting, isReplacing, emptyLibraryMessage, emptyResultsMessage, }: LibraryProps): ReactElement;
 export {};

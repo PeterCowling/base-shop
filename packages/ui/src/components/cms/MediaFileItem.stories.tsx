@@ -23,9 +23,6 @@ const meta: Meta<typeof MediaFileItem> = {
     onReplace: () => {
       /* noop for docs */
     },
-    onOpenDetails: () => {
-      /* noop for docs */
-    },
     onSelect: () => {
       /* noop for docs */
     },

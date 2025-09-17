@@ -97,20 +97,20 @@ describe("MediaFileItem", () => {
     expect(onBulkToggle).toHaveBeenCalledWith(baseItem, true);
   });
 
-  it("calls onOpenDetails when the overlay button is pressed", () => {
-    const onOpenDetails = jest.fn();
+  it("calls onSelect when the overlay button is pressed", () => {
+    const onSelect = jest.fn();
     render(
       <MediaFileItem
         item={baseItem}
         shop="shop"
         onDelete={jest.fn()}
         onReplace={jest.fn()}
-        onOpenDetails={onOpenDetails}
+        onSelect={onSelect}
       />
     );
 
     fireEvent.click(screen.getByText("Open details"));
-    expect(onOpenDetails).toHaveBeenCalledWith(baseItem);
+    expect(onSelect).toHaveBeenCalledWith(baseItem);
   });
 
   it("exposes a select button when onSelect is provided", () => {
@@ -147,6 +147,26 @@ describe("MediaFileItem", () => {
     expect(screen.getByText(/replacing asset/i)).toBeInTheDocument();
     expect(screen.getByText("45%"))
       .toBeInTheDocument();
+  });
+
+  it("renders a deleting overlay and disables selection", () => {
+    const onSelect = jest.fn();
+    render(
+      <MediaFileItem
+        item={baseItem}
+        shop="shop"
+        onDelete={jest.fn()}
+        onReplace={jest.fn()}
+        onSelect={onSelect}
+        deleting
+      />
+    );
+
+    expect(screen.getByText(/deleting asset/i)).toBeInTheDocument();
+    const selectButton = screen.getByText("Select");
+    expect(selectButton).toBeDisabled();
+    fireEvent.click(selectButton);
+    expect(onSelect).not.toHaveBeenCalled();
   });
 
   it("renders tags and file size badges", () => {

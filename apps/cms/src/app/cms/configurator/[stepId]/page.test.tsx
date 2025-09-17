@@ -1,5 +1,5 @@
+import type { ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
-import React from "react";
 
 jest.mock("../ConfiguratorContext", () => ({
   ConfiguratorProvider: ({ children }: any) => (
@@ -18,7 +18,11 @@ afterEach(() => {
 
 it("wraps StepPage with provider", async () => {
   const { default: Page } = await import("./page");
-  render(<Page params={{ stepId: "abc" }} />);
+  const ui = (await Page({
+    params: Promise.resolve({ stepId: "abc" }),
+  })) as ReactElement;
+
+  render(ui);
   expect(screen.getByTestId("provider")).toBeInTheDocument();
   expect(screen.getByTestId("step-page")).toHaveTextContent("abc");
 });

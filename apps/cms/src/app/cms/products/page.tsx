@@ -40,7 +40,7 @@ export default async function ProductsIndexPage() {
         }}
         emptyState={{
           tagLabel: "No shops yet",
-          title: "Create your first shop",
+          title: "No shops found.",
           description:
             "Create a storefront to start organising product data, bundles, and pricing tiers.",
           ctaLabel: "Create shop",

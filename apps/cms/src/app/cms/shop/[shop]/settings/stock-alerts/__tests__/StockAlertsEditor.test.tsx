@@ -4,6 +4,12 @@ import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
 import StockAlertsEditor from "../StockAlertsEditor";
+import {
+  __getUseSettingsSaveFormToastLog,
+  __resetUseSettingsSaveFormMock,
+} from "../../hooks/useSettingsSaveForm";
+
+jest.mock("../../hooks/useSettingsSaveForm");
 
 expect.extend(toHaveNoViolations);
 
@@ -37,6 +43,7 @@ jest.mock("@/components/atoms/shadcn", () => {
 
 describe("StockAlertsEditor", () => {
   beforeEach(() => {
+    __resetUseSettingsSaveFormMock();
     jest.clearAllMocks();
   });
 
@@ -60,11 +67,20 @@ describe("StockAlertsEditor", () => {
 
     expect(updateStockAlert).not.toHaveBeenCalled();
 
-    expect(await screen.findByText("Invalid email: bad-email")).toBeInTheDocument();
-    expect(screen.getByText("Enter a threshold of at least 1.")).toBeInTheDocument();
+    const invalidRecipientChip = await screen.findByText("Invalid email: bad-email");
+    expect(invalidRecipientChip).toHaveAttribute("data-token", "--color-danger");
+    expect(screen.getByText("Enter a threshold of at least 1.")).toHaveAttribute(
+      "data-token",
+      "--color-danger",
+    );
 
     const toast = await screen.findByRole("status");
     expect(toast).toHaveTextContent("Enter valid recipient email addresses.");
+    const toastLog = __getUseSettingsSaveFormToastLog();
+    expect(toastLog.at(-1)).toEqual({
+      status: "error",
+      message: "Enter valid recipient email addresses.",
+    });
 
     const results = await axe(container);
     expect(results).toHaveNoViolations();
@@ -110,6 +126,11 @@ describe("StockAlertsEditor", () => {
 
     const toast = await screen.findByRole("status");
     expect(toast).toHaveTextContent("Stock alert settings saved.");
+    const toastLog = __getUseSettingsSaveFormToastLog();
+    expect(toastLog.at(-1)).toEqual({
+      status: "success",
+      message: "Stock alert settings saved.",
+    });
 
     await waitFor(() => {
       expect(screen.getByLabelText(/recipients/i)).toHaveValue("team@lux.com, lead@lux.com");

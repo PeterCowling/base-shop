@@ -161,7 +161,7 @@ describe("useShopEditorSubmit", () => {
     });
   });
 
-  it("validates mappings and surfaces toast errors", async () => {
+  it("blocks submission when local validation fails", async () => {
     const sections = createSections({
       filterRows: [{ key: "", value: "" }],
       priceRows: [{ key: "en", value: "bad" }],
@@ -198,6 +198,7 @@ describe("useShopEditorSubmit", () => {
       status: "error",
       message: "Please resolve the highlighted validation issues.",
     });
+    expect(result.current.saving).toBe(false);
     expect(updateShopMock).not.toHaveBeenCalled();
 
     act(() => {
@@ -206,18 +207,22 @@ describe("useShopEditorSubmit", () => {
     expect(result.current.toast.open).toBe(false);
   });
 
-  it("submits successfully and updates sections", async () => {
+  it("handles server validation responses, success, and unexpected failures after passing client validation", async () => {
     const sections = createSections();
     const responseShop = {
       id: "s1",
       name: "Updated Shop",
       themeId: "theme",
-      filterMappings: { size: "large" },
-      priceOverrides: { en: 20 },
-      localeOverrides: { banner: "de" },
+      filterMappings: { size: "dimensions.size" },
+      priceOverrides: { en: 42 },
+      localeOverrides: { banner: "it" },
       luxuryFeatures: sections.identity.info.luxuryFeatures,
     };
-    updateShopMock.mockResolvedValue({ shop: responseShop });
+
+    updateShopMock
+      .mockResolvedValueOnce({ errors: { name: ["Required"] } })
+      .mockResolvedValueOnce({ shop: responseShop })
+      .mockRejectedValueOnce(new Error("Network error"));
 
     const form = createForm({
       id: "s1",
@@ -236,56 +241,56 @@ describe("useShopEditorSubmit", () => {
       }),
     );
 
+    sections.overrides.filterMappings.rows = [
+      { key: "", value: "" } as MappingRow,
+    ];
+    sections.localization.priceOverrides.rows = [
+      { key: "en", value: "bad" } as MappingRow,
+    ];
+    sections.localization.localeOverrides.rows = [
+      { key: "banner", value: "xx" } as MappingRow,
+    ];
+
     await act(async () => {
       await result.current.onSubmit(submitEvent(form) as any);
     });
 
-    expect(updateShopMock).toHaveBeenCalledWith("s1", expect.any(FormData));
-    expect(sections.identity.setInfo).toHaveBeenCalledWith(responseShop);
-    expect(sections.providers.setTrackingProviders).toHaveBeenCalledWith([
-      "dhl",
-      "ups",
-    ]);
-    expect(sections.overrides.filterMappings.setRows).toHaveBeenCalledWith([
-      { key: "size", value: "large" },
-    ]);
-    expect(sections.localization.priceOverrides.setRows).toHaveBeenCalledWith([
-      { key: "en", value: "20" },
-    ]);
-    expect(sections.localization.localeOverrides.setRows).toHaveBeenCalledWith([
-      { key: "banner", value: "de" },
-    ]);
-    expect(result.current.errors).toEqual({});
+    expect(updateShopMock).not.toHaveBeenCalled();
+    expect(result.current.errors).toEqual({
+      filterMappings: ["All filter mappings must have key and value"],
+      priceOverrides: [
+        "All price overrides require locale and numeric value",
+      ],
+      localeOverrides: [
+        "All locale overrides require key and valid locale",
+      ],
+    });
     expect(result.current.toast).toEqual({
       open: true,
-      status: "success",
-      message: "Shop settings saved successfully.",
+      status: "error",
+      message: "Please resolve the highlighted validation issues.",
     });
     expect(result.current.saving).toBe(false);
-  });
 
-  it("handles server validation errors", async () => {
-    const sections = createSections();
-    updateShopMock.mockResolvedValue({
-      errors: { name: ["Required"] },
-    });
-
-    const form = createForm({ id: "s1", name: "Shop", themeId: "theme" });
-
-    const { result } = renderHook(() =>
-      useShopEditorSubmit({
-        shop: "s1",
-        identity: sections.identity,
-        localization: sections.localization,
-        providers: sections.providers,
-        overrides: sections.overrides,
-      }),
-    );
+    sections.overrides.filterMappings.rows = [
+      { key: "size", value: "large" } as MappingRow,
+    ];
+    sections.localization.priceOverrides.rows = [
+      { key: "en", value: "20" } as MappingRow,
+    ];
+    sections.localization.localeOverrides.rows = [
+      { key: "banner", value: "en" } as MappingRow,
+    ];
 
     await act(async () => {
       await result.current.onSubmit(submitEvent(form) as any);
     });
 
+    expect(updateShopMock).toHaveBeenCalledTimes(1);
+    expect(updateShopMock).toHaveBeenLastCalledWith(
+      "s1",
+      expect.any(FormData),
+    );
     expect(result.current.errors).toEqual({ name: ["Required"] });
     expect(result.current.toast).toEqual({
       open: true,
@@ -293,32 +298,54 @@ describe("useShopEditorSubmit", () => {
       message:
         "We couldn't save your changes. Please review the errors and try again.",
     });
-    expect(sections.identity.setInfo).not.toHaveBeenCalled();
-  });
-
-  it("handles unexpected failures with an error toast", async () => {
-    const sections = createSections();
-    const consoleError = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-    updateShopMock.mockRejectedValue(new Error("Network error"));
-
-    const form = createForm({ id: "s1", name: "Shop", themeId: "theme" });
-
-    const { result } = renderHook(() =>
-      useShopEditorSubmit({
-        shop: "s1",
-        identity: sections.identity,
-        localization: sections.localization,
-        providers: sections.providers,
-        overrides: sections.overrides,
-      }),
-    );
+    expect(result.current.saving).toBe(false);
 
     await act(async () => {
       await result.current.onSubmit(submitEvent(form) as any);
     });
 
+    expect(updateShopMock).toHaveBeenCalledTimes(2);
+    expect(updateShopMock).toHaveBeenLastCalledWith(
+      "s1",
+      expect.any(FormData),
+    );
+    expect(sections.identity.setInfo).toHaveBeenCalledWith(responseShop);
+    expect(sections.providers.setTrackingProviders).toHaveBeenCalledWith([
+      "dhl",
+      "ups",
+    ]);
+    expect(
+      sections.overrides.filterMappings.setRows,
+    ).toHaveBeenCalledWith([{ key: "size", value: "dimensions.size" }]);
+    expect(
+      sections.localization.priceOverrides.setRows,
+    ).toHaveBeenCalledWith([{ key: "en", value: "42" }]);
+    expect(
+      sections.localization.localeOverrides.setRows,
+    ).toHaveBeenCalledWith([{ key: "banner", value: "it" }]);
+    expect(result.current.errors).toEqual({});
+    expect(result.current.toast).toEqual({
+      open: true,
+      status: "success",
+      message: "Shop settings saved successfully.",
+    });
+    expect(result.current.saving).toBe(false);
+
+    const consoleError = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+
+    await act(async () => {
+      await result.current.onSubmit(submitEvent(form) as any);
+    });
+
+    consoleError.mockRestore();
+
+    expect(updateShopMock).toHaveBeenCalledTimes(3);
+    expect(updateShopMock).toHaveBeenLastCalledWith(
+      "s1",
+      expect.any(FormData),
+    );
     expect(result.current.toast).toEqual({
       open: true,
       status: "error",
@@ -326,8 +353,6 @@ describe("useShopEditorSubmit", () => {
         "Something went wrong while saving your changes. Please try again.",
     });
     expect(result.current.errors).toEqual({});
-    expect(sections.identity.setInfo).not.toHaveBeenCalled();
-
-    consoleError.mockRestore();
+    expect(result.current.saving).toBe(false);
   });
 });

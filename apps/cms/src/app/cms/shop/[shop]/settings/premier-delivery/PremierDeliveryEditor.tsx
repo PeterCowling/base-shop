@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { FormEvent, useCallback, useMemo, useState } from "react";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
@@ -26,6 +26,38 @@ type CollectionKey = "regions" | "windows" | "carriers";
 const ensureCollection = (values: string[]) =>
   values.length > 0 ? values : [""];
 
+const toInputNumberValue = (value?: number | null) =>
+  value === undefined || value === null ? "" : String(value);
+
+const sanitizeCollection = (values: string[]) =>
+  values.map((value) => value.trim()).filter((value) => value.length > 0);
+
+const createPremierDeliveryFormData = (state: PremierDeliveryState) => {
+  const formData = new FormData();
+
+  sanitizeCollection(state.regions).forEach((region) => {
+    formData.append("regions", region);
+  });
+
+  sanitizeCollection(state.windows).forEach((window) => {
+    formData.append("windows", window);
+  });
+
+  sanitizeCollection(state.carriers).forEach((carrier) => {
+    formData.append("carriers", carrier);
+  });
+
+  const trimmedServiceLabel = state.serviceLabel.trim();
+  formData.set("serviceLabel", trimmedServiceLabel);
+
+  const surchargeValue = state.surcharge.trim();
+  if (surchargeValue !== "") {
+    formData.set("surcharge", surchargeValue);
+  }
+
+  return formData;
+};
+
 interface Props {
   shop: string;
   initial: {
@@ -40,10 +72,7 @@ interface Props {
 export default function PremierDeliveryEditor({ shop, initial }: Props) {
   const [state, setState] = useState<PremierDeliveryState>(() => ({
     serviceLabel: initial.serviceLabel ?? "",
-    surcharge:
-      initial.surcharge === undefined || initial.surcharge === null
-        ? ""
-        : String(initial.surcharge),
+    surcharge: toInputNumberValue(initial.surcharge),
     regions: ensureCollection(initial.regions ?? []),
     windows: ensureCollection(initial.windows ?? []),
     carriers: ensureCollection(initial.carriers ?? []),
@@ -52,7 +81,7 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
   const {
     saving,
     errors,
-    handleSubmit,
+    submit,
     toast,
     toastClassName,
     closeToast,
@@ -65,16 +94,22 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
       if (!next) return;
       setState({
         serviceLabel: next.serviceLabel ?? "",
-        surcharge:
-          next.surcharge === undefined || next.surcharge === null
-            ? ""
-            : String(next.surcharge),
+        surcharge: toInputNumberValue(next.surcharge),
         regions: ensureCollection(next.regions ?? []),
         windows: ensureCollection(next.windows ?? []),
         carriers: ensureCollection(next.carriers ?? []),
       });
     },
   });
+
+  const handleSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = createPremierDeliveryFormData(state);
+      return submit(formData);
+    },
+    [state, submit],
+  );
 
   const updateCollection = (key: CollectionKey, index: number, value: string) => {
     setState((current) => {

@@ -190,6 +190,10 @@ describe("ShopEditor", () => {
       providers,
       overrides,
       localization,
+      seo: {
+        catalogFilters: info.catalogFilters,
+        setCatalogFilters: jest.fn(),
+      },
       toast: {
         open: true,
         status: "error",

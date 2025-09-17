@@ -22,8 +22,13 @@ export default async function StockSchedulerSettingsPage({
     history: [],
   };
   return (
-    <div>
-      <h2 className="mb-4 text-xl font-semibold">Stock Scheduler – {shop}</h2>
+    <div className="space-y-6">
+      <header className="space-y-1">
+        <h2 className="text-xl font-semibold">Stock Scheduler – {shop}</h2>
+        <p className="text-sm text-muted-foreground">
+          Control how often automated inventory checks run for this shop.
+        </p>
+      </header>
       <StockSchedulerEditor shop={shop} status={status} />
     </div>
   );

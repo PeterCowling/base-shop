@@ -17,10 +17,14 @@ export default async function MaintenanceScanSettingsPage({
 }) {
   const { shop } = await params;
   return (
-    <div>
-      <h2 className="mb-4 text-xl font-semibold">Maintenance Scan – {shop}</h2>
+    <div className="space-y-6">
+      <header className="space-y-1">
+        <h2 className="text-xl font-semibold">Maintenance Scan – {shop}</h2>
+        <p className="text-sm text-muted-foreground">
+          Schedule recurring maintenance checks for catalog and media issues.
+        </p>
+      </header>
       <MaintenanceSchedulerEditor />
     </div>
   );
 }
-

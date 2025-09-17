@@ -25,10 +25,14 @@ export default async function DepositsSettingsPage({
   };
 
   return (
-    <div>
-      <h2 className="mb-4 text-xl font-semibold">Deposits – {shop}</h2>
+    <div className="space-y-6">
+      <header className="space-y-1">
+        <h2 className="text-xl font-semibold">Deposits – {shop}</h2>
+        <p className="text-sm text-muted-foreground">
+          Control how often escrowed funds are released to the shop.
+        </p>
+      </header>
       <DepositsEditor shop={shop} initial={depositService} />
     </div>
   );
 }
-

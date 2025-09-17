@@ -25,8 +25,13 @@ export default async function ReturnsSettingsPage({
       homePickupEnabled: false,
     };
   return (
-    <div>
-      <h2 className="mb-4 text-xl font-semibold">Returns – {shop}</h2>
+    <div className="space-y-6">
+      <header className="space-y-1">
+        <h2 className="text-xl font-semibold">Returns – {shop}</h2>
+        <p className="text-sm text-muted-foreground">
+          Enable carrier labels, return bags, and door-to-door pickup support.
+        </p>
+      </header>
       <ReturnsEditor
         shop={shop}
         initial={{

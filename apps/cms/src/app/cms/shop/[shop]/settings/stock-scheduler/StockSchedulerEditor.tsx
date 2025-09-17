@@ -1,15 +1,19 @@
 "use client";
 
-// apps/cms/src/app/cms/shop/[shop]/settings/stock-scheduler/StockSchedulerEditor.tsx
+import { useMemo, useState, type ChangeEvent, type FormEvent } from "react";
 
-import { Button, Input } from "@/components/atoms/shadcn";
-import { updateStockScheduler } from "@cms/actions/stockScheduler.server";
+import { Toast } from "@/components/atoms";
+import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
 import DataTable from "@ui/components/cms/DataTable";
+import { FormField } from "@ui/components/molecules";
+import { updateStockScheduler } from "@cms/actions/stockScheduler.server";
+
 import {
   mapSchedulerHistoryRows,
   schedulerHistoryColumns,
 } from "../tableMappers";
-import { useMemo, useState, type FormEvent, type ChangeEvent } from "react";
+import { ErrorChips } from "../components/ErrorChips";
+import { useServiceEditorForm } from "../hooks/useServiceEditorForm";
 
 interface HistoryEntry {
   timestamp: number;
@@ -23,56 +27,112 @@ interface Props {
 
 export default function StockSchedulerEditor({ shop, status }: Props) {
   const [interval, setInterval] = useState(String(status.intervalMs));
-  const [saving, setSaving] = useState(false);
 
   const historyRows = useMemo(
     () => mapSchedulerHistoryRows(status.history),
     [status.history],
   );
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInterval(e.target.value);
+  const {
+    saving,
+    errors,
+    setErrors,
+    submit,
+    toast,
+    toastClassName,
+    closeToast,
+    announceError,
+  } = useServiceEditorForm<void>({
+    action: async (formData) => {
+      await updateStockScheduler(shop, formData);
+    },
+    successMessage: "Stock scheduler updated.",
+    errorMessage: "Unable to update stock scheduler.",
+    extractErrors: () => undefined,
+  });
+
+  const handleIntervalChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setInterval(event.target.value);
+    if (errors.intervalMs?.length) {
+      setErrors((current) => {
+        const next = { ...current };
+        delete next.intervalMs;
+        return next;
+      });
+    }
   };
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSaving(true);
-    const fd = new FormData(e.currentTarget);
-    await updateStockScheduler(shop, fd);
-    setSaving(false);
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const value = Number(formData.get("intervalMs"));
+    if (!value || value <= 0) {
+      setErrors({ intervalMs: ["Enter an interval greater than zero."] });
+      announceError("Interval must be at least 1 millisecond.");
+      return;
+    }
+    void submit(formData);
   };
 
   return (
-    <div className="grid max-w-md gap-4">
-      <form onSubmit={onSubmit} className="grid gap-4">
-        <label className="flex flex-col gap-1">
-          <span>Check Interval (ms)</span>
-          <Input
-            type="number"
-            name="intervalMs"
-            value={interval}
-            onChange={handleChange}
-          />
-        </label>
-        <Button className="bg-primary text-white" disabled={saving} type="submit">
-          {saving ? "Saving…" : "Save"}
-        </Button>
-      </form>
-      <div>
-        <p className="text-sm">
-          Last run: {status.lastRun ? new Date(status.lastRun).toLocaleString() : "never"}
-        </p>
-      </div>
-      <div>
-        <h3 className="mt-4 font-medium">Recent Checks</h3>
-        {historyRows.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No checks yet.</p>
-        ) : (
-          <div className="mt-2">
-            <DataTable rows={historyRows} columns={schedulerHistoryColumns} />
+    <>
+      <Card className="border border-border/60">
+        <CardContent className="space-y-6 p-6">
+          <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+            <FormField
+              label="Check interval (ms)"
+              htmlFor="stock-scheduler-interval"
+              error={<ErrorChips errors={errors.intervalMs} />}
+              className="gap-3"
+            >
+              <Input
+                id="stock-scheduler-interval"
+                name="intervalMs"
+                type="number"
+                min="1"
+                value={interval}
+                onChange={handleIntervalChange}
+              />
+            </FormField>
+            <div className="flex justify-end">
+              <Button
+                type="submit"
+                className="h-10 px-6 text-sm font-semibold"
+                disabled={saving}
+              >
+                {saving ? "Saving…" : "Save changes"}
+              </Button>
+            </div>
+          </form>
+
+          <div className="space-y-2 text-sm text-muted-foreground">
+            <p>
+              Last run:{' '}
+              {status.lastRun
+                ? new Date(status.lastRun).toLocaleString()
+                : "Never"}
+            </p>
           </div>
-        )}
-      </div>
-    </div>
+
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-foreground">Recent checks</h3>
+            {historyRows.length === 0 ? (
+              <p className="text-sm text-muted-foreground">No checks yet.</p>
+            ) : (
+              <div className="overflow-hidden rounded-md border border-border/60">
+                <DataTable rows={historyRows} columns={schedulerHistoryColumns} />
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        onClose={closeToast}
+        className={toastClassName}
+        role="status"
+      />
+    </>
   );
 }

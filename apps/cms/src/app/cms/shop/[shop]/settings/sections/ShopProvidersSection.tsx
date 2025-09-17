@@ -1,38 +1,42 @@
 "use client";
 
-import { Card, CardContent, Checkbox, FormField } from "@ui";
+import { Card, CardContent, Checkbox } from "@/components/atoms/shadcn";
+import { FormField } from "@ui/components/molecules";
 import type { Provider } from "@acme/configurator/providers";
 
-export type ProvidersSectionErrors = Partial<
+export type ShopProvidersSectionErrors = Partial<
   Record<"trackingProviders", string[]>
 >;
 
-export interface ProvidersSectionProps {
-  values: readonly string[];
-  providers: readonly Provider[];
-  errors?: ProvidersSectionErrors;
-  onChange: (next: string[]) => void;
+export interface ShopProvidersSectionProps {
+  readonly trackingProviders: readonly string[];
+  readonly shippingProviders: readonly Provider[];
+  readonly errors?: ShopProvidersSectionErrors;
+  readonly onTrackingChange: (next: string[]) => void;
 }
 
 function formatError(messages?: string[]) {
   return messages && messages.length > 0 ? messages.join("; ") : undefined;
 }
 
-export default function ProvidersSection({
-  values,
-  providers,
+export default function ShopProvidersSection({
+  trackingProviders,
+  shippingProviders,
   errors,
-  onChange,
-}: ProvidersSectionProps) {
+  onTrackingChange,
+}: ShopProvidersSectionProps) {
   const handleToggle = (providerId: string, checked: boolean) => {
-    const current = new Set(values);
+    const current = new Set(trackingProviders);
     if (checked) {
       current.add(providerId);
     } else {
       current.delete(providerId);
     }
-    onChange(Array.from(current));
+    onTrackingChange(Array.from(current));
   };
+
+  const errorMessage = formatError(errors?.trackingProviders);
+  const errorId = errorMessage ? "tracking-providers-error" : undefined;
 
   return (
     <Card>
@@ -40,23 +44,30 @@ export default function ProvidersSection({
         <div className="space-y-1">
           <h3 className="text-lg font-semibold">Logistics providers</h3>
           <p className="text-sm text-muted-foreground">
-            Select the shipping plugins that should push tracking events into CRM dashboards.
+            Select the shipping plugins that should push tracking events into CRM
+            dashboards.
           </p>
         </div>
 
         <FormField
           label="Tracking providers"
-          error={formatError(errors?.trackingProviders)}
+          error={
+            errorMessage ? (
+              <span id={errorId} role="alert">
+                {errorMessage}
+              </span>
+            ) : undefined
+          }
         >
-          {providers.length === 0 ? (
+          {shippingProviders.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               No shipping providers available for this shop.
             </p>
           ) : (
             <div className="space-y-2">
-              {providers.map((provider) => {
+              {shippingProviders.map((provider) => {
                 const id = `provider-${provider.id}`;
-                const checked = values.includes(provider.id);
+                const checked = trackingProviders.includes(provider.id);
                 return (
                   <label
                     key={provider.id}
@@ -71,6 +82,7 @@ export default function ProvidersSection({
                       onCheckedChange={(state) =>
                         handleToggle(provider.id, state === true)
                       }
+                      aria-describedby={errorId}
                     />
                     <span className="text-sm font-medium text-foreground">
                       {provider.name}

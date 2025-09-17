@@ -1,48 +1,99 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
-import LocaleOverrides from "../LocaleOverrides";
+import React from "react";
+import ShopLocalizationSection from "../sections/ShopLocalizationSection";
 
 jest.mock(
   "@/components/atoms/shadcn",
   () => ({
+    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
     Input: (props: any) => <input {...props} />,
+    Select: ({ children, value, onValueChange, name }: any) => {
+      const arrayChildren = React.Children.toArray(children);
+      const content = arrayChildren.find(
+        (child: any) => child?.type?.displayName === "MockSelectContent",
+      );
+      const items = content
+        ? React.Children.toArray((content as any).props.children).map((child: any) => ({
+            value: child.props.value,
+            label: child.props.children,
+          }))
+        : [];
+      return (
+        <select
+          name={name}
+          value={value ?? ""}
+          onChange={(event) => onValueChange?.(event.target.value)}
+          data-testid="mock-select"
+        >
+          <option value="" disabled>
+            Select locale
+          </option>
+          {items.map((item: any) => (
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+      );
+    },
+    SelectTrigger: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    SelectValue: ({ placeholder, children }: any) => children ?? placeholder,
+    SelectContent: Object.assign(
+      ({ children }: any) => <>{children}</>,
+      { displayName: "MockSelectContent" },
+    ),
+    SelectItem: ({ value, children }: any) => (
+      <option value={value}>{children}</option>
+    ),
   }),
   { virtual: true },
 );
 
-describe("LocaleOverrides", () => {
-  it("handles overrides and displays errors", () => {
-    const addOverride = jest.fn();
-    const updateOverride = jest.fn();
-    const removeOverride = jest.fn();
+function createController(initial: Array<{ key: string; value: string }>) {
+  return {
+    rows: initial,
+    add: jest.fn(),
+    update: jest.fn(),
+    remove: jest.fn(),
+    setRows: jest.fn(),
+  } as any;
+}
+
+describe("ShopLocalizationSection", () => {
+  it("allows updates and displays errors", () => {
+    const localeController = createController([{ key: "title", value: "en" }]);
 
     render(
-      <LocaleOverrides
-        overrides={[{ key: "title", value: "en" }]}
-        addOverride={addOverride}
-        updateOverride={updateOverride}
-        removeOverride={removeOverride}
+      <ShopLocalizationSection
+        localeOverrides={localeController}
         errors={{ localeOverrides: ["must not be empty"] }}
-      />, 
+        availableLocales={["en", "de"]}
+      />,
     );
 
-    expect(screen.getByDisplayValue("en")).toBeInTheDocument();
+    fireEvent.change(screen.getByPlaceholderText("/collections/new"), {
+      target: { value: "/collections/sale" },
+    });
+    expect(localeController.update).toHaveBeenCalledWith(
+      0,
+      "key",
+      "/collections/sale",
+    );
 
-    const keyInput = screen.getByPlaceholderText("Field");
-    fireEvent.change(keyInput, { target: { value: "description" } });
-    expect(updateOverride.mock.calls[0]).toEqual([0, "key", "description"]);
+    fireEvent.change(screen.getByTestId("mock-select"), {
+      target: { value: "de" },
+    });
+    expect(localeController.update).toHaveBeenCalledWith(0, "value", "de");
 
-    const select = screen.getByDisplayValue("en");
-    fireEvent.change(select, { target: { value: "de" } });
-    expect(updateOverride.mock.calls[1]).toEqual([0, "value", "de"]);
-
-    fireEvent.click(screen.getByText(/Add Override/i));
-    expect(addOverride).toHaveBeenCalled();
+    fireEvent.click(screen.getByText(/Add locale override/i));
+    expect(localeController.add).toHaveBeenCalled();
 
     fireEvent.click(screen.getByText(/Remove/i));
-    expect(removeOverride).toHaveBeenCalledWith(0);
+    expect(localeController.remove).toHaveBeenCalledWith(0);
 
-    expect(screen.getByText(/must not be empty/i)).toBeInTheDocument();
+    expect(screen.getByRole("alert", { name: /must not be empty/i })).toBeInTheDocument();
   });
 });

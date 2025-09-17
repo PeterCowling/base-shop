@@ -16,6 +16,8 @@ jest.mock(
     const React = require("react");
     return {
       __esModule: true,
+      Progress: () => null,
+      Tag: () => null,
       Toast: ({ open, message }: { open: boolean; message: string }) =>
         open ? React.createElement("div", { role: "alert" }, message) : null,
       Tooltip: ({ children }: { children: React.ReactNode }) =>
@@ -31,7 +33,11 @@ jest.mock(
     const React = require("react");
     return {
       __esModule: true,
-      Button: ({ children, ...props }: any) =>
+      Card: ({ children, asChild: _asChild, ...props }: any) =>
+        React.createElement("div", props, children),
+      CardContent: ({ children, asChild: _asChild, ...props }: any) =>
+        React.createElement("div", props, children),
+      Button: ({ children, asChild: _asChild, ...props }: any) =>
         React.createElement("button", props, children),
     };
   },
@@ -39,17 +45,27 @@ jest.mock(
 );
 
 jest.mock("../src/app/cms/configurator/steps", () => {
+  const stepTrackMeta = {
+    foundation: {
+      label: "Foundation",
+      description: "",
+      pillClass: "",
+      accentClass: "",
+    },
+  } as const;
   const steps = [
     {
       id: "a",
       label: "Step A",
       component: () => null,
+      track: "foundation",
     },
     {
       id: "b",
       label: "Step B",
       component: () => null,
       recommended: ["a"],
+      track: "foundation",
     },
   ];
   return {
@@ -57,6 +73,7 @@ jest.mock("../src/app/cms/configurator/steps", () => {
     getSteps: () => steps,
     getRequiredSteps: () => steps,
     steps: Object.fromEntries(steps.map((s) => [s.id, s])),
+    stepTrackMeta,
   };
 });
 
@@ -105,9 +122,12 @@ test(
   "shows recommendation message when launching step with suggested steps",
   async () => {
     render(<ConfiguratorDashboard />);
-    const link = await screen.findByRole("link", { name: /step b/i });
-    link.addEventListener("click", (e) => e.preventDefault());
-    fireEvent.click(link);
+    const link = (await screen.findAllByRole("link", { name: /continue step/i })).find(
+      (anchor) => anchor.getAttribute("href")?.includes("/b")
+    );
+    expect(link).toBeDefined();
+    link?.addEventListener("click", (e) => e.preventDefault());
+    fireEvent.click(link!);
     const alert = await screen.findByRole("alert");
     expect(alert).toHaveTextContent(/step a/i);
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");

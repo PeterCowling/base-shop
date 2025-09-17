@@ -3,7 +3,8 @@ import {
   readAggregates,
 } from "@platform-core/repositories/analytics.server";
 import { readShop } from "@platform-core/repositories/shops.server";
-import { Progress } from "@acme/ui";
+import { Progress, Tag } from "@acme/ui";
+import { MarketingMetricCard } from "../marketing/components/MarketingMetricCard";
 import { CampaignFilter } from "./components/CampaignFilter.client";
 import { Charts } from "./components/Charts.client";
 import { buildMetrics } from "@cms/lib/analytics";
@@ -134,7 +135,7 @@ export default async function ShopDashboard({
         })()
       : selectedCampaigns.map((c) => {
           const metrics = buildMetrics(
-            events.filter((e: AnalyticsEvent) => e.campaign === c)
+            events.filter((e: AnalyticsEvent) => e.campaign === c),
           );
           const totalTraffic = metrics.totals.emailClicks;
           const totalRevenue = metrics.totals.campaignSales;
@@ -142,13 +143,80 @@ export default async function ShopDashboard({
             totalTraffic > 0
               ? (metrics.totals.campaignSaleCount / totalTraffic) * 100
               : 0;
+          const clickThroughRate =
+            metrics.totals.emailOpens > 0
+              ? (metrics.totals.emailClicks / metrics.totals.emailOpens) * 100
+              : 0;
+          const redemptionRate =
+            metrics.totals.emailClicks > 0
+              ? (metrics.totals.discountRedemptions / metrics.totals.emailClicks) *
+                100
+              : 0;
+          const statusTag = metrics.totals.emailOpens > 0 ? "Active" : "Draft";
           return (
-            <div key={c} className="mb-8">
-              <h3 className="text-lg font-semibold">Campaign: {c}</h3>
-              <p className="mb-2 text-sm">
-                Traffic: {totalTraffic} • Revenue:{" "}
-                {formatPrice(totalRevenue)} • Conversion:{" "}
-                {conversionRate.toFixed(2)}%
+            <div key={c} className="mb-8 space-y-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="text-lg font-semibold">Campaign: {c}</h3>
+                <Tag
+                  variant={metrics.totals.emailOpens > 0 ? "success" : "default"}
+                  className="text-xs font-medium"
+                >
+                  {statusTag}
+                </Tag>
+              </div>
+              <div className="grid gap-4 md:grid-cols-3">
+                <MarketingMetricCard
+                  title="Email opens"
+                  value={metrics.totals.emailOpens.toLocaleString()}
+                  tag={{
+                    label: `${clickThroughRate.toFixed(1)}% CTR`,
+                    variant: clickThroughRate > 5 ? "success" : "default",
+                  }}
+                  progress={{
+                    value: Math.min(100, clickThroughRate),
+                    label: `${metrics.totals.emailClicks.toLocaleString()} clicks`,
+                  }}
+                  emptyLabel="No engagement yet"
+                />
+                <MarketingMetricCard
+                  title="Sales impact"
+                  value={formatPrice(totalRevenue)}
+                  tag={{
+                    label: `${metrics.totals.campaignSaleCount.toLocaleString()} orders`,
+                    variant:
+                      metrics.totals.campaignSaleCount > 0
+                        ? "success"
+                        : "default",
+                  }}
+                  progress={{
+                    value: Math.min(100, conversionRate),
+                    label: `${conversionRate.toFixed(1)}% conversion`,
+                  }}
+                  emptyLabel="No revenue yet"
+                />
+                <MarketingMetricCard
+                  title="Discount redemptions"
+                  value={metrics.totals.discountRedemptions.toLocaleString()}
+                  tag={{
+                    label:
+                      metrics.topDiscountCodes[0]?.[0]
+                        ? `Top code: ${metrics.topDiscountCodes[0][0]}`
+                        : "No redemptions",
+                    variant:
+                      metrics.totals.discountRedemptions > 0
+                        ? "success"
+                        : "default",
+                  }}
+                  progress={{
+                    value: Math.min(100, redemptionRate),
+                    label: `${redemptionRate.toFixed(1)}% of clicks`,
+                  }}
+                  emptyLabel="No redemptions yet"
+                />
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Traffic: {totalTraffic.toLocaleString()} • Revenue: {" "}
+                {formatPrice(totalRevenue)} • Conversion: {conversionRate.toFixed(2)}%
               </p>
               <Charts
                 traffic={metrics.traffic}

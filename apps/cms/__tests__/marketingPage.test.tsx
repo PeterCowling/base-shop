@@ -42,6 +42,8 @@ describe("MarketingPage", () => {
     const Page = (await import("../src/app/cms/marketing/page")).default;
     render(await Page());
 
+    expect(screen.getByText("Tracked campaigns")).toBeInTheDocument();
+    expect(screen.getByText("Marketing performance")).toBeInTheDocument();
     expect(screen.getByText("Campaign Analytics")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "c1" })).toHaveAttribute(
       "href",
@@ -64,6 +66,7 @@ describe("MarketingPage", () => {
     const Page = (await import("../src/app/cms/marketing/page")).default;
     render(await Page());
 
+    expect(screen.getByText("No marketing activity yet")).toBeInTheDocument();
     expect(screen.queryByText("Campaign Analytics")).not.toBeInTheDocument();
   });
 });

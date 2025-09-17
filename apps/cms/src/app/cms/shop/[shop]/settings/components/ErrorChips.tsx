@@ -12,7 +12,7 @@ export function ErrorChips({ errors }: ErrorChipsProps) {
   }
 
   return (
-    <div className="flex flex-wrap gap-2 pt-1">
+    <span className="inline-flex flex-wrap gap-2 pt-1">
       {errors.map((error, index) => (
         <Chip
           key={`${error}-${index}`}
@@ -22,7 +22,7 @@ export function ErrorChips({ errors }: ErrorChipsProps) {
           {error}
         </Chip>
       ))}
-    </div>
+    </span>
   );
 }
 

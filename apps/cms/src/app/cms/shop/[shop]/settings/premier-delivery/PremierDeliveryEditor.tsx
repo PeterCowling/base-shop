@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState, type FormEvent } from "react";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
@@ -52,7 +52,7 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
   const {
     saving,
     errors,
-    handleSubmit,
+    submit,
     toast,
     toastClassName,
     closeToast,
@@ -101,6 +101,47 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
   const regionErrors = useMemo(() => errors.regions, [errors.regions]);
   const windowErrors = useMemo(() => errors.windows, [errors.windows]);
   const carrierErrors = useMemo(() => errors.carriers, [errors.carriers]);
+
+  const sanitizeCollection = useCallback(
+    (formData: FormData, key: CollectionKey) => {
+      const values = formData
+        .getAll(key)
+        .map((value) => (typeof value === "string" ? value.trim() : ""))
+        .filter((value) => value.length > 0);
+
+      formData.delete(key);
+      values.forEach((value) => formData.append(key, value));
+    },
+    [],
+  );
+
+  const handleSubmit = useCallback(
+    async (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
+
+      (Array.from(["regions", "windows", "carriers"]) as CollectionKey[]).forEach(
+        (key) => sanitizeCollection(formData, key),
+      );
+
+      const surcharge = formData.get("surcharge");
+      formData.set(
+        "surcharge",
+        typeof surcharge === "string" && surcharge.trim().length > 0
+          ? surcharge
+          : "",
+      );
+
+      const serviceLabel = formData.get("serviceLabel");
+      formData.set(
+        "serviceLabel",
+        typeof serviceLabel === "string" ? serviceLabel.trim() : "",
+      );
+
+      return submit(formData);
+    },
+    [sanitizeCollection, submit],
+  );
 
   return (
     <>

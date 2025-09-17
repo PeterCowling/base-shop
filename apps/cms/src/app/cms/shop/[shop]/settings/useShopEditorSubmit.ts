@@ -1,5 +1,6 @@
 import { FormEvent, useState } from "react";
 import type { ChangeEvent } from "react";
+import type { Provider } from "@acme/configurator/providers";
 import type { Shop } from "@acme/types";
 import { shopSchema } from "@cms/actions/schemas";
 import { updateShop } from "@cms/actions/shops.server";
@@ -14,19 +15,44 @@ export interface MappingRowsController {
   readonly remove: (index: number) => void;
 }
 
+export interface SelectOption {
+  readonly label: string;
+  readonly value: string;
+}
+
+export type IdentityField = "name" | "themeId";
+
+export type LuxuryFeatureKey = keyof Shop["luxuryFeatures"];
+
+export type LuxuryCheckboxKey = {
+  [K in LuxuryFeatureKey]: Shop["luxuryFeatures"][K] extends boolean ? K : never;
+}[LuxuryFeatureKey];
+
 export interface ShopEditorIdentitySection {
   readonly info: Shop;
   readonly setInfo: React.Dispatch<React.SetStateAction<Shop>>;
   readonly handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  readonly handleTextChange: (field: IdentityField, value: string) => void;
+  readonly handleCheckboxChange: (
+    feature: LuxuryCheckboxKey,
+    checked: boolean,
+  ) => void;
+  readonly handleLuxuryFeatureChange: <K extends LuxuryFeatureKey>(
+    feature: K,
+    value: Shop["luxuryFeatures"][K],
+  ) => void;
 }
 
 export interface ShopEditorLocalizationSection {
   readonly priceOverrides: MappingRowsController;
   readonly localeOverrides: MappingRowsController;
+  readonly localeOptions: readonly SelectOption[];
+  readonly supportedLocales: readonly string[];
 }
 
 export interface ShopEditorProvidersSection {
-  readonly shippingProviders: string[];
+  readonly shippingProviders: readonly Provider[];
+  readonly shippingProviderOptions: readonly SelectOption[];
   readonly trackingProviders: string[];
   readonly setTrackingProviders: React.Dispatch<React.SetStateAction<string[]>>;
 }

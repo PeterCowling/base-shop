@@ -3,9 +3,13 @@
 
 import { useMemo, useState, ChangeEvent } from "react";
 import { providersByType } from "@acme/configurator/providers";
-import type { Shop } from "@acme/types";
+import { LOCALES, type Shop } from "@acme/types";
 import useMappingRows from "@/hooks/useMappingRows";
 import useShopEditorSubmit, {
+  type IdentityField,
+  type LuxuryCheckboxKey,
+  type LuxuryFeatureKey,
+  type SelectOption,
   type ShopEditorIdentitySection,
   type ShopEditorLocalizationSection,
   type ShopEditorOverridesSection,
@@ -33,7 +37,66 @@ export function useShopEditorForm({
   const priceOverrides = useMappingRows(initial.priceOverrides);
   const localeOverrides = useMappingRows(initial.localeOverrides);
 
-  const shippingProviders = providersByType("shipping");
+  const shippingProviders = useMemo(
+    () => providersByType("shipping"),
+    [],
+  );
+
+  const shippingProviderOptions = useMemo<ReadonlyArray<SelectOption>>(
+    () =>
+      shippingProviders.map((provider) => ({
+        label: provider.name,
+        value: provider.id,
+      })),
+    [shippingProviders],
+  );
+
+  const supportedLocales = useMemo<ReadonlyArray<string>>(
+    () => [...LOCALES],
+    [],
+  );
+
+  const localeOptions = useMemo<ReadonlyArray<SelectOption>>(
+    () =>
+      supportedLocales.map((locale) => ({
+        label: locale,
+        value: locale,
+      })),
+    [supportedLocales],
+  );
+
+  const mappingControllers = {
+    filterMappings,
+    priceOverrides,
+    localeOverrides,
+  } as const;
+
+  const isIdentityField = (field: string): field is IdentityField =>
+    field === "name" || field === "themeId";
+
+  const handleTextChange = (field: IdentityField, value: string) => {
+    setInfo((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleLuxuryFeatureChange = <K extends LuxuryFeatureKey>(
+    feature: K,
+    value: Shop["luxuryFeatures"][K],
+  ) => {
+    setInfo((prev) => ({
+      ...prev,
+      luxuryFeatures: {
+        ...prev.luxuryFeatures,
+        [feature]: value,
+      },
+    }));
+  };
+
+  const handleCheckboxChange = <K extends LuxuryCheckboxKey>(
+    feature: K,
+    checked: boolean,
+  ) => {
+    handleLuxuryFeatureChange(feature, checked as Shop["luxuryFeatures"][K]);
+  };
 
   const tokenRows = useMemo(
     () => mapThemeTokenRows(info.themeDefaults ?? {}, info.themeOverrides ?? {}),
@@ -42,22 +105,39 @@ export function useShopEditorForm({
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setInfo((prev) => ({ ...prev, [name]: value }));
+    if (isIdentityField(name)) {
+      handleTextChange(name, value);
+    }
+  };
+
+  const handleMappingChange = (
+    type: keyof typeof mappingControllers,
+    index: number,
+    field: "key" | "value",
+    value: string,
+  ) => {
+    mappingControllers[type].update(index, field, value);
   };
 
   const identity: ShopEditorIdentitySection = {
     info,
     setInfo,
     handleChange,
+    handleTextChange,
+    handleCheckboxChange,
+    handleLuxuryFeatureChange,
   };
 
   const localization: ShopEditorLocalizationSection = {
     priceOverrides,
     localeOverrides,
+    localeOptions,
+    supportedLocales,
   };
 
   const providersState: ShopEditorProvidersSection = {
     shippingProviders,
+    shippingProviderOptions,
     trackingProviders,
     setTrackingProviders,
   };
@@ -95,8 +175,15 @@ export function useShopEditorForm({
     updateLocaleOverride: localeOverrides.update,
     removeLocaleOverride: localeOverrides.remove,
     handleChange,
+    handleTextChange,
+    handleCheckboxChange,
+    handleLuxuryFeatureChange,
+    handleMappingChange,
     tokenRows,
     shippingProviders,
+    shippingProviderOptions,
+    supportedLocales,
+    localeOptions,
     identity,
     localization,
     providers: providersState,

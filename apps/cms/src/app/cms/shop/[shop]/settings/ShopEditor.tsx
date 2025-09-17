@@ -17,18 +17,16 @@ import { type ReactNode } from "react";
 
 import SEOSettings from "./SEOSettings";
 import ThemeTokens from "./ThemeTokens";
-import IdentitySection, {
-  type IdentitySectionErrors,
-} from "./sections/IdentitySection";
-import LocalizationSection, {
-  type LocalizationSectionErrors,
-} from "./sections/LocalizationSection";
-import OverridesSection, {
-  type OverridesSectionErrors,
-} from "./sections/OverridesSection";
-import ProvidersSection, {
-  type ProvidersSectionErrors,
-} from "./sections/ProvidersSection";
+import {
+  ShopIdentitySection,
+  type ShopIdentitySectionErrors,
+  ShopLocalizationSection,
+  type ShopLocalizationSectionErrors,
+  ShopOverridesSection,
+  type ShopOverridesSectionErrors,
+  ShopProvidersSection,
+  type ShopProvidersSectionErrors,
+} from "./sections";
 import { useShopEditorForm } from "./useShopEditorForm";
 
 export { default as GeneralSettings } from "./GeneralSettings";
@@ -68,7 +66,7 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
     "premierDelivery",
   ] as const;
 
-  const identityErrors: IdentitySectionErrors = {};
+  const identityErrors: ShopIdentitySectionErrors = {};
   if (errors.name) {
     identityErrors.name = errors.name;
   }
@@ -89,12 +87,12 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
     }
   }
 
-  const providersErrors: ProvidersSectionErrors | undefined =
+  const providersErrors: ShopProvidersSectionErrors | undefined =
     errors.trackingProviders
       ? { trackingProviders: errors.trackingProviders }
       : undefined;
 
-  const overridesErrors: OverridesSectionErrors = {};
+  const overridesErrors: ShopOverridesSectionErrors = {};
   if (errors.filterMappings) {
     overridesErrors.filterMappings = errors.filterMappings;
   }
@@ -104,7 +102,7 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
   const overridesSectionErrors =
     Object.keys(overridesErrors).length > 0 ? overridesErrors : undefined;
 
-  const localizationErrors: LocalizationSectionErrors | undefined =
+  const localizationErrors: ShopLocalizationSectionErrors | undefined =
     errors.localeOverrides
       ? { localeOverrides: errors.localeOverrides }
       : undefined;
@@ -120,10 +118,10 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
       title: "Identity",
       description: "Update the shop name, theme, and luxury feature toggles.",
       render: () => (
-        <IdentitySection
-          values={identity.info}
+        <ShopIdentitySection
+          info={identity.info}
           errors={identityErrors}
-          onFieldChange={identity.handleTextChange}
+          onInfoChange={identity.handleTextChange}
           onLuxuryFeatureChange={identity.handleLuxuryFeatureChange}
         />
       ),
@@ -140,11 +138,11 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
       title: "Tracking providers",
       description: "Manage analytics and fulfillment tracking integrations.",
       render: () => (
-        <ProvidersSection
-          values={providers.trackingProviders}
-          providers={providers.shippingProviders}
+        <ShopProvidersSection
+          trackingProviders={providers.trackingProviders}
+          shippingProviders={providers.shippingProviders}
           errors={providersErrors}
-          onChange={providers.setTrackingProviders}
+          onTrackingChange={providers.setTrackingProviders}
         />
       ),
       wrapWithCard: false,
@@ -162,16 +160,10 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
       title: "Overrides",
       description: "Fine-tune filter mappings and price localization.",
       render: () => (
-        <OverridesSection
-          filterMappings={overrides.filterMappings.rows}
-          priceOverrides={localization.priceOverrides.rows}
+        <ShopOverridesSection
+          filterMappings={overrides.filterMappings}
+          priceOverrides={localization.priceOverrides}
           errors={overridesSectionErrors}
-          onAddFilterMapping={overrides.filterMappings.add}
-          onUpdateFilterMapping={overrides.filterMappings.update}
-          onRemoveFilterMapping={overrides.filterMappings.remove}
-          onAddPriceOverride={localization.priceOverrides.add}
-          onUpdatePriceOverride={localization.priceOverrides.update}
-          onRemovePriceOverride={localization.priceOverrides.remove}
         />
       ),
       wrapWithCard: false,
@@ -181,12 +173,9 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
       title: "Localization overrides",
       description: "Redirect locale content to custom destinations.",
       render: () => (
-        <LocalizationSection
-          values={localization.localeOverrides.rows}
+        <ShopLocalizationSection
+          localeOverrides={localization.localeOverrides}
           errors={localizationErrors}
-          onAdd={localization.localeOverrides.add}
-          onUpdate={localization.localeOverrides.update}
-          onRemove={localization.localeOverrides.remove}
           availableLocales={localization.supportedLocales}
         />
       ),

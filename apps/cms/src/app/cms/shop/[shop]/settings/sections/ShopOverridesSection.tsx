@@ -8,58 +8,44 @@ import {
   Button,
   Card,
   CardContent,
-  FormField,
   Input,
-} from "@ui";
-import type { MappingRow } from "@/hooks/useMappingRows";
+} from "@/components/atoms/shadcn";
+import { FormField } from "@ui/components/molecules";
+import type { MappingRowsController } from "../useShopEditorSubmit";
 
-export type OverridesSectionErrors = Partial<
+export type ShopOverridesSectionErrors = Partial<
   Record<"filterMappings" | "priceOverrides", string[]>
 >;
 
-export interface OverridesSectionProps {
-  filterMappings: MappingRow[];
-  priceOverrides: MappingRow[];
-  errors?: OverridesSectionErrors;
-  onAddFilterMapping: () => void;
-  onUpdateFilterMapping: (
-    index: number,
-    field: "key" | "value",
-    value: string,
-  ) => void;
-  onRemoveFilterMapping: (index: number) => void;
-  onAddPriceOverride: () => void;
-  onUpdatePriceOverride: (
-    index: number,
-    field: "key" | "value",
-    value: string,
-  ) => void;
-  onRemovePriceOverride: (index: number) => void;
+export interface ShopOverridesSectionProps {
+  readonly filterMappings: MappingRowsController;
+  readonly priceOverrides: MappingRowsController;
+  readonly errors?: ShopOverridesSectionErrors;
 }
 
 function formatError(messages?: string[]) {
   return messages && messages.length > 0 ? messages.join("; ") : undefined;
 }
 
-export default function OverridesSection({
+export default function ShopOverridesSection({
   filterMappings,
   priceOverrides,
   errors,
-  onAddFilterMapping,
-  onUpdateFilterMapping,
-  onRemoveFilterMapping,
-  onAddPriceOverride,
-  onUpdatePriceOverride,
-  onRemovePriceOverride,
-}: OverridesSectionProps) {
+}: ShopOverridesSectionProps) {
+  const filterError = formatError(errors?.filterMappings);
+  const priceError = formatError(errors?.priceOverrides);
+  const filterErrorId = filterError ? "filter-mappings-error" : undefined;
+  const priceErrorId = priceError ? "price-overrides-error" : undefined;
+
   const filterContent = (
     <div className="space-y-4">
-      {filterMappings.length === 0 ? (
+      {filterMappings.rows.length === 0 ? (
         <p className="text-sm text-muted-foreground">
-          No filter mappings configured. Add mappings to translate storefront facets into catalog attributes.
+          No filter mappings configured. Add mappings to translate storefront
+          facets into catalog attributes.
         </p>
       ) : (
-        filterMappings.map((row, index) => {
+        filterMappings.rows.map((row, index) => {
           const keyId = `filter-mapping-key-${index}`;
           const valueId = `filter-mapping-value-${index}`;
           return (
@@ -73,9 +59,10 @@ export default function OverridesSection({
                   name="filterMappingsKey"
                   value={row.key}
                   onChange={(event) =>
-                    onUpdateFilterMapping(index, "key", event.target.value)
+                    filterMappings.update(index, "key", event.target.value)
                   }
                   placeholder="color"
+                  aria-describedby={filterErrorId}
                 />
               </FormField>
               <FormField label="Catalog attribute" htmlFor={valueId}>
@@ -84,15 +71,16 @@ export default function OverridesSection({
                   name="filterMappingsValue"
                   value={row.value}
                   onChange={(event) =>
-                    onUpdateFilterMapping(index, "value", event.target.value)
+                    filterMappings.update(index, "value", event.target.value)
                   }
                   placeholder="attributes.color"
+                  aria-describedby={filterErrorId}
                 />
               </FormField>
               <Button
                 type="button"
                 variant="ghost"
-                onClick={() => onRemoveFilterMapping(index)}
+                onClick={() => filterMappings.remove(index)}
               >
                 Remove
               </Button>
@@ -103,14 +91,14 @@ export default function OverridesSection({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Button
           type="button"
-          onClick={onAddFilterMapping}
+          onClick={filterMappings.add}
           className="w-full sm:w-auto"
         >
           Add filter mapping
         </Button>
-        {errors?.filterMappings ? (
-          <p className="text-sm text-destructive">
-            {formatError(errors.filterMappings)}
+        {filterError ? (
+          <p id={filterErrorId} className="text-sm text-destructive" role="alert">
+            {filterError}
           </p>
         ) : null}
       </div>
@@ -119,12 +107,13 @@ export default function OverridesSection({
 
   const priceContent = (
     <div className="space-y-4">
-      {priceOverrides.length === 0 ? (
+      {priceOverrides.rows.length === 0 ? (
         <p className="text-sm text-muted-foreground">
-          No price overrides defined. Configure overrides to adjust pricing for specific locales.
+          No price overrides defined. Configure overrides to adjust pricing for
+          specific locales.
         </p>
       ) : (
-        priceOverrides.map((row, index) => {
+        priceOverrides.rows.map((row, index) => {
           const keyId = `price-override-key-${index}`;
           const valueId = `price-override-value-${index}`;
           return (
@@ -138,9 +127,10 @@ export default function OverridesSection({
                   name="priceOverridesKey"
                   value={row.key}
                   onChange={(event) =>
-                    onUpdatePriceOverride(index, "key", event.target.value)
+                    priceOverrides.update(index, "key", event.target.value)
                   }
                   placeholder="en-GB"
+                  aria-describedby={priceErrorId}
                 />
               </FormField>
               <FormField label="Override (minor units)" htmlFor={valueId}>
@@ -151,15 +141,16 @@ export default function OverridesSection({
                   name="priceOverridesValue"
                   value={row.value}
                   onChange={(event) =>
-                    onUpdatePriceOverride(index, "value", event.target.value)
+                    priceOverrides.update(index, "value", event.target.value)
                   }
                   placeholder="12000"
+                  aria-describedby={priceErrorId}
                 />
               </FormField>
               <Button
                 type="button"
                 variant="ghost"
-                onClick={() => onRemovePriceOverride(index)}
+                onClick={() => priceOverrides.remove(index)}
               >
                 Remove
               </Button>
@@ -170,14 +161,14 @@ export default function OverridesSection({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Button
           type="button"
-          onClick={onAddPriceOverride}
+          onClick={priceOverrides.add}
           className="w-full sm:w-auto"
         >
           Add price override
         </Button>
-        {errors?.priceOverrides ? (
-          <p className="text-sm text-destructive">
-            {formatError(errors.priceOverrides)}
+        {priceError ? (
+          <p id={priceErrorId} className="text-sm text-destructive" role="alert">
+            {priceError}
           </p>
         ) : null}
       </div>
@@ -203,13 +194,17 @@ export default function OverridesSection({
             <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
               Filter mappings
             </AccordionTrigger>
-            <AccordionContent className="pt-3">{filterContent}</AccordionContent>
+            <AccordionContent className="pt-3">
+              {filterContent}
+            </AccordionContent>
           </AccordionItem>
           <AccordionItem value="price-overrides" className="border-none">
             <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
               Price overrides
             </AccordionTrigger>
-            <AccordionContent className="pt-3">{priceContent}</AccordionContent>
+            <AccordionContent className="pt-3">
+              {priceContent}
+            </AccordionContent>
           </AccordionItem>
         </Accordion>
       </CardContent>

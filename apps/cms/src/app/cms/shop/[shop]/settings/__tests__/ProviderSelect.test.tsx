@@ -1,47 +1,57 @@
-import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import ProviderSelect from "@/app/cms/shop/[shop]/settings/ProviderSelect";
+import { fireEvent, render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import ShopProvidersSection from "../sections/ShopProvidersSection";
 import type { Provider } from "@acme/configurator/providers";
 
-describe("ProviderSelect", () => {
+jest.mock(
+  "@/components/atoms/shadcn",
+  () => ({
+    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    Checkbox: ({ checked, onCheckedChange, ...props }: any) => (
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(event) => onCheckedChange?.(event.target.checked)}
+        {...props}
+      />
+    ),
+  }),
+  { virtual: true },
+);
+
+describe("ShopProvidersSection", () => {
   const shippingProviders: Provider[] = [
     { id: "ups", name: "UPS", type: "shipping" },
     { id: "dhl", name: "DHL", type: "shipping" },
-    { id: "fedex", name: "FedEx", type: "shipping" },
   ];
 
-  it("calls setTrackingProviders with selected options", async () => {
-    const setTrackingProviders = jest.fn();
+  it("calls onTrackingChange when toggled", () => {
+    const handleChange = jest.fn();
     render(
-      <ProviderSelect
+      <ShopProvidersSection
         trackingProviders={[]}
-        setTrackingProviders={setTrackingProviders}
-        errors={{}}
         shippingProviders={shippingProviders}
-      />
+        errors={{}}
+        onTrackingChange={handleChange}
+      />,
     );
 
-    const select = screen.getByLabelText("Tracking Providers") as HTMLSelectElement;
-    const upsOption = screen.getByRole("option", { name: "UPS" }) as HTMLOptionElement;
-    const dhlOption = screen.getByRole("option", { name: "DHL" }) as HTMLOptionElement;
-    upsOption.selected = true;
-    dhlOption.selected = true;
-    fireEvent.change(select);
-    expect(setTrackingProviders).toHaveBeenCalledWith(["ups", "dhl"]);
+    fireEvent.click(screen.getByLabelText("UPS"));
+    expect(handleChange).toHaveBeenCalledWith(["ups"]);
   });
 
-  it("renders error message when errors provided", () => {
+  it("renders error message when provided", () => {
     render(
-      <ProviderSelect
+      <ShopProvidersSection
         trackingProviders={[]}
-        setTrackingProviders={jest.fn()}
-        errors={{ trackingProviders: ["Required"] }}
         shippingProviders={shippingProviders}
-      />
+        errors={{ trackingProviders: ["Required"] }}
+        onTrackingChange={jest.fn()}
+      />,
     );
 
-    expect(screen.getByText("Required")).toBeInTheDocument();
+    expect(screen.getByRole("alert", { name: "Required" })).toBeInTheDocument();
   });
 });
 

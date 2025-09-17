@@ -8,11 +8,43 @@ describe('CMS settings forms accessibility', () => {
     cy.visit('about:blank').then(async (win) => {
       const { default: GeneralSettings } = await import('../../apps/cms/src/app/cms/shop/[shop]/settings/GeneralSettings');
       const Wrapper = () => {
-        const [info, setInfo] = React.useState({ name: '', themeId: '', luxuryFeatures: {} as any });
+        const [info, setInfo] = React.useState({
+          name: '',
+          themeId: '',
+          luxuryFeatures: {
+            blog: false,
+            contentMerchandising: false,
+            raTicketing: false,
+            requireStrongCustomerAuth: false,
+            strictReturnConditions: false,
+            trackingDashboard: false,
+            premierDelivery: false,
+            fraudReviewThreshold: 0,
+          },
+        });
         const [errors, setErrors] = React.useState<Record<string, string[]>>({});
-        const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-          const { name, value, type, checked } = e.target;
-          setInfo((prev: any) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+        const handleInfoChange = (field: 'name' | 'themeId', value: string) => {
+          setInfo((prev) => ({ ...prev, [field]: value }));
+        };
+        const handleLuxuryChange = (
+          feature:
+            | 'blog'
+            | 'contentMerchandising'
+            | 'raTicketing'
+            | 'requireStrongCustomerAuth'
+            | 'strictReturnConditions'
+            | 'trackingDashboard'
+            | 'premierDelivery'
+            | 'fraudReviewThreshold',
+          value: boolean | number,
+        ) => {
+          setInfo((prev) => ({
+            ...prev,
+            luxuryFeatures: {
+              ...prev.luxuryFeatures,
+              [feature]: value,
+            },
+          }));
         };
         return (
           <form
@@ -21,7 +53,12 @@ describe('CMS settings forms accessibility', () => {
               setErrors({ name: ['Required'], themeId: ['Required'] });
             }}
           >
-            <GeneralSettings info={info} setInfo={setInfo} errors={errors} handleChange={handleChange} />
+            <GeneralSettings
+              info={info}
+              errors={errors}
+              onInfoChange={handleInfoChange}
+              onLuxuryFeatureChange={handleLuxuryChange}
+            />
             <button type="submit">Save</button>
           </form>
         );
@@ -31,8 +68,8 @@ describe('CMS settings forms accessibility', () => {
 
     cy.injectAxe();
     cy.findByRole('button', { name: /save/i }).click();
-    cy.findByLabelText('Name').should('have.attr', 'aria-invalid', 'true');
-    cy.findByLabelText('Theme').should('have.attr', 'aria-invalid', 'true');
+    cy.findByLabelText('Shop name').should('have.attr', 'aria-invalid', 'true');
+    cy.findByLabelText('Theme preset').should('have.attr', 'aria-invalid', 'true');
     cy.findAllByText('Required').each(($el) => {
       cy.wrap($el).should('have.attr', 'role', 'alert');
     });

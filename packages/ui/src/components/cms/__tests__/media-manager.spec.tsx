@@ -104,5 +104,38 @@ describe("MediaManager", () => {
     await waitFor(() => expect(libraryProps.files[0].url).toBe("1b"));
     expect(libraryProps.files[1].url).toBe("2");
   });
+
+  it("provides replace feedback callbacks", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    render(
+      <MediaManager
+        shop="s"
+        initialFiles={initialFiles}
+        onDelete={jest.fn()}
+        onMetadataUpdate={jest.fn()}
+      />
+    );
+
+    expect(typeof libraryProps.onReplaceSuccess).toBe("function");
+    expect(typeof libraryProps.onReplaceError).toBe("function");
+
+    act(() => {
+      libraryProps.onReplaceSuccess?.({ url: "3", type: "image" });
+    });
+    expect(errorSpy).not.toHaveBeenCalled();
+
+    act(() => {
+      libraryProps.onReplaceSuccess?.({ type: "image" });
+    });
+    expect(errorSpy).toHaveBeenNthCalledWith(1, "Replacement media item is missing a URL", { type: "image" });
+
+    libraryProps.onReplaceError?.("something went wrong");
+    expect(errorSpy).toHaveBeenLastCalledWith(
+      "Failed to replace media item",
+      "something went wrong"
+    );
+
+    errorSpy.mockRestore();
+  });
 });
 

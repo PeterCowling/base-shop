@@ -21,6 +21,8 @@ interface LibraryProps {
   shop: string;
   onDelete: (url: string) => void;
   onReplace: (oldUrl: string, item: MediaItem) => void;
+  onReplaceSuccess?: (item: MediaItem) => void;
+  onReplaceError?: (message: string) => void;
   onSelect?: (item: WithUrl | null) => void;
   onBulkToggle?: (item: WithUrl, selected: boolean) => void;
   selectionEnabled?: boolean;
@@ -37,6 +39,8 @@ export default function Library({
   shop,
   onDelete,
   onReplace,
+  onReplaceSuccess,
+  onReplaceError,
   onSelect,
   onBulkToggle,
   selectionEnabled = false,
@@ -105,6 +109,8 @@ export default function Library({
           shop={shop}
           onDelete={onDelete}
           onReplace={onReplace}
+          onReplaceSuccess={onReplaceSuccess}
+          onReplaceError={onReplaceError}
           onSelect={onSelect}
           onBulkToggle={onBulkToggle}
           selectionEnabled={selectionEnabled}

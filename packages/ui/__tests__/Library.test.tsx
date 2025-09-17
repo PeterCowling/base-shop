@@ -47,6 +47,8 @@ test("filters files by search", () => {
       shop="s"
       onDelete={() => {}}
       onReplace={() => {}}
+      onReplaceSuccess={undefined}
+      onReplaceError={undefined}
     />
   );
   expect(screen.getAllByText("Delete")).toHaveLength(2);
@@ -57,6 +59,8 @@ test("filters files by search", () => {
 });
 
 test("derives selection helper from selectedUrl", () => {
+  const onReplaceSuccess = jest.fn();
+  const onReplaceError = jest.fn();
   render(
     <Library
       files={[
@@ -67,11 +71,15 @@ test("derives selection helper from selectedUrl", () => {
       onDelete={() => {}}
       onReplace={() => {}}
       selectedUrl="/dog.jpg"
+      onReplaceSuccess={onReplaceSuccess}
+      onReplaceError={onReplaceError}
     />
   );
 
   expect(mockMediaFileList).toHaveBeenCalledTimes(1);
   const props = mockMediaFileList.mock.calls[0][0];
+  expect(props.onReplaceSuccess).toBe(onReplaceSuccess);
+  expect(props.onReplaceError).toBe(onReplaceError);
   expect(props.isItemSelected).toBeInstanceOf(Function);
   expect(props.isItemSelected({ url: "/dog.jpg" })).toBe(true);
   expect(props.isItemSelected({ url: "/a.jpg" })).toBe(false);

@@ -2,29 +2,38 @@ import { fireEvent, render, screen } from "@testing-library/react";
 
 import MediaFileList from "../MediaFileList";
 
-jest.mock("../MediaFileItem", () => (props: any) => (
-  <div
-    data-cy="media-item"
-    data-selected={props.selected ? "true" : "false"}
-    data-deleting={props.deleting ? "true" : "false"}
-    data-replacing={props.replacing ? "true" : "false"}
-    onClick={() => props.onSelect?.(props.item)}
-  >
-    <button type="button" onClick={() => props.onDelete(props.item.url)}>
-      delete
-    </button>
-    <button
-      type="button"
-      data-cy="bulk"
-      onClick={() => props.onBulkToggle?.(props.item, !props.selected)}
+const mediaFileItemProps: any[] = [];
+
+jest.mock("../MediaFileItem", () => (props: any) => {
+  mediaFileItemProps.push(props);
+  return (
+    <div
+      data-cy="media-item"
+      data-selected={props.selected ? "true" : "false"}
+      data-deleting={props.deleting ? "true" : "false"}
+      data-replacing={props.replacing ? "true" : "false"}
+      onClick={() => props.onSelect?.(props.item)}
     >
-      toggle
-    </button>
-    {props.item.url}
-  </div>
-));
+      <button type="button" onClick={() => props.onDelete(props.item.url)}>
+        delete
+      </button>
+      <button
+        type="button"
+        data-cy="bulk"
+        onClick={() => props.onBulkToggle?.(props.item, !props.selected)}
+      >
+        toggle
+      </button>
+      {props.item.url}
+    </div>
+  );
+});
 
 describe("MediaFileList", () => {
+  beforeEach(() => {
+    mediaFileItemProps.length = 0;
+  });
+
   it("renders items and forwards selection callbacks", () => {
     const files = [
       { url: "1", type: "image" },
@@ -37,6 +46,8 @@ describe("MediaFileList", () => {
         shop="s"
         onDelete={jest.fn()}
         onReplace={jest.fn()}
+        onReplaceSuccess={undefined}
+        onReplaceError={undefined}
         onSelect={onSelect}
       />
     );
@@ -58,6 +69,8 @@ describe("MediaFileList", () => {
         shop="s"
         onDelete={jest.fn()}
         onReplace={jest.fn()}
+        onReplaceSuccess={undefined}
+        onReplaceError={undefined}
         selectionEnabled
         isItemSelected={(item) => item.url === "2"}
       />
@@ -77,6 +90,8 @@ describe("MediaFileList", () => {
         shop="s"
         onDelete={jest.fn()}
         onReplace={jest.fn()}
+        onReplaceSuccess={undefined}
+        onReplaceError={undefined}
         selectionEnabled
         onBulkToggle={onBulkToggle}
       />
@@ -97,6 +112,8 @@ describe("MediaFileList", () => {
         shop="s"
         onDelete={jest.fn()}
         onReplace={jest.fn()}
+        onReplaceSuccess={undefined}
+        onReplaceError={undefined}
         isDeleting={(item) => item.url === "1"}
         isReplacing={(item) => item.url === "2"}
       />
@@ -107,5 +124,31 @@ describe("MediaFileList", () => {
     expect(items[0]).toHaveAttribute("data-replacing", "false");
     expect(items[1]).toHaveAttribute("data-deleting", "false");
     expect(items[1]).toHaveAttribute("data-replacing", "true");
+  });
+
+  it("forwards replacement callbacks", () => {
+    const files = [
+      { url: "1", type: "image" },
+      { url: "2", type: "image" },
+    ];
+    const onReplaceSuccess = jest.fn();
+    const onReplaceError = jest.fn();
+
+    render(
+      <MediaFileList
+        files={files}
+        shop="s"
+        onDelete={jest.fn()}
+        onReplace={jest.fn()}
+        onReplaceSuccess={onReplaceSuccess}
+        onReplaceError={onReplaceError}
+      />
+    );
+
+    expect(mediaFileItemProps).toHaveLength(files.length);
+    for (const props of mediaFileItemProps) {
+      expect(props.onReplaceSuccess).toBe(onReplaceSuccess);
+      expect(props.onReplaceError).toBe(onReplaceError);
+    }
   });
 });

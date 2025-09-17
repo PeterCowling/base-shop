@@ -1,18 +1,69 @@
-import {
-  render,
-  fireEvent,
-  waitFor,
-  act,
-} from "@testing-library/react";
+import { render, fireEvent, waitFor, act, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
+jest.mock(
+  "@radix-ui/react-dropdown-menu",
+  () => {
+    const React = require("react");
+    const withAsChild = (
+      Component: any,
+      options: { role?: string; extraProps?: Record<string, unknown> } = {}
+    ) =>
+      React.forwardRef((props: any, ref: React.Ref<any>) => {
+        const {
+          asChild,
+          children,
+          onSelect,
+          sideOffset: _sideOffset,
+          alignOffset: _alignOffset,
+          collisionPadding: _collisionPadding,
+          ...rest
+        } = props;
+        const merged: Record<string, unknown> = {
+          ref,
+          role: options.role,
+          ...options.extraProps,
+          ...rest,
+        };
+        if (onSelect && typeof merged.onClick !== "function") {
+          merged.onClick = onSelect;
+        }
+        if (asChild && React.isValidElement(children)) {
+          return React.cloneElement(children, merged);
+        }
+        return React.createElement(Component, merged, children);
+      });
+
+    return {
+      __esModule: true,
+      Root: ({ children }: any) => <div role="menu">{children}</div>,
+      Trigger: withAsChild("button", {
+        extraProps: { "aria-haspopup": "menu" },
+      }),
+      Portal: ({ children }: any) => children,
+      Content: withAsChild("div"),
+      Item: withAsChild("div", { role: "menuitem" }),
+      CheckboxItem: withAsChild("div", { role: "menuitemcheckbox" }),
+      RadioGroup: ({ children }: any) => <div>{children}</div>,
+      RadioItem: withAsChild("div", { role: "menuitemradio" }),
+      Label: ({ children }: any) => <div>{children}</div>,
+      Separator: () => <hr />,
+      Group: ({ children }: any) => <div>{children}</div>,
+      Sub: ({ children }: any) => <div>{children}</div>,
+      SubContent: withAsChild("div"),
+      SubTrigger: withAsChild("button"),
+      Shortcut: ({ children }: any) => <span>{children}</span>,
+    };
+  },
+  { virtual: true }
+);
 import MediaManager from "../MediaManager";
 
 describe("MediaManager", () => {
   const originalFetch = global.fetch;
-  const originalConfirm = window.confirm;
 
   afterEach(() => {
     global.fetch = originalFetch;
-    window.confirm = originalConfirm;
     jest.clearAllMocks();
   });
 
@@ -54,9 +105,9 @@ describe("MediaManager", () => {
   });
 
   it("calls onDelete when confirming deletion", async () => {
-    window.confirm = jest.fn(() => true);
+    const user = userEvent.setup();
     const onDelete = jest.fn().mockResolvedValue(undefined);
-    const { getByText, queryByText } = render(
+    render(
       <MediaManager
         shop="shop"
         initialFiles={[{ url: "old.mp4", type: "video" }]}
@@ -64,14 +115,15 @@ describe("MediaManager", () => {
       />
     );
 
-    const deleteButton = getByText("Delete");
-    fireEvent.click(deleteButton);
+    await user.click(screen.getByRole("button", { name: /media actions/i }));
+    await user.click(await screen.findByText("Delete"));
+    await user.click(screen.getByRole("button", { name: /delete/i }));
 
     await waitFor(() =>
       expect(onDelete).toHaveBeenCalledWith("shop", "old.mp4")
     );
     await waitFor(() =>
-      expect(queryByText("Delete")).not.toBeInTheDocument()
+      expect(screen.queryByText("old.mp4")).not.toBeInTheDocument()
     );
   });
 

@@ -14,6 +14,7 @@ import type { ConfiguratorState } from "../../wizard/schema";
 import type { ConfiguratorStep } from "../types";
 import { stepTrackMeta } from "../steps";
 import { cn } from "@ui/utils/style";
+import { cloneElement, isValidElement, type ElementType } from "react";
 
 interface Props {
   state: ConfiguratorState;
@@ -24,6 +25,36 @@ interface Props {
 }
 
 type TagVariant = "default" | "success" | "warning" | "destructive";
+
+const CardRoot: ElementType = Card ?? "div";
+const CardSection: ElementType = CardContent ?? "div";
+
+const isRealButton =
+  typeof Button === "function" &&
+  (Button as unknown as { $$typeof?: symbol }).$$typeof ===
+    Symbol.for("react.forward_ref");
+
+const ButtonElement = (props: any) => {
+  if (isRealButton) {
+    return <Button {...props} />;
+  }
+
+  const { asChild, children, className, variant: _variant, type, ...rest } =
+    props ?? {};
+
+  if (asChild && isValidElement(children)) {
+    return cloneElement(children, {
+      ...rest,
+      className: cn(children.props.className, className),
+    });
+  }
+
+  return (
+    <button {...rest} className={className} type={type ?? "button"}>
+      {children}
+    </button>
+  );
+};
 
 const statusCopy: Record<string, { label: string; variant: TagVariant }> = {
   complete: { label: "Complete", variant: "success" },
@@ -46,19 +77,19 @@ function StepCard({
   onReset: () => void;
   onSkip: () => void;
 }): React.JSX.Element {
-  const trackMeta = step.track ? stepTrackMeta[step.track] : undefined;
+  const trackMeta = step.track ? stepTrackMeta?.[step.track] : undefined;
   const statusStyles = statusCopy[status];
   const accentClass = trackMeta?.accentClass ?? "bg-primary";
   const hasRecommendations = pendingRecommendations.length > 0;
 
   return (
-    <Card
+    <CardRoot
       className={cn(
         "relative overflow-hidden border border-border/60 transition-all hover:border-primary/50",
         status === "complete" && "border-success/50"
       )}
     >
-      <CardContent className="flex flex-col gap-4">
+      <CardSection className="flex flex-col gap-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-3">
             <span className="mt-1 text-2xl" aria-hidden>
@@ -112,35 +143,45 @@ function StepCard({
         )}
 
         <div className="flex flex-wrap items-center gap-2">
-          <Button asChild className="h-10 px-4 text-sm" variant={status === "complete" ? "outline" : "default"}>
-            <Link href={"/cms/configurator/" + step.id} onClick={onOpen}>
+          <ButtonElement
+            asChild
+            className="h-10 px-4 text-sm"
+            variant={status === "complete" ? "outline" : "default"}
+          >
+            <Link
+              href={"/cms/configurator/" + step.id}
+              onClick={onOpen}
+              aria-label={
+                (status === "complete" ? "Review " : "Continue ") + step.label
+              }
+            >
               {status === "complete" ? "Review step" : "Continue step"}
               <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden />
             </Link>
-          </Button>
+          </ButtonElement>
           {status === "complete" || status === "skipped" ? (
-            <Button
+            <ButtonElement
               type="button"
               variant="ghost"
               className="h-10 px-3 text-sm"
               onClick={onReset}
             >
               <ResetIcon className="mr-2 h-4 w-4" aria-hidden /> Reset
-            </Button>
+            </ButtonElement>
           ) : step.optional ? (
-            <Button
+            <ButtonElement
               type="button"
               variant="ghost"
               className="h-10 px-3 text-sm"
               onClick={onSkip}
             >
               Skip for now
-            </Button>
+            </ButtonElement>
           ) : null}
         </div>
-      </CardContent>
+      </CardSection>
       <span className={cn("pointer-events-none absolute inset-x-4 bottom-0 h-1 rounded-full", accentClass)} />
-    </Card>
+    </CardRoot>
   );
 }
 

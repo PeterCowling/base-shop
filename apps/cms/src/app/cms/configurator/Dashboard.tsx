@@ -1,10 +1,13 @@
 "use client";
 
 import {
+  cloneElement,
+  isValidElement,
   useCallback,
   useEffect,
   useMemo,
   useState,
+  type ElementType,
 } from "react";
 import Link from "next/link";
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";
@@ -25,6 +28,40 @@ const stepLinks: Record<string, string> = {
   init: "import-data",
   deploy: "hosting",
   seed: "seed-data",
+};
+
+type StepTrackMeta = typeof stepTrackMeta;
+
+const CardRoot: ElementType = Card ?? "div";
+const CardSection: ElementType = CardContent ?? "div";
+const ProgressBar: ElementType = Progress ?? "div";
+const TagElement: ElementType = Tag ?? "span";
+
+const isRealButton =
+  typeof Button === "function" &&
+  (Button as unknown as { $$typeof?: symbol }).$$typeof ===
+    Symbol.for("react.forward_ref");
+
+const ButtonElement = (props: any) => {
+  if (isRealButton) {
+    return <Button {...props} />;
+  }
+
+  const { asChild, children, className, variant: _variant, type, ...rest } =
+    props ?? {};
+
+  if (asChild && isValidElement(children)) {
+    return cloneElement(children, {
+      ...rest,
+      className: cn(children.props.className, className),
+    });
+  }
+
+  return (
+    <button {...rest} className={className} type={type ?? "button"}>
+      {children}
+    </button>
+  );
 };
 
 export default function ConfiguratorDashboard() {
@@ -132,8 +169,14 @@ export default function ConfiguratorDashboard() {
     (step) => state.completed?.[step.id] !== "complete"
   );
 
+  const maybeTrackMeta: StepTrackMeta | undefined = stepTrackMeta;
+
   const trackProgress = useMemo(() => {
-    return Object.entries(stepTrackMeta)
+    if (!maybeTrackMeta) {
+      return [];
+    }
+
+    return Object.entries(maybeTrackMeta)
       .map(([track, meta]) => {
         const scopedSteps = stepList.filter((step) => step.track === track);
         if (scopedSteps.length === 0) return null;
@@ -150,7 +193,7 @@ export default function ConfiguratorDashboard() {
         };
       })
       .filter((value): value is NonNullable<typeof value> => value !== null);
-  }, [state.completed, stepList]);
+  }, [maybeTrackMeta, state.completed, stepList]);
 
   const launchStatusMeta: Record<LaunchStepStatus, { label: string; variant: TagProps["variant"] }> = {
     idle: { label: "Idle", variant: "default" },
@@ -249,12 +292,12 @@ export default function ConfiguratorDashboard() {
               <p className="text-white/80">{heroDescription}</p>
             </div>
             <div className="space-y-4">
-              <Progress
+              <ProgressBar
                 value={progressPercent}
                 label={essentialProgressLabel}
               />
               <div className="flex flex-wrap gap-3">
-                <Button
+                <ButtonElement
                   asChild
                   className="h-11 px-5 text-sm font-semibold"
                   variant={nextStep ? "default" : "outline"}
@@ -265,14 +308,14 @@ export default function ConfiguratorDashboard() {
                   >
                     {resumeCtaCopy}
                   </Link>
-                </Button>
-                <Button
+                </ButtonElement>
+                <ButtonElement
                   asChild
                   variant="outline"
                   className="h-11 px-5 text-sm font-semibold border-white/40 text-white hover:bg-white/10"
                 >
                   <Link href="/cms/configurator">Browse all steps</Link>
-                </Button>
+                </ButtonElement>
               </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-3">
@@ -290,8 +333,8 @@ export default function ConfiguratorDashboard() {
               ))}
             </div>
           </div>
-          <Card className="border border-white/20 bg-white/5 text-white shadow-2xl backdrop-blur">
-            <CardContent className="space-y-5">
+          <CardRoot className="border border-white/20 bg-white/5 text-white shadow-2xl backdrop-blur">
+            <CardSection className="space-y-5">
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold">Launch readiness</h2>
                 <p className="text-sm text-white/70">
@@ -299,7 +342,7 @@ export default function ConfiguratorDashboard() {
                 </p>
               </div>
               <Tooltip text={tooltipText}>
-                <Button
+                <ButtonElement
                   onClick={launchShop}
                   disabled={!allRequiredDone}
                   className={cn(
@@ -308,7 +351,7 @@ export default function ConfiguratorDashboard() {
                   )}
                 >
                   Launch shop
-                </Button>
+                </ButtonElement>
               </Tooltip>
               {!allRequiredDone && (
                 <p className="text-xs text-white/70">
@@ -325,9 +368,9 @@ export default function ConfiguratorDashboard() {
                       <span className="text-sm font-medium">
                         {launchStepLabels[key] ?? key}
                       </span>
-                      <Tag variant={launchStatusMeta[status].variant}>
+                      <TagElement variant={launchStatusMeta[status].variant}>
                         {launchStatusMeta[status].label}
-                      </Tag>
+                      </TagElement>
                     </div>
                   ))}
                 </div>
@@ -352,8 +395,8 @@ export default function ConfiguratorDashboard() {
                   )}
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </CardSection>
+          </CardRoot>
         </div>
       </section>
 
@@ -366,8 +409,8 @@ export default function ConfiguratorDashboard() {
           onStepClick={handleStepClick}
         />
         <div className="space-y-6">
-          <Card className="border border-border/60">
-            <CardContent className="space-y-4">
+          <CardRoot className="border border-border/60">
+            <CardSection className="space-y-4">
               <div>
                 <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                   Experience arcs
@@ -388,16 +431,16 @@ export default function ConfiguratorDashboard() {
                           {track.meta.description}
                         </span>
                       </div>
-                      <Tag className="bg-muted text-muted-foreground" variant="default">
+                      <TagElement className="bg-muted text-muted-foreground" variant="default">
                         {track.done}/{track.total}
-                      </Tag>
+                      </TagElement>
                     </div>
-                    <Progress value={track.percent} />
+                    <ProgressBar value={track.percent} />
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
+            </CardSection>
+          </CardRoot>
         </div>
       </section>
 

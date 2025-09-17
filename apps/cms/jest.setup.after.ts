@@ -11,6 +11,7 @@ import * as ReactDOMTestUtils from "react-dom/test-utils";
 import { TextDecoder, TextEncoder } from "node:util";
 import "./__tests__/mocks/external";
 import "../../test/resetNextMocks";
+import "../../test/polyfills/form-request-submit";
 
 configure({ testIdAttribute: "data-cy" });
 

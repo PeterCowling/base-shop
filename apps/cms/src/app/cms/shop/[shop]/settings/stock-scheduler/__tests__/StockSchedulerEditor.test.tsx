@@ -17,12 +17,24 @@ jest.mock(
   "@/components/atoms/shadcn",
   () => ({
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+    Card: ({ children, ...props }: any) => <section {...props}>{children}</section>,
+    CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     Input: (props: any) => <input {...props} />,
   }),
   { virtual: true },
 );
+jest.mock("@/components/atoms", () => ({
+  __esModule: true,
+  Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
+  Toast: ({ open, message, role = "status" }: any) =>
+    open ? <div role={role}>{message}</div> : null,
+}));
 
 describe("StockSchedulerEditor", () => {
+  beforeEach(() => {
+    updateStockScheduler.mockClear();
+  });
+
   const localeSpy = jest
     .spyOn(Date.prototype, "toLocaleString")
     .mockImplementation(function (this: Date) {
@@ -33,7 +45,7 @@ describe("StockSchedulerEditor", () => {
     localeSpy.mockRestore();
   });
 
-  it("submits the interval and renders scheduler history accessibly", async () => {
+  it("validates the interval, displays toasts, and renders scheduler history accessibly", async () => {
     updateStockScheduler.mockResolvedValue(undefined);
 
     const status: ComponentProps<typeof StockSchedulerEditor>["status"] = {
@@ -50,12 +62,31 @@ describe("StockSchedulerEditor", () => {
     );
 
     const interval = screen.getByRole("spinbutton");
+    const saveButton = screen.getByRole("button", { name: /save changes/i });
+
     await userEvent.clear(interval);
+    await userEvent.click(saveButton);
+
+    expect(updateStockScheduler).not.toHaveBeenCalled();
+
+    expect(
+      await screen.findByText("Interval must be at least 1 millisecond."),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("Enter an interval greater than zero."),
+    ).toBeInTheDocument();
+
     await userEvent.type(interval, "5000");
-    await userEvent.click(screen.getByRole("button", { name: /save/i }));
+    await userEvent.click(saveButton);
+
+    expect(
+      await screen.findByText("Stock scheduler updated."),
+    ).toBeInTheDocument();
 
     expect(updateStockScheduler).toHaveBeenCalledTimes(1);
-    const fd = updateStockScheduler.mock.calls[0][1] as FormData;
+    const [shopArg, formDataArg] = updateStockScheduler.mock.calls[0];
+    expect(shopArg).toBe("lux");
+    const fd = formDataArg as FormData;
     expect(fd.get("intervalMs")).toBe("5000");
 
     const rows = screen.getAllByRole("row");

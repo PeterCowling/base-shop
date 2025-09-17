@@ -47,9 +47,23 @@ function AutoCarousel(props: ProductCarouselProps & { autoplay?: boolean }) {
 
 const meta: Meta<typeof AutoCarousel> = {
   component: AutoCarousel,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "Horizontal product rail with responsive item counts. Control density with `minItems`/`maxItems` or explicit device props and enable quick previews with `enableQuickView`.",
+      },
+    },
+  },
   args: {
     products,
     autoplay: false,
+    minItems: 1,
+    maxItems: 4,
+  },
+  argTypes: {
+    minItems: { control: { type: "number", min: 1, max: 6 } },
+    maxItems: { control: { type: "number", min: 1, max: 6 } },
   },
 };
 export default meta;
@@ -57,10 +71,26 @@ export default meta;
 export const Default: StoryObj<typeof AutoCarousel> = {};
 export const Autoplay: StoryObj<typeof AutoCarousel> = {
   args: { autoplay: true },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Set `autoplay` when showcasing the carousel in marketing contexts. In production pass a timer that respects reduced-motion preferences.",
+      },
+    },
+  },
 };
 
 export const Bounded: StoryObj<typeof AutoCarousel> = {
   args: { minItems: 2, maxItems: 3 },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Clamp the visible slides to create symmetric layouts on desktop while still collapsing to a single item on mobile.",
+      },
+    },
+  },
 };
 
 export const Wide: StoryObj<typeof AutoCarousel> = {

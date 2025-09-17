@@ -108,7 +108,10 @@ To reuse answers across runs, create `profiles/<name>.json` and run
 with `--skip-prompts` to accept defaults for remaining questions and run
 non-interactively.
 
-Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages.
+Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) to lay out your pages. The shop dashboard now
+includes quick actions for staging upgrades and requesting a rollback—use **Upgrade & preview** to run the templating script and
+review changes at `/cms/shop/<id>/upgrade-preview`, or **Rollback to previous version** to restore the last published template
+without leaving the CMS. See [Upgrade & rollback workflows](./cms.md#upgrade--rollback-workflows) for details.
 
 ### Rental shops
 

@@ -1,5 +1,6 @@
 // packages/ui/components/atoms/primitives/index.ts
 export * from "./button";
+export * from "./accordion";
 export * from "./card";
 export * from "./checkbox";
 export * from "./dropdown-menu";

@@ -3,7 +3,12 @@
 
 import type { PageComponent } from "@acme/types";
 import { memo } from "react";
-import { Accordion } from "../../atoms/shadcn";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../../atoms/shadcn";
 import LayoutPanel from "./panels/LayoutPanel";
 import ContentPanel from "./panels/ContentPanel";
 import InteractionsPanel from "./panels/InteractionsPanel";
@@ -42,45 +47,55 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
 
   return (
     <Accordion
-      items={[
-        {
-          title: "Layout",
-          content: (
-            <LayoutPanel
-              component={component}
-              handleInput={handleInput}
-              handleResize={handleResize}
-              handleFullSize={handleFullSize}
-            />
-          ),
-        },
-        {
-          title: "Content",
-          content: (
-            <ContentPanel
-              component={component}
-              onChange={onChange}
-              handleInput={handleInput}
-            />
-          ),
-        },
-        {
-          title: "Style",
-          content: (
-            <StylePanel component={component} handleInput={handleInput} />
-          ),
-        },
-        {
-          title: "Interactions",
-          content: (
-            <InteractionsPanel
-              component={component}
-              handleInput={handleInput}
-            />
-          ),
-        },
-      ]}
-    />
+      type="multiple"
+      defaultValue={["layout", "content", "style", "interactions"]}
+      className="space-y-3"
+    >
+      <AccordionItem value="layout" className="border-none">
+        <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+          Layout
+        </AccordionTrigger>
+        <AccordionContent className="pt-3">
+          <LayoutPanel
+            component={component}
+            handleInput={handleInput}
+            handleResize={handleResize}
+            handleFullSize={handleFullSize}
+          />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="content" className="border-none">
+        <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+          Content
+        </AccordionTrigger>
+        <AccordionContent className="pt-3">
+          <ContentPanel
+            component={component}
+            onChange={onChange}
+            handleInput={handleInput}
+          />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="style" className="border-none">
+        <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+          Style
+        </AccordionTrigger>
+        <AccordionContent className="pt-3">
+          <StylePanel component={component} handleInput={handleInput} />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="interactions" className="border-none">
+        <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+          Interactions
+        </AccordionTrigger>
+        <AccordionContent className="pt-3">
+          <InteractionsPanel
+            component={component}
+            handleInput={handleInput}
+          />
+        </AccordionContent>
+      </AccordionItem>
+    </Accordion>
   );
 }
 

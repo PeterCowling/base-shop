@@ -1,4 +1,14 @@
 export { Button, type ButtonProps } from "./primitives/button";
+export {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+  type AccordionProps,
+  type AccordionItemProps,
+  type AccordionTriggerProps,
+  type AccordionContentProps,
+} from "./primitives/accordion";
 export { Card, CardContent } from "./primitives/card";
 export { Checkbox, type CheckboxProps } from "./primitives/checkbox";
 export {

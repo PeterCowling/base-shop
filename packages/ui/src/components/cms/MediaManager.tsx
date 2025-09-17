@@ -211,41 +211,60 @@ function MediaManagerBase({
     []
   );
 
-  const { files, selectedUrl, metadataPending } = state;
+  const { files, selectedUrl, metadataPending, dialogDeleteUrl, deletePending } = state;
+  const deletingUrl = deletePending ? dialogDeleteUrl : null;
 
   const selectedItem = useMemo(() => {
     if (!selectedUrl) return null;
     return files.find((file) => file.url === selectedUrl) ?? null;
   }, [files, selectedUrl]);
 
-  const handleDelete = useCallback(
-    async (src: string) => {
-      if (!confirm("Delete this image?")) return;
-      setDialogDeleteUrl(src);
-      setDeletePending(true);
-      try {
-        await onDelete(shop, src);
-        setFiles((prev) => prev.filter((f) => f.url !== src));
-        setSelectedUrl((prev) => (prev === src ? null : prev));
-        setToast({
-          open: true,
-          message: "Media deleted.",
-          variant: "success",
-        });
-      } catch (error) {
-        console.error("Failed to delete media item", error);
-        setToast({
-          open: true,
-          message: "Failed to delete media item.",
-          variant: "error",
-        });
-      } finally {
-        setDeletePending(false);
-        setDialogDeleteUrl(null);
-      }
+  const handleRequestDelete = useCallback(
+    (url: string) => {
+      setDialogDeleteUrl(url);
     },
-    [onDelete, setDeletePending, setDialogDeleteUrl, setFiles, setSelectedUrl, setToast, shop]
+    [setDialogDeleteUrl]
   );
+
+  const handleCancelDelete = useCallback(() => {
+    setDialogDeleteUrl(null);
+  }, [setDialogDeleteUrl]);
+
+  const handleConfirmDelete = useCallback(async () => {
+    if (!dialogDeleteUrl) return;
+
+    const targetUrl = dialogDeleteUrl;
+    setDeletePending(true);
+    try {
+      await onDelete(shop, targetUrl);
+      setFiles((prev) => prev.filter((file) => file.url !== targetUrl));
+      setSelectedUrl((prev) => (prev === targetUrl ? null : prev));
+      setToast({
+        open: true,
+        message: "Media deleted.",
+        variant: "success",
+      });
+      setDialogDeleteUrl(null);
+    } catch (error) {
+      console.error("Failed to delete media item", error);
+      setToast({
+        open: true,
+        message: "Failed to delete media item.",
+        variant: "error",
+      });
+    } finally {
+      setDeletePending(false);
+    }
+  }, [
+    dialogDeleteUrl,
+    onDelete,
+    setDeletePending,
+    setDialogDeleteUrl,
+    setFiles,
+    setSelectedUrl,
+    setToast,
+    shop,
+  ]);
 
   const handleUploaded = useCallback((item: MediaItem) => {
     if (!hasUrl(item)) {
@@ -339,10 +358,57 @@ function MediaManagerBase({
       <Library
         files={files}
         shop={shop}
-        onDelete={handleDelete}
+        onDelete={handleRequestDelete}
         onReplace={handleReplace}
         onSelect={handleSelect}
+        isDeleting={(item) => deletingUrl === item.url}
       />
+      <Dialog
+        open={Boolean(dialogDeleteUrl)}
+        onOpenChange={(open) => {
+          if (!open && !deletePending) {
+            handleCancelDelete();
+          }
+        }}
+      >
+        <DialogContent className="space-y-4">
+          <DialogHeader className="space-y-2 text-left">
+            <DialogTitle>Delete media item</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. The media file will be permanently
+              removed.
+            </DialogDescription>
+          </DialogHeader>
+          {dialogDeleteUrl ? (
+            <p className="break-all text-sm text-muted-foreground">
+              <span className="font-medium text-foreground">{dialogDeleteUrl}</span>
+            </p>
+          ) : null}
+          <DialogFooter className="gap-2">
+            <Button
+              variant="outline"
+              onClick={handleCancelDelete}
+              disabled={deletePending}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleConfirmDelete}
+              disabled={deletePending}
+            >
+              {deletePending ? (
+                <>
+                  <Spinner className="mr-2 h-4 w-4" />
+                  Deleting...
+                </>
+              ) : (
+                "Delete"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       {selectedItem ? (
         <MediaDetailsPanel
           open

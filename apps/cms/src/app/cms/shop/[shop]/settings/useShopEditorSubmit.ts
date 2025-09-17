@@ -42,6 +42,21 @@ export function useShopEditorSubmit({
 }: Args) {
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [toast, setToast] = useState<{
+    open: boolean;
+    status: "success" | "error";
+    message: string;
+  }>({
+    open: false,
+    status: "success",
+    message: "",
+  });
+
+  const closeToast = () =>
+    setToast((prev) => ({
+      ...prev,
+      open: false,
+    }));
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,6 +88,11 @@ export function useShopEditorSubmit({
     }
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      setToast({
+        open: true,
+        status: "error",
+        message: "Please fix the highlighted errors before saving.",
+      });
       setSaving(false);
       return;
     }
@@ -105,39 +125,63 @@ export function useShopEditorSubmit({
     });
     if (!parsed.success) {
       setErrors(parsed.error.flatten().fieldErrors);
+      setToast({
+        open: true,
+        status: "error",
+        message: "Please check the form for errors and try again.",
+      });
       setSaving(false);
       return;
     }
-    const result = await updateShop(shop, fd);
-    if (result.errors) {
-      setErrors(result.errors);
-    } else if (result.shop) {
-      setInfo(result.shop);
-      setTrackingProviders(fd.getAll("trackingProviders") as string[]);
-      filterMappings.setRows(
-        Object.entries(result.shop.filterMappings ?? {}).map(([key, value]) => ({
-          key,
-          value: String(value),
-        })),
-      );
-      priceOverrides.setRows(
-        Object.entries(result.shop.priceOverrides ?? {}).map(([key, value]) => ({
-          key,
-          value: String(value),
-        })),
-      );
-      localeOverrides.setRows(
-        Object.entries(result.shop.localeOverrides ?? {}).map(([key, value]) => ({
-          key,
-          value: String(value),
-        })),
-      );
-      setErrors({});
+    try {
+      const result = await updateShop(shop, fd);
+      if (result.errors) {
+        setErrors(result.errors);
+        setToast({
+          open: true,
+          status: "error",
+          message: "Failed to save shop settings. Please review the errors and try again.",
+        });
+      } else if (result.shop) {
+        setInfo(result.shop);
+        setTrackingProviders(fd.getAll("trackingProviders") as string[]);
+        filterMappings.setRows(
+          Object.entries(result.shop.filterMappings ?? {}).map(([key, value]) => ({
+            key,
+            value: String(value),
+          })),
+        );
+        priceOverrides.setRows(
+          Object.entries(result.shop.priceOverrides ?? {}).map(([key, value]) => ({
+            key,
+            value: String(value),
+          })),
+        );
+        localeOverrides.setRows(
+          Object.entries(result.shop.localeOverrides ?? {}).map(([key, value]) => ({
+            key,
+            value: String(value),
+          })),
+        );
+        setErrors({});
+        setToast({
+          open: true,
+          status: "success",
+          message: "Shop settings saved successfully.",
+        });
+      }
+    } catch (error) {
+      setToast({
+        open: true,
+        status: "error",
+        message: "Something went wrong while saving. Please try again.",
+      });
+    } finally {
+      setSaving(false);
     }
-    setSaving(false);
   };
 
-  return { saving, errors, onSubmit } as const;
+  return { saving, errors, onSubmit, toast, closeToast } as const;
 }
 
 export default useShopEditorSubmit;

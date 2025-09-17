@@ -161,7 +161,7 @@ describe("useShopEditorSubmit", () => {
     });
   });
 
-  it("validates mappings and surfaces toast errors", async () => {
+  it("blocks submission when client validation fails", async () => {
     const sections = createSections({
       filterRows: [{ key: "", value: "" }],
       priceRows: [{ key: "en", value: "bad" }],
@@ -198,6 +198,7 @@ describe("useShopEditorSubmit", () => {
       status: "error",
       message: "Please resolve the highlighted validation issues.",
     });
+    expect(result.current.saving).toBe(false);
     expect(updateShopMock).not.toHaveBeenCalled();
 
     act(() => {
@@ -217,7 +218,7 @@ describe("useShopEditorSubmit", () => {
       localeOverrides: { banner: "de" },
       luxuryFeatures: sections.identity.info.luxuryFeatures,
     };
-    updateShopMock.mockResolvedValue({ shop: responseShop });
+    updateShopMock.mockResolvedValueOnce({ shop: responseShop });
 
     const form = createForm({
       id: "s1",
@@ -240,6 +241,7 @@ describe("useShopEditorSubmit", () => {
       await result.current.onSubmit(submitEvent(form) as any);
     });
 
+    expect(updateShopMock).toHaveBeenCalledTimes(1);
     expect(updateShopMock).toHaveBeenCalledWith("s1", expect.any(FormData));
     expect(sections.identity.setInfo).toHaveBeenCalledWith(responseShop);
     expect(sections.providers.setTrackingProviders).toHaveBeenCalledWith([
@@ -266,7 +268,7 @@ describe("useShopEditorSubmit", () => {
 
   it("handles server validation errors", async () => {
     const sections = createSections();
-    updateShopMock.mockResolvedValue({
+    updateShopMock.mockResolvedValueOnce({
       errors: { name: ["Required"] },
     });
 
@@ -286,6 +288,8 @@ describe("useShopEditorSubmit", () => {
       await result.current.onSubmit(submitEvent(form) as any);
     });
 
+    expect(updateShopMock).toHaveBeenCalledTimes(1);
+    expect(updateShopMock).toHaveBeenCalledWith("s1", expect.any(FormData));
     expect(result.current.errors).toEqual({ name: ["Required"] });
     expect(result.current.toast).toEqual({
       open: true,
@@ -293,6 +297,7 @@ describe("useShopEditorSubmit", () => {
       message:
         "We couldn't save your changes. Please review the errors and try again.",
     });
+    expect(result.current.saving).toBe(false);
     expect(sections.identity.setInfo).not.toHaveBeenCalled();
   });
 
@@ -301,7 +306,7 @@ describe("useShopEditorSubmit", () => {
     const consoleError = jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
-    updateShopMock.mockRejectedValue(new Error("Network error"));
+    updateShopMock.mockRejectedValueOnce(new Error("Network error"));
 
     const form = createForm({ id: "s1", name: "Shop", themeId: "theme" });
 
@@ -319,6 +324,8 @@ describe("useShopEditorSubmit", () => {
       await result.current.onSubmit(submitEvent(form) as any);
     });
 
+    expect(updateShopMock).toHaveBeenCalledTimes(1);
+    expect(updateShopMock).toHaveBeenCalledWith("s1", expect.any(FormData));
     expect(result.current.toast).toEqual({
       open: true,
       status: "error",
@@ -326,6 +333,7 @@ describe("useShopEditorSubmit", () => {
         "Something went wrong while saving your changes. Please try again.",
     });
     expect(result.current.errors).toEqual({});
+    expect(result.current.saving).toBe(false);
     expect(sections.identity.setInfo).not.toHaveBeenCalled();
 
     consoleError.mockRestore();

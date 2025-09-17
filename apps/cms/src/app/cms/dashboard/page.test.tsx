@@ -14,16 +14,23 @@ it("renders shop links", async () => {
   mockList.mockResolvedValue(["one", "two"]);
   const { default: Page } = await import("./page");
   render(await Page());
-  expect(screen.getByText("Choose a shop")).toBeInTheDocument();
-  const link = screen.getByRole("link", { name: "one" });
-  expect(link).toHaveAttribute("href", "/cms/dashboard/one");
-  expect(screen.getByRole("link", { name: "two" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("heading", { name: "Choose a storefront to inspect" })
+  ).toBeInTheDocument();
+  const links = screen.getAllByRole("link", { name: "View dashboard" });
+  expect(links).toHaveLength(2);
+  expect(links[0]).toHaveAttribute("href", "/cms/dashboard/one");
+  expect(links[1]).toHaveAttribute("href", "/cms/dashboard/two");
 });
 
 it("shows message when no shops", async () => {
   mockList.mockResolvedValue([]);
   const { default: Page } = await import("./page");
   render(await Page());
-  expect(screen.getByText("No shops found.")).toBeInTheDocument();
+  expect(
+    screen.getByText(
+      "No shops found. Create a shop in the configurator to unlock dashboards."
+    ),
+  ).toBeInTheDocument();
 });
 

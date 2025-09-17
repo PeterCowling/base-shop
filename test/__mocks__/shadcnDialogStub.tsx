@@ -16,10 +16,23 @@ export function CardContent({ children, ...props }: React.HTMLAttributes<HTMLDiv
   );
 }
 
-export function Progress({ value = 0, ...props }: React.HTMLAttributes<HTMLDivElement> & { value?: number }) {
+export function Progress({
+  value = 0,
+  label,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & {
+  value?: number;
+  label?: React.ReactNode;
+}) {
   return (
-    <div role="progressbar" aria-valuenow={value} {...props}>
-      {props.children}
+    <div
+      role="progressbar"
+      aria-valuenow={value}
+      aria-label={typeof label === "string" ? label : undefined}
+      {...props}
+    >
+      {children ?? label ?? null}
     </div>
   );
 }
@@ -65,9 +78,55 @@ export function DialogTitle({ children, ...props }: React.HTMLAttributes<HTMLHea
   );
 }
 
-export function Button(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
-  return <button {...props} />;
-}
+type ButtonStubProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  asChild?: boolean;
+  variant?: string;
+};
+
+export const Button = React.forwardRef<HTMLButtonElement, ButtonStubProps>(
+  ({ asChild = false, children, className, onClick, variant: _variant, ...rest }, ref) => {
+    if (asChild && React.isValidElement(children)) {
+      const childProps = children.props as Record<string, unknown>;
+      const combinedClassName = [childProps.className, className]
+        .filter(Boolean)
+        .join(" ")
+        .trim();
+
+      const mergedProps: Record<string, unknown> = {
+        ...rest,
+      };
+
+      if (combinedClassName) {
+        mergedProps.className = combinedClassName;
+      }
+
+      if (onClick) {
+        const childOnClick = childProps.onClick as
+          | ((event: React.MouseEvent<HTMLElement>) => void)
+          | undefined;
+        mergedProps.onClick = (event: React.MouseEvent<HTMLElement>) => {
+          if (typeof childOnClick === "function") {
+            childOnClick(event);
+          }
+          onClick(event as React.MouseEvent<HTMLButtonElement>);
+        };
+      }
+
+      if (ref) {
+        mergedProps.ref = ref;
+      }
+
+      return React.cloneElement(children, mergedProps);
+    }
+
+    return (
+      <button ref={ref} className={className} onClick={onClick} {...rest}>
+        {children}
+      </button>
+    );
+  },
+);
+Button.displayName = "Button";
 
 export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} />;
@@ -77,6 +136,18 @@ export function Textarea(
   props: React.TextareaHTMLAttributes<HTMLTextAreaElement>
 ) {
   return <textarea {...props} />;
+}
+
+export function Tag({
+  children,
+  variant = "default",
+  ...props
+}: React.HTMLAttributes<HTMLSpanElement> & { variant?: string }) {
+  return (
+    <span data-variant={variant} {...props}>
+      {children}
+    </span>
+  );
 }
 
 // Minimal Select primitives for tests that use shadcn Select

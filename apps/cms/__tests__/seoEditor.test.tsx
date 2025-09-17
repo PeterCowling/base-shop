@@ -18,6 +18,8 @@ jest.mock(
       Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
       Input: (props: any) => <input {...props} />,
       Textarea: (props: any) => <textarea {...props} />,
+      Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+      CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     };
   },
   { virtual: true },
@@ -42,10 +44,9 @@ describe("SeoEditor", () => {
       />,
     );
 
-    const localeSelect = screen.getByRole("combobox");
     expect(screen.getByLabelText("Title")).toHaveValue("Hello");
 
-    await user.selectOptions(localeSelect, "fr");
+    await user.click(screen.getByRole("tab", { name: "FR" }));
 
     expect(screen.getByLabelText("Title")).toHaveValue("Bonjour");
     expect(screen.getByLabelText("Description")).toHaveValue("Desc FR");
@@ -74,9 +75,13 @@ describe("SeoEditor", () => {
     await user.clear(titleInput);
     await user.type(titleInput, "Custom");
 
-    await user.selectOptions(screen.getByRole("combobox"), "fr");
+    await user.click(screen.getByRole("tab", { name: "FR" }));
 
     expect(titleInput).toHaveValue("Custom");
+
+    await user.click(
+      screen.getByRole("button", { name: /show advanced settings/i }),
+    );
     expect(screen.getByLabelText("Canonical Base")).toHaveValue("fr.com");
   });
 
@@ -96,7 +101,7 @@ describe("SeoEditor", () => {
       <SeoEditor shop="s1" languages={["en"]} initialSeo={{ en: {} }} />,
     );
 
-    await user.click(screen.getByRole("button", { name: /generate metadata/i }));
+    await user.click(screen.getByRole("button", { name: /generate with ai/i }));
 
     await waitFor(() =>
       expect(global.fetch).toHaveBeenCalledWith(
@@ -108,7 +113,7 @@ describe("SeoEditor", () => {
     expect(screen.getByLabelText("Title")).toHaveValue("Gen title");
     expect(screen.getByLabelText("Description")).toHaveValue("Gen description");
     expect(screen.getByLabelText("Image URL")).toHaveValue("img.png");
-    expect(screen.getByLabelText("Image Alt")).toHaveValue("Gen alt");
+    expect(screen.getByLabelText("Image Alt Text")).toHaveValue("Gen alt");
   });
 
   it("shows errors from save", async () => {
@@ -143,4 +148,3 @@ describe("SeoEditor", () => {
     expect(await screen.findByText("Check alt text")).toBeInTheDocument();
   });
 });
-

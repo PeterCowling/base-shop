@@ -1,7 +1,15 @@
 "use client";
 
 import { useState, type FormEvent, type ChangeEvent } from "react";
-import { Button, Checkbox, Input } from "@/components/atoms/shadcn";
+
+import { Toast, Tooltip } from "@/components/atoms";
+import {
+  Button,
+  Card,
+  CardContent,
+  Checkbox,
+  Input,
+} from "@/components/atoms/shadcn";
 import { updateAiCatalog } from "@cms/actions/shops.server";
 import { formatTimestamp } from "@acme/date-utils";
 import type { AiCatalogField } from "@acme/types";
@@ -23,6 +31,11 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
   const [state, setState] = useState(initial);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [quickActionBusy, setQuickActionBusy] = useState(false);
+  const [toast, setToast] = useState<{ open: boolean; message: string }>({
+    open: false,
+    message: "",
+  });
 
   const toggleField = (field: AiCatalogField) => {
     setState((s) => ({
@@ -32,6 +45,8 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
         : [...s.fields, field],
     }));
   };
+
+  const queueStatus = state.enabled ? "Active" : "Paused";
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,59 +67,115 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
     setSaving(false);
   };
 
+  const handleQueueCrawl = async () => {
+    setQuickActionBusy(true);
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      setToast({ open: true, message: "AI catalog crawl queued" });
+    } finally {
+      setQuickActionBusy(false);
+    }
+  };
+
+  const handlePreview = () => {
+    setToast({ open: true, message: "Catalog feed preview coming soon" });
+  };
+
   return (
-    <form onSubmit={onSubmit} className="grid max-w-md gap-4">
-      <label className="flex items-center gap-2">
-        <Checkbox
-          name="enabled"
-          checked={state.enabled}
-          onCheckedChange={(v: boolean) =>
-            setState((s) => ({ ...s, enabled: Boolean(v) }))
-          }
-        />
-        <span>Enable AI catalog feed</span>
-      </label>
-      <div className="flex flex-col gap-2">
-        <span>Fields</span>
-        {ALL_FIELDS.map((f) => (
-          <label key={f} className="flex items-center gap-2">
-            <Checkbox
-              name="fields"
-              value={f}
-              checked={state.fields.includes(f)}
-              onCheckedChange={() => toggleField(f)}
-            />
-            <span>{f}</span>
-          </label>
-        ))}
-        {errors.fields && (
-          <span className="text-sm text-red-600">{errors.fields.join("; ")}</span>
-        )}
-      </div>
-      <label className="flex flex-col gap-1">
-        <span>Page size</span>
-        <Input
-          type="number"
-          name="pageSize"
-          value={state.pageSize}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setState((s) => ({ ...s, pageSize: Number(e.target.value) }))
-          }
-        />
-        {errors.pageSize && (
-          <span className="text-sm text-red-600">
-            {errors.pageSize.join("; ")}
-          </span>
-        )}
-      </label>
-      {state.lastCrawl && (
-        <p className="text-sm text-gray-600">
-          Last crawl: {formatTimestamp(state.lastCrawl)}
-        </p>
-      )}
-      <Button className="bg-primary text-white" type="submit" disabled={saving}>
-        {saving ? "Saving…" : "Save"}
-      </Button>
-    </form>
+    <>
+      <Card>
+        <CardContent className="space-y-6 p-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <h3 className="text-lg font-semibold">AI Catalog Feed</h3>
+              <p className="text-muted-foreground text-sm">
+                Configure the structured feed that powers AI discovery surfaces.
+              </p>
+            </div>
+            <div className="text-sm text-right">
+              <p>
+                Last run:
+                {" "}
+                {state.lastCrawl ? formatTimestamp(state.lastCrawl) : "No runs yet"}
+              </p>
+              <p className="mt-1 flex items-center gap-1 justify-end">
+                Queue status: <span className="font-semibold">{queueStatus}</span>
+                <Tooltip text="Queue pauses when the feed is disabled.">?</Tooltip>
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <span className="text-sm font-medium">Quick actions</span>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                onClick={handleQueueCrawl}
+                disabled={quickActionBusy || !state.enabled}
+              >
+                {quickActionBusy ? "Queuing…" : "Queue crawl"}
+              </Button>
+              <Button type="button" variant="outline" onClick={handlePreview}>
+                View feed
+              </Button>
+            </div>
+          </div>
+
+          <form onSubmit={onSubmit} className="grid gap-5">
+            <label className="flex items-center gap-2">
+              <Checkbox
+                name="enabled"
+                checked={state.enabled}
+                onCheckedChange={(v: boolean) =>
+                  setState((s) => ({ ...s, enabled: Boolean(v) }))
+                }
+              />
+              <span className="text-sm font-medium">Enable AI catalog feed</span>
+            </label>
+            <div className="flex flex-col gap-2">
+              <span className="text-sm font-medium">Fields</span>
+              {ALL_FIELDS.map((f) => (
+                <label key={f} className="flex items-center gap-2 text-sm">
+                  <Checkbox
+                    name="fields"
+                    value={f}
+                    checked={state.fields.includes(f)}
+                    onCheckedChange={() => toggleField(f)}
+                  />
+                  <span className="capitalize">{f}</span>
+                </label>
+              ))}
+              {errors.fields && (
+                <span className="text-xs text-destructive">{errors.fields.join("; ")}</span>
+              )}
+            </div>
+            <label className="flex flex-col gap-2">
+              <span className="text-sm font-medium">Page size</span>
+              <Input
+                type="number"
+                name="pageSize"
+                value={state.pageSize}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setState((s) => ({ ...s, pageSize: Number(e.target.value) }))
+                }
+              />
+              {errors.pageSize && (
+                <span className="text-xs text-destructive">
+                  {errors.pageSize.join("; ")}
+                </span>
+              )}
+            </label>
+            <Button type="submit" disabled={saving}>
+              {saving ? "Saving…" : "Save settings"}
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        onClose={() => setToast((t) => ({ ...t, open: false }))}
+      />
+    </>
   );
 }

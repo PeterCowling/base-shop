@@ -1,15 +1,35 @@
-import { render, screen } from "@testing-library/react";
 import React from "react";
+import { render, screen } from "@testing-library/react";
 import { getServerSession } from "next-auth";
 import { listPendingUsers } from "@cms/actions/accounts.server";
 import { readRbac } from "@cms/lib/server/rbacStore";
 import fs from "fs/promises";
 
-jest.mock("@/components/atoms/shadcn", () => ({
-  Button: ({ children, ...props }: { children?: React.ReactNode }) => (
-    <button {...props}>{children}</button>
-  ),
-}));
+jest.mock("@/components/atoms/shadcn", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    Button: ({ children, asChild, ...props }: any) =>
+      asChild && React.isValidElement(children)
+        ? React.cloneElement(children, props)
+        : React.createElement("button", props, children),
+    Card: ({ children, ...props }: any) =>
+      React.createElement("div", props, children),
+    CardContent: ({ children, ...props }: any) =>
+      React.createElement("div", props, children),
+    Progress: ({ label }: any) =>
+      React.createElement("div", { role: label ? "progressbar" : undefined }, label ?? null),
+    Tag: ({ children, ...props }: any) =>
+      React.createElement("span", props, children),
+    Checkbox: ({ checked, onCheckedChange, ...props }: any) =>
+      React.createElement("input", {
+        ...props,
+        type: "checkbox",
+        checked,
+        onChange: () => onCheckedChange?.(!checked),
+      }),
+  };
+});
 
 jest.mock("@cms/actions/accounts.server", () => ({
   approveAccount: jest.fn(),
@@ -24,12 +44,6 @@ jest.mock("@cms/lib/server/rbacStore", () => ({
 
 jest.mock("@platform-core/dataRoot", () => ({
   resolveDataRoot: () => "/data",
-}));
-
-jest.mock("@ui/components/templates", () => ({
-  DashboardTemplate: ({ stats }: { stats: Array<{ label: string; value: React.ReactNode }> }) => (
-    <div data-testid="dashboard">{stats.map((s) => `${s.label}:${s.value}`).join(",")}</div>
-  ),
 }));
 
 jest.mock("next-auth", () => ({ getServerSession: jest.fn() }));
@@ -47,7 +61,7 @@ const mockSession = getServerSession as jest.Mock;
 const mockReaddir = fs.readdir as unknown as jest.Mock;
 const mockListPending = listPendingUsers as jest.Mock;
 
-it("shows create shop link for admin when no shops exist", async () => {
+it("shows admin actions when no shops exist", async () => {
   mockSession.mockResolvedValueOnce({ user: { role: "admin" } });
   mockReaddir.mockResolvedValueOnce([]);
   mockListPending.mockResolvedValueOnce([]);
@@ -56,11 +70,12 @@ it("shows create shop link for admin when no shops exist", async () => {
   render(await CmsDashboardPage());
 
   expect(
-    screen.getByText("No shops found. Get started by creating your first shop.")
+    screen.getByRole("heading", { name: /operate every storefront with confidence/i })
   ).toBeInTheDocument();
-  const link = screen.getByRole("link", { name: "Create Shop" });
+  const link = screen.getByRole("link", { name: /create new shop/i });
   expect(link).toHaveAttribute("href", "/cms/configurator");
-  expect(screen.getByText("No pending requests.")).toBeInTheDocument();
+  expect(screen.getByText(/no storefronts live yet/i)).toBeInTheDocument();
+  expect(screen.getAllByText(/no pending approvals/i)).not.toHaveLength(0);
 });
 
 it("hides admin controls for non-admin users", async () => {
@@ -71,9 +86,8 @@ it("hides admin controls for non-admin users", async () => {
   render(await CmsDashboardPage());
 
   expect(
-    screen.getByText("No shops found. Get started by creating your first shop.")
+    screen.getByText(/only administrators can approve new accounts/i)
   ).toBeInTheDocument();
-  expect(screen.queryByRole("link", { name: "Create Shop" })).toBeNull();
-  expect(screen.queryByText("Account Requests")).toBeNull();
+  expect(screen.queryByRole("link", { name: /create new shop/i })).toBeNull();
   expect(mockListPending).not.toHaveBeenCalled();
 });

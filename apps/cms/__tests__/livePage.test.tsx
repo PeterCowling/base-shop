@@ -1,6 +1,25 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import LivePage from "../src/app/cms/live/page";
+
+jest.mock("@/components/atoms/shadcn", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    Button: ({ children, asChild, ...props }: any) =>
+      asChild && React.isValidElement(children)
+        ? React.cloneElement(children, props)
+        : React.createElement("button", props, children),
+    Card: ({ children, ...props }: any) =>
+      React.createElement("div", props, children),
+    CardContent: ({ children, ...props }: any) =>
+      React.createElement("div", props, children),
+    Progress: ({ label }: any) =>
+      React.createElement("div", { role: label ? "progressbar" : undefined }, label ?? null),
+    Tag: ({ children, ...props }: any) =>
+      React.createElement("span", props, children),
+  };
+});
 
 // Mock listShops to provide a set of shops
 jest.mock("../src/lib/listShops", () => ({
@@ -46,24 +65,27 @@ jest.mock("fs/promises", () => ({
 
 describe("LivePage", () => {
   it("renders shop links and errors for missing ports", async () => {
+    const openSpy = jest.spyOn(window, "open").mockImplementation(() => null);
     render(await LivePage());
 
-    const alpha = await screen.findByRole("link", { name: "shop-alpha" });
-    expect(alpha).toHaveAttribute("href", "http://localhost:3001");
+    const openButton = await screen.findByRole("button", {
+      name: /open preview/i,
+    });
+    fireEvent.click(openButton);
+    expect(openSpy).toHaveBeenCalledWith(
+      "http://localhost:3001",
+      "_blank",
+      "noopener,noreferrer",
+    );
 
-    const beta = await screen.findByRole("link", { name: "shop-beta" });
-    expect(beta).toHaveAttribute("href", "#");
-    expect(
-      await screen.findByText(
-        "Failed to determine port: package.json not found",
-      ),
-    ).toBeInTheDocument();
+    const detailButtons = await screen.findAllByRole("button", {
+      name: /view details/i,
+    });
+    fireEvent.click(detailButtons[0]);
 
-    const gamma = await screen.findByRole("link", { name: "shop-gamma" });
-    expect(gamma).toHaveAttribute("href", "#");
-    expect(
-      await screen.findByText("Failed to determine port: bad package"),
-    ).toBeInTheDocument();
+    expect(await screen.findByText("package.json not found")).toBeInTheDocument();
+
+    openSpy.mockRestore();
   });
 });
 

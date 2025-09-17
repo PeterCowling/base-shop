@@ -1,6 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import {
+  type ComponentPropsWithoutRef,
+  type ComponentType,
+  useMemo,
+  useState,
+} from "react";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
@@ -25,6 +30,55 @@ type CollectionKey = "regions" | "windows" | "carriers";
 
 const ensureCollection = (values: string[]) =>
   values.length > 0 ? values : [""];
+
+const buildPremierDeliveryFormData = (formData: FormData) => {
+  const payload = new FormData();
+
+  const appendCollection = (key: CollectionKey) => {
+    formData
+      .getAll(key)
+      .map((value) => String(value))
+      .map((value) => value.trim())
+      .filter(Boolean)
+      .forEach((value) => {
+        payload.append(key, value);
+      });
+  };
+
+  appendCollection("regions");
+  appendCollection("windows");
+  appendCollection("carriers");
+
+  const surcharge = formData.get("surcharge");
+  if (typeof surcharge === "string") {
+    const trimmed = surcharge.trim();
+    if (trimmed) {
+      payload.set("surcharge", trimmed);
+    }
+  }
+
+  const serviceLabel = formData.get("serviceLabel");
+  if (typeof serviceLabel === "string") {
+    const trimmed = serviceLabel.trim();
+    if (trimmed) {
+      payload.set("serviceLabel", trimmed);
+    }
+  }
+
+  return payload;
+};
+
+type ContainerProps = ComponentPropsWithoutRef<"div">;
+
+const PrimitiveContainer = ({ children, ...props }: ContainerProps) => (
+  <div {...props}>{children}</div>
+);
+
+const CardRoot: ComponentType<ContainerProps> =
+  (Card as ComponentType<ContainerProps> | undefined) ?? PrimitiveContainer;
+
+const CardSection: ComponentType<ContainerProps> =
+  (CardContent as ComponentType<ContainerProps> | undefined) ?? PrimitiveContainer;
 
 interface Props {
   shop: string;
@@ -57,7 +111,8 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
     toastClassName,
     closeToast,
   } = useSettingsSaveForm<PremierDeliveryResult>({
-    action: (formData) => updatePremierDelivery(shop, formData),
+    action: (formData) =>
+      updatePremierDelivery(shop, buildPremierDeliveryFormData(formData)),
     successMessage: "Premier delivery settings saved.",
     errorMessage: "Unable to update premier delivery settings.",
     onSuccess: (result) => {
@@ -104,8 +159,8 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
 
   return (
     <>
-      <Card className="border border-border/60">
-        <CardContent className="space-y-6 p-6">
+      <CardRoot className="border border-border/60">
+        <CardSection className="space-y-6 p-6">
           <form className="space-y-6" onSubmit={handleSubmit} noValidate>
             <div className="grid gap-6 sm:grid-cols-2">
               <FormField
@@ -206,8 +261,8 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
               </Button>
             </div>
           </form>
-        </CardContent>
-      </Card>
+        </CardSection>
+      </CardRoot>
       <Toast
         open={toast.open}
         message={toast.message}

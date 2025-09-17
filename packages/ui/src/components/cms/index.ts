@@ -11,3 +11,5 @@ export { default as PageBuilder } from "./page-builder/PageBuilder";
 export * from "./page-builder";
 export { default as DeviceSelector } from "./DeviceSelector";
 export { default as MediaSelectionCheck } from "./MediaSelectionCheck";
+export { default as ShopChooser } from "./ShopChooser";
+export type { ShopChooserProps } from "./ShopChooser";

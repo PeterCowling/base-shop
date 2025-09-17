@@ -1,10 +1,10 @@
 import { ReactElement } from "react";
 import type { MediaItem } from "@acme/types";
-import MediaDetailsPanel, { type MediaDetailsFormValues } from "./media/MediaDetailsPanel";
+import MediaDetailsPanel, { type MediaDetailsFormValues } from "./media/details/MediaDetailsPanel";
 export type {
     MediaDetailsFormValues,
     MediaDetailsPanelProps,
-} from "./media/MediaDetailsPanel";
+} from "./media/details/MediaDetailsPanel";
 interface Props {
     shop: string;
     initialFiles: MediaItem[];

@@ -1,3 +1,4 @@
+import { act } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { MediaItem } from "@acme/types";
@@ -5,9 +6,12 @@ import type { MediaItem } from "@acme/types";
 import { updateMediaMetadata } from "@cms/actions/media.server";
 import MediaManager from "../MediaManager";
 
+let libraryProps: any;
+
 jest.mock("../media/Library", () => {
   const React = require("react");
   return function MockLibrary(props: any) {
+    libraryProps = props;
     const { files, onDelete, onSelect } = props;
     return (
       <div>
@@ -231,7 +235,7 @@ describe("MediaManager", () => {
     expect(screen.getAllByTestId("media-row")).toHaveLength(2);
   });
 
-  it("saves metadata, updates the list, shows a toast, and closes the details panel", async () => {
+  it("saves metadata, updates the list, shows a toast, and keeps the details panel open", async () => {
     const user = userEvent.setup();
     const deferred = createDeferred<MediaItem>();
     mockUpdateMediaMetadata.mockImplementation(() => deferred.promise);
@@ -279,6 +283,12 @@ describe("MediaManager", () => {
     );
 
     expect(await screen.findByText("Media details updated.")).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("dialog", { name: "Media details" })
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Close" }));
 
     await waitFor(() =>
       expect(screen.queryByRole("dialog", { name: "Media details" })).not.toBeInTheDocument()
@@ -334,17 +344,24 @@ describe("MediaManager", () => {
       libraryProps.onReplaceSuccess?.({ url: "3", type: "image" });
     });
     expect(errorSpy).not.toHaveBeenCalled();
+    expect(screen.getByText("Media replaced.")).toBeInTheDocument();
 
     act(() => {
       libraryProps.onReplaceSuccess?.({ type: "image" });
     });
     expect(errorSpy).toHaveBeenNthCalledWith(1, "Replacement media item is missing a URL", { type: "image" });
+    expect(
+      screen.getByText("Replacement media item is missing a URL.")
+    ).toBeInTheDocument();
 
-    libraryProps.onReplaceError?.("something went wrong");
+    act(() => {
+      libraryProps.onReplaceError?.("something went wrong");
+    });
     expect(errorSpy).toHaveBeenLastCalledWith(
       "Failed to replace media item",
       "something went wrong"
     );
+    expect(screen.getByText("something went wrong")).toBeInTheDocument();
 
     errorSpy.mockRestore();
   });

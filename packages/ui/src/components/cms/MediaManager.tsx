@@ -1,7 +1,7 @@
 // packages/ui/src/components/cms/MediaManager.tsx
 "use client";
 
-import { memo, ReactElement, useCallback, useMemo, useState } from "react";
+import { memo, ReactElement, useCallback, useMemo, useRef, useState } from "react";
 import type { MediaItem } from "@acme/types";
 import MediaDetailsPanel, {
   type MediaDetailsFormValues,
@@ -98,6 +98,8 @@ function MediaManagerBase({
     uploading: false,
     toast: { open: false, message: "" },
   }));
+
+  const replacingUrlRef = useRef<string | null>(null);
 
   const setFiles = useCallback(
     (value: StateUpdater<MediaItemWithUrl[]>) => {
@@ -211,7 +213,7 @@ function MediaManagerBase({
     []
   );
 
-  const { files, selectedUrl, metadataPending, toast } = state;
+  const { files, selectedUrl, metadataPending, toast, replacingUrl } = state;
 
   const selectedItem = useMemo(() => {
     if (!selectedUrl) return null;
@@ -247,50 +249,126 @@ function MediaManagerBase({
     [onDelete, setDeletePending, setDialogDeleteUrl, setFiles, setSelectedUrl, setToast, shop]
   );
 
-  const handleUploaded = useCallback((item: MediaItem) => {
-    if (!hasUrl(item)) {
-      console.error("Uploaded media item is missing a URL", item);
-      return;
-    }
-    const itemWithUrl = item as MediaItemWithUrl;
-    setFiles((prev) => [itemWithUrl, ...prev]);
-    setUploading(false);
-    setToast({
-      open: true,
-      message: "Media uploaded.",
-      variant: "success",
-    });
-  }, [setFiles, setToast, setUploading]);
+  const handleUploaded = useCallback(
+    (item: MediaItem) => {
+      if (!hasUrl(item)) {
+        console.error("Uploaded media item is missing a URL", item);
+        setToast({
+          open: true,
+          message: "Uploaded media item is missing a URL.",
+          variant: "error",
+        });
+        setUploading(false);
+        return;
+      }
 
-  const handleReplace = useCallback((oldUrl: string, item: MediaItem) => {
-    setReplacingUrl(oldUrl);
-    if (!hasUrl(item)) {
-      console.error("Replacement media item is missing a URL", item);
+      const itemWithUrl = item as MediaItemWithUrl;
+      setFiles((prev) => [itemWithUrl, ...prev]);
+      setSelectedUrl(itemWithUrl.url);
+      setUploading(false);
+      setToast({
+        open: true,
+        message: "Media uploaded.",
+        variant: "success",
+      });
+    },
+    [setFiles, setSelectedUrl, setToast, setUploading]
+  );
+
+  const handleUploadError = useCallback(
+    (message: string) => {
+      setUploading(false);
+      setToast({
+        open: true,
+        message: message || "Failed to upload media.",
+        variant: "error",
+      });
+    },
+    [setToast, setUploading]
+  );
+
+  const handleReplace = useCallback(
+    (oldUrl: string) => {
+      setReplacingUrl(oldUrl);
+      replacingUrlRef.current = oldUrl;
+    },
+    [setReplacingUrl]
+  );
+
+  const handleReplaceSuccess = useCallback(
+    (item: MediaItem) => {
+      if (!hasUrl(item)) {
+        console.error("Replacement media item is missing a URL", item);
+        setToast({
+          open: true,
+          message: "Replacement media item is missing a URL.",
+          variant: "error",
+        });
+        setReplacingUrl(null);
+        replacingUrlRef.current = null;
+        return;
+      }
+
+      const previousUrl = replacingUrlRef.current;
+      const itemWithUrl = item as MediaItemWithUrl;
+
+      setFiles((prev) => {
+        if (previousUrl) {
+          let replaced = false;
+          const next = prev.map((file) => {
+            if (file.url === previousUrl) {
+              replaced = true;
+              return { ...file, ...itemWithUrl } as MediaItemWithUrl;
+            }
+            return file;
+          });
+          if (replaced) {
+            return next;
+          }
+        }
+
+        if (prev.some((file) => file.url === itemWithUrl.url)) {
+          return prev.map((file) =>
+            file.url === itemWithUrl.url
+              ? ({ ...file, ...itemWithUrl } as MediaItemWithUrl)
+              : file
+          );
+        }
+
+        return [itemWithUrl, ...prev];
+      });
+
+      setSelectedUrl((prev) => {
+        if (previousUrl && prev === previousUrl) return itemWithUrl.url;
+        if (prev === itemWithUrl.url) return itemWithUrl.url;
+        return prev;
+      });
+
+      setToast({
+        open: true,
+        message: "Media replaced.",
+        variant: "success",
+      });
+
       setReplacingUrl(null);
-      return;
-    }
-    const itemWithUrl = item as MediaItemWithUrl;
-    setFiles((prev) => prev.map((f) => (f.url === oldUrl ? itemWithUrl : f)));
-    setSelectedUrl((prev) => (prev === oldUrl ? itemWithUrl.url : prev));
-    setReplacingUrl(null);
-    setToast({
-      open: true,
-      message: "Media replaced.",
-      variant: "success",
-    });
-  }, [setFiles, setReplacingUrl, setSelectedUrl, setToast]);
+      replacingUrlRef.current = null;
+    },
+    [setFiles, setReplacingUrl, setSelectedUrl, setToast]
+  );
 
-  const handleReplaceSuccess = useCallback((item: MediaItem) => {
-    if (!hasUrl(item)) {
-      console.error("Replacement media item is missing a URL", item);
-      return;
-    }
-    setSelectedUrl(item.url);
-  }, []);
-
-  const handleReplaceError = useCallback((message: string) => {
-    console.error("Failed to replace media item", message);
-  }, []);
+  const handleReplaceError = useCallback(
+    (message: string) => {
+      console.error("Failed to replace media item", message);
+      setReplacingUrl(null);
+      replacingUrlRef.current = null;
+      setToast({
+        open: true,
+        message: message || "Failed to replace media item.",
+        variant: "error",
+      });
+    },
+    [setReplacingUrl, setToast]
+  );
 
   const handleSelect = useCallback((item: MediaItemWithUrl | null) => {
     setSelectedUrl(item?.url ?? null);
@@ -306,6 +384,11 @@ function MediaManagerBase({
         const updated = await onMetadataUpdate(shop, currentUrl, fields);
         if (!hasUrl(updated)) {
           console.error("Updated media item is missing a URL", updated);
+          setToast({
+            open: true,
+            message: "Updated media item is missing a URL.",
+            variant: "error",
+          });
           return;
         }
 
@@ -317,7 +400,7 @@ function MediaManagerBase({
               : file
           )
         );
-        setSelectedUrl(null);
+        setSelectedUrl(updatedWithUrl.url);
         setToast({
           open: true,
           message: "Media details updated.",
@@ -341,16 +424,13 @@ function MediaManagerBase({
     setSelectedUrl(null);
   }, [setSelectedUrl]);
 
-  const handleToastClose = useCallback(() => {
-    setToast((previous) => ({ ...previous, open: false }));
-  }, [setToast]);
-
   return (
     <div className="space-y-6">
       <UploadPanel
         shop={shop}
         onUploaded={handleUploaded}
         focusTargetId={uploaderTargetId}
+        onUploadError={handleUploadError}
       />
       <Library
         files={files}
@@ -360,6 +440,7 @@ function MediaManagerBase({
         onReplaceSuccess={handleReplaceSuccess}
         onReplaceError={handleReplaceError}
         onSelect={handleSelect}
+        isReplacing={(file) => file.url === replacingUrl}
       />
       {selectedItem ? (
         <MediaDetailsPanel
@@ -373,12 +454,8 @@ function MediaManagerBase({
       <Toast
         open={toast.open}
         message={toast.message}
-        onClose={handleToastClose}
-        className={
-          toast.variant === "error"
-            ? "bg-destructive text-destructive-foreground"
-            : undefined
-        }
+        variant={toast.variant}
+        onClose={() => setToast((previous) => ({ ...previous, open: false }))}
         data-cy="media-manager-toast"
       />
     </div>

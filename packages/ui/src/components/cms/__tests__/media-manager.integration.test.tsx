@@ -314,6 +314,7 @@ describe("Media manager integration", () => {
 
     const uploadedLabels = await screen.findAllByText("Uploaded hero.png");
     expect(uploadedLabels.length).toBeGreaterThan(0);
+    await user.click(screen.getByRole("button", { name: "Close details" }));
     expect(
       screen.getAllByRole("button", { name: /media actions/i })
     ).toHaveLength(3);

@@ -10,9 +10,14 @@ import { ChangeEvent, ReactElement, useState } from "react";
 interface UploadPanelProps {
   shop: string;
   onUploaded: (item: MediaItem) => void;
+  focusTargetId?: string;
 }
 
-export default function UploadPanel({ shop, onUploaded }: UploadPanelProps): ReactElement {
+export default function UploadPanel({
+  shop,
+  onUploaded,
+  focusTargetId,
+}: UploadPanelProps): ReactElement {
   const [dragActive, setDragActive] = useState(false);
   const feedbackId = "media-upload-feedback";
 
@@ -43,6 +48,7 @@ export default function UploadPanel({ shop, onUploaded }: UploadPanelProps): Rea
   return (
     <div className="space-y-2">
       <div
+        id={focusTargetId}
         tabIndex={0}
         role="button"
         aria-label="Drop image or video here or press Enter to browse"

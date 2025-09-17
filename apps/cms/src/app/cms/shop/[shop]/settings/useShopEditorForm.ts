@@ -8,6 +8,7 @@ import useMappingRows from "@/hooks/useMappingRows";
 import useShopEditorSubmit, {
   type MappingRowsController,
 } from "./useShopEditorSubmit";
+import { mapThemeTokenRows } from "./tableMappers";
 
 interface HookArgs {
   shop: string;
@@ -40,18 +41,10 @@ export function useShopEditorForm({
 
   const shippingProviders = providersByType("shipping");
 
-  const tokenRows = useMemo(() => {
-    const defaults = info.themeDefaults ?? {};
-    const overrides = info.themeOverrides ?? {};
-    const tokens = Array.from(
-      new Set([...Object.keys(defaults), ...Object.keys(overrides)]),
-    );
-    return tokens.map((token) => ({
-      token,
-      defaultValue: defaults[token],
-      overrideValue: overrides[token],
-    }));
-  }, [info.themeDefaults, info.themeOverrides]);
+  const tokenRows = useMemo(
+    () => mapThemeTokenRows(info.themeDefaults ?? {}, info.themeOverrides ?? {}),
+    [info.themeDefaults, info.themeOverrides],
+  );
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

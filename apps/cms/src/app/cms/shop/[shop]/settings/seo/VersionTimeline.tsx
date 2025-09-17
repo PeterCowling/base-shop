@@ -12,6 +12,7 @@ import { revertSeo } from "@cms/actions/shops.server";
 import type { SettingsDiffEntry } from "@platform-core/repositories/settings.server";
 import { diffHistory } from "@platform-core/repositories/settings.server";
 import { formatTimestamp } from "@acme/date-utils";
+import { CodeBlock } from "@ui/components/molecules";
 import { useEffect, useState } from "react";
 
 interface VersionTimelineProps {
@@ -76,9 +77,10 @@ export default function VersionTimeline({
                       Revert
                     </Button>
                   </div>
-                  <pre className="bg-muted overflow-auto rounded p-2 text-xs">
-                    {JSON.stringify(entry.diff, null, 2)}
-                  </pre>
+                  <CodeBlock
+                    code={JSON.stringify(entry.diff, null, 2)}
+                    preClassName="text-xs"
+                  />
                 </li>
               ))}
             </ul>

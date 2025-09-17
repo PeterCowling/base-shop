@@ -8,24 +8,17 @@ import {
   readShop,
 } from "@platform-core/repositories/json.server";
 import type { Locale } from "@acme/types";
+import DataTable from "@ui/components/cms/DataTable";
+import { CodeBlock } from "@ui/components/molecules";
 import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-
-const HEX_RE = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
-const HSL_RE =
-  /^\d+(?:\.\d+)?\s+\d+(?:\.\d+)?%\s+\d+(?:\.\d+)?%$/;
-
-function isColor(value: string) {
-  return HEX_RE.test(value) || HSL_RE.test(value);
-}
-
-function swatchStyle(value: string) {
-  return {
-    backgroundColor: HSL_RE.test(value) ? `hsl(${value})` : value,
-  } as const;
-}
+import {
+  createThemeTokenColumns,
+  mapThemeTokenRows,
+  themeTokenRowClassName,
+} from "./tableMappers";
 
 const ShopEditor = dynamic(() => import("./ShopEditor"));
 void ShopEditor;
@@ -53,6 +46,21 @@ export default async function SettingsPage({
     : false;
   const defaultTokens = info.themeDefaults ?? {};
   const overrides = info.themeOverrides ?? {};
+  const themeTokenRows = mapThemeTokenRows(defaultTokens, overrides);
+  const themeTokenColumns = createThemeTokenColumns({
+    onReset: isAdmin
+      ? ({ token }) => (
+          <form action={resetThemeOverride.bind(null, shop, token)}>
+            <button
+              type="submit"
+              className="text-xs text-primary underline"
+            >
+              Reset
+            </button>
+          </form>
+        )
+      : undefined,
+  });
 
   return (
     <div>
@@ -131,83 +139,20 @@ export default async function SettingsPage({
       <p className="mt-2 text-sm">{info.themeId}</p>
       <h3 className="mt-4 font-medium">Theme Tokens</h3>
       <div className="mt-2">
-        <table className="text-sm">
-          <thead>
-            <tr>
-              <th className="text-left">Token</th>
-              <th className="text-left">Values</th>
-              <th className="text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.keys(defaultTokens).sort().map((k) => {
-              const override = overrides[k];
-              const hasOverride = override !== undefined;
-              const changed = hasOverride && override !== defaultTokens[k];
-              return (
-                <tr key={k} className={changed ? "bg-yellow-50" : undefined}>
-                  <td className="pr-4 font-mono">{k}</td>
-                  <td className="pr-4">
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-1">
-                        <span className="font-mono">{defaultTokens[k]}</span>
-                        {isColor(defaultTokens[k]) && (
-                          <span
-                            className="ml-1 inline-block h-4 w-4 rounded border align-middle"
-                            style={swatchStyle(defaultTokens[k])}
-                          />
-                        )}
-                        <span className="text-xs text-muted-foreground">default</span>
-                      </div>
-                      {hasOverride && (
-                        <div className="flex items-center gap-1">
-                          <span className="font-mono">{override}</span>
-                          {isColor(override) && (
-                            <span
-                              className="ml-1 inline-block h-4 w-4 rounded border align-middle"
-                              style={swatchStyle(override)}
-                            />
-                          )}
-                          <span className="text-xs text-muted-foreground">override</span>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-                  <td className="pr-4">
-                    {hasOverride && isAdmin && (
-                      <form action={resetThemeOverride.bind(null, shop, k)}>
-                        <button
-                          type="submit"
-                          className="text-xs text-primary underline"
-                        >
-                          Reset
-                        </button>
-                      </form>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        {Object.keys(overrides ?? {}).length === 0 && (
-          <span className="text-muted-foreground text-xs">
-            (using theme defaults)
-          </span>
-        )}
+        <DataTable
+          rows={themeTokenRows}
+          columns={themeTokenColumns}
+          rowClassName={themeTokenRowClassName}
+        />
       </div>
       <h3 className="mt-4 font-medium">Catalog Filters</h3>
       <p className="mt-2 text-sm">{info.catalogFilters.join(", ")}</p>
       <h3 className="mt-4 font-medium">Filter Mappings</h3>
-      <div className="mt-2 flex items-center gap-2">
-        <pre className="rounded bg-gray-50 p-2 text-sm">
-          {JSON.stringify(info.filterMappings, null, 2)}
-        </pre>
-        {Object.keys(info.filterMappings ?? {}).length === 0 && (
-          <span className="text-muted-foreground text-xs">
-            (using theme defaults)
-          </span>
-        )}
+      <div className="mt-2">
+        <CodeBlock
+          code={JSON.stringify(info.filterMappings, null, 2)}
+          preClassName="text-sm"
+        />
       </div>
       <h3 className="mt-4 font-medium">Currency / Tax</h3>
       <p className="mt-2 text-sm">

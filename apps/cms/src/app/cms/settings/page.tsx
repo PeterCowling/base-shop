@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/settings/page.tsx
 
 import Link from "next/link";
-import ShopChooser from "@/components/cms/ShopChooser";
+import ShopChooser from "@ui/components/cms/ShopChooser";
 import { Button, Card, CardContent, Tag } from "@ui/components/atoms";
 import { listShops } from "../../../lib/listShops";
 

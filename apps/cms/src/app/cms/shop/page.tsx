@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/page.tsx
 
-import ShopChooser from "@/components/cms/ShopChooser";
+import ShopChooser from "@ui/components/cms/ShopChooser";
 import { Tag } from "@ui/components/atoms";
 import { listShops } from "../../../lib/listShops";
 
@@ -34,7 +34,7 @@ export default async function ShopIndexPage() {
         shops={shops}
         card={{
           icon: "🏪",
-          title: (shop) => shop.toUpperCase(),
+          title: (shop) => shop,
           description: (shop) =>
             `Coordinate configuration, launches, and health checks for ${shop}.`,
           ctaLabel: () => "Open shop overview",

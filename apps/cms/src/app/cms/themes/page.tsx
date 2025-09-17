@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/themes/page.tsx
 
-import ShopChooser from "@/components/cms/ShopChooser";
+import ShopChooser from "@ui/components/cms/ShopChooser";
 import { Tag } from "@ui/components/atoms";
 import { listShops } from "../../../lib/listShops";
 

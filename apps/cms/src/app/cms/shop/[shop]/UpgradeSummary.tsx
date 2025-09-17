@@ -1,5 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/UpgradeSummary.tsx
 
+import DataTable, { type Column } from "@ui/components/cms/DataTable";
+
 interface ComponentChange {
   name: string;
   from: string | null;
@@ -12,6 +14,38 @@ interface ComponentResponse {
 }
 
 export const revalidate = 0;
+
+const componentColumns: Column<ComponentChange>[] = [
+  {
+    header: "Package",
+    render: (row) => row.name,
+  },
+  {
+    header: "Current",
+    render: (row) => row.from ?? "-",
+  },
+  {
+    header: "New",
+    render: (row) => row.to,
+  },
+  {
+    header: "Changelog",
+    width: "120px",
+    render: (row) =>
+      row.changelog ? (
+        <a
+          href={row.changelog}
+          target="_blank"
+          rel="noreferrer"
+          className="text-primary underline"
+        >
+          View
+        </a>
+      ) : (
+        <span className="text-muted-foreground">—</span>
+      ),
+  },
+];
 
 export default async function UpgradeSummary({ shop }: { shop: string }) {
   const res = await fetch(`/api/components/${shop}?diff`, {
@@ -34,38 +68,8 @@ export default async function UpgradeSummary({ shop }: { shop: string }) {
   }
 
   return (
-    <table className="mt-4 w-full text-left text-sm">
-      <thead>
-        <tr>
-          <th className="pr-4">Package</th>
-          <th className="pr-4">Current</th>
-          <th className="pr-4">New</th>
-          <th className="pr-4">Changelog</th>
-        </tr>
-      </thead>
-      <tbody>
-        {components.map((c) => (
-          <tr key={c.name}>
-            <td className="pr-4">{c.name}</td>
-            <td className="pr-4">{c.from ?? "-"}</td>
-            <td className="pr-4">{c.to}</td>
-            <td>
-              {c.changelog ? (
-                <a
-                  href={c.changelog}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-primary underline"
-                >
-                  View
-                </a>
-              ) : (
-                <span className="text-muted-foreground">—</span>
-              )}
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="mt-4">
+      <DataTable rows={components} columns={componentColumns} />
+    </div>
   );
 }

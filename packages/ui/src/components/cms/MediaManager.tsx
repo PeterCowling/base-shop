@@ -211,7 +211,7 @@ function MediaManagerBase({
     []
   );
 
-  const { files, selectedUrl, metadataPending } = state;
+  const { files, selectedUrl, metadataPending, toast } = state;
 
   const selectedItem = useMemo(() => {
     if (!selectedUrl) return null;
@@ -317,7 +317,7 @@ function MediaManagerBase({
               : file
           )
         );
-        setSelectedUrl(updatedWithUrl.url);
+        setSelectedUrl(null);
         setToast({
           open: true,
           message: "Media details updated.",
@@ -340,6 +340,10 @@ function MediaManagerBase({
   const handleCloseDetails = useCallback(() => {
     setSelectedUrl(null);
   }, [setSelectedUrl]);
+
+  const handleToastClose = useCallback(() => {
+    setToast((previous) => ({ ...previous, open: false }));
+  }, [setToast]);
 
   return (
     <div className="space-y-6">
@@ -366,6 +370,17 @@ function MediaManagerBase({
           onClose={handleCloseDetails}
         />
       ) : null}
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        onClose={handleToastClose}
+        className={
+          toast.variant === "error"
+            ? "bg-destructive text-destructive-foreground"
+            : undefined
+        }
+        data-cy="media-manager-toast"
+      />
     </div>
   );
 }

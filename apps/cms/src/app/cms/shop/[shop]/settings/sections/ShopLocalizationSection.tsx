@@ -4,45 +4,52 @@ import {
   Button,
   Card,
   CardContent,
-  FormField,
   Input,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ui";
+} from "@/components/atoms/shadcn";
+import { FormField } from "@/components/molecules/FormField";
 import type { MappingRow } from "@/hooks/useMappingRows";
 
 const DEFAULT_LOCALES = ["en", "de", "it"] as const;
 
-type LocalizationErrorKey = "localeOverrides";
+type ShopLocalizationErrors = Partial<Record<"localeOverrides", string[]>>;
 
-export type LocalizationSectionErrors = Partial<
-  Record<LocalizationErrorKey, string[]>
->;
-
-export interface LocalizationSectionProps {
-  values: MappingRow[];
-  errors?: LocalizationSectionErrors;
-  onAdd: () => void;
-  onUpdate: (index: number, field: "key" | "value", value: string) => void;
-  onRemove: (index: number) => void;
+export interface ShopLocalizationSectionProps {
+  overrides: MappingRow[];
+  errors?: ShopLocalizationErrors | Record<string, string[]>;
+  onAddOverride: () => void;
+  onUpdateOverride: (
+    index: number,
+    field: "key" | "value",
+    value: string,
+  ) => void;
+  onRemoveOverride: (index: number) => void;
   availableLocales?: readonly string[];
 }
 
-function formatError(messages?: string[]) {
+function formatErrors(
+  errors: ShopLocalizationSectionProps["errors"],
+  key: string,
+) {
+  if (!errors) return undefined;
+  const messages = errors[key];
   return messages && messages.length > 0 ? messages.join("; ") : undefined;
 }
 
-export default function LocalizationSection({
-  values,
+export default function ShopLocalizationSection({
+  overrides,
   errors,
-  onAdd,
-  onUpdate,
-  onRemove,
+  onAddOverride,
+  onUpdateOverride,
+  onRemoveOverride,
   availableLocales = DEFAULT_LOCALES,
-}: LocalizationSectionProps) {
+}: ShopLocalizationSectionProps) {
+  const listError = formatErrors(errors, "localeOverrides");
+
   return (
     <Card>
       <CardContent className="space-y-6 p-6">
@@ -54,12 +61,12 @@ export default function LocalizationSection({
         </div>
 
         <div className="space-y-4">
-          {values.length === 0 ? (
+          {overrides.length === 0 ? (
             <p className="text-sm text-muted-foreground">
               No locale overrides configured.
             </p>
           ) : (
-            values.map((row, index) => {
+            overrides.map((row, index) => {
               const keyId = `locale-override-key-${index}`;
               const valueId = `locale-override-value-${index}`;
               return (
@@ -73,7 +80,7 @@ export default function LocalizationSection({
                       name="localeOverridesKey"
                       value={row.key}
                       onChange={(event) =>
-                        onUpdate(index, "key", event.target.value)
+                        onUpdateOverride(index, "key", event.target.value)
                       }
                       placeholder="/collections/new"
                     />
@@ -82,7 +89,9 @@ export default function LocalizationSection({
                     <Select
                       name="localeOverridesValue"
                       value={row.value === "" ? undefined : row.value}
-                      onValueChange={(value) => onUpdate(index, "value", value)}
+                      onValueChange={(value) =>
+                        onUpdateOverride(index, "value", value)
+                      }
                     >
                       <SelectTrigger id={valueId}>
                         <SelectValue placeholder="Select locale" />
@@ -99,7 +108,7 @@ export default function LocalizationSection({
                   <Button
                     type="button"
                     variant="ghost"
-                    onClick={() => onRemove(index)}
+                    onClick={() => onRemoveOverride(index)}
                   >
                     Remove
                   </Button>
@@ -110,12 +119,16 @@ export default function LocalizationSection({
         </div>
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <Button type="button" onClick={onAdd} className="w-full sm:w-auto">
+          <Button
+            type="button"
+            onClick={onAddOverride}
+            className="w-full sm:w-auto"
+          >
             Add locale override
           </Button>
-          {errors?.localeOverrides ? (
+          {listError ? (
             <p className="text-sm text-destructive">
-              {formatError(errors.localeOverrides)}
+              <span role="alert">{listError}</span>
             </p>
           ) : null}
         </div>

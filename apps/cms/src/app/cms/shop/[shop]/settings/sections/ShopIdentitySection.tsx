@@ -1,10 +1,16 @@
 "use client";
 
-import { Card, CardContent, Checkbox, FormField, Input } from "@ui";
+import {
+  Card,
+  CardContent,
+  Checkbox,
+  Input,
+} from "@/components/atoms/shadcn";
+import { FormField } from "@/components/molecules/FormField";
 import type { Shop } from "@acme/types";
-import { useMemo } from "react";
+import { type ChangeEvent, useMemo } from "react";
 
-const FEATURE_TOGGLES = [
+const LUXURY_FEATURE_TOGGLES = [
   {
     key: "blog",
     label: "Enable blog",
@@ -46,47 +52,64 @@ const FEATURE_TOGGLES = [
   description: string;
 }>;
 
-type IdentityValues = Pick<Shop, "name" | "themeId" | "luxuryFeatures">;
+type LuxuryFeatureKey = (typeof LUXURY_FEATURE_TOGGLES)[number]["key"];
 
-type LuxuryFeatureKey = keyof IdentityValues["luxuryFeatures"];
+type ShopIdentityErrors = Partial<
+  Record<
+    | "name"
+    | "themeId"
+    | "luxuryFeatures"
+    | "fraudReviewThreshold"
+    | LuxuryFeatureKey
+    | `luxuryFeatures.${LuxuryFeatureKey}`
+    | "luxuryFeatures.fraudReviewThreshold",
+    string[]
+  >
+>;
 
-type IdentityErrorKey =
-  | "name"
-  | "themeId"
-  | "fraudReviewThreshold"
-  | "luxuryFeatures"
-  | `luxuryFeatures.${LuxuryFeatureKey}`;
-
-export type IdentitySectionErrors = Partial<Record<IdentityErrorKey, string[]>>;
-
-export interface IdentitySectionProps {
-  values: IdentityValues;
-  errors?: IdentitySectionErrors;
-  onFieldChange: (field: "name" | "themeId", value: string) => void;
-  onLuxuryFeatureChange: <K extends LuxuryFeatureKey>(
+export interface ShopIdentitySectionProps {
+  info: Shop;
+  errors?: ShopIdentityErrors | Record<string, string[]>;
+  onInfoChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onLuxuryFeatureChange: <K extends keyof Shop["luxuryFeatures"]>(
     feature: K,
-    value: IdentityValues["luxuryFeatures"][K],
+    value: Shop["luxuryFeatures"][K],
   ) => void;
 }
 
-function formatError(messages?: string[]) {
-  return messages && messages.length > 0 ? messages.join("; ") : undefined;
-}
-
-function aggregateLuxuryErrors(errors: IdentitySectionErrors | undefined) {
+function collectErrors(
+  errors: ShopIdentitySectionProps["errors"],
+  keys: readonly string[],
+) {
   if (!errors) return undefined;
-  const keys: IdentityErrorKey[] = ["luxuryFeatures", ...FEATURE_TOGGLES.map((feature) => `luxuryFeatures.${feature.key}` as const), "luxuryFeatures.fraudReviewThreshold"];
   const messages = keys.flatMap((key) => errors[key] ?? []);
   return messages.length > 0 ? messages.join("; ") : undefined;
 }
 
-export default function IdentitySection({
-  values,
+export default function ShopIdentitySection({
+  info,
   errors,
-  onFieldChange,
+  onInfoChange,
   onLuxuryFeatureChange,
-}: IdentitySectionProps) {
-  const luxuryError = useMemo(() => aggregateLuxuryErrors(errors), [errors]);
+}: ShopIdentitySectionProps) {
+  const luxuryError = useMemo(
+    () =>
+      collectErrors(errors, [
+        "luxuryFeatures",
+        ...LUXURY_FEATURE_TOGGLES.map((feature) => feature.key),
+        ...LUXURY_FEATURE_TOGGLES.map(
+          (feature) => `luxuryFeatures.${feature.key}`,
+        ),
+      ]),
+    [errors],
+  );
+
+  const nameError = collectErrors(errors, ["name"]);
+  const themeError = collectErrors(errors, ["themeId"]);
+  const fraudError = collectErrors(errors, [
+    "fraudReviewThreshold",
+    "luxuryFeatures.fraudReviewThreshold",
+  ]);
 
   return (
     <Card>
@@ -99,38 +122,43 @@ export default function IdentitySection({
         </div>
 
         <FormField
-          label="Shop name"
+          label="Name"
           htmlFor="shop-name"
-          error={formatError(errors?.name)}
+          error={nameError && <span role="alert">{nameError}</span>}
         >
           <Input
             id="shop-name"
             name="name"
-            value={values.name}
-            onChange={(event) => onFieldChange("name", event.target.value)}
+            value={info.name}
+            onChange={onInfoChange}
             placeholder="Maison de Luxe"
+            aria-invalid={nameError ? true : undefined}
           />
         </FormField>
 
         <FormField
-          label="Theme preset"
+          label="Theme"
           htmlFor="shop-theme-id"
-          error={formatError(errors?.themeId)}
+          error={themeError && <span role="alert">{themeError}</span>}
         >
           <Input
             id="shop-theme-id"
             name="themeId"
-            value={values.themeId}
-            onChange={(event) => onFieldChange("themeId", event.target.value)}
+            value={info.themeId}
+            onChange={onInfoChange}
             placeholder="bcd-classic"
+            aria-invalid={themeError ? true : undefined}
           />
         </FormField>
 
-        <FormField label="Luxury features" error={luxuryError}>
+        <FormField
+          label="Luxury features"
+          error={luxuryError && <span role="alert">{luxuryError}</span>}
+        >
           <div className="space-y-3">
-            {FEATURE_TOGGLES.map((feature) => {
+            {LUXURY_FEATURE_TOGGLES.map((feature) => {
               const checkboxId = `luxury-feature-${feature.key}`;
-              const checked = Boolean(values.luxuryFeatures[feature.key]);
+              const checked = Boolean(info.luxuryFeatures[feature.key]);
               return (
                 <label
                   key={feature.key}
@@ -143,15 +171,14 @@ export default function IdentitySection({
                     value="on"
                     checked={checked}
                     onCheckedChange={(state) =>
-                      onLuxuryFeatureChange(
-                        feature.key,
-                        (state === true) as IdentityValues["luxuryFeatures"][typeof feature.key],
-                      )
+                      onLuxuryFeatureChange(feature.key, state === true)
                     }
                     aria-describedby={`${checkboxId}-description`}
                   />
                   <span className="flex-1 text-sm">
-                    <span className="font-medium text-foreground">{feature.label}</span>
+                    <span className="font-medium text-foreground">
+                      {feature.label}
+                    </span>
                     <span
                       id={`${checkboxId}-description`}
                       className="mt-1 block text-muted-foreground"
@@ -165,7 +192,7 @@ export default function IdentitySection({
             <FormField
               label="Fraud review threshold"
               htmlFor="luxury-fraud-threshold"
-              error={formatError(errors?.fraudReviewThreshold)}
+              error={fraudError && <span role="alert">{fraudError}</span>}
               className="max-w-xs"
             >
               <Input
@@ -173,14 +200,15 @@ export default function IdentitySection({
                 type="number"
                 inputMode="numeric"
                 name="fraudReviewThreshold"
-                value={values.luxuryFeatures.fraudReviewThreshold}
+                value={info.luxuryFeatures.fraudReviewThreshold}
                 min={0}
                 onChange={(event) =>
                   onLuxuryFeatureChange(
                     "fraudReviewThreshold",
-                    Number(event.target.value) as IdentityValues["luxuryFeatures"]["fraudReviewThreshold"],
+                    Number(event.target.value),
                   )
                 }
+                aria-invalid={fraudError ? true : undefined}
               />
             </FormField>
           </div>

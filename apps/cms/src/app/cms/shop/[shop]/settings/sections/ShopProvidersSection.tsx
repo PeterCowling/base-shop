@@ -1,31 +1,39 @@
 "use client";
 
-import { Card, CardContent, Checkbox, FormField } from "@ui";
+import {
+  Card,
+  CardContent,
+  Checkbox,
+} from "@/components/atoms/shadcn";
+import { FormField } from "@/components/molecules/FormField";
 import type { Provider } from "@acme/configurator/providers";
 
-export type ProvidersSectionErrors = Partial<
-  Record<"trackingProviders", string[]>
->;
+export type ShopProvidersErrors = Partial<Record<"trackingProviders", string[]>>;
 
-export interface ProvidersSectionProps {
-  values: readonly string[];
+export interface ShopProvidersSectionProps {
+  selected: readonly string[];
   providers: readonly Provider[];
-  errors?: ProvidersSectionErrors;
+  errors?: ShopProvidersErrors | Record<string, string[]>;
   onChange: (next: string[]) => void;
 }
 
-function formatError(messages?: string[]) {
+function formatError(
+  errors: ShopProvidersSectionProps["errors"],
+  key: "trackingProviders",
+) {
+  if (!errors) return undefined;
+  const messages = errors[key];
   return messages && messages.length > 0 ? messages.join("; ") : undefined;
 }
 
-export default function ProvidersSection({
-  values,
+export default function ShopProvidersSection({
+  selected,
   providers,
   errors,
   onChange,
-}: ProvidersSectionProps) {
+}: ShopProvidersSectionProps) {
   const handleToggle = (providerId: string, checked: boolean) => {
-    const current = new Set(values);
+    const current = new Set(selected);
     if (checked) {
       current.add(providerId);
     } else {
@@ -33,6 +41,8 @@ export default function ProvidersSection({
     }
     onChange(Array.from(current));
   };
+
+  const providersError = formatError(errors, "trackingProviders");
 
   return (
     <Card>
@@ -46,7 +56,9 @@ export default function ProvidersSection({
 
         <FormField
           label="Tracking providers"
-          error={formatError(errors?.trackingProviders)}
+          error={
+            providersError && <span role="alert">{providersError}</span>
+          }
         >
           {providers.length === 0 ? (
             <p className="text-sm text-muted-foreground">
@@ -56,7 +68,7 @@ export default function ProvidersSection({
             <div className="space-y-2">
               {providers.map((provider) => {
                 const id = `provider-${provider.id}`;
-                const checked = values.includes(provider.id);
+                const checked = selected.includes(provider.id);
                 return (
                   <label
                     key={provider.id}

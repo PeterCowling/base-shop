@@ -1,17 +1,20 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
-import React, { useState, ChangeEvent } from "react";
-import GeneralSettings from "../GeneralSettings";
+import React, { useState } from "react";
+import ShopIdentitySection from "../sections/ShopIdentitySection";
+import type { Shop } from "@acme/types";
 
 jest.mock(
   "@/components/atoms/shadcn",
   () => ({
+    Card: ({ children }: any) => <div>{children}</div>,
+    CardContent: ({ children }: any) => <div>{children}</div>,
     Input: (props: any) => <input {...props} />,
     Checkbox: ({ checked, onCheckedChange, ...props }: any) => (
       <input
         type="checkbox"
         checked={checked}
-        onChange={(e) => onCheckedChange?.(e.target.checked)}
+        onChange={(event) => onCheckedChange?.(event.target.checked)}
         {...props}
       />
     ),
@@ -19,10 +22,32 @@ jest.mock(
   { virtual: true },
 );
 
-describe("GeneralSettings", () => {
+jest.mock(
+  "@/components/molecules/FormField",
+  () => ({
+    FormField: ({ label, htmlFor, error, children }: any) => (
+      <div>
+        <label htmlFor={htmlFor}>{label}</label>
+        {children}
+        {error}
+      </div>
+    ),
+  }),
+  { virtual: true },
+);
+
+describe("ShopIdentitySection", () => {
   const initialInfo = {
+    id: "shop-1",
     name: "Test Shop",
     themeId: "theme1",
+    catalogFilters: [],
+    filterMappings: {},
+    priceOverrides: {},
+    localeOverrides: {},
+    themeDefaults: {},
+    themeOverrides: {},
+    themeTokens: {},
     luxuryFeatures: {
       blog: true,
       contentMerchandising: false,
@@ -31,35 +56,36 @@ describe("GeneralSettings", () => {
       requireStrongCustomerAuth: false,
       strictReturnConditions: true,
       trackingDashboard: false,
+      premierDelivery: false,
     },
-  } as any;
+  } as unknown as Shop;
 
   it("renders initial values", () => {
     render(
-      <GeneralSettings
+      <ShopIdentitySection
         info={initialInfo}
-        setInfo={jest.fn()}
         errors={{}}
-        handleChange={jest.fn()}
+        onInfoChange={jest.fn()}
+        onLuxuryFeatureChange={jest.fn()}
       />,
     );
 
     expect(screen.getByLabelText("Name")).toHaveValue("Test Shop");
     expect(screen.getByLabelText("Theme")).toHaveValue("theme1");
-    expect(screen.getByLabelText("Enable blog")).toBeChecked();
-    expect(screen.getByLabelText("RA ticketing")).toBeChecked();
+    expect(screen.getByLabelText(/Enable blog/i)).toBeChecked();
+    expect(screen.getByLabelText(/RA ticketing/i)).toBeChecked();
   });
 
   it("displays validation errors", () => {
     render(
-      <GeneralSettings
+      <ShopIdentitySection
         info={initialInfo}
-        setInfo={jest.fn()}
         errors={{
           name: ["Required"],
           themeId: ["Invalid"],
         }}
-        handleChange={jest.fn()}
+        onInfoChange={jest.fn()}
+        onLuxuryFeatureChange={jest.fn()}
       />,
     );
 
@@ -71,23 +97,35 @@ describe("GeneralSettings", () => {
     expect(themeInput).toHaveAttribute("aria-invalid", "true");
   });
 
-  it("submits edited values via save handler", () => {
-    function Wrapper({ onSave }: { onSave: (info: any) => void }) {
+  it("updates values through provided change handlers", () => {
+    function Wrapper({ onSave }: { onSave: (info: Shop) => void }) {
       const [info, setInfo] = useState(initialInfo);
-      const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
-        setInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+      const handleInfoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setInfo((prev) => ({ ...prev, [name]: value }));
+      };
+      const handleLuxuryChange = <K extends keyof Shop["luxuryFeatures"]>(
+        feature: K,
+        value: Shop["luxuryFeatures"][K],
+      ) => {
+        setInfo((prev) => ({
+          ...prev,
+          luxuryFeatures: { ...prev.luxuryFeatures, [feature]: value },
+        }));
+      };
+
       return (
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
+          onSubmit={(event) => {
+            event.preventDefault();
             onSave(info);
           }}
         >
-          <GeneralSettings
+          <ShopIdentitySection
             info={info}
-            setInfo={setInfo}
             errors={{}}
-            handleChange={handleChange}
+            onInfoChange={handleInfoChange}
+            onLuxuryFeatureChange={handleLuxuryChange}
           />
           <button type="submit">Save</button>
         </form>
@@ -100,7 +138,6 @@ describe("GeneralSettings", () => {
     fireEvent.change(screen.getByLabelText("Name"), {
       target: { value: "Updated Shop" },
     });
-
     fireEvent.click(screen.getByRole("button", { name: /save/i }));
 
     expect(handleSave).toHaveBeenCalledWith(
@@ -108,4 +145,3 @@ describe("GeneralSettings", () => {
     );
   });
 });
-

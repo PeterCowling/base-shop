@@ -12,16 +12,16 @@ import {
 import type { Shop } from "@acme/types";
 import { type ReactNode } from "react";
 
-import FilterMappings from "./FilterMappings";
-import LocaleOverrides from "./LocaleOverrides";
-import PriceOverrides from "./PriceOverrides";
-import ProviderSelect from "./ProviderSelect";
 import SEOSettings from "./SEOSettings";
 import ThemeTokens from "./ThemeTokens";
-import GeneralSettings from "./GeneralSettings";
 import { useShopEditorForm } from "./useShopEditorForm";
+import {
+  ShopIdentitySection,
+  ShopLocalizationSection,
+  ShopOverridesSection,
+  ShopProvidersSection,
+} from "./sections";
 
-export { default as GeneralSettings } from "./GeneralSettings";
 export { default as SEOSettings } from "./SEOSettings";
 export { default as ThemeTokens } from "./ThemeTokens";
 
@@ -58,20 +58,76 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
     onSubmit,
   } = form;
 
+  const handleLuxuryFeatureChange = <K extends keyof Shop["luxuryFeatures"]>(
+    feature: K,
+    value: Shop["luxuryFeatures"][K],
+  ) => {
+    setInfo((prev) => ({
+      ...prev,
+      luxuryFeatures: {
+        ...prev.luxuryFeatures,
+        [feature]: value,
+      },
+    }));
+  };
+
   const sections: SectionConfig[] = [
     {
-      key: "general",
-      title: "General",
+      key: "identity",
+      title: "Identity",
       description: "Update the shop name, theme, and luxury feature toggles.",
       render: () => (
-        <div className="grid gap-4 md:grid-cols-2">
-          <GeneralSettings
-            info={info}
-            setInfo={setInfo}
-            errors={errors}
-            handleChange={handleChange}
-          />
-        </div>
+        <ShopIdentitySection
+          info={info}
+          errors={errors}
+          onInfoChange={handleChange}
+          onLuxuryFeatureChange={handleLuxuryFeatureChange}
+        />
+      ),
+    },
+    {
+      key: "localization",
+      title: "Localization",
+      description: "Redirect key storefront entry points to locale-specific experiences.",
+      render: () => (
+        <ShopLocalizationSection
+          overrides={localeOverrides}
+          errors={errors}
+          onAddOverride={addLocaleOverride}
+          onUpdateOverride={updateLocaleOverride}
+          onRemoveOverride={removeLocaleOverride}
+        />
+      ),
+    },
+    {
+      key: "providers",
+      title: "Logistics providers",
+      description: "Manage analytics and fulfillment tracking integrations.",
+      render: () => (
+        <ShopProvidersSection
+          selected={trackingProviders}
+          providers={shippingProviders}
+          errors={errors}
+          onChange={setTrackingProviders}
+        />
+      ),
+    },
+    {
+      key: "overrides",
+      title: "Overrides",
+      description: "Fine-tune how storefront filters and pricing map to catalog data.",
+      render: () => (
+        <ShopOverridesSection
+          filterMappings={filterMappings}
+          priceOverrides={priceOverrides}
+          errors={errors}
+          onAddFilterMapping={addFilterMapping}
+          onUpdateFilterMapping={updateFilterMapping}
+          onRemoveFilterMapping={removeFilterMapping}
+          onAddPriceOverride={addPriceOverride}
+          onUpdatePriceOverride={updatePriceOverride}
+          onRemovePriceOverride={removePriceOverride}
+        />
       ),
     },
     {
@@ -81,66 +137,11 @@ export default function ShopEditor({ shop, initial, initialTrackingProviders }: 
       render: () => <SEOSettings info={info} setInfo={setInfo} errors={errors} />,
     },
     {
-      key: "providers",
-      title: "Tracking providers",
-      description: "Manage analytics and fulfillment tracking integrations.",
-      render: () => (
-        <ProviderSelect
-          trackingProviders={trackingProviders}
-          setTrackingProviders={setTrackingProviders}
-          errors={errors}
-          shippingProviders={shippingProviders}
-        />
-      ),
-    },
-    {
       key: "theme",
       title: "Theme tokens",
       description: "Compare overrides with defaults and reset individual tokens.",
       render: () => (
         <ThemeTokens shop={shop} tokenRows={tokenRows} info={info} errors={errors} />
-      ),
-    },
-    {
-      key: "filter-mappings",
-      title: "Filter mappings",
-      description: "Link storefront filters to upstream data keys.",
-      render: () => (
-        <FilterMappings
-          mappings={filterMappings}
-          addMapping={addFilterMapping}
-          updateMapping={updateFilterMapping}
-          removeMapping={removeFilterMapping}
-          errors={errors}
-        />
-      ),
-    },
-    {
-      key: "price-overrides",
-      title: "Price overrides",
-      description: "Adjust localized pricing for specific catalog entries.",
-      render: () => (
-        <PriceOverrides
-          overrides={priceOverrides}
-          addOverride={addPriceOverride}
-          updateOverride={updatePriceOverride}
-          removeOverride={removePriceOverride}
-          errors={errors}
-        />
-      ),
-    },
-    {
-      key: "locale-overrides",
-      title: "Locale overrides",
-      description: "Redirect locale content to custom destinations.",
-      render: () => (
-        <LocaleOverrides
-          overrides={localeOverrides}
-          addOverride={addLocaleOverride}
-          updateOverride={updateLocaleOverride}
-          removeOverride={removeLocaleOverride}
-          errors={errors}
-        />
       ),
     },
   ];

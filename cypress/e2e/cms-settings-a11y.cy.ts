@@ -4,15 +4,27 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 describe('CMS settings forms accessibility', () => {
-  it('GeneralSettings inputs are labelled and errors announced', () => {
+  it('ShopIdentitySection inputs are labelled and errors announced', () => {
     cy.visit('about:blank').then(async (win) => {
-      const { default: GeneralSettings } = await import('../../apps/cms/src/app/cms/shop/[shop]/settings/GeneralSettings');
+      const { default: ShopIdentitySection } = await import(
+        '../../apps/cms/src/app/cms/shop/[shop]/settings/sections/ShopIdentitySection'
+      );
       const Wrapper = () => {
-        const [info, setInfo] = React.useState({ name: '', themeId: '', luxuryFeatures: {} as any });
+        const [info, setInfo] = React.useState({
+          name: '',
+          themeId: '',
+          luxuryFeatures: { fraudReviewThreshold: 0 } as any,
+        });
         const [errors, setErrors] = React.useState<Record<string, string[]>>({});
         const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           const { name, value, type, checked } = e.target;
           setInfo((prev: any) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+        };
+        const handleLuxuryChange = (feature: string, value: any) => {
+          setInfo((prev: any) => ({
+            ...prev,
+            luxuryFeatures: { ...prev.luxuryFeatures, [feature]: value },
+          }));
         };
         return (
           <form
@@ -21,7 +33,12 @@ describe('CMS settings forms accessibility', () => {
               setErrors({ name: ['Required'], themeId: ['Required'] });
             }}
           >
-            <GeneralSettings info={info} setInfo={setInfo} errors={errors} handleChange={handleChange} />
+            <ShopIdentitySection
+              info={info as any}
+              errors={errors}
+              onInfoChange={handleChange}
+              onLuxuryFeatureChange={handleLuxuryChange as any}
+            />
             <button type="submit">Save</button>
           </form>
         );

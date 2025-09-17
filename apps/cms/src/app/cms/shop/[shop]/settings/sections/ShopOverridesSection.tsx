@@ -5,19 +5,19 @@ import {
   Button,
   Card,
   CardContent,
-  FormField,
   Input,
-} from "@ui";
+} from "@/components/atoms/shadcn";
+import { FormField } from "@/components/molecules/FormField";
 import type { MappingRow } from "@/hooks/useMappingRows";
 
-export type OverridesSectionErrors = Partial<
+export type ShopOverridesErrors = Partial<
   Record<"filterMappings" | "priceOverrides", string[]>
 >;
 
-export interface OverridesSectionProps {
+export interface ShopOverridesSectionProps {
   filterMappings: MappingRow[];
   priceOverrides: MappingRow[];
-  errors?: OverridesSectionErrors;
+  errors?: ShopOverridesErrors | Record<string, string[]>;
   onAddFilterMapping: () => void;
   onUpdateFilterMapping: (
     index: number,
@@ -34,11 +34,16 @@ export interface OverridesSectionProps {
   onRemovePriceOverride: (index: number) => void;
 }
 
-function formatError(messages?: string[]) {
+function joinErrors(
+  errors: ShopOverridesSectionProps["errors"],
+  key: "filterMappings" | "priceOverrides",
+) {
+  if (!errors) return undefined;
+  const messages = errors[key];
   return messages && messages.length > 0 ? messages.join("; ") : undefined;
 }
 
-export default function OverridesSection({
+export default function ShopOverridesSection({
   filterMappings,
   priceOverrides,
   errors,
@@ -48,7 +53,10 @@ export default function OverridesSection({
   onAddPriceOverride,
   onUpdatePriceOverride,
   onRemovePriceOverride,
-}: OverridesSectionProps) {
+}: ShopOverridesSectionProps) {
+  const filterError = joinErrors(errors, "filterMappings");
+  const priceError = joinErrors(errors, "priceOverrides");
+
   const filterContent = (
     <div className="space-y-4">
       {filterMappings.length === 0 ? (
@@ -105,9 +113,9 @@ export default function OverridesSection({
         >
           Add filter mapping
         </Button>
-        {errors?.filterMappings ? (
+        {filterError ? (
           <p className="text-sm text-destructive">
-            {formatError(errors.filterMappings)}
+            <span role="alert">{filterError}</span>
           </p>
         ) : null}
       </div>
@@ -172,9 +180,9 @@ export default function OverridesSection({
         >
           Add price override
         </Button>
-        {errors?.priceOverrides ? (
+        {priceError ? (
           <p className="text-sm text-destructive">
-            {formatError(errors.priceOverrides)}
+            <span role="alert">{priceError}</span>
           </p>
         ) : null}
       </div>

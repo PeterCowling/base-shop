@@ -12,25 +12,35 @@ const updateStockAlert = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({
   updateStockAlert: (...args: any[]) => updateStockAlert(...args),
 }));
-jest.mock(
-  "@/components/atoms/shadcn",
-  () => ({
+jest.mock("@/components/atoms", () => ({
+  __esModule: true,
+  Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
+  Toast: ({ open, message, className, ...props }: any) =>
+    open ? (
+      <div role="status" className={className} {...props}>
+        {message}
+      </div>
+    ) : null,
+}));
+jest.mock("@/components/atoms/shadcn", () => {
+  const componentStub = require("../../../../../../../../../../test/__mocks__/componentStub.js");
+  return {
+    __esModule: true,
+    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+    CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
     Input: (props: any) => <input {...props} />,
-  }),
-  { virtual: true },
-);
+    Textarea: (props: any) => <textarea {...props} />,
+    default: componentStub,
+  };
+});
 
 describe("StockAlertsEditor", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it("submits edited values and surfaces validation errors", async () => {
-    updateStockAlert.mockResolvedValue({
-      errors: { recipients: ["Invalid recipients"] },
-    });
-
+  it("validates recipients and threshold before submitting", async () => {
     const { container } = render(
       <StockAlertsEditor
         shop="lux"
@@ -38,27 +48,29 @@ describe("StockAlertsEditor", () => {
       />,
     );
 
-    await userEvent.clear(screen.getByLabelText(/recipients/i));
-    await userEvent.type(screen.getByLabelText(/recipients/i), "alerts@lux.com");
-    await userEvent.clear(screen.getByLabelText(/webhook/i));
-    await userEvent.type(screen.getByLabelText(/webhook/i), "https://hooks.example");
-    await userEvent.clear(screen.getByLabelText(/default threshold/i));
-    await userEvent.type(screen.getByLabelText(/default threshold/i), "10");
+    const recipientsField = screen.getByLabelText(/recipients/i);
+    await userEvent.clear(recipientsField);
+    await userEvent.type(recipientsField, "bad-email");
+
+    const thresholdField = screen.getByLabelText(/default threshold/i);
+    await userEvent.clear(thresholdField);
+    await userEvent.type(thresholdField, "0");
+
     await userEvent.click(screen.getByRole("button", { name: /save/i }));
 
-    expect(updateStockAlert).toHaveBeenCalledTimes(1);
-    const fd = updateStockAlert.mock.calls[0][1] as FormData;
-    expect(fd.get("recipients")).toBe("alerts@lux.com");
-    expect(fd.get("webhook")).toBe("https://hooks.example");
-    expect(fd.get("threshold")).toBe("10");
+    expect(updateStockAlert).not.toHaveBeenCalled();
 
-    expect(await screen.findByText("Invalid recipients")).toBeInTheDocument();
+    expect(await screen.findByText("Invalid email: bad-email")).toBeInTheDocument();
+    expect(screen.getByText("Enter a threshold of at least 1.")).toBeInTheDocument();
+
+    const toast = await screen.findByRole("status");
+    expect(toast).toHaveTextContent("Enter valid recipient email addresses.");
 
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
 
-  it("applies server updates on success", async () => {
+  it("submits sanitized values and surfaces success toast", async () => {
     updateStockAlert.mockResolvedValue({
       settings: {
         stockAlert: {
@@ -76,8 +88,28 @@ describe("StockAlertsEditor", () => {
       />,
     );
 
-    await userEvent.type(screen.getByLabelText(/recipients/i), "team@lux.com, lead@lux.com");
+    const recipientsField = screen.getByLabelText(/recipients/i);
+    await userEvent.type(recipientsField, " team@lux.com , ops@lux.com , ");
+
+    const webhookField = screen.getByLabelText(/webhook url/i);
+    await userEvent.type(webhookField, " https://hooks.example/path  ");
+
+    const thresholdField = screen.getByLabelText(/default threshold/i);
+    await userEvent.type(thresholdField, "10");
+
     await userEvent.click(screen.getByRole("button", { name: /save/i }));
+
+    expect(updateStockAlert).toHaveBeenCalledTimes(1);
+    const formData = updateStockAlert.mock.calls[0][1] as FormData;
+    const sanitizedRecipients = String(formData.get("recipients"))
+      .split(",")
+      .map((value) => value.trim());
+    expect(sanitizedRecipients).toEqual(["team@lux.com", "ops@lux.com"]);
+    expect(formData.get("webhook")).toBe("https://hooks.example/path");
+    expect(formData.get("threshold")).toBe("10");
+
+    const toast = await screen.findByRole("status");
+    expect(toast).toHaveTextContent("Stock alert settings saved.");
 
     await waitFor(() => {
       expect(screen.getByLabelText(/recipients/i)).toHaveValue("team@lux.com, lead@lux.com");

@@ -5,7 +5,17 @@ import { memo, ReactElement, useCallback, useMemo, useState } from "react";
 import type { MediaItem } from "@acme/types";
 import MediaDetailsPanel, {
   type MediaDetailsFormValues,
-} from "./media/MediaDetailsPanel";
+} from "./media/details/MediaDetailsPanel";
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../atoms/shadcn";
+import { Spinner, Toast } from "../atoms";
 import Library from "./media/Library";
 import UploadPanel from "./media/UploadPanel";
 
@@ -145,7 +155,7 @@ function MediaManagerBase({
         <MediaDetailsPanel
           open
           item={selectedItem}
-          pending={metadataPending}
+          loading={metadataPending}
           onSubmit={handleMetadataSubmit}
           onClose={handleCloseDetails}
         />
@@ -162,7 +172,7 @@ export { MediaDetailsPanel };
 export type {
   MediaDetailsFormValues,
   MediaDetailsPanelProps,
-} from "./media/MediaDetailsPanel";
+} from "./media/details/MediaDetailsPanel";
 
 export default memo(MediaManagerBase);
 

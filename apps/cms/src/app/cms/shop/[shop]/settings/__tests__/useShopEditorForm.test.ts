@@ -18,7 +18,13 @@ jest.mock("@/hooks/useMappingRows", () => jest.fn((rows: any[]) => ({
 
 jest.mock("../useShopEditorSubmit", () => ({
   __esModule: true,
-  default: jest.fn(() => ({ saving: false, errors: {}, onSubmit: jest.fn() })),
+  default: jest.fn(() => ({
+    saving: false,
+    errors: {},
+    toast: { open: false, status: "success", message: "" },
+    closeToast: jest.fn(),
+    onSubmit: jest.fn(),
+  })),
 }));
 
 describe("useShopEditorForm", () => {

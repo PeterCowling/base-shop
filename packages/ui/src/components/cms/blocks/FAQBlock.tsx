@@ -1,5 +1,10 @@
 // packages/ui/components/cms/blocks/FAQBlock.tsx
-import { Accordion, type AccordionItem } from "../../molecules/Accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../../atoms/shadcn";
 
 interface FAQItem {
   question: string;
@@ -20,9 +25,25 @@ export default function FAQBlock({
   const filtered = items.filter(({ question, answer }) => question && answer);
   const list = filtered.slice(0, maxItems ?? filtered.length);
   if (!list.length || list.length < (minItems ?? 0)) return null;
-  const accItems: AccordionItem[] = list.map(({ question, answer }) => ({
-    title: question,
-    content: answer,
-  }));
-  return <Accordion items={accItems} />;
+  return (
+    <Accordion
+      type="multiple"
+      defaultValue={list.map((_, index) => `faq-${index}`)}
+      className="space-y-2"
+    >
+      {list.map(({ question, answer }, index) => {
+        const value = `faq-${index}`;
+        return (
+          <AccordionItem key={value} value={value} className="border-none">
+            <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+              {question}
+            </AccordionTrigger>
+            <AccordionContent className="pt-2 text-sm text-muted-foreground">
+              {answer}
+            </AccordionContent>
+          </AccordionItem>
+        );
+      })}
+    </Accordion>
+  );
 }

@@ -3,6 +3,9 @@
 
 import {
   Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
   Card,
   CardContent,
   Input,
@@ -146,8 +149,9 @@ export default function ProductEditorForm({
     [product.variants],
   );
 
-  const accordionItems = locales.map((locale) => ({
-    title: (
+  const localePanels = locales.map((locale) => ({
+    locale,
+    trigger: (
       <div className="flex items-center gap-2">
         <Chip className="bg-muted px-2 py-1 text-xs uppercase tracking-wide">
           {locale}
@@ -389,7 +393,20 @@ export default function ProductEditorForm({
           <div className="space-y-4">
             <Card>
               <CardContent>
-                <Accordion items={accordionItems} />
+                <Accordion
+                  type="multiple"
+                  defaultValue={locales as string[]}
+                  className="space-y-3"
+                >
+                  {localePanels.map(({ locale, trigger, content }) => (
+                    <AccordionItem key={locale} value={locale} className="border-none">
+                      <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+                        {trigger}
+                      </AccordionTrigger>
+                      <AccordionContent className="pt-3">{content}</AccordionContent>
+                    </AccordionItem>
+                  ))}
+                </Accordion>
               </CardContent>
             </Card>
           </div>

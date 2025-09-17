@@ -18,11 +18,23 @@ export default async function PremierDeliverySettingsPage({
 }) {
   const { shop } = await params;
   const settings = await getSettings(shop);
-  const premierDelivery = settings.premierDelivery ?? { regions: [], windows: [] };
+  const premierDelivery = settings.premierDelivery ?? {
+    regions: [],
+    windows: [],
+    carriers: [],
+    surcharge: undefined,
+    serviceLabel: undefined,
+  };
 
   return (
-    <div>
-      <h2 className="mb-4 text-xl font-semibold">Premier Delivery – {shop}</h2>
+    <div className="space-y-6">
+      <header className="space-y-1">
+        <h2 className="text-xl font-semibold">Premier Delivery – {shop}</h2>
+        <p className="text-sm text-muted-foreground">
+          Configure regions, delivery windows, and fulfillment partners for the
+          premium experience.
+        </p>
+      </header>
       <PremierDeliveryEditor shop={shop} initial={premierDelivery} />
     </div>
   );

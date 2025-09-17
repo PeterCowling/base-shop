@@ -21,10 +21,14 @@ export default async function StockAlertsSettingsPage({
   const stockAlert = settings.stockAlert ?? { recipients: [] };
 
   return (
-    <div>
-      <h2 className="mb-4 text-xl font-semibold">Stock Alerts – {shop}</h2>
+    <div className="space-y-6">
+      <header className="space-y-1">
+        <h2 className="text-xl font-semibold">Stock Alerts – {shop}</h2>
+        <p className="text-sm text-muted-foreground">
+          Notify operators when inventory falls below your configured threshold.
+        </p>
+      </header>
       <StockAlertsEditor shop={shop} initial={stockAlert} />
     </div>
   );
 }
-

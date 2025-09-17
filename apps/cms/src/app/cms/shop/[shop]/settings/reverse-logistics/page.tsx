@@ -25,8 +25,13 @@ export default async function ReverseLogisticsSettingsPage({
   };
 
   return (
-    <div>
-      <h2 className="mb-4 text-xl font-semibold">Reverse Logistics – {shop}</h2>
+    <div className="space-y-6">
+      <header className="space-y-1">
+        <h2 className="text-xl font-semibold">Reverse Logistics – {shop}</h2>
+        <p className="text-sm text-muted-foreground">
+          Coordinate return-to-vendor and refurbishment workflows on a schedule.
+        </p>
+      </header>
       <ReverseLogisticsEditor shop={shop} initial={reverseLogistics} />
     </div>
   );

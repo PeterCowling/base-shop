@@ -1,69 +1,107 @@
 "use client";
 
-import { Button, Checkbox } from "@/components/atoms/shadcn";
+import { useState } from "react";
+
+import { Toast } from "@/components/atoms";
+import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 import { updateUpsReturns } from "@cms/actions/shops.server";
-import { useState, type FormEvent } from "react";
+
+import { ServiceToggleField } from "../components/ServiceToggleField";
+import { useServiceEditorForm } from "../hooks/useServiceEditorForm";
+
+type ReturnsState = {
+  upsEnabled: boolean;
+  bagEnabled: boolean;
+  homePickupEnabled: boolean;
+};
+
+type ReturnsResult = Awaited<ReturnType<typeof updateUpsReturns>>;
 
 interface Props {
   shop: string;
-  initial: { upsEnabled: boolean; bagEnabled: boolean; homePickupEnabled: boolean };
+  initial: ReturnsState;
 }
 
 export default function ReturnsEditor({ shop, initial }: Props) {
-  const [enabled, setEnabled] = useState(initial.upsEnabled);
-  const [bagEnabled, setBagEnabled] = useState(initial.bagEnabled);
-  const [pickupEnabled, setPickupEnabled] = useState(initial.homePickupEnabled);
-  const [saving, setSaving] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const [state, setState] = useState<ReturnsState>(initial);
 
-  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSaving(true);
-    const fd = new FormData(e.currentTarget);
-    const result = await updateUpsReturns(shop, fd);
-    if (result.errors) {
-      setErrors(result.errors);
-    } else if (result.settings?.returnService) {
-      setEnabled(result.settings.returnService.upsEnabled);
-      setBagEnabled(result.settings.returnService.bagEnabled ?? false);
-      setPickupEnabled(result.settings.returnService.homePickupEnabled ?? false);
-      setErrors({});
-    }
-    setSaving(false);
-  };
+  const { saving, errors, handleSubmit, toast, toastClassName, closeToast } =
+    useServiceEditorForm<ReturnsResult>({
+      action: (formData) => updateUpsReturns(shop, formData),
+      successMessage: "Return options updated.",
+      errorMessage: "Unable to update return options.",
+      onSuccess: (result) => {
+        const next = result.settings?.returnService;
+        if (!next) return;
+        setState({
+          upsEnabled: next.upsEnabled,
+          bagEnabled: next.bagEnabled ?? false,
+          homePickupEnabled: next.homePickupEnabled ?? false,
+        });
+      },
+    });
 
   return (
-    <form onSubmit={onSubmit} className="grid max-w-md gap-4">
-      <label className="flex items-center gap-2">
-        <Checkbox
-          name="enabled"
-          checked={enabled}
-          onCheckedChange={(v: boolean) => setEnabled(Boolean(v))}
-        />
-        <span>Enable UPS returns</span>
-      </label>
-      {errors.enabled && (
-        <span className="text-sm text-red-600">{errors.enabled.join("; ")}</span>
-      )}
-      <label className="flex items-center gap-2">
-        <Checkbox
-          name="bagEnabled"
-          checked={bagEnabled}
-          onCheckedChange={(v: boolean) => setBagEnabled(Boolean(v))}
-        />
-        <span>Provide return bags</span>
-      </label>
-      <label className="flex items-center gap-2">
-        <Checkbox
-          name="homePickupEnabled"
-          checked={pickupEnabled}
-          onCheckedChange={(v: boolean) => setPickupEnabled(Boolean(v))}
-        />
-        <span>Enable home pickup</span>
-      </label>
-      <Button className="bg-primary text-white" disabled={saving} type="submit">
-        {saving ? "Saving…" : "Save"}
-      </Button>
-    </form>
+    <>
+      <Card className="border border-border/60">
+        <CardContent className="space-y-6 p-6">
+          <form className="space-y-6" onSubmit={handleSubmit} noValidate>
+            <ServiceToggleField
+              id="returns-ups"
+              name="enabled"
+              label="UPS returns"
+              description="Allow shoppers to generate UPS labels for their returns."
+              checked={state.upsEnabled}
+              onChange={(checked) =>
+                setState((current) => ({ ...current, upsEnabled: checked }))
+              }
+              errors={errors.enabled}
+            />
+
+            <ServiceToggleField
+              id="returns-bag"
+              name="bagEnabled"
+              label="Return bags"
+              description="Offer pre-paid return bags in outgoing shipments."
+              checked={state.bagEnabled}
+              onChange={(checked) =>
+                setState((current) => ({ ...current, bagEnabled: checked }))
+              }
+            />
+
+            <ServiceToggleField
+              id="returns-pickup"
+              name="homePickupEnabled"
+              label="Home pickup"
+              description="Coordinate home pickup appointments for approved returns."
+              checked={state.homePickupEnabled}
+              onChange={(checked) =>
+                setState((current) => ({
+                  ...current,
+                  homePickupEnabled: checked,
+                }))
+              }
+            />
+
+            <div className="flex justify-end">
+              <Button
+                type="submit"
+                className="h-10 px-6 text-sm font-semibold"
+                disabled={saving}
+              >
+                {saving ? "Saving…" : "Save changes"}
+              </Button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+      <Toast
+        open={toast.open}
+        message={toast.message}
+        onClose={closeToast}
+        className={toastClassName}
+        role="status"
+      />
+    </>
   );
 }

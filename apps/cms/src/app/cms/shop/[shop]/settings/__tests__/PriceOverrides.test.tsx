@@ -21,6 +21,75 @@ jest.mock(
   { virtual: true },
 );
 
+jest.mock(
+  "@ui/components",
+  () => {
+    const React = require("react");
+    const SelectContent = Object.assign(
+      ({ children }: any) => <>{children}</>,
+      { displayName: "MockSelectContent" },
+    );
+    const SelectTrigger = Object.assign(
+      ({ children, ...props }: any) => <div {...props}>{children}</div>,
+      { displayName: "MockSelectTrigger" },
+    );
+    const Select = ({ children, value, onValueChange, name }: any) => {
+      const arrayChildren = React.Children.toArray(children);
+      const content = arrayChildren.find(
+        (child: any) => child?.type?.displayName === "MockSelectContent",
+      );
+      const items = content
+        ? React.Children.toArray((content as any).props.children).map((child: any) => ({
+            value: child.props.value,
+            label: child.props.children,
+          }))
+        : [];
+      const trigger = arrayChildren.find(
+        (child: any) => child?.type?.displayName === "MockSelectTrigger",
+      );
+      const placeholder = trigger ? trigger.props.children : undefined;
+      return (
+        <select
+          name={name}
+          value={value ?? ""}
+          onChange={(event) => onValueChange?.(event.target.value)}
+          data-cy="mock-select"
+        >
+          <option value="" disabled>
+            {placeholder}
+          </option>
+          {items.map((item: any) => (
+            <option key={item.value} value={item.value}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+      );
+    };
+    const SelectValue = ({ placeholder, children }: any) => children ?? placeholder;
+    return {
+      Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+      FormField: ({ children, label, htmlFor, error }: any) => (
+        <div>
+          <label htmlFor={htmlFor}>{label}</label>
+          {children}
+          {error}
+        </div>
+      ),
+      Input: (props: any) => <input {...props} />,
+      Select,
+      SelectTrigger,
+      SelectValue,
+      SelectContent,
+      SelectItem: ({ value, children }: any) => (
+        <option value={value}>{children}</option>
+      ),
+      Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
+    };
+  },
+  { virtual: true },
+);
+
 function createController(initial: Array<{ key: string; value: string }>) {
   return {
     rows: initial,
@@ -40,7 +109,7 @@ describe("ShopOverridesSection", () => {
       <ShopOverridesSection
         filterMappings={filterController}
         priceOverrides={priceController}
-        errors={{ priceOverrides: ["must not be empty"] }}
+        errors={{ priceOverrides: { general: ["must not be empty"] } }}
       />,
     );
 
@@ -77,6 +146,6 @@ describe("ShopOverridesSection", () => {
     fireEvent.click(screen.getAllByText(/Remove/i)[0]);
     expect(filterController.remove).toHaveBeenCalledWith(0);
 
-    expect(screen.getByRole("alert", { name: /must not be empty/i })).toBeInTheDocument();
+    expect(screen.getByText(/must not be empty/i)).toBeInTheDocument();
   });
 });

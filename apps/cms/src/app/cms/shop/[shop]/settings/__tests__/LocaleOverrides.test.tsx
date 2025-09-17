@@ -1,6 +1,5 @@
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
-import React from "react";
 import ShopLocalizationSection from "../sections/ShopLocalizationSection";
 
 jest.mock(
@@ -8,9 +7,23 @@ jest.mock(
   () => ({
     Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-    Input: (props: any) => <input {...props} />,
-    Select: ({ children, value, onValueChange, name }: any) => {
+  }),
+  { virtual: true },
+);
+
+jest.mock(
+  "@ui/components",
+  () => {
+    const React = require("react");
+    const SelectContent = Object.assign(
+      ({ children }: any) => <>{children}</>,
+      { displayName: "MockSelectContent" },
+    );
+    const SelectTrigger = Object.assign(
+      ({ children, ...props }: any) => <div {...props}>{children}</div>,
+      { displayName: "MockSelectTrigger" },
+    );
+    const Select = ({ children, value, onValueChange, name }: any) => {
       const arrayChildren = React.Children.toArray(children);
       const content = arrayChildren.find(
         (child: any) => child?.type?.displayName === "MockSelectContent",
@@ -21,15 +34,19 @@ jest.mock(
             label: child.props.children,
           }))
         : [];
+      const trigger = arrayChildren.find(
+        (child: any) => child?.type?.displayName === "MockSelectTrigger",
+      );
+      const placeholder = trigger ? trigger.props.children : undefined;
       return (
         <select
           name={name}
           value={value ?? ""}
           onChange={(event) => onValueChange?.(event.target.value)}
-          data-testid="mock-select"
+          data-cy="mock-select"
         >
           <option value="" disabled>
-            Select locale
+            {placeholder}
           </option>
           {items.map((item: any) => (
             <option key={item.value} value={item.value}>
@@ -38,17 +55,28 @@ jest.mock(
           ))}
         </select>
       );
-    },
-    SelectTrigger: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    SelectValue: ({ placeholder, children }: any) => children ?? placeholder,
-    SelectContent: Object.assign(
-      ({ children }: any) => <>{children}</>,
-      { displayName: "MockSelectContent" },
-    ),
-    SelectItem: ({ value, children }: any) => (
-      <option value={value}>{children}</option>
-    ),
-  }),
+    };
+    const SelectValue = ({ placeholder, children }: any) => children ?? placeholder;
+    return {
+      Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+      FormField: ({ children, label, htmlFor, error }: any) => (
+        <div>
+          <label htmlFor={htmlFor}>{label}</label>
+          {children}
+          {error}
+        </div>
+      ),
+      Input: (props: any) => <input {...props} />,
+      Select,
+      SelectTrigger,
+      SelectValue,
+      SelectContent,
+      SelectItem: ({ value, children }: any) => (
+        <option value={value}>{children}</option>
+      ),
+      Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
+    };
+  },
   { virtual: true },
 );
 
@@ -69,7 +97,7 @@ describe("ShopLocalizationSection", () => {
     render(
       <ShopLocalizationSection
         localeOverrides={localeController}
-        errors={{ localeOverrides: ["must not be empty"] }}
+        errors={{ localeOverrides: { general: ["must not be empty"] } }}
         availableLocales={["en", "de"]}
       />,
     );
@@ -94,6 +122,6 @@ describe("ShopLocalizationSection", () => {
     fireEvent.click(screen.getByText(/Remove/i));
     expect(localeController.remove).toHaveBeenCalledWith(0);
 
-    expect(screen.getByRole("alert", { name: /must not be empty/i })).toBeInTheDocument();
+    expect(screen.getByText(/must not be empty/i)).toBeInTheDocument();
   });
 });

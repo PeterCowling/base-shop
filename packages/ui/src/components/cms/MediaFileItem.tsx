@@ -28,6 +28,7 @@ import {
   Progress,
   Tag,
 } from "../atoms/shadcn";
+import { Spinner } from "../atoms";
 import { cn } from "../../utils/style";
 
 interface Props {
@@ -46,6 +47,11 @@ interface Props {
   onBulkToggle?: (item: MediaItem & { url: string }, selected: boolean) => void;
   selectionEnabled?: boolean;
   selected?: boolean;
+  deleting?: boolean;
+  replacing?: boolean;
+  disabled?: boolean;
+  onReplaceSuccess?: (newItem: MediaItem) => void;
+  onReplaceError?: (message: string) => void;
 }
 
 type UploadTimer = ReturnType<typeof setInterval> | undefined;
@@ -75,6 +81,11 @@ export default function MediaFileItem({
   onBulkToggle,
   selectionEnabled = false,
   selected = false,
+  deleting = false,
+  replacing = false,
+  disabled = false,
+  onReplaceSuccess,
+  onReplaceError,
 }: Props): ReactElement {
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -126,19 +137,30 @@ export default function MediaFileItem({
       (item as MediaItem & { isReplacing?: boolean }).isReplacing
   );
 
-  const showReplacementOverlay = uploading || externalReplacing;
+  const isReplacing = replacing || externalReplacing;
+  const showReplacementOverlay = uploading || isReplacing;
   const progressValue = uploading
     ? uploadProgress
     : typeof externalProgress === "number"
       ? externalProgress
       : undefined;
 
+  const isBusy = uploading || deleting || isReplacing;
+  const pendingLabel = deleting ? "Deleting media" : "Replacing media";
+  const renderSpinner = (label: string) => (
+    <>
+      <Spinner className="h-4 w-4" aria-hidden="true" />
+      <span className="sr-only">{label}</span>
+    </>
+  );
+
   const handleSelect = () => {
+    if (disabled || isBusy) return;
     onSelect?.(item);
   };
 
   const handlePreviewKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (!onSelect) return;
+    if (!onSelect || disabled || isBusy) return;
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       onSelect(item);
@@ -198,10 +220,12 @@ export default function MediaFileItem({
       finishUploadProgress();
       await onDelete(item.url);
       onReplace(item.url, data);
+      onReplaceSuccess?.(data);
     } catch (error) {
       clearTimer();
       setUploadProgress(0);
       errorMessage = (error as Error).message ?? "Replacement failed";
+      onReplaceError?.(errorMessage);
       setUploadError(errorMessage);
     } finally {
       const delay = errorMessage ? 2000 : 400;
@@ -214,16 +238,19 @@ export default function MediaFileItem({
   };
 
   const handleBulkToggle = (checked: CheckedState) => {
+    if (disabled || isBusy) return;
     onBulkToggle?.(item, checked === true || checked === "indeterminate");
   };
 
   const handleOpenDetails = (event?: React.MouseEvent) => {
     event?.stopPropagation();
+    if (disabled || isBusy) return;
     onOpenDetails?.(item);
   };
 
   const handleReplaceRequest = (event?: React.MouseEvent) => {
     event?.stopPropagation();
+    if (disabled || isBusy) return;
     fileInputRef.current?.click();
   };
 
@@ -231,6 +258,7 @@ export default function MediaFileItem({
     item.type === "video"
       ? `Video preview for ${previewAlt || name}`
       : `Image preview for ${previewAlt || name}`;
+  const previewInteractive = Boolean(onSelect) && !disabled && !isBusy;
 
   return (
     <Card
@@ -242,9 +270,9 @@ export default function MediaFileItem({
     >
       <div className="relative">
         <div
-          role={onSelect ? "button" : undefined}
-          tabIndex={onSelect ? 0 : undefined}
-          onClick={onSelect ? handleSelect : undefined}
+          role={previewInteractive ? "button" : undefined}
+          tabIndex={previewInteractive ? 0 : undefined}
+          onClick={previewInteractive ? handleSelect : undefined}
           onKeyDown={handlePreviewKeyDown}
           className="relative aspect-[4/3] w-full overflow-hidden"
         >
@@ -288,6 +316,7 @@ export default function MediaFileItem({
                 checked={selected}
                 onCheckedChange={handleBulkToggle}
                 aria-label={selected ? "Deselect media" : "Select media"}
+                disabled={disabled || isBusy}
               />
             </div>
           ) : null}
@@ -296,27 +325,59 @@ export default function MediaFileItem({
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
+                  type="button"
                   variant="ghost"
                   className="h-9 w-9 rounded-full p-0"
                   aria-label="Media actions"
                   onClick={(event) => event.stopPropagation()}
+                  disabled={disabled || isBusy}
                 >
-                  <DotsHorizontalIcon className="h-4 w-4" />
+                  {isBusy ? renderSpinner(pendingLabel) : <DotsHorizontalIcon className="h-4 w-4" />}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 {onOpenDetails ? (
-                  <DropdownMenuItem onSelect={() => onOpenDetails(item)}>
-                    View details
+                  <DropdownMenuItem
+                    onSelect={(event) => {
+                      if (disabled || isBusy) {
+                        event.preventDefault();
+                        return;
+                      }
+                      onOpenDetails(item);
+                    }}
+                    disabled={disabled || isBusy}
+                    aria-label="Open details"
+                  >
+                    {isBusy ? renderSpinner(pendingLabel) : "View details"}
                   </DropdownMenuItem>
                 ) : null}
-                <DropdownMenuItem onSelect={() => handleReplaceRequest()}>
-                  Replace
+                <DropdownMenuItem
+                  onSelect={(event) => {
+                    if (disabled || isBusy) {
+                      event.preventDefault();
+                      return;
+                    }
+                    handleReplaceRequest();
+                  }}
+                  disabled={disabled || isBusy}
+                  aria-label="Replace media"
+                >
+                  {isBusy ? renderSpinner(pendingLabel) : "Replace"}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={() => onDelete(item.url)}>
-                  Delete
+                <DropdownMenuItem
+                  onSelect={(event) => {
+                    if (disabled || deleting || isBusy) {
+                      event.preventDefault();
+                      return;
+                    }
+                    onDelete(item.url);
+                  }}
+                  disabled={disabled || isBusy}
+                  aria-label="Delete media"
+                >
+                  {isBusy ? renderSpinner(pendingLabel) : "Delete"}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -325,23 +386,29 @@ export default function MediaFileItem({
           <div className="absolute inset-x-3 bottom-3 z-20 flex items-center justify-between gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
             {onOpenDetails ? (
               <Button
+                type="button"
                 variant="outline"
                 className="h-9 flex-1 rounded-md text-sm"
                 onClick={handleOpenDetails}
+                disabled={disabled || isBusy}
+                aria-label="Open details"
               >
-                Open details
+                {isBusy ? renderSpinner(pendingLabel) : "Open details"}
               </Button>
             ) : null}
             {onSelect ? (
               <Button
+                type="button"
                 variant="ghost"
                 className="h-9 rounded-md px-3 text-sm"
                 onClick={(event) => {
                   event.stopPropagation();
-                  onSelect(item);
+                  handleSelect();
                 }}
+                disabled={disabled || isBusy}
+                aria-label="Select media"
               >
-                Select
+                {isBusy ? renderSpinner(pendingLabel) : "Select"}
               </Button>
             ) : null}
           </div>

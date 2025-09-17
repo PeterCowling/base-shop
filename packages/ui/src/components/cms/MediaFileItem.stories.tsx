@@ -68,3 +68,17 @@ export const ReplacingInProgress: Story = {
     selectionEnabled: true,
   },
 };
+
+export const ReplacingActionState: Story = {
+  args: {
+    replacing: true,
+    selectionEnabled: true,
+  },
+};
+
+export const DeletingState: Story = {
+  args: {
+    deleting: true,
+    selectionEnabled: true,
+  },
+};

@@ -1,7 +1,7 @@
 /* apps/cms/__tests__/dashboardSkip.integration.test.tsx */
 /* eslint-env jest */
 
-import { fireEvent, render, screen, within, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 jest.mock(
   "@/components/atoms",
@@ -9,6 +9,8 @@ jest.mock(
     const React = require("react");
     return {
       __esModule: true,
+      Progress: () => null,
+      Tag: () => null,
       Toast: () => null,
       Tooltip: ({ children }: { children: React.ReactNode }) =>
         React.createElement(React.Fragment, null, children),
@@ -23,7 +25,11 @@ jest.mock(
     const React = require("react");
     return {
       __esModule: true,
-      Button: ({ children, ...props }: any) =>
+      Card: ({ children, asChild: _asChild, ...props }: any) =>
+        React.createElement("div", props, children),
+      CardContent: ({ children, asChild: _asChild, ...props }: any) =>
+        React.createElement("div", props, children),
+      Button: ({ children, asChild: _asChild, ...props }: any) =>
         React.createElement("button", props, children),
     };
   },
@@ -41,6 +47,14 @@ jest.mock("@platform-core/contexts/LayoutContext", () => ({
 }));
 
 jest.mock("../src/app/cms/configurator/steps", () => {
+  const stepTrackMeta = {
+    growth: {
+      label: "Growth",
+      description: "",
+      pillClass: "",
+      accentClass: "",
+    },
+  } as const;
   const steps = [
     {
       id: "opt",
@@ -48,6 +62,7 @@ jest.mock("../src/app/cms/configurator/steps", () => {
       component: () => null,
       optional: true,
       order: 1,
+      track: "growth",
     },
   ];
   return {
@@ -55,6 +70,7 @@ jest.mock("../src/app/cms/configurator/steps", () => {
     getSteps: () => steps,
     getRequiredSteps: () => steps.filter((s) => !s.optional),
     steps: Object.fromEntries(steps.map((s) => [s.id, s])),
+    stepTrackMeta,
   };
 });
 
@@ -110,13 +126,12 @@ test("skipped optional steps do not block Launch Shop", async () => {
   expect(launchBtn).toBeEnabled();
 
   const optional = getSteps().find((s) => s.optional)!;
-  let stepLabel = await screen.findByText(optional.label);
-  fireEvent.click(
-    within(stepLabel.closest("li")!).getByRole("button", { name: /skip/i })
-  );
+  await screen.findByText(optional.label);
+  const skipBtn = await screen.findByRole("button", { name: /skip/i });
+  fireEvent.click(skipBtn);
 
-  stepLabel = await screen.findByText(optional.label);
-  const resetBtn = within(stepLabel.closest("li")!).getByRole("button", { name: /reset/i });
+  await screen.findByText(optional.label);
+  const resetBtn = await screen.findByRole("button", { name: /reset/i });
   await waitFor(() => {
     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
     expect(stored.completed?.[optional.id]).toBe("skipped");

@@ -3,6 +3,7 @@
 
 import { memo, ReactElement, useCallback, useState } from "react";
 import type { MediaItem } from "@acme/types";
+import MediaDetailsPanel from "./media/MediaDetailsPanel";
 import Library from "./media/Library";
 import UploadPanel from "./media/UploadPanel";
 
@@ -72,6 +73,12 @@ function MediaManagerBase({
 /* -------------------------------------------------------------------------- */
 /*  Export                                                                    */
 /* -------------------------------------------------------------------------- */
+
+export { MediaDetailsPanel };
+export type {
+  MediaDetailsFormValues,
+  MediaDetailsPanelProps,
+} from "./media/MediaDetailsPanel";
 
 export default memo(MediaManagerBase);
 

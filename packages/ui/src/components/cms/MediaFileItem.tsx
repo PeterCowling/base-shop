@@ -80,7 +80,7 @@ export default function MediaFileItem({
   const [uploadProgress, setUploadProgress] = useState(0);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const progressTimer = useRef<UploadTimer>();
+  const progressTimer = useRef<UploadTimer>(undefined);
 
   const name = useMemo(() => {
     try {

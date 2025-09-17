@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, screen } from "@testing-library/react";
+import { render, fireEvent, screen, waitFor } from "@testing-library/react";
 import UploadPanel from "../UploadPanel";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 
@@ -13,6 +13,10 @@ jest.mock("@ui/components/atoms/shadcn", () => {
 
 const mockHook = useMediaUpload as jest.MockedFunction<typeof useMediaUpload>;
 
+beforeEach(() => {
+  mockHook.mockReset();
+});
+
 function setupMock(overrides: Partial<ReturnType<typeof useMediaUpload>> = {}) {
   const defaults = {
     pendingFile: { type: "image/png" } as any,
@@ -23,7 +27,7 @@ function setupMock(overrides: Partial<ReturnType<typeof useMediaUpload>> = {}) {
     setTags: jest.fn(),
     actual: "landscape" as const,
     isValid: true as boolean | null,
-    progress: null as any,
+    progress: null,
     error: undefined as string | undefined,
     inputRef: { current: null },
     openFileDialog: jest.fn(),
@@ -97,6 +101,32 @@ describe("UploadPanel", () => {
     expect(setTags).toHaveBeenCalledWith("t1,t2");
     fireEvent.click(screen.getByText("Upload"));
     expect(handleUpload).toHaveBeenCalled();
+  });
+
+  it("disables the upload button while a file is uploading", () => {
+    setupMock({
+      progress: { done: 0, total: 1 },
+    });
+
+    render(<UploadPanel shop="shop" onUploaded={jest.fn()} />);
+
+    const uploadButton = screen.getByRole("button", { name: /uploading/i });
+    expect(uploadButton).toBeDisabled();
+  });
+
+  it("invokes onUploadError when the upload hook reports an error", async () => {
+    setupMock({ error: "Upload failed" });
+    const onUploadError = jest.fn();
+
+    render(
+      <UploadPanel
+        shop="shop"
+        onUploaded={jest.fn()}
+        onUploadError={onUploadError}
+      />
+    );
+
+    await waitFor(() => expect(onUploadError).toHaveBeenCalledWith("Upload failed"));
   });
 });
 

@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import MediaFileItem from "../MediaFileItem";
@@ -34,7 +34,8 @@ describe("MediaFileItem", () => {
     );
 
     await user.click(screen.getByRole("button", { name: /media actions/i }));
-    await user.click(await screen.findByText("Delete"));
+    const deleteItem = await screen.findByText("Delete");
+    await user.click(deleteItem);
 
     expect(onDelete).toHaveBeenCalledWith(baseItem.url);
   });
@@ -43,6 +44,8 @@ describe("MediaFileItem", () => {
     jest.useFakeTimers();
     const onDelete = jest.fn().mockResolvedValue(undefined);
     const onReplace = jest.fn();
+    const onReplaceSuccess = jest.fn();
+    const onReplaceError = jest.fn();
     const replacement = { url: "http://example.com/new.jpg", type: "image" };
     (global.fetch as jest.Mock).mockResolvedValue(
       new Response(JSON.stringify(replacement), {
@@ -57,6 +60,8 @@ describe("MediaFileItem", () => {
         shop="shop"
         onDelete={onDelete}
         onReplace={onReplace}
+        onReplaceSuccess={onReplaceSuccess}
+        onReplaceError={onReplaceError}
       />
     );
 
@@ -70,6 +75,45 @@ describe("MediaFileItem", () => {
     await waitFor(() => expect(onReplace).toHaveBeenCalled());
     expect(onReplace).toHaveBeenCalledWith(baseItem.url, replacement);
     expect(onDelete).toHaveBeenCalledWith(baseItem.url);
+    expect(onReplaceSuccess).toHaveBeenCalledWith(replacement);
+    expect(onReplaceError).not.toHaveBeenCalled();
+
+    act(() => {
+      jest.runAllTimers();
+    });
+    jest.useRealTimers();
+  });
+
+  it("notifies replace errors when the upload fails", async () => {
+    jest.useFakeTimers();
+    const onReplaceError = jest.fn();
+    (global.fetch as jest.Mock).mockResolvedValue(
+      new Response(JSON.stringify({ error: "nope" }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      })
+    );
+
+    const { container } = render(
+      <MediaFileItem
+        item={baseItem}
+        shop="shop"
+        onDelete={jest.fn()}
+        onReplace={jest.fn()}
+        onReplaceError={onReplaceError}
+      />
+    );
+
+    const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+    const file = new File(["hello"], "hello.png", { type: "image/png" });
+
+    await act(async () => {
+      fireEvent.change(fileInput, { target: { files: [file] } });
+    });
+
+    await waitFor(() =>
+      expect(onReplaceError).toHaveBeenCalledWith("Failed to upload replacement")
+    );
 
     act(() => {
       jest.runAllTimers();
@@ -109,7 +153,7 @@ describe("MediaFileItem", () => {
       />
     );
 
-    fireEvent.click(screen.getByText("Open details"));
+    fireEvent.click(screen.getByLabelText("Open details"));
     expect(onSelect).toHaveBeenCalledWith(baseItem);
   });
 
@@ -125,7 +169,7 @@ describe("MediaFileItem", () => {
       />
     );
 
-    fireEvent.click(screen.getByText("Select"));
+    fireEvent.click(screen.getByLabelText("Select media"));
     expect(onSelect).toHaveBeenCalledWith(baseItem);
   });
 
@@ -149,6 +193,23 @@ describe("MediaFileItem", () => {
       .toBeInTheDocument();
   });
 
+  it("displays loading indicators when replacing is in progress", () => {
+    render(
+      <MediaFileItem
+        item={baseItem}
+        shop="shop"
+        onDelete={jest.fn()}
+        onReplace={jest.fn()}
+        onSelect={jest.fn()}
+        replacing
+      />
+    );
+
+    const openDetailsButton = screen.getByLabelText("Open details");
+    expect(openDetailsButton).toBeDisabled();
+    expect(within(openDetailsButton).getByText(/replacing media/i)).toBeInTheDocument();
+  });
+
   it("renders a deleting overlay and disables selection", () => {
     const onSelect = jest.fn();
     render(
@@ -163,8 +224,11 @@ describe("MediaFileItem", () => {
     );
 
     expect(screen.getByText(/deleting asset/i)).toBeInTheDocument();
-    const selectButton = screen.getByText("Select");
+    const selectButton = screen.getByLabelText("Select media");
+    const openDetailsButton = screen.getByLabelText("Open details");
     expect(selectButton).toBeDisabled();
+    expect(openDetailsButton).toBeDisabled();
+    expect(within(openDetailsButton).getByText(/deleting media/i)).toBeInTheDocument();
     fireEvent.click(selectButton);
     expect(onSelect).not.toHaveBeenCalled();
   });

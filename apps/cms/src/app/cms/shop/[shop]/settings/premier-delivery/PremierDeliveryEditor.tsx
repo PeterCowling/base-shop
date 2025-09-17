@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input } from "@/components/atoms/shadcn";
@@ -78,15 +78,21 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
     carriers: ensureCollection(initial.carriers ?? []),
   }));
 
+  const submitPremierDelivery = useCallback(
+    (_formData: FormData) =>
+      updatePremierDelivery(shop, createPremierDeliveryFormData(state)),
+    [shop, state],
+  );
+
   const {
     saving,
     errors,
-    submit,
+    handleSubmit,
     toast,
     toastClassName,
     closeToast,
   } = useSettingsSaveForm<PremierDeliveryResult>({
-    action: (formData) => updatePremierDelivery(shop, formData),
+    action: submitPremierDelivery,
     successMessage: "Premier delivery settings saved.",
     errorMessage: "Unable to update premier delivery settings.",
     onSuccess: (result) => {
@@ -101,15 +107,6 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
       });
     },
   });
-
-  const handleSubmit = useCallback(
-    (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-      const formData = createPremierDeliveryFormData(state);
-      return submit(formData);
-    },
-    [state, submit],
-  );
 
   const updateCollection = (key: CollectionKey, index: number, value: string) => {
     setState((current) => {

@@ -37,6 +37,7 @@ jest.mock('@/lib/server/jsonIO', () => ({ writeJsonFile: writeJsonFileMock }));
 import path from 'path';
 import { File } from 'node:buffer';
 import * as mediaActions from '../media.server';
+import type { UpdateMediaMetadataFields } from '../media.server';
 import * as mediaHelpers from '../media.helpers';
 import { ensureAuthorized } from '../common/auth';
 import { validateShopName } from '@platform-core/shops';
@@ -66,6 +67,7 @@ describe('media.server helpers and actions', () => {
   });
 
   afterEach(() => {
+    jest.clearAllMocks();
     jest.restoreAllMocks();
   });
 
@@ -513,12 +515,104 @@ describe('media.server helpers and actions', () => {
       );
     });
 
+    it('clears metadata fields when null values are provided', async () => {
+      fsMock.readFile.mockResolvedValueOnce(
+        JSON.stringify({
+          'file.jpg': {
+            title: 'Old title',
+            altText: 'Existing alt',
+            tags: ['legacy'],
+            type: 'image',
+            size: 111,
+            uploadedAt: '2024-02-01T00:00:00.000Z',
+          },
+        }),
+      );
+      fsMock.stat.mockResolvedValueOnce({
+        size: 222,
+        mtime: new Date('2024-02-01T00:00:00.000Z'),
+      });
+
+      await expect(
+        updateMediaMetadata('shop', '/uploads/shop/file.jpg', {
+          title: null,
+          altText: null,
+          tags: null,
+        }),
+      ).resolves.toEqual({
+        url: '/uploads/shop/file.jpg',
+        title: undefined,
+        altText: undefined,
+        tags: [],
+        type: 'image',
+        size: 111,
+        uploadedAt: '2024-02-01T00:00:00.000Z',
+      });
+
+      const [, metadata] = writeJsonFileMock.mock.calls[0];
+      expect(metadata['file.jpg']).toEqual({
+        type: 'image',
+        tags: [],
+        size: 111,
+        uploadedAt: '2024-02-01T00:00:00.000Z',
+      });
+    });
+
+    it('removes tags when normalization produces no valid values', async () => {
+      fsMock.readFile.mockResolvedValueOnce(
+        JSON.stringify({
+          'file.jpg': {
+            tags: ['keep'],
+            type: 'image',
+            size: 99,
+            uploadedAt: '2024-03-01T00:00:00.000Z',
+          },
+        }),
+      );
+      fsMock.stat.mockResolvedValueOnce({
+        size: 99,
+        mtime: new Date('2024-03-01T00:00:00.000Z'),
+      });
+
+      const fields: UpdateMediaMetadataFields = { tags: undefined };
+
+      await expect(
+        updateMediaMetadata('shop', '/uploads/shop/file.jpg', fields),
+      ).resolves.toEqual({
+        url: '/uploads/shop/file.jpg',
+        title: undefined,
+        altText: undefined,
+        tags: undefined,
+        type: 'image',
+        size: 99,
+        uploadedAt: '2024-03-01T00:00:00.000Z',
+      });
+
+      const [, metadata] = writeJsonFileMock.mock.calls[0];
+      expect(metadata['file.jpg']).toEqual({
+        type: 'image',
+        size: 99,
+        uploadedAt: '2024-03-01T00:00:00.000Z',
+      });
+    });
+
     it('throws when media file is missing', async () => {
       const error = Object.assign(new Error('missing'), { code: 'ENOENT' });
       fsMock.stat.mockRejectedValueOnce(error);
       await expect(
         updateMediaMetadata('shop', '/uploads/shop/missing.jpg', {}),
       ).rejects.toThrow('Media file not found');
+    });
+
+    it.each([
+      '/uploads/other-shop/file.jpg',
+      '/uploads/shop/../escape.jpg',
+    ])('rejects invalid file url %s', async (url) => {
+      await expect(updateMediaMetadata('shop', url, {})).rejects.toThrow(
+        'Invalid file path',
+      );
+      expect(fsMock.stat).not.toHaveBeenCalled();
+      expect(writeJsonFileMock).not.toHaveBeenCalled();
     });
   });
 
@@ -585,6 +679,102 @@ describe('media.server helpers and actions', () => {
           },
         ],
       });
+    });
+
+    it('computes totals and ordering with mixed metadata', async () => {
+      fsMock.readdir.mockResolvedValueOnce([
+        'first.jpg',
+        'second.mp4',
+        'third.png',
+      ]);
+      fsMock.readFile.mockResolvedValueOnce(
+        JSON.stringify({
+          'first.jpg': {
+            title: 'First',
+            type: 'image',
+            uploadedAt: '2024-04-01T10:00:00.000Z',
+            size: 100,
+          },
+          'second.mp4': {
+            title: 'Second',
+            type: 'video',
+            uploadedAt: 'not-a-date',
+            size: 400,
+          },
+        }),
+      );
+      fsMock.stat.mockResolvedValueOnce({
+        size: 250,
+        mtime: new Date('2024-04-03T00:00:00.000Z'),
+      });
+
+      await expect(getMediaOverview('shop')).resolves.toEqual({
+        files: [
+          {
+            url: '/uploads/shop/first.jpg',
+            title: 'First',
+            altText: undefined,
+            tags: undefined,
+            type: 'image',
+            size: 100,
+            uploadedAt: '2024-04-01T10:00:00.000Z',
+          },
+          {
+            url: '/uploads/shop/second.mp4',
+            title: 'Second',
+            altText: undefined,
+            tags: undefined,
+            type: 'video',
+            size: 400,
+            uploadedAt: 'not-a-date',
+          },
+          {
+            url: '/uploads/shop/third.png',
+            title: undefined,
+            altText: undefined,
+            tags: undefined,
+            type: 'image',
+            size: 250,
+            uploadedAt: '2024-04-03T00:00:00.000Z',
+          },
+        ],
+        totalBytes: 750,
+        imageCount: 2,
+        videoCount: 1,
+        recentUploads: [
+          {
+            url: '/uploads/shop/third.png',
+            title: undefined,
+            altText: undefined,
+            tags: undefined,
+            type: 'image',
+            size: 250,
+            uploadedAt: '2024-04-03T00:00:00.000Z',
+          },
+          {
+            url: '/uploads/shop/first.jpg',
+            title: 'First',
+            altText: undefined,
+            tags: undefined,
+            type: 'image',
+            size: 100,
+            uploadedAt: '2024-04-01T10:00:00.000Z',
+          },
+          {
+            url: '/uploads/shop/second.mp4',
+            title: 'Second',
+            altText: undefined,
+            tags: undefined,
+            type: 'video',
+            size: 400,
+            uploadedAt: 'not-a-date',
+          },
+        ],
+      });
+
+      expect(fsMock.stat).toHaveBeenCalledWith(
+        path.join(process.cwd(), 'public', 'uploads', 'shop', 'third.png'),
+      );
     });
 
     it('returns empty overview when directory is missing', async () => {

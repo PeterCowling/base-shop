@@ -28,6 +28,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.resetAllMocks();
+  jest.restoreAllMocks();
 });
 
 afterAll(() => {
@@ -60,6 +61,9 @@ describe("media route", () => {
         recentUploads: [],
       };
       getMediaOverview.mockResolvedValue(overview);
+      listMedia.mockImplementation(() => {
+        throw new Error("listMedia should not be called when summary is requested");
+      });
       const res = await GET(
         new Request("http://test.local/api/media?shop=s1&summary=true")
       );
@@ -67,6 +71,18 @@ describe("media route", () => {
       expect(await res.json()).toEqual(overview);
       expect(getMediaOverview).toHaveBeenCalledWith("s1");
       expect(listMedia).not.toHaveBeenCalled();
+    });
+
+    it("ignores false-like summary values", async () => {
+      const files = [{ name: "keep" }];
+      listMedia.mockResolvedValue(files);
+      const res = await GET(
+        new Request("http://test.local/api/media?shop=s1&summary=0")
+      );
+      expect(res.status).toBe(200);
+      expect(await res.json()).toEqual(files);
+      expect(listMedia).toHaveBeenCalledWith("s1");
+      expect(getMediaOverview).not.toHaveBeenCalled();
     });
 
     it("returns 500 when listMedia throws", async () => {
@@ -159,6 +175,19 @@ describe("media route", () => {
       expect(updateMediaMetadataAction).not.toHaveBeenCalled();
     });
 
+    it("returns 400 when body is invalid JSON", async () => {
+      const res = await PATCH(
+        new Request("http://test.local/api/media?shop=s1", {
+          method: "PATCH",
+          body: "{",
+          headers: { "Content-Type": "application/json" },
+        })
+      );
+      expect(res.status).toBe(400);
+      expect(await res.json()).toEqual({ error: "Invalid JSON" });
+      expect(updateMediaMetadataAction).not.toHaveBeenCalled();
+    });
+
     it("updates metadata", async () => {
       const item = { url: "/uploads/s1/a.jpg" };
       updateMediaMetadataAction.mockResolvedValue(item);
@@ -191,6 +220,22 @@ describe("media route", () => {
         })
       );
       expect(res.status).toBe(400);
+      expect(await res.json()).toEqual({ error: "Invalid tags" });
+      expect(updateMediaMetadataAction).not.toHaveBeenCalled();
+    });
+
+    it("rejects numeric tags payloads", async () => {
+      const res = await PATCH(
+        new Request("http://test.local/api/media?shop=s1", {
+          method: "PATCH",
+          body: JSON.stringify({
+            file: "/uploads/s1/a.jpg",
+            tags: 123,
+          }),
+        })
+      );
+      expect(res.status).toBe(400);
+      expect(await res.json()).toEqual({ error: "Invalid tags" });
       expect(updateMediaMetadataAction).not.toHaveBeenCalled();
     });
 

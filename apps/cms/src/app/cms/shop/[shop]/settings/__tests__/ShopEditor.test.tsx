@@ -174,6 +174,11 @@ describe("ShopEditor", () => {
       ],
     } as any;
 
+    const seo = {
+      catalogFilters: info.catalogFilters,
+      setCatalogFilters: jest.fn(),
+    } as any;
+
     mockUseShopEditorForm.mockReturnValue({
       info,
       setInfo: jest.fn(),
@@ -190,6 +195,7 @@ describe("ShopEditor", () => {
       providers,
       overrides,
       localization,
+      seo,
       toast: {
         open: true,
         status: "error",

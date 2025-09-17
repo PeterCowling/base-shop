@@ -7,15 +7,32 @@ jest.mock(
   "@/components/atoms/shadcn",
   () => {
     return {
-      Accordion: ({ items }: any) => (
-        <div>
-          {items.map((item: any, index: number) => (
-            <div key={index}>
-              <button type="button">{item.title}</button>
-              <div>{item.content}</div>
-            </div>
-          ))}
-        </div>
+      Accordion: ({ items, children, ...props }: any) => {
+        const accordionItems = Array.isArray(items) ? items : [];
+
+        return (
+          <div {...props}>
+            {accordionItems.length > 0
+              ? accordionItems.map((item: any, index: number) => (
+                  <div key={index}>
+                    <button type="button">{item.title}</button>
+                    <div>{item.content}</div>
+                  </div>
+                ))
+              : children}
+          </div>
+        );
+      },
+      AccordionItem: ({ children, ...props }: any) => (
+        <div {...props}>{children}</div>
+      ),
+      AccordionTrigger: ({ children, ...props }: any) => (
+        <button type="button" {...props}>
+          {children}
+        </button>
+      ),
+      AccordionContent: ({ children, ...props }: any) => (
+        <div {...props}>{children}</div>
       ),
       Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
       CardContent: ({ children, ...props }: any) => (
@@ -68,10 +85,7 @@ describe("ShopEditor", () => {
     );
 
     fireEvent.click(
-      screen.getByRole("button", { name: /filter mappings/i }),
-    );
-    fireEvent.click(
-      await screen.findByRole("button", { name: /add mapping/i }),
+      await screen.findByRole("button", { name: /add filter mapping/i }),
     );
     fireEvent.click(screen.getByRole("button", { name: /save/i }));
 

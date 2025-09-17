@@ -3,25 +3,6 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import ShopOverridesSection from "../sections/ShopOverridesSection";
 
 jest.mock(
-  "@/components/atoms/shadcn",
-  () => ({
-    Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-    Input: (props: any) => <input {...props} />,
-    Accordion: ({ children }: any) => <div>{children}</div>,
-    AccordionItem: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    AccordionTrigger: ({ children, ...props }: any) => (
-      <button type="button" {...props}>
-        {children}
-      </button>
-    ),
-    AccordionContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  }),
-  { virtual: true },
-);
-
-jest.mock(
   "@ui/components",
   () => {
     const React = require("react");
@@ -68,7 +49,17 @@ jest.mock(
     };
     const SelectValue = ({ placeholder, children }: any) => children ?? placeholder;
     return {
+      Accordion: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+      AccordionContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+      AccordionItem: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+      AccordionTrigger: ({ children, ...props }: any) => (
+        <button type="button" {...props}>
+          {children}
+        </button>
+      ),
       Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+      Card: ({ children, ...props }: any) => <div {...props}>{children}</div>,
+      CardContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
       FormField: ({ children, label, htmlFor, error }: any) => (
         <div>
           <label htmlFor={htmlFor}>{label}</label>
@@ -146,6 +137,8 @@ describe("ShopOverridesSection", () => {
     fireEvent.click(screen.getAllByText(/Remove/i)[0]);
     expect(filterController.remove).toHaveBeenCalledWith(0);
 
-    expect(screen.getByText(/must not be empty/i)).toBeInTheDocument();
+    const chip = screen.getByText(/must not be empty/i);
+    expect(chip).toHaveAttribute("data-token", "--color-danger");
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 });

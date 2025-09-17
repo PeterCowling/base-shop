@@ -1,6 +1,6 @@
 "use client";
 
-import { Card, CardContent } from "@/components/atoms/shadcn";
+import { Card, CardContent } from "@ui/components";
 import type { MappingRowsController } from "../useShopEditorSubmit";
 
 import MappingListField, {

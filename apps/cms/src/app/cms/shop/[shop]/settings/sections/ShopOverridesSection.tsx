@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
   Card,
   CardContent,
-} from "@/components/atoms/shadcn";
+} from "@ui/components";
 import type { MappingRowsController } from "../useShopEditorSubmit";
 
 import MappingListField, {

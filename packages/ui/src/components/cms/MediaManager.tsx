@@ -211,27 +211,45 @@ function MediaManagerBase({
     []
   );
 
-  const { files, selectedUrl, metadataPending, toast } = state;
+  const {
+    files,
+    selectedUrl,
+    dialogDeleteUrl,
+    deletePending,
+    metadataPending,
+    toast,
+  } = state;
+
+  const deletingUrl = deletePending ? dialogDeleteUrl : null;
 
   const selectedItem = useMemo(() => {
     if (!selectedUrl) return null;
     return files.find((file) => file.url === selectedUrl) ?? null;
   }, [files, selectedUrl]);
 
-  const handleDelete = useCallback(
-    async (src: string) => {
-      if (!confirm("Delete this image?")) return;
-      setDialogDeleteUrl(src);
+  const handleRequestDelete = useCallback(
+    (url: string) => {
+      setDialogDeleteUrl(url);
+    },
+    [setDialogDeleteUrl]
+  );
+
+  const handleConfirmDelete = useCallback(
+    async () => {
+      const targetUrl = dialogDeleteUrl;
+      if (!targetUrl) return;
+
       setDeletePending(true);
       try {
-        await onDelete(shop, src);
-        setFiles((prev) => prev.filter((f) => f.url !== src));
-        setSelectedUrl((prev) => (prev === src ? null : prev));
+        await onDelete(shop, targetUrl);
+        setFiles((prev) => prev.filter((file) => file.url !== targetUrl));
+        setSelectedUrl((prev) => (prev === targetUrl ? null : prev));
         setToast({
           open: true,
           message: "Media deleted.",
           variant: "success",
         });
+        setDialogDeleteUrl(null);
       } catch (error) {
         console.error("Failed to delete media item", error);
         setToast({
@@ -241,10 +259,32 @@ function MediaManagerBase({
         });
       } finally {
         setDeletePending(false);
-        setDialogDeleteUrl(null);
       }
     },
-    [onDelete, setDeletePending, setDialogDeleteUrl, setFiles, setSelectedUrl, setToast, shop]
+    [
+      dialogDeleteUrl,
+      onDelete,
+      setDeletePending,
+      setDialogDeleteUrl,
+      setFiles,
+      setSelectedUrl,
+      setToast,
+      shop,
+    ]
+  );
+
+  const handleCancelDelete = useCallback(() => {
+    setDialogDeleteUrl(null);
+  }, [setDialogDeleteUrl]);
+
+  const handleDialogOpenChange = useCallback(
+    (open: boolean) => {
+      if (!open) {
+        if (deletePending) return;
+        handleCancelDelete();
+      }
+    },
+    [deletePending, handleCancelDelete]
   );
 
   const handleUploaded = useCallback((item: MediaItem) => {
@@ -355,12 +395,52 @@ function MediaManagerBase({
       <Library
         files={files}
         shop={shop}
-        onDelete={handleDelete}
+        onDelete={handleRequestDelete}
         onReplace={handleReplace}
         onReplaceSuccess={handleReplaceSuccess}
         onReplaceError={handleReplaceError}
         onSelect={handleSelect}
+        isDeleting={(item) => deletingUrl === item.url}
       />
+      <Dialog
+        open={Boolean(dialogDeleteUrl)}
+        onOpenChange={handleDialogOpenChange}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete media?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete the media
+              file from your library.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleCancelDelete}
+              disabled={deletePending}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="destructive"
+              onClick={handleConfirmDelete}
+              disabled={deletePending}
+            >
+              {deletePending ? (
+                <>
+                  <Spinner className="h-4 w-4" />
+                  <span className="sr-only">Deleting media</span>
+                </>
+              ) : (
+                "Delete"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       {selectedItem ? (
         <MediaDetailsPanel
           open

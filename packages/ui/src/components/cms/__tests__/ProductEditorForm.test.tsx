@@ -48,8 +48,8 @@ describe("ProductEditorForm", () => {
       />
     );
 
-    expect(getByText("Required")).toBeInTheDocument();
-    expect(getByText("Too short")).toBeInTheDocument();
+    expect(getByText(/Required/)).toBeInTheDocument();
+    expect(getByText(/Too short/)).toBeInTheDocument();
   });
 
   it("allows adding and removing variant values", () => {
@@ -76,7 +76,7 @@ describe("ProductEditorForm", () => {
     };
     (useProductEditorFormState as jest.Mock).mockReturnValue(hookState);
 
-    const { getByText, getByRole } = render(
+    const { getByRole } = render(
       <ProductEditorForm
         product={hookState.product}
         onSave={jest.fn()}
@@ -84,10 +84,14 @@ describe("ProductEditorForm", () => {
       />
     );
 
-    fireEvent.click(getByText("Add"));
+    fireEvent.click(getByRole("button", { name: "Variants" }));
+
+    fireEvent.click(getByRole("button", { name: "Add option to size" }));
     expect(hookState.addVariantValue).toHaveBeenCalledWith("size");
 
-    fireEvent.click(getByRole("button", { name: "✕" }));
+    fireEvent.click(
+      getByRole("button", { name: "Remove size option 1" })
+    );
     expect(hookState.removeVariantValue).toHaveBeenCalledWith("size", 0);
   });
 
@@ -115,7 +119,7 @@ describe("ProductEditorForm", () => {
     };
     (useProductEditorFormState as jest.Mock).mockReturnValue(hookState);
 
-    const { getByTestId } = render(
+    const { getByRole, getByTestId } = render(
       <ProductEditorForm
         product={hookState.product}
         onSave={jest.fn()}
@@ -123,6 +127,7 @@ describe("ProductEditorForm", () => {
       />
     );
 
+    fireEvent.click(getByRole("button", { name: "Publish locations" }));
     fireEvent.click(getByTestId("publish-selector"));
     expect(hookState.setPublishTargets).toHaveBeenCalledWith(["loc1"]);
   });
@@ -154,7 +159,7 @@ describe("ProductEditorForm", () => {
     };
     (useProductEditorFormState as jest.Mock).mockReturnValue(hookState);
 
-    const { getAllByText } = render(
+    const { getByRole } = render(
       <ProductEditorForm
         product={hookState.product}
         onSave={jest.fn()}
@@ -162,13 +167,15 @@ describe("ProductEditorForm", () => {
       />
     );
 
-    fireEvent.click(getAllByText("↓")[0]);
+    fireEvent.click(getByRole("button", { name: "Media gallery" }));
+
+    fireEvent.click(getByRole("button", { name: "Move media 1 down" }));
     expect(hookState.moveMedia).toHaveBeenCalledWith(0, 1);
 
-    fireEvent.click(getAllByText("↑")[0]);
+    fireEvent.click(getByRole("button", { name: "Move media 2 up" }));
     expect(hookState.moveMedia).toHaveBeenCalledWith(1, 0);
 
-    fireEvent.click(getAllByText("✕")[1]);
+    fireEvent.click(getByRole("button", { name: "Remove media 2" }));
     expect(hookState.removeMedia).toHaveBeenCalledWith(1);
   });
 
@@ -196,7 +203,7 @@ describe("ProductEditorForm", () => {
     };
     (useProductEditorFormState as jest.Mock).mockReturnValue(hookState);
 
-    const { getByRole } = render(
+    const { getByTestId, getByText } = render(
       <ProductEditorForm
         product={hookState.product}
         onSave={jest.fn()}
@@ -204,10 +211,11 @@ describe("ProductEditorForm", () => {
       />
     );
 
-    const button = getByRole("button", { name: "Saving…" });
-    expect(button).toBeDisabled();
+    const form = getByTestId("product-editor-form");
+    expect(form).toHaveAttribute("aria-busy", "true");
+    expect(getByText("Saving product…")).toBeInTheDocument();
 
-    fireEvent.submit(button.closest("form")!);
+    fireEvent.submit(form);
     expect(hookState.handleSubmit).toHaveBeenCalled();
   });
 });

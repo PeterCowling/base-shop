@@ -9,6 +9,7 @@ export { Textarea, type TextareaProps } from "./primitives/textarea";
 export { ARViewer } from "./ARViewer";
 export { Avatar } from "./Avatar";
 export { Chip } from "./Chip";
+export { IconButton } from "./IconButton";
 export { ColorSwatch } from "./ColorSwatch";
 export { Icon } from "./Icon";
 export { LineChart } from "./LineChart";

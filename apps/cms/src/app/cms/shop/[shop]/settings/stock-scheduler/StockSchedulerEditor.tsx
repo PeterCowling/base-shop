@@ -13,7 +13,7 @@ import {
   schedulerHistoryColumns,
 } from "../tableMappers";
 import { ErrorChips } from "../components/ErrorChips";
-import { useServiceEditorForm } from "../hooks/useServiceEditorForm";
+import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
 
 interface HistoryEntry {
   timestamp: number;
@@ -42,14 +42,14 @@ export default function StockSchedulerEditor({ shop, status }: Props) {
     toastClassName,
     closeToast,
     announceError,
-  } = useServiceEditorForm<void>({
-    action: async (formData) => {
-      await updateStockScheduler(shop, formData);
-    },
-    successMessage: "Stock scheduler updated.",
-    errorMessage: "Unable to update stock scheduler.",
-    extractErrors: () => undefined,
-  });
+    } = useSettingsSaveForm<void>({
+      action: async (formData) => {
+        await updateStockScheduler(shop, formData);
+      },
+      successMessage: "Stock scheduler updated.",
+      errorMessage: "Unable to update stock scheduler.",
+      normalizeErrors: () => undefined,
+    });
 
   const handleIntervalChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInterval(event.target.value);

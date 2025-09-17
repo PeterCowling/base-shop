@@ -9,7 +9,7 @@ import { updatePremierDelivery } from "@cms/actions/shops.server";
 
 import { ErrorChips } from "../components/ErrorChips";
 import { StringCollectionField } from "../components/StringCollectionField";
-import { useServiceEditorForm } from "../hooks/useServiceEditorForm";
+import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
 
 type PremierDeliveryState = {
   serviceLabel: string;
@@ -56,7 +56,7 @@ export default function PremierDeliveryEditor({ shop, initial }: Props) {
     toast,
     toastClassName,
     closeToast,
-  } = useServiceEditorForm<PremierDeliveryResult>({
+  } = useSettingsSaveForm<PremierDeliveryResult>({
     action: (formData) => updatePremierDelivery(shop, formData),
     successMessage: "Premier delivery settings saved.",
     errorMessage: "Unable to update premier delivery settings.",

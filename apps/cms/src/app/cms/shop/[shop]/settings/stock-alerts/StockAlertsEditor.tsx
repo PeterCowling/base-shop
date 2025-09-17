@@ -8,7 +8,7 @@ import { FormField } from "@ui/components/molecules";
 import { updateStockAlert } from "@cms/actions/shops.server";
 
 import { ErrorChips } from "../components/ErrorChips";
-import { useServiceEditorForm } from "../hooks/useServiceEditorForm";
+import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
 
 type StockAlertState = {
   recipients: string;
@@ -31,7 +31,7 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
   });
 
   const { saving, errors, handleSubmit, toast, toastClassName, closeToast } =
-    useServiceEditorForm<StockAlertResult>({
+    useSettingsSaveForm<StockAlertResult>({
       action: (formData) => updateStockAlert(shop, formData),
       successMessage: "Stock alert settings saved.",
       errorMessage: "Unable to update stock alerts.",

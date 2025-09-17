@@ -8,7 +8,7 @@ import { FormField } from "@ui/components/molecules";
 import { updateMaintenanceSchedule } from "@cms/actions/maintenance.server";
 
 import { ErrorChips } from "../components/ErrorChips";
-import { useServiceEditorForm } from "../hooks/useServiceEditorForm";
+import { useSettingsSaveForm } from "../hooks/useSettingsSaveForm";
 
 export default function MaintenanceSchedulerEditor() {
   const [frequency, setFrequency] = useState("");
@@ -22,13 +22,13 @@ export default function MaintenanceSchedulerEditor() {
     toastClassName,
     closeToast,
     announceError,
-  } = useServiceEditorForm<void>({
+  } = useSettingsSaveForm<void>({
     action: async (formData) => {
       await updateMaintenanceSchedule(formData);
     },
     successMessage: "Maintenance scan schedule updated.",
     errorMessage: "Unable to update maintenance scan schedule.",
-    extractErrors: () => undefined,
+    normalizeErrors: () => undefined,
   });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {

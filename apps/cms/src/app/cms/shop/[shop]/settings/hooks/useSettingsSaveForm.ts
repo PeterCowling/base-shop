@@ -21,15 +21,15 @@ interface SubmitResult<TResult> {
 const DEFAULT_SUCCESS_MESSAGE = "Settings saved.";
 const DEFAULT_ERROR_MESSAGE = "Unable to save settings.";
 
-type ExtractErrors<TResult> = (result: TResult) => ValidationErrors | undefined;
-
 type ServiceAction<TResult> = (formData: FormData) => Promise<TResult>;
 
 type SuccessHandler<TResult> = (result: TResult) => void;
 
 type ErrorHandler<TResult> = (result: TResult) => void;
 
-const defaultExtractErrors: ExtractErrors<unknown> = (result) => {
+type ErrorNormalizer<TResult> = (result: TResult) => ValidationErrors | undefined;
+
+const defaultNormalizeErrors: ErrorNormalizer<unknown> = (result) => {
   if (result && typeof result === "object" && "errors" in result) {
     const errors = (result as { errors?: ValidationErrors }).errors;
     if (errors && Object.keys(errors).length > 0) {
@@ -39,23 +39,23 @@ const defaultExtractErrors: ExtractErrors<unknown> = (result) => {
   return undefined;
 };
 
-export interface UseServiceEditorFormOptions<TResult> {
+export interface UseSettingsSaveFormOptions<TResult> {
   action: ServiceAction<TResult>;
   onSuccess?: SuccessHandler<TResult>;
   onError?: ErrorHandler<TResult>;
   successMessage?: string;
   errorMessage?: string;
-  extractErrors?: ExtractErrors<TResult>;
+  normalizeErrors?: ErrorNormalizer<TResult>;
 }
 
-export function useServiceEditorForm<TResult>({
+export function useSettingsSaveForm<TResult>({
   action,
   onSuccess,
   onError,
   successMessage = DEFAULT_SUCCESS_MESSAGE,
   errorMessage = DEFAULT_ERROR_MESSAGE,
-  extractErrors,
-}: UseServiceEditorFormOptions<TResult>) {
+  normalizeErrors,
+}: UseSettingsSaveFormOptions<TResult>) {
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [toast, setToast] = useState<ToastState>({
@@ -82,16 +82,16 @@ export function useServiceEditorForm<TResult>({
     setToast((current) => ({ ...current, open: false }));
   }, []);
 
-  const getErrors = extractErrors
-    ? extractErrors
-    : (defaultExtractErrors as ExtractErrors<TResult>);
+  const getNormalizedErrors = normalizeErrors
+    ? normalizeErrors
+    : (defaultNormalizeErrors as ErrorNormalizer<TResult>);
 
   const submit = useCallback(
     async (formData: FormData): Promise<SubmitResult<TResult>> => {
       setSaving(true);
       try {
         const result = await action(formData);
-        const validationErrors = getErrors(result) ?? {};
+        const validationErrors = getNormalizedErrors(result) ?? {};
 
         if (Object.keys(validationErrors).length > 0) {
           setErrors(validationErrors);
@@ -105,8 +105,7 @@ export function useServiceEditorForm<TResult>({
         announceSuccess(successMessage);
         return { ok: true, result };
       } catch (error) {
-        const message =
-          error instanceof Error ? error.message : errorMessage;
+        const message = error instanceof Error ? error.message : errorMessage;
         announceError(message);
         return { ok: false, error };
       } finally {
@@ -118,7 +117,7 @@ export function useServiceEditorForm<TResult>({
       announceError,
       announceSuccess,
       errorMessage,
-      getErrors,
+      getNormalizedErrors,
       onError,
       onSuccess,
       successMessage,
@@ -154,4 +153,4 @@ export function useServiceEditorForm<TResult>({
   };
 }
 
-export default useServiceEditorForm;
+export default useSettingsSaveForm;

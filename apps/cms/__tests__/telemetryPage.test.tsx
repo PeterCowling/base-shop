@@ -31,6 +31,12 @@ function createEvent(partial: Partial<TelemetryEvent> = {}): TelemetryEvent {
   } as TelemetryEvent;
 }
 
+function toLocalDatetimeInput(date: Date): string {
+  const offsetMinutes = date.getTimezoneOffset();
+  const localDate = new Date(date.getTime() - offsetMinutes * 60 * 1000);
+  return localDate.toISOString().slice(0, 16);
+}
+
 describe("Telemetry analytics", () => {
   it("filters events by name and time range", () => {
     const now = Date.now();
@@ -41,8 +47,8 @@ describe("Telemetry analytics", () => {
     ];
     const filtered = filterTelemetryEvents(events, {
       name: "checkout",
-      start: new Date(now - 10 * 60 * 1000).toISOString().slice(0, 16),
-      end: new Date(now).toISOString().slice(0, 16),
+      start: toLocalDatetimeInput(new Date(now - 10 * 60 * 1000)),
+      end: toLocalDatetimeInput(new Date(now)),
     });
     expect(filtered).toHaveLength(1);
     expect(filtered[0].name).toBe("checkout.started");

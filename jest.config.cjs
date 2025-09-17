@@ -199,6 +199,8 @@ const config = {
     "^@acme/platform-core/(.*)$": " /packages/platform-core/src/$1",
     "^@acme/platform-core/contexts/CurrencyContext$":
       " /test/__mocks__/currencyContextMock.tsx",
+    "^@radix-ui/react-dropdown-menu$":
+      " /test/__mocks__/@radix-ui/react-dropdown-menu.tsx",
     "^@acme/sanity$": " /packages/sanity/src/index.ts",
     "^@acme/sanity/(.*)$": " /packages/sanity/src/$1",
     "^@acme/platform-machine/src/(.*)$": " /packages/platform-machine/src/$1",

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Card, CardContent } from "../../../atoms/shadcn";
+import { CodeBlock } from "../../../molecules";
 import { cn } from "../../../../utils/style";
 
 export interface PreviewPanelProps<TData> {
@@ -25,6 +26,17 @@ export function PreviewPanel<TData>({
   emptyLabel = "Preview not available",
 }: PreviewPanelProps<TData>) {
   const content = renderPreview?.(data);
+  const fallbackPreview = data ? JSON.stringify(data, null, 2) : emptyLabel;
+
+  const previewBody = content ? (
+    <div className="p-4">{content}</div>
+  ) : (
+    <CodeBlock
+      code={fallbackPreview}
+      className="p-4"
+      preClassName="bg-transparent text-xs text-muted-foreground border-none p-0 pr-12"
+    />
+  );
 
   return (
     <Card className={cn("space-y-4", className)}>
@@ -38,13 +50,7 @@ export function PreviewPanel<TData>({
           </div>
           {actions && <div className="flex items-center gap-2">{actions}</div>}
         </div>
-        <div className="rounded-lg border bg-muted/40 p-4 text-sm">
-          {content ?? (
-            <pre className="text-xs text-muted-foreground">
-              {data ? JSON.stringify(data, null, 2) : emptyLabel}
-            </pre>
-          )}
-        </div>
+        <div className="rounded-lg border bg-muted/40 text-sm">{previewBody}</div>
         {footer}
       </CardContent>
     </Card>

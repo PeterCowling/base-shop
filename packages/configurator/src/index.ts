@@ -1,8 +1,25 @@
 import { envSchema } from "@acme/config/env";
 import { spawnSync } from "node:child_process";
 
+const REQUIRED_ENV_VARS = [
+  "STRIPE_SECRET_KEY",
+  "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
+  "CART_COOKIE_SECRET",
+] as const;
+
 try {
   envSchema.parse(process.env);
+
+  const missing = REQUIRED_ENV_VARS.filter((key) => {
+    const value = process.env[key];
+    return typeof value !== "string" || value.trim() === "";
+  });
+
+  if (missing.length > 0) {
+    throw new Error(
+      `Missing required environment variables: ${missing.join(", ")}`,
+    );
+  }
 } catch (err) {
   console.error("Invalid environment variables:\n", err);
   process.exit(1);

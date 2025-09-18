@@ -4,6 +4,15 @@ jest.mock("@acme/zod-utils/initZod", () => ({}));
 
 jest.mock("@acme/email", () => ({ sendEmail: jest.fn() }));
 
+const hashedPassword = "$argon2id$mocked";
+const mockHash = jest.fn(async () => hashedPassword);
+
+jest.mock("argon2", () => ({
+  __esModule: true,
+  default: { hash: mockHash },
+  hash: mockHash,
+}));
+
 interface StoreUser {
   id: string;
   email: string;
@@ -42,13 +51,17 @@ jest.mock("@platform-core/users", () => ({
 }));
 
 import { sendEmail } from "@acme/email";
+import { updatePassword } from "@platform-core/users";
 import { POST as requestPOST } from "../src/app/api/password-reset/request/route";
 import { POST as resetPOST } from "../src/app/api/password-reset/[token]/route";
 
 const mockSendEmail = sendEmail as jest.MockedFunction<typeof sendEmail>;
+const mockUpdatePassword = updatePassword as jest.MockedFunction<typeof updatePassword>;
 
 describe("password reset integration", () => {
   beforeEach(() => {
+    mockHash.mockReset();
+    mockHash.mockResolvedValue(hashedPassword);
     mockSendEmail.mockReset();
     mockSendEmail.mockResolvedValue(undefined);
     for (const key in store) delete store[key];
@@ -92,7 +105,9 @@ describe("password reset integration", () => {
     expect(res2.status).toBe(200);
     const resetBody = await res2.json();
     expect(resetBody).toEqual({ ok: true });
-    expect(store["u1"].passwordHash).toBe("newpass123");
+    expect(mockHash).toHaveBeenCalledWith("newpass123");
+    expect(mockUpdatePassword).toHaveBeenCalledWith("u1", hashedPassword);
+    expect(store["u1"].passwordHash).toBe(hashedPassword);
     expect(store["u1"].resetToken).toBeNull();
   });
 

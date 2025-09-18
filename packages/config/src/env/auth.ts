@@ -15,20 +15,17 @@ const isProd =
 
 // Normalize AUTH_TOKEN_TTL from the process environment so validation succeeds
 // even if the shell exported a plain number or included stray whitespace.
-// We intentionally skip this in tests to keep existing expectations.
-if (!isTest) {
-  const rawTTL = process.env.AUTH_TOKEN_TTL;
-  if (typeof rawTTL === "string") {
-    const trimmed = rawTTL.trim();
-    if (trimmed === "") {
-      // Treat blank as unset so default applies
-      delete process.env.AUTH_TOKEN_TTL;
-    } else if (/^\d+$/.test(trimmed)) {
-      process.env.AUTH_TOKEN_TTL = `${trimmed}s`;
-    } else if (/^(\d+)\s*([sm])$/i.test(trimmed)) {
-      const [, num, unit] = trimmed.match(/^(\d+)\s*([sm])$/i)!;
-      process.env.AUTH_TOKEN_TTL = `${num}${unit.toLowerCase()}`;
-    }
+const rawTTL = process.env.AUTH_TOKEN_TTL;
+if (typeof rawTTL === "string") {
+  const trimmed = rawTTL.trim();
+  if (trimmed === "") {
+    // Treat blank as unset so default applies
+    delete process.env.AUTH_TOKEN_TTL;
+  } else if (/^\d+$/.test(trimmed)) {
+    process.env.AUTH_TOKEN_TTL = `${trimmed}s`;
+  } else if (/^(\d+)\s*([sm])$/i.test(trimmed)) {
+    const [, num, unit] = trimmed.match(/^(\d+)\s*([sm])$/i)!;
+    process.env.AUTH_TOKEN_TTL = `${num}${unit.toLowerCase()}`;
   }
 }
 
@@ -178,12 +175,10 @@ export function loadAuthEnv(
 ): AuthEnv {
   const parsed = authEnvSchema.safeParse(raw);
   if (!parsed.success) {
-    if (!isTest) {
-      console.error(
-        "❌ Invalid auth environment variables:",
-        parsed.error.format(),
-      );
-    }
+    console.error(
+      "❌ Invalid auth environment variables:",
+      parsed.error.format(),
+    );
     throw new Error("Invalid auth environment variables");
   }
   return {

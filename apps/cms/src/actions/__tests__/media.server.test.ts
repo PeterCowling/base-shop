@@ -39,12 +39,29 @@ import { File } from 'node:buffer';
 import * as mediaActions from '../media.server';
 import type { UpdateMediaMetadataFields } from '../media.server';
 import * as mediaHelpers from '../media.helpers';
+import * as tagUtils from '../media/tagUtils';
+import * as mediaFileService from '../media/mediaFileService';
+import * as mediaMetadataService from '../media/mediaMetadataService';
 import { ensureAuthorized } from '../common/auth';
 import { validateShopName } from '@platform-core/shops';
 
 const { listMedia, uploadMedia, deleteMedia, updateMediaMetadata, getMediaOverview } =
   mediaActions;
 const { uploadsDir, metadataPath, readMetadata, writeMetadata } = mediaHelpers;
+const {
+  cleanTagsList,
+  parseTagsString,
+  extractTagsFromFormData,
+  normalizeTagsForStorage,
+  normalizeTagsInput,
+} = tagUtils;
+const {
+  listMediaFiles,
+  uploadMediaFile,
+  deleteMediaFile,
+  inferMediaType,
+} = mediaFileService;
+const { updateMediaMetadataEntry, getMediaOverviewForShop } = mediaMetadataService;
 
 describe('media.server helpers and actions', () => {
   beforeEach(() => {
@@ -137,6 +154,55 @@ describe('media.server helpers and actions', () => {
         ),
         { foo: { title: 'bar' } },
       );
+    });
+  });
+
+  describe('tag utilities', () => {
+    it('cleanTagsList trims values and removes duplicates', () => {
+      expect(cleanTagsList([' foo ', 'bar', 'foo', ''])).toEqual(['foo', 'bar']);
+    });
+
+    it('parseTagsString handles JSON and delimited strings', () => {
+      expect(parseTagsString('["hero"," feature "]')).toEqual([
+        'hero',
+        'feature',
+      ]);
+      expect(parseTagsString('alpha, beta\ngamma')).toEqual([
+        'alpha',
+        'beta',
+        'gamma',
+      ]);
+    });
+
+    it('extractTagsFromFormData collects tags from multiple fields', () => {
+      const formData = new FormData();
+      formData.append('tags', '["hero"," feature "]');
+      formData.append('tags[]', 'alpha, beta');
+
+      expect(extractTagsFromFormData(formData)).toEqual([
+        'hero',
+        'feature',
+        'alpha',
+        'beta',
+      ]);
+    });
+
+    it('normalizeTagsForStorage handles optional inputs', () => {
+      expect(normalizeTagsForStorage(undefined)).toBeUndefined();
+      expect(normalizeTagsForStorage(null)).toEqual([]);
+      expect(normalizeTagsForStorage([' hero ', 'hero', 'feature'])).toEqual([
+        'hero',
+        'feature',
+      ]);
+    });
+
+    it('normalizeTagsInput parses arrays and strings', () => {
+      expect(normalizeTagsInput([' hero ', ''])).toEqual(['hero']);
+      expect(normalizeTagsInput('["alpha"," beta "]')).toEqual([
+        'alpha',
+        'beta',
+      ]);
+      expect(normalizeTagsInput(123)).toBeUndefined();
     });
   });
 
@@ -829,6 +895,341 @@ describe('media.server helpers and actions', () => {
         deleteMedia('shop', '/uploads/shop/missing.jpg'),
       ).resolves.toBeUndefined();
       expect(writeMetadataSpy).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('mediaFileService', () => {
+    describe('listMediaFiles', () => {
+      it('merges metadata with directory entries', async () => {
+        fsMock.readdir.mockResolvedValueOnce(['one.jpg', 'metadata.json', 'two.mp4']);
+        fsMock.readFile.mockResolvedValueOnce(
+          JSON.stringify({
+            'one.jpg': {
+              title: 'One',
+              altText: 'first',
+              type: 'image',
+              tags: ['hero'],
+              uploadedAt: '2024-05-01T00:00:00.000Z',
+              size: 111,
+            },
+          }),
+        );
+
+        await expect(listMediaFiles('shop')).resolves.toEqual([
+          {
+            url: '/uploads/shop/one.jpg',
+            title: 'One',
+            altText: 'first',
+            tags: ['hero'],
+            type: 'image',
+            size: 111,
+            uploadedAt: '2024-05-01T00:00:00.000Z',
+          },
+          {
+            url: '/uploads/shop/two.mp4',
+            title: undefined,
+            altText: undefined,
+            tags: undefined,
+            type: 'video',
+            size: 1024,
+            uploadedAt: '2024-01-01T00:00:00.000Z',
+          },
+        ]);
+      });
+
+      it('falls back to fs.stat when metadata is missing', async () => {
+        fsMock.readdir.mockResolvedValueOnce(['missing.jpg']);
+        fsMock.readFile.mockResolvedValueOnce('{}');
+        fsMock.stat.mockResolvedValueOnce({
+          size: 222,
+          mtime: new Date('2024-06-01T00:00:00.000Z'),
+        });
+
+        await expect(listMediaFiles('shop')).resolves.toEqual([
+          {
+            url: '/uploads/shop/missing.jpg',
+            title: undefined,
+            altText: undefined,
+            tags: undefined,
+            type: 'image',
+            size: 222,
+            uploadedAt: '2024-06-01T00:00:00.000Z',
+          },
+        ]);
+        expect(fsMock.stat).toHaveBeenCalledWith(
+          path.join(process.cwd(), 'public', 'uploads', 'shop', 'missing.jpg'),
+        );
+      });
+
+      it('propagates filesystem errors', async () => {
+        const boom = new Error('boom');
+        fsMock.readdir.mockRejectedValueOnce(boom);
+        await expect(listMediaFiles('shop')).rejects.toBe(boom);
+      });
+    });
+
+    describe('uploadMediaFile', () => {
+      it('uploads an image and normalizes tags', async () => {
+        ulidMock.mockReturnValueOnce('svc123');
+        const now = new Date('2024-08-01T00:00:00.000Z');
+        jest.useFakeTimers().setSystemTime(now);
+
+        const file = new File(['img'], 'photo.jpg', { type: 'image/jpeg' });
+
+        await expect(
+          uploadMediaFile({
+            shop: 'shop',
+            file,
+            title: 'Title',
+            altText: 'Alt',
+            tags: ['featured', ' featured '],
+          }),
+        ).resolves.toEqual({
+          url: '/uploads/shop/svc123.jpg',
+          title: 'Title',
+          altText: 'Alt',
+          tags: ['featured'],
+          type: 'image',
+          size: 3,
+          uploadedAt: '2024-08-01T00:00:00.000Z',
+        });
+
+        expect(writeJsonFileMock).toHaveBeenCalledWith(
+          path.join(
+            process.cwd(),
+            'public',
+            'uploads',
+            'shop',
+            'metadata.json',
+          ),
+          {
+            'svc123.jpg': expect.objectContaining({
+              title: 'Title',
+              altText: 'Alt',
+              tags: ['featured'],
+              type: 'image',
+              size: 3,
+              uploadedAt: '2024-08-01T00:00:00.000Z',
+            }),
+          },
+        );
+
+        jest.useRealTimers();
+      });
+
+      it('enforces image orientation when required', async () => {
+        sharpMetadataMock.mockResolvedValueOnce({ width: 300, height: 500 });
+        const file = new File(['img'], 'portrait.jpg', { type: 'image/jpeg' });
+
+        await expect(
+          uploadMediaFile({
+            shop: 'shop',
+            file,
+            requiredOrientation: 'landscape',
+          }),
+        ).rejects.toThrow('Image orientation must be landscape');
+      });
+
+      it('rejects unsupported mime types', async () => {
+        const file = new File(['text'], 'note.txt', { type: 'text/plain' });
+        await expect(uploadMediaFile({ shop: 'shop', file })).rejects.toThrow(
+          'Invalid file type',
+        );
+      });
+    });
+
+    describe('deleteMediaFile', () => {
+      it('rejects paths outside the uploads directory', async () => {
+        await expect(
+          deleteMediaFile('shop', '/uploads/shop/../escape.jpg'),
+        ).rejects.toThrow('Invalid file path');
+      });
+
+      it('removes metadata when the file is deleted', async () => {
+        fsMock.readFile.mockResolvedValueOnce('{"file.jpg":{"title":"t"}}');
+        await deleteMediaFile('shop', '/uploads/shop/file.jpg');
+        expect(fsMock.unlink).toHaveBeenCalledWith(
+          path.join(process.cwd(), 'public', 'uploads', 'shop', 'file.jpg'),
+        );
+        expect(writeJsonFileMock).toHaveBeenCalledWith(
+          path.join(
+            process.cwd(),
+            'public',
+            'uploads',
+            'shop',
+            'metadata.json',
+          ),
+          {},
+        );
+      });
+    });
+
+    it('infers media type from extension and metadata', () => {
+      expect(inferMediaType('video.mp4')).toBe('video');
+      expect(inferMediaType('photo.png')).toBe('image');
+      expect(inferMediaType('asset.bin', 'video')).toBe('video');
+    });
+  });
+
+  describe('mediaMetadataService', () => {
+    describe('updateMediaMetadataEntry', () => {
+      it('updates metadata fields and normalizes tags', async () => {
+        fsMock.readFile.mockResolvedValueOnce(
+          JSON.stringify({
+            'file.jpg': {
+              title: 'Old',
+              altText: 'Old alt',
+              type: 'image',
+              size: 111,
+              uploadedAt: '2024-02-01T00:00:00.000Z',
+            },
+          }),
+        );
+        fsMock.stat.mockResolvedValueOnce({
+          size: 222,
+          mtime: new Date('2024-02-01T00:00:00.000Z'),
+        });
+
+        await expect(
+          updateMediaMetadataEntry({
+            shop: 'shop',
+            fileUrl: '/uploads/shop/file.jpg',
+            fields: {
+              title: 'New',
+              altText: null,
+              tags: [' fresh ', 'fresh'],
+            },
+          }),
+        ).resolves.toEqual({
+          url: '/uploads/shop/file.jpg',
+          title: 'New',
+          altText: undefined,
+          tags: ['fresh'],
+          type: 'image',
+          size: 111,
+          uploadedAt: '2024-02-01T00:00:00.000Z',
+        });
+
+        expect(writeJsonFileMock).toHaveBeenCalledWith(
+          path.join(
+            process.cwd(),
+            'public',
+            'uploads',
+            'shop',
+            'metadata.json',
+          ),
+          {
+            'file.jpg': expect.objectContaining({
+              title: 'New',
+              tags: ['fresh'],
+              type: 'image',
+            }),
+          },
+        );
+      });
+    });
+
+    describe('getMediaOverviewForShop', () => {
+      it('returns aggregated overview data', async () => {
+        fsMock.readdir.mockResolvedValueOnce(['one.jpg']);
+        fsMock.readFile.mockResolvedValueOnce(
+          JSON.stringify({
+            'one.jpg': {
+              type: 'image',
+              uploadedAt: '2024-07-01T00:00:00.000Z',
+              size: 150,
+            },
+          }),
+        );
+
+        await expect(getMediaOverviewForShop('shop')).resolves.toEqual({
+          files: [
+            {
+              url: '/uploads/shop/one.jpg',
+              title: undefined,
+              altText: undefined,
+              tags: undefined,
+              type: 'image',
+              size: 150,
+              uploadedAt: '2024-07-01T00:00:00.000Z',
+            },
+          ],
+          totalBytes: 150,
+          imageCount: 1,
+          videoCount: 0,
+          recentUploads: [
+            {
+              url: '/uploads/shop/one.jpg',
+              title: undefined,
+              altText: undefined,
+              tags: undefined,
+              type: 'image',
+              size: 150,
+              uploadedAt: '2024-07-01T00:00:00.000Z',
+            },
+          ],
+        });
+      });
+
+      it('returns empty overview when directory is missing', async () => {
+        const error = Object.assign(new Error('missing'), { code: 'ENOENT' });
+        fsMock.readdir.mockRejectedValueOnce(error);
+        await expect(getMediaOverviewForShop('shop')).resolves.toEqual({
+          files: [],
+          totalBytes: 0,
+          imageCount: 0,
+          videoCount: 0,
+          recentUploads: [],
+        });
+      });
+    });
+  });
+
+  describe('media.server wrappers', () => {
+    it('listMedia enforces auth and handles missing directories', async () => {
+      const serviceSpy = jest
+        .spyOn(mediaFileService, 'listMediaFiles')
+        .mockRejectedValueOnce(Object.assign(new Error('missing'), { code: 'ENOENT' }));
+
+      await expect(listMedia('shop')).resolves.toEqual([]);
+      expect(ensureAuthorized).toHaveBeenCalled();
+      expect(serviceSpy).toHaveBeenCalledWith('shop');
+      serviceSpy.mockRestore();
+    });
+
+    it('uploadMedia parses form data and delegates to service', async () => {
+      const result = { url: '/uploads/shop/file.jpg' };
+      const serviceSpy = jest
+        .spyOn(mediaFileService, 'uploadMediaFile')
+        .mockResolvedValueOnce(result);
+
+      const formData = new FormData();
+      formData.append('file', new File(['img'], 'photo.jpg', { type: 'image/jpeg' }));
+      formData.append('tags', '["hero"]');
+
+      await expect(uploadMedia('shop', formData)).resolves.toBe(result);
+      expect(serviceSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          shop: 'shop',
+          tags: ['hero'],
+        }),
+      );
+      serviceSpy.mockRestore();
+    });
+
+    it('getMediaOverview logs failures from the service layer', async () => {
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const serviceSpy = jest
+        .spyOn(mediaMetadataService, 'getMediaOverviewForShop')
+        .mockRejectedValueOnce(new Error('boom'));
+
+      await expect(getMediaOverview('shop')).rejects.toThrow(
+        'Failed to load media overview',
+      );
+      expect(consoleSpy).toHaveBeenCalled();
+      expect(serviceSpy).toHaveBeenCalledWith('shop');
+      consoleSpy.mockRestore();
+      serviceSpy.mockRestore();
     });
   });
 });

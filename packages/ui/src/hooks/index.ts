@@ -2,6 +2,7 @@ export * from "./useCart";
 export * from "./useImageUpload";
 export * from "./useFileUpload";
 export * from "./useImageOrientationValidation";
+export * from "./useProductEditorNotifications";
 export * from "./useProductEditorFormState";
 export * from "./useProductFilters";
 export * from "./useTokenEditor";

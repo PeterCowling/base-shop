@@ -8,7 +8,7 @@ const SESSION_SECRET = "session-secret-32-chars-long-string!";
 // without throwing "Module not found" for missing compiled files.
 describe("config package entry", () => {
   it("re-exports core env from root index", async () => {
-    const { env } = await withEnv(
+    await withEnv(
       {
         STRIPE_SECRET_KEY: "sk",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
@@ -21,23 +21,26 @@ describe("config package entry", () => {
         SANITY_API_VERSION: "2023-01-01",
         NODE_ENV: "production",
       },
-      () => import("../src/index"),
+      async () => {
+        const { env } = await import("../src/index");
+        expect({
+          STRIPE_SECRET_KEY: env.STRIPE_SECRET_KEY,
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
+            env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
+          CART_COOKIE_SECRET: env.CART_COOKIE_SECRET,
+          STRIPE_WEBHOOK_SECRET: env.STRIPE_WEBHOOK_SECRET,
+          NEXTAUTH_SECRET: env.NEXTAUTH_SECRET,
+          SESSION_SECRET: env.SESSION_SECRET,
+        }).toEqual({
+          STRIPE_SECRET_KEY: "sk",
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
+          CART_COOKIE_SECRET: "secret",
+          STRIPE_WEBHOOK_SECRET: "whsec",
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET: SESSION_SECRET,
+        });
+      },
     );
-    expect({
-      STRIPE_SECRET_KEY: env.STRIPE_SECRET_KEY,
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY,
-      CART_COOKIE_SECRET: env.CART_COOKIE_SECRET,
-      STRIPE_WEBHOOK_SECRET: env.STRIPE_WEBHOOK_SECRET,
-      NEXTAUTH_SECRET: env.NEXTAUTH_SECRET,
-      SESSION_SECRET: env.SESSION_SECRET,
-    }).toEqual({
-      STRIPE_SECRET_KEY: "sk",
-      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk",
-      CART_COOKIE_SECRET: "secret",
-      STRIPE_WEBHOOK_SECRET: "whsec",
-      NEXTAUTH_SECRET: NEXT_SECRET,
-      SESSION_SECRET: SESSION_SECRET,
-    });
   });
 });
 

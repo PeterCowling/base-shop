@@ -26,9 +26,7 @@ export const shippingEnvSchema = z
     .optional()
     .refine(
       (v) =>
-        v == null
-          ? true
-          : /^(true|false|1|0|yes|no)$/i.test(v.trim()),
+        v == null ? true : /^(true|false|1|0|yes)$/i.test(v.trim()),
       {
         message: "must be a boolean",
       },

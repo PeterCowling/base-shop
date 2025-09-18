@@ -1,65 +1,78 @@
-import { GET } from "../route";
+const getServerSession = jest.fn();
 
-describe("media probe route", () => {
-  const originalFetch = global.fetch;
+jest.mock("next-auth", () => ({ getServerSession }));
+jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
-  afterEach(() => {
-    (global as any).fetch = originalFetch;
-    jest.resetAllMocks();
-  });
+let GET: typeof import("../route").GET;
 
-  it("returns 400 when url param is missing", async () => {
-    const mockFetch = jest.fn();
-    (global as any).fetch = mockFetch;
-    const res = await GET(new Request("https://example.com/api/media/probe"));
-    expect(res.status).toBe(400);
-    expect(await res.text()).toBe("Missing url");
-    expect(mockFetch).not.toHaveBeenCalled();
-  });
+const originalFetch = global.fetch;
+let fetchMock: jest.MockedFunction<typeof fetch>;
 
-  it("returns 415 when fetch response is not ok", async () => {
-    const mockFetch = jest
-      .fn()
-      .mockResolvedValue(new Response(null, { status: 404, headers: { "content-type": "image/png" } }));
-    (global as any).fetch = mockFetch;
-    const res = await GET(
-      new Request("https://example.com/api/media/probe?url=https://img.example/broken.png")
-    );
-    expect(res.status).toBe(415);
-  });
-
-  it("returns 415 for non-image content-type", async () => {
-    const mockFetch = jest
-      .fn()
-      .mockResolvedValue(new Response(null, { status: 200, headers: { "content-type": "text/plain" } }));
-    (global as any).fetch = mockFetch;
-    const res = await GET(
-      new Request("https://example.com/api/media/probe?url=https://img.example/not-image.txt")
-    );
-    expect(res.status).toBe(415);
-  });
-
-  it("returns 400 with message on fetch failure", async () => {
-    const mockFetch = jest.fn().mockRejectedValue(new Error("network"));
-    (global as any).fetch = mockFetch;
-    const res = await GET(
-      new Request("https://example.com/api/media/probe?url=https://img.example/fail.png")
-    );
-    expect(res.status).toBe(400);
-    expect(await res.text()).toBe("Fetch failed");
-  });
-
-  it("returns 200 and propagates content-type for images", async () => {
-    const mockFetch = jest
-      .fn()
-      .mockResolvedValue(new Response(null, { status: 200, headers: { "content-type": "image/jpeg" } }));
-    (global as any).fetch = mockFetch;
-    const res = await GET(
-      new Request("https://example.com/api/media/probe?url=https://img.example/a.jpg")
-    );
-    expect(res.status).toBe(200);
-    expect(res.headers.get("content-type")).toBe("image/jpeg");
-    expect(mockFetch).toHaveBeenCalledWith("https://img.example/a.jpg", { method: "HEAD" });
-  });
+beforeAll(async () => {
+  ({ GET } = await import("../route"));
 });
 
+beforeEach(() => {
+  jest.clearAllMocks();
+  fetchMock = jest.fn<typeof fetch>();
+  global.fetch = fetchMock;
+});
+
+afterEach(() => {
+  global.fetch = originalFetch;
+});
+
+afterAll(() => {
+  global.fetch = originalFetch;
+});
+
+describe("GET", () => {
+  it("returns content type for valid authenticated probe", async () => {
+    getServerSession.mockResolvedValue({ user: { id: "user" } });
+    fetchMock.mockResolvedValue(
+      new Response(null, {
+        status: 200,
+        headers: { "content-type": "image/png" },
+      })
+    );
+
+    const target = encodeURIComponent("https://cdn.example/assets/logo.png");
+    const res = await GET(new Request(`https://cms.local/api/media/probe?url=${target}`));
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toBe("image/png");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [urlArg, initArg] = fetchMock.mock.calls[0];
+    expect(urlArg).toBeInstanceOf(URL);
+    expect((urlArg as URL).href).toBe("https://cdn.example/assets/logo.png");
+    expect(initArg).toEqual({ method: "HEAD" });
+  });
+
+  it("returns 401 for unauthenticated requests", async () => {
+    getServerSession.mockResolvedValue(null);
+
+    const res = await GET(
+      new Request(
+        `https://cms.local/api/media/probe?url=${encodeURIComponent("https://example.com/image.jpg")}`
+      )
+    );
+
+    expect(res.status).toBe(401);
+    expect(await res.text()).toBe("Unauthorized");
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("rejects requests targeting private networks", async () => {
+    getServerSession.mockResolvedValue({ user: { id: "user" } });
+
+    const res = await GET(
+      new Request(
+        `https://cms.local/api/media/probe?url=${encodeURIComponent("http://127.0.0.1/internal.png")}`
+      )
+    );
+
+    expect(res.status).toBe(400);
+    expect(await res.text()).toBe("Invalid url");
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+});

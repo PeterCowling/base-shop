@@ -13,15 +13,48 @@ interface FindManyArgs {
   };
 }
 
+type ShopSessionIdWhere = { shop_sessionId: { shop: string; sessionId: string } };
+
+type ShopTrackingNumberWhere = {
+  shop_trackingNumber: { shop: string; trackingNumber: string | null };
+};
+
+type FindUniqueWhere =
+  | ShopSessionIdWhere
+  | ShopTrackingNumberWhere
+  | Record<string, unknown>;
+
 interface FindUniqueArgs {
-  where: { shop_sessionId: { shop: string; sessionId: string } };
+  where: FindUniqueWhere;
 }
 
 interface UpdateArgs {
-  where:
-    | { shop_sessionId: { shop: string; sessionId: string } }
-    | { shop_trackingNumber: { shop: string; trackingNumber: string | null } };
+  where: ShopSessionIdWhere | ShopTrackingNumberWhere;
   data: Partial<RentalOrder>;
+}
+
+function hasShopSessionIdWhere(
+  where: FindUniqueWhere,
+): where is ShopSessionIdWhere {
+  return (
+    typeof where === "object" &&
+    where !== null &&
+    "shop_sessionId" in where &&
+    typeof where.shop_sessionId === "object" &&
+    where.shop_sessionId !== null
+  );
+}
+
+function hasShopTrackingNumberWhere(
+  where: FindUniqueWhere,
+): where is ShopTrackingNumberWhere {
+  return (
+    typeof where === "object" &&
+    where !== null &&
+    "shop_trackingNumber" in where &&
+    typeof where.shop_trackingNumber === "object" &&
+    where.shop_trackingNumber !== null
+  );
 }
 
 interface RentalOrderDelegate {
@@ -43,11 +76,24 @@ export function createRentalOrderDelegate(): RentalOrderDelegate {
       });
     },
     async findUnique({ where }: FindUniqueArgs) {
-      const { shop, sessionId } = where.shop_sessionId;
-      return (
-        rentalOrders.find((o) => o.shop === shop && o.sessionId === sessionId) ||
-        null
-      );
+      if (hasShopSessionIdWhere(where)) {
+        const { shop, sessionId } = where.shop_sessionId;
+        return (
+          rentalOrders.find((o) => o.shop === shop && o.sessionId === sessionId) ||
+          null
+        );
+      }
+
+      if (hasShopTrackingNumberWhere(where)) {
+        const { shop, trackingNumber } = where.shop_trackingNumber;
+        return (
+          rentalOrders.find(
+            (o) => o.shop === shop && o.trackingNumber === trackingNumber,
+          ) || null
+        );
+      }
+
+      return null;
     },
     async create({ data }) {
       rentalOrders.push({ ...data });

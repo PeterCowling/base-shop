@@ -1,0 +1,240 @@
+[
+  {
+    "id": "S1",
+    "name": "CMS Next.js admin APIs",
+    "scope_paths": [
+      "apps/cms/src/app/api",
+      "apps/cms/src/actions",
+      "apps/cms/src/auth"
+    ],
+    "entry_points": [
+      "apps/cms/src/app/api/deploy-shop/route.ts",
+      "apps/cms/src/app/api/upload-csv/[shop]/route.ts",
+      "apps/cms/src/app/api/media/route.ts"
+    ],
+    "owasp_focus": [
+      "A01:2021 Broken Access Control",
+      "A03:2021 Injection",
+      "A05:2021 Security Misconfiguration",
+      "A08:2021 Software and Data Integrity Failures",
+      "A09:2021 Security Logging and Monitoring Failures"
+    ],
+    "est_review_days": 2.0
+  },
+  {
+    "id": "S2",
+    "name": "Shopper API & UI flows",
+    "scope_paths": [
+      "apps/shop-bcd/src/app/api",
+      "apps/shop-bcd/src/app/account",
+      "apps/shop-bcd/src/app/login"
+    ],
+    "entry_points": [
+      "apps/shop-bcd/src/app/api/login/route.ts",
+      "apps/shop-bcd/src/app/api/account/profile/route.ts",
+      "apps/shop-bcd/src/app/api/orders/route.ts"
+    ],
+    "owasp_focus": [
+      "A07:2021 Identification and Authentication Failures",
+      "A01:2021 Broken Access Control",
+      "A02:2021 Cryptographic Failures",
+      "A03:2021 Injection",
+      "A09:2021 Security Logging and Monitoring Failures"
+    ],
+    "est_review_days": 2.0
+  },
+  {
+    "id": "S3",
+    "name": "Auth & session platform",
+    "scope_paths": [
+      "packages/auth/src",
+      "apps/cms/src/auth"
+    ],
+    "entry_points": [
+      "packages/auth/src/session.ts",
+      "packages/auth/src/store.ts",
+      "packages/auth/src/mfa.ts",
+      "apps/cms/src/auth/options.ts"
+    ],
+    "owasp_focus": [
+      "A07:2021 Identification and Authentication Failures",
+      "A02:2021 Cryptographic Failures",
+      "A01:2021 Broken Access Control",
+      "A05:2021 Security Misconfiguration",
+      "A04:2021 Insecure Design"
+    ],
+    "est_review_days": 1.5
+  },
+  {
+    "id": "S4",
+    "name": "Platform data repositories",
+    "scope_paths": [
+      "packages/platform-core/src/repositories",
+      "packages/platform-core/src/db.ts",
+      "packages/platform-core/src/dataRoot.ts"
+    ],
+    "entry_points": [
+      "packages/platform-core/src/repositories/inventory.server.ts",
+      "packages/platform-core/src/repositories/shop.server.ts",
+      "packages/platform-core/src/repositories/repoResolver.ts"
+    ],
+    "owasp_focus": [
+      "A01:2021 Broken Access Control",
+      "A03:2021 Injection",
+      "A08:2021 Software and Data Integrity Failures",
+      "A05:2021 Security Misconfiguration",
+      "A09:2021 Security Logging and Monitoring Failures"
+    ],
+    "est_review_days": 1.5
+  },
+  {
+    "id": "S5",
+    "name": "Platform services & webhooks",
+    "scope_paths": [
+      "packages/platform-core/src/services",
+      "packages/platform-core/src/webhookHandlers",
+      "packages/platform-core/src/analytics"
+    ],
+    "entry_points": [
+      "packages/platform-core/src/handleStripeWebhook.ts",
+      "packages/platform-core/src/services/stockAlert.server.ts",
+      "packages/platform-core/src/analytics/index.ts"
+    ],
+    "owasp_focus": [
+      "A05:2021 Security Misconfiguration",
+      "A10:2021 Server-Side Request Forgery",
+      "A08:2021 Software and Data Integrity Failures",
+      "A01:2021 Broken Access Control",
+      "A09:2021 Security Logging and Monitoring Failures"
+    ],
+    "est_review_days": 1.5
+  },
+  {
+    "id": "S6",
+    "name": "Payments & upgrades pipeline",
+    "scope_paths": [
+      "packages/stripe/src",
+      "apps/api/src/routes/components",
+      "apps/api/src/routes/shop"
+    ],
+    "entry_points": [
+      "packages/stripe/src/index.ts",
+      "apps/api/src/routes/shop/[id]/publish-upgrade.ts",
+      "apps/api/src/routes/components/[shopId].ts"
+    ],
+    "owasp_focus": [
+      "A07:2021 Identification and Authentication Failures",
+      "A08:2021 Software and Data Integrity Failures",
+      "A05:2021 Security Misconfiguration",
+      "A01:2021 Broken Access Control",
+      "A10:2021 Server-Side Request Forgery"
+    ],
+    "est_review_days": 1.0
+  },
+  {
+    "id": "S7",
+    "name": "Email & notification stack",
+    "scope_paths": [
+      "packages/email/src",
+      "packages/platform-core/src/services/stockAlert.server.ts"
+    ],
+    "entry_points": [
+      "packages/email/src/providers/sendgrid.ts",
+      "packages/email/src/providers/resend.ts",
+      "packages/email/src/cli.ts"
+    ],
+    "owasp_focus": [
+      "A10:2021 Server-Side Request Forgery",
+      "A02:2021 Cryptographic Failures",
+      "A08:2021 Software and Data Integrity Failures",
+      "A01:2021 Broken Access Control",
+      "A09:2021 Security Logging and Monitoring Failures"
+    ],
+    "est_review_days": 1.0
+  },
+  {
+    "id": "S8",
+    "name": "Configuration & secrets enforcement",
+    "scope_paths": [
+      "packages/config/src/env",
+      "docs/.env.reference.md",
+      "middleware.ts",
+      "next.config.mjs"
+    ],
+    "entry_points": [
+      "packages/config/src/env/core.ts",
+      "docs/.env.reference.md",
+      "middleware.ts"
+    ],
+    "owasp_focus": [
+      "A05:2021 Security Misconfiguration",
+      "A02:2021 Cryptographic Failures",
+      "A04:2021 Insecure Design",
+      "A08:2021 Software and Data Integrity Failures",
+      "A06:2021 Vulnerable and Outdated Components"
+    ],
+    "est_review_days": 0.8
+  },
+  {
+    "id": "S9",
+    "name": "Scheduled jobs & background workers",
+    "scope_paths": [
+      "functions/src",
+      "packages/platform-machine/src"
+    ],
+    "entry_points": [
+      "functions/src/seoAudit.ts",
+      "functions/src/publishEditorial.ts",
+      "packages/platform-machine/src/releaseDepositsService.ts"
+    ],
+    "owasp_focus": [
+      "A08:2021 Software and Data Integrity Failures",
+      "A10:2021 Server-Side Request Forgery",
+      "A05:2021 Security Misconfiguration",
+      "A01:2021 Broken Access Control",
+      "A09:2021 Security Logging and Monitoring Failures"
+    ],
+    "est_review_days": 1.2
+  },
+  {
+    "id": "S10",
+    "name": "Operator & automation scripts",
+    "scope_paths": [
+      "scripts/src"
+    ],
+    "entry_points": [
+      "scripts/src/init-shop.ts",
+      "scripts/src/inventory.ts",
+      "scripts/src/generate-shop.ts"
+    ],
+    "owasp_focus": [
+      "A03:2021 Injection",
+      "A01:2021 Broken Access Control",
+      "A05:2021 Security Misconfiguration",
+      "A08:2021 Software and Data Integrity Failures",
+      "A09:2021 Security Logging and Monitoring Failures"
+    ],
+    "est_review_days": 1.0
+  },
+  {
+    "id": "S11",
+    "name": "Cloudflare worker APIs",
+    "scope_paths": [
+      "apps/api/src/routes",
+      "wrangler.toml"
+    ],
+    "entry_points": [
+      "apps/api/src/routes/components/[shopId].ts",
+      "apps/api/src/routes/shop/[id]/publish-upgrade.ts",
+      "apps/api/src/routes/shop/[id]/run.ts"
+    ],
+    "owasp_focus": [
+      "A01:2021 Broken Access Control",
+      "A03:2021 Injection",
+      "A08:2021 Software and Data Integrity Failures",
+      "A05:2021 Security Misconfiguration",
+      "A09:2021 Security Logging and Monitoring Failures"
+    ],
+    "est_review_days": 1.0
+  }
+]

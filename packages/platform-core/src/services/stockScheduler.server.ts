@@ -35,11 +35,11 @@ export function scheduleStockChecks(
   if (existing?.timer) {
     clearInterval(existing.timer);
   }
-  const status: StockCheckStatus = existing?.status ?? {
+
+  const status: StockCheckStatus = {
     intervalMs,
     history: [],
   };
-  status.intervalMs = intervalMs;
 
   const run = async () => {
     try {

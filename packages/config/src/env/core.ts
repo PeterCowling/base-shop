@@ -310,33 +310,81 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
 
 // Lazy proxy; no import-time parse in dev.
 let __cachedCoreEnv: CoreEnv | null = null;
+type LoadCoreEnvFn = (raw?: NodeJS.ProcessEnv) => CoreEnv;
+
 const nodeRequire: NodeJS.Require | null =
   typeof require === "function" ? require : null;
 const cachedEnvMode = process.env.NODE_ENV;
+
+let __loadCoreEnvFn: LoadCoreEnvFn | null = null;
+
+function extractLoadCoreEnvFn(candidate: unknown): LoadCoreEnvFn | null {
+  if (!candidate) {
+    return null;
+  }
+
+  if (typeof candidate === "function") {
+    return candidate as LoadCoreEnvFn;
+  }
+
+  if (
+    typeof (candidate as { loadCoreEnv?: unknown }).loadCoreEnv === "function"
+  ) {
+    return (candidate as { loadCoreEnv: LoadCoreEnvFn }).loadCoreEnv;
+  }
+
+  const defaultExport = (candidate as { default?: unknown }).default;
+  if (
+    defaultExport &&
+    typeof (defaultExport as { loadCoreEnv?: unknown }).loadCoreEnv ===
+      "function"
+  ) {
+    return (defaultExport as { loadCoreEnv: LoadCoreEnvFn }).loadCoreEnv;
+  }
+
+  return null;
+}
+
+function resolveLoadCoreEnvFn(): LoadCoreEnvFn {
+  if (__loadCoreEnvFn) {
+    return __loadCoreEnvFn;
+  }
+
+  const shouldPreferStub =
+    cachedEnvMode === "production" || cachedEnvMode == null;
+
+  if (shouldPreferStub && nodeRequire) {
+    try {
+      const mod = nodeRequire("./core.js");
+      const loader = extractLoadCoreEnvFn(mod);
+      if (loader) {
+        __loadCoreEnvFn = loader;
+        return __loadCoreEnvFn;
+      }
+    } catch (error) {
+      const code =
+        typeof error === "object" && error && "code" in error
+          ? (error as { code?: unknown }).code
+          : undefined;
+      if (
+        code !== "MODULE_NOT_FOUND" &&
+        code !== "ERR_MODULE_NOT_FOUND" &&
+        code !== "ERR_REQUIRE_ESM" &&
+        code !== "ERR_UNKNOWN_FILE_EXTENSION"
+      ) {
+        throw error;
+      }
+    }
+  }
+
+  __loadCoreEnvFn = loadCoreEnv;
+  return __loadCoreEnvFn;
+}
+
 function getCoreEnv(): CoreEnv {
   if (!__cachedCoreEnv) {
-    if (cachedEnvMode === "production" || cachedEnvMode == null) {
-      if (nodeRequire) {
-        try {
-          const mod = nodeRequire("./core.js") as typeof import("./core.js");
-          __cachedCoreEnv = mod.loadCoreEnv(snapshotForCoreEnv());
-        } catch (error) {
-          const code =
-            typeof error === "object" && error && "code" in error
-              ? (error as { code?: unknown }).code
-              : undefined;
-          if (code === "MODULE_NOT_FOUND" || code === "ERR_MODULE_NOT_FOUND") {
-            __cachedCoreEnv = parseCoreEnv(snapshotForCoreEnv());
-          } else {
-            throw error;
-          }
-        }
-      } else {
-        __cachedCoreEnv = parseCoreEnv(snapshotForCoreEnv());
-      }
-    } else {
-      __cachedCoreEnv = parseCoreEnv(snapshotForCoreEnv());
-    }
+    const loader = resolveLoadCoreEnvFn();
+    __cachedCoreEnv = loader(snapshotForCoreEnv());
   }
   return __cachedCoreEnv;
 }

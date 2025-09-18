@@ -14,5 +14,5 @@ export async function withEnv(
   vars: Record<string, string | undefined>,
   fn: () => Promise<void> | void,
 ): Promise<void> {
-  await baseWithEnv({ ...baseEnv, ...vars }, fn);
+  await baseWithEnv({ ...baseEnv, JEST_WORKER_ID: undefined, ...vars }, fn);
 }

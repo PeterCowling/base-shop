@@ -52,6 +52,20 @@ mutableEnv.AUTH_TOKEN_TTL ||= "15m";
 mutableEnv.EMAIL_FROM ||= "test@example.com";
 mutableEnv.EMAIL_PROVIDER ||= "noop";
 
+type BaseEnvRecord = Record<string, string>;
+const globalWithBaseEnv = globalThis as typeof globalThis & {
+  __ACME_TEST_BASE_ENV__?: BaseEnvRecord;
+};
+
+if (!globalWithBaseEnv.__ACME_TEST_BASE_ENV__) {
+  const baselineEntries = Object.entries(process.env).filter(
+    (entry): entry is [string, string] => typeof entry[1] === "string",
+  );
+  globalWithBaseEnv.__ACME_TEST_BASE_ENV__ = Object.freeze(
+    Object.fromEntries(baselineEntries),
+  );
+}
+
 /* -------------------------------------------------------------------------- */
 /* 2.  Polyfills missing from the JSDOM / Node test runtime                    */
 /* -------------------------------------------------------------------------- */

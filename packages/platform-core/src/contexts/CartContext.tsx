@@ -53,46 +53,70 @@ export function CartProvider({ children }: { children: ReactNode }) {
         throw new Error("Cart fetch failed");
       } catch (err) {
         console.error(err);
-        let cached: string | null = null;
+        let cachedRaw: string | null = null;
         try {
-          cached = localStorage.getItem(STORAGE_KEY);
-          if (cached) {
-            setState(JSON.parse(cached) as CartState);
+          cachedRaw = localStorage.getItem(STORAGE_KEY);
+          if (cachedRaw) {
+            setState(JSON.parse(cachedRaw) as CartState);
           }
         } catch {
           /* noop */
         }
 
-        if (!cached) return;
-
         sync = async () => {
+          let synced = false;
           try {
             const cached = localStorage.getItem(STORAGE_KEY);
-            if (!cached) return;
-            const cart = JSON.parse(cached) as CartState;
-            const res = await fetch("/api/cart", {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                lines: Object.values(cart).map((line) => ({
-                  sku: { id: line.sku.id },
-                  qty: line.qty,
-                  size: line.size,
-                })),
-              }),
-            });
-            if (res.ok) {
-              const data = await res.json();
-              setState(data.cart as CartState);
-              localStorage.setItem(STORAGE_KEY, JSON.stringify(data.cart));
-              window.removeEventListener("online", sync!);
+            if (cached) {
+              const cart = JSON.parse(cached) as CartState;
+              const res = await fetch("/api/cart", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  lines: Object.values(cart).map((line) => ({
+                    sku: { id: line.sku.id },
+                    qty: line.qty,
+                    size: line.size,
+                  })),
+                }),
+              });
+              if (res.ok) {
+                const data = await res.json();
+                setState(data.cart as CartState);
+                try {
+                  localStorage.setItem(STORAGE_KEY, JSON.stringify(data.cart));
+                } catch {
+                  /* noop */
+                }
+                window.removeEventListener("online", sync!);
+                synced = true;
+              }
             }
+          } catch (err) {
+            console.error(err);
+          }
+
+          if (synced) return;
+
+          try {
+            const res = await fetch("/api/cart");
+            if (!res.ok) throw new Error("Cart fetch failed");
+            const data = await res.json();
+            setState(data.cart as CartState);
+            try {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(data.cart));
+            } catch {
+              /* noop */
+            }
+            window.removeEventListener("online", sync!);
           } catch (err) {
             console.error(err);
           }
         };
 
         window.addEventListener("online", sync);
+
+        if (!cachedRaw) return;
       }
     }
 

@@ -10,6 +10,12 @@ import {
   selectStore,
 } from "./authEnvTestUtils";
 
+const redisUnset = {
+  SESSION_STORE: undefined,
+  UPSTASH_REDIS_REST_URL: undefined,
+  UPSTASH_REDIS_REST_TOKEN: undefined,
+} satisfies Record<string, string | undefined>;
+
 describe("authEnvSchema basics", () => {
   it("accepts minimal valid environment", async () => {
     const { authEnvSchema } = await import("../auth");
@@ -22,7 +28,11 @@ describe("authEnvSchema basics", () => {
 });
 
 describe("authEnvSchema session store", () => {
-  const baseEnv = { NEXTAUTH_SECRET: NEXT_SECRET, SESSION_SECRET };
+  const baseEnv = {
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET,
+    ...redisUnset,
+  };
 
   it("requires redis url when SESSION_STORE=redis", async () => {
     const { authEnvSchema } = await import("../auth");
@@ -75,14 +85,20 @@ describe("authEnvSchema session store", () => {
 });
 
 describe("auth env session configuration", () => {
+  const prodBase = {
+    NODE_ENV: "production",
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET,
+    ...redisUnset,
+  } as const;
+
   it("throws when SESSION_SECRET is missing", async () => {
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
 
     await expect(
       withEnv(
         {
-          NODE_ENV: "production",
-          NEXTAUTH_SECRET: NEXT_SECRET,
+          ...prodBase,
           SESSION_SECRET: undefined,
         },
         () => import("../auth"),
@@ -93,11 +109,7 @@ describe("auth env session configuration", () => {
 
   it("loads when SESSION_SECRET is provided", async () => {
     const { authEnv } = await withEnv(
-      {
-        NODE_ENV: "production",
-        NEXTAUTH_SECRET: NEXT_SECRET,
-        SESSION_SECRET,
-      },
+      prodBase,
       () => import("../auth"),
     );
 
@@ -107,9 +119,7 @@ describe("auth env session configuration", () => {
   it("selects redis when explicitly configured", async () => {
     const { authEnv } = await withEnv(
       {
-        NODE_ENV: "production",
-        NEXTAUTH_SECRET: NEXT_SECRET,
-        SESSION_SECRET,
+        ...prodBase,
         SESSION_STORE: "redis",
         UPSTASH_REDIS_REST_URL: REDIS_URL,
         UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
@@ -123,9 +133,7 @@ describe("auth env session configuration", () => {
   it("prefers memory when explicitly set", async () => {
     const { authEnv } = await withEnv(
       {
-        NODE_ENV: "production",
-        NEXTAUTH_SECRET: NEXT_SECRET,
-        SESSION_SECRET,
+        ...prodBase,
         SESSION_STORE: "memory",
         UPSTASH_REDIS_REST_URL: REDIS_URL,
         UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
@@ -139,9 +147,7 @@ describe("auth env session configuration", () => {
   it("falls back to redis when creds present without explicit store", async () => {
     const { authEnv } = await withEnv(
       {
-        NODE_ENV: "production",
-        NEXTAUTH_SECRET: NEXT_SECRET,
-        SESSION_SECRET,
+        ...prodBase,
         UPSTASH_REDIS_REST_URL: REDIS_URL,
         UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
       },
@@ -153,11 +159,7 @@ describe("auth env session configuration", () => {
 
   it("falls back to memory when no store or creds provided", async () => {
     const { authEnv } = await withEnv(
-      {
-        NODE_ENV: "production",
-        NEXTAUTH_SECRET: NEXT_SECRET,
-        SESSION_SECRET,
-      },
+      prodBase,
       () => import("../auth"),
     );
 
@@ -170,6 +172,7 @@ describe("SESSION_STORE=redis", () => {
     NODE_ENV: "production",
     NEXTAUTH_SECRET: NEXT_SECRET,
     SESSION_SECRET,
+    ...redisUnset,
   } as const;
 
   describe.each([
@@ -203,7 +206,12 @@ describe("SESSION_STORE=redis", () => {
 describe("development defaults", () => {
   it("applies dev secrets when NODE_ENV is not production", async () => {
     const { authEnv } = await withEnv(
-      { NODE_ENV: "development", NEXTAUTH_SECRET: undefined, SESSION_SECRET: undefined },
+      {
+        NODE_ENV: "development",
+        NEXTAUTH_SECRET: undefined,
+        SESSION_SECRET: undefined,
+        ...redisUnset,
+      },
       () => import("../auth"),
     );
     expect(authEnv.NEXTAUTH_SECRET).toBe(DEV_NEXTAUTH_SECRET);

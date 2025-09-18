@@ -2,6 +2,8 @@
 
 jest.mock("@acme/zod-utils/initZod", () => ({}));
 
+jest.mock("@acme/email", () => ({ sendEmail: jest.fn() }));
+
 interface StoreUser {
   id: string;
   email: string;
@@ -39,11 +41,16 @@ jest.mock("@platform-core/users", () => ({
   }),
 }));
 
+import { sendEmail } from "@acme/email";
 import { POST as requestPOST } from "../src/app/api/password-reset/request/route";
 import { POST as resetPOST } from "../src/app/api/password-reset/[token]/route";
 
+const mockSendEmail = sendEmail as jest.MockedFunction<typeof sendEmail>;
+
 describe("password reset integration", () => {
   beforeEach(() => {
+    mockSendEmail.mockReset();
+    mockSendEmail.mockResolvedValue(undefined);
     for (const key in store) delete store[key];
     store["u1"] = {
       id: "u1",
@@ -62,8 +69,19 @@ describe("password reset integration", () => {
     });
     const res = await requestPOST(req);
     expect(res.status).toBe(200);
-    const { token } = await res.json();
-    expect(token).toBeDefined();
+    const responseBody = await res.json();
+    expect(responseBody).toEqual({ ok: true });
+    const token = store["u1"].resetToken;
+    if (!token) {
+      throw new Error("expected reset token to be set");
+    }
+    expect(token).toHaveLength(32);
+    expect(mockSendEmail).toHaveBeenCalledTimes(1);
+    expect(mockSendEmail).toHaveBeenCalledWith(
+      "u1@example.com",
+      "Reset your Base Shop password",
+      `Use this code to reset your password: ${token}`
+    );
 
     const req2 = new Request(`http://localhost/api/password-reset/${token}`, {
       method: "POST",
@@ -72,7 +90,8 @@ describe("password reset integration", () => {
     });
     const res2 = await resetPOST(req2, { params: { token } });
     expect(res2.status).toBe(200);
-    await expect(res2.json()).resolves.toEqual({ ok: true });
+    const resetBody = await res2.json();
+    expect(resetBody).toEqual({ ok: true });
     expect(store["u1"].passwordHash).toBe("newpass123");
     expect(store["u1"].resetToken).toBeNull();
   });
@@ -84,8 +103,14 @@ describe("password reset integration", () => {
       body: JSON.stringify({ email: "u1@example.com" }),
     });
     const res = await requestPOST(req);
-    const { token } = await res.json();
-    expect(token).toBeDefined();
+    expect(res.status).toBe(200);
+    const responseBody = await res.json();
+    expect(responseBody).toEqual({ ok: true });
+    const token = store["u1"].resetToken;
+    if (!token) {
+      throw new Error("expected reset token to be set");
+    }
+    expect(token).toHaveLength(32);
     await new Promise((r) => setTimeout(r, 1100));
     const req2 = new Request(`http://localhost/api/password-reset/${token}`, {
       method: "POST",
@@ -94,8 +119,8 @@ describe("password reset integration", () => {
     });
     const res2 = await resetPOST(req2, { params: { token } });
     expect(res2.status).toBe(400);
-    const body = await res2.json();
-    expect(body.error).toMatch(/invalid or expired/i);
+    const errorBody = await res2.json();
+    expect(errorBody.error).toMatch(/invalid or expired/i);
   });
 
   it("returns error for invalid token", async () => {

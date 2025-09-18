@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { Column } from "@ui/components/cms/DataTable";
+import type { ThemeTokenRow } from "./lib/pageSections";
 
 const HEX_RE = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
 const HSL_RE = /^\d+(?:\.\d+)?\s+\d+(?:\.\d+)?%\s+\d+(?:\.\d+)?%$/;
@@ -10,39 +11,6 @@ function isColor(value?: string): value is string {
 
 function swatchColor(value: string) {
   return HSL_RE.test(value) ? `hsl(${value})` : value;
-}
-
-export interface ThemeTokenRow {
-  token: string;
-  defaultValue?: string;
-  overrideValue?: string;
-  hasOverride: boolean;
-  changed: boolean;
-}
-
-export function mapThemeTokenRows(
-  defaults: Record<string, string | undefined>,
-  overrides: Record<string, string | undefined>,
-): ThemeTokenRow[] {
-  const tokens = Array.from(
-    new Set([...Object.keys(defaults ?? {}), ...Object.keys(overrides ?? {})]),
-  );
-
-  return tokens
-    .sort((a, b) => a.localeCompare(b))
-    .map((token) => {
-      const defaultValue = defaults?.[token];
-      const overrideValue = overrides?.[token];
-      const hasOverride = overrideValue !== undefined && overrideValue !== null;
-      const changed = hasOverride && overrideValue !== defaultValue;
-      return {
-        token,
-        defaultValue,
-        overrideValue,
-        hasOverride,
-        changed,
-      } satisfies ThemeTokenRow;
-    });
 }
 
 export function createThemeTokenColumns({

@@ -5,7 +5,7 @@ import type { Shop } from "@acme/types";
 import { shopSchema } from "@cms/actions/schemas";
 import { updateShop } from "@cms/actions/shops.server";
 import type { MappingRow } from "@/hooks/useMappingRows";
-import type { ThemeTokenRow } from "./tableMappers";
+import type { ThemeTokenRow } from "./lib/pageSections";
 
 export interface MappingRowsController {
   readonly rows: MappingRow[];

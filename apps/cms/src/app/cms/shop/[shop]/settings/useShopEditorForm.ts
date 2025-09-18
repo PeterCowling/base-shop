@@ -15,7 +15,7 @@ import useShopEditorSubmit, {
   type ShopEditorOverridesSection,
   type ShopEditorProvidersSection,
 } from "./useShopEditorSubmit";
-import { mapThemeTokenRows } from "./tableMappers";
+import { mapThemeTokenRows } from "./lib/pageSections";
 
 interface HookArgs {
   shop: string;

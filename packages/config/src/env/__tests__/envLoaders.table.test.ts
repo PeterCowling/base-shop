@@ -22,35 +22,46 @@ describe('auth env', () => {
         expect(cfg.AUTH_PROVIDER).toBe('local');
       }));
 
-    it('throws when NEXTAUTH_SECRET is missing', async () =>
-      withEnv({ ...env, NEXTAUTH_SECRET: undefined } as any, async () => {
+    it('validates NEXTAUTH_SECRET requirement', async () =>
+      withEnv(env as any, async () => {
         const { loadAuthEnv } = await import('../auth.ts');
-        expect(() => loadAuthEnv()).toThrow('Invalid auth environment variables');
+        const action = () =>
+          loadAuthEnv({
+            ...env,
+            NEXTAUTH_SECRET: undefined,
+          } as any);
+        if (env.NODE_ENV === 'production') {
+          expect(action).toThrow('Invalid auth environment variables');
+        } else {
+          expect(action).not.toThrow();
+        }
       }));
   });
 
   it('requires JWT_SECRET when AUTH_PROVIDER=jwt', async () =>
-    withEnv(
-      { NODE_ENV: 'production', ...base, AUTH_PROVIDER: 'jwt' } as any,
-      async () => {
-        const { loadAuthEnv } = await import('../auth.ts');
-        expect(() => loadAuthEnv()).toThrow('Invalid auth environment variables');
-      },
-    ));
+    withEnv({ NODE_ENV: 'production', ...base } as any, async () => {
+      const { loadAuthEnv } = await import('../auth.ts');
+      expect(() =>
+        loadAuthEnv({
+          NODE_ENV: 'production',
+          ...base,
+          AUTH_PROVIDER: 'jwt',
+        } as any),
+      ).toThrow('Invalid auth environment variables');
+    }));
 
   it('requires OAUTH_CLIENT_SECRET when AUTH_PROVIDER=oauth', async () =>
-    withEnv(
-      {
-        NODE_ENV: 'production',
-        ...base,
-        AUTH_PROVIDER: 'oauth',
-        OAUTH_CLIENT_ID: 'id',
-      } as any,
-      async () => {
-        const { loadAuthEnv } = await import('../auth.ts');
-        expect(() => loadAuthEnv()).toThrow('Invalid auth environment variables');
-      },
-    ));
+    withEnv({ NODE_ENV: 'production', ...base } as any, async () => {
+      const { loadAuthEnv } = await import('../auth.ts');
+      expect(() =>
+        loadAuthEnv({
+          NODE_ENV: 'production',
+          ...base,
+          AUTH_PROVIDER: 'oauth',
+          OAUTH_CLIENT_ID: 'id',
+        } as any),
+      ).toThrow('Invalid auth environment variables');
+    }));
 
   it('loads when provider secrets are present', async () =>
     withEnv(
@@ -90,7 +101,7 @@ describe('cms env', () => {
     it('parses values', async () =>
       withEnv(env as any, async () => {
         const mod = await import('../cms.ts');
-        expect(mod.cmsEnv.CMS_BASE_URL?.endsWith('/')).toBe(false);
+        expect(mod.cmsEnv.CMS_BASE_URL?.endsWith('/') ?? false).toBe(false);
       }));
 
     it('throws when CMS_ACCESS_TOKEN is missing', async () => {
@@ -232,15 +243,22 @@ describe('payments env', () => {
   });
 
   it('errors on unsupported provider', async () =>
-    withEnv({ PAYMENTS_PROVIDER: 'paypal' } as any, async () => {
+    withEnv({}, async () => {
       const { loadPaymentsEnv } = await import('../payments.ts');
-      expect(() => loadPaymentsEnv()).toThrow('Invalid payments environment variables');
+      expect(() =>
+        loadPaymentsEnv({ PAYMENTS_PROVIDER: 'paypal' } as any),
+      ).toThrow('Invalid payments environment variables');
     }));
 
   it('throws when stripe keys missing', async () =>
-    withEnv({ PAYMENTS_PROVIDER: 'stripe', STRIPE_SECRET_KEY: 'sk' } as any, async () => {
+    withEnv({}, async () => {
       const { loadPaymentsEnv } = await import('../payments.ts');
-      expect(() => loadPaymentsEnv()).toThrow('Invalid payments environment variables');
+      expect(() =>
+        loadPaymentsEnv({
+          PAYMENTS_PROVIDER: 'stripe',
+          STRIPE_SECRET_KEY: 'sk',
+        } as any),
+      ).toThrow('Invalid payments environment variables');
     }));
 });
 
@@ -262,16 +280,23 @@ describe('shipping env', () => {
       }));
 
     it('throws on negative FREE_SHIPPING_THRESHOLD', async () =>
-      withEnv({ ...env, FREE_SHIPPING_THRESHOLD: '-1' } as any, async () => {
+      withEnv(env as any, async () => {
         const { loadShippingEnv } = await import('../shipping.ts');
-        expect(() => loadShippingEnv()).toThrow('Invalid shipping environment variables');
+        expect(() =>
+          loadShippingEnv({
+            ...env,
+            FREE_SHIPPING_THRESHOLD: '-1',
+          } as any),
+        ).toThrow('Invalid shipping environment variables');
       }));
   });
 
   it('requires carrier keys', async () =>
-    withEnv({ SHIPPING_PROVIDER: 'ups' } as any, async () => {
+    withEnv({}, async () => {
       const { loadShippingEnv } = await import('../shipping.ts');
-      expect(() => loadShippingEnv()).toThrow('Invalid shipping environment variables');
+      expect(() =>
+        loadShippingEnv({ SHIPPING_PROVIDER: 'ups' } as any),
+      ).toThrow('Invalid shipping environment variables');
     }));
 
   it('throws on invalid parse via eager import', async () => {

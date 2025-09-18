@@ -13,8 +13,12 @@ interface FindManyArgs {
   };
 }
 
+type RentalOrderUniqueWhere =
+  | { shop_sessionId: { shop: string; sessionId: string } }
+  | { shop_trackingNumber: { shop: string; trackingNumber: string | null } };
+
 interface FindUniqueArgs {
-  where: { shop_sessionId: { shop: string; sessionId: string } };
+  where: RentalOrderUniqueWhere;
 }
 
 interface UpdateArgs {
@@ -43,11 +47,14 @@ export function createRentalOrderDelegate(): RentalOrderDelegate {
       });
     },
     async findUnique({ where }: FindUniqueArgs) {
-      const { shop, sessionId } = where.shop_sessionId;
-      return (
-        rentalOrders.find((o) => o.shop === shop && o.sessionId === sessionId) ||
-        null
-      );
+      if ("shop_sessionId" in where) {
+        const { shop, sessionId } = where.shop_sessionId;
+        return (
+          rentalOrders.find((o) => o.shop === shop && o.sessionId === sessionId) ||
+          null
+        );
+      }
+      return null;
     },
     async create({ data }) {
       rentalOrders.push({ ...data });

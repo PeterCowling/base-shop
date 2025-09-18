@@ -1,39 +1,13 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/ShopEditor.tsx
 
 "use client";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-  Button,
-  Card,
-  CardContent,
-  Input,
-} from "@/components/atoms/shadcn";
-import { Toast } from "@/components/atoms";
-import type { Shop } from "@acme/types";
-import { type ReactNode } from "react";
 
-import {
-  ShopIdentitySection,
-  type ShopIdentitySectionErrors,
-  ShopLocalizationSection,
-  type ShopLocalizationSectionErrors,
-  ShopOverridesSection,
-  type ShopOverridesSectionErrors,
-  ShopProvidersSection,
-  type ShopProvidersSectionErrors,
-  ShopSeoSection,
-  type ShopSeoSectionErrors,
-  ShopThemeSection,
-  type ShopThemeSectionErrors,
-} from "./sections";
+import type { Shop } from "@acme/types";
+
+import EditorSectionsAccordion from "./components/EditorSectionsAccordion";
+import { createShopEditorSections } from "./editorSections";
+import useShopEditorErrors from "./useShopEditorErrors";
 import { useShopEditorForm } from "./useShopEditorForm";
-import type {
-  MappingListFieldErrors,
-  MappingListFieldRowErrors,
-} from "./components/MappingListField";
 
 export { default as GeneralSettings } from "./sections/ShopIdentitySection";
 export { default as SEOSettings } from "./sections/ShopSeoSection";
@@ -47,304 +21,27 @@ interface Props {
 
 export default function ShopEditor({ shop, initial, initialTrackingProviders }: Props) {
   const form = useShopEditorForm({ shop, initial, initialTrackingProviders });
-  const {
-    info,
-    errors,
-    tokenRows,
-    saving,
-    identity,
-    providers,
-    overrides,
-    seo,
-    localization,
-    toast,
-    closeToast,
-    onSubmit,
-  } = form;
+  const sectionErrors = useShopEditorErrors(form.errors);
 
-  const luxuryFeatureErrorKeys = [
-    "blog",
-    "contentMerchandising",
-    "raTicketing",
-    "requireStrongCustomerAuth",
-    "strictReturnConditions",
-    "trackingDashboard",
-    "premierDelivery",
-  ] as const;
-
-  const identityErrors: ShopIdentitySectionErrors = {};
-  if (errors.name) {
-    identityErrors.name = errors.name;
-  }
-  if (errors.themeId) {
-    identityErrors.themeId = errors.themeId;
-  }
-  if (errors.fraudReviewThreshold) {
-    identityErrors.fraudReviewThreshold = errors.fraudReviewThreshold;
-  }
-  if (errors.luxuryFeatures) {
-    identityErrors.luxuryFeatures = errors.luxuryFeatures;
-  }
-  for (const feature of luxuryFeatureErrorKeys) {
-    const messages = errors[feature];
-    if (messages) {
-      const field = `luxuryFeatures.${feature}` as const;
-      identityErrors[field] = messages;
-    }
-  }
-
-  const providersErrors: ShopProvidersSectionErrors | undefined =
-    errors.trackingProviders
-      ? { trackingProviders: errors.trackingProviders }
-      : undefined;
-
-  const buildMappingListErrors = (
-    field: "filterMappings" | "priceOverrides" | "localeOverrides",
-  ): MappingListFieldErrors | undefined => {
-    const general = errors[field];
-    const rowEntries = new Map<number, MappingListFieldRowErrors>();
-    const dotPattern = new RegExp(
-      `^${field}\\.(\\d+)(?:\\.(key|value|general))?$`,
-    );
-    const bracketPattern = new RegExp(
-      `^${field}\\[(\\d+)](?:\\.(key|value|general))?$`,
-    );
-
-    for (const [errorKey, messages] of Object.entries(errors)) {
-      const dotMatch = errorKey.match(dotPattern);
-      const bracketMatch = errorKey.match(bracketPattern);
-      const match = dotMatch ?? bracketMatch;
-      if (!match) {
-        continue;
-      }
-
-      const index = Number(match[1]);
-      if (Number.isNaN(index)) {
-        continue;
-      }
-
-      const fieldName = (match[2] as "key" | "value" | "general" | undefined) ??
-        "general";
-      const current = rowEntries.get(index) ?? {};
-
-      if (fieldName === "general") {
-        rowEntries.set(index, { ...current, general: messages });
-      } else {
-        rowEntries.set(index, { ...current, [fieldName]: messages });
-      }
-    }
-
-    const rows =
-      rowEntries.size > 0
-        ? Array.from(rowEntries.entries())
-            .sort(([left], [right]) => left - right)
-            .map(([, value]) => value)
-        : undefined;
-
-    if (!general && !rows) {
-      return undefined;
-    }
-
-    return { general, rows };
-  };
-
-  const overridesErrors: ShopOverridesSectionErrors = {};
-  const filterMappingErrors = buildMappingListErrors("filterMappings");
-  const priceOverrideErrors = buildMappingListErrors("priceOverrides");
-  if (filterMappingErrors) {
-    overridesErrors.filterMappings = filterMappingErrors;
-  }
-  if (priceOverrideErrors) {
-    overridesErrors.priceOverrides = priceOverrideErrors;
-  }
-  const overridesSectionErrors =
-    Object.keys(overridesErrors).length > 0 ? overridesErrors : undefined;
-
-  const localeOverrideErrors = buildMappingListErrors("localeOverrides");
-  const localizationErrors: ShopLocalizationSectionErrors | undefined =
-    localeOverrideErrors ? { localeOverrides: localeOverrideErrors } : undefined;
-
-  const seoErrors: ShopSeoSectionErrors | undefined = errors.catalogFilters
-    ? { catalogFilters: errors.catalogFilters }
-    : undefined;
-
-  const themeErrors: ShopThemeSectionErrors | undefined = (() => {
-    const result: ShopThemeSectionErrors = {};
-    if (errors.themeDefaults) {
-      result.themeDefaults = errors.themeDefaults;
-    }
-    if (errors.themeOverrides) {
-      result.themeOverrides = errors.themeOverrides;
-    }
-    return Object.keys(result).length > 0 ? result : undefined;
-  })();
-
-  const toastClassName =
-    toast.status === "error"
-      ? "bg-destructive text-destructive-foreground"
-      : "bg-success text-success-fg";
-
-  const sections: SectionConfig[] = [
-    {
-      key: "identity",
-      title: "Identity",
-      description: "Update the shop name, theme, and luxury feature toggles.",
-      render: () => (
-        <ShopIdentitySection
-          info={identity.info}
-          errors={identityErrors}
-          onInfoChange={identity.handleTextChange}
-          onLuxuryFeatureChange={identity.handleLuxuryFeatureChange}
-        />
-      ),
-      wrapWithCard: false,
-    },
-    {
-      key: "seo",
-      title: "SEO",
-      description: "Configure catalog filters for storefront metadata.",
-      render: () => (
-        <ShopSeoSection
-          catalogFilters={seo.catalogFilters}
-          onCatalogFiltersChange={seo.setCatalogFilters}
-          errors={seoErrors}
-        />
-      ),
-      wrapWithCard: false,
-    },
-    {
-      key: "providers",
-      title: "Tracking providers",
-      description: "Manage analytics and fulfillment tracking integrations.",
-      render: () => (
-        <ShopProvidersSection
-          trackingProviders={providers.trackingProviders}
-          shippingProviders={providers.shippingProviders}
-          errors={providersErrors}
-          onTrackingChange={providers.setTrackingProviders}
-        />
-      ),
-      wrapWithCard: false,
-    },
-    {
-      key: "theme",
-      title: "Theme tokens",
-      description: "Compare overrides with defaults and reset individual tokens.",
-      render: () => (
-        <ShopThemeSection
-          shop={shop}
-          tokenRows={tokenRows}
-          themeDefaults={info.themeDefaults}
-          themeOverrides={info.themeOverrides}
-          errors={themeErrors}
-        />
-      ),
-    },
-    {
-      key: "overrides",
-      title: "Overrides",
-      description: "Fine-tune filter mappings and price localization.",
-      render: () => (
-        <ShopOverridesSection
-          filterMappings={overrides.filterMappings}
-          priceOverrides={localization.priceOverrides}
-          errors={overridesSectionErrors}
-        />
-      ),
-      wrapWithCard: false,
-    },
-    {
-      key: "localization",
-      title: "Localization overrides",
-      description: "Redirect locale content to custom destinations.",
-      render: () => (
-        <ShopLocalizationSection
-          localeOverrides={localization.localeOverrides}
-          errors={localizationErrors}
-          availableLocales={localization.supportedLocales}
-        />
-      ),
-      wrapWithCard: false,
-    },
-  ];
+  const sections = createShopEditorSections({
+    shop,
+    info: form.info,
+    identity: form.identity,
+    providers: form.providers,
+    overrides: form.overrides,
+    localization: form.localization,
+    seo: form.seo,
+    errors: sectionErrors,
+  });
 
   return (
-    <form onSubmit={onSubmit} className="space-y-6">
-      <Input type="hidden" name="id" value={info.id} />
-      <Accordion
-        type="multiple"
-        defaultValue={sections.map((section) => section.key)}
-        className="space-y-3"
-      >
-        {sections.map(({ key, title, description, render, wrapWithCard }) => (
-          <AccordionItem key={key} value={key} data-section={key} className="border-none">
-            <AccordionTrigger className="rounded-md border border-border/60 bg-muted/40 px-4 py-3 text-left text-sm font-semibold">
-              <SectionHeader title={title} description={description} />
-            </AccordionTrigger>
-            <AccordionContent className="pt-3">
-              <SectionCard dataSectionKey={key} wrapWithCard={wrapWithCard}>
-                {render()}
-              </SectionCard>
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-      <div className="flex justify-end">
-        <Button
-          className="h-10 px-6 text-sm font-semibold"
-          disabled={saving}
-          type="submit"
-        >
-          {saving ? "Saving…" : "Save"}
-        </Button>
-      </div>
-      <Toast
-        open={toast.open}
-        message={toast.message}
-        onClose={closeToast}
-        className={toastClassName}
-        role="status"
-      />
-    </form>
+    <EditorSectionsAccordion
+      sections={sections}
+      hiddenFields={[{ name: "id", value: String(form.info.id) }]}
+      onSubmit={form.onSubmit}
+      saving={form.saving}
+      toast={form.toast}
+      onToastClose={form.closeToast}
+    />
   );
 }
-
-interface SectionConfig {
-  key: string;
-  title: string;
-  description?: string;
-  render: () => ReactNode;
-  wrapWithCard?: boolean;
-}
-
-function SectionHeader({ title, description }: { title: string; description?: string }) {
-  return (
-    <div className="flex flex-col gap-0.5">
-      <span className="text-sm font-semibold">{title}</span>
-      {description ? (
-        <span className="text-xs text-muted-foreground">{description}</span>
-      ) : null}
-    </div>
-  );
-}
-
-function SectionCard({
-  children,
-  dataSectionKey,
-  wrapWithCard = true,
-}: {
-  children: ReactNode;
-  dataSectionKey?: string;
-  wrapWithCard?: boolean;
-}) {
-  if (!wrapWithCard) {
-    return <div data-section={dataSectionKey}>{children}</div>;
-  }
-
-  return (
-    <Card className="border border-border/60" data-section={dataSectionKey}>
-      <CardContent className="space-y-6 p-6">{children}</CardContent>
-    </Card>
-  );
-}
-

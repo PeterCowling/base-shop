@@ -2,22 +2,15 @@
 
 import type { ComponentProps, ReactNode } from "react";
 
-import {
-  Button,
-  FormField,
-  Input,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@ui/components";
+import { Button, Input } from "@ui/components";
 
 import type { MappingRowsController } from "../useShopEditorSubmit";
 
 import ErrorChips from "./ErrorChips";
+import MappingListRow from "./MappingListRow";
+import { hasErrors, joinClassNames } from "./mappingListField.utils";
 
-type MappingFieldName = "key" | "value";
+export type MappingFieldName = "key" | "value";
 
 export interface MappingListFieldRowErrors {
   readonly key?: string[];
@@ -77,44 +70,7 @@ export interface MappingListFieldProps {
 }
 
 const DEFAULT_REMOVE_LABEL = "Remove";
-const BASE_ROW_CLASSNAME = "grid gap-4 sm:items-end";
-const DEFAULT_ROW_TEMPLATE = "sm:grid-cols-[2fr,1fr,auto]";
 const BASE_CONTAINER_CLASSNAME = "space-y-4";
-
-function hasErrors(messages?: readonly string[]) {
-  return Array.isArray(messages) && messages.length > 0;
-}
-
-function isSelectField<Field extends MappingFieldName>(
-  field: MappingListFieldFieldConfig<Field>,
-): field is MappingListFieldSelectConfig<Field> {
-  return field.kind === "select";
-}
-
-function joinClassNames(...classes: Array<string | undefined>) {
-  return classes.filter(Boolean).join(" ");
-}
-
-function composeDescribedBy(...ids: Array<string | undefined>) {
-  const filtered = ids.filter(Boolean);
-  return filtered.length > 0 ? filtered.join(" ") : undefined;
-}
-
-function renderError(errors?: string[], id?: string) {
-  if (!hasErrors(errors)) {
-    return undefined;
-  }
-
-  return (
-    <span id={id}>
-      <ErrorChips errors={errors} />
-    </span>
-  );
-}
-
-function getRowClassName(rowClassName?: string) {
-  return joinClassNames(BASE_ROW_CLASSNAME, rowClassName ?? DEFAULT_ROW_TEMPLATE);
-}
 
 export default function MappingListField({
   controller,
@@ -139,153 +95,20 @@ export default function MappingListField({
           <p className="text-sm text-muted-foreground">{emptyMessage}</p>
         ) : null
       ) : (
-        rows.map((row, index) => {
-          const keyId = `${idPrefix}-${keyField.field}-${index}`;
-          const valueId = `${idPrefix}-${valueField.field}-${index}`;
-          const currentRowErrors = rowErrors[index];
-          const keyMessages = currentRowErrors?.key;
-          const valueMessages = currentRowErrors?.value;
-          const generalMessages = currentRowErrors?.general;
-          const keyErrorId = hasErrors(keyMessages)
-            ? `${idPrefix}-${index}-${keyField.field}-errors`
-            : undefined;
-          const valueErrorId = hasErrors(valueMessages)
-            ? `${idPrefix}-${index}-${valueField.field}-errors`
-            : undefined;
-          const rowErrorId = hasErrors(generalMessages)
-            ? `${idPrefix}-${index}-row-errors`
-            : undefined;
-
-          const keyFieldNode = (
-            <FormField
-              label={keyField.label}
-              htmlFor={keyId}
-              required={keyField.required}
-              error={renderError(keyMessages, keyErrorId)}
-            >
-              {isSelectField(keyField) ? (
-                <Select
-                  name={keyField.name}
-                  value={row[keyField.field] === "" ? undefined : row[keyField.field]}
-                  onValueChange={(value) =>
-                    controller.update(index, keyField.field, value)
-                  }
-                >
-                  <SelectTrigger
-                    id={keyId}
-                    aria-describedby={composeDescribedBy(
-                      keyErrorId,
-                      rowErrorId,
-                    )}
-                  >
-                    <SelectValue placeholder={keyField.placeholder} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {keyField.options.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              ) : (
-                <Input
-                  id={keyId}
-                  name={keyField.name}
-                  value={row[keyField.field]}
-                  onChange={(event) =>
-                    controller.update(index, keyField.field, event.target.value)
-                  }
-                  placeholder={keyField.placeholder}
-                  aria-describedby={composeDescribedBy(keyErrorId, rowErrorId)}
-                  type={keyField.type}
-                  inputMode={keyField.inputMode}
-                  autoComplete={keyField.autoComplete}
-                />
-              )}
-            </FormField>
-          );
-
-          const valueFieldNode = (
-            <FormField
-              label={valueField.label}
-              htmlFor={valueId}
-              required={valueField.required}
-              error={renderError(valueMessages, valueErrorId)}
-            >
-              {isSelectField(valueField) ? (
-                <Select
-                  name={valueField.name}
-                  value={
-                    row[valueField.field] === ""
-                      ? undefined
-                      : row[valueField.field]
-                  }
-                  onValueChange={(value) =>
-                    controller.update(index, valueField.field, value)
-                  }
-                >
-                  <SelectTrigger
-                    id={valueId}
-                    aria-describedby={composeDescribedBy(
-                      valueErrorId,
-                      rowErrorId,
-                    )}
-                  >
-                    <SelectValue placeholder={valueField.placeholder} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {valueField.options.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              ) : (
-                <Input
-                  id={valueId}
-                  name={valueField.name}
-                  value={row[valueField.field]}
-                  onChange={(event) =>
-                    controller.update(
-                      index,
-                      valueField.field,
-                      event.target.value,
-                    )
-                  }
-                  placeholder={valueField.placeholder}
-                  aria-describedby={composeDescribedBy(valueErrorId, rowErrorId)}
-                  type={valueField.type}
-                  inputMode={valueField.inputMode}
-                  autoComplete={valueField.autoComplete}
-                />
-              )}
-            </FormField>
-          );
-
-          return (
-            <div key={`${idPrefix}-row-${index}`} className={getRowClassName(rowClassName)}>
-              {keyFieldNode}
-              {valueFieldNode}
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => controller.remove(index)}
-                className="self-start sm:self-auto"
-              >
-                {removeButtonLabel}
-              </Button>
-              {hasErrors(generalMessages) ? (
-                <div className="sm:col-span-3">
-                  <span id={rowErrorId}>
-                    <ErrorChips errors={generalMessages} />
-                  </span>
-                </div>
-              ) : null}
-            </div>
-          );
-        })
+        rows.map((row, index) => (
+          <MappingListRow
+            key={`${idPrefix}-row-${index}`}
+            controller={controller}
+            errors={rowErrors[index]}
+            idPrefix={idPrefix}
+            index={index}
+            keyField={keyField}
+            removeButtonLabel={removeButtonLabel}
+            row={row}
+            rowClassName={rowClassName}
+            valueField={valueField}
+          />
+        ))
       )}
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

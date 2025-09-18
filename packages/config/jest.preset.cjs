@@ -18,6 +18,10 @@ coveragePathIgnorePatterns.push(
   scope === "packages" ? "/apps/" : "/packages/"
 );
 
+const setupFilesAfterEnv = (base.setupFilesAfterEnv || []).filter(
+  (entry) => !String(entry).includes("jest.setup.ts")
+);
+
 /** @type {import('jest').Config} */
 module.exports = {
   ...base,
@@ -35,6 +39,7 @@ module.exports = {
     "^\\.\\./core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
     "^\\.\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.ts",
   },
+  setupFilesAfterEnv,
   coveragePathIgnorePatterns,
   coverageThreshold: {
     global: {

@@ -43,6 +43,14 @@ describe("ShopChooser", () => {
     expect(screen.getByText("Workspace heading")).toBeInTheDocument();
     const links = screen.getAllByTestId("shop-chooser-cta");
     expect(links).toHaveLength(3);
+    expect(links.map((link) => link.getAttribute("data-index"))).toEqual([
+      "0",
+      "1",
+      "2",
+    ]);
+    expect(links.map((link) => link.getAttribute("href"))).toEqual(
+      baseProps.shops.map((shop) => `/cms/test/${shop}`)
+    );
 
     links.forEach((link) =>
       link.addEventListener("click", (event) => event.preventDefault())

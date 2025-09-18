@@ -18,8 +18,60 @@ export async function withEnv(
     }
 
     jest.resetModules();
+    let result: unknown;
     await jest.isolateModulesAsync(async () => {
-      await run();
+      result = await run();
+
+      const loadFns = new Set<() => unknown | Promise<unknown>>();
+
+      const collectLoaders = (candidate: unknown) => {
+        if (typeof candidate === "function") {
+          if (/^load[A-Z].*Env$/.test(candidate.name ?? "")) {
+            loadFns.add(candidate as () => unknown | Promise<unknown>);
+          }
+          return;
+        }
+        if (!candidate || typeof candidate !== "object") {
+          return;
+        }
+        for (const [key, value] of Object.entries(
+          candidate as Record<string, unknown>,
+        )) {
+          if (
+            typeof value === "function" &&
+            /^load[A-Z].*Env$/.test(key)
+          ) {
+            loadFns.add(value as () => unknown | Promise<unknown>);
+          }
+        }
+      };
+
+      collectLoaders(result);
+      if (
+        result &&
+        typeof result === "object" &&
+        "default" in (result as Record<string, unknown>)
+      ) {
+        collectLoaders(
+          (result as Record<string, unknown>).default,
+        );
+      }
+
+      const isPromiseLike = (value: unknown): value is PromiseLike<unknown> => {
+        return (
+          typeof value === "object" &&
+          value !== null &&
+          "then" in value &&
+          typeof (value as { then?: unknown }).then === "function"
+        );
+      };
+
+      for (const loader of loadFns) {
+        const maybeResult = loader();
+        if (isPromiseLike(maybeResult)) {
+          await maybeResult;
+        }
+      }
     });
   } finally {
     process.env = originalEnv;

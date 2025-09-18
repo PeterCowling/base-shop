@@ -58,11 +58,14 @@ export function createRentalOrderDelegate(): RentalOrderDelegate {
       if ("shop_sessionId" in where) {
         const { shop, sessionId } = where.shop_sessionId;
         order = rentalOrders.find((o) => o.shop === shop && o.sessionId === sessionId);
-      } else {
-        const { shop, trackingNumber } = where.shop_trackingNumber;
-        order = rentalOrders.find(
-          (o) => o.shop === shop && o.trackingNumber === trackingNumber,
-        );
+      } else if ("shop_trackingNumber" in where) {
+        const shopTrackingFilter = where.shop_trackingNumber;
+        if (shopTrackingFilter) {
+          const { shop, trackingNumber } = shopTrackingFilter;
+          order = rentalOrders.find(
+            (o) => o.shop === shop && o.trackingNumber === trackingNumber,
+          );
+        }
       }
       if (!order) throw new Error("Order not found");
       Object.assign(order, data);

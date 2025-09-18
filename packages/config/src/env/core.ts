@@ -6,12 +6,13 @@ import { cmsEnvSchema } from "./cms.schema.js";
 import { emailEnvSchema } from "./email.js";
 import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
+const nodeEnv = process.env.NODE_ENV;
+const hasJestWorker = process.env.JEST_WORKER_ID !== undefined;
 const isJest = typeof (globalThis as { jest?: unknown }).jest !== "undefined";
+const isExplicitProd = nodeEnv === "production";
 const isTest =
-  process.env.NODE_ENV === "test" ||
-  process.env.JEST_WORKER_ID !== undefined ||
-  (isJest && process.env.NODE_ENV !== "production");
-const isProd = process.env.NODE_ENV === "production" && !isTest;
+  nodeEnv === "test" || (!isExplicitProd && (hasJestWorker || isJest));
+const isProd = isExplicitProd && !isTest;
 
 const baseEnvSchema = z
   .object({
@@ -148,7 +149,33 @@ export function depositReleaseEnvRefinement(
   }
 }
 
-export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
+function applyEmailProviderDefaults(input: unknown): unknown {
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
+    return input;
+  }
+  const env = { ...(input as Record<string, unknown>) };
+  const provider = env.EMAIL_PROVIDER;
+  const emailFrom = env.EMAIL_FROM;
+  const providerMissing =
+    provider === undefined ||
+    provider === null ||
+    (typeof provider === "string" && provider.trim() === "");
+  const fromMissing =
+    emailFrom === undefined ||
+    emailFrom === null ||
+    (typeof emailFrom === "string" && emailFrom.trim() === "");
+  if (providerMissing && fromMissing) {
+    env.EMAIL_PROVIDER = "noop";
+  }
+  return env;
+}
+
+const coreEnvSchemaWithEmailDefaults = z.preprocess(
+  applyEmailProviderDefaults,
+  coreEnvBaseSchema,
+);
+
+export const coreEnvSchema = coreEnvSchemaWithEmailDefaults.superRefine((env, ctx) => {
   depositReleaseEnvRefinement(env, ctx);
 
   // Normalize AUTH_TOKEN_TTL before delegating to the auth schema so builds
@@ -218,10 +245,13 @@ function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
           issue.received === "undefined"
       );
       if (onlyMissing) {
-        return coreEnvSchema.parse({
+        const fallback = coreEnvSchema.safeParse({
           EMAIL_FROM: "test@example.com",
           EMAIL_PROVIDER: "noop",
         });
+        if (fallback.success) {
+          return fallback.data;
+        }
       }
     }
     console.error("❌ Invalid core environment variables:");
@@ -243,7 +273,7 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
 let __cachedCoreEnv: CoreEnv | null = null;
 const nodeRequire: NodeJS.Require | null =
   typeof require === "function" ? require : null;
-const envMode = process.env.NODE_ENV;
+const envMode = nodeEnv;
 function getCoreEnv(): CoreEnv {
   if (!__cachedCoreEnv) {
     if (envMode === "production" || envMode == null) {
@@ -288,7 +318,7 @@ export const coreEnv: CoreEnv = new Proxy({} as CoreEnv, {
 }) as CoreEnv;
 
 // Fail fast in prod only (forces a single parse early).
-if (isProd && !process.env.JEST_WORKER_ID) {
+if (isProd) {
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   coreEnv.NODE_ENV;
 }

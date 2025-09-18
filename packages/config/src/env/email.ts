@@ -1,12 +1,12 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
-const isJest = typeof (globalThis as { jest?: unknown }).jest !== "undefined";
-const isTest =
-  process.env.NODE_ENV === "test" ||
-  process.env.JEST_WORKER_ID !== undefined ||
-  (isJest && process.env.NODE_ENV !== "production");
-const isProd = process.env.NODE_ENV === "production" && !isTest;
+const hasEmailProvider =
+  typeof process.env.EMAIL_PROVIDER === "string" &&
+  process.env.EMAIL_PROVIDER.trim().length > 0;
+const hasEmailFrom =
+  typeof process.env.EMAIL_FROM === "string" &&
+  process.env.EMAIL_FROM.trim().length > 0;
 
 export const emailEnvSchema = z
   .object({
@@ -41,9 +41,7 @@ export const emailEnvSchema = z
       .email()
       .transform((v) => v.toLowerCase())
       .optional(),
-    EMAIL_PROVIDER: z
-      .enum(["sendgrid", "resend", "smtp", "noop"])
-      .default(isProd ? "smtp" : "noop"),
+    EMAIL_PROVIDER: z.enum(["sendgrid", "resend", "smtp", "noop"]).default("smtp"),
     SENDGRID_API_KEY: z.string().optional(),
     SENDGRID_MARKETING_KEY: z.string().optional(),
     RESEND_API_KEY: z.string().optional(),
@@ -75,9 +73,10 @@ export const emailEnvSchema = z
   });
 const rawEnv: NodeJS.ProcessEnv = {
   ...process.env,
-  EMAIL_PROVIDER:
-    process.env.EMAIL_FROM || process.env.EMAIL_PROVIDER
-      ? process.env.EMAIL_PROVIDER
+  EMAIL_PROVIDER: hasEmailProvider
+    ? process.env.EMAIL_PROVIDER
+    : hasEmailFrom
+      ? undefined
       : "noop",
 };
 const parsed = emailEnvSchema.safeParse(rawEnv);

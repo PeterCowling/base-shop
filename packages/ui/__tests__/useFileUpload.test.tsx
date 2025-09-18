@@ -105,19 +105,22 @@ describe("useFileUpload", () => {
     );
     const { container, rerender } = render(result.current.uploader);
 
-    fireEvent.dragEnter(container.firstChild!);
+    const dropzone = container.firstChild as HTMLElement;
+
+    fireEvent.dragEnter(dropzone);
     rerender(result.current.uploader);
-    expect(container.firstChild?.className).toContain("highlighted");
+    expect(dropzone).toHaveClass("ring-2");
+    expect(dropzone).toHaveClass("bg-primary/5");
 
     act(() => {
-      fireEvent.drop(container.firstChild!, {
+      fireEvent.drop(dropzone, {
         dataTransfer: { files: [file] },
       });
     });
     rerender(result.current.uploader);
 
     expect(result.current.pendingFile).toBe(file);
-    expect(container.firstChild?.className).not.toContain("highlighted");
+    expect(dropzone).not.toHaveClass("ring-2");
   });
 
   it("shows orientation warning when mismatched", () => {

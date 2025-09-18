@@ -47,14 +47,15 @@ describe("UploadPanel", () => {
       name: /drop image or video here or press enter to browse/i,
     });
     fireEvent.dragEnter(dropzone);
-    expect(dropzone.className).toMatch(/highlighted/);
+    expect(dropzone).toHaveClass("ring-2");
+    expect(dropzone).toHaveClass("bg-primary/5");
     fireEvent.dragLeave(dropzone);
-    expect(dropzone.className).not.toMatch(/highlighted/);
+    expect(dropzone).not.toHaveClass("ring-2");
     fireEvent.dragEnter(dropzone);
     const file = new File(["x"], "x.png", { type: "image/png" });
     fireEvent.drop(dropzone, { dataTransfer: { files: [file] } });
     expect(onDrop).toHaveBeenCalled();
-    expect(dropzone.className).not.toMatch(/highlighted/);
+    expect(dropzone).not.toHaveClass("ring-2");
   });
 
   it("opens file dialog with keyboard", () => {

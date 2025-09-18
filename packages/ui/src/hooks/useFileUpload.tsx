@@ -13,6 +13,7 @@ import { flushSync } from "react-dom";
 
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useImageOrientationValidation } from "./useImageOrientationValidation";
+import { cn } from "../utils/style";
 
 /* ──────────────────────────────────────────────────────────────────────
  * Public API types
@@ -182,9 +183,10 @@ export function useFileUpload(
           openFileDialog();
         }
       }}
-      className={`rounded border-2 border-dashed p-4 text-center${
-        dragActive ? "highlighted" : ""
-      }`}
+      className={cn(
+        "rounded border-2 border-dashed p-4 text-center",
+        dragActive && "ring-2 ring-primary/60 bg-primary/5"
+      )}
     >
       {/* hidden file input */}
       <input

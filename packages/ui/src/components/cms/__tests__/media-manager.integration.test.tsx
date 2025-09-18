@@ -299,14 +299,20 @@ describe("Media manager integration", () => {
     });
 
     fireEvent.dragEnter(dropzone);
-    expect(dropzone.className).toMatch(/highlighted/);
+    expect(dropzone).toHaveClass("ring-2");
+    expect(dropzone).toHaveClass("ring-primary/60");
+    expect(dropzone).toHaveClass("bg-primary/5");
     fireEvent.dragLeave(dropzone);
-    expect(dropzone.className).not.toMatch(/highlighted/);
+    expect(dropzone).not.toHaveClass("ring-2");
+    expect(dropzone).not.toHaveClass("ring-primary/60");
+    expect(dropzone).not.toHaveClass("bg-primary/5");
 
     fireEvent.dragEnter(dropzone);
     const file = new File(["binary"], "hero.png", { type: "image/png" });
     fireEvent.drop(dropzone, { dataTransfer: { files: [file] } });
-    expect(dropzone.className).not.toMatch(/highlighted/);
+    expect(dropzone).not.toHaveClass("ring-2");
+    expect(dropzone).not.toHaveClass("ring-primary/60");
+    expect(dropzone).not.toHaveClass("bg-primary/5");
 
     await screen.findByPlaceholderText("Alt text");
 
@@ -314,9 +320,11 @@ describe("Media manager integration", () => {
 
     const uploadedLabels = await screen.findAllByText("Uploaded hero.png");
     expect(uploadedLabels.length).toBeGreaterThan(0);
-    expect(
-      screen.getAllByRole("button", { name: /media actions/i })
-    ).toHaveLength(3);
+    await waitFor(() =>
+      expect(
+        screen.getAllByRole("button", { name: "Media actions", hidden: true })
+      ).toHaveLength(3)
+    );
     await waitFor(() =>
       expect(screen.queryByPlaceholderText("Alt text")).not.toBeInTheDocument()
     );

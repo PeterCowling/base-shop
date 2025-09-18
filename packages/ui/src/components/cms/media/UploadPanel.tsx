@@ -7,6 +7,7 @@ import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 import { ChangeEvent, ReactElement, useEffect, useState } from "react";
 import { Spinner } from "../../atoms";
+import { cn } from "../../../utils/style";
 
 interface UploadPanelProps {
   shop: string;
@@ -76,9 +77,10 @@ export default function UploadPanel({
             openFileDialog();
           }
         }}
-        className={`flex h-32 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-muted text-sm text-muted${
-          dragActive ? " highlighted" : ""
-        }`}
+        className={cn(
+          "flex h-32 cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-muted text-sm text-muted",
+          dragActive && "ring-2 ring-primary/60 bg-primary/5"
+        )}
       >
         <Input
           ref={inputRef}

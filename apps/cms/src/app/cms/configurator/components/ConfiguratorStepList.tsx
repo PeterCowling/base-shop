@@ -8,13 +8,12 @@ import {
   CircleIcon,
   ResetIcon,
 } from "@radix-ui/react-icons";
-import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 import { Tag } from "@ui/components/atoms";
 import type { ConfiguratorState } from "../../wizard/schema";
 import type { ConfiguratorStep } from "../types";
 import { stepTrackMeta } from "../steps";
 import { cn } from "@ui/utils/style";
-import { cloneElement, isValidElement, type ElementType } from "react";
+import { ButtonElement, CardRoot, CardSection } from "./DashboardPrimitives";
 
 interface Props {
   state: ConfiguratorState;
@@ -25,36 +24,6 @@ interface Props {
 }
 
 type TagVariant = "default" | "success" | "warning" | "destructive";
-
-const CardRoot: ElementType = Card ?? "div";
-const CardSection: ElementType = CardContent ?? "div";
-
-const isRealButton =
-  typeof Button === "function" &&
-  (Button as unknown as { $$typeof?: symbol }).$$typeof ===
-    Symbol.for("react.forward_ref");
-
-const ButtonElement = (props: any) => {
-  if (isRealButton) {
-    return <Button {...props} />;
-  }
-
-  const { asChild, children, className, variant: _variant, type, ...rest } =
-    props ?? {};
-
-  if (asChild && isValidElement(children)) {
-    return cloneElement(children, {
-      ...rest,
-      className: cn(children.props.className, className),
-    });
-  }
-
-  return (
-    <button {...rest} className={className} type={type ?? "button"}>
-      {children}
-    </button>
-  );
-};
 
 const statusCopy: Record<string, { label: string; variant: TagVariant }> = {
   complete: { label: "Complete", variant: "success" },

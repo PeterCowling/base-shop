@@ -39,6 +39,10 @@ export function scheduleStockChecks(
     intervalMs,
     history: [],
   };
+  if (existing?.status) {
+    status.history = [];
+    delete status.lastRun;
+  }
   status.intervalMs = intervalMs;
 
   const run = async () => {

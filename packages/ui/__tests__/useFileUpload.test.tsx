@@ -2,6 +2,17 @@ import { act, fireEvent, render, renderHook } from "@testing-library/react";
 import useFileUpload from "../src/hooks/useFileUpload";
 import { useImageOrientationValidation } from "../src/hooks/useImageOrientationValidation";
 
+function createShadcnStub() {
+  const React = require("react");
+  return {
+    Button: React.forwardRef((props: any, ref: any) => (
+      <button ref={ref} {...props} />
+    )),
+  };
+}
+
+jest.mock("@/components/atoms/shadcn", createShadcnStub);
+jest.mock("../src/components/atoms/shadcn", createShadcnStub);
 jest.mock("../src/hooks/useImageOrientationValidation");
 
 const originalFetch = global.fetch;

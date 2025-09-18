@@ -11,6 +11,7 @@ import type { ChangeEvent, DragEvent, ReactElement, RefObject } from "react";
 import { useCallback, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 
+import { Button } from "@/components/atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useImageOrientationValidation } from "./useImageOrientationValidation";
 
@@ -196,13 +197,13 @@ export function useFileUpload(
       />
 
       <p className="mb-2">Drag &amp; drop or</p>
-      <button
+      <Button
         type="button"
         onClick={openFileDialog}
-        className="bg-primary text-primary-fg rounded px-3 py-1"
+        className="h-auto px-3 py-1 text-sm"
       >
         Browse…
-      </button>
+      </Button>
 
       <div id={feedbackId} role="status" aria-live="polite">
         {pendingFile && (

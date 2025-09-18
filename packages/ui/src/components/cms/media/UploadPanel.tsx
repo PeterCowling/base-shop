@@ -2,7 +2,7 @@
 "use client";
 
 import Image from "next/image";
-import { Input } from "../../atoms/shadcn";
+import { Button, Input } from "@/components/atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 import { ChangeEvent, ReactElement, useEffect, useState } from "react";
@@ -143,10 +143,10 @@ export default function UploadPanel({
                   placeholder="Tags (comma separated)"
                   className="flex-1"
                 />
-                <button
+                <Button
                   onClick={handleUpload}
                   type="button"
-                  className="rounded bg-primary px-2 text-sm text-primary-fg"
+                  className="h-auto px-2 py-1 text-sm"
                   disabled={isUploading}
                 >
                   {isUploading ? (
@@ -159,7 +159,7 @@ export default function UploadPanel({
                   ) : (
                     "Upload"
                   )}
-                </button>
+                </Button>
               </div>
             )}
           </div>

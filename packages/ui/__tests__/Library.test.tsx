@@ -1,14 +1,22 @@
-jest.mock("@ui/components/atoms/shadcn", () => {
+function createShadcnStub() {
   const React = require("react");
   return {
     Input: (props: any) => <input {...props} />,
+    Button: ({ children, ...rest }: any) => (
+      <button type="button" {...rest}>
+        {children}
+      </button>
+    ),
     Select: ({ children, ...rest }: any) => <select {...rest}>{children}</select>,
     SelectTrigger: ({ children }: any) => <div>{children}</div>,
     SelectValue: ({ placeholder }: any) => <option>{placeholder}</option>,
     SelectContent: ({ children }: any) => <div>{children}</div>,
     SelectItem: ({ children, ...rest }: any) => <option {...rest}>{children}</option>,
   };
-});
+}
+
+jest.mock("@/components/atoms/shadcn", createShadcnStub);
+jest.mock("../src/components/atoms/shadcn", createShadcnStub);
 const mockMediaFileList = jest.fn(
   ({ files, onDelete, isItemSelected }: any) => (
     <div>

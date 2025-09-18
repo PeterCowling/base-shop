@@ -1,5 +1,7 @@
 import { jest } from "@jest/globals";
 
+import type { InventoryItem } from "../types/inventory";
+
 const checkAndAlert = jest.fn().mockResolvedValue([]);
 
 jest.mock("../stockAlert.server", () => ({
@@ -96,6 +98,40 @@ describe("scheduleStockChecks", () => {
     const status = getStockCheckStatus("shop");
     expect(status?.intervalMs).toBe(1000);
     expect(status?.lastRun).toBeDefined();
+    expect(status?.history).toHaveLength(1);
+    expect(status?.history[0].alerts).toBe(0);
+  });
+
+  it("ignores in-flight runs when rescheduling", async () => {
+    const { scheduleStockChecks, getStockCheckStatus } = await import(
+      "../stockScheduler.server"
+    );
+
+    let resolveFirstItems: ((items: InventoryItem[]) => void) | undefined;
+    const slowGetItems = jest
+      .fn()
+      .mockImplementation(
+        () =>
+          new Promise<InventoryItem[]>((resolve) => {
+            resolveFirstItems = resolve;
+          }),
+      );
+    const fastGetItems = jest.fn().mockResolvedValue([]);
+
+    scheduleStockChecks("shop", slowGetItems, 100);
+    jest.advanceTimersByTime(100); // kick off the first run without waiting for completion
+
+    scheduleStockChecks("shop", fastGetItems, 100);
+
+    resolveFirstItems?.([]);
+    await Promise.resolve();
+    await Promise.resolve();
+
+    await jest.advanceTimersByTimeAsync(100);
+
+    const status = getStockCheckStatus("shop");
+    expect(slowGetItems).toHaveBeenCalledTimes(1);
+    expect(fastGetItems).toHaveBeenCalledTimes(1);
     expect(status?.history).toHaveLength(1);
     expect(status?.history[0].alerts).toBe(0);
   });

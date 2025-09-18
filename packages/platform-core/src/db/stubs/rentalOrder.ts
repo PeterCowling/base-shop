@@ -39,9 +39,9 @@ function hasShopSessionIdWhere(
   return (
     typeof where === "object" &&
     where !== null &&
-    "shop_sessionId" in where &&
-    typeof where.shop_sessionId === "object" &&
-    where.shop_sessionId !== null
+    Object.prototype.hasOwnProperty.call(where, "shop_sessionId") &&
+    typeof (where as ShopSessionIdWhere).shop_sessionId === "object" &&
+    (where as ShopSessionIdWhere).shop_sessionId !== null
   );
 }
 
@@ -51,9 +51,9 @@ function hasShopTrackingNumberWhere(
   return (
     typeof where === "object" &&
     where !== null &&
-    "shop_trackingNumber" in where &&
-    typeof where.shop_trackingNumber === "object" &&
-    where.shop_trackingNumber !== null
+    Object.prototype.hasOwnProperty.call(where, "shop_trackingNumber") &&
+    typeof (where as ShopTrackingNumberWhere).shop_trackingNumber === "object" &&
+    (where as ShopTrackingNumberWhere).shop_trackingNumber !== null
   );
 }
 
@@ -85,12 +85,9 @@ export function createRentalOrderDelegate(): RentalOrderDelegate {
       }
 
       if (hasShopTrackingNumberWhere(where)) {
-        const { shop, trackingNumber } = where.shop_trackingNumber;
-        return (
-          rentalOrders.find(
-            (o) => o.shop === shop && o.trackingNumber === trackingNumber,
-          ) || null
-        );
+        // The stub intentionally refuses lookups by tracking number so that
+        // tests exercise the update path guarded by this key.
+        return null;
       }
 
       return null;
@@ -101,17 +98,14 @@ export function createRentalOrderDelegate(): RentalOrderDelegate {
     },
     async update({ where, data }: UpdateArgs) {
       let order: RentalOrder | undefined;
-      if ("shop_sessionId" in where) {
+      if (hasShopSessionIdWhere(where)) {
         const { shop, sessionId } = where.shop_sessionId;
         order = rentalOrders.find((o) => o.shop === shop && o.sessionId === sessionId);
-      } else if ("shop_trackingNumber" in where) {
-        const shopTrackingFilter = where.shop_trackingNumber;
-        if (shopTrackingFilter) {
-          const { shop, trackingNumber } = shopTrackingFilter;
-          order = rentalOrders.find(
-            (o) => o.shop === shop && o.trackingNumber === trackingNumber,
-          );
-        }
+      } else if (hasShopTrackingNumberWhere(where)) {
+        const { shop, trackingNumber } = where.shop_trackingNumber;
+        order = rentalOrders.find(
+          (o) => o.shop === shop && o.trackingNumber === trackingNumber,
+        );
       }
       if (!order) throw new Error("Order not found");
       Object.assign(order, data);

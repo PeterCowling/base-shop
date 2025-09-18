@@ -1,8 +1,19 @@
 // test/setupFetchPolyfill.ts   (new file at repo root)
 
-import fetch, { Headers, Request, Response } from "cross-fetch";
-import { webcrypto } from "node:crypto";
-import React from "react";
+type CrossFetchModule = typeof import("cross-fetch");
+
+const crossFetch = require("cross-fetch") as CrossFetchModule & {
+  default?: typeof globalThis.fetch;
+  fetch?: typeof globalThis.fetch;
+};
+
+const fetch: typeof globalThis.fetch =
+  crossFetch.default ??
+  crossFetch.fetch ??
+  (crossFetch as unknown as typeof globalThis.fetch);
+const { Headers, Request, Response } = crossFetch;
+const { webcrypto } = require("node:crypto") as typeof import("node:crypto");
+const React = require("react") as typeof import("react");
 
 const mutableEnv = process.env as Record<string, string>;
 mutableEnv.EMAIL_FROM ||= "test@example.com";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { configuratorStateSchema, type ConfiguratorState } from "../wizard/schema";
+import { configuratorStateSchema, type ConfiguratorState } from "../../wizard/schema";
 import type { ConfiguratorStep } from "../types";
 import { useConfiguratorPersistence } from "./useConfiguratorPersistence";
 import { useLaunchShop, type LaunchStepStatus } from "./useLaunchShop";

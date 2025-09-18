@@ -1,4 +1,4 @@
-import { dirname, join } from "path";
+import { dirname, join, isAbsolute } from "path";
 import { genSecret } from "@acme/shared-utils";
 import type { DeployShopResult } from "./deployTypes";
 import {
@@ -25,14 +25,60 @@ export function deployShopImpl(
   try {
     adapter.scaffold(newApp);
     const envRel = join(newApp, ".env");
-    const envAbs = join(repoRoot(), envRel);
-    const envSrc = fileExists(envAbs) ? envAbs : envRel;
+    const candidateRoots = new Set<string>();
+    const addRoot = (root?: string) => {
+      if (!root) return;
+      const normalized = isAbsolute(root)
+        ? root
+        : join(process.cwd(), root);
+      try {
+        if (fileExists(join(normalized, "apps"))) {
+          candidateRoots.add(normalized);
+        }
+      } catch {
+        /* ignore probe failures */
+      }
+    };
 
+    addRoot(repoRoot());
+    let current = process.cwd();
+    while (true) {
+      addRoot(current);
+      const parent = dirname(current);
+      if (parent === current) break;
+      current = parent;
+    }
+
+    const rootCandidates = Array.from(candidateRoots).map((root) =>
+      join(root, envRel)
+    );
+    const readCandidates = [
+      ...rootCandidates,
+      join(process.cwd(), envRel),
+      envRel,
+    ];
+
+    let envSrc: string | undefined;
     let env = "";
-    try {
-      env = readFile(envSrc);
-    } catch {
-      /* no existing env file */
+    for (const candidate of readCandidates) {
+      try {
+        if (fileExists(candidate)) {
+          env = readFile(candidate);
+          envSrc = candidate;
+          break;
+        }
+      } catch {
+        /* ignore read errors */
+      }
+    }
+    envSrc ??= readCandidates[0];
+    if (!envSrc) envSrc = envRel;
+    if (!env) {
+      try {
+        env = readFile(envSrc);
+      } catch {
+        env = "";
+      }
     }
 
     const secret = `SESSION_SECRET=${genSecret(32)}`;
@@ -42,11 +88,13 @@ export function deployShopImpl(
       env += (env.endsWith("\n") ? "" : "\n") + secret + "\n";
     }
 
-    // Write both the repo-absolute path and a path resolved from the current
-    // working directory. Some test environments mock `fs` with a different
-    // notion of CWD, so attempt both to ensure the secret persists.
-    const cwdPath = join(process.cwd(), envRel);
-    for (const p of new Set([envAbs, cwdPath, envSrc])) {
+    const writeTargets = new Set<string>([
+      ...rootCandidates,
+      join(process.cwd(), envRel),
+      envRel,
+      envSrc,
+    ]);
+    for (const p of writeTargets) {
       try {
         ensureDir(dirname(p));
         writeFile(p, env);

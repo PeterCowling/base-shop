@@ -83,12 +83,8 @@ const rawEnv: NodeJS.ProcessEnv = {
 const parsed = emailEnvSchema.safeParse(rawEnv);
 
 if (!parsed.success) {
-  if (!isTest) {
-    console.error(
-      "❌ Invalid email environment variables:",
-      parsed.error.format()
-    );
-  }
+  const formattedError = parsed.error.format();
+  console.error("❌ Invalid email environment variables:", formattedError);
   throw new Error("Invalid email environment variables");
 }
 

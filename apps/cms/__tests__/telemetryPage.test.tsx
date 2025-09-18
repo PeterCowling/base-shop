@@ -18,10 +18,8 @@ jest.mock("@acme/ui", () => ({
     open ? <div role="status">{message}</div> : null,
 }));
 
-import {
-  TelemetryAnalyticsView,
-  filterTelemetryEvents,
-} from "../src/app/cms/telemetry/page";
+import { TelemetryAnalyticsView } from "../src/app/cms/telemetry/page";
+import { filterTelemetryEvents } from "../src/app/cms/telemetry/telemetryUtils";
 
 function createEvent(partial: Partial<TelemetryEvent> = {}): TelemetryEvent {
   return {

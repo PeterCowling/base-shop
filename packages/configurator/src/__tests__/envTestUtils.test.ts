@@ -30,6 +30,16 @@ describe('withEnv', () => {
     expect(process.env[KEY]).toBe('original');
   });
 
+  it('isolates unspecified environment variables', async () => {
+    process.env[KEY] = 'original';
+
+    await withEnv({}, async () => {
+      expect(process.env[KEY]).toBeUndefined();
+    });
+
+    expect(process.env[KEY]).toBe('original');
+  });
+
   it('restores environment variables after errors', async () => {
     process.env[KEY] = 'original';
     const error = new Error('boom');

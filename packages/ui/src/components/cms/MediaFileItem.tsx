@@ -1,35 +1,16 @@
 // packages/ui/components/cms/MediaFileItem.tsx
 "use client";
 
-import type { ApiError, MediaItem } from "@acme/types";
+import type { MediaItem } from "@acme/types";
 import type { CheckedState } from "@radix-ui/react-checkbox";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
-import {
-  KeyboardEvent,
-  ReactElement,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { KeyboardEvent, ReactElement, useMemo, useRef } from "react";
 
-import {
-  Button,
-  Card,
-  CardContent,
-  Checkbox,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  Progress,
-  Tag,
-} from "../atoms/shadcn";
-import { Spinner } from "../atoms";
+import { Card, CardContent, Tag } from "../atoms/shadcn";
 import { cn } from "../../utils/style";
+
+import { MediaFileActions } from "./MediaFileActions";
+import { MediaFilePreview } from "./MediaFilePreview";
+import { useMediaReplacement } from "./useMediaReplacement";
 
 interface Props {
   /**
@@ -53,7 +34,16 @@ interface Props {
   onReplaceError?: (message: string) => void;
 }
 
-type UploadTimer = ReturnType<typeof setInterval> | undefined;
+type FileSizeCandidate = MediaItem & { size?: unknown; fileSize?: unknown; sizeLabel?: unknown };
+
+type FlaggedMediaItem = MediaItem & { isRecent?: boolean; flags?: string[] };
+
+type ProgressMediaItem = MediaItem & {
+  replaceProgress?: number;
+  progress?: number;
+  status?: string;
+  isReplacing?: boolean;
+};
 
 function formatFileSize(value: unknown): string | null {
   if (typeof value === "number" && Number.isFinite(value)) {
@@ -72,7 +62,7 @@ function formatFileSize(value: unknown): string | null {
 
 export default function MediaFileItem({
   item,
-  shop: _shop,
+  shop: shopSlug,
   onDelete,
   onReplace,
   onSelect,
@@ -85,11 +75,7 @@ export default function MediaFileItem({
   onReplaceSuccess,
   onReplaceError,
 }: Props): ReactElement {
-  const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploadError, setUploadError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const progressTimer = useRef<UploadTimer>(undefined);
 
   const name = useMemo(() => {
     try {
@@ -101,39 +87,55 @@ export default function MediaFileItem({
 
   const previewAlt = item.altText || item.alt || item.title || name;
   const tags = Array.isArray(item.tags) ? item.tags : [];
+
   const fileSize = useMemo(() => {
-    if ("size" in item) return formatFileSize((item as MediaItem & { size?: unknown }).size);
-    if ("fileSize" in item)
-      return formatFileSize((item as MediaItem & { fileSize?: unknown }).fileSize);
-    if ("sizeLabel" in item)
-      return formatFileSize((item as MediaItem & { sizeLabel?: unknown }).sizeLabel);
+    const candidate = item as FileSizeCandidate;
+    if ("size" in candidate) return formatFileSize(candidate.size);
+    if ("fileSize" in candidate) return formatFileSize(candidate.fileSize);
+    if ("sizeLabel" in candidate) return formatFileSize(candidate.sizeLabel);
     return null;
   }, [item]);
 
   const isRecent = useMemo(() => {
-    if ((item as MediaItem & { isRecent?: boolean }).isRecent) return true;
-    if (Array.isArray((item as MediaItem & { flags?: string[] }).flags)) {
-      return ((item as MediaItem & { flags?: string[] }).flags ?? []).some(
-        (flag) => flag?.toLowerCase?.() === "recent"
-      );
+    const flagged = item as FlaggedMediaItem;
+    if (flagged.isRecent) return true;
+    if (Array.isArray(flagged.flags)) {
+      return (flagged.flags ?? []).some((flag) => flag?.toLowerCase?.() === "recent");
     }
     return tags.some((tag) => tag?.toLowerCase?.() === "recent");
   }, [item, tags]);
 
   const externalProgress = useMemo(() => {
-    if (typeof (item as MediaItem & { replaceProgress?: number }).replaceProgress === "number") {
-      return (item as MediaItem & { replaceProgress?: number }).replaceProgress;
+    const progressItem = item as ProgressMediaItem;
+    if (typeof progressItem.replaceProgress === "number") {
+      return progressItem.replaceProgress;
     }
-    if (typeof (item as MediaItem & { progress?: number }).progress === "number") {
-      return (item as MediaItem & { progress?: number }).progress;
+    if (typeof progressItem.progress === "number") {
+      return progressItem.progress;
     }
     return undefined;
   }, [item]);
 
   const externalReplacing = Boolean(
-    (item as MediaItem & { status?: string }).status === "replacing" ||
-      (item as MediaItem & { isReplacing?: boolean }).isReplacing
+    (item as ProgressMediaItem).status === "replacing" || (item as ProgressMediaItem).isReplacing
   );
+
+  const {
+    uploading,
+    uploadProgress,
+    uploadError,
+    handleFileChange,
+  } = useMediaReplacement({
+    item,
+    shop: shopSlug,
+    disabled,
+    previewAlt,
+    tags,
+    onDelete,
+    onReplace,
+    onReplaceSuccess,
+    onReplaceError,
+  });
 
   const showReplacementOverlay = uploading || externalReplacing || replacing;
   const actionsDisabled = disabled || deleting || showReplacementOverlay;
@@ -159,112 +161,35 @@ export default function MediaFileItem({
     }
   };
 
-  const clearTimer = () => {
-    if (progressTimer.current) {
-      clearInterval(progressTimer.current);
-      progressTimer.current = undefined;
-    }
-  };
-
-  useEffect(() => clearTimer, []);
-
-  const beginUploadProgress = () => {
-    clearTimer();
-    setUploadProgress(4);
-    progressTimer.current = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 90) return prev;
-        return prev + 6;
-      });
-    }, 300);
-  };
-
-  const finishUploadProgress = () => {
-    clearTimer();
-    setUploadProgress(100);
-  };
-
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (disabled) {
-      event.target.value = "";
-      return;
-    }
-    const file = event.target.files?.[0];
-    event.target.value = "";
-    if (!file) return;
-
-    setUploadError(null);
-    setUploading(true);
-    beginUploadProgress();
-    let errorMessage: string | null = null;
-    try {
-      const fd = new FormData();
-      fd.append("file", file);
-      if (previewAlt) fd.append("altText", previewAlt);
-      if (tags.length > 0) fd.append("tags", JSON.stringify(tags));
-
-      const response = await fetch(`/cms/api/media?shop=${_shop}`, {
-        method: "POST",
-        body: fd,
-      });
-      const data = (await response.json()) as MediaItem | ApiError;
-      if (!response.ok || "error" in data) {
-        throw new Error("Failed to upload replacement");
-      }
-      finishUploadProgress();
-      await onDelete(item.url);
-      onReplace(item.url, data);
-      onReplaceSuccess?.(data);
-    } catch (error) {
-      clearTimer();
-      setUploadProgress(0);
-      errorMessage = (error as Error).message ?? "Replacement failed";
-      setUploadError(errorMessage);
-      if (errorMessage) onReplaceError?.(errorMessage);
-    } finally {
-      const delay = errorMessage ? 2000 : 400;
-      setTimeout(() => {
-        setUploading(false);
-        setUploadProgress(0);
-        if (errorMessage) setUploadError(null);
-      }, delay);
-    }
-  };
-
   const handleBulkToggle = (checked: CheckedState) => {
     if (actionsDisabled) return;
     onBulkToggle?.(item, checked === true || checked === "indeterminate");
   };
 
-  const handleOpenDetails = (event?: React.MouseEvent) => {
-    event?.stopPropagation();
+  const handleOpenDetails = () => {
     if (actionsDisabled) return;
     onSelect?.(item);
   };
 
-  const handleReplaceRequest = (event?: React.MouseEvent) => {
-    event?.stopPropagation();
+  const handleSelectAction = () => {
+    if (actionsDisabled) return;
+    onSelect?.(item);
+  };
+
+  const handleReplaceRequest = () => {
     if (actionsDisabled) return;
     fileInputRef.current?.click();
+  };
+
+  const handleDeleteRequest = () => {
+    if (actionsDisabled || deleteInProgress) return;
+    onDelete(item.url);
   };
 
   const previewLabel =
     item.type === "video"
       ? `Video preview for ${previewAlt || name}`
       : `Image preview for ${previewAlt || name}`;
-
-  const renderLoadingContent = (label: string, loading: boolean, status?: string) => {
-    if (!loading) return label;
-    const srText = status ?? `${label}…`;
-    return (
-      <>
-        <Spinner className="h-4 w-4" aria-hidden="true" />
-        <span className="sr-only">{srText}</span>
-      </>
-    );
-  };
 
   const statusMessage = deleteInProgress ? "Deleting media…" : "Replacing media…";
   const actionsLoading = deleteInProgress || replaceInProgress;
@@ -279,178 +204,36 @@ export default function MediaFileItem({
       data-deleting={deleting || undefined}
       data-replacing={showReplacementOverlay || undefined}
     >
-      <div className="relative">
-        <div
-          role={onSelect ? "button" : undefined}
-          tabIndex={onSelect && !actionsDisabled ? 0 : undefined}
-          onClick={onSelect && !actionsDisabled ? handleSelect : undefined}
-          onKeyDown={handlePreviewKeyDown}
-          className="relative aspect-[4/3] w-full overflow-hidden"
-          aria-disabled={actionsDisabled || undefined}
-        >
-          {item.type === "video" ? (
-            <video
-              src={item.url}
-              className="h-full w-full object-cover"
-              muted
-              loop
-              playsInline
-              aria-label={previewLabel}
-            />
-          ) : (
-            <Image
-              src={item.url}
-              alt={previewAlt || name}
-              aria-label={previewLabel}
-              fill
-              sizes="(min-width: 768px) 25vw, 50vw"
-              className="object-cover"
-            />
-          )}
-
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
-            aria-hidden
-          />
-
-          {isRecent ? (
-            <div className="absolute left-3 top-3 z-20">
-              <Tag variant="success">Recent</Tag>
-            </div>
-          ) : null}
-
-          {selectionEnabled ? (
-            <div
-              className="absolute left-3 top-3 z-20"
-              onClick={(event) => event.stopPropagation()}
-            >
-              <Checkbox
-                checked={selected}
-                onCheckedChange={handleBulkToggle}
-                aria-label={selected ? "Deselect media" : "Select media"}
-                disabled={actionsDisabled}
-              />
-            </div>
-          ) : null}
-
-          <div className="absolute right-3 top-3 z-20 flex items-center gap-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="h-9 w-9 rounded-full p-0 flex items-center justify-center"
-                  aria-label="Media actions"
-                  onClick={(event) => event.stopPropagation()}
-                  disabled={actionsDisabled}
-                >
-                  {actionsLoading ? (
-                    renderLoadingContent("Actions", true, statusMessage)
-                  ) : (
-                    <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
-                  )}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                {onSelect ? (
-                  <DropdownMenuItem
-                    onSelect={() => {
-                      if (!actionsDisabled) onSelect(item);
-                    }}
-                    disabled={actionsDisabled}
-                  >
-                    View details
-                  </DropdownMenuItem>
-                ) : null}
-                <DropdownMenuItem
-                  onSelect={() => handleReplaceRequest()}
-                  disabled={actionsDisabled}
-                  aria-label="Replace media"
-                  className="flex items-center gap-2"
-                >
-                  {renderLoadingContent("Replace", replaceInProgress, "Replacing media…")}
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onSelect={() => {
-                    if (deleteInProgress) return;
-                    if (!actionsDisabled) onDelete(item.url);
-                  }}
-                  disabled={actionsDisabled}
-                  aria-label="Delete media"
-                  className="flex items-center gap-2"
-                >
-                  {renderLoadingContent("Delete", deleteInProgress, "Deleting media…")}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          <div className="absolute inset-x-3 bottom-3 z-20 flex items-center justify-between gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
-            {onSelect ? (
-              <Button
-                type="button"
-                variant="outline"
-                className="h-9 flex-1 rounded-md text-sm flex items-center justify-center gap-2"
-                onClick={handleOpenDetails}
-                disabled={actionsDisabled}
-                aria-label="Open details"
-              >
-                {renderLoadingContent("Open details", actionsLoading, statusMessage)}
-              </Button>
-            ) : null}
-            {onSelect ? (
-              <Button
-                type="button"
-                variant="ghost"
-                className="h-9 rounded-md px-3 text-sm flex items-center justify-center gap-2"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  if (actionsDisabled) return;
-                  onSelect(item);
-                }}
-                disabled={actionsDisabled}
-                aria-label="Select media"
-              >
-                {renderLoadingContent("Select", actionsLoading, statusMessage)}
-              </Button>
-            ) : null}
-          </div>
-
-          {showReplacementOverlay ? (
-            <div
-              className="bg-background/90 text-center absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 p-4 backdrop-blur"
-              data-token="--color-bg"
-            >
-              <Progress
-                value={progressValue ?? 15}
-                label={progressValue ? `${Math.round(progressValue)}%` : undefined}
-                className="w-4/5 max-w-[200px]"
-              />
-              <p className="text-sm font-medium" data-token="--color-fg">
-                Replacing asset...
-              </p>
-              {uploadError ? (
-                <p className="text-xs text-danger" data-token="--color-danger">
-                  {uploadError}
-                </p>
-              ) : null}
-            </div>
-          ) : null}
-
-          {deleting && !showReplacementOverlay ? (
-            <div
-              className="bg-background/90 text-center absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 p-4 backdrop-blur"
-              data-token="--color-bg"
-            >
-              <p className="text-sm font-medium" data-token="--color-fg">
-                Deleting asset...
-              </p>
-            </div>
-          ) : null}
-        </div>
-      </div>
+      <MediaFilePreview
+        item={item}
+        name={name}
+        previewAlt={previewAlt}
+        previewLabel={previewLabel}
+        actionsDisabled={actionsDisabled}
+        onPreviewSelect={onSelect ? handleSelect : undefined}
+        onPreviewKeyDown={handlePreviewKeyDown}
+        isRecent={isRecent}
+        showReplacementOverlay={showReplacementOverlay}
+        deleting={deleting}
+        progressValue={progressValue}
+        uploadError={uploadError}
+      >
+        <MediaFileActions
+          actionsDisabled={actionsDisabled}
+          actionsLoading={actionsLoading}
+          deleteInProgress={deleteInProgress}
+          replaceInProgress={replaceInProgress}
+          statusMessage={statusMessage}
+          selectionEnabled={selectionEnabled}
+          selected={selected}
+          onBulkToggle={handleBulkToggle}
+          onOpenDetails={onSelect ? handleOpenDetails : undefined}
+          onSelectItem={onSelect ? handleSelectAction : undefined}
+          onViewDetails={onSelect ? handleOpenDetails : undefined}
+          onReplaceRequest={handleReplaceRequest}
+          onDeleteRequest={handleDeleteRequest}
+        />
+      </MediaFilePreview>
 
       <CardContent className="flex flex-1 flex-col gap-2 border-t bg-muted/30 p-4" data-token="--color-muted">
         <div className="flex items-start justify-between gap-3">

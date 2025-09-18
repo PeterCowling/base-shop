@@ -1,5 +1,16 @@
 import { act, fireEvent, render, renderHook } from "@testing-library/react";
 
+function createShadcnStub() {
+  const React = require("react");
+  return {
+    Button: React.forwardRef((props: any, ref: any) => (
+      <button ref={ref} {...props} />
+    )),
+  };
+}
+
+jest.mock("@/components/atoms/shadcn", createShadcnStub);
+
 jest.mock("../useImageOrientationValidation.ts", () => ({
   useImageOrientationValidation: jest.fn(),
 }));

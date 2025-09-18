@@ -1,7 +1,8 @@
 jest.mock("@cms/actions/media.server", () => ({
   deleteMedia: jest.fn(),
 }));
-jest.mock("@ui/components/atoms/shadcn", () => {
+
+function createShadcnStub() {
   const React = require("react");
   const passthrough = (tag = "div") =>
     React.forwardRef(({ asChild: _asChild, ...props }: any, ref: any) =>
@@ -69,7 +70,10 @@ jest.mock("@ui/components/atoms/shadcn", () => {
     DialogDescription: ({ children }: any) => <div>{children}</div>,
     DialogFooter: ({ children }: any) => <div>{children}</div>,
   };
-});
+}
+
+jest.mock("@/components/atoms/shadcn", createShadcnStub);
+jest.mock("../src/components/atoms/shadcn", createShadcnStub);
 import { deleteMedia } from "@cms/actions/media.server";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";
@@ -110,7 +114,7 @@ describe("MediaManager", () => {
         onMetadataUpdate={mockMetadataUpdate}
       />
     );
-    fireEvent.click(screen.getByText("Delete"));
+    fireEvent.click(screen.getAllByRole("menuitem", { name: "Delete" })[0]);
     await waitFor(() =>
       expect(mockDelete).toHaveBeenCalledWith("s", "/img.jpg")
     );
@@ -152,10 +156,10 @@ describe("MediaManager", () => {
         onMetadataUpdate={mockMetadataUpdate}
       />
     );
-    expect(screen.getAllByText("Delete")).toHaveLength(2);
+    expect(screen.getAllByRole("menuitem", { name: "Delete" })).toHaveLength(2);
     fireEvent.change(screen.getByPlaceholderText("Search media..."), {
       target: { value: "dog" },
     });
-    expect(screen.getAllByText("Delete")).toHaveLength(1);
+    expect(screen.getAllByRole("menuitem", { name: "Delete" })).toHaveLength(1);
   });
 });

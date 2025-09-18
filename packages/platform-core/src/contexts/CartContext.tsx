@@ -63,33 +63,40 @@ export function CartProvider({ children }: { children: ReactNode }) {
           /* noop */
         }
 
-        if (!cached) return;
-
         sync = async () => {
           try {
-            const cached = localStorage.getItem(STORAGE_KEY);
-            if (!cached) return;
-            const cart = JSON.parse(cached) as CartState;
-            const res = await fetch("/api/cart", {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                lines: Object.values(cart).map((line) => ({
-                  sku: { id: line.sku.id },
-                  qty: line.qty,
-                  size: line.size,
-                })),
-              }),
-            });
-            if (res.ok) {
-              const data = await res.json();
-              setState(data.cart as CartState);
-              localStorage.setItem(STORAGE_KEY, JSON.stringify(data.cart));
-              window.removeEventListener("online", sync!);
+            const cachedValue = localStorage.getItem(STORAGE_KEY);
+            if (cachedValue) {
+              const cart = JSON.parse(cachedValue) as CartState;
+              const res = await fetch("/api/cart", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  lines: Object.values(cart).map((line) => ({
+                    sku: { id: line.sku.id },
+                    qty: line.qty,
+                    size: line.size,
+                  })),
+                }),
+              });
+              if (res.ok) {
+                const data = await res.json();
+                setState(data.cart as CartState);
+                try {
+                  localStorage.setItem(STORAGE_KEY, JSON.stringify(data.cart));
+                } catch {
+                  /* noop */
+                }
+                window.removeEventListener("online", sync!);
+                return;
+              }
             }
           } catch (err) {
             console.error(err);
           }
+
+          window.removeEventListener("online", sync!);
+          await load();
         };
 
         window.addEventListener("online", sync);

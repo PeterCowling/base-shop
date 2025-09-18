@@ -339,17 +339,9 @@ function MediaManagerBase({
       }
 
       const itemWithUrl = item as MediaItemWithUrl;
-      let replaced = false;
-      setFiles((prev) => {
-        const next = prev.map((file) => {
-          if (file.url !== replacingUrl) return file;
-          replaced = true;
-          return { ...file, ...itemWithUrl } as MediaItemWithUrl;
-        });
-        return replaced ? next : prev;
-      });
+      const hasTarget = files.some((file) => file.url === replacingUrl);
 
-      if (!replaced) {
+      if (!hasTarget) {
         console.error(
           "Failed to locate media item to replace",
           replacingUrl
@@ -363,6 +355,14 @@ function MediaManagerBase({
         return;
       }
 
+      setFiles((prev) =>
+        prev.map((file) =>
+          file.url === replacingUrl
+            ? ({ ...file, ...itemWithUrl } as MediaItemWithUrl)
+            : file
+        )
+      );
+
       if (selectedUrl === replacingUrl) {
         setSelectedUrl(itemWithUrl.url);
       }
@@ -375,6 +375,7 @@ function MediaManagerBase({
       });
     },
     [
+      files,
       replacingUrl,
       selectedUrl,
       setFiles,
@@ -414,19 +415,19 @@ function MediaManagerBase({
         }
 
         const updatedWithUrl = updated as MediaItemWithUrl;
-        let replaced = false;
-        setFiles((prev) => {
-          const next = prev.map((file) => {
-            if (file.url !== currentUrl) return file;
-            replaced = true;
-            return { ...file, ...updatedWithUrl } as MediaItemWithUrl;
-          });
-          return replaced ? next : prev;
-        });
+        const hasTarget = files.some((file) => file.url === currentUrl);
 
-        if (!replaced) {
+        if (!hasTarget) {
           throw new Error("Media item could not be found in the current list");
         }
+
+        setFiles((prev) =>
+          prev.map((file) =>
+            file.url === currentUrl
+              ? ({ ...file, ...updatedWithUrl } as MediaItemWithUrl)
+              : file
+          )
+        );
 
         setSelectedUrl(updatedWithUrl.url);
         setToast({
@@ -446,6 +447,7 @@ function MediaManagerBase({
       }
     },
     [
+      files,
       onMetadataUpdate,
       selectedItem,
       setFiles,

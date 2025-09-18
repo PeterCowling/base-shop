@@ -73,7 +73,7 @@ export function loadShippingEnv(
 ): ShippingEnv {
   const parsed = shippingEnvSchema.safeParse(raw);
   if (!parsed.success) {
-    if (raw === process.env && process.env.NODE_ENV !== "test") {
+    if (process.env.NODE_ENV !== "test") {
       console.error(
         "❌ Invalid shipping environment variables:",
         parsed.error.format()

@@ -1,18 +1,12 @@
 import type { PricingMatrix } from "@acme/types";
-import { useCallback, useMemo, useState, type ChangeEvent, type FormEvent } from "react";
+import { useCallback, useMemo, useState, type FormEvent } from "react";
 
 import {
-  buildPricingFromForm,
-  type CoverageDraft,
-  type DamageDraft,
-  type DurationDraft,
   type PricingFormStatus,
   type PricingFormTab,
 } from "./pricingFormUtils";
-import { useCoverageRows } from "./useCoverageRows";
-import { useDamageRows } from "./useDamageRows";
-import { useDurationRows } from "./useDurationRows";
-import { usePricingJsonControls } from "./usePricingJsonControls";
+import { usePricingGridState } from "./usePricingGridState";
+import { usePricingJsonBridge } from "./usePricingJsonBridge";
 
 interface UsePricingFormStateArgs {
   initial: PricingMatrix;
@@ -20,76 +14,41 @@ interface UsePricingFormStateArgs {
   onToast: (message: string) => void;
 }
 
-interface DurationControls {
-  rows: DurationDraft[];
-  add: () => void;
-  remove: (id: string) => void;
-  update: (id: string, updates: Partial<Omit<DurationDraft, "id">>) => void;
-  getErrors: (id: string) => { minDays?: string; rate?: string };
-}
-
-interface DamageControls {
-  rows: DamageDraft[];
-  add: () => void;
-  remove: (id: string) => void;
-  update: (id: string, updates: Partial<Omit<DamageDraft, "id">>) => void;
-  getErrors: (id: string) => { code?: string; amount?: string };
-}
-
-interface CoverageControls {
-  rows: CoverageDraft[];
-  update: (code: CoverageDraft["code"], updates: Partial<Omit<CoverageDraft, "code">>) => void;
-  getErrors: (code: CoverageDraft["code"]) => { fee?: string; waiver?: string };
-}
-
-interface JsonControls {
-  draft: string;
-  onDraftChange: (event: ChangeEvent<HTMLTextAreaElement>) => void;
-  error: string | null;
-  applyJson: () => void;
-}
-
 export function usePricingFormState({ initial, shop, onToast }: UsePricingFormStateArgs) {
-  const [baseRate, setBaseRate] = useState(() => initial.baseDailyRate.toString());
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<PricingFormStatus>("idle");
   const [activeTab, setActiveTab] = useState<PricingFormTab>("guided");
 
   const {
-    rows: durationRows,
-    add: addDurationRow,
-    remove: removeDurationRow,
-    update: updateDurationRow,
-    hydrate: hydrateDurationRows,
-    getErrors: getDurationErrors,
-  } = useDurationRows({ initial: initial.durationDiscounts, fieldErrors });
+    drafts,
+    controls,
+    errors,
+    setFieldErrors,
+    clearFieldErrors,
+    hydrateFromMatrix,
+    getFormPricing,
+  } = usePricingGridState({ initial });
 
   const {
-    rows: damageRows,
-    add: addDamageRow,
-    remove: removeDamageRow,
-    update: updateDamageRow,
-    hydrate: hydrateDamageRows,
-    getErrors: getDamageErrors,
-  } = useDamageRows({ initial: initial.damageFees, fieldErrors });
-
-  const {
-    rows: coverageRows,
-    update: updateCoverageRow,
-    hydrate: hydrateCoverageRows,
-    getErrors: getCoverageErrors,
-  } = useCoverageRows({ initial: initial.coverage, fieldErrors });
-
-  const hydrateFromMatrix = useCallback(
-    (matrix: PricingMatrix) => {
-      setBaseRate(matrix.baseDailyRate.toString());
-      hydrateDurationRows(matrix.durationDiscounts);
-      hydrateDamageRows(matrix.damageFees);
-      hydrateCoverageRows(matrix.coverage);
-      setFieldErrors({});
-    },
-    [hydrateCoverageRows, hydrateDamageRows, hydrateDurationRows]
-  );
+    draft: jsonDraft,
+    error: jsonError,
+    setError: setJsonError,
+    onDraftChange,
+    applyJson,
+    parseDraft,
+    setDraftFromMatrix,
+    progressMessage,
+    fileInputRef,
+    handleImportClick,
+    handleFileChange,
+    handleExport,
+  } = usePricingJsonBridge({
+    initial,
+    onHydrate: hydrateFromMatrix,
+    onToast,
+    onValidationErrors: setFieldErrors,
+    setStatus,
+    getFormPricing,
+  });
 
   const statusLabel = useMemo(() => {
     switch (status) {
@@ -106,39 +65,6 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
 
   const statusVariant = status === "saved" ? "success" : status === "error" ? "destructive" : "default";
 
-  const getFormPricing = useCallback(
-    () =>
-      buildPricingFromForm({
-        baseRate,
-        durationRows,
-        damageRows,
-        coverageRows,
-      }),
-    [baseRate, coverageRows, damageRows, durationRows]
-  );
-
-  const {
-    draft: jsonDraft,
-    error: jsonError,
-    setError: setJsonError,
-    onDraftChange,
-    applyJson,
-    parseDraft,
-    setDraftFromMatrix,
-    progressMessage,
-    fileInputRef,
-    handleImportClick,
-    handleFileChange,
-    handleExport,
-  } = usePricingJsonControls({
-    initial,
-    onHydrate: hydrateFromMatrix,
-    onToast,
-    onValidationErrors: setFieldErrors,
-    setStatus,
-    getFormPricing,
-  });
-
   const handleTabChange = useCallback(
     (next: PricingFormTab) => {
       if (next === activeTab) return;
@@ -151,7 +77,8 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
           onToast("Resolve highlighted fields before viewing JSON.");
           return;
         }
-        setFieldErrors({});
+
+        clearFieldErrors();
         setDraftFromMatrix(result.data);
         setActiveTab("json");
         return;
@@ -172,6 +99,7 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
     },
     [
       activeTab,
+      clearFieldErrors,
       getFormPricing,
       hydrateFromMatrix,
       onToast,
@@ -182,10 +110,6 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
       setStatus,
     ]
   );
-
-  const onBaseRateChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setBaseRate(event.target.value);
-  }, []);
 
   const onSubmit = useCallback(
     async (event: FormEvent) => {
@@ -204,7 +128,7 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
         }
         pricing = parsed.data;
         hydrateFromMatrix(parsed.data);
-        setFieldErrors({});
+        clearFieldErrors();
         setDraftFromMatrix(parsed.data);
       } else {
         const result = getFormPricing();
@@ -215,7 +139,7 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
           return;
         }
         pricing = result.data;
-        setFieldErrors({});
+        clearFieldErrors();
         setDraftFromMatrix(result.data);
       }
 
@@ -230,7 +154,7 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
           throw new Error(body.error || "Failed to save pricing");
         }
         setStatus("saved");
-        setFieldErrors({});
+        clearFieldErrors();
         setJsonError(null);
         setDraftFromMatrix(pricing);
         onToast("Saved!");
@@ -241,6 +165,7 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
     },
     [
       activeTab,
+      clearFieldErrors,
       getFormPricing,
       hydrateFromMatrix,
       onToast,
@@ -253,53 +178,29 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
     ]
   );
 
-  const jsonControls: JsonControls = {
-    draft: jsonDraft,
-    onDraftChange,
-    error: jsonError,
-    applyJson,
-  };
-
-  const durationControls: DurationControls = {
-    rows: durationRows,
-    add: addDurationRow,
-    remove: removeDurationRow,
-    update: updateDurationRow,
-    getErrors: getDurationErrors,
-  };
-
-  const damageControls: DamageControls = {
-    rows: damageRows,
-    add: addDamageRow,
-    remove: removeDamageRow,
-    update: updateDamageRow,
-    getErrors: getDamageErrors,
-  };
-
-  const coverageControls: CoverageControls = {
-    rows: coverageRows,
-    update: updateCoverageRow,
-    getErrors: getCoverageErrors,
-  };
-
   return {
     refs: {
       fileInputRef,
     },
-    baseRate,
-    baseRateError: fieldErrors.baseDailyRate,
-    onBaseRateChange,
-    rootError: fieldErrors.root,
+    baseRate: drafts.baseRate,
+    baseRateError: errors.baseDailyRate,
+    onBaseRateChange: controls.onBaseRateChange,
+    rootError: errors.root,
     status,
     statusLabel,
     statusVariant,
     progressMessage,
     activeTab,
     handleTabChange,
-    json: jsonControls,
-    duration: durationControls,
-    damage: damageControls,
-    coverage: coverageControls,
+    json: {
+      draft: jsonDraft,
+      onDraftChange,
+      error: jsonError,
+      applyJson,
+    },
+    duration: controls.duration,
+    damage: controls.damage,
+    coverage: controls.coverage,
     handleFileChange,
     handleImportClick,
     handleExport,

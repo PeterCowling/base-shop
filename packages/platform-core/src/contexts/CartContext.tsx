@@ -53,15 +53,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
         throw new Error("Cart fetch failed");
       } catch (err) {
         console.error(err);
-        let cachedRaw: string | null = null;
-        try {
-          cachedRaw = localStorage.getItem(STORAGE_KEY);
-          if (cachedRaw) {
-            setState(JSON.parse(cachedRaw) as CartState);
-          }
-        } catch {
-          /* noop */
-        }
 
         sync = async () => {
           let synced = false;
@@ -115,6 +106,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
         };
 
         window.addEventListener("online", sync);
+
+        let cachedRaw: string | null = null;
+        try {
+          cachedRaw = localStorage.getItem(STORAGE_KEY);
+          if (cachedRaw) {
+            setState(JSON.parse(cachedRaw) as CartState);
+          }
+        } catch {
+          /* noop */
+        }
 
         if (!cachedRaw) return;
       }

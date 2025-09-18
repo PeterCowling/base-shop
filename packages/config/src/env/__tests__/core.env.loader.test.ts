@@ -73,7 +73,11 @@ describe("core env loader", () => {
   describe("proxy delegates to getCoreEnv", () => {
     const setup = async () => {
       const loadCoreEnv = jest.fn(() => baseEnv as any);
-      jest.doMock("../core.js", () => ({ loadCoreEnv }));
+      jest.resetModules();
+      jest.doMock("../core.js", () => {
+        const actual = jest.requireActual("../core.ts");
+        return { ...actual, loadCoreEnv };
+      });
       process.env.NODE_ENV = "production";
       const mod = await import("../core.ts");
       return { coreEnv: mod.coreEnv, loadCoreEnv };

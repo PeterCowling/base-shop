@@ -17,16 +17,21 @@ const prodBase = {
   CART_COOKIE_SECRET: 'cart',
   NEXTAUTH_SECRET: NEXT,
   SESSION_SECRET: SESSION,
+  EMAIL_FROM: 'from@example.com',
   ...CMS,
 } as const;
 
 // NODE_ENV defaults affecting CART_COOKIE_SECRET and EMAIL_PROVIDER
 describe('environment specific defaults', () => {
-  const base = { NEXTAUTH_SECRET: NEXT, SESSION_SECRET: SESSION } as const;
+  const base = {
+    NEXTAUTH_SECRET: NEXT,
+    SESSION_SECRET: SESSION,
+    EMAIL_FROM: 'from@example.com',
+  } as const;
 
   it.each([
-    [{ NODE_ENV: 'development', ...base }, 'dev-cart-secret', 'noop'],
-    [{ NODE_ENV: 'test', ...base }, 'dev-cart-secret', 'noop'],
+    [{ NODE_ENV: 'development', ...base }, 'dev-cart-secret', 'smtp'],
+    [{ NODE_ENV: 'test', ...base }, 'dev-cart-secret', 'smtp'],
   ])('defaults applied for %j', async (env, cartSecret, provider) =>
     withEnv(env as any, async () => {
       const { loadCoreEnv } = await import('../core.ts');
@@ -45,8 +50,9 @@ describe('environment specific defaults', () => {
 
   it('fails without CART_COOKIE_SECRET in production', async () =>
     withEnv({ ...prodBase, CART_COOKIE_SECRET: undefined } as any, async () => {
-      const { loadCoreEnv } = await import('../core.ts');
-      expect(() => loadCoreEnv()).toThrow('Invalid core environment variables');
+      await expect(import('../core.ts')).rejects.toThrow(
+        'Invalid core environment variables',
+      );
     }));
 });
 
@@ -60,13 +66,16 @@ describe.each([
   const env = { ...prodBase, [key]: value } as Record<string, string>;
   it(valid ? 'accepts numeric value' : 'rejects invalid number', async () =>
     withEnv(env, async () => {
-      const { loadCoreEnv } = await import('../core.ts');
-      if (valid) {
-        const cfg = loadCoreEnv();
-        expect(typeof (cfg as any)[key]).toBe('number');
-      } else {
-        expect(() => loadCoreEnv()).toThrow('Invalid core environment variables');
+      if (!valid) {
+        await expect(import('../core.ts')).rejects.toThrow(
+          'Invalid core environment variables',
+        );
+        return;
       }
+
+      const { loadCoreEnv } = await import('../core.ts');
+      const cfg = loadCoreEnv();
+      expect(typeof (cfg as any)[key]).toBe('number');
     }));
 });
 

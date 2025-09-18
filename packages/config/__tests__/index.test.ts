@@ -20,6 +20,7 @@ describe("config package entry", () => {
         CMS_ACCESS_TOKEN: "token",
         SANITY_API_VERSION: "2023-01-01",
         NODE_ENV: "production",
+        EMAIL_FROM: "from@example.com",
       },
       async () => {
         const { env } = await import("../src/index");
@@ -43,4 +44,3 @@ describe("config package entry", () => {
     );
   });
 });
-

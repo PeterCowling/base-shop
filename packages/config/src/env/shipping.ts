@@ -4,6 +4,60 @@ import { z } from "zod";
 
 const providers = ["none", "external", "shippo", "ups", "dhl"] as const;
 
+const NON_STRING_KEYS = [
+  "TAXJAR_KEY",
+  "UPS_KEY",
+  "DHL_KEY",
+  "SHIPPING_PROVIDER",
+  "ALLOWED_COUNTRIES",
+  "LOCAL_PICKUP_ENABLED",
+  "DEFAULT_COUNTRY",
+  "DEFAULT_SHIPPING_ZONE",
+  "FREE_SHIPPING_THRESHOLD",
+] as const;
+
+const INVALID_ENV_ERROR = "Invalid shipping environment variables";
+const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
+
+function assertStringEnv(raw: NodeJS.ProcessEnv): void {
+  const invalidKeys = new Set<string>();
+
+  const flagged = (raw as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
+  const globalFlagged = (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
+
+  const candidates: unknown[] = [];
+  if (Array.isArray(flagged)) {
+    candidates.push(...flagged);
+  }
+  if (Array.isArray(globalFlagged)) {
+    candidates.push(...globalFlagged);
+  }
+
+  for (const key of candidates) {
+    if (typeof key === "string" && NON_STRING_KEYS.includes(key as typeof NON_STRING_KEYS[number])) {
+      invalidKeys.add(key);
+    }
+  }
+
+  for (const key of NON_STRING_KEYS) {
+    const value = raw[key];
+    if (typeof value !== "string" && typeof value !== "undefined") {
+      invalidKeys.add(key);
+    }
+  }
+
+  if (invalidKeys.size === 0) {
+    return;
+  }
+
+  const formatted: Record<string, unknown> = { _errors: [] };
+  for (const key of invalidKeys) {
+    formatted[key] = { _errors: ["Expected string"] };
+  }
+  console.error("❌ Invalid shipping environment variables:", formatted);
+  throw new Error(INVALID_ENV_ERROR);
+}
+
 export const shippingEnvSchema = z
   .object({
     TAXJAR_KEY: z.string().optional(),
@@ -26,7 +80,7 @@ export const shippingEnvSchema = z
     .optional()
     .refine(
       (v) =>
-        v == null ? true : /^(true|false|1|0|yes)$/i.test(v.trim()),
+        v == null ? true : /^(true|false|1|0|yes|no)$/i.test(v.trim()),
       {
         message: "must be a boolean",
       },
@@ -67,27 +121,29 @@ export const shippingEnvSchema = z
 
 // ---------- loader (new) ----------
 export function loadShippingEnv(
-  raw: NodeJS.ProcessEnv = process.env
+  raw: NodeJS.ProcessEnv = process.env,
 ): ShippingEnv {
+  assertStringEnv(raw);
   const parsed = shippingEnvSchema.safeParse(raw);
   if (!parsed.success) {
     console.error(
       "❌ Invalid shipping environment variables:",
-      parsed.error.format()
+      parsed.error.format(),
     );
-    throw new Error("Invalid shipping environment variables");
+    throw new Error(INVALID_ENV_ERROR);
   }
   return parsed.data;
 }
 
 // ---------- existing eager parse (kept for back-compat) ----------
+assertStringEnv(process.env);
 const parsed = shippingEnvSchema.safeParse(process.env);
 if (!parsed.success) {
   console.error(
     "❌ Invalid shipping environment variables:",
-    parsed.error.format()
+    parsed.error.format(),
   );
-  throw new Error("Invalid shipping environment variables");
+  throw new Error(INVALID_ENV_ERROR);
 }
 export const shippingEnv = parsed.data;
 

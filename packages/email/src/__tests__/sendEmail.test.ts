@@ -2,11 +2,32 @@
 
 describe("sendEmail", () => {
   const OLD_ENV = process.env;
+  const ORIGINAL_GMAIL_USER = process.env.GMAIL_USER;
+  const ORIGINAL_GMAIL_PASS = process.env.GMAIL_PASS;
+  const ORIGINAL_EMAIL_LOG_LEVEL = process.env.EMAIL_LOG_LEVEL;
 
   afterEach(() => {
     jest.resetModules();
     jest.clearAllMocks();
+    delete process.env.GMAIL_USER;
+    delete process.env.GMAIL_PASS;
+    delete process.env.EMAIL_LOG_LEVEL;
     process.env = OLD_ENV;
+    if (typeof ORIGINAL_GMAIL_USER === "string") {
+      process.env.GMAIL_USER = ORIGINAL_GMAIL_USER;
+    } else {
+      delete process.env.GMAIL_USER;
+    }
+    if (typeof ORIGINAL_GMAIL_PASS === "string") {
+      process.env.GMAIL_PASS = ORIGINAL_GMAIL_PASS;
+    } else {
+      delete process.env.GMAIL_PASS;
+    }
+    if (typeof ORIGINAL_EMAIL_LOG_LEVEL === "string") {
+      process.env.EMAIL_LOG_LEVEL = ORIGINAL_EMAIL_LOG_LEVEL;
+    } else {
+      delete process.env.EMAIL_LOG_LEVEL;
+    }
   });
 
   it("sends email via nodemailer when credentials exist", async () => {

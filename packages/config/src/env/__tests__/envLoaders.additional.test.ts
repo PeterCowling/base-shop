@@ -63,7 +63,7 @@ describe('email env extras', () => {
       SMTP_SECURE: 'yes',
     } as any, async () => {
       const mod = await import('../email.ts');
-      expect(mod.emailEnv.EMAIL_PROVIDER).toBe('noop');
+      expect(mod.emailEnv.EMAIL_PROVIDER).toBe('smtp');
       expect(mod.emailEnv.SMTP_PORT).toBe(2525);
       expect(mod.emailEnv.SMTP_SECURE).toBe(true);
     });
@@ -135,4 +135,3 @@ describe('cms env extras', () => {
     });
   });
 });
-

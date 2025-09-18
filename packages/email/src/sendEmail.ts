@@ -6,23 +6,57 @@ import pino from "pino";
 import { z } from "zod";
 import { getDefaultSender } from "./config";
 
-const user = process.env.GMAIL_USER;
-const pass = process.env.GMAIL_PASS;
-const hasCreds = user && pass;
+type Transporter = nodemailer.Transporter | null;
 
-const transporter = hasCreds
-  ? nodemailer.createTransport({
+let cachedTransporter: Transporter = null;
+let cachedCredsKey: string | null = null;
+let cachedLogger: pino.Logger | null = null;
+let cachedLoggerLevel: string | undefined;
+
+function resolveCredentials(): { user: string; pass: string } | null {
+  const user = process.env.GMAIL_USER?.trim();
+  const pass = process.env.GMAIL_PASS?.trim();
+  if (!user || !pass) {
+    cachedTransporter = null;
+    cachedCredsKey = null;
+    return null;
+  }
+  return { user, pass };
+}
+
+function getTransporter(): Transporter {
+  const creds = resolveCredentials();
+  if (!creds) {
+    return null;
+  }
+
+  const key = `${creds.user}:${creds.pass}`;
+  if (!cachedTransporter || cachedCredsKey !== key) {
+    cachedTransporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user,
-        pass,
+        user: creds.user,
+        pass: creds.pass,
       },
-    })
-  : null;
+    });
+    cachedCredsKey = key;
+  }
 
-const logger = pino({
-  level: process.env.EMAIL_LOG_LEVEL ?? "silent",
-});
+  return cachedTransporter;
+}
+
+function getLogger(): pino.Logger {
+  const level = process.env.EMAIL_LOG_LEVEL ?? "silent";
+  if (!cachedLogger || cachedLoggerLevel !== level) {
+    cachedLogger = pino({ level });
+    cachedLoggerLevel = level;
+  }
+  return cachedLogger;
+}
+
+// Initialize transporter once at module load so credentialed environments
+// behave consistently with legacy eager instantiation.
+getTransporter();
 
 const emailSchema = z.object({
   to: z.string().email({ message: "Invalid recipient email address" }),
@@ -39,6 +73,7 @@ export async function sendEmail(
 ): Promise<string | undefined> {
   const validated = emailSchema.parse({ to, subject, body, attachments });
 
+  const transporter = getTransporter();
   if (transporter) {
     try {
       const info = await transporter.sendMail({
@@ -54,7 +89,7 @@ export async function sendEmail(
       throw error;
     }
   } else {
-    logger.info({ to: validated.to }, "Email simulated");
+    getLogger().info({ to: validated.to }, "Email simulated");
   }
   return undefined;
 }

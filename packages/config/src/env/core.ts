@@ -32,6 +32,31 @@ function shouldUseTestDefaults(raw?: NodeJS.ProcessEnv): boolean {
 const isTest = shouldUseTestDefaults();
 const isProd = resolveNodeEnv() === "production" && !isTest;
 
+const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
+const NON_STRING_META_KEY = "__acmeNonStringKeys__";
+
+function collectNonStringKeys(raw: unknown): Set<string> {
+  const keys = new Set<string>();
+  const rawRecord = raw as Record<string | symbol, unknown> | undefined;
+  if (rawRecord) {
+    const flagged = rawRecord[NON_STRING_ENV_SYMBOL];
+    if (Array.isArray(flagged)) {
+      for (const key of flagged) {
+        if (typeof key === "string") keys.add(key);
+      }
+    }
+  }
+
+  const globalFlagged = (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
+  if (Array.isArray(globalFlagged)) {
+    for (const key of globalFlagged) {
+      if (typeof key === "string") keys.add(key);
+    }
+  }
+
+  return keys;
+}
+
 const baseEnvSchema = z
   .object({
     NODE_ENV: z.enum(["development", "test", "production"]).optional(),
@@ -139,6 +164,17 @@ const coreEnvPreprocessedSchema = z.preprocess((input) => {
 
   const env = { ...(input as Record<string, unknown>) };
 
+  const nonStringKeys = collectNonStringKeys(input);
+  if (nonStringKeys.size > 0) {
+    Object.defineProperty(env, NON_STRING_META_KEY, {
+      value: nonStringKeys,
+      enumerable: false,
+      configurable: true,
+    });
+  }
+
+  delete (env as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
+
   if (typeof env.EMAIL_PROVIDER === "string") {
     const trimmedProvider = env.EMAIL_PROVIDER.trim();
     if (trimmedProvider === "") {
@@ -162,8 +198,8 @@ const coreEnvPreprocessedSchema = z.preprocess((input) => {
   const hasEmailFrom =
     typeof env.EMAIL_FROM === "string" && env.EMAIL_FROM.length > 0;
 
-  if (!hasEmailProvider && !hasEmailFrom) {
-    env.EMAIL_PROVIDER = "noop";
+  if (!hasEmailProvider) {
+    env.EMAIL_PROVIDER = hasEmailFrom ? "smtp" : "noop";
   }
 
   return env;
@@ -214,7 +250,15 @@ export const coreEnvSchema = coreEnvPreprocessedSchema.superRefine((env, ctx) =>
     ...(env as Record<string, unknown>),
   };
   const rawTtl = envForAuth.AUTH_TOKEN_TTL;
-  if (typeof rawTtl === "number") {
+  const storedMeta = (env as Record<string, unknown>)[NON_STRING_META_KEY];
+  const nonStringKeys: Set<string> | undefined =
+    storedMeta instanceof Set ? storedMeta : collectNonStringKeys(process.env);
+  const ttlWasNonString = nonStringKeys?.has("AUTH_TOKEN_TTL");
+
+  if (ttlWasNonString) {
+    delete envForAuth.AUTH_TOKEN_TTL;
+    nonStringKeys?.delete("AUTH_TOKEN_TTL");
+  } else if (typeof rawTtl === "number") {
     // Let auth schema default to 15m when undefined
     delete envForAuth.AUTH_TOKEN_TTL;
   } else if (typeof rawTtl === "string") {
@@ -227,6 +271,10 @@ export const coreEnvSchema = coreEnvPreprocessedSchema.superRefine((env, ctx) =>
       const [, num, unit] = trimmed.match(/^(\d+)\s*([sm])$/i)!;
       envForAuth.AUTH_TOKEN_TTL = `${num}${unit.toLowerCase()}`;
     }
+  }
+
+  if (nonStringKeys && nonStringKeys.size === 0) {
+    delete (env as Record<string, unknown>)[NON_STRING_META_KEY];
   }
 
   const authResult = authEnvSchema.safeParse(envForAuth);
@@ -262,21 +310,25 @@ function cloneProcessEnv(source: NodeJS.ProcessEnv | EnvRecord): EnvRecord {
   return Object.assign(Object.create(null), source);
 }
 
+const importEnvObject = process.env;
 const importEnvSnapshot = cloneProcessEnv(process.env);
 
 function snapshotForCoreEnv(): NodeJS.ProcessEnv {
+  if (process.env === importEnvObject) {
+    return cloneProcessEnv(process.env) as NodeJS.ProcessEnv;
+  }
   return cloneProcessEnv(importEnvSnapshot) as NodeJS.ProcessEnv;
 }
 
 function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
   const useTestDefaults = shouldUseTestDefaults(raw);
   const env = useTestDefaults
-    ? { EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop", ...raw }
+    ? { EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "smtp", ...raw }
     : {
         ...raw,
-        ...(raw.EMAIL_FROM || raw.EMAIL_PROVIDER
-          ? {}
-          : { EMAIL_PROVIDER: "noop" }),
+        ...(!raw.EMAIL_PROVIDER
+          ? { EMAIL_PROVIDER: raw.EMAIL_FROM ? "smtp" : "noop" }
+          : {}),
       };
   const parsed = coreEnvSchema.safeParse(env);
   if (!parsed.success) {
@@ -289,7 +341,7 @@ function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
       if (onlyMissing) {
         return coreEnvSchema.parse({
           EMAIL_FROM: "test@example.com",
-          EMAIL_PROVIDER: "noop",
+          EMAIL_PROVIDER: "smtp",
         });
       }
     }

@@ -357,7 +357,11 @@ describe("email env module", () => {
   });
 
   it("defaults to smtp provider when EMAIL_PROVIDER is omitted", async () => {
-    process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
+    process.env = {
+      ...ORIGINAL_ENV,
+      NODE_ENV: "production",
+      EMAIL_FROM: "from@example.com",
+    } as NodeJS.ProcessEnv;
     delete process.env.EMAIL_PROVIDER;
     jest.resetModules();
     const { emailEnv } = await import("../email.ts");
@@ -367,6 +371,7 @@ describe("email env module", () => {
   it("parses valid configuration", async () => {
     process.env = {
       ...ORIGINAL_ENV,
+      EMAIL_FROM: "from@example.com",
       EMAIL_PROVIDER: "sendgrid",
       SENDGRID_API_KEY: "api-key",
       SMTP_URL: "https://smtp.example.com",

@@ -301,6 +301,10 @@ describe("cms env module", () => {
     const parsed = cmsEnvSchema.safeParse({
       CMS_ACCESS_TOKEN: "token",
       SANITY_API_VERSION: "2024-01-01",
+      SANITY_API_TOKEN: "token",
+      SANITY_PROJECT_ID: "test-project",
+      SANITY_DATASET: "production",
+      SANITY_PREVIEW_SECRET: "preview-secret",
     });
 
     expect(parsed.success).toBe(false);
@@ -338,6 +342,10 @@ describe("cms env module", () => {
       CMS_SPACE_URL: "not-a-url",
       CMS_ACCESS_TOKEN: "token",
       SANITY_API_VERSION: "2024-01-01",
+      SANITY_API_TOKEN: "token",
+      SANITY_PROJECT_ID: "test-project",
+      SANITY_DATASET: "production",
+      SANITY_PREVIEW_SECRET: "preview-secret",
     });
 
     expect(parsed.success).toBe(false);

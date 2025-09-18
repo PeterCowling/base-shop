@@ -54,6 +54,37 @@ async function ensureDir(shop: string): Promise<void> {
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
 }
 
+let stockAlertModule: Promise<typeof import("../services/stockAlert.server")> | undefined;
+
+async function triggerStockAlert(
+  shop: string,
+  items: InventoryItem[],
+): Promise<void> {
+  if (process.env.SKIP_STOCK_ALERT === "1") return;
+  const hasLowStock = items.some(
+    (i: InventoryItem) =>
+      typeof i.lowStockThreshold === "number" &&
+      i.quantity <= i.lowStockThreshold,
+  );
+  if (!hasLowStock) return;
+  try {
+    stockAlertModule ??= import("../services/stockAlert.server");
+    const mod = await stockAlertModule;
+    const fn =
+      typeof mod.checkAndAlert === "function"
+        ? mod.checkAndAlert
+        : typeof mod.default?.checkAndAlert === "function"
+          ? mod.default.checkAndAlert
+          : undefined;
+    if (!fn) {
+      throw new Error("stock alert module missing checkAndAlert export");
+    }
+    await fn(shop, items);
+  } catch (err) {
+    console.error(`Failed to trigger stock alert for ${shop}`, err);
+  }
+}
+
 async function read(shop: string): Promise<InventoryItem[]> {
   try {
     const buf = await fs.readFile(inventoryPath(shop), "utf8");
@@ -98,14 +129,7 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
     await handle.close();
     await fs.unlink(lockFile).catch(() => {});
   }
-  const hasLowStock = normalized.some(
-    (i: InventoryItem) =>
-      typeof i.lowStockThreshold === "number" &&
-      i.quantity <= i.lowStockThreshold,
-  );
-  if (process.env.SKIP_STOCK_ALERT !== "1" && hasLowStock) {
-    // Stock alerts are skipped during build to avoid pulling in email dependencies.
-  }
+  await triggerStockAlert(shop, normalized);
 }
 
 async function update(
@@ -178,14 +202,7 @@ async function update(
     await fs.unlink(lockFile).catch(() => {});
   }
 
-  const hasLowStock = normalized.some(
-    (i: InventoryItem) =>
-      typeof i.lowStockThreshold === "number" &&
-      i.quantity <= i.lowStockThreshold,
-  );
-  if (process.env.SKIP_STOCK_ALERT !== "1" && hasLowStock) {
-    // Stock alerts are skipped during build to avoid pulling in email dependencies.
-  }
+  await triggerStockAlert(shop, normalized);
 
   return updated;
 }

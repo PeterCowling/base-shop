@@ -9,8 +9,30 @@ const STRONG_TOKEN = "token-value-32-chars-long-string!!";
 const JWT_SECRET = "jwt-secret-32-chars-long-string!!!";
 const OAUTH_SECRET = "oauth-secret-32-chars-long-string!!";
 
+const unsetEnv = (...keys: string[]) => {
+  for (const key of keys) {
+    delete (process.env as NodeJS.ProcessEnv)[key];
+  }
+};
+
+
 describe("auth env module", () => {
-  const ORIGINAL_ENV = { ...process.env } as NodeJS.ProcessEnv;
+  const ORIGINAL_ENV = (() => {
+    const env = { ...process.env } as NodeJS.ProcessEnv;
+    for (const key of [
+      "SESSION_STORE",
+      "UPSTASH_REDIS_REST_URL",
+      "UPSTASH_REDIS_REST_TOKEN",
+      "LOGIN_RATE_LIMIT_REDIS_URL",
+      "LOGIN_RATE_LIMIT_REDIS_TOKEN",
+      "JWT_SECRET",
+      "OAUTH_CLIENT_ID",
+      "OAUTH_CLIENT_SECRET",
+    ]) {
+      delete env[key];
+    }
+    return env;
+  })();
 
   afterEach(() => {
     jest.resetModules();
@@ -237,6 +259,7 @@ describe("auth env module", () => {
       SESSION_SECRET: SESSION_SECRET,
       SESSION_STORE: "redis",
     } as NodeJS.ProcessEnv;
+    unsetEnv("UPSTASH_REDIS_REST_URL", "UPSTASH_REDIS_REST_TOKEN");
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     try {
@@ -294,6 +317,7 @@ describe("auth env module", () => {
         SESSION_STORE: "redis",
         UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
       } as NodeJS.ProcessEnv;
+      unsetEnv("UPSTASH_REDIS_REST_URL");
       const errorSpy = jest
         .spyOn(console, "error")
         .mockImplementation(() => {});
@@ -324,6 +348,7 @@ describe("auth env module", () => {
         SESSION_STORE: "redis",
         UPSTASH_REDIS_REST_URL: "https://example.com",
       } as NodeJS.ProcessEnv;
+      unsetEnv("LOGIN_RATE_LIMIT_REDIS_TOKEN");
       const errorSpy = jest
         .spyOn(console, "error")
         .mockImplementation(() => {});
@@ -355,6 +380,7 @@ describe("auth env module", () => {
         UPSTASH_REDIS_REST_URL: "https://example.com",
         UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
       } as NodeJS.ProcessEnv;
+      unsetEnv("LOGIN_RATE_LIMIT_REDIS_TOKEN");
       const errorSpy = jest
         .spyOn(console, "error")
         .mockImplementation(() => {});
@@ -448,6 +474,7 @@ describe("auth env module", () => {
         SESSION_SECRET: SESSION_SECRET,
         LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
       } as NodeJS.ProcessEnv;
+      unsetEnv("LOGIN_RATE_LIMIT_REDIS_URL");
       const errorSpy = jest
         .spyOn(console, "error")
         .mockImplementation(() => {});
@@ -485,6 +512,7 @@ describe("auth env module", () => {
         SESSION_SECRET: SESSION_SECRET,
         LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
       } as NodeJS.ProcessEnv;
+      unsetEnv("LOGIN_RATE_LIMIT_REDIS_TOKEN");
       const errorSpy = jest
         .spyOn(console, "error")
         .mockImplementation(() => {});
@@ -566,6 +594,7 @@ describe("auth env module", () => {
       SESSION_STORE: "redis",
       UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
     } as NodeJS.ProcessEnv;
+    unsetEnv("UPSTASH_REDIS_REST_URL");
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     await expect(import("../auth.ts")).rejects.toThrow(
@@ -594,6 +623,7 @@ describe("auth env module", () => {
       SESSION_STORE: "redis",
       UPSTASH_REDIS_REST_URL: "https://example.com",
     } as NodeJS.ProcessEnv;
+    unsetEnv("UPSTASH_REDIS_REST_TOKEN");
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     await expect(import("../auth.ts")).rejects.toThrow(
@@ -621,6 +651,7 @@ describe("auth env module", () => {
       SESSION_SECRET: SESSION_SECRET,
       LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
     } as NodeJS.ProcessEnv;
+    unsetEnv("LOGIN_RATE_LIMIT_REDIS_TOKEN");
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     await expect(import("../auth.ts")).rejects.toThrow(
@@ -648,6 +679,7 @@ describe("auth env module", () => {
       SESSION_SECRET: SESSION_SECRET,
       LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
     } as NodeJS.ProcessEnv;
+    unsetEnv("LOGIN_RATE_LIMIT_REDIS_URL");
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     await expect(import("../auth.ts")).rejects.toThrow(
@@ -880,6 +912,20 @@ describe("auth providers and tokens", () => {
       ...baseEnv,
       ...env,
     } as NodeJS.ProcessEnv;
+    const optionalKeys = [
+      "JWT_SECRET",
+      "OAUTH_CLIENT_ID",
+      "OAUTH_CLIENT_SECRET",
+      "UPSTASH_REDIS_REST_URL",
+      "UPSTASH_REDIS_REST_TOKEN",
+      "LOGIN_RATE_LIMIT_REDIS_URL",
+      "LOGIN_RATE_LIMIT_REDIS_TOKEN",
+    ];
+    for (const key of optionalKeys) {
+      if (!(key in env)) {
+        unsetEnv(key);
+      }
+    }
     jest.resetModules();
     await fn();
   };
@@ -1399,4 +1445,3 @@ describe("auth schema dependency validation", () => {
     });
   });
 });
-

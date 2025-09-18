@@ -12,7 +12,7 @@ describe("email-env", () => {
       [" 25 ", 25],
     ])("coerces %p to number %p", async (input, expected) => {
       const { emailEnv } = await withEnv(
-        { SMTP_PORT: input },
+        { EMAIL_FROM: "from@example.com", SMTP_PORT: input },
         () => import("../src/env/email"),
       );
       expect(emailEnv.SMTP_PORT).toBe(expected);
@@ -21,7 +21,10 @@ describe("email-env", () => {
     it("rejects non-numeric values", async () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
       await expect(
-        withEnv({ SMTP_PORT: "abc" }, () => import("../src/env/email")),
+        withEnv(
+          { EMAIL_FROM: "from@example.com", SMTP_PORT: "abc" },
+          () => import("../src/env/email"),
+        ),
       ).rejects.toThrow("Invalid email environment variables");
       expect(spy).toHaveBeenCalled();
     });
@@ -37,7 +40,7 @@ describe("email-env", () => {
       ["0", false],
     ])("parses %p", async (input, expected) => {
       const { emailEnv } = await withEnv(
-        { SMTP_SECURE: input },
+        { EMAIL_FROM: "from@example.com", SMTP_SECURE: input },
         () => import("../src/env/email"),
       );
       expect(emailEnv.SMTP_SECURE).toBe(expected);
@@ -46,7 +49,10 @@ describe("email-env", () => {
     it("rejects invalid values", async () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
       await expect(
-        withEnv({ SMTP_SECURE: "maybe" }, () => import("../src/env/email")),
+        withEnv(
+          { EMAIL_FROM: "from@example.com", SMTP_SECURE: "maybe" },
+          () => import("../src/env/email"),
+        ),
       ).rejects.toThrow("Invalid email environment variables");
       expect(spy).toHaveBeenCalled();
     });
@@ -55,7 +61,10 @@ describe("email-env", () => {
   describe("CAMPAIGN_FROM", () => {
     it("trims and lowercases", async () => {
       const { emailEnv } = await withEnv(
-        { CAMPAIGN_FROM: "  Admin@Example.com  " },
+        {
+          EMAIL_FROM: "from@example.com",
+          CAMPAIGN_FROM: "  Admin@Example.com  ",
+        },
         () => import("../src/env/email"),
       );
       expect(emailEnv.CAMPAIGN_FROM).toBe("admin@example.com");
@@ -64,7 +73,10 @@ describe("email-env", () => {
     it("rejects invalid email", async () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
       await expect(
-        withEnv({ CAMPAIGN_FROM: "notanemail" }, () => import("../src/env/email")),
+        withEnv(
+          { EMAIL_FROM: "from@example.com", CAMPAIGN_FROM: "notanemail" },
+          () => import("../src/env/email"),
+        ),
       ).rejects.toThrow("Invalid email environment variables");
       expect(spy).toHaveBeenCalled();
     });
@@ -173,4 +185,3 @@ describe("email-env", () => {
     });
   });
 });
-

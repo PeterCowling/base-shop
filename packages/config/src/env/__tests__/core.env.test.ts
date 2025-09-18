@@ -334,6 +334,7 @@ describe("redis hints", () => {
         {
           SESSION_STORE: "redis",
           UPSTASH_REDIS_REST_URL: "https://redis.example.com",
+          UPSTASH_REDIS_REST_TOKEN: undefined,
         },
         () => importCore()
       )
@@ -341,12 +342,19 @@ describe("redis hints", () => {
   });
 
   it("defaults to memory when redis vars missing", async () => {
-    await withEnv({}, async () => {
+    await withEnv(
+      {
+        SESSION_STORE: undefined,
+        UPSTASH_REDIS_REST_URL: undefined,
+        UPSTASH_REDIS_REST_TOKEN: undefined,
+      },
+      async () => {
       const { loadCoreEnv } = await importCore();
       const env = loadCoreEnv();
       expect(env.SESSION_STORE).toBeUndefined();
       expect(env.UPSTASH_REDIS_REST_URL).toBeUndefined();
-    });
+      }
+    );
   });
 });
 
@@ -460,7 +468,7 @@ describe("coreEnv extras", () => {
 
   it("propagates auth schema errors", async () => {
     await expect(
-      withEnv({ AUTH_PROVIDER: "jwt" }, () => importCore())
+      withEnv({ AUTH_PROVIDER: "jwt", JWT_SECRET: undefined }, () => importCore())
     ).rejects.toThrow("Invalid auth environment variables");
   });
 
@@ -567,7 +575,15 @@ describe("SESSION_STORE cross-field validation", () => {
 
   it("requires Upstash credentials when SESSION_STORE=redis", async () => {
     await expect(
-      withEnv({ ...base, SESSION_STORE: "redis" }, () => importCore())
+      withEnv(
+        {
+          ...base,
+          SESSION_STORE: "redis",
+          UPSTASH_REDIS_REST_URL: undefined,
+          UPSTASH_REDIS_REST_TOKEN: undefined,
+        },
+        () => importCore()
+      )
     ).rejects.toThrow("Invalid auth environment variables");
   });
 });
@@ -575,7 +591,13 @@ describe("SESSION_STORE cross-field validation", () => {
 describe("loadCoreEnv logging", () => {
   it("logs each invalid path before throwing", async () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await withEnv({}, async () => {
+    await withEnv(
+      {
+        SESSION_STORE: undefined,
+        UPSTASH_REDIS_REST_URL: undefined,
+        UPSTASH_REDIS_REST_TOKEN: undefined,
+      },
+      async () => {
       const { loadCoreEnv } = await importCore();
       expect(() =>
         loadCoreEnv({
@@ -586,7 +608,8 @@ describe("loadCoreEnv logging", () => {
           SESSION_STORE: "redis",
         } as unknown as NodeJS.ProcessEnv)
       ).toThrow("Invalid core environment variables");
-    });
+      }
+    );
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid core environment variables:"
     );

@@ -10,9 +10,38 @@ const isNextProductionBuildPhase = nextPhase === "phase-production-build";
 const isProd =
   nodeEnv === "production" && !isTest && !isNextProductionBuildPhase;
 
+const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
+
+function envHasNonStringTtl(raw: NodeJS.ProcessEnv): boolean {
+  const flagged = (raw as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
+  if (Array.isArray(flagged) && flagged.includes("AUTH_TOKEN_TTL")) {
+    return true;
+  }
+  const globalFlagged = (globalThis as Record<string, unknown>)
+    .__ACME_NON_STRING_ENV__;
+  if (Array.isArray(globalFlagged) && globalFlagged.includes("AUTH_TOKEN_TTL")) {
+    return true;
+  }
+  return typeof raw.AUTH_TOKEN_TTL === "number";
+}
+
 // Normalize AUTH_TOKEN_TTL from the process environment so validation succeeds
-// even if the shell exported a plain number or included stray whitespace.
-const rawTTL = process.env.AUTH_TOKEN_TTL;
+// even if the shell exported a plain number formatted as a string or included
+// stray whitespace.
+const allowNonStringTtlImport =
+  (globalThis as Record<string, unknown>).__ACME_ALLOW_NUMERIC_TTL__ === true;
+
+if (envHasNonStringTtl(process.env) && !allowNonStringTtlImport) {
+  const formatted = {
+    AUTH_TOKEN_TTL: {
+      _errors: ["AUTH_TOKEN_TTL must be a string like '60s' or '15m'"],
+    },
+  };
+  console.error("❌ Invalid auth environment variables:", formatted);
+  throw new Error("Invalid auth environment variables");
+}
+
+const rawTTL = (process.env as Record<string, unknown>).AUTH_TOKEN_TTL;
 if (typeof rawTTL === "string") {
   const trimmed = rawTTL.trim();
   if (trimmed === "") {
@@ -167,10 +196,42 @@ type ParsedAuthEnv = z.infer<typeof authEnvSchema>;
 
 export type AuthEnv = ParsedAuthEnv & { AUTH_TOKEN_EXPIRES_AT: Date };
 
+function cloneEnv(source: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
+  return Object.assign(Object.create(null), source);
+}
+
+const importEnvObject = process.env;
+const importEnvSnapshot = cloneEnv(process.env);
+
+function snapshotForAuthEnv(raw: NodeJS.ProcessEnv = process.env): NodeJS.ProcessEnv {
+  if (raw !== process.env) {
+    return cloneEnv(raw);
+  }
+  if (process.env === importEnvObject) {
+    return cloneEnv(process.env);
+  }
+  return cloneEnv(importEnvSnapshot);
+}
+
 export function loadAuthEnv(
   raw: NodeJS.ProcessEnv = process.env,
+  opts?: { allowNumericTtl?: boolean },
 ): AuthEnv {
-  const parsed = authEnvSchema.safeParse(raw);
+  const effectiveRaw = { ...raw };
+  if (envHasNonStringTtl(raw)) {
+    if (!opts?.allowNumericTtl) {
+      const formatted = {
+        AUTH_TOKEN_TTL: {
+          _errors: ["AUTH_TOKEN_TTL must be a string like '60s' or '15m'"],
+        },
+      };
+      console.error("❌ Invalid auth environment variables:", formatted);
+      throw new Error("Invalid auth environment variables");
+    }
+    delete effectiveRaw.AUTH_TOKEN_TTL;
+  }
+
+  const parsed = authEnvSchema.safeParse(effectiveRaw);
   if (!parsed.success) {
     console.error(
       "❌ Invalid auth environment variables:",
@@ -186,4 +247,24 @@ export function loadAuthEnv(
   };
 }
 
-export const authEnv = loadAuthEnv();
+let __cachedAuthEnv: AuthEnv | null = null;
+
+function getAuthEnv(): AuthEnv {
+  if (!__cachedAuthEnv) {
+    __cachedAuthEnv = loadAuthEnv(snapshotForAuthEnv());
+  }
+  return __cachedAuthEnv;
+}
+
+export const authEnv: AuthEnv = new Proxy({} as AuthEnv, {
+  get: (_target, prop: string) => getAuthEnv()[prop as keyof AuthEnv],
+  has: (_target, prop: string) => prop in getAuthEnv(),
+  ownKeys: () => Reflect.ownKeys(getAuthEnv()),
+  getOwnPropertyDescriptor: (_target, prop: string | symbol) =>
+    Object.getOwnPropertyDescriptor(getAuthEnv(), prop),
+}) as AuthEnv;
+
+if (isProd) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  authEnv.NEXTAUTH_SECRET;
+}

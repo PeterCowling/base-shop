@@ -9,6 +9,19 @@ export async function withEnv(
   const sanitizedKeys = new Set([
     "CART_COOKIE_SECRET",
     "EMAIL_PROVIDER",
+    "UPSTASH_REDIS_REST_URL",
+    "UPSTASH_REDIS_REST_TOKEN",
+    "LOGIN_RATE_LIMIT_REDIS_URL",
+    "LOGIN_RATE_LIMIT_REDIS_TOKEN",
+    "JWT_SECRET",
+    "OAUTH_CLIENT_ID",
+    "OAUTH_CLIENT_SECRET",
+    "EMAIL_FROM",
+    "CAMPAIGN_FROM",
+    "SMTP_PORT",
+    "SMTP_SECURE",
+    "SENDGRID_API_KEY",
+    "RESEND_API_KEY",
   ] satisfies Array<keyof NodeJS.ProcessEnv>);
 
   try {
@@ -24,6 +37,10 @@ export async function withEnv(
       } else {
         process.env[key] = value;
       }
+    }
+
+    if (!("EMAIL_FROM" in vars) && typeof process.env.EMAIL_FROM !== "string") {
+      process.env.EMAIL_FROM = "from@example.com";
     }
 
     jest.resetModules();
@@ -94,4 +111,3 @@ export async function importEnv<T = unknown>(modulePath: string): Promise<T> {
   });
   return mod;
 }
-

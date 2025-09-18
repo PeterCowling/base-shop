@@ -14,14 +14,14 @@ afterEach(() => {
 });
 
 describe("email env provider selection", () => {
-  it("defaults EMAIL_PROVIDER to noop in test env", async () => {
+  it("defaults EMAIL_PROVIDER to smtp in test env", async () => {
     delete process.env.EMAIL_PROVIDER;
     const env = await loadEnv();
-    expect(env.EMAIL_PROVIDER).toBe("noop");
+    expect(env.EMAIL_PROVIDER).toBe("smtp");
   });
 
   it.each([
-    [{ NODE_ENV: "development" }, "noop"],
+    [{ NODE_ENV: "development" }, "smtp"],
     [{ NODE_ENV: "production" }, "smtp"],
   ])("defaults EMAIL_PROVIDER in %o", async (envVars, expected) => {
     Object.assign(process.env, envVars);

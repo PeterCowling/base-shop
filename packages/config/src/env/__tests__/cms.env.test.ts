@@ -59,9 +59,14 @@ describe("cms sanity env", () => {
     });
   });
 
-  it("requires SANITY fields in production", async () => {
+  it.each([
+    "SANITY_PROJECT_ID",
+    "SANITY_DATASET",
+    "SANITY_API_TOKEN",
+    "SANITY_PREVIEW_SECRET",
+  ])("requires %s in production", async (key) => {
     process.env = { ...baseEnv };
-    delete process.env.SANITY_API_VERSION;
+    delete process.env[key as keyof typeof baseEnv];
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
     await expect(import("../cms.ts")).rejects.toThrow(
@@ -70,9 +75,7 @@ describe("cms sanity env", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid CMS environment variables:",
       expect.objectContaining({
-        SANITY_API_VERSION: {
-          _errors: expect.arrayContaining([expect.any(String)]),
-        },
+        [key]: { _errors: expect.arrayContaining([expect.any(String)]) },
       }),
     );
     errorSpy.mockRestore();

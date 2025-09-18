@@ -98,6 +98,7 @@ describe("coreEnv proxy", () => {
         CMS_SPACE_URL: "https://example.com",
         CMS_ACCESS_TOKEN: "token",
         SANITY_API_VERSION: "2023-01-01",
+        EMAIL_FROM: "from@example.com",
       },
       () => import("../src/env/core"),
     );
@@ -105,4 +106,3 @@ describe("coreEnv proxy", () => {
     expect(core.coreEnv.NODE_ENV).toBe("production");
   });
 });
-

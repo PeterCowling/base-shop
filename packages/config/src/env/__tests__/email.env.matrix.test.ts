@@ -10,10 +10,19 @@ describe("email provider matrix", () => {
     ["smtp", {}],
     ["noop", {}],
   ])("loads %s", async (EMAIL_PROVIDER, vars) => {
-    await withEnv({ EMAIL_PROVIDER, ...vars }, async () => {
-      const env = await loadEnv();
-      expect(env.EMAIL_PROVIDER).toBe(EMAIL_PROVIDER);
-    });
+    await withEnv(
+      {
+        EMAIL_PROVIDER,
+        ...(EMAIL_PROVIDER === "noop"
+          ? {}
+          : { EMAIL_FROM: "from@example.com" }),
+        ...vars,
+      },
+      async () => {
+        const env = await loadEnv();
+        expect(env.EMAIL_PROVIDER).toBe(EMAIL_PROVIDER);
+      },
+    );
   });
 
   it("rejects unknown provider", async () => {
@@ -50,10 +59,13 @@ describe("sender requirements", () => {
   });
 
   it("allows optional EMAIL_SENDER_NAME", async () => {
-    await withEnv({ EMAIL_PROVIDER: "smtp" }, async () => {
-      const env = await loadEnv();
-      expect(env.EMAIL_SENDER_NAME).toBeUndefined();
-    });
+    await withEnv(
+      { EMAIL_PROVIDER: "smtp", EMAIL_FROM: "from@example.com" },
+      async () => {
+        const env = await loadEnv();
+        expect(env.EMAIL_SENDER_NAME).toBeUndefined();
+      },
+    );
   });
 });
 
@@ -67,7 +79,11 @@ describe("smtp secure coercion", () => {
     ["no", false],
   ])("coerces %s", async (val, expected) => {
     await withEnv(
-      { EMAIL_PROVIDER: "smtp", SMTP_SECURE: val as string },
+      {
+        EMAIL_PROVIDER: "smtp",
+        EMAIL_FROM: "from@example.com",
+        SMTP_SECURE: val as string,
+      },
       async () => {
         const env = await loadEnv();
         expect(env.SMTP_SECURE).toBe(expected);
@@ -79,7 +95,11 @@ describe("smtp secure coercion", () => {
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
       withEnv(
-        { EMAIL_PROVIDER: "smtp", SMTP_SECURE: "invalid" },
+        {
+          EMAIL_PROVIDER: "smtp",
+          EMAIL_FROM: "from@example.com",
+          SMTP_SECURE: "invalid",
+        },
         async () => {
           await loadEnv();
         },

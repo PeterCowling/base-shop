@@ -130,8 +130,17 @@ describe('core env', () => {
 
     it('throws on invalid CART_TTL', async () =>
       withEnv({ ...env, CART_TTL: 'oops' } as any, async () => {
+        if (env.NODE_ENV === 'production') {
+          await expect(import('../core.ts')).rejects.toThrow(
+            'Invalid core environment variables',
+          );
+          return;
+        }
+
         const { loadCoreEnv } = await import('../core.ts');
-        expect(() => loadCoreEnv()).toThrow('Invalid core environment variables');
+        expect(() => loadCoreEnv()).toThrow(
+          'Invalid core environment variables',
+        );
       }));
   });
 
@@ -305,4 +314,3 @@ describe('shipping env', () => {
     });
   });
 });
-

@@ -110,11 +110,11 @@ describe("env", () => {
           CMS_SPACE_URL: "notaurl",
           CMS_ACCESS_TOKEN: "token",
           SANITY_API_VERSION: "2023-01-01",
+          EMAIL_FROM: "from@example.com",
         },
         () => import("../src/env"),
       ),
-    ).rejects.toThrow("Invalid CMS environment variables");
+    ).rejects.toThrow("Invalid core environment variables");
     expect(spy).toHaveBeenCalled();
   });
 });
-

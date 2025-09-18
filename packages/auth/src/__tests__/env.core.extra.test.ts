@@ -71,11 +71,10 @@ describe("AUTH_TOKEN_TTL normalisation", () => {
   });
 
   it("deletes numeric values", async () => {
-    await withEnv({}, async () => {
+    await withEnv({ AUTH_TOKEN_TTL: 600 as any }, async () => {
       const spy = jest.fn(() => ({ success: true, data: {} }));
       mockAuthSchema(spy);
       const core = await import("@acme/config/env/core");
-      (process.env as any).AUTH_TOKEN_TTL = 600;
       core.loadCoreEnv();
       expect(spy).toHaveBeenCalledWith(
         expect.not.objectContaining({ AUTH_TOKEN_TTL: expect.anything() })
@@ -241,4 +240,3 @@ describe("coreEnv proxy traps", () => {
     expect(combined).toContain("NEXT_PUBLIC_BASE_URL");
   });
 });
-

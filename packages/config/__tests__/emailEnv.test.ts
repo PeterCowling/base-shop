@@ -9,7 +9,10 @@ describe("emailEnv", () => {
   it("throws and logs when SMTP_URL is invalid", async () => {
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     await expect(
-      withEnv({ SMTP_URL: "notaurl" }, () => import("../src/env/email")),
+      withEnv(
+        { EMAIL_FROM: "from@example.com", SMTP_URL: "notaurl" },
+        () => import("../src/env/email"),
+      ),
     ).rejects.toThrow("Invalid email environment variables");
     expect(spy).toHaveBeenCalled();
   });
@@ -17,6 +20,7 @@ describe("emailEnv", () => {
   it("parses numeric strings and applies defaults", async () => {
     const { emailEnv } = await withEnv(
       {
+        EMAIL_FROM: "from@example.com",
         GMAIL_USER: "a",
         SMTP_URL: "https://smtp",
         EMAIL_BATCH_SIZE: "10",
@@ -34,6 +38,7 @@ describe("emailEnv", () => {
     await expect(
       withEnv(
         {
+          EMAIL_FROM: "from@example.com",
           GMAIL_USER: "a",
           SMTP_URL: "https://smtp",
           EMAIL_BATCH_SIZE: "abc",
@@ -81,4 +86,3 @@ describe("emailEnv", () => {
     expect(spy).not.toHaveBeenCalled();
   });
 });
-

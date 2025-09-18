@@ -82,6 +82,15 @@ const ALWAYS_PRESERVE_PREFIXES = [
   "__MISE_",
 ];
 
+const CARRY_OVER_KEYS = [
+  "SANITY_PROJECT_ID",
+  "SANITY_DATASET",
+  "SANITY_API_TOKEN",
+  "SANITY_PREVIEW_SECRET",
+];
+
+const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
+
 function shouldPreserveEnvKey(key: string): boolean {
   if (ALWAYS_PRESERVE_KEYS.has(key)) {
     return true;
@@ -111,11 +120,40 @@ export async function withEnv<T>(
   }
 
   const nextEnv: NodeJS.ProcessEnv = { ...preservedEnv };
+  const overrideKeys = new Set(Object.keys(vars));
+  for (const key of CARRY_OVER_KEYS) {
+    if (overrideKeys.has(key)) {
+      continue;
+    }
+    const value = originalEnv[key];
+    if (typeof value === "string") {
+      nextEnv[key] = value;
+    }
+  }
+  const nonStringKeys: string[] = [];
   for (const [key, value] of Object.entries(vars)) {
     if (typeof value === "undefined") {
       delete nextEnv[key];
     } else {
       nextEnv[key] = value;
+      if (typeof value !== "string") {
+        nonStringKeys.push(key);
+      }
+    }
+  }
+
+  if (nonStringKeys.length > 0) {
+    (nextEnv as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL] = nonStringKeys;
+    (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__ =
+      nonStringKeys.slice();
+  } else {
+    delete (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
+  }
+
+  if (!overrideKeys.has("EMAIL_FROM") && typeof nextEnv.EMAIL_FROM !== "string") {
+    const fallbackFrom = originalEnv.EMAIL_FROM ?? "test@example.com";
+    if (typeof fallbackFrom === "string" && fallbackFrom.length > 0) {
+      nextEnv.EMAIL_FROM = fallbackFrom;
     }
   }
 
@@ -129,6 +167,8 @@ export async function withEnv<T>(
   try {
     return await loader();
   } finally {
+    delete (process.env as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
+    delete (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
     process.env = originalEnv;
   }
 }

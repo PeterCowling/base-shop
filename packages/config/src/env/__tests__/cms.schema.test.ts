@@ -72,6 +72,10 @@ describe("cms env schema", () => {
       NODE_ENV: "production",
       CMS_SPACE_URL: "not-a-url",
       CMS_ACCESS_TOKEN: "",
+      SANITY_PROJECT_ID: "proj",
+      SANITY_DATASET: "dataset",
+      SANITY_API_TOKEN: "token",
+      SANITY_PREVIEW_SECRET: "secret",
     } as unknown as NodeJS.ProcessEnv;
     await expect(import("../cms.ts")).rejects.toThrow(
       "Invalid CMS environment variables",
@@ -81,6 +85,10 @@ describe("cms env schema", () => {
       NODE_ENV: "production",
       CMS_SPACE_URL: "https://cms.example.com",
       CMS_ACCESS_TOKEN: "token",
+      SANITY_PROJECT_ID: "proj",
+      SANITY_DATASET: "dataset",
+      SANITY_API_TOKEN: "token",
+      SANITY_PREVIEW_SECRET: "secret",
     } as NodeJS.ProcessEnv;
     jest.resetModules();
     const { cmsEnv } = await import("../cms.ts");

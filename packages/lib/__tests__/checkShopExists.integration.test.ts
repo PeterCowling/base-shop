@@ -1,10 +1,10 @@
 import { promises as fs } from 'node:fs';
-import os from 'node:os';
-import path from 'node:path';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 describe('checkShopExists integration', () => {
   it('resolves false when shop directory is missing', async () => {
-    const dataRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'check-shop-'));
+    const dataRoot = await fs.mkdtemp(join(tmpdir(), 'check-shop-'));
 
     jest.resetModules();
     jest.doMock('@platform-core/dataRoot', () => ({ resolveDataRoot: () => dataRoot }));

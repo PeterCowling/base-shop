@@ -14,12 +14,12 @@ describe("email provider constraints", () => {
     });
 
     it.each([undefined, "development", "test"]) (
-      "defaults to noop when NODE_ENV=%s",
+      "defaults to smtp when NODE_ENV=%s",
       async (NODE_ENV) => {
-        const vars: Record<string, string | undefined> = {};
+        const vars: Record<string, string | undefined> = { EMAIL_FROM: FROM };
         if (NODE_ENV) vars.NODE_ENV = NODE_ENV;
         const { emailEnv } = await withEnv(vars, () => import("../email"));
-        expect(emailEnv.EMAIL_PROVIDER).toBe("noop");
+        expect(emailEnv.EMAIL_PROVIDER).toBe("smtp");
       },
     );
   });
@@ -32,7 +32,13 @@ describe("email provider constraints", () => {
     ])("requires EMAIL_FROM when provider=%s", async (provider, extras) => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
       await expect(
-        withEnv({ EMAIL_PROVIDER: provider as string, ...extras }, () =>
+        withEnv(
+          {
+            EMAIL_PROVIDER: provider as string,
+            EMAIL_FROM: undefined,
+            ...extras,
+          },
+          () =>
           import("../email"),
         ),
       ).rejects.toThrow("Invalid email environment variables");
@@ -112,4 +118,3 @@ describe("email provider constraints", () => {
     expect(emailEnv.CAMPAIGN_FROM).toBe("campaign@example.com");
   });
 });
-

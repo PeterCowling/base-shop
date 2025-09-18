@@ -116,18 +116,23 @@ describe("shippingEnv", () => {
     ).toBe(false);
   });
 
-  it.each(["no", "maybe"]) (
-    "throws on invalid LOCAL_PICKUP_ENABLED value %s",
-    async (value) => {
-      const { loadShippingEnv } = await import("../src/env/shipping");
-      const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-      expect(() =>
-        loadShippingEnv({ LOCAL_PICKUP_ENABLED: value } as NodeJS.ProcessEnv),
-      ).toThrow("Invalid shipping environment variables");
-      const [[, err]] = spy.mock.calls;
-      expect(err.LOCAL_PICKUP_ENABLED._errors).toContain("must be a boolean");
-    },
-  );
+  it("parses 'no' as false", async () => {
+    const { loadShippingEnv } = await import("../src/env/shipping");
+    const env = loadShippingEnv({
+      LOCAL_PICKUP_ENABLED: "no",
+    } as NodeJS.ProcessEnv);
+    expect(env.LOCAL_PICKUP_ENABLED).toBe(false);
+  });
+
+  it("throws on invalid LOCAL_PICKUP_ENABLED value", async () => {
+    const { loadShippingEnv } = await import("../src/env/shipping");
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    expect(() =>
+      loadShippingEnv({ LOCAL_PICKUP_ENABLED: "maybe" } as NodeJS.ProcessEnv),
+    ).toThrow("Invalid shipping environment variables");
+    const [[, err]] = spy.mock.calls;
+    expect(err.LOCAL_PICKUP_ENABLED._errors).toContain("must be a boolean");
+  });
 
   it("accepts 2-letter DEFAULT_COUNTRY codes", async () => {
     const { loadShippingEnv } = await import("../src/env/shipping");
@@ -205,4 +210,3 @@ describe("shippingEnv", () => {
     });
   });
 });
-

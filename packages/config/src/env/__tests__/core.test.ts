@@ -17,6 +17,7 @@ const baseEnv = {
   CMS_SPACE_URL: "https://example.com",
   CMS_ACCESS_TOKEN: "token",
   SANITY_API_VERSION: "v1",
+  EMAIL_FROM: "from@example.com",
 };
 
 const ORIGINAL_ENV = { ...process.env };
@@ -1549,12 +1550,19 @@ describe("typed variable helpers", () => {
 describe("loadCoreEnv required variable validation", () => {
   const ORIGINAL_ENV = process.env;
   const base = {
+    CMS_SPACE_URL: "https://example.com",
     CMS_ACCESS_TOKEN: "token",
     SANITY_API_VERSION: "v1",
+    SANITY_PROJECT_ID: "dummy-project-id",
+    SANITY_DATASET: "production",
+    SANITY_API_TOKEN: "dummy-api-token",
+    SANITY_PREVIEW_SECRET: "dummy-preview-secret",
     NODE_ENV: "production",
     CART_COOKIE_SECRET: "secret",
     NEXTAUTH_SECRET: NEXT_SECRET, 
     SESSION_SECRET: SESSION_SECRET,
+    EMAIL_FROM: "test@example.com",
+    EMAIL_PROVIDER: "smtp",
   } as NodeJS.ProcessEnv;
 
   afterEach(() => {
@@ -1571,13 +1579,7 @@ describe("loadCoreEnv required variable validation", () => {
       ["invalid", "not-a-url", false],
     ])("%s", async (_label, value, ok) => {
       jest.resetModules();
-      process.env.NODE_ENV = "production";
-      process.env.CMS_SPACE_URL = "https://example.com";
-      process.env.CMS_ACCESS_TOKEN = "token";
-      process.env.SANITY_API_VERSION = "v1";
-      process.env.CART_COOKIE_SECRET = "secret";
-      process.env.NEXTAUTH_SECRET = NEXT_SECRET;
-      process.env.SESSION_SECRET = SESSION_SECRET;
+      Object.assign(process.env, base);
       const { loadCoreEnv } = await import("../core.ts");
       const env = { ...base } as NodeJS.ProcessEnv;
       if (value === undefined) delete env.CMS_SPACE_URL;
@@ -1597,13 +1599,7 @@ describe("loadCoreEnv required variable validation", () => {
       ["whitespace", "   ", true],
     ])("%s", async (_label, value, ok) => {
       jest.resetModules();
-      process.env.NODE_ENV = "production";
-      process.env.CMS_SPACE_URL = "https://example.com";
-      process.env.CMS_ACCESS_TOKEN = "token";
-      process.env.SANITY_API_VERSION = "v1";
-      process.env.CART_COOKIE_SECRET = "secret";
-      process.env.NEXTAUTH_SECRET = NEXT_SECRET;
-      process.env.SESSION_SECRET = SESSION_SECRET;
+      Object.assign(process.env, base);
       const { loadCoreEnv } = await import("../core.ts");
       const env = {
         ...base,
@@ -1754,8 +1750,14 @@ describe("NODE_ENV branches", () => {
     CMS_SPACE_URL: "https://example.com",
     CMS_ACCESS_TOKEN: "token",
     SANITY_API_VERSION: "v1",
+    SANITY_PROJECT_ID: "dummy-project-id",
+    SANITY_DATASET: "production",
+    SANITY_API_TOKEN: "dummy-api-token",
+    SANITY_PREVIEW_SECRET: "dummy-preview-secret",
     NEXTAUTH_SECRET: NEXT_SECRET,
     SESSION_SECRET: SESSION_SECRET,
+    EMAIL_FROM: "test@example.com",
+    EMAIL_PROVIDER: "smtp",
   };
 
   afterEach(() => {
@@ -1802,6 +1804,12 @@ describe("coreEnv proxy NODE_ENV behavior", () => {
   const ORIGINAL_ENV = process.env;
   const base = {
     ...baseEnv,
+    SANITY_PROJECT_ID: "dummy-project-id",
+    SANITY_DATASET: "production",
+    SANITY_API_TOKEN: "dummy-api-token",
+    SANITY_PREVIEW_SECRET: "dummy-preview-secret",
+    CART_COOKIE_SECRET: "secret",
+    EMAIL_PROVIDER: "smtp",
     NEXTAUTH_SECRET: NEXT_SECRET,
     SESSION_SECRET: SESSION_SECRET,
   } as NodeJS.ProcessEnv;
@@ -1866,4 +1874,3 @@ describe("loadCoreEnv fallback precedence", () => {
     expect(withProcess.CMS_ACCESS_TOKEN).toBe("from-process");
   });
 });
-

@@ -1,23 +1,118 @@
 /** @jest-environment node */
 
+const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
+
+function updateNonStringMetadata(
+  env: NodeJS.ProcessEnv,
+  tracked: Set<string>,
+): void {
+  if (tracked.size > 0) {
+    const list = Array.from(tracked);
+    (env as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL] = list;
+    (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__ = list.slice();
+    if (list.includes("AUTH_TOKEN_TTL")) {
+      (globalThis as Record<string, unknown>).__ACME_ALLOW_NUMERIC_TTL__ = true;
+    }
+  } else {
+    delete (env as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
+    delete (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
+    delete (globalThis as Record<string, unknown>).__ACME_ALLOW_NUMERIC_TTL__;
+  }
+}
+
+function installNonStringTracker(
+  env: NodeJS.ProcessEnv,
+  keysToTrack: string[],
+  tracked: Set<string>,
+  update: () => void,
+): () => void {
+  const restores: Array<() => void> = [];
+
+  for (const key of keysToTrack) {
+    const descriptor = Object.getOwnPropertyDescriptor(env, key);
+    if (descriptor && descriptor.configurable === false) {
+      continue;
+    }
+
+    let currentValue = (env as Record<string, unknown>)[key];
+    if (typeof currentValue !== "string" && typeof currentValue !== "undefined") {
+      tracked.add(key);
+    }
+
+    restores.push(() => {
+      if (descriptor) {
+        Object.defineProperty(env, key, descriptor);
+      } else {
+        delete env[key as keyof NodeJS.ProcessEnv];
+      }
+    });
+
+    Object.defineProperty(env, key, {
+      configurable: true,
+      enumerable: true,
+      get() {
+        return currentValue;
+      },
+      set(value: unknown) {
+        currentValue = value as any;
+        if (typeof value !== "string" && typeof value !== "undefined") {
+          tracked.add(key);
+        } else {
+          tracked.delete(key);
+        }
+        update();
+      },
+    });
+  }
+
+  update();
+
+  return () => {
+    for (const restore of restores.reverse()) {
+      restore();
+    }
+    update();
+  };
+}
+
 export async function withEnv(
-  vars: Record<string, string | undefined>,
+  vars: Record<string, string | number | undefined>,
   fn: () => Promise<void> | void,
 ): Promise<void> {
   const originalEnv = process.env;
-  process.env = { ...originalEnv, EMAIL_FROM: "from@example.com" };
+  const originalSnapshot = { ...process.env };
 
-  try {
-    for (const [key, value] of Object.entries(vars)) {
-      if (typeof value === "undefined") {
-        delete process.env[key];
-      } else {
-        process.env[key] = value;
+  const nextEnv: NodeJS.ProcessEnv = Object.assign(
+    Object.create(null),
+    originalSnapshot,
+    { EMAIL_FROM: "from@example.com" },
+  );
+
+  const tracked = new Set<string>();
+
+  for (const [key, value] of Object.entries(vars)) {
+    if (typeof value === "undefined") {
+      delete nextEnv[key];
+    } else {
+      nextEnv[key] = value as any;
+      if (typeof value !== "string") {
+        tracked.add(key);
       }
     }
+  }
 
-    jest.resetModules();
+  jest.resetModules();
+  process.env = nextEnv;
 
+  const update = () => updateNonStringMetadata(process.env, tracked);
+  const restoreTracker = installNonStringTracker(
+    process.env,
+    ["AUTH_TOKEN_TTL"],
+    tracked,
+    update,
+  );
+
+  try {
     await new Promise<void>((resolve, reject) => {
       jest.isolateModules(async () => {
         try {
@@ -29,7 +124,14 @@ export async function withEnv(
       });
     });
   } finally {
-    process.env = originalEnv;
+    restoreTracker();
+    const restoreEnv: NodeJS.ProcessEnv = Object.assign(
+      Object.create(null),
+      originalSnapshot,
+    );
+    delete (restoreEnv as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
+    delete (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
+    process.env = restoreEnv;
   }
 }
 
@@ -49,4 +151,3 @@ export async function importFresh<T = unknown>(path: string): Promise<T> {
 
   return mod!;
 }
-

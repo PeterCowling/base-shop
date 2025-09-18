@@ -4,12 +4,7 @@ import { z } from "zod";
 const hasEmailProvider =
   typeof process.env.EMAIL_PROVIDER === "string" &&
   process.env.EMAIL_PROVIDER.trim().length > 0;
-const normalizedNodeEnv =
-  typeof process.env.NODE_ENV === "string"
-    ? process.env.NODE_ENV.trim().toLowerCase()
-    : undefined;
-const defaultEmailProvider =
-  normalizedNodeEnv === "production" ? "smtp" : "noop";
+const defaultEmailProvider = "smtp";
 
 export const emailEnvSchema = z
   .object({
@@ -44,7 +39,9 @@ export const emailEnvSchema = z
       .email()
       .transform((v) => v.toLowerCase())
       .optional(),
-    EMAIL_PROVIDER: z.enum(["sendgrid", "resend", "smtp", "noop"]).default("noop"),
+    EMAIL_PROVIDER: z
+      .enum(["sendgrid", "resend", "smtp", "noop"])
+      .default("smtp"),
     SENDGRID_API_KEY: z.string().optional(),
     SENDGRID_MARKETING_KEY: z.string().optional(),
     RESEND_API_KEY: z.string().optional(),

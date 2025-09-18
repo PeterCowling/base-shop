@@ -5,16 +5,23 @@ import path from "path";
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 const SHOP = "shop1";
+const SHOP_DELAY_KEY = "ABANDONED_CART_DELAY_MS_SHOP1";
 
 const ORIGINAL_ENV = process.env;
 
 beforeEach(() => {
   jest.resetModules();
   process.env = { ...ORIGINAL_ENV };
+  delete process.env[SHOP_DELAY_KEY];
+  delete process.env.ABANDONED_CART_DELAY_MS;
 });
 
 afterEach(() => {
+  delete process.env[SHOP_DELAY_KEY];
+  delete process.env.ABANDONED_CART_DELAY_MS;
   process.env = ORIGINAL_ENV;
+  delete process.env[SHOP_DELAY_KEY];
+  delete process.env.ABANDONED_CART_DELAY_MS;
 });
 
 describe("resolveAbandonedCartDelay", () => {
@@ -104,4 +111,3 @@ describe("recoverAbandonedCarts", () => {
     expect(carts[3].reminded).toBe(true);
   });
 });
-

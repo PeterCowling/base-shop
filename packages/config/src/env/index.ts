@@ -16,10 +16,10 @@ export function mergeEnvSchemas(
 const parsed = envSchema.safeParse(process.env);
 if (!parsed.success) {
   console.error(
-    "❌ Invalid CMS environment variables:",
+    "❌ Invalid environment variables:",
     parsed.error.format(),
   );
-  throw new Error("Invalid CMS environment variables");
+  throw new Error("Invalid environment variables");
 }
 
 export const env = parsed.data;

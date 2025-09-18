@@ -1,6 +1,7 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
+<<<<<<< Updated upstream
 const envMode = process.env.NODE_ENV;
 const jestWorkerId = process.env.JEST_WORKER_ID;
 const hasJestGlobal =
@@ -13,6 +14,10 @@ const isTestLike =
   hasJestGlobal ||
   hasJestExpect;
 const isProd = envMode === "production" && !isTestLike;
+=======
+const isProd = process.env.NODE_ENV === "production";
+const SANITY_API_VERSION_DEFAULT = "2021-10-21";
+>>>>>>> Stashed changes
 
 const boolish = z.preprocess((val) => {
   if (typeof val === "boolean") {
@@ -43,9 +48,13 @@ export const cmsEnvSchema = z.object({
   CMS_ACCESS_TOKEN: isProd
     ? z.string().min(1)
     : z.string().min(1).default("placeholder-token"),
-  SANITY_API_VERSION: isProd
-    ? z.string().min(1)
-    : z.string().min(1).default("2021-10-21"),
+  SANITY_API_VERSION: z
+    .preprocess((value) => {
+      if (typeof value === "string" && value.trim() === "") {
+        return undefined;
+      }
+      return value;
+    }, z.string().min(1).default(SANITY_API_VERSION_DEFAULT)),
   SANITY_PROJECT_ID: isProd
     ? z.string().min(1)
     : z.string().min(1).default("dummy-project-id"),

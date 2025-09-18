@@ -36,6 +36,7 @@ describe("env matrix scenarios", () => {
         STRIPE_SECRET_KEY: "sk_live_123",
         STRIPE_WEBHOOK_SECRET: "whsec_live_123",
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_live_123",
+        EMAIL_FROM: "from@example.com",
         EMAIL_PROVIDER: "resend",
         RESEND_API_KEY: "re_key",
         SHIPPING_PROVIDER: "shippo",
@@ -69,6 +70,7 @@ describe("env matrix scenarios", () => {
   it("sendgrid + currency + shipping options", async () => {
     await withEnv(
       {
+        EMAIL_FROM: "from@example.com",
         EMAIL_PROVIDER: "sendgrid",
         SENDGRID_API_KEY: "sg_key",
         PAYMENTS_SANDBOX: "false",
@@ -100,4 +102,3 @@ describe("env matrix scenarios", () => {
     );
   });
 });
-

@@ -1,13 +1,31 @@
 import { describe, expect, it, jest } from "@jest/globals";
 
-async function withEnv<T>(vars: NodeJS.ProcessEnv, loader: () => Promise<T>): Promise<T> {
-  const OLD = process.env;
+async function withEnv<T>(
+  vars: NodeJS.ProcessEnv,
+  loader: () => Promise<T>,
+): Promise<T> {
+  const snapshot = { ...process.env };
+  const nextEnv: NodeJS.ProcessEnv = Object.assign(Object.create(null), snapshot);
+
+  for (const [key, value] of Object.entries(vars)) {
+    if (typeof value === "undefined") {
+      delete nextEnv[key];
+    } else {
+      nextEnv[key] = value;
+    }
+  }
+
   jest.resetModules();
-  process.env = { ...OLD, ...vars };
+  process.env = nextEnv;
+
   try {
     return await loader();
   } finally {
-    process.env = OLD;
+    const restore: NodeJS.ProcessEnv = Object.assign(
+      Object.create(null),
+      snapshot,
+    );
+    process.env = restore;
   }
 }
 

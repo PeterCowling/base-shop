@@ -3,7 +3,7 @@ jest.mock("path", () => ({
   join: jest.fn((...parts) => parts.join("/")),
   dirname: jest.fn((p) => p.split("/").slice(0, -1).join("/")),
 }));
-import path from "path";
+import * as path from "path";
 
 const product = { id: "123", title: "Title", description: "Desc" };
 const writeMock = jest.fn();
@@ -406,4 +406,3 @@ describe("generateMeta", () => {
     });
   });
 });
-

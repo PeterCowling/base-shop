@@ -1,10 +1,10 @@
 import { promises as fs } from 'node:fs';
-import os from 'node:os';
-import path from 'node:path';
+import { tmpdir } from 'node:os';
+import * as path from 'node:path';
 
 describe('checkShopExists', () => {
   it('returns true when directory exists', async () => {
-    const dataRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'check-shop-'));
+    const dataRoot = await fs.mkdtemp(path.join(tmpdir(), 'check-shop-'));
     await fs.mkdir(path.join(dataRoot, 'existing-shop'));
 
     jest.resetModules();
@@ -17,7 +17,7 @@ describe('checkShopExists', () => {
   });
 
   it('returns false for non-existent directory', async () => {
-    const dataRoot = await fs.mkdtemp(path.join(os.tmpdir(), 'check-shop-'));
+    const dataRoot = await fs.mkdtemp(path.join(tmpdir(), 'check-shop-'));
 
     jest.resetModules();
     jest.doMock('@acme/platform-core/dataRoot', () => ({ resolveDataRoot: () => dataRoot }));

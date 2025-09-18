@@ -80,6 +80,7 @@ describe("env/index", () => {
         AUTH_TOKEN_TTL: "10",
         SESSION_STORE: "redis",
         UPSTASH_REDIS_REST_URL: "https://redis.example.com",
+        UPSTASH_REDIS_REST_TOKEN: undefined,
       },
       async () => {
         const errorSpy = jest
@@ -96,4 +97,3 @@ describe("env/index", () => {
     );
   });
 });
-

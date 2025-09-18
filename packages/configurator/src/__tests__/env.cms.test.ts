@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
 const baseEnv = {
-  NODE_ENV: "production",
+  NODE_ENV: "development",
   CMS_SPACE_URL: "https://cms.example.com",
   CMS_ACCESS_TOKEN: "token",
   SANITY_API_VERSION: "2024-01-01",

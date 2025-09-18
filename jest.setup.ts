@@ -19,7 +19,32 @@ jest.mock("@prisma/client");
  * TS 2540.
  * We work around that by first casting to a mutable record.
  */
-const mutableEnv = process.env as unknown as Record<string, string>;
+const internalEnv = process.env;
+const mutableEnv = internalEnv as unknown as Record<string, string>;
+
+Object.defineProperty(process, "env", {
+  configurable: true,
+  get() {
+    return internalEnv;
+  },
+  set(nextEnv: NodeJS.ProcessEnv) {
+    if (nextEnv && nextEnv !== internalEnv) {
+      for (const key of Object.keys(internalEnv)) {
+        delete internalEnv[key];
+      }
+      for (const [key, value] of Object.entries(nextEnv)) {
+        if (typeof value !== "undefined") {
+          internalEnv[key] = value;
+        }
+      }
+    }
+    if (!nextEnv || !Object.prototype.hasOwnProperty.call(nextEnv, "EMAIL_FROM")) {
+      if (typeof internalEnv.EMAIL_FROM !== "string") {
+        internalEnv.EMAIL_FROM = "test@example.com";
+      }
+    }
+  },
+});
 
 mutableEnv.NODE_ENV ||= "development"; // relax “edge” runtime checks
 mutableEnv.CART_COOKIE_SECRET ||= "test-cart-secret"; // cart cookie signing
@@ -50,7 +75,7 @@ mutableEnv.CMS_ACCESS_TOKEN ||= "cms-access-token";
 mutableEnv.SANITY_API_VERSION ||= "2023-01-01";
 mutableEnv.AUTH_TOKEN_TTL ||= "15m";
 mutableEnv.EMAIL_FROM ||= "test@example.com";
-mutableEnv.EMAIL_PROVIDER ||= "noop";
+mutableEnv.EMAIL_PROVIDER ||= "smtp";
 
 /* -------------------------------------------------------------------------- */
 /* 2.  Polyfills missing from the JSDOM / Node test runtime                    */

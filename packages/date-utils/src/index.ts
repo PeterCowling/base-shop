@@ -139,15 +139,15 @@ export function parseTargetDate(
           }
           date = zoned;
         } else {
-          const utc = new Date(Date.UTC(year, month - 1, day));
+          const local = new Date(year, month - 1, day);
           if (
-            utc.getUTCFullYear() !== year ||
-            utc.getUTCMonth() !== month - 1 ||
-            utc.getUTCDate() !== day
+            local.getFullYear() !== year ||
+            local.getMonth() !== month - 1 ||
+            local.getDate() !== day
           ) {
             return null;
           }
-          date = utc;
+          date = local;
         }
       }
     }
@@ -189,4 +189,3 @@ export function formatDuration(ms: number): string {
   parts.push(`${seconds}s`);
   return parts.join(" ");
 }
-

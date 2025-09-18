@@ -52,16 +52,20 @@ const coverageThreshold = JSON.parse(
   JSON.stringify(coverageDefaults.coverageThreshold)
 );
 
+const forceCjs = process.env.JEST_FORCE_CJS === "1";
+const preset = forceCjs ? "ts-jest" : "ts-jest/presets/default-esm";
+const useESM = !forceCjs;
+
 const config = {
-  preset: "ts-jest/presets/default-esm",
+  preset,
   testEnvironment: "jsdom",
-  extensionsToTreatAsEsm: [".ts", ".tsx"],
+  extensionsToTreatAsEsm: useESM ? [".ts", ".tsx"] : [],
   transform: {
     "^.+\\.(ts|tsx)$": [
       "ts-jest",
       {
         tsconfig: path.join(process.cwd(), "tsconfig.test.json"),
-        useESM: true,
+        useESM,
         diagnostics: false,
         babelConfig: false,
       },

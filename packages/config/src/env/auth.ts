@@ -9,6 +9,8 @@ const nextPhase = process.env.NEXT_PHASE?.toLowerCase();
 const isNextProductionBuildPhase = nextPhase === "phase-production-build";
 const isProd =
   nodeEnv === "production" && !isTest && !isNextProductionBuildPhase;
+const skipEagerValidation =
+  (globalThis as Record<string, unknown>).__ACME_SKIP_EAGER_AUTH_ENV__ === true;
 
 const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
 
@@ -264,7 +266,7 @@ export const authEnv: AuthEnv = new Proxy({} as AuthEnv, {
     Object.getOwnPropertyDescriptor(getAuthEnv(), prop),
 }) as AuthEnv;
 
-if (isProd) {
+if (isProd && !skipEagerValidation) {
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   authEnv.NEXTAUTH_SECRET;
 }

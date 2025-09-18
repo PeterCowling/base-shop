@@ -1,5 +1,6 @@
 import { describe, expect, it, jest } from "@jest/globals";
 import { z } from "zod";
+import { createExpectInvalidAuthEnv } from "../../../test/utils/expectInvalidAuthEnv";
 import { withEnv } from "../../../test/utils/withEnv";
 import {
   NEXT_SECRET,
@@ -13,6 +14,8 @@ const base = {
   NEXTAUTH_SECRET: NEXT_SECRET,
   SESSION_SECRET,
 };
+
+const expectInvalidAuth = createExpectInvalidAuthEnv(withEnv);
 
 const OAUTH_CLIENT_ID = "client-id";
 const OAUTH_CLIENT_SECRET =
@@ -128,19 +131,21 @@ describe("authEnvSchema.superRefine", () => {
 
 describe("loadAuthEnv logging", () => {
   it("logs before throwing on invalid env", async () => {
-    await withEnv(base, async () => {
-      const { loadAuthEnv } = await import("../auth");
-      const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-      expect(() =>
-        loadAuthEnv({
-          NEXTAUTH_SECRET: NEXT_SECRET,
-          SESSION_SECRET,
-          AUTH_PROVIDER: "jwt",
-        } as any),
-      ).toThrow("Invalid auth environment variables");
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      await expectInvalidAuth({
+        env: base,
+        accessor: (auth) =>
+          auth.loadAuthEnv({
+            NEXTAUTH_SECRET: NEXT_SECRET,
+            SESSION_SECRET,
+            AUTH_PROVIDER: "jwt",
+          } as any),
+        consoleErrorSpy: spy,
+      });
       expect(spy).toHaveBeenCalled();
+    } finally {
       spy.mockRestore();
-    });
+    }
   });
 });
-

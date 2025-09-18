@@ -1,5 +1,6 @@
 import { expect } from "@jest/globals";
 import { withEnv } from "../test/utils/withEnv";
+import { expectInvalidAuthEnvWithConfigEnv as expectInvalidAuth } from "../test/utils/expectInvalidAuthEnv";
 
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
 const SESSION_SECRET = "session-secret-32-chars-long-string!";
@@ -13,19 +14,18 @@ describe("auth-env", () => {
   describe("session store redis", () => {
     it("errors without UPSTASH_REDIS_REST_URL", async () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-      await expect(
-        withEnv(
-          {
-            NODE_ENV: "production",
-            NEXTAUTH_SECRET: NEXT_SECRET,
-            SESSION_SECRET,
-            SESSION_STORE: "redis",
-            UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
-            UPSTASH_REDIS_REST_URL: undefined,
-          },
-          () => import("../src/env/auth"),
-        ),
-      ).rejects.toThrow("Invalid auth environment variables");
+      await expectInvalidAuth({
+        env: {
+          NODE_ENV: "production",
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET,
+          SESSION_STORE: "redis",
+          UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
+          UPSTASH_REDIS_REST_URL: undefined,
+        },
+        accessor: (auth) => auth.authEnv.UPSTASH_REDIS_REST_URL,
+        consoleErrorSpy: spy,
+      });
       expect(spy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
@@ -36,19 +36,18 @@ describe("auth-env", () => {
 
     it("errors without UPSTASH_REDIS_REST_TOKEN", async () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-      await expect(
-        withEnv(
-          {
-            NODE_ENV: "production",
-            NEXTAUTH_SECRET: NEXT_SECRET,
-            SESSION_SECRET,
-            SESSION_STORE: "redis",
-            UPSTASH_REDIS_REST_URL: "https://example.com",
-            UPSTASH_REDIS_REST_TOKEN: undefined,
-          },
-          () => import("../src/env/auth"),
-        ),
-      ).rejects.toThrow("Invalid auth environment variables");
+      await expectInvalidAuth({
+        env: {
+          NODE_ENV: "production",
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET,
+          SESSION_STORE: "redis",
+          UPSTASH_REDIS_REST_URL: "https://example.com",
+          UPSTASH_REDIS_REST_TOKEN: undefined,
+        },
+        accessor: (auth) => auth.authEnv.UPSTASH_REDIS_REST_TOKEN,
+        consoleErrorSpy: spy,
+      });
       expect(spy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
@@ -82,18 +81,17 @@ describe("auth-env", () => {
   describe("login rate limit redis", () => {
     it("errors when only LOGIN_RATE_LIMIT_REDIS_URL is set", async () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-      await expect(
-        withEnv(
-          {
-            NODE_ENV: "production",
-            NEXTAUTH_SECRET: NEXT_SECRET,
-            SESSION_SECRET,
-            LOGIN_RATE_LIMIT_REDIS_TOKEN: undefined,
-            LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
-          },
-          () => import("../src/env/auth"),
-        ),
-      ).rejects.toThrow("Invalid auth environment variables");
+      await expectInvalidAuth({
+        env: {
+          NODE_ENV: "production",
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET,
+          LOGIN_RATE_LIMIT_REDIS_TOKEN: undefined,
+          LOGIN_RATE_LIMIT_REDIS_URL: "https://example.com",
+        },
+        accessor: (auth) => auth.authEnv.LOGIN_RATE_LIMIT_REDIS_TOKEN,
+        consoleErrorSpy: spy,
+      });
       expect(spy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
@@ -104,18 +102,17 @@ describe("auth-env", () => {
 
     it("errors when only LOGIN_RATE_LIMIT_REDIS_TOKEN is set", async () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-      await expect(
-        withEnv(
-          {
-            NODE_ENV: "production",
-            NEXTAUTH_SECRET: NEXT_SECRET,
-            SESSION_SECRET,
-            LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
-            LOGIN_RATE_LIMIT_REDIS_URL: undefined,
-          },
-          () => import("../src/env/auth"),
-        ),
-      ).rejects.toThrow("Invalid auth environment variables");
+      await expectInvalidAuth({
+        env: {
+          NODE_ENV: "production",
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET,
+          LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
+          LOGIN_RATE_LIMIT_REDIS_URL: undefined,
+        },
+        accessor: (auth) => auth.authEnv.LOGIN_RATE_LIMIT_REDIS_URL,
+        consoleErrorSpy: spy,
+      });
       expect(spy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
@@ -147,18 +144,17 @@ describe("auth-env", () => {
   describe("auth providers", () => {
     it("errors when JWT_SECRET missing for jwt provider", async () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-      await expect(
-        withEnv(
-          {
-            NODE_ENV: "production",
-            NEXTAUTH_SECRET: NEXT_SECRET,
-            SESSION_SECRET,
-            AUTH_PROVIDER: "jwt",
-            JWT_SECRET: undefined,
-          },
-          () => import("../src/env/auth"),
-        ),
-      ).rejects.toThrow("Invalid auth environment variables");
+      await expectInvalidAuth({
+        env: {
+          NODE_ENV: "production",
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET,
+          AUTH_PROVIDER: "jwt",
+          JWT_SECRET: undefined,
+        },
+        accessor: (auth) => auth.authEnv.JWT_SECRET,
+        consoleErrorSpy: spy,
+      });
       expect(spy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
@@ -185,19 +181,18 @@ describe("auth-env", () => {
 
     it("errors when OAUTH_CLIENT_ID missing for oauth provider", async () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-      await expect(
-        withEnv(
-          {
-            NODE_ENV: "production",
-            NEXTAUTH_SECRET: NEXT_SECRET,
-            SESSION_SECRET,
-            AUTH_PROVIDER: "oauth",
-            OAUTH_CLIENT_ID: undefined,
-            OAUTH_CLIENT_SECRET: STRONG_TOKEN,
-          },
-          () => import("../src/env/auth"),
-        ),
-      ).rejects.toThrow("Invalid auth environment variables");
+      await expectInvalidAuth({
+        env: {
+          NODE_ENV: "production",
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET,
+          AUTH_PROVIDER: "oauth",
+          OAUTH_CLIENT_ID: undefined,
+          OAUTH_CLIENT_SECRET: STRONG_TOKEN,
+        },
+        accessor: (auth) => auth.authEnv.OAUTH_CLIENT_ID,
+        consoleErrorSpy: spy,
+      });
       expect(spy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
@@ -208,19 +203,18 @@ describe("auth-env", () => {
 
     it("errors when OAUTH_CLIENT_SECRET missing for oauth provider", async () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-      await expect(
-        withEnv(
-          {
-            NODE_ENV: "production",
-            NEXTAUTH_SECRET: NEXT_SECRET,
-            SESSION_SECRET,
-            AUTH_PROVIDER: "oauth",
-            OAUTH_CLIENT_ID: "client-id",
-            OAUTH_CLIENT_SECRET: undefined,
-          },
-          () => import("../src/env/auth"),
-        ),
-      ).rejects.toThrow("Invalid auth environment variables");
+      await expectInvalidAuth({
+        env: {
+          NODE_ENV: "production",
+          NEXTAUTH_SECRET: NEXT_SECRET,
+          SESSION_SECRET,
+          AUTH_PROVIDER: "oauth",
+          OAUTH_CLIENT_ID: "client-id",
+          OAUTH_CLIENT_SECRET: undefined,
+        },
+        accessor: (auth) => auth.authEnv.OAUTH_CLIENT_SECRET,
+        consoleErrorSpy: spy,
+      });
       expect(spy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
@@ -275,12 +269,11 @@ describe("auth-env", () => {
 
     it("rejects numeric values", async () => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-      await expect(
-        withEnv(
-          { ...base, AUTH_TOKEN_TTL: 30 as any },
-          () => import("../src/env/auth"),
-        ),
-      ).rejects.toThrow("Invalid auth environment variables");
+      await expectInvalidAuth({
+        env: { ...base, AUTH_TOKEN_TTL: 30 as any },
+        accessor: (auth) => auth.authEnv.AUTH_TOKEN_TTL,
+        consoleErrorSpy: spy,
+      });
       expect(spy).toHaveBeenCalledWith(
         "❌ Invalid auth environment variables:",
         expect.objectContaining({
@@ -290,4 +283,3 @@ describe("auth-env", () => {
     });
   });
 });
-

@@ -32,6 +32,13 @@ describe("env index module", () => {
       });
       return {
         authEnvSchema: base.superRefine(() => {}),
+        loadAuthEnv: () => ({
+          NEXTAUTH_SECRET: "x".repeat(32),
+          SESSION_SECRET: "x".repeat(32),
+          AUTH_PROVIDER: "local",
+          AUTH_TOKEN_TTL: 900,
+          AUTH_TOKEN_EXPIRES_AT: new Date(),
+        }),
       };
     });
 
@@ -123,4 +130,3 @@ describe("env index module", () => {
     expect(nested.shape).not.toHaveProperty("a");
   });
 });
-

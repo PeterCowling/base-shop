@@ -1,7 +1,7 @@
 // packages/config/src/env/core.ts
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
-import { authEnvSchema } from "./auth.js";
+import { authEnvSchema, loadAuthEnv } from "./auth.js";
 import { cmsEnvSchema } from "./cms.schema.js";
 import { emailEnvSchema } from "./email.js";
 import { paymentsEnvSchema } from "./payments.js";
@@ -33,29 +33,9 @@ const isTest = shouldUseTestDefaults();
 const isProd = resolveNodeEnv() === "production" && !isTest;
 
 const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
-const NON_STRING_META_KEY = "__acmeNonStringKeys__";
-
-function collectNonStringKeys(raw: unknown): Set<string> {
-  const keys = new Set<string>();
-  const rawRecord = raw as Record<string | symbol, unknown> | undefined;
-  if (rawRecord) {
-    const flagged = rawRecord[NON_STRING_ENV_SYMBOL];
-    if (Array.isArray(flagged)) {
-      for (const key of flagged) {
-        if (typeof key === "string") keys.add(key);
-      }
-    }
-  }
-
-  const globalFlagged = (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
-  if (Array.isArray(globalFlagged)) {
-    for (const key of globalFlagged) {
-      if (typeof key === "string") keys.add(key);
-    }
-  }
-
-  return keys;
-}
+const AUTH_TTL_META_SYMBOL = Symbol.for(
+  "acme.config.authTtlWasNonString",
+);
 
 const baseEnvSchema = z
   .object({
@@ -164,10 +144,20 @@ const coreEnvPreprocessedSchema = z.preprocess((input) => {
 
   const env = { ...(input as Record<string, unknown>) };
 
-  const nonStringKeys = collectNonStringKeys(input);
-  if (nonStringKeys.size > 0) {
-    Object.defineProperty(env, NON_STRING_META_KEY, {
-      value: nonStringKeys,
+  const rawRecord = input as Record<string | symbol, unknown> | undefined;
+  const flagged = Array.isArray(rawRecord?.[NON_STRING_ENV_SYMBOL])
+    ? (rawRecord![NON_STRING_ENV_SYMBOL] as unknown[])
+    : [];
+  const globalFlagged = (globalThis as Record<string, unknown>)
+    .__ACME_NON_STRING_ENV__;
+  const ttlWasNonString =
+    typeof (rawRecord?.AUTH_TOKEN_TTL) === "number" ||
+    (Array.isArray(flagged) && flagged.includes("AUTH_TOKEN_TTL")) ||
+    (Array.isArray(globalFlagged) && globalFlagged.includes("AUTH_TOKEN_TTL"));
+
+  if (ttlWasNonString) {
+    Object.defineProperty(env, AUTH_TTL_META_SYMBOL, {
+      value: true,
       enumerable: false,
       configurable: true,
     });
@@ -250,18 +240,19 @@ export const coreEnvSchema = coreEnvPreprocessedSchema.superRefine((env, ctx) =>
     ...(env as Record<string, unknown>),
   };
   const rawTtl = envForAuth.AUTH_TOKEN_TTL;
-  const storedMeta = (env as Record<string, unknown>)[NON_STRING_META_KEY];
-  const nonStringKeys: Set<string> | undefined =
-    storedMeta instanceof Set ? storedMeta : collectNonStringKeys(process.env);
-  const ttlWasNonString = nonStringKeys?.has("AUTH_TOKEN_TTL");
+  const globalFlagged = (globalThis as Record<string, unknown>)
+    .__ACME_NON_STRING_ENV__;
+  const ttlWasNonString =
+    (env as Record<symbol, unknown>)[AUTH_TTL_META_SYMBOL] === true ||
+    typeof rawTtl === "number" ||
+    (Array.isArray(globalFlagged) &&
+      globalFlagged.includes("AUTH_TOKEN_TTL"));
 
   if (ttlWasNonString) {
     delete envForAuth.AUTH_TOKEN_TTL;
-    nonStringKeys?.delete("AUTH_TOKEN_TTL");
-  } else if (typeof rawTtl === "number") {
-    // Let auth schema default to 15m when undefined
-    delete envForAuth.AUTH_TOKEN_TTL;
-  } else if (typeof rawTtl === "string") {
+  }
+
+  if (!ttlWasNonString && typeof rawTtl === "string") {
     const trimmed = rawTtl.trim();
     if (trimmed === "") {
       delete envForAuth.AUTH_TOKEN_TTL;
@@ -273,9 +264,7 @@ export const coreEnvSchema = coreEnvPreprocessedSchema.superRefine((env, ctx) =>
     }
   }
 
-  if (nonStringKeys && nonStringKeys.size === 0) {
-    delete (env as Record<string, unknown>)[NON_STRING_META_KEY];
-  }
+  delete (env as Record<symbol, unknown>)[AUTH_TTL_META_SYMBOL];
 
   const authResult = authEnvSchema.safeParse(envForAuth);
   if (authResult.success) {
@@ -460,4 +449,35 @@ export const coreEnv: CoreEnv = new Proxy({} as CoreEnv, {
 if (isProd) {
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   coreEnv.NODE_ENV;
+}
+
+if (shouldUseTestDefaults()) {
+  const snapshot = snapshotForCoreEnv();
+  const redisSelected =
+    typeof snapshot.SESSION_STORE === "string" &&
+    snapshot.SESSION_STORE.toLowerCase() === "redis";
+  const hasRedisUrl =
+    typeof snapshot.UPSTASH_REDIS_REST_URL === "string" &&
+    snapshot.UPSTASH_REDIS_REST_URL.trim() !== "";
+  const hasRedisToken =
+    typeof snapshot.UPSTASH_REDIS_REST_TOKEN === "string" &&
+    snapshot.UPSTASH_REDIS_REST_TOKEN.trim() !== "";
+  const hasRateLimitUrl =
+    typeof snapshot.LOGIN_RATE_LIMIT_REDIS_URL === "string" &&
+    snapshot.LOGIN_RATE_LIMIT_REDIS_URL.trim() !== "";
+  const hasRateLimitToken =
+    typeof snapshot.LOGIN_RATE_LIMIT_REDIS_TOKEN === "string" &&
+    snapshot.LOGIN_RATE_LIMIT_REDIS_TOKEN.trim() !== "";
+
+  if (
+    redisSelected ||
+    hasRedisUrl ||
+    hasRedisToken ||
+    hasRateLimitUrl ||
+    hasRateLimitToken
+  ) {
+    const allowNumericTtl =
+      (globalThis as Record<string, unknown>).__ACME_ALLOW_NUMERIC_TTL__ === true;
+    loadAuthEnv(snapshot, { allowNumericTtl });
+  }
 }

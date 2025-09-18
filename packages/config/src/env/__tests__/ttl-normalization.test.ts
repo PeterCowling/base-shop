@@ -1,6 +1,17 @@
 import { describe, it, expect } from "@jest/globals";
 import { withEnv } from "../../../test/utils/withEnv";
+import { expectInvalidAuthEnvWithConfigEnv } from "../../../test/utils/expectInvalidAuthEnv";
 import { NEXT_SECRET, SESSION_SECRET } from "./authEnvTestUtils";
+
+async function expectInvalidAuthEnv(
+  vars: Record<string, string | undefined>,
+  accessor: (env: Record<string, unknown>) => unknown,
+): Promise<void> {
+  await expectInvalidAuthEnvWithConfigEnv({
+    env: vars,
+    accessor: (auth) => accessor(auth.authEnv as Record<string, unknown>),
+  });
+}
 
 describe.each(["production", "development"]) (
   "AUTH_TOKEN_TTL normalization (%s)",
@@ -103,11 +114,9 @@ describe("AUTH_TOKEN_TTL parsing", () => {
   });
 
   it("rejects invalid TTL strings", async () => {
-    await expect(
-      withEnv(
-        { ...base, AUTH_TOKEN_TTL: "1h" },
-        () => import("../auth"),
-      ),
-    ).rejects.toThrow("Invalid auth environment variables");
+    await expectInvalidAuthEnv(
+      { ...base, AUTH_TOKEN_TTL: "1h" },
+      (env) => env.AUTH_TOKEN_TTL,
+    );
   });
 });

@@ -1,99 +1,78 @@
 import { describe, it, expect, afterEach } from "@jest/globals";
 import { withEnv } from "../../../config/test/utils/withEnv";
+import { expectInvalidAuthEnvWithConfigEnv } from "../../../config/test/utils/expectInvalidAuthEnv";
 
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
 const SESSION_SECRET = "session-secret-32-chars-long-string!";
 const REDIS_URL = "https://example.com";
 const REDIS_TOKEN = "redis-token-32-chars-long-string!";
 
-function selectStore(env: any): string {
-  return (
-    env.SESSION_STORE ??
-    (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN
-      ? "redis"
-      : "memory")
-  );
-}
+type EnvOverrides = Record<string, string | undefined>;
 
-describe("auth env session configuration", () => {
-  afterEach(() => {
-    jest.restoreAllMocks();
+const prodEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
+  NODE_ENV: "production",
+  NEXTAUTH_SECRET: NEXT_SECRET,
+  SESSION_SECRET,
+  ...overrides,
+});
+
+const expectInvalidProd = (
+  overrides: EnvOverrides,
+  accessor: (env: Record<string, unknown>) => unknown,
+  consoleErrorSpy?: jest.SpyInstance,
+) =>
+  expectInvalidAuthEnvWithConfigEnv({
+    env: prodEnv(overrides),
+    accessor: (auth) => accessor(auth.authEnv as Record<string, unknown>),
+    consoleErrorSpy,
   });
 
+const getProdAuthEnv = async (overrides: EnvOverrides = {}) => {
+  const { authEnv } = await withEnv(prodEnv(overrides), () => import("@acme/config/env/auth"));
+  return authEnv;
+};
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
+describe("auth env session configuration", () => {
   it("throws when SESSION_SECRET is missing", async () => {
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-
-    await expect(
-      withEnv(
-        {
-          NODE_ENV: "production",
-          NEXTAUTH_SECRET: NEXT_SECRET,
-          SESSION_SECRET: undefined,
-        },
-        () => import("@acme/config/env/auth"),
-      ),
-    ).rejects.toThrow("Invalid auth environment variables");
+    await expectInvalidProd({ SESSION_SECRET: undefined }, (env) => env.SESSION_SECRET, spy);
     expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
   });
 
   it("selects redis when explicitly configured", async () => {
-    const { authEnv } = await withEnv(
-      {
-        NODE_ENV: "production",
-        NEXTAUTH_SECRET: NEXT_SECRET,
-        SESSION_SECRET,
-        SESSION_STORE: "redis",
-        UPSTASH_REDIS_REST_URL: REDIS_URL,
-        UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
-      },
-      () => import("@acme/config/env/auth"),
-    );
-
-    expect(selectStore(authEnv)).toBe("redis");
+    const authEnv = await getProdAuthEnv({
+      SESSION_STORE: "redis",
+      UPSTASH_REDIS_REST_URL: REDIS_URL,
+      UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
+    });
+    expect(authEnv.SESSION_STORE).toBe("redis");
   });
 
   it("prefers memory when explicitly set", async () => {
-    const { authEnv } = await withEnv(
-      {
-        NODE_ENV: "production",
-        NEXTAUTH_SECRET: NEXT_SECRET,
-        SESSION_SECRET,
-        SESSION_STORE: "memory",
-        UPSTASH_REDIS_REST_URL: REDIS_URL,
-        UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
-      },
-      () => import("@acme/config/env/auth"),
-    );
-
-    expect(selectStore(authEnv)).toBe("memory");
+    const authEnv = await getProdAuthEnv({
+      SESSION_STORE: "memory",
+      UPSTASH_REDIS_REST_URL: REDIS_URL,
+      UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
+    });
+    expect(authEnv.SESSION_STORE).toBe("memory");
   });
 
   it("falls back to redis when creds present without explicit store", async () => {
-    const { authEnv } = await withEnv(
-      {
-        NODE_ENV: "production",
-        NEXTAUTH_SECRET: NEXT_SECRET,
-        SESSION_SECRET,
-        UPSTASH_REDIS_REST_URL: REDIS_URL,
-        UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
-      },
-      () => import("@acme/config/env/auth"),
-    );
-
-    expect(selectStore(authEnv)).toBe("redis");
+    const authEnv = await getProdAuthEnv({
+      UPSTASH_REDIS_REST_URL: REDIS_URL,
+      UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
+    });
+    expect(authEnv.SESSION_STORE).toBe("redis");
   });
 
   it("falls back to memory when no store or creds provided", async () => {
-    const { authEnv } = await withEnv(
-      {
-        NODE_ENV: "production",
-        NEXTAUTH_SECRET: NEXT_SECRET,
-        SESSION_SECRET,
-      },
-      () => import("@acme/config/env/auth"),
-    );
-
-    expect(selectStore(authEnv)).toBe("memory");
+    const authEnv = await getProdAuthEnv();
+    expect(authEnv.SESSION_STORE).toBe("memory");
   });
 });
 

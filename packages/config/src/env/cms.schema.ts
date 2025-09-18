@@ -1,23 +1,8 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
-<<<<<<< Updated upstream
-const envMode = process.env.NODE_ENV;
-const jestWorkerId = process.env.JEST_WORKER_ID;
-const hasJestGlobal =
-  typeof (globalThis as { jest?: unknown }).jest !== "undefined";
-const hasJestExpect =
-  typeof (globalThis as { expect?: unknown }).expect === "function";
-const isTestLike =
-  envMode === "test" ||
-  typeof jestWorkerId !== "undefined" ||
-  hasJestGlobal ||
-  hasJestExpect;
-const isProd = envMode === "production" && !isTestLike;
-=======
 const isProd = process.env.NODE_ENV === "production";
 const SANITY_API_VERSION_DEFAULT = "2021-10-21";
->>>>>>> Stashed changes
 
 const boolish = z.preprocess((val) => {
   if (typeof val === "boolean") {

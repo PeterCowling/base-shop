@@ -1,8 +1,28 @@
 import { describe, it, expect, afterEach } from '@jest/globals';
+import { createExpectInvalidAuthEnv } from '../../../config/test/utils/expectInvalidAuthEnv';
 import { withEnv } from './envTestUtils';
 
 const REDIS_URL = 'https://example.com';
 const STRONG_TOKEN = 'redis-token-32-chars-long-string!';
+const expectInvalidAuthEnv = createExpectInvalidAuthEnv(withEnv);
+
+const devEnv = (
+  overrides: Record<string, string | undefined>,
+): Record<string, string | undefined> => ({
+  NODE_ENV: 'development',
+  ...overrides,
+});
+
+const expectInvalidDev = (
+  overrides: Record<string, string | undefined>,
+  accessor: (env: Record<string, unknown>) => unknown,
+  consoleErrorSpy?: jest.SpyInstance,
+) =>
+  expectInvalidAuthEnv({
+    env: devEnv(overrides),
+    accessor: (auth) => accessor(auth.authEnv as Record<string, unknown>),
+    consoleErrorSpy,
+  });
 
 describe('auth env validation', () => {
   afterEach(() => {
@@ -23,34 +43,32 @@ describe('auth env validation', () => {
 
   it('requires both redis credentials when SESSION_STORE=redis (missing token)', async () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    await expect(
-      withEnv(
-        {
-          NODE_ENV: 'development',
-          SESSION_STORE: 'redis',
-          UPSTASH_REDIS_REST_URL: REDIS_URL,
-        },
-        () => import('@acme/config/src/env/auth.ts'),
-      ),
-    ).rejects.toThrow('Invalid auth environment variables');
+    await expectInvalidDev(
+      {
+        SESSION_STORE: 'redis',
+        UPSTASH_REDIS_REST_URL: REDIS_URL,
+      },
+      (env) => env.UPSTASH_REDIS_REST_TOKEN,
+      errorSpy,
+    );
     const formatted = errorSpy.mock.calls[0][1];
     expect(formatted.UPSTASH_REDIS_REST_TOKEN?._errors[0]).toContain('UPSTASH_REDIS_REST_TOKEN is required');
+    errorSpy.mockRestore();
   });
 
   it('requires both redis credentials when SESSION_STORE=redis (missing url)', async () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    await expect(
-      withEnv(
-        {
-          NODE_ENV: 'development',
-          SESSION_STORE: 'redis',
-          UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
-        },
-        () => import('@acme/config/src/env/auth.ts'),
-      ),
-    ).rejects.toThrow('Invalid auth environment variables');
+    await expectInvalidDev(
+      {
+        SESSION_STORE: 'redis',
+        UPSTASH_REDIS_REST_TOKEN: STRONG_TOKEN,
+      },
+      (env) => env.UPSTASH_REDIS_REST_URL,
+      errorSpy,
+    );
     const formatted = errorSpy.mock.calls[0][1];
     expect(formatted.UPSTASH_REDIS_REST_URL?._errors[0]).toContain('UPSTASH_REDIS_REST_URL is required');
+    errorSpy.mockRestore();
   });
 
   it('accepts redis store when credentials provided', async () => {
@@ -68,41 +86,37 @@ describe('auth env validation', () => {
 
   it('requires both login rate limit redis credentials (missing token)', async () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    await expect(
-      withEnv(
-        {
-          NODE_ENV: 'development',
-          LOGIN_RATE_LIMIT_REDIS_URL: REDIS_URL,
-        },
-        () => import('@acme/config/src/env/auth.ts'),
-      ),
-    ).rejects.toThrow('Invalid auth environment variables');
+    await expectInvalidDev(
+      {
+        LOGIN_RATE_LIMIT_REDIS_URL: REDIS_URL,
+      },
+      (env) => env.LOGIN_RATE_LIMIT_REDIS_TOKEN,
+      errorSpy,
+    );
     const formatted = errorSpy.mock.calls[0][1];
     expect(formatted.LOGIN_RATE_LIMIT_REDIS_TOKEN?._errors[0]).toContain('LOGIN_RATE_LIMIT_REDIS_TOKEN is required');
+    errorSpy.mockRestore();
   });
 
   it('requires both login rate limit redis credentials (missing url)', async () => {
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-    await expect(
-      withEnv(
-        {
-          NODE_ENV: 'development',
-          LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
-        },
-        () => import('@acme/config/src/env/auth.ts'),
-      ),
-    ).rejects.toThrow('Invalid auth environment variables');
+    await expectInvalidDev(
+      {
+        LOGIN_RATE_LIMIT_REDIS_TOKEN: STRONG_TOKEN,
+      },
+      (env) => env.LOGIN_RATE_LIMIT_REDIS_URL,
+      errorSpy,
+    );
     const formatted = errorSpy.mock.calls[0][1];
     expect(formatted.LOGIN_RATE_LIMIT_REDIS_URL?._errors[0]).toContain('LOGIN_RATE_LIMIT_REDIS_URL is required');
+    errorSpy.mockRestore();
   });
 
   it('throws for jwt provider without secret', async () => {
-    await expect(
-      withEnv(
-        { NODE_ENV: 'development', AUTH_PROVIDER: 'jwt' },
-        () => import('@acme/config/src/env/auth.ts'),
-      ),
-    ).rejects.toThrow('Invalid auth environment variables');
+    await expectInvalidDev(
+      { AUTH_PROVIDER: 'jwt' },
+      (env) => env.JWT_SECRET,
+    );
   });
 
   it('loads for jwt provider with secret', async () => {
@@ -118,29 +132,23 @@ describe('auth env validation', () => {
   });
 
   it('throws for oauth provider missing client id', async () => {
-    await expect(
-      withEnv(
-        {
-          NODE_ENV: 'development',
-          AUTH_PROVIDER: 'oauth',
-          OAUTH_CLIENT_SECRET: STRONG_TOKEN,
-        },
-        () => import('@acme/config/src/env/auth.ts'),
-      ),
-    ).rejects.toThrow('Invalid auth environment variables');
+    await expectInvalidDev(
+      {
+        AUTH_PROVIDER: 'oauth',
+        OAUTH_CLIENT_SECRET: STRONG_TOKEN,
+      },
+      (env) => env.OAUTH_CLIENT_ID,
+    );
   });
 
   it('throws for oauth provider missing client secret', async () => {
-    await expect(
-      withEnv(
-        {
-          NODE_ENV: 'development',
-          AUTH_PROVIDER: 'oauth',
-          OAUTH_CLIENT_ID: 'client-id',
-        },
-        () => import('@acme/config/src/env/auth.ts'),
-      ),
-    ).rejects.toThrow('Invalid auth environment variables');
+    await expectInvalidDev(
+      {
+        AUTH_PROVIDER: 'oauth',
+        OAUTH_CLIENT_ID: 'client-id',
+      },
+      (env) => env.OAUTH_CLIENT_SECRET,
+    );
   });
 
   it('loads when oauth provider has credentials', async () => {
@@ -211,4 +219,3 @@ describe('auth env validation', () => {
     errorSpy.mockRestore();
   });
 });
-

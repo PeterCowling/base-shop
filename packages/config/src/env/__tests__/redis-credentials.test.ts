@@ -1,6 +1,25 @@
 import { describe, it, expect } from "@jest/globals";
 import { withEnv } from "../../../test/utils/withEnv";
+import { expectInvalidAuthEnvWithConfigEnv } from "../../../test/utils/expectInvalidAuthEnv";
 import { NEXT_SECRET, SESSION_SECRET, REDIS_URL, REDIS_TOKEN } from "./authEnvTestUtils";
+
+type EnvOverrides = Record<string, string | undefined>;
+
+const prodEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
+  NODE_ENV: "production",
+  NEXTAUTH_SECRET: NEXT_SECRET,
+  SESSION_SECRET,
+  ...overrides,
+});
+
+const expectInvalidProd = (
+  overrides: EnvOverrides,
+  accessor: (env: Record<string, unknown>) => unknown,
+) =>
+  expectInvalidAuthEnvWithConfigEnv({
+    env: prodEnv(overrides),
+    accessor: (auth) => accessor(auth.authEnv as Record<string, unknown>),
+  });
 
 describe("authEnvSchema redis credentials", () => {
   const baseEnv = { NEXTAUTH_SECRET: NEXT_SECRET, SESSION_SECRET };
@@ -53,30 +72,26 @@ describe("authEnvSchema redis credentials", () => {
 });
 
 describe("login rate limit redis credentials", () => {
-  const base = {
-    NODE_ENV: "production",
-    NEXTAUTH_SECRET: NEXT_SECRET,
-    SESSION_SECRET,
-  } as const;
+  const base = prodEnv();
 
   describe.each([
     ["missing LOGIN_RATE_LIMIT_REDIS_URL", { LOGIN_RATE_LIMIT_REDIS_TOKEN: REDIS_TOKEN }],
     ["missing LOGIN_RATE_LIMIT_REDIS_TOKEN", { LOGIN_RATE_LIMIT_REDIS_URL: REDIS_URL }],
   ])("throws when %s", (_, extra) => {
     it("throws", async () => {
-      await expect(
-        withEnv({ ...base, ...extra }, () => import("../auth")),
-      ).rejects.toThrow("Invalid auth environment variables");
+      const accessor = "LOGIN_RATE_LIMIT_REDIS_URL" in extra
+        ? (env: Record<string, unknown>) => env.LOGIN_RATE_LIMIT_REDIS_TOKEN
+        : (env: Record<string, unknown>) => env.LOGIN_RATE_LIMIT_REDIS_URL;
+      await expectInvalidProd(extra, accessor);
     });
   });
 
   it("loads when rate limit redis credentials provided", async () => {
     const { authEnv } = await withEnv(
-      {
-        ...base,
+      prodEnv({
         LOGIN_RATE_LIMIT_REDIS_URL: REDIS_URL,
         LOGIN_RATE_LIMIT_REDIS_TOKEN: REDIS_TOKEN,
-      },
+      }),
       () => import("../auth"),
     );
     expect(authEnv.LOGIN_RATE_LIMIT_REDIS_URL).toBe(REDIS_URL);

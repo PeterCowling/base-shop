@@ -1,6 +1,25 @@
 import { describe, it, expect } from "@jest/globals";
 import { withEnv } from "../../../test/utils/withEnv";
+import { expectInvalidAuthEnvWithConfigEnv } from "../../../test/utils/expectInvalidAuthEnv";
 import { NEXT_SECRET, SESSION_SECRET, REDIS_TOKEN } from "./authEnvTestUtils";
+
+type EnvOverrides = Record<string, string | undefined>;
+
+const prodEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
+  NODE_ENV: "production",
+  NEXTAUTH_SECRET: NEXT_SECRET,
+  SESSION_SECRET,
+  ...overrides,
+});
+
+const expectInvalidProd = (
+  overrides: EnvOverrides,
+  accessor: (env: Record<string, unknown>) => unknown,
+) =>
+  expectInvalidAuthEnvWithConfigEnv({
+    env: prodEnv(overrides),
+    accessor: (auth) => accessor(auth.authEnv as Record<string, unknown>),
+  });
 
 describe("authEnvSchema provider credentials", () => {
   const baseEnv = { NEXTAUTH_SECRET: NEXT_SECRET, SESSION_SECRET };
@@ -66,11 +85,7 @@ describe("authEnvSchema provider credentials", () => {
 });
 
 describe("AUTH_PROVIDER credentials", () => {
-  const base = {
-    NODE_ENV: "production",
-    NEXTAUTH_SECRET: NEXT_SECRET,
-    SESSION_SECRET,
-  } as const;
+  const base = prodEnv();
 
   describe.each([
     [
@@ -93,16 +108,15 @@ describe("AUTH_PROVIDER credentials", () => {
     ],
   ] as const)("AUTH_PROVIDER=%s", (provider, badVars, goodVars) => {
     it("fails without credentials", async () => {
-      await expect(
-        withEnv({ ...base, ...badVars }, () => import("../auth")),
-      ).rejects.toThrow("Invalid auth environment variables");
+      const accessor =
+        badVars.AUTH_PROVIDER === "jwt"
+          ? (env: Record<string, unknown>) => env.JWT_SECRET
+          : (env: Record<string, unknown>) => env.OAUTH_CLIENT_ID;
+      await expectInvalidProd(badVars, accessor);
     });
 
     it("succeeds with credentials", async () => {
-      const { authEnv } = await withEnv(
-        { ...base, ...goodVars },
-        () => import("../auth"),
-      );
+      const { authEnv } = await withEnv(prodEnv(goodVars), () => import("../auth"));
       expect(authEnv.AUTH_PROVIDER).toBe(provider);
     });
   });

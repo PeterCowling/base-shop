@@ -1,19 +1,20 @@
-import { describe, it, expect, jest } from '@jest/globals';
+import { describe, it, expect, jest } from "@jest/globals";
+import { createExpectInvalidAuthEnv } from "../../../test/utils/expectInvalidAuthEnv";
 import {
   DEV_NEXTAUTH_SECRET,
   DEV_SESSION_SECRET,
   REDIS_URL,
   REDIS_TOKEN,
-} from './authEnvTestUtils';
+} from "./authEnvTestUtils";
 
-const JWT_SECRET = 'jwt-secret-32-chars-long-string!!!';
-const OAUTH_CLIENT_ID = 'client-id';
+const JWT_SECRET = "jwt-secret-32-chars-long-string!!!";
+const OAUTH_CLIENT_ID = "client-id";
 const OAUTH_CLIENT_SECRET =
-  'oauth-client-secret-32-chars-long-string!!';
+  "oauth-client-secret-32-chars-long-string!!";
 
 const reload = async () => {
   jest.resetModules();
-  return await import('../auth.ts');
+  return await import("../auth.ts");
 };
 
 // Ensure tests run with a predictable environment even if the host process
@@ -56,6 +57,8 @@ const withEnv = async (
   }
 };
 
+const expectInvalidAuth = createExpectInvalidAuthEnv(withEnv);
+
 describe('config/env/auth', () => {
   it('coerces boolean and ttl', async () =>
     withEnv(
@@ -73,10 +76,9 @@ describe('config/env/auth', () => {
     ));
 
   it('throws on unknown provider', async () =>
-    withEnv({ AUTH_PROVIDER: 'unknown' }, async () => {
-      await expect(reload()).rejects.toThrow(
-        'Invalid auth environment variables',
-      );
+    expectInvalidAuth({
+      env: { AUTH_PROVIDER: "unknown" },
+      accessor: (auth) => auth.authEnv.AUTH_PROVIDER,
     }));
 
   it('allows dev defaults during Next production build phase', async () =>
@@ -93,16 +95,17 @@ describe('config/env/auth', () => {
       },
     ));
 
-  it('requires JWT_SECRET for jwt provider', async () =>
-    withEnv({ NODE_ENV: 'development', AUTH_PROVIDER: 'jwt' }, async () => {
-      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      await expect(reload()).rejects.toThrow(
-        'Invalid auth environment variables',
-      );
-      const errorObj = spy.mock.calls[0][1] as Record<string, unknown>;
-      expect(errorObj).toHaveProperty('JWT_SECRET');
-      spy.mockRestore();
-    }));
+  it('requires JWT_SECRET for jwt provider', async () => {
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    await expectInvalidAuth({
+      env: { NODE_ENV: "development", AUTH_PROVIDER: "jwt" },
+      accessor: (auth) => auth.authEnv.JWT_SECRET,
+      consoleErrorSpy: spy,
+    });
+    const errorObj = spy.mock.calls[0][1] as Record<string, unknown>;
+    expect(errorObj).toHaveProperty("JWT_SECRET");
+    spy.mockRestore();
+  });
 
   it.each([
     ['60', 60],
@@ -142,36 +145,33 @@ describe('config/env/auth', () => {
         { UPSTASH_REDIS_REST_URL: REDIS_URL },
         'UPSTASH_REDIS_REST_TOKEN',
       ],
-    ])('fails when %s', async (_label, extra, missing) =>
-      withEnv(
-        { NODE_ENV: 'development', SESSION_STORE: 'redis', ...extra },
-        async () => {
-          const spy = jest
-            .spyOn(console, 'error')
-            .mockImplementation(() => {});
-          await expect(reload()).rejects.toThrow(
-            'Invalid auth environment variables',
-          );
-          const errorObj = spy.mock.calls[0][1] as Record<string, unknown>;
-          expect(errorObj).toHaveProperty(missing);
-          spy.mockRestore();
-        },
-      ),
-    );
+    ])('fails when %s', async (_label, extra, missing) => {
+      const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+      await expectInvalidAuth({
+        env: { NODE_ENV: "development", SESSION_STORE: "redis", ...extra },
+        accessor: (auth) =>
+          (auth.authEnv as Record<string, unknown>)[missing],
+        consoleErrorSpy: spy,
+      });
+      const errorObj = spy.mock.calls[0][1] as Record<string, unknown>;
+      expect(errorObj).toHaveProperty(missing);
+      spy.mockRestore();
+    });
 
-    it('fails when both redis credentials missing', async () =>
-      withEnv({ NODE_ENV: 'development', SESSION_STORE: 'redis' }, async () => {
-        const spy = jest
-          .spyOn(console, 'error')
-          .mockImplementation(() => {});
-        await expect(reload()).rejects.toThrow(
-          'Invalid auth environment variables',
-        );
-        const errorObj = spy.mock.calls[0][1] as Record<string, unknown>;
-        expect(errorObj).toHaveProperty('UPSTASH_REDIS_REST_URL');
-        expect(errorObj).toHaveProperty('UPSTASH_REDIS_REST_TOKEN');
-        spy.mockRestore();
-      }));
+    it('fails when both redis credentials missing', async () => {
+      const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+      await expectInvalidAuth({
+        env: { NODE_ENV: "development", SESSION_STORE: "redis" },
+        accessor: (auth) => (auth.authEnv as Record<string, unknown>)[
+          "UPSTASH_REDIS_REST_URL"
+        ],
+        consoleErrorSpy: spy,
+      });
+      const errorObj = spy.mock.calls[0][1] as Record<string, unknown>;
+      expect(errorObj).toHaveProperty("UPSTASH_REDIS_REST_URL");
+      expect(errorObj).toHaveProperty("UPSTASH_REDIS_REST_TOKEN");
+      spy.mockRestore();
+    });
   });
 
   describe('login rate limit redis credentials', () => {
@@ -186,19 +186,18 @@ describe('config/env/auth', () => {
         { LOGIN_RATE_LIMIT_REDIS_TOKEN: REDIS_TOKEN },
         'LOGIN_RATE_LIMIT_REDIS_URL',
       ],
-    ])('errors with %s', async (_label, extra, missing) =>
-      withEnv({ NODE_ENV: 'development', ...extra }, async () => {
-        const spy = jest
-          .spyOn(console, 'error')
-          .mockImplementation(() => {});
-        await expect(reload()).rejects.toThrow(
-          'Invalid auth environment variables',
-        );
-        const errorObj = spy.mock.calls[0][1] as Record<string, unknown>;
-        expect(errorObj).toHaveProperty(missing);
-        spy.mockRestore();
-      }),
-    );
+    ])('errors with %s', async (_label, extra, missing) => {
+      const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+      await expectInvalidAuth({
+        env: { NODE_ENV: "development", ...extra },
+        accessor: (auth) =>
+          (auth.authEnv as Record<string, unknown>)[missing],
+        consoleErrorSpy: spy,
+      });
+      const errorObj = spy.mock.calls[0][1] as Record<string, unknown>;
+      expect(errorObj).toHaveProperty(missing);
+      spy.mockRestore();
+    });
   });
 
   describe('oauth provider credentials', () => {
@@ -213,22 +212,17 @@ describe('config/env/auth', () => {
         { OAUTH_CLIENT_ID: OAUTH_CLIENT_ID },
         'OAUTH_CLIENT_SECRET',
       ],
-    ])('fails when %s', async (_label, extra, missing) =>
-      withEnv(
-        { NODE_ENV: 'development', AUTH_PROVIDER: 'oauth', ...extra },
-        async () => {
-          const spy = jest
-            .spyOn(console, 'error')
-            .mockImplementation(() => {});
-          await expect(reload()).rejects.toThrow(
-            'Invalid auth environment variables',
-          );
-          const errorObj = spy.mock.calls[0][1] as Record<string, unknown>;
-          expect(errorObj).toHaveProperty(missing);
-          spy.mockRestore();
-        },
-      ),
-    );
+    ])('fails when %s', async (_label, extra, missing) => {
+      const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+      await expectInvalidAuth({
+        env: { NODE_ENV: "development", AUTH_PROVIDER: "oauth", ...extra },
+        accessor: (auth) =>
+          (auth.authEnv as Record<string, unknown>)[missing],
+        consoleErrorSpy: spy,
+      });
+      const errorObj = spy.mock.calls[0][1] as Record<string, unknown>;
+      expect(errorObj).toHaveProperty(missing);
+      spy.mockRestore();
+    });
   });
 });
-

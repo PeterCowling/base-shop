@@ -112,17 +112,26 @@ export async function withEnv(
     update,
   );
 
-  try {
+  const runIsolated = async () => {
+    if (typeof jest.isolateModulesAsync === "function") {
+      await jest.isolateModulesAsync(async () => {
+        await fn();
+      });
+      return;
+    }
+
     await new Promise<void>((resolve, reject) => {
-      jest.isolateModules(async () => {
-        try {
-          await fn();
-          resolve();
-        } catch (err) {
-          reject(err);
-        }
+      jest.isolateModules(() => {
+        Promise.resolve()
+          .then(fn)
+          .then(resolve)
+          .catch(reject);
       });
     });
+  };
+
+  try {
+    await runIsolated();
   } finally {
     restoreTracker();
     const restoreEnv: NodeJS.ProcessEnv = Object.assign(

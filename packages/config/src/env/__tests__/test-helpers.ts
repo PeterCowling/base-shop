@@ -6,9 +6,18 @@ export async function withEnv(
   run: () => Promise<void> | void,
 ): Promise<void> {
   const originalEnv = { ...process.env };
+  const sanitizedKeys = new Set([
+    "CART_COOKIE_SECRET",
+    "EMAIL_PROVIDER",
+  ] satisfies Array<keyof NodeJS.ProcessEnv>);
 
   try {
     process.env = { ...originalEnv, EMAIL_FROM: "from@example.com" };
+    for (const key of sanitizedKeys) {
+      if (!(key in vars)) {
+        delete process.env[key];
+      }
+    }
     for (const [key, value] of Object.entries(vars)) {
       if (value === undefined) {
         delete process.env[key];

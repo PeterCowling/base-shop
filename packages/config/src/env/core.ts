@@ -7,11 +7,12 @@ import { emailEnvSchema } from "./email.js";
 import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
 const isJest = typeof (globalThis as { jest?: unknown }).jest !== "undefined";
+const envMode = process.env.NODE_ENV;
+const hasJestWorker = typeof process.env.JEST_WORKER_ID !== "undefined";
 const isTest =
-  process.env.NODE_ENV === "test" ||
-  process.env.JEST_WORKER_ID !== undefined ||
-  (isJest && process.env.NODE_ENV !== "production");
-const isProd = process.env.NODE_ENV === "production" && !isTest;
+  envMode === "test" ||
+  ((hasJestWorker || isJest) && envMode !== "production");
+const isProd = envMode === "production" && !isTest;
 
 const baseEnvSchema = z
   .object({
@@ -243,10 +244,10 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
 let __cachedCoreEnv: CoreEnv | null = null;
 const nodeRequire: NodeJS.Require | null =
   typeof require === "function" ? require : null;
-const envMode = process.env.NODE_ENV;
+const cachedEnvMode = process.env.NODE_ENV;
 function getCoreEnv(): CoreEnv {
   if (!__cachedCoreEnv) {
-    if (envMode === "production" || envMode == null) {
+    if (cachedEnvMode === "production" || cachedEnvMode == null) {
       if (nodeRequire) {
         try {
           const mod = nodeRequire("./core.js") as typeof import("./core.js");

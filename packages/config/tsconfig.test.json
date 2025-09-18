@@ -3,7 +3,10 @@
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "noEmit": true,
-    "rootDir": "."
+    "rootDir": ".",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "verbatimModuleSyntax": false
   },
   "include": ["src/**/*", "__tests__/**/*"]
 }

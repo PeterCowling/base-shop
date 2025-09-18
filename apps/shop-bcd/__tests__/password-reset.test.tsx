@@ -2,6 +2,15 @@
 
 jest.mock("@acme/zod-utils/initZod", () => ({}));
 
+jest.mock("argon2", () => {
+  const hash = jest.fn(async (password: string) => `hashed:${password}`);
+  return {
+    __esModule: true,
+    default: { hash },
+    hash,
+  };
+});
+
 interface StoreUser {
   id: string;
   email: string;
@@ -65,15 +74,23 @@ describe("password reset integration", () => {
     const { token } = await res.json();
     expect(token).toBeDefined();
 
+    const newPassword = "newpass123";
+    const hashedPassword = `hashed:${newPassword}`;
+
     const req2 = new Request(`http://localhost/api/password-reset/${token}`, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ password: "newpass123" }),
+      body: JSON.stringify({ password: newPassword }),
     });
     const res2 = await resetPOST(req2, { params: { token } });
     expect(res2.status).toBe(200);
     await expect(res2.json()).resolves.toEqual({ ok: true });
-    expect(store["u1"].passwordHash).toBe("newpass123");
+    const { updatePassword } = jest.requireMock("@platform-core/users") as {
+      updatePassword: jest.Mock;
+    };
+    expect(updatePassword).toHaveBeenCalledWith("u1", hashedPassword);
+    expect(updatePassword).not.toHaveBeenCalledWith("u1", newPassword);
+    expect(store["u1"].passwordHash).toBe(hashedPassword);
     expect(store["u1"].resetToken).toBeNull();
   });
 

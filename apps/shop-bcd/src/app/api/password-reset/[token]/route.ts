@@ -1,5 +1,6 @@
 import "@acme/zod-utils/initZod";
 import { NextResponse } from "next/server";
+import argon2 from "argon2";
 import { parseJsonBody } from "@shared-utils";
 import { z } from "zod";
 import { getUserByResetToken, updatePassword, setResetToken } from "@platform-core/users";
@@ -18,7 +19,8 @@ export async function POST(
   }
   try {
     const user = await getUserByResetToken(params.token);
-    await updatePassword(user.id, parsed.data.password);
+    const hashedPassword = await argon2.hash(parsed.data.password);
+    await updatePassword(user.id, hashedPassword);
     await setResetToken(user.id, null, null);
     return NextResponse.json({ ok: true });
   } catch {

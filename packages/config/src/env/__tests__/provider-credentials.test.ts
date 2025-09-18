@@ -75,12 +75,16 @@ describe("AUTH_PROVIDER credentials", () => {
   describe.each([
     [
       "jwt",
-      { AUTH_PROVIDER: "jwt" },
+      { AUTH_PROVIDER: "jwt", JWT_SECRET: undefined },
       { AUTH_PROVIDER: "jwt", JWT_SECRET: SESSION_SECRET },
     ],
     [
       "oauth",
-      { AUTH_PROVIDER: "oauth" },
+      {
+        AUTH_PROVIDER: "oauth",
+        OAUTH_CLIENT_ID: undefined,
+        OAUTH_CLIENT_SECRET: undefined,
+      },
       {
         AUTH_PROVIDER: "oauth",
         OAUTH_CLIENT_ID: "client-id",

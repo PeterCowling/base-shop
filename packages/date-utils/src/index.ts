@@ -127,7 +127,9 @@ export function parseTargetDate(
           : parseISO(`${targetDate}Z`);
       } else {
         const parts = targetDate.split("-").map(Number);
-        if (parts.length !== 3) return null;
+        if (parts.length !== 3 || parts.some(Number.isNaN)) {
+          return null;
+        }
         const [year, month, day] = parts;
         const tz = process.env.TZ;
         if (tz) {
@@ -137,15 +139,15 @@ export function parseTargetDate(
           }
           date = zoned;
         } else {
-          const local = new Date(year, month - 1, day);
+          const utc = new Date(Date.UTC(year, month - 1, day));
           if (
-            local.getFullYear() !== year ||
-            local.getMonth() !== month - 1 ||
-            local.getDate() !== day
+            utc.getUTCFullYear() !== year ||
+            utc.getUTCMonth() !== month - 1 ||
+            utc.getUTCDate() !== day
           ) {
             return null;
           }
-          date = local;
+          date = utc;
         }
       }
     }

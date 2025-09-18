@@ -13,7 +13,7 @@ import {
   readdirSync,
   mkdirSync,
 } from "fs";
-import { dirname, join } from "path";
+import { dirname, join, parse, resolve } from "path";
 import { fileURLToPath } from "url";
 import { loadTokens } from "./themeUtils";
 
@@ -29,7 +29,7 @@ export function repoRoot(): string {
     existsSync(join(dir, "pnpm-workspace.yaml"));
 
   const searchUp = (start: string): string | null => {
-    let dir = start;
+    let dir = resolve(start);
     while (true) {
       if (hasMarker(dir)) return dir;
       const parent = dirname(dir);
@@ -39,19 +39,70 @@ export function repoRoot(): string {
     return null;
   };
 
+  const searchDown = (
+    start: string,
+    maxDepth: number,
+    budget = 256
+  ): string | null => {
+    const queue: Array<{ dir: string; depth: number }> = [
+      { dir: resolve(start), depth: maxDepth },
+    ];
+    const visited = new Set<string>();
+    for (let index = 0; index < queue.length && budget > 0; index += 1) {
+      const { dir, depth } = queue[index];
+      const canonical = resolve(dir);
+      if (visited.has(canonical)) continue;
+      visited.add(canonical);
+      budget -= 1;
+      if (hasMarker(canonical)) return canonical;
+      if (depth <= 0) continue;
+      let entries;
+      try {
+        entries = readdirSync(canonical, { withFileTypes: true });
+      } catch {
+        continue;
+      }
+      for (const entry of entries) {
+        if (!entry.isDirectory() || entry.name === "node_modules") continue;
+        const child = join(canonical, entry.name);
+        queue.push({ dir: child, depth: depth - 1 });
+      }
+    }
+    return null;
+  };
+
+  const tried = new Set<string>();
+  const attemptSearchUp = (start: string | null | undefined): string | null => {
+    if (!start) return null;
+    const canonical = resolve(start);
+    if (tried.has(canonical)) return null;
+    tried.add(canonical);
+    return searchUp(canonical);
+  };
+
   try {
     const moduleDir =
       typeof __dirname !== "undefined"
         ? __dirname
         : dirname(fileURLToPath(eval("import.meta.url")));
-    const fromModule = searchUp(moduleDir);
+    const fromModule = attemptSearchUp(moduleDir);
     if (fromModule) return fromModule;
   } catch {
     /* ignore */
   }
 
-  const fromCwd = searchUp(process.cwd());
+  const fromCwd = attemptSearchUp(process.cwd());
   if (fromCwd) return fromCwd;
+
+  const envCandidates = [
+    process.env.PNPM_WORKSPACE_ROOT,
+    process.env.INIT_CWD,
+    process.env.PROJECT_CWD,
+  ];
+  for (const candidate of envCandidates) {
+    const found = attemptSearchUp(candidate ?? undefined);
+    if (found) return found;
+  }
 
   // If the current working directory is above the repo root, scan its
   // immediate subdirectories for a workspace marker.
@@ -63,6 +114,20 @@ export function repoRoot(): string {
     }
   } catch {
     /* ignore */
+  }
+
+  const roots = new Set<string>();
+  for (const dir of tried) {
+    const root = parse(dir).root;
+    if (root) {
+      roots.add(resolve(root));
+    }
+  }
+  roots.add(resolve("/"));
+
+  for (const root of roots) {
+    const found = searchDown(root, 3);
+    if (found) return found;
   }
 
   return process.cwd();

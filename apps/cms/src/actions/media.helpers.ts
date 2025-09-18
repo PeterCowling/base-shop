@@ -4,6 +4,7 @@ import { validateShopName } from "@platform-core/shops";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { writeJsonFile } from "@/lib/server/jsonIO";
+import { normalizeTagsInput } from "./media/tagUtils";
 
 export type MediaMetadataEntry = {
   title?: string;
@@ -23,49 +24,6 @@ export function uploadsDir(shop: string): string {
 
 export function metadataPath(shop: string): string {
   return path.join(uploadsDir(shop), "metadata.json");
-}
-
-function normalizeTags(value: unknown): string[] | undefined {
-  if (value == null) return undefined;
-
-  const pushTag = (acc: string[], tag: unknown) => {
-    if (typeof tag !== "string") return acc;
-    const trimmed = tag.trim();
-    if (trimmed) acc.push(trimmed);
-    return acc;
-  };
-
-  if (Array.isArray(value)) {
-    const tags = value.reduce<string[]>(pushTag, []);
-    return tags.length ? Array.from(new Set(tags)) : undefined;
-  }
-
-  if (typeof value === "string") {
-    let parsed: unknown;
-    try {
-      parsed = JSON.parse(value);
-    } catch {
-      /* ignore – treat as delimited string */
-    }
-
-    if (Array.isArray(parsed)) {
-      const tags = parsed.reduce<string[]>(pushTag, []);
-      return tags.length ? Array.from(new Set(tags)) : undefined;
-    }
-
-    if (typeof parsed === "string") {
-      const single = parsed.trim();
-      return single ? [single] : undefined;
-    }
-
-    const tags = value
-      .split(/[,\n]/)
-      .map((tag) => tag.trim())
-      .filter(Boolean);
-    return tags.length ? Array.from(new Set(tags)) : undefined;
-  }
-
-  return undefined;
 }
 
 function sanitizeMetadataEntry(value: unknown): MediaMetadataEntry {
@@ -93,7 +51,7 @@ function sanitizeMetadataEntry(value: unknown): MediaMetadataEntry {
     entry.type = "image";
   }
 
-  const tags = normalizeTags(record.tags);
+  const tags = normalizeTagsInput(record.tags);
   if (tags) {
     entry.tags = tags;
   } else if (Array.isArray(record.tags) && record.tags.length === 0) {

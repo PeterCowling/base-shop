@@ -154,8 +154,12 @@ const config = {
     // their ESM builds can run in Jest.
     "/node_modules/(?!(jose|next-auth|ulid|@upstash/redis|uncrypto|@acme)/)",
   ],
-  setupFiles: ["dotenv/config", " /test/setupFetchPolyfill.ts"],
-  setupFilesAfterEnv: [" /jest.setup.ts", " /test/polyfills/messageChannel.js"],
+  setupFiles: ["dotenv/config"],
+  setupFilesAfterEnv: [
+    " /test/setupFetchPolyfill.ts",
+    " /jest.setup.ts",
+    " /test/polyfills/messageChannel.js",
+  ],
   testPathIgnorePatterns: [
     " /test/e2e/",
     " /.storybook/",

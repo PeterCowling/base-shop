@@ -1,12 +1,19 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
-const hasEmailProvider =
-  typeof process.env.EMAIL_PROVIDER === "string" &&
-  process.env.EMAIL_PROVIDER.trim().length > 0;
+const nodeEnv = process.env.NODE_ENV ?? "development";
+const rawEmailProvider =
+  typeof process.env.EMAIL_PROVIDER === "string"
+    ? process.env.EMAIL_PROVIDER.trim()
+    : undefined;
+const normalizedEmailProvider = rawEmailProvider?.toLowerCase();
 const hasEmailFrom =
   typeof process.env.EMAIL_FROM === "string" &&
   process.env.EMAIL_FROM.trim().length > 0;
+const shouldDefaultToSmtp =
+  (!rawEmailProvider || normalizedEmailProvider === "noop") &&
+  nodeEnv === "development" &&
+  hasEmailFrom;
 
 export const emailEnvSchema = z
   .object({
@@ -71,13 +78,13 @@ export const emailEnvSchema = z
       });
     }
   });
+const emailProviderValue = shouldDefaultToSmtp
+  ? undefined
+  : rawEmailProvider ?? (hasEmailFrom ? undefined : "noop");
+
 const rawEnv: NodeJS.ProcessEnv = {
   ...process.env,
-  EMAIL_PROVIDER: hasEmailProvider
-    ? process.env.EMAIL_PROVIDER
-    : hasEmailFrom
-      ? undefined
-      : "noop",
+  EMAIL_PROVIDER: emailProviderValue,
 };
 const parsed = emailEnvSchema.safeParse(rawEnv);
 

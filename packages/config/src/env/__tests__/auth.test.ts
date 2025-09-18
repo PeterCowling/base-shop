@@ -10,11 +10,11 @@ const JWT_SECRET = "jwt-secret-32-chars-long-string!!!";
 const OAUTH_SECRET = "oauth-secret-32-chars-long-string!!";
 
 describe("auth env module", () => {
-  const ORIGINAL_ENV = process.env;
+  const ORIGINAL_ENV = { ...process.env } as NodeJS.ProcessEnv;
 
   afterEach(() => {
     jest.resetModules();
-    process.env = ORIGINAL_ENV;
+    process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
   });
 
   it("parses valid configuration", async () => {
@@ -738,11 +738,11 @@ describe("auth env module", () => {
 });
 
 describe("authEnvSchema", () => {
-  const ORIGINAL_ENV = process.env;
+  const ORIGINAL_ENV = { ...process.env } as NodeJS.ProcessEnv;
 
   afterEach(() => {
     jest.resetModules();
-    process.env = ORIGINAL_ENV;
+    process.env = { ...ORIGINAL_ENV } as NodeJS.ProcessEnv;
   });
 
   const baseEnv = {

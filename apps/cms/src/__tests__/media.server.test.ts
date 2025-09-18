@@ -66,8 +66,18 @@ describe('listMedia', () => {
 
     const result = await listMedia('shop');
     expect(result).toEqual([
-      { url: '/uploads/shop/img.jpg', title: 'Image', altText: 'Alt', type: 'image' },
-      { url: '/uploads/shop/vid.mp4', title: 'Video', altText: undefined, type: 'video' },
+      expect.objectContaining({
+        url: '/uploads/shop/img.jpg',
+        title: 'Image',
+        altText: 'Alt',
+        type: 'image',
+      }),
+      expect.objectContaining({
+        url: '/uploads/shop/vid.mp4',
+        title: 'Video',
+        altText: undefined,
+        type: 'video',
+      }),
     ]);
   });
 
@@ -81,12 +91,12 @@ describe('listMedia', () => {
     fsMock.readFile.mockRejectedValue(new Error('nope'));
     const result = await listMedia('shop');
     expect(result).toEqual([
-      {
+      expect.objectContaining({
         url: '/uploads/shop/img.jpg',
         title: undefined,
         altText: undefined,
         type: 'image',
-      },
+      }),
     ]);
   });
 });
@@ -108,30 +118,43 @@ describe('uploadMedia', () => {
     formData.append('altText', 'Alt text');
 
     const res = await uploadMedia('shop', formData);
-    expect(res).toEqual({
+    expect(res).toMatchObject({
       url: '/uploads/shop/id123.jpg',
       title: 'My Image',
       altText: 'Alt text',
       type: 'image',
+      size: expect.any(Number),
+      uploadedAt: expect.any(String),
     });
-    const meta = JSON.parse(fsMock.writeFile.mock.calls[1][1]);
-    expect(meta['id123.jpg']).toEqual({
+    expect(Date.parse(res.uploadedAt ?? '')).not.toBeNaN();
+
+    const meta = JSON.parse(
+      fsMock.writeFile.mock.calls[fsMock.writeFile.mock.calls.length - 1][1],
+    );
+    expect(meta['id123.jpg']).toMatchObject({
       title: 'My Image',
       altText: 'Alt text',
       type: 'image',
+      size: expect.any(Number),
+      uploadedAt: expect.any(String),
     });
+    expect(meta['id123.jpg'].size).toBe(res.size);
+    expect(meta['id123.jpg'].uploadedAt).toBe(res.uploadedAt);
   });
 
   it('uploads video files without using sharp', async () => {
     const formData = new FormData();
     formData.append('file', new File(['vid'], 'movie.mp4', { type: 'video/mp4' }));
     const res = await uploadMedia('shop', formData);
-    expect(res).toEqual({
+    expect(res).toMatchObject({
       url: '/uploads/shop/id123.mp4',
       title: undefined,
       altText: undefined,
       type: 'video',
+      size: expect.any(Number),
+      uploadedAt: expect.any(String),
     });
+    expect(Date.parse(res.uploadedAt ?? '')).not.toBeNaN();
     expect(sharpMock).not.toHaveBeenCalled();
   });
 

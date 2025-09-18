@@ -11,8 +11,8 @@ import {
 } from "@platform-core/plugins";
 import { parseJsonBody } from "@shared-utils";
 import { NextRequest, NextResponse } from "next/server";
+import fs from "node:fs";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { z } from "zod";
 import shop from "../../../../shop.json";
 
@@ -45,15 +45,48 @@ type PremierPluginManager = Awaited<
 
 let pluginsReady: Promise<PremierPluginManager> | null = null;
 
-function resolvePluginsDir(currentModuleUrl: string): string {
-  const __dirname = path.dirname(fileURLToPath(currentModuleUrl));
-  // Monorepo path to /packages/plugins from this route file
-  return path.resolve(__dirname, "../../../../../../packages/plugins");
+const PLUGINS_ENV_KEYS = [
+  "PREMIER_SHIPPING_PLUGINS_DIR",
+  "SHOP_PLUGINS_DIR",
+  "PLUGINS_DIR",
+];
+
+function resolvePluginsDir(): string {
+  for (const key of PLUGINS_ENV_KEYS) {
+    const configured = process.env[key];
+    if (configured) {
+      const resolved = path.resolve(configured);
+      if (fs.existsSync(resolved)) {
+        return resolved;
+      }
+    }
+  }
+
+  const visited = new Set<string>();
+  let current = process.cwd();
+
+  while (!visited.has(current)) {
+    const candidate = path.join(current, "packages", "plugins");
+    if (fs.existsSync(candidate)) {
+      return candidate;
+    }
+
+    visited.add(current);
+    const parent = path.dirname(current);
+    if (parent === current) {
+      break;
+    }
+    current = parent;
+  }
+
+  throw new Error(
+    "Unable to locate packages/plugins directory. Set PREMIER_SHIPPING_PLUGINS_DIR to override the search path."
+  );
 }
 
 async function getPlugins(): Promise<PremierPluginManager> {
   if (!pluginsReady) {
-    const pluginsDir = resolvePluginsDir(import.meta.url);
+    const pluginsDir = resolvePluginsDir();
 
     // NOTE: Keep these entries pure data; avoid reading env or IO at top-level.
     const shopConfig = shop as unknown as {

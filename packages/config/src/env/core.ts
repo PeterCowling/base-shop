@@ -224,14 +224,12 @@ function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
         });
       }
     }
-    if (!isTest) {
-      console.error("❌ Invalid core environment variables:");
-      parsed.error.issues.forEach((issue: z.ZodIssue) => {
-        const pathArr = (issue.path ?? []) as Array<string | number>;
-        const path = pathArr.length ? pathArr.join(".") : "(root)";
-        console.error(`  • ${path}: ${issue.message}`);
-      });
-    }
+    console.error("❌ Invalid core environment variables:");
+    parsed.error.issues.forEach((issue: z.ZodIssue) => {
+      const pathArr = (issue.path ?? []) as Array<string | number>;
+      const path = pathArr.length ? pathArr.join(".") : "(root)";
+      console.error(`  • ${path}: ${issue.message}`);
+    });
     throw new Error("Invalid core environment variables");
   }
   return parsed.data;

@@ -20,6 +20,17 @@ jest.mock(
   { virtual: true },
 );
 
+jest.mock(
+  "@/components/atoms",
+  () => ({
+    __esModule: true,
+    Toast: ({ open, message }: { open: boolean; message: string }) =>
+      open ? <div role="alert">{message}</div> : null,
+    Tag: ({ children }: { children: React.ReactNode }) => <span>{children}</span>,
+  }),
+  { virtual: true },
+);
+
 import { checkShopExists } from "@acme/lib";
 import { readPricing } from "@platform-core/repositories/pricing.server";
 
@@ -79,7 +90,11 @@ describe("PricingForm", () => {
     );
     render(await Page({ params: Promise.resolve({ shop: "s1" }) }));
 
-    const textarea = screen.getByRole("textbox");
+    await act(async () => {
+      fireEvent.click(screen.getByRole("tab", { name: /advanced json/i }));
+    });
+
+    const textarea = await screen.findByRole("textbox");
     fireEvent.change(textarea, { target: { value: "{invalid" } });
 
     await act(async () => {
@@ -87,7 +102,8 @@ describe("PricingForm", () => {
     });
 
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(await screen.findByText(/expected/i)).toBeInTheDocument();
+    const errorMessages = await screen.findAllByText(/expected/i);
+    expect(errorMessages.length).toBeGreaterThan(0);
   });
 
   it("shows error for schema violation", async () => {
@@ -104,7 +120,11 @@ describe("PricingForm", () => {
     );
     render(await Page({ params: Promise.resolve({ shop: "s1" }) }));
 
-    const textarea = screen.getByRole("textbox");
+    await act(async () => {
+      fireEvent.click(screen.getByRole("tab", { name: /advanced json/i }));
+    });
+
+    const textarea = await screen.findByRole("textbox");
     fireEvent.change(textarea, {
       target: { value: JSON.stringify({ baseDailyRate: "ten" }) },
     });
@@ -114,7 +134,8 @@ describe("PricingForm", () => {
     });
 
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(await screen.findByText(/expected number/i)).toBeInTheDocument();
+    const schemaErrors = await screen.findAllByText(/expected number/i);
+    expect(schemaErrors.length).toBeGreaterThan(0);
   });
 });
 

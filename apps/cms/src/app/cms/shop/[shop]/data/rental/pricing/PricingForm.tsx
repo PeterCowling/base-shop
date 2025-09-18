@@ -378,18 +378,35 @@ export default function PricingForm({ shop, initial }: Props) {
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setStatus("saving");
-    const result = buildPricingFromForm();
-    if (!result.success) {
-      setFieldErrors(result.errors);
-      setStatus("error");
-      emitToast("Fix validation issues before saving.");
-      return;
+
+    let pricing: PricingMatrix;
+    if (activeTab === "json") {
+      const parsed = parseJsonDraft();
+      if (!parsed.success) {
+        const message = parsed.errors.json ?? "JSON could not be parsed.";
+        setJsonError(message);
+        setStatus("error");
+        emitToast(message);
+        return;
+      }
+      pricing = parsed.data;
+      hydrateFromMatrix(parsed.data);
+      setFieldErrors({});
+    } else {
+      const result = buildPricingFromForm();
+      if (!result.success) {
+        setFieldErrors(result.errors);
+        setStatus("error");
+        emitToast("Fix validation issues before saving.");
+        return;
+      }
+      pricing = result.data;
     }
     try {
       const response = await fetch(`/api/data/${shop}/rental/pricing`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(result.data),
+        body: JSON.stringify(pricing),
       });
       if (!response.ok) {
         const body = await response.json().catch(() => ({}));
@@ -397,8 +414,9 @@ export default function PricingForm({ shop, initial }: Props) {
       }
       setStatus("saved");
       setFieldErrors({});
-      setJsonDraft(JSON.stringify(result.data, null, 2));
-      emitToast("Pricing saved");
+      setJsonError(null);
+      setJsonDraft(JSON.stringify(pricing, null, 2));
+      emitToast("Saved!");
     } catch (err) {
       setStatus("error");
       emitToast((err as Error).message || "Failed to save pricing");

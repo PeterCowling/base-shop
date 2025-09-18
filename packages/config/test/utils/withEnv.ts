@@ -1,16 +1,145 @@
+const CONFIG_ENV_KEYS = new Set([
+  "ALLOWED_COUNTRIES",
+  "ALLOW_GUEST",
+  "AUTH_PROVIDER",
+  "AUTH_TOKEN_TTL",
+  "CAMPAIGN_FROM",
+  "CART_COOKIE_SECRET",
+  "CART_TTL",
+  "CHROMATIC_PROJECT_TOKEN",
+  "CLOUDFLARE_ACCOUNT_ID",
+  "CLOUDFLARE_API_TOKEN",
+  "CMS_ACCESS_TOKEN",
+  "CMS_BASE_URL",
+  "CMS_DRAFTS_DISABLED_PATHS",
+  "CMS_DRAFTS_ENABLED",
+  "CMS_PAGINATION_LIMIT",
+  "CMS_SEARCH_DISABLED_PATHS",
+  "CMS_SEARCH_ENABLED",
+  "CMS_SPACE_URL",
+  "COOKIE_DOMAIN",
+  "DATABASE_URL",
+  "DEFAULT_COUNTRY",
+  "DEFAULT_SHIPPING_ZONE",
+  "DEPOSIT_RELEASE_ENABLED",
+  "DEPOSIT_RELEASE_INTERVAL_MS",
+  "DHL_KEY",
+  "EMAIL_BATCH_DELAY_MS",
+  "EMAIL_BATCH_SIZE",
+  "EMAIL_FROM",
+  "EMAIL_PROVIDER",
+  "EMAIL_SENDER_NAME",
+  "EMAIL_TEMPLATE_BASE_PATH",
+  "ENFORCE_2FA",
+  "FREE_SHIPPING_THRESHOLD",
+  "GA_API_SECRET",
+  "GMAIL_PASS",
+  "GMAIL_USER",
+  "JWT_SECRET",
+  "LATE_FEE_ENABLED",
+  "LATE_FEE_INTERVAL_MS",
+  "LOCAL_PICKUP_ENABLED",
+  "LOGIN_RATE_LIMIT_REDIS_TOKEN",
+  "LOGIN_RATE_LIMIT_REDIS_URL",
+  "LUXURY_FEATURES_FRAUD_REVIEW_THRESHOLD",
+  "LUXURY_FEATURES_RA_TICKETING",
+  "LUXURY_FEATURES_REQUIRE_STRONG_CUSTOMER_AUTH",
+  "LUXURY_FEATURES_RETURNS",
+  "LUXURY_FEATURES_TRACKING_DASHBOARD",
+  "NEXT_PUBLIC_BASE_URL",
+  "NEXT_PUBLIC_DEFAULT_SHOP",
+  "NEXT_PUBLIC_PHASE",
+  "NEXT_PUBLIC_SHOP_ID",
+  "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY",
+  "NEXTAUTH_SECRET",
+  "OAUTH_CLIENT_ID",
+  "OAUTH_CLIENT_SECRET",
+  "OPENAI_API_KEY",
+  "OUTPUT_EXPORT",
+  "PAYMENTS_CURRENCY",
+  "PAYMENTS_GATEWAY",
+  "PAYMENTS_PROVIDER",
+  "PAYMENTS_SANDBOX",
+  "PREVIEW_TOKEN_SECRET",
+  "RESEND_API_KEY",
+  "RESEND_WEBHOOK_SECRET",
+  "REVERSE_LOGISTICS_ENABLED",
+  "REVERSE_LOGISTICS_INTERVAL_MS",
+  "SANITY_API_TOKEN",
+  "SANITY_API_VERSION",
+  "SANITY_BASE_URL",
+  "SANITY_DATASET",
+  "SANITY_PREVIEW_SECRET",
+  "SANITY_PROJECT_ID",
+  "SENDGRID_API_KEY",
+  "SENDGRID_MARKETING_KEY",
+  "SENDGRID_WEBHOOK_PUBLIC_KEY",
+  "SESSION_SECRET",
+  "SESSION_STORE",
+  "SHIPPING_PROVIDER",
+  "SHOP_CODE",
+  "SMTP_PORT",
+  "SMTP_SECURE",
+  "SMTP_URL",
+  "STOCK_ALERT_DEFAULT_THRESHOLD",
+  "STOCK_ALERT_RECIPIENT",
+  "STOCK_ALERT_RECIPIENTS",
+  "STOCK_ALERT_WEBHOOK",
+  "STRIPE_SECRET_KEY",
+  "STRIPE_WEBHOOK_SECRET",
+  "TAXJAR_KEY",
+  "TOKEN_ALGORITHM",
+  "TOKEN_AUDIENCE",
+  "TOKEN_ISSUER",
+  "UPGRADE_PREVIEW_TOKEN_SECRET",
+  "UPSTASH_REDIS_REST_TOKEN",
+  "UPSTASH_REDIS_REST_URL",
+  "UPS_KEY",
+]);
+
+const CONFIG_ENV_PREFIXES = [
+  "DEPOSIT_RELEASE_",
+  "REVERSE_LOGISTICS_",
+  "LATE_FEE_",
+] as const;
+
 export async function withEnv<T>(
   vars: NodeJS.ProcessEnv,
   loader: () => Promise<T>,
 ): Promise<T> {
-  const OLD = process.env;
+  const previousEnv = process.env;
   jest.resetModules();
-  process.env = { ...OLD, ...vars };
+
+  const nextEnv: NodeJS.ProcessEnv = { ...previousEnv };
+
+  for (const key of Object.keys(nextEnv)) {
+    if (key === "NODE_ENV") continue;
+    if (key in vars) continue;
+    if (CONFIG_ENV_KEYS.has(key)) {
+      delete nextEnv[key];
+      continue;
+    }
+    if (CONFIG_ENV_PREFIXES.some((prefix) => key.startsWith(prefix))) {
+      delete nextEnv[key];
+    }
+  }
+
+  for (const [key, value] of Object.entries(vars)) {
+    if (value == null) {
+      delete nextEnv[key];
+    } else {
+      nextEnv[key] = value;
+    }
+  }
+
+  process.env = nextEnv;
   if (!("NODE_ENV" in vars)) {
     delete process.env.NODE_ENV;
   }
+
   try {
     return await loader();
   } finally {
-    process.env = OLD;
+    process.env = previousEnv;
   }
 }

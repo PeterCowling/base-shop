@@ -163,6 +163,7 @@ export default function ShopChooser({
                     <Link
                       href={href}
                       data-cy="shop-chooser-cta"
+                      data-index={index}
                       aria-labelledby={cardTitleId}
                       aria-describedby={descriptionId}
                       onClick={() =>

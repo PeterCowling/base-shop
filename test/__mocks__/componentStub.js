@@ -23,7 +23,7 @@ function ComponentStub(props) {
     return React.createElement(
       "ul",
       null,
-      props.shops.map((shop) => {
+      props.shops.map((shop, index) => {
         const href = props.card.href(shop);
         const title = resolveValue(props.card.title, shop) || shop;
         const description = resolveValue(props.card.description, shop) || "";
@@ -36,7 +36,7 @@ function ComponentStub(props) {
           description ? React.createElement("p", null, description) : null,
           React.createElement(
             "a",
-            { href, "data-cy": "shop-chooser-cta" },
+            { href, "data-cy": "shop-chooser-cta", "data-index": String(index) },
             React.createElement("span", { className: "sr-only" }, shop),
             React.createElement("span", { "aria-hidden": "true" }, ctaLabel)
           )

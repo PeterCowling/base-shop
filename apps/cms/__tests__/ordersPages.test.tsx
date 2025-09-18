@@ -18,8 +18,8 @@ jest.mock("next/link", () => {
   const React = require("react");
   return {
     __esModule: true,
-    default: ({ href, children }: any) =>
-      React.createElement("a", { href }, children),
+    default: ({ href, children, ...rest }: any) =>
+      React.createElement("a", { href, ...rest }, children),
   };
 });
 
@@ -27,17 +27,17 @@ describe("Orders pages", () => {
   afterEach(() => jest.resetAllMocks());
 
   it("lists shops on index page", async () => {
-    listShops.mockResolvedValue(["shop-a", "shop-b"]);
+    const shops = ["shop-a", "shop-b"];
+    listShops.mockResolvedValue(shops);
     const Page = (await import("../src/app/cms/orders/page")).default;
     render(await Page());
-    expect(screen.getByRole("link", { name: "shop-a" })).toHaveAttribute(
-      "href",
-      "/cms/orders/shop-a",
-    );
-    expect(screen.getByRole("link", { name: "shop-b" })).toHaveAttribute(
-      "href",
-      "/cms/orders/shop-b",
-    );
+    const ctas = screen.getAllByTestId("shop-chooser-cta");
+    expect(ctas).toHaveLength(shops.length);
+    ctas.forEach((cta, index) => {
+      expect(cta).toHaveAttribute("data-index", String(index));
+      expect(cta).toHaveAttribute("href", `/cms/orders/${shops[index]}`);
+      expect(cta).toHaveAccessibleName(shops[index].toUpperCase());
+    });
   });
 
   it("shows order details and calls actions", async () => {

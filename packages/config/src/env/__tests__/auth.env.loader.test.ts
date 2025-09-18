@@ -16,11 +16,35 @@ const reload = async () => {
   return await import('../auth.ts');
 };
 
+// Ensure tests run with a predictable environment even if the host process
+// predefines secrets (for example via jest.setup.ts or CI configuration).
+const CONTROLLED_ENV_KEYS = [
+  'NEXTAUTH_SECRET',
+  'SESSION_SECRET',
+  'PREVIEW_TOKEN_SECRET',
+  'UPGRADE_PREVIEW_TOKEN_SECRET',
+  'JWT_SECRET',
+  'SESSION_STORE',
+  'UPSTASH_REDIS_REST_URL',
+  'UPSTASH_REDIS_REST_TOKEN',
+  'LOGIN_RATE_LIMIT_REDIS_URL',
+  'LOGIN_RATE_LIMIT_REDIS_TOKEN',
+  'OAUTH_CLIENT_ID',
+  'OAUTH_CLIENT_SECRET',
+];
+
 const withEnv = async (
   env: Record<string, string | undefined>,
   fn: () => Promise<void> | void,
 ) => {
   const prev = { ...process.env };
+  const sanitized = { ...prev } as Record<string, string | undefined>;
+  for (const key of CONTROLLED_ENV_KEYS) {
+    if (!(key in env)) {
+      delete sanitized[key];
+    }
+  }
+  process.env = sanitized as NodeJS.ProcessEnv;
   Object.entries(env).forEach(([k, v]) => {
     if (v === undefined) delete (process.env as any)[k];
     else (process.env as any)[k] = v;

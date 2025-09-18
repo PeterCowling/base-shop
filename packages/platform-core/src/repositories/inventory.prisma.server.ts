@@ -97,7 +97,8 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
         i.quantity <= i.lowStockThreshold,
     );
     if (process.env.SKIP_STOCK_ALERT !== "1" && hasLowStock) {
-      // Stock alerts are skipped during build to avoid pulling in email dependencies.
+      const { checkAndAlert } = await import("../services/stockAlert.server");
+      await checkAndAlert(shop, normalized);
     }
   } catch (err) {
     console.error(`Failed to write inventory for ${shop}`, err);
@@ -174,7 +175,8 @@ async function update(
         i.quantity <= i.lowStockThreshold,
     );
     if (process.env.SKIP_STOCK_ALERT !== "1" && hasLowStock) {
-      // Stock alerts are skipped during build to avoid pulling in email dependencies.
+      const { checkAndAlert } = await import("../services/stockAlert.server");
+      await checkAndAlert(shop, all);
     }
 
     return updated;

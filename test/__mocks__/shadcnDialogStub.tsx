@@ -128,6 +128,20 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonStubProps>(
 );
 Button.displayName = "Button";
 
+type CheckboxStubProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  onCheckedChange?: (checked: boolean) => void;
+};
+
+export function Checkbox({ onCheckedChange, ...props }: CheckboxStubProps) {
+  return (
+    <input
+      type="checkbox"
+      onChange={(event) => onCheckedChange?.(event.target.checked)}
+      {...props}
+    />
+  );
+}
+
 export function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} />;
 }

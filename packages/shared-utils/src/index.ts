@@ -7,6 +7,7 @@ export { parseJsonBody, parseLimit } from "./parseJsonBody";
 export { jsonFieldHandler, type ErrorSetter } from "./jsonFieldHandler";
 export { formatCurrency } from "./formatCurrency";
 export { formatPrice } from "./formatPrice";
+export { formatNumber } from "./formatNumber";
 export { logger } from "./logger";
 export type { LogMeta } from "./logger";
 export { getShopFromPath } from "./getShopFromPath";

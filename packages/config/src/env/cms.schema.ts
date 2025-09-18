@@ -4,16 +4,24 @@ import { z } from "zod";
 const isProd = process.env.NODE_ENV === "production";
 
 const boolish = z.preprocess((val) => {
-  if (typeof val === "string") {
-    if (/^(true|1)$/i.test(val)) return true;
-    if (/^(false|0)$/i.test(val)) return false;
+  if (typeof val === "boolean") {
     return val;
   }
+
+  if (typeof val === "string") {
+    const normalized = val.trim();
+    if (normalized === "") return false;
+    if (/^(true|1)$/i.test(normalized)) return true;
+    if (/^(false|0)$/i.test(normalized)) return false;
+    return val;
+  }
+
   if (typeof val === "number") {
     if (val === 1) return true;
     if (val === 0) return false;
     return val;
   }
+
   return val;
 }, z.boolean());
 

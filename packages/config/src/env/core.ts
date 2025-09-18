@@ -113,6 +113,43 @@ export const coreEnvBaseSchema = authInner
     AUTH_TOKEN_TTL: z.union([z.string(), z.number()]).optional(),
   });
 
+const coreEnvPreprocessedSchema = z.preprocess((input) => {
+  if (!input || typeof input !== "object") {
+    return input;
+  }
+
+  const env = { ...(input as Record<string, unknown>) };
+
+  if (typeof env.EMAIL_PROVIDER === "string") {
+    const trimmedProvider = env.EMAIL_PROVIDER.trim();
+    if (trimmedProvider === "") {
+      delete env.EMAIL_PROVIDER;
+    } else {
+      env.EMAIL_PROVIDER = trimmedProvider;
+    }
+  }
+
+  if (typeof env.EMAIL_FROM === "string") {
+    const trimmedFrom = env.EMAIL_FROM.trim();
+    if (trimmedFrom === "") {
+      delete env.EMAIL_FROM;
+    } else {
+      env.EMAIL_FROM = trimmedFrom;
+    }
+  }
+
+  const hasEmailProvider =
+    typeof env.EMAIL_PROVIDER === "string" && env.EMAIL_PROVIDER.length > 0;
+  const hasEmailFrom =
+    typeof env.EMAIL_FROM === "string" && env.EMAIL_FROM.length > 0;
+
+  if (!hasEmailProvider && !hasEmailFrom) {
+    env.EMAIL_PROVIDER = "noop";
+  }
+
+  return env;
+}, coreEnvBaseSchema);
+
 export function depositReleaseEnvRefinement(
   env: Record<string, unknown>,
   ctx: z.RefinementCtx
@@ -148,7 +185,7 @@ export function depositReleaseEnvRefinement(
   }
 }
 
-export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
+export const coreEnvSchema = coreEnvPreprocessedSchema.superRefine((env, ctx) => {
   depositReleaseEnvRefinement(env, ctx);
 
   // Normalize AUTH_TOKEN_TTL before delegating to the auth schema so builds

@@ -222,7 +222,7 @@ export async function uploadMedia(
     const maxSize = 5 * 1024 * 1024; // 5 MB
     if (file.size > maxSize) throw new Error("File too large");
 
-    buffer = Buffer.from(await new Response(file).arrayBuffer());
+    buffer = Buffer.from(await file.arrayBuffer());
     const { width, height } = await sharp(buffer).metadata();
 
     if (
@@ -256,7 +256,7 @@ export async function uploadMedia(
     type = "video";
     const maxSize = 50 * 1024 * 1024; // 50 MB
     if (file.size > maxSize) throw new Error("File too large");
-    buffer = Buffer.from(await new Response(file).arrayBuffer());
+    buffer = Buffer.from(await file.arrayBuffer());
   } else {
     throw new Error("Invalid file type");
   }
@@ -272,7 +272,7 @@ export async function uploadMedia(
   const filename = `${ulid()}${ext}`;
   await fs.writeFile(path.join(dir, filename), buffer);
 
-  const size = buffer.byteLength;
+  const size = typeof file.size === "number" ? file.size : buffer.byteLength;
   const uploadedAt = new Date().toISOString();
 
   const meta = await readMetadata(safeShop);

@@ -8,11 +8,29 @@ import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
 const isJest = typeof (globalThis as { jest?: unknown }).jest !== "undefined";
 const envMode = process.env.NODE_ENV;
-const hasJestWorker = typeof process.env.JEST_WORKER_ID !== "undefined";
-const isTest =
-  envMode === "test" ||
-  ((hasJestWorker || isJest) && envMode !== "production");
-const isProd = envMode === "production" && !isTest;
+
+function resolveNodeEnv(raw?: NodeJS.ProcessEnv): string | undefined {
+  return raw?.NODE_ENV ?? process.env.NODE_ENV ?? envMode;
+}
+
+function hasJestContext(raw?: NodeJS.ProcessEnv): boolean {
+  const workerId = raw?.JEST_WORKER_ID ?? process.env.JEST_WORKER_ID;
+  return typeof workerId !== "undefined" || isJest;
+}
+
+function shouldUseTestDefaults(raw?: NodeJS.ProcessEnv): boolean {
+  const mode = resolveNodeEnv(raw);
+  if (mode === "production") {
+    return false;
+  }
+  if (mode === "test") {
+    return true;
+  }
+  return hasJestContext(raw);
+}
+
+const isTest = shouldUseTestDefaults();
+const isProd = resolveNodeEnv() === "production" && !isTest;
 
 const baseEnvSchema = z
   .object({
@@ -239,7 +257,8 @@ export const coreEnvSchema = coreEnvPreprocessedSchema.superRefine((env, ctx) =>
 export type CoreEnv = z.infer<typeof coreEnvSchema>;
 
 function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
-  const env = isTest
+  const useTestDefaults = shouldUseTestDefaults(raw);
+  const env = useTestDefaults
     ? { EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop", ...raw }
     : {
         ...raw,
@@ -249,7 +268,7 @@ function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
       };
   const parsed = coreEnvSchema.safeParse(env);
   if (!parsed.success) {
-    if (isTest) {
+    if (useTestDefaults) {
       const onlyMissing = parsed.error.issues.every(
         (issue) =>
           issue.code === z.ZodIssueCode.invalid_type &&
@@ -326,7 +345,7 @@ export const coreEnv: CoreEnv = new Proxy({} as CoreEnv, {
 }) as CoreEnv;
 
 // Fail fast in prod only (forces a single parse early).
-if (isProd && !process.env.JEST_WORKER_ID) {
+if (isProd) {
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   coreEnv.NODE_ENV;
 }

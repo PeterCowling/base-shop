@@ -32,7 +32,6 @@ export type PaymentsEnv = z.infer<typeof paymentsEnvSchema>;
 export function loadPaymentsEnv(
   raw: NodeJS.ProcessEnv = process.env,
 ): PaymentsEnv {
-  const isTest = process.env.NODE_ENV === "test";
   if (raw.PAYMENTS_GATEWAY === "disabled") {
     return paymentsEnvSchema.parse({});
   }
@@ -41,50 +40,40 @@ export function loadPaymentsEnv(
     raw.PAYMENTS_PROVIDER &&
     raw.PAYMENTS_PROVIDER !== "stripe"
   ) {
-    if (!isTest) {
-      console.error(
-        "❌ Unsupported PAYMENTS_PROVIDER:",
-        raw.PAYMENTS_PROVIDER,
-      );
-    }
+    console.error(
+      "❌ Unsupported PAYMENTS_PROVIDER:",
+      raw.PAYMENTS_PROVIDER,
+    );
     throw new Error("Invalid payments environment variables");
   }
 
   if (raw.PAYMENTS_PROVIDER === "stripe") {
     if (!raw.STRIPE_SECRET_KEY) {
-      if (!isTest) {
-        console.error(
-          "❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe",
-        );
-      }
+      console.error(
+        "❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe",
+      );
       throw new Error("Invalid payments environment variables");
     }
     if (!raw.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
-      if (!isTest) {
-        console.error(
-          "❌ Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY when PAYMENTS_PROVIDER=stripe",
-        );
-      }
+      console.error(
+        "❌ Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY when PAYMENTS_PROVIDER=stripe",
+      );
       throw new Error("Invalid payments environment variables");
     }
     if (!raw.STRIPE_WEBHOOK_SECRET) {
-      if (!isTest) {
-        console.error(
-          "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
-        );
-      }
+      console.error(
+        "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
+      );
       throw new Error("Invalid payments environment variables");
     }
   }
 
   const parsed = paymentsEnvSchema.safeParse(raw);
   if (!parsed.success) {
-    if (!isTest) {
-      console.warn(
-        "⚠️ Invalid payments environment variables:",
-        parsed.error.format(),
-      );
-    }
+    console.warn(
+      "⚠️ Invalid payments environment variables:",
+      parsed.error.format(),
+    );
     return paymentsEnvSchema.parse({});
   }
 

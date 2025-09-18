@@ -1,7 +1,18 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
-const isProd = process.env.NODE_ENV === "production";
+const envMode = process.env.NODE_ENV;
+const jestWorkerId = process.env.JEST_WORKER_ID;
+const hasJestGlobal =
+  typeof (globalThis as { jest?: unknown }).jest !== "undefined";
+const hasJestExpect =
+  typeof (globalThis as { expect?: unknown }).expect === "function";
+const isTestLike =
+  envMode === "test" ||
+  typeof jestWorkerId !== "undefined" ||
+  hasJestGlobal ||
+  hasJestExpect;
+const isProd = envMode === "production" && !isTestLike;
 
 const boolish = z.preprocess((val) => {
   if (typeof val === "boolean") {

@@ -314,12 +314,13 @@ it("highlights dropzone on drag enter and removes highlight on drag leave", () =
     fireEvent.dragOver(dropzone);
     fireEvent.dragEnter(dropzone);
   });
-  expect(dropzone.className).toContain("highlighted");
+  expect(dropzone).toHaveClass("ring-2");
+  expect(dropzone).toHaveClass("bg-primary/5");
 
   act(() => {
     fireEvent.dragLeave(dropzone);
   });
-  expect(dropzone.className).not.toContain("highlighted");
+  expect(dropzone).not.toHaveClass("ring-2");
 });
 
 it("returns early when no file is pending", async () => {

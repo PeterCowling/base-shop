@@ -200,6 +200,18 @@ export const coreEnvSchema = coreEnvBaseSchema.superRefine((env, ctx) => {
 });
 export type CoreEnv = z.infer<typeof coreEnvSchema>;
 
+type EnvRecord = Record<string, string | undefined>;
+
+function cloneProcessEnv(source: NodeJS.ProcessEnv | EnvRecord): EnvRecord {
+  return Object.assign(Object.create(null), source);
+}
+
+const importEnvSnapshot = cloneProcessEnv(process.env);
+
+function snapshotForCoreEnv(): NodeJS.ProcessEnv {
+  return cloneProcessEnv(importEnvSnapshot) as NodeJS.ProcessEnv;
+}
+
 function parseCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
   const env = isTest
     ? { EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop", ...raw }
@@ -250,23 +262,23 @@ function getCoreEnv(): CoreEnv {
       if (nodeRequire) {
         try {
           const mod = nodeRequire("./core.js") as typeof import("./core.js");
-          __cachedCoreEnv = mod.loadCoreEnv();
+          __cachedCoreEnv = mod.loadCoreEnv(snapshotForCoreEnv());
         } catch (error) {
           const code =
             typeof error === "object" && error && "code" in error
               ? (error as { code?: unknown }).code
               : undefined;
           if (code === "MODULE_NOT_FOUND" || code === "ERR_MODULE_NOT_FOUND") {
-            __cachedCoreEnv = parseCoreEnv();
+            __cachedCoreEnv = parseCoreEnv(snapshotForCoreEnv());
           } else {
             throw error;
           }
         }
       } else {
-        __cachedCoreEnv = parseCoreEnv();
+        __cachedCoreEnv = parseCoreEnv(snapshotForCoreEnv());
       }
     } else {
-      __cachedCoreEnv = parseCoreEnv();
+      __cachedCoreEnv = parseCoreEnv(snapshotForCoreEnv());
     }
   }
   return __cachedCoreEnv;

@@ -8,6 +8,16 @@ import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { z } from "zod";
 
+type ReadEnvFile = (file: string) => Record<string, string>;
+
+declare const module:
+  | {
+      exports?: {
+        readEnvFile?: ReadEnvFile;
+      };
+    }
+  | undefined;
+
 // Accept any string key/value pairs. In the full codebase envSchema would
 // include constraints for required environment variables.
 const envSchema = z.record(z.string(), z.string());
@@ -58,14 +68,17 @@ export function validateEnvFile(file: string): void {
   if (!existsSync(file)) {
     throw new Error(`Missing ${file}`);
   }
-  // Access `readEnvFile` through the module's exported API when possible so
-  // tests can spy on it. In ESM builds `module` is undefined, so fall back to
-  // the local binding.
-  const gt = globalThis as {
-    module?: { exports?: { readEnvFile?: typeof readEnvFile } };
-  };
-  const read: typeof readEnvFile =
-    gt.module?.exports?.readEnvFile ?? readEnvFile;
+  // Access `readEnvFile` through the CommonJS module exports when possible so
+  // tests can spy on it. In native ESM builds `module` is undefined, so fall
+  // back to the local binding.
+  const exportedReader =
+    typeof module !== "undefined" &&
+    module?.exports &&
+    typeof (module.exports as { readEnvFile?: ReadEnvFile }).readEnvFile ===
+      "function"
+      ? (module.exports as { readEnvFile: ReadEnvFile }).readEnvFile
+      : undefined;
+  const read: ReadEnvFile = exportedReader ?? readEnvFile;
   const env = read(file);
   envSchema.parse(env);
 }

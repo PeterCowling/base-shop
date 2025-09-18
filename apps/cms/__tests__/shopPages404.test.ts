@@ -49,7 +49,7 @@ describe("CMS shop pages", () => {
       jest.doMock("next-auth", () => ({ getServerSession: jest.fn() }));
 
       // media route pulls in server-only helpers — stub them completely
-      jest.doMock("@cms/actions/media.server", () => ({
+      jest.doMock("@cms/actions/media", () => ({
         listMedia: jest.fn(),
         deleteMedia: jest.fn(),
       }));

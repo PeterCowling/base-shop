@@ -4,7 +4,7 @@ const deleteMediaAction = jest.fn();
 const updateMediaMetadataAction = jest.fn();
 const getMediaOverview = jest.fn();
 
-jest.mock("@cms/actions/media.server", () => ({
+jest.mock("@cms/actions/media", () => ({
   listMedia,
   uploadMedia,
   deleteMedia: deleteMediaAction,

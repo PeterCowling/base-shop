@@ -90,7 +90,7 @@ describe("media actions", () => {
         mockSharp();
 
         const { listMedia } = await import(
-          /* @vite-ignore */ "../src/actions/media.server.ts"
+          /* @vite-ignore */ "../src/actions/media/index.ts"
         );
         await expect(listMedia("shop1")).resolves.toEqual([]);
       })
@@ -104,7 +104,7 @@ describe("media actions", () => {
         mockSharp({ toBuffer: Buffer.from("img") });
 
         const { uploadMedia } = await import(
-          /* @vite-ignore */ "../src/actions/media.server.ts"
+          /* @vite-ignore */ "../src/actions/media/index.ts"
         );
 
         const data = Buffer.from(
@@ -149,7 +149,7 @@ describe("media actions", () => {
         mockSharp();
 
         const { uploadMedia } = await import(
-          /* @vite-ignore */ "../src/actions/media.server.ts"
+          /* @vite-ignore */ "../src/actions/media/index.ts"
         );
 
         const file = new File(["vid"], "test.mp4", { type: "video/mp4" });
@@ -185,7 +185,7 @@ describe("media actions", () => {
         mockSharp();
 
         const { uploadMedia } = await import(
-          /* @vite-ignore */ "../src/actions/media.server.ts"
+          /* @vite-ignore */ "../src/actions/media/index.ts"
         );
 
         const file = new File(["bad"], "test.txt", { type: "text/plain" });
@@ -206,7 +206,7 @@ describe("media actions", () => {
         mockSharp({ width: 1, height: 2 });
 
         const { uploadMedia } = await import(
-          /* @vite-ignore */ "../src/actions/media.server.ts"
+          /* @vite-ignore */ "../src/actions/media/index.ts"
         );
 
         const data = Buffer.from(
@@ -230,7 +230,7 @@ describe("media actions", () => {
         mockAuth();
 
         const { deleteMedia } = await import(
-          /* @vite-ignore */ "../src/actions/media.server.ts"
+          /* @vite-ignore */ "../src/actions/media/index.ts"
         );
 
         await expect(

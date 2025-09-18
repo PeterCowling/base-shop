@@ -5,7 +5,7 @@ import {
   updateMediaMetadata,
   uploadMedia,
   type UpdateMediaMetadataFields,
-} from "@cms/actions/media.server";
+} from "@cms/actions/media";
 import { NextResponse } from "next/server";
 
 function parseTagsValue(value: unknown): string[] | null | undefined {

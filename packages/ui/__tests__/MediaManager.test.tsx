@@ -1,4 +1,4 @@
-jest.mock("@cms/actions/media.server", () => ({
+jest.mock("@cms/actions/media", () => ({
   deleteMedia: jest.fn(),
 }));
 jest.mock("@ui/components/atoms/shadcn", () => {
@@ -70,7 +70,7 @@ jest.mock("@ui/components/atoms/shadcn", () => {
     DialogFooter: ({ children }: any) => <div>{children}</div>,
   };
 });
-import { deleteMedia } from "@cms/actions/media.server";
+import { deleteMedia } from "@cms/actions/media";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";
 import MediaManager from "../src/components/cms/MediaManager";

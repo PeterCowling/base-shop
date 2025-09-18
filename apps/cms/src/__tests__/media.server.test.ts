@@ -39,7 +39,7 @@ const ulidMock = jest.fn();
 jest.mock('ulid', () => ({ ulid: ulidMock }));
 
 import { File } from 'node:buffer';
-import { listMedia, uploadMedia, deleteMedia } from '../actions/media.server';
+import { listMedia, uploadMedia, deleteMedia } from '../actions/media';
 import { ensureAuthorized } from '../actions/common/auth';
 
 beforeEach(() => {

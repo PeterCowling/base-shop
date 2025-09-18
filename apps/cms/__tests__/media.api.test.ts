@@ -15,7 +15,7 @@ afterEach(() => {
 
 describe("media route", () => {
   it("GET without shop returns 400", async () => {
-    jest.doMock("@cms/actions/media.server", () => ({
+    jest.doMock("@cms/actions/media", () => ({
       listMedia: jest.fn(),
       uploadMedia: jest.fn(),
       deleteMedia: jest.fn(),
@@ -28,7 +28,7 @@ describe("media route", () => {
 
   it("POST returns 400 when upload fails", async () => {
     const spy = jest.spyOn(console, "error").mockImplementation(() => {});
-    jest.doMock("@cms/actions/media.server", () => ({
+    jest.doMock("@cms/actions/media", () => ({
       listMedia: jest.fn(),
       deleteMedia: jest.fn(),
       uploadMedia: jest
@@ -49,7 +49,7 @@ describe("media route", () => {
   });
 
   it("DELETE without shop or file returns 400", async () => {
-    jest.doMock("@cms/actions/media.server", () => ({
+    jest.doMock("@cms/actions/media", () => ({
       listMedia: jest.fn(),
       uploadMedia: jest.fn(),
       deleteMedia: jest.fn(),
@@ -62,7 +62,7 @@ describe("media route", () => {
 
   it("DELETE returns success when params provided", async () => {
     const mockDelete = jest.fn().mockResolvedValue(undefined);
-    jest.doMock("@cms/actions/media.server", () => ({
+    jest.doMock("@cms/actions/media", () => ({
       listMedia: jest.fn(),
       uploadMedia: jest.fn(),
       deleteMedia: mockDelete,

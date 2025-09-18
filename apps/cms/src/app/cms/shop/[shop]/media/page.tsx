@@ -4,7 +4,7 @@ import {
   deleteMedia,
   getMediaOverview,
   updateMediaMetadata,
-} from "@cms/actions/media.server";
+} from "@cms/actions/media";
 import { checkShopExists } from "@acme/lib";
 import MediaManager from "@ui/components/cms/MediaManager";
 import { notFound } from "next/navigation";

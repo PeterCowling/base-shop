@@ -36,8 +36,8 @@ jest.mock('@/lib/server/jsonIO', () => ({ writeJsonFile: writeJsonFileMock }));
 
 import path from 'path';
 import { File } from 'node:buffer';
-import * as mediaActions from '../media.server';
-import type { UpdateMediaMetadataFields } from '../media.server';
+import * as mediaActions from '../media';
+import type { UpdateMediaMetadataFields } from '../media';
 import * as mediaHelpers from '../media.helpers';
 import { ensureAuthorized } from '../common/auth';
 import { validateShopName } from '@platform-core/shops';

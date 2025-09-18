@@ -2,7 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { MediaItem } from "@acme/types";
 
-import { updateMediaMetadata } from "@cms/actions/media.server";
+import { updateMediaMetadata } from "@cms/actions/media";
 import MediaManager from "../MediaManager";
 
 jest.mock("../media/Library", () => {
@@ -111,7 +111,7 @@ jest.mock("../media/details/MediaDetailsPanel", () => {
   };
 });
 
-jest.mock("@cms/actions/media.server", () => ({
+jest.mock("@cms/actions/media", () => ({
   updateMediaMetadata: jest.fn(),
 }));
 

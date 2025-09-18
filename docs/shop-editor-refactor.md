@@ -15,7 +15,7 @@
 - `useShopEditorSubmit` enforces local validation before the network call: filter mappings must have trimmed key/value pairs, price overrides require numeric values, and locale overrides must match an `allowedLocales` list of `en`, `de`, or `it`. Failures populate `validationErrors` that feed the shared `errors` state and abort submission.【F:apps/cms/src/app/cms/shop/[shop]/settings/useShopEditorSubmit.ts†L46-L78】
 
 ### Theme token management
-- `useShopEditorForm` derives `tokenRows` by diffing `themeDefaults` and `themeOverrides` through `mapThemeTokenRows`, which calculates override status and change flags for display.【F:apps/cms/src/app/cms/shop/[shop]/settings/useShopEditorForm.ts†L44-L47】【F:apps/cms/src/app/cms/shop/[shop]/settings/tableMappers.tsx†L23-L45】
+- `useShopEditorForm` derives `tokenRows` by diffing `themeDefaults` and `themeOverrides` through `mapThemeTokenRows`, which calculates override status and change flags for display.【F:apps/cms/src/app/cms/shop/[shop]/settings/useShopEditorForm.ts†L44-L47】【F:apps/cms/src/app/cms/shop/[shop]/settings/lib/pageSections.ts†L102-L132】
 - The `ThemeTokens` panel renders a `DataTable` from `@ui` with those rows, offers a reset action via a server action form, and serializes `themeDefaults`/`themeOverrides` back into hidden inputs to keep the data in sync with form submission. Errors targeting the JSON blobs appear inline.【F:apps/cms/src/app/cms/shop/[shop]/settings/ThemeTokens.tsx†L22-L85】
 
 ### Submission lifecycle and error propagation
@@ -26,7 +26,7 @@
 - `shopSchema` (CMS layer) requires `name` and `themeId`, normalizes `catalogFilters` strings into trimmed arrays, coerces all boolean toggles from `"on"`, ensures `fraudReviewThreshold` becomes a number, and parses JSON blobs for theme data and the three override maps. The final `.transform` nests the luxury feature booleans under `luxuryFeatures` for consumer parity.【F:apps/cms/src/actions/schemas.ts†L39-L119】
 - The locale shortlist baked into `useShopEditorSubmit` matches the global `LOCALES` constant exported by `@acme/types` (`en`, `de`, `it`).【F:apps/cms/src/app/cms/shop/[shop]/settings/useShopEditorSubmit.ts†L50-L72】【F:packages/types/src/constants.ts†L1-L2】
 - `useMappingRows` converts initial records to editable arrays and exposes imperative row mutators, which the submit hook later rehydrates from the server response.【F:apps/cms/src/hooks/useMappingRows.ts†L8-L26】【F:apps/cms/src/app/cms/shop/[shop]/settings/useShopEditorSubmit.ts†L117-L134】
-- `mapThemeTokenRows` ensures deterministic sorting, override detection, and change highlighting for the theme token grid, while `createThemeTokenColumns` supplies the reset slot used in the UI.【F:apps/cms/src/app/cms/shop/[shop]/settings/tableMappers.tsx†L23-L102】
+- `mapThemeTokenRows` ensures deterministic sorting, override detection, and change highlighting for the theme token grid, while `createThemeTokenColumns` supplies the reset slot used in the UI.【F:apps/cms/src/app/cms/shop/[shop]/settings/lib/pageSections.ts†L102-L132】【F:apps/cms/src/app/cms/shop/[shop]/settings/tableMappers.tsx†L23-L102】
 - `@cms/actions/shops.server` simply forwards `updateShop` and related helpers to the service layer without additional validation or transformation, so all client-side shaping must occur before invoking it.【F:apps/cms/src/actions/shops.server.ts†L5-L100】
 
 ## Form control inventory and preferred `@ui` replacements

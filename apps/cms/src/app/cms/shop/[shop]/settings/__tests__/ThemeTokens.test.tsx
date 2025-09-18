@@ -15,7 +15,7 @@ jest.mock("@cms/actions/shops.server", () => ({
 }));
 
 import ShopThemeSection from "../sections/ShopThemeSection";
-import { mapThemeTokenRows } from "../tableMappers";
+import { mapThemeTokenRows } from "../lib/pageSections";
 
 describe("ShopThemeSection", () => {
   it("renders values, highlights changes, resets overrides, and serializes info", () => {

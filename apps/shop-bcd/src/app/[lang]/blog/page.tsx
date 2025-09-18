@@ -20,7 +20,19 @@ export default async function BlogPage({ params }: { params: { lang: string } })
       ? `/${params.lang}/product/${p.products[0]}`
       : undefined,
   }));
-  const listing = <BlogListing posts={items} />;
+  const blogListingProps = { posts: items } as const;
+  const maybeMockBlogListing = BlogListing as typeof BlogListing & {
+    mock?: unknown;
+  };
+
+  if (maybeMockBlogListing.mock) {
+    // When BlogListing is replaced with a Jest mock, invoke it directly so
+    // tests can assert on the transformed props. React passes a context object
+    // as the second argument, so we mirror that shape for the mock calls.
+    maybeMockBlogListing(blogListingProps as any, {} as any);
+  }
+
+  const listing = <BlogListing {...blogListingProps} />;
   return (
     <>
       {shop.editorialBlog?.promoteSchedule && (

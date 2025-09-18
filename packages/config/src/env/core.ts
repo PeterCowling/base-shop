@@ -7,11 +7,14 @@ import { emailEnvSchema } from "./email.js";
 import { paymentsEnvSchema } from "./payments.js";
 import { shippingEnvSchema } from "./shipping.js";
 const isJest = typeof (globalThis as { jest?: unknown }).jest !== "undefined";
-const isTest =
-  process.env.NODE_ENV === "test" ||
-  process.env.JEST_WORKER_ID !== undefined ||
-  (isJest && process.env.NODE_ENV !== "production");
-const isProd = process.env.NODE_ENV === "production" && !isTest;
+const nodeEnv = process.env.NODE_ENV;
+const hasJestWorker = process.env.JEST_WORKER_ID !== undefined;
+const isTestLike =
+  nodeEnv === "test" ||
+  hasJestWorker ||
+  (isJest && nodeEnv !== "production");
+const isTest = nodeEnv !== "production" && isTestLike;
+const isProd = nodeEnv === "production";
 
 const baseEnvSchema = z
   .object({
@@ -102,10 +105,15 @@ export const requireEnv = (
 };
 
 const authInner = authEnvSchema.innerType().omit({ AUTH_TOKEN_TTL: true });
+const emailInner = emailEnvSchema.innerType();
+const emailProviderWithNoop = emailInner.shape.EMAIL_PROVIDER.default("noop");
+const coreEmailSchema = emailInner.extend({
+  EMAIL_PROVIDER: emailProviderWithNoop,
+});
 
 export const coreEnvBaseSchema = authInner
   .merge(cmsEnvSchema)
-  .merge(emailEnvSchema.innerType())
+  .merge(coreEmailSchema)
   .merge(paymentsEnvSchema)
   .merge(shippingEnvSchema.innerType())
   .merge(baseEnvSchema)
@@ -288,7 +296,7 @@ export const coreEnv: CoreEnv = new Proxy({} as CoreEnv, {
 }) as CoreEnv;
 
 // Fail fast in prod only (forces a single parse early).
-if (isProd && !process.env.JEST_WORKER_ID) {
+if (isProd) {
   // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   coreEnv.NODE_ENV;
 }

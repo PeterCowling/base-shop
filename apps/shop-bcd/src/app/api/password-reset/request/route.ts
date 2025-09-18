@@ -4,6 +4,7 @@ import { parseJsonBody } from "@shared-utils";
 import { z } from "zod";
 import crypto from "crypto";
 import { getUserByEmail, setResetToken } from "@platform-core/users";
+import { sendEmail } from "@acme/email";
 
 export const runtime = "nodejs";
 
@@ -22,8 +23,12 @@ export async function POST(req: Request) {
         ? new Date(Date.now() + 1000)
         : new Date(Date.now() + 3600_000);
     await setResetToken(user.id, token, expires);
-    // expose token for tests
-    return NextResponse.json({ ok: true, token });
+    await sendEmail(
+      user.email,
+      "Reset your Base Shop password",
+      `Use this code to reset your password: ${token}`
+    );
+    return NextResponse.json({ ok: true });
   } catch {
     // do not reveal whether email exists
     return NextResponse.json({ ok: true });

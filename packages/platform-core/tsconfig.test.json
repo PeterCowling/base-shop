@@ -11,6 +11,11 @@
     "outDir": ".ts-jest"
   },
 
-  "include": ["src/**/*.ts", "src/**/*.tsx", "__tests__/**/*"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "__tests__/**/*",
+    "*.ts"
+  ]
 }
 

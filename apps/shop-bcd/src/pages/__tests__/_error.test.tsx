@@ -1,6 +1,13 @@
 import { render, screen } from "@testing-library/react";
 
-import ErrorPage from "../_error";
+type ErrorPageModule = typeof import("../_error");
+type ErrorPageType = ErrorPageModule["default"];
+
+let ErrorPage: ErrorPageType;
+
+beforeAll(async () => {
+  ({ default: ErrorPage } = await import("../_error"));
+});
 
 describe("ErrorPage", () => {
   it("renders status-specific content", () => {

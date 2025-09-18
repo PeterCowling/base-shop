@@ -8,7 +8,8 @@
     /* no JS output for tests */
     "noEmit": true,
     "rootDir": ".",
-    "outDir": ".ts-jest"
+    "outDir": ".ts-jest",
+    "verbatimModuleSyntax": false
   },
 
   "include": ["src/**/*.ts", "src/**/*.tsx", "__tests__/**/*"]

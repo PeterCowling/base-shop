@@ -2,17 +2,18 @@ import { render, screen } from "@testing-library/react";
 
 jest.mock("@ui/components/home/HeroBanner.client", () => ({
   __esModule: true,
-  default: () => <div data-testid="home-hero">Hero Banner</div>,
+  // Use data-cy so getByTestId matches the configured attribute.
+  default: () => <div data-cy="home-hero">Hero Banner</div>,
 }));
 
 jest.mock("@ui/components/home/ValueProps", () => ({
   __esModule: true,
-  ValueProps: () => <div data-testid="home-value-props">Value Props</div>,
+  ValueProps: () => <div data-cy="home-value-props">Value Props</div>,
 }));
 
 jest.mock("@ui/components/home/ReviewsCarousel", () => ({
   __esModule: true,
-  default: () => <div data-testid="home-reviews">Reviews Carousel</div>,
+  default: () => <div data-cy="home-reviews">Reviews Carousel</div>,
 }));
 
 import Home from "../page.client";
@@ -26,8 +27,8 @@ describe("Home page client", () => {
     expect(screen.getAllByTestId("home-reviews")).toHaveLength(1);
 
     const sectionOrder = Array.from(
-      container.querySelectorAll('[data-testid^="home-"]'),
-    ).map((element) => element.getAttribute("data-testid") ?? "");
+      container.querySelectorAll('[data-cy^="home-"]'),
+    ).map((element) => element.getAttribute("data-cy") ?? "");
 
     expect(sectionOrder).toEqual([
       "home-hero",

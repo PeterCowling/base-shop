@@ -57,10 +57,10 @@ export function hexToRgb(hex: string): [number, number, number] {
 
 export function getContrastColor(
   hex: string,
-): "var(--color-fg)" | "var(--color-bg)" {
+): "#000000" | "#ffffff" {
   const [r, g, b] = hexToRgb(hex);
   const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-  return brightness > 186 ? "var(--color-fg)" : "var(--color-bg)";
+  return brightness > 186 ? "#000000" : "#ffffff";
 }
 
 export function hexToHsl(hex: string): string {

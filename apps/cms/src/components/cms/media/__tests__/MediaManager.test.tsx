@@ -163,6 +163,10 @@ describe("MediaManager", () => {
   const originalFetch = global.fetch;
   const originalConfirm = window.confirm;
 
+  beforeEach(() => {
+    window.confirm = undefined as any;
+  });
+
   afterEach(() => {
     global.fetch = originalFetch;
     window.confirm = originalConfirm;
@@ -207,7 +211,7 @@ describe("MediaManager", () => {
       expect(queryByText("Uploaded 0/1")).not.toBeInTheDocument()
     );
     await waitFor(() =>
-      expect(queryAllByRole("menuitem", { name: "Delete media" })).toHaveLength(1)
+      expect(queryAllByRole("menuitem", { name: "Delete" })).toHaveLength(1)
     );
   });
 
@@ -223,7 +227,7 @@ describe("MediaManager", () => {
     );
 
     fireEvent.click(getByRole("button", { name: "Media actions" }));
-    fireEvent.click(getByRole("menuitem", { name: "Delete media" }));
+    fireEvent.click(getByRole("menuitem", { name: "Delete" }));
 
     const confirmDeleteButton = getByRole("button", { name: "Delete" });
     fireEvent.click(confirmDeleteButton);
@@ -235,7 +239,7 @@ describe("MediaManager", () => {
       expect(queryByRole("button", { name: "Delete" })).not.toBeInTheDocument()
     );
     await waitFor(() =>
-      expect(queryAllByRole("menuitem", { name: "Delete media" })).toHaveLength(0)
+      expect(queryAllByRole("menuitem", { name: "Delete" })).toHaveLength(0)
     );
   });
 

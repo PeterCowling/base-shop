@@ -15,7 +15,7 @@ const skipEagerValidation =
 const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
 
 function envHasNonStringTtl(raw: NodeJS.ProcessEnv): boolean {
-  const flagged = (raw as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
+  const flagged = Reflect.get(raw, NON_STRING_ENV_SYMBOL) as unknown;
   if (Array.isArray(flagged) && flagged.includes("AUTH_TOKEN_TTL")) {
     return true;
   }

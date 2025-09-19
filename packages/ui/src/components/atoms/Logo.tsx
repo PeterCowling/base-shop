@@ -11,6 +11,8 @@ interface LogoSource {
   height?: number;
 }
 
+type LogoImageProps = ImageProps & { srcSet?: string };
+
 export interface LogoProps
   extends Omit<ImageProps, "alt" | "src" | "width" | "height"> {
   /** Text to display when no image source is available */
@@ -22,6 +24,8 @@ export interface LogoProps
   width?: number;
   height?: number;
   alt?: string;
+  /** Optional srcset override */
+  srcSet?: string;
 }
 
 export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
@@ -83,19 +87,18 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
             .join(", ")
         : undefined);
 
-    return (
-      <Image
-        ref={ref}
-        src={imageSrc}
-        alt={altText}
-        width={typeof imageWidth === "number" ? imageWidth : undefined}
-        height={typeof imageHeight === "number" ? imageHeight : undefined}
-        sizes={sizes}
-        srcSet={computedSrcSet}
-        className={cn(widthClass, heightClass, className)}
-        {...props}
-      />
-    );
+    const imageProps: LogoImageProps = {
+      ...props,
+      src: imageSrc,
+      alt: altText,
+      width: typeof imageWidth === "number" ? imageWidth : undefined,
+      height: typeof imageHeight === "number" ? imageHeight : undefined,
+      sizes,
+      className: cn(widthClass, heightClass, className),
+      ...(computedSrcSet ? { srcSet: computedSrcSet } : {}),
+    };
+
+    return <Image ref={ref} {...imageProps} />;
   },
 );
 Logo.displayName = "Logo";

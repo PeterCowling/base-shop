@@ -1,7 +1,11 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
-const isProd = process.env.NODE_ENV === "production";
+const nodeEnv = process.env.NODE_ENV;
+const isTest = nodeEnv === "test";
+const nextPhase = process.env.NEXT_PHASE?.toLowerCase();
+const isNextProductionBuildPhase = nextPhase === "phase-production-build";
+const isProd = nodeEnv === "production" && !isTest && !isNextProductionBuildPhase;
 const SANITY_API_VERSION_DEFAULT = "2021-10-21";
 
 const boolish = z.preprocess((val) => {

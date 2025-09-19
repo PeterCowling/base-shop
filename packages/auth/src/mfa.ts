@@ -4,6 +4,10 @@ import { prisma } from "@acme/platform-core/db";
 import type { CustomerMfa } from "@acme/types";
 import { randomInt } from "crypto";
 
+const SECRET_BYTES = 20;
+const tolerantAuthenticator = authenticator.clone();
+tolerantAuthenticator.options = { window: 1 };
+
 export interface MfaEnrollment {
   secret: string;
   otpauth: string;
@@ -13,7 +17,7 @@ export async function enrollMfa(customerId: string): Promise<MfaEnrollment> {
   // otplib's default secret length yields only 16 base32 characters which
   // can be too short for some authenticators. Generate 20 bytes instead so
   // the resulting base32 string is 32 characters long.
-  const secret = authenticator.generateSecret(20);
+  const secret = authenticator.generateSecret(SECRET_BYTES);
   await prisma.customerMfa.upsert({
     where: { customerId },
     update: { secret },
@@ -31,10 +35,9 @@ export async function verifyMfa(
     where: { customerId },
   });
   if (!record) return false;
-  const valid = authenticator.verify({
+  const valid = tolerantAuthenticator.verify({
     token,
     secret: record.secret,
-    window: 1,
   });
   if (valid && !record.enabled) {
     await prisma.customerMfa.update({

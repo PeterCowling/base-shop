@@ -1,6 +1,13 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
+const nodeEnv = process.env.NODE_ENV;
+const isTest = nodeEnv === "test";
+const nextPhase = process.env.NEXT_PHASE?.toLowerCase();
+const isNextProductionBuildPhase = nextPhase === "phase-production-build";
+const isProd = nodeEnv === "production" && !isTest && !isNextProductionBuildPhase;
+const DEV_EMAIL_FROM = "dev@example.com";
+
 const hasEmailProvider =
   typeof process.env.EMAIL_PROVIDER === "string" &&
   process.env.EMAIL_PROVIDER.trim().length > 0;
@@ -49,7 +56,7 @@ export const emailEnvSchema = z
     EMAIL_BATCH_DELAY_MS: z.coerce.number().optional(),
   })
   .superRefine((env, ctx) => {
-    if (env.EMAIL_PROVIDER !== "noop" && !env.EMAIL_FROM) {
+    if (isProd && env.EMAIL_PROVIDER !== "noop" && !env.EMAIL_FROM) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["EMAIL_FROM"],
@@ -77,6 +84,10 @@ const rawEnv: NodeJS.ProcessEnv = {
     ? process.env.EMAIL_PROVIDER
     : defaultEmailProvider,
 };
+
+if (!isProd && rawEnv.EMAIL_PROVIDER !== "noop" && !rawEnv.EMAIL_FROM) {
+  rawEnv.EMAIL_FROM = DEV_EMAIL_FROM;
+}
 const parsed = emailEnvSchema.safeParse(rawEnv);
 
 if (!parsed.success) {

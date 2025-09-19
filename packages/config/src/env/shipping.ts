@@ -22,7 +22,7 @@ const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
 function assertStringEnv(raw: NodeJS.ProcessEnv): void {
   const invalidKeys = new Set<string>();
 
-  const flagged = (raw as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
+  const flagged = Reflect.get(raw, NON_STRING_ENV_SYMBOL) as unknown;
   const globalFlagged = (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
 
   const candidates: unknown[] = [];

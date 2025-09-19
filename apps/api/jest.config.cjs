@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const base = require("@acme/config/jest.preset.cjs");
 
+const coveragePathIgnorePatterns = base.coveragePathIgnorePatterns.filter(
+  (pattern) => pattern !== "/apps/"
+);
+
 /** @type {import('jest').Config} */
 module.exports = {
   ...base,
@@ -16,7 +20,7 @@ module.exports = {
     "!apps/api/src/**/?(*.)+(spec|test).{ts,tsx}",
     "!apps/api/src/**/__tests__/**",
   ],
-  coveragePathIgnorePatterns: base.coveragePathIgnorePatterns,
+  coveragePathIgnorePatterns,
   coverageReporters: ["text", "json", "lcov"],
   coverageThreshold: {
     global: {

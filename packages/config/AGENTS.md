@@ -3,9 +3,14 @@
 ## Purpose
 Exposes configuration files through generated JavaScript stubs backed by TypeScript implementations.
 
+## File Organization Guidance
+
+- Keep each file focused on a single clear responsibility instead of mixing unrelated concerns.
+- Aim to keep every file under 350 lines of code. When exceeding this limit is absolutely necessary (for example, generated output or framework-required structure), document the justification and plan for follow-up refactors.
+- Prefer extracting helpers, components, and modules rather than growing a file past the limit.
+
 ## Regenerating Stubs
 Run `pnpm run build:stubs` whenever a `*.impl.ts` file changes to rebuild the JavaScript stubs. This command runs `scripts/generate-env-stubs.mjs`, which scans `src/env/*.impl.ts` and writes matching `.js` files that re-export the compiled implementations.
-
 ## Tooling
 - **Next.js** loads the `*.js` stubs for runtime configuration.
 - **Jest** resolves the stubs so tests run without a custom transformer.

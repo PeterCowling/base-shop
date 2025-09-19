@@ -3,13 +3,18 @@
 ## Purpose
 Tailwind CSS base configuration.
 
+## File Organization Guidance
+
+- Keep each file focused on a single clear responsibility instead of mixing unrelated concerns.
+- Aim to keep every file under 350 lines of code. When exceeding this limit is absolutely necessary (for example, generated output or framework-required structure), document the justification and plan for follow-up refactors.
+- Prefer extracting helpers, components, and modules rather than growing a file past the limit.
+
 ## TypeScript Build Contract
 - `compilerOptions.composite` is `true`
 - `declaration` and `declarationMap` are `true`
 - `rootDir` is `"src"` and `outDir` is `"dist"`
 - `package.json` includes `"types": "dist/index.d.ts"`
 - Add a project reference in `tsconfig.json` when importing this package.
-
 ## Clean & Rebuild
 ```sh
 rimraf dist tsconfig.tsbuildinfo

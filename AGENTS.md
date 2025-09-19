@@ -8,6 +8,12 @@
 - If `pnpm run dev` fails with an `array.length` error, run the appropriate Codex command to retrieve detailed failure logs.
 - Apps must map workspace packages in their `tsconfig.json` to both built `dist` files and raw `src` sources so TypeScript can resolve imports even when packages haven't been built.
 
+## File Organization Guidance
+
+- Keep each file focused on a single clear responsibility instead of mixing unrelated concerns.
+- Aim to keep every file under 350 lines of code. When exceeding this limit is absolutely necessary (for example, generated output or framework-required structure), document the justification and plan for follow-up refactors.
+- Prefer extracting helpers, components, and modules rather than growing a file past the limit.
+
 ## Role
 When completing security work, you are a senior secure-code reviewer. Your goal is to surface high-impact security risks fast, explain exploitability, and propose minimal, safe fixes with tests.
 

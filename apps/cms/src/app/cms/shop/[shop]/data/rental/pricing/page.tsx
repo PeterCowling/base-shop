@@ -50,15 +50,15 @@ export default async function PricingPage({
   ];
 
   return (
-    <div className="space-y-8 text-white">
-      <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950 shadow-xl">
+    <div className="space-y-8 text-foreground">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-slate-950 shadow-xl">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.18),_transparent_55%)]" />
         <div className="relative space-y-4 px-6 py-8">
-          <Tag variant="default" className="bg-white/10 text-white/70">
+          <Tag variant="default">
             Rental pricing · {shop}
           </Tag>
           <h1 className="text-3xl font-semibold md:text-4xl">Tune rates, deposits, and coverage with confidence</h1>
-          <p className="text-sm text-white/70 md:text-base">
+          <p className="text-sm text-muted-foreground md:text-base">
             Build predictable rental revenue by balancing base rates, long-stay discounts, and how you recover for damage or loss.
           </p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -66,13 +66,13 @@ export default async function PricingPage({
               <div
                 key={stat.label}
                 className={cn(
-                  "rounded-2xl border border-white/10 px-4 py-3 text-xs text-white/70 backdrop-blur",
+                  "rounded-2xl border border-border/10 px-4 py-3 text-xs text-muted-foreground backdrop-blur",
                   stat.accent
                 )}
               >
                 <p className="font-semibold uppercase tracking-wide">{stat.label}</p>
-                <p className="mt-1 text-lg font-semibold text-white">{stat.value}</p>
-                <p className="text-xs text-white/70">{stat.caption}</p>
+                <p className="mt-1 text-lg font-semibold text-foreground">{stat.value}</p>
+                <p className="text-xs text-muted-foreground">{stat.caption}</p>
               </div>
             ))}
           </div>
@@ -80,12 +80,12 @@ export default async function PricingPage({
       </section>
 
       <section>
-        <Card className="border border-white/10 bg-slate-950/70 text-white shadow-lg">
+        <Card className="border border-border/10 bg-slate-950/70 text-foreground shadow-lg">
           <CardContent className="space-y-4 px-6 py-6">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold">Pricing controls</h2>
-                <p className="max-w-2xl text-sm text-white/70">
+                <p className="max-w-2xl text-sm text-muted-foreground">
                   Work through the guided editor, import JSON from finance, or export the latest rules to share with merchandising partners.
                 </p>
               </div>

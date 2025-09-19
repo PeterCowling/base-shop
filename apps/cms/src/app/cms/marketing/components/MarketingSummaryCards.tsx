@@ -1,4 +1,5 @@
-import { AnalyticsSummaryCard, type AnalyticsSummaryCardProps } from "@ui/components/cms/marketing";
+import { AnalyticsSummaryCard } from "@ui/components/cms/marketing/shared/AnalyticsSummaryCard";
+import type { AnalyticsSummaryCardProps } from "@ui/components/cms/marketing/shared/AnalyticsSummaryCard";
 
 export interface MarketingSummaryCardsProps {
   cards: AnalyticsSummaryCardProps[];

@@ -3,7 +3,7 @@
 
 import { useConfigurator } from "./ConfiguratorContext";
 import { useGuidedTour } from "./GuidedTour";
-import { Loader, Tag } from "@ui";
+import { Loader, Tag } from "@ui/components/atoms";
 import { CheckIcon } from "@radix-ui/react-icons";
 
 export default function ConfiguratorStatusBar(): React.JSX.Element {

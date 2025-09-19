@@ -69,8 +69,8 @@ describe("PageBuilder drag highlight", () => {
         component={component}
         index={0}
         parentId={undefined}
-        selectedId={null}
-        onSelectId={() => {}}
+        selectedIds={[]}
+        onSelect={() => {}}
         onRemove={() => {}}
         dispatch={() => {}}
         locale="en"
@@ -84,8 +84,8 @@ describe("PageBuilder drag highlight", () => {
         component={component}
         index={0}
         parentId={undefined}
-        selectedId={null}
-        onSelectId={() => {}}
+        selectedIds={[]}
+        onSelect={() => {}}
         onRemove={() => {}}
         dispatch={() => {}}
         locale="en"
@@ -95,4 +95,3 @@ describe("PageBuilder drag highlight", () => {
     expect(container.querySelector('[data-placeholder]')).toBeNull();
   });
 });
-

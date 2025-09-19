@@ -16,8 +16,8 @@ import BlockChildren from "../BlockChildren";
 describe("BlockChildren", () => {
   const createProps = (overrides: Partial<React.ComponentProps<typeof BlockChildren>> = {}) => ({
     component: { id: "parent", type: "Container" } as unknown as PageComponent,
-    selectedId: null,
-    onSelectId: jest.fn(),
+    selectedIds: [],
+    onSelect: jest.fn(),
     dispatch: jest.fn(),
     locale: "en" as const,
     gridCols: 12,
@@ -103,4 +103,3 @@ describe("BlockChildren", () => {
     expect(dispatch).toHaveBeenCalledWith({ type: "remove", id: "c1" });
   });
 });
-

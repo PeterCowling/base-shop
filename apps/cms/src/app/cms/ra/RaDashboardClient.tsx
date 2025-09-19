@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { ReturnAuthorization } from "@acme/types";
-import { Tag } from "@acme/ui";
+import { Tag } from "@ui/components/atoms";
 import {
   Button,
   Card,
@@ -116,13 +116,13 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
 
   if (error) {
     return (
-      <Card className="border border-rose-500/30 bg-rose-500/10 text-white">
+      <Card className="border border-rose-500/30 bg-rose-500/10 text-foreground">
         <CardContent className="space-y-3 px-6 py-6">
-          <Tag variant="destructive" className="bg-rose-500/40 text-white">
+          <Tag variant="destructive">
             Unable to load return authorizations
           </Tag>
-          <p className="text-sm text-white/80">{error}</p>
-          <p className="text-xs text-white/60">
+          <p className="text-sm text-muted-foreground">{error}</p>
+          <p className="text-xs text-muted-foreground">
             Retry shortly or verify the data source connection for the RA service.
           </p>
         </CardContent>
@@ -131,44 +131,44 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
   }
 
   return (
-    <div className="space-y-6 text-white">
+    <div className="space-y-6 text-foreground">
       <header className="space-y-3">
-        <Tag variant="default" className="bg-indigo-500/20 text-indigo-200">
+        <Tag variant="default" className="bg-indigo-500/20 text-foreground">
           Return authorizations
         </Tag>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="space-y-1">
             <h2 className="text-2xl font-semibold">RA workflow overview</h2>
-            <p className="text-sm text-white/70">
+            <p className="text-sm text-muted-foreground">
               Quickly identify escalations, filter by status, and move authorizations forward.
             </p>
           </div>
         </div>
       </header>
 
-      <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {metrics.map((metric) => (
           <Card
             key={metric.label}
-            className="border border-white/10 bg-slate-900/70"
+            className="border border-border/10 bg-slate-900/70"
           >
             <CardContent className="space-y-1 px-4 py-3">
-              <p className="text-xs uppercase tracking-wide text-white/60">
+              <p className="text-xs uppercase tracking-wide text-muted-foreground">
                 {metric.label}
               </p>
               <p className="text-2xl font-semibold">{metric.value}</p>
-              <p className="text-xs text-white/60">{metric.caption}</p>
+              <p className="text-xs text-muted-foreground">{metric.caption}</p>
             </CardContent>
           </Card>
         ))}
       </section>
 
       <section className="grid gap-5 lg:grid-cols-[300px,1fr]">
-        <Card className="border border-white/10 bg-slate-900/60">
-          <CardContent className="space-y-4 px-5 py-6">
+        <Card className="border border-border/10 bg-slate-900/60">
+          <CardContent className="space-y-4 p-6">
             <div className="space-y-1">
               <h3 className="text-base font-semibold">Quick filters</h3>
-              <p className="text-xs text-white/70">
+              <p className="text-xs text-muted-foreground">
                 Snap to a subset and broadcast the count in the live region below.
               </p>
             </div>
@@ -182,39 +182,39 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                   className={cn(
                     "rounded-xl border px-3 py-2 text-left text-sm transition",
                     activeFilter === filter.key
-                      ? "border-indigo-400 bg-indigo-500/20 text-white"
-                      : "border-white/20 bg-white/5 text-white/80 hover:border-indigo-300 hover:bg-indigo-500/10"
+                      ? "border-indigo-400 bg-indigo-500/20 text-foreground"
+                      : "border-border/20 bg-background/60 text-muted-foreground hover:border-indigo-300 hover:bg-indigo-500/10"
                   )}
                 >
                   <span className="block font-semibold">{filter.label}</span>
-                  <span className="block text-xs text-white/60">{filter.description}</span>
+                  <span className="block text-xs text-muted-foreground">{filter.description}</span>
                 </button>
               ))}
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold uppercase tracking-wide text-white/60">
+              <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 Search
               </label>
               <Input
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
                 placeholder="Filter by RA, order, or note"
-                className="border-white/20 bg-white/5 text-white placeholder:text-white/50"
+                className="border-border/20 bg-background/60 text-foreground placeholder:text-muted-foreground"
               />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border border-white/10 bg-slate-900/60">
-          <CardContent className="space-y-4 px-5 py-6">
+        <Card className="border border-border/10 bg-slate-900/60">
+          <CardContent className="space-y-4 p-6">
             <div className="flex items-start justify-between gap-3">
               <div className="space-y-1">
                 <h3 className="text-lg font-semibold">Authorization queue</h3>
-                <p className="text-xs text-white/60">
+                <p className="text-xs text-muted-foreground">
                   Actions provide suggested follow-ups so teams can unblock customers quickly.
                 </p>
               </div>
-              <Tag variant="default" className="bg-white/10 text-white/70">
+              <Tag variant="default">
                 {filtered.length} showing
               </Tag>
             </div>
@@ -236,57 +236,57 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                     key={ra.raId}
                     data-testid="ra-card"
                     data-cy="ra-card"
-                    className={cn(
-                      "border border-white/10 bg-white/5 text-white",
-                      risk === "high" && "border-rose-400/40 bg-rose-500/10",
-                      risk === "medium" && "border-amber-400/40 bg-amber-500/10"
+                  className={cn(
+                    "border border-border/10 bg-background/60 text-foreground",
+                    risk === "high" && "border-rose-400/40 bg-rose-500/10",
+                    risk === "medium" && "border-amber-400/40 bg-amber-500/10"
+                  )}
+                >
+                    <CardContent className="space-y-3 p-6">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div className="space-y-1">
+                        <p className="text-sm font-semibold">RA {ra.raId}</p>
+                        <p className="text-xs text-muted-foreground">Order {ra.orderId}</p>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        <Tag variant={statusVariant(ra.status)}>{ra.status}</Tag>
+                        <Tag variant={riskVariant(risk)}>Risk: {risk}</Tag>
+                      </div>
+                    </div>
+                    {ra.inspectionNotes && (
+                      <p className="text-sm text-muted-foreground">{ra.inspectionNotes}</p>
                     )}
-                  >
-                    <CardContent className="space-y-3 px-5 py-5">
-                      <div className="flex flex-wrap items-start justify-between gap-3">
-                        <div className="space-y-1">
-                          <p className="text-sm font-semibold">RA {ra.raId}</p>
-                          <p className="text-xs text-white/70">Order {ra.orderId}</p>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          <Tag variant={statusVariant(ra.status)}>{ra.status}</Tag>
-                          <Tag variant={riskVariant(risk)}>Risk: {risk}</Tag>
-                        </div>
-                      </div>
-                      {ra.inspectionNotes && (
-                        <p className="text-sm text-white/70">{ra.inspectionNotes}</p>
-                      )}
-                      <div className="flex flex-wrap gap-3">
-                        <Button
-                          asChild
-                          className="h-9 rounded-lg bg-indigo-500 px-4 text-sm font-semibold text-white hover:bg-indigo-400"
-                        >
-                          <Link href={`/cms/orders/${ra.orderId}`}>View order</Link>
-                        </Button>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          className="h-9 rounded-lg border-white/30 bg-white/10 text-sm text-white hover:bg-white/20"
-                        >
-                          Mark for follow-up
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })}
-              {filtered.length === 0 && (
-                <Card className="border border-white/10 bg-white/5 text-white">
-                  <CardContent className="space-y-3 px-6 py-6 text-center text-sm text-white/70">
-                    <Tag variant="warning" className="bg-amber-500/20 text-amber-100">
-                      No matches
-                    </Tag>
-                    <p>
-                      Try clearing filters or widening your search to surface more return authorizations.
-                    </p>
+                    <div className="flex flex-wrap gap-3">
+                      <Button
+                        asChild
+                        className="h-9 rounded-lg bg-indigo-500 px-4 text-sm font-semibold text-white hover:bg-indigo-400"
+                      >
+                        <Link href={`/cms/orders/${ra.orderId}`}>View order</Link>
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="h-9 rounded-lg border-border/30 bg-background/60 text-sm text-foreground hover:bg-muted/10"
+                      >
+                        Mark for follow-up
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
-              )}
+              );
+            })}
+            {filtered.length === 0 && (
+              <Card className="border border-border/10 bg-background/60 text-foreground">
+                <CardContent className="space-y-3 px-6 py-6 text-center text-sm text-muted-foreground">
+                  <Tag variant="warning">
+                    No matches
+                  </Tag>
+                  <p>
+                    Try clearing filters or widening your search to surface more return authorizations.
+                  </p>
+                </CardContent>
+              </Card>
+            )}
             </div>
           </CardContent>
         </Card>

@@ -92,6 +92,8 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
   const startTour = useCallback(() => setRunTour(true), []);
 
   const [showGrid, setShowGrid] = useState(false);
+  const [snapToGrid, setSnapToGrid] = useState(true);
+  const toggleSnap = useCallback(() => setSnapToGrid((s) => !s), []);
   const gridCols =
     typeof state.gridCols === "number" ? state.gridCols : 12;
   const toggleGrid = useCallback(() => {
@@ -103,6 +105,12 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
     (n: number) => dispatch({ type: "set-grid-cols", gridCols: n }),
     [dispatch]
   );
+
+  // Canvas zoom (independent of device scaling)
+  const [zoom, setZoom] = useState(1);
+  // Rulers toggle
+  const [showRulers, setShowRulers] = useState(false);
+  const toggleRulers = useCallback(() => setShowRulers((s) => !s), []);
 
   return {
     deviceId,
@@ -126,10 +134,15 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
     handleTourCallback,
     showGrid,
     toggleGrid,
+    snapToGrid,
+    toggleSnap,
     gridCols,
     setGridCols,
+    showRulers,
+    toggleRulers,
+    zoom,
+    setZoom,
   };
 };
 
 export default usePageBuilderControls;
-

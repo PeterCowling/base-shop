@@ -1,12 +1,12 @@
 import { render, screen } from "@testing-library/react";
 
-type ErrorPageModule = typeof import("../_error");
+type ErrorPageModule = typeof import("../../src/pages/_error");
 type ErrorPageType = ErrorPageModule["default"];
 
 let ErrorPage: ErrorPageType;
 
 beforeAll(async () => {
-  ({ default: ErrorPage } = await import("../_error"));
+  ({ default: ErrorPage } = await import("../../src/pages/_error"));
 });
 
 describe("ErrorPage", () => {
@@ -53,3 +53,4 @@ describe("ErrorPage.getInitialProps", () => {
     expect(status).toEqual({ statusCode: 500 });
   });
 });
+

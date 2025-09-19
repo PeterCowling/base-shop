@@ -43,8 +43,8 @@ describe("TextBlock", () => {
         component={{ id: "1", type: "Text" as any, text: html }}
         index={0}
         parentId={undefined}
-        selectedId={null}
-        onSelectId={() => {}}
+        selectedIds={[]}
+        onSelect={() => {}}
         onRemove={() => {}}
         dispatch={jest.fn()}
         locale="en"
@@ -73,8 +73,8 @@ describe("TextBlock", () => {
         component={{ id: "c1", type: "Text" as any }}
         index={0}
         parentId={undefined}
-        selectedId={null}
-        onSelectId={() => {}}
+        selectedIds={[]}
+        onSelect={() => {}}
         onRemove={() => {}}
         dispatch={dispatch}
         locale="en"
@@ -113,8 +113,8 @@ describe("TextBlock", () => {
         }}
         index={0}
         parentId={undefined}
-        selectedId={null}
-        onSelectId={() => {}}
+        selectedIds={[]}
+        onSelect={() => {}}
         onRemove={() => {}}
         dispatch={jest.fn()}
         locale="en"
@@ -135,4 +135,3 @@ describe("TextBlock", () => {
     });
   });
 });
-

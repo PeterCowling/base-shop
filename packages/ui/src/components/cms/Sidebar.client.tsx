@@ -124,21 +124,21 @@ function Sidebar({
   };
 
   return (
-    <aside className="flex h-full w-full flex-col gap-6 px-5 py-6 text-sm">
+    <aside className="flex h-full w-full flex-col gap-6 px-5 py-6 text-sm text-foreground">
       <div className="space-y-6">
         <div className="space-y-2">
-          <Tag variant="default" className="bg-white/10 text-white/80">
+          <Tag variant="default">
             Control Center
           </Tag>
           <h1 className="text-2xl font-semibold tracking-tight">Base Shop CMS</h1>
-          <p className="text-xs text-white/60">
+          <p className="text-xs text-muted-foreground">
             Configure storefronts, orchestrate launches, and monitor activity from one hub.
           </p>
         </div>
 
-        <Card className="border-white/10 bg-white/5 text-white">
+        <Card className="border-border/10 bg-background/60 text-foreground">
           <CardContent className="space-y-4 px-4 py-5">
-            <div className="flex items-center justify-between text-xs uppercase tracking-wide text-white/50">
+            <div className="flex items-center justify-between text-xs uppercase tracking-wide text-muted-foreground">
               <span>Main navigation</span>
               <span>Explore</span>
             </div>
@@ -153,8 +153,8 @@ function Sidebar({
                   className={cn(
                     "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors",
                     active
-                      ? "bg-white/15 text-white"
-                      : "text-white/70 hover:bg-white/10 hover:text-white"
+                      ? "bg-muted/10 text-foreground"
+                      : "text-muted-foreground hover:bg-muted/10 hover:text-foreground"
                   )}
                 >
                   <span className="text-lg" aria-hidden>
@@ -172,23 +172,23 @@ function Sidebar({
 
         <Button
           asChild
-          className="w-full justify-center bg-white/10 text-white hover:bg-white/20"
+          className="w-full justify-center bg-muted/10 text-foreground hover:bg-muted/20"
           onClick={handleConfiguratorClick}
         >
           <Link href="/cms/configurator">Launch Configurator</Link>
         </Button>
       </div>
 
-      <div className="mt-auto space-y-3 text-xs text-white/60">
-        <Card className="border-white/10 bg-white/5">
+      <div className="mt-auto space-y-3 text-xs text-muted-foreground">
+        <Card className="border-border/10 bg-background/60">
           <CardContent className="space-y-2 px-4 py-4">
-            <h2 className="text-sm font-semibold text-white">Need a hand?</h2>
+            <h2 className="text-sm font-semibold text-foreground">Need a hand?</h2>
             <p>Visit the docs or ping the platform team for support.</p>
             <div className="flex gap-2">
-              <Button asChild variant="outline" className="h-9 flex-1 border-white/30 text-white">
+              <Button asChild variant="outline" className="h-9 flex-1">
                 <Link href="/docs">Docs</Link>
               </Button>
-              <Button asChild className="h-9 flex-1 bg-white/10 text-white hover:bg-white/20">
+              <Button asChild className="h-9 flex-1 bg-muted/10 text-foreground hover:bg-muted/20">
                 <Link href="/cms/support">Support</Link>
               </Button>
             </div>

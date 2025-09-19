@@ -13,4 +13,5 @@ export { QuantityInput } from "./QuantityInput";
 export { RatingSummary } from "./RatingSummary";
 export { SearchBar } from "./SearchBar";
 export { SustainabilityBadgeCluster } from "./SustainabilityBadgeCluster";
-export { Accordion } from "./Accordion";
+// Avoid name collision with atoms' primitive Accordion
+export { default as AccordionMolecule } from "./Accordion";

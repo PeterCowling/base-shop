@@ -78,7 +78,7 @@ export function SegmentDesigner({ saveSegment, onNotify }: SegmentDesignerProps)
       for (const issue of parsed.error.issues) {
         const [key, index, field] = issue.path;
         if (key === "filters" && typeof index === "number" && typeof field === "string") {
-          next[`filters.${index}.${field}`] = issue.message;
+          (next as Record<string, string>)[`filters.${index}.${field}`] = issue.message;
         } else if (typeof key === "string") {
           next[key as keyof FormErrors] = issue.message;
         }

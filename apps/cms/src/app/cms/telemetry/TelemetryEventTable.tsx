@@ -1,4 +1,4 @@
-import { Tag } from "@acme/ui";
+import { Tag } from "@ui/components/atoms";
 
 import type { TelemetrySummaryRow } from "./telemetryUtils";
 
@@ -17,7 +17,7 @@ export function TelemetryEventTable({
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <h3 className="text-base font-semibold">Event breakdown</h3>
-        <Tag variant="default" className="bg-white/10 text-white/70">
+        <Tag variant="default">
           {summaryRows.length} tracked types
         </Tag>
       </div>
@@ -37,18 +37,18 @@ export function TelemetryEventTable({
           aria-label="Event type breakdown"
         >
           <thead>
-            <tr className="text-xs uppercase tracking-wide text-white/50">
-              <th className="border-b border-white/10 px-3 py-2">Event</th>
-              <th className="border-b border-white/10 px-3 py-2">Count</th>
-              <th className="border-b border-white/10 px-3 py-2">Last seen</th>
+            <tr className="text-xs uppercase tracking-wide text-muted-foreground">
+              <th className="border-b border-border/10 px-3 py-2">Event</th>
+              <th className="border-b border-border/10 px-3 py-2">Count</th>
+              <th className="border-b border-border/10 px-3 py-2">Last seen</th>
             </tr>
           </thead>
           <tbody>
             {summaryRows.map((row) => (
-              <tr key={row.name} className="odd:bg-white/5 even:bg-white/0">
-                <td className="px-3 py-2 font-medium text-white">{row.name}</td>
-                <td className="px-3 py-2 text-white/80">{row.count}</td>
-                <td className="px-3 py-2 text-white/60">
+              <tr key={row.name} className="odd:bg-background/60 even:bg-background/0">
+                <td className="px-3 py-2 font-medium text-foreground">{row.name}</td>
+                <td className="px-3 py-2 text-muted-foreground">{row.count}</td>
+                <td className="px-3 py-2 text-muted-foreground">
                   {new Date(row.lastSeen).toLocaleString()}
                 </td>
               </tr>
@@ -57,9 +57,9 @@ export function TelemetryEventTable({
               <tr>
                 <td
                   colSpan={3}
-                  className="px-3 py-6 text-center text-sm text-white/60"
+                  className="px-3 py-6 text-center text-sm text-muted-foreground"
                 >
-                  <Tag variant="warning" className="bg-amber-500/20 text-amber-100">
+                  <Tag variant="warning">
                     Filters active
                   </Tag>{" "}
                   Adjust the criteria to see event types.

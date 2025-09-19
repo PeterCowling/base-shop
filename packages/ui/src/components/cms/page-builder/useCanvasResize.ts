@@ -17,6 +17,8 @@ interface Options {
   disabled?: boolean;
 }
 
+type Handle = "se" | "ne" | "sw" | "nw" | "e" | "w" | "n" | "s";
+
 export default function useCanvasResize({
   componentId,
   widthKey,
@@ -29,7 +31,16 @@ export default function useCanvasResize({
   containerRef,
   disabled = false,
 }: Options) {
-  const startRef = useRef<{ x: number; y: number; w: number; h: number } | null>(
+  const startRef = useRef<{
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    l: number;
+    t: number;
+    handle: Handle;
+    ratio: number | null;
+  } | null>(
     null
   );
   const [resizing, setResizing] = useState(false);
@@ -52,24 +63,57 @@ export default function useCanvasResize({
     if (!resizing) return;
     const handleMove = (e: PointerEvent) => {
       if (!startRef.current || !containerRef.current) return;
+      const { handle, w, h, l: startL, t: startT, ratio } = startRef.current;
       const dx = e.clientX - startRef.current.x;
       const dy = e.clientY - startRef.current.y;
       const parent = containerRef.current.parentElement;
-      const parentW = parent?.offsetWidth ?? startRef.current.w + dx;
-      const parentH = parent?.offsetHeight ?? startRef.current.h + dy;
-      const originalW = startRef.current.w + dx;
-      const originalH = startRef.current.h + dy;
-      let newW = originalW;
-      let newH = originalH;
+      const parentW = parent?.offsetWidth ?? w + dx;
+      const parentH = parent?.offsetHeight ?? h + dy;
+      let newW = w;
+      let newH = h;
+      let left = startL;
+      let top = startT;
       const threshold = 10;
-      const left = containerRef.current.offsetLeft;
-      const top = containerRef.current.offsetTop;
+
+      // Horizontal resizing
+      if (handle.includes("e")) newW = w + dx;
+      if (handle.includes("w")) {
+        newW = w - dx;
+        left = startL + dx;
+      }
+      // Vertical resizing
+      if (handle.includes("s")) newH = h + dy;
+      if (handle.includes("n")) {
+        newH = h - dy;
+        top = startT + dy;
+      }
+
+      // Maintain aspect ratio when Shift is held
+      if (e.shiftKey && ratio && ratio > 0) {
+        if (handle.length === 2) {
+          if (Math.abs(dx) >= Math.abs(dy)) {
+            newH = newW / ratio;
+            if (handle.includes("n")) top = startT + (h - newH);
+            if (handle.includes("w")) left = startL + (w - newW);
+          } else {
+            newW = newH * ratio;
+            if (handle.includes("w")) left = startL + (w - newW);
+            if (handle.includes("n")) top = startT + (h - newH);
+          }
+        } else if (handle === "e" || handle === "w") {
+          newH = newW / ratio;
+          if (handle === "w") left = startL + (w - newW);
+        } else if (handle === "n" || handle === "s") {
+          newW = newH * ratio;
+          if (handle === "n") top = startT + (h - newH);
+        }
+      }
       let guideX: number | null = null;
       let guideY: number | null = null;
       let distX: number | null = null;
       let distY: number | null = null;
       siblingEdgesRef.current.vertical.forEach((edge) => {
-        const rightDist = Math.abs(left + originalW - edge);
+        const rightDist = Math.abs(left + newW - edge);
         if (rightDist <= threshold && (distX === null || rightDist < distX)) {
           newW = edge - left;
           guideX = edge;
@@ -77,7 +121,7 @@ export default function useCanvasResize({
         }
       });
       siblingEdgesRef.current.horizontal.forEach((edge) => {
-        const bottomDist = Math.abs(top + originalH - edge);
+        const bottomDist = Math.abs(top + newH - edge);
         if (bottomDist <= threshold && (distY === null || bottomDist < distY)) {
           newH = edge - top;
           guideY = edge;
@@ -101,13 +145,15 @@ export default function useCanvasResize({
           distY = gridDistY;
         }
       }
-      const snapW = e.shiftKey || Math.abs(parentW - newW) <= threshold;
-      const snapH = e.shiftKey || Math.abs(parentH - newH) <= threshold;
+      const snapW = e.altKey || Math.abs(parentW - newW) <= threshold;
+      const snapH = e.altKey || Math.abs(parentH - newH) <= threshold;
       dispatch({
         type: "resize",
         id: componentId,
         [widthKey]: snapW ? "100%" : `${newW}px`,
         [heightKey]: snapH ? "100%" : `${newH}px`,
+        ...(handle.includes("w") ? { left: `${left}px` } : {}),
+        ...(handle.includes("n") ? { top: `${top}px` } : {}),
       });
       setCurrent({ width: newW, height: newH, left, top });
       setSnapWidth(snapW || guideX !== null);
@@ -144,7 +190,7 @@ export default function useCanvasResize({
     containerRef,
   ]);
 
-  const startResize = (e: React.PointerEvent) => {
+  const startResize = (e: React.PointerEvent, handle: Handle = "se") => {
     if (disabled) return;
     e.stopPropagation();
     const el = containerRef.current;
@@ -160,6 +206,10 @@ export default function useCanvasResize({
       y: e.clientY,
       w: startWidth,
       h: startHeight,
+      l: el.offsetLeft,
+      t: el.offsetTop,
+      handle,
+      ratio: startHeight > 0 ? startWidth / startHeight : null,
     };
     setCurrent({
       width: startWidth,

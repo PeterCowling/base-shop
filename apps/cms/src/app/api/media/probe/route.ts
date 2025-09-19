@@ -1,7 +1,7 @@
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 const ALLOWED_PROTOCOLS = new Set(["http:", "https:"]);
 

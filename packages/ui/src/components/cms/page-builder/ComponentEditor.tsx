@@ -1,7 +1,7 @@
 // packages/ui/src/components/cms/page-builder/ComponentEditor.tsx
 "use client";
 
-import type { PageComponent } from "@acme/types";
+import type { PageComponent, HistoryState } from "@acme/types";
 import { memo } from "react";
 import {
   Accordion,
@@ -37,9 +37,11 @@ interface Props {
     paddingTablet?: string;
     paddingMobile?: string;
   }) => void;
+  editor?: HistoryState["editor"];
+  onUpdateEditor?: (patch: any) => void;
 }
 
-function ComponentEditor({ component, onChange, onResize }: Props) {
+function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor }: Props) {
   const { handleInput } = useComponentInputs(onChange);
   const { handleResize, handleFullSize } = useComponentResize(onResize);
 
@@ -61,6 +63,8 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
             handleInput={handleInput}
             handleResize={handleResize}
             handleFullSize={handleFullSize}
+            editorFlags={editor?.[component.id]}
+            onUpdateEditor={onUpdateEditor}
           />
         </AccordionContent>
       </AccordionItem>
@@ -100,4 +104,3 @@ function ComponentEditor({ component, onChange, onResize }: Props) {
 }
 
 export default memo(ComponentEditor);
-

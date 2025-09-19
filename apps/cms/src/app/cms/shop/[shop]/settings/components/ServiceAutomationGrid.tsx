@@ -23,7 +23,7 @@ export default function ServiceAutomationGrid({
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {services.map((service) => (
           <Card key={service.href} className="h-full border border-border/80">
-            <CardContent className="flex h-full flex-col justify-between gap-4 p-5">
+            <CardContent className="flex h-full flex-col justify-between gap-4 p-6">
               <div className="space-y-2">
                 <h3 className="text-lg font-semibold">{service.name}</h3>
                 <p className="text-sm text-muted-foreground">{service.description}</p>

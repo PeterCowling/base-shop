@@ -3,7 +3,7 @@ import {
   readAggregates,
 } from "@platform-core/repositories/analytics.server";
 import { readShop } from "@platform-core/repositories/shops.server";
-import { Progress } from "@acme/ui";
+import { Progress } from "@ui/components/atoms";
 import { CampaignFilter } from "./components/CampaignFilter.client";
 import { Charts } from "./components/Charts.client";
 import { buildMetrics } from "@cms/lib/analytics";

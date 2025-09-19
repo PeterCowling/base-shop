@@ -65,6 +65,7 @@ export function usePageBuilderDnD({
       const { over, delta, activatorEvent } = ev;
       if (!over || !isPointerEvent(activatorEvent)) return;
       const overData = over.data.current as { index?: number };
+      const visible = components.filter((c) => !(c as any).hidden);
       const rawY = activatorEvent.clientY + delta.y;
       const pointerY = snapToGrid(rawY, gridSize);
       const rawX = activatorEvent.clientX + delta.x;
@@ -73,14 +74,14 @@ export function usePageBuilderDnD({
       const snapX = snapToGrid(pointerX, gridSize);
       setSnapPosition(snapX);
       if (over.id === "canvas") {
-        setInsertIndex(components.length);
+        setInsertIndex(visible.length);
         return;
       }
       const isBelow = pointerY > over.rect.top + over.rect.height / 2;
-      const index = (overData?.index ?? components.length) + (isBelow ? 1 : 0);
+      const index = (overData?.index ?? visible.length) + (isBelow ? 1 : 0);
       setInsertIndex(index);
     },
-    [components.length, gridSize, canvasRef, setSnapPosition]
+    [components, gridSize, canvasRef, setSnapPosition]
   );
 
   const handleDragEndInternal = useCallback(
@@ -186,4 +187,3 @@ export function usePageBuilderDnD({
 }
 
 export default usePageBuilderDnD;
-

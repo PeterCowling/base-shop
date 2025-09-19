@@ -1,4 +1,5 @@
 // packages/ui/components/atoms/primitives/button.tsx
+"use client";
 import * as React from "react";
 import { cn } from "../../../utils/style";
 import { Slot } from "./slot";

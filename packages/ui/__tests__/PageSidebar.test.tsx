@@ -14,7 +14,8 @@ describe("PageSidebar", () => {
     const { getByText, findByLabelText } = render(
       <PageSidebar
         components={[component]}
-        selectedId={component.id}
+        selectedIds={[component.id]}
+        onSelectIds={() => {}}
         dispatch={dispatch}
       />
     );

@@ -16,13 +16,13 @@ export function ConfiguratorHero({
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/60">
+        <span className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">
           Shop Configurator
         </span>
         <h1 className="text-3xl font-semibold md:text-4xl">
           Build a launch-ready storefront without the guesswork
         </h1>
-        <p className="text-white/80">{description}</p>
+        <p className="text-muted-foreground">{description}</p>
       </div>
       <div className="space-y-4">
         <ProgressBar value={progressPercent} label={essentialProgressLabel} />
@@ -39,9 +39,11 @@ export function ConfiguratorHero({
           <ButtonElement
             asChild
             variant="outline"
-            className="h-11 px-5 text-sm font-semibold border-white/40 text-white hover:bg-white/10"
+            className="h-11 px-5 text-sm font-semibold border-border/40 text-foreground hover:bg-muted/10"
           >
-            <Link href="/cms/configurator">Browse all steps</Link>
+            <Link href="#configurator-steps" scroll={true}>
+              Browse all steps
+            </Link>
           </ButtonElement>
         </div>
       </div>
@@ -64,4 +66,3 @@ export function ConfiguratorHero({
 }
 
 export default ConfiguratorHero;
-

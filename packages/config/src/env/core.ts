@@ -352,9 +352,6 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env): CoreEnv {
 // Lazy proxy; no import-time parse in dev.
 let __cachedCoreEnv: CoreEnv | null = null;
 type LoadCoreEnvFn = (raw?: NodeJS.ProcessEnv) => CoreEnv;
-
-const nodeRequire: NodeJS.Require | null =
-  typeof require === "function" ? require : null;
 const cachedEnvMode = process.env.NODE_ENV;
 
 let __loadCoreEnvFn: LoadCoreEnvFn | null = null;
@@ -394,9 +391,12 @@ function resolveLoadCoreEnvFn(): LoadCoreEnvFn {
   const shouldPreferStub =
     cachedEnvMode === "production" || cachedEnvMode == null;
 
-  if (shouldPreferStub && nodeRequire) {
+  if (shouldPreferStub) {
     try {
-      const mod = nodeRequire("./core.js");
+      // Use direct require with a static string so bundlers can statically analyze.
+      // This avoids critical dependency warnings from aliasing/indirect require calls.
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const mod = require("./core.js");
       const loader = extractLoadCoreEnvFn(mod);
       if (loader) {
         __loadCoreEnvFn = loader;

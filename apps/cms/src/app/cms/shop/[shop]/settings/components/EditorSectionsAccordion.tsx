@@ -72,7 +72,7 @@ export default function EditorSectionsAccordion({
             </AccordionTrigger>
             <AccordionContent className="pt-3">
               <SectionCard dataSectionKey={key} wrapWithCard={wrapWithCard}>
-                <Component {...props} />
+                <Component {...(props as any)} />
               </SectionCard>
             </AccordionContent>
           </AccordionItem>

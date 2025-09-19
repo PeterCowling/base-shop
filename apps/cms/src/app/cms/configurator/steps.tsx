@@ -1,3 +1,5 @@
+"use client";
+
 import StepShopDetails from "./steps/StepShopDetails";
 import StepTheme from "./steps/StepTheme";
 import StepTokens from "./steps/StepTokens";

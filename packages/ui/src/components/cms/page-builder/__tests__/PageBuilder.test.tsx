@@ -2,9 +2,9 @@ import React from "react";
 import { render, act } from "@testing-library/react";
 import PageBuilder from "../PageBuilder";
 
-// capture dispatch and setSelectedId
+// capture dispatch and setSelectedIds
 const dispatch = jest.fn();
-const setSelectedId = jest.fn();
+const setSelectedIds = jest.fn();
 
 // mock PageBuilderLayout to expose props
 let layoutProps: any;
@@ -98,8 +98,8 @@ jest.mock("../hooks/usePageBuilderState", () => ({
     state: { past: [], present: [], future: [], gridCols: 4 },
     components: [],
     dispatch,
-    selectedId: null,
-    setSelectedId,
+    selectedIds: [],
+    setSelectedIds,
     liveMessage: "",
     clearHistory: jest.fn(),
   }),
@@ -148,4 +148,3 @@ describe("PageBuilder", () => {
     );
   });
 });
-

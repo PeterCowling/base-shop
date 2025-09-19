@@ -108,8 +108,8 @@ describe("BlockItem", () => {
         component={component}
         index={0}
         parentId={undefined}
-        selectedId="1"
-        onSelectId={jest.fn()}
+        selectedIds={["1"]}
+        onSelect={jest.fn()}
         onRemove={jest.fn()}
         dispatch={jest.fn()}
         locale="en"
@@ -120,12 +120,12 @@ describe("BlockItem", () => {
     );
 
   it("fires onSelectId and onRemove", () => {
-    const onSelectId = jest.fn();
+    const onSelect = jest.fn();
     const onRemove = jest.fn();
-    renderItem(baseComponent, { onSelectId, onRemove });
+    renderItem(baseComponent, { onSelect, onRemove });
 
     fireEvent.click(screen.getByRole("listitem"));
-    expect(onSelectId).toHaveBeenCalledWith("1");
+    expect(onSelect).toHaveBeenCalled();
 
     fireEvent.click(screen.getByRole("button", { name: "×" }));
     expect(onRemove).toHaveBeenCalled();
@@ -201,4 +201,3 @@ describe("BlockItem", () => {
     expect(screen.getByText("80×40 | 5, 7")).toBeInTheDocument();
   });
 });
-

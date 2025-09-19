@@ -18,14 +18,14 @@ export function TelemetrySummaryCards({
       {metrics.map((metric) => (
         <Card
           key={metric.label}
-          className="border border-white/10 bg-slate-900/70 text-white"
+          className="border border-border/10 bg-slate-900/70 text-foreground"
         >
           <CardContent className="space-y-1 px-4 py-3">
-            <p className="text-xs uppercase tracking-wide text-white/60">
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">
               {metric.label}
             </p>
             <p className="text-2xl font-semibold">{metric.value}</p>
-            <p className="text-xs text-white/60">{metric.description}</p>
+            <p className="text-xs text-muted-foreground">{metric.description}</p>
           </CardContent>
         </Card>
       ))}

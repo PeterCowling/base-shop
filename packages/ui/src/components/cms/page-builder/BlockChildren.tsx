@@ -2,7 +2,8 @@
 
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import type { Locale } from "@acme/i18n/locales";
-import type { PageComponent } from "@acme/types";
+import type { PageComponent, HistoryState } from "@acme/types";
+import { isHiddenForViewport } from "./state/layout/utils";
 import CanvasItem from "./CanvasItem";
 import type { Action } from "./state";
 import type { DevicePreset } from "../../../utils/devicePresets";
@@ -10,8 +11,8 @@ import type { DevicePreset } from "../../../utils/devicePresets";
 interface Props {
   component: PageComponent;
   childComponents?: PageComponent[];
-  selectedId: string | null;
-  onSelectId: (id: string) => void;
+  selectedIds: string[];
+  onSelect: (id: string, e?: React.MouseEvent) => void;
   dispatch: React.Dispatch<Action>;
   locale: Locale;
   gridEnabled?: boolean;
@@ -20,13 +21,14 @@ interface Props {
   device?: DevicePreset;
   isOver: boolean;
   setDropRef: (node: HTMLDivElement | null) => void;
+  editor?: HistoryState["editor"];
 }
 
 export default function BlockChildren({
   component,
   childComponents,
-  selectedId,
-  onSelectId,
+  selectedIds,
+  onSelect,
   dispatch,
   locale,
   gridEnabled = false,
@@ -35,9 +37,11 @@ export default function BlockChildren({
   device,
   isOver,
   setDropRef,
+  editor,
 }: Props) {
-  if (!childComponents || childComponents.length === 0) return null;
-  const childIds = childComponents.map((c) => c.id);
+  const visibleChildren = (childComponents ?? []).filter((c) => !isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport));
+  if (visibleChildren.length === 0) return null;
+  const childIds = visibleChildren.map((c) => c.id);
   return (
     <SortableContext
       id={`context-${component.id}`}
@@ -57,14 +61,14 @@ export default function BlockChildren({
             className="border-primary bg-primary/10 ring-primary h-4 w-full rounded border-2 border-dashed ring-2"
           />
         )}
-        {childComponents.map((child, i) => (
+        {visibleChildren.map((child, i) => (
           <CanvasItem
             key={child.id}
             component={child}
             index={i}
             parentId={component.id}
-            selectedId={selectedId}
-            onSelectId={onSelectId}
+            selectedIds={selectedIds}
+            onSelect={onSelect}
             onRemove={() => dispatch({ type: "remove", id: child.id })}
             dispatch={dispatch}
             locale={locale}
@@ -72,10 +76,10 @@ export default function BlockChildren({
             gridCols={gridCols}
             viewport={viewport}
             device={device}
+            editor={editor}
           />
         ))}
       </div>
     </SortableContext>
   );
 }
-

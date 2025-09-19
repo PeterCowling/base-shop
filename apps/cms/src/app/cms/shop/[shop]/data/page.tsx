@@ -55,15 +55,15 @@ export default async function DataIndex({
 }) {
   const { shop } = await params;
   return (
-    <div className="space-y-8 text-white">
-      <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950 shadow-xl">
+    <div className="space-y-8 text-foreground">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-slate-950 shadow-xl">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.18),_transparent_55%)]" />
         <div className="relative space-y-4 px-6 py-8">
-          <Tag variant="default" className="bg-white/10 text-white/70">
+          <Tag variant="default">
             Data operations · {shop}
           </Tag>
           <h1 className="text-3xl font-semibold md:text-4xl">Guide your merchandising source of truth</h1>
-          <p className="text-sm text-white/70 md:text-base">
+          <p className="text-sm text-muted-foreground md:text-base">
             Keep every dataset in lockstep—from stock availability to deposit policies and return coverage—before you roll
             updates to the storefront.
           </p>
@@ -75,10 +75,10 @@ export default async function DataIndex({
             ].map((item) => (
               <div
                 key={item.label}
-                className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-xs text-white/70 backdrop-blur"
+                className="rounded-2xl border border-border/10 bg-background/60 px-4 py-3 text-xs text-muted-foreground backdrop-blur"
               >
                 <p className="font-semibold uppercase tracking-wide">{item.label}</p>
-                <p className="mt-1 text-sm text-white">{item.value}</p>
+                <p className="mt-1 text-sm text-foreground">{item.value}</p>
               </div>
             ))}
           </div>
@@ -89,22 +89,23 @@ export default async function DataIndex({
         {cards.map((card) => (
           <Card
             key={card.title}
-            className={`border border-white/10 bg-gradient-to-br ${card.accent} text-white shadow-lg shadow-black/20`}
+            className={`border border-border/10 bg-gradient-to-br ${card.accent} text-foreground shadow-lg shadow-black/20`}
           >
             <CardContent className="flex h-full flex-col gap-4 p-6">
               <div className="space-y-2">
-                <span className="text-xs font-semibold uppercase tracking-wide text-white/70">{card.eyebrow}</span>
+                <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{card.eyebrow}</span>
                 <h2 className="text-xl font-semibold leading-tight">{card.title}</h2>
-                <p className="text-sm text-white/70">{card.description}</p>
+                <p className="text-sm text-muted-foreground">{card.description}</p>
               </div>
-              <ul className="flex flex-1 list-disc flex-col gap-2 pl-5 text-sm text-white/70">
+              <ul className="flex flex-1 list-disc flex-col gap-2 pl-5 text-sm text-muted-foreground">
                 {card.bullets.map((bullet) => (
                   <li key={bullet}>{bullet}</li>
                 ))}
               </ul>
               <Button
                 asChild
-                className="group mt-auto inline-flex h-11 items-center justify-between rounded-xl border border-white/20 bg-white/10 px-4 text-sm font-semibold text-white transition hover:bg-white/20"
+                variant="outline"
+                className="group mt-auto inline-flex h-11 items-center justify-between rounded-xl px-4 text-sm font-semibold"
               >
                 <Link href={card.href(shop)}>
                   <span>{card.cta}</span>

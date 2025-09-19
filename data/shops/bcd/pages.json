@@ -1,0 +1,158 @@
+[
+  {
+    "id": "01K5HK2BB3QFEH514S5WV9NWKK",
+    "slug": "",
+    "status": "draft",
+    "components": [],
+    "seo": {
+      "title": {
+        "en": "",
+        "de": "",
+        "it": ""
+      },
+      "description": {
+        "en": "",
+        "de": "",
+        "it": ""
+      },
+      "image": {
+        "en": "",
+        "de": "",
+        "it": ""
+      }
+    },
+    "createdAt": "2025-09-19T18:16:31.332Z",
+    "updatedAt": "2025-09-19T18:16:31.332Z",
+    "createdBy": "admin@example.com"
+  },
+  {
+    "id": "01K5HK2BD7ENEAHCBFXKSWZHV0",
+    "slug": "",
+    "status": "draft",
+    "components": [],
+    "seo": {
+      "title": {
+        "en": "",
+        "de": "",
+        "it": ""
+      },
+      "description": {
+        "en": "",
+        "de": "",
+        "it": ""
+      },
+      "image": {
+        "en": "",
+        "de": "",
+        "it": ""
+      }
+    },
+    "createdAt": "2025-09-19T18:16:31.399Z",
+    "updatedAt": "2025-09-19T18:16:31.399Z",
+    "createdBy": "admin@example.com"
+  },
+  {
+    "id": "01K5HK2BHF3X4M20EWP8Q9XK3G",
+    "slug": "",
+    "status": "draft",
+    "components": [],
+    "seo": {
+      "title": {
+        "en": "",
+        "de": "",
+        "it": ""
+      },
+      "description": {
+        "en": "",
+        "de": "",
+        "it": ""
+      },
+      "image": {
+        "en": "",
+        "de": "",
+        "it": ""
+      }
+    },
+    "createdAt": "2025-09-19T18:16:31.536Z",
+    "updatedAt": "2025-09-19T18:16:31.536Z",
+    "createdBy": "admin@example.com"
+  },
+  {
+    "id": "01K5HK2BKJWR3NGH7QVVPXW29W",
+    "slug": "",
+    "status": "draft",
+    "components": [],
+    "seo": {
+      "title": {
+        "en": "",
+        "de": "",
+        "it": ""
+      },
+      "description": {
+        "en": "",
+        "de": "",
+        "it": ""
+      },
+      "image": {
+        "en": "",
+        "de": "",
+        "it": ""
+      }
+    },
+    "createdAt": "2025-09-19T18:16:31.602Z",
+    "updatedAt": "2025-09-19T18:16:31.602Z",
+    "createdBy": "admin@example.com"
+  },
+  {
+    "id": "01K5HK2BNPWH7M0PSDKE9SE8HY",
+    "slug": "",
+    "status": "draft",
+    "components": [],
+    "seo": {
+      "title": {
+        "en": "",
+        "de": "",
+        "it": ""
+      },
+      "description": {
+        "en": "",
+        "de": "",
+        "it": ""
+      },
+      "image": {
+        "en": "",
+        "de": "",
+        "it": ""
+      }
+    },
+    "createdAt": "2025-09-19T18:16:31.670Z",
+    "updatedAt": "2025-09-19T18:16:31.670Z",
+    "createdBy": "admin@example.com"
+  },
+  {
+    "id": "01K5HK2BQ2JRRG8KZN9MHJ6MKW",
+    "slug": "",
+    "status": "draft",
+    "components": [],
+    "seo": {
+      "title": {
+        "en": "",
+        "de": "",
+        "it": ""
+      },
+      "description": {
+        "en": "",
+        "de": "",
+        "it": ""
+      },
+      "image": {
+        "en": "",
+        "de": "",
+        "it": ""
+      }
+    },
+    "createdAt": "2025-09-19T18:16:31.715Z",
+    "updatedAt": "2025-09-19T18:16:31.715Z",
+    "createdBy": "admin@example.com"
+  }
+]

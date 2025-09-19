@@ -24,13 +24,13 @@ function TopBarInner() {
   const showNewPage = shop && last === "pages";
 
   return (
-    <header className="relative z-10 border-b border-white/10 bg-slate-950/60 px-6 py-3 text-white backdrop-blur-xl">
+    <header className="relative z-10 border-b border-border/10 bg-slate-950/60 px-6 py-3 text-foreground backdrop-blur-xl">
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,_rgba(79,70,229,0.25),_rgba(244,114,182,0.12))] opacity-60" />
       <div className="relative flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-1 items-center gap-3">
           <Button
             variant="ghost"
-            className="h-9 w-9 shrink-0 rounded-lg border border-white/20 bg-white/10 text-white sm:hidden"
+            className="h-9 w-9 shrink-0 rounded-lg border border-border/20 bg-background/60 text-foreground sm:hidden"
             onClick={toggleNav}
           >
             <span className="sr-only">Toggle navigation</span>
@@ -38,7 +38,7 @@ function TopBarInner() {
           </Button>
           <Link
             href="/cms"
-            className="rounded-lg border border-white/10 bg-white/10 px-3 py-2 text-sm font-medium text-white transition hover:bg-white/20"
+            className="rounded-lg border border-border/10 bg-background/60 px-3 py-2 text-sm font-medium text-foreground transition hover:bg-muted/10"
           >
             Dashboard
           </Link>
@@ -60,14 +60,14 @@ function TopBarInner() {
           )}
           <Button
             variant="outline"
-            className="h-9 rounded-lg border-white/30 text-white hover:bg-white/10"
+            className="h-9 rounded-lg border-border/30 text-foreground hover:bg-muted/10"
             onClick={() => router.refresh()}
           >
             Refresh
           </Button>
           <Button
             variant="ghost"
-            className="h-9 rounded-lg text-white hover:bg-white/10"
+            className="h-9 rounded-lg text-foreground hover:bg-muted/10"
             onClick={() =>
               signOut({ redirect: false }).then(() => router.push("/login"))
             }
@@ -77,8 +77,8 @@ function TopBarInner() {
         </div>
       </div>
       <div className="mt-3 flex flex-wrap items-center gap-3 sm:hidden">
-        <Card className="w-full border-white/10 bg-white/5">
-          <div className="px-3 py-2 text-xs text-white/70">
+        <Card className="w-full border-border/10 bg-background/60">
+          <div className="px-3 py-2 text-xs text-muted-foreground">
             <ShopSelector />
           </div>
         </Card>

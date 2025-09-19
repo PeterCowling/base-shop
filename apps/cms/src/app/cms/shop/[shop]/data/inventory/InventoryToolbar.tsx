@@ -13,7 +13,7 @@ interface InventoryToolbarProps {
   onAddAttribute: () => void;
   onImport: () => void;
   onExport: (format: "json" | "csv") => void;
-  fileInputRef: RefObject<HTMLInputElement>;
+  fileInputRef: RefObject<HTMLInputElement | null>;
   onFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 

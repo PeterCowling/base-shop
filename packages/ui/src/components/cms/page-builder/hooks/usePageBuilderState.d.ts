@@ -5709,8 +5709,8 @@ export declare function usePageBuilderState({ page, history, onChange, onSaveSho
         mobileItems: import("zod").ZodOptional<import("zod").ZodNumber>;
     }, import("zod").ZodTypeAny, "passthrough">)[];
     dispatch: (action: Action) => void;
-    selectedId: string | null;
-    setSelectedId: import("react").Dispatch<import("react").SetStateAction<string | null>>;
+    selectedIds: string[];
+    setSelectedIds: import("react").Dispatch<import("react").SetStateAction<string[]>>;
     gridCols: number;
     setGridCols: (n: number) => void;
     liveMessage: string;

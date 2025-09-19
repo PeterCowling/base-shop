@@ -3,7 +3,7 @@ import type { FormEvent } from "react";
 import DOMPurify from "dompurify";
 import { z } from "zod";
 import type { MarketingEmailTemplateVariant } from "@acme/email-templates";
-import type { ActionResult } from "../../../../components/actionResult";
+import type { ActionResult } from "../../../components/actionResult";
 
 const formSchema = z
   .object({

@@ -4,7 +4,7 @@
 import { useFormState } from "react-dom";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/atoms/shadcn";
-import { Toast } from "@ui";
+import { Toast } from "@ui/components/atoms";
 import { deleteSanityConfig } from "@cms/actions/deleteSanityConfig";
 import CredentialsStep from "./CredentialsStep";
 import DatasetStep from "./DatasetStep";

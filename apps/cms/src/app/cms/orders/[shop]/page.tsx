@@ -38,25 +38,25 @@ export default async function ShopOrdersPage({
       label: "Placed",
       value: String(totalOrders),
       caption: "Orders recorded for this shop",
-      accent: "bg-white/10 text-white",
+      accent: "bg-muted/10 text-foreground",
     },
     {
       label: "Flagged",
       value: String(flaggedOrders.length),
       caption: "Require manual review",
-      accent: "bg-rose-500/20 text-rose-200",
+      accent: "bg-rose-500/20 text-foreground",
     },
     {
       label: "High risk",
       value: String(highRiskOrders.length),
       caption: "Risk level marked high",
-      accent: "bg-amber-500/20 text-amber-200",
+      accent: "bg-amber-500/20 text-foreground",
     },
     {
       label: "Overdue returns",
       value: String(overdueReturns.length),
       caption: "Past the expected return date",
-      accent: "bg-sky-500/20 text-sky-200",
+      accent: "bg-sky-500/20 text-foreground",
     },
   ];
 
@@ -77,19 +77,19 @@ export default async function ShopOrdersPage({
   }
 
   return (
-    <div className="space-y-8 text-white">
-      <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950 shadow-xl">
+    <div className="space-y-8 text-foreground">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-slate-950 shadow-xl">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(96,165,250,0.25),_transparent_55%)]" />
         <div className="relative grid gap-6 px-6 py-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
           <div className="space-y-5">
             <div className="space-y-2">
-              <Tag variant="default" className="bg-white/10 text-white/70">
+              <Tag variant="default">
                 Orders · {shop}
               </Tag>
               <h1 className="text-3xl font-semibold md:text-4xl">
                 Keep every rental on track and customers delighted
               </h1>
-              <p className="text-sm text-white/70">
+              <p className="text-sm text-muted-foreground">
                 Monitor flagged orders, overdue returns, and risk signals before they impact your launch timeline.
               </p>
             </div>
@@ -104,7 +104,7 @@ export default async function ShopOrdersPage({
                 </Link>
                 <Link
                   href={`/cms/shop/${shop}/data/return-logistics`}
-                  className="inline-flex h-11 items-center rounded-xl border border-white/30 px-5 text-sm font-semibold text-white transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                  className="inline-flex h-11 items-center rounded-xl border border-border/40 px-5 text-sm font-semibold text-foreground transition hover:bg-muted/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   Open logistics data
                 </Link>
@@ -115,27 +115,27 @@ export default async function ShopOrdersPage({
                 <div
                   key={stat.label}
                   className={cn(
-                    "rounded-2xl border border-white/10 px-4 py-3 backdrop-blur",
+                    "rounded-2xl border border-border/10 px-4 py-3 backdrop-blur",
                     stat.accent
                   )}
                 >
-                  <p className="text-xs font-semibold uppercase tracking-wide text-white/70">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     {stat.label}
                   </p>
-                  <p className="text-xl font-semibold text-white">{stat.value}</p>
-                  <p className="text-xs text-white/70">{stat.caption}</p>
+                  <p className="text-xl font-semibold text-foreground">{stat.value}</p>
+                  <p className="text-xs text-muted-foreground">{stat.caption}</p>
                 </div>
               ))}
             </div>
           </div>
-          <Card className="border-white/10 bg-white/5 text-white shadow-lg backdrop-blur">
-            <CardContent className="space-y-3 px-5 py-5 text-sm text-white/80">
-              <h2 className="text-base font-semibold text-white">Return triage tips</h2>
+          <Card className="border-border/10 bg-background/60 text-foreground shadow-lg backdrop-blur">
+            <CardContent className="space-y-3 p-6 text-sm text-muted-foreground">
+              <h2 className="text-base font-semibold text-foreground">Return triage tips</h2>
               <p>• Prioritise overdue items and contact customers directly.</p>
               <p>• Review high-risk orders before approving refunds.</p>
               <p>• Keep an eye on flagged orders to avoid chargebacks.</p>
               {!!flaggedOrders.length && (
-                <Tag variant="warning" className="bg-amber-500/20 text-amber-100">
+                <Tag variant="warning">
                   {flaggedOrders.length} orders require manual review
                 </Tag>
               )}
@@ -145,16 +145,16 @@ export default async function ShopOrdersPage({
       </section>
 
       <section className="space-y-4">
-        <Card className="border border-white/10 bg-slate-950/70 shadow-lg">
-          <CardContent className="space-y-5 px-6 py-6">
-            <div className="flex flex-wrap items-center justify-between gap-3 text-white">
+        <Card className="border border-border/10 bg-slate-950/70 shadow-lg">
+          <CardContent className="space-y-5 p-6">
+            <div className="flex flex-wrap items-center justify-between gap-3 text-foreground">
               <div>
                 <h2 className="text-lg font-semibold">Order queue</h2>
-                <p className="text-sm text-white/70">
+                <p className="text-sm text-muted-foreground">
                   Process returns, refunds, and risk reviews from a single command center.
                 </p>
               </div>
-              <Tag variant="default" className="bg-white/10 text-white/70">
+              <Tag variant="default">
                 {totalOrders} total orders
               </Tag>
             </div>
@@ -182,50 +182,43 @@ export default async function ShopOrdersPage({
                   >
                     <Card
                       className={cn(
-                        "border border-white/10 bg-white/5 text-white",
+                        "border border-border/10 bg-background/60 text-foreground",
                         order.flaggedForReview && "border-rose-400/40 bg-rose-500/10",
                         isOverdue && "border-amber-400/40 bg-amber-500/10"
                       )}
                     >
-                      <CardContent className="space-y-3 px-5 py-5">
+                      <CardContent className="space-y-3 p-6">
                         <div className="flex flex-wrap items-start justify-between gap-3">
                           <div className="space-y-1">
                             <div className="text-sm font-semibold">
                               Order: {order.id ?? "unknown"}
                             </div>
-                            <p className="text-xs text-white/70">
+                            <p className="text-xs text-muted-foreground">
                               Session: {order.sessionId ?? "—"}
                             </p>
                           </div>
                           <div className="flex flex-wrap items-center gap-2">
                             {order.flaggedForReview && (
-                              <Tag variant="warning" className="bg-rose-500/20 text-rose-100">
+                              <Tag variant="warning">
                                 Flagged for review
                               </Tag>
                             )}
                             <Tag
                               variant={riskLevelLower === "high" ? "destructive" : "default"}
-                              className={cn(
-                                "bg-white/15 text-white",
-                                riskLevelLower === "high" && "bg-rose-500/30 text-rose-100"
-                              )}
                             >
                               Risk Level: {riskLevel}
                             </Tag>
-                            <Tag className="bg-white/10 text-white/80" variant="default">
+                            <Tag variant="default">
                               Risk Score: {riskScore}
                             </Tag>
                           </div>
                         </div>
-                        <p className="text-sm text-white/80">
+                        <p className="text-sm text-muted-foreground">
                           {order.expectedReturnDate ? (
                             <>
                               Return: {order.expectedReturnDate}
                               {expected && Number.isFinite(expected.getTime()) && (
-                                <span
-                                  aria-hidden="true"
-                                  className="ml-2 text-white/70"
-                                >
+                                <span aria-hidden="true" className="ml-2 text-muted-foreground">
                                   ({expected.toLocaleDateString()})
                                 </span>
                               )}
@@ -237,7 +230,7 @@ export default async function ShopOrdersPage({
                             <>Return: —</>
                           )}
                         </p>
-                        <div className="text-sm text-white/70">
+                        <div className="text-sm text-muted-foreground">
                           Flagged for Review: {order.flaggedForReview ? "Yes" : "No"}
                         </div>
                         <div className="flex flex-wrap gap-3">
@@ -246,7 +239,7 @@ export default async function ShopOrdersPage({
                             <Button
                               type="submit"
                               variant="outline"
-                              className="h-9 rounded-lg border-white/30 bg-white/10 text-white hover:bg-white/20"
+                              className="h-9 rounded-lg border-border/30 bg-background/60 text-foreground hover:bg-muted/10"
                             >
                               Mark returned
                             </Button>
@@ -256,7 +249,7 @@ export default async function ShopOrdersPage({
                             <Button
                               type="submit"
                               variant="ghost"
-                              className="h-9 rounded-lg text-white hover:bg-white/10"
+                              className="h-9 rounded-lg text-foreground hover:bg-muted/10"
                             >
                               Refund order
                             </Button>
@@ -269,8 +262,8 @@ export default async function ShopOrdersPage({
               })}
               {orders.length === 0 && (
                 <li className="list-none">
-                  <Card className="border border-white/10 bg-white/5 text-white">
-                    <CardContent className="px-6 py-8 text-center text-sm text-white/70">
+                  <Card className="border border-border/10 bg-background/60 text-foreground">
+                    <CardContent className="p-8 text-center text-sm text-muted-foreground">
                       No orders found for this shop yet.
                     </CardContent>
                   </Card>

@@ -44,8 +44,8 @@ export function renderCanvasItem(component: any, options: any = {}) {
       component={component}
       index={0}
       parentId={undefined}
-      selectedId={component.id}
-      onSelectId={() => {}}
+      selectedIds={[component.id]}
+      onSelect={() => {}}
       onRemove={() => {}}
       dispatch={dispatch}
       locale="en"

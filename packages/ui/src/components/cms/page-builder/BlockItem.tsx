@@ -2,7 +2,7 @@
 
 import type { Locale } from "@acme/i18n/locales";
 import { CSS } from "@dnd-kit/utilities";
-import type { PageComponent } from "@acme/types";
+import type { PageComponent, HistoryState } from "@acme/types";
 import { memo } from "react";
 import type { Action } from "./state";
 import Block from "./Block";
@@ -14,13 +14,21 @@ import useBlockDnD from "./useBlockDnD";
 import BlockResizer from "./BlockResizer";
 import BlockChildren from "./BlockChildren";
 import type { DevicePreset } from "../../../utils/devicePresets";
+import { LockClosedIcon } from "@radix-ui/react-icons";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  Button,
+} from "../../atoms/shadcn";
 
 type Props = {
   component: PageComponent;
   index: number;
   parentId: string | undefined;
-  selectedId: string | null;
-  onSelectId: (id: string) => void;
+  selectedIds: string[];
+  onSelect: (id: string, e?: React.MouseEvent) => void;
   onRemove: () => void;
   dispatch: React.Dispatch<Action>;
   locale: Locale;
@@ -28,14 +36,15 @@ type Props = {
   gridCols: number;
   viewport: "desktop" | "tablet" | "mobile";
   device?: DevicePreset;
+  editor?: HistoryState["editor"];
 };
 
 const BlockItem = memo(function BlockItemComponent({
   component,
   index,
   parentId,
-  selectedId,
-  onSelectId,
+  selectedIds,
+  onSelect,
   onRemove,
   dispatch,
   locale,
@@ -43,8 +52,10 @@ const BlockItem = memo(function BlockItemComponent({
   gridCols,
   viewport,
   device,
+  editor,
 }: Props) {
-  const selected = selectedId === component.id;
+  const selected = selectedIds.includes(component.id);
+  const flags = (editor ?? {})[component.id] ?? {};
   const {
     attributes,
     listeners,
@@ -87,6 +98,7 @@ const BlockItem = memo(function BlockItemComponent({
     gridEnabled,
     gridCols,
     containerRef,
+    disabled: !!flags.locked,
   });
 
   const {
@@ -105,6 +117,7 @@ const BlockItem = memo(function BlockItemComponent({
     gridEnabled,
     gridCols,
     containerRef,
+    disabled: !!flags.locked,
   });
 
   const { startSpacing, overlay: spacingOverlay } = useCanvasSpacing({
@@ -137,13 +150,15 @@ const BlockItem = memo(function BlockItemComponent({
   return (
     <div
       ref={setNodeRef}
-      onClick={() => onSelectId(component.id)}
+      onClick={(e) => onSelect(component.id, e)}
       role="listitem"
       aria-grabbed={isDragging}
       aria-dropeffect="move"
       tabIndex={0}
+      data-component-id={component.id}
       style={{
         transform: CSS.Transform.toString(transform),
+        ...(component.zIndex !== undefined ? { zIndex: component.zIndex as number } : {}),
         ...(widthVal ? { width: widthVal } : {}),
         ...(heightVal ? { height: heightVal } : {}),
         ...(marginVal ? { margin: marginVal } : {}),
@@ -162,17 +177,22 @@ const BlockItem = memo(function BlockItemComponent({
       <div
         className="bg-muted absolute top-0 left-0 z-10 h-3 w-3 cursor-move"
         {...attributes}
-        {...listeners}
+        {...(flags.locked ? {} : (listeners as any))}
         role="button"
         tabIndex={0}
         aria-grabbed={isDragging}
         title="Drag or press space/enter to move"
         onPointerDown={(e) => {
           e.stopPropagation();
-          onSelectId(component.id);
-          if (component.position === "absolute") startDrag(e);
+          onSelect(component.id, e);
+          if (!component.locked && component.position === "absolute") startDrag(e);
         }}
       />
+      {flags.locked && (
+        <div className="absolute right-1 top-1 z-30 text-xs" title="Locked" aria-hidden>
+          <LockClosedIcon />
+        </div>
+      )}
       <div className="pointer-events-none absolute inset-0 z-20">
         <div
           className="bg-primary absolute top-0 bottom-0 w-px transition-opacity duration-150"
@@ -205,7 +225,7 @@ const BlockItem = memo(function BlockItemComponent({
           </div>
         )}
       </div>
-      <Block component={component} locale={locale} />
+      <Block component={{ ...component, zIndex: flags.zIndex ?? (component as any).zIndex, locked: flags.locked ?? (component as any).locked } as any} locale={locale} />
       {spacingOverlay && (
         <div
           className="bg-primary/20 pointer-events-none absolute z-30"
@@ -225,8 +245,12 @@ const BlockItem = memo(function BlockItemComponent({
       )}
       <BlockResizer
         selected={selected}
-        startResize={startResize}
-        startSpacing={startSpacing}
+        startResize={(e) => {
+          if (!component.locked) startResize(e);
+        }}
+        startSpacing={(e, type, side) => {
+          if (!component.locked) startSpacing(e, type, side);
+        }}
       />
       <button
         type="button"
@@ -238,11 +262,24 @@ const BlockItem = memo(function BlockItemComponent({
           ×
         </span>
       </button>
+      <div className="absolute top-1 right-10 z-30">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button type="button" variant="outline" className="h-6 px-2 py-1 text-xs">⋯</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-40">
+            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); dispatch({ type: "update-editor", id: component.id, patch: { zIndex: 999 } as any }); }}>Bring to front</DropdownMenuItem>
+            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); dispatch({ type: "update-editor", id: component.id, patch: { zIndex: 0 } as any }); }}>Send to back</DropdownMenuItem>
+            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); const z = (flags.zIndex as number | undefined) ?? 0; dispatch({ type: "update-editor", id: component.id, patch: { zIndex: z + 1 } as any }); }}>Forward</DropdownMenuItem>
+            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); const z = (flags.zIndex as number | undefined) ?? 0; dispatch({ type: "update-editor", id: component.id, patch: { zIndex: Math.max(0, z - 1) } as any }); }}>Backward</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       <BlockChildren
         component={component}
         childComponents={childComponents}
-        selectedId={selectedId}
-        onSelectId={onSelectId}
+        selectedIds={selectedIds}
+        onSelect={onSelect}
         dispatch={dispatch}
         locale={locale}
         gridEnabled={gridEnabled}
@@ -257,4 +294,3 @@ const BlockItem = memo(function BlockItemComponent({
 });
 
 export default BlockItem;
-

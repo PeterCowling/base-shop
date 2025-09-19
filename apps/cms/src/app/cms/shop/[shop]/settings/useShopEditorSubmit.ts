@@ -62,9 +62,9 @@ export interface ShopEditorOverridesSection {
   readonly tokenRows: ThemeTokenRow[];
 }
 
-type ToastStatus = "success" | "error";
+export type ToastStatus = "success" | "error";
 
-interface ToastState {
+export interface ToastState {
   readonly open: boolean;
   readonly status: ToastStatus;
   readonly message: string;

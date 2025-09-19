@@ -39,7 +39,8 @@ describe("usePageBuilderState", () => {
       present: page.components,
       future: [],
       gridCols: 12,
-    });
+      editor: {},
+    } as any);
   });
 
   it("loads history from localStorage and clears it", () => {
@@ -169,4 +170,3 @@ describe("usePageBuilderState", () => {
     expect(onRotate).toHaveBeenCalledWith("right");
   });
 });
-

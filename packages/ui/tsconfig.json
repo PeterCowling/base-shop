@@ -29,8 +29,15 @@
       "@auth": ["types-compat/auth"],
       "@acme/i18n": ["../i18n/src/index", "../i18n/dist/index.d.ts"],
       "@acme/i18n/*": ["../i18n/src/*", "../i18n/dist/*"],
-      "@acme/telemetry": ["../telemetry/src/index", "../telemetry/dist/index.d.ts"],
-      "@acme/telemetry/*": ["../telemetry/src/*", "../telemetry/dist/*"]
+      "@acme/telemetry": [
+        "types-compat/telemetry",
+        "../telemetry/src/index",
+        "../telemetry/dist/index.d.ts"
+      ],
+      "@acme/telemetry/*": [
+        "../telemetry/src/*",
+        "../telemetry/dist/*"
+      ]
     }
   },
   "references": [

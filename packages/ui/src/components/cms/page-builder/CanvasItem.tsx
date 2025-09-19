@@ -1,7 +1,7 @@
 "use client";
 
 import type { Locale } from "@acme/i18n/locales";
-import type { PageComponent, TextComponent } from "@acme/types";
+import type { PageComponent, TextComponent, HistoryState } from "@acme/types";
 import { memo } from "react";
 import type { Action } from "./state";
 import TextBlock from "./TextBlock";
@@ -12,8 +12,8 @@ type Props = {
   component: PageComponent;
   index: number;
   parentId: string | undefined;
-  selectedId: string | null;
-  onSelectId: (id: string) => void;
+  selectedIds: string[];
+  onSelect: (id: string, e?: React.MouseEvent) => void;
   onRemove: () => void;
   dispatch: React.Dispatch<Action>;
   locale: Locale;
@@ -21,6 +21,7 @@ type Props = {
   gridCols: number;
   viewport: "desktop" | "tablet" | "mobile";
   device?: DevicePreset;
+  editor?: HistoryState["editor"];
 };
 
 const CanvasItem = memo(function CanvasItemComponent(props: Props) {
@@ -38,4 +39,3 @@ const CanvasItem = memo(function CanvasItemComponent(props: Props) {
 
 export type { Props as CanvasItemProps };
 export default CanvasItem;
-

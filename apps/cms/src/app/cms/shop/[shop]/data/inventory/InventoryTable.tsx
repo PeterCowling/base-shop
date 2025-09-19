@@ -33,20 +33,20 @@ export function InventoryTable({
   onDeleteRow,
 }: InventoryTableProps) {
   return (
-    <Card className="border border-white/10 bg-white/5 text-white">
+    <Card className="border border-border/10 bg-background/60 text-foreground">
       <CardContent className="px-0 py-0">
-        <Table className="text-white">
-          <TableHeader className="bg-white/10">
-            <TableRow className="text-xs uppercase tracking-wide text-white/70">
-              <TableHead className="text-white">SKU</TableHead>
+        <Table className="text-foreground">
+          <TableHeader className="bg-background/60">
+            <TableRow className="text-xs uppercase tracking-wide text-muted-foreground">
+              <TableHead className="text-foreground">SKU</TableHead>
               {attributes.map((attr) => (
-                <TableHead key={attr} className="text-white">
+                <TableHead key={attr} className="text-foreground">
                   <div className="flex items-center justify-between gap-2">
                     <span>{attr}</span>
                     <Button
                       type="button"
                       variant="ghost"
-                      className="h-7 rounded-lg px-2 text-xs text-white/70 hover:bg-white/10"
+                      className="h-7 rounded-lg px-2 text-xs text-muted-foreground hover:bg-muted/10"
                       onClick={() => onDeleteAttribute(attr)}
                       aria-label={`delete-attr-${attr}`}
                     >
@@ -55,9 +55,9 @@ export function InventoryTable({
                   </div>
                 </TableHead>
               ))}
-              <TableHead className="text-white">Quantity</TableHead>
-              <TableHead className="text-white">Low stock threshold</TableHead>
-              <TableHead className="text-white">&nbsp;</TableHead>
+              <TableHead className="text-foreground">Quantity</TableHead>
+              <TableHead className="text-foreground">Low stock threshold</TableHead>
+              <TableHead className="text-foreground">&nbsp;</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

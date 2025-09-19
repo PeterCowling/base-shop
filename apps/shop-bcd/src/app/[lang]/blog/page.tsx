@@ -27,9 +27,11 @@ export default async function BlogPage({ params }: { params: { lang: string } })
 
   if (maybeMockBlogListing.mock) {
     // When BlogListing is replaced with a Jest mock, invoke it directly so
-    // tests can assert on the transformed props. React passes a context object
-    // as the second argument, so we mirror that shape for the mock calls.
-    maybeMockBlogListing(blogListingProps as any, {} as any);
+    // tests can assert on the transformed props. Use a single-arg call to
+    // satisfy the component function signature in type-checking.
+    (maybeMockBlogListing as unknown as (props: unknown) => unknown)(
+      blogListingProps as unknown,
+    );
   }
 
   const listing = <BlogListing {...blogListingProps} />;

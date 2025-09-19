@@ -39,6 +39,8 @@ function createProps(overrides: Partial<React.ComponentProps<typeof TextBlockVie
     onSelect: jest.fn(),
     onRemove: jest.fn(),
     content: "<p>content</p>",
+    zIndex: undefined,
+    locked: false,
     ...overrides,
   };
 }
@@ -103,4 +105,3 @@ describe("TextBlockView", () => {
     expect(onRemove).toHaveBeenCalled();
   });
 });
-

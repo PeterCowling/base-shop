@@ -1,4 +1,4 @@
-import { Logo } from "@acme/ui";
+import { Logo } from "@ui/components/atoms";
 
 interface ShopPreviewProps {
   logos: Record<string, string>;
@@ -23,4 +23,3 @@ export default function ShopPreview({ logos, shopName }: ShopPreviewProps) {
     </div>
   );
 }
-

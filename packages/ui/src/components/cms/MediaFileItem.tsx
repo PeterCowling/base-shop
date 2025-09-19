@@ -85,7 +85,7 @@ export default function MediaFileItem({
     }
   }, [item.url]);
 
-  const previewAlt = item.altText || item.alt || item.title || name;
+  const previewAlt = (item as any).altText || (item as any).alt || (item as any).title || name;
   const tags = Array.isArray(item.tags) ? item.tags : [];
 
   const fileSize = useMemo(() => {

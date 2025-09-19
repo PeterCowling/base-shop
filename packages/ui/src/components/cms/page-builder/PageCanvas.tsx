@@ -2,8 +2,9 @@
 
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import type { CSSProperties, DragEvent } from "react";
-import { Fragment, useState } from "react";
-import type { PageComponent } from "@acme/types";
+import { Fragment, useEffect, useState } from "react";
+import type { PageComponent, HistoryState } from "@acme/types";
+import { isHiddenForViewport } from "./state/layout/utils";
 import CanvasItem from "./CanvasItem";
 import type { Locale } from "@acme/i18n/locales";
 import type { Action } from "./state";
@@ -12,11 +13,13 @@ import type { DevicePreset } from "../../../utils/devicePresets";
 import GridOverlay from "./GridOverlay";
 import SnapLine from "./SnapLine";
 import Block from "./Block";
+import RulersOverlay from "./RulersOverlay";
+import MultiSelectOverlay from "./MultiSelectOverlay";
 
 interface Props {
   components: PageComponent[];
-  selectedId?: string | null;
-  onSelectId?: (id: string | null) => void;
+  selectedIds?: string[];
+  onSelectIds?: (ids: string[]) => void;
   canvasRef?: React.RefObject<HTMLDivElement | null>;
   dragOver?: boolean;
   setDragOver?: (v: boolean) => void;
@@ -27,16 +30,19 @@ interface Props {
   containerStyle: CSSProperties;
   showGrid?: boolean;
   gridCols?: number;
+  snapEnabled?: boolean;
+  showRulers?: boolean;
   viewport: "desktop" | "tablet" | "mobile";
   snapPosition?: number | null;
   device?: DevicePreset;
   preview?: boolean;
+  editor?: HistoryState["editor"];
 }
 
 const PageCanvas = ({
   components,
-  selectedId = null,
-  onSelectId = () => {},
+  selectedIds = [],
+  onSelectIds = () => {},
   canvasRef,
   dragOver = false,
   setDragOver = () => {},
@@ -47,14 +53,61 @@ const PageCanvas = ({
   containerStyle,
   showGrid = false,
   gridCols = 1,
+  snapEnabled,
+  showRulers = false,
   viewport,
   snapPosition = null,
   device,
   preview = false,
+  editor,
 }: Props) => {
   const [dropRect, setDropRect] = useState<
     { left: number; top: number; width: number; height: number } | null
   >(null);
+
+  const findById = (list: PageComponent[], id: string): PageComponent | null => {
+    for (const c of list) {
+      if (c.id === id) return c;
+      const children = (c as { children?: PageComponent[] }).children;
+      if (Array.isArray(children)) {
+        const found = findById(children, id);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+  const selectedComponents = (selectedIds ?? [])
+    .map((id) => findById(components, id))
+    .filter(Boolean) as PageComponent[];
+  const canGroupTransform = (selectedIds?.length ?? 0) > 1 && selectedComponents.every((c) => (c as any).position === "absolute");
+  const unlockedIds = selectedComponents
+    .filter((c) => (c as any).position === "absolute" && !(c as any).locked)
+    .map((c) => c.id);
+  const hasLockedInSelection = selectedComponents.some((c) => (c as any).locked);
+  const lockedIds = selectedComponents.filter((c) => (c as any).locked).map((c) => c.id);
+
+  // Dim locked items visually while group overlay is active
+  useEffect(() => {
+    const dimmed: HTMLElement[] = [];
+    if ((selectedIds?.length ?? 0) > 1 && canGroupTransform && lockedIds.length > 0) {
+      lockedIds.forEach((id) => {
+        const el = document.querySelector(`[data-component-id="${id}"]`) as HTMLElement | null;
+        if (el) {
+          (el as any).dataset.pbPrevOpacity = el.style.opacity;
+          el.style.opacity = "0.4";
+          dimmed.push(el);
+        }
+      });
+    }
+    return () => {
+      dimmed.forEach((el) => {
+        const prev = (el as any).dataset.pbPrevOpacity as string | undefined;
+        el.style.opacity = prev ?? "";
+        if ((el as any).dataset) delete (el as any).dataset.pbPrevOpacity;
+      });
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canGroupTransform, selectedIds?.length, lockedIds.join(",")]);
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     if (preview) return;
@@ -90,16 +143,17 @@ const PageCanvas = ({
         style={containerStyle}
         className="relative mx-auto flex flex-col gap-4"
       >
-        {components.map((c) => (
+        {components.filter((c)=>!c.hidden).map((c) => (
           <Block key={c.id} component={c} locale={locale} />
         ))}
       </div>
     );
   }
 
+  const visibleComponents = components.filter((c) => !isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport));
   return (
     <SortableContext
-      items={components.map((c) => c.id)}
+      items={visibleComponents.map((c) => c.id)}
       strategy={rectSortingStrategy}
     >
       <div
@@ -128,9 +182,52 @@ const PageCanvas = ({
             }}
           />
         )}
+        <RulersOverlay show={showRulers} canvasRef={canvasRef} step={100} />
+        {selectedIds.length > 1 && canGroupTransform && unlockedIds.length > 0 && (
+          <MultiSelectOverlay
+            canvasRef={canvasRef}
+            ids={unlockedIds}
+            viewport={viewport}
+            gridEnabled={snapEnabled ?? showGrid}
+            gridCols={gridCols}
+            onApply={(patches) => {
+              const widthKey =
+                viewport === "desktop"
+                  ? "widthDesktop"
+                  : viewport === "tablet"
+                    ? "widthTablet"
+                    : "widthMobile";
+              const heightKey =
+                viewport === "desktop"
+                  ? "heightDesktop"
+                  : viewport === "tablet"
+                    ? "heightTablet"
+                    : "heightMobile";
+              const allowed = new Set(unlockedIds);
+              Object.entries(patches).forEach(([id, p]) => {
+                if (!allowed.has(id)) return;
+                if (!p) return;
+                const patch: Record<string, string | undefined> = { left: p.left, top: p.top };
+                if (p.width !== undefined) patch[widthKey] = p.width;
+                if (p.height !== undefined) patch[heightKey] = p.height;
+                dispatch({ type: "resize", id, ...(patch as any) });
+              });
+            }}
+          />
+        )}
+        {selectedIds.length > 1 && !canGroupTransform && (
+          <div className="pointer-events-none absolute left-2 top-2 z-40 rounded bg-muted/70 px-2 py-1 text-xs text-muted-foreground">
+            Group move/resize works only for absolute-positioned items
+          </div>
+        )}
+        {selectedIds.length > 1 && canGroupTransform && hasLockedInSelection && (
+          <div className="pointer-events-none absolute left-2 top-8 z-40 rounded bg-muted/70 px-2 py-1 text-xs text-muted-foreground">
+            Locked items are ignored during group move/resize
+          </div>
+        )}
         {showGrid && <GridOverlay gridCols={gridCols} />}
         <SnapLine x={snapPosition} />
-        {components.map((c, i) => (
+        {visibleComponents.map((c, i) => (
           <Fragment key={c.id}>
             {insertIndex === i && (
               <div
@@ -145,19 +242,31 @@ const PageCanvas = ({
               component={c}
               index={i}
               parentId={undefined}
-              selectedId={selectedId}
-              onSelectId={onSelectId}
+              selectedIds={selectedIds}
+              onSelect={(id, e) => {
+                if (e?.metaKey || e?.ctrlKey || e?.shiftKey) {
+                  const exists = selectedIds.includes(id);
+                  onSelectIds(
+                    exists
+                      ? selectedIds.filter((sid) => sid !== id)
+                      : [...selectedIds, id]
+                  );
+                } else {
+                  onSelectIds([id]);
+                }
+              }}
               onRemove={() => dispatch({ type: "remove", id: c.id })}
               dispatch={dispatch}
               locale={locale}
-              gridEnabled={showGrid}
+              gridEnabled={snapEnabled ?? showGrid}
               gridCols={gridCols}
               viewport={viewport}
               device={device}
+              editor={editor}
             />
           </Fragment>
         ))}
-        {insertIndex === components.length && (
+        {insertIndex === visibleComponents.length && (
           <div
             data-placeholder
             className={cn(

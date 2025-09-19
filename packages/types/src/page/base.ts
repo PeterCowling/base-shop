@@ -18,6 +18,10 @@ export interface SeoMeta {
 export interface PageComponentBase extends LayoutProps, PositioningProps, SpacingProps {
   id: string;
   type: string;
+  /** Do not render this component on the canvas or preview */
+  hidden?: boolean;
+  /** Prevent moving/resizing/spacing adjustments on the canvas */
+  locked?: boolean;
   /** Minimum number of items allowed for components with lists */
   minItems?: number;
   /** Maximum number of items allowed for components with lists */
@@ -40,6 +44,8 @@ export interface PageComponentBase extends LayoutProps, PositioningProps, Spacin
 export const baseComponentSchema = z
   .object({
     id: z.string(),
+    hidden: z.boolean().optional(),
+    locked: z.boolean().optional(),
     minItems: z.number().int().min(0).optional(),
     maxItems: z.number().int().min(0).optional(),
     desktopItems: z.number().int().min(0).optional(),

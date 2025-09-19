@@ -1,7 +1,7 @@
-// packages/ui/src/components/cms/page-builder/panels/LayoutPanel.tsx
 "use client";
 
 import type { PageComponent } from "@acme/types";
+import type { EditorFlags } from "@acme/types";
 import {
   Button,
   Input,
@@ -21,6 +21,8 @@ interface Props {
   ) => void;
   handleResize: (field: string, value: string) => void;
   handleFullSize: (field: string) => void;
+  editorFlags?: EditorFlags;
+  onUpdateEditor?: (patch: Partial<EditorFlags>) => void;
 }
 
 export default function LayoutPanel({
@@ -28,6 +30,8 @@ export default function LayoutPanel({
   handleInput,
   handleResize,
   handleFullSize,
+  editorFlags,
+  onUpdateEditor,
 }: Props) {
   const cssError = (prop: string, value?: string) =>
     value && !globalThis.CSS?.supports(prop, value)
@@ -35,6 +39,28 @@ export default function LayoutPanel({
       : undefined;
   return (
     <div className="space-y-2">
+      <div className="flex items-end gap-2">
+        <Input
+          label={
+            <span className="flex items-center gap-1">
+              z-index
+              <Tooltip text="Stacking order (number)">?</Tooltip>
+            </span>
+          }
+          type="number"
+          value={(editorFlags?.zIndex as number | undefined) ?? ((component.zIndex as number | undefined) ?? "")}
+          onChange={(e) => {
+            const val = e.target.value === "" ? undefined : parseInt(e.target.value, 10);
+            if (onUpdateEditor) onUpdateEditor({ zIndex: val as number | undefined });
+          }}
+        />
+        <div className="flex gap-1">
+          <Button type="button" variant="outline" onClick={() => onUpdateEditor?.({ zIndex: Math.max(0, (editorFlags?.zIndex as number | undefined) ?? 0) })}>Back</Button>
+          <Button type="button" variant="outline" onClick={() => onUpdateEditor?.({ zIndex: (((editorFlags?.zIndex as number | undefined) ?? 0) - 1) })}>-1</Button>
+          <Button type="button" variant="outline" onClick={() => onUpdateEditor?.({ zIndex: (((editorFlags?.zIndex as number | undefined) ?? 0) + 1) })}>+1</Button>
+          <Button type="button" variant="outline" onClick={() => onUpdateEditor?.({ zIndex: 999 })}>Front</Button>
+        </div>
+      </div>
       {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
         <div key={vp} className="space-y-2">
           <div className="flex items-end gap-2">
@@ -220,4 +246,3 @@ export default function LayoutPanel({
     </div>
   );
 }
-

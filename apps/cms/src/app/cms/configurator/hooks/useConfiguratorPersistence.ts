@@ -4,9 +4,11 @@
 import {
   useEffect,
   useState,
+  useRef,
   type Dispatch,
   type SetStateAction,
 } from "react";
+import { getCsrfToken } from "@acme/shared-utils";
 import {
   configuratorStateSchema,
   type ConfiguratorState,
@@ -23,9 +25,12 @@ export async function resetConfiguratorProgress(): Promise<void> {
   if (typeof window !== "undefined") {
     localStorage.removeItem(STORAGE_KEY);
     try {
-      await fetch("/cms/api/configurator-progress", {
+      await fetch("/api/configurator-progress", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-csrf-token": getCsrfToken() ?? "",
+        },
         body: JSON.stringify({ stepId: null, data: {}, completed: {} }),
       });
     } catch {
@@ -54,15 +59,23 @@ export function useConfiguratorPersistence(
   boolean
 ] {
   const [saving, setSaving] = useState(false);
-  /* Load persisted state on mount */
+  const hydratedRef = useRef(false);
+  const lastSavedDataHash = useRef<string | null>(null);
+  /* Load persisted state on mount (skip if already hydrated with non-empty state) */
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (hydratedRef.current) return;
+    const hasState = state && (Object.keys(state).length > 0);
+    if (hasState && (state.completed && Object.keys(state.completed ?? {}).length > 0)) {
+      hydratedRef.current = true;
+      return;
+    }
     const legacy = localStorage.getItem(LEGACY_STORAGE_KEY);
     if (legacy && !localStorage.getItem(STORAGE_KEY)) {
       localStorage.setItem(STORAGE_KEY, legacy);
       localStorage.removeItem(LEGACY_STORAGE_KEY);
     }
-    fetch("/cms/api/configurator-progress")
+    fetch("/api/configurator-progress")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
         let source = json;
@@ -80,6 +93,7 @@ export function useConfiguratorPersistence(
         });
         if (parsed.success) {
           setState(parsed.data);
+          hydratedRef.current = true;
           try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed.data));
             window.dispatchEvent(new CustomEvent("configurator:update"));
@@ -94,11 +108,26 @@ export function useConfiguratorPersistence(
       .catch(() => {
         /* ignore */
       });
-  }, [setState, onInvalid]);
+  }, [setState, onInvalid, state]);
 
-  /* Persist whenever the state changes */
+  /* Persist whenever the state changes (skip if no meaningful change) */
   useEffect(() => {
     if (typeof window === "undefined") return;
+    // Hash only the data portion (exclude `completed`, saved separately via PATCH)
+    const { completed: _completed, ...data } = state;
+    void _completed;
+    const nextHash = (() => {
+      try {
+        return JSON.stringify(data);
+      } catch {
+        return null;
+      }
+    })();
+
+    if (lastSavedDataHash.current && nextHash === lastSavedDataHash.current) {
+      // No changes since last save; do nothing.
+      return;
+    }
     setSaving(true);
     const timer = setTimeout(() => {
       try {
@@ -107,11 +136,13 @@ export function useConfiguratorPersistence(
       } catch {
         /* ignore quota */
       }
-      const { completed: _completed, ...data } = state;
-      void _completed; // explicitly ignore unused property
-      fetch("/cms/api/configurator-progress", {
+      // Persist only data (without completed) via PUT
+      fetch("/api/configurator-progress", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-csrf-token": getCsrfToken() ?? "",
+        },
         body: JSON.stringify({ stepId: "configurator", data }),
       })
         .catch(() => {
@@ -119,6 +150,7 @@ export function useConfiguratorPersistence(
         })
         .finally(() => {
           setSaving(false);
+          lastSavedDataHash.current = nextHash;
           onSave?.();
         });
     }, 500);
@@ -127,6 +159,7 @@ export function useConfiguratorPersistence(
 
   /* Expose completion helper */
   const markStepComplete = (stepId: string, status: StepStatus) => {
+    if (state.completed?.[stepId] === status) return; // no-op
     const updated: ConfiguratorState = {
       ...state,
       completed: { ...state.completed, [stepId]: status },
@@ -139,9 +172,12 @@ export function useConfiguratorPersistence(
       } catch {
         /* ignore quota */
       }
-      fetch("/cms/api/configurator-progress", {
+      fetch("/api/configurator-progress", {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-csrf-token": getCsrfToken() ?? "",
+        },
         body: JSON.stringify({ stepId, completed: status }),
       }).catch(() => {
         /* ignore network errors */

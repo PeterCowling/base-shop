@@ -40,8 +40,8 @@ describe("PageBuilder drag interactions", () => {
           component={c1}
           index={0}
           parentId="parent"
-          selectedId={null}
-          onSelectId={() => {}}
+          selectedIds={[]}
+          onSelect={() => {}}
           onRemove={() => {}}
           dispatch={jest.fn()}
           locale="en"
@@ -52,8 +52,8 @@ describe("PageBuilder drag interactions", () => {
           component={c2}
           index={1}
           parentId="parent"
-          selectedId="c2"
-          onSelectId={() => {}}
+          selectedIds={["c2"]}
+          onSelect={() => {}}
           onRemove={() => {}}
           dispatch={dispatch}
           locale="en"

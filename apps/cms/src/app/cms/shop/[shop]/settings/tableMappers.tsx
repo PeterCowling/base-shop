@@ -1,12 +1,14 @@
 import type { ReactNode } from "react";
 import type { Column } from "@ui/components/cms/DataTable";
 import type { ThemeTokenRow } from "./lib/pageSections";
+export type { ThemeTokenRow } from "./lib/pageSections";
 
 const HEX_RE = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
 const HSL_RE = /^\d+(?:\.\d+)?\s+\d+(?:\.\d+)?%\s+\d+(?:\.\d+)?%$/;
 
 function isColor(value?: string): value is string {
-  return Boolean(value) && (HEX_RE.test(value) || HSL_RE.test(value));
+  if (!value) return false;
+  return HEX_RE.test(value) || HSL_RE.test(value);
 }
 
 function swatchColor(value: string) {
@@ -134,4 +136,3 @@ export const lateFeeColumns: Column<LateFeeRow>[] = [
     render: (row) => <span className="tabular-nums">{row.formattedAmount}</span>,
   },
 ];
-

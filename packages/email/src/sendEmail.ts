@@ -6,9 +6,11 @@ import pino from "pino";
 import { z } from "zod";
 import { getDefaultSender } from "./config";
 
-type Transporter = nodemailer.Transporter | null;
+type MailTransporter = {
+  sendMail: (options: Record<string, unknown>) => Promise<{ messageId?: string }>;
+} | null;
 
-let cachedTransporter: Transporter = null;
+let cachedTransporter: MailTransporter = null;
 let cachedCredsKey: string | null = null;
 let cachedLogger: pino.Logger | null = null;
 let cachedLoggerLevel: string | undefined;
@@ -24,7 +26,7 @@ function resolveCredentials(): { user: string; pass: string } | null {
   return { user, pass };
 }
 
-function getTransporter(): Transporter {
+function getTransporter(): MailTransporter {
   const creds = resolveCredentials();
   if (!creds) {
     return null;

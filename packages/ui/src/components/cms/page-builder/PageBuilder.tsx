@@ -39,7 +39,7 @@ const PageBuilder = memo(function PageBuilder({
   const saveRef = useRef<() => void>(() => {}),
     togglePreviewRef = useRef<() => void>(() => {}),
     rotateDeviceRef = useRef<(dir: "left" | "right") => void>(() => {});
-  const { state, components, dispatch, selectedId, setSelectedId, liveMessage, clearHistory } = usePageBuilderState({
+  const { state, components, dispatch, selectedIds, setSelectedIds, liveMessage, clearHistory } = usePageBuilderState({
     page,
     history: historyProp,
     onChange,
@@ -63,7 +63,7 @@ const PageBuilder = memo(function PageBuilder({
     dispatch,
     defaults: defaults as Record<string, Partial<PageComponent>>,
     containerTypes: CONTAINER_TYPES,
-    selectId: setSelectedId,
+    selectId: (id: string) => setSelectedIds([id]),
     gridSize,
     canvasRef,
     setSnapPosition,
@@ -78,7 +78,7 @@ const PageBuilder = memo(function PageBuilder({
       ...(isContainer ? { children: [] } : {}),
     } as PageComponent;
     dispatch({ type: "add", component });
-    setSelectedId(component.id);
+    setSelectedIds([component.id]);
   };
 
   useEffect(() => {
@@ -110,8 +110,8 @@ const PageBuilder = memo(function PageBuilder({
   });
   saveRef.current = handleSave;
   const toolbarProps = {deviceId: controls.deviceId, setDeviceId: controls.setDeviceId, orientation: controls.orientation, setOrientation: controls.setOrientation, locale: controls.locale, setLocale: controls.setLocale, locales, progress, isValid};
-  const gridProps = {showGrid: controls.showGrid, toggleGrid: controls.toggleGrid, gridCols: controls.gridCols, setGridCols: controls.setGridCols};
-  const canvasProps = {components, selectedId, onSelectId: setSelectedId, canvasRef, dragOver, setDragOver, onFileDrop: handleFileDrop, insertIndex, dispatch, locale: controls.locale, containerStyle: { width: "100%" }, showGrid: controls.showGrid, gridCols: controls.gridCols, viewport: controls.viewport, device: controls.device, snapPosition};
+  const gridProps = {showGrid: controls.showGrid, toggleGrid: controls.toggleGrid, snapToGrid: controls.snapToGrid, toggleSnap: controls.toggleSnap, gridCols: controls.gridCols, setGridCols: controls.setGridCols, zoom: controls.zoom, setZoom: controls.setZoom, showRulers: controls.showRulers, toggleRulers: controls.toggleRulers};
+  const canvasProps = {components, selectedIds, onSelectIds: setSelectedIds, canvasRef, dragOver, setDragOver, onFileDrop: handleFileDrop, insertIndex, dispatch, locale: controls.locale, containerStyle: { width: "100%" }, showGrid: controls.showGrid, gridCols: controls.gridCols, snapEnabled: controls.snapToGrid, showRulers: controls.showRulers, viewport: controls.viewport, device: controls.device, snapPosition, editor: (state as any).editor};
   const previewProps = {components, locale: controls.locale, deviceId: controls.previewDeviceId, onChange: controls.setPreviewDeviceId};
   const historyProps = {canUndo: !!state.past.length, canRedo: !!state.future.length, onUndo: () => dispatch({ type: "undo" }), onRedo: () => dispatch({ type: "redo" }), onSave: handleSave, onPublish: handlePublish, saving, publishing, saveError, publishError, autoSaveState};
   const toastProps = {open: toast.open, message: toast.message, retry: toast.retry, onClose: () => setToast((t) => ({ ...t, open: false }))};
@@ -131,11 +131,12 @@ const PageBuilder = memo(function PageBuilder({
       frameClass={controls.frameClass}
       viewport={controls.viewport}
       viewportStyle={controls.viewportStyle}
+      zoom={controls.zoom}
       canvasProps={canvasProps}
       activeType={activeType}
       previewProps={previewProps}
       historyProps={historyProps}
-      sidebarProps={{ components, selectedId, dispatch }}
+      sidebarProps={{ components, selectedIds, onSelectIds: setSelectedIds, dispatch, editor: (state as any).editor }}
       toast={toastProps}
       tourProps={tourProps}
     />

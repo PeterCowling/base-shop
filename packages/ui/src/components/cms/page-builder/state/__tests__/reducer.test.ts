@@ -113,4 +113,14 @@ describe("page builder state reducer", () => {
     expect(updatedCols.past).toEqual([[]]);
     expect(updatedCols.future).toEqual([]);
   });
+
+  it("updates editor flags without changing history stacks", () => {
+    const added = reducer(init, { type: "add", component: a });
+    const before = added;
+    const updated = reducer(added, { type: "update-editor", id: "a", patch: { name: "Title", locked: true, zIndex: 5 } } as any);
+    expect((updated as any).editor?.a).toEqual({ name: "Title", locked: true, zIndex: 5 });
+    expect(updated.present).toEqual(before.present);
+    expect(updated.past).toEqual(before.past);
+    expect(updated.future).toEqual(before.future);
+  });
 });

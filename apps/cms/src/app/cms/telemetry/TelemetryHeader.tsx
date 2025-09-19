@@ -1,4 +1,4 @@
-import { Tag } from "@acme/ui";
+import { Tag } from "@ui/components/atoms";
 import { Button } from "@/components/atoms/shadcn";
 
 interface TelemetryHeaderProps {
@@ -8,13 +8,13 @@ interface TelemetryHeaderProps {
 export function TelemetryHeader({ onReload }: TelemetryHeaderProps) {
   return (
     <header className="space-y-3">
-      <Tag variant="default" className="bg-sky-500/10 text-sky-300">
+      <Tag variant="default" className="bg-sky-500/10 text-foreground">
         Telemetry analytics
       </Tag>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="space-y-1">
-          <h2 className="text-2xl font-semibold text-white">Live product signals</h2>
-          <p className="text-sm text-white/70">
+          <h2 className="text-2xl font-semibold text-foreground">Live product signals</h2>
+          <p className="text-sm text-muted-foreground">
             Track your key interactions in real time, compare spikes, and lock
             filters you love as presets.
           </p>
@@ -22,7 +22,7 @@ export function TelemetryHeader({ onReload }: TelemetryHeaderProps) {
         <Button
           type="button"
           variant="outline"
-          className="border-white/30 text-white hover:bg-white/10"
+          className="border-border/30 text-foreground hover:bg-muted/10"
           onClick={() => onReload?.()}
         >
           Refresh data

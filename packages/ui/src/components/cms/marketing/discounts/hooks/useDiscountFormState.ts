@@ -10,7 +10,7 @@ import {
   type AsyncSubmissionHandler,
   type SubmissionStatus,
   type ValidationErrors,
-} from "../shared";
+} from "../../shared";
 
 export type DiscountField = keyof DiscountFormValues;
 export type DiscountErrors = ValidationErrors<DiscountField>;
@@ -87,8 +87,8 @@ export function useDiscountFormState({
   );
 
   const update: DiscountFormUpdater = useCallback((key, value) => {
-    setValues((prev) => ({ ...prev, [key]: value }));
-    setInternalErrors((prev) => {
+    setValues((prev: DiscountFormValues) => ({ ...prev, [key]: value }));
+    setInternalErrors((prev: DiscountErrors) => {
       if (!prev[key]) return prev;
       const next = { ...prev };
       delete next[key];
@@ -97,7 +97,7 @@ export function useDiscountFormState({
   }, []);
 
   const dismissToast = useCallback(() => {
-    setToast((prev) => ({ ...prev, open: false }));
+    setToast((prev: DiscountToastState) => ({ ...prev, open: false }));
   }, []);
 
   const handleSubmit = useCallback(
@@ -154,4 +154,3 @@ export function useDiscountFormState({
     dismissToast,
   };
 }
-

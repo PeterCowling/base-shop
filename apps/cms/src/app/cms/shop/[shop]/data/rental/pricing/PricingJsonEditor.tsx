@@ -13,7 +13,7 @@ export default function PricingJsonEditor({ draft, error, onDraftChange, onApply
   return (
     <div className="space-y-4" role="tabpanel" aria-labelledby="pricing-tab-json">
       <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-white" htmlFor="pricing-json-editor">
+        <label className="text-sm font-medium text-foreground" htmlFor="pricing-json-editor">
           Pricing JSON configuration
         </label>
         <Textarea
@@ -21,11 +21,11 @@ export default function PricingJsonEditor({ draft, error, onDraftChange, onApply
           value={draft}
           onChange={onDraftChange}
           rows={18}
-          className="bg-slate-950/80 text-white"
+          className="bg-slate-950/80 text-foreground"
           aria-invalid={error ? "true" : undefined}
           aria-describedby={error ? "pricing-json-error" : undefined}
         />
-        <p className="text-xs text-white/60">
+        <p className="text-xs text-muted-foreground">
           Edit directly to paste pricing from other systems. Validation runs before you return to the guided editor.
         </p>
         {error ? (
@@ -45,7 +45,7 @@ export default function PricingJsonEditor({ draft, error, onDraftChange, onApply
         <Button
           type="button"
           variant="outline"
-          className="h-10 rounded-xl border-white/30 px-4 text-sm text-white hover:bg-white/10"
+          className="h-10 rounded-xl border-border/30 px-4 text-sm text-foreground hover:bg-muted/10"
           onClick={onReturnToGuided}
         >
           Return to guided editor
@@ -54,4 +54,3 @@ export default function PricingJsonEditor({ draft, error, onDraftChange, onApply
     </div>
   );
 }
-

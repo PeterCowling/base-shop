@@ -5,6 +5,7 @@ import type { DraggableAttributes } from "@dnd-kit/core";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import MenuBar from "./MenuBar";
 import DOMPurify from "dompurify";
+import { LockClosedIcon } from "@radix-ui/react-icons";
 
 interface Guides {
   x: number | null;
@@ -26,10 +27,12 @@ interface Props {
   onStartEditing: () => void;
   onFinishEditing: () => void;
   startDrag: (e: React.PointerEvent) => void;
-  startResize: (e: React.PointerEvent) => void;
+  startResize: (e: React.PointerEvent, handle?: "se" | "ne" | "sw" | "nw" | "e" | "w" | "n" | "s") => void;
   onSelect: () => void;
   onRemove: () => void;
   content: string;
+  zIndex?: number;
+  locked?: boolean;
 }
 
 const TextBlockView = ({
@@ -51,6 +54,8 @@ const TextBlockView = ({
   onSelect,
   onRemove,
   content,
+  zIndex,
+  locked = false,
 }: Props) => {
   const sanitized = DOMPurify.sanitize(content);
   return (
@@ -63,7 +68,7 @@ const TextBlockView = ({
       role="listitem"
       aria-grabbed={isDragging}
       tabIndex={0}
-      style={style}
+      style={{ ...(zIndex !== undefined ? { zIndex } : {}), ...style }}
       className={
         "relative rounded border" +
         (selected ? " ring-2 ring-blue-500" : "") +
@@ -81,7 +86,7 @@ const TextBlockView = ({
         onPointerDown={(e) => {
           e.stopPropagation();
           onSelect();
-          startDrag(e);
+          if (!locked) startDrag(e);
         }}
       />
       {(guides.x !== null || guides.y !== null) && (
@@ -98,6 +103,11 @@ const TextBlockView = ({
               style={{ top: guides.y }}
             />
           )}
+        </div>
+      )}
+      {locked && (
+        <div className="absolute right-1 top-1 z-30 text-xs" title="Locked" aria-hidden>
+          <LockClosedIcon />
         </div>
       )}
       {editing ? (
@@ -125,22 +135,14 @@ const TextBlockView = ({
       )}
       {selected && (
         <>
-          <div
-            onPointerDown={startResize}
-            className="absolute -top-1 -left-1 h-2 w-2 cursor-nwse-resize bg-primary"
-          />
-          <div
-            onPointerDown={startResize}
-            className="absolute -top-1 -right-1 h-2 w-2 cursor-nesw-resize bg-primary"
-          />
-          <div
-            onPointerDown={startResize}
-            className="absolute -bottom-1 -left-1 h-2 w-2 cursor-nesw-resize bg-primary"
-          />
-          <div
-            onPointerDown={startResize}
-            className="absolute -right-1 -bottom-1 h-2 w-2 cursor-nwse-resize bg-primary"
-          />
+          <div onPointerDown={(e) => !locked && startResize(e, "nw")} className="absolute -top-1 -left-1 h-2 w-2 cursor-nwse-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "ne")} className="absolute -top-1 -right-1 h-2 w-2 cursor-nesw-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "sw")} className="absolute -bottom-1 -left-1 h-2 w-2 cursor-nesw-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "se")} className="absolute -right-1 -bottom-1 h-2 w-2 cursor-nwse-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "n")} className="absolute -top-1 left-1/2 h-2 w-3 -translate-x-1/2 cursor-ns-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "s")} className="absolute -bottom-1 left-1/2 h-2 w-3 -translate-x-1/2 cursor-ns-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "w")} className="absolute top-1/2 -left-1 h-3 w-2 -translate-y-1/2 cursor-ew-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "e")} className="absolute top-1/2 -right-1 h-3 w-2 -translate-y-1/2 cursor-ew-resize bg-primary" />
         </>
       )}
       <button
@@ -158,4 +160,3 @@ const TextBlockView = ({
 };
 
 export default TextBlockView;
-

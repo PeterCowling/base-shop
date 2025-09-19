@@ -29,6 +29,7 @@ interface LayoutProps {
   frameClass: Record<string, string>;
   viewport: "desktop" | "tablet" | "mobile";
   viewportStyle: CSSProperties;
+  zoom?: number;
   canvasProps: React.ComponentProps<typeof PageCanvas>;
   activeType: ComponentType | null;
   previewProps: {
@@ -56,6 +57,7 @@ const PageBuilderLayout = ({
   frameClass,
   viewport,
   viewportStyle,
+  zoom = 1,
   canvasProps,
   activeType,
   previewProps,
@@ -87,12 +89,14 @@ const PageBuilderLayout = ({
       </div>
       <div className="flex flex-1 gap-4">
         <DndContext {...dndContext}>
-          <div
-            className={`${frameClass[viewport]} shrink-0`}
-            style={viewportStyle}
-            data-tour="canvas"
-          >
-            <PageCanvas {...canvasProps} />
+          <div style={{ transform: `scale(${zoom})`, transformOrigin: "top center" }}>
+            <div
+              className={`${frameClass[viewport]} shrink-0`}
+              style={viewportStyle}
+              data-tour="canvas"
+            >
+              <PageCanvas {...canvasProps} />
+            </div>
           </div>
           <DragOverlay>
             {activeType && (

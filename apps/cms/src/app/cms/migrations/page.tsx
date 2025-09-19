@@ -22,18 +22,18 @@ export default function MigrationsPage() {
 
   return (
     <div className="space-y-10">
-      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-slate-950 text-white shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-slate-950 text-foreground shadow-xl">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,163,255,0.35),_transparent_55%)]" />
         <div className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
           <div className="space-y-6">
             <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/70">
+              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">
                 Migrations
               </span>
               <h1 className="text-3xl font-semibold md:text-4xl">
                 Upgrade storefronts to the latest tokens
               </h1>
-              <p className="text-white/80">
+              <p className="text-muted-foreground">
                 Keep every storefront consistent by running the migration CLI whenever design tokens or templates evolve.
               </p>
             </div>
@@ -46,7 +46,7 @@ export default function MigrationsPage() {
                 <Button
                   asChild
                   variant="outline"
-                  className="h-11 px-5 text-sm font-semibold border-white/40 text-white hover:bg-white/10"
+                  className="h-11 px-5 text-sm font-semibold border-border/40 text-foreground hover:bg-muted/10"
                 >
                   <Link href="/cms">Return to CMS home</Link>
                 </Button>
@@ -56,31 +56,31 @@ export default function MigrationsPage() {
               {quickStats.map((stat) => (
                 <Card
                   key={stat.label}
-                  className="border border-white/15 bg-white/5 text-white backdrop-blur"
+                  className="border border-border/15 bg-background/60 text-foreground backdrop-blur"
                 >
                   <CardContent className="space-y-1 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-white/60">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       {stat.label}
                     </p>
                     <p className="text-xl font-semibold">{stat.value}</p>
-                    <p className="text-xs text-white/70">{stat.caption}</p>
+                    <p className="text-xs text-muted-foreground">{stat.caption}</p>
                   </CardContent>
                 </Card>
               ))}
             </div>
           </div>
-          <Card className="border border-white/20 bg-white/5 text-white shadow-2xl backdrop-blur">
+          <Card className="border border-border/20 bg-background/60 text-foreground shadow-2xl backdrop-blur">
             <CardContent className="space-y-5">
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold">Status</h2>
-                <p className="text-sm text-white/70">
+                <p className="text-sm text-muted-foreground">
                   Migrations are orchestrated manually today. Automation hooks will arrive in a future release.
                 </p>
               </div>
               <div className="flex items-center justify-between gap-3 rounded-xl border border-white/15 bg-white/5 px-4 py-3">
                 <div>
                   <p className="text-sm font-medium">Automation</p>
-                  <p className="text-xs text-white/70">Scripted via migrate-shop CLI</p>
+                  <p className="text-xs text-muted-foreground">Scripted via migrate-shop CLI</p>
                 </div>
                 <Tag variant="warning">Manual step</Tag>
               </div>

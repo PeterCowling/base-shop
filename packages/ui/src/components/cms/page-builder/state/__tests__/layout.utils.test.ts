@@ -9,6 +9,10 @@ import {
   resizeComponent,
   extractComponent,
   moveComponent,
+  getNodeById,
+  getParentOfId,
+  flattenTree,
+  walkTree,
 } from "../layout/utils";
 
 describe("layout utils", () => {
@@ -227,5 +231,64 @@ describe("layout utils", () => {
       expect(updated.children).toEqual([child]);
     });
   });
-});
 
+  describe("tree selectors", () => {
+    const leafA = make("a");
+    const leafB = make("b");
+    const mid = make("m", [leafA]);
+    const root = make("r", [mid, leafB]);
+    const tree = [root];
+
+    it("getNodeById finds nested nodes", () => {
+      expect(getNodeById(tree, "a")?.id).toBe("a");
+      expect(getNodeById(tree, "m")?.id).toBe("m");
+      expect(getNodeById(tree, "missing")).toBeNull();
+    });
+
+    it("getParentOfId returns direct parent or null for root", () => {
+      expect(getParentOfId(tree, "a")?.id).toBe("m");
+      expect(getParentOfId(tree, "m")?.id).toBe("r");
+      expect(getParentOfId(tree, "r")).toBeNull();
+      expect(getParentOfId(tree, "missing")).toBeNull();
+    });
+
+    it("flattenTree returns pre-order list of all nodes", () => {
+      const flat = flattenTree(tree);
+      const ids = flat.map((n) => n.id);
+      expect(ids).toEqual(["r", "m", "a", "b"]);
+    });
+
+    it("walkTree visits every node once", () => {
+      const visited: string[] = [];
+      walkTree(tree, (n) => visited.push(n.id));
+      expect(visited).toEqual(["r", "m", "a", "b"]);
+    });
+  });
+
+  describe("editor decoration helpers", () => {
+    const root = make("r", [make("a"), make("b")]);
+    const editor = {
+      r: { name: "Root", locked: true, zIndex: 3, hidden: ["desktop"] },
+      a: { hidden: ["mobile"] },
+    } as any;
+
+    it("isHiddenForViewport respects viewport array and fallback", () => {
+      const { isHiddenForViewport } = require("../layout/utils");
+      expect(isHiddenForViewport("r", editor, false, "desktop")).toBe(true);
+      expect(isHiddenForViewport("r", editor, false, "tablet")).toBe(false);
+      expect(isHiddenForViewport("x", editor, true, "tablet")).toBe(true); // fallback
+    });
+
+    it("decorateTreeForViewport merges flags on nodes", () => {
+      const { decorateTreeForViewport } = require("../layout/utils");
+      const out = decorateTreeForViewport([root], editor, "desktop");
+      const dRoot = out[0] as any;
+      expect(dRoot.name).toBe("Root");
+      expect(dRoot.locked).toBe(true);
+      expect(dRoot.zIndex).toBe(3);
+      expect(dRoot.hidden).toBe(true);
+      const dA = (dRoot.children ?? [])[0] as any;
+      expect(dA.hidden).toBe(false);
+    });
+  });
+});

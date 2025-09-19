@@ -2,6 +2,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { getCsrfToken } from "@acme/shared-utils";
 import { getRequiredSteps } from "../steps";
 import type { ConfiguratorState } from "../../wizard/schema";
 import type { ConfiguratorStep } from "../types";
@@ -59,9 +60,12 @@ export function useLaunchShop(
       ...(seed ? { seed: "pending" } : {}),
     });
     try {
-      const res = await fetch("/cms/api/launch-shop", {
+      const res = await fetch("/api/launch-shop", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-csrf-token": getCsrfToken() ?? "",
+        },
         body: JSON.stringify({ shopId: state.shopId, state, seed }),
       });
       if (!res.body) {
@@ -109,4 +113,3 @@ export function useLaunchShop(
 }
 
 export default useLaunchShop;
-

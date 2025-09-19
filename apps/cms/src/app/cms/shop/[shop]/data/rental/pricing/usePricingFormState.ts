@@ -63,7 +63,8 @@ export function usePricingFormState({ initial, shop, onToast }: UsePricingFormSt
     }
   }, [status]);
 
-  const statusVariant = status === "saved" ? "success" : status === "error" ? "destructive" : "default";
+  const statusVariant: "default" | "success" | "warning" | "destructive" =
+    status === "saved" ? "success" : status === "error" ? "destructive" : "default";
 
   const handleTabChange = useCallback(
     (next: PricingFormTab) => {

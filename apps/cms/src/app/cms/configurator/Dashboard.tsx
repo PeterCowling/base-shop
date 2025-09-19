@@ -31,7 +31,7 @@ export default function ConfiguratorDashboard() {
         </div>
       </section>
 
-      <section className="grid gap-8 lg:grid-cols-[2fr,1fr]">
+      <section id="configurator-steps" className="grid gap-8 lg:grid-cols-[2fr,1fr]">
         <ConfiguratorStepList
           state={state}
           steps={steps}
@@ -54,4 +54,3 @@ export default function ConfiguratorDashboard() {
     </div>
   );
 }
-

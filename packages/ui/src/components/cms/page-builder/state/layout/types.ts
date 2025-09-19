@@ -1,4 +1,5 @@
 import type { PageComponent } from "@acme/types";
+import type { EditorFlags } from "@acme/types";
 
 export type AddAction = {
   type: "add";
@@ -58,8 +59,15 @@ export type UndoAction = { type: "undo" };
 export type RedoAction = { type: "redo" };
 export type SetGridColsAction = { type: "set-grid-cols"; gridCols: number };
 
+export type UpdateEditorAction = {
+  type: "update-editor";
+  id: string;
+  patch: Partial<EditorFlags>;
+};
+
 export type Action =
   | ChangeAction
   | UndoAction
   | RedoAction
-  | SetGridColsAction;
+  | SetGridColsAction
+  | UpdateEditorAction;

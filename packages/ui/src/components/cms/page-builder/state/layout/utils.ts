@@ -97,6 +97,7 @@ export function updateComponent(
     "desktopItems",
     "tabletItems",
     "mobileItems",
+    "zIndex",
   ] as const;
   type NumericField = (typeof numericFields)[number];
   const normalized: Partial<PageComponent> & Record<NumericField, number | undefined> = {
@@ -189,4 +190,98 @@ export function moveComponent(
   const [item, without] = extractComponent(list, from.parentId, from.index);
   if (!item) return list;
   return addComponent(without, to.parentId, to.index, item);
+}
+
+// Read-only tree helpers for selectors and outline UI
+export function walkTree(
+  list: PageComponent[],
+  visit: (node: PageComponent, parent: PageComponent | undefined) => void,
+  parent?: PageComponent,
+): void {
+  for (const node of list) {
+    visit(node, parent);
+    const children = (node as { children?: PageComponent[] }).children;
+    if (Array.isArray(children)) {
+      walkTree(children, visit, node);
+    }
+  }
+}
+
+export function getNodeById(
+  list: PageComponent[],
+  id: string,
+): PageComponent | null {
+  let found: PageComponent | null = null;
+  walkTree(list, (n) => {
+    if (found) return;
+    if (n.id === id) found = n;
+  });
+  return found;
+}
+
+export function getParentOfId(
+  list: PageComponent[],
+  id: string,
+): PageComponent | null {
+  let parent: PageComponent | null = null;
+  walkTree(list, (n, p) => {
+    if (parent) return;
+    if (n.id === id) parent = p ?? null;
+  });
+  return parent;
+}
+
+export function flattenTree(list: PageComponent[]): PageComponent[] {
+  const result: PageComponent[] = [];
+  walkTree(list, (n) => {
+    result.push(n);
+  });
+  return result;
+}
+
+// Decorators: merge editor flags onto nodes for read-only view rendering
+export type Viewport = "desktop" | "tablet" | "mobile";
+export type EditorMap = Record<string, { name?: string; locked?: boolean; zIndex?: number; hidden?: Viewport[] }> | undefined;
+
+export function isHiddenForViewport(
+  id: string,
+  editor: EditorMap,
+  fallbackHidden?: boolean,
+  viewport?: Viewport,
+): boolean {
+  const flags = editor?.[id];
+  if (!flags) return !!fallbackHidden;
+  if (!flags.hidden) return !!fallbackHidden;
+  if (!viewport) return flags.hidden.length > 0;
+  return flags.hidden.includes(viewport);
+}
+
+export function decorateComponentForViewport<T extends PageComponent>(
+  node: T,
+  editor: EditorMap,
+  viewport?: Viewport,
+): T & { name?: string; locked?: boolean; zIndex?: number; hidden?: boolean } {
+  const flags = (editor ?? {})[node.id] ?? {};
+  const hidden = isHiddenForViewport(node.id, editor, (node as any).hidden as boolean | undefined, viewport);
+  const merged: any = { ...node };
+  if (flags.name !== undefined) merged.name = flags.name;
+  if (flags.locked !== undefined) merged.locked = flags.locked;
+  if (flags.zIndex !== undefined) merged.zIndex = flags.zIndex as number;
+  if (hidden !== undefined) merged.hidden = hidden;
+  return merged as T & { name?: string; locked?: boolean; zIndex?: number; hidden?: boolean };
+}
+
+export function decorateTreeForViewport(
+  list: PageComponent[],
+  editor: EditorMap,
+  viewport?: Viewport,
+): PageComponent[] {
+  return list.map((n) => {
+    const merged = decorateComponentForViewport(n, editor, viewport) as PageComponent & { children?: PageComponent[] };
+    const children = merged.children;
+    if (Array.isArray(children)) {
+      merged.children = decorateTreeForViewport(children, editor, viewport);
+    }
+    return merged as PageComponent;
+  });
 }

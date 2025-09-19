@@ -21,3 +21,4 @@ export { update } from "./update";
 export { resize } from "./resize";
 export { set } from "./set";
 export { setGridCols } from "./setGridCols";
+export { updateEditor } from "./updateEditor";

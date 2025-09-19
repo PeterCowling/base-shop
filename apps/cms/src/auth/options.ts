@@ -98,7 +98,11 @@ export function createAuthOptions(
         if (user) {
           const u = user as typeof user & { role: Role };
           logger.debug("[auth] jwt assign role", { role: u.role });
-          (token as JWT & { role: Role }).role = u.role;
+          const t = token as JWT & { role: Role } & { id?: string };
+          t.role = u.role;
+          // Ensure we keep a stable identifier available to session callback
+          // NextAuth typically sets `sub` from user.id, but we mirror on `id` too.
+          if ((user as any).id) t.id = String((user as any).id);
         }
         return token;
       },
@@ -109,6 +113,13 @@ export function createAuthOptions(
 
         if (role) {
           (session.user as typeof session.user & { role: Role }).role = role;
+        }
+        // Propagate a user id into the session so API routes can identify
+        // per-user configurator state.
+        const id = (token as JWT & { sub?: string; id?: string }).id ??
+          (token as JWT & { sub?: string }).sub;
+        if (id) {
+          (session.user as any).id = id;
         }
         return session;
       },

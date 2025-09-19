@@ -11,6 +11,7 @@ import {
   setGridCols,
 } from "./layout";
 import { undo, redo } from "./history";
+import { updateEditor } from "./layout";
 
 export function reducer(state: HistoryState, action: Action): HistoryState {
   switch (action.type) {
@@ -34,6 +35,8 @@ export function reducer(state: HistoryState, action: Action): HistoryState {
       return resize(state, action);
     case "set":
       return set(state, action);
+    case "update-editor":
+      return updateEditor(state, action);
     default:
       return state;
   }

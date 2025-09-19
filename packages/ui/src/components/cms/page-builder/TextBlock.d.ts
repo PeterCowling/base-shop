@@ -9,8 +9,8 @@ declare const TextBlock: import("react").NamedExoticComponent<{
     component: TextComponent;
     index: number;
     parentId: string | undefined;
-    selectedId: string | null;
-    onSelectId: (id: string) => void;
+    selectedIds: string[];
+    onSelect: (id: string, e?: React.MouseEvent) => void;
     onRemove: () => void;
     dispatch: React.Dispatch<Action>;
     locale: Locale;

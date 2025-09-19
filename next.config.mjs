@@ -1,4 +1,6 @@
 // next.config.mjs
+import path from "node:path";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Cloudflare Pages limitation
@@ -44,6 +46,19 @@ const nextConfig = {
     config.resolve.alias ??= {};
     for (const mod of nodeBuiltins) {
       config.resolve.alias[`node:${mod}`] = mod;
+    }
+
+    // In development, prefer prebuilt dist outputs for heavy workspace packages
+    // to reduce per-route transpilation cost. This does not affect production
+    // builds and keeps HMR behavior stable.
+    if (dev) {
+      const aliasDist = {
+        "@ui": path.resolve(process.cwd(), "packages/ui/dist"),
+        "@acme/ui": path.resolve(process.cwd(), "packages/ui/dist"),
+        "@platform-core": path.resolve(process.cwd(), "packages/platform-core/dist"),
+        "@acme/platform-core": path.resolve(process.cwd(), "packages/platform-core/dist"),
+      };
+      Object.assign(config.resolve.alias, aliasDist);
     }
 
     return config;

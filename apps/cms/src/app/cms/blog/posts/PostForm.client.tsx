@@ -4,7 +4,7 @@
 import { useFormState } from "react-dom";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Button, Input, Switch, Textarea, Toast } from "@ui";
+import { Button, Input, Switch, Textarea, Toast } from "@ui/components/atoms";
 import { slugify } from "@acme/shared-utils";
 import { PortableText } from "@portabletext/react";
 import {

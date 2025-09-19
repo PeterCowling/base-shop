@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { configuratorStateSchema, type ConfiguratorState } from "../../wizard/schema";
 import type { ConfiguratorStep } from "../types";
 import { useConfiguratorPersistence } from "./useConfiguratorPersistence";
@@ -83,16 +83,27 @@ export function useConfiguratorDashboardState(): {
   const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
   const { setConfiguratorProgress } = useLayout();
 
+  const stateRef = useRef(state);
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
+
   const fetchState = useCallback(() => {
-    fetch("/cms/api/configurator-progress")
+    fetch("/api/configurator-progress")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
         if (!json) return;
-        setState((prev: ConfiguratorState) => ({
-          ...prev,
+        const incoming: ConfiguratorState = {
+          ...stateRef.current,
           ...(json.state ?? json),
           completed: json.completed ?? {},
-        }));
+        } as ConfiguratorState;
+        try {
+          const prevHash = JSON.stringify(stateRef.current);
+          const nextHash = JSON.stringify(incoming);
+          if (prevHash === nextHash) return;
+        } catch {}
+        setState(incoming);
       })
       .catch(() => setState(configuratorStateSchema.parse({})));
   }, []);
@@ -341,4 +352,3 @@ export function useConfiguratorDashboardState(): {
 }
 
 export default useConfiguratorDashboardState;
-

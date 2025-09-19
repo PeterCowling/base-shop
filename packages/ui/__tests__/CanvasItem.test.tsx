@@ -18,8 +18,8 @@ describe("CanvasItem", () => {
             component={component}
             index={0}
             parentId={undefined}
-            selectedId={null}
-            onSelectId={() => {}}
+            selectedIds={[]}
+            onSelect={() => {}}
             onRemove={() => {}}
             dispatch={() => {}}
             locale="en"

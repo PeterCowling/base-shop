@@ -73,8 +73,8 @@ describe("PageCanvas", () => {
     const { container } = render(
       <PageCanvas
         components={[component]}
-        selectedId="1"
-        onSelectId={jest.fn()}
+        selectedIds={["1"]}
+        onSelectIds={jest.fn()}
         dispatch={dispatch}
         locale="en"
         containerStyle={{}}

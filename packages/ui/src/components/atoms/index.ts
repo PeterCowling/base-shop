@@ -68,7 +68,7 @@ export { Skeleton } from "./Skeleton";
 export { StatCard } from "./StatCard";
 export { StockStatus } from "./StockStatus";
 export { Switch } from "./Switch";
-export { Tag } from "./Tag";
+export { Tag, type TagProps } from "./Tag";
 export { Toast } from "./Toast";
 export { Tooltip } from "./Tooltip";
 export { VideoPlayer } from "./VideoPlayer";

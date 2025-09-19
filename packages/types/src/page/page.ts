@@ -110,11 +110,19 @@ export type PageComponent = z.infer<typeof pageComponentSchema>;
 
 bindPageComponentSchema(pageComponentSchema);
 
+export interface EditorFlags {
+  name?: string;
+  locked?: boolean;
+  zIndex?: number;
+  hidden?: ("desktop" | "tablet" | "mobile")[];
+}
+
 export interface HistoryState {
   past: PageComponent[][];
   present: PageComponent[];
   future: PageComponent[][];
   gridCols: number;
+  editor?: Record<string, EditorFlags>;
   [key: string]: unknown;
 }
 
@@ -129,9 +137,21 @@ export const historyStateSchema = z
     present: pageComponentHistoryStackSchema.default([]),
     future: pageComponentHistoryTimelineSchema.default([]),
     gridCols: z.number().int().min(1).max(24).default(12),
+    editor: z
+      .record(
+        z.object({
+          name: z.string().optional(),
+          locked: z.boolean().optional(),
+          zIndex: z.number().int().optional(),
+          hidden: z.array(z.enum(["desktop", "tablet", "mobile"]))
+            .optional(),
+        })
+      )
+      .default({})
+      .optional(),
   })
   .passthrough()
-  .default({ past: [], present: [], future: [], gridCols: 12 }) as unknown as z.ZodType<HistoryState>;
+  .default({ past: [], present: [], future: [], gridCols: 12, editor: {} }) as unknown as z.ZodType<HistoryState>;
 
 export interface Page {
   id: string;

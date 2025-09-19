@@ -1,4 +1,5 @@
-import { Button, ImagePicker } from "@ui";
+import { Button } from "@ui/components/atoms";
+import { ImagePicker } from "@ui/components/cms/page-builder";
 import Image from "next/image";
 
 interface Props {

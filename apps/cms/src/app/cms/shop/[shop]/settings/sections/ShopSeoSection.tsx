@@ -45,7 +45,6 @@ export default function ShopSeoSection({
         <FormField
           label="Catalog filters"
           htmlFor="catalog-filters"
-          description="Separate filter keys with commas."
           error={
             errorMessage ? (
               <span id={errorId} role="alert">

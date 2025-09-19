@@ -19,8 +19,8 @@ describe("CanvasItem", () => {
   const baseProps = {
     index: 0,
     parentId: undefined,
-    selectedId: null,
-    onSelectId: jest.fn(),
+    selectedIds: [],
+    onSelect: jest.fn(),
     onRemove: jest.fn(),
     dispatch: jest.fn(),
     locale: "en" as const,

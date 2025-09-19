@@ -45,34 +45,34 @@ export default async function PagesPage({
       label: "Published",
       value: String(publishedPages),
       caption: "Live on storefront",
-      accent: "bg-emerald-500/20 text-emerald-200",
+      accent: "bg-emerald-500/20 text-foreground",
     },
     {
       label: "Draft",
       value: String(draftPages),
       caption: "Still in progress",
-      accent: "bg-amber-500/20 text-amber-200",
+      accent: "bg-amber-500/20 text-foreground",
     },
     {
       label: "Archived",
       value: String(archivedPages),
       caption: "Hidden from navigation",
-      accent: "bg-slate-500/20 text-slate-200",
+      accent: "bg-slate-500/20 text-foreground",
     },
   ];
 
   return (
-    <div className="space-y-8 text-white">
-      <section className="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-950 shadow-xl">
+    <div className="space-y-8 text-foreground">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-slate-950 shadow-xl">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(250,204,21,0.2),_transparent_55%)]" />
         <div className="relative space-y-4 px-6 py-7">
-          <Tag variant="default" className="bg-white/10 text-white/70">
+          <Tag variant="default">
             Pages · {shop}
           </Tag>
           <h1 className="text-3xl font-semibold md:text-4xl">
             Curate every page that shapes your storefront narrative
           </h1>
-          <p className="text-sm text-white/70">
+          <p className="text-sm text-muted-foreground">
             Manage hero stories, campaign landing pages, and evergreen content from one creative workspace.
           </p>
           <div className="grid gap-3 sm:grid-cols-3">
@@ -80,15 +80,15 @@ export default async function PagesPage({
               <div
                 key={stat.label}
                 className={cn(
-                  "rounded-2xl border border-white/10 px-4 py-3 backdrop-blur",
+                  "rounded-2xl border border-border/10 px-4 py-3 backdrop-blur",
                   stat.accent
                 )}
               >
-                <p className="text-xs font-semibold uppercase tracking-wide text-white/70">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   {stat.label}
                 </p>
-                <p className="text-xl font-semibold text-white">{stat.value}</p>
-                <p className="text-xs text-white/70">{stat.caption}</p>
+                <p className="text-xl font-semibold text-foreground">{stat.value}</p>
+                <p className="text-xs text-muted-foreground">{stat.caption}</p>
               </div>
             ))}
           </div>
@@ -96,20 +96,20 @@ export default async function PagesPage({
       </section>
 
       <section>
-        <Card className="border border-white/10 bg-slate-950/70 shadow-lg">
+        <Card className="border border-border/10 bg-slate-950/70 shadow-lg">
           <CardContent className="space-y-4 px-6 py-6">
-            <div className="flex flex-wrap items-center justify-between gap-3 text-white">
+            <div className="flex flex-wrap items-center justify-between gap-3 text-foreground">
               <div>
                 <h2 className="text-lg font-semibold">Page library</h2>
-                <p className="text-sm text-white/70">
+                <p className="text-sm text-muted-foreground">
                   Launch campaign landing pages, update evergreen content, or archive what no longer fits.
                 </p>
               </div>
-              <Tag variant="default" className="bg-white/10 text-white/70">
+              <Tag variant="default">
                 {totalPages} total pages
               </Tag>
             </div>
-            <Suspense fallback={<p className="text-sm text-white/60">Loading pages…</p>}>
+            <Suspense fallback={<p className="text-sm text-muted-foreground">Loading pages…</p>}>
               <PagesClient shop={shop} initial={initial} canWrite={writable} />
             </Suspense>
           </CardContent>

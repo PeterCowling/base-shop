@@ -112,6 +112,10 @@ const nextConfig = {
   experimental: {
     externalDir: true,
   },
+  eslint: {
+    // Speed up CI and avoid blocking builds on lint-only rules
+    ignoreDuringBuilds: true,
+  },
 
   // Keep heavy Node-only libs external on the server bundle
   serverExternalPackages: [

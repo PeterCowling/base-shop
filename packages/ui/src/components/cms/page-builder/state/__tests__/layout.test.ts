@@ -243,6 +243,7 @@ describe("historyStateSchema", () => {
       present: [],
       future: [],
       gridCols: 12,
+      editor: {},
     });
   });
 });

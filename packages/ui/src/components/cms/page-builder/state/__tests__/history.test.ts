@@ -56,4 +56,14 @@ describe("history actions", () => {
     const result = redo(state);
     expect(Object.is(result, state)).toBe(true);
   });
+
+  it("preserves editor metadata across history transitions", () => {
+    const withEditor = { ...init, editor: { a: { name: "A", locked: true } } } as HistoryState;
+    const committed = commit(withEditor, [a]);
+    expect((committed as any).editor).toEqual({ a: { name: "A", locked: true } });
+    const undone = undo(committed);
+    expect((undone as any).editor).toEqual({ a: { name: "A", locked: true } });
+    const redone = redo(undone);
+    expect((redone as any).editor).toEqual({ a: { name: "A", locked: true } });
+  });
 });

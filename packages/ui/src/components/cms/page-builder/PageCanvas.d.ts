@@ -5,8 +5,8 @@ import type { Action } from "./state";
 import type { DevicePreset } from "../../../utils/devicePresets";
 interface Props {
     components: PageComponent[];
-    selectedId?: string | null;
-    onSelectId?: (id: string | null) => void;
+    selectedIds?: string[];
+    onSelectIds?: (ids: string[]) => void;
     canvasRef?: React.RefObject<HTMLDivElement | null>;
     dragOver?: boolean;
     setDragOver?: (v: boolean) => void;
@@ -17,11 +17,13 @@ interface Props {
     containerStyle: CSSProperties;
     showGrid?: boolean;
     gridCols?: number;
+    snapEnabled?: boolean;
+    showRulers?: boolean;
     viewport: "desktop" | "tablet" | "mobile";
     snapPosition?: number | null;
     device?: DevicePreset;
     preview?: boolean;
 }
-declare const PageCanvas: ({ components, selectedId, onSelectId, canvasRef, dragOver, setDragOver, onFileDrop, insertIndex, dispatch, locale, containerStyle, showGrid, gridCols, viewport, snapPosition, device, preview, }: Props) => import("react/jsx-runtime").JSX.Element;
+declare const PageCanvas: ({ components, selectedIds, onSelectIds, canvasRef, dragOver, setDragOver, onFileDrop, insertIndex, dispatch, locale, containerStyle, showGrid, gridCols, viewport, snapPosition, device, preview, }: Props) => import("react/jsx-runtime").JSX.Element;
 export default PageCanvas;
 //# sourceMappingURL=PageCanvas.d.ts.map

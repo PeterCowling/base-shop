@@ -38,10 +38,10 @@ export function ButtonElement(props: ButtonElementProps) {
   }
 
   if (asChild && isValidElement(children)) {
-    return cloneElement(children, {
-      ...cleanProps,
-      className: cn(children.props.className, className),
-    });
+    return cloneElement(children as any, {
+      ...(cleanProps as any),
+      className: cn((children as any).props?.className, className),
+    } as any);
   }
 
   return (
@@ -50,4 +50,3 @@ export function ButtonElement(props: ButtonElementProps) {
     </button>
   );
 }
-

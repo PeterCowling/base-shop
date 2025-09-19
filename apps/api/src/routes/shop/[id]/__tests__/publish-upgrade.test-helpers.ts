@@ -1,5 +1,6 @@
 import { jest } from "@jest/globals";
 import path from "path";
+import jwt from "jsonwebtoken";
 
 jest.mock("@acme/shared-utils", () => ({ logger: { warn: jest.fn() } }));
 jest.mock("fs", () => ({ readFileSync: jest.fn(), writeFileSync: jest.fn() }));
@@ -9,8 +10,7 @@ import { logger } from "@acme/shared-utils";
 import { readFileSync, writeFileSync } from "fs";
 import { spawn } from "child_process";
 
-export { logger, readFileSync, writeFileSync, spawn };
-export { default as jwt } from "jsonwebtoken";
+export { logger, readFileSync, writeFileSync, spawn, jwt };
 
 export const root = path.resolve(__dirname, "..", "../../../../../..");
 export const defaultShopId = "test-shop";
@@ -36,4 +36,9 @@ export const mockSuccessfulSpawn = () => {
       if (event === "close") cb(0);
     },
   }));
+};
+
+export const authorize = () => {
+  process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
+  return jwt.sign({}, "secret");
 };

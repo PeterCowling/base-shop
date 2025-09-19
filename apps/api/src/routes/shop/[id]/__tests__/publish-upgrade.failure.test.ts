@@ -1,7 +1,7 @@
 import type { OnRequestPost } from "./publish-upgrade.test-helpers";
 import {
+  authorize,
   defaultShopId,
-  jwt,
   loadOnRequestPost,
   mockSuccessfulSpawn,
   readFileSync,
@@ -21,11 +21,6 @@ beforeAll(async () => {
 beforeEach(() => {
   resetTestState();
 });
-
-const authorize = () => {
-  process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "secret";
-  return jwt.sign({}, "secret");
-};
 
 describe("onRequestPost failure scenarios", () => {
   it("returns 500 when build command fails", async () => {

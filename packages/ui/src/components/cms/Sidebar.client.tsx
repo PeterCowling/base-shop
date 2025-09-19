@@ -122,6 +122,13 @@ function Sidebar({
     }
   };
 
+  const handleConfiguratorCta = () => {
+    handleConfiguratorClick();
+    if (typeof window !== "undefined") {
+      window.location.assign("/cms/configurator");
+    }
+  };
+
   return (
     <aside className="flex h-full w-full flex-col gap-6 px-5 py-6 text-sm">
       <div className="space-y-2">
@@ -133,11 +140,11 @@ function Sidebar({
           Configure storefronts, orchestrate launches, and monitor activity from one hub.
         </p>
         <Button
+          type="button"
           className="mt-3 w-full justify-center bg-white/10 text-white hover:bg-white/20"
-          onClick={handleConfiguratorClick}
-          asChild
+          onClick={handleConfiguratorCta}
         >
-          <Link href="/cms/configurator">Launch Configurator</Link>
+          Launch Configurator
         </Button>
       </div>
 

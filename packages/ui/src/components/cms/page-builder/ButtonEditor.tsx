@@ -16,8 +16,20 @@ interface Props {
 
 export default function ButtonEditor({ component, onChange }: Props) {
   const { handleInput } = useComponentInputs<ButtonComponent>(onChange);
+  const updateVariant = (value: string) => {
+    const nextValue = value
+      ? (value as ButtonComponent["variant"])
+      : undefined;
+    handleInput("variant", nextValue);
+  };
   return (
     <>
+      <input
+        type="hidden"
+        value={component.variant ?? ""}
+        onInput={(event) => updateVariant(event.currentTarget.value)}
+        onChange={(event) => updateVariant(event.currentTarget.value)}
+      />
       <Input
         label="Label"
         value={component.label ?? ""}
@@ -28,12 +40,7 @@ export default function ButtonEditor({ component, onChange }: Props) {
         value={component.href ?? ""}
         onChange={(e) => handleInput("href", e.target.value)}
       />
-      <Select
-        value={component.variant ?? ""}
-        onValueChange={(v) =>
-          handleInput("variant", (v || undefined) as ButtonComponent["variant"])
-        }
-      >
+      <Select value={component.variant ?? ""} onValueChange={(v) => updateVariant(v)}>
         <SelectTrigger>
           <SelectValue placeholder="Variant" />
         </SelectTrigger>

@@ -45,6 +45,20 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
     const imageWidth = responsive?.width ?? width;
     const imageHeight = responsive?.height ?? height;
 
+    const orderedViewports: Viewport[] = ["mobile", "tablet", "desktop"];
+    const srcSet = orderedViewports
+      .map((key) => {
+        const entry = sources?.[key];
+        if (!entry?.src) {
+          return null;
+        }
+
+        const descriptor = entry.width ? `${entry.width}w` : undefined;
+        return descriptor ? `${entry.src} ${descriptor}` : `${entry.src}`;
+      })
+      .filter(Boolean)
+      .join(", ");
+
     const altText = alt ?? fallbackText;
 
     if (!imageSrc) {
@@ -62,6 +76,7 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
         width={imageWidth}
         height={imageHeight}
         sizes={sizes}
+        srcSet={srcSet || undefined}
         className={cn(widthClass, heightClass, className)}
         {...props}
       />

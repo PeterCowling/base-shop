@@ -24,7 +24,10 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
         const pageTitle = typeof rawTitle === "string" ? rawTitle : "Untitled";
         return (
           <div className="space-y-1">
-            <span className="font-medium text-white">/{p.slug}</span>
+            <span className="font-medium text-white">
+              <span aria-hidden>/</span>
+              <span>{p.slug}</span>
+            </span>
             <p className="text-xs text-white/60">{pageTitle}</p>
           </div>
         );
@@ -76,7 +79,7 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
           asChild
           className="h-10 rounded-xl bg-emerald-500 px-4 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-400"
         >
-          <Link href={`/cms/shop/${shop}/pages/new/builder`}>Create new page</Link>
+          <Link href={`/cms/shop/${shop}/pages/new/builder`}>New Page</Link>
         </Button>
       )}
       <Card className="border border-white/10 bg-white/5 text-white">

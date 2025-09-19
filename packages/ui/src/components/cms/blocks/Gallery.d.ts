@@ -1,6 +1,7 @@
 export type GalleryImage = {
     src: string;
     alt?: string;
+    caption?: string;
 };
 export default function Gallery({ images }: {
     images?: GalleryImage[];

@@ -18,7 +18,6 @@ export default function PricingTab({
       <Card>
         <CardContent className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex flex-col gap-2 sm:max-w-xs">
-            <label className="text-sm font-medium">Price (cents)</label>
             <Input
               type="number"
               name="price"
@@ -26,6 +25,7 @@ export default function PricingTab({
               onChange={onPriceChange}
               required
               min={0}
+              label="Price (cents)"
             />
           </div>
           {currency && (

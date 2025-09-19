@@ -12,7 +12,7 @@ The sidebar inside the CMS provides quick access to different sections:
 
 - **Dashboard** – Shows shop statistics and pending account requests.
 - **Products** – Lists all products. If a shop is selected, also shows **New Product**.
-- **Pages** – Lists pages for the current shop with a **New Page** link when a shop is selected.
+- **Pages** – Lists pages for the current shop with a **Create new page** link when a shop is selected.
 - **Media** – Upload and manage media files.
 - **Theme** – Customize the shop's appearance. Visible to admins and shop owners. See [advanced theming](./theming-advanced.md) for base themes, overrides, persistence and live preview.
 - **Settings** – Shop settings. When a shop is active an additional **SEO** option appears.
@@ -21,7 +21,7 @@ The sidebar inside the CMS provides quick access to different sections:
 - **Account Requests** – (Admin only) Approve new user accounts.
 - **Create Shop** – (Admin only) Launch the configurator for creating a new shop.
 
-Links such as **New Product**, **New Page** and **SEO** only appear after picking a shop, otherwise they are hidden.
+Links such as **New Product**, **Create new page** and **SEO** only appear after picking a shop, otherwise they are hidden.
 
 ## Switching Shops
 

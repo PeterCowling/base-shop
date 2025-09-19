@@ -54,7 +54,7 @@ function Sidebar({
         : []),
       { href: shop ? `${base}/pages` : "/pages", label: "Pages", icon: "📄" },
       ...(shop
-        ? [{ href: `${base}/pages/new/builder`, label: "New Page", icon: "📝" }]
+        ? [{ href: `${base}/pages/new/builder`, label: "Create new page", icon: "📝" }]
         : []),
       { href: shop ? `${base}/media` : "/media", label: "Media", icon: "🖼️" },
       ...(shop

@@ -35,7 +35,7 @@ describe("PagesTable", () => {
       .map((h) => h.textContent?.trim());
     expect(headers).toEqual(["Slug", "Status"]);
     expect(
-      screen.queryByRole("link", { name: "New Page" })
+      screen.queryByRole("link", { name: "Create new page" })
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("link", { name: "Edit" })
@@ -45,7 +45,7 @@ describe("PagesTable", () => {
   it("shows new page and edit links when writable", () => {
     render(<PagesTable shop={shop} pages={pages} canWrite />);
 
-    const newPageLink = screen.getByRole("link", { name: "New Page" });
+    const newPageLink = screen.getByRole("link", { name: "Create new page" });
     expect(newPageLink).toHaveAttribute(
       "href",
       `/cms/shop/${shop}/pages/new/builder`
@@ -71,7 +71,9 @@ describe("PagesTable", () => {
       .map((h) => h.textContent?.trim());
     expect(headers).toEqual(["Slug", "Status", "Actions"]);
 
-    expect(screen.getByRole("link", { name: "New Page" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Create new page" })
+    ).toBeInTheDocument();
 
     expect(dataTableSpy).toHaveBeenCalled();
     const props = dataTableSpy.mock.calls[0][0];

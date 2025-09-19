@@ -5,6 +5,11 @@ const ORIGINAL_ENV = process.env;
 beforeEach(() => {
   jest.resetModules();
   process.env = { ...ORIGINAL_ENV };
+  process.env.SANITY_PROJECT_ID = process.env.SANITY_PROJECT_ID ?? 'project';
+  process.env.SANITY_DATASET = process.env.SANITY_DATASET ?? 'dataset';
+  process.env.SANITY_API_TOKEN = process.env.SANITY_API_TOKEN ?? 'token';
+  process.env.SANITY_PREVIEW_SECRET =
+    process.env.SANITY_PREVIEW_SECRET ?? 'preview-secret';
 });
 
 afterEach(() => {

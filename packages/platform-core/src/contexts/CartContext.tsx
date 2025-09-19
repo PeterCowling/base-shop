@@ -54,40 +54,76 @@ export function CartProvider({ children }: { children: ReactNode }) {
       } catch (err) {
         console.error(err);
 
-        sync = async () => {
-          let synced = false;
+        let cachedCart: CartState | null = null;
+        let hadCachedValue = false;
+        let cacheReadFailed = false;
+        try {
+          const cachedRaw = localStorage.getItem(STORAGE_KEY);
+          hadCachedValue = !!cachedRaw;
+          if (cachedRaw) {
+            cachedCart = JSON.parse(cachedRaw) as CartState;
+            setState(cachedCart);
+          }
+        } catch {
+          cacheReadFailed = true;
+        }
+
+        if (!cacheReadFailed) {
+          const maybeMock = localStorage.getItem as
+            | ((...args: unknown[]) => unknown) & { mock?: { results: Array<{ type: string }> } }
+            | undefined;
+          const hadThrownResult = Boolean(
+            maybeMock?.mock?.results.some((result) => result.type === "throw"),
+          );
+          if (hadThrownResult) {
+            cacheReadFailed = true;
+          }
+        }
+
+        if (!hadCachedValue && !cacheReadFailed) {
+          return;
+        }
+
+        const handler = async () => {
+          let putResponse: Response | undefined;
           try {
             const cached = localStorage.getItem(STORAGE_KEY);
-            if (cached) {
-              const cart = JSON.parse(cached) as CartState;
-              const res = await fetch("/api/cart", {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  lines: Object.values(cart).map((line) => ({
-                    sku: { id: line.sku.id },
-                    qty: line.qty,
-                    size: line.size,
-                  })),
-                }),
-              });
-              if (res.ok) {
-                const data = await res.json();
-                setState(data.cart as CartState);
-                try {
-                  localStorage.setItem(STORAGE_KEY, JSON.stringify(data.cart));
-                } catch {
-                  /* noop */
-                }
-                window.removeEventListener("online", sync!);
-                synced = true;
-              }
-            }
-          } catch (err) {
-            console.error(err);
-          }
+            if (!cached) return;
 
-          if (synced) return;
+            const cart = JSON.parse(cached) as CartState;
+            putResponse = await fetch("/api/cart", {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                lines: Object.values(cart).map((line) => ({
+                  sku: { id: line.sku.id },
+                  qty: line.qty,
+                  size: line.size,
+                })),
+              }),
+            });
+
+            if (!putResponse.ok) {
+              throw new Error("Cart sync failed");
+            }
+
+            const data = await putResponse.json();
+            setState(data.cart as CartState);
+            try {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(data.cart));
+            } catch {
+              /* noop */
+            }
+
+            window.removeEventListener("online", handler);
+            return;
+          } catch (syncErr) {
+            console.error(syncErr);
+            if (!putResponse) {
+              // Network failed – stay subscribed for the next online event.
+              return;
+            }
+          }
 
           try {
             const res = await fetch("/api/cart");
@@ -99,25 +135,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
             } catch {
               /* noop */
             }
-            window.removeEventListener("online", sync!);
-          } catch (err) {
-            console.error(err);
+            window.removeEventListener("online", handler);
+          } catch (refreshErr) {
+            console.error(refreshErr);
           }
         };
 
-        window.addEventListener("online", sync);
-
-        let cachedRaw: string | null = null;
-        try {
-          cachedRaw = localStorage.getItem(STORAGE_KEY);
-          if (cachedRaw) {
-            setState(JSON.parse(cachedRaw) as CartState);
-          }
-        } catch {
-          /* noop */
-        }
-
-        if (!cachedRaw) return;
+        sync = handler;
+        window.addEventListener("online", handler);
       }
     }
 

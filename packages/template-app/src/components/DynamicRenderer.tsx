@@ -17,7 +17,7 @@ import Testimonials from "@ui/components/cms/blocks/Testimonials";
 import TestimonialSlider from "@ui/components/cms/blocks/TestimonialSlider";
 import { Textarea as TextBlock } from "@ui/components/atoms/primitives/textarea";
 
-import { PRODUCTS } from "@platform-core/products/index";
+import { PRODUCTS } from "@platform-core/products";
 import type { PageComponent, SKU } from "@acme/types";
 import type { Locale } from "@i18n/locales";
 

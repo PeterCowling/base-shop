@@ -7,12 +7,27 @@ import { CurrencyProvider, useCurrency, readInitial } from "../CurrencyContext";
 // React 19 requires this flag for `act` to suppress environment warnings
 ;(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
+const WINDOW_OVERRIDE_SYMBOL = Symbol.for(
+  "acme.platformCore.currencyWindowOverride",
+);
+
+function setWindowOverride(value: Window | null | undefined) {
+  (globalThis as Record<symbol, unknown>)[WINDOW_OVERRIDE_SYMBOL] =
+    value ?? null;
+}
+
+function clearWindowOverride() {
+  delete (globalThis as Record<symbol, unknown>)[WINDOW_OVERRIDE_SYMBOL];
+}
+
 function Display() {
   const [currency, setCurrency] = useCurrency();
   return (
     <>
-      <span data-cy="currency">{currency}</span>
-      <button onClick={() => setCurrency("USD")}>change</button>
+      <span data-testid="currency" data-cy="currency">{currency}</span>
+      <button data-cy="change" onClick={() => setCurrency("USD")}>
+        change
+      </button>
     </>
   );
 }
@@ -23,15 +38,15 @@ describe("readInitial", () => {
   beforeEach(() => {
     window.localStorage.clear();
     jest.restoreAllMocks();
+    clearWindowOverride();
   });
 
   it("returns default when window is undefined", () => {
-    const originalWindow = global.window;
-    (global as any).window = undefined;
+    setWindowOverride(null);
 
     expect(readInitial()).toBe("EUR");
 
-    (global as any).window = originalWindow;
+    clearWindowOverride();
   });
 
   it("returns stored currency when valid", () => {
@@ -64,6 +79,7 @@ describe("CurrencyProvider", () => {
   beforeEach(() => {
     window.localStorage.clear();
     jest.restoreAllMocks();
+    clearWindowOverride();
   });
 
   it("reads initial currency from localStorage when valid", () => {
@@ -108,87 +124,42 @@ describe("CurrencyProvider", () => {
   });
 
   it("uses default currency when window is undefined", async () => {
-    jest.resetModules();
     const setSpy = jest.spyOn(Storage.prototype, "setItem");
-    const originalWindow = global.window;
-    // Remove the global window to simulate non-browser environment
-    delete (global as any).window;
-    expect(typeof window).toBe("undefined");
+    setWindowOverride(null);
 
-    const ReactTestRenderer = await import("react-test-renderer");
-    const { default: TestRenderer, act: rendererAct } = ReactTestRenderer;
+    const { getByTestId, unmount } = render(
+      <CurrencyProvider>
+        <Display />
+      </CurrencyProvider>
+    );
 
-    const {
-      CurrencyProvider: LocalCurrencyProvider,
-      useCurrency: localUseCurrency,
-    } = await import("../CurrencyContext");
-
-    function LocalDisplay() {
-      const [currency] = localUseCurrency();
-      return <span data-cy="currency">{currency}</span>;
-    }
-
-    let renderer: any;
-    await rendererAct(async () => {
-      renderer = TestRenderer.create(
-        <LocalCurrencyProvider>
-          <LocalDisplay />
-        </LocalCurrencyProvider>
-      );
-    });
-
-    const currencyNode = renderer.root.findByProps({ "data-cy": "currency" });
-    expect(currencyNode.children.join("")).toBe("EUR");
+    expect(getByTestId("currency").textContent).toBe("EUR");
     expect(setSpy).not.toHaveBeenCalled();
 
-    renderer.unmount();
-    (global as any).window = originalWindow;
+    unmount();
+    clearWindowOverride();
   });
 
   it("does not persist currency when window is undefined", async () => {
-    jest.resetModules();
     const setSpy = jest.spyOn(Storage.prototype, "setItem");
-    const originalWindow = global.window;
-    delete (global as any).window;
+    setWindowOverride(null);
 
-    const ReactTestRenderer = await import("react-test-renderer");
-    const { default: TestRenderer, act: rendererAct } = ReactTestRenderer;
+    const { getByText, getByTestId, unmount } = render(
+      <CurrencyProvider>
+        <Display />
+      </CurrencyProvider>
+    );
 
-    const {
-      CurrencyProvider: LocalCurrencyProvider,
-      useCurrency: localUseCurrency,
-    } = await import("../CurrencyContext");
+    fireEvent.click(getByText("change"));
 
-    function LocalDisplay() {
-      const [currency, setCurrency] = localUseCurrency();
-      return (
-        <>
-          <span data-cy="currency">{currency}</span>
-          <button data-cy="change" onClick={() => setCurrency("USD")} />
-        </>
-      );
-    }
-
-    let renderer: any;
-    await rendererAct(async () => {
-      renderer = TestRenderer.create(
-        <LocalCurrencyProvider>
-          <LocalDisplay />
-        </LocalCurrencyProvider>
-      );
+    await waitFor(() => {
+      expect(getByTestId("currency").textContent).toBe("USD");
     });
 
-    const changeButton = renderer.root.findByProps({ "data-cy": "change" });
-    await rendererAct(async () => {
-      changeButton.props.onClick();
-    });
-
-    const currencyNode = renderer.root.findByProps({ "data-cy": "currency" });
-    expect(currencyNode.children.join("")).toBe("USD");
     expect(setSpy).not.toHaveBeenCalled();
 
-    renderer.unmount();
-    (global as any).window = originalWindow;
+    unmount();
+    clearWindowOverride();
   });
 
   it("provides default and persists currency changes", async () => {

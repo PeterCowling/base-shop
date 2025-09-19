@@ -1,13 +1,16 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { MediaItem } from "@acme/types";
 
 import { updateMediaMetadata } from "@cms/actions/media.server";
 import MediaManager from "../MediaManager";
 
+let libraryProps: any;
+
 jest.mock("../media/Library", () => {
   const React = require("react");
   return function MockLibrary(props: any) {
+    libraryProps = props;
     const { files, onDelete, onSelect } = props;
     return (
       <div>
@@ -146,9 +149,8 @@ function createDeferred<T>() {
 }
 
 describe("MediaManager", () => {
-  const originalConfirm = window.confirm;
-
   beforeEach(() => {
+    libraryProps = null;
     mockUpdateMediaMetadata.mockReset();
     mockUpdateMediaMetadata.mockImplementation(async (_shop, url, fields) => ({
       url,
@@ -158,7 +160,6 @@ describe("MediaManager", () => {
   });
 
   afterEach(() => {
-    window.confirm = originalConfirm;
     jest.clearAllMocks();
   });
 
@@ -176,14 +177,21 @@ describe("MediaManager", () => {
 
   it("does not delete the item when the browser confirm dialog is cancelled", async () => {
     const user = userEvent.setup();
-    window.confirm = jest.fn().mockReturnValue(false);
     const { onDelete } = renderManager();
 
     await user.click(
       screen.getByRole("button", { name: "Delete https://cdn.example.com/first.jpg" })
     );
 
-    expect(window.confirm).toHaveBeenCalledWith("Delete this image?");
+    const deleteDialog = await screen.findByRole("dialog", {
+      name: "Delete media?",
+    });
+    const cancelButton = within(deleteDialog).getByRole("button", { name: "Cancel" });
+    await user.click(cancelButton);
+
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog", { name: "Delete media?" })).not.toBeInTheDocument()
+    );
     expect(onDelete).not.toHaveBeenCalled();
     expect(screen.getAllByTestId("media-row")).toHaveLength(2);
     expect(screen.queryByTestId("media-manager-toast")).not.toBeInTheDocument();
@@ -192,14 +200,18 @@ describe("MediaManager", () => {
   it("removes the media item and shows a success toast when deletion is confirmed", async () => {
     const user = userEvent.setup();
     const onDelete = jest.fn().mockResolvedValue(undefined);
-    window.confirm = jest.fn().mockReturnValue(true);
     renderManager(onDelete);
 
     await user.click(
       screen.getByRole("button", { name: "Delete https://cdn.example.com/first.jpg" })
     );
 
-    expect(window.confirm).toHaveBeenCalledWith("Delete this image?");
+    const deleteDialog = await screen.findByRole("dialog", {
+      name: "Delete media?",
+    });
+    const confirmButton = within(deleteDialog).getByRole("button", { name: "Delete" });
+    await user.click(confirmButton);
+
     await waitFor(() =>
       expect(onDelete).toHaveBeenCalledWith(
         "demo-shop",
@@ -207,6 +219,9 @@ describe("MediaManager", () => {
       )
     );
 
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog", { name: "Delete media?" })).not.toBeInTheDocument()
+    );
     await waitFor(() =>
       expect(screen.getAllByTestId("media-row")).toHaveLength(1)
     );
@@ -219,19 +234,26 @@ describe("MediaManager", () => {
   it("shows an error toast when deletion fails", async () => {
     const user = userEvent.setup();
     const onDelete = jest.fn().mockRejectedValue(new Error("delete failed"));
-    window.confirm = jest.fn().mockReturnValue(true);
     renderManager(onDelete);
 
     await user.click(
       screen.getByRole("button", { name: "Delete https://cdn.example.com/first.jpg" })
     );
 
+    const deleteDialog = await screen.findByRole("dialog", {
+      name: "Delete media?",
+    });
+    const confirmButton = within(deleteDialog).getByRole("button", { name: "Delete" });
+    await user.click(confirmButton);
+
     await waitFor(() => expect(onDelete).toHaveBeenCalledTimes(1));
     expect(await screen.findByText("Failed to delete media item.")).toBeInTheDocument();
     expect(screen.getAllByTestId("media-row")).toHaveLength(2);
+    const retryButton = within(deleteDialog).getByRole("button", { name: "Delete" });
+    expect(retryButton).not.toBeDisabled();
   });
 
-  it("saves metadata, updates the list, shows a toast, and closes the details panel", async () => {
+  it("saves metadata, updates the list, shows a toast, and keeps the details panel open", async () => {
     const user = userEvent.setup();
     const deferred = createDeferred<MediaItem>();
     mockUpdateMediaMetadata.mockImplementation(() => deferred.promise);
@@ -280,9 +302,10 @@ describe("MediaManager", () => {
 
     expect(await screen.findByText("Media details updated.")).toBeInTheDocument();
 
-    await waitFor(() =>
-      expect(screen.queryByRole("dialog", { name: "Media details" })).not.toBeInTheDocument()
-    );
+    expect(
+      screen.getByRole("dialog", { name: "Media details" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Save" })).not.toBeDisabled();
 
     const titles = screen
       .getAllByTestId("media-title")
@@ -318,6 +341,7 @@ describe("MediaManager", () => {
 
   it("provides replace feedback callbacks", () => {
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     render(
       <MediaManager
         shop="s"
@@ -331,22 +355,33 @@ describe("MediaManager", () => {
     expect(typeof libraryProps.onReplaceError).toBe("function");
 
     act(() => {
+      libraryProps.onReplace?.("https://cdn.example.com/first.jpg");
+    });
+    act(() => {
       libraryProps.onReplaceSuccess?.({ url: "3", type: "image" });
     });
     expect(errorSpy).not.toHaveBeenCalled();
 
     act(() => {
+      libraryProps.onReplace?.("https://cdn.example.com/first.jpg");
+    });
+    act(() => {
       libraryProps.onReplaceSuccess?.({ type: "image" });
     });
     expect(errorSpy).toHaveBeenNthCalledWith(1, "Replacement media item is missing a URL", { type: "image" });
 
-    libraryProps.onReplaceError?.("something went wrong");
+    act(() => {
+      libraryProps.onReplace?.("https://cdn.example.com/first.jpg");
+    });
+    act(() => {
+      libraryProps.onReplaceError?.("something went wrong");
+    });
     expect(errorSpy).toHaveBeenLastCalledWith(
       "Failed to replace media item",
       "something went wrong"
     );
 
+    warnSpy.mockRestore();
     errorSpy.mockRestore();
   });
 });
-

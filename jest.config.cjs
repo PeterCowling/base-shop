@@ -53,8 +53,10 @@ const coverageThreshold = JSON.parse(
 );
 
 const forceCjs = process.env.JEST_FORCE_CJS === "1";
-const preset = forceCjs ? "ts-jest" : "ts-jest/presets/default-esm";
-const useESM = !forceCjs;
+const isPlatformCorePackage = /packages\/platform-core$/.test(process.cwd());
+const useCjsPreset = forceCjs || isPlatformCorePackage;
+const preset = useCjsPreset ? "ts-jest" : "ts-jest/presets/default-esm";
+const useESM = !useCjsPreset;
 
 const config = {
   preset,

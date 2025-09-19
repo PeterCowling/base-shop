@@ -12,15 +12,35 @@ export type Currency = "EUR" | "USD" | "GBP";
 
 const DEFAULT_CURRENCY: Currency = "EUR";
 const LS_KEY = "PREFERRED_CURRENCY";
+const WINDOW_OVERRIDE_SYMBOL = Symbol.for(
+  "acme.platformCore.currencyWindowOverride",
+);
+
+function resolveWindow(): Window | undefined {
+  if (
+    Object.prototype.hasOwnProperty.call(
+      globalThis,
+      WINDOW_OVERRIDE_SYMBOL,
+    )
+  ) {
+    const override = (globalThis as Record<symbol, unknown>)[
+      WINDOW_OVERRIDE_SYMBOL
+    ] as Window | null | undefined;
+    return override ?? undefined;
+  }
+  if (typeof window === "undefined") return undefined;
+  return window;
+}
 
 const CurrencyContext = createContext<
   [Currency, (c: Currency) => void] | undefined
 >(undefined);
 
 export function readInitial(): Currency {
-  if (typeof window === "undefined") return DEFAULT_CURRENCY;
+  const win = resolveWindow();
+  if (!win) return DEFAULT_CURRENCY;
   try {
-    const stored = localStorage.getItem(LS_KEY) as Currency | null;
+    const stored = win.localStorage.getItem(LS_KEY) as Currency | null;
     if (stored === "EUR" || stored === "USD" || stored === "GBP") return stored;
   } catch {}
   return DEFAULT_CURRENCY;
@@ -30,9 +50,10 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
   const [currency, setCurrency] = useState<Currency>(readInitial);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    const win = resolveWindow();
+    if (win) {
       try {
-        localStorage.setItem(LS_KEY, currency);
+        win.localStorage.setItem(LS_KEY, currency);
       } catch {}
     }
   }, [currency]);

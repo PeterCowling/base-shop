@@ -17,6 +17,15 @@ describe("configurator CLI", () => {
     process.env.STRIPE_SECRET_KEY = "sk";
     process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
     process.env.CART_COOKIE_SECRET = "secret";
+    process.env.NEXTAUTH_SECRET = "a".repeat(32);
+    process.env.SESSION_SECRET = "b".repeat(32);
+    process.env.CMS_SPACE_URL = "https://cms.example.com";
+    process.env.CMS_ACCESS_TOKEN = "cms-token";
+    process.env.SANITY_PROJECT_ID = "project";
+    process.env.SANITY_DATASET = "dataset";
+    process.env.SANITY_API_TOKEN = "sanity-token";
+    process.env.SANITY_PREVIEW_SECRET = "preview-secret";
+    process.env.EMAIL_PROVIDER = "noop";
   });
 
   afterEach(() => {

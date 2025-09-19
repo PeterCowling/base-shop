@@ -19,9 +19,10 @@ coveragePathIgnorePatterns.push(
   scope === "packages" ? "/apps/" : "/packages/"
 );
 
-const setupFilesAfterEnv = (base.setupFilesAfterEnv || []).filter(
-  (entry) => !String(entry).includes("jest.setup.ts")
-);
+const setupFilesAfterEnv = [
+  ...(base.setupFilesAfterEnv || []),
+  path.join(workspaceRoot, "test/setup-response-json.ts"),
+];
 
 const setupFiles = [
   ...(base.setupFiles || []),

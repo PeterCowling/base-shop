@@ -110,7 +110,6 @@ export function MediaFileActions({
                 if (!actionsDisabled) onReplaceRequest();
               }}
               disabled={actionsDisabled}
-              aria-label="Replace media"
               className="flex items-center gap-2"
             >
               {renderLoadingContent("Replace", replaceInProgress, "Replacing media…")}
@@ -122,7 +121,6 @@ export function MediaFileActions({
                 onDeleteRequest();
               }}
               disabled={actionsDisabled}
-              aria-label="Delete media"
               className="flex items-center gap-2"
             >
               {renderLoadingContent("Delete", deleteInProgress, "Deleting media…")}

@@ -1,13 +1,16 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { MediaItem } from "@acme/types";
 
 import { updateMediaMetadata } from "@cms/actions/media.server";
 import MediaManager from "../MediaManager";
 
+let libraryProps: any;
+
 jest.mock("../media/Library", () => {
   const React = require("react");
   return function MockLibrary(props: any) {
+    libraryProps = props;
     const { files, onDelete, onSelect } = props;
     return (
       <div>
@@ -149,6 +152,7 @@ describe("MediaManager", () => {
   const originalConfirm = window.confirm;
 
   beforeEach(() => {
+    libraryProps = undefined;
     mockUpdateMediaMetadata.mockReset();
     mockUpdateMediaMetadata.mockImplementation(async (_shop, url, fields) => ({
       url,
@@ -183,7 +187,7 @@ describe("MediaManager", () => {
       screen.getByRole("button", { name: "Delete https://cdn.example.com/first.jpg" })
     );
 
-    expect(window.confirm).toHaveBeenCalledWith("Delete this image?");
+    expect(window.confirm).toHaveBeenCalledWith("Delete media?");
     expect(onDelete).not.toHaveBeenCalled();
     expect(screen.getAllByTestId("media-row")).toHaveLength(2);
     expect(screen.queryByTestId("media-manager-toast")).not.toBeInTheDocument();
@@ -199,7 +203,7 @@ describe("MediaManager", () => {
       screen.getByRole("button", { name: "Delete https://cdn.example.com/first.jpg" })
     );
 
-    expect(window.confirm).toHaveBeenCalledWith("Delete this image?");
+    expect(window.confirm).toHaveBeenCalledWith("Delete media?");
     await waitFor(() =>
       expect(onDelete).toHaveBeenCalledWith(
         "demo-shop",
@@ -280,8 +284,16 @@ describe("MediaManager", () => {
 
     expect(await screen.findByText("Media details updated.")).toBeInTheDocument();
 
+    expect(
+      screen.getByRole("dialog", { name: "Media details" })
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "Close" }));
+
     await waitFor(() =>
-      expect(screen.queryByRole("dialog", { name: "Media details" })).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole("dialog", { name: "Media details" })
+      ).not.toBeInTheDocument()
     );
 
     const titles = screen
@@ -316,7 +328,8 @@ describe("MediaManager", () => {
     expect(screen.getByRole("dialog", { name: "Media details" })).toBeInTheDocument();
   });
 
-  it("provides replace feedback callbacks", () => {
+  it("provides replace feedback callbacks", async () => {
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     render(
       <MediaManager
@@ -327,25 +340,56 @@ describe("MediaManager", () => {
       />
     );
 
+    expect(libraryProps).toBeDefined();
+    expect(typeof libraryProps.onReplace).toBe("function");
     expect(typeof libraryProps.onReplaceSuccess).toBe("function");
     expect(typeof libraryProps.onReplaceError).toBe("function");
 
     act(() => {
       libraryProps.onReplaceSuccess?.({ url: "3", type: "image" });
     });
+    expect(warnSpy).toHaveBeenCalledWith(
+      "Replacement completed without a tracked URL."
+    );
     expect(errorSpy).not.toHaveBeenCalled();
 
     act(() => {
+      libraryProps.onReplace?.("https://cdn.example.com/first.jpg");
+    });
+    await waitFor(() =>
+      expect(libraryProps.isReplacing(initialFiles[0] as any)).toBe(true)
+    );
+    act(() => {
+      libraryProps.onReplaceSuccess?.({
+        url: "https://cdn.example.com/replaced.jpg",
+        type: "image",
+      });
+    });
+    expect(errorSpy).not.toHaveBeenCalled();
+
+    act(() => {
+      libraryProps.onReplace?.("https://cdn.example.com/first.jpg");
+    });
+    await waitFor(() =>
+      expect(libraryProps.isReplacing(initialFiles[0] as any)).toBe(true)
+    );
+    act(() => {
       libraryProps.onReplaceSuccess?.({ type: "image" });
     });
-    expect(errorSpy).toHaveBeenNthCalledWith(1, "Replacement media item is missing a URL", { type: "image" });
+    expect(errorSpy).toHaveBeenCalledWith(
+      "Replacement media item is missing a URL",
+      { type: "image" }
+    );
 
-    libraryProps.onReplaceError?.("something went wrong");
+    act(() => {
+      libraryProps.onReplaceError?.("something went wrong");
+    });
     expect(errorSpy).toHaveBeenLastCalledWith(
       "Failed to replace media item",
       "something went wrong"
     );
 
+    warnSpy.mockRestore();
     errorSpy.mockRestore();
   });
 });

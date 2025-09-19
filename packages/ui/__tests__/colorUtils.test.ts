@@ -43,16 +43,16 @@ describe("hexToRgb", () => {
 });
 
 describe("getContrastColor", () => {
-  it("returns black for light colors", () => {
-    expect(getContrastColor("#ffffff")).toBe("#000000");
+  it("returns the foreground token for light colors", () => {
+    expect(getContrastColor("#ffffff")).toBe("var(--color-fg)");
   });
 
-  it("returns white for dark colors", () => {
-    expect(getContrastColor("#000000")).toBe("#ffffff");
+  it("returns the background token for dark colors", () => {
+    expect(getContrastColor("#000000")).toBe("var(--color-bg)");
   });
 
-  it("handles high-contrast colors", () => {
-    expect(getContrastColor("#ff0000")).toBe("#ffffff");
+  it("uses the background token for saturated colors", () => {
+    expect(getContrastColor("#ff0000")).toBe("var(--color-bg)");
   });
 
   it("throws on invalid hex", () => {

@@ -55,10 +55,10 @@ describe("colorUtils", () => {
     expect(() => hexToRgb("not-a-hex" as any)).toThrow("Invalid hex color");
   });
 
-  test("getContrastColor chooses black or white based on brightness", () => {
-    expect(getContrastColor("#ffffff")).toBe("#000000");
-    expect(getContrastColor("#000000")).toBe("#ffffff");
-    expect(getContrastColor("#777777")).toBe("#ffffff");
+  test("getContrastColor returns theme tokens based on brightness", () => {
+    expect(getContrastColor("#ffffff")).toBe("var(--color-fg)");
+    expect(getContrastColor("#000000")).toBe("var(--color-bg)");
+    expect(getContrastColor("#777777")).toBe("var(--color-bg)");
   });
 
   test("hexToHsl handles black and invalid input", () => {

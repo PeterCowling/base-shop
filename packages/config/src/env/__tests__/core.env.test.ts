@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
+import { createExpectInvalidAuthEnv } from "../../../test/utils/expectInvalidAuthEnv";
 import { coreEnvSchema } from "../core.ts";
 
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
@@ -23,6 +24,8 @@ const withEnv = async <T>(
 };
 
 const importCore = () => import("../core.ts");
+
+const expectInvalidAuth = createExpectInvalidAuthEnv(withEnv);
 
 afterEach(() => {
   process.env = ORIGINAL_ENV;
@@ -329,16 +332,14 @@ describe("redis hints", () => {
   });
 
   it("rejects partial redis config", async () => {
-    await expect(
-      withEnv(
-        {
-          SESSION_STORE: "redis",
-          UPSTASH_REDIS_REST_URL: "https://redis.example.com",
-          UPSTASH_REDIS_REST_TOKEN: undefined,
-        },
-        () => importCore()
-      )
-    ).rejects.toThrow("Invalid auth environment variables");
+    await expectInvalidAuth({
+      env: {
+        SESSION_STORE: "redis",
+        UPSTASH_REDIS_REST_URL: "https://redis.example.com",
+        UPSTASH_REDIS_REST_TOKEN: undefined,
+      },
+      accessor: (auth) => auth.loadAuthEnv(),
+    });
   });
 
   it("defaults to memory when redis vars missing", async () => {
@@ -467,9 +468,10 @@ describe("coreEnv extras", () => {
   });
 
   it("propagates auth schema errors", async () => {
-    await expect(
-      withEnv({ AUTH_PROVIDER: "jwt", JWT_SECRET: undefined }, () => importCore())
-    ).rejects.toThrow("Invalid auth environment variables");
+    await expectInvalidAuth({
+      env: { AUTH_PROVIDER: "jwt", JWT_SECRET: undefined },
+      accessor: (auth) => auth.loadAuthEnv(),
+    });
   });
 
   it("propagates payments schema errors", async () => {
@@ -574,17 +576,15 @@ describe("SESSION_STORE cross-field validation", () => {
   } as const;
 
   it("requires Upstash credentials when SESSION_STORE=redis", async () => {
-    await expect(
-      withEnv(
-        {
-          ...base,
-          SESSION_STORE: "redis",
-          UPSTASH_REDIS_REST_URL: undefined,
-          UPSTASH_REDIS_REST_TOKEN: undefined,
-        },
-        () => importCore()
-      )
-    ).rejects.toThrow("Invalid auth environment variables");
+    await expectInvalidAuth({
+      env: {
+        ...base,
+        SESSION_STORE: "redis",
+        UPSTASH_REDIS_REST_URL: undefined,
+        UPSTASH_REDIS_REST_TOKEN: undefined,
+      },
+      accessor: (auth) => auth.loadAuthEnv(),
+    });
   });
 });
 

@@ -16,6 +16,7 @@ export interface ExpectInvalidAuthEnvOptions<TEnv extends EnvOverrides> {
   ) => unknown | Promise<unknown>;
   withEnv: WithEnvExecutor<TEnv>;
   consoleErrorSpy?: jest.SpyInstance;
+  expectedMessage?: string;
 }
 
 async function runAccessor(
@@ -46,7 +47,13 @@ async function runAccessor(
 export async function expectInvalidAuthEnv<TEnv extends EnvOverrides>(
   options: ExpectInvalidAuthEnvOptions<TEnv>,
 ): Promise<void> {
-  const { env, accessor, withEnv, consoleErrorSpy } = options;
+  const {
+    env,
+    accessor,
+    withEnv,
+    consoleErrorSpy,
+    expectedMessage = "Invalid auth environment variables",
+  } = options;
 
   const spy =
     consoleErrorSpy ?? jest.spyOn(console, "error").mockImplementation(() => {});
@@ -70,9 +77,7 @@ export async function expectInvalidAuthEnv<TEnv extends EnvOverrides>(
         }
       };
 
-      await expect(invokeAccessor()).rejects.toThrow(
-        "Invalid auth environment variables",
-      );
+      await expect(invokeAccessor()).rejects.toThrow(expectedMessage);
     });
   } finally {
     if (!consoleErrorSpy) {

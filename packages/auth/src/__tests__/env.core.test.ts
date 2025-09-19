@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
+import { createExpectInvalidAuthEnv } from "../../../config/test/utils/expectInvalidAuthEnv";
 
 const ORIGINAL_ENV = {
   ...process.env,
@@ -24,6 +25,8 @@ const withEnv = async <T>(env: NodeJS.ProcessEnv, fn: () => Promise<T>): Promise
     process.env = ORIGINAL_ENV;
   }
 };
+
+const expectInvalidAuth = createExpectInvalidAuthEnv(withEnv);
 
 afterEach(() => {
   process.env = ORIGINAL_ENV;
@@ -110,15 +113,14 @@ describe("redis hints", () => {
   });
 
   it("rejects partial redis config", async () => {
-    await expect(
-      withEnv(
-        {
-          SESSION_STORE: "redis",
-          UPSTASH_REDIS_REST_URL: "https://redis.example.com",
-        },
-        () => import("@acme/config/env/core"),
-      ),
-    ).rejects.toThrow("Invalid auth environment variables");
+    await expectInvalidAuth({
+      env: {
+        SESSION_STORE: "redis",
+        UPSTASH_REDIS_REST_URL: "https://redis.example.com",
+        UPSTASH_REDIS_REST_TOKEN: undefined,
+      },
+      accessor: (auth) => auth.loadAuthEnv(),
+    });
   });
 
   it("defaults to memory when redis vars missing", async () => {

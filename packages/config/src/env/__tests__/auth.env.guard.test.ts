@@ -1,26 +1,28 @@
 /** @jest-environment node */
 import { describe, it, expect } from '@jest/globals';
+import { createExpectInvalidAuthEnv } from '../../../test/utils/expectInvalidAuthEnv';
 import { withEnv } from './test-helpers';
 
 async function importLoader() {
   return await import('../auth.ts');
 }
 
+const expectInvalidAuth = createExpectInvalidAuthEnv(withEnv);
+
 describe('auth env guards', () => {
   it('throws when NEXTAUTH_SECRET and SESSION_SECRET are missing in production', async () => {
-    await withEnv(
-      {
+    await expectInvalidAuth({
+      env: {
         NODE_ENV: 'production',
         NEXTAUTH_SECRET: 'x'.repeat(32),
         SESSION_SECRET: 'y'.repeat(32),
       },
-      async () => {
-        const { loadAuthEnv } = await importLoader();
+      accessor: (auth) => {
         delete process.env.NEXTAUTH_SECRET;
         delete process.env.SESSION_SECRET;
-        expect(() => loadAuthEnv()).toThrow('Invalid auth environment variables');
+        return auth.loadAuthEnv();
       },
-    );
+    });
   });
 
   describe.each(['ALLOW_GUEST', 'ENFORCE_2FA'] as const)('%s boolean parsing', (key) => {
@@ -39,10 +41,12 @@ describe('auth env guards', () => {
     });
 
     it('rejects invalid values', async () => {
-      await withEnv({}, async () => {
-        const { loadAuthEnv } = await importLoader();
-        process.env[key] = '';
-        expect(() => loadAuthEnv()).toThrow('Invalid auth environment variables');
+      await expectInvalidAuth({
+        env: {},
+        accessor: (auth) => {
+          process.env[key] = '';
+          return auth.loadAuthEnv();
+        },
       });
     });
   });
@@ -79,4 +83,3 @@ describe('auth env guards', () => {
     });
   });
 });
-

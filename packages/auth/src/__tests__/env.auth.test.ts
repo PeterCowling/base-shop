@@ -1,6 +1,7 @@
 import { describe, it, expect, afterEach } from "@jest/globals";
 import { withEnv } from "../../../config/test/utils/withEnv";
 import { expectInvalidAuthEnvWithConfigEnv } from "../../../config/test/utils/expectInvalidAuthEnv";
+import { selectStore } from "../../../config/src/env/__tests__/authEnvTestUtils";
 
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
 const SESSION_SECRET = "session-secret-32-chars-long-string!";
@@ -50,7 +51,7 @@ describe("auth env session configuration", () => {
       UPSTASH_REDIS_REST_URL: REDIS_URL,
       UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
     });
-    expect(authEnv.SESSION_STORE).toBe("redis");
+    expect(selectStore(authEnv)).toBe("redis");
   });
 
   it("prefers memory when explicitly set", async () => {
@@ -59,7 +60,7 @@ describe("auth env session configuration", () => {
       UPSTASH_REDIS_REST_URL: REDIS_URL,
       UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
     });
-    expect(authEnv.SESSION_STORE).toBe("memory");
+    expect(selectStore(authEnv)).toBe("memory");
   });
 
   it("falls back to redis when creds present without explicit store", async () => {
@@ -67,12 +68,11 @@ describe("auth env session configuration", () => {
       UPSTASH_REDIS_REST_URL: REDIS_URL,
       UPSTASH_REDIS_REST_TOKEN: REDIS_TOKEN,
     });
-    expect(authEnv.SESSION_STORE).toBe("redis");
+    expect(selectStore(authEnv)).toBe("redis");
   });
 
   it("falls back to memory when no store or creds provided", async () => {
     const authEnv = await getProdAuthEnv();
-    expect(authEnv.SESSION_STORE).toBe("memory");
+    expect(selectStore(authEnv)).toBe("memory");
   });
 });
-

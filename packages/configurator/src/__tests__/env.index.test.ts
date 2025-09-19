@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it } from "@jest/globals";
+import { createExpectInvalidAuthEnv } from "../../../config/test/utils/expectInvalidAuthEnv";
 
 const ORIGINAL_ENV = process.env;
 
@@ -14,6 +15,8 @@ const withEnv = async <T>(env: NodeJS.ProcessEnv, fn: () => Promise<T>): Promise
     process.env = ORIGINAL_ENV;
   }
 };
+
+const expectInvalidAuthEnv = createExpectInvalidAuthEnv(withEnv);
 
 describe("env/index", () => {
   afterEach(() => {
@@ -74,26 +77,24 @@ describe("env/index", () => {
   });
 
   it("requires redis token when SESSION_STORE=redis", async () => {
-    await withEnv(
-      {
-        NODE_ENV: "development",
-        AUTH_TOKEN_TTL: "10",
-        SESSION_STORE: "redis",
-        UPSTASH_REDIS_REST_URL: "https://redis.example.com",
-        UPSTASH_REDIS_REST_TOKEN: undefined,
-      },
-      async () => {
-        const errorSpy = jest
-          .spyOn(console, "error")
-          .mockImplementation(() => {});
-        await expect(import("@acme/config/env")).rejects.toThrow(
-          "Invalid auth environment variables",
-        );
-        expect(errorSpy.mock.calls[0][1]).toHaveProperty(
-          "UPSTASH_REDIS_REST_TOKEN",
-        );
-        errorSpy.mockRestore();
-      },
-    );
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      await expectInvalidAuthEnv({
+        env: {
+          NODE_ENV: "development",
+          AUTH_TOKEN_TTL: "10",
+          SESSION_STORE: "redis",
+          UPSTASH_REDIS_REST_URL: "https://redis.example.com",
+          UPSTASH_REDIS_REST_TOKEN: undefined,
+        },
+        accessor: (auth) => auth.loadAuthEnv(),
+        consoleErrorSpy: errorSpy,
+      });
+      expect(errorSpy.mock.calls[0][1]).toHaveProperty(
+        "UPSTASH_REDIS_REST_TOKEN",
+      );
+    } finally {
+      errorSpy.mockRestore();
+    }
   });
 });

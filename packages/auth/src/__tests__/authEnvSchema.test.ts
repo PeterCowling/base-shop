@@ -4,11 +4,15 @@ import { expectInvalidAuthEnvWithConfigEnv } from "../../../config/test/utils/ex
 
 const REDIS_URL = "https://redis.example.com";
 const STRONG_TOKEN = "strongtokenstrongtokenstrongtoken!!";
+const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
+const SESSION_SECRET = "session-secret-32-chars-long-string!";
 
 type EnvOverrides = Record<string, string | undefined>;
 
 const prodEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   NODE_ENV: "production",
+  NEXTAUTH_SECRET: NEXT_SECRET,
+  SESSION_SECRET,
   ...overrides,
 });
 

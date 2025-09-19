@@ -188,34 +188,24 @@ describe('auth env validation', () => {
   });
 
   it('throws for invalid ALLOW_GUEST string', async () => {
-    const errorSpy = jest
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
-    const { loadAuthEnv } = await import(
-      '@acme/config/src/env/auth.ts'
-    );
-    expect(() =>
-      loadAuthEnv({
-        NODE_ENV: 'development',
-        ALLOW_GUEST: 'maybe',
-      } as any),
-    ).toThrow('Invalid auth environment variables');
-    errorSpy.mockRestore();
+    await expectInvalidAuthEnv({
+      env: devEnv({}),
+      accessor: (auth) =>
+        auth.loadAuthEnv({
+          NODE_ENV: 'development',
+          ALLOW_GUEST: 'maybe',
+        } as any),
+    });
   });
 
   it('throws for invalid ENFORCE_2FA string', async () => {
-    const errorSpy = jest
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
-    const { loadAuthEnv } = await import(
-      '@acme/config/src/env/auth.ts'
-    );
-    expect(() =>
-      loadAuthEnv({
-        NODE_ENV: 'development',
-        ENFORCE_2FA: 'maybe',
-      } as any),
-    ).toThrow('Invalid auth environment variables');
-    errorSpy.mockRestore();
+    await expectInvalidAuthEnv({
+      env: devEnv({}),
+      accessor: (auth) =>
+        auth.loadAuthEnv({
+          NODE_ENV: 'development',
+          ENFORCE_2FA: 'maybe',
+        } as any),
+    });
   });
 });

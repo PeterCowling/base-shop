@@ -1,10 +1,13 @@
 import { describe, it, expect } from '@jest/globals';
+import { createExpectInvalidAuthEnv } from '../../../test/utils/expectInvalidAuthEnv';
 import { withEnv } from './test-helpers';
 
 const NEXT = 'nextauth-secret-32-chars-long-string!';
 const SESSION = 'session-secret-32-chars-long-string!';
 const JWT_SECRET = 'jwt-secret-32-chars-long-string!';
 const OAUTH_CLIENT_SECRET = 'oauth-secret-32-chars-long-string!';
+
+const expectInvalidAuth = createExpectInvalidAuthEnv(withEnv);
 
 // ------------ auth ------------
 describe('auth env', () => {
@@ -22,45 +25,52 @@ describe('auth env', () => {
         expect(cfg.AUTH_PROVIDER).toBe('local');
       }));
 
-    it('validates NEXTAUTH_SECRET requirement', async () =>
-      withEnv(env as any, async () => {
+    it('validates NEXTAUTH_SECRET requirement', async () => {
+      if (env.NODE_ENV === 'production') {
+        await expectInvalidAuth({
+          env: env as Record<string, string>,
+          accessor: (auth) =>
+            auth.loadAuthEnv({
+              ...(env as Record<string, string | undefined>),
+              NEXTAUTH_SECRET: undefined,
+            } as any),
+        });
+        return;
+      }
+
+      await withEnv(env as any, async () => {
         const { loadAuthEnv } = await import('../auth.ts');
-        const action = () =>
+        expect(() =>
           loadAuthEnv({
-            ...env,
+            ...(env as Record<string, string | undefined>),
             NEXTAUTH_SECRET: undefined,
-          } as any);
-        if (env.NODE_ENV === 'production') {
-          expect(action).toThrow('Invalid auth environment variables');
-        } else {
-          expect(action).not.toThrow();
-        }
-      }));
+          } as any),
+        ).not.toThrow();
+      });
+    });
   });
 
   it('requires JWT_SECRET when AUTH_PROVIDER=jwt', async () =>
-    withEnv({ NODE_ENV: 'production', ...base } as any, async () => {
-      const { loadAuthEnv } = await import('../auth.ts');
-      expect(() =>
-        loadAuthEnv({
+    expectInvalidAuth({
+      env: { NODE_ENV: 'production', ...base },
+      accessor: (auth) =>
+        auth.loadAuthEnv({
           NODE_ENV: 'production',
           ...base,
           AUTH_PROVIDER: 'jwt',
         } as any),
-      ).toThrow('Invalid auth environment variables');
     }));
 
   it('requires OAUTH_CLIENT_SECRET when AUTH_PROVIDER=oauth', async () =>
-    withEnv({ NODE_ENV: 'production', ...base } as any, async () => {
-      const { loadAuthEnv } = await import('../auth.ts');
-      expect(() =>
-        loadAuthEnv({
+    expectInvalidAuth({
+      env: { NODE_ENV: 'production', ...base },
+      accessor: (auth) =>
+        auth.loadAuthEnv({
           NODE_ENV: 'production',
           ...base,
           AUTH_PROVIDER: 'oauth',
           OAUTH_CLIENT_ID: 'id',
         } as any),
-      ).toThrow('Invalid auth environment variables');
     }));
 
   it('loads when provider secrets are present', async () =>

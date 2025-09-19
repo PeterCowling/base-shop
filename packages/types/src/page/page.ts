@@ -6,6 +6,8 @@ import {
   textComponentSchema,
   customHtmlComponentSchema,
   buttonComponentSchema,
+  dividerComponentSchema,
+  spacerComponentSchema,
 } from "./atoms";
 import {
   announcementBarComponentSchema,
@@ -39,6 +41,11 @@ import {
   giftCardBlockComponentSchema,
   popupModalComponentSchema,
   collectionListComponentSchema,
+  featuredProductComponentSchema,
+  productComparisonComponentSchema,
+  formBuilderBlockComponentSchema,
+  productBundleComponentSchema,
+  productFilterComponentSchema,
 } from "./organisms";
 import {
   headerComponentSchema,
@@ -81,10 +88,17 @@ export const pageComponentSchema = z.lazy(() =>
     giftCardBlockComponentSchema,
     popupModalComponentSchema,
     testimonialSliderComponentSchema,
+    featuredProductComponentSchema,
+    productComparisonComponentSchema,
+    formBuilderBlockComponentSchema,
+    productBundleComponentSchema,
+    productFilterComponentSchema,
     imageComponentSchema,
     textComponentSchema,
     customHtmlComponentSchema,
     buttonComponentSchema,
+    dividerComponentSchema,
+    spacerComponentSchema,
     sectionComponentSchema,
     multiColumnComponentSchema,
     tabsComponentSchema,

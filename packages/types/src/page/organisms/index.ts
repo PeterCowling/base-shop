@@ -14,4 +14,9 @@ export * from "./TestimonialSlider";
 export * from "./GiftCardBlock";
 export * from "./PopupModal";
 export * from "./CollectionList";
+export * from "./FeaturedProduct";
+export * from "./ProductComparison";
+export * from "./FormBuilderBlock";
+export * from "./ProductBundle";
+export * from "./ProductFilter";
 

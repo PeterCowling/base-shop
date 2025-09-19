@@ -61,26 +61,41 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
     const heightClass =
       typeof imageHeight === "number" ? `h-[${imageHeight}px]` : undefined;
 
-    const srcSetEntries = new Map<string, number | undefined>();
+    const srcSetEntries: Array<[string, number | undefined]> = [];
 
-    if (typeof src === "string") {
-      srcSetEntries.set(
-        src,
-        typeof defaultWidth === "number" ? defaultWidth : undefined,
-      );
-    }
+    const appendEntry = (
+      url: unknown,
+      width: unknown,
+    ): url is string => {
+      if (typeof url !== "string") {
+        return false;
+      }
+
+      if (srcSetEntries.some(([existing]) => existing === url)) {
+        return true;
+      }
+
+      const widthDescriptor =
+        typeof width === "number" ? width : undefined;
+      srcSetEntries.push([url, widthDescriptor]);
+      return true;
+    };
+
+    appendEntry(src, typeof defaultWidth === "number" ? defaultWidth : undefined);
 
     if (sources) {
-      for (const variant of Object.values(sources)) {
-        if (!variant?.src || typeof variant.src !== "string") continue;
-        srcSetEntries.set(variant.src, variant.width);
+      const viewportOrder: Viewport[] = ["mobile", "tablet", "desktop"];
+      for (const viewportKey of viewportOrder) {
+        const variant = sources[viewportKey];
+        if (!variant) continue;
+        appendEntry(variant.src, variant.width);
       }
     }
 
     const computedSrcSet =
       providedSrcSet ??
-      (srcSetEntries.size > 0
-        ? Array.from(srcSetEntries.entries())
+      (srcSetEntries.length > 0
+        ? srcSetEntries
             .map(([url, widthDescriptor]) =>
               widthDescriptor ? `${url} ${widthDescriptor}w` : url,
             )

@@ -116,6 +116,7 @@ function Sidebar({
         result.catch(() => {
           /* swallow reset errors so navigation still continues */
         });
+        return;
       }
     } catch {
       /* ignore reset errors */
@@ -124,56 +125,59 @@ function Sidebar({
 
   return (
     <aside className="flex h-full w-full flex-col gap-6 px-5 py-6 text-sm">
-      <div className="space-y-2">
-        <Tag variant="default" className="bg-white/10 text-white/80">
-          Control Center
-        </Tag>
-        <h1 className="text-2xl font-semibold tracking-tight">Base Shop CMS</h1>
-        <p className="text-xs text-white/60">
-          Configure storefronts, orchestrate launches, and monitor activity from one hub.
-        </p>
+      <div className="space-y-6">
+        <div className="space-y-2">
+          <Tag variant="default" className="bg-white/10 text-white/80">
+            Control Center
+          </Tag>
+          <h1 className="text-2xl font-semibold tracking-tight">Base Shop CMS</h1>
+          <p className="text-xs text-white/60">
+            Configure storefronts, orchestrate launches, and monitor activity from one hub.
+          </p>
+        </div>
+
+        <Card className="border-white/10 bg-white/5 text-white">
+          <CardContent className="space-y-4 px-4 py-5">
+            <div className="flex items-center justify-between text-xs uppercase tracking-wide text-white/50">
+              <span>Main navigation</span>
+              <span>Explore</span>
+            </div>
+            <nav className="space-y-1">
+              {navItems.map(({ label, icon, title, fullHref, active, href }) => (
+                <Link
+                  key={fullHref}
+                  href={fullHref}
+                  aria-current={active ? "page" : undefined}
+                  title={title}
+                  onClick={href === "/configurator" ? handleConfiguratorClick : undefined}
+                  className={cn(
+                    "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors",
+                    active
+                      ? "bg-white/15 text-white"
+                      : "text-white/70 hover:bg-white/10 hover:text-white"
+                  )}
+                >
+                  <span className="text-lg" aria-hidden>
+                    {icon}
+                  </span>
+                  <span className="flex-1 font-medium">{label}</span>
+                  {active && (
+                    <span className="h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+                  )}
+                </Link>
+              ))}
+            </nav>
+          </CardContent>
+        </Card>
+
         <Button
-          className="mt-3 w-full justify-center bg-white/10 text-white hover:bg-white/20"
-          onClick={handleConfiguratorClick}
           asChild
+          className="w-full justify-center bg-white/10 text-white hover:bg-white/20"
+          onClick={handleConfiguratorClick}
         >
           <Link href="/cms/configurator">Launch Configurator</Link>
         </Button>
       </div>
-
-      <Card className="border-white/10 bg-white/5 text-white">
-        <CardContent className="space-y-4 px-4 py-5">
-          <div className="flex items-center justify-between text-xs uppercase tracking-wide text-white/50">
-            <span>Main navigation</span>
-            <span>Explore</span>
-          </div>
-          <nav className="space-y-1">
-            {navItems.map(({ label, icon, title, fullHref, active, href }) => (
-              <Link
-                key={fullHref}
-                href={fullHref}
-                aria-current={active ? "page" : undefined}
-                title={title}
-                onClick={href === "/configurator" ? handleConfiguratorClick : undefined}
-                className={cn(
-                  "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors",
-                  active
-                    ? "bg-white/15 text-white"
-                    : "text-white/70 hover:bg-white/10 hover:text-white"
-                )}
-              >
-                <span className="text-lg" aria-hidden>
-                  {icon}
-                </span>
-                <span className="flex-1 font-medium">{label}</span>
-                {active && (
-                  <span className="h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
-                )}
-              </Link>
-            ))}
-          </nav>
-        </CardContent>
-      </Card>
 
       <div className="mt-auto space-y-3 text-xs text-white/60">
         <Card className="border-white/10 bg-white/5">

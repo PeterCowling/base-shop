@@ -1,13 +1,12 @@
 [
   {
     "id": "mfqhtrrw",
-    "recipients": [
-      "manual@example.com"
-    ],
+    "recipients": [],
     "subject": "Hello",
     "body": "<p>Hi</p><p>%%UNSUBSCRIBE%%</p>",
     "segment": "vip",
     "sendAt": "2025-09-19T08:03:28.220Z",
-    "templateId": null
+    "templateId": null,
+    "sentAt": "2025-09-19T10:36:47.135Z"
   }
 ]

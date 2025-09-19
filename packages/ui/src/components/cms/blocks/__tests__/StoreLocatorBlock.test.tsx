@@ -5,7 +5,7 @@ jest.mock("../../../organisms/StoreLocatorMap", () => {
   const React = require("react");
   return {
     __esModule: true,
-    StoreLocatorMap: jest.fn(() => <div data-testid="map-view" />),
+    StoreLocatorMap: jest.fn(() => <div data-cy="map-view" />),
   };
 });
 
@@ -23,7 +23,7 @@ describe("StoreLocatorBlock", () => {
 
   afterEach(() => {
     mockStoreLocatorMap.mockReset();
-    mockStoreLocatorMap.mockImplementation(() => <div data-testid="map-view" />);
+    mockStoreLocatorMap.mockImplementation(() => <div data-cy="map-view" />);
   });
 
   it("switches between map and list modes", () => {
@@ -35,7 +35,7 @@ describe("StoreLocatorBlock", () => {
     expect(getByTestId("map-view")).toBeInTheDocument();
 
     mockStoreLocatorMap.mockImplementationOnce(() => (
-      <ul data-testid="list-view">
+      <ul data-cy="list-view">
         {locations.map((loc) => (
           <li key={loc.label}>{loc.label}</li>
         ))}

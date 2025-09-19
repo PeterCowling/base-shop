@@ -32,9 +32,10 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
       sources,
       alt,
       fallbackText,
-      width = 32,
-      height = 32,
+      width: defaultWidth = 32,
+      height: defaultHeight = 32,
       sizes,
+      srcSet: providedSrcSet,
       ...props
     },
     ref,
@@ -42,8 +43,8 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
     const viewport = useViewport();
     const responsive = sources?.[viewport];
     const imageSrc = responsive?.src ?? src;
-    const imageWidth = responsive?.width ?? width;
-    const imageHeight = responsive?.height ?? height;
+    const imageWidth = responsive?.width ?? defaultWidth;
+    const imageHeight = responsive?.height ?? defaultHeight;
 
     const altText = alt ?? fallbackText;
 
@@ -51,17 +52,46 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
       return <span className={cn("font-bold", className)}>{fallbackText}</span>;
     }
 
-    const widthClass = `w-[${imageWidth}px]`;
-    const heightClass = `h-[${imageHeight}px]`;
+    const widthClass =
+      typeof imageWidth === "number" ? `w-[${imageWidth}px]` : undefined;
+    const heightClass =
+      typeof imageHeight === "number" ? `h-[${imageHeight}px]` : undefined;
+
+    const srcSetEntries = new Map<string, number | undefined>();
+
+    if (typeof src === "string") {
+      srcSetEntries.set(
+        src,
+        typeof defaultWidth === "number" ? defaultWidth : undefined,
+      );
+    }
+
+    if (sources) {
+      for (const variant of Object.values(sources)) {
+        if (!variant?.src || typeof variant.src !== "string") continue;
+        srcSetEntries.set(variant.src, variant.width);
+      }
+    }
+
+    const computedSrcSet =
+      providedSrcSet ??
+      (srcSetEntries.size > 0
+        ? Array.from(srcSetEntries.entries())
+            .map(([url, widthDescriptor]) =>
+              widthDescriptor ? `${url} ${widthDescriptor}w` : url,
+            )
+            .join(", ")
+        : undefined);
 
     return (
       <Image
         ref={ref}
         src={imageSrc}
         alt={altText}
-        width={imageWidth}
-        height={imageHeight}
+        width={typeof imageWidth === "number" ? imageWidth : undefined}
+        height={typeof imageHeight === "number" ? imageHeight : undefined}
         sizes={sizes}
+        srcSet={computedSrcSet}
         className={cn(widthClass, heightClass, className)}
         {...props}
       />

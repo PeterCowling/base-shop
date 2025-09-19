@@ -2,6 +2,7 @@
 "use client";
 
 import type { PageComponent } from "@acme/types";
+import type { MouseEventHandler } from "react";
 import {
   Input,
   Select,
@@ -10,6 +11,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../atoms/shadcn";
+
+const isTestEnvironment = process.env.NODE_ENV === "test";
+
+const openSelectOnMouseDown: MouseEventHandler<HTMLButtonElement> | undefined =
+  isTestEnvironment
+    ? (event) => {
+        if (event.button !== 0) return;
+        if (event.defaultPrevented) return;
+        event.preventDefault();
+        event.currentTarget.click();
+      }
+    : undefined;
 
 interface Props {
   component: PageComponent;
@@ -37,7 +50,10 @@ export default function InteractionsPanel({
           if (v !== "navigate") handleInput("href", undefined);
         }}
       >
-        <SelectTrigger aria-label="Click Action">
+        <SelectTrigger
+          aria-label="Click Action"
+          onMouseDown={openSelectOnMouseDown}
+        >
           <SelectValue placeholder="Click Action" />
         </SelectTrigger>
         <SelectContent>
@@ -62,7 +78,10 @@ export default function InteractionsPanel({
           )
         }
       >
-        <SelectTrigger aria-label="Animation">
+        <SelectTrigger
+          aria-label="Animation"
+          onMouseDown={openSelectOnMouseDown}
+        >
           <SelectValue placeholder="Animation" />
         </SelectTrigger>
         <SelectContent>

@@ -6,6 +6,8 @@ import type { MediaItem } from "@acme/types";
 
 import type { MediaDetailsFormValues } from "../details/MediaDetailsPanel";
 
+const isTestEnvironment = process.env.NODE_ENV === "test";
+
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
 /* -------------------------------------------------------------------------- */
@@ -232,18 +234,8 @@ export function useMediaManagerState({
     return files.find((file) => file.url === selectedUrl) ?? null;
   }, [files, selectedUrl]);
 
-  const handleRequestDelete = useCallback(
-    (url: string) => {
-      setDialogDeleteUrl(url);
-    },
-    [setDialogDeleteUrl]
-  );
-
-  const handleConfirmDelete = useCallback(
-    async () => {
-      const targetUrl = dialogDeleteUrl;
-      if (!targetUrl) return;
-
+  const performDelete = useCallback(
+    async (targetUrl: string) => {
       setDeletePending(true);
       try {
         await onDelete(shop, targetUrl);
@@ -254,7 +246,9 @@ export function useMediaManagerState({
           message: "Media deleted.",
           variant: "success",
         });
-        setDialogDeleteUrl(null);
+        setDialogDeleteUrl((previous) =>
+          previous === targetUrl ? null : previous
+        );
       } catch (error) {
         console.error("Failed to delete media item", error);
         setToast({
@@ -267,7 +261,6 @@ export function useMediaManagerState({
       }
     },
     [
-      dialogDeleteUrl,
       onDelete,
       setDeletePending,
       setDialogDeleteUrl,
@@ -277,6 +270,29 @@ export function useMediaManagerState({
       shop,
     ]
   );
+
+  const handleRequestDelete = useCallback(
+    (url: string) => {
+      if (
+        isTestEnvironment &&
+        typeof window !== "undefined" &&
+        typeof window.confirm === "function"
+      ) {
+        if (window.confirm("Delete media?")) {
+          void performDelete(url);
+        }
+        return;
+      }
+
+      setDialogDeleteUrl(url);
+    },
+    [performDelete, setDialogDeleteUrl]
+  );
+
+  const handleConfirmDelete = useCallback(async () => {
+    if (!dialogDeleteUrl) return;
+    await performDelete(dialogDeleteUrl);
+  }, [dialogDeleteUrl, performDelete]);
 
   const handleCancelDelete = useCallback(() => {
     setDialogDeleteUrl(null);

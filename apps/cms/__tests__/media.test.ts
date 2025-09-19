@@ -6,6 +6,7 @@
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { File } from "node:buffer";
 import "../src/types/next-auth.d.ts";
 
 const { resetModules } = jest;

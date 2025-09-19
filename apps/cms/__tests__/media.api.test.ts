@@ -7,6 +7,14 @@ if (typeof (Response as any).json !== "function") {
 
 const originalFetch = global.fetch;
 
+async function loadMediaProbeRoute(session: unknown = { user: {} }) {
+  const getServerSession = jest.fn().mockResolvedValue(session);
+  jest.doMock("@cms/auth/options", () => ({ authOptions: {} }));
+  jest.doMock("next-auth", () => ({ getServerSession }));
+  const mod = await import("../src/app/api/media/probe/route");
+  return { ...mod, getServerSession };
+}
+
 afterEach(() => {
   jest.resetModules();
   jest.resetAllMocks();
@@ -79,7 +87,7 @@ describe("media route", () => {
 
 describe("media probe route", () => {
   it("returns 400 when url param is missing", async () => {
-    const { GET } = await import("../src/app/api/media/probe/route");
+    const { GET } = await loadMediaProbeRoute();
     const res = await GET(
       new Request("https://example.com/api/media/probe"),
     );
@@ -96,7 +104,7 @@ describe("media probe route", () => {
           headers: { "content-type": "text/plain" },
         }),
       );
-    const { GET } = await import("../src/app/api/media/probe/route");
+    const { GET } = await loadMediaProbeRoute();
     const res = await GET(
       new Request(
         "https://example.com/api/media/probe?url=https://img.example/file.txt",
@@ -109,7 +117,7 @@ describe("media probe route", () => {
     (global as any).fetch = jest
       .fn()
       .mockRejectedValue(new Error("network"));
-    const { GET } = await import("../src/app/api/media/probe/route");
+    const { GET } = await loadMediaProbeRoute();
     const res = await GET(
       new Request(
         "https://example.com/api/media/probe?url=https://img.example/fail.png",
@@ -119,4 +127,3 @@ describe("media probe route", () => {
     await expect(res.text()).resolves.toBe("Fetch failed");
   });
 });
-

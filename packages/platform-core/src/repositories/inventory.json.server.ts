@@ -55,6 +55,10 @@ async function ensureDir(shop: string): Promise<void> {
 }
 
 let stockAlertModule: Promise<typeof import("../services/stockAlert.server")> | undefined;
+type StockAlertModuleExports = typeof import("../services/stockAlert.server");
+type StockAlertModuleWithDefault = StockAlertModuleExports & {
+  default?: Partial<Pick<StockAlertModuleExports, "checkAndAlert">>;
+};
 
 async function triggerStockAlert(
   shop: string,
@@ -69,7 +73,7 @@ async function triggerStockAlert(
   if (!hasLowStock) return;
   try {
     stockAlertModule ??= import("../services/stockAlert.server");
-    const mod = await stockAlertModule;
+    const mod = (await stockAlertModule) as StockAlertModuleWithDefault;
     const fn =
       typeof mod.checkAndAlert === "function"
         ? mod.checkAndAlert

@@ -8,33 +8,41 @@ describe("db env guards", () => {
     delete process.env.NODE_ENV;
   });
 
-  it.skip("throws on missing DATABASE_URL", async () => {
+  it("falls back to the stub client when core env throws", async () => {
+    process.env.NODE_ENV = "production";
+    let prisma: any;
     await jest.isolateModulesAsync(async () => {
       jest.doMock("@acme/config/env/core", () => ({
         loadCoreEnv: () => {
           throw new Error("missing");
         },
       }));
-      await import("@acme/platform-core/db");
+      prisma = (await import("@acme/platform-core/db")).prisma;
     });
+
+    const marker = {};
+    await expect(prisma.$transaction(() => marker)).resolves.toBe(marker);
   });
 
-  it.skip("errors on invalid DATABASE_URL", async () => {
-    await jest.isolateModulesAsync(async () => {
-      jest.doMock("@acme/config/env/core", () => ({
-        loadCoreEnv: () => ({ DATABASE_URL: "bad" }),
-      }));
-      jest.doMock(
-        "@prisma/client",
-        () => ({
-          PrismaClient: jest.fn(() => {
-            throw new Error("invalid url");
+  it("errors on invalid DATABASE_URL", async () => {
+    process.env.NODE_ENV = "production";
+    await expect(
+      jest.isolateModulesAsync(async () => {
+        jest.doMock("@acme/config/env/core", () => ({
+          loadCoreEnv: () => ({ DATABASE_URL: "bad" }),
+        }));
+        jest.doMock(
+          "@prisma/client",
+          () => ({
+            PrismaClient: jest.fn(() => {
+              throw new Error("invalid url");
+            }),
           }),
-        }),
-        { virtual: true }
-      );
-      await import("@acme/platform-core/db");
-    });
+          { virtual: true },
+        );
+        await import("@acme/platform-core/db");
+      }),
+    ).rejects.toThrow("invalid url");
   });
 
   it("creates client with valid URL", async () => {

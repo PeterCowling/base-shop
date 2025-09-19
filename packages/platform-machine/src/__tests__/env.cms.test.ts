@@ -61,13 +61,11 @@ describe("lists, booleans and numbers", () => {
 
 describe("required ids", () => {
   it("throw in production when missing", async () => {
-    await withEnv({ NODE_ENV: "production" }, async () => {
-      const { cmsEnvSchema: prodSchema } = await import(
-        "@acme/config/env/cms"
-      );
-      const res = prodSchema.safeParse({});
-      expect(res.success).toBe(false);
-    });
+    await expect(
+      withEnv({ NODE_ENV: "production" }, () =>
+        import("@acme/config/env/cms"),
+      ),
+    ).rejects.toThrow("Invalid CMS environment variables");
   });
 });
 

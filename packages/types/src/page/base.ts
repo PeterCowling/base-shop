@@ -18,6 +18,8 @@ export interface SeoMeta {
 export interface PageComponentBase extends LayoutProps, PositioningProps, SpacingProps {
   id: string;
   type: string;
+  /** Optional custom name used by editors */
+  name?: string;
   /** Do not render this component on the canvas or preview */
   hidden?: boolean;
   /** Prevent moving/resizing/spacing adjustments on the canvas */
@@ -44,6 +46,7 @@ export interface PageComponentBase extends LayoutProps, PositioningProps, Spacin
 export const baseComponentSchema = z
   .object({
     id: z.string(),
+    name: z.string().optional(),
     hidden: z.boolean().optional(),
     locked: z.boolean().optional(),
     minItems: z.number().int().min(0).optional(),

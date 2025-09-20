@@ -12,10 +12,11 @@ import {
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { ulid } from "ulid";
 import { useCallback, useState } from "react";
-import type { PageComponent } from "@acme/types";
+import type { PageComponent, HistoryState } from "@acme/types";
 import type { Action } from "../state";
 import { snapToGrid } from "../gridSnap";
 import type { ComponentType } from "../defaults";
+import { isHiddenForViewport } from "../state/layout/utils";
 
 const noop = () => {};
 
@@ -40,6 +41,8 @@ interface Params {
   gridSize?: number;
   canvasRef?: React.RefObject<HTMLDivElement | null>;
   setSnapPosition?: (x: number | null) => void;
+  editor?: HistoryState["editor"];
+  viewport?: "desktop" | "tablet" | "mobile";
 }
 
 export function usePageBuilderDnD({
@@ -51,6 +54,8 @@ export function usePageBuilderDnD({
   gridSize = 1,
   canvasRef,
   setSnapPosition = noop,
+  editor,
+  viewport,
 }: Params) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -65,7 +70,7 @@ export function usePageBuilderDnD({
       const { over, delta, activatorEvent } = ev;
       if (!over || !isPointerEvent(activatorEvent)) return;
       const overData = over.data.current as { index?: number };
-      const visible = components.filter((c) => !(c as any).hidden);
+      const visible = components.filter((c) => !isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport));
       const rawY = activatorEvent.clientY + delta.y;
       const pointerY = snapToGrid(rawY, gridSize);
       const rawX = activatorEvent.clientX + delta.x;
@@ -81,7 +86,7 @@ export function usePageBuilderDnD({
       const index = (overData?.index ?? visible.length) + (isBelow ? 1 : 0);
       setInsertIndex(index);
     },
-    [components, gridSize, canvasRef, setSnapPosition]
+    [components, gridSize, canvasRef, setSnapPosition, editor, viewport]
   );
 
   const handleDragEndInternal = useCallback(

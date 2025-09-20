@@ -2,7 +2,8 @@
 
 import { useMemo } from "react";
 import type { Locale } from "@acme/i18n/locales";
-import type { PageComponent } from "@acme/types";
+import type { PageComponent, HistoryState } from "@acme/types";
+import { decorateTreeForViewport } from "./state/layout/utils";
 import { devicePresets, type DevicePreset } from "../../../utils/devicePresets";
 import useViewport from "./hooks/useViewport";
 import DeviceSelector from "../../common/DeviceSelector";
@@ -13,9 +14,10 @@ interface Props {
   locale: Locale;
   deviceId: string;
   onChange: (id: string) => void;
+  editor?: HistoryState["editor"];
 }
 
-const PreviewPane = ({ components, locale, deviceId, onChange }: Props) => {
+const PreviewPane = ({ components, locale, deviceId, onChange, editor }: Props) => {
   const previewDevice = useMemo<DevicePreset>(
     () =>
       devicePresets.find((d: DevicePreset) => d.id === deviceId) ??
@@ -25,6 +27,7 @@ const PreviewPane = ({ components, locale, deviceId, onChange }: Props) => {
   const previewViewport: "desktop" | "tablet" | "mobile" = previewDevice.type;
   const { viewportStyle, frameClass } = useViewport(previewDevice);
 
+  const decorated = decorateTreeForViewport(components, editor, previewViewport);
   return (
     <div className="flex flex-col gap-2 shrink-0">
       <DeviceSelector
@@ -36,11 +39,10 @@ const PreviewPane = ({ components, locale, deviceId, onChange }: Props) => {
         className={`${frameClass[previewViewport]} shrink-0`}
         style={viewportStyle}
       >
-        <DynamicRenderer components={components} locale={locale} />
+        <DynamicRenderer components={decorated} locale={locale} />
       </div>
     </div>
   );
 };
 
 export default PreviewPane;
-

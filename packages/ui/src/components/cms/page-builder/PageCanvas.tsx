@@ -81,10 +81,13 @@ const PageCanvas = ({
     .filter(Boolean) as PageComponent[];
   const canGroupTransform = (selectedIds?.length ?? 0) > 1 && selectedComponents.every((c) => (c as any).position === "absolute");
   const unlockedIds = selectedComponents
-    .filter((c) => (c as any).position === "absolute" && !(c as any).locked)
+    .filter((c) => {
+      const isLocked = (editor as any)?.[c.id]?.locked ?? (c as any).locked ?? false;
+      return (c as any).position === "absolute" && !isLocked;
+    })
     .map((c) => c.id);
-  const hasLockedInSelection = selectedComponents.some((c) => (c as any).locked);
-  const lockedIds = selectedComponents.filter((c) => (c as any).locked).map((c) => c.id);
+  const hasLockedInSelection = selectedComponents.some((c) => ((editor as any)?.[c.id]?.locked ?? (c as any).locked ?? false));
+  const lockedIds = selectedComponents.filter((c) => ((editor as any)?.[c.id]?.locked ?? (c as any).locked ?? false)).map((c) => c.id);
 
   // Dim locked items visually while group overlay is active
   useEffect(() => {
@@ -143,7 +146,7 @@ const PageCanvas = ({
         style={containerStyle}
         className="relative mx-auto flex flex-col gap-4"
       >
-        {components.filter((c)=>!c.hidden).map((c) => (
+        {components.filter((c)=>!isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport)).map((c) => (
           <Block key={c.id} component={c} locale={locale} />
         ))}
       </div>

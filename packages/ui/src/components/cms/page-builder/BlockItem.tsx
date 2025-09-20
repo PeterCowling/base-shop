@@ -56,6 +56,8 @@ const BlockItem = memo(function BlockItemComponent({
 }: Props) {
   const selected = selectedIds.includes(component.id);
   const flags = (editor ?? {})[component.id] ?? {};
+  const effLocked = (flags as any).locked ?? (component as any).locked ?? false;
+  const effZIndex = (flags as any).zIndex ?? (component as any).zIndex;
   const {
     attributes,
     listeners,
@@ -98,7 +100,7 @@ const BlockItem = memo(function BlockItemComponent({
     gridEnabled,
     gridCols,
     containerRef,
-    disabled: !!flags.locked,
+    disabled: !!effLocked,
   });
 
   const {
@@ -117,7 +119,7 @@ const BlockItem = memo(function BlockItemComponent({
     gridEnabled,
     gridCols,
     containerRef,
-    disabled: !!flags.locked,
+    disabled: !!effLocked,
   });
 
   const { startSpacing, overlay: spacingOverlay } = useCanvasSpacing({
@@ -158,7 +160,7 @@ const BlockItem = memo(function BlockItemComponent({
       data-component-id={component.id}
       style={{
         transform: CSS.Transform.toString(transform),
-        ...(component.zIndex !== undefined ? { zIndex: component.zIndex as number } : {}),
+        ...(effZIndex !== undefined ? { zIndex: effZIndex as number } : {}),
         ...(widthVal ? { width: widthVal } : {}),
         ...(heightVal ? { height: heightVal } : {}),
         ...(marginVal ? { margin: marginVal } : {}),
@@ -177,7 +179,7 @@ const BlockItem = memo(function BlockItemComponent({
       <div
         className="bg-muted absolute top-0 left-0 z-10 h-3 w-3 cursor-move"
         {...attributes}
-        {...(flags.locked ? {} : (listeners as any))}
+        {...(effLocked ? {} : (listeners as any))}
         role="button"
         tabIndex={0}
         aria-grabbed={isDragging}
@@ -185,10 +187,10 @@ const BlockItem = memo(function BlockItemComponent({
         onPointerDown={(e) => {
           e.stopPropagation();
           onSelect(component.id, e);
-          if (!component.locked && component.position === "absolute") startDrag(e);
+          if (!effLocked && component.position === "absolute") startDrag(e);
         }}
       />
-      {flags.locked && (
+      {effLocked && (
         <div className="absolute right-1 top-1 z-30 text-xs" title="Locked" aria-hidden>
           <LockClosedIcon />
         </div>
@@ -225,7 +227,7 @@ const BlockItem = memo(function BlockItemComponent({
           </div>
         )}
       </div>
-      <Block component={{ ...component, zIndex: flags.zIndex ?? (component as any).zIndex, locked: flags.locked ?? (component as any).locked } as any} locale={locale} />
+      <Block component={{ ...component, zIndex: effZIndex, locked: effLocked } as any} locale={locale} />
       {spacingOverlay && (
         <div
           className="bg-primary/20 pointer-events-none absolute z-30"
@@ -246,10 +248,10 @@ const BlockItem = memo(function BlockItemComponent({
       <BlockResizer
         selected={selected}
         startResize={(e) => {
-          if (!component.locked) startResize(e);
+          if (!effLocked) startResize(e);
         }}
         startSpacing={(e, type, side) => {
-          if (!component.locked) startSpacing(e, type, side);
+          if (!effLocked) startSpacing(e, type, side);
         }}
       />
       <button

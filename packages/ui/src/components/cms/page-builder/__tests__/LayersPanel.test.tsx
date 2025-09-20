@@ -16,13 +16,14 @@ describe("LayersPanel", () => {
         selectedIds={[]}
         onSelectIds={jest.fn()}
         dispatch={dispatch}
+        viewport="desktop"
       />
     );
 
     // Hide b
     const hideBtn = screen.getAllByRole("button", { name: /hide|show layer/i })[0];
     fireEvent.click(hideBtn);
-    expect(dispatch).toHaveBeenCalledWith({ type: "update-editor", id: "a", patch: expect.any(Object) });
+    expect(dispatch).toHaveBeenCalledWith({ type: "update-editor", id: "a", patch: { hidden: ["desktop"] } });
     // The order of buttons matches rows; first row is 'a', then 'b'
 
     dispatch.mockClear();

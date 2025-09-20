@@ -53,6 +53,8 @@ const TextBlock = memo(function TextBlock({
 }) {
   const selected = selectedIds.includes(component.id);
   const flags = (editor ?? {})[component.id] ?? {};
+  const effLocked = (flags as any).locked ?? (component as any).locked ?? false;
+  const effZIndex = (flags as any).zIndex ?? (component as any).zIndex;
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortableBlock(component.id, index, parentId);
 
@@ -81,7 +83,7 @@ const TextBlock = memo(function TextBlock({
       gridEnabled,
       gridCols,
       containerRef,
-      disabled: editing || !!flags.locked,
+      disabled: editing || !!effLocked,
     },
   );
 
@@ -98,7 +100,7 @@ const TextBlock = memo(function TextBlock({
 
   const style = {
     transform: CSS.Transform.toString(transform),
-    ...(flags.zIndex !== undefined ? { zIndex: flags.zIndex as number } : {}),
+    ...(effZIndex !== undefined ? { zIndex: effZIndex as number } : {}),
     ...(widthVal ? { width: widthVal } : {}),
     ...(heightVal ? { height: heightVal } : {}),
     ...(marginVal ? { margin: marginVal } : {}),
@@ -132,7 +134,7 @@ const TextBlock = memo(function TextBlock({
       <TextBlockView
         selected={selected}
         attributes={attributes}
-        listeners={flags.locked ? undefined : listeners}
+        listeners={effLocked ? undefined : listeners}
         setNodeRef={setNodeRef}
         containerRef={containerRef}
         isDragging={isDragging}
@@ -151,8 +153,8 @@ const TextBlock = memo(function TextBlock({
         onSelect={() => onSelect(component.id)}
         onRemove={onRemove}
         content={content}
-        zIndex={(flags.zIndex as number | undefined) ?? (component.zIndex as number | undefined)}
-        locked={!!flags.locked}
+        zIndex={(effZIndex as number | undefined)}
+        locked={!!effLocked}
       />
     </div>
   );

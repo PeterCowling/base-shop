@@ -5,6 +5,7 @@ import { EyeOpenIcon, EyeClosedIcon, LockClosedIcon, LockOpen2Icon } from "@radi
 import { SortableContext, verticalListSortingStrategy, useSortable, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { PageComponent, HistoryState } from "@acme/types";
+import { isHiddenForViewport } from "./state/layout/utils";
 import type { Action } from "./state";
 import { Button } from "../../atoms/shadcn";
 import { useMemo, useState, useCallback } from "react";
@@ -15,6 +16,7 @@ interface LayersPanelProps {
   onSelectIds: (ids: string[]) => void;
   dispatch: (action: Action) => void;
   editor?: HistoryState["editor"];
+  viewport?: "desktop" | "tablet" | "mobile";
 }
 
 type Node = PageComponent & { children?: PageComponent[] };
@@ -213,7 +215,7 @@ function LayerChildren({ parent, selectedIds, onSelect, onToggleHidden, onToggle
   );
 }
 
-export default function LayersPanel({ components, selectedIds, onSelectIds, dispatch, editor }: LayersPanelProps) {
+export default function LayersPanel({ components, selectedIds, onSelectIds, dispatch, editor, viewport = "desktop" }: LayersPanelProps) {
   const [search, setSearch] = useState("");
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
   const sensors = useSensors(
@@ -227,7 +229,9 @@ export default function LayersPanel({ components, selectedIds, onSelectIds, disp
     const decorate = (n: Node): Node => {
       const flags = (editor ?? {})[n.id] ?? {};
       const children = Array.isArray(n.children) ? (n.children as Node[]).map(decorate) : undefined;
-      return { ...n, ...(flags as any), ...(children ? { children } : {}) } as Node;
+      const hidden = isHiddenForViewport(n.id, editor, (n as any).hidden as boolean | undefined, viewport);
+      const name = (flags as any).name;
+      return { ...n, ...(children ? { children } : {}), ...(name !== undefined ? { name } : {}), hidden } as Node;
     };
     const baseNodes = (components as Node[]).map(decorate);
     if (!search) return baseNodes;
@@ -243,7 +247,7 @@ export default function LayersPanel({ components, selectedIds, onSelectIds, disp
         })
         .filter(Boolean) as Node[];
     return filterTree(baseNodes);
-  }, [components, editor, search]);
+  }, [components, editor, viewport, search]);
 
   const handleDragEnd = (ev: DragEndEvent) => {
     const { active, over } = ev;
@@ -284,8 +288,11 @@ export default function LayersPanel({ components, selectedIds, onSelectIds, disp
             selectedIds={selectedIds}
             onSelect={onSelect}
             onToggleHidden={(id, hidden) => {
-              const all = hidden ? ["desktop", "tablet", "mobile"] : [];
-              dispatch({ type: "update-editor", id, patch: { hidden: all } as any });
+              const cur = (editor ?? {})[id]?.hidden ?? [];
+              const set = new Set(cur);
+              if (hidden) set.add(viewport);
+              else set.delete(viewport);
+              dispatch({ type: "update-editor", id, patch: { hidden: Array.from(set) } as any });
             }}
             onToggleLocked={(id, locked) => dispatch({ type: "update-editor", id, patch: { locked } as any })}
             onRename={(id, name) => dispatch({ type: "update-editor", id, patch: { name } as any })}

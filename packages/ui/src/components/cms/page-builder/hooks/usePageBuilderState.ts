@@ -141,8 +141,8 @@ export function usePageBuilderState({
           return null;
         };
         selectedIds.forEach((id) => {
-          const comp = find(components, id) as (PageComponent & { position?: string; left?: string; top?: string }) | null;
-          const locked = !!(typedState as any).editor?.[id]?.locked;
+          const comp = find(components, id) as (PageComponent & { position?: string; left?: string; top?: string; locked?: boolean }) | null;
+          const locked = ((typedState as any).editor?.[id]?.locked ?? (comp as any)?.locked ?? false) as boolean;
           if (!comp || locked || comp.position !== "absolute") return;
           if (lower === "arrowleft") {
             dispatch({ type: "resize", id, left: adjust(comp.left, -step) });

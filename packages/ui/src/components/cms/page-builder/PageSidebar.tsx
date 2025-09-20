@@ -14,9 +14,10 @@ interface Props {
   onSelectIds: (ids: string[]) => void;
   dispatch: (action: Action) => void;
   editor?: HistoryState["editor"];
+  viewport?: "desktop" | "tablet" | "mobile";
 }
 
-const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor }: Props) => {
+const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, viewport = "desktop" }: Props) => {
   const handleChange = useCallback(
     (patch: Partial<PageComponent>) =>
       selectedIds[0] && dispatch({ type: "update", id: selectedIds[0], patch }),
@@ -92,6 +93,7 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor }:
         onSelectIds={onSelectIds}
         dispatch={dispatch}
         editor={editor}
+        viewport={viewport}
       />
       {selectedIds.length === 0 && (
         <div className="p-2 text-sm text-muted-foreground">Select a component to edit its properties.</div>

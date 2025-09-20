@@ -67,6 +67,8 @@ const PageBuilder = memo(function PageBuilder({
     gridSize,
     canvasRef,
     setSnapPosition,
+    editor: (state as any).editor,
+    viewport: controls.viewport,
   });
 
   const handleAddFromPalette = (type: ComponentType) => {
@@ -112,7 +114,7 @@ const PageBuilder = memo(function PageBuilder({
   const toolbarProps = {deviceId: controls.deviceId, setDeviceId: controls.setDeviceId, orientation: controls.orientation, setOrientation: controls.setOrientation, locale: controls.locale, setLocale: controls.setLocale, locales, progress, isValid};
   const gridProps = {showGrid: controls.showGrid, toggleGrid: controls.toggleGrid, snapToGrid: controls.snapToGrid, toggleSnap: controls.toggleSnap, gridCols: controls.gridCols, setGridCols: controls.setGridCols, zoom: controls.zoom, setZoom: controls.setZoom, showRulers: controls.showRulers, toggleRulers: controls.toggleRulers};
   const canvasProps = {components, selectedIds, onSelectIds: setSelectedIds, canvasRef, dragOver, setDragOver, onFileDrop: handleFileDrop, insertIndex, dispatch, locale: controls.locale, containerStyle: { width: "100%" }, showGrid: controls.showGrid, gridCols: controls.gridCols, snapEnabled: controls.snapToGrid, showRulers: controls.showRulers, viewport: controls.viewport, device: controls.device, snapPosition, editor: (state as any).editor};
-  const previewProps = {components, locale: controls.locale, deviceId: controls.previewDeviceId, onChange: controls.setPreviewDeviceId};
+  const previewProps = {components, locale: controls.locale, deviceId: controls.previewDeviceId, onChange: controls.setPreviewDeviceId, editor: (state as any).editor};
   const historyProps = {canUndo: !!state.past.length, canRedo: !!state.future.length, onUndo: () => dispatch({ type: "undo" }), onRedo: () => dispatch({ type: "redo" }), onSave: handleSave, onPublish: handlePublish, saving, publishing, saveError, publishError, autoSaveState};
   const toastProps = {open: toast.open, message: toast.message, retry: toast.retry, onClose: () => setToast((t) => ({ ...t, open: false }))};
   const tourProps = {steps: controls.tourSteps, run: controls.runTour, callback: controls.handleTourCallback};
@@ -136,7 +138,7 @@ const PageBuilder = memo(function PageBuilder({
       activeType={activeType}
       previewProps={previewProps}
       historyProps={historyProps}
-      sidebarProps={{ components, selectedIds, onSelectIds: setSelectedIds, dispatch, editor: (state as any).editor }}
+      sidebarProps={{ components, selectedIds, onSelectIds: setSelectedIds, dispatch, editor: (state as any).editor, viewport: controls.viewport }}
       toast={toastProps}
       tourProps={tourProps}
     />

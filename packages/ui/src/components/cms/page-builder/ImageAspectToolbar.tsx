@@ -1,0 +1,35 @@
+"use client";
+
+import React from "react";
+import { Button } from "../../atoms/shadcn";
+
+const PRESETS: Array<{ label: string; value?: string }> = [
+  { label: "Auto", value: undefined },
+  { label: "1:1", value: "1:1" },
+  { label: "3:2", value: "3:2" },
+  { label: "4:3", value: "4:3" },
+  { label: "16:9", value: "16:9" },
+];
+
+function flip(aspect?: string): string | undefined {
+  if (!aspect) return undefined;
+  const [w, h] = aspect.split(":").map((n) => Number(n));
+  if (!isFinite(w) || !isFinite(h) || w <= 0 || h <= 0) return aspect;
+  return `${h}:${w}`;
+}
+
+export default function ImageAspectToolbar({ value, onChange }: { value?: string; onChange: (next?: string) => void }) {
+  return (
+    <div className="absolute right-1 top-1 z-40 flex items-center gap-1 rounded bg-black/60 p-1 text-white shadow backdrop-blur-sm dark:bg-white/70 dark:text-black">
+      {PRESETS.map((p) => (
+        <Button key={p.label} type="button" variant={p.value === value ? "default" : "outline"} className="h-6 px-2 text-[11px]" onClick={() => onChange(p.value)}>
+          {p.label}
+        </Button>
+      ))}
+      <Button type="button" variant="outline" className="h-6 px-2 text-[11px]" onClick={() => onChange(flip(value))} title="Flip orientation">
+        ↔︎
+      </Button>
+    </div>
+  );
+}
+

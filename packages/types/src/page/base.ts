@@ -35,9 +35,11 @@ export interface PageComponentBase extends LayoutProps, PositioningProps, Spacin
   /** Explicit item counts for small screens */
   mobileItems?: number;
   /** Action performed when component is clicked */
-  clickAction?: "none" | "navigate";
+  clickAction?: "none" | "navigate" | "open-modal" | "scroll-to";
   /** Destination when using a navigation click action */
   href?: string;
+  /** Optional modal HTML/text when using open-modal */
+  modalHtml?: string;
   /** Simple animation applied on render */
   animation?:
     | "none"
@@ -70,6 +72,12 @@ export interface PageComponentBase extends LayoutProps, PositioningProps, Spacin
   sticky?: "top" | "bottom";
   /** Sticky offset (e.g. 64px) */
   stickyOffset?: string | number;
+  /** Hover transform scale (e.g. 1.05) */
+  hoverScale?: number;
+  /** Hover opacity (0..1) */
+  hoverOpacity?: number;
+  /** Stagger child reveal/transition in milliseconds */
+  staggerChildren?: number;
   [key: string]: unknown;
 }
 
@@ -84,8 +92,9 @@ export const baseComponentSchema = z
     desktopItems: z.number().int().min(0).optional(),
     tabletItems: z.number().int().min(0).optional(),
     mobileItems: z.number().int().min(0).optional(),
-    clickAction: z.enum(["none", "navigate"]).optional(),
+    clickAction: z.enum(["none", "navigate", "open-modal", "scroll-to"]).optional(),
     href: z.string().optional(),
+    modalHtml: z.string().optional(),
     animation: z
       .enum([
         "none",
@@ -116,6 +125,9 @@ export const baseComponentSchema = z
     parallax: z.number().optional(),
     sticky: z.enum(["top", "bottom"]).optional(),
     stickyOffset: z.union([z.string(), z.number()]).optional(),
+    hoverScale: z.number().optional(),
+    hoverOpacity: z.number().optional(),
+    staggerChildren: z.number().int().nonnegative().optional(),
   })
   .merge(layoutSchema)
   .merge(positioningSchema)

@@ -100,12 +100,62 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
   const pathname = usePathname() ?? "";
   const shop = getShopFromPath(pathname);
 
+  function createPlaceholderThumbnail(text: string): string | null {
+    try {
+      const size = 48;
+      const c = document.createElement("canvas");
+      c.width = size; c.height = size;
+      const ctx = c.getContext("2d");
+      if (!ctx) return null;
+      // simple hash color
+      let h = 0; for (let i = 0; i < text.length; i++) h = (h * 31 + text.charCodeAt(i)) >>> 0;
+      const r = 128 + (h & 0x7F), g = 128 + ((h >> 7) & 0x7F), b = 128 + ((h >> 14) & 0x7F);
+      ctx.fillStyle = `rgb(${r},${g},${b})`;
+      ctx.fillRect(0, 0, size, size);
+      ctx.fillStyle = "#fff";
+      ctx.font = "bold 20px system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText((text || "?").slice(0, 1).toUpperCase(), size / 2, size / 2);
+      return c.toDataURL("image/png");
+    } catch {
+      return null;
+    }
+  }
+
   const saveSelectionToLibrary = useCallback(() => {
-    if (!selectedComponent) return;
-    const label = window.prompt("Save to My Library as:", (selectedComponent as any).name || selectedComponent.type) || selectedComponent.type;
-    const item = { id: ulid(), label, template: selectedComponent, createdAt: Date.now() };
-    saveLibrary(shop, item);
-  }, [selectedComponent, shop]);
+    if (!selectedIds.length) return;
+
+    // Collect selected nodes without duplicating nested selections
+    const selectedSet = new Set(selectedIds);
+    const out: PageComponent[] = [];
+    const visit = (nodes: PageComponent[], ancestorSelected: boolean) => {
+      for (const n of nodes) {
+        const isSel = selectedSet.has(n.id);
+        if (isSel && !ancestorSelected) {
+          out.push(n);
+          // Do not descend; prevent double-adding nested nodes
+          visit((n as any).children || [], true);
+        } else {
+          visit((n as any).children || [], ancestorSelected || isSel);
+        }
+      }
+    };
+    visit(components, false);
+
+    const defaultLabel = out.length === 1
+      ? ((out[0] as any).name || out[0].type)
+      : `${out.length} blocks`;
+    const label = window.prompt("Save to My Library as:", defaultLabel) || defaultLabel;
+    const tagsRaw = window.prompt("Add tags (comma-separated)", "") || "";
+    const tags = tagsRaw.split(/[,\n]/).map((t) => t.trim()).filter(Boolean);
+    const thumbnail = createPlaceholderThumbnail(label);
+
+    const item = out.length === 1
+      ? { id: ulid(), label, template: out[0], createdAt: Date.now(), tags, thumbnail }
+      : { id: ulid(), label, templates: out, createdAt: Date.now(), tags, thumbnail };
+    void saveLibrary(shop, item as any);
+  }, [components, selectedIds, shop]);
 
   const copyStyles = useCallback(() => {
     if (!selectedComponent) return;
@@ -199,21 +249,21 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
               const ids = selectedIds.filter(id => !locked.has(id));
               return (
                 <>
-                  <Button type="button" variant="outline" aria-label="Align left edges" onClick={() => { const leftKey = viewport === "desktop" ? "leftDesktop" : viewport === "tablet" ? "leftTablet" : "leftMobile"; alignLeft(components, ids).forEach((p)=>dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Aligned left" })); }}>Align Left</Button>
-                  <Button type="button" variant="outline" aria-label="Align right edges" onClick={() => { const leftKey = viewport === "desktop" ? "leftDesktop" : viewport === "tablet" ? "leftTablet" : "leftMobile"; alignRight(components, ids).forEach((p)=>dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Aligned right" })); }}>Align Right</Button>
-                  <Button type="button" variant="outline" aria-label="Align top edges" onClick={() => { const topKey = viewport === "desktop" ? "topDesktop" : viewport === "tablet" ? "topTablet" : "topMobile"; alignTop(components, ids).forEach((p)=>dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Aligned top" })); }}>Align Top</Button>
-                  <Button type="button" variant="outline" aria-label="Align bottom edges" onClick={() => { const topKey = viewport === "desktop" ? "topDesktop" : viewport === "tablet" ? "topTablet" : "topMobile"; alignBottom(components, ids).forEach((p)=>dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Aligned bottom" })); }}>Align Bottom</Button>
-                  <Button type="button" variant="outline" aria-label="Center horizontally across selection" onClick={() => { const leftKey = viewport === "desktop" ? "leftDesktop" : viewport === "tablet" ? "leftTablet" : "leftMobile"; alignCenterX(components, ids).forEach((p)=>dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Centered horizontally" })); }}>Center X</Button>
-                  <Button type="button" variant="outline" aria-label="Center vertically across selection" onClick={() => { const topKey = viewport === "desktop" ? "topDesktop" : viewport === "tablet" ? "topTablet" : "topMobile"; alignCenterY(components, ids).forEach((p)=>dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Centered vertically" })); }}>Center Y</Button>
-                  <Button type="button" variant="outline" aria-label="Distribute horizontally" onClick={() => { const leftKey = viewport === "desktop" ? "leftDesktop" : viewport === "tablet" ? "leftTablet" : "leftMobile"; distributeHorizontal(components, ids).forEach((p)=>dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Distributed horizontally" })); }}>Distribute H</Button>
-                  <Button type="button" variant="outline" aria-label="Distribute vertically" onClick={() => { const topKey = viewport === "desktop" ? "topDesktop" : viewport === "tablet" ? "topTablet" : "topMobile"; distributeVertical(components, ids).forEach((p)=>dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Distributed vertically" })); }}>Distribute V</Button>
+                  <Button type="button" variant="outline" aria-label="Align left edges" onClick={() => { const leftKey = viewport === "desktop" ? "leftDesktop" : viewport === "tablet" ? "leftTablet" : "leftMobile"; alignLeft(components, ids, viewport).forEach((p)=>dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Aligned left" })); }}>Align Left</Button>
+                  <Button type="button" variant="outline" aria-label="Align right edges" onClick={() => { const leftKey = viewport === "desktop" ? "leftDesktop" : viewport === "tablet" ? "leftTablet" : "leftMobile"; alignRight(components, ids, viewport).forEach((p)=>dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Aligned right" })); }}>Align Right</Button>
+                  <Button type="button" variant="outline" aria-label="Align top edges" onClick={() => { const topKey = viewport === "desktop" ? "topDesktop" : viewport === "tablet" ? "topTablet" : "topMobile"; alignTop(components, ids, viewport).forEach((p)=>dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Aligned top" })); }}>Align Top</Button>
+                  <Button type="button" variant="outline" aria-label="Align bottom edges" onClick={() => { const topKey = viewport === "desktop" ? "topDesktop" : viewport === "tablet" ? "topTablet" : "topMobile"; alignBottom(components, ids, viewport).forEach((p)=>dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Aligned bottom" })); }}>Align Bottom</Button>
+                  <Button type="button" variant="outline" aria-label="Center horizontally across selection" onClick={() => { const leftKey = viewport === "desktop" ? "leftDesktop" : viewport === "tablet" ? "leftTablet" : "leftMobile"; alignCenterX(components, ids, viewport).forEach((p)=>dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Centered horizontally" })); }}>Center X</Button>
+                  <Button type="button" variant="outline" aria-label="Center vertically across selection" onClick={() => { const topKey = viewport === "desktop" ? "topDesktop" : viewport === "tablet" ? "topTablet" : "topMobile"; alignCenterY(components, ids, viewport).forEach((p)=>dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Centered vertically" })); }}>Center Y</Button>
+                  <Button type="button" variant="outline" aria-label="Distribute horizontally" onClick={() => { const leftKey = viewport === "desktop" ? "leftDesktop" : viewport === "tablet" ? "leftTablet" : "leftMobile"; distributeHorizontal(components, ids, viewport).forEach((p)=>dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Distributed horizontally" })); }}>Distribute H</Button>
+                  <Button type="button" variant="outline" aria-label="Distribute vertically" onClick={() => { const topKey = viewport === "desktop" ? "topDesktop" : viewport === "tablet" ? "topTablet" : "topMobile"; distributeVertical(components, ids, viewport).forEach((p)=>dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any)); window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Distributed vertically" })); }}>Distribute V</Button>
                 </>
               );
             })()}
           </div>
         </div>
       )}
-      {selectedIds.length === 1 && selectedComponent && (
+      {(selectedIds.length >= 1) && selectedComponent && (
         <div className="space-y-2">
           <Button type="button" variant="outline" onClick={handleDuplicate}>
             Duplicate
@@ -222,7 +272,7 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
             <Button type="button" variant="outline" onClick={copyStyles} aria-label="Copy styles">Copy Styles</Button>
             <Button type="button" variant="outline" onClick={pasteStyles} aria-label="Paste styles">Paste Styles</Button>
           </div>
-          {(() => {
+          {selectedIds.length === 1 && (() => {
             const c = selectedComponent as any; const hasChildren = !!(c && c.children && Array.isArray(c.children) && c.children.length > 0);
             return hasChildren ? (
               <Button type="button" variant="outline" onClick={ungroup}>Ungroup</Button>

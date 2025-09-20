@@ -2,11 +2,12 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { memo, useState, useCallback, useEffect } from "react";
+import { memo, useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
-import { listLibrary, removeLibrary, clearLibrary, type LibraryItem } from "./libraryStore";
+import { listLibrary, removeLibrary, clearLibrary, updateLibrary, syncFromServer, saveLibrary, type LibraryItem } from "./libraryStore";
+import { ulid } from "ulid";
 import {
   atomRegistry,
   moleculeRegistry,
@@ -22,6 +23,7 @@ import {
   PopoverTrigger,
 } from "../../atoms";
 import type { ComponentType } from "./defaults";
+import LibraryImportExport from "./LibraryImportExport";
 
 const defaultIcon = "/window.svg";
 
@@ -142,6 +144,7 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
   const pathname = usePathname() ?? "";
   const shop = getShopFromPath(pathname);
   const [library, setLibrary] = useState<LibraryItem[]>([]);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleAdd = useCallback(
     (type: ComponentType, label: string) => {
@@ -158,8 +161,11 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
   }, [liveMessage]);
 
   useEffect(() => {
-    // Load library
+    // Load library (local snapshot) and then try sync from server
     setLibrary(listLibrary(shop));
+    void syncFromServer(shop).then((remote) => {
+      if (remote) setLibrary(remote);
+    });
   }, [shop]);
 
   useEffect(() => {
@@ -170,6 +176,42 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
 
   return (
     <div className="flex flex-col gap-4" data-tour="drag-component">
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="application/json"
+        className="hidden"
+        onChange={async (e) => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          try {
+            const text = await file.text();
+            const parsed = JSON.parse(text) as unknown;
+            const items: LibraryItem[] = Array.isArray(parsed)
+              ? (parsed as LibraryItem[])
+              : Array.isArray((parsed as any)?.items)
+                ? ((parsed as any).items as LibraryItem[])
+                : [];
+            if (!items.length) throw new Error("Invalid file format");
+            for (const item of items) {
+              const clone = { ...item } as LibraryItem;
+              clone.id = ulid();
+              // Ignore import ownership; default to private on import
+              delete (clone as any).ownerUserId;
+              clone.shared = false;
+              await saveLibrary(shop, clone);
+            }
+            await syncFromServer(shop);
+            setLibrary(listLibrary(shop));
+            setLiveMessage(`Imported ${items.length} item(s) into My Library`);
+          } catch (err) {
+            console.error("Library import failed", err);
+            setLiveMessage("Import failed. Please check your file.");
+          } finally {
+            if (fileInputRef.current) fileInputRef.current.value = "";
+          }
+        }}
+      />
       <input
         type="text"
         value={search}
@@ -184,26 +226,32 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
       {/* My Library */}
       {library.length > 0 && (
         <div className="space-y-2">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-2">
             <h4 className="font-semibold capitalize">My Library</h4>
-            <button
-              type="button"
-              className="text-xs underline"
-              onClick={() => {
-                if (confirm("Clear all items from My Library?")) {
-                  clearLibrary(shop);
-                  setLibrary([]);
-                }
-              }}
-            >
-              Clear
-            </button>
+            <LibraryImportExport shop={shop} onAfterChange={() => setLibrary(listLibrary(shop))} />
           </div>
           <div className="flex flex-col gap-2">
             {library
-              .filter((i) => i.label.toLowerCase().includes(search.toLowerCase()))
+              .filter((i) => {
+                const q = search.trim().toLowerCase();
+                if (!q) return true;
+                const inLabel = i.label.toLowerCase().includes(q);
+                const inTags = (i.tags || []).some((t) => t.toLowerCase().includes(q));
+                return inLabel || inTags;
+              })
               .map((i) => (
-                <LibraryPaletteItem key={i.id} item={i} onDelete={() => { removeLibrary(shop, i.id); setLibrary(listLibrary(shop)); }} />
+                <LibraryPaletteItem
+                  key={i.id}
+                  item={i}
+                  onDelete={() => {
+                    void removeLibrary(shop, i.id);
+                    setLibrary(listLibrary(shop));
+                  }}
+                  onToggleShare={() => {
+                    void updateLibrary(shop, i.id, { shared: !i.shared });
+                    setLibrary(listLibrary(shop));
+                  }}
+                />
               ))}
           </div>
         </div>
@@ -240,9 +288,9 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
 export default Palette;
 
 // Library item drag source (template)
-function LibraryPaletteItem({ item, onDelete }: { item: LibraryItem; onDelete: () => void }) {
+function LibraryPaletteItem({ item, onDelete, onToggleShare }: { item: LibraryItem; onDelete: () => void; onToggleShare: () => void }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
-    useSortable({ id: `lib-${item.id}`, data: { from: "library", template: item.template } });
+    useSortable({ id: `lib-${item.id}`, data: { from: "library", template: item.template, templates: item.templates } });
   return (
     <div
       ref={setNodeRef}
@@ -255,16 +303,45 @@ function LibraryPaletteItem({ item, onDelete }: { item: LibraryItem; onDelete: (
       style={{ transform: CSS.Transform.toString(transform) }}
       className="flex cursor-grab items-center gap-2 rounded border p-2 text-sm"
     >
-      <Image
-        src={"/window.svg"}
-        alt=""
-        aria-hidden="true"
-        className="h-6 w-6 rounded"
-        width={24}
-        height={24}
-        loading="lazy"
-      />
-      <span className="flex-1 truncate">{item.label}</span>
+      {item.thumbnail ? (
+        <Image
+          src={item.thumbnail}
+          alt=""
+          aria-hidden="true"
+          className="h-6 w-6 rounded object-cover"
+          width={24}
+          height={24}
+          loading="lazy"
+        />
+      ) : (
+        <Image
+          src={"/window.svg"}
+          alt=""
+          aria-hidden="true"
+          className="h-6 w-6 rounded"
+          width={24}
+          height={24}
+          loading="lazy"
+        />
+      )}
+      <span className="flex-1 truncate" title={item.label}>{item.label}</span>
+      {Array.isArray(item.tags) && item.tags.length > 0 && (
+        <span className="hidden md:block text-xs text-muted-foreground truncate max-w-[10rem]" title={item.tags.join(", ")}>
+          {item.tags.join(", ")}
+        </span>
+      )}
+      <button
+        type="button"
+        aria-label={item.shared ? "Unshare" : "Share"}
+        className={`rounded border px-2 text-xs ${item.shared ? "bg-green-50" : ""}`}
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggleShare();
+        }}
+        title={item.shared ? "Shared with team" : "Private"}
+      >
+        {item.shared ? "Shared" : "Private"}
+      </button>
       <button
         type="button"
         aria-label="Delete from My Library"

@@ -6,8 +6,16 @@ import type { PageComponent } from "@acme/types";
 export type LibraryItem = {
   id: string;
   label: string;
-  template: PageComponent; // root component (may have children)
   createdAt: number;
+  // Single or multi-node templates
+  template?: PageComponent;
+  templates?: PageComponent[];
+  // Optional metadata
+  tags?: string[];
+  thumbnail?: string | null;
+  // Sharing metadata (best-effort; enforced server-side in CMS API)
+  ownerUserId?: string;
+  shared?: boolean;
 };
 
 const keyFor = (shop: string | null | undefined) => `pb-library-${shop || "default"}`;
@@ -22,38 +30,120 @@ function emitChange() {
   }
 }
 
-export function listLibrary(shop?: string | null): LibraryItem[] {
-  if (typeof window === "undefined") return [];
+function safeParse<T>(raw: string | null, fallback: T): T {
+  if (!raw) return fallback;
   try {
-    const raw = localStorage.getItem(keyFor(shop));
-    if (!raw) return [];
-    const arr = JSON.parse(raw) as LibraryItem[];
-    return Array.isArray(arr) ? arr : [];
+    const val = JSON.parse(raw) as T;
+    return val ?? fallback;
   } catch {
-    return [];
+    return fallback;
   }
 }
 
-export function saveLibrary(shop: string | null | undefined, item: LibraryItem) {
-  if (typeof window === "undefined") return;
+// Local snapshot helpers (used for fast UI and in-page snapshotting)
+export function listLibrary(shop?: string | null): LibraryItem[] {
+  if (typeof window === "undefined") return [];
+  const arr = safeParse<LibraryItem[]>(localStorage.getItem(keyFor(shop)), []);
+  return Array.isArray(arr) ? arr : [];
+}
+
+function writeLocal(shop: string | null | undefined, items: LibraryItem[]) {
+  try {
+    localStorage.setItem(keyFor(shop), JSON.stringify(items));
+  } catch {}
+}
+
+// Network-backed helpers. We keep the local snapshot in sync opportunistically.
+async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
+  const res = await fetch(url, init);
+  if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+  return (await res.json()) as T;
+}
+
+export async function syncFromServer(shop: string | null | undefined): Promise<LibraryItem[] | null> {
+  if (!shop) return null;
+  try {
+    const data = await fetchJson<LibraryItem[]>(`/api/library?shop=${encodeURIComponent(shop)}`);
+    if (Array.isArray(data)) {
+      writeLocal(shop, data);
+      emitChange();
+      return data;
+    }
+  } catch {
+    // ignore network issues; stay with local snapshot
+  }
+  return null;
+}
+
+export async function saveLibrary(shop: string | null | undefined, item: LibraryItem) {
+  // Optimistic local update
   const current = listLibrary(shop);
   const next = [item, ...current.filter((i) => i.id !== item.id)];
-  localStorage.setItem(keyFor(shop), JSON.stringify(next));
+  writeLocal(shop, next);
   emitChange();
+  // Attempt server persistence
+  try {
+    if (shop) {
+      await fetchJson(`/api/library?shop=${encodeURIComponent(shop)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ item }),
+      });
+      // Pull canonical server list
+      await syncFromServer(shop);
+    }
+  } catch {
+    // keep local only if server fails
+  }
 }
 
-export function removeLibrary(shop: string | null | undefined, id: string) {
-  if (typeof window === "undefined") return;
+export async function updateLibrary(
+  shop: string | null | undefined,
+  id: string,
+  patch: Partial<Pick<LibraryItem, "label" | "tags" | "thumbnail" | "shared">>,
+): Promise<void> {
+  try {
+    if (shop) {
+      await fetchJson(`/api/library?shop=${encodeURIComponent(shop)}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, patch }),
+      });
+      await syncFromServer(shop);
+      return;
+    }
+  } catch {}
+  // Fallback to local
   const current = listLibrary(shop);
-  localStorage.setItem(
-    keyFor(shop),
-    JSON.stringify(current.filter((i) => i.id !== id))
-  );
+  const next = current.map((i) => (i.id === id ? { ...i, ...patch } : i));
+  writeLocal(shop, next);
   emitChange();
 }
 
-export function clearLibrary(shop: string | null | undefined) {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(keyFor(shop));
+export async function removeLibrary(shop: string | null | undefined, id: string) {
+  // Optimistic local update
+  const current = listLibrary(shop);
+  writeLocal(shop, current.filter((i) => i.id !== id));
   emitChange();
+  try {
+    if (shop) {
+      await fetchJson(`/api/library?shop=${encodeURIComponent(shop)}&id=${encodeURIComponent(id)}`, { method: "DELETE" });
+      await syncFromServer(shop);
+    }
+  } catch {
+    // ignore
+  }
+}
+
+export async function clearLibrary(shop: string | null | undefined) {
+  writeLocal(shop, []);
+  emitChange();
+  try {
+    if (shop) {
+      await fetchJson(`/api/library?shop=${encodeURIComponent(shop)}&all=1`, { method: "DELETE" });
+      await syncFromServer(shop);
+    }
+  } catch {
+    // ignore
+  }
 }

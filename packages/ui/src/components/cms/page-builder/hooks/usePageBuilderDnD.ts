@@ -117,6 +117,7 @@ export function usePageBuilderDnD({
         index?: number;
         parentId?: string;
         template?: PageComponent;
+        templates?: PageComponent[];
       };
       const o = (over.data.current || {}) as {
         parentId?: string;
@@ -161,17 +162,23 @@ export function usePageBuilderDnD({
           index: index ?? 0,
         });
         selectId(component.id);
-      } else if (a?.from === "library" && a.template) {
-        // Deep clone template and assign new ids
+      } else if (a?.from === "library" && (a.template || (a.templates && a.templates.length))) {
+        // Deep clone template(s) and assign new ids
         const cloneWithIds = (node: PageComponent): PageComponent => {
           const cloned: any = { ...(node as any), id: ulid() };
           const children = (node as any).children as PageComponent[] | undefined;
           if (Array.isArray(children)) cloned.children = children.map(cloneWithIds);
           return cloned as PageComponent;
         };
-        const component = cloneWithIds(a.template);
-        dispatch({ type: "add", component, parentId, index: index ?? 0 });
-        selectId(component.id);
+        const list = (a.templates && a.templates.length ? a.templates : (a.template ? [a.template] : [])) as PageComponent[];
+        const clones = list.map(cloneWithIds);
+        // Insert sequentially, preserving order
+        let insertedFirstId: string | null = null;
+        clones.forEach((component, i) => {
+          dispatch({ type: "add", component, parentId, index: (index ?? 0) + i });
+          if (!insertedFirstId) insertedFirstId = component.id;
+        });
+        if (insertedFirstId) selectId(insertedFirstId);
       } else if (a?.from === "canvas") {
         let toIndex = index ?? 0;
         if (a.parentId === parentId && a.index! < (index ?? 0)) {

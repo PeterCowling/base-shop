@@ -36,6 +36,24 @@ const plugins = await loadPlugins({ directories: [pluginsDir] });
 Each plugin directory must include a `package.json` with a `main` or
 `exports` field pointing at the compiled module entry point.
 
+### Runtime import strategy (Next.js friendly)
+
+When loading plugin entry files by absolute path, avoid variable `require()` which causes Webpack to warn (“request of a dependency is an expression”).
+
+- Prefer dynamic `import()` with file URLs:
+
+```ts
+// packages/platform-core/src/plugins/resolvers.ts
+import { pathToFileURL } from "url";
+
+export async function importByType(entryPath: string) {
+  // Works with both ESM (.mjs) and CJS (.js) thanks to Node interop
+  return import(/* webpackIgnore: true */ pathToFileURL(entryPath).href);
+}
+```
+
+- Candidate selection should stick to compiled JS (dist) and use `package.json` fields (`exports`, `main`, `module`). See `resolvePluginEntry` for an example.
+
 ## Initialisation and configuration
 
 `initPlugins` wires discovered plugins into the platform and returns a
@@ -85,4 +103,3 @@ The `init-shop` configurator collects credentials for optional plugins when you 
   - `SANITY_DATASET`
   - `SANITY_TOKEN`
 - Source: [packages/plugins/sanity/README.md](../packages/plugins/sanity/README.md)
-

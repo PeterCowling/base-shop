@@ -40,5 +40,26 @@ export function cssVars(overrides?: StyleOverrides): Record<string, string> {
     if (overrides.typographyMobile.lineHeight)
       vars["--line-height-mobile"] = `var(${overrides.typographyMobile.lineHeight})`;
   }
+  // Effects: we return direct CSS properties where appropriate.
+  if (overrides.effects) {
+    const fx = overrides.effects;
+    if (fx.borderRadius) vars["borderRadius"] = fx.borderRadius;
+    if (fx.boxShadow) vars["boxShadow"] = fx.boxShadow;
+    if (fx.opacity) vars["opacity"] = fx.opacity;
+    if (fx.backdropFilter) vars["backdropFilter"] = fx.backdropFilter;
+    if (fx.outline) vars["outline"] = fx.outline;
+    if (fx.outlineOffset) vars["outlineOffset"] = fx.outlineOffset;
+    if (fx.borderTop) vars["borderTop"] = fx.borderTop;
+    if (fx.borderRight) vars["borderRight"] = fx.borderRight;
+    if (fx.borderBottom) vars["borderBottom"] = fx.borderBottom;
+    if (fx.borderLeft) vars["borderLeft"] = fx.borderLeft;
+    // Compose transform into a custom var which can be applied by wrappers
+    const parts: string[] = [];
+    if (fx.transformRotate) parts.push(`rotate(${fx.transformRotate})`);
+    if (fx.transformScale) parts.push(`scale(${fx.transformScale})`);
+    if (fx.transformSkewX) parts.push(`skewX(${fx.transformSkewX})`);
+    if (fx.transformSkewY) parts.push(`skewY(${fx.transformSkewY})`);
+    if (parts.length) vars["--pb-static-transform"] = parts.join(" ");
+  }
   return vars;
 }

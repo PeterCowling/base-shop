@@ -2,7 +2,7 @@
 "use client";
 
 import type { PageComponent } from "@acme/types";
-import { Input } from "../../../atoms/shadcn";
+import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../atoms/shadcn";
 import { Tooltip } from "../../../atoms";
 import { Suspense } from "react";
 import editorRegistry from "../editorRegistry";
@@ -21,6 +21,7 @@ export default function ContentPanel({
   onChange,
   handleInput,
 }: Props) {
+  const isMultiColumn = (component as any).type === "MultiColumn";
   const Specific = editorRegistry[component.type];
   const comp = component as PageComponent & {
     minItems?: number;
@@ -29,6 +30,21 @@ export default function ContentPanel({
     tabletItems?: number;
     mobileItems?: number;
     columns?: number;
+    columnsDesktop?: number;
+    columnsTablet?: number;
+    columnsMobile?: number;
+    gap?: string;
+    gapDesktop?: string;
+    gapTablet?: string;
+    gapMobile?: string;
+    justifyItems?: "start" | "center" | "end" | "stretch";
+    justifyItemsDesktop?: "start" | "center" | "end" | "stretch";
+    justifyItemsTablet?: "start" | "center" | "end" | "stretch";
+    justifyItemsMobile?: "start" | "center" | "end" | "stretch";
+    alignItems?: "start" | "center" | "end" | "stretch";
+    alignItemsDesktop?: "start" | "center" | "end" | "stretch";
+    alignItemsTablet?: "start" | "center" | "end" | "stretch";
+    alignItemsMobile?: "start" | "center" | "end" | "stretch";
   };
   const nonNegative = (v?: number) => (v !== undefined && v < 0 ? "Must be ≥ 0" : undefined);
   const minItemsError =
@@ -183,6 +199,167 @@ export default function ContentPanel({
           <Tooltip text="Number of columns">?</Tooltip>
         </div>
       )}
+      {"columns" in component && (
+        <>
+          <div className="flex items-center gap-1">
+            <Input
+              label="Columns (Desktop)"
+              type="number"
+              value={comp.columnsDesktop ?? ""}
+              onChange={(e) =>
+                handleInput(
+                  "columnsDesktop" as any,
+                  e.target.value === "" ? (undefined as any) : (Number(e.target.value) as any)
+                )
+              }
+              min={comp.minItems}
+              max={comp.maxItems}
+            />
+            <Tooltip text="Columns on desktop">?</Tooltip>
+          </div>
+          <div className="flex items-center gap-1">
+            <Input
+              label="Columns (Tablet)"
+              type="number"
+              value={comp.columnsTablet ?? ""}
+              onChange={(e) =>
+                handleInput(
+                  "columnsTablet" as any,
+                  e.target.value === "" ? (undefined as any) : (Number(e.target.value) as any)
+                )
+              }
+              min={0}
+            />
+            <Tooltip text="Columns on tablet">?</Tooltip>
+          </div>
+          <div className="flex items-center gap-1">
+            <Input
+              label="Columns (Mobile)"
+              type="number"
+              value={comp.columnsMobile ?? ""}
+              onChange={(e) =>
+                handleInput(
+                  "columnsMobile" as any,
+                  e.target.value === "" ? (undefined as any) : (Number(e.target.value) as any)
+                )
+              }
+              min={0}
+            />
+            <Tooltip text="Columns on mobile">?</Tooltip>
+          </div>
+        </>
+      )}
+      {("gap" in component) && (
+        <>
+          <div className="flex items-center gap-1">
+            <Input
+              label="Gap (Desktop)"
+              value={comp.gapDesktop ?? ""}
+              onChange={(e) => handleInput("gapDesktop" as any, (e.target.value || undefined) as any)}
+              placeholder="e.g. 24px"
+            />
+            <Tooltip text="Gap between items on desktop">?</Tooltip>
+          </div>
+          <div className="flex items-center gap-1">
+            <Input
+              label="Gap (Tablet)"
+              value={comp.gapTablet ?? ""}
+              onChange={(e) => handleInput("gapTablet" as any, (e.target.value || undefined) as any)}
+              placeholder="e.g. 16px"
+            />
+            <Tooltip text="Gap between items on tablet">?</Tooltip>
+          </div>
+          <div className="flex items-center gap-1">
+            <Input
+              label="Gap (Mobile)"
+              value={comp.gapMobile ?? ""}
+              onChange={(e) => handleInput("gapMobile" as any, (e.target.value || undefined) as any)}
+              placeholder="e.g. 8px"
+            />
+            <Tooltip text="Gap between items on mobile">?</Tooltip>
+          </div>
+        </>
+      )}
+      {isMultiColumn && (
+        <>
+          <div className="grid grid-cols-1 gap-2">
+            <div className="flex items-center gap-1">
+              <Select
+                value={comp.justifyItems ?? ""}
+                onValueChange={(v) => handleInput("justifyItems" as any, (v || undefined) as any)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Justify Items (base)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="start">start</SelectItem>
+                  <SelectItem value="center">center</SelectItem>
+                  <SelectItem value="end">end</SelectItem>
+                  <SelectItem value="stretch">stretch</SelectItem>
+                </SelectContent>
+              </Select>
+              <Tooltip text="Horizontal alignment of items (base)">?</Tooltip>
+            </div>
+            {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
+              <div key={`ji-${vp}`} className="flex items-center gap-1">
+                <Select
+                  value={(comp as any)[`justifyItems${vp}`] ?? ""}
+                  onValueChange={(v) => handleInput(`justifyItems${vp}` as any, (v || undefined) as any)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={`Justify Items (${vp})`} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="start">start</SelectItem>
+                    <SelectItem value="center">center</SelectItem>
+                    <SelectItem value="end">end</SelectItem>
+                    <SelectItem value="stretch">stretch</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Tooltip text={`Horizontal items alignment on ${vp.toLowerCase()}`}>?</Tooltip>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 gap-2">
+            <div className="flex items-center gap-1">
+              <Select
+                value={comp.alignItems ?? ""}
+                onValueChange={(v) => handleInput("alignItems" as any, (v || undefined) as any)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Align Items (base)" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="start">start</SelectItem>
+                  <SelectItem value="center">center</SelectItem>
+                  <SelectItem value="end">end</SelectItem>
+                  <SelectItem value="stretch">stretch</SelectItem>
+                </SelectContent>
+              </Select>
+              <Tooltip text="Vertical alignment of items (base)">?</Tooltip>
+            </div>
+            {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
+              <div key={`ai-${vp}`} className="flex items-center gap-1">
+                <Select
+                  value={(comp as any)[`alignItems${vp}`] ?? ""}
+                  onValueChange={(v) => handleInput(`alignItems${vp}` as any, (v || undefined) as any)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={`Align Items (${vp})`} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="start">start</SelectItem>
+                    <SelectItem value="center">center</SelectItem>
+                    <SelectItem value="end">end</SelectItem>
+                    <SelectItem value="stretch">stretch</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Tooltip text={`Vertical items alignment on ${vp.toLowerCase()}`}>?</Tooltip>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
       <Suspense fallback={<p className="text-muted text-sm">Loading...</p>}>
         {Specific ? (
           <Specific component={component} onChange={onChange} />
@@ -193,4 +370,3 @@ export default function ContentPanel({
     </div>
   );
 }
-

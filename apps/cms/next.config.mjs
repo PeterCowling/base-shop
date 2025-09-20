@@ -62,6 +62,8 @@ process.env.CART_COOKIE_SECRET ??= "dev-cart-secret";
 process.env.CMS_SPACE_URL ??= "https://cms.example.com";
 process.env.CMS_ACCESS_TOKEN ??= "placeholder-token";
 process.env.SANITY_API_VERSION ??= "2021-10-21";
+// Email: default to noop provider during local builds so env validation passes
+process.env.EMAIL_PROVIDER ??= "noop";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -178,6 +180,8 @@ const nextConfig = {
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
       "@": path.resolve(__dirname, "src"),
+      // Allow platform-core theme loader to resolve local theme fixtures
+      "@themes-local": path.resolve(__dirname, "../../packages/themes"),
       "@acme/configurator": path.resolve(
         __dirname,
         "../../packages/configurator/src",

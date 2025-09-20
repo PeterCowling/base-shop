@@ -10,6 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Textarea,
 } from "../../../atoms/shadcn";
 import { Button } from "../../../atoms/shadcn";
 import { useState } from "react";
@@ -49,6 +50,9 @@ export default function InteractionsPanel({
   const parallax = (component as any).parallax as number | undefined;
   const sticky = (component as any).sticky as ("top" | "bottom") | undefined;
   const stickyOffset = (component as any).stickyOffset as string | number | undefined;
+  const hoverScale = (component as any).hoverScale as number | undefined;
+  const hoverOpacity = (component as any).hoverOpacity as number | undefined;
+  const staggerChildren = (component as any).staggerChildren as number | undefined;
   return (
     <div className="space-y-2">
       <Select
@@ -58,7 +62,7 @@ export default function InteractionsPanel({
             "clickAction",
             (v === "none" ? undefined : v) as PageComponent["clickAction"],
           );
-          if (v !== "navigate") handleInput("href", undefined);
+          if (v !== "navigate" && v !== "scroll-to") handleInput("href", undefined);
         }}
       >
         <SelectTrigger
@@ -70,30 +74,47 @@ export default function InteractionsPanel({
         <SelectContent>
           <SelectItem value="none">None</SelectItem>
           <SelectItem value="navigate">Navigate</SelectItem>
+          <SelectItem value="scroll-to">Scroll to</SelectItem>
+          <SelectItem value="open-modal">Open modal</SelectItem>
         </SelectContent>
       </Select>
-      {clickAction === "navigate" && (
+      {(clickAction === "navigate" || clickAction === "scroll-to") && (
         <div className="space-y-1">
           <div className="flex items-end gap-2">
             <div className="grow">
               <Input
-                label="Target"
-                placeholder="https://example.com"
+                label={clickAction === "scroll-to" ? "Target (anchor)" : "Target"}
+                placeholder={clickAction === "scroll-to" ? "#section-id" : "https://example.com"}
                 value={component.href ?? ""}
                 onChange={(e) => handleInput("href", e.target.value)}
               />
             </div>
-            <Button type="button" variant="outline" onClick={() => setPickerOpen(true)}>
-              Pick
-            </Button>
+            {clickAction === "navigate" && (
+              <Button type="button" variant="outline" onClick={() => setPickerOpen(true)}>
+                Pick
+              </Button>
+            )}
           </div>
-          <LinkPicker
-            open={pickerOpen}
-            onClose={() => setPickerOpen(false)}
-            onPick={(href) => {
-              handleInput("href", href as any);
-              setPickerOpen(false);
-            }}
+          {clickAction === "navigate" && (
+            <LinkPicker
+              open={pickerOpen}
+              onClose={() => setPickerOpen(false)}
+              onPick={(href) => {
+                handleInput("href", href as any);
+                setPickerOpen(false);
+              }}
+            />
+          )}
+        </div>
+      )}
+      {clickAction === "open-modal" && (
+        <div>
+          <Textarea
+            label="Modal Content"
+            placeholder="Plain text"
+            value={((component as any).modalHtml ?? "") as any}
+            onChange={(e) => handleInput("modalHtml" as any, (e.target.value || undefined) as any)}
+            rows={3}
           />
         </div>
       )}
@@ -252,6 +273,53 @@ export default function InteractionsPanel({
           }
         />
       </div>
+
+      {/* Hover effects */}
+      <div className="grid grid-cols-2 gap-2">
+        <Input
+          type="number"
+          step="0.01"
+          min="0"
+          label="Hover scale"
+          placeholder="1.05"
+          value={hoverScale ?? ""}
+          onChange={(e) =>
+            handleInput(
+              "hoverScale" as keyof PageComponent,
+              (e.target.value === "" ? undefined : Number(e.target.value)) as any,
+            )
+          }
+        />
+        <Input
+          type="number"
+          step="0.05"
+          min="0"
+          max="1"
+          label="Hover opacity"
+          placeholder="0.9"
+          value={hoverOpacity ?? ""}
+          onChange={(e) =>
+            handleInput(
+              "hoverOpacity" as keyof PageComponent,
+              (e.target.value === "" ? undefined : Number(e.target.value)) as any,
+            )
+          }
+        />
+      </div>
+
+      {/* Simple timeline: stagger children */}
+      <Input
+        type="number"
+        label="Stagger children (ms)"
+        placeholder="80"
+        value={staggerChildren ?? ""}
+        onChange={(e) =>
+          handleInput(
+            "staggerChildren" as keyof PageComponent,
+            (e.target.value === "" ? undefined : Math.max(0, Number(e.target.value))) as any,
+          )
+        }
+      />
     </div>
   );
 }

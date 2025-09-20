@@ -22,6 +22,7 @@ interface LayoutProps {
   style?: CSSProperties;
   paletteOnAdd: (type: ComponentType) => void;
   onInsertPreset?: (component: PageComponent) => void;
+  presetsSourceUrl?: string;
   toolbarProps: React.ComponentProps<typeof PageToolbar>;
   gridProps: React.ComponentProps<typeof GridSettings>;
   startTour: () => void;
@@ -54,6 +55,7 @@ const PageBuilderLayout = ({
   style,
   paletteOnAdd,
   onInsertPreset,
+  presetsSourceUrl,
   toolbarProps,
   gridProps,
   startTour,
@@ -88,7 +90,7 @@ const PageBuilderLayout = ({
         </div>
         <div className="flex items-center gap-2">
           <GridSettings {...gridProps} />
-          {onInsertPreset && <PresetsModal onInsert={onInsertPreset} />}
+          {onInsertPreset && <PresetsModal onInsert={onInsertPreset} sourceUrl={presetsSourceUrl} />}
           <Button variant="outline" onClick={startTour}>
             Tour
           </Button>
@@ -104,7 +106,12 @@ const PageBuilderLayout = ({
         {liveMessage}
       </div>
       <div className="flex flex-1 gap-4">
-        <DndContext {...dndContext}>
+        <DndContext
+          {...dndContext}
+          onDragStart={(dndContext as any).onDragStart || (() => {})}
+          onDragMove={(dndContext as any).onDragMove || (() => {})}
+          onDragEnd={(dndContext as any).onDragEnd || (() => {})}
+        >
           <div
             ref={scrollRef}
             className="relative max-h-full overflow-auto"

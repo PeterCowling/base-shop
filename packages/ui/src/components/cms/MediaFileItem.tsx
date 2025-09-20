@@ -85,14 +85,15 @@ export default function MediaFileItem({
     }
   }, [item.url]);
 
-  const meta = item as Record<string, unknown>;
+  // Cast through unknown to satisfy TS when converting a specific type to an indexable map
+  const meta = item as unknown as Record<string, unknown>;
   const previewAlt =
     (typeof meta["altText"] === "string" && (meta["altText"] as string)) ||
     (typeof meta["alt"] === "string" && (meta["alt"] as string)) ||
     (typeof meta["title"] === "string" && (meta["title"] as string)) ||
     name;
   const tags = useMemo(() => {
-    const raw = (item as Record<string, unknown>)["tags"];
+    const raw = (item as unknown as Record<string, unknown>)["tags"];
     return Array.isArray(raw) ? (raw as unknown[]).filter((t): t is string => typeof t === "string") : [];
   }, [item]);
 

@@ -106,5 +106,12 @@ describe("POST /api/return-request", () => {
       "Your return request for order o3 has been received. Your RA number is RA123.",
     );
   });
-});
 
+  it("returns validation response when body invalid", async () => {
+    const bad = new Response(JSON.stringify({ error: "bad" }), { status: 400 });
+    mockParseJsonBody.mockResolvedValue({ success: false, response: bad });
+    const res = await POST(new Request("http://localhost"));
+    expect(res.status).toBe(400);
+    await expect(res.json()).resolves.toEqual({ error: "bad" });
+  });
+});

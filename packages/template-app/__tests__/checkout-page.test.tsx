@@ -102,4 +102,21 @@ describe("CheckoutPage", () => {
     expect(priceForDaysMock).toHaveBeenCalled();
     expect(summary.props.totals).toEqual({ subtotal: 200, deposit: 50, total: 250 });
   });
+
+  it("shows message for invalid return date in rental flow", async () => {
+    const cart: CartState = {
+      sku1: { sku: { id: "sku1", title: "Tent", deposit: 50 }, qty: 1 },
+    } as any;
+    getCartMock.mockResolvedValue(cart);
+    getProductMock.mockReturnValue(cart.sku1.sku);
+    settingsMock.mockResolvedValue({ taxRegion: "EU", currency: "EUR" });
+    shopMock.mockResolvedValue({ type: "rental" });
+
+    const ui = (await CheckoutPage({
+      params: Promise.resolve({ lang: "en" }),
+      searchParams: Promise.resolve({ returnDate: "not-a-date" }),
+    })) as ReactElement;
+    // The component returns a <p>Invalid return date.</p>
+    expect(String((ui as any).props?.children)).toContain("Invalid return date");
+  });
 });

@@ -4,7 +4,7 @@ import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import type { CSSProperties, DragEvent } from "react";
 import { Fragment, useEffect, useState } from "react";
 import type { PageComponent, HistoryState } from "@acme/types";
-import { isHiddenForViewport } from "./state/layout/utils";
+import { isHiddenForViewport, getParentOfId } from "./state/layout/utils";
 import CanvasItem from "./CanvasItem";
 import type { Locale } from "@acme/i18n/locales";
 import type { Action } from "./state";
@@ -176,7 +176,7 @@ const PageCanvas = ({
               .join(" ");
             return (
               <div key={c.id} className={["pb-scope", hideClasses].filter(Boolean).join(" ") || undefined}>
-                <Block component={c} locale={locale} />
+                <Block component={{ ...(c as any), pbViewport: viewport } as any} locale={locale} />
               </div>
             );
           })}
@@ -229,7 +229,119 @@ const PageCanvas = ({
             }}
           />
         )}
-        <RulersOverlay show={showRulers} canvasRef={canvasRef} step={100} />
+        <RulersOverlay
+          show={showRulers}
+          canvasRef={canvasRef}
+          step={100}
+          viewport={viewport}
+          contentWidth={(function () {
+            // Determine active Section from selection or ancestor of selection
+            const firstSel = selectedIds[0];
+            if (!firstSel) return null;
+            const getNode = (list: PageComponent[], id: string): PageComponent | null => {
+              for (const n of list) {
+                if (n.id === id) return n;
+                const kids = (n as any).children as PageComponent[] | undefined;
+                if (Array.isArray(kids)) {
+                  const found = getNode(kids, id);
+                  if (found) return found;
+                }
+              }
+              return null;
+            };
+            let node = getNode(components, firstSel);
+            // climb ancestors until Section or root
+            while (node && (node as any).type !== "Section") {
+              const parent = getParentOfId(components, node.id);
+              if (!parent) break;
+              node = parent;
+            }
+            if (!node || (node as any).type !== "Section") return null;
+            const sec: any = node;
+            if (viewport === "desktop" && sec.contentWidthDesktop) return sec.contentWidthDesktop as string;
+            if (viewport === "tablet" && sec.contentWidthTablet) return sec.contentWidthTablet as string;
+            if (viewport === "mobile" && sec.contentWidthMobile) return sec.contentWidthMobile as string;
+            return (sec.contentWidth as string | null) ?? null;
+          })()}
+          contentAlign={(function () {
+            const firstSel = selectedIds[0];
+            if (!firstSel) return "center";
+            const getNode = (list: PageComponent[], id: string): PageComponent | null => {
+              for (const n of list) {
+                if (n.id === id) return n;
+                const kids = (n as any).children as PageComponent[] | undefined;
+                if (Array.isArray(kids)) {
+                  const found = getNode(kids, id);
+                  if (found) return found;
+                }
+              }
+              return null;
+            };
+            let node = getNode(components, firstSel);
+            while (node && (node as any).type !== "Section") {
+              const parent = getParentOfId(components, node.id);
+              if (!parent) break;
+              node = parent;
+            }
+            if (!node || (node as any).type !== "Section") return "center";
+            const sec: any = node;
+            if (viewport === "desktop" && sec.contentAlignDesktop) return sec.contentAlignDesktop as any;
+            if (viewport === "tablet" && sec.contentAlignTablet) return sec.contentAlignTablet as any;
+            if (viewport === "mobile" && sec.contentAlignMobile) return sec.contentAlignMobile as any;
+            return (sec.contentAlign as any) ?? "center";
+          })()}
+          contentAlignBase={(function () {
+            const firstSel = selectedIds[0];
+            if (!firstSel) return "center";
+            const getNode = (list: PageComponent[], id: string): PageComponent | null => {
+              for (const n of list) {
+                if (n.id === id) return n;
+                const kids = (n as any).children as PageComponent[] | undefined;
+                if (Array.isArray(kids)) {
+                  const found = getNode(kids, id);
+                  if (found) return found;
+                }
+              }
+              return null;
+            };
+            let node = getNode(components, firstSel);
+            while (node && (node as any).type !== "Section") {
+              const parent = getParentOfId(components, (node as any).id);
+              if (!parent) break;
+              node = parent;
+            }
+            if (!node || (node as any).type !== "Section") return "center";
+            const sec: any = node;
+            return (sec.contentAlign as any) ?? "center";
+          })()}
+          contentAlignSource={(function () {
+            const firstSel = selectedIds[0];
+            if (!firstSel) return "base" as const;
+            const getNode = (list: PageComponent[], id: string): PageComponent | null => {
+              for (const n of list) {
+                if (n.id === id) return n;
+                const kids = (n as any).children as PageComponent[] | undefined;
+                if (Array.isArray(kids)) {
+                  const found = getNode(kids, id);
+                  if (found) return found;
+                }
+              }
+              return null;
+            };
+            let node = getNode(components, firstSel);
+            while (node && (node as any).type !== "Section") {
+              const parent = getParentOfId(components, (node as any).id);
+              if (!parent) break;
+              node = parent;
+            }
+            if (!node || (node as any).type !== "Section") return "base" as const;
+            const sec: any = node;
+            if (viewport === "desktop" && sec.contentAlignDesktop) return "desktop" as const;
+            if (viewport === "tablet" && sec.contentAlignTablet) return "tablet" as const;
+            if (viewport === "mobile" && sec.contentAlignMobile) return "mobile" as const;
+            return "base" as const;
+          })()}
+        />
         {selectedIds.length > 1 && canGroupTransform && unlockedIds.length > 0 && (
           <MultiSelectOverlay
             canvasRef={canvasRef}

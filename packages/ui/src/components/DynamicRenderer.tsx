@@ -163,6 +163,15 @@ export default function DynamicRenderer({
     const mergedClass = [existing, stackClass].filter(Boolean).join(" ");
     if (mergedClass) extraProps.className = mergedClass;
 
+    const hoverScale = (blockRecord as any).hoverScale as number | undefined;
+    const hoverOpacity = (blockRecord as any).hoverOpacity as number | undefined;
+    const staggerChildren = (blockRecord as any).staggerChildren as number | undefined;
+    const needsHover = typeof hoverScale === 'number' || typeof hoverOpacity === 'number';
+    const gridArea = (blockRecord as any).gridArea as string | undefined;
+    const gridColumn = (blockRecord as any).gridColumn as string | undefined;
+    const gridRow = (blockRecord as any).gridRow as string | undefined;
+    const staticTransform = (styleVars as any)["--pb-static-transform"] as string | undefined;
+
     return (
       <div
         key={id}
@@ -172,6 +181,11 @@ export default function DynamicRenderer({
           ...(typeof animationDelay === "number" ? ({ ["--pb-anim-delay"]: `${animationDelay}ms` } as any) : {}),
           ...(animationEasing ? ({ ["--pb-anim-ease"]: animationEasing } as any) : {}),
           ...(stickyOffset !== undefined ? ({ ["--pb-sticky-offset"]: typeof stickyOffset === "number" ? `${stickyOffset}px` : String(stickyOffset) } as any) : {}),
+          ...(typeof hoverScale === 'number' ? ({ ["--pb-hover-scale"]: String(hoverScale) } as any) : {}),
+          ...(typeof hoverOpacity === 'number' ? ({ ["--pb-hover-opacity"]: String(hoverOpacity) } as any) : {}),
+          ...(gridArea ? ({ gridArea } as any) : {}),
+          ...(gridColumn ? ({ gridColumn } as any) : {}),
+          ...(gridRow ? ({ gridRow } as any) : {}),
         }}
         className={["pb-scope", hideClasses, orderClass, animClass].filter(Boolean).join(" ") || undefined}
         data-pb-duration={typeof animationDuration === "number" ? animationDuration : undefined}
@@ -181,16 +195,47 @@ export default function DynamicRenderer({
         data-pb-parallax={typeof parallax === "number" ? parallax : undefined}
         data-pb-sticky={sticky || undefined}
         data-pb-sticky-offset={stickyOffset !== undefined ? String(stickyOffset) : undefined}
+        data-pb-hover={needsHover ? '1' : undefined}
+        data-pb-click={(blockRecord as any).clickAction === 'open-modal' ? 'open-modal' : ((blockRecord as any).clickAction === 'scroll-to' ? 'scroll-to' : undefined)}
+        data-pb-href={(blockRecord as any).href || undefined}
+        data-pb-modal={(blockRecord as any).modalHtml || undefined}
+        data-pb-stagger={typeof staggerChildren === 'number' ? String(staggerChildren) : undefined}
       >
-        <Comp
-          {...rest}
-          {...extraProps}
-          id={id}
-          type={_type}
-          locale={locale}
-        >
-          {childBlocks?.map((child: PageComponent) => renderBlock(child))}
-        </Comp>
+        {needsHover ? (
+          <div className="pb-hover-target">
+            <Comp
+              {...rest}
+              {...extraProps}
+              id={id}
+              type={_type}
+              locale={locale}
+            >
+              {childBlocks?.map((child: PageComponent) => renderBlock(child))}
+            </Comp>
+          </div>
+        ) : staticTransform ? (
+          <div style={{ transform: staticTransform } as any}>
+            <Comp
+              {...rest}
+              {...extraProps}
+              id={id}
+              type={_type}
+              locale={locale}
+            >
+              {childBlocks?.map((child: PageComponent) => renderBlock(child))}
+            </Comp>
+          </div>
+        ) : (
+          <Comp
+            {...rest}
+            {...extraProps}
+            id={id}
+            type={_type}
+            locale={locale}
+          >
+            {childBlocks?.map((child: PageComponent) => renderBlock(child))}
+          </Comp>
+        )}
       </div>
     );
   };

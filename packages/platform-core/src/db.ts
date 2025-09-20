@@ -82,7 +82,6 @@ function resolveRequire(): RequireFn | undefined {
   if (typeof globalRequire === "function") {
     return globalRequire as RequireFn;
   }
-
   if (typeof __filename === "string") {
     try {
       return createRequire(__filename);
@@ -90,7 +89,6 @@ function resolveRequire(): RequireFn | undefined {
       // ignore and fall back to cwd based resolution
     }
   }
-
   try {
     return createRequire(process.cwd() + "/");
   } catch {
@@ -126,6 +124,10 @@ try {
   ({ DATABASE_URL } = loadCoreEnv());
 } catch {
   // Fall back to raw process.env when core env validation fails in tests
+  DATABASE_URL = process.env.DATABASE_URL;
+}
+// Ensure direct env var takes precedence when core env omits DATABASE_URL
+if (!DATABASE_URL && typeof process.env.DATABASE_URL === "string") {
   DATABASE_URL = process.env.DATABASE_URL;
 }
 const useStub = process.env.NODE_ENV === "test" || !DATABASE_URL;

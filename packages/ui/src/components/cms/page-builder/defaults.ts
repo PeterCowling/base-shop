@@ -50,6 +50,10 @@ export const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = 
   },
   Lookbook: { minItems: 0, maxItems: 10 },
   MultiColumn: { columns: 2, gap: "1rem" },
+  StackFlex: { direction: "column", gap: "1rem" },
+  Grid: { columns: 2, gap: "1rem" },
+  CarouselContainer: { slidesPerView: 1, gap: "1rem", showArrows: true, showDots: true },
+  TabsAccordionContainer: { mode: "tabs", tabs: ["Tab 1", "Tab 2"] as unknown as any },
   Divider: { width: "100%", height: "1px" },
   Spacer: { width: "100%", height: "1rem" },
 };

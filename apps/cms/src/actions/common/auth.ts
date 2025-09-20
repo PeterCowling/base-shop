@@ -1,6 +1,4 @@
 // apps/cms/src/actions/common/auth.ts
-import "server-only";
-
 import { getServerSession } from "next-auth";
 import { authOptions } from "@cms/auth/options";
 

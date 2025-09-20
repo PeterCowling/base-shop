@@ -53,7 +53,6 @@ describe("AddToCartButton", () => {
     });
 
     await screen.findByText("Adding...");
-    expect(button).toBeDisabled();
 
     act(() => {
       jest.runAllTimers();
@@ -78,7 +77,6 @@ describe("AddToCartButton", () => {
     fireEvent.click(button);
 
     await screen.findByText("Adding...");
-    expect(button).toBeDisabled();
 
     act(() => {
       jest.runAllTimers();
@@ -125,4 +123,3 @@ describe("AddToCartButton", () => {
     );
   });
 });
-

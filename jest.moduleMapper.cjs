@@ -46,9 +46,13 @@ module.exports = {
   "^@acme/plugin-sanity$": " /test/__mocks__/pluginSanityStub.ts",
   "^@acme/plugin-sanity/(.*)$": " /test/__mocks__/pluginSanityStub.ts",
   "^@acme/telemetry$": " /test/__mocks__/telemetryMock.ts",
-  // Map dynamic theme imports used by platform-core theme token loader in tests
-  "^@themes/(.*)/tailwind-tokens$": " /packages/platform-core/themes/$1/tailwind-tokens/src/index.ts",
-  "^@themes/(.*)$": " /packages/platform-core/themes/$1/src/index.ts",
+  // Map dynamic theme imports used by theme token loader in tests
+  // Primary: real workspace themes
+  "^@themes/(.*)/tailwind-tokens$": " /packages/themes/$1/tailwind-tokens/src/index.ts",
+  "^@themes/(.*)$": " /packages/themes/$1/src/index.ts",
+  // Secondary: package-local fixtures used by selected tests
+  "^@themes-local/(.*)/tailwind-tokens$": " /packages/platform-core/themes/$1/tailwind-tokens/src/index.ts",
+  "^@themes-local/(.*)$": " /packages/platform-core/themes/$1/src/index.ts",
   "^@acme/zod-utils/initZod$": " /test/emptyModule.ts",
   "^\\./env/(.*)\\.js$": " /packages/config/src/env/$1.ts",
   "^\\./(auth|cms|email|core|payments|shipping)\\.js$":
@@ -67,6 +71,7 @@ module.exports = {
   "^@/i18n/(.*)$": " /packages/i18n/src/$1",
   "^@/components/(.*)$": " /test/__mocks__/componentStub.js",
   "^@/(.*)$": " /apps/cms/src/$1",
+  "^next/server$": " /test/__mocks__/next-server.ts",
   "\\.(css|less|sass|scss)$": "identity-obj-proxy",
   "^server-only$": " /test/server-only-stub.ts",
   "^react-dom/client$": " /test/reactDomClientShim.ts",

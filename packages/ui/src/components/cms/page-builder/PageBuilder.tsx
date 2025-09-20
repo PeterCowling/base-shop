@@ -20,6 +20,7 @@ interface Props {
   page: Page; history?: HistoryState; onSave:(fd:FormData)=>Promise<unknown>; onPublish:(fd:FormData)=>Promise<unknown>;
   saving?: boolean; publishing?: boolean; saveError?: string | null; publishError?: string | null;
   onChange?: (components: PageComponent[]) => void; style?: CSSProperties;
+  presetsSourceUrl?: string;
 }
 
 const PageBuilder = memo(function PageBuilder({
@@ -33,6 +34,7 @@ const PageBuilder = memo(function PageBuilder({
   publishError,
   onChange,
   style,
+  presetsSourceUrl,
 }: Props) {
   const pathname = usePathname() ?? "";
   const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
@@ -199,6 +201,7 @@ const PageBuilder = memo(function PageBuilder({
       style={style}
       paletteOnAdd={handleAddFromPalette}
       onInsertPreset={handleInsertPreset}
+      presetsSourceUrl={presetsSourceUrl ?? process.env.NEXT_PUBLIC_PAGEBUILDER_PRESETS_URL}
       toolbarProps={toolbarProps}
       gridProps={gridProps}
       startTour={controls.startTour}

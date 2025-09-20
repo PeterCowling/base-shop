@@ -269,6 +269,24 @@ export default function LayoutPanel({
             disabled={effLocked}
             cssProp="left"
           />
+          <UnitInput
+            label={<span className="flex items-center gap-1">Right<Tooltip text="CSS right offset (px/%/rem)">?</Tooltip></span>}
+            placeholder="e.g. 10px"
+            value={(component as any).right ?? ""}
+            onChange={(v) => handleResize("right", v)}
+            axis="w"
+            disabled={effLocked}
+            cssProp="right"
+          />
+          <UnitInput
+            label={<span className="flex items-center gap-1">Bottom<Tooltip text="CSS bottom offset (px/%/rem)">?</Tooltip></span>}
+            placeholder="e.g. 10px"
+            value={(component as any).bottom ?? ""}
+            onChange={(v) => handleResize("bottom", v)}
+            axis="h"
+            disabled={effLocked}
+            cssProp="bottom"
+          />
           {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
             <div key={`pos-${vp}`} className="grid grid-cols-2 gap-2">
               <UnitInput
@@ -417,6 +435,61 @@ export default function LayoutPanel({
       )}
       {component.type === "Section" && (
         <>
+          <UnitInput
+            label={<span className="flex items-center gap-1">Content Max Width<Tooltip text="Max content width (px/%/rem). Leave empty for full width">?</Tooltip></span>}
+            placeholder="e.g. 1200px or 80%"
+            value={(component as any).contentWidth ?? ""}
+            onChange={(v) => handleInput("contentWidth" as any, (v || undefined) as any)}
+            axis="w"
+            disabled={effLocked}
+            cssProp="max-width"
+          />
+          {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
+            <UnitInput
+              key={`cw-${vp}`}
+              label={<span className="flex items-center gap-1">{`Content Max Width (${vp})`}<Tooltip text="Viewport-specific max width overrides">?</Tooltip></span>}
+              placeholder="e.g. 1200px or 80%"
+              value={((component as any)[`contentWidth${vp}`] as string) ?? ""}
+              onChange={(v) => handleResize(`contentWidth${vp}`, v)}
+              axis="w"
+              disabled={effLocked}
+              cssProp="max-width"
+            />
+          ))}
+          <Select
+            value={(component as any).contentAlign ?? "center"}
+            onValueChange={(v) => handleInput("contentAlign" as any, v as any)}
+          >
+            <Tooltip text="Horizontal alignment for constrained content" className="block">
+              <SelectTrigger>
+                <SelectValue placeholder="Content Align" />
+              </SelectTrigger>
+            </Tooltip>
+            <SelectContent>
+              <SelectItem value="left">Left</SelectItem>
+              <SelectItem value="center">Center</SelectItem>
+              <SelectItem value="right">Right</SelectItem>
+            </SelectContent>
+          </Select>
+          {/* Per-breakpoint content alignment */}
+          {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
+            <Select
+              key={`ca-${vp}`}
+              value={((component as any)[`contentAlign${vp}`] as string) ?? ""}
+              onValueChange={(v) => handleInput(`contentAlign${vp}` as any, (v || undefined) as any)}
+            >
+              <Tooltip text={`Alignment on ${vp.toLowerCase()}`} className="block">
+                <SelectTrigger>
+                  <SelectValue placeholder={`Content Align (${vp})`} />
+                </SelectTrigger>
+              </Tooltip>
+              <SelectContent>
+                <SelectItem value="left">Left</SelectItem>
+                <SelectItem value="center">Center</SelectItem>
+                <SelectItem value="right">Right</SelectItem>
+              </SelectContent>
+            </Select>
+          ))}
           <Input
             label={<span className="flex items-center gap-1">Section Grid Columns<Tooltip text="Override grid columns for this section">?</Tooltip></span>}
             type="number"
@@ -447,6 +520,32 @@ export default function LayoutPanel({
           </Select>
         </>
       )}
+
+      {/* Grid placement for children inside Grid containers (optional) */}
+      <div className="mt-2 border-t pt-2">
+        <div className="mb-1 text-xs font-semibold text-muted-foreground">Grid placement (optional)</div>
+        <Input
+          label={<span className="flex items-center gap-1">Grid Area<Tooltip text="Named area matching grid-template-areas on the parent">?</Tooltip></span>}
+          placeholder="e.g. hero"
+          value={(component as any).gridArea ?? ""}
+          error={cssError("grid-area", (component as any).gridArea)}
+          onChange={(e) => handleInput("gridArea" as any, (e.target.value || undefined) as any)}
+        />
+        <Input
+          label={<span className="flex items-center gap-1">Grid Column<Tooltip text="Line, span or range (e.g. '2 / 4' or 'span 2')">?</Tooltip></span>}
+          placeholder="e.g. span 2"
+          value={(component as any).gridColumn ?? ""}
+          error={cssError("grid-column", (component as any).gridColumn)}
+          onChange={(e) => handleInput("gridColumn" as any, (e.target.value || undefined) as any)}
+        />
+        <Input
+          label={<span className="flex items-center gap-1">Grid Row<Tooltip text="Line, span or range (e.g. '1 / span 3')">?</Tooltip></span>}
+          placeholder="e.g. 1 / span 2"
+          value={(component as any).gridRow ?? ""}
+          error={cssError("grid-row", (component as any).gridRow)}
+          onChange={(e) => handleInput("gridRow" as any, (e.target.value || undefined) as any)}
+        />
+      </div>
     </div>
   );
 }

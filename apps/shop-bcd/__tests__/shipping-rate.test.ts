@@ -73,3 +73,51 @@ test("returns 500 when provider throws", async () => {
   expect(res.status).toBe(500);
   await expect(res.json()).resolves.toEqual({ error: "oops" });
 });
+
+test("uses premierDelivery when enabled and region allowed", async () => {
+  const settings = {
+    luxuryFeatures: { premierDelivery: true },
+    premierDelivery: { regions: ["EU", "US"] },
+  } as any;
+  (getShopSettings as jest.Mock).mockResolvedValueOnce(settings);
+  (getShippingRate as jest.Mock).mockResolvedValue({ rate: 99 });
+  const res = await POST(
+    makeRequest({
+      provider: "premier-shipping",
+      fromPostalCode: "1000",
+      toPostalCode: "2000",
+      weight: 2,
+      region: "EU",
+      window: "AM",
+      carrier: "X",
+    }) as any,
+  );
+  expect(res.status).toBe(200);
+  expect(getShippingRate).toHaveBeenCalledWith(
+    expect.objectContaining({ provider: "premier-shipping", premierDelivery: settings.premierDelivery })
+  );
+});
+
+test("falls back to dhl when region not allowed", async () => {
+  const settings = {
+    luxuryFeatures: { premierDelivery: true },
+    premierDelivery: { regions: ["US"] },
+  } as any;
+  (getShopSettings as jest.Mock).mockResolvedValueOnce(settings);
+  (getShippingRate as jest.Mock).mockResolvedValue({ rate: 55 });
+  const res = await POST(
+    makeRequest({
+      provider: "premier-shipping",
+      fromPostalCode: "1000",
+      toPostalCode: "2000",
+      weight: 2,
+      region: "EU",
+      window: "AM",
+      carrier: "X",
+    }) as any,
+  );
+  expect(res.status).toBe(200);
+  expect(getShippingRate).toHaveBeenCalledWith(
+    expect.objectContaining({ provider: "dhl", premierDelivery: undefined })
+  );
+});

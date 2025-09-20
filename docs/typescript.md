@@ -32,3 +32,15 @@ TypeScript project references stitch the workspace together:
 4. If the app has tests, create a `tsconfig.test.json` and reference it from the root test config
 
 Following these steps keeps the TypeScript setup consistent across the repo.
+
+## Casting to index signatures safely
+
+When you need to access ad‑hoc properties on a strongly typed object (e.g., treat a union as a `Record<string, unknown>` for dynamic keys), cast through `unknown` first so TypeScript does not reject potentially unsafe conversions:
+
+```ts
+// good: cast through unknown, then to the indexable type
+const meta = item as unknown as Record<string, unknown>;
+const tags = (meta["tags"] as unknown[] | undefined)?.filter((t): t is string => typeof t === "string") ?? [];
+```
+
+This keeps the code explicit about the unchecked access without weakening the source types globally.

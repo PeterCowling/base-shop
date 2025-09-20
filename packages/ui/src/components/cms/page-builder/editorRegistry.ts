@@ -39,6 +39,11 @@ const editorRegistry: Record<string, LazyExoticComponent<ComponentType<any>>> = 
   ProductGrid: lazy(() => import("./ProductGridEditor")),
   ProductCarousel: lazy(() => import("./ProductGridEditor")),
   CustomHtml: lazy(() => import("./CustomHtmlEditor")),
+  Section: lazy(() => import("./SectionEditor")),
+  StackFlex: lazy(() => import("./StackFlexEditor")),
+  Grid: lazy(() => import("./GridContainerEditor")),
+  CarouselContainer: lazy(() => import("./CarouselContainerEditor")),
+  TabsAccordionContainer: lazy(() => import("./TabsAccordionContainerEditor")),
 };
 
 export default editorRegistry;

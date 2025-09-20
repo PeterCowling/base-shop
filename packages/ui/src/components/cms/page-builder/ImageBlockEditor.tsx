@@ -16,13 +16,18 @@ function ImageBlockEditor({ component, onChange }: Props) {
   );
 
   return (
-    <ImageSourcePanel
-      src={component.src}
-      alt={component.alt}
-      cropAspect={(component as any).cropAspect}
-      focalPoint={(component as any).focalPoint}
-      onChange={handleChange}
-    />
+    <div className="space-y-2">
+      <ImageSourcePanel
+        src={component.src}
+        alt={component.alt}
+        cropAspect={(component as any).cropAspect}
+        focalPoint={(component as any).focalPoint}
+        onChange={handleChange}
+      />
+      <p className="text-xs text-muted-foreground">
+        Tip: When the image block is selected on the canvas, drag the focal point dot to adjust framing.
+      </p>
+    </div>
   );
 }
 

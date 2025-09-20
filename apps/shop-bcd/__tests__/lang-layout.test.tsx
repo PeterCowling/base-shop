@@ -79,5 +79,18 @@ describe("[lang] layout", () => {
     expect(messages["nav.home"]).toBe("Startseite");
     expect(provider.textContent).toContain("Child");
   });
-});
 
+  it("handles root path with no lang param", async () => {
+    const metadata = await generateMetadata({ params: Promise.resolve({}) });
+    // default locale is en
+    expect(getSeoMock).toHaveBeenCalledWith("en");
+    expect(metadata.title).toBe("Title DE"); // from mock; shape asserted above
+
+    const element = await LocaleLayout({
+      params: Promise.resolve({}),
+      children: <div />,
+    });
+    render(element);
+    expect(screen.getByTestId("header").textContent).toBe("en");
+  });
+});

@@ -77,7 +77,9 @@ const coverageThreshold = JSON.parse(
 
 const forceCjs = process.env.JEST_FORCE_CJS === "1";
 const isPlatformCorePackage = /packages\/platform-core$/.test(process.cwd());
-const useCjsPreset = forceCjs || isPlatformCorePackage;
+// Some Next.js app packages exercise pages/components that are more stable under CJS in Jest
+const isShopBcdApp = /apps\/shop-bcd$/.test(process.cwd());
+const useCjsPreset = forceCjs || isPlatformCorePackage || isShopBcdApp;
 const preset = useCjsPreset ? "ts-jest" : "ts-jest/presets/default-esm";
 const useESM = !useCjsPreset;
 

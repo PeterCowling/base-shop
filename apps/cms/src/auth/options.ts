@@ -102,7 +102,8 @@ export function createAuthOptions(
           t.role = u.role;
           // Ensure we keep a stable identifier available to session callback
           // NextAuth typically sets `sub` from user.id, but we mirror on `id` too.
-          const maybeId = (user as Record<string, unknown>)["id"];
+          // next-auth's `user` can be `User | AdapterUser`; safely access id
+          const maybeId = (user as unknown as { id?: string | number })["id"];
           if (maybeId != null) t.id = String(maybeId);
         }
         return token;

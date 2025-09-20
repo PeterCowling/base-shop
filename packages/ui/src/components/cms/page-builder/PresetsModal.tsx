@@ -2,57 +2,57 @@
 
 import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button } from "../../atoms/shadcn";
 import Image from "next/image";
-import { ulid } from "ulid";
+import { useEffect, useMemo, useState } from "react";
 import type { PageComponent } from "@acme/types";
+import { presetList, presetCategories, type PresetDef, type PresetCategory } from "./presets.data";
 
-interface Props { onInsert: (component: PageComponent) => void }
+interface Props {
+  onInsert: (component: PageComponent) => void;
+  sourceUrl?: string; // optional remote JSON of PresetDef[]
+}
 
-const presets: { id: string; label: string; description?: string; preview: string; build: () => PageComponent }[] = [
-  {
-    id: "hero-simple",
-    label: "Hero: Simple",
-    preview: "/window.svg",
-    build: () => ({
-      id: ulid(),
-      type: "Section",
-      padding: "40px",
-      children: [
-        {
-          id: ulid(),
-          type: "HeroBanner",
-          title: { en: "Welcome to Our Store" } as any,
-          subtitle: { en: "Discover our new arrivals" } as any,
-          ctaLabel: { en: "Shop now" } as any,
-          ctaHref: "/shop",
-        } as any,
-      ],
-    } as any),
-  },
-  {
-    id: "feature-columns",
-    label: "Features: 3 Columns",
-    preview: "/window.svg",
-    build: () => ({
-      id: ulid(),
-      type: "Section",
-      padding: "24px",
-      children: [
-        {
-          id: ulid(),
-          type: "MultiColumn",
-          columns: 3,
-          children: [
-            { id: ulid(), type: "ValueProps", title: { en: "Fast" } as any } as any,
-            { id: ulid(), type: "ValueProps", title: { en: "Reliable" } as any } as any,
-            { id: ulid(), type: "ValueProps", title: { en: "Secure" } as any } as any,
-          ],
-        } as any,
-      ],
-    } as any),
-  },
-];
+export default function PresetsModal({ onInsert, sourceUrl }: Props) {
+  const [presets, setPresets] = useState<PresetDef[]>(presetList);
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState<PresetCategory | "All">("All");
 
-export default function PresetsModal({ onInsert }: Props) {
+  useEffect(() => {
+    let aborted = false;
+    if (!sourceUrl) return;
+    (async () => {
+      try {
+        const res = await fetch(sourceUrl);
+        if (!res.ok) return;
+        const data = (await res.json()) as PresetDef[];
+        if (!aborted && Array.isArray(data) && data.length) setPresets(data);
+      } catch {
+        // ignore network errors, keep local presets
+      }
+    })();
+    return () => { aborted = true; };
+  }, [sourceUrl]);
+
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return presets.filter((p) => {
+      if (category !== "All" && p.category !== category) return false;
+      if (!q) return true;
+      return (
+        p.label.toLowerCase().includes(q) ||
+        (p.description || "").toLowerCase().includes(q)
+      );
+    });
+  }, [presets, search, category]);
+
+  const byCategory = useMemo(() => {
+    const map = new Map<string, PresetDef[]>();
+    for (const c of ["All", ...presetCategories]) map.set(c, [] as PresetDef[]);
+    for (const p of filtered) {
+      map.set(p.category, [...(map.get(p.category) || []), p]);
+    }
+    return map;
+  }, [filtered]);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -60,20 +60,50 @@ export default function PresetsModal({ onInsert }: Props) {
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>Starter Layouts</DialogTitle>
-        <div className="grid grid-cols-2 gap-4">
-          {presets.map((p) => (
-            <button
-              key={p.id}
-              type="button"
-              className="rounded border p-2 text-left hover:bg-accent"
-              onClick={() => onInsert(p.build())}
-            >
-              <Image src={p.preview} alt="" width={300} height={160} className="w-full rounded" />
-              <div className="mt-2 font-medium">{p.label}</div>
-              {p.description && <div className="text-sm text-muted-foreground">{p.description}</div>}
-            </button>
-          ))}
+        <div className="flex items-center gap-2 py-2">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search presets..."
+            className="flex-1 rounded border p-2 text-sm"
+            aria-label="Search presets"
+          />
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value as any)}
+            className="rounded border p-2 text-sm"
+            aria-label="Preset category"
+          >
+            <option value="All">All</option>
+            {presetCategories.map((c) => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
         </div>
+        {presetCategories.map((c) => {
+          const items = byCategory.get(c) || [];
+          if (items.length === 0) return null;
+          return (
+            <div key={c} className="mb-4">
+              <div className="mb-2 text-sm font-semibold">{c}</div>
+              <div className="grid grid-cols-2 gap-4">
+                {items.map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    className="rounded border p-2 text-left hover:bg-accent"
+                    onClick={() => onInsert(p.build())}
+                  >
+                    <Image src={p.preview} alt="" width={300} height={160} className="w-full rounded" />
+                    <div className="mt-2 font-medium">{p.label}</div>
+                    {p.description && <div className="text-sm text-muted-foreground">{p.description}</div>}
+                  </button>
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </DialogContent>
     </Dialog>
   );

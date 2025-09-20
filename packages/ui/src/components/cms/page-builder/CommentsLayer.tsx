@@ -2,7 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { PageComponent } from "@acme/types";
-import { Button, Dialog, DialogContent, DialogTitle, Input, Textarea } from "../../atoms/shadcn";
+import { Button } from "../../atoms/shadcn";
+import CommentsDrawer from "./CommentsDrawer";
+import { useSession } from "next-auth/react";
 
 type Thread = {
   id: string;
@@ -11,6 +13,8 @@ type Thread = {
   assignedTo?: string | null;
   messages: { id: string; text: string; ts: string }[];
   pos?: { x: number; y: number } | null;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 interface Props {
@@ -24,14 +28,14 @@ interface Props {
 export default function CommentsLayer({ canvasRef, components, shop, pageId, selectedIds }: Props) {
   const [threads, setThreads] = useState<Thread[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [openId, setOpenId] = useState<string | null>(null);
-  const [newText, setNewText] = useState("");
-  const [assignTo, setAssignTo] = useState("");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [showResolved, setShowResolved] = useState(true);
   const [dragId, setDragId] = useState<string | null>(null);
   const [dragPos, setDragPos] = useState<{ x: number; y: number } | null>(null);
 
   const positions = useRef<Record<string, { left: number; top: number; width: number; height: number }>>({});
+  const { data: session } = useSession();
 
   const load = useCallback(async () => {
     try {
@@ -39,7 +43,16 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
       const res = await fetch(`/cms/api/comments/${shop}/${pageId}`);
       const data = (await res.json()) as any[];
       setThreads(
-        (data || []).map((t) => ({ id: t.id, componentId: t.componentId, resolved: !!t.resolved, assignedTo: t.assignedTo ?? null, messages: t.messages || [] }))
+        (data || []).map((t) => ({
+          id: t.id,
+          componentId: t.componentId,
+          resolved: !!t.resolved,
+          assignedTo: t.assignedTo ?? null,
+          messages: t.messages || [],
+          pos: t.pos ?? null,
+          createdAt: t.createdAt,
+          updatedAt: t.updatedAt,
+        }))
       );
     } catch (err) {
       setError((err as Error).message);
@@ -108,9 +121,8 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
   }, [dragId, dragPos, threads]);
 
   const open = (id: string) => {
-    setOpenId(id);
-    setNewText("");
-    setAssignTo("");
+    setSelectedId(id);
+    setDrawerOpen(true);
   };
 
   const patch = async (id: string, body: Record<string, unknown>) => {
@@ -122,15 +134,40 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
     await load();
   };
 
-  const addMessage = async () => {
-    const id = openId;
-    if (!id || !newText.trim()) return;
-    await patch(id, { action: "addMessage", text: newText.trim() });
-    setNewText("");
+  const addMessage = async (id: string, text: string) => {
+    if (!id || !text.trim()) return;
+    await patch(id, { action: "addMessage", text: text.trim() });
   };
 
   const toggleResolved = async (id: string, resolved: boolean) => {
     await patch(id, { resolved });
+  };
+
+  const assign = async (id: string, assignee: string | null) => {
+    await patch(id, { assignedTo: assignee ?? null });
+  };
+
+  const del = async (id: string) => {
+    await fetch(`/cms/api/comments/${shop}/${pageId}/${id}`, { method: "DELETE" });
+    await load();
+    if (selectedId === id) setSelectedId(null);
+  };
+
+  const jumpTo = (componentId: string) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const el = canvas.querySelector(`[data-component-id="${componentId}"]`) as HTMLElement | null;
+    if (!el) return;
+    try {
+      el.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
+    } catch {}
+    const prev = el.style.outline;
+    el.style.outline = "2px solid #38bdf8";
+    el.style.outlineOffset = "2px";
+    setTimeout(() => {
+      el.style.outline = prev;
+      el.style.outlineOffset = "";
+    }, 1200);
   };
 
   const startNewForSelected = async () => {
@@ -142,9 +179,10 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
     await fetch(`/cms/api/comments/${shop}/${pageId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ componentId: id, text: text.trim(), assignedTo: assignTo || undefined }),
+      body: JSON.stringify({ componentId: id, text: text.trim() }),
     });
     await load();
+    setDrawerOpen(true);
   };
 
   // Alt+Click to create a pin at position within component
@@ -188,6 +226,9 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
         </label>
         <Button variant="outline" onClick={() => void load()} className="h-6 px-2 py-0 text-xs">Reload</Button>
         <Button variant="outline" onClick={startNewForSelected} disabled={!selectedIds.length} className="h-6 px-2 py-0 text-xs">Add for selected</Button>
+        <Button variant="default" onClick={() => setDrawerOpen((v) => !v)} className="h-6 px-2 py-0 text-xs">
+          Comments ({threads.filter((t) => !t.resolved).length})
+        </Button>
       </div>
 
       {/* Pins */}
@@ -234,49 +275,58 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
         });
       })()}
 
-      {/* Thread dialog */}
-      <Dialog open={!!openId} onOpenChange={(v) => setOpenId(v ? openId : null)}>
-        <DialogContent className="max-w-lg">
-          <DialogTitle>Comment</DialogTitle>
-          {error && <p className="text-sm text-red-500">{error}</p>}
-          {(() => {
-            const t = threads.find((x) => x.id === openId);
-            if (!t) return <div className="text-sm text-muted-foreground">Missing thread</div>;
-            return (
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="text-sm">Component: <code className="text-xs">{t.componentId}</code></div>
-                  <label className="flex items-center gap-2 text-sm">
-                    <input type="checkbox" checked={t.resolved} onChange={(e) => void toggleResolved(t.id, e.target.checked)} />
-                    Resolved
-                  </label>
-                </div>
-                <div className="max-h-48 space-y-2 overflow-y-auto rounded border p-2 text-sm">
-                  {t.messages.map((m) => (
-                    <div key={m.id} className="rounded bg-muted p-2">
-                      <div className="text-xs text-muted-foreground">{new Date(m.ts).toLocaleString()}</div>
-                      <div>{m.text}</div>
-                    </div>
-                  ))}
-                  {t.messages.length === 0 && (
-                    <div className="text-muted-foreground">No messages</div>
-                  )}
-                </div>
-                <div className="space-y-2">
-                  <Textarea placeholder="Reply" value={newText} onChange={(e) => setNewText(e.target.value)} />
-                  <div className="flex justify-end">
-                    <Button onClick={addMessage} disabled={!newText.trim()}>Add Reply</Button>
-                  </div>
-                </div>
-                <div className="space-y-1">
-                  <label className="text-sm">Assign to</label>
-                  <Input placeholder="name or email" value={assignTo} onChange={(e) => setAssignTo(e.target.value)} onBlur={() => void patch(t.id, { assignedTo: assignTo || null })} />
-                </div>
-              </div>
-            );
-          })()}
-        </DialogContent>
-      </Dialog>
+      {/* Right Drawer */}
+      <CommentsDrawer
+        open={drawerOpen}
+        onOpenChange={setDrawerOpen}
+        threads={threads}
+        selectedId={selectedId}
+        onSelect={setSelectedId}
+        onAddMessage={(id, text) => addMessage(id, text).then(() => load())}
+        onToggleResolved={(id, resolved) => toggleResolved(id, resolved)}
+        onAssign={(id, who) => assign(id, who)}
+        onDelete={(id) => del(id)}
+        onJumpTo={(componentId) => jumpTo(componentId)}
+        componentsOptions={(() => {
+          const openCounts = new Map<string, number>();
+          threads.forEach((t) => openCounts.set(t.componentId, (openCounts.get(t.componentId) ?? 0) + (t.resolved ? 0 : 1)));
+          // helper to find type by id
+          const findType = (list: PageComponent[], id: string): string | null => {
+            for (const c of list) {
+              if ((c as any).id === id) return (c as any).type ?? null;
+              const children = (c as any).children as PageComponent[] | undefined;
+              if (Array.isArray(children)) {
+                const t = findType(children, id);
+                if (t) return t;
+              }
+            }
+            return null;
+          };
+          const ids = Object.keys(positions.current);
+          return ids.map((id) => {
+            const type = findType(components, id);
+            const cnt = openCounts.get(id) ?? 0;
+            const suffix = cnt ? ` (${cnt} open)` : "";
+            const base = type ? `${type}` : "Component";
+            return { id, label: `${base} • ${id.slice(-4)}${suffix}` };
+          });
+        })()}
+        onCreate={async (componentId, text, assignedTo) => {
+          const res = await fetch(`/cms/api/comments/${shop}/${pageId}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ componentId, text, assignedTo: assignedTo ?? undefined }),
+          });
+          const json = await res.json();
+          await load();
+          if (res.ok && json?.id) {
+            setSelectedId(json.id as string);
+            setDrawerOpen(true);
+          }
+        }}
+        shop={shop}
+        me={(session?.user?.email as string | undefined) ?? (session?.user?.name as string | undefined) ?? null}
+      />
     </div>
   );
 }

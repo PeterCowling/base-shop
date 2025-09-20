@@ -1,13 +1,7 @@
 import { readFile, stat } from "fs/promises";
-import { createRequire } from "module";
 import path from "path";
 import { pathToFileURL } from "url";
 import { logger } from "../utils";
-
-// Use __filename if available (CommonJS), otherwise derive from import.meta.url
-const req = createRequire(
-  typeof __filename !== "undefined" ? __filename : eval("import.meta.url")
-);
 
 function unique<T>(arr: T[]): T[] {
   return Array.from(new Set(arr));
@@ -98,10 +92,8 @@ export async function resolvePluginEntry(dir: string): Promise<{
   }
 }
 
-export async function importByType(entryPath: string, isModule: boolean) {
-  if (isModule || /\.mjs$/.test(entryPath)) {
-    return import(pathToFileURL(entryPath).href);
-  }
-  return req(entryPath);
+export async function importByType(entryPath: string, _isModule: boolean) {
+  // Always use dynamic import to avoid webpack's "request of a dependency is an expression" warning.
+  // Node's ESM loader will interop default export for CommonJS modules.
+  return import(/* webpackIgnore: true */ pathToFileURL(entryPath).href);
 }
-

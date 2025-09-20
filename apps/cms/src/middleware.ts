@@ -166,7 +166,16 @@ export async function middleware(req: NextRequest) {
       path: url.pathname,
       shop: matchShop ? matchShop[1] : undefined,
     });
-    return applySecurityHeaders(NextResponse.rewrite(url, { status: 403 }));
+    // In some Jest/node environments NextResponse.rewrite may not be available.
+    // Fall back to crafting a middleware rewrite response manually.
+    const rewritten =
+      typeof (NextResponse as any).rewrite === "function"
+        ? NextResponse.rewrite(url, { status: 403 })
+        : new Response(null, {
+            status: 403,
+            headers: { "x-middleware-rewrite": url.toString() },
+          });
+    return applySecurityHeaders(rewritten as NextResponse);
   }
 
   /* Block viewers from write routes */
@@ -178,7 +187,14 @@ export async function middleware(req: NextRequest) {
       path: url.pathname,
       shop: match[1],
     });
-    return applySecurityHeaders(NextResponse.rewrite(url, { status: 403 }));
+    const rewritten =
+      typeof (NextResponse as any).rewrite === "function"
+        ? NextResponse.rewrite(url, { status: 403 })
+        : new Response(null, {
+            status: 403,
+            headers: { "x-middleware-rewrite": url.toString() },
+          });
+    return applySecurityHeaders(rewritten as NextResponse);
   }
 
   logger.info("allow", { path: pathname });

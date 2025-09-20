@@ -22,6 +22,19 @@ export function ensureScrollStyles() {
 /* Sticky helpers */
 [data-pb-sticky="top"] { position: sticky; top: var(--pb-sticky-offset, 0px); }
 [data-pb-sticky="bottom"] { position: sticky; bottom: var(--pb-sticky-offset, 0px); }
+
+/* Hover effects wrapper */
+[data-pb-hover] { position: relative; }
+[data-pb-hover] .pb-hover-target {
+  transition: transform 200ms ease, opacity 200ms ease;
+  transform-origin: center center;
+  /* Respect any static transform overrides */
+  transform: var(--pb-static-transform, none);
+}
+[data-pb-hover]:hover .pb-hover-target {
+  transform: var(--pb-static-transform, none) scale(var(--pb-hover-scale, 1));
+  opacity: var(--pb-hover-opacity, 1);
+}
 `;
   document.head.appendChild(style);
   stylesInjected = true;
@@ -158,6 +171,21 @@ export function initScrollEffects(root?: HTMLElement) {
       const offset = (el.getAttribute("data-pb-sticky-offset") || "0").trim();
       el.style.setProperty("--pb-sticky-offset", /px|%|rem|em/.test(offset) ? offset : `${Number(offset)}px`);
     }
+
+    // Stagger children for simple timelines
+    const staggerNodes = Array.from(container.querySelectorAll<HTMLElement>("[data-pb-stagger]"));
+    for (const el of staggerNodes) {
+      const base = Number(el.getAttribute("data-pb-stagger")) || 0;
+      if (base <= 0) continue;
+      const children = Array.from(el.children) as HTMLElement[];
+      children.forEach((child, idx) => {
+        try {
+          const delay = base * idx;
+          if (child.style)
+            child.style.transitionDelay = `${delay}ms`;
+        } catch { /* noop */ }
+      });
+    }
   };
 
   let ticking = false;
@@ -207,6 +235,75 @@ export function initScrollEffects(root?: HTMLElement) {
   });
   mo.observe(root || document.body, { childList: true, subtree: true });
   cleanupFns.push(() => mo.disconnect());
+
+  // Click triggers: scroll-to and open-modal
+  const onClick = (e: Event) => {
+    const target = e.target as HTMLElement | null;
+    if (!target) return;
+    const el = target.closest("[data-pb-click]") as HTMLElement | null;
+    if (!el) return;
+    const action = el.getAttribute("data-pb-click");
+    if (!action) return;
+    if (action === "scroll-to") {
+      e.preventDefault();
+      const href = el.getAttribute("data-pb-href") || "";
+      const id = href.startsWith("#") ? href.slice(1) : href;
+      if (!id) return;
+      const dest = document.getElementById(id) || document.querySelector(href);
+      if (dest && (dest as any).scrollIntoView) {
+        try { (dest as any).scrollIntoView({ behavior: "smooth", block: "start" }); } catch { (dest as any).scrollIntoView(); }
+      }
+    } else if (action === "open-modal") {
+      e.preventDefault();
+      const text = el.getAttribute("data-pb-modal") || "";
+      const overlay = document.createElement("div");
+      overlay.style.position = "fixed";
+      overlay.style.inset = "0";
+      overlay.style.background = "rgba(0,0,0,0.5)";
+      overlay.style.zIndex = "9999";
+      overlay.style.display = "flex";
+      overlay.style.alignItems = "center";
+      overlay.style.justifyContent = "center";
+      const modal = document.createElement("div");
+      modal.style.background = "white";
+      modal.style.maxWidth = "min(90vw, 640px)";
+      modal.style.maxHeight = "80vh";
+      modal.style.padding = "16px";
+      modal.style.borderRadius = "8px";
+      modal.style.overflow = "auto";
+      const close = document.createElement("button");
+      close.textContent = "×";
+      close.setAttribute("aria-label", "Close");
+      close.style.position = "absolute";
+      close.style.top = "12px";
+      close.style.right = "16px";
+      close.style.fontSize = "20px";
+      close.style.background = "transparent";
+      close.style.border = "none";
+      close.style.cursor = "pointer";
+      const wrap = document.createElement("div");
+      wrap.style.position = "relative";
+      wrap.style.display = "inline-block";
+      wrap.appendChild(close);
+      const content = document.createElement("div");
+      // Use textContent to avoid injecting unsafe HTML. If needed, can be extended.
+      content.textContent = text || "\u00A0";
+      wrap.appendChild(content);
+      modal.appendChild(wrap);
+      overlay.appendChild(modal);
+      const destroy = () => {
+        try { document.body.removeChild(overlay); } catch { /* noop */ }
+        window.removeEventListener("keydown", onKey);
+      };
+      const onKey = (ke: KeyboardEvent) => { if (ke.key === "Escape") destroy(); };
+      overlay.addEventListener("click", (evt) => { if (evt.target === overlay) destroy(); });
+      close.addEventListener("click", destroy);
+      document.body.appendChild(overlay);
+      window.addEventListener("keydown", onKey);
+    }
+  };
+  document.addEventListener("click", onClick);
+  cleanupFns.push(() => document.removeEventListener("click", onClick));
 }
 
 export function disposeScrollEffects() {

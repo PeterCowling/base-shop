@@ -9,6 +9,12 @@ jest.mock("@platform-core/components/shop/ProductGrid", () => ({
   ProductGrid: (props: any) => productGridMock(props),
 }));
 
+// Capture Text block props to verify className merge (stackStrategy branch)
+const textMock = jest.fn((props: any) => <div data-testid="text" data-class={props.className} />);
+jest.mock("@ui/components/atoms/primitives/textarea", () => ({
+  Textarea: (props: any) => textMock(props),
+}));
+
 describe("DynamicRenderer", () => {
   it("warns on unknown component", () => {
     const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
@@ -35,5 +41,48 @@ describe("DynamicRenderer", () => {
         locale: "en",
       }),
     );
+  });
+
+  it("applies hidden classes and order on wrapper", () => {
+    const { container } = render(
+      <DynamicRenderer
+        components={[
+          {
+            id: "h1",
+            type: "ProductGrid",
+            hiddenBreakpoints: ["mobile"],
+            orderMobile: 2,
+            styles: "not-json", // exercise parse error branch
+          } as any,
+        ]}
+        locale="en"
+        editor={{ h1: { hidden: ["tablet"] } } as any}
+      />,
+    );
+    const wrappers = Array.from(container.querySelectorAll(".pb-scope"));
+    expect(wrappers.length).toBeGreaterThan(0);
+    const cls = wrappers[0].className;
+    expect(cls).toMatch(/pb-hide-mobile/);
+    expect(cls).toMatch(/pb-hide-tablet/);
+    expect(cls).toMatch(/pb-order-mobile-2/);
+  });
+
+  it("passes stackStrategy class to non-grid blocks", () => {
+    render(
+      <DynamicRenderer
+        components={[
+          {
+            id: "t1",
+            type: "Text",
+            stackStrategy: "reverse",
+            orderMobile: 1,
+          } as any,
+        ]}
+        locale="en"
+      />,
+    );
+    expect(textMock).toHaveBeenCalled();
+    const last = (textMock as jest.Mock).mock.calls.pop()![0];
+    expect(String(last.className)).toContain("pb-stack-mobile-reverse");
   });
 });

@@ -63,25 +63,19 @@ export function createRedisCartStore(client: Redis, ttl: number): CartStore {
 /** Factory (pure, no side effects) */
 export function createCartStore(options: CartStoreOptions = {}): CartStore {
   const env = getCoreEnv();
-  const ttl = options.ttlSeconds ?? Number(env.CART_TTL ?? DEFAULT_TTL);
+  const ttl = options.ttlSeconds ?? Number((env as any).CART_TTL ?? process.env.CART_TTL ?? DEFAULT_TTL);
 
-  const backend =
-    options.backend ??
-    env.SESSION_STORE ??
-    (env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN
-      ? "redis"
-      : "memory");
+  const hasRedis = Boolean(
+    ((env as any).UPSTASH_REDIS_REST_URL ?? process.env.UPSTASH_REDIS_REST_URL) &&
+      ((env as any).UPSTASH_REDIS_REST_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN)
+  );
+  const backend = options.backend ?? ((env as any).SESSION_STORE ?? (hasRedis ? "redis" : "memory"));
 
   if (backend === "redis") {
     const Redis = loadRedis();
-    const client =
-      options.redis ??
-      (Redis && env.UPSTASH_REDIS_REST_URL && env.UPSTASH_REDIS_REST_TOKEN
-        ? new Redis({
-            url: env.UPSTASH_REDIS_REST_URL,
-            token: env.UPSTASH_REDIS_REST_TOKEN,
-          })
-        : undefined);
+    const url = (env as any).UPSTASH_REDIS_REST_URL ?? process.env.UPSTASH_REDIS_REST_URL;
+    const token = (env as any).UPSTASH_REDIS_REST_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN;
+    const client = options.redis ?? (Redis && url && token ? new Redis({ url, token }) : undefined);
     if (client) {
       return createRedisCartStore(client, ttl);
     }

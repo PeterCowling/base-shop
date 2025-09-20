@@ -15,6 +15,7 @@ import useBlockDimensions from "./useBlockDimensions";
 import useBlockDnD from "./useBlockDnD";
 import BlockResizer from "./BlockResizer";
 import BlockChildren from "./BlockChildren";
+import ImageFocalOverlay from "./ImageFocalOverlay";
 import type { DevicePreset } from "../../../utils/devicePresets";
 import { LockClosedIcon } from "@radix-ui/react-icons";
 import {
@@ -27,6 +28,7 @@ import {
 } from "../../atoms/shadcn";
 import ContextMenu from "./ContextMenu";
 import { getStyleClipboard, setStyleClipboard } from "./style/styleClipboard";
+import ImageAspectToolbar from "./ImageAspectToolbar";
 
 type Props = {
   component: PageComponent;
@@ -430,7 +432,32 @@ const BlockItem = memo(function BlockItemComponent({
           }
         />
       ) : (
-        <Block component={{ ...component, zIndex: effZIndex, locked: effLocked } as any} locale={locale} />
+        <Block
+          component={{
+            ...component,
+            zIndex: effZIndex,
+            locked: effLocked,
+            pbViewport: viewport,
+          } as any}
+          locale={locale}
+        />
+      )}
+      {/* In-canvas focal point overlay for Image blocks */}
+      {selected && !effLocked && component.type === "Image" && (
+        <ImageFocalOverlay
+          value={(component as any).focalPoint as any}
+          visible={true}
+          onChange={(fp) =>
+            dispatch({ type: "update", id: component.id, patch: { focalPoint: fp } as any })
+          }
+        />
+      )}
+      {/* In-canvas aspect toolbar for Image blocks */}
+      {selected && !effLocked && component.type === "Image" && (
+        <ImageAspectToolbar
+          value={(component as any).cropAspect as any}
+          onChange={(next) => dispatch({ type: "update", id: component.id, patch: { cropAspect: next } as any })}
+        />
       )}
       {spacingOverlay && (
         <div

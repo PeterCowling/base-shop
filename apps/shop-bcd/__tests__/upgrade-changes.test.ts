@@ -69,4 +69,15 @@ describe("/api/upgrade-changes", () => {
     const res = await GET();
     expect(res.status).toBe(401);
   });
+
+  test("returns empty arrays when no file present", async () => {
+    jest.doMock("@auth", () => ({
+      __esModule: true,
+      requirePermission: jest.fn(),
+    }));
+    const { GET } = await import("../src/app/api/upgrade-changes/route");
+    const res = await GET();
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual({ components: [], pages: [] });
+  });
 });

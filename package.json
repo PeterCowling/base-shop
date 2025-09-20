@@ -64,6 +64,7 @@
     "benchmark:loadPlugins": "tsx scripts/benchmark-loadPlugins.ts",
     "quickstart-shop": "ts-node scripts/src/quickstart-shop.ts",
     "check:locales": "ts-node scripts/src/check-locales.ts",
+    "preview-scheduler": "ts-node scripts/src/run-preview-scheduler.ts",
     "add-locale": "tsx scripts/src/add-locale.ts",
     "check:tailwind-preset": "tsx scripts/check-tailwind-preset.ts",
     "shadcn:diff": "ts-node scripts/diff-shadcn.ts",

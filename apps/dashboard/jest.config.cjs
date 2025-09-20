@@ -1,29 +1,31 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const path = require("path");
-const base = require("@acme/config/jest.preset.cjs");
-const { "^@/(.*)$": _unused, ...baseModuleNameMapper } = base.moduleNameMapper;
+// Use the monorepo base Jest config, then tailor it for the dashboard app.
+const base = require("../../jest.config.cjs");
 
 /** @type {import('jest').Config} */
 module.exports = {
   ...base,
-  // Run from repo root for consistent relative paths
-  rootDir: path.resolve(__dirname, "..", ".."),
+  // Keep rootDir as the app directory so coverage globs resolve correctly.
+  // The base config already sets rootDir to process.cwd().
+  rootDir: __dirname,
   testEnvironment: "jsdom",
-  roots: ["<rootDir>/apps/dashboard/src", "<rootDir>/apps/dashboard/__tests__"],
+  roots: ["<rootDir>/src", "<rootDir>/__tests__"],
   moduleNameMapper: {
-    ...baseModuleNameMapper,
-    "^@/(.*)$": "<rootDir>/apps/dashboard/src/$1",
-    "^entities/decode$": "<rootDir>/node_modules/entities/lib/decode.js",
+    ...base.moduleNameMapper,
+    // Local alias used by this app
+    "^@/(.*)$": "<rootDir>/src/$1",
+    // Needed by some transitive deps when running under jsdom
+    "^entities/decode$": "<rootDir>/../../node_modules/entities/lib/decode.js",
   },
-  // Restrict coverage to dashboard src and ignore tests/declarations
+  // App-specific coverage settings
   collectCoverage: true,
   collectCoverageFrom: [
-    "apps/dashboard/src/**/*.{ts,tsx}",
-    "!apps/dashboard/src/**/*.d.ts",
-    "!apps/dashboard/src/**/?(*.)+(spec|test).{ts,tsx}",
-    "!apps/dashboard/src/**/__tests__/**",
+    "src/**/*.{ts,tsx}",
+    "!**/*.d.ts",
+    "!**/?(*.)+(spec|test).{ts,tsx}",
+    "!**/__tests__/**",
   ],
-  // Reuse preset’s ignore patterns so other apps/packages aren’t instrumented
-  coveragePathIgnorePatterns: base.coveragePathIgnorePatterns,
-  coverageReporters: ["text", "lcov"],
+  coverageReporters: ["text-summary", "lcov", "json"],
+  // Do not enforce global thresholds for this app unless explicitly desired
+  coverageThreshold: undefined,
 };

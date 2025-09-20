@@ -38,9 +38,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    // Align with Stripe API and test expectations: use `subscriptions.del`
-    // to cancel/delete an active subscription.
-    const sub = await stripe.subscriptions.del(user.stripeSubscriptionId);
+    // Cancel/delete an active subscription via Stripe SDK
+    const sub = await stripe.subscriptions.cancel(user.stripeSubscriptionId);
     await setStripeSubscriptionId(userId, null, shopId);
     return NextResponse.json({ id: sub.id, status: sub.status });
   } catch (err: unknown) {

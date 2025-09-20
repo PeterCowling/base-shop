@@ -4,6 +4,8 @@ import type { PageComponent } from "@acme/types";
 import DOMPurify from "dompurify";
 import { memo, type ComponentType } from "react";
 import { blockRegistry } from "../blocks";
+import { cssVars } from "../../../utils/style/cssVars";
+import { ensureScrollStyles } from "./scrollEffects";
 
 const ANIMATION_STYLE_ID = "pb-animations";
 function injectAnimations() {
@@ -34,6 +36,7 @@ function injectAnimations() {
   document.head.appendChild(style);
 }
 injectAnimations();
+ensureScrollStyles();
 
 function Block({ component, locale }: { component: PageComponent; locale: Locale }) {
   if (component.type === "Text") {
@@ -82,6 +85,16 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
 
   const compProps: Record<string, unknown> = { ...(props as Record<string, unknown>) };
   if (clickAction === "navigate" && href) compProps.href = href;
+  // Inline style vars from overrides for builder preview
+  let styleVars: Record<string, string> = {};
+  try {
+    const raw = (component as any).styles as string | undefined;
+    const overrides = raw ? (JSON.parse(String(raw)) as any) : undefined;
+    styleVars = cssVars(overrides);
+  } catch {
+    // ignore invalid style JSON in builder
+  }
+
   let rendered = <Comp {...compProps} locale={locale} />;
   if (clickAction === "navigate" && href && component.type !== "Button") {
     rendered = (
@@ -123,19 +136,32 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
   const sticky = (component as any).sticky as "top" | "bottom" | undefined;
   const stickyOffset = (component as any).stickyOffset as string | number | undefined;
 
+  const hoverScale = (component as any).hoverScale as number | undefined;
+  const hoverOpacity = (component as any).hoverOpacity as number | undefined;
+  const staggerChildren = (component as any).staggerChildren as number | undefined;
+  const gridArea = (component as any).gridArea as string | undefined;
+  const gridColumn = (component as any).gridColumn as string | undefined;
+  const gridRow = (component as any).gridRow as string | undefined;
+  const needsHover = typeof hoverScale === "number" || typeof hoverOpacity === "number";
   const needsWrapper =
-    !!animationClass || !!reveal || typeof parallax === "number" || !!sticky;
+    !!animationClass || !!reveal || typeof parallax === "number" || !!sticky || needsHover || Object.keys(styleVars).length > 0 || typeof staggerChildren === 'number';
 
   if (!needsWrapper) return rendered;
 
-  const styleVars: Record<string, string> = {};
+  const wrapStyleVars: Record<string, string> = { ...(styleVars as any) };
+  const staticTransform = (wrapStyleVars as any)["--pb-static-transform"] as string | undefined;
   if (typeof animationDuration === "number") styleVars["--pb-anim-duration"] = `${animationDuration}ms`;
   if (typeof animationDelay === "number") styleVars["--pb-anim-delay"] = `${animationDelay}ms`;
   if (animationEasing) styleVars["--pb-anim-ease"] = `${animationEasing}`;
   if (stickyOffset !== undefined) {
     const val = typeof stickyOffset === "number" ? `${stickyOffset}px` : String(stickyOffset);
-    styleVars["--pb-sticky-offset"] = val;
+    wrapStyleVars["--pb-sticky-offset"] = val;
   }
+  if (typeof hoverScale === 'number') wrapStyleVars["--pb-hover-scale"] = String(hoverScale);
+  if (typeof hoverOpacity === 'number') wrapStyleVars["--pb-hover-opacity"] = String(hoverOpacity);
+  if (gridArea) (wrapStyleVars as any).gridArea = gridArea;
+  if (gridColumn) (wrapStyleVars as any).gridColumn = gridColumn;
+  if (gridRow) (wrapStyleVars as any).gridRow = gridRow;
 
   const className = [animationClass ? "pb-animate" : undefined, animationClass]
     .filter(Boolean)
@@ -151,9 +177,22 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
       data-pb-parallax={typeof parallax === "number" ? parallax : undefined}
       data-pb-sticky={sticky || undefined}
       data-pb-sticky-offset={stickyOffset !== undefined ? String(stickyOffset) : undefined}
-      style={styleVars as any}
+      data-pb-hover={needsHover ? '1' : undefined}
+      data-pb-click={component.clickAction === 'open-modal' ? 'open-modal' : (component.clickAction === 'scroll-to' ? 'scroll-to' : undefined)}
+      data-pb-href={(component as any).href || undefined}
+      data-pb-modal={(component as any).modalHtml || undefined}
+      data-pb-stagger={typeof staggerChildren === 'number' ? String(staggerChildren) : undefined}
+      style={wrapStyleVars as any}
     >
-      {rendered}
+      {needsHover ? (
+        <div className="pb-hover-target">
+          {rendered}
+        </div>
+      ) : staticTransform ? (
+        <div style={{ transform: staticTransform } as any}>{rendered}</div>
+      ) : (
+        rendered
+      )}
     </div>
   );
 }

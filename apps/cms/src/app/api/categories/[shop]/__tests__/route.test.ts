@@ -1,8 +1,6 @@
 import { NextRequest } from "next/server";
 import path from "path";
-
-const getServerSession = jest.fn();
-jest.mock("next-auth", () => ({ getServerSession }));
+import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const resolveDataRoot = jest.fn();
@@ -31,7 +29,7 @@ function req(body: string) {
 
 describe("POST", () => {
   it("returns 403 when session is missing", async () => {
-    getServerSession.mockResolvedValue(null);
+    __setMockSession(null as any);
     const res = await POST(req("[]"), {
       params: Promise.resolve({ shop: "s1" }),
     });
@@ -41,7 +39,7 @@ describe("POST", () => {
   });
 
   it("writes categories and returns success", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     resolveDataRoot.mockReturnValue("/data");
     const categories = [{ id: 1 }];
     const res = await POST(req(JSON.stringify(categories)), {
@@ -56,7 +54,7 @@ describe("POST", () => {
   });
 
   it("returns 400 for malformed JSON", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const res = await POST(req("{"), {
       params: Promise.resolve({ shop: "s1" }),
     });
@@ -66,4 +64,3 @@ describe("POST", () => {
     expect(writeJsonFile).not.toHaveBeenCalled();
   });
 });
-

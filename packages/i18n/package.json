@@ -19,7 +19,7 @@
   },
   "main": "./dist/index.js",
   "scripts": {
-    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs --coverageDirectory ../../coverage/i18n",
+    "test": "jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint ."

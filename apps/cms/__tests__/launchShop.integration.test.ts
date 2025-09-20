@@ -1,10 +1,5 @@
 import { jest } from "@jest/globals";
 
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: any, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
-
 jest.mock("../src/app/cms/configurator/steps", () => {
   const steps = [
     { id: "a", label: "A", component: () => null },

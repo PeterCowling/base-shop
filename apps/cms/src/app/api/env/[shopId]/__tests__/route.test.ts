@@ -1,11 +1,9 @@
 import { type NextRequest } from "next/server";
 import path from "path";
-
-const getServerSession = jest.fn();
+import { __setMockSession } from "next-auth";
 const setupSanityBlog = jest.fn();
 const parseJsonBody = jest.fn();
 
-jest.mock("next-auth", () => ({ getServerSession }));
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 jest.mock("@cms/actions/setupSanityBlog", () => ({ setupSanityBlog }));
 jest.mock("@shared-utils", () => ({ parseJsonBody }));
@@ -38,7 +36,7 @@ function req(body: Record<string, string>): NextRequest {
 
 describe("POST", () => {
   it("writes env vars and sets up blog", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const res = await POST(
       req({
         SANITY_PROJECT_ID: "p",
@@ -68,7 +66,7 @@ describe("POST", () => {
   });
 
   it("returns 400 when write fails", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     writeFile.mockRejectedValueOnce(new Error("disk"));
     const res = await POST(req({ FOO: "bar" }), {
       params: Promise.resolve({ shopId: "s1" }),
@@ -78,4 +76,3 @@ describe("POST", () => {
     expect(body).toEqual({ error: "disk" });
   });
 });
-

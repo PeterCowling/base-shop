@@ -6,7 +6,7 @@ import type { IncomingMessage, ServerResponse } from 'http';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { server } from '../../../../../../__tests__/msw/server';
+import { server } from '../../../../../../test/msw/server';
 
 const getServerSession = jest.fn();
 jest.mock('next-auth', () => ({ getServerSession }));

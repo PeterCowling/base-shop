@@ -6,8 +6,7 @@ import { inventoryItemSchema } from "@platform-core/types/inventory";
   ((fn: (...args: any[]) => void, ...args: any[]) =>
     setTimeout(fn, 0, ...args));
 
-const getServerSession = jest.fn();
-jest.mock("next-auth", () => ({ getServerSession }));
+import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const write = jest.fn();
@@ -33,26 +32,26 @@ function req(file?: File) {
 
 describe("POST", () => {
   it("returns 403 without session", async () => {
-    getServerSession.mockResolvedValueOnce(null);
+    __setMockSession(null as any);
     const res = await POST(req(), { params: Promise.resolve({ shop: "s1" }) });
     expect(res.status).toBe(403);
   });
 
   it("returns 403 for non-admin user", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "user" } });
+    __setMockSession({ user: { role: "user" } } as any);
     const res = await POST(req(), { params: Promise.resolve({ shop: "s1" }) });
     expect(res.status).toBe(403);
   });
 
   it("returns 400 when no file provided", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const res = await POST(req(), { params: Promise.resolve({ shop: "s1" }) });
     expect(res.status).toBe(400);
     await expect(res.json()).resolves.toEqual({ error: "No file provided" });
   });
 
   it("returns 400 when file lacks text method", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const badFile: any = { name: "bad.csv" };
     const res = await POST(req(badFile), { params: Promise.resolve({ shop: "s1" }) });
     expect(res.status).toBe(400);
@@ -60,7 +59,7 @@ describe("POST", () => {
   });
 
   it("imports inventory from JSON", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const items = [
       { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
     ];
@@ -74,7 +73,7 @@ describe("POST", () => {
   });
 
   it("imports inventory from CSV", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const csv = "sku,productId,variant.color,quantity\nsku1,p1,red,2";
     const file = new File([csv], "inv.csv", { type: "text/csv" });
     const res = await POST(req(file), { params: Promise.resolve({ shop: "s1" }) });
@@ -92,7 +91,7 @@ describe("POST", () => {
   });
 
   it("returns 400 when CSV contains invalid data", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const csv = "sku,productId,variant.color,quantity\nsku1,p1,red,-1";
     const file = new File([csv], "inv.csv", { type: "text/csv" });
     const res = await POST(req(file), { params: Promise.resolve({ shop: "s1" }) });

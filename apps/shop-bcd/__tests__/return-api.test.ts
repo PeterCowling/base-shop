@@ -4,10 +4,6 @@ import type Stripe from "stripe";
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
 
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
 
 afterEach(() => jest.resetModules());
 

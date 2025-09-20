@@ -23,7 +23,7 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
-    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs --coverageDirectory ../../coverage/email",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs",
     "lint": "eslint ."
   },
   "dependencies": {

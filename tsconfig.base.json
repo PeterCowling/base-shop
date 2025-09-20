@@ -233,6 +233,15 @@
         "packages/zod-utils/src/*",
         "packages/zod-utils/dist/*"
       ]
+      ,
+      "@acme/test-utils": [
+        "packages/test-utils/src/index.ts",
+        "packages/test-utils/dist/index.d.ts"
+      ],
+      "@acme/test-utils/*": [
+        "packages/test-utils/src/*",
+        "packages/test-utils/dist/*"
+      ]
     }
   },
   "files": [

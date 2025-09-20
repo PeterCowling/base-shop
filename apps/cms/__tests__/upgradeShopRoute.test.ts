@@ -1,12 +1,4 @@
-
-// Polyfill Response.json if missing
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), {
-      ...init,
-      headers: { "content-type": "application/json", ...(init?.headers || {}) },
-    });
-}
+ 
 
 jest.mock("@auth", () => ({
   requirePermission: jest.fn(),
@@ -79,4 +71,3 @@ describe("upgrade-shop API route", () => {
     await expect(res.json()).resolves.toEqual({ error: "Upgrade failed" });
   });
 });
-

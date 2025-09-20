@@ -17,13 +17,14 @@ jest.mock("@/components/atoms/shadcn", () => ({
   Card: ({ children }: any) => <div>{children}</div>,
   CardContent: ({ children }: any) => <div>{children}</div>,
 }));
-jest.mock("next-auth", () => ({ getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }) }));
+import { __setMockSession } from "next-auth";
 jest.mock("next/dynamic", () => () => () => null);
 
 import SettingsPage from "../src/app/cms/shop/[shop]/settings/page";
 
 describe("Shop settings page", () => {
   it("shows default and override tokens with reset button", async () => {
+    __setMockSession({ user: { role: "admin" } } as any);
     mockReadSettings.mockResolvedValue({
       languages: ["en"],
       currency: "USD",

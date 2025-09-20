@@ -1,10 +1,5 @@
 import { jest } from "@jest/globals";
 
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: any, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
-
 const originalFetch = global.fetch;
 
 async function loadMediaProbeRoute(session: unknown = { user: {} }) {

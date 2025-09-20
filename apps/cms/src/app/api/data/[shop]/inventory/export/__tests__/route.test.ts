@@ -1,7 +1,5 @@
 import { NextRequest } from "next/server";
-
-const getServerSession = jest.fn();
-jest.mock("next-auth", () => ({ getServerSession }));
+import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const read = jest.fn();
@@ -27,7 +25,7 @@ describe("GET", () => {
   it.each([null, { user: { role: "user" } }])(
     "returns 403 for session %p",
     async (session) => {
-      getServerSession.mockResolvedValue(session);
+      __setMockSession(session as any);
       const res = await GET(req("http://test.local"), {
         params: Promise.resolve({ shop: "s1" }),
       });
@@ -37,7 +35,7 @@ describe("GET", () => {
   );
 
   it("exports CSV when format=csv", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const items = [
       {
         sku: "sku1",
@@ -67,7 +65,7 @@ describe("GET", () => {
   });
 
   it("exports JSON by default", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const items = [
       {
         sku: "sku1",
@@ -106,7 +104,7 @@ describe("GET", () => {
   });
 
   it("returns 400 when repository errors", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     read.mockRejectedValue(new Error("oops"));
     const res = await GET(req("http://test.local"), {
       params: Promise.resolve({ shop: "s1" }),
@@ -115,4 +113,3 @@ describe("GET", () => {
     expect(await res.json()).toEqual({ error: "oops" });
   });
 });
-

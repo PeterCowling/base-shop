@@ -2,11 +2,6 @@
 import path from "node:path";
 import { createHmac } from "node:crypto";
 
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
-
 describe("/api/preview-token", () => {
   const appDir = path.join(__dirname, "..");
   let cwd: string;
@@ -48,4 +43,3 @@ describe("/api/preview-token", () => {
     expect(await res.json()).toEqual({ token });
   });
 });
-

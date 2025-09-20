@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { getServerSession } from "next-auth";
+import { __setMockSession } from "next-auth";
 import { listPendingUsers } from "@cms/actions/accounts.server";
 import { readRbac } from "@cms/lib/server/rbacStore";
 import fs from "fs/promises";
@@ -46,7 +46,6 @@ jest.mock("@platform-core/dataRoot", () => ({
   resolveDataRoot: () => "/data",
 }));
 
-jest.mock("next-auth", () => ({ getServerSession: jest.fn() }));
 
 jest.mock("fs/promises", () => ({
   readdir: jest.fn(),
@@ -57,12 +56,11 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-const mockSession = getServerSession as jest.Mock;
 const mockReaddir = fs.readdir as unknown as jest.Mock;
 const mockListPending = listPendingUsers as jest.Mock;
 
 it("shows admin actions when no shops exist", async () => {
-  mockSession.mockResolvedValueOnce({ user: { role: "admin" } });
+  __setMockSession({ user: { role: "admin" } } as any);
   mockReaddir.mockResolvedValueOnce([]);
   mockListPending.mockResolvedValueOnce([]);
 
@@ -79,7 +77,7 @@ it("shows admin actions when no shops exist", async () => {
 });
 
 it("hides admin controls for non-admin users", async () => {
-  mockSession.mockResolvedValueOnce({ user: { role: "viewer" } });
+  __setMockSession({ user: { role: "viewer" } } as any);
   mockReaddir.mockResolvedValueOnce([]);
 
   const { default: CmsDashboardPage } = await import("./page");

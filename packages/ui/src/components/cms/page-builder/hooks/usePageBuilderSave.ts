@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import type { Page, PageComponent, HistoryState } from "@acme/types";
 import useAutoSave from "./useAutoSave";
+import { exportComponents } from "../state/exportComponents";
 
 interface Params {
   page: Page;
@@ -44,10 +45,36 @@ export default function usePageBuilderSave({
   }, [formData]);
 
   const handleSave = useCallback(() => onSave(formDataRef.current), [onSave]);
-  const handlePublish = useCallback(
-    () => onPublish(formDataRef.current).then(() => clearHistory()),
-    [onPublish, clearHistory]
-  );
+  const handlePublish = useCallback(() => {
+    // Build a transformed FormData merging editor metadata into components
+    const fd = formDataRef.current;
+    const editor = (() => {
+      try {
+        const s = fd.get("history") as string | null;
+        if (!s) return undefined;
+        const parsed = JSON.parse(String(s)) as HistoryState;
+        return (parsed as any).editor as HistoryState["editor"] | undefined;
+      } catch {
+        return undefined;
+      }
+    })();
+    const raw = fd.get("components") as string | null;
+    let nextComponents = components;
+    try {
+      const list = raw ? (JSON.parse(String(raw)) as PageComponent[]) : components;
+      nextComponents = exportComponents(list, editor);
+    } catch {
+      nextComponents = exportComponents(components, editor);
+    }
+    const out = new FormData();
+    // copy all existing entries
+    for (const [k, v] of (fd as any).entries() as Iterable<[string, any]>) {
+      if (k === "components") continue;
+      out.append(k, v);
+    }
+    out.append("components", JSON.stringify(nextComponents));
+    return onPublish(out).then(() => clearHistory());
+  }, [onPublish, clearHistory, components]);
 
   const { autoSaveState } = useAutoSave({
     onSave,

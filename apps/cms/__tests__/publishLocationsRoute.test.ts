@@ -1,32 +1,11 @@
 import fs from "node:fs/promises";
-import os from "node:os";
 import path from "node:path";
+import { withTempRepo } from "@acme/test-utils";
 
 jest.setTimeout(20000);
 
-// NextResponse.json relies on the static Response.json API, which cross-fetch
-// does not provide. Polyfill it when missing.
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), {
-      ...init,
-      headers: { "content-type": "application/json", ...(init?.headers || {}) },
-    });
-}
 
-/** Create a temp repo with cwd set, run cb, then restore */
-async function withTempRepo(cb: (dir: string) => Promise<void>): Promise<void> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "pl-"));
-  await fs.mkdir(path.join(dir, "data"), { recursive: true });
-  const cwd = process.cwd();
-  process.chdir(dir);
-  jest.resetModules();
-  try {
-    await cb(dir);
-  } finally {
-    process.chdir(cwd);
-  }
-}
+// Using shared helper to create temp data repo
 
 describe("publish locations API route", () => {
   afterEach(() => {

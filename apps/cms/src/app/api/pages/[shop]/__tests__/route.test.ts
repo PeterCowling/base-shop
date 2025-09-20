@@ -1,7 +1,5 @@
 import { NextRequest } from "next/server";
-
-const getServerSession = jest.fn();
-jest.mock("next-auth", () => ({ getServerSession }));
+import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const getPages = jest.fn();
@@ -23,7 +21,7 @@ function req(url: string) {
 
 describe("pages route", () => {
   it("returns paginated list of pages", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     getPages.mockResolvedValue([
       { id: "p1" },
       { id: "p2" },
@@ -37,7 +35,7 @@ describe("pages route", () => {
   });
 
   it("returns all pages when no pagination params provided", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const pages = [{ id: "a" }, { id: "b" }];
     getPages.mockResolvedValue(pages);
     const res = await GET(req("http://test.local"), {
@@ -48,7 +46,7 @@ describe("pages route", () => {
   });
 
   it("returns 403 for unauthorized access", async () => {
-    getServerSession.mockResolvedValue(null);
+    __setMockSession(null as any);
     const res = await GET(req("http://test.local"), {
       params: Promise.resolve({ shop: "s1" }),
     });
@@ -57,4 +55,3 @@ describe("pages route", () => {
     expect(getPages).not.toHaveBeenCalled();
   });
 });
-

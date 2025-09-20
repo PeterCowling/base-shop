@@ -36,3 +36,34 @@
   }
 }
 
+/* Mobile stacking helpers for storefront/runtime */
+@media (max-width: 767px) {
+  /* When applied to a container element, reverse child order on mobile */
+  .pb-stack-mobile-reverse { display: flex !important; flex-direction: column-reverse; }
+  /* Deterministic per-child order on mobile */
+  .pb-order-mobile-0 { order: 0; }
+  .pb-order-mobile-1 { order: 1; }
+  .pb-order-mobile-2 { order: 2; }
+  .pb-order-mobile-3 { order: 3; }
+  .pb-order-mobile-4 { order: 4; }
+  .pb-order-mobile-5 { order: 5; }
+  .pb-order-mobile-6 { order: 6; }
+  .pb-order-mobile-7 { order: 7; }
+  .pb-order-mobile-8 { order: 8; }
+  .pb-order-mobile-9 { order: 9; }
+  .pb-order-mobile-10 { order: 10; }
+  .pb-order-mobile-11 { order: 11; }
+  .pb-order-mobile-12 { order: 12; }
+  .pb-order-mobile-13 { order: 13; }
+  .pb-order-mobile-14 { order: 14; }
+  .pb-order-mobile-15 { order: 15; }
+  .pb-order-mobile-16 { order: 16; }
+  .pb-order-mobile-17 { order: 17; }
+  .pb-order-mobile-18 { order: 18; }
+  .pb-order-mobile-19 { order: 19; }
+  .pb-order-mobile-20 { order: 20; }
+  .pb-order-mobile-21 { order: 21; }
+  .pb-order-mobile-22 { order: 22; }
+  .pb-order-mobile-23 { order: 23; }
+  .pb-order-mobile-24 { order: 24; }
+}

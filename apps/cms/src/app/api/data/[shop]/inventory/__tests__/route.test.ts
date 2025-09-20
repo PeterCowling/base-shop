@@ -1,7 +1,5 @@
 import { NextRequest } from "next/server";
-
-const getServerSession = jest.fn();
-jest.mock("next-auth", () => ({ getServerSession }));
+import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const write = jest.fn();
@@ -31,7 +29,7 @@ describe("POST", () => {
   it.each([null, { user: { role: "user" } }])(
     "returns 403 for session %p",
     async (session) => {
-      getServerSession.mockResolvedValueOnce(session);
+      __setMockSession(session as any);
       const res = await POST(req([]), {
         params: Promise.resolve({ shop: "s1" }),
       });
@@ -41,7 +39,7 @@ describe("POST", () => {
   );
 
   it("returns 400 for invalid payload", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const res = await POST(
       req([{ sku: "a", productId: "p1", quantity: -1, variantAttributes: {} }]),
       { params: Promise.resolve({ shop: "s1" }) },
@@ -51,7 +49,7 @@ describe("POST", () => {
   });
 
   it("writes inventory and returns success", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const items = [
       { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
     ];

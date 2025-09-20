@@ -7,7 +7,8 @@ const editorFlagsSchema = z.object({
   locked: z.boolean().optional(),
   zIndex: z.number().int().optional(),
   hidden: z.array(z.enum(["desktop", "tablet", "mobile"])).optional(),
-  stackStrategy: z.enum(["default", "reverse"]).optional(),
+  stackStrategy: z.enum(["default", "reverse", "custom"]).optional(),
+  orderMobile: z.number().int().nonnegative().optional(),
 });
 
 export const historyStateSchema: z.ZodType<unknown> = z

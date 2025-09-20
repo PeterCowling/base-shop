@@ -95,7 +95,10 @@ function DynamicRenderer({
           // ignore invalid style JSON
         }
 
-        const hidden = (editor?.[id]?.hidden ?? []) as ("desktop" | "tablet" | "mobile")[];
+        const hidden = [
+          ...((((block as any).hiddenBreakpoints as ("desktop"|"tablet"|"mobile")[] | undefined) ?? [])),
+          ...((editor?.[id]?.hidden ?? []) as ("desktop" | "tablet" | "mobile")[]),
+        ];
         const hideClasses = [
           hidden.includes("desktop") ? "pb-hide-desktop" : "",
           hidden.includes("tablet") ? "pb-hide-tablet" : "",
@@ -104,11 +107,19 @@ function DynamicRenderer({
           .filter(Boolean)
           .join(" ");
 
+        // Optional export-time props
+        const orderMobile = (typeof (block as any).orderMobile === "number" ? ((block as any).orderMobile as number) : undefined);
+        const orderClass = typeof orderMobile === "number" ? `pb-order-mobile-${orderMobile}` : "";
+        const stackStrategy = (block as any).stackStrategy as string | undefined;
+        const stackClass = stackStrategy === "reverse" ? "pb-stack-mobile-reverse" : "";
+        const existing = (props as any).className as string | undefined;
+        const mergedClassName = [existing, stackClass].filter(Boolean).join(" ");
+
         if (block.type === "ProductGrid") {
           return (
             <div
               key={id}
-              className={["pb-scope", hideClasses].filter(Boolean).join(" ") || undefined}
+              className={["pb-scope", hideClasses, orderClass].filter(Boolean).join(" ") || undefined}
               style={{
                 ...(styleVars as any),
                 fontFamily: (styleVars as any)["--font-family"] ? "var(--font-family)" : undefined,
@@ -132,6 +143,7 @@ function DynamicRenderer({
                 {...props}
                 skus={PRODUCTS as SKU[]}
                 locale={locale}
+                className={mergedClassName}
               />
             </div>
           );
@@ -140,7 +152,7 @@ function DynamicRenderer({
         return (
           <div
             key={id}
-            className={["pb-scope", hideClasses].filter(Boolean).join(" ") || undefined}
+            className={["pb-scope", hideClasses, orderClass].filter(Boolean).join(" ") || undefined}
             style={{
               ...(styleVars as any),
               fontFamily: (styleVars as any)["--font-family"] ? "var(--font-family)" : undefined,
@@ -160,7 +172,7 @@ function DynamicRenderer({
                   : undefined,
             }}
           >
-            <Comp {...(props as any)} locale={locale} />
+            <Comp {...(props as any)} locale={locale} className={mergedClassName} />
           </div>
         );
       })}

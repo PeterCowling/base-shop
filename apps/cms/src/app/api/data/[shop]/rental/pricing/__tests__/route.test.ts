@@ -1,7 +1,5 @@
 import { NextRequest } from "next/server";
-
-const getServerSession = jest.fn();
-jest.mock("next-auth", () => ({ getServerSession }));
+import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const writePricing = jest.fn();
@@ -31,7 +29,7 @@ describe("POST", () => {
   it.each([null, { user: { role: "user" } }])(
     "returns 403 for session %p",
     async (session) => {
-      getServerSession.mockResolvedValueOnce(session);
+      __setMockSession(session as any);
       const res = await POST(req({}), {
         params: Promise.resolve({ shop: "s1" }),
       });
@@ -41,7 +39,7 @@ describe("POST", () => {
   );
 
   it("returns 400 for invalid payload", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const res = await POST(req({ baseDailyRate: "oops" }), {
       params: Promise.resolve({ shop: "s1" }),
     });
@@ -50,7 +48,7 @@ describe("POST", () => {
   });
 
   it("writes pricing and returns success", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const data = {
       baseDailyRate: 10,
       durationDiscounts: [{ minDays: 7, rate: 0.9 }],

@@ -1,23 +1,14 @@
 import fs from "node:fs/promises";
-import os from "node:os";
 import path from "node:path";
+import { withTempRepo, mockNextAuthAdmin } from "@acme/test-utils";
 
 jest.setTimeout(15000);
 
-/** Creates a temp repo, runs cb, then restores CWD */
-async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "pages-"));
-  const shopDir = path.join(dir, "data", "shops", "test");
-  await fs.mkdir(shopDir, { recursive: true });
-  const cwd = process.cwd();
-  process.chdir(dir);
-  jest.resetModules();
-  try {
+const withRepo = (cb: (dir: string) => Promise<void>) =>
+  withTempRepo(async (dir) => {
+    mockNextAuthAdmin();
     await cb(dir);
-  } finally {
-    process.chdir(cwd);
-  }
-}
+  }, { prefix: 'pages-' });
 
 function mockAuth() {
   jest.doMock("next-auth", () => ({

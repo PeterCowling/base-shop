@@ -1,15 +1,5 @@
 import { jest } from '@jest/globals';
-
-// jsdom's Response lacks the static json helper used by NextResponse
-if (typeof (Response as any).json !== 'function') {
-  (Response as any).json = function json(body: unknown, init?: ResponseInit) {
-    const headers = new Headers(init?.headers);
-    if (!headers.has('content-type')) {
-      headers.set('content-type', 'application/json');
-    }
-    return new Response(JSON.stringify(body), { ...init, headers });
-  };
-}
+import { jsonRequest } from '@acme/test-utils';
 
 const createNewShop = jest.fn();
 const validateShopEnv = jest.fn();
@@ -43,9 +33,7 @@ afterEach(() => {
   jest.resetAllMocks();
 });
 
-function req(body: any) {
-  return { json: async () => body } as unknown as Request;
-}
+const req = (body: any) => jsonRequest(body);
 
 describe('POST /cms/api/configurator', () => {
   it('returns 201 with deployment when env is valid', async () => {
@@ -107,4 +95,3 @@ describe('POST /cms/api/configurator', () => {
     );
   });
 });
-

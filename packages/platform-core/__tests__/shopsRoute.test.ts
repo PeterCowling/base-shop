@@ -2,17 +2,6 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
-// jsdom's Response lacks the static json helper used by NextResponse
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = function json(body: unknown, init?: ResponseInit) {
-    const headers = new Headers(init?.headers);
-    if (!headers.has("content-type")) {
-      headers.set("content-type", "application/json");
-    }
-    return new Response(JSON.stringify(body), { ...init, headers });
-  };
-}
-
 /** Creates a temp dir, runs cb, restores CWD */
 async function withTmpRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "shops-api-"));

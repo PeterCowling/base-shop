@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
-    "test": "rimraf dist && jest --config ../../jest.config.cjs --coverageDirectory ../../coverage/telemetry",
+    "test": "rimraf dist && jest --config ../../jest.config.cjs",
     "lint": "eslint ."
   },
   "exports": {

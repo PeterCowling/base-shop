@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { flattenInventoryItem } from "@platform-core/utils/inventory";
-import { withTempRepo, mockSessionAndEmail } from "./helpers";
+import { withTempRepo, mockSessionAndEmail } from "@acme/test-utils";
 
 describe("inventory export route", () => {
   const env = { ...process.env };

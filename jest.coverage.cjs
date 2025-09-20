@@ -28,7 +28,9 @@ module.exports = {
     " /packages/config/src/env/__tests__/",
     "src/.*\\.schema\\.ts$",
   ],
-  coverageReporters: ["text", "text-summary", "lcov", "json"],
+  // Use concise terminal output to avoid misaligned tables when running
+  // across many packages. Full HTML and lcov remain available.
+  coverageReporters: ["text-summary", "lcov", "json"],
   coverageThreshold: {
     global: {
       lines: 80,

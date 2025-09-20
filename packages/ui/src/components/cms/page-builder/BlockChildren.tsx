@@ -42,9 +42,18 @@ export default function BlockChildren({
   let visibleChildren = (childComponents ?? []).filter((c) => !isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport));
   // Apply container stacking presets for mobile
   if (viewport === "mobile") {
-    const strategy = (editor?.[component.id]?.stackStrategy as "default" | "reverse" | undefined) ?? "default";
+    const strategy = (editor?.[component.id]?.stackStrategy as "default" | "reverse" | "custom" | undefined) ?? "default";
     if (strategy === "reverse") {
       visibleChildren = [...visibleChildren].reverse();
+    } else if (strategy === "custom") {
+      visibleChildren = [...visibleChildren].sort((a, b) => {
+        const oa = (editor?.[a.id]?.orderMobile as number | undefined);
+        const ob = (editor?.[b.id]?.orderMobile as number | undefined);
+        const da = oa === undefined ? Number.POSITIVE_INFINITY : oa;
+        const db = ob === undefined ? Number.POSITIVE_INFINITY : ob;
+        if (da === db) return 0;
+        return da < db ? -1 : 1;
+      });
     }
   }
   if (visibleChildren.length === 0) return null;

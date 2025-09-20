@@ -2,11 +2,6 @@
 import path from "node:path";
 import { promises as fs } from "node:fs";
 
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
-
 describe("/api/upgrade-changes", () => {
   const appDir = path.join(__dirname, "..");
   const filePath = path.join(appDir, "upgrade-changes.json");

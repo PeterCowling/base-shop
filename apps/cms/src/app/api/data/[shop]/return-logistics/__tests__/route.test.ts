@@ -1,7 +1,5 @@
 import { NextRequest } from "next/server";
-
-const getServerSession = jest.fn();
-jest.mock("next-auth", () => ({ getServerSession }));
+import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const writeReturnLogistics = jest.fn();
@@ -29,7 +27,7 @@ function req(body: string) {
 
 describe("POST", () => {
   it("writes return logistics and returns success", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const data = {
       labelService: "ups",
       inStore: true,
@@ -51,7 +49,7 @@ describe("POST", () => {
   });
 
   it("returns 400 for malformed JSON", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const res = await POST(req("{"), {
       params: Promise.resolve({ shop: "s1" }),
     });

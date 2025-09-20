@@ -4,7 +4,8 @@
 /*  Executed **once** before the Jest environment is ready                    */
 /* -------------------------------------------------------------------------- */
 
-(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+// Centralize fragile React/Next polyfills and shims
+import "./test/polyfills/react-compat";
 
 import { jest } from "@jest/globals";
 jest.mock("@prisma/client");
@@ -82,48 +83,18 @@ mutableEnv.EMAIL_PROVIDER ||= "smtp";
 /* -------------------------------------------------------------------------- */
 
 import "@testing-library/jest-dom";
-// Use require so that the global IS_REACT_ACT_ENVIRONMENT is set before modules load
+// Configure Testing Library defaults
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { configure } = require("@testing-library/react");
 configure({ testIdAttribute: "data-cy" });
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require("cross-fetch/polyfill");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const React = require("react");
 import { TextDecoder, TextEncoder } from "node:util";
 import { File } from "node:buffer";
 import { webcrypto } from "node:crypto";
 import "./test/polyfills/form-request-submit";
 
-// React 19's experimental builds may not yet expose a built‑in `act` helper.
-// Testing libraries still expect `React.act` to exist, so provide a minimal
-// fallback that awaits the callback and returns a thenable.
-if (!(React as any).act) {
-  (React as any).act = (callback: () => void | Promise<void>) => {
-    const result = callback();
-    return result && typeof (result as any).then === "function"
-      ? result
-      : Promise.resolve(result);
-  };
-}
-
-// React 19 renamed its internal export used by react‑dom.  Depending on which
-// version of React/React‑DOM is installed, either the old `__SECRET_INTERNALS…`
-// or the new `__CLIENT_INTERNALS…` may be missing.  Alias whichever one is
-// absent so that both names resolve to the same object.
-if (
-  (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE &&
-  !(React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
-) {
-  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED =
-    (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
-} else if (
-  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED &&
-  !(React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE
-) {
-  (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE =
-    (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-}
+// React/Next polyfills are provided via test/polyfills/react-compat
 
 /** Node’s `util` encoders/decoders are required by React-DOM’s server renderer */
 (globalThis as any).TextEncoder ||= TextEncoder;
@@ -171,27 +142,7 @@ if (
  * a lightweight stub is installed via `test/polyfills/messageChannel.js`.
  */
 
-/**
- * Next 15 occasionally calls the *static* helper `Response.json()`, which
- * has not yet landed in Node’s WHATWG `Response` implementation.  We shim
- * it here so route-handler tests don’t blow up.
- */
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (
-    data: unknown,
-    init: ResponseInit | number = {}
-  ): Response => {
-    const opts: ResponseInit =
-      typeof init === "number" ? { status: init } : init;
-
-    const headers = new Headers(opts.headers);
-    if (!headers.has("content-type")) {
-      headers.set("content-type", "application/json");
-    }
-
-    return new Response(JSON.stringify(data), { ...opts, headers });
-  };
-}
+// Response.json() polyfill is provided centrally via `test/setup-response-json.ts`.
 
 /* -------------------------------------------------------------------------- */
 /* 3.  MSW (Mock Service Worker) – network stubbing for API calls             */
@@ -202,3 +153,26 @@ import { server } from "./test/msw/server";
 beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
+
+// Reset shared auth/config mocks between tests to avoid leakage across suites
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const auth = require("next-auth");
+  if (auth && typeof auth.__resetMockSession === "function") {
+    afterEach(() => auth.__resetMockSession());
+  }
+} catch {}
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const authJwt = require("next-auth/jwt");
+  if (authJwt && typeof authJwt.__resetMockToken === "function") {
+    afterEach(() => authJwt.__resetMockToken());
+  }
+} catch {}
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const authReact = require("next-auth/react");
+  if (authReact && typeof authReact.__resetReactAuthImpls === "function") {
+    afterEach(() => authReact.__resetReactAuthImpls());
+  }
+} catch {}

@@ -3,8 +3,8 @@
 
 import { jest } from "@jest/globals";
 import fs from "node:fs/promises";
-import os from "node:os";
 import path from "node:path";
+import { withTempRepo } from "@acme/test-utils";
 import "../src/types/next-auth.d.ts";
 
 /* -------------------------------------------------------------------------- */
@@ -16,17 +16,7 @@ interface StoredUsersFile {
   users: Record<string, { id: string; email: string }>;
 }
 
-async function withTempRepo(cb: (dir: string) => Promise<void>): Promise<void> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "rbac-"));
-  const cwd = process.cwd();
-  process.chdir(dir);
-  jest.resetModules();
-  try {
-    await cb(dir);
-  } finally {
-    process.chdir(cwd);
-  }
-}
+// Use shared helper to set up temp repo
 
 function fd(data: Record<string, string | string[]>): FormData {
   const f = new FormData();

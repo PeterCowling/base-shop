@@ -21,10 +21,6 @@ jest.mock("@acme/config/env/auth", () => {
   return { authEnv: env, loadAuthEnv: () => env };
 });
 
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
 
 afterEach(() => jest.resetModules());
 
@@ -101,4 +97,3 @@ test("standard token not accepted as upgrade token", async () => {
 
   expect(res.status).toBe(401);
 });
-

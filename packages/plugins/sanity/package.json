@@ -11,7 +11,7 @@
     }
   },
   "scripts": {
-    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../../jest.config.cjs --coverageDirectory ../../../coverage/plugin-sanity",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../../jest.config.cjs",
     "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint ."

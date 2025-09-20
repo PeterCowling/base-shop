@@ -6,6 +6,8 @@ import type { PageComponent, HistoryState } from "@acme/types";
 import { memo } from "react";
 import type { Action } from "./state";
 import Block from "./Block";
+import useInlineText from "./useInlineText";
+import InlineEditableButton from "./InlineEditableButton";
 import useCanvasResize from "./useCanvasResize";
 import useCanvasDrag from "./useCanvasDrag";
 import useCanvasSpacing from "./useCanvasSpacing";
@@ -20,7 +22,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  Button,
+  Button as MenuButton,
+  Button as UIButton,
 } from "../../atoms/shadcn";
 
 type Props = {
@@ -69,6 +72,13 @@ const BlockItem = memo(function BlockItemComponent({
     containerRef,
   } = useBlockDnD(component.id, index, parentId);
 
+  const isInlineEditableButton = component.type === "Button";
+  const inline = isInlineEditableButton
+    ? (useInlineText(component as any, "label") as ReturnType<
+        typeof useInlineText<any, any>
+      >)
+    : null;
+
   const {
     widthKey,
     heightKey,
@@ -100,7 +110,7 @@ const BlockItem = memo(function BlockItemComponent({
     gridEnabled,
     gridCols,
     containerRef,
-    disabled: !!effLocked,
+    disabled: !!effLocked || !!inline?.editing,
   });
 
   const {
@@ -119,7 +129,7 @@ const BlockItem = memo(function BlockItemComponent({
     gridEnabled,
     gridCols,
     containerRef,
-    disabled: !!effLocked,
+    disabled: !!effLocked || !!inline?.editing,
   });
 
   const { startSpacing, overlay: spacingOverlay } = useCanvasSpacing({
@@ -227,7 +237,19 @@ const BlockItem = memo(function BlockItemComponent({
           </div>
         )}
       </div>
-      <Block component={{ ...component, zIndex: effZIndex, locked: effLocked } as any} locale={locale} />
+      {isInlineEditableButton ? (
+        <InlineEditableButton
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          component={component as any}
+          locale={locale}
+          inline={inline as any}
+          onCommit={(patch) =>
+            dispatch({ type: "update", id: component.id, patch: patch as any })
+          }
+        />
+      ) : (
+        <Block component={{ ...component, zIndex: effZIndex, locked: effLocked } as any} locale={locale} />
+      )}
       {spacingOverlay && (
         <div
           className="bg-primary/20 pointer-events-none absolute z-30"
@@ -267,7 +289,7 @@ const BlockItem = memo(function BlockItemComponent({
       <div className="absolute top-1 right-10 z-30">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button type="button" variant="outline" className="h-6 px-2 py-1 text-xs">⋯</Button>
+            <MenuButton type="button" variant="outline" className="h-6 px-2 py-1 text-xs">⋯</MenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">
             <DropdownMenuItem onClick={(e) => { e.stopPropagation(); dispatch({ type: "update-editor", id: component.id, patch: { zIndex: 999 } as any }); }}>Bring to front</DropdownMenuItem>

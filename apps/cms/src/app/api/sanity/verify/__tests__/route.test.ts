@@ -1,16 +1,5 @@
 import { jest } from '@jest/globals';
 
-// jsdom's Response lacks the static json helper used by NextResponse
-if (typeof (Response as any).json !== 'function') {
-  (Response as any).json = function json(body: unknown, init?: ResponseInit) {
-    const headers = new Headers(init?.headers);
-    if (!headers.has('content-type')) {
-      headers.set('content-type', 'application/json');
-    }
-    return new Response(JSON.stringify(body), { ...init, headers });
-  };
-}
-
 const verifyCredentials = jest.fn();
 
 jest.mock('@acme/plugin-sanity', () => ({
@@ -104,4 +93,3 @@ describe('POST /api/sanity/verify', () => {
     expect(consoleError).toHaveBeenCalledWith(expect.any(Error));
   });
 });
-

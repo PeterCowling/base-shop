@@ -4,14 +4,6 @@ import path from "node:path";
 
 jest.setTimeout(20000);
 
-// Polyfill Response.json when missing
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), {
-      ...init,
-      headers: { "content-type": "application/json", ...(init?.headers || {}) },
-    });
-}
 
 async function withTemplates(
   files: Record<string, unknown>,

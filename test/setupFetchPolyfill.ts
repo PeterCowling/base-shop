@@ -13,7 +13,6 @@ const fetch: typeof globalThis.fetch =
   (crossFetch as unknown as typeof globalThis.fetch);
 const { Headers, Request, Response } = crossFetch;
 const { webcrypto } = require("node:crypto") as typeof import("node:crypto");
-const React = require("react") as typeof import("react");
 
 const mutableEnv = process.env as Record<string, string>;
 mutableEnv.EMAIL_FROM ||= "test@example.com";
@@ -86,31 +85,7 @@ if (!("getAll" in Headers.prototype)) {
   };
 }
 
-// React 19 renamed some internal fields used by react-dom. Jest loads test
-// modules before `setupFilesAfterEnv`, so ensure both the old and new
-// properties exist on the React instance that `react-dom` will import.
-if (
-  (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE &&
-  !(React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED
-) {
-  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED =
-    (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
-} else if (
-  (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED &&
-  !(React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE
-) {
-  (React as any).__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE =
-    (React as any).__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-}
-
-// The experimental React builds used in this repo may not provide `act`.
-// Testing libraries rely on it, so polyfill a minimal thenable version.
-if (!(React as any).act) {
-  (React as any).act = (callback: () => void | Promise<void>) => {
-    const result = callback();
-    return result && typeof (result as any).then === "function"
-      ? result
-      : Promise.resolve(result);
-  };
-}
-
+// Shared React/Next polyfills (act, internals alias, MessageChannel, Response.json)
+// Import AFTER fetch/Response are available so Response.json shim can attach.
+// eslint-disable-next-line import/no-relative-packages
+import "./polyfills/react-compat";

@@ -4,10 +4,6 @@ import { nowIso } from "@date-utils";
 
 import type { Page } from "@acme/types";
 
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
 
 async function withRepo(
   cb: (

@@ -1,26 +1,8 @@
 import fs from "node:fs/promises";
-import os from "node:os";
 import path from "node:path";
+import { withTempRepo } from "@acme/test-utils";
 
-// Polyfill Response.json when missing
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
-
-async function withTempRepo(cb: (dir: string) => Promise<void>): Promise<void> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "inv-route-"));
-  const shopDir = path.join(dir, "data", "shops", "test");
-  await fs.mkdir(shopDir, { recursive: true });
-  const cwd = process.cwd();
-  process.chdir(dir);
-  jest.resetModules();
-  try {
-    await cb(dir);
-  } finally {
-    process.chdir(cwd);
-  }
-}
+// Response.json polyfill is provided in jest.setup.ts
 
 describe("inventory update route", () => {
   afterEach(() => {

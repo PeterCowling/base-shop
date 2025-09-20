@@ -4,8 +4,7 @@ import { promises as fsp } from "fs";
 import os from "os";
 import path from "path";
 
-const getServerSession = jest.fn();
-jest.mock("next-auth", () => ({ getServerSession }));
+import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const resolveDataRoot = jest.fn();
@@ -39,7 +38,7 @@ function req(body: any, shop = "s1") {
 
 describe("POST", () => {
   it("creates new discount", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const res = await POST(req({
       code: "SAVE10",
       description: "10% off",
@@ -60,7 +59,7 @@ describe("POST", () => {
   });
 
   it("updates existing discount when code duplicates", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const file = path.join(tmpDir, "s1", "discounts.json");
     await fsp.mkdir(path.dirname(file), { recursive: true });
     await fsp.writeFile(
@@ -86,7 +85,7 @@ describe("POST", () => {
   });
 
   it("returns 403 without admin session", async () => {
-    getServerSession.mockResolvedValue(null);
+    __setMockSession(null as any);
     const res = await POST(
       req({ code: "SAVE10", description: "10% off", discountPercent: 10 })
     );
@@ -97,4 +96,3 @@ describe("POST", () => {
     ).rejects.toBeTruthy();
   });
 });
-

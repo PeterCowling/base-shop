@@ -81,10 +81,7 @@ jest.mock("next/link", () => {
   };
 });
 
-const getServerSessionMock = jest.fn();
-jest.mock("next-auth", () => ({
-  getServerSession: (...args: unknown[]) => getServerSessionMock(...args),
-}));
+import { __setMockSession } from "next-auth";
 
 const notFoundMock = jest.fn();
 jest.mock("next/navigation", () => ({
@@ -127,7 +124,7 @@ describe("ProductsPage", () => {
     jest.clearAllMocks();
     checkShopExistsMock.mockResolvedValue(true);
     readRepoMock.mockResolvedValue(sampleProducts);
-    getServerSessionMock.mockResolvedValue({ user: { role: "viewer" } });
+    __setMockSession({ user: { role: "viewer" } } as any);
   });
 
   it("shows viewer notice and disables admin actions", async () => {

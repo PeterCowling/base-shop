@@ -1,6 +1,6 @@
 "use client";
 
-import type { PageComponent } from "@acme/types";
+import type { PageComponent, HistoryState } from "@acme/types";
 // Local copy to avoid package export mismatch
 type EditorFlags = {
   name?: string;
@@ -30,6 +30,8 @@ interface Props {
   handleFullSize: (field: string) => void;
   editorFlags?: EditorFlags;
   onUpdateEditor?: (patch: Partial<EditorFlags>) => void;
+  editorMap?: HistoryState["editor"];
+  updateEditorForId?: (id: string, patch: Partial<EditorFlags>) => void;
 }
 
 export default function LayoutPanel({
@@ -39,6 +41,8 @@ export default function LayoutPanel({
   handleFullSize,
   editorFlags,
   onUpdateEditor,
+  editorMap,
+  updateEditorForId,
 }: Props) {
   const cssError = (prop: string, value?: string) =>
     value && !globalThis.CSS?.supports(prop, value)
@@ -191,8 +195,31 @@ export default function LayoutPanel({
             <SelectContent>
               <SelectItem value="default">Default order</SelectItem>
               <SelectItem value="reverse">Reverse order (mobile)</SelectItem>
+              <SelectItem value="custom">Custom order (mobile)</SelectItem>
             </SelectContent>
           </Select>
+          {((editorFlags as any)?.stackStrategy === "custom") && Array.isArray((component as any).children) && (
+            <div className="mt-2 space-y-2">
+              <div className="text-xs text-muted-foreground">Set mobile order for each child (lower appears first)</div>
+              {((component as any).children as PageComponent[]).map((child: PageComponent, idx: number) => {
+                const childFlags = (editorMap ?? {})[child.id] as any;
+                const val = (childFlags?.orderMobile as number | undefined);
+                return (
+                  <Input
+                    key={child.id}
+                    type="number"
+                    label={`${(child as any).name || child.type}`}
+                    placeholder={String(idx)}
+                    value={val === undefined ? "" : String(val)}
+                    onChange={(e) => {
+                      const v = e.target.value === "" ? undefined : Math.max(0, parseInt(e.target.value, 10) || 0);
+                      updateEditorForId?.(child.id, { orderMobile: v as number | undefined } as any);
+                    }}
+                  />
+                );
+              })}
+            </div>
+          )}
         </>
       )}
       {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (

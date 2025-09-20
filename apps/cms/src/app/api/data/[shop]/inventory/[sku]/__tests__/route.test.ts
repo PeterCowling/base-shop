@@ -1,7 +1,5 @@
 import { NextRequest } from "next/server";
-
-const getServerSession = jest.fn();
-jest.mock("next-auth", () => ({ getServerSession }));
+import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const update = jest.fn();
@@ -29,7 +27,7 @@ function req(body: unknown) {
 
 describe("PATCH", () => {
   it("returns 403 without session", async () => {
-    getServerSession.mockResolvedValue(null);
+    __setMockSession(null as any);
     const res = await PATCH(req({}), {
       params: Promise.resolve({ shop: "s1", sku: "sku1" }),
     });
@@ -37,7 +35,7 @@ describe("PATCH", () => {
   });
 
   it("returns 400 for invalid payload", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const res = await PATCH(req({ quantity: "oops" }), {
       params: Promise.resolve({ shop: "s1", sku: "sku1" }),
     });
@@ -46,7 +44,7 @@ describe("PATCH", () => {
   });
 
   it("returns 404 when item not found", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     update.mockRejectedValue(new Error("Not found"));
     const res = await PATCH(req({ quantity: 1, variantAttributes: {} }), {
       params: Promise.resolve({ shop: "s1", sku: "sku1" }),
@@ -56,7 +54,7 @@ describe("PATCH", () => {
   });
 
   it("returns updated item on success", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const updated = {
       sku: "sku1",
       productId: "p1",

@@ -7,10 +7,8 @@ import path from 'path';
 import os from 'os';
 import { PassThrough } from 'stream';
 import type { IncomingMessage, ServerResponse } from 'http';
-import { server } from '../../../../../../__tests__/msw/server';
-
-const getServerSession = jest.fn();
-jest.mock('next-auth', () => ({ getServerSession }));
+import { server } from '../../../../../../test/msw/server';
+import { __setMockSession } from 'next-auth';
 jest.mock('@cms/auth/options', () => ({ authOptions: {} }));
 
 const fileTypeFromBuffer = jest.fn();
@@ -72,7 +70,7 @@ describe('import-products route', () => {
   beforeEach(() => {
     dataRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'data-'));
     process.env.DATA_ROOT = dataRoot;
-    getServerSession.mockResolvedValue({ user: { role: 'admin' } });
+    __setMockSession({ user: { role: 'admin' } } as any);
     fileTypeFromBuffer.mockResolvedValue(undefined);
     createWriteStream.mockImplementation(actualFs.createWriteStream);
     handler = createHandler();

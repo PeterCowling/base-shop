@@ -1,0 +1,74 @@
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
+
+export type WithTempRepoOptions = {
+  prefix?: string;
+  shopId?: string;
+  setCommonEnv?: boolean;
+  createShopDir?: boolean;
+};
+
+/**
+ * Creates an isolated temporary repository structure under a new CWD and
+ * invokes the callback. Restores the original CWD afterwards.
+ *
+ * Defaults:
+ * - Creates `data/shops/<shopId>` (shopId defaults to "test").
+ * - Sets common env secrets used by routes during tests.
+ */
+export async function withTempRepo(
+  cb: (dir: string) => Promise<void>,
+  opts: WithTempRepoOptions = {}
+): Promise<void> {
+  const { prefix = 'repo-', shopId = 'test', setCommonEnv = true, createShopDir = true } = opts;
+  const dir = await fs.mkdtemp(path.join(os.tmpdir(), prefix));
+  const shopDir = path.join(dir, 'data', 'shops', shopId);
+  if (createShopDir) {
+    await fs.mkdir(shopDir, { recursive: true });
+  }
+
+  const cwd = process.cwd();
+  process.chdir(dir);
+
+  // Ensure Response.json exists for NextResponse.json to work in tests
+  if (typeof (Response as any).json !== 'function') {
+    (Response as any).json = (
+      data: unknown,
+      init: ResponseInit | number = {}
+    ): Response => {
+      const opts: ResponseInit = typeof init === 'number' ? { status: init } : init;
+      const headers = new Headers(opts.headers);
+      if (!headers.has('content-type')) headers.set('content-type', 'application/json');
+      return new Response(JSON.stringify(data), { ...opts, headers });
+    };
+  }
+
+  // Polyfill setImmediate used by fast-csv in some test environments
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (global as any).setImmediate ||= ((fn: (...args: any[]) => void, ...args: any[]) =>
+    setTimeout(fn, 0, ...args));
+
+  if (setCommonEnv) {
+    Object.assign(process.env, {
+      NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'test-nextauth-secret-32-chars-long-string!',
+      SESSION_SECRET: process.env.SESSION_SECRET || 'test-session-secret-32-chars-long-string!',
+      CART_COOKIE_SECRET: process.env.CART_COOKIE_SECRET || 'test-cart-secret',
+      STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY || 'sk',
+      NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY:
+        process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk',
+      STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET || 'whsec_test',
+      SKIP_STOCK_ALERT: process.env.SKIP_STOCK_ALERT || '1',
+      CMS_SPACE_URL: process.env.CMS_SPACE_URL || 'http://example.com',
+      CMS_ACCESS_TOKEN: process.env.CMS_ACCESS_TOKEN || 'token',
+      SANITY_API_VERSION: process.env.SANITY_API_VERSION || '2024-01-01',
+    });
+  }
+
+  jest.resetModules();
+  try {
+    await cb(dir);
+  } finally {
+    process.chdir(cwd);
+  }
+}

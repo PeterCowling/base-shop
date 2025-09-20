@@ -8,7 +8,7 @@
   - Component tests reside under `src/components/**/__tests__` and use the `*.test.tsx` suffix (for example, existing CMS suites under `components/cms/__tests__`).【56cef8†L1-L2】
 - **CMS app (@apps/cms)**
   - Run suites with `pnpm exec jest --config ./jest.config.cjs` via the app-level `test` script.【F:apps/cms/package.json†L4-L10】
-  - Jest loads environment helpers (`jest.env.ts`, `jest.setup.ts`) and applies additional setup (`jest.setup.after.ts`, `jest.setup.polyfills.ts`, MSW server) before each test file, so new suites should rely on those shared polyfills and network mocks.【F:apps/cms/jest.config.cjs†L18-L29】【F:apps/cms/jest.setup.after.ts†L6-L153】【F:apps/cms/__tests__/msw/server.ts†L1-L10】
+  - Jest loads environment helpers (`jest.env.ts`, `jest.setup.ts`) and applies additional setup (`jest.setup.after.ts`, `jest.setup.polyfills.ts`, MSW server). Core React/Next shims are centralized in `test/polyfills/react-compat.ts` to avoid drift (React `act`, internal aliasing, `MessageChannel`, `Response.json`). Prefer using these shared polyfills rather than re‑implementing them per suite.【F:apps/cms/jest.config.cjs†L18-L29】【F:apps/cms/jest.setup.after.ts†L6-L153】【F:apps/cms/__tests__/msw/server.ts†L1-L10】【F:test/polyfills/react-compat.ts†L1-L80】
   - Existing page suites (e.g., `campaigns/page.test.tsx`) assert UI feedback with Testing Library utilities—follow the same style for new tests.【F:apps/cms/src/app/cms/campaigns/page.test.tsx†L1-L36】
 
 ## Component Inventory

@@ -39,9 +39,10 @@ interface Props {
   }) => void;
   editor?: HistoryState["editor"];
   onUpdateEditor?: (patch: any) => void;
+  onUpdateEditorForId?: (id: string, patch: any) => void;
 }
 
-function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor }: Props) {
+function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor, onUpdateEditorForId }: Props) {
   const { handleInput } = useComponentInputs(onChange);
   const { handleResize, handleFullSize } = useComponentResize(onResize);
 
@@ -65,6 +66,8 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
             handleFullSize={handleFullSize}
             editorFlags={editor?.[component.id]}
             onUpdateEditor={onUpdateEditor}
+            editorMap={editor}
+            updateEditorForId={onUpdateEditorForId}
           />
         </AccordionContent>
       </AccordionItem>

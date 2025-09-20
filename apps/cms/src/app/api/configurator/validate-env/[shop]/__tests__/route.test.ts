@@ -1,11 +1,6 @@
 import { type NextRequest } from "next/server";
-
-const getServerSession = jest.fn();
+import { __setMockSession } from "next-auth";
 const validateShopEnv = jest.fn();
-
-jest.mock("next-auth", () => ({
-  getServerSession: (...args: any[]) => getServerSession(...args),
-}));
 
 jest.mock("@platform-core/configurator", () => ({
   validateShopEnv: (...args: any[]) => validateShopEnv(...args),
@@ -29,7 +24,7 @@ describe("GET", () => {
   }
 
   it("returns 403 for unauthorized user", async () => {
-    getServerSession.mockResolvedValueOnce(null);
+    __setMockSession(null as any);
 
     const res = await call();
     const body = await res.json();
@@ -39,7 +34,7 @@ describe("GET", () => {
   });
 
   it("returns success when environment is valid", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
 
     const res = await call("shop1");
     const body = await res.json();
@@ -50,7 +45,7 @@ describe("GET", () => {
   });
 
   it("returns 400 when validation throws", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     validateShopEnv.mockImplementationOnce(() => {
       throw new Error("boom");
     });
@@ -62,4 +57,3 @@ describe("GET", () => {
     expect(body).toEqual({ error: "boom" });
   });
 });
-

@@ -6,10 +6,6 @@ import { nowIso } from "@date-utils";
 process.env.PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.NEXT_PUBLIC_SHOP_ID = "shop";
 
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
 
 afterEach(() => jest.resetModules());
 
@@ -96,4 +92,3 @@ test("invalid token yields 401", async () => {
 
   expect(res.status).toBe(401);
 });
-

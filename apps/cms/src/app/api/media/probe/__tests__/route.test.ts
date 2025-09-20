@@ -1,6 +1,4 @@
-const getServerSession = jest.fn();
-
-jest.mock("next-auth", () => ({ getServerSession }));
+import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 let GET: typeof import("../route").GET;
@@ -28,7 +26,7 @@ afterAll(() => {
 
 describe("GET", () => {
   it("returns content type for valid authenticated probe", async () => {
-    getServerSession.mockResolvedValue({ user: { id: "user" } });
+    __setMockSession({ user: { id: "user" } } as any);
     fetchMock.mockResolvedValue(
       new Response(null, {
         status: 200,
@@ -49,7 +47,7 @@ describe("GET", () => {
   });
 
   it("returns 401 for unauthenticated requests", async () => {
-    getServerSession.mockResolvedValue(null);
+    __setMockSession(null as any);
 
     const res = await GET(
       new Request(
@@ -63,7 +61,7 @@ describe("GET", () => {
   });
 
   it("rejects requests targeting private networks", async () => {
-    getServerSession.mockResolvedValue({ user: { id: "user" } });
+    __setMockSession({ user: { id: "user" } } as any);
 
     const res = await GET(
       new Request(

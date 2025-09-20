@@ -1,8 +1,6 @@
 import path from "path";
 import { NextRequest } from "next/server";
-
-const getServerSession = jest.fn();
-jest.mock("next-auth", () => ({ getServerSession }));
+import { __setMockSession } from "next-auth";
 
 const writeJsonFile = jest.fn();
 jest.mock("@/lib/server/jsonIO", () => ({ writeJsonFile }));
@@ -28,7 +26,7 @@ function req() {
 
 describe("POST", () => {
   it("updates providers for authorized user", async () => {
-    getServerSession.mockResolvedValue({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     parseJsonBody.mockResolvedValue({
       success: true,
       data: { payment: ["stripe"], shipping: ["ups"] },
@@ -45,7 +43,7 @@ describe("POST", () => {
   });
 
   it("returns 403 for unauthorized user", async () => {
-    getServerSession.mockResolvedValue(null);
+    __setMockSession(null as any);
 
     const res = await POST(req(), { params: Promise.resolve({ shop: "shop1" }) });
 

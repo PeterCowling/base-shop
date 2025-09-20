@@ -5,7 +5,8 @@ export type EditorFlags = {
   locked?: boolean;
   zIndex?: number;
   hidden?: ("desktop" | "tablet" | "mobile")[];
-  stackStrategy?: "default" | "reverse";
+  stackStrategy?: "default" | "reverse" | "custom";
+  orderMobile?: number;
 };
 
 export type AddAction = {

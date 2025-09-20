@@ -140,6 +140,7 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
             onResize={handleResize}
             editor={editor}
             onUpdateEditor={(patch) => selectedIds[0] && dispatch({ type: "update-editor", id: selectedIds[0], patch } as any)}
+            onUpdateEditorForId={(id, patch) => dispatch({ type: "update-editor", id, patch } as any)}
           />
         </div>
       )}

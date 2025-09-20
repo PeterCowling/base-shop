@@ -43,6 +43,18 @@ const moduleNameMapper = {
   ...tsPaths,
 };
 
+// Always mock NextAuth modules to avoid ESM-only deps and reduce per-test duplication
+moduleNameMapper["^next-auth$"] = " /test/mocks/next-auth.ts";
+moduleNameMapper["^next-auth/jwt$"] = " /test/mocks/next-auth-jwt.ts";
+moduleNameMapper["^next-auth/react$"] = " /test/mocks/next-auth-react.ts";
+
+// Use a lightweight test mock for core config in all packages except the config package itself
+const isConfigPackage = /packages\/config$/.test(process.cwd());
+if (!isConfigPackage) {
+  moduleNameMapper["^@acme/config/env/core$"] = " /test/mocks/config-env-core.ts";
+  moduleNameMapper["^@acme/config/env/shipping$"] = " /test/mocks/config-env-shipping.ts";
+}
+
 const collectCoverageFrom = [...coverageDefaults.collectCoverageFrom];
 const coveragePathIgnorePatterns = [
   ...coverageDefaults.coveragePathIgnorePatterns,
@@ -82,6 +94,7 @@ const config = {
   setupFiles: ["dotenv/config"],
   setupFilesAfterEnv: [
     " /test/setupFetchPolyfill.ts",
+    " /test/setup-response-json.ts",
     " /jest.setup.ts",
     " /test/polyfills/messageChannel.js",
   ],
@@ -105,7 +118,24 @@ const config = {
   ],
   collectCoverage: coverageDefaults.collectCoverage,
   collectCoverageFrom,
-  coverageDirectory: coverageDefaults.coverageDirectory,
+  // Normalize coverage output path so all workspace packages write into
+  // the monorepo root coverage directory under their own sanitized name.
+  // This ensures `pnpm run test:coverage` can always find and merge results.
+  coverageDirectory: (() => {
+    const workspaceRoot = __dirname;
+    let name = path.basename(process.cwd());
+    try {
+      // Prefer the package name when available (e.g. "@acme/zod-utils").
+      const pkg = require(path.join(process.cwd(), "package.json"));
+      if (pkg && typeof pkg.name === "string" && pkg.name.trim()) {
+        name = pkg.name.trim();
+      }
+    } catch {
+      // fall back to directory name
+    }
+    const sanitized = name.replace(/^@/, "").replace(/[\/]/g, "-");
+    return path.join(workspaceRoot, "coverage", sanitized);
+  })(),
   coveragePathIgnorePatterns,
   coverageReporters,
   coverageThreshold,

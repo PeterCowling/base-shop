@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withShop, seedShop, mockShop } from "./helpers/shops";
+import { withShop, seedShop, mockShop } from "@acme/test-utils";
 
 afterEach(() => jest.resetAllMocks());
 

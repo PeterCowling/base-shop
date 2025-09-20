@@ -91,11 +91,15 @@ describe("usePageBuilderSave", () => {
     const onPublish = jest.fn().mockResolvedValue(undefined);
     const clearHistory = jest.fn();
 
+    const editor = { p1: { hidden: ["desktop"] } } as any;
+    const compList = [{ id: "p1", type: "Parent", children: [] }];
+    const historyState = { past: [], present: [], future: [], gridCols: 12, editor } as any;
+
     const { result } = renderHook(() =>
       usePageBuilderSave({
         page: basePage,
-        components,
-        state,
+        components: compList as any,
+        state: historyState,
         onSave,
         onPublish,
         formDataDeps: [],
@@ -108,6 +112,9 @@ describe("usePageBuilderSave", () => {
     });
 
     expect(onPublish).toHaveBeenCalledTimes(1);
+    const sent = onPublish.mock.calls[0][0] as FormData;
+    const exported = JSON.parse(String(sent.get("components")));
+    expect(exported[0].hiddenBreakpoints).toEqual(["desktop"]);
     expect(clearHistory).toHaveBeenCalledTimes(1);
     expect(onPublish.mock.invocationCallOrder[0]).toBeLessThan(
       clearHistory.mock.invocationCallOrder[0]

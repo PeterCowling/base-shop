@@ -1,10 +1,5 @@
 import { NextRequest } from "next/server";
 
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
-
 describe("/api/edit-changes", () => {
   afterEach(() => {
     jest.resetModules();
@@ -51,4 +46,3 @@ describe("/api/edit-changes", () => {
     });
   });
 });
-

@@ -77,7 +77,10 @@ export default function DynamicRenderer({
     };
 
     // Per-breakpoint visibility classes from editor metadata (if provided)
-    const hidden = (editor?.[id]?.hidden ?? []) as ("desktop" | "tablet" | "mobile")[];
+    const hidden = [
+      ...(((blockRecord.hiddenBreakpoints as ("desktop"|"tablet"|"mobile")[] | undefined) ?? [])),
+      ...((editor?.[id]?.hidden ?? []) as ("desktop" | "tablet" | "mobile")[]),
+    ];
     const hideClasses = [
       hidden.includes("desktop") ? "pb-hide-desktop" : "",
       hidden.includes("tablet") ? "pb-hide-tablet" : "",
@@ -85,6 +88,16 @@ export default function DynamicRenderer({
     ]
       .filter(Boolean)
       .join(" ");
+
+    // Optional deterministic mobile order (generated at export time)
+    const orderMobile = (typeof (blockRecord as any).orderMobile === "number"
+      ? ((blockRecord as any).orderMobile as number)
+      : undefined);
+    const orderClass = typeof orderMobile === "number" ? `pb-order-mobile-${orderMobile}` : "";
+
+    // Optional container stacking strategy (export-time prop) → class on component
+    const stackStrategy = (blockRecord as any).stackStrategy as string | undefined;
+    const stackClass = stackStrategy === "reverse" ? "pb-stack-mobile-reverse" : "";
 
     let extraProps: Record<string, unknown> = {};
     if (getRuntimeProps) {
@@ -99,8 +112,13 @@ export default function DynamicRenderer({
       };
     }
 
+    // Merge className to pass to the component (so the container element gets the stack class)
+    const existing = (rest as any).className as string | undefined;
+    const mergedClass = [existing, stackClass].filter(Boolean).join(" ");
+    if (mergedClass) extraProps.className = mergedClass;
+
     return (
-      <div key={id} style={style} className={["pb-scope", hideClasses].filter(Boolean).join(" ") || undefined}>
+      <div key={id} style={style} className={["pb-scope", hideClasses, orderClass].filter(Boolean).join(" ") || undefined}>
         <Comp
           {...rest}
           {...extraProps}

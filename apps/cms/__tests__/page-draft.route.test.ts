@@ -1,14 +1,5 @@
 /** @jest-environment node */
 
-// Polyfill Response.json for environments missing it
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), {
-      ...init,
-      headers: { "content-type": "application/json", ...(init?.headers || {}) },
-    });
-}
-
 process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";
 // Ensure email environment variables are present for tests that import the
 // email configuration schema. Without these, the config module throws at

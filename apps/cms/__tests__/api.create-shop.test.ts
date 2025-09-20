@@ -1,10 +1,5 @@
 import { jest } from "@jest/globals";
 
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: any, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
-
 beforeEach(() => {
   jest.spyOn(console, "error").mockImplementation(() => {});
 });
@@ -109,11 +104,7 @@ describe("create-shop API", () => {
   });
 });
 
-// polyfill Response.json for JSDOM
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: any, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
+// Response.json() provided by shared test setup
 
 afterEach(() => {
   jest.resetModules();

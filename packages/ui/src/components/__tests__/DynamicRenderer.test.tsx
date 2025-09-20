@@ -176,4 +176,72 @@ describe("DynamicRenderer", () => {
       screen.getByTestId("child")
     );
   });
+
+  it("adds pb-hide-* classes from editor flags", () => {
+    const components: PageComponent[] = [
+      { id: "h1", type: "Simple" } as any,
+    ];
+
+    const { container } = render(
+      <DynamicRenderer components={components} locale="en" editor={{ h1: { hidden: ["desktop", "mobile"] } }} />
+    );
+
+    const wrapper = container.firstChild as HTMLDivElement;
+    expect(wrapper.className).toContain("pb-hide-desktop");
+    expect(wrapper.className).toContain("pb-hide-mobile");
+    expect(wrapper.className).not.toContain("pb-hide-tablet");
+  });
+
+  it("adds pb-hide-* classes from stamped hiddenBreakpoints when no editor provided", () => {
+    const components: PageComponent[] = [
+      { id: "h2", type: "Simple", hiddenBreakpoints: ["tablet"] } as any,
+    ];
+
+    const { container } = render(
+      <DynamicRenderer components={components} locale="en" />
+    );
+
+    const wrapper = container.firstChild as HTMLDivElement;
+    expect(wrapper.className).toContain("pb-hide-tablet");
+    expect(wrapper.className).not.toContain("pb-hide-desktop");
+    expect(wrapper.className).not.toContain("pb-hide-mobile");
+  });
+
+  it("adds stackStrategy class to container components", () => {
+    const components: PageComponent[] = [
+      {
+        id: "p",
+        type: "Parent",
+        // export-time prop for stacking
+        stackStrategy: "reverse",
+        children: [{ id: "c", type: "Child", text: { en: "a" } } as any],
+      } as any,
+    ];
+
+    render(<DynamicRenderer components={components} locale="en" />);
+    const parentProps = ParentComp.mock.calls[0][0];
+    expect(parentProps.className).toContain("pb-stack-mobile-reverse");
+  });
+
+  it("adds pb-order-mobile-* class to child wrappers when provided", () => {
+    const components: PageComponent[] = [
+      {
+        id: "p",
+        type: "Parent",
+        children: [
+          { id: "c1", type: "Child", orderMobile: 2, text: { en: "1" } } as any,
+          { id: "c2", type: "Child", orderMobile: 1, text: { en: "2" } } as any,
+        ],
+      } as any,
+    ];
+
+    const { container } = render(
+      <DynamicRenderer components={components} locale="en" />
+    );
+
+    const wrappers = container.querySelectorAll('.pb-scope');
+    // First pb-scope is the Parent wrapper; next two are children
+    expect(wrappers[1].className).toContain('pb-order-mobile-2');
+    expect(wrappers[2].className).toContain('pb-order-mobile-1');
+  });
 });

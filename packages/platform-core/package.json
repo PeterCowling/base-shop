@@ -120,7 +120,7 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
-    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs --coverageDirectory ../../coverage/platform-core",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",
     "lint": "eslint .",
     "prisma:generate": "prisma generate",
     "postinstall": "prisma generate"

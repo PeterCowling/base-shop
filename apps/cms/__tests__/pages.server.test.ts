@@ -3,15 +3,6 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
-// NextResponse.json relies on Response.json which might be missing in some environments
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), {
-      ...init,
-      headers: { "content-type": "application/json", ...(init?.headers || {}) },
-    });
-}
-
 async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "pages-"));
   const shopDir = path.join(dir, "data", "shops", "test");

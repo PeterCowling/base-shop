@@ -116,7 +116,9 @@ export interface EditorFlags {
   zIndex?: number;
   hidden?: ("desktop" | "tablet" | "mobile")[];
   /** Container child stacking strategy applied on mobile */
-  stackStrategy?: "default" | "reverse";
+  stackStrategy?: "default" | "reverse" | "custom";
+  /** Per-node custom mobile order (used when stackStrategy = custom on parent) */
+  orderMobile?: number;
 }
 
 export interface HistoryState {
@@ -147,7 +149,8 @@ export const historyStateSchema = z
           zIndex: z.number().int().optional(),
           hidden: z.array(z.enum(["desktop", "tablet", "mobile"]))
             .optional(),
-          stackStrategy: z.enum(["default", "reverse"]).optional(),
+          stackStrategy: z.enum(["default", "reverse", "custom"]).optional(),
+          orderMobile: z.number().int().nonnegative().optional(),
         })
       )
       .default({})

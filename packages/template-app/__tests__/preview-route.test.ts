@@ -7,10 +7,6 @@ process.env.PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "upgradesecret";
 process.env.NEXT_PUBLIC_SHOP_ID = "shop";
 
-if (typeof (Response as any).json !== "function") {
-  (Response as any).json = (data: unknown, init?: ResponseInit) =>
-    new Response(JSON.stringify(data), init);
-}
 
 afterEach(() => jest.resetModules());
 

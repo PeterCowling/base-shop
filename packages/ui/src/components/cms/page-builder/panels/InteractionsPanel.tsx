@@ -11,6 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../atoms/shadcn";
+import { Button } from "../../../atoms/shadcn";
+import { useState } from "react";
+import LinkPicker from "../LinkPicker";
 
 const isTestEnvironment = process.env.NODE_ENV === "test";
 
@@ -36,6 +39,7 @@ export default function InteractionsPanel({
   component,
   handleInput,
 }: Props) {
+  const [pickerOpen, setPickerOpen] = useState(false);
   const clickAction = component.clickAction ?? "none";
   const animation = component.animation ?? "none";
   return (
@@ -62,12 +66,29 @@ export default function InteractionsPanel({
         </SelectContent>
       </Select>
       {clickAction === "navigate" && (
-        <Input
-          label="Target"
-          placeholder="https://example.com"
-          value={component.href ?? ""}
-          onChange={(e) => handleInput("href", e.target.value)}
-        />
+        <div className="space-y-1">
+          <div className="flex items-end gap-2">
+            <div className="grow">
+              <Input
+                label="Target"
+                placeholder="https://example.com"
+                value={component.href ?? ""}
+                onChange={(e) => handleInput("href", e.target.value)}
+              />
+            </div>
+            <Button type="button" variant="outline" onClick={() => setPickerOpen(true)}>
+              Pick
+            </Button>
+          </div>
+          <LinkPicker
+            open={pickerOpen}
+            onClose={() => setPickerOpen(false)}
+            onPick={(href) => {
+              handleInput("href", href as any);
+              setPickerOpen(false);
+            }}
+          />
+        </div>
       )}
       <Select
         value={animation}
@@ -93,4 +114,3 @@ export default function InteractionsPanel({
     </div>
   );
 }
-

@@ -78,6 +78,7 @@ const PageBuilder = memo(function PageBuilder({
     editor: (state as any).editor,
     viewport: controls.viewport,
     scrollRef,
+    zoom: controls.zoom,
   });
 
   const handleAddFromPalette = (type: ComponentType) => {
@@ -90,6 +91,32 @@ const PageBuilder = memo(function PageBuilder({
     } as PageComponent;
     dispatch({ type: "add", component });
     setSelectedIds([component.id]);
+  };
+
+  const selectedIsSection = useMemo(() => {
+    if (!selectedIds.length) return false;
+    const target = components.find((c: PageComponent) => c.id === selectedIds[0]);
+    return (target?.type === 'Section');
+  }, [components, selectedIds]);
+
+  const handleInsertImageAsset = (url: string) => {
+    const component = { id: ulid(), type: 'Image', src: url } as PageComponent;
+    // Insert at placeholder index if present, else after selected, else at end
+    let index = components.length;
+    if (insertIndex !== null && insertIndex !== undefined) {
+      index = insertIndex as number;
+    } else if (selectedIds.length > 0) {
+      const pos = components.findIndex((c: PageComponent) => c.id === selectedIds[0]);
+      index = pos >= 0 ? pos + 1 : components.length;
+    }
+    dispatch({ type: "add", component, index });
+    setSelectedIds([component.id]);
+  };
+
+  const handleSetSectionBackground = (url: string) => {
+    if (!selectedIsSection || !selectedIds.length) return;
+    const id = selectedIds[0];
+    dispatch({ type: 'update', id, patch: { backgroundImageUrl: url } as any });
   };
 
   const handleInsertPreset = (template: PageComponent) => {
@@ -167,10 +194,64 @@ const PageBuilder = memo(function PageBuilder({
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
   }, []);
-  const toolbarProps = {deviceId: controls.deviceId, setDeviceId: controls.setDeviceId, orientation: controls.orientation, setOrientation: controls.setOrientation, locale: controls.locale, setLocale: controls.setLocale, locales, progress, isValid};
-  const gridProps = {showGrid: controls.showGrid, toggleGrid: controls.toggleGrid, snapToGrid: controls.snapToGrid, toggleSnap: controls.toggleSnap, gridCols: controls.gridCols, setGridCols: controls.setGridCols, zoom: controls.zoom, setZoom: controls.setZoom, showRulers: controls.showRulers, toggleRulers: controls.toggleRulers};
-  const canvasProps = {components, selectedIds, onSelectIds: setSelectedIds, canvasRef, dragOver, setDragOver, onFileDrop: handleFileDrop, insertIndex, dispatch, locale: controls.locale, containerStyle: { width: "100%", ...(previewTokens as any) }, showGrid: controls.showGrid, gridCols: controls.gridCols, snapEnabled: controls.snapToGrid, showRulers: controls.showRulers, viewport: controls.viewport, device: controls.device, snapPosition, editor: (state as any).editor, shop, pageId: page.id, showComments};
-  const previewProps = {components, locale: controls.locale, deviceId: controls.previewDeviceId, onChange: controls.setPreviewDeviceId, editor: (state as any).editor};
+  const toolbarProps = {
+    deviceId: controls.deviceId,
+    setDeviceId: controls.setDeviceId,
+    orientation: controls.orientation,
+    setOrientation: controls.setOrientation,
+    locale: controls.locale,
+    setLocale: controls.setLocale,
+    locales,
+    progress,
+    isValid,
+    breakpoints: (state as any).breakpoints ?? [],
+    setBreakpoints: (list: any[]) => dispatch({ type: "set-breakpoints", breakpoints: list } as any),
+    extraDevices: controls.extraDevices,
+  } as const;
+  const gridProps = {
+    showGrid: controls.showGrid,
+    toggleGrid: controls.toggleGrid,
+    snapToGrid: controls.snapToGrid,
+    toggleSnap: controls.toggleSnap,
+    gridCols: controls.gridCols,
+    setGridCols: controls.setGridCols,
+    zoom: controls.zoom,
+    setZoom: controls.setZoom,
+    showRulers: controls.showRulers,
+    toggleRulers: controls.toggleRulers,
+    showBaseline: controls.showBaseline,
+    toggleBaseline: controls.toggleBaseline,
+    baselineStep: controls.baselineStep,
+    setBaselineStep: controls.setBaselineStep,
+  };
+  const canvasProps = {
+    components,
+    selectedIds,
+    onSelectIds: setSelectedIds,
+    canvasRef,
+    dragOver,
+    setDragOver,
+    onFileDrop: handleFileDrop,
+    insertIndex,
+    dispatch,
+    locale: controls.locale,
+    containerStyle: { width: "100%", ...(previewTokens as any) },
+    showGrid: controls.showGrid,
+    gridCols: controls.gridCols,
+    snapEnabled: controls.snapToGrid,
+    showRulers: controls.showRulers,
+    viewport: controls.viewport,
+    device: controls.device,
+    snapPosition,
+    editor: (state as any).editor,
+    shop,
+    pageId: page.id,
+    showComments,
+    zoom: controls.zoom,
+    showBaseline: controls.showBaseline,
+    baselineStep: controls.baselineStep,
+  } as const;
+  const previewProps = {components, locale: controls.locale, deviceId: controls.previewDeviceId, onChange: controls.setPreviewDeviceId, editor: (state as any).editor, extraDevices: controls.extraDevices};
   const historyProps = {
     canUndo: !!state.past.length,
     canRedo: !!state.future.length,
@@ -200,6 +281,9 @@ const PageBuilder = memo(function PageBuilder({
     <PageBuilderLayout
       style={style}
       paletteOnAdd={handleAddFromPalette}
+      onInsertImageAsset={handleInsertImageAsset}
+      onSetSectionBackground={handleSetSectionBackground}
+      selectedIsSection={selectedIsSection}
       onInsertPreset={handleInsertPreset}
       presetsSourceUrl={presetsSourceUrl ?? process.env.NEXT_PUBLIC_PAGEBUILDER_PRESETS_URL}
       toolbarProps={toolbarProps}
@@ -218,7 +302,7 @@ const PageBuilder = memo(function PageBuilder({
       activeType={activeType}
       previewProps={previewProps}
       historyProps={historyProps}
-      sidebarProps={{ components, selectedIds, onSelectIds: setSelectedIds, dispatch, editor: (state as any).editor, viewport: controls.viewport }}
+      sidebarProps={{ components, selectedIds, onSelectIds: setSelectedIds, dispatch, editor: (state as any).editor, viewport: controls.viewport, breakpoints: (state as any).breakpoints ?? [] }}
       toast={toastProps}
       tourProps={tourProps}
       showComments={showComments}

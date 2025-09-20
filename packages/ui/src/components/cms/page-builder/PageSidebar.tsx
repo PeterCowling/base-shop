@@ -3,10 +3,11 @@
 import ComponentEditor from "./ComponentEditor";
 import type { PageComponent, HistoryState } from "@acme/types";
 import type { Action } from "./state";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "../../atoms/shadcn";
 import { ulid } from "ulid";
-import { saveLibrary } from "./libraryStore";
+import { saveLibrary, saveGlobal, updateGlobal, listGlobals, type GlobalItem } from "./libraryStore";
+import { Popover, PopoverContent, PopoverTrigger } from "../../atoms";
 import { usePathname } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
 import LayersPanel from "./LayersPanel";
@@ -22,9 +23,10 @@ interface Props {
   dispatch: (action: Action) => void;
   editor?: HistoryState["editor"];
   viewport?: "desktop" | "tablet" | "mobile";
+  breakpoints?: { id: string; label: string; min?: number; max?: number }[];
 }
 
-const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, viewport = "desktop" }: Props) => {
+const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, viewport = "desktop", breakpoints = [] }: Props) => {
   const handleChange = useCallback(
     (patch: Partial<PageComponent>) =>
       selectedIds[0] && dispatch({ type: "update", id: selectedIds[0], patch }),
@@ -99,6 +101,16 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
   const selectedComponent = useMemo(() => components.find((c) => c.id === selectedIds[0]) ?? null, [components, selectedIds]);
   const pathname = usePathname() ?? "";
   const shop = getShopFromPath(pathname);
+  const [globals, setGlobals] = useState<GlobalItem[]>([]);
+  const [insertOpen, setInsertOpen] = useState(false);
+  const [insertSearch, setInsertSearch] = useState("");
+
+  useEffect(() => {
+    setGlobals(listGlobals(shop));
+    const onChange = () => setGlobals(listGlobals(shop));
+    window.addEventListener("pb-library-changed", onChange);
+    return () => window.removeEventListener("pb-library-changed", onChange);
+  }, [shop]);
 
   function createPlaceholderThumbnail(text: string): string | null {
     try {
@@ -156,6 +168,64 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
       : { id: ulid(), label, templates: out, createdAt: Date.now(), tags, thumbnail };
     void saveLibrary(shop, item as any);
   }, [components, selectedIds, shop]);
+
+  // ---- Global (linked) components v1 ----
+  const makeGlobal = useCallback(async () => {
+    if (!selectedComponent) return;
+    const labelDefault = (selectedComponent as any).name || selectedComponent.type;
+    const label = window.prompt("Name this Global component:", String(labelDefault))?.trim();
+    if (!label) return;
+    const gid = `gid_${ulid()}`;
+    const item: GlobalItem = { globalId: gid, label, template: selectedComponent, createdAt: Date.now() } as any;
+    await saveGlobal(shop, item);
+    // Mark instance as linked
+    dispatch({ type: "update-editor", id: selectedComponent.id, patch: { global: { id: gid } } as any });
+    try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Made Global: ${label}` })); } catch {}
+  }, [dispatch, selectedComponent, shop]);
+
+  const applyGlobalToTree = useCallback((nodes: PageComponent[], eid: HistoryState["editor"] | undefined, globalId: string, template: PageComponent): PageComponent[] => {
+    const map = eid ?? {};
+    const recur = (list: PageComponent[]): PageComponent[] => list.map((n) => {
+      const flags = (map as any)[n.id] as any;
+      if (flags && flags.global && flags.global.id === globalId) {
+        // Clone template but keep this instance id
+        const clone: PageComponent = { ...(template as any), id: n.id } as any;
+        return clone;
+      }
+      const kids = (n as any).children as PageComponent[] | undefined;
+      if (Array.isArray(kids)) {
+        const nextKids = recur(kids);
+        if (nextKids !== kids) return { ...(n as any), children: nextKids } as any;
+      }
+      return n;
+    });
+    return recur(nodes);
+  }, []);
+
+  const editGlobally = useCallback(async () => {
+    if (!selectedComponent) return;
+    const eid = (editor ?? {})[selectedComponent.id] as any;
+    const gid = eid?.global?.id as string | undefined;
+    if (!gid) {
+      window.alert("This block is not linked to a Global component yet. Use 'Make Global' first.");
+      return;
+    }
+    const confirm = window.confirm("Apply current block state to the Global template and update all instances on this page?");
+    if (!confirm) return;
+    await updateGlobal(shop, gid, { template: selectedComponent });
+    const next = applyGlobalToTree(components, editor, gid, selectedComponent);
+    if (next !== components) {
+      dispatch({ type: "set", components: next });
+    }
+    try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Updated Global and instances" })); } catch {}
+  }, [components, dispatch, editor, selectedComponent, shop, applyGlobalToTree]);
+  const insertGlobal = useCallback((g: GlobalItem) => {
+    const clone = { ...(g.template as any), id: ulid() } as PageComponent;
+    dispatch({ type: "add", component: clone, index: components.length });
+    dispatch({ type: "update-editor", id: clone.id, patch: { global: { id: g.globalId } } as any });
+    try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Inserted Global: ${g.label}` })); } catch {}
+    setInsertOpen(false);
+  }, [components.length, dispatch]);
 
   const copyStyles = useCallback(() => {
     if (!selectedComponent) return;
@@ -265,13 +335,140 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
       )}
       {(selectedIds.length >= 1) && selectedComponent && (
         <div className="space-y-2">
+          {/* Linked state indicator */}
+          {(() => {
+            const eid = (editor ?? {})[selectedComponent.id] as any;
+            const gid = eid?.global?.id as string | undefined;
+            if (!gid) return null;
+            const g = globals.find((x) => x.globalId === gid) || null;
+            const label = g?.label || gid;
+            return (
+              <div className="flex items-center justify-between gap-2 rounded border bg-muted/60 px-2 py-1 text-xs" title="This block is linked to a Global template">
+                <div className="truncate">Linked to Global: <span className="font-medium">{label}</span></div>
+                <div className="flex items-center gap-2">
+                  <Button type="button" variant="outline" className="h-7 px-2 text-xs" onClick={editGlobally}>Edit globally</Button>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="h-7 px-2 text-xs"
+                    onClick={() => dispatch({ type: "update-editor", id: selectedComponent.id, patch: { global: undefined } as any })}
+                    title="Unlink from Global"
+                  >
+                    Unlink
+                  </Button>
+                </div>
+              </div>
+            );
+          })()}
           <Button type="button" variant="outline" onClick={handleDuplicate}>
             Duplicate
           </Button>
+          {/* Global actions */}
+          <div className="flex flex-wrap items-center gap-2">
+            <Button type="button" variant="outline" onClick={makeGlobal} aria-label="Make Global">Make Global</Button>
+            <Button type="button" variant="outline" onClick={editGlobally} aria-label="Edit globally">Edit Globally</Button>
+            <Popover open={insertOpen} onOpenChange={setInsertOpen}>
+              <PopoverTrigger asChild>
+                <Button type="button" variant="outline" aria-label="Insert Global">Insert Global</Button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-72 space-y-2">
+                <input
+                  type="text"
+                  value={insertSearch}
+                  onChange={(e) => setInsertSearch(e.target.value)}
+                  placeholder="Search Globals..."
+                  className="w-full rounded border px-2 py-1 text-sm"
+                />
+                <div className="max-h-64 overflow-auto">
+                  {globals
+                    .filter((g) => g.label.toLowerCase().includes(insertSearch.toLowerCase()))
+                    .map((g) => (
+                      <button
+                        key={g.globalId}
+                        type="button"
+                        className="flex w-full items-center justify-between gap-2 rounded border px-2 py-1 text-left text-sm hover:bg-muted"
+                        onClick={() => insertGlobal(g)}
+                        title={g.label}
+                      >
+                        <span className="truncate">{g.label}</span>
+                        <span className="text-[10px] text-muted-foreground">{g.globalId.slice(-6)}</span>
+                      </button>
+                    ))}
+                  {globals.length === 0 && (
+                    <div className="text-sm text-muted-foreground">No Globals saved yet.</div>
+                  )}
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
           <div className="flex flex-wrap gap-2">
             <Button type="button" variant="outline" onClick={copyStyles} aria-label="Copy styles">Copy Styles</Button>
             <Button type="button" variant="outline" onClick={pasteStyles} aria-label="Paste styles">Paste Styles</Button>
           </div>
+          {/* Quick visibility toggles per device */}
+          <div className="mt-1 space-y-1">
+            <div className="text-xs font-semibold text-muted-foreground">Visibility (device)</div>
+            <div className="flex flex-wrap gap-1">
+              {(["desktop","tablet","mobile"] as const).map((vp) => {
+                const id = selectedIds[0]!;
+                const cur = (editor ?? {})[id]?.hidden ?? [];
+                const isHidden = cur.includes(vp);
+                const label = vp.charAt(0).toUpperCase() + vp.slice(1);
+                return (
+                  <Button
+                    key={vp}
+                    type="button"
+                    variant={isHidden ? "default" : "outline"}
+                    className="h-7 px-2 text-xs"
+                    onClick={() => {
+                      const set = new Set(cur);
+                      if (isHidden) set.delete(vp); else set.add(vp);
+                      dispatch({ type: "update-editor", id, patch: { hidden: Array.from(set) } as any });
+                      try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `${isHidden ? 'Shown' : 'Hidden'} on ${vp}` })); } catch {}
+                    }}
+                    aria-pressed={isHidden}
+                    aria-label={`${isHidden ? 'Show' : 'Hide'} on ${vp}`}
+                    title={`${isHidden ? 'Show' : 'Hide'} on ${vp}`}
+                  >
+                    {label}
+                  </Button>
+                );
+              })}
+            </div>
+          </div>
+          {/* Visibility toggles for custom devices (page breakpoints) */}
+          {breakpoints.length > 0 && (
+            <div className="mt-1 space-y-1">
+              <div className="text-xs font-semibold text-muted-foreground">Visibility (custom devices)</div>
+              <div className="flex flex-wrap gap-1">
+                {breakpoints.map((bp) => {
+                  const eid = selectedIds[0]!;
+                  const cur = ((editor ?? {})[eid]?.hiddenDeviceIds as string[] | undefined) ?? [];
+                  const isHidden = cur.includes(bp.id);
+                  const btnId = `bp-${bp.id}`;
+                  return (
+                    <Button
+                      key={btnId}
+                      type="button"
+                      variant={isHidden ? "default" : "outline"}
+                      className="h-7 px-2 text-xs"
+                      onClick={() => {
+                        const set = new Set(cur);
+                        if (isHidden) set.delete(bp.id); else set.add(bp.id);
+                        dispatch({ type: "update-editor", id: eid, patch: { hiddenDeviceIds: Array.from(set) } as any });
+                        try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `${isHidden ? 'Shown' : 'Hidden'} on ${bp.label}` })); } catch {}
+                      }}
+                      aria-pressed={isHidden}
+                      aria-label={`${isHidden ? 'Show' : 'Hide'} on ${bp.label}`}
+                      title={`${isHidden ? 'Show' : 'Hide'} on ${bp.label}`}
+                    >
+                      {bp.label}
+                    </Button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           {selectedIds.length === 1 && (() => {
             const c = selectedComponent as any; const hasChildren = !!(c && c.children && Array.isArray(c.children) && c.children.length > 0);
             return hasChildren ? (

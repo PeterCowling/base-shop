@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { snapToGrid } from "./gridSnap";
+import { normalizeDragDelta } from "./utils/coords";
 
 type Pos = { left: number; top: number; width: number; height: number };
 
@@ -13,16 +14,17 @@ interface Props {
   viewport: Viewport;
   gridEnabled?: boolean;
   gridCols: number;
+  zoom?: number;
   onApply: (patches: Record<string, { left?: string; top?: string; width?: string; height?: string }>) => void;
 }
 
-export default function MultiSelectOverlay({ canvasRef, ids, gridEnabled = false, gridCols, onApply }: Props) {
+export default function MultiSelectOverlay({ canvasRef, ids, gridEnabled = false, gridCols, onApply, zoom = 1 }: Props) {
   const [bounds, setBounds] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
   const startParentBoundsRef = useRef<{ left: number; top: number; width: number; height: number } | null>(null);
   const startMapRef = useRef<Record<string, Pos>>({});
   const idToParentRef = useRef<Record<string, HTMLElement>>({});
   const groupBoundsRef = useRef<Map<HTMLElement, { left: number; top: number; width: number; height: number }>>(new Map());
-  const dragRef = useRef<{ x: number; y: number } | null>(null);
+  const dragRef = useRef<{ x: number; y: number; zoom: number } | null>(null);
   const [dragDelta, setDragDelta] = useState<{ dx: number; dy: number }>({ dx: 0, dy: 0 });
 
   // Compute initial positions and overlay bounds
@@ -37,10 +39,10 @@ export default function MultiSelectOverlay({ canvasRef, ids, gridEnabled = false
       const el = document.querySelector(`[data-component-id="${id}"]`) as HTMLElement | null;
       if (!el) return;
       const r = el.getBoundingClientRect();
-      const left = r.left - canvasRect.left;
-      const top = r.top - canvasRect.top;
-      const width = r.width;
-      const height = r.height;
+      const left = (r.left - canvasRect.left) / Math.max(zoom, 0.0001);
+      const top = (r.top - canvasRect.top) / Math.max(zoom, 0.0001);
+      const width = el.offsetWidth; // unscaled
+      const height = el.offsetHeight; // unscaled
       const parent = (el.offsetParent as HTMLElement | null) ?? el.parentElement ?? undefined;
       if (parent) idToParentRef.current[id] = parent;
       const parentLeft = el.offsetLeft;
@@ -84,23 +86,24 @@ export default function MultiSelectOverlay({ canvasRef, ids, gridEnabled = false
     const maxY = Math.max(...rects.map((r) => r.top + r.height));
     setBounds({ left: minX, top: minY, width: maxX - minX, height: maxY - minY });
     setDragDelta({ dx: 0, dy: 0 });
-  }, [ids, canvasRef]);
+  }, [ids, canvasRef, zoom]);
 
   type Handle = "se" | "ne" | "sw" | "nw" | "e" | "w" | "n" | "s" | null;
 
   const handlePointerDown = (e: React.PointerEvent, handle: Handle = null) => {
     e.stopPropagation();
-    dragRef.current = { x: e.clientX, y: e.clientY };
+    dragRef.current = { x: e.clientX, y: e.clientY, zoom };
     const onMove = (ev: PointerEvent) => {
       if (!dragRef.current) return;
-      const dxRaw = ev.clientX - dragRef.current.x;
-      const dyRaw = ev.clientY - dragRef.current.y;
-      let dx = dxRaw;
-      let dy = dyRaw;
+      // Lock zoom at drag start to avoid drift when user changes zoom mid-drag
+      const startZoom = dragRef.current.zoom ?? zoom;
+      const d = normalizeDragDelta({ x: dragRef.current.x, y: dragRef.current.y }, { x: ev.clientX, y: ev.clientY }, startZoom);
+      let dx = d.x;
+      let dy = d.y;
       if (gridEnabled && canvasRef?.current) {
         const unit = canvasRef.current.offsetWidth / gridCols;
-        dx = snapToGrid(dxRaw, unit) - snapToGrid(0, unit);
-        dy = snapToGrid(dyRaw, unit) - snapToGrid(0, unit);
+        dx = snapToGrid(dx, unit) - snapToGrid(0, unit);
+        dy = snapToGrid(dy, unit) - snapToGrid(0, unit);
       }
       const out: Record<string, { left?: string; top?: string; width?: string; height?: string }> = {};
       if (!handle) {

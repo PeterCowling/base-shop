@@ -7,6 +7,7 @@ import { Button, Dialog, DialogTrigger, DialogContent, DialogTitle } from "../..
 import { getLegacyPreset } from "../../../utils/devicePresets";
 import DeviceSelector from "../../common/DeviceSelector";
 import ThemePanel from "./ThemePanel";
+import BreakpointsPanel, { type Breakpoint } from "./panels/BreakpointsPanel";
 
 interface Props {
   deviceId: string;
@@ -18,6 +19,9 @@ interface Props {
   locales: readonly Locale[];
   progress: { done: number; total: number } | null;
   isValid: boolean | null;
+  breakpoints?: Breakpoint[];
+  setBreakpoints?: (list: Breakpoint[]) => void;
+  extraDevices?: import("../../../utils/devicePresets").DevicePreset[];
 }
 
 const PageToolbar = ({
@@ -30,6 +34,9 @@ const PageToolbar = ({
   locales,
   progress,
   isValid,
+  breakpoints,
+  setBreakpoints,
+  extraDevices,
 }: Props) => {
   useEffect(() => {
     const presets: Record<string, string> = {
@@ -70,6 +77,7 @@ const PageToolbar = ({
             setOrientation("portrait");
           }}
           showLegacyButtons
+          extraDevices={extraDevices}
         />
         <Button
           variant="outline"
@@ -89,6 +97,17 @@ const PageToolbar = ({
             </Button>
           </DialogTrigger>
           <ThemePanel />
+        </Dialog>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline" aria-label="Breakpoints">
+              Breakpoints
+            </Button>
+          </DialogTrigger>
+          <BreakpointsPanel
+            breakpoints={breakpoints ?? []}
+            onChange={(list) => setBreakpoints?.(list)}
+          />
         </Dialog>
         <Dialog>
           <DialogTrigger asChild>

@@ -8,6 +8,9 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { getSeo } from "../../lib/seo";
 import "../globals.css";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
+import shop from "../../../shop.json";
+import { JsonLdScript, organizationJsonLd } from "../../lib/jsonld";
 
 export async function generateMetadata({
   params,
@@ -18,11 +21,28 @@ export async function generateMetadata({
   const { lang: langParam } = await params;
   const [raw] = langParam ?? [];
   const lang: Locale = resolveLocale(raw);
-  const seo = await getSeo(lang);
+  const [seo, settings] = await Promise.all([
+    getSeo(lang),
+    getShopSettings(shop.id),
+  ]);
+  const languages = settings.languages ?? ["en"];
+  const baseCanonical = seo.canonical || undefined;
+  const alternates: Metadata["alternates"] = { canonical: baseCanonical };
+  if (baseCanonical) {
+    const baseUrl = baseCanonical.replace(/\/$|$/, "");
+    const canonicalRoot = baseUrl.endsWith(`/${lang}`)
+      ? baseUrl.slice(0, -(`/${lang}`.length))
+      : baseUrl;
+    const map: Record<string, string> = {};
+    for (const l of languages) {
+      map[l] = `${canonicalRoot}/${l}`;
+    }
+    alternates.languages = map;
+  }
   return {
     title: seo.title,
     description: seo.description,
-    alternates: { canonical: seo.canonical || undefined },
+    alternates,
     openGraph: seo.openGraph as Metadata["openGraph"],
     twitter: seo.twitter as Metadata["twitter"],
   };
@@ -51,6 +71,13 @@ export default async function LocaleLayout({
 
   return (
     <TranslationsProvider messages={messages}>
+      {/* Organization JSON-LD */}
+      <JsonLdScript
+        data={organizationJsonLd({
+          name: shop.name ?? shop.id,
+          logo: (await getShopSettings(shop.id)).seo?.[lang]?.image,
+        })}
+      />
       <Header lang={lang} />
       <main className="min-h-[calc(100vh-8rem)]">{children}</main>
       <Footer />

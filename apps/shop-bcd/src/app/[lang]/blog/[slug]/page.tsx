@@ -3,6 +3,10 @@ import type { PortableBlock } from "@acme/sanity";
 import { BlogPortableText } from "@platform-core/components/blog/BlogPortableText";
 import type { Shop } from "@acme/types";
 import shopJson from "../../../../../shop.json";
+import type { Metadata } from "next";
+import { getSeo } from "../../../util/seo";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { JsonLdScript, articleJsonLd } from "../../../../lib/jsonld";
 
 type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog">;
 const shop: BlogShop = shopJson;
@@ -32,6 +36,14 @@ export default async function BlogPostPage({
   }
   return (
     <article className="space-y-4">
+      {/* Article JSON-LD */}
+      <JsonLdScript
+        data={articleJsonLd({
+          headline: post.title ?? "",
+          description: post.excerpt ?? undefined,
+          author: post.author ?? undefined,
+        })}
+      />
       {shop.editorialBlog?.promoteSchedule && (
         <p className="rounded bg-muted p-2">
           Daily Edit scheduled for {shop.editorialBlog.promoteSchedule}
@@ -46,4 +58,43 @@ export default async function BlogPostPage({
       ) : null}
     </article>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { lang: string; slug: string };
+}): Promise<Metadata> {
+  const { fetchPostBySlug } = await import("@acme/sanity");
+  const post = await fetchPostBySlug(shop.id, params.slug);
+  const lang = params.lang as any;
+  const baseSeo = await getSeo(lang);
+  const canonicalRoot = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
+  const canonical = canonicalRoot ? `${canonicalRoot}/blog/${params.slug}` : undefined;
+  const settings = await getShopSettings(shop.id);
+  const languages = settings.languages ?? ["en"];
+  let canonicalRootForLanguages = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
+  if (canonicalRootForLanguages.endsWith(`/${lang}`)) {
+    canonicalRootForLanguages = canonicalRootForLanguages.slice(0, -(`/${lang}`.length));
+  }
+  const languagesAlt: Record<string, string> = {};
+  for (const l of languages) {
+    languagesAlt[l] = `${canonicalRootForLanguages}/${l}/blog/${params.slug}`;
+  }
+  const title = post?.title ?? "Blog post";
+  const description = post?.excerpt ?? baseSeo.description;
+  const seo = await getSeo(lang, {
+    title,
+    description,
+    canonical,
+    openGraph: { url: canonical, title, description } as any,
+    twitter: { title, description } as any,
+  });
+  return {
+    title: seo.title,
+    description: seo.description,
+    alternates: { canonical: seo.canonical || undefined, languages: languagesAlt },
+    openGraph: seo.openGraph as Metadata["openGraph"],
+    twitter: seo.twitter as Metadata["twitter"],
+  };
 }

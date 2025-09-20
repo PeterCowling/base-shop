@@ -69,3 +69,31 @@ export function importCustomPresets(json: string): CustomPreset[] | null {
     return null;
   }
 }
+
+export function duplicateCustomPreset(id: string): CustomPreset[] {
+  const current = loadCustomPresets();
+  const idx = current.findIndex((p) => p.id === id);
+  if (idx === -1) return current;
+  const src = current[idx];
+  const copy: CustomPreset = {
+    id: makeId(`${src.label}-copy`),
+    label: `${src.label} (copy)`,
+    value: { ...src.value },
+  };
+  const next = [copy, ...current];
+  saveCustomPresets(next);
+  return next;
+}
+
+export function moveCustomPreset(id: string, dir: 'up' | 'down'): CustomPreset[] {
+  const current = loadCustomPresets();
+  const idx = current.findIndex((p) => p.id === id);
+  if (idx === -1) return current;
+  const target = dir === 'up' ? idx - 1 : idx + 1;
+  if (target < 0 || target >= current.length) return current;
+  const next = current.slice();
+  const [item] = next.splice(idx, 1);
+  next.splice(target, 0, item);
+  saveCustomPresets(next);
+  return next;
+}

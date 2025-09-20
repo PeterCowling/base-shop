@@ -70,7 +70,7 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
       let allowedCats = new Set(["atoms", "molecules", "organisms"]);
       // Specific per-container tweaks
       const ct = containerType ?? "";
-      if (ct === "Section") {
+      if (ct === "Section" || ct === "Repeater" || ct === "Dataset" || ct === "Grid") {
         // Section: allow atoms, molecules, organisms; optionally allow simple containers like 'MultiColumn'
         allowedCats = new Set(["atoms", "molecules", "organisms", "containers"]);
       } else if (ct === "MultiColumn") {

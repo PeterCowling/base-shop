@@ -13,9 +13,15 @@ interface Props {
   setZoom?: (z: number) => void;
   showRulers?: boolean;
   toggleRulers?: () => void;
+  /** Show baseline horizontal grid */
+  showBaseline?: boolean;
+  toggleBaseline?: () => void;
+  /** Baseline step in px */
+  baselineStep?: number;
+  setBaselineStep?: (n: number) => void;
 }
 
-const GridSettings = ({ showGrid, toggleGrid, snapToGrid = true, toggleSnap, gridCols, setGridCols, zoom = 1, setZoom, showRulers = false, toggleRulers }: Props) => (
+const GridSettings = ({ showGrid, toggleGrid, snapToGrid = true, toggleSnap, gridCols, setGridCols, zoom = 1, setZoom, showRulers = false, toggleRulers, showBaseline = false, toggleBaseline, baselineStep = 8, setBaselineStep }: Props) => (
   <div className="flex items-center justify-end gap-2">
     <Button variant={showGrid ? "default" : "outline"} onClick={toggleGrid}>
       {showGrid ? "Hide grid" : "Show grid"}
@@ -26,6 +32,9 @@ const GridSettings = ({ showGrid, toggleGrid, snapToGrid = true, toggleSnap, gri
     <Button variant={showRulers ? "default" : "outline"} onClick={toggleRulers}>
       {showRulers ? "Rulers on" : "Rulers off"}
     </Button>
+    <Button variant={showBaseline ? "default" : "outline"} onClick={toggleBaseline}>
+      {showBaseline ? "Baseline on" : "Baseline off"}
+    </Button>
     <Input
       type="number"
       min={1}
@@ -34,6 +43,18 @@ const GridSettings = ({ showGrid, toggleGrid, snapToGrid = true, toggleSnap, gri
       onChange={(e) => setGridCols(Number(e.target.value))}
       className="w-16"
     />
+    <div className="flex items-center gap-2">
+      <label className="text-sm">Baseline</label>
+      <input
+        type="range"
+        min={2}
+        max={64}
+        step={1}
+        value={baselineStep}
+        onChange={(e) => setBaselineStep?.(Number(e.target.value))}
+      />
+      <span className="w-8 text-right text-sm">{baselineStep}</span>
+    </div>
     <div className="flex items-center gap-2">
       <label className="text-sm">Zoom</label>
       <input

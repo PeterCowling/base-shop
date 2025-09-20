@@ -16,19 +16,34 @@ interface Props {
   deviceId: string;
   onChange: (id: string) => void;
   editor?: HistoryState["editor"];
+  /** Optional extra devices from page breakpoints */
+  extraDevices?: import("../../../utils/devicePresets").DevicePreset[];
 }
 
-const PreviewPane = ({ components, locale, deviceId, onChange, editor }: Props) => {
-  const previewDevice = useMemo<DevicePreset>(
-    () =>
-      devicePresets.find((d: DevicePreset) => d.id === deviceId) ??
-      devicePresets[0],
-    [deviceId]
-  );
+const PreviewPane = ({ components, locale, deviceId, onChange, editor, extraDevices = [] }: Props) => {
+  const previewDevice = useMemo<DevicePreset>(() => {
+    const list = [...extraDevices, ...devicePresets];
+    return list.find((d: DevicePreset) => d.id === deviceId) ?? list[0];
+  }, [deviceId, extraDevices]);
   const previewViewport: "desktop" | "tablet" | "mobile" = previewDevice.type;
   const { viewportStyle, frameClass } = useViewport(previewDevice);
 
-  const decorated = decorateTreeForViewport(components, editor, previewViewport);
+  let decorated = decorateTreeForViewport(components, editor, previewViewport);
+  // Apply custom device visibility when the selected device is a page breakpoint
+  const bpId = deviceId.startsWith("bp-") ? deviceId.slice(3) : null;
+  if (bpId) {
+    const hideByBp = (nodes: PageComponent[]): PageComponent[] =>
+      nodes.map((n) => {
+        const flags = (editor ?? {})[n.id] as any;
+        const hiddenIds = (flags?.hiddenDeviceIds as string[] | undefined) ?? [];
+        const hideHere = hiddenIds.includes(bpId!);
+        const kids = (n as any).children as PageComponent[] | undefined;
+        const merged: any = { ...n, ...(hideHere ? { hidden: true } : {}) };
+        if (Array.isArray(kids)) merged.children = hideByBp(kids);
+        return merged as PageComponent;
+      });
+    decorated = hideByBp(decorated);
+  }
   const previewTokens = usePreviewTokens();
   return (
     <div className="flex flex-col gap-2 shrink-0">
@@ -36,6 +51,7 @@ const PreviewPane = ({ components, locale, deviceId, onChange, editor }: Props) 
         deviceId={deviceId}
         onChange={onChange}
         showLegacyButtons
+        extraDevices={extraDevices}
       />
       <div
         className={`${frameClass[previewViewport]} shrink-0`}

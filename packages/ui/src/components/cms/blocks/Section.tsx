@@ -54,6 +54,8 @@ export interface SectionProps extends HTMLAttributes<HTMLDivElement> {
   bottomShapeColor?: string;
   bottomShapeHeight?: number;
   bottomShapeFlipX?: boolean;
+  /** When enabled, make inner children share equal row heights using CSS Grid */
+  equalizeInnerHeights?: boolean;
 }
 
 export default function Section({
@@ -91,6 +93,7 @@ export default function Section({
   bottomShapeColor,
   bottomShapeHeight,
   bottomShapeFlipX,
+  equalizeInnerHeights,
   style,
   className,
   ...rest
@@ -169,7 +172,16 @@ export default function Section({
       {/* Inner content wrapper to constrain content width and alignment */}
       <div
         data-pb-section-inner=""
-        style={{ maxWidth: maxWidth || undefined, width: "100%", position: "relative", zIndex: 2, ...alignStyle }}
+        style={{
+          maxWidth: maxWidth || undefined,
+          width: "100%",
+          position: "relative",
+          zIndex: 2,
+          ...alignStyle,
+          ...(equalizeInnerHeights
+            ? ({ display: "grid", gridAutoRows: "1fr", alignItems: "stretch" } as React.CSSProperties)
+            : ({} as React.CSSProperties)),
+        }}
       >
         {children}
       </div>

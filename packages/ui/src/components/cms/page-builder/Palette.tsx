@@ -24,6 +24,7 @@ import {
 } from "../../atoms";
 import type { ComponentType } from "./defaults";
 import LibraryImportExport from "./LibraryImportExport";
+import MediaLibrary from "./MediaLibrary";
 
 const defaultIcon = "/window.svg";
 
@@ -136,10 +137,14 @@ const PaletteItem = memo(function PaletteItem({
 
 interface PaletteProps {
   onAdd: (type: ComponentType) => void;
+  onInsertImage: (url: string) => void;
+  onSetSectionBackground: (url: string) => void;
+  selectedIsSection?: boolean;
 }
 
-const Palette = memo(function Palette({ onAdd }: PaletteProps) {
+const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackground, selectedIsSection }: PaletteProps) {
   const [search, setSearch] = useState("");
+  const [tab, setTab] = useState<"components" | "media">("components");
   const [liveMessage, setLiveMessage] = useState("");
   const pathname = usePathname() ?? "";
   const shop = getShopFromPath(pathname);
@@ -176,6 +181,21 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
 
   return (
     <div className="flex flex-col gap-4" data-tour="drag-component">
+      <div className="grid grid-cols-2 gap-2">
+        <button type="button" className={`rounded border px-2 py-1 text-sm ${tab === 'components' ? 'bg-muted' : ''}`} onClick={() => setTab('components')}>
+          Components
+        </button>
+        <button type="button" className={`rounded border px-2 py-1 text-sm ${tab === 'media' ? 'bg-muted' : ''}`} onClick={() => setTab('media')}>
+          Media
+        </button>
+      </div>
+      {tab === 'media' ? (
+        <div>
+          {/* Media Library */}
+          <MediaLibrary onInsertImage={onInsertImage} onSetSectionBackground={onSetSectionBackground} selectedIsSection={selectedIsSection} />
+        </div>
+      ) : (
+      <>
       <input
         ref={fileInputRef}
         type="file"
@@ -251,6 +271,11 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
                     void updateLibrary(shop, i.id, { shared: !i.shared });
                     setLibrary(listLibrary(shop));
                   }}
+                  onUpdate={(patch) => {
+                    void updateLibrary(shop, i.id, patch);
+                    setLibrary(listLibrary(shop));
+                  }}
+                  shop={shop}
                 />
               ))}
           </div>
@@ -281,16 +306,70 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
           </div>
         );
       })}
-    </div>
-  );
-});
+      </>
+      )}
+      </div>
+    );
+  });
 
 export default Palette;
 
 // Library item drag source (template)
-function LibraryPaletteItem({ item, onDelete, onToggleShare }: { item: LibraryItem; onDelete: () => void; onToggleShare: () => void }) {
+function LibraryPaletteItem({ item, onDelete, onToggleShare, onUpdate, shop }: { item: LibraryItem; onDelete: () => void; onToggleShare: () => void; onUpdate: (patch: Partial<Pick<LibraryItem, "label" | "tags" | "thumbnail">>) => void; shop?: string | null }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({ id: `lib-${item.id}`, data: { from: "library", template: item.template, templates: item.templates } });
+  const [editing, setEditing] = useState(false);
+  const [label, setLabel] = useState(item.label);
+  const [tagInput, setTagInput] = useState("");
+  const [tags, setTags] = useState<string[]>(Array.isArray(item.tags) ? item.tags : []);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const addTag = useCallback(() => {
+    const t = tagInput.trim();
+    if (!t) return;
+    setTags((prev) => (prev.includes(t) ? prev : [...prev, t]));
+    setTagInput("");
+  }, [tagInput]);
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      addTag();
+    }
+  }, [addTag]);
+
+  const handleThumbFile = useCallback(async (f: File | null | undefined) => {
+    if (!f) return;
+    try {
+      if (shop) {
+        const fd = new FormData();
+        fd.append("file", f);
+        const res = await fetch(`/api/media?shop=${encodeURIComponent(shop)}&orientation=landscape`, { method: "POST", body: fd });
+        if (res.ok) {
+          const media = await res.json();
+          const url = (media && (media.url || media.fileUrl || media.path)) as string | undefined;
+          if (url) {
+            onUpdate({ thumbnail: url });
+            return;
+          }
+        }
+      }
+      // Fallback to data URL
+      await new Promise<void>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onerror = () => reject(new Error("read error"));
+        reader.onload = () => {
+          onUpdate({ thumbnail: String(reader.result) });
+          resolve();
+        };
+        reader.readAsDataURL(f);
+      });
+    } catch {
+      // ignore
+    } finally {
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  }, [onUpdate, shop]);
   return (
     <div
       ref={setNodeRef}
@@ -324,11 +403,100 @@ function LibraryPaletteItem({ item, onDelete, onToggleShare }: { item: LibraryIt
           loading="lazy"
         />
       )}
-      <span className="flex-1 truncate" title={item.label}>{item.label}</span>
-      {Array.isArray(item.tags) && item.tags.length > 0 && (
-        <span className="hidden md:block text-xs text-muted-foreground truncate max-w-[10rem]" title={item.tags.join(", ")}>
-          {item.tags.join(", ")}
-        </span>
+      {editing ? (
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <input className="min-w-0 flex-1 rounded border px-2 py-1 text-xs" value={label} onChange={(e) => setLabel(e.target.value)} />
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1">
+              {tags.map((t) => (
+                <span key={t} className="inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 text-[10px]">
+                  {t}
+                  <button type="button" aria-label={`Remove ${t}`} className="rounded border px-1" onClick={(e) => { e.stopPropagation(); setTags((prev) => prev.filter((x) => x !== t)); }}>×</button>
+                </span>
+              ))}
+              <input
+                className="min-w-[6rem] flex-1 rounded border px-2 py-1 text-xs"
+                placeholder="add tag"
+                value={tagInput}
+                onChange={(e) => setTagInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                aria-label="Add tag"
+              />
+              <button type="button" className="rounded border px-2 text-xs" onClick={(e) => { e.stopPropagation(); addTag(); }}>Add</button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          <span className="flex-1 truncate" title={item.label}>{item.label}</span>
+          {Array.isArray(item.tags) && item.tags.length > 0 && (
+            <span className="hidden md:block text-xs text-muted-foreground truncate max-w-[10rem]" title={item.tags.join(", ")}>
+              {item.tags.join(", ")}
+            </span>
+          )}
+        </>
+      )}
+      <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => void handleThumbFile(e.target.files?.[0])} />
+      <button
+        type="button"
+        aria-label="Upload thumbnail"
+        className="rounded border px-2 text-xs"
+        onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
+        title="Upload thumbnail"
+      >
+        Thumb
+      </button>
+      {item.thumbnail && (
+        <button
+          type="button"
+          aria-label="Clear thumbnail"
+          className="rounded border px-2 text-xs"
+          onClick={(e) => { e.stopPropagation(); onUpdate({ thumbnail: null }); }}
+        >
+          Clear
+        </button>
+      )}
+      {editing ? (
+        <>
+          <button
+            type="button"
+            aria-label="Save"
+            className="rounded border px-2 text-xs"
+            onClick={(e) => {
+              e.stopPropagation();
+              const nextTags = tags.map((t) => t.trim()).filter(Boolean);
+              onUpdate({ label: label.trim() || item.label, tags: nextTags });
+              setEditing(false);
+            }}
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            aria-label="Cancel"
+            className="rounded border px-2 text-xs"
+            onClick={(e) => {
+              e.stopPropagation();
+              setLabel(item.label);
+              setTags(Array.isArray(item.tags) ? item.tags : []);
+              setEditing(false);
+            }}
+          >
+            Cancel
+          </button>
+        </>
+      ) : (
+        <button
+          type="button"
+          aria-label="Edit"
+          className="rounded border px-2 text-xs"
+          onClick={(e) => {
+            e.stopPropagation();
+            setEditing(true);
+          }}
+        >
+          Edit
+        </button>
       )}
       <button
         type="button"

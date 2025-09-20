@@ -31,11 +31,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
   const item = (payload as any)?.item as LibraryItem | undefined;
-  if (!item || !item.id || !item.label) {
+  const items = (payload as any)?.items as LibraryItem[] | undefined;
+  if (!item && !Array.isArray(items)) {
     return NextResponse.json({ error: "Invalid item" }, { status: 400 });
   }
   try {
-    await saveLibraryItem(shop, item);
+    if (Array.isArray(items)) {
+      for (const it of items) {
+        if (!it || !it.id || !it.label) continue;
+        await saveLibraryItem(shop, it);
+      }
+    } else if (item) {
+      await saveLibraryItem(shop, item);
+    }
     return NextResponse.json({ ok: true });
   } catch (err) {
     return NextResponse.json({ error: (err as Error).message }, { status: 400 });
@@ -82,4 +90,3 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: (err as Error).message }, { status: 400 });
   }
 }
-

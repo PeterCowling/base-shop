@@ -86,6 +86,9 @@ describe("Product detail page", () => {
     expect(
       screen.getByText("Items showing signs of wear may be rejected.")
     ).toBeInTheDocument();
+    // JSON-LD present
+    const script = document.querySelector('script[type="application/ld+json"]');
+    expect(script).toBeTruthy();
   });
 });
 
@@ -98,7 +101,7 @@ describe("page helpers", () => {
     }));
     const { generateMetadata } = await import("../src/app/[lang]/product/[slug]/page");
     const meta = await generateMetadata({ params: { slug: "p1", lang: "en" } } as any);
-    expect(meta.title).toBe("Prod · Base-Shop");
+    expect(meta.title).toBe("Prod");
   });
 
   test("generateMetadata returns fallback when product missing", async () => {

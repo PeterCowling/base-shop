@@ -15,8 +15,12 @@ import SnapLine from "./SnapLine";
 import Block from "./Block";
 import RulersOverlay from "./RulersOverlay";
 import MultiSelectOverlay from "./MultiSelectOverlay";
+import { rectScreenToCanvas } from "./utils/coords";
+import useMarqueeSelect from "./useMarqueeSelect";
 import InlineInsert from "./InlineInsert";
 import CommentsLayer from "./CommentsLayer";
+import SelectionQuickActions from "./SelectionQuickActions";
+import usePresence from "./collab/usePresence";
 
 interface Props {
   components: PageComponent[];
@@ -42,6 +46,9 @@ interface Props {
   shop?: string | null;
   pageId?: string | null;
   showComments?: boolean;
+  zoom?: number;
+  showBaseline?: boolean;
+  baselineStep?: number;
 }
 
 const PageCanvas = ({
@@ -68,6 +75,9 @@ const PageCanvas = ({
   shop,
   pageId,
   showComments = true,
+  zoom = 1,
+  showBaseline = false,
+  baselineStep = 8,
 }: Props) => {
   const [dropRect, setDropRect] = useState<
     { left: number; top: number; width: number; height: number } | null
@@ -84,6 +94,40 @@ const PageCanvas = ({
     }
     return null;
   };
+
+  // Presence: peers + soft locks
+  const { peers, softLocksById } = usePresence({
+    shop: shop ?? null,
+    pageId: pageId ?? null,
+    meId: (typeof window !== "undefined" ? (window as any).__PB_USER_ID : null) || "me",
+    label: (typeof window !== "undefined" ? (window as any).__PB_USER_NAME : null) || "Me",
+    selectedIds,
+    editingId: selectedIds[0] ?? null,
+  });
+
+  // Compute positions for peer selection outlines
+  const [positions, setPositions] = useState<Record<string, { left: number; top: number; width: number; height: number }>>({});
+  useEffect(() => {
+    const canvas = canvasRef?.current;
+    if (!canvas) return;
+    const update = () => {
+      const rect = canvas.getBoundingClientRect();
+      const map: Record<string, { left: number; top: number; width: number; height: number }> = {};
+      const all = canvas.querySelectorAll<HTMLElement>("[data-component-id]");
+      all.forEach((el) => {
+        const id = el.getAttribute("data-component-id");
+        if (!id) return;
+        const r = el.getBoundingClientRect();
+        map[id] = { left: Math.max(0, r.left - rect.left), top: Math.max(0, r.top - rect.top), width: r.width, height: r.height };
+      });
+      setPositions(map);
+    };
+    update();
+    const int = window.setInterval(update, 500);
+    window.addEventListener("resize", update);
+    return () => { clearInterval(int); window.removeEventListener("resize", update); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canvasRef?.current, components]);
   const selectedComponents = (selectedIds ?? [])
     .map((id) => findById(components, id))
     .filter(Boolean) as PageComponent[];
@@ -130,12 +174,8 @@ const PageCanvas = ({
     if (target instanceof HTMLElement && canvasRef?.current) {
       const canvasBounds = canvasRef.current.getBoundingClientRect();
       const rect = target.getBoundingClientRect();
-      setDropRect({
-        left: rect.left - canvasBounds.left,
-        top: rect.top - canvasBounds.top,
-        width: rect.width,
-        height: rect.height,
-      });
+      const r = rectScreenToCanvas({ left: rect.left, top: rect.top, width: rect.width, height: rect.height }, canvasBounds, zoom);
+      setDropRect({ left: r.left, top: r.top, width: r.width, height: r.height });
     } else {
       setDropRect(null);
     }
@@ -195,6 +235,15 @@ const PageCanvas = ({
     }
     return components.length;
   };
+  // Marquee selection hook
+  const marquee = useMarqueeSelect({
+    canvasRef: canvasRef as any,
+    zoom,
+    editor,
+    viewport,
+    onSelectIds,
+  });
+
   return (
     <SortableContext
       items={visibleComponents.map((c) => c.id)}
@@ -206,6 +255,7 @@ const PageCanvas = ({
         style={containerStyle}
         role="list"
         aria-dropeffect="move"
+        onPointerDown={(e) => marquee.start(e as any, selectedIds, { shift: (e as any).shiftKey, meta: (e as any).metaKey || (e as any).ctrlKey })}
         onDrop={onFileDrop}
         onDragOver={handleDragOver}
         onDragLeave={clearHighlight}
@@ -218,6 +268,45 @@ const PageCanvas = ({
         {shop && pageId && showComments && (
           <CommentsLayer canvasRef={canvasRef as any} components={components} shop={shop ?? ""} pageId={pageId ?? ""} selectedIds={selectedIds} />
         )}
+        {/* Peer selections overlay */}
+        {peers.length > 0 && (
+          <div className="pointer-events-none absolute inset-0 z-30" aria-hidden>
+            {peers.map((p) => (
+              <Fragment key={p.id}>
+                {(p.selectedIds || []).map((cid) => {
+                  const box = positions[cid];
+                  if (!box) return null;
+                  return (
+                    <div
+                      key={`${p.id}:${cid}`}
+                      className="absolute rounded"
+                      style={{
+                        left: box.left,
+                        top: box.top,
+                        width: box.width,
+                        height: box.height,
+                        outline: `2px solid ${p.color}`,
+                        outlineOffset: "2px",
+                        boxShadow: `inset 0 0 0 1px ${p.color}66`,
+                      }}
+                      title={`${p.label} selected`}
+                    />
+                  );
+                })}
+              </Fragment>
+            ))}
+          </div>
+        )}
+        {/* Soft-lock banner when someone edits the current selection */}
+        {selectedIds.length > 0 && (() => {
+          const lock = softLocksById.get(selectedIds[0]!);
+          if (!lock) return null;
+          return (
+            <div className="pointer-events-none absolute left-2 top-2 z-40 rounded bg-amber-100/90 px-2 py-1 text-xs text-amber-900 shadow">
+              {lock.label} is editing this block
+            </div>
+          );
+        })()}
         {dropRect && (
           <div
             className="pointer-events-none absolute z-50 rounded border-2 border-primary/50 bg-primary/10"
@@ -349,6 +438,7 @@ const PageCanvas = ({
             viewport={viewport}
             gridEnabled={snapEnabled ?? showGrid}
             gridCols={gridCols}
+            zoom={zoom}
             onApply={(patches) => {
               const widthKey =
                 viewport === "desktop"
@@ -398,8 +488,15 @@ const PageCanvas = ({
             Locked items are ignored during group move/resize
           </div>
         )}
-        {showGrid && <GridOverlay gridCols={gridCols} />}
+        {showGrid && <GridOverlay gridCols={gridCols} baselineStep={showBaseline ? baselineStep : undefined} />}
         <SnapLine x={snapPosition} />
+        {marquee.active && marquee.rect && (
+          <div
+            className="pointer-events-none absolute z-40 rounded border-2 border-primary/40 bg-primary/10"
+            style={{ left: marquee.rect.left, top: marquee.rect.top, width: marquee.rect.width, height: marquee.rect.height }}
+            aria-hidden
+          />
+        )}
         {visibleComponents.map((c, i) => (
           <div key={c.id} className="relative group">
             {/* Inline insert control before each item */}
@@ -457,9 +554,24 @@ const PageCanvas = ({
               viewport={viewport}
               device={device}
               editor={editor}
+              zoom={zoom}
+              baselineSnap={showBaseline}
+              baselineStep={baselineStep}
             />
           </div>
         ))}
+        {/* On-canvas quick alignment/distribute widget */}
+        {selectedIds.length > 0 && (
+          <SelectionQuickActions
+            components={components}
+            selectedIds={selectedIds}
+            dispatch={dispatch}
+            canvasRef={canvasRef as any}
+            viewport={viewport}
+            disabled={hasLockedInSelection}
+            zoom={zoom}
+          />
+        )}
         {/* Inline insert control at the end */}
         <InlineInsert
           index={visibleComponents.length}

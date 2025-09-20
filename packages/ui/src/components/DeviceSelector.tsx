@@ -13,7 +13,9 @@ import {
   devicePresets,
   getLegacyPreset,
   type DevicePreset,
+  getAllDevicePresets,
 } from "../utils/devicePresets";
+import { useMemo } from "react";
 
 interface DeviceSelectorProps {
   deviceId: string;
@@ -24,6 +26,7 @@ export default function DeviceSelector({
   deviceId,
   setDeviceId,
 }: DeviceSelectorProps) {
+  const allPresets = useMemo(() => getAllDevicePresets(), []);
   return (
     <div className="flex justify-center gap-2">
       {(["desktop", "tablet", "mobile"] as const).map((t) => {
@@ -49,7 +52,7 @@ export default function DeviceSelector({
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          {devicePresets.map((p: DevicePreset) => (
+          {allPresets.map((p: DevicePreset) => (
             <SelectItem key={p.id} value={p.id}>
               {p.label}
             </SelectItem>
@@ -59,4 +62,3 @@ export default function DeviceSelector({
     </div>
   );
 }
-

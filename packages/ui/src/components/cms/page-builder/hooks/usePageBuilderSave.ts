@@ -38,6 +38,14 @@ export default function usePageBuilderSave({
       return [];
     }
   };
+  const getGlobals = () => {
+    try {
+      const mod = require("../libraryStore") as typeof import("../libraryStore");
+      return (mod.listGlobals as any)(shop) as Array<{ globalId: string; template: PageComponent }> | [];
+    } catch {
+      return [] as any[];
+    }
+  };
   const formData = useMemo(() => {
     const fd = new FormData();
     fd.append("id", page.id);
@@ -83,9 +91,14 @@ export default function usePageBuilderSave({
     let nextComponents = components;
     try {
       const list = raw ? (JSON.parse(String(raw)) as PageComponent[]) : components;
-      nextComponents = exportComponents(list, editor);
+      // Build globals map for resolving linked instances
+      const globalsArr = getGlobals();
+      const globalsMap = Object.fromEntries((globalsArr || []).map((g: any) => [g.globalId, g.template]));
+      nextComponents = exportComponents(list, editor, globalsMap);
     } catch {
-      nextComponents = exportComponents(components, editor);
+      const globalsArr = getGlobals();
+      const globalsMap = Object.fromEntries((globalsArr || []).map((g: any) => [g.globalId, g.template]));
+      nextComponents = exportComponents(components, editor, globalsMap);
     }
     const out = new FormData();
     // copy all existing entries

@@ -8,11 +8,11 @@ Page Builder — Library Import/Export and Presets Feed
 
 - Remote Presets Feed
   - Optionally supply a curated presets feed via `NEXT_PUBLIC_PAGEBUILDER_PRESETS_URL`.
-  - Value must point to JSON compatible with the local schema:
-    - Array of objects: `{ id, label, description?, preview, category, build: () => PageComponent }`.
-  - When set, the Presets modal will prefer the remote list; otherwise it falls back to the built-in presets.
+  - Endpoint must return JSON in this shape:
+    - Array of objects (or `{ items: [...] }`) with: `{ id, label, description?, preview, category: "Hero"|"Features"|"Testimonials"|"Commerce", template: PageComponent }`.
+  - The Presets modal validates the feed and maps each item into an internal “build” function that inserts the provided `template`.
+  - If the feed is unreachable or invalid, the built‑in curated presets are used.
 
 Notes
 - Library storage API: `GET/POST/PATCH/DELETE /api/library?shop=<id>` in the CMS app.
 - Local snapshots in the browser are kept for speed and synced to the server in the background.
-

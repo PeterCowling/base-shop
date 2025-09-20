@@ -15,6 +15,7 @@ interface Options {
   topKey?: string;
   dockX?: "left" | "right" | "center";
   dockY?: "top" | "bottom" | "center";
+  zoom?: number;
 }
 
 export default function useCanvasDrag({
@@ -28,6 +29,7 @@ export default function useCanvasDrag({
   topKey = "top",
   dockX,
   dockY,
+  zoom = 1,
 }: Options) {
   const moveRef = useRef<{ x: number; y: number; l: number; t: number } | null>(
     null
@@ -50,8 +52,8 @@ export default function useCanvasDrag({
     if (!moving) return;
     const handleMove = (e: PointerEvent) => {
       if (!moveRef.current || !containerRef.current) return;
-      const dx = e.clientX - moveRef.current.x;
-      const dy = e.clientY - moveRef.current.y;
+      const dx = (e.clientX - moveRef.current.x) / Math.max(zoom, 0.0001);
+      const dy = (e.clientY - moveRef.current.y) / Math.max(zoom, 0.0001);
       const originalL = moveRef.current.l + dx;
       const originalT = moveRef.current.t + dy;
       let newL = originalL;
@@ -145,7 +147,7 @@ export default function useCanvasDrag({
       window.removeEventListener("pointermove", handleMove);
       window.removeEventListener("pointerup", stop);
     };
-  }, [moving, componentId, dispatch, gridEnabled, gridCols, setGuides, siblingEdgesRef, containerRef]);
+  }, [moving, componentId, dispatch, gridEnabled, gridCols, setGuides, siblingEdgesRef, containerRef, zoom]);
 
   const startDrag = (e: React.PointerEvent) => {
     if (disabled) return;

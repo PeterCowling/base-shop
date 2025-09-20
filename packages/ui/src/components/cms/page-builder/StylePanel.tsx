@@ -11,6 +11,10 @@ import { getStyleClipboard, setStyleClipboard } from "./style/styleClipboard";
 import { defaultEffectPresets } from "./style/effectPresets";
 import useCustomPresets from "./style/useCustomPresets";
 import PresetGallery from "./PresetGallery";
+import EffectsEditor from "./EffectsEditor";
+import StylePreviewCard from "./StylePreviewCard";
+import ColorEditor from "./ColorEditor";
+import TypographyEditor from "./TypographyEditor";
 
 type TrackFn = (name: string, payload?: Record<string, unknown>) => void;
 let track: TrackFn = () => {};
@@ -53,6 +57,8 @@ export default function StylePanel({ component, handleInput }: Props) {
     saveCurrentAsPreset,
     removeSelected,
     renameSelected,
+    duplicateSelected,
+    moveSelected,
     exportJSON,
     importJSON,
   } = useCustomPresets(effects);
@@ -231,8 +237,12 @@ export default function StylePanel({ component, handleInput }: Props) {
         <Button type="button" variant="outline" onClick={pasteStyles} aria-label="Paste styles">Paste</Button>
         <Button type="button" variant="outline" onClick={() => saveCurrentAsPreset()} aria-label="Save custom effects preset">Save preset</Button>
         <Button type="button" variant="outline" onClick={renameSelected} aria-label="Rename selected custom preset" disabled={!selectedCustom}>Rename</Button>
+        <Button type="button" variant="outline" onClick={duplicateSelected} aria-label="Duplicate selected custom preset" disabled={!selectedCustom}>Duplicate</Button>
+        <Button type="button" variant="outline" onClick={() => moveSelected('up')} aria-label="Move selected preset up" disabled={!selectedCustom || customPresets.findIndex(p => p.id === selectedCustom) <= 0}>Up</Button>
+        <Button type="button" variant="outline" onClick={() => moveSelected('down')} aria-label="Move selected preset down" disabled={!selectedCustom || customPresets.findIndex(p => p.id === selectedCustom) === customPresets.length - 1}>Down</Button>
         <Button type="button" variant="outline" onClick={removeSelected} aria-label="Delete selected custom preset" disabled={!selectedCustom}>Delete</Button>
-        <Button type="button" variant="outline" onClick={openExport} aria-label="Export custom presets JSON">Export</Button>
+        <Button type="button" variant="outline" onClick={() => openExport(false)} aria-label="Export custom presets JSON">Export all</Button>
+        <Button type="button" variant="outline" onClick={() => openExport(true)} aria-label="Export selected custom preset" disabled={!selectedCustom}>Export selected</Button>
         <Button type="button" variant="outline" onClick={() => setImportOpen(true)} aria-label="Import custom presets JSON">Import</Button>
       </div>
       {/* Export dialog */}
@@ -265,103 +275,41 @@ export default function StylePanel({ component, handleInput }: Props) {
       </Dialog>
       <PresetGallery title="Quick presets" presets={presets} onApply={applyPreset} />
       <PresetGallery title="Custom presets" presets={customPresets} onApply={applyCustomPreset} />
-      <Input
-        label={t("cms.style.foreground")}
-        value={color.fg ?? ""}
+      <StylePreviewCard
+        effects={effects}
+        hoverScale={(component as any).hoverScale as number | undefined}
+        hoverOpacity={(component as any).hoverOpacity as number | undefined}
+      />
+      <ColorEditor
+        values={{ fg: color.fg, bg: color.bg, border: color.border }}
+        labels={{ fg: t("cms.style.foreground") as string, bg: t("cms.style.background") as string, border: t("cms.style.border") as string }}
         placeholder={t("cms.style.colorPlaceholder") as string}
-        onChange={(e) => update("color", "fg", e.target.value)}
+        onChange={(key, value) => update('color', key, value)}
       />
-      <Input
-        label={t("cms.style.background")}
-        value={color.bg ?? ""}
-        placeholder={t("cms.style.colorPlaceholder") as string}
-        onChange={(e) => update("color", "bg", e.target.value)}
+
+      <TypographyEditor
+        base={typography}
+        desktop={typoDesktop}
+        tablet={typoTablet}
+        mobile={typoMobile}
+        labels={{
+          base: {
+            fontFamily: t("cms.style.fontFamily") as string,
+            fontSize: t("cms.style.fontSize") as string,
+            fontWeight: t("cms.style.fontWeight") as string,
+            lineHeight: t("cms.style.lineHeight") as string,
+          },
+          desktop: { heading: "Typography (Desktop)", fontSize: "Font size (Desktop)", lineHeight: "Line height (Desktop)" },
+          tablet: { heading: "Typography (Tablet)", fontSize: "Font size (Tablet)", lineHeight: "Line height (Tablet)" },
+          mobile: { heading: "Typography (Mobile)", fontSize: "Font size (Mobile)", lineHeight: "Line height (Mobile)" },
+        }}
+        onBase={(key, value) => update('typography', key, value)}
+        onBp={(bp, key, value) => updateBp(bp, key, value)}
       />
-      <Input
-        label={t("cms.style.border")}
-        value={color.border ?? ""}
-        placeholder={t("cms.style.colorPlaceholder") as string}
-        onChange={(e) => update("color", "border", e.target.value)}
-      />
-      <Input
-        label={t("cms.style.fontFamily")}
-        value={typography.fontFamily ?? ""}
-        onChange={(e) => update("typography", "fontFamily", e.target.value)}
-      />
-      <Input
-        label={t("cms.style.fontSize")}
-        value={typography.fontSize ?? ""}
-        onChange={(e) => update("typography", "fontSize", e.target.value)}
-      />
-      <Input
-        label={t("cms.style.fontWeight")}
-        value={typography.fontWeight ?? ""}
-        onChange={(e) => update("typography", "fontWeight", e.target.value)}
-      />
-      <Input
-        label={t("cms.style.lineHeight")}
-        value={typography.lineHeight ?? ""}
-        onChange={(e) => update("typography", "lineHeight", e.target.value)}
-      />
-      {/* Per-breakpoint typography overrides */}
-      <div className="mt-3 border-t pt-2">
-        <div className="text-xs font-semibold text-muted-foreground">Typography (Desktop)</div>
-        <Input
-          label="Font size (Desktop)"
-          value={typoDesktop.fontSize ?? ""}
-          onChange={(e) => updateBp("Desktop", "fontSize", e.target.value)}
-        />
-        <Input
-          label="Line height (Desktop)"
-          value={typoDesktop.lineHeight ?? ""}
-          onChange={(e) => updateBp("Desktop", "lineHeight", e.target.value)}
-        />
-      </div>
-      <div className="border-t pt-2">
-        <div className="text-xs font-semibold text-muted-foreground">Typography (Tablet)</div>
-        <Input
-          label="Font size (Tablet)"
-          value={typoTablet.fontSize ?? ""}
-          onChange={(e) => updateBp("Tablet", "fontSize", e.target.value)}
-        />
-        <Input
-          label="Line height (Tablet)"
-          value={typoTablet.lineHeight ?? ""}
-          onChange={(e) => updateBp("Tablet", "lineHeight", e.target.value)}
-        />
-      </div>
-      <div className="border-t pt-2">
-        <div className="text-xs font-semibold text-muted-foreground">Typography (Mobile)</div>
-        <Input
-          label="Font size (Mobile)"
-          value={typoMobile.fontSize ?? ""}
-          onChange={(e) => updateBp("Mobile", "fontSize", e.target.value)}
-        />
-        <Input
-          label="Line height (Mobile)"
-          value={typoMobile.lineHeight ?? ""}
-          onChange={(e) => updateBp("Mobile", "lineHeight", e.target.value)}
-        />
-      </div>
       {/* Effects */}
       <div className="mt-3 border-t pt-2">
         <div className="text-xs font-semibold text-muted-foreground">Effects</div>
-        <div className="grid grid-cols-2 gap-2">
-          <Input label="Border radius" value={effects.borderRadius ?? ""} onChange={(e) => updateEffects("borderRadius", e.target.value)} />
-          <Input label="Box shadow" value={effects.boxShadow ?? ""} onChange={(e) => updateEffects("boxShadow", e.target.value)} />
-          <Input label="Opacity" value={effects.opacity ?? ""} onChange={(e) => updateEffects("opacity", e.target.value)} placeholder="0..1" />
-          <Input label="Backdrop filter" value={effects.backdropFilter ?? ""} onChange={(e) => updateEffects("backdropFilter", e.target.value)} placeholder="e.g. blur(6px)" />
-          <Input label="Outline" value={effects.outline ?? ""} onChange={(e) => updateEffects("outline", e.target.value)} placeholder="e.g. 1px solid var(--color-border)" />
-          <Input label="Outline offset" value={effects.outlineOffset ?? ""} onChange={(e) => updateEffects("outlineOffset", e.target.value)} />
-          <Input label="Border top" value={effects.borderTop ?? ""} onChange={(e) => updateEffects("borderTop", e.target.value)} />
-          <Input label="Border right" value={effects.borderRight ?? ""} onChange={(e) => updateEffects("borderRight", e.target.value)} />
-          <Input label="Border bottom" value={effects.borderBottom ?? ""} onChange={(e) => updateEffects("borderBottom", e.target.value)} />
-          <Input label="Border left" value={effects.borderLeft ?? ""} onChange={(e) => updateEffects("borderLeft", e.target.value)} />
-          <Input label="Rotate" value={effects.transformRotate ?? ""} onChange={(e) => updateEffects("transformRotate", e.target.value)} placeholder="e.g. 5deg" />
-          <Input label="Scale" value={effects.transformScale ?? ""} onChange={(e) => updateEffects("transformScale", e.target.value)} placeholder="e.g. 1.05" />
-          <Input label="Skew X" value={effects.transformSkewX ?? ""} onChange={(e) => updateEffects("transformSkewX", e.target.value)} placeholder="e.g. 5deg" />
-          <Input label="Skew Y" value={effects.transformSkewY ?? ""} onChange={(e) => updateEffects("transformSkewY", e.target.value)} placeholder="e.g. 0deg" />
-        </div>
+        <EffectsEditor effects={effects} onChange={updateEffects} />
       </div>
       {warning && (
         <p role="status" aria-live="polite" className="text-danger text-sm">

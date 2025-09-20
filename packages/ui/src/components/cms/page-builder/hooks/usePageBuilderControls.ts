@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Locale } from "@acme/i18n/locales";
 import type { HistoryState } from "@acme/types";
 import type { Action } from "../state";
-import { devicePresets, getLegacyPreset, type DevicePreset } from "../../../../utils/devicePresets";
+import { devicePresets, getLegacyPreset, type DevicePreset, findDevicePresetById } from "../../../../utils/devicePresets";
 import { usePreviewDevice } from "../../../../hooks";
 import useViewport from "./useViewport";
 import { Step, CallBackProps, STATUS } from "../PageBuilderTour";
@@ -20,19 +20,32 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
     "portrait"
   );
 
+  // Custom breakpoints (stored in HistoryState via layout.schema passthrough)
+  const breakpoints = (state as any).breakpoints ?? [] as { id: string; label: string; min?: number; max?: number }[];
+  const extraDevices = useMemo<DevicePreset[]>(() => {
+    const mapWidth = (bp: any): number => {
+      const base = (typeof bp.max === 'number' && bp.max > 0) ? bp.max : (typeof bp.min === 'number' ? bp.min : 1024);
+      return Math.max(320, Math.min(1920, base));
+    };
+    const toType = (w: number): DevicePreset["type"] => (w >= 1024 ? "desktop" : w >= 768 ? "tablet" : "mobile");
+    return (breakpoints as any[]).map((bp) => {
+      const width = mapWidth(bp);
+      const type = toType(width);
+      const id = `bp-${bp.id}`;
+      return { id, label: bp.label, width, height: 800, type, orientation: "portrait" } as DevicePreset;
+    });
+  }, [breakpoints]);
   const device = useMemo<DevicePreset>(() => {
+    const all = [...extraDevices, ...devicePresets];
     const preset =
+      all.find((d: DevicePreset) => d.id === deviceId) ??
+      findDevicePresetById(deviceId) ??
       devicePresets.find((d: DevicePreset) => d.id === deviceId) ??
-      devicePresets[0];
+      (all[0] || devicePresets[0]);
     return orientation === "portrait"
       ? { ...preset, orientation }
-      : {
-          ...preset,
-          width: preset.height,
-          height: preset.width,
-          orientation,
-        };
-  }, [deviceId, orientation]);
+      : { ...preset, width: preset.height, height: preset.width, orientation };
+  }, [deviceId, orientation, extraDevices]);
 
   const viewport: "desktop" | "tablet" | "mobile" = device.type;
   const { viewportStyle, frameClass } = useViewport(device);
@@ -115,6 +128,12 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
   // Rulers toggle
   const [showRulers, setShowRulers] = useState(false);
   const toggleRulers = useCallback(() => setShowRulers((s) => !s), []);
+  // Baseline grid overlay
+  const [showBaseline, setShowBaseline] = useState(false);
+  const [baselineStep, setBaselineStep] = useState(8);
+  const toggleBaseline = useCallback(() => setShowBaseline((s) => !s), []);
+
+  const setBreakpoints = useCallback((list: any[]) => dispatch({ type: "set-breakpoints", breakpoints: list } as any), [dispatch]);
 
   return {
     deviceId,
@@ -144,8 +163,15 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
     setGridCols,
     showRulers,
     toggleRulers,
+    showBaseline,
+    toggleBaseline,
+    baselineStep,
+    setBaselineStep,
     zoom,
     setZoom,
+    breakpoints,
+    setBreakpoints,
+    extraDevices,
   };
 };
 

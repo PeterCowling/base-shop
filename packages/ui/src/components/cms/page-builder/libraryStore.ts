@@ -19,6 +19,7 @@ export type LibraryItem = {
 };
 
 const keyFor = (shop: string | null | undefined) => `pb-library-${shop || "default"}`;
+const keyForGlobals = (shop: string | null | undefined) => `pb-globals-${shop || "default"}`;
 
 function emitChange() {
   if (typeof window === "undefined") return;
@@ -146,4 +147,76 @@ export async function clearLibrary(shop: string | null | undefined) {
   } catch {
     // ignore
   }
+}
+
+// ===== Global components (linked templates) =====
+export type GlobalItem = {
+  globalId: string; // stable id used by instances
+  label: string;
+  createdAt: number;
+  template: PageComponent; // single node template
+  tags?: string[];
+  thumbnail?: string | null;
+};
+
+export function listGlobals(shop?: string | null): GlobalItem[] {
+  if (typeof window === "undefined") return [];
+  return safeParse<GlobalItem[]>(localStorage.getItem(keyForGlobals(shop)), []);
+}
+
+function writeGlobals(shop: string | null | undefined, items: GlobalItem[]) {
+  try {
+    localStorage.setItem(keyForGlobals(shop), JSON.stringify(items));
+  } catch {}
+}
+
+export async function saveGlobal(shop: string | null | undefined, item: GlobalItem) {
+  const cur = listGlobals(shop);
+  const next = [item, ...cur.filter((g) => g.globalId !== item.globalId)];
+  writeGlobals(shop, next);
+  emitChange();
+  try {
+    if (shop) {
+      await fetchJson(`/api/globals?shop=${encodeURIComponent(shop)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ item }),
+      });
+      // Optionally pull server copy
+      try {
+        const remote = await fetchJson<GlobalItem[]>(`/api/globals?shop=${encodeURIComponent(shop)}`);
+        if (Array.isArray(remote)) writeGlobals(shop, remote);
+      } catch {}
+    }
+  } catch {
+    // ignore; local only
+  }
+}
+
+export async function updateGlobal(shop: string | null | undefined, globalId: string, patch: Partial<Pick<GlobalItem, "label" | "template" | "tags" | "thumbnail">>) {
+  // local
+  const cur = listGlobals(shop);
+  const next = cur.map((g) => (g.globalId === globalId ? { ...g, ...patch } : g));
+  writeGlobals(shop, next);
+  emitChange();
+  // server (best-effort)
+  try {
+    if (shop) {
+      await fetchJson(`/api/globals?shop=${encodeURIComponent(shop)}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ globalId, patch }),
+      });
+    }
+  } catch {}
+}
+
+export async function removeGlobal(shop: string | null | undefined, globalId: string) {
+  writeGlobals(shop, listGlobals(shop).filter((g) => g.globalId !== globalId));
+  emitChange();
+  try {
+    if (shop) {
+      await fetchJson(`/api/globals?shop=${encodeURIComponent(shop)}&id=${encodeURIComponent(globalId)}`, { method: "DELETE" });
+    }
+  } catch {}
 }

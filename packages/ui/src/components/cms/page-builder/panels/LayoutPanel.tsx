@@ -8,7 +8,16 @@ type EditorFlags = {
   locked?: boolean;
   zIndex?: number;
   hidden?: ("desktop" | "tablet" | "mobile")[];
+  // Legacy single strategy (mobile); kept for backwards-compat
   stackStrategy?: "default" | "reverse" | "custom";
+  // Per-device stacking strategies
+  stackDesktop?: "default" | "reverse" | "custom";
+  stackTablet?: "default" | "reverse" | "custom";
+  stackMobile?: "default" | "reverse" | "custom";
+  // Per-device custom orders on children
+  orderDesktop?: number;
+  orderTablet?: number;
+  orderMobile?: number;
 };
 import {
   Button,
@@ -19,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../atoms/shadcn";
+import { useEffect, useState } from "react";
 import { Tooltip } from "../../../atoms";
 
 interface Props {
@@ -45,6 +55,26 @@ export default function LayoutPanel({
   editorMap,
   updateEditorForId,
 }: Props) {
+  const isOverridden = (base: unknown, val: unknown) => {
+    if (val === undefined || val === "") return false;
+    if (base === undefined || base === "") return true;
+    const a = String(base).trim();
+    const b = String(val).trim();
+    return a !== b;
+  };
+  const [tabTitles, setTabTitles] = useState<string[]>([]);
+  useEffect(() => {
+    try {
+      const el = typeof document !== 'undefined' ? (document.querySelector(`[data-component-id="${component.id}"]`) as HTMLElement | null) : null;
+      const parent = el?.closest('[data-tab-titles]') as HTMLElement | null;
+      if (!parent) { setTabTitles([]); return; }
+      const raw = parent.getAttribute('data-tab-titles');
+      if (!raw) { setTabTitles([]); return; }
+      const titles = JSON.parse(raw) as string[];
+      if (Array.isArray(titles)) setTabTitles(titles);
+      else setTabTitles([]);
+    } catch { setTabTitles([]); }
+  }, [component.id]);
   const cssError = (prop: string, value?: string) =>
     value && !globalThis.CSS?.supports(prop, value)
       ? `Invalid ${prop} value`
@@ -179,6 +209,12 @@ export default function LayoutPanel({
             disabled={effLocked}
             cssProp="width"
           />
+          {isOverridden((component as any).width, (component as any)[`width${vp}`]) && (
+            <div className="-mt-1 flex items-center gap-2 text-[10px]">
+              <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+              <button type="button" className="underline" onClick={() => handleResize(`width${vp}`, "")}>Reset</button>
+            </div>
+          )}
           <div className="flex gap-2">
             <Button type="button" variant="outline" disabled={effLocked} onClick={() => handleFullSize(`width${vp}`)}>Full width</Button>
           </div>
@@ -191,6 +227,12 @@ export default function LayoutPanel({
             disabled={effLocked}
             cssProp="height"
           />
+          {isOverridden((component as any).height, (component as any)[`height${vp}`]) && (
+            <div className="-mt-1 flex items-center gap-2 text-[10px]">
+              <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+              <button type="button" className="underline" onClick={() => handleResize(`height${vp}`, "")}>Reset</button>
+            </div>
+          )}
           <div className="flex gap-2">
             <Button type="button" variant="outline" disabled={effLocked} onClick={() => handleFullSize(`height${vp}`)}>Full height</Button>
           </div>
@@ -287,6 +329,111 @@ export default function LayoutPanel({
             disabled={effLocked}
             cssProp="bottom"
           />
+          {(() => {
+            const isPinnedLeft = !!(component as any).left;
+            const isPinnedRight = !!(component as any).right;
+            const isPinnedTop = !!(component as any).top;
+            const isPinnedBottom = !!(component as any).bottom;
+            const pinLeft = () => {
+              try {
+                const el = document.querySelector(`[data-component-id="${component.id}"]`) as HTMLElement | null;
+                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+                if (!el || !parent) return;
+                const rect = el.getBoundingClientRect();
+                const pRect = parent.getBoundingClientRect();
+                const left = Math.round(rect.left - pRect.left);
+                handleInput("dockX" as any, "left" as any);
+                handleResize("left", `${left}px`);
+                // clear right if switching
+                handleResize("right", "");
+              } catch {}
+            };
+            const pinRight = () => {
+              try {
+                const el = document.querySelector(`[data-component-id=\"${component.id}\"]`) as HTMLElement | null;
+                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+                if (!el || !parent) return;
+                const rect = el.getBoundingClientRect();
+                const pRect = parent.getBoundingClientRect();
+                const right = Math.round(pRect.right - rect.right);
+                handleInput("dockX" as any, "right" as any);
+                handleResize("right", `${right}px`);
+                // clear left if switching
+                handleResize("left", "");
+              } catch {}
+            };
+            const pinTop = () => {
+              try {
+                const el = document.querySelector(`[data-component-id=\"${component.id}\"]`) as HTMLElement | null;
+                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+                if (!el || !parent) return;
+                const rect = el.getBoundingClientRect();
+                const pRect = parent.getBoundingClientRect();
+                const top = Math.round(rect.top - pRect.top);
+                handleInput("dockY" as any, "top" as any);
+                handleResize("top", `${top}px`);
+                handleResize("bottom", "");
+              } catch {}
+            };
+            const pinBottom = () => {
+              try {
+                const el = document.querySelector(`[data-component-id=\"${component.id}\"]`) as HTMLElement | null;
+                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+                if (!el || !parent) return;
+                const rect = el.getBoundingClientRect();
+                const pRect = parent.getBoundingClientRect();
+                const bottom = Math.round(pRect.bottom - rect.bottom);
+                handleInput("dockY" as any, "bottom" as any);
+                handleResize("bottom", `${bottom}px`);
+                handleResize("top", "");
+              } catch {}
+            };
+            const stretchX = () => {
+              try {
+                const el = document.querySelector(`[data-component-id=\"${component.id}\"]`) as HTMLElement | null;
+                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+                if (!el || !parent) return;
+                const rect = el.getBoundingClientRect();
+                const pRect = parent.getBoundingClientRect();
+                const left = Math.round(rect.left - pRect.left);
+                const right = Math.round(pRect.right - rect.right);
+                handleInput("dockX" as any, "left" as any);
+                handleResize("left", `${left}px`);
+                handleResize("right", `${right}px`);
+                // let width auto by clearing explicit width
+                handleInput("width" as any, undefined as any);
+              } catch {}
+            };
+            const stretchY = () => {
+              try {
+                const el = document.querySelector(`[data-component-id=\"${component.id}\"]`) as HTMLElement | null;
+                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+                if (!el || !parent) return;
+                const rect = el.getBoundingClientRect();
+                const pRect = parent.getBoundingClientRect();
+                const top = Math.round(rect.top - pRect.top);
+                const bottom = Math.round(pRect.bottom - rect.bottom);
+                handleInput("dockY" as any, "top" as any);
+                handleResize("top", `${top}px`);
+                handleResize("bottom", `${bottom}px`);
+                handleInput("height" as any, undefined as any);
+              } catch {}
+            };
+            return (
+              <div className="mt-1 grid grid-cols-2 gap-2">
+                <div className="flex flex-wrap gap-2">
+                  <Button type="button" variant={isPinnedLeft ? "default" : "outline"} disabled={effLocked} onClick={pinLeft} aria-label="Pin Left">Pin Left</Button>
+                  <Button type="button" variant={isPinnedRight ? "default" : "outline"} disabled={effLocked} onClick={pinRight} aria-label="Pin Right">Pin Right</Button>
+                  <Button type="button" variant={isPinnedTop ? "default" : "outline"} disabled={effLocked} onClick={pinTop} aria-label="Pin Top">Pin Top</Button>
+                  <Button type="button" variant={isPinnedBottom ? "default" : "outline"} disabled={effLocked} onClick={pinBottom} aria-label="Pin Bottom">Pin Bottom</Button>
+                </div>
+                <div className="flex flex-wrap justify-end gap-2">
+                  <Button type="button" variant="outline" disabled={effLocked} onClick={stretchX} aria-label="Stretch horizontally">Stretch X</Button>
+                  <Button type="button" variant="outline" disabled={effLocked} onClick={stretchY} aria-label="Stretch vertically">Stretch Y</Button>
+                </div>
+              </div>
+            );
+          })()}
           {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
             <div key={`pos-${vp}`} className="grid grid-cols-2 gap-2">
               <UnitInput
@@ -298,6 +445,12 @@ export default function LayoutPanel({
                 disabled={effLocked}
                 cssProp="top"
               />
+              {isOverridden((component as any).top, (component as any)[`top${vp}`]) && (
+                <div className="-mt-1 col-span-1 flex items-center gap-2 text-[10px]">
+                  <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+                  <button type="button" className="underline" onClick={() => handleResize(`top${vp}`, "")}>Reset</button>
+                </div>
+              )}
               <UnitInput
                 label={<span className="flex items-center gap-1">{`Left (${vp})`}<Tooltip text="CSS left with unit (px/%/rem)">?</Tooltip></span>}
                 placeholder="e.g. 10px"
@@ -307,52 +460,72 @@ export default function LayoutPanel({
                 disabled={effLocked}
                 cssProp="left"
               />
+              {isOverridden((component as any).left, (component as any)[`left${vp}`]) && (
+                <div className="-mt-1 col-span-1 flex items-center gap-2 text-[10px]">
+                  <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+                  <button type="button" className="underline" onClick={() => handleResize(`left${vp}`, "")}>Reset</button>
+                </div>
+              )}
             </div>
           ))}
         </>
       )}
       {(
-        // Heuristic: show stacking option for potential containers
+        // Heuristic: show stacking controls for containers (children exist or grid-like)
         "children" in (component as any) || "columns" in (component as any)
       ) && (
         <>
-          <Select
-            value={(editorFlags as any)?.stackStrategy ?? "default"}
-            onValueChange={(v) => onUpdateEditor?.({ stackStrategy: (v as any) })}
-          >
-            <Tooltip text="Mobile stacking strategy for children" className="block">
-              <SelectTrigger>
-                <SelectValue placeholder="Mobile stacking" />
-              </SelectTrigger>
-            </Tooltip>
-            <SelectContent>
-              <SelectItem value="default">Default order</SelectItem>
-              <SelectItem value="reverse">Reverse order (mobile)</SelectItem>
-              <SelectItem value="custom">Custom order (mobile)</SelectItem>
-            </SelectContent>
-          </Select>
-          {((editorFlags as any)?.stackStrategy === "custom") && Array.isArray((component as any).children) && (
-            <div className="mt-2 space-y-2">
-              <div className="text-xs text-muted-foreground">Set mobile order for each child (lower appears first)</div>
-              {((component as any).children as PageComponent[]).map((child: PageComponent, idx: number) => {
-                const childFlags = (editorMap ?? {})[child.id] as any;
-                const val = (childFlags?.orderMobile as number | undefined);
-                return (
-                  <Input
-                    key={child.id}
-                    type="number"
-                    label={`${(child as any).name || child.type}`}
-                    placeholder={String(idx)}
-                    value={val === undefined ? "" : String(val)}
-                    onChange={(e) => {
-                      const v = e.target.value === "" ? undefined : Math.max(0, parseInt(e.target.value, 10) || 0);
-                      updateEditorForId?.(child.id, { orderMobile: v as number | undefined } as any);
-                    }}
-                  />
-                );
-              })}
-            </div>
-          )}
+          <div className="grid grid-cols-3 gap-2">
+            {(["desktop", "tablet", "mobile"] as const).map((dev) => (
+              <Select
+                key={`stack-${dev}`}
+                value={
+                  // prefer explicit per-device flag; fallback to legacy stackStrategy for mobile only
+                  (editorFlags as any)?.[`stack${dev.charAt(0).toUpperCase() + dev.slice(1)}`] ??
+                  (dev === "mobile" ? ((editorFlags as any)?.stackStrategy ?? "default") : "default")
+                }
+                onValueChange={(v) => onUpdateEditor?.({ [`stack${dev.charAt(0).toUpperCase() + dev.slice(1)}`]: (v as any) } as any)}
+              >
+                <Tooltip text={`Stacking on ${dev}`} className="block">
+                  <SelectTrigger>
+                    <SelectValue placeholder={`Stacking (${dev})`} />
+                  </SelectTrigger>
+                </Tooltip>
+                <SelectContent>
+                  <SelectItem value="default">Default order</SelectItem>
+                  <SelectItem value="reverse">Reverse</SelectItem>
+                  <SelectItem value="custom">Custom</SelectItem>
+                </SelectContent>
+              </Select>
+            ))}
+          </div>
+          {(["desktop", "tablet", "mobile"] as const).map((dev) => {
+            const eff = (editorFlags as any)?.[`stack${dev.charAt(0).toUpperCase() + dev.slice(1)}`] ?? (dev === "mobile" ? ((editorFlags as any)?.stackStrategy ?? "default") : "default");
+            if (eff !== "custom" || !Array.isArray((component as any).children)) return null;
+            return (
+              <div key={`orders-${dev}`} className="mt-2 space-y-2">
+                <div className="text-xs text-muted-foreground">Custom order on {dev} (lower appears first)</div>
+                {((component as any).children as PageComponent[]).map((child: PageComponent, idx: number) => {
+                  const childFlags = (editorMap ?? {})[child.id] as any;
+                  const key = `order${dev.charAt(0).toUpperCase() + dev.slice(1)}`;
+                  const val = (childFlags?.[key] as number | undefined);
+                  return (
+                    <Input
+                      key={`${child.id}-${dev}`}
+                      type="number"
+                      label={`${(child as any).name || child.type}`}
+                      placeholder={String(idx)}
+                      value={val === undefined ? "" : String(val)}
+                      onChange={(e) => {
+                        const v = e.target.value === "" ? undefined : Math.max(0, parseInt(e.target.value, 10) || 0);
+                        updateEditorForId?.(child.id, { [key]: v as number | undefined } as any);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            );
+          })}
         </>
       )}
       {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
@@ -375,6 +548,12 @@ export default function LayoutPanel({
             )}
             onChange={(e) => handleResize(`margin${vp}`, e.target.value)}
           />
+          {isOverridden((component as any).margin, (component as any)[`margin${vp}`]) && (
+            <div className="-mt-1 flex items-center gap-2 text-[10px]">
+              <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+              <button type="button" className="underline" onClick={() => handleResize(`margin${vp}`, "")}>Reset</button>
+            </div>
+          )}
           <Input
             label={
               <span className="flex items-center gap-1">
@@ -393,6 +572,12 @@ export default function LayoutPanel({
             )}
             onChange={(e) => handleResize(`padding${vp}`, e.target.value)}
           />
+          {isOverridden((component as any).padding, (component as any)[`padding${vp}`]) && (
+            <div className="-mt-1 flex items-center gap-2 text-[10px]">
+              <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+              <button type="button" className="underline" onClick={() => handleResize(`padding${vp}`, "")}>Reset</button>
+            </div>
+          )}
         </div>
       ))}
       <Input
@@ -433,6 +618,32 @@ export default function LayoutPanel({
           onChange={(e) => handleInput("gap", e.target.value)}
         />
       )}
+      {/* Tab assignment for children inside tab containers */}
+      {tabTitles.length > 0 ? (
+        <Select
+          value={((component as any).slotKey ?? "0") as any}
+          onValueChange={(v) => handleInput("slotKey" as any, (v || undefined) as any)}
+        >
+          <Tooltip text="If inside Tabs, choose which tab this block belongs to" className="block">
+            <SelectTrigger>
+              <SelectValue placeholder="Tab Slot" />
+            </SelectTrigger>
+          </Tooltip>
+          <SelectContent>
+            {tabTitles.map((t, i) => (
+              <SelectItem key={`tabtitle-${i}`} value={String(i)}>{t || `Tab ${i + 1}`}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      ) : (
+        <Input
+          label={<span className="flex items-center gap-1">Tab Slot<Tooltip text="If inside Tabs, which tab index this block belongs to (0-based)">?</Tooltip></span>}
+          type="number"
+          min={0}
+          value={(((component as any).slotKey ?? "") as any)}
+          onChange={(e) => handleInput("slotKey" as any, (e.target.value === "" ? undefined : String(e.target.value)) as any)}
+        />
+      )}
       {component.type === "Section" && (
         <>
           <UnitInput
@@ -455,6 +666,15 @@ export default function LayoutPanel({
               disabled={effLocked}
               cssProp="max-width"
             />
+          ))}
+          {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
+            isOverridden((component as any).contentWidth, (component as any)[`contentWidth${vp}`]) ? (
+              <div key={`cwo-${vp}`} className="-mt-1 flex items-center gap-2 text-[10px]">
+                <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+                <button type="button" className="underline" onClick={() => handleResize(`contentWidth${vp}`, "")}>Reset</button>
+              </div>
+            ) : null
+            
           ))}
           <Select
             value={(component as any).contentAlign ?? "center"}
@@ -489,6 +709,14 @@ export default function LayoutPanel({
                 <SelectItem value="right">Right</SelectItem>
               </SelectContent>
             </Select>
+          ))}
+          {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
+            isOverridden((component as any).contentAlign, (component as any)[`contentAlign${vp}`]) ? (
+              <div key={`cao-${vp}`} className="-mt-1 flex items-center gap-2 text-[10px]">
+                <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+                <button type="button" className="underline" onClick={() => handleInput(`contentAlign${vp}` as any, undefined as any)}>Reset</button>
+              </div>
+            ) : null
           ))}
           <Input
             label={<span className="flex items-center gap-1">Section Grid Columns<Tooltip text="Override grid columns for this section">?</Tooltip></span>}
@@ -544,6 +772,32 @@ export default function LayoutPanel({
           value={(component as any).gridRow ?? ""}
           error={cssError("grid-row", (component as any).gridRow)}
           onChange={(e) => handleInput("gridRow" as any, (e.target.value || undefined) as any)}
+        />
+      </div>
+
+      {/* Container queries */}
+      <div className="mt-2 border-t pt-2">
+        <div className="mb-1 text-xs font-semibold text-muted-foreground">Container Queries</div>
+        <Select
+          value={((component as any).containerType as string) ?? ""}
+          onValueChange={(v) => handleInput("containerType" as any, (v || undefined) as any)}
+        >
+          <Tooltip text="Sets CSS container-type for this block so children can use @container" className="block">
+            <SelectTrigger>
+              <SelectValue placeholder="container-type" />
+            </SelectTrigger>
+          </Tooltip>
+          <SelectContent>
+            <SelectItem value="">default</SelectItem>
+            <SelectItem value="size">size</SelectItem>
+            <SelectItem value="inline-size">inline-size</SelectItem>
+          </SelectContent>
+        </Select>
+        <Input
+          label={<span className="flex items-center gap-1">Container Name<Tooltip text="Name used in @container queries for this block">?</Tooltip></span>}
+          placeholder="e.g. card"
+          value={((component as any).containerName as string) ?? ""}
+          onChange={(e) => handleInput("containerName" as any, (e.target.value || undefined) as any)}
         />
       </div>
     </div>

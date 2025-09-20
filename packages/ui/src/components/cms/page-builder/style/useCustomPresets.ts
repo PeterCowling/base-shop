@@ -10,6 +10,8 @@ import {
   loadCustomPresets,
   makeId,
   updateCustomPreset,
+  duplicateCustomPreset,
+  moveCustomPreset,
   type CustomPreset,
 } from "./customPresets";
 
@@ -50,6 +52,18 @@ export default function useCustomPresets(effects: NonNullable<StyleOverrides["ef
     setCustomPresets(next);
   }, [selectedCustom]);
 
+  const duplicateSelected = useCallback(() => {
+    if (!selectedCustom) return;
+    const next = duplicateCustomPreset(selectedCustom);
+    setCustomPresets(next);
+  }, [selectedCustom]);
+
+  const moveSelected = useCallback((dir: 'up' | 'down') => {
+    if (!selectedCustom) return;
+    const next = moveCustomPreset(selectedCustom, dir);
+    setCustomPresets(next);
+  }, [selectedCustom]);
+
   const exportJSON = useCallback(() => {
     try {
       const json = JSON.stringify(customPresets, null, 2);
@@ -77,6 +91,8 @@ export default function useCustomPresets(effects: NonNullable<StyleOverrides["ef
     saveCurrentAsPreset,
     removeSelected,
     renameSelected,
+    duplicateSelected,
+    moveSelected,
     exportJSON,
     importJSON,
   } as const;

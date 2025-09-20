@@ -32,6 +32,8 @@ export interface CommentsDrawerProps {
   onCreate?: (componentId: string, text: string, assignedTo?: string | null) => Promise<void> | void;
   shop: string;
   me?: string | null;
+  /** Optional list of users/handles to power @mentions suggestions. */
+  mentionPeople?: string[];
 }
 
 function extractPeople(threads: CommentThread[], me?: string | null): string[] {
@@ -57,7 +59,10 @@ export default function CommentsDrawer(props: CommentsDrawerProps) {
   const [query, setQuery] = useState("");
   const [flashThreadId, setFlashThreadId] = useState<string | null>(null);
 
-  const people = useMemo(() => extractPeople(threads, me), [threads, me]);
+  const people = useMemo(
+    () => props.mentionPeople && props.mentionPeople.length > 0 ? props.mentionPeople : extractPeople(threads, me),
+    [threads, me, props.mentionPeople]
+  );
   const selected = threads.find((t) => t.id === selectedId) || null;
 
   const filtered = useMemo(() => {

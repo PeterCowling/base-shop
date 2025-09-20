@@ -10,6 +10,10 @@ interface Options {
   paddingVal?: string;
   dispatch: React.Dispatch<ResizeAction>;
   containerRef: React.RefObject<HTMLDivElement | null>;
+  /** If enabled, snap spacing values to multiples of baselineStep */
+  baselineSnap?: boolean;
+  /** Baseline step in px to snap to */
+  baselineStep?: number;
 }
 
 type SpacingType = "margin" | "padding";
@@ -52,6 +56,8 @@ export default function useCanvasSpacing({
   paddingVal,
   dispatch,
   containerRef,
+  baselineSnap = false,
+  baselineStep = 8,
 }: Options) {
   const startRef = useRef<{
     x: number;
@@ -76,8 +82,9 @@ export default function useCanvasSpacing({
       const delta = active.side === "left" || active.side === "right" ? dx : dy;
       const current = active.type === "margin" ? [...margin] : [...padding];
       const idx = sideIndex(active.side);
-      current[idx] =
-        active.type === "padding" ? Math.max(0, current[idx] + delta) : current[idx] + delta;
+      const nextRaw = active.type === "padding" ? Math.max(0, current[idx] + delta) : current[idx] + delta;
+      const quantize = (val: number) => (baselineSnap && baselineStep > 0 ? Math.round(val / baselineStep) * baselineStep : val);
+      current[idx] = quantize(nextRaw);
       const patchVal = formatSpacing(current as [number, number, number, number]);
       dispatch({
         type: "resize",
@@ -161,7 +168,9 @@ export default function useCanvasSpacing({
     const padding = parseSpacing(paddingVal);
     const current = type === "margin" ? [...margin] : [...padding];
     const idx = sideIndex(side);
-    const nextVal = type === "padding" ? Math.max(0, current[idx] + delta) : current[idx] + delta;
+    const raw = type === "padding" ? Math.max(0, current[idx] + delta) : current[idx] + delta;
+    const quantize = (val: number) => (baselineSnap && baselineStep > 0 ? Math.round(val / baselineStep) * baselineStep : val);
+    const nextVal = quantize(raw);
     current[idx] = nextVal;
     const patchVal = formatSpacing(current as [number, number, number, number]);
     dispatch({ type: "resize", id: componentId, [type === "margin" ? marginKey : paddingKey]: patchVal });

@@ -19,6 +19,7 @@ interface Options {
   topKey?: string;
   dockX?: "left" | "right" | "center";
   dockY?: "top" | "bottom" | "center";
+  zoom?: number;
 }
 
 type Handle = "se" | "ne" | "sw" | "nw" | "e" | "w" | "n" | "s";
@@ -38,6 +39,7 @@ export default function useCanvasResize({
   topKey = "top",
   dockX,
   dockY,
+  zoom = 1,
 }: Options) {
   const startRef = useRef<{
     x: number;
@@ -74,8 +76,8 @@ export default function useCanvasResize({
     const handleMove = (e: PointerEvent) => {
       if (!startRef.current || !containerRef.current) return;
       const { handle, w, h, l: startL, t: startT, ratio } = startRef.current;
-      const dx = e.clientX - startRef.current.x;
-      const dy = e.clientY - startRef.current.y;
+      const dx = (e.clientX - startRef.current.x) / Math.max(zoom, 0.0001);
+      const dy = (e.clientY - startRef.current.y) / Math.max(zoom, 0.0001);
       const parent = containerRef.current.parentElement;
       const parentW = parent?.offsetWidth ?? w + dx;
       const parentH = parent?.offsetHeight ?? h + dy;
@@ -213,6 +215,7 @@ export default function useCanvasResize({
     setGuides,
     siblingEdgesRef,
     containerRef,
+    zoom,
   ]);
 
   const startResize = (e: React.PointerEvent, handle: Handle = "se") => {

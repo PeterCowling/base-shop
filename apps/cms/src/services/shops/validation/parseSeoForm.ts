@@ -14,6 +14,12 @@ const seoSchema = z
     twitterCard: z
       .enum(["summary", "summary_large_image", "app", "player"])
       .optional(),
+    // Structured data (temporary UI fields mapped into a JSON string)
+    brand: z.string().optional().default(""),
+    offers: z.string().optional().default(""),
+    aggregateRating: z.string().optional().default(""),
+    // Direct structuredData pass-through for future-proofing
+    structuredData: z.string().optional(),
   })
   .strict();
 

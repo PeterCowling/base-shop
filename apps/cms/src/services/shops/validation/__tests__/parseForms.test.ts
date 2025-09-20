@@ -171,6 +171,9 @@ describe("parseSeoForm", () => {
     fd.set("canonicalBase", "https://example.com");
     fd.set("ogUrl", "https://example.com/og");
     fd.set("twitterCard", "summary");
+    fd.set("brand", "BrandX");
+    fd.set("offers", '{"price":"9.99","priceCurrency":"EUR"}');
+    fd.set("aggregateRating", '{"ratingValue":4,"reviewCount":5}');
     const result = parseSeoForm(fd);
     expect(result.data).toBeDefined();
     expect(result.errors).toBeUndefined();

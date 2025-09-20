@@ -1017,6 +1017,9 @@ importers:
       '@acme/next-config':
         specifier: workspace:*
         version: link:../next-config
+      '@acme/sanity':
+        specifier: workspace:*
+        version: link:../sanity
       '@acme/stripe':
         specifier: workspace:*
         version: link:../stripe
@@ -1125,6 +1128,9 @@ importers:
       '@tiptap/extension-link':
         specifier: ^2.24.0
         version: 2.24.1(@tiptap/core@2.24.1(@tiptap/pm@2.24.1))(@tiptap/pm@2.24.1)
+      '@tiptap/extension-underline':
+        specifier: ^2.24.0
+        version: 2.26.1(@tiptap/core@2.24.1(@tiptap/pm@2.24.1))
       '@tiptap/react':
         specifier: ^2.24.0
         version: 2.24.1(@tiptap/core@2.24.1(@tiptap/pm@2.24.1))(@tiptap/pm@2.24.1)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
@@ -1143,6 +1149,9 @@ importers:
       focus-trap:
         specifier: ^7.6.5
         version: 7.6.5
+      lottie-web:
+        specifier: ^5.12.2
+        version: 5.13.0
       next-auth:
         specifier: ^4.24.11
         version: 4.24.11(next@15.3.5(@babel/core@7.28.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(nodemailer@6.10.1)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
@@ -1859,7 +1868,7 @@ packages:
 
   '@cloudflare/next-on-pages@1.13.12':
     resolution: {integrity: sha512-rPy7x9c2+0RDDdJ5o0TeRUwXJ1b7N1epnqF6qKSp5Wz1r9KHOyvaZh1ACoOC6Vu5k9su5WZOgy+8fPLIyrldMQ==}
-    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+    deprecated: 'Please use the OpenNext adapter instead: https://opennext.js.org/cloudflare'
     hasBin: true
     peerDependencies:
       '@cloudflare/workers-types': ^4.20240208.0
@@ -4424,6 +4433,11 @@ packages:
 
   '@tiptap/extension-text@2.24.1':
     resolution: {integrity: sha512-8AybItb7eKlpBJbVcGLqT50W8K2ml84ZZPdK5HLWAbp605YZFMpqlKGHD3b9vbT87YTYxlPSGc8yhf0/FeeL7A==}
+    peerDependencies:
+      '@tiptap/core': ^2.7.0
+
+  '@tiptap/extension-underline@2.26.1':
+    resolution: {integrity: sha512-/fufv41WDMdf0a4xmFAxONoAz08TonJXX6NEoSJmuGKO59M/Y0Pz8DTK1g32Wk44kn7dyScDiPlvvndl+UOv0A==}
     peerDependencies:
       '@tiptap/core': ^2.7.0
 
@@ -8651,6 +8665,9 @@ packages:
   loose-envify@1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
+
+  lottie-web@5.13.0:
+    resolution: {integrity: sha512-+gfBXl6sxXMPe8tKQm7qzLnUy5DUPJPKIyRHwtpCpyUEYjHYRJC/5gjUvdkuO2c3JllrPtHXH5UJJK8LRYl5yQ==}
 
   loupe@3.1.4:
     resolution: {integrity: sha512-wJzkKwJrheKtknCOKNEtDK4iqg/MxmZheEMtSTYvnzRdEYaZzmgH976nenp8WdJRdx5Vc1X/9MO0Oszl6ezeXg==}
@@ -15161,6 +15178,10 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.24.1(@tiptap/pm@2.24.1)
 
+  '@tiptap/extension-underline@2.26.1(@tiptap/core@2.24.1(@tiptap/pm@2.24.1))':
+    dependencies:
+      '@tiptap/core': 2.24.1(@tiptap/pm@2.24.1)
+
   '@tiptap/pm@2.24.1':
     dependencies:
       prosemirror-changeset: 2.3.1
@@ -20230,6 +20251,8 @@ snapshots:
   loose-envify@1.4.0:
     dependencies:
       js-tokens: 4.0.0
+
+  lottie-web@5.13.0: {}
 
   loupe@3.1.4: {}
 

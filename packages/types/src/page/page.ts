@@ -53,7 +53,14 @@ import {
   sectionComponentSchema,
   multiColumnComponentSchema,
   tabsComponentSchema,
+  stackFlexComponentSchema,
+  gridContainerComponentSchema,
+  carouselContainerComponentSchema,
+  tabsAccordionContainerComponentSchema,
   bindPageComponentSchema,
+  datasetComponentSchema,
+  repeaterComponentSchema,
+  bindComponentSchema,
 } from "./layouts";
 
 export const pageComponentSchema = z.lazy(() =>
@@ -102,6 +109,13 @@ export const pageComponentSchema = z.lazy(() =>
     sectionComponentSchema,
     multiColumnComponentSchema,
     tabsComponentSchema,
+    stackFlexComponentSchema,
+    gridContainerComponentSchema,
+    carouselContainerComponentSchema,
+    tabsAccordionContainerComponentSchema,
+    datasetComponentSchema,
+    repeaterComponentSchema,
+    bindComponentSchema,
     collectionListComponentSchema,
   ])
 );
@@ -115,10 +129,14 @@ export interface EditorFlags {
   locked?: boolean;
   zIndex?: number;
   hidden?: ("desktop" | "tablet" | "mobile")[];
+  /** Custom device ids (page-defined breakpoints) to hide this node on */
+  hiddenDeviceIds?: string[];
   /** Container child stacking strategy applied on mobile */
   stackStrategy?: "default" | "reverse" | "custom";
   /** Per-node custom mobile order (used when stackStrategy = custom on parent) */
   orderMobile?: number;
+  /** Builder-only metadata for global (linked) components */
+  global?: { id: string; overrides?: unknown };
 }
 
 export interface HistoryState {
@@ -149,8 +167,15 @@ export const historyStateSchema = z
           zIndex: z.number().int().optional(),
           hidden: z.array(z.enum(["desktop", "tablet", "mobile"]))
             .optional(),
+          hiddenDeviceIds: z.array(z.string()).optional(),
           stackStrategy: z.enum(["default", "reverse", "custom"]).optional(),
           orderMobile: z.number().int().nonnegative().optional(),
+          global: z
+            .object({
+              id: z.string(),
+              overrides: z.unknown().optional(),
+            })
+            .optional(),
         })
       )
       .default({})

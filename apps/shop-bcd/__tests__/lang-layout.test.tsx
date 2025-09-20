@@ -5,10 +5,15 @@ let LocaleLayout: any;
 let generateMetadata: any;
 
 const getSeoMock = jest.fn();
+const getShopSettingsMock = jest.fn();
 
 jest.mock("../src/lib/seo", () => ({
   __esModule: true,
   getSeo: (...args: any[]) => getSeoMock(...args),
+}));
+
+jest.mock("@platform-core/repositories/settings.server", () => ({
+  getShopSettings: (...args: any[]) => getShopSettingsMock(...args),
 }));
 
 jest.mock("@ui/components/layout/Footer", () => ({
@@ -46,6 +51,7 @@ describe("[lang] layout", () => {
       openGraph: { url: "https://example.com/de" },
       twitter: { card: "summary" },
     });
+    getShopSettingsMock.mockResolvedValue({ languages: ["de", "en", "it"], seo: {} });
   });
 
   afterEach(() => {
@@ -58,12 +64,15 @@ describe("[lang] layout", () => {
     });
 
     expect(getSeoMock).toHaveBeenCalledWith("de");
-    expect(metadata).toEqual({
-      title: "Title DE",
-      description: "Desc DE",
-      alternates: { canonical: "https://example.com/de" },
-      openGraph: { url: "https://example.com/de" },
-      twitter: { card: "summary" },
+    expect(metadata.title).toBe("Title DE");
+    expect(metadata.description).toBe("Desc DE");
+    expect(metadata.alternates?.canonical).toBe("https://example.com/de");
+    expect(metadata.openGraph).toEqual({ url: "https://example.com/de" });
+    expect(metadata.twitter).toEqual({ card: "summary" });
+    expect(metadata.alternates?.languages).toEqual({
+      de: "https://example.com/de",
+      en: "https://example.com/en",
+      it: "https://example.com/it",
     });
   });
 
@@ -92,5 +101,8 @@ describe("[lang] layout", () => {
     });
     render(element);
     expect(screen.getByTestId("header").textContent).toBe("en");
+    // JSON-LD script present
+    const script = document.querySelector('script[type="application/ld+json"]');
+    expect(script).toBeTruthy();
   });
 });

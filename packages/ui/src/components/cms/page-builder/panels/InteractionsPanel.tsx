@@ -15,6 +15,8 @@ import {
 import { Button } from "../../../atoms/shadcn";
 import { useState } from "react";
 import LinkPicker from "../LinkPicker";
+import { easingPresets } from "./EasingPresets";
+import { motionPresets } from "./MotionPresets";
 
 const isTestEnvironment = process.env.NODE_ENV === "test";
 
@@ -145,8 +147,7 @@ export default function InteractionsPanel({
           <SelectItem value="rotate">Rotate</SelectItem>
         </SelectContent>
       </Select>
-
-      {/* Timing controls */}
+      
       <div className="grid grid-cols-3 gap-2">
         <Input
           type="number"
@@ -189,18 +190,43 @@ export default function InteractionsPanel({
             <SelectValue placeholder="Easing" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="__none__">Default</SelectItem>
-            <SelectItem value="ease">ease</SelectItem>
-            <SelectItem value="linear">linear</SelectItem>
-            <SelectItem value="ease-in">ease-in</SelectItem>
-            <SelectItem value="ease-out">ease-out</SelectItem>
-            <SelectItem value="ease-in-out">ease-in-out</SelectItem>
-            <SelectItem value="cubic-bezier(0.4, 0, 0.2, 1)">cubic-bezier(0.4,0,0.2,1)</SelectItem>
+            {easingPresets.map((e) => (
+              <SelectItem key={e.value} value={e.value}>{e.label}</SelectItem>
+            ))}
           </SelectContent>
       </Select>
       </div>
 
-      {/* Scroll effects */}
+      {/* Motion presets */}
+      <div className="grid grid-cols-3 gap-2 items-end">
+        <Select
+          value={((component as any).motionPreset as string | undefined) ?? "__none__"}
+          onValueChange={(v) => handleInput("motionPreset" as any, v === "__none__" ? (undefined as any) : (v as any))}
+        >
+          <SelectTrigger aria-label="Motion Preset" onMouseDown={openSelectOnMouseDown}>
+            <SelectValue placeholder="Preset" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="__none__">No preset</SelectItem>
+            {motionPresets.map((p) => (
+              <SelectItem key={p.id} value={p.id}>{p.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Button
+          type="button"
+          variant="outline"
+          className="col-span-2"
+          onClick={() => {
+            const id = ((component as any).motionPreset as string | undefined) ?? "";
+            const preset = motionPresets.find((p) => p.id === id);
+            if (preset) preset.apply(handleInput as any);
+          }}
+        >
+          Apply Preset
+        </Button>
+      </div>
+      
       <Select
         value={reveal ?? "__none__"}
         onValueChange={(v) =>
@@ -273,8 +299,7 @@ export default function InteractionsPanel({
           }
         />
       </div>
-
-      {/* Hover effects */}
+      
       <div className="grid grid-cols-2 gap-2">
         <Input
           type="number"
@@ -306,8 +331,7 @@ export default function InteractionsPanel({
           }
         />
       </div>
-
-      {/* Simple timeline: stagger children */}
+      
       <Input
         type="number"
         label="Stagger children (ms)"

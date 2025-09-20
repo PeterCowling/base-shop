@@ -1,6 +1,7 @@
 "use client";
 
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
+import { useRef } from "react";
 import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent, HistoryState } from "@acme/types";
 import { isHiddenForViewport } from "./state/layout/utils";
@@ -10,6 +11,7 @@ import type { Action } from "./state";
 import type { DevicePreset } from "../../../utils/devicePresets";
 import GridOverlay from "./GridOverlay";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+import { useEffect, useState } from "react";
 
 interface Props {
   component: PageComponent;
@@ -25,6 +27,8 @@ interface Props {
   isOver: boolean;
   setDropRef: (node: HTMLDivElement | null) => void;
   editor?: HistoryState["editor"];
+  baselineSnap?: boolean;
+  baselineStep?: number;
 }
 
 export default function BlockChildren({
@@ -41,18 +45,39 @@ export default function BlockChildren({
   isOver,
   setDropRef,
   editor,
+  baselineSnap = false,
+  baselineStep = 8,
 }: Props) {
+  const containerElRef = useRef<HTMLDivElement | null>(null);
+  const [dragActive, setDragActive] = useState(false);
+  const [hoverTab, setHoverTab] = useState<number | null>(null);
+  useEffect(() => {
+    const onStart = () => setDragActive(true);
+    const onEnd = () => { setDragActive(false); setHoverTab(null); };
+    window.addEventListener('pb-drag-start', onStart as any);
+    window.addEventListener('pb-drag-end', onEnd as any);
+    return () => {
+      window.removeEventListener('pb-drag-start', onStart as any);
+      window.removeEventListener('pb-drag-end', onEnd as any);
+    };
+  }, []);
   const underlyingChildren = (childComponents ?? []);
   let visibleChildren = underlyingChildren.filter((c) => !isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport));
-  // Apply container stacking presets for mobile
-  if (viewport === "mobile") {
-    const strategy = (editor?.[component.id]?.stackStrategy as "default" | "reverse" | "custom" | undefined) ?? "default";
+  // Apply container stacking presets per viewport
+  {
+    const flags = editor?.[component.id] as any;
+    const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+    const devKey = `stack${cap(viewport)}`;
+    const strategy = (flags?.[devKey] as "default" | "reverse" | "custom" | undefined)
+      ?? (viewport === "mobile" ? ((flags?.stackStrategy as any) ?? "default") : "default");
     if (strategy === "reverse") {
       visibleChildren = [...visibleChildren].reverse();
     } else if (strategy === "custom") {
       visibleChildren = [...visibleChildren].sort((a, b) => {
-        const oa = (editor?.[a.id]?.orderMobile as number | undefined);
-        const ob = (editor?.[b.id]?.orderMobile as number | undefined);
+        const key = `order${cap(viewport)}` as const;
+        const e = editor as any;
+        const oa = (e?.[a.id]?.[key] as number | undefined);
+        const ob = (e?.[b.id]?.[key] as number | undefined);
         const da = oa === undefined ? Number.POSITIVE_INFINITY : oa;
         const db = ob === undefined ? Number.POSITIVE_INFINITY : ob;
         if (da === db) return 0;
@@ -104,7 +129,14 @@ export default function BlockChildren({
       items={childIds}
       strategy={rectSortingStrategy}
     >
-      <div ref={setDropRef} id={`container-${component.id}`} role="list" aria-dropeffect="move" className="border-muted relative m-2 flex flex-col gap-4 border border-dashed p-2">
+      <div
+        ref={(node) => { containerElRef.current = node; setDropRef(node); }}
+        id={`container-${component.id}`}
+        role="list"
+        aria-dropeffect="move"
+        className="border-muted relative m-2 flex flex-col gap-4 border border-dashed p-2"
+        data-tab-titles={isTabbed && slots ? JSON.stringify(slots.map((s) => s.title)) : undefined}
+      >
         {effGridEnabled && <div className="absolute inset-0"><GridOverlay gridCols={effGridCols} gutter={effGutter} /></div>}
         {isOver && (
           <div data-placeholder className="border-primary bg-primary/10 ring-primary h-4 w-full rounded border-2 border-dashed ring-2" />
@@ -113,6 +145,115 @@ export default function BlockChildren({
           <>
             {visibleChildren.map((child, i) => (
               <div key={child.id} className="relative group">
+                {compType === "Grid" && (
+                  <div className="absolute -top-3 left-0 z-20 flex gap-1">
+                    {(() => {
+                      const maxCols = Number((component as any).columns) || 12;
+                      const curr = (() => {
+                        const col = String(((child as any).gridColumn ?? "")).trim();
+                        const m = /span\s+(\d+)/i.exec(col);
+                        return m ? Math.max(1, Math.min(maxCols, parseInt(m[1]!, 10))) : 1;
+                      })();
+                      const setSpan = (n: number) => dispatch({ type: "update", id: child.id, patch: { gridColumn: `span ${Math.max(1, Math.min(maxCols, n))}` } as any });
+                      return (
+                        <>
+                          <button type="button" className="rounded bg-black/60 px-1 text-[10px] text-white shadow dark:bg-white/70 dark:text-black" aria-label="Decrease column span" onClick={(e) => { e.stopPropagation(); setSpan(curr - 1); }}>−</button>
+                          <span className="rounded bg-black/40 px-1 text-[10px] text-white dark:bg-white/50 dark:text-black">{curr} col</span>
+                          <button type="button" className="rounded bg-black/60 px-1 text-[10px] text-white shadow dark:bg-white/70 dark:text-black" aria-label="Increase column span" onClick={(e) => { e.stopPropagation(); setSpan(curr + 1); }}>＋</button>
+                        </>
+                      );
+                    })()}
+                  </div>
+                )}
+                {compType === "Grid" && (
+                  <div className="absolute -bottom-3 left-0 z-20 flex gap-1">
+                    {(() => {
+                      const maxRows = Math.max(1, Number((component as any).rows) || 0);
+                      const curr = (() => {
+                        const row = String(((child as any).gridRow ?? "")).trim();
+                        const m = /span\s+(\\d+)/i.exec(row);
+                        return m ? Math.max(1, parseInt(m[1]!, 10)) : 1;
+                      })();
+                      const setSpan = (n: number) => dispatch({ type: "update", id: child.id, patch: { gridRow: `span ${Math.max(1, maxRows ? Math.min(maxRows, n) : n)}` } as any });
+                      return (
+                        <>
+                          <button type="button" className="rounded bg-black/60 px-1 text-[10px] text-white shadow dark:bg-white/70 dark:text-black" aria-label="Decrease row span" onClick={(e) => { e.stopPropagation(); setSpan(curr - 1); }}>−</button>
+                          <span className="rounded bg-black/40 px-1 text-[10px] text-white dark:bg-white/50 dark:text-black">{curr} row</span>
+                          <button type="button" className="rounded bg-black/60 px-1 text-[10px] text-white shadow dark:bg-white/70 dark:text-black" aria-label="Increase row span" onClick={(e) => { e.stopPropagation(); setSpan(curr + 1); }}>＋</button>
+                        </>
+                      );
+                    })()}
+                  </div>
+                )}
+                {compType === "Grid" && (
+                  <div
+                    className="absolute top-0 bottom-0 right-0 z-20 w-1 cursor-col-resize bg-transparent"
+                    onPointerDown={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const el = containerElRef.current;
+                      const maxCols = Math.max(1, Number((component as any).columns) || 12);
+                      const colWidth = el ? el.clientWidth / maxCols : 0;
+                      const startX = e.clientX;
+                      const parseSpan = (val: unknown) => {
+                        const s = String(val ?? "").trim();
+                        const m = /span\s+(\d+)/i.exec(s);
+                        return m ? Math.max(1, Math.min(maxCols, parseInt(m[1]!, 10))) : 1;
+                      };
+                      const initial = parseSpan((child as any).gridColumn);
+                      const move = (ev: PointerEvent) => {
+                        const dx = ev.clientX - startX;
+                        const delta = colWidth > 0 ? Math.round(dx / Math.max(1, colWidth)) : 0;
+                        const next = Math.max(1, Math.min(maxCols, initial + delta));
+                        // dispatch update live
+                        dispatch({ type: "update", id: child.id, patch: { gridColumn: `span ${next}` } as any });
+                      };
+                      const up = () => {
+                        try { window.removeEventListener("pointermove", move as any); } catch {}
+                        try { window.removeEventListener("pointerup", up as any); } catch {}
+                      };
+                      window.addEventListener("pointermove", move as any);
+                      window.addEventListener("pointerup", up as any, { once: true });
+                    }}
+                    title="Drag to change column span"
+                    aria-label="Resize grid column span"
+                  />
+                )}
+                {compType === "Grid" && (
+                  <div
+                    className="absolute bottom-0 left-0 right-0 z-20 h-1 cursor-row-resize bg-transparent"
+                    onPointerDown={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      const el = containerElRef.current;
+                      const rowsProp = Number((component as any).rows) || 0;
+                      if (!rowsProp) return; // only drag when explicit rows are set
+                      const rowCount = Math.max(1, rowsProp);
+                      const rowHeight = el ? el.clientHeight / rowCount : 0;
+                      const startY = e.clientY;
+                      const parseSpan = (val: unknown) => {
+                        const s = String(val ?? "").trim();
+                        const m = /span\s+(\\d+)/i.exec(s);
+                        return m ? Math.max(1, Math.min(rowCount, parseInt(m[1]!, 10))) : 1;
+                      };
+                      const initial = parseSpan((child as any).gridRow);
+                      const move = (ev: PointerEvent) => {
+                        const dy = ev.clientY - startY;
+                        const delta = rowHeight > 0 ? Math.round(dy / Math.max(1, rowHeight)) : 0;
+                        const next = Math.max(1, Math.min(rowCount, initial + delta));
+                        dispatch({ type: "update", id: child.id, patch: { gridRow: `span ${next}` } as any });
+                      };
+                      const up = () => {
+                        try { window.removeEventListener("pointermove", move as any); } catch {}
+                        try { window.removeEventListener("pointerup", up as any); } catch {}
+                      };
+                      window.addEventListener("pointermove", move as any);
+                      window.addEventListener("pointerup", up as any, { once: true });
+                    }}
+                    title="Drag to change row span"
+                    aria-label="Resize grid row span"
+                  />
+                )}
                 <InlineInsert
                   index={i}
                   context="child"
@@ -127,6 +268,8 @@ export default function BlockChildren({
                   component={child}
                   index={i}
                   parentId={component.id}
+                  parentType={(component as any).type as string}
+                  parentSlots={undefined}
                   selectedIds={selectedIds}
                   onSelect={onSelect}
                   onRemove={() => dispatch({ type: "remove", id: child.id })}
@@ -137,7 +280,9 @@ export default function BlockChildren({
                   viewport={viewport}
                   device={device}
                   editor={editor}
-                />
+                  baselineSnap={baselineSnap}
+                  baselineStep={baselineStep}
+                  />
               </div>
             ))}
             <InlineInsert
@@ -153,6 +298,20 @@ export default function BlockChildren({
           </>
         )}
 
+        {isTabbed && slots && dragActive && (
+          <div className="sticky top-0 z-30 -mx-2 -mt-2 mb-2 flex gap-2 bg-background/80 p-2 backdrop-blur">
+            {slots.map((s, i) => (
+              <div
+                key={`tab-head-${s.key}`}
+                onMouseEnter={() => { setHoverTab(i); try { window.dispatchEvent(new CustomEvent('pb-tab-hover', { detail: { parentId: component.id, tabIndex: i } })); } catch {} }}
+                onMouseLeave={() => setHoverTab((prev) => (prev === i ? null : prev))}
+                className={`rounded border px-2 py-1 text-xs ${hoverTab === i ? 'border-primary bg-primary/10 ring-2 ring-primary' : 'border-dashed'}`}
+              >
+                {s.title}
+              </div>
+            ))}
+          </div>
+        )}
         {isTabbed && slots && slots.map((slot, sIdx) => {
           const slotChildren = visibleChildren.filter((c) => {
             const sk = (c as any).slotKey as string | undefined;
@@ -165,7 +324,7 @@ export default function BlockChildren({
           const endIndex = slotChildren.length > 0 ? (visibleChildren.findIndex((c) => c.id === slotChildren[slotChildren.length - 1]!.id) + 1) : startIndex;
           return (
             <div key={slot.key} className="rounded border p-2">
-              <div className="text-muted-foreground mb-2 text-xs font-medium">{slot.title}</div>
+              <div className={`mb-2 text-xs font-medium ${dragActive && hoverTab === sIdx ? 'text-primary' : 'text-muted-foreground'}`}>{slot.title}</div>
               <InlineInsert
                 index={startIndex}
                 context="child"
@@ -200,6 +359,8 @@ export default function BlockChildren({
                       component={child}
                       index={i}
                       parentId={component.id}
+                      parentType={(component as any).type as string}
+                      parentSlots={slots!.length}
                       selectedIds={selectedIds}
                       onSelect={onSelect}
                       onRemove={() => dispatch({ type: "remove", id: child.id })}
@@ -287,20 +448,24 @@ export default function BlockChildren({
                           </SelectContent>
                         </Select>
                       </div>
-                      <CanvasItem
-                        component={child}
-                        index={i}
-                        parentId={component.id}
-                        selectedIds={selectedIds}
-                        onSelect={onSelect}
-                        onRemove={() => dispatch({ type: "remove", id: child.id })}
-                        dispatch={dispatch}
-                        locale={locale}
+                    <CanvasItem
+                      component={child}
+                      index={i}
+                      parentId={component.id}
+                      parentType={(component as any).type as string}
+                      parentSlots={undefined}
+                      selectedIds={selectedIds}
+                      onSelect={onSelect}
+                      onRemove={() => dispatch({ type: "remove", id: child.id })}
+                      dispatch={dispatch}
+                      locale={locale}
                         gridEnabled={effGridEnabled}
                         gridCols={effGridCols}
                         viewport={viewport}
                         device={device}
                         editor={editor}
+                        baselineSnap={baselineSnap}
+                        baselineStep={baselineStep}
                       />
                       <InlineInsert
                         index={i + 1}

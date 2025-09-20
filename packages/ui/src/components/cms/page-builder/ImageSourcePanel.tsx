@@ -14,9 +14,12 @@ interface Props {
   cropAspect?: string;
   focalPoint?: { x: number; y: number };
   onChange: (patch: { src?: string; alt?: string; cropAspect?: string; focalPoint?: { x: number; y: number } }) => void;
+  /** Optional seed + persistence for quick filter adjustments */
+  initialFilter?: string;
+  onApplyFilter?: (filter: string | undefined) => void;
 }
 
-function ImageSourcePanel({ src, alt, cropAspect, focalPoint, onChange }: Props) {
+function ImageSourcePanel({ src, alt, cropAspect, focalPoint, onChange, initialFilter, onApplyFilter }: Props) {
   const t = useTranslations();
   const [url, setUrl] = useState(src ?? "");
   const [altText, setAltText] = useState(alt ?? "");
@@ -132,11 +135,13 @@ function ImageSourcePanel({ src, alt, cropAspect, focalPoint, onChange }: Props)
           open={editorOpen}
           src={url}
           initial={editState}
+          initialFilter={initialFilter}
           onClose={() => setEditorOpen(false)}
           onApply={(next) => {
             setEditState(next);
             onChange({ cropAspect: next.cropAspect, focalPoint: next.focalPoint });
           }}
+          onApplyFilter={onApplyFilter}
         />
       ) : null}
     </div>

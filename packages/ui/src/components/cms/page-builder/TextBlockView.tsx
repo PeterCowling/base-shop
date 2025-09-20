@@ -6,6 +6,8 @@ import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import MenuBar from "./MenuBar";
 import DOMPurify from "dompurify";
 import { LockClosedIcon } from "@radix-ui/react-icons";
+import { useEffect, useMemo, useState } from "react";
+import LinkPicker from "./LinkPicker";
 
 interface Guides {
   x: number | null;
@@ -29,6 +31,7 @@ interface Props {
   onFinishEditing: () => void;
   startDrag: (e: React.PointerEvent) => void;
   startResize: (e: React.PointerEvent, handle?: "se" | "ne" | "sw" | "nw" | "e" | "w" | "n" | "s") => void;
+  startRotate?: (e: React.PointerEvent) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   onSelect: () => void;
   onRemove: () => void;
@@ -36,6 +39,9 @@ interface Props {
   zIndex?: number;
   locked?: boolean;
   spacingOverlay?: { type: "margin" | "padding"; side: "top" | "right" | "bottom" | "left"; top: number; left: number; width: number; height: number } | null;
+  rotating?: boolean;
+  rotateAngle?: number;
+  staticTransform?: string;
 }
 
 const TextBlockView = ({
@@ -54,6 +60,7 @@ const TextBlockView = ({
   onFinishEditing,
   startDrag,
   startResize,
+  startRotate,
   onKeyDown,
   onSelect,
   onRemove,
@@ -62,8 +69,39 @@ const TextBlockView = ({
   locked = false,
   kbResizing = false,
   spacingOverlay,
+  rotating = false,
+  rotateAngle = 0,
+  staticTransform,
 }: Props) => {
   const sanitized = DOMPurify.sanitize(content);
+  const [toolbarPos, setToolbarPos] = useState<{ x: number; y: number; visible: boolean }>({ x: 0, y: 0, visible: false });
+  const [linkOpen, setLinkOpen] = useState(false);
+
+  useEffect(() => {
+    if (!editor || !editing) return;
+    const update = () => {
+      try {
+        const sel = window.getSelection?.();
+        if (!sel || sel.rangeCount === 0) { setToolbarPos((p) => ({ ...p, visible: false })); return; }
+        const range = sel.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+        const host = containerRef.current?.getBoundingClientRect();
+        if (!host || !rect || (rect.width === 0 && rect.height === 0)) { setToolbarPos((p) => ({ ...p, visible: false })); return; }
+        const x = Math.max(0, rect.left - host.left + rect.width / 2);
+        const y = Math.max(0, rect.top - host.top) - 32; // 32px above selection
+        setToolbarPos({ x, y, visible: true });
+      } catch {
+        setToolbarPos((p) => ({ ...p, visible: false }));
+      }
+    };
+    update();
+    editor.on("selectionUpdate", update);
+    editor.on("transaction", update);
+    return () => {
+      try { editor.off("selectionUpdate", update); } catch {}
+      try { editor.off("transaction", update); } catch {}
+    };
+  }, [editor, editing, containerRef]);
   return (
     <div
       ref={(node) => {
@@ -133,6 +171,11 @@ const TextBlockView = ({
           {containerRef.current ? `${Math.round(containerRef.current.offsetWidth)}×${Math.round(containerRef.current.offsetHeight)}` : ""}
         </div>
       )}
+      {rotating && (
+        <div className="pointer-events-none absolute -top-8 left-1/2 z-30 -translate-x-1/2 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
+          {Math.round(rotateAngle)}°
+        </div>
+      )}
       {editing ? (
         <div onBlur={onFinishEditing} onClick={(e) => e.stopPropagation()}>
           <MenuBar editor={editor} />
@@ -140,24 +183,73 @@ const TextBlockView = ({
             editor={editor}
             className="min-h-[1rem] outline-none"
             onKeyDown={(e) => {
+              // Finish editing on Enter
               if (e.key === "Enter") {
                 e.preventDefault();
                 onFinishEditing();
               }
+              // Ensure underline shortcut works
+              if ((e.metaKey || e.ctrlKey) && (e.key === "u" || e.key === "U")) {
+                e.preventDefault();
+                try { editor?.chain().focus().toggleUnderline?.().run(); } catch {}
+              }
+            }}
+          />
+          {toolbarPos.visible && (
+            <div className="pointer-events-auto absolute z-40 flex -translate-x-1/2 gap-1 rounded border bg-background p-1 shadow" style={{ left: toolbarPos.x, top: toolbarPos.y }}>
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleBold().run()} aria-label="Bold">B</button>
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleItalic().run()} aria-label="Italic">I</button>
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleUnderline?.().run()} aria-label="Underline">U</button>
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => setLinkOpen(true)} aria-label="Link">Link</button>
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleBulletList().run()} aria-label="Bulleted">•</button>
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleOrderedList().run()} aria-label="Numbered">1.</button>
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()} aria-label="H2">H2</button>
+            </div>
+          )}
+          <LinkPicker
+            open={linkOpen}
+            onClose={() => setLinkOpen(false)}
+            onPick={(href) => {
+              editor?.chain().focus().extendMarkRange("link").setLink({ href }).run();
+              setLinkOpen(false);
             }}
           />
         </div>
       ) : (
-        <div
-          onClick={(e) => {
-            e.stopPropagation();
-            onStartEditing();
-          }}
-          dangerouslySetInnerHTML={{ __html: sanitized }}
-        />
+        (staticTransform ? (
+          <div style={{ transform: staticTransform }}>
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+                onStartEditing();
+              }}
+              dangerouslySetInnerHTML={{ __html: sanitized }}
+            />
+          </div>
+        ) : (
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              onStartEditing();
+            }}
+            dangerouslySetInnerHTML={{ __html: sanitized }}
+          />
+        ))
       )}
       {selected && (
         <>
+          {startRotate && (
+            <div className="absolute -top-5 left-1/2 -translate-x-1/2 group pointer-events-auto">
+              <div
+                onPointerDown={(e) => !locked && startRotate(e)}
+                title="Rotate (Shift = precise)"
+                className="h-3 w-3 cursor-crosshair rounded-full bg-primary"
+              />
+              <div className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-black/60 px-1 text-[10px] text-white opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-white/70 dark:text-black">
+                Shift = precise
+              </div>
+            </div>
+          )}
           <div onPointerDown={(e) => !locked && startResize(e, "nw")} className="absolute -top-1 -left-1 h-2 w-2 cursor-nwse-resize bg-primary" />
           <div onPointerDown={(e) => !locked && startResize(e, "ne")} className="absolute -top-1 -right-1 h-2 w-2 cursor-nesw-resize bg-primary" />
           <div onPointerDown={(e) => !locked && startResize(e, "sw")} className="absolute -bottom-1 -left-1 h-2 w-2 cursor-nesw-resize bg-primary" />

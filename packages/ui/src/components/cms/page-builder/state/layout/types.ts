@@ -5,7 +5,16 @@ export type EditorFlags = {
   locked?: boolean;
   zIndex?: number;
   hidden?: ("desktop" | "tablet" | "mobile")[];
+  hiddenDeviceIds?: string[];
+  /** Legacy single strategy (mobile); kept for backwards-compat */
   stackStrategy?: "default" | "reverse" | "custom";
+  /** Per-device stacking strategies */
+  stackDesktop?: "default" | "reverse" | "custom";
+  stackTablet?: "default" | "reverse" | "custom";
+  stackMobile?: "default" | "reverse" | "custom";
+  /** Custom orders per device (used when corresponding strategy === "custom") */
+  orderDesktop?: number;
+  orderTablet?: number;
   orderMobile?: number;
 };
 
@@ -74,6 +83,7 @@ export type ChangeAction =
 export type UndoAction = { type: "undo" };
 export type RedoAction = { type: "redo" };
 export type SetGridColsAction = { type: "set-grid-cols"; gridCols: number };
+export type SetBreakpointsAction = { type: "set-breakpoints"; breakpoints: { id: string; label: string; min?: number; max?: number }[] };
 
 export type UpdateEditorAction = {
   type: "update-editor";
@@ -86,4 +96,5 @@ export type Action =
   | UndoAction
   | RedoAction
   | SetGridColsAction
+  | SetBreakpointsAction
   | UpdateEditorAction;

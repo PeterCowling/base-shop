@@ -6,6 +6,8 @@ import { memo, type ComponentType } from "react";
 import { blockRegistry } from "../blocks";
 import { cssVars } from "../../../utils/style/cssVars";
 import { ensureScrollStyles } from "./scrollEffects";
+import { initTimelines } from "./timeline";
+import { initLottie } from "./lottie";
 
 const ANIMATION_STYLE_ID = "pb-animations";
 function injectAnimations() {
@@ -37,6 +39,8 @@ function injectAnimations() {
 }
 injectAnimations();
 ensureScrollStyles();
+initTimelines();
+initLottie();
 
 function Block({ component, locale }: { component: PageComponent; locale: Locale }) {
   if (component.type === "Text") {
@@ -139,6 +143,12 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
   const hoverScale = (component as any).hoverScale as number | undefined;
   const hoverOpacity = (component as any).hoverOpacity as number | undefined;
   const staggerChildren = (component as any).staggerChildren as number | undefined;
+  const timeline = (component as any).timeline as any | undefined;
+  const lottieUrl = (component as any).lottieUrl as string | undefined;
+  const lottieAutoplay = (component as any).lottieAutoplay as boolean | undefined;
+  const lottieLoop = (component as any).lottieLoop as boolean | undefined;
+  const lottieSpeed = (component as any).lottieSpeed as number | undefined;
+  const lottieTrigger = (component as any).lottieTrigger as string | undefined;
   const gridArea = (component as any).gridArea as string | undefined;
   const gridColumn = (component as any).gridColumn as string | undefined;
   const gridRow = (component as any).gridRow as string | undefined;
@@ -182,6 +192,12 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
       data-pb-href={(component as any).href || undefined}
       data-pb-modal={(component as any).modalHtml || undefined}
       data-pb-stagger={typeof staggerChildren === 'number' ? String(staggerChildren) : undefined}
+      data-pb-timeline={timeline && timeline.steps && timeline.steps.length ? JSON.stringify(timeline) : undefined}
+      data-pb-lottie-url={lottieUrl || undefined}
+      data-pb-lottie-autoplay={lottieAutoplay ? '1' : undefined}
+      data-pb-lottie-loop={lottieLoop ? '1' : undefined}
+      data-pb-lottie-speed={typeof lottieSpeed === 'number' ? String(lottieSpeed) : undefined}
+      data-pb-lottie-trigger={lottieTrigger || undefined}
       style={wrapStyleVars as any}
     >
       {needsHover ? (

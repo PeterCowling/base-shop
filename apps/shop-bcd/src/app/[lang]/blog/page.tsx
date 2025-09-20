@@ -3,6 +3,9 @@ import { fetchPublishedPosts } from "@acme/sanity";
 import { notFound } from "next/navigation";
 import type { Shop } from "@acme/types";
 import shopJson from "../../../../shop.json";
+import type { Metadata } from "next";
+import { getSeo } from "../../util/seo";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog">;
 const shop: BlogShop = shopJson;
@@ -48,4 +51,39 @@ export default async function BlogPage({ params }: { params: { lang: string } })
       {listing}
     </>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { lang: string };
+}): Promise<Metadata> {
+  const lang = params.lang as any;
+  const baseSeo = await getSeo(lang);
+  const canonicalRoot = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
+  const canonical = canonicalRoot ? `${canonicalRoot}/blog` : undefined;
+  const settings = await getShopSettings(shop.id);
+  const languages = settings.languages ?? ["en"];
+  let canonicalRootForLanguages = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
+  if (canonicalRootForLanguages.endsWith(`/${lang}`)) {
+    canonicalRootForLanguages = canonicalRootForLanguages.slice(0, -(`/${lang}`.length));
+  }
+  const languagesAlt: Record<string, string> = {};
+  for (const l of languages) {
+    languagesAlt[l] = `${canonicalRootForLanguages}/${l}/blog`;
+  }
+  const seo = await getSeo(lang, {
+    title: `Blog · ${shop.name}`,
+    description: baseSeo.description,
+    canonical,
+    openGraph: { url: canonical } as any,
+    twitter: {} as any,
+  });
+  return {
+    title: seo.title,
+    description: seo.description,
+    alternates: { canonical: seo.canonical || undefined, languages: languagesAlt },
+    openGraph: seo.openGraph as Metadata["openGraph"],
+    twitter: seo.twitter as Metadata["twitter"],
+  };
 }

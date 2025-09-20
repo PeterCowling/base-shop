@@ -9,6 +9,7 @@ import {
   resize,
   set,
   setGridCols,
+  setBreakpoints,
 } from "./layout";
 import { undo, redo } from "./history";
 import { updateEditor } from "./layout";
@@ -21,6 +22,8 @@ export function reducer(state: HistoryState, action: Action): HistoryState {
       return redo(state);
     case "set-grid-cols":
       return setGridCols(state, action);
+    case "set-breakpoints":
+      return setBreakpoints(state, action as any);
     case "add":
       return add(state, action);
     case "move":

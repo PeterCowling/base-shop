@@ -1,5 +1,6 @@
 "use client";
 import Link from "@tiptap/extension-link";
+import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import type { Locale } from "@acme/i18n/locales";
@@ -23,7 +24,7 @@ export default function useTextEditor(
   editing: boolean,
 ) {
   const editor = useEditor({
-    extensions: [StarterKit, Link],
+    extensions: [StarterKit, Link, Underline],
     content: getContent(component, locale),
   });
 

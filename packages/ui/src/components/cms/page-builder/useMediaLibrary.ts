@@ -1,42 +1,46 @@
+// packages/ui/src/components/cms/page-builder/useMediaLibrary.ts
 "use client";
-import { getShopFromPath } from "@acme/shared-utils";
-import type { MediaItem } from "@acme/types";
-import { usePathname, useSearchParams } from "next/navigation";
+
 import { useCallback, useMemo, useState } from "react";
+import type { MediaItem } from "@acme/types";
+import { usePathname } from "next/navigation";
+import { getShopFromPath } from "@acme/shared-utils";
 
 export default function useMediaLibrary() {
   const pathname = usePathname() ?? "";
-  const searchParams = useSearchParams();
-  const shop = useMemo(() => {
-    const fromPath = getShopFromPath(pathname);
-    return fromPath ?? searchParams?.get("shopId") ?? undefined;
-  }, [pathname, searchParams]);
+  const shop = useMemo(() => getShopFromPath(pathname) ?? undefined, [pathname]);
   const [media, setMedia] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
 
-  const loadMedia = useCallback(
-    async (query = "") => {
-      if (!shop) return;
-      setLoading(true);
-      setError(undefined);
-      try {
-        const res = await fetch(
-          `/cms/api/media?shop=${shop}${
-            query ? `&q=${encodeURIComponent(query)}` : ""
-          }`
-        );
-        if (!res.ok) throw new Error(res.statusText);
-        const data = await res.json();
-        if (Array.isArray(data)) setMedia(data);
-      } catch (err) {
-        if (err instanceof Error) setError(err.message);
-      } finally {
-        setLoading(false);
+  const loadMedia = useCallback(async (query?: string) => {
+    if (!shop) return;
+    setLoading(true);
+    setError(undefined);
+    try {
+      const res = await fetch(`/cms/api/media?shop=${encodeURIComponent(shop)}`);
+      const json = await res.json();
+      if (!res.ok) throw new Error(json?.error || res.statusText);
+      let list = Array.isArray(json) ? (json as MediaItem[]) : [];
+      const q = (query || "").trim().toLowerCase();
+      if (q) {
+        list = list.filter((it) => {
+          const namePart = it.url.split("/").pop() || it.url;
+          const inName = namePart.toLowerCase().includes(q);
+          const inTags = (it.tags || []).some((t) => t.toLowerCase().includes(q));
+          const inTitle = (it.title || "").toLowerCase().includes(q);
+          const inAlt = (it.altText || "").toLowerCase().includes(q);
+          return inName || inTags || inTitle || inAlt;
+        });
       }
-    },
-    [shop]
-  );
+      setMedia(list);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load media");
+    } finally {
+      setLoading(false);
+    }
+  }, [shop]);
 
-  return { media, setMedia, loadMedia, shop, loading, error };
+  return { media, setMedia, loadMedia, shop, loading, error } as const;
 }
+

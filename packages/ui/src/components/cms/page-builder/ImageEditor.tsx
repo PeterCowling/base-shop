@@ -24,6 +24,10 @@ interface Props {
   initial?: ImageEditState;
   onClose: () => void;
   onApply: (next: ImageEditState) => void;
+  /** Optional existing CSS filter to seed quick adjustments */
+  initialFilter?: string;
+  /** Persist quick adjustments into style effects (e.g. effects.filter) */
+  onApplyFilter?: (filter: string | undefined) => void;
 }
 
 const aspectPresets = [
@@ -41,17 +45,59 @@ function parseAspect(aspect?: string): number | undefined {
   return w / h;
 }
 
-export default function ImageEditor({ open, src, initial, onClose, onApply }: Props) {
+function parseFilter(input?: string): { brightness: number; contrast: number; saturate: number; blur: number } {
+  if (!input) return { brightness: 1, contrast: 1, saturate: 1, blur: 0 };
+  const out = { brightness: 1, contrast: 1, saturate: 1, blur: 0 };
+  try {
+    const parts = input.split(/\)\s*/).map((p) => p.trim()).filter(Boolean);
+    for (const p of parts) {
+      if (p.startsWith('brightness(')) {
+        const v = p.slice('brightness('.length);
+        out.brightness = v.endsWith('%') ? Number(v.slice(0, -1)) / 100 : Number(v);
+      } else if (p.startsWith('contrast(')) {
+        const v = p.slice('contrast('.length);
+        out.contrast = v.endsWith('%') ? Number(v.slice(0, -1)) / 100 : Number(v);
+      } else if (p.startsWith('saturate(')) {
+        const v = p.slice('saturate('.length);
+        out.saturate = v.endsWith('%') ? Number(v.slice(0, -1)) / 100 : Number(v);
+      } else if (p.startsWith('blur(')) {
+        const v = p.slice('blur('.length);
+        out.blur = v.endsWith('px') ? Number(v.slice(0, -2)) : Number(v);
+      }
+    }
+  } catch {
+    // ignore
+  }
+  const clamp = (n: number, min: number, max: number) => (Number.isFinite(n) ? Math.min(max, Math.max(min, n)) : min);
+  return { brightness: clamp(out.brightness || 1, 0, 4), contrast: clamp(out.contrast || 1, 0, 4), saturate: clamp(out.saturate || 1, 0, 4), blur: clamp(out.blur || 0, 0, 100) };
+}
+
+function composeFilter(v: { brightness: number; contrast: number; saturate: number; blur: number }): string | undefined {
+  const isDefault = Math.abs(v.brightness - 1) < 1e-6 && Math.abs(v.contrast - 1) < 1e-6 && Math.abs(v.saturate - 1) < 1e-6 && Math.abs(v.blur) < 1e-6;
+  if (isDefault) return undefined;
+  return `brightness(${v.brightness}) contrast(${v.contrast}) saturate(${v.saturate}) blur(${v.blur}px)`;
+}
+
+export default function ImageEditor({ open, src, initial, onClose, onApply, initialFilter, onApplyFilter }: Props) {
   const [aspect, setAspect] = useState<string | undefined>(initial?.cropAspect);
   const [focal, setFocal] = useState<FocalPoint>(initial?.focalPoint ?? { x: 0.5, y: 0.5 });
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const [brightness, setBrightness] = useState(1);
+  const [contrast, setContrast] = useState(1);
+  const [saturate, setSaturate] = useState(1);
+  const [blur, setBlur] = useState(0);
 
   useEffect(() => {
     if (open) {
       setAspect(initial?.cropAspect);
       setFocal(initial?.focalPoint ?? { x: 0.5, y: 0.5 });
+      const parsed = parseFilter(initialFilter);
+      setBrightness(parsed.brightness);
+      setContrast(parsed.contrast);
+      setSaturate(parsed.saturate);
+      setBlur(parsed.blur);
     }
-  }, [open, initial?.cropAspect, initial?.focalPoint]);
+  }, [open, initial?.cropAspect, initial?.focalPoint, initialFilter]);
 
   const aspectRatio = useMemo(() => parseAspect(aspect), [aspect]);
 
@@ -66,13 +112,21 @@ export default function ImageEditor({ open, src, initial, onClose, onApply }: Pr
 
   const handleApply = useCallback(() => {
     onApply({ cropAspect: aspect, focalPoint: focal });
+    const filter = composeFilter({ brightness, contrast, saturate, blur });
+    onApplyFilter?.(filter);
     onClose();
-  }, [aspect, focal, onApply, onClose]);
+  }, [aspect, focal, brightness, contrast, saturate, blur, onApply, onApplyFilter, onClose]);
 
   const handleReset = useCallback(() => {
     setAspect(undefined);
     setFocal({ x: 0.5, y: 0.5 });
+    setBrightness(1);
+    setContrast(1);
+    setSaturate(1);
+    setBlur(0);
   }, []);
+
+  const filterStyle = useMemo(() => ({ filter: composeFilter({ brightness, contrast, saturate, blur }) || undefined } as React.CSSProperties), [brightness, contrast, saturate, blur]);
 
   return (
     <Dialog open={open} onOpenChange={(v) => (!v ? onClose() : undefined)}>
@@ -122,7 +176,7 @@ export default function ImageEditor({ open, src, initial, onClose, onApply }: Pr
                 alt="preview"
                 className="absolute inset-0 h-full w-full select-none object-cover"
                 draggable={false}
-                style={{ objectPosition: `${(focal.x * 100).toFixed(2)}% ${(focal.y * 100).toFixed(2)}%` }}
+                style={{ objectPosition: `${(focal.x * 100).toFixed(2)}% ${(focal.y * 100).toFixed(2)}%`, ...(filterStyle as any) }}
               />
               {/* Focal point marker */}
               <div
@@ -134,6 +188,20 @@ export default function ImageEditor({ open, src, initial, onClose, onApply }: Pr
             <p className="mt-2 text-xs text-muted-foreground">
               Tip: The image preview simulates responsive cropping with object-fit: cover.
             </p>
+          </div>
+          {/* Quick adjustments */}
+          <div className="mt-2 space-y-3">
+            <div className="text-xs font-semibold text-muted-foreground">Quick adjustments</div>
+            <div className="grid grid-cols-2 items-center gap-3">
+              <label className="text-xs text-muted-foreground">Brightness ({Math.round(brightness * 100)}%)</label>
+              <input type="range" min={0} max={200} value={Math.round(brightness * 100)} onChange={(e) => setBrightness(Number(e.target.value) / 100)} />
+              <label className="text-xs text-muted-foreground">Contrast ({Math.round(contrast * 100)}%)</label>
+              <input type="range" min={0} max={200} value={Math.round(contrast * 100)} onChange={(e) => setContrast(Number(e.target.value) / 100)} />
+              <label className="text-xs text-muted-foreground">Saturation ({Math.round(saturate * 100)}%)</label>
+              <input type="range" min={0} max={200} value={Math.round(saturate * 100)} onChange={(e) => setSaturate(Number(e.target.value) / 100)} />
+              <label className="text-xs text-muted-foreground">Blur ({blur}px)</label>
+              <input type="range" min={0} max={20} value={Math.round(blur)} onChange={(e) => setBlur(Number(e.target.value))} />
+            </div>
           </div>
         </div>
         <DialogFooter>
@@ -148,4 +216,3 @@ export default function ImageEditor({ open, src, initial, onClose, onApply }: Pr
     </Dialog>
   );
 }
-

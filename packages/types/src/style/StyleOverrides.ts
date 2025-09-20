@@ -37,6 +37,8 @@ export interface StyleOverrides {
     opacity?: string;
     /** Backdrop filter (e.g., blur(8px) saturate(.8)) */
     backdropFilter?: string;
+    /** Foreground filter (e.g., brightness(1) contrast(1.2) saturate(1) blur(2px)) */
+    filter?: string;
     /** Outline shorthand */
     outline?: string;
     /** Outline offset length */

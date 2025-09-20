@@ -21,6 +21,9 @@ import type { PageComponent } from "@acme/types";
 interface LayoutProps {
   style?: CSSProperties;
   paletteOnAdd: (type: ComponentType) => void;
+  onInsertImageAsset: (url: string) => void;
+  onSetSectionBackground: (url: string) => void;
+  selectedIsSection: boolean;
   onInsertPreset?: (component: PageComponent) => void;
   presetsSourceUrl?: string;
   toolbarProps: React.ComponentProps<typeof PageToolbar>;
@@ -54,6 +57,9 @@ interface LayoutProps {
 const PageBuilderLayout = ({
   style,
   paletteOnAdd,
+  onInsertImageAsset,
+  onSetSectionBackground,
+  selectedIsSection,
   onInsertPreset,
   presetsSourceUrl,
   toolbarProps,
@@ -77,11 +83,31 @@ const PageBuilderLayout = ({
   sidebarProps,
   toast,
   tourProps,
-}: LayoutProps) => (
+}: LayoutProps) => {
+  const [spacePanning, setSpacePanning] = React.useState(false);
+  React.useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      const tag = target?.tagName;
+      const editable = !!target && ((target as any).isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT');
+      if (editable) return;
+      if (e.code === 'Space') setSpacePanning(true);
+    };
+    const onKeyUp = (e: KeyboardEvent) => {
+      if (e.code === 'Space') setSpacePanning(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keyup', onKeyUp);
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keyup', onKeyUp);
+    };
+  }, []);
+  return (
   <div className="flex gap-4" style={style}>
     <PageBuilderTour {...tourProps} />
     <aside className="w-48 shrink-0" data-tour="palette">
-      <Palette onAdd={paletteOnAdd} />
+      <Palette onAdd={paletteOnAdd} onInsertImage={onInsertImageAsset} onSetSectionBackground={onSetSectionBackground} selectedIsSection={selectedIsSection} />
     </aside>
     <div className="flex flex-1 flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -118,7 +144,7 @@ const PageBuilderLayout = ({
             onPointerDown={(e) => {
               const sc = scrollRef?.current;
               if (!sc) return;
-              const enable = e.button === 1 || e.altKey;
+              const enable = e.button === 1 || e.altKey || spacePanning;
               if (!enable) return;
               e.preventDefault();
               const startX = e.clientX;
@@ -167,6 +193,7 @@ const PageBuilderLayout = ({
       message={toast.message}
     />
   </div>
-);
+  );
+};
 
 export default PageBuilderLayout;

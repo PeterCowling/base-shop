@@ -21,6 +21,13 @@ export default function ContentPanel({
   onChange,
   handleInput,
 }: Props) {
+  const isOverridden = (base: unknown, val: unknown) => {
+    if (val === undefined || val === "") return false;
+    if (base === undefined || base === "") return true;
+    const a = String(base).trim();
+    const b = String(val).trim();
+    return a !== b;
+  };
   const isMultiColumn = (component as any).type === "MultiColumn";
   const Specific = editorRegistry[component.type];
   const comp = component as PageComponent & {
@@ -146,6 +153,12 @@ export default function ContentPanel({
             />
             <Tooltip text="Items shown on desktop">?</Tooltip>
           </div>
+          {comp.desktopItems !== undefined && (
+            <div className="-mt-1 flex items-center gap-2 text-[10px]">
+              <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+              <button type="button" className="underline" onClick={() => handleInput("desktopItems" as any, undefined as any)}>Reset</button>
+            </div>
+          )}
           <div className="flex items-center gap-1">
             <Input
               label="Tablet Items"
@@ -162,6 +175,12 @@ export default function ContentPanel({
             />
             <Tooltip text="Items shown on tablet">?</Tooltip>
           </div>
+          {comp.tabletItems !== undefined && (
+            <div className="-mt-1 flex items-center gap-2 text-[10px]">
+              <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+              <button type="button" className="underline" onClick={() => handleInput("tabletItems" as any, undefined as any)}>Reset</button>
+            </div>
+          )}
           <div className="flex items-center gap-1">
             <Input
               label="Mobile Items"
@@ -178,6 +197,12 @@ export default function ContentPanel({
             />
             <Tooltip text="Items shown on mobile">?</Tooltip>
           </div>
+          {comp.mobileItems !== undefined && (
+            <div className="-mt-1 flex items-center gap-2 text-[10px]">
+              <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+              <button type="button" className="underline" onClick={() => handleInput("mobileItems" as any, undefined as any)}>Reset</button>
+            </div>
+          )}
         </>
       )}
       {"columns" in component && (
@@ -217,6 +242,12 @@ export default function ContentPanel({
             />
             <Tooltip text="Columns on desktop">?</Tooltip>
           </div>
+          {isOverridden(comp.columns, comp.columnsDesktop) && (
+            <div className="-mt-1 flex items-center gap-2 text-[10px]">
+              <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+              <button type="button" className="underline" onClick={() => handleInput("columnsDesktop" as any, undefined as any)}>Reset</button>
+            </div>
+          )}
           <div className="flex items-center gap-1">
             <Input
               label="Columns (Tablet)"
@@ -232,6 +263,12 @@ export default function ContentPanel({
             />
             <Tooltip text="Columns on tablet">?</Tooltip>
           </div>
+          {isOverridden(comp.columns, comp.columnsTablet) && (
+            <div className="-mt-1 flex items-center gap-2 text-[10px]">
+              <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+              <button type="button" className="underline" onClick={() => handleInput("columnsTablet" as any, undefined as any)}>Reset</button>
+            </div>
+          )}
           <div className="flex items-center gap-1">
             <Input
               label="Columns (Mobile)"
@@ -247,6 +284,12 @@ export default function ContentPanel({
             />
             <Tooltip text="Columns on mobile">?</Tooltip>
           </div>
+          {isOverridden(comp.columns, comp.columnsMobile) && (
+            <div className="-mt-1 flex items-center gap-2 text-[10px]">
+              <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+              <button type="button" className="underline" onClick={() => handleInput("columnsMobile" as any, undefined as any)}>Reset</button>
+            </div>
+          )}
         </>
       )}
       {("gap" in component) && (
@@ -260,6 +303,12 @@ export default function ContentPanel({
             />
             <Tooltip text="Gap between items on desktop">?</Tooltip>
           </div>
+          {isOverridden(comp.gap, comp.gapDesktop) && (
+            <div className="-mt-1 flex items-center gap-2 text-[10px]">
+              <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+              <button type="button" className="underline" onClick={() => handleInput("gapDesktop" as any, undefined as any)}>Reset</button>
+            </div>
+          )}
           <div className="flex items-center gap-1">
             <Input
               label="Gap (Tablet)"
@@ -269,6 +318,12 @@ export default function ContentPanel({
             />
             <Tooltip text="Gap between items on tablet">?</Tooltip>
           </div>
+          {isOverridden(comp.gap, comp.gapTablet) && (
+            <div className="-mt-1 flex items-center gap-2 text-[10px]">
+              <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+              <button type="button" className="underline" onClick={() => handleInput("gapTablet" as any, undefined as any)}>Reset</button>
+            </div>
+          )}
           <div className="flex items-center gap-1">
             <Input
               label="Gap (Mobile)"
@@ -278,6 +333,12 @@ export default function ContentPanel({
             />
             <Tooltip text="Gap between items on mobile">?</Tooltip>
           </div>
+          {isOverridden(comp.gap, comp.gapMobile) && (
+            <div className="-mt-1 flex items-center gap-2 text-[10px]">
+              <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+              <button type="button" className="underline" onClick={() => handleInput("gapMobile" as any, undefined as any)}>Reset</button>
+            </div>
+          )}
         </>
       )}
       {isMultiColumn && (
@@ -319,6 +380,14 @@ export default function ContentPanel({
                 <Tooltip text={`Horizontal items alignment on ${vp.toLowerCase()}`}>?</Tooltip>
               </div>
             ))}
+            {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
+              isOverridden(comp.justifyItems, (comp as any)[`justifyItems${vp}`]) ? (
+                <div key={`jio-${vp}`} className="-mt-1 flex items-center gap-2 text-[10px]">
+                  <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+                  <button type="button" className="underline" onClick={() => handleInput(`justifyItems${vp}` as any, undefined as any)}>Reset</button>
+                </div>
+              ) : null
+            ))}
           </div>
           <div className="grid grid-cols-1 gap-2">
             <div className="flex items-center gap-1">
@@ -356,6 +425,14 @@ export default function ContentPanel({
                 </Select>
                 <Tooltip text={`Vertical items alignment on ${vp.toLowerCase()}`}>?</Tooltip>
               </div>
+            ))}
+            {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
+              isOverridden(comp.alignItems, (comp as any)[`alignItems${vp}`]) ? (
+                <div key={`aio-${vp}`} className="-mt-1 flex items-center gap-2 text-[10px]">
+                  <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
+                  <button type="button" className="underline" onClick={() => handleInput(`alignItems${vp}` as any, undefined as any)}>Reset</button>
+                </div>
+              ) : null
             ))}
           </div>
         </>

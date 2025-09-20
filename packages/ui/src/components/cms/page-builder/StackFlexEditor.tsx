@@ -15,13 +15,13 @@ interface Props {
     gapTablet?: string;
     gapMobile?: string;
     justify?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
-    justifyDesktop?: Props["component"]["justify"];
-    justifyTablet?: Props["component"]["justify"];
-    justifyMobile?: Props["component"]["justify"];
+    justifyDesktop?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
+    justifyTablet?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
+    justifyMobile?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
     align?: "stretch" | "flex-start" | "center" | "flex-end" | "baseline";
-    alignDesktop?: Props["component"]["align"];
-    alignTablet?: Props["component"]["align"];
-    alignMobile?: Props["component"]["align"];
+    alignDesktop?: "stretch" | "flex-start" | "center" | "flex-end" | "baseline";
+    alignTablet?: "stretch" | "flex-start" | "center" | "flex-end" | "baseline";
+    alignMobile?: "stretch" | "flex-start" | "center" | "flex-end" | "baseline";
   };
   onChange: (patch: Partial<PageComponent>) => void;
 }
@@ -108,4 +108,3 @@ export default function StackFlexEditor({ component, onChange }: Props) {
     </div>
   );
 }
-

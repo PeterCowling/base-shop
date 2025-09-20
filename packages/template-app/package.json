@@ -25,6 +25,7 @@
     "@acme/stripe": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "@acme/config": "workspace:*",
+    "@acme/sanity": "workspace:*",
     "react": "workspace:^",
     "react-dom": "workspace:^"
   },

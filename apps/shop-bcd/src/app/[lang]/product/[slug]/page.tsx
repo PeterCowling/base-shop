@@ -11,6 +11,9 @@ import PdpClient from "./PdpClient.client";
 import { readRepo } from "@platform-core/repositories/json.server";
 import type { SKU, ProductPublication, Locale } from "@acme/types";
 import { getReturnLogistics } from "@platform-core/returnLogistics";
+import { getSeo } from "../../../util/seo";
+import { JsonLdScript, productJsonLd } from "../../../../lib/jsonld";
+import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 async function getProduct(
   slug: string,
@@ -63,9 +66,60 @@ export async function generateMetadata({
 }: {
   params: { slug: string; lang: string };
 }): Promise<Metadata> {
-  const product = await getProduct(params.slug, params.lang as Locale, false);
+  const lang = params.lang as Locale;
+  const product = await getProduct(params.slug, lang, false);
+  const settings = await getShopSettings(shop.id);
+  const baseSeo = await getSeo(lang);
+
+  if (!product) {
+    return { title: "Product not found" };
+  }
+
+  const truncate = (text: string, len = 160) =>
+    text.length > len ? `${text.slice(0, len - 1)}…` : text;
+  const description = truncate(product.description);
+
+  const canonicalRoot = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
+  const canonical = canonicalRoot
+    ? `${canonicalRoot}/product/${product.slug}`
+    : undefined;
+  const image = product.media?.[0]?.url;
+
+  const seo = await getSeo(lang, {
+    title: product.title,
+    description,
+    canonical,
+    openGraph: {
+      url: canonical,
+      title: product.title,
+      description,
+      images: image ? [{ url: image }] : undefined,
+    } as any,
+    twitter: {
+      title: product.title,
+      description,
+      image,
+      card: image ? "summary_large_image" : "summary",
+    } as any,
+  });
+  // Build hreflang alternates for this product path
+  const languages = settings.languages ?? ["en"];
+  let canonicalRootForLanguages = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
+  if (canonicalRootForLanguages.endsWith(`/${lang}`)) {
+    canonicalRootForLanguages = canonicalRootForLanguages.slice(0, -(`/${lang}`.length));
+  }
+  const languagesAlt: Record<string, string> = {};
+  for (const l of languages) {
+    languagesAlt[l] = canonicalRootForLanguages
+      ? `${canonicalRootForLanguages}/${l}/product/${product.slug}`
+      : undefined as unknown as string;
+  }
   return {
-    title: product ? `${product.title} · Base-Shop` : "Product not found",
+    title: seo.title,
+    description: seo.description,
+    alternates: { canonical: seo.canonical || undefined, languages: languagesAlt },
+    openGraph: seo.openGraph as Metadata["openGraph"],
+    twitter: seo.twitter as Metadata["twitter"],
   };
 }
 
@@ -103,8 +157,20 @@ export default async function ProductDetailPage({
   }
 
   const cfg = await getReturnLogistics();
+  const settings = await getShopSettings(shop.id);
   return (
     <>
+      {/* Product JSON-LD */}
+      <JsonLdScript
+        data={productJsonLd({
+          name: product.title,
+          description: product.description,
+          image: product.media?.[0]?.url,
+          price: product.price,
+          priceCurrency: settings.currency ?? "EUR",
+          sku: product.slug,
+        })}
+      />
       {latestPost && <BlogListing posts={[latestPost]} />}
       <PdpClient product={product} />
       <div className="p-6 space-y-1 text-sm text-gray-600">

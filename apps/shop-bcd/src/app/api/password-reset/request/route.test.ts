@@ -15,6 +15,7 @@ describe("POST /api/password-reset/request", () => {
   }
 
   it("returns 400 for invalid email", async () => {
+    jest.doMock("@acme/email", () => ({ __esModule: true, sendEmail: jest.fn() }));
     const { POST } = await import("./route");
     const res = await POST(makeReq({ email: "nope" }));
     expect(res.status).toBe(400);

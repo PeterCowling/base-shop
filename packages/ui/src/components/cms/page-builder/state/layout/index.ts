@@ -21,4 +21,5 @@ export { update } from "./update";
 export { resize } from "./resize";
 export { set } from "./set";
 export { setGridCols } from "./setGridCols";
+export { setBreakpoints } from "./setBreakpoints";
 export { updateEditor } from "./updateEditor";

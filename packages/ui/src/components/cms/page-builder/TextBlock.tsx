@@ -11,7 +11,9 @@ import useBlockTransform from "./useBlockTransform";
 import useLocalizedTextEditor from "./useLocalizedTextEditor";
 import useCanvasSpacing from "./useCanvasSpacing";
 import TextBlockView from "./TextBlockView";
+import { cssVars } from "../../../utils/style/cssVars";
 import type { Action } from "./state";
+import useCanvasRotate from "./useCanvasRotate";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,6 +40,7 @@ const TextBlock = memo(function TextBlock({
   gridCols,
   viewport,
   editor,
+  zoom = 1,
 }: {
   component: TextComponent;
   index: number;
@@ -51,6 +54,7 @@ const TextBlock = memo(function TextBlock({
   gridCols: number;
   viewport: "desktop" | "tablet" | "mobile";
   editor?: HistoryState["editor"]; 
+  zoom?: number;
 }) {
   const selected = selectedIds.includes(component.id);
   const flags = (editor ?? {})[component.id] ?? {};
@@ -87,6 +91,7 @@ const TextBlock = memo(function TextBlock({
       gridCols,
       containerRef,
       disabled: editing || !!effLocked,
+      zoom,
     },
   );
 
@@ -99,6 +104,15 @@ const TextBlock = memo(function TextBlock({
     paddingVal,
     dispatch,
     containerRef,
+  });
+
+  // Rotation hook for Text blocks
+  const { startRotate, rotating, angle } = useCanvasRotate({
+    componentId: component.id,
+    styles: (component as any).styles as string | undefined,
+    dispatch,
+    containerRef,
+    zoom,
   });
 
   const handleFinishEditing = useCallback(() => {
@@ -123,6 +137,15 @@ const TextBlock = memo(function TextBlock({
     ...(component.top ? { top: component.top } : {}),
     ...(component.left ? { left: component.left } : {}),
   } as React.CSSProperties;
+
+  // Style overrides (effects etc.)
+  let styleVars: Record<string, string> = {};
+  try {
+    const raw = (component as any).styles as string | undefined;
+    const overrides = raw ? (JSON.parse(String(raw)) as any) : undefined;
+    styleVars = cssVars(overrides);
+  } catch {}
+  const staticTransform = (styleVars as any)["--pb-static-transform"] as string | undefined;
 
   const content = DOMPurify.sanitize(
     typeof component.text === "string"
@@ -152,7 +175,7 @@ const TextBlock = memo(function TextBlock({
         setNodeRef={setNodeRef}
         containerRef={containerRef}
         isDragging={isDragging}
-        style={style}
+        style={{ ...style, ...(styleVars as any) }}
         guides={guides}
         snapping={snapping}
         kbResizing={kbResizing}
@@ -165,7 +188,11 @@ const TextBlock = memo(function TextBlock({
         onFinishEditing={handleFinishEditing}
         startDrag={startDrag}
         startResize={startResize}
+        startRotate={startRotate}
         spacingOverlay={spacingOverlay}
+        staticTransform={staticTransform}
+        rotating={rotating}
+        rotateAngle={angle}
         onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
           if (effLocked || editing) return;
           const key = e.key.toLowerCase();

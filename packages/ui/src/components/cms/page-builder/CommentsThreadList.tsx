@@ -43,6 +43,20 @@ export default function CommentsThreadList({
   const [newCompId, setNewCompId] = React.useState<string | undefined>(undefined);
   const [newText, setNewText] = React.useState("");
   const [newAssign, setNewAssign] = React.useState("");
+  const rowsRef = React.useRef<Record<string, HTMLLIElement | null>>({});
+
+  React.useEffect(() => {
+    const id = flashId || selectedId;
+    if (!id) return;
+    const el = rowsRef.current[id];
+    if (el) {
+      try {
+        el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      } catch {
+        el.scrollIntoView({ block: "nearest" });
+      }
+    }
+  }, [flashId, selectedId, filtered.length]);
 
   return (
     <div className="flex h-full w-full flex-col border-r">
@@ -127,6 +141,9 @@ export default function CommentsThreadList({
             {filtered.map((t) => (
               <li
                 key={t.id}
+                ref={(el) => {
+                  rowsRef.current[t.id] = el;
+                }}
                 className={`cursor-pointer border-b p-2 text-sm hover:bg-muted/40 ${selectedId === t.id ? "bg-muted/60" : ""} ${flashId === t.id ? "animate-pulse ring-2 ring-sky-400" : ""}`}
                 onClick={() => onSelect(t.id)}
               >

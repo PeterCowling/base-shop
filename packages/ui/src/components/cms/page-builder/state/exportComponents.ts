@@ -3,6 +3,8 @@ import type { PageComponent, HistoryState } from "@acme/types";
 export type ExportedComponent = PageComponent & {
   /** CSS-only visibility mapping at runtime */
   hiddenBreakpoints?: ("desktop" | "tablet" | "mobile")[];
+  /** Custom device visibility by breakpoint id */
+  hiddenDeviceIds?: string[];
   /** Mobile stacking strategy class applied to container component */
   stackStrategy?: "default" | "reverse";
   /** Deterministic child order on mobile (optional) */
@@ -19,13 +21,32 @@ export type ExportedComponent = PageComponent & {
 export function exportComponents(
   list: PageComponent[],
   editor?: HistoryState["editor"],
+  globals?: Record<string, PageComponent> | null,
 ): ExportedComponent[] {
   const map = editor ?? {};
   return list.map((n) => {
-    const copy: ExportedComponent = { ...(n as ExportedComponent) };
     const flags = map[n.id] ?? {};
-    if (Array.isArray(flags.hidden) && flags.hidden.length > 0) {
-      copy.hiddenBreakpoints = [...flags.hidden];
+    const globalMeta = (flags as any).global as { id?: string; overrides?: Record<string, unknown> } | undefined;
+    const gid = globalMeta?.id;
+
+    // Start from either the linked global template or the node itself
+    let copy: ExportedComponent = { ...(n as ExportedComponent) };
+    if (gid && globals && globals[gid]) {
+      // Clone template but preserve instance id
+      copy = { ...(globals[gid] as ExportedComponent), id: n.id } as ExportedComponent;
+    }
+
+    // Apply per-instance overrides (builder-only) at shallow level
+    if (globalMeta && globalMeta.overrides && typeof globalMeta.overrides === "object") {
+      Object.assign(copy, globalMeta.overrides);
+    }
+
+    // Stamp runtime flags
+    if (Array.isArray((flags as any).hidden) && (flags as any).hidden.length > 0) {
+      copy.hiddenBreakpoints = [...(flags as any).hidden];
+    }
+    if (Array.isArray((flags as any).hiddenDeviceIds) && (flags as any).hiddenDeviceIds.length > 0) {
+      copy.hiddenDeviceIds = [...(flags as any).hiddenDeviceIds];
     }
     if (typeof (flags as any).stackStrategy === "string") {
       copy.stackStrategy = (flags as any).stackStrategy as "default" | "reverse";
@@ -33,9 +54,10 @@ export function exportComponents(
     if (typeof (flags as any).orderMobile === "number") {
       copy.orderMobile = (flags as any).orderMobile as number;
     }
-    const children = (n as { children?: PageComponent[] }).children;
+
+    const children = (copy as { children?: PageComponent[] }).children ?? (n as { children?: PageComponent[] }).children;
     if (Array.isArray(children)) {
-      copy.children = exportComponents(children, editor);
+      (copy as any).children = exportComponents(children, editor, globals);
     }
     return copy;
   });

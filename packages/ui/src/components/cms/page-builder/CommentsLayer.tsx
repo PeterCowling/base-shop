@@ -5,6 +5,7 @@ import type { PageComponent } from "@acme/types";
 import { Button } from "../../atoms/shadcn";
 import CommentsDrawer from "./CommentsDrawer";
 import { useSession } from "next-auth/react";
+import usePresence from "./collab/usePresence";
 
 type Thread = {
   id: string;
@@ -33,9 +34,14 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
   const [showResolved, setShowResolved] = useState(true);
   const [dragId, setDragId] = useState<string | null>(null);
   const [dragPos, setDragPos] = useState<{ x: number; y: number } | null>(null);
+  const [mentionPeople, setMentionPeople] = useState<string[]>([]);
+  const [lastDeleted, setLastDeleted] = useState<Thread | null>(null);
 
   const positions = useRef<Record<string, { left: number; top: number; width: number; height: number }>>({});
   const { data: session } = useSession();
+  const meId = (session?.user?.email as string | undefined) ?? (session?.user?.name as string | undefined) ?? "me";
+  const meLabel = (session?.user?.name as string | undefined) ?? (session?.user?.email as string | undefined) ?? "Me";
+  const { peers } = usePresence({ shop, pageId, meId, label: meLabel, selectedIds, editingId: selectedIds[0] ?? null });
 
   const load = useCallback(async () => {
     try {
@@ -62,6 +68,25 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
   useEffect(() => {
     void load();
   }, [load]);
+
+  // Load RBAC users/handles for @mentions
+  useEffect(() => {
+    const doFetch = async () => {
+      try {
+        const res = await fetch(`/cms/api/rbac/users`);
+        const data = await res.json();
+        const arr: string[] = Array.isArray(data)
+          ? data
+          : Array.isArray(data?.users)
+            ? data.users
+            : [];
+        setMentionPeople(arr.filter((x) => typeof x === "string" && x.trim()).map((x) => x.trim()));
+      } catch {
+        // ignore
+      }
+    };
+    void doFetch();
+  }, []);
 
   const recalcPositions = useCallback(() => {
     const canvas = canvasRef.current;
@@ -148,6 +173,8 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
   };
 
   const del = async (id: string) => {
+    const t = threads.find((x) => x.id === id) || null;
+    setLastDeleted(t);
     await fetch(`/cms/api/comments/${shop}/${pageId}/${id}`, { method: "DELETE" });
     await load();
     if (selectedId === id) setSelectedId(null);
@@ -168,6 +195,43 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
       el.style.outline = prev;
       el.style.outlineOffset = "";
     }, 1200);
+  };
+
+  const restoreLastDeleted = async () => {
+    const t = lastDeleted;
+    if (!t) return;
+    const first = t.messages[0]?.text || "Restored";
+    const res = await fetch(`/cms/api/comments/${shop}/${pageId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ componentId: t.componentId, text: first, assignedTo: t.assignedTo ?? undefined, pos: t.pos ?? undefined }),
+    });
+    const created = await res.json();
+    if (res.ok && created?.id) {
+      const newId: string = created.id;
+      for (let i = 1; i < (t.messages?.length ?? 0); i++) {
+        const m = t.messages[i];
+        try {
+          // eslint-disable-next-line no-await-in-loop
+          await fetch(`/cms/api/comments/${shop}/${pageId}/${newId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "addMessage", text: m.text }),
+          });
+        } catch {}
+      }
+      if (t.resolved) {
+        await fetch(`/cms/api/comments/${shop}/${pageId}/${newId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ resolved: true }),
+        });
+      }
+      await load();
+      setSelectedId(newId);
+      setDrawerOpen(true);
+    }
+    setLastDeleted(null);
   };
 
   const startNewForSelected = async () => {
@@ -220,6 +284,18 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
     <div className="pointer-events-none absolute inset-0 z-40">
       {/* Toolbar */}
       <div className="pointer-events-auto absolute right-2 top-2 flex items-center gap-2 rounded bg-muted/60 px-2 py-1 text-xs">
+        {/* Presence summary */}
+        <div className="flex items-center gap-1 pr-1 border-r">
+          {peers.slice(0, 3).map((p) => (
+            <span key={p.id} className="inline-flex items-center gap-1 rounded px-1 py-0.5" title={`${p.label} online`} style={{ backgroundColor: `${p.color}20`, color: "inherit" }}>
+              <span aria-hidden className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: p.color }} />
+              <span className="max-w-[6rem] truncate">{p.label}</span>
+            </span>
+          ))}
+          {peers.length > 3 && (
+            <span className="text-muted-foreground">+{peers.length - 3} more</span>
+          )}
+        </div>
         <label className="flex items-center gap-1">
           <input type="checkbox" checked={showResolved} onChange={(e) => setShowResolved(e.target.checked)} />
           Show resolved
@@ -281,7 +357,11 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
         onOpenChange={setDrawerOpen}
         threads={threads}
         selectedId={selectedId}
-        onSelect={setSelectedId}
+        onSelect={(id) => {
+          setSelectedId(id);
+          const t = threads.find((x) => x.id === id);
+          if (t) jumpTo(t.componentId);
+        }}
         onAddMessage={(id, text) => addMessage(id, text).then(() => load())}
         onToggleResolved={(id, resolved) => toggleResolved(id, resolved)}
         onAssign={(id, who) => assign(id, who)}
@@ -325,8 +405,21 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
           }
         }}
         shop={shop}
+        mentionPeople={mentionPeople}
         me={(session?.user?.email as string | undefined) ?? (session?.user?.name as string | undefined) ?? null}
       />
+
+      {lastDeleted && (
+        <div className="pointer-events-auto fixed bottom-3 right-3 z-[70] flex items-center gap-3 rounded border bg-background px-3 py-2 shadow">
+          <span className="text-sm">Thread deleted</span>
+          <Button variant="outline" className="h-7 px-2 text-xs" onClick={() => void restoreLastDeleted()}>
+            Restore
+          </Button>
+          <Button variant="ghost" className="h-7 px-2 text-xs" onClick={() => setLastDeleted(null)}>
+            Dismiss
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

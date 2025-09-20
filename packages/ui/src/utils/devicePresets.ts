@@ -106,3 +106,36 @@ export function getLegacyPreset(
 }
 
 export default devicePresets;
+
+// --- Custom device presets (local, per-user) ---
+export const CUSTOM_DEVICES_KEY = "pb-custom-devices";
+
+export function getCustomDevicePresets(): DevicePreset[] {
+  try {
+    if (typeof window === "undefined") return [];
+    const raw = window.localStorage.getItem(CUSTOM_DEVICES_KEY);
+    if (!raw) return [];
+    const arr = JSON.parse(raw);
+    if (!Array.isArray(arr)) return [];
+    // basic validation
+    return arr.filter((p: any) => p && typeof p.id === "string" && typeof p.label === "string" && typeof p.width === "number" && typeof p.height === "number" && (p.type === "desktop" || p.type === "tablet" || p.type === "mobile")).map((p: any) => ({ ...p, orientation: (p.orientation === "landscape" ? "landscape" : "portrait") as DevicePreset["orientation"] }));
+  } catch {
+    return [];
+  }
+}
+
+export function saveCustomDevicePresets(list: DevicePreset[]) {
+  try {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(CUSTOM_DEVICES_KEY, JSON.stringify(list.map((p) => ({ ...p, orientation: "portrait" }))));
+  } catch {}
+}
+
+export function getAllDevicePresets(): DevicePreset[] {
+  return [...devicePresets, ...getCustomDevicePresets()];
+}
+
+export function findDevicePresetById(id: string): DevicePreset | undefined {
+  const all = getAllDevicePresets();
+  return all.find((p) => p.id === id);
+}

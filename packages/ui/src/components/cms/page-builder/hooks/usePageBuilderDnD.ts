@@ -11,12 +11,13 @@ import {
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { ulid } from "ulid";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { PageComponent, HistoryState } from "@acme/types";
 import type { Action } from "../state";
 import { snapToGrid } from "../gridSnap";
 import type { ComponentType } from "../defaults";
 import { isHiddenForViewport } from "../state/layout/utils";
+import { screenToCanvas } from "../utils/coords";
 
 const noop = () => {};
 
@@ -44,6 +45,7 @@ interface Params {
   editor?: HistoryState["editor"];
   viewport?: "desktop" | "tablet" | "mobile";
   scrollRef?: React.RefObject<HTMLDivElement | null>;
+  zoom?: number;
 }
 
 export function usePageBuilderDnD({
@@ -58,6 +60,7 @@ export function usePageBuilderDnD({
   editor,
   viewport,
   scrollRef,
+  zoom = 1,
 }: Params) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -66,6 +69,22 @@ export function usePageBuilderDnD({
 
   const [insertIndex, setInsertIndex] = useState<number | null>(null);
   const [activeType, setActiveType] = useState<ComponentType | null>(null);
+  const lastTabHoverRef = useRef<{ parentId: string; tabIndex: number } | null>(null);
+  const zoomRef = useRef(zoom);
+  useEffect(() => { zoomRef.current = zoom; }, [zoom]);
+
+  useEffect(() => {
+    const onHover = (e: Event) => {
+      try {
+        const ce = e as CustomEvent<{ parentId: string; tabIndex: number }>;
+        if (ce?.detail && typeof ce.detail.parentId === 'string' && typeof ce.detail.tabIndex === 'number') {
+          lastTabHoverRef.current = { parentId: ce.detail.parentId, tabIndex: ce.detail.tabIndex };
+        }
+      } catch {}
+    };
+    window.addEventListener('pb-tab-hover', onHover as any);
+    return () => window.removeEventListener('pb-tab-hover', onHover as any);
+  }, []);
 
   const handleDragMove = useCallback(
     (ev: DragMoveEvent) => {
@@ -73,12 +92,14 @@ export function usePageBuilderDnD({
       if (!over || !isPointerEvent(activatorEvent)) return;
       const overData = over.data.current as { index?: number };
       const visible = components.filter((c) => !isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport));
-      const rawY = activatorEvent.clientY + delta.y;
-      const pointerY = snapToGrid(rawY, gridSize);
-      const rawX = activatorEvent.clientX + delta.x;
+      const rawYScreen = activatorEvent.clientY + delta.y;
+      const rawXScreen = activatorEvent.clientX + delta.x;
       const canvasRect = canvasRef?.current?.getBoundingClientRect();
-      const pointerX = rawX - (canvasRect?.left ?? 0);
-      const snapX = snapToGrid(pointerX, gridSize);
+      const { x: pointerXCanvas, y: pointerYCanvas } = canvasRect
+        ? screenToCanvas({ x: rawXScreen, y: rawYScreen }, canvasRect, zoomRef.current)
+        : { x: rawXScreen, y: rawYScreen };
+      const snapX = snapToGrid(pointerXCanvas, gridSize);
+      const pointerY = pointerYCanvas;
       setSnapPosition(snapX);
       // Auto-scroll when near edges of the scroll container
       try {
@@ -86,8 +107,8 @@ export function usePageBuilderDnD({
         if (sc) {
           const rect = sc.getBoundingClientRect();
           const edge = 40; // px edge threshold
-          const pageY = activatorEvent.clientY + delta.y;
-          const pageX = activatorEvent.clientX + delta.x;
+          const pageY = rawYScreen;
+          const pageX = rawXScreen;
           if (pageY < rect.top + edge) sc.scrollBy({ top: -20, behavior: "auto" });
           else if (pageY > rect.bottom - edge) sc.scrollBy({ top: 20, behavior: "auto" });
           if (pageX < rect.left + edge) sc.scrollBy({ left: -20, behavior: "auto" });
@@ -98,11 +119,12 @@ export function usePageBuilderDnD({
         setInsertIndex(visible.length);
         return;
       }
-      const isBelow = pointerY > over.rect.top + over.rect.height / 2;
+      // Compare using screen-space for droppable rects
+      const isBelow = rawYScreen > over.rect.top + over.rect.height / 2;
       const index = (overData?.index ?? visible.length) + (isBelow ? 1 : 0);
       setInsertIndex(index);
     },
-    [components, gridSize, canvasRef, setSnapPosition, editor, viewport, scrollRef]
+    [components, gridSize, canvasRef, setSnapPosition, editor, viewport, scrollRef, zoom]
   );
 
   const handleDragEndInternal = useCallback(
@@ -155,6 +177,12 @@ export function usePageBuilderDnD({
           ...(defaults[a.type!] ?? {}),
           ...(isContainer ? { children: [] } : {}),
         } as PageComponent;
+        // Assign tab slot if dropping into tabbed container and a header is hovered
+        if (parentId && lastTabHoverRef.current?.parentId === parentId) {
+          const parent = findById(components, parentId);
+          const isTabbed = parent && (parent.type === 'Tabs' || parent.type === 'TabsAccordionContainer');
+          if (isTabbed) (component as any).slotKey = String(lastTabHoverRef.current.tabIndex);
+        }
         dispatch({
           type: "add",
           component,
@@ -172,6 +200,13 @@ export function usePageBuilderDnD({
         };
         const list = (a.templates && a.templates.length ? a.templates : (a.template ? [a.template] : [])) as PageComponent[];
         const clones = list.map(cloneWithIds);
+        if (parentId && lastTabHoverRef.current?.parentId === parentId) {
+          const parent = findById(components, parentId);
+          const isTabbed = parent && (parent.type === 'Tabs' || parent.type === 'TabsAccordionContainer');
+          if (isTabbed) {
+            clones.forEach((c) => { (c as any).slotKey = String(lastTabHoverRef.current!.tabIndex); });
+          }
+        }
         // Insert sequentially, preserving order
         let insertedFirstId: string | null = null;
         clones.forEach((component, i) => {
@@ -189,6 +224,16 @@ export function usePageBuilderDnD({
           from: { parentId: a.parentId, index: a.index! },
           to: { parentId, index: toIndex },
         });
+        // Assign slotKey if dropping into tabbed container with hovered header
+        if (parentId && lastTabHoverRef.current?.parentId === parentId) {
+          const parent = findById(components, parentId);
+          const isTabbed = parent && (parent.type === 'Tabs' || parent.type === 'TabsAccordionContainer');
+          if (isTabbed) {
+            const movedId = String(ev.active.id);
+            dispatch({ type: 'update', id: movedId, patch: { slotKey: String(lastTabHoverRef.current.tabIndex) } as any });
+            try { window.dispatchEvent(new CustomEvent('pb-live-message', { detail: `Moved to tab ${lastTabHoverRef.current.tabIndex + 1}` })); } catch {}
+          }
+        }
       }
     },
     [dispatch, components, containerTypes, defaults, selectId, setSnapPosition]
@@ -197,12 +242,14 @@ export function usePageBuilderDnD({
   const handleDragStart = useCallback((ev: DragStartEvent) => {
       const a = ev.active.data.current as { type?: ComponentType };
       setActiveType(a?.type ?? null);
+      try { window.dispatchEvent(new CustomEvent('pb-drag-start')); } catch {}
   }, []);
 
   const handleDragEnd = useCallback(
     (ev: DragEndEvent) => {
       setActiveType(null);
       handleDragEndInternal(ev);
+      try { window.dispatchEvent(new CustomEvent('pb-drag-end')); } catch {}
     },
     [handleDragEndInternal]
   );

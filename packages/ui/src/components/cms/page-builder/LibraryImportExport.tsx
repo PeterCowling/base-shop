@@ -62,14 +62,26 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
           ? ((parsed as any).items as LibraryItem[])
           : [];
       if (!inItems.length) throw new Error("Invalid file format");
-      for (const item of inItems) {
+      const clones = inItems.map((item) => {
         const clone = { ...item } as LibraryItem;
         clone.id = ulid();
         delete (clone as any).ownerUserId;
         clone.shared = false;
-        await saveLibrary(shop, clone);
+        return clone;
+      });
+      if (shop) {
+        await fetch(`/api/library?shop=${encodeURIComponent(shop)}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ items: clones }),
+        });
+        await refresh();
+      } else {
+        for (const clone of clones) {
+          await saveLibrary(shop, clone);
+        }
+        await refresh();
       }
-      await refresh();
       onAfterChange?.();
       setMessage(`Imported ${inItems.length} item(s)`);
     } catch (err) {

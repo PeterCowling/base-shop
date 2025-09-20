@@ -16,6 +16,7 @@ import useBlockDnD from "./useBlockDnD";
 import BlockResizer from "./BlockResizer";
 import BlockChildren from "./BlockChildren";
 import ImageFocalOverlay from "./ImageFocalOverlay";
+import useCanvasRotate from "./useCanvasRotate";
 import type { DevicePreset } from "../../../utils/devicePresets";
 import { LockClosedIcon } from "@radix-ui/react-icons";
 import {
@@ -29,11 +30,15 @@ import {
 import ContextMenu from "./ContextMenu";
 import { getStyleClipboard, setStyleClipboard } from "./style/styleClipboard";
 import ImageAspectToolbar from "./ImageAspectToolbar";
+import ImageCropOverlay from "./ImageCropOverlay";
+import { isHiddenForViewport } from "./state/layout/utils";
 
 type Props = {
   component: PageComponent;
   index: number;
   parentId: string | undefined;
+  parentType?: string;
+  parentSlots?: number;
   selectedIds: string[];
   onSelect: (id: string, e?: React.MouseEvent) => void;
   onRemove: () => void;
@@ -44,6 +49,9 @@ type Props = {
   viewport: "desktop" | "tablet" | "mobile";
   device?: DevicePreset;
   editor?: HistoryState["editor"];
+  zoom?: number;
+  baselineSnap?: boolean;
+  baselineStep?: number;
 };
 
 const BlockItem = memo(function BlockItemComponent({
@@ -51,6 +59,8 @@ const BlockItem = memo(function BlockItemComponent({
   index,
   parentId,
   selectedIds,
+  parentType,
+  parentSlots,
   onSelect,
   onRemove,
   dispatch,
@@ -60,11 +70,16 @@ const BlockItem = memo(function BlockItemComponent({
   viewport,
   device,
   editor,
+  zoom = 1,
+  baselineSnap = false,
+  baselineStep = 8,
 }: Props) {
   const selected = selectedIds.includes(component.id);
   const flags = (editor ?? {})[component.id] ?? {};
   const effLocked = (flags as any).locked ?? (component as any).locked ?? false;
   const effZIndex = (flags as any).zIndex ?? (component as any).zIndex;
+  const hiddenList = ((editor ?? {})[component.id]?.hidden ?? []) as ("desktop"|"tablet"|"mobile")[];
+  const isHiddenHere = isHiddenForViewport(component.id, editor, (component as any).hidden as boolean | undefined, viewport);
   const {
     attributes,
     listeners,
@@ -125,6 +140,7 @@ const BlockItem = memo(function BlockItemComponent({
     topKey,
     dockX: (component as any).dockX as any,
     dockY: (component as any).dockY as any,
+    zoom,
   });
 
   const {
@@ -148,6 +164,7 @@ const BlockItem = memo(function BlockItemComponent({
     topKey,
     dockX: (component as any).dockX as any,
     dockY: (component as any).dockY as any,
+    zoom,
   });
 
   const { startSpacing, overlay: spacingOverlay, nudgeSpacingByKeyboard } = useCanvasSpacing({
@@ -158,6 +175,8 @@ const BlockItem = memo(function BlockItemComponent({
     paddingVal,
     dispatch,
     containerRef,
+    baselineSnap,
+    baselineStep,
   });
 
   const guides =
@@ -176,6 +195,15 @@ const BlockItem = memo(function BlockItemComponent({
   const overlayLeft = resizing ? resizeLeft : dragLeft;
   const overlayTop = resizing ? resizeTop : dragTop;
   const childComponents = (component as { children?: PageComponent[] }).children;
+
+  // Rotation
+  const { startRotate, rotating, angle } = useCanvasRotate({
+    componentId: component.id,
+    styles: (component as any).styles as string | undefined,
+    dispatch,
+    containerRef,
+    zoom,
+  });
 
   // Context menu state
   const [ctxOpen, setCtxOpen] = useState(false);
@@ -323,10 +351,36 @@ const BlockItem = memo(function BlockItemComponent({
           const dir = key === "arrowleft" ? "left" : key === "arrowright" ? "right" : key === "arrowup" ? "up" : "down";
           nudgeResizeByKeyboard(dir as any, step);
         }
+        // Alt + Left/Right: move across tabs when parent is tab container
+        if (e.altKey && !e.metaKey && !e.ctrlKey && (key === "arrowleft" || key === "arrowright")) {
+          const count = typeof parentSlots === 'number' ? parentSlots : undefined;
+          const isTabbedParent = parentType === 'Tabs' || parentType === 'TabsAccordionContainer';
+          if (isTabbedParent && count && count > 0) {
+            e.preventDefault();
+            e.stopPropagation();
+            const raw = (component as any).slotKey as string | undefined;
+            const curr = raw != null && !Number.isNaN(Number(raw)) ? Number(raw) : 0;
+            const delta = key === 'arrowleft' ? -1 : 1;
+            const next = Math.max(0, Math.min(count - 1, curr + delta));
+            if (next !== curr) {
+              dispatch({ type: 'update', id: component.id, patch: { slotKey: String(next) } as any });
+              try { window.dispatchEvent(new CustomEvent('pb-live-message', { detail: `Moved to tab ${next + 1}` })); } catch {}
+            }
+          }
+        }
       }}
       style={{
         transform: CSS.Transform.toString(transform),
         ...(effZIndex !== undefined ? { zIndex: effZIndex as number } : {}),
+        // Container queries
+        ...(() => {
+          const ct = (component as any).containerType as string | undefined;
+          const cn = (component as any).containerName as string | undefined;
+          const out: Record<string, any> = {};
+          if (ct) out.containerType = ct as any;
+          if (cn) out.containerName = cn as any;
+          return out;
+        })(),
         ...(widthVal ? { width: widthVal } : {}),
         ...(heightVal ? { height: heightVal } : {}),
         ...(marginVal ? { margin: marginVal } : {}),
@@ -459,6 +513,14 @@ const BlockItem = memo(function BlockItemComponent({
           onChange={(next) => dispatch({ type: "update", id: component.id, patch: { cropAspect: next } as any })}
         />
       )}
+      {/* On-canvas resizable crop box to set custom ratio */}
+      {selected && !effLocked && component.type === "Image" && (
+        <ImageCropOverlay
+          value={(component as any).cropAspect as any}
+          visible={true}
+          onChange={(next) => dispatch({ type: "update", id: component.id, patch: { cropAspect: next } as any })}
+        />
+      )}
       {spacingOverlay && (
         <div
           className="bg-primary/20 pointer-events-none absolute z-30"
@@ -476,6 +538,11 @@ const BlockItem = memo(function BlockItemComponent({
           {Math.round(overlayLeft)}, {Math.round(overlayTop)} px
         </div>
       )}
+      {rotating && (
+        <div className="pointer-events-none absolute -top-8 left-1/2 z-30 -translate-x-1/2 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
+          {Math.round(angle)}°
+        </div>
+      )}
       <BlockResizer
         selected={selected}
         startResize={(e) => {
@@ -483,6 +550,9 @@ const BlockItem = memo(function BlockItemComponent({
         }}
         startSpacing={(e, type, side) => {
           if (!effLocked) startSpacing(e, type, side);
+        }}
+        startRotate={(e) => {
+          if (!effLocked) startRotate(e);
         }}
       />
       <button
@@ -525,7 +595,31 @@ const BlockItem = memo(function BlockItemComponent({
         device={device}
         isOver={isOver}
         setDropRef={setDropRef}
+        baselineSnap={baselineSnap}
+        baselineStep={baselineStep}
       />
+      {/* Hidden-on-device badge + quick toggle */}
+      {hiddenList.length > 0 && (
+        <div className="absolute left-1 top-1 z-30 rounded bg-amber-500/90 px-1 py-0.5 text-[10px] text-white shadow" title={isHiddenHere ? `Hidden on ${viewport}` : `Hidden on ${hiddenList.join(', ')}`}>
+          {isHiddenHere ? `Hidden on ${viewport}` : `Hidden on ${hiddenList.join(', ')}`}
+          {isHiddenHere && (
+            <button
+              type="button"
+              className="ml-2 underline"
+              onClick={(e) => {
+                e.stopPropagation();
+                const cur = (editor ?? {})[component.id]?.hidden ?? [];
+                const set = new Set(cur);
+                set.delete(viewport);
+                dispatch({ type: "update-editor", id: component.id, patch: { hidden: Array.from(set) } as any });
+                try { window.dispatchEvent(new CustomEvent('pb-live-message', { detail: `Shown on ${viewport}` })); } catch {}
+              }}
+            >
+              Show for this device
+            </button>
+          )}
+        </div>
+      )}
       <ContextMenu
         x={ctxPos.x}
         y={ctxPos.y}

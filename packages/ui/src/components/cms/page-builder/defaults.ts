@@ -56,6 +56,9 @@ export const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = 
   TabsAccordionContainer: { mode: "tabs", tabs: ["Tab 1", "Tab 2"] as unknown as any },
   Divider: { width: "100%", height: "1px" },
   Spacer: { width: "100%", height: "1rem" },
+  Dataset: { source: "products" } as any,
+  Repeater: { columns: 3, gap: "1rem" } as any,
+  Bind: { prop: "text", path: "title" } as any,
 };
 
 export default defaults;

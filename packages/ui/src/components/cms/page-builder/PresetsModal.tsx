@@ -3,6 +3,7 @@
 import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button } from "../../atoms/shadcn";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+import { z } from "zod";
 import type { PageComponent } from "@acme/types";
 import { presetList, presetCategories, type PresetDef, type PresetCategory } from "./presets.data";
 
@@ -15,6 +16,7 @@ export default function PresetsModal({ onInsert, sourceUrl }: Props) {
   const [presets, setPresets] = useState<PresetDef[]>(presetList);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<PresetCategory | "All">("All");
+  const [loadError, setLoadError] = useState<string>("");
 
   useEffect(() => {
     let aborted = false;
@@ -23,10 +25,37 @@ export default function PresetsModal({ onInsert, sourceUrl }: Props) {
       try {
         const res = await fetch(sourceUrl);
         if (!res.ok) return;
-        const data = (await res.json()) as PresetDef[];
-        if (!aborted && Array.isArray(data) && data.length) setPresets(data);
+        const data = await res.json();
+        // Validate remote schema: items with a PageComponent template
+        const RemoteItem = z.object({
+          id: z.string().min(1),
+          label: z.string().min(1),
+          description: z.string().optional(),
+          preview: z.string().url().or(z.string().startsWith("/")).or(z.string().min(1)),
+          category: z.enum(["Hero", "Features", "Testimonials", "Commerce"]) as z.ZodType<PresetCategory>,
+          template: z.object({ type: z.string().min(1) }).passthrough(),
+        });
+        const RemoteArray = z.array(RemoteItem);
+        const parsed = RemoteArray.safeParse(Array.isArray(data) ? data : (data?.items ?? []));
+        if (!parsed.success) {
+          setLoadError("Presets feed invalid format");
+          return;
+        }
+        if (!aborted && parsed.data.length) {
+          const mapped: PresetDef[] = parsed.data.map((r) => ({
+            id: r.id,
+            label: r.label,
+            description: r.description,
+            preview: r.preview,
+            category: r.category,
+            build: () => (r.template as any),
+          }));
+          setPresets(mapped);
+          setLoadError("");
+        }
       } catch {
-        // ignore network errors, keep local presets
+        // Show a soft error; keep local presets
+        setLoadError("Failed to load presets feed");
       }
     })();
     return () => { aborted = true; };
@@ -60,6 +89,11 @@ export default function PresetsModal({ onInsert, sourceUrl }: Props) {
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>Starter Layouts</DialogTitle>
+        {loadError && (
+          <div className="rounded border border-red-200 bg-red-50 p-2 text-xs text-red-800">
+            {loadError}
+          </div>
+        )}
         <div className="flex items-center gap-2 py-2">
           <input
             type="text"

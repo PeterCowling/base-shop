@@ -47,6 +47,8 @@ export function cssVars(overrides?: StyleOverrides): Record<string, string> {
     if (fx.boxShadow) vars["boxShadow"] = fx.boxShadow;
     if (fx.opacity) vars["opacity"] = fx.opacity;
     if (fx.backdropFilter) vars["backdropFilter"] = fx.backdropFilter;
+    // Standard foreground filter
+    if ((fx as any).filter) vars["filter"] = (fx as any).filter as string;
     if (fx.outline) vars["outline"] = fx.outline;
     if (fx.outlineOffset) vars["outlineOffset"] = fx.outlineOffset;
     if (fx.borderTop) vars["borderTop"] = fx.borderTop;

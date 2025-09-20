@@ -11,6 +11,10 @@ describe("parseSeoForm", () => {
     fd.set("canonicalBase", "https://example.com");
     fd.set("ogUrl", "https://example.com/og");
     fd.set("twitterCard", "summary");
+    fd.set("brand", "Acme");
+    fd.set("offers", '{"price":"19.99","priceCurrency":"USD"}');
+    fd.set("aggregateRating", '{"ratingValue":4.5,"reviewCount":10}');
+    fd.set("structuredData", '{"foo":"bar"}');
 
     const result = parseSeoForm(fd);
     expect(result.data).toEqual({
@@ -22,6 +26,10 @@ describe("parseSeoForm", () => {
       canonicalBase: "https://example.com",
       ogUrl: "https://example.com/og",
       twitterCard: "summary",
+      brand: "Acme",
+      offers: '{"price":"19.99","priceCurrency":"USD"}',
+      aggregateRating: '{"ratingValue":4.5,"reviewCount":10}',
+      structuredData: '{"foo":"bar"}',
     });
   });
 

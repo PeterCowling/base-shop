@@ -15,6 +15,7 @@ interface Options {
   gridCols: number;
   containerRef: RefObject<HTMLDivElement | null>;
   disabled?: boolean;
+  zoom?: number;
 }
 
 export default function useBlockTransform(
@@ -29,6 +30,7 @@ export default function useBlockTransform(
     gridCols,
     containerRef,
     disabled = false,
+    zoom = 1,
   }: Options,
 ) {
   const {
@@ -48,6 +50,7 @@ export default function useBlockTransform(
     gridCols,
     containerRef,
     disabled,
+    zoom,
   });
 
   const {
@@ -61,6 +64,7 @@ export default function useBlockTransform(
     gridCols,
     containerRef,
     disabled,
+    zoom,
   });
 
   const guides =

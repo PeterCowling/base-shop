@@ -12,6 +12,8 @@ import {
 import LayoutPanel from "./panels/LayoutPanel";
 import ContentPanel from "./panels/ContentPanel";
 import InteractionsPanel from "./panels/InteractionsPanel";
+import TimelinePanel from "./panels/TimelinePanel";
+import LottieControls from "./panels/LottieControls";
 import StylePanel from "./StylePanel";
 import useComponentInputs from "./useComponentInputs";
 import useComponentResize from "./useComponentResize";
@@ -51,7 +53,7 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
   return (
     <Accordion
       type="multiple"
-      defaultValue={["layout", "content", "style", "interactions"]}
+      defaultValue={["layout", "content", "style", "interactions", "timeline"]}
       className="space-y-3"
     >
       <AccordionItem value="layout" className="border-none">
@@ -100,6 +102,22 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
             component={component}
             handleInput={handleInput}
           />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="timeline" className="border-none">
+        <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+          Timeline
+        </AccordionTrigger>
+        <AccordionContent className="pt-3">
+          <TimelinePanel component={component} handleInput={handleInput} />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="lottie" className="border-none">
+        <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+          Lottie
+        </AccordionTrigger>
+        <AccordionContent className="pt-3">
+          <LottieControls component={component} handleInput={handleInput} />
         </AccordionContent>
       </AccordionItem>
     </Accordion>

@@ -12,6 +12,8 @@ type Props = {
   component: PageComponent;
   index: number;
   parentId: string | undefined;
+  parentType?: string;
+  parentSlots?: number;
   selectedIds: string[];
   onSelect: (id: string, e?: React.MouseEvent) => void;
   onRemove: () => void;
@@ -22,6 +24,9 @@ type Props = {
   viewport: "desktop" | "tablet" | "mobile";
   device?: DevicePreset;
   editor?: HistoryState["editor"];
+  zoom?: number;
+  baselineSnap?: boolean;
+  baselineStep?: number;
 };
 
 const CanvasItem = memo(function CanvasItemComponent(props: Props) {

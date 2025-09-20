@@ -9,6 +9,8 @@ import type { PageComponent } from "@acme/types";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect } from "react";
 import { ensureScrollStyles, ensureAnimationStyles, initScrollEffects } from "./cms/page-builder/scrollEffects";
+import { initTimelines } from "./cms/page-builder/timeline";
+import { initLottie } from "./cms/page-builder/lottie";
 import { ensureLightboxStyles, initLightbox } from "./cms/lightbox";
 import type { HistoryState } from "@acme/types";
 import { cssVars } from "../utils/style";
@@ -29,6 +31,8 @@ export default function DynamicRenderer({
     ensureScrollStyles();
     ensureAnimationStyles();
     initScrollEffects();
+    initTimelines();
+    initLottie();
     ensureLightboxStyles();
     initLightbox();
   }, []);
@@ -166,6 +170,12 @@ export default function DynamicRenderer({
     const hoverScale = (blockRecord as any).hoverScale as number | undefined;
     const hoverOpacity = (blockRecord as any).hoverOpacity as number | undefined;
     const staggerChildren = (blockRecord as any).staggerChildren as number | undefined;
+    const timeline = (blockRecord as any).timeline as any | undefined;
+    const lottieUrl = (blockRecord as any).lottieUrl as string | undefined;
+    const lottieAutoplay = (blockRecord as any).lottieAutoplay as boolean | undefined;
+    const lottieLoop = (blockRecord as any).lottieLoop as boolean | undefined;
+    const lottieSpeed = (blockRecord as any).lottieSpeed as number | undefined;
+    const lottieTrigger = (blockRecord as any).lottieTrigger as string | undefined;
     const needsHover = typeof hoverScale === 'number' || typeof hoverOpacity === 'number';
     const gridArea = (blockRecord as any).gridArea as string | undefined;
     const gridColumn = (blockRecord as any).gridColumn as string | undefined;
@@ -200,6 +210,12 @@ export default function DynamicRenderer({
         data-pb-href={(blockRecord as any).href || undefined}
         data-pb-modal={(blockRecord as any).modalHtml || undefined}
         data-pb-stagger={typeof staggerChildren === 'number' ? String(staggerChildren) : undefined}
+        data-pb-timeline={timeline && timeline.steps && timeline.steps.length ? JSON.stringify(timeline) : undefined}
+        data-pb-lottie-url={lottieUrl || undefined}
+        data-pb-lottie-autoplay={lottieAutoplay ? '1' : undefined}
+        data-pb-lottie-loop={lottieLoop ? '1' : undefined}
+        data-pb-lottie-speed={typeof lottieSpeed === 'number' ? String(lottieSpeed) : undefined}
+        data-pb-lottie-trigger={lottieTrigger || undefined}
       >
         {needsHover ? (
           <div className="pb-hover-target">

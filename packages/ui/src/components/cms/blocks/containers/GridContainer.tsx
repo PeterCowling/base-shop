@@ -29,6 +29,12 @@ export interface GridContainerProps {
   alignItemsDesktop?: GridContainerProps["alignItems"];
   alignItemsTablet?: GridContainerProps["alignItems"];
   alignItemsMobile?: GridContainerProps["alignItems"];
+  /** Use repeat(auto-fit, minmax(minColWidth, 1fr)) for columns */
+  autoFit?: boolean;
+  /** Minimum column width when autoFit is enabled (e.g. '240px') */
+  minColWidth?: string;
+  /** Equalize implicit row heights via grid-auto-rows: 1fr */
+  equalizeRows?: boolean;
   className?: string;
   pbViewport?: "desktop" | "tablet" | "mobile";
 }
@@ -58,6 +64,9 @@ export default function GridContainer({
   alignItemsDesktop,
   alignItemsTablet,
   alignItemsMobile,
+  autoFit,
+  minColWidth,
+  equalizeRows,
   className,
   pbViewport,
 }: GridContainerProps) {
@@ -77,8 +86,11 @@ export default function GridContainer({
     <div
       className={cn("grid", className)}
       style={{
-        gridTemplateColumns: `repeat(${effCols}, minmax(0, 1fr))`,
+        gridTemplateColumns: autoFit
+          ? `repeat(auto-fit, minmax(${minColWidth || "240px"}, 1fr))`
+          : `repeat(${effCols}, minmax(0, 1fr))`,
         ...(effRows ? { gridTemplateRows: rowHeights ? rowHeights : `repeat(${effRows}, minmax(0, 1fr))` } : {}),
+        ...(equalizeRows ? { gridAutoRows: "1fr" } : {}),
         ...(areas ? { gridTemplateAreas: areas } : {}),
         ...(autoFlow ? { gridAutoFlow: autoFlow } : {}),
         gap: effGap,

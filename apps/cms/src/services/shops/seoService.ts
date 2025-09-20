@@ -18,7 +18,7 @@ export async function updateSeo(
     return { errors };
   }
 
-  const { locale, title, description, image, alt, canonicalBase, ogUrl, twitterCard } = data;
+  const { locale, title, description, image, alt, canonicalBase, ogUrl, twitterCard, brand, offers, aggregateRating, structuredData } = data;
 
   const warnings: string[] = [];
   if (title.length > 70) warnings.push("Title exceeds 70 characters");
@@ -27,6 +27,28 @@ export async function updateSeo(
   const current = await fetchSettings(shop);
   const seo = { ...(current.seo ?? {}) } as Record<Locale, ShopSeoFields>;
   const existing = seo[locale] ?? {};
+  // Build structured data JSON from UI fields if provided
+  let sd = structuredData;
+  if (!sd && (brand || offers || aggregateRating)) {
+    const sdObj: Record<string, unknown> = {};
+    if (brand) sdObj.brand = brand;
+    if (offers) {
+      try {
+        sdObj.offers = JSON.parse(offers);
+      } catch {
+        sdObj.offers = offers;
+      }
+    }
+    if (aggregateRating) {
+      try {
+        sdObj.aggregateRating = JSON.parse(aggregateRating);
+      } catch {
+        sdObj.aggregateRating = aggregateRating;
+      }
+    }
+    sd = JSON.stringify(sdObj);
+  }
+
   seo[locale] = {
     ...existing,
     title,
@@ -40,6 +62,7 @@ export async function updateSeo(
     ...(twitterCard
       ? { twitter: { ...(existing.twitter ?? {}), card: twitterCard } }
       : {}),
+    ...(sd ? { structuredData: sd } : {}),
   };
   const updated: ShopSettings = {
     ...current,

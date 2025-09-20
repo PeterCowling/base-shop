@@ -56,6 +56,23 @@ describe("Blog listing page", () => {
     await BlogPage({ params: { lang: "en" } } as any);
     expect(notFound).toHaveBeenCalled();
   });
+
+  test("generateMetadata sets canonical and OG/Twitter", async () => {
+    jest.doMock("../src/app/util/seo", () => ({
+      __esModule: true,
+      getSeo: jest.fn(async (_lang: string, page?: any) => ({
+        title: page?.title ?? "Base",
+        description: page?.description ?? "Desc",
+        canonical: page?.canonical ?? "https://example.com/en",
+        openGraph: { url: page?.openGraph?.url ?? "https://example.com/en" },
+        twitter: { card: "summary" },
+      })),
+    }));
+    const { generateMetadata } = await import("../src/app/[lang]/blog/page");
+    const meta = await generateMetadata({ params: { lang: "en" } } as any);
+    expect(meta.alternates?.canonical).toBe("https://example.com/en/blog");
+    expect(meta.openGraph?.url).toBe("https://example.com/en/blog");
+  });
 });
 
 describe("Blog post page", () => {
@@ -89,6 +106,8 @@ describe("Blog post page", () => {
     expect(notFound).not.toHaveBeenCalled();
     render(res);
     expect(screen.getByRole("heading", { name: "Hello" })).toBeInTheDocument();
+    const script = document.querySelector('script[type="application/ld+json"]');
+    expect(script).toBeTruthy();
   });
 
   test("notFound when blog disabled", async () => {
@@ -154,5 +173,37 @@ describe("Blog post page", () => {
     expect(
       screen.getByText("Daily Edit scheduled for 2025-05-01")
     ).toBeInTheDocument();
+  });
+
+  test("generateMetadata derives from post", async () => {
+    jest.doMock("@acme/sanity", () => ({
+      __esModule: true,
+      fetchPostBySlug: jest.fn(async () => ({
+        title: "Hello",
+        slug: "hello",
+        excerpt: "World",
+      })),
+    }));
+    jest.doMock("../src/app/util/seo", () => ({
+      __esModule: true,
+      getSeo: jest.fn(async (_lang: string, page?: any) => ({
+        title: page?.title ?? "Base",
+        description: page?.description ?? "Desc",
+        canonical: page?.canonical ?? "https://example.com/en",
+        openGraph: { url: page?.openGraph?.url ?? "https://example.com/en" },
+        twitter: { card: "summary" },
+      })),
+    }));
+    const { generateMetadata } = await import(
+      "../src/app/[lang]/blog/[slug]/page"
+    );
+    const meta = await generateMetadata({
+      params: { lang: "en", slug: "hello" },
+    } as any);
+    expect(meta.title).toBe("Hello");
+    expect(meta.description).toBe("World");
+    expect(meta.alternates?.canonical).toBe(
+      "https://example.com/en/blog/hello",
+    );
   });
 });

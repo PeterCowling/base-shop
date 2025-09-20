@@ -35,6 +35,29 @@ export default function SectionEditor({ component, onChange }: Props) {
     onChange({ [field]: value } as Partial<PageComponent>);
   }, [onChange]);
 
+  const initialFilter = (() => {
+    try {
+      const raw = (component as any).styles as string | undefined;
+      if (!raw) return undefined;
+      const parsed = JSON.parse(String(raw)) as { effects?: { filter?: string } };
+      return parsed?.effects?.filter;
+    } catch {
+      return undefined;
+    }
+  })();
+
+  const applyFilter = useCallback((filter: string | undefined) => {
+    try {
+      const raw = (component as any).styles as string | undefined;
+      const base = raw ? (JSON.parse(String(raw)) as any) : {};
+      const next = { ...base, effects: { ...(base.effects ?? {}), filter } };
+      handle("styles" as any, JSON.stringify(next) as any);
+    } catch {
+      const next = { effects: { filter } };
+      handle("styles" as any, JSON.stringify(next) as any);
+    }
+  }, [component, handle]);
+
   return (
     <div className="space-y-2">
       {/* Background image */}
@@ -148,6 +171,18 @@ export default function SectionEditor({ component, onChange }: Props) {
         placeholder="0.2"
       />
 
+      {/* Inner layout helpers */}
+      <div className="grid grid-cols-2 gap-2">
+        <Button
+          type="button"
+          variant={(component as any).equalizeInnerHeights ? "default" : "outline"}
+          onClick={() => handle("equalizeInnerHeights" as any, !((component as any).equalizeInnerHeights) as any)}
+          title="Make inner children share equal heights (grid auto-rows: 1fr)"
+        >
+          Equalize inner heights
+        </Button>
+      </div>
+
       {/* Shape dividers */}
       <div className="mt-4 grid grid-cols-2 gap-4">
         <div className="space-y-2">
@@ -223,10 +258,12 @@ export default function SectionEditor({ component, onChange }: Props) {
           open={imgEditorOpen}
           src={(component as any).backgroundImageUrl}
           initial={editState}
+          initialFilter={initialFilter}
           onClose={() => setImgEditorOpen(false)}
           onApply={(next) => {
             handle("backgroundFocalPoint" as any, (next.focalPoint || { x: 0.5, y: 0.5 }) as any);
           }}
+          onApplyFilter={applyFilter}
         />
       ) : null}
     </div>

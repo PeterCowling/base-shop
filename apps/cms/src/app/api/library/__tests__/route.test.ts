@@ -65,6 +65,18 @@ describe("library route", () => {
       await expect(res.json()).resolves.toEqual({ ok: true });
       expect(saveLibraryItem).toHaveBeenCalled();
     });
+    it("200 saves multiple items", async () => {
+      const items = [
+        { id: "1", label: "A", createdAt: 1 },
+        { id: "2", label: "B", createdAt: 2 },
+      ];
+      const res = await POST(new Request("http://test/api/library?shop=s1", { method: "POST", body: JSON.stringify({ items }) }));
+      expect(res.status).toBe(200);
+      await expect(res.json()).resolves.toEqual({ ok: true });
+      expect(saveLibraryItem).toHaveBeenCalledTimes(2);
+      expect(saveLibraryItem).toHaveBeenCalledWith("s1", items[0]);
+      expect(saveLibraryItem).toHaveBeenCalledWith("s1", items[1]);
+    });
   });
 
   describe("PATCH", () => {
@@ -110,4 +122,3 @@ describe("library route", () => {
     });
   });
 });
-

@@ -8,16 +8,31 @@ interface Props {
     type: "margin" | "padding",
     side: "top" | "bottom" | "left" | "right",
   ) => void;
+  startRotate?: (e: React.PointerEvent) => void;
 }
 
 export default function BlockResizer({
   selected,
   startResize,
   startSpacing,
+  startRotate,
 }: Props) {
   if (!selected) return null;
   return (
     <>
+      {/* Rotate handle (top-center, slightly offset above) */}
+      {startRotate && (
+        <div
+          className="absolute -top-5 left-1/2 -translate-x-1/2 group pointer-events-auto"
+          onPointerDown={(e) => startRotate(e)}
+          title="Rotate (Shift = precise)"
+        >
+          <div className="h-3 w-3 cursor-crosshair rounded-full bg-primary" />
+          <div className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-black/60 px-1 text-[10px] text-white opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-white/70 dark:text-black">
+            Shift = precise
+          </div>
+        </div>
+      )}
       <div onPointerDown={(e) => startResize(e, "nw")} className="bg-primary absolute -top-1 -left-1 h-2 w-2 cursor-nwse-resize" />
       <div onPointerDown={(e) => startResize(e, "ne")} className="bg-primary absolute -top-1 -right-1 h-2 w-2 cursor-nesw-resize" />
       <div onPointerDown={(e) => startResize(e, "sw")} className="bg-primary absolute -bottom-1 -left-1 h-2 w-2 cursor-nesw-resize" />

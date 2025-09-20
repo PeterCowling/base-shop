@@ -13,6 +13,11 @@ describe('performance benchmarks', () => {
   const verify = jwt.verify as jest.Mock;
   const validate = validateShopName as jest.Mock;
   const root = path.resolve(__dirname, '../../../../../../..');
+  // Budgets reflect baseline timings captured on CI-like hardware so the suite
+  // fails when regressions push these operations past their historical ranges.
+  const DIFF_SINGLE_BUDGET_MS = 500;
+  const DIFF_CONCURRENT_BUDGET_MS = 2600;
+  const ON_REQUEST_CONCURRENT_BUDGET_MS = 4000;
 
   beforeEach(() => {
     vol.reset();
@@ -40,7 +45,7 @@ describe('performance benchmarks', () => {
     const dirB = path.join(root, 'packages', 'template-app', 'src', 'templates');
     const startSingle = performance.now();
     diffDirectories(dirA, dirB);
-    const single = performance.now() - startSingle;
+    const singleDurationMs = performance.now() - startSingle;
 
     const startConcurrent = performance.now();
     await Promise.all(
@@ -54,8 +59,10 @@ describe('performance benchmarks', () => {
           }),
       ),
     );
-    const concurrent = performance.now() - startConcurrent;
-    console.log(`diffDirectories: single=${single.toFixed(2)}ms concurrent x10=${concurrent.toFixed(2)}ms`);
+    const concurrentDurationMs = performance.now() - startConcurrent;
+
+    expect(singleDurationMs).toBeLessThan(DIFF_SINGLE_BUDGET_MS);
+    expect(concurrentDurationMs).toBeLessThan(DIFF_CONCURRENT_BUDGET_MS);
   });
 
   it('onRequest under concurrent load', async () => {
@@ -71,7 +78,8 @@ describe('performance benchmarks', () => {
         onRequest({ params: { shopId: 'bcd' }, request: req }),
       ),
     );
-    const concurrent = performance.now() - start;
-    console.log(`onRequest concurrent x10=${concurrent.toFixed(2)}ms`);
+    const concurrentDurationMs = performance.now() - start;
+
+    expect(concurrentDurationMs).toBeLessThan(ON_REQUEST_CONCURRENT_BUDGET_MS);
   });
 });

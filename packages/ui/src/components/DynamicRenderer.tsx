@@ -7,6 +7,8 @@ import type { BlockRegistryEntry } from "./cms/blocks/types";
 import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
 import type { CSSProperties, ReactNode } from "react";
+import { useEffect } from "react";
+import { ensureScrollStyles, ensureAnimationStyles, initScrollEffects } from "./cms/page-builder/scrollEffects";
 import type { HistoryState } from "@acme/types";
 import { cssVars } from "../utils/style";
 
@@ -22,6 +24,12 @@ export default function DynamicRenderer({
   /** Optional editor metadata map (builder-only flags) */
   editor?: HistoryState["editor"];
 }) {
+  useEffect(() => {
+    ensureScrollStyles();
+    ensureAnimationStyles();
+    initScrollEffects();
+  }, []);
+
   const renderBlock = (block: PageComponent): ReactNode => {
     // Skip rendering when hidden has been decorated for this viewport
     const blockRecord = block as Record<string, unknown>;
@@ -99,6 +107,41 @@ export default function DynamicRenderer({
     const stackStrategy = (blockRecord as any).stackStrategy as string | undefined;
     const stackClass = stackStrategy === "reverse" ? "pb-stack-mobile-reverse" : "";
 
+    // Animation + scroll effect props (optional, passthrough)
+    const animation = (blockRecord as any).animation as
+      | "none"
+      | "fade"
+      | "slide"
+      | "slide-up"
+      | "slide-down"
+      | "slide-left"
+      | "slide-right"
+      | "zoom"
+      | "rotate"
+      | undefined;
+    const animationDuration = (blockRecord as any).animationDuration as number | undefined;
+    const animationDelay = (blockRecord as any).animationDelay as number | undefined;
+    const animationEasing = (blockRecord as any).animationEasing as string | undefined;
+    const reveal = (blockRecord as any).reveal as string | undefined;
+    const parallax = (blockRecord as any).parallax as number | undefined;
+    const sticky = (blockRecord as any).sticky as "top" | "bottom" | undefined;
+    const stickyOffset = (blockRecord as any).stickyOffset as string | number | undefined;
+
+    const animClass = animation && animation !== "none"
+      ? (
+          {
+            fade: "pb-animate pb-animate-fade",
+            slide: "pb-animate pb-animate-slide",
+            "slide-up": "pb-animate pb-animate-slide-up",
+            "slide-down": "pb-animate pb-animate-slide-down",
+            "slide-left": "pb-animate pb-animate-slide-left",
+            "slide-right": "pb-animate pb-animate-slide-right",
+            zoom: "pb-animate pb-animate-zoom",
+            rotate: "pb-animate pb-animate-rotate",
+          } as Record<string, string>
+        )[animation] || ""
+      : "";
+
     let extraProps: Record<string, unknown> = {};
     if (getRuntimeProps) {
       const runtime = getRuntimeProps(block, locale);
@@ -118,7 +161,24 @@ export default function DynamicRenderer({
     if (mergedClass) extraProps.className = mergedClass;
 
     return (
-      <div key={id} style={style} className={["pb-scope", hideClasses, orderClass].filter(Boolean).join(" ") || undefined}>
+      <div
+        key={id}
+        style={{
+          ...style,
+          ...(typeof animationDuration === "number" ? ({ ["--pb-anim-duration"]: `${animationDuration}ms` } as any) : {}),
+          ...(typeof animationDelay === "number" ? ({ ["--pb-anim-delay"]: `${animationDelay}ms` } as any) : {}),
+          ...(animationEasing ? ({ ["--pb-anim-ease"]: animationEasing } as any) : {}),
+          ...(stickyOffset !== undefined ? ({ ["--pb-sticky-offset"]: typeof stickyOffset === "number" ? `${stickyOffset}px` : String(stickyOffset) } as any) : {}),
+        }}
+        className={["pb-scope", hideClasses, orderClass, animClass].filter(Boolean).join(" ") || undefined}
+        data-pb-duration={typeof animationDuration === "number" ? animationDuration : undefined}
+        data-pb-delay={typeof animationDelay === "number" ? animationDelay : undefined}
+        data-pb-ease={animationEasing || undefined}
+        data-pb-reveal={reveal || undefined}
+        data-pb-parallax={typeof parallax === "number" ? parallax : undefined}
+        data-pb-sticky={sticky || undefined}
+        data-pb-sticky-offset={stickyOffset !== undefined ? String(stickyOffset) : undefined}
+      >
         <Comp
           {...rest}
           {...extraProps}

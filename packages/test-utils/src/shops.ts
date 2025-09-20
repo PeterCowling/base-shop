@@ -3,12 +3,16 @@ import os from 'node:os';
 import path from 'node:path';
 import type { Session } from 'next-auth';
 
-export const adminSession = { user: { role: 'admin' } } as unknown as Session;
+export const adminSession = {
+  user: { role: 'admin', email: 'admin@example.com' },
+} as unknown as Session;
 
 export async function withShop(cb: (dir: string) => Promise<void>): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'shop-'));
   const cwd = process.cwd();
   process.chdir(dir);
+  // Ensure repositories resolve data under this temp directory
+  process.env.DATA_ROOT = path.join(dir, 'data', 'shops');
   jest.resetModules();
   try {
     await cb(dir);

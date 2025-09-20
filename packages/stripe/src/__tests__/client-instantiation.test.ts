@@ -14,7 +14,6 @@ describe("stripe client instantiation", () => {
     jest.doMock("@acme/config/env/core", () => ({
       coreEnv: { STRIPE_SECRET_KEY: undefined },
     }));
-
     await expect(import("../index.ts")).rejects.toThrow(
       "Neither apiKey nor config.authenticator provided",
     );
@@ -100,4 +99,3 @@ describe("stripe client instantiation", () => {
     expect((realStripe as { key: string }).key).toBe("sk_live");
   });
 });
-

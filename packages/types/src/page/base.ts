@@ -39,7 +39,37 @@ export interface PageComponentBase extends LayoutProps, PositioningProps, Spacin
   /** Destination when using a navigation click action */
   href?: string;
   /** Simple animation applied on render */
-  animation?: "none" | "fade" | "slide";
+  animation?:
+    | "none"
+    | "fade"
+    | "slide"
+    | "slide-up"
+    | "slide-down"
+    | "slide-left"
+    | "slide-right"
+    | "zoom"
+    | "rotate";
+  /** Animation duration in milliseconds */
+  animationDuration?: number;
+  /** Animation delay in milliseconds */
+  animationDelay?: number;
+  /** CSS easing function (e.g. 'ease', 'linear', 'cubic-bezier(...)') */
+  animationEasing?: string;
+  /** Reveal effect on scroll */
+  reveal?:
+    | "fade"
+    | "slide-up"
+    | "slide-down"
+    | "slide-left"
+    | "slide-right"
+    | "zoom"
+    | "rotate";
+  /** Parallax factor (small decimal like 0.15..0.5) */
+  parallax?: number;
+  /** Sticky behavior */
+  sticky?: "top" | "bottom";
+  /** Sticky offset (e.g. 64px) */
+  stickyOffset?: string | number;
   [key: string]: unknown;
 }
 
@@ -56,7 +86,36 @@ export const baseComponentSchema = z
     mobileItems: z.number().int().min(0).optional(),
     clickAction: z.enum(["none", "navigate"]).optional(),
     href: z.string().optional(),
-    animation: z.enum(["none", "fade", "slide"]).optional(),
+    animation: z
+      .enum([
+        "none",
+        "fade",
+        "slide",
+        "slide-up",
+        "slide-down",
+        "slide-left",
+        "slide-right",
+        "zoom",
+        "rotate",
+      ])
+      .optional(),
+    animationDuration: z.number().int().nonnegative().optional(),
+    animationDelay: z.number().int().nonnegative().optional(),
+    animationEasing: z.string().optional(),
+    reveal: z
+      .enum([
+        "fade",
+        "slide-up",
+        "slide-down",
+        "slide-left",
+        "slide-right",
+        "zoom",
+        "rotate",
+      ])
+      .optional(),
+    parallax: z.number().optional(),
+    sticky: z.enum(["top", "bottom"]).optional(),
+    stickyOffset: z.union([z.string(), z.number()]).optional(),
   })
   .merge(layoutSchema)
   .merge(positioningSchema)

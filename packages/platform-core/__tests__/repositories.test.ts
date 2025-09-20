@@ -1,9 +1,9 @@
 // packages/platform-core/__tests__/repositories.test.ts
 import { promises as fs } from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import type { ProductPublication } from "../src/products/index";
 import { nowIso } from "@date-utils";
+import { withTempRepo } from "@acme/test-utils";
 
 // These integration-style tests touch the filesystem and can occasionally be
 // slow on CI machines, so allow a more generous timeout than Jest's default
@@ -17,31 +17,13 @@ type JsonRepo = typeof import("../src/repositories/json.server");
  * Creates an isolated temp repo, runs `cb`, then restores CWD.
  * Everything stays strongly-typed – no `any`.
  */
-async function withRepo(
+const withRepo = (
   cb: (repo: JsonRepo, shop: string, dir: string) => Promise<void>
-): Promise<void> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "repo-"));
-  const shopDir = path.join(dir, "data", "shops", "test");
-  await fs.mkdir(shopDir, { recursive: true });
-
-  const cwd = process.cwd();
-  process.chdir(dir);
-  jest.resetModules();
-  // Mock out PrismaClient so importing the repositories does not try to
-  // resolve the real `@prisma/client` package which requires native
-  // bindings and a generated client.  The JSON repository tests do not hit
-  // the database layer, so a lightweight mock suffices.
-  jest.doMock("@prisma/client", () => ({
-    PrismaClient: jest.fn().mockImplementation(() => ({})),
-  }));
-
-  const repo: JsonRepo = await import("../src/repositories/json.server");
-  try {
+) =>
+  withTempRepo(async (dir) => {
+    const repo: JsonRepo = await import("../src/repositories/json.server");
     await cb(repo, "test", dir);
-  } finally {
-    process.chdir(cwd);
-  }
-}
+  }, { prefix: 'repo-' });
 
 /* -------------------------------------------------------------------------- */
 /* Tests                                                                      */

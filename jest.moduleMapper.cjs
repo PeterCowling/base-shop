@@ -1,4 +1,5 @@
 module.exports = {
+  "^~test/(.*)$": " /test/$1",
   "^.+\\.d\\.ts$": " /test/emptyModule.js",
   "^\\./dataRoot\\.js$": " /packages/platform-core/src/dataRoot.ts",
   "^\\./auth\\.js$": " /packages/config/src/env/auth.ts",

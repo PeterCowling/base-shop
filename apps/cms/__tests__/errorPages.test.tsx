@@ -1,10 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-
-jest.mock("next-auth/jwt", () => ({
-  __esModule: true,
-  getToken: jest.fn(),
-}));
+import { __setMockToken, __resetMockToken } from "next-auth/jwt";
 
 jest.mock("next/navigation", () => ({
   useSearchParams: jest.fn(),
@@ -20,17 +16,17 @@ import NotFound from "../src/app/not-found";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const AccessDenied = require("../src/app/403/page").default;
 
-import { getToken as mockedGetToken } from "next-auth/jwt";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 
-// 🔑  Use `typeof mockedGetToken`, no extra import-type alias needed
-const getToken = mockedGetToken as jest.MockedFunction<typeof mockedGetToken>;
 const mockSearch = useSearchParams as jest.MockedFunction<
   typeof useSearchParams
 >;
 
-afterEach(() => jest.resetAllMocks());
+afterEach(() => {
+  jest.resetAllMocks();
+  __resetMockToken();
+});
 
 type MiddlewareRequest = Parameters<typeof middleware>[0];
 function createRequest(path: string): MiddlewareRequest {
@@ -41,7 +37,7 @@ function createRequest(path: string): MiddlewareRequest {
 
 describe("CMS error pages", () => {
   it("redirects unauthenticated users to /login", async () => {
-    getToken.mockResolvedValueOnce(null);
+    __setMockToken(null);
     const req = createRequest("/cms/shop");
     const res = await middleware(req);
     expect(res.status).toBe(307);

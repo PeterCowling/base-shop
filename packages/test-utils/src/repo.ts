@@ -31,18 +31,7 @@ export async function withTempRepo(
   const cwd = process.cwd();
   process.chdir(dir);
 
-  // Ensure Response.json exists for NextResponse.json to work in tests
-  if (typeof (Response as any).json !== 'function') {
-    (Response as any).json = (
-      data: unknown,
-      init: ResponseInit | number = {}
-    ): Response => {
-      const opts: ResponseInit = typeof init === 'number' ? { status: init } : init;
-      const headers = new Headers(opts.headers);
-      if (!headers.has('content-type')) headers.set('content-type', 'application/json');
-      return new Response(JSON.stringify(data), { ...opts, headers });
-    };
-  }
+  // Response.json shim is loaded globally via test/setup-response-json.ts
 
   // Polyfill setImmediate used by fast-csv in some test environments
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

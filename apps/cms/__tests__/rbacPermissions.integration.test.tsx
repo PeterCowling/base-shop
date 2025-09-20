@@ -1,25 +1,17 @@
 import fs from "node:fs/promises";
-import os from "node:os";
 import path from "node:path";
 import { render } from "@testing-library/react";
+import { withTempRepo } from "@acme/test-utils";
 
 process.env.STRIPE_SECRET_KEY = "sk_test_123";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
 process.env.CART_COOKIE_SECRET = "test-secret";
 process.env.STRIPE_WEBHOOK_SECRET = "whsec_test";
 
-async function withRepo(cb: () => Promise<void>): Promise<void> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "rbac-"));
-  await fs.mkdir(path.join(dir, "data"), { recursive: true });
-  const cwd = process.cwd();
-  process.chdir(dir);
-  jest.resetModules();
-  try {
+const withRepo = (cb: () => Promise<void>) =>
+  withTempRepo(async () => {
     await cb();
-  } finally {
-    process.chdir(cwd);
-  }
-}
+  }, { prefix: 'rbac-', createShopDir: false });
 
 afterEach(() => jest.resetAllMocks());
 

@@ -2,7 +2,7 @@
 // packages/stripe/src/__tests__/stripe.test.ts
 import type Stripe from "stripe";
 import { rest } from "msw";
-import { server } from "../../../../test/msw/server";
+import { server } from "~test/msw/server";
 
 /**
  * Our Stripe singleton is fully typed, but the test needs access to an

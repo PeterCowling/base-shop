@@ -4,6 +4,9 @@ import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { memo, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { getShopFromPath } from "@acme/shared-utils";
+import { listLibrary, type LibraryItem } from "./libraryStore";
 import {
   atomRegistry,
   moleculeRegistry,
@@ -136,6 +139,9 @@ interface PaletteProps {
 const Palette = memo(function Palette({ onAdd }: PaletteProps) {
   const [search, setSearch] = useState("");
   const [liveMessage, setLiveMessage] = useState("");
+  const pathname = usePathname() ?? "";
+  const shop = getShopFromPath(pathname);
+  const [library, setLibrary] = useState<LibraryItem[]>([]);
 
   const handleAdd = useCallback(
     (type: ComponentType, label: string) => {
@@ -151,6 +157,11 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
     return () => clearTimeout(t);
   }, [liveMessage]);
 
+  useEffect(() => {
+    // Load library
+    setLibrary(listLibrary(shop));
+  }, [shop]);
+
   return (
     <div className="flex flex-col gap-4" data-tour="drag-component">
       <input
@@ -164,6 +175,20 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
       <div aria-live="polite" className="sr-only">
         {liveMessage}
       </div>
+      {/* My Library */}
+      {library.length > 0 && (
+        <div className="space-y-2">
+          <h4 className="font-semibold capitalize">My Library</h4>
+          <div className="flex flex-col gap-2">
+            {library
+              .filter((i) => i.label.toLowerCase().includes(search.toLowerCase()))
+              .map((i) => (
+                <LibraryPaletteItem key={i.id} item={i} />
+              ))}
+          </div>
+        </div>
+      )}
+
       {Object.entries(palette).map(([category, items]) => {
         const filtered = items.filter((p) =>
           p.label.toLowerCase().includes(search.toLowerCase()),
@@ -193,3 +218,33 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
 });
 
 export default Palette;
+
+// Library item drag source (template)
+function LibraryPaletteItem({ item }: { item: LibraryItem }) {
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useSortable({ id: `lib-${item.id}`, data: { from: "library", template: item.template } });
+  return (
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      role="button"
+      tabIndex={0}
+      aria-grabbed={isDragging}
+      title="Drag to insert"
+      style={{ transform: CSS.Transform.toString(transform) }}
+      className="flex cursor-grab items-center gap-2 rounded border p-2 text-sm"
+    >
+      <Image
+        src={"/window.svg"}
+        alt=""
+        aria-hidden="true"
+        className="h-6 w-6 rounded"
+        width={24}
+        height={24}
+        loading="lazy"
+      />
+      <span>{item.label}</span>
+    </div>
+  );
+}

@@ -30,9 +30,9 @@ tsc -b
 ```
 
 ## Common Errors
-- **TS6305**: Build outputs are missing or stale. Clean the project (rimraf dist tsconfig.tsbuildinfo) and rebuild.
-- **TS6202**: Circular project references. Update references to remove cycles.
-- **TS2307**: Cannot find module or its corresponding type declarations. This happens when TypeScript can’t find a module or its types due to missing type definitions, incorrect import paths, or a misconfigured `baseUrl`/`paths` setup:contentReference[oaicite:9]{index=9}. Check that the module exists (in `src/` or `node_modules`), install `@types` packages if the library has no built-in types:contentReference[oaicite:10]{index=10}, correct any relative paths in imports:contentReference[oaicite:11]{index=11}, and ensure `tsconfig.json` has the correct `baseUrl` and `paths` mappings:contentReference[oaicite:12]{index=12}.
+- **TS6305**: Build outputs are missing or stale. Clean and rebuild (rimraf `dist` `tsconfig.tsbuildinfo`; then `tsc -b`).
+- **TS6202**: Circular project references. Update `references` to remove cycles.
+- **TS2307**: Cannot find module or its corresponding type declarations. Typically caused by missing type definitions, incorrect import paths, or misconfigured `baseUrl`/`paths`. Verify the module exists (in `src/` or `node_modules`), install any missing `@types/*` packages, correct relative import paths, and ensure `tsconfig.json` contains the expected path mappings. See `docs/tsconfig-paths.md` for examples.
 
 ## CI Expectations
 `pnpm run check:references` and `pnpm run build:ts` must pass on a clean checkout.

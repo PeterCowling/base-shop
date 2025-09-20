@@ -10,14 +10,6 @@ const withRepo = (cb: (dir: string) => Promise<void>) =>
     await cb(dir);
   }, { prefix: 'pages-' });
 
-function mockAuth() {
-  jest.doMock("next-auth", () => ({
-    getServerSession: jest.fn().mockResolvedValue({
-      user: { role: "admin", email: "admin@example.com" },
-    }),
-  }));
-}
-
 describe("page actions", () => {
   afterEach(() => jest.resetAllMocks());
 
@@ -25,7 +17,6 @@ describe("page actions", () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
       jest.doMock("@acme/date-utils", () => ({ nowIso: () => now }));
-      mockAuth();
       const { createPage } = await import("../src/actions/pages/create");
 
       const fd = new FormData();
@@ -51,7 +42,6 @@ describe("page actions", () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
       jest.doMock("@acme/date-utils", () => ({ nowIso: () => now }));
-      mockAuth();
       const repo = await import(
         "@acme/platform-core/repositories/pages/index.server"
       );
@@ -90,7 +80,6 @@ describe("page actions", () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
       jest.doMock("@acme/date-utils", () => ({ nowIso: () => now }));
-      mockAuth();
       const repo = await import(
         "@acme/platform-core/repositories/pages/index.server"
       );
@@ -135,7 +124,6 @@ describe("page actions", () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
       jest.doMock("@acme/date-utils", () => ({ nowIso: () => now }));
-      mockAuth();
       const repo = await import(
         "@acme/platform-core/repositories/pages/index.server"
       );
@@ -163,7 +151,6 @@ describe("page actions", () => {
     await withRepo(async () => {
       const now = "2024-01-01T00:00:00.000Z";
       jest.doMock("@acme/date-utils", () => ({ nowIso: () => now }));
-      mockAuth();
       const { createPage } = await import("../src/actions/pages/create");
       const fd = new FormData();
       fd.append("slug", "x");

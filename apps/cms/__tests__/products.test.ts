@@ -6,36 +6,25 @@ import type { ProductPublication } from "@acme/platform-core/products/index";
 process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";
 
 import fs from "node:fs/promises";
-import os from "node:os";
 import path from "node:path";
+import { withTempRepo } from "@acme/test-utils";
 
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                     */
 /* -------------------------------------------------------------------------- */
 
-/** Creates a fresh repo in a tmp dir, runs `cb`, then restores CWD. */
-async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "repo-"));
-  const shopDir = path.join(dir, "data", "shops", "test");
-  await fs.mkdir(shopDir, { recursive: true });
-
-  const cwd = process.cwd();
-  process.chdir(dir);
-  jest.resetModules(); // ensure each test gets a fresh module graph
-  // Reapply module mocks after resetting modules
-  jest.doMock("next-auth", () => ({
-    getServerSession: jest.fn().mockResolvedValue({
-      user: { role: "admin" },
-    }),
-  }));
-  jest.doMock("next/navigation", () => ({ redirect: jest.fn() }));
-  jest.doMock("@cms/auth/options", () => ({ authOptions: {} }));
-  try {
+// Minimal wrapper to attach CMS-specific mocks after module reset
+const withRepo = (cb: (dir: string) => Promise<void>) =>
+  withTempRepo(async (dir) => {
+    jest.doMock("next-auth", () => ({
+      getServerSession: jest.fn().mockResolvedValue({
+        user: { role: "admin" },
+      }),
+    }));
+    jest.doMock("next/navigation", () => ({ redirect: jest.fn() }));
+    jest.doMock("@cms/auth/options", () => ({ authOptions: {} }));
     await cb(dir);
-  } finally {
-    process.chdir(cwd);
-  }
-}
+  }, { prefix: 'repo-' });
 
 /* -------------------------------------------------------------------------- */
 /* Tests                                                                       */

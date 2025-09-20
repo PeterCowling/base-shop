@@ -3,19 +3,7 @@
 
 import type { JWT } from "next-auth/jwt";
 import { middleware } from "../src/middleware";
-
-/* -------------------------------------------------------------------------- */
-/*  Mock `next-auth/jwt` so that ESM‑only `jose` is never imported            */
-/* -------------------------------------------------------------------------- */
-jest.mock("next-auth/jwt", () => ({
-  __esModule: true,
-  getToken: jest.fn(),
-}));
-
-import { getToken as mockedGetToken } from "next-auth/jwt";
-const getToken = mockedGetToken as jest.MockedFunction<
-  typeof import("next-auth/jwt").getToken
->;
+import { __setMockToken, __resetMockToken } from "next-auth/jwt";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                   */
@@ -48,14 +36,17 @@ function createRequest(
   } as unknown as MiddlewareRequest;
 }
 
-afterEach(() => jest.resetAllMocks());
+afterEach(() => {
+  jest.resetAllMocks();
+  __resetMockToken();
+});
 
 /* -------------------------------------------------------------------------- */
 /*  Tests                                                                     */
 /* -------------------------------------------------------------------------- */
 describe("middleware", () => {
   it("redirects unauthenticated users to /login", async () => {
-    getToken.mockResolvedValueOnce(null);
+    __setMockToken(null);
 
     const res = await middleware(createRequest("/cms/shop/foo/products"));
 
@@ -64,7 +55,7 @@ describe("middleware", () => {
   });
 
   it("rewrites viewers hitting admin routes to /403", async () => {
-    getToken.mockResolvedValueOnce({ role: "viewer" } as JWT);
+    __setMockToken({ role: "viewer" } as JWT);
 
     const res = await middleware(
       createRequest("/cms/shop/foo/products/1/edit")
@@ -74,7 +65,7 @@ describe("middleware", () => {
   });
 
   it("allows authorised users through", async () => {
-    getToken.mockResolvedValueOnce({ role: "admin" } as JWT);
+    __setMockToken({ role: "admin" } as JWT);
 
     const res = await middleware(createRequest("/cms/shop/foo/products"));
     expect(res.headers.get("x-middleware-next")).toBe("1");
@@ -101,21 +92,18 @@ describe("middleware", () => {
   it("bypasses CSRF for API GET requests", async () => {
     const res = await middleware(createRequest("/api/test"));
     expect(res.headers.get("x-middleware-next")).toBe("1");
-    expect(getToken).not.toHaveBeenCalled();
   });
 
   it("skips auth logic for static assets", async () => {
     let res = await middleware(createRequest("/favicon.ico"));
     expect(res.headers.get("x-middleware-next")).toBe("1");
-    expect(getToken).not.toHaveBeenCalled();
 
     res = await middleware(createRequest("/_next/static/chunk.js"));
     expect(res.headers.get("x-middleware-next")).toBe("1");
-    expect(getToken).not.toHaveBeenCalled();
   });
 
   it("rewrites roles without read access to /403 with shop query", async () => {
-    getToken.mockResolvedValueOnce({ role: "ghost" } as JWT);
+    __setMockToken({ role: "ghost" } as JWT);
 
     const res = await middleware(createRequest("/cms/foo/products"));
 

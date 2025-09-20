@@ -100,6 +100,7 @@ export function usePageBuilderDnD({
         type?: ComponentType;
         index?: number;
         parentId?: string;
+        template?: PageComponent;
       };
       const o = (over.data.current || {}) as {
         parentId?: string;
@@ -143,6 +144,17 @@ export function usePageBuilderDnD({
           parentId,
           index: index ?? 0,
         });
+        selectId(component.id);
+      } else if (a?.from === "library" && a.template) {
+        // Deep clone template and assign new ids
+        const cloneWithIds = (node: PageComponent): PageComponent => {
+          const cloned: any = { ...(node as any), id: ulid() };
+          const children = (node as any).children as PageComponent[] | undefined;
+          if (Array.isArray(children)) cloned.children = children.map(cloneWithIds);
+          return cloned as PageComponent;
+        };
+        const component = cloneWithIds(a.template);
+        dispatch({ type: "add", component, parentId, index: index ?? 0 });
         selectId(component.id);
       } else if (a?.from === "canvas") {
         let toIndex = index ?? 0;

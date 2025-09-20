@@ -5,6 +5,7 @@ import type { CSSProperties, ComponentProps } from "react";
 import { Button } from "../../atoms/shadcn";
 import { Toast } from "../../atoms";
 import PageToolbar from "./PageToolbar";
+import PresetsModal from "./PresetsModal";
 import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
 import HistoryControls from "./HistoryControls";
@@ -19,6 +20,7 @@ import type { PageComponent } from "@acme/types";
 interface LayoutProps {
   style?: CSSProperties;
   paletteOnAdd: (type: ComponentType) => void;
+  onInsertPreset?: (component: PageComponent) => void;
   toolbarProps: React.ComponentProps<typeof PageToolbar>;
   gridProps: React.ComponentProps<typeof GridSettings>;
   startTour: () => void;
@@ -47,6 +49,7 @@ interface LayoutProps {
 const PageBuilderLayout = ({
   style,
   paletteOnAdd,
+  onInsertPreset,
   toolbarProps,
   gridProps,
   startTour,
@@ -76,6 +79,7 @@ const PageBuilderLayout = ({
         <PageToolbar {...toolbarProps} />
         <div className="flex items-center gap-2">
           <GridSettings {...gridProps} />
+          {onInsertPreset && <PresetsModal onInsert={onInsertPreset} />}
           <Button variant="outline" onClick={startTour}>
             Tour
           </Button>

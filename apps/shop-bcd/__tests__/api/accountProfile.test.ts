@@ -23,10 +23,8 @@ jest.mock("@platform-core/customerProfiles", () => ({
 }));
 
 import { PUT } from "../../src/app/api/account/profile/route";
-
-function createRequest(body: any): any {
-  return { json: async () => body } as any;
-}
+import { jsonRequest } from "@acme/test-utils";
+const createRequest = (body: any) => jsonRequest(body);
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -63,4 +61,3 @@ test("updates profile with valid payload", async () => {
     profile: { customerId: "cust1", name: "New Name", email: "new@example.com" },
   });
 });
-

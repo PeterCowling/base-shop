@@ -2,6 +2,7 @@
 
 import type { JWT } from "next-auth/jwt";
 import { middleware } from "../middleware";
+import { __setMockToken, __resetMockToken } from "next-auth/jwt";
 
 // Mock RBAC helpers to control permission checks
 jest.mock("@auth/rbac", () => ({
@@ -16,11 +17,7 @@ jest.mock("@acme/config", () => ({
   env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!" },
 }));
 
-// Mock next-auth token retrieval
-jest.mock("next-auth/jwt", () => ({
-  __esModule: true,
-  getToken: jest.fn(),
-}));
+// Use centralized next-auth/jwt mock via moduleNameMapper
 
 // Mock Next.js middleware helpers
 jest.mock("next/server", () => ({
@@ -41,13 +38,8 @@ jest.mock("next/server", () => ({
   },
 }));
 
-import { getToken as mockedGetToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 import { render, screen } from "@testing-library/react";
-
-const getToken = mockedGetToken as jest.MockedFunction<
-  typeof import("next-auth/jwt").getToken
->;
 const redirect = NextResponse.redirect as jest.Mock;
 const next = NextResponse.next as jest.Mock;
 const rewrite = NextResponse.rewrite as jest.Mock;
@@ -62,11 +54,12 @@ function createRequest(path: string) {
 
 afterEach(() => {
   jest.clearAllMocks();
+  __resetMockToken();
 });
 
 describe("/cms access", () => {
   it("redirects unauthenticated requests to /login", async () => {
-    getToken.mockResolvedValueOnce(null);
+    __setMockToken(null);
 
     const res = await middleware(createRequest("/cms"));
 
@@ -77,7 +70,7 @@ describe("/cms access", () => {
   });
 
   it("allows authenticated users to view shop list", async () => {
-    getToken.mockResolvedValueOnce({ role: "admin" } as JWT);
+    __setMockToken({ role: "admin" } as JWT);
 
     const res = await middleware(createRequest("/cms"));
     expect(next).toHaveBeenCalled();
@@ -99,7 +92,7 @@ describe("/cms access", () => {
       canWrite: jest.Mock;
     };
     canRead.mockReturnValueOnce(false);
-    getToken.mockResolvedValueOnce({ role: "stranger" } as JWT);
+    __setMockToken({ role: "stranger" } as JWT);
 
     const res = await middleware(createRequest("/cms"));
 
@@ -108,4 +101,3 @@ describe("/cms access", () => {
     expect(res.headers.get("x-middleware-rewrite")).toContain("/403");
   });
 });
-

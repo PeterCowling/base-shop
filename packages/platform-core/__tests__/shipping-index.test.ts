@@ -1,7 +1,5 @@
 import { jest } from '@jest/globals';
-
-const mockEnv: Record<string, string | undefined> = {};
-jest.mock('@acme/config/env/shipping', () => ({ shippingEnv: mockEnv }));
+import { __setShippingEnv, __resetShippingEnv } from '@acme/config/env/shipping';
 
 import { getShippingRate, getTrackingStatus } from '../src/shipping/index';
 
@@ -12,9 +10,7 @@ describe('getShippingRate', () => {
     fetchMock = jest.fn();
     // @ts-expect-error replace global fetch
     global.fetch = fetchMock;
-    for (const key of Object.keys(mockEnv)) {
-      delete mockEnv[key];
-    }
+    __resetShippingEnv();
   });
 
   it('returns rate for valid premier shipping', async () => {
@@ -191,7 +187,7 @@ describe('getShippingRate', () => {
   });
 
   it('throws when fetch response is not ok', async () => {
-    mockEnv.UPS_KEY = 'ups-key';
+    __setShippingEnv({ UPS_KEY: 'ups-key' });
     fetchMock.mockResolvedValue({ ok: false });
     await expect(
       getShippingRate({
@@ -204,7 +200,7 @@ describe('getShippingRate', () => {
   });
 
   it('returns JSON for valid non-premier request', async () => {
-    mockEnv.UPS_KEY = 'ups-key';
+    __setShippingEnv({ UPS_KEY: 'ups-key' });
     const apiResponse = { rate: 10 };
     fetchMock.mockResolvedValue({ ok: true, json: async () => apiResponse });
     const result = await getShippingRate({
@@ -217,7 +213,7 @@ describe('getShippingRate', () => {
   });
 
   it('supports premierDelivery fields for non-premier provider', async () => {
-    mockEnv.UPS_KEY = 'ups-key';
+    __setShippingEnv({ UPS_KEY: 'ups-key' });
     const apiResponse = {
       rate: 15,
       surcharge: 2,
@@ -243,7 +239,7 @@ describe('getShippingRate', () => {
   });
 
   it('returns JSON for valid DHL request', async () => {
-    mockEnv.DHL_KEY = 'dhl-key';
+    __setShippingEnv({ DHL_KEY: 'dhl-key' });
     const apiResponse = {
       rate: 20,
       surcharge: 3,

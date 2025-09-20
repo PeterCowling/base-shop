@@ -7,7 +7,7 @@ import path from 'path';
 import os from 'os';
 import { PassThrough } from 'stream';
 import type { IncomingMessage, ServerResponse } from 'http';
-import { server } from '../../../../../../test/msw/server';
+import { server } from '~test/msw/server';
 import { __setMockSession } from 'next-auth';
 jest.mock('@cms/auth/options', () => ({ authOptions: {} }));
 

@@ -1,5 +1,6 @@
 import { jest } from "@jest/globals";
 import type { NextRequest } from "next/server";
+import { asNextJson } from "@acme/test-utils";
 
 const CART_COOKIE = "__Host-CART_ID";
 function mockCartCookie() {
@@ -26,14 +27,8 @@ function mockCartStore(overrides: Record<string, unknown> = {}) {
 }
 
 // Helper to build request mocks
-function buildRequest(body: any, cookie?: string): NextRequest {
-  return {
-    json: async () => body,
-    cookies: {
-      get: () => (cookie ? { value: cookie } : undefined),
-    },
-  } as unknown as NextRequest;
-}
+const buildRequest = (body: any, cookie?: string): NextRequest =>
+  asNextJson(body, { cookies: cookie ? { [CART_COOKIE]: cookie } : undefined });
 
 describe("cart API handlers", () => {
   afterEach(() => {

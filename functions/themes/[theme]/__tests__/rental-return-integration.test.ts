@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
 import { promises as fs } from "node:fs";
-import os from "node:os";
 import path from "node:path";
+import { withTempRepo, setupRentalData } from "@acme/test-utils";
 
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
@@ -12,17 +12,9 @@ async function withShop(
     repo: typeof import("@platform-core/repositories/rentalOrders")
   ) => Promise<void>
 ) {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "shop-"));
-  await fs.mkdir(path.join(dir, "data", "shops", "bcd"), { recursive: true });
-  await fs.mkdir(path.join(dir, "data", "rental"), { recursive: true });
-  await fs.copyFile(
-    path.join(__dirname, "../../..", "data", "rental", "pricing.json"),
-    path.join(dir, "data", "rental", "pricing.json")
-  );
-  const cwd = process.cwd();
-  process.chdir(dir);
-  jest.resetModules();
-  const orders: any[] = [];
+  await withTempRepo(async (dir) => {
+    await setupRentalData(dir, 'bcd');
+    const orders: any[] = [];
   const repo = {
     async readOrders(shop: string) {
       return orders.filter((o) => o.shop === shop);
@@ -53,31 +45,28 @@ async function withShop(
       return order;
     },
   };
-  jest.doMock(
+    jest.doMock(
     "@platform-core/repositories/rentalOrders.server",
     () => ({ __esModule: true, ...repo }),
     { virtual: true },
   );
-  jest.doMock(
+    jest.doMock(
     "@platform-core/repositories/rentalOrders",
     () => ({ __esModule: true, ...repo }),
     { virtual: true },
   );
-  jest.doMock(
+    jest.doMock(
     "@platform-core/repositories/shops.server",
     () => ({ __esModule: true, readShop: async () => ({ coverageIncluded: false }) }),
     { virtual: true },
   );
-  jest.doMock(
+    jest.doMock(
     "@acme/zod-utils/initZod",
     () => ({ initZod: () => {} }),
     { virtual: true },
   );
-  try {
     await cb(repo as any);
-  } finally {
-    process.chdir(cwd);
-  }
+  });
 }
 
 test("rental order is returned and refunded", async () => {

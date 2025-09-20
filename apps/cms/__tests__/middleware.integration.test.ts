@@ -3,6 +3,7 @@
 
 import type { JWT } from "next-auth/jwt";
 import { middleware } from "../src/middleware";
+import { __setMockToken, __resetMockToken } from "next-auth/jwt";
 import { canRead as mockedCanRead, canWrite as mockedCanWrite } from "@auth/rbac";
 
 /* -------------------------------------------------------------------------- */
@@ -26,10 +27,7 @@ jest.mock("@acme/config", () => ({
 /* Mock `next-auth/jwt` *completely* so the ESM-only `jose` bundle never      */
 /* reaches Jest.  We expose only the symbol(s) our middleware touches.        */
 /* -------------------------------------------------------------------------- */
-jest.mock("next-auth/jwt", () => ({
-  __esModule: true,
-  getToken: jest.fn(),
-}));
+// Use centralized next-auth/jwt mock via moduleNameMapper
 
 /* -------------------------------------------------------------------------- */
 /* Mock `next/server` with minimal behaviour that our assertions inspect.     */
@@ -60,12 +58,7 @@ jest.mock("next/server", () => ({
 /* -------------------------------------------------------------------------- */
 /* Typed handles to the mocked functions                                      */
 /* -------------------------------------------------------------------------- */
-import { getToken as mockedGetToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
-
-const getToken = mockedGetToken as jest.MockedFunction<
-  typeof import("next-auth/jwt").getToken
->;
 const redirect = NextResponse.redirect as jest.Mock;
 const next = NextResponse.next as jest.Mock;
 const rewrite = NextResponse.rewrite as jest.Mock;
@@ -79,7 +72,10 @@ const canWrite = mockedCanWrite as jest.MockedFunction<
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                    */
 /* -------------------------------------------------------------------------- */
-afterEach(() => jest.clearAllMocks());
+afterEach(() => {
+  jest.clearAllMocks();
+  __resetMockToken();
+});
 
 type MiddlewareRequest = Parameters<typeof middleware>[0];
 
@@ -94,7 +90,7 @@ function createRequest(path: string): MiddlewareRequest {
 /* -------------------------------------------------------------------------- */
 describe("middleware integration", () => {
   it("redirects unauthenticated requests to /login", async () => {
-    getToken.mockResolvedValueOnce(null);
+    __setMockToken(null);
 
     const req = createRequest("/cms/shop/foo/products");
     const res = await middleware(req);
@@ -107,7 +103,7 @@ describe("middleware integration", () => {
   });
 
   it("allows authenticated requests", async () => {
-    getToken.mockResolvedValueOnce({ role: "admin" } as JWT);
+    __setMockToken({ role: "admin" } as JWT);
 
     const req = createRequest("/cms/shop/foo/products");
     const res = await middleware(req);
@@ -117,7 +113,7 @@ describe("middleware integration", () => {
   });
 
   it("rewrites to /403 when read access is denied", async () => {
-    getToken.mockResolvedValueOnce({ role: "viewer" } as JWT);
+    __setMockToken({ role: "viewer" } as JWT);
     canRead.mockReturnValueOnce(false);
 
     const req = createRequest("/cms");
@@ -129,7 +125,7 @@ describe("middleware integration", () => {
   });
 
   it("rewrites admin paths to /403?shop=<slug> when write access is denied", async () => {
-    getToken.mockResolvedValueOnce({ role: "viewer" } as JWT);
+    __setMockToken({ role: "viewer" } as JWT);
     canWrite.mockReturnValueOnce(false);
 
     const req = createRequest("/cms/shop/foo/settings");
@@ -143,7 +139,7 @@ describe("middleware integration", () => {
   });
 
   it("allows viewers with read access to /cms", async () => {
-    getToken.mockResolvedValueOnce({ role: "viewer" } as JWT);
+    __setMockToken({ role: "viewer" } as JWT);
     canRead.mockReturnValueOnce(true);
 
     const req = createRequest("/cms");
@@ -154,7 +150,7 @@ describe("middleware integration", () => {
   });
 
   it("bypasses auth for Next.js static assets", async () => {
-    getToken.mockResolvedValueOnce(null);
+    __setMockToken(null);
 
     const req = createRequest("/_next/static/chunk.js");
     const res = await middleware(req);

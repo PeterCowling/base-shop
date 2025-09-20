@@ -7,8 +7,10 @@
 // Centralize fragile React/Next polyfills and shims
 import "./test/polyfills/react-compat";
 
-import { jest } from "@jest/globals";
-jest.mock("@prisma/client");
+// Note: Do not auto‑mock `@prisma/client` here. Jest's moduleNameMapper
+// points `@prisma/client` to a manual mock at `__mocks__/@prisma/client.ts`.
+// Calling `jest.mock('@prisma/client')` would override that with an auto‑mock
+// and break tests that expect the manual mock's API.
 
 /* -------------------------------------------------------------------------- */
 /* 1.  Environment variables expected by the app while running tests          */

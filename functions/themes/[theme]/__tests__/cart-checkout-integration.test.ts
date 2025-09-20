@@ -1,4 +1,6 @@
 import { jest } from "@jest/globals";
+import { asNextJson } from "@acme/test-utils";
+import { CART_COOKIE } from "@platform-core/cartCookie";
 jest.doMock(
   "@acme/zod-utils/initZod",
   () => ({ initZod: () => {} }),
@@ -59,15 +61,11 @@ jest.doMock(
 
 process.env.CART_COOKIE_SECRET = "secret";
 
-function checkoutReq(body: any, cookie: string): any {
-  return {
-    json: async () => body,
-    cookies: { get: (_: string) => ({ name: "c", value: cookie }) },
-    nextUrl: Object.assign(new URL("http://test/api/checkout-session"), {
-      clone: () => new URL("http://test/api/checkout-session"),
-    }),
-  } as any;
-}
+const checkoutReq = (body: any, cookie: string) =>
+  asNextJson(body, {
+    cookies: { [CART_COOKIE]: cookie },
+    url: "http://test/api/checkout-session",
+  });
 
 afterEach(() => jest.resetAllMocks());
 

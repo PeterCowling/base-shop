@@ -32,7 +32,7 @@ const {
   reactJsxDevRuntimePath,
 } = resolveReactPaths();
 
-const moduleNameMapper = {
+let moduleNameMapper = {
   ...baseModuleNameMapper,
   // Use resolved React paths to ensure a single instance across tests
   "^react$": reactPath,
@@ -51,8 +51,17 @@ moduleNameMapper["^next-auth/react$"] = " /test/mocks/next-auth-react.ts";
 // Use a lightweight test mock for core config in all packages except the config package itself
 const isConfigPackage = /packages\/config$/.test(process.cwd());
 if (!isConfigPackage) {
-  moduleNameMapper["^@acme/config/env/core$"] = " /test/mocks/config-env-core.ts";
-  moduleNameMapper["^@acme/config/env/shipping$"] = " /test/mocks/config-env-shipping.ts";
+  // Ensure specific env mocks take precedence over the generic @acme/config/env/(.*) mapper
+  const overrides = {
+    "^@acme/config/env/core$": " /test/mocks/config-env-core.ts",
+    "^@acme/config/env/shipping$": " /test/mocks/config-env-shipping.ts",
+  };
+  const pruned = Object.fromEntries(
+    Object.entries(moduleNameMapper).filter(
+      ([key]) => !(key in overrides)
+    )
+  );
+  moduleNameMapper = { ...overrides, ...pruned };
 }
 
 const collectCoverageFrom = [...coverageDefaults.collectCoverageFrom];
@@ -93,10 +102,8 @@ const config = {
   ],
   setupFiles: ["dotenv/config"],
   setupFilesAfterEnv: [
-    " /test/setupFetchPolyfill.ts",
-    " /test/setup-response-json.ts",
+    " /test/setupFetchPolyfill.ts", // establishes fetch/Response and imports shared react-compat
     " /jest.setup.ts",
-    " /test/polyfills/messageChannel.js",
   ],
   testPathIgnorePatterns: [
     " /test/e2e/",

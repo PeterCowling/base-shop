@@ -1,8 +1,8 @@
 /** @jest-environment node */
 import { jest } from "@jest/globals";
 import { promises as fs } from "node:fs";
-import os from "node:os";
 import path from "node:path";
+import { withTempRepo, seedShop, setupRentalData } from "@acme/test-utils";
 
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
@@ -15,42 +15,33 @@ async function withShop(
     repo: typeof import("@acme/platform-core/repositories/rentalOrders.server")
   ) => Promise<void>
 ) {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "shop-"));
-  await fs.mkdir(path.join(dir, "data", "shops", "bcd"), { recursive: true });
-  await fs.mkdir(path.join(dir, "data", "rental"), { recursive: true });
-  await fs.copyFile(
-    path.resolve(__dirname, "../../../data/rental/pricing.json"),
-    path.join(dir, "data", "rental", "pricing.json"),
-  );
-  await fs.writeFile(
-    path.join(dir, "data", "shops", "bcd", "shop.json"),
-    JSON.stringify({
-      id: "bcd",
-      name: "bcd",
+  await withTempRepo(async (dir) => {
+    await setupRentalData(dir, 'bcd');
+    await seedShop(dir, {
+      id: 'bcd',
+      name: 'bcd',
       catalogFilters: [],
-      themeId: "base",
+      themeId: 'base',
       filterMappings: {},
       rentalInventoryAllocation: true,
       returnsEnabled: true,
       coverageIncluded: false,
-    }),
-  );
-  const cwd = process.cwd();
-  process.chdir(dir);
-  jest.resetModules();
-  const repo: typeof import("@acme/platform-core/repositories/rentalOrders.server") = await import(
-    "@acme/platform-core/repositories/rentalOrders.server"
-  );
-  try {
+      themeDefaults: {},
+      themeOverrides: {},
+      themeTokens: {},
+      priceOverrides: {},
+      localeOverrides: {},
+    } as any);
+    const repo: typeof import("@acme/platform-core/repositories/rentalOrders.server") = await import(
+      "@acme/platform-core/repositories/rentalOrders.server"
+    );
     await cb(repo);
-  } finally {
-    process.chdir(cwd);
-  }
+  });
 }
 
 describe("rental order lifecycle", () => {
   test("order is returned and refunded", async () => {
-    await withShop(async (repo) => {
+    await withShop(async () => {
       const reserveRentalInventory = jest.fn();
       const readInventory = jest
         .fn()
@@ -106,6 +97,7 @@ describe("rental order lifecycle", () => {
         json: async () => ({ sessionId: "sess", damage: "scuff" }),
       } as any);
 
+      const repo = await import("@acme/platform-core/repositories/rentalOrders.server");
       const orders = await repo.readOrders("bcd");
       expect(orders).toHaveLength(1);
       expect(orders[0].damageFee).toBe(20);

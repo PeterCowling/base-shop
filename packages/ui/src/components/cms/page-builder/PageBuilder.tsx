@@ -83,6 +83,19 @@ const PageBuilder = memo(function PageBuilder({
     setSelectedIds([component.id]);
   };
 
+  const handleInsertPreset = (template: PageComponent) => {
+    // Deep clone and ensure unique ids
+    const withNewIds = (node: PageComponent): PageComponent => {
+      const cloned: any = { ...(node as any), id: ulid() };
+      const children = (node as any).children as PageComponent[] | undefined;
+      if (Array.isArray(children)) cloned.children = children.map(withNewIds);
+      return cloned as PageComponent;
+    };
+    const component = withNewIds(template);
+    dispatch({ type: "add", component });
+    setSelectedIds([component.id]);
+  };
+
   useEffect(() => {
     if (controls.showGrid && canvasRef.current) {
       setGridSize(canvasRef.current.offsetWidth / controls.gridCols);
@@ -123,6 +136,7 @@ const PageBuilder = memo(function PageBuilder({
     <PageBuilderLayout
       style={style}
       paletteOnAdd={handleAddFromPalette}
+      onInsertPreset={handleInsertPreset}
       toolbarProps={toolbarProps}
       gridProps={gridProps}
       startTour={controls.startTour}

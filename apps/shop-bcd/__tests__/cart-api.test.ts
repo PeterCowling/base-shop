@@ -6,6 +6,8 @@ import {
 } from "@platform-core/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { DELETE, GET, PATCH, POST } from "../src/api/cart/route";
+import { asNextJson } from "@acme/test-utils";
+import { CART_COOKIE } from "@platform-core/cartCookie";
 
 const TEST_SKU = PRODUCTS[0];
 
@@ -18,19 +20,15 @@ jest.mock("next/server", () => ({
   },
 }));
 
-function createRequest(
+const createRequest = (
   body: any,
   cookie?: string,
   url = "http://localhost/api/cart"
-): Parameters<typeof POST>[0] {
-  return {
-    json: async () => body,
-    cookies: {
-      get: (name: string) => (cookie ? { name, value: cookie } : undefined),
-    },
-    nextUrl: Object.assign(new URL(url), { clone: () => new URL(url) }),
-  } as any;
-}
+): Parameters<typeof POST>[0] =>
+  asNextJson(body, {
+    cookies: cookie ? { [CART_COOKIE]: cookie } : undefined,
+    url,
+  });
 
 afterEach(() => {
   jest.resetAllMocks();

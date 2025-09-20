@@ -11,6 +11,7 @@ module.exports = {
   roots: ["<rootDir>/apps/api/src", "<rootDir>/apps/api/__tests__"],
   testEnvironment: "node",
   setupFilesAfterEnv: [
+    ...(base.setupFilesAfterEnv || []),
     "<rootDir>/apps/api/jest.setup.ts",
   ],
   collectCoverage: true,

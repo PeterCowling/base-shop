@@ -8,6 +8,7 @@
 - `moduleResolution: "bundler"` so packages resolve like they do in bundlers
 - `strict: true` to enable strict type checking
 - a large `paths` map that aliases packages such as `@acme/ui` and `@cms`
+ - apps should map workspace packages to both `src` and `dist` so imports resolve pre/post build. See `docs/tsconfig-paths.md` for examples.
 
 ## Project references
 

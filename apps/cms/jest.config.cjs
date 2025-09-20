@@ -23,6 +23,7 @@ module.exports = {
   // files that may import modules requiring them.  `jest.setup.tsx` establishes
   // auth secrets needed by configuration code, so it must run first.
   setupFilesAfterEnv: [
+    ...(base.setupFilesAfterEnv || []),
     "<rootDir>/apps/cms/jest.setup.after.ts",
     "<rootDir>/apps/cms/jest.setup.polyfills.ts",
     "<rootDir>/apps/cms/__tests__/msw/server.ts",

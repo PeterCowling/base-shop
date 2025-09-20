@@ -1,29 +1,21 @@
-# AGENTS
+# AGENTS — Repo Runbook
 
-## Required scripts
-
-- Run `pnpm install` to install dependencies.
+## Core Workflow
+- Install dependencies: `pnpm install`.
 - Build all packages before starting any app: `pnpm -r build`.
-- Regenerate config stubs after editing `.impl.ts` files: `pnpm run build:stubs`.
-- If `pnpm run dev` fails with an `array.length` error, run the appropriate Codex command to retrieve detailed failure logs.
-- Apps must map workspace packages in their `tsconfig.json` to both built `dist` files and raw `src` sources so TypeScript can resolve imports even when packages haven't been built.
+- Regenerate config stubs after editing `packages/config/src/env/*.impl.ts`:
+  - `pnpm --filter @acme/config run build:stubs`
+- TypeScript path mapping: apps must map workspace packages to both `src` and `dist` so imports resolve pre/post build. See `docs/tsconfig-paths.md` for examples.
 
-## File Organization Guidance
+## Troubleshooting
+- If `pnpm run dev` fails with an `array.length` error, use the Codex CLI failure log command to retrieve detailed logs and stack traces for the failing step.
 
-- Keep each file focused on a single clear responsibility instead of mixing unrelated concerns.
-- Aim to keep every file under 350 lines of code. When exceeding this limit is absolutely necessary (for example, generated output or framework-required structure), document the justification and plan for follow-up refactors.
-- Prefer extracting helpers, components, and modules rather than growing a file past the limit.
+## File Boundaries
+- Keep each file focused on a single responsibility.
+- Target ≤350 lines per file. If you must exceed this (e.g., generated output or framework-mandated structure), document the reason and plan a follow-up refactor.
+- Prefer extracting helpers/components/modules over growing a single file.
 
-## Role
-When completing security work, you are a senior secure-code reviewer. Your goal is to surface high-impact security risks fast, explain exploitability, and propose minimal, safe fixes with tests.
-
-## Scope & Rules of Engagement
-- Scope: Entire repo. Prioritize externally reachable surfaces, authn/z, secrets, injections, deserialization, file handling, network calls/SSRF, path traversal, uploads, crypto use, CSP/CORS/headers, CI/CD, IaC and cloud config.
-- Verification: Prefer runnable proofs via unit/integration tests over speculative claims. Do not contact external networks unless explicitly approved. 
-- Guardrails: Never exfiltrate code or secrets. Keep all outputs local to this repo.
-- Output: For each finding provide: CWE/OWASP mapping, component path, risk (High/Med/Low), exploit narrative, minimal patch, and a test demonstrating the fix.
-
-## Triage rubric
-- Severity: High if direct RCE, auth bypass, IDOR, SSRF to internal metadata, secret exposure, SQLi/NoSQLi, sandbox escape, or supply-chain risk.
-- Confidence: Evidence from code + test or deterministic reasoning over call graph.
+## Security Work
+- When performing security reviews or fixes, follow `security/AGENTS.md`.
+  - Summary: prioritize externally reachable surfaces, authn/z, secrets, injections, deserialization, file handling, network/SSRF, path traversal, uploads, crypto, headers (CSP/CORS), CI/CD, IaC/cloud config. Provide runnable proofs via tests when possible. Keep all outputs local. For each finding include CWE/OWASP mapping, component path, risk, exploit narrative, minimal patch, and a test.
 

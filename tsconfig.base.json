@@ -29,6 +29,9 @@
       "react-dom"
     ],
     "paths": {
+      "~test/*": [
+        "test/*"
+      ],
       "@acme/platform-machine": [
         "packages/platform-machine/src/index.ts",
         "packages/platform-machine/dist/index.d.ts"

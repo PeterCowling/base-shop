@@ -5,6 +5,10 @@ import type { PageComponent, HistoryState } from "@acme/types";
 import type { Action } from "./state";
 import { useCallback, useMemo } from "react";
 import { Button } from "../../atoms/shadcn";
+import { ulid } from "ulid";
+import { saveLibrary } from "./libraryStore";
+import { usePathname } from "next/navigation";
+import { getShopFromPath } from "@acme/shared-utils";
 import LayersPanel from "./LayersPanel";
 import { alignLeft, alignTop, alignRight, alignBottom, alignCenterX, alignCenterY, distributeHorizontal, distributeVertical } from "./state/layout/geometry";
 
@@ -84,6 +88,15 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
   }, [components, dispatch, selectedIds]);
 
   const selectedComponent = useMemo(() => components.find((c) => c.id === selectedIds[0]) ?? null, [components, selectedIds]);
+  const pathname = usePathname() ?? "";
+  const shop = getShopFromPath(pathname);
+
+  const saveSelectionToLibrary = useCallback(() => {
+    if (!selectedComponent) return;
+    const label = window.prompt("Save to My Library as:", (selectedComponent as any).name || selectedComponent.type) || selectedComponent.type;
+    const item = { id: ulid(), label, template: selectedComponent, createdAt: Date.now() };
+    saveLibrary(shop, item);
+  }, [selectedComponent, shop]);
 
   return (
     <aside className="w-72 shrink-0 space-y-4 p-2" data-tour="sidebar">
@@ -129,6 +142,9 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
         <div className="space-y-2">
           <Button type="button" variant="outline" onClick={handleDuplicate}>
             Duplicate
+          </Button>
+          <Button type="button" variant="outline" onClick={saveSelectionToLibrary}>
+            Save to My Library
           </Button>
           <div className="flex flex-wrap gap-2">
             <Button type="button" variant="outline" aria-label="Center horizontally in parent" onClick={centerInParentX}>Center H in parent</Button>

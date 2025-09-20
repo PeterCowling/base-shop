@@ -264,23 +264,7 @@ The provider’s `package.json` must then point to the generated type declaratio
 
 ## TSConfig path fallbacks for apps
 
-Every app should map workspace packages to both their built `dist` output and the raw `src` files. This mirrors `apps/shop-bcd` and lets TypeScript resolve imports even when packages haven't been built.
-
-```json
-{
-  "compilerOptions": {
-    "paths": {
-      "@acme/lib": [
-        "../../packages/lib/dist/index.d.ts",
-        "../../packages/lib/src/index.ts"
-      ],
-      "@acme/lib/*": ["../../packages/lib/dist/*", "../../packages/lib/src/*"]
-    }
-  }
-}
-```
-
-Repeat this pattern for any other packages an app consumes to avoid missing module errors when the package hasn't been built yet.
+Apps must map workspace packages to both built `dist` files and raw `src` sources so TypeScript can resolve imports before and after a build. See `docs/tsconfig-paths.md` for examples and guidelines.
 
 ## Troubleshooting
 

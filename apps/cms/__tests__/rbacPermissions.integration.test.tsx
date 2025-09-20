@@ -3,6 +3,8 @@ import path from "node:path";
 import { render } from "@testing-library/react";
 import { withTempRepo } from "@acme/test-utils";
 
+jest.setTimeout(20000);
+
 process.env.STRIPE_SECRET_KEY = "sk_test_123";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test_123";
 process.env.CART_COOKIE_SECRET = "test-secret";

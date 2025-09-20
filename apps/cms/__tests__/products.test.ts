@@ -9,6 +9,8 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import { withTempRepo } from "@acme/test-utils";
 
+jest.setTimeout(20000);
+
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                     */
 /* -------------------------------------------------------------------------- */

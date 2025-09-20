@@ -21,6 +21,7 @@ import { PRODUCTS } from "@platform-core/products/index";
 import type { PageComponent, SKU, HistoryState } from "@acme/types";
 import { cssVars } from "@ui/src/utils/style";
 import type { Locale } from "@i18n/locales";
+import { ensureLightboxStyles, initLightbox } from "@ui/components/cms";
 
 /* ------------------------------------------------------------------
  * next/image wrapper usable in CMS blocks
@@ -30,14 +31,35 @@ const CmsImage = React.memo(function CmsImage({
   alt = "",
   width,
   height,
+  cropAspect,
+  focalPoint,
   ...rest
 }: Omit<ImageProps, "src" | "alt"> & {
   src: string;
   alt?: string;
   width?: number;
   height?: number;
+  cropAspect?: string;
+  focalPoint?: { x: number; y: number };
 }) {
-  return <NextImage src={src} alt={alt} width={width} height={height} {...rest} />;
+  const style: React.CSSProperties | undefined = focalPoint
+    ? ({ objectPosition: `${(focalPoint.x * 100).toFixed(2)}% ${(focalPoint.y * 100).toFixed(2)}%` } as React.CSSProperties)
+    : undefined;
+
+  if (cropAspect) {
+    const [w, h] = cropAspect.split(":");
+    const numeric = Number(w) > 0 && Number(h) > 0 ? `${Number(w) / Number(h)}` : undefined;
+    return (
+      <div
+        className="relative w-full overflow-hidden"
+        style={numeric ? ({ aspectRatio: numeric } as React.CSSProperties) : undefined}
+      >
+        <NextImage src={src} alt={alt} fill style={style} className="object-cover" {...rest} />
+      </div>
+    );
+  }
+
+  return <NextImage src={src} alt={alt} width={width} height={height} style={style} {...rest} />;
 });
 
 /* ------------------------------------------------------------------
@@ -72,6 +94,10 @@ function DynamicRenderer({
   locale: Locale;
   editor?: HistoryState["editor"];
 }) {
+  React.useEffect(() => {
+    ensureLightboxStyles();
+    initLightbox();
+  }, []);
   return (
     <>
       {components.map((block) => {

@@ -1,34 +1,19 @@
 import { promises as fs } from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import type { InventoryItem } from "../src/types/inventory";
+import { withTempRepo } from "@acme/test-utils";
 
-async function withRepo(
+const withRepo = (
   cb: (
     repo: typeof import("../src/repositories/inventory.server"),
     shop: string,
     dir: string,
   ) => Promise<void>,
-): Promise<void> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "inv-"));
-  const shopDir = path.join(dir, "data", "shops", "test");
-  await fs.mkdir(shopDir, { recursive: true });
-
-  const cwd = process.cwd();
-  process.chdir(dir);
-  process.env.STRIPE_SECRET_KEY = "sk";
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk";
-  process.env.NEXTAUTH_SECRET = "test";
-  process.env.SESSION_SECRET = "test";
-  jest.resetModules();
-
-  const repo = await import("../src/repositories/inventory.server");
-  try {
+) =>
+  withTempRepo(async (dir) => {
+    const repo = await import("../src/repositories/inventory.server");
     await cb(repo, "test", dir);
-  } finally {
-    process.chdir(cwd);
-  }
-}
+  }, { prefix: 'inv-' });
 
 describe("inventory repository", () => {
   it(

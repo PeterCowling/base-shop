@@ -14,3 +14,4 @@ export { default as MediaSelectionCheck } from "./MediaSelectionCheck";
 export { default as ShopChooser } from "./ShopChooser";
 export type { ShopChooserProps } from "./ShopChooser";
 export * from "./marketing";
+export { ensureLightboxStyles, initLightbox } from "./lightbox";

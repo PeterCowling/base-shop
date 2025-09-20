@@ -1,24 +1,9 @@
 import fs from "node:fs/promises";
-import os from "node:os";
 import path from "node:path";
+import { withTempRepo } from "@acme/test-utils";
 
-async function withRepo(
-  cb: (dir: string) => Promise<void>
-): Promise<void> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "shoprepo-"));
-  const shopDir = path.join(dir, "data", "shops", "test");
-  await fs.mkdir(shopDir, { recursive: true });
-
-  const cwd = process.cwd();
-  process.chdir(dir);
-  jest.resetModules();
-
-  try {
-    await cb(dir);
-  } finally {
-    process.chdir(cwd);
-  }
-}
+const withRepo = (cb: (dir: string) => Promise<void>) =>
+  withTempRepo(cb, { prefix: 'shoprepo-' });
 
 describe("readShop", () => {
   afterEach(() => {

@@ -67,6 +67,10 @@ export interface ImageProps
   alt?: string;
   width?: number;
   height?: number;
+  /** Aspect ratio preset like "1:1", "4:3", "16:9" */
+  cropAspect?: string;
+  /** Focal point within the image (0..1 coordinates) */
+  focalPoint?: { x: number; y: number };
 }
 
 export const Image = memo(function Image({
@@ -74,18 +78,38 @@ export const Image = memo(function Image({
   alt = "",
   width,
   height,
+  cropAspect,
+  focalPoint,
   ...rest
 }: ImageProps) {
   if (!src) return null;
-  return (
-    <NextImage
-      src={src}
-      alt={alt}
-      width={width ?? 0}
-      height={height ?? 0}
-      {...rest}
-    />
-  );
+  const style: React.CSSProperties | undefined = focalPoint
+    ? ({ objectPosition: `${(focalPoint.x * 100).toFixed(2)}% ${(focalPoint.y * 100).toFixed(2)}%` } as React.CSSProperties)
+    : undefined;
+
+  // If an aspect ratio is provided, render a responsive wrapper and use fill
+  if (cropAspect) {
+    const [w, h] = cropAspect.split(":");
+    const numeric = Number(w) > 0 && Number(h) > 0 ? `${Number(w) / Number(h)}` : undefined;
+    return (
+      <div
+        className="relative w-full overflow-hidden"
+        style={numeric ? ({ aspectRatio: numeric } as React.CSSProperties) : undefined}
+      >
+        <NextImage
+          src={src}
+          alt={alt}
+          fill
+          style={style}
+          className="object-cover"
+          {...rest}
+        />
+      </div>
+    );
+  }
+
+  // No aspect ratio → use width/height as provided
+  return <NextImage src={src} alt={alt} width={width ?? 0} height={height ?? 0} style={style} {...rest} />;
 });
 
 /* ──────────────────────────────────────────────────────────────────────────

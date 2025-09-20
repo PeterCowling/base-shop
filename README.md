@@ -268,7 +268,7 @@ Apps must map workspace packages to both built `dist` files and raw `src` source
 
 ## Troubleshooting
 
-- If `pnpm run dev` fails with an `array.length` error, run the appropriate Codex command to retrieve detailed failure information.
+See `docs/troubleshooting.md` for steps to capture detailed logs (including the “array.length” failure) and common fixes.
 
 ## Performance
 

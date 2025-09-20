@@ -9,6 +9,7 @@ import type { PageComponent } from "@acme/types";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect } from "react";
 import { ensureScrollStyles, ensureAnimationStyles, initScrollEffects } from "./cms/page-builder/scrollEffects";
+import { ensureLightboxStyles, initLightbox } from "./cms/lightbox";
 import type { HistoryState } from "@acme/types";
 import { cssVars } from "../utils/style";
 
@@ -28,6 +29,8 @@ export default function DynamicRenderer({
     ensureScrollStyles();
     ensureAnimationStyles();
     initScrollEffects();
+    ensureLightboxStyles();
+    initLightbox();
   }, []);
 
   const renderBlock = (block: PageComponent): ReactNode => {

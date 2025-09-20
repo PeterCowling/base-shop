@@ -1,33 +1,23 @@
 import { promises as fs } from "node:fs";
-import os from "node:os";
 import path from "node:path";
 import { LOCALES } from "@acme/i18n/locales";
+import { withTempRepo } from "@acme/test-utils";
 
 jest.mock("@acme/date-utils", () => ({ nowIso: jest.fn(() => "2000-01-01T00:00:00.000Z") }));
 
 jest.setTimeout(20_000);
 
-async function withRepo(
+const withRepo = (
   cb: (
     repo: typeof import("../src/repositories/settings.server"),
     shop: string,
     dir: string
   ) => Promise<void>
-): Promise<void> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "settings-"));
-  const realDir = await fs.realpath(dir);
-  const shopDir = path.join(realDir, "data", "shops", "test");
-  await fs.mkdir(shopDir, { recursive: true });
-  const cwd = process.cwd();
-  process.chdir(realDir);
-  jest.resetModules();
-  const repo = await import("../src/repositories/settings.server");
-  try {
-    await cb(repo, "test", realDir);
-  } finally {
-    process.chdir(cwd);
-  }
-}
+) =>
+  withTempRepo(async (dir) => {
+    const repo = await import("../src/repositories/settings.server");
+    await cb(repo, "test", dir);
+  }, { prefix: 'settings-' });
 
 describe("settings repository", () => {
   it("reads existing settings and merges defaults", async () => {
@@ -121,4 +111,3 @@ describe("settings repository", () => {
     });
   });
 });
-

@@ -6,19 +6,24 @@ import { useCallback, useEffect, useState, memo } from "react";
 import { Button, Checkbox, Input } from "../../atoms/shadcn";
 import useRemoteImageProbe from "../../../hooks/useRemoteImageProbe";
 import ImagePicker from "./ImagePicker";
+import ImageEditor, { type ImageEditState } from "./ImageEditor";
 
 interface Props {
   src?: string;
   alt?: string;
-  onChange: (patch: { src?: string; alt?: string }) => void;
+  cropAspect?: string;
+  focalPoint?: { x: number; y: number };
+  onChange: (patch: { src?: string; alt?: string; cropAspect?: string; focalPoint?: { x: number; y: number } }) => void;
 }
 
-function ImageSourcePanel({ src, alt, onChange }: Props) {
+function ImageSourcePanel({ src, alt, cropAspect, focalPoint, onChange }: Props) {
   const t = useTranslations();
   const [url, setUrl] = useState(src ?? "");
   const [altText, setAltText] = useState(alt ?? "");
   const [decorative, setDecorative] = useState(false);
   const { probe, loading, error, valid } = useRemoteImageProbe();
+  const [editorOpen, setEditorOpen] = useState(false);
+  const [editState, setEditState] = useState<ImageEditState>({ cropAspect, focalPoint });
 
   useEffect(() => {
     setUrl(src ?? "");
@@ -27,6 +32,10 @@ function ImageSourcePanel({ src, alt, onChange }: Props) {
   useEffect(() => {
     setAltText(alt ?? "");
   }, [alt]);
+
+  useEffect(() => {
+    setEditState({ cropAspect, focalPoint });
+  }, [cropAspect, focalPoint]);
 
   useEffect(() => {
     if (url) {
@@ -84,6 +93,9 @@ function ImageSourcePanel({ src, alt, onChange }: Props) {
             {t("cms.image.upload")}
           </Button>
         </ImagePicker>
+        <Button type="button" variant="outline" disabled={!url} onClick={() => setEditorOpen(true)}>
+          Edit
+        </Button>
       </div>
       {loading && (
         <p className="text-sm text-muted-foreground">{t("cms.image.probing")}</p>
@@ -113,6 +125,20 @@ function ImageSourcePanel({ src, alt, onChange }: Props) {
           {t("cms.image.probeError")}
         </p>
       )}
+
+      {/* Image Editor Modal */}
+      {editorOpen && url ? (
+        <ImageEditor
+          open={editorOpen}
+          src={url}
+          initial={editState}
+          onClose={() => setEditorOpen(false)}
+          onApply={(next) => {
+            setEditState(next);
+            onChange({ cropAspect: next.cropAspect, focalPoint: next.focalPoint });
+          }}
+        />
+      ) : null}
     </div>
   );
 }

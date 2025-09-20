@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
-import os from "node:os";
 import path from "node:path";
+import { withTempRepo } from "@acme/test-utils";
 
 // Some pages pull in heavy server-only modules which can slow down
 // the initial dynamic import. Increase the Jest timeout so the test has
@@ -16,22 +16,13 @@ jest.mock("next/link", () => {
   };
 });
 
-async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "sections-"));
-  const shopsDir = path.join(dir, "data", "shops");
-  await fs.mkdir(path.join(shopsDir, "foo"), { recursive: true });
-  await fs.mkdir(path.join(shopsDir, "bar"), { recursive: true });
-  const cwd = process.cwd();
-  process.chdir(dir);
-  const env = process.env;
-  jest.resetModules();
-  process.env = env;
-  try {
+const withRepo = (cb: (dir: string) => Promise<void>) =>
+  withTempRepo(async (dir) => {
+    const shopsDir = path.join(dir, 'data', 'shops');
+    await fs.mkdir(path.join(shopsDir, 'foo'), { recursive: true });
+    await fs.mkdir(path.join(shopsDir, 'bar'), { recursive: true });
     await cb(dir);
-  } finally {
-    process.chdir(cwd);
-  }
-}
+  }, { prefix: 'sections-', createShopDir: false });
 
 describe("CMS section index pages", () => {
   it("lists shops with links", async () => {

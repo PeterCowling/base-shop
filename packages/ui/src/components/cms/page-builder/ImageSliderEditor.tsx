@@ -1,6 +1,6 @@
 "use client";
 import type { ImageSliderComponent } from "@acme/types";
-import { Button, Input } from "../../atoms/shadcn";
+import { Button, Input, Checkbox } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
 
 interface Props {
@@ -37,6 +37,13 @@ export default function ImageSliderEditor({ component, onChange }: Props) {
 
   return (
     <div className="space-y-2">
+      <label className="flex items-center gap-2 text-sm">
+        <Checkbox
+          checked={!!(component as any).openInLightbox}
+          onCheckedChange={(v) => onChange({ openInLightbox: !!v } as Partial<ImageSliderComponent>)}
+        />
+        Open images in lightbox
+      </label>
       {slides.map((s: NonNullable<ImageSliderComponent["slides"]>[number], idx: number) => (
         <div key={idx} className="space-y-1 rounded border p-2">
           <div className="flex items-start gap-2">

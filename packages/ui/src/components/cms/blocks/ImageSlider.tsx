@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 export type ImageSlide = {
   src: string;
@@ -11,15 +11,20 @@ interface Props {
   slides?: ImageSlide[];
   minItems?: number;
   maxItems?: number;
+  openInLightbox?: boolean;
+  id?: string;
 }
 
 export default function ImageSlider({
   slides = [],
   minItems,
   maxItems,
+  openInLightbox,
+  id,
 }: Props) {
   const list = slides.slice(0, maxItems ?? slides.length);
   const [index, setIndex] = useState(0);
+  const group = id || useId();
 
   if (!list.length || list.length < (minItems ?? 0)) return null;
 
@@ -33,6 +38,7 @@ export default function ImageSlider({
   return (
     <div
       className="relative"
+      data-lightbox-root={openInLightbox ? group : undefined}
       role="region"
       aria-roledescription="carousel"
       aria-label="Image Slider"
@@ -46,7 +52,13 @@ export default function ImageSlider({
           aria-hidden={i !== index}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={img.src} alt={img.alt ?? ""} className="w-full object-cover" />
+          {openInLightbox ? (
+            <a href={img.src} data-lightbox data-lightbox-group={group} aria-label={img.caption || img.alt || undefined}>
+              <img src={img.src} alt={img.alt ?? ""} className="w-full object-cover" />
+            </a>
+          ) : (
+            <img src={img.src} alt={img.alt ?? ""} className="w-full object-cover" />
+          )}
           {img.caption && (
             <figcaption className="text-center text-sm" aria-live="polite">
               {img.caption}

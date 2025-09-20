@@ -6,6 +6,8 @@ export interface ImageSliderComponent extends PageComponentBase {
   slides?: { src: string; alt?: string; caption?: string }[];
   minItems?: number;
   maxItems?: number;
+  /** When enabled, clicking images opens a grouped lightbox */
+  openInLightbox?: boolean;
 }
 
 export const imageSliderComponentSchema = baseComponentSchema.extend({
@@ -17,5 +19,5 @@ export const imageSliderComponentSchema = baseComponentSchema.extend({
     .optional(),
   minItems: z.number().optional(),
   maxItems: z.number().optional(),
+  openInLightbox: z.boolean().optional(),
 });
-

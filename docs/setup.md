@@ -280,4 +280,4 @@ See [machine](./machine.md#deposit-release-service) for more details and configu
 - **"Theme 'X' not found" or "Template 'Y' not found"** – ensure the names match directories in `packages/themes` or `packages/`.
 - **`validate-env` fails** – verify `apps/shop-<id>/.env` contains all variables listed in the error. Missing values will stop the script.
 - **Node or pnpm version errors** – check you are running Node.js ≥20 and pnpm 10.x. Version mismatches can cause dependency resolution issues.
-- **`pnpm dev` throws an `array.length` error** – run the relevant Codex command to gather detailed logs about the failure.
+- **`pnpm dev` throws an `array.length` error** – see `docs/troubleshooting.md` for steps to capture detailed logs and resolve the issue.

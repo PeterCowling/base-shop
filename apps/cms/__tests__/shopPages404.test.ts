@@ -1,8 +1,8 @@
 // apps/cms/__tests__/shopPages404.test.ts
 /* eslint-env jest */
 import fs from "node:fs/promises";
-import os from "node:os";
 import path from "node:path";
+import { withTempRepo } from "@acme/test-utils";
 
 // Some pages pull in heavy server-only modules which can slow down
 // the initial dynamic import. Increase the Jest timeout so each
@@ -10,20 +10,8 @@ import path from "node:path";
 jest.setTimeout(20_000);
 
 /** Spin up an isolated repo in /tmp, run the callback, then restore CWD. */
-async function withRepo(cb: (dir: string) => Promise<void>): Promise<void> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "repo-"));
-  await fs.mkdir(path.join(dir, "data", "shops"), { recursive: true });
-
-  const cwd = process.cwd();
-  process.chdir(dir);
-  jest.resetModules();
-
-  try {
-    await cb(dir);
-  } finally {
-    process.chdir(cwd);
-  }
-}
+const withRepo = (cb: (dir: string) => Promise<void>) =>
+  withTempRepo(cb, { prefix: 'repo-' });
 
 afterEach(() => jest.resetAllMocks());
 

@@ -8,7 +8,7 @@
 - TypeScript path mapping: apps must map workspace packages to both `src` and `dist` so imports resolve pre/post build. See `docs/tsconfig-paths.md` for examples.
 
 ## Troubleshooting
-- If `pnpm run dev` fails with an `array.length` error, use the Codex CLI failure log command to retrieve detailed logs and stack traces for the failing step.
+- If `pnpm run dev` fails with an `array.length` error, see `docs/troubleshooting.md` for steps to capture detailed logs and stack traces.
 
 ## File Boundaries
 - Keep each file focused on a single responsibility.
@@ -18,4 +18,3 @@
 ## Security Work
 - When performing security reviews or fixes, follow `security/AGENTS.md`.
   - Summary: prioritize externally reachable surfaces, authn/z, secrets, injections, deserialization, file handling, network/SSRF, path traversal, uploads, crypto, headers (CSP/CORS), CI/CD, IaC/cloud config. Provide runnable proofs via tests when possible. Keep all outputs local. For each finding include CWE/OWASP mapping, component path, risk, exploit narrative, minimal patch, and a test.
-

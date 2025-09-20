@@ -3,8 +3,8 @@
 
 import argon2 from "argon2";
 import fs from "node:fs/promises";
-import os from "node:os";
 import path from "node:path";
+import { withTempRepo } from "@acme/test-utils";
 
 // Account action tests spin up temporary repos and hash passwords; give them
 // extra time in CI environments where startup can be slow.
@@ -25,20 +25,10 @@ function fd(data: Record<string, string>): FormData {
   return f;
 }
 
-/** Run the callback inside a throw-away repo and restore CWD afterwards. */
-async function withRepo(cb: () => Promise<void>): Promise<void> {
-  const dir = await fs.mkdtemp(path.join(os.tmpdir(), "rbac-"));
-  await fs.mkdir(path.join(dir, "data"), { recursive: true });
-
-  const cwd = process.cwd();
-  process.chdir(dir);
-  jest.resetModules();
-  try {
+const withRepo = (cb: () => Promise<void>) =>
+  withTempRepo(async () => {
     await cb();
-  } finally {
-    process.chdir(cwd);
-  }
-}
+  }, { prefix: 'rbac-', createShopDir: false });
 
 afterEach(() => jest.resetAllMocks());
 

@@ -19,6 +19,8 @@ function ImageBlockEditor({ component, onChange }: Props) {
     <ImageSourcePanel
       src={component.src}
       alt={component.alt}
+      cropAspect={(component as any).cropAspect}
+      focalPoint={(component as any).focalPoint}
       onChange={handleChange}
     />
   );

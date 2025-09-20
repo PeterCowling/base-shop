@@ -102,7 +102,7 @@ Example `shop.config.json`:
    editing `.env` if you need to re-check. Open http://localhost:3000 to view the site. Pages
    hot-reload on save.
 
-   If `pnpm dev` fails with an `array.length` error, run the relevant Codex command to inspect detailed logs explaining the failure.
+   If `pnpm dev` fails with an `array.length` error, see `docs/troubleshooting.md` to capture detailed logs and diagnose the failure.
 
 3. _(Optional)_ Each Next.js app must provide its own `postcss.config.cjs` that forwards to the repo root configuration so Tailwind resolves correctly. After updating Tailwind or any CSS utilities, run `pnpm tailwind:check` to verify the build.
 

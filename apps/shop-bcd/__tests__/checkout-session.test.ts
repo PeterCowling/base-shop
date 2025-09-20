@@ -3,6 +3,8 @@ import { encodeCartCookie, decodeCartCookie } from "@platform-core/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { calculateRentalDays } from "@acme/date-utils";
 import { POST } from "../src/api/checkout-session/route";
+import { asNextJson } from "@acme/test-utils";
+import { CART_COOKIE } from "@platform-core/cartCookie";
 
 jest.mock("next/server", () => ({
   NextResponse: {
@@ -44,21 +46,12 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-function createRequest(
+const createRequest = (
   body: any,
   cookie: string,
   url = "http://store.example/api/checkout-session",
   headers: Record<string, string> = {}
-): Parameters<typeof POST>[0] {
-  return {
-    json: async () => body,
-    cookies: { get: () => ({ name: "", value: cookie }) },
-    nextUrl: Object.assign(new URL(url), { clone: () => new URL(url) }),
-    headers: {
-      get: (key: string) => headers[key.toLowerCase()] ?? null,
-    },
-  } as any;
-}
+) => asNextJson(body, { cookies: { [CART_COOKIE]: cookie }, url, headers });
 
 test("builds Stripe session with correct items and metadata", async () => {
   jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
@@ -191,4 +184,3 @@ test("responds with 502 when session creation fails", async () => {
   expect(body.error).toBe("Checkout failed");
   spy.mockRestore();
 });
-

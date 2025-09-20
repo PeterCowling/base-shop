@@ -23,9 +23,13 @@ export function jsonRequest(body: unknown, init: JsonRequestInit = {}): Request 
  */
 export function asNextJson<T extends object>(
   body: T,
-  options: { cookies?: Record<string, string>; url?: string } = {}
+  options: { cookies?: Record<string, string>; url?: string; headers?: Record<string, string> } = {}
 ): any {
   const url = options.url || "http://localhost";
+  const headersLower: Record<string, string> = {};
+  for (const [k, v] of Object.entries(options.headers || {})) {
+    headersLower[k.toLowerCase()] = v;
+  }
   return {
     json: async () => body,
     cookies: {
@@ -34,7 +38,9 @@ export function asNextJson<T extends object>(
           ? { name, value: options.cookies[name] }
           : undefined,
     },
+    headers: {
+      get: (key: string) => headersLower[key.toLowerCase()] ?? null,
+    },
     nextUrl: Object.assign(new URL(url), { clone: () => new URL(url) }),
   } as any;
 }
-

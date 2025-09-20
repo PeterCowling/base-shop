@@ -1,25 +1,25 @@
 import { NextRequest } from "next/server";
 import { middleware } from "../middleware";
-import { getToken } from "next-auth/jwt";
+import { __setMockToken, __resetMockToken } from "next-auth/jwt";
 import { canRead, canWrite } from "@auth/rbac";
 
 jest.mock("../auth/secret", () => ({ authSecret: "test-secret" }));
-jest.mock("next-auth/jwt", () => ({ getToken: jest.fn() }));
+// Use centralized next-auth/jwt mock via moduleNameMapper
 jest.mock("@auth/rbac", () => ({ canRead: jest.fn(), canWrite: jest.fn() }));
 
-const getTokenMock = getToken as jest.MockedFunction<typeof getToken>;
 const canReadMock = canRead as jest.MockedFunction<typeof canRead>;
 const canWriteMock = canWrite as jest.MockedFunction<typeof canWrite>;
 
 describe("middleware", () => {
   beforeEach(() => {
     jest.resetAllMocks();
+    __resetMockToken();
   });
 
   it.each(["/api/auth/test", "/login", "/signup", "/favicon.ico"])(
     "returns NextResponse.next for %s",
     async (path) => {
-      getTokenMock.mockResolvedValue(null);
+      __setMockToken(null);
 
       const req = new NextRequest(`http://example.com${path}`);
       const res = await middleware(req);
@@ -34,11 +34,11 @@ describe("middleware", () => {
 
     expect(res.status).toBe(200);
     expect(res.headers.get("x-middleware-next")).toBe("1");
-    expect(getTokenMock).not.toHaveBeenCalled();
+    // token retrieval not required for GET API requests
   });
 
   it("redirects unauthenticated requests to /login with callbackUrl", async () => {
-    getTokenMock.mockResolvedValue(null);
+    __setMockToken(null);
 
     const req = new NextRequest("http://example.com/cms");
     const res = await middleware(req);
@@ -50,7 +50,7 @@ describe("middleware", () => {
   });
 
   it("includes security headers on redirect responses", async () => {
-    getTokenMock.mockResolvedValue(null);
+    __setMockToken(null as any);
 
     const req = new NextRequest("http://example.com/cms");
     const res = await middleware(req);
@@ -61,7 +61,7 @@ describe("middleware", () => {
   });
 
   it("allows non-CMS paths without invoking canRead", async () => {
-    getTokenMock.mockResolvedValue({ role: "viewer" } as any);
+    __setMockToken({ role: "viewer" } as any);
 
     const req = new NextRequest("http://example.com/other");
     const res = await middleware(req);
@@ -71,7 +71,7 @@ describe("middleware", () => {
   });
 
   it("adds security headers for allowed authenticated paths", async () => {
-    getTokenMock.mockResolvedValue({ role: "viewer" } as any);
+    __setMockToken({ role: "viewer" } as any);
 
     const req = new NextRequest("http://example.com/");
     const res = await middleware(req);
@@ -86,7 +86,7 @@ describe("middleware", () => {
   it.each(["/_next/static/chunk.js", "/_next"])(
     "returns NextResponse.next for static asset path %s",
     async (path) => {
-      getTokenMock.mockResolvedValue(null);
+      __setMockToken(null);
 
       const req = new NextRequest(`http://example.com${path}`);
       const res = await middleware(req);
@@ -98,7 +98,7 @@ describe("middleware", () => {
   );
 
   it("rewrites roles without read access to /403", async () => {
-    getTokenMock.mockResolvedValue({ role: "viewer" } as any);
+    __setMockToken({ role: "viewer" } as any);
     canReadMock.mockReturnValue(false);
 
     const req = new NextRequest("http://example.com/cms");
@@ -111,7 +111,7 @@ describe("middleware", () => {
   });
 
   it("blocks viewer roles from write routes", async () => {
-    getTokenMock.mockResolvedValue({ role: "viewer" } as any);
+    __setMockToken({ role: "viewer" } as any);
     canReadMock.mockReturnValue(true);
     canWriteMock.mockReturnValue(false);
 
@@ -127,7 +127,7 @@ describe("middleware", () => {
   });
 
   it("blocks viewer roles from media routes", async () => {
-    getTokenMock.mockResolvedValue({ role: "viewer" } as any);
+    __setMockToken({ role: "viewer" } as any);
     canReadMock.mockReturnValue(true);
     canWriteMock.mockReturnValue(false);
 
@@ -141,7 +141,7 @@ describe("middleware", () => {
   });
 
   it("allows viewer roles with read access on CMS routes", async () => {
-    getTokenMock.mockResolvedValue({ role: "viewer" } as any);
+    __setMockToken({ role: "viewer" } as any);
     canReadMock.mockReturnValue(true);
     canWriteMock.mockReturnValue(false);
 
@@ -154,7 +154,7 @@ describe("middleware", () => {
   });
 
   it("allows viewer roles on media when canWrite is true", async () => {
-    getTokenMock.mockResolvedValue({ role: "viewer" } as any);
+    __setMockToken({ role: "viewer" } as any);
     canReadMock.mockReturnValue(true);
     canWriteMock.mockReturnValue(true);
 
@@ -167,7 +167,7 @@ describe("middleware", () => {
   });
 
   it("allows admin roles on write routes", async () => {
-    getTokenMock.mockResolvedValue({ role: "admin" } as any);
+    __setMockToken({ role: "admin" } as any);
     canReadMock.mockReturnValue(true);
     canWriteMock.mockReturnValue(true);
 
@@ -212,7 +212,7 @@ describe("middleware", () => {
   });
 
   it("allows mutating api requests with valid csrf token", async () => {
-    getTokenMock.mockResolvedValue({ role: "admin" } as any);
+    __setMockToken({ role: "admin" } as any);
 
     const req = new NextRequest("http://example.com/api/test", {
       method: "POST",

@@ -1,6 +1,8 @@
 // Central mock for @acme/config/env/core
-// Provides a test-friendly `coreEnv` and `loadCoreEnv` driven by process.env
-// and lightweight in-memory overrides. This avoids repeated jest.doMock calls.
+// Provides a test-friendly `coreEnv`, `coreEnvSchema`, and `loadCoreEnv`
+// driven by process.env and lightweight in-memory overrides. This avoids
+// repeated jest.doMock calls while keeping API parity used by tests.
+import { z } from "zod";
 
 type Primitive = string | number | boolean | undefined;
 export type TestCoreEnv = Record<string, Primitive> & {
@@ -9,6 +11,14 @@ export type TestCoreEnv = Record<string, Primitive> & {
   EMAIL_FROM?: string;
   EMAIL_PROVIDER?: string;
   OPENAI_API_KEY?: string;
+  // Flags used by configurator tests
+  DEPOSIT_RELEASE_ENABLED?: boolean;
+  DEPOSIT_RELEASE_INTERVAL_MS?: number;
+  REVERSE_LOGISTICS_ENABLED?: boolean;
+  REVERSE_LOGISTICS_INTERVAL_MS?: number;
+  LATE_FEE_ENABLED?: boolean;
+  LATE_FEE_INTERVAL_MS?: number;
+  NEXT_PUBLIC_BASE_URL?: string;
 };
 
 let overrides: Partial<TestCoreEnv> = Object.create(null);
@@ -26,8 +36,8 @@ function ensureFallbackSecret(value: string | undefined, fallback: string) {
   return value;
 }
 
-function computeCoreEnv(): TestCoreEnv {
-  const env = process.env;
+function computeCoreEnvFrom(raw: NodeJS.ProcessEnv): TestCoreEnv {
+  const env = raw;
   // Align defaults with jest.setup.ts so types and expectations match
   const base: TestCoreEnv = {
     NEXTAUTH_SECRET: ensureFallbackSecret(
@@ -43,13 +53,266 @@ function computeCoreEnv(): TestCoreEnv {
     CART_COOKIE_SECRET: env.CART_COOKIE_SECRET ?? "test-cart-secret",
     AUTH_TOKEN_TTL: (env.AUTH_TOKEN_TTL as any) ?? "15m",
     OPENAI_API_KEY: env.OPENAI_API_KEY,
+    // CMS settings used in tests
+    CMS_SPACE_URL: env.CMS_SPACE_URL,
+    CMS_ACCESS_TOKEN: env.CMS_ACCESS_TOKEN,
   };
-  return Object.assign(Object.create(null), base, overrides);
+  // Light coercion for flags used in tests so coreEnv proxy reads are typed
+  const toBool = (v: string | undefined): boolean | undefined =>
+    v == null ? undefined : /^(true|1)$/i.test(v) ? true : /^(false|0)$/i.test(v) ? false : undefined;
+  const toNum = (v: string | undefined): number | undefined =>
+    v == null ? undefined : (Number.isNaN(Number(v)) ? undefined : Number(v));
+
+  const derived: Partial<TestCoreEnv> = {
+    DEPOSIT_RELEASE_ENABLED: toBool(env.DEPOSIT_RELEASE_ENABLED),
+    DEPOSIT_RELEASE_INTERVAL_MS: toNum(env.DEPOSIT_RELEASE_INTERVAL_MS),
+    REVERSE_LOGISTICS_ENABLED: toBool(env.REVERSE_LOGISTICS_ENABLED),
+    REVERSE_LOGISTICS_INTERVAL_MS: toNum(env.REVERSE_LOGISTICS_INTERVAL_MS),
+    LATE_FEE_ENABLED: toBool(env.LATE_FEE_ENABLED),
+    LATE_FEE_INTERVAL_MS: toNum(env.LATE_FEE_INTERVAL_MS),
+    NEXT_PUBLIC_BASE_URL: env.NEXT_PUBLIC_BASE_URL,
+  };
+
+  return Object.assign(Object.create(null), base, derived, overrides);
 }
 
-export function loadCoreEnv(): TestCoreEnv {
-  return computeCoreEnv();
+function computeCoreEnv(): TestCoreEnv {
+  return computeCoreEnvFrom(process.env as NodeJS.ProcessEnv);
 }
+
+export function depositReleaseEnvRefinement(
+  env: Record<string, unknown>,
+  ctx: { addIssue: (issue: { code: string; path: string[]; message: string }) => void },
+): void {
+  for (const [key, value] of Object.entries(env)) {
+    const isDeposit = key.startsWith("DEPOSIT_RELEASE_");
+    const isReverse = key.startsWith("REVERSE_LOGISTICS_");
+    const isLateFee = key.startsWith("LATE_FEE_");
+    if (!isDeposit && !isReverse && !isLateFee) continue;
+    if (key.includes("ENABLED")) {
+      const sv = typeof value === "string" ? value : String(value);
+      if (!/^(true|false|1|0)$/i.test(sv)) {
+        ctx.addIssue({
+          code: "custom",
+          path: [key],
+          message: "must be true or false",
+        });
+      }
+    } else if (key.includes("INTERVAL_MS")) {
+      const num = typeof value === "number" ? value : Number(value);
+      if (Number.isNaN(num)) {
+        ctx.addIssue({
+          code: "custom",
+          path: [key],
+          message: "must be a number",
+        });
+      }
+    }
+  }
+}
+
+// Minimal schema implementing features used by tests:
+// - CART_COOKIE_SECRET default outside production, required in production
+// - Refinements for *_ENABLED booleans and *_INTERVAL_MS numbers
+// - Passthrough so unrelated keys do not fail parsing
+const isProd = (() => {
+  const mode = process.env.NODE_ENV;
+  const isJest = typeof (globalThis as { jest?: unknown }).jest !== "undefined";
+  // Mirror real behavior: production only when explicitly set AND not under Jest defaulting
+  return mode === "production" && !isJest;
+})();
+
+const baseEnvSchema = z
+  .object({
+    NODE_ENV: z.enum(["development", "test", "production"]).optional(),
+    CART_COOKIE_SECRET: isProd
+      ? z.string().min(1)
+      : z.string().min(1).default("dev-cart-secret"),
+    DEPOSIT_RELEASE_ENABLED: z
+      .preprocess((v) => (v == null ? undefined : v), z.any().optional())
+      .refine(
+        (v) => v == null || /^(true|false|1|0)$/i.test(String(v)),
+        { message: "must be true or false" },
+      ),
+    DEPOSIT_RELEASE_INTERVAL_MS: z
+      .preprocess((v) => (v == null ? undefined : v), z.any().optional())
+      .refine(
+        (v) => v == null || !Number.isNaN(Number(v)),
+        { message: "must be a number" },
+      ),
+    REVERSE_LOGISTICS_ENABLED: z
+      .preprocess((v) => (v == null ? undefined : v), z.any().optional())
+      .refine(
+        (v) => v == null || /^(true|false|1|0)$/i.test(String(v)),
+        { message: "must be true or false" },
+      ),
+    REVERSE_LOGISTICS_INTERVAL_MS: z
+      .preprocess((v) => (v == null ? undefined : v), z.any().optional())
+      .refine(
+        (v) => v == null || !Number.isNaN(Number(v)),
+        { message: "must be a number" },
+      ),
+    LATE_FEE_ENABLED: z
+      .preprocess((v) => (v == null ? undefined : v), z.any().optional())
+      .refine(
+        (v) => v == null || /^(true|false|1|0)$/i.test(String(v)),
+        { message: "must be true or false" },
+      ),
+    LATE_FEE_INTERVAL_MS: z
+      .preprocess((v) => (v == null ? undefined : v), z.any().optional())
+      .refine(
+        (v) => v == null || !Number.isNaN(Number(v)),
+        { message: "must be a number" },
+      ),
+  })
+  .passthrough()
+  .superRefine((env, ctx) => depositReleaseEnvRefinement(env, ctx as any));
+
+export const coreEnvSchema = baseEnvSchema;
+
+export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env as NodeJS.ProcessEnv): TestCoreEnv {
+  // Minimal validation to mirror real core behavior used in API tests
+  const env = computeCoreEnvFrom(raw);
+  const provider = (raw.AUTH_PROVIDER || "").toLowerCase();
+  // Validation for configurator tests around deposit/reverse/late flags
+  const issues: Array<{ path: string; message: string }> = [];
+  const addBoolIssue = (key: string, v: unknown) => {
+    if (v == null) return;
+    const sv = typeof v === "string" ? v : String(v);
+    if (!/^(true|false|1|0)$/i.test(sv)) {
+      issues.push({ path: key, message: "must be true or false" });
+    }
+  };
+  const addNumIssue = (key: string, v: unknown) => {
+    if (v == null) return;
+    const num = typeof v === "number" ? v : Number(v);
+    if (Number.isNaN(num)) {
+      issues.push({ path: key, message: "must be a number" });
+    }
+  };
+
+  addBoolIssue("DEPOSIT_RELEASE_ENABLED", raw.DEPOSIT_RELEASE_ENABLED);
+  addNumIssue("DEPOSIT_RELEASE_INTERVAL_MS", raw.DEPOSIT_RELEASE_INTERVAL_MS);
+  addBoolIssue("REVERSE_LOGISTICS_ENABLED", raw.REVERSE_LOGISTICS_ENABLED);
+  addNumIssue("REVERSE_LOGISTICS_INTERVAL_MS", raw.REVERSE_LOGISTICS_INTERVAL_MS);
+  addBoolIssue("LATE_FEE_ENABLED", raw.LATE_FEE_ENABLED);
+  addNumIssue("LATE_FEE_INTERVAL_MS", raw.LATE_FEE_INTERVAL_MS);
+
+  // Validate NEXT_PUBLIC_BASE_URL when present
+  if (typeof raw.NEXT_PUBLIC_BASE_URL === "string") {
+    try {
+      // Throws for invalid URLs like "not a url"
+      // Allow only absolute http/https
+      const u = new URL(raw.NEXT_PUBLIC_BASE_URL);
+      if (!/^https?:$/.test(u.protocol)) throw new Error("bad protocol");
+    } catch {
+      issues.push({ path: "NEXT_PUBLIC_BASE_URL", message: "Invalid url" });
+    }
+  }
+
+  // Validate sendgrid when selected
+  if ((raw.EMAIL_PROVIDER || "").toLowerCase() === "sendgrid") {
+    const hasKey = typeof raw.SENDGRID_API_KEY === "string" && raw.SENDGRID_API_KEY.trim() !== "";
+    if (!hasKey) {
+      issues.push({ path: "SENDGRID_API_KEY", message: "Required" });
+    }
+  }
+  if (provider === "jwt") {
+    const hasJwt = typeof raw.JWT_SECRET === "string" && raw.JWT_SECRET.trim() !== "";
+    if (!hasJwt) {
+      issues.push({ path: "JWT_SECRET", message: "JWT_SECRET is required when AUTH_PROVIDER=jwt" });
+    }
+  }
+
+  // Normalize AUTH_TOKEN_TTL similar to real loader behavior
+  const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
+  const rawTtl = raw.AUTH_TOKEN_TTL as unknown;
+  let normalizedTtl: number | undefined;
+  const flagged = Reflect.get(raw, NON_STRING_ENV_SYMBOL) as unknown;
+  const globalFlagged = (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
+  const ttlWasNonString =
+    typeof rawTtl === "number" ||
+    (Array.isArray(flagged) && (flagged as unknown[]).includes("AUTH_TOKEN_TTL")) ||
+    (Array.isArray(globalFlagged) && (globalFlagged as unknown[]).includes("AUTH_TOKEN_TTL"));
+
+  if (ttlWasNonString) {
+    // console.debug("[core-env-mock] raw AUTH_TOKEN_TTL is non-string:", rawTtl);
+    // Mimic core loader behavior: treat non-string TTL as "unset" so
+    // auth schema default applies (15m => 900)
+    normalizedTtl = 900;
+  } else if (typeof rawTtl === "string") {
+    const trimmed = rawTtl.trim();
+    if (trimmed === "") {
+      normalizedTtl = 900; // default
+    } else if (/^\d+$/.test(trimmed)) {
+      normalizedTtl = Number(trimmed);
+    } else if (/^(\d+)\s*([sm])$/i.test(trimmed)) {
+      const m = trimmed.match(/^(\d+)\s*([sm])$/i)!;
+      const n = Number(m[1]);
+      normalizedTtl = m[2].toLowerCase() === "m" ? n * 60 : n;
+    } else {
+      // leave undefined; real loader would surface a schema error in prod
+    }
+  }
+  if (typeof normalizedTtl === "number") {
+    (env as any).AUTH_TOKEN_TTL = normalizedTtl;
+    // console.debug('[core-env-mock] normalized AUTH_TOKEN_TTL ->', normalizedTtl, 'from', rawTtl);
+  }
+
+  if (issues.length) {
+    console.error("❌ Invalid core environment variables:");
+    for (const issue of issues) {
+      console.error(`  • ${issue.path}: ${issue.message}`);
+    }
+    throw new Error("Invalid core environment variables");
+  }
+  const result = {
+    ...env,
+    ...(typeof normalizedTtl === "number" ? { AUTH_TOKEN_TTL: normalizedTtl } : {}),
+  } as TestCoreEnv;
+  // Debug for TTL test case: ensure normalization is applied when input is number
+  if (typeof raw.AUTH_TOKEN_TTL === "number") {
+    // eslint-disable-next-line no-console
+    console.error(
+      "[core-env-mock] TTL input number=",
+      raw.AUTH_TOKEN_TTL,
+      "=> returned=",
+      (result as any).AUTH_TOKEN_TTL,
+    );
+  }
+  return result;
+}
+
+// Eager validation in production to mirror real core module behavior
+(() => {
+  if ((process.env.NODE_ENV || "").toLowerCase() === "production") {
+    const errors: string[] = [];
+    const url = process.env.CMS_SPACE_URL;
+    const token = process.env.CMS_ACCESS_TOKEN;
+    if (!token) {
+      errors.push("CMS_ACCESS_TOKEN: Required");
+    }
+    if (url) {
+      try {
+        // Validate absolute http/https URL
+        const u = new URL(url);
+        if (!/^https?:$/.test(u.protocol)) throw new Error("bad protocol");
+      } catch {
+        errors.push("CMS_SPACE_URL: Invalid url");
+      }
+    }
+    if (errors.length) {
+      console.error("❌ Invalid core environment variables:", {
+        _errors: [],
+        CMS_ACCESS_TOKEN: token ? undefined : { _errors: ["Required"] },
+        ...(url
+          ? {}
+          : {}),
+      });
+      throw new Error("Invalid core environment variables");
+    }
+  }
+})();
 
 export const coreEnv: TestCoreEnv = new Proxy({} as TestCoreEnv, {
   get: (_t, prop: string) => (computeCoreEnv() as any)[prop],
@@ -61,3 +324,24 @@ export const coreEnv: TestCoreEnv = new Proxy({} as TestCoreEnv, {
 
 export default {} as unknown as never;
 
+// Provide requireEnv helper to match real module API used in tests
+export function requireEnv(
+  key: string,
+  type: "boolean" | "number" | "string" = "string",
+): string | number | boolean {
+  const raw = process.env[key];
+  if (raw == null) throw new Error(`${key} is required`);
+  const val = raw.trim();
+  if (val === "") throw new Error(`${key} is required`);
+  if (type === "boolean") {
+    if (/^(true|1)$/i.test(val)) return true;
+    if (/^(false|0)$/i.test(val)) return false;
+    throw new Error(`${key} must be a boolean`);
+  }
+  if (type === "number") {
+    const num = Number(val);
+    if (!Number.isNaN(num)) return num;
+    throw new Error(`${key} must be a number`);
+  }
+  return val;
+}

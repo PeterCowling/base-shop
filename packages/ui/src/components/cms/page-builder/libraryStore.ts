@@ -12,6 +12,16 @@ export type LibraryItem = {
 
 const keyFor = (shop: string | null | undefined) => `pb-library-${shop || "default"}`;
 
+function emitChange() {
+  if (typeof window === "undefined") return;
+  try {
+    const ev = new CustomEvent("pb-library-changed");
+    window.dispatchEvent(ev);
+  } catch {
+    // noop
+  }
+}
+
 export function listLibrary(shop?: string | null): LibraryItem[] {
   if (typeof window === "undefined") return [];
   try {
@@ -29,6 +39,7 @@ export function saveLibrary(shop: string | null | undefined, item: LibraryItem) 
   const current = listLibrary(shop);
   const next = [item, ...current.filter((i) => i.id !== item.id)];
   localStorage.setItem(keyFor(shop), JSON.stringify(next));
+  emitChange();
 }
 
 export function removeLibrary(shop: string | null | undefined, id: string) {
@@ -38,5 +49,11 @@ export function removeLibrary(shop: string | null | undefined, id: string) {
     keyFor(shop),
     JSON.stringify(current.filter((i) => i.id !== id))
   );
+  emitChange();
 }
 
+export function clearLibrary(shop: string | null | undefined) {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(keyFor(shop));
+  emitChange();
+}

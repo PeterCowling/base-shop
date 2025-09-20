@@ -48,10 +48,9 @@ function withDevEnv<T>(fn: () => Promise<T>): Promise<T> {
 /* -------------------------------------------------------------------------- */
 /*  Common mocks                                                              */
 /* -------------------------------------------------------------------------- */
+import { __setMockSession } from "next-auth";
 function mockAuth() {
-  jest.doMock("next-auth", () => ({
-    getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
-  }));
+  __setMockSession({ user: { role: "admin" } } as any);
 }
 
 /**

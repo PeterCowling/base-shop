@@ -2,12 +2,12 @@ import { jest } from "@jest/globals";
 
 const originalFetch = global.fetch;
 
+import { __setMockSession } from "next-auth";
 async function loadMediaProbeRoute(session: unknown = { user: {} }) {
-  const getServerSession = jest.fn().mockResolvedValue(session);
+  __setMockSession(session as any);
   jest.doMock("@cms/auth/options", () => ({ authOptions: {} }));
-  jest.doMock("next-auth", () => ({ getServerSession }));
   const mod = await import("../src/app/api/media/probe/route");
-  return { ...mod, getServerSession };
+  return { ...mod };
 }
 
 afterEach(() => {

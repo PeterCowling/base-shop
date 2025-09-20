@@ -3,15 +3,10 @@
 import type { Locale } from "@acme/i18n/locales";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "../../atoms/shadcn";
+import { Button, Dialog, DialogTrigger, DialogContent, DialogTitle } from "../../atoms/shadcn";
 import { getLegacyPreset } from "../../../utils/devicePresets";
 import DeviceSelector from "../../common/DeviceSelector";
+import ThemePanel from "./ThemePanel";
 
 interface Props {
   deviceId: string;
@@ -89,6 +84,14 @@ const PageToolbar = ({
         </Button>
         <Dialog>
           <DialogTrigger asChild>
+            <Button variant="outline" aria-label="Theme">
+              Theme
+            </Button>
+          </DialogTrigger>
+          <ThemePanel />
+        </Dialog>
+        <Dialog>
+          <DialogTrigger asChild>
             <Button variant="outline" aria-label="Keyboard shortcuts">
               ?
             </Button>
@@ -101,6 +104,15 @@ const PageToolbar = ({
               </li>
               <li>
                 <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>P</kbd> Toggle preview
+              </li>
+              <li>
+                <kbd>Shift</kbd> + <kbd>Arrow</kbd> Resize selected block
+              </li>
+              <li>
+                <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Arrow</kbd> Adjust spacing
+              </li>
+              <li className="text-xs text-muted-foreground">
+                When snap to grid is enabled, steps use the grid unit
               </li>
               <li>
                 <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>[</kbd> Rotate
@@ -124,6 +136,12 @@ const PageToolbar = ({
               </li>
               <li>
                 <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>3</kbd> Mobile view
+              </li>
+              <li>
+                <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> Save Version
+              </li>
+              <li>
+                <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd> Open Versions
               </li>
             </ul>
           </DialogContent>

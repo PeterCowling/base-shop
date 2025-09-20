@@ -8,6 +8,8 @@ jest.mock("child_process", () => ({
   spawnSync: jest.fn(),
 }));
 
+import { asNextJson } from "@acme/test-utils";
+
 describe("upgrade-shop API route", () => {
   let requirePermission: jest.Mock;
   let spawnSync: jest.Mock;
@@ -34,9 +36,7 @@ describe("upgrade-shop API route", () => {
     spawnSync.mockReturnValueOnce({ status: 0 });
 
     const route = await import("../src/app/api/upgrade-shop/route");
-
-    const req = { json: async () => ({ shop: "shop-1" }) } as any;
-    const res = await route.POST(req);
+    const res = await route.POST(asNextJson({ shop: "shop-1" }));
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ status: "ok" });
     expect(spawnSync).toHaveBeenCalledWith("pnpm", ["tsx", "scripts/src/upgrade-shop.ts", "shop-1"]);
@@ -45,8 +45,7 @@ describe("upgrade-shop API route", () => {
   it("returns 401 when permission check fails", async () => {
     requirePermission.mockRejectedValueOnce(new Error("nope"));
     const route = await import("../src/app/api/upgrade-shop/route");
-    const req = { json: async () => ({ shop: "shop-1" }) } as any;
-    const res = await route.POST(req);
+    const res = await route.POST(asNextJson({ shop: "shop-1" }));
     expect(res.status).toBe(401);
     await expect(res.json()).resolves.toEqual({ error: "Unauthorized" });
     expect(spawnSync).not.toHaveBeenCalled();
@@ -55,8 +54,7 @@ describe("upgrade-shop API route", () => {
   it("returns 400 when shop is missing", async () => {
     requirePermission.mockResolvedValueOnce(undefined);
     const route = await import("../src/app/api/upgrade-shop/route");
-    const req = { json: async () => ({}) } as any;
-    const res = await route.POST(req);
+    const res = await route.POST(asNextJson({}));
     expect(res.status).toBe(400);
     await expect(res.json()).resolves.toEqual({ error: "shop required" });
   });
@@ -65,8 +63,7 @@ describe("upgrade-shop API route", () => {
     requirePermission.mockResolvedValueOnce(undefined);
     spawnSync.mockReturnValueOnce({ status: 1 });
     const route = await import("../src/app/api/upgrade-shop/route");
-    const req = { json: async () => ({ shop: "shop-1" }) } as any;
-    const res = await route.POST(req);
+    const res = await route.POST(asNextJson({ shop: "shop-1" }));
     expect(res.status).toBe(500);
     await expect(res.json()).resolves.toEqual({ error: "Upgrade failed" });
   });

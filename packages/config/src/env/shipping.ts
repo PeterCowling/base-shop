@@ -65,42 +65,42 @@ export const shippingEnvSchema = z
     DHL_KEY: z.string().optional(),
     SHIPPING_PROVIDER: z.enum(providers).optional(),
     ALLOWED_COUNTRIES: z
-      .string()
-      .optional()
-      .transform((val) =>
-      val
-        ? val
-            .split(",")
-            .map((c) => c.trim().toUpperCase())
-            .filter(Boolean)
-        : undefined,
-    ),
-  LOCAL_PICKUP_ENABLED: z
-    .string()
-    .optional()
-    .refine(
-      (v) =>
-        v == null ? true : /^(true|false|1|0|yes|no)$/i.test(v.trim()),
-      {
-        message: "must be a boolean",
-      },
-    )
-    .transform((v) =>
-      v == null ? undefined : /^(true|1|yes)$/i.test(v.trim()),
-    ),
-  DEFAULT_COUNTRY: z
-    .string()
-    .optional()
-    .refine((v) =>
-      v == null ? true : /^[A-Za-z]{2}$/.test(v.trim()),
-    {
-      message: "must be a 2-letter country code",
-    })
-    .transform((v) => (v == null ? undefined : v.trim().toUpperCase())),
-  DEFAULT_SHIPPING_ZONE: z
-    .enum(["domestic", "eu", "international"])
-    .optional(),
-  FREE_SHIPPING_THRESHOLD: z.coerce.number().nonnegative().optional(),
+      .preprocess((val) => {
+        if (typeof val !== "string") return undefined;
+        const items = val
+          .split(",")
+          .map((c) => c.trim().toUpperCase())
+          .filter(Boolean);
+        return items.length > 0 ? items : undefined;
+      }, z.array(z.string()).optional()),
+    LOCAL_PICKUP_ENABLED: z
+      .preprocess((v) => (v == null ? undefined : v), z.string().optional())
+      .refine(
+        (v) =>
+          v === undefined || /^(true|false|1|0|yes|no)$/i.test(v.trim()),
+        { message: "must be a boolean" },
+      )
+      .transform((v) =>
+        v === undefined ? undefined : /^(true|1|yes)$/i.test(v.trim()),
+      ),
+    DEFAULT_COUNTRY: z
+      .preprocess((v) => {
+        if (typeof v !== "string") return undefined;
+        const s = v.trim();
+        return s === "" ? undefined : s.toUpperCase();
+      }, z.string().optional())
+      .refine((v) => v === undefined || /^[A-Z]{2}$/.test(v), {
+        message: "must be a 2-letter country code",
+      }),
+    DEFAULT_SHIPPING_ZONE: z
+      .enum(["domestic", "eu", "international"])
+      .optional(),
+    FREE_SHIPPING_THRESHOLD: z
+      .preprocess((v) => {
+        if (v == null) return undefined;
+        const n = Number(v);
+        return Number.isFinite(n) ? n : v;
+      }, z.number().nonnegative().optional()),
   })
   .superRefine((env, ctx) => {
     if (env.SHIPPING_PROVIDER === "ups" && !env.UPS_KEY) {

@@ -1,5 +1,6 @@
 import { jest } from "@jest/globals";
 import { mockStripe, mockRentalRepo } from "./helpers/rental";
+import { asNextJson } from "@acme/test-utils";
 
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
@@ -30,7 +31,7 @@ describe("/api/rental POST", () => {
     jest.doMock("@platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
 
     const { POST } = await import("../src/api/rental/route");
-    const res = await POST({ json: async () => ({}) } as any);
+    const res = await POST(asNextJson({}));
     expect(res.status).toBe(400);
   });
 
@@ -79,9 +80,7 @@ describe("/api/rental POST", () => {
     jest.doMock("@platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
 
     const { POST } = await import("../src/api/rental/route");
-    const res = await POST({
-      json: async () => ({ sessionId: "sess" }),
-    } as any);
+    const res = await POST(asNextJson({ sessionId: "sess" }));
     expect(retrieve).toHaveBeenCalledWith("sess");
     expect(reserveRentalInventory).toHaveBeenCalledWith(
       "bcd",
@@ -140,9 +139,7 @@ describe("/api/rental POST", () => {
     jest.doMock("@platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
 
     const { POST } = await import("../src/api/rental/route");
-    const res = await POST({
-      json: async () => ({ sessionId: "sess" }),
-    } as any);
+    const res = await POST(asNextJson({ sessionId: "sess" }));
     expect(readInventory).not.toHaveBeenCalled();
     expect(readProducts).not.toHaveBeenCalled();
     expect(reserveRentalInventory).not.toHaveBeenCalled();
@@ -198,9 +195,7 @@ describe("/api/rental POST", () => {
     jest.doMock("@platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
 
     const { POST } = await import("../src/api/rental/route");
-    const res = await POST({
-      json: async () => ({ sessionId: "sess" }),
-    } as any);
+    const res = await POST(asNextJson({ sessionId: "sess" }));
     expect(reserveRentalInventory).toHaveBeenCalledTimes(1);
     expect(reserveRentalInventory).toHaveBeenCalledWith(
       "bcd",

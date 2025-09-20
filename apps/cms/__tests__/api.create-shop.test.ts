@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+import { jsonRequest } from "@acme/test-utils";
 
 beforeEach(() => {
   jest.spyOn(console, "error").mockImplementation(() => {});
@@ -39,9 +40,7 @@ describe("create-shop API", () => {
     }));
 
     const { POST } = await import("../src/app/api/create-shop/route");
-    const body = { id: "new" };
-    const req = { json: () => Promise.resolve(body) } as Request;
-    const res = await POST(req);
+    const res = await POST(jsonRequest({ id: "new" }));
     expect(res.status).toBe(201);
     expect(createNewShop).toHaveBeenCalledTimes(1);
     expect(createNewShop).toHaveBeenCalledWith("new", {
@@ -74,7 +73,7 @@ describe("create-shop API", () => {
       createNewShop,
     }));
     const { POST } = await import("../src/app/api/create-shop/route");
-    const res = await POST({ json: async () => ({ id: "new" }) } as Request);
+    const res = await POST(jsonRequest({ id: "new" }));
     expect(res.status).toBe(403);
     (process.env as Record<string, string>).NODE_ENV = prevEnv as string;
   });
@@ -98,7 +97,7 @@ describe("create-shop API", () => {
       createNewShop,
     }));
     const { POST } = await import("../src/app/api/create-shop/route");
-    const res = await POST({ json: async () => ({ id: "new" }) } as Request);
+    const res = await POST(jsonRequest({ id: "new" }));
     expect(res.status).toBe(400);
     (process.env as Record<string, string>).NODE_ENV = prevEnv as string;
   });

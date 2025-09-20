@@ -1,11 +1,12 @@
 // packages/config/src/env/core.ts
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
-import { authEnvSchema, loadAuthEnv } from "./auth.js";
+import { authEnvSchema, loadAuthEnv } from "@acme/config/env/auth";
+// Avoid importing the cms module which parses on import; use the schema directly.
 import { cmsEnvSchema } from "./cms.schema.js";
-import { emailEnvSchema } from "./email.js";
-import { paymentsEnvSchema } from "./payments.js";
-import { shippingEnvSchema } from "./shipping.js";
+import { emailEnvSchema } from "@acme/config/env/email";
+import { paymentsEnvSchema } from "@acme/config/env/payments";
+import { shippingEnvSchema } from "@acme/config/env/shipping";
 const isJest = typeof (globalThis as { jest?: unknown }).jest !== "undefined";
 const envMode = process.env.NODE_ENV;
 

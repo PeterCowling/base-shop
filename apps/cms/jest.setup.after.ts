@@ -4,13 +4,12 @@
 /* eslint-disable no-underscore-dangle */
 
 import "@testing-library/jest-dom";
-import "cross-fetch/polyfill";
 // Central React/Next polyfills (act, internals, MessageChannel, Response.json)
 import "../../test/polyfills/react-compat";
 import { configure } from "@testing-library/react";
 import React from "react";
 import * as ReactDOMTestUtils from "react-dom/test-utils";
-import { TextDecoder, TextEncoder } from "node:util";
+import "../../test/polyfills/dom-compat";
 import "./__tests__/mocks/external";
 import "../../test/resetNextMocks";
 import "../../test/polyfills/form-request-submit";
@@ -33,10 +32,6 @@ Object.assign(process.env, {
 /* 2 ·  GLOBAL POLYFILLS & SHIMS                                              */
 /* -------------------------------------------------------------------------- */
 
-/** Promote WHATWG encoders/decoders so libraries can rely on them */
-(globalThis as any).TextEncoder ||= TextEncoder;
-(globalThis as any).TextDecoder ||= TextDecoder;
-
 // React's testing utilities check this flag to verify that the environment
 // supports `act()` semantics. Setting it silences act warnings and helps
 // React flush updates consistently in tests.
@@ -44,14 +39,7 @@ Object.assign(process.env, {
 
 // React/Next compat is provided via ../../test/polyfills/react-compat
 
-// JSDOM doesn't implement object URLs. Some hooks rely on these APIs when
-// handling file uploads or generating video thumbnails.
-if (!(URL as any).createObjectURL) {
-  (URL as any).createObjectURL = () => "blob:mock";
-}
-if (!(URL as any).revokeObjectURL) {
-  (URL as any).revokeObjectURL = () => {};
-}
+// URL/object and DOM stubs are provided via ../../test/polyfills/dom-compat
 
 // MessageChannel polyfill comes from ../../test/polyfills/react-compat
 

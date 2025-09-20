@@ -1,4 +1,5 @@
 import type Stripe from "stripe";
+import { asNextJson } from "@acme/test-utils";
 
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
@@ -58,7 +59,7 @@ describe("payment failure handling", () => {
       .mockImplementation(() => {});
 
     const { POST } = await import("../src/api/return/route");
-    const res = await POST({ json: async () => ({ sessionId: "sess" }) } as any);
+    const res = await POST(asNextJson({ sessionId: "sess" }));
 
     expect(refundCreate).toHaveBeenCalledWith({
       payment_intent: "pi_123",
@@ -126,9 +127,7 @@ describe("payment failure handling", () => {
       .mockImplementation(() => {});
 
     const { PATCH } = await import("../src/api/rental/route");
-    const res = await PATCH({
-      json: async () => ({ sessionId: "sess", damage: "scratch" }),
-    } as any);
+    const res = await PATCH(asNextJson({ sessionId: "sess", damage: "scratch" }));
 
     expect(paymentIntentsCreate).toHaveBeenCalled();
     expect(markReturned).not.toHaveBeenCalled();

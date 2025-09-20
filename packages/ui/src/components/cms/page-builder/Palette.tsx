@@ -6,7 +6,7 @@ import { memo, useState, useCallback, useEffect } from "react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
-import { listLibrary, type LibraryItem } from "./libraryStore";
+import { listLibrary, removeLibrary, clearLibrary, type LibraryItem } from "./libraryStore";
 import {
   atomRegistry,
   moleculeRegistry,
@@ -162,6 +162,12 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
     setLibrary(listLibrary(shop));
   }, [shop]);
 
+  useEffect(() => {
+    const handler = () => setLibrary(listLibrary(shop));
+    window.addEventListener("pb-library-changed", handler);
+    return () => window.removeEventListener("pb-library-changed", handler);
+  }, [shop]);
+
   return (
     <div className="flex flex-col gap-4" data-tour="drag-component">
       <input
@@ -178,12 +184,26 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
       {/* My Library */}
       {library.length > 0 && (
         <div className="space-y-2">
-          <h4 className="font-semibold capitalize">My Library</h4>
+          <div className="flex items-center justify-between">
+            <h4 className="font-semibold capitalize">My Library</h4>
+            <button
+              type="button"
+              className="text-xs underline"
+              onClick={() => {
+                if (confirm("Clear all items from My Library?")) {
+                  clearLibrary(shop);
+                  setLibrary([]);
+                }
+              }}
+            >
+              Clear
+            </button>
+          </div>
           <div className="flex flex-col gap-2">
             {library
               .filter((i) => i.label.toLowerCase().includes(search.toLowerCase()))
               .map((i) => (
-                <LibraryPaletteItem key={i.id} item={i} />
+                <LibraryPaletteItem key={i.id} item={i} onDelete={() => { removeLibrary(shop, i.id); setLibrary(listLibrary(shop)); }} />
               ))}
           </div>
         </div>
@@ -220,7 +240,7 @@ const Palette = memo(function Palette({ onAdd }: PaletteProps) {
 export default Palette;
 
 // Library item drag source (template)
-function LibraryPaletteItem({ item }: { item: LibraryItem }) {
+function LibraryPaletteItem({ item, onDelete }: { item: LibraryItem; onDelete: () => void }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({ id: `lib-${item.id}`, data: { from: "library", template: item.template } });
   return (
@@ -244,7 +264,18 @@ function LibraryPaletteItem({ item }: { item: LibraryItem }) {
         height={24}
         loading="lazy"
       />
-      <span>{item.label}</span>
+      <span className="flex-1 truncate">{item.label}</span>
+      <button
+        type="button"
+        aria-label="Delete from My Library"
+        className="rounded border px-2 text-xs"
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete();
+        }}
+      >
+        Delete
+      </button>
     </div>
   );
 }

@@ -155,20 +155,20 @@ export default function InteractionsPanel({
             )
           }
         />
-        <Select
-          value={easing ?? ""}
-          onValueChange={(v) =>
-            handleInput(
-              "animationEasing" as keyof PageComponent,
-              (v || undefined) as any,
-            )
-          }
-        >
+      <Select
+        value={easing ?? "__none__"}
+        onValueChange={(v) =>
+          handleInput(
+            "animationEasing" as keyof PageComponent,
+            (v === "__none__" ? undefined : (v as any)) as any,
+          )
+        }
+      >
           <SelectTrigger aria-label="Easing" onMouseDown={openSelectOnMouseDown}>
             <SelectValue placeholder="Easing" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Default</SelectItem>
+            <SelectItem value="__none__">Default</SelectItem>
             <SelectItem value="ease">ease</SelectItem>
             <SelectItem value="linear">linear</SelectItem>
             <SelectItem value="ease-in">ease-in</SelectItem>
@@ -176,32 +176,32 @@ export default function InteractionsPanel({
             <SelectItem value="ease-in-out">ease-in-out</SelectItem>
             <SelectItem value="cubic-bezier(0.4, 0, 0.2, 1)">cubic-bezier(0.4,0,0.2,1)</SelectItem>
           </SelectContent>
-        </Select>
+      </Select>
       </div>
 
       {/* Scroll effects */}
       <Select
-        value={reveal ?? ""}
+        value={reveal ?? "__none__"}
         onValueChange={(v) =>
           handleInput(
             "reveal" as keyof PageComponent,
-            (v || undefined) as any,
+            (v === "__none__" ? undefined : (v as any)) as any,
           )
         }
       >
         <SelectTrigger aria-label="Reveal on Scroll" onMouseDown={openSelectOnMouseDown}>
           <SelectValue placeholder="Reveal on Scroll" />
         </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="">None</SelectItem>
-          <SelectItem value="fade">Fade</SelectItem>
-          <SelectItem value="slide-up">Slide Up</SelectItem>
-          <SelectItem value="slide-down">Slide Down</SelectItem>
-          <SelectItem value="slide-left">Slide Left</SelectItem>
-          <SelectItem value="slide-right">Slide Right</SelectItem>
-          <SelectItem value="zoom">Zoom</SelectItem>
-          <SelectItem value="rotate">Rotate</SelectItem>
-        </SelectContent>
+          <SelectContent>
+            <SelectItem value="__none__">None</SelectItem>
+            <SelectItem value="fade">Fade</SelectItem>
+            <SelectItem value="slide-up">Slide Up</SelectItem>
+            <SelectItem value="slide-down">Slide Down</SelectItem>
+            <SelectItem value="slide-left">Slide Left</SelectItem>
+            <SelectItem value="slide-right">Slide Right</SelectItem>
+            <SelectItem value="zoom">Zoom</SelectItem>
+            <SelectItem value="rotate">Rotate</SelectItem>
+          </SelectContent>
       </Select>
 
       <div className="grid grid-cols-3 gap-2">
@@ -223,11 +223,11 @@ export default function InteractionsPanel({
           }
         />
         <Select
-          value={sticky ?? ""}
+          value={sticky ?? "__none__"}
           onValueChange={(v) =>
             handleInput(
               "sticky" as keyof PageComponent,
-              (v || undefined) as any,
+              (v === "__none__" ? undefined : (v as any)) as any,
             )
           }
         >
@@ -235,7 +235,7 @@ export default function InteractionsPanel({
             <SelectValue placeholder="Sticky" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">None</SelectItem>
+            <SelectItem value="__none__">None</SelectItem>
             <SelectItem value="top">Top</SelectItem>
             <SelectItem value="bottom">Bottom</SelectItem>
           </SelectContent>

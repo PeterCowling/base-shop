@@ -35,10 +35,9 @@ const withRepo = (cb: (dir: string) => Promise<void>) =>
   withTempRepo(cb, { prefix: 'seo-' });
 
 /** Stub `getServerSession` so the action layer sees an admin user. */
+import { __setMockSession } from "next-auth";
 function mockAuth(): void {
-  jest.doMock("next-auth", () => ({
-    getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
-  }));
+  __setMockSession({ user: { role: "admin" } } as any);
 }
 
 /* ---------------------------------------------------------------------- */

@@ -37,6 +37,14 @@ export type ResizeAction = {
   height?: string;
   left?: string;
   top?: string;
+  right?: string;
+  bottom?: string;
+  leftDesktop?: string;
+  leftTablet?: string;
+  leftMobile?: string;
+  topDesktop?: string;
+  topTablet?: string;
+  topMobile?: string;
   widthDesktop?: string;
   widthTablet?: string;
   widthMobile?: string;

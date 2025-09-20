@@ -75,6 +75,10 @@ export const defaultHandlers: RestHandler[] = [
   rest.patch("/api/cart", (req) => req.passthrough()),
   rest.delete("/api/cart", (req) => req.passthrough()),
   // Allow API route tests to hit local handlers without mocking
+  // Supertest spins up an ephemeral HTTP server on 127.0.0.1; MSW intercepts
+  // those requests unless explicitly bypassed. Let requests to the API routes
+  // under test pass through so the real handlers execute.
+  rest.get("*/components/:shopId", (req) => req.passthrough()),
   rest.post("*/shop/:id/publish-upgrade", (req) => req.passthrough()),
 ];
 
@@ -90,4 +94,3 @@ export function createServer(
 }
 
 export { rest };
-

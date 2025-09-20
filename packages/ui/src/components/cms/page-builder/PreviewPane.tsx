@@ -8,6 +8,7 @@ import { devicePresets, type DevicePreset } from "../../../utils/devicePresets";
 import useViewport from "./hooks/useViewport";
 import DeviceSelector from "../../common/DeviceSelector";
 import DynamicRenderer from "../../DynamicRenderer";
+import usePreviewTokens from "./hooks/usePreviewTokens";
 
 interface Props {
   components: PageComponent[];
@@ -28,6 +29,7 @@ const PreviewPane = ({ components, locale, deviceId, onChange, editor }: Props) 
   const { viewportStyle, frameClass } = useViewport(previewDevice);
 
   const decorated = decorateTreeForViewport(components, editor, previewViewport);
+  const previewTokens = usePreviewTokens();
   return (
     <div className="flex flex-col gap-2 shrink-0">
       <DeviceSelector
@@ -37,7 +39,7 @@ const PreviewPane = ({ components, locale, deviceId, onChange, editor }: Props) 
       />
       <div
         className={`${frameClass[previewViewport]} shrink-0`}
-        style={viewportStyle}
+        style={{ ...viewportStyle, ...(previewTokens as any) }}
       >
         <DynamicRenderer components={decorated} locale={locale} editor={editor} />
       </div>

@@ -4,7 +4,7 @@
 import { jest } from "@jest/globals";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withTempRepo } from "@acme/test-utils";
+import { withTempRepo, mockNextAuthAdmin } from "@acme/test-utils";
 import "../src/types/next-auth.d.ts";
 
 /* -------------------------------------------------------------------------- */
@@ -52,9 +52,9 @@ describe("createNewShop authorization", () => {
       __esModule: true,
       createShop: jest.fn(),
     }));
-    jest.doMock("next-auth", () => ({
-      getServerSession: jest.fn(() => Promise.resolve(null)),
-    }));
+    jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!", EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop" } }));
+    const { __setMockSession } = require('next-auth') as { __setMockSession: (s: any) => void };
+    __setMockSession(null);
 
     const { createNewShop } = await import(
       /* webpackIgnore: true */ "../src/actions/createShop.server.ts"
@@ -79,11 +79,8 @@ describe("createNewShop authorization", () => {
       __esModule: true,
       createShop,
     }));
-    jest.doMock("next-auth", () => ({
-      getServerSession: jest.fn(() =>
-        Promise.resolve({ user: { role: "admin" } })
-      ),
-    }));
+    mockNextAuthAdmin();
+    jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!", EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop" } }));
 
     const { createNewShop } = await import(
       /* webpackIgnore: true */ "../src/actions/createShop.server.ts"

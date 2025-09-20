@@ -1,18 +1,19 @@
 /** @jest-environment node */
 import type { Page } from "@acme/types/page";
+import { __setMockSession } from "next-auth";
 
 function mockAuth() {
-  jest.doMock("next-auth", () => ({
-    getServerSession: jest.fn().mockResolvedValue({
-      user: { role: "admin", email: "admin@example.com" },
-    }),
-  }));
+  const session = { user: { role: "admin", email: "admin@example.com" } } as any;
+  __setMockSession(session);
+  // Keep an explicit mock here due to module isolation in this spec
+  jest.doMock("next-auth", () => ({ getServerSession: jest.fn().mockResolvedValue(session) }));
 }
 
 function mockConfig() {
   jest.doMock("@acme/config", () => ({
     env: { NODE_ENV: "test", NEXTAUTH_SECRET: "secret" },
   }));
+  jest.doMock("@cms/auth/options", () => ({ authOptions: {} }));
 }
 
 describe("publish page action", () => {

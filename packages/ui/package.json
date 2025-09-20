@@ -18,7 +18,7 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
-    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs --coverage",
+    "test": "cross-env JEST_FORCE_CJS=1 pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs --coverage",
     "lint": "eslint ."
   },
   "dependencies": {

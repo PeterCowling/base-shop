@@ -1,6 +1,6 @@
 module.exports = {
   "^~test/(.*)$": " /test/$1",
-  "^.+\\.d\\.ts$": " /test/emptyModule.js",
+  "^.+\\.d\\.ts$": " /test/emptyModule.ts",
   "^\\./dataRoot\\.js$": " /packages/platform-core/src/dataRoot.ts",
   "^\\./auth\\.js$": " /packages/config/src/env/auth.ts",
   "^\\./cms\\.js$": " /packages/config/src/env/cms.ts",
@@ -46,7 +46,10 @@ module.exports = {
   "^@acme/plugin-sanity$": " /test/__mocks__/pluginSanityStub.ts",
   "^@acme/plugin-sanity/(.*)$": " /test/__mocks__/pluginSanityStub.ts",
   "^@acme/telemetry$": " /test/__mocks__/telemetryMock.ts",
-  "^@acme/zod-utils/initZod$": " /test/emptyModule.js",
+  // Map dynamic theme imports used by platform-core theme token loader in tests
+  "^@themes/(.*)/tailwind-tokens$": " /packages/platform-core/themes/$1/tailwind-tokens/src/index.ts",
+  "^@themes/(.*)$": " /packages/platform-core/themes/$1/src/index.ts",
+  "^@acme/zod-utils/initZod$": " /test/emptyModule.ts",
   "^\\./env/(.*)\\.js$": " /packages/config/src/env/$1.ts",
   "^\\./(auth|cms|email|core|payments|shipping)\\.js$":
     " /packages/config/src/env/$1.ts",

@@ -7,6 +7,7 @@ import type { CartStore } from "../cartStore";
 /** In-memory implementation of CartStore */
 export class MemoryCartStore implements CartStore {
   private carts = new Map<string, { cart: CartState; expires: number }>();
+  private timers = new Map<string, NodeJS.Timeout>();
 
   constructor(private ttl: number) {}
 
@@ -28,6 +29,7 @@ export class MemoryCartStore implements CartStore {
 
   async setCart(id: string, cart: CartState): Promise<void> {
     this.carts.set(id, { cart, expires: Date.now() + this.ttl * 1000 });
+    this.resetTimer(id);
   }
 
   async deleteCart(id: string): Promise<void> {
@@ -49,6 +51,7 @@ export class MemoryCartStore implements CartStore {
     const line = entry.cart[key];
     entry.cart[key] = { sku, size, qty: (line?.qty ?? 0) + qty };
     entry.expires = Date.now() + this.ttl * 1000;
+    this.resetTimer(id);
     return entry.cart;
   }
 
@@ -70,6 +73,7 @@ export class MemoryCartStore implements CartStore {
       entry.cart[skuId] = { ...line, qty };
     }
     entry.expires = Date.now() + this.ttl * 1000;
+    this.resetTimer(id);
     return entry.cart;
   }
 
@@ -82,7 +86,18 @@ export class MemoryCartStore implements CartStore {
     if (!(skuId in entry.cart)) return null;
     delete entry.cart[skuId];
     entry.expires = Date.now() + this.ttl * 1000;
+    this.resetTimer(id);
     return entry.cart;
   }
-}
 
+  private resetTimer(id: string) {
+    const existing = this.timers.get(id);
+    if (existing) clearTimeout(existing);
+    // Schedule deletion so Jest fake timers can advance and trigger expiry deterministically
+    const handle = setTimeout(() => {
+      this.carts.delete(id);
+      this.timers.delete(id);
+    }, this.ttl * 1000);
+    this.timers.set(id, handle);
+  }
+}

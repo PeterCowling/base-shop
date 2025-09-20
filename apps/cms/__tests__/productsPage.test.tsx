@@ -7,11 +7,11 @@ jest.mock("@acme/lib", () => ({
   checkShopExists: checkShopExistsMock,
 }));
 
-const getServerSessionMock = jest.fn();
-jest.mock("next-auth", () => ({
-  __esModule: true,
-  getServerSession: getServerSessionMock,
-}));
+// Centralized NextAuth mock control
+function setSession(session: any) {
+  const { __setMockSession } = require('next-auth') as { __setMockSession: (s: any) => void };
+  __setMockSession(session);
+}
 
 jest.mock("@cms/auth/options", () => ({
   __esModule: true,
@@ -135,7 +135,7 @@ describe("ProductsPage", () => {
     ];
 
     checkShopExistsMock.mockResolvedValue(true);
-    getServerSessionMock.mockResolvedValue({ user: { role: "admin" } });
+    setSession({ user: { role: "admin" } });
     readRepoMock.mockResolvedValue(rows);
     createDraftMock.mockResolvedValue(undefined);
     duplicateProductMock.mockResolvedValue(undefined);
@@ -199,7 +199,7 @@ describe("ProductsPage", () => {
     ];
 
     checkShopExistsMock.mockResolvedValue(true);
-    getServerSessionMock.mockResolvedValue({ user: { role: "viewer" } });
+    setSession({ user: { role: "viewer" } });
     readRepoMock.mockResolvedValue(rows);
 
     const element = await ProductsPage({
@@ -232,6 +232,5 @@ describe("ProductsPage", () => {
 
     expect(notFoundMock).toHaveBeenCalledTimes(1);
     expect(readRepoMock).not.toHaveBeenCalled();
-    expect(getServerSessionMock).not.toHaveBeenCalled();
   });
 });

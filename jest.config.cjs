@@ -50,11 +50,13 @@ moduleNameMapper["^next-auth/react$"] = " /test/mocks/next-auth-react.ts";
 
 // Use a lightweight test mock for core config in all packages except the config package itself
 const isConfigPackage = /packages\/config$/.test(process.cwd());
+const isAuthPackage = /packages\/auth$/.test(process.cwd());
 if (!isConfigPackage) {
   // Ensure specific env mocks take precedence over the generic @acme/config/env/(.*) mapper
   const overrides = {
-    "^@acme/config/env/core$": " /test/mocks/config-env-core.ts",
-    "^@acme/config/env/shipping$": " /test/mocks/config-env-shipping.ts",
+    // Mock core/shipping env for most packages; auth package uses real loaders.
+    ...(isAuthPackage ? {} : { "^@acme/config/env/core$": " /test/mocks/config-env-core.ts" }),
+    ...(isAuthPackage ? {} : { "^@acme/config/env/shipping$": " /test/mocks/config-env-shipping.ts" }),
   };
   const pruned = Object.fromEntries(
     Object.entries(moduleNameMapper).filter(

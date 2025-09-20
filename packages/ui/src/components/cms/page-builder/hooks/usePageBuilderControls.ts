@@ -61,6 +61,10 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
         content: "Drag components from the palette onto the canvas.",
       },
       {
+        target: "[data-tour='toolbar']",
+        content: "Use the toolbar to change device, locale, and more.",
+      },
+      {
         target: "[data-tour='canvas']",
         content: "Arrange and edit components on the canvas.",
       },

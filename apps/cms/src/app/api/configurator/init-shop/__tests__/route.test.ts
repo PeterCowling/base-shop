@@ -21,9 +21,10 @@ jest.mock("@platform-core/dataRoot", () => ({
   resolveDataRoot: jest.fn(() => "/data-root"),
 }));
 
-jest.mock("next-auth", () => ({
-  getServerSession: jest.fn(),
-}));
+function setSession(session: any) {
+  const { __setMockSession } = require('next-auth') as { __setMockSession: (s: any) => void };
+  __setMockSession(session);
+}
 import path from "path";
 
 const buildRequest = (body: unknown) =>
@@ -40,20 +41,14 @@ afterEach(() => {
 
 describe("init-shop route", () => {
   it("returns 403 for non-admin session", async () => {
-    const { getServerSession } = await import("next-auth");
-    (getServerSession as jest.Mock).mockResolvedValue({
-      user: { role: "user" },
-    });
+    setSession({ user: { role: 'user' } });
     const { POST } = await import("../route");
     const res = await POST(new Request("http://localhost"));
     expect(res.status).toBe(403);
   });
 
   it("writes products.csv and categories.json on success", async () => {
-    const { getServerSession } = await import("next-auth");
-    (getServerSession as jest.Mock).mockResolvedValue({
-      user: { role: "admin" },
-    });
+    setSession({ user: { role: 'admin' } });
     const csvContent = "sku,price\n1,10\n";
     const csv = Buffer.from(csvContent).toString("base64");
     const categories = ["a", "b"];
@@ -87,10 +82,7 @@ describe("init-shop route", () => {
   });
 
   it("returns 400 for invalid base64 csv", async () => {
-    const { getServerSession } = await import("next-auth");
-    (getServerSession as jest.Mock).mockResolvedValue({
-      user: { role: "admin" },
-    });
+    setSession({ user: { role: 'admin' } });
     const { POST } = await import("../route");
     const res = await POST(
       buildRequest({ id: "shop1", csv: "!!!notbase64!!!" })
@@ -100,10 +92,7 @@ describe("init-shop route", () => {
   });
 
   it("returns 400 for schema violations", async () => {
-    const { getServerSession } = await import("next-auth");
-    (getServerSession as jest.Mock).mockResolvedValue({
-      user: { role: "admin" },
-    });
+    setSession({ user: { role: 'admin' } });
     const { POST } = await import("../route");
     const res = await POST(buildRequest({ csv: "" }));
     expect(res.status).toBe(400);

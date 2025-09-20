@@ -12,9 +12,8 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-function createRequest(body: any = {}) {
-  return { json: async () => body } as any;
-}
+import { jsonRequest } from "@acme/test-utils";
+const createRequest = (body: any = {}) => jsonRequest(body);
 
 describe("/api/delivery", () => {
   test("returns error when premier shipping not available", async () => {

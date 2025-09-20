@@ -127,7 +127,7 @@ describe("BlockItem", () => {
     fireEvent.click(screen.getByRole("listitem"));
     expect(onSelect).toHaveBeenCalled();
 
-    fireEvent.click(screen.getByRole("button", { name: "×" }));
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
     expect(onRemove).toHaveBeenCalled();
   });
 
@@ -182,7 +182,7 @@ describe("BlockItem", () => {
       resizing: true,
     });
     renderItem(baseComponent);
-    expect(screen.getByText("100×50 | 10, 20")).toBeInTheDocument();
+    expect(screen.getByText(/100×50\s*px\s*\|\s*10,\s*20\s*px/)).toBeInTheDocument();
   });
 
   it("renders overlay when moving is true", () => {
@@ -198,6 +198,6 @@ describe("BlockItem", () => {
       moving: true,
     });
     renderItem(baseComponent);
-    expect(screen.getByText("80×40 | 5, 7")).toBeInTheDocument();
+    expect(screen.getByText(/80×40\s*px\s*\|\s*5,\s*7\s*px/)).toBeInTheDocument();
   });
 });

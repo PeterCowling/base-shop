@@ -2,7 +2,7 @@
 
 import "cypress-axe";
 // Enable Mock Service Worker for API mocking in Cypress tests
-import { server } from "../../test/msw/server";
+import { server } from "~test/msw/server";
 
 // Prevent tests from failing on uncaught exceptions originating from the app
 Cypress.on("uncaught:exception", (_err, _runnable) => {

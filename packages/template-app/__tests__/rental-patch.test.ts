@@ -1,5 +1,6 @@
 import { jest } from "@jest/globals";
 import { mockStripe, mockRentalRepo } from "./helpers/rental";
+import { asNextJson } from "@acme/test-utils";
 
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
@@ -30,7 +31,7 @@ describe("/api/rental PATCH", () => {
     }));
 
     const { PATCH } = await import("../src/api/rental/route");
-    const res = await PATCH({ json: async () => ({}) } as any);
+    const res = await PATCH(asNextJson({}));
     expect(res.status).toBe(400);
   });
 
@@ -58,9 +59,7 @@ describe("/api/rental PATCH", () => {
     }));
 
     const { PATCH } = await import("../src/api/rental/route");
-    const res = await PATCH({
-      json: async () => ({ sessionId: "sess", damage: "scratch" }),
-    } as any);
+    const res = await PATCH(asNextJson({ sessionId: "sess", damage: "scratch" }));
     expect(markReturned).toHaveBeenCalledWith("bcd", "sess");
     expect(markReturned).toHaveBeenCalledWith("bcd", "sess", 30);
     expect(computeDamageFee).toHaveBeenCalledWith("scratch", 100, [], true);
@@ -103,9 +102,7 @@ describe("/api/rental PATCH", () => {
     }));
 
     const { PATCH } = await import("../src/api/rental/route");
-    const res = await PATCH({
-      json: async () => ({ sessionId: "sess", damage: "major" }),
-    } as any);
+    const res = await PATCH(asNextJson({ sessionId: "sess", damage: "major" }));
     expect(paymentIntentsCreate).toHaveBeenCalledWith({
       amount: 50 * 100,
       currency: "usd",
@@ -126,9 +123,7 @@ describe("/api/rental PATCH", () => {
     }));
 
     const { PATCH } = await import("../src/api/rental/route");
-    const res = await PATCH({
-      json: async () => ({ sessionId: "missing" }),
-    } as any);
+    const res = await PATCH(asNextJson({ sessionId: "missing" }));
     expect(markReturned).toHaveBeenCalledWith("bcd", "missing");
     expect(res.status).toBe(404);
   });
@@ -155,9 +150,7 @@ describe("/api/rental PATCH", () => {
     }));
 
     const { PATCH } = await import("../src/api/rental/route");
-    const res = await PATCH({
-      json: async () => ({ sessionId: "sess", damage: "mild" }),
-    } as any);
+    const res = await PATCH(asNextJson({ sessionId: "sess", damage: "mild" }));
     expect(refundCreate).not.toHaveBeenCalled();
     expect(res.status).toBe(200);
   });
@@ -183,9 +176,7 @@ describe("/api/rental PATCH", () => {
     }));
 
     const { PATCH } = await import("../src/api/rental/route");
-    const res = await PATCH({
-      json: async () => ({ sessionId: "sess", damage: "none" }),
-    } as any);
+    const res = await PATCH(asNextJson({ sessionId: "sess", damage: "none" }));
     expect(markReturned).toHaveBeenCalledTimes(1);
     expect(markReturned).toHaveBeenCalledWith("bcd", "sess");
     expect(refundCreate).not.toHaveBeenCalled();
@@ -214,9 +205,7 @@ describe("/api/rental PATCH", () => {
     }));
 
     const { PATCH } = await import("../src/api/rental/route");
-    const res = await PATCH({
-      json: async () => ({ sessionId: "sess", damage: "scratch" }),
-    } as any);
+    const res = await PATCH(asNextJson({ sessionId: "sess", damage: "scratch" }));
     expect(refundCreate).toHaveBeenCalledWith({
       payment_intent: "pi_obj",
       amount: 70 * 100,
@@ -242,9 +231,7 @@ describe("/api/rental PATCH", () => {
     }));
 
     const { PATCH } = await import("../src/api/rental/route");
-    const res = await PATCH({
-      json: async () => ({ sessionId: "sess", damage: "scratch" }),
-    } as any);
+    const res = await PATCH(asNextJson({ sessionId: "sess", damage: "scratch" }));
     expect(res.status).toBe(200);
     expect(markRefunded).not.toHaveBeenCalled();
   });

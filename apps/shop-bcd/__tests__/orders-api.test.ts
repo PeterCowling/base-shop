@@ -1,5 +1,6 @@
 // apps/shop-bcd/__tests__/orders-api.test.ts
 import { GET, PATCH } from "../src/app/api/orders/[id]/route";
+import { jsonRequest } from "@acme/test-utils";
 
 jest.mock("@platform-core/orders", () => ({
   __esModule: true,
@@ -44,8 +45,7 @@ describe("/api/orders/[id]", () => {
 
   test("PATCH cancels order", async () => {
     markCancelled.mockResolvedValue({ id: "ord1" });
-    const req = { json: async () => ({ status: "cancelled" }) } as any;
-    const res = await PATCH(req, { params: { id: "ord1" } });
+    const res = await PATCH(jsonRequest({ status: "cancelled" }), { params: { id: "ord1" } });
     expect(markCancelled).toHaveBeenCalledWith("bcd", "ord1");
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ order: { id: "ord1" } });
@@ -53,8 +53,7 @@ describe("/api/orders/[id]", () => {
 
   test("PATCH marks order delivered", async () => {
     markDelivered.mockResolvedValue({ id: "ord1" });
-    const req = { json: async () => ({ status: "delivered" }) } as any;
-    const res = await PATCH(req, { params: { id: "ord1" } });
+    const res = await PATCH(jsonRequest({ status: "delivered" }), { params: { id: "ord1" } });
     expect(markDelivered).toHaveBeenCalledWith("bcd", "ord1");
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ order: { id: "ord1" } });
@@ -75,15 +74,13 @@ describe("/api/orders/[id]", () => {
 
   test("PATCH returns 401 when session missing", async () => {
     getCustomerSession.mockResolvedValue(null);
-    const req = { json: async () => ({ status: "cancelled" }) } as any;
-    const res = await PATCH(req, { params: { id: "ord1" } });
+    const res = await PATCH(jsonRequest({ status: "cancelled" }), { params: { id: "ord1" } });
     expect(res.status).toBe(401);
     await expect(res.json()).resolves.toEqual({ error: "Unauthorized" });
   });
 
   test("PATCH returns 400 for invalid status", async () => {
-    const req = { json: async () => ({ status: "unknown" }) } as any;
-    const res = await PATCH(req, { params: { id: "ord1" } });
+    const res = await PATCH(jsonRequest({ status: "unknown" }), { params: { id: "ord1" } });
     expect(res.status).toBe(400);
     await expect(res.json()).resolves.toEqual({ error: "Invalid status" });
   });
@@ -97,16 +94,14 @@ describe("/api/orders/[id]", () => {
 
   test("PATCH returns 500 on backend failure", async () => {
     markCancelled.mockRejectedValue(new Error("oops"));
-    const req = { json: async () => ({ status: "cancelled" }) } as any;
-    const res = await PATCH(req, { params: { id: "ord1" } });
+    const res = await PATCH(jsonRequest({ status: "cancelled" }), { params: { id: "ord1" } });
     expect(res.status).toBe(500);
     await expect(res.json()).resolves.toEqual({ error: "oops" });
   });
  
   test("PATCH fully refunds order", async () => {
     refundOrder.mockResolvedValue({ id: "ord1", refundedAt: "now" });
-    const req = { json: async () => ({ status: "refunded" }) } as any;
-    const res = await PATCH(req, { params: { id: "ord1" } });
+    const res = await PATCH(jsonRequest({ status: "refunded" }), { params: { id: "ord1" } });
     expect(refundOrder).toHaveBeenCalledWith("bcd", "ord1", undefined);
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({
@@ -116,8 +111,7 @@ describe("/api/orders/[id]", () => {
 
   test("PATCH partially refunds order", async () => {
     refundOrder.mockResolvedValue({ id: "ord1", refundedAt: "now" });
-    const req = { json: async () => ({ status: "refunded", amount: 5 }) } as any;
-    const res = await PATCH(req, { params: { id: "ord1" } });
+    const res = await PATCH(jsonRequest({ status: "refunded", amount: 5 }), { params: { id: "ord1" } });
     expect(refundOrder).toHaveBeenCalledWith("bcd", "ord1", 5);
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({
@@ -127,8 +121,7 @@ describe("/api/orders/[id]", () => {
 
   test("PATCH refund returns 401 when session missing", async () => {
     getCustomerSession.mockResolvedValue(null);
-    const req = { json: async () => ({ status: "refunded" }) } as any;
-    const res = await PATCH(req, { params: { id: "ord1" } });
+    const res = await PATCH(jsonRequest({ status: "refunded" }), { params: { id: "ord1" } });
     expect(res.status).toBe(401);
     await expect(res.json()).resolves.toEqual({ error: "Unauthorized" });
     expect(refundOrder).not.toHaveBeenCalled();
@@ -136,18 +129,14 @@ describe("/api/orders/[id]", () => {
 
   test("PATCH refund returns 404 when order not found", async () => {
     refundOrder.mockResolvedValue(null);
-    const req = { json: async () => ({ status: "refunded" }) } as any;
-    const res = await PATCH(req, { params: { id: "ord1" } });
+    const res = await PATCH(jsonRequest({ status: "refunded" }), { params: { id: "ord1" } });
     expect(refundOrder).toHaveBeenCalledWith("bcd", "ord1", undefined);
     expect(res.status).toBe(404);
     await expect(res.json()).resolves.toEqual({ error: "Order not found" });
   });
 
   test("PATCH refund returns 400 for invalid amount", async () => {
-    const req = {
-      json: async () => ({ status: "refunded", amount: "bad" }),
-    } as any;
-    const res = await PATCH(req, { params: { id: "ord1" } });
+    const res = await PATCH(jsonRequest({ status: "refunded", amount: "bad" as any }), { params: { id: "ord1" } });
     expect(res.status).toBe(400);
     await expect(res.json()).resolves.toEqual({ error: "Invalid amount" });
     expect(refundOrder).not.toHaveBeenCalled();
@@ -159,11 +148,9 @@ describe("/api/orders/[id]", () => {
       return { id: "ord1", refundedAt: "now" };
     });
     stripe.refunds.create.mockRejectedValue(new Error("stripe fail"));
-    const req = { json: async () => ({ status: "refunded", amount: 5 }) } as any;
-    const res = await PATCH(req, { params: { id: "ord1" } });
+    const res = await PATCH(jsonRequest({ status: "refunded", amount: 5 }), { params: { id: "ord1" } });
     expect(refundOrder).toHaveBeenCalledWith("bcd", "ord1", 5);
     expect(res.status).toBe(500);
     await expect(res.json()).resolves.toEqual({ error: "stripe fail" });
   });
 });
-

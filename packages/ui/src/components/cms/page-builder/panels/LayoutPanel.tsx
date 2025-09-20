@@ -1,5 +1,6 @@
 "use client";
 
+import type React from "react";
 import type { PageComponent, HistoryState } from "@acme/types";
 // Local copy to avoid package export mismatch
 type EditorFlags = {
@@ -7,7 +8,7 @@ type EditorFlags = {
   locked?: boolean;
   zIndex?: number;
   hidden?: ("desktop" | "tablet" | "mobile")[];
-  stackStrategy?: "default" | "reverse";
+  stackStrategy?: "default" | "reverse" | "custom";
 };
 import {
   Button,
@@ -49,6 +50,99 @@ export default function LayoutPanel({
       ? `Invalid ${prop} value`
       : undefined;
   const effLocked = ((editorFlags as any)?.locked ?? (component as any)?.locked ?? false) as boolean;
+  const getRootFontPx = () => {
+    const fs = typeof window !== "undefined" ? getComputedStyle(document.documentElement).fontSize : "16px";
+    const n = parseFloat(fs || "16");
+    return isFinite(n) && n > 0 ? n : 16;
+  };
+
+  type Axis = "w" | "h";
+  const getParentSize = (axis: Axis) => {
+    try {
+      const el = document.querySelector(`[data-component-id="${component.id}"]`) as HTMLElement | null;
+      const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+      if (!parent) return 0;
+      return axis === "w" ? parent.clientWidth : parent.clientHeight;
+    } catch {
+      return 0;
+    }
+  };
+
+  const parseVal = (v?: string): { num: number; unit: "%" | "px" | "rem" } => {
+    const s = String(v ?? "").trim();
+    if (s.endsWith("%")) return { num: parseFloat(s.slice(0, -1)) || 0, unit: "%" };
+    if (s.endsWith("rem")) return { num: parseFloat(s.slice(0, -3)) || 0, unit: "rem" };
+    if (s.endsWith("px")) return { num: parseFloat(s.slice(0, -2)) || 0, unit: "px" };
+    // default to px
+    const num = parseFloat(s) || 0;
+    return { num, unit: "px" };
+  };
+
+  const fmt = (num: number, unit: "%" | "px" | "rem") =>
+    `${Number.isFinite(num) ? (unit === "%" ? Math.round(num) : Math.round(num)) : 0}${unit}`;
+
+  const convert = (num: number, from: "%" | "px" | "rem", to: "%" | "px" | "rem", axis: Axis) => {
+    if (from === to) return num;
+    const basePx = getRootFontPx();
+    const parentSize = getParentSize(axis) || 0;
+    // Convert from -> px
+    let px: number = num;
+    if (from === "%") px = parentSize > 0 ? (num / 100) * parentSize : num;
+    else if (from === "rem") px = num * basePx;
+    // px -> to
+    if (to === "%") return parentSize > 0 ? (px / parentSize) * 100 : px;
+    if (to === "rem") return basePx > 0 ? px / basePx : px;
+    return px;
+  };
+
+  const UnitInput = ({
+    label,
+    value,
+    onChange,
+    axis,
+    placeholder,
+    disabled,
+    cssProp,
+  }: {
+    label: React.ReactNode;
+    value?: string;
+    onChange: (v: string) => void;
+    axis: Axis;
+    placeholder?: string;
+    disabled?: boolean;
+    cssProp: string;
+  }) => {
+    const { num, unit } = parseVal(value);
+    return (
+      <div className="flex items-end gap-2">
+        <Input
+          label={label}
+          placeholder={placeholder}
+          value={value ?? ""}
+          onChange={(e) => onChange(e.target.value)}
+          disabled={disabled}
+          error={cssError(cssProp, value)}
+        />
+        <Select
+          value={unit}
+          onValueChange={(next) => {
+            const nextUnit = (next as "%" | "px" | "rem");
+            const nextNum = convert(num, unit, nextUnit, axis);
+            onChange(fmt(nextNum, nextUnit));
+          }}
+        >
+          <SelectTrigger className="w-20">
+            <SelectValue placeholder="unit" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="px">px</SelectItem>
+            <SelectItem value="%">%</SelectItem>
+            <SelectItem value="rem">rem</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+    );
+  };
   return (
     <div className="space-y-2">
       <div className="flex items-end gap-2">
@@ -76,58 +170,29 @@ export default function LayoutPanel({
       </div>
       {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
         <div key={vp} className="space-y-2">
-          <div className="flex items-end gap-2">
-            <Input
-              label={
-                <span className="flex items-center gap-1">
-                  {`Width (${vp})`}
-                  <Tooltip text="CSS width value with units">?</Tooltip>
-                </span>
-              }
-              placeholder="e.g. 100px or 50%"
-              value={
-                (component[`width${vp}` as keyof PageComponent] as string) ?? ""
-              }
-              error={cssError(
-                "width",
-                component[`width${vp}` as keyof PageComponent] as string
-              )}
-              onChange={(e) => handleResize(`width${vp}`, e.target.value)}
-            />
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => handleFullSize(`width${vp}`)}
-            >
-              Full width
-            </Button>
+          <UnitInput
+            label={<span className="flex items-center gap-1">{`Width (${vp})`}<Tooltip text="CSS width with unit (px/%/rem)">?</Tooltip></span>}
+            placeholder="e.g. 100px or 50%"
+            value={(component[`width${vp}` as keyof PageComponent] as string) ?? ""}
+            onChange={(v) => handleResize(`width${vp}`, v)}
+            axis="w"
+            disabled={effLocked}
+            cssProp="width"
+          />
+          <div className="flex gap-2">
+            <Button type="button" variant="outline" disabled={effLocked} onClick={() => handleFullSize(`width${vp}`)}>Full width</Button>
           </div>
-          <div className="flex items-end gap-2">
-            <Input
-              label={
-                <span className="flex items-center gap-1">
-                  {`Height (${vp})`}
-                  <Tooltip text="CSS height value with units">?</Tooltip>
-                </span>
-              }
-              placeholder="e.g. 1px or 1rem"
-              value={
-                (component[`height${vp}` as keyof PageComponent] as string) ??
-                ""
-              }
-              error={cssError(
-                "height",
-                component[`height${vp}` as keyof PageComponent] as string
-              )}
-              onChange={(e) => handleResize(`height${vp}`, e.target.value)}
-            />
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => handleFullSize(`height${vp}`)}
-            >
-              Full height
-            </Button>
+          <UnitInput
+            label={<span className="flex items-center gap-1">{`Height (${vp})`}<Tooltip text="CSS height with unit (px/%/rem)">?</Tooltip></span>}
+            placeholder="e.g. 1px or 1rem"
+            value={(component[`height${vp}` as keyof PageComponent] as string) ?? ""}
+            onChange={(v) => handleResize(`height${vp}`, v)}
+            axis="h"
+            disabled={effLocked}
+            cssProp="height"
+          />
+          <div className="flex gap-2">
+            <Button type="button" variant="outline" disabled={effLocked} onClick={() => handleFullSize(`height${vp}`)}>Full height</Button>
           </div>
         </div>
       ))}
@@ -152,30 +217,80 @@ export default function LayoutPanel({
       </Select>
       {component.position === "absolute" && (
         <>
-          <Input
-            label={
-              <span className="flex items-center gap-1">
-                Top
-                <Tooltip text="CSS top offset with units">?</Tooltip>
-              </span>
-            }
+          {/* Docking controls */}
+          <div className="grid grid-cols-2 gap-2">
+            <Select
+              value={(component as any).dockX ?? "left"}
+              onValueChange={(v) => handleInput("dockX" as any, v as any)}
+            >
+              <Tooltip text="Dock horizontally to container">
+                <SelectTrigger>
+                  <SelectValue placeholder="Dock X" />
+                </SelectTrigger>
+              </Tooltip>
+              <SelectContent>
+                <SelectItem value="left">Dock Left</SelectItem>
+                <SelectItem value="center">Dock Center</SelectItem>
+                <SelectItem value="right">Dock Right</SelectItem>
+              </SelectContent>
+            </Select>
+            <Select
+              value={(component as any).dockY ?? "top"}
+              onValueChange={(v) => handleInput("dockY" as any, v as any)}
+            >
+              <Tooltip text="Dock vertically to container">
+                <SelectTrigger>
+                  <SelectValue placeholder="Dock Y" />
+                </SelectTrigger>
+              </Tooltip>
+              <SelectContent>
+                <SelectItem value="top">Dock Top</SelectItem>
+                <SelectItem value="center">Dock Center</SelectItem>
+                <SelectItem value="bottom">Dock Bottom</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          {/* Per-breakpoint top/left */}
+          <UnitInput
+            label={<span className="flex items-center gap-1">Top<Tooltip text="CSS top offset (px/%/rem)">?</Tooltip></span>}
             placeholder="e.g. 10px"
             value={component.top ?? ""}
-            error={cssError("top", component.top)}
-            onChange={(e) => handleResize("top", e.target.value)}
+            onChange={(v) => handleResize("top", v)}
+            axis="h"
+            disabled={effLocked}
+            cssProp="top"
           />
-          <Input
-            label={
-              <span className="flex items-center gap-1">
-                Left
-                <Tooltip text="CSS left offset with units">?</Tooltip>
-              </span>
-            }
+          <UnitInput
+            label={<span className="flex items-center gap-1">Left<Tooltip text="CSS left offset (px/%/rem)">?</Tooltip></span>}
             placeholder="e.g. 10px"
             value={component.left ?? ""}
-            error={cssError("left", component.left)}
-            onChange={(e) => handleResize("left", e.target.value)}
+            onChange={(v) => handleResize("left", v)}
+            axis="w"
+            disabled={effLocked}
+            cssProp="left"
           />
+          {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
+            <div key={`pos-${vp}`} className="grid grid-cols-2 gap-2">
+              <UnitInput
+                label={<span className="flex items-center gap-1">{`Top (${vp})`}<Tooltip text="CSS top with unit (px/%/rem)">?</Tooltip></span>}
+                placeholder="e.g. 10px"
+                value={(component[`top${vp}` as keyof PageComponent] as string) ?? ""}
+                onChange={(v) => handleResize(`top${vp}`, v)}
+                axis="h"
+                disabled={effLocked}
+                cssProp="top"
+              />
+              <UnitInput
+                label={<span className="flex items-center gap-1">{`Left (${vp})`}<Tooltip text="CSS left with unit (px/%/rem)">?</Tooltip></span>}
+                placeholder="e.g. 10px"
+                value={(component[`left${vp}` as keyof PageComponent] as string) ?? ""}
+                onChange={(v) => handleResize(`left${vp}`, v)}
+                axis="w"
+                disabled={effLocked}
+                cssProp="left"
+              />
+            </div>
+          ))}
         </>
       )}
       {(
@@ -299,6 +414,38 @@ export default function LayoutPanel({
           error={cssError("gap", (component as { gap?: string }).gap)}
           onChange={(e) => handleInput("gap", e.target.value)}
         />
+      )}
+      {component.type === "Section" && (
+        <>
+          <Input
+            label={<span className="flex items-center gap-1">Section Grid Columns<Tooltip text="Override grid columns for this section">?</Tooltip></span>}
+            type="number"
+            min={1}
+            max={24}
+            value={(component as any).gridCols ?? ""}
+            onChange={(e) => handleInput("gridCols" as any, (e.target.value === "" ? undefined : Number(e.target.value)) as any)}
+          />
+          <Input
+            label={<span className="flex items-center gap-1">Section Grid Gutter<Tooltip text="Column gap for grid overlay (e.g. 16px)">?</Tooltip></span>}
+            placeholder="e.g. 16px"
+            value={(component as any).gridGutter ?? ""}
+            onChange={(e) => handleInput("gridGutter" as any, (e.target.value || undefined) as any)}
+          />
+          <Select
+            value={((component as any).gridSnap ? "on" : "off")}
+            onValueChange={(v) => handleInput("gridSnap" as any, (v === "on") as any)}
+          >
+            <Tooltip text="Enable snapping to grid for children in this section" className="block">
+              <SelectTrigger>
+                <SelectValue placeholder="Section Snap" />
+              </SelectTrigger>
+            </Tooltip>
+            <SelectContent>
+              <SelectItem value="off">Snap off</SelectItem>
+              <SelectItem value="on">Snap on</SelectItem>
+            </SelectContent>
+          </Select>
+        </>
       )}
     </div>
   );

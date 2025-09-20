@@ -28,6 +28,11 @@ function useSelectionHandlers(selectedIds: string[], onSelectIds: (ids: string[]
         onSelectIds(exists ? selectedIds.filter((s) => s !== id) : [...selectedIds, id]);
       } else {
         onSelectIds([id]);
+        // Move focus to the selected canvas item for predictable keyboard flow
+        setTimeout(() => {
+          const el = document.querySelector(`[data-component-id="${id}"]`) as HTMLElement | null;
+          el?.focus?.();
+        }, 0);
       }
     },
     [selectedIds, onSelectIds]

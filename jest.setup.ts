@@ -4,8 +4,8 @@
 /*  Executed **once** before the Jest environment is ready                    */
 /* -------------------------------------------------------------------------- */
 
-// Centralize fragile React/Next polyfills and shims
-import "./test/polyfills/react-compat";
+// DOM shims common to jsdom tests
+import "./test/polyfills/dom-compat";
 
 // Note: Do not auto‑mock `@prisma/client` here. Jest's moduleNameMapper
 // points `@prisma/client` to a manual mock at `__mocks__/@prisma/client.ts`.
@@ -79,6 +79,8 @@ mutableEnv.SANITY_API_VERSION ||= "2023-01-01";
 mutableEnv.AUTH_TOKEN_TTL ||= "15m";
 mutableEnv.EMAIL_FROM ||= "test@example.com";
 mutableEnv.EMAIL_PROVIDER ||= "smtp";
+// Use Stripe mock client by default in tests to avoid requiring secrets
+mutableEnv.STRIPE_USE_MOCK ||= "true";
 
 /* -------------------------------------------------------------------------- */
 /* 2.  Polyfills missing from the JSDOM / Node test runtime                    */
@@ -89,54 +91,9 @@ import "@testing-library/jest-dom";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { configure } = require("@testing-library/react");
 configure({ testIdAttribute: "data-cy" });
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require("cross-fetch/polyfill");
-import { TextDecoder, TextEncoder } from "node:util";
-import { File } from "node:buffer";
-import { webcrypto } from "node:crypto";
 import "./test/polyfills/form-request-submit";
 
-// React/Next polyfills are provided via test/polyfills/react-compat
-
-/** Node’s `util` encoders/decoders are required by React-DOM’s server renderer */
-(globalThis as any).TextEncoder ||= TextEncoder;
-(globalThis as any).TextDecoder ||= TextDecoder;
-(globalThis as any).File ||= File;
-(globalThis as any).crypto ||= webcrypto;
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { File: UndiciFile, FormData: UndiciFormData } = require("undici");
-(globalThis as any).File ||= UndiciFile;
-// Use JSDOM's FormData/File when available so form submissions work in tests
-if (typeof window !== "undefined") {
-  (globalThis as any).FormData = window.FormData;
-  (globalThis as any).File = window.File;
-} else {
-  (globalThis as any).FormData ||= UndiciFormData;
-}
-
-/** JSDOM doesn't implement object URLs; stub the APIs used in tests */
-if (!(URL as any).createObjectURL) {
-  (URL as any).createObjectURL = () => "blob:mock";
-}
-if (!(URL as any).revokeObjectURL) {
-  (URL as any).revokeObjectURL = () => {};
-}
-
-// JSDOM 20 (used by Jest 29) does not yet implement `form.requestSubmit()`.
-// Polyfill the browser behavior so submit buttons trigger the form's submit
-// event instead of throwing a "not implemented" error during tests.
-// JSDOM lacks certain DOM APIs used by Radix UI components
-if (typeof Element !== "undefined" && !Element.prototype.scrollIntoView) {
-  Element.prototype.scrollIntoView = () => {};
-}
-if (
-  typeof HTMLElement !== "undefined" &&
-  !HTMLElement.prototype.hasPointerCapture
-) {
-  HTMLElement.prototype.hasPointerCapture = () => false;
-  HTMLElement.prototype.setPointerCapture = () => {};
-  HTMLElement.prototype.releasePointerCapture = () => {};
-}
+// React/Next + DOM polyfills are provided via test/polyfills/*
 
 /**
  * React 19+ uses `MessageChannel` internally for suspense & streaming.

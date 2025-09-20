@@ -87,12 +87,12 @@ export default function Library({
           className="w-full flex-1"
         />
         {allTags.length > 0 && (
-          <Select value={tag} onValueChange={setTag}>
+          <Select value={tag === "" ? "__all__" : tag} onValueChange={(v) => setTag(v === "__all__" ? "" : v)}>
             <SelectTrigger className="sm:w-[180px]">
               <SelectValue placeholder="All tags" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">All tags</SelectItem>
+              <SelectItem value="__all__">All tags</SelectItem>
               {allTags.map((t) => (
                 <SelectItem key={t} value={t}>
                   {t}
@@ -135,4 +135,3 @@ export default function Library({
     </div>
   );
 }
-

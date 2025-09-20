@@ -1,31 +1,13 @@
-import {
-  fetch as undiciFetch,
-  Response as UndiciResponse,
-  Request as UndiciRequest,
-  Headers as UndiciHeaders,
-} from "undici";
+import { fetch as undiciFetch, Response, Request, Headers } from "undici";
 
-const globalAny = globalThis as typeof globalThis & Record<string, unknown>;
+const g = globalThis as typeof globalThis & Record<string, unknown>;
 
-if (typeof globalAny.fetch !== "function") {
-  globalAny.fetch = undiciFetch;
-}
+// Ensure WHATWG fetch primitives exist in Node environment
+g.fetch ||= undiciFetch;
+g.Response ||= Response;
+g.Request ||= Request;
+g.Headers ||= Headers;
 
-if (typeof globalAny.Response !== "function") {
-  globalAny.Response = UndiciResponse;
-}
-
-if (typeof globalAny.Request !== "function") {
-  globalAny.Request = UndiciRequest;
-}
-
-if (typeof globalAny.Headers !== "function") {
-  globalAny.Headers = UndiciHeaders;
-}
-
-const ResponseCtor = globalAny.Response as typeof UndiciResponse;
-
-if (typeof (ResponseCtor as any).json !== "function") {
-  (ResponseCtor as any).json = (data: unknown, init?: ResponseInit) =>
-    new ResponseCtor(JSON.stringify(data), init);
-}
+// Attach a spec-compliant static Response.json() implementation centrally
+// (ensures content-type header is set consistently across tests)
+import "../../test/setup-response-json";

@@ -1,6 +1,6 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withTempRepo } from "@acme/test-utils";
+import { withTempRepo, mockNextAuthAdmin, jsonRequest } from "@acme/test-utils";
 
 // Response.json polyfill is provided in jest.setup.ts
 
@@ -13,9 +13,7 @@ describe("inventory update route", () => {
   it("applies partial updates", async () => {
     await withTempRepo(async () => {
       process.env.SKIP_STOCK_ALERT = "1";
-      jest.doMock("next-auth", () => ({
-        getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
-      }));
+      mockNextAuthAdmin();
         jest.doMock("@acme/config", () => ({
           env: {
             NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!",
@@ -38,8 +36,7 @@ describe("inventory update route", () => {
       const route = await import(
         "../src/app/api/data/[shop]/inventory/[sku]/route",
       );
-      const req = { json: async () => ({ quantity: 5, variantAttributes: {} }) } as any;
-      const res = await route.PATCH(req, {
+      const res = await route.PATCH(jsonRequest({ quantity: 5, variantAttributes: {} }), {
         params: Promise.resolve({ shop: "test", sku: "a" }),
       });
       expect(res.status).toBe(200);
@@ -59,9 +56,7 @@ describe("inventory update route", () => {
   it("merges concurrent updates", async () => {
     await withTempRepo(async () => {
       process.env.SKIP_STOCK_ALERT = "1";
-      jest.doMock("next-auth", () => ({
-        getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
-      }));
+      mockNextAuthAdmin();
         jest.doMock("@acme/config", () => ({
           env: {
             NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!",
@@ -78,10 +73,8 @@ describe("inventory update route", () => {
       const route = await import(
         "../src/app/api/data/[shop]/inventory/[sku]/route",
       );
-      const req1 = { json: async () => ({ quantity: 5, variantAttributes: {} }) } as any;
-      const req2 = {
-        json: async () => ({ lowStockThreshold: 2, variantAttributes: {} }),
-      } as any;
+      const req1 = jsonRequest({ quantity: 5, variantAttributes: {} });
+      const req2 = jsonRequest({ lowStockThreshold: 2, variantAttributes: {} });
       await Promise.all([
         route.PATCH(req1, {
           params: Promise.resolve({ shop: "test", sku: "a" }),

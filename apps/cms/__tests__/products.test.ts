@@ -7,7 +7,7 @@ process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";
 
 import fs from "node:fs/promises";
 import path from "node:path";
-import { withTempRepo } from "@acme/test-utils";
+import { withTempRepo, mockNextAuthAdmin } from "@acme/test-utils";
 
 jest.setTimeout(20000);
 
@@ -18,11 +18,7 @@ jest.setTimeout(20000);
 // Minimal wrapper to attach CMS-specific mocks after module reset
 const withRepo = (cb: (dir: string) => Promise<void>) =>
   withTempRepo(async (dir) => {
-    jest.doMock("next-auth", () => ({
-      getServerSession: jest.fn().mockResolvedValue({
-        user: { role: "admin" },
-      }),
-    }));
+    mockNextAuthAdmin();
     jest.doMock("next/navigation", () => ({ redirect: jest.fn() }));
     jest.doMock("@cms/auth/options", () => ({ authOptions: {} }));
     await cb(dir);

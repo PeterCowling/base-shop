@@ -14,6 +14,8 @@ interface Params {
   formDataDeps: unknown[];
   onAutoSaveError?: (retry: () => void) => void;
   clearHistory: () => void;
+  /** Optional shop id to embed local library snapshots */
+  shop?: string | null;
 }
 
 export default function usePageBuilderSave({
@@ -25,7 +27,17 @@ export default function usePageBuilderSave({
   formDataDeps,
   onAutoSaveError,
   clearHistory,
+  shop,
 }: Params) {
+  // Lazy import to avoid SSR issues
+  const getLibrary = () => {
+    try {
+      const mod = require("../libraryStore") as typeof import("../libraryStore");
+      return mod.listLibrary(shop);
+    } catch {
+      return [];
+    }
+  };
   const formData = useMemo(() => {
     const fd = new FormData();
     fd.append("id", page.id);
@@ -36,8 +48,17 @@ export default function usePageBuilderSave({
     fd.append("description", JSON.stringify(page.seo.description ?? {}));
     fd.append("components", JSON.stringify(components));
     fd.append("history", JSON.stringify(state));
+    // Optional library snapshot
+    try {
+      const lib = getLibrary();
+      if (lib && Array.isArray(lib) && lib.length > 0) {
+        fd.append("library", JSON.stringify(lib));
+      }
+    } catch {
+      // ignore library persistence errors
+    }
     return fd;
-  }, [page, components, state]);
+  }, [page, components, state, shop]);
 
   const formDataRef = useRef<FormData>(formData);
   useEffect(() => {

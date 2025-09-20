@@ -2,10 +2,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import type { Session } from 'next-auth';
-
-export const adminSession = {
-  user: { role: 'admin', email: 'admin@example.com' },
-} as unknown as Session;
+import { adminSession } from './mocks';
 
 export async function withShop(cb: (dir: string) => Promise<void>): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'shop-'));

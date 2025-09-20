@@ -19,7 +19,7 @@ import "../setup-response-json";
 
 // Ensure MessageChannel doesn't leave open handles in Jest
 // eslint-disable-next-line import/no-relative-packages
-import "./messageChannel.js";
+import "./messageChannel";
 
 // React compatibility shims
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -54,4 +54,3 @@ try {
 } catch {
   // react-dom/test-utils not required in all environments; ignore if unavailable
 }
-

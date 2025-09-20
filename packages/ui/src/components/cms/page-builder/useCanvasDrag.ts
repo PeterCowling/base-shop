@@ -11,6 +11,10 @@ interface Options {
   gridCols: number;
   containerRef: React.RefObject<HTMLDivElement | null>;
   disabled?: boolean;
+  leftKey?: string;
+  topKey?: string;
+  dockX?: "left" | "right" | "center";
+  dockY?: "top" | "bottom" | "center";
 }
 
 export default function useCanvasDrag({
@@ -20,6 +24,10 @@ export default function useCanvasDrag({
   gridCols,
   containerRef,
   disabled = false,
+  leftKey = "left",
+  topKey = "top",
+  dockX,
+  dockY,
 }: Options) {
   const moveRef = useRef<{ x: number; y: number; l: number; t: number } | null>(
     null
@@ -83,8 +91,8 @@ export default function useCanvasDrag({
           distY = bottomDist;
         }
       }
-      const parent = containerRef.current.parentElement;
-      const unit = parent ? parent.offsetWidth / gridCols : null;
+      const parentEl = containerRef.current.parentElement;
+      const unit = parentEl ? parentEl.offsetWidth / gridCols : null;
       if (gridEnabled && unit) {
         const snappedL = snapToGrid(newL, unit);
         const snappedT = snapToGrid(newT, unit);
@@ -101,12 +109,24 @@ export default function useCanvasDrag({
           distY = gridDistY;
         }
       }
-      dispatch({
-        type: "resize",
-        id: componentId,
-        left: `${newL}px`,
-        top: `${newT}px`,
-      });
+      // Compute docked offsets when docking is enabled
+      const parent = containerRef.current.parentElement;
+      const useRight = dockX === "right";
+      const useBottom = dockY === "bottom";
+      const patch: Record<string, string> = {};
+      if (useRight && parent) {
+        const right = Math.round((parent.offsetWidth - (newL + width)));
+        patch.right = `${right}px`;
+      } else {
+        patch[leftKey] = `${Math.round(newL)}px`;
+      }
+      if (useBottom && parent) {
+        const bottom = Math.round((parent.offsetHeight - (newT + height)));
+        patch.bottom = `${bottom}px`;
+      } else {
+        patch[topKey] = `${Math.round(newT)}px`;
+      }
+      dispatch({ type: "resize", id: componentId, ...(patch as any) });
       setCurrent({ left: newL, top: newT, width, height });
       setGuides({
         x: guideX !== null ? guideX - newL : null,

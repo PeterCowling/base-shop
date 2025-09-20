@@ -1,6 +1,7 @@
 import { jest } from "@jest/globals";
 import type { NextRequest } from "next/server";
 import { setupReturnMocks } from "./helpers/return";
+import { asNextJson } from "@acme/test-utils";
 
 afterEach(() => jest.resetModules());
 
@@ -10,9 +11,7 @@ describe("/api/return order not found", () => {
     markReturned.mockResolvedValue(null);
 
     const { POST } = await import("../src/api/return/route");
-    const res = await POST({
-      json: async () => ({ sessionId: "sess" }),
-    } as unknown as NextRequest);
+    const res = await POST(asNextJson({ sessionId: "sess" }));
 
     expect(res.status).toBe(404);
     expect(await res.json()).toEqual({ error: "Order not found" });

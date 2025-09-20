@@ -26,7 +26,7 @@ const setupFilesAfterEnv = [
 
 const setupFiles = [
   ...(base.setupFiles || []),
-  path.join(packageRoot, "test/setup-env.js"),
+  path.join(packageRoot, "test/setup-env.ts"),
 ];
 
 const tsJestOptions = {
@@ -38,18 +38,6 @@ const tsJestOptions = {
 
 const transform = {
   "^.+\\.(ts|tsx)$": ["ts-jest", tsJestOptions],
-  "^.+\\.tsx?$": ["ts-jest", tsJestOptions],
-};
-
-const globals = {
-  ...base.globals,
-  "ts-jest": {
-    ...(base.globals && base.globals["ts-jest"]),
-    tsconfig: path.join(packageRoot, "tsconfig.test.json"),
-    useESM: false,
-    diagnostics: false,
-    babelConfig: false,
-  },
 };
 
 /** @type {import('jest').Config} */
@@ -65,7 +53,6 @@ module.exports = {
   // Node environment avoids that resolution path entirely and prevents
   // `ERR_PACKAGE_PATH_NOT_EXPORTED` errors when running unit tests.
   testEnvironment: "node",
-  globals,
   setupFiles,
   moduleNameMapper: {
     ...base.moduleNameMapper,

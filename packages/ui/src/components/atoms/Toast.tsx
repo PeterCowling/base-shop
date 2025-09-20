@@ -46,6 +46,9 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
           className
         )}
         data-token={token}
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
         {...props}
       >
         <span data-token={tokenFg}>{message}</span>

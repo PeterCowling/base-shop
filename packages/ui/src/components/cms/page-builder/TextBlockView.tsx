@@ -22,17 +22,20 @@ interface Props {
   style: React.CSSProperties;
   guides: Guides;
   snapping: boolean;
+  kbResizing?: boolean;
   editor: Editor | null;
   editing: boolean;
   onStartEditing: () => void;
   onFinishEditing: () => void;
   startDrag: (e: React.PointerEvent) => void;
   startResize: (e: React.PointerEvent, handle?: "se" | "ne" | "sw" | "nw" | "e" | "w" | "n" | "s") => void;
+  onKeyDown?: (e: React.KeyboardEvent<HTMLDivElement>) => void;
   onSelect: () => void;
   onRemove: () => void;
   content: string;
   zIndex?: number;
   locked?: boolean;
+  spacingOverlay?: { type: "margin" | "padding"; side: "top" | "right" | "bottom" | "left"; top: number; left: number; width: number; height: number } | null;
 }
 
 const TextBlockView = ({
@@ -51,11 +54,14 @@ const TextBlockView = ({
   onFinishEditing,
   startDrag,
   startResize,
+  onKeyDown,
   onSelect,
   onRemove,
   content,
   zIndex,
   locked = false,
+  kbResizing = false,
+  spacingOverlay,
 }: Props) => {
   const sanitized = DOMPurify.sanitize(content);
   return (
@@ -68,6 +74,7 @@ const TextBlockView = ({
       role="listitem"
       aria-grabbed={isDragging}
       tabIndex={0}
+      onKeyDown={onKeyDown}
       style={{ ...(zIndex !== undefined ? { zIndex } : {}), ...style }}
       className={
         "relative rounded border" +
@@ -108,6 +115,22 @@ const TextBlockView = ({
       {locked && (
         <div className="absolute right-1 top-1 z-30 text-xs" title="Locked" aria-hidden>
           <LockClosedIcon />
+        </div>
+      )}
+      {spacingOverlay && (
+        <div
+          className="pointer-events-none absolute z-30 bg-primary/20"
+          style={{
+            top: spacingOverlay.top,
+            left: spacingOverlay.left,
+            width: spacingOverlay.width,
+            height: spacingOverlay.height,
+          }}
+        />
+      )}
+      {kbResizing && (
+        <div className="pointer-events-none absolute -top-5 left-0 z-30 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
+          {containerRef.current ? `${Math.round(containerRef.current.offsetWidth)}×${Math.round(containerRef.current.offsetHeight)}` : ""}
         </div>
       )}
       {editing ? (

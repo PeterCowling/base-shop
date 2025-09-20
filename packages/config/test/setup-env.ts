@@ -1,6 +1,6 @@
-const mutableEnv = process.env;
+const mutableEnv = process.env as unknown as Record<string, string>;
 
-const ensureSecret = (key, fallback) => {
+const ensureSecret = (key: string, fallback: string) => {
   const current = mutableEnv[key];
   if (!current || current.length < 32) {
     mutableEnv[key] = fallback;
@@ -28,3 +28,4 @@ mutableEnv.UPSTASH_REDIS_REST_TOKEN ||= "token-value-32-chars-long-string!!";
 mutableEnv.JWT_SECRET ||= "jwt-secret-32-chars-long-string!!!!";
 mutableEnv.OAUTH_CLIENT_ID ||= "oauth-client-id";
 mutableEnv.OAUTH_CLIENT_SECRET ||= "oauth-client-secret-32-chars-long-string!!!";
+

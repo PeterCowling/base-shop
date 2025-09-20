@@ -1,5 +1,6 @@
 import { jest } from "@jest/globals";
 import type { NextRequest } from "next/server";
+import { asNextJson } from "@acme/test-utils";
 
 describe("cart API edge runtime", () => {
   afterEach(() => {
@@ -17,10 +18,7 @@ describe("cart API edge runtime", () => {
     const { POST } = await import("../src/cartApi");
 
     await expect(
-      POST({
-        json: async () => ({ sku: { id: "foo" }, qty: 1 }),
-        cookies: { get: () => undefined },
-      } as unknown as NextRequest)
+      POST(asNextJson({ sku: { id: "foo" }, qty: 1 }))
     ).rejects.toThrow(/length/);
   });
 });

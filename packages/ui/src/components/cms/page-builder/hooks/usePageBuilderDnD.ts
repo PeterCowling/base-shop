@@ -43,6 +43,7 @@ interface Params {
   setSnapPosition?: (x: number | null) => void;
   editor?: HistoryState["editor"];
   viewport?: "desktop" | "tablet" | "mobile";
+  scrollRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 export function usePageBuilderDnD({
@@ -56,6 +57,7 @@ export function usePageBuilderDnD({
   setSnapPosition = noop,
   editor,
   viewport,
+  scrollRef,
 }: Params) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -78,6 +80,20 @@ export function usePageBuilderDnD({
       const pointerX = rawX - (canvasRect?.left ?? 0);
       const snapX = snapToGrid(pointerX, gridSize);
       setSnapPosition(snapX);
+      // Auto-scroll when near edges of the scroll container
+      try {
+        const sc = scrollRef?.current;
+        if (sc) {
+          const rect = sc.getBoundingClientRect();
+          const edge = 40; // px edge threshold
+          const pageY = activatorEvent.clientY + delta.y;
+          const pageX = activatorEvent.clientX + delta.x;
+          if (pageY < rect.top + edge) sc.scrollBy({ top: -20, behavior: "auto" });
+          else if (pageY > rect.bottom - edge) sc.scrollBy({ top: 20, behavior: "auto" });
+          if (pageX < rect.left + edge) sc.scrollBy({ left: -20, behavior: "auto" });
+          else if (pageX > rect.right - edge) sc.scrollBy({ left: 20, behavior: "auto" });
+        }
+      } catch {}
       if (over.id === "canvas") {
         setInsertIndex(visible.length);
         return;
@@ -86,7 +102,7 @@ export function usePageBuilderDnD({
       const index = (overData?.index ?? visible.length) + (isBelow ? 1 : 0);
       setInsertIndex(index);
     },
-    [components, gridSize, canvasRef, setSnapPosition, editor, viewport]
+    [components, gridSize, canvasRef, setSnapPosition, editor, viewport, scrollRef]
   );
 
   const handleDragEndInternal = useCallback(

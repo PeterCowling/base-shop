@@ -2,6 +2,7 @@
 
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import type { CSSProperties, ComponentProps } from "react";
+import React from "react";
 import { Button } from "../../atoms/shadcn";
 import { Toast } from "../../atoms";
 import PageToolbar from "./PageToolbar";
@@ -26,12 +27,15 @@ interface LayoutProps {
   startTour: () => void;
   togglePreview: () => void;
   showPreview: boolean;
+  toggleComments: () => void;
+  showComments: boolean;
   liveMessage: string;
   dndContext: ComponentProps<typeof DndContext>;
   frameClass: Record<string, string>;
   viewport: "desktop" | "tablet" | "mobile";
   viewportStyle: CSSProperties;
   zoom?: number;
+  scrollRef?: React.RefObject<HTMLDivElement | null>;
   canvasProps: React.ComponentProps<typeof PageCanvas>;
   activeType: ComponentType | null;
   previewProps: {
@@ -55,12 +59,15 @@ const PageBuilderLayout = ({
   startTour,
   togglePreview,
   showPreview,
+  toggleComments,
+  showComments,
   liveMessage,
   dndContext,
   frameClass,
   viewport,
   viewportStyle,
   zoom = 1,
+  scrollRef,
   canvasProps,
   activeType,
   previewProps,
@@ -76,30 +83,61 @@ const PageBuilderLayout = ({
     </aside>
     <div className="flex flex-1 flex-col gap-4">
       <div className="flex items-center justify-between">
-        <PageToolbar {...toolbarProps} />
+        <div data-tour="toolbar">
+          <PageToolbar {...toolbarProps} />
+        </div>
         <div className="flex items-center gap-2">
           <GridSettings {...gridProps} />
           {onInsertPreset && <PresetsModal onInsert={onInsertPreset} />}
           <Button variant="outline" onClick={startTour}>
             Tour
           </Button>
+          <Button variant="outline" onClick={toggleComments}>
+            {showComments ? "Hide comments" : "Show comments"}
+          </Button>
           <Button variant="outline" onClick={togglePreview}>
             {showPreview ? "Hide preview" : "Show preview"}
           </Button>
         </div>
       </div>
-      <div aria-live="polite" role="status" className="sr-only">
+      <div aria-live="polite" aria-atomic="true" role="status" className="sr-only">
         {liveMessage}
       </div>
       <div className="flex flex-1 gap-4">
         <DndContext {...dndContext}>
-          <div style={{ transform: `scale(${zoom})`, transformOrigin: "top center" }}>
-            <div
+          <div
+            ref={scrollRef}
+            className="relative max-h-full overflow-auto"
+            onPointerDown={(e) => {
+              const sc = scrollRef?.current;
+              if (!sc) return;
+              const enable = e.button === 1 || e.altKey;
+              if (!enable) return;
+              e.preventDefault();
+              const startX = e.clientX;
+              const startY = e.clientY;
+              const startScrollLeft = sc.scrollLeft;
+              const startScrollTop = sc.scrollTop;
+              const handleMove = (ev: PointerEvent) => {
+                sc.scrollTo({ left: startScrollLeft - (ev.clientX - startX), top: startScrollTop - (ev.clientY - startY) });
+              };
+              const stop = () => {
+                window.removeEventListener("pointermove", handleMove);
+                window.removeEventListener("pointerup", stop);
+              };
+              window.addEventListener("pointermove", handleMove);
+              window.addEventListener("pointerup", stop);
+            }}
+          >
+            <div style={{ transform: `scale(${zoom})`, transformOrigin: "top center" }}>
+              <div
               className={`${frameClass[viewport]} shrink-0`}
               style={viewportStyle}
               data-tour="canvas"
-            >
-              <PageCanvas {...canvasProps} />
+              data-viewport={viewport}
+              >
+                <PageCanvas {...canvasProps} />
+              </div>
             </div>
           </div>
           <DragOverlay>

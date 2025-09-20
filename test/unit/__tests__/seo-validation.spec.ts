@@ -1,10 +1,5 @@
 (process.env as Record<string, string>).NODE_ENV = "development";
-
-jest.mock("next-auth", () => ({
-  getServerSession: jest
-    .fn()
-    .mockResolvedValue({ user: { role: "admin" } } as any),
-}));
+import { __setMockSession } from "next-auth";
 
 jest.mock("@prisma/client", () => ({
   PrismaClient: jest.fn().mockImplementation(() => ({})),
@@ -28,6 +23,7 @@ beforeEach(() => {
   jest.clearAllMocks();
   mockGetShopSettings.mockResolvedValue({ languages: ["en"] });
   mockSaveShopSettings.mockResolvedValue(undefined);
+  __setMockSession({ user: { role: "admin" } } as any);
 });
 
 describe("updateSeo validation", () => {

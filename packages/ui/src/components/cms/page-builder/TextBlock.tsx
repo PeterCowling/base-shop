@@ -9,6 +9,7 @@ import useSortableBlock from "./useSortableBlock";
 import useBlockDimensions from "./useBlockDimensions";
 import useBlockTransform from "./useBlockTransform";
 import useLocalizedTextEditor from "./useLocalizedTextEditor";
+import useCanvasSpacing from "./useCanvasSpacing";
 import TextBlockView from "./TextBlockView";
 import type { Action } from "./state";
 import {
@@ -65,6 +66,8 @@ const TextBlock = memo(function TextBlock({
     heightKey,
     widthVal,
     heightVal,
+    marginKey,
+    paddingKey,
     marginVal,
     paddingVal,
   } = useBlockDimensions({ component, viewport });
@@ -72,7 +75,7 @@ const TextBlock = memo(function TextBlock({
   const { editor: textEditor, editing, startEditing, finishEditing } =
     useLocalizedTextEditor(component, locale);
 
-  const { startResize, startDrag, guides, snapping } = useBlockTransform(
+  const { startResize, startDrag, guides, snapping, nudgeByKeyboard, kbResizing } = useBlockTransform(
     component.id,
     {
       widthKey,
@@ -86,6 +89,17 @@ const TextBlock = memo(function TextBlock({
       disabled: editing || !!effLocked,
     },
   );
+
+  // Spacing keyboard adjustments with overlay
+  const { nudgeSpacingByKeyboard, overlay: spacingOverlay } = useCanvasSpacing({
+    componentId: component.id,
+    marginKey,
+    paddingKey,
+    marginVal,
+    paddingVal,
+    dispatch,
+    containerRef,
+  });
 
   const handleFinishEditing = useCallback(() => {
     const patch = finishEditing();
@@ -141,6 +155,7 @@ const TextBlock = memo(function TextBlock({
         style={style}
         guides={guides}
         snapping={snapping}
+        kbResizing={kbResizing}
         editor={textEditor}
         editing={editing}
         onStartEditing={() => {
@@ -150,6 +165,36 @@ const TextBlock = memo(function TextBlock({
         onFinishEditing={handleFinishEditing}
         startDrag={startDrag}
         startResize={startResize}
+        spacingOverlay={spacingOverlay}
+        onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+          if (effLocked || editing) return;
+          const key = e.key.toLowerCase();
+          const isArrow = key === "arrowleft" || key === "arrowright" || key === "arrowup" || key === "arrowdown";
+          if (!isArrow) return;
+          if (e.ctrlKey || e.metaKey) {
+            e.preventDefault();
+            e.stopPropagation();
+            const el = containerRef.current;
+            const parent = el?.parentElement ?? null;
+            const unit = gridEnabled && parent ? parent.offsetWidth / gridCols : undefined;
+            const step = unit ?? (e.altKey ? 10 : 1);
+            const type = e.altKey ? "padding" : "margin";
+            const side = key === "arrowleft" ? "left" : key === "arrowright" ? "right" : key === "arrowup" ? "top" : "bottom";
+            const delta = key === "arrowleft" || key === "arrowup" ? -step : step;
+            nudgeSpacingByKeyboard(type, side, delta);
+            return;
+          }
+          if (e.shiftKey) {
+            e.preventDefault();
+            e.stopPropagation();
+            const el = containerRef.current;
+            const parent = el?.parentElement ?? null;
+            const unit = gridEnabled && parent ? parent.offsetWidth / gridCols : undefined;
+            const step = unit ?? (e.altKey ? 10 : 1);
+            const dir = key === "arrowleft" ? "left" : key === "arrowright" ? "right" : key === "arrowup" ? "up" : "down";
+            nudgeByKeyboard(dir, step);
+          }
+        }}
         onSelect={() => onSelect(component.id)}
         onRemove={onRemove}
         content={content}

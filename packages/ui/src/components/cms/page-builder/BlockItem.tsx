@@ -3,7 +3,7 @@
 import type { Locale } from "@acme/i18n/locales";
 import { CSS } from "@dnd-kit/utilities";
 import type { PageComponent, HistoryState } from "@acme/types";
-import { memo } from "react";
+import { memo, useMemo, useState } from "react";
 import type { Action } from "./state";
 import Block from "./Block";
 import useInlineText from "./useInlineText";
@@ -25,6 +25,8 @@ import {
   Button as MenuButton,
   Button as UIButton,
 } from "../../atoms/shadcn";
+import ContextMenu from "./ContextMenu";
+import { getStyleClipboard, setStyleClipboard } from "./style/styleClipboard";
 
 type Props = {
   component: PageComponent;
@@ -88,6 +90,10 @@ const BlockItem = memo(function BlockItemComponent({
     paddingKey,
     marginVal,
     paddingVal,
+    leftKey,
+    topKey,
+    leftVal,
+    topVal,
   } = useBlockDimensions({ component, viewport });
 
   const {
@@ -100,6 +106,8 @@ const BlockItem = memo(function BlockItemComponent({
     left: resizeLeft,
     top: resizeTop,
     resizing,
+    kbResizing,
+    nudgeByKeyboard: nudgeResizeByKeyboard,
   } = useCanvasResize({
     componentId: component.id,
     widthKey,
@@ -111,6 +119,10 @@ const BlockItem = memo(function BlockItemComponent({
     gridCols,
     containerRef,
     disabled: !!effLocked || !!inline?.editing,
+    leftKey,
+    topKey,
+    dockX: (component as any).dockX as any,
+    dockY: (component as any).dockY as any,
   });
 
   const {
@@ -130,9 +142,13 @@ const BlockItem = memo(function BlockItemComponent({
     gridCols,
     containerRef,
     disabled: !!effLocked || !!inline?.editing,
+    leftKey,
+    topKey,
+    dockX: (component as any).dockX as any,
+    dockY: (component as any).dockY as any,
   });
 
-  const { startSpacing, overlay: spacingOverlay } = useCanvasSpacing({
+  const { startSpacing, overlay: spacingOverlay, nudgeSpacingByKeyboard } = useCanvasSpacing({
     componentId: component.id,
     marginKey,
     paddingKey,
@@ -152,22 +168,160 @@ const BlockItem = memo(function BlockItemComponent({
       : dragDistances;
   const snapping = resizeSnapping || dragSnapping;
 
-  const showOverlay = resizing || moving;
+  const showOverlay = resizing || moving || kbResizing;
   const overlayWidth = resizing ? resizeWidth : dragWidth;
   const overlayHeight = resizing ? resizeHeight : dragHeight;
   const overlayLeft = resizing ? resizeLeft : dragLeft;
   const overlayTop = resizing ? resizeTop : dragTop;
   const childComponents = (component as { children?: PageComponent[] }).children;
 
+  // Context menu state
+  const [ctxOpen, setCtxOpen] = useState(false);
+  const [ctxPos, setCtxPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  const ctxItems = useMemo(() => {
+    const locked = !!effLocked;
+    const z = (flags as any).zIndex as number | undefined;
+    const clip = getStyleClipboard();
+    const canPasteStyle = clip != null && !locked;
+    const selectionSet = new Set((selectedIds || []).length > 0 ? selectedIds : [component.id]);
+    if (!selectionSet.has(component.id)) selectionSet.add(component.id);
+    const selection = Array.from(selectionSet);
+    const isLocked = (id: string) => !!((editor as any)?.[id]?.locked);
+    const unlocked = selection.filter((id) => !isLocked(id));
+    const lockedSel = selection.filter((id) => isLocked(id));
+    const pasteTargets = unlocked;
+    const multiCount = selection.length;
+    return [
+      { label: "Duplicate", onClick: () => dispatch({ type: "duplicate", id: component.id }), disabled: locked },
+      { label: locked ? "Unlock" : "Lock", onClick: () => dispatch({ type: "update-editor", id: component.id, patch: { locked: !locked } as any }), disabled: false },
+      ...(multiCount > 1
+        ? [{
+            label: lockedSel.length > 0 ? `Unlock selection (${lockedSel.length})` : `Lock selection (${unlocked.length})`,
+            onClick: () => {
+              if (lockedSel.length > 0) {
+                lockedSel.forEach((id) => dispatch({ type: "update-editor", id, patch: { locked: false } as any }));
+                try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Unlocked ${lockedSel.length} blocks` })); } catch {}
+              } else if (unlocked.length > 0) {
+                unlocked.forEach((id) => dispatch({ type: "update-editor", id, patch: { locked: true } as any }));
+                try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Locked ${unlocked.length} blocks` })); } catch {}
+              }
+            },
+            disabled: multiCount === 0,
+          } as const]
+        : []),
+      { label: "Delete", onClick: () => onRemove(), disabled: locked },
+      ...(multiCount > 1
+        ? [{
+            label: `Duplicate selection (${unlocked.length})`,
+            onClick: () => {
+              unlocked.forEach((id) => dispatch({ type: "duplicate", id }));
+              try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Duplicated ${unlocked.length} blocks` })); } catch {}
+            },
+            disabled: unlocked.length === 0,
+          } as const]
+        : []),
+      ...(multiCount > 1
+        ? [{
+            label: `Delete selection (${unlocked.length})`,
+            onClick: () => {
+              unlocked.forEach((id) => dispatch({ type: "remove", id }));
+              try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Deleted ${unlocked.length} blocks` })); } catch {}
+            },
+            disabled: unlocked.length === 0,
+          } as const]
+        : []),
+      { label: "Bring to front", onClick: () => dispatch({ type: "update-editor", id: component.id, patch: { zIndex: 999 } as any }), disabled: locked },
+      { label: "Send to back", onClick: () => dispatch({ type: "update-editor", id: component.id, patch: { zIndex: 0 } as any }), disabled: locked },
+      { label: "Forward", onClick: () => dispatch({ type: "update-editor", id: component.id, patch: { zIndex: ((z ?? 0) + 1) } as any }), disabled: locked },
+      { label: "Backward", onClick: () => dispatch({ type: "update-editor", id: component.id, patch: { zIndex: Math.max(0, (z ?? 0) - 1) } as any }), disabled: locked },
+      ...(multiCount > 1
+        ? [{
+            label: `Bring selection to front (${unlocked.length})`,
+            onClick: () => {
+              unlocked.forEach((id) => dispatch({ type: "update-editor", id, patch: { zIndex: 999 } as any }));
+              try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Brought ${unlocked.length} to front` })); } catch {}
+            },
+            disabled: unlocked.length === 0,
+          },
+          {
+            label: `Send selection to back (${unlocked.length})`,
+            onClick: () => {
+              unlocked.forEach((id) => dispatch({ type: "update-editor", id, patch: { zIndex: 0 } as any }));
+              try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Sent ${unlocked.length} to back` })); } catch {}
+            },
+            disabled: unlocked.length === 0,
+          }] as const
+        : []),
+      { label: "Copy style", onClick: () => {
+          let overrides: any = {};
+          try {
+            overrides = component.styles ? JSON.parse(String(component.styles)) : {};
+          } catch {
+            overrides = {};
+          }
+          setStyleClipboard(overrides);
+          try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Styles copied" })); } catch {}
+        }, disabled: false },
+      { label: pasteTargets.length > 1 ? `Paste style (${pasteTargets.length})` : "Paste style", onClick: () => {
+          const clip2 = getStyleClipboard();
+          if (!clip2) return;
+          try {
+            pasteTargets.forEach((id) => {
+              dispatch({ type: "update", id, patch: { styles: JSON.stringify(clip2) } as any });
+            });
+            try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: pasteTargets.length > 1 ? `Styles pasted to ${pasteTargets.length} blocks` : "Styles pasted" })); } catch {}
+          } catch {}
+        }, disabled: !canPasteStyle },
+    ];
+  }, [effLocked, flags, component.id, component.styles, dispatch, onRemove, selectedIds, editor]);
+
   return (
     <div
       ref={setNodeRef}
       onClick={(e) => onSelect(component.id, e)}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        onSelect(component.id, e);
+        setCtxPos({ x: e.clientX, y: e.clientY });
+        setCtxOpen(true);
+      }}
       role="listitem"
       aria-grabbed={isDragging}
       aria-dropeffect="move"
       tabIndex={0}
       data-component-id={component.id}
+      data-pb-contextmenu-trigger
+      onKeyDown={(e) => {
+        if (effLocked || inline?.editing) return;
+        const key = e.key.toLowerCase();
+        const isArrow = key === "arrowleft" || key === "arrowright" || key === "arrowup" || key === "arrowdown";
+        if (!isArrow) return;
+        // Ctrl/Cmd + Arrow: spacing (Alt => padding, otherwise margin)
+        if (e.ctrlKey || e.metaKey) {
+          e.preventDefault();
+          e.stopPropagation();
+          const el = containerRef.current;
+          const parent = el?.parentElement ?? null;
+          const unit = gridEnabled && parent ? parent.offsetWidth / gridCols : undefined;
+          const step = unit ?? (e.altKey ? 10 : 1);
+          const type = e.altKey ? "padding" : "margin";
+          const side = key === "arrowleft" ? "left" : key === "arrowright" ? "right" : key === "arrowup" ? "top" : "bottom";
+          const delta = key === "arrowleft" || key === "arrowup" ? -step : step;
+          nudgeSpacingByKeyboard(type as any, side as any, delta);
+        }
+        // Shift + Arrow: resize width/height
+        if (e.shiftKey) {
+          e.preventDefault();
+          e.stopPropagation();
+          const el = containerRef.current;
+          const parent = el?.parentElement ?? null;
+          const unit = gridEnabled && parent ? parent.offsetWidth / gridCols : undefined;
+          const step = unit ?? (e.altKey ? 10 : 1);
+          const dir = key === "arrowleft" ? "left" : key === "arrowright" ? "right" : key === "arrowup" ? "up" : "down";
+          nudgeResizeByKeyboard(dir as any, step);
+        }
+      }}
       style={{
         transform: CSS.Transform.toString(transform),
         ...(effZIndex !== undefined ? { zIndex: effZIndex as number } : {}),
@@ -176,8 +330,36 @@ const BlockItem = memo(function BlockItemComponent({
         ...(marginVal ? { margin: marginVal } : {}),
         ...(paddingVal ? { padding: paddingVal } : {}),
         ...(component.position ? { position: component.position } : {}),
-        ...(component.top ? { top: component.top } : {}),
-        ...(component.left ? { left: component.left } : {}),
+        ...(() => {
+          const pos: Record<string, any> = {};
+          const dockX = (component as any).dockX as ("left"|"right"|"center"|undefined);
+          const dockY = (component as any).dockY as ("top"|"bottom"|"center"|undefined);
+          if (component.position === "absolute") {
+            // Horizontal docking
+            if (dockX === "right") {
+              if ((component as any).right) pos.right = (component as any).right;
+              else if (leftVal && (containerRef.current?.parentElement)) {
+                // fallback: compute right from left/width if possible at render time
+              }
+            } else if (dockX === "center") {
+              pos.left = 0; pos.right = 0; pos.marginLeft = "auto"; pos.marginRight = "auto";
+            } else {
+              if (leftVal) pos.left = leftVal;
+            }
+            // Vertical docking
+            if (dockY === "bottom") {
+              if ((component as any).bottom) pos.bottom = (component as any).bottom;
+            } else if (dockY === "center") {
+              pos.top = 0; pos.bottom = 0; pos.marginTop = "auto"; pos.marginBottom = "auto";
+            } else {
+              if (topVal) pos.top = topVal;
+            }
+          } else {
+            if (topVal) pos.top = topVal;
+            if (leftVal) pos.left = leftVal;
+          }
+          return pos;
+        })(),
       }}
       className={
         "hover:border-primary relative rounded border hover:border-dashed" +
@@ -263,8 +445,8 @@ const BlockItem = memo(function BlockItemComponent({
       )}
       {showOverlay && (
         <div className="pointer-events-none absolute -top-5 left-0 z-30 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
-          {Math.round(overlayWidth)}×{Math.round(overlayHeight)} |{" "}
-          {Math.round(overlayLeft)}, {Math.round(overlayTop)}
+          {Math.round(overlayWidth)}×{Math.round(overlayHeight)} px |{" "}
+          {Math.round(overlayLeft)}, {Math.round(overlayTop)} px
         </div>
       )}
       <BlockResizer
@@ -278,9 +460,13 @@ const BlockItem = memo(function BlockItemComponent({
       />
       <button
         type="button"
-        onClick={onRemove}
-        className="bg-danger absolute top-1 right-1 rounded px-2 text-xs"
+        onClick={() => { if (!effLocked) onRemove(); }}
+        className="bg-danger absolute top-1 right-1 rounded px-2 text-xs disabled:opacity-50"
         data-token="--color-danger"
+        disabled={!!effLocked}
+        aria-disabled={!!effLocked}
+        aria-label={effLocked ? "Delete disabled while locked" : "Delete"}
+        title={effLocked ? "Unlock to delete" : "Delete"}
       >
         <span className="text-danger-foreground" data-token="--color-danger-fg">
           ×
@@ -312,6 +498,13 @@ const BlockItem = memo(function BlockItemComponent({
         device={device}
         isOver={isOver}
         setDropRef={setDropRef}
+      />
+      <ContextMenu
+        x={ctxPos.x}
+        y={ctxPos.y}
+        open={ctxOpen}
+        onClose={() => setCtxOpen(false)}
+        items={ctxItems}
       />
     </div>
   );

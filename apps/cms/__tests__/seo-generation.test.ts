@@ -5,9 +5,10 @@ import React from "react";
 import { DefaultSeo } from "next-seo";
 import { render } from "@testing-library/react";
 
-jest.mock("next-auth", () => ({
-  getServerSession: jest.fn().mockResolvedValue({ user: { role: "admin" } }),
-}));
+const setSession = (s: any) => {
+  const { __setMockSession } = require('next-auth') as { __setMockSession: (x: any) => void };
+  __setMockSession(s);
+};
 const saved: any = {
   languages: ["en"],
   seo: {},
@@ -55,6 +56,8 @@ describe("seo generation", () => {
 
   it("persists generated metadata and exposes via DefaultSeo", async () => {
     (process.env as Record<string, string>).NEXT_PUBLIC_SHOP_ID = "shop1";
+    jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!", EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop" } }));
+    setSession({ user: { role: 'admin' } });
     const { generateSeo } = await import("../src/actions/shops.server.ts");
     const fd = new FormData();
     fd.append("id", "prod1");

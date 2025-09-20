@@ -10,12 +10,12 @@ process.env.EMAIL_PROVIDER = "noop";
 const mockGetPages = jest.fn();
 const mockSaveDraft = jest.fn();
 
+function setSession(session: any) {
+  const { __setMockSession } = require('next-auth') as { __setMockSession: (s: any) => void };
+  __setMockSession(session);
+}
 function mockAuth() {
-  jest.doMock("next-auth", () => ({
-    getServerSession: jest.fn().mockResolvedValue({
-      user: { role: "admin", email: "admin@example.com" },
-    }),
-  }));
+  setSession({ user: { role: 'admin', email: 'admin@example.com' } });
 }
 
 describe("page draft GET route", () => {
@@ -25,9 +25,7 @@ describe("page draft GET route", () => {
   });
 
   it("returns 403 for unauthorized access", async () => {
-    jest.doMock("next-auth", () => ({
-      getServerSession: jest.fn().mockResolvedValue(null),
-    }));
+    setSession(null);
     const route = await import("../src/app/api/page-draft/[shop]/route");
     const res = await route.GET({} as any, {
       params: Promise.resolve({ shop: "shop" }),

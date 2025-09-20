@@ -1,8 +1,15 @@
+import type { Session } from 'next-auth';
+
+export const adminSession = {
+  user: { role: 'admin', email: 'admin@example.com' },
+} as unknown as Session;
+
 /** Mock next-auth to always resolve an admin session */
 export function mockNextAuthAdmin(): void {
-  jest.doMock('next-auth', () => ({
-    getServerSession: jest.fn().mockResolvedValue({ user: { role: 'admin' } }),
-  }));
+  const { __setMockSession } = require('next-auth') as {
+    __setMockSession: (s: Session | null) => void;
+  };
+  __setMockSession(adminSession);
 }
 
 /** Common mock used by CMS routes to avoid sending emails during tests */

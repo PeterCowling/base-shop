@@ -60,7 +60,18 @@ export function validateEnvFile(file: string): void {
   if (!existsSync(file)) {
     throw new Error(`Missing ${file}`);
   }
-  const env = readEnvFile(file);
+  // Allow tests to override or delete the exported reader. Prefer
+  // the live export on `module.exports` when available so spies and
+  // deletions take effect; otherwise fall back to the local function.
+  type ModuleWithRead = NodeJS.Module & {
+    exports?: { readEnvFile?: typeof readEnvFile };
+  };
+  const exportedReader =
+    typeof module !== "undefined" &&
+    (module as ModuleWithRead).exports?.readEnvFile
+      ? (module as ModuleWithRead).exports!.readEnvFile!
+      : readEnvFile;
+  const env = exportedReader(file);
   envSchema.parse(env);
 }
 

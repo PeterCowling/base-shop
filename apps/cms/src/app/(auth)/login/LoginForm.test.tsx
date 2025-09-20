@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import LoginForm from "./LoginForm";
+import { __setSignInImpl, __resetReactAuthImpls } from "next-auth/react";
 
 jest.mock("@/components/atoms/shadcn", () => ({
   Button: (props: any) => <button {...props} />, 
@@ -8,9 +9,6 @@ jest.mock("@/components/atoms/shadcn", () => ({
 }));
 
 const signInMock = jest.fn();
-jest.mock("next-auth/react", () => ({
-  signIn: (...args: any[]) => signInMock(...args),
-}));
 
 const pushMock = jest.fn();
 const getMock = jest.fn();
@@ -25,6 +23,8 @@ describe("LoginForm", () => {
     signInMock.mockReset();
     pushMock.mockReset();
     getMock.mockReset();
+    __resetReactAuthImpls();
+    __setSignInImpl((...args: any[]) => signInMock(...args));
   });
 
   it("sanitizes inputs and redirects on successful sign in", async () => {

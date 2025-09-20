@@ -5,7 +5,11 @@
     "noEmit": false,
     "noEmitOnError": false,
     "rootDir": ".",
-    "outDir": ".ts-jest"
+    "outDir": ".ts-jest",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "jsx": "react-jsx",
+    "esModuleInterop": true
   },
   "include": ["src/**/*", "__tests__/**/*"],
   "exclude": []

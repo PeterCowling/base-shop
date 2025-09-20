@@ -1,4 +1,4 @@
-import { applyFriendlyZodMessages, friendlyErrorMap } from "./zodErrorMap";
+import { applyFriendlyZodMessages, friendlyErrorMap } from "./zodErrorMap.js";
 
 export function initZod(): void {
   applyFriendlyZodMessages();

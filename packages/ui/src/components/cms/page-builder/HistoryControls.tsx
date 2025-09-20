@@ -1,8 +1,11 @@
 "use client";
 
-import { Button } from "../../atoms/shadcn";
+import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
+import { useEffect, useState } from "react";
 import { Spinner } from "../../atoms";
 import { CheckIcon } from "@radix-ui/react-icons";
+import VersionsPanel from "./VersionsPanel";
+import type { PageComponent, HistoryState } from "@acme/types";
 
 interface Props {
   canUndo: boolean;
@@ -16,6 +19,12 @@ interface Props {
   saveError?: string | null;
   publishError?: string | null;
   autoSaveState: "idle" | "saving" | "saved" | "error";
+  // Versions panel integration (optional)
+  shop?: string | null;
+  pageId?: string | null;
+  currentComponents?: PageComponent[];
+  editor?: HistoryState["editor"];
+  onRestoreVersion?: (components: PageComponent[]) => void;
 }
 
 const HistoryControls = ({
@@ -30,7 +39,27 @@ const HistoryControls = ({
   saveError,
   publishError,
   autoSaveState,
-}: Props) => (
+  shop,
+  pageId,
+  currentComponents,
+  editor,
+  onRestoreVersion,
+}: Props) => {
+  const [isOpenSave, setIsOpenSave] = useState(false);
+  const [isOpenManage, setIsOpenManage] = useState(false);
+
+  // Listen for global events to open dialogs
+  useEffect(() => {
+    const openSave = () => setIsOpenSave(true);
+    const openManage = () => setIsOpenManage(true);
+    window.addEventListener("pb:save-version", openSave as EventListener);
+    window.addEventListener("pb:open-versions", openManage as EventListener);
+    return () => {
+      window.removeEventListener("pb:save-version", openSave as EventListener);
+      window.removeEventListener("pb:open-versions", openManage as EventListener);
+    };
+  }, []);
+  return (
   <div className="flex gap-2">
     <Button onClick={onUndo} disabled={!canUndo}>
       Undo
@@ -71,8 +100,42 @@ const HistoryControls = ({
         <p className="text-sm text-red-500">{publishError}</p>
       )}
     </div>
+    {shop && pageId && currentComponents && onRestoreVersion && (
+      <Dialog open={isOpenManage} onOpenChange={setIsOpenManage}>
+        <DialogTrigger asChild>
+          <Button variant="outline" onClick={() => setIsOpenManage(true)}>Versions</Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-5xl">
+          <DialogTitle>Versions</DialogTitle>
+          <VersionsPanel
+            shop={shop}
+            pageId={pageId}
+            current={currentComponents}
+            editor={editor}
+            onRestore={onRestoreVersion}
+          />
+        </DialogContent>
+      </Dialog>
+    )}
+    {shop && pageId && currentComponents && onRestoreVersion && (
+      <Dialog open={isOpenSave} onOpenChange={setIsOpenSave}>
+        <DialogTrigger asChild>
+          <Button variant="outline" onClick={() => setIsOpenSave(true)}>Save Version</Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-5xl">
+          <DialogTitle>Save Version</DialogTitle>
+          <VersionsPanel
+            shop={shop}
+            pageId={pageId}
+            current={currentComponents}
+            editor={editor}
+            onRestore={onRestoreVersion}
+            autoFocusLabel
+          />
+        </DialogContent>
+      </Dialog>
+    )}
   </div>
-);
+)};
 
 export default HistoryControls;
-

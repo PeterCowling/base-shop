@@ -5,8 +5,6 @@ import type { CustomerMfa } from "@acme/types";
 import { randomInt } from "crypto";
 
 const SECRET_BYTES = 20;
-const tolerantAuthenticator = authenticator.clone();
-tolerantAuthenticator.options = { window: 1 };
 
 export interface MfaEnrollment {
   secret: string;
@@ -35,10 +33,7 @@ export async function verifyMfa(
     where: { customerId },
   });
   if (!record) return false;
-  const valid = tolerantAuthenticator.verify({
-    token,
-    secret: record.secret,
-  });
+  const valid = authenticator.verify({ token, secret: record.secret, window: 1 });
   if (valid && !record.enabled) {
     await prisma.customerMfa.update({
       where: { customerId },

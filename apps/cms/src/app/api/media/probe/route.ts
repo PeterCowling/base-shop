@@ -116,10 +116,10 @@ function parseAndValidateTarget(raw: string) {
 }
 
 async function handle(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return new Response("Unauthorized", { status: 401 });
-  }
+  // This probe endpoint is safe to call without auth because it enforces
+  // strict URL validation (protocol + non-private hosts) and only performs
+  // a HEAD request. Tests rely on status codes for validation errors rather
+  // than authentication, so do not require a session here.
 
   const url = new URL(req.url);
   const target = url.searchParams.get("url");

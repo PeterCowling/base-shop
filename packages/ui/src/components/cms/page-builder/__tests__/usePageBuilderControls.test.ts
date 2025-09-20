@@ -75,5 +75,32 @@ describe("usePageBuilderControls", () => {
       gridCols: 24,
     });
   });
-});
 
+  test("toggleSnap flips snapToGrid state", () => {
+    const dispatch = jest.fn();
+    const { result } = renderHook(() =>
+      usePageBuilderControls({ state: baseState, dispatch })
+    );
+    expect(result.current.snapToGrid).toBe(true);
+    act(() => {
+      result.current.toggleSnap();
+    });
+    expect(result.current.snapToGrid).toBe(false);
+    act(() => {
+      result.current.toggleSnap();
+    });
+    expect(result.current.snapToGrid).toBe(true);
+  });
+
+  test("setZoom updates zoom level", () => {
+    const dispatch = jest.fn();
+    const { result } = renderHook(() =>
+      usePageBuilderControls({ state: baseState, dispatch })
+    );
+    expect(result.current.zoom).toBe(1);
+    act(() => {
+      result.current.setZoom(1.5);
+    });
+    expect(result.current.zoom).toBe(1.5);
+  });
+});

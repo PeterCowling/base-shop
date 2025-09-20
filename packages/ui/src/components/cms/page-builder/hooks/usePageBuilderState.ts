@@ -87,10 +87,28 @@ export function usePageBuilderState({
         setLiveMessage("Block moved");
       } else if (action.type === "resize") {
         setLiveMessage("Block resized");
+      } else if (action.type === "duplicate") {
+        setLiveMessage("Block duplicated");
+      } else if (action.type === "remove") {
+        setLiveMessage("Block deleted");
       }
     },
     [rawDispatch]
   );
+
+  useEffect(() => {
+    // Allow other components (e.g., sidebar alignment controls) to announce
+    const handleAnnounce = (e: Event) => {
+      try {
+        const ce = e as CustomEvent<string>;
+        if (typeof ce.detail === "string") setLiveMessage(ce.detail);
+      } catch {
+        // ignore
+      }
+    };
+    window.addEventListener("pb-live-message", handleAnnounce as EventListener);
+    return () => window.removeEventListener("pb-live-message", handleAnnounce as EventListener);
+  }, []);
 
   useEffect(() => {
     if (!liveMessage) return;
@@ -129,6 +147,11 @@ export function usePageBuilderState({
           const base = Number.isNaN(n) ? 0 : n;
           return `${Math.round(base + (delta ?? 0))}px`;
         };
+        const viewportEl = typeof document !== "undefined" ? document.querySelector('[data-viewport]') as HTMLElement | null : null;
+        const vpRaw = viewportEl?.getAttribute('data-viewport') ?? 'desktop';
+        const vp = (vpRaw === 'tablet' || vpRaw === 'mobile') ? vpRaw : 'desktop';
+        const leftKey = vp === 'desktop' ? 'leftDesktop' : vp === 'tablet' ? 'leftTablet' : 'leftMobile';
+        const topKey = vp === 'desktop' ? 'topDesktop' : vp === 'tablet' ? 'topTablet' : 'topMobile';
         const find = (list: PageComponent[], cid: string): PageComponent | null => {
           for (const c of list) {
             if (c.id === cid) return c;
@@ -141,17 +164,21 @@ export function usePageBuilderState({
           return null;
         };
         selectedIds.forEach((id) => {
-          const comp = find(components, id) as (PageComponent & { position?: string; left?: string; top?: string; locked?: boolean }) | null;
+          const comp = find(components, id) as (PageComponent & { position?: string; left?: string; top?: string; locked?: boolean; leftDesktop?: string; leftTablet?: string; leftMobile?: string; topDesktop?: string; topTablet?: string; topMobile?: string }) | null;
           const locked = ((typedState as any).editor?.[id]?.locked ?? (comp as any)?.locked ?? false) as boolean;
           if (!comp || locked || comp.position !== "absolute") return;
           if (lower === "arrowleft") {
-            dispatch({ type: "resize", id, left: adjust(comp.left, -step) });
+            const current = (comp as any)[leftKey] ?? comp.left;
+            dispatch({ type: "resize", id, [leftKey]: adjust(current, -step) } as any);
           } else if (lower === "arrowright") {
-            dispatch({ type: "resize", id, left: adjust(comp.left, step) });
+            const current = (comp as any)[leftKey] ?? comp.left;
+            dispatch({ type: "resize", id, [leftKey]: adjust(current, step) } as any);
           } else if (lower === "arrowup") {
-            dispatch({ type: "resize", id, top: adjust(comp.top, -step) });
+            const current = (comp as any)[topKey] ?? comp.top;
+            dispatch({ type: "resize", id, [topKey]: adjust(current, -step) } as any);
           } else if (lower === "arrowdown") {
-            dispatch({ type: "resize", id, top: adjust(comp.top, step) });
+            const current = (comp as any)[topKey] ?? comp.top;
+            dispatch({ type: "resize", id, [topKey]: adjust(current, step) } as any);
           }
         });
         return;

@@ -1,27 +1,26 @@
 // Response.json() provided by shared test setup
-
-jest.mock("next-auth", () => ({
-  getServerSession: jest.fn(),
-}))
+function setSession(session: any) {
+  const { __setMockSession } = require("next-auth") as {
+    __setMockSession: (s: any) => void;
+  };
+  __setMockSession(session);
+}
 
 jest.mock("@platform-core/repositories/shop.server", () => ({
   updateShopInRepo: jest.fn(),
 }))
 
 describe("configure-shop route", () => {
-  let getServerSession: jest.Mock
   let updateShopInRepo: jest.Mock
 
   beforeEach(() => {
     jest.resetModules()
-    getServerSession = require("next-auth").getServerSession as jest.Mock
     updateShopInRepo = require("@platform-core/repositories/shop.server").updateShopInRepo as jest.Mock
-    getServerSession.mockReset()
     updateShopInRepo.mockReset()
   })
 
   it("updates shop when request is valid", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } })
+    setSession({ user: { role: "admin" } })
     updateShopInRepo.mockResolvedValueOnce(undefined)
     const { POST } = await import("../route")
     const req = new Request("http://localhost/api/configure-shop", {
@@ -39,7 +38,7 @@ describe("configure-shop route", () => {
   })
 
   it("returns error when update fails", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } })
+    setSession({ user: { role: "admin" } })
     updateShopInRepo.mockRejectedValueOnce(new Error("bad input"))
     const { POST } = await import("../route")
     const req = new Request("http://localhost/api/configure-shop", {

@@ -1,6 +1,7 @@
 /** @jest-environment node */
 
 import type { NextRequest } from "next/server";
+import { asNextJson } from "@acme/test-utils";
 
 const CART_COOKIE = "__Host-CART_ID";
 
@@ -27,14 +28,8 @@ function mockCartStore(overrides: Record<string, unknown> = {}) {
   }));
 }
 
-function buildRequest(body: any, cookie?: string): NextRequest {
-  return {
-    json: async () => body,
-    cookies: {
-      get: () => (cookie ? { value: cookie } : undefined),
-    },
-  } as unknown as NextRequest;
-}
+const buildRequest = (body: any, cookie?: string): NextRequest =>
+  asNextJson(body, { cookies: cookie ? { [CART_COOKIE]: cookie } : undefined });
 
 describe("cart API POST", () => {
   afterEach(() => {
@@ -362,5 +357,4 @@ describe("cart API GET", () => {
     expect(data.cart).toEqual({});
   });
 });
-
 

@@ -63,6 +63,8 @@ export default function useCanvasSpacing({
   } | null>(null);
   const [active, setActive] = useState<null | { type: SpacingType; side: SpacingSide }>(null);
   const [overlay, setOverlay] = useState<Overlay | null>(null);
+  // When adjusting spacing via keyboard, briefly show overlay
+  const kbTimer = useRef<number | null>(null);
 
   useEffect(() => {
     if (!active) return;
@@ -148,6 +150,62 @@ export default function useCanvasSpacing({
     setActive({ type, side });
   };
 
-  return { startSpacing, overlay } as const;
-}
+  const nudgeSpacingByKeyboard = (
+    type: SpacingType,
+    side: SpacingSide,
+    delta: number
+  ) => {
+    const el = containerRef.current;
+    if (!el) return;
+    const margin = parseSpacing(marginVal);
+    const padding = parseSpacing(paddingVal);
+    const current = type === "margin" ? [...margin] : [...padding];
+    const idx = sideIndex(side);
+    const nextVal = type === "padding" ? Math.max(0, current[idx] + delta) : current[idx] + delta;
+    current[idx] = nextVal;
+    const patchVal = formatSpacing(current as [number, number, number, number]);
+    dispatch({ type: "resize", id: componentId, [type === "margin" ? marginKey : paddingKey]: patchVal });
+    // compute overlay for keyboard interaction
+    if (type === "padding") {
+      let top = 0;
+      let left = 0;
+      let w = el.offsetWidth;
+      let h = el.offsetHeight;
+      if (side === "top") {
+        h = current[0];
+      } else if (side === "bottom") {
+        h = current[2];
+        top = el.offsetHeight - h;
+      } else if (side === "left") {
+        w = current[3];
+      } else if (side === "right") {
+        w = current[1];
+        left = el.offsetWidth - w;
+      }
+      setOverlay({ type: "padding", side, top, left, width: w, height: h });
+    } else {
+      let top = 0;
+      let left = 0;
+      let w = el.offsetWidth;
+      let h = el.offsetHeight;
+      if (side === "top") {
+        h = current[0];
+        top = -h;
+      } else if (side === "bottom") {
+        h = current[2];
+        top = el.offsetHeight;
+      } else if (side === "left") {
+        w = current[3];
+        left = -w;
+      } else if (side === "right") {
+        w = current[1];
+        left = el.offsetWidth;
+      }
+      setOverlay({ type: "margin", side, top, left, width: w, height: h });
+    }
+    if (kbTimer.current) window.clearTimeout(kbTimer.current);
+    kbTimer.current = window.setTimeout(() => setOverlay(null), 300) as unknown as number;
+  };
 
+  return { startSpacing, overlay, nudgeSpacingByKeyboard } as const;
+}

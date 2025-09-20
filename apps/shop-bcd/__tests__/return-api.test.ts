@@ -1,5 +1,6 @@
 // apps/shop-bcd/__tests__/return-api.test.ts
 import type Stripe from "stripe";
+import { asNextJson } from "@acme/test-utils";
 
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
@@ -51,9 +52,7 @@ describe("/api/return", () => {
     }));
 
     const { POST } = await import("../src/api/return/route");
-    const res = await POST({
-      json: async () => ({ sessionId: "sess", damage: "scratch" }),
-    } as any);
+    const res = await POST(asNextJson({ sessionId: "sess", damage: "scratch" }));
 
     expect(retrieve).toHaveBeenCalledWith("sess", { expand: ["payment_intent"] });
     expect(computeDamageFee).toHaveBeenCalledWith("scratch", 50, [], true);
@@ -110,7 +109,7 @@ describe("/api/return", () => {
     }));
 
     const { POST } = await import("../src/api/return/route");
-    const res = await POST({ json: async () => ({ sessionId: "sess" }) } as any);
+    const res = await POST(asNextJson({ sessionId: "sess" }));
 
     expect(refundCreate).toHaveBeenCalledWith({
       payment_intent: "pi_123",
@@ -168,7 +167,7 @@ describe("/api/return", () => {
     }));
 
     const { POST } = await import("../src/api/return/route");
-    const res = await POST({ json: async () => ({ sessionId: "sess" }) } as any);
+    const res = await POST(asNextJson({ sessionId: "sess" }));
 
     expect(refundCreate).toHaveBeenCalledWith({
       payment_intent: "pi_123",
@@ -218,9 +217,7 @@ describe("/api/return", () => {
     }));
 
     const { POST } = await import("../src/api/return/route");
-    const res = await POST({
-      json: async () => ({ sessionId: "sess", damage: 5 }),
-    } as any);
+    const res = await POST(asNextJson({ sessionId: "sess", damage: 5 }));
 
     expect(refundCreate).not.toHaveBeenCalled();
     expect(markRefunded).not.toHaveBeenCalled();
@@ -248,20 +245,20 @@ describe("/api/return", () => {
       priceForDays: jest.fn(),
     }));
     const { POST } = await import("../src/api/return/route");
-    const res = await POST({ json: async () => ({ sessionId: "missing" }) } as any);
+    const res = await POST(asNextJson({ sessionId: "missing" }));
     expect(markReturned).toHaveBeenCalledWith("bcd", "missing");
     expect(res.status).toBe(404);
   });
 
   test("returns 400 for missing sessionId", async () => {
     const { POST } = await import("../src/api/return/route");
-    const res = await POST({ json: async () => ({}) } as any);
+    const res = await POST(asNextJson({}));
     expect(res.status).toBe(400);
   });
 
   test("returns 400 for invalid request body", async () => {
     const { POST } = await import("../src/api/return/route");
-    const res = await POST({ json: async () => null } as any);
+    const res = await POST(asNextJson(null as any));
     expect(res.status).toBe(400);
   });
 });

@@ -125,7 +125,8 @@ let DATABASE_URL: string | undefined;
 try {
   ({ DATABASE_URL } = loadCoreEnv());
 } catch {
-  DATABASE_URL = undefined;
+  // Fall back to raw process.env when core env validation fails in tests
+  DATABASE_URL = process.env.DATABASE_URL;
 }
 const useStub = process.env.NODE_ENV === "test" || !DATABASE_URL;
 

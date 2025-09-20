@@ -6,7 +6,6 @@ const isTest = nodeEnv === "test";
 const nextPhase = process.env.NEXT_PHASE?.toLowerCase();
 const isNextProductionBuildPhase = nextPhase === "phase-production-build";
 const isProd = nodeEnv === "production" && !isTest && !isNextProductionBuildPhase;
-const DEV_EMAIL_FROM = "dev@example.com";
 
 const hasEmailProvider =
   typeof process.env.EMAIL_PROVIDER === "string" &&
@@ -56,7 +55,8 @@ export const emailEnvSchema = z
     EMAIL_BATCH_DELAY_MS: z.coerce.number().optional(),
   })
   .superRefine((env, ctx) => {
-    if (isProd && env.EMAIL_PROVIDER !== "noop" && !env.EMAIL_FROM) {
+    // Require EMAIL_FROM whenever a real provider is selected, in all envs.
+    if (env.EMAIL_PROVIDER !== "noop" && !env.EMAIL_FROM) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["EMAIL_FROM"],
@@ -84,10 +84,6 @@ const rawEnv: NodeJS.ProcessEnv = {
     ? process.env.EMAIL_PROVIDER
     : defaultEmailProvider,
 };
-
-if (!isProd && rawEnv.EMAIL_PROVIDER !== "noop" && !rawEnv.EMAIL_FROM) {
-  rawEnv.EMAIL_FROM = DEV_EMAIL_FROM;
-}
 const parsed = emailEnvSchema.safeParse(rawEnv);
 
 if (!parsed.success) {

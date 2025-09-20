@@ -14,6 +14,7 @@ import usePageBuilderControls from "./hooks/usePageBuilderControls";
 import usePageBuilderSave from "./hooks/usePageBuilderSave";
 import PageBuilderLayout from "./PageBuilderLayout";
 import { defaults, CONTAINER_TYPES, type ComponentType } from "./defaults";
+import usePreviewTokens from "./hooks/usePreviewTokens";
 
 interface Props {
   page: Page; history?: HistoryState; onSave:(fd:FormData)=>Promise<unknown>; onPublish:(fd:FormData)=>Promise<unknown>;
@@ -54,9 +55,14 @@ const PageBuilder = memo(function PageBuilder({
 
   const { dragOver, setDragOver, handleFileDrop, progress, isValid } = useFileDrop({ shop: shop ?? "", dispatch });
   const canvasRef = useRef<HTMLDivElement>(null),
+    scrollRef = useRef<HTMLDivElement>(null),
     [toast, setToast] = useState<{ open: boolean; message: string; retry?: () => void }>({ open: false, message: "" }),
     [gridSize, setGridSize] = useState(1),
     [snapPosition, setSnapPosition] = useState<number | null>(null);
+
+  // Live theme tokens applied to the canvas container for instant visual feedback
+  const previewTokens = usePreviewTokens();
+  const [showComments, setShowComments] = useState(true);
 
   const { dndContext, insertIndex, activeType } = usePageBuilderDnD({
     components,
@@ -69,6 +75,7 @@ const PageBuilder = memo(function PageBuilder({
     setSnapPosition,
     editor: (state as any).editor,
     viewport: controls.viewport,
+    scrollRef,
   });
 
   const handleAddFromPalette = (type: ComponentType) => {
@@ -92,7 +99,15 @@ const PageBuilder = memo(function PageBuilder({
       return cloned as PageComponent;
     };
     const component = withNewIds(template);
-    dispatch({ type: "add", component });
+    // Insert at placeholder index if present, else after selected, else at end
+    let index = components.length;
+    if (insertIndex !== null && insertIndex !== undefined) {
+      index = insertIndex;
+    } else if (selectedIds.length > 0) {
+      const pos = components.findIndex((c: PageComponent) => c.id === selectedIds[0]);
+      index = pos >= 0 ? pos + 1 : components.length;
+    }
+    dispatch({ type: "add", component, index });
     setSelectedIds([component.id]);
   };
 
@@ -111,6 +126,7 @@ const PageBuilder = memo(function PageBuilder({
     onSave,
     onPublish,
     formDataDeps: [components, state],
+    shop,
     onAutoSaveError: (retry) => {
       setToast({
         open: true,
@@ -124,11 +140,57 @@ const PageBuilder = memo(function PageBuilder({
     clearHistory,
   });
   saveRef.current = handleSave;
+  // Keyboard shortcuts for versions dialogs
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (
+        e.target instanceof HTMLElement &&
+        (e.target.tagName === "INPUT" ||
+          e.target.tagName === "TEXTAREA" ||
+          e.target.tagName === "SELECT" ||
+          e.target.isContentEditable)
+      ) {
+        return;
+      }
+      if (!(e.ctrlKey || e.metaKey) || !e.shiftKey) return;
+      const k = e.key.toLowerCase();
+      if (k === "s") {
+        e.preventDefault();
+        window.dispatchEvent(new Event("pb:save-version"));
+      } else if (k === "v") {
+        e.preventDefault();
+        window.dispatchEvent(new Event("pb:open-versions"));
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
   const toolbarProps = {deviceId: controls.deviceId, setDeviceId: controls.setDeviceId, orientation: controls.orientation, setOrientation: controls.setOrientation, locale: controls.locale, setLocale: controls.setLocale, locales, progress, isValid};
   const gridProps = {showGrid: controls.showGrid, toggleGrid: controls.toggleGrid, snapToGrid: controls.snapToGrid, toggleSnap: controls.toggleSnap, gridCols: controls.gridCols, setGridCols: controls.setGridCols, zoom: controls.zoom, setZoom: controls.setZoom, showRulers: controls.showRulers, toggleRulers: controls.toggleRulers};
-  const canvasProps = {components, selectedIds, onSelectIds: setSelectedIds, canvasRef, dragOver, setDragOver, onFileDrop: handleFileDrop, insertIndex, dispatch, locale: controls.locale, containerStyle: { width: "100%" }, showGrid: controls.showGrid, gridCols: controls.gridCols, snapEnabled: controls.snapToGrid, showRulers: controls.showRulers, viewport: controls.viewport, device: controls.device, snapPosition, editor: (state as any).editor};
+  const canvasProps = {components, selectedIds, onSelectIds: setSelectedIds, canvasRef, dragOver, setDragOver, onFileDrop: handleFileDrop, insertIndex, dispatch, locale: controls.locale, containerStyle: { width: "100%", ...(previewTokens as any) }, showGrid: controls.showGrid, gridCols: controls.gridCols, snapEnabled: controls.snapToGrid, showRulers: controls.showRulers, viewport: controls.viewport, device: controls.device, snapPosition, editor: (state as any).editor, shop, pageId: page.id, showComments};
   const previewProps = {components, locale: controls.locale, deviceId: controls.previewDeviceId, onChange: controls.setPreviewDeviceId, editor: (state as any).editor};
-  const historyProps = {canUndo: !!state.past.length, canRedo: !!state.future.length, onUndo: () => dispatch({ type: "undo" }), onRedo: () => dispatch({ type: "redo" }), onSave: handleSave, onPublish: handlePublish, saving, publishing, saveError, publishError, autoSaveState};
+  const historyProps = {
+    canUndo: !!state.past.length,
+    canRedo: !!state.future.length,
+    onUndo: () => dispatch({ type: "undo" }),
+    onRedo: () => dispatch({ type: "redo" }),
+    onSave: handleSave,
+    onPublish: handlePublish,
+    saving,
+    publishing,
+    saveError,
+    publishError,
+    autoSaveState,
+    shop,
+    pageId: page.id,
+    currentComponents: components,
+    editor: (state as any).editor,
+    onRestoreVersion: (restored: PageComponent[]) => {
+      dispatch({ type: "set", components: restored });
+      // Persist restored snapshot
+      handleSave();
+    },
+  } as const;
   const toastProps = {open: toast.open, message: toast.message, retry: toast.retry, onClose: () => setToast((t) => ({ ...t, open: false }))};
   const tourProps = {steps: controls.tourSteps, run: controls.runTour, callback: controls.handleTourCallback};
 
@@ -149,12 +211,15 @@ const PageBuilder = memo(function PageBuilder({
       viewportStyle={controls.viewportStyle}
       zoom={controls.zoom}
       canvasProps={canvasProps}
+      scrollRef={scrollRef}
       activeType={activeType}
       previewProps={previewProps}
       historyProps={historyProps}
       sidebarProps={{ components, selectedIds, onSelectIds: setSelectedIds, dispatch, editor: (state as any).editor, viewport: controls.viewport }}
       toast={toastProps}
       tourProps={tourProps}
+      showComments={showComments}
+      toggleComments={() => setShowComments((v) => !v)}
     />
   );
 });

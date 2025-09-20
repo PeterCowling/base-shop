@@ -9,11 +9,8 @@ const withRepo = (cb: (dir: string) => Promise<void>) =>
   }, { prefix: 'pages-' });
 
 function mockAuth() {
-  jest.doMock("next-auth", () => ({
-    getServerSession: jest.fn().mockResolvedValue({
-      user: { role: "admin", email: "admin@example.com" },
-    }),
-  }));
+  const { __setMockSession } = require('next-auth') as { __setMockSession: (s: any) => void };
+  __setMockSession({ user: { role: 'admin', email: 'admin@example.com' } });
 }
 
 describe("pages API validation", () => {
@@ -22,6 +19,7 @@ describe("pages API validation", () => {
   it("returns 400 when component structure is invalid", async () => {
     await withRepo(async () => {
       mockAuth();
+      jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!", EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop" } }));
       const route = await import("../src/app/api/page-draft/[shop]/route");
       const fd = new FormData();
       fd.append("components", '[{"id":"c1"}]'); // missing type

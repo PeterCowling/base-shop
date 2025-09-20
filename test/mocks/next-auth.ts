@@ -24,9 +24,10 @@ export function __resetMockSession(): void {
 }
 
 // Match next-auth server API used in the codebase
-export async function getServerSession(..._args: unknown[]): Promise<TestSession> {
-  return currentSession;
-}
+export const getServerSession = (jest.fn(
+  async (..._args: unknown[]): Promise<TestSession> => currentSession,
+) as unknown) as jest.MockedFunction<(
+  ...args: unknown[]
+) => Promise<TestSession>>;
 
 export default {} as unknown as never;
-

@@ -7,9 +7,10 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import { server } from '~test/msw/server';
-
-const getServerSession = jest.fn();
-jest.mock('next-auth', () => ({ getServerSession }));
+function setSession(session: any) {
+  const { __setMockSession } = require('next-auth') as { __setMockSession: (s: any) => void };
+  __setMockSession(session);
+}
 jest.mock('@cms/auth/options', () => ({ authOptions: {} }));
 jest.mock('file-type/core', () => ({
   fileTypeFromBuffer: jest.fn().mockResolvedValue(undefined),
@@ -63,7 +64,7 @@ describe('upload-csv parallel', () => {
   beforeEach(() => {
     dataRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'data-'));
     process.env.DATA_ROOT = dataRoot;
-    getServerSession.mockResolvedValue({ user: { role: 'admin' } });
+    setSession({ user: { role: 'admin' } });
     handler = createHandler();
   });
 

@@ -16,9 +16,10 @@ jest.mock("fs", () => {
 });
 
 process.env.NEXTAUTH_SECRET = "test-nextauth-secret-32-chars-long-string!";
-
-const getServerSession = jest.fn();
-jest.mock("next-auth", () => ({ getServerSession }));
+function setSession(session: any) {
+  const { __setMockSession } = require('next-auth') as { __setMockSession: (s: any) => void };
+  __setMockSession(session);
+}
 
 const validateShopName = jest.fn((s: string) => s);
 jest.mock("@platform-core/shops", () => ({ validateShopName }));
@@ -37,14 +38,16 @@ afterEach(() => {
 
 describe("POST /cms/api/configurator/init-shop", () => {
   it("returns 403 for unauthorized session", async () => {
-    getServerSession.mockResolvedValueOnce(null);
+    setSession(null);
+    jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!", EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop" } }));
     const { POST } = await import("../../route");
     const res = await POST(new Request("http://localhost"));
     expect(res.status).toBe(403);
   });
 
   it("returns 400 for invalid CSV", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    setSession({ user: { role: 'admin' } });
+    jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!", EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop" } }));
     const { POST } = await import("../../route");
     const res = await POST(buildRequest({ id: "shop1", csv: "notbase64" }));
     expect(res.status).toBe(400);
@@ -52,7 +55,8 @@ describe("POST /cms/api/configurator/init-shop", () => {
   });
 
   it("writes csv and categories on success", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    setSession({ user: { role: 'admin' } });
+    jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!", EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop" } }));
     const csvContent = "sku,price\n1,10\n";
     const csv = Buffer.from(csvContent).toString("base64");
     const categories = ["a", "b"];
@@ -83,7 +87,8 @@ describe("POST /cms/api/configurator/init-shop", () => {
   });
 
   it("returns error when write fails", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    setSession({ user: { role: 'admin' } });
+    jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!", EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop" } }));
     writeFileMock.mockRejectedValueOnce(new Error("disk"));
     const { POST } = await import("../../route");
     const csv = Buffer.from("sku\n").toString("base64");
@@ -92,4 +97,3 @@ describe("POST /cms/api/configurator/init-shop", () => {
     expect(await res.json()).toEqual({ error: "disk" });
   });
 });
-

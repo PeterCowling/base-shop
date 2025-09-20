@@ -25,7 +25,7 @@ export async function resetConfiguratorProgress(): Promise<void> {
   if (typeof window !== "undefined") {
     localStorage.removeItem(STORAGE_KEY);
     try {
-      await fetch("/api/configurator-progress", {
+      await fetch("/cms/api/configurator-progress", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +75,7 @@ export function useConfiguratorPersistence(
       localStorage.setItem(STORAGE_KEY, legacy);
       localStorage.removeItem(LEGACY_STORAGE_KEY);
     }
-    fetch("/api/configurator-progress")
+    fetch("/cms/api/configurator-progress")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
         let source = json;
@@ -137,7 +137,7 @@ export function useConfiguratorPersistence(
         /* ignore quota */
       }
       // Persist only data (without completed) via PUT
-      fetch("/api/configurator-progress", {
+      fetch("/cms/api/configurator-progress", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -172,7 +172,7 @@ export function useConfiguratorPersistence(
       } catch {
         /* ignore quota */
       }
-      fetch("/api/configurator-progress", {
+      fetch("/cms/api/configurator-progress", {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

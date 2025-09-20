@@ -6,6 +6,7 @@ import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import { Input } from "../../atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
 import useContrastWarnings from "../../../hooks/useContrastWarnings";
+import { getStyleClipboard, setStyleClipboard } from "./style/styleClipboard";
 
 type TrackFn = (name: string, payload?: Record<string, unknown>) => void;
 let track: TrackFn = () => {};
@@ -37,6 +38,34 @@ export default function StylePanel({ component, handleInput }: Props) {
   const typoMobile = overrides.typographyMobile ?? {};
   const warning = useContrastWarnings(color.fg ?? "", color.bg ?? "");
   const t = useTranslations();
+
+  const _clipboard = { get: getStyleClipboard, set: setStyleClipboard } as const;
+
+  const presets: { id: string; label: string; value: Partial<StyleOverrides> }[] = [
+    {
+      id: "muted-card",
+      label: "Muted card",
+      value: {
+        color: {
+          bg: "hsl(var(--color-muted))",
+          fg: "hsl(var(--color-muted-fg))",
+          border: "hsl(var(--color-muted-border))",
+        },
+      },
+    },
+    {
+      id: "primary-button",
+      label: "Primary button",
+      value: {
+        color: {
+          bg: "hsl(var(--color-primary))",
+          fg: "hsl(var(--color-primary-fg))",
+          border: "hsl(var(--color-primary))",
+        },
+        typography: { fontWeight: "600" },
+      },
+    },
+  ];
 
   const update = (group: "color" | "typography", key: string, value: string) => {
     const next: StyleOverrides = {
@@ -70,8 +99,81 @@ export default function StylePanel({ component, handleInput }: Props) {
     track("stylepanel:update", { group: `typography-${bp.toLowerCase()}` as string, key });
   };
 
+  const applyPreset = (presetId: string) => {
+    const preset = presets.find((p) => p.id === presetId);
+    if (!preset) return;
+    const next: StyleOverrides = {
+      color: { ...color, ...(preset.value.color ?? {}) },
+      typography: { ...typography, ...(preset.value.typography ?? {}) },
+      typographyDesktop: { ...typoDesktop },
+      typographyTablet: { ...typoTablet },
+      typographyMobile: { ...typoMobile },
+    };
+    handleInput("styles", JSON.stringify(next));
+    track("stylepanel:preset", { id: presetId });
+  };
+
+  const copyStyles = () => {
+    const toCopy: StyleOverrides = {
+      color: { ...color },
+      typography: { ...typography },
+      typographyDesktop: { ...typoDesktop },
+      typographyTablet: { ...typoTablet },
+      typographyMobile: { ...typoMobile },
+    };
+    _clipboard.set(toCopy);
+    track("stylepanel:copy");
+  };
+
+  const pasteStyles = () => {
+    const data = _clipboard.get();
+    if (!data) return;
+    const next: StyleOverrides = {
+      color: { ...color, ...(data.color ?? {}) },
+      typography: { ...typography, ...(data.typography ?? {}) },
+      typographyDesktop: { ...typoDesktop, ...(data.typographyDesktop ?? {}) },
+      typographyTablet: { ...typoTablet, ...(data.typographyTablet ?? {}) },
+      typographyMobile: { ...typoMobile, ...(data.typographyMobile ?? {}) },
+    };
+    handleInput("styles", JSON.stringify(next));
+    track("stylepanel:paste");
+  };
+
   return (
     <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <select
+          aria-label="Style preset"
+          className="rounded border bg-background px-2 py-1 text-sm"
+          onChange={(e) => applyPreset(e.target.value)}
+          defaultValue=""
+        >
+          <option value="" disabled>
+            Presets
+          </option>
+          {presets.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.label}
+            </option>
+          ))}
+        </select>
+        <button
+          type="button"
+          className="rounded border px-2 py-1 text-sm"
+          onClick={copyStyles}
+          aria-label="Copy styles"
+        >
+          Copy
+        </button>
+        <button
+          type="button"
+          className="rounded border px-2 py-1 text-sm"
+          onClick={pasteStyles}
+          aria-label="Paste styles"
+        >
+          Paste
+        </button>
+      </div>
       <Input
         label={t("cms.style.foreground")}
         value={color.fg ?? ""}

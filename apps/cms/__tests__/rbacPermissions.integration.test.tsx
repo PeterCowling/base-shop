@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { render } from "@testing-library/react";
-import { withTempRepo } from "@acme/test-utils";
+import { withTempRepo, mockNextAuthAdmin } from "@acme/test-utils";
 
 jest.setTimeout(20000);
 
@@ -20,11 +20,8 @@ afterEach(() => jest.resetAllMocks());
 describe("PermissionsPage storefront roles", () => {
   it("renders storefront roles", async () => {
     await withRepo(async () => {
-      jest.doMock("next-auth", () => ({
-        getServerSession: jest
-          .fn()
-          .mockResolvedValue({ user: { role: "admin" } }),
-      }));
+      mockNextAuthAdmin();
+      jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!", EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop" } }));
       jest.doMock("next/navigation", () => ({ redirect: jest.fn() }));
       jest.doMock(
         "@/components/atoms/shadcn",
@@ -51,11 +48,8 @@ describe("PermissionsPage storefront roles", () => {
 
   it("updates customer permissions", async () => {
     await withRepo(async () => {
-      jest.doMock("next-auth", () => ({
-        getServerSession: jest
-          .fn()
-          .mockResolvedValue({ user: { role: "admin" } }),
-      }));
+      mockNextAuthAdmin();
+      jest.doMock("@acme/config", () => ({ env: { NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long-string!", EMAIL_FROM: "test@example.com", EMAIL_PROVIDER: "noop" } }));
       jest.doMock("next/navigation", () => ({ redirect: jest.fn() }));
       jest.doMock(
         "@/components/atoms/shadcn",

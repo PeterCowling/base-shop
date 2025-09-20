@@ -34,7 +34,9 @@ describe("CMS shop pages", () => {
       });
 
       jest.doMock("next/navigation", () => ({ notFound }));
-      jest.doMock("next-auth", () => ({ getServerSession: jest.fn() }));
+      // Ensure an unauthenticated session via central mock
+      const { __setMockSession } = require('next-auth') as { __setMockSession: (s: any) => void };
+      __setMockSession(null);
 
       // media route pulls in server-only helpers — stub them completely
       jest.doMock("@cms/actions/media.server", () => ({

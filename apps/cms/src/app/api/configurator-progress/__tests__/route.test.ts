@@ -1,8 +1,7 @@
-const mockGetServerSession = jest.fn();
-
-jest.mock('next-auth', () => ({
-  getServerSession: (...args: any[]) => mockGetServerSession(...args),
-}));
+function setSession(session: any) {
+  const { __setMockSession } = require('next-auth') as { __setMockSession: (s: any) => void };
+  __setMockSession(session);
+}
 
 jest.mock('@cms/auth/options', () => ({ authOptions: {} }));
 
@@ -47,14 +46,14 @@ function req(method: string, body?: any) {
 
 describe('GET', () => {
   it('responds 401 when unauthorized', async () => {
-    mockGetServerSession.mockResolvedValueOnce(null);
+    setSession(null);
     const res = await GET();
     expect(res.status).toBe(401);
   });
 
   it('returns existing record', async () => {
     mockDb['u1'] = { state: { foo: 'bar' }, completed: { step: 'complete' } };
-    mockGetServerSession.mockResolvedValueOnce({ user: { id: 'u1' } });
+    setSession({ user: { id: 'u1' } });
     const res = await GET();
     const body = await res.json();
     expect(res.status).toBe(200);
@@ -62,7 +61,7 @@ describe('GET', () => {
   });
 
   it('returns defaults when record missing', async () => {
-    mockGetServerSession.mockResolvedValueOnce({ user: { id: 'u2' } });
+    setSession({ user: { id: 'u2' } });
     const res = await GET();
     const body = await res.json();
     expect(res.status).toBe(200);
@@ -72,19 +71,19 @@ describe('GET', () => {
 
 describe('PUT', () => {
   it('responds 401 when unauthorized', async () => {
-    mockGetServerSession.mockResolvedValueOnce(null);
+    setSession(null);
     const res = await PUT(req('PUT'));
     expect(res.status).toBe(401);
   });
 
   it('responds 400 on invalid body', async () => {
-    mockGetServerSession.mockResolvedValueOnce({ user: { id: 'u1' } });
+    setSession({ user: { id: 'u1' } });
     const res = await PUT(req('PUT', { stepId: 5 }));
     expect(res.status).toBe(400);
   });
 
   it('writes state and completion', async () => {
-    mockGetServerSession.mockResolvedValueOnce({ user: { id: 'u1' } });
+    setSession({ user: { id: 'u1' } });
     const res = await PUT(
       req('PUT', { stepId: 's1', data: { storeName: 'Shop' }, completed: 'complete' }),
     );
@@ -95,7 +94,7 @@ describe('PUT', () => {
   });
 
   it('handles internal TypeError', async () => {
-    mockGetServerSession.mockResolvedValueOnce({ user: { id: 'u1' } });
+    setSession({ user: { id: 'u1' } });
     mockWriteJsonFile.mockRejectedValueOnce(new TypeError('bad'));
     const res = await PUT(req('PUT', { stepId: 's1' }));
     const body = await res.json();
@@ -106,20 +105,20 @@ describe('PUT', () => {
 
 describe('PATCH', () => {
   it('responds 401 when unauthorized', async () => {
-    mockGetServerSession.mockResolvedValueOnce(null);
+    setSession(null);
     const res = await PATCH(req('PATCH'));
     expect(res.status).toBe(401);
   });
 
   it('responds 400 on invalid body', async () => {
-    mockGetServerSession.mockResolvedValueOnce({ user: { id: 'u1' } });
+    setSession({ user: { id: 'u1' } });
     const res = await PATCH(req('PATCH', { stepId: 123 }));
     expect(res.status).toBe(400);
   });
 
   it('updates step status', async () => {
     mockDb = { u1: { state: {}, completed: {} } };
-    mockGetServerSession.mockResolvedValueOnce({ user: { id: 'u1' } });
+    setSession({ user: { id: 'u1' } });
     const res = await PATCH(req('PATCH', { stepId: 's1', completed: 'complete' }));
     const body = await res.json();
     expect(res.status).toBe(200);
@@ -129,7 +128,7 @@ describe('PATCH', () => {
 
   it('handles internal TypeError', async () => {
     mockDb = { u1: { state: {}, completed: {} } };
-    mockGetServerSession.mockResolvedValueOnce({ user: { id: 'u1' } });
+    setSession({ user: { id: 'u1' } });
     mockWriteJsonFile.mockRejectedValueOnce(new TypeError('oops'));
     const res = await PATCH(req('PATCH', { stepId: 's1', completed: 'complete' }));
     const body = await res.json();
@@ -137,4 +136,3 @@ describe('PATCH', () => {
     expect(body).toEqual({ error: 'oops' });
   });
 });
-

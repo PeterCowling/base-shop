@@ -25,6 +25,7 @@
 - [Lighthouse](./lighthouse.md)
 - [SEO](./seo.md)
 - [Sanity blog](./sanity-blog.md)
+ - [Troubleshooting](./troubleshooting.md)
 
 ## Upgrades & Migrations
 - [Upgrade flow](./upgrade-flow.md)
@@ -32,6 +33,7 @@
 - [Edit preview & republish](./edit-preview-republish.md)
 - [Migration guide](./migration-guide.md)
 - [Argon2 migration](./argon2-migration.md)
+- [Page Builder metadata & CSS](./page-builder-metadata.md)
 
 ## Reference
 - [Prebuild preview best practices](./prebuild-preview-best-practices.md)
@@ -39,3 +41,5 @@
 - [Contributing](./contributing.md)
 - [Auth rate limiting](./auth-rate-limiting.md)
 - [Luxury features](./luxury-features.md)
+ - [TypeScript configuration](./typescript.md)
+ - [TypeScript path mapping](./tsconfig-paths.md)

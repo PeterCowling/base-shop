@@ -15,6 +15,8 @@ import SnapLine from "./SnapLine";
 import Block from "./Block";
 import RulersOverlay from "./RulersOverlay";
 import MultiSelectOverlay from "./MultiSelectOverlay";
+import InlineInsert from "./InlineInsert";
+import CommentsLayer from "./CommentsLayer";
 
 interface Props {
   components: PageComponent[];
@@ -37,6 +39,9 @@ interface Props {
   device?: DevicePreset;
   preview?: boolean;
   editor?: HistoryState["editor"];
+  shop?: string | null;
+  pageId?: string | null;
+  showComments?: boolean;
 }
 
 const PageCanvas = ({
@@ -60,6 +65,9 @@ const PageCanvas = ({
   device,
   preview = false,
   editor,
+  shop,
+  pageId,
+  showComments = true,
 }: Props) => {
   const [dropRect, setDropRect] = useState<
     { left: number; top: number; width: number; height: number } | null
@@ -177,6 +185,16 @@ const PageCanvas = ({
   }
 
   const visibleComponents = components.filter((c) => !isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport));
+  const toUnderlyingIndex = (uiIndex: number): number => {
+    if (uiIndex < visibleComponents.length) {
+      const targetId = visibleComponents[uiIndex]?.id;
+      if (targetId) {
+        const idx = components.findIndex((c) => c.id === targetId);
+        return idx >= 0 ? idx : components.length;
+      }
+    }
+    return components.length;
+  };
   return (
     <SortableContext
       items={visibleComponents.map((c) => c.id)}
@@ -197,6 +215,9 @@ const PageCanvas = ({
           dragOver && "ring-2 ring-primary"
         )}
       >
+        {shop && pageId && showComments && (
+          <CommentsLayer canvasRef={canvasRef as any} components={components} shop={shop ?? ""} pageId={pageId ?? ""} selectedIds={selectedIds} />
+        )}
         {dropRect && (
           <div
             className="pointer-events-none absolute z-50 rounded border-2 border-primary/50 bg-primary/10"
@@ -229,11 +250,25 @@ const PageCanvas = ({
                   : viewport === "tablet"
                     ? "heightTablet"
                     : "heightMobile";
+              const leftKey =
+                viewport === "desktop"
+                  ? "leftDesktop"
+                  : viewport === "tablet"
+                    ? "leftTablet"
+                    : "leftMobile";
+              const topKey =
+                viewport === "desktop"
+                  ? "topDesktop"
+                  : viewport === "tablet"
+                    ? "topTablet"
+                    : "topMobile";
               const allowed = new Set(unlockedIds);
               Object.entries(patches).forEach(([id, p]) => {
                 if (!allowed.has(id)) return;
                 if (!p) return;
-                const patch: Record<string, string | undefined> = { left: p.left, top: p.top };
+                const patch: Record<string, string | undefined> = {};
+                if (p.left !== undefined) patch[leftKey] = p.left;
+                if (p.top !== undefined) patch[topKey] = p.top;
                 if (p.width !== undefined) patch[widthKey] = p.width;
                 if (p.height !== undefined) patch[heightKey] = p.height;
                 dispatch({ type: "resize", id, ...(patch as any) });
@@ -254,7 +289,23 @@ const PageCanvas = ({
         {showGrid && <GridOverlay gridCols={gridCols} />}
         <SnapLine x={snapPosition} />
         {visibleComponents.map((c, i) => (
-          <Fragment key={c.id}>
+          <div key={c.id} className="relative group">
+            {/* Inline insert control before each item */}
+            <InlineInsert
+              index={i}
+              context="top"
+              onInsert={(component, index) => {
+                const insertAt = toUnderlyingIndex(index);
+                dispatch({ type: "add", component, index: insertAt });
+                onSelectIds([component.id]);
+                // Announce for a11y
+                try {
+                  window.dispatchEvent(
+                    new CustomEvent("pb-live-message", { detail: "Block inserted" })
+                  );
+                } catch {}
+              }}
+            />
             {insertIndex === i && (
               <div
                 data-placeholder
@@ -280,6 +331,11 @@ const PageCanvas = ({
                 } else {
                   onSelectIds([id]);
                 }
+                // Move focus to the selected block for predictable keyboard flow
+                setTimeout(() => {
+                  const el = document.querySelector(`[data-component-id="${id}"]`) as HTMLElement | null;
+                  el?.focus?.();
+                }, 0);
               }}
               onRemove={() => dispatch({ type: "remove", id: c.id })}
               dispatch={dispatch}
@@ -290,8 +346,23 @@ const PageCanvas = ({
               device={device}
               editor={editor}
             />
-          </Fragment>
+          </div>
         ))}
+        {/* Inline insert control at the end */}
+        <InlineInsert
+          index={visibleComponents.length}
+          context="top"
+          onInsert={(component, index) => {
+            const insertAt = toUnderlyingIndex(index);
+            dispatch({ type: "add", component, index: insertAt });
+            onSelectIds([component.id]);
+            try {
+              window.dispatchEvent(
+                new CustomEvent("pb-live-message", { detail: "Block inserted" })
+              );
+            } catch {}
+          }}
+        />
         {insertIndex === visibleComponents.length && (
           <div
             data-placeholder

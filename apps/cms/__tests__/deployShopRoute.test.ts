@@ -1,8 +1,11 @@
 // Response.json() provided by shared test setup
-
-jest.mock("next-auth", () => ({
-  getServerSession: jest.fn(),
-}));
+function setSession(session: any) {
+  const { __setMockSession } = require("next-auth") as {
+    __setMockSession: (s: any) => void;
+  };
+  __setMockSession(session);
+}
+jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 jest.mock("@cms/actions/deployShop.server", () => ({
   deployShopHosting: jest.fn(),
@@ -16,7 +19,6 @@ process.env.STRIPE_WEBHOOK_SECRET = "whsec";
 process.env.EMAIL_FROM = "from@example.com";
 
 describe("deploy-shop API route", () => {
-  let getServerSession: jest.Mock;
   let actions: {
     deployShopHosting: jest.Mock;
     getDeployStatus: jest.Mock;
@@ -25,9 +27,7 @@ describe("deploy-shop API route", () => {
 
   beforeEach(() => {
     jest.resetModules();
-    getServerSession = require("next-auth").getServerSession as jest.Mock;
     actions = require("@cms/actions/deployShop.server");
-    getServerSession.mockReset();
     actions.deployShopHosting.mockReset();
     actions.getDeployStatus.mockReset();
     actions.updateDeployStatus.mockReset();
@@ -35,8 +35,11 @@ describe("deploy-shop API route", () => {
 
   describe("POST", () => {
     it("deploys shop when authorized", async () => {
-      getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+      setSession({ user: { role: "admin" } });
       actions.deployShopHosting.mockResolvedValueOnce({ id: "123" });
+      const { getServerSession } = await import("next-auth");
+      const probe = await getServerSession({} as any);
+      expect(probe).toEqual({ user: { role: "admin" } });
       const route = await import("../src/app/api/deploy-shop/route");
       const req = new Request("http://localhost/api/deploy-shop", {
         method: "POST",
@@ -49,7 +52,7 @@ describe("deploy-shop API route", () => {
     });
 
     it("returns 403 when unauthorized", async () => {
-      getServerSession.mockResolvedValueOnce(null);
+      setSession(null);
       const route = await import("../src/app/api/deploy-shop/route");
       const req = new Request("http://localhost/api/deploy-shop", {
         method: "POST",
@@ -61,7 +64,7 @@ describe("deploy-shop API route", () => {
     });
 
     it("returns 400 when action throws", async () => {
-      getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+      setSession({ user: { role: "admin" } });
       actions.deployShopHosting.mockRejectedValueOnce(new Error("bad"));
       const route = await import("../src/app/api/deploy-shop/route");
       const req = new Request("http://localhost/api/deploy-shop", {
@@ -76,7 +79,7 @@ describe("deploy-shop API route", () => {
 
   describe("GET", () => {
     it("returns deploy status when authorized", async () => {
-      getServerSession.mockResolvedValueOnce({ user: { role: "ShopAdmin" } });
+      setSession({ user: { role: "ShopAdmin" } });
       actions.getDeployStatus.mockResolvedValueOnce({ status: "ok" });
       const route = await import("../src/app/api/deploy-shop/route");
       const req = new Request("http://localhost/api/deploy-shop?id=42");
@@ -87,7 +90,7 @@ describe("deploy-shop API route", () => {
     });
 
     it("returns 403 when unauthorized", async () => {
-      getServerSession.mockResolvedValueOnce(null);
+      setSession(null);
       const route = await import("../src/app/api/deploy-shop/route");
       const req = new Request("http://localhost/api/deploy-shop?id=42");
       const res = await route.GET(req);
@@ -96,7 +99,7 @@ describe("deploy-shop API route", () => {
     });
 
     it("returns 400 when id missing", async () => {
-      getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+      setSession({ user: { role: "admin" } });
       const route = await import("../src/app/api/deploy-shop/route");
       const req = new Request("http://localhost/api/deploy-shop");
       const res = await route.GET(req);
@@ -107,7 +110,7 @@ describe("deploy-shop API route", () => {
 
   describe("PUT", () => {
     it("updates status when authorized", async () => {
-      getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+      setSession({ user: { role: "admin" } });
       actions.updateDeployStatus.mockResolvedValueOnce(undefined);
       const route = await import("../src/app/api/deploy-shop/route");
       const req = new Request("http://localhost/api/deploy-shop", {
@@ -121,7 +124,7 @@ describe("deploy-shop API route", () => {
     });
 
     it("returns 403 when unauthorized", async () => {
-      getServerSession.mockResolvedValueOnce(null);
+      setSession(null);
       const route = await import("../src/app/api/deploy-shop/route");
       const req = new Request("http://localhost/api/deploy-shop", {
         method: "PUT",
@@ -133,7 +136,7 @@ describe("deploy-shop API route", () => {
     });
 
     it("returns 400 when id missing", async () => {
-      getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+      setSession({ user: { role: "admin" } });
       const route = await import("../src/app/api/deploy-shop/route");
       const req = new Request("http://localhost/api/deploy-shop", {
         method: "PUT",

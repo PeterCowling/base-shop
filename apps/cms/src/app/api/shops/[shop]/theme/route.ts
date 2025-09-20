@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { patchTheme } from "@cms/services/shops";
+import { readShop } from "@platform-core/repositories/shops.server";
 
 export async function PATCH(
   req: NextRequest,
@@ -14,6 +15,27 @@ export async function PATCH(
       themeDefaults,
     });
     return NextResponse.json({ shop: result.shop });
+  } catch (err) {
+    return NextResponse.json(
+      { error: (err as Error).message },
+      { status: 400 },
+    );
+  }
+}
+
+export async function GET(
+  _req: NextRequest,
+  context: { params: Promise<{ shop: string }> },
+) {
+  try {
+    const { shop } = await context.params;
+    const s = await readShop(shop);
+    return NextResponse.json({
+      themeId: s.themeId,
+      themeDefaults: s.themeDefaults ?? {},
+      themeOverrides: s.themeOverrides ?? {},
+      themeTokens: s.themeTokens ?? {},
+    });
   } catch (err) {
     return NextResponse.json(
       { error: (err as Error).message },

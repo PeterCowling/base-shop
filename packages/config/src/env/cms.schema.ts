@@ -43,7 +43,16 @@ export const cmsEnvSchema = z.object({
         return undefined;
       }
       return value;
-    }, z.string().min(1).default(SANITY_API_VERSION_DEFAULT)),
+    },
+    z
+      .string()
+      .min(1)
+      .refine(
+        (v) => /^(\d{4}-\d{2}-\d{2}|v\d+)$/.test(v),
+        { message: "Invalid SANITY_API_VERSION format" },
+      )
+      .default(SANITY_API_VERSION_DEFAULT)
+    ),
   SANITY_PROJECT_ID: isProd
     ? z.string().min(1)
     : z.string().min(1).default("dummy-project-id"),

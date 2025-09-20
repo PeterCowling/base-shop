@@ -35,6 +35,8 @@ export default function useBlockTransform(
     startResize,
     guides: resizeGuides,
     snapping: resizeSnapping,
+    nudgeByKeyboard,
+    kbResizing,
   } = useCanvasResize({
     componentId,
     widthKey,
@@ -67,6 +69,5 @@ export default function useBlockTransform(
       : dragGuides;
   const snapping = resizeSnapping || dragSnapping;
 
-  return { startResize, startDrag, guides, snapping } as const;
+  return { startResize, startDrag, guides, snapping, nudgeByKeyboard, kbResizing } as const;
 }
-

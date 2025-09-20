@@ -1,4 +1,5 @@
 import { jest } from "@jest/globals";
+import { jsonRequest, asNextJson } from "@acme/test-utils";
 
 afterEach(() => {
   jest.resetModules();
@@ -17,12 +18,9 @@ describe("cart API", () => {
 
   it("returns 404 for unknown sku", async () => {
     const { POST } = await import("../src/app/api/cart/route");
-    const req = new Request("http://test.local/api/cart", {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ sku: { id: "missing" }, qty: 1 }),
-    }) as any;
-    const res = await POST(req);
+    const res = await POST(
+      jsonRequest({ sku: { id: "missing" }, qty: 1 }, { url: "http://test.local/api/cart" })
+    );
     expect(res.status).toBe(404);
     const json = await res.json();
     expect(json).toEqual({ error: "Item not found" });
@@ -36,10 +34,7 @@ describe("cart API", () => {
     }));
 
     const { POST } = await import("../src/app/api/cart/route");
-    const res = await POST({
-      json: async () => ({ sku: { id: "foo" }, qty: 1 }),
-      cookies: { get: () => undefined },
-    } as unknown as Request);
+    const res = await POST(asNextJson({ sku: { id: "foo" }, qty: 1 }));
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json.ok).toBe(true);

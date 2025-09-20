@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import type { PageComponent } from "@acme/types";
+import type { PageComponent, HistoryState } from "@acme/types";
 import type { Locale } from "@i18n/locales";
 import DynamicRenderer from "@/components/DynamicRenderer";
 import DeviceSelector from "@ui/src/components/DeviceSelector";
@@ -12,12 +12,14 @@ interface PreviewClientProps {
   components: PageComponent[];
   locale: Locale;
   initialDeviceId: string;
+  editor?: HistoryState["editor"];
 }
 
 export default function PreviewClient({
   components,
   locale,
   initialDeviceId,
+  editor,
 }: PreviewClientProps) {
   const [deviceId, setDeviceId] = usePreviewDevice(initialDeviceId);
   const device = useMemo(
@@ -32,9 +34,8 @@ export default function PreviewClient({
         style={{ width: device.width, height: device.height }}
         className="mx-auto overflow-auto rounded border"
       >
-        <DynamicRenderer components={components} locale={locale} />
+        <DynamicRenderer components={components} locale={locale} editor={editor as any} />
       </div>
     </div>
   );
 }
-

@@ -37,7 +37,6 @@ export default function PricingForm({ shop, initial }: Props) {
     baseRateError,
     onBaseRateChange,
     rootError,
-    status,
     statusLabel,
     statusVariant,
     progressMessage,

@@ -93,7 +93,7 @@ export default function MigrationsPage() {
         <CardContent className="space-y-4">
           <h2 className="text-lg font-semibold text-foreground">Run the migrate-shop CLI</h2>
           <p className="text-sm text-muted-foreground">
-            From the root of the repository, execute the migration tool to align a shop's theme tokens and templates with the latest release.
+            From the root of the repository, execute the migration tool to align a shop’s theme tokens and templates with the latest release.
           </p>
           <Card className="border border-border/60 bg-muted/10">
             <CardContent className="font-mono text-sm text-foreground">

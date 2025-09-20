@@ -102,7 +102,8 @@ export function createAuthOptions(
           t.role = u.role;
           // Ensure we keep a stable identifier available to session callback
           // NextAuth typically sets `sub` from user.id, but we mirror on `id` too.
-          if ((user as any).id) t.id = String((user as any).id);
+          const maybeId = (user as Record<string, unknown>)["id"];
+          if (maybeId != null) t.id = String(maybeId);
         }
         return token;
       },
@@ -119,7 +120,7 @@ export function createAuthOptions(
         const id = (token as JWT & { sub?: string; id?: string }).id ??
           (token as JWT & { sub?: string }).sub;
         if (id) {
-          (session.user as any).id = id;
+          (session.user as Record<string, unknown>)["id"] = id;
         }
         return session;
       },

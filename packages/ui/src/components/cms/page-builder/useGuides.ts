@@ -20,6 +20,11 @@ export default function useGuides(
     if (!el || !parent) return { vertical: [], horizontal: [] };
     const vertical: number[] = [];
     const horizontal: number[] = [];
+    // Add container centerlines to improve snapping to midlines
+    const centerX = parent.offsetWidth / 2;
+    const centerY = parent.offsetHeight / 2;
+    if (Number.isFinite(centerX)) vertical.push(centerX);
+    if (Number.isFinite(centerY)) horizontal.push(centerY);
     Array.from(parent.children).forEach((child) => {
       if (child === el) return;
       const c = child as HTMLElement;

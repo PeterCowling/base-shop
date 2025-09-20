@@ -104,7 +104,7 @@ export function DashboardHero({
               <div>
                 <p className="text-sm font-medium">Pending approvals</p>
                 <p className="text-xs text-muted-foreground">
-                  We'll surface new requests as soon as they arrive.
+                  We’ll surface new requests as soon as they arrive.
                 </p>
               </div>
               <Tag variant={pendingSummaryVariant}>{pendingSummaryText}</Tag>

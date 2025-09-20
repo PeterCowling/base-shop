@@ -4,6 +4,7 @@
 
 /* Use a relative path so PostCSS resolves tokens without package build */
 @import "../../../../packages/themes/base/src/tokens.css";
+@import "../../../../packages/ui/src/styles/builder.css";
 @import "tailwindcss";
 
 /* -------- CSS reset (minimal) ------------------------------------ */

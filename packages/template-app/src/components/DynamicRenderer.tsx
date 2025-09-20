@@ -18,7 +18,8 @@ import TestimonialSlider from "@ui/components/cms/blocks/TestimonialSlider";
 import { Textarea as TextBlock } from "@ui/components/atoms/primitives/textarea";
 
 import { PRODUCTS } from "@platform-core/products/index";
-import type { PageComponent, SKU } from "@acme/types";
+import type { PageComponent, SKU, HistoryState } from "@acme/types";
+import { cssVars } from "@ui/src/utils/style";
 import type { Locale } from "@i18n/locales";
 
 /* ------------------------------------------------------------------
@@ -65,9 +66,11 @@ const registry: Partial<
 function DynamicRenderer({
   components,
   locale,
+  editor,
 }: {
   components: PageComponent[];
   locale: Locale;
+  editor?: HistoryState["editor"];
 }) {
   return (
     <>
@@ -82,18 +85,84 @@ function DynamicRenderer({
           id: string;
         };
 
+        // Inline CSS variables based on style overrides
+        let styleVars: Record<string, string> = {};
+        try {
+          const raw = (block as any).styles as string | undefined;
+          const overrides = raw ? (JSON.parse(String(raw)) as any) : undefined;
+          styleVars = cssVars(overrides);
+        } catch {
+          // ignore invalid style JSON
+        }
+
+        const hidden = (editor?.[id]?.hidden ?? []) as ("desktop" | "tablet" | "mobile")[];
+        const hideClasses = [
+          hidden.includes("desktop") ? "pb-hide-desktop" : "",
+          hidden.includes("tablet") ? "pb-hide-tablet" : "",
+          hidden.includes("mobile") ? "pb-hide-mobile" : "",
+        ]
+          .filter(Boolean)
+          .join(" ");
+
         if (block.type === "ProductGrid") {
           return (
-            <Comp
+            <div
               key={id}
-              {...props}
-              skus={PRODUCTS as SKU[]}
-              locale={locale}
-            />
+              className={["pb-scope", hideClasses].filter(Boolean).join(" ") || undefined}
+              style={{
+                ...(styleVars as any),
+                fontFamily: (styleVars as any)["--font-family"] ? "var(--font-family)" : undefined,
+                fontSize:
+                  (styleVars as any)["--font-size"] ||
+                  (styleVars as any)["--font-size-desktop"] ||
+                  (styleVars as any)["--font-size-tablet"] ||
+                  (styleVars as any)["--font-size-mobile"]
+                    ? "var(--font-size)"
+                    : undefined,
+                lineHeight:
+                  (styleVars as any)["--line-height"] ||
+                  (styleVars as any)["--line-height-desktop"] ||
+                  (styleVars as any)["--line-height-tablet"] ||
+                  (styleVars as any)["--line-height-mobile"]
+                    ? "var(--line-height)"
+                    : undefined,
+              }}
+            >
+              <Comp
+                {...props}
+                skus={PRODUCTS as SKU[]}
+                locale={locale}
+              />
+            </div>
           );
         }
 
-        return <Comp key={id} {...props} locale={locale} />;
+        return (
+          <div
+            key={id}
+            className={["pb-scope", hideClasses].filter(Boolean).join(" ") || undefined}
+            style={{
+              ...(styleVars as any),
+              fontFamily: (styleVars as any)["--font-family"] ? "var(--font-family)" : undefined,
+              fontSize:
+                (styleVars as any)["--font-size"] ||
+                (styleVars as any)["--font-size-desktop"] ||
+                (styleVars as any)["--font-size-tablet"] ||
+                (styleVars as any)["--font-size-mobile"]
+                  ? "var(--font-size)"
+                  : undefined,
+              lineHeight:
+                (styleVars as any)["--line-height"] ||
+                (styleVars as any)["--line-height-desktop"] ||
+                (styleVars as any)["--line-height-tablet"] ||
+                (styleVars as any)["--line-height-mobile"]
+                  ? "var(--line-height)"
+                  : undefined,
+            }}
+          >
+            <Comp {...(props as any)} locale={locale} />
+          </div>
+        );
       })}
     </>
   );

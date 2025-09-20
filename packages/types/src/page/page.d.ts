@@ -6823,4 +6823,10 @@
         size: z.ZodOptional<z.ZodEnum<["sm", "md", "lg"]>>;
     }, z.ZodTypeAny, "passthrough"> | z.objectInputType<{
         id: z.ZodString;
+export interface EditorFlags {
+    name?: string;
+    locked?: boolean;
+    zIndex?: number;
+    hidden?: ("desktop" | "tablet" | "mobile")[];
+}
 //# sourceMappingURL=page.d.ts.map

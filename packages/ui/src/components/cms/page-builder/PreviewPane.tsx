@@ -39,7 +39,7 @@ const PreviewPane = ({ components, locale, deviceId, onChange, editor }: Props) 
         className={`${frameClass[previewViewport]} shrink-0`}
         style={viewportStyle}
       >
-        <DynamicRenderer components={decorated} locale={locale} />
+        <DynamicRenderer components={decorated} locale={locale} editor={editor} />
       </div>
     </div>
   );

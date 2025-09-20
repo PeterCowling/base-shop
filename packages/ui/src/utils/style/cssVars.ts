@@ -21,5 +21,24 @@ export function cssVars(overrides?: StyleOverrides): Record<string, string> {
     if (overrides.typography.lineHeight)
       vars["--line-height"] = `var(${overrides.typography.lineHeight})`;
   }
+  // Per-breakpoint typography variants. These are mapped via builder.css
+  if (overrides.typographyDesktop) {
+    if (overrides.typographyDesktop.fontSize)
+      vars["--font-size-desktop"] = `var(${overrides.typographyDesktop.fontSize})`;
+    if (overrides.typographyDesktop.lineHeight)
+      vars["--line-height-desktop"] = `var(${overrides.typographyDesktop.lineHeight})`;
+  }
+  if (overrides.typographyTablet) {
+    if (overrides.typographyTablet.fontSize)
+      vars["--font-size-tablet"] = `var(${overrides.typographyTablet.fontSize})`;
+    if (overrides.typographyTablet.lineHeight)
+      vars["--line-height-tablet"] = `var(${overrides.typographyTablet.lineHeight})`;
+  }
+  if (overrides.typographyMobile) {
+    if (overrides.typographyMobile.fontSize)
+      vars["--font-size-mobile"] = `var(${overrides.typographyMobile.fontSize})`;
+    if (overrides.typographyMobile.lineHeight)
+      vars["--line-height-mobile"] = `var(${overrides.typographyMobile.lineHeight})`;
+  }
   return vars;
 }

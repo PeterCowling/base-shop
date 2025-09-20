@@ -129,8 +129,8 @@ export function buildChartData(events: TelemetryEvent[]): TelemetryChartData {
       {
         label: "Events",
         data: labels.map((label) => buckets.get(label) ?? 0),
-        borderColor: "#38bdf8",
-        backgroundColor: "rgba(56, 189, 248, 0.2)",
+        borderColor: "hsl(var(--color-info))",
+        backgroundColor: "hsl(var(--color-info) / 0.2)",
         tension: 0.35,
         fill: true,
       },

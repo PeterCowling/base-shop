@@ -36,7 +36,7 @@ export default function RulersOverlay({ show = false, canvasRef, step = 50 }: Pr
   }, [size.h, step]);
 
   if (!show) return null;
-  const major = "#9993", minor = "#9992";
+  const major = "hsl(var(--color-border) / 0.35)", minor = "hsl(var(--color-border) / 0.2)";
   return (
     <div className="pointer-events-none absolute inset-0 z-30">
       <div

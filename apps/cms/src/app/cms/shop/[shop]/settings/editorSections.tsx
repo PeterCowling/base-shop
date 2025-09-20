@@ -168,7 +168,7 @@ export function createShopEditorSections({
   localization,
   seo,
   errors,
-}: CreateShopEditorSectionsArgs): EditorSectionConfig<any>[] {
+}: CreateShopEditorSectionsArgs): EditorSectionConfig[] {
   return [
     {
       key: "identity",

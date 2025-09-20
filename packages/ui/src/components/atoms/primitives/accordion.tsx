@@ -132,8 +132,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
 );
 AccordionItem.displayName = "AccordionItem";
 
-export interface AccordionTriggerProps
-  extends ButtonHTMLAttributes<HTMLButtonElement> {}
+export type AccordionTriggerProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const AccordionTrigger = forwardRef<
   HTMLButtonElement,
@@ -176,8 +175,7 @@ export const AccordionTrigger = forwardRef<
 });
 AccordionTrigger.displayName = "AccordionTrigger";
 
-export interface AccordionContentProps
-  extends HTMLAttributes<HTMLDivElement> {}
+export type AccordionContentProps = HTMLAttributes<HTMLDivElement>;
 
 export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
   ({ className, children, ...props }, ref) => {
@@ -199,4 +197,3 @@ export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps
   },
 );
 AccordionContent.displayName = "AccordionContent";
-

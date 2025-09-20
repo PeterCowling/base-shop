@@ -85,8 +85,16 @@ export default function MediaFileItem({
     }
   }, [item.url]);
 
-  const previewAlt = (item as any).altText || (item as any).alt || (item as any).title || name;
-  const tags = Array.isArray(item.tags) ? item.tags : [];
+  const meta = item as Record<string, unknown>;
+  const previewAlt =
+    (typeof meta["altText"] === "string" && (meta["altText"] as string)) ||
+    (typeof meta["alt"] === "string" && (meta["alt"] as string)) ||
+    (typeof meta["title"] === "string" && (meta["title"] as string)) ||
+    name;
+  const tags = useMemo(() => {
+    const raw = (item as Record<string, unknown>)["tags"];
+    return Array.isArray(raw) ? (raw as unknown[]).filter((t): t is string => typeof t === "string") : [];
+  }, [item]);
 
   const fileSize = useMemo(() => {
     const candidate = item as FileSizeCandidate;

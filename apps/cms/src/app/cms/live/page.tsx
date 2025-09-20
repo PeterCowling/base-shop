@@ -121,7 +121,7 @@ export default async function LivePage() {
                 Validate storefronts in real time
               </h1>
               <p className="text-white/80">
-                Launch each storefront's development server directly from the CMS. Monitor availability before sharing links with stakeholders.
+                Launch each storefront’s development server directly from the CMS. Monitor availability before sharing links with stakeholders.
               </p>
             </div>
             <div className="space-y-4">

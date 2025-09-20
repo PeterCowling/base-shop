@@ -1,5 +1,12 @@
 import type { PageComponent } from "@acme/types";
-import type { EditorFlags } from "@acme/types";
+// Local copy to avoid package export mismatch
+export type EditorFlags = {
+  name?: string;
+  locked?: boolean;
+  zIndex?: number;
+  hidden?: ("desktop" | "tablet" | "mobile")[];
+  stackStrategy?: "default" | "reverse";
+};
 
 export type AddAction = {
   type: "add";

@@ -10,4 +10,17 @@ export interface StyleOverrides {
     fontWeight?: string;
     lineHeight?: string;
   };
+  /** Optional per-breakpoint overrides used by the builder stylesheet */
+  typographyDesktop?: {
+    fontSize?: string;
+    lineHeight?: string;
+  };
+  typographyTablet?: {
+    fontSize?: string;
+    lineHeight?: string;
+  };
+  typographyMobile?: {
+    fontSize?: string;
+    lineHeight?: string;
+  };
 }

@@ -292,4 +292,30 @@ export default [
       ],
     },
   },
+
+  /* ▸ Treat UI Storybook files as non-project to avoid TS project errors */
+  {
+    files: ["packages/ui/**/*.stories.{ts,tsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+        ecmaFeatures: { jsx: true },
+      },
+    },
+    rules: {
+      // Storybook stories often contain inline hooks in render functions
+      "react-hooks/rules-of-hooks": "off",
+    },
+  },
+
+  /* ▸ Page builder uses dynamic, permissive typing */
+  {
+    files: ["packages/ui/src/components/cms/page-builder/**/*.{ts,tsx}"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
 ];

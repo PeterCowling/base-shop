@@ -44,7 +44,7 @@ export default class ChunkReloadBoundary extends React.Component<
         <div className="mx-auto max-w-lg p-6 text-center">
           <h2 className="mb-2 text-lg font-semibold">Something went wrong</h2>
           <p className="mb-4 text-sm text-muted-foreground">
-            We couldn't load a development chunk. Try a manual refresh.
+            We couldn’t load a development chunk. Try a manual refresh.
           </p>
           <button
             type="button"
@@ -59,4 +59,3 @@ export default class ChunkReloadBoundary extends React.Component<
     return this.props.children as React.ReactElement;
   }
 }
-

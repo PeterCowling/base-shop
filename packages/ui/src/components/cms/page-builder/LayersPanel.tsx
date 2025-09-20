@@ -7,7 +7,6 @@ import { CSS } from "@dnd-kit/utilities";
 import type { PageComponent, HistoryState } from "@acme/types";
 import { isHiddenForViewport } from "./state/layout/utils";
 import type { Action } from "./state";
-import { Button } from "../../atoms/shadcn";
 import { useMemo, useState, useCallback } from "react";
 
 interface LayersPanelProps {

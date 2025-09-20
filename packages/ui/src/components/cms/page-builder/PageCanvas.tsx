@@ -146,9 +146,32 @@ const PageCanvas = ({
         style={containerStyle}
         className="relative mx-auto flex flex-col gap-4"
       >
-        {components.filter((c)=>!isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport)).map((c) => (
-          <Block key={c.id} component={c} locale={locale} />
-        ))}
+        {components
+          .filter(
+            (c) =>
+              !isHiddenForViewport(
+                c.id,
+                editor,
+                (c as any).hidden as boolean | undefined,
+                viewport,
+              ),
+          )
+          .map((c) => {
+            const flags = (editor ?? {})[c.id];
+            const hidden = (flags?.hidden ?? []) as ("desktop" | "tablet" | "mobile")[];
+            const hideClasses = [
+              hidden.includes("desktop") ? "pb-hide-desktop" : "",
+              hidden.includes("tablet") ? "pb-hide-tablet" : "",
+              hidden.includes("mobile") ? "pb-hide-mobile" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <div key={c.id} className={["pb-scope", hideClasses].filter(Boolean).join(" ") || undefined}>
+                <Block component={c} locale={locale} />
+              </div>
+            );
+          })}
       </div>
     );
   }

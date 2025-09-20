@@ -44,12 +44,12 @@ function formatBytes(bytes: number): string {
 
 function formatTimestamp(value?: string): string {
   if (!value) {
-    return "Timestamp unavailable";
+    return "Time unavailable";
   }
 
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    return "Timestamp unavailable";
+    return "Time unavailable";
   }
 
   return new Intl.DateTimeFormat(undefined, {

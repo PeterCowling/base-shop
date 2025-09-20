@@ -2,7 +2,7 @@
 import { render, screen } from "@testing-library/react";
 import DynamicRenderer from "../src/components/DynamicRenderer";
 
-jest.mock("@platform-core/products", () => ({ PRODUCTS: [{ id: "sku1" }] }));
+jest.mock("@platform-core/products/index", () => ({ PRODUCTS: [{ id: "sku1" }] }));
 
 const productGridMock = jest.fn(() => <div data-testid="grid" />);
 jest.mock("@platform-core/components/shop/ProductGrid", () => ({
@@ -37,4 +37,3 @@ describe("DynamicRenderer", () => {
     );
   });
 });
-

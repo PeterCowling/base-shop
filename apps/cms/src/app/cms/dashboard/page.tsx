@@ -82,7 +82,7 @@ export default async function DashboardIndexPage() {
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold">Status</h2>
                 <p className="text-sm text-muted-foreground">
-                  We keep an eye on each storefront's telemetry so you can hop in when something needs attention.
+                  We keep an eye on each storefront’s telemetry so you can hop in when something needs attention.
                 </p>
               </div>
               <div className="flex items-center justify-between gap-3 rounded-xl border border-border/15 bg-background/60 px-4 py-3">

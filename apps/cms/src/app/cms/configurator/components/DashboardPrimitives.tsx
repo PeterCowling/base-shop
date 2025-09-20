@@ -38,10 +38,14 @@ export function ButtonElement(props: ButtonElementProps) {
   }
 
   if (asChild && isValidElement(children)) {
-    return cloneElement(children as any, {
-      ...(cleanProps as any),
-      className: cn((children as any).props?.className, className),
-    } as any);
+    const child = children as React.ReactElement<Record<string, unknown>>;
+    const childClass = (child.props as Record<string, unknown>)?.className as
+      | string
+      | undefined;
+    return cloneElement(child, {
+      ...cleanProps,
+      className: cn(childClass, className),
+    });
   }
 
   return (

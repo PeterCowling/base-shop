@@ -115,6 +115,8 @@ export interface EditorFlags {
   locked?: boolean;
   zIndex?: number;
   hidden?: ("desktop" | "tablet" | "mobile")[];
+  /** Container child stacking strategy applied on mobile */
+  stackStrategy?: "default" | "reverse";
 }
 
 export interface HistoryState {
@@ -145,6 +147,7 @@ export const historyStateSchema = z
           zIndex: z.number().int().optional(),
           hidden: z.array(z.enum(["desktop", "tablet", "mobile"]))
             .optional(),
+          stackStrategy: z.enum(["default", "reverse"]).optional(),
         })
       )
       .default({})

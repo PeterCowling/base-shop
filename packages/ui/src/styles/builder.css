@@ -1,0 +1,38 @@
+/* packages/ui/src/styles/builder.css
+   Builder utilities: responsive visibility + CSS var remapping */
+
+/* Breakpoints: mobile < 768px, tablet 768–1023px, desktop >= 1024px */
+
+/* Per-breakpoint visibility toggles */
+@media (max-width: 767px) {
+  .pb-hide-mobile { display: none !important; }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .pb-hide-tablet { display: none !important; }
+}
+@media (min-width: 1024px) {
+  .pb-hide-desktop { display: none !important; }
+}
+
+/* Per-breakpoint typography remapping
+   Components set --font-size[-vp] and --line-height[-vp] inline.
+   These rules map the active viewport variant onto the base variables. */
+@media (max-width: 767px) {
+  .pb-scope { 
+    --font-size: var(--font-size-mobile, var(--font-size));
+    --line-height: var(--line-height-mobile, var(--line-height));
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .pb-scope { 
+    --font-size: var(--font-size-tablet, var(--font-size));
+    --line-height: var(--line-height-tablet, var(--line-height));
+  }
+}
+@media (min-width: 1024px) {
+  .pb-scope { 
+    --font-size: var(--font-size-desktop, var(--font-size));
+    --line-height: var(--line-height-desktop, var(--line-height));
+  }
+}
+

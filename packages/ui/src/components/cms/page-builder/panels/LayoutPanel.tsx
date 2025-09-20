@@ -1,7 +1,14 @@
 "use client";
 
 import type { PageComponent } from "@acme/types";
-import type { EditorFlags } from "@acme/types";
+// Local copy to avoid package export mismatch
+type EditorFlags = {
+  name?: string;
+  locked?: boolean;
+  zIndex?: number;
+  hidden?: ("desktop" | "tablet" | "mobile")[];
+  stackStrategy?: "default" | "reverse";
+};
 import {
   Button,
   Input,
@@ -37,6 +44,7 @@ export default function LayoutPanel({
     value && !globalThis.CSS?.supports(prop, value)
       ? `Invalid ${prop} value`
       : undefined;
+  const effLocked = ((editorFlags as any)?.locked ?? (component as any)?.locked ?? false) as boolean;
   return (
     <div className="space-y-2">
       <div className="flex items-end gap-2">
@@ -53,12 +61,13 @@ export default function LayoutPanel({
             const val = e.target.value === "" ? undefined : parseInt(e.target.value, 10);
             if (onUpdateEditor) onUpdateEditor({ zIndex: val as number | undefined });
           }}
+          disabled={effLocked}
         />
         <div className="flex gap-1">
-          <Button type="button" variant="outline" onClick={() => onUpdateEditor?.({ zIndex: Math.max(0, (editorFlags?.zIndex as number | undefined) ?? 0) })}>Back</Button>
-          <Button type="button" variant="outline" onClick={() => onUpdateEditor?.({ zIndex: (((editorFlags?.zIndex as number | undefined) ?? 0) - 1) })}>-1</Button>
-          <Button type="button" variant="outline" onClick={() => onUpdateEditor?.({ zIndex: (((editorFlags?.zIndex as number | undefined) ?? 0) + 1) })}>+1</Button>
-          <Button type="button" variant="outline" onClick={() => onUpdateEditor?.({ zIndex: 999 })}>Front</Button>
+          <Button type="button" variant="outline" disabled={effLocked} onClick={() => onUpdateEditor?.({ zIndex: Math.max(0, (editorFlags?.zIndex as number | undefined) ?? 0) })}>Back</Button>
+          <Button type="button" variant="outline" disabled={effLocked} onClick={() => onUpdateEditor?.({ zIndex: (((editorFlags?.zIndex as number | undefined) ?? 0) - 1) })}>-1</Button>
+          <Button type="button" variant="outline" disabled={effLocked} onClick={() => onUpdateEditor?.({ zIndex: (((editorFlags?.zIndex as number | undefined) ?? 0) + 1) })}>+1</Button>
+          <Button type="button" variant="outline" disabled={effLocked} onClick={() => onUpdateEditor?.({ zIndex: 999 })}>Front</Button>
         </div>
       </div>
       {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
@@ -163,6 +172,27 @@ export default function LayoutPanel({
             error={cssError("left", component.left)}
             onChange={(e) => handleResize("left", e.target.value)}
           />
+        </>
+      )}
+      {(
+        // Heuristic: show stacking option for potential containers
+        "children" in (component as any) || "columns" in (component as any)
+      ) && (
+        <>
+          <Select
+            value={(editorFlags as any)?.stackStrategy ?? "default"}
+            onValueChange={(v) => onUpdateEditor?.({ stackStrategy: (v as any) })}
+          >
+            <Tooltip text="Mobile stacking strategy for children" className="block">
+              <SelectTrigger>
+                <SelectValue placeholder="Mobile stacking" />
+              </SelectTrigger>
+            </Tooltip>
+            <SelectContent>
+              <SelectItem value="default">Default order</SelectItem>
+              <SelectItem value="reverse">Reverse order (mobile)</SelectItem>
+            </SelectContent>
+          </Select>
         </>
       )}
       {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (

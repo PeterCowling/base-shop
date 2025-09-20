@@ -196,17 +196,6 @@ export function usePageBuilderState({
       } else if (k === "]" && !e.shiftKey) {
         // Cmd/Ctrl + ] : bring forward (zIndex + 1)
         e.preventDefault();
-        const find = (list: PageComponent[], id: string): PageComponent | null => {
-          for (const c of list) {
-            if (c.id === id) return c;
-            const children = (c as { children?: PageComponent[] }).children;
-            if (Array.isArray(children)) {
-              const found = find(children, id);
-              if (found) return found;
-            }
-          }
-          return null;
-        };
         if (selectedIds.length > 0) {
           selectedIds.forEach((id) => {
             const z = (typedState as any).editor?.[id]?.zIndex ?? 0;
@@ -217,17 +206,6 @@ export function usePageBuilderState({
       } else if (k === "[" && !e.shiftKey) {
         // Cmd/Ctrl + [ : send backward (zIndex - 1)
         e.preventDefault();
-        const find = (list: PageComponent[], id: string): PageComponent | null => {
-          for (const c of list) {
-            if (c.id === id) return c;
-            const children = (c as { children?: PageComponent[] }).children;
-            if (Array.isArray(children)) {
-              const found = find(children, id);
-              if (found) return found;
-            }
-          }
-          return null;
-        };
         if (selectedIds.length > 0) {
           selectedIds.forEach((id) => {
             const z = (typedState as any).editor?.[id]?.zIndex ?? 0;

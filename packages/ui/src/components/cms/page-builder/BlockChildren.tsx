@@ -39,7 +39,14 @@ export default function BlockChildren({
   setDropRef,
   editor,
 }: Props) {
-  const visibleChildren = (childComponents ?? []).filter((c) => !isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport));
+  let visibleChildren = (childComponents ?? []).filter((c) => !isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport));
+  // Apply container stacking presets for mobile
+  if (viewport === "mobile") {
+    const strategy = (editor?.[component.id]?.stackStrategy as "default" | "reverse" | undefined) ?? "default";
+    if (strategy === "reverse") {
+      visibleChildren = [...visibleChildren].reverse();
+    }
+  }
   if (visibleChildren.length === 0) return null;
   const childIds = visibleChildren.map((c) => c.id);
   return (

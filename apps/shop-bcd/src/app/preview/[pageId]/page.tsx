@@ -29,6 +29,7 @@ export default async function PreviewPage({
   }
   const page = pageSchema.parse(await res.json());
   const components = page.components as PageComponent[];
+  const editor = page.history?.editor;
   const locale = (Object.keys(page.seo.title)[0] || "en") as Locale;
   const init = searchParams.device ?? searchParams.view;
   const initialDeviceId = (() => {
@@ -47,6 +48,7 @@ export default async function PreviewPage({
       components={components}
       locale={locale}
       initialDeviceId={initialDeviceId}
+      editor={editor as any}
     />
   );
 }

@@ -2,7 +2,7 @@
 
 import { notFound } from "next/navigation";
 import Image from "next/image";
-import { fetchPostBySlug } from "@acme/sanity";
+import { fetchPostBySlug, type PortableBlock } from "@acme/sanity";
 
 export const revalidate = 60;
 
@@ -31,10 +31,13 @@ export default async function BlogPostPage({
       )}
       {/* Basic portable text fallback: list paragraphs if provided */}
       <div className="prose prose-slate max-w-none">
-        {(post.body as any[] | undefined)?.map((block, i) => {
-          if (block?._type === "block" && Array.isArray(block.children)) {
-            const text = block.children.map((c: any) => c.text).join("");
-            return <p key={i}>{text}</p>;
+        {(post.body as PortableBlock[] | undefined)?.map((block, i) => {
+          const children = (block as { children?: unknown }).children;
+          if (block?._type === "block" && Array.isArray(children)) {
+            const texts = (children as Array<{ text?: unknown }>).map((c) =>
+              typeof c.text === "string" ? c.text : "",
+            );
+            return <p key={i}>{texts.join("")}</p>;
           }
           return null;
         })}
@@ -42,4 +45,3 @@ export default async function BlogPostPage({
     </article>
   );
 }
-

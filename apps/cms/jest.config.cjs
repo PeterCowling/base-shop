@@ -47,6 +47,7 @@ module.exports = {
     "^packages/ui/src/hooks/useFileUpload(\\.tsx)?$": "<rootDir>/test/__mocks__/ui-useFileUpload.mock.ts",
     "^packages/ui/src/components/atoms/shadcn$": "<rootDir>/test/__mocks__/ui-shadcn-lite.tsx",
     "^packages/ui/src/components/cms/page-builder/Palette(\\.tsx)?$": "<rootDir>/test/__mocks__/ui-palette-add.mock.tsx",
+    "^packages/ui/src/components/cms/page-builder/hooks/usePageBuilderDnD(\\.ts)?$": "<rootDir>/test/__mocks__/ui-pb-dnd.mock.ts",
     "^undici$": "<rootDir>/test/__mocks__/undici.ts",
     "^react-chartjs-2$": "<rootDir>/test/__mocks__/react-chartjs-2.ts",
   },

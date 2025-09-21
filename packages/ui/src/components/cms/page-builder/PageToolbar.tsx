@@ -6,8 +6,7 @@ import React, { useEffect } from "react";
 import { Button, Dialog, DialogTrigger, DialogContent, DialogTitle, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../../atoms/shadcn";
 import { getLegacyPreset } from "../../../utils/devicePresets";
 import DeviceSelector from "../../common/DeviceSelector";
-import ThemePanel from "./ThemePanel";
-import BreakpointsPanel, { type Breakpoint } from "./panels/BreakpointsPanel";
+import type { Breakpoint } from "./panels/BreakpointsPanel";
 import DesignMenu, { DesignMenuContent } from "./DesignMenu";
 import MoreMenu from "./MoreMenu";
 import { Tooltip } from "../../atoms";
@@ -70,7 +69,6 @@ const PageToolbar = ({
     return () => window.removeEventListener("keydown", handler);
   }, [setDeviceId, setOrientation]);
 
-  const controlsRef = (typeof window !== 'undefined') ? (window as any) : null;
   const [helpOpen, setHelpOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [w, setW] = React.useState<number>(0);

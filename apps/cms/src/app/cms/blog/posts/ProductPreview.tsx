@@ -51,15 +51,15 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
     };
   }, [slug, onValidChange]);
 
-  if (loading) return <div className="border p-2">Loading…</div>;
+  if (loading) return <div className="border border-border/10 p-2">Loading…</div>;
   if (error || !product)
     return (
-      <div className="border p-2 text-danger-foreground">{error ?? "Not found"}</div>
+      <div className="border border-border/10 p-2 text-danger-foreground">{error ?? "Not found"}</div>
     );
   const available = (product.stock ?? 0) > 0;
   const imageUrl = product.media?.[0]?.url ?? "/file.svg";
   return (
-    <div className="flex gap-2 border p-2">
+    <div className="flex gap-2 border border-border/10 p-2">
       <Image
         src={imageUrl}
         alt={product.title}

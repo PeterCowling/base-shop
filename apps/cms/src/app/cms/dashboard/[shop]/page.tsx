@@ -169,7 +169,7 @@ export default async function ShopDashboard({
     <div>
       <h2 className="mb-4 text-xl font-semibold">Dashboard: {shop}</h2>
       {domain && (
-        <p className="mb-2 text-sm text-gray-600">
+        <p className="mb-2 text-sm text-muted-foreground">
           Domain: {domain} {domainStatus ? `(${domainStatus})` : ""}
         </p>
       )}

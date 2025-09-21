@@ -16,15 +16,19 @@ export interface BindProps {
 function getByPath(obj: unknown, path?: string): unknown {
   if (!obj || !path) return undefined;
   const parts = path.split(".").map((p) => p.trim()).filter(Boolean);
-  let cur: any = obj as any;
+  let cur: unknown = obj;
   for (const part of parts) {
-    cur = cur?.[part];
-    if (cur == null) break;
+    if (cur && typeof cur === "object" && part in (cur as Record<string, unknown>)) {
+      cur = (cur as Record<string, unknown>)[part];
+    } else {
+      cur = undefined;
+      break;
+    }
   }
   return cur ?? undefined;
 }
 
-function template(str: string, item: any): string {
+function template(str: string, item: unknown): string {
   return str.replace(/\{([^}]+)\}/g, (_, key) => {
     const val = getByPath(item, key);
     return val == null ? "" : String(val);
@@ -35,7 +39,7 @@ function template(str: string, item: any): string {
  * Bind wrapper: clones its only child, injecting a prop from the current item context.
  */
 export default function Bind({ prop = "text", path, fallback, children }: BindProps) {
-  const { item } = useCurrentItem<any>();
+  const { item } = useCurrentItem<unknown>();
   const meta = useDatasetMeta();
   // Resolve value either as dot-path or as template with {field}
   let value: unknown = undefined;

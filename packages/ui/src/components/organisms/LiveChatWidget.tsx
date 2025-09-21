@@ -86,7 +86,7 @@ export function LiveChatWidget({
       <DialogContent
         style={{ ...widthStyle, ...bottomStyle }}
         className={cn(
-          "bg-background fixed right-4 flex flex-col gap-4 border p-6 shadow-lg",
+          "bg-surface-3 fixed right-4 flex flex-col gap-4 border border-border-2 p-6 shadow-lg",
           widthClass,
           bottomClass
         )}

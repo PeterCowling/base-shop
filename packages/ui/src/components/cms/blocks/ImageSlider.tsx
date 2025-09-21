@@ -24,7 +24,8 @@ export default function ImageSlider({
 }: Props) {
   const list = slides.slice(0, maxItems ?? slides.length);
   const [index, setIndex] = useState(0);
-  const group = id || useId();
+  const fallbackId = useId();
+  const group = id ?? fallbackId;
 
   if (!list.length || list.length < (minItems ?? 0)) return null;
 

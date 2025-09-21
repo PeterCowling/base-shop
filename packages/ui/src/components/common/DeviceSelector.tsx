@@ -132,7 +132,7 @@ export default function DeviceSelector({
               <Input placeholder="Label" value={draft.label} onChange={(e) => setDraft((d) => ({ ...d, label: e.target.value }))} />
               <Input placeholder="Width" type="number" value={draft.width} onChange={(e) => setDraft((d) => ({ ...d, width: e.target.value }))} />
               <Input placeholder="Height" type="number" value={draft.height} onChange={(e) => setDraft((d) => ({ ...d, height: e.target.value }))} />
-              <UISelect value={draft.type} onValueChange={(v) => setDraft((d) => ({ ...d, type: v as any }))}>
+              <UISelect value={draft.type} onValueChange={(v) => setDraft((d) => ({ ...d, type: v as "desktop" | "tablet" | "mobile" }))}>
                 <UISelectTrigger>
                   <UISelectValue placeholder="Type" />
                 </UISelectTrigger>

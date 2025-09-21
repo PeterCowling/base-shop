@@ -96,7 +96,7 @@ export const DragAndDrop: Story = {
           />
         </div>
         <div>
-          <p style={{ margin: 0, fontSize: 12, color: "#666" }}>Drag rows to reorder or nest under parents.</p>
+          <p style={{ margin: 0, fontSize: 12, color: 'var(--color-muted-foreground)' }}>Drag rows to reorder or nest under parents.</p>
           <pre style={{ marginTop: 8, fontSize: 12 }}>{JSON.stringify(components, null, 2)}</pre>
         </div>
       </div>

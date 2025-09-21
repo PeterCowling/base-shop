@@ -9,7 +9,12 @@ jest.mock("@dnd-kit/core", () => {
   const React = require("react");
   return {
     DndContext: (props: any) => {
-      dndHandlers = props;
+      dndHandlers = {
+        ...props,
+        onDragStart: typeof props.onDragStart === "function" ? props.onDragStart : () => {},
+        onDragMove: typeof props.onDragMove === "function" ? props.onDragMove : () => {},
+        onDragEnd: typeof props.onDragEnd === "function" ? props.onDragEnd : () => {},
+      };
       return <div>{props.children}</div>;
     },
     DragOverlay: ({ children }: any) => <div>{children}</div>,

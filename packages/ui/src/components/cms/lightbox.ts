@@ -24,11 +24,11 @@ export function ensureLightboxStyles() {
   .pb-lightbox-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.8); }
   .pb-lightbox-content { position: relative; z-index: 1; max-width: 90vw; max-height: 90vh; display: flex; flex-direction: column; align-items: center; gap: .5rem; }
   .pb-lightbox-content img { max-width: 90vw; max-height: 80vh; object-fit: contain; }
-  .pb-lightbox-caption { color: #fff; font-size: 12px; text-align: center; }
-  .pb-lightbox-btn { position: absolute; z-index: 1; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); color: #fff; border: none; padding: .5rem .75rem; cursor: pointer; border-radius: .25rem; }
+  .pb-lightbox-caption { color: var(--color-fg); font-size: 12px; text-align: center; }
+  .pb-lightbox-btn { position: absolute; z-index: 1; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); color: var(--color-fg); border: none; padding: .5rem .75rem; cursor: pointer; border-radius: .25rem; }
   .pb-lightbox-prev { left: 1rem; }
   .pb-lightbox-next { right: 1rem; }
-  .pb-lightbox-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.15); color: #fff; border: none; padding: .25rem .5rem; cursor: pointer; border-radius: .25rem; }
+  .pb-lightbox-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.15); color: var(--color-fg); border: none; padding: .25rem .5rem; cursor: pointer; border-radius: .25rem; }
   `;
   document.head.appendChild(style);
   globalThis.__pbLightboxStyles = true;
@@ -174,4 +174,3 @@ export function initLightbox() {
     open(e as MouseEvent, a);
   });
 }
-

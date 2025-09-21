@@ -68,7 +68,7 @@ export default function SearchBar({
       />
       {results.length > 0 && (
         <ul
-          className="bg-background absolute z-10 mt-1 w-full rounded-md border shadow"
+          className="bg-surface-2 absolute z-10 mt-1 w-full rounded-md border border-border-2 shadow"
           data-token="--color-bg"
         >
           {results.map((r) => (

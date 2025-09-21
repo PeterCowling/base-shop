@@ -59,7 +59,7 @@ export default function PreviewViewer({ params }: { params: Promise<{ token: str
   return (
     <div className="mx-auto max-w-4xl p-4 space-y-4">
       <h1 className="text-xl font-semibold">Version Preview</h1>
-      <div className="rounded border p-3 space-y-2">
+      <div className="rounded border border-border/10 p-3 space-y-2">
         <div className="flex items-end gap-2">
           <div className="flex-1">
             <label className="text-sm font-medium">Password (if required)</label>
@@ -71,7 +71,7 @@ export default function PreviewViewer({ params }: { params: Promise<{ token: str
       </div>
       {data && (
         <div className="space-y-3">
-          <div className="rounded border p-3">
+          <div className="rounded border border-border/10 p-3">
             <div className="text-sm text-muted-foreground">Shop: <span className="font-mono">{data.shop}</span></div>
             <div className="text-sm text-muted-foreground">Page: <span className="font-mono">{data.pageId}</span></div>
             <div className="text-sm text-muted-foreground">Version: <span className="font-mono">{data.versionId}</span></div>
@@ -81,7 +81,7 @@ export default function PreviewViewer({ params }: { params: Promise<{ token: str
               Components: <span className="font-mono">{Array.isArray(data.components) ? data.components.length : 0}</span>
             </div>
           </div>
-          <div className="rounded border p-3">
+          <div className="rounded border border-border/10 p-3">
             <div className="mb-2 text-sm font-medium">JSON</div>
             <pre className="max-h-[480px] overflow-auto whitespace-pre-wrap break-words text-xs bg-muted/40 p-2 rounded">{JSON.stringify(data, null, 2)}</pre>
             <div className="mt-2 text-xs">

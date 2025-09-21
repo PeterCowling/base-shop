@@ -96,11 +96,10 @@ export function usePageBuilderDnD({
       const rawYScreen = activatorEvent.clientY + delta.y;
       const rawXScreen = activatorEvent.clientX + delta.x;
       const canvasRect = canvasRef?.current?.getBoundingClientRect();
-      const { x: pointerXCanvas, y: pointerYCanvas } = canvasRect
+      const { x: pointerXCanvas /*, y: pointerYCanvas */ } = canvasRect
         ? screenToCanvas({ x: rawXScreen, y: rawYScreen }, canvasRect, zoomRef.current)
         : { x: rawXScreen, y: rawYScreen };
       const snapX = snapToGrid(pointerXCanvas, gridSize);
-      const pointerY = pointerYCanvas;
       setSnapPosition(snapX);
       // Auto-scroll when near edges of the scroll container
       try {
@@ -169,6 +168,31 @@ export function usePageBuilderDnD({
         parentId = over.id.toString().replace(/^container-/, "");
         const parent = findById(components, parentId);
         index = parent ? (hasChildren(parent) ? parent.children.length : 0) : 0;
+        // If "over" points to a non-container node, interpret drop as
+        // inserting into its parent before the over node (or at root).
+        if (!over.id.toString().startsWith("container-") && (!parent || !hasChildren(parent))) {
+          const overId = over.id.toString();
+          const findParentId = (list: PageComponent[], target: string, pid?: string): string | undefined => {
+            for (const c of list) {
+              if (c.id === target) return pid;
+              const children = (c as { children?: PageComponent[] }).children;
+              if (Array.isArray(children)) {
+                const res = findParentId(children, target, c.id);
+                if (res !== undefined) return res;
+              }
+            }
+            return undefined;
+          };
+          const actualParentId = findParentId(components, overId, undefined);
+          parentId = actualParentId;
+          if (parentId) {
+            const p = findById(components, parentId);
+            const children = p && hasChildren(p) ? p.children : [];
+            index = Math.max(0, children.findIndex((c) => c.id === overId));
+          } else {
+            index = Math.max(0, components.findIndex((c) => c.id === overId));
+          }
+        }
       }
       // Resolve parent kind for placement rules
       const parentKind: ParentKind = parentId ? ((findById(components, parentId)?.type as ComponentType) || ("" as ComponentType)) : "ROOT";

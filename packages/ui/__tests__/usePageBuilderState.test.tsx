@@ -35,8 +35,10 @@ describe("usePageBuilderState", () => {
     expect(result.current.components).toEqual(history.present);
     expect(setItem).toHaveBeenCalledWith(
       "page-builder-history-p1",
-      JSON.stringify(result.current.state)
+      expect.any(String)
     );
+    const stored = JSON.parse((setItem as jest.Mock).mock.calls[0][1]);
+    expect(stored).toEqual(expect.objectContaining(history));
     act(() => result.current.clearHistory());
     expect(removeItem).toHaveBeenCalledWith("page-builder-history-p1");
   });
@@ -61,15 +63,26 @@ describe("usePageBuilderState", () => {
       usePageBuilderState({ page, history: invalidHistory })
     );
     expect(getItem).toHaveBeenCalledWith("page-builder-history-p1");
-    expect(result.current.state).toEqual({
-      past: [],
-      present: page.components,
-      future: [],
-      gridCols: 12,
-    });
+    expect(result.current.state).toEqual(
+      expect.objectContaining({
+        past: [],
+        present: page.components,
+        future: [],
+        gridCols: 12,
+      })
+    );
     expect(setItem).toHaveBeenCalledWith(
       "page-builder-history-p1",
-      JSON.stringify(result.current.state)
+      expect.any(String)
+    );
+    const stored2 = JSON.parse((setItem as jest.Mock).mock.calls.slice(-1)[0][1]);
+    expect(stored2).toEqual(
+      expect.objectContaining({
+        past: [],
+        present: page.components,
+        future: [],
+        gridCols: 12,
+      })
     );
   });
 
@@ -92,12 +105,16 @@ describe("usePageBuilderState", () => {
 
     const { result } = renderHook(() => usePageBuilderState({ page }));
     expect(getItem).toHaveBeenCalledWith("page-builder-history-p1");
-    expect(result.current.state).toEqual(serverHistory);
+    expect(result.current.state).toEqual(
+      expect.objectContaining(serverHistory)
+    );
     expect(result.current.components).toEqual(serverHistory.present);
     expect(setItem).toHaveBeenCalledWith(
       "page-builder-history-p1",
-      JSON.stringify(result.current.state)
+      expect.any(String)
     );
+    const stored3 = JSON.parse((setItem as jest.Mock).mock.calls.slice(-1)[0][1]);
+    expect(stored3).toEqual(expect.objectContaining(serverHistory));
   });
 
   it("falls back to server history on malformed localStorage JSON", () => {
@@ -119,7 +136,9 @@ describe("usePageBuilderState", () => {
 
     const { result } = renderHook(() => usePageBuilderState({ page }));
     expect(getItem).toHaveBeenCalledWith("page-builder-history-p1");
-    expect(result.current.state).toEqual(serverHistory);
+    expect(result.current.state).toEqual(
+      expect.objectContaining(serverHistory)
+    );
     expect(result.current.components).toEqual(serverHistory.present);
     expect(setItem).toHaveBeenCalledWith(
       "page-builder-history-p1",

@@ -33,30 +33,30 @@ function createMock(): Stripe {
             id,
             object: "checkout.session",
             metadata: {},
-          } as any;
+          } as unknown as Stripe.Checkout.Session;
         },
       },
     },
     refunds: {
       async create(params: unknown) {
         console.info("[stripe-mock] refunds.create", params);
-        return { id: "re_mock", object: "refund", ...(params as object) } as any;
+        return { id: "re_mock", object: "refund", ...(params as object) } as unknown as Stripe.Refund;
       },
     },
     paymentIntents: {
       async update(id: string, params: unknown) {
         console.info("[stripe-mock] paymentIntents.update", id, params);
-        return { id, object: "payment_intent", ...(params as object) } as any;
+        return { id, object: "payment_intent", ...(params as object) } as unknown as Stripe.PaymentIntent;
       },
       async create(params: unknown) {
         console.info("[stripe-mock] paymentIntents.create", params);
-        return { id: "pi_mock", object: "payment_intent", client_secret: "cs_mock", ...(params as object) } as any;
+        return { id: "pi_mock", object: "payment_intent", client_secret: "cs_mock", ...(params as object) } as unknown as Stripe.PaymentIntent;
       },
     },
     subscriptions: {
       async del(id: string) {
         console.info("[stripe-mock] subscriptions.del", id);
-        return { id, status: "canceled" } as any;
+        return { id, status: "canceled" } as unknown as Stripe.Subscription;
       },
     },
   };

@@ -82,7 +82,7 @@ export function MediaFilePreview({
 
         {showReplacementOverlay ? (
           <div
-            className="bg-background/90 text-center absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 p-4 backdrop-blur"
+            className="bg-surface-1/90 text-center absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 p-4 backdrop-blur"
             data-token="--color-bg"
           >
             <Progress
@@ -103,7 +103,7 @@ export function MediaFilePreview({
 
         {deleting && !showReplacementOverlay ? (
           <div
-            className="bg-background/90 text-center absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 p-4 backdrop-blur"
+            className="bg-surface-1/90 text-center absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 p-4 backdrop-blur"
             data-token="--color-bg"
           >
             <p className="text-sm font-medium" data-token="--color-fg">

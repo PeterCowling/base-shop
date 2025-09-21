@@ -39,7 +39,7 @@ export default async function PermissionsPage() {
     <div>
       <h2 className="mb-4 text-xl font-semibold">Role Permissions</h2>
       {roles.map((role) => (
-        <form key={role} action={save} className="mb-4 rounded border p-3">
+        <form key={role} action={save} className="mb-4 rounded border border-border/10 p-3">
           <input type="hidden" name="role" value={role} />
           <p className="font-semibold">{role}</p>
           <div className="my-2 flex flex-wrap gap-2">

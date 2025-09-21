@@ -3,7 +3,7 @@
 
 import type { PageComponent } from "@acme/types";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
-import { Button, Input, Textarea, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../../atoms/shadcn";
+import { Button, Textarea, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../../atoms/shadcn";
 import { useState } from "react";
 import { useTranslations } from "@acme/i18n";
 import useContrastWarnings from "../../../hooks/useContrastWarnings";
@@ -207,7 +207,7 @@ export default function StylePanel({ component, handleInput }: Props) {
       <div className="flex items-center gap-2">
         <select
           aria-label="Style preset"
-          className="rounded border bg-background px-2 py-1 text-sm"
+          className="rounded border border-border-2 bg-surface-2 px-2 py-1 text-sm"
           onChange={(e) => applyPreset(e.target.value)}
           defaultValue=""
         >
@@ -222,7 +222,7 @@ export default function StylePanel({ component, handleInput }: Props) {
         </select>
         <select
           aria-label="Custom preset"
-          className="rounded border bg-background px-2 py-1 text-sm"
+          className="rounded border border-border-2 bg-surface-2 px-2 py-1 text-sm"
           onChange={(e) => applyCustomPreset(e.target.value)}
           value={selectedCustom}
         >

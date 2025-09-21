@@ -19,6 +19,7 @@ import { Textarea as TextBlock } from "@ui/components/atoms/primitives/textarea"
 
 import { PRODUCTS } from "@platform-core/products/index";
 import type { PageComponent, SKU, HistoryState } from "@acme/types";
+import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import { cssVars } from "@ui/src/utils/style";
 import type { Locale } from "@i18n/locales";
 import { ensureLightboxStyles, initLightbox } from "@ui/components/cms";
@@ -114,15 +115,21 @@ function DynamicRenderer({
         // Inline CSS variables based on style overrides
         let styleVars: Record<string, string> = {};
         try {
-          const raw = (block as any).styles as string | undefined;
-          const overrides = raw ? (JSON.parse(String(raw)) as any) : undefined;
+          const rawVal = (block as Record<string, unknown>).styles;
+          const raw = typeof rawVal === "string" ? rawVal : undefined;
+          const parsed = raw ? JSON.parse(String(raw)) : undefined;
+          const overrides = parsed as unknown as StyleOverrides | undefined;
           styleVars = cssVars(overrides);
         } catch {
           // ignore invalid style JSON
         }
 
+        const fromBlockHidden = (block as Record<string, unknown>).hiddenBreakpoints;
+        const hiddenFromBlock = Array.isArray(fromBlockHidden)
+          ? (fromBlockHidden as ("desktop" | "tablet" | "mobile")[])
+          : [];
         const hidden = [
-          ...((((block as any).hiddenBreakpoints as ("desktop"|"tablet"|"mobile")[] | undefined) ?? [])),
+          ...hiddenFromBlock,
           ...((editor?.[id]?.hidden ?? []) as ("desktop" | "tablet" | "mobile")[]),
         ];
         const hideClasses = [
@@ -134,12 +141,14 @@ function DynamicRenderer({
           .join(" ");
 
         // Optional export-time props
-        const orderMobile = (typeof (block as any).orderMobile === "number" ? ((block as any).orderMobile as number) : undefined);
+        const orderMobileVal = (block as Record<string, unknown>).orderMobile as unknown;
+        const orderMobile = typeof orderMobileVal === "number" ? orderMobileVal : undefined;
         const orderClass = typeof orderMobile === "number" ? `pb-order-mobile-${orderMobile}` : "";
-        const stackStrategy = (block as any).stackStrategy as string | undefined;
+        const stackStrategy = (block as Record<string, unknown>).stackStrategy as string | undefined;
         const stackClass = stackStrategy === "reverse" ? "pb-stack-mobile-reverse" : "";
-        const existing = (props as any).className as string | undefined;
-        const mergedClassName = [existing, stackClass].filter(Boolean).join(" ");
+        const existing = (props as { className?: unknown }).className;
+        const existingClass = typeof existing === "string" ? existing : undefined;
+        const mergedClassName = [existingClass, stackClass].filter(Boolean).join(" ");
 
         if (block.type === "ProductGrid") {
           return (
@@ -147,26 +156,26 @@ function DynamicRenderer({
               key={id}
               className={["pb-scope", hideClasses, orderClass].filter(Boolean).join(" ") || undefined}
               style={{
-                ...(styleVars as any),
-                fontFamily: (styleVars as any)["--font-family"] ? "var(--font-family)" : undefined,
+                ...((styleVars as unknown) as React.CSSProperties),
+                fontFamily: styleVars["--font-family"] ? "var(--font-family)" : undefined,
                 fontSize:
-                  (styleVars as any)["--font-size"] ||
-                  (styleVars as any)["--font-size-desktop"] ||
-                  (styleVars as any)["--font-size-tablet"] ||
-                  (styleVars as any)["--font-size-mobile"]
+                  styleVars["--font-size"] ||
+                  styleVars["--font-size-desktop"] ||
+                  styleVars["--font-size-tablet"] ||
+                  styleVars["--font-size-mobile"]
                     ? "var(--font-size)"
                     : undefined,
                 lineHeight:
-                  (styleVars as any)["--line-height"] ||
-                  (styleVars as any)["--line-height-desktop"] ||
-                  (styleVars as any)["--line-height-tablet"] ||
-                  (styleVars as any)["--line-height-mobile"]
+                  styleVars["--line-height"] ||
+                  styleVars["--line-height-desktop"] ||
+                  styleVars["--line-height-tablet"] ||
+                  styleVars["--line-height-mobile"]
                     ? "var(--line-height)"
                     : undefined,
               }}
             >
               <Comp
-                {...props}
+                {...(props as Record<string, unknown>)}
                 skus={PRODUCTS as SKU[]}
                 locale={locale}
                 className={mergedClassName}
@@ -180,25 +189,25 @@ function DynamicRenderer({
             key={id}
             className={["pb-scope", hideClasses, orderClass].filter(Boolean).join(" ") || undefined}
             style={{
-              ...(styleVars as any),
-              fontFamily: (styleVars as any)["--font-family"] ? "var(--font-family)" : undefined,
+              ...((styleVars as unknown) as React.CSSProperties),
+              fontFamily: styleVars["--font-family"] ? "var(--font-family)" : undefined,
               fontSize:
-                (styleVars as any)["--font-size"] ||
-                (styleVars as any)["--font-size-desktop"] ||
-                (styleVars as any)["--font-size-tablet"] ||
-                (styleVars as any)["--font-size-mobile"]
+                styleVars["--font-size"] ||
+                styleVars["--font-size-desktop"] ||
+                styleVars["--font-size-tablet"] ||
+                styleVars["--font-size-mobile"]
                   ? "var(--font-size)"
                   : undefined,
               lineHeight:
-                (styleVars as any)["--line-height"] ||
-                (styleVars as any)["--line-height-desktop"] ||
-                (styleVars as any)["--line-height-tablet"] ||
-                (styleVars as any)["--line-height-mobile"]
+                styleVars["--line-height"] ||
+                styleVars["--line-height-desktop"] ||
+                styleVars["--line-height-tablet"] ||
+                styleVars["--line-height-mobile"]
                   ? "var(--line-height)"
                   : undefined,
             }}
           >
-            <Comp {...(props as any)} locale={locale} className={mergedClassName} />
+            <Comp {...(props as Record<string, unknown>)} locale={locale} className={mergedClassName} />
           </div>
         );
       })}

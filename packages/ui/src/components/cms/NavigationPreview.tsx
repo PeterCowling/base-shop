@@ -8,7 +8,7 @@ interface Props {
 
 export default function NavigationPreview({ items, style }: Props) {
   return (
-    <nav style={style} className="bg-background text-foreground p-4 rounded border" data-token="--color-bg">
+    <nav style={style} className="bg-surface-2 text-foreground p-4 rounded border border-border-1" data-token="--color-bg">
       <ul className="flex gap-4">
         {items.map((item) => (
           <NavItemView key={item.id} item={item} />
@@ -30,7 +30,7 @@ function NavItemView({ item }: { item: NavItem }) {
       </a>
       {item.children && item.children.length > 0 && (
         <ul
-          className="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border bg-background p-2 shadow-md group-hover:flex"
+          className="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border border-border-1 bg-surface-2 p-2 shadow-md group-hover:flex"
           data-token="--color-bg"
         >
           {item.children.map((child) => (
@@ -49,4 +49,3 @@ function NavItemView({ item }: { item: NavItem }) {
     </li>
   );
 }
-

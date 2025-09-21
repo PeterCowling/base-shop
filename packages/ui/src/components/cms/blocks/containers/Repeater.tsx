@@ -43,7 +43,7 @@ export default function Repeater({
   pbViewport,
   className,
 }: RepeaterProps) {
-  const base = useDataset<any>();
+  const base = useDataset<unknown>();
   const filtered = (() => {
     if (!filter) return base;
     const m = /^(?<k>[^=!:><\s]+)\s*(?<op>==|=|!=|>=|<=|>|<)?\s*(?<v>.+)$/.exec(filter);
@@ -57,8 +57,9 @@ export default function Repeater({
       if (s === "true" || s === "false") return s === "true";
       return s;
     };
-    return base.filter((it: any) => {
-      const a = coerce(it?.[key]);
+    const getKey = (it: unknown, k: string): unknown => (it && typeof it === 'object') ? (it as Record<string, unknown>)[k] : undefined;
+    return base.filter((it: unknown) => {
+      const a = coerce(getKey(it, key));
       const b = coerce(val);
       switch (op) {
         case "=":
@@ -67,13 +68,13 @@ export default function Repeater({
         case "!=":
           return a !== b;
         case ">":
-          return (a as number) > (b as number);
+          return Number(a) > Number(b);
         case ">=":
-          return (a as number) >= (b as number);
+          return Number(a) >= Number(b);
         case "<":
-          return (a as number) < (b as number);
+          return Number(a) < Number(b);
         case "<=":
-          return (a as number) <= (b as number);
+          return Number(a) <= Number(b);
         default:
           return true;
       }
@@ -81,9 +82,9 @@ export default function Repeater({
   })();
   const sorted = (() => {
     if (!sortBy) return filtered;
-    return [...filtered].sort((a: any, b: any) => {
-      const av = a?.[sortBy];
-      const bv = b?.[sortBy];
+    return [...filtered].sort((a: unknown, b: unknown) => {
+      const av = (a && typeof a === 'object') ? (a as Record<string, unknown>)[sortBy] : undefined;
+      const bv = (b && typeof b === 'object') ? (b as Record<string, unknown>)[sortBy] : undefined;
       if (av == null && bv == null) return 0;
       if (av == null) return 1;
       if (bv == null) return -1;
@@ -119,11 +120,10 @@ export default function Repeater({
       }}
     >
       {list.map((it, idx) => (
-        <ItemProvider key={(it as any)?.id ?? idx} item={it} index={idx}>
+        <ItemProvider key={(it && typeof it === 'object' && (it as Record<string, unknown>).id != null ? String((it as Record<string, unknown>).id) : String(idx))} item={it} index={idx}>
           {children}
         </ItemProvider>
       ))}
     </div>
   );
 }
-

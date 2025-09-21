@@ -146,7 +146,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
             width: rect.width + 12,
             height: rect.height + 12,
             borderRadius: 8,
-            boxShadow: "0 0 0 3px #fff, 0 0 0 9999px rgba(0,0,0,0.45)",
+            boxShadow: "0 0 0 3px var(--color-bg), 0 0 0 9999px rgba(0,0,0,0.45)",
             pointerEvents: "none",
             transition: "top 0.1s, left 0.1s, width 0.1s, height 0.1s",
           }}
@@ -157,8 +157,8 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
       <div
         style={{
           ...tipStyle,
-          background: "#111827",
-          color: "#F9FAFB",
+          background: "var(--color-surface-1)",
+          color: "var(--color-fg)",
           border: "1px solid rgba(255,255,255,0.2)",
           borderRadius: 8,
           padding: 12,
@@ -183,7 +183,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
             onClick={skip}
             style={{
               background: "transparent",
-              color: "#E5E7EB",
+              color: "var(--color-muted-foreground)",
               border: "none",
               padding: "6px 10px",
               cursor: "pointer",
@@ -197,9 +197,9 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
               onClick={() => setActive((i) => Math.max(0, i - 1))}
               disabled={active === 0}
               style={{
-                background: "#374151",
-                color: "#F9FAFB",
-                border: "1px solid #4B5563",
+              background: "var(--color-surface-2)",
+              color: "var(--color-fg)",
+              border: "1px solid var(--color-border)",
                 padding: "6px 12px",
                 borderRadius: 6,
                 cursor: active === 0 ? "not-allowed" : "pointer",
@@ -213,9 +213,9 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
                 type="button"
                 onClick={() => setActive((i) => Math.min(steps.length - 1, i + 1))}
                 style={{
-                  background: "#2563EB",
-                  color: "white",
-                  border: "1px solid #1D4ED8",
+                  background: "var(--color-primary)",
+                  color: "var(--color-fg)",
+                  border: "1px solid var(--color-primary)",
                   padding: "6px 12px",
                   borderRadius: 6,
                   cursor: "pointer",
@@ -228,9 +228,9 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
                 type="button"
                 onClick={finish}
                 style={{
-                  background: "#10B981",
-                  color: "white",
-                  border: "1px solid #059669",
+                  background: "var(--color-primary)",
+                  color: "var(--color-fg)",
+                  border: "1px solid var(--color-primary)",
                   padding: "6px 12px",
                   borderRadius: 6,
                   cursor: "pointer",

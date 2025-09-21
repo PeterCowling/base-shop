@@ -53,17 +53,17 @@ export default function StackFlex({
   className,
   pbViewport,
 }: StackFlexProps) {
-  const eff = (base?: any, d?: any, t?: any, m?: any) => {
+  const eff = <T,>(base?: T, d?: T, t?: T, m?: T): T | undefined => {
     if (pbViewport === "desktop" && d !== undefined) return d;
     if (pbViewport === "tablet" && t !== undefined) return t;
     if (pbViewport === "mobile" && m !== undefined) return m;
     return base;
   };
 
-  const effDirection = eff(direction ?? "column", directionDesktop, directionTablet, directionMobile);
-  const effGap = eff(gap ?? "1rem", gapDesktop, gapTablet, gapMobile);
-  const effJustify = eff(justify, justifyDesktop, justifyTablet, justifyMobile);
-  const effAlign = eff(align, alignDesktop, alignTablet, alignMobile);
+  const effDirection = eff<NonNullable<StackFlexProps["direction"]>>(direction ?? "column", directionDesktop, directionTablet, directionMobile);
+  const effGap = eff<string>(gap ?? "1rem", gapDesktop, gapTablet, gapMobile) ?? "1rem";
+  const effJustify = eff<StackFlexProps["justify"]>(justify, justifyDesktop, justifyTablet, justifyMobile);
+  const effAlign = eff<StackFlexProps["align"]>(align, alignDesktop, alignTablet, alignMobile);
 
   return (
     <div
@@ -80,4 +80,3 @@ export default function StackFlex({
     </div>
   );
 }
-

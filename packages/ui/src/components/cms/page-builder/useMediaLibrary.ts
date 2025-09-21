@@ -3,12 +3,19 @@
 
 import { useCallback, useMemo, useState } from "react";
 import type { MediaItem } from "@acme/types";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
 
 export default function useMediaLibrary() {
   const pathname = usePathname() ?? "";
-  const shop = useMemo(() => getShopFromPath(pathname) ?? undefined, [pathname]);
+  const searchParams = useSearchParams();
+  const shop = useMemo(() => {
+    return (
+      getShopFromPath(pathname) ??
+      searchParams?.get("shopId") ??
+      undefined
+    );
+  }, [pathname, searchParams]);
   const [media, setMedia] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
@@ -43,4 +50,3 @@ export default function useMediaLibrary() {
 
   return { media, setMedia, loadMedia, shop, loading, error } as const;
 }
-

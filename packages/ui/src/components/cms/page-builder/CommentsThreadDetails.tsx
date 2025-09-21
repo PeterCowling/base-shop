@@ -251,7 +251,7 @@ export default function CommentsThreadDetails({
             className="min-h-[5rem] pr-24"
           />
           {mentionOpen && mentionMatches.length > 0 && (
-            <div className="absolute bottom-2 left-2 z-10 max-h-40 w-48 overflow-y-auto rounded border bg-background text-sm shadow">
+            <div className="absolute bottom-2 left-2 z-10 max-h-40 w-48 overflow-y-auto rounded border border-border-2 bg-surface-2 text-sm shadow">
               {mentionMatches.map((p, idx) => (
                 <div
                   key={p}

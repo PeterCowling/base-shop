@@ -4,7 +4,7 @@
 type LottieInstance = any; // from lottie-web
 
 let initialized = false;
-let cleanupFns: Array<() => void> = [];
+const cleanupFns: Array<() => void> = [];
 const instances = new WeakMap<HTMLElement, LottieInstance>();
 
 async function loadLottie() {
@@ -115,4 +115,3 @@ export function disposeLottie() {
   for (const fn of cleanupFns.splice(0)) { try { fn(); } catch { /* noop */ } }
   initialized = false;
 }
-

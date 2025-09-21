@@ -34,14 +34,14 @@ export default function CarouselContainer({
   className,
   pbViewport,
 }: CarouselContainerProps) {
-  const eff = (base?: any, d?: any, t?: any, m?: any) => {
+  const eff = <T,>(base?: T, d?: T, t?: T, m?: T): T | undefined => {
     if (pbViewport === "desktop" && d !== undefined) return d;
     if (pbViewport === "tablet" && t !== undefined) return t;
     if (pbViewport === "mobile" && m !== undefined) return m;
     return base;
   };
-  const effSlides = Math.max(1, Number(eff(slidesPerView ?? 1, slidesPerViewDesktop, slidesPerViewTablet, slidesPerViewMobile) || 1));
-  const effGap = eff(gap ?? "1rem", gapDesktop, gapTablet, gapMobile);
+  const effSlides = Math.max(1, Number(eff<number>(slidesPerView ?? 1, slidesPerViewDesktop, slidesPerViewTablet, slidesPerViewMobile) || 1));
+  const effGap = eff<string>(gap ?? "1rem", gapDesktop, gapTablet, gapMobile) ?? "1rem";
   const listRef = useRef<HTMLDivElement | null>(null);
   const [active, setActive] = useState(0);
 
@@ -67,7 +67,7 @@ export default function CarouselContainer({
       <div
         ref={listRef}
         className="flex snap-x snap-mandatory overflow-x-auto"
-        style={{ gap: effGap, scrollPadding: effGap as any }}
+        style={{ gap: effGap, scrollPadding: effGap as string }}
       >
         {items.map((child, i) => (
           <div

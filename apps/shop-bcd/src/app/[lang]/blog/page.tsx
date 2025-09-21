@@ -58,7 +58,7 @@ export async function generateMetadata({
 }: {
   params: { lang: string };
 }): Promise<Metadata> {
-  const lang = params.lang as any;
+  const lang = params.lang as string;
   const baseSeo = await getSeo(lang);
   const canonicalRoot = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
   const canonical = canonicalRoot ? `${canonicalRoot}/blog` : undefined;
@@ -76,8 +76,8 @@ export async function generateMetadata({
     title: `Blog · ${shop.name}`,
     description: baseSeo.description,
     canonical,
-    openGraph: { url: canonical } as any,
-    twitter: {} as any,
+    openGraph: { url: canonical } as Partial<Metadata["openGraph"]>,
+    twitter: {} as Partial<Metadata["twitter"]>,
   });
   return {
     title: seo.title,

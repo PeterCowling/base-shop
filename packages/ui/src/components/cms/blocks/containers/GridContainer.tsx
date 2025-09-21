@@ -70,17 +70,17 @@ export default function GridContainer({
   className,
   pbViewport,
 }: GridContainerProps) {
-  const eff = (base?: any, d?: any, t?: any, m?: any) => {
+  const eff = <T,>(base?: T, d?: T, t?: T, m?: T): T | undefined => {
     if (pbViewport === "desktop" && d !== undefined) return d;
     if (pbViewport === "tablet" && t !== undefined) return t;
     if (pbViewport === "mobile" && m !== undefined) return m;
     return base;
   };
-  const effCols = eff(columns ?? 2, columnsDesktop, columnsTablet, columnsMobile);
-  const effRows = eff(rows, rowsDesktop, rowsTablet, rowsMobile);
-  const effGap = eff(gap ?? "1rem", gapDesktop, gapTablet, gapMobile);
-  const effJustifyItems = eff(justifyItems, justifyItemsDesktop, justifyItemsTablet, justifyItemsMobile);
-  const effAlignItems = eff(alignItems, alignItemsDesktop, alignItemsTablet, alignItemsMobile);
+  const effCols = eff<number>(columns ?? 2, columnsDesktop, columnsTablet, columnsMobile);
+  const effRows = eff<number>(rows, rowsDesktop, rowsTablet, rowsMobile);
+  const effGap = eff<string>(gap ?? "1rem", gapDesktop, gapTablet, gapMobile);
+  const effJustifyItems = eff<GridContainerProps["justifyItems"]>(justifyItems, justifyItemsDesktop, justifyItemsTablet, justifyItemsMobile);
+  const effAlignItems = eff<GridContainerProps["alignItems"]>(alignItems, alignItemsDesktop, alignItemsTablet, alignItemsMobile);
 
   return (
     <div

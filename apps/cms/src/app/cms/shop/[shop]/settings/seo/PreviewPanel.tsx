@@ -34,7 +34,7 @@ const PreviewPanel: FC<Props> = ({
       {/* SERP preview -------------------------------------------------- */}
       <div className="space-y-1">
         <p className="text-muted-foreground text-sm">Google result</p>
-        <div className="rounded-md border p-4 text-sm">
+        <div className="rounded-md border border-border/10 p-4 text-sm">
           <p className="text-primary">{placeholder.title}</p>
           <p className="text-success">{placeholder.url}</p>
           <p className="text-muted-foreground">{placeholder.description}</p>
@@ -44,7 +44,7 @@ const PreviewPanel: FC<Props> = ({
       {/* Open Graph preview -------------------------------------------- */}
       <div className="space-y-1">
         <p className="text-muted-foreground text-sm">Open Graph</p>
-        <div className="flex gap-4 rounded-md border p-4">
+        <div className="flex gap-4 rounded-md border border-border/10 p-4">
           {image && (
             <Image
               src={image}
@@ -65,7 +65,7 @@ const PreviewPanel: FC<Props> = ({
       {/* Twitter card preview ----------------------------------------- */}
       <div className="space-y-1">
         <p className="text-muted-foreground text-sm">Twitter card</p>
-        <div className="flex gap-4 rounded-md border p-4">
+        <div className="flex gap-4 rounded-md border border-border/10 p-4">
           {image && (
             <Image
               src={image}

@@ -18,7 +18,7 @@ export default function PdpClient({ product }: { product: SKU }) {
 
       <section className="flex flex-col gap-6">
         <h1 className="text-3xl font-bold">{product.title}</h1>
-        <p className="text-gray-700">{product.description}</p>
+        <p className="text-muted-foreground">{product.description}</p>
 
         <div>
           <div className="mb-2 font-medium">Select size:</div>
@@ -38,7 +38,7 @@ export default function PdpClient({ product }: { product: SKU }) {
             min={1}
             value={quantity}
             onChange={(e) => setQuantity(Number(e.target.value))}
-            className="w-20 rounded border p-2"
+            className="w-20 rounded-md border border-input bg-background p-2"
           />
         </div>
 

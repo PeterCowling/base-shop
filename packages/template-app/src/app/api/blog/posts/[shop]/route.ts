@@ -5,10 +5,11 @@ export const runtime = "nodejs";
 
 export async function GET(
   _req: NextRequest,
-  ctx: any,
+  ctx: { params?: { shop?: string } | Promise<{ shop?: string }> },
 ) {
-  const p = (ctx && typeof ctx === 'object' && 'params' in ctx) ? (ctx as any).params : undefined;
-  const shop = (p && typeof p === 'object') ? (await p).shop : undefined;
+  const p = ctx?.params;
+  const params = p instanceof Promise ? await p : p;
+  const shop = params?.shop;
   try {
     const posts = await fetchPublishedPosts(shop);
     return NextResponse.json(posts);

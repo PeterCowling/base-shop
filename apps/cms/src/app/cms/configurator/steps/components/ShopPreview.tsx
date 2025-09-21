@@ -12,7 +12,7 @@ export default function ShopPreview({ logos, shopName }: ShopPreviewProps) {
     undefined;
 
   return (
-    <div className="flex items-center gap-2 rounded border p-2">
+    <div className="flex items-center gap-2 rounded border border-border/10 p-2">
       <Logo
         src={src}
         alt={shopName || "Store Name"}

@@ -187,6 +187,7 @@
   },
   "include": [
     "src/**/*",
+    "src/app/.well-known/**/*",
     ".next/types/**/*.ts",
     "shop.json",
     "next-env.d.ts",

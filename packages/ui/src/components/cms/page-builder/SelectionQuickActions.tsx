@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { PageComponent } from "@acme/types";
 import type { Action } from "./state";
 import { Button } from "../../atoms/shadcn";

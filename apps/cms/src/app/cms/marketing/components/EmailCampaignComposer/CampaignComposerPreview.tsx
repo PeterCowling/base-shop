@@ -21,7 +21,7 @@ export function CampaignComposerPreview({
             Preview renders with the selected template. Update subject or content to refresh the view.
           </p>
         </header>
-        <div className="rounded-lg border bg-surface-2 p-4">
+        <div className="rounded-lg border border-border/10 bg-surface-2 p-4">
           {selectedTemplate?.make({
             headline: subject || "",
             content: <div dangerouslySetInnerHTML={{ __html: sanitizedPreview }} />,

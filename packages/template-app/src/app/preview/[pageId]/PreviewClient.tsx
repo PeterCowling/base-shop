@@ -34,7 +34,7 @@ export default function PreviewClient({
         style={{ width: device.width, height: device.height }}
         className="mx-auto overflow-auto rounded border"
       >
-        <DynamicRenderer components={components} locale={locale} editor={editor as any} />
+        <DynamicRenderer components={components} locale={locale} editor={editor} />
       </div>
     </div>
   );

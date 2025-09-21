@@ -118,7 +118,29 @@ export function getCustomDevicePresets(): DevicePreset[] {
     const arr = JSON.parse(raw);
     if (!Array.isArray(arr)) return [];
     // basic validation
-    return arr.filter((p: any) => p && typeof p.id === "string" && typeof p.label === "string" && typeof p.width === "number" && typeof p.height === "number" && (p.type === "desktop" || p.type === "tablet" || p.type === "mobile")).map((p: any) => ({ ...p, orientation: (p.orientation === "landscape" ? "landscape" : "portrait") as DevicePreset["orientation"] }));
+    const isValid = (p: unknown): p is Partial<DevicePreset> & {
+      id: string; label: string; width: number; height: number; type: DevicePreset["type"]; orientation?: string;
+    } => {
+      const obj = p as Record<string, unknown>;
+      return (
+        !!obj &&
+        typeof obj.id === "string" &&
+        typeof obj.label === "string" &&
+        typeof obj.width === "number" &&
+        typeof obj.height === "number" &&
+        (obj.type === "desktop" || obj.type === "tablet" || obj.type === "mobile")
+      );
+    };
+    return arr
+      .filter(isValid)
+      .map((p) => ({
+        id: p.id,
+        label: p.label,
+        width: p.width,
+        height: p.height,
+        type: p.type,
+        orientation: p.orientation === "landscape" ? "landscape" : "portrait",
+      }));
   } catch {
     return [];
   }

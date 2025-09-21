@@ -19,7 +19,7 @@ export default function PluginList({ plugins }: Props) {
   return (
     <ul className="space-y-6">
       {plugins.map((plugin) => (
-        <li key={plugin.id} className="border-b pb-4">
+        <li key={plugin.id} className="border-b border-border/10 pb-4">
           <label className="flex items-center space-x-2">
             <input
               type="checkbox"
@@ -32,7 +32,7 @@ export default function PluginList({ plugins }: Props) {
           </label>
           {enabled[plugin.id] && (
             <textarea
-              className="mt-2 w-full rounded border p-2 font-mono text-sm"
+              className="mt-2 w-full rounded-md border border-input bg-background p-2 font-mono text-sm"
               rows={4}
               value={configs[plugin.id]}
               onChange={(e) =>

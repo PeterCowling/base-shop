@@ -73,9 +73,9 @@ export default function TokenGroup({
                 type="button"
                 aria-label={k}
                 title={k}
-                className={`h-6 w-6 overflow-hidden rounded border p-0 ${
-                  hasOverride ? "ring-2 ring-amber-400" : ""
-                } ${selectedToken === k ? "ring-2 ring-blue-500" : ""}`}
+                className={`h-6 w-6 overflow-hidden rounded border border-border/10 p-0 ${
+                  hasOverride ? "ring-2 ring-warning" : ""
+                } ${selectedToken === k ? "ring-2 ring-primary" : ""}`}
                 onClick={() => onTokenSelect(k)}
               >
                 {hasOverride ? (

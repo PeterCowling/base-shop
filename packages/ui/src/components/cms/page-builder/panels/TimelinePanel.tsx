@@ -75,7 +75,7 @@ export default function TimelinePanel({ component, handleInput }: Props) {
             <SelectItem value="scroll">Scroll Progress</SelectItem>
           </SelectContent>
         </Select>
-        <label className="col-span-1 flex items-center justify-between rounded border border-border/60 bg-muted/30 px-3 py-2 text-sm">
+        <label className="col-span-1 flex items-center justify-between rounded border border-border-3 bg-muted/30 px-3 py-2 text-sm">
           <span>Loop</span>
           <Checkbox checked={!!loop} onCheckedChange={(v: boolean) => update({ loop: Boolean(v) })} />
         </label>
@@ -89,7 +89,7 @@ export default function TimelinePanel({ component, handleInput }: Props) {
 
       <div className="space-y-2">
         {steps.map((s, idx) => (
-          <div key={idx} className="rounded-md border border-border/60 bg-muted/10 p-2">
+          <div key={idx} className="rounded-md border border-border-3 bg-muted/10 p-2">
             <div className="flex items-center justify-between pb-2">
               <div className="text-xs font-semibold">Step {idx + 1}</div>
               <div className="flex gap-2">

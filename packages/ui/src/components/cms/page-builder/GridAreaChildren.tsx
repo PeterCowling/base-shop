@@ -1,0 +1,163 @@
+"use client";
+
+import type { PageComponent, HistoryState } from "@acme/types";
+import type { Locale } from "@acme/i18n/locales";
+import type { Action } from "./state";
+import type { DevicePreset } from "../../../utils/devicePresets";
+import CanvasItem from "./CanvasItem";
+import InlineInsert from "./InlineInsert";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+
+type Props = {
+  component: PageComponent;
+  visibleChildren: PageComponent[];
+  underlyingChildren: PageComponent[];
+  selectedIds: string[];
+  onSelect: (id: string, e?: React.MouseEvent) => void;
+  dispatch: React.Dispatch<Action>;
+  locale: Locale;
+  effGridEnabled: boolean;
+  effGridCols: number;
+  viewport: "desktop" | "tablet" | "mobile";
+  device?: DevicePreset;
+  editor?: HistoryState["editor"];
+  baselineSnap: boolean;
+  baselineStep: number;
+  toUnderlyingIndex: (uiIndex: number) => number;
+};
+
+export default function GridAreaChildren({
+  component,
+  visibleChildren,
+  underlyingChildren: _underlyingChildren,
+  selectedIds,
+  onSelect,
+  dispatch,
+  locale,
+  effGridEnabled,
+  effGridCols,
+  viewport,
+  device,
+  editor,
+  baselineSnap,
+  baselineStep,
+  toUnderlyingIndex,
+}: Props) {
+  const raw = String((component as any).areas || "");
+  const names = new Set<string>();
+  raw
+    .split(/\n+/)
+    .map((line) => line.trim().replace(/^"|"$/g, ""))
+    .filter(Boolean)
+    .forEach((line) => {
+      line.split(/\s+/).forEach((token) => {
+        if (token && token !== ".") names.add(token);
+      });
+    });
+  const gridAreas = Array.from(names.values());
+
+  return (
+    <>
+      {gridAreas.map((area) => {
+        const areaChildren = visibleChildren.filter((c) => (c as any).gridArea === area);
+        const firstIdx =
+          areaChildren.length > 0
+            ? visibleChildren.findIndex((c) => c.id === areaChildren[0]!.id)
+            : visibleChildren.length;
+        const endIndex =
+          areaChildren.length > 0
+            ? visibleChildren.findIndex((c) => c.id === areaChildren[areaChildren.length - 1]!.id) + 1
+            : firstIdx;
+        return (
+          <div key={area} className="rounded border p-2">
+            <div className="text-muted-foreground mb-2 text-xs font-medium">
+              Area: <code>{area}</code>
+            </div>
+            <InlineInsert
+              index={firstIdx}
+              context="child"
+              containerType={component.type}
+              onInsert={(newComponent, index) => {
+                (newComponent as any).gridArea = area;
+                const insertAt = toUnderlyingIndex(index);
+                dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
+                try {
+                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block inserted" }));
+                } catch {}
+              }}
+            />
+            {areaChildren.map((child) => {
+              const i = visibleChildren.findIndex((c) => c.id === child.id);
+              return (
+                <div key={child.id} className="relative group">
+                  <div className="absolute -top-3 -left-[10px] z-20">
+                    <Select
+                      value={String((child as any).gridArea ?? area)}
+                      onValueChange={(v) => dispatch({ type: "update", id: child.id, patch: { gridArea: v } as any })}
+                    >
+                      <SelectTrigger className="h-6 w-28 px-2 py-0 text-xs">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {gridAreas.map((g) => (
+                          <SelectItem key={g} value={g}>
+                            {g}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <CanvasItem
+                    component={child}
+                    index={i}
+                    parentId={component.id}
+                    parentType={(component as any).type as string}
+                    parentSlots={undefined}
+                    selectedIds={selectedIds}
+                    onSelect={onSelect}
+                    onRemove={() => dispatch({ type: "remove", id: child.id })}
+                    dispatch={dispatch}
+                    locale={locale}
+                    gridEnabled={effGridEnabled}
+                    gridCols={effGridCols}
+                    viewport={viewport}
+                    device={device}
+                    editor={editor}
+                    baselineSnap={baselineSnap}
+                    baselineStep={baselineStep}
+                  />
+                  <InlineInsert
+                    index={i + 1}
+                    context="child"
+                    containerType={component.type}
+                    onInsert={(newComponent, index) => {
+                      (newComponent as any).gridArea = area;
+                      const insertAt = toUnderlyingIndex(index);
+                      dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
+                      try {
+                        window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block inserted" }));
+                      } catch {}
+                    }}
+                  />
+                </div>
+              );
+            })}
+            <InlineInsert
+              index={endIndex}
+              context="child"
+              containerType={component.type}
+              onInsert={(newComponent, index) => {
+                (newComponent as any).gridArea = area;
+                const insertAt = toUnderlyingIndex(index);
+                dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
+                try {
+                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block inserted" }));
+                } catch {}
+              }}
+            />
+          </div>
+        );
+      })}
+    </>
+  );
+}

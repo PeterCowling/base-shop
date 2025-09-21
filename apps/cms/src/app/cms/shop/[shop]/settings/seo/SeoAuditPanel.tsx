@@ -101,13 +101,13 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
             </div>
           ) : (
             <div className="grid gap-4 sm:grid-cols-3">
-              <div className="rounded-md border p-4">
+              <div className="rounded-md border border-border/10 p-4">
                 <p className="text-xs text-muted-foreground">Last run</p>
                 <p className="text-base font-semibold">
                   {last ? formatTimestamp(last.timestamp) : "Never"}
                 </p>
               </div>
-              <div className="rounded-md border p-4">
+              <div className="rounded-md border border-border/10 p-4">
                 <p className="flex items-center gap-1 text-xs text-muted-foreground">
                   Score
                   <Tooltip text="Scores are normalized to 0–100">?</Tooltip>
@@ -116,7 +116,7 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
                   {last ? Math.round(last.score * 100) : "–"}
                 </p>
               </div>
-              <div className="rounded-md border p-4">
+              <div className="rounded-md border border-border/10 p-4">
                 <p className="text-xs text-muted-foreground">Issues found</p>
                 <p className="text-base font-semibold">{last ? last.issues : "–"}</p>
               </div>

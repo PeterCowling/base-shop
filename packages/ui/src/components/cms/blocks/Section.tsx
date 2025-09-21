@@ -139,9 +139,13 @@ export default function Section({
         backgroundRepeat: backgroundRepeat,
         backgroundAttachment: backgroundAttachment,
         backgroundPosition: backgroundFocalPoint ? `${(backgroundFocalPoint.x * 100).toFixed(2)}% ${(backgroundFocalPoint.y * 100).toFixed(2)}%` : undefined,
-        ...(gridCols ? { ["--pb-grid-cols" as any]: gridCols } : {}),
-        ...(gridGutter ? { ["--pb-grid-gutter" as any]: gridGutter } : {}),
-        ...(gridSnap !== undefined ? { ["--pb-grid-snap" as any]: gridSnap ? 1 : 0 } : {}),
+        ...((): Record<string, string | number> => {
+          const vars: Record<string, string | number> = {};
+          if (gridCols) vars["--pb-grid-cols"] = gridCols;
+          if (gridGutter) vars["--pb-grid-gutter"] = gridGutter;
+          if (gridSnap !== undefined) vars["--pb-grid-snap"] = gridSnap ? 1 : 0;
+          return vars;
+        })(),
       }}
     >
       {/* Top shape divider (rendered before background media so it sits above background) */}

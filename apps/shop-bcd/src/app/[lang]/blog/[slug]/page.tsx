@@ -67,7 +67,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { fetchPostBySlug } = await import("@acme/sanity");
   const post = await fetchPostBySlug(shop.id, params.slug);
-  const lang = params.lang as any;
+  const lang = params.lang as string;
   const baseSeo = await getSeo(lang);
   const canonicalRoot = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
   const canonical = canonicalRoot ? `${canonicalRoot}/blog/${params.slug}` : undefined;
@@ -87,8 +87,8 @@ export async function generateMetadata({
     title,
     description,
     canonical,
-    openGraph: { url: canonical, title, description } as any,
-    twitter: { title, description } as any,
+    openGraph: { url: canonical, title, description } as Partial<Metadata["openGraph"]>,
+    twitter: { title, description } as Partial<Metadata["twitter"]>,
   });
   return {
     title: seo.title,

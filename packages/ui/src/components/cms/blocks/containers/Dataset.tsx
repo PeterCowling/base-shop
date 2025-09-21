@@ -86,14 +86,21 @@ export default function Dataset({
   const processed = useMemo(() => {
     let list = Array.isArray(items) ? [...items] : [];
     if (sortBy) {
-      list.sort((a: any, b: any) => {
-        const av = (a?.[sortBy] ?? "") as unknown as string | number;
-        const bv = (b?.[sortBy] ?? "") as unknown as string | number;
-        if (typeof av === "number" && typeof bv === "number") return sortOrder === "asc" ? av - bv : bv - av;
+      const getVal = (obj: unknown): string | number => {
+        if (obj && typeof obj === 'object' && sortBy in (obj as Record<string, unknown>)) {
+          const v = (obj as Record<string, unknown>)[sortBy];
+          return typeof v === 'number' ? v : String(v ?? '');
+        }
+        return '';
+      };
+      list.sort((a: unknown, b: unknown) => {
+        const av = getVal(a);
+        const bv = getVal(b);
+        if (typeof av === 'number' && typeof bv === 'number') return sortOrder === 'asc' ? av - bv : bv - av;
         const as = String(av).toLowerCase();
         const bs = String(bv).toLowerCase();
         if (as === bs) return 0;
-        return sortOrder === "asc" ? (as < bs ? -1 : 1) : (as > bs ? -1 : 1);
+        return sortOrder === 'asc' ? (as < bs ? -1 : 1) : (as > bs ? -1 : 1);
       });
     }
     if (typeof limit === "number") list = list.slice(0, Math.max(0, limit));

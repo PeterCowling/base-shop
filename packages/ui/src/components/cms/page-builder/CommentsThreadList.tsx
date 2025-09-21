@@ -27,7 +27,7 @@ export interface CommentsThreadListProps {
 }
 
 export default function CommentsThreadList({
-  threads,
+  threads: _threads,
   filtered,
   filter,
   onFilterChange,

@@ -52,7 +52,7 @@ export default function DatasetStep({
           <input
             id="dataset"
             name="dataset"
-            className="w-full rounded border p-2"
+            className="w-full rounded-md border border-input bg-background p-2"
             value={dataset}
             onChange={(e) => setDataset(e.target.value)}
             required
@@ -61,7 +61,7 @@ export default function DatasetStep({
           <select
             id="dataset"
             name="dataset"
-            className="w-full rounded border p-2"
+            className="w-full rounded-md border border-input bg-background p-2"
             value={dataset}
             onChange={(e) => {
               if (e.target.value === "__add__") {
@@ -108,7 +108,7 @@ export default function DatasetStep({
         <select
           id="aclMode"
           name="aclMode"
-          className="w-full rounded border p-2"
+          className="w-full rounded-md border border-input bg-background p-2"
           value={aclMode}
           onChange={(e) => setAclMode(e.target.value as "public" | "private")}
         >

@@ -9,12 +9,7 @@ import {
   SelectContent,
   SelectItem,
 } from "./atoms/shadcn";
-import {
-  devicePresets,
-  getLegacyPreset,
-  type DevicePreset,
-  getAllDevicePresets,
-} from "../utils/devicePresets";
+import { getLegacyPreset, type DevicePreset, getAllDevicePresets } from "../utils/devicePresets";
 import { useMemo } from "react";
 
 interface DeviceSelectorProps {

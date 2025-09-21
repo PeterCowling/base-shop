@@ -195,7 +195,7 @@ export default function GuidedTour({
               width: coords.width,
               height: coords.height,
               animation: "tour-pulse 2s infinite",
-              boxShadow: "0 0 0 3px rgba(59,130,246,0.9)",
+              boxShadow: "0 0 0 3px hsl(var(--color-primary) / 0.9)",
             }}
           />
           <div
@@ -230,7 +230,7 @@ export default function GuidedTour({
               )}
             </div>
           </div>
-          <style>{`@keyframes tour-pulse{0%{box-shadow:0 0 0 0 rgba(59,130,246,0.9);}70%{box-shadow:0 0 0 8px rgba(59,130,246,0);}100%{box-shadow:0 0 0 0 rgba(59,130,246,0);}}`}</style>
+          <style>{`@keyframes tour-pulse{0%{box-shadow:0 0 0 0 hsl(var(--color-primary) / 0.9);}70%{box-shadow:0 0 0 8px hsl(var(--color-primary) / 0);}100%{box-shadow:0 0 0 0 hsl(var(--color-primary) / 0);}}`}</style>
         </>
       )}
     </GuidedTourContext.Provider>

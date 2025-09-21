@@ -30,7 +30,7 @@ export default function buildBlockKeyDownHandler({
   currSlotKey,
   componentId,
   dispatch,
-  viewport,
+  viewport: _viewport,
 }: Args) {
   return (e: React.KeyboardEvent) => {
     if (locked || inlineEditing) return;

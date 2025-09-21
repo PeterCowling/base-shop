@@ -31,19 +31,7 @@ function TopBarInner() {
     if (typeof window === "undefined") return;
     setIsDark(document.documentElement.classList.contains("theme-dark"));
   }, []);
-  const toggleTheme = () => {
-    try {
-      const next = isDark ? "base" : "dark";
-      // Persist selection so initTheme picks it up on reload
-      localStorage.setItem("theme", next);
-      const root = document.documentElement;
-      root.style.colorScheme = next === "dark" ? "dark" : "light";
-      root.classList.toggle("theme-dark", next === "dark");
-      setIsDark(next === "dark");
-    } catch {
-      /* no-op */
-    }
-  };
+  // Theme toggling is handled inline on the Switch below
 
   return (
     <header className="relative z-10 border-b border-border-1 bg-surface-2 px-6 py-3 text-foreground">

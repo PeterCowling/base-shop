@@ -33,7 +33,7 @@ export default function CredentialsStep({
         <input
           id="projectId"
           name="projectId"
-          className="w-full rounded border p-2"
+          className="w-full rounded-md border border-input bg-background p-2"
           value={projectId}
           onChange={(e) => setProjectId(e.target.value)}
           required
@@ -50,7 +50,7 @@ export default function CredentialsStep({
           id="token"
           name="token"
           type="password"
-          className="w-full rounded border p-2"
+          className="w-full rounded-md border border-input bg-background p-2"
           value={token}
           onChange={(e) => setToken(e.target.value)}
           required

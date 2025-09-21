@@ -64,7 +64,7 @@ export default async function PagesPage({
   return (
     <div className="space-y-8 text-foreground">
       <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(250,204,21,0.2),_transparent_55%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--color-accent)/0.2),_transparent_55%)]" />
         <div className="relative space-y-4 px-6 py-7">
           <Tag variant="default">
             Pages · {shop}

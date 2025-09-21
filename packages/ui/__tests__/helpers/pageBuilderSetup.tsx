@@ -3,6 +3,7 @@ import React from "react";
 
 jest.mock("next/navigation", () => ({
   usePathname: () => "/shop",
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 // stub complex subcomponents used by CanvasItem

@@ -19,7 +19,7 @@ type TimelineConfig = {
 
 let initialized = false;
 const tracked = new WeakMap<HTMLElement, { cfg: TimelineConfig; playing?: boolean }>();
-let cleanupFns: Array<() => void> = [];
+const cleanupFns: Array<() => void> = [];
 
 function applyStep(el: HTMLElement, s: NonNullable<TimelineConfig["steps"]>[number]) {
   const parts: string[] = [];
@@ -180,4 +180,3 @@ export function disposeTimelines() {
   for (const fn of cleanupFns.splice(0)) { try { fn(); } catch { /* noop */ } }
   initialized = false;
 }
-

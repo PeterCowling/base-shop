@@ -206,7 +206,7 @@ export default function MediaFileItem({
   return (
     <Card
       className={cn(
-        "group relative flex h-full flex-col overflow-hidden border border-border/60 transition focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2",
+        "group relative flex h-full flex-col overflow-hidden border border-border-3 transition focus-within:outline-none focus-within:ring-[var(--ring-width)] focus-within:ring-offset-[var(--ring-offset-width)] focus-within:ring-primary",
         selected && "ring-2 ring-primary"
       )}
       data-selected={selected}
@@ -244,7 +244,7 @@ export default function MediaFileItem({
         />
       </MediaFilePreview>
 
-      <CardContent className="flex flex-1 flex-col gap-2 border-t bg-muted/30 p-4" data-token="--color-muted">
+      <CardContent className="flex flex-1 flex-col gap-2 border-t border-border-2 bg-muted/30 p-4" data-token="--color-muted">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="text-sm font-semibold text-fg line-clamp-2" data-token="--color-fg">

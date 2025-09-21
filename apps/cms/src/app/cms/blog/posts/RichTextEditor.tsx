@@ -187,7 +187,7 @@ export default function RichTextEditor({
       />
       <Toolbar />
       <PortableTextEditable
-        className="min-h-[200px] rounded border p-2"
+        className="min-h-[200px] rounded-md border border-input bg-background p-2"
         renderBlock={renderBlock}
       />
       <ProductSearch query={query} setQuery={setQuery} />

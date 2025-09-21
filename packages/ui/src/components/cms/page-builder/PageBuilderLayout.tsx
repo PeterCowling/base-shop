@@ -3,17 +3,14 @@
 import { DndContext, DragOverlay } from "@dnd-kit/core";
 import type { CSSProperties, ComponentProps } from "react";
 import React from "react";
-import { Button } from "../../atoms/shadcn";
 import { Toast, Tooltip, Popover, PopoverTrigger, PopoverContent } from "../../atoms";
 import PageToolbar from "./PageToolbar";
-import PresetsModal from "./PresetsModal";
 import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
 import HistoryControls from "./HistoryControls";
 import Palette from "./Palette";
 import PreviewPane from "./PreviewPane";
 import PageBuilderTour, { Step, CallBackProps } from "./PageBuilderTour";
-import CanvasControlsMenu from "./CanvasControlsMenu";
 import ResponsiveRightActions from "./ResponsiveRightActions";
 import type GridSettings from "./GridSettings";
 import type { ComponentType } from "./defaults";
@@ -117,7 +114,6 @@ const PageBuilderLayout = ({
   React.useEffect(() => {
     try { localStorage.setItem("pb:palette-width", String(paletteWidth)); } catch {}
   }, [paletteWidth]);
-  const [presetOpen, setPresetOpen] = React.useState(false);
   React.useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
@@ -178,7 +174,7 @@ const PageBuilderLayout = ({
         <Popover>
           <PopoverTrigger asChild>
             <Tooltip text="Quick components">
-              <button type="button" aria-label="Quick components" className="rounded border bg-background px-1 text-xs">🧩</button>
+              <button type="button" aria-label="Quick components" className="rounded border border-border-2 bg-surface-2 px-1 text-xs">🧩</button>
             </Tooltip>
           </PopoverTrigger>
           <PopoverContent className="w-80 p-2">
@@ -197,7 +193,7 @@ const PageBuilderLayout = ({
         <Popover>
           <PopoverTrigger asChild>
             <Tooltip text="Quick media">
-              <button type="button" aria-label="Quick media" className="rounded border bg-background px-1 text-xs">🖼</button>
+              <button type="button" aria-label="Quick media" className="rounded border border-border-2 bg-surface-2 px-1 text-xs">🖼</button>
             </Tooltip>
           </PopoverTrigger>
           <PopoverContent className="w-80 p-2">
@@ -216,7 +212,7 @@ const PageBuilderLayout = ({
           <button
             type="button"
             aria-label="Show palette"
-            className="rounded border bg-background px-1 text-xs"
+            className="rounded border border-border-2 bg-surface-2 px-1 text-xs"
             onClick={() => setShowPalette(true)}
             title="Show palette"
           >
@@ -226,7 +222,7 @@ const PageBuilderLayout = ({
       </div>
     )}
     <div className="flex flex-1 flex-col gap-4 min-h-0">
-      <div className="sticky top-0 z-10 flex w-full flex-wrap items-center gap-2 overflow-x-hidden bg-background/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+      <div className="sticky top-0 z-10 flex w-full flex-wrap items-center gap-2 overflow-x-hidden bg-surface-1/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-surface-1/70">
         <div data-tour="toolbar" className="min-w-0 flex-1 overflow-x-hidden">
           <PageToolbar {...toolbarProps} />
         </div>
@@ -291,7 +287,7 @@ const PageBuilderLayout = ({
           </DragOverlay>
         {showPreview && <PreviewPane {...previewProps} />}
       </div>
-      <div className="sticky bottom-0 z-10 border-t border-border/40 bg-background/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+      <div className="sticky bottom-0 z-10 border-t border-border-2 bg-surface-1/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-surface-1/70">
         <HistoryControls {...historyProps} />
       </div>
     </div>

@@ -184,7 +184,7 @@ function PostFormContent({ action, submitLabel, post }: Props) {
       />
       <div className="space-y-2">
         <h2 className="font-semibold">Preview</h2>
-        <div className="prose max-w-none rounded border p-4">
+        <div className="prose max-w-none rounded border border-border/10 p-4">
           <PortableText value={content} components={previewComponents} />
         </div>
       </div>

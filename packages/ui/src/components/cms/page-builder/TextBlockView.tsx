@@ -6,7 +6,7 @@ import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import MenuBar from "./MenuBar";
 import DOMPurify from "dompurify";
 import { LockClosedIcon } from "@radix-ui/react-icons";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import LinkPicker from "./LinkPicker";
 
 interface Guides {

@@ -5,8 +5,9 @@ import { useId } from "react";
 export type GalleryImage = { src: string; alt?: string; caption?: string };
 
 export default function Gallery({ images = [], openInLightbox, id }: { images?: GalleryImage[]; openInLightbox?: boolean; id?: string }) {
+  const fallbackId = useId();
+  const group = id ?? fallbackId;
   if (!images.length) return null;
-  const group = id || useId();
   return (
     <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3" data-lightbox-root={openInLightbox ? group : undefined}>
       {images.map((img) => (

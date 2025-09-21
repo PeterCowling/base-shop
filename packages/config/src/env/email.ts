@@ -1,12 +1,6 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
-const nodeEnv = process.env.NODE_ENV;
-const isTest = nodeEnv === "test";
-const nextPhase = process.env.NEXT_PHASE?.toLowerCase();
-const isNextProductionBuildPhase = nextPhase === "phase-production-build";
-const isProd = nodeEnv === "production" && !isTest && !isNextProductionBuildPhase;
-
 const hasEmailProvider =
   typeof process.env.EMAIL_PROVIDER === "string" &&
   process.env.EMAIL_PROVIDER.trim().length > 0;

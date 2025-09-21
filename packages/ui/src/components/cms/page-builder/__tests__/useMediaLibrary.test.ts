@@ -28,6 +28,7 @@ function mockFetchError(statusText: string) {
   global.fetch = jest.fn().mockResolvedValue({
     ok: false,
     statusText,
+    json: async () => ({ error: statusText }),
   });
 }
 
@@ -130,4 +131,3 @@ describe("useMediaLibrary", () => {
     expect(result.current.media).toEqual([]);
   });
 });
-

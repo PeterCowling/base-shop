@@ -25,14 +25,14 @@ export default function LottieControls({ component, handleInput }: Props) {
         onChange={(e) => handleInput("lottieUrl" as any, (e.target.value || undefined) as any)}
       />
       <div className="grid grid-cols-3 gap-2 items-end">
-        <label className="col-span-1 flex items-center justify-between rounded border border-border/60 bg-muted/30 px-3 py-2 text-sm">
+        <label className="col-span-1 flex items-center justify-between rounded border border-border-3 bg-muted/30 px-3 py-2 text-sm">
           <span>Autoplay</span>
           <Checkbox
             checked={!!lottieAutoplay}
             onCheckedChange={(v) => handleInput("lottieAutoplay" as any, Boolean(v) as any)}
           />
         </label>
-        <label className="col-span-1 flex items-center justify-between rounded border border-border/60 bg-muted/30 px-3 py-2 text-sm">
+        <label className="col-span-1 flex items-center justify-between rounded border border-border-3 bg-muted/30 px-3 py-2 text-sm">
           <span>Loop</span>
           <Checkbox
             checked={!!lottieLoop}

@@ -48,7 +48,7 @@ export default async function PreviewPage({
       components={components}
       locale={locale}
       initialDeviceId={initialDeviceId}
-      editor={editor as any}
+      editor={editor}
     />
   );
 }

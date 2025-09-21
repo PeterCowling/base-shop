@@ -30,7 +30,7 @@ export default function OverrideField({
   isSelected = false,
 }: Props) {
   return (
-    <div className={isSelected ? "ring-2 ring-blue-500 rounded p-1" : ""}>
+    <div className={isSelected ? "ring-2 ring-primary rounded-md p-1" : ""}>
       <ColorInput
         key={name}
         name={name}

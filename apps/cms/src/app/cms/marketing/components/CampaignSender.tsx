@@ -124,7 +124,7 @@ export function CampaignSender({ sendCampaign, onNotify }: CampaignSenderProps) 
             Content renders exactly as subscribers will see it. Links are not rewritten for tracking here.
           </p>
           <div
-            className="rounded-lg border bg-surface-2 p-4"
+            className="rounded-lg border border-border/10 bg-surface-2 p-4"
             dangerouslySetInnerHTML={{ __html: previewHtml }}
           />
         </CardContent>

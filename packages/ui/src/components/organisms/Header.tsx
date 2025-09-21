@@ -50,7 +50,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
       <header
         ref={ref}
         data-token="--color-bg"
-        className={cn("bg-background border-b", className)}
+        className={cn("bg-surface-1 border-b border-border-2", className)}
         {...props}
       >
         <div className="mx-auto flex h-16 items-center justify-between gap-6 px-4">
@@ -76,7 +76,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                   {section.title}
                 </a>
                 {section.items && section.items.length > 0 && (
-                  <div className="bg-background absolute top-full left-0 z-10 hidden min-w-[12rem] rounded-md border p-4 shadow-lg group-hover:block">
+                  <div className="bg-surface-2 border-border-2 absolute top-full left-0 z-10 hidden min-w-[12rem] rounded-md border p-4 shadow-lg group-hover:block">
                     <ul className="flex flex-col gap-2">
                       {section.items.map((item) => (
                         <li key={item.title}>

@@ -2,7 +2,6 @@
 
 // types consumed via Props
 import { memo, useMemo, useState } from "react";
-import type { Action } from "./state";
 import useInlineText from "./useInlineText";
 import BlockContent from "./BlockContent";
 import useCanvasResize from "./useCanvasResize";
@@ -66,11 +65,8 @@ const BlockItem = memo(function BlockItemComponent({
   } = useBlockDnD(component.id, index, parentId);
 
   const isInlineEditableButton = component.type === "Button";
-  const inline = isInlineEditableButton
-    ? (useInlineText(component as any, "label") as ReturnType<
-        typeof useInlineText<any, any>
-      >)
-    : null;
+  const inlineAll = useInlineText(component as any, "label") as ReturnType<typeof useInlineText<any, any>>;
+  const inline = isInlineEditableButton ? inlineAll : null;
 
   const {
     widthKey,

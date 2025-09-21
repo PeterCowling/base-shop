@@ -43,20 +43,20 @@ export async function checkAndAlert(
 ): Promise<InventoryItem[]> {
   const settings = await getShopSettings(shop);
   const envRecipients =
-    (process.env.STOCK_ALERT_RECIPIENTS || (coreEnv as any).STOCK_ALERT_RECIPIENTS) ??
-    (process.env.STOCK_ALERT_RECIPIENT || (coreEnv as any).STOCK_ALERT_RECIPIENT) ??
+    (process.env.STOCK_ALERT_RECIPIENTS || coreEnv.STOCK_ALERT_RECIPIENTS) ??
+    (process.env.STOCK_ALERT_RECIPIENT || coreEnv.STOCK_ALERT_RECIPIENT) ??
     "";
   const recipients = settings.stockAlert?.recipients?.length
     ? settings.stockAlert.recipients
     : envRecipients.split(",").map((r: string) => r.trim()).filter(Boolean);
   const webhook =
     (settings.stockAlert?.webhook as string | undefined) ??
-    (process.env.STOCK_ALERT_WEBHOOK || (coreEnv as any).STOCK_ALERT_WEBHOOK);
+    (process.env.STOCK_ALERT_WEBHOOK || coreEnv.STOCK_ALERT_WEBHOOK);
   const defaultThreshold =
     settings.stockAlert?.threshold ??
     (typeof process.env.STOCK_ALERT_DEFAULT_THRESHOLD === "string"
       ? Number(process.env.STOCK_ALERT_DEFAULT_THRESHOLD)
-      : ((coreEnv as any).STOCK_ALERT_DEFAULT_THRESHOLD as number | undefined));
+      : coreEnv.STOCK_ALERT_DEFAULT_THRESHOLD);
 
   if (recipients.length === 0 && !webhook) return [];
 

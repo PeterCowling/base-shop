@@ -94,13 +94,13 @@ export async function generateMetadata({
       title: product.title,
       description,
       images: image ? [{ url: image }] : undefined,
-    } as any,
+    } as Partial<Metadata["openGraph"]>,
     twitter: {
       title: product.title,
       description,
       image,
       card: image ? "summary_large_image" : "summary",
-    } as any,
+    } as Partial<Metadata["twitter"]>,
   });
   // Build hreflang alternates for this product path
   const languages = settings.languages ?? ["en"];
@@ -109,10 +109,10 @@ export async function generateMetadata({
     canonicalRootForLanguages = canonicalRootForLanguages.slice(0, -(`/${lang}`.length));
   }
   const languagesAlt: Record<string, string> = {};
-  for (const l of languages) {
-    languagesAlt[l] = canonicalRootForLanguages
-      ? `${canonicalRootForLanguages}/${l}/product/${product.slug}`
-      : undefined as unknown as string;
+  if (canonicalRootForLanguages) {
+    for (const l of languages) {
+      languagesAlt[l] = `${canonicalRootForLanguages}/${l}/product/${product.slug}`;
+    }
   }
   return {
     title: seo.title,

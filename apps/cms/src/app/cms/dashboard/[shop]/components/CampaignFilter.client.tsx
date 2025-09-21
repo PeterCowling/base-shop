@@ -11,7 +11,7 @@ export function CampaignFilter({ campaigns }: { campaigns: string[] }) {
   return (
     <select
       multiple
-      className="mb-4 rounded border p-1"
+      className="mb-4 rounded-md border border-input bg-background p-1"
       value={selected}
       onChange={(e) => {
         const params = new URLSearchParams(searchParams.toString());
@@ -32,4 +32,3 @@ export function CampaignFilter({ campaigns }: { campaigns: string[] }) {
     </select>
   );
 }
-

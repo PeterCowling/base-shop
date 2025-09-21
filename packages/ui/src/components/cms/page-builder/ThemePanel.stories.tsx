@@ -22,10 +22,12 @@ export const Basic: Story = {
       (window as any).fetch = async (url: RequestInfo) => {
         const u = String(url);
         if (u.includes("/cms/api/shops/") && u.endsWith("/theme")) {
+          const doc = document.documentElement;
+          const brand = getComputedStyle(doc).getPropertyValue("--color-brand").trim();
           return new Response(
             JSON.stringify({
-              themeDefaults: { "color.brand": "#000000", "font.body": "Inter" },
-              themeTokens: { "color.brand": "#0ea5e9", "font.body": "Inter" },
+              themeDefaults: { "color.brand": brand || "", "font.body": "Inter" },
+              themeTokens: { "color.brand": brand || "", "font.body": "Inter" },
             }),
             { status: 200, headers: { "Content-Type": "application/json" } },
           );
@@ -40,4 +42,3 @@ export const Basic: Story = {
     return <ThemePanel />;
   },
 };
-

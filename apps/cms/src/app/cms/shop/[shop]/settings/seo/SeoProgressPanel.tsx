@@ -61,15 +61,15 @@ export default async function SeoProgressPanel({ shop }: Props) {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-3">
-          <div className="rounded-md border p-4">
+          <div className="rounded-md border border-border/10 p-4">
             <p className="text-xs text-muted-foreground">Latest score</p>
             <p className="text-base font-semibold">{latestScore ?? "–"}</p>
           </div>
-          <div className="rounded-md border p-4">
+          <div className="rounded-md border border-border/10 p-4">
             <p className="text-xs text-muted-foreground">Average score</p>
             <p className="text-base font-semibold">{averageScore ?? "–"}</p>
           </div>
-          <div className="rounded-md border p-4">
+          <div className="rounded-md border border-border/10 p-4">
             <p className="text-xs text-muted-foreground">Audit count</p>
             <p className="text-base font-semibold">{audits.length}</p>
           </div>

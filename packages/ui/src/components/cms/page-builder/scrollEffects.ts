@@ -78,7 +78,7 @@ type ParallaxEl = {
 };
 
 let initialized = false;
-let cleanupFns: Array<() => void> = [];
+const cleanupFns: Array<() => void> = [];
 
 export function initScrollEffects(root?: HTMLElement) {
   if (typeof window === "undefined" || typeof document === "undefined") return;

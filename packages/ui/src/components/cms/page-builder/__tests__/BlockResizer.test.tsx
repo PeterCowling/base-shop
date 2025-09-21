@@ -29,11 +29,13 @@ describe("BlockResizer", () => {
       />
     );
     const corners = Array.from(container.children).slice(0, 4) as HTMLElement[];
+    const expectedHandles = ["nw", "ne", "sw", "se"] as const;
     corners.forEach((corner, idx) => {
       fireEvent.pointerDown(corner);
       expect(startResize).toHaveBeenNthCalledWith(
         idx + 1,
-        expect.objectContaining({ type: "pointerdown" })
+        expect.objectContaining({ type: "pointerdown" }),
+        expectedHandles[idx]
       );
     });
   });
@@ -47,7 +49,8 @@ describe("BlockResizer", () => {
         startSpacing={startSpacing}
       />
     );
-    const handles = Array.from(container.children).slice(4) as HTMLElement[];
+    // Skip 4 corner and 4 side resize handles; verify spacing handles only
+    const handles = Array.from(container.children).slice(8) as HTMLElement[];
     const expected: Array<
       ["margin" | "padding", "top" | "bottom" | "left" | "right"]
     > = [

@@ -86,7 +86,7 @@ function ProductReferenceBlock(props: BlockRenderProps) {
       { slug: next },
     );
   };
-  const className = `space-y-2 ${isInvalid ? "rounded border border-red-500 p-2" : ""}`;
+  const className = `space-y-2 ${isInvalid ? "rounded border border-danger p-2" : ""}`;
   return React.createElement(
     "div",
     { className },

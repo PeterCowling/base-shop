@@ -14,6 +14,7 @@ import { initLottie } from "./cms/page-builder/lottie";
 import { ensureLightboxStyles, initLightbox } from "./cms/lightbox";
 import type { HistoryState } from "@acme/types";
 import { cssVars } from "../utils/style";
+import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 
 export default function DynamicRenderer({
   components,
@@ -66,11 +67,13 @@ export default function DynamicRenderer({
 
     // Inline CSS variables based on style overrides
     let styleVars: CSSProperties = {};
+    let varsRecord: Record<string, string> | undefined;
     try {
-      const raw = (blockRecord.styles as string | undefined) ?? "";
-      const overrides = raw ? (JSON.parse(String(raw)) as any) : undefined;
+      const raw = blockRecord.styles as unknown;
+      const overrides = (typeof raw === "string" ? JSON.parse(String(raw)) : undefined) as unknown as StyleOverrides | undefined;
       const vars = cssVars(overrides);
-      styleVars = vars as CSSProperties;
+      styleVars = vars as unknown as CSSProperties;
+      varsRecord = vars as Record<string, string>;
     } catch {
       // ignore invalid style JSON
     }
@@ -86,9 +89,19 @@ export default function DynamicRenderer({
       ...(typeof blockRecord.zIndex === "number" ? { zIndex: blockRecord.zIndex as number } : {}),
       ...styleVars,
       // Apply inheritable typography props using CSS variables
-      fontFamily: (styleVars as any)["--font-family"] ? ("var(--font-family)" as any) : undefined,
-      fontSize: (styleVars as any)["--font-size"] || (styleVars as any)["--font-size-desktop"] || (styleVars as any)["--font-size-tablet"] || (styleVars as any)["--font-size-mobile"] ? ("var(--font-size)" as any) : undefined,
-      lineHeight: (styleVars as any)["--line-height"] || (styleVars as any)["--line-height-desktop"] || (styleVars as any)["--line-height-tablet"] || (styleVars as any)["--line-height-mobile"] ? ("var(--line-height)" as any) : undefined,
+      fontFamily: varsRecord?.["--font-family"] ? ("var(--font-family)" as unknown as CSSProperties["fontFamily"]) : undefined,
+      fontSize:
+        varsRecord?.["--font-size"] ||
+        varsRecord?.["--font-size-desktop"] ||
+        varsRecord?.["--font-size-tablet"] ||
+        varsRecord?.["--font-size-mobile"]
+          ? ("var(--font-size)" as unknown as CSSProperties["fontSize"]) : undefined,
+      lineHeight:
+        varsRecord?.["--line-height"] ||
+        varsRecord?.["--line-height-desktop"] ||
+        varsRecord?.["--line-height-tablet"] ||
+        varsRecord?.["--line-height-mobile"]
+          ? ("var(--line-height)" as unknown as CSSProperties["lineHeight"]) : undefined,
     };
 
     // Per-breakpoint visibility classes from editor metadata (if provided)
@@ -105,17 +118,16 @@ export default function DynamicRenderer({
       .join(" ");
 
     // Optional deterministic mobile order (generated at export time)
-    const orderMobile = (typeof (blockRecord as any).orderMobile === "number"
-      ? ((blockRecord as any).orderMobile as number)
-      : undefined);
+    const om = (blockRecord as Record<string, unknown>).orderMobile as unknown;
+    const orderMobile = typeof om === "number" ? om : undefined;
     const orderClass = typeof orderMobile === "number" ? `pb-order-mobile-${orderMobile}` : "";
 
     // Optional container stacking strategy (export-time prop) → class on component
-    const stackStrategy = (blockRecord as any).stackStrategy as string | undefined;
+    const stackStrategy = (blockRecord as Record<string, unknown>).stackStrategy as string | undefined;
     const stackClass = stackStrategy === "reverse" ? "pb-stack-mobile-reverse" : "";
 
     // Animation + scroll effect props (optional, passthrough)
-    const animation = (blockRecord as any).animation as
+    type AnimationType =
       | "none"
       | "fade"
       | "slide"
@@ -124,15 +136,29 @@ export default function DynamicRenderer({
       | "slide-left"
       | "slide-right"
       | "zoom"
-      | "rotate"
-      | undefined;
-    const animationDuration = (blockRecord as any).animationDuration as number | undefined;
-    const animationDelay = (blockRecord as any).animationDelay as number | undefined;
-    const animationEasing = (blockRecord as any).animationEasing as string | undefined;
-    const reveal = (blockRecord as any).reveal as string | undefined;
-    const parallax = (blockRecord as any).parallax as number | undefined;
-    const sticky = (blockRecord as any).sticky as "top" | "bottom" | undefined;
-    const stickyOffset = (blockRecord as any).stickyOffset as string | number | undefined;
+      | "rotate";
+    const allowedAnimations: readonly AnimationType[] = [
+      "none",
+      "fade",
+      "slide",
+      "slide-up",
+      "slide-down",
+      "slide-left",
+      "slide-right",
+      "zoom",
+      "rotate",
+    ] as const;
+    const animRaw = (blockRecord as Record<string, unknown>).animation;
+    const animation = (typeof animRaw === "string" && (allowedAnimations as readonly string[]).includes(animRaw))
+      ? (animRaw as AnimationType)
+      : undefined;
+    const animationDuration = (blockRecord as Record<string, unknown>).animationDuration as number | undefined;
+    const animationDelay = (blockRecord as Record<string, unknown>).animationDelay as number | undefined;
+    const animationEasing = (blockRecord as Record<string, unknown>).animationEasing as string | undefined;
+    const reveal = (blockRecord as Record<string, unknown>).reveal as string | undefined;
+    const parallax = (blockRecord as Record<string, unknown>).parallax as number | undefined;
+    const sticky = (blockRecord as Record<string, unknown>).sticky as "top" | "bottom" | undefined;
+    const stickyOffset = (blockRecord as Record<string, unknown>).stickyOffset as string | number | undefined;
 
     const animClass = animation && animation !== "none"
       ? (
@@ -163,39 +189,43 @@ export default function DynamicRenderer({
     }
 
     // Merge className to pass to the component (so the container element gets the stack class)
-    const existing = (rest as any).className as string | undefined;
+    const existing = (rest as { className?: unknown }).className as string | undefined;
     const mergedClass = [existing, stackClass].filter(Boolean).join(" ");
     if (mergedClass) extraProps.className = mergedClass;
 
-    const hoverScale = (blockRecord as any).hoverScale as number | undefined;
-    const hoverOpacity = (blockRecord as any).hoverOpacity as number | undefined;
-    const staggerChildren = (blockRecord as any).staggerChildren as number | undefined;
-    const timeline = (blockRecord as any).timeline as any | undefined;
-    const lottieUrl = (blockRecord as any).lottieUrl as string | undefined;
-    const lottieAutoplay = (blockRecord as any).lottieAutoplay as boolean | undefined;
-    const lottieLoop = (blockRecord as any).lottieLoop as boolean | undefined;
-    const lottieSpeed = (blockRecord as any).lottieSpeed as number | undefined;
-    const lottieTrigger = (blockRecord as any).lottieTrigger as string | undefined;
+    const hoverScale = (blockRecord as Record<string, unknown>).hoverScale as number | undefined;
+    const hoverOpacity = (blockRecord as Record<string, unknown>).hoverOpacity as number | undefined;
+    const staggerChildren = (blockRecord as Record<string, unknown>).staggerChildren as number | undefined;
+    const timeline = (blockRecord as Record<string, unknown>).timeline as unknown;
+    const lottieUrl = (blockRecord as Record<string, unknown>).lottieUrl as string | undefined;
+    const lottieAutoplay = (blockRecord as Record<string, unknown>).lottieAutoplay as boolean | undefined;
+    const lottieLoop = (blockRecord as Record<string, unknown>).lottieLoop as boolean | undefined;
+    const lottieSpeed = (blockRecord as Record<string, unknown>).lottieSpeed as number | undefined;
+    const lottieTrigger = (blockRecord as Record<string, unknown>).lottieTrigger as string | undefined;
     const needsHover = typeof hoverScale === 'number' || typeof hoverOpacity === 'number';
-    const gridArea = (blockRecord as any).gridArea as string | undefined;
-    const gridColumn = (blockRecord as any).gridColumn as string | undefined;
-    const gridRow = (blockRecord as any).gridRow as string | undefined;
-    const staticTransform = (styleVars as any)["--pb-static-transform"] as string | undefined;
+    const gridArea = (blockRecord as Record<string, unknown>).gridArea as string | undefined;
+    const gridColumn = (blockRecord as Record<string, unknown>).gridColumn as string | undefined;
+    const gridRow = (blockRecord as Record<string, unknown>).gridRow as string | undefined;
+    const staticTransform = varsRecord?.["--pb-static-transform"] as string | undefined;
 
     return (
       <div
         key={id}
         style={{
           ...style,
-          ...(typeof animationDuration === "number" ? ({ ["--pb-anim-duration"]: `${animationDuration}ms` } as any) : {}),
-          ...(typeof animationDelay === "number" ? ({ ["--pb-anim-delay"]: `${animationDelay}ms` } as any) : {}),
-          ...(animationEasing ? ({ ["--pb-anim-ease"]: animationEasing } as any) : {}),
-          ...(stickyOffset !== undefined ? ({ ["--pb-sticky-offset"]: typeof stickyOffset === "number" ? `${stickyOffset}px` : String(stickyOffset) } as any) : {}),
-          ...(typeof hoverScale === 'number' ? ({ ["--pb-hover-scale"]: String(hoverScale) } as any) : {}),
-          ...(typeof hoverOpacity === 'number' ? ({ ["--pb-hover-opacity"]: String(hoverOpacity) } as any) : {}),
-          ...(gridArea ? ({ gridArea } as any) : {}),
-          ...(gridColumn ? ({ gridColumn } as any) : {}),
-          ...(gridRow ? ({ gridRow } as any) : {}),
+          ...((): Record<string, string> => {
+            const dyn: Record<string, string> = {};
+            if (typeof animationDuration === "number") dyn["--pb-anim-duration"] = `${animationDuration}ms`;
+            if (typeof animationDelay === "number") dyn["--pb-anim-delay"] = `${animationDelay}ms`;
+            if (animationEasing) dyn["--pb-anim-ease"] = animationEasing;
+            if (stickyOffset !== undefined) dyn["--pb-sticky-offset"] = typeof stickyOffset === "number" ? `${stickyOffset}px` : String(stickyOffset);
+            if (typeof hoverScale === 'number') dyn["--pb-hover-scale"] = String(hoverScale);
+            if (typeof hoverOpacity === 'number') dyn["--pb-hover-opacity"] = String(hoverOpacity);
+            return dyn;
+          })(),
+          ...(gridArea ? ({ gridArea } as CSSProperties) : {}),
+          ...(gridColumn ? ({ gridColumn } as CSSProperties) : {}),
+          ...(gridRow ? ({ gridRow } as CSSProperties) : {}),
         }}
         className={["pb-scope", hideClasses, orderClass, animClass].filter(Boolean).join(" ") || undefined}
         data-pb-duration={typeof animationDuration === "number" ? animationDuration : undefined}
@@ -206,11 +236,14 @@ export default function DynamicRenderer({
         data-pb-sticky={sticky || undefined}
         data-pb-sticky-offset={stickyOffset !== undefined ? String(stickyOffset) : undefined}
         data-pb-hover={needsHover ? '1' : undefined}
-        data-pb-click={(blockRecord as any).clickAction === 'open-modal' ? 'open-modal' : ((blockRecord as any).clickAction === 'scroll-to' ? 'scroll-to' : undefined)}
-        data-pb-href={(blockRecord as any).href || undefined}
-        data-pb-modal={(blockRecord as any).modalHtml || undefined}
+        data-pb-click={(() => {
+          const action = (blockRecord as Record<string, unknown>).clickAction as string | undefined;
+          return action === 'open-modal' ? 'open-modal' : action === 'scroll-to' ? 'scroll-to' : undefined;
+        })()}
+        data-pb-href={((blockRecord as Record<string, unknown>).href as string | undefined) || undefined}
+        data-pb-modal={((blockRecord as Record<string, unknown>).modalHtml as string | undefined) || undefined}
         data-pb-stagger={typeof staggerChildren === 'number' ? String(staggerChildren) : undefined}
-        data-pb-timeline={timeline && timeline.steps && timeline.steps.length ? JSON.stringify(timeline) : undefined}
+        data-pb-timeline={(() => { const t = timeline as { steps?: unknown[] } | undefined; return t && Array.isArray(t.steps) && t.steps.length ? JSON.stringify(t) : undefined; })()}
         data-pb-lottie-url={lottieUrl || undefined}
         data-pb-lottie-autoplay={lottieAutoplay ? '1' : undefined}
         data-pb-lottie-loop={lottieLoop ? '1' : undefined}
@@ -230,7 +263,7 @@ export default function DynamicRenderer({
             </Comp>
           </div>
         ) : staticTransform ? (
-          <div style={{ transform: staticTransform } as any}>
+          <div style={{ transform: staticTransform } as CSSProperties}>
             <Comp
               {...rest}
               {...extraProps}

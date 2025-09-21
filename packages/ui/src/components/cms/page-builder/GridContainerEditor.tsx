@@ -97,9 +97,9 @@ export default function GridContainerEditor({ component, onChange }: Props) {
               label=""
               value={(component as any).areas ?? ""}
               onChange={(e) => handle("areas" as any, (e.target.value || undefined) as any)}
-              placeholder={`"hero hero"\n"left right"`}
+              placeholder={'&quot;hero hero&quot;\n&quot;left right&quot;'}
             />
-            <p className="text-xs text-muted-foreground">CSS format: quote each row, separate by newline. Use "." for empty slots.</p>
+            <p className="text-xs text-muted-foreground">CSS format: quote each row, separate by newline. Use &quot;.&quot; for empty slots.</p>
           </>
         )}
         {areasOpen && (

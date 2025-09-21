@@ -2,7 +2,7 @@
 "use client";
 
 import type { PageComponent } from "@acme/types";
-import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from "../../atoms/shadcn";
+import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
 import { useCallback, useMemo, useState } from "react";
 import ImageEditor, { type ImageEditState } from "./ImageEditor";
 import OverlayPicker from "./OverlayPicker";
@@ -201,7 +201,7 @@ export default function SectionEditor({ component, onChange }: Props) {
                 <SelectItem value="triangle">triangle</SelectItem>
               </SelectContent>
             </Select>
-            <Input label="Color" value={(component as any).topShapeColor ?? ""} onChange={(e) => handle("topShapeColor" as any, (e.target.value || undefined) as any)} placeholder="#000 or var(--token)" />
+            <Input label="Color" value={(component as any).topShapeColor ?? ""} onChange={(e) => handle("topShapeColor" as any, (e.target.value || undefined) as any)} placeholder="var(--token)" />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <Input label="Height (px)" type="number" min="0" value={((component as any).topShapeHeight ?? "") as any} onChange={(e) => handle("topShapeHeight" as any, (e.target.value === "" ? undefined : Number(e.target.value)) as any)} />
@@ -234,7 +234,7 @@ export default function SectionEditor({ component, onChange }: Props) {
                 <SelectItem value="triangle">triangle</SelectItem>
               </SelectContent>
             </Select>
-            <Input label="Color" value={(component as any).bottomShapeColor ?? ""} onChange={(e) => handle("bottomShapeColor" as any, (e.target.value || undefined) as any)} placeholder="#000 or var(--token)" />
+            <Input label="Color" value={(component as any).bottomShapeColor ?? ""} onChange={(e) => handle("bottomShapeColor" as any, (e.target.value || undefined) as any)} placeholder="var(--token)" />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <Input label="Height (px)" type="number" min="0" value={((component as any).bottomShapeHeight ?? "") as any} onChange={(e) => handle("bottomShapeHeight" as any, (e.target.value === "" ? undefined : Number(e.target.value)) as any)} />

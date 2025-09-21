@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Page, PageComponent, HistoryState } from "@acme/types";
 import useAutoSave from "./useAutoSave";
 import { exportComponents } from "../state/exportComponents";
+import type { GlobalItem } from "../libraryStore";
 
 interface Params {
   page: Page;
@@ -35,7 +36,8 @@ export default function usePageBuilderSave({
   // Lazy import to avoid SSR issues
   const getLibrary = () => {
     try {
-      const mod = require("../libraryStore") as typeof import("../libraryStore");
+      const req = (eval("require") as (id: string) => unknown);
+      const mod = req("../libraryStore") as typeof import("../libraryStore");
       return mod.listLibrary(shop);
     } catch {
       return [];
@@ -43,10 +45,11 @@ export default function usePageBuilderSave({
   };
   const getGlobals = () => {
     try {
-      const mod = require("../libraryStore") as typeof import("../libraryStore");
-      return (mod.listGlobals as any)(shop) as Array<{ globalId: string; template: PageComponent }> | [];
+      const req = (eval("require") as (id: string) => unknown);
+      const mod = req("../libraryStore") as typeof import("../libraryStore");
+      return mod.listGlobals(shop) as GlobalItem[];
     } catch {
-      return [] as any[];
+      return [] as GlobalItem[];
     }
   };
   const formData = useMemo(() => {
@@ -80,9 +83,10 @@ export default function usePageBuilderSave({
   // subsequent saves in sync.
   const saveWithMetaUpdate = useCallback(
     async (fd: FormData) => {
-      const res: any = await onSave(fd);
+      const res: unknown = await onSave(fd);
       try {
-        const next = (res?.page ?? res) as { updatedAt?: string } | undefined;
+        const next = (res as { page?: { updatedAt?: string }; updatedAt?: string })?.page ??
+          (res as { updatedAt?: string } | undefined);
         if (next && typeof next.updatedAt === "string" && next.updatedAt) {
           setUpdatedAt(next.updatedAt);
         }
@@ -103,7 +107,7 @@ export default function usePageBuilderSave({
         const s = fd.get("history") as string | null;
         if (!s) return undefined;
         const parsed = JSON.parse(String(s)) as HistoryState;
-        return (parsed as any).editor as HistoryState["editor"] | undefined;
+        return parsed.editor as HistoryState["editor"] | undefined;
       } catch {
         return undefined;
       }
@@ -114,16 +118,16 @@ export default function usePageBuilderSave({
       const list = raw ? (JSON.parse(String(raw)) as PageComponent[]) : components;
       // Build globals map for resolving linked instances
       const globalsArr = getGlobals();
-      const globalsMap = Object.fromEntries((globalsArr || []).map((g: any) => [g.globalId, g.template]));
+      const globalsMap = Object.fromEntries((globalsArr || []).map((g: GlobalItem) => [g.globalId, g.template]));
       nextComponents = exportComponents(list, editor, globalsMap);
     } catch {
       const globalsArr = getGlobals();
-      const globalsMap = Object.fromEntries((globalsArr || []).map((g: any) => [g.globalId, g.template]));
+      const globalsMap = Object.fromEntries((globalsArr || []).map((g: GlobalItem) => [g.globalId, g.template]));
       nextComponents = exportComponents(components, editor, globalsMap);
     }
     const out = new FormData();
     // copy all existing entries
-    for (const [k, v] of (fd as any).entries() as Iterable<[string, any]>) {
+    for (const [k, v] of fd.entries()) {
       if (k === "components") continue;
       out.append(k, v);
     }

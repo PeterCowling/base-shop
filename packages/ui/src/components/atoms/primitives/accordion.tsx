@@ -121,7 +121,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
           ref={ref}
           data-state={isOpen ? "open" : "closed"}
           data-value={value}
-          className={cn("rounded-md border border-border/60", className)}
+          className={cn("rounded-md border border-border-3", className)}
           {...props}
         >
           {children}

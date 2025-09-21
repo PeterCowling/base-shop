@@ -44,7 +44,7 @@ export default function AddToCartButton({
     }
   }, [adding, forceDisabled, disabled]);
 
-  async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
+  async function handleClick(_e: React.MouseEvent<HTMLButtonElement>) {
     if (disabled) return;
     if (quantity < 1) {
       setError("Quantity must be at least 1");

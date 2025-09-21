@@ -46,7 +46,7 @@ describe("PageBuilder resize interactions", () => {
     expect(screen.getByTestId("target")).toHaveStyle({ height: "100%" });
   });
 
-  it("resizes via drag handle and snaps to full size with shift", () => {
+  it("resizes via drag handle and snaps to full size with Alt", () => {
     const component: any = {
       id: "c1",
       type: "Image",
@@ -56,7 +56,10 @@ describe("PageBuilder resize interactions", () => {
     const { el, dispatch } = renderCanvasItem(component);
     setRect(el, { width: 100, height: 100, left: 0, top: 0 });
 
-    const handle = el.querySelector(".cursor-nwse-resize") as HTMLElement;
+    // There are crop overlay handles that also use nwse-resize; prefer the block resizer
+    const handle = el.querySelector(
+      ".bg-primary.cursor-nwse-resize"
+    ) as HTMLElement; // bottom-right (se)
     fireEvent.pointerDown(handle, { clientX: 100, clientY: 100 });
     fireEvent.pointerMove(window, { clientX: 150, clientY: 150 });
     fireEvent.pointerUp(window);
@@ -69,7 +72,7 @@ describe("PageBuilder resize interactions", () => {
     fireEvent.pointerMove(window, {
       clientX: 150,
       clientY: 150,
-      shiftKey: true,
+      altKey: true,
     });
     fireEvent.pointerUp(window);
     expect(dispatch).toHaveBeenCalledWith(
@@ -88,7 +91,9 @@ describe("PageBuilder resize interactions", () => {
     setRect(el, { width: 100, height: 100 });
     setRect(container as HTMLElement, { width: 150, height: 150 });
 
-    const handle = el.querySelector(".cursor-nwse-resize") as HTMLElement;
+    const handle = el.querySelector(
+      ".bg-primary.cursor-nwse-resize"
+    ) as HTMLElement; // bottom-right (se)
     fireEvent.pointerDown(handle, { clientX: 100, clientY: 100 });
     fireEvent.pointerMove(window, { clientX: 145, clientY: 145 });
     fireEvent.pointerUp(window);
@@ -111,7 +116,9 @@ describe("PageBuilder resize interactions", () => {
     setRect(container as HTMLElement, { width: 400, height: 400 });
     setRect(el, { width: 100, height: 100, left: 0, top: 0 });
 
-    const handle = el.querySelector(".cursor-nwse-resize") as HTMLElement;
+    const handle = el.querySelector(
+      ".bg-primary.cursor-nwse-resize"
+    ) as HTMLElement; // bottom-right (se)
     fireEvent.pointerDown(handle, { clientX: 100, clientY: 100 });
     fireEvent.pointerMove(window, { clientX: 175, clientY: 175 });
     fireEvent.pointerUp(window);

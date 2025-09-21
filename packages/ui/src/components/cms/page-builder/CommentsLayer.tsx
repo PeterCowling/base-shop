@@ -28,7 +28,7 @@ interface Props {
 
 export default function CommentsLayer({ canvasRef, components, shop, pageId, selectedIds }: Props) {
   const [threads, setThreads] = useState<Thread[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [showResolved, setShowResolved] = useState(true);
@@ -45,7 +45,7 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
 
   const load = useCallback(async () => {
     try {
-      setError(null);
+      // setError(null);
       const res = await fetch(`/cms/api/comments/${shop}/${pageId}`);
       const data = (await res.json()) as any[];
       setThreads(
@@ -60,8 +60,8 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
           updatedAt: t.updatedAt,
         }))
       );
-    } catch (err) {
-      setError((err as Error).message);
+    } catch {
+      // ignore load errors (toolbar has manual Reload)
     }
   }, [shop, pageId]);
 
@@ -188,12 +188,13 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
     try {
       el.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
     } catch {}
-    const prev = el.style.outline;
-    el.style.outline = "2px solid #38bdf8";
-    el.style.outlineOffset = "2px";
+    const prevOutline = el.style.outline;
+    const prevOffset = el.style.outlineOffset;
+    el.classList.add("ring-2", "ring-primary");
     setTimeout(() => {
-      el.style.outline = prev;
-      el.style.outlineOffset = "";
+      el.classList.remove("ring-2", "ring-primary");
+      el.style.outline = prevOutline;
+      el.style.outlineOffset = prevOffset;
     }, 1200);
   };
 

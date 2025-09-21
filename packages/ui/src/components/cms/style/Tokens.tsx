@@ -182,7 +182,8 @@ export default function Tokens({
   return (
     <div
       ref={containerRef}
-      className="max-h-64 space-y-4 overflow-y-auto rounded border p-2"
+      // Ensure the tokens panel never causes horizontal overflow in dialogs
+      className="max-h-64 w-full space-y-4 overflow-y-auto overflow-x-hidden rounded border p-2"
     >
       <Input
         placeholder="Search tokens"
@@ -230,5 +231,4 @@ export default function Tokens({
     </div>
   );
 }
-
 

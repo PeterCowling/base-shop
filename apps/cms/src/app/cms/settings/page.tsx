@@ -23,8 +23,7 @@ export default async function SettingsIndexPage() {
   ];
   return (
     <div className="space-y-8 text-foreground">
-      <Card className="relative overflow-hidden rounded-3xl border border-border/10 bg-slate-950 text-foreground shadow-xl">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(94,234,212,0.25),_transparent_55%)]" />
+      <Card className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
         <CardContent className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr]">
           <div className="space-y-6">
             <div className="space-y-3">
@@ -34,7 +33,7 @@ export default async function SettingsIndexPage() {
               <h1 className="text-3xl font-semibold md:text-4xl">
                 Govern storefront policies with confidence
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-primary-foreground/80">
                 Choose a shop to orchestrate taxes, payments, compliance, and access so every channel stays aligned.
               </p>
             </div>
@@ -45,7 +44,7 @@ export default async function SettingsIndexPage() {
               <Button
                 asChild
                 variant="outline"
-                className="h-11 px-5 text-sm font-semibold border-border/40 text-foreground hover:bg-muted/10"
+                className="h-11 px-5 text-sm font-semibold border-primary/40 text-primary-foreground hover:bg-primary/10"
               >
                 <Link href="#shop-selection">Browse existing shops</Link>
               </Button>
@@ -55,7 +54,7 @@ export default async function SettingsIndexPage() {
             {featureHighlights.map(({ title, description }) => (
               <div
                 key={title}
-                className="rounded-2xl border border-border/10 bg-background/60 p-4 text-sm text-muted-foreground shadow-sm"
+                className="rounded-2xl border border-border/10 bg-surface-2 p-4 text-sm text-muted-foreground shadow-sm"
               >
                 <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   {title}

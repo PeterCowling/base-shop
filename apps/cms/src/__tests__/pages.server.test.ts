@@ -170,15 +170,16 @@ describe("pages.server", () => {
   });
 
   describe("updatePage", () => {
-    it("returns errors on validation failure", async () => {
+    it("returns errors on validation failure (publishing without slug)", async () => {
       const fd = new FormData();
       fd.set("id", "p1");
       fd.set("updatedAt", "now");
       fd.set("slug", "");
+      fd.set("status", "published");
       fd.set("components", "[]");
 
       const result = await updatePage("shop", fd);
-      expect(result.errors?.slug[0]).toBe("Slug required");
+      expect(result.errors?.slug[0]).toBe("Slug required to publish");
       expect(service.updatePage).not.toHaveBeenCalled();
     });
 
@@ -274,4 +275,3 @@ describe("pages.server", () => {
     });
   });
 });
-

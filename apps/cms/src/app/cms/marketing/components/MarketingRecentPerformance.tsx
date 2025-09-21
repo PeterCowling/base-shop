@@ -21,13 +21,13 @@ export function MarketingRecentPerformance({ items }: MarketingRecentPerformance
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <div className="flex flex-wrap items-start justify-between gap-3">
-                  <div>
+                  <div className="min-w-0">
                     <h3 className="text-base font-semibold text-foreground">{item.shop}</h3>
                     <span className="text-xs uppercase tracking-wide text-muted-foreground">
                       {item.activeLabel}
                     </span>
                   </div>
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex shrink-0 flex-wrap items-center gap-2">
                     <Tag variant={item.openRateTag.variant} className="text-xs">
                       {item.openRateTag.label}
                     </Tag>

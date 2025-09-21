@@ -1,0 +1,99 @@
+/* apps/cms/src/app/cms.tokens.css
+   CMS-specific design tokens (light/dark), isolated from base package tokens. */
+
+:root {
+  color-scheme: light;
+  /* semantic colours */
+  --color-bg: 0 0% 100%;
+  --color-fg: 0 0% 10%;
+  --color-primary: 220 90% 56%;
+  --color-primary-fg: 0 0% 100%;
+  --color-accent: 260 83% 70%;
+  --color-accent-fg: 0 0% 10%;
+  --color-danger: 0 86% 97%;
+  --color-danger-fg: 0 74% 42%;
+  --color-success: 142 76% 97%;
+  --color-success-fg: 142 72% 30%;
+  --color-warning: 40 90% 96%;
+  --color-warning-fg: 25 85% 31%;
+  --color-info: 210 90% 96%;
+  --color-info-fg: 210 90% 35%;
+  --color-muted: 0 0% 88%;
+
+  /* dark counterparts (referenced by html.theme-dark rules) */
+  /* Tuned for contrast and comfortable luminance on layered backgrounds */
+  --color-bg-dark: 222 16% 10%;
+  --color-fg-dark: 210 20% 92%;
+  --color-primary-dark: 221 75% 62%;
+  --color-primary-fg-dark: 0 0% 10%;
+  --color-accent-dark: 276 62% 72%;
+  --color-accent-fg-dark: 0 0% 10%;
+  --color-danger-dark: 0 62% 48%;
+  --color-danger-fg-dark: 0 0% 100%;
+  /* Dark success toned down to ensure AA contrast with white text */
+  --color-success-dark: 142 45% 32%;
+  --color-success-fg-dark: 0 0% 100%;
+  --color-warning-dark: 38 84% 52%;
+  --color-warning-fg-dark: 0 0% 10%;
+  --color-info-dark: 210 92% 56%;
+  --color-info-fg-dark: 0 0% 10%;
+  /* Missing in earlier revision, required by tests and dark overlays */
+  --color-muted-dark: 222 10% 28%;
+
+  /* typography */
+  --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
+  --font-mono: var(--font-geist-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+
+  /* spacing, radii, and shadows are sourced from base theme to preserve layout scale */
+
+  /* Layered surface tokens for consistent stacking across the CMS */
+  --surface-1: var(--color-bg);     /* base surface */
+  /* Slightly darken raised surfaces to ensure text contrast over 60% overlays */
+  --surface-2: 0 0% 94%;            /* slightly raised surface */
+  --surface-3: 0 0% 92%;            /* prominent surface (cards, popovers) */
+
+  /* gradient tokens (used via bg-hero) */
+  --gradient-hero-from: 234 70% 55%;
+  --gradient-hero-via: 272 60% 52%;
+  --gradient-hero-to: 222 30% 18%;
+}
+
+/* No prefers-color-scheme: dark media query here.
+   Dark mode is driven exclusively by the .theme-dark class via the toggle. */
+html.theme-dark {
+  color-scheme: dark;
+  --color-bg: var(--color-bg-dark);
+  --color-fg: var(--color-fg-dark);
+  --color-primary: var(--color-primary-dark);
+  --color-primary-fg: var(--color-primary-fg-dark);
+  --color-accent: var(--color-accent-dark);
+  --color-accent-fg: var(--color-accent-fg-dark);
+  --color-danger: var(--color-danger-dark);
+  --color-danger-fg: var(--color-danger-fg-dark);
+  --color-success: var(--color-success-dark);
+  --color-success-fg: var(--color-success-fg-dark);
+  --color-warning: var(--color-warning-dark);
+  --color-warning-fg: var(--color-warning-fg-dark);
+  --color-info: var(--color-info-dark);
+  --color-info-fg: var(--color-info-fg-dark);
+  --color-muted: var(--color-muted-dark);
+
+  /* Dark-mode surfaces tuned for visibility and depth */
+  --surface-1: var(--color-bg-dark);
+  --surface-2: 222 14% 13%;
+  --surface-3: 222 12% 16%;
+}
+
+html,
+body {
+  transition-property: background-color, color, border-color;
+  transition-duration: 250ms;
+  transition-timing-function: ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    transition: none;
+  }
+}

@@ -1,4 +1,9 @@
-import { addDays, format, parseISO, formatRelative as fnsFormatRelative } from "date-fns";
+// Use deep imports to avoid Next.js vendor-chunk optimization for date-fns,
+// which can cause missing vendor chunk errors in some server builds.
+import { addDays } from "date-fns/addDays";
+import { format } from "date-fns/format";
+import { parseISO } from "date-fns/parseISO";
+import { formatRelative as fnsFormatRelative } from "date-fns/formatRelative";
 import { fromZonedTime, formatInTimeZone } from "date-fns-tz";
 
 export { addDays, format, parseISO, fromZonedTime };

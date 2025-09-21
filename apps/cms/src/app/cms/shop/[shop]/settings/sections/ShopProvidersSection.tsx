@@ -76,7 +76,7 @@ export default function ShopProvidersSection({
                   <label
                     key={provider.id}
                     htmlFor={id}
-                    className="flex items-center gap-3 rounded-md border border-border/60 bg-muted/10 px-3 py-2"
+                    className="flex items-center gap-3 rounded-md border border-border/60 bg-surface-3 px-3 py-2"
                   >
                     <Checkbox
                       id={id}

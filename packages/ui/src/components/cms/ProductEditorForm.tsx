@@ -8,6 +8,7 @@ import Tabs from "./blocks/Tabs";
 import PricingTab from "./PricingTab";
 import VariantsTab from "./VariantsTab";
 import PublishLocationsTab from "./PublishLocationsTab";
+import PublishShopsTab from "./PublishShopsTab";
 import MediaGalleryTab from "./MediaGalleryTab";
 import LocaleContentTab from "./LocaleContentTab";
 import { useProductEditorFormState } from "../../hooks/useProductEditorFormState";
@@ -17,7 +18,9 @@ import type {
 } from "../../hooks/useProductEditorFormState";
 import { useProductEditorNotifications } from "../../hooks/useProductEditorNotifications";
 import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
-import { useCallback, useMemo, type FormEvent } from "react";
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
+import { usePathname } from "next/navigation";
+import { getShopFromPath } from "@acme/shared-utils";
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
@@ -61,6 +64,26 @@ export default function ProductEditorForm({
 
   const { locations } = usePublishLocations();
 
+  // Local state for shops selection (kept here to avoid changing the shared form-state hook API)
+  const [publishShops, setPublishShops] = useState<string[]>([]);
+  const pathname = usePathname() ?? "";
+  useEffect(() => {
+    // If the product already carries a persisted list, prefer it.
+    const preset = (init as unknown as { publishShops?: string[] })
+      .publishShops;
+    if (Array.isArray(preset) && preset.length > 0) {
+      setPublishShops(preset);
+      return;
+    }
+    // Otherwise default to current shop from URL (if available)
+    if (publishShops.length === 0) {
+      const currentShop = getShopFromPath(pathname);
+      if (currentShop) setPublishShops([currentShop]);
+    }
+    // run once on mount for defaulting/preset
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const errorEntries = useMemo(
     () => Object.entries(errors as Record<string, string[]>),
     [errors],
@@ -92,6 +115,12 @@ export default function ProductEditorForm({
         className="flex flex-col gap-6"
       >
         <Input type="hidden" name="id" value={product.id} />
+        <Input
+          type="hidden"
+          name="publishShops"
+          value={publishShops.join(",")}
+          data-testid="publish-shops-input"
+        />
 
         {hasErrors && (
           <div
@@ -115,6 +144,7 @@ export default function ProductEditorForm({
             "Pricing",
             "Variants",
             "Publish locations",
+            "Publish to shops",
             "Media gallery",
             "Localized content",
           ]}
@@ -137,6 +167,11 @@ export default function ProductEditorForm({
             selectedIds={publishTargets}
             locations={locations}
             onChange={setPublishTargets}
+          />
+
+          <PublishShopsTab
+            selectedIds={publishShops}
+            onChange={setPublishShops}
           />
 
           <MediaGalleryTab

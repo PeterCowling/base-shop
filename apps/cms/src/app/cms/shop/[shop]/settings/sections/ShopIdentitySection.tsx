@@ -179,7 +179,7 @@ export default function ShopIdentitySection({
                 <label
                   key={feature.key}
                   htmlFor={checkboxId}
-                  className="flex items-start gap-3 rounded-md border border-border/60 bg-muted/10 px-3 py-2"
+                  className="flex items-start gap-3 rounded-md border border-border/60 bg-surface-3 px-3 py-2"
                 >
                   <Checkbox
                     id={checkboxId}

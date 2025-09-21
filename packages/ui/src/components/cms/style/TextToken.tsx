@@ -19,17 +19,19 @@ export function TextToken({
     <label
       key={tokenKey}
       data-token-key={tokenKey}
-      className={`flex items-center gap-2 text-sm ${
+      className={`flex flex-wrap items-center gap-2 text-sm ${
         isOverridden ? "border-l-2 border-l-info pl-2" : ""
       }`}
       data-token={isOverridden ? "--color-info" : undefined}
     >
-      <span className="w-40 flex-shrink-0">{tokenKey}</span>
+      <span className="basis-40 shrink-0">{tokenKey}</span>
       <Input
         value={value}
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setToken(tokenKey, e.target.value)
         }
+        className="min-w-0 flex-1"
+        wrapperClassName="min-w-0 flex-1"
       />
       {isOverridden && (
         <button

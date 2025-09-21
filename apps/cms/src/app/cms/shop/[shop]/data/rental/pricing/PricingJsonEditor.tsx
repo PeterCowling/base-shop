@@ -21,7 +21,7 @@ export default function PricingJsonEditor({ draft, error, onDraftChange, onApply
           value={draft}
           onChange={onDraftChange}
           rows={18}
-          className="bg-slate-950/80 text-foreground"
+          className="bg-surface-2 text-foreground"
           aria-invalid={error ? "true" : undefined}
           aria-describedby={error ? "pricing-json-error" : undefined}
         />
@@ -29,7 +29,7 @@ export default function PricingJsonEditor({ draft, error, onDraftChange, onApply
           Edit directly to paste pricing from other systems. Validation runs before you return to the guided editor.
         </p>
         {error ? (
-          <p id="pricing-json-error" className="text-xs text-rose-300">
+          <p id="pricing-json-error" className="text-xs text-danger-foreground">
             {error}
           </p>
         ) : null}
@@ -37,7 +37,7 @@ export default function PricingJsonEditor({ draft, error, onDraftChange, onApply
       <div className="flex flex-wrap items-center gap-2">
         <Button
           type="button"
-          className="h-10 rounded-xl bg-emerald-500 px-4 text-sm font-semibold text-white hover:bg-emerald-400"
+          className="h-10 rounded-xl bg-success px-4 text-sm font-semibold text-success-foreground hover:bg-success/90"
           onClick={onApply}
         >
           Apply JSON to form
@@ -45,7 +45,7 @@ export default function PricingJsonEditor({ draft, error, onDraftChange, onApply
         <Button
           type="button"
           variant="outline"
-          className="h-10 rounded-xl border-border/30 px-4 text-sm text-foreground hover:bg-muted/10"
+          className="h-10 rounded-xl border-border/30 px-4 text-sm text-foreground hover:bg-surface-3"
           onClick={onReturnToGuided}
         >
           Return to guided editor

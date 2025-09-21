@@ -7,6 +7,11 @@
  * resorting to `any` casts and therefore satisfies strict linting rules.
  */
 export async function register(): Promise<void> {
+  // Avoid duplicate registrations during dev HMR / route reloads
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const g: any = globalThis as any;
+  if (g.__CMS_NODE_INSTRUMENTATION_INSTALLED__) return;
+  g.__CMS_NODE_INSTRUMENTATION_INSTALLED__ = true;
   // Dev‑focused handler that logs uncaught exceptions. If the incoming error
   // isn't already an instance of `Error`, create a new one from its string
   // representation so that a stack trace can still be produced.

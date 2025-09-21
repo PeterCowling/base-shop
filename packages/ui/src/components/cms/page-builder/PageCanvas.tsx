@@ -1,6 +1,7 @@
 "use client";
 
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
+import { useDroppable } from "@dnd-kit/core";
 import type { CSSProperties, DragEvent } from "react";
 import { Fragment, useEffect, useState } from "react";
 import type { PageComponent, HistoryState } from "@acme/types";
@@ -186,11 +187,13 @@ const PageCanvas = ({
     setDropRect(null);
   };
 
+  const { setNodeRef: setCanvasDropRef, isOver: isCanvasOver } = useDroppable({ id: "canvas", data: {} });
+
   if (preview) {
     return (
       <div
         id="canvas"
-        ref={canvasRef}
+        ref={(node) => { setCanvasDropRef(node); if (canvasRef) (canvasRef as any).current = node; }}
         style={containerStyle}
         className="relative mx-auto flex flex-col gap-4"
       >
@@ -251,7 +254,7 @@ const PageCanvas = ({
     >
       <div
         id="canvas"
-        ref={canvasRef}
+        ref={(node) => { setCanvasDropRef(node); if (canvasRef) (canvasRef as any).current = node; }}
         style={containerStyle}
         role="list"
         aria-dropeffect="move"
@@ -262,7 +265,7 @@ const PageCanvas = ({
         onDragEnd={clearHighlight}
         className={cn(
           "relative mx-auto flex flex-col gap-4 rounded border",
-          dragOver && "ring-2 ring-primary"
+          (dragOver || isCanvasOver) && "ring-2 ring-primary"
         )}
       >
         {shop && pageId && showComments && (

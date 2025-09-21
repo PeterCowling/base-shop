@@ -98,12 +98,12 @@ export default function ColorInput({
   return (
     <label
       data-token-key={name}
-      className={`flex flex-col gap-1 ${isOverridden ? "bg-amber-50" : ""}`}
+      className={`flex flex-col gap-1 ${isOverridden ? "bg-warning/10" : ""}`}
     >
       <span className="flex items-center gap-2">
         {name}
         {warning && (
-          <span className="rounded bg-amber-100 px-1 text-xs text-amber-800">
+          <span className="rounded bg-warning/20 px-1 text-xs text-warning-foreground">
             {warning}
           </span>
         )}
@@ -117,7 +117,7 @@ export default function ColorInput({
               value={colorValue}
               onChange={handleChange}
               ref={inputRef}
-              className={isOverridden ? "bg-amber-100" : ""}
+              className={isOverridden ? "bg-warning/20" : ""}
             />
             <div className="flex items-center gap-1">
               <span
@@ -140,7 +140,7 @@ export default function ColorInput({
               onChange(e.target.value)
             }
             ref={inputRef}
-            className={isOverridden ? "bg-amber-100" : ""}
+            className={isOverridden ? "bg-warning/20" : ""}
           />
         )}
         {hasOverride && (

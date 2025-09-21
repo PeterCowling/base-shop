@@ -45,25 +45,25 @@ export default async function PagesPage({
       label: "Published",
       value: String(publishedPages),
       caption: "Live on storefront",
-      accent: "bg-emerald-500/20 text-foreground",
+      accent: "bg-success/20 text-foreground",
     },
     {
       label: "Draft",
       value: String(draftPages),
       caption: "Still in progress",
-      accent: "bg-amber-500/20 text-foreground",
+      accent: "bg-warning/20 text-foreground",
     },
     {
       label: "Archived",
       value: String(archivedPages),
       caption: "Hidden from navigation",
-      accent: "bg-slate-500/20 text-foreground",
+      accent: "bg-muted/20 text-foreground",
     },
   ];
 
   return (
     <div className="space-y-8 text-foreground">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-slate-950 shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(250,204,21,0.2),_transparent_55%)]" />
         <div className="relative space-y-4 px-6 py-7">
           <Tag variant="default">
@@ -96,7 +96,7 @@ export default async function PagesPage({
       </section>
 
       <section>
-        <Card className="border border-border/10 bg-slate-950/70 shadow-lg">
+        <Card className="border border-border/10 bg-surface-2 shadow-lg">
           <CardContent className="space-y-4 px-6 py-6">
             <div className="flex flex-wrap items-center justify-between gap-3 text-foreground">
               <div>

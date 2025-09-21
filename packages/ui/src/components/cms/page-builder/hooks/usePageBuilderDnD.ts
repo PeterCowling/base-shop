@@ -16,6 +16,7 @@ import type { PageComponent, HistoryState } from "@acme/types";
 import type { Action } from "../state";
 import { snapToGrid } from "../gridSnap";
 import type { ComponentType } from "../defaults";
+import { canDropChild, type ParentKind } from "../rules";
 import { isHiddenForViewport } from "../state/layout/utils";
 import { screenToCanvas } from "../utils/coords";
 
@@ -169,8 +170,20 @@ export function usePageBuilderDnD({
         const parent = findById(components, parentId);
         index = parent ? (hasChildren(parent) ? parent.children.length : 0) : 0;
       }
+      // Resolve parent kind for placement rules
+      const parentKind: ParentKind = parentId ? ((findById(components, parentId)?.type as ComponentType) || ("" as ComponentType)) : "ROOT";
+      const getTypeOfId = (id: string | number | symbol | undefined): ComponentType | null => {
+        if (!id) return null;
+        const node = findById(components, String(id));
+        return (node?.type as ComponentType) || null;
+      };
       if (a?.from === "palette") {
         const isContainer = containerTypes.includes(a.type!);
+        // Enforce placement rules for new palette items
+        if (!canDropChild(parentKind, a.type as ComponentType)) {
+          try { window.dispatchEvent(new CustomEvent('pb-live-message', { detail: `Cannot place ${a.type} here` })); } catch {}
+          return;
+        }
         const component = {
           id: ulid(),
           type: a.type! as PageComponent["type"],
@@ -200,6 +213,12 @@ export function usePageBuilderDnD({
         };
         const list = (a.templates && a.templates.length ? a.templates : (a.template ? [a.template] : [])) as PageComponent[];
         const clones = list.map(cloneWithIds);
+        // Enforce rules for all top-level cloned nodes
+        const invalid = clones.find((c) => !canDropChild(parentKind, (c as any).type as ComponentType));
+        if (invalid) {
+          try { window.dispatchEvent(new CustomEvent('pb-live-message', { detail: `Cannot place ${String((invalid as any).type)} here` })); } catch {}
+          return;
+        }
         if (parentId && lastTabHoverRef.current?.parentId === parentId) {
           const parent = findById(components, parentId);
           const isTabbed = parent && (parent.type === 'Tabs' || parent.type === 'TabsAccordionContainer');
@@ -218,6 +237,12 @@ export function usePageBuilderDnD({
         let toIndex = index ?? 0;
         if (a.parentId === parentId && a.index! < (index ?? 0)) {
           toIndex = (index ?? 0) - 1;
+        }
+        // Enforce placement rules for moving existing components
+        const movingType = getTypeOfId(ev.active.id) || (a.type as ComponentType | null);
+        if (movingType && !canDropChild(parentKind, movingType)) {
+          try { window.dispatchEvent(new CustomEvent('pb-live-message', { detail: `Cannot move ${String(movingType)} here` })); } catch {}
+          return;
         }
         dispatch({
           type: "move",

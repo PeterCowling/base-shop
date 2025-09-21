@@ -61,7 +61,12 @@ process.env.NEXTAUTH_URL ??= "http://localhost:3006";
 process.env.CART_COOKIE_SECRET ??= "dev-cart-secret";
 process.env.CMS_SPACE_URL ??= "https://cms.example.com";
 process.env.CMS_ACCESS_TOKEN ??= "placeholder-token";
+// Sanity: provide safe dev defaults so validation never trips in dev/edge
 process.env.SANITY_API_VERSION ??= "2021-10-21";
+process.env.SANITY_PROJECT_ID ??= "dummy-project-id";
+process.env.SANITY_DATASET ??= "production";
+process.env.SANITY_API_TOKEN ??= "dummy-api-token";
+process.env.SANITY_PREVIEW_SECRET ??= "dummy-preview-secret";
 // Email: default to noop provider during local builds so env validation passes
 process.env.EMAIL_PROVIDER ??= "noop";
 
@@ -113,6 +118,15 @@ const nextConfig = {
   reactStrictMode: true,
   experimental: {
     externalDir: true,
+  },
+  // Ensure UI calls to `/cms/api/*` hit route handlers under `/api/*`
+  async rewrites() {
+    return [
+      {
+        source: "/cms/api/:path*",
+        destination: "/api/:path*",
+      },
+    ];
   },
   eslint: {
     // Speed up CI and avoid blocking builds on lint-only rules

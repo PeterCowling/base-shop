@@ -26,7 +26,7 @@ export default function AdminTools({
 }: AdminToolsProps) {
   if (!isAdmin) {
     return (
-      <Card className="border border-yellow-200 bg-yellow-50 text-yellow-900">
+      <Card className="border border-warning/20 bg-warning/10 text-warning-foreground">
         <CardContent className="p-4">
           <p className="text-sm">
             You are signed in as a <b>viewer</b>. Editing is disabled.

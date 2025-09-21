@@ -116,7 +116,7 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
 
   if (error) {
     return (
-      <Card className="border border-rose-500/30 bg-rose-500/10 text-foreground">
+      <Card className="border border-danger/30 bg-danger/10 text-foreground">
         <CardContent className="space-y-3 px-6 py-6">
           <Tag variant="destructive">
             Unable to load return authorizations
@@ -133,7 +133,7 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
   return (
     <div className="space-y-6 text-foreground">
       <header className="space-y-3">
-        <Tag variant="default" className="bg-indigo-500/20 text-foreground">
+        <Tag variant="default" className="bg-primary/20 text-foreground">
           Return authorizations
         </Tag>
         <div className="flex flex-wrap items-end justify-between gap-4">
@@ -150,7 +150,7 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
         {metrics.map((metric) => (
           <Card
             key={metric.label}
-            className="border border-border/10 bg-slate-900/70"
+            className="border border-border/10 bg-surface-2"
           >
             <CardContent className="space-y-1 px-4 py-3">
               <p className="text-xs uppercase tracking-wide text-muted-foreground">
@@ -164,7 +164,7 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
       </section>
 
       <section className="grid gap-5 lg:grid-cols-[300px,1fr]">
-        <Card className="border border-border/10 bg-slate-900/60">
+        <Card className="border border-border/10 bg-surface-2">
           <CardContent className="space-y-4 p-6">
             <div className="space-y-1">
               <h3 className="text-base font-semibold">Quick filters</h3>
@@ -182,8 +182,8 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                   className={cn(
                     "rounded-xl border px-3 py-2 text-left text-sm transition",
                     activeFilter === filter.key
-                      ? "border-indigo-400 bg-indigo-500/20 text-foreground"
-                      : "border-border/20 bg-background/60 text-muted-foreground hover:border-indigo-300 hover:bg-indigo-500/10"
+                      ? "border-primary/60 bg-primary/20 text-foreground"
+                      : "border-border/20 bg-surface-2 text-muted-foreground hover:border-primary/50 hover:bg-primary/10"
                   )}
                 >
                   <span className="block font-semibold">{filter.label}</span>
@@ -199,13 +199,13 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
                 placeholder="Filter by RA, order, or note"
-                className="border-border/20 bg-background/60 text-foreground placeholder:text-muted-foreground"
+                className="border-border/20 bg-surface-2 text-foreground placeholder:text-muted-foreground"
               />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border border-border/10 bg-slate-900/60">
+        <Card className="border border-border/10 bg-surface-2">
           <CardContent className="space-y-4 p-6">
             <div className="flex items-start justify-between gap-3">
               <div className="space-y-1">
@@ -237,9 +237,9 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                     data-testid="ra-card"
                     data-cy="ra-card"
                   className={cn(
-                    "border border-border/10 bg-background/60 text-foreground",
-                    risk === "high" && "border-rose-400/40 bg-rose-500/10",
-                    risk === "medium" && "border-amber-400/40 bg-amber-500/10"
+                    "border border-border/10 bg-surface-2 text-foreground",
+                    risk === "high" && "border-danger/40 bg-danger/10",
+                    risk === "medium" && "border-warning/40 bg-warning/10"
                   )}
                 >
                     <CardContent className="space-y-3 p-6">
@@ -259,14 +259,14 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                     <div className="flex flex-wrap gap-3">
                       <Button
                         asChild
-                        className="h-9 rounded-lg bg-indigo-500 px-4 text-sm font-semibold text-white hover:bg-indigo-400"
+                        className="h-9 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
                       >
                         <Link href={`/cms/orders/${ra.orderId}`}>View order</Link>
                       </Button>
                       <Button
                         type="button"
                         variant="outline"
-                        className="h-9 rounded-lg border-border/30 bg-background/60 text-sm text-foreground hover:bg-muted/10"
+                        className="h-9 rounded-lg border-border/30 bg-surface-2 text-sm text-foreground hover:bg-surface-3"
                       >
                         Mark for follow-up
                       </Button>
@@ -276,7 +276,7 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
               );
             })}
             {filtered.length === 0 && (
-              <Card className="border border-border/10 bg-background/60 text-foreground">
+              <Card className="border border-border/10 bg-surface-2 text-foreground">
                 <CardContent className="space-y-3 px-6 py-6 text-center text-sm text-muted-foreground">
                   <Tag variant="warning">
                     No matches

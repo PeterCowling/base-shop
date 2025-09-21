@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import { getSeo } from "../../util/seo";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 
-type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog">;
+type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog" | "name">;
 const shop: BlogShop = shopJson;
 
 export default async function BlogPage({ params }: { params: { lang: string } }) {

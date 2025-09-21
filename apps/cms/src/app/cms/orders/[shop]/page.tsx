@@ -38,25 +38,25 @@ export default async function ShopOrdersPage({
       label: "Placed",
       value: String(totalOrders),
       caption: "Orders recorded for this shop",
-      accent: "bg-muted/10 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
     {
       label: "Flagged",
       value: String(flaggedOrders.length),
       caption: "Require manual review",
-      accent: "bg-rose-500/20 text-foreground",
+      accent: "bg-danger/20 text-foreground",
     },
     {
       label: "High risk",
       value: String(highRiskOrders.length),
       caption: "Risk level marked high",
-      accent: "bg-amber-500/20 text-foreground",
+      accent: "bg-warning/20 text-foreground",
     },
     {
       label: "Overdue returns",
       value: String(overdueReturns.length),
       caption: "Past the expected return date",
-      accent: "bg-sky-500/20 text-foreground",
+      accent: "bg-info/20 text-foreground",
     },
   ];
 
@@ -78,8 +78,7 @@ export default async function ShopOrdersPage({
 
   return (
     <div className="space-y-8 text-foreground">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-slate-950 shadow-xl">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(96,165,250,0.25),_transparent_55%)]" />
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
         <div className="relative grid gap-6 px-6 py-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
           <div className="space-y-5">
             <div className="space-y-2">
@@ -89,7 +88,7 @@ export default async function ShopOrdersPage({
               <h1 className="text-3xl font-semibold md:text-4xl">
                 Keep every rental on track and customers delighted
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-primary-foreground/80">
                 Monitor flagged orders, overdue returns, and risk signals before they impact your launch timeline.
               </p>
             </div>
@@ -98,13 +97,13 @@ export default async function ShopOrdersPage({
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href={`/cms/shop/${shop}/settings/returns`}
-                  className="inline-flex h-11 items-center rounded-xl bg-emerald-500 px-5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200"
+                  className="inline-flex h-11 items-center rounded-xl bg-success px-5 text-sm font-semibold text-success-foreground shadow-lg transition hover:bg-success/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-success"
                 >
                   Review return policies
                 </Link>
                 <Link
                   href={`/cms/shop/${shop}/data/return-logistics`}
-                  className="inline-flex h-11 items-center rounded-xl border border-border/40 px-5 text-sm font-semibold text-foreground transition hover:bg-muted/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="inline-flex h-11 items-center rounded-xl border border-border/40 px-5 text-sm font-semibold text-foreground transition hover:bg-surface-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   Open logistics data
                 </Link>
@@ -115,7 +114,7 @@ export default async function ShopOrdersPage({
                 <div
                   key={stat.label}
                   className={cn(
-                    "rounded-2xl border border-border/10 px-4 py-3 backdrop-blur",
+                    "rounded-2xl border border-border/10 px-4 py-3",
                     stat.accent
                   )}
                 >
@@ -128,7 +127,7 @@ export default async function ShopOrdersPage({
               ))}
             </div>
           </div>
-          <Card className="border-border/10 bg-background/60 text-foreground shadow-lg backdrop-blur">
+          <Card className="border-border/10 bg-surface-2 text-foreground shadow-lg">
             <CardContent className="space-y-3 p-6 text-sm text-muted-foreground">
               <h2 className="text-base font-semibold text-foreground">Return triage tips</h2>
               <p>• Prioritise overdue items and contact customers directly.</p>
@@ -145,16 +144,16 @@ export default async function ShopOrdersPage({
       </section>
 
       <section className="space-y-4">
-        <Card className="border border-border/10 bg-slate-950/70 shadow-lg">
+        <Card className="border border-border/10 bg-surface-2 shadow-lg">
           <CardContent className="space-y-5 p-6">
             <div className="flex flex-wrap items-center justify-between gap-3 text-foreground">
-              <div>
+              <div className="min-w-0">
                 <h2 className="text-lg font-semibold">Order queue</h2>
                 <p className="text-sm text-muted-foreground">
                   Process returns, refunds, and risk reviews from a single command center.
                 </p>
               </div>
-              <Tag variant="default">
+              <Tag className="shrink-0" variant="default">
                 {totalOrders} total orders
               </Tag>
             </div>
@@ -177,19 +176,19 @@ export default async function ShopOrdersPage({
                     key={order.id ?? order.sessionId}
                     className={cn(
                       "list-none rounded-2xl border border-transparent",
-                      highlight && "border-red-500 bg-red-50"
+                      highlight && "border-danger bg-danger/10"
                     )}
                   >
                     <Card
                       className={cn(
-                        "border border-border/10 bg-background/60 text-foreground",
-                        order.flaggedForReview && "border-rose-400/40 bg-rose-500/10",
-                        isOverdue && "border-amber-400/40 bg-amber-500/10"
+                        "border border-border/10 bg-surface-2 text-foreground",
+                        order.flaggedForReview && "border-danger/40 bg-danger/10",
+                        isOverdue && "border-warning/40 bg-warning/10"
                       )}
                     >
                       <CardContent className="space-y-3 p-6">
                         <div className="flex flex-wrap items-start justify-between gap-3">
-                          <div className="space-y-1">
+                          <div className="min-w-0 space-y-1">
                             <div className="text-sm font-semibold">
                               Order: {order.id ?? "unknown"}
                             </div>
@@ -197,7 +196,7 @@ export default async function ShopOrdersPage({
                               Session: {order.sessionId ?? "—"}
                             </p>
                           </div>
-                          <div className="flex flex-wrap items-center gap-2">
+                          <div className="flex shrink-0 flex-wrap items-center gap-2">
                             {order.flaggedForReview && (
                               <Tag variant="warning">
                                 Flagged for review
@@ -223,7 +222,7 @@ export default async function ShopOrdersPage({
                                 </span>
                               )}
                               {isOverdue && (
-                                <span className="text-amber-200"> (overdue)</span>
+                                <span className="text-warning-foreground"> (overdue)</span>
                               )}
                             </>
                           ) : (
@@ -239,7 +238,7 @@ export default async function ShopOrdersPage({
                             <Button
                               type="submit"
                               variant="outline"
-                              className="h-9 rounded-lg border-border/30 bg-background/60 text-foreground hover:bg-muted/10"
+                              className="h-9 rounded-lg border-border/30 bg-surface-2 text-foreground hover:bg-surface-3"
                             >
                               Mark returned
                             </Button>
@@ -249,7 +248,7 @@ export default async function ShopOrdersPage({
                             <Button
                               type="submit"
                               variant="ghost"
-                              className="h-9 rounded-lg text-foreground hover:bg-muted/10"
+                              className="h-9 rounded-lg text-foreground hover:bg-surface-3"
                             >
                               Refund order
                             </Button>
@@ -262,7 +261,7 @@ export default async function ShopOrdersPage({
               })}
               {orders.length === 0 && (
                 <li className="list-none">
-                  <Card className="border border-border/10 bg-background/60 text-foreground">
+                  <Card className="border border-border/10 bg-surface-2 text-foreground">
                     <CardContent className="p-8 text-center text-sm text-muted-foreground">
                       No orders found for this shop yet.
                     </CardContent>

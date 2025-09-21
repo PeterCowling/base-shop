@@ -11,7 +11,7 @@ export default function NotFound(): ReactElement {
       </p>
       <Link
         href="/cms"
-        className="bg-primary hover:bg-primary/90 rounded-md px-4 py-2 text-white"
+        className="bg-primary hover:bg-primary/90 rounded-md px-4 py-2 text-primary-foreground"
       >
         Back to CMS
       </Link>

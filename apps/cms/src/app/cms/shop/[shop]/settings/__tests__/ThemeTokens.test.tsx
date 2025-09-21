@@ -49,12 +49,12 @@ describe("ShopThemeSection", () => {
     expect(getByText("#fff")).toBeInTheDocument();
     expect(getByText("#000")).toBeInTheDocument();
 
-    // highlight when changed
+    // highlight when changed (token-based class)
     expect(getByText("color-primary").closest("tr")).toHaveClass(
-      "bg-yellow-50",
+      "bg-warning/10",
     );
     expect(getByText("spacing").closest("tr")).not.toHaveClass(
-      "bg-yellow-50",
+      "bg-warning/10",
     );
 
     // reset override for changed token
@@ -77,4 +77,3 @@ describe("ShopThemeSection", () => {
     expect(getByText("invalid override")).toBeInTheDocument();
   });
 });
-

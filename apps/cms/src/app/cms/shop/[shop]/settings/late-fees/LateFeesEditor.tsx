@@ -59,12 +59,12 @@ export default function LateFeesEditor({ shop, initial }: Props) {
           onChange={handleChange}
         />
         {errors.intervalMinutes && (
-          <span className="text-sm text-red-600">
+          <span className="text-sm text-danger-foreground">
             {errors.intervalMinutes.join("; ")}
           </span>
         )}
       </label>
-      <Button className="bg-primary text-white" disabled={saving} type="submit">
+      <Button className="bg-primary text-primary-foreground" disabled={saving} type="submit">
         {saving ? "Saving…" : "Save"}
       </Button>
     </form>

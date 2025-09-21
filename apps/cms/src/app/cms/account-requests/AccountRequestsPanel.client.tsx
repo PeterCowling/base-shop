@@ -136,9 +136,9 @@ export default function AccountRequestsPanel({
       <div className="space-y-4">
         <Card>
           <CardContent className="space-y-2 text-sm text-muted-foreground">
-            <div className="flex items-center justify-between">
-              <span className="font-medium text-foreground">All requests reviewed</span>
-              <Tag variant="success">Up to date</Tag>
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <span className="min-w-0 font-medium text-foreground">All requests reviewed</span>
+              <Tag className="shrink-0" variant="success">Up to date</Tag>
             </div>
             <p>New account requests will appear here automatically.</p>
           </CardContent>
@@ -162,13 +162,13 @@ export default function AccountRequestsPanel({
           <Card key={request.id} data-testid="account-request-card">
             <CardContent className="space-y-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                <div className="space-y-1">
+                <div className="min-w-0 space-y-1">
                   <p className="text-base font-semibold text-foreground">
                     {request.name}
                   </p>
                   <p className="text-sm text-muted-foreground">{request.email}</p>
                 </div>
-                <Tag variant="warning">Pending approval</Tag>
+                <Tag className="shrink-0" variant="warning">Pending approval</Tag>
               </div>
 
               <section

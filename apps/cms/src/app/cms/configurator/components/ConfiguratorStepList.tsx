@@ -58,13 +58,13 @@ function StepCard({
         status === "complete" && "border-success/50"
       )}
     >
-      <CardSection className="flex flex-col gap-4">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex items-start gap-3">
+      <CardSection className="flex min-h-48 flex-col gap-4 pb-2">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="min-w-0 flex items-start gap-3">
             <span className="mt-1 text-2xl" aria-hidden>
               {step.icon ?? "🧩"}
             </span>
-            <div className="space-y-1">
+            <div className="min-w-0 space-y-1">
               <div className="flex items-center gap-2">
                 <h4 className="text-base font-semibold text-foreground">
                   {step.label}
@@ -90,8 +90,8 @@ function StepCard({
               )}
             </div>
           </div>
-          <div className="flex flex-col items-end gap-2">
-            <Tag variant={statusStyles.variant}>{statusStyles.label}</Tag>
+          <div className="flex shrink-0 flex-col items-end gap-2">
+            <Tag className="shrink-0" variant={statusStyles.variant}>{statusStyles.label}</Tag>
             {status === "complete" ? (
               <CheckCircledIcon className="h-5 w-5 text-success" aria-hidden />
             ) : (
@@ -111,10 +111,10 @@ function StepCard({
           </div>
         )}
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="mt-auto flex flex-wrap items-center gap-2">
           <ButtonElement
             asChild
-            className="h-10 px-4 text-sm"
+            className="h-10 px-4 text-sm whitespace-nowrap"
             variant={status === "complete" ? "outline" : "default"}
           >
             <Link
@@ -149,7 +149,7 @@ function StepCard({
           ) : null}
         </div>
       </CardSection>
-      <span className={cn("pointer-events-none absolute inset-x-4 bottom-0 h-1 rounded-full", accentClass)} />
+      <span className={cn("pointer-events-none absolute inset-x-0 bottom-0 h-1 rounded-full", accentClass)} />
     </CardRoot>
   );
 }
@@ -183,13 +183,13 @@ export function ConfiguratorStepList({
   ) => (
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
+        <div className="min-w-0">
           <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
             {options.title}
           </h3>
           <p className="text-sm text-muted-foreground/80">{options.description}</p>
         </div>
-        <Tag className="bg-muted text-muted-foreground" variant="default">
+        <Tag className="shrink-0 bg-muted text-muted-foreground" variant="default">
           {options.summary}
         </Tag>
       </div>

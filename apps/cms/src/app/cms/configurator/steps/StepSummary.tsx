@@ -114,7 +114,7 @@ export default function StepSummary({
               placeholder="Home"
             />
             {errors[`pageTitle.${l}`] && (
-              <p className="text-sm text-red-600">
+              <p className="text-sm text-danger-foreground">
                 {errors[`pageTitle.${l}`][0]}
               </p>
             )}
@@ -134,7 +134,7 @@ export default function StepSummary({
               placeholder="Page description"
             />
             {errors[`pageDescription.${l}`] && (
-              <p className="text-sm text-red-600">
+              <p className="text-sm text-danger-foreground">
                 {errors[`pageDescription.${l}`][0]}
               </p>
             )}
@@ -153,7 +153,7 @@ export default function StepSummary({
           placeholder="https://example.com/og.png"
         />
         {errors.socialImage && (
-          <p className="text-sm text-red-600">{errors.socialImage[0]}</p>
+          <p className="text-sm text-danger-foreground">{errors.socialImage[0]}</p>
         )}
       </label>
 

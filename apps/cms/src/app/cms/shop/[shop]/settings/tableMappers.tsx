@@ -72,7 +72,7 @@ export function createThemeTokenColumns({
 }
 
 export function themeTokenRowClassName(row: ThemeTokenRow) {
-  return row.changed ? "bg-yellow-50" : undefined;
+  return row.changed ? "bg-warning/10" : undefined;
 }
 
 export interface SchedulerHistoryRow {

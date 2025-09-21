@@ -33,10 +33,10 @@ export function InventoryTable({
   onDeleteRow,
 }: InventoryTableProps) {
   return (
-    <Card className="border border-border/10 bg-background/60 text-foreground">
+    <Card className="border border-border/10 bg-surface-2 text-foreground">
       <CardContent className="px-0 py-0">
         <Table className="text-foreground">
-          <TableHeader className="bg-background/60">
+          <TableHeader className="bg-surface-2">
             <TableRow className="text-xs uppercase tracking-wide text-muted-foreground">
               <TableHead className="text-foreground">SKU</TableHead>
               {attributes.map((attr) => (
@@ -46,7 +46,7 @@ export function InventoryTable({
                     <Button
                       type="button"
                       variant="ghost"
-                      className="h-7 rounded-lg px-2 text-xs text-muted-foreground hover:bg-muted/10"
+                      className="h-7 rounded-lg px-2 text-xs text-muted-foreground hover:bg-surface-3"
                       onClick={() => onDeleteAttribute(attr)}
                       aria-label={`delete-attr-${attr}`}
                     >

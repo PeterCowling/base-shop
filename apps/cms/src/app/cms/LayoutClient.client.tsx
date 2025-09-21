@@ -18,11 +18,10 @@ export default function LayoutClient({
   const { isMobileNavOpen, configuratorProgress } = useLayout();
 
   return (
-    <div className="relative flex min-h-screen bg-slate-950">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,163,255,0.15),_transparent_55%)]" />
+    <div className="relative flex min-h-screen bg-surface-1">
       <div
         className={cn(
-          "relative z-10 h-full w-72 shrink-0 border-r border-border/10 bg-slate-950/80 text-foreground backdrop-blur-xl transition-transform duration-300",
+          "relative z-10 h-full w-72 shrink-0 border-r border-border/10 bg-surface-2 text-foreground transition-transform duration-300",
           isMobileNavOpen
             ? "block translate-x-0"
             : "hidden -translate-x-full sm:translate-x-0 sm:block"
@@ -38,7 +37,7 @@ export default function LayoutClient({
       <div className="relative z-10 flex flex-1 flex-col">
         <TopBar />
         {configuratorProgress && (
-          <div className="border-b border-border/10 bg-slate-900/50 px-6 py-3 backdrop-blur">
+          <div className="border-b border-border/10 bg-surface-2 px-6 py-3">
             <Progress
               value={
                 (configuratorProgress.completedRequired /
@@ -54,8 +53,7 @@ export default function LayoutClient({
           </div>
         )}
         <main className="relative flex-1 overflow-y-auto">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom,_rgba(59,130,246,0.08),_transparent_45%)]" />
-          <div className="relative mx-auto w-full max-w-6xl px-6 py-10">
+          <div className="cms-content relative mx-auto w-full max-w-6xl px-6 py-10">
             <ChunkReloadBoundary>{children}</ChunkReloadBoundary>
           </div>
         </main>

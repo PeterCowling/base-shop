@@ -161,7 +161,7 @@ function PostFormContent({ action, submitLabel, post }: Props) {
         />
         {post?._id && <input type="hidden" name="id" value={post._id} />}
         {hasInvalidProducts && (
-          <div className="text-red-500">
+          <div className="text-danger-foreground">
             Product not found: {Object.values(invalidProducts).join(", ")}
           </div>
         )}

@@ -35,7 +35,7 @@ export class ErrorBoundary extends React.Component<
     if (this.state.hasError) {
       return (
         this.props.fallback ?? (
-          <p className="text-red-600">Something went wrong.</p>
+          <p className="text-danger-foreground">Something went wrong.</p>
         )
       );
     }

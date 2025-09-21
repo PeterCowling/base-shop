@@ -116,7 +116,7 @@ export default function ThemeEditorForm({
                   </div>
                 </Button>
                 {warn && (
-                  <span className="absolute -top-1 -right-1 rounded bg-amber-100 px-1 text-xs text-amber-800">
+                  <span className="absolute -top-1 -right-1 rounded bg-warning/20 px-1 text-xs text-warning-foreground">
                     Low contrast
                   </span>
                 )}
@@ -147,4 +147,3 @@ export default function ThemeEditorForm({
     </div>
   );
 }
-

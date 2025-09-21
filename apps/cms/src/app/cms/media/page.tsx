@@ -8,8 +8,7 @@ export default async function MediaIndexPage() {
   const shops = await listShops();
   return (
     <div className="space-y-8 text-foreground">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-slate-950 shadow-xl">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(134,239,172,0.25),_transparent_55%)]" />
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
         <div className="relative space-y-4 px-6 py-8">
           <Tag variant="default">
             Media · Choose a shop
@@ -17,7 +16,7 @@ export default async function MediaIndexPage() {
           <h1 className="text-3xl font-semibold md:text-4xl">
             Curate visuals for each storefront
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-primary-foreground/80">
             Select a shop to organise assets, rights, and variants with confidence.
           </p>
         </div>

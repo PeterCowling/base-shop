@@ -36,18 +36,17 @@ export function DashboardHero({
     pendingCount === 0 ? "No pending approvals" : `${pendingCount} awaiting review`;
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-slate-950 text-foreground shadow-xl">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,163,255,0.35),_transparent_55%)]" />
+    <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero text-primary-foreground shadow-xl">
       <div className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
         <div className="space-y-6">
           <div className="space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">
+            <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground/70">
               Base-Shop CMS
             </span>
             <h1 className="text-3xl font-semibold md:text-4xl">
               Operate every storefront with confidence
             </h1>
-            <p className="text-muted-foreground">{heroDescription}</p>
+            <p className="text-primary-foreground/80">{heroDescription}</p>
           </div>
           <div className="space-y-4">
             <Progress value={approvalProgress} label={progressLabel} />
@@ -60,7 +59,7 @@ export function DashboardHero({
               <Button
                 asChild
                 variant="outline"
-                className="h-11 px-5 text-sm font-semibold border-border/40 text-foreground hover:bg-muted/10"
+                className="h-11 px-5 text-sm font-semibold border-primary/40 text-primary-foreground hover:bg-primary/10"
               >
                 <Link href="/cms/dashboard">View shop dashboards</Link>
               </Button>
@@ -68,7 +67,7 @@ export function DashboardHero({
                 <JumpLinkButton
                   targetId={pendingHeadingId}
                   variant="outline"
-                  className="h-11 px-5 text-sm font-semibold border-border/40 text-foreground hover:bg-muted/10"
+                  className="h-11 px-5 text-sm font-semibold border-primary/40 text-primary-foreground hover:bg-primary/10"
                 >
                   Review account requests
                 </JumpLinkButton>
@@ -79,20 +78,20 @@ export function DashboardHero({
           {quickStats.map((stat) => (
             <Card
               key={stat.label}
-              className="border border-border/20 bg-background/60 text-foreground backdrop-blur"
+              className="border border-primary/20 bg-surface-2 text-foreground"
             >
               <CardContent className="space-y-1 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                <p className="text-xs font-semibold uppercase tracking-wide text-primary-foreground/70">
                   {stat.label}
                 </p>
-                <p className="text-xl font-semibold">{stat.value}</p>
-                <p className="text-xs text-muted-foreground">{stat.caption}</p>
+                <p className="text-xl font-semibold text-primary-foreground">{stat.value}</p>
+                <p className="text-xs text-primary-foreground/70">{stat.caption}</p>
               </CardContent>
             </Card>
           ))}
         </div>
       </div>
-        <Card className="border border-border/20 bg-background/60 text-foreground shadow-2xl backdrop-blur">
+        <Card className="border border-border/20 bg-surface-2 text-foreground shadow-2xl">
           <CardContent className="space-y-5">
             <div className="space-y-1">
               <h2 className="text-lg font-semibold">Access control</h2>
@@ -100,14 +99,14 @@ export function DashboardHero({
                 Keep the workspace safe by approving new teammates promptly.
               </p>
             </div>
-            <div className="flex items-center justify-between gap-3 rounded-xl border border-border/15 bg-background/60 px-4 py-3">
-              <div>
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/15 bg-surface-2 px-4 py-3">
+              <div className="min-w-0">
                 <p className="text-sm font-medium">Pending approvals</p>
                 <p className="text-xs text-muted-foreground">
                   We’ll surface new requests as soon as they arrive.
                 </p>
               </div>
-              <Tag variant={pendingSummaryVariant}>{pendingSummaryText}</Tag>
+              <Tag className="shrink-0" variant={pendingSummaryVariant}>{pendingSummaryText}</Tag>
             </div>
             <p className="text-xs text-muted-foreground">
               Assign the right mix of roles so each collaborator has the access they need.

@@ -93,4 +93,6 @@ export interface ProductPublication extends ProductCore {
   shop: string; // e.g. "abc"
   status: PublicationStatus;
   row_version: number;
+  /** Optional list of shops this product is published to (in addition to owner). */
+  publishShops?: string[];
 }

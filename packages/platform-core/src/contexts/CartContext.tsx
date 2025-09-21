@@ -33,13 +33,20 @@ const STORAGE_KEY = "cart";
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<CartState>({});
 
+  // Resolve API base so this context works in both the storefront app
+  // ("/api/...") and when embedded in the CMS app ("/cms/api/...").
+  const getCartApi = () =>
+    typeof window !== "undefined" && window.location.pathname.startsWith("/cms")
+      ? "/cms/api/cart"
+      : "/api/cart";
+
   /* initial fetch */
   useEffect(() => {
     let sync: (() => Promise<void>) | undefined;
 
     async function load() {
       try {
-        const res = await fetch("/api/cart");
+        const res = await fetch(getCartApi());
         if (res.ok) {
           const data = await res.json();
           setState(data.cart as CartState);
@@ -91,7 +98,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             if (!cached) return;
 
             const cart = JSON.parse(cached) as CartState;
-            putResponse = await fetch("/api/cart", {
+            putResponse = await fetch(getCartApi(), {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -126,7 +133,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           }
 
           try {
-            const res = await fetch("/api/cart");
+            const res = await fetch(getCartApi());
             if (!res.ok) throw new Error("Cart fetch failed");
             const data = await res.json();
             setState(data.cart as CartState);
@@ -184,7 +191,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return;
     }
 
-    const res = await fetch("/api/cart", {
+    const res = await fetch(getCartApi(), {
       method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

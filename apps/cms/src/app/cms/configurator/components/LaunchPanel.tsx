@@ -36,11 +36,11 @@ export function LaunchPanel({
   failedStepLink,
 }: LaunchPanelProps) {
   return (
-    <CardRoot className="border border-white/20 bg-white/5 text-white shadow-2xl backdrop-blur">
+    <CardRoot className="border border-primary/20 bg-surface-2 text-primary-foreground shadow-2xl">
       <CardSection className="space-y-5">
         <div className="space-y-1">
           <h2 className="text-lg font-semibold">Launch readiness</h2>
-          <p className="text-sm text-white/70">
+          <p className="text-sm text-primary-foreground/70">
             When every essential step is marked complete, you can launch directly from here.
           </p>
         </div>
@@ -57,7 +57,7 @@ export function LaunchPanel({
           </ButtonElement>
         </Tooltip>
         {!allRequiredDone && (
-          <p className="text-xs text-white/70">
+          <p className="text-xs text-primary-foreground/70">
             Complete the remaining essential steps to unlock launch.
           </p>
         )}
@@ -66,19 +66,19 @@ export function LaunchPanel({
             {Object.entries(launchStatus).map(([key, status]) => (
               <div
                 key={key}
-                className="flex items-center justify-between gap-3 rounded-xl border border-white/15 bg-white/5 px-3 py-2"
+                className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/15 bg-surface-2 px-3 py-2"
               >
-                <span className="text-sm font-medium">
+                <span className="min-w-0 text-sm font-medium">
                   {launchStepLabels[key] ?? key}
                 </span>
-                <TagElement variant={launchStatusMeta[status].variant}>
+                <TagElement className="shrink-0" variant={launchStatusMeta[status].variant}>
                   {launchStatusMeta[status].label}
                 </TagElement>
               </div>
             ))}
           </div>
         ) : (
-          <p className="rounded-xl border border-white/15 bg-white/5 px-3 py-2 text-sm text-white/70">
+          <p className="rounded-xl border border-border/15 bg-surface-2 px-3 py-2 text-sm text-primary-foreground/70">
             Launch progress will appear here once you kick things off.
           </p>
         )}
@@ -101,4 +101,3 @@ export function LaunchPanel({
 }
 
 export default LaunchPanel;
-

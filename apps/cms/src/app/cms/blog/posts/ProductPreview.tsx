@@ -54,7 +54,7 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
   if (loading) return <div className="border p-2">Loading…</div>;
   if (error || !product)
     return (
-      <div className="border p-2 text-red-500">{error ?? "Not found"}</div>
+      <div className="border p-2 text-danger-foreground">{error ?? "Not found"}</div>
     );
   const available = (product.stock ?? 0) > 0;
   const imageUrl = product.media?.[0]?.url ?? "/file.svg";

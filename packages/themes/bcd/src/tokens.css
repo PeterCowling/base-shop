@@ -6,6 +6,10 @@
   --color-primary: 340 80% 50%;
   --color-primary-fg: 0 0% 100%;
   --color-accent: 40 95% 50%;
+  /* hero gradient stops (indigo → purple → slate) */
+  --gradient-hero-from: 234 89% 60%;
+  --gradient-hero-via: 270 83% 60%;
+  --gradient-hero-to: 222 47% 11%;
   --color-success: 142 76% 97%;
   --color-success-fg: 142 72% 30%;
   --color-warning: 40 90% 96%;

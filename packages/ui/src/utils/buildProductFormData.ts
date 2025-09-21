@@ -19,14 +19,15 @@ export function buildProductFormData(
   fd.append("id", product.id);
 
   locales.forEach((l: Locale) => {
-    fd.append(`title_${l}`, product.title[l]);
-    fd.append(`desc_${l}`, product.description[l]);
+    // Be tolerant to partially-populated products in dev/seed data
+    fd.append(`title_${l}`, String(product.title?.[l] ?? ""));
+    fd.append(`desc_${l}`, String(product.description?.[l] ?? ""));
   });
 
   fd.append("price", String(product.price));
 
   // Extract file attachments from media items and append them separately
-  const mediaWithoutFiles = product.media.map(
+  const mediaWithoutFiles = (product.media ?? []).map(
     (item: MediaEntry, index: number): MediaEntry => {
       if (!item) {
         return null;

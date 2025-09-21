@@ -4,6 +4,7 @@ import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { ulid } from "ulid";
 import type { PageComponent } from "@acme/types";
 import { defaults, CONTAINER_TYPES, type ComponentType } from "./defaults";
+import { getAllowedChildren, isTopLevelAllowed } from "./rules";
 import {
   Popover,
   PopoverContent,
@@ -64,22 +65,14 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
         )
         .map((i) => ({ ...i, category })),
     );
-    // Context filter by container type
+    // Placement-rule filtering
     if (context === "child") {
-      // Default allowlist: atoms, molecules, organisms only
-      let allowedCats = new Set(["atoms", "molecules", "organisms"]);
-      // Specific per-container tweaks
-      const ct = containerType ?? "";
-      if (ct === "Section" || ct === "Repeater" || ct === "Dataset" || ct === "Grid") {
-        // Section: allow atoms, molecules, organisms; optionally allow simple containers like 'MultiColumn'
-        allowedCats = new Set(["atoms", "molecules", "organisms", "containers"]);
-      } else if (ct === "MultiColumn") {
-        // MultiColumn: content only (no containers/layout/overlays inside)
-        allowedCats = new Set(["atoms", "molecules", "organisms"]);
-      }
-      return entries.filter((e) => allowedCats.has(String(e.category)));
+      const parent = (containerType ?? "") as ComponentType;
+      const allowed = getAllowedChildren(parent);
+      return entries.filter((e) => allowed.has(e.type as ComponentType));
     }
-    return entries;
+    // context === 'top' (canvas level)
+    return entries.filter((e) => isTopLevelAllowed(e.type as ComponentType));
   }, [search, context, containerType]);
 
   const handleChoose = (type: ComponentType) => {

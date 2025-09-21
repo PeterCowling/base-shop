@@ -4,7 +4,8 @@ import { z } from "zod";
 import { authEnvSchema, loadAuthEnv } from "@acme/config/env/auth";
 // Avoid importing the cms module which parses on import; use the schema directly.
 import { cmsEnvSchema } from "./cms.schema.js";
-import { emailEnvSchema } from "@acme/config/env/email";
+// Avoid importing the email module which parses on import; use the schema directly.
+import { emailEnvSchema } from "./email.schema.js";
 import { paymentsEnvSchema } from "@acme/config/env/payments";
 import { shippingEnvSchema } from "@acme/config/env/shipping";
 const isJest = typeof (globalThis as { jest?: unknown }).jest !== "undefined";

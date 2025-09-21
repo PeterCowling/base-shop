@@ -27,7 +27,7 @@ export default function PricingCoverageSection({ rows, onUpdate, getErrors }: Pr
             onUpdate(row.code, { enabled: Boolean(checked) });
 
           return (
-            <Card key={row.code} className="border border-border/10 bg-slate-900/60 text-foreground">
+            <Card key={row.code} className="border border-border/10 bg-surface-2 text-foreground">
               <CardContent className="space-y-3 p-4">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-sm font-semibold capitalize">{row.code}</span>
@@ -50,10 +50,10 @@ export default function PricingCoverageSection({ rows, onUpdate, getErrors }: Pr
                     disabled={!row.enabled}
                     aria-invalid={errors.fee ? "true" : undefined}
                     aria-describedby={errors.fee ? `coverage-${row.code}-fee-error` : undefined}
-                    className="bg-slate-950/80 text-foreground disabled:opacity-40"
+                    className="bg-surface-2 text-foreground disabled:opacity-40"
                   />
                   {errors.fee ? (
-                    <span id={`coverage-${row.code}-fee-error`} className="text-xs text-rose-300">
+                    <span id={`coverage-${row.code}-fee-error`} className="text-xs text-danger-foreground">
                       {errors.fee}
                     </span>
                   ) : null}
@@ -75,10 +75,10 @@ export default function PricingCoverageSection({ rows, onUpdate, getErrors }: Pr
                     disabled={!row.enabled}
                     aria-invalid={errors.waiver ? "true" : undefined}
                     aria-describedby={errors.waiver ? `coverage-${row.code}-waiver-error` : undefined}
-                    className="bg-slate-950/80 text-foreground disabled:opacity-40"
+                    className="bg-surface-2 text-foreground disabled:opacity-40"
                   />
                   {errors.waiver ? (
-                    <span id={`coverage-${row.code}-waiver-error`} className="text-xs text-rose-300">
+                    <span id={`coverage-${row.code}-waiver-error`} className="text-xs text-danger-foreground">
                       {errors.waiver}
                     </span>
                   ) : null}

@@ -33,26 +33,26 @@ export const stepTrackMeta: Record<ConfiguratorStepTrack, {
   foundation: {
     label: "Foundation",
     description: "Brand setup, compliance, and the fundamentals that every shop needs.",
-    pillClass: "bg-blue-500/10 text-blue-600",
-    accentClass: "bg-blue-500",
+    pillClass: "bg-info/10 text-info",
+    accentClass: "bg-info",
   },
   experience: {
     label: "Experience",
     description: "Design how shoppers explore, interact, and fall in love with your products.",
-    pillClass: "bg-purple-500/10 text-purple-600",
-    accentClass: "bg-purple-500",
+    pillClass: "bg-accent/10 text-accent-foreground",
+    accentClass: "bg-accent",
   },
   operations: {
     label: "Operations",
     description: "Wire up integrations, environments, and go-live readiness.",
-    pillClass: "bg-amber-500/10 text-amber-600",
-    accentClass: "bg-amber-500",
+    pillClass: "bg-warning/10 text-warning-foreground",
+    accentClass: "bg-warning",
   },
   growth: {
     label: "Growth",
     description: "Optional boosters that accelerate content, experimentation, and scale.",
-    pillClass: "bg-emerald-500/10 text-emerald-600",
-    accentClass: "bg-emerald-500",
+    pillClass: "bg-success/10 text-success-foreground",
+    accentClass: "bg-success",
   },
 };
 

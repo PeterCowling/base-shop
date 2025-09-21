@@ -126,7 +126,7 @@ export default function ConfigurationOverview({
                 Compare defaults with overrides to keep components aligned with the Base-Shop palette.
               </p>
             </div>
-            <div className="overflow-hidden rounded-lg border border-border bg-background">
+            <div className="overflow-hidden rounded-lg border border-border bg-surface-2">
               <DataTable
                 rows={themeTokenRows}
                 columns={columns}

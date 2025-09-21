@@ -34,13 +34,14 @@ export function FontToken({
       }`}
       data-token={isOverridden ? "--color-info" : undefined}
     >
-      <span className="flex items-center gap-2">
-        <span className="w-40 flex-shrink-0">{tokenKey}</span>
+      <span className="flex flex-wrap items-center gap-2 min-w-0">
+        <span className="basis-40 shrink-0">{tokenKey}</span>
         <FontSelect
           value={value}
           options={options}
           onChange={(val) => setToken(tokenKey, val)}
           onUpload={(e) => handleUpload(type, e)}
+          className="min-w-0 flex-1"
         />
         {isOverridden && (
           <button
@@ -52,7 +53,7 @@ export function FontToken({
           </button>
         )}
         <select
-          className="rounded border p-1"
+          className="min-w-0 flex-1 rounded border p-1 sm:flex-none sm:w-auto"
           onChange={(e) => {
             if (e.target.value) {
               setGoogleFont(type, e.target.value);

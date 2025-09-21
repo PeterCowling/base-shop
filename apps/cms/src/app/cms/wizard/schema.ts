@@ -5,6 +5,7 @@ import {
   pageComponentSchema,
   localeSchema,
   type Locale,
+  type PageComponent,
 } from "@acme/types";
 import {
   environmentSettingsSchema,
@@ -31,6 +32,14 @@ function defaultLocaleRecord(
 }
 
 const localeRecordSchema = z.record(localeSchema, z.string());
+// For places where all locales must be present (no Partial)
+const requiredLocaleRecordSchema: z.ZodType<Record<Locale, string>> = z
+  .object(
+    Object.fromEntries(LOCALES.map((l) => [l, z.string()])) as Record<
+      Locale,
+      z.ZodString
+    >
+  ) as unknown as z.ZodType<Record<Locale, string>>;
 
 /* -------------------------------------------------------------------------- */
 /*  Nav‑item schema (recursive)                                               */
@@ -62,21 +71,29 @@ export type NavItem = z.infer<typeof navItemSchema>;
 /*  Page‑info schema                                                          */
 /* -------------------------------------------------------------------------- */
 
+export interface PageInfo {
+  id?: string;
+  slug: string;
+  title: Record<Locale, string>;
+  description: Record<Locale, string>;
+  image: Record<Locale, string>;
+  components: PageComponent[];
+}
+
 export const pageInfoSchema = z
   .object({
     id: z.string().optional(),
     /** `slug` is **required** so routing can never break. */
     slug: z.string(),
     /** All locale keys are required – no `Partial`. */
-    title: localeRecordSchema,
-    description: localeRecordSchema,
-    image: localeRecordSchema,
+    title: requiredLocaleRecordSchema,
+    description: requiredLocaleRecordSchema,
+    image: requiredLocaleRecordSchema,
     /** Components are serialised PageComponent instances. */
     components: z.array(pageComponentSchema).default([]),
   })
-  .strict();
-
-export type PageInfo = z.infer<typeof pageInfoSchema>; // <- slug & components **required**
+  .strict() as z.ZodSchema<PageInfo>;
+// slug & components are required (components defaults to [])
 
 /* -------------------------------------------------------------------------- */
 /*  Wizard‑state schema                                                       */

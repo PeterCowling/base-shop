@@ -23,7 +23,7 @@ export function TrackProgressList({ items }: TrackProgressListProps) {
           {items.map((track) => (
             <div
               key={track.key}
-              className="space-y-2 rounded-xl border border-border/60 bg-muted/10 p-4"
+              className="space-y-2 rounded-xl border border-border/60 bg-surface-3 p-4"
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="flex flex-col">
@@ -48,4 +48,3 @@ export function TrackProgressList({ items }: TrackProgressListProps) {
 }
 
 export default TrackProgressList;
-

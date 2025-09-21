@@ -96,7 +96,7 @@ export default function CommentsDrawer(props: CommentsDrawerProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="fixed right-0 top-0 z-[60] h-screen w-[24rem] max-w-full translate-x-full overflow-hidden border-l bg-background p-0 shadow-xl transition-transform data-[state=open]:translate-x-0">
+      <DialogContent className="fixed right-0 top-0 z-[60] h-screen w-[24rem] max-w-full translate-x-full overflow-hidden border-l bg-surface-3 p-0 shadow-xl transition-transform data-[state=open]:translate-x-0">
         <DialogTitle className="sr-only">Comments</DialogTitle>
         <div className="flex h-full">
           <CommentsThreadList

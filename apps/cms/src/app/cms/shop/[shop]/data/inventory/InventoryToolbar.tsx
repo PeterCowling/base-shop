@@ -46,32 +46,32 @@ export function InventoryToolbar({
         <Tag
           variant={statusVariant}
           className={cn(
-            "rounded-lg border border-white/10 bg-white/10 text-xs font-medium",
-            status === "saved" && "bg-emerald-500/20 text-emerald-100",
-            status === "error" && "bg-rose-500/20 text-rose-100",
+            "rounded-lg border border-border/10 bg-surface-2 text-xs font-medium",
+            status === "saved" && "bg-success/20 text-success-foreground",
+            status === "error" && "bg-danger/20 text-danger-foreground",
           )}
         >
           {statusLabel}
         </Tag>
         {status === "error" && error ? (
-          <span className="text-sm text-rose-200">{error}</span>
+          <span className="text-sm text-danger-foreground">{error}</span>
         ) : null}
         {status === "saved" ? (
-          <span className="text-sm text-emerald-200">The latest changes are safe.</span>
+          <span className="text-sm text-success-foreground">The latest changes are safe.</span>
         ) : null}
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <Button
           type="button"
           onClick={onAddRow}
-          className="h-9 rounded-lg bg-emerald-500 px-3 text-xs font-semibold text-white shadow-sm hover:bg-emerald-400"
+          className="h-9 rounded-lg bg-success px-3 text-xs font-semibold text-success-foreground shadow-sm hover:bg-success/90"
         >
           Add row
         </Button>
         <Button
           type="button"
           variant="outline"
-          className="h-9 rounded-lg border-white/30 px-3 text-xs text-white hover:bg-white/10"
+          className="h-9 rounded-lg border-primary/30 px-3 text-xs text-primary-foreground hover:bg-primary/10"
           onClick={onAddAttribute}
         >
           Add attribute
@@ -79,7 +79,7 @@ export function InventoryToolbar({
         <Button
           type="button"
           variant="ghost"
-          className="h-9 rounded-lg text-xs text-white hover:bg-white/10"
+          className="h-9 rounded-lg text-xs text-primary-foreground hover:bg-primary/10"
           onClick={onImport}
         >
           Import JSON/CSV
@@ -87,7 +87,7 @@ export function InventoryToolbar({
         <Button
           type="button"
           variant="ghost"
-          className="h-9 rounded-lg text-xs text-white hover:bg-white/10"
+          className="h-9 rounded-lg text-xs text-primary-foreground hover:bg-primary/10"
           onClick={() => onExport("json")}
         >
           Export JSON
@@ -95,7 +95,7 @@ export function InventoryToolbar({
         <Button
           type="button"
           variant="ghost"
-          className="h-9 rounded-lg text-xs text-white hover:bg-white/10"
+          className="h-9 rounded-lg text-xs text-primary-foreground hover:bg-primary/10"
           onClick={() => onExport("csv")}
         >
           Export CSV

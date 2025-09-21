@@ -19,12 +19,12 @@ export function RangeToken({
     <label
       key={tokenKey}
       data-token-key={tokenKey}
-      className={`flex items-center gap-2 text-sm ${
+      className={`flex flex-wrap items-center gap-2 text-sm ${
         isOverridden ? "border-l-2 border-l-info pl-2" : ""
       }`}
       data-token={isOverridden ? "--color-info" : undefined}
     >
-      <span className="w-40 flex-shrink-0">{tokenKey}</span>
+      <span className="basis-40 shrink-0">{tokenKey}</span>
       <RangeInput value={value} onChange={(val) => setToken(tokenKey, val)} />
       {isOverridden && (
         <button

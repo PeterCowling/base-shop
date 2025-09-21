@@ -8,7 +8,7 @@ interface Props {
 export default function ConfirmationStep({ message }: Props) {
   return (
     <div className="space-y-2">
-      <p className="text-green-600">{message}</p>
+      <p className="text-success">{message}</p>
     </div>
   );
 }

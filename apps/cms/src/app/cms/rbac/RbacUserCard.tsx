@@ -37,11 +37,11 @@ export default function RbacUserCard({
     <Card data-testid="rbac-user-card">
       <CardContent className="space-y-4">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div className="space-y-1">
+          <div className="min-w-0 space-y-1">
             <p className="text-base font-semibold text-foreground">{user.name}</p>
             <p className="text-sm text-muted-foreground">{user.email}</p>
           </div>
-          <Tag variant={statusTag.variant}>{statusTag.label}</Tag>
+          <Tag className="shrink-0" variant={statusTag.variant}>{statusTag.label}</Tag>
         </div>
 
         <section className="space-y-3" aria-labelledby={`role-picker-${user.id}`}>

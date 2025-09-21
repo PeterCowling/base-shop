@@ -39,7 +39,7 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
         data-token={bgTokens[variant]}
         data-token-fg={textTokens[variant]}
         className={cn(
-          "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
+          "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium",
           bgClasses[variant],
           textClasses[variant],
           className

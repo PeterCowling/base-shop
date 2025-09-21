@@ -13,7 +13,7 @@ export default function CmsNotFound() {
       <h1 className="text-3xl font-bold">404 – Page not found</h1>
       <Link
         href={href}
-        className="bg-primary hover:bg-primary/90 rounded-md px-4 py-2 text-white"
+        className="bg-primary hover:bg-primary/90 rounded-md px-4 py-2 text-primary-foreground"
       >
         Back to dashboard
       </Link>

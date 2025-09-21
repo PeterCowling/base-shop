@@ -45,7 +45,7 @@ export default function LocaleContentTab({
           <span className="text-sm font-medium">Title</span>
           <Input
             name={`title_${locale}`}
-            value={title[locale] ?? ""}
+            value={title?.[locale] ?? ""}
             onChange={(event) => onFieldChange(event)}
           />
         </label>
@@ -54,7 +54,7 @@ export default function LocaleContentTab({
           <Textarea
             rows={5}
             name={`desc_${locale}`}
-            value={description[locale] ?? ""}
+            value={description?.[locale] ?? ""}
             onChange={(event) => onFieldChange(event)}
           />
         </label>

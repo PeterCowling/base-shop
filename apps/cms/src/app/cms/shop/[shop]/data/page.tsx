@@ -16,7 +16,7 @@ const cards = [
     ],
     href: (shop: string) => `/cms/shop/${shop}/data/inventory`,
     cta: "Manage inventory",
-    accent: "from-slate-900 via-slate-950 to-black",
+    accent: "bg-hero",
   },
   {
     title: "Rental pricing",
@@ -30,7 +30,7 @@ const cards = [
     ],
     href: (shop: string) => `/cms/shop/${shop}/data/rental/pricing`,
     cta: "Configure pricing",
-    accent: "from-emerald-500/10 via-teal-500/10 to-cyan-500/10",
+    accent: "bg-hero",
   },
   {
     title: "Return logistics",
@@ -44,7 +44,7 @@ const cards = [
     ],
     href: (shop: string) => `/cms/shop/${shop}/data/return-logistics`,
     cta: "Optimize returns",
-    accent: "from-rose-500/10 via-fuchsia-500/10 to-purple-500/10",
+    accent: "bg-hero",
   },
 ] as const;
 
@@ -56,7 +56,7 @@ export default async function DataIndex({
   const { shop } = await params;
   return (
     <div className="space-y-8 text-foreground">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-slate-950 shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,163,184,0.18),_transparent_55%)]" />
         <div className="relative space-y-4 px-6 py-8">
           <Tag variant="default">
@@ -75,7 +75,7 @@ export default async function DataIndex({
             ].map((item) => (
               <div
                 key={item.label}
-                className="rounded-2xl border border-border/10 bg-background/60 px-4 py-3 text-xs text-muted-foreground backdrop-blur"
+                className="rounded-2xl border border-border/10 bg-surface-2 px-4 py-3 text-xs text-muted-foreground"
               >
                 <p className="font-semibold uppercase tracking-wide">{item.label}</p>
                 <p className="mt-1 text-sm text-foreground">{item.value}</p>
@@ -89,7 +89,7 @@ export default async function DataIndex({
         {cards.map((card) => (
           <Card
             key={card.title}
-            className={`border border-border/10 bg-gradient-to-br ${card.accent} text-foreground shadow-lg shadow-black/20`}
+            className={`border border-border/10 ${card.accent} text-primary-foreground shadow-lg`}
           >
             <CardContent className="flex h-full flex-col gap-4 p-6">
               <div className="space-y-2">

@@ -15,9 +15,9 @@ export function TelemetryEventTable({
 }: TelemetryEventTableProps) {
   return (
     <div className="space-y-3">
-      <div className="flex items-center justify-between">
-        <h3 className="text-base font-semibold">Event breakdown</h3>
-        <Tag variant="default">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h3 className="min-w-0 text-base font-semibold">Event breakdown</h3>
+        <Tag className="shrink-0" variant="default">
           {summaryRows.length} tracked types
         </Tag>
       </div>
@@ -45,7 +45,7 @@ export function TelemetryEventTable({
           </thead>
           <tbody>
             {summaryRows.map((row) => (
-              <tr key={row.name} className="odd:bg-background/60 even:bg-background/0">
+              <tr key={row.name} className="odd:bg-surface-2 even:bg-surface-1">
                 <td className="px-3 py-2 font-medium text-foreground">{row.name}</td>
                 <td className="px-3 py-2 text-muted-foreground">{row.count}</td>
                 <td className="px-3 py-2 text-muted-foreground">

@@ -66,9 +66,9 @@ export function LivePreviewList({ items }: LivePreviewListProps) {
         const statusVariant = hasPreview ? "success" : "warning";
         const statusLabel = hasPreview ? "Preview ready" : "Unavailable";
         return (
-          <Card key={item.shop} className="border border-border/60 bg-muted/10">
+          <Card key={item.shop} className="border border-border/60 bg-surface-3">
             <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="space-y-1">
+              <div className="min-w-0 space-y-1">
                 <p className="text-sm font-semibold text-foreground">{item.shop}</p>
                 <p className="text-xs text-muted-foreground">
                   {hasPreview
@@ -77,10 +77,10 @@ export function LivePreviewList({ items }: LivePreviewListProps) {
                 </p>
               </div>
               <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:gap-3">
-                <Tag variant={statusVariant}>{statusLabel}</Tag>
+                <Tag className="shrink-0" variant={statusVariant}>{statusLabel}</Tag>
                 <Button
                   type="button"
-                  className="h-10 px-4 text-sm font-medium"
+                  className="h-10 shrink-0 px-4 text-sm font-medium"
                   onClick={handleOpen(item)}
                 >
                   {hasPreview ? "Open preview" : "View details"}

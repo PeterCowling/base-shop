@@ -49,7 +49,7 @@ export default function CurrencyTaxEditor({ shop, initial }: Props) {
           aria-invalid={errors.currency ? true : undefined}
         />
         {errors.currency && (
-          <span role="alert" className="text-sm text-red-600">
+          <span role="alert" className="text-sm text-danger-foreground">
             {errors.currency.join("; ")}
           </span>
         )}
@@ -63,12 +63,12 @@ export default function CurrencyTaxEditor({ shop, initial }: Props) {
           aria-invalid={errors.taxRegion ? true : undefined}
         />
         {errors.taxRegion && (
-          <span role="alert" className="text-sm text-red-600">
+          <span role="alert" className="text-sm text-danger-foreground">
             {errors.taxRegion.join("; ")}
           </span>
         )}
       </label>
-      <Button className="bg-primary text-white" disabled={saving} type="submit">
+      <Button className="bg-primary text-primary-foreground" disabled={saving} type="submit">
         {saving ? "Saving…" : "Save"}
       </Button>
     </form>

@@ -44,18 +44,17 @@ export default async function MaintenancePage() {
 
   return (
     <div className="space-y-10">
-      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-slate-950 text-foreground shadow-xl">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,163,255,0.35),_transparent_55%)]" />
+      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero text-primary-foreground shadow-xl">
         <div className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
           <div className="space-y-6">
             <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">
+              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground/70">
                 Maintenance
               </span>
               <h1 className="text-3xl font-semibold md:text-4xl">
                 Keep your catalog clean and compliant
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-primary-foreground/80">
                 Run automated scans to spot outdated or risky products before customers do. Address flagged items directly from this dashboard.
               </p>
             </div>
@@ -68,7 +67,7 @@ export default async function MaintenancePage() {
                 <Button
                   asChild
                   variant="outline"
-                  className="h-11 px-5 text-sm font-semibold border-border/40 text-foreground hover:bg-muted/10"
+                  className="h-11 px-5 text-sm font-semibold border-primary/40 text-primary-foreground hover:bg-primary/10"
                 >
                   <Link href="/cms/live">Check live previews</Link>
                 </Button>
@@ -78,20 +77,20 @@ export default async function MaintenancePage() {
               {quickStats.map((stat) => (
                 <Card
                   key={stat.label}
-                  className="border border-border/15 bg-background/60 text-foreground backdrop-blur"
+                  className="border border-primary/15 bg-surface-2 text-foreground"
                 >
                   <CardContent className="space-y-1 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-primary-foreground/70">
                       {stat.label}
                     </p>
-                    <p className="text-xl font-semibold">{stat.value}</p>
-                    <p className="text-xs text-muted-foreground">{stat.caption}</p>
+                    <p className="text-xl font-semibold text-primary-foreground">{stat.value}</p>
+                    <p className="text-xs text-primary-foreground/70">{stat.caption}</p>
                   </CardContent>
                 </Card>
               ))}
             </div>
           </div>
-          <Card className="border border-border/20 bg-background/60 text-foreground shadow-2xl backdrop-blur">
+          <Card className="border border-border/20 bg-surface-2 text-foreground shadow-2xl">
             <CardContent className="space-y-5">
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold">Scan status</h2>
@@ -99,8 +98,8 @@ export default async function MaintenancePage() {
                   Review maintenance insights regularly to avoid shipping stale content or non-compliant products.
                 </p>
               </div>
-              <div className="flex items-center justify-between gap-3 rounded-xl border border-white/15 bg-white/5 px-4 py-3">
-                <div>
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/15 bg-surface-2 px-4 py-3">
+                <div className="min-w-0">
                   <p className="text-sm font-medium">Current posture</p>
                   <p className="text-xs text-muted-foreground">
                     {flagged.length === 0
@@ -108,7 +107,7 @@ export default async function MaintenancePage() {
                       : `${flagged.length} flagged for investigation`}
                   </p>
                 </div>
-                <Tag variant={flagged.length === 0 ? "success" : "warning"}>
+                <Tag className="shrink-0" variant={flagged.length === 0 ? "success" : "warning"}>
                   {flagged.length === 0 ? "Healthy" : "Action needed"}
                 </Tag>
               </div>

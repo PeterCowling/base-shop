@@ -34,16 +34,26 @@ describe("pages validation", () => {
     }
   });
 
-  it("requires slug on update", () => {
+  it("requires slug only when publishing on update", () => {
+    const ok = updateSchema.safeParse({
+      id: "1",
+      updatedAt: "now",
+      slug: "",
+      status: "draft",
+      components: "[]",
+    });
+    expect(ok.success).toBe(true);
+
     const res = updateSchema.safeParse({
       id: "1",
       updatedAt: "now",
       slug: "",
+      status: "published",
       components: "[]",
     });
     expect(res.success).toBe(false);
     if (!res.success) {
-      expect(res.error.issues[0].message).toBe("Slug required");
+      expect(res.error.issues[0].message).toBe("Slug required to publish");
       expect(res.error.issues[0].path).toEqual(["slug"]);
     }
   });

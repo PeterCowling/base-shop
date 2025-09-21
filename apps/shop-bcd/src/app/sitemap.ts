@@ -19,7 +19,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getSanityConfig(shop).catch(() => null),
   ]);
 
-  const languages: string[] = settings.languages ?? ["en"];
+  // Use the readonly languages as-is; no mutation needed
+  const languages = settings.languages ?? ["en"];
   const primary = languages[0] ?? "en";
 
   const buildAlternates = (path: string) => {
@@ -72,4 +73,3 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return entries;
 }
-

@@ -27,31 +27,31 @@ export default async function PricingPage({
       label: "Base daily rate",
       value: `$${formatNumber(initial.baseDailyRate, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       caption: "Default fallback when no SKU override exists",
-      accent: "bg-emerald-500/20 text-emerald-100",
+      accent: "bg-success/20 text-success-foreground",
     },
     {
       label: "Discount tiers",
       value: tiers ? String(tiers) : "None",
       caption: tiers ? "Longer bookings receive incentives" : "Add tiers to reward duration",
-      accent: tiers ? "bg-sky-500/20 text-sky-100" : "bg-slate-500/30 text-slate-100",
+      accent: tiers ? "bg-info/20 text-info-foreground" : "bg-muted/20 text-foreground",
     },
     {
       label: "Deposit defaults",
       value: depositCodes ? `${depositCodes} damage codes` : "None",
       caption: depositCodes ? "Automatically reserve deposits when triggered" : "No deposit rules configured",
-      accent: depositCodes ? "bg-amber-500/20 text-amber-100" : "bg-slate-500/30 text-slate-100",
+      accent: depositCodes ? "bg-warning/20 text-warning-foreground" : "bg-muted/20 text-foreground",
     },
     {
       label: "Coverage entries",
       value: coverageEnabled ? String(coverageEnabled) : "Optional",
       caption: coverageEnabled ? "Fee & waiver rules live for customers" : "Add coverage to offset risk",
-      accent: coverageEnabled ? "bg-indigo-500/20 text-indigo-100" : "bg-slate-500/30 text-slate-100",
+      accent: coverageEnabled ? "bg-primary/20 text-primary-foreground" : "bg-muted/20 text-foreground",
     },
   ];
 
   return (
     <div className="space-y-8 text-foreground">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-slate-950 shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(16,185,129,0.18),_transparent_55%)]" />
         <div className="relative space-y-4 px-6 py-8">
           <Tag variant="default">
@@ -80,7 +80,7 @@ export default async function PricingPage({
       </section>
 
       <section>
-        <Card className="border border-border/10 bg-slate-950/70 text-foreground shadow-lg">
+        <Card className="border border-border/10 bg-surface-2 text-foreground shadow-lg">
           <CardContent className="space-y-4 px-6 py-6">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="space-y-1">

@@ -37,12 +37,14 @@ export const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "bg-popover text-popover-foreground z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-md",
+        "z-[70] min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-md",
+        "bg-background text-foreground",
         className
       )}
+      style={{ backgroundColor: "hsl(var(--color-bg))", color: "hsl(var(--color-fg))" }}
       {...props}
     >
-      <SelectPrimitive.Viewport className="p-1">
+      <SelectPrimitive.Viewport className="p-1 bg-background">
         {children}
       </SelectPrimitive.Viewport>
     </SelectPrimitive.Content>

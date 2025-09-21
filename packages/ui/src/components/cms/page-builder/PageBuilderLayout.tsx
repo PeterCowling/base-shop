@@ -4,7 +4,7 @@ import { DndContext, DragOverlay } from "@dnd-kit/core";
 import type { CSSProperties, ComponentProps } from "react";
 import React from "react";
 import { Button } from "../../atoms/shadcn";
-import { Toast } from "../../atoms";
+import { Toast, Tooltip } from "../../atoms";
 import PageToolbar from "./PageToolbar";
 import PresetsModal from "./PresetsModal";
 import PageCanvas from "./PageCanvas";
@@ -13,7 +13,9 @@ import HistoryControls from "./HistoryControls";
 import Palette from "./Palette";
 import PreviewPane from "./PreviewPane";
 import PageBuilderTour, { Step, CallBackProps } from "./PageBuilderTour";
-import GridSettings from "./GridSettings";
+import CanvasControlsMenu from "./CanvasControlsMenu";
+import ResponsiveRightActions from "./ResponsiveRightActions";
+import type GridSettings from "./GridSettings";
 import type { ComponentType } from "./defaults";
 import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
@@ -85,6 +87,19 @@ const PageBuilderLayout = ({
   tourProps,
 }: LayoutProps) => {
   const [spacePanning, setSpacePanning] = React.useState(false);
+  const [showPalette, setShowPalette] = React.useState<boolean>(() => {
+    try { const v = localStorage.getItem("pb:show-palette"); return v === null ? true : v === "1"; } catch { return true; }
+  });
+  const [paletteWidth, setPaletteWidth] = React.useState<number>(() => {
+    try { const v = localStorage.getItem("pb:palette-width"); const n = v ? parseInt(v, 10) : 192; return Number.isFinite(n) ? Math.min(Math.max(n, 160), 360) : 192; } catch { return 192; }
+  });
+  React.useEffect(() => {
+    try { localStorage.setItem("pb:show-palette", showPalette ? "1" : "0"); } catch {}
+  }, [showPalette]);
+  React.useEffect(() => {
+    try { localStorage.setItem("pb:palette-width", String(paletteWidth)); } catch {}
+  }, [paletteWidth]);
+  const [presetOpen, setPresetOpen] = React.useState(false);
   React.useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
@@ -104,43 +119,81 @@ const PageBuilderLayout = ({
     };
   }, []);
   return (
-  <div className="flex gap-4" style={style}>
+  <DndContext
+    {...dndContext}
+    onDragStart={(dndContext as any).onDragStart || (() => {})}
+    onDragMove={(dndContext as any).onDragMove || (() => {})}
+    onDragEnd={(dndContext as any).onDragEnd || (() => {})}
+  >
+  <div className="flex gap-4 min-h-0" style={style}>
     <PageBuilderTour {...tourProps} />
-    <aside className="w-48 shrink-0" data-tour="palette">
-      <Palette onAdd={paletteOnAdd} onInsertImage={onInsertImageAsset} onSetSectionBackground={onSetSectionBackground} selectedIsSection={selectedIsSection} />
-    </aside>
-    <div className="flex flex-1 flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <div data-tour="toolbar">
+    {showPalette && (
+      <>
+        <aside className="shrink-0" style={{ width: paletteWidth }} data-tour="palette">
+          <Palette onAdd={paletteOnAdd} onInsertImage={onInsertImageAsset} onSetSectionBackground={onSetSectionBackground} selectedIsSection={selectedIsSection} />
+        </aside>
+        <div
+          role="separator"
+          aria-label="Resize palette"
+          className="w-1 shrink-0 cursor-col-resize select-none bg-border/50 hover:bg-border"
+          onPointerDown={(e) => {
+            const startX = e.clientX;
+            const startW = paletteWidth;
+            const onMove = (ev: PointerEvent) => {
+              const dx = ev.clientX - startX;
+              const next = Math.min(Math.max(startW + dx, 160), 360);
+              setPaletteWidth(next);
+            };
+            const onUp = () => {
+              window.removeEventListener("pointermove", onMove);
+              window.removeEventListener("pointerup", onUp);
+            };
+            window.addEventListener("pointermove", onMove);
+            window.addEventListener("pointerup", onUp);
+          }}
+        />
+      </>
+    )}
+    {!showPalette && (
+      <div className="shrink-0 w-3 flex items-start justify-center pt-2">
+        <Tooltip text="Show palette">
+          <button
+            type="button"
+            aria-label="Show palette"
+            className="rounded border bg-background px-1 text-xs"
+            onClick={() => setShowPalette(true)}
+            title="Show palette"
+          >
+            ▶
+          </button>
+        </Tooltip>
+      </div>
+    )}
+    <div className="flex flex-1 flex-col gap-4 min-h-0">
+      <div className="sticky top-0 z-10 flex w-full flex-wrap items-center gap-2 overflow-x-hidden bg-background/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+        <div data-tour="toolbar" className="min-w-0 flex-1 overflow-x-hidden">
           <PageToolbar {...toolbarProps} />
         </div>
-        <div className="flex items-center gap-2">
-          <GridSettings {...gridProps} />
-          {onInsertPreset && <PresetsModal onInsert={onInsertPreset} sourceUrl={presetsSourceUrl} />}
-          <Button variant="outline" onClick={startTour}>
-            Tour
-          </Button>
-          <Button variant="outline" onClick={toggleComments}>
-            {showComments ? "Hide comments" : "Show comments"}
-          </Button>
-          <Button variant="outline" onClick={togglePreview}>
-            {showPreview ? "Hide preview" : "Show preview"}
-          </Button>
-        </div>
+        <ResponsiveRightActions
+          gridProps={gridProps}
+          onInsertPreset={onInsertPreset}
+          presetsSourceUrl={presetsSourceUrl}
+          startTour={startTour}
+          toggleComments={toggleComments}
+          showComments={showComments}
+          togglePreview={togglePreview}
+          showPreview={showPreview}
+          showPalette={showPalette}
+          togglePalette={() => setShowPalette((v) => !v)}
+        />
       </div>
       <div aria-live="polite" aria-atomic="true" role="status" className="sr-only">
         {liveMessage}
       </div>
-      <div className="flex flex-1 gap-4">
-        <DndContext
-          {...dndContext}
-          onDragStart={(dndContext as any).onDragStart || (() => {})}
-          onDragMove={(dndContext as any).onDragMove || (() => {})}
-          onDragEnd={(dndContext as any).onDragEnd || (() => {})}
-        >
+      <div className="flex flex-1 gap-4 min-h-0">
           <div
             ref={scrollRef}
-            className="relative max-h-full overflow-auto"
+            className="relative max-h-full overflow-auto overscroll-contain min-h-0"
             onPointerDown={(e) => {
               const sc = scrollRef?.current;
               if (!sc) return;
@@ -180,10 +233,11 @@ const PageBuilderLayout = ({
               </div>
             )}
           </DragOverlay>
-        </DndContext>
         {showPreview && <PreviewPane {...previewProps} />}
       </div>
-      <HistoryControls {...historyProps} />
+      <div className="sticky bottom-0 z-10 border-t border-border/40 bg-background/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+        <HistoryControls {...historyProps} />
+      </div>
     </div>
     <PageSidebar {...sidebarProps} />
     <Toast
@@ -193,6 +247,7 @@ const PageBuilderLayout = ({
       message={toast.message}
     />
   </div>
+  </DndContext>
   );
 };
 

@@ -64,7 +64,7 @@ export default function ThemeEditor(props: Props) {
         isPresetTheme={presetThemes.includes(theme)}
       />
       {Object.keys(contrastWarnings).length > 0 && (
-        <div className="rounded border border-amber-300 bg-amber-50 p-2 text-sm text-amber-800">
+        <div className="rounded border border-warning/30 bg-warning/10 p-2 text-sm text-warning-foreground">
           <p>Contrast warnings:</p>
           <ul className="list-disc pl-4">
             {Object.values(contrastWarnings).map((w, i) => (

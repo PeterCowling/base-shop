@@ -30,10 +30,10 @@ export default function InventoryRow({
   deleteRow,
 }: Props) {
   return (
-    <TableRow key={index} className="border-border/5 bg-background/60 text-foreground/90">
+    <TableRow key={index} className="border-border/5 bg-surface-2 text-foreground/90">
       <TableCell className="min-w-[10rem]">
         <Input
-          className="border-border/10 bg-slate-900/70 text-foreground shadow-inner"
+          className="border-border/10 bg-surface-2 text-foreground shadow-inner"
           value={item.sku}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             updateItem(index, "sku", e.target.value)
@@ -43,7 +43,7 @@ export default function InventoryRow({
       {attributes.map((attr) => (
         <TableCell key={attr} className="min-w-[8rem]">
           <Input
-            className="border-border/10 bg-slate-900/70 text-foreground shadow-inner"
+            className="border-border/10 bg-surface-2 text-foreground shadow-inner"
             value={item.variantAttributes[attr] ?? ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               updateItem(index, `variantAttributes.${attr}`, e.target.value)
@@ -53,7 +53,7 @@ export default function InventoryRow({
       ))}
       <TableCell>
         <Input
-          className="border-border/10 bg-slate-900/70 text-foreground shadow-inner"
+          className="border-border/10 bg-surface-2 text-foreground shadow-inner"
           type="number"
           min={0}
           value={Number.isNaN(item.quantity) ? "" : item.quantity}
@@ -64,7 +64,7 @@ export default function InventoryRow({
       </TableCell>
       <TableCell>
         <Input
-          className="border-border/10 bg-slate-900/70 text-foreground shadow-inner"
+          className="border-border/10 bg-surface-2 text-foreground shadow-inner"
           type="number"
           min={0}
           value={item.lowStockThreshold ?? ""}
@@ -77,7 +77,7 @@ export default function InventoryRow({
         <Button
           type="button"
           variant="ghost"
-          className="h-9 rounded-lg px-3 text-xs text-foreground hover:bg-muted/10"
+          className="h-9 rounded-lg px-3 text-xs text-foreground hover:bg-surface-3"
           onClick={() => deleteRow(index)}
           aria-label="delete-row"
         >

@@ -5,7 +5,6 @@ import type { ImageOrientation, MediaItem } from "@acme/types";
 import { promises as fs } from "fs";
 import type { Stats } from "fs";
 import * as path from "path";
-import sharp from "sharp";
 import { ulid } from "ulid";
 
 import {
@@ -112,6 +111,10 @@ export async function uploadMediaFile({
   let buffer: Buffer;
 
   if (file.type.startsWith("image/")) {
+    // Lazy-load sharp only when handling images to avoid adding process
+    // listeners during route/module import (which Next.js dev can repeat),
+    // causing MaxListeners warnings.
+    const sharp = (await import("sharp")).default;
     type = "image";
     const maxSize = 5 * 1024 * 1024; // 5 MB
     if (file.size > maxSize) throw new Error("File too large");
@@ -223,4 +226,3 @@ export async function deleteMediaFile(
     await writeMetadata(safeShop, meta);
   }
 }
-

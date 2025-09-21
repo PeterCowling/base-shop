@@ -4,6 +4,7 @@ import "../globals.css";
 import { authOptions } from "@cms/auth/options";
 import { LayoutProvider } from "@platform-core/contexts/LayoutContext";
 import { getServerSession } from "next-auth";
+import CmsSessionProvider from "./SessionProvider.client";
 import LayoutClient from "./LayoutClient.client";
 
 import type { ReactNode } from "react";
@@ -13,7 +14,9 @@ export default async function CmsLayout({ children }: { children: ReactNode }) {
   const session = await getServerSession(authOptions);
   return (
     <LayoutProvider>
-      <LayoutClient role={session?.user.role}>{children}</LayoutClient>
+      <CmsSessionProvider session={session}>
+        <LayoutClient role={session?.user.role}>{children}</LayoutClient>
+      </CmsSessionProvider>
     </LayoutProvider>
   );
 }

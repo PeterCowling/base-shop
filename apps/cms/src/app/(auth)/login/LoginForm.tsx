@@ -74,7 +74,7 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
         autoComplete="username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        className="bg-white text-black dark:bg-white dark:text-black"
+        className="bg-surface-2 text-foreground"
         required
       />
       <Input
@@ -85,17 +85,17 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
         autoComplete="current-password"
         value={pwd}
         onChange={(e) => setPwd(e.target.value)}
-        className="bg-white text-black dark:bg-white dark:text-black"
+        className="bg-surface-2 text-foreground"
         required
       />
 
-      {error && <span className="block text-sm text-red-500">{error}</span>}
+      {error && <span className="block text-sm text-danger-foreground">{error}</span>}
 
       <Button className="h-12 w-full" type="button" onClick={handleSubmit}>
         Continue
       </Button>
       <p className="mt-4 text-center text-sm">
-        <Link href="/signup" prefetch={false} className="text-blue-500 hover:underline">
+        <Link href="/signup" prefetch={false} className="text-primary hover:underline">
           Create new account
         </Link>
       </p>

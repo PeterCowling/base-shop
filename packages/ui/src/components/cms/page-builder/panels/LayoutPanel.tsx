@@ -780,7 +780,7 @@ export default function LayoutPanel({
         <div className="mb-1 text-xs font-semibold text-muted-foreground">Container Queries</div>
         <Select
           value={((component as any).containerType as string) ?? ""}
-          onValueChange={(v) => handleInput("containerType" as any, (v || undefined) as any)}
+          onValueChange={(v) => handleInput("containerType" as any, (v === "__default__" ? undefined : v) as any)}
         >
           <Tooltip text="Sets CSS container-type for this block so children can use @container" className="block">
             <SelectTrigger>
@@ -788,7 +788,7 @@ export default function LayoutPanel({
             </SelectTrigger>
           </Tooltip>
           <SelectContent>
-            <SelectItem value="">default</SelectItem>
+            <SelectItem value="__default__">default</SelectItem>
             <SelectItem value="size">size</SelectItem>
             <SelectItem value="inline-size">inline-size</SelectItem>
           </SelectContent>

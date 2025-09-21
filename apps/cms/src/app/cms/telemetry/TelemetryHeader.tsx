@@ -8,11 +8,11 @@ interface TelemetryHeaderProps {
 export function TelemetryHeader({ onReload }: TelemetryHeaderProps) {
   return (
     <header className="space-y-3">
-      <Tag variant="default" className="bg-sky-500/10 text-foreground">
+      <Tag variant="default" className="bg-info/10 text-foreground">
         Telemetry analytics
       </Tag>
       <div className="flex flex-wrap items-end justify-between gap-4">
-        <div className="space-y-1">
+        <div className="min-w-0 space-y-1">
           <h2 className="text-2xl font-semibold text-foreground">Live product signals</h2>
           <p className="text-sm text-muted-foreground">
             Track your key interactions in real time, compare spikes, and lock
@@ -22,7 +22,7 @@ export function TelemetryHeader({ onReload }: TelemetryHeaderProps) {
         <Button
           type="button"
           variant="outline"
-          className="border-border/30 text-foreground hover:bg-muted/10"
+          className="shrink-0 border-border/30 text-foreground hover:bg-surface-3"
           onClick={() => onReload?.()}
         >
           Refresh data

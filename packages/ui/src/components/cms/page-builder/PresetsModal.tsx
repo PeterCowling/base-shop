@@ -10,9 +10,11 @@ import { presetList, presetCategories, type PresetDef, type PresetCategory } fro
 interface Props {
   onInsert: (component: PageComponent) => void;
   sourceUrl?: string; // optional remote JSON of PresetDef[]
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export default function PresetsModal({ onInsert, sourceUrl }: Props) {
+export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange }: Props) {
   const [presets, setPresets] = useState<PresetDef[]>(presetList);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<PresetCategory | "All">("All");
@@ -83,7 +85,7 @@ export default function PresetsModal({ onInsert, sourceUrl }: Props) {
   }, [filtered]);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
         <Button variant="outline">Insert Preset</Button>
       </DialogTrigger>

@@ -136,7 +136,7 @@ function Sidebar({
           </p>
         </div>
 
-        <Card className="border-border/10 bg-background/60 text-foreground">
+        <Card className="border-border/10 bg-background text-foreground">
           <CardContent className="space-y-4 px-4 py-5">
             <div className="flex items-center justify-between text-xs uppercase tracking-wide text-muted-foreground">
               <span>Main navigation</span>
@@ -170,17 +170,13 @@ function Sidebar({
           </CardContent>
         </Card>
 
-        <Button
-          asChild
-          className="w-full justify-center bg-muted/10 text-foreground hover:bg-muted/20"
-          onClick={handleConfiguratorClick}
-        >
+        <Button asChild variant="outline" className="w-full justify-center" onClick={handleConfiguratorClick}>
           <Link href="/cms/configurator">Launch Configurator</Link>
         </Button>
       </div>
 
       <div className="mt-auto space-y-3 text-xs text-muted-foreground">
-        <Card className="border-border/10 bg-background/60">
+        <Card className="border-border/10 bg-background">
           <CardContent className="space-y-2 px-4 py-4">
             <h2 className="text-sm font-semibold text-foreground">Need a hand?</h2>
             <p>Visit the docs or ping the platform team for support.</p>
@@ -188,7 +184,7 @@ function Sidebar({
               <Button asChild variant="outline" className="h-9 flex-1">
                 <Link href="/docs">Docs</Link>
               </Button>
-              <Button asChild className="h-9 flex-1 bg-muted/10 text-foreground hover:bg-muted/20">
+              <Button asChild variant="outline" className="h-9 flex-1">
                 <Link href="/cms/support">Support</Link>
               </Button>
             </div>

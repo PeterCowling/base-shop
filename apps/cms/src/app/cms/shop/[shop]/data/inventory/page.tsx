@@ -41,31 +41,31 @@ export default async function InventoryPage({
       label: "Tracked SKUs",
       value: String(totalItems),
       caption: "Items monitored in this shop",
-      accent: "bg-muted/10 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
     {
       label: "Low stock",
       value: String(lowStockItems.length),
       caption: "At or below threshold",
-      accent: "bg-amber-500/20 text-foreground",
+      accent: "bg-warning/20 text-foreground",
     },
     {
       label: "Maintenance due",
       value: String(maintenanceNeeded.length),
       caption: "Exceeded wear limit",
-      accent: "bg-rose-500/20 text-foreground",
+      accent: "bg-danger/20 text-foreground",
     },
     {
       label: "Variants tracked",
       value: String(variantAttributes.size),
       caption: "Unique attribute dimensions",
-      accent: "bg-sky-500/20 text-foreground",
+      accent: "bg-info/20 text-foreground",
     },
   ];
 
   return (
     <div className="space-y-8 text-foreground">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-slate-950 shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(45,212,191,0.18),_transparent_50%)]" />
         <div className="relative space-y-4 px-6 py-7">
           <Tag variant="default">
@@ -82,7 +82,7 @@ export default async function InventoryPage({
               <div
                 key={stat.label}
                 className={cn(
-                  "rounded-2xl border border-border/10 px-4 py-3 backdrop-blur",
+                  "rounded-2xl border border-border/10 px-4 py-3",
                   stat.accent
                 )}
               >
@@ -98,7 +98,7 @@ export default async function InventoryPage({
       </section>
 
       <section>
-        <Card className="border border-border/10 bg-slate-950/70 shadow-lg">
+        <Card className="border border-border/10 bg-surface-2 shadow-lg">
           <CardContent className="space-y-4 px-6 py-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>

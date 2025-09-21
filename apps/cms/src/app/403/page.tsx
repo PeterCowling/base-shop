@@ -21,13 +21,13 @@ function AccessDeniedContent() {
 
   return (
     <div className="flex h-screen flex-col items-center justify-center gap-4">
-      <h1 className="text-3xl font-bold text-red-600">403 – Access denied</h1>
+      <h1 className="text-3xl font-bold text-danger-foreground">403 – Access denied</h1>
       <p className="text-muted-foreground text-sm">
         You don’t have permission to perform this action.
       </p>
       <Link
         href={href}
-        className="bg-primary hover:bg-primary/90 rounded-md px-4 py-2 text-white"
+        className="bg-primary hover:bg-primary/90 rounded-md px-4 py-2 text-primary-foreground"
       >
         Back to catalogue
       </Link>

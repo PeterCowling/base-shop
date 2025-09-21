@@ -46,4 +46,8 @@ export const tokens = {
   "--shadow-lg": {
     light: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
   },
+  // Gradient tokens (used by bg-hero utility)
+  "--gradient-hero-from": { light: "234 89% 60%" },
+  "--gradient-hero-via": { light: "270 83% 60%" },
+  "--gradient-hero-to": { light: "222 47% 11%" },
 } as const satisfies TokenMap;

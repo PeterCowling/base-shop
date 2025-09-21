@@ -39,7 +39,7 @@ export default function TypographySettings({
             <div key={k} className="flex items-center gap-2">
               <Input
                 name={k}
-                defaultValue={defaultValue}
+                placeholder={defaultValue}
                 value={overrideValue}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   handleOverrideChange(k, defaultValue)(e.target.value)

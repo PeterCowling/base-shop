@@ -124,7 +124,7 @@ function ProductSearch({
         onChange={(e) => setQuery(e.target.value)}
       />
       {loading && <div>Loading…</div>}
-      {error && <div className="text-red-500">{error}</div>}
+      {error && <div className="text-danger-foreground">{error}</div>}
       {query && !loading && !error && (
         <ul className="space-y-1">
           {matches.map((p) => {

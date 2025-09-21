@@ -5,7 +5,8 @@ import type {
   Plugin,
 } from "@acme/types";
 import { z } from "zod";
-import { processPaypalPayment } from "./paypalClient";
+// Explicit .js extension for Node ESM runtime compatibility
+import { processPaypalPayment } from "./paypalClient.js";
 
 const configSchema = z
   .object({

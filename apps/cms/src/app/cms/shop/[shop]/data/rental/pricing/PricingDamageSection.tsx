@@ -20,7 +20,7 @@ export default function PricingDamageSection({ rows, onAdd, onRemove, onUpdate, 
         <Button
           type="button"
           variant="outline"
-          className="h-9 rounded-lg border-border/30 text-xs text-foreground hover:bg-muted/10"
+          className="h-9 rounded-lg border-border/30 text-xs text-foreground hover:bg-surface-3"
           onClick={onAdd}
         >
           Add damage rule
@@ -46,7 +46,7 @@ export default function PricingDamageSection({ rows, onAdd, onRemove, onUpdate, 
           return (
             <div
               key={row.id}
-              className="grid gap-3 rounded-xl border border-border/10 bg-slate-900/60 p-4 sm:grid-cols-[1fr_1fr_auto]"
+              className="grid gap-3 rounded-xl border border-border/10 bg-surface-2 p-4 sm:grid-cols-[1fr_1fr_auto]"
             >
               <label className="flex flex-col gap-1">
                 <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Damage code</span>
@@ -55,10 +55,10 @@ export default function PricingDamageSection({ rows, onAdd, onRemove, onUpdate, 
                   onChange={handleCodeChange}
                   aria-invalid={errors.code ? "true" : undefined}
                   aria-describedby={errors.code ? `${row.id}-code-error` : undefined}
-                  className="bg-slate-950/80 text-foreground"
+                  className="bg-surface-2 text-foreground"
                 />
                 {errors.code ? (
-                  <span id={`${row.id}-code-error`} className="text-xs text-rose-300">
+                  <span id={`${row.id}-code-error`} className="text-xs text-danger-foreground">
                     {errors.code}
                   </span>
                 ) : null}
@@ -71,7 +71,7 @@ export default function PricingDamageSection({ rows, onAdd, onRemove, onUpdate, 
                     variant={isDeposit ? "ghost" : "outline"}
                     className={cn(
                       "h-9 flex-1 rounded-lg text-xs",
-                      isDeposit ? "border-border/10 bg-background/60 text-foreground" : "border-border/30 text-foreground"
+                      isDeposit ? "border-border/10 bg-surface-2 text-foreground" : "border-border/30 text-foreground"
                     )}
                     onClick={() => setMode("amount")}
                   >
@@ -82,7 +82,7 @@ export default function PricingDamageSection({ rows, onAdd, onRemove, onUpdate, 
                     variant={isDeposit ? "outline" : "ghost"}
                     className={cn(
                       "h-9 flex-1 rounded-lg text-xs",
-                      isDeposit ? "border-border/30 text-foreground" : "border-border/10 bg-background/60 text-foreground"
+                      isDeposit ? "border-border/30 text-foreground" : "border-border/10 bg-surface-2 text-foreground"
                     )}
                     onClick={() => setMode("deposit")}
                   >
@@ -99,10 +99,10 @@ export default function PricingDamageSection({ rows, onAdd, onRemove, onUpdate, 
                       onChange={handleAmountChange}
                       aria-invalid={errors.amount ? "true" : undefined}
                       aria-describedby={errors.amount ? `${row.id}-amount-error` : undefined}
-                      className="bg-slate-950/80 text-foreground"
+                      className="bg-surface-2 text-foreground"
                     />
                     {errors.amount ? (
-                      <span id={`${row.id}-amount-error`} className="text-xs text-rose-300">
+                      <span id={`${row.id}-amount-error`} className="text-xs text-danger-foreground">
                         {errors.amount}
                       </span>
                     ) : null}
@@ -115,7 +115,7 @@ export default function PricingDamageSection({ rows, onAdd, onRemove, onUpdate, 
                 <Button
                   type="button"
                   variant="ghost"
-                  className="h-9 rounded-lg text-xs text-foreground hover:bg-muted/10"
+                  className="h-9 rounded-lg text-xs text-foreground hover:bg-surface-3"
                   onClick={() => onRemove(row.id)}
                   aria-label={`remove-damage-${row.id}`}
                 >

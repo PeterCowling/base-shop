@@ -67,7 +67,7 @@ export default function PreviewViewer({ params }: { params: Promise<{ token: str
           </div>
           <Button onClick={load} disabled={loading || !token}>{loading ? "Loading…" : "Load Preview"}</Button>
         </div>
-        {error && <p className="text-sm text-red-500">{error}</p>}
+        {error && <p className="text-sm text-danger-foreground">{error}</p>}
       </div>
       {data && (
         <div className="space-y-3">
@@ -85,7 +85,7 @@ export default function PreviewViewer({ params }: { params: Promise<{ token: str
             <div className="mb-2 text-sm font-medium">JSON</div>
             <pre className="max-h-[480px] overflow-auto whitespace-pre-wrap break-words text-xs bg-muted/40 p-2 rounded">{JSON.stringify(data, null, 2)}</pre>
             <div className="mt-2 text-xs">
-              <a className="text-blue-600 underline" href={apiUrl} target="_blank" rel="noreferrer">Open raw JSON</a>
+              <a className="text-primary underline" href={apiUrl} target="_blank" rel="noreferrer">Open raw JSON</a>
             </div>
           </div>
         </div>
@@ -93,4 +93,3 @@ export default function PreviewViewer({ params }: { params: Promise<{ token: str
     </div>
   );
 }
-

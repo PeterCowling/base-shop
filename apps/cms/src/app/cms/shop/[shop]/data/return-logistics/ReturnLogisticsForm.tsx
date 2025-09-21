@@ -226,10 +226,10 @@ export default function ReturnLogisticsForm({ shop, initial }: Props) {
         <span>Enable mobile returns</span>
       </label>
       {status === "saved" && (
-        <p className="text-sm text-green-600">Saved!</p>
+        <p className="text-sm text-success">Saved!</p>
       )}
       {status === "error" && error && (
-        <p className="text-sm text-red-600">{error}</p>
+        <p className="text-sm text-danger-foreground">{error}</p>
       )}
       <Button type="submit">Save</Button>
     </form>

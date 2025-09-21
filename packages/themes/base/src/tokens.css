@@ -23,6 +23,11 @@
   --color-info-fg: 210 90% 35%;
   --color-muted: 0 0% 88%;
 
+  /* gradient tokens (used via bg-hero) */
+  --gradient-hero-from: 234 89% 60%;
+  --gradient-hero-via: 270 83% 60%;
+  --gradient-hero-to: 222 47% 11%;
+
   --color-bg-dark: 0 0% 4%;
   --color-fg-dark: 0 0% 93%;
   --color-primary-dark: 220 90% 66%;
@@ -105,4 +110,5 @@ html.theme-dark {
   --color-info: var(--color-info-dark);
   --color-info-fg: var(--color-info-fg-dark);
   --color-muted: var(--color-muted-dark);
+  /* keep hero gradient consistent across modes by default */
 }

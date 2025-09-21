@@ -1,10 +1,87 @@
 [
   {
-    "id": "123",
-    "title": { "en": "Demo" },
-    "price": 1999,
+    "id": "01K5NZ3KVH5TQXYVFZW27HCE10",
+    "sku": "DRAFT-1758452633457",
+    "title": {
+      "en": "Untitled",
+      "de": "",
+      "it": ""
+    },
+    "description": {
+      "en": "",
+      "de": "",
+      "it": ""
+    },
+    "price": 0,
+    "currency": "EUR",
     "media": [],
+    "status": "draft",
+    "shop": "bcd",
+    "row_version": 1,
+    "created_at": "2025-09-21T11:03:53.453Z",
+    "updated_at": "2025-09-21T11:03:53.453Z"
+  },
+  {
+    "id": "01K5NWE2T4JGCXRAC94K8TNBH4",
+    "sku": "DRAFT-1758449830724",
+    "title": {
+      "en": "Untitled",
+      "de": "",
+      "it": ""
+    },
+    "description": {
+      "en": "",
+      "de": "",
+      "it": ""
+    },
+    "price": 0,
+    "currency": "EUR",
+    "media": [],
+    "status": "draft",
+    "shop": "bcd",
+    "row_version": 1,
+    "created_at": "2025-09-21T10:17:10.720Z",
+    "updated_at": "2025-09-21T10:17:10.720Z"
+  },
+  {
+    "id": "01K5NWC3QSKWPWH5H0792AT3QR",
+    "sku": "DRAFT-1758449766137",
+    "title": {
+      "en": "Untitled",
+      "de": "",
+      "it": ""
+    },
+    "description": {
+      "en": "",
+      "de": "",
+      "it": ""
+    },
+    "price": 0,
+    "currency": "EUR",
+    "media": [],
+    "status": "draft",
+    "shop": "bcd",
+    "row_version": 1,
+    "created_at": "2025-09-21T10:16:06.135Z",
+    "updated_at": "2025-09-21T10:16:06.135Z"
+  },
+  {
+    "id": "123",
+    "sku": "demo-123",
+    "title": {
+      "en": "Demo"
+    },
+    "description": {
+      "en": ""
+    },
+    "price": 1999,
+    "currency": "USD",
+    "media": [],
+    "shop": "bcd",
+    "status": "draft",
     "row_version": 0,
+    "created_at": "2025-01-01T00:00:00.000Z",
+    "updated_at": "2025-01-01T00:00:00.000Z",
     "dailyRate": 100,
     "weeklyRate": 500,
     "monthlyRate": 1500,
@@ -12,7 +89,10 @@
     "forSale": true,
     "forRental": true,
     "availability": [
-      { "from": "2025-01-01T00:00:00.000Z", "to": "2025-12-31T23:59:59.000Z" }
+      {
+        "from": "2025-01-01T00:00:00.000Z",
+        "to": "2025-12-31T23:59:59.000Z"
+      }
     ]
   }
 ]

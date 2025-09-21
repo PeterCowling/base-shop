@@ -17,7 +17,7 @@ export const revalidate = 0;
 
 interface Params {
   shop: string;
-  page: string;
+  page: string; // slug or id
 }
 
 export default async function PageBuilderRoute({
@@ -25,9 +25,10 @@ export default async function PageBuilderRoute({
 }: {
   params: Promise<Params>;
 }) {
-  const { shop, page: slug } = await params;
+  const { shop, page: key } = await params;
   const pages: Page[] = await getPages(shop);
-  const current = pages.find((p) => p.slug === slug);
+  // Allow editing by slug (preferred) or by id when slug is not yet set
+  const current = pages.find((p) => p.slug === key || p.id === key);
   if (!current) return notFound();
 
   async function save(formData: FormData) {
@@ -44,7 +45,7 @@ export default async function PageBuilderRoute({
   return (
     <>
       <h1 className="mb-6 text-2xl font-semibold">
-        Edit page - {shop}/{current.slug}
+        Edit page - {shop}/{current.slug || current.id}
       </h1>
       <p className="mb-4 text-sm text-muted-foreground">
         Hold <kbd>Shift</kbd> while resizing to snap a component to full

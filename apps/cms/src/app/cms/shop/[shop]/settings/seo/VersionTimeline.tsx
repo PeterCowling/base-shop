@@ -56,7 +56,7 @@ export default function VersionTimeline({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="bg-background fixed top-0 right-0 h-full w-96 max-w-full translate-x-full overflow-y-auto border-l p-6 shadow-lg transition-transform data-[state=open]:translate-x-0">
+      <DialogContent className="bg-surface-3 fixed top-0 right-0 h-full w-96 max-w-full translate-x-full overflow-y-auto border-l p-6 shadow-lg transition-transform data-[state=open]:translate-x-0">
         <DialogTitle className="mb-4">Revision History</DialogTitle>
 
         <div className="space-y-4 text-sm">

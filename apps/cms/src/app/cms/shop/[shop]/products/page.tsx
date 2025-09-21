@@ -79,25 +79,25 @@ export default async function ProductsPage({
       label: "Active",
       value: String(activeProducts),
       caption: "Live on the storefront",
-      accent: "bg-emerald-500/20 text-foreground",
+      accent: "bg-success/20 text-foreground",
     },
     {
       label: "Draft",
       value: String(draftProducts),
       caption: "Still in progress",
-      accent: "bg-amber-500/20 text-foreground",
+      accent: "bg-warning/20 text-foreground",
     },
     {
       label: "Scheduled",
       value: String(upcomingProducts),
       caption: "Queued for launch",
-      accent: "bg-sky-500/20 text-foreground",
+      accent: "bg-info/20 text-foreground",
     },
     {
       label: "Archived",
       value: String(archivedProducts),
       caption: "Hidden from customers",
-      accent: "bg-slate-500/20 text-foreground",
+      accent: "bg-muted/20 text-foreground",
     },
   ];
 
@@ -110,8 +110,7 @@ export default async function ProductsPage({
   /* ---------------------------------------------------------------------- */
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-slate-950 text-foreground shadow-xl">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.25),_transparent_55%)]" />
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
         <div className="relative grid gap-6 px-6 py-7 lg:grid-cols-[2fr,1fr] lg:gap-10">
           <div className="space-y-4">
             <div className="space-y-1">
@@ -135,7 +134,7 @@ export default async function ProductsPage({
                   <form action={onCreate}>
                     <Button
                       type="submit"
-                      className="h-11 rounded-xl bg-emerald-500 px-5 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-400"
+                      className="h-11 rounded-xl bg-success px-5 text-sm font-semibold text-success-foreground shadow-lg hover:bg-success/90"
                     >
                       Add new product
                     </Button>
@@ -144,7 +143,7 @@ export default async function ProductsPage({
                 <Button
                   asChild
                   variant="outline"
-                  className="h-11 rounded-xl border-border/40 px-5 text-sm font-semibold text-foreground hover:bg-muted/10"
+                  className="h-11 rounded-xl border-border/40 px-5 text-sm font-semibold text-foreground hover:bg-surface-3"
                 >
                   <Link href={`/cms/shop/${shop}/pages/new/builder`}>
                     Build merchandising page
@@ -170,7 +169,7 @@ export default async function ProductsPage({
               ))}
             </div>
           </div>
-          <Card className="border-border/10 bg-background/60 text-foreground shadow-xl backdrop-blur">
+          <Card className="border-border/10 bg-surface-2 text-foreground shadow-xl">
           <CardContent className="space-y-4 p-6">
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold">Launch checklist</h2>
@@ -192,7 +191,7 @@ export default async function ProductsPage({
       </section>
 
       <section className="space-y-4">
-        <Card className="border border-border/10 bg-slate-950/70 text-foreground shadow-lg">
+        <Card className="border border-border/10 bg-surface-2 text-foreground shadow-lg">
           <CardContent className="space-y-4 p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
@@ -216,7 +215,7 @@ export default async function ProductsPage({
         </Card>
 
         {viewerNotice && (
-          <Card className="border border-amber-500/30 bg-amber-500/10">
+          <Card className="border border-warning/30 bg-warning/10">
             <CardContent className="text-sm text-foreground">
               {viewerNotice}
             </CardContent>

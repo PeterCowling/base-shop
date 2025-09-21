@@ -35,8 +35,8 @@ const PreviewPanel: FC<Props> = ({
       <div className="space-y-1">
         <p className="text-muted-foreground text-sm">Google result</p>
         <div className="rounded-md border p-4 text-sm">
-          <p className="text-blue-600">{placeholder.title}</p>
-          <p className="text-green-700">{placeholder.url}</p>
+          <p className="text-primary">{placeholder.title}</p>
+          <p className="text-success">{placeholder.url}</p>
           <p className="text-muted-foreground">{placeholder.description}</p>
         </div>
       </div>

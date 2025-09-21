@@ -25,6 +25,8 @@ interface Props {
   showLegacyButtons?: boolean;
   /** Additional devices to include in the dropdown (e.g., page breakpoints). */
   extraDevices?: DevicePreset[];
+  /** Hide the quick device icon buttons on small screens to save space. */
+  compact?: boolean;
 }
 
 export default function DeviceSelector({
@@ -32,6 +34,7 @@ export default function DeviceSelector({
   onChange,
   showLegacyButtons = false,
   extraDevices = [],
+  compact = false,
 }: Props): React.JSX.Element {
   const [custom, setCustom] = useState<DevicePreset[]>([]);
   useEffect(() => {
@@ -80,6 +83,8 @@ export default function DeviceSelector({
             <Button
               key={t}
               variant={deviceId === preset.id ? "default" : "outline"}
+              size="icon"
+              className={compact ? "hidden sm:inline-flex" : undefined}
               onClick={() => onChange(preset.id)}
               aria-label={t}
             >
@@ -91,7 +96,7 @@ export default function DeviceSelector({
           );
         })}
       <Select value={deviceId} onValueChange={onChange}>
-        <SelectTrigger aria-label="Device" className="w-40">
+        <SelectTrigger aria-label="Device" className="w-28 sm:w-36">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

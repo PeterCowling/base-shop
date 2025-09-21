@@ -43,14 +43,14 @@ export default function SeoForm(props: Props) {
       />
 
       {Object.keys(errors).length > 0 && (
-        <div className="text-sm text-red-600">
+        <div className="text-sm text-danger-foreground">
           {Object.entries(errors).map(([k, v]) => (
             <p key={k}>{v.join("; ")}</p>
           ))}
         </div>
       )}
       {warnings.length > 0 && (
-        <div className="text-sm text-yellow-700">
+        <div className="text-sm text-warning-foreground">
           {warnings.map((w) => (
             <p key={w}>{w}</p>
           ))}

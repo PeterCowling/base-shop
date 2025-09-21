@@ -36,26 +36,26 @@ export default async function ShopDashboardPage({
 
   return (
     <div className="space-y-10">
-      <section className="overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 via-purple-600 to-slate-900 p-8 text-white shadow-xl">
+      <section className="overflow-hidden rounded-3xl bg-hero p-8 text-primary-foreground shadow-xl">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-          <div className="max-w-2xl space-y-4">
-            <p className="text-sm font-semibold uppercase tracking-wide text-white/80">
+          <div className="min-w-0 max-w-2xl space-y-4">
+            <p className="text-sm font-semibold uppercase tracking-wide text-primary-foreground/80">
               Experience overview
             </p>
             <h1 className="text-3xl font-bold lg:text-4xl">{shop} shop control center</h1>
-            <p className="text-white/80">
+            <p className="text-primary-foreground/80">
               Welcome back! Monitor your experience health, preview upgrades, and publish changes
               with confidence. Use the quick actions below to jump back into your most common
               workflows.
             </p>
             <div className="flex flex-wrap gap-3">
-              <Button asChild className="bg-white text-slate-900 hover:bg-white/90">
+              <Button asChild className="bg-surface-2 text-foreground hover:bg-surface-3">
                 <Link href={`/cms/shop/${shop}/pages`}>Manage pages</Link>
               </Button>
               <Button
                 asChild
                 variant="ghost"
-                className="text-white hover:bg-white/10 hover:text-white"
+                className="text-primary-foreground hover:bg-primary/10 hover:text-primary-foreground"
               >
                 <Link href={`/cms/shop/${shop}/themes`}>Open theme editor</Link>
               </Button>
@@ -67,7 +67,7 @@ export default async function ShopDashboardPage({
                 key={metric.label}
                 label={metric.label}
                 value={metric.value}
-                className="bg-white/10 backdrop-blur [&_span:first-child]:text-white/70 [&_span:last-child]:text-white"
+                className="bg-surface-2 [&_span:first-child]:text-primary-foreground/70 [&_span:last-child]:text-primary-foreground"
               />
             ))}
           </div>

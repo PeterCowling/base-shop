@@ -28,7 +28,7 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
               <span aria-hidden className="text-white/50">
                 /
               </span>
-              <span className="font-medium text-white">{p.slug}</span>
+              <span className="font-medium text-white">{p.slug || "(no slug)"}</span>
             </div>
             <p className="text-xs text-white/60">{pageTitle}</p>
           </div>
@@ -68,7 +68,9 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
           variant="outline"
           className="h-8 rounded-lg border-white/30 px-3 text-xs text-white hover:bg-white/10"
         >
-          <Link href={`/cms/shop/${shop}/pages/${p.slug}/builder`}>Edit</Link>
+          <Link href={`/cms/shop/${shop}/pages/${p.slug || p.id}/builder`}>
+            Edit
+          </Link>
         </Button>
       ),
     });

@@ -33,7 +33,7 @@ describe("usePageBuilderDnD", () => {
     expect(setSnapPosition).toHaveBeenLastCalledWith(10);
   });
 
-  it("adds new component from the palette", () => {
+  it("adds new component from the palette (allowed at root)", () => {
     const dispatch = jest.fn();
     const selectId = jest.fn();
 
@@ -51,13 +51,13 @@ describe("usePageBuilderDnD", () => {
 
     act(() =>
       result.current.handleDragStart({
-        active: { data: { current: { type: "Text" } } },
+        active: { data: { current: { type: "Section" } } },
       } as any)
     );
 
     act(() =>
       result.current.handleDragEnd({
-        active: { data: { current: { from: "palette", type: "Text" } } },
+        active: { data: { current: { from: "palette", type: "Section" } } },
         over: { id: "canvas", data: { current: {} } },
       } as any)
     );
@@ -67,10 +67,10 @@ describe("usePageBuilderDnD", () => {
     expect(selectId).toHaveBeenCalledWith(action.component.id);
   });
 
-  it("moves existing component", () => {
+  it("moves existing component (allowed at root)", () => {
     const components = [
-      { id: "a", type: "Text" },
-      { id: "b", type: "Text" },
+      { id: "a", type: "Section" },
+      { id: "b", type: "Section" },
     ] as any;
 
     const dispatch = jest.fn();
@@ -93,7 +93,7 @@ describe("usePageBuilderDnD", () => {
 
     act(() =>
       result.current.handleDragStart({
-        active: { data: { current: { type: "Text" } } },
+        active: { data: { current: { type: "Section" } } },
       } as any)
     );
 
@@ -113,7 +113,7 @@ describe("usePageBuilderDnD", () => {
               from: "canvas",
               index: 0,
               parentId: undefined,
-              type: "Text",
+              type: "Section",
             },
           },
         },
@@ -128,4 +128,3 @@ describe("usePageBuilderDnD", () => {
     });
   });
 });
-

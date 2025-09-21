@@ -25,6 +25,7 @@ import {
 import type { ComponentType } from "./defaults";
 import LibraryImportExport from "./LibraryImportExport";
 import MediaLibrary from "./MediaLibrary";
+import { isTopLevelAllowed } from "./rules";
 
 const defaultIcon = "/window.svg";
 
@@ -283,9 +284,10 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
       )}
 
       {Object.entries(palette).map(([category, items]) => {
-        const filtered = items.filter((p) =>
-          p.label.toLowerCase().includes(search.toLowerCase()),
-        );
+        const filtered = items
+          .filter((p) => p.label.toLowerCase().includes(search.toLowerCase()))
+          // Only show items permitted at top-level (canvas)
+          .filter((p) => isTopLevelAllowed(p.type));
         if (!filtered.length) return null;
         return (
           <div key={category} className="space-y-2">

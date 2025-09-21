@@ -14,6 +14,7 @@ import usePageBuilderControls from "./hooks/usePageBuilderControls";
 import usePageBuilderSave from "./hooks/usePageBuilderSave";
 import PageBuilderLayout from "./PageBuilderLayout";
 import { defaults, CONTAINER_TYPES, type ComponentType } from "./defaults";
+import { isTopLevelAllowed } from "./rules";
 import usePreviewTokens from "./hooks/usePreviewTokens";
 
 interface Props {
@@ -82,6 +83,11 @@ const PageBuilder = memo(function PageBuilder({
   });
 
   const handleAddFromPalette = (type: ComponentType) => {
+    // Enforce root-level placement rules
+    if (!isTopLevelAllowed(type)) {
+      try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Cannot add ${type} at page root` })); } catch {}
+      return;
+    }
     const isContainer = CONTAINER_TYPES.includes(type);
     const component = {
       id: ulid(),

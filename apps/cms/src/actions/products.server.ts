@@ -123,12 +123,20 @@ export async function updateProduct(
   const current = await getProductById(shop, id);
   if (!current) throw new Error(`Product ${id} not found in ${shop}`);
 
+  // Parse optional list of publish shops provided by the client UI. Accept a
+  // comma-separated list and persist as a string array. Empty string -> [].
+  const publishShopsRaw = String(formEntries.publishShops ?? "").trim();
+  const publishShops = publishShopsRaw
+    ? publishShopsRaw.split(",").map((s) => s.trim()).filter(Boolean)
+    : [];
+
   const updated: ProductPublication = {
     ...current,
     title: { ...current.title, ...data.title },
     description: { ...current.description, ...data.description },
     price,
     media: mediaItems,
+    ...(publishShops ? { publishShops } : { publishShops: [] }),
     row_version: current.row_version + 1,
     updated_at: nowIso(),
   };

@@ -109,18 +109,17 @@ export default async function LivePage() {
 
   return (
     <div className="space-y-10">
-      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-slate-950 text-white shadow-xl">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,163,255,0.35),_transparent_55%)]" />
+      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero text-primary-foreground shadow-xl">
         <div className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
           <div className="space-y-6">
             <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-white/70">
+              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground/70">
                 Live previews
               </span>
               <h1 className="text-3xl font-semibold md:text-4xl">
                 Validate storefronts in real time
               </h1>
-              <p className="text-white/80">
+              <p className="text-primary-foreground/80">
                 Launch each storefront’s development server directly from the CMS. Monitor availability before sharing links with stakeholders.
               </p>
             </div>
@@ -133,7 +132,7 @@ export default async function LivePage() {
                 <Button
                   asChild
                   variant="outline"
-                  className="h-11 px-5 text-sm font-semibold border-white/40 text-white hover:bg-white/10"
+                  className="h-11 px-5 text-sm font-semibold border-primary/40 text-primary-foreground hover:bg-primary/10"
                 >
                   <Link href="/cms/maintenance">Run maintenance scan</Link>
                 </Button>
@@ -143,37 +142,37 @@ export default async function LivePage() {
               {quickStats.map((stat) => (
                 <Card
                   key={stat.label}
-                  className="border border-white/15 bg-white/5 text-white backdrop-blur"
+                  className="border border-primary/15 bg-surface-2 text-primary-foreground"
                 >
                   <CardContent className="space-y-1 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-white/60">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-primary-foreground/70">
                       {stat.label}
                     </p>
                     <p className="text-xl font-semibold">{stat.value}</p>
-                    <p className="text-xs text-white/70">{stat.caption}</p>
+                    <p className="text-xs text-primary-foreground/70">{stat.caption}</p>
                   </CardContent>
                 </Card>
               ))}
             </div>
           </div>
-          <Card className="border border-white/20 bg-white/5 text-white shadow-2xl backdrop-blur">
+          <Card className="border border-primary/20 bg-surface-2 text-primary-foreground shadow-2xl">
             <CardContent className="space-y-5">
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold">Preview readiness</h2>
-                <p className="text-sm text-white/70">
+                <p className="text-sm text-primary-foreground/70">
                   Keep development servers running so designers and QA can review changes instantly.
                 </p>
               </div>
-              <div className="flex items-center justify-between gap-3 rounded-xl border border-white/15 bg-white/5 px-4 py-3">
-                <div>
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/15 bg-surface-2 px-4 py-3">
+                <div className="min-w-0">
                   <p className="text-sm font-medium">Available previews</p>
-                  <p className="text-xs text-white/70">
+                  <p className="text-xs text-primary-foreground/70">
                     {previewsReady === shops.length
                       ? "All previews online"
                       : `${previewsReady} of ${shops.length} available`}
                   </p>
                 </div>
-                <Tag variant={previewsUnavailable === 0 ? "success" : "warning"}>
+                <Tag className="shrink-0" variant={previewsUnavailable === 0 ? "success" : "warning"}>
                   {previewsUnavailable === 0 ? "All good" : "Needs attention"}
                 </Tag>
               </div>
@@ -184,9 +183,9 @@ export default async function LivePage() {
 
       <Card className="border border-border/60">
         <CardContent className="space-y-6">
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-lg font-semibold text-foreground">Shop previews</h2>
-            <Tag variant={previewsUnavailable === 0 ? "success" : "warning"}>
+            <Tag className="shrink-0" variant={previewsUnavailable === 0 ? "success" : "warning"}>
               {shops.length === 0
                 ? "No shops"
                 : previewsUnavailable === 0

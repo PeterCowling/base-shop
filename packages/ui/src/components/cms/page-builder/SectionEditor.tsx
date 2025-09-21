@@ -137,22 +137,22 @@ export default function SectionEditor({ component, onChange }: Props) {
         />
         <Select
           value={(((component as any).backgroundVideoLoop ?? undefined) === undefined) ? "" : (((component as any).backgroundVideoLoop ? "1" : "0"))}
-          onValueChange={(v) => handle("backgroundVideoLoop" as any, (v === "" ? undefined : (v === "1")) as any)}
+          onValueChange={(v) => handle("backgroundVideoLoop" as any, (v === "__default__" ? undefined : (v === "" ? undefined : (v === "1"))) as any)}
         >
           <SelectTrigger><SelectValue placeholder="Loop" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Default</SelectItem>
+            <SelectItem value="__default__">Default</SelectItem>
             <SelectItem value="1">true</SelectItem>
             <SelectItem value="0">false</SelectItem>
           </SelectContent>
         </Select>
         <Select
           value={(((component as any).backgroundVideoMuted ?? undefined) === undefined) ? "" : (((component as any).backgroundVideoMuted ? "1" : "0"))}
-          onValueChange={(v) => handle("backgroundVideoMuted" as any, (v === "" ? undefined : (v === "1")) as any)}
+          onValueChange={(v) => handle("backgroundVideoMuted" as any, (v === "__default__" ? undefined : (v === "" ? undefined : (v === "1"))) as any)}
         >
           <SelectTrigger><SelectValue placeholder="Muted" /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Default</SelectItem>
+            <SelectItem value="__default__">Default</SelectItem>
             <SelectItem value="1">true</SelectItem>
             <SelectItem value="0">false</SelectItem>
           </SelectContent>
@@ -207,11 +207,11 @@ export default function SectionEditor({ component, onChange }: Props) {
             <Input label="Height (px)" type="number" min="0" value={((component as any).topShapeHeight ?? "") as any} onChange={(e) => handle("topShapeHeight" as any, (e.target.value === "" ? undefined : Number(e.target.value)) as any)} />
             <Select
               value={(((component as any).topShapeFlipX ?? undefined) === undefined) ? "" : (((component as any).topShapeFlipX ? "1" : "0"))}
-              onValueChange={(v) => handle("topShapeFlipX" as any, (v === "" ? undefined : (v === "1")) as any)}
+              onValueChange={(v) => handle("topShapeFlipX" as any, (v === "__default__" ? undefined : (v === "" ? undefined : (v === "1"))) as any)}
             >
               <SelectTrigger><SelectValue placeholder="Flip X" /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="">default</SelectItem>
+                <SelectItem value="__default__">default</SelectItem>
                 <SelectItem value="1">true</SelectItem>
                 <SelectItem value="0">false</SelectItem>
               </SelectContent>
@@ -240,11 +240,11 @@ export default function SectionEditor({ component, onChange }: Props) {
             <Input label="Height (px)" type="number" min="0" value={((component as any).bottomShapeHeight ?? "") as any} onChange={(e) => handle("bottomShapeHeight" as any, (e.target.value === "" ? undefined : Number(e.target.value)) as any)} />
             <Select
               value={(((component as any).bottomShapeFlipX ?? undefined) === undefined) ? "" : (((component as any).bottomShapeFlipX ? "1" : "0"))}
-              onValueChange={(v) => handle("bottomShapeFlipX" as any, (v === "" ? undefined : (v === "1")) as any)}
+              onValueChange={(v) => handle("bottomShapeFlipX" as any, (v === "__default__" ? undefined : (v === "" ? undefined : (v === "1"))) as any)}
             >
               <SelectTrigger><SelectValue placeholder="Flip X" /></SelectTrigger>
               <SelectContent>
-                <SelectItem value="">default</SelectItem>
+                <SelectItem value="__default__">default</SelectItem>
                 <SelectItem value="1">true</SelectItem>
                 <SelectItem value="0">false</SelectItem>
               </SelectContent>

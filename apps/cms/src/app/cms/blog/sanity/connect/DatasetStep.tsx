@@ -95,10 +95,10 @@ export default function DatasetStep({
           <p className="text-xs text-muted-foreground">Verifying dataset...</p>
         )}
         {verifyStatus === "success" && (
-          <p className="text-xs text-green-600">Dataset verified</p>
+          <p className="text-xs text-success">Dataset verified</p>
         )}
         {verifyStatus === "error" && (
-          <p className="text-xs text-red-600">{verifyError}</p>
+          <p className="text-xs text-danger-foreground">{verifyError}</p>
         )}
       </div>
       <div className="space-y-1">
@@ -128,7 +128,7 @@ function SubmitButton({ isCreating }: { isCreating: boolean }) {
   const { pending } = useFormStatus();
   const label = pending ? (isCreating ? "Creating dataset..." : "Saving...") : "Save";
   return (
-    <Button type="submit" className="bg-primary text-white" disabled={pending}>
+    <Button type="submit" className="bg-primary text-primary-foreground" disabled={pending}>
       {label}
     </Button>
   );

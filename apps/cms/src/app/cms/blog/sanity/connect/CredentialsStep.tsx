@@ -62,7 +62,7 @@ export default function CredentialsStep({
       <div className="space-y-2">
         <Button
           type="button"
-          className="bg-primary text-white"
+          className="bg-primary text-primary-foreground"
           onClick={() => void verify()}
         >
           Verify
@@ -74,14 +74,14 @@ export default function CredentialsStep({
         )}
         {verifyStatus === "success" && (
           <>
-            <p className="text-xs text-green-600">Credentials verified</p>
+            <p className="text-xs text-success">Credentials verified</p>
             <Button type="button" onClick={onNext}>
               Next
             </Button>
           </>
         )}
         {verifyStatus === "error" && (
-          <p className="text-xs text-red-600">{verifyError}</p>
+          <p className="text-xs text-danger-foreground">{verifyError}</p>
         )}
       </div>
     </div>

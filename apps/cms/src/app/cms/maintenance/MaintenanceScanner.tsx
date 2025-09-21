@@ -83,14 +83,14 @@ export function MaintenanceScanner({ initial }: MaintenanceScannerProps) {
           className="space-y-3 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           {items.length === 0 ? (
-            <Card className="border border-dashed border-border/60 bg-muted/10">
+            <Card className="border border-dashed border-border/60 bg-surface-3">
               <CardContent className="p-4 text-sm text-muted-foreground">
                 No items currently require maintenance. Run the scan whenever you want an updated view.
               </CardContent>
             </Card>
           ) : (
             items.map((item, index) => (
-              <Card key={`${item.shopId}-${item.sku}-${index}`} className="border border-border/60 bg-muted/10">
+              <Card key={`${item.shopId}-${item.sku}-${index}`} className="border border-border/60 bg-surface-3">
                 <CardContent className="space-y-1 p-4">
                   <p className="text-sm font-semibold text-foreground">{item.shopId}</p>
                   <p className="text-xs text-muted-foreground">

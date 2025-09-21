@@ -2,8 +2,10 @@
    CMS-wide globals powered by design-system tokens                    */
 @config "../../../../tailwind.config.mjs";
 
-/* Use a relative path so PostCSS resolves tokens without package build */
+/* Import base theme first for layout primitives; override colors/fonts below */
 @import "../../../../packages/themes/base/src/tokens.css";
+/* CMS-only tokens to prevent base theme bleed-through */
+@import "./cms.tokens.css";
 @import "../../../../packages/ui/src/styles/builder.css";
 @import "tailwindcss";
 
@@ -27,7 +29,8 @@ body {
 
 /* link & button helpers */
 a {
-  color: hsl(var(--color-primary));
+  /* Inherit text color so buttons/variants control anchor contrast. */
+  color: inherit;
   text-decoration: none;
 }
 a:hover {
@@ -35,4 +38,62 @@ a:hover {
 }
 button {
   font-family: inherit;
+}
+
+/* CMS surface utilities and overrides */
+.bg-surface-1 { background-color: hsl(var(--surface-1)); }
+.bg-surface-2 { background-color: hsl(var(--surface-2)); }
+.bg-surface-3 { background-color: hsl(var(--surface-3)); }
+
+/* Align shadcn/Tailwind semantic classes with CMS surfaces */
+.bg-card { background-color: hsl(var(--surface-2)) !important; }
+.bg-popover { background-color: hsl(var(--surface-3)) !important; }
+
+/* Optional text/border utilities for surface-aware styling */
+.text-surface-1 { color: hsl(var(--surface-1)); }
+.text-surface-2 { color: hsl(var(--surface-2)); }
+.text-surface-3 { color: hsl(var(--surface-3)); }
+.border-surface-1 { border-color: hsl(var(--surface-1)); }
+.border-surface-2 { border-color: hsl(var(--surface-2)); }
+.border-surface-3 { border-color: hsl(var(--surface-3)); }
+
+/* Improve readability of muted helper text within the CMS.
+   Our preset sets text-muted-foreground to 65% alpha of --color-fg,
+   which looked too faint on layered CMS surfaces. Bump to ~78% here. */
+.text-muted-foreground { color: hsl(var(--color-fg) / 0.78); }
+
+/* Keyboard key styling for inline <kbd> elements used in Page Builder tips
+   and the shortcuts dialog. Keeps contrast and affordance consistent across
+   light/dark surfaces without relying on UA default styles. */
+kbd {
+  display: inline-block;
+  padding: 0 0.4em;
+  border-radius: 0.375rem; /* ~6px */
+  background: hsl(var(--surface-3));
+  color: hsl(var(--color-fg));
+  border: 1px solid hsl(var(--color-fg) / 0.25);
+  box-shadow: inset 0 -1px 0 hsl(var(--color-bg) / 0.6);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.6;
+}
+
+/* -------- Text wrapping & overflow safety ------------------------ */
+/*
+   Ensure long user-provided text (names, emails, slugs, URLs) does not
+   bleed outside components. We scope these rules to the CMS content area
+   (see LayoutClient) to avoid side effects in other apps.
+*/
+.cms-content :where(h1,h2,h3,h4,h5,h6,p,span,small,li,dt,dd,blockquote,label,a,strong,em,code,div) {
+  overflow-wrap: anywhere; /* allow breaking very long tokens */
+  word-break: break-word;  /* fallback for older engines */
+  hyphens: auto;           /* nicer wrapping where supported */
+}
+
+/* In flex rows, allow text containers to shrink and wrap instead of
+   forcing siblings (like status tags) to compress awkwardly. Apply the
+   utility class `min-w-0` where needed in markup; this targets any
+   element carrying it for clarity. */
+.cms-content :where(.min-w-0) {
+  min-width: 0 !important;
 }

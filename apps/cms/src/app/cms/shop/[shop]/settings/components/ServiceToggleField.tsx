@@ -33,7 +33,7 @@ export function ServiceToggleField({
       error={<ErrorChips errors={errors} />}
       className="gap-3"
     >
-      <div className="flex items-center justify-between gap-4 rounded-md border border-border/60 bg-muted/10 px-4 py-3">
+      <div className="flex items-center justify-between gap-4 rounded-md border border-border/60 bg-surface-3 px-4 py-3">
         <div className="flex-1 text-sm text-muted-foreground">
           {description ? (
             <p id={`${id}-description`} className="leading-relaxed">

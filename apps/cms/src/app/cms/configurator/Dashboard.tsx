@@ -23,8 +23,7 @@ export default function ConfiguratorDashboard() {
 
   return (
     <div className="space-y-10">
-      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-slate-950 text-white shadow-xl">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,163,255,0.35),_transparent_55%)]" />
+      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero text-primary-foreground shadow-xl">
         <div className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
           <ConfiguratorHero {...heroData} />
           <LaunchPanel {...launchPanelData} />

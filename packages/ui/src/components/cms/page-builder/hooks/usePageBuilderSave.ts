@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Page, PageComponent, HistoryState } from "@acme/types";
 import useAutoSave from "./useAutoSave";
 import { exportComponents } from "../state/exportComponents";
@@ -29,6 +29,9 @@ export default function usePageBuilderSave({
   clearHistory,
   shop,
 }: Params) {
+  // Track the latest updatedAt returned by the server to avoid optimistic
+  // concurrency conflicts on subsequent auto-saves.
+  const [updatedAt, setUpdatedAt] = useState(page.updatedAt);
   // Lazy import to avoid SSR issues
   const getLibrary = () => {
     try {
@@ -49,7 +52,7 @@ export default function usePageBuilderSave({
   const formData = useMemo(() => {
     const fd = new FormData();
     fd.append("id", page.id);
-    fd.append("updatedAt", page.updatedAt);
+    fd.append("updatedAt", updatedAt);
     fd.append("slug", page.slug);
     fd.append("status", page.status);
     fd.append("title", JSON.stringify(page.seo.title));
@@ -66,14 +69,32 @@ export default function usePageBuilderSave({
       // ignore library persistence errors
     }
     return fd;
-  }, [page, components, state, shop]);
+  }, [page, components, state, shop, updatedAt]);
 
   const formDataRef = useRef<FormData>(formData);
   useEffect(() => {
     formDataRef.current = formData;
   }, [formData]);
 
-  const handleSave = useCallback(() => onSave(formDataRef.current), [onSave]);
+  // Wrap onSave to capture the server's latest updatedAt and keep our
+  // subsequent saves in sync.
+  const saveWithMetaUpdate = useCallback(
+    async (fd: FormData) => {
+      const res: any = await onSave(fd);
+      try {
+        const next = (res?.page ?? res) as { updatedAt?: string } | undefined;
+        if (next && typeof next.updatedAt === "string" && next.updatedAt) {
+          setUpdatedAt(next.updatedAt);
+        }
+      } catch {
+        /* ignore shape mismatches */
+      }
+      return res;
+    },
+    [onSave]
+  );
+
+  const handleSave = useCallback(() => saveWithMetaUpdate(formDataRef.current), [saveWithMetaUpdate]);
   const handlePublish = useCallback(() => {
     // Build a transformed FormData merging editor metadata into components
     const fd = formDataRef.current;
@@ -111,7 +132,7 @@ export default function usePageBuilderSave({
   }, [onPublish, clearHistory, components]);
 
   const { autoSaveState } = useAutoSave({
-    onSave,
+    onSave: saveWithMetaUpdate,
     formData,
     deps: formDataDeps,
     onError: onAutoSaveError,

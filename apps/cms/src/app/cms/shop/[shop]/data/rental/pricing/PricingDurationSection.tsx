@@ -19,7 +19,7 @@ export default function PricingDurationSection({ rows, onAdd, onRemove, onUpdate
         <Button
           type="button"
           variant="outline"
-          className="h-9 rounded-lg border-border/30 text-xs text-foreground hover:bg-muted/10"
+          className="h-9 rounded-lg border-border/30 text-xs text-foreground hover:bg-surface-3"
           onClick={onAdd}
         >
           Add discount tier
@@ -43,7 +43,7 @@ export default function PricingDurationSection({ rows, onAdd, onRemove, onUpdate
           return (
             <div
               key={row.id}
-              className="grid gap-3 rounded-xl border border-border/10 bg-slate-900/60 p-4 sm:grid-cols-[1fr_1fr_auto]"
+              className="grid gap-3 rounded-xl border border-border/10 bg-surface-2 p-4 sm:grid-cols-[1fr_1fr_auto]"
             >
               <label className="flex flex-col gap-1">
                 <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Min days</span>
@@ -54,10 +54,10 @@ export default function PricingDurationSection({ rows, onAdd, onRemove, onUpdate
                   onChange={handleMinDaysChange}
                   aria-invalid={errors.minDays ? "true" : undefined}
                   aria-describedby={errors.minDays ? `${row.id}-minDays-error` : undefined}
-                  className="bg-slate-950/80 text-foreground"
+                  className="bg-surface-2 text-foreground"
                 />
                 {errors.minDays ? (
-                  <span id={`${row.id}-minDays-error`} className="text-xs text-rose-300">
+                  <span id={`${row.id}-minDays-error`} className="text-xs text-danger-foreground">
                     {errors.minDays}
                   </span>
                 ) : null}
@@ -72,10 +72,10 @@ export default function PricingDurationSection({ rows, onAdd, onRemove, onUpdate
                   onChange={handleRateChange}
                   aria-invalid={errors.rate ? "true" : undefined}
                   aria-describedby={errors.rate ? `${row.id}-rate-error` : undefined}
-                  className="bg-slate-950/80 text-foreground"
+                  className="bg-surface-2 text-foreground"
                 />
                 {errors.rate ? (
-                  <span id={`${row.id}-rate-error`} className="text-xs text-rose-300">
+                  <span id={`${row.id}-rate-error`} className="text-xs text-danger-foreground">
                     {errors.rate}
                   </span>
                 ) : null}
@@ -84,7 +84,7 @@ export default function PricingDurationSection({ rows, onAdd, onRemove, onUpdate
                 <Button
                   type="button"
                   variant="ghost"
-                  className="h-9 rounded-lg text-xs text-foreground hover:bg-muted/10"
+                  className="h-9 rounded-lg text-xs text-foreground hover:bg-surface-3"
                   onClick={() => onRemove(row.id)}
                   aria-label={`remove-duration-${row.id}`}
                 >

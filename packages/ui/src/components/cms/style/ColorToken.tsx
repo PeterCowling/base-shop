@@ -31,8 +31,8 @@ export function ColorToken({
       }`}
       data-token={isOverridden ? "--color-info" : undefined}
     >
-      <span className="flex items-center gap-2">
-        <span className="w-40 flex-shrink-0">{tokenKey}</span>
+      <span className="flex flex-wrap items-center gap-2 min-w-0">
+        <span className="basis-40 shrink-0">{tokenKey}</span>
         <ColorInput value={value} onChange={(val) => setToken(tokenKey, val)} />
         {isOverridden && (
           <button

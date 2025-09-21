@@ -119,7 +119,7 @@ export default function StepShopDetails(
           placeholder="my-shop"
         />
         {getError("id") && (
-          <p className="text-sm text-red-600">{getError("id")}</p>
+          <p className="text-sm text-danger-foreground">{getError("id")}</p>
         )}
       </label>
       <label className="flex flex-col gap-1">
@@ -131,7 +131,7 @@ export default function StepShopDetails(
           placeholder="My Store"
         />
         {getError("name") && (
-          <p className="text-sm text-red-600">{getError("name")}</p>
+          <p className="text-sm text-danger-foreground">{getError("name")}</p>
         )}
       </label>
       {([
@@ -160,7 +160,7 @@ export default function StepShopDetails(
             </ImagePicker>
           </div>
           {getError(`logo.${key}`) && (
-            <p className="text-sm text-red-600">{getError(`logo.${key}`)}</p>
+            <p className="text-sm text-danger-foreground">{getError(`logo.${key}`)}</p>
           )}
         </label>
       ))}
@@ -173,7 +173,7 @@ export default function StepShopDetails(
           placeholder="Email or phone"
         />
         {getError("contactInfo") && (
-          <p className="text-sm text-red-600">{getError("contactInfo")}</p>
+          <p className="text-sm text-danger-foreground">{getError("contactInfo")}</p>
         )}
       </label>
       <label className="flex flex-col gap-1">
@@ -188,7 +188,7 @@ export default function StepShopDetails(
           </SelectContent>
         </Select>
         {getError("type") && (
-          <p className="text-sm text-red-600">{getError("type")}</p>
+          <p className="text-sm text-danger-foreground">{getError("type")}</p>
         )}
       </label>
       <label className="flex flex-col gap-1">
@@ -206,7 +206,7 @@ export default function StepShopDetails(
           </SelectContent>
         </Select>
         {getError("template") && (
-          <p className="text-sm text-red-600">{getError("template")}</p>
+          <p className="text-sm text-danger-foreground">{getError("template")}</p>
         )}
       </label>
       <div className="flex justify-end">

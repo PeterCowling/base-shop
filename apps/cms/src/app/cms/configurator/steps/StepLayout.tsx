@@ -144,12 +144,12 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
         <div className="flex items-center gap-2 h-5">
           {headerSaving && <Spinner className="h-4 w-4" />}
           {!headerSaving && headerSaved && (
-            <p className="flex items-center gap-1 text-sm text-green-600">
+            <p className="flex items-center gap-1 text-sm text-success">
               <CheckIcon className="h-4 w-4" /> Saved
             </p>
           )}
           {!headerSaving && headerError && (
-            <p className="text-sm text-red-500">{headerError}</p>
+            <p className="text-sm text-danger-foreground">{headerError}</p>
           )}
         </div>
       </div>
@@ -205,12 +205,12 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
         <div className="flex items-center gap-2 h-5">
           {footerSaving && <Spinner className="h-4 w-4" />}
           {!footerSaving && footerSaved && (
-            <p className="flex items-center gap-1 text-sm text-green-600">
+            <p className="flex items-center gap-1 text-sm text-success">
               <CheckIcon className="h-4 w-4" /> Saved
             </p>
           )}
           {!footerSaving && footerError && (
-            <p className="text-sm text-red-500">{footerError}</p>
+            <p className="text-sm text-danger-foreground">{footerError}</p>
           )}
         </div>
       </div>

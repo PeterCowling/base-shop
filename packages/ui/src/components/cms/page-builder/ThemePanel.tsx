@@ -88,7 +88,7 @@ export default function ThemePanel() {
   }, [shop]);
 
   return (
-    <DialogContent className="max-w-3xl">
+    <DialogContent className="max-w-4xl">
       <DialogTitle>Theme</DialogTitle>
       <div className="space-y-3">
         <p className="text-sm text-muted-foreground">

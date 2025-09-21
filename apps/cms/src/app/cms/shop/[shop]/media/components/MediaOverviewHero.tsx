@@ -135,7 +135,7 @@ export default function MediaOverviewHero({
           </div>
 
           <dl className="grid gap-4 sm:grid-cols-3" aria-label="Media usage statistics">
-            <div className="rounded-lg border border-border/60 bg-muted/10 p-4">
+            <div className="rounded-lg border border-border/60 bg-surface-3 p-4">
               <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 <StackIcon className="h-4 w-4" aria-hidden />
                 Storage used
@@ -153,7 +153,7 @@ export default function MediaOverviewHero({
               )}
             </div>
 
-            <div className="rounded-lg border border-border/60 bg-muted/10 p-4">
+            <div className="rounded-lg border border-border/60 bg-surface-3 p-4">
               <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 <ImageIcon className="h-4 w-4" aria-hidden />
                 Assets in library
@@ -166,7 +166,7 @@ export default function MediaOverviewHero({
               </p>
             </div>
 
-            <div className="rounded-lg border border-border/60 bg-muted/10 p-4">
+            <div className="rounded-lg border border-border/60 bg-surface-3 p-4">
               <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 <ClockIcon className="h-4 w-4" aria-hidden />
                 Last upload
@@ -216,7 +216,7 @@ export default function MediaOverviewHero({
                             </div>
                           )}
                           {item.type === "video" && (
-                            <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-1 text-xs text-white">
+                            <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-foreground/60 px-2 py-1 text-xs text-primary-foreground">
                               <VideoIcon className="h-3 w-3" aria-hidden />
                               Video
                             </span>

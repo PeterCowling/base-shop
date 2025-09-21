@@ -341,8 +341,8 @@ export default function BlockChildren({
                 const i = visibleChildren.findIndex((c) => c.id === child.id);
                 return (
                   <div key={child.id} className="relative group">
-                    {/* Slot assignment control */}
-                    <div className="absolute -top-3 right-0 z-20">
+                    {/* Slot assignment control: position 10px to left of parent */}
+                    <div className="absolute -top-3 -left-[10px] z-20">
                       <Select
                         value={String((child as any).slotKey ?? 0)}
                         onValueChange={(v) => dispatch({ type: "update", id: child.id, patch: { slotKey: v } as any })}
@@ -435,7 +435,8 @@ export default function BlockChildren({
                   return (
                     <div key={child.id} className="relative group">
                       {/* Area assignment control */}
-                      <div className="absolute -top-3 right-0 z-20">
+                      {/* Area assignment control: position 10px to left of parent */}
+                      <div className="absolute -top-3 -left-[10px] z-20">
                         <Select
                           value={String((child as any).gridArea ?? area)}
                           onValueChange={(v) => dispatch({ type: "update", id: child.id, patch: { gridArea: v } as any })}

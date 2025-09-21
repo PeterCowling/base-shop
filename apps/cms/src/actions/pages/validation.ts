@@ -47,7 +47,13 @@ const baseSchema = z
   })
   .extend(localeFields as Record<string, z.ZodTypeAny>);
 
-export const createSchema = baseSchema;
+export const createSchema = baseSchema.refine(
+  (data) => data.status !== "published" || data.slug.trim().length > 0,
+  {
+    message: "Slug required to publish",
+    path: ["slug"],
+  },
+);
 export type PageCreateForm = z.infer<typeof createSchema>;
 
 export const updateSchema = baseSchema
@@ -55,8 +61,11 @@ export const updateSchema = baseSchema
     id: z.string(),
     updatedAt: z.string(),
   })
-  .refine((data) => data.slug.trim().length > 0, {
-    message: "Slug required",
-    path: ["slug"],
-  });
+  .refine(
+    (data) => data.status !== "published" || data.slug.trim().length > 0,
+    {
+      message: "Slug required to publish",
+      path: ["slug"],
+    },
+  );
 export type PageUpdateForm = z.infer<typeof updateSchema>;

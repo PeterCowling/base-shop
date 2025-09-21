@@ -54,7 +54,7 @@ export default async function UpgradeSummary({ shop }: { shop: string }) {
 
   if (!res.ok) {
     return (
-      <p className="text-sm text-red-600">
+      <p className="text-sm text-danger-foreground">
         Failed to load upgrade information.
       </p>
     );

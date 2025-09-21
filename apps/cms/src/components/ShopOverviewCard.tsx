@@ -20,8 +20,8 @@ export function ShopOverviewCard({ stats, pendingCount }: ShopOverviewCardProps)
           </p>
         </div>
         <div className="space-y-3">
-          <div className="flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-muted/10 px-4 py-3">
-            <div>
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/60 bg-surface-3 px-4 py-3">
+            <div className="min-w-0">
               <p className="text-sm font-medium text-foreground">Operational footprint</p>
               <p className="text-xs text-muted-foreground">
                 {shops === 0
@@ -29,12 +29,12 @@ export function ShopOverviewCard({ stats, pendingCount }: ShopOverviewCardProps)
                   : `${shops} ${shops === 1 ? "shop" : "shops"} ready for merchandising`}
               </p>
             </div>
-            <Tag variant={shops > 0 ? "default" : "warning"}>
+            <Tag className="shrink-0" variant={shops > 0 ? "default" : "warning"}>
               {shops > 0 ? "Active" : "Needs setup"}
             </Tag>
           </div>
-          <div className="flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-muted/10 px-4 py-3">
-            <div>
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/60 bg-surface-3 px-4 py-3">
+            <div className="min-w-0">
               <p className="text-sm font-medium text-foreground">Catalog depth</p>
               <p className="text-xs text-muted-foreground">
                 {products === 0
@@ -42,12 +42,12 @@ export function ShopOverviewCard({ stats, pendingCount }: ShopOverviewCardProps)
                   : `${products} items available across all shops`}
               </p>
             </div>
-            <Tag variant={products > 0 ? "default" : "warning"}>
+            <Tag className="shrink-0" variant={products > 0 ? "default" : "warning"}>
               {products > 0 ? "Populated" : "Empty"}
             </Tag>
           </div>
-          <div className="flex items-center justify-between gap-3 rounded-xl border border-border/60 bg-muted/10 px-4 py-3">
-            <div>
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/60 bg-surface-3 px-4 py-3">
+            <div className="min-w-0">
               <p className="text-sm font-medium text-foreground">Team access</p>
               <p className="text-xs text-muted-foreground">
                 {users === 0
@@ -55,7 +55,7 @@ export function ShopOverviewCard({ stats, pendingCount }: ShopOverviewCardProps)
                   : `${users} active ${users === 1 ? "member" : "members"}`}
               </p>
             </div>
-            <Tag variant={pendingCount === 0 ? "success" : "warning"}>
+            <Tag className="shrink-0" variant={pendingCount === 0 ? "success" : "warning"}>
               {pendingCount === 0 ? "Stable" : `${pendingCount} pending`}
             </Tag>
           </div>

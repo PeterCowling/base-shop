@@ -78,7 +78,7 @@ export default function StepHosting({
             href={deployInfo.previewUrl}
             target="_blank"
             rel="noreferrer"
-            className="text-blue-600 underline"
+            className="text-primary underline"
           >
             {deployInfo.previewUrl}
           </a>
@@ -91,10 +91,10 @@ export default function StepHosting({
         <p className="text-sm">Waiting for domain verification…</p>
       )}
       {deployInfo?.status === "success" && (
-        <p className="text-sm text-green-600">Deployment complete</p>
+        <p className="text-sm text-success">Deployment complete</p>
       )}
       {deployInfo?.status === "error" && deployInfo.error && (
-        <p className="text-sm text-red-600">{deployInfo.error}</p>
+        <p className="text-sm text-danger-foreground">{deployInfo.error}</p>
       )}
       <div className="flex justify-end">
         <Button

@@ -137,7 +137,8 @@ export function usePageBuilderState({
       // Arrow key nudging for absolutely positioned blocks when no modifier except Shift/Alt
       const lower = e.key.toLowerCase();
       if (lower === "arrowleft" || lower === "arrowright" || lower === "arrowup" || lower === "arrowdown") {
-        e.preventDefault();
+        // If nothing is selected, allow normal page scroll behavior
+        if (selectedIds.length === 0) return;
         const canvas = typeof document !== "undefined" ? document.getElementById("canvas") : null;
         const unit = canvas?.offsetWidth ? canvas.offsetWidth / typedState.gridCols : null;
         const step = e.altKey && unit ? unit : e.shiftKey ? 10 : 1;
@@ -163,10 +164,14 @@ export function usePageBuilderState({
           }
           return null;
         };
+        // Identify any movable (absolute-positioned and unlocked) selections
+        let handled = false;
         selectedIds.forEach((id) => {
           const comp = find(components, id) as (PageComponent & { position?: string; left?: string; top?: string; locked?: boolean; leftDesktop?: string; leftTablet?: string; leftMobile?: string; topDesktop?: string; topTablet?: string; topMobile?: string }) | null;
           const locked = ((typedState as any).editor?.[id]?.locked ?? (comp as any)?.locked ?? false) as boolean;
           if (!comp || locked || comp.position !== "absolute") return;
+          // We will handle at least one move; prevent default page scroll
+          if (!handled) { e.preventDefault(); handled = true; }
           if (lower === "arrowleft") {
             const current = (comp as any)[leftKey] ?? comp.left;
             dispatch({ type: "resize", id, [leftKey]: adjust(current, -step) } as any);
@@ -181,7 +186,9 @@ export function usePageBuilderState({
             dispatch({ type: "resize", id, [topKey]: adjust(current, step) } as any);
           }
         });
-        return;
+        // If we didn't move anything (no eligible absolute-positioned selection), allow default behavior
+        if (handled) return;
+        else return;
       }
 
       if (!(e.ctrlKey || e.metaKey)) return;

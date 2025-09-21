@@ -30,18 +30,17 @@ export default async function DashboardIndexPage() {
 
   return (
     <div className="space-y-10">
-      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-slate-950 text-foreground shadow-xl">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(148,163,255,0.35),_transparent_55%)]" />
+      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero text-primary-foreground shadow-xl">
         <div className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
           <div className="space-y-6">
             <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-muted-foreground">
+              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground/70">
                 Shop dashboards
               </span>
               <h1 className="text-3xl font-semibold md:text-4xl">
                 Choose a storefront to inspect
               </h1>
-              <p className="text-muted-foreground">
+              <p className="text-primary-foreground/80">
                 Dive into operational analytics for each shop. Pick a workspace to review merchandising, traffic, and conversion trends.
               </p>
             </div>
@@ -54,7 +53,7 @@ export default async function DashboardIndexPage() {
                 <Button
                   asChild
                   variant="outline"
-                  className="h-11 px-5 text-sm font-semibold border-border/40 text-foreground hover:bg-muted/10"
+                  className="h-11 px-5 text-sm font-semibold border-primary/40 text-primary-foreground hover:bg-primary/10"
                 >
                   <Link href="/cms">Return to CMS home</Link>
                 </Button>
@@ -64,20 +63,20 @@ export default async function DashboardIndexPage() {
               {quickStats.map((stat) => (
                 <Card
                   key={stat.label}
-                  className="border border-border/15 bg-background/60 text-foreground backdrop-blur"
+                  className="border border-primary/15 bg-surface-2 text-foreground"
                 >
                   <CardContent className="space-y-1 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-primary-foreground/70">
                       {stat.label}
                     </p>
-                    <p className="text-xl font-semibold">{stat.value}</p>
-                    <p className="text-xs text-muted-foreground">{stat.caption}</p>
+                    <p className="text-xl font-semibold text-primary-foreground">{stat.value}</p>
+                    <p className="text-xs text-primary-foreground/70">{stat.caption}</p>
                   </CardContent>
                 </Card>
               ))}
             </div>
           </div>
-          <Card className="border border-border/20 bg-background/60 text-foreground shadow-2xl backdrop-blur">
+          <Card className="border border-border/20 bg-surface-2 text-foreground shadow-2xl">
             <CardContent className="space-y-5">
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold">Status</h2>
@@ -85,8 +84,8 @@ export default async function DashboardIndexPage() {
                   We keep an eye on each storefront’s telemetry so you can hop in when something needs attention.
                 </p>
               </div>
-              <div className="flex items-center justify-between gap-3 rounded-xl border border-border/15 bg-background/60 px-4 py-3">
-                <div>
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/15 bg-surface-2 px-4 py-3">
+                <div className="min-w-0">
                   <p className="text-sm font-medium">Workspace health</p>
                   <p className="text-xs text-muted-foreground">
                     {shops.length === 0
@@ -94,7 +93,7 @@ export default async function DashboardIndexPage() {
                       : "All dashboards ready"}
                   </p>
                 </div>
-                <Tag variant={shops.length === 0 ? "warning" : "success"}>
+                <Tag className="shrink-0" variant={shops.length === 0 ? "warning" : "success"}>
                   {shops.length === 0 ? "Action required" : "Ready"}
                 </Tag>
               </div>
@@ -105,9 +104,9 @@ export default async function DashboardIndexPage() {
 
       <Card className="border border-border/60">
         <CardContent className="space-y-6">
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <h2 className="text-lg font-semibold text-foreground">Available shops</h2>
-            <Tag variant={shops.length === 0 ? "warning" : "default"}>
+            <Tag className="shrink-0" variant={shops.length === 0 ? "warning" : "default"}>
               {shops.length === 0 ? "No shops yet" : `${shops.length} available`}
             </Tag>
           </div>
@@ -118,15 +117,15 @@ export default async function DashboardIndexPage() {
           ) : (
             <div className="grid gap-3 sm:grid-cols-2">
               {shops.map((shop) => (
-                <Card key={shop} className="border border-border/60 bg-muted/10">
-                  <CardContent className="flex items-center justify-between gap-3 p-4">
-                    <div>
+                <Card key={shop} className="border border-border/60 bg-surface-3">
+                  <CardContent className="flex flex-wrap items-center justify-between gap-3 p-4">
+                    <div className="min-w-0">
                       <p className="text-sm font-semibold text-foreground">{shop}</p>
                       <p className="text-xs text-muted-foreground">
                         View orders, merchandising, and campaign performance for this shop.
                       </p>
                     </div>
-                    <Button asChild className="h-10 px-4 text-sm font-medium">
+                    <Button asChild className="h-10 shrink-0 px-4 text-sm font-medium">
                       <Link href={`/cms/dashboard/${shop}`}>View dashboard</Link>
                     </Button>
                   </CardContent>

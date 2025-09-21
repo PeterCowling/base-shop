@@ -43,11 +43,10 @@ describe("PagesTable", () => {
   it("shows action buttons when write access is enabled", () => {
     render(<PagesTable shop="acme" pages={pages} canWrite />);
 
-    expect(screen.getByText("Create new page")).toBeInTheDocument();
+    expect(screen.getByText("New Page")).toBeInTheDocument();
     expect(screen.getByText("Actions")).toBeInTheDocument();
 
     const editLinks = screen.getAllByRole("link", { name: "Edit" });
     expect(editLinks).toHaveLength(pages.length);
   });
 });
-

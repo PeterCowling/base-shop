@@ -163,11 +163,11 @@ export default function GuidedTour({
         <>
           <div className="pointer-events-none fixed inset-0 z-40">
             <div
-              className="absolute top-0 right-0 left-0 bg-black/50"
+              className="absolute top-0 right-0 left-0 bg-foreground/50"
               style={{ height: coords.top }}
             />
             <div
-              className="absolute left-0 bg-black/50"
+              className="absolute left-0 bg-foreground/50"
               style={{
                 top: coords.top,
                 width: coords.left,
@@ -175,7 +175,7 @@ export default function GuidedTour({
               }}
             />
             <div
-              className="absolute right-0 bg-black/50"
+              className="absolute right-0 bg-foreground/50"
               style={{
                 top: coords.top,
                 left: coords.left + coords.width,
@@ -183,7 +183,7 @@ export default function GuidedTour({
               }}
             />
             <div
-              className="absolute right-0 left-0 bg-black/50"
+              className="absolute right-0 left-0 bg-foreground/50"
               style={{ top: coords.top + coords.height, bottom: 0 }}
             />
           </div>

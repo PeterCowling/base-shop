@@ -66,7 +66,7 @@ export function StringCollectionField({
             </div>
           ))
         ) : (
-          <p className="rounded-md border border-dashed border-border/60 bg-surface-3 px-3 py-2 text-sm text-muted-foreground">
+          <p className="rounded-md border border-dashed border-border-3 bg-surface-3 px-3 py-2 text-sm text-muted-foreground">
             {emptyState ?? "No entries yet."}
           </p>
         )}

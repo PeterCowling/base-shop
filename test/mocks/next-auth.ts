@@ -17,10 +17,14 @@ let currentSession: TestSession = null;
 // Allow tests to control the mocked session
 export function __setMockSession(session: TestSession): void {
   currentSession = session ?? null;
+  (globalThis as any).__NEXTAUTH_MOCK_SET = true;
+  (globalThis as any).__MOCK_SESSION = currentSession;
 }
 
 export function __resetMockSession(): void {
   currentSession = null;
+  (globalThis as any).__NEXTAUTH_MOCK_SET = false;
+  (globalThis as any).__MOCK_SESSION = undefined;
 }
 
 // Match next-auth server API used in the codebase

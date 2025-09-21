@@ -52,6 +52,20 @@
   --surface-2: 0 0% 94%;            /* slightly raised surface */
   --surface-3: 0 0% 92%;            /* prominent surface (cards, popovers) */
 
+  /* Form controls */
+  --surface-input: 0 0% 96%;        /* input fields default surface */
+  --ring-width: 2px;                /* focus ring thickness */
+  --ring-offset-width: 2px;         /* focus ring offset thickness */
+
+  /* Border intensity tokens: tune once, use everywhere */
+  --border-1: var(--color-fg) / 0.12; /* subtle separators */
+  --border-2: var(--color-fg) / 0.22; /* standard borders */
+  --border-3: var(--color-fg) / 0.38; /* emphasized accents */
+
+  /* Focus rings */
+  --ring: var(--color-primary);
+  --ring-offset: var(--surface-1);
+
   /* gradient tokens (used via bg-hero) */
   --gradient-hero-from: 234 70% 55%;
   --gradient-hero-via: 272 60% 52%;
@@ -82,6 +96,14 @@ html.theme-dark {
   --surface-1: var(--color-bg-dark);
   --surface-2: 222 14% 13%;
   --surface-3: 222 12% 16%;
+
+  /* Dark focus rings */
+  --ring: var(--color-primary-dark);
+  --ring-offset: var(--surface-1);
+  /* Dark inputs */
+  --surface-input: 222 12% 18%;
+  --ring-width: 2px;
+  --ring-offset-width: 2px;
 }
 
 html,

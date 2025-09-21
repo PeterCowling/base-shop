@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "../../atoms/shadcn";
 import { ulid } from "ulid";
 import { saveLibrary, saveGlobal, updateGlobal, listGlobals, type GlobalItem } from "./libraryStore";
-import { Popover, PopoverContent, PopoverTrigger } from "../../atoms";
+import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../atoms";
 import { usePathname } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
 import LayersPanel from "./LayersPanel";
@@ -303,15 +303,29 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
         <div className="space-y-2">
           <div className="text-sm font-semibold">Multiple selection</div>
           <div className="flex flex-wrap gap-2">
-            <Button type="button" variant="outline" aria-label="Duplicate selected" onClick={() => handleDuplicate()}>Duplicate</Button>
-            <Button type="button" variant="outline" aria-label="Delete selected" onClick={() => handleDelete()}>Delete</Button>
-            <Button type="button" variant="outline" aria-label="Paste styles" onClick={pasteStyles}>Paste Styles</Button>
-            <Button type="button" variant="outline" aria-label="Center horizontally in parent" onClick={centerInParentX}>Center H in parent</Button>
-            <Button type="button" variant="outline" aria-label="Center vertically in parent" onClick={centerInParentY}>Center V in parent</Button>
+            <Tooltip text="Duplicate selected blocks">
+              <Button type="button" variant="outline" aria-label="Duplicate selected" onClick={() => handleDuplicate()}>Duplicate</Button>
+            </Tooltip>
+            <Tooltip text="Delete selected blocks">
+              <Button type="button" variant="outline" aria-label="Delete selected" onClick={() => handleDelete()}>Delete</Button>
+            </Tooltip>
+            <Tooltip text="Paste styles from clipboard">
+              <Button type="button" variant="outline" aria-label="Paste styles" onClick={pasteStyles}>Paste Styles</Button>
+            </Tooltip>
+            <Tooltip text="Center horizontally in parent (absolute only)">
+              <Button type="button" variant="outline" aria-label="Center horizontally in parent" onClick={centerInParentX}>Center H in parent</Button>
+            </Tooltip>
+            <Tooltip text="Center vertically in parent (absolute only)">
+              <Button type="button" variant="outline" aria-label="Center vertically in parent" onClick={centerInParentY}>Center V in parent</Button>
+            </Tooltip>
             {selectedIds.length > 1 && (
               <>
-                <Button type="button" variant="outline" aria-label="Group selection into Section" onClick={() => groupAs("Section")}>Group → Section</Button>
-                <Button type="button" variant="outline" aria-label="Group selection into MultiColumn" onClick={() => groupAs("MultiColumn")}>Group → MultiColumn</Button>
+                <Tooltip text="Wrap selection in a Section container">
+                  <Button type="button" variant="outline" aria-label="Group selection into Section" onClick={() => groupAs("Section")}>Group → Section</Button>
+                </Tooltip>
+                <Tooltip text="Wrap selection in a MultiColumn container">
+                  <Button type="button" variant="outline" aria-label="Group selection into MultiColumn" onClick={() => groupAs("MultiColumn")}>Group → MultiColumn</Button>
+                </Tooltip>
               </>
             )}
             {(() => {
@@ -472,15 +486,23 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
           {selectedIds.length === 1 && (() => {
             const c = selectedComponent as any; const hasChildren = !!(c && c.children && Array.isArray(c.children) && c.children.length > 0);
             return hasChildren ? (
-              <Button type="button" variant="outline" onClick={ungroup}>Ungroup</Button>
+              <Tooltip text="Ungroup children from container">
+                <Button type="button" variant="outline" onClick={ungroup}>Ungroup</Button>
+              </Tooltip>
             ) : null;
           })()}
-          <Button type="button" variant="outline" onClick={saveSelectionToLibrary}>
-            Save to My Library
-          </Button>
+          <Tooltip text="Save selected blocks as a reusable snippet">
+            <Button type="button" variant="outline" onClick={saveSelectionToLibrary}>
+              Save to My Library
+            </Button>
+          </Tooltip>
           <div className="flex flex-wrap gap-2">
-            <Button type="button" variant="outline" aria-label="Center horizontally in parent" onClick={centerInParentX}>Center H in parent</Button>
-            <Button type="button" variant="outline" aria-label="Center vertically in parent" onClick={centerInParentY}>Center V in parent</Button>
+            <Tooltip text="Center horizontally in parent (absolute only)">
+              <Button type="button" variant="outline" aria-label="Center horizontally in parent" onClick={centerInParentX}>Center H in parent</Button>
+            </Tooltip>
+            <Tooltip text="Center vertically in parent (absolute only)">
+              <Button type="button" variant="outline" aria-label="Center vertically in parent" onClick={centerInParentY}>Center V in parent</Button>
+            </Tooltip>
           </div>
           <ComponentEditor
             component={selectedComponent}

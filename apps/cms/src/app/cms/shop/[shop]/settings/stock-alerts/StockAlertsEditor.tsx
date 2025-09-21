@@ -176,7 +176,7 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
 
   return (
     <>
-      <Card className="border border-border/60">
+      <Card className="border border-border-3">
         <CardContent className="space-y-6 p-6">
           <form className="space-y-6" onSubmit={handleSubmit} noValidate>
             <FormField

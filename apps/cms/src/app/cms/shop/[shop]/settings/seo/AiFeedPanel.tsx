@@ -46,13 +46,13 @@ export default async function AiFeedPanel({ shop }: { shop: string }) {
     <Card>
       <CardContent className="space-y-6 p-6 text-sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div>
+          <div className="min-w-0">
             <h3 className="text-lg font-semibold">AI Feed Activity</h3>
             <p className="text-muted-foreground text-sm">
               Track the most recent AI crawl executions and delivery status.
             </p>
           </div>
-          <div className="text-right">
+          <div className="shrink-0 text-right">
             <p>
               Last run: <span className="font-medium">{lastRun}</span>
             </p>

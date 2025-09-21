@@ -136,7 +136,7 @@ function Sidebar({
           </p>
         </div>
 
-        <Card className="border-border/10 bg-background text-foreground">
+        <Card className="border-border-1 bg-surface-2 text-foreground">
           <CardContent className="space-y-4 px-4 py-5">
             <div className="flex items-center justify-between text-xs uppercase tracking-wide text-muted-foreground">
               <span>Main navigation</span>
@@ -153,8 +153,8 @@ function Sidebar({
                   className={cn(
                     "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors",
                     active
-                      ? "bg-muted/10 text-foreground"
-                      : "text-muted-foreground hover:bg-muted/10 hover:text-foreground"
+                      ? "bg-surface-3 text-foreground"
+                      : "text-muted-foreground hover:bg-surface-3 hover:text-foreground"
                   )}
                 >
                   <span className="text-lg" aria-hidden>
@@ -176,7 +176,7 @@ function Sidebar({
       </div>
 
       <div className="mt-auto space-y-3 text-xs text-muted-foreground">
-        <Card className="border-border/10 bg-background">
+        <Card className="border-border-1 bg-surface-2">
           <CardContent className="space-y-2 px-4 py-4">
             <h2 className="text-sm font-semibold text-foreground">Need a hand?</h2>
             <p>Visit the docs or ping the platform team for support.</p>

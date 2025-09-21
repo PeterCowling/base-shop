@@ -16,7 +16,9 @@ export const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "border-input bg-background ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex h-10 w-full items-center justify-between rounded-md border px-3 py-2 text-sm focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50",
+      "flex h-10 w-full items-center justify-between rounded-md border border-input bg-input px-3 py-2 text-sm text-foreground",
+      "placeholder:text-muted-foreground",
+      "focus:outline-none focus:ring-[var(--ring-width)] focus:ring-offset-[var(--ring-offset-width)] disabled:cursor-not-allowed disabled:opacity-50",
       className
     )}
     {...props}
@@ -37,14 +39,12 @@ export const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "z-[70] min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-md",
-        "bg-background text-foreground",
+        "z-[70] min-w-[8rem] overflow-hidden rounded-md border border-input bg-surface-2 p-1 text-foreground shadow-md",
         className
       )}
-      style={{ backgroundColor: "hsl(var(--color-bg))", color: "hsl(var(--color-fg))" }}
       {...props}
     >
-      <SelectPrimitive.Viewport className="p-1 bg-background">
+      <SelectPrimitive.Viewport className="p-1 bg-surface-2">
         {children}
       </SelectPrimitive.Viewport>
     </SelectPrimitive.Content>

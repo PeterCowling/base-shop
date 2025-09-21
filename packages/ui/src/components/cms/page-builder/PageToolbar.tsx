@@ -8,7 +8,7 @@ import { getLegacyPreset } from "../../../utils/devicePresets";
 import DeviceSelector from "../../common/DeviceSelector";
 import ThemePanel from "./ThemePanel";
 import BreakpointsPanel, { type Breakpoint } from "./panels/BreakpointsPanel";
-import DesignMenu from "./DesignMenu";
+import DesignMenu, { DesignMenuContent } from "./DesignMenu";
 import MoreMenu from "./MoreMenu";
 import { Tooltip } from "../../atoms";
 
@@ -85,6 +85,17 @@ const PageToolbar = ({
     return () => ro.disconnect();
   }, []);
 
+  const showDesignInline = w >= 420;
+  const showHelpIcon = w >= 440;
+  const moreItems: { label: string; onClick: () => void }[] = [];
+  const moreContent: React.ReactNode = !showDesignInline ? (
+    <DesignMenuContent
+      breakpoints={breakpoints ?? []}
+      onChangeBreakpoints={(list) => setBreakpoints?.(list)}
+    />
+  ) : undefined;
+  if (!showHelpIcon) moreItems.push({ label: "Keyboard shortcuts", onClick: () => setHelpOpen(true) });
+
   return (
     <div className="flex w-full flex-wrap items-center gap-2" ref={containerRef}>
       {/* Left cluster: device + rotate */}
@@ -116,11 +127,13 @@ const PageToolbar = ({
       </div>
       {/* Middle cluster: design menu + help */}
       <div className="flex items-center gap-2 shrink-0">
-        <DesignMenu
-          breakpoints={breakpoints ?? []}
-          onChangeBreakpoints={(list) => setBreakpoints?.(list)}
-        />
-        {w >= 440 ? (
+        {showDesignInline && (
+          <DesignMenu
+            breakpoints={breakpoints ?? []}
+            onChangeBreakpoints={(list) => setBreakpoints?.(list)}
+          />
+        )}
+        {showHelpIcon ? (
           <Dialog open={helpOpen} onOpenChange={setHelpOpen}>
             <DialogTrigger asChild>
               <Tooltip text="Keyboard shortcuts">
@@ -137,6 +150,9 @@ const PageToolbar = ({
                 </li>
                 <li>
                   <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>P</kbd> Toggle preview
+                </li>
+                <li>
+                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>B</kbd> Toggle palette
                 </li>
                 <li>
                   <kbd>Shift</kbd> + <kbd>Arrow</kbd> Resize selected block
@@ -179,10 +195,9 @@ const PageToolbar = ({
               </ul>
             </DialogContent>
           </Dialog>
-        ) : (
-          <MoreMenu
-            items={[{ label: "Keyboard shortcuts", onClick: () => setHelpOpen(true) }]}
-          />
+        ) : null}
+        {(!showHelpIcon || !showDesignInline) && (
+          <MoreMenu items={moreItems} content={moreContent} />
         )}
       </div>
       {/* Right cluster: locales (wraps to new line when tight) */}

@@ -137,7 +137,7 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
           Return authorizations
         </Tag>
         <div className="flex flex-wrap items-end justify-between gap-4">
-          <div className="space-y-1">
+          <div className="min-w-0 space-y-1">
             <h2 className="text-2xl font-semibold">RA workflow overview</h2>
             <p className="text-sm text-muted-foreground">
               Quickly identify escalations, filter by status, and move authorizations forward.
@@ -150,7 +150,7 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
         {metrics.map((metric) => (
           <Card
             key={metric.label}
-            className="border border-border/10 bg-surface-2"
+            className="border border-border-1 bg-surface-2"
           >
             <CardContent className="space-y-1 px-4 py-3">
               <p className="text-xs uppercase tracking-wide text-muted-foreground">
@@ -164,7 +164,7 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
       </section>
 
       <section className="grid gap-5 lg:grid-cols-[300px,1fr]">
-        <Card className="border border-border/10 bg-surface-2">
+        <Card className="border border-border-1 bg-surface-2">
           <CardContent className="space-y-4 p-6">
             <div className="space-y-1">
               <h3 className="text-base font-semibold">Quick filters</h3>
@@ -183,7 +183,7 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                     "rounded-xl border px-3 py-2 text-left text-sm transition",
                     activeFilter === filter.key
                       ? "border-primary/60 bg-primary/20 text-foreground"
-                      : "border-border/20 bg-surface-2 text-muted-foreground hover:border-primary/50 hover:bg-primary/10"
+                      : "border-border-2 bg-surface-2 text-muted-foreground hover:border-primary/50 hover:bg-primary/10"
                   )}
                 >
                   <span className="block font-semibold">{filter.label}</span>
@@ -199,22 +199,22 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
                 placeholder="Filter by RA, order, or note"
-                className="border-border/20 bg-surface-2 text-foreground placeholder:text-muted-foreground"
+                className="border-border-2 bg-surface-2 text-foreground placeholder:text-muted-foreground"
               />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border border-border/10 bg-surface-2">
+        <Card className="border border-border-1 bg-surface-2">
           <CardContent className="space-y-4 p-6">
-            <div className="flex items-start justify-between gap-3">
-              <div className="space-y-1">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="min-w-0 space-y-1">
                 <h3 className="text-lg font-semibold">Authorization queue</h3>
                 <p className="text-xs text-muted-foreground">
                   Actions provide suggested follow-ups so teams can unblock customers quickly.
                 </p>
               </div>
-              <Tag variant="default">
+              <Tag className="shrink-0" variant="default">
                 {filtered.length} showing
               </Tag>
             </div>
@@ -237,18 +237,18 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                     data-testid="ra-card"
                     data-cy="ra-card"
                   className={cn(
-                    "border border-border/10 bg-surface-2 text-foreground",
+                    "border border-border-1 bg-surface-2 text-foreground",
                     risk === "high" && "border-danger/40 bg-danger/10",
                     risk === "medium" && "border-warning/40 bg-warning/10"
                   )}
                 >
                     <CardContent className="space-y-3 p-6">
                     <div className="flex flex-wrap items-start justify-between gap-3">
-                      <div className="space-y-1">
+                      <div className="min-w-0 space-y-1">
                         <p className="text-sm font-semibold">RA {ra.raId}</p>
                         <p className="text-xs text-muted-foreground">Order {ra.orderId}</p>
                       </div>
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex shrink-0 flex-wrap gap-2">
                         <Tag variant={statusVariant(ra.status)}>{ra.status}</Tag>
                         <Tag variant={riskVariant(risk)}>Risk: {risk}</Tag>
                       </div>
@@ -266,7 +266,7 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                       <Button
                         type="button"
                         variant="outline"
-                        className="h-9 rounded-lg border-border/30 bg-surface-2 text-sm text-foreground hover:bg-surface-3"
+                        className="h-9 rounded-lg border-border-2 bg-surface-2 text-sm text-foreground hover:bg-surface-3"
                       >
                         Mark for follow-up
                       </Button>
@@ -276,7 +276,7 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
               );
             })}
             {filtered.length === 0 && (
-              <Card className="border border-border/10 bg-surface-2 text-foreground">
+              <Card className="border border-border-1 bg-surface-2 text-foreground">
                 <CardContent className="space-y-3 px-6 py-6 text-center text-sm text-muted-foreground">
                   <Tag variant="warning">
                     No matches

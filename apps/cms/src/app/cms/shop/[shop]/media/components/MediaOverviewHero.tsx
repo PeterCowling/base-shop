@@ -135,7 +135,7 @@ export default function MediaOverviewHero({
           </div>
 
           <dl className="grid gap-4 sm:grid-cols-3" aria-label="Media usage statistics">
-            <div className="rounded-lg border border-border/60 bg-surface-3 p-4">
+            <div className="rounded-lg border border-border-3 bg-surface-3 p-4">
               <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 <StackIcon className="h-4 w-4" aria-hidden />
                 Storage used
@@ -153,7 +153,7 @@ export default function MediaOverviewHero({
               )}
             </div>
 
-            <div className="rounded-lg border border-border/60 bg-surface-3 p-4">
+            <div className="rounded-lg border border-border-3 bg-surface-3 p-4">
               <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 <ImageIcon className="h-4 w-4" aria-hidden />
                 Assets in library
@@ -166,7 +166,7 @@ export default function MediaOverviewHero({
               </p>
             </div>
 
-            <div className="rounded-lg border border-border/60 bg-surface-3 p-4">
+            <div className="rounded-lg border border-border-3 bg-surface-3 p-4">
               <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 <ClockIcon className="h-4 w-4" aria-hidden />
                 Last upload
@@ -201,7 +201,7 @@ export default function MediaOverviewHero({
                       className="min-w-[11rem] flex-shrink-0"
                     >
                       <div className="space-y-2">
-                        <div className="relative h-28 w-full overflow-hidden rounded-md border border-border/60 bg-muted">
+                        <div className="relative h-28 w-full overflow-hidden rounded-md border border-border-3 bg-muted">
                           {item.url ? (
                             <Image
                               src={item.url}

@@ -32,9 +32,9 @@ export default async function BlogPostsPage({
   const posts = await getPosts(shopId);
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Blog Posts</h1>
-        <Button asChild>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h1 className="min-w-0 text-xl font-semibold">Blog Posts</h1>
+        <Button asChild className="shrink-0">
           <Link href={`/cms/blog/posts/new?shopId=${shopId}`}>New Post</Link>
         </Button>
       </div>

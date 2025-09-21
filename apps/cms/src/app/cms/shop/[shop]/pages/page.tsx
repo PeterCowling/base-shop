@@ -99,13 +99,13 @@ export default async function PagesPage({
         <Card className="border border-border/10 bg-surface-2 shadow-lg">
           <CardContent className="space-y-4 px-6 py-6">
             <div className="flex flex-wrap items-center justify-between gap-3 text-foreground">
-              <div>
+              <div className="min-w-0">
                 <h2 className="text-lg font-semibold">Page library</h2>
                 <p className="text-sm text-muted-foreground">
                   Launch campaign landing pages, update evergreen content, or archive what no longer fits.
                 </p>
               </div>
-              <Tag variant="default">
+              <Tag className="shrink-0" variant="default">
                 {totalPages} total pages
               </Tag>
             </div>

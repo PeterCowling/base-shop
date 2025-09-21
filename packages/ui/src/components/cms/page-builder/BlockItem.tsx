@@ -1,13 +1,10 @@
 "use client";
 
-import type { Locale } from "@acme/i18n/locales";
-import { CSS } from "@dnd-kit/utilities";
-import type { PageComponent, HistoryState } from "@acme/types";
+// types consumed via Props
 import { memo, useMemo, useState } from "react";
 import type { Action } from "./state";
-import Block from "./Block";
 import useInlineText from "./useInlineText";
-import InlineEditableButton from "./InlineEditableButton";
+import BlockContent from "./BlockContent";
 import useCanvasResize from "./useCanvasResize";
 import useCanvasDrag from "./useCanvasDrag";
 import useCanvasSpacing from "./useCanvasSpacing";
@@ -15,44 +12,21 @@ import useBlockDimensions from "./useBlockDimensions";
 import useBlockDnD from "./useBlockDnD";
 import BlockResizer from "./BlockResizer";
 import BlockChildren from "./BlockChildren";
-import ImageFocalOverlay from "./ImageFocalOverlay";
 import useCanvasRotate from "./useCanvasRotate";
-import type { DevicePreset } from "../../../utils/devicePresets";
 import { LockClosedIcon } from "@radix-ui/react-icons";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  Button as MenuButton,
-  Button as UIButton,
-} from "../../atoms/shadcn";
 import ContextMenu from "./ContextMenu";
-import { getStyleClipboard, setStyleClipboard } from "./style/styleClipboard";
-import ImageAspectToolbar from "./ImageAspectToolbar";
-import ImageCropOverlay from "./ImageCropOverlay";
+import ImageEditingOverlays from "./ImageEditingOverlays";
 import { isHiddenForViewport } from "./state/layout/utils";
+import { computeBlockStyle } from "./utils/computeBlockStyle";
+import CanvasOverlays from "./CanvasOverlays";
+import ZIndexMenu from "./ZIndexMenu";
+import HiddenBadge from "./HiddenBadge";
+import DragHandle from "./DragHandle";
+import buildBlockContextMenuItems from "./buildBlockContextMenuItems";
+import buildBlockKeyDownHandler from "./buildBlockKeyDownHandler";
+import DeleteButton from "./DeleteButton";
 
-type Props = {
-  component: PageComponent;
-  index: number;
-  parentId: string | undefined;
-  parentType?: string;
-  parentSlots?: number;
-  selectedIds: string[];
-  onSelect: (id: string, e?: React.MouseEvent) => void;
-  onRemove: () => void;
-  dispatch: React.Dispatch<Action>;
-  locale: Locale;
-  gridEnabled?: boolean;
-  gridCols: number;
-  viewport: "desktop" | "tablet" | "mobile";
-  device?: DevicePreset;
-  editor?: HistoryState["editor"];
-  zoom?: number;
-  baselineSnap?: boolean;
-  baselineStep?: number;
-};
+import type { BlockItemProps as Props } from "./BlockItem.types";
 
 const BlockItem = memo(function BlockItemComponent({
   component,
@@ -194,7 +168,7 @@ const BlockItem = memo(function BlockItemComponent({
   const overlayHeight = resizing ? resizeHeight : dragHeight;
   const overlayLeft = resizing ? resizeLeft : dragLeft;
   const overlayTop = resizing ? resizeTop : dragTop;
-  const childComponents = (component as { children?: PageComponent[] }).children;
+  const childComponents = (component as any).children as any;
 
   // Rotation
   const { startRotate, rotating, angle } = useCanvasRotate({
@@ -209,102 +183,20 @@ const BlockItem = memo(function BlockItemComponent({
   const [ctxOpen, setCtxOpen] = useState(false);
   const [ctxPos, setCtxPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  const ctxItems = useMemo(() => {
-    const locked = !!effLocked;
-    const z = (flags as any).zIndex as number | undefined;
-    const clip = getStyleClipboard();
-    const canPasteStyle = clip != null && !locked;
-    const selectionSet = new Set((selectedIds || []).length > 0 ? selectedIds : [component.id]);
-    if (!selectionSet.has(component.id)) selectionSet.add(component.id);
-    const selection = Array.from(selectionSet);
-    const isLocked = (id: string) => !!((editor as any)?.[id]?.locked);
-    const unlocked = selection.filter((id) => !isLocked(id));
-    const lockedSel = selection.filter((id) => isLocked(id));
-    const pasteTargets = unlocked;
-    const multiCount = selection.length;
-    return [
-      { label: "Duplicate", onClick: () => dispatch({ type: "duplicate", id: component.id }), disabled: locked },
-      { label: locked ? "Unlock" : "Lock", onClick: () => dispatch({ type: "update-editor", id: component.id, patch: { locked: !locked } as any }), disabled: false },
-      ...(multiCount > 1
-        ? [{
-            label: lockedSel.length > 0 ? `Unlock selection (${lockedSel.length})` : `Lock selection (${unlocked.length})`,
-            onClick: () => {
-              if (lockedSel.length > 0) {
-                lockedSel.forEach((id) => dispatch({ type: "update-editor", id, patch: { locked: false } as any }));
-                try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Unlocked ${lockedSel.length} blocks` })); } catch {}
-              } else if (unlocked.length > 0) {
-                unlocked.forEach((id) => dispatch({ type: "update-editor", id, patch: { locked: true } as any }));
-                try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Locked ${unlocked.length} blocks` })); } catch {}
-              }
-            },
-            disabled: multiCount === 0,
-          } as const]
-        : []),
-      { label: "Delete", onClick: () => onRemove(), disabled: locked },
-      ...(multiCount > 1
-        ? [{
-            label: `Duplicate selection (${unlocked.length})`,
-            onClick: () => {
-              unlocked.forEach((id) => dispatch({ type: "duplicate", id }));
-              try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Duplicated ${unlocked.length} blocks` })); } catch {}
-            },
-            disabled: unlocked.length === 0,
-          } as const]
-        : []),
-      ...(multiCount > 1
-        ? [{
-            label: `Delete selection (${unlocked.length})`,
-            onClick: () => {
-              unlocked.forEach((id) => dispatch({ type: "remove", id }));
-              try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Deleted ${unlocked.length} blocks` })); } catch {}
-            },
-            disabled: unlocked.length === 0,
-          } as const]
-        : []),
-      { label: "Bring to front", onClick: () => dispatch({ type: "update-editor", id: component.id, patch: { zIndex: 999 } as any }), disabled: locked },
-      { label: "Send to back", onClick: () => dispatch({ type: "update-editor", id: component.id, patch: { zIndex: 0 } as any }), disabled: locked },
-      { label: "Forward", onClick: () => dispatch({ type: "update-editor", id: component.id, patch: { zIndex: ((z ?? 0) + 1) } as any }), disabled: locked },
-      { label: "Backward", onClick: () => dispatch({ type: "update-editor", id: component.id, patch: { zIndex: Math.max(0, (z ?? 0) - 1) } as any }), disabled: locked },
-      ...(multiCount > 1
-        ? [{
-            label: `Bring selection to front (${unlocked.length})`,
-            onClick: () => {
-              unlocked.forEach((id) => dispatch({ type: "update-editor", id, patch: { zIndex: 999 } as any }));
-              try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Brought ${unlocked.length} to front` })); } catch {}
-            },
-            disabled: unlocked.length === 0,
-          },
-          {
-            label: `Send selection to back (${unlocked.length})`,
-            onClick: () => {
-              unlocked.forEach((id) => dispatch({ type: "update-editor", id, patch: { zIndex: 0 } as any }));
-              try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Sent ${unlocked.length} to back` })); } catch {}
-            },
-            disabled: unlocked.length === 0,
-          }] as const
-        : []),
-      { label: "Copy style", onClick: () => {
-          let overrides: any = {};
-          try {
-            overrides = component.styles ? JSON.parse(String(component.styles)) : {};
-          } catch {
-            overrides = {};
-          }
-          setStyleClipboard(overrides);
-          try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Styles copied" })); } catch {}
-        }, disabled: false },
-      { label: pasteTargets.length > 1 ? `Paste style (${pasteTargets.length})` : "Paste style", onClick: () => {
-          const clip2 = getStyleClipboard();
-          if (!clip2) return;
-          try {
-            pasteTargets.forEach((id) => {
-              dispatch({ type: "update", id, patch: { styles: JSON.stringify(clip2) } as any });
-            });
-            try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: pasteTargets.length > 1 ? `Styles pasted to ${pasteTargets.length} blocks` : "Styles pasted" })); } catch {}
-          } catch {}
-        }, disabled: !canPasteStyle },
-    ];
-  }, [effLocked, flags, component.id, component.styles, dispatch, onRemove, selectedIds, editor]);
+  const ctxItems = useMemo(
+    () =>
+      buildBlockContextMenuItems({
+        componentId: component.id,
+        componentStyles: component.styles as any,
+        effLocked,
+        flagsZIndex: (flags as any).zIndex as number | undefined,
+        selectedIds,
+        editor,
+        dispatch,
+        onRemove,
+      }),
+    [component.id, component.styles, dispatch, editor, effLocked, flags, onRemove, selectedIds]
+  );
 
   return (
     <div
@@ -322,101 +214,36 @@ const BlockItem = memo(function BlockItemComponent({
       tabIndex={0}
       data-component-id={component.id}
       data-pb-contextmenu-trigger
-      onKeyDown={(e) => {
-        if (effLocked || inline?.editing) return;
-        const key = e.key.toLowerCase();
-        const isArrow = key === "arrowleft" || key === "arrowright" || key === "arrowup" || key === "arrowdown";
-        if (!isArrow) return;
-        // Ctrl/Cmd + Arrow: spacing (Alt => padding, otherwise margin)
-        if (e.ctrlKey || e.metaKey) {
-          e.preventDefault();
-          e.stopPropagation();
-          const el = containerRef.current;
-          const parent = el?.parentElement ?? null;
-          const unit = gridEnabled && parent ? parent.offsetWidth / gridCols : undefined;
-          const step = unit ?? (e.altKey ? 10 : 1);
-          const type = e.altKey ? "padding" : "margin";
-          const side = key === "arrowleft" ? "left" : key === "arrowright" ? "right" : key === "arrowup" ? "top" : "bottom";
-          const delta = key === "arrowleft" || key === "arrowup" ? -step : step;
-          nudgeSpacingByKeyboard(type as any, side as any, delta);
-        }
-        // Shift + Arrow: resize width/height
-        if (e.shiftKey) {
-          e.preventDefault();
-          e.stopPropagation();
-          const el = containerRef.current;
-          const parent = el?.parentElement ?? null;
-          const unit = gridEnabled && parent ? parent.offsetWidth / gridCols : undefined;
-          const step = unit ?? (e.altKey ? 10 : 1);
-          const dir = key === "arrowleft" ? "left" : key === "arrowright" ? "right" : key === "arrowup" ? "up" : "down";
-          nudgeResizeByKeyboard(dir as any, step);
-        }
-        // Alt + Left/Right: move across tabs when parent is tab container
-        if (e.altKey && !e.metaKey && !e.ctrlKey && (key === "arrowleft" || key === "arrowright")) {
-          const count = typeof parentSlots === 'number' ? parentSlots : undefined;
-          const isTabbedParent = parentType === 'Tabs' || parentType === 'TabsAccordionContainer';
-          if (isTabbedParent && count && count > 0) {
-            e.preventDefault();
-            e.stopPropagation();
-            const raw = (component as any).slotKey as string | undefined;
-            const curr = raw != null && !Number.isNaN(Number(raw)) ? Number(raw) : 0;
-            const delta = key === 'arrowleft' ? -1 : 1;
-            const next = Math.max(0, Math.min(count - 1, curr + delta));
-            if (next !== curr) {
-              dispatch({ type: 'update', id: component.id, patch: { slotKey: String(next) } as any });
-              try { window.dispatchEvent(new CustomEvent('pb-live-message', { detail: `Moved to tab ${next + 1}` })); } catch {}
-            }
-          }
-        }
-      }}
-      style={{
-        transform: CSS.Transform.toString(transform),
-        ...(effZIndex !== undefined ? { zIndex: effZIndex as number } : {}),
-        // Container queries
-        ...(() => {
-          const ct = (component as any).containerType as string | undefined;
-          const cn = (component as any).containerName as string | undefined;
-          const out: Record<string, any> = {};
-          if (ct) out.containerType = ct as any;
-          if (cn) out.containerName = cn as any;
-          return out;
-        })(),
-        ...(widthVal ? { width: widthVal } : {}),
-        ...(heightVal ? { height: heightVal } : {}),
-        ...(marginVal ? { margin: marginVal } : {}),
-        ...(paddingVal ? { padding: paddingVal } : {}),
-        ...(component.position ? { position: component.position } : {}),
-        ...(() => {
-          const pos: Record<string, any> = {};
-          const dockX = (component as any).dockX as ("left"|"right"|"center"|undefined);
-          const dockY = (component as any).dockY as ("top"|"bottom"|"center"|undefined);
-          if (component.position === "absolute") {
-            // Horizontal docking
-            if (dockX === "right") {
-              if ((component as any).right) pos.right = (component as any).right;
-              else if (leftVal && (containerRef.current?.parentElement)) {
-                // fallback: compute right from left/width if possible at render time
-              }
-            } else if (dockX === "center") {
-              pos.left = 0; pos.right = 0; pos.marginLeft = "auto"; pos.marginRight = "auto";
-            } else {
-              if (leftVal) pos.left = leftVal;
-            }
-            // Vertical docking
-            if (dockY === "bottom") {
-              if ((component as any).bottom) pos.bottom = (component as any).bottom;
-            } else if (dockY === "center") {
-              pos.top = 0; pos.bottom = 0; pos.marginTop = "auto"; pos.marginBottom = "auto";
-            } else {
-              if (topVal) pos.top = topVal;
-            }
-          } else {
-            if (topVal) pos.top = topVal;
-            if (leftVal) pos.left = leftVal;
-          }
-          return pos;
-        })(),
-      }}
+      onKeyDown={buildBlockKeyDownHandler({
+        locked: !!effLocked,
+        inlineEditing: !!inline?.editing,
+        containerRef: containerRef as any,
+        gridEnabled: !!gridEnabled,
+        gridCols,
+        nudgeSpacingByKeyboard,
+        nudgeResizeByKeyboard,
+        parentSlots,
+        parentType,
+        currSlotKey: (component as any).slotKey as any,
+        componentId: component.id,
+        dispatch,
+        viewport,
+      })}
+      style={computeBlockStyle({
+        transform,
+        zIndex: effZIndex as number | undefined,
+        containerType: (component as any).containerType as string | undefined,
+        containerName: (component as any).containerName as string | undefined,
+        widthVal,
+        heightVal,
+        marginVal,
+        paddingVal,
+        position: component.position,
+        leftVal,
+        topVal,
+        dockX: (component as any).dockX as any,
+        dockY: (component as any).dockY as any,
+      })}
       className={
         "hover:border-primary relative rounded border hover:border-dashed" +
         (selected ? " ring-2 ring-blue-500" : "") +
@@ -424,14 +251,11 @@ const BlockItem = memo(function BlockItemComponent({
         (isOver || isDragging ? " border-primary border-dashed" : "")
       }
     >
-      <div
-        className="bg-muted absolute top-0 left-0 z-10 h-3 w-3 cursor-move"
-        {...attributes}
-        {...(effLocked ? {} : (listeners as any))}
-        role="button"
-        tabIndex={0}
-        aria-grabbed={isDragging}
-        title="Drag or press space/enter to move"
+      <DragHandle
+        attributes={attributes}
+        listeners={listeners}
+        isDragging={isDragging}
+        locked={!!effLocked}
         onPointerDown={(e) => {
           e.stopPropagation();
           onSelect(component.id, e);
@@ -443,106 +267,32 @@ const BlockItem = memo(function BlockItemComponent({
           <LockClosedIcon />
         </div>
       )}
-      <div className="pointer-events-none absolute inset-0 z-20">
-        <div
-          className="bg-primary absolute top-0 bottom-0 w-px transition-opacity duration-150"
-          style={{ left: guides.x ?? 0, opacity: guides.x !== null ? 1 : 0 }}
-        />
-        {distances.x !== null && (
-          <div
-            className="absolute -top-4 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow transition-opacity duration-150 dark:bg-white/75 dark:text-black"
-            style={{
-              left: (guides.x ?? 0) + 4,
-              opacity: guides.x !== null ? 1 : 0,
-            }}
-          >
-            {Math.round(distances.x)}
-          </div>
-        )}
-        <div
-          className="bg-primary absolute right-0 left-0 h-px transition-opacity duration-150"
-          style={{ top: guides.y ?? 0, opacity: guides.y !== null ? 1 : 0 }}
-        />
-        {distances.y !== null && (
-          <div
-            className="absolute -left-4 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow transition-opacity duration-150 dark:bg-white/75 dark:text-black"
-            style={{
-              top: (guides.y ?? 0) + 4,
-              opacity: guides.y !== null ? 1 : 0,
-            }}
-          >
-            {Math.round(distances.y)}
-          </div>
-        )}
-      </div>
-      {isInlineEditableButton ? (
-        <InlineEditableButton
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          component={component as any}
-          locale={locale}
-          inline={inline as any}
-          onCommit={(patch) =>
-            dispatch({ type: "update", id: component.id, patch: patch as any })
-          }
-        />
-      ) : (
-        <Block
-          component={{
-            ...component,
-            zIndex: effZIndex,
-            locked: effLocked,
-            pbViewport: viewport,
-          } as any}
-          locale={locale}
-        />
-      )}
-      {/* In-canvas focal point overlay for Image blocks */}
-      {selected && !effLocked && component.type === "Image" && (
-        <ImageFocalOverlay
-          value={(component as any).focalPoint as any}
-          visible={true}
-          onChange={(fp) =>
-            dispatch({ type: "update", id: component.id, patch: { focalPoint: fp } as any })
-          }
-        />
-      )}
-      {/* In-canvas aspect toolbar for Image blocks */}
-      {selected && !effLocked && component.type === "Image" && (
-        <ImageAspectToolbar
-          value={(component as any).cropAspect as any}
-          onChange={(next) => dispatch({ type: "update", id: component.id, patch: { cropAspect: next } as any })}
-        />
-      )}
-      {/* On-canvas resizable crop box to set custom ratio */}
-      {selected && !effLocked && component.type === "Image" && (
-        <ImageCropOverlay
-          value={(component as any).cropAspect as any}
-          visible={true}
-          onChange={(next) => dispatch({ type: "update", id: component.id, patch: { cropAspect: next } as any })}
-        />
-      )}
-      {spacingOverlay && (
-        <div
-          className="bg-primary/20 pointer-events-none absolute z-30"
-          style={{
-            top: spacingOverlay.top,
-            left: spacingOverlay.left,
-            width: spacingOverlay.width,
-            height: spacingOverlay.height,
-          }}
-        />
-      )}
-      {showOverlay && (
-        <div className="pointer-events-none absolute -top-5 left-0 z-30 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
-          {Math.round(overlayWidth)}×{Math.round(overlayHeight)} px |{" "}
-          {Math.round(overlayLeft)}, {Math.round(overlayTop)} px
-        </div>
-      )}
-      {rotating && (
-        <div className="pointer-events-none absolute -top-8 left-1/2 z-30 -translate-x-1/2 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
-          {Math.round(angle)}°
-        </div>
-      )}
+      <CanvasOverlays
+        guides={guides}
+        distances={distances}
+        spacingOverlay={spacingOverlay ?? null}
+        showSizePosition={showOverlay}
+        overlayWidth={overlayWidth}
+        overlayHeight={overlayHeight}
+        overlayLeft={overlayLeft}
+        overlayTop={overlayTop}
+        rotating={rotating}
+        angle={angle}
+      />
+      <BlockContent
+        component={{
+          ...component,
+          zIndex: effZIndex,
+          locked: effLocked,
+          pbViewport: viewport,
+        } as any}
+        locale={locale}
+        isInlineEditableButton={isInlineEditableButton}
+        inline={inline as any}
+        dispatch={dispatch as any}
+      />
+      <ImageEditingOverlays enabled={selected && !effLocked} component={component} dispatch={dispatch} />
+      
       <BlockResizer
         selected={selected}
         startResize={(e) => {
@@ -555,33 +305,8 @@ const BlockItem = memo(function BlockItemComponent({
           if (!effLocked) startRotate(e);
         }}
       />
-      <button
-        type="button"
-        onClick={() => { if (!effLocked) onRemove(); }}
-        className="bg-danger absolute top-1 right-1 rounded px-2 text-xs disabled:opacity-50"
-        data-token="--color-danger"
-        disabled={!!effLocked}
-        aria-disabled={!!effLocked}
-        aria-label={effLocked ? "Delete disabled while locked" : "Delete"}
-        title={effLocked ? "Unlock to delete" : "Delete"}
-      >
-        <span className="text-danger-foreground" data-token="--color-danger-fg">
-          ×
-        </span>
-      </button>
-      <div className="absolute top-1 right-10 z-30">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <MenuButton type="button" variant="outline" className="h-6 px-2 py-1 text-xs">⋯</MenuButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); dispatch({ type: "update-editor", id: component.id, patch: { zIndex: 999 } as any }); }}>Bring to front</DropdownMenuItem>
-            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); dispatch({ type: "update-editor", id: component.id, patch: { zIndex: 0 } as any }); }}>Send to back</DropdownMenuItem>
-            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); const z = (flags.zIndex as number | undefined) ?? 0; dispatch({ type: "update-editor", id: component.id, patch: { zIndex: z + 1 } as any }); }}>Forward</DropdownMenuItem>
-            <DropdownMenuItem onClick={(e) => { e.stopPropagation(); const z = (flags.zIndex as number | undefined) ?? 0; dispatch({ type: "update-editor", id: component.id, patch: { zIndex: Math.max(0, z - 1) } as any }); }}>Backward</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
+      <DeleteButton locked={!!effLocked} onRemove={onRemove} />
+      <ZIndexMenu componentId={component.id} currentZ={(flags as any).zIndex as number | undefined} dispatch={dispatch} />
       <BlockChildren
         component={component}
         childComponents={childComponents}
@@ -598,28 +323,14 @@ const BlockItem = memo(function BlockItemComponent({
         baselineSnap={baselineSnap}
         baselineStep={baselineStep}
       />
-      {/* Hidden-on-device badge + quick toggle */}
-      {hiddenList.length > 0 && (
-        <div className="absolute left-1 top-1 z-30 rounded bg-amber-500/90 px-1 py-0.5 text-[10px] text-white shadow" title={isHiddenHere ? `Hidden on ${viewport}` : `Hidden on ${hiddenList.join(', ')}`}>
-          {isHiddenHere ? `Hidden on ${viewport}` : `Hidden on ${hiddenList.join(', ')}`}
-          {isHiddenHere && (
-            <button
-              type="button"
-              className="ml-2 underline"
-              onClick={(e) => {
-                e.stopPropagation();
-                const cur = (editor ?? {})[component.id]?.hidden ?? [];
-                const set = new Set(cur);
-                set.delete(viewport);
-                dispatch({ type: "update-editor", id: component.id, patch: { hidden: Array.from(set) } as any });
-                try { window.dispatchEvent(new CustomEvent('pb-live-message', { detail: `Shown on ${viewport}` })); } catch {}
-              }}
-            >
-              Show for this device
-            </button>
-          )}
-        </div>
-      )}
+      <HiddenBadge
+        hiddenList={hiddenList}
+        isHiddenHere={isHiddenHere}
+        viewport={viewport}
+        componentId={component.id}
+        editor={editor}
+        dispatch={dispatch}
+      />
       <ContextMenu
         x={ctxPos.x}
         y={ctxPos.y}

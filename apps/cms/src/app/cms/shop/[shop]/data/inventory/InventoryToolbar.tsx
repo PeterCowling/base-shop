@@ -42,11 +42,11 @@ export function InventoryToolbar({
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-3">
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="min-w-0 flex flex-wrap items-center gap-2">
         <Tag
           variant={statusVariant}
           className={cn(
-            "rounded-lg border border-border/10 bg-surface-2 text-xs font-medium",
+            "rounded-lg border border-border-1 bg-surface-2 text-xs font-medium",
             status === "saved" && "bg-success/20 text-success-foreground",
             status === "error" && "bg-danger/20 text-danger-foreground",
           )}
@@ -60,7 +60,7 @@ export function InventoryToolbar({
           <span className="text-sm text-success-foreground">The latest changes are safe.</span>
         ) : null}
       </div>
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex shrink-0 flex-wrap items-center gap-2">
         <Button
           type="button"
           onClick={onAddRow}

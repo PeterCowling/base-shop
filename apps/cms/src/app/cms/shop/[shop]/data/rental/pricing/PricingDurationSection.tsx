@@ -14,12 +14,12 @@ interface Props {
 export default function PricingDurationSection({ rows, onAdd, onRemove, onUpdate, getErrors }: Props) {
   return (
     <section className="space-y-3">
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Duration discounts</h3>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h3 className="min-w-0 text-sm font-semibold uppercase tracking-wide text-muted-foreground">Duration discounts</h3>
         <Button
           type="button"
           variant="outline"
-          className="h-9 rounded-lg border-border/30 text-xs text-foreground hover:bg-surface-3"
+          className="h-9 shrink-0 rounded-lg border-border-2 text-xs text-foreground hover:bg-surface-3"
           onClick={onAdd}
         >
           Add discount tier
@@ -30,7 +30,7 @@ export default function PricingDurationSection({ rows, onAdd, onRemove, onUpdate
       </p>
       <div className="space-y-4">
         {rows.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-border/20 px-4 py-3 text-sm text-muted-foreground">
+          <p className="rounded-lg border border-dashed border-border-2 px-4 py-3 text-sm text-muted-foreground">
             No duration tiers configured. Add one to reward longer bookings.
           </p>
         ) : null}
@@ -43,7 +43,7 @@ export default function PricingDurationSection({ rows, onAdd, onRemove, onUpdate
           return (
             <div
               key={row.id}
-              className="grid gap-3 rounded-xl border border-border/10 bg-surface-2 p-4 sm:grid-cols-[1fr_1fr_auto]"
+              className="grid gap-3 rounded-xl border border-border-1 bg-surface-2 p-4 sm:grid-cols-[1fr_1fr_auto]"
             >
               <label className="flex flex-col gap-1">
                 <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Min days</span>

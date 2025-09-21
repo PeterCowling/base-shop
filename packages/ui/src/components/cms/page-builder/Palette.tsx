@@ -21,6 +21,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Tooltip,
 } from "../../atoms";
 import type { ComponentType } from "./defaults";
 import LibraryImportExport from "./LibraryImportExport";
@@ -120,7 +121,11 @@ const PaletteItem = memo(function PaletteItem({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>{content}</PopoverTrigger>
+      <PopoverTrigger asChild>
+        <Tooltip text={description ? `${label} — ${description}` : label}>
+          {content}
+        </Tooltip>
+      </PopoverTrigger>
       <PopoverContent className="w-64 space-y-2 text-sm">
         <Image
           src={previewImage}
@@ -141,11 +146,12 @@ interface PaletteProps {
   onInsertImage: (url: string) => void;
   onSetSectionBackground: (url: string) => void;
   selectedIsSection?: boolean;
+  defaultTab?: "components" | "media";
 }
 
-const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackground, selectedIsSection }: PaletteProps) {
+const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, defaultTab = "components" }: PaletteProps) {
   const [search, setSearch] = useState("");
-  const [tab, setTab] = useState<"components" | "media">("components");
+  const [tab, setTab] = useState<"components" | "media">(defaultTab);
   const [liveMessage, setLiveMessage] = useState("");
   const pathname = usePathname() ?? "";
   const shop = getShopFromPath(pathname);
@@ -439,90 +445,104 @@ function LibraryPaletteItem({ item, onDelete, onToggleShare, onUpdate, shop }: {
         </>
       )}
       <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => void handleThumbFile(e.target.files?.[0])} />
-      <button
-        type="button"
-        aria-label="Upload thumbnail"
-        className="rounded border px-2 text-xs"
-        onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
-        title="Upload thumbnail"
-      >
-        Thumb
-      </button>
-      {item.thumbnail && (
+      <Tooltip text="Upload thumbnail">
         <button
           type="button"
-          aria-label="Clear thumbnail"
+          aria-label="Upload thumbnail"
           className="rounded border px-2 text-xs"
-          onClick={(e) => { e.stopPropagation(); onUpdate({ thumbnail: null }); }}
+          onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
+          title="Upload thumbnail"
         >
-          Clear
+          Thumb
         </button>
+      </Tooltip>
+      {item.thumbnail && (
+        <Tooltip text="Clear thumbnail">
+          <button
+            type="button"
+            aria-label="Clear thumbnail"
+            className="rounded border px-2 text-xs"
+            onClick={(e) => { e.stopPropagation(); onUpdate({ thumbnail: null }); }}
+          >
+            Clear
+          </button>
+        </Tooltip>
       )}
       {editing ? (
         <>
-          <button
-            type="button"
-            aria-label="Save"
-            className="rounded border px-2 text-xs"
-            onClick={(e) => {
-              e.stopPropagation();
-              const nextTags = tags.map((t) => t.trim()).filter(Boolean);
-              onUpdate({ label: label.trim() || item.label, tags: nextTags });
-              setEditing(false);
-            }}
-          >
-            Save
-          </button>
-          <button
-            type="button"
-            aria-label="Cancel"
-            className="rounded border px-2 text-xs"
-            onClick={(e) => {
-              e.stopPropagation();
-              setLabel(item.label);
-              setTags(Array.isArray(item.tags) ? item.tags : []);
-              setEditing(false);
-            }}
-          >
-            Cancel
-          </button>
+          <Tooltip text="Save changes">
+            <button
+              type="button"
+              aria-label="Save"
+              className="rounded border px-2 text-xs"
+              onClick={(e) => {
+                e.stopPropagation();
+                const nextTags = tags.map((t) => t.trim()).filter(Boolean);
+                onUpdate({ label: label.trim() || item.label, tags: nextTags });
+                setEditing(false);
+              }}
+            >
+              Save
+            </button>
+          </Tooltip>
+          <Tooltip text="Cancel editing">
+            <button
+              type="button"
+              aria-label="Cancel"
+              className="rounded border px-2 text-xs"
+              onClick={(e) => {
+                e.stopPropagation();
+                setLabel(item.label);
+                setTags(Array.isArray(item.tags) ? item.tags : []);
+                setEditing(false);
+              }}
+            >
+              Cancel
+            </button>
+          </Tooltip>
         </>
       ) : (
+        <Tooltip text="Edit item">
+          <button
+            type="button"
+            aria-label="Edit"
+            className="rounded border px-2 text-xs"
+            onClick={(e) => {
+              e.stopPropagation();
+              setEditing(true);
+            }}
+          >
+            Edit
+          </button>
+        </Tooltip>
+      )}
+      <Tooltip text={item.shared ? "Unshare with team" : "Share with team"}>
         <button
           type="button"
-          aria-label="Edit"
+          aria-label={item.shared ? "Unshare" : "Share"}
+          className={`rounded border px-2 text-xs ${item.shared ? "bg-green-50" : ""}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleShare();
+          }}
+          title={item.shared ? "Shared with team" : "Private"}
+        >
+          {item.shared ? "Shared" : "Private"}
+        </button>
+      </Tooltip>
+      <Tooltip text="Delete from My Library">
+        <button
+          type="button"
+          aria-label="Delete from My Library"
           className="rounded border px-2 text-xs"
           onClick={(e) => {
             e.stopPropagation();
-            setEditing(true);
+            onDelete();
           }}
         >
-          Edit
+          Delete
         </button>
-      )}
-      <button
-        type="button"
-        aria-label={item.shared ? "Unshare" : "Share"}
-        className={`rounded border px-2 text-xs ${item.shared ? "bg-green-50" : ""}`}
-        onClick={(e) => {
-          e.stopPropagation();
-          onToggleShare();
-        }}
-        title={item.shared ? "Shared with team" : "Private"}
-      >
-        {item.shared ? "Shared" : "Private"}
-      </button>
-      <button
-        type="button"
-        aria-label="Delete from My Library"
-        className="rounded border px-2 text-xs"
-        onClick={(e) => {
-          e.stopPropagation();
-          onDelete();
-        }}
-      >
-        Delete
-      </button>
+      </Tooltip>
     </div>
   );
 }

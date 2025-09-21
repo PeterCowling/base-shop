@@ -20,9 +20,9 @@ export default function ConfiguratorStatusBar(): React.JSX.Element {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between bg-muted py-2 px-4 text-sm">
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-wrap items-center justify-between gap-2 bg-muted py-2 px-4 text-sm">
       <span className="flex items-center gap-2">{status}</span>
-      <button type="button" onClick={replay} className="underline">
+      <button type="button" onClick={replay} className="shrink-0 underline">
         Replay tour
       </button>
     </div>

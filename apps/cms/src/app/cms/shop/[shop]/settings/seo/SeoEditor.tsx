@@ -118,7 +118,7 @@ export default function SeoEditor(props: UseSeoEditorProps) {
             )}
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex gap-2">
+              <div className="min-w-0 flex gap-2">
                 <Button
                   type="button"
                   variant="outline"

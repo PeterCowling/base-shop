@@ -6,7 +6,7 @@ type PendingSummaryPanelProps = {
 
 export function PendingSummaryPanel({ headingId }: PendingSummaryPanelProps) {
   return (
-    <Card className="border border-border/60">
+    <Card className="border border-border-3">
       <CardContent className="space-y-4">
         <h2
           id={headingId}

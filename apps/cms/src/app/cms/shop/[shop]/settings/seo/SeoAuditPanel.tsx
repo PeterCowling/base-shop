@@ -78,13 +78,13 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
       <Card>
         <CardContent className="space-y-6 p-6 text-sm">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div>
+            <div className="min-w-0">
               <h3 className="text-lg font-semibold">SEO Audit</h3>
               <p className="text-muted-foreground text-sm">
                 Review the latest crawl score, issues found, and actionable recommendations.
               </p>
             </div>
-            <Button onClick={runAudit} disabled={running}>
+            <Button className="shrink-0" onClick={runAudit} disabled={running}>
               {running ? "Running audit…" : "Run audit"}
             </Button>
           </div>

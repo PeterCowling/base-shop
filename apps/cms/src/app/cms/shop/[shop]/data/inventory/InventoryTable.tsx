@@ -41,12 +41,12 @@ export function InventoryTable({
               <TableHead className="text-foreground">SKU</TableHead>
               {attributes.map((attr) => (
                 <TableHead key={attr} className="text-foreground">
-                  <div className="flex items-center justify-between gap-2">
-                    <span>{attr}</span>
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="min-w-0">{attr}</span>
                     <Button
                       type="button"
                       variant="ghost"
-                      className="h-7 rounded-lg px-2 text-xs text-muted-foreground hover:bg-surface-3"
+                      className="h-7 shrink-0 rounded-lg px-2 text-xs text-muted-foreground hover:bg-surface-3"
                       onClick={() => onDeleteAttribute(attr)}
                       aria-label={`delete-attr-${attr}`}
                     >

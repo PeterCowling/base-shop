@@ -10,7 +10,7 @@ export default async function PagesIndexPage() {
 
   return (
     <div className="space-y-8 text-foreground">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border-1 bg-hero text-primary-foreground shadow-xl">
         <div className="relative space-y-4 px-6 py-7">
           <Tag variant="default">
             Content · Choose a shop
@@ -25,13 +25,13 @@ export default async function PagesIndexPage() {
       </section>
 
       <section>
-        <Card className="border border-border/10 bg-surface-2 shadow-lg">
+        <Card className="border border-border-1 bg-surface-2 shadow-lg">
           <CardContent className="grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-3">
             {shops.map((shop) => (
               <Link
                 key={shop}
                 href={`/cms/shop/${shop}/pages`}
-                className="group rounded-2xl border border-border/10 bg-surface-2 px-4 py-5 text-sm font-medium text-foreground shadow-sm transition hover:border-border/40 hover:bg-surface-3"
+                className="group rounded-2xl border border-border-1 bg-surface-2 px-4 py-5 text-sm font-medium text-foreground shadow-sm transition hover:border-border-3 hover:bg-surface-3"
               >
                 <span className="block text-xs uppercase tracking-wider text-muted-foreground">
                   Shop
@@ -43,7 +43,7 @@ export default async function PagesIndexPage() {
               </Link>
             ))}
             {shops.length === 0 && (
-              <div className="rounded-2xl border border-border/10 bg-surface-2 px-4 py-5 text-sm text-muted-foreground">
+              <div className="rounded-2xl border border-border-1 bg-surface-2 px-4 py-5 text-sm text-muted-foreground">
                 No shops found yet.
               </div>
             )}

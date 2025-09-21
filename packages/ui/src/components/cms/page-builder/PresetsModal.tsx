@@ -1,6 +1,7 @@
 "use client";
 
 import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button } from "../../atoms/shadcn";
+import { Tooltip } from "../../atoms";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
@@ -87,7 +88,9 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange }
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline">Insert Preset</Button>
+        <Tooltip text="Insert a starter layout">
+          <Button variant="outline">Insert Preset</Button>
+        </Tooltip>
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>Starter Layouts</DialogTitle>

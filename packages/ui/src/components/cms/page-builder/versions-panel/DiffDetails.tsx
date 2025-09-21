@@ -1,0 +1,65 @@
+"use client";
+
+import { Button } from "../../../atoms/shadcn";
+import type { PageComponent } from "@acme/types";
+import type { DiffSummary } from "./diff";
+import { replaceComponentById } from "./diff";
+
+interface Props {
+  diff: DiffSummary | null;
+  current: PageComponent[];
+  onRestore: (components: PageComponent[]) => void;
+}
+
+const DiffDetails = ({ diff, current, onRestore }: Props) => {
+  if (!diff || (diff.modifiedList?.length ?? 0) === 0) return null;
+  return (
+    <div className="rounded border bg-background p-2 text-sm space-y-2">
+      <div className="text-sm font-medium">Detailed Diff</div>
+      {diff.modifiedList!.slice(0, 5).map((m) => {
+        const before = (diff.a as any)[m.id] ?? {};
+        const after = (diff.b as any)[m.id] ?? {};
+        return (
+          <div key={m.id} className="border rounded p-2">
+            <div className="mb-2 flex items-center justify-between">
+              <div className="font-medium">{m.id}</div>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  const replacement = (diff.b as any)[m.id] as PageComponent | undefined;
+                  const next = replaceComponentById(current, m.id, replacement);
+                  onRestore(next);
+                }}
+              >
+                Restore this component
+              </Button>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="rounded border p-2">
+                <div className="font-medium mb-1">Current</div>
+                {m.keys.map((k) => (
+                  <div key={k} className="mb-1">
+                    <span className="mr-1 text-muted-foreground">{k}:</span>
+                    <span className="bg-red-50 dark:bg-red-900/30 px-1 rounded break-words">{JSON.stringify((before as any)[k])}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="rounded border p-2">
+                <div className="font-medium mb-1">Selected</div>
+                {m.keys.map((k) => (
+                  <div key={k} className="mb-1">
+                    <span className="mr-1 text-muted-foreground">{k}:</span>
+                    <span className="bg-green-50 dark:bg-green-900/30 px-1 rounded break-words">{JSON.stringify((after as any)[k])}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+export default DiffDetails;
+

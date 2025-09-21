@@ -39,7 +39,7 @@ export function TelemetryFiltersPanel({
 }: TelemetryFiltersPanelProps) {
   return (
     <section className="grid gap-6 lg:grid-cols-[340px,1fr]">
-      <Card className="border border-border/10 bg-surface-2 text-foreground">
+      <Card className="border border-border-1 bg-surface-2 text-foreground">
         <CardContent className="space-y-5 p-6">
           <div className="space-y-2">
             <h3 className="text-lg font-semibold">Saved filters</h3>
@@ -57,7 +57,7 @@ export function TelemetryFiltersPanel({
                   "rounded-xl border px-3 py-2 text-left text-sm transition",
                   activePreset === preset.id
                     ? "border-info bg-info/20 text-foreground"
-                    : "border-border/20 bg-surface-2 text-muted-foreground hover:border-info hover:bg-info/10",
+                    : "border-border-2 bg-surface-2 text-muted-foreground hover:border-info hover:bg-info/10",
                 )}
                 aria-pressed={activePreset === preset.id}
               >
@@ -71,7 +71,7 @@ export function TelemetryFiltersPanel({
         </CardContent>
       </Card>
 
-      <Card className="border border-border/10 bg-surface-2 text-foreground">
+      <Card className="border border-border-1 bg-surface-2 text-foreground">
         <CardContent className="space-y-5 p-6">
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
             <label className="space-y-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -82,7 +82,7 @@ export function TelemetryFiltersPanel({
                   onFiltersChange({ name: event.target.value })
                 }
                 placeholder="Search events"
-                className="border-border/20 bg-surface-2 text-foreground placeholder:text-muted-foreground"
+                className="border-border-2 bg-surface-2 text-foreground placeholder:text-muted-foreground"
               />
             </label>
             <label className="space-y-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -93,7 +93,7 @@ export function TelemetryFiltersPanel({
                 onChange={(event) =>
                   onFiltersChange({ start: event.target.value })
                 }
-                className="border-border/20 bg-surface-2 text-foreground"
+                className="border-border-2 bg-surface-2 text-foreground"
               />
             </label>
             <label className="space-y-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -104,14 +104,14 @@ export function TelemetryFiltersPanel({
                 onChange={(event) =>
                   onFiltersChange({ end: event.target.value })
                 }
-                className="border-border/20 bg-surface-2 text-foreground"
+                className="border-border-2 bg-surface-2 text-foreground"
               />
             </label>
           </div>
 
-          <div className="relative rounded-2xl border border-border/10 bg-surface-2 p-4">
-            <div className="mb-3 flex items-center justify-between">
-              <div>
+          <div className="relative rounded-2xl border border-border-1 bg-surface-2 p-4">
+            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
+              <div className="min-w-0">
                 <h3 className="text-base font-semibold">Event trend</h3>
                 <p className="text-xs text-muted-foreground">
                   Visualise when filtered events are landing.
@@ -121,7 +121,7 @@ export function TelemetryFiltersPanel({
                 <Loader
                   aria-label="Loading telemetry"
                   size={20}
-                  className="text-info"
+                  className="shrink-0 text-info"
                 />
               )}
             </div>

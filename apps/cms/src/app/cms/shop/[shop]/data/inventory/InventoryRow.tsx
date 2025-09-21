@@ -30,10 +30,10 @@ export default function InventoryRow({
   deleteRow,
 }: Props) {
   return (
-    <TableRow key={index} className="border-border/5 bg-surface-2 text-foreground/90">
+    <TableRow key={index} className="border-border-1 bg-surface-2 text-foreground/90">
       <TableCell className="min-w-[10rem]">
         <Input
-          className="border-border/10 bg-surface-2 text-foreground shadow-inner"
+          className="border-border-1 bg-surface-2 text-foreground shadow-inner"
           value={item.sku}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             updateItem(index, "sku", e.target.value)
@@ -43,7 +43,7 @@ export default function InventoryRow({
       {attributes.map((attr) => (
         <TableCell key={attr} className="min-w-[8rem]">
           <Input
-            className="border-border/10 bg-surface-2 text-foreground shadow-inner"
+            className="border-border-1 bg-surface-2 text-foreground shadow-inner"
             value={item.variantAttributes[attr] ?? ""}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               updateItem(index, `variantAttributes.${attr}`, e.target.value)
@@ -53,7 +53,7 @@ export default function InventoryRow({
       ))}
       <TableCell>
         <Input
-          className="border-border/10 bg-surface-2 text-foreground shadow-inner"
+          className="border-border-1 bg-surface-2 text-foreground shadow-inner"
           type="number"
           min={0}
           value={Number.isNaN(item.quantity) ? "" : item.quantity}
@@ -64,7 +64,7 @@ export default function InventoryRow({
       </TableCell>
       <TableCell>
         <Input
-          className="border-border/10 bg-surface-2 text-foreground shadow-inner"
+          className="border-border-1 bg-surface-2 text-foreground shadow-inner"
           type="number"
           min={0}
           value={item.lowStockThreshold ?? ""}

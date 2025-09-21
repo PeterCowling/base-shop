@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
+import { Tooltip } from "../../atoms";
 import { useEffect, useState } from "react";
 import { Spinner } from "../../atoms";
 import { CheckIcon } from "@radix-ui/react-icons";
@@ -61,17 +62,23 @@ const HistoryControls = ({
   }, []);
   return (
   <div className="flex gap-2">
-    <Button onClick={onUndo} disabled={!canUndo}>
-      Undo
-    </Button>
-    <Button onClick={onRedo} disabled={!canRedo}>
-      Redo
-    </Button>
+    <Tooltip text="Undo (Ctrl/⌘+Z)">
+      <Button onClick={onUndo} disabled={!canUndo}>
+        Undo
+      </Button>
+    </Tooltip>
+    <Tooltip text="Redo (Ctrl/⌘+Y)">
+      <Button onClick={onRedo} disabled={!canRedo}>
+        Redo
+      </Button>
+    </Tooltip>
     <div className="flex flex-col gap-1">
       <div className="flex items-center gap-2">
-        <Button onClick={onSave} disabled={saving}>
-          {saving ? <Spinner className="h-4 w-4" /> : "Save"}
-        </Button>
+        <Tooltip text="Save (Ctrl/⌘+S)">
+          <Button onClick={onSave} disabled={saving}>
+            {saving ? <Spinner className="h-4 w-4" /> : "Save"}
+          </Button>
+        </Tooltip>
         {autoSaveState === "saving" && (
           <div className="flex items-center gap-1 text-sm text-muted-foreground">
             <Spinner className="h-4 w-4" /> Saving…
@@ -88,14 +95,16 @@ const HistoryControls = ({
       )}
     </div>
     <div className="flex flex-col gap-1">
-      <Button
-        variant="outline"
-        onClick={onPublish}
-        disabled={publishing}
-        data-tour="publish"
-      >
-        {publishing ? <Spinner className="h-4 w-4" /> : "Publish"}
-      </Button>
+      <Tooltip text="Publish page">
+        <Button
+          variant="outline"
+          onClick={onPublish}
+          disabled={publishing}
+          data-tour="publish"
+        >
+          {publishing ? <Spinner className="h-4 w-4" /> : "Publish"}
+        </Button>
+      </Tooltip>
       {publishError && (
         <p className="text-sm text-red-500">{publishError}</p>
       )}
@@ -103,7 +112,9 @@ const HistoryControls = ({
     {shop && pageId && currentComponents && onRestoreVersion && (
       <Dialog open={isOpenManage} onOpenChange={setIsOpenManage}>
         <DialogTrigger asChild>
-          <Button variant="outline" onClick={() => setIsOpenManage(true)}>Versions</Button>
+          <Tooltip text="Manage versions (Ctrl/⌘+Shift+V)">
+            <Button variant="outline" onClick={() => setIsOpenManage(true)}>Versions</Button>
+          </Tooltip>
         </DialogTrigger>
         <DialogContent className="max-w-5xl">
           <DialogTitle>Versions</DialogTitle>
@@ -120,7 +131,9 @@ const HistoryControls = ({
     {shop && pageId && currentComponents && onRestoreVersion && (
       <Dialog open={isOpenSave} onOpenChange={setIsOpenSave}>
         <DialogTrigger asChild>
-          <Button variant="outline" onClick={() => setIsOpenSave(true)}>Save Version</Button>
+          <Tooltip text="Save version snapshot (Ctrl/⌘+Shift+S)">
+            <Button variant="outline" onClick={() => setIsOpenSave(true)}>Save Version</Button>
+          </Tooltip>
         </DialogTrigger>
         <DialogContent className="max-w-5xl">
           <DialogTitle>Save Version</DialogTitle>

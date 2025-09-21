@@ -64,9 +64,9 @@ export function MaintenanceScanner({ initial }: MaintenanceScannerProps) {
   return (
     <Card className="border border-border/60">
       <CardContent className="space-y-5">
-        <div className="flex items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-foreground">Maintenance results</h2>
-          <Tag variant={statusVariant}>{statusLabel}</Tag>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="min-w-0 text-lg font-semibold text-foreground">Maintenance results</h2>
+          <Tag className="shrink-0" variant={statusVariant}>{statusLabel}</Tag>
         </div>
         <p className="text-sm text-muted-foreground">{summary}</p>
         <Button

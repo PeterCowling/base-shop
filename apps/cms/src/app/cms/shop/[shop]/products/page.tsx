@@ -194,13 +194,13 @@ export default async function ProductsPage({
         <Card className="border border-border/10 bg-surface-2 text-foreground shadow-lg">
           <CardContent className="space-y-4 p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
+              <div className="min-w-0">
                 <h2 className="text-lg font-semibold">Catalog overview</h2>
                 <p className="text-sm text-muted-foreground">
                   Filter, duplicate, or retire products without leaving this view.
                 </p>
               </div>
-              <Tag variant="default">
+              <Tag className="shrink-0" variant="default">
                 {totalProducts} total products
               </Tag>
             </div>

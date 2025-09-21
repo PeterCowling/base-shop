@@ -86,13 +86,13 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
       <Card>
         <CardContent className="space-y-6 p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div>
+            <div className="min-w-0">
               <h3 className="text-lg font-semibold">AI Catalog Feed</h3>
               <p className="text-muted-foreground text-sm">
                 Configure the structured feed that powers AI discovery surfaces.
               </p>
             </div>
-            <div className="text-sm text-right">
+            <div className="shrink-0 text-right text-sm">
               <p>
                 Last run:
                 {" "}
@@ -106,7 +106,7 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
           </div>
 
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <span className="text-sm font-medium">Quick actions</span>
+            <span className="min-w-0 text-sm font-medium">Quick actions</span>
             <div className="flex gap-2">
               <Button
                 type="button"

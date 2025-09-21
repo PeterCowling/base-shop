@@ -41,21 +41,7 @@ button {
 }
 
 /* CMS surface utilities and overrides */
-.bg-surface-1 { background-color: hsl(var(--surface-1)); }
-.bg-surface-2 { background-color: hsl(var(--surface-2)); }
-.bg-surface-3 { background-color: hsl(var(--surface-3)); }
-
-/* Align shadcn/Tailwind semantic classes with CMS surfaces */
-.bg-card { background-color: hsl(var(--surface-2)) !important; }
-.bg-popover { background-color: hsl(var(--surface-3)) !important; }
-
-/* Optional text/border utilities for surface-aware styling */
-.text-surface-1 { color: hsl(var(--surface-1)); }
-.text-surface-2 { color: hsl(var(--surface-2)); }
-.text-surface-3 { color: hsl(var(--surface-3)); }
-.border-surface-1 { border-color: hsl(var(--surface-1)); }
-.border-surface-2 { border-color: hsl(var(--surface-2)); }
-.border-surface-3 { border-color: hsl(var(--surface-3)); }
+/* Surface utilities now provided via Tailwind theme colors */
 
 /* Improve readability of muted helper text within the CMS.
    Our preset sets text-muted-foreground to 65% alpha of --color-fg,

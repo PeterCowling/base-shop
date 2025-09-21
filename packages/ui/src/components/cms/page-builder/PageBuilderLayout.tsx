@@ -4,7 +4,7 @@ import { DndContext, DragOverlay } from "@dnd-kit/core";
 import type { CSSProperties, ComponentProps } from "react";
 import React from "react";
 import { Button } from "../../atoms/shadcn";
-import { Toast, Tooltip } from "../../atoms";
+import { Toast, Tooltip, Popover, PopoverTrigger, PopoverContent } from "../../atoms";
 import PageToolbar from "./PageToolbar";
 import PresetsModal from "./PresetsModal";
 import PageCanvas from "./PageCanvas";
@@ -96,6 +96,24 @@ const PageBuilderLayout = ({
   React.useEffect(() => {
     try { localStorage.setItem("pb:show-palette", showPalette ? "1" : "0"); } catch {}
   }, [showPalette]);
+  // Keyboard shortcut: Ctrl/Cmd + B toggles the palette
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const isEditable = () => {
+        const t = e.target as HTMLElement | null;
+        const tag = t?.tagName;
+        return !!t && ((t as any).isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT');
+      };
+      if (isEditable()) return;
+      if (!(e.ctrlKey || e.metaKey)) return;
+      if (e.key.toLowerCase() === 'b') {
+        e.preventDefault();
+        setShowPalette((v) => !v);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
   React.useEffect(() => {
     try { localStorage.setItem("pb:palette-width", String(paletteWidth)); } catch {}
   }, [paletteWidth]);
@@ -155,7 +173,45 @@ const PageBuilderLayout = ({
       </>
     )}
     {!showPalette && (
-      <div className="shrink-0 w-3 flex items-start justify-center pt-2">
+      <div className="shrink-0 w-8 flex flex-col items-center gap-2 pt-2">
+        {/* Quick Components popover */}
+        <Popover>
+          <PopoverTrigger asChild>
+            <Tooltip text="Quick components">
+              <button type="button" aria-label="Quick components" className="rounded border bg-background px-1 text-xs">🧩</button>
+            </Tooltip>
+          </PopoverTrigger>
+          <PopoverContent className="w-80 p-2">
+            <div className="max-h-[70vh] overflow-auto">
+              <Palette
+                onAdd={paletteOnAdd}
+                onInsertImage={onInsertImageAsset}
+                onSetSectionBackground={onSetSectionBackground}
+                selectedIsSection={selectedIsSection}
+                defaultTab="components"
+              />
+            </div>
+          </PopoverContent>
+        </Popover>
+        {/* Quick Media popover */}
+        <Popover>
+          <PopoverTrigger asChild>
+            <Tooltip text="Quick media">
+              <button type="button" aria-label="Quick media" className="rounded border bg-background px-1 text-xs">🖼</button>
+            </Tooltip>
+          </PopoverTrigger>
+          <PopoverContent className="w-80 p-2">
+            <div className="max-h-[70vh] overflow-auto">
+              <Palette
+                onAdd={paletteOnAdd}
+                onInsertImage={onInsertImageAsset}
+                onSetSectionBackground={onSetSectionBackground}
+                selectedIsSection={selectedIsSection}
+                defaultTab="media"
+              />
+            </div>
+          </PopoverContent>
+        </Popover>
         <Tooltip text="Show palette">
           <button
             type="button"

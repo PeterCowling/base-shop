@@ -46,9 +46,10 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
      * ------------------------------------------------------------------ */
     const baseClasses = cn(
       // base
-      "flex h-12 w-full rounded-md border border-input bg-background px-3 py-3 text-sm text-foreground",
+      "flex h-12 w-full rounded-md border border-input bg-input px-3 py-3 text-sm text-foreground",
       "placeholder:text-gray-400 dark:placeholder:text-gray-500 file:border-0 file:bg-transparent file:text-sm file:font-medium",
-      "ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+      // ring uses tokenized color and widths
+      "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)]",
       "disabled:cursor-not-allowed disabled:opacity-50",
       // floating-label tweak
       floatingLabel && "peer pt-5",

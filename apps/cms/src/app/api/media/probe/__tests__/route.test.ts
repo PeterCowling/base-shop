@@ -46,8 +46,9 @@ describe("GET", () => {
     expect(initArg).toEqual({ method: "HEAD" });
   });
 
-  it("returns 401 for unauthenticated requests", async () => {
+  it("works without auth; returns 400 on fetch failure", async () => {
     __setMockSession(null as any);
+    fetchMock.mockRejectedValue(new Error("network"));
 
     const res = await GET(
       new Request(
@@ -55,9 +56,9 @@ describe("GET", () => {
       )
     );
 
-    expect(res.status).toBe(401);
-    expect(await res.text()).toBe("Unauthorized");
-    expect(fetchMock).not.toHaveBeenCalled();
+    expect(res.status).toBe(400);
+    expect(await res.text()).toBe("Fetch failed");
+    expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
   it("rejects requests targeting private networks", async () => {

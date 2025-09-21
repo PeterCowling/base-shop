@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import useMediaLibrary from "./useMediaLibrary";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+import { Tooltip } from "../../atoms";
 
 interface Props {
   onInsertImage: (url: string) => void;
@@ -90,8 +91,12 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
                   )}
                 </div>
                 <div className="flex items-center gap-2 p-2">
-                  <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => onInsertImage(it.url)}>Insert</Button>
-                  <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => onSetSectionBackground(it.url)} disabled={!selectedIsSection}>Set BG</Button>
+                  <Tooltip text="Insert image into the canvas">
+                    <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => onInsertImage(it.url)}>Insert</Button>
+                  </Tooltip>
+                  <Tooltip text={selectedIsSection ? "Set selected section background" : "Select a section to set background"}>
+                    <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => onSetSectionBackground(it.url)} disabled={!selectedIsSection}>Set BG</Button>
+                  </Tooltip>
                 </div>
               </div>
             ))}

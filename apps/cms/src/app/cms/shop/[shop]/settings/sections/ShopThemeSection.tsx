@@ -59,11 +59,11 @@ export default function ShopThemeSection({
 
   return (
     <div className="col-span-2 flex flex-col gap-1">
-      <div className="flex items-center justify-between">
-        <span>Theme tokens</span>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <span className="min-w-0">Theme tokens</span>
         <Link
           href={`/cms/shop/${shop}/themes`}
-          className="h-auto p-0 text-primary hover:bg-transparent"
+          className="h-auto shrink-0 p-0 text-primary hover:bg-transparent"
         >
           Edit Theme
         </Link>

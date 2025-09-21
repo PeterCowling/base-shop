@@ -46,7 +46,9 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: initTheme }} />
       </head>
       <body className="antialiased">
-        <CartProvider>{children}</CartProvider>
+        <CartProvider>
+          <div className="sf-content">{children}</div>
+        </CartProvider>
       </body>
     </html>
   );

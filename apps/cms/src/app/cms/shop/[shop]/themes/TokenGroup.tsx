@@ -40,11 +40,11 @@ export default function TokenGroup({
 }: Props) {
   return (
     <fieldset className="space-y-2">
-      <legend className="flex items-center justify-between font-semibold">
+      <legend className="flex flex-wrap items-center justify-between gap-2 font-semibold">
         {name}
         <button
           type="button"
-          className="text-sm underline"
+          className="shrink-0 text-sm underline"
           onClick={handleGroupReset(tokens.map(([k]) => k))}
         >
           Reset

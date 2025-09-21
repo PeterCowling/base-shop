@@ -39,6 +39,14 @@ module.exports = {
     "^packages/config/src/env/core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
     "^packages/config/src/env/index\\.js$": "<rootDir>/packages/config/src/env/index.ts",
     "^packages/config/src/env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.ts",
+    // Ensure relative JS re-exports in the config package resolve to TS sources under Jest
+    "^\\./email\\.schema\\.js$": "<rootDir>/packages/config/src/env/email.schema.ts",
+    "^\\./payments\\.js$": "<rootDir>/packages/config/src/env/payments.ts",
+    "^\\./shipping\\.js$": "<rootDir>/packages/config/src/env/shipping.ts",
+    // UI relative imports used inside package code that tests need to mock
+    "^packages/ui/src/hooks/useFileUpload(\\.tsx)?$": "<rootDir>/test/__mocks__/ui-useFileUpload.mock.ts",
+    "^packages/ui/src/components/atoms/shadcn$": "<rootDir>/test/__mocks__/ui-shadcn-lite.tsx",
+    "^packages/ui/src/components/cms/page-builder/Palette(\\.tsx)?$": "<rootDir>/test/__mocks__/ui-palette-add.mock.tsx",
     "^undici$": "<rootDir>/test/__mocks__/undici.ts",
     "^react-chartjs-2$": "<rootDir>/test/__mocks__/react-chartjs-2.ts",
   },
@@ -53,7 +61,10 @@ module.exports = {
       },
     ],
   },
-  transformIgnorePatterns: ["/node_modules/(?!(?:@?jose)/)"],
+  // Keep in sync with monorepo base so internal workspace packages are transformed
+  transformIgnorePatterns: [
+    "/node_modules/(?!(jose|next-auth|ulid|@upstash/redis|uncrypto|@acme)/)",
+  ],
   // Collect coverage only from the CMS source code; exclude declarations and tests.
   collectCoverage: true,
   collectCoverageFrom: [

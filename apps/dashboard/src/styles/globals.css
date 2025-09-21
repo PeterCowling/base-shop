@@ -1,0 +1,15 @@
+/* apps/dashboard/src/styles/globals.css
+   Minimal, app-scoped text wrapping to prevent overflow issues */
+
+/* Wrap long tokens (IDs, file names, URLs) inside dashboard content */
+.dash-content :where(h1,h2,h3,h4,h5,h6,p,span,small,li,dt,dd,blockquote,label,a,strong,em,code,div) {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Allow explicit .min-w-0 helpers to take effect when added */
+.dash-content :where(.min-w-0) {
+  min-width: 0 !important;
+}
+

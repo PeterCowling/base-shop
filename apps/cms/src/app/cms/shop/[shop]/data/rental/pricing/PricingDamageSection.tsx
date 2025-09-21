@@ -15,12 +15,12 @@ interface Props {
 export default function PricingDamageSection({ rows, onAdd, onRemove, onUpdate, getErrors }: Props) {
   return (
     <section className="space-y-3">
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Damage fees</h3>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h3 className="min-w-0 text-sm font-semibold uppercase tracking-wide text-muted-foreground">Damage fees</h3>
         <Button
           type="button"
           variant="outline"
-          className="h-9 rounded-lg border-border/30 text-xs text-foreground hover:bg-surface-3"
+          className="h-9 shrink-0 rounded-lg border-border-2 text-xs text-foreground hover:bg-surface-3"
           onClick={onAdd}
         >
           Add damage rule
@@ -29,7 +29,7 @@ export default function PricingDamageSection({ rows, onAdd, onRemove, onUpdate, 
       <p className="text-xs text-muted-foreground">Map damage codes to a fixed fee or reuse the deposit amount.</p>
       <div className="space-y-4">
         {rows.length === 0 ? (
-          <p className="rounded-lg border border-dashed border-border/20 px-4 py-3 text-sm text-muted-foreground">
+          <p className="rounded-lg border border-dashed border-border-2 px-4 py-3 text-sm text-muted-foreground">
             No damage fees yet. Add codes for your most common incidents.
           </p>
         ) : null}
@@ -46,7 +46,7 @@ export default function PricingDamageSection({ rows, onAdd, onRemove, onUpdate, 
           return (
             <div
               key={row.id}
-              className="grid gap-3 rounded-xl border border-border/10 bg-surface-2 p-4 sm:grid-cols-[1fr_1fr_auto]"
+              className="grid gap-3 rounded-xl border border-border-1 bg-surface-2 p-4 sm:grid-cols-[1fr_1fr_auto]"
             >
               <label className="flex flex-col gap-1">
                 <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Damage code</span>
@@ -71,7 +71,7 @@ export default function PricingDamageSection({ rows, onAdd, onRemove, onUpdate, 
                     variant={isDeposit ? "ghost" : "outline"}
                     className={cn(
                       "h-9 flex-1 rounded-lg text-xs",
-                      isDeposit ? "border-border/10 bg-surface-2 text-foreground" : "border-border/30 text-foreground"
+                      isDeposit ? "border-border-1 bg-surface-2 text-foreground" : "border-border-2 text-foreground"
                     )}
                     onClick={() => setMode("amount")}
                   >
@@ -82,7 +82,7 @@ export default function PricingDamageSection({ rows, onAdd, onRemove, onUpdate, 
                     variant={isDeposit ? "outline" : "ghost"}
                     className={cn(
                       "h-9 flex-1 rounded-lg text-xs",
-                      isDeposit ? "border-border/30 text-foreground" : "border-border/10 bg-surface-2 text-foreground"
+                      isDeposit ? "border-border-2 text-foreground" : "border-border-1 bg-surface-2 text-foreground"
                     )}
                     onClick={() => setMode("deposit")}
                   >

@@ -27,7 +27,7 @@ export default function PricingCoverageSection({ rows, onUpdate, getErrors }: Pr
             onUpdate(row.code, { enabled: Boolean(checked) });
 
           return (
-            <Card key={row.code} className="border border-border/10 bg-surface-2 text-foreground">
+            <Card key={row.code} className="border border-border-1 bg-surface-2 text-foreground">
               <CardContent className="space-y-3 p-4">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-sm font-semibold capitalize">{row.code}</span>

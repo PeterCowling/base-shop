@@ -101,13 +101,13 @@ export default async function InventoryPage({
         <Card className="border border-border/10 bg-surface-2 shadow-lg">
           <CardContent className="space-y-4 px-6 py-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
+              <div className="min-w-0">
                 <h2 className="text-lg font-semibold">Inventory matrix</h2>
                 <p className="text-sm text-muted-foreground">
                   Edit quantities, variant attributes, and maintenance data in one place.
                 </p>
               </div>
-              <Tag variant="default">
+              <Tag className="shrink-0" variant="default">
                 {totalItems} items tracked
               </Tag>
             </div>

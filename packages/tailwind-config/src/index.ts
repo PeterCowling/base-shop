@@ -16,13 +16,30 @@ const preset: Config = {
   content: [],
   theme: {
     extend: {
+      ringColor: {
+        DEFAULT: "hsl(var(--ring))",
+      },
+      ringOffsetColor: {
+        DEFAULT: "hsl(var(--ring-offset))",
+      },
       colors: {
         // Base semantic aliases expected by shadcn components
         background: "hsl(var(--color-bg))",
         foreground: "hsl(var(--color-fg))",
-        card: "hsl(var(--color-bg))",
-        popover: "hsl(var(--color-bg))",
+        // Surfaces (with safe fallbacks for apps that don't define surface tokens)
+        "surface-1": "hsl(var(--surface-1, var(--color-bg)))",
+        "surface-2": "hsl(var(--surface-2, var(--color-bg)))",
+        "surface-3": "hsl(var(--surface-3, var(--color-bg)))",
+        // Component surfaces
+        card: "hsl(var(--surface-2, var(--color-bg)))",
+        popover: "hsl(var(--surface-3, var(--color-bg)))",
+        // Form input surface
+        input: "hsl(var(--surface-input, var(--surface-2, var(--color-bg))))",
         border: "hsl(var(--color-fg))",
+        "border-1": "hsl(var(--border-1, var(--color-fg) / 0.12))",
+        "border-2": "hsl(var(--border-2, var(--color-fg) / 0.22))",
+        "border-3": "hsl(var(--border-3, var(--color-fg) / 0.38))",
+        // Legacy aliases used across apps
         bg: "hsl(var(--color-bg))",
         fg: "hsl(var(--color-fg))",
         primary: "hsl(var(--color-primary))",

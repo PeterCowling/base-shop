@@ -36,7 +36,7 @@ export function DashboardHero({
     pendingCount === 0 ? "No pending approvals" : `${pendingCount} awaiting review`;
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero text-primary-foreground shadow-xl">
+    <section className="relative overflow-hidden rounded-3xl border border-border-3 bg-hero text-primary-foreground shadow-xl">
       <div className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
         <div className="space-y-6">
           <div className="space-y-2">
@@ -91,7 +91,7 @@ export function DashboardHero({
           ))}
         </div>
       </div>
-        <Card className="border border-border/20 bg-surface-2 text-foreground shadow-2xl">
+        <Card className="border border-border-2 bg-surface-2 text-foreground shadow-2xl">
           <CardContent className="space-y-5">
             <div className="space-y-1">
               <h2 className="text-lg font-semibold">Access control</h2>
@@ -99,7 +99,7 @@ export function DashboardHero({
                 Keep the workspace safe by approving new teammates promptly.
               </p>
             </div>
-            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/15 bg-surface-2 px-4 py-3">
+            <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border-1 bg-surface-2 px-4 py-3">
               <div className="min-w-0">
                 <p className="text-sm font-medium">Pending approvals</p>
                 <p className="text-xs text-muted-foreground">

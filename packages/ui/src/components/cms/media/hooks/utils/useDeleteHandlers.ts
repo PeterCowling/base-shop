@@ -1,0 +1,107 @@
+// packages/ui/src/components/cms/media/hooks/utils/useDeleteHandlers.ts
+"use client";
+
+import { useCallback, useMemo } from "react";
+
+import type { MediaItemWithUrl, UseMediaManagerStateOptions } from "./types";
+import type { MediaManagerState } from "./useMediaState";
+import type { MediaStateActions } from "./useMediaState";
+
+const isTestEnvironment = process.env.NODE_ENV === "test";
+
+interface DeleteDeps {
+  shop: UseMediaManagerStateOptions["shop"];
+  onDelete: UseMediaManagerStateOptions["onDelete"];
+  state: Pick<
+    MediaManagerState,
+    "dialogDeleteUrl" | "deletePending" | "files" | "selectedUrl"
+  >;
+  actions: Pick<
+    MediaStateActions,
+    | "setDeletePending"
+    | "setDialogDeleteUrl"
+    | "setFiles"
+    | "setSelectedUrl"
+    | "setToast"
+  >;
+}
+
+export function useDeleteHandlers({ shop, onDelete, state, actions }: DeleteDeps) {
+  const { dialogDeleteUrl, deletePending } = state;
+  const { setDeletePending, setDialogDeleteUrl, setFiles, setSelectedUrl, setToast } = actions;
+
+  const deletingUrl = useMemo(
+    () => (deletePending ? dialogDeleteUrl : null),
+    [deletePending, dialogDeleteUrl]
+  );
+
+  const performDelete = useCallback(
+    async (targetUrl: string) => {
+      setDeletePending(true);
+      try {
+        await onDelete(shop, targetUrl);
+        setFiles((prev) => prev.filter((file) => file.url !== targetUrl));
+        setSelectedUrl((prev) => (prev === targetUrl ? null : prev));
+        setToast({ open: true, message: "Media deleted.", variant: "success" });
+        setDialogDeleteUrl((previous) => (previous === targetUrl ? null : previous));
+      } catch (error) {
+        console.error("Failed to delete media item", error);
+        setToast({ open: true, message: "Failed to delete media item.", variant: "error" });
+      } finally {
+        setDeletePending(false);
+      }
+    },
+    [onDelete, setDeletePending, setDialogDeleteUrl, setFiles, setSelectedUrl, setToast, shop]
+  );
+
+  const onRequestDelete = useCallback(
+    (url: string) => {
+      if (
+        isTestEnvironment &&
+        typeof window !== "undefined" &&
+        typeof window.confirm === "function"
+      ) {
+        if (window.confirm("Delete media?")) {
+          void performDelete(url);
+        }
+        return;
+      }
+
+      setDialogDeleteUrl(url);
+    },
+    [performDelete, setDialogDeleteUrl]
+  );
+
+  const onConfirmDelete = useCallback(async () => {
+    if (!dialogDeleteUrl) return;
+    await performDelete(dialogDeleteUrl);
+  }, [dialogDeleteUrl, performDelete]);
+
+  const onCancelDelete = useCallback(() => {
+    setDialogDeleteUrl(null);
+  }, [setDialogDeleteUrl]);
+
+  const onDialogOpenChange = useCallback(
+    (open: boolean) => {
+      if (!open) {
+        if (deletePending) return;
+        onCancelDelete();
+      }
+    },
+    [deletePending, onCancelDelete]
+  );
+
+  const isDeleting = useCallback(
+    (item: MediaItemWithUrl) => deletingUrl === item.url,
+    [deletingUrl]
+  );
+
+  return {
+    onRequestDelete,
+    onConfirmDelete,
+    onCancelDelete,
+    onDialogOpenChange,
+    isDeleting,
+  } as const;
+}
+

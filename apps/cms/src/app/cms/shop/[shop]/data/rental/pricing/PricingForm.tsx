@@ -99,7 +99,7 @@ export default function PricingForm({ shop, initial }: Props) {
 
       <PricingCoverageSection rows={coverage.rows} onUpdate={coverage.update} getErrors={coverage.getErrors} />
 
-      <section className="rounded-xl border border-border/10 bg-surface-2 p-4">
+      <section className="rounded-xl border border-border-1 bg-surface-2 p-4">
         <h3 className="text-sm font-semibold text-foreground">Need a quick checklist?</h3>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-muted-foreground">
           <li>Verify base rate aligns with current merchandising calendar.</li>
@@ -129,9 +129,9 @@ export default function PricingForm({ shop, initial }: Props) {
         className="hidden"
         onChange={handleFileChange}
       />
-      <div className="space-y-5 rounded-2xl border border-border/10 bg-surface-2 p-5">
+      <div className="space-y-5 rounded-2xl border border-border-1 bg-surface-2 p-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="flex flex-col gap-2">
+          <div className="min-w-0 flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <Tag
                 variant={statusVariant}
@@ -150,7 +150,7 @@ export default function PricingForm({ shop, initial }: Props) {
               Save regularly to push updates to pricing services. Import JSON from finance or export to share with operations.
             </p>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex shrink-0 flex-wrap items-center gap-2">
             <Button
               type="button"
               variant="ghost"
@@ -170,8 +170,8 @@ export default function PricingForm({ shop, initial }: Props) {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-border/10 bg-surface-2">
-          <div className="flex gap-2 border-b border-border/10 bg-surface-2 p-2" role="tablist">
+        <div className="rounded-2xl border border-border-1 bg-surface-2">
+          <div className="flex gap-2 border-b border-border-1 bg-surface-2 p-2" role="tablist">
             {tabs.map((tab) => {
               const isActive = activeTab === tab.id;
               return (

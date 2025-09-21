@@ -13,6 +13,7 @@ import "../../test/polyfills/dom-compat";
 import "./__tests__/mocks/external";
 import "../../test/resetNextMocks";
 import "../../test/polyfills/form-request-submit";
+// next-auth is mocked via moduleNameMapper in the root Jest config
 
 configure({ testIdAttribute: "data-cy" });
 
@@ -36,6 +37,16 @@ Object.assign(process.env, {
 // supports `act()` semantics. Setting it silences act warnings and helps
 // React flush updates consistently in tests.
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+
+// Basic ResizeObserver shim for JSDOM to satisfy components using it
+if (typeof (globalThis as any).ResizeObserver === "undefined") {
+  class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+  ;(globalThis as any).ResizeObserver = ResizeObserver as any;
+}
 
 // React/Next compat is provided via ../../test/polyfills/react-compat
 

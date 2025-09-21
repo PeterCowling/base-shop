@@ -11,7 +11,7 @@ export function ShopOverviewCard({ stats, pendingCount }: ShopOverviewCardProps)
   const { shops, products, users } = stats;
 
   return (
-    <Card className="border border-border/60">
+    <Card className="border border-border-3">
       <CardContent className="space-y-5">
         <div className="space-y-1">
           <h2 className="text-lg font-semibold text-foreground">Shop overview</h2>
@@ -20,7 +20,7 @@ export function ShopOverviewCard({ stats, pendingCount }: ShopOverviewCardProps)
           </p>
         </div>
         <div className="space-y-3">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/60 bg-surface-3 px-4 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border-3 bg-surface-3 px-4 py-3">
             <div className="min-w-0">
               <p className="text-sm font-medium text-foreground">Operational footprint</p>
               <p className="text-xs text-muted-foreground">
@@ -33,7 +33,7 @@ export function ShopOverviewCard({ stats, pendingCount }: ShopOverviewCardProps)
               {shops > 0 ? "Active" : "Needs setup"}
             </Tag>
           </div>
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/60 bg-surface-3 px-4 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border-3 bg-surface-3 px-4 py-3">
             <div className="min-w-0">
               <p className="text-sm font-medium text-foreground">Catalog depth</p>
               <p className="text-xs text-muted-foreground">
@@ -46,7 +46,7 @@ export function ShopOverviewCard({ stats, pendingCount }: ShopOverviewCardProps)
               {products > 0 ? "Populated" : "Empty"}
             </Tag>
           </div>
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/60 bg-surface-3 px-4 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border-3 bg-surface-3 px-4 py-3">
             <div className="min-w-0">
               <p className="text-sm font-medium text-foreground">Team access</p>
               <p className="text-xs text-muted-foreground">

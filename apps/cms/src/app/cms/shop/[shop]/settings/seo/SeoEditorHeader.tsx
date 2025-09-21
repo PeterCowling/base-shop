@@ -10,13 +10,13 @@ interface SeoEditorHeaderProps {
 export function SeoEditorHeader({ freeze, onFreezeChange }: SeoEditorHeaderProps) {
   return (
     <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-      <div>
+      <div className="min-w-0">
         <h3 className="text-lg font-semibold">SEO metadata</h3>
         <p className="text-muted-foreground text-sm">
           Manage localized titles, descriptions, and social previews.
         </p>
       </div>
-      <label className="flex items-center gap-2 text-sm font-medium">
+      <label className="flex shrink-0 items-center gap-2 text-sm font-medium">
         <input
           type="checkbox"
           checked={freeze}

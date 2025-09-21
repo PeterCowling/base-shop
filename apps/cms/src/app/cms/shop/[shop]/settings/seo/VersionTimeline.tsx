@@ -66,12 +66,13 @@ export default function VersionTimeline({
             <ul className="space-y-4">
               {ordered.map((entry) => (
                 <li key={entry.timestamp} className="space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground font-mono text-xs">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="min-w-0 font-mono text-xs text-muted-foreground">
                       {formatTimestamp(entry.timestamp)}
                     </span>
                     <Button
                       variant="outline"
+                      className="shrink-0"
                       onClick={() => handleRevert(entry.timestamp)}
                     >
                       Revert

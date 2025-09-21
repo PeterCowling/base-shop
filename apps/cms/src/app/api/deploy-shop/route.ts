@@ -3,13 +3,16 @@ import {
   getDeployStatus,
   updateDeployStatus,
 } from "@cms/actions/deployShop.server";
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
+import { ensureAuthorized } from "@cms/actions/common/auth";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
+  try {
+    const session = await ensureAuthorized();
+    if (!session || !["admin", "ShopAdmin"].includes((session as any).user.role)) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+  } catch {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {
@@ -26,8 +29,12 @@ export async function POST(req: Request) {
 }
 
 export async function GET(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
+  try {
+    const session = await ensureAuthorized();
+    if (!session || !["admin", "ShopAdmin"].includes((session as any).user.role)) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+  } catch {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   const url = new URL(req.url);
@@ -40,8 +47,12 @@ export async function GET(req: Request) {
 }
 
 export async function PUT(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
+  try {
+    const session = await ensureAuthorized();
+    if (!session || !["admin", "ShopAdmin"].includes((session as any).user.role)) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+  } catch {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {

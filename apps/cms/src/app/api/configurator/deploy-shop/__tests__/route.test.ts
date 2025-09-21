@@ -1,12 +1,9 @@
 import { jest } from '@jest/globals';
+import { __setMockSession, __resetMockSession } from 'next-auth';
 
 const deployShopHosting = jest.fn();
 const getDeployStatus = jest.fn();
 const updateDeployStatus = jest.fn();
-function setSession(session: any) {
-  const { __setMockSession } = require('next-auth') as { __setMockSession: (s: any) => void };
-  __setMockSession(session);
-}
 
 jest.mock('@cms/actions/deployShop.server', () => ({
   __esModule: true,
@@ -45,7 +42,7 @@ describe('authorization', () => {
     ['GET', () => GET(req('GET', undefined, 'http://localhost/api?id=1'))],
     ['PUT', () => PUT(req('PUT', { id: '1' }))],
   ])('%s returns 403 for non-admin', async (_, call) => {
-    setSession({ user: { role: 'user' } });
+    __setMockSession({ user: { role: 'user' } } as any);
     const res = await call();
     expect(res.status).toBe(403);
     expect(await res.json()).toEqual({ error: 'Forbidden' });
@@ -54,7 +51,7 @@ describe('authorization', () => {
 
 describe('POST /api/configurator/deploy-shop', () => {
   it('deploys shop when payload valid', async () => {
-    setSession({ user: { role: 'admin' } });
+    __resetMockSession();
     deployShopHosting.mockResolvedValue({ ok: true });
 
     const res = await POST(req('POST', { id: 'shop1', domain: 'foo' }));
@@ -64,7 +61,7 @@ describe('POST /api/configurator/deploy-shop', () => {
   });
 
   it('returns 400 for invalid json', async () => {
-    setSession({ user: { role: 'admin' } });
+    __resetMockSession();
     const badReq = new Request('http://localhost/api', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
@@ -78,7 +75,7 @@ describe('POST /api/configurator/deploy-shop', () => {
 
 describe('GET /api/configurator/deploy-shop', () => {
   it('returns status when id present', async () => {
-    setSession({ user: { role: 'admin' } });
+    __resetMockSession();
     getDeployStatus.mockResolvedValue({ status: 'ok' });
 
     const res = await GET(req('GET', undefined, 'http://localhost/api?id=shop1'));
@@ -88,7 +85,7 @@ describe('GET /api/configurator/deploy-shop', () => {
   });
 
   it('returns 400 when id missing', async () => {
-    setSession({ user: { role: 'admin' } });
+    __resetMockSession();
 
     const res = await GET(req('GET'));
     expect(res.status).toBe(400);
@@ -98,7 +95,7 @@ describe('GET /api/configurator/deploy-shop', () => {
 
 describe('PUT /api/configurator/deploy-shop', () => {
   it('updates status with valid payload', async () => {
-    setSession({ user: { role: 'ShopAdmin' } });
+    __resetMockSession();
     updateDeployStatus.mockResolvedValue(undefined);
 
     const res = await PUT(req('PUT', { id: 'shop1', domain: 'foo' }));
@@ -108,7 +105,7 @@ describe('PUT /api/configurator/deploy-shop', () => {
   });
 
   it('returns 400 when id missing', async () => {
-    setSession({ user: { role: 'admin' } });
+    __resetMockSession();
 
     const res = await PUT(req('PUT', { domain: 'foo' }));
     expect(res.status).toBe(400);

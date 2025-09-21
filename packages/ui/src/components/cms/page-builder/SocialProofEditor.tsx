@@ -1,11 +1,9 @@
 // packages/ui/src/components/cms/page-builder/SocialProofEditor.tsx
 import type { SocialProofComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: SocialProofComponent;
-  onChange: (patch: Partial<SocialProofComponent>) => void;
-}
+type Props = EditorProps<SocialProofComponent>;
 
 export default function SocialProofEditor({ component, onChange }: Props) {
   const handleInput = (
@@ -36,4 +34,3 @@ export default function SocialProofEditor({ component, onChange }: Props) {
     </div>
   );
 }
-

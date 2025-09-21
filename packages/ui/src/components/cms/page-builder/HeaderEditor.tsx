@@ -2,16 +2,14 @@ import type { HeaderComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 import { useArrayEditor } from "./useArrayEditor";
 import type { LogoVariants } from "../../organisms/types";
+import type { EditorProps } from "./EditorProps";
 
 interface ExtendedHeaderComponent extends HeaderComponent {
   logoVariants?: LogoVariants;
   shopName?: string;
 }
 
-interface Props {
-  component: ExtendedHeaderComponent;
-  onChange: (patch: Partial<ExtendedHeaderComponent>) => void;
-}
+type Props = EditorProps<ExtendedHeaderComponent>;
 
 export default function HeaderEditor({ component, onChange }: Props) {
   const arrayEditor = useArrayEditor<ExtendedHeaderComponent>(onChange);

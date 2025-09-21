@@ -1,11 +1,9 @@
 import type { SocialLinksComponent } from "@acme/types";
+import type { EditorProps } from "./EditorProps";
 import { Input } from "../../atoms/shadcn";
 import useComponentInputs from "./useComponentInputs";
 
-interface Props {
-  component: SocialLinksComponent;
-  onChange: (patch: Partial<SocialLinksComponent>) => void;
-}
+type Props = EditorProps<SocialLinksComponent>;
 
 export default function SocialLinksEditor({ component, onChange }: Props) {
   const { handleInput } = useComponentInputs<SocialLinksComponent>(onChange);

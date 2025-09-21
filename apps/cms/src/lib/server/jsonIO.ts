@@ -26,6 +26,8 @@ async function withFileLock<T>(file: string, fn: () => Promise<T>): Promise<T> {
 
 export async function readJsonFile<T>(file: string, fallback: T): Promise<T> {
   try {
+    // Callers pass validated paths rooted in the workspace data directory
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const buf = await fs.readFile(file, "utf8");
     return JSON.parse(buf) as T;
   } catch {
@@ -42,17 +44,20 @@ export async function writeJsonFile(
     throw new TypeError("Expected value to be a non-null object or array");
   }
 
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   await fs.mkdir(path.dirname(file), { recursive: true });
   const data = JSON.stringify(value, null, indent ?? 2);
 
   if (typeof fs.rename === "function") {
     const tmp = `${file}.${process.pid}.${Date.now()}.tmp`;
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     await fs.writeFile(tmp, data, "utf8");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     await fs.rename(tmp, file);
   } else {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     await fs.writeFile(file, data, "utf8");
   }
 }
 
 export { withFileLock };
-

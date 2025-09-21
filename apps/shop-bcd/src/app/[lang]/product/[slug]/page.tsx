@@ -10,6 +10,7 @@ import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
 import { readRepo } from "@platform-core/repositories/json.server";
 import type { SKU, ProductPublication, Locale } from "@acme/types";
+import { resolveLocale } from "@i18n/locales";
 import { getReturnLogistics } from "@platform-core/returnLogistics";
 import { getSeo } from "../../../util/seo";
 import { JsonLdScript, productJsonLd } from "../../../../lib/jsonld";
@@ -66,7 +67,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string; lang: string };
 }): Promise<Metadata> {
-  const lang = params.lang as Locale;
+  const lang = resolveLocale(params.lang);
   const product = await getProduct(params.slug, lang, false);
   const settings = await getShopSettings(shop.id);
   const baseSeo = await getSeo(lang);
@@ -94,13 +95,13 @@ export async function generateMetadata({
       title: product.title,
       description,
       images: image ? [{ url: image }] : undefined,
-    } as Partial<Metadata["openGraph"]>,
+    } as any,
     twitter: {
       title: product.title,
       description,
       image,
       card: image ? "summary_large_image" : "summary",
-    } as Partial<Metadata["twitter"]>,
+    } as any,
   });
   // Build hreflang alternates for this product path
   const languages = settings.languages ?? ["en"];

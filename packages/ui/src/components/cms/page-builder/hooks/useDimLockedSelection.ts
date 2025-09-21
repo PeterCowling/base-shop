@@ -31,6 +31,5 @@ export default function useDimLockedSelection({
         if ((el as any).dataset) delete (el as any).dataset.pbPrevOpacity;
       });
     };
-  }, [enabled, lockedIds.join(",")]);
+  }, [enabled, lockedIds]);
 }
-

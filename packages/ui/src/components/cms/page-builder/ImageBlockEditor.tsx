@@ -1,11 +1,9 @@
 import type { ImageComponent } from "@acme/types";
 import React, { useCallback } from "react";
 import ImageSourcePanel from "./ImageSourcePanel";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: ImageComponent;
-  onChange: (patch: Partial<ImageComponent>) => void;
-}
+type Props = EditorProps<ImageComponent>;
 
 function ImageBlockEditor({ component, onChange }: Props) {
   const handleChange = useCallback(

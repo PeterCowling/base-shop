@@ -2,11 +2,9 @@
 import type { ChangeEvent } from "react";
 import type { PricingTableComponent } from "@acme/types";
 import { Button, Input, Textarea } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: PricingTableComponent;
-  onChange: (patch: Partial<PricingTableComponent>) => void;
-}
+type Props = EditorProps<PricingTableComponent>;
 
 export default function PricingTableEditor({ component, onChange }: Props) {
   type Plan = NonNullable<PricingTableComponent["plans"]>[number];

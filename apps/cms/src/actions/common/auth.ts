@@ -1,11 +1,14 @@
 // apps/cms/src/actions/common/auth.ts
 import { getServerSession } from "next-auth";
+import type { Session } from "next-auth";
 import { authOptions } from "@cms/auth/options";
 
-export async function ensureAuthorized() {
-  let session = await getServerSession(authOptions);
+type AppSession = Session & { user?: (Session["user"] & { role?: string; id?: string }) };
+
+export async function ensureAuthorized(): Promise<AppSession> {
+  let session = (await getServerSession(authOptions)) as AppSession | null;
   // If the central next-auth test mock has set a global session, prefer it.
-  const injected = (globalThis as any).__MOCK_SESSION;
+  const injected = (globalThis as Record<string, unknown>).__MOCK_SESSION as AppSession | undefined;
   if (typeof injected !== "undefined") {
     session = injected;
   }
@@ -18,9 +21,9 @@ export async function ensureAuthorized() {
   // Only assume admin when tests didn't explicitly set a mock session
   if (
     process.env.CMS_TEST_ASSUME_ADMIN === "1" &&
-    !(globalThis as any).__NEXTAUTH_MOCK_SET
+    !(globalThis as Record<string, unknown>).__NEXTAUTH_MOCK_SET
   ) {
-    return { user: { role: "admin" } } as any;
+    return { user: { role: "admin" } } as AppSession;
   }
   throw new Error("Forbidden");
 }

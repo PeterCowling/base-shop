@@ -1,10 +1,8 @@
 import type { AnnouncementBarComponent } from "@acme/types";
+import type { EditorProps } from "./EditorProps";
 import { Input } from "../../atoms/shadcn";
 
-interface Props {
-  component: AnnouncementBarComponent;
-  onChange: (patch: Partial<AnnouncementBarComponent>) => void;
-}
+type Props = EditorProps<AnnouncementBarComponent>;
 
 export default function AnnouncementBarEditor({ component, onChange }: Props) {
   const handleInput = (field: keyof AnnouncementBarComponent & string, value: string) => {

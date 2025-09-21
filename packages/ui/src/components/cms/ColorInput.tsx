@@ -23,12 +23,46 @@ export function hexToRgb(hex: string): [number, number, number] {
   ];
 }
 
+// Parse an HSL triplet in either "h s% l%" or CSS Function notation "hsl(h s% l% / a)"
+// Returns [h, s, l] normalized where s,l are 0..1
+function parseHslTriplet(input: string): [number, number, number] | null {
+  const raw = input.trim();
+  // Accept bare triplet: "h s% l%"
+  if (!raw.startsWith("hsl(")) {
+    const parts = raw.split(/\s+/);
+    if (parts.length >= 3) {
+      const h = parseFloat(parts[0]);
+      const s = parseFloat(parts[1]);
+      const l = parseFloat(parts[2]);
+      if (Number.isFinite(h) && Number.isFinite(s) && Number.isFinite(l)) {
+        return [h, s / 100, l / 100];
+      }
+    }
+    return null;
+  }
+
+  // CSS Function: hsl(h s% l% [ / a ]) or hsl(h, s%, l% [ , a ])
+  const inner = raw.slice(4, -1).trim();
+  // Replace commas with spaces and collapse whitespace
+  const cleaned = inner.replace(/,/g, " ").replace(/\s+/g, " ").trim();
+  // Handle var() inside hsl(...)
+  const resolved = resolveCssVars(cleaned);
+  const tokens = resolved.split(" ");
+  // Expect at least: h s% l%
+  if (tokens.length < 3) return null;
+  const h = parseFloat(tokens[0]);
+  const s = parseFloat(tokens[1]);
+  const l = parseFloat(tokens[2]);
+  if (!Number.isFinite(h) || !Number.isFinite(s) || !Number.isFinite(l)) {
+    return null;
+  }
+  return [h, s / 100, l / 100];
+}
+
 export function hslToRgb(hsl: string): [number, number, number] {
-  const [h, s, l] = hsl
-    .split(" ")
-    .map((p: string, i: number) =>
-      i === 0 ? parseFloat(p) : parseFloat(p) / 100
-    );
+  const parsed = parseHslTriplet(hsl);
+  if (!parsed) return [NaN as unknown as number, NaN as unknown as number, NaN as unknown as number];
+  const [h, s, l] = parsed;
   const c = (1 - Math.abs(2 * l - 1)) * s;
   const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
   const m = l - c / 2;
@@ -64,7 +98,20 @@ export function hslToRgb(hsl: string): [number, number, number] {
 }
 
 export function colorToRgb(color: string): [number, number, number] {
-  return color.startsWith("#") ? hexToRgb(color) : hslToRgb(color);
+  const v = color.trim();
+  if (v.startsWith("#")) return hexToRgb(v);
+  if (v.toLowerCase().startsWith("rgb")) {
+    // rgb(a) parsing: rgb(r g b / a) | rgb(r, g, b) | rgba(r, g, b, a)
+    const inner = v.substring(v.indexOf("(") + 1, v.lastIndexOf(")"));
+    // Remove slashes and commas, collapse whitespace
+    const parts = inner.replaceAll("/", " ").replace(/,/g, " ").trim().split(/\s+/);
+    const r = parseFloat(parts[0]);
+    const g = parseFloat(parts[1]);
+    const b = parseFloat(parts[2]);
+    return [r, g, b].map((n) => Math.max(0, Math.min(255, Math.round(n)))) as [number, number, number];
+  }
+  // Accept both bare triplet "h s% l%" and CSS function "hsl(...)"
+  return hslToRgb(v);
 }
 
 export function luminance(rgb: [number, number, number]): number {
@@ -76,8 +123,8 @@ export function luminance(rgb: [number, number, number]): number {
 }
 
 export function getContrast(color1: string, color2: string): number {
-  const L1 = luminance(colorToRgb(color1));
-  const L2 = luminance(colorToRgb(color2));
+  const L1 = luminance(colorToRgb(resolveCssVars(color1)));
+  const L2 = luminance(colorToRgb(resolveCssVars(color2)));
   const brightest = Math.max(L1, L2);
   const darkest = Math.min(L1, L2);
   return (brightest + 0.05) / (darkest + 0.05);
@@ -90,11 +137,11 @@ export function suggestContrastColor(
 ): string | null {
   const isHex = color.startsWith("#");
   const hsl = isHex ? hexToHsl(color) : color;
-  const [h, s, l] = hsl.split(" ").map((p: string, i: number) =>
-    i === 0 ? parseFloat(p) : parseFloat(p) / 100
-  );
-  const refLum = luminance(colorToRgb(reference));
-  const currentLum = luminance(colorToRgb(color));
+  const parsed = parseHslTriplet(hsl);
+  if (!parsed) return null;
+  const [h, s, l] = parsed;
+  const refLum = luminance(colorToRgb(resolveCssVars(reference)));
+  const currentLum = luminance(colorToRgb(resolveCssVars(color)));
   const direction = currentLum > refLum ? -1 : 1;
   let newL = l;
 
@@ -102,12 +149,33 @@ export function suggestContrastColor(
     newL += direction * 0.05;
     if (newL < 0 || newL > 1) break;
     const test = `${h} ${Math.round(s * 100)}% ${Math.round(newL * 100)}%`;
-    if (getContrast(test, reference) >= ratio) {
+    if (getContrast(test, resolveCssVars(reference)) >= ratio) {
       return isHex ? hslToHex(test) : test;
     }
   }
 
   return null;
+}
+
+// Resolve CSS variable references inside an HSL/RGB string where possible.
+// - hsl(var(--token) / a) -> hsl(<value> / a) if the variable exists on :root
+// - hsl(var(--token)) -> hsl(<value>)
+// For non-var input, returns the string unchanged.
+export function resolveCssVars(input: string): string {
+  if (!/var\(/.test(input)) return input;
+  // Only attempt in browser-ish environments
+  try {
+    const d = typeof document !== "undefined" ? document.documentElement : null;
+    if (!d) return input;
+    return input.replace(/var\((--[a-z0-9-_]+)\)/gi, (_m, name: string) => {
+      const direct = d.style.getPropertyValue(name)?.trim();
+      const computed = (typeof getComputedStyle === "function") ? getComputedStyle(d).getPropertyValue(name).trim() : "";
+      const val = direct || computed;
+      return val || `var(${name})`;
+    });
+  } catch {
+    return input;
+  }
 }
 
 export function ColorInput({ value, onChange }: ColorInputProps) {

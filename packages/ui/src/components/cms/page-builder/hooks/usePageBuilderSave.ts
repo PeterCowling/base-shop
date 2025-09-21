@@ -34,7 +34,7 @@ export default function usePageBuilderSave({
   // concurrency conflicts on subsequent auto-saves.
   const [updatedAt, setUpdatedAt] = useState(page.updatedAt);
   // Lazy import to avoid SSR issues
-  const getLibrary = () => {
+  const getLibrary = useCallback(() => {
     try {
       const req = (eval("require") as (id: string) => unknown);
       const mod = req("../libraryStore") as typeof import("../libraryStore");
@@ -42,8 +42,8 @@ export default function usePageBuilderSave({
     } catch {
       return [];
     }
-  };
-  const getGlobals = () => {
+  }, [shop]);
+  const getGlobals = useCallback(() => {
     try {
       const req = (eval("require") as (id: string) => unknown);
       const mod = req("../libraryStore") as typeof import("../libraryStore");
@@ -51,7 +51,7 @@ export default function usePageBuilderSave({
     } catch {
       return [] as GlobalItem[];
     }
-  };
+  }, [shop]);
   const formData = useMemo(() => {
     const fd = new FormData();
     fd.append("id", page.id);
@@ -72,7 +72,7 @@ export default function usePageBuilderSave({
       // ignore library persistence errors
     }
     return fd;
-  }, [page, components, state, shop, updatedAt]);
+  }, [page, components, state, updatedAt, getLibrary]);
 
   const formDataRef = useRef<FormData>(formData);
   useEffect(() => {
@@ -133,7 +133,7 @@ export default function usePageBuilderSave({
     }
     out.append("components", JSON.stringify(nextComponents));
     return onPublish(out).then(() => clearHistory());
-  }, [onPublish, clearHistory, components]);
+  }, [onPublish, clearHistory, components, getGlobals]);
 
   const { autoSaveState } = useAutoSave({
     onSave: saveWithMetaUpdate,

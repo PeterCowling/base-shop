@@ -64,6 +64,7 @@ function resolveFile(): string {
   let dir = process.cwd();
   while (true) {
     const candidateDir = path.join(dir, "data", "cms");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     if (fsSync.existsSync(candidateDir)) {
       return path.join(candidateDir, "users.json");
     }
@@ -78,6 +79,7 @@ const FILE = resolveFile();
 
 export async function readRbac(): Promise<RbacDB> {
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const buf = await fs.readFile(FILE, "utf8");
     const parsed = JSON.parse(buf) as RbacDB;
     if (parsed && parsed.users && parsed.roles && parsed.permissions) {
@@ -103,10 +105,12 @@ export async function writeRbac(
   if (db == null) {
     throw new TypeError("db must be defined");
   }
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   await fs.mkdir(path.dirname(FILE), { recursive: true });
   const tmp = `${FILE}.${Date.now()}.tmp`;
   await writeJsonFile(tmp, db);
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     await fs.rename(tmp, FILE);
   } catch (err) {
     await fs.rm(tmp, { force: true }).catch(() => {});

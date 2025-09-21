@@ -30,8 +30,9 @@ export async function POST(req: Request) {
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
-  const item = (payload as any)?.item as LibraryItem | undefined;
-  const items = (payload as any)?.items as LibraryItem[] | undefined;
+  const record = (payload && typeof payload === 'object') ? (payload as Record<string, unknown>) : undefined;
+  const item = (record?.item as unknown) as LibraryItem | undefined;
+  const items = (record?.items as unknown) as LibraryItem[] | undefined;
   if (!item && !Array.isArray(items)) {
     return NextResponse.json({ error: "Invalid item" }, { status: 400 });
   }
@@ -60,11 +61,12 @@ export async function PATCH(req: Request) {
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
-  const id = (payload as any)?.id as string | undefined;
-  const patch = (payload as any)?.patch as Partial<LibraryItem> | undefined;
+  const rec = (payload && typeof payload === 'object') ? (payload as Record<string, unknown>) : undefined;
+  const id = (rec?.id as unknown) as string | undefined;
+  const patch = (rec?.patch as unknown) as Partial<LibraryItem> | undefined;
   if (!id || !patch) return NextResponse.json({ error: "Invalid patch" }, { status: 400 });
   try {
-    await updateLibraryItem(shop, id, patch as any);
+    await updateLibraryItem(shop, id, patch);
     return NextResponse.json({ ok: true });
   } catch (err) {
     return NextResponse.json({ error: (err as Error).message }, { status: 400 });

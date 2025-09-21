@@ -48,7 +48,7 @@ const BlockItem = memo(function BlockItemComponent({
   baselineStep = 8,
 }: Props) {
   const selected = selectedIds.includes(component.id);
-  const flags = (editor ?? {})[component.id] ?? {};
+  const flags = useMemo(() => ((editor ?? {})[component.id] ?? {}), [editor, component.id]);
   const effLocked = (flags as any).locked ?? (component as any).locked ?? false;
   const effZIndex = (flags as any).zIndex ?? (component as any).zIndex;
   const hiddenList = ((editor ?? {})[component.id]?.hidden ?? []) as ("desktop"|"tablet"|"mobile")[];
@@ -278,8 +278,6 @@ const BlockItem = memo(function BlockItemComponent({
       <BlockContent
         component={{
           ...component,
-          zIndex: effZIndex,
-          locked: effLocked,
           pbViewport: viewport,
         } as any}
         locale={locale}

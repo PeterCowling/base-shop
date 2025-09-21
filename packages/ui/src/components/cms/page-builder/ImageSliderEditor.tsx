@@ -2,11 +2,9 @@
 import type { ImageSliderComponent } from "@acme/types";
 import { Button, Input, Checkbox } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: ImageSliderComponent;
-  onChange: (patch: Partial<ImageSliderComponent>) => void;
-}
+type Props = EditorProps<ImageSliderComponent>;
 
 export default function ImageSliderEditor({ component, onChange }: Props) {
   const slides: NonNullable<ImageSliderComponent["slides"]> = component.slides ?? [];

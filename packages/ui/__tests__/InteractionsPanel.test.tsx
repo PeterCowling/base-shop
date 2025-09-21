@@ -1,12 +1,27 @@
 jest.mock("../src/components/atoms/shadcn", () => {
   const React = require("react");
   return {
+    Button: ({ children, ...rest }: any) => <button {...rest}>{children}</button>,
     Input: ({ label, ...rest }: any) => (
       <label>
         {label}
         <input {...rest} />
       </label>
     ),
+    Textarea: ({ label, ...rest }: any) => (
+      <label>
+        {label}
+        <textarea {...rest} />
+      </label>
+    ),
+    Dialog: ({ children, open, onOpenChange, ...p }: any) => (
+      <div data-open={open ? 'true' : 'false'} {...p}>{children}</div>
+    ),
+    DialogContent: ({ children, ...p }: any) => <div {...p}>{children}</div>,
+    DialogHeader: ({ children, ...p }: any) => <div {...p}>{children}</div>,
+    DialogTitle: ({ children, ...p }: any) => <div {...p}>{children}</div>,
+    DialogDescription: ({ children, ...p }: any) => <div {...p}>{children}</div>,
+    DialogFooter: ({ children, ...p }: any) => <div {...p}>{children}</div>,
     Select: ({ children, value, onValueChange }: any) => {
       const content = React.Children.toArray(children).find(
         (c: any) => c.type === React.Fragment || c.type?.name === "SelectContent"

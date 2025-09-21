@@ -150,7 +150,7 @@ export async function middleware(req: NextRequest) {
 
   /* Redirect unauthenticated users to /login */
   if (!role) {
-    const url = req.nextUrl.clone();
+    const url = new URL(req.url);
     url.pathname = "/login";
     url.searchParams.set("callbackUrl", pathname);
     logger.info("redirect to login", { path: url.pathname });
@@ -168,14 +168,19 @@ export async function middleware(req: NextRequest) {
     });
     // In some Jest/node environments NextResponse.rewrite may not be available.
     // Fall back to crafting a middleware rewrite response manually.
-    const rewritten =
-      typeof (NextResponse as any).rewrite === "function"
-        ? NextResponse.rewrite(url, { status: 403 })
-        : new Response(null, {
-            status: 403,
-            headers: { "x-middleware-rewrite": url.toString() },
-          });
-    return applySecurityHeaders(rewritten as NextResponse);
+    const rewritten = (() => {
+      const api = NextResponse as unknown as {
+        rewrite?: (input: URL, init?: ResponseInit & { status?: number }) => NextResponse;
+      };
+      if (typeof api.rewrite === "function") {
+        return api.rewrite(url, { status: 403 });
+      }
+      return new Response(null, {
+        status: 403,
+        headers: { "x-middleware-rewrite": url.toString() },
+      }) as unknown as NextResponse;
+    })();
+    return applySecurityHeaders(rewritten);
   }
 
   /* Block viewers from write routes */
@@ -187,14 +192,19 @@ export async function middleware(req: NextRequest) {
       path: url.pathname,
       shop: match[1],
     });
-    const rewritten =
-      typeof (NextResponse as any).rewrite === "function"
-        ? NextResponse.rewrite(url, { status: 403 })
-        : new Response(null, {
-            status: 403,
-            headers: { "x-middleware-rewrite": url.toString() },
-          });
-    return applySecurityHeaders(rewritten as NextResponse);
+    const rewritten = (() => {
+      const api = NextResponse as unknown as {
+        rewrite?: (input: URL, init?: ResponseInit & { status?: number }) => NextResponse;
+      };
+      if (typeof api.rewrite === "function") {
+        return api.rewrite(url, { status: 403 });
+      }
+      return new Response(null, {
+        status: 403,
+        headers: { "x-middleware-rewrite": url.toString() },
+      }) as unknown as NextResponse;
+    })();
+    return applySecurityHeaders(rewritten);
   }
 
   logger.info("allow", { path: pathname });

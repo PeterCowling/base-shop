@@ -23,7 +23,7 @@ export const options = {
 
 const imgBase64 = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4nGMAAQAABQABDQottAAAAABJRU5ErkJggg==';
 
-export default function () {
+export default function mediaUploadScenario() {
   const bin = encoding.b64decode(imgBase64, 'binary');
   const data = { file: http.file(bin, 'pixel.png', 'image/png') };
   const res = http.post(`${__ENV.CMS_BASE_URL}/cms/api/media?shop=test`, data);

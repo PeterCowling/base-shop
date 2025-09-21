@@ -1,5 +1,4 @@
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
+import { ensureAuthorized } from "@cms/actions/common/auth";
 import { NextResponse, type NextRequest } from "next/server";
 import fs from "fs";
 import { mkdir, unlink } from "fs/promises";
@@ -27,8 +26,13 @@ export async function POST(
   req: NextRequest,
   context: { params: Promise<{ shop: string }> }
 ): Promise<NextResponse> {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
+  try {
+    const session = await ensureAuthorized();
+    const role = session.user?.role;
+    if (!role || !["admin", "ShopAdmin"].includes(role)) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+  } catch {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
@@ -36,6 +40,7 @@ export async function POST(
     const { shop: rawShop } = await context.params;
     const shop = validateShopName(rawShop);
     const dir = path.join(resolveDataRoot(), shop);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     await mkdir(dir, { recursive: true });
     const filePath = path.join(dir, "products.csv");
 
@@ -55,6 +60,7 @@ export async function POST(
       busboy.on("file", (_name, file: NodeJS.ReadableStream, info: FileInfo) => {
         fileFound = true;
         const { mimeType } = info;
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
         const writeStream = fs.createWriteStream(filePath);
         let firstChunk: Buffer | undefined;
 
@@ -66,6 +72,7 @@ export async function POST(
           if (resolved) return;
           resolved = true;
           writeStream.destroy();
+          // eslint-disable-next-line security/detect-non-literal-fs-filename
           void unlink(filePath).catch(() => {});
           resolve(
             NextResponse.json({ error: "File too large" }, { status: 413 })
@@ -88,6 +95,7 @@ export async function POST(
                 (type && type.mime === "text/csv") ||
                 (!type && mimeType === "text/csv");
               if (!isCsv) {
+                // eslint-disable-next-line security/detect-non-literal-fs-filename
                 void unlink(filePath).catch(() => {});
                 resolved = true;
                 resolve(
@@ -110,6 +118,7 @@ export async function POST(
         writeStream.on("error", (err) => {
           if (resolved) return;
           resolved = true;
+          // eslint-disable-next-line security/detect-non-literal-fs-filename
           void unlink(filePath).catch(() => {});
           reject(err);
         });
@@ -159,4 +168,3 @@ export async function POST(
     );
   }
 }
-

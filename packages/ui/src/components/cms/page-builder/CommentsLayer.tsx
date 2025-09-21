@@ -115,6 +115,15 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
   }, [recalcPositions, components]);
 
   // Drag handlers for repositioning pins
+  const patch = useCallback(async (id: string, body: Record<string, unknown>) => {
+    await fetch(`/cms/api/comments/${shop}/${pageId}/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    await load();
+  }, [shop, pageId, load]);
+
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       if (!dragId) return;
@@ -143,21 +152,14 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseup", onUp, true);
     };
-  }, [dragId, dragPos, threads]);
+  }, [dragId, dragPos, threads, canvasRef, patch]);
 
   const open = (id: string) => {
     setSelectedId(id);
     setDrawerOpen(true);
   };
 
-  const patch = async (id: string, body: Record<string, unknown>) => {
-    await fetch(`/cms/api/comments/${shop}/${pageId}/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    await load();
-  };
+  // (moved `patch` above to avoid use-before-declaration; also using `useCallback` import)
 
   const addMessage = async (id: string, text: string) => {
     if (!id || !text.trim()) return;
@@ -213,7 +215,6 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
       for (let i = 1; i < (t.messages?.length ?? 0); i++) {
         const m = t.messages[i];
         try {
-          // eslint-disable-next-line no-await-in-loop
           await fetch(`/cms/api/comments/${shop}/${pageId}/${newId}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },

@@ -81,7 +81,7 @@ export default function Dataset({
     return () => {
       cancelled = true;
     };
-  }, [source, collectionId, JSON.stringify(skus), shopId]);
+  }, [source, collectionId, shopId, skus]);
 
   const processed = useMemo(() => {
     let list = Array.isArray(items) ? [...items] : [];

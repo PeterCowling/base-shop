@@ -41,7 +41,7 @@ export default function DeviceSelector({
     setCustom(getCustomDevicePresets());
   }, []);
   const allPresets = useMemo<DevicePreset[]>(() => {
-    const base = getAllDevicePresets();
+    const base = [...getCustomDevicePresets(), ...devicePresets];
     const map = new Map<string, DevicePreset>();
     [...base, ...extraDevices].forEach((p) => { if (!map.has(p.id)) map.set(p.id, p); });
     return Array.from(map.values());

@@ -60,9 +60,12 @@ export async function POST(req: Request) {
 
     const { id, csv, categories } = parsed.data;
     const dir = path.join(resolveDataRoot(), id);
+    // Directory path constrained by validated shop id
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     await fs.mkdir(dir, { recursive: true });
     if (csv) {
       const buf = Buffer.from(csv, "base64");
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
       await fs.writeFile(path.join(dir, "products.csv"), buf);
     }
     if (categories) {

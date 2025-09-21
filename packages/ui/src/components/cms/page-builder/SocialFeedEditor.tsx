@@ -1,10 +1,8 @@
 import type { SocialFeedComponent } from "@acme/types";
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: SocialFeedComponent;
-  onChange: (patch: Partial<SocialFeedComponent>) => void;
-}
+type Props = EditorProps<SocialFeedComponent>;
 
 export default function SocialFeedEditor({ component, onChange }: Props) {
   const handleInput = (
@@ -41,4 +39,3 @@ export default function SocialFeedEditor({ component, onChange }: Props) {
     </div>
   );
 }
-

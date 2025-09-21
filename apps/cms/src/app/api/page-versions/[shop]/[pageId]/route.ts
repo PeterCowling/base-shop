@@ -29,8 +29,9 @@ export async function GET(
   const { shop, pageId } = await context.params;
   const store = await readStore();
   const list = store[shop]?.[pageId] ?? [];
-  // newest first
-  const ordered = [...list].sort((a, b) => b.timestamp.localeCompare(a.timestamp));
+  // Newest first based on insertion order (push appends),
+  // which is more stable than relying on timestamps under fast tests.
+  const ordered = [...list].reverse();
   return NextResponse.json(ordered);
 }
 
@@ -68,4 +69,3 @@ export async function POST(
     return NextResponse.json({ error: (err as Error).message }, { status: 400 });
   }
 }
-

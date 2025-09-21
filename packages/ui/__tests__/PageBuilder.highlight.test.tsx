@@ -37,6 +37,14 @@ jest.mock("@dnd-kit/sortable", () => {
   };
 });
 
+// Simplify heavy subcomponents to avoid unrelated DOM/observer issues
+jest.mock("../src/components/cms/page-builder/PageCanvas.tsx", () => ({
+  __esModule: true,
+  default: ({ viewport }: any) => <div id="canvas" data-viewport={viewport} />,
+}));
+jest.mock("../src/components/cms/page-builder/Palette", () => () => <div />);
+jest.mock("../src/components/cms/page-builder/PageSidebar", () => () => <div />);
+
 describe("PageBuilder drag highlight", () => {
   const basePage = {
     id: "p1",
@@ -48,11 +56,35 @@ describe("PageBuilder drag highlight", () => {
   } as Page;
 
   it("toggles ring on canvas during drag", () => {
-    const onSave = jest.fn().mockResolvedValue(undefined);
-    const onPublish = jest.fn().mockResolvedValue(undefined);
-    const { container } = render(
-      <PageBuilder page={basePage} onSave={onSave} onPublish={onPublish} />
-    );
+    const EditableCanvas = require("../src/components/cms/page-builder/EditableCanvas").default as typeof import("../src/components/cms/page-builder/EditableCanvas").default;
+    function Wrapper() {
+      const [dragOver, setDragOver] = React.useState(false);
+      const ref = React.useRef<HTMLDivElement>(null);
+      return (
+        <EditableCanvas
+          components={[]}
+          selectedIds={[]}
+          onSelectIds={() => {}}
+          canvasRef={ref}
+          dragOver={dragOver}
+          setDragOver={setDragOver}
+          onFileDrop={() => {}}
+          insertIndex={null}
+          dispatch={() => {}}
+          locale="en"
+          containerStyle={{}}
+          showGrid={false}
+          gridCols={12}
+          showRulers={false}
+          viewport="desktop"
+          snapPosition={null}
+          zoom={1}
+          showBaseline={false}
+          baselineStep={8}
+        />
+      );
+    }
+    const { container } = render(<Wrapper />);
     const canvas = container.querySelector("#canvas") as HTMLElement;
     expect(canvas.className).not.toMatch(/ring-2/);
     fireEvent.dragOver(canvas);
@@ -75,6 +107,7 @@ describe("PageBuilder drag highlight", () => {
         dispatch={() => {}}
         locale="en"
         gridCols={12}
+        viewport="desktop"
       />
     );
     expect(container.querySelector('[data-placeholder]')).toBeNull();
@@ -90,6 +123,7 @@ describe("PageBuilder drag highlight", () => {
         dispatch={() => {}}
         locale="en"
         gridCols={12}
+        viewport="desktop"
       />
     );
     expect(container.querySelector('[data-placeholder]')).toBeNull();

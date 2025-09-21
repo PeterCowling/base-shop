@@ -25,20 +25,27 @@ function generateStub(tsPath) {
   }
 }
 
+function walk(dir) {
+  const entries = fs.readdirSync(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      if (entry.name === '__tests__') continue;
+      walk(full);
+      continue;
+    }
+    if (!entry.name.endsWith('.ts')) continue;
+    if (isTestFile(entry.name)) continue;
+    generateStub(full);
+  }
+}
+
 function main() {
   if (!fs.existsSync(ROOT)) {
     console.error('env dir not found:', ROOT);
     process.exit(1);
   }
-  const entries = fs.readdirSync(ROOT);
-  entries.forEach((entry) => {
-    const full = path.join(ROOT, entry);
-    const stat = fs.statSync(full);
-    if (stat.isDirectory()) return; // ignore directories (including __tests__)
-    if (!entry.endsWith('.ts')) return;
-    if (isTestFile(entry)) return;
-    generateStub(full);
-  });
+  walk(ROOT);
 }
 
 main();

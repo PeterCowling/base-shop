@@ -11,7 +11,8 @@ interface LogoSource {
   height?: number;
 }
 
-type LogoImageProps = ImageProps & { srcSet?: string };
+// Exclude `alt` so we can supply it explicitly without duplicate-prop errors
+type LogoImageProps = Omit<ImageProps, "alt"> & { srcSet?: string };
 
 export interface LogoProps
   extends Omit<ImageProps, "alt" | "src" | "width" | "height"> {
@@ -105,7 +106,6 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
     const imageProps: LogoImageProps = {
       ...props,
       src: imageSrc,
-      alt: altText,
       width: typeof imageWidth === "number" ? imageWidth : undefined,
       height: typeof imageHeight === "number" ? imageHeight : undefined,
       sizes,
@@ -113,7 +113,7 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
       ...(computedSrcSet ? { srcSet: computedSrcSet } : {}),
     };
 
-    return <Image ref={ref} {...imageProps} />;
+    return <Image ref={ref} alt={altText} {...imageProps} />;
   },
 );
 Logo.displayName = "Logo";

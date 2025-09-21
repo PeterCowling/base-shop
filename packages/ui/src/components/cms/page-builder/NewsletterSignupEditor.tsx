@@ -1,10 +1,8 @@
 import type { NewsletterSignupComponent } from "@acme/types";
+import type { EditorProps } from "./EditorProps";
 import { Input } from "../../atoms/shadcn";
 
-interface Props {
-  component: NewsletterSignupComponent;
-  onChange: (patch: Partial<NewsletterSignupComponent>) => void;
-}
+type Props = EditorProps<NewsletterSignupComponent>;
 
 export default function NewsletterSignupEditor({ component, onChange }: Props) {
   const handleInput = (field: string, value: string) => {

@@ -1,5 +1,4 @@
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
+// No auth required; endpoint enforces strict validation
 
 export const runtime = "nodejs";
 

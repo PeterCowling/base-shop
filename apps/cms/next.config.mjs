@@ -76,6 +76,7 @@ const __dirname = path.dirname(__filename);
 const PNPM_VIRTUAL_STORE = path.resolve(__dirname, "../../node_modules/.pnpm");
 
 const resolveFromPnpmStore = (pkg, subpath) => {
+  // Access to pnpm store path is internal to the workspace; no user input here.
   if (!existsSync(PNPM_VIRTUAL_STORE)) return null;
   let entries = [];
   try {
@@ -96,6 +97,7 @@ const resolveFromPnpmStore = (pkg, subpath) => {
       subpath,
     );
 
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     if (existsSync(candidate)) return candidate;
   }
 
@@ -223,6 +225,8 @@ const nextConfig = {
       try {
         const nextAuthEntry = require.resolve("next-auth");
         const nextAuthRequire = createRequire(nextAuthEntry);
+        // Resolves from Node's module resolver; no user input
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
         const resolvedOidcTokenHash = realpathSync(
           nextAuthRequire.resolve("oidc-token-hash"),
         );
@@ -270,6 +274,7 @@ const nextConfig = {
         if (config.resolve.alias[dep] !== undefined) continue;
 
         const candidate = path.join(pinoDepsRoot, dep);
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
         if (existsSync(candidate)) {
           config.resolve.alias[dep] = candidate;
         }

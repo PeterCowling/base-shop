@@ -30,9 +30,11 @@
         "../platform-core/src/*",
         "../platform-core/dist/*"
       ],
-      "@acme/config": ["../config/src/index.ts", "../config/dist/index.d.ts"],
+      "@acme/config": [
+        "../config/src/index.ts",
+        "../config/dist/index.d.ts"
+      ],
       "@acme/config/*": [
-        "./src/env/*.ts",
         "../config/src/*",
         "../config/dist/*"
       ],

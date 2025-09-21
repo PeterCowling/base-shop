@@ -19,6 +19,7 @@ async function loadTailwindPreset() {
               fg: "hsl(var(--color-fg))",
               primary: "hsl(var(--color-primary))",
               accent: "hsl(var(--color-accent))",
+              destructive: "hsl(var(--color-danger))",
               danger: "hsl(var(--color-danger))",
               success: "hsl(var(--color-success))",
               warning: "hsl(var(--color-warning))",
@@ -28,6 +29,7 @@ async function loadTailwindPreset() {
             textColor: {
               "primary-foreground": "hsl(var(--color-primary-fg))",
               "accent-foreground": "hsl(var(--color-accent-fg))",
+              "destructive-foreground": "hsl(var(--color-danger-fg))",
               "danger-foreground": "hsl(var(--color-danger-fg))",
               "success-foreground": "hsl(var(--color-success-fg))",
               "warning-foreground": "hsl(var(--color-warning-fg))",
@@ -85,6 +87,7 @@ async function loadDesignTokens() {
                 fg: "hsl(var(--color-fg))",
                 primary: "hsl(var(--color-primary))",
                 accent: "hsl(var(--color-accent))",
+                destructive: "hsl(var(--color-danger))",
                 danger: "hsl(var(--color-danger))",
                 success: "hsl(var(--color-success))",
                 warning: "hsl(var(--color-warning))",
@@ -94,6 +97,7 @@ async function loadDesignTokens() {
               textColor: {
                 "primary-foreground": "hsl(var(--color-primary-fg))",
                 "accent-foreground": "hsl(var(--color-accent-fg))",
+                "destructive-foreground": "hsl(var(--color-danger-fg))",
                 "danger-foreground": "hsl(var(--color-danger-fg))",
                 "success-foreground": "hsl(var(--color-success-fg))",
                 "warning-foreground": "hsl(var(--color-warning-fg))",
@@ -153,4 +157,3 @@ const config = {
 };
 
 export default config;
-

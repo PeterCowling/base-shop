@@ -1,10 +1,8 @@
 import type { MapBlockComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: MapBlockComponent;
-  onChange: (patch: Partial<MapBlockComponent>) => void;
-}
+type Props = EditorProps<MapBlockComponent>;
 
 export default function MapBlockEditor({ component, onChange }: Props) {
   const handleNumber = (field: string, value: string) => {

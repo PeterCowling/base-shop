@@ -1,3 +1,20 @@
+// Mock builder runtime hooks that use DOM APIs not present in jsdom
+jest.mock("../cms/page-builder/scrollEffects", () => ({
+  ensureScrollStyles: jest.fn(),
+  ensureAnimationStyles: jest.fn(),
+  initScrollEffects: jest.fn(),
+}));
+jest.mock("../cms/page-builder/timeline", () => ({
+  initTimelines: jest.fn(),
+}));
+jest.mock("../cms/page-builder/lottie", () => ({
+  initLottie: jest.fn(),
+}));
+jest.mock("../cms/lightbox", () => ({
+  ensureLightboxStyles: jest.fn(),
+  initLightbox: jest.fn(),
+}));
+
 import { render, screen } from "@testing-library/react";
 import type { PageComponent } from "@acme/types";
 
@@ -30,16 +47,10 @@ const mockBlockRegistry = {
   },
 };
 
+jest.mock("../cms/blocks", () => ({ blockRegistry: mockBlockRegistry }));
+import DynamicRenderer from "../DynamicRenderer";
+
 describe("DynamicRenderer", () => {
-  let DynamicRenderer: typeof import("../DynamicRenderer").default;
-
-  beforeAll(() => {
-    jest.resetModules();
-    jest.doMock("../cms/blocks", () => ({ blockRegistry: mockBlockRegistry }));
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    DynamicRenderer = require("../DynamicRenderer").default;
-  });
-
   afterEach(() => {
     jest.clearAllMocks();
   });

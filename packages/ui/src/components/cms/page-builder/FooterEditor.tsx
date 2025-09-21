@@ -2,16 +2,14 @@ import type { FooterComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 import { useArrayEditor } from "./useArrayEditor";
 import type { LogoVariants } from "../../organisms/types";
+import type { EditorProps } from "./EditorProps";
 
 interface ExtendedFooterComponent extends FooterComponent {
   logoVariants?: LogoVariants;
   shopName?: string;
 }
 
-interface Props {
-  component: ExtendedFooterComponent;
-  onChange: (patch: Partial<ExtendedFooterComponent>) => void;
-}
+type Props = EditorProps<ExtendedFooterComponent>;
 
 export default function FooterEditor({ component, onChange }: Props) {
   const arrayEditor = useArrayEditor<ExtendedFooterComponent>(onChange);

@@ -5,6 +5,7 @@ import type { Shop } from "@acme/types";
 import shopJson from "../../../../shop.json";
 import type { Metadata } from "next";
 import { getSeo } from "../../util/seo";
+import { resolveLocale } from "@i18n/locales";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 
 type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog" | "name">;
@@ -58,7 +59,7 @@ export async function generateMetadata({
 }: {
   params: { lang: string };
 }): Promise<Metadata> {
-  const lang = params.lang as string;
+  const lang = resolveLocale(params.lang);
   const baseSeo = await getSeo(lang);
   const canonicalRoot = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
   const canonical = canonicalRoot ? `${canonicalRoot}/blog` : undefined;
@@ -76,8 +77,8 @@ export async function generateMetadata({
     title: `Blog · ${shop.name}`,
     description: baseSeo.description,
     canonical,
-    openGraph: { url: canonical } as Partial<Metadata["openGraph"]>,
-    twitter: {} as Partial<Metadata["twitter"]>,
+    openGraph: { url: canonical } as any,
+    twitter: {} as any,
   });
   return {
     title: seo.title,

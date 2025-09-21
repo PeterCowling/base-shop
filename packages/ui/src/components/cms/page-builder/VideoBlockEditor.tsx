@@ -4,11 +4,9 @@ import type { VideoBlockComponent } from "@acme/types";
 import { Button, Checkbox, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
 import { useEffect, useState } from "react";
 import useMediaLibrary from "./useMediaLibrary";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: VideoBlockComponent;
-  onChange: (patch: Partial<VideoBlockComponent>) => void;
-}
+type Props = EditorProps<VideoBlockComponent>;
 
 export default function VideoBlockEditor({ component, onChange }: Props) {
   const handleInput = (field: keyof VideoBlockComponent & string, value: string | boolean) => {

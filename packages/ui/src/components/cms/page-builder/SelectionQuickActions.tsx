@@ -46,7 +46,7 @@ export default function SelectionQuickActions({ components, selectedIds, dispatc
     const centerX = (left + right) / 2;
     const gap = 8;
     setPos({ left: centerX, top: Math.max(0, top - gap) });
-  }, [canvasRef, selectedIds.join(","), zoom]);
+  }, [canvasRef, selectedIds, zoom]);
 
   if (!pos || selectedIds.length === 0) return null;
 

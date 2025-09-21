@@ -1,17 +1,15 @@
-import type { PageComponentBase } from "@acme/types";
 import { Input, Textarea } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-type ProductBundleComponent = PageComponentBase & {
+type ProductBundleComponent = {
+  id: string;
   type: "ProductBundle";
   skus?: string[];
   discount?: number;
   quantity?: number;
-};
+} & Record<string, unknown>;
 
-interface Props {
-  component: ProductBundleComponent;
-  onChange: (patch: Partial<ProductBundleComponent>) => void;
-}
+type Props = EditorProps<ProductBundleComponent>;
 
 export default function ProductBundleEditor({ component, onChange }: Props) {
   const handleSkus = (value: string) => {
@@ -47,4 +45,3 @@ export default function ProductBundleEditor({ component, onChange }: Props) {
     </div>
   );
 }
-

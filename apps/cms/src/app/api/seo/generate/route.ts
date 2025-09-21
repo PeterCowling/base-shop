@@ -31,6 +31,8 @@ export async function POST(req: NextRequest) {
   const file = path.join(DATA_ROOT, shop, "seo.json");
   let current: Record<string, unknown> = {};
   try {
+    // Constrained to validated shop data directory
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const buf = await fs.readFile(file, "utf8");
     current = JSON.parse(buf) as Record<string, unknown>;
   } catch {

@@ -1,10 +1,8 @@
 import type { GiftCardBlockComponent } from "@acme/types";
 import { Input, Textarea } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: GiftCardBlockComponent;
-  onChange: (patch: Partial<GiftCardBlockComponent>) => void;
-}
+type Props = EditorProps<GiftCardBlockComponent>;
 
 export default function GiftCardEditor({ component, onChange }: Props) {
   return (

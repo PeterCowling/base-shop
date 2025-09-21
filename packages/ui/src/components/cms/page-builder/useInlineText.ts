@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import type { FormEvent } from "react";
 
 /**
  * Lightweight inline text editor for simple string props (e.g. Button.label).
@@ -45,7 +46,7 @@ export default function useInlineText<T extends object, K extends keyof T & stri
     },
     contentEditable: true,
     suppressContentEditableWarning: true,
-    onInput: (e: React.FormEvent<HTMLElement>) => {
+    onInput: (e: FormEvent<HTMLElement>) => {
       setValue((e.target as HTMLElement).innerText);
     },
     onBlur: () => {
@@ -56,3 +57,5 @@ export default function useInlineText<T extends object, K extends keyof T & stri
   return { editing, value, startEditing, finishEditing, bind } as const;
 }
 
+// Helper type to reference the return shape from other modules
+export type InlineTextApi<T extends object, K extends keyof T & string> = ReturnType<typeof useInlineText<T, K>>;

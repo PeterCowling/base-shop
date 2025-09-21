@@ -7,6 +7,7 @@ import fs from "fs/promises";
 import path from "path";
 import { writeJsonFile, withFileLock } from "@/lib/server/jsonIO";
 import { ensureAuthorized } from "./common/auth";
+import { validateShopName } from "@platform-core/shops";
 
 export async function deployShopHosting(
   id: string,
@@ -21,7 +22,10 @@ export async function getDeployStatus(
 ): Promise<DeployShopResult | { status: "pending"; error?: string }> {
   await ensureAuthorized();
   try {
-    const file = path.join(resolveDataRoot(), id, "deploy.json");
+    const safe = validateShopName(id);
+    const file = path.join(resolveDataRoot(), safe, "deploy.json");
+    // Path constrained to workspace data root and validated shop id
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const content = await fs.readFile(file, "utf8");
     return JSON.parse(content) as DeployShopResult;
   } catch (err) {
@@ -39,9 +43,11 @@ export async function updateDeployStatus(
   }
 ): Promise<void> {
   await ensureAuthorized();
-  const file = path.join(resolveDataRoot(), id, "deploy.json");
+  const safe = validateShopName(id);
+  const file = path.join(resolveDataRoot(), safe, "deploy.json");
   try {
     await withFileLock(file, async () => {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
       const existing = await fs.readFile(file, "utf8").catch(() => "{}");
       const parsed = JSON.parse(existing) as Record<string, unknown>;
       const updated = { ...parsed, ...data };

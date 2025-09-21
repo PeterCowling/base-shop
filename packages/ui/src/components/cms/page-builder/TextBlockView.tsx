@@ -6,7 +6,7 @@ import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import MenuBar from "./MenuBar";
 import DOMPurify from "dompurify";
 import { LockClosedIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import LinkPicker from "./LinkPicker";
 
 interface Guides {
@@ -102,12 +102,14 @@ const TextBlockView = ({
       try { editor.off("transaction", update); } catch {}
     };
   }, [editor, editing, containerRef]);
+  const assignNodeRef = useCallback((node: HTMLDivElement | null) => {
+    setNodeRef(node);
+    containerRef.current = node;
+  }, [setNodeRef, containerRef]);
+
   return (
     <div
-      ref={(node) => {
-        setNodeRef(node);
-        containerRef.current = node;
-      }}
+      ref={assignNodeRef}
       onClick={onSelect}
       role="listitem"
       aria-grabbed={isDragging}

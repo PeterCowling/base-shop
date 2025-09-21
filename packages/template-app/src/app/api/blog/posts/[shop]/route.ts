@@ -4,12 +4,13 @@ import { fetchPublishedPosts } from "@acme/sanity";
 export const runtime = "nodejs";
 
 export async function GET(
-  _req: NextRequest,
-  ctx: { params?: { shop?: string } | Promise<{ shop?: string }> },
+  _req: Request,
+  ctx: any,
 ) {
-  const p = ctx?.params;
-  const params = p instanceof Promise ? await p : p;
-  const shop = params?.shop;
+  const shop = ctx?.params?.shop as string | undefined;
+  if (!shop) {
+    return NextResponse.json({ error: "Missing shop param" }, { status: 400 });
+  }
   try {
     const posts = await fetchPublishedPosts(shop);
     return NextResponse.json(posts);

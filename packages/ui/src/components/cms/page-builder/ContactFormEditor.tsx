@@ -1,10 +1,8 @@
 import type { ContactFormComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: ContactFormComponent;
-  onChange: (patch: Partial<ContactFormComponent>) => void;
-}
+type Props = EditorProps<ContactFormComponent>;
 
 export default function ContactFormEditor({ component, onChange }: Props) {
   const handleInput = (field: string, value: string) => {

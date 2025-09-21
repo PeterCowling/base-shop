@@ -1,17 +1,8 @@
-import type { PageComponentBase } from "@acme/types";
 import useComponentInputs from "./useComponentInputs";
+import type { EditorProps } from "./EditorProps";
+import type { ProductFilterComponent } from "@acme/types/page/organisms/ProductFilter";
 
-type ProductFilterComponent = PageComponentBase & {
-  type: "ProductFilter";
-  showSize?: boolean;
-  showColor?: boolean;
-  showPrice?: boolean;
-};
-
-interface Props {
-  component: ProductFilterComponent;
-  onChange: (patch: Partial<ProductFilterComponent>) => void;
-}
+type Props = EditorProps<ProductFilterComponent>;
 
 export default function ProductFilterEditor({ component, onChange }: Props) {
   const { handleInput } = useComponentInputs<ProductFilterComponent>(onChange);

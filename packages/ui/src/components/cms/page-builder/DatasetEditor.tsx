@@ -1,22 +1,9 @@
 "use client";
-
-import type { PageComponent } from "@acme/types";
+import type { DatasetComponent } from "@acme/types/page/layouts/dataset";
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-type DatasetComponent = PageComponent & {
-  source?: "products" | "blog" | "sanity" | "manual";
-  collectionId?: string;
-  skus?: { id: string }[];
-  limit?: number;
-  sortBy?: string;
-  sortOrder?: "asc" | "desc";
-  itemRoutePattern?: string;
-};
-
-interface Props {
-  component: DatasetComponent;
-  onChange: (patch: Partial<DatasetComponent>) => void;
-}
+type Props = EditorProps<DatasetComponent & { children: any[] }>;
 
 export default function DatasetEditor({ component, onChange }: Props) {
   return (
@@ -60,7 +47,7 @@ export default function DatasetEditor({ component, onChange }: Props) {
         <Textarea
           label="SKUs (comma separated)"
           placeholder="sku-1, sku-2, sku-3"
-          value={((component.skus ?? []).map((s) => (typeof s === 'string' ? s : s.id))).join(",")}
+          value={((component.skus ?? []).map((s: any) => (typeof s === 'string' ? s : s.id))).join(",")}
           onChange={(e) =>
             onChange({
               skus: e.target.value
@@ -99,4 +86,3 @@ export default function DatasetEditor({ component, onChange }: Props) {
     </div>
   );
 }
-

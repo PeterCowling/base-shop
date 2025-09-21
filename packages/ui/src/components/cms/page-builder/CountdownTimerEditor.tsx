@@ -1,11 +1,9 @@
 import type { CountdownTimerComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 import useComponentInputs from "./useComponentInputs";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: CountdownTimerComponent;
-  onChange: (patch: Partial<CountdownTimerComponent>) => void;
-}
+type Props = EditorProps<CountdownTimerComponent>;
 
 export default function CountdownTimerEditor({ component, onChange }: Props) {
   const { handleInput } = useComponentInputs<CountdownTimerComponent>(onChange);

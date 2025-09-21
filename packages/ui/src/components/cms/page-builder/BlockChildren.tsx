@@ -1,7 +1,7 @@
 "use client";
 
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import type { PageComponent } from "@acme/types";
 import { isHiddenForViewport } from "./state/layout/utils";
 import GridOverlay from "./GridOverlay";
@@ -90,6 +90,11 @@ export default function BlockChildren({
     });
   }
 
+  const handleSetContainerRef = useCallback((node: HTMLDivElement | null) => {
+    containerElRef.current = node;
+    setDropRef(node);
+  }, [setDropRef]);
+
   return (
     <SortableContext
       id={`context-${component.id}`}
@@ -97,7 +102,7 @@ export default function BlockChildren({
       strategy={rectSortingStrategy}
     >
       <div
-        ref={(node) => { containerElRef.current = node; setDropRef(node); }}
+        ref={handleSetContainerRef}
         id={`container-${component.id}`}
         role="list"
         aria-dropeffect="move"

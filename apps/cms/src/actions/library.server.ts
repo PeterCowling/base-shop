@@ -1,7 +1,6 @@
 // apps/cms/src/actions/library.server.ts
 "use server";
 
-import { promises as fs } from "fs";
 import path from "path";
 import type { PageComponent } from "@acme/types";
 import { ensureAuthorized } from "./common/auth";
@@ -29,21 +28,18 @@ async function readAll(shop: string): Promise<LibraryItem[]> {
   return readJsonFile<LibraryItem[]>(file, []);
 }
 
-async function writeAll(shop: string, items: LibraryItem[]): Promise<void> {
-  const file = resolveFile(shop);
-  await writeJsonFile(file, items, 2);
-}
+// writeAll helper not used currently; keep read/modify within withFileLock
 
 export async function listLibrary(shop: string): Promise<LibraryItem[]> {
   const session = await ensureAuthorized();
-  const userId = String((session.user as any)?.id ?? "");
+  const userId = String(((session as { user?: { id?: string } }).user?.id) ?? "");
   const all = await readAll(shop);
   return all.filter((i) => i.shared || i.ownerUserId === userId);
 }
 
 export async function saveLibraryItem(shop: string, item: LibraryItem): Promise<void> {
   const session = await ensureAuthorized();
-  const userId = String((session.user as any)?.id ?? "");
+  const userId = String(((session as { user?: { id?: string } }).user?.id) ?? "");
   const value: LibraryItem = { ...item, ownerUserId: userId, shared: Boolean(item.shared) };
   const file = resolveFile(shop);
   await withFileLock(file, async () => {
@@ -59,7 +55,7 @@ export async function updateLibraryItem(
   patch: Partial<Pick<LibraryItem, "label" | "tags" | "thumbnail" | "shared">>,
 ): Promise<void> {
   const session = await ensureAuthorized();
-  const userId = String((session.user as any)?.id ?? "");
+  const userId = String(((session as { user?: { id?: string } }).user?.id) ?? "");
   const file = resolveFile(shop);
   await withFileLock(file, async () => {
     const current = await readJsonFile<LibraryItem[]>(file, []);
@@ -74,7 +70,7 @@ export async function updateLibraryItem(
 
 export async function removeLibraryItem(shop: string, id: string): Promise<void> {
   const session = await ensureAuthorized();
-  const userId = String((session.user as any)?.id ?? "");
+  const userId = String(((session as { user?: { id?: string } }).user?.id) ?? "");
   const file = resolveFile(shop);
   await withFileLock(file, async () => {
     const current = await readJsonFile<LibraryItem[]>(file, []);
@@ -85,7 +81,7 @@ export async function removeLibraryItem(shop: string, id: string): Promise<void>
 
 export async function clearUserLibrary(shop: string): Promise<void> {
   const session = await ensureAuthorized();
-  const userId = String((session.user as any)?.id ?? "");
+  const userId = String(((session as { user?: { id?: string } }).user?.id) ?? "");
   const file = resolveFile(shop);
   await withFileLock(file, async () => {
     const current = await readJsonFile<LibraryItem[]>(file, []);

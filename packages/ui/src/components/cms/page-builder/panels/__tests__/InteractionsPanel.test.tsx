@@ -9,12 +9,30 @@ jest.mock("../../../../atoms/shadcn", () => {
   let id = 0;
   return {
     __esModule: true,
+    Button: ({ children, ...p }: any) => <button {...p}>{children}</button>,
+    Dialog: ({ children, open, onOpenChange, ...p }: any) => (
+      <div data-open={open ? 'true' : 'false'} {...p}>{children}</div>
+    ),
+    DialogContent: ({ children, ...p }: any) => <div {...p}>{children}</div>,
+    DialogHeader: ({ children, ...p }: any) => <div {...p}>{children}</div>,
+    DialogTitle: ({ children, ...p }: any) => <div {...p}>{children}</div>,
+    DialogDescription: ({ children, ...p }: any) => <div {...p}>{children}</div>,
+    DialogFooter: ({ children, ...p }: any) => <div {...p}>{children}</div>,
     Input: ({ label, ...p }: any) => {
       const inputId = `in-${id++}`;
       return (
         <div>
           {label && <label htmlFor={inputId}>{label}</label>}
           <input id={inputId} {...p} />
+        </div>
+      );
+    },
+    Textarea: ({ label, ...p }: any) => {
+      const inputId = `ta-${id++}`;
+      return (
+        <div>
+          {label && <label htmlFor={inputId}>{label}</label>}
+          <textarea id={inputId} {...p} />
         </div>
       );
     },
@@ -110,4 +128,3 @@ describe("InteractionsPanel", () => {
     expect(animationSelect.value).toBe("none");
   });
 });
-

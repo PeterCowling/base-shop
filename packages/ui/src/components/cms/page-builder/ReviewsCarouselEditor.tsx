@@ -1,10 +1,8 @@
 import type { ReviewsCarouselComponent } from "@acme/types";
+import type { EditorProps } from "./EditorProps";
 import { useArrayEditor } from "./useArrayEditor";
 
-interface Props {
-  component: ReviewsCarouselComponent;
-  onChange: (patch: Partial<ReviewsCarouselComponent>) => void;
-}
+type Props = EditorProps<ReviewsCarouselComponent>;
 
 export default function ReviewsCarouselEditor({ component, onChange }: Props) {
   const arrayEditor = useArrayEditor<ReviewsCarouselComponent>(onChange);

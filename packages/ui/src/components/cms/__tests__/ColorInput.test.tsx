@@ -120,6 +120,17 @@ describe("colorToRgb", () => {
     expect(colorToRgb("0 0% 100%"))
       .toEqual([255, 255, 255]);
   });
+
+  it("handles CSS hsl() function notation", () => {
+    expect(colorToRgb("hsl(0 0% 100%)")).toEqual([255, 255, 255]);
+    expect(colorToRgb("hsl(0, 0%, 0%)")).toEqual([0, 0, 0]);
+  });
+
+  it("handles rgb() and rgba() notation", () => {
+    expect(colorToRgb("rgb(255, 255, 255)")).toEqual([255, 255, 255]);
+    expect(colorToRgb("rgba(255, 0, 0, 0.3)")).toEqual([255, 0, 0]);
+    expect(colorToRgb("rgb(0 128 255 / 50%)")).toEqual([0, 128, 255]);
+  });
 });
 
 describe("luminance", () => {
@@ -140,3 +151,21 @@ describe("luminance", () => {
   });
 });
 
+describe("getContrast with CSS variables", () => {
+  it("resolves hsl(var(--token)) using :root variables when available", () => {
+    // Arrange CSS variables on the root element
+    document.documentElement.style.setProperty("--color-fg", "0 0% 100%");
+    document.documentElement.style.setProperty("--color-bg", "0 0% 0%");
+
+    const fg = "hsl(var(--color-fg))";
+    const bg = "hsl(var(--color-bg))";
+    const ratio = getContrast(fg, bg);
+    expect(ratio).toBeGreaterThanOrEqual(21);
+  });
+
+  it("computes contrast for hsl(var(--token) / a) ignoring alpha in luminance", () => {
+    document.documentElement.style.setProperty("--color-fg", "0 0% 100%");
+    document.documentElement.style.setProperty("--color-bg", "0 0% 0%");
+    expect(getContrast("hsl(var(--color-fg) / 0.4)", "hsl(var(--color-bg) / 0.9)")).toBeGreaterThanOrEqual(21);
+  });
+});

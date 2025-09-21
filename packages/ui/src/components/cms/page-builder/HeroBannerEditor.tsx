@@ -1,10 +1,8 @@
 import type { HeroBannerComponent } from "@acme/types";
 import { useArrayEditor } from "./useArrayEditor";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: HeroBannerComponent;
-  onChange: (patch: Partial<HeroBannerComponent>) => void;
-}
+type Props = EditorProps<HeroBannerComponent>;
 
 export default function HeroBannerEditor({ component, onChange }: Props) {
   const arrayEditor = useArrayEditor<HeroBannerComponent>(onChange);

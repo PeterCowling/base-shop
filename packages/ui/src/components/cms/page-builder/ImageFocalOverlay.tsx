@@ -79,6 +79,9 @@ export default function ImageFocalOverlay({ value, onChange, visible = false, di
       ref={overlayRef}
       role="slider"
       aria-label="Image focal point"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round((fp.x + fp.y) * 50)}
       tabIndex={0}
       className="pointer-events-auto absolute inset-0 z-40 select-none"
       onPointerDown={handlePointerDown}
@@ -98,4 +101,3 @@ export default function ImageFocalOverlay({ value, onChange, visible = false, di
     </div>
   );
 }
-

@@ -1,11 +1,9 @@
 import type { StoreLocatorBlockComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 import { useArrayEditor } from "./useArrayEditor";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: StoreLocatorBlockComponent;
-  onChange: (patch: Partial<StoreLocatorBlockComponent>) => void;
-}
+type Props = EditorProps<StoreLocatorBlockComponent>;
 
 export default function StoreLocatorBlockEditor({ component, onChange }: Props) {
   const arrayEditor = useArrayEditor<StoreLocatorBlockComponent>(onChange);

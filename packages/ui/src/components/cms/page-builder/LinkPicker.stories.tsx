@@ -48,7 +48,6 @@ export const Basic: Story = {
         open={open}
         onClose={() => setOpen(false)}
         onPick={(href) => {
-          // eslint-disable-next-line no-alert
           alert(`Picked: ${href}`);
           setOpen(false);
         }}
@@ -57,4 +56,3 @@ export const Basic: Story = {
     );
   },
 };
-

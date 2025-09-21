@@ -46,10 +46,14 @@ function resolveFile(): string {
   let dir = process.cwd();
   while (true) {
     const candidateDir = path.join(dir, "data", "cms");
+    // Probes a known workspace directory; no user input involved
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     if (fsSync.existsSync(candidateDir)) {
       const newFile = path.join(candidateDir, "configurator-progress.json");
       const oldFile = path.join(candidateDir, "wizard-progress.json");
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
       if (!fsSync.existsSync(newFile) && fsSync.existsSync(oldFile)) {
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
         fsSync.renameSync(oldFile, newFile);
       }
       return newFile;
@@ -71,6 +75,7 @@ const FILE = resolveFile();
 
 async function readDb(): Promise<DB> {
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const buf = await fs.readFile(FILE, "utf8");
     const parsed = JSON.parse(buf) as DB;
     if (parsed && typeof parsed === "object") return parsed;
@@ -96,6 +101,7 @@ async function writeDb(db: unknown): Promise<void> {
     });
   } catch {}
   await writeJsonFile(tmp, payload);
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   await fs.rename(tmp, FILE);
 }
 

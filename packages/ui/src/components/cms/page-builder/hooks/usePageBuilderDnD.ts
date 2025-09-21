@@ -19,6 +19,7 @@ import type { ComponentType } from "../defaults";
 import { canDropChild, type ParentKind } from "../rules";
 import { isHiddenForViewport } from "../state/layout/utils";
 import { screenToCanvas } from "../utils/coords";
+import type { Point } from "../utils/coords";
 
 const noop = () => {};
 
@@ -96,9 +97,10 @@ export function usePageBuilderDnD({
       const rawYScreen = activatorEvent.clientY + delta.y;
       const rawXScreen = activatorEvent.clientX + delta.x;
       const canvasRect = canvasRef?.current?.getBoundingClientRect();
-      const { x: pointerXCanvas /*, y: pointerYCanvas */ } = canvasRect
+      const pointerCanvasPoint: Point = canvasRect
         ? screenToCanvas({ x: rawXScreen, y: rawYScreen }, canvasRect, zoomRef.current)
         : { x: rawXScreen, y: rawYScreen };
+      const pointerXCanvas = pointerCanvasPoint.x;
       const snapX = snapToGrid(pointerXCanvas, gridSize);
       setSnapPosition(snapX);
       // Auto-scroll when near edges of the scroll container
@@ -124,7 +126,7 @@ export function usePageBuilderDnD({
       const index = (overData?.index ?? visible.length) + (isBelow ? 1 : 0);
       setInsertIndex(index);
     },
-    [components, gridSize, canvasRef, setSnapPosition, editor, viewport, scrollRef, zoom]
+    [components, gridSize, canvasRef, setSnapPosition, editor, viewport, scrollRef]
   );
 
   const handleDragEndInternal = useCallback(

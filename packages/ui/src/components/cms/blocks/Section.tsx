@@ -155,7 +155,6 @@ export default function Section({
       {/* Absolute video background when provided */}
       {backgroundVideoUrl ? (
         <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden" style={{ zIndex: 0 }}>
-          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
           <video
             className="h-full w-full object-cover"
             style={{ objectPosition: backgroundFocalPoint ? `${(backgroundFocalPoint.x * 100).toFixed(2)}% ${(backgroundFocalPoint.y * 100).toFixed(2)}%` : undefined }}

@@ -9,11 +9,9 @@ import {
 } from "../../atoms/shadcn";
 import useComponentInputs from "./useComponentInputs";
 import type { FormEvent } from "react";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: ButtonComponent;
-  onChange: (patch: Partial<ButtonComponent>) => void;
-}
+type Props = EditorProps<ButtonComponent>;
 
 export default function ButtonEditor({ component, onChange }: Props) {
   const { handleInput } = useComponentInputs<ButtonComponent>(onChange);

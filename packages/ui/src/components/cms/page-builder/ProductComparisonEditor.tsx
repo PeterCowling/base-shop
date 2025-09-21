@@ -1,16 +1,14 @@
-import type { PageComponentBase } from "@acme/types";
 import { Textarea } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-type ProductComparisonComponent = PageComponentBase & {
+type ProductComparisonComponent = {
+  id: string;
   type: "ProductComparison";
   skus?: string[];
   attributes?: string[];
-};
+} & Record<string, unknown>;
 
-interface Props {
-  component: ProductComparisonComponent;
-  onChange: (patch: Partial<ProductComparisonComponent>) => void;
-}
+type Props = EditorProps<ProductComparisonComponent>;
 
 export default function ProductComparisonEditor({ component, onChange }: Props) {
   const handleList = (
@@ -39,4 +37,3 @@ export default function ProductComparisonEditor({ component, onChange }: Props) 
     </div>
   );
 }
-

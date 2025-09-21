@@ -21,7 +21,7 @@ describe("ComponentEditor", () => {
       type: "Image",
     } as PageComponent;
     const onResize = jest.fn();
-    const { findByLabelText, findAllByText, getByText } = render(
+    const { findByLabelText, findAllByLabelText, findAllByText, getByText } = render(
       <TranslationsProvider messages={en}>
         <ComponentEditor
           component={component}
@@ -33,13 +33,15 @@ describe("ComponentEditor", () => {
     await act(async () => {
       fireEvent.click(getByText("Layout"));
     });
-    fireEvent.change(await findByLabelText("Width (Desktop)", { exact: false }), {
+    const widthInputs = await findAllByLabelText(/Width \(Desktop\)/i);
+    fireEvent.change(widthInputs[0], {
       target: { value: "200" },
     });
     expect(onResize).toHaveBeenCalledWith({ widthDesktop: "200" });
     fireEvent.click((await findAllByText("Full width"))[0]);
     expect(onResize).toHaveBeenCalledWith({ widthDesktop: "100%" });
-    fireEvent.change(await findByLabelText("Height (Desktop)", { exact: false }), {
+    const heightInputs = await findAllByLabelText(/Height \(Desktop\)/i);
+    fireEvent.change(heightInputs[0], {
       target: { value: "300" },
     });
     expect(onResize).toHaveBeenCalledWith({ heightDesktop: "300" });

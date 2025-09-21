@@ -64,8 +64,8 @@ describe("Orders pages", () => {
     expect(screen.getByText("Flagged")).toBeInTheDocument();
 
     const item = screen.getByText("Order: o1").closest("li");
-    expect(item).toHaveClass("border-red-500");
-    expect(item).toHaveClass("bg-red-50");
+    expect(item).toHaveClass("border-danger");
+    expect(item).toHaveClass("bg-danger/10");
 
     const returnButton = screen.getByRole("button", {
       name: /mark returned/i,

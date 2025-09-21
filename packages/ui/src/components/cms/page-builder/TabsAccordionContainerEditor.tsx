@@ -3,17 +3,16 @@
 import type { PageComponent } from "@acme/types";
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
 import { useMemo } from "react";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: PageComponent & {
-    mode?: "tabs" | "accordion";
-    tabs?: string[];
-  };
-  onChange: (patch: Partial<PageComponent>) => void;
-}
+type TabsAccordionExtra = PageComponent & {
+  mode?: "tabs" | "accordion";
+  tabs?: string[];
+};
+type Props = EditorProps<TabsAccordionExtra>;
 
 export default function TabsAccordionContainerEditor({ component, onChange }: Props) {
-  const handle = <K extends keyof PageComponent>(field: K, value: PageComponent[K]) => onChange({ [field]: value } as Partial<PageComponent>);
+  const handle = <K extends keyof TabsAccordionExtra>(field: K, value: TabsAccordionExtra[K]) => onChange({ [field]: value } as Partial<TabsAccordionExtra>);
   const titles = useMemo(() => (Array.isArray((component as any).tabs) ? ((component as any).tabs as string[]) : []), [component]);
   return (
     <div className="space-y-2">
@@ -43,4 +42,3 @@ export default function TabsAccordionContainerEditor({ component, onChange }: Pr
     </div>
   );
 }
-

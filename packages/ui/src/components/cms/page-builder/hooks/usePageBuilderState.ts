@@ -252,7 +252,7 @@ export function usePageBuilderState({
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [dispatch, onSaveShortcut, onTogglePreview, onRotateDevice, components, selectedIds, typedState.gridCols]);
+  }, [dispatch, onSaveShortcut, onTogglePreview, onRotateDevice, components, selectedIds, typedState]);
 
   const clearHistory = useCallback(() => {
     if (typeof window !== "undefined") {

@@ -1,3 +1,20 @@
+// Mock builder runtime hooks that rely on browser APIs (IntersectionObserver, etc.)
+jest.mock("../src/components/cms/page-builder/scrollEffects", () => ({
+  ensureScrollStyles: jest.fn(),
+  ensureAnimationStyles: jest.fn(),
+  initScrollEffects: jest.fn(),
+}));
+jest.mock("../src/components/cms/page-builder/timeline", () => ({
+  initTimelines: jest.fn(),
+}));
+jest.mock("../src/components/cms/page-builder/lottie", () => ({
+  initLottie: jest.fn(),
+}));
+jest.mock("../src/components/cms/lightbox", () => ({
+  ensureLightboxStyles: jest.fn(),
+  initLightbox: jest.fn(),
+}));
+
 import { render, screen } from "@testing-library/react";
 import DynamicRenderer from "../src/components/DynamicRenderer";
 import { blockRegistry } from "../src/components/cms/blocks";
@@ -202,38 +219,32 @@ describe("DynamicRenderer", () => {
 
 describe("DynamicRenderer block registry coverage", () => {
   const blockTypes = Object.keys(blockRegistry);
-  const stubRegistry = Object.fromEntries(
-    blockTypes.map((key) => [
-      key,
-      {
-        component: jest.fn(({ children }: any) => (
-          <div data-cy={key}>{children}</div>
-        )),
-      },
-    ])
-  ) as Record<string, { component: jest.Mock }>;
+  const originals: Array<{ key: string; comp: any }> = [];
 
-  let StubDynamicRenderer: typeof DynamicRenderer;
   beforeAll(() => {
-    jest.resetModules();
-    jest.doMock("../src/components/cms/blocks", () => ({ blockRegistry: stubRegistry }));
-    StubDynamicRenderer = require("../src/components/DynamicRenderer").default;
+    for (const key of blockTypes) {
+      const entry = (blockRegistry as any)[key];
+      originals.push({ key, comp: entry.component });
+      entry.component = jest.fn(({ children }: any) => (
+        <div data-cy={key}>{children}</div>
+      ));
+    }
   });
 
   afterAll(() => {
-    jest.resetModules();
+    for (const { key, comp } of originals) {
+      (blockRegistry as any)[key].component = comp;
+    }
   });
 
   it.each(blockTypes)("renders %s block", (type) => {
     render(
-      <StubDynamicRenderer
-        components={[{ id: "1", type } as any]}
-        locale="en"
-      />
+      <DynamicRenderer components={[{ id: "1", type } as any]} locale="en" />
     );
     expect(screen.getByTestId(type)).toBeInTheDocument();
-    expect(stubRegistry[type].component).toHaveBeenCalled();
-    expect(stubRegistry[type].component.mock.calls[0][0]).toEqual(
+    const stub = (blockRegistry as any)[type].component as jest.Mock;
+    expect(stub).toHaveBeenCalled();
+    expect(stub.mock.calls[0][0]).toEqual(
       expect.objectContaining({ locale: "en" })
     );
   });

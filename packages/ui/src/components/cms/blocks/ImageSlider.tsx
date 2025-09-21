@@ -1,5 +1,6 @@
 "use client";
 import { useId, useState } from "react";
+import NextImage from "next/image";
 
 export type ImageSlide = {
   src: string;
@@ -52,13 +53,12 @@ export default function ImageSlider({
           className={i === index ? "block" : "hidden"}
           aria-hidden={i !== index}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           {openInLightbox ? (
             <a href={img.src} data-lightbox data-lightbox-group={group} aria-label={img.caption || img.alt || undefined}>
-              <img src={img.src} alt={img.alt ?? ""} className="w-full object-cover" />
+              <NextImage src={img.src} alt={img.alt ?? ""} width={1600} height={900} className="w-full object-cover" />
             </a>
           ) : (
-            <img src={img.src} alt={img.alt ?? ""} className="w-full object-cover" />
+            <NextImage src={img.src} alt={img.alt ?? ""} width={1600} height={900} className="w-full object-cover" />
           )}
           {img.caption && (
             <figcaption className="text-center text-sm" aria-live="polite">

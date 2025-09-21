@@ -1,10 +1,8 @@
 import type { ValuePropsComponent } from "@acme/types";
 import { useArrayEditor } from "./useArrayEditor";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: ValuePropsComponent;
-  onChange: (patch: Partial<ValuePropsComponent>) => void;
-}
+type Props = EditorProps<ValuePropsComponent>;
 
 export default function ValuePropsEditor({ component, onChange }: Props) {
   const arrayEditor = useArrayEditor<ValuePropsComponent>(onChange);

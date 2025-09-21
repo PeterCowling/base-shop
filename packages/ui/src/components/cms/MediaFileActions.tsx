@@ -111,6 +111,7 @@ export function MediaFileActions({
               }}
               disabled={actionsDisabled}
               className="flex items-center gap-2"
+              aria-label={replaceInProgress ? "Replacing media" : "Replace media"}
             >
               {renderLoadingContent("Replace", replaceInProgress, "Replacing media…")}
             </DropdownMenuItem>
@@ -122,6 +123,7 @@ export function MediaFileActions({
               }}
               disabled={actionsDisabled}
               className="flex items-center gap-2"
+              aria-label={deleteInProgress ? "Deleting media" : "Delete media"}
             >
               {renderLoadingContent("Delete", deleteInProgress, "Deleting media…")}
             </DropdownMenuItem>

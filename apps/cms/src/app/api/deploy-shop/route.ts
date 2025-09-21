@@ -9,7 +9,8 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   try {
     const session = await ensureAuthorized();
-    if (!session || !["admin", "ShopAdmin"].includes((session as any).user.role)) {
+    const role = (session as { user?: { role?: string } }).user?.role;
+    if (!session || !["admin", "ShopAdmin"].includes(role ?? "")) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
   } catch {
@@ -31,7 +32,8 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   try {
     const session = await ensureAuthorized();
-    if (!session || !["admin", "ShopAdmin"].includes((session as any).user.role)) {
+    const role = (session as { user?: { role?: string } }).user?.role;
+    if (!session || !["admin", "ShopAdmin"].includes(role ?? "")) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
   } catch {
@@ -49,7 +51,8 @@ export async function GET(req: Request) {
 export async function PUT(req: Request) {
   try {
     const session = await ensureAuthorized();
-    if (!session || !["admin", "ShopAdmin"].includes((session as any).user.role)) {
+    const role = (session as { user?: { role?: string } }).user?.role;
+    if (!session || !["admin", "ShopAdmin"].includes(role ?? "")) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
   } catch {

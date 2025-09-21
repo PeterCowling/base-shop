@@ -1,11 +1,9 @@
 "use client";
 import type { TabsComponent } from "@acme/types";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: TabsComponent;
-  onChange: (patch: Partial<TabsComponent>) => void;
-}
+type Props = EditorProps<TabsComponent>;
 
 export default function TabsEditor({ component, onChange }: Props) {
   const labels = component.labels ?? [];

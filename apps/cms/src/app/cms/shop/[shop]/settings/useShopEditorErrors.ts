@@ -37,6 +37,18 @@ export interface ShopEditorErrorBags {
   readonly theme?: ShopThemeSectionErrors;
 }
 
+const DOT_PATTERNS: Record<MappingListFieldName, RegExp> = {
+  filterMappings: /^filterMappings\.(\d+)(?:\.(key|value|general))?$/,
+  priceOverrides: /^priceOverrides\.(\d+)(?:\.(key|value|general))?$/,
+  localeOverrides: /^localeOverrides\.(\d+)(?:\.(key|value|general))?$/,
+};
+
+const BRACKET_PATTERNS: Record<MappingListFieldName, RegExp> = {
+  filterMappings: /^filterMappings\[(\d+)](?:\.(key|value|general))?$/,
+  priceOverrides: /^priceOverrides\[(\d+)](?:\.(key|value|general))?$/,
+  localeOverrides: /^localeOverrides\[(\d+)](?:\.(key|value|general))?$/,
+};
+
 function buildMappingListErrors(
   errors: Readonly<Record<string, string[]>>,
   field: MappingListFieldName,
@@ -44,10 +56,8 @@ function buildMappingListErrors(
   const general = errors[field];
   const rowEntries = new Map<number, MappingListFieldRowErrors>();
 
-  const dotPattern = new RegExp(`^${field}\\.(\\d+)(?:\\.(key|value|general))?$`);
-  const bracketPattern = new RegExp(
-    `^${field}\\[(\\d+)](?:\\.(key|value|general))?$`,
-  );
+  const dotPattern = DOT_PATTERNS[field];
+  const bracketPattern = BRACKET_PATTERNS[field];
 
   for (const [errorKey, messages] of Object.entries(errors)) {
     const dotMatch = errorKey.match(dotPattern);

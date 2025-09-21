@@ -1,11 +1,9 @@
 import type { CollectionListComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 import { useArrayEditor } from "./useArrayEditor";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: CollectionListComponent;
-  onChange: (patch: Partial<CollectionListComponent>) => void;
-}
+type Props = EditorProps<CollectionListComponent>;
 
 export default function CollectionListEditor({ component, onChange }: Props) {
   const arrayEditor = useArrayEditor<CollectionListComponent>(onChange);

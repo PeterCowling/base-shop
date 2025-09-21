@@ -4,35 +4,34 @@ import type { PageComponent } from "@acme/types";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
 import GridAreasEditor from "./GridAreasEditor";
 import React from "react";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: PageComponent & {
-    columns?: number; columnsDesktop?: number; columnsTablet?: number; columnsMobile?: number;
-    rows?: number; rowsDesktop?: number; rowsTablet?: number; rowsMobile?: number;
-    rowHeights?: string;
-    gap?: string; gapDesktop?: string; gapTablet?: string; gapMobile?: string;
-    /** Named areas in CSS grid-template-areas format */
-    areas?: string;
-    justifyItems?: "start" | "center" | "end" | "stretch";
-    justifyItemsDesktop?: "start" | "center" | "end" | "stretch";
-    justifyItemsTablet?: "start" | "center" | "end" | "stretch";
-    justifyItemsMobile?: "start" | "center" | "end" | "stretch";
-    alignItems?: "start" | "center" | "end" | "stretch";
-    alignItemsDesktop?: "start" | "center" | "end" | "stretch";
-    alignItemsTablet?: "start" | "center" | "end" | "stretch";
-    alignItemsMobile?: "start" | "center" | "end" | "stretch";
-    /** Auto-fit columns via minmax() instead of fixed repeat(n,1fr) */
-    autoFit?: boolean;
-    /** Minimum column width when autoFit is enabled */
-    minColWidth?: string;
-    /** Equalize implicit row heights (grid-auto-rows: 1fr) */
-    equalizeRows?: boolean;
-  };
-  onChange: (patch: Partial<PageComponent>) => void;
-}
+type GridExtra = PageComponent & {
+  columns?: number; columnsDesktop?: number; columnsTablet?: number; columnsMobile?: number;
+  rows?: number; rowsDesktop?: number; rowsTablet?: number; rowsMobile?: number;
+  rowHeights?: string;
+  gap?: string; gapDesktop?: string; gapTablet?: string; gapMobile?: string;
+  /** Named areas in CSS grid-template-areas format */
+  areas?: string;
+  justifyItems?: "start" | "center" | "end" | "stretch";
+  justifyItemsDesktop?: "start" | "center" | "end" | "stretch";
+  justifyItemsTablet?: "start" | "center" | "end" | "stretch";
+  justifyItemsMobile?: "start" | "center" | "end" | "stretch";
+  alignItems?: "start" | "center" | "end" | "stretch";
+  alignItemsDesktop?: "start" | "center" | "end" | "stretch";
+  alignItemsTablet?: "start" | "center" | "end" | "stretch";
+  alignItemsMobile?: "start" | "center" | "end" | "stretch";
+  /** Auto-fit columns via minmax() instead of fixed repeat(n,1fr) */
+  autoFit?: boolean;
+  /** Minimum column width when autoFit is enabled */
+  minColWidth?: string;
+  /** Equalize implicit row heights (grid-auto-rows: 1fr) */
+  equalizeRows?: boolean;
+};
+type Props = EditorProps<GridExtra>;
 
 export default function GridContainerEditor({ component, onChange }: Props) {
-  const handle = <K extends keyof PageComponent>(field: K, value: PageComponent[K]) => onChange({ [field]: value } as Partial<PageComponent>);
+  const handle = <K extends keyof GridExtra>(field: K, value: GridExtra[K]) => onChange({ [field]: value } as Partial<GridExtra>);
   const [areasOpen, setAreasOpen] = React.useState(false);
   return (
     <div className="space-y-2">

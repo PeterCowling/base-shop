@@ -1,11 +1,9 @@
 import type { ProductGridComponent } from "@acme/types";
 import { Checkbox, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Textarea } from "../../atoms/shadcn";
 import useComponentInputs from "./useComponentInputs";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: ProductGridComponent;
-  onChange: (patch: Partial<ProductGridComponent>) => void;
-}
+type Props = EditorProps<ProductGridComponent>;
 
 export default function ProductGridEditor({ component, onChange }: Props) {
   const { handleInput } = useComponentInputs<ProductGridComponent>(onChange);

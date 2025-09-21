@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { validateShopName } from "@platform-core/shops";
 
 interface UpgradeComponent {
   file: string;
@@ -13,14 +14,16 @@ export default async function EditPreviewPage({
 }: {
   shop: string;
 }) {
+  const safeShop = validateShopName(shop);
   const filePath = path.resolve(
     process.cwd(),
     "..",
-    `shop-${shop}`,
+    `shop-${safeShop}`,
     "upgrade-changes.json",
   );
   let components: UpgradeComponent[] = [];
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const raw = await fs.readFile(filePath, "utf8");
     const data = JSON.parse(raw);
     components = Array.isArray(data.components) ? data.components : [];

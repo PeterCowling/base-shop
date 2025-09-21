@@ -36,7 +36,8 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       "@ui/src": path.resolve(__dirname, "../ui/src"),
       // Allow imports like "@platform-core/components/…" to resolve to packages/platform-core/src
       "@platform-core": path.resolve(__dirname, "../platform-core/src"),
-      "@acme/config": path.resolve(__dirname, "../config/src"),
+      // Route @acme/config to built output to avoid .js stub pitfalls in src
+      "@acme/config": path.resolve(__dirname, "../config/dist"),
       "@acme/date-utils": path.resolve(__dirname, "../date-utils/src"),
       "@acme/email": path.resolve(__dirname, "../email/src"),
       "@acme/email-templates": path.resolve(__dirname, "../email-templates/src"),

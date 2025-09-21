@@ -1,10 +1,8 @@
 import type { FAQBlockComponent } from "@acme/types";
+import type { EditorProps } from "./EditorProps";
 import { useArrayEditor } from "./useArrayEditor";
 
-interface Props {
-  component: FAQBlockComponent;
-  onChange: (patch: Partial<FAQBlockComponent>) => void;
-}
+type Props = EditorProps<FAQBlockComponent>;
 
 export default function FAQBlockEditor({ component, onChange }: Props) {
   const arrayEditor = useArrayEditor<FAQBlockComponent>(onChange);

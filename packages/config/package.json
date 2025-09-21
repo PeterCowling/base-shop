@@ -54,7 +54,8 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "prebuild": "rimraf dist tsconfig.tsbuildinfo && pnpm --filter @acme/zod-utils run build",
+    "prebuild": "rimraf dist tsconfig.tsbuildinfo && pnpm --filter @acme/zod-utils run build && pnpm run build:stubs",
+    "prepare": "pnpm run build:stubs",
     "build:stubs": "node ./scripts/generate-env-stubs.mjs",
     "build": "tsc -p tsconfig.json",
     "dev": "tsc -p tsconfig.json -w",

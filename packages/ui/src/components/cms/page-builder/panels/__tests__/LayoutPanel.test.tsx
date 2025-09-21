@@ -68,8 +68,10 @@ describe("LayoutPanel", () => {
         {...handlers}
       />
     );
-    expect(screen.getByLabelText(/Top/)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Left/)).toBeInTheDocument();
+    const top = screen.getByLabelText(/Top/, { selector: 'input' });
+    const left = screen.getByLabelText(/Left/, { selector: 'input' });
+    expect(top).toBeInTheDocument();
+    expect(left).toBeInTheDocument();
   });
 
   test("hides absolute controls when not absolute", () => {
@@ -202,8 +204,8 @@ describe("LayoutPanel", () => {
     expect(screen.queryByLabelText(/Top/)).toBeNull();
     fireEvent.click(screen.getByText("absolute"));
     expect(handlers.handleInput).toHaveBeenCalledWith("position", "absolute");
-    const top = screen.getByLabelText(/Top/);
-    const left = screen.getByLabelText(/Left/);
+    const top = screen.getByLabelText(/Top/, { selector: 'input' });
+    const left = screen.getByLabelText(/Left/, { selector: 'input' });
     fireEvent.change(top, { target: { value: "bad" } });
     fireEvent.change(left, { target: { value: "bad" } });
     expect(top.getAttribute("error")).toBe("Invalid top value");
@@ -232,4 +234,3 @@ describe("LayoutPanel", () => {
     (globalThis as any).CSS.supports = original;
   });
 });
-

@@ -8,6 +8,7 @@ jest.mock("../src/components/atoms/shadcn", () => {
     Button: ({ children, ...props }: any) => (
       <button {...props}>{children}</button>
     ),
+    Input: (props: any) => <input {...props} />,
     Select: ({ value, onValueChange, children }: any) => (
       <select value={value} onChange={(e) => onValueChange(e.target.value)}>
         {children}
@@ -19,6 +20,11 @@ jest.mock("../src/components/atoms/shadcn", () => {
     SelectItem: ({ children, value }: any) => (
       <option value={value}>{children}</option>
     ),
+    Dialog: ({ children }: any) => <div>{children}</div>,
+    DialogTrigger: ({ children }: any) => <>{children}</>,
+    DialogContent: ({ children }: any) => <div>{children}</div>,
+    DialogHeader: ({ children }: any) => <div>{children}</div>,
+    DialogTitle: ({ children }: any) => <div>{children}</div>,
   };
 });
 
@@ -32,7 +38,7 @@ describe("common DeviceSelector", () => {
       />
     );
     expect(screen.queryByRole("button", { name: "desktop" })).toBeNull();
-    fireEvent.change(screen.getByRole("combobox"), {
+    fireEvent.change(screen.getAllByRole("combobox")[0], {
       target: { value: getLegacyPreset("mobile").id },
     });
     expect(onChange).toHaveBeenCalledWith(getLegacyPreset("mobile").id);
@@ -57,10 +63,9 @@ describe("common DeviceSelector", () => {
     fireEvent.click(screen.getByRole("button", { name: "desktop" }));
     expect(onChange).toHaveBeenNthCalledWith(3, getLegacyPreset("desktop").id);
 
-    fireEvent.change(screen.getByRole("combobox"), {
+    fireEvent.change(screen.getAllByRole("combobox")[0], {
       target: { value: getLegacyPreset("tablet").id },
     });
     expect(onChange).toHaveBeenNthCalledWith(4, getLegacyPreset("tablet").id);
   });
 });
-

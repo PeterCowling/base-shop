@@ -18,7 +18,7 @@ export default function useSelectionGrouping({
       (selectedIds ?? [])
         .map((id) => findById(components, id))
         .filter(Boolean) as PageComponent[],
-    [components, selectedIds.join(",")],
+    [components, selectedIds],
   );
 
   const canGroupTransform = useMemo(
@@ -49,4 +49,3 @@ export default function useSelectionGrouping({
 
   return { selectedComponents, canGroupTransform, hasLockedInSelection, unlockedIds, lockedIds } as const;
 }
-

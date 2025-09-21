@@ -1,9 +1,7 @@
 /* Tiny, dependency-free lightbox with grouping and keyboard nav */
 
 declare global {
-  // eslint-disable-next-line no-var
   var __pbLightboxReady: boolean | undefined;
-  // eslint-disable-next-line no-var
   var __pbLightboxStyles: boolean | undefined;
 }
 

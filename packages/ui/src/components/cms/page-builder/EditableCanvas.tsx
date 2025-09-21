@@ -2,7 +2,7 @@
 
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import { useDroppable } from "@dnd-kit/core";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { PageComponent, HistoryState } from "@acme/types";
 import type { Locale } from "@acme/i18n/locales";
 import type { Action } from "./state";
@@ -103,6 +103,11 @@ export default function EditableCanvas({
 
   const { setNodeRef: setCanvasDropRef, isOver: isCanvasOver } = useDroppable({ id: "canvas", data: {} });
 
+  const assignCanvasRef = useCallback((node: HTMLDivElement | null) => {
+    setCanvasDropRef(node);
+    if (canvasRef) (canvasRef as any).current = node;
+  }, [setCanvasDropRef, canvasRef]);
+
   const visibleComponents = components.filter((c) => !isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport));
   const toUnderlyingIndex = (uiIndex: number): number => {
     if (uiIndex < visibleComponents.length) {
@@ -122,7 +127,7 @@ export default function EditableCanvas({
     <SortableContext items={visibleComponents.map((c) => c.id)} strategy={rectSortingStrategy}>
       <div
         id="canvas"
-        ref={(node) => { setCanvasDropRef(node); if (canvasRef) (canvasRef as any).current = node; }}
+        ref={assignCanvasRef}
         style={containerStyle}
         role="list"
         aria-dropeffect="move"
@@ -260,4 +265,3 @@ export default function EditableCanvas({
     </SortableContext>
   );
 }
-

@@ -4,6 +4,8 @@
 import type { PageComponent } from "@acme/types";
 import { Suspense } from "react";
 import editorRegistry from "../editorRegistry";
+import type { EditorProps } from "../EditorProps";
+import type { ComponentType, LazyExoticComponent } from "react";
 import MinMaxItems from "./content/MinMaxItems";
 import ResponsiveItems from "./content/ResponsiveItems";
 import ColumnsControls from "./content/ColumnsControls";
@@ -25,7 +27,7 @@ export default function ContentPanel({
   handleInput,
 }: Props) {
   const isMultiColumn = (component as any).type === "MultiColumn";
-  const Specific = editorRegistry[component.type];
+  const Specific: LazyExoticComponent<ComponentType<EditorProps>> | undefined = editorRegistry[component.type];
   return (
     <div className="space-y-2">
       {("minItems" in component || "maxItems" in component) && (

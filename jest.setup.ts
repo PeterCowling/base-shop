@@ -92,6 +92,11 @@ import "@testing-library/jest-dom";
 const { configure } = require("@testing-library/react");
 configure({ testIdAttribute: "data-cy" });
 import "./test/polyfills/form-request-submit";
+// Provide a harmless confirm() stub that tests can spy on or override
+try {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  (globalThis as any).confirm = (msg?: string) => false;
+} catch {}
 
 // React/Next + DOM polyfills are provided via test/polyfills/*
 

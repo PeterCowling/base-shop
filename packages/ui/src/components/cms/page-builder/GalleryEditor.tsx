@@ -1,11 +1,9 @@
 import type { GalleryComponent } from "@acme/types";
 import { useArrayEditor } from "./useArrayEditor";
 import { Checkbox } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: GalleryComponent;
-  onChange: (patch: Partial<GalleryComponent>) => void;
-}
+type Props = EditorProps<GalleryComponent>;
 
 export default function GalleryEditor({ component, onChange }: Props) {
   const arrayEditor = useArrayEditor<GalleryComponent>(onChange);

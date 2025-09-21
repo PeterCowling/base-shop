@@ -1,10 +1,8 @@
 import type { RecommendationCarouselComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: RecommendationCarouselComponent;
-  onChange: (patch: Partial<RecommendationCarouselComponent>) => void;
-}
+type Props = EditorProps<RecommendationCarouselComponent>;
 
 export default function RecommendationCarouselEditor({ component, onChange }: Props) {
   const handleNum = (field: keyof RecommendationCarouselComponent & string, value: string) => {

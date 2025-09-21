@@ -1,12 +1,10 @@
 import type { LookbookComponent } from "@acme/types";
+import type { EditorProps } from "./EditorProps";
 import { Button, Input } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
 import { useArrayEditor } from "./useArrayEditor";
 
-interface Props {
-  component: LookbookComponent;
-  onChange: (patch: Partial<LookbookComponent>) => void;
-}
+type Props = EditorProps<LookbookComponent>;
 
 export default function LookbookEditor({ component, onChange }: Props) {
   const handleInput = (field: keyof LookbookComponent & string, value: string) => {
@@ -47,4 +45,3 @@ export default function LookbookEditor({ component, onChange }: Props) {
     </div>
   );
 }
-

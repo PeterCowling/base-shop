@@ -32,7 +32,7 @@ function generateCsv(sizeBytes) {
 
 const csvContent = generateCsv(5 * 1024 * 1024);
 
-export default function () {
+export default function uploadCsvScenario() {
   const url = `${__ENV.CMS_BASE_URL}/cms/api/upload-csv/test-shop`;
   const payload = { file: http.file(csvContent, 'products.csv', 'text/csv') };
   const res = http.post(url, payload);

@@ -3,16 +3,37 @@ import type { Column } from "@ui/components/cms/DataTable";
 import type { ThemeTokenRow } from "./lib/pageSections";
 export type { ThemeTokenRow } from "./lib/pageSections";
 
-const HEX_RE = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
-const HSL_RE = /^\d+(?:\.\d+)?\s+\d+(?:\.\d+)?%\s+\d+(?:\.\d+)?%$/;
+function isHexColor(value: string): boolean {
+  if (!value || value[0] !== '#') return false;
+  const hex = value.slice(1);
+  if (!(hex.length === 3 || hex.length === 6)) return false;
+  for (let i = 0; i < hex.length; i += 1) {
+    const c = hex[i]!;
+    const ok =
+      (c >= '0' && c <= '9') ||
+      (c >= 'a' && c <= 'f') ||
+      (c >= 'A' && c <= 'F');
+    if (!ok) return false;
+  }
+  return true;
+}
+
+function isHslValue(value: string): boolean {
+  const parts = value.trim().split(/\s+/);
+  if (parts.length !== 3) return false;
+  const [h, s, l] = parts;
+  const isNum = (v: string) => v.length > 0 && Number.isFinite(Number(v));
+  const isPct = (v: string) => v.endsWith("%") && isNum(v.slice(0, -1));
+  return isNum(h) && isPct(s) && isPct(l);
+}
 
 function isColor(value?: string): value is string {
   if (!value) return false;
-  return HEX_RE.test(value) || HSL_RE.test(value);
+  return isHexColor(value) || isHslValue(value);
 }
 
 function swatchColor(value: string) {
-  return HSL_RE.test(value) ? `hsl(${value})` : value;
+  return isHslValue(value) ? `hsl(${value})` : value;
 }
 
 export function createThemeTokenColumns({

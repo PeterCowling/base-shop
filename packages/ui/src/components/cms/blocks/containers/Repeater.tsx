@@ -46,14 +46,28 @@ export default function Repeater({
   const base = useDataset<unknown>();
   const filtered = (() => {
     if (!filter) return base;
-    const m = /^(?<k>[^=!:><\s]+)\s*(?<op>==|=|!=|>=|<=|>|<)?\s*(?<v>.+)$/.exec(filter);
-    if (!m || !m.groups) return base;
-    const key = m.groups.k;
-    const op = (m.groups.op ?? "=") as string;
-    const val = m.groups.v;
+    // Safe, non-regex parsing: find the first operator token
+    const ops = ["==", "!=", ">=", "<=", ">", "<", "="] as const;
+    let key = filter;
+    let op: (typeof ops)[number] = "=";
+    let val = "";
+    for (const candidate of ops) {
+      const idx = filter.indexOf(candidate);
+      if (idx > 0) {
+        key = filter.slice(0, idx).trim();
+        op = candidate;
+        val = filter.slice(idx + candidate.length).trim();
+        break;
+      }
+    }
+    if (!val && key !== filter) {
+      val = filter.slice(filter.indexOf(op) + op.length).trim();
+    }
+    if (!key) return base;
     const coerce = (input: unknown): unknown => {
       const s = String(input ?? "");
-      if (/^\d+(?:\.\d+)?$/.test(s)) return Number(s);
+      const n = Number(s);
+      if (s !== '' && Number.isFinite(n)) return n;
       if (s === "true" || s === "false") return s === "true";
       return s;
     };

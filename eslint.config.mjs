@@ -100,12 +100,23 @@ export default [
     },
   },
 
-  /* ▸ Design system token enforcement */
+  /* ▸ Design system token enforcement (global) */
   {
     plugins: { ds: dsPlugin },
     rules: {
       "ds/no-raw-color": "error",
       "ds/no-raw-font": "error",
+      // Scope the strict Tailwind color check to CMS to avoid breaking other apps
+      "ds/no-raw-tailwind-color": "off",
+    },
+  },
+
+  /* ▸ CMS-only: disallow raw Tailwind palette and arbitrary colors */
+  {
+    files: ["apps/cms/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-tailwind-color": "error",
     },
   },
 
@@ -253,6 +264,14 @@ export default [
   },
 
   /* ▸ Test files relaxations */
+  /* ▸ Test files: disallow hsl(var(--...)) literals that break contrast checks */
+  {
+    files: ["**/__tests__/**/*.{ts,tsx,js,jsx}", "**/*.test.{ts,tsx,js,jsx}", "**/*.spec.{ts,tsx,js,jsx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-hsl-var-in-tests": "error",
+    },
+  },
 
   /* ▸ Enforce UI component layering */
   {

@@ -6,23 +6,22 @@ import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, Select
 import { useCallback, useMemo, useState } from "react";
 import ImageEditor, { type ImageEditState } from "./ImageEditor";
 import OverlayPicker from "./OverlayPicker";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: PageComponent & {
-    backgroundImageUrl?: string;
-    backgroundFocalPoint?: { x: number; y: number };
-    backgroundSize?: 'cover' | 'contain' | 'auto';
-    backgroundRepeat?: 'no-repeat' | 'repeat' | 'repeat-x' | 'repeat-y';
-    backgroundAttachment?: 'scroll' | 'fixed' | 'local';
-    backgroundOverlay?: string;
-    backgroundVideoUrl?: string;
-    backgroundVideoPoster?: string;
-    backgroundVideoLoop?: boolean;
-    backgroundVideoMuted?: boolean;
-    sectionParallax?: number;
-  };
-  onChange: (patch: Partial<PageComponent>) => void;
-}
+type SectionExtra = PageComponent & {
+  backgroundImageUrl?: string;
+  backgroundFocalPoint?: { x: number; y: number };
+  backgroundSize?: 'cover' | 'contain' | 'auto';
+  backgroundRepeat?: 'no-repeat' | 'repeat' | 'repeat-x' | 'repeat-y';
+  backgroundAttachment?: 'scroll' | 'fixed' | 'local';
+  backgroundOverlay?: string;
+  backgroundVideoUrl?: string;
+  backgroundVideoPoster?: string;
+  backgroundVideoLoop?: boolean;
+  backgroundVideoMuted?: boolean;
+  sectionParallax?: number;
+};
+type Props = EditorProps<SectionExtra>;
 
 export default function SectionEditor({ component, onChange }: Props) {
   const [imgEditorOpen, setImgEditorOpen] = useState(false);
@@ -31,8 +30,8 @@ export default function SectionEditor({ component, onChange }: Props) {
     focalPoint: component.backgroundFocalPoint ?? { x: 0.5, y: 0.5 },
   }), [component.backgroundFocalPoint]);
 
-  const handle = useCallback(<K extends keyof PageComponent>(field: K, value: PageComponent[K]) => {
-    onChange({ [field]: value } as Partial<PageComponent>);
+  const handle = useCallback(<K extends keyof SectionExtra>(field: K, value: SectionExtra[K]) => {
+    onChange({ [field]: value } as Partial<SectionExtra>);
   }, [onChange]);
 
   const initialFilter = (() => {

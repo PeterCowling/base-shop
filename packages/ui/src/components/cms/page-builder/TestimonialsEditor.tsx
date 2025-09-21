@@ -1,10 +1,8 @@
 import type { TestimonialsComponent } from "@acme/types";
+import type { EditorProps } from "./EditorProps";
 import { useArrayEditor } from "./useArrayEditor";
 
-interface Props {
-  component: TestimonialsComponent;
-  onChange: (patch: Partial<TestimonialsComponent>) => void;
-}
+type Props = EditorProps<TestimonialsComponent>;
 
 export default function TestimonialsEditor({ component, onChange }: Props) {
   const arrayEditor = useArrayEditor<TestimonialsComponent>(onChange);

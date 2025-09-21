@@ -13,7 +13,7 @@ function MenuBar({ editor }: { editor: Editor | null }) {
     } catch {
       return "";
     }
-  }, [editor, editor?.state?.selection?.from, editor?.state?.selection?.to]);
+  }, [editor]);
 
   if (!editor) return null;
 

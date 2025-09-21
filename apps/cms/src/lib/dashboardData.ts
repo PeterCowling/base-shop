@@ -22,6 +22,7 @@ export async function collectStats(): Promise<Stats> {
 
   let shops: string[] = [];
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const entries = await fs.readdir(shopsDir, { withFileTypes: true });
     shops = entries.filter((entry) => entry.isDirectory()).map((entry) => entry.name);
   } catch {
@@ -33,6 +34,7 @@ export async function collectStats(): Promise<Stats> {
     shops.map(async (shop) => {
       const file = path.join(shopsDir, shop, "products.json");
       try {
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
         const buf = await fs.readFile(file, "utf8");
         const json = JSON.parse(buf);
         if (Array.isArray(json)) {

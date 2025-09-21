@@ -7,6 +7,7 @@ jest.mock("../../../../atoms/shadcn", () => {
   let id = 0;
   return {
     __esModule: true,
+    Button: ({ children, ...p }: any) => <button {...p}>{children}</button>,
     Input: ({ label, ...p }: any) => {
       const inputId = `in-${id++}`;
       return (
@@ -16,6 +17,23 @@ jest.mock("../../../../atoms/shadcn", () => {
         </div>
       );
     },
+    Textarea: ({ label, ...p }: any) => {
+      const inputId = `ta-${id++}`;
+      return (
+        <div>
+          {label && <label htmlFor={inputId}>{label}</label>}
+          <textarea id={inputId} {...p} />
+        </div>
+      );
+    },
+    Dialog: ({ children, open, onOpenChange, ...p }: any) => (
+      <div data-open={open ? 'true' : 'false'} {...p}>{children}</div>
+    ),
+    DialogContent: ({ children, ...p }: any) => <div {...p}>{children}</div>,
+    DialogHeader: ({ children, ...p }: any) => <div {...p}>{children}</div>,
+    DialogTitle: ({ children, ...p }: any) => <div {...p}>{children}</div>,
+    DialogDescription: ({ children, ...p }: any) => <div {...p}>{children}</div>,
+    DialogFooter: ({ children, ...p }: any) => <div {...p}>{children}</div>,
     Select: ({ children, value, onValueChange }: any) => {
       const content = React.Children.toArray(children).find(
         (c: any) => c.type === React.Fragment || c.type?.name === "SelectContent"
@@ -50,7 +68,8 @@ describe("InteractionsPanel timing + scroll effects", () => {
 
     fireEvent.change(screen.getByLabelText("Duration (ms)"), { target: { value: "600" } });
     fireEvent.change(screen.getByLabelText("Delay (ms)"), { target: { value: "120" } });
-    const easingSelect = screen.getByLabelText("Easing");
+    const selects1 = screen.getAllByRole('combobox');
+    const easingSelect = selects1[2] as HTMLSelectElement;
     fireEvent.change(easingSelect, { target: { value: "ease-in-out" } });
 
     expect(mockInput).toHaveBeenCalledWith("animationDuration", 600);
@@ -75,14 +94,15 @@ describe("InteractionsPanel timing + scroll effects", () => {
 
     render(<Wrapper />);
 
-    const revealSelect = screen.getByLabelText("Reveal on Scroll");
+    const selects2 = screen.getAllByRole('combobox');
+    const revealSelect = selects2[4] as HTMLSelectElement;
     fireEvent.change(revealSelect, { target: { value: "slide-up" } });
     expect(mockInput).toHaveBeenCalledWith("reveal", "slide-up");
 
     fireEvent.change(screen.getByLabelText("Parallax"), { target: { value: "0.3" } });
     expect(mockInput).toHaveBeenCalledWith("parallax", 0.3);
 
-    const stickySelect = screen.getByLabelText("Sticky");
+    const stickySelect = selects2[5] as HTMLSelectElement;
     fireEvent.change(stickySelect, { target: { value: "top" } });
     expect(mockInput).toHaveBeenCalledWith("sticky", "top");
 
@@ -90,9 +110,9 @@ describe("InteractionsPanel timing + scroll effects", () => {
     expect(mockInput).toHaveBeenCalledWith("stickyOffset", "64px");
 
     // clear to none
-    fireEvent.change(revealSelect, { target: { value: "" } });
+    fireEvent.change(revealSelect as HTMLSelectElement, { target: { value: "__none__" } });
     expect(mockInput).toHaveBeenCalledWith("reveal", undefined);
-    fireEvent.change(stickySelect, { target: { value: "" } });
+    fireEvent.change(stickySelect as HTMLSelectElement, { target: { value: "__none__" } });
     expect(mockInput).toHaveBeenCalledWith("sticky", undefined);
     fireEvent.change(screen.getByLabelText("Parallax"), { target: { value: "" } });
     expect(mockInput).toHaveBeenCalledWith("parallax", undefined);
@@ -100,4 +120,3 @@ describe("InteractionsPanel timing + scroll effects", () => {
     expect(mockInput).toHaveBeenCalledWith("stickyOffset", undefined);
   });
 });
-

@@ -2,33 +2,32 @@
 
 import type { PageComponent } from "@acme/types";
 import { Checkbox, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: PageComponent & {
-    direction?: "row" | "column";
-    directionDesktop?: "row" | "column";
-    directionTablet?: "row" | "column";
-    directionMobile?: "row" | "column";
-    wrap?: boolean;
-    gap?: string;
-    gapDesktop?: string;
-    gapTablet?: string;
-    gapMobile?: string;
-    justify?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
-    justifyDesktop?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
-    justifyTablet?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
-    justifyMobile?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
-    align?: "stretch" | "flex-start" | "center" | "flex-end" | "baseline";
-    alignDesktop?: "stretch" | "flex-start" | "center" | "flex-end" | "baseline";
-    alignTablet?: "stretch" | "flex-start" | "center" | "flex-end" | "baseline";
-    alignMobile?: "stretch" | "flex-start" | "center" | "flex-end" | "baseline";
-  };
-  onChange: (patch: Partial<PageComponent>) => void;
-}
+type StackFlexExtra = PageComponent & {
+  direction?: "row" | "column";
+  directionDesktop?: "row" | "column";
+  directionTablet?: "row" | "column";
+  directionMobile?: "row" | "column";
+  wrap?: boolean;
+  gap?: string;
+  gapDesktop?: string;
+  gapTablet?: string;
+  gapMobile?: string;
+  justify?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
+  justifyDesktop?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
+  justifyTablet?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
+  justifyMobile?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around" | "space-evenly";
+  align?: "stretch" | "flex-start" | "center" | "flex-end" | "baseline";
+  alignDesktop?: "stretch" | "flex-start" | "center" | "flex-end" | "baseline";
+  alignTablet?: "stretch" | "flex-start" | "center" | "flex-end" | "baseline";
+  alignMobile?: "stretch" | "flex-start" | "center" | "flex-end" | "baseline";
+};
+type Props = EditorProps<StackFlexExtra>;
 
 export default function StackFlexEditor({ component, onChange }: Props) {
-  const handle = <K extends keyof PageComponent>(field: K, value: PageComponent[K]) => {
-    onChange({ [field]: value } as Partial<PageComponent>);
+  const handle = <K extends keyof StackFlexExtra>(field: K, value: StackFlexExtra[K]) => {
+    onChange({ [field]: value } as Partial<StackFlexExtra>);
   };
   return (
     <div className="space-y-2">

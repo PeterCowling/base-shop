@@ -12,6 +12,8 @@ export function resolveTemplatesRoot(): string {
       path.join(dir, "packages", "ui", "src", "components", "templates"),
     ];
     for (const candidate of candidates) {
+      // ESLint: workspace-only paths, no user input
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
       if (fsSync.existsSync(candidate)) return candidate;
     }
     const parent = path.dirname(dir);
@@ -35,7 +37,14 @@ export async function GET(
     const { resolveTemplatesRoot } = await import("./route");
     const dir = resolveTemplatesRoot();
     const { name } = await context.params;
-    const file = path.join(dir, `${name}.json`);
+    // Constrain template name to safe characters and ensure the resolved path stays within the templates dir
+    const safeName = String(name).replace(/[^a-zA-Z0-9_-]/g, "");
+    const file = path.join(dir, `${safeName}.json`);
+    const resolved = path.resolve(file);
+    if (!resolved.startsWith(path.resolve(dir) + path.sep)) {
+      return NextResponse.json({ error: "Invalid template name" }, { status: 400 });
+    }
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const buf = await fs.readFile(file, "utf8");
     const data = JSON.parse(buf);
     return NextResponse.json(data);

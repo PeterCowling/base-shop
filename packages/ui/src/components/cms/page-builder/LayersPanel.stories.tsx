@@ -40,7 +40,6 @@ export const Basic: Story = {
             if (action.type === "update-editor") {
               setEditor((e) => ({ ...e, [action.id]: { ...(e[action.id] ?? {}), ...(action.patch ?? {}) } }));
             }
-            // eslint-disable-next-line no-console
             console.log("dispatch", action);
           }}
           editor={editor as any}
@@ -88,7 +87,6 @@ export const DragAndDrop: Story = {
                 }));
                 return;
               }
-              // eslint-disable-next-line no-console
               console.log("dispatch", action);
             }}
             editor={editor as any}

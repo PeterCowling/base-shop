@@ -9,6 +9,8 @@ export async function GET() {
     // resolveDataRoot() -> <repo>/data/shops, so step up one level to <repo>/data
     const dataRoot = resolveDataRoot();
     const file = join(dataRoot, "..", "publish-locations.json");
+    // File path is derived from a trusted workspace root
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const buf = await fs.readFile(file, "utf8");
     const data = JSON.parse(buf);
     return NextResponse.json(data);

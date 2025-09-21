@@ -11,14 +11,13 @@ import {
 } from "../../atoms/shadcn";
 
 type FormBuilderComponent = {
+  id: string;
   type: "FormBuilderBlock";
   fields?: FormField[];
-};
+} & Record<string, unknown>;
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: FormBuilderComponent;
-  onChange: (patch: Partial<FormBuilderComponent>) => void;
-}
+type Props = EditorProps<FormBuilderComponent>;
 
 export default function FormBuilderEditor({ component, onChange }: Props) {
   const fields = component.fields ?? [];
@@ -40,13 +39,13 @@ export default function FormBuilderEditor({ component, onChange }: Props) {
   };
 
   const removeField = (idx: number) => {
-    const next = fields.filter((_, i) => i !== idx);
+    const next = fields.filter((_: unknown, i: number) => i !== idx);
     onChange({ fields: next });
   };
 
   return (
     <div className="space-y-2">
-      {fields.map((field, idx) => (
+      {fields.map((field: FormField, idx: number) => (
         <div key={idx} className="space-y-1 rounded border p-2">
           <Select
             value={field.type}

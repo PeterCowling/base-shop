@@ -21,43 +21,53 @@
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs"
   },
   "exports": {
+    "./page": {
+      "types": "./dist/page/index.d.ts",
+      "import": "./src/page/index.ts",
+      "default": "./src/page/index.ts"
+    },
+    "./page/*": {
+      "types": "./dist/page/*.d.ts",
+      "import": "./src/page/*.ts",
+      "default": "./src/page/*.ts"
+    },
     "./settings": {
-      "types": "./src/settings/index.ts",
+      "types": "./dist/settings/index.d.ts",
       "import": "./src/settings/index.ts",
       "default": "./src/settings/index.ts"
     },
     "./settings/*": {
-      "types": "./src/settings/*.ts",
+      "types": "./dist/settings/*.d.ts",
       "import": "./src/settings/*.ts",
       "default": "./src/settings/*.ts"
     },
     "./theme": {
-      "types": "./src/theme/index.ts",
+      "types": "./dist/theme/index.d.ts",
       "import": "./src/theme/index.ts",
       "default": "./src/theme/index.ts"
     },
     "./theme/*": {
-      "types": "./src/theme/*.ts",
+      "types": "./dist/theme/*.d.ts",
       "import": "./src/theme/*.ts",
       "default": "./src/theme/*.ts"
     },
     "./ds": {
-      "types": "./src/ds/index.ts",
+      "types": "./dist/ds/index.d.ts",
       "import": "./src/ds/index.ts",
       "default": "./src/ds/index.ts"
     },
     "./ds/*": {
-      "types": "./src/ds/*.ts",
+      "types": "./dist/ds/*.d.ts",
       "import": "./src/ds/*.ts",
       "default": "./src/ds/*.ts"
     },
     "./*": {
-      "types": "./src/*.ts",
+      "types": "./dist/*.d.ts",
       "import": "./src/*.ts",
       "default": "./src/*.ts"
     },
     ".": {
-      "types": "./src/index.ts",
+      "types": "./dist/index.d.ts",
       "import": "./src/index.ts",
       "default": "./src/index.ts"
     }

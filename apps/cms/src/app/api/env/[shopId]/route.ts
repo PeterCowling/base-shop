@@ -7,6 +7,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { z } from "zod";
 import { resolveDataRoot } from "@platform-core/dataRoot";
+import { validateShopName } from "@platform-core/shops";
 import { setupSanityBlog } from "@cms/actions/setupSanityBlog";
 import { parseJsonBody } from "@shared-utils";
 
@@ -27,7 +28,9 @@ export async function POST(
     }
     const data = parsed.data;
     const { shopId } = await context.params;
-    const dir = path.join(resolveDataRoot(), shopId);
+    const safeShop = validateShopName(shopId);
+    const dir = path.join(resolveDataRoot(), safeShop);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     await fs.mkdir(dir, { recursive: true });
     const lines = Object.entries(data ?? {})
       .map(([k, v]) => `${k}=${String(v)}`)
@@ -40,6 +43,8 @@ export async function POST(
         bytes: Buffer.byteLength(content, "utf8"),
       });
     } catch {}
+    // The path is constrained to the workspace data directory; values are validated.
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     await fs.writeFile(path.join(dir, ".env"), content, "utf8");
     if (
       data.SANITY_PROJECT_ID &&

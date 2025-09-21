@@ -8,6 +8,7 @@ import { listEvents } from "@platform-core/repositories/analytics.server";
 import { coreEnv as env } from "@acme/config/env/core";
 import type { Coupon } from "@acme/types";
 import { writeJsonFile } from "@/lib/server/jsonIO";
+import { validateShopName } from "@platform-core/shops";
 
 interface Discount extends Coupon {
   active?: boolean;
@@ -23,11 +24,13 @@ function getShop(req: NextRequest): string {
 }
 
 function filePath(shop: string): string {
-  return path.join(resolveDataRoot(), shop, "discounts.json");
+  const safe = validateShopName(shop);
+  return path.join(resolveDataRoot(), safe, "discounts.json");
 }
 
 async function readDiscounts(shop: string): Promise<Discount[]> {
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const buf = await fs.readFile(filePath(shop), "utf8");
     const parsed = JSON.parse(buf) as Discount[];
     return Array.isArray(parsed) ? parsed : [];

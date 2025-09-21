@@ -5,6 +5,7 @@ import type { Shop } from "@acme/types";
 import shopJson from "../../../../../shop.json";
 import type { Metadata } from "next";
 import { getSeo } from "../../../util/seo";
+import { resolveLocale } from "@i18n/locales";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { JsonLdScript, articleJsonLd } from "../../../../lib/jsonld";
 
@@ -67,7 +68,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { fetchPostBySlug } = await import("@acme/sanity");
   const post = await fetchPostBySlug(shop.id, params.slug);
-  const lang = params.lang as string;
+  const lang = resolveLocale(params.lang);
   const baseSeo = await getSeo(lang);
   const canonicalRoot = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
   const canonical = canonicalRoot ? `${canonicalRoot}/blog/${params.slug}` : undefined;
@@ -87,8 +88,8 @@ export async function generateMetadata({
     title,
     description,
     canonical,
-    openGraph: { url: canonical, title, description } as Partial<Metadata["openGraph"]>,
-    twitter: { title, description } as Partial<Metadata["twitter"]>,
+    openGraph: { url: canonical, title, description } as any,
+    twitter: { title, description } as any,
   });
   return {
     title: seo.title,

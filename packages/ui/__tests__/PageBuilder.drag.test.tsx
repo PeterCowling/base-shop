@@ -75,7 +75,7 @@ describe("PageBuilder drag interactions", () => {
     fireEvent.pointerUp(window);
 
     expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ left: "100px" })
+      expect.objectContaining({ leftDesktop: "100px" })
     );
   });
 
@@ -102,7 +102,7 @@ describe("PageBuilder drag interactions", () => {
     fireEvent.pointerUp(window);
 
     expect(dispatch).toHaveBeenCalledWith(
-      expect.objectContaining({ left: "100px", top: "100px" })
+      expect.objectContaining({ leftDesktop: "100px", topDesktop: "100px" })
     );
   });
 

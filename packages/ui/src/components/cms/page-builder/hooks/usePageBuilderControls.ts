@@ -21,7 +21,10 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
   );
 
   // Custom breakpoints (stored in HistoryState via layout.schema passthrough)
-  const breakpoints = (state as any).breakpoints ?? [] as { id: string; label: string; min?: number; max?: number }[];
+  const breakpoints = useMemo(
+    () => ((state as any).breakpoints ?? []) as { id: string; label: string; min?: number; max?: number }[],
+    [state]
+  );
   const extraDevices = useMemo<DevicePreset[]>(() => {
     const mapWidth = (bp: any): number => {
       const base = (typeof bp.max === 'number' && bp.max > 0) ? bp.max : (typeof bp.min === 'number' ? bp.min : 1024);

@@ -103,7 +103,7 @@ describe("POST", () => {
   });
 
   it("returns 400 when validation fails", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const arraySpy = jest.spyOn(inventoryItemSchema, "array");
     const safeParse = jest.fn().mockReturnValue({
       success: false,
@@ -128,7 +128,7 @@ describe("POST", () => {
   });
 
   it("returns 400 for JSON object payload", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     const item = { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} };
     const file = new File([JSON.stringify(item)], "inv.json", {
       type: "application/json",
@@ -139,7 +139,7 @@ describe("POST", () => {
   });
 
   it("returns 400 when write fails", async () => {
-    getServerSession.mockResolvedValueOnce({ user: { role: "admin" } });
+    __setMockSession({ user: { role: "admin" } } as any);
     write.mockRejectedValueOnce(new Error("boom"));
     const items = [
       { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },

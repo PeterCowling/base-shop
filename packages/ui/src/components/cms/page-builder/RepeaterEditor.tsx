@@ -1,27 +1,10 @@
 "use client";
 
-import type { PageComponent } from "@acme/types";
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
+import type { RepeaterComponent } from "@acme/types/page/layouts/repeater";
 
-type RepeaterComponent = PageComponent & {
-  limit?: number;
-  filter?: string;
-  sortBy?: string;
-  sortOrder?: "asc" | "desc";
-  columns?: number;
-  columnsDesktop?: number;
-  columnsTablet?: number;
-  columnsMobile?: number;
-  gap?: string;
-  gapDesktop?: string;
-  gapTablet?: string;
-  gapMobile?: string;
-};
-
-interface Props {
-  component: RepeaterComponent;
-  onChange: (patch: Partial<RepeaterComponent>) => void;
-}
+type Props = EditorProps<RepeaterComponent>;
 
 export default function RepeaterEditor({ component, onChange }: Props) {
   return (
@@ -71,4 +54,3 @@ export default function RepeaterEditor({ component, onChange }: Props) {
     </div>
   );
 }
-

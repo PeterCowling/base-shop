@@ -73,7 +73,8 @@ describe('CMS settings forms accessibility', () => {
     cy.findAllByText('Required').each(($el) => {
       cy.wrap($el).should('have.attr', 'role', 'alert');
     });
-    cy.checkA11y(undefined, undefined, undefined, true);
+    // Fail the test on any accessibility violations
+    cy.checkA11y();
   });
 
   it('CurrencyTaxEditor inputs are labelled and errors announced', () => {
@@ -98,6 +99,6 @@ describe('CMS settings forms accessibility', () => {
     cy.findAllByText('Required').each(($el) => {
       cy.wrap($el).should('have.attr', 'role', 'alert');
     });
-    cy.checkA11y(undefined, undefined, undefined, true);
+    cy.checkA11y();
   });
 });

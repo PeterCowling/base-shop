@@ -1,4 +1,5 @@
 import type { PopupModalComponent } from "@acme/types";
+import type { EditorProps } from "./EditorProps";
 import {
   Input,
   Textarea,
@@ -9,10 +10,7 @@ import {
   SelectValue,
 } from "../../atoms/shadcn";
 
-interface Props {
-  component: PopupModalComponent;
-  onChange: (patch: Partial<PopupModalComponent>) => void;
-}
+type Props = EditorProps<PopupModalComponent>;
 
 export default function PopupModalEditor({ component, onChange }: Props) {
   const handleInput = (field: keyof PopupModalComponent & string, value: unknown) => {

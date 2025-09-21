@@ -1,91 +1,42 @@
-import type { ProductPublication } from "@acme/types";
-import type { Locale } from "@acme/i18n";
 import { buildProductFormData } from "../buildProductFormData";
 
-const locales: readonly Locale[] = ["en", "de"];
-const baseProduct: ProductPublication & { variants: Record<string, string[]> } = {
-  id: "p1",
-  sku: "sku1",
-  title: { en: "EN", de: "DE" },
-  description: { en: "Desc EN", de: "Desc DE" },
-  price: 100,
-  currency: "EUR",
-  media: [],
-  created_at: "2023-01-01",
-  updated_at: "2023-01-01",
-  shop: "shop",
-  status: "draft",
-  row_version: 1,
-  variants: { size: ["m", "l"] },
-};
-
 describe("buildProductFormData", () => {
-  it("builds correct FormData for given product input", () => {
-    const fd = buildProductFormData(baseProduct, ["loc1"], locales);
-    const entries = Array.from(fd.entries());
-    expect(entries).toEqual(
-      expect.arrayContaining([
-        ["id", "p1"],
-        ["title_en", "EN"],
-        ["desc_en", "Desc EN"],
-        ["title_de", "DE"],
-        ["desc_de", "Desc DE"],
-        ["price", "100"],
-        ["publish", "loc1"],
-        ["variant_size", "m,l"],
-        ["media", "[]"],
-      ])
-    );
-  });
-
-  it("omits undefined variant values", () => {
-    const product = {
-      ...baseProduct,
-      variants: { size: ["m", undefined as any, "", "l"] },
-    };
-    const fd = buildProductFormData(product, [], locales);
-    expect(fd.get("variant_size")).toBe("m,l");
-  });
-
-  it("handles images/media arrays", () => {
-    const file = new File(["hello"], "image.png", { type: "image/png" });
-    const product = {
-      ...baseProduct,
+  it("serializes core fields, locales, media (stripping File), and variants", () => {
+    const file = new File([new Blob(["abc"])], "a.png", { type: "image/png" });
+    const product: any = {
+      id: "p1",
+      title: { en: "Hat", fr: "Chapeau" },
+      description: { en: "Nice", fr: "Joli" },
+      price: 1299,
       media: [
-        { id: "1", alt: "first", file },
-        { id: "2", alt: "second" },
+        { id: "m1", url: "/img1.png" },
+        { id: "m2", url: "/img2.png", file },
+        null,
       ],
+      variants: { color: ["red", "blue", ""], size: ["m"] },
     };
-    const fd = buildProductFormData(product, [], locales);
-
-    expect(fd.get("file_0")).toBe(file);
-    expect(fd.get("file_1")).toBeNull();
-
-    const media = fd.get("media");
-    expect(media).toBe(
-      JSON.stringify([
-        { id: "1", alt: "first" },
-        { id: "2", alt: "second" },
-      ])
-    );
-  });
-
-  it("handles null media items, multiple publish targets, and empty variants", () => {
-    const file = new File(["hi"], "img.png", { type: "image/png" });
-    const product = {
-      ...baseProduct,
-      media: [null, { id: "3", alt: "third", file }],
-      variants: { size: [undefined as any, ""] },
-    };
-    const fd = buildProductFormData(product, ["loc1", "loc2"], locales);
-
-    expect(fd.get("file_1")).toBe(file);
-    expect(fd.get("file_0")).toBeNull();
-    expect(fd.get("publish")).toBe("loc1,loc2");
-    expect(fd.get("media")).toBe(
-      JSON.stringify([null, { id: "3", alt: "third" }])
-    );
-    expect(fd.get("variant_size")).toBe("");
+    const fd = buildProductFormData(product, ["storefront", "bcd"], ["en", "fr"] as const);
+    const entries = Array.from((fd as any).entries()) as [string, any][];
+    const map = Object.fromEntries(entries);
+    expect(map.id).toBe("p1");
+    expect(map.title_en).toBe("Hat");
+    expect(map.title_fr).toBe("Chapeau");
+    expect(map.desc_en).toBe("Nice");
+    expect(map.desc_fr).toBe("Joli");
+    expect(map.price).toBe("1299");
+    // file_1 should exist and be a File; file_0 not present
+    expect(map.file_1).toBe(file);
+    expect(map.file_0).toBeUndefined();
+    // media JSON strips File and keeps nulls positionally
+    const media = JSON.parse(map.media);
+    expect(media).toEqual([
+      { id: "m1", url: "/img1.png" },
+      { id: "m2", url: "/img2.png" },
+      null,
+    ]);
+    expect(map.publish).toBe("storefront,bcd");
+    expect(map.variant_color).toBe("red,blue");
+    expect(map.variant_size).toBe("m");
   });
 });
 

@@ -20,7 +20,7 @@ export const options = {
   },
 };
 
-export default function () {
+export default function cartScenario() {
   const baseUrl = __ENV.API_BASE_URL;
   const params = { headers: { 'Content-Type': 'application/json' } };
 

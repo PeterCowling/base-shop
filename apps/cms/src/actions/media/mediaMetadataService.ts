@@ -72,6 +72,8 @@ export async function updateMediaMetadataEntry({
 
   let stats: Stats | undefined;
   try {
+    // Constrained to validated uploads directory
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     stats = await fs.stat(fullPath);
   } catch (err) {
     if ((err as NodeJS.ErrnoException)?.code === "ENOENT") {

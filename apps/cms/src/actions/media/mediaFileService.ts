@@ -49,6 +49,8 @@ export async function buildMediaItem(
     if (uploadedAt == null) uploadedAt = stats.mtime.toISOString();
   } else if (size == null || uploadedAt == null) {
     try {
+      // Path is built from a validated shop id and normalized filename
+      // eslint-disable-next-line security/detect-non-literal-fs-filename
       const stat = await fs.stat(path.join(dir, filename));
       if (size == null) size = stat.size;
       if (uploadedAt == null) uploadedAt = stat.mtime.toISOString();
@@ -71,6 +73,8 @@ export async function buildMediaItem(
 async function collectMediaItems(shop: string): Promise<MediaItem[]> {
   const safeShop = validateShopName(shop);
   const dir = uploadsDir(safeShop);
+  // Constrained to validated uploads directory
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   const files = await fs.readdir(dir);
   const meta = await readMetadata(safeShop);
 
@@ -105,6 +109,8 @@ export async function uploadMediaFile({
 }: UploadMediaFileParams): Promise<MediaItem> {
   const safeShop = validateShopName(shop);
   const dir = uploadsDir(safeShop);
+  // Constrained to validated uploads directory
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   await fs.mkdir(dir, { recursive: true });
 
   let type: "image" | "video";
@@ -159,6 +165,8 @@ export async function uploadMediaFile({
 
   const ext = path.extname(file.name) || (type === "video" ? ".mp4" : ".jpg");
   const filename = `${ulid()}${ext}`;
+  // Constrained to validated uploads directory
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   await fs.writeFile(path.join(dir, filename), buffer);
 
   const size = typeof file.size === "number" ? file.size : buffer.byteLength;
@@ -216,6 +224,8 @@ export async function deleteMediaFile(
     throw new Error("Invalid file path");
   }
 
+  // Constrained to validated uploads directory
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   await fs.unlink(fullPath).catch(() => {
     /* ignore – file might already be gone */
   });

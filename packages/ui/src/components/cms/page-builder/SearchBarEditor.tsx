@@ -1,10 +1,8 @@
 import type { SearchBarComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
+import type { EditorProps } from "./EditorProps";
 
-interface Props {
-  component: SearchBarComponent;
-  onChange: (patch: Partial<SearchBarComponent>) => void;
-}
+type Props = EditorProps<SearchBarComponent>;
 
 export default function SearchBarEditor({ component, onChange }: Props) {
   const handleInput = (

@@ -2,6 +2,14 @@ import { z } from "zod";
 import { componentMetadataSchema } from "./component.schema";
 import { layoutSchema } from "./layout.schema";
 
+const editingSizeSchema = z
+  .object({
+    desktop: z.number().int().min(320).max(1920).nullable().optional(),
+    tablet: z.number().int().min(320).max(1920).nullable().optional(),
+    mobile: z.number().int().min(320).max(1920).nullable().optional(),
+  })
+  .partial();
+
 const editorFlagsSchema = z.object({
   name: z.string().optional(),
   locked: z.boolean().optional(),
@@ -18,6 +26,14 @@ const editorFlagsSchema = z.object({
   orderDesktop: z.number().int().nonnegative().optional(),
   orderTablet: z.number().int().nonnegative().optional(),
   orderMobile: z.number().int().nonnegative().optional(),
+  global: z
+    .object({
+      id: z.string(),
+      overrides: z.unknown().optional(),
+      pinned: z.boolean().optional(),
+      editingSize: editingSizeSchema.optional(),
+    })
+    .optional(),
 });
 
 export const historyStateSchema: z.ZodType<unknown> = z

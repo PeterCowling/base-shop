@@ -14,6 +14,63 @@ interface Params {
   dispatch: React.Dispatch<Action>;
 }
 
+const VIEWPORT_KEYS = ["desktop", "tablet", "mobile"] as const;
+type ViewportKey = (typeof VIEWPORT_KEYS)[number];
+type EditingSizeState = Record<ViewportKey, number | null>;
+
+const makeEmptyEditingSize = (): EditingSizeState => ({
+  desktop: null,
+  tablet: null,
+  mobile: null,
+});
+
+const clampEditingWidth = (value: number): number =>
+  Math.max(320, Math.min(1920, Math.round(value)));
+
+const normalizeEditingSizeValue = (value: unknown): number | null => {
+  if (value === null || value === undefined) return null;
+  if (typeof value === "number") {
+    if (!Number.isFinite(value)) return null;
+    return clampEditingWidth(value);
+  }
+  if (typeof value === "string") {
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+    const parsed = Number.parseFloat(trimmed);
+    if (!Number.isFinite(parsed)) return null;
+    return clampEditingWidth(parsed);
+  }
+  return null;
+};
+
+const editingSizeFromMeta = (value: unknown): EditingSizeState => {
+  const next = makeEmptyEditingSize();
+  if (!value || typeof value !== "object") {
+    return next;
+  }
+  const source = value as Record<string, unknown>;
+  VIEWPORT_KEYS.forEach((key) => {
+    const normalized = normalizeEditingSizeValue(source[key]);
+    if (normalized !== null) {
+      next[key] = normalized;
+    }
+  });
+  return next;
+};
+
+const toStoredEditingSize = (
+  state: EditingSizeState,
+): Partial<Record<ViewportKey, number>> => {
+  const stored: Partial<Record<ViewportKey, number>> = {};
+  VIEWPORT_KEYS.forEach((key) => {
+    const value = state[key];
+    if (typeof value === "number" && Number.isFinite(value)) {
+      stored[key] = value;
+    }
+  });
+  return stored;
+};
+
 const usePageBuilderControls = ({ state, dispatch }: Params) => {
   const [deviceId, setDeviceId] = usePreviewDevice(devicePresets[0].id);
   const [orientation, setOrientation] = useState<"portrait" | "landscape">(
@@ -52,16 +109,54 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
 
   const viewport: "desktop" | "tablet" | "mobile" = device.type;
   const { viewportStyle, frameClass } = useViewport(device);
-  // Per-viewport editing size override (px). Stored by viewport key.
-  const [editingSize, setEditingSize] = useState<Record<"desktop"|"tablet"|"mobile", number | null>>({ desktop: null, tablet: null, mobile: null });
-  const setEditingSizePx = useCallback((px: number | null) => setEditingSize((prev) => ({ ...prev, [viewport]: px })), [viewport]);
+  const [pageEditingSize, setPageEditingSize] = useState<EditingSizeState>(() => makeEmptyEditingSize());
+  const pinnedGlobal = useMemo(() => {
+    const editorMap = state.editor ?? {};
+    for (const [id, flags] of Object.entries(editorMap as Record<string, any>)) {
+      const globalMeta = (flags as Record<string, any>)?.global;
+      if (globalMeta?.pinned) {
+        return { id, meta: globalMeta as Record<string, unknown> };
+      }
+    }
+    return null;
+  }, [state.editor]);
+  const pinnedEditingSize = useMemo<EditingSizeState | null>(() => {
+    if (!pinnedGlobal?.meta) return null;
+    return editingSizeFromMeta((pinnedGlobal.meta as Record<string, unknown>).editingSize);
+  }, [pinnedGlobal]);
+  const editingSizeRecord = pinnedEditingSize ?? pageEditingSize;
+  const setEditingSizePx = useCallback(
+    (value: number | null) => {
+      const normalized = normalizeEditingSizeValue(value);
+      if (pinnedGlobal?.id && pinnedEditingSize) {
+        if (pinnedEditingSize[viewport] === normalized) {
+          return;
+        }
+        const nextRecord: EditingSizeState = { ...pinnedEditingSize, [viewport]: normalized };
+        const stored = toStoredEditingSize(nextRecord);
+        const nextGlobal = { ...(pinnedGlobal.meta as Record<string, unknown>) };
+        if (Object.keys(stored).length === 0) {
+          delete nextGlobal.editingSize;
+        } else {
+          nextGlobal.editingSize = stored;
+        }
+        dispatch({ type: "update-editor", id: pinnedGlobal.id, patch: { global: nextGlobal } as any });
+        return;
+      }
+      setPageEditingSize((prev) => {
+        if (prev[viewport] === normalized) return prev;
+        return { ...prev, [viewport]: normalized };
+      });
+    },
+    [dispatch, pinnedGlobal, pinnedEditingSize, viewport],
+  );
   const effectiveViewportStyle = useMemo(() => {
-    const px = editingSize[viewport];
-    if (px && Number.isFinite(px)) {
+    const px = editingSizeRecord[viewport];
+    if (typeof px === "number" && Number.isFinite(px)) {
       return { ...viewportStyle, width: `${px}px` } as typeof viewportStyle;
     }
     return viewportStyle;
-  }, [viewportStyle, editingSize, viewport]);
+  }, [viewportStyle, editingSizeRecord, viewport]);
 
   const [locale, setLocale] = useState<Locale>("en");
   const [showPreview, setShowPreview] = useState(false);
@@ -188,7 +283,7 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
     breakpoints,
     setBreakpoints,
     extraDevices,
-    editingSizePx: editingSize[viewport] ?? null,
+    editingSizePx: editingSizeRecord[viewport] ?? null,
     setEditingSizePx,
   };
 };

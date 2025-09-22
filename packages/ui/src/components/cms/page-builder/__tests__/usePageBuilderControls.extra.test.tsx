@@ -27,6 +27,55 @@ describe("usePageBuilderControls – extras", () => {
     expect(result.current.baselineStep).toBe(12);
   });
 
+  it("syncs editing size overrides for pinned global instances via editor state", () => {
+    const dispatch = jest.fn();
+    const initialState = {
+      ...base,
+      editor: {
+        foo: { global: { id: "gid_1", pinned: true, editingSize: { desktop: 840 } } },
+      },
+    } as any;
+    const { result, rerender } = renderHook(
+      ({ state }: { state: any }) => usePageBuilderControls({ state, dispatch }),
+      { initialProps: { state: initialState } },
+    );
+
+    expect(result.current.editingSizePx).toBe(840);
+
+    act(() => { result.current.setEditingSizePx(900); });
+    expect(dispatch).toHaveBeenCalledWith({
+      type: "update-editor",
+      id: "foo",
+      patch: { global: { id: "gid_1", pinned: true, editingSize: { desktop: 900 } } },
+    });
+
+    const updatedState = {
+      ...initialState,
+      editor: {
+        foo: { global: { id: "gid_1", pinned: true, editingSize: { desktop: 900 } } },
+      },
+    } as any;
+    rerender({ state: updatedState });
+    expect(result.current.editingSizePx).toBe(900);
+
+    dispatch.mockClear();
+    act(() => { result.current.setEditingSizePx(null); });
+    const clearCall = dispatch.mock.calls[0]?.[0] as any;
+    expect(clearCall).toEqual({
+      type: "update-editor",
+      id: "foo",
+      patch: { global: { id: "gid_1", pinned: true } },
+    });
+
+    rerender({
+      state: {
+        ...updatedState,
+        editor: { foo: { global: { id: "gid_1", pinned: true } } },
+      } as any,
+    });
+    expect(result.current.editingSizePx).toBeNull();
+  });
+
   it("setBreakpoints dispatches list", () => {
     const dispatch = jest.fn();
     const { result } = renderHook(() => usePageBuilderControls({ state: base, dispatch }));

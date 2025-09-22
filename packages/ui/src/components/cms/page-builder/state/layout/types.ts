@@ -20,6 +20,7 @@ export type EditorFlags = {
     id: string;
     overrides?: unknown;
     pinned?: boolean;
+    editingSize?: Partial<Record<"desktop" | "tablet" | "mobile", number | null>>;
   };
 };
 

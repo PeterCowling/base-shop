@@ -136,7 +136,13 @@ export interface EditorFlags {
   /** Per-node custom mobile order (used when stackStrategy = custom on parent) */
   orderMobile?: number;
   /** Builder-only metadata for global (linked) components */
-  global?: { id: string; overrides?: unknown; pinned?: boolean };
+  global?: {
+    id: string;
+    overrides?: unknown;
+    pinned?: boolean;
+    /** Per-viewport editing width overrides in the builder (px) */
+    editingSize?: Partial<Record<"desktop" | "tablet" | "mobile", number | null>>;
+  };
 }
 
 export interface HistoryState {
@@ -170,13 +176,21 @@ export const historyStateSchema = z
           hiddenDeviceIds: z.array(z.string()).optional(),
           stackStrategy: z.enum(["default", "reverse", "custom"]).optional(),
           orderMobile: z.number().int().nonnegative().optional(),
-          global: z
-            .object({
-              id: z.string(),
-              overrides: z.unknown().optional(),
-              pinned: z.boolean().optional(),
-            })
-            .optional(),
+            global: z
+              .object({
+                id: z.string(),
+                overrides: z.unknown().optional(),
+                pinned: z.boolean().optional(),
+                editingSize: z
+                  .object({
+                    desktop: z.number().int().min(320).max(1920).nullable().optional(),
+                    tablet: z.number().int().min(320).max(1920).nullable().optional(),
+                    mobile: z.number().int().min(320).max(1920).nullable().optional(),
+                  })
+                  .partial()
+                  .optional(),
+              })
+              .optional(),
         })
       )
       .default({})

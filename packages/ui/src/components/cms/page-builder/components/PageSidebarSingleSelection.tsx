@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo, useEffect } from "react";
 import type { PageComponent, HistoryState } from "@acme/types";
+import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import type { Action } from "../state";
 import ComponentEditor from "../ComponentEditor";
 import { Button } from "../../../atoms/shadcn";
@@ -33,6 +34,8 @@ import {
   ColumnSpacingIcon,
 } from "@radix-ui/react-icons";
 import { alignLeft, alignRight, alignTop, alignBottom, alignCenterX, alignCenterY, distributeHorizontal, distributeVertical } from "../state/layout/geometry";
+import usePreviewTokens from "../hooks/usePreviewTokens";
+import { extractTextThemes, applyTextThemeToOverrides } from "../textThemes";
 
 interface Props {
   components: PageComponent[];
@@ -46,6 +49,8 @@ interface Props {
 }
 
 const PageSidebarSingleSelection = ({ components, selectedIds, dispatch, editor, viewport, breakpoints = [], selectedComponent, pageId }: Props) => {
+  const previewTokens = usePreviewTokens();
+  const textThemes = useMemo(() => extractTextThemes(previewTokens), [previewTokens]);
   const { globals, insertOpen, setInsertOpen, insertSearch, setInsertSearch, makeGlobal, editGlobally, insertGlobal } = useGlobals({ components, editor, dispatch, selectedComponent, pageId });
   const { copyStyles, pasteStyles } = useStyleClipboardActions({ selectedComponent, selectedIds, components, dispatch });
   const { centerInParentX, centerInParentY } = useCenterInParent({ components, selectedIds, editor, dispatch, viewport });
@@ -106,6 +111,32 @@ const PageSidebarSingleSelection = ({ components, selectedIds, dispatch, editor,
     const g = globals.find((x) => x.globalId === gid) || null;
     return g?.label || gid;
   })();
+
+  useEffect(() => {
+    const handler = (event: Event) => {
+      const detail = (event as CustomEvent<{ id: string }>).detail;
+      if (!detail?.id) return;
+      if (selectedIds.length !== 1) {
+        try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Select a block to apply text style" })); } catch {}
+        return;
+      }
+      const theme = textThemes.find((t) => t.id === detail.id);
+      if (!theme) return;
+      let overrides: StyleOverrides = {};
+      try {
+        overrides = (selectedComponent as any).styles
+          ? JSON.parse(String((selectedComponent as any).styles)) as StyleOverrides
+          : {};
+      } catch {
+        overrides = {};
+      }
+      const next = applyTextThemeToOverrides(overrides, theme);
+      handleChange({ styles: JSON.stringify(next) } as any);
+      try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `${theme.label} text style applied` })); } catch {}
+    };
+    window.addEventListener("pb:apply-text-theme", handler as EventListener);
+    return () => window.removeEventListener("pb:apply-text-theme", handler as EventListener);
+  }, [handleChange, selectedComponent, selectedIds, textThemes]);
 
   React.useEffect(() => {
     if (!eid?.global?.pinned) return;

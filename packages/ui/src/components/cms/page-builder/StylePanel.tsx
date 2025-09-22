@@ -4,7 +4,7 @@
 import type { PageComponent } from "@acme/types";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import { Button, Textarea, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../../atoms/shadcn";
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useTranslations } from "@acme/i18n";
 import useContrastWarnings from "../../../hooks/useContrastWarnings";
 import { getStyleClipboard, setStyleClipboard } from "./style/styleClipboard";
@@ -15,6 +15,13 @@ import EffectsEditor from "./EffectsEditor";
 import StylePreviewCard from "./StylePreviewCard";
 import ColorEditor from "./ColorEditor";
 import TypographyEditor from "./TypographyEditor";
+import usePreviewTokens from "./hooks/usePreviewTokens";
+import {
+  applyTextThemeToOverrides,
+  clearTextThemeFromOverrides,
+  extractTextThemes,
+  getAppliedTextTheme,
+} from "./textThemes";
 
 type TrackFn = (name: string, payload?: Record<string, unknown>) => void;
 let track: TrackFn = () => {};
@@ -47,6 +54,9 @@ export default function StylePanel({ component, handleInput }: Props) {
   const effects = overrides.effects ?? {};
   const warning = useContrastWarnings(color.fg ?? "", color.bg ?? "");
   const t = useTranslations();
+  const previewTokens = usePreviewTokens();
+  const textThemes = useMemo(() => extractTextThemes(previewTokens), [previewTokens]);
+  const appliedTextTheme = useMemo(() => getAppliedTextTheme(overrides, textThemes), [overrides, textThemes]);
 
   const _clipboard = { get: getStyleClipboard, set: setStyleClipboard } as const;
   const presets = defaultEffectPresets;
@@ -174,6 +184,20 @@ export default function StylePanel({ component, handleInput }: Props) {
   const [importError, setImportError] = useState<string>("");
   const [copied, setCopied] = useState(false);
 
+  const handleTextThemeSelect = useCallback((themeId: string) => {
+    if (!themeId) {
+      const cleared = clearTextThemeFromOverrides(overrides);
+      handleInput("styles", JSON.stringify(cleared));
+      track("stylepanel:text-theme", { id: "__custom__" });
+      return;
+    }
+    const theme = textThemes.find((t) => t.id === themeId);
+    if (!theme) return;
+    const next = applyTextThemeToOverrides(overrides, theme);
+    handleInput("styles", JSON.stringify(next));
+    track("stylepanel:text-theme", { id: theme.id });
+  }, [handleInput, overrides, textThemes]);
+
   const openExport = (onlySelected = false) => {
     if (onlySelected && selectedCustom) {
       const one = customPresets.find((p) => p.id === selectedCustom);
@@ -286,6 +310,26 @@ export default function StylePanel({ component, handleInput }: Props) {
         placeholder={t("cms.style.colorPlaceholder") as string}
         onChange={(key, value) => update('color', key, value)}
       />
+
+      {textThemes.length > 0 && (
+        <div className="space-y-1">
+          <label className="flex flex-col gap-1 text-xs font-medium text-muted-foreground">
+            <span>{t("cms.style.textStyle") as string}</span>
+            <select
+              className="rounded border border-border-2 bg-surface-2 px-2 py-1 text-sm"
+              value={appliedTextTheme?.id ?? ""}
+              onChange={(event) => handleTextThemeSelect(event.target.value)}
+            >
+              <option value="">Custom</option>
+              {textThemes.map((theme) => (
+                <option key={theme.id} value={theme.id}>
+                  {theme.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      )}
 
       <TypographyEditor
         base={typography}

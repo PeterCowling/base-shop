@@ -49,6 +49,7 @@
   "cms.style.fontSize": "Schriftgröße",
   "cms.style.fontWeight": "Schriftstärke",
   "cms.style.lineHeight": "Zeilenhöhe",
+  "cms.style.textStyle": "Textstil",
   "cms.style.colorPlaceholder": "Token oder #Hex",
   "cms.image.url": "Bild-URL",
   "cms.image.upload": "Hochladen",

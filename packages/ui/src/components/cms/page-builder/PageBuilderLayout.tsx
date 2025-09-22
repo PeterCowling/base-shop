@@ -284,7 +284,12 @@ const PageBuilderLayout = ({
             }
           >
             {dragMeta ? (
-              <DragOverlayPreview dragMeta={dragMeta} allowed={dropAllowed ?? null} locale={(toolbarProps as any)?.locale ?? 'en'} />
+              <DragOverlayPreview
+                dragMeta={dragMeta}
+                allowed={dropAllowed ?? null}
+                locale={(toolbarProps as any)?.locale ?? 'en'}
+                shop={shop ?? null}
+              />
             ) : activeType ? (
               <div className="pointer-events-none rounded border bg-muted px-4 py-2 opacity-50 shadow">{activeType}</div>
             ) : null}

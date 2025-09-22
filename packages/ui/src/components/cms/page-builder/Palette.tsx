@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState, useCallback, useEffect, useRef } from "react";
+import { memo, useState, useCallback, useEffect, useRef, useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
 import { listLibrary, removeLibrary, updateLibrary, syncFromServer, saveLibrary, type LibraryItem } from "./libraryStore";
@@ -8,11 +8,13 @@ import { ulid } from "ulid";
 import LibraryImportExport from "./LibraryImportExport";
 import MediaLibrary from "./MediaLibrary";
 import { isTopLevelAllowed } from "./rules";
-import { palette } from "./paletteData";
+import { defaultIcon, getPaletteCategories } from "./paletteData";
 import PaletteItem from "./PaletteItem";
 import LibraryPaletteItem from "./LibraryPaletteItem";
 import type { ComponentType } from "./defaults";
 import type { PaletteProps } from "./palette.types";
+import type { PaletteMeta } from "./palette.types";
+import { listInstalledApps, subscribeInstalledApps } from "./appInstallStore";
 
 const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, defaultTab = "components" }: PaletteProps) {
   const [search, setSearch] = useState("");
@@ -25,6 +27,26 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
   const [recents, setRecents] = useState<string[]>(() => {
     try { const s = localStorage.getItem('pb:recent-types'); return s ? (JSON.parse(s) as string[]) : []; } catch { return []; }
   });
+  const [installedApps, setInstalledApps] = useState<string[]>(() => listInstalledApps(shop ?? null));
+
+  useEffect(() => {
+    setInstalledApps(listInstalledApps(shop ?? null));
+    return subscribeInstalledApps(shop ?? null, (apps) => setInstalledApps(apps));
+  }, [shop]);
+
+  const paletteCategories = useMemo(() => getPaletteCategories(installedApps), [installedApps]);
+
+  const paletteIndex = useMemo(() => {
+    const index = new Map<string, PaletteMeta>();
+    for (const category of paletteCategories) {
+      for (const item of category.items) {
+        index.set(item.type, item);
+      }
+    }
+    return index;
+  }, [paletteCategories]);
+
+  const searchTerm = search.trim().toLowerCase();
 
   const pushRecent = useCallback((type: ComponentType) => {
     try {
@@ -138,12 +160,16 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
           <div className="flex flex-col gap-2">
             {recents
               .map((type) => {
-                // find meta from palette
-                for (const [, items] of Object.entries(palette)) {
-                  const match = items.find((p) => p.type === type);
-                  if (match) return match;
-                }
-                return { type, label: type, icon: "/window.svg", description: "" } as any;
+                const match = paletteIndex.get(type);
+                if (match) return match;
+                const label = type.replace(/([A-Z])/g, " $1").trim();
+                return {
+                  type: type as ComponentType,
+                  label,
+                  icon: defaultIcon,
+                  description: "",
+                  previewImage: defaultIcon,
+                } satisfies PaletteMeta;
               })
               .filter((p) => isTopLevelAllowed(p.type as ComponentType))
               .map((p) => (
@@ -200,15 +226,15 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
         </div>
       )}
 
-      {Object.entries(palette).map(([category, items]) => {
+      {paletteCategories.map(({ id, label, items }) => {
         const filtered = items
-          .filter((p) => p.label.toLowerCase().includes(search.toLowerCase()))
+          .filter((p) => p.label.toLowerCase().includes(searchTerm))
           // Only show items permitted at top-level (canvas)
           .filter((p) => isTopLevelAllowed(p.type));
         if (!filtered.length) return null;
         return (
-          <div key={category} className="space-y-2">
-            <h4 className="font-semibold capitalize">{category}</h4>
+          <div key={id} className="space-y-2">
+            <h4 className="font-semibold capitalize">{label}</h4>
             <div className="flex flex-col gap-2">
               {filtered.map((p) => (
                 <PaletteItem

@@ -4,7 +4,7 @@ import React, { useCallback } from "react";
 import type { PageComponent, HistoryState } from "@acme/types";
 import type { Action } from "../state";
 import ComponentEditor from "../ComponentEditor";
-import { Button, Input } from "../../../atoms/shadcn";
+import { Button } from "../../../atoms/shadcn";
 import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../../atoms";
 import useGlobals from "../hooks/useGlobals";
 import useStyleClipboardActions from "../hooks/useStyleClipboardActions";
@@ -21,6 +21,7 @@ import TimelinePanel from "../panels/TimelinePanel";
 import ContentPanel from "../panels/ContentPanel";
 import DatasetEditor from "../DatasetEditor";
 import LottieControls from "../panels/LottieControls";
+import GlobalsPanel from "../GlobalsPanel";
 import {
   AlignLeftIcon,
   AlignRightIcon,
@@ -224,32 +225,12 @@ const PageSidebarSingleSelection = ({ components, selectedIds, dispatch, editor,
             <Button type="button" variant="outline" aria-label="Insert Global">Insert Global</Button>
           </PopoverTrigger>
           <PopoverContent align="start" className="w-72 space-y-2">
-            <input
-              type="text"
-              value={insertSearch}
-              onChange={(e) => setInsertSearch(e.target.value)}
-              placeholder="Search Globals..."
-              className="w-full rounded border border-input bg-input px-2 py-1 text-sm"
+            <GlobalsPanel
+              globals={globals}
+              search={insertSearch}
+              onSearchChange={setInsertSearch}
+              onSelect={insertGlobal}
             />
-            <div className="max-h-64 overflow-auto">
-              {globals
-                .filter((g) => g.label.toLowerCase().includes(insertSearch.toLowerCase()))
-                .map((g) => (
-                  <button
-                    key={g.globalId}
-                    type="button"
-                    className="flex w-full items-center justify-between gap-2 rounded border px-2 py-1 text-left text-sm hover:bg-muted"
-                    onClick={() => insertGlobal(g)}
-                    title={g.label}
-                  >
-                    <span className="truncate">{g.label}</span>
-                    <span className="text-[10px] text-muted-foreground">{g.globalId.slice(-6)}</span>
-                  </button>
-                ))}
-              {globals.length === 0 && (
-                <div className="text-sm text-muted-foreground">No Globals saved yet.</div>
-              )}
-            </div>
           </PopoverContent>
         </Popover>
       </div>

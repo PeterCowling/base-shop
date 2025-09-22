@@ -46,9 +46,15 @@ export const DropdownMenuSubContent = React.forwardRef<
   <DropdownMenuPrimitive.SubContent
     ref={ref}
     className={cn(
-      "bg-popover text-popover-foreground z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-elevation-3",
+      "bg-surface-2 text-foreground z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-elevation-3 border-border-2",
       className
     )}
+    // Hard fallback ensures solid background even if tokens are missing
+    style={{
+      backgroundColor: "hsl(var(--popover, var(--surface-3, 0 0% 96%)))",
+      color: "hsl(var(--popover-foreground, var(--color-fg, 0 0% 10%)))",
+      borderColor: "hsl(var(--border-2, var(--color-fg, 0 0% 10%) / 0.22))",
+    }}
     {...props}
   />
 ));
@@ -57,20 +63,34 @@ DropdownMenuSubContent.displayName =
 
 export const DropdownMenuContent = React.forwardRef<
   React.ElementRef<typeof DropdownMenuPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => (
-  <DropdownMenuPrimitive.Portal>
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content> & {
+    container?: HTMLElement | null;
+  }
+>(({ className, sideOffset = 4, container, ...props }, ref) => {
+  const defaultContainer =
+    typeof document !== "undefined"
+      ? (document.querySelector('[data-pb-portal-root]') as HTMLElement | null)
+      : null;
+  return (
+  <DropdownMenuPrimitive.Portal container={container ?? defaultContainer}>
     <DropdownMenuPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        "bg-popover text-popover-foreground z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-elevation-3",
+        "bg-surface-2 text-foreground z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-elevation-3 border-border-2",
         className
       )}
+      // Hard fallback ensures solid background even if tokens are missing
+      style={{
+        backgroundColor: "hsl(var(--popover, var(--surface-3, 0 0% 96%)))",
+        color: "hsl(var(--popover-foreground, var(--color-fg, 0 0% 10%)))",
+        borderColor: "hsl(var(--border-2, var(--color-fg, 0 0% 10%) / 0.22))",
+      }}
       {...props}
     />
   </DropdownMenuPrimitive.Portal>
-));
+  );
+});
 DropdownMenuContent.displayName =
   DropdownMenuPrimitive.Content.displayName;
 

@@ -41,7 +41,14 @@ describe("BlockChildren", () => {
       { id: "c1", type: "Foo" } as any,
     ];
     const { container } = render(
-      <BlockChildren {...createProps({ childComponents, isOver: true })} />
+      <BlockChildren
+        {...createProps({
+          childComponents,
+          isOver: true,
+          insertParentId: "parent",
+          insertIndex: 0,
+        })}
+      />
     );
     expect(container.querySelector("[data-placeholder]")).toBeInTheDocument();
   });

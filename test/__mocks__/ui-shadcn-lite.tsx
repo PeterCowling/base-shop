@@ -13,7 +13,25 @@ export const CardContent = passthrough("div");
 export const Checkbox = React.forwardRef((props: any, ref: any) => (
   <input ref={ref} type="checkbox" {...props} />
 ));
-export const Progress = passthrough();
+// Implement a minimal Progress mock that avoids forwarding non-DOM props
+// like `labelClassName` which would trigger React unknown prop warnings.
+export const Progress = React.forwardRef(
+  (
+    {
+      value: _value,
+      label,
+      labelClassName,
+      className,
+      // intentionally drop the rest to avoid leaking unknown props to DOM
+    }: any,
+    ref: any,
+  ) => (
+    <div ref={ref} className={className}>
+      <div />
+      {label ? <div className={labelClassName}>{label}</div> : null}
+    </div>
+  ),
+);
 export const Tag = ({ children, ...rest }: any) => <span {...rest}>{children}</span>;
 
 export const DropdownMenu = ({ children }: any) => <div>{children}</div>;

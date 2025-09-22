@@ -122,6 +122,15 @@ export default [
     },
   },
 
+  /* ▸ UI Page Builder: enforce icon-only Button sizing */
+  {
+    files: ["packages/ui/src/components/cms/page-builder/**/*.{ts,tsx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/icon-button-size": "error",
+    },
+  },
+
   /* ▸ design-tokens uses generated dist files; lint without TS project */
   {
     files: ["packages/design-tokens/**/*.{ts,tsx,js,jsx}"],

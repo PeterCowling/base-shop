@@ -23,6 +23,7 @@ describe("usePageBuilderDnD", () => {
 
     act(() =>
       result.current.handleDragMove({
+        active: { id: "a", data: { current: {} } },
         over: { id: "canvas", data: { current: {} }, rect: { top: 0, height: 0 } },
         delta: { x: 12, y: 0 },
         activatorEvent: { clientX: 0, clientY: 0 },
@@ -51,7 +52,7 @@ describe("usePageBuilderDnD", () => {
 
     act(() =>
       result.current.handleDragStart({
-        active: { data: { current: { type: "Section" } } },
+        active: { id: "new", data: { current: { type: "Section" } } },
       } as any)
     );
 
@@ -99,6 +100,7 @@ describe("usePageBuilderDnD", () => {
 
     act(() =>
       result.current.handleDragMove({
+        active: { id: "a", data: { current: {} } },
         over: { id: "canvas", data: { current: {} }, rect: { top: 0, height: 0 } },
         delta: { x: 8, y: 0 },
         activatorEvent: { clientX: 0, clientY: 0 },

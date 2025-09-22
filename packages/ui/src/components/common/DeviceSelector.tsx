@@ -88,7 +88,7 @@ export default function DeviceSelector({
               onClick={() => onChange(preset.id)}
               aria-label={t}
             >
-              <Icon />
+              <Icon className="h-4 w-4" aria-hidden="true" />
               <span className="sr-only">
                 {t.charAt(0).toUpperCase() + t.slice(1)}
               </span>

@@ -124,10 +124,10 @@ function Sidebar({
   };
 
   return (
-    <aside className="flex h-full w-full flex-col gap-6 px-5 py-6 text-sm text-foreground">
+    <aside className="flex h-full w-full min-h-0 flex-col gap-6 overflow-y-auto px-5 py-6 text-sm text-foreground">
       <div className="space-y-6">
         <div className="space-y-2">
-          <Tag variant="default">
+          <Tag className="uppercase tracking-wide" variant="default">
             Control Center
           </Tag>
           <h1 className="text-2xl font-semibold tracking-tight">Base Shop CMS</h1>
@@ -136,9 +136,9 @@ function Sidebar({
           </p>
         </div>
 
-        <Card className="border-border-1 bg-surface-2 text-foreground">
+        <Card className="border-border-1 bg-surface-2 text-foreground shadow-elevation-2">
           <CardContent className="space-y-4 px-4 py-5">
-            <div className="flex items-center justify-between text-xs uppercase tracking-wide text-muted-foreground">
+            <div className="flex items-center justify-between text-[11px] uppercase tracking-wide text-muted-foreground">
               <span>Main navigation</span>
               <span>Explore</span>
             </div>
@@ -151,13 +151,21 @@ function Sidebar({
                   title={title}
                   onClick={href === "/configurator" ? handleConfiguratorClick : undefined}
                   className={cn(
-                    "group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors",
+                    "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all",
                     active
-                      ? "bg-surface-3 text-foreground"
+                      ? "border border-border-1 bg-surface-3 text-foreground ring-1 ring-primary/20"
                       : "text-muted-foreground hover:bg-surface-3 hover:text-foreground"
                   )}
                 >
-                  <span className="text-lg" aria-hidden>
+                  <span
+                    className={cn(
+                      "flex h-8 w-8 items-center justify-center rounded-lg border text-lg transition-colors",
+                      active
+                        ? "border-primary/30 bg-primary/10 text-primary"
+                        : "border-border-1 bg-surface-2 text-foreground/80 group-hover:border-border-2"
+                    )}
+                    aria-hidden
+                  >
                     {icon}
                   </span>
                   <span className="flex-1 font-medium">{label}</span>
@@ -170,13 +178,18 @@ function Sidebar({
           </CardContent>
         </Card>
 
-        <Button asChild variant="outline" className="w-full justify-center" onClick={handleConfiguratorClick}>
+        <Button
+          asChild
+          variant="outline"
+          className="w-full justify-center border-border-2 hover:bg-surface-3"
+          onClick={handleConfiguratorClick}
+        >
           <Link href="/cms/configurator">Launch Configurator</Link>
         </Button>
       </div>
 
       <div className="mt-auto space-y-3 text-xs text-muted-foreground">
-        <Card className="border-border-1 bg-surface-2">
+        <Card className="border-border-1 bg-surface-2 shadow-elevation-1">
           <CardContent className="space-y-2 px-4 py-4">
             <h2 className="text-sm font-semibold text-foreground">Need a hand?</h2>
             <p>Visit the docs or ping the platform team for support.</p>

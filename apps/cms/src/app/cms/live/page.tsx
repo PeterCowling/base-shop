@@ -149,11 +149,11 @@ export default async function LivePage() {
                   className="border border-primary/15 bg-surface-2 text-foreground"
                 >
                   <CardContent className="space-y-1 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-foreground">
                       {stat.label}
                     </p>
                     <p className="text-xl font-semibold text-foreground">{stat.value}</p>
-                    <p className="text-xs text-muted-foreground">{stat.caption}</p>
+                    <p className="text-xs text-foreground">{stat.caption}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -198,7 +198,7 @@ export default async function LivePage() {
             </Tag>
           </div>
           {shops.length === 0 ? (
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-foreground">
               No shops found. Create a shop in the configurator to unlock live previews.
             </p>
           ) : (

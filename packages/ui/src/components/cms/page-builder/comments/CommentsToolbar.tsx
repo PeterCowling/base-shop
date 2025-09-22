@@ -1,6 +1,15 @@
 "use client";
 
-import { Button } from "../../../atoms/shadcn";
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "../../../atoms/shadcn";
 import type { PresencePeer } from "../collab/usePresence";
 
 export function CommentsToolbar(props: {
@@ -14,31 +23,48 @@ export function CommentsToolbar(props: {
   unresolvedCount: number;
 }) {
   const { peers, showResolved, onShowResolvedChange, onReload, onAddForSelected, canAddForSelected, onToggleDrawer, unresolvedCount } = props;
+  const portalContainer = typeof document !== "undefined" ? (document.querySelector('[data-pb-portal-root]') as HTMLElement | null) : null;
   return (
-    <div className="pointer-events-auto absolute right-2 top-2 flex items-center gap-2 rounded bg-muted/60 px-2 py-1 text-xs">
-      <div className="flex items-center gap-1 pr-1 border-r">
-        {peers.slice(0, 3).map((p) => (
-          <span key={p.id} className="inline-flex items-center gap-1 rounded px-1 py-0.5" title={`${p.label} online`} style={{ backgroundColor: `${p.color}20`, color: "inherit" }}>
-            <span aria-hidden className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: p.color }} />
-            <span className="max-w-[6rem] truncate">{p.label}</span>
-          </span>
-        ))}
-        {peers.length > 3 && (
-          <span className="text-muted-foreground">+{peers.length - 3} more</span>
-        )}
-      </div>
-      <label className="flex items-center gap-1">
-        <input type="checkbox" checked={showResolved} onChange={(e) => onShowResolvedChange(e.target.checked)} />
-        Show resolved
-      </label>
-      <Button variant="outline" onClick={() => void onReload()} className="h-6 px-2 py-0 text-xs">Reload</Button>
-      <Button variant="outline" onClick={() => void onAddForSelected()} disabled={!canAddForSelected} className="h-6 px-2 py-0 text-xs">Add for selected</Button>
+    <div className="pointer-events-auto absolute right-2 top-2 flex items-center gap-1 rounded bg-muted/60 px-1.5 py-1 text-xs shadow-sm opacity-80 hover:opacity-100">
       <Button variant="default" onClick={onToggleDrawer} className="h-6 px-2 py-0 text-xs">
         Comments ({unresolvedCount})
       </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" className="h-6 px-2 py-0 text-xs" aria-label="Comments options">
+            •••
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="min-w-[14rem] text-xs" container={portalContainer}>
+          <DropdownMenuLabel>Comments</DropdownMenuLabel>
+          <DropdownMenuCheckboxItem
+            checked={!!showResolved}
+            onCheckedChange={(v) => onShowResolvedChange(Boolean(v))}
+          >
+            Show resolved pins
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuItem onClick={() => void onReload()}>Reload</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => void onAddForSelected()} disabled={!canAddForSelected}>
+            Add for selected
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuLabel>Online</DropdownMenuLabel>
+          {peers.length === 0 && (
+            <DropdownMenuItem disabled className="text-muted-foreground">No one else online</DropdownMenuItem>
+          )}
+          {peers.slice(0, 6).map((p) => (
+            <DropdownMenuItem key={p.id} disabled className="gap-2">
+              <span aria-hidden className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: p.color }} />
+              <span className="truncate">{p.label}</span>
+            </DropdownMenuItem>
+          ))}
+          {peers.length > 6 && (
+            <DropdownMenuItem disabled className="text-muted-foreground">+{peers.length - 6} more</DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 }
 
 export default CommentsToolbar;
-

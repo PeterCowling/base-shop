@@ -71,7 +71,7 @@ export function InventoryToolbar({
         <Button
           type="button"
           variant="outline"
-          className="h-9 rounded-lg border-primary/30 px-3 text-xs text-primary-foreground hover:bg-primary/10"
+          className="h-9 rounded-lg border-primary/30 px-3 text-xs text-foreground hover:bg-primary/10"
           onClick={onAddAttribute}
         >
           Add attribute
@@ -79,7 +79,7 @@ export function InventoryToolbar({
         <Button
           type="button"
           variant="ghost"
-          className="h-9 rounded-lg text-xs text-primary-foreground hover:bg-primary/10"
+          className="h-9 rounded-lg text-xs text-foreground hover:bg-primary/10"
           onClick={onImport}
         >
           Import JSON/CSV
@@ -87,7 +87,7 @@ export function InventoryToolbar({
         <Button
           type="button"
           variant="ghost"
-          className="h-9 rounded-lg text-xs text-primary-foreground hover:bg-primary/10"
+          className="h-9 rounded-lg text-xs text-foreground hover:bg-primary/10"
           onClick={() => onExport("json")}
         >
           Export JSON
@@ -95,7 +95,7 @@ export function InventoryToolbar({
         <Button
           type="button"
           variant="ghost"
-          className="h-9 rounded-lg text-xs text-primary-foreground hover:bg-primary/10"
+          className="h-9 rounded-lg text-xs text-foreground hover:bg-primary/10"
           onClick={() => onExport("csv")}
         >
           Export CSV

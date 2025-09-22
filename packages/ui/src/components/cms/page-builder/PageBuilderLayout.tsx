@@ -1,6 +1,6 @@
 "use client";
 
-import { DndContext, DragOverlay } from "@dnd-kit/core";
+import { DndContext, DragOverlay, defaultDropAnimation, defaultDropAnimationSideEffects } from "@dnd-kit/core";
 import type { CSSProperties, ComponentProps } from "react";
 import React from "react";
 import { Toast, Tooltip, Popover, PopoverTrigger, PopoverContent } from "../../atoms";
@@ -20,6 +20,8 @@ import type { PageComponent } from "@acme/types";
 import DragOverlayPreview, { type DragMeta } from "./DragOverlayPreview";
 import ErrorBoundary from "./ErrorBoundary";
 import useReducedMotion from "../../../hooks/useReducedMotion";
+import EmptyCanvasOverlay from "./EmptyCanvasOverlay";
+import CommandPalette from "./CommandPalette";
 
 interface LayoutProps {
   style?: CSSProperties;
@@ -118,6 +120,27 @@ const PageBuilderLayout = ({
       if (e.key.toLowerCase() === 'b') {
         e.preventDefault();
         setShowPalette((v) => !v);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  // Command palette ("/" or Cmd/Ctrl+K)
+  const [cmdOpen, setCmdOpen] = React.useState(false);
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      const tag = t?.tagName;
+      const isEditable = !!t && ((t as any).isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT');
+      if (isEditable) return;
+      const k = e.key.toLowerCase();
+      if (k === '/' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        setCmdOpen(true);
+      } else if (k === 'k' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        setCmdOpen(true);
       }
     };
     window.addEventListener('keydown', onKey);
@@ -352,12 +375,21 @@ const PageBuilderLayout = ({
           >
             <div style={{ transform: `scale(${zoom})`, transformOrigin: "top center" }}>
               <div
-              className={`${frameClass[viewport]} shrink-0`}
-              style={viewportStyle}
-              data-tour="canvas"
-              data-viewport={viewport}
+                className={`${frameClass[viewport]} shrink-0`}
+                style={viewportStyle}
+                data-tour="canvas"
+                data-viewport={viewport}
               >
-                <PageCanvas {...canvasProps} />
+                <div className="relative">
+                  <PageCanvas {...canvasProps} />
+                  {Array.isArray((canvasProps as any)?.components) && (canvasProps as any).components.length === 0 && (
+                    <EmptyCanvasOverlay
+                      onAddSection={() => paletteOnAdd("Section" as ComponentType)}
+                      onOpenPalette={() => setShowPalette(true)}
+                      onOpenPresets={() => window.dispatchEvent(new Event('pb:open-presets'))}
+                    />
+                  )}
+                </div>
                 {showDevTools && <DevToolsOverlay scrollRef={scrollRef as any} />}
               </div>
             </div>
@@ -366,7 +398,14 @@ const PageBuilderLayout = ({
             dropAnimation={
               reducedMotion
                 ? { duration: 0, easing: "linear" }
-                : { duration: 220, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)", dragSourceOpacity: 0.25 }
+                : {
+                    ...defaultDropAnimation,
+                    duration: 220,
+                    easing: "cubic-bezier(0.2, 0.8, 0.2, 1)",
+                    sideEffects: defaultDropAnimationSideEffects({
+                      styles: { active: { opacity: "0.25" } },
+                    }),
+                  }
             }
           >
             {dragMeta ? (
@@ -391,6 +430,13 @@ const PageBuilderLayout = ({
     />
   </div>
   </DndContext>
+  <CommandPalette
+    open={cmdOpen}
+    onOpenChange={setCmdOpen}
+    components={(canvasProps as any)?.components ?? []}
+    selectedIds={(canvasProps as any)?.selectedIds ?? []}
+    dispatch={(canvasProps as any)?.dispatch ?? (() => {})}
+  />
   );
 };
 

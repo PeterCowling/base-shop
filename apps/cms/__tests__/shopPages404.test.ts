@@ -7,7 +7,8 @@ import { withTempRepo } from "@acme/test-utils";
 // Some pages pull in heavy server-only modules which can slow down
 // the initial dynamic import. Increase the Jest timeout so each
 // route test has enough time to complete without failing.
-jest.setTimeout(20_000);
+// Allow additional time for dynamic imports of Next.js server routes
+jest.setTimeout(60_000);
 
 /** Spin up an isolated repo in /tmp, run the callback, then restore CWD. */
 const withRepo = (cb: (dir: string) => Promise<void>) =>

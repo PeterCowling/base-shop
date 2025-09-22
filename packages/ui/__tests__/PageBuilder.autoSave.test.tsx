@@ -33,10 +33,16 @@ describe("PageBuilder interactions", () => {
     const onSave = jest.fn().mockResolvedValue(undefined);
     const onPublish = jest.fn().mockResolvedValue(undefined);
 
-    render(<PageBuilder page={page} onSave={onSave} onPublish={onPublish} />);
+    const { container } = render(
+      <PageBuilder page={page} onSave={onSave} onPublish={onPublish} />
+    );
 
-    const spacer = await screen.findByText("Spacer");
-    fireEvent.keyDown(spacer, { key: "Enter" });
+    const paletteItems = Array.from(
+      container.querySelectorAll('div[role="button"][title="Drag or press space/enter to add"]')
+    ) as HTMLElement[];
+    const sectionItem = paletteItems.find((el) => /\bSection\b/i.test(el.textContent || ""));
+    expect(sectionItem).toBeTruthy();
+    fireEvent.keyDown(sectionItem as HTMLElement, { key: "Enter" });
     const canvas = screen.getByRole("list");
     await waitFor(() => {
       expect(within(canvas).getAllByRole("listitem")).toHaveLength(1);

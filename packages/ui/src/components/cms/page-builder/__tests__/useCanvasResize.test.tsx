@@ -26,6 +26,9 @@ test("resizes without grid and no guides", () => {
   }
   const { getByTestId } = render(<Wrapper />);
   const box = getByTestId("box") as HTMLElement;
+  const parent = box.parentElement as HTMLElement;
+  Object.defineProperty(parent, "offsetWidth", { value: 1000, writable: true });
+  Object.defineProperty(parent, "offsetHeight", { value: 1000, writable: true });
   Object.defineProperty(box, "offsetWidth", { value: 100, writable: true });
   Object.defineProperty(box, "offsetHeight", { value: 100, writable: true });
   Object.defineProperty(box, "offsetLeft", { value: 0, writable: true });
@@ -61,6 +64,7 @@ test("snaps to grid units and sets guides", () => {
   const box = getByTestId("box") as HTMLElement;
   const parent = box.parentElement as HTMLElement;
   Object.defineProperty(parent, "offsetWidth", { value: 400, writable: true });
+  Object.defineProperty(parent, "offsetHeight", { value: 400, writable: true });
   Object.defineProperty(box, "offsetWidth", { value: 100, writable: true });
   Object.defineProperty(box, "offsetHeight", { value: 100, writable: true });
   Object.defineProperty(box, "offsetLeft", { value: 0, writable: true });
@@ -74,7 +78,7 @@ test("snaps to grid units and sets guides", () => {
   fireEvent.pointerUp(window);
 });
 
-test("shift key snaps to full width and height", () => {
+test("Alt key snaps to full width and height", () => {
   const dispatch = jest.fn();
   let hook: ReturnType<typeof useCanvasResize>;
   function Wrapper() {
@@ -104,7 +108,7 @@ test("shift key snaps to full width and height", () => {
   fireEvent.pointerMove(window, {
     clientX: 150,
     clientY: 150,
-    shiftKey: true,
+    altKey: true,
   });
   expect(dispatch).toHaveBeenCalledWith(
     expect.objectContaining({ widthDesktop: "100%", heightDesktop: "100%" })

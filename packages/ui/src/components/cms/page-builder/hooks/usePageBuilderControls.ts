@@ -101,7 +101,10 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
   }, []);
 
   useEffect(() => {
+    // Do not auto-run the tour during tests to avoid interfering with DOM queries
+    const isTest = typeof process !== "undefined" && process.env.NODE_ENV === "test";
     if (
+      !isTest &&
       typeof window !== "undefined" &&
       !localStorage.getItem("page-builder-tour")
     ) {

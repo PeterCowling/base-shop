@@ -39,19 +39,18 @@ describe("MenuBar", () => {
     expect(chain.run).toHaveBeenCalled();
   });
 
-  it("invokes link command chain with prompt value", () => {
+  it("invokes link command chain via modal with entered URL", () => {
     const { editor, chain } = createEditor();
-    const promptSpy = jest
-      .spyOn(window, "prompt")
-      .mockReturnValue("https://example.com");
     render(<MenuBar editor={editor} />);
     fireEvent.click(screen.getByRole("button", { name: "Link" }));
-    expect(promptSpy).toHaveBeenCalled();
+    const dialog = screen.getByRole("dialog", { name: "Insert Link" });
+    const input = dialog.querySelector("input") as HTMLInputElement;
+    fireEvent.change(input, { target: { value: "https://example.com" } });
+    fireEvent.click(screen.getByRole("button", { name: "Save" }));
     expect(chain.focus).toHaveBeenCalled();
     expect(chain.extendMarkRange).toHaveBeenCalledWith("link");
     expect(chain.setLink).toHaveBeenCalledWith({ href: "https://example.com" });
     expect(chain.run).toHaveBeenCalled();
-    promptSpy.mockRestore();
   });
 
   it("renders nothing when editor is null", () => {
@@ -59,4 +58,3 @@ describe("MenuBar", () => {
     expect(container).toBeEmptyDOMElement();
   });
 });
-

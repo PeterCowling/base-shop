@@ -16,10 +16,12 @@ export interface ButtonProps extends Omit<BaseButtonProps, "variant"> {
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ variant = "default", size, className, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
-    const sizeClass = size === "icon" ? "h-8 w-8 p-0 shrink-0" : "h-12 px-4 py-3";
+    // Default to the primitive's base sizing (h-10 px-4 py-2) for text buttons.
+    // Only override when rendering icon-only buttons for consistent square touch targets.
+    const sizeClass = size === "icon" ? "h-10 w-12 min-w-12 p-0 shrink-0" : "";
     if (variant === "destructive") {
       const base =
-        "inline-flex h-12 items-center justify-center rounded-md px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
+        "inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
       const styles =
         "bg-destructive text-destructive-foreground hover:bg-destructive/90";
       return (

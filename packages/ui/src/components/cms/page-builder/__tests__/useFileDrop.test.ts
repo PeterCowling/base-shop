@@ -47,7 +47,7 @@ describe("useFileDrop", () => {
       useFileDrop({ shop: "shop", dispatch })
     );
 
-    const ev = {} as any;
+    const ev = { preventDefault() {} } as any;
 
     act(() => {
       result.current.setDragOver(true);
@@ -82,7 +82,7 @@ describe("useFileDrop", () => {
       .spyOn(console, "error")
       .mockImplementation(() => {});
 
-    const ev = {} as any;
+    const ev = { preventDefault() {} } as any;
 
     act(() => {
       result.current.setDragOver(true);
@@ -102,4 +102,3 @@ describe("useFileDrop", () => {
     consoleError.mockRestore();
   });
 });
-

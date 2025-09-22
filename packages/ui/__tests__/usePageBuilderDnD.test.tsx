@@ -24,13 +24,14 @@ describe("usePageBuilderDnD", () => {
 
     act(() =>
       result.current.handleDragStart({
-        active: { data: { current: { type: "Text" } } },
+        active: { id: "new", data: { current: { type: "Section" } } },
       } as any)
     );
-    expect(result.current.activeType).toBe("Text");
+    expect(result.current.activeType).toBe("Section");
 
     act(() =>
       result.current.handleDragMove({
+        active: { id: "new", data: { current: {} } },
         over: { id: "canvas", data: { current: {} }, rect: { top: 0, height: 0 } },
         delta: { x: 12, y: 0 },
         activatorEvent: { clientX: 0, clientY: 0 },
@@ -49,7 +50,7 @@ describe("usePageBuilderDnD", () => {
     expect(dispatch).toHaveBeenCalledWith(
       expect.objectContaining({
         type: "add",
-        component: expect.objectContaining({ type: "Text" }),
+        component: expect.objectContaining({ type: "Section" }),
       })
     );
     expect(selectId).toHaveBeenCalled();
@@ -60,8 +61,8 @@ describe("usePageBuilderDnD", () => {
 
   it("moves existing component within canvas with grid snapping", () => {
     const components = [
-      { id: "a", type: "Text" },
-      { id: "b", type: "Text" },
+      { id: "a", type: "Section" },
+      { id: "b", type: "Section" },
     ] as any;
     const dispatch = jest.fn();
     const setSnapPosition = jest.fn();
@@ -83,13 +84,14 @@ describe("usePageBuilderDnD", () => {
 
     act(() =>
       result.current.handleDragStart({
-        active: { data: { current: { type: "Text" } } },
+        active: { id: "a", data: { current: { type: "Section" } } },
       } as any)
     );
-    expect(result.current.activeType).toBe("Text");
+    expect(result.current.activeType).toBe("Section");
 
     act(() =>
       result.current.handleDragMove({
+        active: { id: "a", data: { current: {} } },
         over: { id: "canvas", data: { current: {} }, rect: { top: 0, height: 0 } },
         delta: { x: 8, y: 0 },
         activatorEvent: { clientX: 0, clientY: 0 },
@@ -143,6 +145,7 @@ describe("usePageBuilderDnD", () => {
 
     act(() =>
       result.current.handleDragMove({
+        active: { id: "a", data: { current: {} } },
         over: {
           id: "a",
           data: { current: { index: 0 } },
@@ -156,6 +159,7 @@ describe("usePageBuilderDnD", () => {
 
     act(() =>
       result.current.handleDragMove({
+        active: { id: "a", data: { current: {} } },
         over: {
           id: "a",
           data: { current: { index: 0 } },
@@ -172,7 +176,7 @@ describe("usePageBuilderDnD", () => {
     const components = [
       {
         id: "container-1",
-        type: "Container",
+        type: "Section",
         children: [{ id: "child-1", type: "Text" }],
       },
     ] as any;

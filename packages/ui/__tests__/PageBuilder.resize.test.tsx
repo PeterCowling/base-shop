@@ -55,6 +55,9 @@ describe("PageBuilder resize interactions", () => {
     };
     const { el, dispatch } = renderCanvasItem(component);
     setRect(el, { width: 100, height: 100, left: 0, top: 0 });
+    // Ensure parent dimensions are large enough to avoid clamping to 1px
+    const parent = (el.parentElement as HTMLElement) || el;
+    setRect(parent, { width: 1000, height: 1000 });
 
     // There are crop overlay handles that also use nwse-resize; prefer the block resizer
     const handle = el.querySelector(

@@ -23,7 +23,7 @@ describe("useFileDrop", () => {
       useFileDrop({ shop: "shop", dispatch })
     );
 
-    const event = { dataTransfer: "data" } as any;
+    const event = { dataTransfer: "data", preventDefault() {} } as any;
     await act(async () => {
       result.current.setDragOver(true);
       await result.current.handleFileDrop(event);

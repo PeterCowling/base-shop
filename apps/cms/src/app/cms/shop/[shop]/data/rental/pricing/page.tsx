@@ -45,7 +45,7 @@ export default async function PricingPage({
       label: "Coverage entries",
       value: coverageEnabled ? String(coverageEnabled) : "Optional",
       caption: coverageEnabled ? "Fee & waiver rules live for customers" : "Add coverage to offset risk",
-      accent: coverageEnabled ? "bg-primary/20 text-primary-foreground" : "bg-muted/20 text-foreground",
+      accent: coverageEnabled ? "bg-primary/20 text-foreground" : "bg-muted/20 text-foreground",
     },
   ];
 

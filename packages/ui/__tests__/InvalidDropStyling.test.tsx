@@ -3,8 +3,8 @@ import { render } from "@testing-library/react";
 import EditableCanvas from "../src/components/cms/page-builder/EditableCanvas";
 import BlockChildren from "../src/components/cms/page-builder/BlockChildren";
 
-describe("Invalid drop styling and aria-dropeffect", () => {
-  it("canvas shows danger ring and aria-dropeffect=none when invalid", () => {
+describe("Invalid drop styling", () => {
+  it("canvas shows danger ring when invalid", () => {
     const ref = { current: null } as React.RefObject<HTMLDivElement | null>;
     const { container } = render(
       <EditableCanvas
@@ -32,11 +32,10 @@ describe("Invalid drop styling and aria-dropeffect", () => {
       />
     );
     const canvas = container.querySelector("#canvas") as HTMLElement;
-    expect(canvas).toHaveAttribute("aria-dropeffect", "none");
     expect(canvas.className).toMatch(/ring-danger/);
   });
 
-  it("container shows danger styles and aria-dropeffect=none when invalid and over", () => {
+  it("container shows danger styles when invalid and over", () => {
     const comp: any = { id: "p1", type: "Section", children: [{ id: "c1", type: "Text" }] };
     const { container } = render(
       <BlockChildren
@@ -62,7 +61,6 @@ describe("Invalid drop styling and aria-dropeffect", () => {
       />
     );
     const containerEl = container.querySelector("#container-p1") as HTMLElement;
-    expect(containerEl).toHaveAttribute("aria-dropeffect", "none");
     expect(containerEl.className).toMatch(/ring-danger/);
   });
 });

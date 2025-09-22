@@ -44,7 +44,7 @@ describe("Dialog", () => {
     const content = screen.getByRole("dialog");
     expect(contentRef.current).toBe(content);
     expect(content).toHaveClass("custom-content");
-    expect(content).toHaveClass("bg-background");
+    expect(content).toHaveClass("bg-surface-2");
   });
 
   it(

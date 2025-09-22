@@ -11,7 +11,7 @@ describe("PageSidebar", () => {
       maxItems: 5,
     } as PageComponent;
     const dispatch = jest.fn();
-    const { getByText, findByLabelText } = render(
+    const { getByText, findByLabelText, container } = render(
       <PageSidebar
         components={[component]}
         selectedIds={[component.id]}
@@ -44,8 +44,11 @@ describe("PageSidebar", () => {
     });
     dispatch.mockClear();
 
-    // duplicate
-    fireEvent.click(getByText("Duplicate"));
+    // duplicate (click the enabled Duplicate button for component, not the preset one)
+    const dupButtons = Array.from(container.querySelectorAll('button'))
+      .filter((b) => b.textContent?.trim() === 'Duplicate' && !(b as HTMLButtonElement).disabled);
+    expect(dupButtons.length).toBeGreaterThan(0);
+    fireEvent.click(dupButtons[0] as HTMLButtonElement);
     expect(dispatch).toHaveBeenCalledWith({ type: "duplicate", id: component.id });
   });
 });

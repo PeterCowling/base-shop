@@ -30,6 +30,9 @@ module.exports = {
   ],
   moduleNameMapper: {
     ...baseModuleNameMapper,
+    // Avoid React unknown-prop warnings by mapping Next.js Link to a
+    // DOM-safe mock that strips Next-specific props like `scroll`.
+    "^next/link$": "<rootDir>/test/mocks/next-link.tsx",
     "^packages/config/src/env/cms\\.ts$": "<rootDir>/packages/config/src/env/__tests__/cms.stub.ts",
     "^packages/config/src/env/core\\.ts$": "<rootDir>/packages/config/src/env/__tests__/core.stub.ts",
     "^@/components/(.*)$": "<rootDir>/test/__mocks__/componentStub.js",

@@ -80,11 +80,11 @@ export default async function MaintenancePage() {
                   className="border border-primary/15 bg-surface-2 text-foreground"
                 >
                   <CardContent className="space-y-1 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-primary-foreground/70">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       {stat.label}
                     </p>
-                    <p className="text-xl font-semibold text-primary-foreground">{stat.value}</p>
-                    <p className="text-xs text-primary-foreground/70">{stat.caption}</p>
+                    <p className="text-xl font-semibold text-foreground">{stat.value}</p>
+                    <p className="text-xs text-muted-foreground">{stat.caption}</p>
                   </CardContent>
                 </Card>
               ))}

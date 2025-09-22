@@ -65,7 +65,8 @@ describe("Orders pages", () => {
 
     const item = screen.getByText("Order: o1").closest("li");
     expect(item).toHaveClass("border-danger");
-    expect(item).toHaveClass("bg-danger/10");
+    // Highlight style uses surface background with danger border
+    expect(item).toHaveClass("bg-surface-2");
 
     const returnButton = screen.getByRole("button", {
       name: /mark returned/i,

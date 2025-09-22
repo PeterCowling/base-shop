@@ -7,7 +7,10 @@ let dndHandlers: any = {};
 
 jest.mock("@dnd-kit/core", () => {
   const React = require("react");
+  const actual = jest.requireActual("@dnd-kit/core");
   return {
+    // Preserve all actual exports (including drop animation helpers)
+    ...actual,
     DndContext: (props: any) => {
       dndHandlers = {
         ...props,

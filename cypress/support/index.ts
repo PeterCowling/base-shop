@@ -14,5 +14,7 @@ before(() => server.listen({ onUnhandledRequest: "error" }));
 afterEach(() => server.resetHandlers());
 after(() => server.close());
 
+// Sessions are persisted via cy.session in tests where needed.
+
 // You can add custom Cypress commands here if needed.
 // e.g., Cypress.Commands.add("login", (email, password) => { ... });

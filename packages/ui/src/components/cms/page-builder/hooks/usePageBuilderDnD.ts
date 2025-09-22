@@ -106,16 +106,17 @@ export function usePageBuilderDnD({
         const base = root.getBoundingClientRect();
         const shield = document.createElement('div');
         shield.className = 'pb-iframe-shield';
-        Object.assign(shield.style, {
+        const style: Partial<CSSStyleDeclaration> = {
           position: 'absolute',
           left: `${r.left - base.left}px`,
           top: `${r.top - base.top}px`,
           width: `${r.width}px`,
           height: `${r.height}px`,
-          zIndex: 50,
+          zIndex: '50',
           background: 'transparent',
           pointerEvents: 'auto',
-        } as CSSStyleDeclaration as any);
+        };
+        Object.assign(shield.style, style as unknown as Record<string, string>);
         root.appendChild(shield);
         shields.push(shield);
       });

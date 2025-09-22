@@ -70,7 +70,7 @@ export function LivePreviewList({ items }: LivePreviewListProps) {
             <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0 space-y-1">
                 <p className="text-sm font-semibold text-foreground">{item.shop}</p>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-foreground">
                   {hasPreview
                     ? "Launch the live preview in a new tab."
                     : item.error || "Preview configuration not detected."}

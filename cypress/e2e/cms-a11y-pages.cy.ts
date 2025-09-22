@@ -1,7 +1,7 @@
 import '@testing-library/cypress/add-commands';
 
 describe('CMS pages accessibility (broad)', () => {
-  before(() => {
+  const login = () => {
     // Sign in via NextAuth credentials provider
     cy.request('/api/auth/csrf').then(({ body }) => {
       const csrf = body.csrfToken as string;
@@ -18,10 +18,19 @@ describe('CMS pages accessibility (broad)', () => {
         },
       });
     });
+  };
+
+  // Prepare a named session to reuse across tests
+  before(() => {
+    cy.session('admin-session', login);
   });
 
   const routes = [
     '/cms',
+    '/cms/dashboard',
+    '/cms/migrations',
+    '/cms/media',
+    '/cms/shop/segshop/data/inventory',
     '/cms/pages',
     '/cms/products',
     '/cms/orders',
@@ -34,6 +43,7 @@ describe('CMS pages accessibility (broad)', () => {
 
   routes.forEach((path) => {
     it(`has no serious+ a11y violations on ${path}`, () => {
+      cy.session('admin-session', login);
       cy.visit(path, { failOnStatusCode: false });
       cy.location('pathname').should('eq', path);
       cy.injectAxe();

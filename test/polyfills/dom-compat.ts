@@ -43,3 +43,14 @@ if (
   (HTMLElement.prototype as any).releasePointerCapture = () => {};
 }
 
+// Minimal ResizeObserver stub for JSDOM tests (measurements not needed for logic assertions)
+if (!(globalThis as any).ResizeObserver) {
+  class RO {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    constructor(_cb: any) {}
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+  (globalThis as any).ResizeObserver = RO as any;
+}

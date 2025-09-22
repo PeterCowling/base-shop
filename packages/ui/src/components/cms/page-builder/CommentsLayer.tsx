@@ -154,6 +154,9 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
         unresolvedCount={threads.filter((t) => !t.resolved).length}
       />
 
+      {/* Local portal root so dropdowns/menus inherit canvas preview tokens */}
+      <div data-pb-portal-root className="absolute inset-0 z-50 pointer-events-none" />
+
       {/* Pins + per-component badges */}
       <CommentsPinsLayer
         threads={threads}

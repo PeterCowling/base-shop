@@ -41,7 +41,7 @@ export function ConfiguratorHero({
             variant="outline"
             className="h-11 px-5 text-sm font-semibold border-primary/40 text-hero-foreground hover:bg-primary/10"
           >
-            <Link href="#configurator-steps" scroll={true}>
+            <Link href="#configurator-steps">
               Browse all steps
             </Link>
           </ButtonElement>

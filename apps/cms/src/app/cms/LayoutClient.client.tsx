@@ -21,7 +21,7 @@ export default function LayoutClient({
     <div className="relative flex min-h-screen bg-surface-1">
       <div
         className={cn(
-          "relative z-10 h-full w-72 shrink-0 border-r border-border/10 bg-surface-2 text-foreground transition-transform duration-300",
+          "relative z-10 h-full w-72 shrink-0 border-r border-border-1 bg-gradient-to-b from-surface-2 to-surface-3 text-foreground shadow-elevation-2 transition-transform duration-300",
           isMobileNavOpen
             ? "block translate-x-0"
             : "hidden -translate-x-full sm:translate-x-0 sm:block"

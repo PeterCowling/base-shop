@@ -38,6 +38,11 @@ export default function ResponsiveRightActions({
   const [w, setW] = React.useState<number>(0);
   const [presetOpen, setPresetOpen] = React.useState(false);
   React.useEffect(() => {
+    const open = () => setPresetOpen(true);
+    window.addEventListener("pb:open-presets", open as EventListener);
+    return () => window.removeEventListener("pb:open-presets", open as EventListener);
+  }, []);
+  React.useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const ro = new ResizeObserver((entries) => {

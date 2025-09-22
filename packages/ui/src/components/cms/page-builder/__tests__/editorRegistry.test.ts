@@ -34,9 +34,17 @@ const expectedKeys = [
   "SocialLinks",
   "Button",
   "Tabs",
+  "Dataset",
+  "Repeater",
+  "Bind",
   "ProductGrid",
   "ProductCarousel",
   "CustomHtml",
+  "Section",
+  "StackFlex",
+  "Grid",
+  "CarouselContainer",
+  "TabsAccordionContainer",
 ];
 
 describe("editorRegistry", () => {
@@ -72,4 +80,3 @@ describe("editorRegistry", () => {
     );
   });
 });
-

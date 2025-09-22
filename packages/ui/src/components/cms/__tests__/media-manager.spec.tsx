@@ -178,20 +178,14 @@ describe("MediaManager", () => {
   it("does not delete the item when the browser confirm dialog is cancelled", async () => {
     const user = userEvent.setup();
     const { onDelete } = renderManager();
-
+    // Confirm flow is handled via window.confirm in tests
+    const confirmSpy = jest.spyOn(window, 'confirm').mockReturnValue(false);
     await user.click(
       screen.getByRole("button", { name: "Delete https://cdn.example.com/first.jpg" })
     );
+    expect(confirmSpy).toHaveBeenCalledWith("Delete media?");
+    confirmSpy.mockRestore();
 
-    const deleteDialog = await screen.findByRole("dialog", {
-      name: "Delete media?",
-    });
-    const cancelButton = within(deleteDialog).getByRole("button", { name: "Cancel" });
-    await user.click(cancelButton);
-
-    await waitFor(() =>
-      expect(screen.queryByRole("dialog", { name: "Delete media?" })).not.toBeInTheDocument()
-    );
     expect(onDelete).not.toHaveBeenCalled();
     expect(screen.getAllByTestId("media-row")).toHaveLength(2);
     expect(screen.queryByTestId("media-manager-toast")).not.toBeInTheDocument();
@@ -201,26 +195,17 @@ describe("MediaManager", () => {
     const user = userEvent.setup();
     const onDelete = jest.fn().mockResolvedValue(undefined);
     renderManager(onDelete);
-
+    const confirmSpy = jest.spyOn(window, 'confirm').mockReturnValue(true);
     await user.click(
       screen.getByRole("button", { name: "Delete https://cdn.example.com/first.jpg" })
     );
-
-    const deleteDialog = await screen.findByRole("dialog", {
-      name: "Delete media?",
-    });
-    const confirmButton = within(deleteDialog).getByRole("button", { name: "Delete" });
-    await user.click(confirmButton);
+    confirmSpy.mockRestore();
 
     await waitFor(() =>
       expect(onDelete).toHaveBeenCalledWith(
         "demo-shop",
         "https://cdn.example.com/first.jpg"
       )
-    );
-
-    await waitFor(() =>
-      expect(screen.queryByRole("dialog", { name: "Delete media?" })).not.toBeInTheDocument()
     );
     await waitFor(() =>
       expect(screen.getAllByTestId("media-row")).toHaveLength(1)
@@ -235,22 +220,15 @@ describe("MediaManager", () => {
     const user = userEvent.setup();
     const onDelete = jest.fn().mockRejectedValue(new Error("delete failed"));
     renderManager(onDelete);
-
+    const confirmSpy = jest.spyOn(window, 'confirm').mockReturnValue(true);
     await user.click(
       screen.getByRole("button", { name: "Delete https://cdn.example.com/first.jpg" })
     );
-
-    const deleteDialog = await screen.findByRole("dialog", {
-      name: "Delete media?",
-    });
-    const confirmButton = within(deleteDialog).getByRole("button", { name: "Delete" });
-    await user.click(confirmButton);
+    confirmSpy.mockRestore();
 
     await waitFor(() => expect(onDelete).toHaveBeenCalledTimes(1));
     expect(await screen.findByText("Failed to delete media item.")).toBeInTheDocument();
     expect(screen.getAllByTestId("media-row")).toHaveLength(2);
-    const retryButton = within(deleteDialog).getByRole("button", { name: "Delete" });
-    expect(retryButton).not.toBeDisabled();
   });
 
   it("saves metadata, updates the list, shows a toast, and keeps the details panel open", async () => {

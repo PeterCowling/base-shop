@@ -118,7 +118,8 @@ const PageToolbar = ({
             aria-label="Rotate"
           >
             <ReloadIcon
-              className={orientation === "landscape" ? "rotate-90" : ""}
+              className={(orientation === "landscape" ? "rotate-90 " : "") + "h-4 w-4"}
+              aria-hidden="true"
             />
           </Button>
         </Tooltip>

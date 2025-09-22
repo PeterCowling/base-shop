@@ -26,9 +26,9 @@ describe("InlineInsert", () => {
     const trigger = screen.getByRole("button", { name: /insert block here/i });
     fireEvent.click(trigger);
 
-    // Pick an obvious atom, e.g., Button
+    // Pick a top-level allowed container, e.g., Section
     const pop = screen.getByRole("dialog");
-    const option = within(pop).getByRole("option", { name: /button/i });
+    const option = within(pop).getByRole("option", { name: /section/i });
     fireEvent.click(option);
 
     expect(onInsert).toHaveBeenCalledTimes(1);

@@ -191,3 +191,8 @@ export async function diffHistory(shop: string): Promise<PageDiffEntry[]> {
   }
 }
 
+export async function reorderPages(shop: string, ids: string[]): Promise<Page[]> {
+  // Prisma schema currently has no explicit ordering field.
+  // Return current pages in existing order.
+  return getPages(shop);
+}

@@ -11,6 +11,7 @@ import ResponsiveItems from "./content/ResponsiveItems";
 import ColumnsControls from "./content/ColumnsControls";
 import GapControls from "./content/GapControls";
 import AlignmentControls from "./content/AlignmentControls";
+import { getContentSuggestions } from "./content/contentSuggestions";
 
 interface Props {
   component: PageComponent;
@@ -28,6 +29,8 @@ export default function ContentPanel({
 }: Props) {
   const isMultiColumn = (component as any).type === "MultiColumn";
   const Specific: LazyExoticComponent<ComponentType<EditorProps>> | undefined = editorRegistry[component.type];
+  const suggestionsEnabled = (process.env.NEXT_PUBLIC_CMS_CONTENT_SUGGESTIONS || "").toString().toLowerCase() === "true";
+  const suggestions = suggestionsEnabled ? getContentSuggestions(component) : [];
   return (
     <div className="space-y-2">
       {("minItems" in component || "maxItems" in component) && (
@@ -48,6 +51,36 @@ export default function ContentPanel({
 
       {isMultiColumn && (
         <AlignmentControls component={component} handleInput={handleInput} />
+      )}
+
+      {suggestionsEnabled && suggestions.length > 0 && (
+        <div className="space-y-1" data-testid="content-suggestions">
+          <div className="text-xs font-semibold text-muted-foreground">Suggestions</div>
+          <div className="grid grid-cols-2 gap-2">
+            {suggestions.map((s) => (
+              <button
+                key={s.id}
+                type="button"
+                className="rounded border p-2 text-left hover:bg-accent/30"
+                onClick={() => {
+                  try {
+                    const patch = s.apply(component);
+                    if (patch && typeof patch === "object") onChange(patch);
+                  } catch (e) {
+                    // no-op on apply errors
+                  }
+                }}
+                title={s.description || s.label}
+                aria-label={`Apply suggestion: ${s.label}`}
+              >
+                <div className="text-[12px] font-medium">{s.label}</div>
+                {s.description && (
+                  <div className="text-[11px] text-muted-foreground">{s.description}</div>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
       )}
       <Suspense fallback={<p className="text-muted text-sm">Loading...</p>}>
         {Specific ? (

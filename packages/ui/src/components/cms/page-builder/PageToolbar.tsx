@@ -4,9 +4,10 @@ import type { Locale } from "@acme/i18n/locales";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import React, { useEffect } from "react";
 import { Button, Dialog, DialogTrigger, DialogContent, DialogTitle, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../../atoms/shadcn";
+import { Popover, PopoverContent, PopoverTrigger, Tooltip as UITooltip } from "../../atoms";
 import { getLegacyPreset } from "../../../utils/devicePresets";
 import DeviceSelector from "../../common/DeviceSelector";
-import type { Breakpoint } from "./panels/BreakpointsPanel";
+import BreakpointsPanel, { type Breakpoint } from "./panels/BreakpointsPanel";
 import DesignMenu, { DesignMenuContent } from "./DesignMenu";
 import MoreMenu from "./MoreMenu";
 import { Tooltip } from "../../atoms";
@@ -28,6 +29,9 @@ interface Props {
   // Editing size control (px) for current viewport
   editingSizePx?: number | null;
   setEditingSizePx?: (px: number | null) => void;
+  // Zoom indicator/control (compact)
+  zoom?: number;
+  setZoom?: (z: number) => void;
   // Pages navigator (builder)
   pagesNav?: { items: { label: string; value: string; href: string }[]; current: string };
 }
@@ -47,9 +51,13 @@ const PageToolbar = ({
   extraDevices,
   editingSizePx,
   setEditingSizePx,
+  zoom,
+  setZoom,
   pagesNav,
 }: Props) => {
-  const router = useRouter();
+  // Only access Next.js router when the pages navigator is used to avoid
+  // requiring an app router context in tests/standalone usage.
+  const router = pagesNav ? useRouter() : (null as unknown as ReturnType<typeof useRouter> | null);
   useEffect(() => {
     const presets: Record<string, string> = {
       1: getLegacyPreset("desktop").id,
@@ -82,6 +90,8 @@ const PageToolbar = ({
   const [helpOpen, setHelpOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [w, setW] = React.useState<number>(0);
+  const [sizeOpen, setSizeOpen] = React.useState(false);
+  const [sizeDraft, setSizeDraft] = React.useState<string>("");
   React.useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -112,7 +122,7 @@ const PageToolbar = ({
           value={pagesNav.current}
           onValueChange={(v) => {
             const next = pagesNav.items.find((i) => i.value === v) || null;
-            if (next?.href) router.push(next.href);
+            if (next?.href) router?.push(next.href as any);
           }}
         >
           <SelectTrigger className="h-8 w-52 text-xs" aria-label="Page">
@@ -137,27 +147,87 @@ const PageToolbar = ({
           compact
           extraDevices={extraDevices}
         />
-        {/* Editing size: override width in px */}
-        <div className="flex items-center gap-1">
-          <label className="text-xs text-muted-foreground" htmlFor="pb-editing-size">Size</label>
-          <input
-            id="pb-editing-size"
-            type="number"
-            className="h-8 w-20 rounded border px-2 text-xs"
-            placeholder="px"
-            value={editingSizePx ?? ""}
-            onChange={(e) => {
-              const v = e.target.value;
-              if (!setEditingSizePx) return;
-              if (v === "") setEditingSizePx(null);
-              else {
-                const n = parseInt(v, 10);
-                if (Number.isFinite(n)) setEditingSizePx(Math.max(320, Math.min(1920, n)));
+        {/* Compact zoom display: click opens View menu zoom controls; Alt-click resets to 100% */}
+        <UITooltip text="Zoom">
+          <Button
+            variant="outline"
+            className="h-8 px-2 text-xs"
+            aria-label="Zoom"
+            onClick={(e) => {
+              if (e.altKey) {
+                setZoom?.(1);
+                try { window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'info', title: 'Zoom reset to 100%' } })); } catch {}
+              } else {
+                try { window.dispatchEvent(new Event('pb:open-view')); } catch {}
               }
             }}
-            title="Editing size (px)"
+            onDoubleClick={() => setZoom?.(1)}
+            title="Click to open Zoom controls; Alt-click to reset"
+          >
+            {`${Math.round((zoom ?? 1) * 100)}%`}
+          </Button>
+        </UITooltip>
+        {/* Breakpoints overflow: three-dot menu next to device selector */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <Tooltip text="Manage breakpoints">
+              <Button variant="outline" size="icon" aria-label="Manage breakpoints">
+                •••
+              </Button>
+            </Tooltip>
+          </DialogTrigger>
+          <BreakpointsPanel
+            breakpoints={breakpoints ?? []}
+            onChange={(list) => setBreakpoints?.(list)}
           />
-        </div>
+        </Dialog>
+        {/* Editing size: popover with numeric input + Done (per viewport) */}
+        <Popover open={sizeOpen} onOpenChange={(o) => {
+          setSizeOpen(o);
+          if (o) setSizeDraft((editingSizePx ?? "").toString());
+        }}>
+          <UITooltip text="Editing size (px)">
+            <PopoverTrigger asChild>
+              <Button variant="outline" className="h-8 px-2 text-xs" aria-label="Editing size">
+                {editingSizePx ? `${editingSizePx}px` : "Size"}
+              </Button>
+            </PopoverTrigger>
+          </UITooltip>
+          <PopoverContent align="start" className="w-40 space-y-2">
+            <label className="text-xs text-muted-foreground" htmlFor="pb-editing-size">Editing size (px)</label>
+            <input
+              id="pb-editing-size"
+              type="number"
+              className="h-8 w-full rounded border px-2 text-xs"
+              placeholder="px"
+              value={sizeDraft}
+              onChange={(e) => setSizeDraft(e.target.value)}
+            />
+            <div className="flex items-center justify-between gap-2">
+              <Button
+                variant="outline"
+                className="h-8 px-2 text-xs"
+                onClick={() => {
+                  if (!setEditingSizePx) { setSizeOpen(false); return; }
+                  const v = sizeDraft.trim();
+                  if (!v) { setEditingSizePx(null); setSizeOpen(false); return; }
+                  const n = parseInt(v, 10);
+                  if (Number.isFinite(n)) setEditingSizePx(Math.max(320, Math.min(1920, n)));
+                  setSizeOpen(false);
+                }}
+              >
+                Done
+              </Button>
+              <Button
+                variant="ghost"
+                className="h-8 px-2 text-xs"
+                onClick={() => { setSizeOpen(false); }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </PopoverContent>
+        </Popover>
         <Tooltip text="Rotate">
           <Button
             variant="outline"

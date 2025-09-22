@@ -67,22 +67,18 @@ describe("coreEnv proxy", () => {
       CMS_SPACE_URL: "https://example.com",
       CMS_ACCESS_TOKEN: "token",
       SANITY_API_VERSION: "v1",
-    };
+    } as NodeJS.ProcessEnv;
     jest.resetModules();
+    const loaderMod = await import("../src/env/core/loader.parse.ts");
+    const spy = jest.spyOn(loaderMod, "loadCoreEnv");
     const core = await import("../src/env/core");
-    const spy = jest.fn(core.loadCoreEnv);
-    let cache: any;
-    const proxy: any = new Proxy(
-      {},
-      {
-        get: (_t, prop: string) => {
-          if (!cache) cache = spy();
-          return cache[prop];
-        },
-      },
-    );
-    (core as any).coreEnv = proxy;
+    // Access multiple times; loader should be invoked once via proxy cache
+    // The first access triggers loadCoreEnv; subsequent accesses use cached env
+    // so the spy call count remains 1.
+    // Access properties
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     core.coreEnv.CMS_SPACE_URL;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     core.coreEnv.CMS_ACCESS_TOKEN;
     expect(spy).toHaveBeenCalledTimes(1);
     process.env = OLD;

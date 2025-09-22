@@ -15,15 +15,15 @@ export const leftRailIconAssets: Partial<Record<
   | "inspector",
   string
 >> = {
-  // Example paths (replace with final assets when available):
-  // add: "/editor-icons/add.svg",
-  // layers: "/editor-icons/layers.svg",
-  // pages: "/editor-icons/pages.svg",
-  // globalSections: "/editor-icons/global-sections.svg",
-  // siteStyles: "/editor-icons/site-styles.svg",
-  // appMarket: "/editor-icons/app-market.svg",
-  // cms: "/editor-icons/cms.svg",
-  // code: "/editor-icons/code.svg",
-  // inspector: "/editor-icons/inspector.svg",
+  // Monochrome line PNGs (16–19px). Place these under the host app's
+  // `public/editor-icons/` directory. These paths are absolute from public/.
+  add: "/editor-icons/add.png",
+  layers: "/editor-icons/layers.png",
+  pages: "/editor-icons/pages.png",
+  globalSections: "/editor-icons/global-sections.png",
+  siteStyles: "/editor-icons/site-styles.png",
+  appMarket: "/editor-icons/app-market.png",
+  cms: "/editor-icons/cms.png",
+  code: "/editor-icons/code.png",
+  inspector: "/editor-icons/inspector.png",
 };
-

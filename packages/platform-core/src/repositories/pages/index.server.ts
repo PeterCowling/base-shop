@@ -105,3 +105,19 @@ export async function diffHistory(shop: string): Promise<PageDiffEntry[]> {
   }
 }
 
+export async function reorderPages(shop: string, ids: string[]): Promise<Page[]> {
+  const repo = await getRepo();
+  // Call backend reorder if available; otherwise fall back to JSON backend.
+  const maybe = (repo as unknown as { reorderPages?: (s: string, i: string[]) => Promise<Page[]> }).reorderPages;
+  if (typeof maybe === "function") {
+    try {
+      return await maybe(shop, ids);
+    } catch {
+      const jsonRepo = await loadJsonRepo();
+      repoPromise = undefined;
+      return jsonRepo.reorderPages(shop, ids);
+    }
+  }
+  const jsonRepo = await loadJsonRepo();
+  return jsonRepo.reorderPages(shop, ids);
+}

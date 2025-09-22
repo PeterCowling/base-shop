@@ -21,9 +21,10 @@ interface Props {
   shop: string;
   pageId: string;
   selectedIds: string[];
+  onSelectIds?: (ids: string[]) => void;
 }
 
-export default function CommentsLayer({ canvasRef, components, shop, pageId, selectedIds }: Props) {
+export default function CommentsLayer({ canvasRef, components, shop, pageId, selectedIds, onSelectIds }: Props) {
   const [threads, setThreads] = useState<Thread[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -112,6 +113,8 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
     try {
       el.scrollIntoView({ block: "center", inline: "center", behavior: "smooth" });
     } catch {}
+    // Also select the component in the editor when jumping
+    try { onSelectIds?.([componentId]); } catch {}
     const prevOutline = el.style.outline;
     const prevOffset = el.style.outlineOffset;
     el.classList.add("ring-2", "ring-primary");

@@ -20,6 +20,8 @@ This repo uses Cypress for end‑to‑end and a11y testing. Tests live under `cy
 - `pnpm test:e2e` — convenience wrapper that runs `e2e:dashboard` then `e2e:shop`.
 - Dev server variant (useful for debugging): `pnpm e2e:cms` starts `next dev` on port 3010 and runs a single spec against it. Note the `env -u ELECTRON_RUN_AS_NODE` in this script avoids a known Electron/Next dev interaction.
 - CMS functional flows (using isolated DATA_ROOT): `pnpm e2e:cms:functional` runs functional CMS specs against a temporary data root so file assertions use the same directory the app writes to.
+- Coverage run (client+server): `pnpm e2e:coverage` builds/starts with `COVERAGE=1`, instruments client bundles and collects server route coverage via `/api/__coverage__`.
+- Lighthouse only: `pnpm e2e:lh` runs the LH‑tagged specs (`grepTags=lh`) on Chrome, desktop viewport.
 
 All of the above rely on `start-server-and-test` to boot the app and wait until the target port responds before executing `cypress run`.
 
@@ -152,3 +154,4 @@ Two common patterns are used in specs:
 - Overrides validation (negative): `cypress/e2e/cms-overrides-validation-functional.cy.ts:1`
 - Overview reflects settings: `cypress/e2e/cms-overview-readonly-functional.cy.ts:1`
 - Stock alerts validation: `cypress/e2e/cms-stock-alerts-validation-functional.cy.ts:1`
+  - When `COVERAGE=1`, `after:run` fetches server coverage and writes `.nyc_output/server.coverage.json` for merging.

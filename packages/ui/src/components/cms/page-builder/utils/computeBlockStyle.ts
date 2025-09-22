@@ -20,6 +20,8 @@ export type ComputeBlockStyleArgs = {
   topVal?: string | number;
   dockX?: DockX;
   dockY?: DockY;
+  // Builder-only responsive behavior flag from editor
+  responsiveBehavior?: "none" | "scale-proportional";
 };
 
 /**
@@ -40,6 +42,7 @@ export function computeBlockStyle({
   topVal,
   dockX,
   dockY,
+  responsiveBehavior,
 }: ComputeBlockStyleArgs): Record<string, any> {
   const style: Record<string, any> = {
     transform: CSS.Transform.toString(transform),
@@ -90,6 +93,29 @@ export function computeBlockStyle({
     if (leftVal) pos.left = leftVal;
   }
 
+  // Apply responsive behavior overrides (builder-only)
+  if ((responsiveBehavior === "scale-proportional" || responsiveBehavior === undefined) && position !== "absolute") {
+    if (responsiveBehavior === "scale-proportional") {
+      // Attempt to compute aspect-ratio if both dimensions are numeric px or numbers
+      const toNum = (v?: string | number): number | undefined => {
+        if (v === undefined) return undefined;
+        if (typeof v === "number") return isFinite(v) ? v : undefined;
+        const s = String(v).trim();
+        if (/^\d+(\.\d+)?px$/.test(s)) return parseFloat(s);
+        if (/^\d+(\.\d+)?$/.test(s)) return parseFloat(s);
+        return undefined;
+      };
+      const w = toNum(widthVal);
+      const h = toNum(heightVal);
+      if (w && h) {
+        (style as any).aspectRatio = `${w} / ${h}`;
+        // Stretch to container width while keeping ratio
+        (style as any).width = "100%";
+        // Let height auto-derive from aspect-ratio
+        delete (style as any).height;
+      }
+    }
+  }
+
   return { ...style, ...pos };
 }
-

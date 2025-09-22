@@ -6,6 +6,7 @@ import { SortableContext, verticalListSortingStrategy, useSortable, sortableKeyb
 import { CSS } from "@dnd-kit/utilities";
 import type { PageComponent, HistoryState } from "@acme/types";
 import { isHiddenForViewport } from "./state/layout/utils";
+import { applyDesktopOrderAcrossBreakpoints } from "./utils/applyDesktopOrder";
 import type { Action } from "./state";
 import { useMemo, useState, useCallback } from "react";
 
@@ -16,9 +17,10 @@ interface LayersPanelProps {
   dispatch: (action: Action) => void;
   editor?: HistoryState["editor"];
   viewport?: "desktop" | "tablet" | "mobile";
+  crossNotices?: boolean;
 }
 
-type Node = PageComponent & { children?: PageComponent[] };
+type Node = PageComponent & { children?: PageComponent[] } & { __isGlobal?: boolean; __hasOverride?: boolean };
 
 function useSelectionHandlers(selectedIds: string[], onSelectIds: (ids: string[]) => void) {
   return useCallback(
@@ -90,9 +92,18 @@ function SortableRow({ node, index, parentId, selected, onSelect, onToggleHidden
             className="w-28 rounded border px-1 text-xs"
           />
         ) : (
-          <span className={`truncate ${node.hidden ? "opacity-50" : ""}`} onDoubleClick={() => setEditing(true)}>
-            {(node as any).name || node.type}
-          </span>
+          <>
+            <span className={`truncate ${node.hidden ? "opacity-50" : ""}`} onDoubleClick={() => setEditing(true)}>
+              {(node as any).name || node.type}
+            </span>
+            {/* Global/Override badges */}
+            {node.__isGlobal && (
+              <span className="ml-2 rounded bg-green-500/15 px-1 text-[10px] text-green-700" title="Global section">Global</span>
+            )}
+            {node.__hasOverride && (
+              <span className="ml-1 rounded bg-amber-500/15 px-1 text-[10px] text-amber-700" title="Breakpoint override">Override</span>
+            )}
+          </>
         )}
       </div>
       <div className="flex items-center gap-1">
@@ -219,7 +230,7 @@ function LayerChildren({ parent, selectedIds, onSelect, onToggleHidden, onToggle
   );
 }
 
-export default function LayersPanel({ components, selectedIds, onSelectIds, dispatch, editor, viewport = "desktop" }: LayersPanelProps) {
+export default function LayersPanel({ components, selectedIds, onSelectIds, dispatch, editor, viewport = "desktop", crossNotices = true }: LayersPanelProps) {
   const [search, setSearch] = useState("");
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
   const sensors = useSensors(
@@ -235,7 +246,16 @@ export default function LayersPanel({ components, selectedIds, onSelectIds, disp
       const children = Array.isArray(n.children) ? (n.children as Node[]).map(decorate) : undefined;
       const hidden = isHiddenForViewport(n.id, editor, (n as any).hidden as boolean | undefined, viewport);
       const name = (flags as any).name;
-      return { ...n, ...(children ? { children } : {}), ...(name !== undefined ? { name } : {}), hidden } as Node;
+      const isGlobal = !!((flags as any)?.global?.id);
+      // Heuristic: mark as override if component has any viewport-specific props for current viewport
+      const hasVpOverride = (() => {
+        if (!crossNotices) return false;
+        const props = n as any;
+        const suffix = viewport === 'mobile' ? 'Mobile' : viewport === 'tablet' ? 'Tablet' : 'Desktop';
+        const keys = Object.keys(props || {});
+        return keys.some((k) => k.endsWith(suffix));
+      })();
+      return { ...n, ...(children ? { children } : {}), ...(name !== undefined ? { name } : {}), hidden, __isGlobal: isGlobal, __hasOverride: hasVpOverride } as Node;
     };
     const baseNodes = (components as Node[]).map(decorate);
     if (!search) return baseNodes;
@@ -274,6 +294,16 @@ export default function LayersPanel({ components, selectedIds, onSelectIds, disp
     <div className="space-y-2">
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold">Layers</h3>
+        <button
+          type="button"
+          className="rounded border px-2 py-1 text-xs hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+          title="Apply current desktop order to Tablet and Mobile"
+          onClick={() => {
+            try { applyDesktopOrderAcrossBreakpoints(components, editor, dispatch); } catch {}
+          }}
+        >
+          Use Section Order on All Breakpoints
+        </button>
       </div>
       <input
         type="text"

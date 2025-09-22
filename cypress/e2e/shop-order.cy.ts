@@ -1,4 +1,4 @@
-describe("Shop order flow", () => {
+describe("Shop order flow", { tags: ["smoke"] }, () => {
   beforeEach(() => {
     cy.intercept("POST", "**/api/checkout-session", {
       statusCode: 200,
@@ -90,4 +90,3 @@ describe("Shop order flow", () => {
     cy.checkA11y();
   });
 });
-

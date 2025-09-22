@@ -1,4 +1,4 @@
-describe("Shopper journey", () => {
+describe("Shopper journey", { tags: ["smoke"] }, () => {
   beforeEach(() => {
     cy.intercept("POST", "**/api/checkout-session", {
       statusCode: 200,

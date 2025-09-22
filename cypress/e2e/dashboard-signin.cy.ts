@@ -1,4 +1,4 @@
-describe("Dashboard sign in", () => {
+describe("Dashboard sign in", { tags: ["smoke"] }, () => {
   it("logs in via the login page and manages session", () => {
     const callbackUrl = "/cms";
     cy.visit(`/login?callbackUrl=${callbackUrl}`);

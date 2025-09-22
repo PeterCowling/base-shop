@@ -179,7 +179,14 @@ export default function EditableCanvas({
         <SelectionBreadcrumb components={components} selectedIds={selectedIds} onSelectIds={onSelectIds} />
         <CommentsHelpLauncher />
         {shop && pageId && showComments && (
-          <CommentsLayer canvasRef={canvasRef as any} components={components} shop={shop ?? ""} pageId={pageId ?? ""} selectedIds={selectedIds} />
+          <CommentsLayer
+            canvasRef={canvasRef as any}
+            components={components}
+            shop={shop ?? ""}
+            pageId={pageId ?? ""}
+            selectedIds={selectedIds}
+            onSelectIds={onSelectIds}
+          />
         )}
         {peers.length > 0 && <PeerSelectionsOverlay peers={peers} positions={positions} />}
         <SoftLockBanner selectedIds={selectedIds} softLocksById={softLocksById} />

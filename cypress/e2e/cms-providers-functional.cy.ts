@@ -1,6 +1,6 @@
 import "@testing-library/cypress/add-commands";
 
-describe("CMS settings – Providers (tracking) functional", () => {
+describe("CMS settings – Providers (tracking) functional", { tags: ["smoke"] }, () => {
   const shop = "demo";
   const root = (Cypress.env("TEST_DATA_ROOT") as string) || "__tests__/data/shops";
   const settingsFile = `${root}/${shop}/settings.json`;

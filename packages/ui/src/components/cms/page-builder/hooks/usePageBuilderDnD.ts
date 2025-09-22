@@ -231,6 +231,7 @@ export function usePageBuilderDnD({
     handleDragStart,
     handleDragMove,
     handleDragEnd,
+    handleDragCancel,
     insertIndex,
     insertParentId,
     activeType,

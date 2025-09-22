@@ -22,6 +22,8 @@ interface Props {
   togglePalette: () => void;
   parentFirst?: boolean;
   onParentFirstChange?: (v: boolean) => void;
+  crossBreakpointNotices?: boolean;
+  onCrossBreakpointNoticesChange?: (v: boolean) => void;
 }
 
 export default function ResponsiveRightActions({
@@ -37,14 +39,22 @@ export default function ResponsiveRightActions({
   togglePalette,
   parentFirst,
   onParentFirstChange,
+  crossBreakpointNotices,
+  onCrossBreakpointNoticesChange,
 }: Props) {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [w, setW] = React.useState<number>(0);
   const [presetOpen, setPresetOpen] = React.useState(false);
+  const [viewOpen, setViewOpen] = React.useState(false);
   React.useEffect(() => {
     const open = () => setPresetOpen(true);
     window.addEventListener("pb:open-presets", open as EventListener);
     return () => window.removeEventListener("pb:open-presets", open as EventListener);
+  }, []);
+  React.useEffect(() => {
+    const open = () => setViewOpen(true);
+    window.addEventListener("pb:open-view", open as EventListener);
+    return () => window.removeEventListener("pb:open-view", open as EventListener);
   }, []);
   React.useEffect(() => {
     const el = containerRef.current;
@@ -67,6 +77,8 @@ export default function ResponsiveRightActions({
       <CanvasControlsMenu gridProps={gridProps} />
       {showView ? (
         <ViewMenu
+          open={viewOpen}
+          onOpenChange={setViewOpen}
           showPreview={showPreview}
           togglePreview={togglePreview}
           showComments={showComments}
@@ -77,6 +89,8 @@ export default function ResponsiveRightActions({
           parentFirst={parentFirst}
           onParentFirstChange={onParentFirstChange}
           gridProps={gridProps}
+          crossBreakpointNotices={crossBreakpointNotices}
+          onCrossBreakpointNoticesChange={onCrossBreakpointNoticesChange}
         />
       ) : null}
       {showPresets && onInsertPreset && (
@@ -102,6 +116,8 @@ export default function ResponsiveRightActions({
                 parentFirst={parentFirst}
                 onParentFirstChange={onParentFirstChange}
                 gridProps={gridProps}
+                crossBreakpointNotices={crossBreakpointNotices}
+                onCrossBreakpointNoticesChange={onCrossBreakpointNoticesChange}
               />
             ) : undefined
           }

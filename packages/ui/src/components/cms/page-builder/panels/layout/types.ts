@@ -7,6 +7,8 @@ export type EditorFlags = {
   locked?: boolean;
   zIndex?: number;
   hidden?: ("desktop" | "tablet" | "mobile")[];
+  // Per-element responsive behavior (builder-only flag)
+  responsiveBehavior?: "none" | "scale-proportional";
   // Legacy single strategy (mobile); kept for backwards-compat
   stackStrategy?: "default" | "reverse" | "custom";
   // Per-device stacking strategies
@@ -34,4 +36,3 @@ export interface EditorContextProps {
   editorMap?: HistoryState["editor"];
   updateEditorForId?: (id: string, patch: Partial<EditorFlags>) => void;
 }
-

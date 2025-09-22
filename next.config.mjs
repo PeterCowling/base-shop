@@ -66,3 +66,22 @@ const nextConfig = {
 };
 
 export default nextConfig;
+    // Enable Istanbul instrumentation for E2E coverage when COVERAGE=1
+    if (!isServer && process.env.COVERAGE === '1') {
+      config.module ??= {};
+      config.module.rules ??= [];
+      config.module.rules.push({
+        test: /\.(js|jsx|ts|tsx)$/,
+        enforce: 'post',
+        include: [
+          path.resolve(process.cwd(), 'apps'),
+          path.resolve(process.cwd(), 'packages'),
+          path.resolve(process.cwd(), 'src')
+        ],
+        exclude: [/node_modules\//, /\.cy\./, /__tests__\//, /\.test\./],
+        use: {
+          loader: require.resolve('istanbul-instrumenter-loader'),
+          options: { esModules: true },
+        },
+      });
+    }

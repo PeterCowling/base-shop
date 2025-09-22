@@ -158,7 +158,7 @@ describe('cms env extras', () => {
       CMS_SEARCH_ENABLED: 'true',
       CMS_SPACE_URL: 'https://cms.example.com',
       CMS_ACCESS_TOKEN: 'token',
-      SANITY_API_VERSION: 'v',
+      SANITY_API_VERSION: 'v1',
       SANITY_PROJECT_ID: 'pid',
       SANITY_DATASET: 'ds',
       SANITY_API_TOKEN: 'sat',

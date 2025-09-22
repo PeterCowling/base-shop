@@ -1,4 +1,5 @@
 import type { ComponentType } from "./defaults";
+import type { PageComponent } from "@acme/types";
 
 export interface PaletteMeta {
   type: ComponentType;
@@ -18,7 +19,7 @@ export interface PaletteProps {
   onSetSectionBackground: (url: string) => void;
   selectedIsSection?: boolean;
   defaultTab?: "components" | "media";
+  onInsertPreset?: (component: PageComponent) => void;
 }
 
 export type PaletteTab = "components" | "media";
-

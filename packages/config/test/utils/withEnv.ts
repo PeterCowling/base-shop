@@ -120,7 +120,12 @@ export async function withEnv<T>(
   }
 
   const nextEnv: NodeJS.ProcessEnv = { ...preservedEnv };
-  const overrideKeys = new Set(Object.keys(vars));
+  // Capture explicit overrides including keys set to undefined
+  const overrideKeys = new Set(Object.getOwnPropertyNames(vars));
+  const hasEmailFromOverride = Object.prototype.hasOwnProperty.call(
+    vars,
+    "EMAIL_FROM",
+  );
   for (const key of CARRY_OVER_KEYS) {
     if (overrideKeys.has(key)) {
       continue;
@@ -150,7 +155,7 @@ export async function withEnv<T>(
     delete (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
   }
 
-  if (!overrideKeys.has("EMAIL_FROM") && typeof nextEnv.EMAIL_FROM !== "string") {
+  if (!hasEmailFromOverride && typeof nextEnv.EMAIL_FROM !== "string") {
     const fallbackFrom = originalEnv.EMAIL_FROM ?? "test@example.com";
     if (typeof fallbackFrom === "string" && fallbackFrom.length > 0) {
       nextEnv.EMAIL_FROM = fallbackFrom;
@@ -160,12 +165,21 @@ export async function withEnv<T>(
   jest.resetModules();
   process.env = nextEnv;
 
+  // Ensure explicit unset overrides are honored for EMAIL_FROM
+  if (hasEmailFromOverride && typeof vars.EMAIL_FROM === "undefined") {
+    delete (process.env as Record<string, unknown>)["EMAIL_FROM"];
+  }
+
   if (!("NODE_ENV" in vars)) {
     delete process.env.NODE_ENV;
   }
 
   try {
-    return await loader();
+    let result!: T;
+    await jest.isolateModulesAsync(async () => {
+      result = await loader();
+    });
+    return result;
   } finally {
     delete (process.env as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL];
     delete (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;

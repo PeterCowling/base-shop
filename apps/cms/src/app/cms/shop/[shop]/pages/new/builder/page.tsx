@@ -1,6 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/new/builder/page.tsx
 
 import { createPage } from "@cms/actions/pages/create";
+import { getPages } from "@platform-core/repositories/pages/index.server";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page } from "@acme/types";
 import dynamic from "next/dynamic";
@@ -24,6 +25,7 @@ export default async function NewPageBuilderRoute({
   params: Promise<Params>;
 }) {
   const { shop } = await params;
+  const pages = await getPages(shop);
 
   const blank = {
     id: "",
@@ -62,7 +64,22 @@ export default async function NewPageBuilderRoute({
         use the editor buttons for quick 100% width or height, and press
         <kbd>Space</kbd>/<kbd>Enter</kbd> then arrow keys to move components.
       </p>
-      <PageBuilder page={blank} onSave={save} onPublish={publish} />
+      <PageBuilder
+        page={blank}
+        onSave={save}
+        onPublish={publish}
+        pagesNav={{
+          items: [
+            { label: "New page", value: "__new__", href: `/cms/shop/${shop}/pages/new/builder` },
+            ...pages.map((p) => ({
+              label: p.slug || p.id,
+              value: p.slug || p.id,
+              href: `/cms/shop/${shop}/pages/${p.slug || p.id}/builder`,
+            })),
+          ],
+          current: "__new__",
+        }}
+      />
     </>
   );
 }

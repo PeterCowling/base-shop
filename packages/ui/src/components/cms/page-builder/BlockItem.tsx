@@ -245,7 +245,15 @@ const BlockItem = memo(function BlockItemComponent({
           topVal,
           dockX: (component as any).dockX as any,
           dockY: (component as any).dockY as any,
+          responsiveBehavior: (flags as any)?.responsiveBehavior as any,
         }),
+        // Pin to top (sticky) for top-level globals when flagged in editor
+        ...(function() {
+          const isTopLevel = !parentId;
+          const pinned = !!(flags as any)?.pinned;
+          if (!isTopLevel || !pinned) return {};
+          return { position: 'sticky', top: 0, zIndex: 30 } as const;
+        })(),
         // Custom cursor support
         ...(function() {
           const cur = (component as any).cursor as string | undefined;

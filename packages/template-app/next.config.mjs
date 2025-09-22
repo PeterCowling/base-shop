@@ -26,6 +26,19 @@ const nextConfig = {
     ...(sharedConfig.typescript ?? {}),
     tsconfigPath: "./tsconfig.json",
   },
+  // Disable Webpack's filesystem cache for this template app to avoid
+  // intermittent ENOENT rename issues in CI/turbo concurrent builds.
+  // Preserve upstream tweaks from the shared config's webpack hook.
+  webpack(config, ctx) {
+    if (typeof sharedConfig.webpack === "function") {
+      config = sharedConfig.webpack(config, ctx);
+    }
+    // Allow opting back in via env if desired
+    if (process.env.NEXT_CACHE !== "true") {
+      config.cache = false;
+    }
+    return config;
+  },
   // Override or extend any fields here.  In this case we need to
   // transpile additional internal packages so that Next.js can import
   // their untranspiled source code from `node_modules`.

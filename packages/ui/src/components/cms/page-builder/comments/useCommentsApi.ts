@@ -3,7 +3,7 @@ import type { Thread } from "./types";
 
 export function useCommentsApi(shop: string, pageId: string) {
   const loadThreads = useCallback(async (): Promise<Thread[]> => {
-    const res = await fetch(`/cms/api/comments/${shop}/${pageId}`);
+    const res = await fetch(`/api/comments/${shop}/${pageId}`);
     const data = (await res.json()) as any[];
     return (data || []).map((t) => ({
       id: t.id,
@@ -18,7 +18,7 @@ export function useCommentsApi(shop: string, pageId: string) {
   }, [shop, pageId]);
 
   const patchThread = useCallback(async (id: string, body: Record<string, unknown>) => {
-    await fetch(`/cms/api/comments/${shop}/${pageId}/${id}`, {
+    await fetch(`/api/comments/${shop}/${pageId}/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
@@ -26,12 +26,12 @@ export function useCommentsApi(shop: string, pageId: string) {
   }, [shop, pageId]);
 
   const deleteThread = useCallback(async (id: string) => {
-    await fetch(`/cms/api/comments/${shop}/${pageId}/${id}`, { method: "DELETE" });
+    await fetch(`/api/comments/${shop}/${pageId}/${id}`, { method: "DELETE" });
   }, [shop, pageId]);
 
   const createThread = useCallback(
     async (componentId: string, text: string, extra?: { assignedTo?: string | null; pos?: { x: number; y: number } }) => {
-      const res = await fetch(`/cms/api/comments/${shop}/${pageId}`, {
+      const res = await fetch(`/api/comments/${shop}/${pageId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ componentId, text, assignedTo: extra?.assignedTo ?? undefined, pos: extra?.pos ?? undefined }),
@@ -44,4 +44,3 @@ export function useCommentsApi(shop: string, pageId: string) {
 
   return { loadThreads, patchThread, deleteThread, createThread };
 }
-

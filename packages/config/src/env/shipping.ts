@@ -120,11 +120,10 @@ export const shippingEnvSchema = z
   });
 
 // ---------- loader (new) ----------
-export function loadShippingEnv(
-  raw: NodeJS.ProcessEnv = process.env,
-): ShippingEnv {
-  assertStringEnv(raw);
-  const parsed = shippingEnvSchema.safeParse(raw);
+export function loadShippingEnv(raw?: NodeJS.ProcessEnv): ShippingEnv {
+  const effective = raw ?? process.env;
+  assertStringEnv(effective);
+  const parsed = shippingEnvSchema.safeParse(effective);
   if (!parsed.success) {
     console.error(
       "❌ Invalid shipping environment variables:",

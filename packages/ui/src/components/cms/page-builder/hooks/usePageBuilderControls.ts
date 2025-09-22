@@ -246,6 +246,9 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
 
   const setBreakpoints = useCallback((list: any[]) => dispatch({ type: "set-breakpoints", breakpoints: list } as any), [dispatch]);
 
+  // Cross-breakpoint notifications (show indicators for overrides)
+  const [crossBreakpointNotices, setCrossBreakpointNotices] = useState(true);
+
   return {
     deviceId,
     setDeviceId,
@@ -285,6 +288,8 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
     extraDevices,
     editingSizePx: editingSizeRecord[viewport] ?? null,
     setEditingSizePx,
+    crossBreakpointNotices,
+    setCrossBreakpointNotices,
   };
 };
 

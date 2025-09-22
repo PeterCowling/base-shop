@@ -1,11 +1,8 @@
 /** @jest-environment node */
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
-import {
-  importShippingModule,
-  resetShippingEnv,
-  spyOnConsoleError,
-} from "./shipping.test-helpers";
+import { importShippingModule, resetShippingEnv, spyOnConsoleError } from "./shipping.test-helpers";
+import { withEnv as withGlobalEnv } from "../../../test/utils/withEnv";
 
 afterEach(() => {
   resetShippingEnv();
@@ -79,19 +76,19 @@ describe("loadShippingEnv", () => {
 
   it("throws when process.env has invalid variables", async () => {
     const { loadShippingEnv } = await importShippingModule();
-    process.env = {
-      ...process.env,
-      UPS_KEY: 999 as unknown as string,
-    } as NodeJS.ProcessEnv;
-    const errorSpy = spyOnConsoleError();
-    expect(() => loadShippingEnv()).toThrow("Invalid shipping environment variables");
-    expect(errorSpy).toHaveBeenCalledWith(
-      "❌ Invalid shipping environment variables:",
-      expect.objectContaining({
-        UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
-      }),
-    );
-    errorSpy.mockRestore();
+    await withGlobalEnv({ UPS_KEY: 999 as unknown as string }, async () => {
+      const errorSpy = spyOnConsoleError();
+      expect(() => loadShippingEnv()).toThrow(
+        "Invalid shipping environment variables",
+      );
+      expect(errorSpy).toHaveBeenCalledWith(
+        "❌ Invalid shipping environment variables:",
+        expect.objectContaining({
+          UPS_KEY: { _errors: expect.arrayContaining([expect.any(String)]) },
+        }),
+      );
+      errorSpy.mockRestore();
+    });
   });
 
   it("returns env for valid input", async () => {

@@ -43,7 +43,7 @@ export function useCmsNavItems({
       { href: shop ? `${base}/media` : "/media", label: "Media", icon: "🖼️" },
       ...(shop ? [{ href: `${base}/edit-preview`, label: "Edit Preview", icon: "🧪" }] : []),
       ...(shop && role && ["admin", "ShopAdmin", "ThemeEditor"].includes(role)
-        ? [{ href: `${base}/themes`, label: "Themes", icon: "🎨" }]
+        ? [{ href: `${base}/themes`, label: "Theme", icon: "🎨" }]
         : []),
       { href: shop ? `${base}/settings` : "/settings", label: "Settings", icon: "⚙️" },
       ...(shop

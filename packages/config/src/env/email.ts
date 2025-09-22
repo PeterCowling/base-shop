@@ -1,6 +1,51 @@
 import "@acme/zod-utils/initZod";
 import { z } from "zod";
 
+const NON_STRING_KEYS = [
+  "EMAIL_FROM",
+  "EMAIL_SENDER_NAME",
+  "GMAIL_USER",
+  "GMAIL_PASS",
+  "SMTP_URL",
+  "SMTP_PORT",
+  "SMTP_SECURE",
+  "CAMPAIGN_FROM",
+  "EMAIL_PROVIDER",
+  "SENDGRID_API_KEY",
+  "SENDGRID_MARKETING_KEY",
+  "RESEND_API_KEY",
+  "EMAIL_BATCH_SIZE",
+  "EMAIL_BATCH_DELAY_MS",
+] as const;
+const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
+
+function assertStringEnv(raw: NodeJS.ProcessEnv): void {
+  const invalidKeys = new Set<string>();
+  const flagged = Reflect.get(raw, NON_STRING_ENV_SYMBOL) as unknown;
+  const globalFlagged = (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
+  const candidates: unknown[] = [];
+  if (Array.isArray(flagged)) candidates.push(...flagged);
+  if (Array.isArray(globalFlagged)) candidates.push(...globalFlagged);
+  for (const key of candidates) {
+    if (typeof key === "string" && NON_STRING_KEYS.includes(key as (typeof NON_STRING_KEYS)[number])) {
+      invalidKeys.add(key);
+    }
+  }
+  for (const key of NON_STRING_KEYS) {
+    const value = raw[key];
+    if (typeof value !== "string" && typeof value !== "undefined") {
+      invalidKeys.add(key);
+    }
+  }
+  if (invalidKeys.size === 0) return;
+  const formatted: Record<string, unknown> = { _errors: [] };
+  for (const key of invalidKeys) {
+    formatted[key] = { _errors: ["Expected string"] };
+  }
+  console.error("❌ Invalid email environment variables:", formatted);
+  throw new Error("Invalid email environment variables");
+}
+
 const hasEmailProvider =
   typeof process.env.EMAIL_PROVIDER === "string" &&
   process.env.EMAIL_PROVIDER.trim().length > 0;
@@ -78,6 +123,7 @@ const rawEnv: NodeJS.ProcessEnv = {
     ? process.env.EMAIL_PROVIDER
     : defaultEmailProvider,
 };
+assertStringEnv(rawEnv);
 const parsed = emailEnvSchema.safeParse(rawEnv);
 
 if (!parsed.success) {

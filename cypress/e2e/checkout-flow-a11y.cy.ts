@@ -1,7 +1,7 @@
 import '@testing-library/cypress/add-commands';
 import 'cypress-plugin-tab';
 
-describe('Checkout flow accessibility', () => {
+describe('Checkout flow accessibility', { tags: ['a11y'] }, () => {
   beforeEach(() => {
     cy.intercept('POST', '**/api/checkout-session', {
       statusCode: 200,
@@ -48,4 +48,3 @@ describe('Checkout flow accessibility', () => {
     cy.location('pathname').should('not.eq', '/en/checkout');
   });
 });
-

@@ -12,25 +12,36 @@ export const PopoverContent = React.forwardRef<
     container?: HTMLElement | null;
   }
 >(({ className, sideOffset = 4, align = "center", container, ...props }, ref) => {
-  const defaultContainer =
-    typeof document !== "undefined"
-      ? (document.querySelector('[data-pb-portal-root]') as HTMLElement | null)
-      : null;
+  // If a container is provided, render within a Portal targeting it.
+  if (container) {
+    return (
+      <PopoverPrimitive.Portal container={container}>
+        <PopoverPrimitive.Content
+          ref={ref}
+          sideOffset={sideOffset}
+          align={align}
+          className={cn(
+            "bg-popover text-popover-foreground z-50 rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto",
+            className
+          )}
+          {...props}
+        />
+      </PopoverPrimitive.Portal>
+    );
+  }
 
+  // Default: render Content directly (Radix will handle its own portal).
   return (
-    <PopoverPrimitive.Portal container={container ?? defaultContainer}>
-      <PopoverPrimitive.Content
-        ref={ref}
-        sideOffset={sideOffset}
-        align={align}
-        className={cn(
-          // High z-index to float above sticky toolbars and overlays
-          "bg-popover text-popover-foreground z-50 rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto",
-          className
-        )}
-        {...props}
-      />
-    </PopoverPrimitive.Portal>
+    <PopoverPrimitive.Content
+      ref={ref}
+      sideOffset={sideOffset}
+      align={align}
+      className={cn(
+        "bg-popover text-popover-foreground z-50 rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto",
+        className
+      )}
+      {...props}
+    />
   );
 });
 PopoverContent.displayName = PopoverPrimitive.Content.displayName;

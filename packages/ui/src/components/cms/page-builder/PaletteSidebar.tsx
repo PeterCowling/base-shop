@@ -3,6 +3,7 @@
 import React from "react";
 import Palette from "./Palette";
 import type { ComponentType } from "./defaults";
+import type { PageComponent } from "@acme/types";
 
 interface Props {
   width: number;
@@ -11,13 +12,14 @@ interface Props {
   onInsertImage: (url: string) => void;
   onSetSectionBackground: (url: string) => void;
   selectedIsSection: boolean;
+  onInsertPreset?: (component: PageComponent) => void;
 }
 
 /**
  * Renders the left palette sidebar, including a drag-resize handle.
  * Single purpose: palette column UI + width resize behavior.
  */
-const PaletteSidebar = ({ width, onWidthChange, onAdd, onInsertImage, onSetSectionBackground, selectedIsSection }: Props) => (
+const PaletteSidebar = ({ width, onWidthChange, onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, onInsertPreset }: Props) => (
   <>
     <aside className="shrink-0" style={{ width }} data-tour="palette" data-cy="pb-palette">
       <Palette
@@ -25,6 +27,7 @@ const PaletteSidebar = ({ width, onWidthChange, onAdd, onInsertImage, onSetSecti
         onInsertImage={onInsertImage}
         onSetSectionBackground={onSetSectionBackground}
         selectedIsSection={selectedIsSection}
+        onInsertPreset={onInsertPreset}
       />
     </aside>
     <div
@@ -51,4 +54,3 @@ const PaletteSidebar = ({ width, onWidthChange, onAdd, onInsertImage, onSetSecti
 );
 
 export default PaletteSidebar;
-

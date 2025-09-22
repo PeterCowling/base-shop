@@ -169,3 +169,18 @@ export async function diffHistory(shop: string): Promise<PageDiffEntry[]> {
   }
 }
 
+export async function reorderPages(shop: string, ids: string[]): Promise<Page[]> {
+  const pages = await readPagesFromDisk(shop);
+  const map = new Map(pages.map((p) => [p.id, p] as const));
+  const ordered: Page[] = [];
+  for (const id of ids) {
+    const p = map.get(id);
+    if (p) ordered.push(p);
+  }
+  // append any pages not included in ids to preserve data
+  for (const p of pages) {
+    if (!ids.includes(p.id)) ordered.push(p);
+  }
+  await writePages(shop, ordered);
+  return ordered;
+}

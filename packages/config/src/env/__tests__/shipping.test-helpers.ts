@@ -7,14 +7,27 @@ const clone = (env: NodeJS.ProcessEnv): NodeJS.ProcessEnv => ({
   ...env,
 });
 
+const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
+
 const mergeEnv = (overrides: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv => {
   const merged: NodeJS.ProcessEnv = clone(BASE_ENV);
+  const nonStringKeys: string[] = [];
   for (const [key, value] of Object.entries(overrides)) {
     if (value === undefined) {
       delete merged[key];
       continue;
     }
     merged[key] = value as any;
+    if (typeof value !== "string") {
+      nonStringKeys.push(key);
+    }
+  }
+  if (nonStringKeys.length > 0) {
+    (merged as Record<symbol, unknown>)[NON_STRING_ENV_SYMBOL] = nonStringKeys;
+    (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__ =
+      nonStringKeys.slice();
+  } else {
+    delete (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
   }
   return merged;
 };

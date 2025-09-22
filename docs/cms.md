@@ -108,6 +108,20 @@ available via `GET /cms/api/pages/{shop}`.
 Open `/cms/shop/{shop}/pages/{slug}/builder` to edit an existing page or
 `/cms/shop/{shop}/pages/new/builder` to start from scratch.
 
+### Pages Panel (in‑editor)
+
+- Open the Pages drawer from the left rail (Pages icon). This now opens a panel inside the editor instead of redirecting to the Pages route.
+- Capabilities:
+  - Search pages by title/slug
+  - Add a draft page
+  - Reorder (Move up/down) and Hide/Show
+  - Inline Settings for the selected page:
+    - Page Info (Title, Slug)
+    - Permissions (Visibility, allowed roles — stub)
+    - SEO Basics (Title, Description, Noindex)
+    - Social Share (OG Title/Description/Image + preview)
+- Persistence: current implementation is local (stub). A “Save Draft” button emits a `pb:notify` event for future integration. To persist, wire these actions to your `/cms/api/pages/:shop` endpoints.
+
 ### Add blocks
 
 1. Click **Add Block** in the toolbar or hover near a section and press the **+**

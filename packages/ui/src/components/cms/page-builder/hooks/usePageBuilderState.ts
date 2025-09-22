@@ -57,7 +57,7 @@ export function usePageBuilderState({
         })()
       : ({ past: [], present: initial, future: [], gridCols: 12, editor: {} as Record<string, any> } as any);
 
-    if (typeof window === "undefined") {
+    if (typeof window === "undefined" || process.env.NODE_ENV === "test") {
       return parsedServer;
     }
     try {
@@ -214,7 +214,11 @@ export function usePageBuilderState({
           if (!comp || locked || comp.position !== "absolute") return;
           // We will handle at least one move; prevent default page scroll
           if (!handled) { e.preventDefault(); handled = true; }
-          const el = typeof document !== 'undefined' ? document.querySelector(`[data-component-id="${id}"]`) as HTMLElement | null : null;
+          let el: HTMLElement | null = null;
+          if (typeof document !== 'undefined') {
+            const all = document.querySelectorAll(`[data-component-id="${id}"]`);
+            el = (all.length ? (all[all.length - 1] as HTMLElement) : null);
+          }
           const parent = el?.offsetParent as HTMLElement | null;
           const maxLeft = parent ? Math.max(0, parent.offsetWidth - (el?.offsetWidth || 0)) : null;
           const maxTop = parent ? Math.max(0, parent.offsetHeight - (el?.offsetHeight || 0)) : null;

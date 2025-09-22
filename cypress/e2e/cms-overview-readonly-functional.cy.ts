@@ -1,6 +1,6 @@
 import "@testing-library/cypress/add-commands";
 
-describe("CMS settings – Configuration overview reflects persisted values", () => {
+describe("CMS settings – Configuration overview reflects persisted values", { tags: ["smoke"] }, () => {
   const shop = "demo";
   const root = (Cypress.env("TEST_DATA_ROOT") as string) || "__tests__/data/shops";
   const shopFile = `${root}/${shop}/shop.json`;
@@ -39,4 +39,3 @@ describe("CMS settings – Configuration overview reflects persisted values", ()
     cy.contains('dt', 'Theme preset').next('dd').should('contain.text', 'bcd-classic');
   });
 });
-

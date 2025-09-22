@@ -4,7 +4,7 @@ import type { Action } from "../state";
 import { usePathname } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
 import { ulid } from "ulid";
-import { saveGlobalForPage, updateGlobalForPage, listGlobalsForPage, type GlobalItem } from "../libraryStore";
+import { saveGlobalForPage, updateGlobalForPage, listGlobalsForPage, listGlobals, saveGlobal, updateGlobal, type GlobalItem } from "../libraryStore";
 
 interface Args {
   components: PageComponent[];
@@ -22,8 +22,9 @@ const useGlobals = ({ components, editor, dispatch, selectedComponent, pageId }:
   const [insertSearch, setInsertSearch] = useState("");
 
   useEffect(() => {
-    setGlobals(listGlobalsForPage(shop, pageId));
-    const onChange = () => setGlobals(listGlobalsForPage(shop, pageId));
+    const listFn = pageId ? listGlobalsForPage : listGlobals;
+    setGlobals(listFn(shop, pageId as any));
+    const onChange = () => setGlobals(listFn(shop, pageId as any));
     window.addEventListener("pb-library-changed", onChange);
     return () => window.removeEventListener("pb-library-changed", onChange);
   }, [shop, pageId]);
@@ -35,7 +36,11 @@ const useGlobals = ({ components, editor, dispatch, selectedComponent, pageId }:
     if (!label) return;
     const gid = `gid_${ulid()}`;
     const item: GlobalItem = { globalId: gid, label, template: selectedComponent, createdAt: Date.now() } as any;
-    await saveGlobalForPage(shop, pageId ?? null, item);
+    if (pageId) {
+      await saveGlobalForPage(shop, pageId ?? null, item as any);
+    } else {
+      await saveGlobal(shop, item as any);
+    }
     dispatch({ type: "update-editor", id: selectedComponent.id, patch: { global: { id: gid } } as any });
     try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Made Global: ${label}` })); } catch {}
   }, [dispatch, selectedComponent, shop, pageId]);
@@ -68,7 +73,11 @@ const useGlobals = ({ components, editor, dispatch, selectedComponent, pageId }:
     }
     const confirm = window.confirm("Apply current block state to the Global template and update all instances on this page?");
     if (!confirm) return;
-    await updateGlobalForPage(shop, pageId ?? null, gid, { template: selectedComponent });
+    if (pageId) {
+      await updateGlobalForPage(shop, pageId ?? null, gid, { template: selectedComponent } as any);
+    } else {
+      await updateGlobal(shop, gid, { template: selectedComponent } as any);
+    }
     const next = applyGlobalToTree(components, editor, gid, selectedComponent);
     if (next !== components) {
       dispatch({ type: "set", components: next });

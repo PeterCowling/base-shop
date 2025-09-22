@@ -55,7 +55,7 @@ const viewports = [
   { label: 'desktop', width: 1280, height: 800, hasHamburger: false },
 ];
 
-describe('Navigation accessibility', () => {
+describe('Navigation accessibility', { tags: ['a11y'] }, () => {
   viewports.forEach(({ label, width, height, hasHamburger }) => {
     it(`behaves correctly on ${label} (${width}x${height})`, () => {
       cy.viewport(width, height);

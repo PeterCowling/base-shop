@@ -16,8 +16,9 @@ interface Props {
   viewport?: "desktop" | "tablet" | "mobile";
   breakpoints?: { id: string; label: string; min?: number; max?: number }[];
   pageId?: string | null;
+  crossNotices?: boolean;
 }
-const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, viewport = "desktop", breakpoints = [], pageId = null }: Props) => {
+const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, viewport = "desktop", breakpoints = [], pageId = null, crossNotices = true }: Props) => {
   const selectedComponent = useMemo(() => components.find((c) => c.id === selectedIds[0]) ?? null, [components, selectedIds]);
 
   return (
@@ -30,6 +31,7 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
         dispatch={dispatch}
         editor={editor}
         viewport={viewport}
+        crossNotices={crossNotices}
       />
       </div>
 

@@ -37,7 +37,11 @@ export default function useInlineText<T extends object, K extends keyof T & stri
 
   const finishEditing = useCallback(() => {
     setEditing(false);
-    return { [key]: value } as Partial<T>;
+    const el = ref.current;
+    const current = (el?.textContent ?? value ?? "") as string;
+    // ensure we capture the latest DOM value even if a state update is pending
+    setValue(current);
+    return { [key]: current } as Partial<T>;
   }, [key, value]);
 
   const bind = {
@@ -47,7 +51,8 @@ export default function useInlineText<T extends object, K extends keyof T & stri
     contentEditable: true,
     suppressContentEditableWarning: true,
     onInput: (e: FormEvent<HTMLElement>) => {
-      setValue((e.target as HTMLElement).innerText);
+      const el = e.target as HTMLElement;
+      setValue(el.textContent ?? "");
     },
     onBlur: () => {
       setEditing(false);

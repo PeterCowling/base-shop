@@ -5,8 +5,8 @@ function setupDom() {
   // Canvas element used for unit step (Alt + Arrow)
   const canvas = document.createElement("div");
   canvas.id = "canvas";
-  Object.defineProperty(canvas, "offsetWidth", { value: 1200 });
-  Object.defineProperty(canvas, "offsetHeight", { value: 800 });
+  Object.defineProperty(canvas, "offsetWidth", { value: 1200, configurable: true });
+  Object.defineProperty(canvas, "offsetHeight", { value: 800, configurable: true });
   document.body.appendChild(canvas);
 
   // Viewport selector
@@ -17,9 +17,9 @@ function setupDom() {
   // Component node A with parent canvas
   const a = document.createElement("div");
   a.setAttribute("data-component-id", "a");
-  Object.defineProperty(a, "offsetParent", { value: canvas });
-  Object.defineProperty(a, "offsetWidth", { value: 50 });
-  Object.defineProperty(a, "offsetHeight", { value: 20 });
+  Object.defineProperty(a, "offsetParent", { value: canvas, configurable: true });
+  Object.defineProperty(a, "offsetWidth", { value: 50, configurable: true });
+  Object.defineProperty(a, "offsetHeight", { value: 20, configurable: true });
   document.body.appendChild(a);
 
   return { canvas, a };

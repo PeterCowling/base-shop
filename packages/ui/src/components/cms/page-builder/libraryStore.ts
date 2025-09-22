@@ -158,6 +158,8 @@ export type GlobalItem = {
   template: PageComponent; // single node template
   tags?: string[];
   thumbnail?: string | null;
+  // Optional: independent breakpoints for this global
+  breakpoints?: { id: string; label: string; min?: number; max?: number }[];
 };
 
 export function listGlobals(shop?: string | null): GlobalItem[] {
@@ -194,7 +196,7 @@ export async function saveGlobal(shop: string | null | undefined, item: GlobalIt
   }
 }
 
-export async function updateGlobal(shop: string | null | undefined, globalId: string, patch: Partial<Pick<GlobalItem, "label" | "template" | "tags" | "thumbnail">>) {
+export async function updateGlobal(shop: string | null | undefined, globalId: string, patch: Partial<Pick<GlobalItem, "label" | "template" | "tags" | "thumbnail" | "breakpoints">>) {
   // local
   const cur = listGlobals(shop);
   const next = cur.map((g) => (g.globalId === globalId ? { ...g, ...patch } : g));
@@ -249,7 +251,7 @@ export async function saveGlobalForPage(shop: string | null | undefined, pageId:
   } catch {}
 }
 
-export async function updateGlobalForPage(shop: string | null | undefined, pageId: string | null | undefined, globalId: string, patch: Partial<Pick<GlobalItem, "label" | "template" | "tags" | "thumbnail">>) {
+export async function updateGlobalForPage(shop: string | null | undefined, pageId: string | null | undefined, globalId: string, patch: Partial<Pick<GlobalItem, "label" | "template" | "tags" | "thumbnail" | "breakpoints">>) {
   const cur = listGlobalsForPage(shop, pageId);
   const next = cur.map((g) => (g.globalId === globalId ? { ...g, ...patch } : g));
   writePageGlobals(shop, pageId, next);

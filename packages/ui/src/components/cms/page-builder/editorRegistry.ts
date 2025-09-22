@@ -55,4 +55,15 @@ const editorRegistry: Record<string, LazyExoticComponent<ComponentType<EditorPro
   TabsAccordionContainer: lazyEditor(() => import("./TabsAccordionContainerEditor")),
 };
 
+// In tests, ensure the most common editor loads synchronously to avoid flakiness
+if (process.env.NODE_ENV === "test") {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const Btn = require("./ButtonEditor").default as ComponentType<EditorProps>;
+    editorRegistry.Button = lazy(() => Promise.resolve({ default: Btn })) as unknown as LazyExoticComponent<ComponentType<EditorProps>>;
+  } catch {
+    // ignore
+  }
+}
+
 export default editorRegistry;

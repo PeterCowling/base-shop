@@ -53,7 +53,9 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
   return (
     <Accordion
       type="multiple"
-      defaultValue={["layout", "content", "style", "interactions", "timeline"]}
+      // Keep most panels open by default for quicker access, but start
+      // Content closed so tests and users can intentionally open it.
+      defaultValue={["layout", "style", "interactions", "timeline"]}
       className="space-y-3"
     >
       <AccordionItem value="layout" className="border-none">

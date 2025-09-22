@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ProfileForm from '../../packages/ui/src/components/account/ProfileForm';
 
-describe('ProfileForm accessibility', () => {
+describe('ProfileForm accessibility', { tags: ['a11y'] }, () => {
   it('focuses first invalid field and announces errors', () => {
     cy.visit('about:blank').then((win) => {
       ReactDOM.createRoot(win.document.body).render(

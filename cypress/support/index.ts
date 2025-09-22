@@ -1,9 +1,13 @@
 // cypress/support/index.ts
 
 import "cypress-axe";
+import '@cypress/code-coverage/support';
+import 'cypress-image-snapshot/command';
+import 'cypress-audit/commands';
 import 'cypress-grep';
 // Enable Mock Service Worker for API mocking in Cypress tests
 import { server } from "~test/msw/server";
+import { handlersLoginAs, handlersCheckoutHappyPath } from "~test/msw/flows";
 
 // Prevent tests from failing on uncaught exceptions originating from the app
 Cypress.on("uncaught:exception", (_err, _runnable) => {
@@ -26,6 +30,10 @@ declare global {
     interface Chainable {
       /** Programmatic login as default admin via credentials provider */
       loginAsAdmin(): Chainable<void>;
+      /** Apply MSW handlers to simulate next-auth credentials login for a role. Auto-resets after each test. */
+      mswLoginAs(role?: 'admin' | 'viewer'): Chainable<void>;
+      /** Apply MSW handlers for a deterministic checkout-session endpoint. */
+      mswCheckoutHappyPath(): Chainable<void>;
       pbVisitBuilder(shop: string, pageIdOrSlug: string): Chainable<void>;
       pbEnsurePaletteOpen(): Chainable<void>;
       pbDrag(fromSelector: string, toSelector: string): Chainable<void>;
@@ -87,6 +95,15 @@ Cypress.Commands.add("loginAsAdmin", () => {
       },
     });
   });
+});
+
+// MSW flow helpers
+Cypress.Commands.add("mswLoginAs", (role: 'admin' | 'viewer' = 'admin') => {
+  server.use(...handlersLoginAs(role));
+});
+
+Cypress.Commands.add("mswCheckoutHappyPath", () => {
+  server.use(...handlersCheckoutHappyPath());
 });
 
 Cypress.Commands.add("pbEnsurePaletteOpen", () => {

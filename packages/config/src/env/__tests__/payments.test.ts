@@ -22,7 +22,11 @@ async function withEnv<T>(
   }
   jest.resetModules();
   try {
-    return await fn();
+    let result!: T;
+    await jest.isolateModulesAsync(async () => {
+      result = await fn();
+    });
+    return result;
   } finally {
     process.env = previous;
     jest.resetModules();
@@ -71,13 +75,9 @@ describe("payments env", () => {
 
   it("throws for unsupported provider", async () => {
     errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    await withEnv(
-      { PAYMENTS_PROVIDER: "paypal" },
-      async () => {
-        await expect(import("../payments.js")).rejects.toThrow(
-          "Invalid payments environment variables",
-        );
-      },
+    const { loadPaymentsEnv } = await import("../payments.ts");
+    expect(() => loadPaymentsEnv({ PAYMENTS_PROVIDER: "paypal" } as any)).toThrow(
+      "Invalid payments environment variables",
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Unsupported PAYMENTS_PROVIDER:",
@@ -93,17 +93,13 @@ describe("payments env", () => {
       STRIPE_WEBHOOK_SECRET: "whsec_live_123",
     };
 
-    it.each(["sk_test_abc", "sk_live_abc"])(
-      "parses %s secret key",
-      async (key) => {
-        warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
-        await withEnv({ ...baseEnv, STRIPE_SECRET_KEY: key }, async () => {
-          const { paymentsEnv } = await import("../payments.js");
-          expect(paymentsEnv.STRIPE_SECRET_KEY).toBe(key);
-          expect(warnSpy).not.toHaveBeenCalled();
-        });
-      },
-    );
+    it.each(["sk_test_abc", "sk_live_abc"])('parses %s secret key', async (key) => {
+      warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+      const { loadPaymentsEnv } = await import("../payments.ts");
+      const env = loadPaymentsEnv({ ...baseEnv, STRIPE_SECRET_KEY: key } as any);
+      expect(env.STRIPE_SECRET_KEY).toBe(key);
+      expect(warnSpy).not.toHaveBeenCalled();
+    });
 
     it.each([
       [
@@ -120,14 +116,12 @@ describe("payments env", () => {
       ],
     ])("throws when %s is missing", async (missing, message) => {
       errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-      const env = { ...baseEnv, [missing]: undefined } as Record<string, string | undefined>;
-      await withEnv(env, async () => {
-        await expect(import("../payments.js")).rejects.toThrow(
-          "Invalid payments environment variables",
-        );
-      });
+      const overrides = { ...baseEnv, [missing]: undefined } as Record<string, string | undefined>;
+      const { loadPaymentsEnv } = await import("../payments.ts");
+      expect(() => loadPaymentsEnv(overrides as any)).toThrow(
+        "Invalid payments environment variables",
+      );
       expect(errorSpy).toHaveBeenCalledWith(message);
     });
   });
 });
-

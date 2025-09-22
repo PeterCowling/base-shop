@@ -75,6 +75,8 @@ describe("env index module", () => {
       CMS_ACCESS_TOKEN: "test-token",
       SANITY_API_VERSION: "2023-10-01",
       CART_COOKIE_SECRET: "cart-secret",
+      NEXTAUTH_SECRET: "x".repeat(32),
+      SESSION_SECRET: "x".repeat(32),
     } as NodeJS.ProcessEnv;
     const modPromise = import("../index.ts");
     await expect(modPromise).resolves.toBeDefined();
@@ -90,6 +92,11 @@ describe("env index module", () => {
   });
 
   it("mergeEnvSchemas combines shapes", async () => {
+    process.env = {
+      ...process.env,
+      NEXTAUTH_SECRET: "x".repeat(32),
+      SESSION_SECRET: "x".repeat(32),
+    } as NodeJS.ProcessEnv;
     const { mergeEnvSchemas } = await import("../index.ts");
     const schemaA = z.object({ FOO: z.string() });
     const schemaB = z.object({ BAR: z.number() });
@@ -101,6 +108,11 @@ describe("env index module", () => {
   });
 
   it("mergeEnvSchemas allows partial optional objects", async () => {
+    process.env = {
+      ...process.env,
+      NEXTAUTH_SECRET: "x".repeat(32),
+      SESSION_SECRET: "x".repeat(32),
+    } as NodeJS.ProcessEnv;
     const { mergeEnvSchemas } = await import("../index.ts");
     const schemaA = z.object({ A: z.string().optional() });
     const schemaB = z.object({ B: z.number().optional() });
@@ -111,6 +123,11 @@ describe("env index module", () => {
   });
 
   it("later schemas override earlier ones", async () => {
+    process.env = {
+      ...process.env,
+      NEXTAUTH_SECRET: "x".repeat(32),
+      SESSION_SECRET: "x".repeat(32),
+    } as NodeJS.ProcessEnv;
     const { mergeEnvSchemas } = await import("../index.ts");
     const schemaA = z.object({ FOO: z.string() });
     const schemaB = z.object({ FOO: z.number().optional() });
@@ -121,6 +138,11 @@ describe("env index module", () => {
   });
 
   it("performs shallow merges for nested objects", async () => {
+    process.env = {
+      ...process.env,
+      NEXTAUTH_SECRET: "x".repeat(32),
+      SESSION_SECRET: "x".repeat(32),
+    } as NodeJS.ProcessEnv;
     const { mergeEnvSchemas } = await import("../index.ts");
     const schemaA = z.object({ nested: z.object({ a: z.string() }) });
     const schemaB = z.object({ nested: z.object({ b: z.number() }) });

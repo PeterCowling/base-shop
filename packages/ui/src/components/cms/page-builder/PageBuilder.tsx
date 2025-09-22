@@ -20,6 +20,7 @@ import useInsertHandlers from "./hooks/useInsertHandlers";
 import useKeyboardShortcuts from "./hooks/useKeyboardShortcuts";
 import useGridSize from "./hooks/useGridSize";
 import { buildCanvasProps, buildGridProps, buildHistoryProps, buildPreviewProps, buildToolbarProps, buildToastProps, buildTourProps } from "./buildProps";
+import { listGlobals, updateGlobal, type GlobalItem } from "./libraryStore";
 
 interface Props {
   page: Page; history?: HistoryState; onSave:(fd:FormData)=>Promise<unknown>; onPublish:(fd:FormData)=>Promise<unknown>;
@@ -141,9 +142,72 @@ const PageBuilder = memo(function PageBuilder({
     locales,
     progress,
     isValid,
-    breakpoints: (state as any).breakpoints ?? [],
-    setBreakpoints: (list: any[]) => dispatch({ type: "set-breakpoints", breakpoints: list } as any),
-    extraDevices: controls.extraDevices,
+    zoom: controls.zoom,
+    setZoom: controls.setZoom,
+    // Page vs Global-section breakpoints
+    breakpoints: (() => {
+      const sel = selectedIds[0];
+      if (!sel) return ((state as any).breakpoints ?? []) as any[];
+      const flags = (state as any).editor?.[sel] ?? {};
+      const isGlobal = !!flags?.global?.id;
+      if (!isGlobal) return ((state as any).breakpoints ?? []);
+      // prefer instance-level overrides; else fall back to library template breakpoints
+      if (Array.isArray(flags.globalBreakpoints)) return flags.globalBreakpoints as any[];
+      const gid = String(flags.global?.id || "");
+      const gl = listGlobals(shop);
+      const found = gl.find((g) => g.globalId === gid) as GlobalItem | undefined;
+      return (found?.breakpoints ?? []) as any[];
+    })(),
+    setBreakpoints: (list: any[]) => {
+      const sel = selectedIds[0];
+      if (sel) {
+        const flags = (state as any).editor?.[sel] ?? {};
+        const isGlobal = !!flags?.global?.id;
+        if (isGlobal) {
+          // update instance override
+          dispatch({ type: "update-editor", id: sel, patch: { globalBreakpoints: list } as any });
+          // persist to global template to cascade to all instances
+          try {
+            const gid = String(flags.global?.id || "");
+            if (gid) void updateGlobal(shop, gid, { breakpoints: list as any });
+          } catch {}
+          return;
+        }
+      }
+      dispatch({ type: "set-breakpoints", breakpoints: list } as any);
+    },
+    extraDevices: (() => {
+      const pageExtra = controls.extraDevices || [];
+      const sel = selectedIds[0];
+      if (!sel) return pageExtra;
+      const flags = (state as any).editor?.[sel] ?? {};
+      const isGlobal = !!flags?.global?.id;
+      let g = isGlobal ? (flags.globalBreakpoints ?? []) as any[] : [];
+      // fall back to library stored breakpoints when instance has none
+      if (isGlobal && (!g || g.length === 0)) {
+        try {
+          const gid = String(flags.global?.id || "");
+          const found = listGlobals(shop).find((i) => i.globalId === gid) as GlobalItem | undefined;
+          g = (found?.breakpoints ?? []) as any[];
+        } catch {}
+      }
+      if (!g.length) return pageExtra;
+      const mapWidth = (bp: any): number => {
+        const base = (typeof bp.max === 'number' && bp.max > 0) ? bp.max : (typeof bp.min === 'number' ? bp.min : 1024);
+        return Math.max(320, Math.min(1920, base));
+      };
+      const toType = (w: number): "desktop" | "tablet" | "mobile" => (w >= 1024 ? "desktop" : w >= 768 ? "tablet" : "mobile");
+      const devices = g.map((bp) => {
+        const width = mapWidth(bp);
+        const type = toType(width);
+        const id = `global-bp-${bp.id}`;
+        return { id, label: bp.label, width, height: 800, type, orientation: "portrait" } as any;
+      });
+      // de-duplicate by id
+      const map = new Map<string, any>();
+      [...pageExtra, ...devices].forEach((d: any) => { if (!map.has(d.id)) map.set(d.id, d); });
+      return Array.from(map.values());
+    })(),
     editingSizePx: (controls as any).editingSizePx ?? null,
     setEditingSizePx: (controls as any).setEditingSizePx,
     pagesNav,
@@ -244,12 +308,14 @@ const PageBuilder = memo(function PageBuilder({
       viewport={controls.viewport}
       viewportStyle={controls.viewportStyle}
       zoom={controls.zoom}
+      editingSizePx={(controls as any).editingSizePx ?? null}
+      setEditingSizePx={(controls as any).setEditingSizePx}
       canvasProps={{ ...canvasProps, dropAllowed, insertParentId, preferParentOnClick: parentFirst }}
       scrollRef={scrollRef}
       activeType={activeType}
       previewProps={previewProps}
       historyProps={historyProps}
-      sidebarProps={{ components, selectedIds, onSelectIds: setSelectedIds, dispatch, editor: (state as any).editor, viewport: controls.viewport, breakpoints: (state as any).breakpoints ?? [], pageId: page.id }}
+      sidebarProps={{ components, selectedIds, onSelectIds: setSelectedIds, dispatch, editor: (state as any).editor, viewport: controls.viewport, breakpoints: (state as any).breakpoints ?? [], pageId: page.id, crossNotices: (controls as any).crossBreakpointNotices }}
       toast={toastProps}
       tourProps={tourProps}
       showComments={showComments}
@@ -258,6 +324,8 @@ const PageBuilder = memo(function PageBuilder({
       onParentFirstChange={setParentFirst}
       shop={shop}
       pageId={page.id}
+      crossBreakpointNotices={(controls as any).crossBreakpointNotices}
+      onCrossBreakpointNoticesChange={(controls as any).setCrossBreakpointNotices}
     />
   );
 });

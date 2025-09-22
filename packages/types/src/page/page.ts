@@ -205,11 +205,15 @@ export interface Page {
   stableId?: string;
   slug: string;
   status: "draft" | "published";
+  /** Navigation/Sitemap visibility. Defaults to "public". */
+  visibility?: "public" | "hidden";
   components: PageComponent[];
   seo: {
     title: Partial<Record<Locale, string>>;
     description?: Partial<Record<Locale, string>>;
     image?: Partial<Record<Locale, string>>;
+    /** When true, exclude from sitemaps and add robots noindex. */
+    noindex?: boolean;
   };
   createdAt: string;
   updatedAt: string;
@@ -223,11 +227,13 @@ export const pageSchema = z
     stableId: z.string().optional(),
     slug: z.string(),
     status: z.enum(["draft", "published"]),
+    visibility: z.enum(["public", "hidden"]).optional(),
     components: z.array(pageComponentSchema).default([]),
     seo: z.object({
       title: z.record(localeSchema, z.string()),
       description: z.record(localeSchema, z.string()).optional(),
       image: z.record(localeSchema, z.string()).optional(),
+      noindex: z.boolean().optional(),
     }),
     createdAt: z.string(),
     updatedAt: z.string(),

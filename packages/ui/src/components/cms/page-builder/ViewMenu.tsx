@@ -17,9 +17,15 @@ interface Props {
   onParentFirstChange?: (v: boolean) => void;
   // Optional canvas settings to expose in the View menu for parity with spec
   gridProps?: ComponentProps<typeof GridSettings>;
+  // Cross-breakpoint override notices
+  crossBreakpointNotices?: boolean;
+  onCrossBreakpointNoticesChange?: (v: boolean) => void;
+  // Controlled popover support
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export function ViewMenuContent({ showPreview, togglePreview, showComments, toggleComments, startTour, showPalette, togglePalette, parentFirst, onParentFirstChange, gridProps }: Props) {
+export function ViewMenuContent({ showPreview, togglePreview, showComments, toggleComments, startTour, showPalette, togglePalette, parentFirst, onParentFirstChange, gridProps, crossBreakpointNotices, onCrossBreakpointNoticesChange }: Props) {
   const clampZoom = (z: number) => Math.min(2, Math.max(0.25, Math.round(z * 100) / 100));
   return (
     <div className="space-y-2">
@@ -41,6 +47,10 @@ export function ViewMenuContent({ showPreview, togglePreview, showComments, togg
       <label className="flex items-center justify-between gap-4 text-sm">
         <span>Layer selection (Parent-first)</span>
         <Switch checked={!!parentFirst} onChange={() => onParentFirstChange?.(!parentFirst)} />
+      </label>
+      <label className="flex items-center justify-between gap-4 text-sm">
+        <span>Cross-breakpoint notifications</span>
+        <Switch checked={!!crossBreakpointNotices} onChange={() => onCrossBreakpointNoticesChange?.(!crossBreakpointNotices)} />
       </label>
 
       {/* Zoom controls (parity with View menu: Zoom In/Out/Reset) */}
@@ -116,15 +126,16 @@ export function ViewMenuContent({ showPreview, togglePreview, showComments, togg
 }
 
 export default function ViewMenu(props: Props) {
+  const { open, onOpenChange, ...contentProps } = props;
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={onOpenChange}>
       <Tooltip text="View options">
         <PopoverTrigger asChild>
           <Button variant="outline" aria-label="View options">View</Button>
         </PopoverTrigger>
       </Tooltip>
       <PopoverContent className="w-64">
-        <ViewMenuContent {...props} />
+        <ViewMenuContent {...(contentProps as any)} />
       </PopoverContent>
     </Popover>
   );

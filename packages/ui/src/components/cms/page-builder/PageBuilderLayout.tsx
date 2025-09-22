@@ -38,6 +38,7 @@ import { CheckIcon, ReloadIcon } from "@radix-ui/react-icons";
 import GlobalsPanel from "./GlobalsPanel";
 import CMSPanel from "./CMSPanel";
 import CodePanel from "./CodePanel";
+import PagesPanel from "./PagesPanel";
 
 interface LayoutProps {
   style?: CSSProperties;
@@ -80,6 +81,12 @@ interface LayoutProps {
   pageId?: string | null;
   parentFirst?: boolean;
   onParentFirstChange?: (v: boolean) => void;
+  // Editing size (px) per current viewport; to support frame handles
+  editingSizePx?: number | null;
+  setEditingSizePx?: (px: number | null) => void;
+  // Cross-breakpoint notifications toggle (View)
+  crossBreakpointNotices?: boolean;
+  onCrossBreakpointNoticesChange?: (v: boolean) => void;
 }
 
 const PageBuilderLayout = ({
@@ -117,6 +124,10 @@ const PageBuilderLayout = ({
   onParentFirstChange,
   shop,
   pageId,
+  editingSizePx,
+  setEditingSizePx,
+  crossBreakpointNotices,
+  onCrossBreakpointNoticesChange,
 }: LayoutProps) => {
   const reducedMotion = useReducedMotion();
   const { showDevTools } = useDevToolsToggle();
@@ -129,6 +140,22 @@ const PageBuilderLayout = ({
   const [globalsOpen, setGlobalsOpen] = React.useState(false);
   const [cmsOpen, setCmsOpen] = React.useState(false);
   const [codeOpen, setCodeOpen] = React.useState(false);
+  const [pagesOpen, setPagesOpen] = React.useState(false);
+
+  // Ensure bottom-left launcher works even when comments layer is hidden
+  React.useEffect(() => {
+    const onToggleComments = () => {
+      if (!showComments) {
+        try {
+          // Enable comments layer so its drawer listener mounts, then re-fire toggle
+          toggleComments();
+          setTimeout(() => { try { window.dispatchEvent(new Event('pb:toggle-comments')); } catch {} }, 0);
+        } catch {}
+      }
+    };
+    window.addEventListener('pb:toggle-comments', onToggleComments as EventListener);
+    return () => window.removeEventListener('pb:toggle-comments', onToggleComments as EventListener);
+  }, [showComments, toggleComments]);
 
   // Keyboard shortcuts for panel toggles: Ctrl/Cmd+I (Inspector), Ctrl/Cmd+L (Layers), Ctrl/Cmd+. (Palette)
   React.useEffect(() => {
@@ -185,14 +212,7 @@ const PageBuilderLayout = ({
           document.getElementById("pb-layers-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
         } catch {}
       }}
-      onOpenPages={() => {
-        if (typeof window !== "undefined" && typeof (window as any).location !== "undefined") {
-          const target = (typeof window !== "undefined" ? ((window as any).__PB_SHOP_ID as string | undefined) : undefined) || undefined;
-          const shopParam = (typeof shop === "string" ? shop : (target ?? "")).trim();
-          if (shopParam) window.location.href = `/cms/shop/${shopParam}/pages`;
-          else window.location.href = "/cms/pages";
-        }
-      }}
+      onOpenPages={() => setPagesOpen(true)}
       onOpenGlobalSections={() => setGlobalsOpen(true)}
       onOpenSiteStyles={() => {
         // Ask DesignMenu to open Theme dialog
@@ -214,6 +234,7 @@ const PageBuilderLayout = ({
         onInsertImage={onInsertImageAsset}
         onSetSectionBackground={onSetSectionBackground}
         selectedIsSection={selectedIsSection}
+        onInsertPreset={onInsertPreset}
       />
     )}
     {!showPalette && (
@@ -255,6 +276,8 @@ const PageBuilderLayout = ({
             togglePalette={() => setShowPalette((v) => !v)}
             parentFirst={parentFirst}
             onParentFirstChange={onParentFirstChange}
+            crossBreakpointNotices={crossBreakpointNotices}
+            onCrossBreakpointNoticesChange={onCrossBreakpointNoticesChange}
           />
           <PresenceAvatars shop={shop ?? null} pageId={pageId ?? null} />
           <button
@@ -302,6 +325,54 @@ const PageBuilderLayout = ({
                 data-viewport={viewport}
               >
                 <div className="relative">
+                  {setEditingSizePx && (
+                    <>
+                      <div
+                        role="separator"
+                        aria-label="Resize canvas narrower"
+                        className="absolute left-0 top-0 h-full w-1 cursor-col-resize bg-transparent"
+                        onPointerDown={(e) => {
+                          const host = e.currentTarget.parentElement as HTMLElement | null;
+                          if (!host) return;
+                          const startX = e.clientX;
+                          const startW = host.offsetWidth / (zoom || 1);
+                          const onMove = (ev: PointerEvent) => {
+                            const dx = (ev.clientX - startX) / (zoom || 1);
+                            const next = Math.max(320, Math.min(1920, Math.round(startW - dx)));
+                            setEditingSizePx(next);
+                          };
+                          const onUp = () => {
+                            window.removeEventListener("pointermove", onMove);
+                            window.removeEventListener("pointerup", onUp);
+                          };
+                          window.addEventListener("pointermove", onMove);
+                          window.addEventListener("pointerup", onUp);
+                        }}
+                      />
+                      <div
+                        role="separator"
+                        aria-label="Resize canvas wider"
+                        className="absolute right-0 top-0 h-full w-1 cursor-col-resize bg-transparent"
+                        onPointerDown={(e) => {
+                          const host = e.currentTarget.parentElement as HTMLElement | null;
+                          if (!host) return;
+                          const startX = e.clientX;
+                          const startW = host.offsetWidth / (zoom || 1);
+                          const onMove = (ev: PointerEvent) => {
+                            const dx = (ev.clientX - startX) / (zoom || 1);
+                            const next = Math.max(320, Math.min(1920, Math.round(startW + dx)));
+                            setEditingSizePx(next);
+                          };
+                          const onUp = () => {
+                            window.removeEventListener("pointermove", onMove);
+                            window.removeEventListener("pointerup", onUp);
+                          };
+                          window.addEventListener("pointermove", onMove);
+                          window.addEventListener("pointerup", onUp);
+                        }}
+                      />
+                    </>
+                  )}
                   <PageCanvas {...canvasProps} />
                   {Array.isArray((canvasProps as any)?.components) && (canvasProps as any).components.length === 0 && (
                     <EmptyCanvasOverlay
@@ -359,6 +430,7 @@ const PageBuilderLayout = ({
   />
   <AppMarketStub open={appMarketOpen} onOpenChange={setAppMarketOpen} />
   <GlobalsPanel open={globalsOpen} onOpenChange={setGlobalsOpen} shop={shop ?? null} pageId={pageId ?? null} />
+  <PagesPanel open={pagesOpen} onOpenChange={setPagesOpen} shop={shop ?? null} />
   <CMSPanel
     open={cmsOpen}
     onOpenChange={setCmsOpen}

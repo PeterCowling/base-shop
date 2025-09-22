@@ -4,6 +4,7 @@
 
 import '@testing-library/cypress/add-commands';
 import 'cypress-grep';
+import '@cypress/code-coverage/support';
 import { mount as cypressMount } from 'cypress/react';
 import React from 'react';
 import { ThemeProvider } from '@platform-core/contexts/ThemeContext';

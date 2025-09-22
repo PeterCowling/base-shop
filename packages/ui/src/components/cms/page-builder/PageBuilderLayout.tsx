@@ -3,7 +3,7 @@
 import { DndContext, DragOverlay, defaultDropAnimation, defaultDropAnimationSideEffects } from "@dnd-kit/core";
 import type { CSSProperties, ComponentProps } from "react";
 import React from "react";
-import { Toast } from "../../atoms";
+import { IconButton, Toast, Tooltip } from "../../atoms";
 import PageToolbar from "./PageToolbar";
 import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
@@ -34,7 +34,7 @@ import PresenceAvatars from "./PresenceAvatars";
 import NotificationsBell from "./NotificationsBell";
 import AppMarketStub from "./AppMarketStub";
 import StudioMenu from "./StudioMenu";
-import { CheckIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { CheckIcon, EyeOpenIcon, ReloadIcon } from "@radix-ui/react-icons";
 
 interface LayoutProps {
   style?: CSSProperties;
@@ -123,6 +123,7 @@ const PageBuilderLayout = ({
   const { onPointerDown } = useSpacePanning(scrollRef);
   const [showInspector, setShowInspector] = React.useState(true);
   const [appMarketOpen, setAppMarketOpen] = React.useState(false);
+  const previewLabel = showPreview ? "Exit preview" : "Preview";
 
   // (Optional) live message toasts can be surfaced by parent if desired
   return (
@@ -215,14 +216,18 @@ const PageBuilderLayout = ({
             onParentFirstChange={onParentFirstChange}
           />
           <PresenceAvatars shop={shop ?? null} pageId={pageId ?? null} />
-          <button
-            type="button"
-            className="rounded border px-2 py-1 text-sm"
-            onClick={togglePreview}
-            aria-label="Preview"
-          >
-            {showPreview ? "Editing" : "Preview"}
-          </button>
+          <Tooltip text={previewLabel}>
+            <IconButton
+              onClick={togglePreview}
+              aria-label={previewLabel}
+              aria-pressed={showPreview}
+              title={previewLabel}
+              variant={showPreview ? "secondary" : "ghost"}
+              data-state={showPreview ? "on" : "off"}
+            >
+              <EyeOpenIcon aria-hidden className="h-4 w-4" />
+            </IconButton>
+          </Tooltip>
           <NotificationsBell shop={shop ?? null} pageId={pageId ?? null} />
           <HistoryControls {...historyProps} />
           <button

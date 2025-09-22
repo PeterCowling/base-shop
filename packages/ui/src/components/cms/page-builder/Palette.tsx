@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState, useCallback, useEffect, useRef, useMemo } from "react";
+import { memo, useState, useCallback, useEffect, useRef, useMemo, type CSSProperties } from "react";
 import { usePathname } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
 import { listLibrary, removeLibrary, updateLibrary, syncFromServer, saveLibrary, type LibraryItem } from "./libraryStore";
@@ -15,6 +15,8 @@ import type { ComponentType } from "./defaults";
 import type { PaletteProps } from "./palette.types";
 import type { PaletteMeta } from "./palette.types";
 import { listInstalledApps, subscribeInstalledApps } from "./appInstallStore";
+import usePreviewTokens from "./hooks/usePreviewTokens";
+import { extractTextThemes, toCssValue, type TextTheme } from "./textThemes";
 
 const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, defaultTab = "components" }: PaletteProps) {
   const [search, setSearch] = useState("");
@@ -28,6 +30,7 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
     try { const s = localStorage.getItem('pb:recent-types'); return s ? (JSON.parse(s) as string[]) : []; } catch { return []; }
   });
   const [installedApps, setInstalledApps] = useState<string[]>(() => listInstalledApps(shop ?? null));
+  const previewTokens = usePreviewTokens();
 
   useEffect(() => {
     setInstalledApps(listInstalledApps(shop ?? null));
@@ -45,6 +48,27 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
     }
     return index;
   }, [paletteCategories]);
+
+  const textThemes = useMemo(() => extractTextThemes(previewTokens), [previewTokens]);
+
+  const buildPreviewStyle = useCallback((theme: TextTheme): CSSProperties => {
+    const base = theme.tokens.typography ?? {};
+    const style: CSSProperties = {};
+    if (base.fontFamily) style.fontFamily = toCssValue(base.fontFamily);
+    if (base.fontSize) style.fontSize = toCssValue(base.fontSize);
+    if (base.fontWeight) style.fontWeight = toCssValue(base.fontWeight);
+    if (base.lineHeight) style.lineHeight = toCssValue(base.lineHeight);
+    return style;
+  }, []);
+
+  const handleApplyTextTheme = useCallback((theme: TextTheme) => {
+    try {
+      window.dispatchEvent(new CustomEvent("pb:apply-text-theme", { detail: { id: theme.id } }));
+      setLiveMessage(`${theme.label} text style applied`);
+    } catch {
+      // noop
+    }
+  }, []);
 
   const searchTerm = search.trim().toLowerCase();
 
@@ -222,6 +246,30 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
                   shop={shop}
                 />
               ))}
+          </div>
+        </div>
+      )}
+
+      {textThemes.length > 0 && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <h4 className="font-semibold capitalize">Text Themes</h4>
+            <span className="text-xs text-muted-foreground">Apply to selected block</span>
+          </div>
+          <div className="flex flex-col gap-2">
+            {textThemes.map((theme) => (
+              <button
+                key={theme.id}
+                type="button"
+                className="flex flex-col gap-1 rounded border p-2 text-left text-sm transition hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                onClick={() => handleApplyTextTheme(theme)}
+              >
+                <span className="font-medium">{theme.label}</span>
+                <span aria-hidden="true" className="truncate" style={buildPreviewStyle(theme)}>
+                  The quick brown fox jumps over the lazy dog
+                </span>
+              </button>
+            ))}
           </div>
         </div>
       )}

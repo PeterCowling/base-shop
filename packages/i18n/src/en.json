@@ -45,6 +45,7 @@
   "cms.style.fontSize": "Font Size",
   "cms.style.fontWeight": "Font Weight",
   "cms.style.lineHeight": "Line Height",
+  "cms.style.textStyle": "Text Style",
   "cms.style.colorPlaceholder": "token or #hex",
   "cms.image.url": "Image URL",
   "cms.image.upload": "Upload",

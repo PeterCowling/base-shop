@@ -107,6 +107,24 @@ const PageSidebarSingleSelection = ({ components, selectedIds, dispatch, editor,
     return g?.label || gid;
   })();
 
+  React.useEffect(() => {
+    if (!eid?.global?.pinned) return;
+
+    const otherPinned = Object.entries(editor ?? {}).filter(
+      ([id, flags]) => id !== selectedComponent.id && Boolean((flags as any)?.global?.pinned),
+    );
+
+    if (otherPinned.length === 0) return;
+
+    otherPinned.forEach(([id, flags]) => {
+      const otherGlobal = (flags as any)?.global;
+      if (!otherGlobal) return;
+
+      const nextGlobal = { ...otherGlobal, pinned: false };
+      dispatch({ type: "update-editor", id, patch: { global: nextGlobal } as any });
+    });
+  }, [dispatch, editor, selectedComponent.id, eid?.global?.pinned]);
+
   return (
     <div className="space-y-2">
       {/* Alignment / distribution row (multi-select) */}

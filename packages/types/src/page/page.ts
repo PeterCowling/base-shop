@@ -136,7 +136,7 @@ export interface EditorFlags {
   /** Per-node custom mobile order (used when stackStrategy = custom on parent) */
   orderMobile?: number;
   /** Builder-only metadata for global (linked) components */
-  global?: { id: string; overrides?: unknown };
+  global?: { id: string; overrides?: unknown; pinned?: boolean };
 }
 
 export interface HistoryState {
@@ -174,6 +174,7 @@ export const historyStateSchema = z
             .object({
               id: z.string(),
               overrides: z.unknown().optional(),
+              pinned: z.boolean().optional(),
             })
             .optional(),
         })

@@ -30,8 +30,8 @@ const tokenByVariant: Record<IconButtonVariant, string> = {
 };
 
 const sizeClasses: Record<IconButtonSize, string> = {
-  sm: "h-8 w-8 text-base",
-  md: "h-10 w-10 text-lg",
+  sm: "h-8 w-8 text-base shrink-0",
+  md: "h-10 w-10 text-lg shrink-0",
 };
 
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(

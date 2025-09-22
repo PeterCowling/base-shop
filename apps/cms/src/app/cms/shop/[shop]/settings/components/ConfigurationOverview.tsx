@@ -39,7 +39,7 @@ export default function ConfigurationOverview({
           <form action={resetThemeOverride.bind(null, shop, token)}>
             <button
               type="submit"
-              className="text-xs text-primary underline"
+              className="text-xs text-link underline"
             >
               Reset
             </button>

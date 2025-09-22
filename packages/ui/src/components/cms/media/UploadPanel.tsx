@@ -2,7 +2,7 @@
 "use client";
 
 import Image from "next/image";
-import { Button, Input } from "@/components/atoms/shadcn";
+import { Button, Input } from "../../atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 import { ChangeEvent, ReactElement, useEffect, useState } from "react";
@@ -170,4 +170,3 @@ export default function UploadPanel({
     </div>
   );
 }
-

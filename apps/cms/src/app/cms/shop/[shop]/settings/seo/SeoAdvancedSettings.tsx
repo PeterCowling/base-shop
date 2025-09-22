@@ -22,7 +22,7 @@ export function SeoAdvancedSettings({
     <div className="space-y-3">
       <button
         type="button"
-        className="text-sm font-medium text-primary"
+        className="text-sm font-medium text-link"
         aria-expanded={open}
         onClick={onToggle}
       >

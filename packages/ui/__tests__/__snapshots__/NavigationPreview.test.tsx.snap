@@ -30,7 +30,7 @@ exports[`NavigationPreview renders nested menu links 1`] = `
         Products
       </a>
       <ul
-        class="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border bg-background p-2 shadow-md group-hover:flex"
+        class="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border bg-background p-2 shadow-elevation-2 group-hover:flex"
         data-token="--color-bg"
       >
         <li>
@@ -64,7 +64,7 @@ exports[`NavigationPreview renders nested menu links 1`] = `
         About
       </a>
       <ul
-        class="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border bg-background p-2 shadow-md group-hover:flex"
+        class="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border bg-background p-2 shadow-elevation-2 group-hover:flex"
         data-token="--color-bg"
       >
         <li>
@@ -89,7 +89,7 @@ exports[`NavigationPreview renders nested menu links 1`] = `
         Item
       </a>
       <ul
-        class="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border bg-background p-2 shadow-md group-hover:flex"
+        class="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border bg-background p-2 shadow-elevation-2 group-hover:flex"
         data-token="--color-bg"
       >
         <li>

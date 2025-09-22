@@ -67,7 +67,26 @@ const PageBuilder = memo(function PageBuilder({
   const previewTokens = usePreviewTokens();
   const [showComments, setShowComments] = useState(true);
 
-  const { dndContext, insertIndex, activeType } = usePageBuilderDnD({
+  // simple i18n for overlay/messages (can be replaced with app i18n later)
+  const t = (key: string, vars?: Record<string, unknown>) => {
+    const L = controls.locale || 'en';
+    const dict: Record<string, Record<string, string>> = {
+      en: {
+        cannotPlace: `Cannot place ${String((vars as any)?.type ?? 'item')} here`,
+        cannotMove: `Cannot move ${String((vars as any)?.type ?? 'item')} here`,
+        movedToTab: `Moved to tab ${String((vars as any)?.n ?? '')}`,
+        canceled: 'Canceled',
+        source_palette: 'Palette',
+        source_library: 'Library',
+        source_canvas: 'Canvas',
+      },
+    };
+    const table = dict[L] || dict.en;
+    const raw = table[key] || key;
+    return raw;
+  };
+
+  const { dndContext, insertIndex, insertParentId, activeType, dropAllowed, dragMeta } = usePageBuilderDnD({
     components,
     dispatch,
     defaults: defaults as Record<string, Partial<PageComponent>>,
@@ -80,6 +99,7 @@ const PageBuilder = memo(function PageBuilder({
     viewport: controls.viewport,
     scrollRef,
     zoom: controls.zoom,
+    t,
   });
 
   const handleAddFromPalette = (type: ComponentType) => {
@@ -300,11 +320,13 @@ const PageBuilder = memo(function PageBuilder({
       showPreview={controls.showPreview}
       liveMessage={liveMessage}
       dndContext={dndContext}
+      dropAllowed={dropAllowed}
+      dragMeta={dragMeta as any}
       frameClass={controls.frameClass}
       viewport={controls.viewport}
       viewportStyle={controls.viewportStyle}
       zoom={controls.zoom}
-      canvasProps={canvasProps}
+      canvasProps={{ ...canvasProps, dropAllowed, insertParentId }}
       scrollRef={scrollRef}
       activeType={activeType}
       previewProps={previewProps}

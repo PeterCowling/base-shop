@@ -156,6 +156,9 @@ const PageToolbar = ({
                   <kbd>Shift</kbd> + <kbd>Arrow</kbd> Resize selected block
                 </li>
                 <li>
+                  Hold <kbd>Shift</kbd> while dragging to lock to an axis
+                </li>
+                <li>
                   <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Arrow</kbd> Adjust spacing
                 </li>
                 <li className="text-xs text-muted-foreground">

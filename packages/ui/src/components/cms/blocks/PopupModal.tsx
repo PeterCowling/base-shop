@@ -85,7 +85,7 @@ export default function PopupModal({
         role="dialog"
         aria-modal="true"
         aria-label="Popup modal"
-        className="relative bg-white p-4 shadow-lg"
+        className="relative bg-white p-4 shadow-elevation-4"
         style={{ width, height }}
         onClick={(e) => e.stopPropagation()}
         ref={modalRef}
@@ -105,4 +105,3 @@ export default function PopupModal({
     </div>
   );
 }
-

@@ -49,7 +49,7 @@ export function MarketingRecentPerformance({ items }: MarketingRecentPerformance
                   <li key={campaign.name}>
                     <Link
                       href={campaign.href}
-                      className="text-primary underline decoration-dotted underline-offset-4"
+                      className="text-link underline decoration-dotted underline-offset-4"
                     >
                       {campaign.name}
                     </Link>

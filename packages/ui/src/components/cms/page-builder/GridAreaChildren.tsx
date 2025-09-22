@@ -24,6 +24,9 @@ type Props = {
   baselineSnap: boolean;
   baselineStep: number;
   toUnderlyingIndex: (uiIndex: number) => number;
+  insertParentId?: string | undefined;
+  insertIndex?: number | null;
+  dropAllowed?: boolean | null;
 };
 
 export default function GridAreaChildren({
@@ -42,6 +45,9 @@ export default function GridAreaChildren({
   baselineSnap,
   baselineStep,
   toUnderlyingIndex,
+  insertParentId,
+  insertIndex,
+  dropAllowed,
 }: Props) {
   const raw = String((component as any).areas || "");
   const names = new Set<string>();
@@ -86,10 +92,16 @@ export default function GridAreaChildren({
                 } catch {}
               }}
             />
+            {insertParentId === component.id && insertIndex === firstIdx && (
+              <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
+            )}
             {areaChildren.map((child) => {
               const i = visibleChildren.findIndex((c) => c.id === child.id);
               return (
                 <div key={child.id} className="relative group">
+                  {insertParentId === component.id && insertIndex === i && (
+                    <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
+                  )}
                   <div className="absolute -top-3 -left-[10px] z-20">
                     <Select
                       value={String((child as any).gridArea ?? area)}
@@ -125,6 +137,9 @@ export default function GridAreaChildren({
                     editor={editor}
                     baselineSnap={baselineSnap}
                     baselineStep={baselineStep}
+                    insertParentId={insertParentId}
+                    insertIndex={insertIndex}
+                    dropAllowed={dropAllowed}
                   />
                   <InlineInsert
                     index={i + 1}
@@ -139,6 +154,9 @@ export default function GridAreaChildren({
                       } catch {}
                     }}
                   />
+                  {insertParentId === component.id && insertIndex === i + 1 && (
+                    <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
+                  )}
                 </div>
               );
             })}
@@ -155,6 +173,9 @@ export default function GridAreaChildren({
                 } catch {}
               }}
             />
+            {insertParentId === component.id && insertIndex === endIndex && (
+              <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
+            )}
           </div>
         );
       })}

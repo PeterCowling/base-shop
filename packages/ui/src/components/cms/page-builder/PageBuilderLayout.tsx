@@ -10,12 +10,16 @@ import PageSidebar from "./PageSidebar";
 import HistoryControls from "./HistoryControls";
 import Palette from "./Palette";
 import PreviewPane from "./PreviewPane";
+import DevToolsOverlay from "./devtools/DevToolsOverlay";
 import PageBuilderTour, { Step, CallBackProps } from "./PageBuilderTour";
 import ResponsiveRightActions from "./ResponsiveRightActions";
 import type GridSettings from "./GridSettings";
 import type { ComponentType } from "./defaults";
 import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
+import DragOverlayPreview, { type DragMeta } from "./DragOverlayPreview";
+import ErrorBoundary from "./ErrorBoundary";
+import useReducedMotion from "../../../hooks/useReducedMotion";
 
 interface LayoutProps {
   style?: CSSProperties;
@@ -34,6 +38,8 @@ interface LayoutProps {
   showComments: boolean;
   liveMessage: string;
   dndContext: ComponentProps<typeof DndContext>;
+  dropAllowed?: boolean | null;
+  dragMeta?: DragMeta | null;
   frameClass: Record<string, string>;
   viewport: "desktop" | "tablet" | "mobile";
   viewportStyle: CSSProperties;
@@ -70,6 +76,8 @@ const PageBuilderLayout = ({
   showComments,
   liveMessage,
   dndContext,
+  dropAllowed,
+  dragMeta,
   frameClass,
   viewport,
   viewportStyle,
@@ -84,6 +92,10 @@ const PageBuilderLayout = ({
   tourProps,
 }: LayoutProps) => {
   const [spacePanning, setSpacePanning] = React.useState(false);
+  const reducedMotion = useReducedMotion();
+  const [showDevTools, setShowDevTools] = React.useState<boolean>(() => {
+    try { return localStorage.getItem("pb:devtools") === "1"; } catch { return false; }
+  });
   const [showPalette, setShowPalette] = React.useState<boolean>(() => {
     try { const v = localStorage.getItem("pb:show-palette"); return v === null ? true : v === "1"; } catch { return true; }
   });
@@ -111,6 +123,59 @@ const PageBuilderLayout = ({
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, []);
+
+  // Basic accessibility announcements for screen readers
+  const a11y = React.useMemo(() => {
+    const L = (toolbarProps as any)?.locale ?? "en";
+    const messages: Record<string, Record<string, string>> = {
+      en: {
+        picked: "Picked up",
+        moved: "Moved",
+        over: "over",
+        dropped: "Dropped",
+        into: "into",
+        canceled: "Canceled drag",
+        instructions:
+          "To pick up an item, press space or enter. Use arrow keys to move. Press space or enter to drop, or escape to cancel.",
+      },
+    };
+    const t = (k: string) => (messages[L] || messages.en)[k] || k;
+    return {
+      screenReaderInstructions: {
+        draggable: t("instructions"),
+      },
+      announcements: {
+        onDragStart({ active }: { active: any }) {
+          const label = (active?.data?.current as any)?.label || String(active?.id ?? "item");
+          return `${t("picked")} ${label}`;
+        },
+        onDragMove({ active, over }: { active: any; over: any }) {
+          if (!over) return undefined;
+          const a = (active?.data?.current as any);
+          const label = a?.label || String(active?.id ?? "item");
+          const overLabel = (over?.data?.current as any)?.label || String(over?.id ?? "target");
+          return `${t("moved")} ${label} ${t("over")} ${overLabel}`;
+        },
+        onDragOver({ active, over }: { active: any; over: any }) {
+          if (!over) return undefined;
+          const a = (active?.data?.current as any);
+          const label = a?.label || String(active?.id ?? "item");
+          const overLabel = (over?.data?.current as any)?.label || String(over?.id ?? "target");
+          return `${t("moved")} ${label} ${t("over")} ${overLabel}`;
+        },
+        onDragEnd({ active, over }: { active: any; over: any }) {
+          const a = (active?.data?.current as any);
+          const label = a?.label || String(active?.id ?? "item");
+          if (!over) return `${t("canceled")}`;
+          const overLabel = (over?.data?.current as any)?.label || String(over?.id ?? "target");
+          return `${t("dropped")} ${label} ${t("into")} ${overLabel}`;
+        },
+        onDragCancel() {
+          return `${t("canceled")}`;
+        },
+      },
+    };
+  }, [toolbarProps]);
   React.useEffect(() => {
     try { localStorage.setItem("pb:palette-width", String(paletteWidth)); } catch {}
   }, [paletteWidth]);
@@ -120,6 +185,11 @@ const PageBuilderLayout = ({
       const tag = target?.tagName;
       const editable = !!target && ((target as any).isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT');
       if (editable) return;
+      if ((e.ctrlKey || e.metaKey) && e.altKey && e.key.toLowerCase() === 'd') {
+        e.preventDefault();
+        setShowDevTools((v) => { try { localStorage.setItem('pb:devtools', v ? '0' : '1'); } catch {}; return !v; });
+        return;
+      }
       if (e.code === 'Space') setSpacePanning(true);
     };
     const onKeyUp = (e: KeyboardEvent) => {
@@ -135,10 +205,15 @@ const PageBuilderLayout = ({
   return (
   <DndContext
     {...dndContext}
+    accessibility={a11y}
     onDragStart={(dndContext as any).onDragStart || (() => {})}
     onDragMove={(dndContext as any).onDragMove || (() => {})}
     onDragEnd={(dndContext as any).onDragEnd || (() => {})}
   >
+  {/* A11y: shared drag instructions for handles (replaces deprecated aria-grabbed/dropeffect) */}
+  <div id="pb-drag-instructions" className="sr-only">
+    To pick up an item, press space or enter. Use arrow keys to move. Press space or enter to drop, or escape to cancel.
+  </div>
   <div className="flex gap-4 min-h-0" style={style}>
     <PageBuilderTour {...tourProps} />
     {showPalette && (
@@ -242,7 +317,15 @@ const PageBuilderLayout = ({
       <div aria-live="polite" aria-atomic="true" role="status" className="sr-only">
         {liveMessage}
       </div>
+      {/* Tiny spring/tween for placeholders (reduced-motion aware) */}
+      <style>{`
+        @media (prefers-reduced-motion: no-preference) {
+          @keyframes pb-fade-scale-in { from { transform: scale(0.96); opacity: .65 } to { transform: scale(1); opacity: 1 } }
+          [data-placeholder] { transform-origin: center; animation: pb-fade-scale-in 140ms cubic-bezier(0.16,1,0.3,1); }
+        }
+      `}</style>
       <div className="flex flex-1 gap-4 min-h-0">
+        <ErrorBoundary>
           <div
             ref={scrollRef}
             className="relative max-h-full overflow-auto overscroll-contain min-h-0"
@@ -275,17 +358,25 @@ const PageBuilderLayout = ({
               data-viewport={viewport}
               >
                 <PageCanvas {...canvasProps} />
+                {showDevTools && <DevToolsOverlay scrollRef={scrollRef as any} />}
               </div>
             </div>
           </div>
-          <DragOverlay>
-            {activeType && (
-              <div className="pointer-events-none rounded border bg-muted px-4 py-2 opacity-50 shadow">
-                {activeType}
-              </div>
-            )}
+          <DragOverlay
+            dropAnimation={
+              reducedMotion
+                ? { duration: 0, easing: "linear" }
+                : { duration: 220, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)", dragSourceOpacity: 0.25 }
+            }
+          >
+            {dragMeta ? (
+              <DragOverlayPreview dragMeta={dragMeta} allowed={dropAllowed ?? null} locale={(toolbarProps as any)?.locale ?? 'en'} />
+            ) : activeType ? (
+              <div className="pointer-events-none rounded border bg-muted px-4 py-2 opacity-50 shadow">{activeType}</div>
+            ) : null}
           </DragOverlay>
         {showPreview && <PreviewPane {...previewProps} />}
+        </ErrorBoundary>
       </div>
       <div className="sticky bottom-0 z-10 border-t border-border-2 bg-surface-1/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-surface-1/70">
         <HistoryControls {...historyProps} />

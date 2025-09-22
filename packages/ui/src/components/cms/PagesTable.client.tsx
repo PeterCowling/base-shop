@@ -81,7 +81,7 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
       {canWrite && (
         <Button
           asChild
-          className="h-10 rounded-xl bg-emerald-500 px-4 text-sm font-semibold text-white shadow-lg shadow-emerald-500/30 hover:bg-emerald-400"
+          className="h-10 rounded-xl bg-emerald-500 px-4 text-sm font-semibold text-white shadow-elevation-3 shadow-emerald-500/30 hover:bg-emerald-400"
         >
           <Link href={`/cms/shop/${shop}/pages/new/builder`}>New Page</Link>
         </Button>

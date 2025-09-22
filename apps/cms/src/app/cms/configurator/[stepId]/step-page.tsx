@@ -37,7 +37,7 @@ export default function StepPage({ stepId }: Props) {
 
   return (
     <div className="space-y-8">
-      <Card className="border border-border-3 shadow-sm">
+      <Card className="border border-border-3 shadow-elevation-1">
         <CardContent className="space-y-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="flex items-start gap-3">

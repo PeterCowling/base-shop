@@ -90,7 +90,7 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
           </div>
 
           {running && (
-            <p className="text-xs text-primary">Audit in progress…</p>
+            <p className="text-xs text-link">Audit in progress…</p>
           )}
 
           {loading ? (

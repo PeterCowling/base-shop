@@ -26,6 +26,9 @@ export default function BlockChildren({
   editor,
   baselineSnap = false,
   baselineStep = 8,
+  dropAllowed,
+  insertParentId,
+  insertIndex,
 }: Props) {
   const containerElRef = useRef<HTMLDivElement | null>(null);
   const underlyingChildren = (childComponents ?? []);
@@ -105,13 +108,22 @@ export default function BlockChildren({
         ref={handleSetContainerRef}
         id={`container-${component.id}`}
         role="list"
-        aria-dropeffect="move"
-        className="border-muted relative m-2 flex flex-col gap-4 border border-dashed p-2"
+        aria-label="Container"
+        className={"border-muted relative m-2 flex flex-col gap-4 border border-dashed p-2 " + (isOver && dropAllowed === false ? "ring-2 ring-danger border-danger cursor-not-allowed" : "")}
         data-tab-titles={isTabbed && slots ? JSON.stringify(slots.map((s) => s.title)) : undefined}
       >
         {effGridEnabled && <div className="absolute inset-0"><GridOverlay gridCols={effGridCols} gutter={effGutter} /></div>}
-        {isOver && (
-          <div data-placeholder className="border-primary bg-primary/10 ring-primary h-4 w-full rounded border-2 border-dashed ring-2" />
+        {/* top-of-container placeholder when targeting index 0 */}
+        {isOver && insertParentId === component.id && insertIndex === 0 && (
+          <div
+            data-placeholder
+            className={
+              (dropAllowed === false
+                ? "border-danger bg-danger/10 ring-2 ring-danger"
+                : "border-primary bg-primary/10 ring-2 ring-primary") +
+              " h-4 w-full rounded border-2 border-dashed"
+            }
+          />
         )}
         {!isTabbed && !isGridArea && (
           <DefaultChildrenList
@@ -132,6 +144,9 @@ export default function BlockChildren({
             containerElRef={containerElRef}
             toUnderlyingIndex={toUnderlyingIndex}
             compType={compType}
+            insertParentId={insertParentId}
+            insertIndex={insertIndex}
+            dropAllowed={dropAllowed}
           />
         )}
         {isTabbed && slots && (
@@ -152,6 +167,9 @@ export default function BlockChildren({
             baselineSnap={baselineSnap}
             baselineStep={baselineStep}
             toUnderlyingIndex={toUnderlyingIndex}
+            insertParentId={insertParentId}
+            insertIndex={insertIndex}
+            dropAllowed={dropAllowed}
           />
         )}
         {isGridArea && (
@@ -171,6 +189,9 @@ export default function BlockChildren({
             baselineSnap={baselineSnap}
             baselineStep={baselineStep}
             toUnderlyingIndex={toUnderlyingIndex}
+            insertParentId={insertParentId}
+            insertIndex={insertIndex}
+            dropAllowed={dropAllowed}
           />
         )}
       </div>

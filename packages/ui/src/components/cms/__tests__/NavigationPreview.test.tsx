@@ -69,7 +69,7 @@ describe("NavigationPreview", () => {
       "border",
       "bg-background",
       "p-2",
-      "shadow-md",
+      "shadow-elevation-2",
       "group-hover:flex",
     );
   });

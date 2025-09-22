@@ -27,6 +27,9 @@ type Props = {
   baselineSnap: boolean;
   baselineStep: number;
   toUnderlyingIndex: (uiIndex: number) => number;
+  insertParentId?: string | undefined;
+  insertIndex?: number | null;
+  dropAllowed?: boolean | null;
 };
 
 export default function TabbedChildren({
@@ -46,6 +49,9 @@ export default function TabbedChildren({
   baselineSnap: _baselineSnap,
   baselineStep: _baselineStep,
   toUnderlyingIndex,
+  insertParentId,
+  insertIndex,
+  dropAllowed,
 }: Props) {
   // Track dragging to show sticky tab headers
   const [dragActive, setDragActive] = useState(false);
@@ -124,10 +130,19 @@ export default function TabbedChildren({
                 } catch {}
               }}
             />
+            {insertParentId === component.id && insertIndex === startIndex && (
+              <div
+                data-placeholder
+                className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"}
+              />
+            )}
             {slotChildren.map((child) => {
               const i = visibleChildren.findIndex((c) => c.id === child.id);
               return (
                 <div key={child.id} className="relative group">
+                  {insertParentId === component.id && insertIndex === i && (
+                    <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
+                  )}
                   <div className="absolute -top-3 -left-[10px] z-20">
                     <Select
                       value={String((child as any).slotKey ?? 0)}
@@ -161,6 +176,9 @@ export default function TabbedChildren({
                     viewport={viewport}
                     device={device}
                     editor={editor}
+                    insertParentId={insertParentId}
+                    insertIndex={insertIndex}
+                    dropAllowed={dropAllowed}
                   />
                   <InlineInsert
                     index={i + 1}
@@ -175,6 +193,9 @@ export default function TabbedChildren({
                       } catch {}
                     }}
                   />
+                  {insertParentId === component.id && insertIndex === i + 1 && (
+                    <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
+                  )}
                 </div>
               );
             })}
@@ -191,6 +212,9 @@ export default function TabbedChildren({
                 } catch {}
               }}
             />
+            {insertParentId === component.id && insertIndex === endIndex && (
+              <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
+            )}
           </div>
         );
       })}

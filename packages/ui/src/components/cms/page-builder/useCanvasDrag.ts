@@ -35,6 +35,10 @@ export default function useCanvasDrag({
     null
   );
   const [moving, setMoving] = useState(false);
+  const rafRef = useRef<number | null>(null);
+  const lastEventRef = useRef<PointerEvent | null>(null);
+  const axisLockRef = useRef<null | 'x' | 'y'>(null);
+  const captureRef = useRef<{ el: Element | null; id: number | null }>({ el: null, id: null });
   const [current, setCurrent] = useState({
     left: 0,
     top: 0,
@@ -50,10 +54,19 @@ export default function useCanvasDrag({
 
   useEffect(() => {
     if (!moving) return;
-    const handleMove = (e: PointerEvent) => {
+    const processMove = (e: PointerEvent) => {
       if (!moveRef.current || !containerRef.current) return;
-      const dx = (e.clientX - moveRef.current.x) / Math.max(zoom, 0.0001);
-      const dy = (e.clientY - moveRef.current.y) / Math.max(zoom, 0.0001);
+      let dx = (e.clientX - moveRef.current.x) / Math.max(zoom, 0.0001);
+      let dy = (e.clientY - moveRef.current.y) / Math.max(zoom, 0.0001);
+      // Axis lock: when Shift is held, lock to the dominant axis for the current drag session
+      if (e.shiftKey) {
+        if (axisLockRef.current === null) {
+          axisLockRef.current = Math.abs(dx) >= Math.abs(dy) ? 'x' : 'y';
+        }
+        if (axisLockRef.current === 'x') dy = 0; else dx = 0;
+      } else {
+        axisLockRef.current = null;
+      }
       const originalL = moveRef.current.l + dx;
       const originalT = moveRef.current.t + dy;
       let newL = originalL;
@@ -115,6 +128,13 @@ export default function useCanvasDrag({
       const parent = containerRef.current.parentElement;
       const useRight = dockX === "right";
       const useBottom = dockY === "bottom";
+      // Restrict to parent bounds when a parent exists
+      if (parent) {
+        const maxL = Math.max(0, parent.offsetWidth - width);
+        const maxT = Math.max(0, parent.offsetHeight - height);
+        newL = Math.min(Math.max(0, newL), maxL);
+        newT = Math.min(Math.max(0, newT), maxT);
+      }
       const patch: Record<string, string> = {};
       if (useRight && parent) {
         const right = Math.round((parent.offsetWidth - (newL + width)));
@@ -136,16 +156,42 @@ export default function useCanvasDrag({
       });
       setDistances({ x: distX, y: distY });
     };
+    const handleMove = (e: PointerEvent) => {
+      lastEventRef.current = e;
+      if (rafRef.current == null) {
+        rafRef.current = window.requestAnimationFrame(() => {
+          const ev = lastEventRef.current;
+          if (ev) processMove(ev);
+          rafRef.current = null;
+        });
+      }
+    };
     const stop = () => {
       setMoving(false);
       setGuides({ x: null, y: null });
       setDistances({ x: null, y: null });
+      // Release pointer capture if held
+      try {
+        if (captureRef.current?.el && captureRef.current?.id != null) {
+          (captureRef.current.el as any).releasePointerCapture?.(captureRef.current.id);
+        }
+      } catch {}
+      captureRef.current = { el: null, id: null };
+      if (rafRef.current != null) {
+        try { cancelAnimationFrame(rafRef.current); } catch {}
+        rafRef.current = null;
+      }
     };
-    window.addEventListener("pointermove", handleMove);
+    const onKeyDown = (ke: KeyboardEvent) => { if (ke.key === "Escape") stop(); };
+    try { window.addEventListener("pointermove", handleMove, { passive: true }); } catch { window.addEventListener("pointermove", handleMove as any); }
     window.addEventListener("pointerup", stop);
+    window.addEventListener("blur", stop);
+    window.addEventListener("keydown", onKeyDown);
     return () => {
-      window.removeEventListener("pointermove", handleMove);
+      try { window.removeEventListener("pointermove", handleMove as any); } catch {}
       window.removeEventListener("pointerup", stop);
+      window.removeEventListener("blur", stop);
+      window.removeEventListener("keydown", onKeyDown);
     };
   }, [moving, componentId, dispatch, gridEnabled, gridCols, setGuides, siblingEdgesRef, containerRef, zoom]);
 
@@ -153,6 +199,8 @@ export default function useCanvasDrag({
     if (disabled) return;
     const el = containerRef.current;
     if (!el) return;
+    // Capture pointer to keep events consistent during drag
+    try { (e.target as Element)?.setPointerCapture?.(e.pointerId); captureRef.current = { el: e.target as Element, id: e.pointerId }; } catch {}
     moveRef.current = {
       x: e.clientX,
       y: e.clientY,

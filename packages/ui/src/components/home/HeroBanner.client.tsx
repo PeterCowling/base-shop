@@ -91,7 +91,7 @@ export default function HeroBanner({
         {/* locale-aware route link */}
         <Link
           href={`/${langPrefix}/shop`}
-          className="bg-fg hover:bg-muted inline-block rounded-full px-[calc(var(--space-4)*2)] py-3 font-semibold shadow-lg transition-colors"
+          className="bg-fg hover:bg-muted inline-block rounded-full px-[calc(var(--space-4)*2)] py-3 font-semibold shadow-elevation-2 transition-colors"
           data-token="--color-fg"
         >
           <span className="text-bg" data-token="--color-bg">

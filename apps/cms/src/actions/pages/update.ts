@@ -45,6 +45,24 @@ export async function updatePage(
     const saved = await updatePageInService(shop, patch, previous);
     return { page: saved };
   } catch (err) {
+    // Attempt a single conflict-resolution retry by refreshing the latest
+    // page and updating the optimistic concurrency token (updatedAt).
+    const message = (err as Error)?.message || String(err);
+    const isConflict = typeof message === "string" && message.includes("Conflict: page has been modified");
+    if (isConflict) {
+      try {
+        const latestPages = await getPages(shop);
+        const latest = latestPages.find((p) => p.id === patch.id);
+        if (!latest) throw new Error(`Page ${patch.id} not found`);
+        // Bump the patch's updatedAt to the latest server value and retry once.
+        const retryPatch = { ...patch, updatedAt: latest.updatedAt } as typeof patch;
+        const saved = await updatePageInService(shop, retryPatch, latest);
+        return { page: saved };
+      } catch (retryErr) {
+        await reportError(retryErr);
+        throw retryErr;
+      }
+    }
     await reportError(err);
     throw err;
   }

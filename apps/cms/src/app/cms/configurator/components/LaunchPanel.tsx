@@ -36,7 +36,7 @@ export function LaunchPanel({
   failedStepLink,
 }: LaunchPanelProps) {
   return (
-    <CardRoot className="border border-primary/20 bg-surface-2 text-primary-foreground shadow-2xl">
+    <CardRoot className="border border-primary/20 bg-surface-2 text-primary-foreground shadow-elevation-5">
       <CardSection className="space-y-5">
         <div className="space-y-1">
           <h2 className="text-lg font-semibold">Launch readiness</h2>

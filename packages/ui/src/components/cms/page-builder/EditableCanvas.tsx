@@ -36,6 +36,7 @@ interface Props {
   setDragOver: (v: boolean) => void;
   onFileDrop: (e: React.DragEvent<HTMLDivElement>) => void;
   insertIndex: number | null;
+  insertParentId?: string | undefined;
   dispatch: (action: Action) => void;
   locale: Locale;
   containerStyle: React.CSSProperties;
@@ -53,6 +54,7 @@ interface Props {
   zoom: number;
   showBaseline: boolean;
   baselineStep: number;
+  dropAllowed?: boolean | null;
 }
 
 export default function EditableCanvas({
@@ -64,6 +66,7 @@ export default function EditableCanvas({
   setDragOver,
   onFileDrop,
   insertIndex,
+  insertParentId,
   dispatch,
   locale,
   containerStyle,
@@ -81,6 +84,7 @@ export default function EditableCanvas({
   zoom,
   showBaseline,
   baselineStep,
+  dropAllowed,
 }: Props) {
   const [dropRect, setDropRectState] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
 
@@ -130,7 +134,7 @@ export default function EditableCanvas({
         ref={assignCanvasRef}
         style={containerStyle}
         role="list"
-        aria-dropeffect="move"
+        aria-label="Canvas"
         onPointerDown={(e) => {
           const hasPointerEvent = typeof window !== "undefined" && typeof (window as any).PointerEvent !== "undefined";
           if (hasPointerEvent) {
@@ -141,7 +145,10 @@ export default function EditableCanvas({
         onDragOver={handleDragOver}
         onDragLeave={clearHighlight}
         onDragEnd={clearHighlight}
-        className={cn("relative mx-auto flex flex-col gap-4 rounded border", (dragOver || isCanvasOver) && "ring-2 ring-primary")}
+        className={cn(
+          "relative mx-auto flex flex-col gap-4 rounded border",
+          (dragOver || isCanvasOver) && (dropAllowed === false ? "ring-2 ring-danger border-danger cursor-not-allowed" : "ring-2 ring-primary")
+        )}
       >
         {shop && pageId && showComments && (
           <CommentsLayer canvasRef={canvasRef as any} components={components} shop={shop ?? ""} pageId={pageId ?? ""} selectedIds={selectedIds} />
@@ -208,8 +215,15 @@ export default function EditableCanvas({
                 try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block inserted" })); } catch {}
               }}
             />
-            {insertIndex === i && (
-              <div data-placeholder className={cn("h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10", snapPosition !== null && "ring-2 ring-primary")} />
+            {insertParentId === undefined && insertIndex === i && (
+              <div
+                data-placeholder
+                className={cn(
+                  "h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none",
+                  dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10",
+                  snapPosition !== null && (dropAllowed === false ? "ring-2 ring-danger" : "ring-2 ring-primary")
+                )}
+              />
             )}
             <CanvasItem
               component={c}
@@ -236,6 +250,9 @@ export default function EditableCanvas({
               zoom={zoom}
               baselineSnap={showBaseline}
               baselineStep={baselineStep}
+              dropAllowed={dropAllowed}
+              insertParentId={insertParentId}
+              insertIndex={insertIndex}
             />
           </div>
         ))}
@@ -258,8 +275,15 @@ export default function EditableCanvas({
             try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block inserted" })); } catch {}
           }}
         />
-        {insertIndex === visibleComponents.length && (
-          <div data-placeholder className={cn("h-4 w-full rounded border-2 border-dashed border-primary bg-primary/10", snapPosition !== null && "ring-2 ring-primary")} />
+        {insertParentId === undefined && insertIndex === visibleComponents.length && (
+          <div
+            data-placeholder
+            className={cn(
+              "h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none",
+              dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10",
+              snapPosition !== null && (dropAllowed === false ? "ring-2 ring-danger" : "ring-2 ring-primary")
+            )}
+          />
         )}
       </div>
     </SortableContext>

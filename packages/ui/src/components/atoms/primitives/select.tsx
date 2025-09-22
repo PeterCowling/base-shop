@@ -39,7 +39,7 @@ export const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "z-[70] min-w-[8rem] overflow-hidden rounded-md border border-input bg-surface-2 p-1 text-foreground shadow-md",
+        "z-[70] min-w-[8rem] overflow-hidden rounded-md border border-input bg-surface-2 p-1 text-foreground shadow-elevation-2",
         className
       )}
       {...props}

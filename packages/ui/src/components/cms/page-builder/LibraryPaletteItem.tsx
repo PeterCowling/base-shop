@@ -9,7 +9,7 @@ import type { LibraryItem } from "./libraryStore";
 
 export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUpdate, shop }: { item: LibraryItem; onDelete: () => void; onToggleShare: () => void; onUpdate: (patch: Partial<Pick<LibraryItem, "label" | "tags" | "thumbnail">>) => void; shop?: string | null }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
-    useSortable({ id: `lib-${item.id}`, data: { from: "library", template: item.template, templates: item.templates } });
+    useSortable({ id: `lib-${item.id}`, data: { from: "library", template: item.template, templates: item.templates, label: item.label, thumbnail: item.thumbnail } });
   const [editing, setEditing] = useState(false);
   const [label, setLabel] = useState(item.label);
   const [tagInput, setTagInput] = useState("");
@@ -69,7 +69,8 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
       {...listeners}
       role="button"
       tabIndex={0}
-      aria-grabbed={isDragging}
+      aria-pressed={isDragging}
+      aria-describedby="pb-drag-instructions"
       title="Drag to insert"
       style={{ transform: CSS.Transform.toString(transform) }}
       className="flex cursor-grab items-center gap-2 rounded border p-2 text-sm"
@@ -230,4 +231,3 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
     </div>
   );
 }
-

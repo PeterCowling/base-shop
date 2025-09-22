@@ -44,22 +44,22 @@ export default async function MaintenancePage() {
 
   return (
     <div className="space-y-10">
-      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero text-primary-foreground shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero-contrast text-hero-foreground shadow-elevation-4">
         <div className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
           <div className="space-y-6">
             <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground/70">
+              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-hero-foreground/80">
                 Maintenance
               </span>
               <h1 className="text-3xl font-semibold md:text-4xl">
                 Keep your catalog clean and compliant
               </h1>
-              <p className="text-primary-foreground/80">
+              <p className="text-hero-foreground/80">
                 Run automated scans to spot outdated or risky products before customers do. Address flagged items directly from this dashboard.
               </p>
             </div>
             <div className="space-y-4">
-              <Progress value={progressValue} label={progressLabel} />
+              <Progress value={progressValue} label={progressLabel} labelClassName="text-hero-foreground/80" />
               <div className="flex flex-wrap gap-3">
                 <Button asChild className="h-11 px-5 text-sm font-semibold">
                   <Link href="/cms">Back to CMS home</Link>
@@ -67,7 +67,7 @@ export default async function MaintenancePage() {
                 <Button
                   asChild
                   variant="outline"
-                  className="h-11 px-5 text-sm font-semibold border-primary/40 text-primary-foreground hover:bg-primary/10"
+                  className="h-11 px-5 text-sm font-semibold border-primary/40 text-hero-foreground hover:bg-primary/10"
                 >
                   <Link href="/cms/live">Check live previews</Link>
                 </Button>
@@ -90,18 +90,18 @@ export default async function MaintenancePage() {
               ))}
             </div>
           </div>
-          <Card className="border border-border/20 bg-surface-2 text-foreground shadow-2xl">
+          <Card className="border border-border/20 bg-surface-2 text-foreground shadow-elevation-5">
             <CardContent className="space-y-5">
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold">Scan status</h2>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-foreground">
                   Review maintenance insights regularly to avoid shipping stale content or non-compliant products.
                 </p>
               </div>
               <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/15 bg-surface-2 px-4 py-3">
                 <div className="min-w-0">
                   <p className="text-sm font-medium">Current posture</p>
-                  <p className="text-xs text-muted-foreground">
+                  <p className="text-xs text-foreground">
                     {flagged.length === 0
                       ? "All systems go"
                       : `${flagged.length} flagged for investigation`}

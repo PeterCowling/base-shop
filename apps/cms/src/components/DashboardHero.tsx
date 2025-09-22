@@ -36,20 +36,24 @@ export function DashboardHero({
     pendingCount === 0 ? "No pending approvals" : `${pendingCount} awaiting review`;
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-border-3 bg-hero text-primary-foreground shadow-xl">
+    <section className="relative overflow-hidden rounded-3xl border border-border-3 bg-hero-contrast text-hero-foreground shadow-elevation-4">
       <div className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
         <div className="space-y-6">
           <div className="space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground/70">
+            <span className="text-xs font-semibold uppercase tracking-[0.35em] text-hero-foreground/80">
               Base-Shop CMS
             </span>
             <h1 className="text-3xl font-semibold md:text-4xl">
               Operate every storefront with confidence
             </h1>
-            <p className="text-primary-foreground/80">{heroDescription}</p>
+            <p className="text-hero-foreground/80">{heroDescription}</p>
           </div>
           <div className="space-y-4">
-            <Progress value={approvalProgress} label={progressLabel} />
+            <Progress
+              value={approvalProgress}
+              label={progressLabel}
+              labelClassName="text-hero-foreground/80"
+            />
             <div className="flex flex-wrap gap-3">
               {canManageRequests && (
                 <Button asChild className="h-11 px-5 text-sm font-semibold">
@@ -59,7 +63,7 @@ export function DashboardHero({
               <Button
                 asChild
                 variant="outline"
-                className="h-11 px-5 text-sm font-semibold border-primary/40 text-primary-foreground hover:bg-primary/10"
+                className="h-11 px-5 text-sm font-semibold border-primary/40 text-hero-foreground hover:bg-primary/10"
               >
                 <Link href="/cms/dashboard">View shop dashboards</Link>
               </Button>
@@ -67,7 +71,7 @@ export function DashboardHero({
                 <JumpLinkButton
                   targetId={pendingHeadingId}
                   variant="outline"
-                  className="h-11 px-5 text-sm font-semibold border-primary/40 text-primary-foreground hover:bg-primary/10"
+                  className="h-11 px-5 text-sm font-semibold border-primary/40 text-hero-foreground hover:bg-primary/10"
                 >
                   Review account requests
                 </JumpLinkButton>
@@ -81,17 +85,17 @@ export function DashboardHero({
               className="border border-primary/20 bg-surface-2 text-foreground"
             >
               <CardContent className="space-y-1 p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-primary-foreground/70">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   {stat.label}
                 </p>
-                <p className="text-xl font-semibold text-primary-foreground">{stat.value}</p>
-                <p className="text-xs text-primary-foreground/70">{stat.caption}</p>
+                <p className="text-xl font-semibold text-foreground">{stat.value}</p>
+                <p className="text-xs text-muted-foreground">{stat.caption}</p>
               </CardContent>
             </Card>
           ))}
         </div>
       </div>
-        <Card className="border border-border-2 bg-surface-2 text-foreground shadow-2xl">
+        <Card className="border border-border-2 bg-surface-2 text-foreground shadow-elevation-5">
           <CardContent className="space-y-5">
             <div className="space-y-1">
               <h2 className="text-lg font-semibold">Access control</h2>

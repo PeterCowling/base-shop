@@ -4,61 +4,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { configuratorStateSchema, type ConfiguratorState } from "../../wizard/schema";
 import type { ConfiguratorStep } from "../types";
 import { useConfiguratorPersistence } from "./useConfiguratorPersistence";
-import { useLaunchShop, type LaunchStepStatus } from "./useLaunchShop";
+import { useLaunchShop } from "./useLaunchShop";
 import { calculateConfiguratorProgress } from "../lib/progress";
 import { useLayout } from "@platform-core/contexts/LayoutContext";
-import { getSteps, stepTrackMeta, steps as configuratorSteps } from "../steps";
-
-const stepLinks: Record<string, string> = {
-  create: "summary",
-  init: "import-data",
-  deploy: "hosting",
-  seed: "seed-data",
-};
-
-export interface QuickStat {
-  label: string;
-  value: string;
-  caption: string;
-}
-
-export interface HeroResumeCta {
-  href: string;
-  label: string;
-  isPrimary: boolean;
-  onClick?: () => void;
-}
-
-export interface ConfiguratorHeroData {
-  description: string;
-  progressPercent: number;
-  essentialProgressLabel: string;
-  resumeCta: HeroResumeCta;
-  quickStats: QuickStat[];
-}
-
-export interface TrackProgressItem {
-  key: string;
-  label: string;
-  description: string;
-  done: number;
-  total: number;
-  percent: number;
-}
-
-export interface LaunchErrorLink {
-  href: string;
-  label: string;
-}
-
-export interface LaunchPanelData {
-  allRequiredDone: boolean;
-  tooltipText: string;
-  onLaunch: () => void;
-  launchStatus: Record<string, LaunchStepStatus> | null;
-  launchError: string | null;
-  failedStepLink: LaunchErrorLink | null;
-}
+import { getSteps, steps as configuratorSteps } from "../steps";
+import type { ConfiguratorHeroData, LaunchErrorLink, LaunchPanelData, QuickStat, TrackProgressItem } from "./dashboard/types";
+import { computeStepGroups } from "./dashboard/stepGroups";
+import { buildHeroData } from "./dashboard/heroData";
+import { buildTrackProgress } from "./dashboard/trackProgress";
+import { getFailedStepLink } from "./dashboard/failedStepLink";
 
 interface ToastState {
   open: boolean;
@@ -175,155 +129,26 @@ export function useConfiguratorDashboardState(): {
       }),
   });
 
-  const requiredSteps = useMemo(
-    () => steps.filter((step) => !step.optional),
-    [steps]
-  );
-  const optionalSteps = useMemo(
-    () => steps.filter((step) => step.optional),
-    [steps]
+  const groups = useMemo(
+    () => computeStepGroups(steps, state.completed),
+    [steps, state.completed]
   );
 
-  const requiredCompleted = useMemo(
-    () =>
-      requiredSteps.filter((step) => state.completed?.[step.id] === "complete")
-        .length,
-    [requiredSteps, state.completed]
-  );
-  const optionalCompleted = useMemo(
-    () =>
-      optionalSteps.filter((step) => state.completed?.[step.id] === "complete")
-        .length,
-    [optionalSteps, state.completed]
-  );
-  const skippedOptional = useMemo(
-    () =>
-      optionalSteps.filter((step) => state.completed?.[step.id] === "skipped")
-        .length,
-    [optionalSteps, state.completed]
+  const { heroData, quickStats } = useMemo(
+    () => buildHeroData(groups, allRequiredDone, onStepClick),
+    [groups, allRequiredDone, onStepClick]
   );
 
-  const progressPercent = requiredSteps.length
-    ? Math.round((requiredCompleted / requiredSteps.length) * 100)
-    : 0;
-
-  const nextStep = useMemo(
-    () => requiredSteps.find((step) => state.completed?.[step.id] !== "complete"),
-    [requiredSteps, state.completed]
+  const trackProgress: TrackProgressItem[] = useMemo(
+    () => buildTrackProgress(steps, state.completed),
+    [steps, state.completed]
   );
 
-  const heroDescription = useMemo(() => {
-    const remainingRequired = requiredSteps.length - requiredCompleted;
-    if (!nextStep) {
-      return "Every foundational step is complete. Review the summary or explore optional enhancements before you launch.";
-    }
-    const suffix = remainingRequired === 1 ? "" : "s";
-    return `You are only ${remainingRequired} step${suffix} away from launch. Pick up with ${nextStep.label} to keep momentum.`;
-  }, [nextStep, requiredCompleted, requiredSteps.length]);
-
-  const essentialProgressLabel = `${requiredCompleted}/${requiredSteps.length || 0} essential steps complete`;
-
-  const resumeCta: HeroResumeCta = nextStep
-    ? {
-        href: `/cms/configurator/${nextStep.id}`,
-        label: `Resume ${nextStep.label}`,
-        isPrimary: true,
-        onClick: () => onStepClick(nextStep),
-      }
-    : {
-        href: "/cms/configurator/summary",
-        label: "Review configuration",
-        isPrimary: false,
-      };
-
-  const coreValue = `${requiredCompleted}/${requiredSteps.length || 0}`;
-  const coreCaption =
-    requiredCompleted === requiredSteps.length
-      ? "All essential steps complete"
-      : `${requiredSteps.length - requiredCompleted} remaining before launch`;
-
-  const optionalValue = optionalSteps.length
-    ? `${optionalCompleted}/${optionalSteps.length}`
-    : "0";
-
-  let optionalCaption = "";
-  if (optionalSteps.length === 0) {
-    optionalCaption = "No optional steps configured";
-  } else if (skippedOptional > 0) {
-    optionalCaption = `${optionalCompleted} done • ${skippedOptional} skipped`;
-  } else {
-    optionalCaption = `${optionalCompleted} completed so far`;
-  }
-
-  const quickStats: QuickStat[] = useMemo(
-    () => [
-      {
-        label: "Core milestones",
-        value: coreValue,
-        caption: coreCaption,
-      },
-      {
-        label: "Optional upgrades",
-        value: optionalValue,
-        caption: optionalCaption,
-      },
-      {
-        label: "Launch readiness",
-        value: allRequiredDone ? "Ready" : "In progress",
-        caption: allRequiredDone
-          ? "You can launch whenever you're ready"
-          : "Complete the remaining essentials to unlock launch",
-      },
-    ],
-    [allRequiredDone, coreCaption, coreValue, optionalCaption, optionalValue]
+  const failedStepLink = useMemo<LaunchErrorLink | null>(
+    () => getFailedStepLink(failedStep),
+    [failedStep]
   );
-
-  const trackProgress: TrackProgressItem[] = useMemo(() => {
-    const meta = stepTrackMeta;
-    if (!meta) {
-      return [];
-    }
-
-    return Object.entries(meta)
-      .map(([track, metaValue]) => {
-        const scopedSteps = steps.filter((step) => step.track === track);
-        if (scopedSteps.length === 0) return null;
-        const done = scopedSteps.filter(
-          (step) => state.completed?.[step.id] === "complete"
-        ).length;
-        const percent = Math.round((done / scopedSteps.length) * 100);
-        return {
-          key: track,
-          label: metaValue.label,
-          description: metaValue.description,
-          done,
-          total: scopedSteps.length,
-          percent,
-        };
-      })
-      .filter((value): value is TrackProgressItem => value !== null);
-  }, [state.completed, steps]);
-
-  const failedStepLink = useMemo<LaunchErrorLink | null>(() => {
-    if (!failedStep) return null;
-    const slug = stepLinks[failedStep];
-    if (!slug) return null;
-    const step = configuratorSteps[slug];
-    if (!step) return null;
-    return {
-      href: `/cms/configurator/${slug}`,
-      label: step.label,
-    };
-  }, [failedStep]);
-
-  const heroData: ConfiguratorHeroData = {
-    description: heroDescription,
-    progressPercent,
-    essentialProgressLabel,
-    resumeCta,
-    quickStats,
-  };
-
+  // heroData and quickStats are derived above via buildHeroData
   const launchPanelData: LaunchPanelData = {
     allRequiredDone,
     tooltipText,
@@ -352,3 +177,12 @@ export function useConfiguratorDashboardState(): {
 }
 
 export default useConfiguratorDashboardState;
+
+export type {
+  QuickStat,
+  HeroResumeCta,
+  ConfiguratorHeroData,
+  TrackProgressItem,
+  LaunchPanelData,
+  LaunchErrorLink,
+} from "./dashboard/types";

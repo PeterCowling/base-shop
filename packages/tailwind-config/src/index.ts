@@ -56,16 +56,26 @@ const preset: Config = {
         // Token-driven hero gradient
         hero:
           "linear-gradient(to right, hsl(var(--gradient-hero-from)), hsl(var(--gradient-hero-via)), hsl(var(--gradient-hero-to)))",
+        // Contrast-safe variant: adds a dark overlay beneath text to guarantee legibility
+        // across bright gradient stops. Use `bg-hero-contrast` instead of `bg-hero` when
+        // placing body copy or headings directly on the hero background.
+        'hero-contrast':
+          "linear-gradient(hsl(var(--hero-contrast-overlay, 0 0% 0% / 0.55)), hsl(var(--hero-contrast-overlay, 0 0% 0% / 0.55))), linear-gradient(to right, hsl(var(--gradient-hero-from)), hsl(var(--gradient-hero-via)), hsl(var(--gradient-hero-to)))",
       },
       textColor: {
         // Core foreground aliases used across apps and shadcn
         foreground: "hsl(var(--color-fg))",
-        "muted-foreground": "hsl(var(--color-fg) / 0.65)",
+        // Muted foreground uses opaque color to satisfy axe contrast checks across surfaces
+        "muted-foreground": "hsl(var(--color-fg))",
         "card-foreground": "hsl(var(--color-fg))",
         "popover-foreground": "hsl(var(--color-fg))",
+        // Link color tuned for WCAG contrast on light surfaces
+        link: "hsl(var(--color-link))",
         // Canonical foreground tokens
         "primary-foreground": "hsl(var(--color-primary-fg))",
         "accent-foreground": "hsl(var(--color-accent-fg))",
+        // Hero foreground token pairs with `bg-hero-contrast` to maintain contrast
+        "hero-foreground": "hsl(var(--hero-fg, 0 0% 100%))",
         // Alias destructive -> danger for shadcn compatibility
         "destructive-foreground": "hsl(var(--color-danger-fg))",
         "danger-foreground": "hsl(var(--color-danger-fg))",
@@ -99,6 +109,13 @@ const preset: Config = {
         sm: "var(--shadow-sm)",
         md: "var(--shadow-md)",
         lg: "var(--shadow-lg)",
+        // Elevation scale for consistent depth across apps
+        'elevation-0': 'var(--elevation-0, none)',
+        'elevation-1': 'var(--elevation-1, 0 1px 2px rgba(0,0,0,0.06))',
+        'elevation-2': 'var(--elevation-2, 0 2px 6px rgba(0,0,0,0.10))',
+        'elevation-3': 'var(--elevation-3, 0 4px 12px rgba(0,0,0,0.14))',
+        'elevation-4': 'var(--elevation-4, 0 8px 24px rgba(0,0,0,0.18))',
+        'elevation-5': 'var(--elevation-5, 0 12px 36px rgba(0,0,0,0.22))',
       },
     },
   },

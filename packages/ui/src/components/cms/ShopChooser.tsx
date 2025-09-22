@@ -74,7 +74,7 @@ export default function ShopChooser({
   return (
     <Card
       className={cn(
-        "border border-white/10 bg-slate-950/70 text-white shadow-lg",
+        "border border-white/20 bg-slate-950/80 text-white shadow-elevation-4",
         className
       )}
     >
@@ -82,7 +82,7 @@ export default function ShopChooser({
         {(tag || heading || subheading) && (
           <div className="space-y-2">
             {tag && (
-              <Tag variant="default" className="bg-white/10 text-white/70">
+              <Tag variant="default" className="bg-white/10 text-white">
                 {tag}
               </Tag>
             )}
@@ -90,7 +90,7 @@ export default function ShopChooser({
               <h2 className="text-lg font-semibold text-white">{heading}</h2>
             )}
             {subheading && (
-              <p className="text-sm text-white/70">{subheading}</p>
+              <p className="text-sm text-white">{subheading}</p>
             )}
           </div>
         )}
@@ -121,7 +121,7 @@ export default function ShopChooser({
                 <li key={shop}>
                   <article
                     className={cn(
-                      "group flex h-full flex-col justify-between gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 text-sm text-white shadow-sm transition hover:border-white/40 hover:bg-white/10 focus-within:border-white/50 focus-within:bg-white/10",
+                      "group flex h-full flex-col justify-between gap-4 rounded-2xl border border-white/20 bg-white/10 p-5 text-sm text-white shadow-elevation-1 transition hover:border-white/40 hover:bg-white/15 focus-within:border-white/50 focus-within:bg-white/15",
                       card.cardClassName
                     )}
                     aria-labelledby={cardTitleId}
@@ -141,7 +141,7 @@ export default function ShopChooser({
                           </span>
                         )}
                         <div className="space-y-1">
-                          <span className="block text-xs uppercase tracking-wide text-white/50">
+                          <span className="block text-xs uppercase tracking-wide text-white">
                             {resolvedEyebrow}
                           </span>
                           <h3
@@ -154,7 +154,7 @@ export default function ShopChooser({
                       </div>
                       <p
                         id={descriptionId}
-                        className="text-sm leading-relaxed text-white/70"
+                        className="text-sm leading-relaxed text-white"
                       >
                         {resolvedDescription}
                       </p>
@@ -173,7 +173,7 @@ export default function ShopChooser({
                         )
                       }
                       className={cn(
-                        "mt-auto inline-flex h-11 w-full items-center justify-center rounded-xl border border-white/30 bg-white/10 text-sm font-semibold text-white shadow-sm transition hover:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
+                        "mt-auto inline-flex h-11 w-full items-center justify-center rounded-xl border border-white/30 bg-white/15 text-sm font-semibold text-white shadow-elevation-1 transition hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
                         card.ctaClassName
                       )}
                     >
@@ -207,7 +207,7 @@ export default function ShopChooser({
                   emptyState.analyticsPayload
                 )
               }
-              className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-emerald-500 text-sm font-semibold text-white shadow-md shadow-emerald-500/30 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200"
+              className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-emerald-500 text-sm font-semibold text-white shadow-elevation-2 shadow-emerald-500/30 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200"
             >
               {emptyState.ctaLabel}
             </Link>

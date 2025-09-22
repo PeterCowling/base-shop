@@ -13,7 +13,7 @@ export default async function PluginsPage() {
       <div className="mt-6">
         <Link
           href="/cms/blog/sanity/connect"
-          className="text-primary hover:underline"
+          className="text-link hover:underline"
         >
           Connect blog (Sanity)
         </Link>

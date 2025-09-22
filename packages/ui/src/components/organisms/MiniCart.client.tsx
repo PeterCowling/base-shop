@@ -67,7 +67,7 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
         <DialogContent
           style={style}
           className={cn(
-            "bg-background fixed top-0 right-0 h-full max-w-full rounded-none border-l p-6 shadow-lg",
+            "bg-background fixed top-0 right-0 h-full max-w-full rounded-none border-l p-6 shadow-elevation-4",
             widthClass
           )}
         >

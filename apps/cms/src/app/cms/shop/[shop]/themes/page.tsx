@@ -47,7 +47,7 @@ export default async function ShopThemePage({
     <div>
       <h2 className="mb-4 text-xl font-semibold">Theme</h2>
       <p className="mb-4 text-sm">
-        <Link href="/cms/themes/library" className="text-primary underline">
+        <Link href="/cms/themes/library" className="text-link underline">
           Theme Library
         </Link>
       </p>

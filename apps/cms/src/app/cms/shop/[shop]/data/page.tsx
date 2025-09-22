@@ -16,7 +16,7 @@ const cards = [
     ],
     href: (shop: string) => `/cms/shop/${shop}/data/inventory`,
     cta: "Manage inventory",
-    accent: "bg-hero",
+    accent: "bg-hero-contrast",
   },
   {
     title: "Rental pricing",
@@ -30,7 +30,7 @@ const cards = [
     ],
     href: (shop: string) => `/cms/shop/${shop}/data/rental/pricing`,
     cta: "Configure pricing",
-    accent: "bg-hero",
+    accent: "bg-hero-contrast",
   },
   {
     title: "Return logistics",
@@ -44,7 +44,7 @@ const cards = [
     ],
     href: (shop: string) => `/cms/shop/${shop}/data/return-logistics`,
     cta: "Optimize returns",
-    accent: "bg-hero",
+    accent: "bg-hero-contrast",
   },
 ] as const;
 
@@ -56,14 +56,14 @@ export default async function DataIndex({
   const { shop } = await params;
   return (
     <div className="space-y-8 text-foreground">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero-contrast text-hero-foreground shadow-elevation-4">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--color-muted)/0.18),_transparent_55%)]" />
         <div className="relative space-y-4 px-6 py-8">
           <Tag variant="default">
             Data operations · {shop}
           </Tag>
           <h1 className="text-3xl font-semibold md:text-4xl">Guide your merchandising source of truth</h1>
-          <p className="text-sm text-muted-foreground md:text-base">
+          <p className="text-sm text-hero-foreground/80 md:text-base">
             Keep every dataset in lockstep—from stock availability to deposit policies and return coverage—before you roll
             updates to the storefront.
           </p>
@@ -89,15 +89,15 @@ export default async function DataIndex({
         {cards.map((card) => (
           <Card
             key={card.title}
-            className={`border border-border/10 ${card.accent} text-primary-foreground shadow-lg`}
+            className={`border border-border/10 ${card.accent} text-hero-foreground shadow-elevation-3`}
           >
             <CardContent className="flex h-full flex-col gap-4 p-6">
               <div className="space-y-2">
-                <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{card.eyebrow}</span>
+                <span className="text-xs font-semibold uppercase tracking-wide text-hero-foreground/80">{card.eyebrow}</span>
                 <h2 className="text-xl font-semibold leading-tight">{card.title}</h2>
-                <p className="text-sm text-muted-foreground">{card.description}</p>
+                <p className="text-sm text-hero-foreground/80">{card.description}</p>
               </div>
-              <ul className="flex flex-1 list-disc flex-col gap-2 pl-5 text-sm text-muted-foreground">
+              <ul className="flex flex-1 list-disc flex-col gap-2 pl-5 text-sm text-hero-foreground/80">
                 {card.bullets.map((bullet) => (
                   <li key={bullet}>{bullet}</li>
                 ))}

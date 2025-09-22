@@ -24,8 +24,10 @@ export function resolveDataRoot() {
     let found;
     while (true) {
         const candidate = path.join(dir, "data", "shops");
+        // Some tests mock `node:fs` and may omit `existsSync`. Guard the call
+        // so we don't attempt to invoke `undefined`.
         // eslint-disable-next-line security/detect-non-literal-fs-filename
-        if (fsSync.existsSync(candidate)) {
+        if ((fsSync as unknown as { existsSync?: (p: string) => boolean }).existsSync?.(candidate)) {
             found = candidate;
         }
         const parent = path.dirname(dir);

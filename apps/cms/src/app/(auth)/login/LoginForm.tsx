@@ -95,7 +95,7 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
         Continue
       </Button>
       <p className="mt-4 text-center text-sm">
-        <Link href="/signup" prefetch={false} className="text-primary hover:underline">
+        <Link href="/signup" prefetch={false} className="text-link hover:underline">
           Create new account
         </Link>
       </p>

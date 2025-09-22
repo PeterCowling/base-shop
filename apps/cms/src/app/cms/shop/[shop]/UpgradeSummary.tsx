@@ -37,7 +37,7 @@ const componentColumns: Column<ComponentChange>[] = [
           href={row.changelog}
           target="_blank"
           rel="noreferrer"
-          className="text-primary underline"
+          className="text-link underline"
         >
           View
         </a>

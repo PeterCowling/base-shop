@@ -15,7 +15,7 @@ export function PendingSummaryPanel({ headingId }: PendingSummaryPanelProps) {
         >
           Account requests
         </h2>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-foreground">
           Only administrators can approve new accounts. Reach out to an admin if someone is waiting for access.
         </p>
       </CardContent>

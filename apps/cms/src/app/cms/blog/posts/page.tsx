@@ -22,7 +22,7 @@ export default async function BlogPostsPage({
         Sanity is not connected.{" "}
         <Link
           href={`/cms/blog/sanity/connect?shopId=${shopId}`}
-          className="text-primary underline"
+          className="text-link underline"
         >
           Connect Sanity
         </Link>
@@ -50,7 +50,7 @@ export default async function BlogPostsPage({
             <li key={post._id}>
               <Link
                 href={`/cms/blog/posts/${post._id}?shopId=${shopId}`}
-                className="text-primary underline"
+                className="text-link underline"
               >
                 {post.title || "(untitled)"}
               </Link>

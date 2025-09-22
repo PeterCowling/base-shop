@@ -19,7 +19,9 @@ export interface BlockChildrenProps {
   editor?: HistoryState["editor"];
   baselineSnap?: boolean;
   baselineStep?: number;
+  dropAllowed?: boolean | null;
+  insertParentId?: string | undefined;
+  insertIndex?: number | null;
 }
 
 export type SlotDef = { key: string; title: string };
-

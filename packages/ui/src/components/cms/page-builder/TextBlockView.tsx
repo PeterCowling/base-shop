@@ -112,7 +112,7 @@ const TextBlockView = ({
       ref={assignNodeRef}
       onClick={onSelect}
       role="listitem"
-      aria-grabbed={isDragging}
+      aria-label="Canvas item"
       tabIndex={0}
       onKeyDown={onKeyDown}
       style={{ ...(zIndex !== undefined ? { zIndex } : {}), ...style }}
@@ -123,12 +123,13 @@ const TextBlockView = ({
       }
     >
       <div
-        className="absolute left-0 top-0 z-10 h-3 w-3 cursor-move bg-muted"
+        className="absolute left-0 top-0 z-10 h-6 w-6 cursor-move bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         {...attributes}
         {...(listeners ?? {})}
         role="button"
         tabIndex={0}
-        aria-grabbed={isDragging}
+        aria-pressed={isDragging}
+        aria-describedby="pb-drag-instructions"
         title="Drag or press space/enter to move"
         onPointerDown={(e) => {
           e.stopPropagation();

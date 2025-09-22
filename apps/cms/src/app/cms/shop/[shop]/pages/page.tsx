@@ -45,25 +45,25 @@ export default async function PagesPage({
       label: "Published",
       value: String(publishedPages),
       caption: "Live on storefront",
-      accent: "bg-success/20 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
     {
       label: "Draft",
       value: String(draftPages),
       caption: "Still in progress",
-      accent: "bg-warning/20 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
     {
       label: "Archived",
       value: String(archivedPages),
       caption: "Hidden from navigation",
-      accent: "bg-muted/20 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
   ];
 
   return (
     <div className="space-y-8 text-foreground">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero-contrast text-hero-foreground shadow-elevation-4">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--color-accent)/0.2),_transparent_55%)]" />
         <div className="relative space-y-4 px-6 py-7">
           <Tag variant="default">
@@ -72,7 +72,7 @@ export default async function PagesPage({
           <h1 className="text-3xl font-semibold md:text-4xl">
             Curate every page that shapes your storefront narrative
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-hero-foreground/80">
             Manage hero stories, campaign landing pages, and evergreen content from one creative workspace.
           </p>
           <div className="grid gap-3 sm:grid-cols-3">
@@ -96,7 +96,7 @@ export default async function PagesPage({
       </section>
 
       <section>
-        <Card className="border border-border/10 bg-surface-2 shadow-lg">
+        <Card className="border border-border/10 bg-surface-2 shadow-elevation-3">
           <CardContent className="space-y-4 px-6 py-6">
             <div className="flex flex-wrap items-center justify-between gap-3 text-foreground">
               <div className="min-w-0">

@@ -54,6 +54,9 @@ export default function useCanvasResize({
     null
   );
   const [resizing, setResizing] = useState(false);
+  const rafRef = useRef<number | null>(null);
+  const lastEventRef = useRef<PointerEvent | null>(null);
+  const captureRef = useRef<{ el: Element | null; id: number | null }>({ el: null, id: null });
   // When resizing via keyboard, we briefly show the overlay without pointer listeners
   const [kbResizing, setKbResizing] = useState(false);
   const [snapWidth, setSnapWidth] = useState(false);
@@ -73,7 +76,7 @@ export default function useCanvasResize({
 
   useEffect(() => {
     if (!resizing) return;
-    const handleMove = (e: PointerEvent) => {
+    const processMove = (e: PointerEvent) => {
       if (!startRef.current || !containerRef.current) return;
       const { handle, w, h, l: startL, t: startT, ratio } = startRef.current;
       const dx = (e.clientX - startRef.current.x) / Math.max(zoom, 0.0001);
@@ -160,6 +163,14 @@ export default function useCanvasResize({
       const snapW = e.altKey || Math.abs(parentW - newW) <= threshold;
       const snapH = e.altKey || Math.abs(parentH - newH) <= threshold;
       const parent2 = containerRef.current.parentElement;
+      // Restrict to parent bounds if present
+      if (parent2) {
+        // Clamp size and position so the element stays within 0..parentSize
+        newW = Math.max(1, Math.min(newW, parent2.offsetWidth));
+        newH = Math.max(1, Math.min(newH, parent2.offsetHeight));
+        left = Math.max(0, Math.min(left, Math.max(0, parent2.offsetWidth - newW)));
+        top = Math.max(0, Math.min(top, Math.max(0, parent2.offsetHeight - newH)));
+      }
       const patch: Record<string, string> = {
         [widthKey]: snapW ? "100%" : `${newW}px`,
         [heightKey]: snapH ? "100%" : `${newH}px`,
@@ -191,18 +202,44 @@ export default function useCanvasResize({
       });
       setDistances({ x: distX, y: distY });
     };
+    const handleMove = (e: PointerEvent) => {
+      lastEventRef.current = e;
+      if (rafRef.current == null) {
+        rafRef.current = window.requestAnimationFrame(() => {
+          const ev = lastEventRef.current;
+          if (ev) processMove(ev);
+          rafRef.current = null;
+        });
+      }
+    };
     const stop = () => {
       setResizing(false);
       setSnapWidth(false);
       setSnapHeight(false);
       setGuides({ x: null, y: null });
       setDistances({ x: null, y: null });
+      // Release pointer capture if held
+      try {
+        if (captureRef.current?.el && captureRef.current?.id != null) {
+          (captureRef.current.el as any).releasePointerCapture?.(captureRef.current.id);
+        }
+      } catch {}
+      captureRef.current = { el: null, id: null };
+      if (rafRef.current != null) {
+        try { cancelAnimationFrame(rafRef.current); } catch {}
+        rafRef.current = null;
+      }
     };
-    window.addEventListener("pointermove", handleMove);
+    const onKeyDown = (ke: KeyboardEvent) => { if (ke.key === "Escape") stop(); };
+    try { window.addEventListener("pointermove", handleMove, { passive: true }); } catch { window.addEventListener("pointermove", handleMove as any); }
     window.addEventListener("pointerup", stop);
+    window.addEventListener("blur", stop);
+    window.addEventListener("keydown", onKeyDown);
     return () => {
-      window.removeEventListener("pointermove", handleMove);
+      try { window.removeEventListener("pointermove", handleMove as any); } catch {}
       window.removeEventListener("pointerup", stop);
+      window.removeEventListener("blur", stop);
+      window.removeEventListener("keydown", onKeyDown);
     };
   }, [
     resizing,
@@ -223,6 +260,8 @@ export default function useCanvasResize({
     e.stopPropagation();
     const el = containerRef.current;
     if (!el) return;
+    // Capture pointer to keep events consistent during resize
+    try { (e.target as Element)?.setPointerCapture?.(e.pointerId); captureRef.current = { el: e.target as Element, id: e.pointerId }; } catch {}
     const startWidth =
       widthVal && widthVal.endsWith("px") ? parseFloat(widthVal) : el.offsetWidth;
     const startHeight =

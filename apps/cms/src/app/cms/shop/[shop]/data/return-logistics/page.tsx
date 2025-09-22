@@ -26,13 +26,13 @@ export default async function ReturnLogisticsPage({
       label: "Return carriers",
       value: String(carrierCount || 0),
       caption: "Configured shipping partners",
-      accent: "bg-info/20 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
     {
       label: "Home pickup ZIPs",
       value: String(pickupZipCount || 0),
       caption: "Coverage for scheduled pickups",
-      accent: "bg-success/20 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
     {
       label: "Tracking",
@@ -50,7 +50,7 @@ export default async function ReturnLogisticsPage({
 
   return (
     <div className="space-y-8 text-foreground">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero-contrast text-hero-foreground shadow-elevation-4">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--color-accent)/0.18),_transparent_55%)]" />
         <div className="relative space-y-4 px-6 py-7">
           <Tag variant="default">
@@ -59,7 +59,7 @@ export default async function ReturnLogisticsPage({
           <h1 className="text-3xl font-semibold md:text-4xl">
             Streamline every return and pickup experience
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-hero-foreground/80">
             Tune carrier preferences, label service, and pickup coverage to keep customers smiling and ops efficient.
           </p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -83,7 +83,7 @@ export default async function ReturnLogisticsPage({
       </section>
 
       <section>
-        <Card className="border border-border/10 bg-surface-2 shadow-lg">
+        <Card className="border border-border/10 bg-surface-2 shadow-elevation-3">
           <CardContent className="space-y-4 px-6 py-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>

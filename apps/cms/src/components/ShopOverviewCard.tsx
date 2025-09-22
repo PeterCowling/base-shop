@@ -15,7 +15,7 @@ export function ShopOverviewCard({ stats, pendingCount }: ShopOverviewCardProps)
       <CardContent className="space-y-5">
         <div className="space-y-1">
           <h2 className="text-lg font-semibold text-foreground">Shop overview</h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-foreground">
             Track the health of your storefront network and jump into the right workspace.
           </p>
         </div>
@@ -23,7 +23,7 @@ export function ShopOverviewCard({ stats, pendingCount }: ShopOverviewCardProps)
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border-3 bg-surface-3 px-4 py-3">
             <div className="min-w-0">
               <p className="text-sm font-medium text-foreground">Operational footprint</p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-foreground">
                 {shops === 0
                   ? "No storefronts live yet"
                   : `${shops} ${shops === 1 ? "shop" : "shops"} ready for merchandising`}
@@ -36,7 +36,7 @@ export function ShopOverviewCard({ stats, pendingCount }: ShopOverviewCardProps)
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border-3 bg-surface-3 px-4 py-3">
             <div className="min-w-0">
               <p className="text-sm font-medium text-foreground">Catalog depth</p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-foreground">
                 {products === 0
                   ? "Start importing products"
                   : `${products} items available across all shops`}
@@ -49,7 +49,7 @@ export function ShopOverviewCard({ stats, pendingCount }: ShopOverviewCardProps)
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border-3 bg-surface-3 px-4 py-3">
             <div className="min-w-0">
               <p className="text-sm font-medium text-foreground">Team access</p>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-foreground">
                 {users === 0
                   ? "Invite collaborators to share the workload"
                   : `${users} active ${users === 1 ? "member" : "members"}`}

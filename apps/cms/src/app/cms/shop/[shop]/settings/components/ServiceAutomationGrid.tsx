@@ -30,7 +30,7 @@ export default function ServiceAutomationGrid({
               </div>
               <Link
                 href={service.href}
-                className="inline-flex items-center text-sm font-semibold text-primary hover:text-primary/80"
+                className="inline-flex items-center text-sm font-semibold text-link hover:text-link/80"
               >
                 Manage {service.name}
               </Link>

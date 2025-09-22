@@ -8,6 +8,8 @@ export const tokens = {
   "--color-primary": "340 80% 50%",
   "--color-primary-fg": "0 0% 100%",
   "--color-accent": "40 95% 50%",
+  // Text color designed to sit on top of hero backgrounds
+  "--hero-fg": "0 0% 100%",
   // hero gradient stops (indigo → purple → slate)
   "--gradient-hero-from": "234 89% 60%",
   "--gradient-hero-via": "270 83% 60%",

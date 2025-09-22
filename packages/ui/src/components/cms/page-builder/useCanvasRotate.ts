@@ -87,11 +87,16 @@ export default function useCanvasRotate({
       } catch {}
       startRef.current = null;
     };
-    window.addEventListener("pointermove", onMove);
+    const onKey = (ke: KeyboardEvent) => { if (ke.key === 'Escape') onUp(); };
+    try { window.addEventListener("pointermove", onMove as any, { passive: true }); } catch { window.addEventListener("pointermove", onMove as any); }
     window.addEventListener("pointerup", onUp, { once: true });
+    window.addEventListener("blur", onUp, { once: true });
+    window.addEventListener("keydown", onKey);
     return () => {
-      try { window.removeEventListener("pointermove", onMove); } catch {}
+      try { window.removeEventListener("pointermove", onMove as any); } catch {}
       try { window.removeEventListener("pointerup", onUp as any); } catch {}
+      try { window.removeEventListener("blur", onUp as any); } catch {}
+      window.removeEventListener("keydown", onKey);
     };
   }, [rotating, componentId, dispatch, styles, zoom]);
 
@@ -119,4 +124,3 @@ export default function useCanvasRotate({
 
   return { startRotate, rotating, angle } as const;
 }
-

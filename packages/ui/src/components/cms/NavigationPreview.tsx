@@ -30,7 +30,7 @@ function NavItemView({ item }: { item: NavItem }) {
       </a>
       {item.children && item.children.length > 0 && (
         <ul
-          className="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border border-border-1 bg-surface-2 p-2 shadow-md group-hover:flex"
+          className="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border border-border-1 bg-surface-2 p-2 shadow-elevation-2 group-hover:flex"
           data-token="--color-bg"
         >
           {item.children.map((child) => (

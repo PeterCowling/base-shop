@@ -26,6 +26,9 @@ type Props = {
   containerElRef: React.MutableRefObject<HTMLDivElement | null>;
   toUnderlyingIndex: (uiIndex: number) => number;
   compType: string;
+  insertParentId?: string | undefined;
+  insertIndex?: number | null;
+  dropAllowed?: boolean | null;
 };
 
 export default function DefaultChildrenList({
@@ -46,6 +49,9 @@ export default function DefaultChildrenList({
   containerElRef,
   toUnderlyingIndex,
   compType,
+  insertParentId,
+  insertIndex,
+  dropAllowed,
 }: Props) {
   const isGrid = compType === "Grid";
 
@@ -53,6 +59,17 @@ export default function DefaultChildrenList({
     <>
       {visibleChildren.map((child, i) => (
         <div key={child.id} className="relative group">
+          {insertParentId === component.id && insertIndex === i && (
+            <div
+              data-placeholder
+              className={
+                (dropAllowed === false
+                  ? "border-danger bg-danger/10 ring-2 ring-danger"
+                  : "border-primary bg-primary/10 ring-2 ring-primary") +
+                " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"
+              }
+            />
+          )}
           {isGrid && (
             <GridChildControls
               enabled={true}
@@ -93,9 +110,23 @@ export default function DefaultChildrenList({
             editor={editor}
             baselineSnap={baselineSnap}
             baselineStep={baselineStep}
+            insertParentId={insertParentId}
+            insertIndex={insertIndex}
+            dropAllowed={dropAllowed}
           />
         </div>
       ))}
+      {insertParentId === component.id && insertIndex === visibleChildren.length && (
+        <div
+          data-placeholder
+          className={
+            (dropAllowed === false
+              ? "border-danger bg-danger/10 ring-2 ring-danger"
+              : "border-primary bg-primary/10 ring-2 ring-primary") +
+            " mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"
+          }
+        />
+      )}
       <InlineInsert
         index={visibleChildren.length}
         context="child"

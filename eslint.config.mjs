@@ -117,6 +117,8 @@ export default [
     plugins: { ds: dsPlugin },
     rules: {
       "ds/no-raw-tailwind-color": "error",
+      // Prevent low-contrast hero patterns (phase in as a warning first)
+      "ds/no-hero-primary-foreground": "warn",
     },
   },
 

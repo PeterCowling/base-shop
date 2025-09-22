@@ -46,6 +46,10 @@ const BlockItem = memo(function BlockItemComponent({
   zoom = 1,
   baselineSnap = false,
   baselineStep = 8,
+  // not destructured earlier; used further below
+  dropAllowed,
+  insertParentId,
+  insertIndex,
 }: Props) {
   const selected = selectedIds.includes(component.id);
   const flags = useMemo(() => ((editor ?? {})[component.id] ?? {}), [editor, component.id]);
@@ -205,8 +209,7 @@ const BlockItem = memo(function BlockItemComponent({
         setCtxOpen(true);
       }}
       role="listitem"
-      aria-grabbed={isDragging}
-      aria-dropeffect="move"
+      aria-label="Canvas item"
       tabIndex={0}
       data-component-id={component.id}
       data-pb-contextmenu-trigger
@@ -244,7 +247,9 @@ const BlockItem = memo(function BlockItemComponent({
         "hover:border-primary relative rounded border hover:border-dashed" +
         (selected ? " ring-2 ring-blue-500" : "") +
         (snapping ? " border-primary" : "") +
-        (isOver || isDragging ? " border-primary border-dashed" : "")
+        (isOver || isDragging
+          ? (dropAllowed === false ? " border-danger border-dashed cursor-not-allowed" : " border-primary border-dashed")
+          : "")
       }
     >
       <DragHandle
@@ -316,6 +321,9 @@ const BlockItem = memo(function BlockItemComponent({
         setDropRef={setDropRef}
         baselineSnap={baselineSnap}
         baselineStep={baselineStep}
+        dropAllowed={dropAllowed}
+        insertParentId={insertParentId as any}
+        insertIndex={insertIndex as any}
       />
       <HiddenBadge
         hiddenList={hiddenList}

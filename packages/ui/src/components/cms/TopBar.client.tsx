@@ -35,7 +35,6 @@ function TopBarInner() {
 
   return (
     <header className="relative z-10 border-b border-border-1 bg-surface-2 px-6 py-3 text-foreground">
-      <div className="pointer-events-none absolute inset-0 bg-hero opacity-10" />
       <div className="relative flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-1 items-center gap-3">
           <Button

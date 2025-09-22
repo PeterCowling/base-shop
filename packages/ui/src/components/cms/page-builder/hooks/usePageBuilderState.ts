@@ -172,18 +172,30 @@ export function usePageBuilderState({
           if (!comp || locked || comp.position !== "absolute") return;
           // We will handle at least one move; prevent default page scroll
           if (!handled) { e.preventDefault(); handled = true; }
+          const el = typeof document !== 'undefined' ? document.querySelector(`[data-component-id="${id}"]`) as HTMLElement | null : null;
+          const parent = el?.offsetParent as HTMLElement | null;
+          const maxLeft = parent ? Math.max(0, parent.offsetWidth - (el?.offsetWidth || 0)) : null;
+          const maxTop = parent ? Math.max(0, parent.offsetHeight - (el?.offsetHeight || 0)) : null;
+          const clampPx = (raw: string | undefined, delta: number, max: number | null): string => {
+            const s = (raw ?? "0").trim();
+            const n = s.endsWith("px") ? parseFloat(s) : Number(s);
+            const base = Number.isNaN(n) ? 0 : n;
+            const next = base + delta;
+            const clamped = max == null ? next : Math.min(Math.max(0, next), max);
+            return `${Math.round(clamped)}px`;
+          };
           if (lower === "arrowleft") {
             const current = (comp as any)[leftKey] ?? comp.left;
-            dispatch({ type: "resize", id, [leftKey]: adjust(current, -step) } as any);
+            dispatch({ type: "resize", id, [leftKey]: clampPx(current, -step, maxLeft) } as any);
           } else if (lower === "arrowright") {
             const current = (comp as any)[leftKey] ?? comp.left;
-            dispatch({ type: "resize", id, [leftKey]: adjust(current, step) } as any);
+            dispatch({ type: "resize", id, [leftKey]: clampPx(current, step, maxLeft) } as any);
           } else if (lower === "arrowup") {
             const current = (comp as any)[topKey] ?? comp.top;
-            dispatch({ type: "resize", id, [topKey]: adjust(current, -step) } as any);
+            dispatch({ type: "resize", id, [topKey]: clampPx(current, -step, maxTop) } as any);
           } else if (lower === "arrowdown") {
             const current = (comp as any)[topKey] ?? comp.top;
-            dispatch({ type: "resize", id, [topKey]: adjust(current, step) } as any);
+            dispatch({ type: "resize", id, [topKey]: clampPx(current, step, maxTop) } as any);
           }
         });
         // If we didn't move anything (no eligible absolute-positioned selection), allow default behavior

@@ -26,6 +26,12 @@ export default defineConfig({
       let tempDir: string | null = null;
 
       on("task", {
+        /** Simple logger to surface values from browser context */
+        log(message: unknown) {
+          // eslint-disable-next-line no-console
+          console.log(message);
+          return null;
+        },
         /**
          * Create a temporary TEST_DATA_ROOT and seed minimal fixtures.
          * @param shop shop identifier (e.g. "demo")

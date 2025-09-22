@@ -22,22 +22,22 @@ export default function MigrationsPage() {
 
   return (
     <div className="space-y-10">
-      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero text-primary-foreground shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero-contrast text-hero-foreground shadow-elevation-4">
         <div className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
           <div className="space-y-6">
             <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground/70">
+              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-hero-foreground/80">
                 Migrations
               </span>
               <h1 className="text-3xl font-semibold md:text-4xl">
                 Upgrade storefronts to the latest tokens
               </h1>
-              <p className="text-primary-foreground/80">
+              <p className="text-hero-foreground/80">
                 Keep every storefront consistent by running the migration CLI whenever design tokens or templates evolve.
               </p>
             </div>
             <div className="space-y-4">
-              <Progress value={30} label="Run migrate-shop from your terminal" />
+              <Progress value={30} label="Run migrate-shop from your terminal" labelClassName="text-hero-foreground/80" />
               <div className="flex flex-wrap gap-3">
                 <Button asChild className="h-11 px-5 text-sm font-semibold">
                   <Link href="/cms/configurator">Open configurator</Link>
@@ -45,7 +45,7 @@ export default function MigrationsPage() {
                 <Button
                   asChild
                   variant="outline"
-                  className="h-11 px-5 text-sm font-semibold border-primary/40 text-primary-foreground hover:bg-primary/10"
+                  className="h-11 px-5 text-sm font-semibold border-primary/40 text-hero-foreground hover:bg-primary/10"
                 >
                   <Link href="/cms">Return to CMS home</Link>
                 </Button>
@@ -68,7 +68,7 @@ export default function MigrationsPage() {
               ))}
             </div>
           </div>
-          <Card className="border border-border/20 bg-surface-2 text-foreground shadow-2xl">
+          <Card className="border border-border/20 bg-surface-2 text-foreground shadow-elevation-5">
             <CardContent className="space-y-5">
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold">Status</h2>

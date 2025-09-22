@@ -22,5 +22,7 @@ export type BlockItemProps = {
   zoom?: number;
   baselineSnap?: boolean;
   baselineStep?: number;
+  dropAllowed?: boolean | null;
+  insertParentId?: string | undefined;
+  insertIndex?: number | null;
 };
-

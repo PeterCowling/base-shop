@@ -113,22 +113,22 @@ export default async function LivePage() {
 
   return (
     <div className="space-y-10">
-      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero text-primary-foreground shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero-contrast text-hero-foreground shadow-elevation-4">
         <div className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
           <div className="space-y-6">
             <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground/70">
+              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-hero-foreground/80">
                 Live previews
               </span>
               <h1 className="text-3xl font-semibold md:text-4xl">
                 Validate storefronts in real time
               </h1>
-              <p className="text-primary-foreground/80">
+              <p className="text-hero-foreground/80">
                 Launch each storefront’s development server directly from the CMS. Monitor availability before sharing links with stakeholders.
               </p>
             </div>
             <div className="space-y-4">
-              <Progress value={progressValue} label={progressLabel} />
+              <Progress value={progressValue} label={progressLabel} labelClassName="text-hero-foreground/80" />
               <div className="flex flex-wrap gap-3">
                 <Button asChild className="h-11 px-5 text-sm font-semibold">
                   <Link href="/cms/dashboard">View dashboards</Link>
@@ -136,7 +136,7 @@ export default async function LivePage() {
                 <Button
                   asChild
                   variant="outline"
-                  className="h-11 px-5 text-sm font-semibold border-primary/40 text-primary-foreground hover:bg-primary/10"
+                  className="h-11 px-5 text-sm font-semibold border-primary/40 text-hero-foreground hover:bg-primary/10"
                 >
                   <Link href="/cms/maintenance">Run maintenance scan</Link>
                 </Button>
@@ -146,31 +146,31 @@ export default async function LivePage() {
               {quickStats.map((stat) => (
                 <Card
                   key={stat.label}
-                  className="border border-primary/15 bg-surface-2 text-primary-foreground"
+                  className="border border-primary/15 bg-surface-2 text-foreground"
                 >
                   <CardContent className="space-y-1 p-4">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-primary-foreground/70">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                       {stat.label}
                     </p>
-                    <p className="text-xl font-semibold">{stat.value}</p>
-                    <p className="text-xs text-primary-foreground/70">{stat.caption}</p>
+                    <p className="text-xl font-semibold text-foreground">{stat.value}</p>
+                    <p className="text-xs text-muted-foreground">{stat.caption}</p>
                   </CardContent>
                 </Card>
               ))}
             </div>
           </div>
-          <Card className="border border-primary/20 bg-surface-2 text-primary-foreground shadow-2xl">
+          <Card className="border border-primary/20 bg-surface-2 text-foreground shadow-elevation-5">
             <CardContent className="space-y-5">
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold">Preview readiness</h2>
-                <p className="text-sm text-primary-foreground/70">
+                <p className="text-sm text-foreground">
                   Keep development servers running so designers and QA can review changes instantly.
                 </p>
               </div>
               <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/15 bg-surface-2 px-4 py-3">
                 <div className="min-w-0">
                   <p className="text-sm font-medium">Available previews</p>
-                  <p className="text-xs text-primary-foreground/70">
+                  <p className="text-xs text-foreground">
                     {previewsReady === shops.length
                       ? "All previews online"
                       : `${previewsReady} of ${shops.length} available`}

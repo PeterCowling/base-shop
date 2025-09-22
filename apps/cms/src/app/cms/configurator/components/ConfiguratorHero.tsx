@@ -16,13 +16,13 @@ export function ConfiguratorHero({
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <span className="text-xs font-semibold uppercase tracking-[0.35em] text-primary-foreground/70">
+        <span className="text-xs font-semibold uppercase tracking-[0.35em] text-hero-foreground/80">
           Shop Configurator
         </span>
         <h1 className="text-3xl font-semibold md:text-4xl">
           Build a launch-ready storefront without the guesswork
         </h1>
-        <p className="text-primary-foreground/80">{description}</p>
+        <p className="text-hero-foreground/80">{description}</p>
       </div>
       <div className="space-y-4">
         <ProgressBar value={progressPercent} label={essentialProgressLabel} />
@@ -39,7 +39,7 @@ export function ConfiguratorHero({
           <ButtonElement
             asChild
             variant="outline"
-            className="h-11 px-5 text-sm font-semibold border-primary/40 text-primary-foreground hover:bg-primary/10"
+            className="h-11 px-5 text-sm font-semibold border-primary/40 text-hero-foreground hover:bg-primary/10"
           >
             <Link href="#configurator-steps" scroll={true}>
               Browse all steps
@@ -53,11 +53,11 @@ export function ConfiguratorHero({
             key={stat.label}
             className="rounded-2xl border border-primary/15 bg-surface-2 p-4"
           >
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary-foreground/70">
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               {stat.label}
             </p>
             <p className="text-xl font-semibold">{stat.value}</p>
-            <p className="text-xs text-primary-foreground/70">{stat.caption}</p>
+            <p className="text-xs text-muted-foreground">{stat.caption}</p>
           </div>
         ))}
       </div>

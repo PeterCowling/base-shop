@@ -39,7 +39,8 @@ const PaletteItem = memo(function PaletteItem({
       {...listeners}
       role="button"
       tabIndex={0}
-      aria-grabbed={isDragging}
+      aria-pressed={isDragging}
+      aria-describedby="pb-drag-instructions"
       title="Drag or press space/enter to add"
       style={{ transform: CSS.Transform.toString(transform) }}
       className="flex cursor-grab items-center gap-2 rounded border p-2 text-sm"
@@ -85,4 +86,3 @@ const PaletteItem = memo(function PaletteItem({
 });
 
 export default PaletteItem;
-

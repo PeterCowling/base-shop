@@ -30,7 +30,7 @@ export default async function EditPostPage({
         Sanity is not connected.{" "}
         <Link
           href={`/cms/blog/sanity/connect?shopId=${shopId}`}
-          className="text-primary underline"
+          className="text-link underline"
         >
           Connect Sanity
         </Link>

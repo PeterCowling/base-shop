@@ -170,7 +170,7 @@ export const previewComponents = {
           "a",
           {
             href: value?.href ?? "#",
-            className: "text-primary underline",
+            className: "text-link underline",
             target: "_blank",
             rel: "noopener noreferrer",
           },

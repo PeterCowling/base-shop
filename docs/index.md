@@ -13,6 +13,7 @@
 - [Advanced theming](./theming-advanced.md)
 - [Theme lifecycle and library](./theme-lifecycle-and-library.md)
 - [Theme editor tokens](./theme-editor-tokens.md)
+- [Elevation and hero contrast](./elevation-and-hero.md)
 - [Design system package import](./design-system-package-import.md)
 - [Palette](./palette.md)
 

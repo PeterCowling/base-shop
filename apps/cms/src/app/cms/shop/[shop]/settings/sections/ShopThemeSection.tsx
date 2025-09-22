@@ -46,7 +46,7 @@ export default function ShopThemeSection({
         <Button
           type="submit"
           variant="ghost"
-          className="h-auto p-0 text-primary hover:bg-transparent"
+          className="h-auto p-0 text-link hover:bg-transparent"
         >
           Reset
         </Button>
@@ -63,7 +63,7 @@ export default function ShopThemeSection({
         <span className="min-w-0">Theme tokens</span>
         <Link
           href={`/cms/shop/${shop}/themes`}
-          className="h-auto shrink-0 p-0 text-primary hover:bg-transparent"
+          className="h-auto shrink-0 p-0 text-link hover:bg-transparent"
         >
           Edit Theme
         </Link>

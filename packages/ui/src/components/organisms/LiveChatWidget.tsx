@@ -73,7 +73,7 @@ export function LiveChatWidget({
       <DialogTrigger asChild>
         <Button
           className={cn(
-            "fixed right-4 z-50 rounded-full shadow-lg",
+            "fixed right-4 z-50 rounded-full shadow-elevation-3",
             bottomClass,
             className
           )}
@@ -86,7 +86,7 @@ export function LiveChatWidget({
       <DialogContent
         style={{ ...widthStyle, ...bottomStyle }}
         className={cn(
-          "bg-surface-3 fixed right-4 flex flex-col gap-4 border border-border-2 p-6 shadow-lg",
+          "bg-surface-3 fixed right-4 flex flex-col gap-4 border border-border-2 p-6 shadow-elevation-3",
           widthClass,
           bottomClass
         )}

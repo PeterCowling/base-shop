@@ -38,15 +38,15 @@ export default function DesignSystemImportPage() {
 
   return (
     <div className="space-y-8">
-      <Card className="overflow-hidden bg-hero text-primary-foreground shadow-xl">
+      <Card className="overflow-hidden bg-hero-contrast text-hero-foreground shadow-elevation-4">
         <CardContent className="space-y-6 p-8">
           <div className="space-y-2">
-            <p className="text-sm font-semibold uppercase tracking-wide text-primary-foreground/80">
+            <p className="text-sm font-semibold uppercase tracking-wide text-hero-foreground/80">
               {t("cms.theme.importDesignSystem")}
             </p>
             <h2 className="text-3xl font-bold">Design system onboarding</h2>
-            <p className="text-primary-foreground/80">{t("cms.theme.importDesc")}</p>
-            <p className="text-primary-foreground/70">
+            <p className="text-hero-foreground/80">{t("cms.theme.importDesc")}</p>
+            <p className="text-hero-foreground/80">
               Follow the guided steps to bring your brand tokens and UI kit into Base-Shop. We’ll
               save your progress so you can pause and resume whenever you’re ready.
             </p>
@@ -55,12 +55,13 @@ export default function DesignSystemImportPage() {
             value={33}
             label="Step 1 of 3 · Package preparation"
             className="max-w-md"
+            labelClassName="text-hero-foreground/80"
           />
           <div className="flex flex-wrap gap-3">
             <Button onClick={handleStartImport}>Begin guided import</Button>
             <Button
               variant="outline"
-              className="border-primary/40 bg-surface-2 text-primary-foreground hover:bg-primary/10"
+              className="border-primary/40 bg-surface-2 text-foreground hover:bg-primary/10"
               onClick={handleNavigateLibrary}
             >
               Explore theme library
@@ -110,7 +111,7 @@ export default function DesignSystemImportPage() {
                   href="/docs/design-system-package-import"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:underline"
+                  className="text-link hover:underline"
                   onClick={() => handleDocClick("package")}
                 >
                   {t("cms.theme.packageGuide")}
@@ -121,7 +122,7 @@ export default function DesignSystemImportPage() {
                   href="/docs/theme-lifecycle-and-library"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:underline"
+                  className="text-link hover:underline"
                   onClick={() => handleDocClick("lifecycle")}
                 >
                   {t("cms.theme.libraryTips")}

@@ -18,6 +18,30 @@ const expectedKeys = [
   '--color-info',
   '--color-info-fg',
   '--color-muted',
+  '--color-muted-fg',
+  '--color-muted-border',
+
+  // Layered surfaces
+  '--surface-1',
+  '--surface-2',
+  '--surface-3',
+  '--surface-input',
+
+  // Border intensity scale
+  '--border-1',
+  '--border-2',
+  '--border-3',
+
+  // Focus rings
+  '--ring',
+  '--ring-offset',
+  '--ring-width',
+  '--ring-offset-width',
+
+  // Gradients
+  '--gradient-hero-from',
+  '--gradient-hero-via',
+  '--gradient-hero-to',
   '--font-sans',
   '--font-mono',
   '--space-1',
@@ -30,6 +54,13 @@ const expectedKeys = [
   '--shadow-sm',
   '--shadow-md',
   '--shadow-lg',
+  // Elevation
+  '--elevation-0',
+  '--elevation-1',
+  '--elevation-2',
+  '--elevation-3',
+  '--elevation-4',
+  '--elevation-5',
 ] as const;
 
 describe('dark theme tokens', () => {

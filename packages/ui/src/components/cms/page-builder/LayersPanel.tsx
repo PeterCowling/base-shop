@@ -69,7 +69,7 @@ function SortableRow({ node, index, parentId, selected, onSelect, onToggleHidden
       {...listeners}
       role="button"
       tabIndex={0}
-      aria-grabbed={isDragging}
+      aria-pressed={isDragging}
     >
       <div className="flex items-center gap-2 truncate">
         <span className="cursor-grab">⋮⋮</span>

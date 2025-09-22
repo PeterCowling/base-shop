@@ -30,6 +30,12 @@ export const tokens = {
   "--color-info": { light: "210 90% 96%", dark: "210 90% 35%" },
   "--color-info-fg": { light: "210 90% 35%", dark: "210 90% 96%" },
   "--color-muted": { light: "0 0% 88%", dark: "0 0% 60%" },
+  // Accessible link color (AA on light surfaces)
+  "--color-link": { light: "220 75% 40%", dark: "220 80% 70%" },
+  "--color-muted-fg": { light: "0 0% 20%", dark: "0 0% 92%" },
+  "--color-muted-border": { light: "0 0% 72%", dark: "0 0% 40%" },
+  // Foreground color suitable for hero backgrounds (paired with bg-hero-contrast)
+  "--hero-fg": { light: "0 0% 100%", dark: "0 0% 100%" },
   "--font-sans": { light: 'var(--font-geist-sans)' },
   "--font-mono": { light: 'var(--font-geist-mono)' },
   "--space-1": { light: "4px" },
@@ -50,4 +56,6 @@ export const tokens = {
   "--gradient-hero-from": { light: "234 89% 60%" },
   "--gradient-hero-via": { light: "270 83% 60%" },
   "--gradient-hero-to": { light: "222 47% 11%" },
+  // Overlay used by bg-hero-contrast to guarantee text contrast
+  "--hero-contrast-overlay": { light: "0 0% 0% / 0.55", dark: "0 0% 0% / 0.55" },
 } as const satisfies TokenMap;

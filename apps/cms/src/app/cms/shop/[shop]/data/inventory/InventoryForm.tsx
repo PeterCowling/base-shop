@@ -106,7 +106,7 @@ export default function InventoryForm({ shop, initial, onSave }: Props) {
       <div className="flex flex-wrap items-center gap-2">
         <Button
           type="submit"
-          className="h-10 rounded-xl bg-success px-5 text-sm font-semibold text-success-foreground shadow-lg hover:bg-success/90"
+          className="h-10 rounded-xl bg-success px-5 text-sm font-semibold text-success-foreground shadow-elevation-2 hover:bg-success/90"
         >
           Save inventory
         </Button>

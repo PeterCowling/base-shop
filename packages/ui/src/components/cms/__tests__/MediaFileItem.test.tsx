@@ -1,26 +1,10 @@
-import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { act, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import MediaFileItem from "../MediaFileItem";
+import { baseImageItem as baseItem, createDeferred, makeFile, mockFetchJson, setupMedia } from "./testUtils";
 
 describe("MediaFileItem", () => {
-  const baseItem = {
-    url: "http://example.com/image.jpg",
-    type: "image" as const,
-    altText: "Alt text",
-    tags: ["featured", "homepage"],
-    size: 12_288,
-  };
-
-  const createDeferred = <T,>() => {
-    let resolve!: (value: T | PromiseLike<T>) => void;
-    let reject!: (reason?: unknown) => void;
-    const promise = new Promise<T>((res, rej) => {
-      resolve = res;
-      reject = rej;
-    });
-    return { promise, resolve, reject };
-  };
 
   beforeEach(() => {
     // @ts-expect-error — tests control fetch
@@ -32,35 +16,18 @@ describe("MediaFileItem", () => {
   });
 
   it("calls onDelete when the dropdown action is selected", async () => {
-    const onDelete = jest.fn();
     const user = userEvent.setup();
-    render(
-      <MediaFileItem
-        item={baseItem}
-        shop="shop"
-        onDelete={onDelete}
-        onReplace={jest.fn()}
-      />
-    );
+    const onDelete = jest.fn();
+    setupMedia({ item: baseItem, onDelete, onReplace: jest.fn() });
 
     await user.click(screen.getByRole("button", { name: /media actions/i }));
-    const deleteItem = await screen.findByText("Delete");
-    await user.click(deleteItem);
+    await user.click(await screen.findByText("Delete"));
 
     expect(onDelete).toHaveBeenCalledWith(baseItem.url);
   });
-
   it("provides accessible controls for the media actions dropdown", async () => {
     const user = userEvent.setup();
-    render(
-      <MediaFileItem
-        item={baseItem}
-        shop="shop"
-        onDelete={jest.fn()}
-        onReplace={jest.fn()}
-        onSelect={jest.fn()}
-      />
-    );
+    setupMedia({ item: baseItem, onDelete: jest.fn(), onReplace: jest.fn(), onSelect: jest.fn() });
 
     const trigger = screen.getByRole("button", { name: /media actions/i });
     expect(trigger).not.toHaveAttribute("aria-expanded", "true");
@@ -71,15 +38,9 @@ describe("MediaFileItem", () => {
     const pointerMenu = await screen.findByRole("menu");
     const pointerItems = within(pointerMenu).getAllByRole("menuitem");
     expect(pointerItems).toHaveLength(3);
-    expect(
-      within(pointerMenu).getByRole("menuitem", { name: /view details/i })
-    ).toBeInTheDocument();
-    expect(
-      within(pointerMenu).getByRole("menuitem", { name: /replace/i })
-    ).toBeInTheDocument();
-    expect(
-      within(pointerMenu).getByRole("menuitem", { name: /delete/i })
-    ).toBeInTheDocument();
+    expect(within(pointerMenu).getByRole("menuitem", { name: /view details/i })).toBeInTheDocument();
+    expect(within(pointerMenu).getByRole("menuitem", { name: /replace/i })).toBeInTheDocument();
+    expect(within(pointerMenu).getByRole("menuitem", { name: /delete/i })).toBeInTheDocument();
 
     await user.keyboard("{Escape}");
     await waitFor(() => expect(trigger).toHaveAttribute("aria-expanded", "false"));
@@ -112,38 +73,23 @@ describe("MediaFileItem", () => {
     await user.keyboard("{Escape}");
     await waitFor(() => expect(trigger).toHaveAttribute("aria-expanded", "false"));
   });
-
   it("uploads a replacement file and forwards callbacks", async () => {
     jest.useFakeTimers();
-    const onDelete = jest.fn().mockResolvedValue(undefined);
-    const onReplace = jest.fn();
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     const onReplaceSuccess = jest.fn();
     const onReplaceError = jest.fn();
-    const replacement = { url: "http://example.com/new.jpg", type: "image" };
-    (global.fetch as jest.Mock).mockResolvedValue(
-      new Response(JSON.stringify(replacement), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      })
-    );
+    const replacement = { url: "http://example.com/new.jpg", type: "image" } as const;
+    mockFetchJson(replacement, 200);
 
-    const { container } = render(
-      <MediaFileItem
-        item={baseItem}
-        shop="shop"
-        onDelete={onDelete}
-        onReplace={onReplace}
-        onReplaceSuccess={onReplaceSuccess}
-        onReplaceError={onReplaceError}
-      />
-    );
-
-    const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
-    const file = new File(["hello"], "hello.png", { type: "image/png" });
-
-    await act(async () => {
-      fireEvent.change(fileInput, { target: { files: [file] } });
+    const { fileInput, onDelete, onReplace } = setupMedia({
+      item: baseItem,
+      onDelete: jest.fn().mockResolvedValue(undefined),
+      onReplace: jest.fn(),
+      onReplaceSuccess,
+      onReplaceError,
     });
+
+    await user.upload(fileInput, makeFile());
 
     await waitFor(() => expect(onReplace).toHaveBeenCalled());
     expect(onReplace).toHaveBeenCalledWith(baseItem.url, replacement);
@@ -156,39 +102,22 @@ describe("MediaFileItem", () => {
     });
     jest.useRealTimers();
   });
-
   it("shows upload progress while replacing media", async () => {
     jest.useFakeTimers();
-    const onDelete = jest.fn();
-    const onReplace = jest.fn();
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     const deferred = createDeferred<Response>();
     const replacement = { url: "http://example.com/new.jpg", type: "image" };
     (global.fetch as jest.Mock).mockReturnValue(deferred.promise);
 
-    const { container } = render(
-      <MediaFileItem
-        item={baseItem}
-        shop="shop"
-        onDelete={onDelete}
-        onReplace={onReplace}
-        onReplaceSuccess={jest.fn()}
-      />
-    );
+    const { fileInput } = setupMedia({ item: baseItem, onReplaceSuccess: jest.fn() });
 
-    const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
-    const file = new File(["hello"], "hello.png", { type: "image/png" });
+    await user.upload(fileInput, makeFile());
 
-    act(() => {
-      fireEvent.change(fileInput, { target: { files: [file] } });
-    });
-
-    expect(await screen.findByText("4%"))
-      .toBeInTheDocument();
+    expect(await screen.findByText("4%")).toBeInTheDocument();
     act(() => {
       jest.advanceTimersByTime(300);
     });
-    expect(await screen.findByText("10%"))
-      .toBeInTheDocument();
+    expect(await screen.findByText("10%")).toBeInTheDocument();
 
     await act(async () => {
       deferred.resolve(
@@ -199,65 +128,41 @@ describe("MediaFileItem", () => {
       );
     });
 
-    expect(await screen.findByText("100%"))
-      .toBeInTheDocument();
+    expect(await screen.findByText("100%")).toBeInTheDocument();
 
     act(() => {
       jest.advanceTimersByTime(400);
     });
 
-    await waitFor(() =>
-      expect(screen.queryByText(/replacing asset/i)).not.toBeInTheDocument()
-    );
+    await waitFor(() => expect(screen.queryByText(/replacing asset/i)).not.toBeInTheDocument());
 
     jest.useRealTimers();
   });
-
   it("notifies replace errors when the upload fails", async () => {
     jest.useFakeTimers();
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     const onReplaceError = jest.fn();
-    (global.fetch as jest.Mock).mockResolvedValue(
-      new Response(JSON.stringify({ error: "nope" }), {
-        status: 500,
-        headers: { "Content-Type": "application/json" },
-      })
-    );
+    mockFetchJson({ error: "nope" }, 500);
 
-    const { container } = render(
-      <MediaFileItem
-        item={baseItem}
-        shop="shop"
-        onDelete={jest.fn()}
-        onReplace={jest.fn()}
-        onReplaceError={onReplaceError}
-      />
-    );
-
-    const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
-    const file = new File(["hello"], "hello.png", { type: "image/png" });
-
-    await act(async () => {
-      fireEvent.change(fileInput, { target: { files: [file] } });
+    const { fileInput } = setupMedia({
+      item: baseItem,
+      onReplace: jest.fn(),
+      onReplaceError,
     });
 
-    await waitFor(() =>
-      expect(onReplaceError).toHaveBeenCalledWith("Failed to upload replacement")
-    );
+    await user.upload(fileInput, makeFile());
+
+    await waitFor(() => expect(onReplaceError).toHaveBeenCalledWith("Failed to upload replacement"));
 
     expect(screen.getByText(/replacing asset/i)).toBeInTheDocument();
-    expect(
-      screen.getByText("Failed to upload replacement")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /media actions/i })
-    ).toBeDisabled();
+    expect(screen.getByText("Failed to upload replacement")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /media actions/i })).toBeDisabled();
 
     act(() => {
       jest.runAllTimers();
     });
     jest.useRealTimers();
   });
-
   it("renders multi-select controls with accessible labels and toggles selection state", async () => {
     const user = userEvent.setup();
     const onBulkToggle = jest.fn();
@@ -297,8 +202,8 @@ describe("MediaFileItem", () => {
 
     expect(onBulkToggle).toHaveBeenNthCalledWith(2, baseItem, false);
   });
-
-  it("calls onSelect when the overlay button is pressed", () => {
+  it("calls onSelect when the overlay button is pressed", async () => {
+    const user = userEvent.setup();
     const onSelect = jest.fn();
     render(
       <MediaFileItem
@@ -310,11 +215,11 @@ describe("MediaFileItem", () => {
       />
     );
 
-    fireEvent.click(screen.getByLabelText("Open details"));
+    await user.click(screen.getByLabelText("Open details"));
     expect(onSelect).toHaveBeenCalledWith(baseItem);
   });
-
-  it("exposes a select button when onSelect is provided", () => {
+  it("exposes a select button when onSelect is provided", async () => {
+    const user = userEvent.setup();
     const onSelect = jest.fn();
     render(
       <MediaFileItem
@@ -326,10 +231,9 @@ describe("MediaFileItem", () => {
       />
     );
 
-    fireEvent.click(screen.getByLabelText("Select media"));
+    await user.click(screen.getByLabelText("Select media"));
     expect(onSelect).toHaveBeenCalledWith(baseItem);
   });
-
   it("shows external replacement progress", () => {
     const replacingItem = {
       ...baseItem,
@@ -346,10 +250,8 @@ describe("MediaFileItem", () => {
     );
 
     expect(screen.getByText(/replacing asset/i)).toBeInTheDocument();
-    expect(screen.getByText("45%"))
-      .toBeInTheDocument();
+    expect(screen.getByText("45%")).toBeInTheDocument();
   });
-
   it("displays loading indicators when replacing is in progress", () => {
     render(
       <MediaFileItem
@@ -366,8 +268,8 @@ describe("MediaFileItem", () => {
     expect(openDetailsButton).toBeDisabled();
     expect(within(openDetailsButton).getByText(/replacing media/i)).toBeInTheDocument();
   });
-
-  it("renders a deleting overlay and disables interactions", () => {
+  it("renders a deleting overlay and disables interactions", async () => {
+    const user = userEvent.setup();
     const onSelect = jest.fn();
     const { container } = render(
       <MediaFileItem
@@ -391,12 +293,11 @@ describe("MediaFileItem", () => {
     expect(openDetailsButton).toBeDisabled();
     expect(checkbox).toBeDisabled();
     expect(within(openDetailsButton).getByText(/deleting media/i)).toBeInTheDocument();
-    const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+    const fileInput = (container.querySelector('input[type="file"]') as HTMLInputElement);
     expect(fileInput).toBeDisabled();
-    fireEvent.click(selectButton);
+    await user.click(selectButton);
     expect(onSelect).not.toHaveBeenCalled();
   });
-
   it("locks controls when replacement is reported externally", () => {
     const { container } = render(
       <MediaFileItem
@@ -415,8 +316,7 @@ describe("MediaFileItem", () => {
     );
 
     expect(screen.getByText(/replacing asset/i)).toBeInTheDocument();
-    expect(screen.getByText("45%"))
-      .toBeInTheDocument();
+    expect(screen.getByText("45%")).toBeInTheDocument();
     const mediaActions = screen.getByRole("button", { name: /media actions/i });
     expect(mediaActions).toBeDisabled();
     const selectButton = screen.getByRole("button", { name: "Select media" });
@@ -428,7 +328,6 @@ describe("MediaFileItem", () => {
     const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
     expect(fileInput).toBeDisabled();
   });
-
   it("renders tags and file size badges", () => {
     render(
       <MediaFileItem

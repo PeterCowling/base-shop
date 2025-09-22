@@ -71,10 +71,12 @@ export default function useCanvasSpacing({
   const [overlay, setOverlay] = useState<Overlay | null>(null);
   // When adjusting spacing via keyboard, briefly show overlay
   const kbTimer = useRef<number | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const lastEventRef = useRef<PointerEvent | null>(null);
 
   useEffect(() => {
     if (!active) return;
-    const handleMove = (e: PointerEvent) => {
+    const processMove = (e: PointerEvent) => {
       if (!startRef.current) return;
       const { x, y, margin, padding, width, height } = startRef.current;
       const dx = e.clientX - x;
@@ -130,15 +132,34 @@ export default function useCanvasSpacing({
         setOverlay({ type: "margin", side: active.side, top, left, width: w, height: h });
       }
     };
+    const handleMove = (e: PointerEvent) => {
+      lastEventRef.current = e;
+      if (rafRef.current == null) {
+        rafRef.current = window.requestAnimationFrame(() => {
+          const ev = lastEventRef.current;
+          if (ev) processMove(ev);
+          rafRef.current = null;
+        });
+      }
+    };
     const stop = () => {
       setActive(null);
       setOverlay(null);
+      if (rafRef.current != null) {
+        try { cancelAnimationFrame(rafRef.current); } catch {}
+        rafRef.current = null;
+      }
     };
-    window.addEventListener("pointermove", handleMove);
+    const onKeyDown = (ke: KeyboardEvent) => { if (ke.key === "Escape") stop(); };
+    try { window.addEventListener("pointermove", handleMove, { passive: true }); } catch { window.addEventListener("pointermove", handleMove as any); }
     window.addEventListener("pointerup", stop);
+    window.addEventListener("blur", stop);
+    window.addEventListener("keydown", onKeyDown);
     return () => {
-      window.removeEventListener("pointermove", handleMove);
+      try { window.removeEventListener("pointermove", handleMove as any); } catch {}
       window.removeEventListener("pointerup", stop);
+      window.removeEventListener("blur", stop);
+      window.removeEventListener("keydown", onKeyDown);
     };
   }, [active, componentId, dispatch, marginKey, paddingKey]);
 

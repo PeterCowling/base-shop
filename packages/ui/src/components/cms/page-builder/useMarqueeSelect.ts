@@ -112,13 +112,15 @@ export default function useMarqueeSelect({ canvasRef, zoom = 1, editor, viewport
       setActive(false);
       startRef.current = null;
       setRect(null);
-      window.removeEventListener('pointermove', onMove);
+      try { window.removeEventListener('pointermove', onMove as any); } catch {}
       window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('keydown', onKey);
     };
-    window.addEventListener('pointermove', onMove);
+    const onKey = (ke: KeyboardEvent) => { if (ke.key === 'Escape') onUp(); };
+    try { window.addEventListener('pointermove', onMove as any, { passive: true }); } catch { window.addEventListener('pointermove', onMove as any); }
     window.addEventListener('pointerup', onUp, { once: true });
+    window.addEventListener('keydown', onKey);
   }, [canvasRef, zoom, buildItemsSnapshot, onSelectIds]);
 
   return { active, rect, start } as const;
 }
-

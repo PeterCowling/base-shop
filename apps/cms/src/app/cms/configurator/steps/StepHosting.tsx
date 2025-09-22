@@ -78,7 +78,7 @@ export default function StepHosting({
             href={deployInfo.previewUrl}
             target="_blank"
             rel="noreferrer"
-            className="text-primary underline"
+            className="text-link underline"
           >
             {deployInfo.previewUrl}
           </a>

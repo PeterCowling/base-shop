@@ -27,7 +27,7 @@ export default async function PricingPage({
       label: "Base daily rate",
       value: `$${formatNumber(initial.baseDailyRate, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
       caption: "Default fallback when no SKU override exists",
-      accent: "bg-success/20 text-success-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
     {
       label: "Discount tiers",
@@ -51,14 +51,14 @@ export default async function PricingPage({
 
   return (
     <div className="space-y-8 text-foreground">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero-contrast text-hero-foreground shadow-elevation-4">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--color-success)/0.18),_transparent_55%)]" />
         <div className="relative space-y-4 px-6 py-8">
           <Tag variant="default">
             Rental pricing · {shop}
           </Tag>
           <h1 className="text-3xl font-semibold md:text-4xl">Tune rates, deposits, and coverage with confidence</h1>
-          <p className="text-sm text-muted-foreground md:text-base">
+          <p className="text-sm text-hero-foreground/80 md:text-base">
             Build predictable rental revenue by balancing base rates, long-stay discounts, and how you recover for damage or loss.
           </p>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -80,7 +80,7 @@ export default async function PricingPage({
       </section>
 
       <section>
-        <Card className="border border-border/10 bg-surface-2 text-foreground shadow-lg">
+        <Card className="border border-border/10 bg-surface-2 text-foreground shadow-elevation-3">
           <CardContent className="space-y-4 px-6 py-6">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="space-y-1">

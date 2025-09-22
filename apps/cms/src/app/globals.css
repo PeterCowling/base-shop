@@ -83,3 +83,22 @@ kbd {
 .cms-content :where(.min-w-0) {
   min-width: 0 !important;
 }
+
+/* -------- Non-text intrinsic sizing ------------------------------------ */
+/*
+   Controls that render non-text content (SVGs, images, video) should not get
+   clipped when placed inside tight flex containers. Prevent flex-shrink on
+   the inner media and ensure it scales within the control bounds.
+*/
+.cms-content :where(button, [role="button"]) > svg {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  display: block; /* avoid baseline gaps/cropping inside fixed-height buttons */
+}
+
+/* Ensure embedded media respects its container without overflowing. */
+.cms-content :where(img, svg, canvas, video, iframe) {
+  max-width: 100%;
+  max-height: 100%;
+}

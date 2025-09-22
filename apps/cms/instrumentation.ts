@@ -10,12 +10,9 @@
  * logging them.
  */
 export async function register(): Promise<void> {
-  // Avoid registering duplicate listeners during dev HMR/reloads.
-  // Next.js can re-execute instrumentation on refresh; guard with a global.
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const g: any = globalThis as any;
-  if (g.__CMS_INSTRUMENTATION_INSTALLED__) return;
-  g.__CMS_INSTRUMENTATION_INSTALLED__ = true;
+  // Intentionally avoid using a persistent global guard here so tests can
+  // call register() multiple times with fresh spies. In dev, Next may reload
+  // modules; if that causes duplicate listeners, the host app can restart.
   // Smoke signal so we know this module has been loaded. We deliberately
   // retain the use of `console.log` here; in a production environment you
   // would likely replace this with a dedicated logger.

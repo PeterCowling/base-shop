@@ -19,6 +19,15 @@
   --color-info: 210 90% 96%;
   --color-info-fg: 210 90% 35%;
   --color-muted: 0 0% 88%;
+  /* Link color tuned for AA on light surfaces */
+  --color-link: 220 75% 40%;
+  --color-muted-fg: 0 0% 20%;
+  --color-muted-border: 0 0% 72%;
+
+  /* hero text foreground tuned for gradient background */
+  --hero-fg: 0 0% 100%;
+  /* strengthen hero overlay for AA contrast across bright stops */
+  --hero-contrast-overlay: 0 0% 0% / 0.7;
 
   /* dark counterparts (referenced by html.theme-dark rules) */
   /* Tuned for contrast and comfortable luminance on layered backgrounds */
@@ -39,6 +48,8 @@
   --color-info-fg-dark: 0 0% 10%;
   /* Missing in earlier revision, required by tests and dark overlays */
   --color-muted-dark: 222 10% 28%;
+  --color-muted-fg-dark: 0 0% 92%;
+  --color-muted-border-dark: 0 0% 40%;
 
   /* typography */
   --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
@@ -56,6 +67,14 @@
   --surface-input: 0 0% 96%;        /* input fields default surface */
   --ring-width: 2px;                /* focus ring thickness */
   --ring-offset-width: 2px;         /* focus ring offset thickness */
+
+  /* Elevation scale for consistent depth (light mode) */
+  --elevation-0: none;
+  --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --elevation-2: 0 2px 6px rgba(0, 0, 0, 0.12);
+  --elevation-3: 0 4px 12px rgba(0, 0, 0, 0.16);
+  --elevation-4: 0 8px 24px rgba(0, 0, 0, 0.20);
+  --elevation-5: 0 12px 36px rgba(0, 0, 0, 0.24);
 
   /* Border intensity tokens: tune once, use everywhere */
   --border-1: var(--color-fg) / 0.12; /* subtle separators */
@@ -91,6 +110,13 @@ html.theme-dark {
   --color-info: var(--color-info-dark);
   --color-info-fg: var(--color-info-fg-dark);
   --color-muted: var(--color-muted-dark);
+  --color-link: 220 80% 70%;
+  --color-muted-fg: var(--color-muted-fg-dark);
+  --color-muted-border: var(--color-muted-border-dark);
+
+  /* dark mode hero text remains white over contrast overlay */
+  --hero-fg: 0 0% 100%;
+  --hero-contrast-overlay: 0 0% 0% / 0.7;
 
   /* Dark-mode surfaces tuned for visibility and depth */
   --surface-1: var(--color-bg-dark);
@@ -104,6 +130,14 @@ html.theme-dark {
   --surface-input: 222 12% 18%;
   --ring-width: 2px;
   --ring-offset-width: 2px;
+
+  /* Dark-mode elevation */
+  --elevation-0: none;
+  --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.14);
+  --elevation-2: 0 2px 6px rgba(0, 0, 0, 0.18);
+  --elevation-3: 0 4px 12px rgba(0, 0, 0, 0.24);
+  --elevation-4: 0 8px 24px rgba(0, 0, 0, 0.30);
+  --elevation-5: 0 12px 36px rgba(0, 0, 0, 0.36);
 }
 
 html,

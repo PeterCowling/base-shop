@@ -37,6 +37,16 @@ it("sets arrays and exposes theme mappings", async () => {
     expect.objectContaining({ sm: "var(--radius-sm)" })
   );
   expect(extend.boxShadow).toEqual(
-    expect.objectContaining({ sm: "var(--shadow-sm)" })
+    expect.objectContaining({
+      sm: "var(--shadow-sm)",
+      "elevation-3": expect.stringContaining("var(--elevation-3")
+    })
+  );
+  // Background images include hero and contrast-safe variant
+  expect(extend.backgroundImage).toEqual(
+    expect.objectContaining({
+      hero: expect.stringContaining("linear-gradient"),
+      "hero-contrast": expect.stringContaining("linear-gradient"),
+    })
   );
 });

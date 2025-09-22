@@ -96,7 +96,7 @@ export default function ContextMenu({ x, y, open, onClose, items }: Props) {
 
   return (
     <div
-      className="fixed z-[1000] min-w-[10rem] overflow-hidden rounded border bg-popover p-1 text-popover-foreground shadow-md"
+      className="fixed z-[1000] min-w-[10rem] overflow-hidden rounded border bg-popover p-1 text-popover-foreground shadow-elevation-2"
       style={style}
       role="menu"
       data-pb-contextmenu

@@ -79,25 +79,25 @@ export default async function ProductsPage({
       label: "Active",
       value: String(activeProducts),
       caption: "Live on the storefront",
-      accent: "bg-success/20 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
     {
       label: "Draft",
       value: String(draftProducts),
       caption: "Still in progress",
-      accent: "bg-warning/20 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
     {
       label: "Scheduled",
       value: String(upcomingProducts),
       caption: "Queued for launch",
-      accent: "bg-info/20 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
     {
       label: "Archived",
       value: String(archivedProducts),
       caption: "Hidden from customers",
-      accent: "bg-muted/20 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
   ];
 
@@ -110,7 +110,7 @@ export default async function ProductsPage({
   /* ---------------------------------------------------------------------- */
   return (
     <div className="space-y-8">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero-contrast text-hero-foreground shadow-elevation-4">
         <div className="relative grid gap-6 px-6 py-7 lg:grid-cols-[2fr,1fr] lg:gap-10">
           <div className="space-y-4">
             <div className="space-y-1">
@@ -120,7 +120,7 @@ export default async function ProductsPage({
               <h1 className="text-3xl font-semibold md:text-4xl">
                 Shape every product story for {shop.toUpperCase()}
               </h1>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-hero-foreground/80">
                 Track launch readiness, make quick edits, and plan upcoming releases from this workspace.
               </p>
             </div>
@@ -128,13 +128,14 @@ export default async function ProductsPage({
               <Progress
                 value={completeness}
                 label={`${activeProducts}/${totalProducts || 0} products live`}
+                labelClassName="text-hero-foreground/80"
               />
               <div className="flex flex-wrap items-center gap-3">
                 {isAdmin ? (
                   <form action={onCreate}>
                     <Button
                       type="submit"
-                      className="h-11 rounded-xl bg-success px-5 text-sm font-semibold text-success-foreground shadow-lg hover:bg-success/90"
+                      className="h-11 rounded-xl bg-success px-5 text-sm font-semibold text-success-foreground shadow-elevation-2 hover:bg-success/90"
                     >
                       Add new product
                     </Button>
@@ -169,7 +170,7 @@ export default async function ProductsPage({
               ))}
             </div>
           </div>
-          <Card className="border-border/10 bg-surface-2 text-foreground shadow-xl">
+          <Card className="border-border/10 bg-surface-2 text-foreground shadow-elevation-4">
           <CardContent className="space-y-4 p-6">
               <div className="space-y-1">
                 <h2 className="text-lg font-semibold">Launch checklist</h2>
@@ -191,7 +192,7 @@ export default async function ProductsPage({
       </section>
 
       <section className="space-y-4">
-        <Card className="border border-border/10 bg-surface-2 text-foreground shadow-lg">
+        <Card className="border border-border/10 bg-surface-2 text-foreground shadow-elevation-3">
           <CardContent className="space-y-4 p-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="min-w-0">
@@ -215,7 +216,7 @@ export default async function ProductsPage({
         </Card>
 
         {viewerNotice && (
-          <Card className="border border-warning/30 bg-warning/10">
+          <Card className="border border-warning/30 bg-surface-2">
             <CardContent className="text-sm text-foreground">
               {viewerNotice}
             </CardContent>

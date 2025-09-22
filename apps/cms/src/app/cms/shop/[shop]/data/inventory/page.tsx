@@ -47,25 +47,25 @@ export default async function InventoryPage({
       label: "Low stock",
       value: String(lowStockItems.length),
       caption: "At or below threshold",
-      accent: "bg-warning/20 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
     {
       label: "Maintenance due",
       value: String(maintenanceNeeded.length),
       caption: "Exceeded wear limit",
-      accent: "bg-danger/20 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
     {
       label: "Variants tracked",
       value: String(variantAttributes.size),
       caption: "Unique attribute dimensions",
-      accent: "bg-info/20 text-foreground",
+      accent: "bg-surface-3 text-foreground",
     },
   ];
 
   return (
     <div className="space-y-8 text-foreground">
-      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero text-primary-foreground shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero-contrast text-hero-foreground shadow-elevation-4">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--color-success)/0.18),_transparent_50%)]" />
         <div className="relative space-y-4 px-6 py-7">
           <Tag variant="default">
@@ -74,7 +74,7 @@ export default async function InventoryPage({
           <h1 className="text-3xl font-semibold md:text-4xl">
             Keep stock levels, wear cycles, and attributes aligned
           </h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-hero-foreground/80">
             Adjust thresholds, import updates, and monitor wear & tear before it impacts fulfillment.
           </p>
           <div className="grid gap-3 sm:grid-cols-4">
@@ -98,7 +98,7 @@ export default async function InventoryPage({
       </section>
 
       <section>
-        <Card className="border border-border/10 bg-surface-2 shadow-lg">
+        <Card className="border border-border/10 bg-surface-2 shadow-elevation-3">
           <CardContent className="space-y-4 px-6 py-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="min-w-0">

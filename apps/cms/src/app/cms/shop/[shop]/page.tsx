@@ -36,14 +36,14 @@ export default async function ShopDashboardPage({
 
   return (
     <div className="space-y-10">
-      <section className="overflow-hidden rounded-3xl bg-hero p-8 text-primary-foreground shadow-xl">
+      <section className="overflow-hidden rounded-3xl bg-hero-contrast p-8 text-hero-foreground shadow-elevation-4">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="min-w-0 max-w-2xl space-y-4">
-            <p className="text-sm font-semibold uppercase tracking-wide text-primary-foreground/80">
+            <p className="text-sm font-semibold uppercase tracking-wide text-hero-foreground/80">
               Experience overview
             </p>
             <h1 className="text-3xl font-bold lg:text-4xl">{shop} shop control center</h1>
-            <p className="text-primary-foreground/80">
+            <p className="text-hero-foreground/80">
               Welcome back! Monitor your experience health, preview upgrades, and publish changes
               with confidence. Use the quick actions below to jump back into your most common
               workflows.
@@ -55,7 +55,7 @@ export default async function ShopDashboardPage({
               <Button
                 asChild
                 variant="ghost"
-                className="text-primary-foreground hover:bg-primary/10 hover:text-primary-foreground"
+                className="text-hero-foreground hover:bg-primary/10 hover:text-hero-foreground"
               >
                 <Link href={`/cms/shop/${shop}/themes`}>Open theme editor</Link>
               </Button>
@@ -67,7 +67,7 @@ export default async function ShopDashboardPage({
                 key={metric.label}
                 label={metric.label}
                 value={metric.value}
-                className="bg-surface-2 [&_span:first-child]:text-primary-foreground/70 [&_span:last-child]:text-primary-foreground"
+                className="bg-surface-2 [&_span:first-child]:text-muted-foreground [&_span:last-child]:text-foreground"
               />
             ))}
           </div>

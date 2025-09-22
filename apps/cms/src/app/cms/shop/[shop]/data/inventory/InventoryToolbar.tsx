@@ -64,7 +64,7 @@ export function InventoryToolbar({
         <Button
           type="button"
           onClick={onAddRow}
-          className="h-9 rounded-lg bg-success px-3 text-xs font-semibold text-success-foreground shadow-sm hover:bg-success/90"
+          className="h-9 rounded-lg bg-success px-3 text-xs font-semibold text-success-foreground shadow-elevation-1 hover:bg-success/90"
         >
           Add row
         </Button>

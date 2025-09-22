@@ -26,6 +26,8 @@ export default function MultiSelectOverlay({ canvasRef, ids, gridEnabled = false
   const groupBoundsRef = useRef<Map<HTMLElement, { left: number; top: number; width: number; height: number }>>(new Map());
   const dragRef = useRef<{ x: number; y: number; zoom: number } | null>(null);
   const [dragDelta, setDragDelta] = useState<{ dx: number; dy: number }>({ dx: 0, dy: 0 });
+  const rafRef = useRef<number | null>(null);
+  const lastEventRef = useRef<PointerEvent | null>(null);
 
   // Compute initial positions and overlay bounds
   useEffect(() => {
@@ -93,7 +95,7 @@ export default function MultiSelectOverlay({ canvasRef, ids, gridEnabled = false
   const handlePointerDown = (e: React.PointerEvent, handle: Handle = null) => {
     e.stopPropagation();
     dragRef.current = { x: e.clientX, y: e.clientY, zoom };
-    const onMove = (ev: PointerEvent) => {
+    const processMove = (ev: PointerEvent) => {
       if (!dragRef.current) return;
       // Lock zoom at drag start to avoid drift when user changes zoom mid-drag
       const startZoom = dragRef.current.zoom ?? zoom;
@@ -109,7 +111,14 @@ export default function MultiSelectOverlay({ canvasRef, ids, gridEnabled = false
       if (!handle) {
         setDragDelta({ dx, dy });
         Object.entries(startMapRef.current).forEach(([id, p]) => {
-          out[id] = { left: `${Math.round(p.left + dx)}px`, top: `${Math.round(p.top + dy)}px` };
+          const parent = idToParentRef.current[id];
+          const maxLeft = parent ? Math.max(0, parent.offsetWidth - p.width) : null;
+          const maxTop = parent ? Math.max(0, parent.offsetHeight - p.height) : null;
+          const nextL = p.left + dx;
+          const nextT = p.top + dy;
+          const clampedL = maxLeft == null ? nextL : Math.min(Math.max(0, nextL), maxLeft);
+          const clampedT = maxTop == null ? nextT : Math.min(Math.max(0, nextT), maxTop);
+          out[id] = { left: `${Math.round(clampedL)}px`, top: `${Math.round(clampedT)}px` };
         });
       } else {
         const vis = bounds;
@@ -150,13 +159,29 @@ export default function MultiSelectOverlay({ canvasRef, ids, gridEnabled = false
       }
       onApply(out);
     };
+    const onMove = (ev: PointerEvent) => {
+      lastEventRef.current = ev;
+      if (rafRef.current == null) {
+        rafRef.current = window.requestAnimationFrame(() => {
+          const last = lastEventRef.current;
+          if (last) processMove(last);
+          rafRef.current = null;
+        });
+      }
+    };
     const onUp = () => {
       dragRef.current = null;
-      window.removeEventListener("pointermove", onMove);
+      try { window.removeEventListener("pointermove", onMove as any); } catch {}
       window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("blur", onUp);
+      if (rafRef.current != null) { try { cancelAnimationFrame(rafRef.current); } catch {} rafRef.current = null; }
     };
-    window.addEventListener("pointermove", onMove);
+    const onKey = (ke: KeyboardEvent) => { if (ke.key === 'Escape') onUp(); };
+    try { window.addEventListener("pointermove", onMove as any, { passive: true }); } catch { window.addEventListener("pointermove", onMove as any); }
     window.addEventListener("pointerup", onUp);
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("blur", onUp);
   };
 
   const overlayStyle = useMemo(() => {

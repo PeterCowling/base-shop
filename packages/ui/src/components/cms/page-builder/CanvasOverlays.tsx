@@ -33,24 +33,24 @@ export default function CanvasOverlays({
       {/* Alignment guides + distances */}
       <div className="pointer-events-none absolute inset-0 z-20">
         <div
-          className="bg-primary absolute top-0 bottom-0 w-px transition-opacity duration-150"
+          className="bg-primary absolute top-0 bottom-0 w-px transition-opacity duration-150 motion-reduce:transition-none"
           style={{ left: guides.x ?? 0, opacity: guides.x !== null ? 1 : 0 }}
         />
         {distances.x !== null && (
           <div
-            className="absolute -top-4 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow transition-opacity duration-150 dark:bg-white/75 dark:text-black"
+            className="absolute -top-4 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow transition-opacity duration-150 motion-reduce:transition-none dark:bg-white/75 dark:text-black"
             style={{ left: (guides.x ?? 0) + 4, opacity: guides.x !== null ? 1 : 0 }}
           >
             {Math.round(distances.x)}
           </div>
         )}
         <div
-          className="bg-primary absolute right-0 left-0 h-px transition-opacity duration-150"
+          className="bg-primary absolute right-0 left-0 h-px transition-opacity duration-150 motion-reduce:transition-none"
           style={{ top: guides.y ?? 0, opacity: guides.y !== null ? 1 : 0 }}
         />
         {distances.y !== null && (
           <div
-            className="absolute -left-4 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow transition-opacity duration-150 dark:bg-white/75 dark:text-black"
+            className="absolute -left-4 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow transition-opacity duration-150 motion-reduce:transition-none dark:bg-white/75 dark:text-black"
             style={{ top: (guides.y ?? 0) + 4, opacity: guides.y !== null ? 1 : 0 }}
           >
             {Math.round(distances.y)}
@@ -87,4 +87,3 @@ export default function CanvasOverlays({
     </>
   );
 }
-

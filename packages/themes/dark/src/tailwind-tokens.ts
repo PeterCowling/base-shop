@@ -18,6 +18,30 @@ export const tokens = {
   "--color-info": "210 90% 35%",
   "--color-info-fg": "210 90% 96%",
   "--color-muted": "0 0% 60%",
+  "--color-muted-fg": "0 0% 92%",
+  "--color-muted-border": "0 0% 40%",
+
+  // Layered surfaces
+  "--surface-1": "0 0% 4%",
+  "--surface-2": "222 14% 13%",
+  "--surface-3": "222 12% 16%",
+  "--surface-input": "222 12% 18%",
+
+  // Border intensity scale
+  "--border-1": "var(--color-fg) / 0.12",
+  "--border-2": "var(--color-fg) / 0.22",
+  "--border-3": "var(--color-fg) / 0.38",
+
+  // Focus ring tokens
+  "--ring": "220 90% 66%",
+  "--ring-offset": "0 0% 4%",
+  "--ring-width": "2px",
+  "--ring-offset-width": "2px",
+
+  // Hero gradient
+  "--gradient-hero-from": "234 70% 55%",
+  "--gradient-hero-via": "272 60% 52%",
+  "--gradient-hero-to": "222 30% 18%",
   "--font-sans": 'var(--font-geist-sans)',
   "--font-mono": 'var(--font-geist-mono)',
   "--space-1": "4px",
@@ -32,4 +56,11 @@ export const tokens = {
     "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
   "--shadow-lg":
     "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+  // Elevation tokens (for Tailwind boxShadow aliases)
+  "--elevation-0": "none",
+  "--elevation-1": "0 1px 2px rgba(0,0,0,0.14)",
+  "--elevation-2": "0 2px 6px rgba(0,0,0,0.18)",
+  "--elevation-3": "0 4px 12px rgba(0,0,0,0.24)",
+  "--elevation-4": "0 8px 24px rgba(0,0,0,0.30)",
+  "--elevation-5": "0 12px 36px rgba(0,0,0,0.36)",
 } as const;

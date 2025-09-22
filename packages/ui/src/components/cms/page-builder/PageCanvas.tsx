@@ -35,6 +35,8 @@ interface Props {
   zoom?: number;
   showBaseline?: boolean;
   baselineStep?: number;
+  dropAllowed?: boolean | null;
+  insertParentId?: string | undefined;
 }
 
 const PageCanvas = ({
@@ -64,6 +66,8 @@ const PageCanvas = ({
   zoom = 1,
   showBaseline = false,
   baselineStep = 8,
+  dropAllowed = null,
+  insertParentId,
 }: Props) => {
   if (preview) {
     return (
@@ -88,6 +92,7 @@ const PageCanvas = ({
       setDragOver={setDragOver}
       onFileDrop={onFileDrop}
       insertIndex={insertIndex}
+      insertParentId={insertParentId}
       dispatch={dispatch}
       locale={locale}
       containerStyle={containerStyle}
@@ -105,6 +110,7 @@ const PageCanvas = ({
       zoom={zoom}
       showBaseline={showBaseline}
       baselineStep={baselineStep}
+      dropAllowed={dropAllowed}
     />
   );
 };

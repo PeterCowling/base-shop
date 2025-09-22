@@ -16,6 +16,11 @@ export type EditorFlags = {
   orderDesktop?: number;
   orderTablet?: number;
   orderMobile?: number;
+  global?: {
+    id: string;
+    overrides?: unknown;
+    pinned?: boolean;
+  };
 };
 
 export type AddAction = {

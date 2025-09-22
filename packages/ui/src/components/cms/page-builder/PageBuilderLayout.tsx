@@ -36,6 +36,9 @@ import AppMarketStub from "./AppMarketStub";
 import StudioMenu from "./StudioMenu";
 import { CheckIcon, ReloadIcon } from "@radix-ui/react-icons";
 
+const PANEL_SEQUENCE = ["palette", "inspector", "layers"] as const;
+type PanelShortcutTarget = (typeof PANEL_SEQUENCE)[number];
+
 interface LayoutProps {
   style?: CSSProperties;
   paletteOnAdd: (type: ComponentType) => void;
@@ -123,6 +126,56 @@ const PageBuilderLayout = ({
   const { onPointerDown } = useSpacePanning(scrollRef);
   const [showInspector, setShowInspector] = React.useState(true);
   const [appMarketOpen, setAppMarketOpen] = React.useState(false);
+  const panelCycleIndexRef = React.useRef<number>(0);
+
+  // Ctrl/Cmd + . cycles through palette → inspector → layers.
+  React.useEffect(() => {
+    const handlePanelCycle = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      const tag = target?.tagName;
+      const isEditable =
+        !!target &&
+        ((target as any).isContentEditable || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT");
+      if (isEditable) return;
+      if (event.altKey || event.shiftKey) return;
+      if (!(event.ctrlKey || event.metaKey)) return;
+      if (event.key.toLowerCase() !== ".") return;
+
+      event.preventDefault();
+
+      const nextTarget: PanelShortcutTarget = PANEL_SEQUENCE[panelCycleIndexRef.current];
+      panelCycleIndexRef.current = (panelCycleIndexRef.current + 1) % PANEL_SEQUENCE.length;
+
+      if (nextTarget === "palette") {
+        setShowPalette((value) => !value);
+        return;
+      }
+
+      if (nextTarget === "inspector") {
+        setShowInspector((value) => !value);
+        return;
+      }
+
+      setShowInspector(true);
+      const scrollToLayers = () => {
+        try {
+          document
+            .getElementById("pb-layers-panel")
+            ?.scrollIntoView({ behavior: "smooth", block: "start" });
+        } catch {
+          // ignore scroll errors
+        }
+      };
+      if (typeof requestAnimationFrame === "function") {
+        requestAnimationFrame(scrollToLayers);
+      } else {
+        setTimeout(scrollToLayers, 16);
+      }
+    };
+
+    window.addEventListener("keydown", handlePanelCycle);
+    return () => window.removeEventListener("keydown", handlePanelCycle);
+  }, [setShowPalette, setShowInspector]);
 
   // (Optional) live message toasts can be surfaced by parent if desired
   return (

@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useReducedMotion from "../../../hooks/useReducedMotion";
-import { palette } from "./paletteData";
-
-type ComponentType = keyof typeof palette["layout"][number] | string;
+import { defaultIcon, getPaletteCategories } from "./paletteData";
+import { listInstalledApps, subscribeInstalledApps } from "./appInstallStore";
+import type { ComponentType } from "./defaults";
+import type { PaletteMeta } from "./palette.types";
 
 export type DragMeta = {
   from: "palette" | "library" | "canvas";
@@ -15,29 +16,48 @@ export type DragMeta = {
   thumbnail?: string | null;
 };
 
-function findIcon(type?: string): string | null {
-  if (!type) return null;
-  try {
-    const cats = Object.values(palette);
-    for (const list of cats) {
-      const item = list.find((i) => i.type === type);
-      if (item?.previewImage) return item.previewImage as string;
+const buildPaletteIndex = (installedApps: string[]): Map<string, PaletteMeta> => {
+  const index = new Map<string, PaletteMeta>();
+  for (const category of getPaletteCategories(installedApps)) {
+    for (const item of category.items) {
+      index.set(item.type, item);
     }
-    return "/window.svg";
-  } catch {
-    return "/window.svg";
   }
-}
+  return index;
+};
 
-export default function DragOverlayPreview({ dragMeta, allowed, locale = 'en' }: { dragMeta: DragMeta | null; allowed: boolean | null; locale?: string }) {
+export default function DragOverlayPreview({ dragMeta, allowed, locale = 'en', shop = null }: { dragMeta: DragMeta | null; allowed: boolean | null; locale?: string; shop?: string | null }) {
   if (!dragMeta) return null;
   const reducedMotion = useReducedMotion();
   const [ready, setReady] = useState<boolean>(reducedMotion);
+  const [paletteIndex, setPaletteIndex] = useState<Map<string, PaletteMeta>>(() =>
+    buildPaletteIndex(listInstalledApps(shop ?? null)),
+  );
+
+  useEffect(() => {
+    setPaletteIndex(buildPaletteIndex(listInstalledApps(shop ?? null)));
+    return subscribeInstalledApps(shop ?? null, (apps) => {
+      setPaletteIndex(buildPaletteIndex(apps));
+    });
+  }, [shop]);
+
   useEffect(() => {
     if (reducedMotion) return;
     const id = requestAnimationFrame(() => setReady(true));
     return () => cancelAnimationFrame(id);
   }, [reducedMotion]);
+
+  const findIcon = useCallback(
+    (type?: string): string | null => {
+      if (!type) return null;
+      const entry = paletteIndex.get(type);
+      if (entry?.previewImage) return entry.previewImage;
+      if (entry?.icon) return entry.icon;
+      return defaultIcon;
+    },
+    [paletteIndex],
+  );
+
   const icon = dragMeta.from === "library" && dragMeta.thumbnail ? dragMeta.thumbnail : findIcon(dragMeta.type);
   const label = dragMeta.label ?? dragMeta.type ?? (dragMeta.from === "library" ? (dragMeta.count ? `${dragMeta.count} block${dragMeta.count > 1 ? "s" : ""}` : "Library item") : "Block");
   const notes: Record<string, Record<string, string>> = {

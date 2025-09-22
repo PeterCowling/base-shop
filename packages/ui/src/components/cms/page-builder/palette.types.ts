@@ -1,4 +1,5 @@
 import type { ComponentType } from "./defaults";
+import type { PageComponent } from "@acme/types";
 
 export interface PaletteMeta {
   type: ComponentType;
@@ -13,7 +14,7 @@ export interface PaletteItemProps extends PaletteMeta {
 }
 
 export interface PaletteProps {
-  onAdd: (type: ComponentType) => void;
+  onAdd: (type: ComponentType, initializer?: Partial<PageComponent>) => void;
   onInsertImage: (url: string) => void;
   onSetSectionBackground: (url: string) => void;
   selectedIsSection?: boolean;

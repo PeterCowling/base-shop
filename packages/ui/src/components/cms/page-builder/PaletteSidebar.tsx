@@ -1,13 +1,14 @@
 "use client";
 
 import React from "react";
+import type { PageComponent } from "@acme/types";
 import Palette from "./Palette";
 import type { ComponentType } from "./defaults";
 
 interface Props {
   width: number;
   onWidthChange: (w: number) => void;
-  onAdd: (type: ComponentType) => void;
+  onAdd: (type: ComponentType, initializer?: Partial<PageComponent>) => void;
   onInsertImage: (url: string) => void;
   onSetSectionBackground: (url: string) => void;
   selectedIsSection: boolean;

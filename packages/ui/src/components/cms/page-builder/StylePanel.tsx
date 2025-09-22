@@ -4,7 +4,7 @@
 import type { PageComponent } from "@acme/types";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import { Button, Textarea, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../../atoms/shadcn";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslations } from "@acme/i18n";
 import useContrastWarnings from "../../../hooks/useContrastWarnings";
 import { getStyleClipboard, setStyleClipboard } from "./style/styleClipboard";
@@ -15,6 +15,38 @@ import EffectsEditor from "./EffectsEditor";
 import StylePreviewCard from "./StylePreviewCard";
 import ColorEditor from "./ColorEditor";
 import TypographyEditor from "./TypographyEditor";
+import usePreviewTokens from "./hooks/usePreviewTokens";
+import { applyTextThemeToOverrides, extractTextThemes, matchTextTheme } from "./textThemes";
+
+const parseStyleOverrides = (styles: PageComponent["styles"]): StyleOverrides => {
+  if (!styles) return {};
+  try {
+    return JSON.parse(String(styles)) as StyleOverrides;
+  } catch {
+    return {};
+  }
+};
+
+type OverrideSections = {
+  color: NonNullable<StyleOverrides["color"]>;
+  typography: NonNullable<StyleOverrides["typography"]>;
+  typographyDesktop: NonNullable<StyleOverrides["typographyDesktop"]>;
+  typographyTablet: NonNullable<StyleOverrides["typographyTablet"]>;
+  typographyMobile: NonNullable<StyleOverrides["typographyMobile"]>;
+  effects: NonNullable<StyleOverrides["effects"]>;
+};
+
+const ensureSection = <T extends object>(value: T | undefined): T =>
+  (value ? value : ({} as T));
+
+const pickSections = (overrides: StyleOverrides): OverrideSections => ({
+  color: ensureSection(overrides.color),
+  typography: ensureSection(overrides.typography),
+  typographyDesktop: ensureSection(overrides.typographyDesktop),
+  typographyTablet: ensureSection(overrides.typographyTablet),
+  typographyMobile: ensureSection(overrides.typographyMobile),
+  effects: ensureSection(overrides.effects),
+});
 
 type TrackFn = (name: string, payload?: Record<string, unknown>) => void;
 let track: TrackFn = () => {};
@@ -36,17 +68,18 @@ interface Props {
 }
 
 export default function StylePanel({ component, handleInput }: Props) {
-  const overrides: StyleOverrides = component.styles
-    ? JSON.parse(String(component.styles))
-    : {};
-  const color = overrides.color ?? {};
-  const typography = overrides.typography ?? {};
-  const typoDesktop = overrides.typographyDesktop ?? {};
-  const typoTablet = overrides.typographyTablet ?? {};
-  const typoMobile = overrides.typographyMobile ?? {};
-  const effects = overrides.effects ?? {};
+  const overrides = parseStyleOverrides(component.styles);
+  const { color, typography, typographyDesktop, typographyTablet, typographyMobile, effects } =
+    pickSections(overrides);
   const warning = useContrastWarnings(color.fg ?? "", color.bg ?? "");
   const t = useTranslations();
+  const previewTokens = usePreviewTokens();
+  const textThemes = useMemo(() => extractTextThemes(previewTokens), [previewTokens]);
+  const appliedTextTheme = useMemo(
+    () => matchTextTheme(overrides, textThemes) ?? "",
+    [overrides, textThemes],
+  );
+  const getLatestSections = () => pickSections(parseStyleOverrides(component.styles));
 
   const _clipboard = { get: getStyleClipboard, set: setStyleClipboard } as const;
   const presets = defaultEffectPresets;
@@ -64,14 +97,15 @@ export default function StylePanel({ component, handleInput }: Props) {
   } = useCustomPresets(effects);
 
   const update = (group: "color" | "typography", key: string, value: string) => {
+    const latest = getLatestSections();
     const next: StyleOverrides = {
-      color: { ...color },
-      typography: { ...typography },
+      color: { ...latest.color },
+      typography: { ...latest.typography },
     };
     if (group === "color") {
-      next.color = { ...color, [key]: value };
+      next.color = { ...latest.color, [key]: value };
     } else {
-      next.typography = { ...typography, [key]: value };
+      next.typography = { ...latest.typography, [key]: value };
     }
     handleInput("styles", JSON.stringify(next));
     track("stylepanel:update", { group, key });
@@ -82,12 +116,13 @@ export default function StylePanel({ component, handleInput }: Props) {
     key: "fontSize" | "lineHeight",
     value: string,
   ) => {
+    const latest = getLatestSections();
     const next: StyleOverrides = {
-      color: { ...color },
-      typography: { ...typography },
-      typographyDesktop: { ...typoDesktop },
-      typographyTablet: { ...typoTablet },
-      typographyMobile: { ...typoMobile },
+      color: { ...latest.color },
+      typography: { ...latest.typography },
+      typographyDesktop: { ...latest.typographyDesktop },
+      typographyTablet: { ...latest.typographyTablet },
+      typographyMobile: { ...latest.typographyMobile },
     };
     const field = `typography${bp}` as const;
     (next as any)[field] = { ...(next as any)[field], [key]: value };
@@ -98,26 +133,28 @@ export default function StylePanel({ component, handleInput }: Props) {
   const applyPreset = (presetId: string) => {
     const preset = presets.find((p) => p.id === presetId);
     if (!preset) return;
+    const latest = getLatestSections();
     const next: StyleOverrides = {
-      color: { ...color, ...(preset.value.color ?? {}) },
-      typography: { ...typography, ...(preset.value.typography ?? {}) },
-      typographyDesktop: { ...typoDesktop },
-      typographyTablet: { ...typoTablet },
-      typographyMobile: { ...typoMobile },
-      effects: { ...effects },
+      color: { ...latest.color, ...(preset.value.color ?? {}) },
+      typography: { ...latest.typography, ...(preset.value.typography ?? {}) },
+      typographyDesktop: { ...latest.typographyDesktop },
+      typographyTablet: { ...latest.typographyTablet },
+      typographyMobile: { ...latest.typographyMobile },
+      effects: { ...latest.effects },
     };
     handleInput("styles", JSON.stringify(next));
     track("stylepanel:preset", { id: presetId });
   };
 
   const copyStyles = () => {
+    const latest = getLatestSections();
     const toCopy: StyleOverrides = {
-      color: { ...color },
-      typography: { ...typography },
-      typographyDesktop: { ...typoDesktop },
-      typographyTablet: { ...typoTablet },
-      typographyMobile: { ...typoMobile },
-      effects: { ...effects },
+      color: { ...latest.color },
+      typography: { ...latest.typography },
+      typographyDesktop: { ...latest.typographyDesktop },
+      typographyTablet: { ...latest.typographyTablet },
+      typographyMobile: { ...latest.typographyMobile },
+      effects: { ...latest.effects },
     };
     _clipboard.set(toCopy);
     track("stylepanel:copy");
@@ -126,13 +163,14 @@ export default function StylePanel({ component, handleInput }: Props) {
   const applyCustomPreset = (presetId: string) => {
     const preset = customPresets.find((p) => p.id === presetId);
     if (!preset) return;
+    const latest = getLatestSections();
     const next: StyleOverrides = {
-      color: { ...color },
-      typography: { ...typography },
-      typographyDesktop: { ...typoDesktop },
-      typographyTablet: { ...typoTablet },
-      typographyMobile: { ...typoMobile },
-      effects: { ...effects, ...(preset.value.effects ?? {}) },
+      color: { ...latest.color },
+      typography: { ...latest.typography },
+      typographyDesktop: { ...latest.typographyDesktop },
+      typographyTablet: { ...latest.typographyTablet },
+      typographyMobile: { ...latest.typographyMobile },
+      effects: { ...latest.effects, ...(preset.value.effects ?? {}) },
     };
     handleInput("styles", JSON.stringify(next));
     setSelectedCustom(presetId);
@@ -142,26 +180,28 @@ export default function StylePanel({ component, handleInput }: Props) {
   const pasteStyles = () => {
     const data = _clipboard.get();
     if (!data) return;
+    const latest = getLatestSections();
     const next: StyleOverrides = {
-      color: { ...color, ...(data.color ?? {}) },
-      typography: { ...typography, ...(data.typography ?? {}) },
-      typographyDesktop: { ...typoDesktop, ...(data.typographyDesktop ?? {}) },
-      typographyTablet: { ...typoTablet, ...(data.typographyTablet ?? {}) },
-      typographyMobile: { ...typoMobile, ...(data.typographyMobile ?? {}) },
-      effects: { ...effects, ...(data.effects ?? {}) },
+      color: { ...latest.color, ...(data.color ?? {}) },
+      typography: { ...latest.typography, ...(data.typography ?? {}) },
+      typographyDesktop: { ...latest.typographyDesktop, ...(data.typographyDesktop ?? {}) },
+      typographyTablet: { ...latest.typographyTablet, ...(data.typographyTablet ?? {}) },
+      typographyMobile: { ...latest.typographyMobile, ...(data.typographyMobile ?? {}) },
+      effects: { ...latest.effects, ...(data.effects ?? {}) },
     };
     handleInput("styles", JSON.stringify(next));
     track("stylepanel:paste");
   };
 
   const updateEffects = (key: keyof NonNullable<StyleOverrides["effects"]>, value: string) => {
+    const latest = getLatestSections();
     const next: StyleOverrides = {
-      color: { ...color },
-      typography: { ...typography },
-      typographyDesktop: { ...typoDesktop },
-      typographyTablet: { ...typoTablet },
-      typographyMobile: { ...typoMobile },
-      effects: { ...effects, [key]: value },
+      color: { ...latest.color },
+      typography: { ...latest.typography },
+      typographyDesktop: { ...latest.typographyDesktop },
+      typographyTablet: { ...latest.typographyTablet },
+      typographyMobile: { ...latest.typographyMobile },
+      effects: { ...latest.effects, [key]: value },
     };
     handleInput("styles", JSON.stringify(next));
     track("stylepanel:update", { group: "effects", key });
@@ -173,6 +213,14 @@ export default function StylePanel({ component, handleInput }: Props) {
   const [importText, setImportText] = useState("");
   const [importError, setImportError] = useState<string>("");
   const [copied, setCopied] = useState(false);
+
+  const handleTextThemeChange = (themeId: string) => {
+    const theme = textThemes.find((entry) => entry.id === themeId) ?? null;
+    const current = parseStyleOverrides(component.styles);
+    const next = applyTextThemeToOverrides(current, theme);
+    handleInput("styles", JSON.stringify(next));
+    track("stylepanel:text-theme", { id: theme ? theme.id : "custom" });
+  };
 
   const openExport = (onlySelected = false) => {
     if (onlySelected && selectedCustom) {
@@ -287,11 +335,35 @@ export default function StylePanel({ component, handleInput }: Props) {
         onChange={(key, value) => update('color', key, value)}
       />
 
+      {textThemes.length > 0 && (
+        <div>
+          <label
+            htmlFor={`text-theme-${component.id}`}
+            className="text-xs font-semibold text-muted-foreground"
+          >
+            Text Style
+          </label>
+          <select
+            id={`text-theme-${component.id}`}
+            className="mt-1 w-full rounded border border-border-2 bg-surface-2 px-2 py-1 text-sm"
+            value={appliedTextTheme}
+            onChange={(e) => handleTextThemeChange(e.target.value)}
+          >
+            <option value="">Custom</option>
+            {textThemes.map((theme) => (
+              <option key={theme.id} value={theme.id}>
+                {theme.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
       <TypographyEditor
         base={typography}
-        desktop={typoDesktop}
-        tablet={typoTablet}
-        mobile={typoMobile}
+        desktop={typographyDesktop}
+        tablet={typographyTablet}
+        mobile={typographyMobile}
         labels={{
           base: {
             fontFamily: t("cms.style.fontFamily") as string,

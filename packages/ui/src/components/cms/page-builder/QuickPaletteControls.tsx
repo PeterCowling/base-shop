@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
+import type { PageComponent } from "@acme/types";
 import { Tooltip, Popover, PopoverTrigger, PopoverContent } from "../../atoms";
 import Palette from "./Palette";
 import type { ComponentType } from "./defaults";
 
 interface Props {
-  onAdd: (type: ComponentType) => void;
+  onAdd: (type: ComponentType, initializer?: Partial<PageComponent>) => void;
   onInsertImage: (url: string) => void;
   onSetSectionBackground: (url: string) => void;
   selectedIsSection: boolean;

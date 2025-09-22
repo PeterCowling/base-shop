@@ -1,8 +1,10 @@
 "use client";
 
-import { memo, useState, useCallback, useEffect, useRef } from "react";
+import { memo, useState, useCallback, useEffect, useRef, useMemo } from "react";
+import type { CSSProperties } from "react";
 import { usePathname } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
+import type { PageComponent } from "@acme/types";
 import { listLibrary, removeLibrary, updateLibrary, syncFromServer, saveLibrary, type LibraryItem } from "./libraryStore";
 import { ulid } from "ulid";
 import LibraryImportExport from "./LibraryImportExport";
@@ -13,6 +15,8 @@ import PaletteItem from "./PaletteItem";
 import LibraryPaletteItem from "./LibraryPaletteItem";
 import type { ComponentType } from "./defaults";
 import type { PaletteProps } from "./palette.types";
+import usePreviewTokens from "./hooks/usePreviewTokens";
+import { createTextThemeOverrides, extractTextThemes, type TextThemeDefinition } from "./textThemes";
 
 const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, defaultTab = "components" }: PaletteProps) {
   const [search, setSearch] = useState("");
@@ -25,6 +29,8 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
   const [recents, setRecents] = useState<string[]>(() => {
     try { const s = localStorage.getItem('pb:recent-types'); return s ? (JSON.parse(s) as string[]) : []; } catch { return []; }
   });
+  const previewTokens = usePreviewTokens();
+  const textThemes = useMemo(() => extractTextThemes(previewTokens), [previewTokens]);
 
   const pushRecent = useCallback((type: ComponentType) => {
     try {
@@ -37,12 +43,24 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
   }, []);
 
   const handleAdd = useCallback(
-    (type: ComponentType, label: string) => {
-      onAdd(type);
+    (type: ComponentType, label: string, initializer?: Partial<PageComponent>) => {
+      onAdd(type, initializer);
       setLiveMessage(`${label} added`);
       pushRecent(type);
     },
     [onAdd, pushRecent],
+  );
+
+  const handleAddTextTheme = useCallback(
+    (theme: TextThemeDefinition) => {
+      const overrides = createTextThemeOverrides(theme);
+      const initializer: Partial<PageComponent> = {};
+      if (Object.keys(overrides).length > 0) {
+        initializer.styles = JSON.stringify(overrides);
+      }
+      handleAdd("Text" as ComponentType, `${theme.label} text`, initializer);
+    },
+    [handleAdd],
   );
 
   useEffect(() => {
@@ -157,6 +175,40 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
                   onAdd={handleAdd}
                 />
               ))}
+          </div>
+        </div>
+      )}
+
+      {/* Text Themes */}
+      {textThemes.length > 0 && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <h4 className="font-semibold capitalize">Text Themes</h4>
+          </div>
+          <div className="flex flex-col gap-2">
+            {textThemes.map((theme) => {
+              const preview = theme.tokens.base;
+              const previewStyle: CSSProperties = {
+                fontFamily: preview.fontFamily ? `var(${preview.fontFamily})` : undefined,
+                fontSize: preview.fontSize ? `var(${preview.fontSize})` : undefined,
+                fontWeight: preview.fontWeight ? `var(${preview.fontWeight})` : undefined,
+                lineHeight: preview.lineHeight ? `var(${preview.lineHeight})` : undefined,
+              };
+              return (
+                <button
+                  key={theme.id}
+                  type="button"
+                  className="flex flex-col items-start gap-1 rounded border border-border-2 bg-surface-1 p-2 text-left text-sm transition-colors hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  onClick={() => handleAddTextTheme(theme)}
+                >
+                  <span className="font-medium">{theme.label}</span>
+                  <span className="text-xs text-muted-foreground">Applies global tokens</span>
+                  <span className="text-sm" style={previewStyle}>
+                    The quick brown fox
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       )}

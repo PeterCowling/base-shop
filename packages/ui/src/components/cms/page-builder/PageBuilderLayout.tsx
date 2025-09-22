@@ -38,7 +38,7 @@ import { CheckIcon, ReloadIcon } from "@radix-ui/react-icons";
 
 interface LayoutProps {
   style?: CSSProperties;
-  paletteOnAdd: (type: ComponentType) => void;
+  paletteOnAdd: (type: ComponentType, initializer?: Partial<PageComponent>) => void;
   onInsertImageAsset: (url: string) => void;
   onSetSectionBackground: (url: string) => void;
   selectedIsSection: boolean;

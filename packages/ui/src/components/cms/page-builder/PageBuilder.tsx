@@ -105,7 +105,7 @@ const PageBuilder = memo(function PageBuilder({
     t,
   });
 
-  const handleAddFromPalette = (type: ComponentType) => {
+  const handleAddFromPalette = (type: ComponentType, initializer?: Partial<PageComponent>) => {
     // Enforce root-level placement rules; in test env allow for integration tests
     if (!isTopLevelAllowed(type)) {
       try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Cannot add ${type} at page root` })); } catch {}
@@ -118,6 +118,7 @@ const PageBuilder = memo(function PageBuilder({
       type,
       ...(defaults[type] ?? {}),
       ...(isContainer ? { children: [] } : {}),
+      ...(initializer ?? {}),
     } as PageComponent;
     dispatch({ type: "add", component });
     setSelectedIds([component.id]);

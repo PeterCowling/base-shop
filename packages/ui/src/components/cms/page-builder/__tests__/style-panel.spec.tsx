@@ -7,8 +7,16 @@ jest.mock("@acme/i18n", () => ({
   useTranslations: () => (key: string) => translations[key] || key,
 }));
 
+jest.mock("../hooks/usePreviewTokens", () => ({
+  __esModule: true,
+  default: jest.fn(() => ({})),
+}));
+
+const mockPreviewTokens = require("../hooks/usePreviewTokens").default as jest.Mock;
+
 beforeEach(() => {
   Object.keys(translations).forEach((k) => delete translations[k]);
+  mockPreviewTokens.mockReturnValue({});
 });
 
 describe("StylePanel", () => {
@@ -61,8 +69,6 @@ describe("StylePanel", () => {
     // Desktop overrides
     const fsDesktop = screen.getByLabelText("Font size (Desktop)") as HTMLInputElement;
     const lhDesktop = screen.getByLabelText("Line height (Desktop)") as HTMLInputElement;
-    fsDesktop.focus();
-    fsDesktop.setSelectionRange(0, 0);
     fireEvent.change(fsDesktop, { target: { value: "--fs-lg" } });
     fireEvent.change(lhDesktop, { target: { value: "--lh-6" } });
     rerender(<StylePanel component={component} handleInput={handleInput} />);
@@ -87,5 +93,44 @@ describe("StylePanel", () => {
     expect(parsed.typographyDesktop).toEqual({ fontSize: "--fs-lg", lineHeight: "--lh-6" });
     expect(parsed.typographyTablet).toEqual({ fontSize: "--fs-md", lineHeight: "--lh-5" });
     expect(parsed.typographyMobile).toEqual({ fontSize: "--fs-sm", lineHeight: "--lh-4" });
+  });
+
+  it("applies typography overrides when selecting a text theme", () => {
+    mockPreviewTokens.mockReturnValue({
+      "--font-size-heading-lg": "2rem",
+      "--line-height-heading-lg": "2.5rem",
+      "--font-weight-heading-lg": "700",
+      "--font-family-heading-lg": "--font-sans",
+    });
+
+    const component: any = { type: "Text", styles: "" };
+    const handleInput = jest.fn((field, value) => {
+      component[field] = value;
+    });
+
+    const { rerender } = render(
+      <StylePanel component={component} handleInput={handleInput} />
+    );
+
+    const select = screen.getByLabelText("Text Style") as HTMLSelectElement;
+    fireEvent.change(select, { target: { value: "heading-lg" } });
+
+    const applied = handleInput.mock.calls.pop();
+    expect(applied?.[0]).toBe("styles");
+    expect(JSON.parse(applied?.[1] as string)).toEqual({
+      typography: {
+        fontSize: "--font-size-heading-lg",
+        lineHeight: "--line-height-heading-lg",
+        fontWeight: "--font-weight-heading-lg",
+        fontFamily: "--font-family-heading-lg",
+      },
+    });
+
+    rerender(<StylePanel component={component} handleInput={handleInput} />);
+    fireEvent.change(screen.getByLabelText("Text Style"), { target: { value: "" } });
+
+    const cleared = handleInput.mock.calls.pop();
+    expect(cleared?.[0]).toBe("styles");
+    expect(JSON.parse(cleared?.[1] as string)).toEqual({});
   });
 });

@@ -74,4 +74,79 @@ describe("CommentsToolbar dropdown actions", () => {
     }
     expect(screen.getByText("+2 more")).toBeInTheDocument();
   });
+
+  it("exposes ARIA and keyboard toggles Show resolved pins", async () => {
+    const user = userEvent.setup();
+    const onShowResolvedChange = jest.fn();
+    const onReload = jest.fn();
+    const onAddForSelected = jest.fn();
+    const onToggleDrawer = jest.fn();
+
+    render(
+      <div>
+        <div data-pb-portal-root />
+        <CommentsToolbar
+          peers={[]}
+          showResolved={false}
+          onShowResolvedChange={onShowResolvedChange}
+          onReload={onReload}
+          onAddForSelected={onAddForSelected}
+          canAddForSelected={true}
+          onToggleDrawer={onToggleDrawer}
+          unresolvedCount={0}
+        />
+      </div>
+    );
+
+    // ARIA attributes present
+    const opts = screen.getByRole("button", { name: "Comments options" });
+    expect(opts).toBeInTheDocument();
+    const drawer = screen.getByRole("button", { name: /Comments \(0\)/ });
+    expect(drawer).toBeInTheDocument();
+
+    // Keyboard toggle on the "Show resolved pins" button
+    const toggle = screen.getByText("Show resolved pins");
+    toggle.focus();
+    // Focus-visible semantics: element is focusable and receives focus
+    expect(document.activeElement).toBe(toggle);
+    // Tabindex should be focusable (button default 0)
+    expect(toggle).toHaveProperty("tabIndex");
+    expect((toggle as HTMLButtonElement).tabIndex).toBeGreaterThanOrEqual(0);
+    // Toggle via Enter and Space
+    expect(toggle).toHaveAttribute("aria-pressed", "false");
+    await user.keyboard("{Enter}");
+    await user.keyboard(" ");
+    expect(onShowResolvedChange).toHaveBeenCalled();
+    expect(onShowResolvedChange).toHaveBeenCalledWith(true);
+  });
+
+  it("supports keyboard Tab traversal across menu items", async () => {
+    const user = userEvent.setup();
+    render(
+      <div>
+        <div data-pb-portal-root />
+        <CommentsToolbar
+          peers={[]}
+          showResolved={false}
+          onShowResolvedChange={jest.fn()}
+          onReload={jest.fn()}
+          onAddForSelected={jest.fn()}
+          canAddForSelected={true}
+          onToggleDrawer={jest.fn()}
+          unresolvedCount={0}
+        />
+      </div>
+    );
+
+    const showResolved = screen.getByText("Show resolved pins");
+    const reload = screen.getByText("Reload");
+    const addForSelected = screen.getByText("Add for selected");
+
+    showResolved.focus();
+    expect(document.activeElement).toBe(showResolved);
+    await user.tab();
+    expect(document.activeElement).toBe(reload);
+    await user.tab();
+    expect(document.activeElement).toBe(addForSelected);
+  });
 });

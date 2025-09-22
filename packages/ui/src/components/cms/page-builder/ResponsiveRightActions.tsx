@@ -76,6 +76,7 @@ export default function ResponsiveRightActions({
           togglePalette={togglePalette}
           parentFirst={parentFirst}
           onParentFirstChange={onParentFirstChange}
+          gridProps={gridProps}
         />
       ) : null}
       {showPresets && onInsertPreset && (
@@ -100,6 +101,7 @@ export default function ResponsiveRightActions({
                 togglePalette={togglePalette}
                 parentFirst={parentFirst}
                 onParentFirstChange={onParentFirstChange}
+                gridProps={gridProps}
               />
             ) : undefined
           }

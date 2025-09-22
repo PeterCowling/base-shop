@@ -11,6 +11,7 @@ import TabSlotControl from "./layout/TabSlotControl";
 import SectionSettings from "./layout/SectionSettings";
 import GridPlacementControls from "./layout/GridPlacementControls";
 import ContainerQueryControls from "./layout/ContainerQueryControls";
+import { Input } from "../../../atoms/shadcn";
 
 interface Props {
   component: PageComponent;
@@ -56,6 +57,24 @@ export default function LayoutPanel({
       <GridPlacementControls component={component} handleInput={handleInput} />
 
       <ContainerQueryControls component={component} handleInput={handleInput} />
+
+      {/* Anchor control: assign an element id for scroll-to targets */}
+      <div className="mt-2 border-t pt-2">
+        <div className="text-xs font-semibold text-muted-foreground">Anchor</div>
+        <Input
+          label="Anchor ID"
+          placeholder="e.g. section-about"
+          value={((component as any).anchorId as string | undefined) ?? ""}
+          onChange={(e) => {
+            // sanitize to valid id-like string (letters, numbers, - _)
+            const raw = e.target.value;
+            const trimmed = raw.trim().replace(/\s+/g, "-").replace(/[^A-Za-z0-9_-]/g, "");
+            (e.target as HTMLInputElement).value = raw; // keep user's text while storing sanitized
+            handleInput("anchorId" as any, (trimmed || undefined) as any);
+          }}
+        />
+        <div className="mt-1 text-[10px] text-muted-foreground">Use with Click Action → Scroll to by linking to #your-id.</div>
+      </div>
     </div>
   );
 }

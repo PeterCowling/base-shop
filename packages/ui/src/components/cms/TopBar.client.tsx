@@ -1,7 +1,6 @@
 // packages/ui/components/cms/TopBar.tsx
 "use client";
 
-import { useLayout } from "@acme/platform-core/contexts/LayoutContext";
 import { getShopFromPath } from "@acme/shared-utils";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
@@ -17,8 +16,6 @@ import NavMenu from "./NavMenu.client";
 function TopBarInner({ role }: { role?: string }) {
   const router = useRouter();
   const pathname = usePathname();
-  // keep layout context hook for potential future use
-  useLayout();
 
   const segments = pathname.split("/").filter(Boolean);
   const shop = getShopFromPath(pathname);

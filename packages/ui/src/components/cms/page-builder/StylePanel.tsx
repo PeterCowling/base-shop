@@ -228,6 +228,37 @@ export default function StylePanel({ component, handleInput }: Props) {
 
   return (
     <div className="space-y-2">
+      {/* Cursor (custom cursor support) */}
+      <div className="space-y-1">
+        <div className="text-xs font-semibold text-muted-foreground">Cursor</div>
+        <div className="flex items-center gap-2">
+          <select
+            aria-label="Cursor"
+            className="rounded border border-border-2 bg-surface-2 px-2 py-1 text-sm"
+            value={((component as any).cursor as string | undefined) ?? "default"}
+            onChange={(e) => handleInput("cursor" as any, (e.target.value === 'default' ? undefined : e.target.value) as any)}
+          >
+            <option value="default">Default</option>
+            <option value="pointer">Pointer</option>
+            <option value="text">Text</option>
+            <option value="move">Move</option>
+            <option value="crosshair">Crosshair</option>
+            <option value="not-allowed">Not allowed</option>
+            <option value="grab">Grab</option>
+            <option value="custom">Custom…</option>
+          </select>
+          {(((component as any).cursor as string | undefined) ?? "default") === "custom" && (
+            <input
+              type="text"
+              className="w-64 rounded border px-2 py-1 text-sm"
+              placeholder="Cursor image URL"
+              value={((component as any).cursorUrl as string | undefined) ?? ""}
+              onChange={(e) => handleInput("cursorUrl" as any, (e.target.value || undefined) as any)}
+            />
+          )}
+        </div>
+      </div>
+
       <div className="flex items-center gap-2">
         <select
           aria-label="Style preset"

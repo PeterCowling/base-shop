@@ -14,6 +14,9 @@ module.exports = {
   // Run tests from the workspace root so relative paths resolve correctly
   rootDir: path.resolve(__dirname, "..", ".."),
   testEnvironment: "jsdom",
+  // Ensure TSX from workspace packages is always transpiled as CJS by ts-jest
+  // to avoid ESM parsing of raw TS files under Jest runtime.
+  extensionsToTreatAsEsm: [],
   roots: ["<rootDir>/apps/cms/src", "<rootDir>/apps/cms/__tests__"],
   setupFiles: [
     "<rootDir>/apps/cms/jest.env.ts",
@@ -73,6 +76,9 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     "apps/cms/src/**/*.{ts,tsx}",
+    // Include UI page-builder internals when exercised from CMS tests
+    "packages/ui/src/components/cms/page-builder/**/*.{ts,tsx}",
+    "packages/ui/src/components/cms/PageBuilder.tsx",
     "!apps/cms/src/**/*.d.ts",
     "!apps/cms/src/**/?(*.)+(spec|test).{ts,tsx}",
     "!apps/cms/src/**/__tests__/**",

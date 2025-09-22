@@ -212,6 +212,7 @@ const BlockItem = memo(function BlockItemComponent({
       role="listitem"
       aria-label="Canvas item"
       tabIndex={0}
+      id={(component as any).anchorId || undefined}
       data-component-id={component.id}
       data-pb-contextmenu-trigger
       onKeyDown={buildBlockKeyDownHandler({
@@ -229,21 +230,31 @@ const BlockItem = memo(function BlockItemComponent({
         dispatch,
         viewport,
       })}
-      style={computeBlockStyle({
-        transform,
-        zIndex: effZIndex as number | undefined,
-        containerType: (component as any).containerType as string | undefined,
-        containerName: (component as any).containerName as string | undefined,
-        widthVal,
-        heightVal,
-        marginVal,
-        paddingVal,
-        position: component.position,
-        leftVal,
-        topVal,
-        dockX: (component as any).dockX as any,
-        dockY: (component as any).dockY as any,
-      })}
+      style={{
+        ...computeBlockStyle({
+          transform,
+          zIndex: effZIndex as number | undefined,
+          containerType: (component as any).containerType as string | undefined,
+          containerName: (component as any).containerName as string | undefined,
+          widthVal,
+          heightVal,
+          marginVal,
+          paddingVal,
+          position: component.position,
+          leftVal,
+          topVal,
+          dockX: (component as any).dockX as any,
+          dockY: (component as any).dockY as any,
+        }),
+        // Custom cursor support
+        ...(function() {
+          const cur = (component as any).cursor as string | undefined;
+          const url = (component as any).cursorUrl as string | undefined;
+          if (!cur || cur === 'default') return {};
+          if (cur === 'custom' && url) return { cursor: `url(${url}), auto` } as const;
+          return { cursor: cur } as const;
+        })(),
+      }}
       className={
         "hover:border-primary relative rounded border hover:border-dashed" +
         (selected ? " ring-2 ring-blue-500" : "") +

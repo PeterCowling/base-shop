@@ -212,4 +212,57 @@ describe("CommentsLayer", () => {
 
     expect(api.patchThread).toHaveBeenCalledWith("t1", { pos: { x: 0.5, y: 0.5 } });
   });
+
+  it("drag cancel without move does not patch", async () => {
+    const { canvasRef, components } = setup();
+    render(
+      <CommentsLayer
+        canvasRef={canvasRef}
+        components={components}
+        shop="shop-1"
+        pageId="p1"
+        selectedIds={["c1"]}
+      />
+    );
+    await screen.findByTestId("visible-count");
+    const dragBtn = await screen.findByTestId("pin-drag");
+    await act(async () => {
+      dragBtn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+    });
+    await act(async () => {
+      // No move; immediately mouseup
+      window.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+    });
+    expect(api.patchThread).not.toHaveBeenCalled();
+  });
+
+  it("patch rejection leaves threads unchanged and does not reload", async () => {
+    const { canvasRef, components } = setup();
+    api.patchThread.mockRejectedValueOnce(new Error("fail"));
+    const errSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    render(
+      <CommentsLayer
+        canvasRef={canvasRef}
+        components={components}
+        shop="shop-1"
+        pageId="p1"
+        selectedIds={["c1"]}
+      />
+    );
+    await screen.findByTestId("visible-count");
+    const dragBtn = await screen.findByTestId("pin-drag");
+    await act(async () => {
+      dragBtn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+    });
+    await act(async () => {
+      window.dispatchEvent(new MouseEvent("mousemove", { clientX: 50, clientY: 50 }));
+    });
+    await act(async () => {
+      window.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+    });
+    expect(api.patchThread).toHaveBeenCalled();
+    // loadThreads should not be called extra due to rejection (initial load already called once in setup)
+    expect(api.loadThreads).toHaveBeenCalledTimes(1);
+    errSpy.mockRestore();
+  });
 });

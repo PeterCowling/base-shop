@@ -47,6 +47,41 @@ describe("usePageBuilderDnD branch coverage", () => {
     expect(result.current.insertIndex).toBe(2);
   });
 
+  it("over child above/below midpoint adjusts index", () => {
+    const components = [{ id: "p1", type: "Section", children: [{ id: "c1", type: "Text" }, { id: "c2", type: "Text" }] }] as any;
+    const { result } = renderHook(() =>
+      usePageBuilderDnD({
+        components,
+        dispatch: jest.fn(),
+        defaults: {},
+        containerTypes: [],
+        selectId: jest.fn(),
+      })
+    );
+
+    // Over c1 above midpoint → index stays at base
+    act(() =>
+      result.current.handleDragMove({
+        active: { id: "new", data: { current: { from: "palette", type: "Text" } } },
+        over: { id: "c1", data: { current: { index: 0 } }, rect: { top: 0, height: 100 } },
+        delta: { x: 0, y: 0 },
+        activatorEvent: { clientX: 0, clientY: 0 },
+      } as any)
+    );
+    expect(result.current.insertIndex).toBe(0);
+
+    // Over c1 below midpoint → index = base + 1
+    act(() =>
+      result.current.handleDragMove({
+        active: { id: "new", data: { current: { from: "palette", type: "Text" } } },
+        over: { id: "c1", data: { current: { index: 0 } }, rect: { top: 0, height: 100 } },
+        delta: { x: 0, y: 60 },
+        activatorEvent: { clientX: 0, clientY: 0 },
+      } as any)
+    );
+    expect(result.current.insertIndex).toBe(1);
+  });
+
   it("dropAllowed true for library templates and null for empty library entry", () => {
     const { result } = renderHook(() =>
       usePageBuilderDnD({
@@ -121,4 +156,3 @@ describe("usePageBuilderDnD branch coverage", () => {
     expect(result.current.dropAllowed).toBeNull();
   });
 });
-

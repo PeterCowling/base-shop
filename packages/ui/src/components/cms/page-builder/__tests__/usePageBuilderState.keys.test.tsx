@@ -67,6 +67,34 @@ describe("usePageBuilderState – keyboard controls", () => {
     expect(reordered.map((c: any) => c.id)).toEqual(["b", "a"]);
   });
 
+  it("clamps nudges to parent bounds", async () => {
+    const { canvas, a } = setupDom();
+    const page = { id: "p1", components: [{ id: "a", type: "Text", position: "absolute", leftDesktop: "0px", topDesktop: "0px" }] } as any;
+    const { result } = renderHook(() => usePageBuilderState({ page }));
+    await act(async () => { result.current.setSelectedIds(["a"]); });
+    // Attempt to move left by -10px → remains 0px
+    await act(async () => { window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft", shiftKey: true })); });
+    // Attempt to move up by -10px → remains 0px
+    await act(async () => { window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp", shiftKey: true })); });
+    const comps = (result.current.state as any).present;
+    const comp = comps.find((c: any) => c.id === "a");
+    expect(comp.leftDesktop).toBe("0px");
+    expect(comp.topDesktop).toBe("0px");
+
+    // Set parent sizes to clamp max
+    Object.defineProperty(canvas, "offsetWidth", { value: 100 });
+    Object.defineProperty(canvas, "offsetHeight", { value: 50 });
+    Object.defineProperty(a, "offsetWidth", { value: 40 });
+    Object.defineProperty(a, "offsetHeight", { value: 30 });
+    // Move far right and down using large steps
+    await act(async () => { window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", altKey: true })); });
+    await act(async () => { window.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", altKey: true })); });
+    const after = (result.current.state as any).present.find((c: any) => c.id === "a");
+    // maxLeft = parentWidth - elWidth = 60; maxTop = 20; clamp to these
+    expect(after.leftDesktop).toBe("60px");
+    expect(after.topDesktop).toBe("20px");
+  });
+
   it("handles preview toggle, rotate device, and z-index adjustments", async () => {
     setupDom();
     const page = { id: "p1", components: [{ id: "a", type: "Text", position: "absolute" }] } as any;
@@ -114,4 +142,3 @@ describe("usePageBuilderState – keyboard controls", () => {
     expect(result.current.liveMessage).toBe("Sent backward");
   });
 });
-

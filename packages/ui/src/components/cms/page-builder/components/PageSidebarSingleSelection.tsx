@@ -158,6 +158,163 @@ const PageSidebarSingleSelection = ({ components, selectedIds, dispatch, editor,
 
   return (
     <div className="space-y-2">
+      {/* Single-select align/stretch to parent edges */}
+      {selectedIds.length === 1 && (
+        <div className="flex flex-wrap items-center gap-1">
+          <Button
+            type="button"
+            variant="outline"
+            className="h-7 px-2"
+            title="Align to parent left"
+            onClick={() => {
+              const id = selectedIds[0];
+              if (!id) return;
+              try {
+                const el = document.querySelector(`[data-component-id="${id}"]`) as HTMLElement | null;
+                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+                if (!el || !parent) return;
+                const rect = el.getBoundingClientRect();
+                const pRect = parent.getBoundingClientRect();
+                const left = Math.round(rect.left - pRect.left);
+                handleChange({ dockX: 'left' } as any);
+                handleResize({ [dims.leftKey]: `${left}px`, right: undefined } as any);
+              } catch {}
+            }}
+          >
+            <AlignLeftIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="h-7 px-2"
+            title="Align to parent right"
+            onClick={() => {
+              const id = selectedIds[0];
+              if (!id) return;
+              try {
+                const el = document.querySelector(`[data-component-id="${id}"]`) as HTMLElement | null;
+                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+                if (!el || !parent) return;
+                const rect = el.getBoundingClientRect();
+                const pRect = parent.getBoundingClientRect();
+                const right = Math.round(pRect.right - rect.right);
+                handleChange({ dockX: 'right' } as any);
+                handleResize({ right: `${right}px`, [dims.leftKey]: '' } as any);
+              } catch {}
+            }}
+          >
+            <AlignRightIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="h-7 px-2"
+            title="Align to parent top"
+            onClick={() => {
+              const id = selectedIds[0];
+              if (!id) return;
+              try {
+                const el = document.querySelector(`[data-component-id=\"${id}\"]`) as HTMLElement | null;
+                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+                if (!el || !parent) return;
+                const rect = el.getBoundingClientRect();
+                const pRect = parent.getBoundingClientRect();
+                const top = Math.round(rect.top - pRect.top);
+                handleChange({ dockY: 'top' } as any);
+                handleResize({ [dims.topKey]: `${top}px`, bottom: '' } as any);
+              } catch {}
+            }}
+          >
+            <AlignTopIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="h-7 px-2"
+            title="Align to parent bottom"
+            onClick={() => {
+              const id = selectedIds[0];
+              if (!id) return;
+              try {
+                const el = document.querySelector(`[data-component-id=\"${id}\"]`) as HTMLElement | null;
+                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+                if (!el || !parent) return;
+                const rect = el.getBoundingClientRect();
+                const pRect = parent.getBoundingClientRect();
+                const bottom = Math.round(pRect.bottom - rect.bottom);
+                handleChange({ dockY: 'bottom' } as any);
+                handleResize({ bottom: `${bottom}px`, [dims.topKey]: '' } as any);
+              } catch {}
+            }}
+          >
+            <AlignBottomIcon className="h-4 w-4" />
+          </Button>
+          <Button type="button" variant="outline" className="h-7 px-2" title="Center Horizontally in parent" onClick={centerInParentX}>
+            <AlignCenterHorizontallyIcon className="h-4 w-4" />
+          </Button>
+          <Button type="button" variant="outline" className="h-7 px-2" title="Center Vertically in parent" onClick={centerInParentY}>
+            <AlignCenterVerticallyIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="h-7 px-2"
+            title="Stretch horizontally"
+            onClick={() => {
+              const id = selectedIds[0];
+              if (!id) return;
+              try {
+                const el = document.querySelector(`[data-component-id=\"${id}\"]`) as HTMLElement | null;
+                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+                if (!el || !parent) return;
+                const rect = el.getBoundingClientRect();
+                const pRect = parent.getBoundingClientRect();
+                const left = Math.round(rect.left - pRect.left);
+                const right = Math.round(pRect.right - rect.right);
+                handleChange({ dockX: 'left' } as any);
+                handleResize({ [dims.leftKey]: `${left}px`, right: `${right}px`, width: '' } as any);
+              } catch {}
+            }}
+          >
+            {/* Uses vertical/horizontal spacing icons as simple stretch glyphs */}
+            <ColumnSpacingIcon className="h-4 w-4" />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="h-7 px-2"
+            title="Stretch vertically"
+            onClick={() => {
+              const id = selectedIds[0];
+              if (!id) return;
+              try {
+                const el = document.querySelector(`[data-component-id=\"${id}\"]`) as HTMLElement | null;
+                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
+                if (!el || !parent) return;
+                const rect = el.getBoundingClientRect();
+                const pRect = parent.getBoundingClientRect();
+                const top = Math.round(rect.top - pRect.top);
+                const bottom = Math.round(pRect.bottom - rect.bottom);
+                handleChange({ dockY: 'top' } as any);
+                handleResize({ [dims.topKey]: `${top}px`, bottom: `${bottom}px`, height: '' } as any);
+              } catch {}
+            }}
+          >
+            <RowSpacingIcon className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+      {/* Alignment / center row (single-select) */}
+      {selectedIds.length === 1 && (
+        <div className="flex flex-wrap items-center gap-1">
+          <Button type="button" variant="outline" className="h-7 px-2" title="Center Horizontally in parent" onClick={centerInParentX}>
+            <AlignCenterHorizontallyIcon className="h-4 w-4" />
+          </Button>
+          <Button type="button" variant="outline" className="h-7 px-2" title="Center Vertically in parent" onClick={centerInParentY}>
+            <AlignCenterVerticallyIcon className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
       {/* Alignment / distribution row (multi-select) */}
       {selectedIds.length > 1 && (
         <div className="flex flex-wrap items-center gap-1">
@@ -213,6 +370,16 @@ const PageSidebarSingleSelection = ({ components, selectedIds, dispatch, editor,
           axis="w"
           cssProp="width"
         />
+        <Button
+          type="button"
+          variant="outline"
+          className="h-7 px-2 text-xs"
+          aria-label="Set full width"
+          title="Set full width (100%)"
+          onClick={() => handleResize({ [dims.widthKey]: "100%" } as any)}
+        >
+          Full W
+        </Button>
         <UnitInput
           componentId={selectedComponent.id}
           label={<span className="text-xs">H (Height)</span>}
@@ -221,6 +388,16 @@ const PageSidebarSingleSelection = ({ components, selectedIds, dispatch, editor,
           axis="h"
           cssProp="height"
         />
+        <Button
+          type="button"
+          variant="outline"
+          className="h-7 px-2 text-xs"
+          aria-label="Set full height"
+          title="Set full height (100%)"
+          onClick={() => handleResize({ [dims.heightKey]: "100%" } as any)}
+        >
+          Full H
+        </Button>
       </div>
 
       {/* Tabs */}

@@ -6,7 +6,6 @@ import { memo, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import type { Page, PageComponent, HistoryState } from "@acme/types";
 import { getShopFromPath } from "@acme/shared-utils";
-import { ulid } from "ulid";
 import useFileDrop from "./hooks/useFileDrop";
 import usePageBuilderState from "./hooks/usePageBuilderState";
 import usePageBuilderDnD from "./hooks/usePageBuilderDnD";
@@ -14,9 +13,13 @@ import usePageBuilderControls from "./hooks/usePageBuilderControls";
 import usePageBuilderSave from "./hooks/usePageBuilderSave";
 import PageBuilderLayout from "./PageBuilderLayout";
 import { defaults, CONTAINER_TYPES, type ComponentType } from "./defaults";
-import { isTopLevelAllowed } from "./rules";
 import usePreviewTokens from "./hooks/usePreviewTokens";
 import useLayerSelectionPreference from "./hooks/useLayerSelectionPreference";
+import useLocalStrings from "./hooks/useLocalStrings";
+import useInsertHandlers from "./hooks/useInsertHandlers";
+import useKeyboardShortcuts from "./hooks/useKeyboardShortcuts";
+import useGridSize from "./hooks/useGridSize";
+import { buildCanvasProps, buildGridProps, buildHistoryProps, buildPreviewProps, buildToolbarProps, buildToastProps, buildTourProps } from "./buildProps";
 
 interface Props {
   page: Page; history?: HistoryState; onSave:(fd:FormData)=>Promise<unknown>; onPublish:(fd:FormData)=>Promise<unknown>;
@@ -63,31 +66,16 @@ const PageBuilder = memo(function PageBuilder({
   const canvasRef = useRef<HTMLDivElement>(null),
     scrollRef = useRef<HTMLDivElement>(null),
     [toast, setToast] = useState<{ open: boolean; message: string; retry?: () => void }>({ open: false, message: "" }),
-    [gridSize, setGridSize] = useState(1),
     [snapPosition, setSnapPosition] = useState<number | null>(null);
 
   // Live theme tokens applied to the canvas container for instant visual feedback
   const previewTokens = usePreviewTokens();
   const [showComments, setShowComments] = useState(true);
 
-  // simple i18n for overlay/messages (can be replaced with app i18n later)
-  const t = (key: string, vars?: Record<string, unknown>) => {
-    const L = controls.locale || 'en';
-    const dict: Record<string, Record<string, string>> = {
-      en: {
-        cannotPlace: `Cannot place ${String((vars as any)?.type ?? 'item')} here`,
-        cannotMove: `Cannot move ${String((vars as any)?.type ?? 'item')} here`,
-        movedToTab: `Moved to tab ${String((vars as any)?.n ?? '')}`,
-        canceled: 'Canceled',
-        source_palette: 'Palette',
-        source_library: 'Library',
-        source_canvas: 'Canvas',
-      },
-    };
-    const table = dict[L] || dict.en;
-    const raw = table[key] || key;
-    return raw;
-  };
+  // Local strings helper for overlay/messages
+  const t = useLocalStrings(controls.locale);
+
+  const gridSize = useGridSize(canvasRef, { showGrid: controls.showGrid, gridCols: controls.gridCols, deviceKey: controls.deviceId + ":" + controls.orientation });
 
   const { dndContext, insertIndex, insertParentId, activeType, dropAllowed, dragMeta } = usePageBuilderDnD({
     components,
@@ -104,102 +92,23 @@ const PageBuilder = memo(function PageBuilder({
     zoom: controls.zoom,
     t,
   });
-
-  const handleAddFromPalette = (type: ComponentType) => {
-    // Enforce root-level placement rules; in test env allow for integration tests
-    if (!isTopLevelAllowed(type)) {
-      try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Cannot add ${type} at page root` })); } catch {}
-      if (process.env.NODE_ENV !== "test") return;
-      // fall through in tests to add the component anyway
-    }
-    const isContainer = CONTAINER_TYPES.includes(type);
-    const component = {
-      id: ulid(),
-      type,
-      ...(defaults[type] ?? {}),
-      ...(isContainer ? { children: [] } : {}),
-    } as PageComponent;
-    dispatch({ type: "add", component });
-    setSelectedIds([component.id]);
-  };
-
-  const selectedIsSection = useMemo(() => {
-    if (!selectedIds.length) return false;
-    const target = components.find((c: PageComponent) => c.id === selectedIds[0]);
-    return (target?.type === 'Section');
-  }, [components, selectedIds]);
-
-  const handleInsertImageAsset = (url: string) => {
-    const component = { id: ulid(), type: 'Image', src: url } as PageComponent;
-    // Insert at placeholder index if present, else after selected, else at end
-    let index = components.length;
-    if (insertIndex !== null && insertIndex !== undefined) {
-      index = insertIndex as number;
-    } else if (selectedIds.length > 0) {
-      const pos = components.findIndex((c: PageComponent) => c.id === selectedIds[0]);
-      index = pos >= 0 ? pos + 1 : components.length;
-    }
-    dispatch({ type: "add", component, index });
-    setSelectedIds([component.id]);
-  };
-
-  const handleSetSectionBackground = (url: string) => {
-    if (!selectedIsSection || !selectedIds.length) return;
-    const id = selectedIds[0];
-    dispatch({ type: 'update', id, patch: { backgroundImageUrl: url } as any });
-  };
+  const {
+    selectedIsSection,
+    handleAddFromPalette,
+    handleInsertImageAsset,
+    handleSetSectionBackground,
+    handleInsertPreset,
+    mediaLibraryListener,
+  } = useInsertHandlers({ components, selectedIds, setSelectedIds, insertIndex, dispatch, t });
 
   // Support rich image insert via MediaLibrary (alt, cropAspect)
   useEffect(() => {
-    const onInsert = (e: Event) => {
-      try {
-        const ce = e as CustomEvent<{ url: string; alt?: string; cropAspect?: string }>;
-        const d = ce?.detail;
-        if (!d?.url) return;
-        const component = { id: ulid(), type: 'Image', src: d.url, alt: d.alt, cropAspect: d.cropAspect } as PageComponent;
-        let index = components.length;
-        if (insertIndex !== null && insertIndex !== undefined) index = insertIndex as number;
-        else if (selectedIds.length > 0) {
-          const pos = components.findIndex((c: PageComponent) => c.id === selectedIds[0]);
-          index = pos >= 0 ? pos + 1 : components.length;
-        }
-        dispatch({ type: 'add', component, index });
-        setSelectedIds([component.id]);
-        try { window.dispatchEvent(new CustomEvent('pb-live-message', { detail: 'Image inserted' })); } catch {}
-      } catch {}
-    };
-    window.addEventListener('pb:insert-image', onInsert as EventListener);
-    return () => window.removeEventListener('pb:insert-image', onInsert as EventListener);
-  }, [components, dispatch, insertIndex, selectedIds, setSelectedIds]);
+    window.addEventListener('pb:insert-image', mediaLibraryListener as EventListener);
+    return () => window.removeEventListener('pb:insert-image', mediaLibraryListener as EventListener);
+  }, [mediaLibraryListener]);
 
-  const handleInsertPreset = (template: PageComponent) => {
-    // Deep clone and ensure unique ids
-    const withNewIds = (node: PageComponent): PageComponent => {
-      const cloned: any = { ...(node as any), id: ulid() };
-      const children = (node as any).children as PageComponent[] | undefined;
-      if (Array.isArray(children)) cloned.children = children.map(withNewIds);
-      return cloned as PageComponent;
-    };
-    const component = withNewIds(template);
-    // Insert at placeholder index if present, else after selected, else at end
-    let index = components.length;
-    if (insertIndex !== null && insertIndex !== undefined) {
-      index = insertIndex;
-    } else if (selectedIds.length > 0) {
-      const pos = components.findIndex((c: PageComponent) => c.id === selectedIds[0]);
-      index = pos >= 0 ? pos + 1 : components.length;
-    }
-    dispatch({ type: "add", component, index });
-    setSelectedIds([component.id]);
-  };
-
-  useEffect(() => {
-    if (controls.showGrid && canvasRef.current) {
-      setGridSize(canvasRef.current.offsetWidth / controls.gridCols);
-    } else {
-      setGridSize(1);
-    }
-  }, [controls.showGrid, controls.device, controls.gridCols]);
+  // Keyboard shortcuts for save/publish/device/preview
+  useKeyboardShortcuts({ onPublish: () => handlePublish(), rotateDevice: (d) => rotateDeviceRef.current(d), togglePreview: () => togglePreviewRef.current() });
 
   const { handlePublish, handleSave, autoSaveState } = usePageBuilderSave({
     page,
@@ -222,54 +131,7 @@ const PageBuilder = memo(function PageBuilder({
     clearHistory,
   });
   saveRef.current = handleSave;
-  // Keyboard shortcuts for versions dialogs
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (
-        e.target instanceof HTMLElement &&
-        (e.target.tagName === "INPUT" ||
-          e.target.tagName === "TEXTAREA" ||
-          e.target.tagName === "SELECT" ||
-          e.target.isContentEditable)
-      ) {
-        return;
-      }
-      const k = e.key.toLowerCase();
-      if (e.ctrlKey || e.metaKey) {
-        if (e.shiftKey) {
-          if (k === "s") {
-            e.preventDefault();
-            window.dispatchEvent(new Event("pb:save-version"));
-            return;
-          }
-          if (k === "p") {
-            e.preventDefault();
-            handlePublish();
-            return;
-          }
-          if (k === "]") {
-            e.preventDefault();
-            rotateDeviceRef.current("right");
-            return;
-          }
-          if (k === "[") {
-            e.preventDefault();
-            rotateDeviceRef.current("left");
-            return;
-          }
-        }
-        // Ctrl/Cmd + Alt + P ⇒ Preview toggle
-        if ((e.altKey || (e as any).altGraphKey) && k === "p") {
-          e.preventDefault();
-          togglePreviewRef.current();
-          return;
-        }
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, []);
-  const toolbarProps = {
+  const toolbarProps = buildToolbarProps({
     deviceId: controls.deviceId,
     setDeviceId: controls.setDeviceId,
     orientation: controls.orientation,
@@ -285,8 +147,9 @@ const PageBuilder = memo(function PageBuilder({
     editingSizePx: (controls as any).editingSizePx ?? null,
     setEditingSizePx: (controls as any).setEditingSizePx,
     pagesNav,
-  } as const;
-  const gridProps = {
+  });
+
+  const gridProps = buildGridProps({
     showGrid: controls.showGrid,
     toggleGrid: controls.toggleGrid,
     snapToGrid: controls.snapToGrid,
@@ -301,8 +164,9 @@ const PageBuilder = memo(function PageBuilder({
     toggleBaseline: controls.toggleBaseline,
     baselineStep: controls.baselineStep,
     setBaselineStep: controls.setBaselineStep,
-  };
-  const canvasProps = {
+  });
+
+  const canvasProps = buildCanvasProps({
     components,
     selectedIds,
     onSelectIds: setSelectedIds,
@@ -328,9 +192,11 @@ const PageBuilder = memo(function PageBuilder({
     zoom: controls.zoom,
     showBaseline: controls.showBaseline,
     baselineStep: controls.baselineStep,
-  } as const;
-  const previewProps = {components, locale: controls.locale, deviceId: controls.previewDeviceId, onChange: controls.setPreviewDeviceId, editor: (state as any).editor, extraDevices: controls.extraDevices};
-  const historyProps = {
+  });
+
+  const previewProps = buildPreviewProps({ components, locale: controls.locale, deviceId: controls.previewDeviceId, onChange: controls.setPreviewDeviceId, editor: (state as any).editor, extraDevices: controls.extraDevices });
+
+  const historyProps = buildHistoryProps({
     canUndo: !!state.past.length,
     canRedo: !!state.future.length,
     onUndo: () => dispatch({ type: "undo" }),
@@ -348,12 +214,12 @@ const PageBuilder = memo(function PageBuilder({
     editor: (state as any).editor,
     onRestoreVersion: (restored: PageComponent[]) => {
       dispatch({ type: "set", components: restored });
-      // Persist restored snapshot
       handleSave();
     },
-  } as const;
-  const toastProps = {open: toast.open, message: toast.message, retry: toast.retry, onClose: () => setToast((t) => ({ ...t, open: false }))};
-  const tourProps = {steps: controls.tourSteps, run: controls.runTour, callback: controls.handleTourCallback};
+  });
+
+  const toastProps = buildToastProps({ open: toast.open, message: toast.message, retry: toast.retry, onClose: () => setToast((t) => ({ ...t, open: false })) });
+  const tourProps = buildTourProps({ steps: controls.tourSteps, run: controls.runTour, callback: controls.handleTourCallback });
   const { parentFirst, setParentFirst } = useLayerSelectionPreference();
 
   return (

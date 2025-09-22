@@ -1,186 +1,144 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import type { PageComponent } from "@acme/types";
-import type { GlobalItem } from "./libraryStore";
+import React, { useEffect, useMemo, useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, Button, Input } from "../../atoms/shadcn";
+import { Tooltip } from "../../atoms";
+import {
+  listGlobals,
+  listGlobalsForPage,
+  saveGlobalForPage,
+  removeGlobalForPage,
+  updateGlobal,
+  removeGlobal,
+  type GlobalItem,
+} from "./libraryStore";
 
-type PreviewMap = Record<string, string>;
-
-interface GlobalsPanelProps {
-  globals: GlobalItem[];
-  search: string;
-  onSearchChange: (value: string) => void;
-  onSelect: (item: GlobalItem) => void;
+interface Props {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  shop?: string | null;
+  pageId?: string | null;
 }
 
-const CANVAS_WIDTH = 160;
-const CANVAS_HEIGHT = 96;
+export default function GlobalsPanel({ open, onOpenChange, shop = null, pageId = null }: Props) {
+  const [query, setQuery] = useState("");
+  const [globals, setGlobals] = useState<GlobalItem[]>([]);
+  const [pageGlobals, setPageGlobals] = useState<GlobalItem[]>([]);
+  const [renameId, setRenameId] = useState<string | null>(null);
+  const [renameVal, setRenameVal] = useState<string>("");
 
-function hashString(input: string): number {
-  let hash = 0;
-  for (let i = 0; i < input.length; i += 1) {
-    hash = (hash << 5) - hash + input.charCodeAt(i);
-    hash |= 0; // convert to 32bit integer
-  }
-  return Math.abs(hash);
-}
-
-function drawNode(
-  ctx: CanvasRenderingContext2D,
-  node: PageComponent,
-  depth: number,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-) {
-  if (width <= 4 || height <= 4) return;
-
-  const type = String((node as any)?.type ?? "node");
-  const hash = hashString(`${type}-${depth}`);
-  const hue = hash % 360;
-  const saturation = 55;
-  const lightness = Math.max(35, 70 - depth * 7);
-
-  ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-  ctx.fillRect(x, y, width, height);
-
-  ctx.strokeStyle = "rgba(15, 23, 42, 0.16)";
-  ctx.lineWidth = 1;
-  ctx.strokeRect(x + 0.5, y + 0.5, width - 1, height - 1);
-
-  const children = (node as any)?.children as PageComponent[] | undefined;
-  if (!Array.isArray(children) || children.length === 0) {
-    const name = String((node as any)?.name ?? type ?? "");
-    if (!name) return;
-    ctx.fillStyle = "rgba(15, 23, 42, 0.55)";
-    ctx.font = "bold 10px system-ui";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(name.slice(0, 2).toUpperCase(), x + width / 2, y + height / 2);
-    return;
-  }
-
-  const orientation: "row" | "column" = depth % 2 === 0 ? "column" : "row";
-  const step = (orientation === "column" ? height : width) / children.length;
-
-  for (let i = 0; i < children.length; i += 1) {
-    const child = children[i];
-    if (orientation === "column") {
-      const childHeight = Math.max(6, step - 4);
-      const childY = y + i * step + 2;
-      drawNode(ctx, child, depth + 1, x + 2, childY, width - 4, childHeight);
-    } else {
-      const childWidth = Math.max(6, step - 4);
-      const childX = x + i * step + 2;
-      drawNode(ctx, child, depth + 1, childX, y + 2, childWidth, height - 4);
-    }
-  }
-}
-
-function createMiniature(item: GlobalItem): string | null {
-  if (typeof document === "undefined") return null;
-
-  try {
-    const canvas = document.createElement("canvas");
-    canvas.width = CANVAS_WIDTH;
-    canvas.height = CANVAS_HEIGHT;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return null;
-
-    ctx.fillStyle = "#f8fafc";
-    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-    drawNode(ctx, item.template, 0, 6, 6, CANVAS_WIDTH - 12, CANVAS_HEIGHT - 12);
-
-    return canvas.toDataURL("image/png");
-  } catch {
-    return null;
-  }
-}
-
-const GlobalsPanel = ({ globals, search, onSearchChange, onSelect }: GlobalsPanelProps) => {
-  const [generatedThumbs, setGeneratedThumbs] = useState<PreviewMap>({});
+  const refresh = () => {
+    setGlobals(listGlobals(shop));
+    setPageGlobals(listGlobalsForPage(shop, pageId));
+  };
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    refresh();
+    const onChange = () => refresh();
+    window.addEventListener("pb-library-changed", onChange as EventListener);
+    return () => window.removeEventListener("pb-library-changed", onChange as EventListener);
+  }, [shop, pageId]);
 
-    setGeneratedThumbs((prev) => {
-      const next: PreviewMap = {};
-      let changed = false;
-
-      const ids = new Set(globals.map((g) => g.globalId));
-      for (const id of Object.keys(prev)) {
-        if (ids.has(id)) next[id] = prev[id];
-      }
-
-      for (const item of globals) {
-        if (item.thumbnail || next[item.globalId]) continue;
-        const thumb = createMiniature(item);
-        if (thumb) {
-          next[item.globalId] = thumb;
-          changed = true;
-        }
-      }
-
-      return changed ? next : prev;
-    });
-  }, [globals]);
-
-  const filteredGlobals = useMemo(() => {
-    const term = search.trim().toLowerCase();
-    if (!term) return globals;
-    return globals.filter((g) => g.label.toLowerCase().includes(term));
-  }, [globals, search]);
-
-  const getPreviewFor = (item: GlobalItem) => item.thumbnail || generatedThumbs[item.globalId] || null;
+  const used = useMemo(() => new Set(pageGlobals.map((g) => g.globalId)), [pageGlobals]);
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return globals;
+    return globals.filter((g) => g.label.toLowerCase().includes(q) || (g.tags || []).some((t) => t.toLowerCase().includes(q)));
+  }, [globals, query]);
 
   return (
-    <div className="space-y-2">
-      <input
-        type="text"
-        value={search}
-        onChange={(event) => onSearchChange(event.target.value)}
-        placeholder="Search Globals..."
-        className="w-full rounded border border-input bg-input px-2 py-1 text-sm"
-      />
-      <div className="max-h-64 overflow-auto">
-        {filteredGlobals.map((item) => {
-          const preview = getPreviewFor(item);
-          return (
-            <button
-              key={item.globalId}
-              type="button"
-              className="group relative flex w-full items-center justify-between gap-2 rounded border px-2 py-1 text-left text-sm transition hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              onClick={() => onSelect(item)}
-              title={item.label}
-            >
-              <div className="min-w-0 flex-1 truncate">{item.label}</div>
-              <span className="text-[10px] text-muted-foreground">{item.globalId.slice(-6)}</span>
-              <div className="pointer-events-none absolute right-2 top-1/2 hidden h-16 w-24 -translate-y-1/2 overflow-hidden rounded border bg-background shadow group-hover:flex group-focus-visible:flex">
-                {preview ? (
-                  <img src={preview} alt="" className="h-full w-full object-cover" loading="lazy" />
-                ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-muted text-[10px] text-muted-foreground">
-                    No preview
-                  </div>
-                )}
-              </div>
-            </button>
-          );
-        })}
-        {filteredGlobals.length === 0 && (
-          <div className="space-y-1 px-1 py-2 text-sm text-muted-foreground">
-            {globals.length === 0 ? (
-              <div>No Globals saved yet.</div>
-            ) : (
-              <div>No Globals match your search.</div>
-            )}
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="fixed left-0 top-0 z-[60] h-screen w-[24rem] max-w-full -translate-x-full overflow-hidden border-r bg-surface-3 p-0 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0">
+        <DialogHeader className="px-4 py-3">
+          <DialogTitle>Global Sections</DialogTitle>
+        </DialogHeader>
+        <div className="flex h-[calc(100%-3rem)] flex-col gap-3 p-3 text-sm">
+          <div className="space-y-1">
+            <Input placeholder="Search globals…" value={query} onChange={(e) => setQuery(e.target.value)} />
+            <div className="text-xs text-muted-foreground">{filtered.length} item{filtered.length === 1 ? "" : "s"}</div>
           </div>
-        )}
-      </div>
-    </div>
+          <div className="flex-1 overflow-auto">
+            {filtered.length === 0 && (
+              <div className="p-2 text-muted-foreground">No global sections yet.</div>
+            )}
+            <ul className="space-y-2">
+              {filtered.map((g) => (
+                <li key={g.globalId} className="rounded border p-2">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="min-w-0 flex-1">
+                      {renameId === g.globalId ? (
+                        <div className="flex items-center gap-2">
+                          <Input autoFocus value={renameVal} onChange={(e) => setRenameVal(e.target.value)} className="h-7" />
+                          <Button
+                            variant="outline"
+                            className="h-7"
+                            onClick={async () => {
+                              await updateGlobal(shop, g.globalId, { label: renameVal });
+                              setRenameId(null);
+                              setRenameVal("");
+                              refresh();
+                            }}
+                          >Save</Button>
+                          <Button variant="ghost" className="h-7" onClick={() => { setRenameId(null); setRenameVal(""); }}>Cancel</Button>
+                        </div>
+                      ) : (
+                        <div className="truncate">
+                          <div className="flex items-center gap-2">
+                            <span className="truncate font-medium">{g.label}</span>
+                            {used.has(g.globalId) && (
+                              <span className="rounded bg-emerald-500/15 px-1 text-[10px] text-emerald-700">On this page</span>
+                            )}
+                          </div>
+                          {g.tags && g.tags.length > 0 && (
+                            <div className="mt-1 flex flex-wrap gap-1 text-[10px] text-muted-foreground">
+                              {g.tags.map((t) => (
+                                <span key={t} className="rounded border px-1">{t}</span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {used.has(g.globalId) ? (
+                        <Tooltip text="Remove from this page">
+                          <Button
+                            variant="outline"
+                            className="h-7 px-2"
+                            onClick={async () => { await removeGlobalForPage(shop, pageId, g.globalId); refresh(); }}
+                          >Remove</Button>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip text="Add to this page">
+                          <Button
+                            variant="outline"
+                            className="h-7 px-2"
+                            onClick={async () => { await saveGlobalForPage(shop, pageId, g); refresh(); }}
+                          >Add</Button>
+                        </Tooltip>
+                      )}
+                      <Tooltip text="Rename">
+                        <Button variant="outline" className="h-7 px-2" onClick={() => { setRenameId(g.globalId); setRenameVal(g.label); }}>Rename</Button>
+                      </Tooltip>
+                      <Tooltip text="Delete global">
+                        <Button
+                          variant="outline"
+                          className="h-7 px-2"
+                          onClick={async () => { await removeGlobal(shop, g.globalId); refresh(); }}
+                        >Delete</Button>
+                      </Tooltip>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="text-xs text-muted-foreground">
+            Tip: Make any section global from the Inspector, then use this panel to add it to other pages. You can pin one global per page using the Inspector.
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
-};
+}
 
-export default GlobalsPanel;

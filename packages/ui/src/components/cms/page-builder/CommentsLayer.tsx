@@ -63,6 +63,19 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
     setDrawerOpen(true);
   };
 
+  // External open support for a specific thread id
+  useEffect(() => {
+    const handler = (e: Event) => {
+      try {
+        const ce = e as CustomEvent<{ id?: string }>;
+        const id = ce?.detail?.id;
+        if (id) open(id);
+      } catch {}
+    };
+    window.addEventListener('pb:open-comment', handler as EventListener);
+    return () => window.removeEventListener('pb:open-comment', handler as EventListener);
+  }, []);
+
   // External toggle support (bottom-left launcher)
   useEffect(() => {
     const toggle = () => setDrawerOpen((v) => !v);

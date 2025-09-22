@@ -27,53 +27,24 @@ describe("usePageBuilderControls – extras", () => {
     expect(result.current.baselineStep).toBe(12);
   });
 
-  it("syncs editing size overrides for pinned global instances via editor state", () => {
-    const dispatch = jest.fn();
-    const initialState = {
-      ...base,
-      editor: {
-        foo: { global: { id: "gid_1", pinned: true, editingSize: { desktop: 840 } } },
-      },
-    } as any;
-    const { result, rerender } = renderHook(
-      ({ state }: { state: any }) => usePageBuilderControls({ state, dispatch }),
-      { initialProps: { state: initialState } },
-    );
+  it("persists editingSize per viewport when switching device types", () => {
+    const { result } = renderHook(() => usePageBuilderControls({ state: base, dispatch: jest.fn() }));
+    // Desktop override
+    act(() => { result.current.setEditingSizePx(777); });
+    const desktopStyle = result.current.viewportStyle as any;
+    expect(desktopStyle.width).toBe("777px");
 
-    expect(result.current.editingSizePx).toBe(840);
+    // Switch to a tablet-like preset (from extraDevices or built-ins via device.type change)
+    const tabletId = (result.current.extraDevices.find((d) => d.type === 'tablet') || []).id || 'tablet';
+    act(() => { result.current.setDeviceId(tabletId as any); });
+    // Set tablet override
+    act(() => { result.current.setEditingSizePx(555); });
+    expect((result.current.viewportStyle as any).width).toBe("555px");
 
-    act(() => { result.current.setEditingSizePx(900); });
-    expect(dispatch).toHaveBeenCalledWith({
-      type: "update-editor",
-      id: "foo",
-      patch: { global: { id: "gid_1", pinned: true, editingSize: { desktop: 900 } } },
-    });
-
-    const updatedState = {
-      ...initialState,
-      editor: {
-        foo: { global: { id: "gid_1", pinned: true, editingSize: { desktop: 900 } } },
-      },
-    } as any;
-    rerender({ state: updatedState });
-    expect(result.current.editingSizePx).toBe(900);
-
-    dispatch.mockClear();
-    act(() => { result.current.setEditingSizePx(null); });
-    const clearCall = dispatch.mock.calls[0]?.[0] as any;
-    expect(clearCall).toEqual({
-      type: "update-editor",
-      id: "foo",
-      patch: { global: { id: "gid_1", pinned: true } },
-    });
-
-    rerender({
-      state: {
-        ...updatedState,
-        editor: { foo: { global: { id: "gid_1", pinned: true } } },
-      } as any,
-    });
-    expect(result.current.editingSizePx).toBeNull();
+    // Switch back to a desktop preset (first desktop extra or fallback)
+    const desktopPreset = (result.current.extraDevices.find((d) => d.type === 'desktop') || []).id || result.current.deviceId;
+    act(() => { result.current.setDeviceId(desktopPreset as any); });
+    expect((result.current.viewportStyle as any).width).toBe("777px");
   });
 
   it("setBreakpoints dispatches list", () => {
@@ -84,4 +55,3 @@ describe("usePageBuilderControls – extras", () => {
     expect(dispatch).toHaveBeenCalledWith({ type: "set-breakpoints", breakpoints: list });
   });
 });
-

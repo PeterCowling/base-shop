@@ -3,7 +3,7 @@
 import { DndContext, DragOverlay, defaultDropAnimation, defaultDropAnimationSideEffects } from "@dnd-kit/core";
 import type { CSSProperties, ComponentProps } from "react";
 import React from "react";
-import { IconButton, Toast } from "../../atoms";
+import { Toast } from "../../atoms";
 import PageToolbar from "./PageToolbar";
 import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
@@ -34,17 +34,10 @@ import PresenceAvatars from "./PresenceAvatars";
 import NotificationsBell from "./NotificationsBell";
 import AppMarketStub from "./AppMarketStub";
 import StudioMenu from "./StudioMenu";
-import {
-  CheckIcon,
-  ReloadIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  EyeClosedIcon,
-  EyeOpenIcon,
-} from "@radix-ui/react-icons";
-
-const PANEL_SEQUENCE = ["palette", "inspector", "layers"] as const;
-type PanelShortcutTarget = (typeof PANEL_SEQUENCE)[number];
+import { CheckIcon, ReloadIcon } from "@radix-ui/react-icons";
+import GlobalsPanel from "./GlobalsPanel";
+import CMSPanel from "./CMSPanel";
+import CodePanel from "./CodePanel";
 
 interface LayoutProps {
   style?: CSSProperties;
@@ -133,56 +126,39 @@ const PageBuilderLayout = ({
   const { onPointerDown } = useSpacePanning(scrollRef);
   const [showInspector, setShowInspector] = React.useState(true);
   const [appMarketOpen, setAppMarketOpen] = React.useState(false);
-  const panelCycleIndexRef = React.useRef<number>(0);
+  const [globalsOpen, setGlobalsOpen] = React.useState(false);
+  const [cmsOpen, setCmsOpen] = React.useState(false);
+  const [codeOpen, setCodeOpen] = React.useState(false);
 
-  // Ctrl/Cmd + . cycles through palette → inspector → layers.
+  // Keyboard shortcuts for panel toggles: Ctrl/Cmd+I (Inspector), Ctrl/Cmd+L (Layers), Ctrl/Cmd+. (Palette)
   React.useEffect(() => {
-    const handlePanelCycle = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement | null;
-      const tag = target?.tagName;
-      const isEditable =
-        !!target &&
-        ((target as any).isContentEditable || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT");
-      if (isEditable) return;
-      if (event.altKey || event.shiftKey) return;
-      if (!(event.ctrlKey || event.metaKey)) return;
-      if (event.key.toLowerCase() !== ".") return;
-
-      event.preventDefault();
-
-      const nextTarget: PanelShortcutTarget = PANEL_SEQUENCE[panelCycleIndexRef.current];
-      panelCycleIndexRef.current = (panelCycleIndexRef.current + 1) % PANEL_SEQUENCE.length;
-
-      if (nextTarget === "palette") {
-        setShowPalette((value) => !value);
+    const onKeyDown = (e: KeyboardEvent) => {
+      // Ignore when typing in inputs/contentEditable
+      const t = e.target as HTMLElement | null;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return;
+      if (!(e.ctrlKey || e.metaKey)) return;
+      const k = e.key.toLowerCase();
+      if (k === 'i') {
+        e.preventDefault();
+        setShowInspector((v) => !v);
         return;
       }
-
-      if (nextTarget === "inspector") {
-        setShowInspector((value) => !value);
+      if (k === 'l') {
+        e.preventDefault();
+        // Ensure inspector is visible and scroll to Layers panel
+        setShowInspector(true);
+        try { document.getElementById('pb-layers-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch {}
         return;
       }
-
-      setShowInspector(true);
-      const scrollToLayers = () => {
-        try {
-          document
-            .getElementById("pb-layers-panel")
-            ?.scrollIntoView({ behavior: "smooth", block: "start" });
-        } catch {
-          // ignore scroll errors
-        }
-      };
-      if (typeof requestAnimationFrame === "function") {
-        requestAnimationFrame(scrollToLayers);
-      } else {
-        setTimeout(scrollToLayers, 16);
+      if (k === '.' || k === '›') {
+        e.preventDefault();
+        setShowPalette((v) => !v);
+        return;
       }
     };
-
-    window.addEventListener("keydown", handlePanelCycle);
-    return () => window.removeEventListener("keydown", handlePanelCycle);
-  }, [setShowPalette, setShowInspector]);
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [setShowPalette]);
 
   // (Optional) live message toasts can be surfaced by parent if desired
   return (
@@ -217,12 +193,18 @@ const PageBuilderLayout = ({
           else window.location.href = "/cms/pages";
         }
       }}
+      onOpenGlobalSections={() => setGlobalsOpen(true)}
       onOpenSiteStyles={() => {
         // Ask DesignMenu to open Theme dialog
         try { window.dispatchEvent(new Event("pb:open-theme")); } catch {}
       }}
       onOpenAppMarket={() => setAppMarketOpen(true)}
+      onOpenCMS={() => setCmsOpen(true)}
+      onOpenCode={() => setCodeOpen(true)}
       onToggleInspector={() => setShowInspector((v) => !v)}
+      isAddActive={showPalette}
+      isLayersActive={showInspector}
+      isInspectorActive={showInspector}
     />
     {showPalette && (
       <PaletteSidebar
@@ -244,7 +226,7 @@ const PageBuilderLayout = ({
       />
     )}
     <div className="flex flex-1 flex-col gap-4 min-h-0">
-      <div className="sticky top-0 z-10 flex w-full flex-wrap items-center gap-2 overflow-x-hidden bg-surface-1/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-surface-1/70">
+      <div className="sticky top-0 z-10 flex w-full flex-wrap items-center gap-2 overflow-x-hidden bg-surface-1/95 py-3 backdrop-blur supports-[backdrop-filter]:bg-surface-1/70">
         {/* Left logo/project menu + autosave indicator */}
         <div className="flex items-center gap-2">
           <StudioMenu shop={shop ?? null} />
@@ -275,35 +257,28 @@ const PageBuilderLayout = ({
             onParentFirstChange={onParentFirstChange}
           />
           <PresenceAvatars shop={shop ?? null} pageId={pageId ?? null} />
-          <IconButton
+          <button
             type="button"
-            aria-label={showPreview ? "Exit preview" : "Preview"}
-            title={showPreview ? "Exit preview" : "Preview"}
-            onClick={togglePreview}
-            aria-pressed={showPreview}
-            variant={showPreview ? "secondary" : "ghost"}
-            className="border border-input"
+            className="rounded border px-2 py-1 text-sm"
+            onClick={() => {
+              const next = !showPreview;
+              try { window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'preview', title: next ? 'Preview enabled' : 'Preview disabled' } })); } catch {}
+              togglePreview();
+            }}
+            aria-label="Preview"
           >
-            {showPreview ? (
-              <EyeOpenIcon aria-hidden="true" className="h-4 w-4" />
-            ) : (
-              <EyeClosedIcon aria-hidden="true" className="h-4 w-4" />
-            )}
-          </IconButton>
+            {showPreview ? "Editing" : "Preview"}
+          </button>
           <NotificationsBell shop={shop ?? null} pageId={pageId ?? null} />
           <HistoryControls {...historyProps} />
           <button
             type="button"
-            className="inline-flex items-center justify-center rounded border px-2 py-1 text-sm"
+            className="rounded border px-2 py-1 text-sm"
             onClick={() => setShowInspector((v) => !v)}
             aria-label={showInspector ? "Hide Inspector" : "Show Inspector"}
             title={showInspector ? "Hide Inspector" : "Show Inspector"}
           >
-            {showInspector ? (
-              <ChevronRightIcon aria-hidden="true" className="h-4 w-4" />
-            ) : (
-              <ChevronLeftIcon aria-hidden="true" className="h-4 w-4" />
-            )}
+            {showInspector ? <span className="inline-flex items-center" aria-hidden>›</span> : <span className="inline-flex items-center" aria-hidden>‹</span>}
           </button>
         </div>
       </div>
@@ -355,12 +330,7 @@ const PageBuilderLayout = ({
             }
           >
             {dragMeta ? (
-              <DragOverlayPreview
-                dragMeta={dragMeta}
-                allowed={dropAllowed ?? null}
-                locale={(toolbarProps as any)?.locale ?? 'en'}
-                shop={shop ?? null}
-              />
+              <DragOverlayPreview dragMeta={dragMeta} allowed={dropAllowed ?? null} locale={(toolbarProps as any)?.locale ?? 'en'} />
             ) : activeType ? (
               <div className="pointer-events-none rounded border bg-muted px-4 py-2 opacity-50 shadow">{activeType}</div>
             ) : null}
@@ -388,6 +358,15 @@ const PageBuilderLayout = ({
     onSelectIds={(canvasProps as any)?.onSelectIds ?? (() => {})}
   />
   <AppMarketStub open={appMarketOpen} onOpenChange={setAppMarketOpen} />
+  <GlobalsPanel open={globalsOpen} onOpenChange={setGlobalsOpen} shop={shop ?? null} pageId={pageId ?? null} />
+  <CMSPanel
+    open={cmsOpen}
+    onOpenChange={setCmsOpen}
+    components={(canvasProps as any)?.components ?? []}
+    selectedIds={(canvasProps as any)?.selectedIds ?? []}
+    onSelectIds={(canvasProps as any)?.onSelectIds ?? (() => {})}
+  />
+  <CodePanel open={codeOpen} onOpenChange={setCodeOpen} shop={shop ?? null} pageId={pageId ?? null} />
   </>
   );
 };

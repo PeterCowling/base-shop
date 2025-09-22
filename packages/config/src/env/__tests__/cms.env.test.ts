@@ -11,11 +11,9 @@ const baseEnv = {
   SANITY_PREVIEW_SECRET: "secret",
 } as NodeJS.ProcessEnv;
 
-const ORIGINAL_ENV = process.env;
-
 afterEach(() => {
   jest.resetModules();
-  process.env = ORIGINAL_ENV;
+  process.env = { ...baseEnv } as NodeJS.ProcessEnv;
 });
 
 describe("cms sanity env", () => {

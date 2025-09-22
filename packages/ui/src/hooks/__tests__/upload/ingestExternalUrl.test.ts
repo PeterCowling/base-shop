@@ -1,0 +1,86 @@
+import { ingestExternalUrl, ingestFromText } from "../../upload/ingestExternalUrl";
+
+const originalFetch = global.fetch;
+
+beforeEach(() => {
+  (global as any).fetch = jest.fn(async (url: string) => {
+    // default: ok image
+    return {
+      ok: true,
+      headers: new Map([["content-type", "image/png"]]),
+      async blob() {
+        return new Blob([new Uint8Array(5)], { type: "image/png" });
+      },
+    } as any;
+  });
+});
+
+afterEach(() => {
+  (global as any).fetch = originalFetch;
+  jest.clearAllMocks();
+});
+
+describe("ingestExternalUrl", () => {
+  it("wraps remote resource in a File when allowed", async () => {
+    const res = await ingestExternalUrl("https://example.com/a.png", {
+      allowedMimePrefixes: ["image/"],
+    });
+    expect(res.error).toBeUndefined();
+    expect(res.file).toBeInstanceOf(File);
+    expect(res.file?.name).toBe("a.png");
+    expect(res.handled).toBe("url");
+  });
+
+  it("blocks disallowed schemes and policies", async () => {
+    const blocked = await ingestExternalUrl("javascript:alert(1)", {
+      allowedMimePrefixes: ["image/"],
+    });
+    expect(blocked.error).toMatch(/Blocked URL/);
+
+    const denied = await ingestExternalUrl("https://example.com/a.png", {
+      allowedMimePrefixes: ["image/"],
+      allowExternalUrl: () => false,
+    });
+    expect(denied.error).toMatch(/not allowed/);
+  });
+
+  it("errors on unsupported content-type", async () => {
+    (global.fetch as any).mockResolvedValueOnce({
+      ok: true,
+      headers: new Map([["content-type", "text/plain"]]),
+      async blob() { return new Blob([new Uint8Array(3)], { type: "text/plain" }); },
+    });
+    const res = await ingestExternalUrl("https://example.com/a.txt", {
+      allowedMimePrefixes: ["image/"],
+    });
+    expect(res.error).toMatch(/Unsupported content-type/);
+  });
+
+  it("errors when size exceeds maxBytes", async () => {
+    (global.fetch as any).mockResolvedValueOnce({
+      ok: true,
+      headers: new Map([["content-type", "image/png"]]),
+      async blob() { return new Blob([new Uint8Array(10)], { type: "image/png" }); },
+    });
+    const res = await ingestExternalUrl("https://example.com/a.png", {
+      allowedMimePrefixes: ["image/"],
+      maxBytes: 5,
+    });
+    expect(res.error).toMatch(/File too large/);
+  });
+});
+
+describe("ingestFromText", () => {
+  it("returns handled=text when no URL present", async () => {
+    const res = await ingestFromText("hello", { allowedMimePrefixes: ["image/"] });
+    expect(res.handled).toBe("text");
+    expect(res.file).toBeNull();
+  });
+
+  it("ingests when URL is in text", async () => {
+    const res = await ingestFromText("see https://example.com/pic.png", { allowedMimePrefixes: ["image/"] });
+    expect(res.handled).toBe("url");
+    expect(res.file).toBeInstanceOf(File);
+  });
+});
+

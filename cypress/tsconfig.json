@@ -9,6 +9,8 @@
     "cypress/**/*.ts",
     "cypress/**/*.tsx",
     "test/e2e/**/*.ts",
+    "test/**/*.ts",
+    "test/**/*.tsx",
     "apps/**/*.cy.ts",
     "apps/**/*.cy.tsx"
   ]

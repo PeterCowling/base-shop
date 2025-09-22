@@ -1,7 +1,8 @@
 // cypress.config.ts
 import { defineConfig } from "cypress";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { cpSync, mkdirSync, mkdtempSync, rmSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve as resolvePath } from "node:path";
 import os from "node:os";
 
 export default defineConfig({
@@ -22,7 +23,12 @@ export default defineConfig({
       TEST_DATA_ROOT: process.env.TEST_DATA_ROOT || "__tests__/data/shops"
     },
     defaultCommandTimeout: 10000,
-    setupNodeEvents(on, config) {
+    async setupNodeEvents(on, config) {
+      // Enable test filtering by name/tags
+      try {
+        const { default: grepPlugin } = await import('cypress-grep/src/plugin.js');
+        grepPlugin(config);
+      } catch {}
       let tempDir: string | null = null;
 
       on("task", {
@@ -66,12 +72,30 @@ export default defineConfig({
     devServer: {
       framework: "react",
       bundler: "vite",
-      // Use a minimal Vite config for CT to avoid inheriting unrelated root plugins
-      viteConfig: { plugins: [] }
+      // Use a Vite config tailored for CT with TS path aliases
+      viteConfig: {
+        plugins: [
+          tsconfigPaths({ projects: ["apps/cms/tsconfig.json", "tsconfig.base.json"] })
+        ],
+        resolve: {
+          alias: {
+            'next/navigation': resolvePath(process.cwd(), 'test/shims/next-navigation-ct.ts'),
+            '@cms/actions/shops.server': resolvePath(process.cwd(), 'test/shims/cms-actions-seo.ts'),
+            '@platform-core/repositories/settings.server': resolvePath(process.cwd(), 'test/shims/platform-settings-repo.ts')
+          }
+        }
+      }
     },
     specPattern: [
       "apps/cms/src/**/*.cy.{ts,tsx}"
     ],
-    supportFile: "cypress/support/component.ts"
+    supportFile: "cypress/support/component.ts",
+    setupNodeEvents: async (_on, config) => {
+      try {
+        const { default: grepPlugin } = await import('cypress-grep/src/plugin.js');
+        grepPlugin(config);
+      } catch {}
+      return config;
+    }
   }
 });

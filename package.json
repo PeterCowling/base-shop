@@ -293,5 +293,3 @@
     }
   }
 }
-    "ct:open": "pnpm exec cypress open --component",
-    "ct:run": "pnpm exec cypress run --component",

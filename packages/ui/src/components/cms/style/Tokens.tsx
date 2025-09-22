@@ -25,6 +25,8 @@ interface TokensProps {
   baseTokens: TokenMap;
   onChange: (tokens: TokenMap) => void;
   focusToken?: string | null;
+  onRenameToken?: (tokenKey: string, nextKey: string) => void;
+  onReplaceColor?: (tokenKey: string, nextValue: string) => void;
 }
 
 export default function Tokens({
@@ -32,6 +34,8 @@ export default function Tokens({
   baseTokens,
   onChange,
   focusToken,
+  onRenameToken,
+  onReplaceColor,
 }: TokensProps): ReactElement {
   const {
     colors,
@@ -136,6 +140,8 @@ export default function Tokens({
           tokens={tokens}
           baseTokens={baseTokens}
           setToken={setToken}
+          onRenameToken={onRenameToken}
+          onReplaceColor={onReplaceColor}
         />
       );
     }

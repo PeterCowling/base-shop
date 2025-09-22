@@ -5,10 +5,33 @@ import {
   waitFor,
   act,
 } from "@testing-library/react";
+import React from "react";
 import Tokens from "../Tokens";
 import Presets from "../Presets";
 import * as tokenEditor from "../../../../hooks/useTokenEditor";
 import type { TokenMap } from "../../../../hooks/useTokenEditor";
+import { hexToHsl } from "../../../../utils/colorUtils";
+
+jest.mock("../../../atoms/shadcn", () => {
+  const actual = jest.requireActual("../../../atoms/shadcn");
+  return {
+    ...actual,
+    DropdownMenu: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    DropdownMenuTrigger: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    DropdownMenuContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    DropdownMenuItem: ({
+      children,
+      onSelect,
+    }: {
+      children: React.ReactNode;
+      onSelect?: (event: Event) => void;
+    }) => (
+      <button type="button" onClick={() => onSelect?.(new Event("select"))}>
+        {children}
+      </button>
+    ),
+  };
+});
 
 afterEach(() => {
   jest.useRealTimers();
@@ -229,6 +252,54 @@ describe("Tokens", () => {
     expect(el.dataset.token).toBeUndefined();
 
     window.HTMLElement.prototype.scrollIntoView = original;
+  });
+
+  it("surfaces rename action when provided", () => {
+    const baseTokens: TokenMap = { "--color-bg": "0 0% 100%" };
+    const onRename = jest.fn();
+    const promptSpy = jest
+      .spyOn(window, "prompt")
+      .mockReturnValue("--color-brand");
+
+    render(
+      <Tokens
+        tokens={baseTokens}
+        baseTokens={baseTokens}
+        onChange={jest.fn()}
+        onRenameToken={onRename}
+      />
+    );
+
+    const trigger = screen.getByLabelText("More actions for --color-bg");
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByText("Rename token…"));
+
+    expect(onRename).toHaveBeenCalledWith("--color-bg", "--color-brand");
+    promptSpy.mockRestore();
+  });
+
+  it("normalizes hex input when replacing colors", () => {
+    const baseTokens: TokenMap = { "--color-bg": "0 0% 100%" };
+    const onReplace = jest.fn();
+    const promptSpy = jest
+      .spyOn(window, "prompt")
+      .mockReturnValue("#112233");
+
+    render(
+      <Tokens
+        tokens={baseTokens}
+        baseTokens={{}}
+        onChange={jest.fn()}
+        onReplaceColor={onReplace}
+      />
+    );
+
+    const trigger = screen.getByLabelText("More actions for --color-bg");
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByText("Replace across tokens…"));
+
+    expect(onReplace).toHaveBeenCalledWith("--color-bg", hexToHsl("#112233"));
+    promptSpy.mockRestore();
   });
 });
 

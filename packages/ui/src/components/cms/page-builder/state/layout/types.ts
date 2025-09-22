@@ -16,6 +16,11 @@ export type EditorFlags = {
   orderDesktop?: number;
   orderTablet?: number;
   orderMobile?: number;
+  global?: {
+    id: string;
+    overrides?: unknown;
+    editingWidth?: Partial<Record<"desktop" | "tablet" | "mobile", number>>;
+  };
 };
 
 export type AddAction = {

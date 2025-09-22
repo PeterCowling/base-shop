@@ -1,4 +1,4 @@
-import { renderHook, act } from "@testing-library/react";
+import { renderHook, act, waitFor } from "@testing-library/react";
 import usePageBuilderControls from "../hooks/usePageBuilderControls";
 
 describe("usePageBuilderControls – extras", () => {
@@ -33,6 +33,44 @@ describe("usePageBuilderControls – extras", () => {
     const list = [{ id: "x", label: "X" }];
     act(() => result.current.setBreakpoints(list as any));
     expect(dispatch).toHaveBeenCalledWith({ type: "set-breakpoints", breakpoints: list });
+  });
+
+  it("syncs and persists global editing widths independently", async () => {
+    const dispatch = jest.fn();
+    const state = {
+      gridCols: 12,
+      breakpoints: [],
+      editor: {
+        g1: { global: { id: "global-1", editingWidth: { desktop: 640 } } },
+      },
+    } as any;
+    const { result } = renderHook(() =>
+      usePageBuilderControls({ state, dispatch, globalContext: { id: "global-1" } })
+    );
+
+    await waitFor(() => expect(result.current.editingSizePx).toBe(640));
+
+    act(() => {
+      result.current.setEditingSizePx(720);
+    });
+    expect(result.current.editingSizePx).toBe(720);
+    expect(dispatch).toHaveBeenCalledTimes(1);
+    expect(dispatch).toHaveBeenLastCalledWith({
+      type: "update-editor",
+      id: "g1",
+      patch: { global: { id: "global-1", editingWidth: { desktop: 720 } } },
+    });
+
+    act(() => {
+      result.current.setEditingSizePx(null);
+    });
+    expect(result.current.editingSizePx).toBeNull();
+    expect(dispatch).toHaveBeenCalledTimes(2);
+    expect(dispatch).toHaveBeenLastCalledWith({
+      type: "update-editor",
+      id: "g1",
+      patch: { global: { id: "global-1" } },
+    });
   });
 });
 

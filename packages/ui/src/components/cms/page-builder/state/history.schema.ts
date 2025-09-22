@@ -18,6 +18,20 @@ const editorFlagsSchema = z.object({
   orderDesktop: z.number().int().nonnegative().optional(),
   orderTablet: z.number().int().nonnegative().optional(),
   orderMobile: z.number().int().nonnegative().optional(),
+  global: z
+    .object({
+      id: z.string(),
+      overrides: z.unknown().optional(),
+      editingWidth: z
+        .object({
+          desktop: z.number().int().nonnegative().optional(),
+          tablet: z.number().int().nonnegative().optional(),
+          mobile: z.number().int().nonnegative().optional(),
+        })
+        .partial()
+        .optional(),
+    })
+    .optional(),
 });
 
 export const historyStateSchema: z.ZodType<unknown> = z

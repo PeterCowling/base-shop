@@ -136,7 +136,12 @@ export interface EditorFlags {
   /** Per-node custom mobile order (used when stackStrategy = custom on parent) */
   orderMobile?: number;
   /** Builder-only metadata for global (linked) components */
-  global?: { id: string; overrides?: unknown };
+  global?: {
+    id: string;
+    overrides?: unknown;
+    /** Preferred editing widths per viewport (builder-only) */
+    editingWidth?: Partial<Record<"desktop" | "tablet" | "mobile", number>>;
+  };
 }
 
 export interface HistoryState {
@@ -174,6 +179,14 @@ export const historyStateSchema = z
             .object({
               id: z.string(),
               overrides: z.unknown().optional(),
+              editingWidth: z
+                .object({
+                  desktop: z.number().int().nonnegative().optional(),
+                  tablet: z.number().int().nonnegative().optional(),
+                  mobile: z.number().int().nonnegative().optional(),
+                })
+                .partial()
+                .optional(),
             })
             .optional(),
         })

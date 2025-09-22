@@ -9,12 +9,15 @@ import { usePreviewDevice } from "../../../../hooks";
 import useViewport from "./useViewport";
 import { Step, CallBackProps, STATUS } from "../PageBuilderTour";
 
+type ViewportKey = "desktop" | "tablet" | "mobile";
+
 interface Params {
   state: HistoryState;
   dispatch: React.Dispatch<Action>;
+  globalContext?: { id: string } | null;
 }
 
-const usePageBuilderControls = ({ state, dispatch }: Params) => {
+const usePageBuilderControls = ({ state, dispatch, globalContext }: Params) => {
   const [deviceId, setDeviceId] = usePreviewDevice(devicePresets[0].id);
   const [orientation, setOrientation] = useState<"portrait" | "landscape">(
     "portrait"
@@ -50,18 +53,108 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
       : { ...preset, width: preset.height, height: preset.width, orientation };
   }, [deviceId, orientation, extraDevices]);
 
-  const viewport: "desktop" | "tablet" | "mobile" = device.type;
+  const viewport: ViewportKey = device.type;
   const { viewportStyle, frameClass } = useViewport(device);
-  // Per-viewport editing size override (px). Stored by viewport key.
-  const [editingSize, setEditingSize] = useState<Record<"desktop"|"tablet"|"mobile", number | null>>({ desktop: null, tablet: null, mobile: null });
-  const setEditingSizePx = useCallback((px: number | null) => setEditingSize((prev) => ({ ...prev, [viewport]: px })), [viewport]);
+  // Per-viewport editing size overrides. Track page-level and global contexts separately.
+  const [pageEditingSize, setPageEditingSize] = useState<Record<ViewportKey, number | null>>({
+    desktop: null,
+    tablet: null,
+    mobile: null,
+  });
+  const [globalEditingDraft, setGlobalEditingDraft] = useState<Record<ViewportKey, number | null>>({
+    desktop: null,
+    tablet: null,
+    mobile: null,
+  });
+
+  const editorMap = useMemo(
+    () =>
+      ((state as any).editor ?? {}) as Record<
+        string,
+        { global?: { id?: string; overrides?: unknown; editingWidth?: Partial<Record<ViewportKey, number>> } }
+      >,
+    [state]
+  );
+
+  const globalMetaEntries = useMemo(
+    () =>
+      Object.entries(editorMap)
+        .map(([id, flags]) => {
+          const meta = flags?.global;
+          if (!meta || typeof meta.id !== "string") return null;
+          return [id, meta] as const;
+        })
+        .filter(
+          (entry): entry is [string, { id: string; overrides?: unknown; editingWidth?: Partial<Record<ViewportKey, number>> }] =>
+            entry !== null
+        ),
+    [editorMap]
+  );
+
+  const globalEditingId = globalContext?.id ?? null;
+
+  useEffect(() => {
+    if (!globalEditingId) return;
+    const entry = globalMetaEntries.find(([, meta]) => meta.id === globalEditingId);
+    const editing = entry?.[1]?.editingWidth ?? {};
+    const next = {
+      desktop: editing.desktop ?? null,
+      tablet: editing.tablet ?? null,
+      mobile: editing.mobile ?? null,
+    } as Record<ViewportKey, number | null>;
+    setGlobalEditingDraft((prev) => {
+      if (
+        prev.desktop === next.desktop &&
+        prev.tablet === next.tablet &&
+        prev.mobile === next.mobile
+      ) {
+        return prev;
+      }
+      return next;
+    });
+  }, [globalEditingId, globalMetaEntries]);
+
+  const setEditingSizePx = useCallback(
+    (px: number | null) => {
+      if (globalEditingId) {
+        setGlobalEditingDraft((prev) => ({ ...prev, [viewport]: px }));
+        globalMetaEntries.forEach(([id, meta]) => {
+          if (meta.id !== globalEditingId) return;
+          const prevEditing = (meta.editingWidth ?? {}) as Partial<Record<ViewportKey, number>>;
+          const nextEditing: Partial<Record<ViewportKey, number>> = { ...prevEditing };
+          if (px === null || px === undefined) {
+            delete nextEditing[viewport];
+          } else {
+            nextEditing[viewport] = px;
+          }
+          if (JSON.stringify(prevEditing) === JSON.stringify(nextEditing)) return;
+          const { editingWidth: _omit, ...restMeta } = meta as {
+            editingWidth?: Partial<Record<ViewportKey, number>>;
+            [key: string]: unknown;
+          };
+          const nextMeta =
+            Object.keys(nextEditing).length > 0
+              ? { ...restMeta, editingWidth: nextEditing }
+              : restMeta;
+          dispatch({ type: "update-editor", id, patch: { global: nextMeta } as any });
+        });
+        return;
+      }
+      setPageEditingSize((prev) => ({ ...prev, [viewport]: px }));
+    },
+    [globalEditingId, viewport, globalMetaEntries, dispatch]
+  );
+
+  const editingSizeValue = globalEditingId
+    ? globalEditingDraft[viewport]
+    : pageEditingSize[viewport];
   const effectiveViewportStyle = useMemo(() => {
-    const px = editingSize[viewport];
+    const px = editingSizeValue;
     if (px && Number.isFinite(px)) {
       return { ...viewportStyle, width: `${px}px` } as typeof viewportStyle;
     }
     return viewportStyle;
-  }, [viewportStyle, editingSize, viewport]);
+  }, [viewportStyle, editingSizeValue]);
 
   const [locale, setLocale] = useState<Locale>("en");
   const [showPreview, setShowPreview] = useState(false);
@@ -188,7 +281,7 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
     breakpoints,
     setBreakpoints,
     extraDevices,
-    editingSizePx: editingSize[viewport] ?? null,
+    editingSizePx: editingSizeValue ?? null,
     setEditingSizePx,
   };
 };

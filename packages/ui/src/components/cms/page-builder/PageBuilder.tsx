@@ -24,6 +24,7 @@ interface Props {
   onChange?: (components: PageComponent[]) => void; style?: CSSProperties;
   presetsSourceUrl?: string;
   pagesNav?: { items: { label: string; value: string; href: string }[]; current: string };
+  globalContext?: { id: string } | null;
 }
 
 const PageBuilder = memo(function PageBuilder({
@@ -39,6 +40,7 @@ const PageBuilder = memo(function PageBuilder({
   style,
   presetsSourceUrl,
   pagesNav,
+  globalContext = null,
 }: Props) {
   const pathname = usePathname() ?? "";
   const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
@@ -55,7 +57,7 @@ const PageBuilder = memo(function PageBuilder({
     onRotateDevice: (d) => rotateDeviceRef.current(d),
   });
 
-  const controls = usePageBuilderControls({ state, dispatch });
+  const controls = usePageBuilderControls({ state, dispatch, globalContext });
   togglePreviewRef.current = controls.togglePreview;
   rotateDeviceRef.current = controls.rotateDevice;
 

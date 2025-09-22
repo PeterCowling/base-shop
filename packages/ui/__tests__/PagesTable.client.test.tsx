@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import PagesTable from "../src/components/cms/PagesTable";
 import type { Page } from "@acme/types";
 
@@ -48,5 +49,16 @@ describe("PagesTable", () => {
 
     const editLinks = screen.getAllByRole("link", { name: "Edit" });
     expect(editLinks).toHaveLength(pages.length);
+  });
+
+  it("filters pages by search query", async () => {
+    const user = userEvent.setup();
+    render(<PagesTable shop="acme" pages={pages} />);
+
+    const searchInput = screen.getByRole("searchbox", { name: "Search pages" });
+    await user.type(searchInput, "contact");
+
+    expect(screen.getByText(/contact/)).toBeInTheDocument();
+    expect(screen.queryByText(/about/)).not.toBeInTheDocument();
   });
 });

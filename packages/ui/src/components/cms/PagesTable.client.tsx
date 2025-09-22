@@ -2,10 +2,11 @@
 "use client";
 
 import Link from "next/link";
+import { useMemo, useState } from "react";
 
 import type { Page } from "@acme/types";
 import DataTable, { type Column } from "./DataTable";
-import { Button, Card, CardContent } from "../atoms/shadcn";
+import { Button, Card, CardContent, Input } from "../atoms/shadcn";
 import { Tag } from "../atoms";
 import { cn } from "@ui/utils/style";
 
@@ -16,6 +17,32 @@ interface Props {
 }
 
 export default function PagesTable({ shop, pages, canWrite = false }: Props) {
+  const [search, setSearch] = useState<string>("");
+  const normalisedQuery = useMemo(() => search.trim().toLowerCase(), [search]);
+
+  const filteredPages = useMemo(() => {
+    if (!normalisedQuery) return pages;
+
+    return pages.filter((page) => {
+      const slug = typeof page.slug === "string" ? page.slug.toLowerCase() : "";
+      const legacyTitle = (page as unknown as { title?: unknown }).title;
+      const titleFromLegacy = typeof legacyTitle === "string" ? legacyTitle.toLowerCase() : "";
+      const status = (page as unknown as { status?: unknown }).status;
+      const statusLabel = typeof status === "string" ? status.toLowerCase() : "";
+
+      const seoMatches = Object.values(page.seo?.title ?? {})
+        .filter((value): value is string => typeof value === "string")
+        .some((value) => value.toLowerCase().includes(normalisedQuery));
+
+      return (
+        slug.includes(normalisedQuery) ||
+        titleFromLegacy.includes(normalisedQuery) ||
+        seoMatches ||
+        statusLabel.includes(normalisedQuery)
+      );
+    });
+  }, [pages, normalisedQuery]);
+
   const columns: Column<Page>[] = [
     {
       header: "Slug",
@@ -78,17 +105,27 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
 
   return (
     <div className="space-y-4">
-      {canWrite && (
-        <Button
-          asChild
-          className="h-10 rounded-xl bg-emerald-500 px-4 text-sm font-semibold text-white shadow-elevation-3 shadow-emerald-500/30 hover:bg-emerald-400"
-        >
-          <Link href={`/cms/shop/${shop}/pages/new/builder`}>New Page</Link>
-        </Button>
-      )}
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        {canWrite && (
+          <Button
+            asChild
+            className="h-10 rounded-xl bg-emerald-500 px-4 text-sm font-semibold text-white shadow-elevation-3 shadow-emerald-500/30 hover:bg-emerald-400"
+          >
+            <Link href={`/cms/shop/${shop}/pages/new/builder`}>New Page</Link>
+          </Button>
+        )}
+        <Input
+          type="search"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+          placeholder="Search pages by slug, title, or status…"
+          aria-label="Search pages"
+          className="h-10 w-full max-w-xs rounded-lg border-white/20 bg-white/10 text-sm text-white placeholder:text-white/60 focus-visible:ring-white/30 focus-visible:ring-offset-0"
+        />
+      </div>
       <Card className="border border-white/10 bg-white/5 text-white">
         <CardContent className="px-0 py-0">
-          <DataTable rows={pages} columns={columns} />
+          <DataTable rows={filteredPages} columns={columns} />
         </CardContent>
       </Card>
     </div>

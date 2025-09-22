@@ -29,6 +29,7 @@ type Props = {
   insertParentId?: string | undefined;
   insertIndex?: number | null;
   dropAllowed?: boolean | null;
+  preferParentOnClick?: boolean;
 };
 
 export default function DefaultChildrenList({
@@ -52,6 +53,7 @@ export default function DefaultChildrenList({
   insertParentId,
   insertIndex,
   dropAllowed,
+  preferParentOnClick = false,
 }: Props) {
   const isGrid = compType === "Grid";
 
@@ -113,6 +115,7 @@ export default function DefaultChildrenList({
             insertParentId={insertParentId}
             insertIndex={insertIndex}
             dropAllowed={dropAllowed}
+            preferParentOnClick={preferParentOnClick}
           />
         </div>
       ))}

@@ -57,6 +57,7 @@ interface Props {
   showBaseline: boolean;
   baselineStep: number;
   dropAllowed?: boolean | null;
+  preferParentOnClick?: boolean;
 }
 
 export default function EditableCanvas({
@@ -87,6 +88,7 @@ export default function EditableCanvas({
   showBaseline,
   baselineStep,
   dropAllowed,
+  preferParentOnClick = false,
 }: Props) {
   const [dropRect, setDropRectState] = useState<{ left: number; top: number; width: number; height: number } | null>(null);
 
@@ -277,6 +279,7 @@ export default function EditableCanvas({
               dropAllowed={dropAllowed}
               insertParentId={insertParentId}
               insertIndex={insertIndex}
+              preferParentOnClick={preferParentOnClick}
             />
           </div>
         ))}

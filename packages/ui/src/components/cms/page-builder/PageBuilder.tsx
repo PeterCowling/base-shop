@@ -22,6 +22,7 @@ interface Props {
   saving?: boolean; publishing?: boolean; saveError?: string | null; publishError?: string | null;
   onChange?: (components: PageComponent[]) => void; style?: CSSProperties;
   presetsSourceUrl?: string;
+  pagesNav?: { items: { label: string; value: string; href: string }[]; current: string };
 }
 
 const PageBuilder = memo(function PageBuilder({
@@ -231,14 +232,36 @@ const PageBuilder = memo(function PageBuilder({
       ) {
         return;
       }
-      if (!(e.ctrlKey || e.metaKey) || !e.shiftKey) return;
       const k = e.key.toLowerCase();
-      if (k === "s") {
-        e.preventDefault();
-        window.dispatchEvent(new Event("pb:save-version"));
-      } else if (k === "v") {
-        e.preventDefault();
-        window.dispatchEvent(new Event("pb:open-versions"));
+      if (e.ctrlKey || e.metaKey) {
+        if (e.shiftKey) {
+          if (k === "s") {
+            e.preventDefault();
+            window.dispatchEvent(new Event("pb:save-version"));
+            return;
+          }
+          if (k === "p") {
+            e.preventDefault();
+            handlePublish();
+            return;
+          }
+          if (k === "]") {
+            e.preventDefault();
+            rotateDeviceRef.current("right");
+            return;
+          }
+          if (k === "[") {
+            e.preventDefault();
+            rotateDeviceRef.current("left");
+            return;
+          }
+        }
+        // Ctrl/Cmd + Alt + P ⇒ Preview toggle
+        if ((e.altKey || (e as any).altGraphKey) && k === "p") {
+          e.preventDefault();
+          togglePreviewRef.current();
+          return;
+        }
       }
     };
     window.addEventListener("keydown", handler);
@@ -257,6 +280,9 @@ const PageBuilder = memo(function PageBuilder({
     breakpoints: (state as any).breakpoints ?? [],
     setBreakpoints: (list: any[]) => dispatch({ type: "set-breakpoints", breakpoints: list } as any),
     extraDevices: controls.extraDevices,
+    editingSizePx: (controls as any).editingSizePx ?? null,
+    setEditingSizePx: (controls as any).setEditingSizePx,
+    pagesNav,
   } as const;
   const gridProps = {
     showGrid: controls.showGrid,
@@ -354,11 +380,13 @@ const PageBuilder = memo(function PageBuilder({
       activeType={activeType}
       previewProps={previewProps}
       historyProps={historyProps}
-      sidebarProps={{ components, selectedIds, onSelectIds: setSelectedIds, dispatch, editor: (state as any).editor, viewport: controls.viewport, breakpoints: (state as any).breakpoints ?? [] }}
+      sidebarProps={{ components, selectedIds, onSelectIds: setSelectedIds, dispatch, editor: (state as any).editor, viewport: controls.viewport, breakpoints: (state as any).breakpoints ?? [], pageId: page.id }}
       toast={toastProps}
       tourProps={tourProps}
       showComments={showComments}
       toggleComments={() => setShowComments((v) => !v)}
+      shop={shop}
+      pageId={page.id}
     />
   );
 });

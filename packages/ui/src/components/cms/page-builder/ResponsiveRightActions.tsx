@@ -20,6 +20,8 @@ interface Props {
   showPreview: boolean;
   showPalette: boolean;
   togglePalette: () => void;
+  parentFirst?: boolean;
+  onParentFirstChange?: (v: boolean) => void;
 }
 
 export default function ResponsiveRightActions({
@@ -33,6 +35,8 @@ export default function ResponsiveRightActions({
   showPreview,
   showPalette,
   togglePalette,
+  parentFirst,
+  onParentFirstChange,
 }: Props) {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [w, setW] = React.useState<number>(0);
@@ -70,6 +74,8 @@ export default function ResponsiveRightActions({
           startTour={startTour}
           showPalette={showPalette}
           togglePalette={togglePalette}
+          parentFirst={parentFirst}
+          onParentFirstChange={onParentFirstChange}
         />
       ) : null}
       {showPresets && onInsertPreset && (
@@ -92,6 +98,8 @@ export default function ResponsiveRightActions({
                 startTour={startTour}
                 showPalette={showPalette}
                 togglePalette={togglePalette}
+                parentFirst={parentFirst}
+                onParentFirstChange={onParentFirstChange}
               />
             ) : undefined
           }

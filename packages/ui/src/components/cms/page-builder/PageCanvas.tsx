@@ -37,6 +37,7 @@ interface Props {
   baselineStep?: number;
   dropAllowed?: boolean | null;
   insertParentId?: string | undefined;
+  preferParentOnClick?: boolean;
 }
 
 const PageCanvas = ({
@@ -68,6 +69,7 @@ const PageCanvas = ({
   baselineStep = 8,
   dropAllowed = null,
   insertParentId,
+  preferParentOnClick = false,
 }: Props) => {
   if (preview) {
     return (
@@ -111,6 +113,7 @@ const PageCanvas = ({
       showBaseline={showBaseline}
       baselineStep={baselineStep}
       dropAllowed={dropAllowed}
+      preferParentOnClick={preferParentOnClick}
     />
   );
 };

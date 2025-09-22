@@ -120,6 +120,23 @@ Two common patterns are used in specs:
 
 ## CMS Functional Examples
 
-- SEO settings save: `cypress/e2e/cms-seo-functional.cy.ts:1`
-- Stock alert settings save: `cypress/e2e/cms-settings-functional.cy.ts:1`
-- AI Catalog enable/disable: `cypress/e2e/cms-ai-catalog-functional.cy.ts:1`
+- Shop Editor (name/theme/luxury flags): `cypress/e2e/cms-shop-editor-functional.cy.ts:1`
+- Currency & tax: `cypress/e2e/cms-currency-tax-functional.cy.ts:1`
+- Deposits: `cypress/e2e/cms-deposits-functional.cy.ts:1`
+- Returns: `cypress/e2e/cms-returns-functional.cy.ts:1`
+- Reverse logistics: `cypress/e2e/cms-reverse-logistics-functional.cy.ts:1`
+- Late fees: `cypress/e2e/cms-late-fees-functional.cy.ts:1`
+- Premier delivery: `cypress/e2e/cms-premier-delivery-functional.cy.ts:1`
+- SEO save: `cypress/e2e/cms-seo-functional.cy.ts:1`
+- SEO freeze translations: `cypress/e2e/cms-seo-freeze-functional.cy.ts:1`
+- SEO warnings (length): `cypress/e2e/cms-seo-warnings-functional.cy.ts:1`
+- AI Catalog: `cypress/e2e/cms-ai-catalog-functional.cy.ts:1`
+- Theme override reset: `cypress/e2e/cms-theme-reset-functional.cy.ts:1`
+- RBAC (viewer): `cypress/e2e/cms-rbac-viewer-functional.cy.ts:1`
+- Stock scheduler (toast only): `cypress/e2e/cms-stock-scheduler-functional.cy.ts:1`
+- Providers (tracking): `cypress/e2e/cms-providers-functional.cy.ts:1`
+- Overrides + localization: `cypress/e2e/cms-overrides-functional.cy.ts:1`
+- Maintenance scan (toast only): `cypress/e2e/cms-maintenance-scan-functional.cy.ts:1`
+- Overrides validation (negative): `cypress/e2e/cms-overrides-validation-functional.cy.ts:1`
+- Overview reflects settings: `cypress/e2e/cms-overview-readonly-functional.cy.ts:1`
+- Stock alerts validation: `cypress/e2e/cms-stock-alerts-validation-functional.cy.ts:1`

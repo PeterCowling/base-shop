@@ -25,4 +25,5 @@ export type BlockItemProps = {
   dropAllowed?: boolean | null;
   insertParentId?: string | undefined;
   insertIndex?: number | null;
+  preferParentOnClick?: boolean;
 };

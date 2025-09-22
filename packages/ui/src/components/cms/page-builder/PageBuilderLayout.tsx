@@ -29,6 +29,10 @@ import useSpacePanning from "./hooks/useSpacePanning";
 import PaletteSidebar from "./PaletteSidebar";
 import QuickPaletteControls from "./QuickPaletteControls";
 import PlaceholderAnimations from "./PlaceholderAnimations";
+import LeftRail from "./LeftRail";
+import PresenceAvatars from "./PresenceAvatars";
+import NotificationsBell from "./NotificationsBell";
+import AppMarketStub from "./AppMarketStub";
 
 interface LayoutProps {
   style?: CSSProperties;
@@ -66,6 +70,9 @@ interface LayoutProps {
   sidebarProps: React.ComponentProps<typeof PageSidebar>;
   toast: { open: boolean; message: string; retry?: () => void; onClose: () => void };
   tourProps: { steps: Step[]; run: boolean; callback: (data: CallBackProps) => void };
+  // For navigation/stubs/collab
+  shop?: string | null;
+  pageId?: string | null;
 }
 
 const PageBuilderLayout = ({
@@ -106,6 +113,8 @@ const PageBuilderLayout = ({
   const { open: cmdOpen, setOpen: setCmdOpen } = useCommandPalette();
   const a11y = useDndA11y((toolbarProps as any)?.locale ?? "en");
   const { onPointerDown } = useSpacePanning(scrollRef);
+  const [showInspector, setShowInspector] = React.useState(true);
+  const [appMarketOpen, setAppMarketOpen] = React.useState(false);
 
   // (Optional) live message toasts can be surfaced by parent if desired
   return (
@@ -123,6 +132,30 @@ const PageBuilderLayout = ({
   </div>
   <div className="flex gap-4 min-h-0" style={style}>
     <PageBuilderTour {...tourProps} />
+    {/* Left icon rail (panels launcher) */}
+    <LeftRail
+      onOpenAdd={() => setShowPalette(true)}
+      onOpenLayers={() => {
+        setShowInspector(true);
+        try {
+          document.getElementById("pb-layers-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        } catch {}
+      }}
+      onOpenPages={() => {
+        if (typeof window !== "undefined" && typeof (window as any).location !== "undefined") {
+          const target = (typeof window !== "undefined" ? ((window as any).__PB_SHOP_ID as string | undefined) : undefined) || undefined;
+          const shopParam = (typeof shop === "string" ? shop : (target ?? "")).trim();
+          if (shopParam) window.location.href = `/cms/shop/${shopParam}/pages`;
+          else window.location.href = "/cms/pages";
+        }
+      }}
+      onOpenSiteStyles={() => {
+        // Ask DesignMenu to open Theme dialog
+        try { window.dispatchEvent(new Event("pb:open-theme")); } catch {}
+      }}
+      onOpenAppMarket={() => setAppMarketOpen(true)}
+      onToggleInspector={() => setShowInspector((v) => !v)}
+    />
     {showPalette && (
       <PaletteSidebar
         width={paletteWidth}
@@ -147,18 +180,41 @@ const PageBuilderLayout = ({
         <div data-tour="toolbar" className="min-w-0 flex-1 overflow-x-hidden">
           <PageToolbar {...toolbarProps} />
         </div>
-        <ResponsiveRightActions
-          gridProps={gridProps}
-          onInsertPreset={onInsertPreset}
-          presetsSourceUrl={presetsSourceUrl}
-          startTour={startTour}
-          toggleComments={toggleComments}
-          showComments={showComments}
-          togglePreview={togglePreview}
-          showPreview={showPreview}
-          showPalette={showPalette}
-          togglePalette={() => setShowPalette((v) => !v)}
-        />
+        {/* Right cluster: View/Canvas + Collab + Notifications + Preview + Versions/Save/Publish + Inspector toggle */}
+        <div className="flex items-center gap-2">
+          <ResponsiveRightActions
+            gridProps={gridProps}
+            onInsertPreset={onInsertPreset}
+            presetsSourceUrl={presetsSourceUrl}
+            startTour={startTour}
+            toggleComments={toggleComments}
+            showComments={showComments}
+            togglePreview={togglePreview}
+            showPreview={showPreview}
+            showPalette={showPalette}
+            togglePalette={() => setShowPalette((v) => !v)}
+          />
+          <PresenceAvatars shop={shop ?? null} pageId={pageId ?? null} />
+          <button
+            type="button"
+            className="rounded border px-2 py-1 text-sm"
+            onClick={togglePreview}
+            aria-label="Preview"
+          >
+            {showPreview ? "Editing" : "Preview"}
+          </button>
+          <NotificationsBell />
+          <HistoryControls {...historyProps} />
+          <button
+            type="button"
+            className="rounded border px-2 py-1 text-sm"
+            onClick={() => setShowInspector((v) => !v)}
+            aria-label={showInspector ? "Hide Inspector" : "Show Inspector"}
+            title={showInspector ? "Hide Inspector" : "Show Inspector"}
+          >
+            {showInspector ? "»" : "«"} Inspector
+          </button>
+        </div>
       </div>
       <div aria-live="polite" aria-atomic="true" role="status" className="sr-only">
         {liveMessage}
@@ -216,11 +272,9 @@ const PageBuilderLayout = ({
         {showPreview && <PreviewPane {...previewProps} />}
         </ErrorBoundary>
       </div>
-      <div className="sticky bottom-0 z-10 border-t border-border-2 bg-surface-1/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-surface-1/70">
-        <HistoryControls {...historyProps} />
-      </div>
+      {/* Bottom history bar removed; actions moved to top bar */}
     </div>
-    <PageSidebar {...sidebarProps} />
+    {showInspector && <PageSidebar {...sidebarProps} />}
     <Toast
       open={toast.open}
       onClose={toast.onClose}
@@ -237,6 +291,7 @@ const PageBuilderLayout = ({
     dispatch={(canvasProps as any)?.dispatch ?? (() => {})}
     onSelectIds={(canvasProps as any)?.onSelectIds ?? (() => {})}
   />
+  <AppMarketStub open={appMarketOpen} onOpenChange={setAppMarketOpen} />
   </>
   );
 };

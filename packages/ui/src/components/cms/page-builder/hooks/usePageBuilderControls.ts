@@ -52,6 +52,16 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
 
   const viewport: "desktop" | "tablet" | "mobile" = device.type;
   const { viewportStyle, frameClass } = useViewport(device);
+  // Per-viewport editing size override (px). Stored by viewport key.
+  const [editingSize, setEditingSize] = useState<Record<"desktop"|"tablet"|"mobile", number | null>>({ desktop: null, tablet: null, mobile: null });
+  const setEditingSizePx = useCallback((px: number | null) => setEditingSize((prev) => ({ ...prev, [viewport]: px })), [viewport]);
+  const effectiveViewportStyle = useMemo(() => {
+    const px = editingSize[viewport];
+    if (px && Number.isFinite(px)) {
+      return { ...viewportStyle, width: `${px}px` } as typeof viewportStyle;
+    }
+    return viewportStyle;
+  }, [viewportStyle, editingSize, viewport]);
 
   const [locale, setLocale] = useState<Locale>("en");
   const [showPreview, setShowPreview] = useState(false);
@@ -149,7 +159,7 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
     rotateDevice,
     device,
     viewport,
-    viewportStyle,
+    viewportStyle: effectiveViewportStyle,
     frameClass,
     locale,
     setLocale,
@@ -178,6 +188,8 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
     breakpoints,
     setBreakpoints,
     extraDevices,
+    editingSizePx: editingSize[viewport] ?? null,
+    setEditingSizePx,
   };
 };
 

@@ -21,10 +21,11 @@ interface Props {
   viewport: "desktop" | "tablet" | "mobile";
   breakpoints?: { id: string; label: string; min?: number; max?: number }[];
   selectedComponent: PageComponent;
+  pageId?: string | null;
 }
 
-const PageSidebarSingleSelection = ({ components, selectedIds, dispatch, editor, viewport, breakpoints = [], selectedComponent }: Props) => {
-  const { globals, insertOpen, setInsertOpen, insertSearch, setInsertSearch, makeGlobal, editGlobally, insertGlobal } = useGlobals({ components, editor, dispatch, selectedComponent });
+const PageSidebarSingleSelection = ({ components, selectedIds, dispatch, editor, viewport, breakpoints = [], selectedComponent, pageId }: Props) => {
+  const { globals, insertOpen, setInsertOpen, insertSearch, setInsertSearch, makeGlobal, editGlobally, insertGlobal } = useGlobals({ components, editor, dispatch, selectedComponent, pageId });
   const { copyStyles, pasteStyles } = useStyleClipboardActions({ selectedComponent, selectedIds, components, dispatch });
   const { centerInParentX, centerInParentY } = useCenterInParent({ components, selectedIds, editor, dispatch, viewport });
   const { ungroup } = useGroupingActions({ components, selectedIds, dispatch });

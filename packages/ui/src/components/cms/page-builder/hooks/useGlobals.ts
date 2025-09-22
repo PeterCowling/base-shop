@@ -4,16 +4,17 @@ import type { Action } from "../state";
 import { usePathname } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
 import { ulid } from "ulid";
-import { saveGlobal, updateGlobal, listGlobals, type GlobalItem } from "../libraryStore";
+import { saveGlobalForPage, updateGlobalForPage, listGlobalsForPage, type GlobalItem } from "../libraryStore";
 
 interface Args {
   components: PageComponent[];
   editor?: HistoryState["editor"];
   dispatch: (action: Action) => void;
   selectedComponent: PageComponent | null;
+  pageId?: string | null;
 }
 
-const useGlobals = ({ components, editor, dispatch, selectedComponent }: Args) => {
+const useGlobals = ({ components, editor, dispatch, selectedComponent, pageId }: Args) => {
   const pathname = usePathname() ?? "";
   const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
   const [globals, setGlobals] = useState<GlobalItem[]>([]);
@@ -21,11 +22,11 @@ const useGlobals = ({ components, editor, dispatch, selectedComponent }: Args) =
   const [insertSearch, setInsertSearch] = useState("");
 
   useEffect(() => {
-    setGlobals(listGlobals(shop));
-    const onChange = () => setGlobals(listGlobals(shop));
+    setGlobals(listGlobalsForPage(shop, pageId));
+    const onChange = () => setGlobals(listGlobalsForPage(shop, pageId));
     window.addEventListener("pb-library-changed", onChange);
     return () => window.removeEventListener("pb-library-changed", onChange);
-  }, [shop]);
+  }, [shop, pageId]);
 
   const makeGlobal = useCallback(async () => {
     if (!selectedComponent) return;
@@ -34,10 +35,10 @@ const useGlobals = ({ components, editor, dispatch, selectedComponent }: Args) =
     if (!label) return;
     const gid = `gid_${ulid()}`;
     const item: GlobalItem = { globalId: gid, label, template: selectedComponent, createdAt: Date.now() } as any;
-    await saveGlobal(shop, item);
+    await saveGlobalForPage(shop, pageId ?? null, item);
     dispatch({ type: "update-editor", id: selectedComponent.id, patch: { global: { id: gid } } as any });
     try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `Made Global: ${label}` })); } catch {}
-  }, [dispatch, selectedComponent, shop]);
+  }, [dispatch, selectedComponent, shop, pageId]);
 
   const applyGlobalToTree = useCallback((nodes: PageComponent[], eid: HistoryState["editor"] | undefined, globalId: string, template: PageComponent): PageComponent[] => {
     const map = eid ?? {};
@@ -67,13 +68,13 @@ const useGlobals = ({ components, editor, dispatch, selectedComponent }: Args) =
     }
     const confirm = window.confirm("Apply current block state to the Global template and update all instances on this page?");
     if (!confirm) return;
-    await updateGlobal(shop, gid, { template: selectedComponent });
+    await updateGlobalForPage(shop, pageId ?? null, gid, { template: selectedComponent });
     const next = applyGlobalToTree(components, editor, gid, selectedComponent);
     if (next !== components) {
       dispatch({ type: "set", components: next });
     }
     try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Updated Global and instances" })); } catch {}
-  }, [components, dispatch, editor, selectedComponent, shop, applyGlobalToTree]);
+  }, [components, dispatch, editor, selectedComponent, shop, pageId, applyGlobalToTree]);
 
   const insertGlobal = useCallback((g: GlobalItem) => {
     const clone = { ...(g.template as any), id: ulid() } as PageComponent;
@@ -87,4 +88,3 @@ const useGlobals = ({ components, editor, dispatch, selectedComponent }: Args) =
 };
 
 export default useGlobals;
-

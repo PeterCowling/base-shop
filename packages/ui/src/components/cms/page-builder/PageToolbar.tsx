@@ -10,6 +10,7 @@ import type { Breakpoint } from "./panels/BreakpointsPanel";
 import DesignMenu, { DesignMenuContent } from "./DesignMenu";
 import MoreMenu from "./MoreMenu";
 import { Tooltip } from "../../atoms";
+import { useRouter } from "next/navigation";
 
 interface Props {
   deviceId: string;
@@ -24,6 +25,11 @@ interface Props {
   breakpoints?: Breakpoint[];
   setBreakpoints?: (list: Breakpoint[]) => void;
   extraDevices?: import("../../../utils/devicePresets").DevicePreset[];
+  // Editing size control (px) for current viewport
+  editingSizePx?: number | null;
+  setEditingSizePx?: (px: number | null) => void;
+  // Pages navigator (builder)
+  pagesNav?: { items: { label: string; value: string; href: string }[]; current: string };
 }
 
 const PageToolbar = ({
@@ -39,7 +45,11 @@ const PageToolbar = ({
   breakpoints,
   setBreakpoints,
   extraDevices,
+  editingSizePx,
+  setEditingSizePx,
+  pagesNav,
 }: Props) => {
+  const router = useRouter();
   useEffect(() => {
     const presets: Record<string, string> = {
       1: getLegacyPreset("desktop").id,
@@ -96,6 +106,25 @@ const PageToolbar = ({
 
   return (
     <div className="flex w-full flex-wrap items-center gap-2" ref={containerRef}>
+      {/* Page selector (left of device selector) */}
+      {pagesNav && pagesNav.items?.length ? (
+        <Select
+          value={pagesNav.current}
+          onValueChange={(v) => {
+            const next = pagesNav.items.find((i) => i.value === v) || null;
+            if (next?.href) router.push(next.href);
+          }}
+        >
+          <SelectTrigger className="h-8 w-52 text-xs" aria-label="Page">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {pagesNav.items.map((p) => (
+              <SelectItem key={p.value} value={p.value}>{p.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      ) : null}
       {/* Left cluster: device + rotate */}
       <div className="flex items-center gap-2 shrink-0">
         <DeviceSelector
@@ -108,6 +137,27 @@ const PageToolbar = ({
           compact
           extraDevices={extraDevices}
         />
+        {/* Editing size: override width in px */}
+        <div className="flex items-center gap-1">
+          <label className="text-xs text-muted-foreground" htmlFor="pb-editing-size">Size</label>
+          <input
+            id="pb-editing-size"
+            type="number"
+            className="h-8 w-20 rounded border px-2 text-xs"
+            placeholder="px"
+            value={editingSizePx ?? ""}
+            onChange={(e) => {
+              const v = e.target.value;
+              if (!setEditingSizePx) return;
+              if (v === "") setEditingSizePx(null);
+              else {
+                const n = parseInt(v, 10);
+                if (Number.isFinite(n)) setEditingSizePx(Math.max(320, Math.min(1920, n)));
+              }
+            }}
+            title="Editing size (px)"
+          />
+        </div>
         <Tooltip text="Rotate">
           <Button
             variant="outline"

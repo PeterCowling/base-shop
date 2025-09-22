@@ -12,9 +12,15 @@ interface Props {
 }
 
 export function DesignMenuContent({ breakpoints = [], onChangeBreakpoints }: Props) {
+  const [themeOpen, setThemeOpen] = React.useState(false);
+  React.useEffect(() => {
+    const open = () => setThemeOpen(true);
+    window.addEventListener("pb:open-theme", open as EventListener);
+    return () => window.removeEventListener("pb:open-theme", open as EventListener);
+  }, []);
   return (
     <div className="flex flex-col gap-2 text-sm">
-      <Dialog>
+      <Dialog open={themeOpen} onOpenChange={setThemeOpen}>
         <DialogTrigger asChild>
           <Button variant="outline">Theme…</Button>
         </DialogTrigger>

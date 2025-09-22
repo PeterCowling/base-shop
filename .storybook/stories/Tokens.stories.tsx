@@ -26,6 +26,7 @@ const withTokens: Decorator = (Story, context) => {
 const meta: Meta = {
   title: "Tokens/All",
   parameters: { layout: "centered" },
+  tags: ["ci"],
   decorators: [withTokens],
 };
 export default meta;

@@ -50,6 +50,7 @@ const BlockItem = memo(function BlockItemComponent({
   dropAllowed,
   insertParentId,
   insertIndex,
+  preferParentOnClick = false,
 }: Props) {
   const selected = selectedIds.includes(component.id);
   const flags = useMemo(() => ((editor ?? {})[component.id] ?? {}), [editor, component.id]);
@@ -201,10 +202,10 @@ const BlockItem = memo(function BlockItemComponent({
   return (
     <div
       ref={setNodeRef}
-      onClick={(e) => onSelect(component.id, e)}
+      onClick={(e) => onSelect((preferParentOnClick && parentId ? parentId : component.id), e)}
       onContextMenu={(e) => {
         e.preventDefault();
-        onSelect(component.id, e);
+        onSelect((preferParentOnClick && parentId ? parentId : component.id), e);
         setCtxPos({ x: e.clientX, y: e.clientY });
         setCtxOpen(true);
       }}

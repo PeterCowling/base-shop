@@ -30,6 +30,7 @@ type Props = {
   dropAllowed?: boolean | null;
   insertParentId?: string | undefined;
   insertIndex?: number | null;
+  preferParentOnClick?: boolean;
 };
 
 const CanvasItem = memo(function CanvasItemComponent(props: Props) {

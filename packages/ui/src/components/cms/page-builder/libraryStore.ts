@@ -20,6 +20,7 @@ export type LibraryItem = {
 
 const keyFor = (shop: string | null | undefined) => `pb-library-${shop || "default"}`;
 const keyForGlobals = (shop: string | null | undefined) => `pb-globals-${shop || "default"}`;
+const keyForPageGlobals = (shop: string | null | undefined, pageId: string | null | undefined) => `pb-globals-${shop || "default"}-page-${pageId || "default"}`;
 
 function emitChange() {
   if (typeof window === "undefined") return;
@@ -217,6 +218,59 @@ export async function removeGlobal(shop: string | null | undefined, globalId: st
   try {
     if (shop) {
       await fetchJson(`/api/globals?shop=${encodeURIComponent(shop)}&id=${encodeURIComponent(globalId)}`, { method: "DELETE" });
+    }
+  } catch {}
+}
+
+// === Page-scoped Globals: used when global sections should be page-level ===
+export function listGlobalsForPage(shop?: string | null, pageId?: string | null): GlobalItem[] {
+  if (typeof window === "undefined") return [];
+  return safeParse<GlobalItem[]>(localStorage.getItem(keyForPageGlobals(shop, pageId)), []);
+}
+
+function writePageGlobals(shop: string | null | undefined, pageId: string | null | undefined, items: GlobalItem[]) {
+  try { localStorage.setItem(keyForPageGlobals(shop, pageId), JSON.stringify(items)); } catch {}
+}
+
+export async function saveGlobalForPage(shop: string | null | undefined, pageId: string | null | undefined, item: GlobalItem) {
+  const cur = listGlobalsForPage(shop, pageId);
+  const next = [item, ...cur.filter((g) => g.globalId !== item.globalId)];
+  writePageGlobals(shop, pageId, next);
+  emitChange();
+  // best-effort server persistence (ignore if unsupported)
+  try {
+    if (shop) {
+      await fetchJson(`/api/globals?shop=${encodeURIComponent(shop)}&pageId=${encodeURIComponent(pageId || "")}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ item }),
+      });
+    }
+  } catch {}
+}
+
+export async function updateGlobalForPage(shop: string | null | undefined, pageId: string | null | undefined, globalId: string, patch: Partial<Pick<GlobalItem, "label" | "template" | "tags" | "thumbnail">>) {
+  const cur = listGlobalsForPage(shop, pageId);
+  const next = cur.map((g) => (g.globalId === globalId ? { ...g, ...patch } : g));
+  writePageGlobals(shop, pageId, next);
+  emitChange();
+  try {
+    if (shop) {
+      await fetchJson(`/api/globals?shop=${encodeURIComponent(shop)}&pageId=${encodeURIComponent(pageId || "")}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ globalId, patch }),
+      });
+    }
+  } catch {}
+}
+
+export async function removeGlobalForPage(shop: string | null | undefined, pageId: string | null | undefined, globalId: string) {
+  writePageGlobals(shop, pageId, listGlobalsForPage(shop, pageId).filter((g) => g.globalId !== globalId));
+  emitChange();
+  try {
+    if (shop) {
+      await fetchJson(`/api/globals?shop=${encodeURIComponent(shop)}&pageId=${encodeURIComponent(pageId || "")}&id=${encodeURIComponent(globalId)}`, { method: "DELETE" });
     }
   } catch {}
 }

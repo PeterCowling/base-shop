@@ -15,12 +15,14 @@ interface Props {
   editor?: HistoryState["editor"];
   viewport?: "desktop" | "tablet" | "mobile";
   breakpoints?: { id: string; label: string; min?: number; max?: number }[];
+  pageId?: string | null;
 }
-const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, viewport = "desktop", breakpoints = [] }: Props) => {
+const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, viewport = "desktop", breakpoints = [], pageId = null }: Props) => {
   const selectedComponent = useMemo(() => components.find((c) => c.id === selectedIds[0]) ?? null, [components, selectedIds]);
 
   return (
-    <aside className="w-72 shrink-0 space-y-4 p-2" data-tour="sidebar">
+    <aside className="w-80 shrink-0 space-y-4 p-2" data-tour="sidebar">
+      <div id="pb-layers-panel">
       <LayersPanel
         components={components}
         selectedIds={selectedIds}
@@ -29,6 +31,7 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
         editor={editor}
         viewport={viewport}
       />
+      </div>
 
       {selectedIds.length === 0 && (
         <div className="p-2 text-sm text-muted-foreground">Select a component to edit its properties.</div>
@@ -53,6 +56,7 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
           viewport={viewport}
           breakpoints={breakpoints}
           selectedComponent={selectedComponent}
+          pageId={pageId}
         />
       )}
     </aside>

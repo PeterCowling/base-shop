@@ -30,6 +30,14 @@ export default async function PageBuilderRoute({
   // Allow editing by slug (preferred) or by id when slug is not yet set
   const current = pages.find((p) => p.slug === key || p.id === key);
   if (!current) return notFound();
+  const pagesNav = {
+    items: pages.map((p) => ({
+      label: (p.slug || p.id),
+      value: (p.slug || p.id),
+      href: `/cms/shop/${shop}/pages/${p.slug || p.id}/builder`,
+    })),
+    current: (current.slug || current.id),
+  } as const;
 
   async function save(formData: FormData) {
     "use server";
@@ -58,6 +66,7 @@ export default async function PageBuilderRoute({
         history={current.history}
         onSave={save}
         onPublish={publish}
+        pagesNav={pagesNav}
       />
     </>
   );

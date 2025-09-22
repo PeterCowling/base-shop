@@ -11,9 +11,11 @@ interface Props {
   startTour: () => void;
   showPalette?: boolean;
   togglePalette?: () => void;
+  parentFirst?: boolean;
+  onParentFirstChange?: (v: boolean) => void;
 }
 
-export function ViewMenuContent({ showPreview, togglePreview, showComments, toggleComments, startTour, showPalette, togglePalette }: Props) {
+export function ViewMenuContent({ showPreview, togglePreview, showComments, toggleComments, startTour, showPalette, togglePalette, parentFirst, onParentFirstChange }: Props) {
   return (
     <div className="space-y-2">
       <div className="text-sm font-medium">View</div>
@@ -31,6 +33,10 @@ export function ViewMenuContent({ showPreview, togglePreview, showComments, togg
           <Switch checked={showPalette} onChange={togglePalette} />
         </label>
       )}
+      <label className="flex items-center justify-between gap-4 text-sm">
+        <span>Layer selection (Parent-first)</span>
+        <Switch checked={!!parentFirst} onChange={() => onParentFirstChange?.(!parentFirst)} />
+      </label>
       <div className="pt-1">
         <Button variant="outline" className="w-full" onClick={startTour}>
           Start tour

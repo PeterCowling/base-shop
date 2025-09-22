@@ -3,6 +3,7 @@ import { useFSM } from "@acme/platform-machine/useFSM";
 
 const meta: Meta = {
   title: "Hooks/useFSM",
+  tags: ["ci"],
   parameters: {
     docs: {
       description: {

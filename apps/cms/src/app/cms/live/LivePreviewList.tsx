@@ -80,7 +80,7 @@ export function LivePreviewList({ items }: LivePreviewListProps) {
                 <Tag className="shrink-0" variant={statusVariant}>{statusLabel}</Tag>
                 <Button
                   type="button"
-                  className="h-10 shrink-0 px-4 text-sm font-medium"
+                  className="h-10 shrink-0 px-4 text-sm font-medium text-white"
                   onClick={handleOpen(item)}
                 >
                   {hasPreview ? "Open preview" : "View details"}

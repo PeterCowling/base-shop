@@ -5,6 +5,7 @@ import type { PageComponent } from "@acme/types";
 import type { Action } from "./state";
 import { Button } from "../../atoms/shadcn";
 import { alignLeft, alignRight, alignTop, alignBottom, alignCenterX, alignCenterY, distributeHorizontal, distributeVertical } from "./state/layout/geometry";
+import useGroupingActions from "./hooks/useGroupingActions";
 import { rectScreenToCanvas } from "./utils/coords";
 
 interface Props {
@@ -48,8 +49,6 @@ export default function SelectionQuickActions({ components, selectedIds, dispatc
     setPos({ left: centerX, top: Math.max(0, top - gap) });
   }, [canvasRef, selectedIds, zoom]);
 
-  if (!pos || selectedIds.length === 0) return null;
-
   const vpKey = (k: "left" | "top") => (viewport === "desktop" ? `${k}Desktop` : viewport === "tablet" ? `${k}Tablet` : `${k}Mobile`);
 
   const locked = disabled;
@@ -61,6 +60,10 @@ export default function SelectionQuickActions({ components, selectedIds, dispatc
   };
 
   const ids = selectedIds;
+  // Hooks must not be called conditionally; initialize grouping actions regardless of visibility
+  const { groupAs, ungroup } = useGroupingActions({ components, selectedIds, dispatch });
+
+  if (!pos || selectedIds.length === 0) return null;
 
   const centerInParentX = () => {
     ids.forEach((id) => {
@@ -88,6 +91,11 @@ export default function SelectionQuickActions({ components, selectedIds, dispatc
       style={{ left: pos.left, top: pos.top }}
     >
       <div className="flex flex-wrap items-center gap-1">
+        {selectedIds.length === 1 && (
+          <>
+            <Button type="button" className="h-6 px-2 py-0 text-xs" variant="outline" disabled={locked} onClick={ungroup} title="Ungroup container">Ungroup</Button>
+          </>
+        )}
         {selectedIds.length > 1 && (
           <>
             <Button type="button" className="h-6 px-2 py-0 text-xs" variant="outline" disabled={locked} onClick={() => doPatch(alignLeft(components, ids, viewport))}>L</Button>
@@ -98,6 +106,8 @@ export default function SelectionQuickActions({ components, selectedIds, dispatc
             <Button type="button" className="h-6 px-2 py-0 text-xs" variant="outline" disabled={locked} onClick={() => doPatch(alignCenterY(components, ids, viewport))}>CY</Button>
             <Button type="button" className="h-6 px-2 py-0 text-xs" variant="outline" disabled={locked} onClick={() => doPatch(distributeHorizontal(components, ids, viewport))}>DH</Button>
             <Button type="button" className="h-6 px-2 py-0 text-xs" variant="outline" disabled={locked} onClick={() => doPatch(distributeVertical(components, ids, viewport))}>DV</Button>
+            <Button type="button" className="h-6 px-2 py-0 text-xs" variant="outline" disabled={locked} onClick={() => groupAs("Section")} title="Group into Section">Group: Sec</Button>
+            <Button type="button" className="h-6 px-2 py-0 text-xs" variant="outline" disabled={locked} onClick={() => groupAs("MultiColumn")} title="Group into Columns">Group: Col</Button>
           </>
         )}
         <Button type="button" className="h-6 px-2 py-0 text-xs" variant="outline" disabled={locked} onClick={centerInParentX} title="Center horizontally in parent">C‒P X</Button>

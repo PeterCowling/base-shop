@@ -11,9 +11,6 @@ jest.mock("@platform-core/contexts/LayoutContext", () => ({
 
 // Stub internal components
 // Use data-cy so getByTestId resolves correctly with the custom testIdAttribute.
-jest.mock("@ui/components/cms/Sidebar.client", () => () => (
-  <div data-cy="sidebar">Sidebar</div>
-));
 jest.mock("@ui/components/cms/TopBar.client", () => () => <div>TopBar</div>);
 jest.mock("@/components/atoms", () => ({
   Progress: ({ value, label }: any) => (
@@ -23,9 +20,8 @@ jest.mock("@/components/atoms", () => ({
 }));
 
 describe("LayoutClient", () => {
-  it("shows sidebar when mobile nav is open and renders progress", () => {
+  it("renders progress summary when configurator is active", () => {
     useLayoutMock.mockReturnValue({
-      isMobileNavOpen: true,
       configuratorProgress: {
         completedRequired: 2,
         totalRequired: 4,
@@ -36,24 +32,16 @@ describe("LayoutClient", () => {
 
     render(<LayoutClient>child</LayoutClient>);
 
-    const sidebar = screen.getByTestId("sidebar");
-    expect(sidebar.parentElement).toHaveClass("block");
-
     const progress = screen.getByTestId("progress");
     expect(progress).toHaveTextContent("2/4 required, 1/3 optional");
     expect(progress).toHaveTextContent("50");
   });
 
-  it("hides sidebar when mobile nav is closed and omits progress", () => {
-    useLayoutMock.mockReturnValue({
-      isMobileNavOpen: false,
-      configuratorProgress: undefined,
-    });
+  it("omits progress when configurator is not active", () => {
+    useLayoutMock.mockReturnValue({ configuratorProgress: undefined });
 
     render(<LayoutClient>child</LayoutClient>);
 
-    const sidebar = screen.getByTestId("sidebar");
-    expect(sidebar.parentElement).toHaveClass("hidden");
     expect(screen.queryByTestId("progress")).toBeNull();
   });
 });

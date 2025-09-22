@@ -112,6 +112,9 @@ jest.mock("@ui/components/cms/blocks", () => ({
   overlayRegistry: {},
 }));
 
+// Increase timeout: the builder mounts several async subtrees
+jest.setTimeout(30000);
+
 describe("PageBuilder integration", () => {
   it("adds, reorders, deletes blocks and updates styles", async () => {
     const user = userEvent.setup();

@@ -4,7 +4,7 @@
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import useMediaLibrary from "./useMediaLibrary";
-import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Dialog, DialogContent, DialogTitle, DialogFooter } from "../../atoms/shadcn";
 import { Tooltip } from "../../atoms";
 
 interface Props {
@@ -19,6 +19,10 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
   const [tag, setTag] = useState("");
   const [type, setType] = useState<"all" | "image" | "video">("all");
   const [page, setPage] = useState(1);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editUrl, setEditUrl] = useState<string>("");
+  const [editAlt, setEditAlt] = useState<string>("");
+  const [editAspect, setEditAspect] = useState<string>("");
   const pageSize = 24;
   useEffect(() => { void loadMedia(); }, [loadMedia]);
   useEffect(() => { setPage(1); }, [q, tag, type]);
@@ -94,6 +98,18 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
                   <Tooltip text="Insert image into the canvas">
                     <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => onInsertImage(it.url)}>Insert</Button>
                   </Tooltip>
+                  {it.type === 'image' && (
+                    <Tooltip text="Edit alt text and aspect before inserting">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        className="h-auto px-2 py-1 text-xs"
+                        onClick={() => { setEditUrl(it.url); setEditAlt(it.altText || ""); setEditAspect(""); setEditOpen(true); }}
+                      >
+                        Edit…
+                      </Button>
+                    </Tooltip>
+                  )}
                   <Tooltip text={selectedIsSection ? "Set selected section background" : "Select a section to set background"}>
                     <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => onSetSectionBackground(it.url)} disabled={!selectedIsSection}>Set BG</Button>
                   </Tooltip>
@@ -101,6 +117,41 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
               </div>
             ))}
           </div>
+          <Dialog open={editOpen} onOpenChange={setEditOpen}>
+            <DialogContent>
+              <DialogTitle>Insert Image</DialogTitle>
+              <div className="space-y-2">
+                <Input label="Alt text" value={editAlt} onChange={(e) => setEditAlt(e.target.value)} placeholder="Describe the image for accessibility" />
+                <Select value={editAspect} onValueChange={(v) => setEditAspect(v)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Aspect (optional)" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">Original</SelectItem>
+                    <SelectItem value="16:9">16:9</SelectItem>
+                    <SelectItem value="4:3">4:3</SelectItem>
+                    <SelectItem value="1:1">1:1</SelectItem>
+                    <SelectItem value="3:4">3:4</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <DialogFooter>
+                <div className="mr-auto text-xs text-muted-foreground">Alt text improves accessibility</div>
+                <Button type="button" variant="outline" onClick={() => setEditOpen(false)}>Cancel</Button>
+                <Button
+                  type="button"
+                  onClick={() => {
+                    try {
+                      window.dispatchEvent(new CustomEvent('pb:insert-image', { detail: { url: editUrl, alt: editAlt || undefined, cropAspect: editAspect || undefined } }));
+                    } catch {}
+                    setEditOpen(false);
+                  }}
+                >
+                  Insert
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
           <div className="flex items-center justify-between text-xs">
             <div>
               {total > 0 ? (

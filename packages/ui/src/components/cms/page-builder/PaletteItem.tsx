@@ -39,6 +39,7 @@ const PaletteItem = memo(function PaletteItem({
       {...listeners}
       role="button"
       tabIndex={0}
+      data-cy={`pb-palette-item-${type}`}
       aria-pressed={isDragging}
       aria-describedby="pb-drag-instructions"
       title="Drag or press space/enter to add"

@@ -134,6 +134,48 @@ export function usePageBuilderState({
       ) {
         return;
       }
+      // Reorder selected block among siblings: Alt+Shift+ArrowUp/Down
+      if ((e.altKey && e.shiftKey) && (e.key.toLowerCase() === 'arrowup' || e.key.toLowerCase() === 'arrowdown')) {
+        if (selectedIds.length !== 1) return;
+        const targetId = selectedIds[0]!;
+        const findParentAndIndex = (nodes: PageComponent[], id: string, parentId?: string): { parentId?: string; index: number } | null => {
+          for (let i = 0; i < nodes.length; i++) {
+            const n = nodes[i] as any;
+            if (n.id === id) return { parentId, index: i };
+            const kids = (n.children as PageComponent[] | undefined);
+            if (Array.isArray(kids)) {
+              const got = findParentAndIndex(kids, id, n.id);
+              if (got) return got;
+            }
+          }
+          return null;
+        };
+        const locateList = (nodes: PageComponent[], pid?: string): PageComponent[] => {
+          if (!pid) return nodes;
+          for (const c of nodes) {
+            if ((c as any).id === pid) return ((c as any).children ?? []) as PageComponent[];
+            const kids = (c as any).children as PageComponent[] | undefined;
+            if (Array.isArray(kids)) {
+              const res = locateList(kids, pid);
+              if (res) return res;
+            }
+          }
+          return nodes;
+        };
+        const info = findParentAndIndex(components, targetId, undefined);
+        if (!info) return;
+        const list = locateList(components, info.parentId);
+        const last = Math.max(0, list.length - 1);
+        const dir = e.key.toLowerCase() === 'arrowup' ? -1 : 1;
+        const to = Math.min(last, Math.max(0, info.index + dir));
+        if (to !== info.index) {
+          e.preventDefault();
+          dispatch({ type: 'move', from: { parentId: info.parentId, index: info.index }, to: { parentId: info.parentId, index: to } });
+          setLiveMessage('Block reordered');
+        }
+        return;
+      }
+
       // Arrow key nudging for absolutely positioned blocks when no modifier except Shift/Alt
       const lower = e.key.toLowerCase();
       if (lower === "arrowleft" || lower === "arrowright" || lower === "arrowup" || lower === "arrowdown") {

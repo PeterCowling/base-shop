@@ -11,15 +11,15 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
   ({ className, variant = "default", children, ...props }, ref) => {
     const bgClasses: Record<string, string> = {
       default: "bg-muted",
-      success: "bg-success",
-      warning: "bg-warning",
-      destructive: "bg-danger",
+      success: "bg-success/20",
+      warning: "bg-warning/20",
+      destructive: "bg-danger/20",
     };
     const textClasses: Record<string, string> = {
-      default: "text-fg",
-      success: "text-success-fg",
-      warning: "text-warning-fg",
-      destructive: "text-danger-foreground",
+      default: "text-foreground",
+      success: "text-foreground",
+      warning: "text-foreground",
+      destructive: "text-foreground",
     };
     const bgTokens: Record<string, string> = {
       default: "--color-muted",

@@ -22,13 +22,27 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
   const shop = getShopFromPath(pathname);
   const [library, setLibrary] = useState<LibraryItem[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [recents, setRecents] = useState<string[]>(() => {
+    try { const s = localStorage.getItem('pb:recent-types'); return s ? (JSON.parse(s) as string[]) : []; } catch { return []; }
+  });
+
+  const pushRecent = useCallback((type: ComponentType) => {
+    try {
+      setRecents((prev) => {
+        const next = [type, ...prev.filter((t) => t !== type)].slice(0, 10);
+        localStorage.setItem('pb:recent-types', JSON.stringify(next));
+        return next;
+      });
+    } catch { /* noop */ }
+  }, []);
 
   const handleAdd = useCallback(
     (type: ComponentType, label: string) => {
       onAdd(type);
       setLiveMessage(`${label} added`);
+      pushRecent(type);
     },
-    [onAdd],
+    [onAdd, pushRecent],
   );
 
   useEffect(() => {
@@ -115,6 +129,38 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
       <div aria-live="polite" className="sr-only">
         {liveMessage}
       </div>
+      {/* Recents */}
+      {recents.length > 0 && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <h4 className="font-semibold capitalize">Recent</h4>
+          </div>
+          <div className="flex flex-col gap-2">
+            {recents
+              .map((type) => {
+                // find meta from palette
+                for (const [, items] of Object.entries(palette)) {
+                  const match = items.find((p) => p.type === type);
+                  if (match) return match;
+                }
+                return { type, label: type, icon: "/window.svg", description: "" } as any;
+              })
+              .filter((p) => isTopLevelAllowed(p.type as ComponentType))
+              .map((p) => (
+                <PaletteItem
+                  key={`recent-${p.type}`}
+                  type={p.type as ComponentType}
+                  label={p.label}
+                  icon={p.icon}
+                  description={p.description}
+                  previewImage={p.previewImage}
+                  onAdd={handleAdd}
+                />
+              ))}
+          </div>
+        </div>
+      )}
+
       {/* My Library */}
       {library.length > 0 && (
         <div className="space-y-2">

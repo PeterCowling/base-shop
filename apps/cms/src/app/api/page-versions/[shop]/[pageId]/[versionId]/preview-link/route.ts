@@ -15,7 +15,10 @@ type PreviewLink = {
 
 type Store = Record<string, PreviewLink>; // token -> link
 
-const STORE_PATH = path.join(process.cwd(), "data", "cms", "page-preview-links.json");
+const STORE_BASE = process.env.DATA_ROOT
+  ? path.join(process.env.DATA_ROOT, "..", "cms")
+  : path.join(process.cwd(), "data", "cms");
+const STORE_PATH = path.join(STORE_BASE, "page-preview-links.json");
 
 async function readStore(): Promise<Store> {
   return readJsonFile<Store>(STORE_PATH, {});

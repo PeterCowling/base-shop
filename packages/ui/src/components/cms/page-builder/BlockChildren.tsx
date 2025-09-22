@@ -109,6 +109,8 @@ export default function BlockChildren({
         id={`container-${component.id}`}
         role="list"
         aria-label="Container"
+        data-cy="pb-container"
+        data-cy-parent-id={component.id}
         className={"border-muted relative m-2 flex flex-col gap-4 border border-dashed p-2 " + (isOver && dropAllowed === false ? "ring-2 ring-danger border-danger cursor-not-allowed" : "")}
         data-tab-titles={isTabbed && slots ? JSON.stringify(slots.map((s) => s.title)) : undefined}
       >

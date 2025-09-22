@@ -11,6 +11,7 @@ const GridOverlay = ({ gridCols, gutter, baselineStep }: Props) => {
   return (
     <div
       className="pointer-events-none absolute inset-0 z-10 grid"
+      data-cy="pb-grid-overlay"
       style={{
         gridTemplateColumns: `repeat(${cols}, 1fr)`,
         ...(gutter ? { columnGap: gutter } : {}),

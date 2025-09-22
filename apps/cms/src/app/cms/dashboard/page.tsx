@@ -125,7 +125,7 @@ export default async function DashboardIndexPage() {
                         View orders, merchandising, and campaign performance for this shop.
                       </p>
                     </div>
-                    <Button asChild className="h-10 shrink-0 px-4 text-sm font-medium">
+                    <Button asChild variant="outline" className="h-10 shrink-0 px-4 text-sm font-medium">
                       <Link href={`/cms/dashboard/${shop}`}>View dashboard</Link>
                     </Button>
                   </CardContent>

@@ -49,6 +49,18 @@ export default function buildBlockContextMenuItems({
     { label: locked ? "Unlock" : "Lock", onClick: () => dispatch({ type: "update-editor", id: componentId, patch: { locked: !locked } as any }), disabled: false },
   ];
 
+  // Group / Ungroup actions
+  if (multiCount > 1) {
+    items.push({ type: "separator" });
+    items.push(
+      { label: "Group into Section", onClick: () => { try { window.dispatchEvent(new CustomEvent('pb:group', { detail: { kind: 'Section' } })); } catch {} } },
+      { label: "Group into Columns", onClick: () => { try { window.dispatchEvent(new CustomEvent('pb:group', { detail: { kind: 'MultiColumn' } })); } catch {} } },
+    );
+  } else if (multiCount === 1) {
+    items.push({ type: "separator" });
+    items.push({ label: "Ungroup", onClick: () => { try { window.dispatchEvent(new Event('pb:ungroup')); } catch {} } });
+  }
+
   if (multiCount > 1) {
     items.push({
       label: lockedSel.length > 0 ? `Unlock selection (${lockedSel.length})` : `Lock selection (${unlocked.length})`,

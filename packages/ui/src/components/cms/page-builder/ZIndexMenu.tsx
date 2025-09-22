@@ -1,6 +1,7 @@
 "use client";
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, Button as MenuButton } from "../../atoms/shadcn";
+import { Tooltip } from "../../atoms";
 import type { Action } from "./state";
 
 type Props = {
@@ -14,7 +15,9 @@ export default function ZIndexMenu({ componentId, currentZ, dispatch }: Props) {
     <div className="absolute top-1 right-10 z-30">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <MenuButton type="button" variant="outline" className="h-6 px-2 py-1 text-xs">⋯</MenuButton>
+          <Tooltip text="Layer order">
+            <MenuButton type="button" variant="outline" className="h-6 px-2 py-1 text-xs" aria-label="Layer order">⋯</MenuButton>
+          </Tooltip>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-40">
           <DropdownMenuItem onClick={(e) => { e.stopPropagation(); dispatch({ type: "update-editor", id: componentId, patch: { zIndex: 999 } as any }); }}>Bring to front</DropdownMenuItem>
@@ -26,4 +29,3 @@ export default function ZIndexMenu({ componentId, currentZ, dispatch }: Props) {
     </div>
   );
 }
-

@@ -8,6 +8,10 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
+    "./useFSM": {
+      "types": "./dist/useFSM.d.ts",
+      "default": "./dist/useFSM.js"
+    },
     "./releaseDepositsService": {
       "types": "./dist/releaseDepositsService.d.ts",
       "default": "./dist/releaseDepositsService.js"

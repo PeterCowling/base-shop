@@ -23,6 +23,7 @@ import PeerSelectionsOverlay from "./PeerSelectionsOverlay";
 import SoftLockBanner from "./SoftLockBanner";
 import useRulerProps from "./hooks/useRulerProps";
 import useSelectionGrouping from "./hooks/useSelectionGrouping";
+import useGroupingActions from "./hooks/useGroupingActions";
 import useDimLockedSelection from "./hooks/useDimLockedSelection";
 import useDropHighlight from "./hooks/useDropHighlight";
 import { isHiddenForViewport } from "./state/layout/utils";
@@ -100,6 +101,7 @@ export default function EditableCanvas({
 
   const positions = useSelectionPositions(canvasRef as any, components);
   const { unlockedIds, hasLockedInSelection, lockedIds } = useSelectionGrouping({ components, selectedIds, editor });
+  const { groupAs, ungroup } = useGroupingActions({ components, selectedIds, dispatch });
 
   useDimLockedSelection({ enabled: (selectedIds?.length ?? 0) > 1 && selectedIds.length > 1 && unlockedIds.length >= 0, lockedIds });
 
@@ -128,6 +130,24 @@ export default function EditableCanvas({
   const marquee = useMarqueeSelect({ canvasRef: canvasRef as any, zoom, editor, viewport, onSelectIds });
   const { contentWidth, contentAlign, contentAlignBase, contentAlignSource } = useRulerProps({ components, selectedIds, editor, viewport });
 
+  // Listen for context-menu driven group/ungroup events
+  useEffect(() => {
+    const onGroup = (e: Event) => {
+      try {
+        const ce = e as CustomEvent<{ kind: "Section" | "MultiColumn" }>;
+        const kind = ce?.detail?.kind;
+        if (kind) groupAs(kind);
+      } catch {}
+    };
+    const onUngroup = () => ungroup();
+    window.addEventListener('pb:group', onGroup as EventListener);
+    window.addEventListener('pb:ungroup', onUngroup as EventListener);
+    return () => {
+      window.removeEventListener('pb:group', onGroup as EventListener);
+      window.removeEventListener('pb:ungroup', onUngroup as EventListener);
+    };
+  }, [groupAs, ungroup]);
+
   return (
     <SortableContext items={visibleComponents.map((c) => c.id)} strategy={rectSortingStrategy}>
       <div
@@ -136,6 +156,7 @@ export default function EditableCanvas({
         style={containerStyle}
         role="list"
         aria-label="Canvas"
+        data-cy="pb-canvas"
         onPointerDown={(e) => {
           const hasPointerEvent = typeof window !== "undefined" && typeof (window as any).PointerEvent !== "undefined";
           if (hasPointerEvent) {

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useFSM } from "@acme/platform-machine";
+import { useFSM } from "@acme/platform-machine/useFSM";
 
 const meta: Meta = {
   title: "Hooks/useFSM",

@@ -12,11 +12,13 @@ import { Button, Card } from "../atoms/shadcn";
 import { Switch } from "../atoms";
 import Breadcrumbs from "./Breadcrumbs.client";
 import ShopSelector from "./ShopSelector";
+import NavMenu from "./NavMenu.client";
 
-function TopBarInner() {
+function TopBarInner({ role }: { role?: string }) {
   const router = useRouter();
   const pathname = usePathname();
-  const { toggleNav } = useLayout();
+  // keep layout context hook for potential future use
+  useLayout();
 
   const segments = pathname.split("/").filter(Boolean);
   const shop = getShopFromPath(pathname);
@@ -37,14 +39,7 @@ function TopBarInner() {
     <header className="relative z-10 border-b border-border-1 bg-surface-2 px-6 py-3 text-foreground">
       <div className="relative flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-1 items-center gap-3">
-          <Button
-            variant="ghost"
-            className="h-9 w-9 shrink-0 rounded-lg border border-border-2 bg-surface-2 text-foreground sm:hidden"
-            onClick={toggleNav}
-          >
-            <span className="sr-only">Toggle navigation</span>
-            ☰
-          </Button>
+          <NavMenu role={role} />
           <Link
             href="/cms"
             className="rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm font-medium text-foreground transition hover:bg-surface-3"

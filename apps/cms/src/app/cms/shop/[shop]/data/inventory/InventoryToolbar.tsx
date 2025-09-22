@@ -62,6 +62,7 @@ export function InventoryToolbar({
       </div>
       <div className="flex shrink-0 flex-wrap items-center gap-2">
         <Button
+          variant="ghost"
           type="button"
           onClick={onAddRow}
           className="h-9 rounded-lg bg-success px-3 text-xs font-semibold text-success-foreground shadow-elevation-1 hover:bg-success/90"

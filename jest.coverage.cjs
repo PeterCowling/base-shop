@@ -11,6 +11,8 @@ module.exports = {
     "*.{ts,tsx}",
     "!**/__tests__/**",
     "!**/*.d.ts",
+    "!**/*.stories.{ts,tsx}",
+    "!**/devtools/**",
     "!**/*.test.{ts,tsx}",
     "!**/*.spec.{ts,tsx}",
   ],

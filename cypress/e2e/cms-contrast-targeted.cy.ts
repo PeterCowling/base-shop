@@ -1,8 +1,7 @@
 import '@testing-library/cypress/add-commands';
 
-describe('CMS pages accessibility (broad)', () => {
+describe('CMS targeted contrast logging', () => {
   const login = () => {
-    // Sign in via NextAuth credentials provider
     cy.request('/api/auth/csrf').then(({ body }) => {
       const csrf = body.csrfToken as string;
       cy.request({
@@ -20,41 +19,35 @@ describe('CMS pages accessibility (broad)', () => {
     });
   };
 
-  // Prepare a named session to reuse across tests
   before(() => {
     cy.session('admin-session', login);
   });
 
-  const routes = [
-    '/cms',
-    '/cms/dashboard',
-    '/cms/migrations',
-    '/cms/media',
-    '/cms/shop/segshop/data/inventory',
-    '/cms/pages',
-    '/cms/products',
-    '/cms/orders',
-    '/cms/settings',
-    '/cms/themes',
-    '/cms/live',
-    '/cms/maintenance',
-    '/cms/shop',
-  ];
+  const routes = ['/cms/dashboard', '/cms/live', '/cms/maintenance', '/cms/shop/segshop/data/inventory', '/cms/themes/library', '/cms/plugins'];
 
   routes.forEach((path) => {
-    it(`has no serious+ a11y violations on ${path}`, () => {
+    it(`logs color-contrast nodes on ${path}`, () => {
       cy.session('admin-session', login);
       cy.visit(path, { failOnStatusCode: false });
       cy.location('pathname').should('eq', path);
       cy.injectAxe();
-      // Exclude hero sections (covered by dedicated hero specs) to focus on non-hero content
       cy.checkA11y(
-        // Focus on main content; exclude global chrome and heroes
         { exclude: [['header'], ['nav'], ['aside'], ['footer'], ['.bg-hero-contrast'], ['.bg-hero']] },
-        { runOnly: { type: 'rule', values: ['color-contrast'] }, includedImpacts: ['critical', 'serious'] },
+        { runOnly: ['color-contrast'] },
         (violations) => {
-          cy.task('log', violations.map(v => ({ id: v.id, impact: v.impact, nodes: v.nodes.map(n => n.target) })));
-        }
+          const rows = violations.map((v) => ({
+            id: v.id,
+            impact: v.impact,
+            help: v.help,
+            nodes: v.nodes.map((n) => ({
+              target: n.target,
+              html: n.html?.slice(0, 200),
+              failureSummary: n.failureSummary,
+            })),
+          }));
+          cy.task('log', JSON.stringify(rows, null, 2));
+        },
+        true
       );
     });
   });

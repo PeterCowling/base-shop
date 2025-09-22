@@ -48,7 +48,7 @@ export default class ChunkReloadBoundary extends React.Component<
           </p>
           <button
             type="button"
-            className="rounded bg-primary px-4 py-2 text-primary-fg"
+            className="rounded bg-primary px-4 py-2 text-white"
             onClick={() => window.location.reload()}
           >
             Refresh

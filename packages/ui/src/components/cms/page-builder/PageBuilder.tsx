@@ -146,6 +146,29 @@ const PageBuilder = memo(function PageBuilder({
     dispatch({ type: 'update', id, patch: { backgroundImageUrl: url } as any });
   };
 
+  // Support rich image insert via MediaLibrary (alt, cropAspect)
+  useEffect(() => {
+    const onInsert = (e: Event) => {
+      try {
+        const ce = e as CustomEvent<{ url: string; alt?: string; cropAspect?: string }>;
+        const d = ce?.detail;
+        if (!d?.url) return;
+        const component = { id: ulid(), type: 'Image', src: d.url, alt: d.alt, cropAspect: d.cropAspect } as PageComponent;
+        let index = components.length;
+        if (insertIndex !== null && insertIndex !== undefined) index = insertIndex as number;
+        else if (selectedIds.length > 0) {
+          const pos = components.findIndex((c: PageComponent) => c.id === selectedIds[0]);
+          index = pos >= 0 ? pos + 1 : components.length;
+        }
+        dispatch({ type: 'add', component, index });
+        setSelectedIds([component.id]);
+        try { window.dispatchEvent(new CustomEvent('pb-live-message', { detail: 'Image inserted' })); } catch {}
+      } catch {}
+    };
+    window.addEventListener('pb:insert-image', onInsert as EventListener);
+    return () => window.removeEventListener('pb:insert-image', onInsert as EventListener);
+  }, [components, dispatch, insertIndex, selectedIds, setSelectedIds]);
+
   const handleInsertPreset = (template: PageComponent) => {
     // Deep clone and ensure unique ids
     const withNewIds = (node: PageComponent): PageComponent => {

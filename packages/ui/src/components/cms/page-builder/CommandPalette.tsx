@@ -13,6 +13,7 @@ type Props = {
   components: PageComponent[];
   selectedIds: string[];
   dispatch: (action: any) => void;
+  onSelectIds?: (ids: string[]) => void;
 };
 
 type PaletteEntry = { type: ComponentType; label: string; category: string; icon?: string };
@@ -57,7 +58,7 @@ function findParentInfo(list: PageComponent[], id: string, parentId?: string): {
   return null;
 }
 
-export default function CommandPalette({ open, onOpenChange, components, selectedIds, dispatch }: Props) {
+export default function CommandPalette({ open, onOpenChange, components, selectedIds, dispatch, onSelectIds }: Props) {
   const [q, setQ] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const all = usePalette();
@@ -124,6 +125,7 @@ export default function CommandPalette({ open, onOpenChange, components, selecte
       return;
     }
     dispatch({ type: "add", component, parentId, index });
+    try { onSelectIds?.([component.id]); } catch {}
     onOpenChange(false);
   };
 
@@ -158,4 +160,3 @@ export default function CommandPalette({ open, onOpenChange, components, selecte
     </Dialog>
   );
 }
-

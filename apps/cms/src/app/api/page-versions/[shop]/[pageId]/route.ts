@@ -12,7 +12,10 @@ type VersionEntry = {
 
 type Store = Record<string, Record<string, VersionEntry[]>>; // shop -> pageId -> versions
 
-const STORE_PATH = path.join(process.cwd(), "data", "cms", "page-versions.json");
+const STORE_BASE = process.env.DATA_ROOT
+  ? path.join(process.env.DATA_ROOT, "..", "cms")
+  : path.join(process.cwd(), "data", "cms");
+const STORE_PATH = path.join(STORE_BASE, "page-versions.json");
 
 async function readStore(): Promise<Store> {
   return readJsonFile<Store>(STORE_PATH, {});

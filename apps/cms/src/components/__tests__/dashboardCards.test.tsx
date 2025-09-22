@@ -6,13 +6,19 @@ jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
   const Passthrough = ({ children, asChild, ...rest }: any) =>
     React.createElement("div", rest, children);
+  const Progress = ({ label, labelClassName, className }: any) => (
+    <div className={className}>
+      <div />
+      {label ? <div className={labelClassName}>{label}</div> : null}
+    </div>
+  );
   return {
     __esModule: true,
     Button: Passthrough,
     Card: Passthrough,
     CardContent: Passthrough,
     Tag: ({ children }: any) => React.createElement("span", { role: "status" }, children),
-    Progress: Passthrough,
+    Progress,
   };
 });
 

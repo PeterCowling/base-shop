@@ -71,7 +71,7 @@ export function MaintenanceScanner({ initial }: MaintenanceScannerProps) {
         <p className="text-sm text-muted-foreground">{summary}</p>
         <Button
           type="button"
-          className="h-11 px-5 text-sm font-semibold"
+          className="h-11 px-5 text-sm font-semibold text-white"
           disabled={isPending}
           onClick={handleScan}
         >

@@ -1,20 +1,12 @@
 // packages/ui/components/cms/Sidebar.tsx
 "use client";
-import { getShopFromPath } from "@acme/shared-utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { features } from "@acme/platform-core/features";
 import { memo, useMemo } from "react";
 import { Button, Card, CardContent } from "../atoms/shadcn";
 import { Tag } from "../atoms";
 import { cn } from "@ui/utils/style";
-
-interface NavigationLink {
-  href: string;
-  label: string;
-  icon: string;
-  title?: string;
-}
+import { useCmsNavItems } from "./nav/useCmsNavItems";
 
 interface SidebarProps {
   role?: string;
@@ -34,80 +26,7 @@ function Sidebar({
     [pathnameProp, routerPathname],
   );
 
-  const navItems = useMemo(() => {
-    const shop = getShopFromPath(pathname);
-    const base = shop ? `/shop/${shop}` : "";
-    const dashboardBase = shop ? `/cms/shop/${shop}` : "/cms";
-
-    const links: NavigationLink[] = [
-      { href: base, label: "Dashboard", icon: "📊" },
-      ...(shop ? [] : [{ href: "/shop", label: "Shops", icon: "🏬" }]),
-      {
-        href: shop ? `${base}/products` : "/products",
-        label: "Products",
-        icon: "📦",
-      },
-      ...(shop
-        ? [
-            { href: `${base}/products/new`, label: "New Product", icon: "➕" },
-          ]
-        : []),
-      { href: shop ? `${base}/pages` : "/pages", label: "Pages", icon: "📄" },
-      ...(shop
-        ? [{ href: `${base}/pages/new/builder`, label: "Create new page", icon: "📝" }]
-        : []),
-      { href: shop ? `${base}/media` : "/media", label: "Media", icon: "🖼️" },
-      ...(shop
-        ? [{ href: `${base}/edit-preview`, label: "Edit Preview", icon: "🧪" }]
-        : []),
-      ...(shop && role && ["admin", "ShopAdmin", "ThemeEditor"].includes(role)
-        ? [{ href: `${base}/themes`, label: "Theme", icon: "🎨" }]
-        : []),
-      { href: shop ? `${base}/settings` : "/settings", label: "Settings", icon: "⚙️" },
-      ...(shop
-        ? [
-            { href: `${base}/settings/seo`, label: "SEO", icon: "🔍" },
-            { href: `${base}/settings/deposits`, label: "Deposits", icon: "💰" },
-          ]
-        : []),
-      ...(features.raTicketing ? [{ href: "/ra", label: "RA", icon: "↩️" }] : []),
-      { href: "/live", label: "Live", icon: "🌐" },
-      ...(role === "admin"
-        ? [
-            {
-              href: "/rbac",
-              label: "RBAC",
-              icon: "🛡️",
-              title: "Manage user roles",
-            },
-            {
-              href: "/account-requests",
-              label: "Account Requests",
-              icon: "📥",
-              title: "Approve new users",
-            },
-            {
-              href: "/configurator",
-              label: "New Shop (Configurator)",
-              icon: "🛠️",
-              title: "Launch configurator to create a new shop",
-            },
-          ]
-        : []),
-    ];
-
-    return links.map((link) => {
-      const fullHref = `/cms${link.href}`;
-      const isDashboardLink = link.label === "Dashboard";
-      const isShopIndexLink = link.label === "Shops";
-      const active = isDashboardLink
-        ? pathname === dashboardBase
-        : isShopIndexLink
-          ? pathname === fullHref
-          : pathname.startsWith(fullHref);
-      return { ...link, fullHref, active };
-    });
-  }, [pathname, role]);
+  const navItems = useCmsNavItems({ pathname, role });
 
   const handleConfiguratorClick = () => {
     try {
@@ -143,13 +62,13 @@ function Sidebar({
               <span>Explore</span>
             </div>
             <nav className="space-y-1">
-              {navItems.map(({ label, icon, title, fullHref, active, href }) => (
+              {navItems.map(({ label, icon, title, fullHref, active, href, isConfigurator }) => (
                 <Link
                   key={fullHref}
                   href={fullHref}
                   aria-current={active ? "page" : undefined}
                   title={title}
-                  onClick={href === "/configurator" ? handleConfiguratorClick : undefined}
+                  onClick={isConfigurator ? handleConfiguratorClick : undefined}
                   className={cn(
                     "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all",
                     active

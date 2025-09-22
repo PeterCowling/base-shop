@@ -73,7 +73,7 @@ export default function RulersOverlay({ show = false, canvasRef, step = 50, view
   if (!show) return null;
   const major = "hsl(var(--color-border) / 0.35)", minor = "hsl(var(--color-border) / 0.2)";
   return (
-    <div className="pointer-events-none absolute inset-0 z-30">
+    <div className="pointer-events-none absolute inset-0 z-30" data-cy="pb-rulers-overlay">
       <div
         aria-hidden
         className="absolute left-0 right-0 h-5"

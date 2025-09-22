@@ -22,8 +22,11 @@ type VersionEntry = {
 type VersionsStore = Record<string, Record<string, VersionEntry[]>>;
 type LinksStore = Record<string, PreviewLink>;
 
-const LINKS_PATH = path.join(process.cwd(), "data", "cms", "page-preview-links.json");
-const VERSIONS_PATH = path.join(process.cwd(), "data", "cms", "page-versions.json");
+const STORE_BASE = process.env.DATA_ROOT
+  ? path.join(process.env.DATA_ROOT, "..", "cms")
+  : path.join(process.cwd(), "data", "cms");
+const LINKS_PATH = path.join(STORE_BASE, "page-preview-links.json");
+const VERSIONS_PATH = path.join(STORE_BASE, "page-versions.json");
 
 async function readLinks(): Promise<LinksStore> {
   return readJsonFile<LinksStore>(LINKS_PATH, {});
@@ -64,4 +67,3 @@ export async function GET(
     editor: v.editor,
   });
 }
-

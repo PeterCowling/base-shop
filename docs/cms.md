@@ -6,9 +6,9 @@ For role and permission details, see the [permission guide](./permissions.md).
 
 Disk-backed repositories allow the CMS to run without an external database. See [persistence](./persistence.md) for how `DATA_ROOT` controls where this data is stored.
 
-## Sidebar Links
+## Navigation Menu
 
-The sidebar inside the CMS provides quick access to different sections:
+The CMS navigation is now a dropdown menu in the top bar. It provides quick access to different sections:
 
 - **Dashboard** – Shows shop statistics and pending account requests.
 - **Products** – Lists all products. If a shop is selected, also shows **New Product**.
@@ -25,7 +25,7 @@ Links such as **New Product**, **Create new page** and **SEO** only appear after
 
 ## Switching Shops
 
-Use the shop selector in the top bar to change which shop you are editing. The selector fetches available shops from `/api/shops` and updates the current route accordingly. Once you select a shop, the sidebar links update to include actions specific to that shop.
+Use the shop selector in the top bar to change which shop you are editing. The selector fetches available shops from `/api/shops` and updates the current route accordingly. Once you select a shop, the menu updates to include actions specific to that shop.
 
 ## Admin‑only Routes
 

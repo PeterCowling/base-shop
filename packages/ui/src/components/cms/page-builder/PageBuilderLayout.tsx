@@ -34,7 +34,7 @@ import PresenceAvatars from "./PresenceAvatars";
 import NotificationsBell from "./NotificationsBell";
 import AppMarketStub from "./AppMarketStub";
 import StudioMenu from "./StudioMenu";
-import { CheckIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { CheckIcon, ReloadIcon, ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 
 interface LayoutProps {
   style?: CSSProperties;
@@ -227,12 +227,16 @@ const PageBuilderLayout = ({
           <HistoryControls {...historyProps} />
           <button
             type="button"
-            className="rounded border px-2 py-1 text-sm"
+            className="inline-flex items-center justify-center rounded border px-2 py-1 text-sm"
             onClick={() => setShowInspector((v) => !v)}
             aria-label={showInspector ? "Hide Inspector" : "Show Inspector"}
             title={showInspector ? "Hide Inspector" : "Show Inspector"}
           >
-            {showInspector ? <span className="inline-flex items-center" aria-hidden>›</span> : <span className="inline-flex items-center" aria-hidden>‹</span>}
+            {showInspector ? (
+              <ChevronRightIcon aria-hidden="true" className="h-4 w-4" />
+            ) : (
+              <ChevronLeftIcon aria-hidden="true" className="h-4 w-4" />
+            )}
           </button>
         </div>
       </div>

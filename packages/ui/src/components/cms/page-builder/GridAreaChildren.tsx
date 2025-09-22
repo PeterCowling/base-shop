@@ -27,6 +27,7 @@ type Props = {
   insertParentId?: string | undefined;
   insertIndex?: number | null;
   dropAllowed?: boolean | null;
+  preferParentOnClick?: boolean;
 };
 
 export default function GridAreaChildren({
@@ -48,6 +49,7 @@ export default function GridAreaChildren({
   insertParentId,
   insertIndex,
   dropAllowed,
+  preferParentOnClick = false,
 }: Props) {
   const raw = String((component as any).areas || "");
   const names = new Set<string>();
@@ -140,6 +142,7 @@ export default function GridAreaChildren({
                     insertParentId={insertParentId}
                     insertIndex={insertIndex}
                     dropAllowed={dropAllowed}
+                    preferParentOnClick={preferParentOnClick}
                   />
                   <InlineInsert
                     index={i + 1}

@@ -30,6 +30,7 @@ type Props = {
   insertParentId?: string | undefined;
   insertIndex?: number | null;
   dropAllowed?: boolean | null;
+  preferParentOnClick?: boolean;
 };
 
 export default function TabbedChildren({
@@ -52,6 +53,7 @@ export default function TabbedChildren({
   insertParentId,
   insertIndex,
   dropAllowed,
+  preferParentOnClick = false,
 }: Props) {
   // Track dragging to show sticky tab headers
   const [dragActive, setDragActive] = useState(false);
@@ -179,6 +181,7 @@ export default function TabbedChildren({
                     insertParentId={insertParentId}
                     insertIndex={insertIndex}
                     dropAllowed={dropAllowed}
+                    preferParentOnClick={preferParentOnClick}
                   />
                   <InlineInsert
                     index={i + 1}

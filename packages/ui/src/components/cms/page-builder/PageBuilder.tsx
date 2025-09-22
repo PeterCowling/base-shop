@@ -16,6 +16,7 @@ import PageBuilderLayout from "./PageBuilderLayout";
 import { defaults, CONTAINER_TYPES, type ComponentType } from "./defaults";
 import { isTopLevelAllowed } from "./rules";
 import usePreviewTokens from "./hooks/usePreviewTokens";
+import useLayerSelectionPreference from "./hooks/useLayerSelectionPreference";
 
 interface Props {
   page: Page; history?: HistoryState; onSave:(fd:FormData)=>Promise<unknown>; onPublish:(fd:FormData)=>Promise<unknown>;
@@ -37,6 +38,7 @@ const PageBuilder = memo(function PageBuilder({
   onChange,
   style,
   presetsSourceUrl,
+  pagesNav,
 }: Props) {
   const pathname = usePathname() ?? "";
   const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
@@ -352,6 +354,7 @@ const PageBuilder = memo(function PageBuilder({
   } as const;
   const toastProps = {open: toast.open, message: toast.message, retry: toast.retry, onClose: () => setToast((t) => ({ ...t, open: false }))};
   const tourProps = {steps: controls.tourSteps, run: controls.runTour, callback: controls.handleTourCallback};
+  const { parentFirst, setParentFirst } = useLayerSelectionPreference();
 
   return (
     <PageBuilderLayout
@@ -375,7 +378,7 @@ const PageBuilder = memo(function PageBuilder({
       viewport={controls.viewport}
       viewportStyle={controls.viewportStyle}
       zoom={controls.zoom}
-      canvasProps={{ ...canvasProps, dropAllowed, insertParentId }}
+      canvasProps={{ ...canvasProps, dropAllowed, insertParentId, preferParentOnClick: parentFirst }}
       scrollRef={scrollRef}
       activeType={activeType}
       previewProps={previewProps}
@@ -385,6 +388,8 @@ const PageBuilder = memo(function PageBuilder({
       tourProps={tourProps}
       showComments={showComments}
       toggleComments={() => setShowComments((v) => !v)}
+      parentFirst={parentFirst}
+      onParentFirstChange={setParentFirst}
       shop={shop}
       pageId={page.id}
     />

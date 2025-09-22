@@ -130,6 +130,18 @@ Two common patterns are used in specs:
 - SEO save: `cypress/e2e/cms-seo-functional.cy.ts:1`
 - SEO freeze translations: `cypress/e2e/cms-seo-freeze-functional.cy.ts:1`
 - SEO warnings (length): `cypress/e2e/cms-seo-warnings-functional.cy.ts:1`
+- SEO locales (freeze off): `cypress/e2e/cms-seo-locales-functional.cy.ts:1`
+- SEO generate (stubbed): `cypress/e2e/cms-seo-generate-functional.cy.ts:1`
+- SEO audit panel (stubbed): `cypress/e2e/cms-seo-audit-functional.cy.ts:1`
+- Overrides duplicate resolution: `cypress/e2e/cms-overrides-duplicate-functional.cy.ts:1`
+- Theme reset (multiple): `cypress/e2e/cms-theme-reset-multi-functional.cy.ts:1`
+- Live previews list: `cypress/e2e/cms-live-previews-functional.cy.ts:1`
+- Edit Preview page: `cypress/e2e/cms-edit-preview-functional.cy.ts:1`
+- Configurator dashboard + Shop Details: `cypress/e2e/cms-configurator-functional.cy.ts:1`
+- Configurator launch (SSE stub): `cypress/e2e/cms-configurator-launch-functional.cy.ts:1`
+- Configurator Theme step: `cypress/e2e/cms-configurator-theme-functional.cy.ts:1`
+- Configurator Home Page step: `cypress/e2e/cms-configurator-homepage-functional.cy.ts:1`
+- Configurator Tokens step: `cypress/e2e/cms-configurator-tokens-functional.cy.ts:1`
 - AI Catalog: `cypress/e2e/cms-ai-catalog-functional.cy.ts:1`
 - Theme override reset: `cypress/e2e/cms-theme-reset-functional.cy.ts:1`
 - RBAC (viewer): `cypress/e2e/cms-rbac-viewer-functional.cy.ts:1`

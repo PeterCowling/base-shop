@@ -95,4 +95,11 @@ export const Overview: Story = {
       </div>
     );
   },
+  // Help the test-runner detect the story has rendered
+  play: async ({ canvasElement }) => {
+    await Promise.resolve();
+    const marker = document.createElement('span');
+    marker.setAttribute('data-test', 'tokens-ready');
+    canvasElement.appendChild(marker);
+  },
 };

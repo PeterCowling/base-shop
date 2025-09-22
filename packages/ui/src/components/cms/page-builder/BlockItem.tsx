@@ -325,6 +325,8 @@ const BlockItem = memo(function BlockItemComponent({
         dropAllowed={dropAllowed}
         insertParentId={insertParentId as any}
         insertIndex={insertIndex as any}
+        editor={editor}
+        preferParentOnClick={preferParentOnClick}
       />
       <HiddenBadge
         hiddenList={hiddenList}

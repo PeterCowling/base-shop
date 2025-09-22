@@ -1,6 +1,7 @@
 // packages/ui/src/components/cms/page-builder/DesignMenu.tsx
 "use client";
 
+import React from "react";
 import { Button, Dialog, DialogTrigger } from "../../atoms/shadcn";
 import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../atoms";
 import ThemePanel from "./ThemePanel";

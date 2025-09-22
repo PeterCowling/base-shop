@@ -29,6 +29,7 @@ export default function BlockChildren({
   dropAllowed,
   insertParentId,
   insertIndex,
+  preferParentOnClick = false,
 }: Props) {
   const containerElRef = useRef<HTMLDivElement | null>(null);
   const underlyingChildren = (childComponents ?? []);
@@ -149,6 +150,7 @@ export default function BlockChildren({
             insertParentId={insertParentId}
             insertIndex={insertIndex}
             dropAllowed={dropAllowed}
+            preferParentOnClick={preferParentOnClick}
           />
         )}
         {isTabbed && slots && (
@@ -172,6 +174,7 @@ export default function BlockChildren({
             insertParentId={insertParentId}
             insertIndex={insertIndex}
             dropAllowed={dropAllowed}
+            preferParentOnClick={preferParentOnClick}
           />
         )}
         {isGridArea && (
@@ -194,6 +197,7 @@ export default function BlockChildren({
             insertParentId={insertParentId}
             insertIndex={insertIndex}
             dropAllowed={dropAllowed}
+            preferParentOnClick={preferParentOnClick}
           />
         )}
       </div>

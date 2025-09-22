@@ -17,6 +17,7 @@ import InlineInsert from "./InlineInsert";
 import CommentsLayer from "./CommentsLayer";
 import SelectionQuickActions from "./SelectionQuickActions";
 import SelectionBreadcrumb from "./SelectionBreadcrumb";
+import CommentsHelpLauncher from "./CommentsHelpLauncher";
 import usePresence from "./collab/usePresence";
 import useSelectionPositions from "./hooks/useSelectionPositions";
 import PeerSelectionsOverlay from "./PeerSelectionsOverlay";
@@ -174,8 +175,9 @@ export default function EditableCanvas({
           (dragOver || isCanvasOver) && (dropAllowed === false ? "ring-2 ring-danger border-danger cursor-not-allowed" : "ring-2 ring-primary")
         )}
       >
-        {/* Breadcrumb of current selection */}
+        {/* Bottom-left utilities: Breadcrumbs + Comments/Help */}
         <SelectionBreadcrumb components={components} selectedIds={selectedIds} onSelectIds={onSelectIds} />
+        <CommentsHelpLauncher />
         {shop && pageId && showComments && (
           <CommentsLayer canvasRef={canvasRef as any} components={components} shop={shop ?? ""} pageId={pageId ?? ""} selectedIds={selectedIds} />
         )}

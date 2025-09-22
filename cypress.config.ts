@@ -61,4 +61,17 @@ export default defineConfig({
       return config;
     }
   }
+  ,
+  component: {
+    devServer: {
+      framework: "react",
+      bundler: "vite",
+      // Use a minimal Vite config for CT to avoid inheriting unrelated root plugins
+      viteConfig: { plugins: [] }
+    },
+    specPattern: [
+      "apps/cms/src/**/*.cy.{ts,tsx}"
+    ],
+    supportFile: "cypress/support/component.ts"
+  }
 });

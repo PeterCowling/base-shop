@@ -1,9 +1,15 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "types": ["cypress", "node"],
+    "types": ["cypress", "node", "cypress/react"],
     "target": "ESNext",
     "lib": ["ESNext", "DOM"]
   },
-  "include": ["cypress/**/*.ts", "test/e2e/**/*.ts"]
+  "include": [
+    "cypress/**/*.ts",
+    "cypress/**/*.tsx",
+    "test/e2e/**/*.ts",
+    "apps/**/*.cy.ts",
+    "apps/**/*.cy.tsx"
+  ]
 }

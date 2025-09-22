@@ -97,7 +97,8 @@ const HistoryControls = ({
     <div className="flex flex-col gap-1">
       <Tooltip text="Publish page">
         <Button
-          variant="outline"
+          variant="default"
+          className="h-9 px-4"
           onClick={onPublish}
           disabled={publishing}
           data-tour="publish"

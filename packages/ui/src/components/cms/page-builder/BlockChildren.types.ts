@@ -22,6 +22,7 @@ export interface BlockChildrenProps {
   dropAllowed?: boolean | null;
   insertParentId?: string | undefined;
   insertIndex?: number | null;
+  preferParentOnClick?: boolean;
 }
 
 export type SlotDef = { key: string; title: string };

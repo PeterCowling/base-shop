@@ -23,8 +23,9 @@ jest.mock("../comments/CommentsPinsLayer", () => ({
   __esModule: true,
   default: (props: any) => (
     <div>
-      <button data-testid="pin-open" onClick={() => props.onOpen("t1")}>open</button>
-      <button data-testid="pin-drag" onMouseDown={() => props.onStartDrag("t1")}>drag</button>
+      <div data-cy="visible-count">{props.visibleThreads?.length ?? 0}</div>
+      <button data-cy="pin-open" onClick={() => props.onOpen("t1")}>open</button>
+      <button data-cy="pin-drag" onMouseDown={() => props.onStartDrag("t1")}>drag</button>
     </div>
   ),
 }));
@@ -67,7 +68,16 @@ describe("CommentsLayer", () => {
     const canvas = document.createElement("div");
     const c1 = document.createElement("div"); c1.setAttribute("data-component-id", "c1");
     const c2 = document.createElement("div"); c2.setAttribute("data-component-id", "c2");
-    Object.assign(canvas, { querySelector: (sel: string) => (sel.includes("c1") ? c1 : sel.includes("c2") ? c2 : null) });
+    Object.assign(canvas, {
+      querySelector: (sel: string) => (sel.includes("c1") ? c1 : sel.includes("c2") ? c2 : null),
+      querySelectorAll: (sel: string) => {
+        if (sel.includes("[data-component-id]")) {
+          // Minimal NodeList-like
+          return [c1, c2] as any;
+        }
+        return [] as any;
+      },
+    });
     const rect = { left: 0, top: 0, x: 0, y: 0, right: 200, bottom: 200, width: 200, height: 200, toJSON: () => ({}) } as any;
     (canvas as any).getBoundingClientRect = () => rect;
     (c1 as any).getBoundingClientRect = () => ({ ...rect, left: 0, top: 0, width: 100, height: 100 });
@@ -104,7 +114,11 @@ describe("CommentsLayer", () => {
     expect(screen.getByTestId("drawer").getAttribute("data-open")).toBe("true");
 
     // Toolbar actions
+    // Initially showResolved = true -> visible threads include resolved and unresolved
+    expect(screen.getByTestId("visible-count")).toHaveTextContent("2");
     await user.click(screen.getAllByText("toggle-resolved")[0]);
+    // Now only unresolved are visible
+    expect(screen.getByTestId("visible-count")).toHaveTextContent("1");
     await user.click(screen.getByText("reload"));
     expect(api.loadThreads).toHaveBeenCalledTimes(2);
 
@@ -136,5 +150,66 @@ describe("CommentsLayer", () => {
     const el = canvas.querySelector('[data-component-id="c1"]') as any;
     expect(el.scrollIntoView).toHaveBeenCalled();
     promptSpy.mockRestore();
+  });
+
+  it("handles load error and recovers on reload", async () => {
+    const { canvasRef, components } = setup();
+    const user = userEvent.setup();
+    // First call fails, second returns 1 unresolved
+    api.loadThreads.mockRejectedValueOnce(new Error("fail"));
+    api.loadThreads.mockResolvedValueOnce([
+      { id: "t3", componentId: "c1", resolved: false, assignedTo: null, messages: [{ id: "m1", text: "hi", ts: new Date().toISOString() }] },
+    ] as any);
+
+    render(
+      <CommentsLayer
+        canvasRef={canvasRef}
+        components={components}
+        shop="shop-1"
+        pageId="p1"
+        selectedIds={["c1"]}
+      />
+    );
+
+    // After failing load, unresolved count is 0 until reload
+    expect(screen.getByText(/Comments \(0\)/)).toBeInTheDocument();
+    await user.click(screen.getByText("reload"));
+    expect(screen.getByText(/Comments \(1\)/)).toBeInTheDocument();
+  });
+
+  it("drags a pin and patches with normalized position", async () => {
+    const { canvasRef, components } = setup();
+    render(
+      <CommentsLayer
+        canvasRef={canvasRef}
+        components={components}
+        shop="shop-1"
+        pageId="p1"
+        selectedIds={["c1"]}
+      />
+    );
+
+    // Ensure pins layer rendered and threads loaded
+    await screen.findByTestId("visible-count");
+    // Begin dragging the first pin
+    const dragBtn = await screen.findByTestId("pin-drag");
+    await act(async () => {
+      dragBtn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+    });
+
+    // Move cursor to center of c1 (0.5, 0.5) and release
+    await act(async () => {
+      window.dispatchEvent(new MouseEvent("mousemove", { clientX: 50, clientY: 50 }));
+    });
+    // Trigger a second move after state/effect cycle so the listener with updated dragId runs
+    await act(async () => {
+      await Promise.resolve();
+      window.dispatchEvent(new MouseEvent("mousemove", { clientX: 50, clientY: 50 }));
+    });
+    await act(async () => {
+      window.dispatchEvent(new MouseEvent("mouseup", { bubbles: true }));
+    });
+
+    expect(api.patchThread).toHaveBeenCalledWith("t1", { pos: { x: 0.5, y: 0.5 } });
   });
 });

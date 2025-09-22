@@ -63,6 +63,13 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
     setDrawerOpen(true);
   };
 
+  // External toggle support (bottom-left launcher)
+  useEffect(() => {
+    const toggle = () => setDrawerOpen((v) => !v);
+    window.addEventListener("pb:toggle-comments", toggle as EventListener);
+    return () => window.removeEventListener("pb:toggle-comments", toggle as EventListener);
+  }, []);
+
   const addMessage = async (id: string, text: string) => {
     if (!id || !text.trim()) return;
     await patchThread(id, { action: "addMessage", text: text.trim() });

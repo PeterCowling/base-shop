@@ -15,6 +15,7 @@ export default function BreakpointsPanel({ breakpoints, onChange }: Props) {
   const [draft, setDraft] = useState<{ label: string; min: string; max: string }>({ label: "", min: "", max: "" });
 
   const add = () => {
+    if (list.length >= 3) return; // limit to 3 additional breakpoints
     const label = draft.label.trim();
     if (!label) return;
     const min = draft.min ? Math.max(0, parseInt(draft.min, 10) || 0) : undefined;
@@ -59,8 +60,11 @@ export default function BreakpointsPanel({ breakpoints, onChange }: Props) {
           <Input placeholder="Label" value={draft.label} onChange={(e) => setDraft((d) => ({ ...d, label: e.target.value }))} />
           <Input placeholder="Min px" type="number" value={draft.min} onChange={(e) => setDraft((d) => ({ ...d, min: e.target.value }))} />
           <Input placeholder="Max px" type="number" value={draft.max} onChange={(e) => setDraft((d) => ({ ...d, max: e.target.value }))} />
-          <Button type="button" variant="outline" onClick={add}>Add</Button>
+          <Button type="button" variant="outline" onClick={add} disabled={list.length >= 3}>Add</Button>
         </div>
+        {list.length >= 3 && (
+          <div className="mt-2 text-xs text-muted-foreground">Limit: up to 3 additional breakpoints per page.</div>
+        )}
         <div className="mt-3 flex justify-end">
           <Button type="button" variant="outline" onClick={save}>Save</Button>
         </div>

@@ -41,6 +41,7 @@ const TextBlock = memo(function TextBlock({
   viewport,
   editor,
   zoom = 1,
+  preferParentOnClick = false,
 }: {
   component: TextComponent;
   index: number;
@@ -55,6 +56,7 @@ const TextBlock = memo(function TextBlock({
   viewport: "desktop" | "tablet" | "mobile";
   editor?: HistoryState["editor"]; 
   zoom?: number;
+  preferParentOnClick?: boolean;
 }) {
   const selected = selectedIds.includes(component.id);
   const flags = (editor ?? {})[component.id] ?? {};
@@ -222,7 +224,7 @@ const TextBlock = memo(function TextBlock({
             nudgeByKeyboard(dir, step);
           }
         }}
-        onSelect={() => onSelect(component.id)}
+        onSelect={() => onSelect((preferParentOnClick && parentId ? parentId : component.id))}
         onRemove={onRemove}
         content={content}
         zIndex={(effZIndex as number | undefined)}

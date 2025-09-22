@@ -33,6 +33,8 @@ import LeftRail from "./LeftRail";
 import PresenceAvatars from "./PresenceAvatars";
 import NotificationsBell from "./NotificationsBell";
 import AppMarketStub from "./AppMarketStub";
+import StudioMenu from "./StudioMenu";
+import { CheckIcon, ReloadIcon } from "@radix-ui/react-icons";
 
 interface LayoutProps {
   style?: CSSProperties;
@@ -73,6 +75,8 @@ interface LayoutProps {
   // For navigation/stubs/collab
   shop?: string | null;
   pageId?: string | null;
+  parentFirst?: boolean;
+  onParentFirstChange?: (v: boolean) => void;
 }
 
 const PageBuilderLayout = ({
@@ -106,6 +110,10 @@ const PageBuilderLayout = ({
   sidebarProps,
   toast,
   tourProps,
+  parentFirst,
+  onParentFirstChange,
+  shop,
+  pageId,
 }: LayoutProps) => {
   const reducedMotion = useReducedMotion();
   const { showDevTools } = useDevToolsToggle();
@@ -177,6 +185,16 @@ const PageBuilderLayout = ({
     )}
     <div className="flex flex-1 flex-col gap-4 min-h-0">
       <div className="sticky top-0 z-10 flex w-full flex-wrap items-center gap-2 overflow-x-hidden bg-surface-1/95 py-2 backdrop-blur supports-[backdrop-filter]:bg-surface-1/70">
+        {/* Left logo/project menu + autosave indicator */}
+        <div className="flex items-center gap-2">
+          <StudioMenu shop={shop ?? null} />
+          {historyProps?.autoSaveState === "saving" && (
+            <span className="inline-flex items-center gap-1 text-xs text-muted-foreground"><ReloadIcon className="h-3 w-3 animate-spin" /> Saving…</span>
+          )}
+          {historyProps?.autoSaveState === "saved" && (
+            <span className="inline-flex items-center gap-1 text-xs text-muted-foreground"><CheckIcon className="h-3 w-3" /> Autosaved</span>
+          )}
+        </div>
         <div data-tour="toolbar" className="min-w-0 flex-1 overflow-x-hidden">
           <PageToolbar {...toolbarProps} />
         </div>
@@ -193,6 +211,8 @@ const PageBuilderLayout = ({
             showPreview={showPreview}
             showPalette={showPalette}
             togglePalette={() => setShowPalette((v) => !v)}
+            parentFirst={parentFirst}
+            onParentFirstChange={onParentFirstChange}
           />
           <PresenceAvatars shop={shop ?? null} pageId={pageId ?? null} />
           <button
@@ -203,7 +223,7 @@ const PageBuilderLayout = ({
           >
             {showPreview ? "Editing" : "Preview"}
           </button>
-          <NotificationsBell />
+          <NotificationsBell shop={shop ?? null} pageId={pageId ?? null} />
           <HistoryControls {...historyProps} />
           <button
             type="button"
@@ -212,7 +232,7 @@ const PageBuilderLayout = ({
             aria-label={showInspector ? "Hide Inspector" : "Show Inspector"}
             title={showInspector ? "Hide Inspector" : "Show Inspector"}
           >
-            {showInspector ? "»" : "«"} Inspector
+            {showInspector ? <span className="inline-flex items-center" aria-hidden>›</span> : <span className="inline-flex items-center" aria-hidden>‹</span>}
           </button>
         </div>
       </div>

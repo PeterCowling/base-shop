@@ -198,10 +198,13 @@ const PageToolbar = ({
                   <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>S</kbd> Save
                 </li>
                 <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>P</kbd> Toggle preview
+                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Alt</kbd> + <kbd>P</kbd> Toggle preview
                 </li>
                 <li>
                   <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>B</kbd> Toggle palette
+                </li>
+                <li>
+                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> Publish
                 </li>
                 <li>
                   <kbd>Shift</kbd> + <kbd>Arrow</kbd> Resize selected block

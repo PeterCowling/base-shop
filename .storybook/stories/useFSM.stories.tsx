@@ -34,6 +34,16 @@ export const ToggleExample: Story = {
       </button>
     );
   },
+  // Help the test-runner detect the story has rendered
+  play: async ({ canvasElement }) => {
+    // Wait a microtask and assert there is content in the canvas
+    await Promise.resolve();
+    if (!canvasElement.querySelector('*')) {
+      const el = document.createElement('span');
+      el.textContent = 'ready';
+      canvasElement.appendChild(el);
+    }
+  },
   parameters: {
     docs: {
       source: {

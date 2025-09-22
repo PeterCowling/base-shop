@@ -26,5 +26,10 @@ describe("CMS settings – Providers (tracking) functional", () => {
       const list = (json.trackingProviders || []).sort();
       expect(list).to.include.members(["dhl", "ups"]);
     });
+
+    // Reload and ensure checkboxes remain checked
+    cy.reload();
+    cy.contains('label', 'DHL').find('input[type=checkbox]').should('be.checked');
+    cy.contains('label', 'UPS').find('input[type=checkbox]').should('be.checked');
   });
 });

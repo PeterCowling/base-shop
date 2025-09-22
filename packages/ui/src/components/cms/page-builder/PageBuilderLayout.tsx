@@ -3,7 +3,7 @@
 import { DndContext, DragOverlay, defaultDropAnimation, defaultDropAnimationSideEffects } from "@dnd-kit/core";
 import type { CSSProperties, ComponentProps } from "react";
 import React from "react";
-import { Toast } from "../../atoms";
+import { IconButton, Toast } from "../../atoms";
 import PageToolbar from "./PageToolbar";
 import PageCanvas from "./PageCanvas";
 import PageSidebar from "./PageSidebar";
@@ -34,7 +34,14 @@ import PresenceAvatars from "./PresenceAvatars";
 import NotificationsBell from "./NotificationsBell";
 import AppMarketStub from "./AppMarketStub";
 import StudioMenu from "./StudioMenu";
-import { CheckIcon, ReloadIcon, ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import {
+  CheckIcon,
+  ReloadIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  EyeClosedIcon,
+  EyeOpenIcon,
+} from "@radix-ui/react-icons";
 
 const PANEL_SEQUENCE = ["palette", "inspector", "layers"] as const;
 type PanelShortcutTarget = (typeof PANEL_SEQUENCE)[number];
@@ -268,14 +275,21 @@ const PageBuilderLayout = ({
             onParentFirstChange={onParentFirstChange}
           />
           <PresenceAvatars shop={shop ?? null} pageId={pageId ?? null} />
-          <button
+          <IconButton
             type="button"
-            className="rounded border px-2 py-1 text-sm"
+            aria-label={showPreview ? "Exit preview" : "Preview"}
+            title={showPreview ? "Exit preview" : "Preview"}
             onClick={togglePreview}
-            aria-label="Preview"
+            aria-pressed={showPreview}
+            variant={showPreview ? "secondary" : "ghost"}
+            className="border border-input"
           >
-            {showPreview ? "Editing" : "Preview"}
-          </button>
+            {showPreview ? (
+              <EyeOpenIcon aria-hidden="true" className="h-4 w-4" />
+            ) : (
+              <EyeClosedIcon aria-hidden="true" className="h-4 w-4" />
+            )}
+          </IconButton>
           <NotificationsBell shop={shop ?? null} pageId={pageId ?? null} />
           <HistoryControls {...historyProps} />
           <button

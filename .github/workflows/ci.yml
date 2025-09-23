@@ -13,8 +13,53 @@ jobs:
         with:
           files: ./coverage/lcov.info
       - run: pnpm build
-      - run: pnpm e2e:dashboard
-      - run: pnpm e2e:shop
+
+  e2e:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [dashboard, shop, cms-playwright]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - uses: pnpm/action-setup@v3
+      - run: pnpm install
+      - name: Install Playwright browsers
+        if: matrix.suite == 'cms-playwright'
+        run: pnpm exec playwright install --with-deps
+      - name: Run ${{ matrix.suite }} suite
+        run: |
+          case "${{ matrix.suite }}" in
+            dashboard)
+              pnpm e2e:dashboard
+              ;;
+            shop)
+              pnpm e2e:shop
+              ;;
+            cms-playwright)
+              pnpm --filter @apps/cms playwright
+              ;;
+          esac
+
+  deploy:
+    needs:
+      - build
+      - e2e
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+      - uses: pnpm/action-setup@v3
+      - run: pnpm install
+      - run: pnpm build
       - run: npx @cloudflare/next-on-pages deploy \
                --project-name=base-shop \
                --branch=${{ github.ref_name }}

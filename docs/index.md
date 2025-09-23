@@ -28,6 +28,13 @@
 - [Sanity blog](./sanity-blog.md)
  - [Troubleshooting](./troubleshooting.md)
 
+## Testing
+- [Testing guide](/__tests__/docs/testing.md)
+- [Cypress](./cypress.md)
+- [Testing with MSW](./testing-with-msw.md)
+- [Coverage](./coverage.md)
+- [Linting](./linting.md)
+
 ## Upgrades & Migrations
 - [Upgrade flow](./upgrade-flow.md)
 - [Upgrade preview & republish](./upgrade-preview-republish.md)

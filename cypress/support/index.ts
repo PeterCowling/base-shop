@@ -75,7 +75,8 @@ Cypress.Commands.add("pbVisitBuilder", (shop: string, pageIdOrSlug: string) => {
   const url = `/cms/shop/${shop}/pages/${pageIdOrSlug}/builder`;
   cy.visit(url, { failOnStatusCode: false });
   cy.location("pathname").should("eq", url);
-  cy.findByRole("heading", { name: /Edit page -/i }).should("exist");
+  // Ensure builder canvas is present instead of legacy header text
+  cy.get('[data-cy="pb-canvas"]').should('exist');
 });
 
 // Simple credentials login helper (reused by specs)

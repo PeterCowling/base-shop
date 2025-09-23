@@ -32,11 +32,26 @@ const set = (list: ComponentType[]) => new Set<ComponentType>(list);
 
 // Allowed children mapping. Adjust as product requirements evolve.
 const ALLOWED: Record<ParentKind, Set<ComponentType>> = {
-  // Top level only allows a Canvas-like container. We use Section as the page canvas.
-  ROOT: set(["Section" as ComponentType]),
+  // Top level allows a Canvas-like container. Historically this was `Section`; now `Canvas` is supported too.
+  ROOT: set(["Section" as ComponentType, "Canvas" as ComponentType]),
 
   // Containers: Section may contain content and selected containers for layouting
   Section: set([
+    // layout containers that organize content
+    "MultiColumn" as ComponentType,
+    "StackFlex" as ComponentType,
+    "Grid" as ComponentType,
+    "CarouselContainer" as ComponentType,
+    "TabsAccordionContainer" as ComponentType,
+    "Dataset" as ComponentType,
+    "Repeater" as ComponentType,
+    "Bind" as ComponentType,
+    // all content classes
+    ...Array.from(CONTENT),
+  ]),
+
+  // Layout: Canvas behaves like the page surface and accepts containers and content
+  Canvas: set([
     // layout containers that organize content
     "MultiColumn" as ComponentType,
     "StackFlex" as ComponentType,
@@ -85,4 +100,3 @@ export function isContainerType(t: string): boolean {
 export function isTopLevelAllowed(t: ComponentType): boolean {
   return canDropChild("ROOT", t);
 }
-

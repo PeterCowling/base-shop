@@ -1,6 +1,6 @@
-import DataTable from "@ui/components/cms/DataTable";
-import { lateFeeColumns, mapLateFeeRows } from "../tableMappers";
+import { mapLateFeeRows } from "../tableMappers";
 import { readOrders } from "@platform-core/repositories/rentalOrders.server";
+import LateFeesTableClient from "./LateFeesTableClient";
 
 export default async function LateFeesTable({ shop }: { shop: string }) {
   const orders = await readOrders(shop);
@@ -11,9 +11,5 @@ export default async function LateFeesTable({ shop }: { shop: string }) {
 
   const rows = mapLateFeeRows(charges);
 
-  return (
-    <div className="mt-4">
-      <DataTable rows={rows} columns={lateFeeColumns} />
-    </div>
-  );
+  return <LateFeesTableClient rows={rows} />;
 }

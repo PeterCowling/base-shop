@@ -6,6 +6,7 @@ import { memo, useState, useCallback } from "react";
 import Image from "next/image";
 import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../atoms";
 import type { PaletteItemProps } from "./palette.types";
+import { getPaletteGlyph } from "./paletteIcons";
 
 const PaletteItem = memo(function PaletteItem({
   type,
@@ -32,6 +33,8 @@ const PaletteItem = memo(function PaletteItem({
     [onAdd, type, label],
   );
 
+  const glyph = getPaletteGlyph(type);
+
   const content = (
     <div
       ref={setNodeRef}
@@ -51,15 +54,20 @@ const PaletteItem = memo(function PaletteItem({
       onBlur={() => setOpen(false)}
       onKeyDown={handleKeyDown}
     >
-      <Image
-        src={icon}
-        alt=""
-        aria-hidden="true"
-        className="h-6 w-6 rounded"
-        width={24}
-        height={24}
-        loading="lazy"
-      />
+      {/* Prefer Radix glyphs; fall back to provided image asset if any */}
+      {glyph ? (
+        <span aria-hidden className="text-foreground">{glyph}</span>
+      ) : (
+        <Image
+          src={icon}
+          alt=""
+          aria-hidden="true"
+          className="h-6 w-6 rounded"
+          width={24}
+          height={24}
+          loading="lazy"
+        />
+      )}
       <span>{label}</span>
     </div>
   );

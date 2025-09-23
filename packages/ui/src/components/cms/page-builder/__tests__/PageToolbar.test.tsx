@@ -220,9 +220,9 @@ describe("PageToolbar", () => {
     render(<Wrapper />);
     fireEvent.click(screen.getByText("Add"));
     expect(screen.getByTestId("count").textContent).toBe("1");
-    fireEvent.click(screen.getByText("Undo"));
+    fireEvent.click(screen.getByLabelText("Undo"));
     expect(screen.getByTestId("count").textContent).toBe("0");
-    fireEvent.click(screen.getByText("Redo"));
+    fireEvent.click(screen.getByLabelText("Redo"));
     expect(screen.getByTestId("count").textContent).toBe("1");
     fireEvent.click(screen.getByText("Remove"));
     expect(screen.getByTestId("count").textContent).toBe("0");

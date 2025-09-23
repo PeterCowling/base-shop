@@ -22,7 +22,7 @@ import TimelinePanel from "../panels/TimelinePanel";
 import ContentPanel from "../panels/ContentPanel";
 import DatasetEditor from "../DatasetEditor";
 import LottieControls from "../panels/LottieControls";
-import GlobalsPanel from "../GlobalsPanel";
+import GlobalsPicker from "./GlobalsPicker";
 import {
   AlignLeftIcon,
   AlignRightIcon,
@@ -451,7 +451,7 @@ const PageSidebarSingleSelection = ({ components, selectedIds, dispatch, editor,
             <Button type="button" variant="outline" aria-label="Insert Global">Insert Global</Button>
           </PopoverTrigger>
           <PopoverContent align="start" className="w-72 space-y-2">
-            <GlobalsPanel
+            <GlobalsPicker
               globals={globals}
               search={insertSearch}
               onSearchChange={setInsertSearch}

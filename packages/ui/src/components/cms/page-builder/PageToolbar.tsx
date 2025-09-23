@@ -1,9 +1,9 @@
 "use client";
 
 import type { Locale } from "@acme/i18n/locales";
-import { ReloadIcon } from "@radix-ui/react-icons";
+import { ReloadIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import React, { useEffect } from "react";
-import { Button, Dialog, DialogTrigger, DialogContent, DialogTitle, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../../atoms/shadcn";
+import { Button, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, Dialog, DialogTrigger } from "../../atoms/shadcn";
 import { Popover, PopoverContent, PopoverTrigger, Tooltip as UITooltip } from "../../atoms";
 import { getLegacyPreset } from "../../../utils/devicePresets";
 import DeviceSelector from "../../common/DeviceSelector";
@@ -87,7 +87,6 @@ const PageToolbar = ({
     return () => window.removeEventListener("keydown", handler);
   }, [setDeviceId, setOrientation]);
 
-  const [helpOpen, setHelpOpen] = React.useState(false);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [w, setW] = React.useState<number>(0);
   const [sizeOpen, setSizeOpen] = React.useState(false);
@@ -104,7 +103,6 @@ const PageToolbar = ({
   }, []);
 
   const showDesignInline = w >= 420;
-  const showHelpIcon = w >= 440;
   const moreItems: { label: string; onClick: () => void }[] = [];
   const moreContent: React.ReactNode = !showDesignInline ? (
     <DesignMenuContent
@@ -112,7 +110,6 @@ const PageToolbar = ({
       onChangeBreakpoints={(list) => setBreakpoints?.(list)}
     />
   ) : undefined;
-  if (!showHelpIcon) moreItems.push({ label: "Keyboard shortcuts", onClick: () => setHelpOpen(true) });
 
   return (
     <div className="flex w-full flex-wrap items-center gap-2" ref={containerRef}>
@@ -147,26 +144,7 @@ const PageToolbar = ({
           compact
           extraDevices={extraDevices}
         />
-        {/* Compact zoom display: click opens View menu zoom controls; Alt-click resets to 100% */}
-        <UITooltip text="Zoom">
-          <Button
-            variant="outline"
-            className="h-8 px-2 text-xs"
-            aria-label="Zoom"
-            onClick={(e) => {
-              if (e.altKey) {
-                setZoom?.(1);
-                try { window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'info', title: 'Zoom reset to 100%' } })); } catch {}
-              } else {
-                try { window.dispatchEvent(new Event('pb:open-view')); } catch {}
-              }
-            }}
-            onDoubleClick={() => setZoom?.(1)}
-            title="Click to open Zoom controls; Alt-click to reset"
-          >
-            {`${Math.round((zoom ?? 1) * 100)}%`}
-          </Button>
-        </UITooltip>
+        {/* Zoom control removed per requirements */}
         {/* Breakpoints overflow: three-dot menu next to device selector */}
         <Dialog>
           <DialogTrigger asChild>
@@ -244,7 +222,7 @@ const PageToolbar = ({
           </Button>
         </Tooltip>
       </div>
-      {/* Middle cluster: design menu + help */}
+      {/* Middle cluster: design menu */}
       <div className="flex items-center gap-2 shrink-0">
         {showDesignInline && (
           <DesignMenu
@@ -252,107 +230,38 @@ const PageToolbar = ({
             onChangeBreakpoints={(list) => setBreakpoints?.(list)}
           />
         )}
-        {showHelpIcon ? (
-          <Dialog open={helpOpen} onOpenChange={setHelpOpen}>
-            <DialogTrigger asChild>
-              <Tooltip text="Keyboard shortcuts">
-                <Button variant="outline" size="icon" aria-label="Keyboard shortcuts">
-                  ?
-                </Button>
-              </Tooltip>
-            </DialogTrigger>
-            <DialogContent className="space-y-2">
-              <DialogTitle>Keyboard shortcuts</DialogTitle>
-              <ul className="space-y-1 text-sm">
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>S</kbd> Save
-                </li>
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Alt</kbd> + <kbd>P</kbd> Toggle preview
-                </li>
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>B</kbd> Toggle palette
-                </li>
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> Publish
-                </li>
-                <li>
-                  <kbd>Shift</kbd> + <kbd>Arrow</kbd> Resize selected block
-                </li>
-                <li>
-                  Hold <kbd>Shift</kbd> while dragging to lock to an axis
-                </li>
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Arrow</kbd> Adjust spacing
-                </li>
-                <li className="text-xs text-muted-foreground">
-                  When snap to grid is enabled, steps use the grid unit
-                </li>
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>[</kbd> Rotate
-                  device left
-                </li>
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>]</kbd> Rotate
-                  device right
-                </li>
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Z</kbd> Undo
-                </li>
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Y</kbd> Redo
-                </li>
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>1</kbd> Desktop view
-                </li>
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>2</kbd> Tablet view
-                </li>
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>3</kbd> Mobile view
-                </li>
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd> Save Version
-                </li>
-                <li>
-                  <kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd> Open Versions
-                </li>
-              </ul>
-            </DialogContent>
-          </Dialog>
-        ) : null}
-        {(!showHelpIcon || !showDesignInline) && (
-          <MoreMenu items={moreItems} content={moreContent} />
-        )}
+        {!showDesignInline && <MoreMenu items={moreItems} content={moreContent} />}
       </div>
-      {/* Right cluster: locales (wraps to new line when tight) */}
-      <div className="ml-auto flex flex-wrap items-center gap-1 basis-full md:basis-auto">
-        {locales.length > 3 ? (
-          <Select value={locale} onValueChange={(v) => setLocale(v as Locale)}>
-            <SelectTrigger className="h-8 w-28 text-xs" aria-label="Locale">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {locales.map((l) => (
-                <SelectItem key={l} value={l}>
-                  {l.toUpperCase()}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        ) : (
-          locales.map((l) => (
-            <Button
-              key={l}
-              variant={locale === l ? "default" : "outline"}
-              className="h-8 px-2 text-xs"
-              onClick={() => setLocale(l)}
-            >
-              {l.toUpperCase()}
-            </Button>
-          ))
-        )}
-      </div>
+      {/* Right cluster: locales — hidden when only one locale (EN) */}
+      {locales.length > 1 ? (
+        <div className="ml-auto flex flex-wrap items-center gap-1 basis-full md:basis-auto">
+          {locales.length > 3 ? (
+            <Select value={locale} onValueChange={(v) => setLocale(v as Locale)}>
+              <SelectTrigger className="h-8 w-28 text-xs" aria-label="Locale">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {locales.map((l) => (
+                  <SelectItem key={l} value={l}>
+                    {l.toUpperCase()}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ) : (
+            locales.map((l) => (
+              <Button
+                key={l}
+                variant={locale === l ? "default" : "outline"}
+                className="h-8 px-2 text-xs"
+                onClick={() => setLocale(l)}
+              >
+                {l.toUpperCase()}
+              </Button>
+            ))
+          )}
+        </div>
+      ) : null}
       {progress && (
         <p className="basis-full text-xs">
           Uploading image… {progress.done}/{progress.total}

@@ -4,7 +4,7 @@ import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../..
 import { Tooltip } from "../../atoms";
 import { useEffect, useState } from "react";
 import { Spinner } from "../../atoms";
-import { CheckIcon } from "@radix-ui/react-icons";
+import { CheckIcon, RotateCounterClockwiseIcon, UpdateIcon } from "@radix-ui/react-icons";
 import VersionsPanel from "./VersionsPanel";
 import type { PageComponent, HistoryState } from "@acme/types";
 
@@ -26,6 +26,10 @@ interface Props {
   currentComponents?: PageComponent[];
   editor?: HistoryState["editor"];
   onRestoreVersion?: (components: PageComponent[]) => void;
+  // Visibility controls (to support multi-row layouts)
+  showUndoRedo?: boolean;
+  showSavePublish?: boolean;
+  showVersions?: boolean;
 }
 
 const HistoryControls = ({
@@ -45,6 +49,9 @@ const HistoryControls = ({
   currentComponents,
   editor,
   onRestoreVersion,
+  showUndoRedo = true,
+  showSavePublish = true,
+  showVersions = true,
 }: Props) => {
   const [isOpenSave, setIsOpenSave] = useState(false);
   const [isOpenManage, setIsOpenManage] = useState(false);
@@ -61,95 +68,104 @@ const HistoryControls = ({
     };
   }, []);
   return (
-  <div className="flex gap-2">
-    <Tooltip text="Undo (Ctrl/⌘+Z)">
-      <Button onClick={onUndo} disabled={!canUndo}>
-        Undo
-      </Button>
-    </Tooltip>
-    <Tooltip text="Redo (Ctrl/⌘+Y)">
-      <Button onClick={onRedo} disabled={!canRedo}>
-        Redo
-      </Button>
-    </Tooltip>
-    <div className="flex flex-col gap-1">
-      <div className="flex items-center gap-2">
-        <Tooltip text="Save (Ctrl/⌘+S)">
-          <Button onClick={onSave} disabled={saving}>
-            {saving ? <Spinner className="h-4 w-4" /> : "Save"}
-          </Button>
-        </Tooltip>
-        {autoSaveState === "saving" && (
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <Spinner className="h-4 w-4" /> Saving…
+    <div className="flex gap-2">
+      {showUndoRedo && (
+        <>
+          <Tooltip text="Undo (Ctrl/⌘+Z)">
+            <Button onClick={onUndo} disabled={!canUndo} aria-label="Undo">
+              <RotateCounterClockwiseIcon className="h-4 w-4" aria-hidden="true" />
+            </Button>
+          </Tooltip>
+          <Tooltip text="Redo (Ctrl/⌘+Y)">
+            <Button onClick={onRedo} disabled={!canRedo} aria-label="Redo">
+              <UpdateIcon className="h-4 w-4" aria-hidden="true" />
+            </Button>
+          </Tooltip>
+        </>
+      )}
+      {showSavePublish && (
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <Tooltip text="Save (Ctrl/⌘+S)">
+              <Button onClick={onSave} disabled={saving}>
+                {saving ? <Spinner className="h-4 w-4" /> : "Save"}
+              </Button>
+            </Tooltip>
+            {autoSaveState === "saving" && (
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <Spinner className="h-4 w-4" /> Saving…
+              </div>
+            )}
+            {autoSaveState === "saved" && (
+              <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                <CheckIcon className="h-4 w-4 text-green-500" /> All changes saved
+              </div>
+            )}
           </div>
-        )}
-        {autoSaveState === "saved" && (
-          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-            <CheckIcon className="h-4 w-4 text-green-500" /> All changes saved
-          </div>
-        )}
-      </div>
-      {saveError && (
-        <p className="text-sm text-red-500">{saveError}</p>
+          {saveError && (
+            <p className="text-sm text-red-500">{saveError}</p>
+          )}
+        </div>
+      )}
+      {showSavePublish && (
+        <div className="flex flex-col gap-1">
+          <Tooltip text="Publish page">
+            <Button
+              variant="default"
+              className="h-9 px-4"
+              onClick={onPublish}
+              disabled={publishing}
+              data-tour="publish"
+            >
+              {publishing ? <Spinner className="h-4 w-4" /> : "Publish"}
+            </Button>
+          </Tooltip>
+          {publishError && (
+            <p className="text-sm text-red-500">{publishError}</p>
+          )}
+        </div>
+      )}
+      {showVersions && shop && pageId && currentComponents && onRestoreVersion && (
+        <Dialog open={isOpenManage} onOpenChange={setIsOpenManage}>
+          <DialogTrigger asChild>
+            <Tooltip text="Manage versions (Ctrl/⌘+Shift+V)">
+              <Button variant="outline" onClick={() => setIsOpenManage(true)}>Versions</Button>
+            </Tooltip>
+          </DialogTrigger>
+          <DialogContent className="max-w-5xl">
+            <DialogTitle>Versions</DialogTitle>
+            <VersionsPanel
+              shop={shop}
+              pageId={pageId}
+              current={currentComponents}
+              editor={editor}
+              onRestore={onRestoreVersion}
+            />
+          </DialogContent>
+        </Dialog>
+      )}
+      {showVersions && shop && pageId && currentComponents && onRestoreVersion && (
+        <Dialog open={isOpenSave} onOpenChange={setIsOpenSave}>
+          <DialogTrigger asChild>
+            <Tooltip text="Save version snapshot (Ctrl/⌘+Shift+S)">
+              <Button variant="outline" onClick={() => setIsOpenSave(true)}>Save Version</Button>
+            </Tooltip>
+          </DialogTrigger>
+          <DialogContent className="max-w-5xl">
+            <DialogTitle>Save Version</DialogTitle>
+            <VersionsPanel
+              shop={shop}
+              pageId={pageId}
+              current={currentComponents}
+              editor={editor}
+              onRestore={onRestoreVersion}
+              autoFocusLabel
+            />
+          </DialogContent>
+        </Dialog>
       )}
     </div>
-    <div className="flex flex-col gap-1">
-      <Tooltip text="Publish page">
-        <Button
-          variant="default"
-          className="h-9 px-4"
-          onClick={onPublish}
-          disabled={publishing}
-          data-tour="publish"
-        >
-          {publishing ? <Spinner className="h-4 w-4" /> : "Publish"}
-        </Button>
-      </Tooltip>
-      {publishError && (
-        <p className="text-sm text-red-500">{publishError}</p>
-      )}
-    </div>
-    {shop && pageId && currentComponents && onRestoreVersion && (
-      <Dialog open={isOpenManage} onOpenChange={setIsOpenManage}>
-        <DialogTrigger asChild>
-          <Tooltip text="Manage versions (Ctrl/⌘+Shift+V)">
-            <Button variant="outline" onClick={() => setIsOpenManage(true)}>Versions</Button>
-          </Tooltip>
-        </DialogTrigger>
-        <DialogContent className="max-w-5xl">
-          <DialogTitle>Versions</DialogTitle>
-          <VersionsPanel
-            shop={shop}
-            pageId={pageId}
-            current={currentComponents}
-            editor={editor}
-            onRestore={onRestoreVersion}
-          />
-        </DialogContent>
-      </Dialog>
-    )}
-    {shop && pageId && currentComponents && onRestoreVersion && (
-      <Dialog open={isOpenSave} onOpenChange={setIsOpenSave}>
-        <DialogTrigger asChild>
-          <Tooltip text="Save version snapshot (Ctrl/⌘+Shift+S)">
-            <Button variant="outline" onClick={() => setIsOpenSave(true)}>Save Version</Button>
-          </Tooltip>
-        </DialogTrigger>
-        <DialogContent className="max-w-5xl">
-          <DialogTitle>Save Version</DialogTitle>
-          <VersionsPanel
-            shop={shop}
-            pageId={pageId}
-            current={currentComponents}
-            editor={editor}
-            onRestore={onRestoreVersion}
-            autoFocusLabel
-          />
-        </DialogContent>
-      </Dialog>
-    )}
-  </div>
-)};
+  );
+};
 
 export default HistoryControls;

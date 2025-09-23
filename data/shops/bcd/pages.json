@@ -32,23 +32,17 @@
     ],
     "seo": {
       "title": {
-        "en": "",
-        "de": "",
-        "it": ""
+        "en": ""
       },
       "description": {
-        "en": "",
-        "de": "",
-        "it": ""
+        "en": ""
       },
       "image": {
-        "en": "",
-        "de": "",
-        "it": ""
+        "en": ""
       }
     },
     "createdAt": "2025-09-19T18:16:31.332Z",
-    "updatedAt": "2025-09-22T18:33:27.590Z",
+    "updatedAt": "2025-09-23T07:26:08.472Z",
     "createdBy": "admin@example.com",
     "history": {
       "past": [

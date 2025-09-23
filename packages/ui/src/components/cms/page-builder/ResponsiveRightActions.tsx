@@ -3,7 +3,6 @@
 
 import React from "react";
 import CanvasControlsMenu from "./CanvasControlsMenu";
-import PresetsModal from "./PresetsModal";
 import MoreMenu from "./MoreMenu";
 import { ViewMenuContent, default as ViewMenu } from "./ViewMenu";
 import type GridSettings from "./GridSettings";
@@ -28,8 +27,8 @@ interface Props {
 
 export default function ResponsiveRightActions({
   gridProps,
-  onInsertPreset,
-  presetsSourceUrl,
+  onInsertPreset: _onInsertPreset,
+  presetsSourceUrl: _presetsSourceUrl,
   startTour,
   toggleComments,
   showComments,
@@ -44,13 +43,7 @@ export default function ResponsiveRightActions({
 }: Props) {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [w, setW] = React.useState<number>(0);
-  const [presetOpen, setPresetOpen] = React.useState(false);
   const [viewOpen, setViewOpen] = React.useState(false);
-  React.useEffect(() => {
-    const open = () => setPresetOpen(true);
-    window.addEventListener("pb:open-presets", open as EventListener);
-    return () => window.removeEventListener("pb:open-presets", open as EventListener);
-  }, []);
   React.useEffect(() => {
     const open = () => setViewOpen(true);
     window.addEventListener("pb:open-view", open as EventListener);
@@ -68,8 +61,7 @@ export default function ResponsiveRightActions({
     return () => ro.disconnect();
   }, []);
 
-  // Simple heuristic thresholds: keep Canvas visible; hide Presets under 520px; hide View under 380px.
-  const showPresets = !!onInsertPreset && w >= 520;
+  // Simple heuristic thresholds: keep Canvas visible; hide View under 380px.
   const showView = w >= 380;
 
   return (
@@ -93,42 +85,25 @@ export default function ResponsiveRightActions({
           onCrossBreakpointNoticesChange={onCrossBreakpointNoticesChange}
         />
       ) : null}
-      {showPresets && onInsertPreset && (
-        <PresetsModal onInsert={onInsertPreset} sourceUrl={presetsSourceUrl} />
-      )}
-      {(!showView || !showPresets) && (
+      {!showView && (
         <MoreMenu
-          items={
-            !showPresets && onInsertPreset
-              ? [{ label: "Insert preset", onClick: () => setPresetOpen(true) }]
-              : []
-          }
+          items={[]}
           content={
-            !showView ? (
-              <ViewMenuContent
-                showPreview={showPreview}
-                togglePreview={togglePreview}
-                showComments={showComments}
-                toggleComments={toggleComments}
-                startTour={startTour}
-                showPalette={showPalette}
-                togglePalette={togglePalette}
-                parentFirst={parentFirst}
-                onParentFirstChange={onParentFirstChange}
-                gridProps={gridProps}
-                crossBreakpointNotices={crossBreakpointNotices}
-                onCrossBreakpointNoticesChange={onCrossBreakpointNoticesChange}
-              />
-            ) : undefined
+            <ViewMenuContent
+              showPreview={showPreview}
+              togglePreview={togglePreview}
+              showComments={showComments}
+              toggleComments={toggleComments}
+              startTour={startTour}
+              showPalette={showPalette}
+              togglePalette={togglePalette}
+              parentFirst={parentFirst}
+              onParentFirstChange={onParentFirstChange}
+              gridProps={gridProps}
+              crossBreakpointNotices={crossBreakpointNotices}
+              onCrossBreakpointNoticesChange={onCrossBreakpointNoticesChange}
+            />
           }
-        />
-      )}
-      {onInsertPreset && (
-        <PresetsModal
-          onInsert={onInsertPreset}
-          sourceUrl={presetsSourceUrl}
-          open={presetOpen}
-          onOpenChange={setPresetOpen}
         />
       )}
     </div>

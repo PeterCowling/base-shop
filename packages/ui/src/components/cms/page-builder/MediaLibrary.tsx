@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import useMediaLibrary from "./useMediaLibrary";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Dialog, DialogContent, DialogTitle, DialogFooter } from "../../atoms/shadcn";
+import { ImageIcon, VideoIcon, MixIcon, TokensIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Tooltip } from "../../atoms";
 
 interface Props {
@@ -59,8 +60,14 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
       </div>
       <div className="grid grid-cols-3 gap-2">
         <Select value={type} onValueChange={(v) => setType(v as any)}>
-          <SelectTrigger>
-            <SelectValue placeholder="Type" />
+          <SelectTrigger aria-label="Filter media type" title="Filter media type">
+            {type === "image" ? (
+              <ImageIcon className="h-4 w-4" />
+            ) : type === "video" ? (
+              <VideoIcon className="h-4 w-4" />
+            ) : (
+              <MixIcon className="h-4 w-4" />
+            )}
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">all</SelectItem>
@@ -68,15 +75,22 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
             <SelectItem value="video">video</SelectItem>
           </SelectContent>
         </Select>
-        <select className="rounded border bg-background px-2 py-1 text-sm" value={tag} onChange={(e) => setTag(e.target.value)}>
-          <option value="">All tags</option>
-          {tags.map((t) => (
-            <option key={t.label} value={t.label}>
-              {t.label} ({t.count})
-            </option>
-          ))}
-        </select>
-        <Button type="button" variant="outline" onClick={() => void loadMedia()}>Refresh</Button>
+        <Select value={tag} onValueChange={(v) => setTag(v)}>
+          <SelectTrigger aria-label="Filter by tag" title="Filter by tag">
+            <TokensIcon className="h-4 w-4" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">All tags</SelectItem>
+            {tags.map((t) => (
+              <SelectItem key={t.label} value={t.label}>
+                {t.label} ({t.count})
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Button type="button" aria-label="Refresh" title="Refresh" variant="outline" onClick={() => void loadMedia()}>
+          <ReloadIcon className="h-4 w-4" />
+        </Button>
       </div>
       {loading && <p className="text-sm text-muted-foreground">Loading…</p>}
       {error && (

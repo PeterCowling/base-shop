@@ -1,5 +1,6 @@
 // packages/i18n/src/locales.ts
-export const LOCALES = ["en", "de", "it"] as const;
+// Limit locales to English only for now
+export const LOCALES = ["en"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export function assertLocales(

@@ -26,7 +26,6 @@ interface Props {
 }
 
 export function ViewMenuContent({ showPreview, togglePreview, showComments, toggleComments, startTour, showPalette, togglePalette, parentFirst, onParentFirstChange, gridProps, crossBreakpointNotices, onCrossBreakpointNoticesChange }: Props) {
-  const clampZoom = (z: number) => Math.min(2, Math.max(0.25, Math.round(z * 100) / 100));
   return (
     <div className="space-y-2">
       <div className="text-sm font-medium">View</div>
@@ -53,32 +52,7 @@ export function ViewMenuContent({ showPreview, togglePreview, showComments, togg
         <Switch checked={!!crossBreakpointNotices} onChange={() => onCrossBreakpointNoticesChange?.(!crossBreakpointNotices)} />
       </label>
 
-      {/* Zoom controls (parity with View menu: Zoom In/Out/Reset) */}
-      {gridProps && (
-        <div className="mt-2 space-y-1">
-          <div className="text-sm font-medium">Zoom</div>
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                aria-label="Zoom out"
-                onClick={() => gridProps.setZoom?.(clampZoom((gridProps.zoom ?? 1) - 0.1))}
-              >
-                −
-              </Button>
-              <span className="w-14 text-center text-sm">{Math.round((gridProps.zoom ?? 1) * 100)}%</span>
-              <Button
-                variant="outline"
-                aria-label="Zoom in"
-                onClick={() => gridProps.setZoom?.(clampZoom((gridProps.zoom ?? 1) + 0.1))}
-              >
-                +
-              </Button>
-            </div>
-            <Button variant="outline" aria-label="Reset zoom" onClick={() => gridProps.setZoom?.(1)}>Reset</Button>
-          </div>
-        </div>
-      )}
+      {/* Zoom controls removed per requirements */}
 
       {/* Canvas indications moved into View for parity with spec */}
       {gridProps && (
@@ -116,11 +90,7 @@ export function ViewMenuContent({ showPreview, togglePreview, showComments, togg
           </div>
         </div>
       )}
-      <div className="pt-1">
-        <Button variant="outline" className="w-full" onClick={startTour}>
-          Start tour
-        </Button>
-      </div>
+      {/* Start tour moved to Help modal */}
     </div>
   );
 }

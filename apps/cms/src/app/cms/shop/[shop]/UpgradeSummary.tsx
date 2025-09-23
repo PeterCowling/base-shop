@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/UpgradeSummary.tsx
 
-import DataTable, { type Column } from "@ui/components/cms/DataTable";
+import UpgradeSummaryClient from "./UpgradeSummaryClient";
 
 interface ComponentChange {
   name: string;
@@ -15,37 +15,8 @@ interface ComponentResponse {
 
 export const revalidate = 0;
 
-const componentColumns: Column<ComponentChange>[] = [
-  {
-    header: "Package",
-    render: (row) => row.name,
-  },
-  {
-    header: "Current",
-    render: (row) => row.from ?? "-",
-  },
-  {
-    header: "New",
-    render: (row) => row.to,
-  },
-  {
-    header: "Changelog",
-    width: "120px",
-    render: (row) =>
-      row.changelog ? (
-        <a
-          href={row.changelog}
-          target="_blank"
-          rel="noreferrer"
-          className="text-link underline"
-        >
-          View
-        </a>
-      ) : (
-        <span className="text-muted-foreground">—</span>
-      ),
-  },
-];
+// Columns are defined in the client component to avoid passing
+// function props across the server/client boundary.
 
 export default async function UpgradeSummary({ shop }: { shop: string }) {
   const res = await fetch(`/api/components/${shop}?diff`, {
@@ -69,7 +40,7 @@ export default async function UpgradeSummary({ shop }: { shop: string }) {
 
   return (
     <div className="mt-4">
-      <DataTable rows={components} columns={componentColumns} />
+      <UpgradeSummaryClient components={components} />
     </div>
   );
 }

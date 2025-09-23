@@ -17,11 +17,13 @@ import type { PaletteMeta } from "./palette.types";
 import { listInstalledApps, subscribeInstalledApps } from "./appInstallStore";
 import usePreviewTokens from "./hooks/usePreviewTokens";
 import { extractTextThemes, toCssValue, type TextTheme } from "./textThemes";
+import PresetsModal from "./PresetsModal";
 
-const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, defaultTab = "components" }: PaletteProps) {
+const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, defaultTab = "components", onInsertPreset }: PaletteProps) {
   const [search, setSearch] = useState("");
   const [tab, setTab] = useState<"components" | "media">(defaultTab);
   const [liveMessage, setLiveMessage] = useState("");
+  const [presetOpen, setPresetOpen] = useState(false);
   const pathname = usePathname() ?? "";
   const shop = getShopFromPath(pathname);
   const [library, setLibrary] = useState<LibraryItem[]>([]);
@@ -111,6 +113,13 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
     return () => window.removeEventListener("pb-library-changed", handler);
   }, [shop]);
 
+  // Allow other parts of the UI (e.g. empty canvas overlay) to open presets
+  useEffect(() => {
+    const open = () => setPresetOpen(true);
+    window.addEventListener("pb:open-presets", open as EventListener);
+    return () => window.removeEventListener("pb:open-presets", open as EventListener);
+  }, []);
+
   return (
     <div className="flex flex-col gap-4" data-tour="drag-component">
       <div className="grid grid-cols-2 gap-2">
@@ -121,6 +130,11 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
           Media
         </button>
       </div>
+      {onInsertPreset && (
+        <div>
+          <PresetsModal onInsert={onInsertPreset} open={presetOpen} onOpenChange={setPresetOpen} hideTrigger />
+        </div>
+      )}
       {tab === 'media' ? (
         <div>
           {/* Media Library */}

@@ -21,8 +21,6 @@ interface Props {
 
 const label: Record<Locale, string> = {
   en: "English",
-  de: "Deutsch",
-  it: "Italiano",
 };
 
 function MultilingualFieldsInner({ locales, product, onChange }: Props) {

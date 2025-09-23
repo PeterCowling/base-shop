@@ -1,5 +1,6 @@
 import Header from "./HeaderBlock";
 import Footer from "./FooterBlock";
+import Canvas from "./Canvas";
 import type { BlockRegistryEntry } from "./types";
 
 const defaultPreview = "/window.svg";
@@ -7,6 +8,7 @@ const defaultPreview = "/window.svg";
 const layoutEntries = {
   Header: { component: Header },
   Footer: { component: Footer },
+  Canvas: { component: Canvas },
 } as const;
 
 type LayoutRegistry = {

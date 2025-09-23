@@ -16,11 +16,16 @@ Create branches from `main` and name them descriptively (e.g., `feat/login-form`
 
 ## Linting and Tests
 
-Before submitting changes, run [`pnpm lint`](../package.json#L24) and [`pnpm test`](../package.json#L28) to ensure the codebase is formatted correctly and the test suite passes.
+Before submitting changes, run [`pnpm lint`](../package.json#L24). For tests, avoid monorepo‑wide runs unless necessary; scope tests to the package or files you touched to keep feedback fast.
+
+- Single package: `pnpm --filter <workspace> test`
+- Single file/pattern (Jest): `pnpm --filter <workspace> test -- --testPathPattern <pattern>`
+- Cypress subsets: use `pnpm e2e:dashboard` or targeted scripts in `docs/cypress.md`
 
 ## Testing
 
-See [testing](../__tests__/docs/testing.md) for guidance on running tests with Prisma.
+- Policy: Do not run package/app‑wide tests across the whole workspace unless explicitly requested (they’re time‑consuming).
+- See [testing](../__tests__/docs/testing.md) for guidance on running tests with Prisma (stubbed vs. real DB), and [coverage](./coverage.md) for when you need instrumentation.
 
 ## Prisma model access
 
@@ -49,4 +54,3 @@ pnpm doc:api
 ```
 
 The output is written to `docs/api/`.
-

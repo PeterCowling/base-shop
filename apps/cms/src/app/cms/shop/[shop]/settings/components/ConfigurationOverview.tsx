@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent } from "@/components/atoms/shadcn";
 import { CodeBlock } from "@ui/components/molecules";
 import DataTable from "@ui/components/cms/DataTable";

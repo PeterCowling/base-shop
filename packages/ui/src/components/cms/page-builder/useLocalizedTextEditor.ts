@@ -5,7 +5,7 @@ import type { Locale } from "@acme/i18n/locales";
 import type { TextComponent as BaseTextComponent } from "@acme/types";
 import useTextEditor from "./useTextEditor";
 
-type TextComponent = BaseTextComponent & {
+type TextComponent = Omit<BaseTextComponent, "text"> & {
   text?: string | Record<string, string>;
 };
 
@@ -14,7 +14,7 @@ export default function useLocalizedTextEditor(
   locale: Locale,
 ) {
   const [editing, setEditing] = useState(false);
-  const editor = useTextEditor(component, locale, editing);
+  const editor = useTextEditor(component as any, locale, editing);
 
   const startEditing = useCallback(() => {
     setEditing(true);
@@ -33,4 +33,3 @@ export default function useLocalizedTextEditor(
 
   return { editor, editing, startEditing, finishEditing } as const;
 }
-

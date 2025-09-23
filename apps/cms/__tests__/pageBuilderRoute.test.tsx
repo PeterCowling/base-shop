@@ -64,18 +64,8 @@ describe("PageBuilderRoute", () => {
 
     render(Page);
 
-    expect(
-      screen.getByRole("heading", { name: "Edit page - acme/hero" }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        (_, element) =>
-          element?.tagName === "P" &&
-          (element.textContent?.includes(
-            "Hold Shift while resizing to snap a component to full width or height.",
-          ) ?? false),
-      ),
-    ).toBeInTheDocument();
+    // Route should render the PageBuilder with proper props; legacy header/help text removed.
+    expect(screen.getByTestId("page-builder-stub")).toBeInTheDocument();
 
     expect(capturedBuilderProps?.page).toBe(page);
     expect(capturedBuilderProps?.history).toBe(page.history);

@@ -9,20 +9,14 @@ export async function useTranslations(
 ): Promise<(key: string) => string> {
   const enMessages = (
     await import(
-      /* webpackInclude: /(en|de|it)\.json$/ */
+      /* webpackInclude: /en\.json$/ */
       `./en.json`
     )
   ).default as Record<string, string>;
 
   const localeMessages =
-    locale === "en"
-      ? enMessages
-      : (
-          await import(
-            /* webpackInclude: /(en|de|it)\.json$/ */
-            `./${locale}.json`
-          )
-        ).default;
+    // With only English enabled, always use English messages
+    enMessages;
 
   const messages = { ...enMessages, ...localeMessages } as Record<string, string>;
 

@@ -52,15 +52,6 @@ export default async function PageBuilderRoute({
 
   return (
     <>
-      <h1 className="mb-6 text-2xl font-semibold">
-        Edit page - {shop}/{current.slug || current.id}
-      </h1>
-      <p className="mb-4 text-sm text-muted-foreground">
-        Hold <kbd>Shift</kbd> while resizing to snap a component to full
-        width or height. Use the editor buttons for quick 100% sizing and
-        press <kbd>Space</kbd>/<kbd>Enter</kbd> then arrow keys to move
-        components.
-      </p>
       <PageBuilder
         page={current}
         history={current.history}

@@ -17,8 +17,6 @@ interface LocaleContentTabProps {
 
 const localeLabel: Partial<Record<Locale, string>> = {
   en: "English",
-  de: "Deutsch",
-  it: "Italiano",
 };
 
 export default function LocaleContentTab({

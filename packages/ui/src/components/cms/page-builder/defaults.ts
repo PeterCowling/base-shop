@@ -59,6 +59,8 @@ export const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = 
   Dataset: { source: "products" } as any,
   Repeater: { columns: 3, gap: "1rem" } as any,
   Bind: { prop: "text", path: "title" } as any,
+  // Layout: Canvas covers the page area
+  Canvas: { width: "100%", height: "100%", color: "#ffffff" } as any,
 };
 
 export default defaults;

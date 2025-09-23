@@ -13,9 +13,11 @@ interface Props {
   sourceUrl?: string; // optional remote JSON of PresetDef[]
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** When true, do not render the trigger button; control externally via open/onOpenChange */
+  hideTrigger?: boolean;
 }
 
-export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange }: Props) {
+export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, hideTrigger = false }: Props) {
   const [presets, setPresets] = useState<PresetDef[]>(presetList);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<PresetCategory | "All">("All");
@@ -87,11 +89,13 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogTrigger asChild>
-        <Tooltip text="Insert a starter layout">
-          <Button variant="outline">Insert Preset</Button>
-        </Tooltip>
-      </DialogTrigger>
+      {!hideTrigger && (
+        <DialogTrigger asChild>
+          <Tooltip text="Insert a starter layout">
+            <Button variant="outline">Insert Preset</Button>
+          </Tooltip>
+        </DialogTrigger>
+      )}
       <DialogContent>
         <DialogTitle>Starter Layouts</DialogTitle>
         {loadError && (

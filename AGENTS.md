@@ -18,3 +18,11 @@
 ## Security Work
 - When performing security reviews or fixes, follow `security/AGENTS.md`.
   - Summary: prioritize externally reachable surfaces, authn/z, secrets, injections, deserialization, file handling, network/SSRF, path traversal, uploads, crypto, headers (CSP/CORS), CI/CD, IaC/cloud config. Provide runnable proofs via tests when possible. Keep all outputs local. For each finding include CWE/OWASP mapping, component path, risk, exploit narrative, minimal patch, and a test.
+
+## Testing Policy
+- Do not run package- or app-wide test suites across the monorepo unless explicitly asked. These runs are expensive and slow down iteration.
+- Prefer scoped runs:
+  - Single package: `pnpm --filter <workspace> test`
+  - Single file or pattern (Jest): `pnpm --filter <workspace> test -- --testPathPattern <pattern>`
+  - Cypress subset: `pnpm e2e:dashboard` or tag/grep focused specs
+- For coverage, run targeted commands only when needed (see `docs/coverage.md`).

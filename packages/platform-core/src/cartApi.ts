@@ -88,7 +88,8 @@ export async function POST(req: NextRequest) {
     sku: { id: skuId },
     qty,
     size,
-  } = parsed.data;
+    rental,
+  } = parsed.data as any;
   const sku = getProductById(skuId);
   if (!sku) {
     const exists = PRODUCTS.some((p) => p.id === skuId);
@@ -114,7 +115,7 @@ export async function POST(req: NextRequest) {
   if (newQty > sku.stock) {
     return NextResponse.json({ error: "Insufficient stock" }, { status: 409 });
   }
-  const updated = await incrementQty(cartId, sku, qty, size);
+  const updated = await incrementQty(cartId, sku, qty, size, rental);
   const res = NextResponse.json({ ok: true, cart: updated });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;

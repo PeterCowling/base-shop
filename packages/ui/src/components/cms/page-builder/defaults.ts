@@ -39,7 +39,7 @@ export const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = 
     mobileItems: 1,
     mode: "collection",
   },
-  RecommendationCarousel: { minItems: 1, maxItems: 4 },
+  RecommendationCarousel: { minItems: 1, maxItems: 4, endpoint: "/api/recommendations" } as any,
   Testimonials: { minItems: 1, maxItems: 10 },
   TestimonialSlider: { minItems: 1, maxItems: 10 },
   ImageSlider: { minItems: 1, maxItems: 10 },

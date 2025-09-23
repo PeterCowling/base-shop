@@ -1,7 +1,7 @@
 import crypto from "crypto";
 
 import type { CartState } from "../cart";
-import type { SKU } from "@acme/types";
+import type { SKU, RentalLineItem } from "@acme/types";
 import type { CartStore } from "../cartStore";
 
 /** In-memory implementation of CartStore */
@@ -40,7 +40,8 @@ export class MemoryCartStore implements CartStore {
     id: string,
     sku: SKU,
     qty: number,
-    size?: string
+    size?: string,
+    rental?: RentalLineItem
   ): Promise<CartState> {
     let entry = this.carts.get(id);
     if (!entry || entry.expires < Date.now()) {
@@ -49,7 +50,7 @@ export class MemoryCartStore implements CartStore {
     }
     const key = size ? `${sku.id}:${size}` : sku.id;
     const line = entry.cart[key];
-    entry.cart[key] = { sku, size, qty: (line?.qty ?? 0) + qty };
+    entry.cart[key] = { sku, size, qty: (line?.qty ?? 0) + qty, rental: rental ?? line?.rental };
     entry.expires = Date.now() + this.ttl * 1000;
     this.resetTimer(id);
     return entry.cart;

@@ -2,7 +2,7 @@ import crypto from "crypto";
 import type { Redis } from "@upstash/redis";
 
 import type { CartState } from "../cart";
-import type { SKU } from "@acme/types";
+import type { SKU, RentalLineItem } from "@acme/types";
 import type { CartStore } from "../cartStore";
 import { withFallback, expireBoth } from "./redisHelpers";
 import type { AsyncOp } from "./redisHelpers";
@@ -75,8 +75,9 @@ export class RedisCartStore implements CartStore {
       const parsed = JSON.parse(lineJson) as {
         sku: SKU;
         size?: string;
+        rental?: RentalLineItem;
       };
-      cart[lineId] = { sku: parsed.sku, size: parsed.size, qty: Number(q) };
+      cart[lineId] = { sku: parsed.sku, size: parsed.size, rental: parsed.rental, qty: Number(q) };
     }
     return cart;
   }
@@ -86,7 +87,7 @@ export class RedisCartStore implements CartStore {
     const lines: Record<string, string> = {};
     for (const [lineId, line] of Object.entries(cart)) {
       qty[lineId] = line.qty;
-      lines[lineId] = JSON.stringify({ sku: line.sku, size: line.size });
+      lines[lineId] = JSON.stringify({ sku: line.sku, size: line.size, rental: line.rental });
     }
     const ops: AsyncOp[] = [
       () => this.exec(() => this.client.del(id)),
@@ -116,7 +117,8 @@ export class RedisCartStore implements CartStore {
     id: string,
     sku: SKU,
     qty: number,
-    size?: string
+    size?: string,
+    rental?: RentalLineItem
   ): Promise<CartState> {
     const key = size ? `${sku.id}:${size}` : sku.id;
     const ops = [
@@ -124,13 +126,13 @@ export class RedisCartStore implements CartStore {
       () =>
         this.exec(() =>
           this.client.hset(this.skuKey(id), {
-            [key]: JSON.stringify({ sku, size }),
+            [key]: JSON.stringify({ sku, size, rental }),
           })
         ),
       ...expireBoth(this.exec.bind(this), this.client, id, this.ttl, this.skuKey(id)),
     ];
     const fallbackCart = await withFallback(ops, () =>
-      this.fallback.incrementQty(id, sku, qty, size)
+      this.fallback.incrementQty(id, sku, qty, size, rental)
     );
     if (fallbackCart !== undefined) {
       return fallbackCart;

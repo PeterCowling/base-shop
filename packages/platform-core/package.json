@@ -102,6 +102,16 @@
       "import": "./dist/repositories/*.js",
       "default": "./dist/repositories/*.js"
     },
+    "./router/*": {
+      "types": "./dist/router/*.d.ts",
+      "import": "./dist/router/*.js",
+      "default": "./dist/router/*.js"
+    },
+    "./rental/*": {
+      "types": "./dist/rental/*.d.ts",
+      "import": "./dist/rental/*.js",
+      "default": "./dist/rental/*.js"
+    },
     "./createShop": {
       "types": "./dist/createShop/index.d.ts",
       "import": "./dist/createShop/index.js",

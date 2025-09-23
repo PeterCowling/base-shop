@@ -1,6 +1,6 @@
 // packages/platform-core/src/cartStore.ts
 import { loadCoreEnv } from "@acme/config/env/core";
-import type { SKU } from "@acme/types";
+import type { SKU, RentalLineItem } from "@acme/types";
 import type { Redis } from "@upstash/redis";
 import type { CartState } from "./cart";
 import { MemoryCartStore } from "./cartStore/memoryStore";
@@ -16,7 +16,8 @@ export interface CartStore {
     id: string,
     sku: SKU,
     qty: number,
-    size?: string
+    size?: string,
+    rental?: RentalLineItem
   ): Promise<CartState>;
   setQty(id: string, skuId: string, qty: number): Promise<CartState | null>;
   removeItem(id: string, skuId: string): Promise<CartState | null>;
@@ -120,8 +121,9 @@ export const incrementQty = (
   id: string,
   sku: SKU,
   qty: number,
-  size?: string
-) => getDefaultCartStore().incrementQty(id, sku, qty, size);
+  size?: string,
+  rental?: RentalLineItem
+) => getDefaultCartStore().incrementQty(id, sku, qty, size, rental);
 export const setQty = (id: string, skuId: string, qty: number) =>
   getDefaultCartStore().setQty(id, skuId, qty);
 export const removeItem = (id: string, skuId: string) =>

@@ -30,6 +30,26 @@
       "types": "./dist/components/cms/blocks/CurrencySelector.d.ts",
       "import": "./dist/components/cms/blocks/CurrencySelector.js"
     },
+    "./components/cms/blocks/RentalAvailabilitySection": {
+      "types": "./dist/components/cms/blocks/RentalAvailabilitySection.d.ts",
+      "import": "./dist/components/cms/blocks/RentalAvailabilitySection.js"
+    },
+    "./components/cms/blocks/RentalTermsSection": {
+      "types": "./dist/components/cms/blocks/RentalTermsSection.d.ts",
+      "import": "./dist/components/cms/blocks/RentalTermsSection.js"
+    },
+    "./components/cms/blocks/StructuredDataSection": {
+      "types": "./dist/components/cms/blocks/StructuredDataSection.d.ts",
+      "import": "./dist/components/cms/blocks/StructuredDataSection.js"
+    },
+    "./components/cms/blocks/ConsentSection": {
+      "types": "./dist/components/cms/blocks/ConsentSection.d.ts",
+      "import": "./dist/components/cms/blocks/ConsentSection.js"
+    },
+    "./components/cms/blocks/AnalyticsPixelsSection": {
+      "types": "./dist/components/cms/blocks/AnalyticsPixelsSection.d.ts",
+      "import": "./dist/components/cms/blocks/AnalyticsPixelsSection.js"
+    },
     "./account": {
       "types": "./dist/account.d.ts",
       "import": "./dist/account.js"

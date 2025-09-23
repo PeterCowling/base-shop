@@ -45,6 +45,12 @@ import ProductBundle, {
 import ProductFilter from "./ProductFilter";
 import HeaderSection from "./HeaderSection";
 import FooterSection from "./FooterSection";
+import CurrencySelector from "./CurrencySelector";
+import RentalAvailabilitySection from "./RentalAvailabilitySection";
+import RentalTermsSection from "./RentalTermsSection";
+import StructuredDataSection from "./StructuredDataSection";
+import ConsentSection from "./ConsentSection";
+import AnalyticsPixelsSection from "./AnalyticsPixelsSection";
 import type { BlockRegistryEntry } from "./types";
 
 const defaultPreview = "/window.svg";
@@ -102,6 +108,12 @@ const organismEntries = {
   ProductFilter: { component: ProductFilter },
   HeaderSection: { component: HeaderSection },
   FooterSection: { component: FooterSection },
+  CurrencySelector: { component: CurrencySelector },
+  RentalAvailabilitySection: { component: RentalAvailabilitySection },
+  RentalTermsSection: { component: RentalTermsSection },
+  StructuredDataSection: { component: StructuredDataSection },
+  ConsentSection: { component: ConsentSection },
+  AnalyticsPixelsSection: { component: AnalyticsPixelsSection },
 } as const;
 
 type OrganismRegistry = {

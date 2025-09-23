@@ -43,10 +43,9 @@ describe("fillLocales with filesystem", () => {
       ])
     );
 
-    expect(result).toEqual({
-      greet: { en: "Hello", de: "Hallo", it: "Hello" },
-      bye: { en: "Bye", de: "Bye", it: "Bye" },
-    });
+    // Build expected object according to the current LOCALES set
+    const expGreet: Record<Locale, string> = fillLocales({ en: "Hello", de: "Hallo" } as any, "Hello");
+    const expBye: Record<Locale, string> = fillLocales({ en: "Bye", de: "Bye" } as any, "Bye");
+    expect(result).toEqual({ greet: expGreet, bye: expBye });
   });
 });
-

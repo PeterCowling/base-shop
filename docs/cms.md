@@ -108,6 +108,25 @@ available via `GET /cms/api/pages/{shop}`.
 Open `/cms/shop/{shop}/pages/{slug}/builder` to edit an existing page or
 `/cms/shop/{shop}/pages/new/builder` to start from scratch.
 
+### Sections workflow (new)
+
+- Build pages from whole Sections. Enable `NEXT_PUBLIC_PB_SECTIONS_ONLY=true` to restrict page root to `Section` nodes and default the editor to the Sections palette.
+- Use the left rail → Sections to browse reusable sections and insert into the page:
+  - Insert copy: clones the section’s component tree with new IDs.
+  - Insert linked: saves the section as a Global and inserts a linked instance (use the Inspector to manage it later). Globals are stored under `DATA_ROOT/<shop>/globals.json`.
+  - Search and tags: the panel supports text search and tag filtering. When many sections exist, use “Load more” to paginate.
+
+### Section Builder
+
+- Create and curate reusable Sections at:
+  - `/cms/shop/{shop}/sections` (list)
+  - `/cms/shop/{shop}/sections/new/builder` (new)
+  - `/cms/shop/{shop}/sections/{id}/builder` (edit)
+- Section Builder focuses the UI on section composition:
+  - Elements palette opens by default; page-only controls (Pages/Globals/Site Styles/CMS) are hidden.
+  - Insertions target the selected Section automatically.
+- Section Templates support draft/publish and optional tags/thumbnail.
+
 ### Pages Panel (in‑editor)
 
 - Open the Pages drawer from the left rail (Pages icon). This now opens a panel inside the editor instead of redirecting to the Pages route.

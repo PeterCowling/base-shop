@@ -3,7 +3,6 @@
 import type { PageComponent, HistoryState } from "@acme/types";
 import type { Action } from "./state";
 import { useMemo } from "react";
-import LayersPanel from "./LayersPanel";
 import PageSidebarMultipleSelection from "./components/PageSidebarMultipleSelection";
 import PageSidebarSingleSelection from "./components/PageSidebarSingleSelection";
 
@@ -23,17 +22,6 @@ const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, v
 
   return (
     <aside className="w-80 shrink-0 space-y-4 p-2" data-tour="sidebar">
-      <div id="pb-layers-panel">
-      <LayersPanel
-        components={components}
-        selectedIds={selectedIds}
-        onSelectIds={onSelectIds}
-        dispatch={dispatch}
-        editor={editor}
-        viewport={viewport}
-        crossNotices={crossNotices}
-      />
-      </div>
 
       {selectedIds.length === 0 && (
         <div className="p-2 text-sm text-muted-foreground">Select a component to edit its properties.</div>

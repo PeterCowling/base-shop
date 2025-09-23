@@ -88,12 +88,12 @@ export default async function ShopOrdersPage({
               <h1 className="text-3xl font-semibold md:text-4xl">
                 Keep every rental on track and customers delighted
               </h1>
-              <p className="text-sm text-hero-foreground/80">
+              <p className="text-sm text-hero-foreground/90">
                 Monitor flagged orders, overdue returns, and risk signals before they impact your launch timeline.
               </p>
             </div>
             <div className="space-y-4">
-              <Progress value={readiness} label={`${readiness}% of orders on schedule`} labelClassName="text-hero-foreground/80" />
+              <Progress value={readiness} label={`${readiness}% of orders on schedule`} labelClassName="text-hero-foreground/90" />
               <div className="flex flex-wrap items-center gap-3">
                 <Link
                   href={`/cms/shop/${shop}/settings/returns`}

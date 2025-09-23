@@ -16,7 +16,7 @@ export default async function MediaIndexPage() {
           <h1 className="text-3xl font-semibold md:text-4xl">
             Curate visuals for each storefront
           </h1>
-          <p className="text-sm text-hero-foreground/80">
+          <p className="text-sm text-hero-foreground/90">
             Select a shop to organise assets, rights, and variants with confidence.
           </p>
         </div>

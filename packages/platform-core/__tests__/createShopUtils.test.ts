@@ -3,6 +3,7 @@ import fs from "fs";
 import { copyTemplate } from "../src/createShop/fsUtils";
 import { loadBaseTokens } from "../src/createShop/themeUtils";
 import { fillLocales } from "@i18n/fillLocales";
+import { LOCALES } from "@i18n/locales";
 
 describe("createShop utils", () => {
   beforeEach(() => {
@@ -38,6 +39,9 @@ describe("createShop utils", () => {
   it("fills locales with fallback", () => {
     const result = fillLocales({ en: "Hello" }, "Hi");
     expect(result.en).toBe("Hello");
-    expect(result.de).toBe("Hi");
+    for (const loc of LOCALES) {
+      if (loc === "en") continue;
+      expect(result[loc as keyof typeof result]).toBe("Hi");
+    }
   });
 });

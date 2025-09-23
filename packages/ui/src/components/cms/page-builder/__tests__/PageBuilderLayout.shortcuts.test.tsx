@@ -161,10 +161,6 @@ jest.mock("../NotificationsBell", () => ({
   default: () => <div data-testid="notifications" />,
 }));
 
-jest.mock("../AppMarketStub", () => ({
-  __esModule: true,
-  default: () => null,
-}));
 
 jest.mock("../StudioMenu", () => ({
   __esModule: true,
@@ -248,4 +244,3 @@ describe("PageBuilderLayout panel shortcut", () => {
     await waitFor(() => expect(screen.getByTestId("palette-sidebar")).toBeInTheDocument());
   });
 });
-

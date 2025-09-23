@@ -8,6 +8,8 @@ jest.mock("@platform-core/repositories/shops.server", () => ({
 
 jest.mock("@acme/config/env/core", () => ({ coreEnv: {} }));
 
+import { LOCALES } from "@i18n/locales";
+
 describe("getSeo", () => {
   const settings = {
     languages: ["en", "de"],
@@ -40,24 +42,30 @@ describe("getSeo", () => {
     });
     expect(seo.canonical).toBe("https://shop.com/en/about");
     expect(seo.openGraph?.images?.[0]?.url).toBe("https://shop.com/og.png");
-    expect(seo.additionalLinkTags).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ hrefLang: "en", href: "https://shop.com/en/about" }),
+    const expected = [
+      expect.objectContaining({ hrefLang: "en", href: "https://shop.com/en/about" }),
+    ];
+    if (LOCALES.includes("de" as any)) {
+      expected.push(
         expect.objectContaining({ hrefLang: "de", href: "https://shop.de/de/about" }),
-      ]),
-    );
+      );
+    }
+    expect(seo.additionalLinkTags).toEqual(expect.arrayContaining(expected));
   });
 
   it("falls back to canonicalBase when page canonical missing", async () => {
     const { getSeo } = await import("../src/lib/seo");
     const seo = await getSeo("en");
     expect(seo.canonical).toBe("https://shop.com/en");
-    expect(seo.additionalLinkTags).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ hrefLang: "en", href: "https://shop.com/en" }),
+    const expected = [
+      expect.objectContaining({ hrefLang: "en", href: "https://shop.com/en" }),
+    ];
+    if (LOCALES.includes("de" as any)) {
+      expected.push(
         expect.objectContaining({ hrefLang: "de", href: "https://shop.de/de" }),
-      ]),
-    );
+      );
+    }
+    expect(seo.additionalLinkTags).toEqual(expect.arrayContaining(expected));
   });
 
   it("handles invalid canonical URL gracefully", async () => {
@@ -65,12 +73,15 @@ describe("getSeo", () => {
     const seo = await getSeo("en", { canonical: "not a url" });
     expect(seo.canonical).toBe("not a url");
     expect(seo.openGraph?.url).toBe("https://shop.com/en");
-    expect(seo.additionalLinkTags).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ hrefLang: "en", href: "https://shop.com/en" }),
+    const expected = [
+      expect.objectContaining({ hrefLang: "en", href: "https://shop.com/en" }),
+    ];
+    if (LOCALES.includes("de" as any)) {
+      expected.push(
         expect.objectContaining({ hrefLang: "de", href: "https://shop.de/de" }),
-      ]),
-    );
+      );
+    }
+    expect(seo.additionalLinkTags).toEqual(expect.arrayContaining(expected));
   });
 
   it("returns relative canonical unchanged", async () => {
@@ -78,12 +89,15 @@ describe("getSeo", () => {
     const seo = await getSeo("en", { canonical: "/contact" });
     expect(seo.canonical).toBe("/contact");
     expect(seo.openGraph?.url).toBe("https://shop.com/en");
-    expect(seo.additionalLinkTags).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ hrefLang: "en", href: "https://shop.com/en" }),
+    const expected = [
+      expect.objectContaining({ hrefLang: "en", href: "https://shop.com/en" }),
+    ];
+    if (LOCALES.includes("de" as any)) {
+      expected.push(
         expect.objectContaining({ hrefLang: "de", href: "https://shop.de/de" }),
-      ]),
-    );
+      );
+    }
+    expect(seo.additionalLinkTags).toEqual(expect.arrayContaining(expected));
   });
 
   it.each([
@@ -290,4 +304,3 @@ describe("getSeo", () => {
     expect(seo.additionalLinkTags).toHaveLength(0);
   });
 });
-

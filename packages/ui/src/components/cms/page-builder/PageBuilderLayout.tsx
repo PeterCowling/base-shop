@@ -27,17 +27,17 @@ import useDevToolsToggle from "./hooks/useDevToolsToggle";
 import useCommandPalette from "./hooks/useCommandPalette";
 import useSpacePanning from "./hooks/useSpacePanning";
 import PaletteSidebar from "./PaletteSidebar";
+import SectionsPanel from "./SectionsPanel";
 import QuickPaletteControls from "./QuickPaletteControls";
 import PlaceholderAnimations from "./PlaceholderAnimations";
 import LeftRail from "./LeftRail";
+import LayersSidebar from "./LayersSidebar";
 import PresenceAvatars from "./PresenceAvatars";
 import NotificationsBell from "./NotificationsBell";
-import AppMarketStub from "./AppMarketStub";
 import StudioMenu from "./StudioMenu";
 import { CheckIcon, ReloadIcon } from "@radix-ui/react-icons";
 import GlobalsPanel from "./GlobalsPanel";
 import CMSPanel from "./CMSPanel";
-import CodePanel from "./CodePanel";
 import PagesPanel from "./PagesPanel";
 import TopActionBar from "./TopActionBar";
 import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
@@ -49,6 +49,7 @@ interface LayoutProps {
   onSetSectionBackground: (url: string) => void;
   selectedIsSection: boolean;
   onInsertPreset?: (component: PageComponent) => void;
+  onInsertLinkedSection?: (item: { globalId: string; label: string; component: PageComponent }) => void;
   presetsSourceUrl?: string;
   toolbarProps: React.ComponentProps<typeof PageToolbar>;
   gridProps: React.ComponentProps<typeof GridSettings>;
@@ -89,6 +90,8 @@ interface LayoutProps {
   // Cross-breakpoint notifications toggle (View)
   crossBreakpointNotices?: boolean;
   onCrossBreakpointNoticesChange?: (v: boolean) => void;
+  // Mode: "page" (default) or "section" to simplify UI for SectionBuilder
+  mode?: "page" | "section";
 }
 
 const PageBuilderLayout = ({
@@ -98,6 +101,7 @@ const PageBuilderLayout = ({
   onSetSectionBackground,
   selectedIsSection,
   onInsertPreset,
+  onInsertLinkedSection,
   presetsSourceUrl,
   toolbarProps,
   gridProps,
@@ -130,18 +134,21 @@ const PageBuilderLayout = ({
   setEditingSizePx,
   crossBreakpointNotices,
   onCrossBreakpointNoticesChange,
+  mode = "page",
 }: LayoutProps) => {
   const reducedMotion = useReducedMotion();
   const { showDevTools } = useDevToolsToggle();
   const { showPalette, setShowPalette, paletteWidth, setPaletteWidth } = usePaletteState();
+  const SECTIONS_ONLY = process.env.NEXT_PUBLIC_PB_SECTIONS_ONLY === "true";
   const { open: cmdOpen, setOpen: setCmdOpen } = useCommandPalette();
   const a11y = useDndA11y((toolbarProps as any)?.locale ?? "en");
   const { onPointerDown } = useSpacePanning(scrollRef);
   const [showInspector, setShowInspector] = React.useState(true);
-  const [appMarketOpen, setAppMarketOpen] = React.useState(false);
+  const [showLayersLeft, setShowLayersLeft] = React.useState(false);
+  const [layersWidth, setLayersWidth] = React.useState(280);
+  const [showSections, setShowSections] = React.useState(false);
   const [globalsOpen, setGlobalsOpen] = React.useState(false);
   const [cmsOpen, setCmsOpen] = React.useState(false);
-  const [codeOpen, setCodeOpen] = React.useState(false);
   const [pagesOpen, setPagesOpen] = React.useState(false);
   const [helpOpen, setHelpOpen] = React.useState(false);
 
@@ -175,20 +182,45 @@ const PageBuilderLayout = ({
       }
       if (k === 'l') {
         e.preventDefault();
-        // Ensure inspector is visible and scroll to Layers panel
-        setShowInspector(true);
-        try { document.getElementById('pb-layers-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch {}
+        setShowLayersLeft((v) => {
+          const next = !v;
+          if (next) setShowPalette(false);
+          return next;
+        });
         return;
       }
       if (k === '.' || k === '›') {
         e.preventDefault();
-        setShowPalette((v) => !v);
+        setShowPalette((v) => {
+          const next = !v;
+          if (next) setShowLayersLeft(false);
+          return next;
+        });
         return;
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [setShowPalette]);
+
+  // In sections-only mode, default the left panel to the Sections palette.
+  // We do this on first mount to nudge the workflow without permanently
+  // overriding the user's stored palette preference.
+  React.useEffect(() => {
+    if (!SECTIONS_ONLY) return;
+    // If Elements palette is open by default, switch to Sections.
+    setShowSections(true);
+    setShowPalette(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // SectionBuilder prefers Elements palette by default regardless of flag.
+  React.useEffect(() => {
+    if (mode !== "section") return;
+    setShowSections(false);
+    setShowPalette(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // (Optional) live message toasts can be surfaced by parent if desired
   return (
@@ -206,14 +238,24 @@ const PageBuilderLayout = ({
   </div>
   <div className="flex gap-4 min-h-0" style={style}>
     <PageBuilderTour {...tourProps} />
-    {/* Left icon rail (panels launcher) */}
+    {/* Left icon rail (panel launcher) moved to be left-most */}
     <LeftRail
-      onOpenAdd={() => setShowPalette(true)}
+      onOpenAdd={() => {
+        // Open Elements palette and close others in that space
+        setShowLayersLeft(false);
+        setShowSections(false);
+        setShowPalette(true);
+      }}
+      onOpenSections={() => {
+        // Open Sections palette and close others in that space
+        setShowLayersLeft(false);
+        setShowPalette(false);
+        setShowSections(true);
+      }}
       onOpenLayers={() => {
-        setShowInspector(true);
-        try {
-          document.getElementById("pb-layers-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
-        } catch {}
+        setShowLayersLeft(true);
+        setShowPalette(false);
+        setShowSections(false);
       }}
       onOpenPages={() => setPagesOpen(true)}
       onOpenGlobalSections={() => setGlobalsOpen(true)}
@@ -221,14 +263,43 @@ const PageBuilderLayout = ({
         // Ask DesignMenu to open Theme dialog
         try { window.dispatchEvent(new Event("pb:open-theme")); } catch {}
       }}
-      onOpenAppMarket={() => setAppMarketOpen(true)}
       onOpenCMS={() => setCmsOpen(true)}
-      onOpenCode={() => setCodeOpen(true)}
       onToggleInspector={() => setShowInspector((v) => !v)}
       isAddActive={showPalette}
-      isLayersActive={showInspector}
+      isSectionsActive={showSections}
+      isLayersActive={showLayersLeft}
       isInspectorActive={showInspector}
+      // Provide More actions content props
+      gridProps={gridProps}
+      startTour={startTour}
+      toggleComments={toggleComments}
+      showComments={showComments}
+      togglePreview={togglePreview}
+      showPreview={showPreview}
+      showPalette={showPalette}
+      togglePalette={() =>
+        setShowPalette((v) => {
+          const next = !v;
+          if (next) {
+            setShowLayersLeft(false);
+            setShowSections(false);
+          }
+          return next;
+        })
+      }
+      parentFirst={parentFirst}
+      onParentFirstChange={onParentFirstChange}
+      crossBreakpointNotices={crossBreakpointNotices}
+      onCrossBreakpointNoticesChange={onCrossBreakpointNoticesChange}
+      breakpoints={(toolbarProps as any)?.breakpoints}
+      setBreakpoints={(toolbarProps as any)?.setBreakpoints}
+      hideAddElements={mode === "section"}
+      hidePages={mode === "section"}
+      hideGlobalSections={mode === "section"}
+      hideSiteStyles={mode === "section"}
+      hideCMS={mode === "section"}
     />
+    {/* Panels opened by left rail now render to the right of it */}
     {showPalette && (
       <PaletteSidebar
         width={paletteWidth}
@@ -238,15 +309,39 @@ const PageBuilderLayout = ({
         onSetSectionBackground={onSetSectionBackground}
         selectedIsSection={selectedIsSection}
         onInsertPreset={onInsertPreset}
+        mode="elements"
       />
     )}
-    {!showPalette && (
+    {showSections && (
+      <div style={{ width: paletteWidth }} className="shrink-0">
+        <SectionsPanel shop={shop} onInsert={(c) => onInsertPreset?.(c)} onInsertLinked={(g) => onInsertLinkedSection?.(g)} />
+      </div>
+    )}
+    {showLayersLeft && (
+      <LayersSidebar
+        width={layersWidth}
+        onWidthChange={setLayersWidth}
+        components={(sidebarProps as any)?.components}
+        selectedIds={(sidebarProps as any)?.selectedIds}
+        onSelectIds={(sidebarProps as any)?.onSelectIds}
+        dispatch={(sidebarProps as any)?.dispatch}
+        editor={(sidebarProps as any)?.editor}
+        viewport={(sidebarProps as any)?.viewport}
+        crossNotices={(sidebarProps as any)?.crossNotices}
+      />
+    )}
+    
+    {!showPalette && !showSections && (
       <QuickPaletteControls
         onAdd={paletteOnAdd}
         onInsertImage={onInsertImageAsset}
         onSetSectionBackground={onSetSectionBackground}
         selectedIsSection={selectedIsSection}
-        onShowPalette={() => setShowPalette(true)}
+        onShowPalette={() => {
+          setShowLayersLeft(false);
+          setShowSections(false);
+          setShowPalette(true);
+        }}
       />
     )}
     <div className="flex flex-1 flex-col gap-4 min-h-0">
@@ -271,6 +366,8 @@ const PageBuilderLayout = ({
             publishing={historyProps.publishing}
             showPreview={showPreview}
             togglePreview={togglePreview}
+            showVersions={mode !== "section"}
+            publishLabel={mode === "section" ? "Publish section" : "Publish"}
           />
           {/* Far-right notifications */}
           <NotificationsBell shop={shop ?? null} pageId={pageId ?? null} />
@@ -378,7 +475,13 @@ const PageBuilderLayout = ({
             <StudioMenu shop={shop ?? null} />
           </div>
           <div data-tour="toolbar" className="min-w-0 flex-1 overflow-x-hidden">
-            <PageToolbar {...toolbarProps} />
+            <PageToolbar
+              {...toolbarProps}
+              hideDeviceManager={mode === "section"}
+              hidePagesNav={mode === "section"}
+              // Also avoid rendering page navigation when in section mode
+              pagesNav={mode === "section" ? undefined : (toolbarProps as any).pagesNav}
+            />
           </div>
           {/* Right cluster: View/Canvas + Collab + Notifications + Preview + Versions/Save/Publish + Inspector toggle */}
           <div className="flex items-center gap-2">
@@ -487,12 +590,15 @@ const PageBuilderLayout = ({
                   )}
                   <PageCanvas {...canvasProps} />
                   {Array.isArray((canvasProps as any)?.components) && (canvasProps as any).components.length === 0 && (
-                    <EmptyCanvasOverlay
-                      onAddSection={() => paletteOnAdd("Section" as ComponentType)}
-                      onOpenPalette={() => setShowPalette(true)}
-                      onOpenPresets={() => window.dispatchEvent(new Event('pb:open-presets'))}
-                    />
-                  )}
+                  <EmptyCanvasOverlay
+                    onAddSection={() => paletteOnAdd("Section" as ComponentType)}
+                    onOpenPalette={() => {
+                      setShowLayersLeft(false);
+                      setShowPalette(true);
+                    }}
+                    onOpenPresets={() => window.dispatchEvent(new Event('pb:open-presets'))}
+                  />
+                )}
                 </div>
                 {showDevTools && <DevToolsOverlay scrollRef={scrollRef as any} />}
               </div>
@@ -540,7 +646,6 @@ const PageBuilderLayout = ({
     dispatch={(canvasProps as any)?.dispatch ?? (() => {})}
     onSelectIds={(canvasProps as any)?.onSelectIds ?? (() => {})}
   />
-  <AppMarketStub open={appMarketOpen} onOpenChange={setAppMarketOpen} />
   <GlobalsPanel open={globalsOpen} onOpenChange={setGlobalsOpen} shop={shop ?? null} pageId={pageId ?? null} />
   <PagesPanel open={pagesOpen} onOpenChange={setPagesOpen} shop={shop ?? null} />
   <CMSPanel
@@ -550,7 +655,6 @@ const PageBuilderLayout = ({
     selectedIds={(canvasProps as any)?.selectedIds ?? []}
     onSelectIds={(canvasProps as any)?.onSelectIds ?? (() => {})}
   />
-  <CodePanel open={codeOpen} onOpenChange={setCodeOpen} shop={shop ?? null} pageId={pageId ?? null} />
   </>
   );
 };

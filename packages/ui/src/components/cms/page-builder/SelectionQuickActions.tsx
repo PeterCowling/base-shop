@@ -87,7 +87,7 @@ export default function SelectionQuickActions({ components, selectedIds, dispatc
   return (
     <div
       ref={bubbleRef}
-      className="absolute z-40 -translate-x-1/2 -translate-y-full rounded bg-muted/90 px-1 py-1 text-xs text-muted-foreground shadow backdrop-blur"
+      className="absolute z-[60] -translate-x-1/2 -translate-y-full rounded bg-muted/90 px-1 py-1 text-xs text-muted-foreground shadow backdrop-blur"
       style={{ left: pos.left, top: pos.top }}
     >
       <div className="flex flex-wrap items-center gap-1">

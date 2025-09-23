@@ -12,6 +12,7 @@ model Shop {
   /// @type {import("../../types/src/Shop").Shop}
   data  Json
   pages Page[]
+  sections SectionTemplate[]
 }
 
 model Page {
@@ -20,6 +21,21 @@ model Page {
   shopId String
   slug   String
   data   Json
+}
+
+/// Reusable Sections (templates) curated per shop and inserted into pages
+model SectionTemplate {
+  id        String @id @default(cuid())
+  shop      Shop   @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  shopId    String
+  label     String
+  status    String // "draft" | "published"
+  tags      Json?
+  thumbnail String?
+  data      Json
+
+  @@index([shopId])
+  @@index([shopId, status])
 }
 
 model RentalOrder {

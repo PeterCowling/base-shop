@@ -3,7 +3,6 @@
 
 import React from "react";
 import CanvasControlsMenu from "./CanvasControlsMenu";
-import MoreMenu from "./MoreMenu";
 import { ViewMenuContent, default as ViewMenu } from "./ViewMenu";
 import type GridSettings from "./GridSettings";
 import type { PageComponent } from "@acme/types";
@@ -85,27 +84,7 @@ export default function ResponsiveRightActions({
           onCrossBreakpointNoticesChange={onCrossBreakpointNoticesChange}
         />
       ) : null}
-      {!showView && (
-        <MoreMenu
-          items={[]}
-          content={
-            <ViewMenuContent
-              showPreview={showPreview}
-              togglePreview={togglePreview}
-              showComments={showComments}
-              toggleComments={toggleComments}
-              startTour={startTour}
-              showPalette={showPalette}
-              togglePalette={togglePalette}
-              parentFirst={parentFirst}
-              onParentFirstChange={onParentFirstChange}
-              gridProps={gridProps}
-              crossBreakpointNotices={crossBreakpointNotices}
-              onCrossBreakpointNoticesChange={onCrossBreakpointNoticesChange}
-            />
-          }
-        />
-      )}
+      {!showView && null}
     </div>
   );
 }

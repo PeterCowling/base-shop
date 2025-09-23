@@ -16,7 +16,7 @@ export default async function ThemesIndexPage() {
           <h1 className="text-3xl font-semibold md:text-4xl">
             Tailor the look and feel per shop
           </h1>
-          <p className="text-sm text-hero-foreground/80">
+          <p className="text-sm text-hero-foreground/90">
             Select a shop to swap themes, adjust palettes, and preview storefronts before publishing.
           </p>
         </div>

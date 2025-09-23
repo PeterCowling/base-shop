@@ -7,6 +7,8 @@ import { useCallback, useMemo, useState } from "react";
 import ImageEditor, { type ImageEditState } from "./ImageEditor";
 import OverlayPicker from "./OverlayPicker";
 import type { EditorProps } from "./EditorProps";
+import usePreviewTokens from "./hooks/usePreviewTokens";
+import { extractTextThemes, type TextTheme } from "./textThemes";
 
 type SectionExtra = PageComponent & {
   backgroundImageUrl?: string;
@@ -20,11 +22,16 @@ type SectionExtra = PageComponent & {
   backgroundVideoLoop?: boolean;
   backgroundVideoMuted?: boolean;
   sectionParallax?: number;
+  textTheme?: string;
+  heightPreset?: 'auto' | 'compact' | 'standard' | 'tall' | 'full';
+  minHeight?: string;
 };
 type Props = EditorProps<SectionExtra>;
 
 export default function SectionEditor({ component, onChange }: Props) {
   const [imgEditorOpen, setImgEditorOpen] = useState(false);
+  const previewTokens = usePreviewTokens();
+  const textThemes = extractTextThemes(previewTokens);
   const editState = useMemo<ImageEditState>(() => ({
     cropAspect: undefined,
     focalPoint: component.backgroundFocalPoint ?? { x: 0.5, y: 0.5 },
@@ -59,6 +66,58 @@ export default function SectionEditor({ component, onChange }: Props) {
 
   return (
     <div className="space-y-2">
+      {/* Section typography + height */}
+      <div className="grid grid-cols-2 gap-2">
+        <Select
+          value={(component as any).textTheme ?? ""}
+          onValueChange={(v) => handle("textTheme" as any, (v || undefined) as any)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Text theme" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">Default</SelectItem>
+            {textThemes.map((t: TextTheme) => (
+              <SelectItem key={t.id} value={t.id}>{t.label}</SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select
+          value={(component as any).heightPreset ?? ""}
+          onValueChange={(v) => handle("heightPreset" as any, (v || undefined) as any)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Height preset" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="auto">Auto</SelectItem>
+            <SelectItem value="compact">Compact</SelectItem>
+            <SelectItem value="standard">Standard</SelectItem>
+            <SelectItem value="tall">Tall</SelectItem>
+            <SelectItem value="full">Full screen</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div className="grid grid-cols-3 gap-2">
+        <Input
+          label="Min height"
+          placeholder="e.g. 480px or 80vh"
+          value={(component as any).minHeight ?? ""}
+          onChange={(e) => handle("minHeight" as any, (e.target.value || undefined) as any)}
+        />
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => handle("minHeight" as any, ("100vh" as any))}
+          title="Set full viewport height"
+        >Full (100vh)</Button>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => handle("minHeight" as any, (undefined as any))}
+          title="Clear minimum height"
+        >Clear min</Button>
+      </div>
       {/* Background image */}
       <div className="flex items-start gap-2">
         <Input

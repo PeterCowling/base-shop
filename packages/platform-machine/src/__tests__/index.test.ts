@@ -25,4 +25,20 @@ describe("index exports", () => {
     expect(pkg.runMaintenanceScan).toBe(mod.runMaintenanceScan);
     expect(pkg.startMaintenanceScheduler).toBe(mod.startMaintenanceScheduler);
   });
+
+  it("exposes reverse logistics helpers", () => {
+    expect(pkg.writeReverseLogisticsEvent).toBe(
+      require("../writeReverseLogisticsEvent").writeReverseLogisticsEvent,
+    );
+    expect(pkg.processReverseLogisticsEventsOnce).toBe(
+      require("../processReverseLogisticsEventsOnce").processReverseLogisticsEventsOnce,
+    );
+    expect(pkg.resolveConfig).toBe(require("../resolveConfig").resolveConfig);
+  });
+
+  it("exposes late fee helpers", () => {
+    const lf = require("../lateFeeService");
+    expect(pkg.chargeLateFeesOnce).toBe(lf.chargeLateFeesOnce);
+    expect(pkg.resolveLateFeeConfig).toBe(lf.resolveConfig);
+  });
 });

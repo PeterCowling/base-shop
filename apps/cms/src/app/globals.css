@@ -46,7 +46,7 @@ button {
 /* Improve readability of muted helper text within the CMS.
    Our preset sets text-muted-foreground to 65% alpha of --color-fg,
    which looked too faint on layered CMS surfaces. Bump to ~78% here. */
-.text-muted-foreground { color: hsl(var(--color-fg) / 0.78); }
+.text-muted-foreground { color: hsl(var(--color-fg) / 0.85); }
 
 /* Keyboard key styling for inline <kbd> elements used in Page Builder tips
    and the shortcuts dialog. Keeps contrast and affordance consistent across

@@ -23,6 +23,8 @@ import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import { cssVars } from "@ui/src/utils/style";
 import type { Locale } from "@i18n/locales";
 import { ensureLightboxStyles, initLightbox } from "@ui/components/cms";
+import Section from "@ui/components/cms/blocks/Section";
+import { extractTextThemes, applyTextThemeToOverrides } from "@ui/src/components/cms/page-builder/textThemes";
 
 /* ------------------------------------------------------------------
  * next/image wrapper usable in CMS blocks
@@ -81,6 +83,8 @@ const registry: Partial<
   TestimonialSlider,
   Image: (CmsImage as unknown as React.ComponentType<Record<string, unknown>>),
   Text: TextBlock,
+  // Minimal mapping so Sections render in preview/runtime
+  Section: (Section as unknown as React.ComponentType<Record<string, unknown>>),
 };
 
 /* ------------------------------------------------------------------
@@ -99,6 +103,40 @@ function DynamicRenderer({
     ensureLightboxStyles();
     initLightbox();
   }, []);
+
+  // Build a cache of text themes from CSS variables at runtime (client-side only)
+  const textThemes = React.useMemo(() => {
+    if (typeof window === "undefined") return [] as ReturnType<typeof extractTextThemes>;
+    try {
+      const styles = getComputedStyle(document.documentElement);
+      const tokens: Record<string, string> = {};
+      for (let i = 0; i < styles.length; i++) {
+        const prop = styles[i];
+        if (prop && prop.startsWith("--")) {
+          tokens[prop] = styles.getPropertyValue(prop);
+        }
+      }
+      return extractTextThemes(tokens);
+    } catch {
+      return [] as ReturnType<typeof extractTextThemes>;
+    }
+  }, []);
+
+  const presetToMinHeight = (preset: string | undefined): string | undefined => {
+    switch (preset) {
+      case "compact":
+        return "320px";
+      case "standard":
+        return "560px";
+      case "tall":
+        return "720px";
+      case "full":
+        return "100dvh"; // viewport-height aware
+      case "auto":
+      default:
+        return undefined;
+    }
+  };
   return (
     <>
       {components.map((block) => {
@@ -184,6 +222,35 @@ function DynamicRenderer({
           );
         }
 
+        // Optional Section-specific container vars
+        const sectionVars: Record<string, string | number> = (() => {
+          if (block.type !== "Section") return {};
+          const b = block as unknown as Record<string, unknown>;
+          const minH = (b.minHeight as string | undefined) || presetToMinHeight(b.heightPreset as string | undefined);
+          const vars: Record<string, string | number> = {};
+          if (minH) vars.minHeight = minH;
+          const themeId = b.textTheme as string | undefined;
+          if (themeId && textThemes.length) {
+            const theme = textThemes.find((t) => t.id === themeId);
+            if (theme) {
+              try {
+                const overrides = applyTextThemeToOverrides(undefined, theme);
+                const tv = cssVars(overrides);
+                Object.assign(vars, tv);
+                // Ensure inheritable properties apply
+                if (tv["--font-family"]) (vars as any).fontFamily = "var(--font-family)";
+                if (tv["--font-size"] || tv["--font-size-desktop"] || tv["--font-size-tablet"] || tv["--font-size-mobile"]) {
+                  (vars as any).fontSize = "var(--font-size)";
+                }
+                if (tv["--line-height"] || tv["--line-height-desktop"] || tv["--line-height-tablet"] || tv["--line-height-mobile"]) {
+                  (vars as any).lineHeight = "var(--line-height)";
+                }
+              } catch {}
+            }
+          }
+          return vars;
+        })();
+
         return (
           <div
             key={id}
@@ -205,6 +272,7 @@ function DynamicRenderer({
                 styleVars["--line-height-mobile"]
                   ? "var(--line-height)"
                   : undefined,
+              ...(sectionVars as React.CSSProperties),
             }}
           >
             <Comp {...(props as Record<string, unknown>)} locale={locale} className={mergedClassName} />

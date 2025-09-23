@@ -6,7 +6,6 @@ import { getShopFromPath } from "@acme/shared-utils";
 import { listLibrary, removeLibrary, updateLibrary, syncFromServer, saveLibrary, type LibraryItem } from "./libraryStore";
 import { ulid } from "ulid";
 import LibraryImportExport from "./LibraryImportExport";
-import MediaLibrary from "./MediaLibrary";
 import { isTopLevelAllowed } from "./rules";
 import { defaultIcon, getPaletteCategories } from "./paletteData";
 import PaletteItem from "./PaletteItem";
@@ -19,9 +18,8 @@ import usePreviewTokens from "./hooks/usePreviewTokens";
 import { extractTextThemes, toCssValue, type TextTheme } from "./textThemes";
 import PresetsModal from "./PresetsModal";
 
-const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, defaultTab = "components", onInsertPreset }: PaletteProps) {
+const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, defaultTab = "components", onInsertPreset, mode = "all" }: PaletteProps) {
   const [search, setSearch] = useState("");
-  const [tab, setTab] = useState<"components" | "media">(defaultTab);
   const [liveMessage, setLiveMessage] = useState("");
   const [presetOpen, setPresetOpen] = useState(false);
   const pathname = usePathname() ?? "";
@@ -39,7 +37,22 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
     return subscribeInstalledApps(shop ?? null, (apps) => setInstalledApps(apps));
   }, [shop]);
 
-  const paletteCategories = useMemo(() => getPaletteCategories(installedApps), [installedApps]);
+  const paletteCategories = useMemo(() => {
+    const cats = getPaletteCategories(installedApps);
+    if (mode === "all") return cats;
+    const elementsSet = new Set(["atoms", "molecules", "overlays"]);
+    const sectionsSet = new Set(["containers", "organisms"]);
+    return cats.filter((c) => {
+      // Base categories
+      if (elementsSet.has(c.id)) return mode === "elements";
+      if (sectionsSet.has(c.id)) return mode === "sections";
+      // App-provided categories (dynamic) → treat as sections by default
+      const isDynamic = !elementsSet.has(c.id) && !sectionsSet.has(c.id) && !["layout"].includes(c.id);
+      if (isDynamic) return mode === "sections";
+      // Exclude layout from both specialized modes
+      return false;
+    });
+  }, [installedApps, mode]);
 
   const paletteIndex = useMemo(() => {
     const index = new Map<string, PaletteMeta>();
@@ -122,25 +135,11 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
 
   return (
     <div className="flex flex-col gap-4" data-tour="drag-component">
-      <div className="grid grid-cols-2 gap-2">
-        <button type="button" className={`rounded border px-2 py-1 text-sm ${tab === 'components' ? 'bg-muted' : ''}`} onClick={() => setTab('components')}>
-          Components
-        </button>
-        <button type="button" className={`rounded border px-2 py-1 text-sm ${tab === 'media' ? 'bg-muted' : ''}`} onClick={() => setTab('media')}>
-          Media
-        </button>
-      </div>
       {onInsertPreset && (
         <div>
           <PresetsModal onInsert={onInsertPreset} open={presetOpen} onOpenChange={setPresetOpen} hideTrigger />
         </div>
       )}
-      {tab === 'media' ? (
-        <div>
-          {/* Media Library */}
-          <MediaLibrary onInsertImage={onInsertImage} onSetSectionBackground={onSetSectionBackground} selectedIsSection={selectedIsSection} />
-        </div>
-      ) : (
       <>
       <input
         ref={fileInputRef}
@@ -314,7 +313,6 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
         );
       })}
       </>
-      )}
       </div>
     );
   });

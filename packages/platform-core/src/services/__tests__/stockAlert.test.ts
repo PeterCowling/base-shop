@@ -3,7 +3,7 @@ import { variantKey } from "../../repositories/inventory.server";
 
 const sendEmail = jest.fn();
 const getShopSettings = jest.fn();
-const loadCoreEnv = jest.fn();
+const loadCoreEnvMock = jest.fn();
 const readFile = jest.fn();
 const writeFile = jest.fn();
 const mkdir = jest.fn();
@@ -20,7 +20,7 @@ jest.mock("../../repositories/settings.server", () => ({
 }));
 
 jest.mock("@acme/config/env/core", () => ({
-  loadCoreEnv,
+  loadCoreEnv: (...args: any[]) => (loadCoreEnvMock as any)(...args),
 }));
 
 jest.mock("fs", () => ({
@@ -40,7 +40,7 @@ describe("checkAndAlert", () => {
   });
 
   it("sends emails, writes log, and dispatches webhook", async () => {
-    loadCoreEnv.mockReturnValue({});
+    loadCoreEnvMock.mockReturnValue({});
     getShopSettings.mockResolvedValue({
       stockAlert: {
         recipients: ["shop@example.com"],
@@ -81,7 +81,7 @@ describe("checkAndAlert", () => {
   });
 
   it("falls back to env recipients and respects threshold", async () => {
-    loadCoreEnv.mockReturnValue({
+    loadCoreEnvMock.mockReturnValue({
       STOCK_ALERT_RECIPIENTS: "env1@example.com, env2@example.com",
       STOCK_ALERT_DEFAULT_THRESHOLD: 5,
     });
@@ -116,7 +116,7 @@ describe("checkAndAlert", () => {
   });
 
   it("logs errors when email or webhook fails", async () => {
-    loadCoreEnv.mockReturnValue({});
+    loadCoreEnvMock.mockReturnValue({});
     getShopSettings.mockResolvedValue({
       stockAlert: {
         recipients: ["shop@example.com"],
@@ -151,7 +151,7 @@ describe("checkAndAlert", () => {
   });
 
   it("suppresses alerts based on existing log and merges new entries", async () => {
-    loadCoreEnv.mockReturnValue({});
+    loadCoreEnvMock.mockReturnValue({});
     getShopSettings.mockResolvedValue({
       stockAlert: { recipients: ["shop@example.com"], threshold: 2 },
     });
@@ -196,4 +196,3 @@ describe("checkAndAlert", () => {
     expect(logged[keyFresh]).toBe(now);
   });
 });
-

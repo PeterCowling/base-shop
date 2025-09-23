@@ -37,3 +37,5 @@ export * from "./shop-theme";
 export type { StyleOverrides } from "./style/StyleOverrides";
 export * from "./ds";
 export * from "./theme";
+export { sectionTemplateSchema } from "./section/template";
+export type { SectionTemplate } from "./section/template";

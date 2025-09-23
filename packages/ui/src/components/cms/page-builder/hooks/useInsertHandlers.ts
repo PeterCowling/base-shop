@@ -31,7 +31,8 @@ export default function useInsertHandlers({
 
   const handleAddFromPalette = useCallback(
     (type: ComponentType) => {
-      if (!isTopLevelAllowed(type)) {
+      // If a Section is selected, we insert into it and skip the root allowlist.
+      if (!selectedIsSection && !isTopLevelAllowed(type)) {
         try {
           window.dispatchEvent(
             new CustomEvent("pb-live-message", {
@@ -48,30 +49,50 @@ export default function useInsertHandlers({
         ...(defaults[type] ?? {}),
         ...(isContainer ? { children: [] } : {}),
       } as PageComponent;
-      dispatch({ type: "add", component });
+      // Compute target (root or selected Section children)
+      const target = (() => {
+        if (selectedIsSection && selectedIds.length > 0) {
+          const sel = components.find((c) => c.id === selectedIds[0]) as any;
+          const kids = (sel?.children as PageComponent[] | undefined) ?? [];
+          return { parentId: selectedIds[0], index: kids.length };
+        }
+        let idx = components.length;
+        if (insertIndex !== null && insertIndex !== undefined) return { index: insertIndex as number };
+        if (selectedIds.length > 0) {
+          const pos = components.findIndex((c: PageComponent) => c.id === selectedIds[0]);
+          idx = pos >= 0 ? pos + 1 : components.length;
+        }
+        return { index: idx };
+      })();
+      dispatch({ type: "add", component, ...(target.parentId ? { parentId: target.parentId } : {}), index: target.index });
       setSelectedIds([component.id]);
     },
-    [dispatch, setSelectedIds]
+    [dispatch, setSelectedIds, components, selectedIds, insertIndex, selectedIsSection]
   );
 
-  const computeInsertIndex = useCallback(() => {
+  const computeInsertTarget = useCallback((): { parentId?: string; index: number } => {
+    if (selectedIsSection && selectedIds.length > 0) {
+      const sel = components.find((c) => c.id === selectedIds[0]) as any;
+      const kids = (sel?.children as PageComponent[] | undefined) ?? [];
+      return { parentId: selectedIds[0], index: kids.length };
+    }
     let index = components.length;
-    if (insertIndex !== null && insertIndex !== undefined) return insertIndex as number;
+    if (insertIndex !== null && insertIndex !== undefined) return { index: insertIndex as number };
     if (selectedIds.length > 0) {
       const pos = components.findIndex((c: PageComponent) => c.id === selectedIds[0]);
       index = pos >= 0 ? pos + 1 : components.length;
     }
-    return index;
-  }, [components, insertIndex, selectedIds]);
+    return { index };
+  }, [components, insertIndex, selectedIds, selectedIsSection]);
 
   const handleInsertImageAsset = useCallback(
     (url: string) => {
       const component = { id: ulid(), type: "Image", src: url } as PageComponent;
-      const index = computeInsertIndex();
-      dispatch({ type: "add", component, index });
+      const target = computeInsertTarget();
+      dispatch({ type: "add", component, ...(target.parentId ? { parentId: target.parentId } : {}), index: target.index });
       setSelectedIds([component.id]);
     },
-    [computeInsertIndex, dispatch, setSelectedIds]
+    [computeInsertTarget, dispatch, setSelectedIds]
   );
 
   const handleSetSectionBackground = useCallback(
@@ -92,11 +113,11 @@ export default function useInsertHandlers({
         return cloned as PageComponent;
       };
       const component = withNewIds(template);
-      const index = computeInsertIndex();
-      dispatch({ type: "add", component, index });
+      const target = computeInsertTarget();
+      dispatch({ type: "add", component, ...(target.parentId ? { parentId: target.parentId } : {}), index: target.index });
       setSelectedIds([component.id]);
     },
-    [computeInsertIndex, dispatch, setSelectedIds]
+    [computeInsertTarget, dispatch, setSelectedIds]
   );
 
   // Media library event: supports alt/cropAspect
@@ -113,15 +134,15 @@ export default function useInsertHandlers({
           alt: d.alt,
           cropAspect: d.cropAspect,
         } as PageComponent;
-        const index = computeInsertIndex();
-        dispatch({ type: "add", component, index });
+        const target = computeInsertTarget();
+        dispatch({ type: "add", component, ...(target.parentId ? { parentId: target.parentId } : {}), index: target.index });
         setSelectedIds([component.id]);
         try {
           window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Image inserted" }));
         } catch {}
       } catch {}
     },
-    [computeInsertIndex, dispatch, setSelectedIds]
+    [computeInsertTarget, dispatch, setSelectedIds]
   );
 
   return {
@@ -133,4 +154,3 @@ export default function useInsertHandlers({
     mediaLibraryListener,
   } as const;
 }
-

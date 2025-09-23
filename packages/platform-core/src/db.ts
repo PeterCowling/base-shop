@@ -16,6 +16,7 @@ import {
   createReverseLogisticsEventDelegate,
   createProductDelegate,
   createInventoryItemDelegate,
+  createSectionTemplateDelegate,
   type InventoryItemDelegate,
 } from './db/stubs';
 
@@ -44,6 +45,7 @@ function createTestPrismaStub(): Pick<
   | 'user'
   | 'reverseLogisticsEvent'
   | 'customerMfa'
+  | 'sectionTemplate'
   | '$transaction'
   > & { inventoryItem: InventoryItemDelegate } {
   const stub = {
@@ -57,6 +59,7 @@ function createTestPrismaStub(): Pick<
     reverseLogisticsEvent: createReverseLogisticsEventDelegate() as unknown as PrismaClientType['reverseLogisticsEvent'],
     product: createProductDelegate() as unknown as PrismaClientType['product'],
     inventoryItem: createInventoryItemDelegate(),
+    sectionTemplate: createSectionTemplateDelegate() as unknown as PrismaClientType['sectionTemplate'],
   } as unknown as Pick<
     PrismaClientType,
     | 'rentalOrder'
@@ -67,6 +70,7 @@ function createTestPrismaStub(): Pick<
     | 'user'
     | 'reverseLogisticsEvent'
     | 'customerMfa'
+    | 'sectionTemplate'
     | '$transaction'
   > & { inventoryItem: InventoryItemDelegate };
 

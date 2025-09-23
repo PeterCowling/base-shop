@@ -34,18 +34,18 @@ export default async function DashboardIndexPage() {
         <div className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
           <div className="space-y-6">
             <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-hero-foreground/80">
+              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-hero-foreground/90">
                 Shop dashboards
               </span>
               <h1 className="text-3xl font-semibold md:text-4xl">
                 Choose a storefront to inspect
               </h1>
-              <p className="text-hero-foreground/80">
+              <p className="text-hero-foreground/90">
                 Dive into operational analytics for each shop. Pick a workspace to review merchandising, traffic, and conversion trends.
               </p>
             </div>
             <div className="space-y-4">
-              <Progress value={progressValue} label={progressLabel} labelClassName="text-hero-foreground/80" />
+              <Progress value={progressValue} label={progressLabel} labelClassName="text-hero-foreground/90" />
               <div className="flex flex-wrap gap-3">
                 <Button asChild className="h-11 px-5 text-sm font-semibold">
                   <Link href="/cms/configurator">Launch new shop</Link>

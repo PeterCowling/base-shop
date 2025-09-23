@@ -8,30 +8,53 @@ import {
   ReaderIcon,
   SectionIcon,
   TokensIcon,
-  ViewGridIcon,
   TableIcon,
-  CodeIcon,
   ChevronRightIcon,
-  ChevronLeftIcon,
 } from "@radix-ui/react-icons";
+import MoreMenu from "./MoreMenu";
+import { ViewMenuContent } from "./ViewMenu";
+import { DesignMenuContent } from "./DesignMenu";
+import type GridSettings from "./GridSettings";
+import type { Breakpoint } from "./panels/BreakpointsPanel";
 
 interface Props {
   onOpenAdd: () => void;
+  onOpenSections: () => void;
   onOpenLayers: () => void;
   onOpenPages: () => void;
   onOpenSiteStyles: () => void;
   onOpenGlobalSections: () => void;
-  onOpenAppMarket: () => void;
   onOpenCMS: () => void;
-  onOpenCode: () => void;
   onToggleInspector: () => void;
   isAddActive?: boolean;
+  isSectionsActive?: boolean;
   isLayersActive?: boolean;
   isInspectorActive?: boolean;
+  // For More actions content
+  gridProps?: React.ComponentProps<typeof GridSettings>;
+  startTour?: () => void;
+  toggleComments?: () => void;
+  showComments?: boolean;
+  togglePreview?: () => void;
+  showPreview?: boolean;
+  showPalette?: boolean;
+  togglePalette?: () => void;
+  parentFirst?: boolean;
+  onParentFirstChange?: (v: boolean) => void;
+  crossBreakpointNotices?: boolean;
+  onCrossBreakpointNoticesChange?: (v: boolean) => void;
+  breakpoints?: Breakpoint[];
+  setBreakpoints?: (list: Breakpoint[]) => void;
+  // Optional: hide certain entries (used by SectionBuilder mode)
+  hideAddElements?: boolean;
+  hidePages?: boolean;
+  hideGlobalSections?: boolean;
+  hideSiteStyles?: boolean;
+  hideCMS?: boolean;
 }
 
 // Minimal left icon rail. Uses simple glyphs; replace with line icons later.
-export default function LeftRail({ onOpenAdd, onOpenLayers, onOpenPages, onOpenSiteStyles, onOpenGlobalSections, onOpenAppMarket, onOpenCMS, onOpenCode, onToggleInspector, isAddActive = false, isLayersActive = false, isInspectorActive = false }: Props) {
+export default function LeftRail({ onOpenAdd, onOpenSections, onOpenLayers, onOpenPages, onOpenSiteStyles, onOpenGlobalSections, onOpenCMS, onToggleInspector, isAddActive = false, isSectionsActive = false, isLayersActive = false, isInspectorActive = false, gridProps, startTour, toggleComments, showComments, togglePreview, showPreview, showPalette, togglePalette, parentFirst, onParentFirstChange, crossBreakpointNotices, onCrossBreakpointNoticesChange, breakpoints, setBreakpoints, hideAddElements, hidePages, hideGlobalSections, hideSiteStyles, hideCMS }: Props) {
   const Item = ({ label, onClick, icon, active = false }: { label: string; onClick: () => void; icon: React.ReactNode; active?: boolean }) => (
     <Tooltip text={label}>
       <button
@@ -51,16 +74,46 @@ export default function LeftRail({ onOpenAdd, onOpenLayers, onOpenPages, onOpenS
 
   return (
     <aside className="ml-[25px] flex w-16 shrink-0 flex-col items-center gap-4 border-r bg-surface-1/80 py-4">
-      <Item label="Add Elements" onClick={onOpenAdd} icon={<PlusIcon className="h-5 w-5" />} active={isAddActive} />
+      <Item label="Add Section" onClick={onOpenSections} icon={<SectionIcon className="h-5 w-5" />} active={isSectionsActive} />
+      {!hideAddElements && (
+        <Item label="Add Elements" onClick={onOpenAdd} icon={<PlusIcon className="h-5 w-5" />} active={isAddActive} />
+      )}
       <Item label="Layers" onClick={onOpenLayers} icon={<LayersIcon className="h-5 w-5" />} active={isLayersActive} />
-      <Item label="Pages" onClick={onOpenPages} icon={<ReaderIcon className="h-5 w-5" />} />
-      <Item label="Global Sections" onClick={onOpenGlobalSections} icon={<SectionIcon className="h-5 w-5" />} />
-      <Item label="Site Styles" onClick={onOpenSiteStyles} icon={<TokensIcon className="h-5 w-5" />} />
-      <Item label="App Market" onClick={onOpenAppMarket} icon={<ViewGridIcon className="h-5 w-5" />} />
-      <Item label="CMS" onClick={onOpenCMS} icon={<TableIcon className="h-5 w-5" />} />
-      <Item label="Code" onClick={onOpenCode} icon={<CodeIcon className="h-5 w-5" />} />
+      {!hidePages && <Item label="Pages" onClick={onOpenPages} icon={<ReaderIcon className="h-5 w-5" />} />}
+      {!hideGlobalSections && <Item label="Global Sections" onClick={onOpenGlobalSections} icon={<SectionIcon className="h-5 w-5" />} />}
+      {!hideSiteStyles && <Item label="Site Styles" onClick={onOpenSiteStyles} icon={<TokensIcon className="h-5 w-5" />} />}
+      {!hideCMS && <Item label="CMS" onClick={onOpenCMS} icon={<TableIcon className="h-5 w-5" />} />}
       <div className="mt-auto" />
       <Item label="Toggle Inspector" onClick={onToggleInspector} icon={<ChevronRightIcon className="h-5 w-5" />} active={isInspectorActive} />
+      {/* More actions moved to bottom of left rail with 30px gap from prior button */}
+      <div className="mt-[30px]">
+        <MoreMenu
+          content={
+            <div className="flex flex-col gap-4">
+              {gridProps && (
+                <ViewMenuContent
+                  showPreview={!!showPreview}
+                  togglePreview={togglePreview || (() => {})}
+                  showComments={!!showComments}
+                  toggleComments={toggleComments || (() => {})}
+                  startTour={startTour || (() => {})}
+                  showPalette={!!showPalette}
+                  togglePalette={togglePalette || (() => {})}
+                  parentFirst={parentFirst}
+                  onParentFirstChange={onParentFirstChange}
+                  gridProps={gridProps}
+                  crossBreakpointNotices={crossBreakpointNotices}
+                  onCrossBreakpointNoticesChange={onCrossBreakpointNoticesChange}
+                />
+              )}
+              <DesignMenuContent
+                breakpoints={breakpoints ?? []}
+                onChangeBreakpoints={(list) => setBreakpoints?.(list)}
+              />
+            </div>
+          }
+        />
+      </div>
     </aside>
   );
 }

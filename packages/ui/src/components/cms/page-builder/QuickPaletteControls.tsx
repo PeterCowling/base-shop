@@ -38,25 +38,6 @@ const QuickPaletteControls = ({ onAdd, onInsertImage, onSetSectionBackground, se
         </div>
       </PopoverContent>
     </Popover>
-    {/* Quick Media popover */}
-    <Popover>
-      <PopoverTrigger asChild>
-        <Tooltip text="Quick media">
-          <button type="button" aria-label="Quick media" className="rounded border border-border-2 bg-surface-2 px-1 text-xs">🖼</button>
-        </Tooltip>
-      </PopoverTrigger>
-      <PopoverContent className="w-80 p-2">
-        <div className="max-h-[70vh] overflow-auto">
-          <Palette
-            onAdd={onAdd}
-            onInsertImage={onInsertImage}
-            onSetSectionBackground={onSetSectionBackground}
-            selectedIsSection={selectedIsSection}
-            defaultTab="media"
-          />
-        </div>
-      </PopoverContent>
-    </Popover>
     <Tooltip text="Show palette">
       <button
         type="button"
@@ -72,4 +53,3 @@ const QuickPaletteControls = ({ onAdd, onInsertImage, onSetSectionBackground, se
 );
 
 export default QuickPaletteControls;
-

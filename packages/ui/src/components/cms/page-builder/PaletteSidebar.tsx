@@ -13,13 +13,14 @@ interface Props {
   onSetSectionBackground: (url: string) => void;
   selectedIsSection: boolean;
   onInsertPreset?: (component: PageComponent) => void;
+  mode?: "elements" | "sections" | "all";
 }
 
 /**
  * Renders the left palette sidebar, including a drag-resize handle.
  * Single purpose: palette column UI + width resize behavior.
  */
-const PaletteSidebar = ({ width, onWidthChange, onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, onInsertPreset }: Props) => (
+const PaletteSidebar = ({ width, onWidthChange, onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, onInsertPreset, mode = "all" }: Props) => (
   <>
     <aside className="shrink-0" style={{ width }} data-tour="palette" data-cy="pb-palette">
       <Palette
@@ -28,6 +29,7 @@ const PaletteSidebar = ({ width, onWidthChange, onAdd, onInsertImage, onSetSecti
         onSetSectionBackground={onSetSectionBackground}
         selectedIsSection={selectedIsSection}
         onInsertPreset={onInsertPreset}
+        mode={mode}
       />
     </aside>
     <div

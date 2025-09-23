@@ -16,7 +16,7 @@ export default async function OrdersIndexPage() {
           <h1 className="text-3xl font-semibold md:text-4xl">
             Stay ahead of order flows across storefronts
           </h1>
-          <p className="text-sm text-hero-foreground/80">
+          <p className="text-sm text-hero-foreground/90">
             Select a shop to review rentals, returns, and risk signals before they escalate.
           </p>
         </div>

@@ -20,6 +20,13 @@ export interface PaletteProps {
   selectedIsSection?: boolean;
   defaultTab?: "components" | "media";
   onInsertPreset?: (component: PageComponent) => void;
+  /**
+   * Optional filter mode to split the palette into basic elements vs sections.
+   * - elements: atoms, molecules, overlays
+   * - sections: containers, organisms, and any app-provided categories
+   * - all (default): show everything
+   */
+  mode?: "elements" | "sections" | "all";
 }
 
 export type PaletteTab = "components" | "media";

@@ -12,6 +12,12 @@ export interface SectionComponent extends PageComponentBase {
   gridGutter?: string;
   /** Optional per-section toggle: enable grid snapping for children */
   gridSnap?: boolean;
+  /** Optional text theme identifier applied to this section */
+  textTheme?: string;
+  /** Height preset for section container */
+  heightPreset?: 'auto' | 'compact' | 'standard' | 'tall' | 'full';
+  /** Minimum height (e.g. '480px', '80vh') */
+  minHeight?: string;
   /** Background image URL */
   backgroundImageUrl?: string;
   /** Background image focal point (0..1) */
@@ -42,6 +48,9 @@ export const sectionComponentSchema = baseComponentSchema.extend({
   gridCols: z.number().int().min(1).max(24).optional(),
   gridGutter: z.string().optional(),
   gridSnap: z.boolean().optional(),
+  textTheme: z.string().optional(),
+  heightPreset: z.enum(['auto','compact','standard','tall','full']).optional(),
+  minHeight: z.string().optional(),
   backgroundImageUrl: z.string().optional(),
   backgroundFocalPoint: z.object({ x: z.number(), y: z.number() }).optional(),
   backgroundSize: z.enum(['cover','contain','auto']).optional(),

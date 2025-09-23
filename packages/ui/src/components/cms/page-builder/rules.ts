@@ -12,6 +12,10 @@ import type { ComponentType } from "./defaults";
 // Parent can be a concrete component type or the special ROOT (top-level page canvas).
 export type ParentKind = "ROOT" | ComponentType;
 
+// Feature flag: when enabled, the page root only allows Sections.
+// This aligns the builder to "pages are composed of sections".
+const SECTIONS_ONLY = process.env.NEXT_PUBLIC_PB_SECTIONS_ONLY === "true";
+
 // Build category sets from registries
 const ATOMS = new Set(Object.keys(atomRegistry) as ComponentType[]);
 const MOLECULES = new Set(Object.keys(moleculeRegistry) as ComponentType[]);
@@ -32,8 +36,11 @@ const set = (list: ComponentType[]) => new Set<ComponentType>(list);
 
 // Allowed children mapping. Adjust as product requirements evolve.
 const ALLOWED: Record<ParentKind, Set<ComponentType>> = {
-  // Top level allows a Canvas-like container. Historically this was `Section`; now `Canvas` is supported too.
-  ROOT: set(["Section" as ComponentType, "Canvas" as ComponentType]),
+  // Top level: when sections-only is enabled, restrict to Section; otherwise keep legacy Canvas support.
+  ROOT: set([
+    "Section" as ComponentType,
+    ...(SECTIONS_ONLY ? [] : (["Canvas"] as ComponentType[])),
+  ]),
 
   // Containers: Section may contain content and selected containers for layouting
   Section: set([

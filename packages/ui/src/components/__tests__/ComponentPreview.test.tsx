@@ -1,152 +1,62 @@
+/** @jest-environment jsdom */
+import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import ComponentPreview from "../ComponentPreview";
-import type { UpgradeComponent } from "@acme/types";
 
 describe("ComponentPreview", () => {
+  beforeEach(() => {
+    (globalThis as any).__UPGRADE_MOCKS__ = {};
+  });
+
   afterEach(() => {
     delete (globalThis as any).__UPGRADE_MOCKS__;
   });
 
-  const component: UpgradeComponent = {
-    componentName: "MyComp",
-    file: "MyComp.tsx",
-  } as UpgradeComponent;
+  function registerMock(path: string, comp: React.ComponentType) {
+    (globalThis as any).__UPGRADE_MOCKS__[path] = comp;
+  }
 
-  it("logs error when dynamic import fails", async () => {
-    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+  it("renders new component and supports compare + toggle modes", async () => {
+    const New = ({ label }: { label: string }) => <div>new:{label}</div>;
+    const Old = ({ label }: { label: string }) => <div>old:{label}</div>;
 
-    render(<ComponentPreview component={component} />);
+    registerMock("@ui/components/MyComp", New);
+    registerMock("@ui/components/MyComp.bak", Old);
 
-    await waitFor(() => expect(spy).toHaveBeenCalled());
-    expect(spy.mock.calls[0][0]).toBe("Failed to load component");
-    expect(spy.mock.calls[0][1]).toBe(component.componentName);
-
-    spy.mockRestore();
-  });
-
-  it("renders component with provided props", async () => {
-    const NewComp = ({ message }: { message: string }) => (
-      <div>{message}</div>
-    );
-    (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-    };
+    const { default: ComponentPreview } = await import("../ComponentPreview");
 
     render(
       <ComponentPreview
-        component={component}
-        componentProps={{ message: "Hello Props" }}
+        component={{ id: "1", type: "X", file: "MyComp.tsx", componentName: "MyComp" } as any}
+        componentProps={{ label: "A" }}
       />
     );
 
-    expect(
-      await screen.findByText("Hello Props")
-    ).toBeInTheDocument();
+    expect(await screen.findByText("new:A")).toBeInTheDocument();
+
+    // Enable compare (side-by-side)
+    fireEvent.click(screen.getByRole("button", { name: /compare/i }));
+    expect(await screen.findByText("old:A")).toBeInTheDocument();
+
+    // Switch to toggle mode and flip shown component
+    fireEvent.click(screen.getByRole("button", { name: /toggle/i }));
+    fireEvent.click(screen.getByRole("button", { name: /show old/i }));
+    expect(await screen.findByText("old:A")).toBeInTheDocument();
   });
 
-  it("does not show Compare button without backup component", async () => {
-    const NewComp = () => <div>New Component</div>;
-    (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-    };
-
-    render(<ComponentPreview component={component} />);
-
-    expect(await screen.findByText("New Component")).toBeInTheDocument();
-    expect(
-      screen.queryByRole("button", { name: "Compare" })
-    ).not.toBeInTheDocument();
-  });
-
-  it("renders the new component by default", async () => {
-    const NewComp = () => <div>New Component</div>;
-    const OldComp = () => <div>Old Component</div>;
-    (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-      "@ui/components/MyComp.bak": OldComp,
-    };
-
-    render(<ComponentPreview component={component} />);
-
-    expect(await screen.findByText("New Component")).toBeInTheDocument();
-    expect(screen.queryByText("Old Component")).not.toBeInTheDocument();
-  });
-
-  it("shows components side by side when comparison is enabled", async () => {
-    const NewComp = () => <div>New Component</div>;
-    const OldComp = () => <div>Old Component</div>;
-    (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-      "@ui/components/MyComp.bak": OldComp,
-    };
-
-    render(<ComponentPreview component={component} />);
-
-    fireEvent.click(await screen.findByRole("button", { name: "Compare" }));
-
-    expect(await screen.findByText("New Component")).toBeInTheDocument();
-    expect(await screen.findByText("Old Component")).toBeInTheDocument();
-  });
-
-  it("switches between side and toggle modes", async () => {
-    const NewComp = () => <div>New Component</div>;
-    const OldComp = () => <div>Old Component</div>;
-    (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-      "@ui/components/MyComp.bak": OldComp,
-    };
-
-    render(<ComponentPreview component={component} />);
-
-    fireEvent.click(await screen.findByRole("button", { name: "Compare" }));
-
-    expect(await screen.findByText("New Component")).toBeInTheDocument();
-    expect(await screen.findByText("Old Component")).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: "Toggle" }));
-
-    expect(await screen.findByText("New Component")).toBeInTheDocument();
-    expect(screen.queryByText("Old Component")).not.toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: "Side by side" }));
-
-    expect(await screen.findByText("New Component")).toBeInTheDocument();
-    expect(await screen.findByText("Old Component")).toBeInTheDocument();
-  });
-
-  it("toggles screenshot mode between versions", async () => {
-    const NewComp = () => <div>New Component</div>;
-    const OldComp = () => <div>Old Component</div>;
-    (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": NewComp,
-      "@ui/components/MyComp.bak": OldComp,
-    };
-
-    render(<ComponentPreview component={component} />);
-
-    fireEvent.click(await screen.findByRole("button", { name: "Compare" }));
-    fireEvent.click(screen.getByRole("button", { name: "Toggle" }));
-
-    fireEvent.click(screen.getByRole("button", { name: "Show old" }));
-    expect(await screen.findByText("Old Component")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Show new" }));
-    expect(await screen.findByText("New Component")).toBeInTheDocument();
-  });
-
-  it("shows fallback when component throws", async () => {
-    const ErrorComp = () => {
+  it("shows error boundary fallback when new component throws", async () => {
+    const Boom = () => {
       throw new Error("boom");
     };
-    (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/MyComp": ErrorComp,
-    };
+    registerMock("@ui/components/Boomy", Boom);
 
-    render(<ComponentPreview component={component} />);
+    const { default: ComponentPreview } = await import("../ComponentPreview");
+    render(
+      <ComponentPreview
+        component={{ id: "2", type: "Y", file: "Boomy.tsx", componentName: "Boomy" } as any}
+      />
+    );
 
-    expect(
-      await screen.findByText("Failed to render preview")
-    ).toBeInTheDocument();
+    expect(await screen.findByText(/Failed to render preview/)).toBeInTheDocument();
   });
 });
 

@@ -85,4 +85,27 @@ describe("DynamicRenderer", () => {
     const last = (textMock as jest.Mock).mock.calls.pop()![0];
     expect(String(last.className)).toContain("pb-stack-mobile-reverse");
   });
+
+  it("applies Section height presets and minHeight on wrapper", () => {
+    const { container, rerender } = render(
+      <DynamicRenderer
+        components={[{ id: "s1", type: "Section", heightPreset: "compact" } as any]}
+        locale="en"
+      />,
+    );
+    const first = container.querySelector(".pb-scope") as HTMLElement | null;
+    expect(first).toBeTruthy();
+    // Height preset compact => 320px min-height
+    expect(first!.style.minHeight).toBe("320px");
+
+    rerender(
+      <DynamicRenderer
+        components={[{ id: "s2", type: "Section", minHeight: "480px" } as any]}
+        locale="en"
+      />,
+    );
+    const second = container.querySelector(".pb-scope") as HTMLElement | null;
+    expect(second).toBeTruthy();
+    expect(second!.style.minHeight).toBe("480px");
+  });
 });

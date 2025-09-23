@@ -20,7 +20,8 @@ import useInsertHandlers from "./hooks/useInsertHandlers";
 import useKeyboardShortcuts from "./hooks/useKeyboardShortcuts";
 import useGridSize from "./hooks/useGridSize";
 import { buildCanvasProps, buildGridProps, buildHistoryProps, buildPreviewProps, buildToolbarProps, buildToastProps, buildTourProps } from "./buildProps";
-import { listGlobals, updateGlobal, type GlobalItem } from "./libraryStore";
+import { listGlobals, updateGlobal, saveGlobal, type GlobalItem } from "./libraryStore";
+import { ulid } from "ulid";
 
 interface Props {
   page: Page; history?: HistoryState; onSave:(fd:FormData)=>Promise<unknown>; onPublish:(fd:FormData)=>Promise<unknown>;
@@ -28,6 +29,7 @@ interface Props {
   onChange?: (components: PageComponent[]) => void; style?: CSSProperties;
   presetsSourceUrl?: string;
   pagesNav?: { items: { label: string; value: string; href: string }[]; current: string };
+  mode?: "page" | "section";
 }
 
 const PageBuilder = memo(function PageBuilder({
@@ -43,6 +45,7 @@ const PageBuilder = memo(function PageBuilder({
   style,
   presetsSourceUrl,
   pagesNav,
+  mode = "page",
 }: Props) {
   const pathname = usePathname() ?? "";
   const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
@@ -286,6 +289,13 @@ const PageBuilder = memo(function PageBuilder({
   const tourProps = buildTourProps({ steps: controls.tourSteps, run: controls.runTour, callback: controls.handleTourCallback });
   const { parentFirst, setParentFirst } = useLayerSelectionPreference();
 
+  // In section mode, auto-select the first Section so inserts go inside it.
+  useEffect(() => {
+    if (mode !== "section") return;
+    const first = components.find((c: PageComponent) => c.type === "Section");
+    if (first) setSelectedIds([first.id]);
+  }, [mode, components, setSelectedIds]);
+
   return (
     <PageBuilderLayout
       style={style}
@@ -294,6 +304,33 @@ const PageBuilder = memo(function PageBuilder({
       onSetSectionBackground={handleSetSectionBackground}
       selectedIsSection={selectedIsSection}
       onInsertPreset={handleInsertPreset}
+      mode={mode}
+      onInsertLinkedSection={async (item) => {
+        try {
+          // Persist as Global (best-effort local + optional server)
+          await saveGlobal(shop, { globalId: item.globalId, label: item.label, createdAt: Date.now(), template: item.component } as any);
+        } catch {}
+        // Insert node and mark as linked global
+        const withNewIds = (node: PageComponent): PageComponent => {
+          const cloned: any = { ...(node as any), id: ulid() };
+          const kids = (node as any).children as PageComponent[] | undefined;
+          if (Array.isArray(kids)) cloned.children = kids.map(withNewIds);
+          return cloned as PageComponent;
+        };
+        const component = withNewIds(item.component);
+        // Add at computed index after current selection
+        const index = (() => {
+          const list = components as PageComponent[];
+          const sel = selectedIds[0];
+          if (!sel) return list.length;
+          const pos = list.findIndex((c) => c.id === sel);
+          return pos >= 0 ? pos + 1 : list.length;
+        })();
+        dispatch({ type: "add", component, index });
+        // Mark editor flags
+        dispatch({ type: "update-editor", id: component.id, patch: { global: { id: item.globalId } } as any });
+        setSelectedIds([component.id]);
+      }}
       presetsSourceUrl={presetsSourceUrl ?? process.env.NEXT_PUBLIC_PAGEBUILDER_PRESETS_URL}
       toolbarProps={toolbarProps}
       gridProps={gridProps}

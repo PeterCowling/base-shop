@@ -14,10 +14,16 @@ interface Props {
 
 export function DesignMenuContent({ breakpoints = [], onChangeBreakpoints }: Props) {
   const [themeOpen, setThemeOpen] = React.useState(false);
+  const [breakpointsOpen, setBreakpointsOpen] = React.useState(false);
   React.useEffect(() => {
     const open = () => setThemeOpen(true);
     window.addEventListener("pb:open-theme", open as EventListener);
     return () => window.removeEventListener("pb:open-theme", open as EventListener);
+  }, []);
+  React.useEffect(() => {
+    const open = () => setBreakpointsOpen(true);
+    window.addEventListener("pb:open-breakpoints", open as EventListener);
+    return () => window.removeEventListener("pb:open-breakpoints", open as EventListener);
   }, []);
   return (
     <div className="flex flex-col gap-2 text-sm">
@@ -27,7 +33,7 @@ export function DesignMenuContent({ breakpoints = [], onChangeBreakpoints }: Pro
         </DialogTrigger>
         <ThemePanel />
       </Dialog>
-      <Dialog>
+      <Dialog open={breakpointsOpen} onOpenChange={setBreakpointsOpen}>
         <DialogTrigger asChild>
           <Button variant="outline">Breakpoints…</Button>
         </DialogTrigger>

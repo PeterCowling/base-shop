@@ -12,10 +12,13 @@ interface Props {
   publishing?: boolean;
   showPreview?: boolean;
   togglePreview?: () => void;
+  showVersions?: boolean;
+  showPreviewButton?: boolean;
+  publishLabel?: string;
 }
 
 // Compact top-row actions aligned to the right: Save, Publish, Versions, Save Version
-export default function TopActionBar({ onSave, onPublish, saving = false, publishing = false, showPreview, togglePreview }: Props) {
+export default function TopActionBar({ onSave, onPublish, saving = false, publishing = false, showPreview, togglePreview, showVersions = true, showPreviewButton = true, publishLabel = "Publish" }: Props) {
   return (
     <div className="flex w-full items-center justify-end gap-2">
       <Tooltip text="Save (Ctrl/⌘+S)">
@@ -23,7 +26,7 @@ export default function TopActionBar({ onSave, onPublish, saving = false, publis
           {saving ? <Spinner className="h-4 w-4" /> : "Save"}
         </Button>
       </Tooltip>
-      <Tooltip text="Publish page">
+      <Tooltip text={publishLabel}>
         <Button
           variant="default"
           className="h-9 px-4"
@@ -31,10 +34,10 @@ export default function TopActionBar({ onSave, onPublish, saving = false, publis
           disabled={publishing}
           data-tour="publish"
         >
-          {publishing ? <Spinner className="h-4 w-4" /> : "Publish"}
+          {publishing ? <Spinner className="h-4 w-4" /> : publishLabel}
         </Button>
       </Tooltip>
-      {typeof showPreview === 'boolean' && togglePreview && (
+      {showPreviewButton && typeof showPreview === 'boolean' && togglePreview && (
         <Tooltip text="Toggle preview (Ctrl/⌘+Alt+P)">
           <Button
             variant="outline"
@@ -50,26 +53,30 @@ export default function TopActionBar({ onSave, onPublish, saving = false, publis
           </Button>
         </Tooltip>
       )}
-      <Tooltip text="Manage versions (Ctrl/⌘+Shift+V)">
-        <Button
-          variant="outline"
-          onClick={() => {
-            try { window.dispatchEvent(new Event("pb:open-versions")); } catch {}
-          }}
-        >
-          Versions
-        </Button>
-      </Tooltip>
-      <Tooltip text="Save version snapshot (Ctrl/⌘+Shift+S)">
-        <Button
-          variant="outline"
-          onClick={() => {
-            try { window.dispatchEvent(new Event("pb:save-version")); } catch {}
-          }}
-        >
-          Save Version
-        </Button>
-      </Tooltip>
+      {showVersions && (
+        <>
+          <Tooltip text="Manage versions (Ctrl/⌘+Shift+V)">
+            <Button
+              variant="outline"
+              onClick={() => {
+                try { window.dispatchEvent(new Event("pb:open-versions")); } catch {}
+              }}
+            >
+              Versions
+            </Button>
+          </Tooltip>
+          <Tooltip text="Save version snapshot (Ctrl/⌘+Shift+S)">
+            <Button
+              variant="outline"
+              onClick={() => {
+                try { window.dispatchEvent(new Event("pb:save-version")); } catch {}
+              }}
+            >
+              Save Version
+            </Button>
+          </Tooltip>
+        </>
+      )}
     </div>
   );
 }

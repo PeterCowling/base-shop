@@ -1,6 +1,7 @@
 import { readFile, stat } from "fs/promises";
 import path from "path";
 import { pathToFileURL } from "url";
+import { createRequire } from "module";
 import { logger } from "../utils";
 
 function unique<T>(arr: T[]): T[] {
@@ -92,8 +93,13 @@ export async function resolvePluginEntry(dir: string): Promise<{
   }
 }
 
-export async function importByType(entryPath: string, _isModule: boolean) {
-  // Always use dynamic import to avoid webpack's "request of a dependency is an expression" warning.
-  // Node's ESM loader will interop default export for CommonJS modules.
+export async function importByType(entryPath: string, isModule: boolean) {
+  // Use require for CommonJS to support environments where the file may not
+  // be importable as ESM (and to satisfy tests that mock require).
+  if (!isModule && /\.(cjs|js)$/.test(entryPath)) {
+    const req = createRequire(process.cwd() + "/jest.require.cjs");
+    return req(entryPath);
+  }
+  // Otherwise, use dynamic import; Node will interop CJS default exports.
   return import(/* webpackIgnore: true */ pathToFileURL(entryPath).href);
 }

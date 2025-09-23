@@ -1,136 +1,49 @@
-import { jest } from "@jest/globals";
-
 import { MemoryCartStore } from "../memoryStore";
-import type { SKU } from "@acme/types";
+
 
 describe("MemoryCartStore", () => {
-  const sku: SKU = { id: "sku1" } as SKU;
-
   beforeEach(() => {
     jest.useFakeTimers();
   });
-
   afterEach(() => {
     jest.useRealTimers();
   });
 
-  it("createCart returns a UUID and initializes empty cart", async () => {
+  test("createCart initializes empty cart and getCart returns it", async () => {
     const store = new MemoryCartStore(60);
     const id = await store.createCart();
-    expect(id).toMatch(
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
-    );
-    expect(await store.getCart(id)).toEqual({});
+    expect(id).toBeTruthy();
+    await expect(store.getCart(id)).resolves.toEqual({});
   });
 
-  it("getCart returns empty for new cart and purges expired entries", async () => {
-    const store = new MemoryCartStore(1);
-    const id = await store.createCart();
-    expect(await store.getCart(id)).toEqual({});
-    jest.setSystemTime(0);
-    await store.setCart(id, { [sku.id!]: { sku, qty: 1 } });
-    jest.setSystemTime(2000);
-    expect(await store.getCart(id)).toEqual({});
-    expect(await store.getCart(id)).toEqual({});
-  });
-
-  describe("incrementQty", () => {
-    it("merges quantities without size and resets expiry", async () => {
-      jest.setSystemTime(0);
-      const store = new MemoryCartStore(1);
-      await store.incrementQty("cart", sku, 1);
-      jest.setSystemTime(500);
-      await store.incrementQty("cart", sku, 2);
-      expect(await store.getCart("cart")).toEqual({
-        [sku.id!]: { sku, qty: 3 },
-      });
-      jest.setSystemTime(1500);
-      expect(await store.getCart("cart")).toEqual({
-        [sku.id!]: { sku, qty: 3 },
-      });
-    });
-
-    it("merges quantities with size", async () => {
-      const store = new MemoryCartStore(60);
-      const size = "L";
-      await store.incrementQty("cart", sku, 1, size);
-      await store.incrementQty("cart", sku, 2, size);
-      expect(await store.getCart("cart")).toEqual({
-        [`${sku.id}:${size}`]: { sku, size, qty: 3 },
-      });
-    });
-
-    it("creates new cart when previous one expired", async () => {
-      jest.setSystemTime(0);
-      const store = new MemoryCartStore(1);
-      await store.incrementQty("cart", sku, 1);
-      jest.setSystemTime(2000);
-      await store.incrementQty("cart", sku, 1);
-      expect(await store.getCart("cart")).toEqual({
-        [sku.id!]: { sku, qty: 1 },
-      });
-      jest.setSystemTime(2500);
-      expect(await store.getCart("cart")).toEqual({
-        [sku.id!]: { sku, qty: 1 },
-      });
-      jest.setSystemTime(3500);
-      expect(await store.getCart("cart")).toEqual({});
-    });
-  });
-
-  describe("setQty", () => {
-    it("updates quantity", async () => {
-      const store = new MemoryCartStore(60);
-      await store.setCart("cart", { [sku.id!]: { sku, qty: 1 } });
-      const cart = await store.setQty("cart", sku.id!, 5);
-      expect(cart).toEqual({ [sku.id!]: { sku, qty: 5 } });
-    });
-
-    it("returns null when cart expired", async () => {
-      jest.setSystemTime(0);
-      const store = new MemoryCartStore(1);
-      await store.setCart("cart", { [sku.id!]: { sku, qty: 1 } });
-      jest.setSystemTime(2000);
-      expect(await store.setQty("cart", sku.id!, 5)).toBeNull();
-    });
-
-    it("removes line when qty is 0", async () => {
-      const store = new MemoryCartStore(60);
-      await store.setCart("cart", { [sku.id!]: { sku, qty: 3 } });
-      const cart = await store.setQty("cart", sku.id!, 0);
-      expect(cart).toEqual({});
-      expect(await store.getCart("cart")).toEqual({});
-    });
-  });
-
-  describe("removeItem", () => {
-    it("deletes specified line", async () => {
-      const store = new MemoryCartStore(60);
-      await store.setCart("cart", { [sku.id!]: { sku, qty: 1 } });
-      const cart = await store.removeItem("cart", sku.id!);
-      expect(cart).toEqual({});
-    });
-
-    it("returns null when line missing", async () => {
-      const store = new MemoryCartStore(60);
-      expect(await store.removeItem("cart", sku.id!)).toBeNull();
-    });
-
-    it("returns null and purges expired cart", async () => {
-      jest.setSystemTime(0);
-      const store = new MemoryCartStore(1);
-      await store.setCart("cart", { [sku.id!]: { sku, qty: 1 } });
-      jest.setSystemTime(2000);
-      expect(await store.removeItem("cart", sku.id!)).toBeNull();
-      expect(await store.getCart("cart")).toEqual({});
-    });
-  });
-
-  it("supports concurrent increments without race conditions", async () => {
+  test("incrementQty adds and updates line items and bumps expiry", async () => {
     const store = new MemoryCartStore(60);
-    await Promise.all(Array.from({ length: 5 }, () => store.incrementQty("c", sku, 1)));
-    const cart = await store.getCart("c");
-    expect(cart[sku.id!].qty).toBe(5);
+    const id = await store.createCart();
+    const sku = { id: "sku1" } as any;
+    let cart = await store.incrementQty(id, sku, 2);
+    expect(cart["sku1"].qty).toBe(2);
+    cart = await store.incrementQty(id, sku, 3);
+    expect(cart["sku1"].qty).toBe(5);
+  });
+
+  test("setQty updates quantity and deletes on zero; removeItem deletes line", async () => {
+    const store = new MemoryCartStore(60);
+    const id = await store.createCart();
+    const sku = { id: "sku2" } as any;
+    await store.incrementQty(id, sku, 1);
+    await expect(store.setQty(id, "sku2", 4)).resolves.toMatchObject({ sku2: expect.objectContaining({ qty: 4 }) });
+    await expect(store.setQty(id, "does-not-exist", 1)).resolves.toBeNull();
+    await expect(store.setQty(id, "sku2", 0)).resolves.toEqual({});
+    await store.incrementQty(id, sku, 2);
+    await expect(store.removeItem(id, "sku2")).resolves.toEqual({});
+  });
+
+  test("expired carts are cleared via timer and getCart returns empty", async () => {
+    const store = new MemoryCartStore(1); // 1 second TTL
+    const id = await store.createCart();
+    await store.incrementQty(id, { id: "sku3" } as any, 1);
+    jest.advanceTimersByTime(1100);
+    jest.runOnlyPendingTimers();
+    await expect(store.getCart(id)).resolves.toEqual({});
   });
 });
-

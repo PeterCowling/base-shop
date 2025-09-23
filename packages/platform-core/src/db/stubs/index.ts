@@ -9,3 +9,4 @@ export { createReverseLogisticsEventDelegate } from './reverseLogisticsEvent';
 export { createProductDelegate } from './product';
 export { createInventoryItemDelegate } from './inventoryItem';
 export type { InventoryItemDelegate } from './inventoryItem';
+export { createSectionTemplateDelegate } from './sectionTemplate';

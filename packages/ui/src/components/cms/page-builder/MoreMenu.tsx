@@ -18,7 +18,7 @@ export default function MoreMenu({ items = [], content }: Props) {
     <Popover>
       <Tooltip text="More actions">
         <PopoverTrigger asChild>
-          <Button variant="outline" aria-label="More actions">⋯</Button>
+          <Button variant="outline" className="h-10 w-10 rounded-md" aria-label="More actions">⋯</Button>
         </PopoverTrigger>
       </Tooltip>
       <PopoverContent className="w-56 p-2">

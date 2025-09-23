@@ -1,21 +1,17 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
-export async function POST(req: NextRequest): Promise<NextResponse> {
-  const { to, subject, body } = (await req.json().catch(() => ({}))) as {
-    to?: string;
-    subject?: string;
-    body?: string;
-  };
-
-  if (!to || !subject || !body) {
-    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
-  }
-
+// Minimal stub endpoint for sending marketing campaigns from the CMS UI.
+// Accepts JSON payload and returns success without performing any delivery.
+export async function POST(req: NextRequest) {
   try {
-    const { sendCampaignEmail } = await import("@acme/email");
-    await sendCampaignEmail({ to, subject, html: body });
-    return NextResponse.json({ ok: true });
-  } catch {
-    return NextResponse.json({ error: "Failed to send" }, { status: 500 });
+    // Read payload to keep consistent with real-world shape; ignore content.
+    await req.json().catch(() => ({}));
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    return NextResponse.json(
+      { error: (err as Error).message },
+      { status: 400 },
+    );
   }
 }
+

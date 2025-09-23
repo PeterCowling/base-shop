@@ -5,12 +5,12 @@ import { getPages } from "@platform-core/repositories/pages/index.server";
 import type { Page } from "@acme/types";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
-import type PageBuilderComponent from "@ui/components/cms/PageBuilder";
+// Import the concrete client component to avoid any wrapper/typing indirection
+// that can confuse the bundler during server compilation.
+import type PageBuilderComponent from "@ui/components/cms/page-builder/PageBuilder";
 
 type PageBuilderProps = React.ComponentProps<typeof PageBuilderComponent>;
-const PageBuilder = dynamic<PageBuilderProps>(
-  () => import("@ui/components/cms/PageBuilder"),
-);
+const PageBuilder = dynamic<PageBuilderProps>(() => import("@ui/components/cms/page-builder/PageBuilder"));
 void PageBuilder;
 
 export const revalidate = 0;

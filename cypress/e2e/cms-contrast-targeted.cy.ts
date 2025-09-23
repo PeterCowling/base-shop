@@ -23,7 +23,8 @@ describe('CMS targeted contrast logging', () => {
     cy.session('admin-session', login);
   });
 
-  const routes = ['/cms/dashboard', '/cms/live', '/cms/maintenance', '/cms/shop/segshop/data/inventory', '/cms/themes/library', '/cms/plugins'];
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
+  const routes = ['/cms/dashboard', '/cms/live', '/cms/maintenance', `/cms/shop/${shop}/data/inventory`, '/cms/themes/library', '/cms/plugins'];
 
   routes.forEach((path) => {
     it(`logs color-contrast nodes on ${path}`, () => {

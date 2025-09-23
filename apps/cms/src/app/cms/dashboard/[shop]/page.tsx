@@ -15,10 +15,10 @@ export default async function ShopDashboard({
   params,
   searchParams,
 }: {
-  params: { shop: string };
+  params: Promise<{ shop: string }>;
   searchParams: { campaign?: string | string[] };
 }) {
-  const shop = params.shop;
+  const shop = (await params).shop;
   const [events, aggregates, shopData] = (await Promise.all([
     listEvents(shop),
     readAggregates(shop),

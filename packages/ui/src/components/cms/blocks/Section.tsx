@@ -1,5 +1,7 @@
 "use client";
 import type { ReactNode, HTMLAttributes } from "react";
+import { useMemo } from "react";
+import useInView from "../../../hooks/useInView";
 import ShapeDivider from "./ShapeDivider";
 
 export interface SectionProps extends HTMLAttributes<HTMLDivElement> {
@@ -9,13 +11,19 @@ export interface SectionProps extends HTMLAttributes<HTMLDivElement> {
   /** Background color for the section */
   backgroundColor?: string;
   /** Max content width (used for inner content wrapper) */
-  contentWidth?: string;
+  contentWidth?: string | "full" | "wide" | "normal" | "narrow";
   /** Max content width on desktop */
   contentWidthDesktop?: string;
   /** Max content width on tablet */
   contentWidthTablet?: string;
   /** Max content width on mobile */
   contentWidthMobile?: string;
+  /** Density scale for vertical spacing */
+  density?: "compact" | "spacious";
+  /** Toggle section-local dark theme */
+  themeDark?: boolean;
+  /** Opt-in minimal scroll animation */
+  animateOnScroll?: boolean;
   /** Horizontal alignment of the content wrapper */
   contentAlign?: "left" | "center" | "right";
   /** Horizontal alignment per viewport */
@@ -66,6 +74,9 @@ export default function Section({
   contentWidthDesktop,
   contentWidthTablet,
   contentWidthMobile,
+  density = "compact",
+  themeDark = false,
+  animateOnScroll = false,
   contentAlign = "center",
   contentAlignDesktop,
   contentAlignTablet,
@@ -106,6 +117,21 @@ export default function Section({
     return contentWidth;
   };
   const maxWidth = resolveContentWidth();
+  const widthClass = useMemo(() => {
+    const v = maxWidth;
+    switch (v) {
+      case "full":
+        return "max-w-none";
+      case "wide":
+        return "max-w-7xl";
+      case "normal":
+        return "max-w-5xl";
+      case "narrow":
+        return "max-w-3xl";
+      default:
+        return undefined;
+    }
+  }, [maxWidth]);
   const resolveAlign = () => {
     const vp = pbViewport;
     const value = vp === "desktop" && contentAlignDesktop
@@ -124,10 +150,19 @@ export default function Section({
       : align === "right"
         ? { marginLeft: "auto", marginRight: 0 }
         : { marginLeft: "auto", marginRight: "auto" };
+  const densityClass = density === "spacious" ? "py-12" : "py-6";
+  const [inViewRef, inView] = useInView<HTMLDivElement>(animateOnScroll);
+  const aosClass = animateOnScroll
+    ? inView
+      ? "opacity-100 translate-y-0"
+      : "opacity-0 translate-y-3"
+    : undefined;
   return (
     <div
       {...rest}
-      className={[className, "relative"].filter(Boolean).join(" ") || undefined}
+      className={[className, "relative", themeDark ? "theme-dark" : undefined, densityClass]
+        .filter(Boolean)
+        .join(" ") || undefined}
       data-pb-section=""
       data-pb-parallax={typeof sectionParallax === 'number' ? sectionParallax : undefined}
       style={{
@@ -174,9 +209,13 @@ export default function Section({
       ) : null}
       {/* Inner content wrapper to constrain content width and alignment */}
       <div
+        ref={inViewRef}
         data-pb-section-inner=""
+        className={[widthClass, aosClass, animateOnScroll ? "transition-all duration-700 ease-out will-change-transform" : undefined]
+          .filter(Boolean)
+          .join(" ") || undefined}
         style={{
-          maxWidth: maxWidth || undefined,
+          maxWidth: widthClass ? undefined : (typeof maxWidth === 'string' ? maxWidth : undefined),
           width: "100%",
           position: "relative",
           zIndex: 2,

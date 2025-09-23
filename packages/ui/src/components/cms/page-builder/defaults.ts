@@ -17,6 +17,7 @@ export type ComponentType =
 export const CONTAINER_TYPES = Object.keys(containerRegistry) as ComponentType[];
 
 export const defaults: Partial<Record<ComponentType, Partial<PageComponent>>> = {
+  Section: { contentWidth: "normal", density: "compact", themeDark: false, animateOnScroll: false } as any,
   HeroBanner: { minItems: 1, maxItems: 5 },
   ValueProps: { minItems: 1, maxItems: 6 },
   ReviewsCarousel: { minItems: 1, maxItems: 10 },

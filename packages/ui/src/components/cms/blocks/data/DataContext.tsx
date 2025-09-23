@@ -11,6 +11,7 @@ export interface DatasetMeta {
 export interface DatasetValue<T = unknown> {
   items: T[];
   meta?: DatasetMeta;
+  state?: "idle" | "loading" | "loaded" | "error";
 }
 
 export interface ItemValue<T = unknown> {
@@ -21,8 +22,8 @@ export interface ItemValue<T = unknown> {
 const DatasetCtx = createContext<DatasetValue | null>(null);
 const ItemCtx = createContext<ItemValue | null>(null);
 
-export function DatasetProvider<T = unknown>({ items, meta, children }: { items: T[]; meta?: DatasetMeta; children?: React.ReactNode }) {
-  const value = useMemo(() => ({ items, meta }), [items, meta]);
+export function DatasetProvider<T = unknown>({ items, meta, state, children }: { items: T[]; meta?: DatasetMeta; state?: DatasetValue['state']; children?: React.ReactNode }) {
+  const value = useMemo(() => ({ items, meta, state }), [items, meta, state]);
   return <DatasetCtx.Provider value={value as DatasetValue}>{children}</DatasetCtx.Provider>;
 }
 
@@ -44,4 +45,9 @@ export function useCurrentItem<T = unknown>(): ItemValue<T> {
 export function useDatasetMeta(): DatasetMeta | undefined {
   const ctx = useContext(DatasetCtx);
   return ctx?.meta;
+}
+
+export function useDatasetState(): DatasetValue['state'] {
+  const ctx = useContext(DatasetCtx);
+  return ctx?.state ?? "idle";
 }

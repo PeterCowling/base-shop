@@ -1,7 +1,7 @@
 import "@testing-library/cypress/add-commands";
 
 describe("CMS settings – Stock Scheduler functional (toast only)", () => {
-  const shop = "demo";
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
 
   it("updates interval and shows success toast", () => {
     cy.session("admin-session", () => cy.loginAsAdmin());
@@ -14,4 +14,3 @@ describe("CMS settings – Stock Scheduler functional (toast only)", () => {
     cy.contains("Stock scheduler updated.").should("exist");
   });
 });
-

@@ -57,9 +57,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
           }
           return;
         }
-        throw new Error("Cart fetch failed");
+        // Non-OK initial response: prefer graceful fallback over throwing.
+        console.warn(
+          "[cart] initial fetch not ok",
+          { status: res.status, statusText: res.statusText }
+        );
       } catch (err) {
-        console.error(err);
+        // Network or runtime error: log at warn to avoid noisy console errors in dev
+        console.warn("[cart] initial fetch failed", err);
 
         let cachedCart: CartState | null = null;
         let hadCachedValue = false;
@@ -88,6 +93,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
 
         if (!hadCachedValue && !cacheReadFailed) {
+          // Nothing cached to sync; wait for online event without logging errors.
           return;
         }
 
@@ -125,7 +131,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             window.removeEventListener("online", handler);
             return;
           } catch (syncErr) {
-            console.error(syncErr);
+            console.warn("[cart] sync on online failed", syncErr);
             if (!putResponse) {
               // Network failed – stay subscribed for the next online event.
               return;
@@ -144,7 +150,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             }
             window.removeEventListener("online", handler);
           } catch (refreshErr) {
-            console.error(refreshErr);
+            console.warn("[cart] refresh after sync failed", refreshErr);
           }
         };
 

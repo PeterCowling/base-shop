@@ -34,7 +34,7 @@ describe("CMS Page Builder — drag & drop", () => {
   });
 
   it("drags Section to canvas, then Button into the Section", () => {
-    const shop = "demo";
+    const shop = (Cypress.env('SHOP') as string) || 'demo';
     const slug = "home";
     cy.session("admin-session", login);
     cy.pbVisitBuilder(shop, slug);
@@ -63,7 +63,7 @@ describe("CMS Page Builder — drag & drop", () => {
   });
 
   it("disallowed drop: Button at ROOT (canvas) shows blocked state and no insert", () => {
-    const shop = "demo";
+    const shop = (Cypress.env('SHOP') as string) || 'demo';
     const slug = "home";
     cy.session("admin-session", login);
     cy.pbVisitBuilder(shop, slug);
@@ -78,7 +78,7 @@ describe("CMS Page Builder — drag & drop", () => {
   });
 
   it("grid snap: drag absolute block snaps to grid units", () => {
-    const shop = "demo";
+    const shop = (Cypress.env('SHOP') as string) || 'demo';
     const slug = "home";
     cy.session("admin-session", login);
     cy.pbVisitBuilder(shop, slug);
@@ -127,7 +127,7 @@ describe("CMS Page Builder — drag & drop", () => {
   });
 
   it("axis lock (Shift): movement locks to dominant axis", () => {
-    const shop = "demo";
+    const shop = (Cypress.env('SHOP') as string) || 'demo';
     const slug = "home";
     cy.session("admin-session", login);
     cy.pbVisitBuilder(shop, slug);
@@ -160,7 +160,7 @@ describe("CMS Page Builder — drag & drop", () => {
   });
 
   it("disallowed drop into MultiColumn container (no Section as child)", () => {
-    const shop = "demo";
+    const shop = (Cypress.env('SHOP') as string) || 'demo';
     const slug = "home";
     cy.session("admin-session", login);
     cy.pbVisitBuilder(shop, slug);
@@ -179,7 +179,7 @@ describe("CMS Page Builder — drag & drop", () => {
   });
 
   it("tabbed container accepts drops into its child slots", () => {
-    const shop = "demo";
+    const shop = (Cypress.env('SHOP') as string) || 'demo';
     const slug = "home";
     cy.session("admin-session", login);
     cy.pbVisitBuilder(shop, slug);

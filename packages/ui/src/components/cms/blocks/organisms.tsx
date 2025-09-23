@@ -43,6 +43,8 @@ import ProductBundle, {
   getRuntimeProps as getProductBundleRuntimeProps,
 } from "./ProductBundle";
 import ProductFilter from "./ProductFilter";
+import HeaderSection from "./HeaderSection";
+import FooterSection from "./FooterSection";
 import type { BlockRegistryEntry } from "./types";
 
 const defaultPreview = "/window.svg";
@@ -98,6 +100,8 @@ const organismEntries = {
     getRuntimeProps: getProductBundleRuntimeProps,
   },
   ProductFilter: { component: ProductFilter },
+  HeaderSection: { component: HeaderSection },
+  FooterSection: { component: FooterSection },
 } as const;
 
 type OrganismRegistry = {

@@ -6,7 +6,7 @@ import { writeReturnLogistics } from "@platform-core/repositories/returnLogistic
 
 export async function POST(
   req: NextRequest,
-  _context: { params: Promise<{ shop: string }> }
+  _context: { params: { shop: string } }
 ) {
   const session = await getServerSession(authOptions);
   if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {

@@ -6,7 +6,7 @@ import { writePricing } from "@platform-core/repositories/pricing.server";
 
 export async function POST(
   req: NextRequest,
-  _context: { params: Promise<{ shop: string }> }
+  _context: { params: { shop: string } }
 ) {
   const session = await getServerSession(authOptions);
   if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {

@@ -10,6 +10,26 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
+    "./components/cms/blocks/CollectionSection.server": {
+      "types": "./dist/components/cms/blocks/CollectionSection.server.d.ts",
+      "import": "./dist/components/cms/blocks/CollectionSection.server.js"
+    },
+    "./components/cms/blocks/CollectionSection.client": {
+      "types": "./dist/components/cms/blocks/CollectionSection.client.d.ts",
+      "import": "./dist/components/cms/blocks/CollectionSection.client.js"
+    },
+    "./components/cms/blocks/HeaderSection": {
+      "types": "./dist/components/cms/blocks/HeaderSection.d.ts",
+      "import": "./dist/components/cms/blocks/HeaderSection.js"
+    },
+    "./components/cms/blocks/FooterSection": {
+      "types": "./dist/components/cms/blocks/FooterSection.d.ts",
+      "import": "./dist/components/cms/blocks/FooterSection.js"
+    },
+    "./components/cms/blocks/CurrencySelector": {
+      "types": "./dist/components/cms/blocks/CurrencySelector.d.ts",
+      "import": "./dist/components/cms/blocks/CurrencySelector.js"
+    },
     "./account": {
       "types": "./dist/account.d.ts",
       "import": "./dist/account.js"

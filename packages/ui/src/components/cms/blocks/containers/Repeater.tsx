@@ -1,7 +1,8 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { ItemProvider, useDataset } from "../data/DataContext";
+import { useMemo, useState } from "react";
+import { ItemProvider, useDataset, useDatasetState } from "../data/DataContext";
 
 export interface RepeaterProps {
   children?: ReactNode;
@@ -24,6 +25,13 @@ export interface RepeaterProps {
   /** Builder-only viewport hint for responsive values */
   pbViewport?: "desktop" | "tablet" | "mobile";
   className?: string;
+  /** Load states */
+  LoadingState?: React.ComponentType | null;
+  EmptyState?: React.ComponentType | null;
+  ErrorState?: React.ComponentType | null;
+  /** Client-side load more */
+  initialCount?: number;
+  increment?: number;
 }
 
 export default function Repeater({
@@ -42,8 +50,14 @@ export default function Repeater({
   gapMobile,
   pbViewport,
   className,
+  LoadingState,
+  EmptyState,
+  ErrorState,
+  initialCount,
+  increment = 4,
 }: RepeaterProps) {
   const base = useDataset<unknown>();
+  const state = useDatasetState();
   const filtered = (() => {
     if (!filter) return base;
     // Safe, non-regex parsing: find the first operator token
@@ -109,7 +123,11 @@ export default function Repeater({
       return sortOrder === "asc" ? (as < bs ? -1 : 1) : (as > bs ? -1 : 1);
     });
   })();
-  const list = typeof limit === "number" ? sorted.slice(0, Math.max(0, limit)) : sorted;
+  const baseList = typeof limit === "number" ? sorted.slice(0, Math.max(0, limit)) : sorted;
+  const [visible, setVisible] = useState<number>(() => {
+    return typeof initialCount === "number" ? Math.max(0, Math.min(initialCount, baseList.length)) : baseList.length;
+  });
+  const list = useMemo(() => baseList.slice(0, visible), [baseList, visible]);
 
   const effColumns = (() => {
     if (pbViewport === "desktop" && typeof columnsDesktop === "number") return columnsDesktop;
@@ -123,6 +141,10 @@ export default function Repeater({
     if (pbViewport === "mobile" && gapMobile) return gapMobile;
     return gap ?? "1rem";
   })();
+
+  if (state === "loading") return LoadingState ? <LoadingState /> : null;
+  if (state === "error") return ErrorState ? <ErrorState /> : null;
+  if (baseList.length === 0) return EmptyState ? <EmptyState /> : null;
 
   return (
     <div
@@ -138,6 +160,15 @@ export default function Repeater({
           {children}
         </ItemProvider>
       ))}
+      {baseList.length > visible ? (
+        <button
+          type="button"
+          onClick={() => setVisible((v) => Math.min(baseList.length, v + Math.max(1, increment)))}
+          style={{ gridColumn: `span ${effColumns} / span ${effColumns}` }}
+        >
+          Load more
+        </button>
+      ) : null}
     </div>
   );
 }

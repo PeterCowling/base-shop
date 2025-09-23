@@ -7,13 +7,15 @@ import type { SKU } from "@acme/types";
  */
 export async function fetchCollection(collectionId: string): Promise<SKU[]> {
   try {
-    const res = await fetch(`/api/collections/${collectionId}`);
+    const res = await fetch(`/api/collections/${collectionId}`, { next: { revalidate: 60, tags: ["collections", `collection:${collectionId}`] } as any });
     if (!res.ok) {
       console.error(`Failed to fetch collection ${collectionId}:`, res.statusText);
       return [];
     }
     const data = await res.json();
-    const products = Array.isArray(data) ? data : data.products;
+    const products = Array.isArray(data)
+      ? data
+      : (data.items ?? data.products ?? []);
     return (products ?? []) as SKU[];
   } catch (err) {
     console.error("fetchCollection error", err);

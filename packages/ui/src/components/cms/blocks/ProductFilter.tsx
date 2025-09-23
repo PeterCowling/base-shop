@@ -11,12 +11,14 @@ export interface ProductFilterProps {
   showSize?: boolean;
   showColor?: boolean;
   showPrice?: boolean;
+  onChange?: (state: { size?: string; color?: string; minPrice?: number; maxPrice?: number }) => void;
 }
 
 export default function ProductFilter({
   showSize = true,
   showColor = true,
   showPrice = true,
+  onChange,
 }: ProductFilterProps) {
   const { filteredRows } = useProductFilters<FilterSku>(
     PRODUCTS as FilterSku[],
@@ -49,6 +51,43 @@ export default function ProductFilter({
   const [minPrice, setMinPrice] = useState(priceBounds[0]);
   const [maxPrice, setMaxPrice] = useState(priceBounds[1]);
 
+  // URL sync (best-effort)
+  const nav = (() => {
+    try { return require("next/navigation"); } catch { return null; }
+  })();
+  const router = nav?.useRouter?.();
+  const searchParams = nav?.useSearchParams?.();
+
+  // initialize state from URL
+  useMemo(() => {
+    try {
+      const sp = searchParams as ReturnType<typeof nav.useSearchParams>;
+      if (!sp) return;
+      const sz = sp.get("size");
+      const co = sp.get("color");
+      const min = Number(sp.get("min"));
+      const max = Number(sp.get("max"));
+      if (sz) setSize(sz);
+      if (co) setColor(co);
+      if (Number.isFinite(min)) setMinPrice(min);
+      if (Number.isFinite(max)) setMaxPrice(max);
+    } catch {}
+  }, []);
+
+  const pushUrl = (patch: Record<string, string | number | undefined>) => {
+    try {
+      if (!router) return;
+      const next = new URL(window.location.href);
+      const entries = new URLSearchParams(next.search);
+      for (const [k, v] of Object.entries(patch)) {
+        if (v == null || v === "") entries.delete(k);
+        else entries.set(k, String(v));
+      }
+      next.search = entries.toString();
+      router.push(next.pathname + (next.search ? `?${next.search}` : ""));
+    } catch {}
+  };
+
   const results = useMemo(() => {
     return filteredRows.filter((p) => {
       const sizeMatch = !size || p.sizes?.includes(size);
@@ -66,7 +105,7 @@ export default function ProductFilter({
           <label className="text-sm font-medium">Size</label>
           <select
             value={size}
-            onChange={(e) => setSize(e.target.value)}
+            onChange={(e) => { const v = e.target.value; setSize(v); pushUrl({ size: v }); onChange?.({ size: v, color, minPrice, maxPrice }); }}
             className="w-full rounded border p-2 text-sm"
           >
             <option value="">All</option>
@@ -83,7 +122,7 @@ export default function ProductFilter({
           <label className="text-sm font-medium">Color</label>
           <select
             value={color}
-            onChange={(e) => setColor(e.target.value)}
+            onChange={(e) => { const v = e.target.value; setColor(v); pushUrl({ color: v }); onChange?.({ size, color: v, minPrice, maxPrice }); }}
             className="w-full rounded border p-2 text-sm"
           >
             <option value="">All</option>
@@ -102,14 +141,14 @@ export default function ProductFilter({
             <input
               type="number"
               value={minPrice}
-              onChange={(e) => setMinPrice(Number(e.target.value))}
+              onChange={(e) => { const n = Number(e.target.value); setMinPrice(n); pushUrl({ min: n }); onChange?.({ size, color, minPrice: n, maxPrice }); }}
               className="w-20 rounded border p-1 text-sm"
             />
             <span className="text-sm">-</span>
             <input
               type="number"
               value={maxPrice}
-              onChange={(e) => setMaxPrice(Number(e.target.value))}
+              onChange={(e) => { const n = Number(e.target.value); setMaxPrice(n); pushUrl({ max: n }); onChange?.({ size, color, minPrice, maxPrice: n }); }}
               className="w-20 rounded border p-1 text-sm"
             />
           </div>
@@ -119,4 +158,3 @@ export default function ProductFilter({
     </div>
   );
 }
-

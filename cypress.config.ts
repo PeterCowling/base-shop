@@ -21,7 +21,9 @@ export default defineConfig({
       NEXTAUTH_SECRET:
         process.env.NEXTAUTH_SECRET ||
         "test-nextauth-secret-32-chars-long-string!",
-      TEST_DATA_ROOT: process.env.TEST_DATA_ROOT || "__tests__/data/shops"
+      TEST_DATA_ROOT: process.env.TEST_DATA_ROOT || "__tests__/data/shops",
+      SHOP: process.env.CYPRESS_SHOP || 'demo',
+      SHOP_ALT: process.env.CYPRESS_SHOP_ALT || 'bcd'
     },
     defaultCommandTimeout: 10000,
     // Reduce flakes in CI without masking real failures in open mode

@@ -13,7 +13,7 @@ interface VersionResponse {
   editor?: Record<string, unknown>;
 }
 
-export default function PreviewViewer({ params }: { params: Promise<{ token: string }> }) {
+export default function PreviewViewer({ params }: { params: { token: string } }) {
   const [token, setToken] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -21,10 +21,7 @@ export default function PreviewViewer({ params }: { params: Promise<{ token: str
   const [data, setData] = useState<VersionResponse | null>(null);
 
   useEffect(() => {
-    void (async () => {
-      const { token } = await params;
-      setToken(token);
-    })();
+    setToken(params.token);
   }, [params]);
 
   const apiUrl = useMemo(() => (token ? `/cms/api/page-versions/preview/${token}${pw ? `?pw=${encodeURIComponent(pw)}` : ""}` : ""), [token, pw]);

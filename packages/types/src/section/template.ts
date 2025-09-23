@@ -10,8 +10,17 @@ export interface SectionTemplate {
   template: PageComponent; // root is expected to be a Section node
   tags?: string[];
   thumbnail?: string | null;
+  // Presentation presets (optional, used by renderer)
+  contentWidth?: "full" | "wide" | "normal" | "narrow";
+  density?: "compact" | "spacious";
+  themeDark?: boolean;
+  /** Opt-in minimal scroll animations */
+  animateOnScroll?: boolean;
   // Optional: independent breakpoints for this template
   breakpoints?: { id: string; label: string; min?: number; max?: number }[];
+  // Scheduling (optional; when present, worker flips published state accordingly)
+  publishAt?: string; // ISO timestamp
+  expireAt?: string; // ISO timestamp
   createdAt: string;
   updatedAt: string;
   createdBy: string;
@@ -31,9 +40,15 @@ export const sectionTemplateSchema: z.ZodType<SectionTemplate, any, any> = z
     template: sectionLike,
     tags: z.array(z.string().min(1)).optional(),
     thumbnail: z.string().url().nullable().optional(),
+    contentWidth: z.enum(["full", "wide", "normal", "narrow"]).optional(),
+    density: z.enum(["compact", "spacious"]).optional(),
+    themeDark: z.boolean().optional(),
+    animateOnScroll: z.boolean().optional(),
     breakpoints: z
       .array(z.object({ id: z.string(), label: z.string(), min: z.number().optional(), max: z.number().optional() }).strict())
       .optional(),
+    publishAt: z.string().optional(),
+    expireAt: z.string().optional(),
     createdAt: z.string(),
     updatedAt: z.string(),
     createdBy: z.string(),

@@ -18,6 +18,7 @@ describe('CMS a11y: All sections sweep', () => {
   before(() => { cy.session('admin-session', login); });
 
   // Curated list of CMS routes (top-level + shop-specific) seeded in tests
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
   const routes: string[] = [
     // Top-level
     '/cms',
@@ -41,18 +42,18 @@ describe('CMS a11y: All sections sweep', () => {
     '/cms/configurator',
     // Shop-scoped
     '/cms/shop',
-    '/cms/orders/segshop',
-    '/cms/shop/segshop',
-    '/cms/shop/segshop/media',
-    '/cms/shop/segshop/themes',
-    '/cms/shop/segshop/pages',
-    '/cms/shop/segshop/products',
-    '/cms/shop/segshop/settings',
-    '/cms/shop/segshop/data/inventory',
-    '/cms/shop/segshop/upgrade-preview',
-    '/cms/shop/segshop/edit-preview',
-    '/cms/shop/segshop/import/design-system',
-    '/cms/shop/segshop/wizard/new',
+    `/cms/orders/${shop}`,
+    `/cms/shop/${shop}`,
+    `/cms/shop/${shop}/media`,
+    `/cms/shop/${shop}/themes`,
+    `/cms/shop/${shop}/pages`,
+    `/cms/shop/${shop}/products`,
+    `/cms/shop/${shop}/settings`,
+    `/cms/shop/${shop}/data/inventory`,
+    `/cms/shop/${shop}/upgrade-preview`,
+    `/cms/shop/${shop}/edit-preview`,
+    `/cms/shop/${shop}/import/design-system`,
+    `/cms/shop/${shop}/wizard/new`,
   ];
 
   routes.forEach((path) => {

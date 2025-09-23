@@ -145,6 +145,25 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
           <div key={s.id} className="space-y-1 rounded border p-2">
             <div className="truncate text-sm font-medium">{s.label}</div>
             <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{s.status}</div>
+            {/* Thumbnail preview */}
+            {s.thumbnail ? (
+              <div className="relative mt-1 aspect-[16/9] overflow-hidden rounded border bg-muted">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={s.thumbnail} alt="" className="h-full w-full object-cover" aria-hidden />
+              </div>
+            ) : (
+              <div className="mt-1 aspect-[16/9] rounded border bg-muted/40" />
+            )}
+            {/* Tags */}
+            {Array.isArray(s.tags) && s.tags.length > 0 && (
+              <div className="mt-1 flex flex-wrap gap-1">
+                {s.tags.map((t) => (
+                  <span key={t} className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
             <div className="flex items-center gap-2 pt-1">
               <Button
                 type="button"

@@ -47,34 +47,51 @@ export default function Dataset({
   className,
 }: DatasetProps) {
   const [items, setItems] = useState<unknown[]>(Array.isArray(skus) ? skus : []);
+  const [state, setState] = useState<"idle" | "loading" | "loaded" | "error">("idle");
 
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
       if (source === "products" && collectionId) {
+        setState("loading");
         try {
           const fetched = await fetchCollection(collectionId);
-          if (!cancelled) setItems(fetched as unknown[]);
+          if (!cancelled) {
+            setItems(fetched as unknown[]);
+            setState("loaded");
+          }
         } catch (err) {
           console.warn("Dataset(products) fetch failed:", err);
-          if (!cancelled) setItems(Array.isArray(skus) ? (skus as unknown[]) : []);
+          if (!cancelled) {
+            setItems(Array.isArray(skus) ? (skus as unknown[]) : []);
+            setState("error");
+          }
         }
       } else if (source === "manual") {
         setItems(Array.isArray(skus) ? (skus as unknown[]) : []);
+        setState("loaded");
       } else if (source === "blog" || source === "sanity") {
+        setState("loading");
         try {
           const shop = shopId || (process.env.NEXT_PUBLIC_SHOP_ID as string | undefined) || "default";
           const res = await fetch(`/api/blog/posts/${encodeURIComponent(shop)}`);
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const posts = (await res.json()) as unknown[];
-          if (!cancelled) setItems(posts);
+          if (!cancelled) {
+            setItems(posts);
+            setState("loaded");
+          }
         } catch (err) {
           console.warn("Dataset(blog) fetch failed:", err);
-          if (!cancelled) setItems([]);
+          if (!cancelled) {
+            setItems([]);
+            setState("error");
+          }
         }
       } else {
         // Placeholder for blog/sanity; keep current items
         setItems((prev) => prev ?? []);
+        setState("loaded");
       }
     };
     void load();
@@ -109,7 +126,7 @@ export default function Dataset({
 
   return (
     <div className={className} data-dataset-source={source}>
-      <DatasetProvider items={processed} meta={{ source, itemRoutePattern, shopId }}>
+      <DatasetProvider items={processed} meta={{ source, itemRoutePattern, shopId }} state={state}>
         {children}
       </DatasetProvider>
     </div>

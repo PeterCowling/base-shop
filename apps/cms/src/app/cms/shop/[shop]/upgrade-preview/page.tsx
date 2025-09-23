@@ -18,4 +18,3 @@ export default async function UpgradePreview({
   if (!(await checkShopExists(shop))) return notFound();
   return <UpgradePreviewClient shop={shop} />;
 }
-

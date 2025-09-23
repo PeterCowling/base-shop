@@ -1,7 +1,7 @@
 import "@testing-library/cypress/add-commands";
 
 describe("CMS settings – Shop Editor identity & luxury features", () => {
-  const shop = "demo";
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
   const root = (Cypress.env("TEST_DATA_ROOT") as string) || "__tests__/data/shops";
   const shopFile = `${root}/${shop}/shop.json`;
   const settingsFile = `${root}/${shop}/settings.json`;
@@ -40,4 +40,3 @@ describe("CMS settings – Shop Editor identity & luxury features", () => {
     });
   });
 });
-

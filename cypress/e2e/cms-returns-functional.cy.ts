@@ -1,7 +1,7 @@
 import "@testing-library/cypress/add-commands";
 
 describe("CMS settings – Returns functional", () => {
-  const shop = "demo";
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
   const root = (Cypress.env("TEST_DATA_ROOT") as string) || "__tests__/data/shops";
   const settingsFile = `${root}/${shop}/settings.json`;
 
@@ -23,4 +23,3 @@ describe("CMS settings – Returns functional", () => {
     });
   });
 });
-

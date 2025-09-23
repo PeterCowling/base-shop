@@ -8,7 +8,7 @@ export const runtime = "nodejs";
 
 export async function POST(
   _req: Request,
-  { params }: { params: { shop: string } }
+  { params }: { params: Promise<{ shop: string }> }
 ) {
   try {
     await requirePermission("manage_orders");
@@ -16,7 +16,7 @@ export async function POST(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
     try {
-      const { shop } = params;
+      const { shop } = await params;
       const root = join(process.cwd(), "..", "..");
       const run = promisify(execFile);
       await run("pnpm", ["ts-node", "scripts/src/rollback-shop.ts", shop], {

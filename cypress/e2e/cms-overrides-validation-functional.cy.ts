@@ -1,7 +1,7 @@
 import "@testing-library/cypress/add-commands";
 
 describe("CMS settings – Overrides validation (negative)", () => {
-  const shop = "demo";
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
 
   before(() => {
     cy.session("admin-session", () => cy.loginAsAdmin());
@@ -38,4 +38,3 @@ describe("CMS settings – Overrides validation (negative)", () => {
   });
   
 });
-

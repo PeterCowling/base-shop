@@ -1,7 +1,7 @@
 import "@testing-library/cypress/add-commands";
 
 describe("CMS settings – Maintenance Scan functional (toast only)", () => {
-  const shop = "demo";
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
 
   it("updates frequency and shows success toast", () => {
     cy.session("admin-session", () => cy.loginAsAdmin());
@@ -14,4 +14,3 @@ describe("CMS settings – Maintenance Scan functional (toast only)", () => {
     cy.contains("Maintenance scan schedule updated.").should("exist");
   });
 });
-

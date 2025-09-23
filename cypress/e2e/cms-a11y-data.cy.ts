@@ -16,10 +16,11 @@ describe('CMS a11y: Data views', () => {
 
   before(() => { cy.session('admin-session', login); });
 
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
   const routes = [
-    '/cms/shop/segshop/data/inventory',
-    '/cms/shop/segshop/data/return-logistics',
-    '/cms/shop/segshop/data/rental/pricing',
+    `/cms/shop/${shop}/data/inventory`,
+    `/cms/shop/${shop}/data/return-logistics`,
+    `/cms/shop/${shop}/data/rental/pricing`,
   ];
 
   routes.forEach((path) => {
@@ -37,4 +38,3 @@ describe('CMS a11y: Data views', () => {
     });
   });
 });
-

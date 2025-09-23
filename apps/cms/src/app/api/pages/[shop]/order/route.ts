@@ -16,4 +16,3 @@ export async function PUT(
     return NextResponse.json({ error: (err as Error).message }, { status: 400 });
   }
 }
-

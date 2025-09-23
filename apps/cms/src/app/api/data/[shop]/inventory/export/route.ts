@@ -14,7 +14,7 @@ export async function GET(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {
-    const { shop } = await context.params;
+  const { shop } = await context.params;
     const items = await inventoryRepository.read(shop);
     const format = new URL(req.url).searchParams.get("format");
     if (format === "csv") {

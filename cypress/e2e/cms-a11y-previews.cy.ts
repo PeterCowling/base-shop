@@ -16,9 +16,10 @@ describe('CMS a11y: Previews', () => {
 
   before(() => { cy.session('admin-session', login); });
 
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
   const routes = [
-    '/cms/shop/segshop/edit-preview',
-    '/cms/shop/segshop/upgrade-preview',
+    `/cms/shop/${shop}/edit-preview`,
+    `/cms/shop/${shop}/upgrade-preview`,
     '/cms/live',
     '/cms/maintenance',
   ];
@@ -38,4 +39,3 @@ describe('CMS a11y: Previews', () => {
     });
   });
 });
-

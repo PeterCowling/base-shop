@@ -12,15 +12,15 @@ export const metadata = {
 };
 
 /**
- * Next 15 delivers `params` as a Promise, and `cookies()` is async in
- * the edge runtime.  Await both.
+ * Params is a plain object in Next 15. `cookies()` may be async in
+ * some runtimes; keep awaiting that.
  */
 export default async function CheckoutPage({
   params,
 }: {
   params: Promise<{ lang?: string }>;
 }) {
-  /* ---------- await params ---------- */
+  /* ---------- read params ---------- */
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
 

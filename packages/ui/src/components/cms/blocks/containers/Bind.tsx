@@ -52,12 +52,20 @@ export default function Bind({ prop = "text", path, fallback, children }: BindPr
   if (prop === "href" && !path && meta?.itemRoutePattern && item) {
     value = template(meta.itemRoutePattern, item);
   }
+  if (path && (value === undefined || value === null)) {
+    console.warn(`[Bind] Missing value for path "${path}" on item`, item);
+  }
   const inject = value === undefined || value === "" ? fallback : value;
   const arr = React.Children.toArray(children) as React.ReactElement[];
   const first = arr[0] as React.ReactElement | undefined;
   if (!first) return null;
   try {
-    return React.cloneElement(first, { [prop]: inject } as Record<string, unknown>);
+    const nextProps: Record<string, unknown> = { [prop]: inject };
+    const prev = (first.props as Record<string, unknown>)[prop];
+    if (inject != null && prev != null && typeof prev !== typeof inject) {
+      console.warn(`[Bind] Type mismatch for prop "${prop}": expected ${typeof prev}, got ${typeof inject}`);
+    }
+    return React.cloneElement(first, nextProps);
   } catch {
     return first;
   }

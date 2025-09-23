@@ -24,7 +24,7 @@ describe("CMS Page Builder — presets and versions", () => {
   });
 
   it("inserts a preset from the gallery", () => {
-    const shop = "demo";
+    const shop = (Cypress.env('SHOP') as string) || 'demo';
     const slug = "home";
     cy.session("admin-session", login);
     cy.pbVisitBuilder(shop, slug);
@@ -43,7 +43,7 @@ describe("CMS Page Builder — presets and versions", () => {
   });
 
   it("saves a version and restores it after changes", () => {
-    const shop = "demo";
+    const shop = (Cypress.env('SHOP') as string) || 'demo';
     const slug = "home";
     cy.session("admin-session", login);
     cy.pbVisitBuilder(shop, slug);
@@ -81,7 +81,7 @@ describe("CMS Page Builder — presets and versions", () => {
   });
 
   it("rulers and baseline toggles show overlays", () => {
-    const shop = "demo";
+    const shop = (Cypress.env('SHOP') as string) || 'demo';
     const slug = "home";
     cy.session("admin-session", login);
     cy.pbVisitBuilder(shop, slug);
@@ -101,4 +101,3 @@ describe("CMS Page Builder — presets and versions", () => {
     });
   });
 });
-

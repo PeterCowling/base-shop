@@ -12,7 +12,7 @@ function sign(role: string) {
 }
 
 describe("CMS RBAC – viewer restrictions on settings", () => {
-  const shop = "demo";
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
 
   it("renders Admin tools as read-only message and hides Save controls", () => {
     // Set viewer session cookie without doing full credentials flow
@@ -30,4 +30,3 @@ describe("CMS RBAC – viewer restrictions on settings", () => {
     cy.findAllByRole("button", { name: /^Save/ }).should("have.length", 0);
   });
 });
-

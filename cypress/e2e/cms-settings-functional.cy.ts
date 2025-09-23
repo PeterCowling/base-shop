@@ -1,7 +1,7 @@
 import "@testing-library/cypress/add-commands";
 
 describe("CMS settings – Stock Alerts functional", () => {
-  const shop = "demo";
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
   const settingsFile = `${(Cypress.env("TEST_DATA_ROOT") as string) || "__tests__/data/shops"}/${shop}/settings.json`;
 
   before(() => {
@@ -32,4 +32,3 @@ describe("CMS settings – Stock Alerts functional", () => {
     });
   });
 });
-

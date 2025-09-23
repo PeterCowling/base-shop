@@ -50,7 +50,7 @@ export async function POST(
   context: { params: Promise<{ shop: string; pageId: string }> },
 ) {
   try {
-    const { shop, pageId } = await context.params;
+  const { shop, pageId } = await context.params;
     const body = await req.json();
     const { componentId, text, assignedTo, pos } = body ?? {};
     if (!componentId || typeof componentId !== "string") {

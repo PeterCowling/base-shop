@@ -16,14 +16,15 @@ describe('CMS a11y: Shop + sections', () => {
 
   before(() => { cy.session('admin-session', login); });
 
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
   const routes = [
-    '/cms/orders/segshop',
+    `/cms/orders/${shop}`,
     '/cms/shop',
-    '/cms/shop/segshop',
-    '/cms/shop/segshop/media',
-    '/cms/shop/segshop/themes',
-    '/cms/shop/segshop/pages',
-    '/cms/shop/segshop/products',
+    `/cms/shop/${shop}`,
+    `/cms/shop/${shop}/media`,
+    `/cms/shop/${shop}/themes`,
+    `/cms/shop/${shop}/pages`,
+    `/cms/shop/${shop}/products`,
   ];
 
   routes.forEach((path) => {
@@ -41,4 +42,3 @@ describe('CMS a11y: Shop + sections', () => {
     });
   });
 });
-

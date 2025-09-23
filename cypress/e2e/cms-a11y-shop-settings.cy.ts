@@ -16,17 +16,18 @@ describe('CMS a11y: Shop settings', () => {
 
   before(() => { cy.session('admin-session', login); });
 
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
   const routes = [
-    '/cms/shop/segshop/settings',
-    '/cms/shop/segshop/settings/seo',
-    '/cms/shop/segshop/settings/deposits',
-    '/cms/shop/segshop/settings/late-fees',
-    '/cms/shop/segshop/settings/reverse-logistics',
-    '/cms/shop/segshop/settings/stock-alerts',
-    '/cms/shop/segshop/settings/stock-scheduler',
-    '/cms/shop/segshop/settings/premier-delivery',
-    '/cms/shop/segshop/settings/returns',
-    '/cms/shop/segshop/settings/maintenance-scan',
+    `/cms/shop/${shop}/settings`,
+    `/cms/shop/${shop}/settings/seo`,
+    `/cms/shop/${shop}/settings/deposits`,
+    `/cms/shop/${shop}/settings/late-fees`,
+    `/cms/shop/${shop}/settings/reverse-logistics`,
+    `/cms/shop/${shop}/settings/stock-alerts`,
+    `/cms/shop/${shop}/settings/stock-scheduler`,
+    `/cms/shop/${shop}/settings/premier-delivery`,
+    `/cms/shop/${shop}/settings/returns`,
+    `/cms/shop/${shop}/settings/maintenance-scan`,
   ];
 
   routes.forEach((path) => {
@@ -44,4 +45,3 @@ describe('CMS a11y: Shop settings', () => {
     });
   });
 });
-

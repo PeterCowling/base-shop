@@ -1,7 +1,7 @@
 import "@testing-library/cypress/add-commands";
 
 describe("CMS settings – Theme override reset (multiple)", () => {
-  const shop = "demo";
+  const shop = (Cypress.env('SHOP') as string) || 'demo';
   const dataRoot = (Cypress.env("TEST_DATA_ROOT") as string) || "__tests__/data/shops";
   const shopFile = `${dataRoot}/${shop}/shop.json`;
 
@@ -32,4 +32,3 @@ describe("CMS settings – Theme override reset (multiple)", () => {
     });
   });
 });
-

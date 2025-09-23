@@ -44,4 +44,3 @@ export default async function NewSectionBuilderRoute({ params }: { params: Promi
     </>
   );
 }
-

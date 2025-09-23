@@ -9,9 +9,9 @@ import Link from "next/link";
 export default async function ShopOrdersPage({
   params,
 }: {
-  params: { shop: string };
+  params: Promise<{ shop: string }>;
 }) {
-  const shop = params.shop;
+  const shop = (await params).shop;
   const orders: RentalOrder[] = await readOrders(shop);
 
   const totalOrders = orders.length;

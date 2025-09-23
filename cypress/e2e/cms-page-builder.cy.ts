@@ -35,7 +35,7 @@ describe("CMS Page Builder — core flows", () => {
   }
 
   it("loads builder, inserts Section, undo/redo", () => {
-    const shop = "demo";
+    const shop = (Cypress.env('SHOP') as string) || 'demo';
     const slug = "home";
     cy.session("admin-session", login);
     cy.pbVisitBuilder(shop, slug);
@@ -62,7 +62,7 @@ describe("CMS Page Builder — core flows", () => {
   });
 
   it("toggles device and preview", () => {
-    const shop = "bcd";
+    const shop = (Cypress.env('SHOP_ALT') as string) || (Cypress.env('SHOP') as string) || 'bcd';
     cy.session("admin-session", login);
     getFirstPageId(shop).then((pageId) => {
       const url = `/cms/shop/${shop}/pages/${pageId}/builder`;

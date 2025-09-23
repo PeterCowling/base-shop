@@ -52,12 +52,10 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
         return (
           <div className="space-y-1">
             <div className="flex items-baseline gap-1">
-              <span aria-hidden className="text-white/50">
-                /
-              </span>
-              <span className="font-medium text-white">{p.slug || "(no slug)"}</span>
+              <span aria-hidden className="text-muted-foreground">/</span>
+              <span className="font-medium text-foreground">{p.slug || "(no slug)"}</span>
             </div>
-            <p className="text-xs text-white/60">{pageTitle}</p>
+            <p className="text-xs text-muted-foreground">{pageTitle}</p>
           </div>
         );
       },
@@ -70,12 +68,12 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
         const normalized = typeof rawStatus === "string" ? rawStatus : "";
         const label = normalized || "unknown";
         const variantClasses = normalized === "published"
-          ? "bg-emerald-500/20 text-emerald-100"
+          ? "bg-success/20 text-success-foreground"
           : normalized === "draft"
-            ? "bg-amber-500/20 text-amber-100"
+            ? "bg-warning/20 text-warning-foreground"
             : normalized === "archived"
-              ? "bg-slate-500/20 text-slate-200"
-              : "bg-white/10 text-white";
+              ? "bg-muted text-foreground"
+              : "bg-surface-2 text-foreground";
         return (
           <Tag className={cn("rounded-lg px-2 py-1 text-xs", variantClasses)}>
             {label}
@@ -93,7 +91,7 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
         <Button
           asChild
           variant="outline"
-          className="h-8 rounded-lg border-white/30 px-3 text-xs text-white hover:bg-white/10"
+          className="h-8 rounded-lg border-border/30 px-3 text-xs text-foreground hover:bg-surface-2"
         >
           <Link href={`/cms/shop/${shop}/pages/${p.slug || p.id}/builder`}>
             Edit
@@ -109,7 +107,7 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
         {canWrite && (
           <Button
             asChild
-            className="h-10 rounded-xl bg-emerald-500 px-4 text-sm font-semibold text-white shadow-elevation-3 shadow-emerald-500/30 hover:bg-emerald-400"
+            className="h-10 rounded-xl bg-success px-4 text-sm font-semibold text-success-foreground shadow-elevation-3 hover:brightness-110"
           >
             <Link href={`/cms/shop/${shop}/pages/new/builder`}>New Page</Link>
           </Button>
@@ -120,10 +118,10 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
           onChange={(event) => setSearch(event.target.value)}
           placeholder="Search pages by slug, title, or status…"
           aria-label="Search pages"
-          className="h-10 w-full max-w-xs rounded-lg border-white/20 bg-white/10 text-sm text-white placeholder:text-white/60 focus-visible:ring-white/30 focus-visible:ring-offset-0"
+          className="h-10 w-full max-w-xs rounded-lg border-border/20 bg-input text-sm text-foreground placeholder:text-muted-foreground focus-visible:ring focus-visible:ring-offset-2"
         />
       </div>
-      <Card className="border border-white/10 bg-white/5 text-white">
+      <Card className="border border-border/10 bg-surface-2 text-foreground">
         <CardContent className="px-0 py-0">
           <DataTable rows={filteredPages} columns={columns} />
         </CardContent>

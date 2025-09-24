@@ -19,7 +19,15 @@ describe("fetchCollection", () => {
 
     const result = await fetchCollection("col");
 
-    expect(global.fetch).toHaveBeenCalledWith("/api/collections/col");
+    expect(global.fetch).toHaveBeenCalledWith(
+      "/api/collections/col",
+      {
+        next: {
+          revalidate: 60,
+          tags: ["collections", "collection:col"],
+        },
+      }
+    );
     expect(result).toEqual(skus);
   });
 

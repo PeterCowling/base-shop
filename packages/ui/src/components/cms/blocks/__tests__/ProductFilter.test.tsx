@@ -2,6 +2,14 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import ProductFilter from "../ProductFilter";
 import { useProductFilters } from "../../../../hooks/useProductFilters";
 
+const pushMock = jest.fn();
+let searchParams = new URLSearchParams();
+
+jest.mock("next/navigation", () => ({
+  useRouter: () => ({ push: pushMock }),
+  useSearchParams: () => searchParams,
+}));
+
 jest.mock("../../../../hooks/useProductFilters", () => ({
   useProductFilters: jest.fn(),
 }));
@@ -16,6 +24,8 @@ describe("ProductFilter", () => {
   ];
 
   beforeEach(() => {
+    pushMock.mockReset();
+    searchParams = new URLSearchParams();
     (useProductFilters as jest.Mock).mockReturnValue({ filteredRows: products });
   });
 

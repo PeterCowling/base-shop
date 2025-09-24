@@ -7,8 +7,10 @@ export const isOverridden = (base: unknown, val: unknown) => {
   return a !== b;
 };
 
-export const cssError = (prop: string, value?: string) =>
-  value && !globalThis.CSS?.supports(prop, value)
-    ? `Invalid ${prop} value`
-    : undefined;
+export const cssError = (prop: string, value?: string) => {
+  if (!value) return undefined;
+  const supports = globalThis.CSS?.supports;
+  if (typeof supports !== "function") return undefined;
+  return supports.call(globalThis.CSS, prop, value) ? undefined : `Invalid ${prop} value`;
+};
 

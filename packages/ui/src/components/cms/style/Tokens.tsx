@@ -67,19 +67,29 @@ export default function Tokens({
   }, [colors, fonts, others]);
 
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
+    const ensureAllGroups = (state: Partial<Record<string, boolean>>): Record<string, boolean> => {
+      const merged: Record<string, boolean> = {};
+      Object.keys(groups).forEach((key) => {
+        merged[key] = state[key] ?? true;
+      });
+      return merged;
+    };
+
     if (typeof window !== "undefined") {
       try {
         const stored = localStorage.getItem("token-group-state");
-        if (stored) return JSON.parse(stored);
+        if (stored) {
+          const parsed = JSON.parse(stored) as Partial<Record<string, boolean>>;
+          if (parsed && typeof parsed === "object") {
+            return ensureAllGroups(parsed);
+          }
+        }
       } catch {
         // ignore
       }
     }
-    const initial: Record<string, boolean> = {};
-    Object.keys(groups).forEach((k) => {
-      initial[k] = true;
-    });
-    return initial;
+
+    return ensureAllGroups({});
   });
 
   useEffect(() => {

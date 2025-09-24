@@ -54,10 +54,28 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
 
   const mentionPeople = useMentionPeople();
 
-  const { dragId, dragPos, startDrag } = useDragPins(canvasRef, positions, threads, async (id, body) => {
-    await patchThread(id, body);
-    await load();
-  });
+  const patchThreadSafely = useCallback(
+    async (id: string, body: Record<string, unknown>, options?: { reload?: boolean }) => {
+      try {
+        await patchThread(id, body);
+        if (options?.reload) {
+          await load();
+        }
+      } catch (error) {
+        console.error("Failed to patch comment thread", error);
+      }
+    },
+    [patchThread, load]
+  );
+
+  const patchPosition = useCallback(
+    async (id: string, body: Record<string, unknown>) => {
+      await patchThreadSafely(id, body, { reload: true });
+    },
+    [patchThreadSafely]
+  );
+
+  const { dragId, dragPos, startDrag } = useDragPins(canvasRef, positions, threads, patchPosition);
 
   const open = (id: string) => {
     setSelectedId(id);
@@ -86,15 +104,15 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
 
   const addMessage = async (id: string, text: string) => {
     if (!id || !text.trim()) return;
-    await patchThread(id, { action: "addMessage", text: text.trim() });
+    await patchThreadSafely(id, { action: "addMessage", text: text.trim() }, { reload: true });
   };
 
   const toggleResolved = async (id: string, resolved: boolean) => {
-    await patchThread(id, { resolved });
+    await patchThreadSafely(id, { resolved }, { reload: true });
   };
 
   const assign = async (id: string, assignee: string | null) => {
-    await patchThread(id, { assignedTo: assignee ?? null });
+    await patchThreadSafely(id, { assignedTo: assignee ?? null }, { reload: true });
   };
 
   const del = async (id: string) => {
@@ -134,12 +152,10 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
       const newId: string = created.json.id;
       for (let i = 1; i < (t.messages?.length ?? 0); i++) {
         const m = t.messages[i];
-        try {
-          await patchThread(newId, { action: "addMessage", text: m.text });
-        } catch {}
+        await patchThreadSafely(newId, { action: "addMessage", text: m.text });
       }
       if (t.resolved) {
-        await patchThread(newId, { resolved: true });
+        await patchThreadSafely(newId, { resolved: true });
       }
       await load();
       setSelectedId(newId);
@@ -202,7 +218,7 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
           const t = threads.find((x) => x.id === id);
           if (t) jumpTo(t.componentId);
         }}
-        onAddMessage={(id, text) => addMessage(id, text).then(() => load())}
+        onAddMessage={(id, text) => addMessage(id, text)}
         onToggleResolved={(id, resolved) => toggleResolved(id, resolved)}
         onAssign={(id, who) => assign(id, who)}
         onDelete={(id) => del(id)}

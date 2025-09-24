@@ -302,7 +302,7 @@ export default function LayersPanel({ components, selectedIds, onSelectIds, disp
             try { applyDesktopOrderAcrossBreakpoints(components, editor, dispatch); } catch {}
           }}
         >
-          Use Section Order on All Breakpoints
+          Use Section Order on all Breakpoints
         </button>
       </div>
       <input

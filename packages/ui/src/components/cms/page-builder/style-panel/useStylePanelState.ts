@@ -45,21 +45,53 @@ export default function useStylePanelState({ component, handleInput }: StylePane
     [overrides, textThemes],
   );
 
+  const buildNextOverrides = useCallback((): StyleOverrides => {
+    const latest = parseOverrides(component.styles);
+    const next: StyleOverrides = { ...latest };
+    if (latest.color) {
+      next.color = { ...latest.color };
+    }
+    if (latest.typography) {
+      next.typography = { ...latest.typography };
+    }
+    if (latest.typographyDesktop) {
+      next.typographyDesktop = { ...latest.typographyDesktop };
+    }
+    if (latest.typographyTablet) {
+      next.typographyTablet = { ...latest.typographyTablet };
+    }
+    if (latest.typographyMobile) {
+      next.typographyMobile = { ...latest.typographyMobile };
+    }
+    if (latest.effects) {
+      next.effects = { ...latest.effects };
+    }
+    return next;
+  }, [component]);
+
+  const commitOverrides = useCallback(
+    (next: StyleOverrides) => {
+      handleInput("styles", JSON.stringify(next));
+    },
+    [handleInput],
+  );
+
   const updateGroup = useCallback(
     (group: "color" | "typography", key: string, value: string) => {
-      const next: StyleOverrides = {
-        color: { ...color },
-        typography: { ...typography },
-      };
+      const next = buildNextOverrides();
+      const nextColor = { ...(next.color ?? {}) };
+      const nextTypography = { ...(next.typography ?? {}) };
       if (group === "color") {
-        next.color = { ...color, [key]: value };
+        next.color = { ...nextColor, [key]: value };
+        next.typography = nextTypography;
       } else {
-        next.typography = { ...typography, [key]: value };
+        next.color = nextColor;
+        next.typography = { ...nextTypography, [key]: value };
       }
-      handleInput("styles", JSON.stringify(next));
+      commitOverrides(next);
       trackEvent("stylepanel:update", { group, key });
     },
-    [color, typography, handleInput],
+    [buildNextOverrides, commitOverrides],
   );
 
   const updateColor = useCallback(
@@ -78,40 +110,34 @@ export default function useStylePanelState({ component, handleInput }: StylePane
 
   const updateBreakpointTypography = useCallback(
     (bp: Breakpoint, key: BreakpointKey, value: string) => {
-      const next: StyleOverrides = {
-        color: { ...color },
-        typography: { ...typography },
-        typographyDesktop: { ...typographyDesktop },
-        typographyTablet: { ...typographyTablet },
-        typographyMobile: { ...typographyMobile },
-      };
+      const next = buildNextOverrides();
       const field = `typography${bp}` as const;
-      (next as Record<string, unknown>)[field] = {
-        ...(next as Record<string, Record<string, string>>)[field],
+      const current = (next[field] ?? {}) as Partial<Record<BreakpointKey, string>>;
+      next[field] = {
+        ...current,
         [key]: value,
-      };
-      handleInput("styles", JSON.stringify(next));
+      } as NonNullable<StyleOverrides[typeof field]>;
+      commitOverrides(next);
       trackEvent("stylepanel:update", { group: `typography-${bp.toLowerCase()}` as string, key });
     },
-    [color, typography, typographyDesktop, typographyTablet, typographyMobile, handleInput],
+    [buildNextOverrides, commitOverrides],
   );
 
   const applyPreset = useCallback(
     (presetId: string) => {
       const preset = defaultEffectPresets.find((p) => p.id === presetId);
       if (!preset) return;
-      const next: StyleOverrides = {
-        color: { ...color, ...(preset.value.color ?? {}) },
-        typography: { ...typography, ...(preset.value.typography ?? {}) },
-        typographyDesktop: { ...typographyDesktop },
-        typographyTablet: { ...typographyTablet },
-        typographyMobile: { ...typographyMobile },
-        effects: { ...effects },
-      };
-      handleInput("styles", JSON.stringify(next));
+      const next = buildNextOverrides();
+      if (preset.value.color) {
+        next.color = { ...(next.color ?? {}), ...preset.value.color };
+      }
+      if (preset.value.typography) {
+        next.typography = { ...(next.typography ?? {}), ...preset.value.typography };
+      }
+      commitOverrides(next);
       trackEvent("stylepanel:preset", { id: presetId });
     },
-    [color, typography, typographyDesktop, typographyTablet, typographyMobile, effects, handleInput],
+    [buildNextOverrides, commitOverrides],
   );
 
   const {
@@ -131,80 +157,81 @@ export default function useStylePanelState({ component, handleInput }: StylePane
     (presetId: string) => {
       const preset = customPresets.find((p) => p.id === presetId);
       if (!preset) return;
-      const next: StyleOverrides = {
-        color: { ...color },
-        typography: { ...typography },
-        typographyDesktop: { ...typographyDesktop },
-        typographyTablet: { ...typographyTablet },
-        typographyMobile: { ...typographyMobile },
-        effects: { ...effects, ...(preset.value.effects ?? {}) },
-      };
-      handleInput("styles", JSON.stringify(next));
+      const next = buildNextOverrides();
+      next.effects = { ...(next.effects ?? {}), ...(preset.value.effects ?? {}) };
+      commitOverrides(next);
       setSelectedCustom(presetId);
       trackEvent("stylepanel:apply-custom-preset", { id: presetId });
     },
-    [customPresets, color, typography, typographyDesktop, typographyTablet, typographyMobile, effects, handleInput, setSelectedCustom],
+    [customPresets, buildNextOverrides, commitOverrides, setSelectedCustom],
   );
 
   const copyStyles = useCallback(() => {
+    const snapshot = buildNextOverrides();
     const toCopy: StyleOverrides = {
-      color: { ...color },
-      typography: { ...typography },
-      typographyDesktop: { ...typographyDesktop },
-      typographyTablet: { ...typographyTablet },
-      typographyMobile: { ...typographyMobile },
-      effects: { ...effects },
+      color: { ...(snapshot.color ?? {}) },
+      typography: { ...(snapshot.typography ?? {}) },
+      typographyDesktop: { ...(snapshot.typographyDesktop ?? {}) },
+      typographyTablet: { ...(snapshot.typographyTablet ?? {}) },
+      typographyMobile: { ...(snapshot.typographyMobile ?? {}) },
+      effects: { ...(snapshot.effects ?? {}) },
     };
     clipboard.set(toCopy);
     trackEvent("stylepanel:copy");
-  }, [color, typography, typographyDesktop, typographyTablet, typographyMobile, effects]);
+  }, [buildNextOverrides]);
 
   const pasteStyles = useCallback(() => {
     const data = clipboard.get();
     if (!data) return;
-    const next: StyleOverrides = {
-      color: { ...color, ...(data.color ?? {}) },
-      typography: { ...typography, ...(data.typography ?? {}) },
-      typographyDesktop: { ...typographyDesktop, ...(data.typographyDesktop ?? {}) },
-      typographyTablet: { ...typographyTablet, ...(data.typographyTablet ?? {}) },
-      typographyMobile: { ...typographyMobile, ...(data.typographyMobile ?? {}) },
-      effects: { ...effects, ...(data.effects ?? {}) },
-    };
-    handleInput("styles", JSON.stringify(next));
+    const next = buildNextOverrides();
+    if (data.color) {
+      next.color = { ...(next.color ?? {}), ...data.color };
+    }
+    if (data.typography) {
+      next.typography = { ...(next.typography ?? {}), ...data.typography };
+    }
+    if (data.typographyDesktop) {
+      next.typographyDesktop = { ...(next.typographyDesktop ?? {}), ...data.typographyDesktop };
+    }
+    if (data.typographyTablet) {
+      next.typographyTablet = { ...(next.typographyTablet ?? {}), ...data.typographyTablet };
+    }
+    if (data.typographyMobile) {
+      next.typographyMobile = { ...(next.typographyMobile ?? {}), ...data.typographyMobile };
+    }
+    if (data.effects) {
+      next.effects = { ...(next.effects ?? {}), ...data.effects };
+    }
+    commitOverrides(next);
     trackEvent("stylepanel:paste");
-  }, [color, typography, typographyDesktop, typographyTablet, typographyMobile, effects, handleInput]);
+  }, [buildNextOverrides, commitOverrides]);
 
   const updateEffects = useCallback(
     (key: EffectKey, value: string) => {
-      const next: StyleOverrides = {
-        color: { ...color },
-        typography: { ...typography },
-        typographyDesktop: { ...typographyDesktop },
-        typographyTablet: { ...typographyTablet },
-        typographyMobile: { ...typographyMobile },
-        effects: { ...effects, [key]: value },
-      };
-      handleInput("styles", JSON.stringify(next));
+      const next = buildNextOverrides();
+      next.effects = { ...(next.effects ?? {}), [key]: value };
+      commitOverrides(next);
       trackEvent("stylepanel:update", { group: "effects", key });
     },
-    [color, typography, typographyDesktop, typographyTablet, typographyMobile, effects, handleInput],
+    [buildNextOverrides, commitOverrides],
   );
 
   const handleTextThemeSelect = useCallback(
     (themeId: string) => {
+      const latest = parseOverrides(component.styles);
       if (!themeId) {
-        const cleared = clearTextThemeFromOverrides(overrides);
-        handleInput("styles", JSON.stringify(cleared));
+        const cleared = clearTextThemeFromOverrides(latest);
+        commitOverrides(cleared);
         trackEvent("stylepanel:text-theme", { id: "__custom__" });
         return;
       }
       const theme = textThemes.find((t) => t.id === themeId);
       if (!theme) return;
-      const next = applyTextThemeToOverrides(overrides, theme);
-      handleInput("styles", JSON.stringify(next));
+      const next = applyTextThemeToOverrides(latest, theme);
+      commitOverrides(next);
       trackEvent("stylepanel:text-theme", { id: theme.id });
     },
-    [handleInput, overrides, textThemes],
+    [component, commitOverrides, textThemes],
   );
 
   return {

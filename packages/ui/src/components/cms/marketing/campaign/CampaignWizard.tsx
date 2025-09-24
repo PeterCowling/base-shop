@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Button } from "../../../atoms/shadcn";
 import { Toast } from "../../../atoms";
 import { cn } from "../../../../utils/style";
@@ -117,10 +117,13 @@ export function CampaignWizard({
     goToStep(stepIndex + 1);
   };
 
-  const handlePreview = (nextPreview: CampaignPreviewData) => {
-    setPreview(nextPreview);
-    onPreviewChange?.(nextPreview);
-  };
+  const handlePreview = useCallback(
+    (nextPreview: CampaignPreviewData) => {
+      setPreview(nextPreview);
+      onPreviewChange?.(nextPreview);
+    },
+    [onPreviewChange]
+  );
 
   const handleFinish = async () => {
     if (status === "submitting") return;

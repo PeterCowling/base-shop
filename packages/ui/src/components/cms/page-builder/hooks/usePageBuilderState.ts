@@ -57,7 +57,7 @@ export function usePageBuilderState({
         })()
       : ({ past: [], present: initial, future: [], gridCols: 12, editor: {} as Record<string, any> } as any);
 
-    if (typeof window === "undefined" || process.env.NODE_ENV === "test") {
+    if (typeof window === "undefined") {
       return parsedServer;
     }
     try {

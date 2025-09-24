@@ -19,7 +19,7 @@ interface Options {
 type SpacingType = "margin" | "padding";
 type SpacingSide = "top" | "right" | "bottom" | "left";
 
-interface Overlay {
+export interface Overlay {
   type: SpacingType;
   side: SpacingSide;
   top: number;

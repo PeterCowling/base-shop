@@ -1,29 +1,23 @@
 "use client";
 
-// types consumed via Props
-import { memo, useMemo, useState } from "react";
-import useInlineText from "./useInlineText";
+import { memo } from "react";
+import useBlockItemMetadata from "./useBlockItemMetadata";
+import useBlockItemInlineEditing from "./useBlockItemInlineEditing";
+import useBlockItemInteractions from "./useBlockItemInteractions";
+import useBlockItemStyles from "./useBlockItemStyles";
+import useBlockItemContextMenu from "./useBlockItemContextMenu";
 import BlockContent from "./BlockContent";
-import useCanvasResize from "./useCanvasResize";
-import useCanvasDrag from "./useCanvasDrag";
-import useCanvasSpacing from "./useCanvasSpacing";
-import useBlockDimensions from "./useBlockDimensions";
-import useBlockDnD from "./useBlockDnD";
 import BlockResizer from "./BlockResizer";
 import BlockChildren from "./BlockChildren";
-import useCanvasRotate from "./useCanvasRotate";
-import { LockClosedIcon } from "@radix-ui/react-icons";
-import ContextMenu from "./ContextMenu";
-import ImageEditingOverlays from "./ImageEditingOverlays";
-import { isHiddenForViewport } from "./state/layout/utils";
-import { computeBlockStyle } from "./utils/computeBlockStyle";
 import CanvasOverlays from "./CanvasOverlays";
-import ZIndexMenu from "./ZIndexMenu";
-import HiddenBadge from "./HiddenBadge";
-import DragHandle from "./DragHandle";
-import buildBlockContextMenuItems from "./buildBlockContextMenuItems";
-import buildBlockKeyDownHandler from "./buildBlockKeyDownHandler";
 import DeleteButton from "./DeleteButton";
+import DragHandle from "./DragHandle";
+import HiddenBadge from "./HiddenBadge";
+import ImageEditingOverlays from "./ImageEditingOverlays";
+import ContextMenu from "./ContextMenu";
+import ZIndexMenu from "./ZIndexMenu";
+import buildBlockKeyDownHandler from "./buildBlockKeyDownHandler";
+import { LockClosedIcon } from "@radix-ui/react-icons";
 
 import type { BlockItemProps as Props } from "./BlockItem.types";
 
@@ -46,168 +40,71 @@ const BlockItem = memo(function BlockItemComponent({
   zoom = 1,
   baselineSnap = false,
   baselineStep = 8,
-  // not destructured earlier; used further below
   dropAllowed,
   insertParentId,
   insertIndex,
   preferParentOnClick = false,
 }: Props) {
-  const selected = selectedIds.includes(component.id);
-  const flags = useMemo(() => ((editor ?? {})[component.id] ?? {}), [editor, component.id]);
-  const effLocked = (flags as any).locked ?? (component as any).locked ?? false;
-  const effZIndex = (flags as any).zIndex ?? (component as any).zIndex;
-  const hiddenList = ((editor ?? {})[component.id]?.hidden ?? []) as ("desktop"|"tablet"|"mobile")[];
-  const isHiddenHere = isHiddenForViewport(component.id, editor, (component as any).hidden as boolean | undefined, viewport);
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    isDragging,
-    setDropRef,
-    isOver,
-    containerRef,
-  } = useBlockDnD(component.id, index, parentId);
+  const { selected, flags, effLocked, effZIndex, hiddenList, isHiddenHere } = useBlockItemMetadata({
+    component,
+    selectedIds,
+    editor,
+    viewport,
+  });
 
-  const isInlineEditableButton = component.type === "Button";
-  const inlineAll = useInlineText(component as any, "label") as ReturnType<typeof useInlineText<any, any>>;
-  const inline = isInlineEditableButton ? inlineAll : null;
+  const { isInlineEditableButton, inline } = useBlockItemInlineEditing(component);
 
-  const {
-    widthKey,
-    heightKey,
-    widthVal,
-    heightVal,
-    marginKey,
-    paddingKey,
-    marginVal,
-    paddingVal,
-    leftKey,
-    topKey,
-    leftVal,
-    topVal,
-  } = useBlockDimensions({ component, viewport });
-
-  const {
-    startResize,
-    guides: resizeGuides,
-    distances: resizeDistances,
-    snapping: resizeSnapping,
-    width: resizeWidth,
-    height: resizeHeight,
-    left: resizeLeft,
-    top: resizeTop,
-    resizing,
-    kbResizing,
-    nudgeByKeyboard: nudgeResizeByKeyboard,
-  } = useCanvasResize({
-    componentId: component.id,
-    widthKey,
-    heightKey,
-    widthVal,
-    heightVal,
+  const { dnd, dimensions, resize, drag, spacing, rotate, overlay } = useBlockItemInteractions({
+    component,
+    index,
+    parentId,
     dispatch,
     gridEnabled,
     gridCols,
-    containerRef,
-    disabled: !!effLocked || !!inline?.editing,
-    leftKey,
-    topKey,
-    dockX: (component as any).dockX as any,
-    dockY: (component as any).dockY as any,
-    zoom,
-  });
-
-  const {
-    startDrag,
-    guides: dragGuides,
-    distances: dragDistances,
-    snapping: dragSnapping,
-    width: dragWidth,
-    height: dragHeight,
-    left: dragLeft,
-    top: dragTop,
-    moving,
-  } = useCanvasDrag({
-    componentId: component.id,
-    dispatch,
-    gridEnabled,
-    gridCols,
-    containerRef,
-    disabled: !!effLocked || !!inline?.editing,
-    leftKey,
-    topKey,
-    dockX: (component as any).dockX as any,
-    dockY: (component as any).dockY as any,
-    zoom,
-  });
-
-  const { startSpacing, overlay: spacingOverlay, nudgeSpacingByKeyboard } = useCanvasSpacing({
-    componentId: component.id,
-    marginKey,
-    paddingKey,
-    marginVal,
-    paddingVal,
-    dispatch,
-    containerRef,
+    effLocked: !!effLocked,
+    inlineEditing: !!inline?.editing,
     baselineSnap,
     baselineStep,
-  });
-
-  const guides =
-    resizeGuides.x !== null || resizeGuides.y !== null
-      ? resizeGuides
-      : dragGuides;
-  const distances =
-    resizeGuides.x !== null || resizeGuides.y !== null
-      ? resizeDistances
-      : dragDistances;
-  const snapping = resizeSnapping || dragSnapping;
-
-  const showOverlay = resizing || moving || kbResizing;
-  const overlayWidth = resizing ? resizeWidth : dragWidth;
-  const overlayHeight = resizing ? resizeHeight : dragHeight;
-  const overlayLeft = resizing ? resizeLeft : dragLeft;
-  const overlayTop = resizing ? resizeTop : dragTop;
-  const childComponents = (component as any).children as any;
-
-  // Rotation
-  const { startRotate, rotating, angle } = useCanvasRotate({
-    componentId: component.id,
-    styles: (component as any).styles as string | undefined,
-    dispatch,
-    containerRef,
     zoom,
+    viewport,
   });
 
-  // Context menu state
-  const [ctxOpen, setCtxOpen] = useState(false);
-  const [ctxPos, setCtxPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const style = useBlockItemStyles({
+    component,
+    parentId,
+    flags,
+    effZIndex: effZIndex as number | undefined,
+    transform: dnd.transform,
+    dimensions: {
+      widthVal: dimensions.widthVal,
+      heightVal: dimensions.heightVal,
+      marginVal: dimensions.marginVal,
+      paddingVal: dimensions.paddingVal,
+      leftVal: dimensions.leftVal,
+      topVal: dimensions.topVal,
+    },
+  });
 
-  const ctxItems = useMemo(
-    () =>
-      buildBlockContextMenuItems({
-        componentId: component.id,
-        componentStyles: component.styles as any,
-        effLocked,
-        flagsZIndex: (flags as any).zIndex as number | undefined,
-        selectedIds,
-        editor,
-        dispatch,
-        onRemove,
-      }),
-    [component.id, component.styles, dispatch, editor, effLocked, flags, onRemove, selectedIds]
-  );
+  const { ctxItems, ctxOpen, ctxPos, openContextMenu, closeContextMenu } = useBlockItemContextMenu({
+    component,
+    effLocked: !!effLocked,
+    flags,
+    selectedIds,
+    editor,
+    dispatch,
+    onRemove,
+  });
+
+  const selectableId = preferParentOnClick && parentId ? parentId : component.id;
+  const childComponents = (component as any).children as any;
 
   return (
     <div
-      ref={setNodeRef}
-      onClick={(e) => onSelect((preferParentOnClick && parentId ? parentId : component.id), e)}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        onSelect((preferParentOnClick && parentId ? parentId : component.id), e);
-        setCtxPos({ x: e.clientX, y: e.clientY });
-        setCtxOpen(true);
+      ref={dnd.setNodeRef}
+      onClick={(event) => onSelect(selectableId, event)}
+      onContextMenu={(event) => {
+        onSelect(selectableId, event);
+        openContextMenu(event);
       }}
       role="listitem"
       aria-label="Canvas item"
@@ -218,11 +115,11 @@ const BlockItem = memo(function BlockItemComponent({
       onKeyDown={buildBlockKeyDownHandler({
         locked: !!effLocked,
         inlineEditing: !!inline?.editing,
-        containerRef: containerRef as any,
+        containerRef: dnd.containerRef as any,
         gridEnabled: !!gridEnabled,
         gridCols,
-        nudgeSpacingByKeyboard,
-        nudgeResizeByKeyboard,
+        nudgeSpacingByKeyboard: spacing.nudgeSpacingByKeyboard,
+        nudgeResizeByKeyboard: resize.nudgeByKeyboard,
         parentSlots,
         parentType,
         currSlotKey: (component as any).slotKey as any,
@@ -230,57 +127,29 @@ const BlockItem = memo(function BlockItemComponent({
         dispatch,
         viewport,
       })}
-      style={{
-        ...computeBlockStyle({
-          transform,
-          zIndex: effZIndex as number | undefined,
-          containerType: (component as any).containerType as string | undefined,
-          containerName: (component as any).containerName as string | undefined,
-          widthVal,
-          heightVal,
-          marginVal,
-          paddingVal,
-          position: component.position,
-          leftVal,
-          topVal,
-          dockX: (component as any).dockX as any,
-          dockY: (component as any).dockY as any,
-          responsiveBehavior: (flags as any)?.responsiveBehavior as any,
-        }),
-        // Pin to top (sticky) for top-level globals when flagged in editor
-        ...(function() {
-          const isTopLevel = !parentId;
-          const pinned = !!(flags as any)?.pinned;
-          if (!isTopLevel || !pinned) return {};
-          return { position: 'sticky', top: 0, zIndex: 30 } as const;
-        })(),
-        // Custom cursor support
-        ...(function() {
-          const cur = (component as any).cursor as string | undefined;
-          const url = (component as any).cursorUrl as string | undefined;
-          if (!cur || cur === 'default') return {};
-          if (cur === 'custom' && url) return { cursor: `url(${url}), auto` } as const;
-          return { cursor: cur } as const;
-        })(),
-      }}
+      style={style}
       className={
         "hover:border-primary relative rounded border hover:border-dashed" +
         (selected ? " ring-2 ring-blue-500" : "") +
-        (snapping ? " border-primary" : "") +
-        (isOver || isDragging
-          ? (dropAllowed === false ? " border-danger border-dashed cursor-not-allowed" : " border-primary border-dashed")
+        (overlay.snapping ? " border-primary" : "") +
+        (dnd.isOver || dnd.isDragging
+          ? dropAllowed === false
+            ? " border-danger border-dashed cursor-not-allowed"
+            : " border-primary border-dashed"
           : "")
       }
     >
       <DragHandle
-        attributes={attributes}
-        listeners={listeners}
-        isDragging={isDragging}
+        attributes={dnd.attributes}
+        listeners={dnd.listeners}
+        isDragging={dnd.isDragging}
         locked={!!effLocked}
-        onPointerDown={(e) => {
-          e.stopPropagation();
-          onSelect(component.id, e);
-          if (!effLocked && component.position === "absolute") startDrag(e);
+        onPointerDown={(event) => {
+          event.stopPropagation();
+          onSelect(component.id, event);
+          if (!effLocked && component.position === "absolute") {
+            drag.startDrag(event);
+          }
         }}
       />
       {effLocked && (
@@ -289,16 +158,16 @@ const BlockItem = memo(function BlockItemComponent({
         </div>
       )}
       <CanvasOverlays
-        guides={guides}
-        distances={distances}
-        spacingOverlay={spacingOverlay ?? null}
-        showSizePosition={showOverlay}
-        overlayWidth={overlayWidth}
-        overlayHeight={overlayHeight}
-        overlayLeft={overlayLeft}
-        overlayTop={overlayTop}
-        rotating={rotating}
-        angle={angle}
+        guides={overlay.guides}
+        distances={overlay.distances}
+        spacingOverlay={spacing.overlay ?? null}
+        showSizePosition={overlay.showOverlay}
+        overlayWidth={overlay.overlayWidth}
+        overlayHeight={overlay.overlayHeight}
+        overlayLeft={overlay.overlayLeft}
+        overlayTop={overlay.overlayTop}
+        rotating={rotate.rotating}
+        angle={rotate.angle}
       />
       <BlockContent
         component={{
@@ -311,21 +180,30 @@ const BlockItem = memo(function BlockItemComponent({
         dispatch={dispatch as any}
       />
       <ImageEditingOverlays enabled={selected && !effLocked} component={component} dispatch={dispatch} />
-      
       <BlockResizer
         selected={selected}
-        startResize={(e) => {
-          if (!effLocked) startResize(e);
+        startResize={(event) => {
+          if (!effLocked) {
+            resize.startResize(event);
+          }
         }}
-        startSpacing={(e, type, side) => {
-          if (!effLocked) startSpacing(e, type, side);
+        startSpacing={(event, type, side) => {
+          if (!effLocked) {
+            spacing.startSpacing(event, type, side);
+          }
         }}
-        startRotate={(e) => {
-          if (!effLocked) startRotate(e);
+        startRotate={(event) => {
+          if (!effLocked) {
+            rotate.startRotate(event);
+          }
         }}
       />
       <DeleteButton locked={!!effLocked} onRemove={onRemove} />
-      <ZIndexMenu componentId={component.id} currentZ={(flags as any).zIndex as number | undefined} dispatch={dispatch} />
+      <ZIndexMenu
+        componentId={component.id}
+        currentZ={(flags as any).zIndex as number | undefined}
+        dispatch={dispatch}
+      />
       <BlockChildren
         component={component}
         childComponents={childComponents}
@@ -337,8 +215,8 @@ const BlockItem = memo(function BlockItemComponent({
         gridCols={gridCols}
         viewport={viewport}
         device={device}
-        isOver={isOver}
-        setDropRef={setDropRef}
+        isOver={dnd.isOver}
+        setDropRef={dnd.setDropRef}
         baselineSnap={baselineSnap}
         baselineStep={baselineStep}
         dropAllowed={dropAllowed}
@@ -355,13 +233,7 @@ const BlockItem = memo(function BlockItemComponent({
         editor={editor}
         dispatch={dispatch}
       />
-      <ContextMenu
-        x={ctxPos.x}
-        y={ctxPos.y}
-        open={ctxOpen}
-        onClose={() => setCtxOpen(false)}
-        items={ctxItems}
-      />
+      <ContextMenu x={ctxPos.x} y={ctxPos.y} open={ctxOpen} onClose={closeContextMenu} items={ctxItems} />
     </div>
   );
 });

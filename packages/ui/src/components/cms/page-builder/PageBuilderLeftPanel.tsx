@@ -1,0 +1,183 @@
+import type { ComponentProps } from "react";
+import LeftRail from "./LeftRail";
+import PaletteSidebar from "./PaletteSidebar";
+import SectionsPanel from "./SectionsPanel";
+import LayersSidebar from "./LayersSidebar";
+import QuickPaletteControls from "./QuickPaletteControls";
+import type GridSettings from "./GridSettings";
+import type PageSidebar from "./PageSidebar";
+import type { ComponentType } from "./defaults";
+import type { PageComponent } from "@acme/types";
+
+type SidebarProps = ComponentProps<typeof PageSidebar>;
+
+type GridProps = ComponentProps<typeof GridSettings>;
+
+interface PageBuilderLeftPanelProps {
+  showPalette: boolean;
+  showSections: boolean;
+  showLayers: boolean;
+  showInspector: boolean;
+  paletteWidth: number;
+  onPaletteWidthChange: (width: number) => void;
+  layersWidth: number;
+  onLayersWidthChange: (width: number) => void;
+  openPalette: () => void;
+  openSections: () => void;
+  openLayers: () => void;
+  onTogglePalette: () => void;
+  onToggleInspector: () => void;
+  paletteOnAdd: (type: ComponentType) => void;
+  onInsertImageAsset: (url: string) => void;
+  onSetSectionBackground: (url: string) => void;
+  selectedIsSection: boolean;
+  onInsertPreset?: (component: PageComponent) => void;
+  onInsertLinkedSection?: (item: { globalId: string; label: string; component: PageComponent }) => void;
+  gridProps: GridProps;
+  startTour: () => void;
+  toggleComments: () => void;
+  showComments: boolean;
+  togglePreview: () => void;
+  showPreview: boolean;
+  parentFirst?: boolean;
+  onParentFirstChange?: (v: boolean) => void;
+  crossBreakpointNotices?: boolean;
+  onCrossBreakpointNoticesChange?: (v: boolean) => void;
+  breakpoints?: any;
+  setBreakpoints?: (value: any) => void;
+  shop?: string | null;
+  sidebarProps: SidebarProps;
+  mode: "page" | "section";
+  onOpenPages: () => void;
+  onOpenGlobals: () => void;
+  onOpenCMS: () => void;
+}
+
+const PageBuilderLeftPanel = ({
+  showPalette,
+  showSections,
+  showLayers,
+  showInspector,
+  paletteWidth,
+  onPaletteWidthChange,
+  layersWidth,
+  onLayersWidthChange,
+  openPalette,
+  openSections,
+  openLayers,
+  onTogglePalette,
+  onToggleInspector,
+  paletteOnAdd,
+  onInsertImageAsset,
+  onSetSectionBackground,
+  selectedIsSection,
+  onInsertPreset,
+  onInsertLinkedSection,
+  gridProps,
+  startTour,
+  toggleComments,
+  showComments,
+  togglePreview,
+  showPreview,
+  parentFirst,
+  onParentFirstChange,
+  crossBreakpointNotices,
+  onCrossBreakpointNoticesChange,
+  breakpoints,
+  setBreakpoints,
+  shop,
+  sidebarProps,
+  mode,
+  onOpenPages,
+  onOpenGlobals,
+  onOpenCMS,
+}: PageBuilderLeftPanelProps) => {
+  const showQuickPalette = !showPalette && !showSections;
+
+  return (
+    <>
+      <LeftRail
+        onOpenAdd={openPalette}
+        onOpenSections={openSections}
+        onOpenLayers={openLayers}
+        onOpenPages={onOpenPages}
+        onOpenGlobalSections={onOpenGlobals}
+        onOpenSiteStyles={() => {
+          try {
+            window.dispatchEvent(new Event("pb:open-theme"));
+          } catch {}
+        }}
+        onOpenCMS={onOpenCMS}
+        onToggleInspector={onToggleInspector}
+        isAddActive={showPalette}
+        isSectionsActive={showSections}
+        isLayersActive={showLayers}
+        isInspectorActive={showInspector}
+        gridProps={gridProps}
+        startTour={startTour}
+        toggleComments={toggleComments}
+        showComments={showComments}
+        togglePreview={togglePreview}
+        showPreview={showPreview}
+        showPalette={showPalette}
+        togglePalette={onTogglePalette}
+        parentFirst={parentFirst}
+        onParentFirstChange={onParentFirstChange}
+        crossBreakpointNotices={crossBreakpointNotices}
+        onCrossBreakpointNoticesChange={onCrossBreakpointNoticesChange}
+        breakpoints={breakpoints}
+        setBreakpoints={setBreakpoints}
+        hideAddElements={mode === "section"}
+        hidePages={mode === "section"}
+        hideGlobalSections={mode === "section"}
+        hideSiteStyles={mode === "section"}
+        hideCMS={mode === "section"}
+      />
+      {showPalette && (
+        <PaletteSidebar
+          width={paletteWidth}
+          onWidthChange={onPaletteWidthChange}
+          onAdd={paletteOnAdd}
+          onInsertImage={onInsertImageAsset}
+          onSetSectionBackground={onSetSectionBackground}
+          selectedIsSection={selectedIsSection}
+          onInsertPreset={onInsertPreset}
+          mode="elements"
+        />
+      )}
+      {showSections && (
+        <div style={{ width: paletteWidth }} className="shrink-0">
+          <SectionsPanel
+            shop={shop}
+            onInsert={(c) => onInsertPreset?.(c)}
+            onInsertLinked={(g) => onInsertLinkedSection?.(g)}
+          />
+        </div>
+      )}
+      {showLayers && (
+        <LayersSidebar
+          width={layersWidth}
+          onWidthChange={onLayersWidthChange}
+          components={(sidebarProps as any)?.components}
+          selectedIds={(sidebarProps as any)?.selectedIds}
+          onSelectIds={(sidebarProps as any)?.onSelectIds}
+          dispatch={(sidebarProps as any)?.dispatch}
+          editor={(sidebarProps as any)?.editor}
+          viewport={(sidebarProps as any)?.viewport}
+          crossNotices={(sidebarProps as any)?.crossNotices}
+        />
+      )}
+      {showQuickPalette && (
+        <QuickPaletteControls
+          onAdd={paletteOnAdd}
+          onInsertImage={onInsertImageAsset}
+          onSetSectionBackground={onSetSectionBackground}
+          selectedIsSection={selectedIsSection}
+          onShowPalette={openPalette}
+        />
+      )}
+    </>
+  );
+};
+
+export default PageBuilderLeftPanel;

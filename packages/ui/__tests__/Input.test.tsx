@@ -27,7 +27,7 @@ describe("Input", () => {
   it("applies error styles and accessibility attributes", () => {
     render(<Input aria-label="email" error="Required" />);
     const input = screen.getByLabelText("email");
-    expect(input).toHaveClass("border-red-500");
+    expect(input).toHaveClass("border-danger");
     expect(input).toHaveAttribute("aria-invalid", "true");
     expect(screen.getByText("Required")).toHaveTextContent("Required");
   });

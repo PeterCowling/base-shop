@@ -61,7 +61,7 @@ describe("Textarea", () => {
   it("applies error class and message", () => {
     render(<Textarea error="Required" />);
     const textarea = screen.getByRole("textbox");
-    expect(textarea).toHaveClass("border-red-500");
+    expect(textarea).toHaveClass("border-danger");
     expect(textarea).toHaveAttribute("aria-invalid", "true");
 
     const error = screen.getByText("Required");

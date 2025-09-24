@@ -36,7 +36,7 @@ exports[`MiniCart shows cart items and handles quantity changes and removal 1`] 
   <div
     aria-describedby="radix-«r5»"
     aria-labelledby="radix-«r4»"
-    class="bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border p-6 shadow-elevation-4 duration-200 bg-background fixed top-0 right-0 h-full max-w-full rounded-none border-l p-6 shadow-elevation-4 w-80"
+    class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-xl translate-x-[-50%] translate-y-[-50%] gap-4 border p-6 shadow-elevation-4 duration-200 overflow-x-hidden bg-surface-2 border-border-2 text-foreground bg-background fixed top-0 right-0 h-full max-w-full rounded-none border-l p-6 shadow-elevation-4 w-80"
     data-state="open"
     id="radix-«r3»"
     role="dialog"
@@ -81,7 +81,7 @@ exports[`MiniCart shows cart items and handles quantity changes and removal 1`] 
           >
             <button
               aria-label="Decrease quantity"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium text-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-fg hover:bg-primary/90 h-12 px-4 py-3 px-2 py-1 text-xs"
+              class="inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-fg hover:bg-primary/90 px-2 py-1 text-xs"
               data-token="--color-primary"
             >
               -
@@ -93,14 +93,14 @@ exports[`MiniCart shows cart items and handles quantity changes and removal 1`] 
             </span>
             <button
               aria-label="Increase quantity"
-              class="inline-flex items-center justify-center rounded-md text-sm font-medium text-fg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-fg hover:bg-primary/90 h-12 px-4 py-3 px-2 py-1 text-xs"
+              class="inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-fg hover:bg-primary/90 px-2 py-1 text-xs"
               data-token="--color-primary"
             >
               +
             </button>
           </div>
           <button
-            class="inline-flex h-12 items-center justify-center rounded-md px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 px-2 py-1 text-xs"
+            class="inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 px-2 py-1 text-xs"
           >
             Remove
           </button>
@@ -124,7 +124,7 @@ exports[`MiniCart shows cart items and handles quantity changes and removal 1`] 
       </div>
     </div>
     <button
-      class="ring-offset-background focus:ring-ring data-[state=open]:bg-secondary absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:pointer-events-none"
+      class="data-[state=open]:bg-secondary absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-[var(--ring-width)] focus:ring-offset-[var(--ring-offset-width)] disabled:pointer-events-none"
       type="button"
     >
       <svg

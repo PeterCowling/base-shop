@@ -4,6 +4,7 @@ import { useState, useMemo, useRef } from "react";
 import { tokenGroups } from "./tokenGroups";
 import { useThemePresetManager } from "./useThemePresetManager";
 import { useThemeTokenSync } from "./useThemeTokenSync";
+import { useBrandIntensity } from "./useBrandIntensity";
 
 interface Options {
   shop: string;
@@ -43,6 +44,8 @@ export function useThemeEditor({
     presets,
   });
 
+  const { intensity: brandIntensity, setIntensity: setBrandIntensity } = useBrandIntensity();
+
   const {
     previewTokens,
     mergedTokens,
@@ -56,6 +59,7 @@ export function useThemeEditor({
     overrides,
     tokensByThemeState,
     setOverrides,
+    brandIntensity,
   });
 
   const [contrastWarnings, setContrastWarnings] = useState<Record<string, string>>({});
@@ -125,6 +129,8 @@ export function useThemeEditor({
     availableThemes,
     tokensByThemeState,
     presetThemes,
+    brandIntensity,
+    setBrandIntensity,
     presetName,
     setPresetName,
     handleSavePreset,
@@ -146,4 +152,3 @@ export function useThemeEditor({
     handleResetAll,
   };
 }
-

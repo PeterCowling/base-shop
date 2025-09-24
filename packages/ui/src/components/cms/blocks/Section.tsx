@@ -109,6 +109,29 @@ export default function Section({
   className,
   ...rest
 }: SectionProps) {
+  // Filter out builder-only sizing props so they don't leak to the DOM
+  const {
+    heightDesktop: _heightDesktop,
+    heightTablet: _heightTablet,
+    heightMobile: _heightMobile,
+    widthDesktop: _widthDesktop,
+    widthTablet: _widthTablet,
+    widthMobile: _widthMobile,
+    marginDesktop: _marginDesktop,
+    marginTablet: _marginTablet,
+    marginMobile: _marginMobile,
+    paddingDesktop: _paddingDesktop,
+    paddingTablet: _paddingTablet,
+    paddingMobile: _paddingMobile,
+    leftDesktop: _leftDesktop,
+    leftTablet: _leftTablet,
+    leftMobile: _leftMobile,
+    topDesktop: _topDesktop,
+    topTablet: _topTablet,
+    topMobile: _topMobile,
+    pbViewport: _pbViewport,
+    ...domProps
+  } = (rest as unknown) as Record<string, unknown>;
   const resolveContentWidth = () => {
     const vp = pbViewport;
     if (vp === "desktop" && contentWidthDesktop) return contentWidthDesktop;
@@ -159,7 +182,7 @@ export default function Section({
     : undefined;
   return (
     <div
-      {...rest}
+      {...(domProps as any)}
       className={[className, "relative", themeDark ? "theme-dark" : undefined, densityClass]
         .filter(Boolean)
         .join(" ") || undefined}

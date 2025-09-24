@@ -26,7 +26,7 @@ export const DropdownMenuSubTrigger = React.forwardRef<
   <DropdownMenuPrimitive.SubTrigger
     ref={ref}
     className={cn(
-      "focus:bg-accent focus:text-accent-foreground flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[state=open]:bg-accent data-[state=open]:text-accent-foreground",
+      "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-surface-3 focus:bg-surface-3",
       inset && "pl-8",
       className
     )}
@@ -67,12 +67,11 @@ export const DropdownMenuContent = React.forwardRef<
     container?: HTMLElement | null;
   }
 >(({ className, sideOffset = 4, container, ...props }, ref) => {
-  const defaultContainer =
-    typeof document !== "undefined"
-      ? (document.querySelector('[data-pb-portal-root]') as HTMLElement | null)
-      : null;
+  // Only portal into an explicit container if provided by the caller.
+  // Default behavior: Radix portals to document.body to avoid aria-hidden warnings
+  // when the container is not an ancestor of the trigger.
   return (
-  <DropdownMenuPrimitive.Portal container={container ?? defaultContainer}>
+  <DropdownMenuPrimitive.Portal {...(container ? { container } : {})}>
     <DropdownMenuPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
@@ -103,7 +102,7 @@ export const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      "focus:bg-accent focus:text-accent-foreground relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-surface-3 focus:bg-surface-3 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       inset && "pl-8",
       className
     )}
@@ -119,7 +118,7 @@ export const DropdownMenuCheckboxItem = React.forwardRef<
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
     className={cn(
-      "focus:bg-accent focus:text-accent-foreground relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-surface-3 focus:bg-surface-3 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
     checked={checked}
@@ -143,7 +142,7 @@ export const DropdownMenuRadioItem = React.forwardRef<
   <DropdownMenuPrimitive.RadioItem
     ref={ref}
     className={cn(
-      "focus:bg-accent focus:text-accent-foreground relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-surface-3 focus:bg-surface-3 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       className
     )}
     {...props}

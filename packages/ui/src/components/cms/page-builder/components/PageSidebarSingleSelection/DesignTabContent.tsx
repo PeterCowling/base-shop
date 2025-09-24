@@ -9,7 +9,7 @@ interface DesignTabContentProps {
   handleFieldInput: HandleFieldInput;
   handleResizeField: (field: string, value: string) => void;
   handleFullSizeField: (field: string) => void;
-  editorFlags: HistoryState["editor"][string] | undefined;
+  editorFlags: NonNullable<HistoryState["editor"]>[string] | undefined;
   editorMap: HistoryState["editor"] | undefined;
   onUpdateEditor: (patch: any) => void;
   updateEditorForId: (id: string, patch: any) => void;

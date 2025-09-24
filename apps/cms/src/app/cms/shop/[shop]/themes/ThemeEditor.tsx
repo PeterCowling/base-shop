@@ -2,12 +2,15 @@
 
 "use client";
 import { Button } from "@/components/atoms/shadcn";
+import { Alert } from "@/components/atoms";
 import ThemePreview from "./ThemePreview";
 import PalettePicker from "./PalettePicker";
 import TypographySettings from "./TypographySettings";
 import ThemeSelector from "./ThemeSelector";
 import PresetControls from "./PresetControls";
 import { useThemeEditor } from "./useThemeEditor";
+import BrandIntensitySelector from "./BrandIntensitySelector";
+import PalettePeek from "./PalettePeek";
 
 export { default as ThemePreview } from "./ThemePreview";
 export { default as PalettePicker } from "./PalettePicker";
@@ -26,6 +29,8 @@ export default function ThemeEditor(props: Props) {
   const {
     theme,
     availableThemes,
+    brandIntensity,
+    setBrandIntensity,
     presetName,
     setPresetName,
     handleSavePreset,
@@ -56,6 +61,14 @@ export default function ThemeEditor(props: Props) {
         value={theme}
         onChange={handleThemeChange}
       />
+      <PalettePeek
+        themes={availableThemes}
+        value={theme}
+        onChange={(t) =>
+          handleThemeChange({ target: { value: t } } as unknown as React.ChangeEvent<HTMLSelectElement>)
+        }
+        hasWarnings={Object.keys(contrastWarnings).length > 0}
+      />
       <PresetControls
         presetName={presetName}
         setPresetName={setPresetName}
@@ -63,15 +76,15 @@ export default function ThemeEditor(props: Props) {
         handleDeletePreset={handleDeletePreset}
         isPresetTheme={presetThemes.includes(theme)}
       />
+      <BrandIntensitySelector value={brandIntensity} onChange={setBrandIntensity} />
       {Object.keys(contrastWarnings).length > 0 && (
-        <div className="rounded border border-warning/30 bg-warning/10 p-2 text-sm text-warning-foreground">
-          <p>Contrast warnings:</p>
+        <Alert variant="warning" tone="soft" title="Contrast warnings">
           <ul className="list-disc pl-4">
             {Object.values(contrastWarnings).map((w, i) => (
               <li key={i}>{w}</li>
             ))}
           </ul>
-        </div>
+        </Alert>
       )}
       <ThemePreview
         overrides={overrides}

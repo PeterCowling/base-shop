@@ -8,7 +8,8 @@
   --color-primary: var(--token-color-primary, 220 90% 56%);
   --color-primary-dark: var(--token-color-primary-dark, 220 90% 66%);
   --color-primary-fg: var(--token-color-primary-fg, 0 0% 100%);
-  --color-primary-fg-dark: var(--token-color-primary-fg-dark, 0 0% 10%);
+  /* Ensure adequate contrast on brand surfaces in dark mode */
+  --color-primary-fg-dark: var(--token-color-primary-fg-dark, 0 0% 100%);
   --color-accent: var(--token-color-accent, 260 83% 70%);
   --color-accent-dark: var(--token-color-accent-dark, 260 83% 70%);
   --color-accent-fg: var(--token-color-accent-fg, 0 0% 10%);

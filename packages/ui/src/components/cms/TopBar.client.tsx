@@ -13,7 +13,12 @@ import Breadcrumbs from "./Breadcrumbs.client";
 import ShopSelector from "./ShopSelector";
 import NavMenu from "./NavMenu.client";
 
-function TopBarInner({ role }: { role?: string }) {
+interface TopBarProps {
+  role?: string;
+  onConfiguratorStartNew?: () => void | Promise<void>;
+}
+
+function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -36,7 +41,7 @@ function TopBarInner({ role }: { role?: string }) {
     <header className="relative z-10 border-b border-border-1 bg-surface-2 px-6 py-3 text-foreground">
       <div className="relative flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-1 items-center gap-3">
-          <NavMenu role={role} />
+          <NavMenu role={role} onConfiguratorStartNew={onConfiguratorStartNew} />
           <Link
             href="/cms"
             className="rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm font-medium text-foreground transition hover:bg-surface-3"
@@ -80,6 +85,9 @@ function TopBarInner({ role }: { role?: string }) {
                 root.style.colorScheme = next === "dark" ? "dark" : "light";
                 root.classList.toggle("theme-dark", next === "dark");
                 setIsDark(next === "dark");
+                try {
+                  window.dispatchEvent(new CustomEvent("pb:theme-changed"));
+                } catch {}
               }}
             />
             <MoonIcon

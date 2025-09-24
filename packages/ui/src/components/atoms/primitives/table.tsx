@@ -15,7 +15,7 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(
     <div className="w-full overflow-x-auto">
       <table
         ref={ref}
-        className={cn("text-foreground w-full text-left text-sm", className)}
+        className={cn("text-foreground w-full text-left text-sm bg-surface-1", className)}
         {...props}
       />
     </div>
@@ -29,7 +29,7 @@ export const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   TableHeaderProps
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("bg-muted/50 border-b", className)} {...props} />
+  <thead ref={ref} className={cn("bg-surface-2 border-b border-border-2", className)} {...props} />
 ));
 TableHeader.displayName = "TableHeader";
 
@@ -48,10 +48,7 @@ export const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
   ({ className, ...props }, ref) => (
     <tr
       ref={ref}
-      className={cn(
-        "hover:bg-muted/25 data-[state=selected]:bg-muted border-b transition-colors",
-        className
-      )}
+      className={cn("border-b border-border-1 transition-colors hover:bg-surface-3 data-[state=selected]:bg-surface-2", className)}
       {...props}
     />
   )
@@ -79,4 +76,3 @@ export const TableCell = React.forwardRef<HTMLTableCellElement, TableCellProps>(
   )
 );
 TableCell.displayName = "TableCell";
-

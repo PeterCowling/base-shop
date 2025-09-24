@@ -1,0 +1,87 @@
+[
+  {
+    "id": "base",
+    "name": "Base",
+    "tags": ["modern", "default", "general"],
+    "light": {
+      "--color-bg": "0 0% 100%",
+      "--color-fg": "0 0% 10%",
+      "--color-primary": "220 90% 56%",
+      "--color-primary-fg": "0 0% 100%",
+      "--color-accent": "260 83% 67%",
+      "--color-muted": "0 0% 88%"
+    },
+    "dark": {
+      "--color-bg": "0 0% 4%",
+      "--color-fg": "0 0% 93%",
+      "--color-primary": "220 90% 66%",
+      "--color-primary-fg": "0 0% 100%",
+      "--color-accent": "260 83% 67%",
+      "--color-muted": "0 0% 60%"
+    }
+  },
+  {
+    "id": "forest",
+    "name": "Forest",
+    "tags": ["outdoors", "sports", "gear", "sturdy"],
+    "light": {
+      "--color-bg": "0 0% 100%",
+      "--color-fg": "0 0% 10%",
+      "--color-primary": "160 80% 40%",
+      "--color-primary-fg": "0 0% 100%",
+      "--color-accent": "200 90% 45%",
+      "--color-muted": "0 0% 88%"
+    },
+    "dark": {
+      "--color-bg": "160 12% 8%",
+      "--color-fg": "160 10% 92%",
+      "--color-primary": "160 70% 55%",
+      "--color-primary-fg": "0 0% 10%",
+      "--color-accent": "200 80% 60%",
+      "--color-muted": "160 9% 28%"
+    }
+  },
+  {
+    "id": "ocean",
+    "name": "Ocean",
+    "tags": ["tech", "electronics", "SaaS", "modern"],
+    "light": {
+      "--color-bg": "0 0% 100%",
+      "--color-fg": "220 15% 16%",
+      "--color-primary": "205 90% 48%",
+      "--color-primary-fg": "0 0% 100%",
+      "--color-accent": "230 70% 60%",
+      "--color-muted": "220 12% 88%"
+    },
+    "dark": {
+      "--color-bg": "220 30% 8%",
+      "--color-fg": "210 20% 92%",
+      "--color-primary": "205 90% 60%",
+      "--color-primary-fg": "0 0% 10%",
+      "--color-accent": "230 70% 70%",
+      "--color-muted": "220 10% 28%"
+    }
+  },
+  {
+    "id": "boutique",
+    "name": "Boutique",
+    "tags": ["luxury", "fashion", "editorial", "boutique"],
+    "light": {
+      "--color-bg": "0 0% 100%",
+      "--color-fg": "0 0% 10%",
+      "--color-primary": "340 82% 52%",
+      "--color-primary-fg": "0 0% 100%",
+      "--color-accent": "260 83% 70%",
+      "--color-muted": "0 0% 88%"
+    },
+    "dark": {
+      "--color-bg": "0 0% 6%",
+      "--color-fg": "0 0% 92%",
+      "--color-primary": "340 82% 60%",
+      "--color-primary-fg": "0 0% 10%",
+      "--color-accent": "260 83% 76%",
+      "--color-muted": "0 0% 32%"
+    }
+  }
+]
+

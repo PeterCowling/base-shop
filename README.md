@@ -64,6 +64,16 @@ See [docs/install.md](docs/install.md) for setup and quickstart instructions.
 
 See [docs/architecture.md](docs/architecture.md) for a component layer overview.
 
+## Fonts & Colours
+
+- Detailed guide: see docs/typography-and-color.md
+- Machine manifest (for tooling): docs/tokens.fonts-and-colors.json
+- Quick picks (contributors):
+  - Use the CMS Typography panel to choose three fonts: Body, Heading 1 (H1–H3), Heading 2 (H4–H6). The runtime injector loads only the needed Google Fonts and sets CSS variables.
+  - Tailwind utilities map to tokens: backgrounds/text use HSL variables, e.g. `bg-primary` + `text-primary-foreground`, `text-fg`, `bg-bg`. `font-sans` follows the selected `--font-body`.
+  - Dark mode: prefer class toggle `html.theme-dark`; system default also applies via media query.
+  - Accessibility: ensure text on coloured/gradient backgrounds uses approved pairs; prefer `bg-hero-contrast` with `text-hero-foreground` for content sections.
+
 ## Database
 
 The project uses [Prisma](https://www.prisma.io/) with PostgreSQL as the

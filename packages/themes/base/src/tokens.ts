@@ -15,29 +15,69 @@ export interface Token {
 export type TokenMap = Record<`--${string}`, Token>;
 
 export const tokens = {
+  // Neutral core
   "--color-bg": { light: "0 0% 100%", dark: "0 0% 4%" },
   "--color-fg": { light: "0 0% 10%", dark: "0 0% 93%" },
+  // Neutral extensions (12-step semantic mapping)
+  "--color-bg-1": { light: "0 0% 100%", dark: "0 0% 4%" },
+  "--color-bg-2": { light: "0 0% 98%", dark: "0 0% 6%" },
+  "--color-bg-3": { light: "0 0% 96%", dark: "0 0% 9%" },
+  "--color-bg-4": { light: "0 0% 94%", dark: "0 0% 12%" },
+  "--color-bg-5": { light: "0 0% 92%", dark: "0 0% 15%" },
+  "--color-panel": { light: "0 0% 96%", dark: "0 0% 12%" },
+  "--color-inset": { light: "0 0% 98%", dark: "0 0% 9%" },
+  "--color-border": { light: "0 0% 80%", dark: "0 0% 30%" },
+  "--color-border-strong": { light: "0 0% 65%", dark: "0 0% 45%" },
+  "--color-border-muted": { light: "0 0% 88%", dark: "0 0% 22%" },
+  "--color-fg-muted": { light: "0 0% 40%", dark: "0 0% 75%" },
+  // Brand families
   "--color-primary": { light: "220 90% 56%", dark: "220 90% 66%" },
-  "--color-primary-fg": { light: "0 0% 100%", dark: "0 0% 10%" },
+  // In dark theme, foreground on primary should remain light for contrast
+  "--color-primary-fg": { light: "0 0% 100%", dark: "0 0% 100%" },
+  "--color-primary-soft": { light: "220 90% 96%", dark: "220 90% 18%" },
+  "--color-primary-hover": { light: "220 90% 50%", dark: "220 90% 72%" },
+  "--color-primary-active": { light: "220 90% 45%", dark: "220 90% 78%" },
   "--color-accent": { light: "260 83% 70%", dark: "260 83% 70%" },
   "--color-accent-fg": { light: "0 0% 10%", dark: "0 0% 10%" },
+  "--color-accent-soft": { light: "260 83% 97%", dark: "260 83% 20%" },
   "--color-danger": { light: "0 86% 97%", dark: "0 63% 31%" },
   "--color-danger-fg": { light: "0 74% 42%", dark: "0 93% 94%" },
+  "--color-danger-soft": { light: "0 100% 98%", dark: "0 50% 20%" },
   "--color-success": { light: "142 76% 97%", dark: "142 72% 27%" },
   "--color-success-fg": { light: "142 72% 30%", dark: "142 70% 94%" },
+  "--color-success-soft": { light: "142 76% 96%", dark: "142 60% 18%" },
   "--color-warning": { light: "40 90% 96%", dark: "35 90% 30%" },
   "--color-warning-fg": { light: "25 85% 31%", dark: "40 90% 96%" },
+  "--color-warning-soft": { light: "40 90% 95%", dark: "35 70% 20%" },
   "--color-info": { light: "210 90% 96%", dark: "210 90% 35%" },
   "--color-info-fg": { light: "210 90% 35%", dark: "210 90% 96%" },
+  "--color-info-soft": { light: "210 90% 95%", dark: "210 70% 20%" },
   "--color-muted": { light: "0 0% 88%", dark: "0 0% 60%" },
   // Accessible link color (AA on light surfaces)
   "--color-link": { light: "220 75% 40%", dark: "220 80% 70%" },
+  // Interaction helpers
+  "--color-focus-ring": { light: "220 90% 56%", dark: "220 90% 66%" },
+  "--color-selection": { light: "260 83% 92%", dark: "220 30% 40%" },
+  "--color-highlight": { light: "260 83% 97%", dark: "220 25% 30%" },
   "--color-muted-fg": { light: "0 0% 20%", dark: "0 0% 92%" },
   "--color-muted-border": { light: "0 0% 72%", dark: "0 0% 40%" },
+  // Translucent overlays
+  "--overlay-scrim-1": { light: "0 0% 0% / 0.40", dark: "0 0% 100% / 0.40" },
+  "--overlay-scrim-2": { light: "0 0% 0% / 0.64", dark: "0 0% 100% / 0.64" },
   // Foreground color suitable for hero backgrounds (paired with bg-hero-contrast)
   "--hero-fg": { light: "0 0% 100%", dark: "0 0% 100%" },
   "--font-sans": { light: 'var(--font-geist-sans)' },
   "--font-mono": { light: 'var(--font-geist-mono)' },
+  // Three-font typography model
+  // Body copy defaults to sans until configured
+  "--font-body": { light: 'var(--font-sans)' },
+  // Primary and secondary heading families default to body until configured
+  "--font-heading-1": { light: 'var(--font-sans)' },
+  "--font-heading-2": { light: 'var(--font-sans)' },
+  // Text theme hooks used by the CMS page builder to extract typography themes
+  "--typography-body-font-family": { light: 'var(--font-body)' },
+  "--text-heading-1-font-family": { light: 'var(--font-heading-1)' },
+  "--text-heading-2-font-family": { light: 'var(--font-heading-2)' },
   "--space-1": { light: "4px" },
   "--space-2": { light: "8px" },
   "--space-3": { light: "12px" },

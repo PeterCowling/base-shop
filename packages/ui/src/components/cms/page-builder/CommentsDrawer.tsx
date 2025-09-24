@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Dialog, DialogContent, DialogTitle } from "../../atoms/shadcn";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "../../atoms/shadcn";
 import CommentsThreadList from "./CommentsThreadList";
 import CommentsThreadDetails from "./CommentsThreadDetails";
 
@@ -98,6 +98,9 @@ export default function CommentsDrawer(props: CommentsDrawerProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="fixed right-0 top-0 z-[60] h-screen w-[24rem] max-w-full translate-x-full overflow-hidden border-l bg-surface-3 p-0 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0">
         <DialogTitle className="sr-only">Comments</DialogTitle>
+        <DialogDescription className="sr-only">
+          Drawer for viewing, filtering, and managing comment threads.
+        </DialogDescription>
         <div className="flex h-full">
           <CommentsThreadList
             threads={threads}

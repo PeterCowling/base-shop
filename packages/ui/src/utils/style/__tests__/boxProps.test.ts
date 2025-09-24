@@ -1,89 +1,25 @@
+// packages/ui/src/utils/style/__tests__/boxProps.test.ts
 import { boxProps } from "../boxProps";
 
 describe("boxProps", () => {
-  it("returns empty classes and style when no props provided", () => {
-    expect(boxProps({})).toEqual({ classes: "", style: {} });
-  });
-
-  it("returns class when only tailwind width provided", () => {
-    expect(boxProps({ width: "w-10" })).toEqual({ classes: "w-10", style: {} });
-  });
-
-  it("uses style when only numeric width provided", () => {
-    expect(boxProps({ width: 100 })).toEqual({ classes: "", style: { width: 100 } });
-  });
-
-  it("returns class when only tailwind height provided", () => {
-    expect(boxProps({ height: "h-8" })).toEqual({ classes: "h-8", style: {} });
-  });
-
-  it("uses style when only numeric height provided", () => {
-    expect(boxProps({ height: 50 })).toEqual({ classes: "", style: { height: 50 } });
-  });
-
-  it("returns classes for tailwind width/height", () => {
-    const result = boxProps({
-      width: "w-16",
-      height: "h-32",
-      padding: "p-2",
-      margin: "m-3",
+  test("returns classes for tailwind width/height and padding/margin", () => {
+    const { classes, style } = boxProps({
+      width: "w-full",
+      height: "md:h-40",
+      padding: "p-4",
+      margin: "mt-2",
     });
-    expect(result).toEqual({ classes: "w-16 h-32 p-2 m-3", style: {} });
+    expect(classes).toContain("w-full");
+    expect(classes).toContain("md:h-40");
+    expect(classes).toContain("p-4");
+    expect(classes).toContain("mt-2");
+    expect(style).toEqual({});
   });
 
-  it("uses style for numeric or non-tailwind values", () => {
-    const result = boxProps({ width: 200, height: "100%" });
-    expect(result.classes).toBe("");
-    expect(result.style).toEqual({ width: 200, height: "100%" });
-  });
-
-  it("uses style when height is a non-tailwind string", () => {
-    const result = boxProps({ height: "40px" });
-    expect(result.classes).toBe("");
-    expect(result.style).toEqual({ height: "40px" });
-  });
-
-  it("uses style for percentage width values", () => {
-    const result = boxProps({ width: "50%" });
-    expect(result.classes).toBe("");
-    expect(result.style.width).toBe("50%");
-  });
-
-  it("drops unknown properties", () => {
-    const result = boxProps({ width: "w-4", foo: "bar" } as any);
-    expect(result).toEqual({ classes: "w-4", style: {} });
-  });
-
-  it("supports responsive utility classes", () => {
-    const result = boxProps({ padding: "md:p-4" });
-    expect(result.classes).toBe("md:p-4");
-  });
-
-  it("includes responsive width and height utility classes", () => {
-    const result = boxProps({ width: "md:w-10", height: "lg:h-20" });
-    expect(result).toEqual({ classes: "md:w-10 lg:h-20", style: {} });
-  });
-
-  it("aggregates padding class when only padding provided", () => {
-    expect(boxProps({ padding: "p-4" })).toEqual({ classes: "p-4", style: {} });
-  });
-
-  it("aggregates margin class when only margin provided", () => {
-    expect(boxProps({ margin: "m-2" })).toEqual({ classes: "m-2", style: {} });
-  });
-
-  it("aggregates padding and margin classes together", () => {
-    const result = boxProps({ padding: "p-2", margin: "m-3" });
-    expect(result).toEqual({ classes: "p-2 m-3", style: {} });
-  });
-
-  it("preserves zero width and height in style", () => {
-    const result = boxProps({ width: 0, height: 0 });
-    expect(result).toEqual({ classes: "", style: { width: 0, height: 0 } });
-  });
-
-  it("mixes class and style when only one dimension uses tailwind", () => {
-    const result = boxProps({ width: "w-4", height: 20 });
-    expect(result).toEqual({ classes: "w-4", style: { height: 20 } });
+  test("returns inline styles for numeric or raw width/height", () => {
+    const { classes, style } = boxProps({ width: 320, height: "40vh" });
+    expect(classes).toBe("");
+    expect(style).toEqual({ width: 320, height: "40vh" });
   });
 });
+

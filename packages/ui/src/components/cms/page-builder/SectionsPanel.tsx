@@ -5,6 +5,8 @@ import type { PageComponent } from "@acme/types";
 import type { SectionTemplate } from "@acme/types/section/template";
 import { Button, Input } from "../../atoms/shadcn";
 import { ulid } from "ulid";
+import { builtInSections } from "./builtInSections.data";
+import { getPalettePreview } from "./previewImages";
 
 function cloneWithIds(node: PageComponent): PageComponent {
   const cloned = { ...node, id: ulid() } as any;
@@ -22,11 +24,13 @@ interface Props {
 export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props) {
   const [items, setItems] = useState<SectionTemplate[]>([]);
   const [q, setQ] = useState("");
+  // Tag chips replaced by built-in section groups; keep state for compatibility but unused
   const [allTags, setAllTags] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
-  const pageSize = 24;
+  // Increased page size to better handle larger section sets
+  const pageSize = 100;
   const [loading, setLoading] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const debounceRef = useRef<number | null>(null);
@@ -40,7 +44,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
     setLoading(true);
     const params = new URLSearchParams();
     if (q.trim()) params.set("q", q.trim());
-    selectedTags.forEach((t) => params.append("tag", t));
+    // No tag chips UI — do not append tag filters
     params.set("page", String(reset ? 1 : page));
     params.set("pageSize", String(pageSize));
     fetch(`/cms/api/sections/${encodeURIComponent(s)}?${params.toString()}`, { signal: ctrl.signal })
@@ -86,59 +90,80 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q]);
 
-  // Reload when tags change
-  useEffect(() => {
-    setPage(1);
-    setItems([]);
-    load(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedTags.join(",")]);
+  // Tags UI removed; no reload by tag filters
 
   const hasMore = items.length < total;
 
   return (
-    <aside className="w-[280px] shrink-0" data-cy="pb-sections-panel">
+    <aside className="w-full shrink-0" data-cy="pb-sections-panel">
       <div className="flex items-center justify-between gap-2 p-2">
         <div className="text-sm font-semibold">Sections</div>
       </div>
       <div className="p-2">
         <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search…" aria-label="Search sections" />
       </div>
-      {allTags.length > 0 && (
-        <div className="flex flex-wrap gap-1 px-2">
-          {allTags.map((t) => {
-            const active = selectedTags.includes(t);
-            return (
-              <button
-                key={t}
-                type="button"
-                className={[
-                  "rounded border px-2 py-1 text-[11px]",
-                  active ? "bg-muted" : "bg-transparent",
-                ].join(" ")}
-                aria-pressed={active}
-                onClick={() =>
-                  setSelectedTags((prev) =>
-                    prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t],
-                  )
-                }
-                title={active ? `Remove tag filter: ${t}` : `Filter by tag: ${t}`}
-              >
-                {t}
-              </button>
-            );
-          })}
-          {selectedTags.length > 0 && (
-            <button
-              type="button"
-              className="ml-auto text-[11px] text-muted-foreground underline"
-              onClick={() => setSelectedTags([])}
-            >
-              Clear filters
-            </button>
-          )}
+      {/* Demo presets area (simple flow) */}
+      <div className="px-2 pb-2">
+        <div className="mb-1 text-xs font-semibold text-muted-foreground">Demo Presets</div>
+        <div className="flex flex-wrap gap-1">
+          <button
+            type="button"
+            className="rounded border px-2 py-1 text-[11px]"
+            onClick={() => onInsert(cloneWithIds({ id: ulid(), type: "Section", children: [{ id: ulid(), type: "Text", text: "Preset: Title + Button" }, { id: ulid(), type: "Button", label: "CTA", href: "/shop" }] } as any))}
+          >
+            Title + CTA
+          </button>
+          <button
+            type="button"
+            className="rounded border px-2 py-1 text-[11px]"
+            onClick={() => onInsert(cloneWithIds({ id: ulid(), type: "Section", children: [{ id: ulid(), type: "Image", src: "/hero/slide-1.jpg", alt: "" }] } as any))}
+          >
+            Image Hero
+          </button>
         </div>
-      )}
+      </div>
+      {/* Built-in section groups (replaces tag chips) */}
+      <div className="px-2 pb-2">
+        <div className="mb-1 text-xs font-semibold text-muted-foreground">Built-in Sections</div>
+        {(() => {
+          const groups: Record<string, typeof builtInSections> = {};
+          for (const s of builtInSections) {
+            const key = s.previewType.startsWith("HeaderSection")
+              ? "Headers"
+              : s.previewType.startsWith("FooterSection")
+                ? "Footers"
+                : "Essentials";
+            (groups[key] ||= []).push(s);
+          }
+          const order = ["Headers", "Footers", "Essentials"] as const;
+          return order
+            .filter((k) => Array.isArray(groups[k]) && groups[k]!.length > 0)
+            .map((k) => (
+              <div key={k} className="mb-2">
+                <div className="mb-1 text-[11px] font-medium text-muted-foreground">{k}</div>
+                <div className="grid grid-cols-1 gap-2">
+                  {groups[k]!.map((p) => {
+                    const resolvedPreview = p.preview === "/window.svg" ? getPalettePreview(p.previewType) : p.preview;
+                    return (
+                      <button
+                        key={p.id}
+                        type="button"
+                        className="rounded border p-1 text-left hover:bg-muted"
+                        title={p.label}
+                        onClick={() => onInsert(cloneWithIds(p.build() as any))}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={resolvedPreview} alt="" className="aspect-[16/9] w-full rounded border bg-muted" aria-hidden />
+                        <div className="mt-1 truncate text-[12px]" title={p.label}>{p.label}</div>
+                        {p.description && <div className="truncate text-[11px] text-muted-foreground" title={p.description}>{p.description}</div>}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ));
+        })()}
+      </div>
       <div className="flex max-h-[calc(100vh-6rem)] flex-col gap-2 overflow-auto p-2">
         {items.length === 0 && !loading && <div className="p-2 text-sm text-muted-foreground">No sections</div>}
         {items.map((s) => (

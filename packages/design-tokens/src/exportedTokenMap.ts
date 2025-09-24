@@ -23,6 +23,13 @@ export const exportedTokenMap = {
   "--color-muted": "var(--color-muted)",
   "--font-sans": "var(--font-sans)",
   "--font-mono": "var(--font-mono)",
+  // Three-font model and CMS text theme hooks
+  "--font-body": "var(--font-body)",
+  "--font-heading-1": "var(--font-heading-1)",
+  "--font-heading-2": "var(--font-heading-2)",
+  "--typography-body-font-family": "var(--typography-body-font-family)",
+  "--text-heading-1-font-family": "var(--text-heading-1-font-family)",
+  "--text-heading-2-font-family": "var(--text-heading-2-font-family)",
   "--space-1": "var(--space-1)",
   "--space-2": "var(--space-2)",
   "--space-3": "var(--space-3)",
@@ -36,4 +43,3 @@ export const exportedTokenMap = {
 } as const;
 
 export type ExportedTokenMap = typeof exportedTokenMap;
-

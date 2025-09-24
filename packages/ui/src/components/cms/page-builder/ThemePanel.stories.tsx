@@ -2,6 +2,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React, { useEffect } from "react";
 import ThemePanel from "./ThemePanel";
+import { Dialog } from "../../atoms/shadcn";
 
 const meta: Meta<typeof ThemePanel> = {
   title: "CMS/Page Builder/ThemePanel",
@@ -39,6 +40,10 @@ export const Basic: Story = {
       };
     }, []);
 
-    return <ThemePanel />;
+    return (
+      <Dialog open>
+        <ThemePanel />
+      </Dialog>
+    );
   },
 };

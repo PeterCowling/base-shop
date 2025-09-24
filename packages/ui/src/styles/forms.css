@@ -1,0 +1,46 @@
+/* packages/ui/src/styles/forms.css
+   Form control overrides that use design tokens instead of Tailwind Forms
+   default light/dark rules (which rely on the `.dark` class). This ensures
+   inputs/selects/textarea adopt correct surfaces in apps that toggle
+   dark mode with `.theme-dark`.
+*/
+
+@layer base {
+  /* Token-driven surface, border, and text for common controls */
+  :where(input[type="text"], input[type="search"], input[type="email"], input[type="url"], input[type="password"], input[type="number"], select, textarea) {
+    background-color: hsl(var(--surface-input, var(--surface-2, var(--color-bg))));
+    color: hsl(var(--color-fg));
+    border-color: hsl(var(--border-2, var(--color-fg) / 0.22));
+  }
+
+  /* Ensure placeholder is readable and not UA-default low opacity */
+  :where(input[type="text"], input[type="search"], input[type="email"], input[type="url"], input[type="password"], input[type="number"], textarea)::placeholder {
+    color: hsl(var(--color-fg) / 0.7);
+    opacity: 1; /* override browsers that lower placeholder opacity */
+  }
+
+  /* Ensure native selects don't force a white fill via UA styles */
+  select {
+    background-image: none;
+  }
+
+  /* Token-driven focus styles using focus ring tokens */
+  :where(input, select, textarea):focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 var(--ring-offset-width, 2px) hsl(var(--ring-offset, var(--surface-1, var(--color-bg)))) ,
+                0 0 0 calc(var(--ring-offset-width, 2px) + var(--ring-width, 2px)) hsl(var(--color-focus-ring, var(--ring)));
+  }
+
+  /* Invalid/error states */
+  :where(input, select, textarea)[aria-invalid="true"],
+  :where(input:invalid, select:invalid, textarea:invalid) {
+    border-color: hsl(var(--color-danger));
+    background-color: hsl(var(--color-danger-soft, var(--color-danger) / 0.12));
+  }
+
+  /* Disabled state readability */
+  :where(input, select, textarea):disabled {
+    background-color: hsl(var(--surface-2, var(--color-bg)) / 0.6);
+    color: hsl(var(--color-fg) / 0.7);
+  }
+}

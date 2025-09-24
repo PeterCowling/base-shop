@@ -1,15 +1,23 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { ZoomImage } from "../src/components/atoms/ZoomImage";
 
+jest.mock("next/image", () => ({
+  __esModule: true,
+  default: ({ alt, className, style }: any) => (
+    <img alt={alt} className={className} style={style} />
+  ),
+}));
+
 describe("ZoomImage", () => {
-  it("toggles zoomed state on click", () => {
-    render(<ZoomImage src="/img.jpg" alt="img" width={100} height={100} />);
-    const img = screen.getByAltText("img");
-    const figure = img.closest("figure")!;
-    expect(img.className).toContain("scale-100");
+  it("toggles zoom on click and applies transform scale", () => {
+    render(<ZoomImage src="/a.jpg" alt="a" width={100} height={100} zoomScale={1.5} />);
+    const figure = screen.getByRole("img").parentElement as HTMLElement;
+    const img = screen.getByRole("img") as HTMLImageElement;
+    expect(img.className).toMatch(/scale-100/);
     fireEvent.click(figure);
-    expect(img.className).toContain("scale-125");
-    fireEvent.click(figure);
-    expect(img.className).toContain("scale-100");
+    expect(img.className).toMatch(/scale-125/);
+    expect((img as any).style.transform).toBe("scale(1.5)");
   });
 });
+

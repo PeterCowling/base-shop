@@ -72,7 +72,7 @@ const BlockItem = memo(function BlockItemComponent({
   const style = useBlockItemStyles({
     component,
     parentId,
-    flags,
+    flags: flags as Record<string, unknown>,
     effZIndex: effZIndex as number | undefined,
     transform: dnd.transform,
     dimensions: {
@@ -88,7 +88,7 @@ const BlockItem = memo(function BlockItemComponent({
   const { ctxItems, ctxOpen, ctxPos, openContextMenu, closeContextMenu } = useBlockItemContextMenu({
     component,
     effLocked: !!effLocked,
-    flags,
+    flags: flags as Record<string, unknown>,
     selectedIds,
     editor,
     dispatch,

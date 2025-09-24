@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, Input } from "@/components/atoms/shadcn";
+import { Alert } from "@/components/atoms";
 import { useEffect, type ChangeEvent } from "react";
 import { getDeployStatus, type DeployInfo } from "../../wizard/services/deployShop";
 import useStepCompletion from "../hooks/useStepCompletion";
@@ -91,10 +92,10 @@ export default function StepHosting({
         <p className="text-sm">Waiting for domain verification…</p>
       )}
       {deployInfo?.status === "success" && (
-        <p className="text-sm text-success">Deployment complete</p>
+        <Alert variant="success" tone="soft" title="Deployment complete" />
       )}
       {deployInfo?.status === "error" && deployInfo.error && (
-        <p className="text-sm text-danger-foreground">{deployInfo.error}</p>
+        <Alert variant="danger" tone="soft" title={deployInfo.error} />
       )}
       <div className="flex justify-end">
         <Button

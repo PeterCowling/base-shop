@@ -33,10 +33,12 @@ export class ErrorBoundary extends React.Component<
 
   render() {
     if (this.state.hasError) {
-      return (
-        this.props.fallback ?? (
-          <p className="text-danger-foreground">Something went wrong.</p>
-        )
+      return this.props.fallback ?? (
+        <div className="max-w-prose">
+          <div className="rounded-md border border-border-2 bg-danger-soft p-3">
+            <p className="text-danger-foreground">Something went wrong.</p>
+          </div>
+        </div>
       );
     }
 

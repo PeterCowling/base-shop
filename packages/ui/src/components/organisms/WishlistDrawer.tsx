@@ -54,11 +54,11 @@ export function WishlistDrawer({
             Your wishlist is empty.
           </p>
         ) : (
-          <ul className="space-y-3">
+          <ul className="space-y-1">
             {items.map((item) => (
               <li
                 key={item.id}
-                className="flex items-center justify-between gap-2 border-b pb-2 last:border-b-0"
+                className="flex items-center justify-between gap-2 rounded px-2 py-1 hover:bg-surface-2"
               >
                 <span>{item.title}</span>
                 <Button variant="outline" className="h-8 px-2">

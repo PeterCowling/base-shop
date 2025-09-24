@@ -44,7 +44,7 @@ export function FilterSidebar({
         <Button variant="outline">Filters</Button>
       </DialogPrimitive.Trigger>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="fixed inset-0 z-40 bg-fg/50" />
+        <DialogPrimitive.Overlay className="fixed inset-0 z-40 bg-[hsl(var(--overlay-scrim-1))]" />
         <DialogPrimitive.Content
           aria-describedby={undefined}
           className={cn(

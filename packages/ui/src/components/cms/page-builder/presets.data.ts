@@ -17,6 +17,8 @@ export type PresetDef = {
   label: string;
   description?: string;
   preview: string;
+  /** Optional hint to generate a schematic thumbnail when preview is missing */
+  previewType?: string;
   category: PresetCategory;
   build: () => PageComponent;
 };
@@ -35,6 +37,7 @@ export const presetList: PresetDef[] = [
     label: "Hero: Simple",
     description: "Centered headline with subcopy and CTA",
     preview: "/window.svg",
+    previewType: "HeroBanner",
     category: "Hero",
     build: () => section([
       { id: ulid(), type: "HeroBanner", title: { en: "Welcome" } as any, subtitle: { en: "Discover our new arrivals" } as any, ctaLabel: { en: "Shop now" } as any, ctaHref: "/shop" } as any,
@@ -45,6 +48,7 @@ export const presetList: PresetDef[] = [
     label: "Hero: Split Image",
     description: "Two-column hero with image",
     preview: "/window.svg",
+    previewType: "MultiColumn",
     category: "Hero",
     build: () => section([
       { id: ulid(), type: "TwoColumn", children: [
@@ -60,6 +64,7 @@ export const presetList: PresetDef[] = [
     label: "Features: 3 Columns",
     description: "Three-value proposition grid",
     preview: "/window.svg",
+    previewType: "MultiColumn",
     category: "Features",
     build: () => section([
       { id: ulid(), type: "MultiColumn", columns: 3, children: [
@@ -74,6 +79,7 @@ export const presetList: PresetDef[] = [
     label: "Features: 4-Grid",
     description: "Icon grid with captions",
     preview: "/window.svg",
+    previewType: "Grid",
     category: "Features",
     build: () => section([
       { id: ulid(), type: "MultiColumn", columns: 4, children: Array.from({ length: 4 }).map((_, i) => ({ id: ulid(), type: "ValueProps", title: { en: `Feature ${i+1}` } as any })) } as any,
@@ -86,6 +92,7 @@ export const presetList: PresetDef[] = [
     label: "Testimonials: Carousel",
     description: "Auto-playing testimonial quotes",
     preview: "/window.svg",
+    previewType: "Testimonials",
     category: "Testimonials",
     build: () => section([
       { id: ulid(), type: "Testimonials", style: "carousel", items: [
@@ -99,6 +106,7 @@ export const presetList: PresetDef[] = [
     label: "Testimonials: Grid",
     description: "Three-column static quotes",
     preview: "/window.svg",
+    previewType: "Testimonials",
     category: "Testimonials",
     build: () => section([
       { id: ulid(), type: "MultiColumn", columns: 3, children: [
@@ -115,6 +123,7 @@ export const presetList: PresetDef[] = [
     label: "Commerce: Featured Products",
     description: "Carousel of featured products",
     preview: "/window.svg",
+    previewType: "ProductCarousel",
     category: "Commerce",
     build: () => section([
       { id: ulid(), type: "ProductCarousel", query: { kind: "featured" } } as any,
@@ -125,6 +134,7 @@ export const presetList: PresetDef[] = [
     label: "Commerce: Product Grid",
     description: "4-up grid from collection",
     preview: "/window.svg",
+    previewType: "ProductGrid",
     category: "Commerce",
     build: () => section([
       { id: ulid(), type: "ProductGrid", columns: 4, query: { kind: "collection", handle: "new" } } as any,
@@ -135,10 +145,10 @@ export const presetList: PresetDef[] = [
     label: "Commerce: CTA Banner",
     description: "Promo strip with CTA",
     preview: "/window.svg",
+    previewType: "HeroBanner",
     category: "Commerce",
     build: () => section([
       { id: ulid(), type: "Callout", title: { en: "Summer Sale" } as any, ctaLabel: { en: "Shop sale" } as any, ctaHref: "/sale" } as any,
     ], "20px"),
   },
 ];
-

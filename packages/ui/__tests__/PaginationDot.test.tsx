@@ -1,26 +1,17 @@
-import { render } from "@testing-library/react";
+import React from "react";
+import { render, screen } from "@testing-library/react";
 import { PaginationDot } from "../src/components/atoms/PaginationDot";
 
 describe("PaginationDot", () => {
-  it("uses muted background by default", () => {
-    const { container } = render(<PaginationDot />);
-    expect((container.firstChild as HTMLElement).className).toContain(
-      "bg-muted"
-    );
-    expect((container.firstChild as HTMLElement).className).toContain("w-2");
-    expect((container.firstChild as HTMLElement).className).toContain("h-2");
-  });
+  it("renders with active/inactive styles and custom size", () => {
+    const { rerender } = render(<PaginationDot aria-label="dot" size="3" />);
+    let btn = screen.getByRole("button", { name: "dot" });
+    expect(btn.className).toMatch(/h-3/);
+    expect(btn.className).toMatch(/bg-muted/);
 
-  it("uses primary background when active", () => {
-    const { container } = render(<PaginationDot active />);
-    expect((container.firstChild as HTMLElement).className).toContain(
-      "bg-primary"
-    );
-  });
-
-  it("applies custom size classes", () => {
-    const { container } = render(<PaginationDot size="4" />);
-    expect((container.firstChild as HTMLElement).className).toContain("w-4");
-    expect((container.firstChild as HTMLElement).className).toContain("h-4");
+    rerender(<PaginationDot aria-label="dot" active />);
+    btn = screen.getByRole("button", { name: "dot" });
+    expect(btn.className).toMatch(/bg-primary/);
   });
 });
+

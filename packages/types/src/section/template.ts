@@ -56,3 +56,28 @@ export const sectionTemplateSchema: z.ZodType<SectionTemplate, any, any> = z
   .strict();
 
 export type { SectionTemplate as SectionTemplateType };
+
+// Preset schema: reusable Section templates with optional locked keys
+export interface SectionPreset {
+  id: string;
+  label: string;
+  template: PageComponent;
+  locked?: string[]; // property keys locked from editing
+  tags?: string[];
+  createdAt: string;
+  updatedAt: string;
+  createdBy: string;
+}
+
+export const sectionPresetSchema: z.ZodType<SectionPreset, any, any> = z
+  .object({
+    id: z.string(),
+    label: z.string().min(1),
+    template: sectionLike,
+    locked: z.array(z.string().min(1)).optional(),
+    tags: z.array(z.string().min(1)).optional(),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    createdBy: z.string(),
+  })
+  .strict();

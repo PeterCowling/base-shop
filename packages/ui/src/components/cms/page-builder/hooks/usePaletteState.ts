@@ -18,10 +18,11 @@ export default function usePaletteState() {
   const [paletteWidth, setPaletteWidth] = React.useState<number>(() => {
     try {
       const v = localStorage.getItem("pb:palette-width");
-      const n = v ? parseInt(v, 10) : 192;
-      return Number.isFinite(n) ? Math.min(Math.max(n, 160), 360) : 192;
+      const n = v ? parseInt(v, 10) : 350;
+      // Fixed palette/sidebar width: 350px for consistency across selectors
+      return 350;
     } catch {
-      return 192;
+      return 350;
     }
   });
 
@@ -30,7 +31,7 @@ export default function usePaletteState() {
   }, [showPalette]);
 
   React.useEffect(() => {
-    try { localStorage.setItem("pb:palette-width", String(paletteWidth)); } catch {}
+    try { localStorage.setItem("pb:palette-width", String(350)); } catch {}
   }, [paletteWidth]);
 
   // Keyboard shortcut: Ctrl/Cmd + B toggles the palette
@@ -52,4 +53,3 @@ export default function usePaletteState() {
 
   return { showPalette, setShowPalette, paletteWidth, setPaletteWidth } as const;
 }
-

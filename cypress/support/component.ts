@@ -3,6 +3,7 @@
 // - Registers a global `cy.mount` command
 
 import '@testing-library/cypress/add-commands';
+import 'cypress-axe';
 import 'cypress-grep';
 import '@cypress/code-coverage/support';
 import { mount as cypressMount } from 'cypress/react';

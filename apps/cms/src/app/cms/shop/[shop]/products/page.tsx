@@ -13,7 +13,7 @@ import { readRepo } from "@platform-core/repositories/json.server";
 import ProductsTable from "@ui/components/cms/ProductsTable.client";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
-import { Progress, Tag } from "@ui/components/atoms";
+import { Alert, Progress, Tag } from "@ui/components/atoms";
 import { cn } from "@ui/utils/style";
 import Link from "next/link";
 
@@ -216,11 +216,7 @@ export default async function ProductsPage({
         </Card>
 
         {viewerNotice && (
-          <Card className="border border-warning/30 bg-surface-2">
-            <CardContent className="text-sm text-foreground">
-              {viewerNotice}
-            </CardContent>
-          </Card>
+          <Alert variant="warning" tone="soft" title={viewerNotice} />
         )}
       </section>
     </div>

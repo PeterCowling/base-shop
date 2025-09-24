@@ -2,11 +2,14 @@
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { memo, useState, useCallback } from "react";
+import { memo, useState, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../atoms";
 import type { PaletteItemProps } from "./palette.types";
 import { getPaletteGlyph } from "./paletteIcons";
+import { getPalettePreview } from "./previewImages";
+import useThemeSignature from "./hooks/useThemeSignature";
+import { defaultIcon } from "./paletteData";
 
 const PaletteItem = memo(function PaletteItem({
   type,
@@ -34,6 +37,20 @@ const PaletteItem = memo(function PaletteItem({
   );
 
   const glyph = getPaletteGlyph(type);
+
+  const themeSig = useThemeSignature(["--color-bg", "--color-fg"]);
+
+  const finalPreview = useMemo(() => {
+    const isData = typeof previewImage === "string" && previewImage.startsWith("data:");
+    const isDefault = previewImage === defaultIcon;
+    if (isData || isDefault) {
+      // Re-generate on theme changes to keep previews in sync
+      void themeSig; // dependency
+      return getPalettePreview(type);
+    }
+    return previewImage;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [previewImage, type, themeSig]);
 
   const content = (
     <div
@@ -80,14 +97,20 @@ const PaletteItem = memo(function PaletteItem({
         </Tooltip>
       </PopoverTrigger>
       <PopoverContent className="w-64 space-y-2 text-sm">
-        <Image
-          src={previewImage}
-          alt=""
-          className="w-full rounded"
-          width={400}
-          height={225}
-          loading="lazy"
-        />
+        {(() => {
+          const isData = typeof finalPreview === "string" && finalPreview.startsWith("data:");
+          return (
+            <Image
+              src={finalPreview}
+              alt=""
+              className="w-full rounded"
+              width={400}
+              height={225}
+              loading="lazy"
+              {...(isData ? { unoptimized: true } : {})}
+            />
+          );
+        })()}
         {description && <p>{description}</p>}
       </PopoverContent>
     </Popover>

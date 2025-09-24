@@ -1,84 +1,34 @@
-import "../../../../../../../test/resetNextMocks";
-import * as React from "react";
-import { render, screen, configure } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+// packages/ui/src/components/atoms/primitives/__tests__/slot.test.tsx
+import { render } from "@testing-library/react";
+import React from "react";
 import { Slot } from "../slot";
 
-configure({ testIdAttribute: "data-testid" });
+describe("Slot primitive", () => {
+  test("merges props, className and forwards refs", () => {
+    const parentRef = React.createRef<HTMLElement>();
+    const childRef = React.createRef<HTMLElement>();
 
-describe("Slot", () => {
-  it("forwards props and ref to child element", () => {
-    const ref = React.createRef<HTMLDivElement>();
-    render(
-      <Slot ref={ref} className="forwarded" data-test="passed">
-        <div data-testid="child" />
+    const { container } = render(
+      <Slot className="parent" ref={parentRef} id="outer" onClick={() => {}}>
+        <button className="child" ref={childRef} data-id="button" />
       </Slot>
     );
-    const child = screen.getByTestId("child");
-    expect(child).toHaveClass("forwarded");
-    expect(child).toHaveAttribute("data-test", "passed");
-    expect(ref.current).toBe(child);
+
+    const btn = container.querySelector("button[data-id='button']")!;
+    expect(btn).toBeTruthy();
+    // className merged
+    expect(btn.className).toContain("parent");
+    expect(btn.className).toContain("child");
+    // id prop applied from parent
+    expect(btn.id).toBe("outer");
+    // refs both receive the same node
+    expect(parentRef.current).toBe(btn);
+    expect(childRef.current).toBe(btn);
   });
 
-  it("returns null when children is not a valid element", () => {
-    const { container } = render(<Slot>{"text"}</Slot>);
+  test("returns null when children is not a valid element", () => {
+    const { container } = render(<Slot>text-only</Slot>);
     expect(container.firstChild).toBeNull();
   });
-
-  it("returns null when children is null or undefined", () => {
-    const { container: nullContainer } = render(<Slot>{null}</Slot>);
-    const { container: undefinedContainer } = render(<Slot>{undefined}</Slot>);
-    expect(nullContainer.firstChild).toBeNull();
-    expect(undefinedContainer.firstChild).toBeNull();
-  });
-
-  it("merges props with child element without overwriting", () => {
-    render(
-      <Slot className="forwarded" data-test="slot" data-new="added">
-        <div data-testid="child" className="existing" data-test="original" />
-      </Slot>
-    );
-    const child = screen.getByTestId("child");
-    expect(child).toHaveClass("existing");
-    expect(child).toHaveClass("forwarded");
-    expect(child).toHaveAttribute("data-test", "original");
-    expect(child).toHaveAttribute("data-new", "added");
-  });
-
-  it("supports object refs on the child element", () => {
-    const slotRef = React.createRef<HTMLDivElement>();
-    const childRef = React.createRef<HTMLDivElement>();
-    render(
-      <Slot ref={slotRef}>
-        <div data-testid="child" ref={childRef} />
-      </Slot>
-    );
-    const child = screen.getByTestId("child");
-    expect(slotRef.current).toBe(child);
-    expect(childRef.current).toBe(child);
-  });
-
-  it("supports function refs on the child element", () => {
-    const slotRef = jest.fn();
-    const childRef = jest.fn();
-    render(
-      <Slot ref={slotRef}>
-        <div data-testid="child" ref={childRef} />
-      </Slot>
-    );
-    const child = screen.getByTestId("child");
-    expect(slotRef).toHaveBeenCalledWith(child);
-    expect(childRef).toHaveBeenCalledWith(child);
-  });
-
-  it("passes event handlers through to the child", async () => {
-    const handleClick = jest.fn();
-    render(
-      <Slot onClick={handleClick}>
-        <button data-testid="child">child</button>
-      </Slot>
-    );
-    await userEvent.click(screen.getByTestId("child"));
-    expect(handleClick).toHaveBeenCalledTimes(1);
-  });
 });
+

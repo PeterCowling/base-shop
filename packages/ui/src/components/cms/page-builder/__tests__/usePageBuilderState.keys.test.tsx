@@ -26,6 +26,11 @@ function setupDom() {
 }
 
 describe("usePageBuilderState – keyboard controls", () => {
+  afterEach(() => {
+    // Ensure tests don't leak state via localStorage across cases
+    window.localStorage.clear();
+  });
+
   it("nudges absolute positioned block and reorders with Alt+Shift+Arrows", async () => {
     setupDom();
     const page = {

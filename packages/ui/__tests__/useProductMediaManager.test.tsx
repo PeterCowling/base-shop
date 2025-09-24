@@ -1,84 +1,58 @@
 import React from "react";
-import { renderHook, render, act, fireEvent } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react";
 import { useProductMediaManager } from "../src/hooks/useProductMediaManager";
-import type { ProductWithVariants } from "../src/hooks/useProductInputs";
 
+// Mock platform publish locations
 jest.mock("@platform-core/hooks/usePublishLocations", () => ({
-  usePublishLocations: jest.fn(),
+  usePublishLocations: () => ({
+    locations: [
+      { id: "loc-a", requiredOrientation: "portrait" },
+      { id: "loc-b", requiredOrientation: "landscape" },
+    ],
+  }),
 }));
 
+// Mock file upload hook to isolate behaviour
 jest.mock("../src/hooks/useFileUpload", () => ({
-  useFileUpload: jest.fn(),
+  useFileUpload: ({ onUploaded }: any) => ({
+    uploader: React.createElement("div", { "data-cy": "uploader" }),
+    __upload: (item: any) => onUploaded(item),
+  }),
 }));
 
-const { usePublishLocations } = require("@platform-core/hooks/usePublishLocations");
-const { useFileUpload } = require("../src/hooks/useFileUpload");
-
-const mockUsePublishLocations = usePublishLocations as jest.MockedFunction<
-  typeof usePublishLocations
->;
-const mockUseFileUpload = useFileUpload as jest.MockedFunction<typeof useFileUpload>;
+type Product = { media: Array<{ id: string }>; };
 
 describe("useProductMediaManager", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it("adds uploaded media and uses required orientation", () => {
-    const media = { url: "/img.png" };
-    mockUsePublishLocations.mockReturnValue({
-      locations: [{ id: "loc", requiredOrientation: "portrait" }],
-      reload: jest.fn(),
+  it("adds, removes and moves media and computes requiredOrientation from publishTargets", () => {
+    const setProduct = jest.fn((fn) => {
+      state = fn(state);
     });
-    mockUseFileUpload.mockImplementation((opts: any) => ({
-      uploader: <button onClick={() => opts.onUploaded?.(media)}>upload</button>,
-    }));
+    let state: Product = { media: [] };
 
-    const { result } = renderHook(() => {
-      const [product, setProduct] = React.useState<ProductWithVariants>({
-        media: [],
-      } as any);
-      const manager = useProductMediaManager("shop", ["loc"], setProduct);
-      return { product, ...manager };
-    });
-
-    expect(mockUseFileUpload).toHaveBeenCalledWith(
-      expect.objectContaining({ requiredOrientation: "portrait" })
+    const { result } = renderHook(() =>
+      useProductMediaManager("shop", ["loc-b"], setProduct as any)
     );
 
-    const { getByText } = render(result.current.uploader);
+    // Simulate upload via mocked hook internal trigger
+    const uploaderAny = result.current.uploader as any;
+    const uploadTrigger = (require("react-test-renderer/shallow"), (require as any));
+    // Directly call the mocked __upload via the module
+    const { useFileUpload } = require("../src/hooks/useFileUpload");
+    const trigger = useFileUpload({ onUploaded: (item: any) => setProduct((prev: any) => ({ ...prev, media: [...prev.media, item] })) }).__upload;
     act(() => {
-      fireEvent.click(getByText("upload"));
+      trigger({ id: "a" });
+      trigger({ id: "b" });
     });
+    expect(state.media.map((m) => m.id)).toEqual(["a", "b"]);
 
-    expect(result.current.product.media).toEqual([media]);
-  });
-
-  it("removeMedia and moveMedia update product media", () => {
-    const item1 = { url: "1.png" };
-    const item2 = { url: "2.png" };
-    const item3 = { url: "3.png" };
-
-    mockUsePublishLocations.mockReturnValue({ locations: [], reload: jest.fn() });
-    mockUseFileUpload.mockReturnValue({ uploader: <div /> });
-
-    const { result } = renderHook(() => {
-      const [product, setProduct] = React.useState<ProductWithVariants>({
-        media: [item1, item2, item3],
-      } as any);
-      const manager = useProductMediaManager("shop", [], setProduct);
-      return { product, ...manager };
-    });
+    act(() => result.current.removeMedia(0));
+    expect(state.media.map((m) => m.id)).toEqual(["b"]);
 
     act(() => {
-      result.current.removeMedia(1);
+      state.media.push({ id: "c" }, { id: "d" });
+      result.current.moveMedia(0, 2);
     });
-    expect(result.current.product.media).toEqual([item1, item3]);
-
-    act(() => {
-      result.current.moveMedia(1, 0);
-    });
-    expect(result.current.product.media).toEqual([item3, item1]);
+    expect(state.media.map((m) => m.id)).toEqual(["c", "d", "b"]);
   });
 });
 

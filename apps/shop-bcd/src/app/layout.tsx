@@ -4,6 +4,10 @@ import { initTheme } from "@platform-core/utils";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import ConsentSection from "@acme/ui/components/cms/blocks/ConsentSection";
+import AnalyticsPixelsSection from "@acme/ui/components/cms/blocks/AnalyticsPixelsSection";
+import StructuredDataSection from "@acme/ui/components/cms/blocks/StructuredDataSection";
+import RentalDemoProvider from "@acme/ui/components/cms/blocks/RentalDemoProvider.client";
 
 /**
  * Root layout for the Shop app.
@@ -47,6 +51,13 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <CartProvider>
+          {/* Demo rental provider wiring; safe no-op without consumers */}
+          <RentalDemoProvider />
+          {/* Consent + analytics (loads only after consent) */}
+          <ConsentSection />
+          <AnalyticsPixelsSection measurementId={process.env.NEXT_PUBLIC_GA4_ID} />
+          {/* Structured data (BreadcrumbList) */}
+          <StructuredDataSection breadcrumbs />
           <div className="sf-content">{children}</div>
         </CartProvider>
       </body>

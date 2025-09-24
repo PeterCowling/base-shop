@@ -59,6 +59,29 @@ export default [
     },
   },
 
+  /* ▸ UI published components: disallow Tailwind palette colors; use tokens */
+  {
+    files: ["packages/ui/src/components/**/*.{ts,tsx,js,jsx}"],
+    excludedFiles: ["packages/ui/src/components/cms/**/*"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector:
+            "JSXAttribute[name.name='className'] Literal[value=/\\b(?:text|bg|border)-(?:white|black|slate|zinc|gray|neutral|stone|red|rose|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink)(?:-[0-9]{2,3})?\\b/ ]",
+          message:
+            "Use token-based utilities (e.g., text-foreground, bg-bg, border-danger) instead of Tailwind palette colors in published UI.",
+        },
+        {
+          selector:
+            "JSXAttribute[name.name='className'] TemplateLiteral[quasis.0.value.raw=/.*\\b(?:text|bg|border)-(?:white|black|slate|zinc|gray|neutral|stone|red|rose|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink)(?:-[0-9]{2,3})?\\b.*/ ]",
+          message:
+            "Avoid Tailwind palette colors in published UI; prefer token utilities.",
+        },
+      ],
+    },
+  },
+
   /* ▸ Next.js presets (bring in @typescript-eslint plugin once) */
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 

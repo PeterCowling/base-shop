@@ -1,24 +1,27 @@
-import { configure, fireEvent, render, screen } from "@testing-library/react";
-import { FileSelector } from "../src/components/atoms/FileSelector";
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import FileSelector from "../src/components/atoms/FileSelector";
 
-configure({ testIdAttribute: "data-testid" });
+function createFile(name: string, type = "text/plain") {
+  return new File(["content"], name, { type });
+}
 
 describe("FileSelector", () => {
-  it("invokes callback and lists selected files", () => {
-    const handle = jest.fn();
-    render(<FileSelector onFilesSelected={handle} />);
+  it("selects single and multiple files and lists names", () => {
+    const onFilesSelected = jest.fn();
+    const { rerender } = render(<FileSelector onFilesSelected={onFilesSelected} />);
     const input = screen.getByTestId("file-input") as HTMLInputElement;
-    const file = new File(["hello"], "hello.txt", { type: "text/plain" });
+    const file = createFile("a.txt");
     fireEvent.change(input, { target: { files: [file] } });
-    expect(handle).toHaveBeenCalledTimes(1);
-    expect(handle).toHaveBeenCalledWith([file]);
-    expect(screen.getByText("hello.txt")).toBeInTheDocument();
-    expect(input).toHaveAttribute("type", "file");
-  });
+    expect(onFilesSelected).toHaveBeenCalledWith([file]);
+    expect(screen.getByText("a.txt")).toBeInTheDocument();
 
-  it("supports multiple file selection", () => {
-    render(<FileSelector multiple />);
-    const input = screen.getByTestId("file-input");
-    expect(input).toHaveAttribute("multiple");
+    rerender(<FileSelector onFilesSelected={onFilesSelected} multiple />);
+    const input2 = screen.getByTestId("file-input") as HTMLInputElement;
+    const file2 = createFile("b.txt");
+    fireEvent.change(input2, { target: { files: [file, file2] } });
+    expect(onFilesSelected).toHaveBeenLastCalledWith([file, file2]);
+    expect(screen.getByText("b.txt")).toBeInTheDocument();
   });
 });
+

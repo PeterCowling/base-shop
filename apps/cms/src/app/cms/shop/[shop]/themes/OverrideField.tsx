@@ -1,6 +1,10 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/OverrideField.tsx
 "use client";
 import ColorInput from "./ColorInput";
+import { Tooltip } from "@ui/components/atoms";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { getUsageText } from "./usageMap";
+import { dispatchTokenHover } from "./events";
 
 interface Props {
   name: string;
@@ -30,7 +34,11 @@ export default function OverrideField({
   isSelected = false,
 }: Props) {
   return (
-    <div className={isSelected ? "ring-2 ring-primary rounded-md p-1" : ""}>
+    <div
+      className={isSelected ? "ring-2 ring-primary rounded-md p-1" : ""}
+      onMouseEnter={() => dispatchTokenHover(name)}
+      onMouseLeave={() => dispatchTokenHover(null)}
+    >
       <ColorInput
         key={name}
         name={name}

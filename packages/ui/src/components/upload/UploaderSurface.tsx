@@ -2,6 +2,7 @@
 import type { ReactElement, RefObject } from "react";
 import { useState } from "react";
 import { Button } from "../atoms/shadcn";
+import { Alert } from "../atoms";
 import { cn } from "../../utils/style";
 import type { ImageOrientation } from "@acme/types";
 
@@ -87,10 +88,10 @@ export function UploaderSurface(props: UploaderSurfaceProps): ReactElement {
         )}
 
         {error && (
-          <p className="text-danger mt-2 text-sm" data-token="--color-danger">{error}</p>
+          <Alert variant="danger" tone="soft" title={error} className="mt-2" />
         )}
         {isValid === false && !isVideo && (
-          <p className="text-warning mt-2 text-sm">Wrong orientation (needs {requiredOrientation})</p>
+          <Alert variant="warning" tone="soft" title={`Wrong orientation (needs ${requiredOrientation})`} className="mt-2" />
         )}
       </div>
     </div>

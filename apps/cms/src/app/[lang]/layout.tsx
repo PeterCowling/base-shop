@@ -9,16 +9,9 @@ import { Locale, resolveLocale } from "@i18n/locales";
 
 import type { ReactNode } from "react";
 
-/** Eager-import the three locale JSON files so webpack can statically analyse them. */
+/** Import English messages (EN-only configuration) */
 import en from "@i18n/en.json";
-import de_ from "@i18n/de.json";
-import it_ from "@i18n/it.json";
 import type { Messages } from "@/types/i18n";
-
-const de = de_ as Messages;
-const it = it_ as Messages;
-
-const MESSAGES: Record<Locale, Messages> = { en, de, it };
 
 /** Layout for every route under `/[lang]/*` */
 export default async function LocaleLayout({
@@ -30,7 +23,7 @@ export default async function LocaleLayout({
 }) {
   const { lang: raw } = await params;
   const locale: Locale = resolveLocale(raw);
-  const messages = MESSAGES[locale];
+  const messages: Messages = en;
 
   return (
     <TranslationsProvider messages={messages}>

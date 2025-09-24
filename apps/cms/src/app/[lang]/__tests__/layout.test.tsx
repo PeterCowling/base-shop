@@ -28,13 +28,14 @@ jest.mock("@i18n/Translations", () => ({
 describe("LocaleLayout", () => {
   afterEach(() => HeaderMock.mockClear());
 
-  it("renders with provided lang", async () => {
+  it("renders with provided lang (falls back to 'en')", async () => {
     const element = await LocaleLayout({
       children: <div />,
       params: Promise.resolve({ lang: "de" }),
     });
     render(element);
-    expect(screen.getByTestId("header")).toHaveTextContent("de");
+    // Non-EN locales resolve to 'en' in EN-only mode
+    expect(screen.getByTestId("header")).toHaveTextContent("en");
   });
 
   it("defaults to 'en' when lang param is missing", async () => {

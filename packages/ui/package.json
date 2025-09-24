@@ -50,6 +50,10 @@
       "types": "./dist/components/cms/blocks/AnalyticsPixelsSection.d.ts",
       "import": "./dist/components/cms/blocks/AnalyticsPixelsSection.js"
     },
+    "./components/cms/blocks/RentalDemoProvider.client": {
+      "types": "./dist/components/cms/blocks/RentalDemoProvider.client.d.ts",
+      "import": "./dist/components/cms/blocks/RentalDemoProvider.client.js"
+    },
     "./account": {
       "types": "./dist/account.d.ts",
       "import": "./dist/account.js"

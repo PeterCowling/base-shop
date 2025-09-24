@@ -2,7 +2,7 @@
 
 import React from "react";
 import type { SKU } from "@acme/types";
-import ProductFilter from "./ProductFilter";
+import ProductFilter, { type FacetConfig } from "./ProductFilter";
 
 export interface CollectionClientProps extends React.HTMLAttributes<HTMLDivElement> {
   initial: SKU[];
@@ -14,6 +14,10 @@ export default function CollectionSectionClient({ initial, params, className, ..
   const [sort, setSort] = React.useState<string>(params.sort ?? "");
   const [size, setSize] = React.useState<string>(params.size ?? "");
   const [color, setColor] = React.useState<string>(params.color ?? "");
+  const [price, setPrice] = React.useState<{ min?: number; max?: number }>({
+    min: params.min ? Number(params.min) : undefined,
+    max: params.max ? Number(params.max) : undefined,
+  });
 
   const router = require("next/navigation").useRouter();
   const sp = require("next/navigation").useSearchParams();
@@ -44,13 +48,23 @@ export default function CollectionSectionClient({ initial, params, className, ..
         const res = await fetch(url.toString(), { signal: controller.signal });
         if (!res.ok) return;
         const data = (await res.json()) as { items?: SKU[] } | SKU[];
-        const list = Array.isArray(data) ? data : (data.items ?? []);
+        let list = Array.isArray(data) ? data : (data.items ?? []);
+        // Apply facet filters client-side
+        list = list.filter((p) => {
+          const priceOk = (price.min == null || (p.price ?? 0) >= price.min) && (price.max == null || (p.price ?? 0) <= price.max);
+          const sizeOk = !size || p.sizes?.includes(size);
+          const colorId = String(p.id ?? "").split("-")[0];
+          const colorOk = !color || colorId === color || String(p.id).includes(color);
+          return priceOk && sizeOk && colorOk;
+        });
         setItems(list);
       } catch {}
     };
     void load();
     return () => controller.abort();
-  }, [sp, params.slug, sort]);
+  }, [sp, params.slug, sort, size, color, price.min, price.max]);
+
+  const facetConfig: FacetConfig = { size: true, color: true, price: true };
 
   return (
     <div className={className} {...rest}>
@@ -58,13 +72,12 @@ export default function CollectionSectionClient({ initial, params, className, ..
         <div className="grid grid-cols-4 gap-6">
           <aside className="col-span-1">
             <ProductFilter
-              showSize
-              showColor
-              showPrice
-              onChange={(state: any) => {
+              facets={facetConfig}
+              onChange={(state) => {
                 setSize(state.size ?? "");
                 setColor(state.color ?? "");
-                updateUrl({ size: state.size, color: state.color, min: String(state.minPrice ?? ""), max: String(state.maxPrice ?? "") });
+                setPrice({ min: state.minPrice, max: state.maxPrice });
+                updateUrl({ size: state.size, color: state.color, min: state.minPrice ? String(state.minPrice) : undefined, max: state.maxPrice ? String(state.maxPrice) : undefined });
               }}
             />
           </aside>
@@ -92,4 +105,3 @@ export default function CollectionSectionClient({ initial, params, className, ..
     </div>
   );
 }
-

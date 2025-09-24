@@ -5,7 +5,11 @@ import type { TokenInfo } from "../../../hooks/useTokenEditor";
 import { ReactElement, ChangeEvent } from "react";
 
 interface TextTokenProps extends Omit<TokenInfo, "key"> {
+<<<<<<< Updated upstream
   tokenKey: TokenInfo["key"];
+=======
+  tokenKey: string;
+>>>>>>> Stashed changes
   setToken: (key: string, value: string) => void;
 }
 

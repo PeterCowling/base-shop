@@ -17,7 +17,7 @@ const preset: Config = {
   theme: {
     extend: {
       ringColor: {
-        DEFAULT: "hsl(var(--ring))",
+        DEFAULT: "hsl(var(--color-focus-ring, var(--ring)))",
       },
       ringOffsetColor: {
         DEFAULT: "hsl(var(--ring-offset))",
@@ -31,8 +31,10 @@ const preset: Config = {
         "surface-2": "hsl(var(--surface-2, var(--color-bg)))",
         "surface-3": "hsl(var(--surface-3, var(--color-bg)))",
         // Component surfaces
-        card: "hsl(var(--surface-2, var(--color-bg)))",
-        popover: "hsl(var(--surface-3, var(--color-bg)))",
+        card: "hsl(var(--surface-2, var(--color-panel, var(--color-bg))))",
+        popover: "hsl(var(--surface-3, var(--color-panel, var(--color-bg))))",
+        panel: "hsl(var(--color-panel, var(--surface-2, var(--color-bg))))",
+        inset: "hsl(var(--color-inset, var(--surface-2, var(--color-bg))))",
         // Form input surface
         input: "hsl(var(--surface-input, var(--surface-2, var(--color-bg))))",
         border: "hsl(var(--color-fg))",
@@ -51,6 +53,13 @@ const preset: Config = {
         warning: "hsl(var(--color-warning))",
         info: "hsl(var(--color-info))",
         muted: "hsl(var(--color-muted))",
+        // Soft/tinted backgrounds
+        "primary-soft": "hsl(var(--color-primary-soft, var(--color-primary) / 0.12))",
+        "accent-soft": "hsl(var(--color-accent-soft, var(--color-accent) / 0.12))",
+        "success-soft": "hsl(var(--color-success-soft, var(--color-success) / 0.12))",
+        "info-soft": "hsl(var(--color-info-soft, var(--color-info) / 0.12))",
+        "warning-soft": "hsl(var(--color-warning-soft, var(--color-warning) / 0.12))",
+        "danger-soft": "hsl(var(--color-danger-soft, var(--color-danger) / 0.12))",
       },
       backgroundImage: {
         // Token-driven hero gradient
@@ -65,8 +74,8 @@ const preset: Config = {
       textColor: {
         // Core foreground aliases used across apps and shadcn
         foreground: "hsl(var(--color-fg))",
-        // Muted foreground uses opaque color to satisfy axe contrast checks across surfaces
-        "muted-foreground": "hsl(var(--color-fg))",
+        // Muted foreground uses dedicated token
+        "muted-foreground": "hsl(var(--color-fg-muted, var(--color-fg)))",
         "card-foreground": "hsl(var(--color-fg))",
         "popover-foreground": "hsl(var(--color-fg))",
         // Link color tuned for WCAG contrast on light surfaces

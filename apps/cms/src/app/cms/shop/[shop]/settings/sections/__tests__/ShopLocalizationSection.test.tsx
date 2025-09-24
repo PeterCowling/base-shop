@@ -104,7 +104,7 @@ describe("ShopLocalizationSection", () => {
     render(
       <ShopLocalizationSection
         localeOverrides={controller}
-        availableLocales={["en", "fr"]}
+        availableLocales={["en"]}
         errors={{ localeOverrides: { general: ["must not be empty"] } }}
       />,
     );
@@ -116,12 +116,12 @@ describe("ShopLocalizationSection", () => {
     expect(localeSelect).toBeInTheDocument();
 
     fireEvent.change(keyInput, { target: { value: "/collections/sale" } });
-    fireEvent.change(localeSelect, { target: { value: "fr" } });
+    fireEvent.change(localeSelect, { target: { value: "en" } });
 
     expect(update).toHaveBeenCalledTimes(2);
     expect(update.mock.calls.map(([, field, value]) => [field, value])).toEqual([
       ["key", "/collections/sale"],
-      ["value", "fr"],
+      ["value", "en"],
     ]);
 
     fireEvent.click(screen.getByRole("button", { name: /Add locale override/i }));

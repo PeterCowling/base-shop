@@ -8,7 +8,8 @@
   --color-primary: 220 90% 56%;
   --color-primary-dark: 220 90% 66%;
   --color-primary-fg: 0 0% 100%;
-  --color-primary-fg-dark: 0 0% 10%;
+  /* Use light foreground on primary in dark mode for contrast */
+  --color-primary-fg-dark: 0 0% 100%;
   --color-accent: 260 83% 70%;
   --color-accent-dark: 260 83% 70%;
   --color-accent-fg: 0 0% 10%;

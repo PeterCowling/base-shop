@@ -121,6 +121,23 @@ describe("Tokens", () => {
     ).toBeNull();
   });
 
+  it("hides search input when showSearch is false", () => {
+    const baseTokens: TokenMap = {
+      "--color-bg": "0 0% 100%",
+      "--color-fg": "0 0% 0%",
+    };
+    render(
+      <Tokens
+        tokens={{}}
+        baseTokens={baseTokens}
+        onChange={jest.fn()}
+        showSearch={false}
+      />
+    );
+
+    expect(screen.queryByPlaceholderText("Search tokens")).toBeNull();
+  });
+
   it("persists group open state to localStorage", async () => {
     const baseTokens: TokenMap = {
       "--color-bg": "0 0% 100%",
@@ -319,4 +336,3 @@ describe("Presets", () => {
     expect(handleChange).toHaveBeenLastCalledWith({});
   });
 });
-

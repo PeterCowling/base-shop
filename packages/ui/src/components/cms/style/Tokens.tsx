@@ -27,6 +27,11 @@ interface TokensProps {
   focusToken?: string | null;
   onRenameToken?: (tokenKey: string, nextKey: string) => void;
   onReplaceColor?: (tokenKey: string, nextValue: string) => void;
+  /**
+   * Controls visibility of the token search input.
+   * Default: true (search visible)
+   */
+  showSearch?: boolean;
 }
 
 export default function Tokens({
@@ -36,6 +41,7 @@ export default function Tokens({
   focusToken,
   onRenameToken,
   onReplaceColor,
+  showSearch = true,
 }: TokensProps): ReactElement {
   const {
     colors,
@@ -51,6 +57,14 @@ export default function Tokens({
     addCustomFont,
     setGoogleFont,
   } = useTokenEditor(tokens, baseTokens, onChange);
+
+  // Wrap setToken to broadcast token changes for live preview regeneration
+  const setTokenAndNotify = (key: string, value: string) => {
+    setToken(key, value);
+    try {
+      window.dispatchEvent(new CustomEvent("pb:tokens-changed", { detail: { keys: [key] } }));
+    } catch {}
+  };
 
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -139,7 +153,7 @@ export default function Tokens({
           {...rest}
           tokens={tokens}
           baseTokens={baseTokens}
-          setToken={setToken}
+          setToken={setTokenAndNotify}
           onRenameToken={onRenameToken}
           onReplaceColor={onReplaceColor}
         />
@@ -158,7 +172,7 @@ export default function Tokens({
           options={options}
           type={type}
           googleFonts={googleFonts}
-          setToken={setToken}
+          setToken={setTokenAndNotify}
           handleUpload={handleUpload}
           setGoogleFont={setGoogleFont}
         />
@@ -172,7 +186,11 @@ export default function Tokens({
           key={tokenKey}
           tokenKey={tokenKey}
           {...rest}
+<<<<<<< Updated upstream
           setToken={setToken}
+=======
+          setToken={setTokenAndNotify}
+>>>>>>> Stashed changes
         />
       );
     }
@@ -183,7 +201,11 @@ export default function Tokens({
         key={tokenKey}
         tokenKey={tokenKey}
         {...rest}
+<<<<<<< Updated upstream
         setToken={setToken}
+=======
+        setToken={setTokenAndNotify}
+>>>>>>> Stashed changes
       />
     );
   };
@@ -207,14 +229,16 @@ export default function Tokens({
       // Ensure the tokens panel never causes horizontal overflow in dialogs
       className="max-h-64 w-full space-y-4 overflow-y-auto overflow-x-hidden rounded border p-2"
     >
-      <Input
-        placeholder="Search tokens"
-        value={search}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setSearch(e.target.value)
-        }
-        className="mb-2"
-      />
+      {showSearch && (
+        <Input
+          placeholder="Search tokens"
+          value={search}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setSearch(e.target.value)
+          }
+          className="mb-2"
+        />
+      )}
       {Object.entries(filteredGroups).map(([prefix, list]) => (
         <div key={prefix} className="space-y-2">
           <button
@@ -253,4 +277,3 @@ export default function Tokens({
     </div>
   );
 }
-

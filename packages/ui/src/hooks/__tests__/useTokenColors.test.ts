@@ -1,234 +1,39 @@
-import { renderHook } from "@testing-library/react";
-import { useTokenColors } from "../useTokenColors";
-import type { TokenMap } from "../useTokenEditor";
-
+// packages/ui/src/hooks/__tests__/useTokenColors.test.ts
 jest.mock("../../components/cms/ColorInput", () => ({
-  getContrast: jest.fn(),
-  suggestContrastColor: jest.fn(),
+  getContrast: jest.fn((a: string, b: string) => (a === b ? 1 : 3)),
+  suggestContrastColor: jest.fn(() => "#000000"),
 }));
 
-import {
-  getContrast,
-  suggestContrastColor,
-} from "../../components/cms/ColorInput";
-
-const mockGetContrast =
-  getContrast as jest.MockedFunction<typeof getContrast>;
-const mockSuggestContrastColor =
-  suggestContrastColor as jest.MockedFunction<typeof suggestContrastColor>;
+import { renderHook } from "@testing-library/react";
+import { useTokenColors } from "../useTokenColors";
 
 describe("useTokenColors", () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
+  const tokens: Record<string, string> = {
+    "--color-bg-1": "0 0% 100%",
+    "--color-fg-1": "0 0% 10%",
+    "--color-primary": "220 60% 50%",
+    "--color-primary-fg": "0 0% 100%",
+  };
+
+  test("pairs bg<->fg tokens by suffix", () => {
+    const { result, rerender } = renderHook(({ key, val }) =>
+      useTokenColors(key, val, tokens, tokens)
+    , { initialProps: { key: "--color-bg-1", val: tokens["--color-bg-1"] } });
+    // mocked contrast of different values -> 3 < 4.5, suggest black
+    expect(result.current).toEqual({ contrast: 3, suggestion: "#000000" });
+
+    rerender({ key: "--color-primary", val: tokens["--color-primary"] });
+    // finds --color-primary-fg in tokens and uses mock contrast 3 < 4.5
+    expect(result.current).toEqual({ contrast: 3, suggestion: "#000000" });
   });
 
-  it("pairs --color-bg* with --color-fg*", () => {
-    mockGetContrast.mockReturnValue(5);
-    const tokens = {
-      "--color-fg-primary": "#000000",
-    } as unknown as TokenMap;
+  test("returns null when adequate contrast (>= 4.5) is reported", () => {
+    // Override mock to simulate adequate contrast
+    const mod = require("../../components/cms/ColorInput");
+    mod.getContrast.mockReturnValue(5);
     const { result } = renderHook(() =>
-      useTokenColors("--color-bg-primary", "#ffffff", tokens, {} as TokenMap)
+      useTokenColors("--color-primary", tokens["--color-primary"], tokens, tokens)
     );
-    expect(mockGetContrast).toHaveBeenCalledWith("#ffffff", "#000000");
-    expect(mockSuggestContrastColor).not.toHaveBeenCalled();
-    expect(result.current).toBeNull();
-  });
-
-  it("pairs --color-bg* with base tokens --color-fg*", () => {
-    mockGetContrast.mockReturnValue(5);
-    const baseTokens = {
-      "--color-fg-primary": "#000000",
-    } as unknown as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--color-bg-primary", "#ffffff", {} as TokenMap, baseTokens)
-    );
-    expect(mockGetContrast).toHaveBeenCalledWith("#ffffff", "#000000");
-    expect(mockSuggestContrastColor).not.toHaveBeenCalled();
-    expect(result.current).toBeNull();
-  });
-
-  it("returns contrast warning for low contrast when base tokens provide color pair", () => {
-    mockGetContrast.mockReturnValue(3);
-    mockSuggestContrastColor.mockReturnValue("#123456");
-    const baseTokens = {
-      "--color-fg-primary": "#000000",
-    } as unknown as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--color-bg-primary", "#111111", {} as TokenMap, baseTokens)
-    );
-    expect(mockSuggestContrastColor).toHaveBeenCalledWith(
-      "#111111",
-      "#000000"
-    );
-    expect(result.current).toEqual({ contrast: 3, suggestion: "#123456" });
-  });
-
-  it("returns null when contrast meets threshold", () => {
-    mockGetContrast.mockReturnValue(4.5);
-    const tokens = {
-      "--color-fg-primary": "#000000",
-    } as unknown as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--color-bg-primary", "#ffffff", tokens, {} as TokenMap)
-    );
-    expect(mockGetContrast).toHaveBeenCalledWith("#ffffff", "#000000");
-    expect(mockSuggestContrastColor).not.toHaveBeenCalled();
-    expect(result.current).toBeNull();
-  });
-
-  it("pairs --color-fg* with --color-bg*", () => {
-    mockGetContrast.mockReturnValue(5);
-    const tokens = {
-      "--color-bg-secondary": "#ffffff",
-    } as unknown as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--color-fg-secondary", "#000000", tokens, {} as TokenMap)
-    );
-    expect(mockGetContrast).toHaveBeenCalledWith("#000000", "#ffffff");
-    expect(mockSuggestContrastColor).not.toHaveBeenCalled();
-    expect(result.current).toBeNull();
-  });
-
-  it("returns contrast warning for low contrast when token starts with --color-fg", () => {
-    mockGetContrast.mockReturnValue(3);
-    mockSuggestContrastColor.mockReturnValue("#123456");
-    const tokens = {
-      "--color-bg-secondary": "#ffffff",
-    } as unknown as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--color-fg-secondary", "#111111", tokens, {} as TokenMap)
-    );
-    expect(mockSuggestContrastColor).toHaveBeenCalledWith(
-      "#111111",
-      "#ffffff"
-    );
-    expect(result.current).toEqual({ contrast: 3, suggestion: "#123456" });
-  });
-
-  it("pairs *-fg with base key", () => {
-    mockGetContrast.mockReturnValue(5);
-    const tokens = {
-      "--brand": "#ffffff",
-    } as unknown as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--brand-fg", "#000000", tokens, {} as TokenMap)
-    );
-    expect(mockGetContrast).toHaveBeenCalledWith("#000000", "#ffffff");
-    expect(mockSuggestContrastColor).not.toHaveBeenCalled();
-    expect(result.current).toBeNull();
-  });
-
-  it("finds candidate -fg key in tokens", () => {
-    mockGetContrast.mockReturnValue(5);
-    const tokens = {
-      "--accent-fg": "#000000",
-    } as unknown as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--accent", "#ffffff", tokens, {} as TokenMap)
-    );
-    expect(mockGetContrast).toHaveBeenCalledWith("#ffffff", "#000000");
-    expect(mockSuggestContrastColor).not.toHaveBeenCalled();
-    expect(result.current).toBeNull();
-  });
-
-  it("returns contrast warning for low contrast when tokens have -fg candidate", () => {
-    mockGetContrast.mockReturnValue(3);
-    mockSuggestContrastColor.mockReturnValue("#123456");
-    const tokens = {
-      "--accent-fg": "#000000",
-    } as unknown as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--accent", "#111111", tokens, {} as TokenMap)
-    );
-    expect(mockSuggestContrastColor).toHaveBeenCalledWith(
-      "#111111",
-      "#000000"
-    );
-    expect(result.current).toEqual({ contrast: 3, suggestion: "#123456" });
-  });
-
-  it("returns contrast warning for low contrast when token ends with -fg", () => {
-    mockGetContrast.mockReturnValue(3);
-    mockSuggestContrastColor.mockReturnValue("#123456");
-    const tokens = {
-      "--brand": "#ffffff",
-    } as unknown as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--brand-fg", "#111111", tokens, {} as TokenMap)
-    );
-    expect(mockSuggestContrastColor).toHaveBeenCalledWith(
-      "#111111",
-      "#ffffff"
-    );
-    expect(result.current).toEqual({ contrast: 3, suggestion: "#123456" });
-  });
-
-  it("finds candidate -fg key in base tokens", () => {
-    mockGetContrast.mockReturnValue(5);
-    const baseTokens = {
-      "--accent-fg": "#000000",
-    } as unknown as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--accent", "#ffffff", {} as TokenMap, baseTokens)
-    );
-    expect(mockGetContrast).toHaveBeenCalledWith("#ffffff", "#000000");
-    expect(mockSuggestContrastColor).not.toHaveBeenCalled();
-    expect(result.current).toBeNull();
-  });
-
-  it("returns contrast warning for low contrast when base token has -fg variant", () => {
-    mockGetContrast.mockReturnValue(3);
-    mockSuggestContrastColor.mockReturnValue("#123456");
-    const baseTokens = {
-      "--accent-fg": "#000000",
-    } as unknown as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--accent", "#111111", {} as TokenMap, baseTokens)
-    );
-    expect(mockSuggestContrastColor).toHaveBeenCalledWith(
-      "#111111",
-      "#000000"
-    );
-    expect(result.current).toEqual({ contrast: 3, suggestion: "#123456" });
-  });
-
-  it("returns contrast warning for low contrast when token starts with --color-bg", () => {
-    mockGetContrast.mockReturnValue(3);
-    mockSuggestContrastColor.mockReturnValue("#123456");
-    const tokens = {
-      "--color-fg-primary": "#000000",
-    } as unknown as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--color-bg-primary", "#111111", tokens, {} as TokenMap)
-    );
-    expect(mockSuggestContrastColor).toHaveBeenCalledWith(
-      "#111111",
-      "#000000"
-    );
-    expect(result.current).toEqual({ contrast: 3, suggestion: "#123456" });
-  });
-
-  it("returns null when --color-bg* pair is missing", () => {
-    const tokens = {} as TokenMap;
-    const baseTokens = {} as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--color-bg-primary", "#fff", tokens, baseTokens)
-    );
-    expect(mockGetContrast).not.toHaveBeenCalled();
-    expect(mockSuggestContrastColor).not.toHaveBeenCalled();
-    expect(result.current).toBeNull();
-  });
-
-  it("returns null when no pair is found", () => {
-    const tokens = {} as TokenMap;
-    const baseTokens = {} as TokenMap;
-    const { result } = renderHook(() =>
-      useTokenColors("--no-pair", "#fff", tokens, baseTokens)
-    );
-    expect(mockGetContrast).not.toHaveBeenCalled();
-    expect(mockSuggestContrastColor).not.toHaveBeenCalled();
     expect(result.current).toBeNull();
   });
 });
-

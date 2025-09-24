@@ -30,7 +30,7 @@
     "typecheck": "pnpm -r build && tsc -b tsconfig.json --pretty",
     "test": "CI=true turbo run test",
     "test:coverage": "sh -c 'CI=true pnpm -r --no-bail --workspace-concurrency=1 --filter=!@acme/next-config run test -- --coverage; status=$?; pnpm --filter @acme/next-config run test:coverage || true; pnpm run coverage:merge; exit $status'",
-    "coverage:merge": "mkdir -p coverage/merged && nyc merge coverage .nyc_output coverage/merged/coverage.json && nyc report -t coverage/merged -r html -r text-summary",
+    "coverage:merge": "mkdir -p coverage/merged && nyc merge coverage .nyc_output coverage/merged/coverage.json && nyc report -t coverage/merged -r html -r text-summary -r text",
     "coverage:summary": "tsx scripts/src/coverage-summary.ts",
     "e2e": "TEST_DATA_ROOT=__tests__/data node scripts/src/seed-test-data.ts && start-server-and-test \"sh -c 'pnpm --filter @apps/cms build && pnpm --filter @apps/cms start -- --port 3006'\" http://localhost:3006 \"pnpm exec cypress run\"",
     "e2e:open": "TEST_DATA_ROOT=__tests__/data node scripts/src/seed-test-data.ts && start-server-and-test \"sh -c 'pnpm --filter @apps/cms build && pnpm --filter @apps/cms start -- --port 3006'\" http://localhost:3006 \"pnpm exec cypress open\"",

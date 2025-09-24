@@ -21,6 +21,7 @@ export interface PageBuilderLayoutState {
   showDevTools: boolean;
   showPalette: boolean;
   showSections: boolean;
+  showFontsLeft: boolean;
   showLayersLeft: boolean;
   showInspector: boolean;
   paletteWidth: number;
@@ -29,12 +30,16 @@ export interface PageBuilderLayoutState {
   setLayersWidth: (width: number) => void;
   openPalette: () => void;
   openSections: () => void;
+  openFonts: () => void;
+  openTheme: () => void;
   openLayers: () => void;
   togglePaletteWithReset: () => void;
   toggleInspector: () => void;
   setShowPalette: React.Dispatch<React.SetStateAction<boolean>>;
   globalsOpen: boolean;
   setGlobalsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  fontsOpen: boolean;
+  setFontsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   cmsOpen: boolean;
   setCmsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   pagesOpen: boolean;
@@ -66,8 +71,11 @@ export function usePageBuilderLayoutState({
   const [showLayersLeft, setShowLayersLeft] = React.useState(false);
   const [layersWidth, setLayersWidth] = React.useState(280);
   const [showSections, setShowSections] = React.useState(false);
+  const [showFontsLeft, setShowFontsLeft] = React.useState(false);
+  const [showThemeLeft, setShowThemeLeft] = React.useState(false);
   const [globalsOpen, setGlobalsOpen] = React.useState(false);
   const [cmsOpen, setCmsOpen] = React.useState(false);
+  const [fontsOpen, setFontsOpen] = React.useState(false);
   const [pagesOpen, setPagesOpen] = React.useState(false);
   const [helpOpen, setHelpOpen] = React.useState(false);
 
@@ -88,6 +96,8 @@ export function usePageBuilderLayoutState({
     return () => window.removeEventListener("pb:toggle-comments", onToggleComments as EventListener);
   }, [showComments, toggleComments]);
 
+  const cycleRef = React.useRef(0);
+
   React.useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null;
@@ -97,6 +107,7 @@ export function usePageBuilderLayoutState({
       if (k === "i") {
         e.preventDefault();
         setShowInspector((v) => !v);
+        cycleRef.current = 0;
         return;
       }
       if (k === "l") {
@@ -109,24 +120,42 @@ export function usePageBuilderLayoutState({
           }
           return next;
         });
+        cycleRef.current = 0;
         return;
       }
       if (k === "." || k === "›") {
+        // Cycle palette → inspector → layers (scroll) → palette
         e.preventDefault();
-        setShowPalette((v) => {
-          const next = !v;
-          if (next) {
+        cycleRef.current = (cycleRef.current + 1) % 4;
+        const step = cycleRef.current;
+        switch (step) {
+          case 1: // hide palette
+            setShowPalette(false);
             setShowLayersLeft(false);
             setShowSections(false);
-          }
-          return next;
-        });
+            break;
+          case 2: // hide inspector
+            setShowInspector(false);
+            break;
+          case 3: // show inspector and scroll to layers panel
+            setShowInspector(true);
+            setTimeout(() => {
+              try {
+                document.getElementById("pb-layers-panel")?.scrollIntoView();
+              } catch {}
+            }, 0);
+            break;
+          case 0: // show palette
+          default:
+            setShowPalette(true);
+            break;
+        }
         return;
       }
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [setShowPalette, setShowSections, setShowLayersLeft]);
+  }, [setShowPalette, setShowSections, setShowLayersLeft, setShowInspector, showPalette, showInspector]);
 
   React.useEffect(() => {
     if (!SECTIONS_ONLY) return;
@@ -145,12 +174,16 @@ export function usePageBuilderLayoutState({
   const openPalette = React.useCallback(() => {
     setShowLayersLeft(false);
     setShowSections(false);
+    setShowFontsLeft(false);
+    setShowThemeLeft(false);
     setShowPalette(true);
   }, [setShowLayersLeft, setShowPalette, setShowSections]);
 
   const openSections = React.useCallback(() => {
     setShowLayersLeft(false);
     setShowPalette(false);
+    setShowFontsLeft(false);
+    setShowThemeLeft(false);
     setShowSections(true);
   }, [setShowLayersLeft, setShowPalette, setShowSections]);
 
@@ -158,7 +191,25 @@ export function usePageBuilderLayoutState({
     setShowLayersLeft(true);
     setShowPalette(false);
     setShowSections(false);
+    setShowFontsLeft(false);
+    setShowThemeLeft(false);
   }, [setShowLayersLeft, setShowPalette, setShowSections]);
+
+  const openFonts = React.useCallback(() => {
+    setShowLayersLeft(false);
+    setShowPalette(false);
+    setShowSections(false);
+    setShowFontsLeft(true);
+    setShowThemeLeft(false);
+  }, []);
+
+  const openTheme = React.useCallback(() => {
+    setShowLayersLeft(false);
+    setShowPalette(false);
+    setShowSections(false);
+    setShowFontsLeft(false);
+    setShowThemeLeft(true);
+  }, []);
 
   const togglePaletteWithReset = React.useCallback(() => {
     setShowPalette((value) => {
@@ -166,6 +217,7 @@ export function usePageBuilderLayoutState({
       if (next) {
         setShowLayersLeft(false);
         setShowSections(false);
+        setShowFontsLeft(false);
       }
       return next;
     });
@@ -180,6 +232,8 @@ export function usePageBuilderLayoutState({
     showDevTools,
     showPalette,
     showSections,
+    showFontsLeft,
+    showThemeLeft,
     showLayersLeft,
     showInspector,
     paletteWidth,
@@ -188,12 +242,16 @@ export function usePageBuilderLayoutState({
     setLayersWidth,
     openPalette,
     openSections,
+    openFonts,
+    openTheme,
     openLayers,
     togglePaletteWithReset,
     toggleInspector,
     setShowPalette,
     globalsOpen,
     setGlobalsOpen,
+    fontsOpen,
+    setFontsOpen,
     cmsOpen,
     setCmsOpen,
     pagesOpen,

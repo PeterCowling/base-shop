@@ -13,3 +13,5 @@
   min-width: 0 !important;
 }
 
+/* Token-driven form control styles to ensure inputs reflect theme surfaces */
+@import "../../../../packages/ui/src/styles/forms.css";

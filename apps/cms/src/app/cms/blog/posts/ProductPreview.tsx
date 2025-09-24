@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { SKU } from "@acme/types";
 import { formatCurrency } from "@acme/shared-utils";
 import Image from "next/image";
+import { Alert } from "@/components/atoms";
 
 export interface Props {
   slug: string;
@@ -54,7 +55,7 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
   if (loading) return <div className="border border-border/10 p-2">Loading…</div>;
   if (error || !product)
     return (
-      <div className="border border-border/10 p-2 text-danger-foreground">{error ?? "Not found"}</div>
+      <Alert variant="danger" tone="soft" title={error ?? "Not found"} />
     );
   const available = (product.stock ?? 0) > 0;
   const imageUrl = product.media?.[0]?.url ?? "/file.svg";

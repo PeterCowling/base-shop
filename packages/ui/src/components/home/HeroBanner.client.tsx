@@ -104,7 +104,7 @@ export default function HeroBanner({
       <button
         aria-label="Previous slide"
         onClick={prev}
-        className="bg-fg/50 hover:bg-fg/70 absolute top-1/2 left-[var(--space-4)] -translate-y-1/2 rounded-full p-1"
+        className="absolute top-1/2 left-[var(--space-4)] -translate-y-1/2 rounded-full p-1 bg-[hsl(var(--overlay-scrim-1))] hover:bg-[hsl(var(--overlay-scrim-2))]"
         data-token="--color-fg"
       >
         ‹
@@ -112,7 +112,7 @@ export default function HeroBanner({
       <button
         aria-label="Next slide"
         onClick={next}
-        className="bg-fg/50 hover:bg-fg/70 absolute top-1/2 right-[var(--space-4)] -translate-y-1/2 rounded-full p-1"
+        className="absolute top-1/2 right-[var(--space-4)] -translate-y-1/2 rounded-full p-1 bg-[hsl(var(--overlay-scrim-1))] hover:bg-[hsl(var(--overlay-scrim-2))]"
         data-token="--color-fg"
       >
         ›

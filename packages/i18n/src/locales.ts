@@ -1,6 +1,7 @@
 // packages/i18n/src/locales.ts
 // Supported locales for the storefront experience.
-export const LOCALES = ["en", "de", "it"] as const;
+// English-only configuration
+export const LOCALES = ["en"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export function assertLocales(

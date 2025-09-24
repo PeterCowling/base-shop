@@ -54,6 +54,14 @@
   /* typography */
   --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
   --font-mono: var(--font-geist-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+  /* Three-font model (body + two headings). Defaults inherit sans until configured */
+  --font-body: var(--font-sans);
+  --font-heading-1: var(--font-sans);
+  --font-heading-2: var(--font-sans);
+  /* Text theme hooks for page builder theme extraction */
+  --typography-body-font-family: var(--font-body);
+  --text-heading-1-font-family: var(--font-heading-1);
+  --text-heading-2-font-family: var(--font-heading-2);
 
   /* spacing, radii, and shadows are sourced from base theme to preserve layout scale */
 
@@ -138,6 +146,19 @@ html.theme-dark {
   --elevation-3: 0 4px 12px rgba(0, 0, 0, 0.24);
   --elevation-4: 0 8px 24px rgba(0, 0, 0, 0.30);
   --elevation-5: 0 12px 36px rgba(0, 0, 0, 0.36);
+}
+
+/* WYSIWYG font application across CMS surfaces */
+/* Make body copy follow --font-body while preserving fallbacks */
+body {
+  font-family: var(--font-body, var(--font-sans));
+}
+/* Apply heading families by level */
+h1, h2, h3 {
+  font-family: var(--font-heading-1, var(--font-body, var(--font-sans)));
+}
+h4, h5, h6 {
+  font-family: var(--font-heading-2, var(--font-body, var(--font-sans)));
 }
 
 html,

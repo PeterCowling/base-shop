@@ -21,7 +21,7 @@ export default function LayoutClient({
   return (
     <div className="relative flex min-h-screen bg-surface-1">
       <div className="relative z-10 flex flex-1 flex-col">
-        <TopBar role={role} />
+        <TopBar role={role} onConfiguratorStartNew={resetConfiguratorProgress} />
         {configuratorProgress && (
           <div className="border-b border-border/10 bg-surface-2 px-6 py-3">
             <Progress

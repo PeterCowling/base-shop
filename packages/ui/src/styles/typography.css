@@ -1,0 +1,16 @@
+/* packages/ui/src/styles/typography.css
+   Shared typography helpers to map heading/body families to theme tokens */
+
+/* Base text uses the selected body font */
+html, body {
+  font-family: var(--font-body);
+}
+
+/* Headings map to selected heading families */
+.sf-content :where(h1, h2, h3) {
+  font-family: var(--font-heading-1);
+}
+.sf-content :where(h4, h5, h6) {
+  font-family: var(--font-heading-2);
+}
+

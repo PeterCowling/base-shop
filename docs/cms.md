@@ -44,7 +44,7 @@ Admins can scaffold and launch a shop directly from the CMS at `/cms/configurato
 1. **Shop Details** – provide the shop ID, display name, logo URL, contact email and shop type.
 2. **Theme** – pick a base theme.
 3. **Tokens** – tweak design tokens to match your brand. See [advanced theming](./theming-advanced.md) for details.
-4. **Options** – select the starter template and plugins.
+4. **Options** – select a base template and plugins.
 5. **Navigation** – build the header navigation tree or start from presets.
 6. **Layout** – choose overall page layouts.
 7. **Home Page** – configure the home page layout.

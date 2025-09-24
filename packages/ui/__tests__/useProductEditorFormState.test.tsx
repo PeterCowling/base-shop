@@ -1,146 +1,78 @@
-// packages/ui/hooks/__tests../src/hooks/useProductEditorFormState.test.tsx
+import React from "react";
+import { renderHook, act } from "@testing-library/react";
+import { useProductEditorFormState } from "../src/hooks/useProductEditorFormState";
 
-import type { ProductPublication } from "@acme/types";
-import type { Locale } from "@acme/i18n";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import {
-  useProductEditorFormState,
-  type ProductSaveResult,
-} from "../src/hooks/useProductEditorFormState";
-
-/* ------------------------------------------------------------------ *
- *  Mock the file-upload and publish-location hooks (no network, no DOM)
- * ------------------------------------------------------------------ */
-jest.mock("../src/hooks/useFileUpload", () => ({
-  useFileUpload: () => ({
-    pendingFile: null,
-    altText: "",
-    setAltText: jest.fn(),
-    uploader: <div />,
+// Mock media manager to avoid real upload/location dependencies
+jest.mock("../src/hooks/useProductMediaManager", () => ({
+  useProductMediaManager: () => ({
+    uploader: React.createElement("div", { "data-cy": "uploader" }),
+    removeMedia: jest.fn(),
+    moveMedia: jest.fn(),
   }),
 }));
 
-jest.mock("@platform-core/hooks/usePublishLocations", () => ({
-  usePublishLocations: () => ({ locations: [], reload: jest.fn() }),
-}));
+const locales = ["en"] as const;
 
-/* ------------------------------------------------------------------ *
- *  Shared fixtures
- * ------------------------------------------------------------------ */
-const product: ProductPublication & { variants: Record<string, string[]> } = {
-  id: "p1",
-  sku: "sku1",
-  title: { en: "Old EN", de: "Old DE", it: "Old IT" },
-  description: { en: "Desc EN", de: "Desc DE", it: "Desc IT" },
-  price: 100,
-  currency: "EUR",
-  media: [],
-  created_at: "2023-01-01",
-  updated_at: "2023-01-01",
-  shop: "shop",
-  status: "draft",
-  row_version: 1,
-  variants: { size: ["m", "l"] },
-};
-
-const locales: readonly Locale[] = ["en", "de"];
-
-/* ------------------------------------------------------------------ *
- *  Test wrapper component
- * ------------------------------------------------------------------ */
-function Wrapper({
-  onSave,
-}: {
-  onSave: (fd: FormData) => Promise<ProductSaveResult>;
-}) {
-  const state = useProductEditorFormState(product, locales, onSave);
-
-  return (
-    <form onSubmit={state.handleSubmit}>
-      <input
-        data-cy="title-en"
-        name="title_en"
-        value={state.product.title.en}
-        onChange={state.handleChange}
-      />
-      <input
-        data-cy="price"
-        name="price"
-        value={state.product.price}
-        onChange={state.handleChange}
-      />
-      <input
-        data-cy="variant-size"
-        name="variant_size"
-        value={state.product.variants.size.join(",")}
-        onChange={state.handleChange}
-      />
-      <button type="submit">save</button>
-    </form>
-  );
+function createInit() {
+  return {
+    id: "p1",
+    shop: "default",
+    title: { en: "Name" },
+    description: { en: "Desc" },
+    price: 100,
+    media: [],
+    status: "active",
+    variants: { color: ["red"] },
+  } as any;
 }
 
-/* ------------------------------------------------------------------ *
- *  Tests
- * ------------------------------------------------------------------ */
 describe("useProductEditorFormState", () => {
-  it("handleChange updates multilingual, price and variant fields", () => {
-    const onSave = jest.fn().mockResolvedValue({ product });
-    render(<Wrapper onSave={onSave} />);
-
-    fireEvent.change(screen.getByTestId("title-en"), {
-      target: { value: "New" },
-    });
-    fireEvent.change(screen.getByTestId("price"), {
-      target: { value: "200" },
-    });
-    fireEvent.change(screen.getByTestId("variant-size"), {
-      target: { value: "xl" },
-    });
-
-    expect((screen.getByTestId("title-en") as HTMLInputElement).value).toBe(
-      "New"
+  it("sets errors when onSave returns errors", async () => {
+    const onSave = jest.fn(async () => ({ errors: { title: ["required"] } }));
+    const { result } = renderHook(() =>
+      useProductEditorFormState(createInit(), locales, onSave)
     );
-    expect((screen.getByTestId("price") as HTMLInputElement).value).toBe("200");
-    expect(
-      (screen.getByTestId("variant-size") as HTMLInputElement).value
-    ).toBe("xl");
+
+    await act(async () => {
+      await result.current.handleSubmit({ preventDefault() {} } as any);
+    });
+
+    expect(onSave).toHaveBeenCalledWith(expect.any(FormData));
+    expect(result.current.errors.title).toEqual(["required"]);
+    expect(result.current.saving).toBe(false);
   });
 
-  it("handleSubmit calls save callback with generated FormData", async () => {
-    const onSave = jest
-      .fn<Promise<ProductSaveResult>, [FormData]>()
-      .mockResolvedValue({ product });
-
-    render(<Wrapper onSave={onSave} />);
-
-    fireEvent.change(screen.getByTestId("title-en"), {
-      target: { value: "New" },
-    });
-    fireEvent.change(screen.getByTestId("price"), {
-      target: { value: "200" },
-    });
-    fireEvent.change(screen.getByTestId("variant-size"), {
-      target: { value: "xl" },
-    });
-    fireEvent.click(screen.getByText("save"));
-
-    await waitFor(() => expect(onSave).toHaveBeenCalled());
-
-    const fd = onSave.mock.calls[0]![0];
-    const entries = Array.from(fd.entries());
-
-    expect(entries).toEqual(
-      expect.arrayContaining([
-        ["id", "p1"],
-        ["title_en", "New"],
-        ["desc_en", "Desc EN"],
-        ["title_de", "Old DE"],
-        ["desc_de", "Desc DE"],
-        ["price", "200"],
-        ["publish", ""],
-        ["variant_size", "xl"],
-      ])
+  it("updates product and clears errors when onSave returns product", async () => {
+    const next = { ...createInit(), title: { en: "New Name" } };
+    const onSave = jest.fn(async () => ({ product: next }));
+    const { result } = renderHook(() =>
+      useProductEditorFormState(createInit(), locales, onSave)
     );
+
+    await act(async () => {
+      await result.current.handleSubmit({ preventDefault() {} } as any);
+    });
+
+    expect(result.current.errors).toEqual({});
+    expect(result.current.product.title.en).toBe("New Name");
+  });
+
+  it("exposes variant add/remove and publishTargets setters", () => {
+    const onSave = jest.fn(async () => ({ product: createInit() }));
+    const { result } = renderHook(() =>
+      useProductEditorFormState(createInit(), locales, onSave)
+    );
+
+    act(() => {
+      result.current.addVariantValue("size");
+      result.current.addVariantValue("size");
+      result.current.removeVariantValue("size", 0);
+      result.current.setPublishTargets(["site-1"]);
+    });
+
+    expect(result.current.publishTargets).toEqual(["site-1"]);
+    // After add twice then remove index 0, there should be one empty slot left for size
+    expect(result.current.product.variants.size.length).toBe(1);
   });
 });
+

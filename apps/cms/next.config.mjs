@@ -248,6 +248,21 @@ const nextConfig = {
       config.resolve.alias["@sentry/opentelemetry"] = false;
     }
 
+    // Silence known safe dynamic import warning from plugin resolver
+    config.ignoreWarnings ||= [];
+    config.ignoreWarnings.push((warn) => {
+      try {
+        const msg = typeof warn === "string" ? warn : warn?.message || "";
+        const resource = (warn && warn.module && warn.module.resource) || "";
+        return (
+          msg.includes("Critical dependency: the request of a dependency is an expression") &&
+          /packages\/(platform-core)\/src\/plugins\/resolvers\.ts$/.test(resource)
+        );
+      } catch {
+        return false;
+      }
+    });
+
     const sharedUtilsPinoSymlink = path.resolve(
       __dirname,
       "../../packages/shared-utils/node_modules/pino",

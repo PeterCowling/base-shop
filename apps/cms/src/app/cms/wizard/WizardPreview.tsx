@@ -13,6 +13,7 @@ import React, { useEffect, useState, useMemo, forwardRef } from "react";
 import { STORAGE_KEY } from "../configurator/hooks/useConfiguratorPersistence";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 import usePreviewTokens from "./usePreviewTokens";
+import { THEME_TOKEN_HOVER_EVENT, type TokenHoverDetail } from "../../shop/[shop]/themes/events";
 
 interface Props {
   style: React.CSSProperties;
@@ -64,6 +65,23 @@ const WizardPreview = forwardRef<HTMLDivElement, Props>(function WizardPreview(
     }),
     [tokens, style, device],
   );
+
+  // Highlight impacted areas: outline elements matching data-token when hovering a token in editor
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<TokenHoverDetail>).detail;
+      const token = detail?.token;
+      const previewEl = (ref as React.MutableRefObject<HTMLDivElement | null>).current;
+      if (!previewEl) return;
+      const all = Array.from(previewEl.querySelectorAll<HTMLElement>("[data-token]"));
+      all.forEach((el) => {
+        const matches = token && el.getAttribute("data-token") === token;
+        el.style.outline = matches ? "2px solid hsl(var(--color-primary))" : "";
+      });
+    };
+    window.addEventListener(THEME_TOKEN_HOVER_EVENT, handler as EventListener);
+    return () => window.removeEventListener(THEME_TOKEN_HOVER_EVENT, handler as EventListener);
+  }, [ref]);
 
   /** Renders a single block component */
   function Block({ component }: { component: PageComponent }) {

@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "_note": "Machine-readable manifest describing Base-Shop font and colour selection model.",
+  "version": "1.0.0",
+  "darkMode": {
+    "strategy": "media+class",
+    "class": "theme-dark",
+    "prefersColorSchemeMedia": true
+  },
+  "fontModel": {
+    "lowLevel": {
+      "sans": "--font-sans",
+      "mono": "--font-mono"
+    },
+    "semantic": {
+      "body": "--font-body",
+      "heading1": "--font-heading-1",
+      "heading2": "--font-heading-2"
+    },
+    "runtimeAliases": [
+      {
+        "alias": "--font-sans",
+        "value": "var(--font-body)",
+        "when": "--font-body present",
+        "reason": "Make Tailwind font-sans follow selected body font"
+      }
+    ],
+    "loader": {
+      "component": "packages/ui/src/components/ThemeStyle.tsx",
+      "preconnect": [
+        "https://fonts.googleapis.com",
+        "https://fonts.gstatic.com"
+      ],
+      "urlFormat": "https://fonts.googleapis.com/css2?family=<Name>&display=swap"
+    }
+  },
+  "tailwind": {
+    "config": "tailwind.config.mjs",
+    "presets": ["@acme/tailwind-config"],
+    "plugins": ["@acme/design-tokens"],
+    "aliases": {
+      "colors": {
+        "bg": "hsl(var(--color-bg))",
+        "fg": "hsl(var(--color-fg))",
+        "primary": "hsl(var(--color-primary))",
+        "accent": "hsl(var(--color-accent))",
+        "danger": "hsl(var(--color-danger))",
+        "success": "hsl(var(--color-success))",
+        "warning": "hsl(var(--color-warning))",
+        "info": "hsl(var(--color-info))",
+        "muted": "hsl(var(--color-muted))"
+      },
+      "textColors": {
+        "primary-foreground": "hsl(var(--color-primary-fg))",
+        "accent-foreground": "hsl(var(--color-accent-fg))",
+        "danger-foreground": "hsl(var(--color-danger-fg))",
+        "success-foreground": "hsl(var(--color-success-fg))",
+        "warning-foreground": "hsl(var(--color-warning-fg))",
+        "info-foreground": "hsl(var(--color-info-fg))"
+      },
+      "fonts": {
+        "sans": "var(--font-sans)",
+        "mono": "var(--font-mono)"
+      },
+      "spacing": {
+        "1": "var(--space-1)",
+        "2": "var(--space-2)",
+        "3": "var(--space-3)",
+        "4": "var(--space-4)"
+      },
+      "radius": {
+        "sm": "var(--radius-sm)",
+        "md": "var(--radius-md)",
+        "lg": "var(--radius-lg)"
+      },
+      "shadow": {
+        "sm": "var(--shadow-sm)",
+        "md": "var(--shadow-md)",
+        "lg": "var(--shadow-lg)"
+      }
+    }
+  },
+  "colorTokens": [
+    { "name": "--color-bg", "role": "neutral", "hasDark": true },
+    { "name": "--color-fg", "role": "neutral", "hasDark": true },
+    { "name": "--color-primary", "role": "brand", "hasDark": true },
+    { "name": "--color-primary-fg", "role": "brand-foreground", "hasDark": true },
+    { "name": "--color-accent", "role": "brand", "hasDark": true },
+    { "name": "--color-accent-fg", "role": "brand-foreground", "hasDark": true },
+    { "name": "--color-danger", "role": "status", "hasDark": true },
+    { "name": "--color-danger-fg", "role": "status-foreground", "hasDark": true },
+    { "name": "--color-success", "role": "status", "hasDark": true },
+    { "name": "--color-success-fg", "role": "status-foreground", "hasDark": true },
+    { "name": "--color-warning", "role": "status", "hasDark": true },
+    { "name": "--color-warning-fg", "role": "status-foreground", "hasDark": true },
+    { "name": "--color-info", "role": "status", "hasDark": true },
+    { "name": "--color-info-fg", "role": "status-foreground", "hasDark": true },
+    { "name": "--color-muted", "role": "utility", "hasDark": true },
+    { "name": "--color-muted-fg", "role": "utility", "hasDark": true },
+    { "name": "--color-muted-border", "role": "utility", "hasDark": true },
+    { "name": "--gradient-hero-from", "role": "gradient", "hasDark": false },
+    { "name": "--gradient-hero-via", "role": "gradient", "hasDark": false },
+    { "name": "--gradient-hero-to", "role": "gradient", "hasDark": false },
+    { "name": "--hero-contrast-overlay", "role": "overlay", "hasDark": true }
+  ],
+  "fontTokens": [
+    { "name": "--font-sans", "role": "low-level" },
+    { "name": "--font-mono", "role": "low-level" },
+    { "name": "--font-body", "role": "semantic" },
+    { "name": "--font-heading-1", "role": "semantic" },
+    { "name": "--font-heading-2", "role": "semantic" },
+    { "name": "--typography-body-font-family", "role": "cms-hook" },
+    { "name": "--text-heading-1-font-family", "role": "cms-hook" },
+    { "name": "--text-heading-2-font-family", "role": "cms-hook" }
+  ],
+  "selectionFlow": {
+    "sourceDefaults": "packages/themes/base/src/tokens.ts",
+    "themeOverrides": "packages/themes/*/src/tokens.css",
+    "shopOverrides": "stored per shop and injected by ThemeStyle",
+    "runtime": [
+      "Resolve defaults + theme + shop overrides",
+      "Inject :root CSS variables and font links via ThemeStyle",
+      "Tailwind utilities render using var() + hsl()"
+    ]
+  },
+  "accessibility": {
+    "contrastTarget": "WCAG 2.1 AA (>= 4.5:1)",
+    "tests": [
+      "packages/ui/src/components/cms/page-builder/__tests__/FontsPanel.contrast.test.ts"
+    ],
+    "guidance": [
+      "Use bg-hero-contrast + text-hero-foreground for content over gradients",
+      "Validate custom brand pairings in CMS preview"
+    ]
+  }
+}
+

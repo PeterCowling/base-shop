@@ -108,3 +108,21 @@ export async function restoreSection(shop: string, snapshot: SectionTemplate): P
   await appendHistory(shop, { type: "restore", id: snapshot.id, after: snapshot });
   return snapshot;
 }
+
+export async function listSectionHistory(shop: string): Promise<unknown[]> {
+  try {
+    const buf = await fs.readFile(historyPath(shop), "utf8");
+    const lines = buf.split(/\r?\n/).filter(Boolean);
+    const entries: unknown[] = [];
+    for (const line of lines) {
+      try {
+        entries.push(JSON.parse(line));
+      } catch {
+        // skip invalid lines
+      }
+    }
+    return entries.reverse(); // newest last appended → return newest first
+  } catch {
+    return [];
+  }
+}

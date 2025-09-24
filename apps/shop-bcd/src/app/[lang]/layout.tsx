@@ -11,6 +11,7 @@ import "../globals.css";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import shop from "../../../shop.json";
 import { JsonLdScript, organizationJsonLd } from "../../lib/jsonld";
+import { ThemeStyle } from "@acme/ui";
 
 export async function generateMetadata({
   params,
@@ -71,6 +72,8 @@ export default async function LocaleLayout({
 
   return (
     <TranslationsProvider messages={messages}>
+      {/* Inject per-shop theme tokens and fonts */}
+      <ThemeStyle shopId={shop.id} />
       {/* Organization JSON-LD */}
       <JsonLdScript
         data={organizationJsonLd({

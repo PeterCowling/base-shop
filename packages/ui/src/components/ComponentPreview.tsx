@@ -24,7 +24,7 @@ class PreviewErrorBoundary extends React.Component<{ children: React.ReactNode }
   render() {
     if (this.state.hasError) {
       return (
-        <div className="rounded border p-4 text-red-500">
+        <div className="rounded border p-4 text-danger">
           Failed to render preview
         </div>
       );
@@ -99,7 +99,7 @@ export default function ComponentPreview<
                 type="button"
                 onClick={() => setCompareMode("side")}
                 className={`rounded border px-2 py-1 ${
-                  compareMode === "side" ? "bg-gray-100" : ""
+                  compareMode === "side" ? "bg-muted" : ""
                 }`}
               >
                 Side by side
@@ -108,7 +108,7 @@ export default function ComponentPreview<
                 type="button"
                 onClick={() => setCompareMode("toggle")}
                 className={`rounded border px-2 py-1 ${
-                  compareMode === "toggle" ? "bg-gray-100" : ""
+                  compareMode === "toggle" ? "bg-muted" : ""
                 }`}
               >
                 Toggle
@@ -143,4 +143,3 @@ export default function ComponentPreview<
     </div>
   );
 }
-

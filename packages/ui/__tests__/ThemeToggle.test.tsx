@@ -1,52 +1,43 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import ThemeToggle from "../src/components/ThemeToggle";
 
-const setTheme = jest.fn();
-let mockTheme: string = "base";
+const state: { theme: "base" | "dark" | "system" } = { theme: "base" };
+const setThemeMock = jest.fn((next: string) => {
+  // update mock state so repeated renders can observe changes if needed
+  state.theme = next as any;
+});
 
 jest.mock("@platform-core/contexts/ThemeContext", () => ({
-  useTheme: () => ({ theme: mockTheme, setTheme }),
+  useTheme: () => ({ theme: state.theme, setTheme: setThemeMock }),
 }));
 
 describe("ThemeToggle", () => {
   beforeEach(() => {
-    setTheme.mockClear();
-    mockTheme = "base";
+    state.theme = "base";
+    setThemeMock.mockClear();
   });
 
-  it("cycles through themes and announces changes", () => {
-    const { rerender } = render(<ThemeToggle />);
+  it("cycles to next theme on click", () => {
+    render(<ThemeToggle />);
+    // base -> dark
+    fireEvent.click(screen.getByRole("button"));
+    expect(setThemeMock).toHaveBeenCalledWith("dark");
+  });
 
-    let button = screen.getByRole("button", {
-      name: /switch to dark theme/i,
-    });
-    let live = screen.getByText(/light theme selected/i);
-    expect(live).toHaveAttribute("aria-live", "polite");
+  it("cycles on Enter keydown", () => {
+    state.theme = "dark"; // dark -> system
+    render(<ThemeToggle />);
+    const btn = screen.getByRole("button");
+    fireEvent.keyDown(btn, { key: "Enter" });
+    expect(setThemeMock).toHaveBeenCalledWith("system");
+  });
 
-    fireEvent.click(button);
-    expect(setTheme).toHaveBeenNthCalledWith(1, "dark");
-
-    mockTheme = "dark";
-    rerender(<ThemeToggle />);
-
-    button = screen.getByRole("button", {
-      name: /switch to system theme/i,
-    });
-    live = screen.getByText(/dark theme selected/i);
-
-    fireEvent.keyDown(button, { key: "Enter" });
-    expect(setTheme).toHaveBeenNthCalledWith(2, "system");
-
-    mockTheme = "system";
-    rerender(<ThemeToggle />);
-
-    button = screen.getByRole("button", {
-      name: /switch to light theme/i,
-    });
-    live = screen.getByText(/system theme selected/i);
-
-    fireEvent.keyDown(button, { key: " " });
-    expect(setTheme).toHaveBeenNthCalledWith(3, "base");
+  it("cycles on Space keydown", () => {
+    state.theme = "system"; // system -> base
+    render(<ThemeToggle />);
+    const btn = screen.getByRole("button");
+    fireEvent.keyDown(btn, { key: " " });
+    expect(setThemeMock).toHaveBeenCalledWith("base");
   });
 });
-

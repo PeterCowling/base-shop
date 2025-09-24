@@ -32,28 +32,30 @@ export default function SeoLanguageTabs({
   const current = seo[locale];
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap gap-2">
-        {languages.map((l) => {
-          const isSelected = l === locale;
-          const inherited = l !== base && !seo[l];
-          return (
-            <button
-              key={l}
-              type="button"
-              onClick={() => onLocaleChange(l)}
-              className={cn(
-                "rounded-full border px-2 py-0.5 text-xs font-medium",
-                isSelected
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted text-fg hover:bg-muted/80",
-                inherited && "opacity-50"
-              )}
-            >
-              {l.toUpperCase()}
-            </button>
-          );
-        })}
-      </div>
+      {languages.length > 1 && (
+        <div className="flex flex-wrap gap-2">
+          {languages.map((l) => {
+            const isSelected = l === locale;
+            const inherited = l !== base && !seo[l];
+            return (
+              <button
+                key={l}
+                type="button"
+                onClick={() => onLocaleChange(l)}
+                className={cn(
+                  "rounded-full border px-2 py-0.5 text-xs font-medium",
+                  isSelected
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-fg hover:bg-muted/80",
+                  inherited && "opacity-50"
+                )}
+              >
+                {l.toUpperCase()}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       <div className="grid gap-6 md:grid-cols-3">
         {/* Meta ------------------------------------------------------- */}

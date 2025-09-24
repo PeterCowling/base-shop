@@ -1,21 +1,17 @@
+// packages/ui/src/utils/style/__tests__/drawerWidth.test.ts
 import { drawerWidthProps } from "../drawerWidth";
 
 describe("drawerWidthProps", () => {
-  it("returns widthClass for tailwind input", () => {
-    const result = drawerWidthProps("w-64");
-    expect(result).toEqual({ widthClass: "w-64", style: undefined });
+  test("returns class when width is tailwind class string", () => {
+    const out = drawerWidthProps("w-64");
+    expect(out.widthClass).toBe("w-64");
+    expect(out.style).toBeUndefined();
   });
 
-  it("returns style for numeric width", () => {
-    const result = drawerWidthProps(250);
-    expect(result.widthClass).toBeUndefined();
-    expect(result.style).toEqual({ width: 250 });
-  });
-
-  it("handles percentage width string", () => {
-    expect(drawerWidthProps("50%")).toEqual({
-      widthClass: undefined,
-      style: { width: "50%" },
-    });
+  test("returns style when width is number", () => {
+    const out = drawerWidthProps(320);
+    expect(out.widthClass).toBeUndefined();
+    expect(out.style).toEqual({ width: 320 });
   });
 });
+

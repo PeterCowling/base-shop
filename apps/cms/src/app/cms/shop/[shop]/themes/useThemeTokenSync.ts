@@ -3,6 +3,8 @@
 import { Dispatch, SetStateAction, useEffect, useMemo, useRef, useState } from "react";
 import { patchShopTheme } from "../../../wizard/services/patchTheme";
 import { savePreviewTokens } from "../../../wizard/previewTokens";
+import type { BrandIntensity } from "./brandIntensity";
+import { computeBrandOverlay } from "./brandIntensity";
 
 interface Args {
   shop: string;
@@ -10,6 +12,7 @@ interface Args {
   overrides: Record<string, string>;
   tokensByThemeState: Record<string, Record<string, string>>;
   setOverrides: Dispatch<SetStateAction<Record<string, string>>>;
+  brandIntensity?: BrandIntensity;
 }
 
 export function useThemeTokenSync({
@@ -18,6 +21,7 @@ export function useThemeTokenSync({
   overrides,
   tokensByThemeState,
   setOverrides,
+  brandIntensity = "Everyday",
 }: Args) {
   const [previewTokens, setPreviewTokens] = useState<Record<string, string>>({
     ...tokensByThemeState[theme],
@@ -77,8 +81,11 @@ export function useThemeTokenSync({
   };
 
   useEffect(() => {
-    schedulePreviewUpdate(mergedTokens);
-  }, [mergedTokens]);
+    const brandOverlay = computeBrandOverlay(brandIntensity);
+    // Apply brand overlay to preview only (do not mutate overrides)
+    const preview = { ...mergedTokens, ...brandOverlay } as Record<string, string>;
+    schedulePreviewUpdate(preview);
+  }, [mergedTokens, brandIntensity]);
 
   // Broadcast initial tokens so previews reflect the current theme on mount
   useEffect(() => {
@@ -159,4 +166,3 @@ export function useThemeTokenSync({
     handleResetAll,
   };
 }
-

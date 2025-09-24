@@ -157,7 +157,11 @@ export default function StepSummary({
         )}
       </label>
 
-      {result && <p className="text-sm">{result}</p>}
+      {result && (
+        <div className="mt-2">
+          <span className="rounded bg-success-soft px-2 py-1 text-sm text-foreground">{result}</span>
+        </div>
+      )}
 
       <PreviewDeviceSelector onChange={setDevice} />
       <WizardPreview style={themeStyle} device={device} />

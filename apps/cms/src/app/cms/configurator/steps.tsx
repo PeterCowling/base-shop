@@ -75,8 +75,8 @@ const stepList: ConfiguratorStep[] = [
   },
   {
     id: "tokens",
-    label: "Design Tokens",
-    description: "Fine-tune colors, typography, and spacing so every surface feels on brand.",
+    label: "Fonts and Colors",
+    description: "Pick a font pairing and a color theme. Simple and fast.",
     icon: "🪄",
     track: "experience",
     component: StepTokens,

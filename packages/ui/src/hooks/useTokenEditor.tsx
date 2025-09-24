@@ -35,6 +35,15 @@ const googleFontList = [
   "Lato",
   "Merriweather",
   "Poppins",
+  // Additional popular families for pairings
+  "Space Grotesk",
+  "Playfair Display",
+  "Source Sans 3",
+  "Montserrat",
+  "Rubik",
+  "Work Sans",
+  "Nunito",
+  "Quicksand",
 ];
 
 export interface UseTokenEditorResult {
@@ -178,7 +187,19 @@ export function useTokenEditor(
         o.push(info);
       }
     });
-    return { colors: c, fonts: f, others: o };
+    // Emphasise three-font model and reduce clutter by hiding base plumbing tokens
+    const filteredFonts = f
+      .filter((t) => t.key !== "--font-sans" && t.key !== "--font-mono")
+      .sort((a, b) => {
+        const order = ["--font-body", "--font-heading-1", "--font-heading-2"];
+        const ia = order.indexOf(a.key);
+        const ib = order.indexOf(b.key);
+        if (ia !== -1 && ib !== -1) return ia - ib;
+        if (ia !== -1) return -1;
+        if (ib !== -1) return 1;
+        return a.key.localeCompare(b.key);
+      });
+    return { colors: c, fonts: filteredFonts, others: o };
   }, [tokens, baseTokens]);
 
   return {

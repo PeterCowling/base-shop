@@ -14,6 +14,17 @@ import { setupServer } from "msw/node";
  * `server.use(...extraHandlers)` at runtime.
  */
 export const defaultHandlers: RestHandler[] = [
+  // RBAC users list used by Comments mention feature
+  // Accepts GET to `/cms/api/rbac/users` and returns a small stable set
+  // of emails. The hook also supports a bare array, but an object with
+  // `users` mirrors typical API shape while remaining harmless.
+  rest.get("/cms/api/rbac/users", (_req, res, ctx) =>
+    res(ctx.status(200), ctx.json({ users: [
+      "me@example.com",
+      "alice@example.com",
+      "bob@example.com",
+    ] }))
+  ),
   // Healthy default endpoints for CMS configurator flows
   rest.post("/cms/api/configurator", (_req, res, ctx) =>
     res(ctx.status(200), ctx.json({ success: true, message: "default handler: OK" }))

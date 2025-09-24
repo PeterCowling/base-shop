@@ -22,7 +22,7 @@ interface Props {
  */
 const PaletteSidebar = ({ width, onWidthChange, onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, onInsertPreset, mode = "all" }: Props) => (
   <>
-    <aside className="shrink-0" style={{ width }} data-tour="palette" data-cy="pb-palette">
+    <aside className="shrink-0" style={{ width: 350 }} data-tour="palette" data-cy="pb-palette">
       <Palette
         onAdd={onAdd}
         onInsertImage={onInsertImage}
@@ -38,11 +38,13 @@ const PaletteSidebar = ({ width, onWidthChange, onAdd, onInsertImage, onSetSecti
       className="w-1 shrink-0 cursor-col-resize select-none bg-border/50 hover:bg-border"
       onPointerDown={(e) => {
         const startX = e.clientX;
-        const startW = width;
+        const startW = 350;
         const onMove = (ev: PointerEvent) => {
           const dx = ev.clientX - startX;
-          const next = Math.min(Math.max(startW + dx, 160), 360);
-          onWidthChange(next);
+          // Fixed width: keep at 350px regardless of drag
+          const _ = dx + startW; // keep references for potential future use
+          void _;
+          onWidthChange(350);
         };
         const onUp = () => {
           window.removeEventListener("pointermove", onMove);

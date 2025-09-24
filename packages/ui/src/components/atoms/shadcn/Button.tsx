@@ -9,8 +9,8 @@ import { Slot } from "../primitives/slot";
 
 export interface ButtonProps extends Omit<BaseButtonProps, "variant"> {
   variant?: BaseButtonProps["variant"] | "destructive";
-  /** Optional size override for icon-only buttons */
-  size?: "icon";
+  /** Optional size override */
+  size?: "icon" | "sm";
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
@@ -18,7 +18,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button";
     // Default to the primitive's base sizing (h-10 px-4 py-2) for text buttons.
     // Only override when rendering icon-only buttons for consistent square touch targets.
-    const sizeClass = size === "icon" ? "h-10 w-12 min-w-12 p-0 shrink-0" : "";
+    const sizeClass =
+      size === "icon"
+        ? "h-10 w-12 min-w-12 p-0 shrink-0"
+        : size === "sm"
+        ? "h-8 px-3 py-1.5 text-xs"
+        : "";
     if (variant === "destructive") {
       const base =
         "inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";

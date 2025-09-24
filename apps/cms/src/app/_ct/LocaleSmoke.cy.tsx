@@ -12,10 +12,9 @@ function I18nProbe() {
 }
 
 describe('Locale + i18n (CT)', { tags: ['basics'] }, () => {
-  it('sets html[lang] and renders translations', () => {
-    cy.mountWithRouterLocale(<I18nProbe />, { locale: 'de', messages: { hello: 'Hallo' } });
-    cy.get('[data-cy="lang"]').should('have.text', 'de');
-    cy.get('[data-cy="hello"]').should('have.text', 'Hallo');
+  it('sets html[lang] and renders translations (EN only)', () => {
+    cy.mountWithRouterLocale(<I18nProbe />, { locale: 'en', messages: { hello: 'Hello' } });
+    cy.get('[data-cy="lang"]').should('have.text', 'en');
+    cy.get('[data-cy="hello"]').should('have.text', 'Hello');
   });
 });
-

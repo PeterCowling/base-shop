@@ -38,5 +38,6 @@ export type { StyleOverrides } from "./style/StyleOverrides";
 export * from "./ds";
 export * from "./theme";
 export { sectionTemplateSchema } from "./section/template";
-export type { SectionTemplate } from "./section/template";
+export { sectionPresetSchema } from "./section/template";
+export type { SectionTemplate, SectionPreset } from "./section/template";
 export type { RentalLineItem } from "./rental";

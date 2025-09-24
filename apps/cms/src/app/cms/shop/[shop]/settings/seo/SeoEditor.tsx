@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 
-import { Toast } from "@/components/atoms";
+import { Alert, Toast } from "@/components/atoms";
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 import type { Locale } from "@acme/types";
 
@@ -86,11 +86,13 @@ export default function SeoEditor(props: UseSeoEditorProps) {
         <CardContent className="space-y-6 p-6">
           <SeoEditorHeader freeze={freeze} onFreezeChange={handleFreezeChange} />
 
-          <Tabs
-            value={locale}
-            onValueChange={handleLocaleChange}
-            items={languages.map((l) => ({ value: l, label: l.toUpperCase() }))}
-          />
+          {languages.length > 1 && (
+            <Tabs
+              value={locale}
+              onValueChange={handleLocaleChange}
+              items={languages.map((l) => ({ value: l, label: l.toUpperCase() }))}
+            />
+          )}
 
           <form className="space-y-6" onSubmit={handleSubmit}>
             <SeoSharedFields
@@ -107,14 +109,13 @@ export default function SeoEditor(props: UseSeoEditorProps) {
             />
 
             {warnings.length > 0 && (
-              <div className="rounded-md border border-warning/40 bg-warning/10 p-3 text-sm text-warning-foreground">
-                <p className="font-medium">Warnings</p>
+              <Alert variant="warning" tone="soft" title="Warnings">
                 <ul className="list-disc pl-5">
                   {warnings.map((warning) => (
                     <li key={warning}>{warning}</li>
                   ))}
                 </ul>
-              </div>
+              </Alert>
             )}
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

@@ -176,7 +176,7 @@ const PageSidebarSingleSelection = ({
   const handleFullSizeField = useCallback((field: string) => handleResize({ [field]: "100%" }), [handleResize]);
 
   const handleUpdateEditor = useCallback(
-    (patch: Partial<HistoryState["editor"][string]>) => {
+    (patch: Partial<NonNullable<HistoryState["editor"]>[string]>) => {
       if (!selectedIds[0]) return;
       dispatch({ type: "update-editor", id: selectedIds[0], patch } as any);
     },
@@ -184,7 +184,7 @@ const PageSidebarSingleSelection = ({
   );
 
   const updateEditorForId = useCallback(
-    (id: string, patch: Partial<HistoryState["editor"][string]>) => {
+    (id: string, patch: Partial<NonNullable<HistoryState["editor"]>[string]>) => {
       dispatch({ type: "update-editor", id, patch } as any);
     },
     [dispatch],

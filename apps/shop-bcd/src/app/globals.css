@@ -2,6 +2,8 @@
 
 @import "@themes/base/src/tokens.css";
 @import "../../../../packages/ui/src/styles/builder.css";
+@import "../../../../packages/ui/src/styles/typography.css";
+@import "../../../../packages/ui/src/styles/forms.css";
 
 @import "tailwindcss";
 
@@ -17,3 +19,7 @@
   hyphens: auto;
 }
 .sf-content :where(.min-w-0) { min-width: 0 !important; }
+
+/* -------- Typography mapping to theme tokens --------------------- */
+/* Ensure authored font selections flow through to runtime elements. */
+/* Heading/body mapping provided by shared typography.css */

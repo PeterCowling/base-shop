@@ -9,9 +9,9 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      data-token="--color-bg"
+      data-token="--color-panel"
       className={cn(
-        "bg-card text-card-foreground rounded-xl border shadow",
+        "bg-card text-card-foreground rounded-xl border border-border-2 shadow",
         className
       )}
       {...props}

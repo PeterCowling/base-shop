@@ -11,6 +11,7 @@ import {
 import { loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 import { fetchJson } from "@acme/shared-utils";
 import { useRouter } from "next/navigation";
+import { Alert, Button } from "../atoms";
 import { useEffect, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { isoDateInNDays } from "@acme/date-utils";
@@ -84,19 +85,19 @@ export default function CheckoutForm({
   if (!clientSecret) {
     if (fetchError)
       return (
-        <div className="space-y-2">
-          <p>{t("checkout.loadError")}</p>
-          <button
+        <div className="space-y-3">
+          <Alert variant="danger" tone="soft" title={t("checkout.loadError") as string} />
+          <Button
             type="button"
-            className="rounded bg-fg px-2 py-1 text-bg"
-            data-token="--color-fg"
+            color="primary"
+            tone="solid"
             onClick={() => {
               setFetchError(false);
               setRetry((r) => r + 1);
             }}
           >
             {t("checkout.retry")}
-          </button>
+          </Button>
         </div>
       );
     return <p>{t("checkout.loading")}</p>;
@@ -180,30 +181,16 @@ function PaymentForm({
       </label>
       <PaymentElement />
       {errors.returnDate && (
-        <p
-          id="returnDate-error"
-          className="text-sm text-danger"
-          data-token="--color-danger"
-          role="alert"
-        >
-          {errors.returnDate.message}
-        </p>
+        <Alert
+          variant="danger"
+          tone="soft"
+          title={errors.returnDate.message as string}
+        />
       )}
-      {error && (
-        <p className="text-sm text-danger" data-token="--color-danger" role="alert">
-          {error}
-        </p>
-      )}
-      <button
-        type="submit"
-        disabled={!stripe || processing}
-        className="w-full rounded bg-fg py-2 disabled:opacity-50"
-        data-token="--color-fg"
-      >
-        <span className="text-bg" data-token="--color-bg">
-          {processing ? t("checkout.processing") : t("checkout.pay")}
-        </span>
-      </button>
+      {error && <Alert variant="danger" tone="soft" title={error} />}
+      <Button type="submit" disabled={!stripe || processing} className="w-full" color="primary" tone="solid">
+        {processing ? t("checkout.processing") : t("checkout.pay")}
+      </Button>
     </form>
   );
 }

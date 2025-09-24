@@ -62,6 +62,30 @@ export default function DynamicRenderer({
       top,
       left,
       children: childBlocks,
+      // PB-only props that should not be forwarded to DOM elements/components
+      animation: _animIgnored,
+      animationDuration: _animDurIgnored,
+      animationDelay: _animDelayIgnored,
+      animationEasing: _animEaseIgnored,
+      reveal: _revealIgnored,
+      parallax: _parallaxIgnored,
+      sticky: _stickyIgnored,
+      stickyOffset: _stickyOffsetIgnored,
+      hoverScale: _hoverScaleIgnored,
+      hoverOpacity: _hoverOpacityIgnored,
+      staggerChildren: _staggerIgnored,
+      timeline: _timelineIgnored,
+      lottieUrl: _lottieUrlIgnored,
+      lottieAutoplay: _lottieAutoplayIgnored,
+      lottieLoop: _lottieLoopIgnored,
+      lottieSpeed: _lottieSpeedIgnored,
+      lottieTrigger: _lottieTriggerIgnored,
+      orderMobile: _orderMobileIgnored,
+      stackStrategy: _stackStrategyIgnored,
+      gridArea: _gridAreaIgnored,
+      gridColumn: _gridColumnIgnored,
+      gridRow: _gridRowIgnored,
+      styles: _stylesIgnored,
       ...rest
     } = block as PageComponent & { children?: PageComponent[] };
 
@@ -208,6 +232,10 @@ export default function DynamicRenderer({
     const gridRow = (blockRecord as Record<string, unknown>).gridRow as string | undefined;
     const staticTransform = varsRecord?.["--pb-static-transform"] as string | undefined;
 
+    // Remove non-DOM/implementation-only props from the component spread
+    const { staggerChildren: _staggerChildren_omit, ...cleanRest } = (rest as Record<string, unknown>);
+    const { staggerChildren: _staggerChildren_extra, ...cleanExtraProps } = (extraProps as Record<string, unknown>);
+
     return (
       <div
         key={id}
@@ -253,8 +281,8 @@ export default function DynamicRenderer({
         {needsHover ? (
           <div className="pb-hover-target">
             <Comp
-              {...rest}
-              {...extraProps}
+              {...(cleanRest as Record<string, unknown>)}
+              {...(cleanExtraProps as Record<string, unknown>)}
               id={id}
               type={_type}
               locale={locale}
@@ -265,8 +293,8 @@ export default function DynamicRenderer({
         ) : staticTransform ? (
           <div style={{ transform: staticTransform } as CSSProperties}>
             <Comp
-              {...rest}
-              {...extraProps}
+              {...(cleanRest as Record<string, unknown>)}
+              {...(cleanExtraProps as Record<string, unknown>)}
               id={id}
               type={_type}
               locale={locale}
@@ -276,8 +304,8 @@ export default function DynamicRenderer({
           </div>
         ) : (
           <Comp
-            {...rest}
-            {...extraProps}
+            {...(cleanRest as Record<string, unknown>)}
+            {...(cleanExtraProps as Record<string, unknown>)}
             id={id}
             type={_type}
             locale={locale}

@@ -115,7 +115,7 @@ export default defineConfig({
       // Use a Vite config tailored for CT with TS path aliases
       viteConfig: {
         plugins: [
-          tsconfigPaths({ projects: ["apps/cms/tsconfig.json", "tsconfig.base.json"] }),
+          tsconfigPaths({ projects: ["apps/cms/tsconfig.json", "apps/dashboard/tsconfig.json", "tsconfig.base.json"] }),
           istanbul({
             cypress: true,
             requireEnv: false,
@@ -126,6 +126,7 @@ export default defineConfig({
         resolve: {
           alias: {
             'next/navigation': resolvePath(process.cwd(), 'test/shims/next-navigation-ct.ts'),
+            'next/router': resolvePath(process.cwd(), 'test/shims/next-router-ct.ts'),
             '@cms/actions/shops.server': resolvePath(process.cwd(), 'test/shims/cms-actions-seo.ts'),
             '@platform-core/repositories/settings.server': resolvePath(process.cwd(), 'test/shims/platform-settings-repo.ts')
           }
@@ -133,7 +134,8 @@ export default defineConfig({
       }
     },
     specPattern: [
-      "apps/cms/src/**/*.cy.{ts,tsx}"
+      "apps/cms/src/**/*.cy.{ts,tsx}",
+      "apps/dashboard/src/**/*.cy.{ts,tsx}"
     ],
     supportFile: "cypress/support/component.ts",
     retries: { runMode: 2, openMode: 0 },

@@ -15,6 +15,8 @@ interface PageBuilderDialogsProps {
   canvasProps: CanvasProps;
   globalsOpen: boolean;
   setGlobalsOpen: Setter;
+  fontsOpen: boolean;
+  setFontsOpen: Setter;
   pagesOpen: boolean;
   setPagesOpen: Setter;
   cmsOpen: boolean;
@@ -29,6 +31,8 @@ const PageBuilderDialogs = ({
   canvasProps,
   globalsOpen,
   setGlobalsOpen,
+  fontsOpen,
+  setFontsOpen,
   pagesOpen,
   setPagesOpen,
   cmsOpen,
@@ -46,6 +50,7 @@ const PageBuilderDialogs = ({
       onSelectIds={(canvasProps as any)?.onSelectIds ?? (() => {})}
     />
     <GlobalsPanel open={globalsOpen} onOpenChange={setGlobalsOpen} shop={shop ?? null} pageId={pageId ?? null} />
+    {/* FontsPanel moved into left sidebar; dialog removed */}
     <PagesPanel open={pagesOpen} onOpenChange={setPagesOpen} shop={shop ?? null} />
     <CMSPanel
       open={cmsOpen}

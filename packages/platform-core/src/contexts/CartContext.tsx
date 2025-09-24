@@ -3,7 +3,7 @@
 
 import { type CartState } from "../cart";
 
-import type { SKU } from "@acme/types";
+import type { SKU, RentalLineItem } from "@acme/types";
 import {
   createContext,
   useContext,
@@ -16,7 +16,7 @@ import {
  * Action types
  * ------------------------------------------------------------------ */
 type Action =
-  | { type: "add"; sku: SKU; size?: string; qty?: number }
+  | { type: "add"; sku: SKU; size?: string; qty?: number; rental?: RentalLineItem }
   | { type: "remove"; id: string }
   | { type: "setQty"; id: string; qty: number }
   | { type: "clear" };
@@ -179,6 +179,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
           sku: { id: action.sku.id },
           qty: action.qty ?? 1,
           size: action.size,
+          // Optional rental payload (Phase 3.1)
+          rental: action.rental,
         };
         break;
       case "remove":

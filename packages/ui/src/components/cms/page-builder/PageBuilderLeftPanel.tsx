@@ -7,6 +7,8 @@ import QuickPaletteControls from "./QuickPaletteControls";
 import type GridSettings from "./GridSettings";
 import type PageSidebar from "./PageSidebar";
 import type { ComponentType } from "./defaults";
+import FontsPanel from "./FontsPanel";
+import ThemePanel from "./ThemePanel";
 import type { PageComponent } from "@acme/types";
 
 type SidebarProps = ComponentProps<typeof PageSidebar>;
@@ -51,6 +53,10 @@ interface PageBuilderLeftPanelProps {
   onOpenPages: () => void;
   onOpenGlobals: () => void;
   onOpenCMS: () => void;
+  onOpenFonts?: () => void;
+  showFonts?: boolean;
+  onOpenTheme?: () => void;
+  showTheme?: boolean;
 }
 
 const PageBuilderLeftPanel = ({
@@ -91,6 +97,10 @@ const PageBuilderLeftPanel = ({
   onOpenPages,
   onOpenGlobals,
   onOpenCMS,
+  onOpenFonts,
+  showFonts,
+  onOpenTheme,
+  showTheme,
 }: PageBuilderLeftPanelProps) => {
   const showQuickPalette = !showPalette && !showSections;
 
@@ -104,17 +114,16 @@ const PageBuilderLeftPanel = ({
         onOpenLayers={openLayers}
         onOpenPages={onOpenPages}
         onOpenGlobalSections={onOpenGlobals}
-        onOpenSiteStyles={() => {
-          try {
-            window.dispatchEvent(new Event("pb:open-theme"));
-          } catch {}
-        }}
+        onOpenSiteStyles={onOpenTheme || (() => {})}
+        onOpenFonts={onOpenFonts}
         onOpenCMS={onOpenCMS}
         onToggleInspector={onToggleInspector}
         isAddActive={showPalette}
         isSectionsActive={showSections}
         isLayersActive={showLayers}
         isInspectorActive={showInspector}
+        isFontsActive={!!showFonts}
+        isSiteStylesActive={!!showTheme}
         gridProps={gridProps}
         startTour={startTour}
         toggleComments={toggleComments}
@@ -154,6 +163,20 @@ const PageBuilderLeftPanel = ({
             onInsert={(c) => onInsertPreset?.(c)}
             onInsertLinked={(g) => onInsertLinkedSection?.(g)}
           />
+        </div>
+      )}
+      {showFonts && (
+        <div style={{ width: paletteWidth }} className="shrink-0">
+          <FontsPanel open variant="sidebar" onOpenChange={() => { /* inline variant ignores dialog open */ }} />
+        </div>
+      )}
+      {showTheme && (
+        <div style={{ width: paletteWidth }} className="shrink-0">
+          {/* Inline Theme (color) selector */}
+          <aside className="h-screen overflow-auto bg-surface-3" role="region" aria-label="Theme Panel">
+            {/* ThemePanel renders token editor UI; used inline here */}
+            <ThemePanel variant="sidebar" />
+          </aside>
         </div>
       )}
       {showLayers && (

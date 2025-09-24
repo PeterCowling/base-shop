@@ -14,6 +14,8 @@ import useLayerSelectionPreference from "./hooks/useLayerSelectionPreference";
 import useLocalStrings from "./hooks/useLocalStrings";
 import useInsertHandlers from "./hooks/useInsertHandlers";
 import useKeyboardShortcuts from "./hooks/useKeyboardShortcuts";
+import { validateSectionRules } from "@acme/platform-core/validation/sectionRules";
+import type { SectionTemplate } from "@acme/types/section/template";
 import useGridSize from "./hooks/useGridSize";
 import { defaults, CONTAINER_TYPES } from "./defaults";
 import {
@@ -160,8 +162,34 @@ const usePageBuilderLayout = ({
 
   saveRef.current = handleSave;
 
+  // Wrap publish with validation guardrails (hero limit, image width hint)
+  const publishWithValidation = async () => {
+    try {
+      const sections: SectionTemplate[] = (components || [])
+        .filter((c: any) => (c as any)?.type === 'Section')
+        .map((c: any, idx: number) => ({
+          id: `local-${idx}`,
+          label: (c as any)?.label || `Section ${idx + 1}`,
+          status: 'draft',
+          template: c,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          createdBy: 'editor',
+        }));
+      const result = validateSectionRules(sections);
+      if ((result as any).ok === false) {
+        const msg = (result as any).errors?.join('\n') || 'Validation failed';
+        setToast({ open: true, message: msg });
+        return;
+      }
+    } catch {
+      // non-blocking
+    }
+    await handlePublish();
+  };
+
   useKeyboardShortcuts({
-    onPublish: () => handlePublish(),
+    onPublish: () => publishWithValidation(),
     rotateDevice: (direction) => rotateDeviceRef.current(direction),
     togglePreview: () => togglePreviewRef.current(),
   });
@@ -238,7 +266,7 @@ const usePageBuilderLayout = ({
     onUndo: () => dispatch({ type: "undo" }),
     onRedo: () => dispatch({ type: "redo" }),
     onSave: handleSave,
-    onPublish: handlePublish,
+    onPublish: publishWithValidation,
     saving,
     publishing,
     saveError,
@@ -336,6 +364,47 @@ const usePageBuilderLayout = ({
     crossBreakpointNotices: (controls as any).crossBreakpointNotices,
     onCrossBreakpointNoticesChange: (controls as any).setCrossBreakpointNotices,
     mode,
+    canSavePreset: (() => {
+      if (!Array.isArray(selectedIds) || selectedIds.length !== 1) return false;
+      const id = selectedIds[0];
+      const c = (components || []).find((x: any) => (x as any)?.id === id) as any;
+      return !!c && c.type === 'Section';
+    })(),
+    onSavePreset: async () => {
+      try {
+        if (!Array.isArray(selectedIds) || selectedIds.length !== 1) {
+          setToast({ open: true, message: 'Select a single Section to save as preset' });
+          return;
+        }
+        const id = selectedIds[0];
+        const c = (components || []).find((x: any) => (x as any)?.id === id) as any;
+        if (!c || c.type !== 'Section') {
+          setToast({ open: true, message: 'Selected item is not a Section' });
+          return;
+        }
+        const label = (typeof window !== 'undefined' ? window.prompt('Preset label', c.label || 'Section Preset') : null) || '';
+        if (!label.trim()) return;
+        const lockedRaw = typeof window !== 'undefined' ? window.prompt('Locked keys (optional, comma-separated)', '') || '' : '';
+        const locked = lockedRaw.split(',').map((s: string) => s.trim()).filter(Boolean);
+        const preset = {
+          id: `${Date.now()}`,
+          label,
+          template: c,
+          locked: locked.length ? locked : undefined,
+          tags: [],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          createdBy: 'editor',
+        };
+        const target = shop ? `/api/sections/${encodeURIComponent(shop)}/presets` : '/api/sections/default/presets';
+        const res = await fetch(target, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ preset }) });
+        if (!res.ok) throw new Error('Failed to save preset');
+        setToast({ open: true, message: 'Preset saved' });
+      } catch (err) {
+        console.error('save preset failed', err);
+        setToast({ open: true, message: 'Failed to save preset' });
+      }
+    },
   } as PageBuilderLayoutProps;
 };
 

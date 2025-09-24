@@ -20,7 +20,7 @@ export default function EmptyCanvasOverlay({ onAddSection, onOpenPalette, onOpen
           <Button type="button" onClick={onAddSection}>Add Section</Button>
           <Button type="button" variant="outline" onClick={onOpenPalette}>Open Palette</Button>
           {onOpenPresets && (
-            <Button type="button" variant="outline" onClick={onOpenPresets}>Starter Layouts</Button>
+            <Button type="button" variant="outline" onClick={onOpenPresets}>Section Library</Button>
           )}
         </div>
         <div className="mt-3 text-xs text-muted-foreground">
@@ -30,4 +30,3 @@ export default function EmptyCanvasOverlay({ onAddSection, onOpenPalette, onOpen
     </div>
   );
 }
-

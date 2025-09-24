@@ -8,7 +8,7 @@ import MappingListField, {
   type MappingListFieldSelectOption,
 } from "../components/MappingListField";
 
-const DEFAULT_LOCALES = ["en", "de", "it"] as const;
+const DEFAULT_LOCALES = ["en"] as const;
 
 export type ShopLocalizationSectionErrors = Partial<
   Record<"localeOverrides", MappingListFieldErrors>

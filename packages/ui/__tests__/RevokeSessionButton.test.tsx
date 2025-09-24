@@ -1,45 +1,36 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import React from "react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import RevokeSessionButton from "../src/components/account/RevokeSessionButton";
-import { revoke as revokeSession } from "../src/actions/revokeSession";
 
-jest.mock("../src/actions/revokeSession", () => ({
-  __esModule: true,
-  revoke: jest.fn(),
-}));
-
-const refresh = jest.fn();
+const refreshMock = jest.fn();
 jest.mock("next/navigation", () => ({
-  __esModule: true,
-  useRouter: () => ({ refresh }),
+  useRouter: () => ({ refresh: refreshMock }),
 }));
 
 describe("RevokeSessionButton", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    refreshMock.mockClear();
   });
 
-  it("calls revokeSession and shows loading state", async () => {
-    let resolve: (value: { success: boolean }) => void;
-    (revokeSession as jest.Mock).mockReturnValue(
-      new Promise((res) => {
-        resolve = res;
-      })
-    );
+  it("refreshes router on successful revoke", async () => {
+    const revoke = jest.fn().mockResolvedValue({ success: true });
+    render(<RevokeSessionButton sessionId="s1" revoke={revoke} />);
 
-    render(
-      <RevokeSessionButton sessionId="abc" revoke={revokeSession} />
-    );
+    fireEvent.click(screen.getByRole("button", { name: /revoke/i }));
 
-    const button = screen.getByRole("button", { name: "Revoke" });
-    await userEvent.click(button);
+    await waitFor(() => expect(revoke).toHaveBeenCalledWith("s1"));
+    expect(refreshMock).toHaveBeenCalled();
+    expect(screen.queryByText(/failed to revoke/i)).toBeNull();
+  });
 
-    expect(revokeSession).toHaveBeenCalledWith("abc");
-    await waitFor(() => expect(button).toBeDisabled());
-    expect(button).toHaveTextContent("Revoking...");
+  it("shows error when revoke fails", async () => {
+    const revoke = jest.fn().mockResolvedValue({ success: false, error: "Oops" });
+    render(<RevokeSessionButton sessionId="s2" revoke={revoke} />);
 
-    resolve!({ success: true });
-    await waitFor(() => expect(button).toBeEnabled());
-    expect(button).toHaveTextContent("Revoke");
+    fireEvent.click(screen.getByRole("button", { name: /revoke/i }));
+
+    await screen.findByText("Oops");
+    expect(refreshMock).not.toHaveBeenCalled();
   });
 });
+

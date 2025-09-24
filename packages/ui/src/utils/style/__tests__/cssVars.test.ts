@@ -1,51 +1,78 @@
+// packages/ui/src/utils/style/__tests__/cssVars.test.ts
 import { cssVars } from "../cssVars";
 
 describe("cssVars", () => {
-  it("returns empty object for no overrides", () => {
+  test("returns empty object when no overrides provided", () => {
     expect(cssVars()).toEqual({});
   });
 
-  it("maps color overrides to CSS variables", () => {
-    const vars = cssVars({
-      color: { bg: "--bg", fg: "--fg", border: "--border" },
-    });
-    expect(vars).toEqual({
-      "--color-bg": "var(--bg)",
-      "--color-fg": "var(--fg)",
-      "--color-border": "var(--border)",
-    });
-  });
-
-  it("maps typography overrides to CSS variables", () => {
-    const vars = cssVars({
+  test("maps color and typography overrides to CSS custom properties", () => {
+    const out = cssVars({
+      color: { bg: "--color-bg-1", fg: "--color-fg", border: "--color-border" },
       typography: {
-        fontFamily: "--font-family",
-        fontSize: "--font-size",
-        fontWeight: "--font-weight",
-        lineHeight: "--line-height",
+        fontFamily: "--font-body",
+        fontSize: "--font-size-1",
+        fontWeight: "--font-weight-1",
+        lineHeight: "--line-height-1",
       },
-    });
-    expect(vars).toEqual({
-      "--font-family": "var(--font-family)",
-      "--font-size": "var(--font-size)",
-      "--font-weight": "var(--font-weight)",
-      "--line-height": "var(--line-height)",
+      typographyDesktop: { fontSize: "--font-size-2", lineHeight: "--line-height-2" },
+      typographyTablet: { fontSize: "--font-size-3", lineHeight: "--line-height-3" },
+      typographyMobile: { fontSize: "--font-size-4", lineHeight: "--line-height-4" },
+    } as any);
+
+    expect(out).toMatchObject({
+      "--color-bg": "var(--color-bg-1)",
+      "--color-fg": "var(--color-fg)",
+      "--color-border": "var(--color-border)",
+      "--font-family": "var(--font-body)",
+      "--font-size": "var(--font-size-1)",
+      "--font-weight": "var(--font-weight-1)",
+      "--line-height": "var(--line-height-1)",
+      "--font-size-desktop": "var(--font-size-2)",
+      "--line-height-desktop": "var(--line-height-2)",
+      "--font-size-tablet": "var(--font-size-3)",
+      "--line-height-tablet": "var(--line-height-3)",
+      "--font-size-mobile": "var(--font-size-4)",
+      "--line-height-mobile": "var(--line-height-4)",
     });
   });
 
-  it("ignores missing tokens", () => {
-    const vars = cssVars({ color: {} });
-    expect(vars).toEqual({});
-  });
+  test("maps effects fields including composed transform", () => {
+    const out = cssVars({
+      effects: {
+        borderRadius: "8px",
+        boxShadow: "0 0 0 1px red",
+        opacity: "0.9",
+        backdropFilter: "blur(4px)",
+        outline: "2px solid",
+        outlineOffset: "2px",
+        borderTop: "1px solid",
+        borderRight: "1px solid",
+        borderBottom: "1px solid",
+        borderLeft: "1px solid",
+        transformRotate: "10deg",
+        transformScale: "1.1",
+        transformSkewX: "2deg",
+        transformSkewY: "-1deg",
+      },
+    } as any);
 
-  it("supports combined color and typography overrides", () => {
-    const vars = cssVars({
-      color: { bg: "--bg" },
-      typography: { fontSize: "--size" },
+    expect(out).toMatchObject({
+      borderRadius: "8px",
+      boxShadow: "0 0 0 1px red",
+      opacity: "0.9",
+      backdropFilter: "blur(4px)",
+      outline: "2px solid",
+      outlineOffset: "2px",
+      borderTop: "1px solid",
+      borderRight: "1px solid",
+      borderBottom: "1px solid",
+      borderLeft: "1px solid",
+      "--pb-static-transform": expect.stringContaining("rotate(10deg)"),
     });
-    expect(vars).toEqual({
-      "--color-bg": "var(--bg)",
-      "--font-size": "var(--size)",
-    });
+    expect(out["--pb-static-transform"]).toContain("scale(1.1)");
+    expect(out["--pb-static-transform"]).toContain("skewX(2deg)");
+    expect(out["--pb-static-transform"]).toContain("skewY(-1deg)");
   });
 });
+

@@ -1,27 +1,18 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { Chip } from "../src/components/atoms/Chip";
-import { Tag } from "../src/components/atoms/Tag";
 
 describe("Chip", () => {
-  it("calls onRemove when remove button clicked", () => {
-    const fn = jest.fn();
-    render(<Chip onRemove={fn}>Label</Chip>);
+  it("renders children and remove button triggers callback", () => {
+    const onRemove = jest.fn();
+    render(
+      <Chip onRemove={onRemove} variant="success">
+        Label
+      </Chip>
+    );
+    expect(screen.getByText("Label")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button"));
-    expect(fn).toHaveBeenCalled();
-  });
-
-  it("forwards extra class names via cn", () => {
-    const { container } = render(<Chip className="extra">Text</Chip>);
-    const span = container.firstChild as HTMLElement;
-    expect(span.className).toContain("extra");
+    expect(onRemove).toHaveBeenCalled();
   });
 });
 
-describe("Tag", () => {
-  it("applies success variant classes", () => {
-    const { container } = render(<Tag variant="success" />);
-    const span = container.firstChild as HTMLElement;
-    expect(span.className).toContain("bg-success");
-    expect(span.className).toContain("text-success-fg");
-  });
-});

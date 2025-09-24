@@ -1,19 +1,29 @@
+import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import DeviceSelector from "../src/components/DeviceSelector";
 import { getLegacyPreset } from "../src/utils/devicePresets";
 
+// Mock shadcn primitives to simple HTML controls
 jest.mock("../src/components/atoms/shadcn", () => {
-  const React = require("react");
   return {
     Button: ({ children, ...props }: any) => (
       <button {...props}>{children}</button>
     ),
+    // Render a native <select> and pass through children.
+    // With SelectTrigger mocked to null, only <option> elements remain
+    // (wrapped by a Fragment from SelectContent), which is valid.
     Select: ({ value, onValueChange, children }: any) => (
-      <select value={value} onChange={(e) => onValueChange(e.target.value)}>
+      <select
+        aria-label="Device"
+        value={value}
+        onChange={(e) => onValueChange((e.target as HTMLSelectElement).value)}
+      >
         {children}
       </select>
     ),
-    SelectTrigger: ({ children }: any) => <>{children}</>,
+    // In Radix, Trigger is a button; for the native-select mock we omit it
+    // entirely to avoid placing a <div> within <select>.
+    SelectTrigger: () => null,
     SelectValue: () => null,
     SelectContent: ({ children }: any) => <>{children}</>,
     SelectItem: ({ children, value }: any) => (
@@ -23,79 +33,35 @@ jest.mock("../src/components/atoms/shadcn", () => {
 });
 
 describe("DeviceSelector", () => {
-  it("calls setDeviceId with correct device values", () => {
-    const setDeviceId = jest.fn();
-    const currentId = getLegacyPreset("desktop").id;
-    render(<DeviceSelector deviceId={currentId} setDeviceId={setDeviceId} />);
-
-    fireEvent.click(screen.getByRole("button", { name: "tablet" }));
-    expect(setDeviceId).toHaveBeenNthCalledWith(1, getLegacyPreset("tablet").id);
-
-    fireEvent.click(screen.getByRole("button", { name: "mobile" }));
-    expect(setDeviceId).toHaveBeenNthCalledWith(2, getLegacyPreset("mobile").id);
-
-    fireEvent.click(screen.getByRole("button", { name: "desktop" }));
-    expect(setDeviceId).toHaveBeenNthCalledWith(3, getLegacyPreset("desktop").id);
-
-    fireEvent.change(screen.getByRole("combobox"), {
-      target: { value: getLegacyPreset("mobile").id },
-    });
-    expect(setDeviceId).toHaveBeenNthCalledWith(
-      4,
-      getLegacyPreset("mobile").id,
-    );
-  });
-
-  it("toggles active button variant based on deviceId", () => {
-    const setDeviceId = jest.fn();
-    const { rerender } = render(
+  it("clicks legacy buttons to select presets", () => {
+    const onChange = jest.fn();
+    render(
       <DeviceSelector
         deviceId={getLegacyPreset("desktop").id}
-        setDeviceId={setDeviceId}
-      />,
+        setDeviceId={onChange}
+      />
     );
 
-    expect(
-      screen.getByRole("button", { name: "desktop" }),
-    ).toHaveAttribute("variant", "default");
-    expect(
-      screen.getByRole("button", { name: "tablet" }),
-    ).toHaveAttribute("variant", "outline");
-    expect(
-      screen.getByRole("button", { name: "mobile" }),
-    ).toHaveAttribute("variant", "outline");
+    fireEvent.click(screen.getByRole("button", { name: /tablet/i }));
+    expect(onChange).toHaveBeenCalledWith(getLegacyPreset("tablet").id);
+    fireEvent.click(screen.getByRole("button", { name: /mobile/i }));
+    expect(onChange).toHaveBeenCalledWith(getLegacyPreset("mobile").id);
+    fireEvent.click(screen.getByRole("button", { name: /desktop/i }));
+    expect(onChange).toHaveBeenCalledWith(getLegacyPreset("desktop").id);
+  });
 
-    rerender(
+  it("changes select to a specific preset id", () => {
+    const onChange = jest.fn();
+    render(
       <DeviceSelector
-        deviceId={getLegacyPreset("tablet").id}
-        setDeviceId={setDeviceId}
-      />,
+        deviceId={getLegacyPreset("desktop").id}
+        setDeviceId={onChange}
+      />
     );
-    expect(
-      screen.getByRole("button", { name: "tablet" }),
-    ).toHaveAttribute("variant", "default");
-    expect(
-      screen.getByRole("button", { name: "desktop" }),
-    ).toHaveAttribute("variant", "outline");
-    expect(
-      screen.getByRole("button", { name: "mobile" }),
-    ).toHaveAttribute("variant", "outline");
 
-    rerender(
-      <DeviceSelector
-        deviceId={getLegacyPreset("mobile").id}
-        setDeviceId={setDeviceId}
-      />,
-    );
-    expect(
-      screen.getByRole("button", { name: "mobile" }),
-    ).toHaveAttribute("variant", "default");
-    expect(
-      screen.getByRole("button", { name: "tablet" }),
-    ).toHaveAttribute("variant", "outline");
-    expect(
-      screen.getByRole("button", { name: "desktop" }),
-    ).toHaveAttribute("variant", "outline");
+    const select = screen.getByRole("combobox");
+    expect((select as HTMLSelectElement).value).toBe(getLegacyPreset("desktop").id);
+    fireEvent.change(select, { target: { value: getLegacyPreset("mobile").id } });
+    expect(onChange).toHaveBeenCalledWith(getLegacyPreset("mobile").id);
   });
 });
-

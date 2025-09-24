@@ -3,7 +3,7 @@
 import { ConfiguratorProgress, getSteps, stepIndex, stepTrackMeta, steps } from "../steps";
 import { useConfigurator } from "../ConfiguratorContext";
 import { Card, CardContent } from "@/components/atoms/shadcn";
-import { Tag } from "@ui/components/atoms";
+import { Alert, Tag } from "@ui/components/atoms";
 import { cn } from "@ui/utils/style";
 import type { ConfiguratorStep } from "../types";
 
@@ -85,14 +85,13 @@ export default function StepPage({ stepId }: Props) {
             <ConfiguratorProgress currentStepId={stepId} completed={state.completed} />
           </div>
           {pendingRecommendations.length > 0 && (
-            <div className="rounded-xl border border-warning/40 bg-warning/10 p-4 text-sm text-warning-fg">
-              <p className="font-medium">Recommended to finish first</p>
+            <Alert variant="warning" tone="soft" title="Recommended to finish first">
               <ul className="mt-1 list-disc pl-5">
                 {pendingRecommendations.map((recommendedStep) => (
                   <li key={recommendedStep.id}>{recommendedStep.label}</li>
                 ))}
               </ul>
-            </div>
+            </Alert>
           )}
           <div className="rounded-2xl border border-border bg-card p-6">
             <StepComponent prevStepId={prev?.id} nextStepId={next?.id} />

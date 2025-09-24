@@ -1,9 +1,0 @@
-{
-  "slug": "abc",
-  "name": "ABC Shop",
-  "themeOverrides": {},
-  "lastUpgrade": "2024-01-01T00:00:00.000Z",
-  "componentVersions": {
-    "pkg": "1.0.0"
-  }
-}

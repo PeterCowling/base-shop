@@ -2,47 +2,73 @@
 import * as React from "react";
 import { cn } from "../../utils/style";
 
-type ToastVariant = "default" | "success" | "error";
+type ToastVariant = "default" | "success" | "info" | "warning" | "danger" | "error";
+type ToastTone = "soft" | "solid";
 
 export interface ToastProps extends React.HTMLAttributes<HTMLDivElement> {
   open: boolean;
   onClose?: () => void;
   message: string;
   variant?: ToastVariant;
+  tone?: ToastTone;
 }
 
-const VARIANT_STYLES: Record<ToastVariant, {
-  className: string;
-  token: string;
-  tokenFg: string;
-}> = {
-  default: {
-    className: "bg-fg text-bg",
-    token: "--color-fg",
-    tokenFg: "--color-bg",
-  },
-  success: {
-    className: "bg-success text-success-fg",
-    token: "--color-success",
-    tokenFg: "--color-success-fg",
-  },
-  error: {
-    className: "bg-destructive text-destructive-foreground",
-    token: "--color-danger",
-    tokenFg: "--color-danger-fg",
-  },
+const SOFT_BG: Record<Exclude<ToastVariant, "error">, string> = {
+  default: "bg-muted",
+  success: "bg-success-soft",
+  info: "bg-info-soft",
+  warning: "bg-warning-soft",
+  danger: "bg-danger-soft",
+};
+
+const SOLID_BG: Record<Exclude<ToastVariant, "error">, string> = {
+  default: "bg-fg",
+  success: "bg-success",
+  info: "bg-info",
+  warning: "bg-warning",
+  danger: "bg-danger",
+};
+
+const FG: Record<Exclude<ToastVariant, "error">, string> = {
+  default: "text-bg",
+  success: "text-success-foreground",
+  info: "text-info-foreground",
+  warning: "text-warning-foreground",
+  danger: "text-danger-foreground",
+};
+
+const TOKEN_BG: Record<Exclude<ToastVariant, "error">, string> = {
+  default: "--color-muted",
+  success: "--color-success",
+  info: "--color-info",
+  warning: "--color-warning",
+  danger: "--color-danger",
+};
+
+const TOKEN_FG: Record<Exclude<ToastVariant, "error">, string> = {
+  default: "--color-bg",
+  success: "--color-success-fg",
+  info: "--color-info-fg",
+  warning: "--color-warning-fg",
+  danger: "--color-danger-fg",
 };
 
 export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
-  ({ open, onClose, message, className, variant = "default", ...props }, ref) => {
+  ({ open, onClose, message, className, variant = "default", tone = "soft", ...props }, ref) => {
     if (!open) return null;
-    const { className: variantClassName, token, tokenFg } = VARIANT_STYLES[variant];
+    // Back-compat: "error" maps to "danger"
+    const v = variant === "error" ? "danger" : variant;
+    const bgClass = tone === "solid" ? SOLID_BG[v] : SOFT_BG[v];
+    const fgClass = tone === "solid" ? FG[v] : "text-fg";
+    const token = TOKEN_BG[v];
+    const tokenFg = TOKEN_FG[v];
     return (
       <div
         ref={ref}
         className={cn(
-          "fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-md px-4 py-2 shadow-elevation-3 max-w-[90vw] sm:max-w-md break-words",
-          variantClassName,
+          "fixed bottom-4 left-1/2 z-50 -translate-x-1/2 rounded-md border border-border-2 px-4 py-2 shadow-elevation-3 max-w-[90vw] sm:max-w-md break-words",
+          bgClass,
+          fgClass,
           className
         )}
         data-token={token}

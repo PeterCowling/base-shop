@@ -23,9 +23,36 @@ export async function GET(
       .filter(Boolean);
     const page = Math.max(1, parseInt(url.searchParams.get("page") || "0", 10) || 0);
     const pageSizeRaw = parseInt(url.searchParams.get("pageSize") || "0", 10) || 0;
-    const pageSize = page > 0 ? Math.min(100, Math.max(1, pageSizeRaw || 24)) : 0;
+    // Allow larger result sets to support shops with many sections
+    const pageSize = page > 0 ? Math.min(500, Math.max(1, pageSizeRaw || 24)) : 0;
 
-    const list = await getSections(shop);
+    const listRaw = await getSections(shop);
+
+    // Ensure all sections have helpful tags for filtering in the UI
+    const deriveTags = (s: SectionTemplate): string[] => {
+      const tags = new Set<string>((s.tags || []).map((t) => t.toLowerCase()));
+      tags.add("section");
+      const label = (s.label || "").toLowerCase();
+      const addIf = (cond: boolean, t: string) => { if (cond) tags.add(t); };
+      addIf(/hero/.test(label), "hero");
+      addIf(/feature/.test(label), "features");
+      addIf(/testimonial/.test(label), "testimonials");
+      addIf(/commerce|product|shop|grid|carousel/.test(label), "commerce");
+      // Inspect template children for hints
+      try {
+        const root: any = s.template as any;
+        const types: string[] = Array.isArray(root?.children) ? root.children.map((c: any) => String(c?.type || "").toLowerCase()) : [];
+        addIf(types.includes("herobanner"), "hero");
+        addIf(types.includes("productcarousel") || types.includes("productgrid"), "commerce");
+        addIf(types.includes("multicolumn"), "features");
+        addIf(types.includes("testimonial") || types.includes("testimonials"), "testimonials");
+        addIf(types.includes("image"), "image");
+        addIf(types.includes("button"), "cta");
+      } catch {}
+      return Array.from(tags);
+    };
+
+    const list: SectionTemplate[] = listRaw.map((s) => ({ ...s, tags: deriveTags(s) }));
 
     // No filters/pagination → preserve legacy shape (array)
     if (!q && tagsFilter.length === 0 && page === 0) {

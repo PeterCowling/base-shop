@@ -25,7 +25,8 @@ module.exports = {
     "!**/?(*.)+(spec|test).{ts,tsx}",
     "!**/__tests__/**",
   ],
-  coverageReporters: ["text-summary", "lcov", "json"],
+  // Ensure per-file breakdown is printed to the console
+  coverageReporters: ["text", "text-summary", "lcov", "json"],
   // Do not enforce global thresholds for this app unless explicitly desired
   coverageThreshold: undefined,
 };

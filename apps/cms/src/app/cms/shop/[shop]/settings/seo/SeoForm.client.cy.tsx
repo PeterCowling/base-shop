@@ -2,7 +2,7 @@ import React from 'react';
 import SeoForm from './SeoForm.client';
 import type { Locale } from '@acme/types';
 
-const languages = ['en', 'de'] as unknown as Locale[];
+const languages = ['en'] as unknown as Locale[];
 
 describe('SeoForm (CT)', { tags: ['forms'] }, () => {
   it('saves and shows warnings for long fields', () => {
@@ -10,7 +10,7 @@ describe('SeoForm (CT)', { tags: ['forms'] }, () => {
       <SeoForm
         shop="demo"
         languages={languages}
-        initialSeo={{ en: { title: '', description: '' }, de: {} }}
+        initialSeo={{ en: { title: '', description: '' } }}
         baseLocale={languages[0]}
       />
     );
@@ -40,4 +40,3 @@ describe('SeoForm (CT)', { tags: ['forms'] }, () => {
     cy.findByText('Required').should('exist');
   });
 });
-

@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import { Card, CardContent } from "@/components/atoms/shadcn";
+import { Alert } from "@ui/components/atoms";
 import type { Shop } from "@acme/types";
 
 const ShopEditor = dynamic(() => import("../ShopEditor"));
@@ -26,13 +27,7 @@ export default function AdminTools({
 }: AdminToolsProps) {
   if (!isAdmin) {
     return (
-      <Card className="border border-warning/20 bg-warning/10 text-warning-foreground">
-        <CardContent className="p-4">
-          <p className="text-sm">
-            You are signed in as a <b>viewer</b>. Editing is disabled.
-          </p>
-        </CardContent>
-      </Card>
+      <Alert variant="warning" tone="soft" title="You are signed in as a viewer. Editing is disabled." />
     );
   }
 

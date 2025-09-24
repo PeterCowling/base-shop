@@ -13,7 +13,15 @@ import { getShopFromPath } from "@acme/shared-utils";
  * - Live updates via broadcasting preview tokens
  * - Persists changes per shop via /cms/api/shops/[shop]/theme PATCH
  */
-export default function ThemePanel() {
+export interface ThemePanelProps {
+  /**
+   * Render style for the panel. "dialog" places content inside shadcn Dialog components.
+   * "sidebar" renders inline without any Dialog wrappers so it can be embedded.
+   */
+  variant?: "dialog" | "sidebar";
+}
+
+export default function ThemePanel({ variant = "dialog" }: ThemePanelProps) {
   const pathname = usePathname() ?? "";
   const shop = useMemo(() => getShopFromPath(pathname) ?? "", [pathname]);
   const preview = usePreviewTokens();
@@ -200,6 +208,25 @@ export default function ThemePanel() {
     };
   }, [shop]);
 
+  if (variant === "sidebar") {
+    return (
+      <div className="space-y-3 p-3">
+        <div className="text-sm font-semibold">Theme</div>
+        <p className="text-sm text-muted-foreground">
+          Adjust brand colors and typography. Changes preview instantly and save to this shop.
+        </p>
+        <Tokens
+          tokens={tokens}
+          baseTokens={baseTokens}
+          onChange={handleTokensChange}
+          onRenameToken={handleRenameToken}
+          onReplaceColor={handleReplaceColor}
+        />
+      </div>
+    );
+  }
+
+  // Default: dialog variant
   return (
     <DialogContent className="max-w-4xl">
       <DialogTitle>Theme</DialogTitle>

@@ -27,5 +27,55 @@
       "--color-accent": "260 83% 70%",
       "--color-accent-fg": "0 0% 10%"
     }
+  },
+  {
+    "id": "type-modern-tech",
+    "name": "Typography: Inter + Space Grotesk",
+    "tags": ["tech", "electronics", "SaaS", "modern"],
+    "tokens": {
+      "--font-body": "\"Inter\", var(--font-sans)",
+      "--font-heading-1": "\"Space Grotesk\", var(--font-sans)",
+      "--font-heading-2": "\"Inter\", var(--font-sans)"
+    }
+  },
+  {
+    "id": "type-editorial-luxury",
+    "name": "Typography: Playfair + Lato",
+    "tags": ["luxury", "fashion", "editorial", "boutique"],
+    "tokens": {
+      "--font-body": "\"Lato\", var(--font-sans)",
+      "--font-heading-1": "\"Playfair Display\", var(--font-sans)",
+      "--font-heading-2": "\"Lato\", var(--font-sans)"
+    }
+  },
+  {
+    "id": "type-minimal-home",
+    "name": "Typography: Source Sans + Montserrat",
+    "tags": ["home", "furniture", "lifestyle", "minimal"],
+    "tokens": {
+      "--font-body": "\"Source Sans 3\", var(--font-sans)",
+      "--font-heading-1": "\"Montserrat\", var(--font-sans)",
+      "--font-heading-2": "\"Source Sans 3\", var(--font-sans)"
+    }
+  },
+  {
+    "id": "type-outdoors-gear",
+    "name": "Typography: Rubik + Work Sans",
+    "tags": ["outdoors", "sports", "gear", "sturdy"],
+    "tokens": {
+      "--font-body": "\"Work Sans\", var(--font-sans)",
+      "--font-heading-1": "\"Rubik\", var(--font-sans)",
+      "--font-heading-2": "\"Work Sans\", var(--font-sans)"
+    }
+  },
+  {
+    "id": "type-handmade-crafts",
+    "name": "Typography: Nunito + Quicksand",
+    "tags": ["handmade", "crafts", "kids", "friendly"],
+    "tokens": {
+      "--font-body": "\"Nunito\", var(--font-sans)",
+      "--font-heading-1": "\"Quicksand\", var(--font-sans)",
+      "--font-heading-2": "\"Nunito\", var(--font-sans)"
+    }
   }
 ]

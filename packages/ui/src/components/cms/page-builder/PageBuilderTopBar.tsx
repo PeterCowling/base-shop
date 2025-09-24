@@ -36,6 +36,9 @@ interface PageBuilderTopBarProps {
   onToggleInspector: () => void;
   helpOpen: boolean;
   onHelpOpenChange: (open: boolean) => void;
+  // Presets authoring
+  canSavePreset?: boolean;
+  onSavePreset?: () => void;
 }
 
 const PageBuilderTopBar = ({
@@ -62,6 +65,8 @@ const PageBuilderTopBar = ({
   onToggleInspector,
   helpOpen,
   onHelpOpenChange,
+  canSavePreset,
+  onSavePreset,
 }: PageBuilderTopBarProps) => (
   <div className="sticky top-0 z-10 w-full overflow-x-hidden bg-surface-1/95 backdrop-blur supports-[backdrop-filter]:bg-surface-1/70">
     <div className="flex w-full items-center gap-2 py-2">
@@ -204,6 +209,28 @@ const PageBuilderTopBar = ({
         />
       </div>
       <div className="flex items-center gap-2">
+        {/* Quick access to Presets modal */}
+        {typeof window !== 'undefined' && (
+          <Tooltip text="Insert a preset layout">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                try { window.dispatchEvent(new Event("pb:open-presets")); } catch {}
+              }}
+              aria-label="Insert Preset"
+            >
+              Insert Preset
+            </Button>
+          </Tooltip>
+        )}
+        {onSavePreset && (
+          <Tooltip text={canSavePreset ? "Save selected Section as preset" : "Select a Section to save as preset"}>
+            <Button variant="outline" size="sm" disabled={!canSavePreset} onClick={onSavePreset} aria-disabled={!canSavePreset}>
+              Save as Preset
+            </Button>
+          </Tooltip>
+        )}
         <ResponsiveRightActions
           gridProps={gridProps}
           onInsertPreset={onInsertPreset}

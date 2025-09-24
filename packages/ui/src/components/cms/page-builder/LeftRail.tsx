@@ -10,6 +10,7 @@ import {
   TokensIcon,
   TableIcon,
   ChevronRightIcon,
+  FontFamilyIcon,
 } from "@radix-ui/react-icons";
 import MoreMenu from "./MoreMenu";
 import { ViewMenuContent } from "./ViewMenu";
@@ -23,6 +24,7 @@ interface Props {
   onOpenLayers: () => void;
   onOpenPages: () => void;
   onOpenSiteStyles: () => void;
+  onOpenFonts?: () => void;
   onOpenGlobalSections: () => void;
   onOpenCMS: () => void;
   onToggleInspector: () => void;
@@ -30,6 +32,8 @@ interface Props {
   isSectionsActive?: boolean;
   isLayersActive?: boolean;
   isInspectorActive?: boolean;
+  isFontsActive?: boolean;
+  isSiteStylesActive?: boolean;
   // For More actions content
   gridProps?: React.ComponentProps<typeof GridSettings>;
   startTour?: () => void;
@@ -54,7 +58,7 @@ interface Props {
 }
 
 // Minimal left icon rail. Uses simple glyphs; replace with line icons later.
-export default function LeftRail({ onOpenAdd, onOpenSections, onOpenLayers, onOpenPages, onOpenSiteStyles, onOpenGlobalSections, onOpenCMS, onToggleInspector, isAddActive = false, isSectionsActive = false, isLayersActive = false, isInspectorActive = false, gridProps, startTour, toggleComments, showComments, togglePreview, showPreview, showPalette, togglePalette, parentFirst, onParentFirstChange, crossBreakpointNotices, onCrossBreakpointNoticesChange, breakpoints, setBreakpoints, hideAddElements, hidePages, hideGlobalSections, hideSiteStyles, hideCMS }: Props) {
+export default function LeftRail({ onOpenAdd, onOpenSections, onOpenLayers, onOpenPages, onOpenSiteStyles, onOpenGlobalSections, onOpenCMS, onToggleInspector, isAddActive = false, isSectionsActive = false, isLayersActive = false, isInspectorActive = false, isFontsActive = false, isSiteStylesActive = false, gridProps, startTour, toggleComments, showComments, togglePreview, showPreview, showPalette, togglePalette, parentFirst, onParentFirstChange, crossBreakpointNotices, onCrossBreakpointNoticesChange, breakpoints, setBreakpoints, hideAddElements, hidePages, hideGlobalSections, hideSiteStyles, hideCMS, onOpenFonts }: Props) {
   const Item = ({ label, onClick, icon, active = false }: { label: string; onClick: () => void; icon: React.ReactNode; active?: boolean }) => (
     <Tooltip text={label}>
       <button
@@ -81,7 +85,9 @@ export default function LeftRail({ onOpenAdd, onOpenSections, onOpenLayers, onOp
       <Item label="Layers" onClick={onOpenLayers} icon={<LayersIcon className="h-5 w-5" />} active={isLayersActive} />
       {!hidePages && <Item label="Pages" onClick={onOpenPages} icon={<ReaderIcon className="h-5 w-5" />} />}
       {!hideGlobalSections && <Item label="Global Sections" onClick={onOpenGlobalSections} icon={<SectionIcon className="h-5 w-5" />} />}
-      {!hideSiteStyles && <Item label="Site Styles" onClick={onOpenSiteStyles} icon={<TokensIcon className="h-5 w-5" />} />}
+      {!hideSiteStyles && <Item label="Site Styles" onClick={onOpenSiteStyles} icon={<TokensIcon className="h-5 w-5" />} active={isSiteStylesActive} />}
+      {/* Dedicated Fonts editor */}
+      {onOpenFonts && <Item label="Typography" onClick={onOpenFonts} icon={<FontFamilyIcon className="h-5 w-5" />} active={isFontsActive} />}
       {!hideCMS && <Item label="CMS" onClick={onOpenCMS} icon={<TableIcon className="h-5 w-5" />} />}
       <div className="mt-auto" />
       <Item label="Toggle Inspector" onClick={onToggleInspector} icon={<ChevronRightIcon className="h-5 w-5" />} active={isInspectorActive} />

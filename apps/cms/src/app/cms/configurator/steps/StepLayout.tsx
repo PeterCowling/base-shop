@@ -7,7 +7,7 @@ import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
 import { apiRequest } from "../lib/api";
 import { useState, useEffect, useCallback, type ReactNode } from "react";
-import { Toast, Spinner } from "@/components/atoms";
+import { Alert, Toast, Spinner } from "@/components/atoms";
 import { CheckIcon } from "@radix-ui/react-icons";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
@@ -149,7 +149,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
             </p>
           )}
           {!headerSaving && headerError && (
-            <p className="text-sm text-danger-foreground">{headerError}</p>
+            <Alert variant="danger" tone="soft" title={headerError} />
           )}
         </div>
       </div>
@@ -210,7 +210,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
             </p>
           )}
           {!footerSaving && footerError && (
-            <p className="text-sm text-danger-foreground">{footerError}</p>
+            <Alert variant="danger" tone="soft" title={footerError} />
           )}
         </div>
       </div>

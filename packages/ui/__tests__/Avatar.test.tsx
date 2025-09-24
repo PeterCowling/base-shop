@@ -1,31 +1,33 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { Avatar } from "../src/components/atoms/Avatar";
-import Image from "next/image";
 
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: jest.fn((props: any) => <img {...props} />),
+  default: ({ alt, width, height, className }: any) => (
+    <img alt={alt} width={width} height={height} className={className} />
+  ),
 }));
 
-const MockImage = Image as unknown as jest.Mock;
-
 describe("Avatar", () => {
-  it("renders alt initial when no src provided", () => {
-    const { getByText } = render(<Avatar alt="Alice" />);
-    expect(getByText("A")).toBeInTheDocument();
+  it("renders fallback when no src, using alt initial", () => {
+    render(<Avatar alt="Alice" size={40} />);
+    const el = screen.getByText("A");
+    expect(el).toHaveClass("rounded-full");
+    expect((el as HTMLElement).style.width).toBe("40px");
+    expect((el as HTMLElement).style.height).toBe("40px");
   });
 
-  it("uses explicit fallback prop when provided", () => {
-    const { getByText } = render(<Avatar alt="Alice" fallback="AL" />);
-    expect(getByText("AL")).toBeInTheDocument();
-  });
-
-  it("converts width/height strings to numbers for Next Image", () => {
-    render(<Avatar src="/a.png" alt="A" width="40" height="50" />);
-    expect(MockImage).toHaveBeenCalled();
-    const props = MockImage.mock.calls[0][0];
-    expect(props.width).toBe(40);
-    expect(props.height).toBe(50);
+  it("renders image with numeric width/height parsed from strings and padding/margin classes", () => {
+    render(
+      <Avatar src="/me.png" alt="Me" width={"48" as any} height={"64" as any} padding="p-2" margin="m-1" />
+    );
+    const img = screen.getByAltText("Me") as HTMLImageElement;
+    expect(img.width).toBe(48);
+    expect(img.height).toBe(64);
+    expect(img.className).toMatch(/rounded-full/);
+    expect(img.className).toMatch(/p-2/);
+    expect(img.className).toMatch(/m-1/);
   });
 });
+

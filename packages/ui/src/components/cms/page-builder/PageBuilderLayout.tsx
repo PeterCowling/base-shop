@@ -18,6 +18,8 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
     showPalette,
     showSections,
     showLayersLeft,
+    showFontsLeft,
+    showThemeLeft,
     showInspector,
     paletteWidth,
     setPaletteWidth,
@@ -26,11 +28,15 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
     openPalette,
     openSections,
     openLayers,
+    openFonts,
+    openTheme,
     togglePaletteWithReset,
     toggleInspector,
     setShowPalette,
     globalsOpen,
     setGlobalsOpen,
+    fontsOpen,
+    setFontsOpen,
     cmsOpen,
     setCmsOpen,
     pagesOpen,
@@ -144,6 +150,10 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
             onOpenPages={() => setPagesOpen(true)}
             onOpenGlobals={() => setGlobalsOpen(true)}
             onOpenCMS={() => setCmsOpen(true)}
+            onOpenFonts={() => openFonts()}
+            showFonts={showFontsLeft}
+            onOpenTheme={() => openTheme()}
+            showTheme={showThemeLeft}
           />
           <div className="flex flex-1 flex-col gap-4 min-h-0">
             <PageBuilderTopBar
@@ -170,6 +180,8 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
               onToggleInspector={toggleInspector}
               helpOpen={helpOpen}
               onHelpOpenChange={setHelpOpen}
+              canSavePreset={props.canSavePreset}
+              onSavePreset={props.onSavePreset}
             />
             <div aria-live="polite" aria-atomic="true" role="status" className="sr-only">
               {liveMessage}
@@ -205,6 +217,8 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
         canvasProps={canvasProps}
         globalsOpen={globalsOpen}
         setGlobalsOpen={setGlobalsOpen}
+        fontsOpen={false}
+        setFontsOpen={() => {}}
         pagesOpen={pagesOpen}
         setPagesOpen={setPagesOpen}
         cmsOpen={cmsOpen}

@@ -58,4 +58,7 @@ export interface PageBuilderLayoutProps {
   crossBreakpointNotices?: boolean;
   onCrossBreakpointNoticesChange?: (v: boolean) => void;
   mode?: "page" | "section";
+  // Presets authoring (save selected Section as preset)
+  canSavePreset?: boolean;
+  onSavePreset?: () => void;
 }

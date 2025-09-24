@@ -8,6 +8,9 @@
 @import "./cms.tokens.css";
 @import "../../../../packages/ui/src/styles/builder.css";
 @import "tailwindcss";
+/* Override Tailwind Forms base styles with token-driven colors
+   so dark mode via `.theme-dark` is honored. */
+@import "../../../../packages/ui/src/styles/forms.css";
 
 /* -------- CSS reset (minimal) ------------------------------------ */
 *,

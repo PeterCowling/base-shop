@@ -7,7 +7,8 @@ export const tokens = {
     "--color-bg": { light: "0 0% 100%", dark: "0 0% 4%" },
     "--color-fg": { light: "0 0% 10%", dark: "0 0% 93%" },
     "--color-primary": { light: "220 90% 56%", dark: "220 90% 66%" },
-    "--color-primary-fg": { light: "0 0% 100%", dark: "0 0% 10%" },
+    // Keep foreground on primary light in dark theme for adequate contrast
+    "--color-primary-fg": { light: "0 0% 100%", dark: "0 0% 100%" },
     "--color-accent": { light: "260 83% 70%", dark: "260 83% 70%" },
     "--color-accent-fg": { light: "0 0% 10%", dark: "0 0% 10%" },
     "--color-danger": { light: "0 86% 97%", dark: "0 63% 31%" },

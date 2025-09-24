@@ -70,6 +70,7 @@ export { StockStatus } from "./StockStatus";
 export { Switch } from "./Switch";
 export { Tag, type TagProps } from "./Tag";
 export { Toast } from "./Toast";
+export { Alert } from "./Alert";
 export { Tooltip } from "./Tooltip";
 export { VideoPlayer } from "./VideoPlayer";
 export { ZoomImage } from "./ZoomImage";

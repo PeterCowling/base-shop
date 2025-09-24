@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/atoms/shadcn";
+import { Alert } from "@/components/atoms";
 import type { Locale } from "@acme/types";
 import SeoLanguageTabs from "./SeoLanguageTabs";
 import type { SeoRecord } from "./useSeoForm";
@@ -43,18 +44,22 @@ export default function SeoForm(props: Props) {
       />
 
       {Object.keys(errors).length > 0 && (
-        <div className="text-sm text-danger-foreground">
-          {Object.entries(errors).map(([k, v]) => (
-            <p key={k}>{v.join("; ")}</p>
-          ))}
-        </div>
+        <Alert variant="danger" tone="soft" title="Please fix the following">
+          <ul className="list-disc pl-5">
+            {Object.entries(errors).map(([k, v]) => (
+              <li key={k}>{v.join("; ")}</li>
+            ))}
+          </ul>
+        </Alert>
       )}
       {warnings.length > 0 && (
-        <div className="text-sm text-warning-foreground">
-          {warnings.map((w) => (
-            <p key={w}>{w}</p>
-          ))}
-        </div>
+        <Alert variant="warning" tone="soft" title="Warnings">
+          <ul className="list-disc pl-5">
+            {warnings.map((w) => (
+              <li key={w}>{w}</li>
+            ))}
+          </ul>
+        </Alert>
       )}
 
       <Button type="submit" disabled={saving} className="w-fit">

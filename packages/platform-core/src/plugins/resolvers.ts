@@ -94,12 +94,13 @@ export async function resolvePluginEntry(dir: string): Promise<{
 }
 
 export async function importByType(entryPath: string, isModule: boolean) {
-  // Use require for CommonJS to support environments where the file may not
-  // be importable as ESM (and to satisfy tests that mock require).
+  // Always use dynamic import with webpackIgnore to avoid bundler analysis.
+  const mod = await import(
+    /* webpackIgnore: true */ pathToFileURL(entryPath).href
+  );
+  // For CommonJS, unwrap the default to mirror require(entryPath)
   if (!isModule && /\.(cjs|js)$/.test(entryPath)) {
-    const req = createRequire(process.cwd() + "/jest.require.cjs");
-    return req(entryPath);
+    return (mod as any).default;
   }
-  // Otherwise, use dynamic import; Node will interop CJS default exports.
-  return import(/* webpackIgnore: true */ pathToFileURL(entryPath).href);
+  return mod;
 }

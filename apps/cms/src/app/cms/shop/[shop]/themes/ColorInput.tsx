@@ -2,8 +2,11 @@
 
 import { useEffect, useState, type ChangeEvent } from "react";
 import { Button, Input } from "@/components/atoms/shadcn";
+import { Tooltip } from "@ui/components/atoms";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { getUsageText } from "./usageMap";
 import { hslToHex, hexToHsl, isHex, isHsl } from "@ui/utils/colorUtils";
-import ColorContrastChecker from "color-contrast-checker";
+import { getContrast, suggestContrastColor } from "@ui/components/cms";
 
 interface Props {
   name: string;
@@ -55,9 +58,9 @@ export default function ColorInput({
     : defaultHex;
 
   const [warning, setWarning] = useState<string | null>(null);
+  const [suggestion, setSuggestion] = useState<string | null>(null);
 
   const checkContrast = (raw: string) => {
-    const ccc = new ColorContrastChecker();
     const colorHex = defaultIsHsl ? hslToHex(raw) : raw;
     if (!isHex(colorHex)) return;
     const isTextToken = /text|foreground/i.test(name);
@@ -68,18 +71,25 @@ export default function ColorInput({
         ? textTokens
         : [];
     let warn: string | null = null;
+    let sugg: string | null = null;
     for (const t of compareTokens) {
       const other = tokens[t];
       if (!other) continue;
       const otherHex = isHsl(other) ? hslToHex(other) : other;
       if (!isHex(otherHex)) continue;
-      const ratio = ccc.getContrastRatio(colorHex, otherHex);
+      const ratio = getContrast(colorHex, otherHex);
       if (ratio < 4.5) {
         warn = `${name} on ${t} contrast ${ratio.toFixed(2)}:1`;
+        // Try to suggest nearest AA fix for current token against the failing counterpart
+        const s = suggestContrastColor(defaultIsHsl ? raw : colorHex, otherHex);
+        if (s) {
+          sugg = defaultIsHsl ? (isHex(s) ? s : s) : isHex(s) ? s : s;
+        }
         break;
       }
     }
     setWarning(warn);
+    setSuggestion(sugg ?? null);
     onWarningChange?.(name, warn);
   };
 
@@ -102,10 +112,28 @@ export default function ColorInput({
     >
       <span className="flex items-center gap-2">
         {name}
+        <Tooltip text={getUsageText(name) ?? "No usage info"}>
+          <span aria-label="Where it's used" className="inline-flex h-4 w-4 items-center justify-center text-muted-foreground">
+            <InfoCircledIcon />
+          </span>
+        </Tooltip>
         {warning && (
           <span className="rounded bg-warning/20 px-1 text-xs text-warning-foreground">
             {warning}
           </span>
+        )}
+        {warning && suggestion && (
+          <Button
+            type="button"
+            className="h-6 px-2 py-0 text-xs"
+            onClick={() => {
+              const next = defaultIsHsl ? (isHex(suggestion) ? hexToHsl(suggestion) : suggestion) : suggestion;
+              onChange(next);
+              checkContrast(next);
+            }}
+          >
+            Fix to nearest AA
+          </Button>
         )}
       </span>
       <div className="flex items-center gap-2">

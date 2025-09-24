@@ -87,7 +87,52 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
   void _id;
   void _type;
 
-  const compProps: Record<string, unknown> = { ...(props as Record<string, unknown>) };
+  // Remove PB-only props that shouldn't leak to DOM nodes
+  const {
+    reveal: _revealIgnored,
+    parallax: _parallaxIgnored,
+    sticky: _stickyIgnored,
+    stickyOffset: _stickyOffsetIgnored,
+    hoverScale: _hoverScaleIgnored,
+    hoverOpacity: _hoverOpacityIgnored,
+    staggerChildren: _staggerIgnored,
+    timeline: _timelineIgnored,
+    lottieUrl: _lottieUrlIgnored,
+    lottieAutoplay: _lottieAutoplayIgnored,
+    lottieLoop: _lottieLoopIgnored,
+    lottieSpeed: _lottieSpeedIgnored,
+    lottieTrigger: _lottieTriggerIgnored,
+    gridArea: _gridAreaIgnored,
+    gridColumn: _gridColumnIgnored,
+    gridRow: _gridRowIgnored,
+    styles: _stylesIgnored,
+    // Editor-only responsive sizing/spacing keys that must not hit the DOM
+    widthDesktop: _widthDesktopIgnored,
+    widthTablet: _widthTabletIgnored,
+    widthMobile: _widthMobileIgnored,
+    heightDesktop: _heightDesktopIgnored,
+    heightTablet: _heightTabletIgnored,
+    heightMobile: _heightMobileIgnored,
+    marginDesktop: _marginDesktopIgnored,
+    marginTablet: _marginTabletIgnored,
+    marginMobile: _marginMobileIgnored,
+    paddingDesktop: _paddingDesktopIgnored,
+    paddingTablet: _paddingTabletIgnored,
+    paddingMobile: _paddingMobileIgnored,
+    leftDesktop: _leftDesktopIgnored,
+    leftTablet: _leftTabletIgnored,
+    leftMobile: _leftMobileIgnored,
+    topDesktop: _topDesktopIgnored,
+    topTablet: _topTabletIgnored,
+    topMobile: _topMobileIgnored,
+    pbViewport: _pbViewportIgnored,
+    // Canvas/editor specific props
+    zIndex: _zIndexIgnored,
+    locked: _lockedIgnored,
+    anchorId: _anchorIdIgnored,
+    ...safeProps
+  } = props as Record<string, unknown>;
+  const compProps: Record<string, unknown> = { ...safeProps };
   if (clickAction === "navigate" && href) compProps.href = href;
   // Inline style vars from overrides for builder preview
   let styleVars: Record<string, string> = {};

@@ -218,6 +218,7 @@ describe("MediaManager", () => {
 
   it("shows an error toast when deletion fails", async () => {
     const user = userEvent.setup();
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     const onDelete = jest.fn().mockRejectedValue(new Error("delete failed"));
     renderManager(onDelete);
     const confirmSpy = jest.spyOn(window, 'confirm').mockReturnValue(true);
@@ -229,6 +230,7 @@ describe("MediaManager", () => {
     await waitFor(() => expect(onDelete).toHaveBeenCalledTimes(1));
     expect(await screen.findByText("Failed to delete media item.")).toBeInTheDocument();
     expect(screen.getAllByTestId("media-row")).toHaveLength(2);
+    errorSpy.mockRestore();
   });
 
   it("saves metadata, updates the list, shows a toast, and keeps the details panel open", async () => {
@@ -293,6 +295,7 @@ describe("MediaManager", () => {
 
   it("re-enables the details form and shows an error toast when saving fails", async () => {
     const user = userEvent.setup();
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     const deferred = createDeferred<MediaItem>();
     mockUpdateMediaMetadata.mockImplementation(() => deferred.promise);
 
@@ -315,6 +318,7 @@ describe("MediaManager", () => {
       expect(screen.getByRole("button", { name: "Save" })).not.toBeDisabled()
     );
     expect(screen.getByRole("dialog", { name: "Media details" })).toBeInTheDocument();
+    errorSpy.mockRestore();
   });
 
   it("provides replace feedback callbacks", () => {

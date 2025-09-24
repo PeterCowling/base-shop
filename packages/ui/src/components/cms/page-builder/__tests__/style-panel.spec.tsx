@@ -61,7 +61,8 @@ describe("StylePanel", () => {
     // Desktop overrides
     const fsDesktop = screen.getByLabelText("Font size (Desktop)") as HTMLInputElement;
     const lhDesktop = screen.getByLabelText("Line height (Desktop)") as HTMLInputElement;
-    fsDesktop.focus();
+    // Use Testing Library focus helper to auto-wrap in React act
+    fireEvent.focus(fsDesktop);
     fsDesktop.setSelectionRange(0, 0);
     fireEvent.change(fsDesktop, { target: { value: "--fs-lg" } });
     fireEvent.change(lhDesktop, { target: { value: "--lh-6" } });

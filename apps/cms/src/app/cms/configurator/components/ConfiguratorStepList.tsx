@@ -8,7 +8,7 @@ import {
   CircleIcon,
   ResetIcon,
 } from "@radix-ui/react-icons";
-import { Tag } from "@ui/components/atoms";
+import { Alert, Tag } from "@ui/components/atoms";
 import type { ConfiguratorState } from "../../wizard/schema";
 import type { ConfiguratorStep } from "../types";
 import { stepTrackMeta } from "../steps";
@@ -101,14 +101,13 @@ function StepCard({
         </div>
 
         {hasRecommendations && (
-          <div className="rounded-lg border border-warning/40 bg-warning/10 p-3 text-sm text-warning-fg">
-            <p className="font-medium">Recommended before tackling this step</p>
+          <Alert variant="warning" tone="soft" title="Recommended before tackling this step">
             <ul className="list-disc pl-5">
               {pendingRecommendations.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
-          </div>
+          </Alert>
         )}
 
         <div className="mt-auto flex flex-wrap items-center gap-2">

@@ -7,10 +7,17 @@ import type { SKU } from "@acme/types";
 
 type FilterSku = SKU & { id: string; title: string };
 
+export interface FacetConfig {
+  size?: boolean;
+  color?: boolean;
+  price?: boolean;
+}
+
 export interface ProductFilterProps {
   showSize?: boolean;
   showColor?: boolean;
   showPrice?: boolean;
+  facets?: FacetConfig;
   onChange?: (state: { size?: string; color?: string; minPrice?: number; maxPrice?: number }) => void;
 }
 
@@ -18,6 +25,7 @@ export default function ProductFilter({
   showSize = true,
   showColor = true,
   showPrice = true,
+  facets,
   onChange,
 }: ProductFilterProps) {
   const { filteredRows } = useProductFilters<FilterSku>(
@@ -104,9 +112,15 @@ export default function ProductFilter({
     });
   }, [filteredRows, size, color, minPrice, maxPrice]);
 
+  const eff = {
+    size: facets?.size ?? showSize,
+    color: facets?.color ?? showColor,
+    price: facets?.price ?? showPrice,
+  };
+
   return (
     <div className="space-y-4">
-      {showSize && (
+      {eff.size && (
         <div className="space-y-1">
           <label className="text-sm font-medium">Size</label>
           <select
@@ -123,7 +137,7 @@ export default function ProductFilter({
           </select>
         </div>
       )}
-      {showColor && (
+      {eff.color && (
         <div className="space-y-1">
           <label className="text-sm font-medium">Color</label>
           <select
@@ -140,7 +154,7 @@ export default function ProductFilter({
           </select>
         </div>
       )}
-      {showPrice && (
+      {eff.price && (
         <div className="space-y-1">
           <label className="text-sm font-medium">Price</label>
           <div className="flex items-center gap-2">

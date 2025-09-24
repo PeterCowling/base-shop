@@ -1,19 +1,20 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
 import { StockStatus } from "../src/components/atoms/StockStatus";
 
 describe("StockStatus", () => {
-  it("renders in-stock state with default classes", () => {
-    render(<StockStatus inStock aria-label="availability" />);
-    const span = screen.getByText("In stock");
-    expect(span).toHaveClass("text-sm", "font-medium", "text-success");
-    expect(span).toHaveAttribute("data-token", "--color-success");
-    expect(screen.getByLabelText("availability")).toBe(span);
+  it("shows in-stock label and tokens", () => {
+    render(<StockStatus inStock />);
+    const el = screen.getByText(/In stock/i);
+    expect(el).toHaveAttribute("data-token", "--color-success");
+    expect(el.className).toMatch(/text-success/);
   });
 
-  it("renders out-of-stock state", () => {
+  it("shows out-of-stock label when false", () => {
     render(<StockStatus inStock={false} />);
-    const span = screen.getByText("Out of stock");
-    expect(span).toHaveClass("text-sm", "font-medium", "text-danger");
-    expect(span).toHaveAttribute("data-token", "--color-danger");
+    const el = screen.getByText(/Out of stock/i);
+    expect(el).toHaveAttribute("data-token", "--color-danger");
+    expect(el.className).toMatch(/text-danger/);
   });
 });
+

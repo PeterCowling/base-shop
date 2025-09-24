@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { ReturnAuthorization } from "@acme/types";
-import { Tag } from "@ui/components/atoms";
+import { Alert, Tag } from "@ui/components/atoms";
 import {
   Button,
   Card,
@@ -116,17 +116,10 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
 
   if (error) {
     return (
-      <Card className="border border-danger/30 bg-danger/10 text-foreground">
-        <CardContent className="space-y-3 px-6 py-6">
-          <Tag variant="destructive">
-            Unable to load return authorizations
-          </Tag>
-          <p className="text-sm text-muted-foreground">{error}</p>
-          <p className="text-xs text-muted-foreground">
-            Retry shortly or verify the data source connection for the RA service.
-          </p>
-        </CardContent>
-      </Card>
+      <Alert variant="danger" tone="soft" title="Unable to load return authorizations">
+        <p className="text-sm">{error}</p>
+        <p className="text-xs">Retry shortly or verify the data source connection for the RA service.</p>
+      </Alert>
     );
   }
 
@@ -238,8 +231,8 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                     data-cy="ra-card"
                   className={cn(
                     "border border-border-1 bg-surface-2 text-foreground",
-                    risk === "high" && "border-danger/40 bg-danger/10",
-                    risk === "medium" && "border-warning/40 bg-warning/10"
+                    risk === "high" && "border-danger/40",
+                    risk === "medium" && "border-warning/40"
                   )}
                 >
                     <CardContent className="space-y-3 p-6">

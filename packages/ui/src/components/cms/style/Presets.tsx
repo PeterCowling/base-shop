@@ -23,11 +23,43 @@ export default function Presets({
   tokens,
   onChange,
 }: PresetsProps): ReactElement {
-
   const applyPreset = (id: string) => {
     const preset = presetList?.find((p) => p.id === id);
     if (preset) {
       onChange({ ...tokens, ...preset.tokens });
+      // Heuristically load Google Fonts for known families to keep previews WYSIWYG
+      const googleFamilies = new Set([
+        "Inter",
+        "Space Grotesk",
+        "Playfair Display",
+        "Lato",
+        "Source Sans 3",
+        "Montserrat",
+        "Rubik",
+        "Work Sans",
+        "Nunito",
+        "Quicksand",
+        "Open Sans",
+        "Roboto",
+        "Merriweather",
+        "Poppins",
+      ]);
+      const injectGoogle = (name: string) => {
+        const id = `google-font-${name}`;
+        if (!document.getElementById(id)) {
+          const link = document.createElement("link");
+          link.id = id;
+          link.rel = "stylesheet";
+          link.href = `https://fonts.googleapis.com/css2?family=${name.replace(/ /g, "+")}&display=swap`;
+          document.head.appendChild(link);
+        }
+      };
+      Object.values(preset.tokens).forEach((v) => {
+        if (typeof v !== "string") return;
+        const match = v.match(/"([^"]+)"/);
+        const name = match?.[1];
+        if (name && googleFamilies.has(name)) injectGoogle(name);
+      });
     }
   };
 
@@ -75,5 +107,4 @@ export default function Presets({
     </div>
   );
 }
-
 

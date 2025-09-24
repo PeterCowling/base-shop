@@ -8,6 +8,7 @@ import {
 } from "../blocks";
 import type { BlockRegistryEntry } from "../blocks/types";
 import type { PaletteMeta } from "./palette.types";
+import { getPalettePreview } from "./previewImages";
 import type { ComponentType } from "./defaults";
 
 export const defaultIcon = "/window.svg";
@@ -51,11 +52,21 @@ type MutableCategory = {
 };
 
 const normalizeItems = (items: PaletteMeta[]): PaletteMeta[] =>
-  items.map((item) => ({
-    ...item,
-    icon: item.icon ?? item.previewImage ?? defaultIcon,
-    previewImage: item.previewImage ?? item.icon ?? defaultIcon,
-  }));
+  items.map((item) => {
+    const icon = item.icon ?? item.previewImage ?? defaultIcon;
+    // If the item still points at the generic default icon, inject a generated
+    // schematic preview so users get a useful visual outline per section.
+    const previewImageRaw = item.previewImage ?? item.icon ?? defaultIcon;
+    const previewImage = previewImageRaw === defaultIcon
+      ? getPalettePreview(item.type)
+      : previewImageRaw;
+
+    return {
+      ...item,
+      icon,
+      previewImage,
+    };
+  });
 
 const BASE_CATEGORY_ENTRIES: PaletteCategoryDefinition[] = (
   Object.entries(palette) as [string, PaletteMeta[]][]
@@ -153,5 +164,4 @@ export const getPaletteMap = (installedApps: Iterable<string>): Record<string, P
   }
   return map;
 };
-
 

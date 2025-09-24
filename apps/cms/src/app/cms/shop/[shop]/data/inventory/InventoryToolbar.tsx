@@ -33,24 +33,12 @@ export function InventoryToolbar({
       : status === "error"
       ? "Needs attention"
       : "Draft";
-  const statusVariant =
-    status === "saved"
-      ? "success"
-      : status === "error"
-      ? "destructive"
-      : "default";
+  const statusColor = status === "saved" ? "success" : status === "error" ? "danger" : "default";
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-3">
       <div className="min-w-0 flex flex-wrap items-center gap-2">
-        <Tag
-          variant={statusVariant}
-          className={cn(
-            "rounded-lg border border-border-1 bg-surface-2 text-xs font-medium",
-            status === "saved" && "bg-success/20 text-success-foreground",
-            status === "error" && "bg-danger/20 text-danger-foreground",
-          )}
-        >
+        <Tag color={statusColor} tone="soft" className={cn("rounded-lg border border-border-1 text-xs font-medium")}> 
           {statusLabel}
         </Tag>
         {status === "error" && error ? (
@@ -62,41 +50,46 @@ export function InventoryToolbar({
       </div>
       <div className="flex shrink-0 flex-wrap items-center gap-2">
         <Button
-          variant="ghost"
+          color="success"
+          tone="solid"
           type="button"
           onClick={onAddRow}
-          className="h-9 rounded-lg bg-success px-3 text-xs font-semibold text-success-foreground shadow-elevation-1 hover:bg-success/90"
+          className="h-9 rounded-lg px-3 text-xs font-semibold shadow-elevation-1"
         >
           Add row
         </Button>
         <Button
           type="button"
-          variant="outline"
-          className="h-9 rounded-lg border-primary/30 px-3 text-xs text-foreground hover:bg-primary/10"
+          color="primary"
+          tone="outline"
+          className="h-9 rounded-lg px-3 text-xs"
           onClick={onAddAttribute}
         >
           Add attribute
         </Button>
         <Button
           type="button"
-          variant="ghost"
-          className="h-9 rounded-lg text-xs text-foreground hover:bg-primary/10"
+          color="primary"
+          tone="ghost"
+          className="h-9 rounded-lg text-xs"
           onClick={onImport}
         >
           Import JSON/CSV
         </Button>
         <Button
           type="button"
-          variant="ghost"
-          className="h-9 rounded-lg text-xs text-foreground hover:bg-primary/10"
+          color="primary"
+          tone="ghost"
+          className="h-9 rounded-lg text-xs"
           onClick={() => onExport("json")}
         >
           Export JSON
         </Button>
         <Button
           type="button"
-          variant="ghost"
-          className="h-9 rounded-lg text-xs text-foreground hover:bg-primary/10"
+          color="primary"
+          tone="ghost"
+          className="h-9 rounded-lg text-xs"
           onClick={() => onExport("csv")}
         >
           Export CSV

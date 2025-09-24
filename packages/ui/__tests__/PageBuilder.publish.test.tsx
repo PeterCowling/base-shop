@@ -26,7 +26,8 @@ describe("PageBuilder publishing", () => {
 
     expect(localStorage.getItem(storageKey)).not.toBeNull();
 
-    fireEvent.click(screen.getByText("Publish"));
+    const publishButton = screen.getByText("Publish", { selector: "button" });
+    fireEvent.click(publishButton);
 
     await waitFor(() => expect(localStorage.getItem(storageKey)).toBeNull());
     expect(onPublish).toHaveBeenCalled();

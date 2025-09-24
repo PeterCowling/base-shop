@@ -123,6 +123,7 @@ describe("PageBuilder", () => {
     expect(dispatch).toHaveBeenCalledWith({
       type: "add",
       component: { id: "uid-1", type: "Section", foo: "bar", children: [] },
+      index: 0,
     });
   });
 

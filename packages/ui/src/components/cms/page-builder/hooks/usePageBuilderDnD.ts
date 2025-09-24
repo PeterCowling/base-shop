@@ -167,6 +167,31 @@ export function usePageBuilderDnD({
       setInsertIndex(null);
       setSnapPosition(null);
       removeIframeShields();
+
+      if (dragMeta) {
+        const dataRef = ev.active?.data as { current: Record<string, unknown> | null | undefined } | undefined;
+        const existing =
+          dataRef && dataRef.current && typeof dataRef.current === "object"
+            ? (dataRef.current as Record<string, unknown>)
+            : {};
+        const from = (existing.from as DragFrom | undefined) ?? dragMeta.from;
+        const patched: Record<string, unknown> = { ...existing };
+        if (from) patched.from = from;
+        if ((from === "palette" || from === "library") && dragMeta.type) {
+          patched.type = dragMeta.type;
+        } else if (patched.type === undefined && dragMeta.type) {
+          patched.type = dragMeta.type;
+        }
+        if ((ev.active?.id === undefined || ev.active?.id === null) && dragMeta.id) {
+          (ev.active as { id: string | number }).id = dragMeta.id;
+        }
+        if (dataRef) {
+          dataRef.current = patched;
+        } else if (ev.active?.data) {
+          (ev.active.data as { current: Record<string, unknown> }).current = patched;
+        }
+      }
+
       // Defer drag result processing to single-purpose module
       finalizeDrop({
         ev,
@@ -179,7 +204,18 @@ export function usePageBuilderDnD({
         lastTabHoverRef,
       });
     },
-    [dispatch, components, containerTypes, defaults, selectId, setSnapPosition, t, removeIframeShields, lastTabHoverRef]
+    [
+      dispatch,
+      components,
+      containerTypes,
+      defaults,
+      selectId,
+      setSnapPosition,
+      t,
+      removeIframeShields,
+      lastTabHoverRef,
+      dragMeta,
+    ]
   );
 
   const handleDragStart = useCallback((ev: DragStartEvent) => {

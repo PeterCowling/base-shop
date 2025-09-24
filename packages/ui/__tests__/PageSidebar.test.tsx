@@ -21,8 +21,8 @@ describe("PageSidebar", () => {
     );
 
     // onResize
-    fireEvent.click(getByText("Layout"));
-    fireEvent.change(await findByLabelText("Width (Desktop)", { exact: false }), {
+    const widthInput = await findByLabelText(/W\s*\(Width\)/i);
+    fireEvent.change(widthInput, {
       target: { value: "200" },
     });
     expect(dispatch).toHaveBeenCalledWith({

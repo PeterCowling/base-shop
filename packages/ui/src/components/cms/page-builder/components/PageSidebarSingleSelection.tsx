@@ -1,123 +1,131 @@
 "use client";
 
-import React, { useCallback, useMemo, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PageComponent, HistoryState } from "@acme/types";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import type { Action } from "../state";
-import ComponentEditor from "../ComponentEditor";
-import { Button } from "../../../atoms/shadcn";
-import { Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../../atoms";
 import useGlobals from "../hooks/useGlobals";
 import useStyleClipboardActions from "../hooks/useStyleClipboardActions";
 import useCenterInParent from "../hooks/useCenterInParent";
 import useGroupingActions from "../hooks/useGroupingActions";
 import useLibraryActions from "../hooks/useLibraryActions";
-import VisibilityToggles from "./VisibilityToggles";
 import useBlockDimensions from "../useBlockDimensions";
-import UnitInput from "../panels/layout/UnitInput";
-import LayoutPanel from "../panels/LayoutPanel";
-import StylePanel from "../StylePanel";
-import InteractionsPanel from "../panels/InteractionsPanel";
-import TimelinePanel from "../panels/TimelinePanel";
-import ContentPanel from "../panels/ContentPanel";
-import DatasetEditor from "../DatasetEditor";
-import LottieControls from "../panels/LottieControls";
-import GlobalsPicker from "./GlobalsPicker";
-import {
-  AlignLeftIcon,
-  AlignRightIcon,
-  AlignTopIcon,
-  AlignBottomIcon,
-  AlignCenterHorizontallyIcon,
-  AlignCenterVerticallyIcon,
-  RowSpacingIcon,
-  ColumnSpacingIcon,
-} from "@radix-ui/react-icons";
-import { alignLeft, alignRight, alignTop, alignBottom, alignCenterX, alignCenterY, distributeHorizontal, distributeVertical } from "../state/layout/geometry";
 import usePreviewTokens from "../hooks/usePreviewTokens";
 import { extractTextThemes, applyTextThemeToOverrides } from "../textThemes";
+import VisibilityToggles from "./VisibilityToggles";
+import AnimationTabContent from "./PageSidebarSingleSelection/AnimationTabContent";
+import CenterInParentActionButtons from "./PageSidebarSingleSelection/CenterInParentActionButtons";
+import CenterInParentButtons from "./PageSidebarSingleSelection/CenterInParentButtons";
+import CmsTabContent from "./PageSidebarSingleSelection/CmsTabContent";
+import ContentTabContent from "./PageSidebarSingleSelection/ContentTabContent";
+import DesignTabContent from "./PageSidebarSingleSelection/DesignTabContent";
+import DimensionInputs from "./PageSidebarSingleSelection/DimensionInputs";
+import DuplicateButton from "./PageSidebarSingleSelection/DuplicateButton";
+import GlobalActions from "./PageSidebarSingleSelection/GlobalActions";
+import LinkedGlobalNotice from "./PageSidebarSingleSelection/LinkedGlobalNotice";
+import MultiSelectionAlignmentControls from "./PageSidebarSingleSelection/MultiSelectionAlignmentControls";
+import SaveToLibraryButton from "./PageSidebarSingleSelection/SaveToLibraryButton";
+import SingleSelectionAlignmentControls from "./PageSidebarSingleSelection/SingleSelectionAlignmentControls";
+import StyleClipboardActions from "./PageSidebarSingleSelection/StyleClipboardActions";
+import TabSwitcher from "./PageSidebarSingleSelection/TabSwitcher";
+import UngroupButton from "./PageSidebarSingleSelection/UngroupButton";
+import type { HandleFieldInput, HandleResize, UpdateComponent, Viewport } from "./PageSidebarSingleSelection/types";
 
 interface Props {
   components: PageComponent[];
   selectedIds: string[];
   dispatch: (action: Action) => void;
   editor?: HistoryState["editor"];
-  viewport: "desktop" | "tablet" | "mobile";
+  viewport: Viewport;
   breakpoints?: { id: string; label: string; min?: number; max?: number }[];
   selectedComponent: PageComponent;
   pageId?: string | null;
 }
 
-const PageSidebarSingleSelection = ({ components, selectedIds, dispatch, editor, viewport, breakpoints = [], selectedComponent, pageId }: Props) => {
+const PageSidebarSingleSelection = ({
+  components,
+  selectedIds,
+  dispatch,
+  editor,
+  viewport,
+  breakpoints = [],
+  selectedComponent,
+  pageId,
+}: Props) => {
   const previewTokens = usePreviewTokens();
   const textThemes = useMemo(() => extractTextThemes(previewTokens), [previewTokens]);
-  const { globals, insertOpen, setInsertOpen, insertSearch, setInsertSearch, makeGlobal, editGlobally, insertGlobal } = useGlobals({ components, editor, dispatch, selectedComponent, pageId });
+  const {
+    globals,
+    insertOpen,
+    setInsertOpen,
+    insertSearch,
+    setInsertSearch,
+    makeGlobal,
+    editGlobally,
+    insertGlobal,
+  } = useGlobals({ components, editor, dispatch, selectedComponent, pageId });
   const { copyStyles, pasteStyles } = useStyleClipboardActions({ selectedComponent, selectedIds, components, dispatch });
   const { centerInParentX, centerInParentY } = useCenterInParent({ components, selectedIds, editor, dispatch, viewport });
   const { ungroup } = useGroupingActions({ components, selectedIds, dispatch });
   const { saveSelectionToLibrary } = useLibraryActions({ components, selectedIds });
   const dims = useBlockDimensions({ component: selectedComponent, viewport });
-  const [tab, setTab] = React.useState<"design" | "anim" | "content" | "cms">("design");
+  const [tab, setTab] = useState<"design" | "anim" | "content" | "cms">("design");
 
   const handleDuplicate = useCallback(() => {
     selectedIds.forEach((id) => dispatch({ type: "duplicate", id }));
-    try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block duplicated" })); } catch {}
+    try {
+      window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block duplicated" }));
+    } catch {
+      // no-op
+    }
   }, [dispatch, selectedIds]);
 
-  const handleChange = useCallback(
-    (patch: Partial<PageComponent>) => selectedIds[0] && dispatch({ type: "update", id: selectedIds[0], patch }),
+  const handleChange = useCallback<UpdateComponent>(
+    (patch) => {
+      if (!selectedIds[0]) return;
+      dispatch({ type: "update", id: selectedIds[0], patch });
+    },
     [dispatch, selectedIds],
   );
 
-  const handleResize = useCallback(
-    (
-      size: {
-        width?: string;
-        height?: string;
-        top?: string;
-        left?: string;
-        widthDesktop?: string;
-        widthTablet?: string;
-        widthMobile?: string;
-        heightDesktop?: string;
-        heightTablet?: string;
-        heightMobile?: string;
-        marginDesktop?: string;
-        marginTablet?: string;
-        marginMobile?: string;
-        paddingDesktop?: string;
-        paddingTablet?: string;
-        paddingMobile?: string;
-      },
-    ) => selectedIds[0] && dispatch({ type: "resize", id: selectedIds[0], ...size }),
+  const handleResize = useCallback<HandleResize>(
+    (size) => {
+      if (!selectedIds[0]) return;
+      dispatch({ type: "resize", id: selectedIds[0], ...size });
+    },
     [dispatch, selectedIds],
   );
 
-  // Adapter for panels that expect handleInput(field, value)
-  const handleFieldInput = useCallback(<K extends keyof PageComponent>(field: K, value: PageComponent[K]) => {
-    handleChange({ [field]: value } as any);
-  }, [handleChange]);
+  const handleFieldInput = useCallback<HandleFieldInput>(
+    (field, value) => {
+      handleChange({ [field]: value } as any);
+    },
+    [handleChange],
+  );
 
-  // Whether the selected component is a container with children
-  const hasChildren = (() => {
+  const hasChildren = useMemo(() => {
     const c = selectedComponent as any;
     return !!(c && c.children && Array.isArray(c.children) && c.children.length > 0);
-  })();
+  }, [selectedComponent]);
 
   const eid = (editor ?? {})[selectedComponent.id] as any;
   const gid = eid?.global?.id as string | undefined;
-  const linkedGlobalLabel = (() => {
+  const linkedGlobalLabel = useMemo(() => {
     if (!gid) return null;
     const g = globals.find((x) => x.globalId === gid) || null;
     return g?.label || gid;
-  })();
+  }, [gid, globals]);
 
   useEffect(() => {
     const handler = (event: Event) => {
       const detail = (event as CustomEvent<{ id: string }>).detail;
       if (!detail?.id) return;
       if (selectedIds.length !== 1) {
-        try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Select a block to apply text style" })); } catch {}
+        try {
+          window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Select a block to apply text style" }));
+        } catch {
+          // no-op
+        }
         return;
       }
       const theme = textThemes.find((t) => t.id === detail.id);
@@ -125,20 +133,24 @@ const PageSidebarSingleSelection = ({ components, selectedIds, dispatch, editor,
       let overrides: StyleOverrides = {};
       try {
         overrides = (selectedComponent as any).styles
-          ? JSON.parse(String((selectedComponent as any).styles)) as StyleOverrides
+          ? (JSON.parse(String((selectedComponent as any).styles)) as StyleOverrides)
           : {};
       } catch {
         overrides = {};
       }
       const next = applyTextThemeToOverrides(overrides, theme);
       handleChange({ styles: JSON.stringify(next) } as any);
-      try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `${theme.label} text style applied` })); } catch {}
+      try {
+        window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `${theme.label} text style applied` }));
+      } catch {
+        // no-op
+      }
     };
     window.addEventListener("pb:apply-text-theme", handler as EventListener);
     return () => window.removeEventListener("pb:apply-text-theme", handler as EventListener);
   }, [handleChange, selectedComponent, selectedIds, textThemes]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!eid?.global?.pinned) return;
 
     const otherPinned = Object.entries(editor ?? {}).filter(
@@ -156,379 +168,91 @@ const PageSidebarSingleSelection = ({ components, selectedIds, dispatch, editor,
     });
   }, [dispatch, editor, selectedComponent.id, eid?.global?.pinned]);
 
+  const handleResizeField = useCallback(
+    (field: string, value: string) => handleResize({ [field]: value }),
+    [handleResize],
+  );
+
+  const handleFullSizeField = useCallback((field: string) => handleResize({ [field]: "100%" }), [handleResize]);
+
+  const handleUpdateEditor = useCallback(
+    (patch: Partial<HistoryState["editor"][string]>) => {
+      if (!selectedIds[0]) return;
+      dispatch({ type: "update-editor", id: selectedIds[0], patch } as any);
+    },
+    [dispatch, selectedIds],
+  );
+
+  const updateEditorForId = useCallback(
+    (id: string, patch: Partial<HistoryState["editor"][string]>) => {
+      dispatch({ type: "update-editor", id, patch } as any);
+    },
+    [dispatch],
+  );
+
+  const unlinkFromGlobal = useCallback(() => {
+    dispatch({ type: "update-editor", id: selectedComponent.id, patch: { global: undefined } as any });
+  }, [dispatch, selectedComponent.id]);
+
+  const showUngroup = selectedIds.length === 1 && hasChildren;
+
   return (
     <div className="space-y-2">
-      {/* Single-select align/stretch to parent edges */}
       {selectedIds.length === 1 && (
-        <div className="flex flex-wrap items-center gap-1">
-          <Button
-            type="button"
-            variant="outline"
-            className="h-7 px-2"
-            title="Align to parent left"
-            onClick={() => {
-              const id = selectedIds[0];
-              if (!id) return;
-              try {
-                const el = document.querySelector(`[data-component-id="${id}"]`) as HTMLElement | null;
-                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
-                if (!el || !parent) return;
-                const rect = el.getBoundingClientRect();
-                const pRect = parent.getBoundingClientRect();
-                const left = Math.round(rect.left - pRect.left);
-                handleChange({ dockX: 'left' } as any);
-                handleResize({ [dims.leftKey]: `${left}px`, right: undefined } as any);
-              } catch {}
-            }}
-          >
-            <AlignLeftIcon className="h-4 w-4" />
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="h-7 px-2"
-            title="Align to parent right"
-            onClick={() => {
-              const id = selectedIds[0];
-              if (!id) return;
-              try {
-                const el = document.querySelector(`[data-component-id="${id}"]`) as HTMLElement | null;
-                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
-                if (!el || !parent) return;
-                const rect = el.getBoundingClientRect();
-                const pRect = parent.getBoundingClientRect();
-                const right = Math.round(pRect.right - rect.right);
-                handleChange({ dockX: 'right' } as any);
-                handleResize({ right: `${right}px`, [dims.leftKey]: '' } as any);
-              } catch {}
-            }}
-          >
-            <AlignRightIcon className="h-4 w-4" />
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="h-7 px-2"
-            title="Align to parent top"
-            onClick={() => {
-              const id = selectedIds[0];
-              if (!id) return;
-              try {
-                const el = document.querySelector(`[data-component-id=\"${id}\"]`) as HTMLElement | null;
-                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
-                if (!el || !parent) return;
-                const rect = el.getBoundingClientRect();
-                const pRect = parent.getBoundingClientRect();
-                const top = Math.round(rect.top - pRect.top);
-                handleChange({ dockY: 'top' } as any);
-                handleResize({ [dims.topKey]: `${top}px`, bottom: '' } as any);
-              } catch {}
-            }}
-          >
-            <AlignTopIcon className="h-4 w-4" />
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="h-7 px-2"
-            title="Align to parent bottom"
-            onClick={() => {
-              const id = selectedIds[0];
-              if (!id) return;
-              try {
-                const el = document.querySelector(`[data-component-id=\"${id}\"]`) as HTMLElement | null;
-                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
-                if (!el || !parent) return;
-                const rect = el.getBoundingClientRect();
-                const pRect = parent.getBoundingClientRect();
-                const bottom = Math.round(pRect.bottom - rect.bottom);
-                handleChange({ dockY: 'bottom' } as any);
-                handleResize({ bottom: `${bottom}px`, [dims.topKey]: '' } as any);
-              } catch {}
-            }}
-          >
-            <AlignBottomIcon className="h-4 w-4" />
-          </Button>
-          <Button type="button" variant="outline" className="h-7 px-2" title="Center Horizontally in parent" onClick={centerInParentX}>
-            <AlignCenterHorizontallyIcon className="h-4 w-4" />
-          </Button>
-          <Button type="button" variant="outline" className="h-7 px-2" title="Center Vertically in parent" onClick={centerInParentY}>
-            <AlignCenterVerticallyIcon className="h-4 w-4" />
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="h-7 px-2"
-            title="Stretch horizontally"
-            onClick={() => {
-              const id = selectedIds[0];
-              if (!id) return;
-              try {
-                const el = document.querySelector(`[data-component-id=\"${id}\"]`) as HTMLElement | null;
-                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
-                if (!el || !parent) return;
-                const rect = el.getBoundingClientRect();
-                const pRect = parent.getBoundingClientRect();
-                const left = Math.round(rect.left - pRect.left);
-                const right = Math.round(pRect.right - rect.right);
-                handleChange({ dockX: 'left' } as any);
-                handleResize({ [dims.leftKey]: `${left}px`, right: `${right}px`, width: '' } as any);
-              } catch {}
-            }}
-          >
-            {/* Uses vertical/horizontal spacing icons as simple stretch glyphs */}
-            <ColumnSpacingIcon className="h-4 w-4" />
-          </Button>
-          <Button
-            type="button"
-            variant="outline"
-            className="h-7 px-2"
-            title="Stretch vertically"
-            onClick={() => {
-              const id = selectedIds[0];
-              if (!id) return;
-              try {
-                const el = document.querySelector(`[data-component-id=\"${id}\"]`) as HTMLElement | null;
-                const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
-                if (!el || !parent) return;
-                const rect = el.getBoundingClientRect();
-                const pRect = parent.getBoundingClientRect();
-                const top = Math.round(rect.top - pRect.top);
-                const bottom = Math.round(pRect.bottom - rect.bottom);
-                handleChange({ dockY: 'top' } as any);
-                handleResize({ [dims.topKey]: `${top}px`, bottom: `${bottom}px`, height: '' } as any);
-              } catch {}
-            }}
-          >
-            <RowSpacingIcon className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
-      {/* Alignment / center row (single-select) */}
-      {selectedIds.length === 1 && (
-        <div className="flex flex-wrap items-center gap-1">
-          <Button type="button" variant="outline" className="h-7 px-2" title="Center Horizontally in parent" onClick={centerInParentX}>
-            <AlignCenterHorizontallyIcon className="h-4 w-4" />
-          </Button>
-          <Button type="button" variant="outline" className="h-7 px-2" title="Center Vertically in parent" onClick={centerInParentY}>
-            <AlignCenterVerticallyIcon className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
-      {/* Alignment / distribution row (multi-select) */}
-      {selectedIds.length > 1 && (
-        <div className="flex flex-wrap items-center gap-1">
-          <Button type="button" variant="outline" className="h-7 px-2" title="Align Left" onClick={() => alignLeft(components, selectedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [`left${viewport === "desktop" ? "Desktop" : viewport === "tablet" ? "Tablet" : "Mobile"}`]: p.left } as any))}>
-            <AlignLeftIcon className="h-4 w-4" />
-          </Button>
-          <Button type="button" variant="outline" className="h-7 px-2" title="Align Right" onClick={() => alignRight(components, selectedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [`left${viewport === "desktop" ? "Desktop" : viewport === "tablet" ? "Tablet" : "Mobile"}`]: p.left } as any))}>
-            <AlignRightIcon className="h-4 w-4" />
-          </Button>
-          <Button type="button" variant="outline" className="h-7 px-2" title="Align Top" onClick={() => alignTop(components, selectedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [`top${viewport === "desktop" ? "Desktop" : viewport === "tablet" ? "Tablet" : "Mobile"}`]: p.top } as any))}>
-            <AlignTopIcon className="h-4 w-4" />
-          </Button>
-          <Button type="button" variant="outline" className="h-7 px-2" title="Align Bottom" onClick={() => alignBottom(components, selectedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [`top${viewport === "desktop" ? "Desktop" : viewport === "tablet" ? "Tablet" : "Mobile"}`]: p.top } as any))}>
-            <AlignBottomIcon className="h-4 w-4" />
-          </Button>
-          <Button type="button" variant="outline" className="h-7 px-2" title="Center Horizontally" onClick={() => alignCenterX(components, selectedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [`left${viewport === "desktop" ? "Desktop" : viewport === "tablet" ? "Tablet" : "Mobile"}`]: p.left } as any))}>
-            <AlignCenterHorizontallyIcon className="h-4 w-4" />
-          </Button>
-          <Button type="button" variant="outline" className="h-7 px-2" title="Center Vertically" onClick={() => alignCenterY(components, selectedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [`top${viewport === "desktop" ? "Desktop" : viewport === "tablet" ? "Tablet" : "Mobile"}`]: p.top } as any))}>
-            <AlignCenterVerticallyIcon className="h-4 w-4" />
-          </Button>
-          <Button type="button" variant="outline" className="h-7 px-2" title="Distribute Horizontally" onClick={() => distributeHorizontal(components, selectedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [`left${viewport === "desktop" ? "Desktop" : viewport === "tablet" ? "Tablet" : "Mobile"}`]: p.left } as any))}>
-            <ColumnSpacingIcon className="h-4 w-4" />
-          </Button>
-          <Button type="button" variant="outline" className="h-7 px-2" title="Distribute Vertically" onClick={() => distributeVertical(components, selectedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [`top${viewport === "desktop" ? "Desktop" : viewport === "tablet" ? "Tablet" : "Mobile"}`]: p.top } as any))}>
-            <RowSpacingIcon className="h-4 w-4" />
-          </Button>
-        </div>
-      )}
-      {/* Top numeric row (X, Y, W, H) */}
-      <div className="grid grid-cols-2 gap-2">
-        <UnitInput
-          componentId={selectedComponent.id}
-          label={<span className="text-xs">X (Left)</span>}
-          value={dims.leftVal ?? ""}
-          onChange={(v) => handleResize({ [dims.leftKey]: v } as any)}
-          axis="w"
-          cssProp="left"
-        />
-        <UnitInput
-          componentId={selectedComponent.id}
-          label={<span className="text-xs">Y (Top)</span>}
-          value={dims.topVal ?? ""}
-          onChange={(v) => handleResize({ [dims.topKey]: v } as any)}
-          axis="h"
-          cssProp="top"
-        />
-        <UnitInput
-          componentId={selectedComponent.id}
-          label={<span className="text-xs">W (Width)</span>}
-          value={dims.widthVal ?? ""}
-          onChange={(v) => handleResize({ [dims.widthKey]: v } as any)}
-          axis="w"
-          cssProp="width"
-        />
-        <Button
-          type="button"
-          variant="outline"
-          className="h-7 px-2 text-xs"
-          aria-label="Set full width"
-          title="Set full width (100%)"
-          onClick={() => handleResize({ [dims.widthKey]: "100%" } as any)}
-        >
-          Full W
-        </Button>
-        <UnitInput
-          componentId={selectedComponent.id}
-          label={<span className="text-xs">H (Height)</span>}
-          value={dims.heightVal ?? ""}
-          onChange={(v) => handleResize({ [dims.heightKey]: v } as any)}
-          axis="h"
-          cssProp="height"
-        />
-        <Button
-          type="button"
-          variant="outline"
-          className="h-7 px-2 text-xs"
-          aria-label="Set full height"
-          title="Set full height (100%)"
-          onClick={() => handleResize({ [dims.heightKey]: "100%" } as any)}
-        >
-          Full H
-        </Button>
-      </div>
-
-      {/* Tabs */}
-      <div className="mt-1 flex items-center gap-1">
-        {([
-          ["design", "Design"],
-          ["anim", "Animations"],
-          ["content", "Content"],
-          ["cms", "CMS"],
-        ] as const).map(([key, label]) => (
-          <button
-            key={key}
-            type="button"
-            className={`rounded px-2 py-1 text-xs ${tab === key ? "bg-muted font-medium" : "border"}`}
-            onClick={() => setTab(key)}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-
-      {/* Linked state indicator */}
-      {gid && linkedGlobalLabel && (
-        <div className="flex items-center justify-between gap-2 rounded border bg-muted/60 px-2 py-1 text-xs" title="This block is linked to a Global template">
-          <div className="truncate">Linked to Global: <span className="font-medium">{linkedGlobalLabel}</span></div>
-          <div className="flex items-center gap-2">
-            <Button type="button" variant="outline" className="h-7 px-2 text-xs" onClick={editGlobally}>Edit globally</Button>
-            <Button
-              type="button"
-              variant="ghost"
-              className="h-7 px-2 text-xs"
-              onClick={() => dispatch({ type: "update-editor", id: selectedComponent.id, patch: { global: undefined } as any })}
-              title="Unlink from Global"
-            >
-              Unlink
-            </Button>
-          </div>
-        </div>
-      )}
-
-      <Button type="button" variant="outline" onClick={handleDuplicate}>
-        Duplicate
-      </Button>
-
-      {/* Global actions */}
-      <div className="flex flex-wrap items-center gap-2">
-        <Button type="button" variant="outline" onClick={makeGlobal} aria-label="Make Global">Make Global</Button>
-        <Button type="button" variant="outline" onClick={editGlobally} aria-label="Edit globally">Edit Globally</Button>
-        <Popover open={insertOpen} onOpenChange={setInsertOpen}>
-          <PopoverTrigger asChild>
-            <Button type="button" variant="outline" aria-label="Insert Global">Insert Global</Button>
-          </PopoverTrigger>
-          <PopoverContent align="start" className="w-72 space-y-2">
-            <GlobalsPicker
-              globals={globals}
-              search={insertSearch}
-              onSearchChange={setInsertSearch}
-              onSelect={insertGlobal}
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
-
-      <div className="flex flex-wrap gap-2">
-        <Button type="button" variant="outline" onClick={copyStyles} aria-label="Copy styles">Copy Styles</Button>
-        <Button type="button" variant="outline" onClick={pasteStyles} aria-label="Paste styles">Paste Styles</Button>
-      </div>
-
-      <VisibilityToggles
-        selectedIds={selectedIds}
-        editor={editor}
-        dispatch={dispatch}
-        breakpoints={breakpoints}
-      />
-
-      {selectedIds.length === 1 && hasChildren && (
-        <Tooltip text="Ungroup children from container">
-          <Button type="button" variant="outline" onClick={ungroup}>Ungroup</Button>
-        </Tooltip>
-      )}
-
-      <Tooltip text="Save selected blocks as a reusable snippet">
-        <Button type="button" variant="outline" onClick={saveSelectionToLibrary}>
-          Save to My Library
-        </Button>
-      </Tooltip>
-
-      <div className="flex flex-wrap gap-2">
-        <Tooltip text="Center horizontally in parent (absolute only)">
-          <Button type="button" variant="outline" aria-label="Center horizontally in parent" onClick={centerInParentX}>Center H in parent</Button>
-        </Tooltip>
-        <Tooltip text="Center vertically in parent (absolute only)">
-          <Button type="button" variant="outline" aria-label="Center vertically in parent" onClick={centerInParentY}>Center V in parent</Button>
-        </Tooltip>
-      </div>
-
-      {/* Tab content */}
-      {tab === "design" && (
-        <div className="space-y-3">
-          <LayoutPanel
-            component={selectedComponent}
-            handleInput={handleFieldInput}
-            handleResize={(field, v) => handleResize({ [field]: v } as any)}
-            handleFullSize={(field) => handleResize({ [field]: "100%" } as any)}
-            editorFlags={editor?.[selectedComponent.id] as any}
-            onUpdateEditor={(patch) => selectedIds[0] && dispatch({ type: "update-editor", id: selectedIds[0], patch } as any)}
-            editorMap={editor}
-            updateEditorForId={(id, patch) => dispatch({ type: "update-editor", id, patch } as any)}
+        <>
+          <SingleSelectionAlignmentControls
+            selectedIds={selectedIds}
+            dims={dims}
+            handleChange={handleChange}
+            handleResize={handleResize}
+            centerInParentX={centerInParentX}
+            centerInParentY={centerInParentY}
           />
-          <StylePanel component={selectedComponent} handleInput={handleFieldInput} />
-        </div>
+          <CenterInParentButtons onCenterX={centerInParentX} onCenterY={centerInParentY} />
+        </>
       )}
-      {tab === "anim" && (
-        <div className="space-y-3">
-          <InteractionsPanel component={selectedComponent} handleInput={handleFieldInput} />
-          <TimelinePanel component={selectedComponent} handleInput={handleFieldInput} />
-          <LottieControls component={selectedComponent} handleInput={handleFieldInput} />
-        </div>
+      <MultiSelectionAlignmentControls
+        components={components}
+        selectedIds={selectedIds}
+        viewport={viewport}
+        dispatch={dispatch}
+      />
+      <DimensionInputs dims={dims} selectedComponentId={selectedComponent.id} handleResize={handleResize} />
+      <TabSwitcher value={tab} onChange={(value) => setTab(value)} />
+      <LinkedGlobalNotice globalId={gid} linkedLabel={linkedGlobalLabel} onEditGlobally={editGlobally} onUnlink={unlinkFromGlobal} />
+      <DuplicateButton onDuplicate={handleDuplicate} />
+      <GlobalActions
+        globals={globals}
+        insertOpen={insertOpen}
+        setInsertOpen={setInsertOpen}
+        insertSearch={insertSearch}
+        setInsertSearch={setInsertSearch}
+        insertGlobal={insertGlobal}
+        makeGlobal={makeGlobal}
+        editGlobally={editGlobally}
+      />
+      <StyleClipboardActions onCopy={copyStyles} onPaste={pasteStyles} />
+      <VisibilityToggles selectedIds={selectedIds} editor={editor} dispatch={dispatch} breakpoints={breakpoints} />
+      <UngroupButton show={showUngroup} onUngroup={ungroup} />
+      <SaveToLibraryButton onSave={saveSelectionToLibrary} />
+      <CenterInParentActionButtons onCenterX={centerInParentX} onCenterY={centerInParentY} />
+      {tab === "design" && (
+        <DesignTabContent
+          component={selectedComponent}
+          handleFieldInput={handleFieldInput}
+          handleResizeField={handleResizeField}
+          handleFullSizeField={handleFullSizeField}
+          editorFlags={editor?.[selectedComponent.id]}
+          editorMap={editor}
+          onUpdateEditor={handleUpdateEditor}
+          updateEditorForId={updateEditorForId}
+        />
       )}
+      {tab === "anim" && <AnimationTabContent component={selectedComponent} handleFieldInput={handleFieldInput} />}
       {tab === "content" && (
-        <ContentPanel component={selectedComponent} onChange={handleChange} handleInput={handleFieldInput} />
+        <ContentTabContent component={selectedComponent} handleFieldInput={handleFieldInput} onChange={handleChange} />
       )}
-      {tab === "cms" && (
-        <div className="space-y-2">
-          {String((selectedComponent as any).type) === "Dataset" ? (
-            <DatasetEditor component={selectedComponent as any} onChange={handleChange} />
-          ) : (
-            <div className="rounded border p-2 text-xs text-muted-foreground">Connect to CMS: select a Dataset block to edit connections.</div>
-          )}
-        </div>
-      )}
+      {tab === "cms" && <CmsTabContent component={selectedComponent} onChange={handleChange} />}
     </div>
   );
 };

@@ -65,12 +65,18 @@ export default function ProductFilter({
       if (!sp) return;
       const sz = sp.get("size");
       const co = sp.get("color");
-      const min = Number(sp.get("min"));
-      const max = Number(sp.get("max"));
+      const minRaw = sp.get("min");
+      const maxRaw = sp.get("max");
       if (sz) setSize(sz);
       if (co) setColor(co);
-      if (Number.isFinite(min)) setMinPrice(min);
-      if (Number.isFinite(max)) setMaxPrice(max);
+      if (minRaw != null) {
+        const min = Number(minRaw);
+        if (Number.isFinite(min)) setMinPrice(min);
+      }
+      if (maxRaw != null) {
+        const max = Number(maxRaw);
+        if (Number.isFinite(max)) setMaxPrice(max);
+      }
     } catch {}
   }, []);
 

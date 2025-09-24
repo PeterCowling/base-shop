@@ -3,15 +3,20 @@
 import * as React from "react";
 import { cn } from "../../../utils/style";
 
-export type CardProps = React.HTMLAttributes<HTMLDivElement>;
+export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Elevate surface to surface-3 and stronger shadow */
+  elevated?: boolean;
+}
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, ...props }, ref) => (
+  ({ className, elevated = false, ...props }, ref) => (
     <div
       ref={ref}
       data-token="--color-panel"
       className={cn(
-        "bg-card text-card-foreground rounded-xl border border-border-2 shadow",
+        // Default to panel surface; allow elevated variant to opt into surface-3
+        elevated ? "bg-surface-3 shadow-elevation-2" : "bg-panel shadow",
+        "text-card-foreground rounded-xl border border-border-2",
         className
       )}
       {...props}

@@ -126,7 +126,7 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
   return (
     <div className="space-y-6 text-foreground">
       <header className="space-y-3">
-        <Tag variant="default" className="bg-primary/20 text-foreground">
+        <Tag variant="default" className="bg-primary-soft text-foreground">
           Return authorizations
         </Tag>
         <div className="flex flex-wrap items-end justify-between gap-4">
@@ -175,8 +175,8 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                   className={cn(
                     "rounded-xl border px-3 py-2 text-left text-sm transition",
                     activeFilter === filter.key
-                      ? "border-primary/60 bg-primary/20 text-foreground"
-                      : "border-border-2 bg-surface-2 text-muted-foreground hover:border-primary/50 hover:bg-primary/10"
+                      ? "border-primary/60 bg-primary-soft text-foreground"
+                      : "border-border-2 bg-surface-2 text-muted-foreground hover:border-primary/50 hover:bg-primary-soft"
                   )}
                 >
                   <span className="block font-semibold">{filter.label}</span>

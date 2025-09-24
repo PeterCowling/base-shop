@@ -184,7 +184,8 @@
     "**/*.stories.*",
     "**/__tests__/**",
     "**/*.test.*",
-    "**/*.spec.*"
+    "**/*.spec.*",
+    "**/*.cy.*"
   ],
   "references": [
     { "path": "../../packages/ui" },

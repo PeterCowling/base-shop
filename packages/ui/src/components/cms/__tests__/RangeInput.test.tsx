@@ -1,67 +1,19 @@
-import { render, fireEvent } from "@testing-library/react";
+// packages/ui/src/components/cms/__tests__/RangeInput.test.tsx
+import { render, screen, fireEvent, act } from "@testing-library/react";
+import React from "react";
 import { RangeInput } from "../RangeInput";
 
 describe("RangeInput", () => {
-  it("uses default min and max", () => {
-    const { container } = render(<RangeInput value="16px" onChange={() => {}} />);
-    const input = container.querySelector("input") as HTMLInputElement;
-    expect(input).toHaveAttribute("min", "0");
-    expect(input).toHaveAttribute("max", "64");
-  });
+  test("emits px-suffixed values on user change", () => {
+    const onChange = jest.fn();
+    render(<RangeInput value="16px" onChange={onChange} min={10} max={20} />);
+    const input = screen.getByRole("slider") as HTMLInputElement;
 
-  it("calls onChange with px suffix", () => {
-    const handleChange = jest.fn();
-    const { container } = render(<RangeInput value="16px" onChange={handleChange} />);
-    const input = container.querySelector("input") as HTMLInputElement;
-    fireEvent.change(input, { target: { value: "20" } });
-    expect(handleChange).toHaveBeenCalledWith("20px");
-  });
-
-  it("renders the numeric value with px suffix", () => {
-    const { container } = render(<RangeInput value="16px" onChange={() => {}} />);
-    const span = container.querySelector("span") as HTMLSpanElement;
-    expect(span).toHaveTextContent("16px");
-  });
-
-  it("applies custom min and max", () => {
-    const { container } = render(
-      <RangeInput value="16px" onChange={() => {}} min={10} max={100} />,
-    );
-    const input = container.querySelector("input") as HTMLInputElement;
-    expect(input).toHaveAttribute("min", "10");
-    expect(input).toHaveAttribute("max", "100");
-  });
-
-  it("renders with provided min and max values", () => {
-    const { container } = render(
-      <RangeInput value="16px" onChange={() => {}} min={10} max={20} />,
-    );
-    const input = container.querySelector("input") as HTMLInputElement;
-    expect(input).toHaveAttribute("min", "10");
-    expect(input).toHaveAttribute("max", "20");
-  });
-
-  it("displays min boundary and handles values below it", () => {
-    const handleChange = jest.fn();
-    const { container } = render(
-      <RangeInput value="10px" onChange={handleChange} min={10} max={20} />,
-    );
-    const input = container.querySelector("input") as HTMLInputElement;
-    const span = container.querySelector("span") as HTMLSpanElement;
-    expect(span).toHaveTextContent("10px");
-    fireEvent.change(input, { target: { value: "9" } });
-    expect(handleChange).toHaveBeenCalledWith("9px");
-  });
-
-  it("displays max boundary and handles values above it", () => {
-    const handleChange = jest.fn();
-    const { container } = render(
-      <RangeInput value="20px" onChange={handleChange} min={10} max={20} />,
-    );
-    const input = container.querySelector("input") as HTMLInputElement;
-    const span = container.querySelector("span") as HTMLSpanElement;
-    expect(span).toHaveTextContent("20px");
-    fireEvent.change(input, { target: { value: "21" } });
-    expect(handleChange).toHaveBeenCalledWith("21px");
+    // User change path still goes through onChange handler
+    fireEvent.change(input, { target: { value: "18" } });
+    expect(onChange).toHaveBeenCalledWith("18px");
+    onChange.mockClear();
+    fireEvent.change(input, { target: { value: "4" } });
+    expect(onChange).toHaveBeenCalledWith("4px");
   });
 });

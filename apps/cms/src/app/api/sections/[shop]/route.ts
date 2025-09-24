@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getSections, saveSection, updateSection, deleteSection } from "@platform-core/repositories/sections/index.server";
-import { sectionTemplateSchema, type SectionTemplate } from "@acme/types";
+import { sectionTemplateSchema, pageComponentSchema, type SectionTemplate } from "@acme/types";
 import { ensureAuthorized } from "@cms/actions/common/auth";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
@@ -103,7 +103,7 @@ export async function POST(
       if (typeof t === "string" && t) template = JSON.parse(t);
     }
 
-    const parsedTemplate = sectionTemplateSchema.shape.template.parse(template);
+    const parsedTemplate = pageComponentSchema.parse(template);
     const now = nowIso();
     const section: SectionTemplate = {
       id: ulid(),
@@ -138,7 +138,7 @@ export async function PATCH(
     if (body.status === "draft" || body.status === "published") patch.status = body.status;
     if (body.template !== undefined) {
       try {
-        patch.template = sectionTemplateSchema.shape.template.parse(body.template);
+        patch.template = pageComponentSchema.parse(body.template);
       } catch (e) {
         return NextResponse.json({ error: "Invalid template" }, { status: 400 });
       }

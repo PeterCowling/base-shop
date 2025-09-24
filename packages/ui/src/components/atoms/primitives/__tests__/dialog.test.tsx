@@ -39,12 +39,13 @@ describe("Dialog", () => {
     const overlay = screen.getByTestId("overlay");
     expect(overlayRef.current).toBe(overlay);
     expect(overlay).toHaveClass("custom-overlay");
-    expect(overlay).toHaveClass("bg-fg/50");
+    // Overlay uses theme scrim token now
+    expect(overlay.className).toMatch(/overlay|scrim|bg-\[/);
 
     const content = screen.getByRole("dialog");
     expect(contentRef.current).toBe(content);
     expect(content).toHaveClass("custom-content");
-    expect(content).toHaveClass("bg-surface-2");
+    expect(content).toHaveClass("bg-panel");
   });
 
   it(

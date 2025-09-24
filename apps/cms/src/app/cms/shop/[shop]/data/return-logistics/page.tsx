@@ -38,13 +38,13 @@ export default async function ReturnLogisticsPage({
       label: "Tracking",
       value: trackingEnabled ? "Enabled" : "Disabled",
       caption: trackingEnabled ? "Customers receive tracking" : "No tracking numbers",
-      accent: trackingEnabled ? "bg-primary/20 text-foreground" : "bg-muted/20 text-foreground",
+      accent: trackingEnabled ? "bg-primary-soft text-foreground" : "bg-muted/20 text-foreground",
     },
     {
       label: "In-store returns",
       value: inStoreEnabled ? "Allowed" : "Disabled",
       caption: inStoreEnabled ? "Customers can drop off in person" : "Drop-off only",
-      accent: inStoreEnabled ? "bg-warning/20 text-foreground" : "bg-muted/20 text-foreground",
+      accent: inStoreEnabled ? "bg-warning-soft text-foreground" : "bg-muted/20 text-foreground",
     },
   ];
 

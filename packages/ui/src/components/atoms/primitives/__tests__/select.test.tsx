@@ -175,7 +175,7 @@ describe("Select", () => {
 
     expect(contentRef.current).toBe(content);
     expect(content).toHaveAttribute("data-foo", "content");
-    expect(content).toHaveClass("bg-surface-2");
+    expect(content).toHaveClass("bg-panel");
 
     expect(labelRef.current).toBe(label);
     expect(label).toHaveAttribute("data-foo", "label");

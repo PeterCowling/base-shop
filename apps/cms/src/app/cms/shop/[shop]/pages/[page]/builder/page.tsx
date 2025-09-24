@@ -3,17 +3,10 @@
 import { updatePage } from "@cms/actions/pages/update";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import type { Page } from "@acme/types";
-import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
-// Import the concrete client component to avoid any wrapper/typing indirection
-// that can confuse the bundler during server compilation.
-import type PageBuilderComponent from "@ui/components/cms/page-builder/PageBuilder";
+import PageBuilderClient from "./PageBuilderClient";
 
-type PageBuilderProps = React.ComponentProps<typeof PageBuilderComponent>;
-const PageBuilder = dynamic<PageBuilderProps>(() => import("@ui/components/cms/page-builder/PageBuilder"));
-void PageBuilder;
-
-export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 interface Params {
   shop: string;
@@ -52,7 +45,7 @@ export default async function PageBuilderRoute({
 
   return (
     <>
-      <PageBuilder
+      <PageBuilderClient
         page={current}
         history={current.history}
         onSave={save}

@@ -19,7 +19,7 @@ export default function StepTokens(_: ConfiguratorStepProps): React.JSX.Element 
   const router = useRouter();
   const { state, themeDefaults, themeOverrides, setThemeOverrides } = useConfigurator();
   const tokens = { ...themeDefaults, ...themeOverrides } as TokenMap;
-  const [tagFilter, setTagFilter] = useState<string>("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const pendingRef = useRef<Record<string, string>>({});
   const timeoutRef = useRef<number | null>(null);
@@ -65,31 +65,49 @@ export default function StepTokens(_: ConfiguratorStepProps): React.JSX.Element 
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Fonts and Colors</h2>
       {/* Shared tag filter for both selectors */}
-      <div className="flex items-center gap-2 text-sm">
-        <label className="text-muted-foreground">Filter by tag</label>
-        <select className="rounded border p-1" value={tagFilter} onChange={(e) => setTagFilter(e.target.value)}>
-          <option value="">All</option>
-          {allTags.map((t) => (
-            <option key={t} value={t}>
+      <div className="flex flex-wrap items-center gap-2 text-sm">
+        <span className="text-muted-foreground">Filter by tag</span>
+        {allTags.map((t) => {
+          const active = selectedTags.includes(t);
+          return (
+            <button
+              key={t}
+              type="button"
+              className={`rounded-full border px-2 py-0.5 text-xs ${active ? "bg-primary text-primary-foreground border-primary" : "hover:bg-muted"}`}
+              onClick={() =>
+                setSelectedTags((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]))
+              }
+            >
               {t}
-            </option>
-          ))}
-        </select>
+            </button>
+          );
+        })}
+        {selectedTags.length > 0 && (
+          <button
+            type="button"
+            className="ml-1 rounded-full border px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted"
+            onClick={() => setSelectedTags([])}
+            aria-label="Clear tag filters"
+          >
+            Clear
+          </button>
+        )}
       </div>
       {/* Font pairing selector */}
       <TypographySelector
         tokens={tokens}
         baseTokens={themeDefaults}
         onChange={handleChange}
-        tagFilter={tagFilter}
+        tagFilters={selectedTags}
         hideTagFilter
+        showFineTune={false}
       />
       {/* Prebuilt color theme selector (light/dark paired) */}
       <ColorThemeSelector
         tokens={tokens}
         baseTokens={themeDefaults}
         onChange={handleChange}
-        tagFilter={tagFilter}
+        tagFilters={selectedTags}
       />
       <div className="flex justify-end">
         <Button

@@ -175,8 +175,8 @@ export default async function ShopOrdersPage({
                   <li
                     key={order.id ?? order.sessionId}
                   className={cn(
-                    "list-none rounded-2xl border border-transparent",
-                    highlight && "border-danger bg-surface-2"
+                    "list-none rounded-2xl border",
+                    highlight ? "border-danger/40 bg-surface-2" : "border-transparent"
                   )}
                   >
                     <Card

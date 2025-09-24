@@ -1,4 +1,5 @@
 // packages/ui/src/components/ThemeStyle.tsx
+import * as React from "react";
 import { readShop } from "@acme/platform-core/repositories/shops.server";
 
 function firstFamilyFromStack(stack?: string): string | null {
@@ -31,7 +32,7 @@ export interface ThemeStyleProps {
  * Server component that injects theme tokens as CSS custom properties and
  * emits Google Font links for heading/body families.
  */
-export default async function ThemeStyle({ shopId, tokens: propTokens }: ThemeStyleProps): Promise<JSX.Element | null> {
+export default async function ThemeStyle({ shopId, tokens: propTokens }: ThemeStyleProps): Promise<React.ReactElement | null> {
   let tokens = propTokens ?? {};
   if (!propTokens) {
     if (!shopId) return null;
@@ -67,4 +68,3 @@ export default async function ThemeStyle({ shopId, tokens: propTokens }: ThemeSt
     </>
   );
 }
-

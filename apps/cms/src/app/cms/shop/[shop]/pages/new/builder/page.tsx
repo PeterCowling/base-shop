@@ -4,16 +4,9 @@ import { createPage } from "@cms/actions/pages/create";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page } from "@acme/types";
-import dynamic from "next/dynamic";
-import type PageBuilderComponent from "@ui/components/cms/PageBuilder";
+import PageBuilderClient from "./PageBuilderClient";
 
-type PageBuilderProps = React.ComponentProps<typeof PageBuilderComponent>;
-const PageBuilder = dynamic<PageBuilderProps>(
-  () => import("@ui/components/cms/PageBuilder"),
-);
-void PageBuilder;
-
-export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 interface Params {
   shop: string;
@@ -64,7 +57,7 @@ export default async function NewPageBuilderRoute({
         use the editor buttons for quick 100% width or height, and press
         <kbd>Space</kbd>/<kbd>Enter</kbd> then arrow keys to move components.
       </p>
-      <PageBuilder
+      <PageBuilderClient
         page={blank}
         onSave={save}
         onPublish={publish}

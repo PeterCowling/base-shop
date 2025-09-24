@@ -2,6 +2,7 @@
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
+import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { ProductQuickView } from "../overlays/ProductQuickView";
 import type { SKU } from "@acme/types";
 import { ProductCard } from "./ProductCard";
@@ -122,7 +123,7 @@ export function ProductCarousel({
         className={cn("overflow-hidden", className)}
         {...props}
       >
-        <Button aria-label="Previous" onClick={prev} />
+        <Button aria-label="Previous" onClick={prev} iconOnly leadingIcon={<ChevronLeftIcon />} />
         <div
           ref={scrollerRef}
           className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)}
@@ -147,7 +148,7 @@ export function ProductCarousel({
             </div>
           ))}
         </div>
-        <Button aria-label="Next" onClick={next} />
+        <Button aria-label="Next" onClick={next} iconOnly leadingIcon={<ChevronRightIcon />} />
       </div>
       {enableQuickView && quickViewProduct && (
         <ProductQuickView

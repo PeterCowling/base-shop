@@ -28,7 +28,7 @@ exports[`MiniCart shows cart items and handles quantity changes and removal 1`] 
   </div>
   <div
     aria-hidden="true"
-    class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in fixed inset-0 z-50 bg-fg/50 backdrop-blur-sm"
+  class="data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out data-[state=open]:fade-in fixed inset-0 z-50 backdrop-blur-sm bg-[hsl(var(--overlay-scrim-1))]"
     data-aria-hidden="true"
     data-state="open"
     style="pointer-events: auto;"

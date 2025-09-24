@@ -77,5 +77,17 @@ describe("createCampaign – recipients resolution and filtering", () => {
     const campaign = ctx.memory[shop][0];
     expect(campaign.recipients).toEqual(["s1@example.com", "s2@example.com"]);
   });
-});
 
+  test("createCampaign falls back to original recipients when analytics fails", async () => {
+    (listEvents as jest.Mock).mockRejectedValueOnce(new Error("oops"));
+    await createCampaign({
+      shop,
+      recipients: ["a@example.com", "b@example.com"],
+      subject: "Hi",
+      body: "<p>Hi %%UNSUBSCRIBE%%</p>",
+    });
+    expect(sendCampaignEmail).toHaveBeenCalledTimes(2);
+    const sentTo = (sendCampaignEmail as jest.Mock).mock.calls.map((c) => c[0].to);
+    expect(sentTo).toEqual(["a@example.com", "b@example.com"]);
+  });
+});

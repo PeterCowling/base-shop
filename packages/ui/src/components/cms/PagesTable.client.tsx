@@ -68,9 +68,9 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
         const normalized = typeof rawStatus === "string" ? rawStatus : "";
         const label = normalized || "unknown";
         const variantClasses = normalized === "published"
-          ? "bg-success/20 text-success-foreground"
+          ? "bg-success-soft text-foreground"
           : normalized === "draft"
-            ? "bg-warning/20 text-warning-foreground"
+            ? "bg-warning-soft text-foreground"
             : normalized === "archived"
               ? "bg-muted text-foreground"
               : "bg-surface-2 text-foreground";

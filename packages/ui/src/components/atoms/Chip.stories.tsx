@@ -2,11 +2,34 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import { Chip } from "./Chip";
 
 const meta: Meta<typeof Chip> = {
+  title: "Atoms/Chip",
   component: Chip,
-  args: {
-    children: "Chip",
-  },
 };
 export default meta;
 
-export const Default: StoryObj<typeof Chip> = {};
+export const BackCompatVariants: StoryObj<typeof Chip> = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-2">
+      <Chip>default</Chip>
+      <Chip variant="success">success</Chip>
+      <Chip variant="warning">warning</Chip>
+      <Chip variant="destructive">destructive</Chip>
+    </div>
+  ),
+};
+
+export const TonesAndColors: StoryObj<typeof Chip> = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-2">
+      <Chip color="primary" tone="soft">primary soft</Chip>
+      <Chip color="primary" tone="solid">primary solid</Chip>
+      <Chip color="success" tone="soft">success soft</Chip>
+      <Chip color="success" tone="solid">success solid</Chip>
+      <Chip color="warning" tone="soft">warning soft</Chip>
+      <Chip color="warning" tone="solid">warning solid</Chip>
+      <Chip color="danger" tone="soft">danger soft</Chip>
+      <Chip color="danger" tone="solid">danger solid</Chip>
+    </div>
+  ),
+};
+

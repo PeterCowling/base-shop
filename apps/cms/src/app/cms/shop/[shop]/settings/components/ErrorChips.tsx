@@ -1,6 +1,6 @@
 "use client";
 
-import { Chip } from "@ui/components";
+import { Chip } from "@ui/components/atoms";
 
 interface ErrorChipsProps {
   errors?: string[];

@@ -5,11 +5,7 @@ import type { TokenInfo } from "../../../hooks/useTokenEditor";
 import { ReactElement } from "react";
 
 interface RangeTokenProps extends Omit<TokenInfo, "key"> {
-<<<<<<< Updated upstream
   tokenKey: TokenInfo["key"];
-=======
-  tokenKey: string;
->>>>>>> Stashed changes
   setToken: (key: string, value: string) => void;
 }
 

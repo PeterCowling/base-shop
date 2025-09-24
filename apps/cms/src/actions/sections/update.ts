@@ -39,7 +39,10 @@ export async function updateSectionAction(
     return { errors: fieldErrors as Record<string, string[]> };
   }
 
-  const saved = await updateSection(shop, { id: parsed.data.id, updatedAt: previous.updatedAt, ...parsed.data }, previous);
+  const saved = await updateSection(
+    shop,
+    { ...parsed.data, updatedAt: previous.updatedAt },
+    previous,
+  );
   return { section: saved };
 }
-

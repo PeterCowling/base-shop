@@ -2,7 +2,7 @@
 
 import type { ComponentProps, ReactNode } from "react";
 
-import { Button, Input } from "@ui/components";
+import { Button, Input } from "@ui/components/atoms";
 
 import type { MappingRowsController } from "../useShopEditorSubmit";
 

@@ -19,7 +19,7 @@ interface Props {
   ) => void;
 }
 
-const label: Record<Locale, string> = {
+const label: Record<string, string> = {
   en: "English",
   de: "Deutsch",
   it: "Italiano",

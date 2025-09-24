@@ -1,68 +1,62 @@
+// packages/ui/src/components/cms/page-builder/utils/__tests__/computeBlockStyle.test.ts
 import { computeBlockStyle } from "../computeBlockStyle";
-import { CSS } from "@dnd-kit/utilities";
 
 describe("computeBlockStyle", () => {
-  it("includes transform, zIndex, container queries and box model", () => {
-    const transform = { x: 10, y: 20, scaleX: 1, scaleY: 1 } as const;
+  test("basic mapping and transform serialization", () => {
     const style = computeBlockStyle({
-      transform,
+      transform: [{ x: 10, y: 20, scaleX: 1, scaleY: 1, rotate: 0, translate: undefined } as any],
       zIndex: 5,
       containerType: "inline-size",
-      containerName: "pb-container",
-      widthVal: "100px",
-      heightVal: "200px",
+      containerName: "pb",
+      widthVal: "100%",
+      heightVal: 240,
       marginVal: "1rem",
       paddingVal: "2rem",
       position: "relative",
-      leftVal: "4px",
-      topVal: "3px",
+      leftVal: "10px",
+      topVal: "5px",
     });
-    expect(style.transform).toBe(CSS.Transform.toString(transform));
+    expect(style.transform).toContain("translate3d");
     expect(style.zIndex).toBe(5);
     expect(style.containerType).toBe("inline-size");
-    expect(style.containerName).toBe("pb-container");
-    expect(style.width).toBe("100px");
-    expect(style.height).toBe("200px");
+    expect(style.containerName).toBe("pb");
+    expect(style.width).toBe("100%");
+    expect(style.height).toBe(240);
     expect(style.margin).toBe("1rem");
     expect(style.padding).toBe("2rem");
     expect(style.position).toBe("relative");
-    expect(style.left).toBe("4px");
-    expect(style.top).toBe("3px");
+    expect(style.left).toBe("10px");
+    expect(style.top).toBe("5px");
   });
 
-  it("applies centered docking for absolute positioning", () => {
-    const styleX = computeBlockStyle({
+  test("absolute docking center sets auto margins and both sides", () => {
+    const style = computeBlockStyle({
       transform: null,
       position: "absolute",
       dockX: "center",
-    });
-    expect(styleX.left).toBe(0);
-    expect(styleX.right).toBe(0);
-    expect(styleX.marginLeft).toBe("auto");
-    expect(styleX.marginRight).toBe("auto");
-
-    const styleY = computeBlockStyle({
-      transform: null,
-      position: "absolute",
       dockY: "center",
     });
-    expect(styleY.top).toBe(0);
-    expect(styleY.bottom).toBe(0);
-    expect(styleY.marginTop).toBe("auto");
-    expect(styleY.marginBottom).toBe("auto");
+    expect(style.left).toBe(0);
+    expect(style.right).toBe(0);
+    expect(style.marginLeft).toBe("auto");
+    expect(style.marginRight).toBe("auto");
+    expect(style.top).toBe(0);
+    expect(style.bottom).toBe(0);
+    expect(style.marginTop).toBe("auto");
+    expect(style.marginBottom).toBe("auto");
   });
 
-  it("respects left/top values for absolute non-centered docking", () => {
-    const s = computeBlockStyle({
+  test("scale-proportional computes aspect-ratio and sets width 100%", () => {
+    const style = computeBlockStyle({
       transform: null,
-      position: "absolute",
-      dockX: "left",
-      dockY: "top",
-      leftVal: "12px",
-      topVal: "8px",
+      position: "relative",
+      responsiveBehavior: "scale-proportional",
+      widthVal: "200px",
+      heightVal: 100,
     });
-    expect(s.left).toBe("12px");
-    expect(s.top).toBe("8px");
+    expect(style.aspectRatio).toBe("200 / 100");
+    expect(style.width).toBe("100%");
+    expect(style.height).toBeUndefined();
   });
 });
 

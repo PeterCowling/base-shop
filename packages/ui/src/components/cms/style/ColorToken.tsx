@@ -19,6 +19,8 @@ interface ColorTokenProps extends Omit<TokenInfo, "key"> {
   setToken: (key: string, value: string) => void;
   onRenameToken?: (oldKey: string, nextKey: string) => void;
   onReplaceColor?: (tokenKey: string, nextValue: string) => void;
+  /** Hide eyedropper and advanced actions when not needed */
+  showExtras?: boolean;
 }
 
 export function ColorToken({
@@ -31,6 +33,7 @@ export function ColorToken({
   setToken,
   onRenameToken,
   onReplaceColor,
+  showExtras = true,
 }: ColorTokenProps): ReactElement {
   const warning = useTokenColors(tokenKey, value, tokens, baseTokens);
   const supportsEyeDropper =
@@ -77,7 +80,7 @@ export function ColorToken({
     onReplaceColor(tokenKey, normalized);
   };
 
-  const showAdvanced = Boolean(onRenameToken || onReplaceColor);
+  const showAdvanced = showExtras && Boolean(onRenameToken || onReplaceColor);
 
   return (
     <label
@@ -91,7 +94,7 @@ export function ColorToken({
         <span className="basis-40 shrink-0 break-all">{tokenKey}</span>
         <div className="flex items-center gap-2">
           <ColorInput value={value} onChange={(val) => setToken(tokenKey, val)} />
-          {supportsEyeDropper && (
+          {showExtras && supportsEyeDropper && (
             <button
               type="button"
               className="rounded border px-2 py-1 text-xs"

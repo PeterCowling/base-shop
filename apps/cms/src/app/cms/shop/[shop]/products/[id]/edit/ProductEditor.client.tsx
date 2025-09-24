@@ -5,6 +5,7 @@ import { updateProduct } from "@cms/actions/products.server";
 import type { ProductPublication } from "@platform-core/products";
 import type { Locale } from "@acme/types";
 import ProductEditorForm from "@ui/components/cms/ProductEditorForm";
+import { LOCALES as UILOCALES, type Locale as UiLocale } from "@i18n/locales";
 
 interface Props {
   shop: string;
@@ -20,11 +21,14 @@ export default function ProductEditor({
   formId = "product-editor-form",
 }: Props) {
   const onSave = (fd: FormData) => updateProduct(shop, fd);
+  const uiLocales = languages.filter((l): l is UiLocale =>
+    (UILOCALES as readonly string[]).includes(l as unknown as string)
+  );
   return (
     <ProductEditorForm
       product={{ ...initialProduct, variants: initialProduct.variants ?? {} }}
       onSave={onSave}
-      locales={languages}
+      locales={uiLocales}
       formId={formId}
     />
   );

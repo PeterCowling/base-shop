@@ -8,7 +8,7 @@ import {
   resolveCssVars,
   suggestContrastColor,
 } from "../ColorInput";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 
 describe("ColorInput helpers", () => {
@@ -46,8 +46,7 @@ describe("ColorInput helpers", () => {
     const { container } = render(<ColorInput value="210 50% 40%" onChange={onChange} />);
     const input = container.querySelector('input[type="color"]') as HTMLInputElement;
     expect(input.value).toMatch(/^#([0-9a-f]{6})$/i);
-    input.value = "#000000";
-    input.dispatchEvent(new Event("change", { bubbles: true }));
+    fireEvent.change(input, { target: { value: "#000000" } });
     expect(onChange).toHaveBeenCalled();
   });
 });

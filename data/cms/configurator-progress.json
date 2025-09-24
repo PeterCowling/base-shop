@@ -7,10 +7,14 @@
       "contactInfo": "",
       "type": "sale",
       "pageTitle": {
-        "en": "Home"
+        "en": "Home",
+        "de": "",
+        "it": ""
       },
       "pageDescription": {
-        "en": ""
+        "en": "",
+        "de": "",
+        "it": ""
       },
       "socialImage": "",
       "components": [],
@@ -33,7 +37,7 @@
       "analyticsId": "",
       "navItems": [
         {
-          "id": "01K5XYQFAPKY9D4ZFMEG8BQ8MC",
+          "id": "01K5YH7AW4ZG9S8PGCQCCWTF0P",
           "label": "Shop",
           "url": "https://example.com/shop"
         }

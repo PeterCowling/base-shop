@@ -22,6 +22,7 @@ export interface PageBuilderLayoutState {
   showPalette: boolean;
   showSections: boolean;
   showFontsLeft: boolean;
+  showThemeLeft: boolean;
   showLayersLeft: boolean;
   showInspector: boolean;
   paletteWidth: number;

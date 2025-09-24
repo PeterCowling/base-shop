@@ -37,13 +37,13 @@ export const DialogContent = React.forwardRef<
         // out of the dialog when children use full-width inputs inside flex rows.
         // Slightly wider default dialog to give editors more breathing room
         "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 grid w-full max-w-xl translate-x-[-50%] translate-y-[-50%] gap-4 border p-6 shadow-elevation-4 duration-200 overflow-x-hidden",
-        "bg-surface-2 border-border-2 text-foreground",
+        "bg-panel border-border-2 text-foreground",
         className
       )}
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="data-[state=open]:bg-secondary absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-[var(--ring-width)] focus:ring-offset-[var(--ring-offset-width)] disabled:pointer-events-none">
+      <DialogPrimitive.Close className="data-[state=open]:bg-secondary absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none focus:ring-[var(--ring-width)] focus:ring-offset-[var(--ring-offset-width)] focus:ring-ring disabled:pointer-events-none">
         <Cross2Icon className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>

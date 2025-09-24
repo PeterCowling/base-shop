@@ -1,17 +1,18 @@
+"use client";
 import { type Meta, type StoryObj } from "@storybook/react";
-import { FilterSidebar } from "./FilterSidebar";
+import { FilterSidebar } from "./FilterSidebar.client";
 
 const meta: Meta<typeof FilterSidebar> = {
+  title: "Organisms/FilterSidebar",
   component: FilterSidebar,
-  args: {},
-  argTypes: {
-    onChange: { action: "onChange" },
-    width: {
-      control: { type: "text" },
-      description: "Tailwind width class or pixel value",
-    },
-  },
 };
 export default meta;
 
-export const Default: StoryObj<typeof FilterSidebar> = {};
+export const Default: StoryObj<typeof FilterSidebar> = {
+  render: () => (
+    <div className="p-8">
+      <FilterSidebar onChange={() => {}} />
+    </div>
+  ),
+};
+

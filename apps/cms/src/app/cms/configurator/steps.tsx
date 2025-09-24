@@ -16,11 +16,12 @@ import StepSummary from "./steps/StepSummary";
 import StepImportData from "./steps/StepImportData";
 import StepSeedData from "./steps/StepSeedData";
 import StepHosting from "./steps/StepHosting";
-import { CheckIcon } from "@radix-ui/react-icons";
+import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import type { StepStatus } from "../wizard/schema";
 import { cn } from "@ui/utils/style";
-import { Tooltip } from "@/components/atoms";
+// Tooltip not required in compact progress UI
+import { Button, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/atoms/shadcn";
 import type { ConfiguratorStep, ConfiguratorStepTrack } from "./types";
 import type { ConfiguratorStepProps } from "@/types/configurator";
 
@@ -33,25 +34,25 @@ export const stepTrackMeta: Record<ConfiguratorStepTrack, {
   foundation: {
     label: "Foundation",
     description: "Brand setup, compliance, and the fundamentals that every shop needs.",
-    pillClass: "bg-info/10 text-info",
+    pillClass: "bg-info-soft text-fg",
     accentClass: "bg-info",
   },
   experience: {
     label: "Experience",
     description: "Design how shoppers explore, interact, and fall in love with your products.",
-    pillClass: "bg-accent/10 text-accent-foreground",
+    pillClass: "bg-accent-soft text-fg",
     accentClass: "bg-accent",
   },
   operations: {
     label: "Operations",
     description: "Wire up integrations, environments, and go-live readiness.",
-    pillClass: "bg-warning/10 text-warning-foreground",
+    pillClass: "bg-warning-soft text-fg",
     accentClass: "bg-warning",
   },
   growth: {
     label: "Growth",
     description: "Optional boosters that accelerate content, experimentation, and scale.",
-    pillClass: "bg-success/10 text-success-foreground",
+    pillClass: "bg-success-soft text-fg",
     accentClass: "bg-success",
   },
 };
@@ -216,68 +217,97 @@ interface ProgressProps {
 }
 
 /** Horizontal progress indicator for the configurator wizard. */
-export function ConfiguratorProgress({
-  currentStepId,
-  completed,
-}: ProgressProps) {
+export function ConfiguratorProgress({ currentStepId, completed }: ProgressProps) {
   const list = getSteps();
   const currentIdx = stepIndex[currentStepId] ?? 0;
+  const total = list.length;
+  const current = Math.min(currentIdx + 1, total);
+  const prev = list[currentIdx - 1];
+  const next = list[currentIdx + 1];
+
   return (
-    <ol className="flex items-center gap-4 text-sm">
-      {list.map((s, idx) => {
-        const status = completed[s.id] ?? "pending";
-        const statusText =
-          status === "complete"
-            ? "Done"
-            : status === "skipped"
-              ? "Skipped"
-              : "Pending";
-        const isDisabled = idx > currentIdx;
-        return (
-          <li key={s.id} className="flex flex-1 items-center gap-2">
-            <Tooltip text={statusText}>
-              <Link
-                href={`/cms/configurator/${s.id}`}
-                aria-disabled={isDisabled}
-                tabIndex={isDisabled ? -1 : undefined}
-                className={cn(
-                  "flex items-center gap-2",
-                  isDisabled
-                    ? "pointer-events-none cursor-default"
-                    : "hover:underline"
-                )}
-              >
-                <span
-                  className={cn(
-                    "grid size-6 place-content-center rounded-full border",
-                    completed[s.id] === "complete" &&
-                      "bg-primary border-primary text-primary-fg",
-                    idx === currentIdx && "border-primary",
-                    idx > currentIdx && "text-muted-foreground border-muted"
-                  )}
-                >
-                  {completed[s.id] === "complete" ? (
-                    <CheckIcon className="h-4 w-4" />
-                  ) : (
-                    idx + 1
-                  )}
-                </span>
-                <span
-                  className={cn(
-                    idx === currentIdx && "font-medium",
-                    isDisabled && "text-muted-foreground"
-                  )}
-                >
-                  {s.label}
-                </span>
-              </Link>
-            </Tooltip>
-            {idx < list.length - 1 && (
-              <span className="border-muted ml-2 flex-1 border-t" />
-            )}
-          </li>
-        );
-      })}
-    </ol>
+    <div className="space-y-3">
+      {/* Compact header with prev/next and a jump menu to avoid overflow */}
+      <div className="flex items-center justify-between gap-3">
+        <Button asChild variant="outline" size="sm" className="min-w-0">
+          <Link
+            href={prev ? `/cms/configurator/${prev.id}` : `#`}
+            aria-disabled={!prev}
+            tabIndex={prev ? 0 : -1}
+            className={cn("flex items-center gap-2", !prev && "pointer-events-none opacity-50")}
+          >
+            <ChevronLeftIcon className="h-4 w-4" aria-hidden />
+            <span className="truncate max-w-[8rem] sm:max-w-[12rem]">{prev ? prev.label : "Start"}</span>
+          </Link>
+        </Button>
+
+        <div className="min-w-0 text-center">
+          <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            Step {current} of {total}
+          </div>
+          <div className="truncate text-sm font-medium text-foreground max-w-[18rem] sm:max-w-[28rem] md:max-w-[36rem]">
+            {list[currentIdx]?.label}
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" aria-label="Jump to step">
+                <DotsHorizontalIcon className="h-4 w-4" aria-hidden />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="max-h-[60vh] w-72 overflow-auto p-0">
+              {list.map((s, idx) => {
+                const status = completed[s.id] ?? "pending";
+                const isCurrent = idx === currentIdx;
+                const statusText = status === "complete" ? "Done" : status === "skipped" ? "Skipped" : "Pending";
+                return (
+                  <DropdownMenuItem key={s.id} asChild className="cursor-pointer">
+                    <Link
+                      href={`/cms/configurator/${s.id}`}
+                      aria-current={isCurrent ? "step" : undefined}
+                      title={`${s.label} — ${statusText}`}
+                    >
+                      <span
+                        className={cn(
+                          "mr-2 grid size-6 place-content-center rounded-full border text-xs",
+                          completed[s.id] === "complete" && "bg-primary border-primary text-primary-fg",
+                          isCurrent && "border-primary"
+                        )}
+                      >
+                        {completed[s.id] === "complete" ? <CheckIcon className="h-4 w-4" aria-hidden /> : idx + 1}
+                      </span>
+                      <span className="truncate">{s.label}</span>
+                      <span className="ml-auto text-xs text-muted-foreground">{statusText}</span>
+                    </Link>
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Button asChild variant="outline" size="sm" className="min-w-0">
+            <Link
+              href={next ? `/cms/configurator/${next.id}` : `#`}
+              aria-disabled={!next}
+              tabIndex={next ? 0 : -1}
+              className={cn("flex items-center gap-2", !next && "pointer-events-none opacity-50")}
+            >
+              <span className="truncate max-w-[8rem] sm:max-w-[12rem]">{next ? next.label : "Finish"}</span>
+              <ChevronRightIcon className="h-4 w-4" aria-hidden />
+            </Link>
+          </Button>
+        </div>
+      </div>
+
+      {/* Unified progress bar */}
+      <div className="h-1 w-full overflow-hidden rounded bg-muted">
+        <div
+          className="h-full bg-primary transition-[width]"
+          style={{ width: `${(current / total) * 100}%` }}
+          aria-hidden
+        />
+      </div>
+    </div>
   );
 }

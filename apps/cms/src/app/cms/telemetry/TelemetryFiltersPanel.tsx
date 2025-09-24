@@ -56,8 +56,8 @@ export function TelemetryFiltersPanel({
                 className={cn(
                   "rounded-xl border px-3 py-2 text-left text-sm transition",
                   activePreset === preset.id
-                    ? "border-info bg-info/20 text-foreground"
-                    : "border-border-2 bg-surface-2 text-muted-foreground hover:border-info hover:bg-info/10",
+                    ? "border-info bg-info-soft text-foreground"
+                    : "border-border-2 bg-surface-2 text-muted-foreground hover:border-info hover:bg-info-soft",
                 )}
                 aria-pressed={activePreset === preset.id}
               >

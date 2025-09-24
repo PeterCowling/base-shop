@@ -42,6 +42,14 @@ export {
   TableRow,
 } from "./primitives/table";
 export { Textarea, type TextareaProps } from "./primitives/textarea";
+export {
+  Drawer,
+  DrawerTrigger,
+  DrawerPortal,
+  DrawerOverlay,
+  DrawerContent,
+  type DrawerContentProps,
+} from "./primitives/drawer";
 export { ARViewer } from "./ARViewer";
 export { Avatar } from "./Avatar";
 export { Chip } from "./Chip";
@@ -71,6 +79,7 @@ export { Switch } from "./Switch";
 export { Tag, type TagProps } from "./Tag";
 export { Toast } from "./Toast";
 export { Alert } from "./Alert";
+export { LinkText, type LinkTextProps } from "./LinkText";
 export { Tooltip } from "./Tooltip";
 export { VideoPlayer } from "./VideoPlayer";
 export { ZoomImage } from "./ZoomImage";

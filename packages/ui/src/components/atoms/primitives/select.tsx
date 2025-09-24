@@ -18,7 +18,7 @@ export const SelectTrigger = React.forwardRef<
     className={cn(
       "flex h-10 w-full items-center justify-between rounded-md border border-input bg-input px-3 py-2 text-sm text-foreground",
       "placeholder:text-muted-foreground",
-      "focus:outline-none focus:ring-[var(--ring-width)] focus:ring-offset-[var(--ring-offset-width)] disabled:cursor-not-allowed disabled:opacity-50",
+      "focus:outline-none focus:ring-[var(--ring-width)] focus:ring-offset-[var(--ring-offset-width)] focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
       className
     )}
     {...props}
@@ -39,12 +39,12 @@ export const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "z-[70] min-w-[8rem] overflow-hidden rounded-md border border-input bg-surface-2 p-1 text-foreground shadow-elevation-2",
+        "z-[70] min-w-[8rem] overflow-hidden rounded-md border border-border-2 bg-panel p-1 text-foreground shadow-elevation-2",
         className
       )}
       {...props}
     >
-      <SelectPrimitive.Viewport className="p-1 bg-surface-2">
+      <SelectPrimitive.Viewport className="p-1 bg-panel">
         {children}
       </SelectPrimitive.Viewport>
     </SelectPrimitive.Content>
@@ -71,7 +71,8 @@ export const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "focus:bg-accent focus:text-accent-foreground relative flex w-full cursor-default items-center rounded-sm py-1.5 pr-2 pl-8 text-sm text-fg outline-none select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pr-2 pl-8 text-sm text-fg outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "hover:bg-surface-3 focus:bg-accent focus:text-accent-foreground",
       className
     )}
     {...props}

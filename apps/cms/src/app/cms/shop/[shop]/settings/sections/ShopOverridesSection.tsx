@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
   Card,
   CardContent,
-} from "@ui/components";
+} from "@ui/components/atoms";
 import type { MappingRowsController } from "../useShopEditorSubmit";
 
 import MappingListField, {

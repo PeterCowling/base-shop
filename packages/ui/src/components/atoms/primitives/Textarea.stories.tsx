@@ -2,18 +2,19 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import { Textarea } from "./textarea";
 
 const meta: Meta<typeof Textarea> = {
+  title: "Primitives/Textarea",
   component: Textarea,
-  args: {
-    label: "Message",
-    error: "",
-    floatingLabel: false,
-  },
-  argTypes: {
-    label: { control: "text" },
-    error: { control: "text" },
-    floatingLabel: { control: "boolean" },
-  },
 };
 export default meta;
 
-export const Default: StoryObj<typeof Textarea> = {};
+export const States: StoryObj<typeof Textarea> = {
+  render: () => (
+    <div className="space-y-3">
+      <Textarea placeholder="Enter details" />
+      <Textarea placeholder="With error" error="Explain more" />
+      <Textarea placeholder="Disabled" disabled />
+      <Textarea placeholder="Floating label" label="Notes" floatingLabel />
+    </div>
+  ),
+};
+

@@ -1,20 +1,69 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/react";
 import { Button } from "./button";
 
 const meta: Meta<typeof Button> = {
-  title: "Atoms/Primitives/Button",
+  title: "Primitives/Button",
   component: Button,
-  tags: ["autodocs"],
-  args: {
-    children: "Button",
-  },
 };
 export default meta;
 
-export const Default: StoryObj<typeof Button> = {};
-export const Outline: StoryObj<typeof Button> = {
-  args: { variant: "outline" },
+export const LegacyVariants: StoryObj<typeof Button> = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button variant="default">default</Button>
+      <Button variant="outline">outline</Button>
+      <Button variant="ghost">ghost</Button>
+      <Button variant="destructive">destructive</Button>
+    </div>
+  ),
 };
-export const Ghost: StoryObj<typeof Button> = {
-  args: { variant: "ghost" },
+
+export const TonesAndColors: StoryObj<typeof Button> = {
+  render: () => (
+    <div className="flex flex-col gap-3">
+      <div className="flex flex-wrap items-center gap-2">
+        <Button color="primary" tone="solid">primary solid</Button>
+        <Button color="primary" tone="soft">primary soft</Button>
+        <Button color="primary" tone="outline">primary outline</Button>
+        <Button color="primary" tone="ghost">primary ghost</Button>
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <Button color="accent" tone="solid">accent solid</Button>
+        <Button color="accent" tone="soft">accent soft</Button>
+        <Button color="accent" tone="outline">accent outline</Button>
+        <Button color="accent" tone="ghost">accent ghost</Button>
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        <Button color="success" tone="solid">success solid</Button>
+        <Button color="success" tone="soft">success soft</Button>
+        <Button color="warning" tone="solid">warning solid</Button>
+        <Button color="warning" tone="soft">warning soft</Button>
+        <Button color="info" tone="solid">info solid</Button>
+        <Button color="info" tone="soft">info soft</Button>
+        <Button color="danger" tone="solid">danger solid</Button>
+        <Button color="danger" tone="soft">danger soft</Button>
+      </div>
+    </div>
+  ),
+};
+
+export const WithIconsAndLoading: StoryObj<typeof Button> = {
+  render: () => (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button leadingIcon={<span aria-hidden>★</span>}>
+        Leading icon
+      </Button>
+      <Button trailingIcon={<span aria-hidden>›</span>} color="accent">
+        Trailing icon
+      </Button>
+      <Button aria-busy color="primary">
+        Busy state
+      </Button>
+      <Button iconOnly aria-label="More" tone="ghost">
+        •••
+      </Button>
+      <Button disabled>Disabled</Button>
+      <Button aria-disabled color="accent">Aria-disabled</Button>
+    </div>
+  ),
 };

@@ -38,8 +38,10 @@ export function useCmsNavItems({
       ...(shop ? [] : [{ href: "/shop", label: "Shops", icon: "🏬" }]),
       { href: shop ? `${base}/products` : "/products", label: "Products", icon: "📦" },
       ...(shop ? [{ href: `${base}/products/new`, label: "New Product", icon: "➕" }] : []),
-      { href: shop ? `${base}/pages` : "/pages", label: "Pages", icon: "📄" },
-      ...(shop ? [{ href: `${base}/pages/new/builder`, label: "Create new page", icon: "📝" }] : []),
+      // When a shop is selected, jump straight to the builder
+      { href: shop ? `${base}/pages/new/builder` : "/pages", label: "Pages", icon: "📄" },
+      // Since "Pages" routes directly to the builder when a shop is selected,
+      // avoid adding a separate "Create new page" entry to prevent duplicate keys.
       { href: shop ? `${base}/media` : "/media", label: "Media", icon: "🖼️" },
       ...(shop ? [{ href: `${base}/edit-preview`, label: "Edit Preview", icon: "🧪" }] : []),
       ...(shop && role && ["admin", "ShopAdmin", "ThemeEditor"].includes(role)

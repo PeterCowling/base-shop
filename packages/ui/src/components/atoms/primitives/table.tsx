@@ -29,7 +29,7 @@ export const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   TableHeaderProps
 >(({ className, ...props }, ref) => (
-  <thead ref={ref} className={cn("bg-surface-2 border-b border-border-2", className)} {...props} />
+  <thead ref={ref} className={cn("bg-panel border-b border-border-2", className)} {...props} />
 ));
 TableHeader.displayName = "TableHeader";
 
@@ -48,7 +48,10 @@ export const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
   ({ className, ...props }, ref) => (
     <tr
       ref={ref}
-      className={cn("border-b border-border-1 transition-colors hover:bg-surface-3 data-[state=selected]:bg-surface-2", className)}
+      className={cn(
+        "border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3",
+        className
+      )}
       {...props}
     />
   )

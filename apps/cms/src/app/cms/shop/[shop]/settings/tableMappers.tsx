@@ -93,7 +93,7 @@ export function createThemeTokenColumns({
 }
 
 export function themeTokenRowClassName(row: ThemeTokenRow) {
-  return row.changed ? "bg-warning/10" : undefined;
+  return row.changed ? "bg-warning-soft" : undefined;
 }
 
 export interface SchedulerHistoryRow {

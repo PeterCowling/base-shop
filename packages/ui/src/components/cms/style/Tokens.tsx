@@ -29,9 +29,11 @@ interface TokensProps {
   onReplaceColor?: (tokenKey: string, nextValue: string) => void;
   /**
    * Controls visibility of the token search input.
-   * Default: true (search visible)
-   */
+  * Default: true (search visible)
+  */
   showSearch?: boolean;
+  /** Hide eyedropper and advanced actions */
+  showExtras?: boolean;
 }
 
 export default function Tokens({
@@ -42,6 +44,7 @@ export default function Tokens({
   onRenameToken,
   onReplaceColor,
   showSearch = true,
+  showExtras = true,
 }: TokensProps): ReactElement {
   const {
     colors,
@@ -156,6 +159,7 @@ export default function Tokens({
           setToken={setTokenAndNotify}
           onRenameToken={onRenameToken}
           onReplaceColor={onReplaceColor}
+          showExtras={showExtras}
         />
       );
     }
@@ -186,11 +190,7 @@ export default function Tokens({
           key={tokenKey}
           tokenKey={tokenKey}
           {...rest}
-<<<<<<< Updated upstream
-          setToken={setToken}
-=======
           setToken={setTokenAndNotify}
->>>>>>> Stashed changes
         />
       );
     }
@@ -201,11 +201,7 @@ export default function Tokens({
         key={tokenKey}
         tokenKey={tokenKey}
         {...rest}
-<<<<<<< Updated upstream
-        setToken={setToken}
-=======
         setToken={setTokenAndNotify}
->>>>>>> Stashed changes
       />
     );
   };

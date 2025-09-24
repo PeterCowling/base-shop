@@ -46,12 +46,12 @@ export const DropdownMenuSubContent = React.forwardRef<
   <DropdownMenuPrimitive.SubContent
     ref={ref}
     className={cn(
-      "bg-surface-2 text-foreground z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-elevation-3 border-border-2",
+      "bg-panel text-foreground z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-elevation-3 border-border-2",
       className
     )}
     // Hard fallback ensures solid background even if tokens are missing
     style={{
-      backgroundColor: "hsl(var(--popover, var(--surface-3, 0 0% 96%)))",
+      backgroundColor: "hsl(var(--panel, var(--color-panel, var(--surface-2, var(--color-bg)))))",
       color: "hsl(var(--popover-foreground, var(--color-fg, 0 0% 10%)))",
       borderColor: "hsl(var(--border-2, var(--color-fg, 0 0% 10%) / 0.22))",
     }}
@@ -76,12 +76,12 @@ export const DropdownMenuContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       className={cn(
-        "bg-surface-2 text-foreground z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-elevation-3 border-border-2",
+        "bg-panel text-foreground z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-elevation-3 border-border-2",
         className
       )}
       // Hard fallback ensures solid background even if tokens are missing
       style={{
-        backgroundColor: "hsl(var(--popover, var(--surface-3, 0 0% 96%)))",
+        backgroundColor: "hsl(var(--panel, var(--color-panel, var(--surface-2, var(--color-bg)))))",
         color: "hsl(var(--popover-foreground, var(--color-fg, 0 0% 10%)))",
         borderColor: "hsl(var(--border-2, var(--color-fg, 0 0% 10%) / 0.22))",
       }}

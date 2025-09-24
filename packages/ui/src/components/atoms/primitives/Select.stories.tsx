@@ -2,33 +2,39 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "./select";
 
 const meta: Meta<typeof Select> = {
+  title: "Primitives/Select",
   component: Select,
-  args: {
-    defaultValue: "apple",
-  },
-  argTypes: {
-    defaultValue: { control: "select", options: ["apple", "banana", "orange"] },
-  },
 };
 export default meta;
 
-export const Default: StoryObj<typeof Select> = {
-  render: (args) => (
-    <Select {...args}>
-      <SelectTrigger>
-        <SelectValue />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="apple">Apple</SelectItem>
-        <SelectItem value="banana">Banana</SelectItem>
-        <SelectItem value="orange">Orange</SelectItem>
-      </SelectContent>
-    </Select>
+export const PanelSurface: StoryObj<typeof Select> = {
+  render: () => (
+    <div className="p-8">
+      <Select>
+        <SelectTrigger className="w-56">
+          <SelectValue placeholder="Choose a fruit" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            <SelectLabel>Fruits</SelectLabel>
+            <SelectItem value="apple">Apple</SelectItem>
+            <SelectItem value="banana">Banana</SelectItem>
+            <SelectItem value="grapes">Grapes</SelectItem>
+            <SelectSeparator />
+            <SelectItem value="kiwi">Kiwi</SelectItem>
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+    </div>
   ),
 };
+

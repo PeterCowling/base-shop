@@ -255,7 +255,7 @@ export default function CommentsThreadDetails({
               {mentionMatches.map((p, idx) => (
                 <div
                   key={p}
-                  className={`cursor-pointer px-2 py-1 hover:bg-muted ${idx === mentionIndex ? "bg-muted" : ""}`}
+                  className={`cursor-pointer px-2 py-1 hover:bg-surface-3 ${idx === mentionIndex ? "bg-surface-3" : ""}`}
                   onMouseDown={(e) => {
                     e.preventDefault();
                     insertMention(p);

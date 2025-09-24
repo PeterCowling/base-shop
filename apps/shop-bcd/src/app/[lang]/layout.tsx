@@ -11,7 +11,7 @@ import "../globals.css";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import shop from "../../../shop.json";
 import { JsonLdScript, organizationJsonLd } from "../../lib/jsonld";
-import { ThemeStyle } from "@acme/ui";
+import ThemeStyle from "@acme/ui/components/ThemeStyle";
 
 export async function generateMetadata({
   params,

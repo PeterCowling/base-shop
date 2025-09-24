@@ -19,7 +19,7 @@ interface ChatMessage {
 }
 
 export interface LiveChatWidgetProps
-  extends React.HTMLAttributes<HTMLButtonElement> {
+  extends Omit<React.HTMLAttributes<HTMLButtonElement>, "color"> {
   /**
    * Width of the chat dialog. Provide a Tailwind width class
    * (e.g. "w-80") or a numeric pixel value.
@@ -86,7 +86,7 @@ export function LiveChatWidget({
       <DialogContent
         style={{ ...widthStyle, ...bottomStyle }}
         className={cn(
-          "bg-surface-3 fixed right-4 flex flex-col gap-4 border border-border-2 p-6 shadow-elevation-3",
+          "bg-panel fixed right-4 flex flex-col gap-4 border border-border-2 p-6 shadow-elevation-3",
           widthClass,
           bottomClass
         )}

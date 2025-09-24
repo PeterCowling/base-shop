@@ -7,9 +7,11 @@ type Config = Record<string, unknown>;
 /* ------------------------------------------------------------
  *  Runtime diagnostics — confirm the preset really loads
  * ------------------------------------------------------------ */
-console.log(
-  `[@acme/tailwind-config] ✅  preset imported (cwd: ${process.cwd()})`
-);
+if (process.env.NODE_ENV !== "production") {
+  console.log(
+    `[@acme/tailwind-config] ✅  preset imported (cwd: ${process.cwd()})`
+  );
+}
 
 const preset: Config = {
   // This preset only provides design tokens, so no files need to be scanned
@@ -23,6 +25,8 @@ const preset: Config = {
         DEFAULT: "hsl(var(--ring-offset))",
       },
       colors: {
+        // Provide a named ring color so `ring-ring` maps to the focus token
+        ring: "hsl(var(--color-focus-ring, var(--ring)))",
         // Base semantic aliases expected by shadcn components
         background: "hsl(var(--color-bg))",
         foreground: "hsl(var(--color-fg))",
@@ -136,13 +140,15 @@ const preset: Config = {
 };
 
 // Additional diagnostics
-console.log("[@acme/tailwind-config] preset keys", Object.keys(preset));
-console.log(
-  "[@acme/tailwind-config] has nested",
-  {
-    plugins: Array.isArray((preset as { plugins?: unknown[] }).plugins),
-    presets: Array.isArray((preset as { presets?: unknown[] }).presets),
-  }
-);
+if (process.env.NODE_ENV !== "production") {
+  console.log("[@acme/tailwind-config] preset keys", Object.keys(preset));
+  console.log(
+    "[@acme/tailwind-config] has nested",
+    {
+      plugins: Array.isArray((preset as { plugins?: unknown[] }).plugins),
+      presets: Array.isArray((preset as { presets?: unknown[] }).presets),
+    }
+  );
+}
 
 export default preset;

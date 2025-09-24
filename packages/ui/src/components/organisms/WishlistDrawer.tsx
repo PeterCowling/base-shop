@@ -41,7 +41,7 @@ export function WishlistDrawer({
       <DialogContent
         style={style}
         className={cn(
-          "bg-surface-3 fixed top-0 right-0 z-50 h-full max-w-full translate-x-full overflow-y-auto border-l border-border-2 p-6 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0",
+          "bg-panel fixed top-0 right-0 z-50 h-full max-w-full translate-x-full overflow-y-auto border-l border-border-2 p-6 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0",
           widthClass
         )}
       >

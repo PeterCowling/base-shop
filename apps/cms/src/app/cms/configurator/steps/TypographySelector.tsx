@@ -9,15 +9,17 @@ interface Props {
   tokens: TokenMap;
   baseTokens: TokenMap;
   onChange: (next: TokenMap) => void;
-  /** Optional shared tag filter injected by parent */
-  tagFilter?: string;
+  /** Optional shared tag filters injected by parent */
+  tagFilters?: string[];
   /** Hide the built-in tag filter UI when a shared filter is provided */
   hideTagFilter?: boolean;
+  /** Hide the fine-tune token editor section */
+  showFineTune?: boolean;
 }
 
 type PairPreset = { id: string; name: string; tags?: string[]; tokens: Record<string, string> };
 
-export default function TypographySelector({ tokens, baseTokens, onChange, tagFilter: externalTagFilter, hideTagFilter }: Props) {
+export default function TypographySelector({ tokens, baseTokens, onChange, tagFilters: externalTagFilters, hideTagFilter, showFineTune = true }: Props) {
   const pairings = useMemo(() => (presetData as unknown as PairPreset[]).filter((p) => p.id.startsWith("type-")), []);
 
   const googleFamilies = useMemo(
@@ -79,22 +81,28 @@ export default function TypographySelector({ tokens, baseTokens, onChange, tagFi
   const [sizeH2, setSizeH2] = useState(24);
   const [sizeBody, setSizeBody] = useState(16);
 
-  const [tagFilter, setTagFilter] = useState<string>(externalTagFilter ?? "");
+  // For the built-in single-select UI (when used standalone), we keep a local single tag string
+  const [tagFilter, setTagFilter] = useState<string>("");
   const allTags = useMemo(() => {
     const t = new Set<string>();
     pairings.forEach((p) => (p.tags || []).forEach((tag) => t.add(tag)));
     return Array.from(t).sort();
   }, [pairings]);
   const filteredPairs = useMemo(() => {
-    const active = externalTagFilter ?? tagFilter;
-    if (!active) return pairings;
-    return pairings.filter((p) => (p.tags || []).some((t) => t === active));
-  }, [pairings, tagFilter, externalTagFilter]);
+    const active = externalTagFilters && externalTagFilters.length > 0 ? externalTagFilters : (tagFilter ? [tagFilter] : []);
+    if (!active || active.length === 0) return pairings;
+    return pairings.filter((p) => {
+      const tags = p.tags || [];
+      return tags.some((t) => active.includes(t));
+    });
+  }, [pairings, tagFilter, externalTagFilters]);
 
   // Keep internal state in sync when parent drives the filter
   useEffect(() => {
-    if (externalTagFilter !== undefined) setTagFilter(externalTagFilter);
-  }, [externalTagFilter]);
+    // When external filters are provided, we don't manage local state
+    // Keep the local dropdown cleared to avoid confusion if shown
+    if (externalTagFilters !== undefined) setTagFilter("");
+  }, [externalTagFilters]);
 
   const applyPairing = useCallback(
     (p: PairPreset) => {
@@ -110,6 +118,11 @@ export default function TypographySelector({ tokens, baseTokens, onChange, tagFi
     },
     [onChange, tokens, ensureGoogle, firstFamilyFromStack, googleFamilies],
   );
+
+  const isPairingSelected = useCallback((p: PairPreset) => {
+    const keys: Array<keyof typeof p.tokens> = ["--font-body", "--font-heading-1", "--font-heading-2"] as any;
+    return keys.every((k) => !p.tokens[k] || (tokens as Record<string, string>)[k as string] === p.tokens[k]);
+  }, [tokens]);
 
   const fontOnly = useCallback((map: TokenMap) => {
     const out: Record<string, string> = {};
@@ -179,13 +192,16 @@ export default function TypographySelector({ tokens, baseTokens, onChange, tagFi
               if (name && googleFamilies.has(name)) ensureGoogle(name);
             });
             return (
-              <div key={p.id} className="rounded border p-3">
+              <div key={p.id} className={`rounded border p-3 ${isPairingSelected(p) ? "border-primary ring-1 ring-primary/40" : ""}`}>
                 <div className="mb-1 flex items-center justify-between gap-2">
                   <div className="truncate text-sm font-medium">{p.name}</div>
                   <button type="button" className="rounded border px-2 py-1 text-xs" onClick={() => applyPairing(p)}>
                     Use pairing
                   </button>
                 </div>
+                {isPairingSelected(p) && (
+                  <div className="mb-2 inline-block rounded-full border border-primary bg-primary/10 px-2 py-0.5 text-[10px] text-primary">Selected</div>
+                )}
                 {p.tags && p.tags.length > 0 && (
                   <div className="mb-2 flex flex-wrap gap-1 text-[10px] text-muted-foreground">
                     {p.tags.map((t) => (
@@ -209,10 +225,12 @@ export default function TypographySelector({ tokens, baseTokens, onChange, tagFi
         </div>
       </div>
       {/* Fine‑tune (optional) */}
-      <div className="space-y-2">
-        <h3 className="text-sm font-semibold">Fine‑tune</h3>
-        <Tokens tokens={fontOnly(tokens)} baseTokens={fontOnly(baseTokens)} onChange={onChange} />
-      </div>
+      {showFineTune && (
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold">Fine‑tune</h3>
+          <Tokens tokens={fontOnly(tokens)} baseTokens={fontOnly(baseTokens)} onChange={onChange} />
+        </div>
+      )}
     </section>
   );
 }

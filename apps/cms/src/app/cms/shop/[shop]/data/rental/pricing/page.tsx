@@ -33,19 +33,19 @@ export default async function PricingPage({
       label: "Discount tiers",
       value: tiers ? String(tiers) : "None",
       caption: tiers ? "Longer bookings receive incentives" : "Add tiers to reward duration",
-      accent: tiers ? "bg-info/20 text-info-foreground" : "bg-muted/20 text-foreground",
+      accent: tiers ? "bg-info-soft text-foreground" : "bg-muted/20 text-foreground",
     },
     {
       label: "Deposit defaults",
       value: depositCodes ? `${depositCodes} damage codes` : "None",
       caption: depositCodes ? "Automatically reserve deposits when triggered" : "No deposit rules configured",
-      accent: depositCodes ? "bg-warning/20 text-warning-foreground" : "bg-muted/20 text-foreground",
+      accent: depositCodes ? "bg-warning-soft text-foreground" : "bg-muted/20 text-foreground",
     },
     {
       label: "Coverage entries",
       value: coverageEnabled ? String(coverageEnabled) : "Optional",
       caption: coverageEnabled ? "Fee & waiver rules live for customers" : "Add coverage to offset risk",
-      accent: coverageEnabled ? "bg-primary/20 text-foreground" : "bg-muted/20 text-foreground",
+      accent: coverageEnabled ? "bg-primary-soft text-foreground" : "bg-muted/20 text-foreground",
     },
   ];
 

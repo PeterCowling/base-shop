@@ -7,12 +7,12 @@ const meta: Meta<typeof StockStatus> = {
 };
 export default meta;
 
-export const InStock: StoryObj<typeof StockStatus> = {
-  args: { inStock: true, labelInStock: "In Stock" },
+export const Variants: StoryObj<typeof StockStatus> = {
+  render: () => (
+    <div className="flex items-center gap-4">
+      <StockStatus inStock />
+      <StockStatus inStock={false} />
+    </div>
+  ),
 };
-export const LowStock: StoryObj<typeof StockStatus> = {
-  args: { inStock: true, labelInStock: "Low Stock" },
-};
-export const SoldOut: StoryObj<typeof StockStatus> = {
-  args: { inStock: false, labelOutOfStock: "Sold Out" },
-};
+

@@ -144,12 +144,12 @@ export default function CommentsThreadList({
                 ref={(el) => {
                   rowsRef.current[t.id] = el;
                 }}
-                className={`cursor-pointer border-b p-2 text-sm hover:bg-muted/40 ${selectedId === t.id ? "bg-muted/60" : ""} ${flashId === t.id ? "animate-pulse ring-2 ring-sky-400" : ""}`}
+                className={`cursor-pointer border-b p-2 text-sm hover:bg-surface-3 ${selectedId === t.id ? "bg-surface-2" : ""} ${flashId === t.id ? "animate-pulse ring-2 ring-primary" : ""}`}
                 onClick={() => onSelect(t.id)}
               >
                 <div className="flex items-center justify-between">
                   <div className="truncate font-medium">{t.componentId}</div>
-                  <div className={`ml-2 shrink-0 rounded px-1 text-[10px] ${t.resolved ? "bg-green-200" : "bg-amber-200"}`}>
+                  <div className={`ml-2 shrink-0 rounded px-1 text-[10px] ${t.resolved ? "bg-success-soft" : "bg-warning-soft"}`}>
                     {t.resolved ? "Resolved" : "Open"}
                   </div>
                 </div>

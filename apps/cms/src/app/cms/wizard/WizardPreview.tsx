@@ -13,7 +13,7 @@ import React, { useEffect, useState, useMemo, forwardRef } from "react";
 import { STORAGE_KEY } from "../configurator/hooks/useConfiguratorPersistence";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 import usePreviewTokens from "./usePreviewTokens";
-import { THEME_TOKEN_HOVER_EVENT, type TokenHoverDetail } from "../../shop/[shop]/themes/events";
+import { THEME_TOKEN_HOVER_EVENT, type TokenHoverDetail } from "../shop/[shop]/themes/events";
 
 interface Props {
   style: React.CSSProperties;

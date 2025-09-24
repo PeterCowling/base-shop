@@ -49,7 +49,7 @@ export function FilterSidebar({
           aria-describedby={undefined}
           className={cn(
             widthClass,
-            "bg-surface-3 fixed inset-y-0 left-0 z-50 border-r border-border-2 p-4 shadow-elevation-3 focus:outline-none"
+            "bg-panel fixed inset-y-0 left-0 z-50 border-r border-border-2 p-4 shadow-elevation-3 focus:outline-none"
           )}
         >
           <DialogPrimitive.Title className="mb-4 text-lg font-semibold">

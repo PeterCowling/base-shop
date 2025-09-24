@@ -3,14 +3,14 @@
 import type { MappingRowsController } from "../useShopEditorSubmit";
 import {
   Button,
-  FormField,
   Input,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ui/components";
+} from "@ui/components/atoms";
+import { FormField } from "@ui/components/molecules";
 
 import type {
   MappingFieldName,

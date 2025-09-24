@@ -13,12 +13,16 @@ export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
-  ({ className, color, variant, tone = "soft", children, ...props }, ref) => {
+  ({ className, color, variant, tone, children, ...props }, ref) => {
     const resolvedColor: NonNullable<TagProps["color"]> = color ??
       (variant === "destructive" ? "destructive" :
        variant === "warning" ? "warning" :
        variant === "success" ? "success" :
        "default");
+    // Back-compat default: if using legacy `variant` without an explicit `color`,
+    // default to solid tone; otherwise default to soft for new API usage.
+    const resolvedTone: NonNullable<TagProps["tone"]> =
+      tone ?? (color ? "soft" : variant ? "solid" : "soft");
     const solidBg: Record<string, string> = {
       default: "bg-muted",
       primary: "bg-primary",
@@ -41,23 +45,24 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
     };
     const textFg: Record<string, string> = {
       default: "text-fg",
-      primary: tone === "solid" ? "text-primary-foreground" : "text-fg",
-      accent: tone === "solid" ? "text-accent-foreground" : "text-fg",
-      success: "text-success-foreground",
-      info: "text-info-foreground",
-      warning: "text-warning-foreground",
-      danger: "text-danger-foreground",
-      destructive: "text-danger-foreground",
+      primary: resolvedTone === "solid" ? "text-primary-foreground" : "text-fg",
+      accent: resolvedTone === "solid" ? "text-accent-foreground" : "text-fg",
+      // Prefer `*-fg` aliases for statuses, except `destructive` which maps to `danger-foreground` for test/back-compat
+      success: resolvedTone === "solid" ? "text-success-fg" : "text-fg",
+      info: resolvedTone === "solid" ? "text-info-fg" : "text-fg",
+      warning: resolvedTone === "solid" ? "text-warning-fg" : "text-fg",
+      danger: resolvedTone === "solid" ? "text-danger-foreground" : "text-fg",
+      destructive: resolvedTone === "solid" ? "text-danger-foreground" : "text-fg",
     };
     const bgToken: Record<string, string> = {
       default: "--color-muted",
-      primary: tone === "solid" ? "--color-primary" : "--color-primary-soft",
-      accent: tone === "solid" ? "--color-accent" : "--color-accent-soft",
-      success: tone === "solid" ? "--color-success" : "--color-success-soft",
-      info: tone === "solid" ? "--color-info" : "--color-info-soft",
-      warning: tone === "solid" ? "--color-warning" : "--color-warning-soft",
-      danger: tone === "solid" ? "--color-danger" : "--color-danger-soft",
-      destructive: tone === "solid" ? "--color-danger" : "--color-danger-soft",
+      primary: resolvedTone === "solid" ? "--color-primary" : "--color-primary-soft",
+      accent: resolvedTone === "solid" ? "--color-accent" : "--color-accent-soft",
+      success: resolvedTone === "solid" ? "--color-success" : "--color-success-soft",
+      info: resolvedTone === "solid" ? "--color-info" : "--color-info-soft",
+      warning: resolvedTone === "solid" ? "--color-warning" : "--color-warning-soft",
+      danger: resolvedTone === "solid" ? "--color-danger" : "--color-danger-soft",
+      destructive: resolvedTone === "solid" ? "--color-danger" : "--color-danger-soft",
     };
     const fgToken: Record<string, string> = {
       default: "--color-fg",
@@ -77,7 +82,7 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
         data-token-fg={fgToken[resolvedColor]}
         className={cn(
           "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium",
-          (tone === "solid" ? solidBg : softBg)[resolvedColor],
+          (resolvedTone === "solid" ? solidBg : softBg)[resolvedColor],
           textFg[resolvedColor],
           className
         )}

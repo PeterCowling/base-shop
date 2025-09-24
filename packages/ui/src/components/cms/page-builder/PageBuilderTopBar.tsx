@@ -94,6 +94,10 @@ const PageBuilderTopBar = ({
         publishLabel={mode === "section" ? "Publish section" : "Publish"}
       />
       <NotificationsBell shop={shop ?? null} pageId={pageId ?? null} />
+      {/* Quick access to NextAuth session for debugging */}
+      <Button asChild variant="outline" size="sm" aria-label="View session">
+        <a href="/api/auth/session" target="_blank" rel="noreferrer">Session</a>
+      </Button>
       <Dialog open={helpOpen} onOpenChange={onHelpOpenChange}>
         <DialogTrigger asChild>
           <Tooltip text="Keyboard & mouse controls">

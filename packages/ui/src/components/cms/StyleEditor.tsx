@@ -11,14 +11,17 @@ interface StyleEditorProps {
   onChange: (tokens: TokenMap) => void;
   /** Token key to focus when editor opens */
   focusToken?: string | null;
+  /** Hide token search input */
+  showSearch?: boolean;
+  /** Hide eyedropper and advanced actions */
+  showExtras?: boolean;
 }
 
 export default function StyleEditor(props: StyleEditorProps) {
   return (
     <div className="space-y-4">
       <Presets {...props} />
-      <Tokens {...props} />
+      <Tokens {...props} showSearch={props.showSearch} showExtras={props.showExtras} />
     </div>
   );
 }
-

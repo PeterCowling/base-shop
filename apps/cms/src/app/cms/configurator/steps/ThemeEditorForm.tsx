@@ -15,6 +15,7 @@ import WizardPreview from "../../wizard/WizardPreview";
 import { getContrast } from "@ui/components/cms";
 import type { TokenMap } from "@ui/hooks/useTokenEditor";
 import type { DevicePreset } from "@ui/utils/devicePresets";
+import ThemeSpectrum from "@ui/components/cms/ThemeSpectrum";
 
 const MIN_CONTRAST = 4.5;
 
@@ -116,7 +117,7 @@ export default function ThemeEditorForm({
                   </div>
                 </Button>
                 {warn && (
-                  <span className="absolute -top-1 -right-1 rounded bg-warning/20 px-1 text-xs text-warning-foreground">
+                  <span className="absolute -top-1 -right-1 rounded bg-warning-soft px-1 text-xs text-foreground">
                     Low contrast
                   </span>
                 )}
@@ -126,10 +127,14 @@ export default function ThemeEditorForm({
         </div>
       </div>
 
+      <ThemeSpectrum />
+
       <StyleEditor
         tokens={themeOverrides}
         baseTokens={themeDefaults}
         onChange={onTokensChange}
+        showSearch={false}
+        showExtras={false}
       />
       <div className="flex justify-between">
         <Button data-cy="reset-theme" variant="outline" onClick={onReset}>

@@ -15,8 +15,8 @@ export const PopoverContent = React.forwardRef<
   // Ensure a non-transparent background even if theme vars are missing by
   // providing robust CSS variable fallbacks like other primitives do.
   const safeStyle: React.CSSProperties = {
-    backgroundColor: "hsl(var(--popover, var(--surface-3, 0 0% 96%)))",
-    color: "hsl(var(--popover-foreground, var(--color-fg, 0 0% 10%)))",
+    backgroundColor: "hsl(var(--panel, var(--color-panel, var(--surface-2, var(--color-bg)))))",
+    color: "hsl(var(--color-fg, 0 0% 10%))",
     ...(props as any).style,
   };
   // If a container is provided, render within a Portal targeting it.
@@ -28,7 +28,7 @@ export const PopoverContent = React.forwardRef<
           sideOffset={sideOffset}
           align={align}
           className={cn(
-            "bg-popover text-popover-foreground z-50 rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto",
+            "bg-panel text-foreground z-50 rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto border-border-2",
             className
           )}
           style={safeStyle}
@@ -45,7 +45,7 @@ export const PopoverContent = React.forwardRef<
       sideOffset={sideOffset}
       align={align}
       className={cn(
-        "bg-popover text-popover-foreground z-50 rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto",
+        "bg-panel text-foreground z-50 rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto border-border-2",
         className
       )}
       style={safeStyle}

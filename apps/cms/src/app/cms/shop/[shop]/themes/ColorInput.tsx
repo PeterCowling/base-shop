@@ -108,7 +108,7 @@ export default function ColorInput({
   return (
     <label
       data-token-key={name}
-      className={`flex flex-col gap-1 ${isOverridden ? "bg-warning/10" : ""}`}
+      className={`flex flex-col gap-1 ${isOverridden ? "bg-warning-soft" : ""}`}
     >
       <span className="flex items-center gap-2">
         {name}
@@ -118,7 +118,7 @@ export default function ColorInput({
           </span>
         </Tooltip>
         {warning && (
-          <span className="rounded bg-warning/20 px-1 text-xs text-warning-foreground">
+          <span className="rounded bg-warning-soft px-1 text-xs text-foreground">
             {warning}
           </span>
         )}
@@ -145,7 +145,7 @@ export default function ColorInput({
               value={colorValue}
               onChange={handleChange}
               ref={inputRef}
-              className={isOverridden ? "bg-warning/20" : ""}
+              className={isOverridden ? "bg-warning-soft" : ""}
             />
             <div className="flex items-center gap-1">
               <span
@@ -168,7 +168,7 @@ export default function ColorInput({
               onChange(e.target.value)
             }
             ref={inputRef}
-            className={isOverridden ? "bg-warning/20" : ""}
+            className={isOverridden ? "bg-warning-soft" : ""}
           />
         )}
         {hasOverride && (

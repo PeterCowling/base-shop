@@ -28,7 +28,7 @@ export async function PATCH(
       body = await req.json().catch(() => ({}));
     } else if (ct.includes("multipart/form-data")) {
       const fd = await req.formData();
-      body = Object.fromEntries(fd.entries());
+      body = Object.fromEntries((fd as any).entries());
       // Coerce booleans
       if (typeof body["seo.noindex"] === "string") {
         body["seo.noindex"] = body["seo.noindex"] === "true";

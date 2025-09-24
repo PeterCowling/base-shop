@@ -106,8 +106,12 @@ export default function useCanvasDrag({
           distY = bottomDist;
         }
       }
-      const parentEl = containerRef.current.parentElement;
-      const unit = parentEl ? parentEl.offsetWidth / gridCols : null;
+      const parent = containerRef.current.parentElement;
+      const parentWidth = parent?.offsetWidth ?? 0;
+      const parentHeight = parent?.offsetHeight ?? 0;
+      const hasParentWidth = parentWidth > 0;
+      const hasParentHeight = parentHeight > 0;
+      const unit = parent && hasParentWidth ? parentWidth / gridCols : null;
       if (gridEnabled && unit) {
         const snappedL = snapToGrid(newL, unit);
         const snappedT = snapToGrid(newT, unit);
@@ -125,25 +129,28 @@ export default function useCanvasDrag({
         }
       }
       // Compute docked offsets when docking is enabled
-      const parent = containerRef.current.parentElement;
       const useRight = dockX === "right";
       const useBottom = dockY === "bottom";
       // Restrict to parent bounds when a parent exists
-      if (parent) {
-        const maxL = Math.max(0, parent.offsetWidth - width);
-        const maxT = Math.max(0, parent.offsetHeight - height);
-        newL = Math.min(Math.max(0, newL), maxL);
-        newT = Math.min(Math.max(0, newT), maxT);
+      if (parent && (hasParentWidth || hasParentHeight)) {
+        if (hasParentWidth) {
+          const maxL = Math.max(0, parentWidth - width);
+          newL = Math.min(Math.max(0, newL), maxL);
+        }
+        if (hasParentHeight) {
+          const maxT = Math.max(0, parentHeight - height);
+          newT = Math.min(Math.max(0, newT), maxT);
+        }
       }
       const patch: Record<string, string> = {};
-      if (useRight && parent) {
-        const right = Math.round((parent.offsetWidth - (newL + width)));
+      if (useRight && parent && hasParentWidth) {
+        const right = Math.round(parentWidth - (newL + width));
         patch.right = `${right}px`;
       } else {
         patch[leftKey] = `${Math.round(newL)}px`;
       }
-      if (useBottom && parent) {
-        const bottom = Math.round((parent.offsetHeight - (newT + height)));
+      if (useBottom && parent && hasParentHeight) {
+        const bottom = Math.round(parentHeight - (newT + height));
         patch.bottom = `${bottom}px`;
       } else {
         patch[topKey] = `${Math.round(newT)}px`;

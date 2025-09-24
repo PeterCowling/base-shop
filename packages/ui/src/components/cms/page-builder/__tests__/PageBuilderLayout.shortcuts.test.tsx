@@ -7,25 +7,39 @@ const layersScrollSpy = jest.fn();
 
 jest.mock("@dnd-kit/core", () => ({
   __esModule: true,
-  DndContext: ({ children }: any) => <div data-testid="dnd-context">{children}</div>,
-  DragOverlay: ({ children }: any) => <div data-testid="drag-overlay">{children}</div>,
+  DndContext: ({ children }: any) => <div data-cy="dnd-context">{children}</div>,
+  DragOverlay: ({ children }: any) => <div data-cy="drag-overlay">{children}</div>,
   defaultDropAnimation: {},
   defaultDropAnimationSideEffects: () => ({}),
+  KeyboardCode: {
+    Space: "Space",
+    Down: "ArrowDown",
+    Right: "ArrowRight",
+    Left: "ArrowLeft",
+    Up: "ArrowUp",
+    Esc: "Escape",
+    Enter: "Enter",
+    Tab: "Tab",
+  },
 }));
 
-jest.mock("../../atoms", () => ({
-  __esModule: true,
-  Toast: () => null,
-}));
+jest.mock("../../../atoms", () => {
+  const actual = jest.requireActual("../../../atoms");
+  return {
+    __esModule: true,
+    ...actual,
+    Toast: () => null,
+  };
+});
 
 jest.mock("../PageToolbar", () => ({
   __esModule: true,
-  default: () => <div data-testid="toolbar" />,
+  default: () => <div data-cy="toolbar" />,
 }));
 
 jest.mock("../PageCanvas", () => ({
   __esModule: true,
-  default: () => <div data-testid="canvas" />,
+  default: () => <div data-cy="canvas" />,
 }));
 
 jest.mock("../PageSidebar", () => {
@@ -41,8 +55,8 @@ jest.mock("../PageSidebar", () => {
       }
     }, []);
     return (
-      <div data-testid="page-sidebar" {...props}>
-        <div id="pb-layers-panel" data-testid="layers-panel" ref={setNode} />
+      <div data-cy="page-sidebar" {...props}>
+        <div id="pb-layers-panel" data-cy="layers-panel" ref={setNode} />
       </div>
     );
   };
@@ -51,12 +65,12 @@ jest.mock("../PageSidebar", () => {
 
 jest.mock("../HistoryControls", () => ({
   __esModule: true,
-  default: () => <div data-testid="history" />,
+  default: () => <div data-cy="history" />,
 }));
 
 jest.mock("../PreviewPane", () => ({
   __esModule: true,
-  default: () => <div data-testid="preview" />,
+  default: () => <div data-cy="preview" />,
 }));
 
 jest.mock("../devtools/DevToolsOverlay", () => ({
@@ -71,12 +85,12 @@ jest.mock("../PageBuilderTour", () => ({
 
 jest.mock("../ResponsiveRightActions", () => ({
   __esModule: true,
-  default: () => <div data-testid="right-actions" />,
+  default: () => <div data-cy="right-actions" />,
 }));
 
 jest.mock("../DragOverlayPreview", () => ({
   __esModule: true,
-  default: () => <div data-testid="drag-preview" />,
+  default: () => <div data-cy="drag-preview" />,
 }));
 
 jest.mock("../ErrorBoundary", () => ({
@@ -84,7 +98,7 @@ jest.mock("../ErrorBoundary", () => ({
   default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }));
 
-jest.mock("../../../hooks/useReducedMotion", () => ({
+jest.mock("../../../../hooks/useReducedMotion", () => ({
   __esModule: true,
   default: () => false,
 }));
@@ -133,12 +147,12 @@ jest.mock("../hooks/useSpacePanning", () => ({
 
 jest.mock("../PaletteSidebar", () => ({
   __esModule: true,
-  default: () => <div data-testid="palette-sidebar" />,
+  default: () => <div data-cy="palette-sidebar" />,
 }));
 
 jest.mock("../QuickPaletteControls", () => ({
   __esModule: true,
-  default: () => <div data-testid="quick-controls" />,
+  default: () => <div data-cy="quick-controls" />,
 }));
 
 jest.mock("../PlaceholderAnimations", () => ({
@@ -148,23 +162,23 @@ jest.mock("../PlaceholderAnimations", () => ({
 
 jest.mock("../LeftRail", () => ({
   __esModule: true,
-  default: () => <div data-testid="left-rail" />,
+  default: () => <div data-cy="left-rail" />,
 }));
 
 jest.mock("../PresenceAvatars", () => ({
   __esModule: true,
-  default: () => <div data-testid="presence" />,
+  default: () => <div data-cy="presence" />,
 }));
 
 jest.mock("../NotificationsBell", () => ({
   __esModule: true,
-  default: () => <div data-testid="notifications" />,
+  default: () => <div data-cy="notifications" />,
 }));
 
 
 jest.mock("../StudioMenu", () => ({
   __esModule: true,
-  default: () => <div data-testid="studio-menu" />,
+  default: () => <div data-cy="studio-menu" />,
 }));
 
 const baseProps = {
@@ -221,7 +235,6 @@ describe("PageBuilderLayout panel shortcut", () => {
 
   it("cycles palette, inspector, and layers with Ctrl+.", async () => {
     render(<PageBuilderLayout {...(baseProps as any)} />);
-
     expect(screen.getByTestId("palette-sidebar")).toBeInTheDocument();
     expect(screen.getByTestId("page-sidebar")).toBeInTheDocument();
 

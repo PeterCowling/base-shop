@@ -7,7 +7,7 @@ describe("TextToken", () => {
   const renderToken = (props: Partial<React.ComponentProps<typeof TextToken>> = {}) =>
     render(
       TextToken({
-        key: tokenKey,
+        tokenKey,
         value: "hello",
         defaultValue: "hello",
         isOverridden: false,

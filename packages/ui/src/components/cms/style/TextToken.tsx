@@ -4,12 +4,13 @@ import { Input } from "../../atoms/shadcn";
 import type { TokenInfo } from "../../../hooks/useTokenEditor";
 import { ReactElement, ChangeEvent } from "react";
 
-interface TextTokenProps extends TokenInfo {
+interface TextTokenProps extends Omit<TokenInfo, "key"> {
+  tokenKey: TokenInfo["key"];
   setToken: (key: string, value: string) => void;
 }
 
 export function TextToken({
-  key: tokenKey,
+  tokenKey,
   value,
   defaultValue,
   isOverridden,
@@ -17,7 +18,6 @@ export function TextToken({
 }: TextTokenProps): ReactElement {
   return (
     <label
-      key={tokenKey}
       data-token-key={tokenKey}
       className={`flex flex-wrap items-center gap-2 text-sm ${
         isOverridden ? "border-l-2 border-l-info pl-2" : ""

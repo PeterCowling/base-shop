@@ -19,8 +19,10 @@ afterEach(() => {
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 
 const originalError = console.error;
+let consoleErrorSpy: jest.SpyInstance | undefined;
+
 beforeAll(() => {
-  jest.spyOn(console, "error").mockImplementation((msg, ...args) => {
+  consoleErrorSpy = jest.spyOn(console, "error").mockImplementation((msg, ...args) => {
     if (typeof msg === "string" && msg.includes("not wrapped in act")) {
       return;
     }
@@ -29,7 +31,7 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-  (console.error as jest.Mock).mockRestore();
+  consoleErrorSpy?.mockRestore();
 });
 
 describe("loadPublishLocations", () => {

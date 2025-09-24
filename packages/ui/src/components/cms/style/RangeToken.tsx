@@ -4,12 +4,13 @@ import { RangeInput } from "../index";
 import type { TokenInfo } from "../../../hooks/useTokenEditor";
 import { ReactElement } from "react";
 
-interface RangeTokenProps extends TokenInfo {
+interface RangeTokenProps extends Omit<TokenInfo, "key"> {
+  tokenKey: string;
   setToken: (key: string, value: string) => void;
 }
 
 export function RangeToken({
-  key: tokenKey,
+  tokenKey,
   value,
   defaultValue,
   isOverridden,
@@ -17,7 +18,6 @@ export function RangeToken({
 }: RangeTokenProps): ReactElement {
   return (
     <label
-      key={tokenKey}
       data-token-key={tokenKey}
       className={`flex flex-wrap items-center gap-2 text-sm ${
         isOverridden ? "border-l-2 border-l-info pl-2" : ""

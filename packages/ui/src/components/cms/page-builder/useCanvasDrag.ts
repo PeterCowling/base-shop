@@ -126,24 +126,32 @@ export default function useCanvasDrag({
       }
       // Compute docked offsets when docking is enabled
       const parent = containerRef.current.parentElement;
-      const useRight = dockX === "right";
-      const useBottom = dockY === "bottom";
-      // Restrict to parent bounds when a parent exists
+      const parentWidth = parent?.offsetWidth ?? 0;
+      const parentHeight = parent?.offsetHeight ?? 0;
+      const hasParentWidth = parentWidth > 0;
+      const hasParentHeight = parentHeight > 0;
+      const useRight = dockX === "right" && hasParentWidth;
+      const useBottom = dockY === "bottom" && hasParentHeight;
+      // Restrict to parent bounds when a parent exists with measurable bounds
       if (parent) {
-        const maxL = Math.max(0, parent.offsetWidth - width);
-        const maxT = Math.max(0, parent.offsetHeight - height);
-        newL = Math.min(Math.max(0, newL), maxL);
-        newT = Math.min(Math.max(0, newT), maxT);
+        if (hasParentWidth) {
+          const maxL = Math.max(0, parentWidth - width);
+          newL = Math.min(Math.max(0, newL), maxL);
+        }
+        if (hasParentHeight) {
+          const maxT = Math.max(0, parentHeight - height);
+          newT = Math.min(Math.max(0, newT), maxT);
+        }
       }
       const patch: Record<string, string> = {};
       if (useRight && parent) {
-        const right = Math.round((parent.offsetWidth - (newL + width)));
+        const right = Math.round(parentWidth - (newL + width));
         patch.right = `${right}px`;
       } else {
         patch[leftKey] = `${Math.round(newL)}px`;
       }
       if (useBottom && parent) {
-        const bottom = Math.round((parent.offsetHeight - (newT + height)));
+        const bottom = Math.round(parentHeight - (newT + height));
         patch.bottom = `${bottom}px`;
       } else {
         patch[topKey] = `${Math.round(newT)}px`;

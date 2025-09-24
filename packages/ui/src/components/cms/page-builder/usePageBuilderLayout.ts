@@ -125,7 +125,15 @@ const usePageBuilderLayout = ({
     handleSetSectionBackground,
     handleInsertPreset,
     mediaLibraryListener,
-  } = useInsertHandlers({ components, selectedIds, setSelectedIds, insertIndex, dispatch, t });
+  } = useInsertHandlers({
+    components,
+    selectedIds,
+    setSelectedIds,
+    insertIndex,
+    insertParentId,
+    dispatch,
+    t,
+  });
 
   useMediaLibraryListener(mediaLibraryListener);
 

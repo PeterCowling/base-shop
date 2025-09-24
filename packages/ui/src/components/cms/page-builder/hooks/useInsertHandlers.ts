@@ -6,11 +6,29 @@ import type { PageComponent } from "@acme/types";
 import { isTopLevelAllowed } from "../rules";
 import { CONTAINER_TYPES, defaults, type ComponentType } from "../defaults";
 
+const clampIndex = (value: number, length: number) => Math.max(0, Math.min(value, length));
+
+const isValidIndex = (value: number | null | undefined): value is number =>
+  typeof value === "number" && Number.isFinite(value);
+
+const findComponentById = (nodes: PageComponent[], id: string): PageComponent | undefined => {
+  for (const node of nodes) {
+    if (node.id === id) return node;
+    const children = (node as any)?.children as PageComponent[] | undefined;
+    if (Array.isArray(children)) {
+      const match = findComponentById(children, id);
+      if (match) return match;
+    }
+  }
+  return undefined;
+};
+
 interface Params {
   components: PageComponent[];
   selectedIds: string[];
   setSelectedIds: (ids: string[]) => void;
   insertIndex: number | null | undefined;
+  insertParentId?: string | undefined;
   dispatch: (action: any) => void;
   t: (key: string, vars?: Record<string, unknown>) => string;
 }
@@ -20,6 +38,7 @@ export default function useInsertHandlers({
   selectedIds,
   setSelectedIds,
   insertIndex,
+  insertParentId,
   dispatch,
   t,
 }: Params) {
@@ -29,10 +48,47 @@ export default function useInsertHandlers({
     return target?.type === "Section";
   }, [components, selectedIds]);
 
+  const resolveInsertTarget = useCallback(
+    (options?: { preferSection?: boolean }): { parentId?: string; index: number } => {
+      const preferSection = options?.preferSection ?? false;
+
+      if (insertParentId) {
+        const parent = findComponentById(components, insertParentId);
+        if (parent) {
+          const children = Array.isArray((parent as any).children)
+            ? ((parent as any).children as PageComponent[])
+            : [];
+          const length = children.length;
+          const index = isValidIndex(insertIndex) ? clampIndex(insertIndex, length) : length;
+          return { parentId: insertParentId, index };
+        }
+      }
+
+      if (isValidIndex(insertIndex)) {
+        return { index: clampIndex(insertIndex, components.length) };
+      }
+
+      if (preferSection && selectedIsSection && selectedIds.length > 0) {
+        const sel = components.find((c) => c.id === selectedIds[0]) as any;
+        const kids = (sel?.children as PageComponent[] | undefined) ?? [];
+        return { parentId: selectedIds[0], index: kids.length };
+      }
+
+      if (selectedIds.length > 0) {
+        const pos = components.findIndex((c: PageComponent) => c.id === selectedIds[0]);
+        const idx = pos >= 0 ? pos + 1 : components.length;
+        return { index: idx };
+      }
+
+      return { index: components.length };
+    },
+    [components, insertIndex, insertParentId, selectedIds, selectedIsSection]
+  );
+
   const handleAddFromPalette = useCallback(
     (type: ComponentType) => {
-      // If a Section is selected, we insert into it and skip the root allowlist.
-      if (!selectedIsSection && !isTopLevelAllowed(type)) {
+      const target = resolveInsertTarget({ preferSection: true });
+      if (!target.parentId && !isTopLevelAllowed(type)) {
         try {
           window.dispatchEvent(
             new CustomEvent("pb-live-message", {
@@ -49,41 +105,13 @@ export default function useInsertHandlers({
         ...(defaults[type] ?? {}),
         ...(isContainer ? { children: [] } : {}),
       } as PageComponent;
-      // Compute target (root or selected Section children)
-      const target = (() => {
-        if (selectedIsSection && selectedIds.length > 0) {
-          const sel = components.find((c) => c.id === selectedIds[0]) as any;
-          const kids = (sel?.children as PageComponent[] | undefined) ?? [];
-          return { parentId: selectedIds[0], index: kids.length };
-        }
-        let idx = components.length;
-        if (insertIndex !== null && insertIndex !== undefined) return { index: insertIndex as number };
-        if (selectedIds.length > 0) {
-          const pos = components.findIndex((c: PageComponent) => c.id === selectedIds[0]);
-          idx = pos >= 0 ? pos + 1 : components.length;
-        }
-        return { index: idx };
-      })();
       dispatch({ type: "add", component, ...(target.parentId ? { parentId: target.parentId } : {}), index: target.index });
       setSelectedIds([component.id]);
     },
-    [dispatch, setSelectedIds, components, selectedIds, insertIndex, selectedIsSection]
+    [dispatch, resolveInsertTarget, setSelectedIds]
   );
 
-  const computeInsertTarget = useCallback((): { parentId?: string; index: number } => {
-    if (selectedIsSection && selectedIds.length > 0) {
-      const sel = components.find((c) => c.id === selectedIds[0]) as any;
-      const kids = (sel?.children as PageComponent[] | undefined) ?? [];
-      return { parentId: selectedIds[0], index: kids.length };
-    }
-    let index = components.length;
-    if (insertIndex !== null && insertIndex !== undefined) return { index: insertIndex as number };
-    if (selectedIds.length > 0) {
-      const pos = components.findIndex((c: PageComponent) => c.id === selectedIds[0]);
-      index = pos >= 0 ? pos + 1 : components.length;
-    }
-    return { index };
-  }, [components, insertIndex, selectedIds, selectedIsSection]);
+  const computeInsertTarget = useCallback((): { parentId?: string; index: number } => resolveInsertTarget(), [resolveInsertTarget]);
 
   const handleInsertImageAsset = useCallback(
     (url: string) => {

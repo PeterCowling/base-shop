@@ -47,7 +47,8 @@ export default function TopActionBar({ onSave, onPublish, saving = false, publis
               try { window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'preview', title: next ? 'Preview enabled' : 'Preview disabled' } })); } catch {}
               togglePreview();
             }}
-            aria-label="Preview"
+            aria-label={showPreview ? "Hide preview" : "Show preview"}
+            title={showPreview ? "Hide preview" : "Show preview"}
           >
             {showPreview ? "Editing" : "Preview"}
           </Button>

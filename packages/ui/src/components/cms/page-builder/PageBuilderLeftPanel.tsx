@@ -94,6 +94,8 @@ const PageBuilderLeftPanel = ({
 }: PageBuilderLeftPanelProps) => {
   const showQuickPalette = !showPalette && !showSections;
 
+  const paletteMode = mode === "section" ? "elements" : "all";
+
   return (
     <>
       <LeftRail
@@ -142,7 +144,7 @@ const PageBuilderLeftPanel = ({
           onSetSectionBackground={onSetSectionBackground}
           selectedIsSection={selectedIsSection}
           onInsertPreset={onInsertPreset}
-          mode="elements"
+          mode={paletteMode}
         />
       )}
       {showSections && (

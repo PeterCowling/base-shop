@@ -130,28 +130,38 @@ export default function useCanvasDrag({
       const parentHeight = parent?.offsetHeight ?? 0;
       const hasParentWidth = parentWidth > 0;
       const hasParentHeight = parentHeight > 0;
-      const useRight = dockX === "right" && hasParentWidth;
-      const useBottom = dockY === "bottom" && hasParentHeight;
+      const horizontalCapacity = hasParentWidth ? Math.max(0, parentWidth - width) : null;
+      const verticalCapacity = hasParentHeight ? Math.max(0, parentHeight - height) : null;
+      const useRight = dockX === "right" && !!horizontalCapacity;
+      const useBottom = dockY === "bottom" && !!verticalCapacity;
       // Restrict to parent bounds when a parent exists with measurable bounds
       if (parent) {
         if (hasParentWidth) {
-          const maxL = Math.max(0, parentWidth - width);
-          newL = Math.min(Math.max(0, newL), maxL);
+          const maxL = horizontalCapacity ?? 0;
+          if (maxL > 0) {
+            newL = Math.min(Math.max(0, newL), maxL);
+          } else {
+            newL = Math.max(newL, 0);
+          }
         }
         if (hasParentHeight) {
-          const maxT = Math.max(0, parentHeight - height);
-          newT = Math.min(Math.max(0, newT), maxT);
+          const maxT = verticalCapacity ?? 0;
+          if (maxT > 0) {
+            newT = Math.min(Math.max(0, newT), maxT);
+          } else {
+            newT = Math.max(newT, 0);
+          }
         }
       }
       const patch: Record<string, string> = {};
       if (useRight && parent) {
-        const right = Math.round(parentWidth - (newL + width));
+        const right = Math.round(Math.max(0, parentWidth - (newL + width)));
         patch.right = `${right}px`;
       } else {
         patch[leftKey] = `${Math.round(newL)}px`;
       }
       if (useBottom && parent) {
-        const bottom = Math.round(parentHeight - (newT + height));
+        const bottom = Math.round(Math.max(0, parentHeight - (newT + height)));
         patch.bottom = `${bottom}px`;
       } else {
         patch[topKey] = `${Math.round(newT)}px`;

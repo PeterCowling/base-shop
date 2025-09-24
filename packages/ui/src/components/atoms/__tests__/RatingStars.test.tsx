@@ -18,7 +18,7 @@ describe("RatingStars", () => {
       expect(star).toHaveAttribute("width", size.toString());
       expect(star).toHaveAttribute("height", size.toString());
       if (index < filled) {
-        expect(star).toHaveClass("fill-yellow-500");
+        expect(star).toHaveClass("fill-warning");
       } else {
         expect(star).toHaveClass("fill-muted");
       }
@@ -30,7 +30,7 @@ describe("RatingStars", () => {
     const size = 24;
     const { container } = render(<RatingStars rating={rating} size={size} />);
 
-    const filledStars = container.querySelectorAll("svg.fill-yellow-500");
+    const filledStars = container.querySelectorAll("svg.fill-warning");
     const mutedStars = container.querySelectorAll("svg.fill-muted");
 
     expect(filledStars).toHaveLength(Math.round(rating));

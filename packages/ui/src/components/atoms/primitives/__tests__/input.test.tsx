@@ -11,7 +11,7 @@ describe("Input primitive", () => {
   it("renders without floating label and applies error styles", () => {
     render(<Input label="Email" error="Required" />);
     const input = screen.getByLabelText("Email");
-    expect(input).toHaveClass("border-red-500");
+    expect(input).toHaveClass("border-danger");
     expect(input).toHaveAttribute("aria-invalid", "true");
 
     // exercise focus/blur handlers

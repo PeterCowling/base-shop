@@ -44,7 +44,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       "min-h-[6rem] w-full rounded-md border border-input bg-input px-3 py-2 text-sm text-foreground",
       "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] disabled:cursor-not-allowed disabled:opacity-50",
       floatingLabel && "peer pt-5",
-      hasError && "border-red-500",
+      hasError && "border-danger",
       className
     );
 

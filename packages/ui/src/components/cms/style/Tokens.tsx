@@ -166,10 +166,26 @@ export default function Tokens({
     }
 
     if (/px$/.test(info.value)) {
-      return <RangeToken {...info} setToken={setToken} />;
+      const { key: tokenKey, ...rest } = info;
+      return (
+        <RangeToken
+          key={tokenKey}
+          tokenKey={tokenKey}
+          {...rest}
+          setToken={setToken}
+        />
+      );
     }
 
-    return <TextToken {...info} setToken={setToken} />;
+    const { key: tokenKey, ...rest } = info;
+    return (
+      <TextToken
+        key={tokenKey}
+        tokenKey={tokenKey}
+        {...rest}
+        setToken={setToken}
+      />
+    );
   };
   const filteredGroups = useMemo(() => {
     const lower = search.toLowerCase();

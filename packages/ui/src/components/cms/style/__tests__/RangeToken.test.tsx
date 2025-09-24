@@ -7,7 +7,7 @@ describe("RangeToken", () => {
   const renderToken = (props: Partial<React.ComponentProps<typeof RangeToken>> = {}) =>
     render(
       RangeToken({
-        key: tokenKey,
+        tokenKey,
         value: "8px",
         defaultValue: "8px",
         isOverridden: false,

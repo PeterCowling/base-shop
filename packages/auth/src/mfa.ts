@@ -33,8 +33,12 @@ export async function verifyMfa(
     where: { customerId },
   });
   if (!record) return false;
-  // Use the shared authenticator and pass a ±1 step window explicitly
-  const valid = authenticator.verify({ token, secret: record.secret, window: 1 });
+  // Use the shared authenticator and pass a ±1 step window explicitly.
+  // The current @types for otplib's verify options don't include `window`,
+  // but the runtime supports it. Pass via an `any`-typed options object to
+  // preserve the behaviour without fighting the upstream types.
+  const opts: any = { token, secret: record.secret, window: 1 };
+  const valid = authenticator.verify(opts);
   if (valid && !record.enabled) {
     await prisma.customerMfa.update({
       where: { customerId },

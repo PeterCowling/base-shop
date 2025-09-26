@@ -14,26 +14,18 @@ import useLayerSelectionPreference from "./hooks/useLayerSelectionPreference";
 import useLocalStrings from "./hooks/useLocalStrings";
 import useInsertHandlers from "./hooks/useInsertHandlers";
 import useKeyboardShortcuts from "./hooks/useKeyboardShortcuts";
-import { validateSectionRules } from "@acme/platform-core/validation/sectionRules";
-import type { SectionTemplate } from "@acme/types/section/template";
 import useGridSize from "./hooks/useGridSize";
 import { defaults, CONTAINER_TYPES } from "./defaults";
-import {
-  buildCanvasProps,
-  buildGridProps,
-  buildHistoryProps,
-  buildPreviewProps,
-  buildToastProps,
-  buildTourProps,
-} from "./buildProps";
+import { buildCanvasProps, buildGridProps, buildHistoryProps, buildPreviewProps, buildTourProps } from "./buildProps";
 import { createToolbarProps } from "./createToolbarProps";
 import { createLinkedSectionHandler } from "./createLinkedSectionHandler";
 import useMediaLibraryListener from "./useMediaLibraryListener";
 import useSectionModeInitialSelection from "./useSectionModeInitialSelection";
 import type { PageComponent } from "@acme/types";
 import type { PageBuilderLayoutProps, PageBuilderProps } from "./PageBuilder.types";
-
-const DEFAULT_TOAST = { open: false, message: "" } as const;
+import usePublishWithValidation from "./hooks/usePublishWithValidation";
+import usePresetActions from "./hooks/usePresetActions";
+import { useToastState } from "./hooks/useToastState";
 
 const usePageBuilderLayout = ({
   page,
@@ -85,7 +77,7 @@ const usePageBuilderLayout = ({
 
   const canvasRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [toast, setToast] = useState<{ open: boolean; message: string; retry?: () => void }>(DEFAULT_TOAST);
+  const { toast, setToast, toastProps } = useToastState();
   const [snapPosition, setSnapPosition] = useState<number | null>(null);
   const [showComments, setShowComments] = useState(true);
 
@@ -162,31 +154,11 @@ const usePageBuilderLayout = ({
 
   saveRef.current = handleSave;
 
-  // Wrap publish with validation guardrails (hero limit, image width hint)
-  const publishWithValidation = async () => {
-    try {
-      const sections: SectionTemplate[] = (components || [])
-        .filter((c: any) => (c as any)?.type === 'Section')
-        .map((c: any, idx: number) => ({
-          id: `local-${idx}`,
-          label: (c as any)?.label || `Section ${idx + 1}`,
-          status: 'draft',
-          template: c,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          createdBy: 'editor',
-        }));
-      const result = validateSectionRules(sections);
-      if ((result as any).ok === false) {
-        const msg = (result as any).errors?.join('\n') || 'Validation failed';
-        setToast({ open: true, message: msg });
-        return;
-      }
-    } catch {
-      // non-blocking
-    }
-    await handlePublish();
-  };
+  const publishWithValidation = usePublishWithValidation({
+    components,
+    handlePublish,
+    setToast,
+  });
 
   useKeyboardShortcuts({
     onPublish: () => publishWithValidation(),
@@ -282,12 +254,7 @@ const usePageBuilderLayout = ({
     },
   });
 
-  const toastProps = buildToastProps({
-    open: toast.open,
-    message: toast.message,
-    retry: toast.retry,
-    onClose: () => setToast((current) => ({ ...current, open: false })),
-  });
+  // toastProps come from useToastState
 
   const tourProps = buildTourProps({
     steps: controls.tourSteps,
@@ -306,6 +273,13 @@ const usePageBuilderLayout = ({
     selectedIds,
     dispatch,
     setSelectedIds,
+  });
+
+  const { canSavePreset, onSavePreset } = usePresetActions({
+    shop,
+    components,
+    selectedIds,
+    setToast,
   });
 
   return {
@@ -364,47 +338,8 @@ const usePageBuilderLayout = ({
     crossBreakpointNotices: (controls as any).crossBreakpointNotices,
     onCrossBreakpointNoticesChange: (controls as any).setCrossBreakpointNotices,
     mode,
-    canSavePreset: (() => {
-      if (!Array.isArray(selectedIds) || selectedIds.length !== 1) return false;
-      const id = selectedIds[0];
-      const c = (components || []).find((x: any) => (x as any)?.id === id) as any;
-      return !!c && c.type === 'Section';
-    })(),
-    onSavePreset: async () => {
-      try {
-        if (!Array.isArray(selectedIds) || selectedIds.length !== 1) {
-          setToast({ open: true, message: 'Select a single Section to save as preset' });
-          return;
-        }
-        const id = selectedIds[0];
-        const c = (components || []).find((x: any) => (x as any)?.id === id) as any;
-        if (!c || c.type !== 'Section') {
-          setToast({ open: true, message: 'Selected item is not a Section' });
-          return;
-        }
-        const label = (typeof window !== 'undefined' ? window.prompt('Preset label', c.label || 'Section Preset') : null) || '';
-        if (!label.trim()) return;
-        const lockedRaw = typeof window !== 'undefined' ? window.prompt('Locked keys (optional, comma-separated)', '') || '' : '';
-        const locked = lockedRaw.split(',').map((s: string) => s.trim()).filter(Boolean);
-        const preset = {
-          id: `${Date.now()}`,
-          label,
-          template: c,
-          locked: locked.length ? locked : undefined,
-          tags: [],
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          createdBy: 'editor',
-        };
-        const target = shop ? `/api/sections/${encodeURIComponent(shop)}/presets` : '/api/sections/default/presets';
-        const res = await fetch(target, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ preset }) });
-        if (!res.ok) throw new Error('Failed to save preset');
-        setToast({ open: true, message: 'Preset saved' });
-      } catch (err) {
-        console.error('save preset failed', err);
-        setToast({ open: true, message: 'Failed to save preset' });
-      }
-    },
+    canSavePreset,
+    onSavePreset,
   } as PageBuilderLayoutProps;
 };
 

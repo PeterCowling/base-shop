@@ -28,6 +28,26 @@ interface ToastState {
   message: string;
 }
 
+export interface UseSegmentBuilderWizardReturn {
+  steps: StepDefinition[];
+  stepIndex: number;
+  currentStep: StepDefinition;
+  definition: SegmentDefinition;
+  preview: SegmentPreviewData;
+  status: SubmissionStatus;
+  errors: SegmentValidationErrors;
+  goToStep: (index: number) => void;
+  updateDefinition: (patch: Partial<SegmentDefinition>) => void;
+  updateRule: (ruleId: string, patch: Partial<SegmentRule>) => void;
+  addRule: () => void;
+  removeRule: (ruleId: string) => void;
+  handleDetailsSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  handleRulesNext: () => void;
+  handleFinish: () => Promise<void>;
+  toast: ToastState;
+  closeToast: () => void;
+}
+
 const wizardSteps: StepDefinition[] = [
   {
     id: "details",
@@ -67,7 +87,7 @@ export function useSegmentBuilderWizard({
   onSubmit,
   validationErrors,
   onPreviewChange,
-}: UseSegmentBuilderWizardOptions) {
+}: UseSegmentBuilderWizardOptions): UseSegmentBuilderWizardReturn {
   const [definition, setDefinition] = useState<SegmentDefinition>(() =>
     buildDefinition(initialDefinition)
   );
@@ -230,9 +250,6 @@ export function useSegmentBuilderWizard({
   apiRef.current.toast = toast;
   apiRef.current.closeToast = closeToast;
 
-  return apiRef.current as ReturnType<typeof useSegmentBuilderWizard>;
+  return apiRef.current as UseSegmentBuilderWizardReturn;
 }
-
-export type UseSegmentBuilderWizardReturn = ReturnType<
-  typeof useSegmentBuilderWizard
->;
+// Exported above as explicit interface for clarity and type safety

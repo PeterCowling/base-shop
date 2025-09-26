@@ -52,6 +52,23 @@
         "../date-utils/dist"
       ],
       "@date-utils/*": ["../date-utils/src/*", "../date-utils/dist/*"]
+      ,
+      "@acme/telemetry": [
+        "../telemetry/src/index.ts",
+        "../telemetry/dist/index.d.ts"
+      ],
+      "@acme/telemetry/*": [
+        "../telemetry/src/*",
+        "../telemetry/dist/*"
+      ],
+      "@acme/sanity": [
+        "../sanity/src/index.ts",
+        "../sanity/dist/index.d.ts"
+      ],
+      "@acme/sanity/*": [
+        "../sanity/src/*",
+        "../sanity/dist/*"
+      ]
     },
     "allowJs": true,
     "incremental": true,

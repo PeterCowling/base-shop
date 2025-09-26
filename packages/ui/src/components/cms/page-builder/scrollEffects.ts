@@ -128,14 +128,14 @@ export function initScrollEffects(root?: HTMLElement) {
   const hasIO = typeof (globalThis as unknown as { IntersectionObserver?: unknown }).IntersectionObserver !== "undefined";
   const revealObserver = hasIO
     ? new IntersectionObserver(
-        (entries) => {
+        (entries, observer) => {
           for (const entry of entries) {
             const el = entry.target as HTMLElement;
             if (entry.isIntersecting) {
               el.classList.add("pb-revealed");
               el.style.opacity = ""; // allow class to control
               el.style.transform = "";
-              revealObserver.unobserve(el);
+              observer.unobserve(el);
             }
           }
         },

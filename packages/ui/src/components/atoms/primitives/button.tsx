@@ -116,7 +116,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ghost: ghostBg,
     };
 
-    const Comp = asChild ? Slot : "button";
+    // Use a lax type here to accommodate polymorphic rendering with Slot
+    const Comp: any = asChild ? Slot : "button";
 
     const dataTokenByColor: Record<ButtonColor, string> = {
       default: "--color-muted",
@@ -146,7 +147,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     if (asChild) {
       return (
         <Comp
-          ref={ref as unknown as React.Ref<HTMLElement>}
+          ref={ref}
           data-token={dataTokenByColor[effColor]}
           className={computedClasses}
           aria-busy={isLoading || undefined}

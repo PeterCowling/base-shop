@@ -25,9 +25,11 @@ function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
   const segments = pathname.split("/").filter(Boolean);
   const shop = getShopFromPath(pathname);
   const last = segments[segments.length - 1];
+  const baseShopPath = shop ? `/cms/shop/${shop}` : null;
 
   const showNewProduct = shop && last === "products";
-  const showNewPage = shop && last === "pages";
+  // Show "New page" when anywhere within the Pages area
+  const showNewPage = !!(shop && baseShopPath && pathname.startsWith(`${baseShopPath}/pages`));
 
   // CMS theme toggle (light/dark) using html.theme-dark + localStorage("theme")
   const [isDark, setIsDark] = useState(false);

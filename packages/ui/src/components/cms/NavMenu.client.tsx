@@ -40,20 +40,9 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
           ),
       );
     }
-    if (variant === "cms") {
-      const exclude = new Set([
-        "Products",
-        "New Product",
-        "Pages",
-        "Edit Pages",
-        "Edit Preview",
-        "Deposits",
-        "Live",
-        "SEO",
-        "Media",
-      ]);
-      return items.filter((i) => !exclude.has(i.label));
-    }
+    // CMS-level menu: show all available items so you can
+    // see the full navigation without selecting a shop first.
+    if (variant === "cms") return items;
     return items;
   })();
 

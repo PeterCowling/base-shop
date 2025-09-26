@@ -20,7 +20,7 @@ export function Price({ amount, currency }: PriceProps) {
 
 function ProductCardInner({ sku }: { sku: SKU & { badges?: { sale?: boolean; new?: boolean } } }) {
   return (
-    <article className="flex flex-col gap-[var(--space-3)] rounded-lg border p-[var(--space-4)] transition-shadow hover:shadow-md">
+    <article className="flex flex-col gap-3 rounded-lg border p-4 transition-shadow hover:shadow-md">
       {" "}
       <Link
         href={`../product/${sku.slug}`}

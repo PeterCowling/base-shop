@@ -14,7 +14,7 @@ import {
 } from "../atoms/primitives/dropdown-menu";
 import { Button } from "../atoms/shadcn";
 import { useCmsNavItems } from "./nav/useCmsNavItems";
-import { PlusIcon } from "@radix-ui/react-icons";
+import { PlusIcon, MixIcon } from "@radix-ui/react-icons";
 
 interface NavMenuProps {
   role?: string;
@@ -36,13 +36,29 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
             i.fullHref.endsWith("/pages/new/componentcreator") ||
             i.fullHref.endsWith("/components/new") ||
             i.fullHref.endsWith("/pages/new/component") ||
+            i.fullHref.endsWith("/pages/edit/component") ||
+            i.label === "Component Editor" ||
             i.isConfigurator
           ),
       );
     }
-    // CMS-level menu: show all available items so you can
-    // see the full navigation without selecting a shop first.
-    if (variant === "cms") return items;
+    // CMS-level menu: include global items and suppress duplicates of
+    // component edit/create and configurator (we add explicit entries below).
+    if (variant === "cms")
+      return items.filter((i) => {
+        // Fully separate CMS vs Shop menus:
+        // - Drop shop-scoped entries (anything under /cms/shop/<shop>/...)
+        // - Drop configurator duplicates (we add a custom New Shop above)
+        // - Drop component editor duplicates (we add custom items above)
+        // - Drop "Edit Pages" from CMS menu
+        const isShopScoped = i.fullHref.startsWith("/cms/shop/");
+        if (isShopScoped) return false;
+        if (i.isConfigurator) return false;
+        if (i.label === "New Shop (Configurator)") return false;
+        if (i.label === "Component Editor") return false;
+        if (i.label === "Edit Pages") return false;
+        return true;
+      });
     return items;
   })();
 
@@ -75,6 +91,8 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
     return active;
   };
 
+  const onConfigurator = pathname.startsWith("/cms/configurator");
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -91,17 +109,46 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
         {variant === "cms" && (
           <DropdownMenuItem
             key="add-shop"
+            className={onConfigurator ? "bg-surface-3 text-foreground" : ""}
             onSelect={() => {
-              try {
-                window.location.href = "http://localhost:3006/cms/configurator";
-              } catch {}
+              router.push("/cms/configurator");
             }}
           >
             <span className="mr-2" aria-hidden>
               <PlusIcon className="h-4 w-4" />
             </span>
-            <span className="flex-1">Add Shop</span>
+            <span className="flex-1">New Shop</span>
+            {onConfigurator ? (
+              <span className="ml-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+            ) : null}
           </DropdownMenuItem>
+        )}
+        {variant === "cms" && (
+          <>
+            <DropdownMenuItem
+              key="cms-new-component"
+              onSelect={() => {
+                router.push("/cms/pages/new/component");
+              }}
+            >
+              <span className="mr-2" aria-hidden>
+                <PlusIcon className="h-4 w-4" />
+              </span>
+              <span className="flex-1">New Component</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              key="cms-edit-component"
+              onSelect={() => {
+                router.push("/cms/pages/edit/component");
+              }}
+            >
+              <span className="mr-2" aria-hidden>
+                <MixIcon className="h-4 w-4" />
+              </span>
+              <span className="flex-1">Edit Component</span>
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+          </>
         )}
         {variant === "shop" ? (
           <>

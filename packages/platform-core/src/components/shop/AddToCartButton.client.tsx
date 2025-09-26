@@ -77,7 +77,10 @@ export default function AddToCartButton({
 
   return (
     <>
-      <fieldset disabled={forceDisabled || adding || disabled} style={{ border: 0, padding: 0, margin: 0 }}>
+      <fieldset
+        disabled={forceDisabled || adding || disabled}
+        className="border-0 m-0 p-0"
+      >
         <button
           ref={btnRef}
           onClick={handleClick}

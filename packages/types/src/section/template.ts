@@ -28,11 +28,11 @@ export interface SectionTemplate {
 
 // Ensure the template root looks like a Section via a lightweight refine
 const sectionLike = pageComponentSchema.refine(
-  (c) => (c as any)?.type === "Section",
+  (c: PageComponent) => c?.type === "Section",
   { message: "Template root must be a Section" }
 );
 
-export const sectionTemplateSchema: z.ZodType<SectionTemplate, any, any> = z
+export const sectionTemplateSchema: z.ZodType<SectionTemplate> = z
   .object({
     id: z.string(),
     label: z.string().min(1),
@@ -69,7 +69,7 @@ export interface SectionPreset {
   createdBy: string;
 }
 
-export const sectionPresetSchema: z.ZodType<SectionPreset, any, any> = z
+export const sectionPresetSchema: z.ZodType<SectionPreset> = z
   .object({
     id: z.string(),
     label: z.string().min(1),

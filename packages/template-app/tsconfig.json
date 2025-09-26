@@ -5,6 +5,9 @@
     "moduleResolution": "Bundler",
     "jsx": "preserve",
     "resolveJsonModule": true,
+    // NOTE: Path mapping guidance — apps must map workspace packages
+    // to BOTH their `src` and `dist` outputs so imports resolve before
+    // and after building. See ../../docs/tsconfig-paths.md for examples.
     "paths": {
       "@/*": [
         "./src/*",

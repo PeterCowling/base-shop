@@ -7,6 +7,8 @@ import importPlugin from "eslint-plugin-import";
 import dsPlugin from "@acme/eslint-plugin-ds";
 import securityPlugin from "eslint-plugin-security";
 import { fixupPluginRules } from "@eslint/compat";
+import jsxA11y from "eslint-plugin-jsx-a11y";
+import testingLibrary from "eslint-plugin-testing-library";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -49,6 +51,8 @@ export default [
       "apps/api/postcss.config.cjs",
     ],
   },
+  /* ▸ Baseline DX plugins (no new rules except Tailwind contradicting classes) */
+  // Baseline DX plugins are provided by Next/other configs; avoid redefining to prevent Flat config conflicts.
   {
     languageOptions: {
       ecmaVersion: "latest",
@@ -145,6 +149,40 @@ export default [
     },
   },
 
+  /* ▸ M1 baseline: default warnings for token/arbitrary/important rules */
+  {
+    files: ["**/*.{ts,tsx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-spacing": "warn",
+      "ds/no-raw-typography": "warn",
+      "ds/no-raw-radius": "warn",
+      "ds/no-raw-shadow": "warn",
+      "ds/no-raw-zindex": "warn",
+      "ds/no-arbitrary-tailwind": "warn",
+      "ds/no-important": "warn",
+    },
+  },
+
+  /* ▸ CMS/UI globs: enforce token/arbitrary/important as errors */
+  {
+    files: [
+      "packages/ui/src/components/**/*.{ts,tsx}",
+      "apps/**/src/**/*.{ts,tsx}",
+    ],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-raw-spacing": "error",
+      "ds/no-raw-typography": "error",
+      "ds/no-raw-radius": "error",
+      "ds/no-raw-shadow": "error",
+      // z-index: error in CMS/UI; remains warn elsewhere
+      "ds/no-raw-zindex": "error",
+      "ds/no-arbitrary-tailwind": "error",
+      "ds/no-important": "error",
+    },
+  },
+
   /* ▸ UI Page Builder: enforce icon-only Button sizing */
   {
     files: ["packages/ui/src/components/cms/page-builder/**/*.{ts,tsx}"],
@@ -190,6 +228,29 @@ export default [
         projectService: false,
         allowDefaultProject: true,
       },
+    },
+  },
+  {
+    files: ["packages/tailwind-config/plugins/*.js"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+
+  /* ▸ eslint-plugin-ds: allow 'any' in parser utilities */
+  {
+    files: ["packages/eslint-plugin-ds/**/*.{ts,tsx}"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
+
+  /* ▸ Cypress specs: relax strict TS comments and 'any' for test ergonomics */
+  {
+    files: ["**/*.cy.{ts,tsx,js,jsx}"],
+    rules: {
+      "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 

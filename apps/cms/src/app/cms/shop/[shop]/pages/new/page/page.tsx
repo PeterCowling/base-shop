@@ -51,7 +51,7 @@ export default async function NewPageBuilderRoute({
 
   return (
     <>
-      <h1 className="mb-6 text-2xl font-semibold">New page - {shop}</h1>
+      <h1 className="mb-6 text-2xl font-semibold">Create Page – {shop}</h1>
       <p className="mb-4 text-sm text-muted-foreground">
         Hold <kbd>Shift</kbd> while resizing to snap a component to full size,
         use the editor buttons for quick 100% width or height, and press
@@ -76,4 +76,3 @@ export default async function NewPageBuilderRoute({
     </>
   );
 }
-

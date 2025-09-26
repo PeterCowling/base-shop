@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 
 import forms from "@tailwindcss/forms";
 import containerQueries from "@tailwindcss/container-queries";
+import logicalProps from "./plugins/logical-props.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,7 +23,7 @@ const config = {
     "!**/dist",
     "!**/.next",
   ],
-  plugins: [forms, containerQueries],
+  plugins: [forms, containerQueries, logicalProps],
 };
 
 export default config;

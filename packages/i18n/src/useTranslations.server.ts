@@ -5,7 +5,7 @@ import type { Locale } from "./locales";
  * lookup function.
  */
 export async function useTranslations(
-  locale: Locale
+  _locale: Locale
 ): Promise<(key: string) => string> {
   const enMessages = (
     await import(

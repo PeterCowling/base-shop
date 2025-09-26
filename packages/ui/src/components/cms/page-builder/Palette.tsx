@@ -25,6 +25,7 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
   const pathname = usePathname() ?? "";
   const shop = getShopFromPath(pathname);
   const [library, setLibrary] = useState<LibraryItem[]>([]);
+  const [globalLibrary, setGlobalLibrary] = useState<LibraryItem[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [recents, setRecents] = useState<string[]>(() => {
     try { const s = localStorage.getItem('pb:recent-types'); return s ? (JSON.parse(s) as string[]) : []; } catch { return []; }
@@ -118,10 +119,18 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
     void syncFromServer(shop).then((remote) => {
       if (remote) setLibrary(remote);
     });
+    // Load global library snapshot and try sync from server
+    setGlobalLibrary(listLibrary("_global"));
+    void syncFromServer("_global").then((remote) => {
+      if (remote) setGlobalLibrary(remote);
+    });
   }, [shop]);
 
   useEffect(() => {
-    const handler = () => setLibrary(listLibrary(shop));
+    const handler = () => {
+      setLibrary(listLibrary(shop));
+      setGlobalLibrary(listLibrary("_global"));
+    };
     window.addEventListener("pb-library-changed", handler);
     return () => window.removeEventListener("pb-library-changed", handler);
   }, [shop]);
@@ -218,6 +227,43 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
                   description={p.description}
                   previewImage={p.previewImage}
                   onAdd={handleAdd}
+                />
+              ))}
+          </div>
+        </div>
+      )}
+
+      {/* Global Library (shared across shops) */}
+      {globalLibrary.length > 0 && (
+        <div className="space-y-2">
+          <div className="flex items-center justify-between gap-2">
+            <h4 className="font-semibold capitalize">Global Library</h4>
+          </div>
+          <div className="flex flex-col gap-2">
+            {globalLibrary
+              .filter((i) => {
+                const q = search.trim().toLowerCase();
+                if (!q) return true;
+                const inLabel = i.label.toLowerCase().includes(q);
+                const inTags = (i.tags || []).some((t) => t.toLowerCase().includes(q));
+                return inLabel || inTags;
+              })
+              .map((i) => (
+                <LibraryPaletteItem
+                  key={i.id}
+                  item={i}
+                  onDelete={() => {
+                    void removeLibrary("_global", i.id);
+                    setGlobalLibrary(listLibrary("_global"));
+                  }}
+                  onToggleShare={() => {
+                    void updateLibrary("_global", i.id, { shared: !i.shared });
+                    setGlobalLibrary(listLibrary("_global"));
+                  }}
+                  onUpdate={(patch) => {
+                    void updateLibrary("_global", i.id, patch);
+                    setGlobalLibrary(listLibrary("_global"));
+                  }}
                 />
               ))}
           </div>

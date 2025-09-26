@@ -2,11 +2,21 @@ import type { SectionTemplate } from "@acme/types";
 
 export type ValidationResult = { ok: true } | { ok: false; errors: string[] };
 
-function walk(node: any, fn: (n: any) => void) {
+import type { PageComponent } from "@acme/types/src/page/page";
+
+type WithChildren = { children?: unknown };
+
+function getChildren(node: PageComponent): PageComponent[] | undefined {
+  const maybeChildren = (node as unknown as WithChildren).children;
+  if (Array.isArray(maybeChildren)) return maybeChildren as PageComponent[];
+  return undefined;
+}
+
+function walk(node: PageComponent, fn: (n: PageComponent) => void): void {
   if (!node || typeof node !== 'object') return;
   fn(node);
-  const children = (node as any).children as any[] | undefined;
-  if (Array.isArray(children)) children.forEach((c) => walk(c, fn));
+  const children = getChildren(node);
+  if (children) children.forEach((c) => walk(c, fn));
 }
 
 export function validateSectionRules(sections: SectionTemplate[]): ValidationResult {
@@ -16,7 +26,7 @@ export function validateSectionRules(sections: SectionTemplate[]): ValidationRes
   let heroCount = 0;
   for (const s of sections) {
     walk(s.template, (n) => {
-      if (n && typeof n === 'object' && heroTypes.has((n as any).type)) heroCount += 1;
+      if (heroTypes.has(n.type)) heroCount += 1;
     });
   }
   if (heroCount > 1) {
@@ -28,11 +38,11 @@ export function validateSectionRules(sections: SectionTemplate[]): ValidationRes
   // Emit a warning-style error when a hero exists but no explicit large asset field is present.
   for (const s of sections) {
     walk(s.template, (n) => {
-      if (!n || typeof n !== 'object') return;
-      const t = (n as any).type;
+      const t = n.type;
       if (t === 'HeroBanner' || t === 'CampaignHeroSection') {
-        const img = (n as any).image || (n as any).src || (n as any).media;
-        if (!img) {
+        const record = n as unknown as Record<string, unknown>;
+        const hasImg = 'image' in record || 'src' in record || 'media' in record;
+        if (!hasImg) {
           errors.push(`Hero section "${s.label}" may lack a large image; ensure ≥1440px width.`);
         }
       }
@@ -41,4 +51,3 @@ export function validateSectionRules(sections: SectionTemplate[]): ValidationRes
 
   return errors.length ? { ok: false, errors } : { ok: true };
 }
-

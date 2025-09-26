@@ -17,7 +17,7 @@ const preset: Config = {
   // This preset only provides design tokens, so no files need to be scanned
   content: [],
   theme: {
-    extend: {
+      // Lock Tailwind scales to DS tokens by defining full theme keys
       ringColor: {
         DEFAULT: "hsl(var(--color-focus-ring, var(--ring)))",
       },
@@ -130,7 +130,6 @@ const preset: Config = {
         'elevation-4': 'var(--elevation-4, 0 8px 24px rgba(0,0,0,0.18))',
         'elevation-5': 'var(--elevation-5, 0 12px 36px rgba(0,0,0,0.22))',
       },
-    },
   },
   plugins: [],
   // Tailwind’s loader expects `presets` to be an array. Without this property,

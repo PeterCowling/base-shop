@@ -250,6 +250,7 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jest": "^29.0.1",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-tailwindcss": "^3.17.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-security": "^3.0.1",
     "eslint-plugin-testing-library": "^7.5.3",

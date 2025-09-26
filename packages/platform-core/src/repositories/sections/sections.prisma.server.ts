@@ -12,6 +12,40 @@ async function loadJsonRepo() {
 
 type JsonObject = Prisma.InputJsonObject;
 
+type SectionTemplateDelegate = {
+  findMany: (args: { where: { shopId: string } }) => Promise<Array<{ data?: unknown }>>;
+  upsert: (args: {
+    where: { id: string };
+    update: {
+      data: JsonObject;
+      label: string;
+      status: SectionTemplate["status"];
+      tags: JsonObject;
+      thumbnail: string | null;
+    };
+    create: {
+      id: string;
+      shopId: string;
+      label: string;
+      status: SectionTemplate["status"];
+      tags: JsonObject;
+      thumbnail: string | null;
+      data: JsonObject;
+    };
+  }) => Promise<unknown>;
+  deleteMany: (args: { where: { id: string; shopId: string } }) => Promise<{ count: number }>; 
+  update: (args: {
+    where: { id: string };
+    data: {
+      data: JsonObject;
+      label: string;
+      status: SectionTemplate["status"];
+      tags: JsonObject;
+      thumbnail: string | null;
+    };
+  }) => Promise<unknown>;
+};
+
 function mergeDefined<T extends object>(base: T, patch: Partial<T>): T {
   const definedEntries = Object.entries(patch).filter(([, v]) => v !== undefined);
   return { ...base, ...(Object.fromEntries(definedEntries) as Partial<T>) };
@@ -19,11 +53,11 @@ function mergeDefined<T extends object>(base: T, patch: Partial<T>): T {
 
 export async function getSections(shop: string): Promise<SectionTemplate[]> {
   try {
-    const delegate = (prisma as unknown as { sectionTemplate?: { findMany: Function } }).sectionTemplate;
+    const delegate = (prisma as unknown as { sectionTemplate?: SectionTemplateDelegate }).sectionTemplate;
     if (!delegate) throw new Error("SectionTemplate model not available");
-    const rows = (await (delegate.findMany as any)({ where: { shopId: shop } })) as { data?: unknown }[];
-    return rows.map((r) => sectionTemplateSchema.parse((r as any).data ?? r));
-  } catch (err) {
+    const rows = await delegate.findMany({ where: { shopId: shop } });
+    return rows.map((r) => sectionTemplateSchema.parse(r.data ?? r));
+  } catch {
     // Fallback to JSON backend
     const jsonRepo = await loadJsonRepo();
     return jsonRepo.getSections(shop);
@@ -36,9 +70,9 @@ export async function saveSection(
   _previous?: SectionTemplate,
 ): Promise<SectionTemplate> {
   try {
-    const delegate = (prisma as unknown as { sectionTemplate?: { upsert: Function } }).sectionTemplate;
+    const delegate = (prisma as unknown as { sectionTemplate?: SectionTemplateDelegate }).sectionTemplate;
     if (!delegate) throw new Error("SectionTemplate model not available");
-    await (delegate.upsert as any)({
+    await delegate.upsert({
       where: { id: section.id },
       update: {
         data: section as unknown as JsonObject,
@@ -58,7 +92,7 @@ export async function saveSection(
       },
     });
     return section;
-  } catch (err) {
+  } catch {
     const jsonRepo = await loadJsonRepo();
     return jsonRepo.saveSection(shop, section, _previous);
   }
@@ -66,9 +100,9 @@ export async function saveSection(
 
 export async function deleteSection(shop: string, id: string): Promise<void> {
   try {
-    const delegate = (prisma as unknown as { sectionTemplate?: { deleteMany: Function } }).sectionTemplate;
+    const delegate = (prisma as unknown as { sectionTemplate?: SectionTemplateDelegate }).sectionTemplate;
     if (!delegate) throw new Error("SectionTemplate model not available");
-    const res = await (delegate.deleteMany as any)({ where: { id, shopId: shop } });
+    const res = await delegate.deleteMany({ where: { id, shopId: shop } });
     if (!res || typeof res.count !== "number" || res.count === 0) {
       throw new Error(`Section ${id} not found in ${shop}`);
     }
@@ -91,9 +125,9 @@ export async function updateSection(
   updated.updatedAt = nowIso();
 
   try {
-    const delegate = (prisma as unknown as { sectionTemplate?: { update: Function } }).sectionTemplate;
+    const delegate = (prisma as unknown as { sectionTemplate?: SectionTemplateDelegate }).sectionTemplate;
     if (!delegate) throw new Error("SectionTemplate model not available");
-    await (delegate.update as any)({
+    await delegate.update({
       where: { id: updated.id },
       data: {
         data: updated as unknown as JsonObject,
@@ -104,7 +138,7 @@ export async function updateSection(
       },
     });
     return updated;
-  } catch (err) {
+  } catch {
     const jsonRepo = await loadJsonRepo();
     return jsonRepo.updateSection(shop, patch, previous);
   }

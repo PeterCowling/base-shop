@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/pages/new/componenteditor/page.tsx
 
-import ComponentEditorClient from "./ComponentEditorClient";
+import ComponentEditorClient from "@/app/cms/pages/new/component/ComponentEditorClient";
 
 export const dynamic = "force-dynamic";
 
@@ -17,4 +17,3 @@ export default async function NewComponentEditorRoute({
     </>
   );
 }
-

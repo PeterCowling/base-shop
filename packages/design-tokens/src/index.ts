@@ -13,7 +13,6 @@ const preset: Config = {
   content: [],
 
   theme: {
-    extend: {
       colors: {
         bg: "hsl(var(--color-bg))",
         fg: "hsl(var(--color-fg))",
@@ -57,7 +56,6 @@ const preset: Config = {
         md: "var(--shadow-md)",
         lg: "var(--shadow-lg)",
       },
-    },
   },
 };
 

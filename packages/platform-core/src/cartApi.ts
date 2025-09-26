@@ -84,12 +84,13 @@ export async function POST(req: NextRequest) {
     });
   }
 
+  const data: z.infer<typeof postSchema> = parsed.data;
   const {
     sku: { id: skuId },
     qty,
     size,
     rental,
-  } = parsed.data as any;
+  } = data;
   const sku = getProductById(skuId);
   if (!sku) {
     const exists = PRODUCTS.some((p) => p.id === skuId);

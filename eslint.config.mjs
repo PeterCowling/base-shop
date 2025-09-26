@@ -121,7 +121,7 @@ export default [
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/no-unused-vars": [
         "error",
-        { argsIgnorePattern: "^_" },
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
       // add more TS-only rules here
     },
@@ -173,6 +173,10 @@ export default [
       "ds/no-margins-on-atoms": "warn",
       "ds/enforce-layout-primitives": "warn",
       "ds/container-widths-only-at": "warn",
+      // M5 baseline warnings
+      "ds/enforce-focus-ring-token": "warn",
+      "ds/min-tap-size": ["warn", { min: 40 }],
+      "ds/no-misused-sr-only": "warn",
     },
   },
 
@@ -204,6 +208,20 @@ export default [
       "ds/no-margins-on-atoms": "error",
       "ds/enforce-layout-primitives": "error",
       "ds/container-widths-only-at": "error",
+      // M5 rules as errors in CMS/UI paths
+      "ds/enforce-focus-ring-token": "error",
+      "ds/min-tap-size": ["error", { min: 40 }],
+      "ds/no-misused-sr-only": "error",
+    },
+  },
+  // Downgrade no-hardcoded-copy in TS-only files to ease server/logic migration
+  {
+    files: [
+      "apps/**/src/**/*.ts",
+      "packages/ui/src/**/*.ts",
+    ],
+    rules: {
+      "ds/no-hardcoded-copy": "warn",
     },
   },
 
@@ -388,10 +406,17 @@ export default [
   /* ▸ Test files relaxations */
   /* ▸ Test files: disallow hsl(var(--...)) literals that break contrast checks */
   {
-    files: ["**/__tests__/**/*.{ts,tsx,js,jsx}", "**/*.test.{ts,tsx,js,jsx}", "**/*.spec.{ts,tsx,js,jsx}"],
+    files: [
+      "**/__tests__/**/*.{ts,tsx,js,jsx}",
+      "**/*.test.{ts,tsx,js,jsx}",
+      "**/*.spec.{ts,tsx,js,jsx}",
+      "**/*.cy.{ts,tsx,js,jsx}",
+    ],
     plugins: { ds: dsPlugin },
     rules: {
       "ds/no-hsl-var-in-tests": "error",
+      // Tests/specs/Cypress can carry literal copy for assertions/fixtures
+      "ds/no-hardcoded-copy": "off",
     },
   },
 
@@ -449,6 +474,8 @@ export default [
     rules: {
       // Storybook stories often contain inline hooks in render functions
       "react-hooks/rules-of-hooks": "off",
+      // Stories are dev-only; allow copy
+      "ds/no-hardcoded-copy": "off",
     },
   },
 

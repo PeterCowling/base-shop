@@ -12,7 +12,7 @@ export const Tooltip = ({ text, children, className }: TooltipProps) => (
     {children}
     <span
       aria-hidden="true"
-      className="bg-fg text-bg absolute top-full left-1/2 z-10 mt-2 hidden -translate-x-1/2 rounded px-2 py-1 text-xs whitespace-nowrap group-hover:block"
+      className="bg-fg text-bg absolute top-full z-10 hidden rounded px-2 py-1 text-xs whitespace-nowrap group-hover:block translate-y-2"
     >
       {text}
     </span>

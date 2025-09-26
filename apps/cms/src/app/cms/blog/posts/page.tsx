@@ -53,7 +53,7 @@ export default async function BlogPostsPage(props: {
               >
                 {post.title || "(untitled)"}
               </Link>
-              <span className="ml-2 text-sm text-muted-foreground">
+              <span className="ms-2 text-sm text-muted-foreground">
                 {status}
               </span>
             </li>

@@ -31,7 +31,7 @@ export default async function SectionsHistoryPage({ params }: { params: { shop: 
                 <form
                   action={`/api/sections/${encodeURIComponent(shop)}/restore`}
                   method="post"
-                  className="ml-4"
+                  className="ms-4"
                 >
                   <input type="hidden" name="snapshot" value={JSON.stringify(e.after as SectionTemplate)} />
                   <button type="submit" className="rounded border bg-white px-3 py-1 text-sm hover:bg-neutral-50">Restore</button>

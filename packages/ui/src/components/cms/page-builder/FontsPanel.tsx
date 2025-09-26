@@ -203,27 +203,27 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
           <div className="rounded border bg-surface-2 p-4">
             <div className="mb-3 flex flex-wrap items-end gap-4">
               <label className="text-xs">Heading sample
-                <input className="ml-2 h-8 w-60 rounded border px-2 text-sm" value={headingSample} onChange={(e) => setHeadingSample(e.target.value)} />
+                <input className="ms-2 h-8 w-60 rounded border px-2 text-sm" value={headingSample} onChange={(e) => setHeadingSample(e.target.value)} />
               </label>
               <label className="text-xs">Body sample
-                <input className="ml-2 h-8 w-60 rounded border px-2 text-sm" value={bodySample} onChange={(e) => setBodySample(e.target.value)} />
+                <input className="ms-2 h-8 w-60 rounded border px-2 text-sm" value={bodySample} onChange={(e) => setBodySample(e.target.value)} />
               </label>
               <label className="text-xs">H1 size
-                <input className="ml-2 align-middle" type="range" min={20} max={64} value={sizeH1} onChange={(e) => setSizeH1(Number(e.target.value))} />
+                <input className="ms-2 align-middle" type="range" min={20} max={64} value={sizeH1} onChange={(e) => setSizeH1(Number(e.target.value))} />
               </label>
               <label className="text-xs">H2 size
-                <input className="ml-2 align-middle" type="range" min={16} max={40} value={sizeH2} onChange={(e) => setSizeH2(Number(e.target.value))} />
+                <input className="ms-2 align-middle" type="range" min={16} max={40} value={sizeH2} onChange={(e) => setSizeH2(Number(e.target.value))} />
               </label>
               <label className="text-xs">Body size
-                <input className="ml-2 align-middle" type="range" min={12} max={24} value={sizeBody} onChange={(e) => setSizeBody(Number(e.target.value))} />
+                <input className="ms-2 align-middle" type="range" min={12} max={24} value={sizeBody} onChange={(e) => setSizeBody(Number(e.target.value))} />
               </label>
             </div>
             <div className="space-y-2">
-              <div className="text-xs text-foreground">Heading 1 (H1–H3) <span className="ml-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(currentH1) || ""}</span></div>
+              <div className="text-xs text-foreground">Heading 1 (H1–H3) <span className="ms-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(currentH1) || ""}</span></div>
               <div className="text-foreground" style={{ fontFamily: currentH1, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>{headingSample}</div>
-              <div className="mt-3 text-xs text-foreground">Heading 2 (H4–H6) <span className="ml-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(currentH2) || ""}</span></div>
+              <div className="mt-3 text-xs text-foreground">Heading 2 (H4–H6) <span className="ms-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(currentH2) || ""}</span></div>
               <div className="text-foreground" style={{ fontFamily: currentH2, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>{headingSample}</div>
-              <div className="mt-3 text-xs text-foreground">Body <span className="ml-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(currentBody) || ""}</span></div>
+              <div className="mt-3 text-xs text-foreground">Body <span className="ms-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(currentBody) || ""}</span></div>
               <div className="text-foreground" style={{ fontFamily: currentBody, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>{bodySample}</div>
             </div>
           </div>
@@ -235,7 +235,7 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
               <div className="flex items-center gap-2 text-xs">
                 <label className="text-foreground">Tag</label>
                 <select
-                  className="rounded border border-border-2 bg-input p-1 text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="rounded border border-border-2 bg-input p-1 text-foreground focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary"
                   value={tagFilter}
                   onChange={(e) => setTagFilter(e.target.value)}
                 >
@@ -261,7 +261,7 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
                       <div className="truncate text-sm font-medium">{p.name}</div>
                       <button
                         type="button"
-                        className="rounded border border-border-2 bg-surface-3 px-2 py-1 text-xs text-foreground transition-colors hover:bg-surface-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                        className="rounded border border-border-2 bg-surface-3 px-2 py-1 text-xs text-foreground transition-colors hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-primary"
                         onClick={() => applyPairing(p)}
                       >
                         Use pairing
@@ -273,11 +273,11 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
                       </div>
                     )}
                     <div className="space-y-1">
-                      <div className="text-xs text-foreground">Heading 1 <span className="ml-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(h1) || ""}</span></div>
+                      <div className="text-xs text-foreground">Heading 1 <span className="ms-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(h1) || ""}</span></div>
                       <div className="text-foreground" style={{ fontFamily: h1, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>{headingSample}</div>
-                      <div className="mt-2 text-xs text-foreground">Heading 2 <span className="ml-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(h2) || ""}</span></div>
+                      <div className="mt-2 text-xs text-foreground">Heading 2 <span className="ms-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(h2) || ""}</span></div>
                       <div className="text-foreground" style={{ fontFamily: h2, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>{headingSample}</div>
-                      <div className="mt-2 text-xs text-foreground">Body <span className="ml-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(body) || ""}</span></div>
+                      <div className="mt-2 text-xs text-foreground">Body <span className="ms-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(body) || ""}</span></div>
                       <div className="text-foreground" style={{ fontFamily: body, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>{bodySample}</div>
                     </div>
                   </div>

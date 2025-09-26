@@ -76,12 +76,7 @@ const nextConfig = {
       Object.assign(config.resolve.alias, aliasDist);
     }
 
-    return config;
-  },
-};
-
-export default nextConfig;
-    // Enable Istanbul instrumentation for E2E coverage when COVERAGE=1
+    // Enable Istanbul instrumentation for E2E coverage when COVERAGE=1 (client only)
     if (!isServer && process.env.COVERAGE === '1') {
       config.module ??= {};
       config.module.rules ??= [];
@@ -100,3 +95,9 @@ export default nextConfig;
         },
       });
     }
+
+    return config;
+  },
+};
+
+export default nextConfig;

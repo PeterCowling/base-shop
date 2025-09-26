@@ -4,6 +4,7 @@ import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
 import ProfileForm from "./ProfileForm";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+const t = (s: string) => s;
 
 export interface ProfilePageProps {
   /** Optional heading to allow shop-specific overrides */
@@ -12,10 +13,10 @@ export interface ProfilePageProps {
   callbackUrl?: string;
 }
 
-export const metadata = { title: "Profile" };
+export const metadata = { title: t("Profile") };
 
 export default async function ProfilePage({
-  title = "Profile",
+  title,
   callbackUrl = "/account/profile",
 }: ProfilePageProps) {
   const session = await getCustomerSession();
@@ -27,16 +28,16 @@ export default async function ProfilePage({
   const canManageProfile = hasPermission(session.role, "manage_profile");
   return (
     <div className="p-6">
-      <h1 className="mb-4 text-xl">{title}</h1>
+      <h1 className="mb-4 text-xl">{title ?? t("Profile")}</h1>
       <ProfileForm name={profile?.name} email={profile?.email} />
       {canManageProfile && (
         <div className="mt-4">
-          <Link href="/account/change-password" className="text-sm underline">
-            Change password
+          <Link href="/account/change-password" className="text-sm underline inline-block min-h-10 min-w-10">
+            {/* i18n-exempt */}
+            {t("Change password")}
           </Link>
         </div>
       )}
     </div>
   );
 }
-

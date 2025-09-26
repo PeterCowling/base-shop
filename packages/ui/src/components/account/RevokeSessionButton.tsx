@@ -3,6 +3,7 @@
 // packages/ui/src/components/account/RevokeSessionButton.tsx
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+const t = (s: string) => s;
 
 export interface RevokeSessionButtonProps {
   sessionId: string;
@@ -24,7 +25,7 @@ export default function RevokeSessionButton({
       if (result.success) {
         router.refresh();
       } else {
-        setError(result.error ?? "Failed to revoke session.");
+        setError(result.error ?? t("Failed to revoke session."));
       }
     });
   };
@@ -35,11 +36,11 @@ export default function RevokeSessionButton({
         type="button"
         onClick={handleClick}
         disabled={isPending}
-        className="rounded bg-primary px-4 py-2"
+        className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
         data-token="--color-primary"
       >
         <span className="text-primary-fg" data-token="--color-primary-fg">
-          {isPending ? "Revoking..." : "Revoke"}
+          {isPending ? t("Revoking...") : t("Revoke")}
         </span>
       </button>
       {error && (

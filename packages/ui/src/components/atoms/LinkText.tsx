@@ -42,7 +42,7 @@ export const LinkText = React.forwardRef<HTMLAnchorElement, LinkTextProps>(
       warning: "hover:bg-warning-soft",
       danger: "hover:bg-danger-soft",
     };
-    const Comp: any = asChild ? Slot : "a";
+    const Comp: React.ElementType = asChild ? Slot : "a";
     return (
       <Comp
         ref={ref}

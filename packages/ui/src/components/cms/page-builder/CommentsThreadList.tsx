@@ -77,7 +77,7 @@ export default function CommentsThreadList({
           placeholder="Search..."
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
-          className="ml-auto h-7 w-32 text-xs"
+          className="ms-auto h-7 w-32 text-xs"
         />
       </div>
 

@@ -310,6 +310,38 @@ const otherSections: BuiltInSection[] = [
     previewType: "EmailReferralSection:giveget",
     build: () => ({ id: ulid(), type: "EmailReferralSection", headline: "Give $10, Get $10", subtitle: "Invite a friend and both get rewarded.", giveLabel: "$10 for them", getLabel: "$10 for you" } as any),
   },
+  {
+    id: "builtin:DSARSection:default",
+    label: "DSAR — Data Requests",
+    description: "Export/delete request UI",
+    preview: "/window.svg",
+    previewType: "DSARSection:default",
+    build: () => ({ id: ulid(), type: "DSARSection" } as any),
+  },
+  {
+    id: "builtin:AgeGateSection:18",
+    label: "Age Gate — 18+",
+    description: "Overlay age confirmation",
+    preview: "/window.svg",
+    previewType: "AgeGateSection:18",
+    build: () => ({ id: ulid(), type: "AgeGateSection", minAge: 18, rememberDays: 30 } as any),
+  },
+  {
+    id: "builtin:AccountSection:default",
+    label: "Account — Dashboard",
+    description: "Cards for orders/rentals/addresses/payments",
+    preview: "/window.svg",
+    previewType: "AccountSection:default",
+    build: () => ({ id: ulid(), type: "AccountSection", showDashboard: true, showOrders: true, showRentals: true, showAddresses: true, showPayments: true } as any),
+  },
+  {
+    id: "builtin:RentalManageSection:default",
+    label: "Account — Manage Rental",
+    description: "Extend/return manager",
+    preview: "/window.svg",
+    previewType: "RentalManageSection:default",
+    build: () => ({ id: ulid(), type: "RentalManageSection" } as any),
+  },
 ];
 
 export const builtInSections: BuiltInSection[] = [

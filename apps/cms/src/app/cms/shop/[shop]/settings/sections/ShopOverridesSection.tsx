@@ -95,7 +95,7 @@ export default function ShopOverridesSection({
           className="space-y-3"
         >
           <AccordionItem value="filter-mappings" className="border-none">
-            <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+            <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
               Filter mappings
             </AccordionTrigger>
             <AccordionContent className="pt-3">
@@ -103,7 +103,7 @@ export default function ShopOverridesSection({
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="price-overrides" className="border-none">
-            <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+            <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
               Price overrides
             </AccordionTrigger>
             <AccordionContent className="pt-3">

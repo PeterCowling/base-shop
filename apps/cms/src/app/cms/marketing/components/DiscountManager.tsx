@@ -234,10 +234,10 @@ export function DiscountManager({
                   <TableRow>
                     <TableHead>Code</TableHead>
                     <TableHead>Description</TableHead>
-                    <TableHead className="text-right">Percent</TableHead>
-                    <TableHead className="text-right">Redemptions</TableHead>
-                    <TableHead className="text-right">Status</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead className="text-end">Percent</TableHead>
+                    <TableHead className="text-end">Redemptions</TableHead>
+                    <TableHead className="text-end">Status</TableHead>
+                    <TableHead className="text-end">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -245,9 +245,9 @@ export function DiscountManager({
                     <TableRow key={discount.code}>
                       <TableCell className="font-mono">{discount.code}</TableCell>
                       <TableCell>{discount.description || "—"}</TableCell>
-                      <TableCell className="text-right">{discount.discountPercent}%</TableCell>
-                      <TableCell className="text-right">{discount.redemptions ?? 0}</TableCell>
-                      <TableCell className="text-right">
+                      <TableCell className="text-end">{discount.discountPercent}%</TableCell>
+                      <TableCell className="text-end">{discount.redemptions ?? 0}</TableCell>
+                      <TableCell className="text-end">
                         <Button
                           type="button"
                           variant="outline"
@@ -257,7 +257,7 @@ export function DiscountManager({
                           {discount.active === false ? "Inactive" : "Active"}
                         </Button>
                       </TableCell>
-                      <TableCell className="flex justify-end gap-2 text-right">
+                      <TableCell className="flex justify-end gap-2 text-end">
                         <Button
                           type="button"
                           variant="ghost"

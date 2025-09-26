@@ -34,7 +34,7 @@ export default function RentalTermsSection({ sku, termsVersion, onAdd, className
             <input
               type="number"
               placeholder="Fee"
-              className="ml-2 w-24 rounded border px-2 py-1"
+              className="ms-2 w-24 rounded border px-2 py-1"
               value={typeof insuranceFee === 'number' ? insuranceFee : ''}
               onChange={(e) => setInsuranceFee(e.target.value ? Number(e.target.value) : undefined)}
             />

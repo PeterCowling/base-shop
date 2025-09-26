@@ -150,7 +150,7 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
                 </Select>
               </div>
               <DialogFooter>
-                <div className="mr-auto text-xs text-muted-foreground">Alt text improves accessibility</div>
+                <div className="me-auto text-xs text-muted-foreground">Alt text improves accessibility</div>
                 <Button type="button" variant="outline" onClick={() => setEditOpen(false)}>Cancel</Button>
                 <Button
                   type="button"

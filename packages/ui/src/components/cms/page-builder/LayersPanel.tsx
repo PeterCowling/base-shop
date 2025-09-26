@@ -98,10 +98,10 @@ function SortableRow({ node, index, parentId, selected, onSelect, onToggleHidden
             </span>
             {/* Global/Override badges */}
             {node.__isGlobal && (
-              <span className="ml-2 rounded bg-green-500/15 px-1 text-[10px] text-green-700" title="Global section">Global</span>
+              <span className="ms-2 rounded bg-green-500/15 px-1 text-[10px] text-green-700" title="Global section">Global</span>
             )}
             {node.__hasOverride && (
-              <span className="ml-1 rounded bg-amber-500/15 px-1 text-[10px] text-amber-700" title="Breakpoint override">Override</span>
+              <span className="ms-1 rounded bg-amber-500/15 px-1 text-[10px] text-amber-700" title="Breakpoint override">Override</span>
             )}
           </>
         )}
@@ -212,7 +212,7 @@ function LayerChildren({ parent, selectedIds, onSelect, onToggleHidden, onToggle
   const children = (parent.children ?? []) as Node[];
   const { setNodeRef, isOver } = useDroppable({ id: `layer-container-${parent.id}`, data: { parentId: parent.id, index: children.length } });
   return (
-    <div className="ml-4">
+    <div className="ms-4">
       <div ref={setNodeRef} className={`rounded border border-dashed px-2 py-1 ${isOver ? 'border-primary' : 'border-transparent'}`}>
         <LayerList
           nodes={children}

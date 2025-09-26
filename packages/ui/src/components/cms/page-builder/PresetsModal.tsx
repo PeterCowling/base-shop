@@ -208,7 +208,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
                   <button
                     key={p.id}
                     type="button"
-                    className="rounded border p-2 text-left hover:bg-accent"
+                    className="rounded border p-2 text-start hover:bg-accent"
                     onClick={() => onInsert(p.build())}
                   >
                     <Image src={resolvedPreview} alt="" width={300} height={160} className="w-full rounded" {...(typeof resolvedPreview === 'string' && resolvedPreview.startsWith('data:') ? { unoptimized: true } : {})} />
@@ -236,7 +236,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
                   <button
                      key={p.id}
                      type="button"
-                     className="rounded border p-2 text-left hover:bg-accent"
+                     className="rounded border p-2 text-start hover:bg-accent"
                      onClick={() => onInsert(p.build())}
                    >
                     <Image src={resolvedPreview} alt="" width={300} height={160} className="w-full rounded" {...(typeof resolvedPreview === 'string' && resolvedPreview.startsWith('data:') ? { unoptimized: true } : {})} />

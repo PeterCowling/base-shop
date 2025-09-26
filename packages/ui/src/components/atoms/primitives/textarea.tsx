@@ -85,7 +85,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               <label
                 htmlFor={textareaId}
                 className={cn(
-                  "text-muted-foreground pointer-events-none absolute top-2 left-3 transition-all",
+                  "text-muted-foreground pointer-events-none absolute top-2 ms-3 transition-all",
                   (focused || hasValue) && "-translate-y-3 text-xs"
                 )}
               >
@@ -98,7 +98,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             {label && (
               <label
                 htmlFor={textareaId}
-                className="mb-1 block text-sm font-medium"
+                className="block text-sm font-medium"
               >
                 {label}
               </label>
@@ -115,7 +115,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           </>
         )}
         {error && (
-          <p className="mt-1 text-sm text-danger" data-token="--color-danger">
+          <p className="text-sm text-danger" data-token="--color-danger">
             {error}
           </p>
         )}

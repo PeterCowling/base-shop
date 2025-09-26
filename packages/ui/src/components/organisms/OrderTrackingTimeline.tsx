@@ -41,7 +41,7 @@ export function OrderTrackingTimeline({
       {...props}
     >
       {merged.map((step, idx) => (
-        <li key={idx} className="ml-6">
+        <li key={idx} className="ms-6">
           <span
             className={cn(
               "absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full border",

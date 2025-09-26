@@ -70,10 +70,10 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
   return (
     <table className="w-full text-sm">
       <thead>
-        <tr className="border-b text-left">
+        <tr className="border-b text-start">
           <th className="py-2">Item</th>
           <th>Qty</th>
-          <th className="text-right">Price</th>
+          <th className="text-end">Price</th>
         </tr>
       </thead>
       <tbody>
@@ -82,13 +82,13 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
             <td className="py-2">
               {line.sku.title}
               {line.size && (
-                <span className="ml-1 text-xs text-muted">
+                <span className="ms-1 text-xs text-muted">
                   ({line.size})
                 </span>
               )}
             </td>
             <td>{line.qty}</td>
-            <td className="text-right">
+            <td className="text-end">
               <Price amount={line.sku.price * line.qty} />
             </td>
           </tr>
@@ -98,14 +98,14 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
         <tr>
           <td />
           <td className="py-2">Subtotal</td>
-          <td className="text-right">
+          <td className="text-end">
             <Price amount={subtotal} />
           </td>
         </tr>
         <tr>
           <td />
           <td className="py-2">Deposit</td>
-          <td className="text-right">
+          <td className="text-end">
             <Price amount={deposit} />
           </td>
         </tr>
@@ -113,7 +113,7 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
           <tr>
             <td />
             <td className="py-2">Tax</td>
-            <td className="text-right">
+            <td className="text-end">
               <Price amount={tax} />
             </td>
           </tr>
@@ -122,7 +122,7 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
           <tr>
             <td />
             <td className="py-2">Discount</td>
-            <td className="text-right">
+            <td className="text-end">
               <Price amount={-discount} />
             </td>
           </tr>
@@ -130,7 +130,7 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
         <tr>
           <td />
           <td className="py-2 font-semibold">Total</td>
-          <td className="text-right font-semibold">
+          <td className="text-end font-semibold">
             <Price amount={total} />
           </td>
         </tr>

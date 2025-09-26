@@ -148,13 +148,13 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
                       <button
                         key={p.id}
                         type="button"
-                        className="rounded border p-1 text-left hover:bg-muted"
+                        className="rounded border p-1 text-start hover:bg-muted"
                         title={p.label}
                         onClick={() => onInsert(cloneWithIds(p.build() as any))}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={resolvedPreview} alt="" className="aspect-[16/9] w-full rounded border bg-muted" aria-hidden />
-                        <div className="mt-1 truncate text-[12px]" title={p.label}>{p.label}</div>
+                        <div className="mt-1 truncate text-xs" title={p.label}>{p.label}</div>
                         {p.description && <div className="truncate text-[11px] text-muted-foreground" title={p.description}>{p.description}</div>}
                       </button>
                     );

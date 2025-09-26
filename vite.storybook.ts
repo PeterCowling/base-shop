@@ -22,6 +22,11 @@ export default defineConfig({
         __dirname,
         "./.storybook/mocks/CartContext.tsx"
       ),
+      // Mock Next.js router hooks used by some components in preview
+      "next/navigation": path.resolve(
+        __dirname,
+        "./.storybook/mocks/nextNavigation.ts"
+      ),
     },
   },
   optimizeDeps: { entries: [] },

@@ -43,7 +43,7 @@ export default function AnnouncementBar({
           type="button"
           aria-label="Close announcement"
           onClick={() => setOpen(false)}
-          className="ml-2 text-primary-foreground/70 hover:text-primary-foreground"
+          className="ms-2 text-primary-foreground/70 hover:text-primary-foreground"
           data-token="--color-primary-fg"
         >
           &times;

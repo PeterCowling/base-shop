@@ -9,14 +9,20 @@ export interface SlotProps extends React.HTMLAttributes<HTMLElement> {
 
 export const Slot = React.forwardRef<HTMLElement, SlotProps>(
   ({ children, ...props }, ref) => {
-    if (!React.isValidElement(children)) return null;
+    const isValid = React.isValidElement(children);
 
     interface MergedProps extends React.HTMLAttributes<HTMLElement> {
       ref?: React.Ref<HTMLElement>;
     }
 
-    const { ref: childRef, ...childProps } = children
-      .props as MergedProps;
+    let childRef: React.Ref<HTMLElement> | undefined;
+    let childProps = {} as MergedProps;
+    if (isValid) {
+      const { ref: cRef, ...cProps } = (children as React.ReactElement<MergedProps>)
+        .props as MergedProps;
+      childRef = cRef;
+      childProps = cProps;
+    }
 
     // Create a stable ref setter to avoid ref attach/detach thrash loops
     const setMergedRef = React.useCallback(
@@ -44,6 +50,7 @@ export const Slot = React.forwardRef<HTMLElement, SlotProps>(
       ref: setMergedRef,
     };
 
+    if (!isValid) return null;
     return React.cloneElement(
       children as React.ReactElement<MergedProps>,
       merged

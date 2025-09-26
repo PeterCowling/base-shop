@@ -61,7 +61,12 @@ const rule: Rule.RuleModule = {
           let changed = false;
           for (let i = 0; i < parts.length; i++) {
             const base = lastSeg(parts[i]);
-            if (isRingOrOutline(base) && !isOutlineOff(base) && !hasFocusVisiblePrefix(parts[i])) {
+            if (
+              isRingOrOutline(base) &&
+              !isOutlineOff(base) &&
+              !hasFocusVisiblePrefix(parts[i]) &&
+              !isRawArbitraryFocus(base)
+            ) {
               parts[i] = `focus-visible:${parts[i]}`;
               changed = true;
             }
@@ -94,4 +99,3 @@ const rule: Rule.RuleModule = {
 };
 
 export default rule;
-

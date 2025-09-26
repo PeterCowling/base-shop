@@ -41,7 +41,7 @@ export function CheckoutStepper({
             {step}
           </span>
           {idx < steps.length - 1 && (
-            <span className="border-muted ml-2 flex-1 border-t" />
+            <span className="border-muted ms-2 flex-1 border-t" />
           )}
         </li>
       ))}

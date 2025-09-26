@@ -32,21 +32,21 @@ export const Default: StoryObj<typeof OrderSummary> = {
           <tr>
             <td />
             <td className="py-2">Shipping</td>
-            <td className="text-right">
+            <td className="text-end">
               <Price amount={5} />
             </td>
           </tr>
           <tr>
             <td />
             <td className="py-2">Tax</td>
-            <td className="text-right">
+            <td className="text-end">
               <Price amount={3} />
             </td>
           </tr>
           <tr>
             <td />
             <td className="py-2">Discount</td>
-            <td className="text-right">
+            <td className="text-end">
               <Price amount={-2} />
             </td>
           </tr>

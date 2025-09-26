@@ -49,7 +49,7 @@ const PaletteItem = memo(function PaletteItem({
       return getPalettePreview(type);
     }
     return previewImage;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, [previewImage, type, themeSig]);
 
   const content = (

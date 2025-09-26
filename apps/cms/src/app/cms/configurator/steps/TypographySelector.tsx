@@ -139,19 +139,19 @@ export default function TypographySelector({ tokens, baseTokens, onChange, tagFi
       <div className="rounded border p-4">
         <div className="mb-3 flex flex-wrap items-end gap-4">
           <label className="text-xs">Heading sample
-            <input className="ml-2 h-8 w-60 rounded border px-2 text-sm" value={headingSample} onChange={(e) => setHeadingSample(e.target.value)} />
+            <input className="ms-2 h-8 w-60 rounded border px-2 text-sm" value={headingSample} onChange={(e) => setHeadingSample(e.target.value)} />
           </label>
           <label className="text-xs">Body sample
-            <input className="ml-2 h-8 w-60 rounded border px-2 text-sm" value={bodySample} onChange={(e) => setBodySample(e.target.value)} />
+            <input className="ms-2 h-8 w-60 rounded border px-2 text-sm" value={bodySample} onChange={(e) => setBodySample(e.target.value)} />
           </label>
           <label className="text-xs">H1 size
-            <input className="ml-2 align-middle" type="range" min={20} max={64} value={sizeH1} onChange={(e) => setSizeH1(Number(e.target.value))} />
+            <input className="ms-2 align-middle" type="range" min={20} max={64} value={sizeH1} onChange={(e) => setSizeH1(Number(e.target.value))} />
           </label>
           <label className="text-xs">H2 size
-            <input className="ml-2 align-middle" type="range" min={16} max={40} value={sizeH2} onChange={(e) => setSizeH2(Number(e.target.value))} />
+            <input className="ms-2 align-middle" type="range" min={16} max={40} value={sizeH2} onChange={(e) => setSizeH2(Number(e.target.value))} />
           </label>
           <label className="text-xs">Body size
-            <input className="ml-2 align-middle" type="range" min={12} max={24} value={sizeBody} onChange={(e) => setSizeBody(Number(e.target.value))} />
+            <input className="ms-2 align-middle" type="range" min={12} max={24} value={sizeBody} onChange={(e) => setSizeBody(Number(e.target.value))} />
           </label>
         </div>
         <div className="space-y-2">

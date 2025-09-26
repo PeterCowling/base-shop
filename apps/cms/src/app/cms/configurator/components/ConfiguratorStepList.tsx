@@ -89,7 +89,7 @@ function StepCard({
               {useRadixIcons ? (
                 <TrackIcon track={step.track} />
               ) : (
-                <span className="inline-block h-[30px] w-[30px] leading-[30px] text-[20px] text-center">
+                <span className="inline-block h-[30px] w-[30px] leading-[30px] text-xl text-center">
                   {step.icon ?? "🧩"}
                 </span>
               )}
@@ -157,7 +157,7 @@ function StepCard({
               className="h-10 px-3 text-sm"
               onClick={onReset}
             >
-              <ResetIcon className="mr-2 h-4 w-4" aria-hidden /> Reset
+              <ResetIcon className="me-2 h-4 w-4" aria-hidden /> Reset
             </ButtonElement>
           ) : step.optional ? (
             <ButtonElement

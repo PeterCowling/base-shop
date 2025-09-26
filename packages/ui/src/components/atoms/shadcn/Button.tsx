@@ -31,19 +31,21 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         "bg-destructive text-destructive-foreground hover:bg-destructive/90";
       // Avoid forwarding non-DOM props when rendering native elements
       const {
-        // strip custom props not valid on DOM nodes
         iconOnly: _iconOnly,
         leadingIcon: _leadingIcon,
         trailingIcon: _trailingIcon,
         iconSize: _iconSize,
         tone: _tone,
         color: _color,
-        // size handled via sizeClass above
         size: _size,
-        ...domProps
-      } = props as any;
+        ...restProps
+      } = props as Omit<ButtonProps, "variant">;
       return (
-        <Comp ref={ref} className={cn(base, sizeClass, styles, className)} {...domProps} />
+        <Comp
+          ref={ref}
+          className={cn(base, sizeClass, styles, className)}
+          {...(restProps as unknown as React.ButtonHTMLAttributes<HTMLButtonElement>)}
+        />
       );
     }
     return (

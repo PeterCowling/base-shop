@@ -162,7 +162,7 @@ export function RangeInput({
         value={num}
         onChange={(e) => onChange(`${e.target.value}px`)}
       />
-      <span className="w-10 text-right">{num}px</span>
+      <span className="w-10 text-end">{num}px</span>
     </>
   );
 }

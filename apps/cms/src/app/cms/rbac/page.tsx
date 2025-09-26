@@ -137,7 +137,7 @@ export default async function RbacPage() {
             href="/docs/permissions.md"
             target="_blank"
             rel="noreferrer"
-            className="ml-1 underline"
+            className="ms-1 underline"
           >
             permission guide
           </Link>

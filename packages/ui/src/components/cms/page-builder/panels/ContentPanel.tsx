@@ -61,7 +61,7 @@ export default function ContentPanel({
               <button
                 key={s.id}
                 type="button"
-                className="rounded border p-2 text-left hover:bg-accent/30"
+                className="rounded border p-2 text-start hover:bg-accent/30"
                 onClick={() => {
                   try {
                     const patch = s.apply(component);
@@ -73,7 +73,7 @@ export default function ContentPanel({
                 title={s.description || s.label}
                 aria-label={`Apply suggestion: ${s.label}`}
               >
-                <div className="text-[12px] font-medium">{s.label}</div>
+                <div className="text-xs font-medium">{s.label}</div>
                 {s.description && (
                   <div className="text-[11px] text-muted-foreground">{s.description}</div>
                 )}

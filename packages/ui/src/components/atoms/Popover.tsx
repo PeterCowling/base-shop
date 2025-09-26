@@ -14,10 +14,11 @@ export const PopoverContent = React.forwardRef<
 >(({ className, sideOffset = 4, align = "center", container, ...props }, ref) => {
   // Ensure a non-transparent background even if theme vars are missing by
   // providing robust CSS variable fallbacks like other primitives do.
+  const { style: styleFromProps, ...restProps } = props;
   const safeStyle: React.CSSProperties = {
     backgroundColor: "hsl(var(--panel, var(--color-panel, var(--surface-2, var(--color-bg)))))",
     color: "hsl(var(--color-fg, 0 0% 10%))",
-    ...(props as any).style,
+    ...(styleFromProps as React.CSSProperties | undefined),
   };
   // If a container is provided, render within a Portal targeting it.
   if (container) {
@@ -32,7 +33,7 @@ export const PopoverContent = React.forwardRef<
             className
           )}
           style={safeStyle}
-          {...props}
+          {...restProps}
         />
       </PopoverPrimitive.Portal>
     );
@@ -49,7 +50,7 @@ export const PopoverContent = React.forwardRef<
         className
       )}
       style={safeStyle}
-      {...props}
+      {...restProps}
     />
   );
 });

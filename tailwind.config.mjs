@@ -132,10 +132,21 @@ async function loadDesignTokens() {
   }
 }
 
-const [preset, tokens] = await Promise.all([
+const [rawPreset, tokens] = await Promise.all([
   loadTailwindPreset(),
   loadDesignTokens(),
 ]);
+
+// Some presets may include an empty `preset`/`presets: []` key which Tailwind rejects.
+// Sanitize by dropping empty preset arrays.
+const preset = (() => {
+  const p = { ...(rawPreset || {}) };
+  // @ts-ignore - dynamic shape
+  if (Array.isArray(p.preset) && p.preset.length === 0) delete p.preset;
+  // @ts-ignore - dynamic shape
+  if (Array.isArray(p.presets) && p.presets.length === 0) delete p.presets;
+  return p;
+})();
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -144,6 +155,11 @@ const config = {
   content: [
     "./apps/**/*.{ts,tsx,mdx}",
     "./packages/{ui,platform-core,platform-machine,i18n,themes}/**/*.{ts,tsx,mdx}",
+    // Exclude test files and plugin test suites to avoid JIT generating CSS from test-only classes
+    "!**/__tests__/**",
+    "!**/*.test.{ts,tsx}",
+    "!**/*.spec.{ts,tsx}",
+    "!./packages/eslint-plugin-ds/**",
     ".storybook/**/*.{ts,tsx,mdx}",
     "!**/node_modules",
     "!**/dist",

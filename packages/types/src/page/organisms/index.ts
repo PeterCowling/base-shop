@@ -35,3 +35,7 @@ export * from "./CheckoutSection";
 export * from "./ThankYouSection";
 export * from "./StoreLocatorSection";
 export * from "./EmailReferralSection";
+export * from "./DSARSection";
+export * from "./AgeGateSection";
+export * from "./AccountSection";
+export * from "./RentalManageSection";

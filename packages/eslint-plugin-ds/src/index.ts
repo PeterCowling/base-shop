@@ -20,6 +20,9 @@ import forbidFixedHeightsOnText from "./rules/forbid-fixed-heights-on-text.js";
 import requireBreakpointModifiers from "./rules/require-breakpoint-modifiers.js";
 import noHardcodedCopy from "./rules/no-hardcoded-copy.js";
 import noPhysicalDirectionClassesInRtl from "./rules/no-physical-direction-classes-in-rtl.js";
+import enforceFocusRingToken from "./rules/enforce-focus-ring-token.js";
+import minTapSize from "./rules/min-tap-size.js";
+import noMisusedSrOnly from "./rules/no-misused-sr-only.js";
 
 export const rules = {
   "no-raw-color": noRawColor,
@@ -44,6 +47,9 @@ export const rules = {
   "require-breakpoint-modifiers": requireBreakpointModifiers,
   "no-hardcoded-copy": noHardcodedCopy,
   "no-physical-direction-classes-in-rtl": noPhysicalDirectionClassesInRtl,
+  "enforce-focus-ring-token": enforceFocusRingToken,
+  "min-tap-size": minTapSize,
+  "no-misused-sr-only": noMisusedSrOnly,
 };
 
 const plugin = { rules };

@@ -48,7 +48,7 @@ export default function ProductEditHero({
                 <span className="text-[0.65rem] font-medium text-muted-foreground">
                   {label}
                 </span>
-                <span className="ml-1 font-semibold text-foreground">{value}</span>
+                <span className="ms-1 font-semibold text-foreground">{value}</span>
               </Chip>
             ))}
           </div>

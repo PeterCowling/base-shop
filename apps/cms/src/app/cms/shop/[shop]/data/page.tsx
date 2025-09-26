@@ -109,7 +109,7 @@ export default async function DataIndex({
               >
                 <Link href={card.href(shop)}>
                   <span>{card.cta}</span>
-                  <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
+                  <ArrowRightIcon className="ms-2 h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden />
                 </Link>
               </Button>
             </CardContent>

@@ -78,7 +78,7 @@ export default function DragOverlayPreview({ dragMeta, allowed, locale = 'en', s
     >
       <div className="flex items-center gap-2">
         {icon ? (
-          // eslint-disable-next-line @next/next/no-img-element
+           
           <Image src={icon} alt="" width={24} height={24} className="h-6 w-6 rounded" />
         ) : (
           <div className="h-6 w-6 rounded bg-muted" />
@@ -88,7 +88,7 @@ export default function DragOverlayPreview({ dragMeta, allowed, locale = 'en', s
           <span className="text-muted-foreground text-[10px]">{note}</span>
         </div>
         {danger && (
-          <span className="ml-2 text-danger" aria-hidden>
+          <span className="ms-2 text-danger" aria-hidden>
             ⛔
           </span>
         )}

@@ -34,7 +34,7 @@ export const Footer = React.forwardRef<HTMLDivElement, FooterProps>(
           fallbackText={shopName}
           className="font-bold"
         />
-        <nav className="ml-auto flex gap-4 text-sm">
+        <nav className="ms-auto flex gap-4 text-sm">
           {links.map((l) => (
             <a key={l.href} href={l.href} className="hover:underline" data-token="--color-fg">
               {l.label}

@@ -1,4 +1,5 @@
 import * as React from "react";
+const t = (s: string) => s;
 import { cn } from "../../utils/style";
 import { PaginationControl } from "../molecules/PaginationControl";
 import { SearchBar } from "../molecules/SearchBar";
@@ -51,8 +52,8 @@ export function SearchResultsTemplate({
         suggestions={suggestions}
         onSelect={onQueryChange}
         onSearch={onQueryChange}
-        placeholder="Search products…"
-        label="Search products"
+        placeholder={t("Search products…")}
+        label={t("Search products")}
       />
       {filters}
       {isLoading ? (
@@ -74,7 +75,7 @@ export function SearchResultsTemplate({
           maxItems={maxItems}
         />
       ) : (
-        <p>No results found.</p>
+        <p>{t("No results found.")}</p>
       )}
       {pageCount > 1 && (
         <PaginationControl

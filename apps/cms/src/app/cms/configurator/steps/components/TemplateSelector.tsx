@@ -62,7 +62,7 @@ export default function TemplateSelector({
               setPendingTemplate({ name: "blank", components: [], preview: "" });
             }}
           >
-            <button type="button" data-cy="template-blank" className="w-full text-left">
+            <button type="button" data-cy="template-blank" className="w-full text-start">
               Blank
             </button>
           </SelectItem>
@@ -80,7 +80,7 @@ export default function TemplateSelector({
               <button
                 type="button"
                 data-cy={`template-${t.name.replace(/\s+/g, '-')}`}
-                className="w-full text-left"
+                className="w-full text-start"
               >
                 <div className="flex items-center gap-2">
                   {t.preview && (

@@ -62,6 +62,10 @@ import {
   thankYouSectionComponentSchema,
   storeLocatorSectionComponentSchema,
   emailReferralSectionComponentSchema,
+  dsarSectionComponentSchema,
+  ageGateSectionComponentSchema,
+  accountSectionComponentSchema,
+  rentalManageSectionComponentSchema,
 } from "./organisms";
 import {
   headerComponentSchema,
@@ -79,7 +83,9 @@ import {
   bindComponentSchema,
 } from "./layouts";
 
-export const pageComponentSchema = z.lazy(() =>
+// Add an explicit annotation to prevent TS from attempting to serialize the
+// enormous inferred discriminated union type (TS7056).
+export const pageComponentSchema: z.ZodTypeAny = z.lazy(() =>
   z.discriminatedUnion("type", [
     announcementBarComponentSchema,
     heroBannerComponentSchema,
@@ -132,6 +138,10 @@ export const pageComponentSchema = z.lazy(() =>
     thankYouSectionComponentSchema,
     storeLocatorSectionComponentSchema,
     emailReferralSectionComponentSchema,
+    dsarSectionComponentSchema,
+    ageGateSectionComponentSchema,
+    accountSectionComponentSchema,
+    rentalManageSectionComponentSchema,
     imageComponentSchema,
     textComponentSchema,
     customHtmlComponentSchema,

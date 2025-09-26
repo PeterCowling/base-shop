@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PRODUCTS } from "@acme/platform-core/products";
+import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
 import { ProductCard } from "../../organisms/ProductCard";
 
@@ -57,4 +57,3 @@ export default function CrossSellSection({ rules = {}, layout = "grid", classNam
     </section>
   );
 }
-

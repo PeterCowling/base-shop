@@ -35,7 +35,7 @@ export default function FAQBlock({
         const value = `faq-${index}`;
         return (
           <AccordionItem key={value} value={value} className="border-none">
-            <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+            <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
               {question}
             </AccordionTrigger>
             <AccordionContent className="pt-2 text-sm text-muted-foreground">

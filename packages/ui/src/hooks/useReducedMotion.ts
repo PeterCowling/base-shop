@@ -15,13 +15,10 @@ export default function useReducedMotion(): boolean {
       return () => mq.removeEventListener("change", update);
     } catch {
       // Safari <=14
-      // @ts-ignore
       mq.addListener?.(update);
-      // @ts-ignore
       return () => mq.removeListener?.(update);
     }
   }, []);
 
   return prefersReducedMotion;
 }
-

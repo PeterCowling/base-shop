@@ -21,7 +21,7 @@ export default function TabsAccordionContainer({ children, mode = "tabs", tabs, 
           <div key={i} className="border-b">
             <button
               type="button"
-              className="w-full px-3 py-2 text-left font-medium"
+              className="w-full px-3 py-2 text-start font-medium"
               onClick={() => setActive((prev) => (prev === i ? -1 : i))}
               aria-expanded={active === i}
             >

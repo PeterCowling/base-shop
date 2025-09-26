@@ -36,11 +36,11 @@ export function CampaignHistoryTable({ campaigns, loading }: CampaignHistoryTabl
                 <TableRow>
                   <TableHead>Subject</TableHead>
                   <TableHead>Recipients</TableHead>
-                  <TableHead className="text-right">Send at</TableHead>
-                  <TableHead className="text-right">Status</TableHead>
-                  <TableHead className="text-right">Sent</TableHead>
-                  <TableHead className="text-right">Opened</TableHead>
-                  <TableHead className="text-right">Clicked</TableHead>
+                  <TableHead className="text-end">Send at</TableHead>
+                  <TableHead className="text-end">Status</TableHead>
+                  <TableHead className="text-end">Sent</TableHead>
+                  <TableHead className="text-end">Opened</TableHead>
+                  <TableHead className="text-end">Clicked</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -61,13 +61,13 @@ export function CampaignHistoryTable({ campaigns, loading }: CampaignHistoryTabl
                             }`
                           : campaign.recipients.join(", ")}
                       </TableCell>
-                      <TableCell className="text-right text-sm">
+                      <TableCell className="text-end text-sm">
                         {new Date(campaign.sendAt).toLocaleString()}
                       </TableCell>
-                      <TableCell className="text-right text-sm">{status}</TableCell>
-                      <TableCell className="text-right text-sm">{campaign.metrics.sent}</TableCell>
-                      <TableCell className="text-right text-sm">{campaign.metrics.opened}</TableCell>
-                      <TableCell className="text-right text-sm">{campaign.metrics.clicked}</TableCell>
+                      <TableCell className="text-end text-sm">{status}</TableCell>
+                      <TableCell className="text-end text-sm">{campaign.metrics.sent}</TableCell>
+                      <TableCell className="text-end text-sm">{campaign.metrics.opened}</TableCell>
+                      <TableCell className="text-end text-sm">{campaign.metrics.clicked}</TableCell>
                     </TableRow>
                   );
                 })}

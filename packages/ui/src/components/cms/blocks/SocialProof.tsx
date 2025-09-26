@@ -143,7 +143,7 @@ export default function SocialProof({
                 ) : (
                   <div className="h-10 w-10 rounded-full bg-neutral-200" />
                 )}
-                <div className="text-left">
+                <div className="text-start">
                   <div className="font-medium">{inf.name}</div>
                   {inf.handle ? <div className="text-xs text-neutral-600">{inf.handle}</div> : null}
                   {inf.quote ? <div className="text-sm text-neutral-800">“{inf.quote}”</div> : null}

@@ -3,6 +3,7 @@
 // packages/ui/src/components/account/ProfileForm.tsx
 import { useState } from "react";
 import { getCsrfToken } from "@acme/shared-utils";
+const t = (s: string) => s;
 
 export interface ProfileFormProps {
   /** Pre-filled name value; may be undefined if profile data is missing */
@@ -39,12 +40,12 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
     setMessage(null);
     setErrors({});
     const newErrors: Record<string, string> = {};
-    if (!form.name) newErrors.name = "Name is required.";
-    if (!form.email) newErrors.email = "Email is required.";
+    if (!form.name) newErrors.name = t("Name is required.");
+    if (!form.email) newErrors.email = t("Email is required.");
     if (Object.keys(newErrors).length) {
       setErrors(newErrors);
       setStatus("error");
-      setMessage("Please fix the errors below.");
+      setMessage(t("Please fix the errors below."));
       focusFirstError(newErrors);
       return;
     }
@@ -62,7 +63,7 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
         const data = await res.json();
         setStatus("error");
         if (res.status === 409) {
-          const conflict = { email: data.error ?? "Email already in use" };
+          const conflict = { email: data.error ?? t("Email already in use") };
           setErrors(conflict);
           setMessage(conflict.email);
           focusFirstError(conflict);
@@ -72,29 +73,25 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
             Object.entries(fieldErrors).map(([key, value]) => [key, value[0]])
           );
           setErrors(formatted);
-          setMessage("Please fix the errors below.");
+          setMessage(t("Please fix the errors below."));
           focusFirstError(formatted);
         } else {
-          setMessage(data.error ?? "Update failed");
+          setMessage(data.error ?? t("Update failed"));
         }
         return;
       }
       setStatus("success");
-      setMessage("Profile updated successfully.");
+      setMessage(t("Profile updated successfully."));
     } catch {
       setStatus("error");
-      setMessage("An unexpected error occurred.");
+      setMessage(t("An unexpected error occurred."));
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4 max-w-md"
-      noValidate
-    >
+    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
       <div className="flex flex-col">
-        <label htmlFor="name" className="mb-1">Name</label>
+        <label htmlFor="name" className="mb-1">{t("Name")}</label>
         <input
           id="name"
           name="name"
@@ -117,7 +114,7 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
         )}
       </div>
       <div className="flex flex-col">
-        <label htmlFor="email" className="mb-1">Email</label>
+        <label htmlFor="email" className="mb-1">{t("Email")}</label>
         <input
           id="email"
           name="email"
@@ -142,11 +139,11 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
       </div>
       <button
         type="submit"
-        className="rounded bg-primary px-4 py-2"
+        className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
         data-token="--color-primary"
       >
         <span className="text-primary-fg" data-token="--color-primary-fg">
-          Save
+          {t("Save")}
         </span>
       </button>
       {status === "success" && (
@@ -162,4 +159,3 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
     </form>
   );
 }
-

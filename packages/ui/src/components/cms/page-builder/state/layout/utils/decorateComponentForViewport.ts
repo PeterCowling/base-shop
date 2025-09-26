@@ -1,8 +1,7 @@
-import type { PageComponent } from "@acme/types";
 import { isHiddenForViewport } from "./isHiddenForViewport";
 import type { EditorMap, Viewport } from "./types";
 
-export function decorateComponentForViewport<T extends PageComponent>(
+export function decorateComponentForViewport<T extends { id: string }>(
   node: T,
   editor: EditorMap,
   viewport?: Viewport,
@@ -21,4 +20,3 @@ export function decorateComponentForViewport<T extends PageComponent>(
   if (hidden !== undefined) merged.hidden = hidden;
   return merged as T & { name?: string; locked?: boolean; zIndex?: number; hidden?: boolean };
 }
-

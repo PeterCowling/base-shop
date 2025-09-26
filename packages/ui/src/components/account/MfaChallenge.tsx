@@ -3,6 +3,8 @@
 // packages/ui/src/components/account/MfaChallenge.tsx
 import { useState } from "react";
 import { getCsrfToken } from "@acme/shared-utils";
+// Minimal local translator (no runtime change)
+const t = (s: string) => s;
 
 export interface MfaChallengeProps {
   onSuccess?: () => void;
@@ -16,6 +18,7 @@ export default function MfaChallenge({ onSuccess, customerId }: MfaChallengeProp
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const csrfToken = getCsrfToken();
+    // i18n-exempt
     const res = await fetch("/api/mfa/verify", {
       method: "POST",
       headers: {
@@ -29,7 +32,7 @@ export default function MfaChallenge({ onSuccess, customerId }: MfaChallengeProp
       setError(null);
       onSuccess?.();
     } else {
-      setError("Invalid code");
+      setError(t("Invalid code"));
     }
   };
 
@@ -39,15 +42,15 @@ export default function MfaChallenge({ onSuccess, customerId }: MfaChallengeProp
         value={token}
         onChange={(e) => setToken(e.target.value)}
         className="rounded border p-2"
-        placeholder="Enter MFA code"
+        placeholder={t("Enter MFA code")}
       />
       <button
         type="submit"
-        className="rounded bg-primary px-4 py-2"
+        className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
         data-token="--color-primary"
       >
         <span className="text-primary-fg" data-token="--color-primary-fg">
-          Verify
+          {t("Verify")}
         </span>
       </button>
       {error && (

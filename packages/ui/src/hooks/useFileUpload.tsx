@@ -242,7 +242,7 @@ export function useFileUpload(
         return "file";
       }
       // URLs or text fallback
-      let url = dt.getData("text/uri-list");
+      const url = dt.getData("text/uri-list");
       if (!url) {
         const text = dt.getData("text/plain");
         const { file: ingestedFile, error, handled } = await ingestFromText(text, {

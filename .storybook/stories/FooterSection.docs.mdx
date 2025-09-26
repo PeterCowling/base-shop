@@ -1,0 +1,21 @@
+import { Meta, Canvas, ArgsTable, Title, Description, Subtitle } from '@storybook/blocks';
+import FooterSection from '../../packages/ui/src/components/cms/blocks/FooterSection';
+
+<Meta title="Sections/Footer/Docs" of={FooterSection} />
+
+<Title>Footer Section</Title>
+<Subtitle>Simple presets for multi‑column, legal‑heavy, newsletter, and social</Subtitle>
+
+<Description>
+The FooterSection supports multiple presets and is designed to be used as a page‑level section.
+Use the `variant` prop to switch between presets.
+</Description>
+
+## Multi‑column
+<Canvas>
+  <FooterSection variant="multiColumn" />
+</Canvas>
+
+## Props
+<ArgsTable of={FooterSection} />
+

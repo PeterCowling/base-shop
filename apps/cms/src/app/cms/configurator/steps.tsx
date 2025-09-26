@@ -236,7 +236,7 @@ export function ConfiguratorProgress({ currentStepId, completed }: ProgressProps
                       {completed[s.id] === "complete" ? <CheckIcon className="h-4 w-4" aria-hidden /> : idx + 1}
                     </span>
                     <span className="truncate">{s.label}</span>
-                    <span className="ml-auto text-xs text-muted-foreground">{statusText}</span>
+                    <span className="ms-auto text-xs text-muted-foreground">{statusText}</span>
                   </DropdownMenuItem>
                 );
               })}

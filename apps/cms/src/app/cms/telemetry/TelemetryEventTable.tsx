@@ -33,7 +33,7 @@ export function TelemetryEventTable({
       </div>
       <div className="overflow-x-auto">
         <table
-          className="w-full min-w-[320px] border-separate border-spacing-0 text-left text-sm"
+          className="w-full min-w-[320px] border-separate border-spacing-0 text-start text-sm"
           aria-label="Event type breakdown"
         >
           <thead>

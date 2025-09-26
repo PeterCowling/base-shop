@@ -217,7 +217,7 @@ export default async function ShopOrdersPage({
                             <>
                               Return: {order.expectedReturnDate}
                               {expected && Number.isFinite(expected.getTime()) && (
-                                <span aria-hidden="true" className="ml-2 text-muted-foreground">
+                                <span aria-hidden="true" className="ms-2 text-muted-foreground">
                                   ({expected.toLocaleDateString()})
                                 </span>
                               )}

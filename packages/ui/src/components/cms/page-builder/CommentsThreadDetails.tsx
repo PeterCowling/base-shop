@@ -208,7 +208,7 @@ export default function CommentsThreadDetails({
             Delete
           </Button>
         )}
-        <label className="ml-1 flex items-center gap-2 text-sm">
+        <label className="ms-1 flex items-center gap-2 text-sm">
           <input type="checkbox" checked={t.resolved} onChange={(e) => onToggleResolved(t.id, e.target.checked)} />
           Resolved
         </label>

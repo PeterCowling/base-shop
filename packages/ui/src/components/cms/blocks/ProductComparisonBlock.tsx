@@ -1,5 +1,4 @@
 import type { SKU } from "@acme/types";
-import { PRODUCTS } from "@acme/platform-core/products";
 
 interface Props {
   skus?: SKU[];
@@ -14,27 +13,17 @@ interface Props {
 /**
  * Display a simple comparison table for selected products.
  */
-export default function ProductComparisonBlock({ skus = [], attributes, fromUrlParam = "compare", resolveBy = "id" }: Props) {
-  let list = skus;
-  if ((!list || list.length === 0) && typeof window !== "undefined") {
-    try {
-      const params = new URLSearchParams(window.location.search);
-      const raw = params.get(fromUrlParam);
-      if (raw) {
-        const tokens = raw.split(",").map((s) => s.trim()).filter(Boolean);
-        list = PRODUCTS.filter((p) => tokens.includes(resolveBy === "id" ? p.id : p.slug)) as SKU[];
-      }
-    } catch {}
-  }
+export default function ProductComparisonBlock({ skus = [], attributes }: Props) {
+  const list = skus;
   if (!list.length || !attributes.length) return null;
 
   return (
     <table className="w-full border-collapse text-sm">
       <thead>
         <tr>
-          <th className="border px-2 py-1 text-left">Product</th>
+          <th className="border px-2 py-1 text-start">Product</th>
           {attributes.map((attr) => (
-            <th key={attr} className="border px-2 py-1 text-left capitalize">
+            <th key={attr} className="border px-2 py-1 text-start capitalize">
               {attr}
             </th>
           ))}

@@ -56,7 +56,7 @@ export function createThemeTokenColumns({
             {isColor(row.defaultValue) && (
               <span
                 aria-hidden
-                className="ml-1 inline-block h-4 w-4 rounded border align-middle"
+                className="ms-1 inline-block h-4 w-4 rounded border align-middle"
                 style={{ backgroundColor: swatchColor(row.defaultValue) }}
               />
             )}
@@ -68,7 +68,7 @@ export function createThemeTokenColumns({
               {isColor(row.overrideValue) && (
                 <span
                   aria-hidden
-                  className="ml-1 inline-block h-4 w-4 rounded border align-middle"
+                  className="ms-1 inline-block h-4 w-4 rounded border align-middle"
                   style={{ backgroundColor: swatchColor(row.overrideValue) }}
                 />
               )}

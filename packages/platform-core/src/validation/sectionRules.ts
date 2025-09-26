@@ -2,7 +2,7 @@ import type { SectionTemplate } from "@acme/types";
 
 export type ValidationResult = { ok: true } | { ok: false; errors: string[] };
 
-import type { PageComponent } from "@acme/types/src/page/page";
+import type { PageComponent } from "@acme/types";
 
 type WithChildren = { children?: unknown };
 

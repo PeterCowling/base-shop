@@ -52,7 +52,7 @@ function PublishLocationSelectorInner({
               />
               <span>
                 <span className="font-medium">{name}</span>
-                <span className="text-muted-foreground ml-1 text-xs">
+                <span className="text-muted-foreground ms-1 text-xs">
                   ({requiredOrientation})
                 </span>
                 {description && (

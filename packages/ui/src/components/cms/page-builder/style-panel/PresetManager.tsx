@@ -169,7 +169,7 @@ export default function PresetManager({
           </DialogHeader>
           <Textarea value={exportText} readOnly rows={10} />
           <DialogFooter>
-            <div className="mr-auto text-xs text-muted-foreground">{copied ? "Copied" : ""}</div>
+            <div className="me-auto text-xs text-muted-foreground">{copied ? "Copied" : ""}</div>
             <Button type="button" variant="outline" onClick={() => setExportOpen(false)}>
               Close
             </Button>

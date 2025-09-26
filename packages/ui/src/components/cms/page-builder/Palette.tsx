@@ -320,7 +320,7 @@ const Palette = memo(function Palette({ onAdd, onInsertImage, onSetSectionBackgr
               <button
                 key={theme.id}
                 type="button"
-                className="flex flex-col gap-1 rounded border p-2 text-left text-sm transition hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="flex flex-col gap-1 rounded border p-2 text-start text-sm transition hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 onClick={() => handleApplyTextTheme(theme)}
               >
                 <span className="font-medium">{theme.label}</span>

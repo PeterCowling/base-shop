@@ -200,7 +200,7 @@ export default function PagesPanel({ open, onOpenChange, shop: shopProp = null }
                   const isSel = p.id === selectedId;
                   return (
                     <li key={p.id} className={`rounded border ${isSel ? 'ring-1 ring-primary' : ''}`}>
-                      <button type="button" className="block w-full truncate px-2 py-1 text-left" onClick={() => setSelectedId(p.id)}>
+                      <button type="button" className="block w-full truncate px-2 py-1 text-start" onClick={() => setSelectedId(p.id)}>
                         <div className="truncate font-medium">{p.title || p.seo?.title?.en || p.slug || p.id}</div>
                         <div className="truncate text-xs text-muted-foreground">/{p.slug}</div>
                       </button>

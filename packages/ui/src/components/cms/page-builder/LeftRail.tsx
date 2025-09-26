@@ -77,7 +77,7 @@ export default function LeftRail({ onOpenAdd, onOpenSections, onOpenLayers, onOp
   );
 
   return (
-    <aside className="ml-[25px] flex w-16 shrink-0 flex-col items-center gap-4 border-r bg-surface-1/80 py-4">
+    <aside className="ms-[25px] flex w-16 shrink-0 flex-col items-center gap-4 border-r bg-surface-1/80 py-4">
       <Item label="Add Section" onClick={onOpenSections} icon={<SectionIcon className="h-5 w-5" />} active={isSectionsActive} />
       {!hideAddElements && (
         <Item label="Add Elements" onClick={onOpenAdd} icon={<PlusIcon className="h-5 w-5" />} active={isAddActive} />

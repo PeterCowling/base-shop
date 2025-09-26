@@ -154,7 +154,7 @@ function ProductSearch({
                       className="h-8 w-8 object-cover"
                     />
                   )}
-                  <span className="flex-1 text-left">{p.title}</span>
+                  <span className="flex-1 text-start">{p.title}</span>
                   <span className="text-sm">{formatCurrency(p.price)}</span>
                 </Button>
               </li>

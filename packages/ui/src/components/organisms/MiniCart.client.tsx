@@ -91,7 +91,7 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
                     <span className="text-sm">
                       {line.sku.title}
                       {line.size && (
-                        <span className="ml-1 text-muted">({line.size})</span>
+                        <span className="ms-1 text-muted">({line.size})</span>
                       )}
                     </span>
                     <div className="flex items-center gap-1">

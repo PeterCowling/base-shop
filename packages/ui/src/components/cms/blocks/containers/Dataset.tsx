@@ -50,6 +50,9 @@ export default function Dataset({
   sortBy,
   sortOrder = "asc",
   itemRoutePattern,
+  cacheKey,
+  ttlMs,
+  transform,
   className,
 }: DatasetProps) {
   const [items, setItems] = useState<unknown[]>(Array.isArray(skus) ? skus : []);

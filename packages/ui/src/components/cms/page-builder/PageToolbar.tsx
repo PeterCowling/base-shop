@@ -249,7 +249,7 @@ const PageToolbar = ({
       {/* Middle cluster: design menu removed per spec */}
       {/* Right cluster: locales — hidden when only one locale (EN) */}
       {locales.length > 1 ? (
-        <div className="ml-auto flex flex-wrap items-center gap-1 basis-full md:basis-auto">
+        <div className="ms-auto flex flex-wrap items-center gap-1 basis-full md:basis-auto">
           {locales.length > 3 ? (
             <Select value={locale} onValueChange={(v) => setLocale(v as Locale)}>
               <SelectTrigger className="h-8 w-28 text-xs" aria-label="Locale">

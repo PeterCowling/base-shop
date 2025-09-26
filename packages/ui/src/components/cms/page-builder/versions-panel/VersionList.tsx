@@ -24,7 +24,7 @@ const VersionList = ({ versions, selectedId, onSelect }: Props) => {
             aria-label={`Select version ${v.label}`}
           >
             <span className="truncate" title={v.label}>{v.label}</span>
-            <time className="ml-2 shrink-0 text-muted-foreground" dateTime={v.timestamp}>
+            <time className="ms-2 shrink-0 text-muted-foreground" dateTime={v.timestamp}>
               {new Date(v.timestamp).toLocaleString()}
             </time>
           </button>

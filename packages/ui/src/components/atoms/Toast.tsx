@@ -82,8 +82,9 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
           <button
             type="button"
             onClick={onClose}
-            className="ml-2 font-bold"
+            className="ms-2 font-bold inline-flex items-center justify-center min-h-10 min-w-10"
             data-token={tokenFg}
+            aria-label="Close"
           >
             ×
           </button>

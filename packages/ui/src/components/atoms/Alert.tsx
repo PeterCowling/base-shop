@@ -57,8 +57,8 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         )}
         {...props}
       >
-        {title && <div className="mb-1 font-medium">{title}</div>}
-        {children && <div className="text-sm">{children}</div>}
+        {title && <div className="font-medium">{title}</div>}
+        {children && <div className={cn("text-sm", title ? "pt-1" : undefined)}>{children}</div>}
       </div>
     );
   }
@@ -67,4 +67,3 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 Alert.displayName = "Alert";
 
 export default Alert;
-

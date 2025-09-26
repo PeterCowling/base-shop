@@ -59,7 +59,7 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
       className="space-y-3"
     >
       <AccordionItem value="layout" className="border-none">
-        <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+        <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
           Layout
         </AccordionTrigger>
         <AccordionContent className="pt-3">
@@ -76,7 +76,7 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="content" className="border-none">
-        <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+        <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
           Content
         </AccordionTrigger>
         <AccordionContent className="pt-3">
@@ -88,7 +88,7 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="style" className="border-none">
-        <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+        <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
           Style
         </AccordionTrigger>
         <AccordionContent className="pt-3">
@@ -96,7 +96,7 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="interactions" className="border-none">
-        <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+        <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
           Interactions
         </AccordionTrigger>
         <AccordionContent className="pt-3">
@@ -107,7 +107,7 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="timeline" className="border-none">
-        <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+        <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
           Timeline
         </AccordionTrigger>
         <AccordionContent className="pt-3">
@@ -115,7 +115,7 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="lottie" className="border-none">
-        <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-left text-sm font-semibold">
+        <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
           Lottie
         </AccordionTrigger>
         <AccordionContent className="pt-3">

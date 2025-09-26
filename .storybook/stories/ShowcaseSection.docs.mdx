@@ -1,0 +1,30 @@
+import { Meta, Canvas, Story, ArgsTable, Subtitle, Title, Description } from '@storybook/blocks';
+import ShowcaseSection from '../../packages/ui/src/components/cms/blocks/ShowcaseSection';
+
+<Meta title="Sections/Showcase/Docs" of={ShowcaseSection} />
+
+<Title>Showcase Section</Title>
+<Subtitle>Curated products via presets with carousel/grid layouts</Subtitle>
+
+<Description>
+The ShowcaseSection renders curated product groups using presets (Featured/New/Bestsellers/Clearance/Limited).
+It supports a carousel layout (default) or a grid layout and fetches data from `/api/recommendations`.
+In Storybook, network calls are mocked with MSW and can be overridden per story.
+</Description>
+
+## Basic Usage
+
+<Canvas>
+  <Story id="packages-ui-src-components-cms-blocks-showcasesection--carousel" />
+</Canvas>
+
+## Props
+
+<ArgsTable of={ShowcaseSection} />
+
+## Grid Example
+
+<Canvas>
+  <Story id="packages-ui-src-components-cms-blocks-showcasesection--grid" />
+</Canvas>
+

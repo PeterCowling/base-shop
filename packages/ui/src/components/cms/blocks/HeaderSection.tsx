@@ -86,7 +86,7 @@ export default function HeaderSection({
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3">
         <a className="font-bold" href="/">Shop</a>
         {variant === "centerLogo" ? <div className="mx-auto" /> : null}
-        <nav className="flex items-center gap-3 ml-auto">
+        <nav className="flex items-center gap-3 ms-auto">
           {renderSearch()}
           {showCurrencySelector ? (
             experimentKey ? (

@@ -52,7 +52,7 @@ export function LiveShoppingEventTemplate({
           <div className="h-64 space-y-2 overflow-y-auto rounded-md border bg-bg p-4">
             {chatMessages.map((m) => (
               <div key={m.id} className="text-sm">
-                <span className="mr-1 font-medium">{m.user}:</span>
+                <span className="me-1 font-medium">{m.user}:</span>
                 <span>{m.message}</span>
               </div>
             ))}

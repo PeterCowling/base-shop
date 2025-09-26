@@ -170,7 +170,7 @@ export default function StepSummary({
             markComplete(true);
             router.push("/cms/configurator");
           }}
-          className="ml-auto"
+          className="ms-auto"
         >
           {creating ? "Saving…" : "Save & return"}
         </Button>

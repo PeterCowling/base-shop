@@ -65,7 +65,7 @@ export default function SeoLanguageTabs({
             <span className="flex items-center gap-1">
               Title
               <Tooltip text="Recommended ≤ 70 characters">?</Tooltip>
-              <span className="text-muted-foreground ml-auto text-xs">
+              <span className="text-muted-foreground ms-auto text-xs">
                 {current.title.length}/{titleLimit}
               </span>
             </span>
@@ -80,7 +80,7 @@ export default function SeoLanguageTabs({
             <span className="flex items-center gap-1">
               Description
               <Tooltip text="Recommended ≤ 160 characters">?</Tooltip>
-              <span className="text-muted-foreground ml-auto text-xs">
+              <span className="text-muted-foreground ms-auto text-xs">
                 {current.description.length}/{descLimit}
               </span>
             </span>

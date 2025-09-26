@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import type { RecommendationPreset, SKU } from "@acme/types";
+import type { SKU } from "@acme/types";
+import type { RecommendationPreset } from "@acme/types/recommendations";
 import { RecommendationCarousel } from "../../organisms/RecommendationCarousel";
 import { ProductCard } from "../../organisms/ProductCard";
 

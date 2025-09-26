@@ -33,10 +33,10 @@ export function OrderConfirmationTemplate({
       </p>
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b text-left">
+          <tr className="border-b text-start">
             <th className="py-2">Item</th>
             <th>Qty</th>
-            <th className="text-right">Price</th>
+            <th className="text-end">Price</th>
           </tr>
         </thead>
         <tbody>
@@ -46,7 +46,7 @@ export function OrderConfirmationTemplate({
                 {l.sku.title}
                 {l.size && (
                   <span
-                    className="ml-1 text-xs text-muted"
+                    className="ms-1 text-xs text-muted"
                     data-token="--color-muted"
                   >
                     ({l.size})
@@ -54,7 +54,7 @@ export function OrderConfirmationTemplate({
                 )}
               </td>
               <td>{l.qty}</td>
-              <td className="text-right">
+              <td className="text-end">
                 <Price amount={(l.sku.price ?? 0) * l.qty} />
               </td>
             </tr>
@@ -64,14 +64,14 @@ export function OrderConfirmationTemplate({
           <tr>
             <td />
             <td className="py-2">Deposit</td>
-            <td className="text-right">
+            <td className="text-end">
               <Price amount={deposit} />
             </td>
           </tr>
           <tr>
             <td />
             <td className="py-2 font-semibold">Total</td>
-            <td className="text-right font-semibold">
+            <td className="text-end font-semibold">
               <Price amount={subtotal + deposit} />
             </td>
           </tr>

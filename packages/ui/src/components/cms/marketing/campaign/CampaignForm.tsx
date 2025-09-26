@@ -116,7 +116,7 @@ export function CampaignForm({
             {secondaryAction.label}
           </Button>
         )}
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ms-auto flex items-center gap-2">
           <span className="text-muted-foreground text-xs">
             {status === "submitting"
               ? "Saving campaign…"

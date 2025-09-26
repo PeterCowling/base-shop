@@ -124,9 +124,9 @@ export default function MediaDetailsPanel({
           <Cross2Icon className="h-4 w-4" />
         </Button>
         <form onSubmit={handleSubmit} className="flex h-full flex-col">
-          <DialogHeader className="space-y-2 text-left">
+          <DialogHeader className="space-y-2 text-start">
             <DialogTitle>Edit media details</DialogTitle>
-            <DialogDescription className="break-all text-left text-sm text-muted-foreground">
+            <DialogDescription className="break-all text-start text-sm text-muted-foreground">
               Update metadata for {fileName}.
             </DialogDescription>
           </DialogHeader>

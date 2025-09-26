@@ -61,6 +61,10 @@ import CheckoutSection from "./CheckoutSection";
 import ThankYouSection from "./ThankYouSection";
 import StoreLocatorSection from "./StoreLocatorSection";
 import EmailReferralSection from "./EmailReferralSection";
+import DSARSection from "./DSARSection";
+import AgeGateSection from "./AgeGateSection";
+import AccountSection from "./AccountSection";
+import RentalManageSection from "./RentalManageSection";
 import RentalAvailabilitySection from "./RentalAvailabilitySection";
 import RentalTermsSection from "./RentalTermsSection";
 import StructuredDataSection from "./StructuredDataSection";
@@ -140,6 +144,10 @@ const organismEntries = {
   ThankYouSection: { component: ThankYouSection },
   StoreLocatorSection: { component: StoreLocatorSection },
   EmailReferralSection: { component: EmailReferralSection },
+  DSARSection: { component: DSARSection },
+  AgeGateSection: { component: AgeGateSection },
+  AccountSection: { component: AccountSection },
+  RentalManageSection: { component: RentalManageSection },
   RentalAvailabilitySection: { component: RentalAvailabilitySection },
   RentalTermsSection: { component: RentalTermsSection },
   StructuredDataSection: { component: StructuredDataSection },

@@ -1,5 +1,7 @@
 // packages/ui/src/components/ThemeStyle.tsx
 import * as React from "react";
+// Local t shim (no runtime change); ThemeStyle is server-side and emits links/styles
+const t = (s: string) => s;
 import { readShop } from "@acme/platform-core/repositories/shops.server";
 
 function firstFamilyFromStack(stack?: string): string | null {
@@ -59,8 +61,8 @@ export default async function ThemeStyle({ shopId, tokens: propTokens }: ThemeSt
   return (
     <>
       {/* Font loading performance hints */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      <link rel="preconnect" href={t("https://fonts.googleapis.com")} />
+      <link rel="preconnect" href={t("https://fonts.gstatic.com")} crossOrigin="anonymous" />
       {uniqueFamilies.map((name) => (
         <link key={name} rel="stylesheet" href={googleHref(name)} />
       ))}

@@ -226,7 +226,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
           disabled={headerSaving || footerSaving}
         >
           {(headerSaving || footerSaving) && (
-            <Spinner className="mr-2 h-4 w-4" />
+            <Spinner className="me-2 h-4 w-4" />
           )}
           Save & return
         </Button>

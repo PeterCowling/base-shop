@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+const t = (s: string) => s;
 
 interface Props {
   sessionId: string;
@@ -60,14 +61,14 @@ export default function StartReturnButton({ sessionId }: Props) {
         type="button"
         onClick={handleClick}
         disabled={loading}
-        className="rounded bg-primary px-3 py-1"
+        className="rounded bg-primary px-3 py-1 min-h-10 min-w-10"
         data-token="--color-primary"
       >
         <span
           className="text-primary-foreground"
           data-token="--color-primary-fg"
         >
-          {loading ? "Processing…" : "Start return"}
+          {loading ? t("Processing…") : t("Start return")}
         </span>
       </button>
       {labelUrl && (
@@ -76,19 +77,19 @@ export default function StartReturnButton({ sessionId }: Props) {
             href={labelUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline"
+            className="underline inline-block min-h-10 min-w-10"
           >
-            Download label
+            {t("Download label")}
           </a>
         </p>
       )}
       {dropOffProvider && (
-        <p className="mt-1 text-sm">Drop-off: {dropOffProvider}</p>
+        <p className="mt-1 text-sm">{t("Drop-off:")} {dropOffProvider}</p>
       )}
       {tracking && (
-        <p className="mt-1 text-sm">Tracking: {tracking}</p>
+        <p className="mt-1 text-sm">{t("Tracking:")} {tracking}</p>
       )}
-      {status && <p className="mt-1 text-sm">Status: {status}</p>}
+      {status && <p className="mt-1 text-sm">{t("Status:")} {status}</p>}
     </div>
   );
 }

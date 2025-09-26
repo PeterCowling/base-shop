@@ -92,7 +92,7 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
                 Configure the structured feed that powers AI discovery surfaces.
               </p>
             </div>
-            <div className="shrink-0 text-right text-sm">
+            <div className="shrink-0 text-end text-sm">
               <p>
                 Last run:
                 {" "}

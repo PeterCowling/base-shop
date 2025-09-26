@@ -3,7 +3,9 @@
 import { withThemeByClassName } from "@storybook/addon-themes";
 import type { Decorator, Preview } from "@storybook/react";
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
-import "../apps/cms/src/app/globals.css";
+import "./styles/sb-globals.css";
+import { initialize, mswDecorator } from "msw-storybook-addon";
+import { handlers as mswHandlers } from "./msw/handlers";
 
 export const globalTypes = {
   tokens: {
@@ -28,7 +30,14 @@ const withTokens: Decorator = (Story, context) => {
   return <Story />;
 };
 
+// Initialize Mock Service Worker once per session
+initialize({ onUnhandledRequest: "bypass" });
+
 const preview: Preview = {
+  parameters: {
+    msw: { handlers: mswHandlers },
+    docs: { autodocs: true },
+  },
   decorators: [
     withThemeByClassName({
       themes: {
@@ -37,6 +46,7 @@ const preview: Preview = {
       },
       defaultTheme: "light",
     }),
+    mswDecorator,
     // Opt-in cart provider: set `parameters: { cart: true }` in a story to wrap it
     ((Story, ctx) => {
       const { cart } = (ctx.parameters as any) ?? {};

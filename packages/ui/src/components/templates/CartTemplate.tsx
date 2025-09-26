@@ -40,10 +40,10 @@ export function CartTemplate({
       <h2 className="text-xl font-semibold">Your Bag</h2>
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b text-left">
+          <tr className="border-b text-start">
             <th className="py-2">Item</th>
             <th>Qty</th>
-            <th className="text-right">Price</th>
+            <th className="text-end">Price</th>
             {onRemove && <th className="sr-only">Remove</th>}
           </tr>
         </thead>
@@ -76,7 +76,7 @@ export function CartTemplate({
                     )}
                     {line.sku.title}
                     {line.size && (
-                      <span className="ml-1 text-xs text-muted" data-token="--color-muted">
+                      <span className="ms-1 text-xs text-muted" data-token="--color-muted">
                         ({line.size})
                       </span>
                     )}
@@ -95,11 +95,11 @@ export function CartTemplate({
                     </div>
                   )}
                 </td>
-                <td className="text-right">
+                <td className="text-end">
                   <Price amount={(line.sku.price ?? 0) * line.qty} />
                 </td>
                 {onRemove && (
-                  <td className="text-right">
+                  <td className="text-end">
                     <button
                       type="button"
                       onClick={() => onRemove(line.id)}
@@ -118,7 +118,7 @@ export function CartTemplate({
           <tr>
             <td />
             <td className="py-2">Deposit</td>
-            <td className="text-right">
+            <td className="text-end">
               <Price amount={deposit} />
             </td>
             {onRemove && <td />}
@@ -126,7 +126,7 @@ export function CartTemplate({
           <tr>
             <td />
             <td className="py-2 font-semibold">Total</td>
-            <td className="text-right font-semibold">
+            <td className="text-end font-semibold">
               <Price amount={subtotal + deposit} />
             </td>
             {onRemove && <td />}

@@ -53,7 +53,7 @@ const GridSettings = ({ showGrid, toggleGrid, snapToGrid = true, toggleSnap, gri
         value={baselineStep}
         onChange={(e) => setBaselineStep?.(Number(e.target.value))}
       />
-      <span className="w-8 text-right text-sm">{baselineStep}</span>
+      <span className="w-8 text-end text-sm">{baselineStep}</span>
     </div>
     <div className="flex items-center gap-2">
       <label className="text-sm">Zoom</label>
@@ -65,7 +65,7 @@ const GridSettings = ({ showGrid, toggleGrid, snapToGrid = true, toggleSnap, gri
         value={zoom}
         onChange={(e) => setZoom?.(Number(e.target.value))}
       />
-      <span className="w-10 text-right text-sm">{Math.round(zoom * 100)}%</span>
+      <span className="w-10 text-end text-sm">{Math.round(zoom * 100)}%</span>
     </div>
   </div>
 );

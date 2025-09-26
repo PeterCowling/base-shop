@@ -92,11 +92,41 @@ const ICONS: Record<string, React.ReactNode> = {
   PopupModal: <BoxIcon className="h-6 w-6" />,
   ProductBundle: <LayersIcon className="h-6 w-6" />,
   ProductFilter: <MagnifyingGlassIcon className="h-6 w-6" />,
+  // New section blocks
+  HeaderSection: <HeadingIcon className="h-6 w-6" />,
+  FooterSection: <LayersIcon className="h-6 w-6" />,
+  CampaignHeroSection: <ImageIcon className="h-6 w-6" />,
+  PromoTilesSection: <ViewGridIcon className="h-6 w-6" />,
+  ShowcaseSection: <RocketIcon className="h-6 w-6" />,
+  CollectionSection: <ViewGridIcon className="h-6 w-6" />,
+  CurrencySelector: <BoxIcon className="h-6 w-6" />,
+  RentalAvailabilitySection: <ClockIcon className="h-6 w-6" />,
+  RentalTermsSection: <ReaderIcon className="h-6 w-6" />,
+  StructuredDataSection: <CodeIcon className="h-6 w-6" />,
+  ConsentSection: <QuestionMarkCircledIcon className="h-6 w-6" />,
+  AnalyticsPixelsSection: <RocketIcon className="h-6 w-6" />,
+  ReviewsSection: <StarIcon className="h-6 w-6" />,
+  CrossSellSection: <ViewGridIcon className="h-6 w-6" />,
+  FinancingBadge: <StarIcon className="h-6 w-6" />,
+  CertificateCheck: <MagnifyingGlassIcon className="h-6 w-6" />,
+  PoliciesAccordion: <ReaderIcon className="h-6 w-6" />,
+  StickyBuyBar: <BoxIcon className="h-6 w-6" />,
+  PDPDetailsSection: <TextAlignLeftIcon className="h-6 w-6" />,
+  GuidedSellingSection: <QuestionMarkCircledIcon className="h-6 w-6" />,
+  CartSection: <TableIcon className="h-6 w-6" />,
+  CheckoutSection: <TableIcon className="h-6 w-6" />,
+  ThankYouSection: <StarIcon className="h-6 w-6" />,
+  StoreLocatorSection: <MagnifyingGlassIcon className="h-6 w-6" />,
+  EmailReferralSection: <EnvelopeClosedIcon className="h-6 w-6" />,
+  DSARSection: <ReaderIcon className="h-6 w-6" />,
+  AgeGateSection: <QuestionMarkCircledIcon className="h-6 w-6" />,
+  AccountSection: <TableIcon className="h-6 w-6" />,
+  RentalManageSection: <ClockIcon className="h-6 w-6" />,
 };
 
 // Some icon names used above are guaranteed by @radix-ui/react-icons. For those
 // that may not exist in older versions, provide fallbacks at runtime.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function safe(node: React.ReactNode | undefined, fallback: React.ReactNode): React.ReactNode {
   try {
     return node ?? fallback;

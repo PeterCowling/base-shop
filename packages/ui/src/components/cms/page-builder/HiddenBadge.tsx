@@ -20,7 +20,7 @@ export default function HiddenBadge({ hiddenList, isHiddenHere, viewport, compon
       {isHiddenHere && (
         <button
           type="button"
-          className="ml-2 underline"
+          className="ms-2 underline"
           onClick={(e) => {
             e.stopPropagation();
             const cur = (editor ?? {})[componentId]?.hidden ?? [];

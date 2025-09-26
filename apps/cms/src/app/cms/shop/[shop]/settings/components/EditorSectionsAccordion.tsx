@@ -67,7 +67,7 @@ export default function EditorSectionsAccordion({
       >
         {sections.map(({ key, title, description, component: Component, props, wrapWithCard }) => (
           <AccordionItem key={key} value={key} data-section={key} className="border-none">
-            <AccordionTrigger className="rounded-md border border-border-3 bg-muted/40 px-4 py-3 text-left text-sm font-semibold">
+            <AccordionTrigger className="rounded-md border border-border-3 bg-muted/40 px-4 py-3 text-start text-sm font-semibold">
               <SectionHeader title={title} description={description} />
             </AccordionTrigger>
             <AccordionContent className="pt-3">

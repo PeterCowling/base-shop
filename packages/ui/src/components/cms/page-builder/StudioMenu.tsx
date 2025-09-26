@@ -33,17 +33,17 @@ export default function StudioMenu({ shop }: { shop?: string | null }) {
               Email Campaigns
             </Link>
           )}
-          <button type="button" className="rounded px-2 py-1 text-left hover:bg-muted" onClick={() => { try { window.dispatchEvent(new Event("pb:open-view")); } catch {} }}>View…</button>
+          <button type="button" className="rounded px-2 py-1 text-start hover:bg-muted" onClick={() => { try { window.dispatchEvent(new Event("pb:open-view")); } catch {} }}>View…</button>
           <button
             type="button"
-            className="rounded px-2 py-1 text-left hover:bg-muted"
+            className="rounded px-2 py-1 text-start hover:bg-muted"
             onClick={() => { try { window.dispatchEvent(new Event("pb:open-design")); } catch {} }}
           >
             Design…
           </button>
           <button
             type="button"
-            className="rounded px-2 py-1 text-left hover:bg-muted"
+            className="rounded px-2 py-1 text-start hover:bg-muted"
             onClick={() => { try { window.dispatchEvent(new Event("pb:open-breakpoints")); } catch {} }}
           >
             Device Manager…

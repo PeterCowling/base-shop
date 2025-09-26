@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PRODUCTS } from "@acme/platform-core/products";
+import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
 import { ProductCard } from "../../organisms/ProductCard";
 
@@ -104,8 +104,7 @@ const defaultQuestions: Question[] = [
 function filterProducts(all: SKU[], a: Record<string, string>): SKU[] {
   return all.filter((p) => {
     const intentOk = a.intent === "rent" ? p.forRental : p.forSale;
-    const colorOk = a.color ? p.id.includes(a.color) : true;
+    const colorOk = a.color ? String(p.id ?? "").includes(a.color) : true;
     return intentOk && colorOk;
   });
 }
-

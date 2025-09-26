@@ -85,7 +85,7 @@ export function ViewMenuContent({ showPreview, togglePreview, showComments, togg
                 value={gridProps.baselineStep}
                 onChange={(e) => gridProps.setBaselineStep?.(Number(e.target.value))}
               />
-              <span className="w-8 text-right text-sm">{gridProps.baselineStep}</span>
+              <span className="w-8 text-end text-sm">{gridProps.baselineStep}</span>
             </div>
           </div>
         </div>

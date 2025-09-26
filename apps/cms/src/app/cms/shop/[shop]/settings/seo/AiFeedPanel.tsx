@@ -52,7 +52,7 @@ export default async function AiFeedPanel({ shop }: { shop: string }) {
               Track the most recent AI crawl executions and delivery status.
             </p>
           </div>
-          <div className="shrink-0 text-right">
+          <div className="shrink-0 text-end">
             <p>
               Last run: <span className="font-medium">{lastRun}</span>
             </p>

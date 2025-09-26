@@ -10,7 +10,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
   ({ className, label, children, ...props }, ref) => (
     <label className={cn("inline-flex items-center gap-2", className)}>
       {" "}
-      <input ref={ref} type="radio" className="accent-primary" {...props} />
+      <input ref={ref} type="radio" className="accent-primary h-10 w-10" {...props} />
       {label ?? children}
     </label>
   )

@@ -58,7 +58,7 @@ export default function PalettePeek({ themes, value, onChange, hasWarnings = fal
               </span>
               <span className="text-sm">{t}</span>
               {t === value && hasWarnings && (
-                <span className="ml-1 rounded bg-warning-soft px-1 text-[10px] text-foreground">Low contrast</span>
+                <span className="ms-1 rounded bg-warning-soft px-1 text-[10px] text-foreground">Low contrast</span>
               )}
             </button>
           </PopoverTrigger>

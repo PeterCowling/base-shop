@@ -6,7 +6,7 @@ export function isPointerEvent(
 
 export function safeDispatchEvent(name: string, detail?: any) {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+     
     window.dispatchEvent(new CustomEvent(name, { detail }));
   } catch {
     // no-op

@@ -76,7 +76,7 @@ export default function usePresetActions({
       if (!res.ok) throw new Error("Failed to save preset");
       setToast({ open: true, message: "Preset saved" });
     } catch (err) {
-      // eslint-disable-next-line no-console
+       
       console.error("save preset failed", err);
       setToast({ open: true, message: "Failed to save preset" });
     }

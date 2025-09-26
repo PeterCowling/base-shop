@@ -154,7 +154,7 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={i.icon} alt="" className="h-5 w-5 rounded" />
-                <span className="flex-1 text-left">{i.label}</span>
+                <span className="flex-1 text-start">{i.label}</span>
                 <span className="text-muted-foreground text-[10px] capitalize">
                   {i.category}
                 </span>

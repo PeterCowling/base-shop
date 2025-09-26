@@ -114,12 +114,12 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
               router.push("/cms/configurator");
             }}
           >
-            <span className="mr-2" aria-hidden>
+            <span className="me-2" aria-hidden>
               <PlusIcon className="h-4 w-4" />
             </span>
             <span className="flex-1">New Shop</span>
             {onConfigurator ? (
-              <span className="ml-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+              <span className="ms-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
             ) : null}
           </DropdownMenuItem>
         )}
@@ -131,7 +131,7 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
                 router.push("/cms/pages/new/component");
               }}
             >
-              <span className="mr-2" aria-hidden>
+              <span className="me-2" aria-hidden>
                 <PlusIcon className="h-4 w-4" />
               </span>
               <span className="flex-1">New Component</span>
@@ -142,7 +142,7 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
                 router.push("/cms/pages/edit/component");
               }}
             >
-              <span className="mr-2" aria-hidden>
+              <span className="me-2" aria-hidden>
                 <MixIcon className="h-4 w-4" />
               </span>
               <span className="flex-1">Edit Component</span>
@@ -163,12 +163,12 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
                   router.push(filteredItems[0].fullHref);
                 }}
               >
-                <span className="mr-2" aria-hidden>
+                <span className="me-2" aria-hidden>
                   {filteredItems[0].icon}
                 </span>
                 <span className="flex-1">{filteredItems[0].label}</span>
                 {isActive(filteredItems[0].active, filteredItems[0].fullHref) ? (
-                  <span className="ml-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+                  <span className="ms-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
                 ) : null}
               </DropdownMenuItem>
             )}
@@ -178,12 +178,12 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
                 className={onNewPage ? "bg-surface-3 text-foreground" : ""}
                 onSelect={handleOpenPageBuilder}
               >
-                <span className="mr-2" aria-hidden>
+                <span className="me-2" aria-hidden>
                   <PlusIcon className="h-4 w-4" />
                 </span>
                 <span className="flex-1">New page</span>
                 {onNewPage ? (
-                  <span className="ml-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+                  <span className="ms-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
                 ) : null}
               </DropdownMenuItem>
             )}
@@ -198,12 +198,12 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
                   router.push(item.fullHref);
                 }}
               >
-                <span className="mr-2" aria-hidden>
+                <span className="me-2" aria-hidden>
                   {item.icon}
                 </span>
                 <span className="flex-1">{item.label}</span>
                 {isActive(item.active, item.fullHref) ? (
-                  <span className="ml-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+                  <span className="ms-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
                 ) : null}
               </DropdownMenuItem>
             ))}
@@ -220,12 +220,12 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
                 router.push(item.fullHref);
               }}
             >
-              <span className="mr-2" aria-hidden>
+              <span className="me-2" aria-hidden>
                 {item.icon}
               </span>
               <span className="flex-1">{item.label}</span>
               {item.active ? (
-                <span className="ml-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+                <span className="ms-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
               ) : null}
             </DropdownMenuItem>
           ))

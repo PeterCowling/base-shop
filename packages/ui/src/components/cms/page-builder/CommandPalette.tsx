@@ -147,7 +147,7 @@ export default function CommandPalette({ open, onOpenChange, components, selecte
               <div className="grid grid-cols-1 gap-1">
                 {items.map((i) => (
                   <Button key={`${i.category}-${i.type}`} variant="outline" className="justify-start" onClick={() => insert(i.type)}>
-                    <span className="mr-2 rounded border bg-muted px-1 text-[10px] capitalize">{i.category}</span>
+                    <span className="me-2 rounded border bg-muted px-1 text-[10px] capitalize">{i.category}</span>
                     {i.label}
                   </Button>
                 ))}

@@ -5,6 +5,7 @@ import { getTrackingStatus as getShippingTrackingStatus } from "@acme/platform-c
 import { getTrackingStatus as getReturnTrackingStatus } from "@acme/platform-core/returnAuthorization";
 import type { RentalOrder } from "@acme/types";
 import { redirect } from "next/navigation";
+const t = (s: string) => s;
 import StartReturnButton from "./StartReturnButton";
 import type { OrderStep } from "../organisms/OrderTrackingTimeline";
 import { OrderTrackingTimeline } from "../organisms/OrderTrackingTimeline";
@@ -26,11 +27,11 @@ export interface OrdersPageProps {
   trackingProviders?: string[];
 }
 
-export const metadata = { title: "Orders" };
+export const metadata = { title: t("Orders") };
 
 export default async function OrdersPage({
   shopId,
-  title = "Orders",
+  title,
   callbackUrl = "/account/orders",
   returnsEnabled = false,
   returnPolicyUrl,
@@ -43,13 +44,13 @@ export default async function OrdersPage({
     return null as never;
   }
   if (!hasPermission(session.role, "view_orders")) {
-    return <p className="p-6">Not authorized.</p>;
+    return <p className="p-6">{t("Not authorized.")}</p>;
   }
   const orders: RentalOrder[] = await getOrdersForCustomer(
     shopId,
     session.customerId,
   );
-  if (!orders.length) return <p className="p-6">No orders yet.</p>;
+  if (!orders.length) return <p className="p-6">{t("No orders yet.")}</p>;
 
   const items = await Promise.all(
     orders.map(async (o) => {
@@ -75,17 +76,17 @@ export default async function OrdersPage({
       }
       return (
         <li key={o.id} className="rounded border p-4">
-          <div>Order: {o.id}</div>
-          {o.expectedReturnDate && <div>Return: {o.expectedReturnDate}</div>}
+          <div>{t("Order:")} {o.id}</div>
+          {o.expectedReturnDate && <div>{t("Return:")} {o.expectedReturnDate}</div>}
           <OrderTrackingTimeline
             shippingSteps={shippingSteps}
             returnSteps={returnSteps}
             trackingEnabled={trackingEnabled}
             className="mt-2"
           />
-          {status && <p className="mt-2 text-sm">Status: {status}</p>}
+          {status && <p className="mt-2 text-sm">{t("Status:")} {status}</p>}
           {returnStatus && (
-            <p className="mt-2 text-sm">Return: {returnStatus}</p>
+            <p className="mt-2 text-sm">{t("Return:")} {returnStatus}</p>
           )}
           {returnsEnabled && !o.returnedAt && (
             <StartReturnButton sessionId={o.sessionId} />
@@ -97,16 +98,16 @@ export default async function OrdersPage({
 
   return (
     <>
-      <h1 className="p-6 text-xl">{title}</h1>
+      <h1 className="p-6 text-xl">{title ?? t("Orders")}</h1>
       {returnsEnabled && returnPolicyUrl && (
         <p className="p-6 pt-0">
           <a
             href={returnPolicyUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline"
+            className="underline inline-block min-h-10 min-w-10"
           >
-            Return policy
+            {t("Return policy")}
           </a>
         </p>
       )}
@@ -114,4 +115,3 @@ export default async function OrdersPage({
     </>
   );
 }
-

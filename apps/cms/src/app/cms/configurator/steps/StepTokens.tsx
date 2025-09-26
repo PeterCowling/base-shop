@@ -82,7 +82,7 @@ export default function StepTokens(_: ConfiguratorStepProps): React.JSX.Element 
         {selectedTags.length > 0 && (
           <button
             type="button"
-            className="ml-1 rounded-full border px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted"
+            className="ms-1 rounded-full border px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted"
             onClick={() => setSelectedTags([])}
             aria-label="Clear tag filters"
           >

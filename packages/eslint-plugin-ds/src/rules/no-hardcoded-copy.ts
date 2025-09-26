@@ -97,21 +97,51 @@ const rule: Rule.RuleModule = {
     },
   },
   create(context) {
+    const sc = (context as any).sourceCode || context.getSourceCode();
+    const fileExempt = (sc.getAllComments?.() ?? []).some((c: any) => /i18n-exempt\s+file/.test(String(c.value || "")));
     return {
       Literal(node: any) {
+        if (fileExempt) return;
         if (typeof node.value !== "string") return;
+        // Ignore module specifiers in import/export declarations
+        const p = node.parent;
+        if (
+          p?.type === "ImportDeclaration" ||
+          p?.type === "ExportAllDeclaration" ||
+          (p?.type === "ExportNamedDeclaration" && (p as any).source)
+        ) {
+          return;
+        }
         if (hasExemptComment(context, node)) return;
         // Ignore within allowed a11y attributes
         const parent = node.parent;
         if (parent?.type === "JSXAttribute") {
           const name = parent.name?.name as string | undefined;
           if (isA11yAttr(name)) return;
+          if (name === "href") return;
+          if (name === "viewBox" || name === "width" || name === "height" || name === "d" || name === "fill") return;
+          if (name === "rel") return;
+          // Non-copy attributes to ignore
+          if (name === "class" || name === "className") return;
+          if (name?.startsWith("data-")) return;
+        }
+        // Heuristic: ignore CSS/utility-like strings in non-JSX contexts
+        if (parent?.type !== "JSXAttribute") {
+          const s = String(node.value);
+          // Ignore utility/CSS-like tokens and URLs/MIME types in code
+          if (/^[a-z0-9_:\-\[\]\(\)\/\.\s]+$/i.test(s)) return;
+          if (s.startsWith("/") || /:\/\//.test(s)) return;
+          if (/^[a-z0-9.+-]+\/[a-z0-9.+-]+$/i.test(s)) return; // MIME types
+          if (/^var\(--[a-z0-9\-]+\)$/i.test(s)) return;
+          if (/^(hsl|hsla|rgb|rgba)\(/i.test(s)) return;
+          if (/var\(/i.test(s)) return;
         }
         if (isWrappedByT(node)) return;
         if (isTrivial(String(node.value))) return;
         context.report({ node, messageId: "hardcodedCopy" });
       },
       JSXText(node: any) {
+        if (fileExempt) return;
         const raw = String(node.value ?? node.raw ?? "");
         if (hasExemptComment(context, node)) return;
         const t = raw.replace(/\s+/g, " ").trim();

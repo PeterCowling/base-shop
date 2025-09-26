@@ -56,11 +56,7 @@ export function LaunchPanel({
             Launch shop
           </ButtonElement>
         </Tooltip>
-        {!allRequiredDone && (
-          <p className="text-xs text-muted-foreground">
-            Complete the remaining essential steps to unlock launch.
-          </p>
-        )}
+        {/* Removed extra helper text per UX request */}
         {launchStatus ? (
           <div className="space-y-3">
             {Object.entries(launchStatus).map(([key, status]) => (

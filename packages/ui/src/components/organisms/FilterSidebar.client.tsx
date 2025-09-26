@@ -1,6 +1,14 @@
 "use client";
 
-import * as DialogPrimitive from "@radix-ui/react-dialog";
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerPortal,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerTitle,
+  DrawerDescription,
+} from "../atoms/primitives/drawer";
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/primitives/button";
@@ -39,25 +47,22 @@ export function FilterSidebar({
   const widthClass = typeof width === "number" ? `w-[${width}px]` : width;
 
   return (
-    <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
-      <DialogPrimitive.Trigger asChild>
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
         <Button variant="outline">Filters</Button>
-      </DialogPrimitive.Trigger>
-      <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="fixed inset-0 z-40 bg-[hsl(var(--overlay-scrim-1))]" />
-        <DialogPrimitive.Content
+      </DrawerTrigger>
+      <DrawerPortal>
+        <DrawerOverlay className="fixed inset-0 z-40 bg-[hsl(var(--overlay-scrim-1))]" />
+        <DrawerContent
           aria-describedby={undefined}
+          side="left"
+          width={widthClass}
           className={cn(
-            widthClass,
-            "bg-panel fixed inset-y-0 left-0 z-50 border-r border-border-2 p-4 shadow-elevation-3 focus:outline-none"
+            "p-4 focus:outline-none"
           )}
         >
-          <DialogPrimitive.Title className="mb-4 text-lg font-semibold">
-            Filters
-          </DialogPrimitive.Title>
-          <DialogPrimitive.Description className="sr-only">
-            Use filters to refine results
-          </DialogPrimitive.Description>
+          <DrawerTitle className="mb-4 text-lg font-semibold">Filters</DrawerTitle>
+          <DrawerDescription className="sr-only">Use filters to refine results</DrawerDescription>
           <form
             aria-label="Filters"
             className="space-y-4"
@@ -88,8 +93,8 @@ export function FilterSidebar({
               </Select>
             </div>
           </form>
-        </DialogPrimitive.Content>
-      </DialogPrimitive.Portal>
-    </DialogPrimitive.Root>
+        </DrawerContent>
+      </DrawerPortal>
+    </Drawer>
   );
 }

@@ -1,21 +1,11 @@
 "use client";
 
-import {
-  Button,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@ui/components/atoms/shadcn";
+import { Button } from "@ui/components/atoms/shadcn";
 import StyleEditor from "@ui/components/cms/StyleEditor";
-import Image from "next/image";
-import DeviceSelector from "@ui/components/cms/DeviceSelector";
-import WizardPreview from "../../wizard/WizardPreview";
 import { getContrast } from "@ui/components/cms";
 import type { TokenMap } from "@ui/hooks/useTokenEditor";
-import type { DevicePreset } from "@ui/utils/devicePresets";
 import ThemeSpectrum from "@ui/components/cms/ThemeSpectrum";
+import ColorThemeSelector from "./ColorThemeSelector";
 
 const MIN_CONTRAST = 4.5;
 
@@ -35,12 +25,6 @@ interface ThemeEditorFormProps {
   themeDefaults: Record<string, string>;
   onTokensChange: (tokens: TokenMap) => void;
   onReset: () => void;
-  deviceId: string;
-  orientation: "portrait" | "landscape";
-  setDeviceId: (id: string) => void;
-  toggleOrientation: () => void;
-  device: DevicePreset;
-  themeStyle: React.CSSProperties;
 }
 
 export default function ThemeEditorForm({
@@ -54,38 +38,17 @@ export default function ThemeEditorForm({
   themeDefaults,
   onTokensChange,
   onReset,
-  deviceId,
-  orientation,
-  setDeviceId,
-  toggleOrientation,
-  device,
-  themeStyle,
 }: ThemeEditorFormProps): React.JSX.Element {
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Select Theme</h2>
+      {/* Theme select removed per request; Color Themes picker remains below */}
 
-      <Select data-cy="theme-select" value={theme} onValueChange={onThemeChange}>
-        <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select theme" />
-        </SelectTrigger>
-        <SelectContent>
-          {themes.map((t) => (
-            <SelectItem key={t} value={t} textValue={t}>
-              <div className="flex items-center gap-2">
-                <Image
-                  src={`/themes/${t}.svg`}
-                  alt={`${t} preview`}
-                  width={24}
-                  height={24}
-                  className="h-6 w-6 rounded object-cover"
-                />
-                {t}
-              </div>
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+      {/* Prebuilt color theme picker — moved here for prominence under theme select */}
+      <ColorThemeSelector
+        tokens={{ ...(themeDefaults as Record<string, string>), ...(themeOverrides as Record<string, string>) }}
+        baseTokens={themeDefaults as any}
+        onChange={onTokensChange as any}
+      />
 
       <div className="space-y-2">
         <h3 className="font-medium">Color Palette</h3>
@@ -100,20 +63,30 @@ export default function ThemeEditorForm({
             return (
               <div key={p.name} className="relative">
                 <Button
-                  variant={p.name === palette ? "default" : "outline"}
                   onClick={() => setPalette(p.name)}
                   className="h-10 w-10 p-0"
                   aria-label={p.name}
                   data-cy={`palette-${p.name}`}
+                  color={p.name === palette ? "primary" : "default"}
+                  tone={p.name === palette ? "soft" : "outline"}
                 >
-                  <div className="flex h-full w-full flex-wrap overflow-hidden rounded">
-                    {Object.values(p.colors).map((c, i) => (
-                      <span
-                        key={i}
-                        className="h-1/2 w-1/2"
-                        style={{ backgroundColor: `hsl(${c})` }}
-                      />
-                    ))}
+                  <div
+                    className="grid h-full w-full grid-cols-3 grid-rows-2 overflow-hidden rounded"
+                    // Provide hard fallbacks for contrast in dark mode
+                    style={{
+                      backgroundColor: "hsl(var(--surface-2, var(--color-bg)))",
+                      borderColor: "hsl(var(--border-2, var(--color-fg, 0 0% 93%) / 0.22))",
+                    }}
+                  >
+                    {Object.values(p.colors)
+                      .slice(0, 6)
+                      .map((c, i) => (
+                        <span
+                          key={i}
+                          className="h-full w-full"
+                          style={{ backgroundColor: `hsl(${c})` }}
+                        />
+                      ))}
                   </div>
                 </Button>
                 {warn && (
@@ -133,22 +106,15 @@ export default function ThemeEditorForm({
         tokens={themeOverrides}
         baseTokens={themeDefaults}
         onChange={onTokensChange}
+        showPresets={false}
         showSearch={false}
         showExtras={false}
       />
-      <div className="flex justify-between">
+      <div className="flex justify-start">
         <Button data-cy="reset-theme" variant="outline" onClick={onReset}>
           Reset to defaults
         </Button>
-        <DeviceSelector
-          deviceId={deviceId}
-          orientation={orientation}
-          setDeviceId={setDeviceId}
-          toggleOrientation={toggleOrientation}
-        />
       </div>
-
-      <WizardPreview style={themeStyle} device={device} />
     </div>
   );
 }

@@ -28,6 +28,7 @@
     "lint:apps": "eslint \"apps/**/*.{ts,tsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\"",
     "lint:all": "eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\"",
     "typecheck": "pnpm -r build && tsc -b tsconfig.json --pretty",
+    "typecheck:watch": "tsc -b -w tsconfig.json --noEmit --preserveWatchOutput --pretty",
     "test": "CI=true turbo run test",
     "test:coverage": "sh -c 'CI=true pnpm -r --no-bail --workspace-concurrency=1 --filter=!@acme/next-config run test -- --coverage; status=$?; pnpm --filter @acme/next-config run test:coverage || true; pnpm run coverage:merge; exit $status'",
     "coverage:merge": "mkdir -p coverage/merged && nyc merge coverage .nyc_output coverage/merged/coverage.json && nyc report -t coverage/merged -r html -r text-summary -r text",

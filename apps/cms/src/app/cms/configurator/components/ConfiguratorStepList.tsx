@@ -5,12 +5,15 @@ import Link from "next/link";
 import {
   ArrowRightIcon,
   CheckCircledIcon,
-  CircleIcon,
   ResetIcon,
+  TokensIcon,
+  ImageIcon,
+  LockClosedIcon,
+  PlusIcon,
 } from "@radix-ui/react-icons";
-import { Alert, Tag } from "@ui/components/atoms";
+import { Tag } from "@ui/components/atoms";
 import type { ConfiguratorState } from "../../wizard/schema";
-import type { ConfiguratorStep } from "../types";
+import type { ConfiguratorStep, ConfiguratorStepTrack } from "../types";
 import { stepTrackMeta } from "../steps";
 import { cn } from "@ui/utils/style";
 import { ButtonElement, CardRoot, CardSection } from "./DashboardPrimitives";
@@ -31,6 +34,22 @@ const statusCopy: Record<string, { label: string; variant: TagVariant }> = {
   pending: { label: "Pending", variant: "default" },
 };
 
+function TrackIcon({ track }: { track?: ConfiguratorStepTrack }) {
+  const className = "h-[30px] w-[30px]";
+  switch (track) {
+    case "foundation":
+      return <TokensIcon className={className} aria-hidden />;
+    case "experience":
+      return <ImageIcon className={className} aria-hidden />;
+    case "operations":
+      return <LockClosedIcon className={className} aria-hidden />;
+    case "growth":
+      return <PlusIcon className={className} aria-hidden />;
+    default:
+      return <TokensIcon className={className} aria-hidden />;
+  }
+}
+
 function StepCard({
   step,
   status,
@@ -38,6 +57,7 @@ function StepCard({
   onOpen,
   onReset,
   onSkip,
+  useRadixIcons = false,
 }: {
   step: ConfiguratorStep;
   status: "complete" | "pending" | "skipped";
@@ -45,6 +65,7 @@ function StepCard({
   onOpen: () => void;
   onReset: () => void;
   onSkip: () => void;
+  useRadixIcons?: boolean;
 }): React.JSX.Element {
   const trackMeta = step.track ? stepTrackMeta?.[step.track] : undefined;
   const statusStyles = statusCopy[status];
@@ -54,63 +75,64 @@ function StepCard({
   return (
     <CardRoot
       className={cn(
-        "relative overflow-hidden border border-border/60 transition-all hover:border-primary/50",
+        // Clean hover/focus styling without duplicating base Card borders
+        "relative overflow-hidden transition-colors hover:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20",
         status === "complete" && "border-success/50"
       )}
     >
-      <CardSection className="flex min-h-48 flex-col gap-4 pb-2">
-        <div className="flex flex-wrap items-start justify-between gap-4">
+      <CardSection className="flex min-h-48 flex-col gap-5 pb-16">
+        {/* Header */}
+        <div className="grid grid-cols-[1fr,auto] items-start gap-4">
+          {/* Left cluster: icon + text on one row */}
           <div className="min-w-0 flex items-start gap-3">
-            <span className="mt-1 text-2xl" aria-hidden>
-              {step.icon ?? "🧩"}
-            </span>
-            <div className="min-w-0 space-y-1">
-              <div className="flex items-center gap-2">
-                <h4 className="text-base font-semibold text-foreground">
-                  {step.label}
-                </h4>
-                {step.optional && (
-                  <Tag className="bg-muted text-muted-foreground" variant="default">
-                    Optional
-                  </Tag>
-                )}
-              </div>
-              {trackMeta ? (
-                <span
-                  className={cn(
-                    "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
-                    trackMeta.pillClass
-                  )}
-                >
-                  {trackMeta.label}
+            <div className="grid h-[30px] w-[30px] place-content-center rounded bg-info" aria-hidden>
+              {useRadixIcons ? (
+                <TrackIcon track={step.track} />
+              ) : (
+                <span className="inline-block h-[30px] w-[30px] leading-[30px] text-[20px] text-center">
+                  {step.icon ?? "🧩"}
                 </span>
-              ) : null}
-              {step.description && (
-                <p className="text-sm text-muted-foreground">{step.description}</p>
               )}
             </div>
+            <div className="min-w-0 space-y-1">
+              <div className="flex items-center gap-2">
+                <h4 className="text-base font-semibold tracking-tight text-foreground">
+                  {step.label}
+                </h4>
+                {/* Optional chip removed */}
+              </div>
+              {/* Track pill moved to status column */}
+            </div>
           </div>
+          {/* Status */}
           <div className="flex shrink-0 flex-col items-end gap-2">
-            <Tag className="shrink-0" variant={statusStyles.variant}>{statusStyles.label}</Tag>
-            {status === "complete" ? (
+            <Tag className="shrink-0" variant={statusStyles.variant} tone="soft">
+              {statusStyles.label}
+            </Tag>
+            {trackMeta ? (
+              <span
+                className={cn(
+                  "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
+                  trackMeta.pillClass
+                )}
+              >
+                {trackMeta.label}
+              </span>
+            ) : null}
+            {status === "complete" && (
               <CheckCircledIcon className="h-5 w-5 text-success" aria-hidden />
-            ) : (
-              <CircleIcon className="h-5 w-5 text-muted-foreground" aria-hidden />
             )}
           </div>
+          {/* Description spanning both columns */}
+          {step.description && (
+            <p className="col-span-2 text-sm text-muted-foreground">{step.description}</p>
+          )}
         </div>
 
-        {hasRecommendations && (
-          <Alert variant="warning" tone="soft" title="Recommended before tackling this step">
-            <ul className="list-disc pl-5">
-              {pendingRecommendations.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </Alert>
-        )}
+        {/* Recommendation banner removed per request */}
 
-        <div className="mt-auto flex flex-wrap items-center gap-2">
+        {/* Footer — absolutely pinned 8px from card bottom */}
+        <div className="pointer-events-auto absolute left-6 right-6 bottom-2 flex flex-wrap items-center gap-2 justify-end">
           <ButtonElement
             asChild
             className="h-10 px-4 text-sm whitespace-nowrap"
@@ -119,12 +141,13 @@ function StepCard({
             <Link
               href={"/cms/configurator/" + step.id}
               onClick={onOpen}
+              className="inline-flex items-center gap-2"
               aria-label={
                 (status === "complete" ? "Review " : "Continue ") + step.label
               }
             >
               {status === "complete" ? "Review step" : "Continue step"}
-              <ArrowRightIcon className="ml-2 h-4 w-4" aria-hidden />
+              <ArrowRightIcon className="h-4 w-4" aria-hidden />
             </Link>
           </ButtonElement>
           {status === "complete" || status === "skipped" ? (
@@ -178,7 +201,7 @@ export function ConfiguratorStepList({
 
   const renderSection = (
     sectionSteps: ConfiguratorStep[],
-    options: { title: string; description: string; summary: string }
+    options: { title: string; description: string; summary: string; useRadixIcons?: boolean }
   ) => (
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
@@ -216,6 +239,7 @@ export function ConfiguratorStepList({
               onOpen={() => onStepClick(step)}
               onReset={() => resetStep(step.id)}
               onSkip={() => skipStep(step.id)}
+              useRadixIcons={options.useRadixIcons}
             />
           );
         })}
@@ -229,12 +253,14 @@ export function ConfiguratorStepList({
         title: "Essential milestones",
         description: "Complete these steps to achieve launch readiness.",
         summary: requiredSummary,
+        useRadixIcons: true,
       })}
       {optionalSteps.length > 0 &&
         renderSection(optionalSteps, {
           title: "Momentum boosters",
           description: "Optional enhancements that add polish and speed to your rollout.",
           summary: optionalSummary,
+          useRadixIcons: true,
         })}
     </div>
   );

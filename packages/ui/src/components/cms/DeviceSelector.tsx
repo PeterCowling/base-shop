@@ -26,7 +26,7 @@ export default function DeviceSelector({
   return (
     <div className="flex items-center gap-2">
       <Select value={deviceId} onValueChange={setDeviceId}>
-        <SelectTrigger aria-label="Device" className="w-40">
+        <SelectTrigger aria-label="Device" className="w-28 sm:w-36">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

@@ -11,8 +11,7 @@ This UI package standardizes container surfaces to improve readability and consi
 Examples:
 - DropdownMenu / Select / Popover: `bg-panel` + `border-border-2`, item `hover:bg-surface-3`.
 - Dialog content: `bg-panel` + `border-border-2`.
-- Drawers (MiniCart, Wishlist, Sidebars): `bg-panel` + `border-border-2`.
+- Drawers (MiniCart, Wishlist, Sidebars): `bg-panel` + `border-border-2`. Prefer the Drawer primitive for new slide-overs.
 - Table rows: hover `bg-surface-2`, selected `bg-surface-3`.
 
 Rationale: `panel` maps to a token that ensures contrast and theme parity across light/dark, while `surface-2/3` provide a stepped elevation/interaction scale.
-

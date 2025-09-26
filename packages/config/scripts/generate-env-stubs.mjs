@@ -17,6 +17,10 @@ function generateStub(tsPath) {
   const dir = path.dirname(tsPath);
   const base = path.basename(tsPath, '.ts');
   const jsPath = path.join(dir, `${base}.js`);
+  // Emit ESM re-exports so these stubs are safe in Edge/runtime ESM
+  // environments (e.g., Next.js middleware). Jest is configured to map
+  // these .js specifiers back to the .ts sources, so using ESM here is
+  // compatible with tests while avoiding CommonJS globals like `module`.
   const content = `export * from "./${base}.ts";\n`;
   if (!fs.existsSync(jsPath) || fs.readFileSync(jsPath, 'utf8') !== content) {
     fs.writeFileSync(jsPath, content, 'utf8');

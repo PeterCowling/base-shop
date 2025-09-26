@@ -40,3 +40,16 @@ export const InsidePanel: StoryObj<typeof LinkText> = {
     </div>
   ),
 };
+
+export const AsChild: StoryObj<typeof LinkText> = {
+  render: () => (
+    <div className="space-x-3">
+      <LinkText asChild color="primary">
+        <a href="#">asChild anchor</a>
+      </LinkText>
+      <LinkText asChild tone="soft" color="accent">
+        <button type="button">asChild button</button>
+      </LinkText>
+    </div>
+  ),
+};

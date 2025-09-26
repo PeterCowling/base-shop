@@ -9,9 +9,10 @@ import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 
 interface Props {
   onChange?: (device: DevicePreset) => void;
+  showRotate?: boolean;
 }
 
-export default function PreviewDeviceSelector({ onChange }: Props) {
+export default function PreviewDeviceSelector({ onChange, showRotate = false }: Props) {
   const [deviceId, setDeviceId] = usePreviewDevice(devicePresets[0].id);
   const [orientation, setOrientation] = useState<"portrait" | "landscape">(
     "portrait"
@@ -45,17 +46,19 @@ export default function PreviewDeviceSelector({ onChange }: Props) {
         }}
         showLegacyButtons
       />
-      <Button
-        variant="outline"
-        onClick={() =>
-          setOrientation((o) => (o === "portrait" ? "landscape" : "portrait"))
-        }
-        aria-label="Rotate"
-      >
-        <ReloadIcon
-          className={orientation === "landscape" ? "rotate-90" : ""}
-        />
-      </Button>
+      {showRotate && (
+        <Button
+          variant="outline"
+          onClick={() =>
+            setOrientation((o) => (o === "portrait" ? "landscape" : "portrait"))
+          }
+          aria-label="Rotate"
+        >
+          <ReloadIcon
+            className={orientation === "landscape" ? "rotate-90" : ""}
+          />
+        </Button>
+      )}
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { render, screen } from "@testing-library/react";
 jest.mock("@cms/actions/pages/create", () => ({ createPage: jest.fn() }));
 jest.mock("next/dynamic", () => () => () => <div data-cy="builder" />);
 
-import NewPageBuilderRoute from "../src/app/cms/shop/[shop]/pages/new/builder/page";
+import NewPageBuilderRoute from "../src/app/cms/shop/[shop]/pages/new/page/page";
 
 describe("NewPageBuilderRoute", () => {
   it("renders header and builder", async () => {

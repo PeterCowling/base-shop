@@ -18,7 +18,6 @@ interface Props {
   logo: Record<string, string>;
   contactInfo: string;
   type: "sale" | "rental";
-  template: string;
   theme: string;
   payment: string[];
   shipping: string[];
@@ -42,7 +41,6 @@ export default function StepSummary({
   logo,
   contactInfo,
   type,
-  template,
   theme,
   payment,
   shipping,
@@ -83,9 +81,6 @@ export default function StepSummary({
         </li>
         <li>
           <b>Type:</b> {type}
-        </li>
-        <li>
-          <b>Template:</b> {template}
         </li>
         <li>
           <b>Theme:</b> {theme}

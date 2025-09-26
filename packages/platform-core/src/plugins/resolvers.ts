@@ -94,13 +94,23 @@ export async function resolvePluginEntry(dir: string): Promise<{
 }
 
 export async function importByType(entryPath: string, isModule: boolean) {
-  // Always use dynamic import with webpackIgnore to avoid bundler analysis.
-  const mod = await import(
-    /* webpackIgnore: true */ pathToFileURL(entryPath).href
-  );
-  // For CommonJS, unwrap the default to mirror require(entryPath)
+  // Prefer require() for CommonJS entries to avoid Jest/Node ESM resolution issues.
   if (!isModule && /\.(cjs|js)$/.test(entryPath)) {
-    return (mod as any).default;
+    // Support both ESM and CJS contexts without using import.meta in CJS.
+    // eslint-disable-next-line no-new-func
+    const getMetaUrl = () => {
+      try {
+        // Constructed at runtime so CJS parsers don't choke on import.meta
+        return (Function("return import.meta.url")() as string) || undefined;
+      } catch {
+        return undefined;
+      }
+    };
+    const base = getMetaUrl() ?? __filename;
+    const req = createRequire(base);
+    // eslint-disable-next-line security/detect-non-literal-require
+    return req(entryPath);
   }
-  return mod;
+  // For ESM, use dynamic import with webpackIgnore to avoid bundler analysis.
+  return import(/* webpackIgnore: true */ pathToFileURL(entryPath).href);
 }

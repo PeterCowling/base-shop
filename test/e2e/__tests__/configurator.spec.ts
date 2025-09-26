@@ -48,19 +48,16 @@ describe("Shop configurator flow", () => {
     cy.visit("/cms/configurator/theme");
     cy.contains("button", "Next").click();
     cy.contains("button", "Save & return").click();
-    cy.visit("/cms/configurator/options");
+    cy.visit("/cms/configurator/payment-provider");
     cy.contains("button", "Save & return").click();
 
     // Mark remaining steps complete so Launch Shop is enabled
     const extraSteps = [
-      "navigation",
-      "layout",
-      "home-page",
+      "shipping",
       "checkout-page",
-      "shop-page",
-      "product-page",
-      "additional-pages",
+      "inventory",
       "env-vars",
+      "hosting",
     ];
     cy.wrap(extraSteps).each((step) => {
       cy.request("PATCH", "/cms/api/configurator-progress", {
@@ -69,13 +66,9 @@ describe("Shop configurator flow", () => {
       });
     });
 
-    // Complete Summary step
-    cy.visit("/cms/configurator/summary");
-    cy.contains("button", "Save & return").click();
-
-    // Launch shop
+    // Launch shop from dashboard
     cy.visit("/cms/configurator");
-    cy.contains("button", "Launch Shop").should("not.be.disabled").click();
+    cy.contains("button", "Launch shop").should("not.be.disabled").click();
     cy.contains("create: success", { timeout: 60000 }).should("be.visible");
     cy.contains("deploy: success", { timeout: 60000 }).should("be.visible");
 

@@ -10,9 +10,9 @@ import Stripe from "stripe";
  * • Uses `createFetchHttpClient` so it works on Cloudflare Workers / Pages.
  * • Pins `apiVersion` to Stripe’s latest GA (“2025-06-30.basil”) so typings
  *   and requests stay in sync.
- * • When `STRIPE_USE_MOCK` is true, or when no secret is configured outside
- *   production, exports a lightweight mock that logs calls and returns
- *   predictable dummy data.
+ * • When `STRIPE_USE_MOCK` is true, exports a lightweight mock that logs
+ *   calls and returns predictable dummy data. Otherwise a real client is
+ *   created and a missing secret throws immediately.
  */
 
 function createMock(): Stripe {
@@ -65,15 +65,13 @@ function createMock(): Stripe {
 
 const useMock = process.env.STRIPE_USE_MOCK === "true";
 const secret = coreEnv.STRIPE_SECRET_KEY;
-const inProd = (process.env.NODE_ENV || "").toLowerCase() === "production";
 
 let stripeClient: Stripe;
-if (useMock || (!secret && !inProd)) {
-  // Default to a safe mock when explicitly requested or when running tests/dev
-  // without a configured secret. Avoid throwing during module init so tests can
-  // replace this export with their own mocks as needed.
+if (useMock) {
+  // Explicit opt-in mock for local dev/tests.
   stripeClient = createMock();
 } else {
+  // In all non-mock modes, require a real secret key.
   if (!secret) {
     throw new Error("Neither apiKey nor config.authenticator provided");
   }

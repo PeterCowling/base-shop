@@ -2,7 +2,13 @@
 import { render, screen } from "@testing-library/react";
 import { Card, CardContent } from "../Card";
 import { Checkbox } from "../Checkbox";
-import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "../Dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+  DialogDescription,
+} from "../Dialog";
 import { Input } from "../Input";
 import {
   Select,
@@ -39,6 +45,7 @@ describe("shadcn wrappers", () => {
         <DialogTrigger>Open</DialogTrigger>
         <DialogContent>
           <DialogTitle>Dialog Title</DialogTitle>
+          <DialogDescription>Test-only description</DialogDescription>
           Dialog Body
         </DialogContent>
       </Dialog>

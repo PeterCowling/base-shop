@@ -2,6 +2,7 @@
 import { getServerSession } from "next-auth";
 import type { Session } from "next-auth";
 import { authOptions } from "@cms/auth/options";
+import { canRead } from "@auth/rbac";
 
 type AppSession = Session & { user?: (Session["user"] & { role?: string; id?: string }) };
 
@@ -26,4 +27,29 @@ export async function ensureAuthorized(): Promise<AppSession> {
     return { user: { role: "admin" } } as AppSession;
   }
   throw new Error("Forbidden");
+}
+
+/**
+ * Ensures the current user has at least read access to the CMS.
+ * - Any authenticated role included in READ_ROLES is allowed.
+ * - Falls back to test helpers when running under tests.
+ */
+export async function ensureCanRead(): Promise<AppSession> {
+  let session = (await getServerSession(authOptions)) as AppSession | null;
+  const injected = (globalThis as Record<string, unknown>).__MOCK_SESSION as
+    | AppSession
+    | undefined;
+  if (typeof injected !== "undefined") {
+    session = injected;
+  }
+  if (session && canRead(session.user?.role)) {
+    return session;
+  }
+  if (
+    process.env.CMS_TEST_ASSUME_ADMIN === "1" &&
+    !(globalThis as Record<string, unknown>).__NEXTAUTH_MOCK_SET
+  ) {
+    return { user: { role: "admin" } } as AppSession;
+  }
+  throw new Error("Unauthorized");
 }

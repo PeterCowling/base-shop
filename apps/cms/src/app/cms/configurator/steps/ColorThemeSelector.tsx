@@ -114,8 +114,8 @@ export default function ColorThemeSelector({ tokens, baseTokens, onChange, tagFi
 
   return (
     <section className="space-y-3">
-      <h2 className="text-lg font-semibold">Color Themes</h2>
-      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+      <h2 className="text-lg font-semibold">Select an Existing Theme</h2>
+      <div className="grid grid-cols-1 gap-3">
         {filtered.map((t) => (
           <div key={t.id} className={`rounded border p-3 ${isThemeSelected(t) ? "border-primary ring-1 ring-primary/40" : ""}`}>
             <div className="mb-2 flex items-center justify-between gap-2">

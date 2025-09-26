@@ -42,12 +42,13 @@ const mockRemoveThemeToken = removeThemeToken as jest.Mock;
 const mockRevalidatePath = revalidatePath as jest.Mock;
 
 describe("theme service", () => {
+  let consoleErrorSpy: jest.SpyInstance | undefined;
   beforeAll(() => {
-    jest.spyOn(console, "error").mockImplementation(() => {});
+    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
   });
 
   afterAll(() => {
-    (console.error as jest.Mock).mockRestore();
+    consoleErrorSpy?.mockRestore();
   });
 
   beforeEach(() => {
@@ -163,4 +164,3 @@ describe("theme service", () => {
     expect(mockRevalidatePath).toHaveBeenCalledWith("/cms/shop/test/settings");
   });
 });
-

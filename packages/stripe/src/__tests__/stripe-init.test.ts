@@ -11,6 +11,7 @@ describe("stripe client initialization", () => {
   });
 
   it("throws when STRIPE_SECRET_KEY is undefined", async () => {
+    (process.env as Record<string, string>).STRIPE_USE_MOCK = "false";
     jest.doMock("@acme/config/env/core", () => ({
       coreEnv: { STRIPE_SECRET_KEY: undefined },
     }));
@@ -21,6 +22,7 @@ describe("stripe client initialization", () => {
   });
 
   it("creates client with fetch http client and api version", async () => {
+    (process.env as Record<string, string>).STRIPE_USE_MOCK = "false";
     const httpClient = {};
     const createHttpClient = jest.fn().mockReturnValue(httpClient);
     const StripeMock = jest.fn().mockImplementation(() => ({}));
@@ -40,4 +42,3 @@ describe("stripe client initialization", () => {
     });
   });
 });
-

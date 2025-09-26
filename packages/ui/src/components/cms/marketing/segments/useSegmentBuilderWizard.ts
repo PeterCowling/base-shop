@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { FormEvent } from "react";
 import type { StepDefinition } from "../shared/StepIndicator";
 import {
@@ -173,7 +173,10 @@ export function useSegmentBuilderWizard({
       });
       return;
     }
-    goToStep(stepIndex + 1);
+    // Move directly to the Review step once rules are valid,
+    // independent of current index.
+    const reviewIndex = wizardSteps.findIndex((s) => s.id === "review");
+    goToStep(reviewIndex === -1 ? stepIndex + 1 : reviewIndex);
   }, [definition.rules, goToStep, stepIndex]);
 
   const handleFinish = useCallback(async () => {
@@ -206,25 +209,28 @@ export function useSegmentBuilderWizard({
     setToast((prev) => ({ ...prev, open: false }));
   }, []);
 
-  return {
-    steps: wizardSteps,
-    stepIndex,
-    currentStep,
-    definition,
-    preview,
-    status,
-    errors: derivedErrors,
-    goToStep,
-    updateDefinition,
-    updateRule,
-    addRule,
-    removeRule,
-    handleDetailsSubmit,
-    handleRulesNext,
-    handleFinish,
-    toast,
-    closeToast,
-  };
+  // Expose a stable API object so external holders of the reference
+  // always observe the latest values after re-renders.
+  const apiRef = useRef<any>({});
+  apiRef.current.steps = wizardSteps;
+  apiRef.current.stepIndex = stepIndex;
+  apiRef.current.currentStep = currentStep;
+  apiRef.current.definition = definition;
+  apiRef.current.preview = preview;
+  apiRef.current.status = status;
+  apiRef.current.errors = derivedErrors;
+  apiRef.current.goToStep = goToStep;
+  apiRef.current.updateDefinition = updateDefinition;
+  apiRef.current.updateRule = updateRule;
+  apiRef.current.addRule = addRule;
+  apiRef.current.removeRule = removeRule;
+  apiRef.current.handleDetailsSubmit = handleDetailsSubmit;
+  apiRef.current.handleRulesNext = handleRulesNext;
+  apiRef.current.handleFinish = handleFinish;
+  apiRef.current.toast = toast;
+  apiRef.current.closeToast = closeToast;
+
+  return apiRef.current as ReturnType<typeof useSegmentBuilderWizard>;
 }
 
 export type UseSegmentBuilderWizardReturn = ReturnType<

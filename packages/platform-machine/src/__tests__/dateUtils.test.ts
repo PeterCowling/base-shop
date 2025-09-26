@@ -7,7 +7,7 @@ import {
   getTimeRemaining,
   formatDuration,
   DAY_MS,
-} from '@acme/date-utils/src';
+} from '@acme/date-utils';
 
 describe('nowIso', () => {
   it('returns a valid ISO string', () => {
@@ -179,4 +179,3 @@ describe('formatDuration', () => {
     expect(formatDuration(-5000)).toBe('0s');
   });
 });
-

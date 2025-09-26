@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/atoms/shadcn";
-// Simplified step: keep typography, add color theme selector
+// Step now focuses on typography (fonts only)
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { useCallback, useRef, useState } from "react";
@@ -9,8 +9,6 @@ import { type TokenMap } from "../../wizard/tokenUtils";
 import { useConfigurator } from "../ConfiguratorContext";
 import type { ConfiguratorStepProps } from "@/types/configurator";
 import TypographySelector from "./TypographySelector";
-import ColorThemeSelector from "./ColorThemeSelector";
-import colorThemesData from "./color-themes.json";
 import presetData from "@ui/components/cms/style/presets.json";
 import { patchShopTheme } from "../../wizard/services/patchTheme";
 
@@ -52,19 +50,18 @@ export default function StepTokens(_: ConfiguratorStepProps): React.JSX.Element 
     setThemeOverrides(overrides);
     scheduleSave(overrides as Record<string, string>);
   };
-  // Union of tags across font pairings and color themes for the shared filter
+  // Tags only from font pairings for the shared filter
   const allTags = (() => {
     const t = new Set<string>();
     const pairs = (presetData as any[]).filter((p) => typeof p?.id === "string" && p.id.startsWith("type-"));
     pairs.forEach((p) => (p.tags || []).forEach((tg: string) => t.add(tg)));
-    (colorThemesData as Array<{ tags?: string[] }>).forEach((p) => (p.tags || []).forEach((tg) => t.add(tg)));
     return Array.from(t).sort();
   })();
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Fonts and Colors</h2>
-      {/* Shared tag filter for both selectors */}
+      <h2 className="text-xl font-semibold">Fonts</h2>
+      {/* Shared tag filter for font pairings */}
       <div className="flex flex-wrap items-center gap-2 text-sm">
         <span className="text-muted-foreground">Filter by tag</span>
         {allTags.map((t) => {
@@ -101,13 +98,6 @@ export default function StepTokens(_: ConfiguratorStepProps): React.JSX.Element 
         tagFilters={selectedTags}
         hideTagFilter
         showFineTune={false}
-      />
-      {/* Prebuilt color theme selector (light/dark paired) */}
-      <ColorThemeSelector
-        tokens={tokens}
-        baseTokens={themeDefaults}
-        onChange={handleChange}
-        tagFilters={selectedTags}
       />
       <div className="flex justify-end">
         <Button

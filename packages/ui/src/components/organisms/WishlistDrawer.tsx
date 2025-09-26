@@ -2,14 +2,16 @@ import * as React from "react";
 import { cn } from "../../utils/style";
 import { drawerWidthProps } from "../../utils/style/drawerWidth";
 
+import { Button } from "../atoms/shadcn";
 import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from "../atoms/shadcn";
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerPortal,
+} from "../atoms/primitives/drawer";
+import { OverlayScrim } from "../atoms";
 import type { SKU } from "@acme/types";
 
 export interface WishlistDrawerProps {
@@ -36,19 +38,20 @@ export function WishlistDrawer({
   const { widthClass, style } = drawerWidthProps(width);
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent
+    <Drawer>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      <DrawerPortal>
+        <OverlayScrim />
+        <DrawerContent
         style={style}
-        className={cn(
-          "bg-panel fixed top-0 right-0 z-50 h-full max-w-full translate-x-full overflow-y-auto border-l border-border-2 p-6 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0",
-          widthClass
-        )}
+        side="right"
+        width={widthClass}
+        className={cn("p-6")}
       >
-        <DialogTitle className="mb-4">Wishlist</DialogTitle>
-        <DialogDescription className="sr-only">
+        <DrawerTitle className="mb-4 text-lg font-semibold">Wishlist</DrawerTitle>
+        <DrawerDescription className="sr-only">
           Items currently saved to your wishlist
-        </DialogDescription>
+        </DrawerDescription>
         {items.length === 0 ? (
           <p className="text-muted-foreground text-sm">
             Your wishlist is empty.
@@ -68,7 +71,8 @@ export function WishlistDrawer({
             ))}
           </ul>
         )}
-      </DialogContent>
-    </Dialog>
+        </DrawerContent>
+      </DrawerPortal>
+    </Drawer>
   );
 }

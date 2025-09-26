@@ -12,6 +12,7 @@ describe('stripe wrapper', () => {
   });
 
   it('throws without STRIPE_SECRET_KEY', async () => {
+    process.env = { ...OLD_ENV, STRIPE_USE_MOCK: 'false' } as NodeJS.ProcessEnv;
     jest.doMock('@acme/config/env/core', () => ({
       coreEnv: { STRIPE_SECRET_KEY: undefined },
     }));
@@ -20,6 +21,7 @@ describe('stripe wrapper', () => {
   });
 
   it('throws with invalid STRIPE_SECRET_KEY format', async () => {
+    process.env = { ...OLD_ENV, STRIPE_USE_MOCK: 'false' } as NodeJS.ProcessEnv;
     const StripeCtor = jest.fn().mockImplementation(() => ({}));
     StripeCtor.createFetchHttpClient = jest.fn().mockReturnValue({});
     StripeCtor.mockImplementation(() => {
@@ -35,6 +37,7 @@ describe('stripe wrapper', () => {
   });
 
   it('creates client and allows calling methods', async () => {
+    process.env = { ...OLD_ENV, STRIPE_USE_MOCK: 'false' } as NodeJS.ProcessEnv;
     const create = jest.fn();
     const StripeCtor = jest.fn().mockImplementation(() => ({
       charges: { create },
@@ -54,6 +57,7 @@ describe('stripe wrapper', () => {
   });
 
   it('reuses existing client instance on subsequent imports', async () => {
+    process.env = { ...OLD_ENV, STRIPE_USE_MOCK: 'false' } as NodeJS.ProcessEnv;
     const StripeCtor = jest.fn().mockImplementation(() => ({}));
     StripeCtor.createFetchHttpClient = jest.fn().mockReturnValue({});
 
@@ -68,5 +72,21 @@ describe('stripe wrapper', () => {
     expect(mod1.stripe).toBe(mod2.stripe);
     expect(StripeCtor).toHaveBeenCalledTimes(1);
   });
-});
 
+  it('uses mock client when STRIPE_USE_MOCK is true and does not require secret', async () => {
+    process.env = { ...OLD_ENV, STRIPE_USE_MOCK: 'true' } as NodeJS.ProcessEnv;
+
+    const StripeCtor = jest.fn();
+    jest.doMock('stripe', () => ({ __esModule: true, default: StripeCtor }));
+    jest.doMock('@acme/config/env/core', () => ({
+      coreEnv: { STRIPE_SECRET_KEY: undefined },
+    }));
+
+    const { stripe } = await import('../../src/index.ts');
+
+    // Should not construct real Stripe client
+    expect(StripeCtor).not.toHaveBeenCalled();
+    // Mock exposes checkout.sessions.create function
+    expect(typeof stripe.checkout.sessions.create).toBe('function');
+  });
+});

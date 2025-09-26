@@ -85,6 +85,22 @@ export const defaultHandlers: RestHandler[] = [
   rest.put("/api/cart", (req) => req.passthrough()),
   rest.patch("/api/cart", (req) => req.passthrough()),
   rest.delete("/api/cart", (req) => req.passthrough()),
+
+  // Page Builder: presets and sections feeds
+  rest.get("/api/sections/:shop/presets", (_req, res, ctx) =>
+    res(ctx.status(200), ctx.json([]))
+  ),
+  rest.get("/cms/api/sections/:shop", (req, res, ctx) => {
+    // Supports `?page=1&pageSize=500`; return minimal list shape
+    const items: any[] = [];
+    return res(ctx.status(200), ctx.json({ items }));
+  }),
+
+  // Page Builder library endpoints (server-backed best-effort)
+  rest.get("/api/library", (_req, res, ctx) => res(ctx.status(200), ctx.json([]))),
+  rest.post("/api/library", (_req, res, ctx) => res(ctx.status(200), ctx.json({ ok: true }))),
+  rest.patch("/api/library", (_req, res, ctx) => res(ctx.status(200), ctx.json({ ok: true }))),
+  rest.delete("/api/library", (_req, res, ctx) => res(ctx.status(200), ctx.json({ ok: true }))),
   // Allow API route tests to hit local handlers without mocking
   // Supertest spins up an ephemeral HTTP server on 127.0.0.1; MSW intercepts
   // those requests unless explicitly bypassed. Let requests to the API routes

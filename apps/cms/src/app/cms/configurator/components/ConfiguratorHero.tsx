@@ -20,7 +20,7 @@ export function ConfiguratorHero({
           Shop Configurator
         </span>
         <h1 className="text-3xl font-semibold md:text-4xl">
-          Build a launch-ready storefront without the guesswork
+          Build or Edit the Storefront Configuration
         </h1>
         <p className="text-hero-foreground/80">{description}</p>
       </div>

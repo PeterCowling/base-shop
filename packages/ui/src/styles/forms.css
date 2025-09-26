@@ -31,6 +31,13 @@
                 0 0 0 calc(var(--ring-offset-width, 2px) + var(--ring-width, 2px)) hsl(var(--color-focus-ring, var(--ring)));
   }
 
+  /* Invalid controls prefer danger ring for stronger affordance */
+  :where(input, select, textarea)[aria-invalid="true"]:focus-visible,
+  :where(input:invalid, select:invalid, textarea:invalid):focus-visible {
+    box-shadow: 0 0 0 var(--ring-offset-width, 2px) hsl(var(--ring-offset, var(--surface-1, var(--color-bg)))) ,
+                0 0 0 calc(var(--ring-offset-width, 2px) + var(--ring-width, 2px)) hsl(var(--color-danger));
+  }
+
   /* Invalid/error states */
   :where(input, select, textarea)[aria-invalid="true"],
   :where(input:invalid, select:invalid, textarea:invalid) {

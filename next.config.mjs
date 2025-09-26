@@ -9,6 +9,21 @@ const nextConfig = {
   // Required by Cloudflare’s adapter
   output: "standalone",
 
+  async redirects() {
+    return [
+      {
+        source: "/cms/shop/:shop/pages/new/pagebuilder",
+        destination: "/cms/shop/:shop/pages/new/page",
+        permanent: false,
+      },
+      {
+        source: "/cms/shop/:shop/pages",
+        destination: "/cms/shop/:shop/pages/edit/page",
+        permanent: false,
+      },
+    ];
+  },
+
   /**
    * Enable server‑side source‑maps **only when we’re not in dev**
    * to avoid Next.js’ “Improper devtool” warning. :contentReference[oaicite:1]{index=1}

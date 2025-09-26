@@ -18,9 +18,9 @@ describe("step validators", () => {
     expect(validators.tokens(state)).toBe(false);
   });
 
-  it("options require analytics id when provider set", () => {
+  it("payment-provider requires analytics id when GA selected", () => {
     const state = { ...base, analyticsProvider: "ga", analyticsId: "" };
-    expect(validators.options(state)).toBe(false);
+    expect(validators["payment-provider"](state)).toBe(false);
   });
 
   it("navigation requires items", () => {
@@ -44,9 +44,7 @@ describe("step validators", () => {
     expect(validators["shop-page"](base)).toBe(false);
   });
 
-  it("product page requires id", () => {
-    expect(validators["product-page"](base)).toBe(false);
-  });
+  // product-page step removed
 
   it("additional pages require slugs", () => {
     const state = {
@@ -76,9 +74,7 @@ describe("step validators", () => {
     expect(validators["import-data"](base)).toBe(false);
   });
 
-  it("seed data requires categories", () => {
-    expect(validators["seed-data"](base)).toBe(false);
-  });
+  // 'seed-data' step removed
 
   it("hosting requires domain", () => {
     expect(validators.hosting(base)).toBe(false);

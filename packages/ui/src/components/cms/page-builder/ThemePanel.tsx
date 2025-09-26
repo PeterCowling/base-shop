@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DialogContent, DialogTitle } from "../../atoms/shadcn";
 import Tokens from "../style/Tokens";
+import ColorThemeSelector from "./ColorThemeSelector";
 import { type TokenMap } from "../../../hooks/useTokenEditor";
 import usePreviewTokens, { savePreviewTokens } from "./hooks/usePreviewTokens";
 import { usePathname } from "next/navigation";
@@ -215,6 +216,12 @@ export default function ThemePanel({ variant = "dialog" }: ThemePanelProps) {
         <p className="text-sm text-muted-foreground">
           Adjust brand colors and typography. Changes preview instantly and save to this shop.
         </p>
+        {/* Prebuilt color theme selector (light/dark paired) */}
+        <ColorThemeSelector
+          tokens={tokens}
+          baseTokens={baseTokens}
+          onChange={handleTokensChange}
+        />
         <Tokens
           tokens={tokens}
           baseTokens={baseTokens}
@@ -234,6 +241,12 @@ export default function ThemePanel({ variant = "dialog" }: ThemePanelProps) {
         <p className="text-sm text-muted-foreground">
           Adjust brand colors and typography. Changes preview instantly and save to this shop.
         </p>
+        {/* Optional: include color theme selector in dialog as well */}
+        <ColorThemeSelector
+          tokens={tokens}
+          baseTokens={baseTokens}
+          onChange={handleTokensChange}
+        />
         <Tokens
           tokens={tokens}
           baseTokens={baseTokens}

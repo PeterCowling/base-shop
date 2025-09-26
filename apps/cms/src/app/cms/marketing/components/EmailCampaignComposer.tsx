@@ -34,6 +34,7 @@ export function EmailCampaignComposer(props: EmailCampaignComposerProps) {
         segments={segments}
         loadingSegments={loadingSegments}
         isSubmitting={isSubmitting}
+        lockShop={props.lockShop}
         onFieldChange={updateField}
         onSubmit={handleSubmit}
       />

@@ -124,20 +124,24 @@ export function initScrollEffects(root?: HTMLElement) {
     }
   };
 
-  const revealObserver = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        const el = entry.target as HTMLElement;
-        if (entry.isIntersecting) {
-          el.classList.add("pb-revealed");
-          el.style.opacity = ""; // allow class to control
-          el.style.transform = "";
-          revealObserver.unobserve(el);
-        }
-      }
-    },
-    { threshold: 0.2 }
-  );
+  // Guard for test/SSR where IntersectionObserver may be missing
+  const hasIO = typeof (globalThis as unknown as { IntersectionObserver?: unknown }).IntersectionObserver !== "undefined";
+  const revealObserver = hasIO
+    ? new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            const el = entry.target as HTMLElement;
+            if (entry.isIntersecting) {
+              el.classList.add("pb-revealed");
+              el.style.opacity = ""; // allow class to control
+              el.style.transform = "";
+              revealObserver.unobserve(el);
+            }
+          }
+        },
+        { threshold: 0.2 }
+      )
+    : null;
 
   const scan = (scope?: ParentNode) => {
     const container: ParentNode = scope || root || document;
@@ -149,7 +153,14 @@ export function initScrollEffects(root?: HTMLElement) {
     for (const el of revealNodes) {
       if (el.classList.contains("pb-revealed")) continue;
       setRevealInitial(el);
-      revealObserver.observe(el);
+      if (revealObserver) {
+        revealObserver.observe(el);
+      } else {
+        // Fallback: reveal immediately when IntersectionObserver is unavailable
+        el.classList.add("pb-revealed");
+        el.style.opacity = "";
+        el.style.transform = "";
+      }
     }
 
     // Parallax targets
@@ -221,7 +232,9 @@ export function initScrollEffects(root?: HTMLElement) {
   window.addEventListener("resize", onResize);
   cleanupFns.push(() => window.removeEventListener("scroll", onScroll));
   cleanupFns.push(() => window.removeEventListener("resize", onResize));
-  cleanupFns.push(() => revealObserver.disconnect());
+  if (revealObserver) {
+    cleanupFns.push(() => revealObserver.disconnect());
+  }
 
   // Observe DOM changes to attach effects to new nodes
   const mo = new MutationObserver((mutations) => {

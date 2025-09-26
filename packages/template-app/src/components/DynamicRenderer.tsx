@@ -251,6 +251,23 @@ function DynamicRenderer({
           return vars;
         })();
 
+        // For Section blocks, avoid leaking builder-only props to DOM via the Section component.
+        const sanitizedProps: Record<string, unknown> = (() => {
+          if (block.type !== "Section") return (props as Record<string, unknown>);
+          const {
+            // builder/runtime-only props that should not hit the DOM
+            heightPreset: _heightPreset,
+            minHeight: _minHeight,
+            textTheme: _textTheme,
+            hiddenBreakpoints: _hiddenBreakpoints,
+            orderMobile: _orderMobile,
+            stackStrategy: _stackStrategy,
+            styles: _styles,
+            ...restSectionProps
+          } = (props as Record<string, unknown>);
+          return restSectionProps;
+        })();
+
         return (
           <div
             key={id}
@@ -275,7 +292,7 @@ function DynamicRenderer({
               ...(sectionVars as React.CSSProperties),
             }}
           >
-            <Comp {...(props as Record<string, unknown>)} locale={locale} className={mergedClassName} />
+            <Comp {...sanitizedProps} locale={locale} className={mergedClassName} />
           </div>
         );
       })}

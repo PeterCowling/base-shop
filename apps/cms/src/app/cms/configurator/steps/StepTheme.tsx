@@ -3,21 +3,43 @@
 import { Button } from "@ui/components/atoms/shadcn";
 import { useRouter } from "next/navigation";
 import useStepCompletion from "../hooks/useStepCompletion";
-import { useThemeLoader } from "../hooks/useThemeLoader";
 import { useConfigurator } from "../ConfiguratorContext";
 import ThemeEditorForm from "./ThemeEditorForm";
 import { useThemePalette } from "./hooks/useThemePalette";
-import { useThemePreviewDevice } from "./hooks/useThemePreviewDevice";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
 import type { ConfiguratorStepProps } from "@/types/configurator";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function StepTheme({
   themes,
   prevStepId,
   nextStepId,
 }: ConfiguratorStepProps): React.JSX.Element {
-  const themeStyle = useThemeLoader();
+  // Ensure we always have a concrete array to render, and lazily load if missing
+  const [availableThemes, setAvailableThemes] = useState<string[]>(themes ?? []);
+
+  useEffect(() => {
+    // If themes were supplied via props, prefer them
+    if (themes && themes.length > 0) {
+      setAvailableThemes(themes);
+      return;
+    }
+    let cancelled = false;
+    const load = async () => {
+      try {
+        const res = await fetch("/cms/api/theme/list", { cache: "no-store" });
+        if (!res.ok) return;
+        const json = (await res.json()) as { themes?: string[] };
+        if (!cancelled) setAvailableThemes(json.themes ?? []);
+      } catch {
+        // ignore – keep empty list on failure
+      }
+    };
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [themes]);
   const { state, update } = useConfigurator();
   const { theme } = state;
   const [, markComplete] = useStepCompletion("theme");
@@ -33,8 +55,7 @@ export default function StepTheme({
     handleReset,
   } = useThemePalette();
 
-  const { device, deviceId, orientation, setDeviceId, toggleOrientation } =
-    useThemePreviewDevice();
+  // Preview device controls removed from this step
 
   const handleThemeChange = useCallback(
     (v: string) => {
@@ -48,7 +69,6 @@ export default function StepTheme({
             data.theme = v;
             data.themeOverrides = {};
             localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-            window.dispatchEvent(new CustomEvent("configurator:update"));
           }
         } catch {
           /* ignore */
@@ -61,7 +81,7 @@ export default function StepTheme({
   return (
     <div className="space-y-4">
       <ThemeEditorForm
-        themes={themes}
+        themes={availableThemes}
         theme={theme}
         onThemeChange={handleThemeChange}
         colorPalettes={colorPalettes}
@@ -71,13 +91,8 @@ export default function StepTheme({
         themeDefaults={themeDefaults}
         onTokensChange={handleTokenChange}
         onReset={handleReset}
-        deviceId={deviceId}
-        orientation={orientation}
-        setDeviceId={setDeviceId}
-        toggleOrientation={toggleOrientation}
-        device={device}
-        themeStyle={themeStyle}
       />
+
       <div className="flex justify-between">
         {prevStepId && (
           <Button
@@ -103,4 +118,3 @@ export default function StepTheme({
     </div>
   );
 }
-

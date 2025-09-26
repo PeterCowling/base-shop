@@ -15,12 +15,14 @@ interface StyleEditorProps {
   showSearch?: boolean;
   /** Hide eyedropper and advanced actions */
   showExtras?: boolean;
+  /** Show presets selector above tokens (default: true) */
+  showPresets?: boolean;
 }
 
 export default function StyleEditor(props: StyleEditorProps) {
   return (
     <div className="space-y-4">
-      <Presets {...props} />
+      {props.showPresets !== false && <Presets {...props} />}
       <Tokens {...props} showSearch={props.showSearch} showExtras={props.showExtras} />
     </div>
   );

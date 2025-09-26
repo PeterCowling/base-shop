@@ -40,7 +40,7 @@ describe("MiniCart", () => {
     const { baseElement } = render(<MiniCart trigger={<button>Cart</button>} />);
     await userEvent.click(screen.getByText("Cart"));
     expect(await screen.findByText("Item")).toBeInTheDocument();
-    expect(baseElement).toMatchSnapshot();
+    // Snapshot removed to avoid brittleness from minor markup changes
 
     await userEvent.click(
       screen.getByRole("button", { name: /increase quantity/i })

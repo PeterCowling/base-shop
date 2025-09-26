@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 
 import type { Page } from "@acme/types";
 import DataTable, { type Column } from "./DataTable";
-import { Button, Card, CardContent, Input } from "../atoms/shadcn";
+import { Card, CardContent, Input } from "../atoms/shadcn";
 import { Tag } from "../atoms";
 import { cn } from "@ui/utils/style";
 
@@ -88,15 +88,12 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
       header: "Actions",
       width: "6rem",
       render: (p: Page) => (
-        <Button
-          asChild
-          variant="outline"
-          className="h-8 rounded-lg border-border/30 px-3 text-xs text-foreground hover:bg-surface-2"
+        <Link
+          href={`/cms/shop/${shop}/pages/${p.slug || p.id}/builder`}
+          className="inline-flex h-8 items-center justify-center rounded-lg border border-border/30 px-3 text-xs text-foreground hover:bg-surface-2"
         >
-          <Link href={`/cms/shop/${shop}/pages/${p.slug || p.id}/builder`}>
-            Edit
-          </Link>
-        </Button>
+          Edit
+        </Link>
       ),
     });
   }
@@ -105,12 +102,20 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
         {canWrite && (
-          <Button
-            asChild
-            className="h-10 rounded-xl bg-success px-4 text-sm font-semibold text-success-foreground shadow-elevation-3 hover:brightness-110"
-          >
-            <Link href={`/cms/shop/${shop}/pages/new/builder`}>New Page</Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Link
+              href={`/cms/shop/${shop}/pages/new/builder`}
+              className="inline-flex h-10 items-center justify-center rounded-xl bg-success px-4 text-sm font-semibold text-success-foreground shadow-elevation-3 hover:brightness-110"
+            >
+              New Page
+            </Link>
+            <Link
+              href={`/cms/shop/${shop}/pages/new/componenteditor`}
+              className="inline-flex h-10 items-center justify-center rounded-xl border border-border/30 px-4 text-sm font-semibold text-foreground hover:bg-surface-2"
+            >
+              Component editor
+            </Link>
+          </div>
         )}
         <Input
           type="search"

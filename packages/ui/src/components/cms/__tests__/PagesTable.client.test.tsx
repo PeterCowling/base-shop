@@ -3,6 +3,12 @@ import PagesTable from "../PagesTable.client";
 import * as DataTableModule from "../DataTable";
 import type { Page } from "@acme/types";
 
+// Ensure Next.js Link renders an anchor in JSDOM
+jest.mock("next/link", () => ({
+  __esModule: true,
+  default: ({ children, ...props }: any) => <a {...props}>{children}</a>,
+}));
+
 describe("PagesTable", () => {
   const shop = "demo";
   const pages: Page[] = [

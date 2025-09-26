@@ -23,4 +23,32 @@ describe("Image360Viewer", () => {
     fireEvent.pointerMove(container, { clientX: 100 });
     expect(img).toHaveAttribute("src", frames[0]);
   });
+
+  it("does not change on tiny moves and stops after pointer up/leave", () => {
+    const frames = ["/1.jpg", "/2.jpg", "/3.jpg"];
+    render(<Image360Viewer frames={frames} />);
+    const img = screen.getByAltText("");
+    const container = img.closest("div") as HTMLElement;
+
+    // Small movement below threshold should not change frame
+    expect(img).toHaveAttribute("src", frames[0]);
+    fireEvent.pointerDown(container, { clientX: 100 });
+    fireEvent.pointerMove(container, { clientX: 108 });
+    expect(img).toHaveAttribute("src", frames[0]);
+
+    // Cross threshold to advance one frame (right drag -> previous index)
+    fireEvent.pointerMove(container, { clientX: 121 });
+    expect(img).toHaveAttribute("src", frames[2]);
+
+    // Pointer up should stop tracking further moves
+    fireEvent.pointerUp(container);
+    fireEvent.pointerMove(container, { clientX: 140 });
+    expect(img).toHaveAttribute("src", frames[2]);
+
+    // Pointer leave also resets tracking
+    fireEvent.pointerDown(container, { clientX: 200 });
+    fireEvent.pointerLeave(container);
+    fireEvent.pointerMove(container, { clientX: 220 });
+    expect(img).toHaveAttribute("src", frames[2]);
+  });
 });

@@ -40,10 +40,11 @@ export const ProductBadge = React.forwardRef<HTMLSpanElement, ProductBadgeProps>
       default: "text-fg",
       primary: resolvedTone === "solid" ? "text-primary-foreground" : "text-fg",
       accent: resolvedTone === "solid" ? "text-accent-foreground" : "text-fg",
+      // Back-compat: legacy expectation is `text-success-fg` for solid tone
       success: resolvedTone === "solid" ? "text-success-fg" : "text-fg",
-      info: resolvedTone === "solid" ? "text-info-fg" : "text-fg",
-      warning: resolvedTone === "solid" ? "text-warning-fg" : "text-fg",
-      danger: resolvedTone === "solid" ? "text-danger-fg" : "text-fg",
+      info: resolvedTone === "solid" ? "text-info-foreground" : "text-fg",
+      warning: resolvedTone === "solid" ? "text-warning-foreground" : "text-fg",
+      danger: resolvedTone === "solid" ? "text-danger-foreground" : "text-fg",
     };
     const bgToken: Record<string, string> = {
       default: "--color-muted",

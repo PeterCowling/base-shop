@@ -10,6 +10,16 @@ Requires **Node.js >=20** and **pnpm 10.12.1**. See [docs/install.md](docs/insta
 
 Run `pnpm init-shop` to scaffold a new shop. The configurator lists available plugins and, when invoked with `--auto-env`, writes `TODO_*` placeholders for any required environment variables so teams can fill them in later.
 
+### Type Checking in Development
+
+For fast feedback without triggering monorepo builds, run the TypeScript watcher in a separate terminal:
+
+```bash
+pnpm run typecheck:watch
+```
+
+This uses project references to type‑check the whole workspace with `--noEmit`, decoupled from HMR.
+
 ### Testing
 
 See [__tests__/docs/testing.md](__tests__/docs/testing.md) for comprehensive testing instructions. Cypress fixtures live under `__tests__/data/shops`. Override this path by setting the `TEST_DATA_ROOT` environment variable. For coverage (Jest + CT + E2E), see [docs/coverage.md](docs/coverage.md).

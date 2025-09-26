@@ -53,5 +53,21 @@ describe("PaginationControl", () => {
     fireEvent.click(prev);
     expect(onPageChange).toHaveBeenCalledWith(9);
   });
-});
 
+  it("invokes onPageChange when clicking specific page buttons", () => {
+    const onPageChange = jest.fn();
+    render(<PaginationControl page={3} pageCount={10} onPageChange={onPageChange} />);
+    fireEvent.click(screen.getByRole("button", { name: "5" }));
+    expect(onPageChange).toHaveBeenCalledWith(5);
+
+    fireEvent.click(screen.getByRole("button", { name: "3" }));
+    expect(onPageChange).toHaveBeenLastCalledWith(3);
+  });
+
+  it("does nothing if onPageChange is not provided", () => {
+    render(<PaginationControl page={2} pageCount={3} />);
+    fireEvent.click(screen.getByRole("button", { name: /next/i }));
+    fireEvent.click(screen.getByRole("button", { name: "1" }));
+    // No assertions: ensuring no crash when handler is absent
+  });
+});

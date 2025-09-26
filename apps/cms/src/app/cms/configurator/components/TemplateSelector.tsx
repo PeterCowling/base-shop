@@ -32,7 +32,7 @@ interface Props {
   /** Currently selected layout name */
   value: string;
   /** Available templates to choose from */
-  pageTemplates: Template[];
+  pageTemplates?: Template[];
   /** Called with normalized layout name and components when confirmed */
   onConfirm: (layout: string, components: PageComponent[]) => void;
   /** Optional props for the SelectTrigger */
@@ -53,6 +53,7 @@ export default function TemplateSelector({
 }: Props): React.JSX.Element {
   const [selectOpen, setSelectOpen] = useState(false);
   const [pendingTemplate, setPendingTemplate] = useState<Template | null>(null);
+  const templates = Array.isArray(pageTemplates) ? pageTemplates : [];
 
   return (
     <>
@@ -79,7 +80,7 @@ export default function TemplateSelector({
               Blank
             </button>
           </SelectItem>
-          {pageTemplates.map((t) => (
+          {templates.map((t) => (
             <SelectItem
               key={t.name}
               value={t.name}
@@ -161,4 +162,3 @@ export default function TemplateSelector({
     </>
   );
 }
-

@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, Button, Input, Textarea, Checkbox, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../../atoms/shadcn";
+import { Drawer, DrawerContent, DrawerTitle, DrawerPortal } from "../../atoms/primitives/drawer";
+import { Button, Input, Textarea, Checkbox, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../../atoms/shadcn";
+import { OverlayScrim } from "../../atoms";
 
 type PageItem = {
   id: string;
@@ -47,7 +49,21 @@ export default function PagesPanel({ open, onOpenChange, shop: shopProp = null }
         if (res.ok) {
           const list = (await res.json()) as any[];
           // Normalize to PageItem shape
-          const items: PageItem[] = list.map((p) => ({ id: String(p.id ?? p.slug ?? uid()), slug: String(p.slug ?? p.path ?? ""), title: (p as any).title, seo: (p as any).seo, visibility: (p as any).visibility, updatedAt: (p as any).updatedAt }));
+          const items: PageItem[] = list.map((p) => {
+            const rawSeo = (p as any).seo ?? {};
+            const img = typeof rawSeo.image === "string"
+              ? rawSeo.image
+              : rawSeo?.image?.url ?? "";
+            const seo = { ...rawSeo, image: img } as PageItem["seo"];
+            return {
+              id: String(p.id ?? p.slug ?? uid()),
+              slug: String(p.slug ?? p.path ?? ""),
+              title: (p as any).title,
+              seo,
+              visibility: (p as any).visibility,
+              updatedAt: (p as any).updatedAt,
+            } satisfies PageItem;
+          });
           setPages(items);
           if (!selectedId && items.length) setSelectedId(items[0].id);
           return;
@@ -160,11 +176,13 @@ export default function PagesPanel({ open, onOpenChange, shop: shopProp = null }
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="fixed left-0 top-0 z-[60] h-screen w-[42rem] max-w-full -translate-x-full overflow-hidden border-r bg-surface-3 p-0 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0">
-        <DialogHeader className="px-4 py-3">
-          <DialogTitle>Pages</DialogTitle>
-        </DialogHeader>
+    <Drawer open={open} onOpenChange={onOpenChange}>
+      <DrawerPortal>
+        <OverlayScrim />
+        <DrawerContent side="left" width="w-[42rem]" className="z-[60] p-0">
+        <div className="px-4 py-3">
+          <DrawerTitle>Pages</DrawerTitle>
+        </div>
         <div className="grid h-[calc(100%-3rem)] grid-cols-[18rem_minmax(0,1fr)] gap-0">
           {/* List + controls */}
           <div className="flex h-full flex-col gap-2 border-r p-3 text-sm">
@@ -314,7 +332,8 @@ export default function PagesPanel({ open, onOpenChange, shop: shopProp = null }
             )}
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+        </DrawerContent>
+      </DrawerPortal>
+    </Drawer>
   );
 }

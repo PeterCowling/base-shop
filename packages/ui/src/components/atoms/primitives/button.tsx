@@ -129,25 +129,81 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const isLoading = ariaBusy === true || (typeof ariaBusy === "string" && ariaBusy !== "false");
+    const isDisabled = Boolean(disabled) || isLoading;
+    const computedClasses = cn(
+      base,
+      classesByTone[effTone][effColor],
+      // Ensure legacy expectations for specific variants
+      variant === "outline" && "border-input",
+      variant === "ghost" && effColor === "accent" && "hover:bg-accent",
+      variant === "destructive" && "bg-destructive",
+      iconOnly && "h-10 w-10 p-0 justify-center",
+      isLoading && "cursor-progress opacity-70",
+      className,
+    );
+
+    // When using asChild, Slot must receive exactly one valid element child.
+    if (asChild) {
+      return (
+        <Comp
+          ref={ref as unknown as React.Ref<HTMLElement>}
+          data-token={dataTokenByColor[effColor]}
+          className={computedClasses}
+          aria-busy={isLoading || undefined}
+          // Do not forward `disabled` to non-button elements
+          {...props}
+        >
+          {children as React.ReactElement}
+        </Comp>
+      );
+    }
+
+    // Default: render a real button with internal layout helpers
     return (
       <Comp
         ref={ref}
         data-token={dataTokenByColor[effColor]}
-        className={cn(base, classesByTone[effTone][effColor], iconOnly && "h-10 w-10 p-0 justify-center", isLoading && "cursor-progress opacity-70", className)}
+        className={computedClasses}
         aria-busy={isLoading || undefined}
-        disabled={disabled || isLoading}
+        disabled={isDisabled}
         {...props}
       >
-        {/* Leading spinner for loading state */}
         {isLoading && (
-          <span className={cn("mr-2 inline-flex animate-spin rounded-full border-2 border-current border-t-transparent", iconSize === "sm" ? "h-3.5 w-3.5" : iconSize === "lg" ? "h-5 w-5" : "h-4 w-4")} aria-hidden="true" />
+          <span
+            className={cn(
+              "mr-2 inline-flex animate-spin rounded-full border-2 border-current border-t-transparent",
+              iconSize === "sm" ? "h-3.5 w-3.5" : iconSize === "lg" ? "h-5 w-5" : "h-4 w-4",
+            )}
+            aria-hidden="true"
+          />
         )}
         {!isLoading && leadingIcon ? (
-          <span className={cn("mr-2 inline-flex items-center justify-center", iconSize === "sm" ? "h-3.5 w-3.5" : iconSize === "lg" ? "h-5 w-5" : "h-4 w-4")} aria-hidden>{leadingIcon}</span>
+          <span
+            className={cn(
+              "mr-2 inline-flex items-center justify-center",
+              iconSize === "sm" ? "h-3.5 w-3.5" : iconSize === "lg" ? "h-5 w-5" : "h-4 w-4",
+            )}
+            aria-hidden
+          >
+            {leadingIcon}
+          </span>
         ) : null}
-        <span className={cn("inline-flex items-center", iconOnly && "sr-only")}>{children}</span>
+        {iconOnly ? (
+          <span className="sr-only">{children}</span>
+        ) : (
+          // Render text directly so tests targeting getByText() receive the button element
+          <>{children}</>
+        )}
         {!isLoading && trailingIcon ? (
-          <span className={cn("ml-2 inline-flex items-center justify-center", iconSize === "sm" ? "h-3.5 w-3.5" : iconSize === "lg" ? "h-5 w-5" : "h-4 w-4")} aria-hidden>{trailingIcon}</span>
+          <span
+            className={cn(
+              "ml-2 inline-flex items-center justify-center",
+              iconSize === "sm" ? "h-3.5 w-3.5" : iconSize === "lg" ? "h-5 w-5" : "h-4 w-4",
+            )}
+            aria-hidden
+          >
+            {trailingIcon}
+          </span>
         ) : null}
       </Comp>
     );

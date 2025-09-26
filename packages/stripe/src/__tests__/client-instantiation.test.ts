@@ -11,6 +11,7 @@ describe("stripe client instantiation", () => {
   });
 
   it("requires STRIPE_SECRET_KEY", async () => {
+    (process.env as Record<string, string>).STRIPE_USE_MOCK = "false";
     jest.doMock("@acme/config/env/core", () => ({
       coreEnv: { STRIPE_SECRET_KEY: undefined },
     }));
@@ -20,6 +21,7 @@ describe("stripe client instantiation", () => {
   });
 
   it("passes expected options to Stripe constructor", async () => {
+    (process.env as Record<string, string>).STRIPE_USE_MOCK = "false";
     const httpClient = {};
     const createHttpClient = jest.fn().mockReturnValue(httpClient);
     const StripeMock = jest.fn().mockImplementation(() => ({}));
@@ -40,6 +42,7 @@ describe("stripe client instantiation", () => {
   });
 
   it("caches instance and respects secret changes after reset", async () => {
+    (process.env as Record<string, string>).STRIPE_USE_MOCK = "false";
     const StripeMock = jest.fn().mockImplementation((key: string) => ({ key }));
     StripeMock.createFetchHttpClient = jest.fn().mockReturnValue({});
 

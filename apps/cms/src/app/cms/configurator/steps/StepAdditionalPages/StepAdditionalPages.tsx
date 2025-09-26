@@ -32,6 +32,7 @@ export default function StepAdditionalPages({
   shopId,
   themeStyle,
 }: Props): React.JSX.Element {
+  const safePages = Array.isArray(pages) ? pages : [];
   const languages = LOCALES as readonly Locale[];
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
@@ -74,9 +75,9 @@ export default function StepAdditionalPages({
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Additional Pages</h2>
-      {pages.length > 0 && (
+      {safePages.length > 0 && (
         <ul className="list-disc pl-5 text-sm">
-          {pages.map((p) => (
+          {safePages.map((p) => (
             <li key={p.slug}>{p.slug}</li>
           ))}
         </ul>
@@ -156,7 +157,7 @@ export default function StepAdditionalPages({
               data-cy="confirm-add-page"
               onClick={() => {
                 setPages([
-                  ...pages,
+                  ...safePages,
                   toPageInfo({
                     id: newDraftId ?? undefined,
                     slug: newSlug,
@@ -199,4 +200,3 @@ export default function StepAdditionalPages({
     </div>
   );
 }
-

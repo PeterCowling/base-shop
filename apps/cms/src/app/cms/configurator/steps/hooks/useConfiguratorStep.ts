@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { ZodTypeAny } from "zod";
 import useStepCompletion from "../../hooks/useStepCompletion";
 
@@ -22,17 +22,32 @@ export default function useConfiguratorStep<T>({
   const [, markComplete] = useStepCompletion(stepId);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
 
-  useEffect(() => {
-    if (schema && values) {
-      const parsed = schema.safeParse(values);
-      if (parsed.success) {
-        setErrors({});
-      } else {
-        const fieldErrors = parsed.error.flatten().fieldErrors;
-        setErrors(fieldErrors as Record<string, string[]>);
-      }
+  // Avoid infinite re-validation loops when callers pass a new object literal
+  // each render by hashing the values and only re-validating when the hash
+  // changes meaningfully.
+  const valuesKey = useMemo(() => {
+    try {
+      return JSON.stringify(values ?? null);
+    } catch {
+      return String(Math.random());
     }
-  }, [schema, values]);
+  }, [values]);
+
+  useEffect(() => {
+    if (!schema || values === undefined) return;
+    const parsed = schema.safeParse(values);
+    if (parsed.success) {
+      setErrors((prev) => (Object.keys(prev).length === 0 ? prev : {}));
+    } else {
+      const fieldErrors = parsed.error.flatten().fieldErrors as Record<string, string[]>;
+      setErrors((prev) => {
+        // Shallow compare to avoid unnecessary state updates
+        const sameKeys = Object.keys(prev).length === Object.keys(fieldErrors).length &&
+          Object.keys(prev).every((k) => prev[k]?.[0] === fieldErrors[k]?.[0]);
+        return sameKeys ? prev : fieldErrors;
+      });
+    }
+  }, [schema, valuesKey]);
 
   const getError = (field: string) => errors[field]?.[0];
   const isValid = Object.keys(errors).length === 0;

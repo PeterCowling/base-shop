@@ -3,7 +3,7 @@
 
 import { Input } from "../atoms/shadcn";
 import { Toast } from "../atoms";
-import type { Locale } from "@acme/types";
+import type { Locale } from "@acme/i18n";
 import Tabs from "./blocks/Tabs";
 import PricingTab from "./PricingTab";
 import VariantsTab from "./VariantsTab";

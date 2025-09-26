@@ -33,7 +33,13 @@ function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
   const [isDark, setIsDark] = useState(false);
   useEffect(() => {
     if (typeof window === "undefined") return;
-    setIsDark(document.documentElement.classList.contains("theme-dark"));
+    const root = document.documentElement;
+    const dark = root.classList.contains("theme-dark");
+    setIsDark(dark);
+    // Ensure native form controls (like <select>) adopt dark appearance on load
+    try {
+      root.style.colorScheme = dark ? "dark" : "light";
+    } catch {}
   }, []);
   // Theme toggling is handled inline on the Switch below
 
@@ -41,13 +47,16 @@ function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
     <header className="relative z-10 border-b border-border-1 bg-surface-2 px-6 py-3 text-foreground">
       <div className="relative flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-1 items-center gap-3">
-          <NavMenu role={role} onConfiguratorStartNew={onConfiguratorStartNew} />
           <Link
             href="/cms"
             className="rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm font-medium text-foreground transition hover:bg-surface-3"
           >
-            Dashboard
+            Home
           </Link>
+          <NavMenu role={role} onConfiguratorStartNew={onConfiguratorStartNew} label="CMS" variant="cms" />
+          {shop && (
+            <NavMenu role={role} onConfiguratorStartNew={onConfiguratorStartNew} label="Shop" variant="shop" />
+          )}
           <Breadcrumbs />
           <div className="hidden sm:flex">
             <ShopSelector />
@@ -61,7 +70,7 @@ function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
           )}
           {showNewPage && (
             <Button asChild className="h-9 rounded-lg bg-sky-500 px-3 py-2 text-white hover:bg-sky-400">
-              <Link href={`/cms/shop/${shop}/pages/new/builder`}>New page</Link>
+              <Link href={`/cms/shop/${shop}/pages/new/page`}>New page</Link>
             </Button>
           )}
           {/* Theme toggle (left of Refresh) */}

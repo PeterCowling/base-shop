@@ -2,16 +2,9 @@
 
 import * as React from "react";
 import { cn } from "../../utils/style";
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  Input,
-} from "../atoms/shadcn";
+import { Button, Input } from "../atoms/shadcn";
+import { Drawer, DrawerContent, DrawerTrigger, DrawerTitle, DrawerDescription, DrawerPortal } from "../atoms/primitives/drawer";
+import { OverlayScrim } from "../atoms";
 
 interface ChatMessage {
   sender: "user" | "bot";
@@ -69,8 +62,8 @@ export function LiveChatWidget({
   const bottomStyle = bottomClass ? undefined : { bottom: bottomOffset };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
         <Button
           className={cn(
             "fixed right-4 z-50 rounded-full shadow-elevation-3",
@@ -82,23 +75,18 @@ export function LiveChatWidget({
         >
           Chat
         </Button>
-      </DialogTrigger>
-      <DialogContent
+      </DrawerTrigger>
+      <DrawerPortal>
+        <OverlayScrim />
+        <DrawerContent
         style={{ ...widthStyle, ...bottomStyle }}
-        className={cn(
-          "bg-panel fixed right-4 flex flex-col gap-4 border border-border-2 p-6 shadow-elevation-3",
-          widthClass,
-          bottomClass
-        )}
+        side="right"
+        width={widthClass}
+        className={cn("flex flex-col gap-4 border-border-2 p-6 shadow-elevation-3", bottomClass)}
         data-token="--color-bg"
       >
-        {" "}
-        <DialogHeader>
-          <DialogTitle>How can we help?</DialogTitle>
-          <DialogDescription className="sr-only">
-            Chat with our support team
-          </DialogDescription>
-        </DialogHeader>
+        <DrawerTitle className="text-lg font-semibold">How can we help?</DrawerTitle>
+        <DrawerDescription className="sr-only">Chat with our support team</DrawerDescription>
         <div className="flex flex-col gap-2 overflow-y-auto py-2">
           {messages.map((m, i) => (
             <div
@@ -130,7 +118,8 @@ export function LiveChatWidget({
           />
           <Button onClick={send}>Send</Button>
         </div>
-      </DialogContent>
-    </Dialog>
+        </DrawerContent>
+      </DrawerPortal>
+    </Drawer>
   );
 }

@@ -12,10 +12,10 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, elevated = false, ...props }, ref) => (
     <div
       ref={ref}
-      data-token="--color-panel"
+      data-token="--color-bg"
       className={cn(
-        // Default to panel surface; allow elevated variant to opt into surface-3
-        elevated ? "bg-surface-3 shadow-elevation-2" : "bg-panel shadow",
+        // Default to card surface; allow elevated variant to opt into stronger surface
+        elevated ? "bg-surface-3 shadow-elevation-2" : "bg-card shadow",
         "text-card-foreground rounded-xl border border-border-2",
         className
       )}

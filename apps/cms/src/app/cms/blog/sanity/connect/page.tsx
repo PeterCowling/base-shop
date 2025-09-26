@@ -8,9 +8,10 @@ export const revalidate = 0;
 export default async function SanityConnectPage({
   searchParams,
 }: {
-  searchParams?: { shopId?: string };
+  searchParams?: Promise<{ shopId?: string }>;
 }) {
-  const shopId = searchParams?.shopId;
+  const sp = (await searchParams) ?? undefined;
+  const shopId = sp?.shopId;
   if (!shopId) return <p>No shop selected.</p>;
   const shop = await getShopById(shopId);
   const sanity = getSanityConfig(shop) as

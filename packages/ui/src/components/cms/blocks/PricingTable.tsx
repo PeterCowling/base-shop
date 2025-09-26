@@ -49,12 +49,19 @@ export default function PricingTable({
               <li key={idx}>{f}</li>
             ))}
           </ul>
-          <Button asChild className="mt-6 self-start">
-            <a href={plan.ctaHref}>{plan.ctaLabel}</a>
-          </Button>
+          {/* Render a plain anchor to ensure link role in tests */}
+          <a
+            href={plan.ctaHref}
+            className={cn(
+              "mt-6 inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium",
+              "bg-primary text-primary-foreground hover:bg-primary/90",
+              "self-start"
+            )}
+          >
+            {plan.ctaLabel}
+          </a>
         </div>
       ))}
     </section>
   );
 }
-

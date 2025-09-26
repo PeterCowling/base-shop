@@ -146,8 +146,17 @@ export default async function ProductsPage({
                   variant="outline"
                   className="h-11 rounded-xl border-border/40 px-5 text-sm font-semibold text-foreground hover:bg-surface-3"
                 >
-                  <Link href={`/cms/shop/${shop}/pages/new/builder`}>
+                  <Link href={`/cms/shop/${shop}/pages/new/page`}>
                     Build merchandising page
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-11 rounded-xl border-border/40 px-5 text-sm font-semibold text-foreground hover:bg-surface-3"
+                >
+                  <Link href={`/cms/shop/${shop}/pages/new/componenteditor`}>
+                    Open component editor
                   </Link>
                 </Button>
               </div>
@@ -184,7 +193,7 @@ export default async function ProductsPage({
                 <p>• Archive aging inventory to keep the storefront focused.</p>
               </div>
               <Button asChild variant="outline" className="h-10 w-full">
-                <Link href={`/cms/shop/${shop}/pages`}>Preview catalog experience</Link>
+                <Link href={`/cms/shop/${shop}/pages/edit/page`}>Preview catalog experience</Link>
               </Button>
             </CardContent>
           </Card>

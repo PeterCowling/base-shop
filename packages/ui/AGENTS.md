@@ -3,6 +3,16 @@
 ## Purpose
 UI component library.
 
+Scope
+- Generic, app-agnostic components (atoms/molecules/organisms), overlays, layout scaffolding.
+- Generic hooks and utilities without CMS/page model or routing awareness.
+
+Out of Scope (migrate out)
+- CMS and page-builder UI (`src/components/cms/**`) → `@acme/page-builder-ui` / `apps/cms`
+- Page-builder core state and utils → `@acme/page-builder-core`
+- CMS marketing (`src/components/cms/marketing/**`) → `@acme/cms-marketing`
+- App/domain templates (`src/components/templates/**`) → `@acme/templates`
+
 ## File Organization Guidance
 
 - Keep each file focused on a single clear responsibility instead of mixing unrelated concerns.

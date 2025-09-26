@@ -157,6 +157,12 @@ const configuratorStateSchemaBase: z.AnyZodObject = z
     analyticsProvider: z.string().optional().default(""),
     analyticsId: z.string().optional().default(""),
 
+    /* ------------------- Inventory ---------------------- */
+    inventoryTracking: z.boolean().optional().default(true),
+    lowStockThreshold: z.number().int().min(0).optional().default(5),
+    backorderPolicy: z.enum(["deny", "notify", "allow"]).optional().default("deny"),
+    defaultStockLocation: z.string().optional().default("main"),
+
     /* ------------------- Navigation --------------------- */
     navItems: z
       .array(navItemSchema)

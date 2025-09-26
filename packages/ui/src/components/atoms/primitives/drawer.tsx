@@ -9,6 +9,8 @@ export const Drawer = DialogPrimitive.Root;
 export const DrawerTrigger = DialogPrimitive.Trigger;
 export const DrawerPortal = DialogPrimitive.Portal;
 export const DrawerOverlay = DialogPrimitive.Overlay;
+export const DrawerTitle = DialogPrimitive.Title;
+export const DrawerDescription = DialogPrimitive.Description;
 
 export interface DrawerContentProps
   extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
@@ -40,4 +42,3 @@ export const DrawerContent = React.forwardRef<
   );
 });
 DrawerContent.displayName = DialogPrimitive.Content.displayName;
-

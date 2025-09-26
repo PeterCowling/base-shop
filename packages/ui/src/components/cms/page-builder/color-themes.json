@@ -1,0 +1,66 @@
+[
+  {
+    "id": "modern-light",
+    "name": "Modern Light",
+    "tags": ["modern", "light"],
+    "light": {
+      "--color-bg": "0 0% 100%",
+      "--color-fg": "222 47% 11%",
+      "--color-primary": "221 83% 53%",
+      "--color-primary-fg": "0 0% 100%",
+      "--color-accent": "262 83% 58%",
+      "--color-muted": "210 40% 96%"
+    },
+    "dark": {
+      "--color-bg": "224 71% 4%",
+      "--color-fg": "210 40% 98%",
+      "--color-primary": "217 91% 60%",
+      "--color-primary-fg": "222 47% 11%",
+      "--color-accent": "262 83% 70%",
+      "--color-muted": "215 25% 27%"
+    }
+  },
+  {
+    "id": "modern-dark",
+    "name": "Modern Dark",
+    "tags": ["modern", "dark"],
+    "light": {
+      "--color-bg": "0 0% 100%",
+      "--color-fg": "222 47% 11%",
+      "--color-primary": "221 83% 53%",
+      "--color-primary-fg": "0 0% 100%",
+      "--color-accent": "262 83% 58%",
+      "--color-muted": "210 40% 96%"
+    },
+    "dark": {
+      "--color-bg": "224 71% 4%",
+      "--color-fg": "210 40% 98%",
+      "--color-primary": "221 83% 53%",
+      "--color-primary-fg": "222 47% 11%",
+      "--color-accent": "262 83% 70%",
+      "--color-muted": "215 25% 27%"
+    }
+  },
+  {
+    "id": "brandx-light",
+    "name": "Brand X Light",
+    "tags": ["brandx", "light", "vibrant"],
+    "light": {
+      "--color-bg": "0 0% 100%",
+      "--color-fg": "0 0% 10%",
+      "--color-primary": "340 82% 52%",
+      "--color-primary-fg": "0 0% 100%",
+      "--color-accent": "260 83% 70%",
+      "--color-muted": "0 0% 88%"
+    },
+    "dark": {
+      "--color-bg": "0 0% 6%",
+      "--color-fg": "0 0% 92%",
+      "--color-primary": "340 82% 60%",
+      "--color-primary-fg": "0 0% 10%",
+      "--color-accent": "260 83% 76%",
+      "--color-muted": "0 0% 32%"
+    }
+  }
+]
+

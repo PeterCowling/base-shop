@@ -15,8 +15,9 @@ const hookMock = {
 };
 
 const originalError = console.error;
+let consoleErrorSpy: jest.SpyInstance | undefined;
 beforeAll(() => {
-  jest.spyOn(console, "error").mockImplementation((...args) => {
+  consoleErrorSpy = jest.spyOn(console, "error").mockImplementation((...args) => {
     if (
       typeof args[0] === "string" &&
       args[0].includes("A suspended resource finished loading inside a test")
@@ -28,7 +29,7 @@ beforeAll(() => {
 });
 
 afterAll(() => {
-  (console.error as jest.Mock).mockRestore();
+  consoleErrorSpy?.mockRestore();
 });
 
 jest.mock("../useSanityConnection", () => {

@@ -75,11 +75,30 @@ export function useConfiguratorDashboardState(): {
   const [markStepComplete] = useConfiguratorPersistence(state, setState);
   const steps = useMemo(() => getSteps(), []);
 
+  // Avoid progress update loops by only updating when values actually change
+  const lastProgressRef = useRef<ReturnType<typeof calculateConfiguratorProgress> | undefined>(undefined);
   useEffect(() => {
-    setConfiguratorProgress(calculateConfiguratorProgress(state.completed));
+    const next = calculateConfiguratorProgress(state.completed);
+    const prev = lastProgressRef.current;
+    const changed = !prev ||
+      prev.completedRequired !== next.completedRequired ||
+      prev.totalRequired !== next.totalRequired ||
+      prev.completedOptional !== next.completedOptional ||
+      prev.totalOptional !== next.totalOptional;
+    if (changed) {
+      lastProgressRef.current = next;
+      setConfiguratorProgress(next);
+    }
   }, [state.completed, setConfiguratorProgress]);
 
-  useEffect(() => () => setConfiguratorProgress(undefined), [setConfiguratorProgress]);
+  useEffect(() => {
+    return () => {
+      if (lastProgressRef.current) {
+        lastProgressRef.current = undefined;
+        setConfiguratorProgress(undefined);
+      }
+    };
+  }, [setConfiguratorProgress]);
 
   const skipStep = useCallback(
     (stepId: string) => {

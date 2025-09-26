@@ -31,19 +31,13 @@ describe('CMS configurator color-contrast [a11y]', { tags: ['a11y'] }, () => {
     'shop-details',
     'theme',
     'tokens',
-    'options',
-    'navigation',
-    'layout',
-    'home-page',
+    'payment-provider',
+    'shipping',
     'checkout-page',
-    'shop-page',
-    'product-page',
-    'additional-pages',
+    'inventory',
     'env-vars',
-    'summary',
     // optional growth/ops steps
     'import-data',
-    'seed-data',
     'hosting',
   ];
 

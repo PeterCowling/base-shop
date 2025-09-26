@@ -18,6 +18,7 @@ import { THEME_TOKEN_HOVER_EVENT, type TokenHoverDetail } from "../shop/[shop]/t
 interface Props {
   style: React.CSSProperties;
   device?: DevicePreset;
+  hideHeader?: boolean;
 }
 
 /**
@@ -26,7 +27,7 @@ interface Props {
  * so it always shows the latest edits without needing a full refresh.
  */
 const WizardPreview = forwardRef<HTMLDivElement, Props>(function WizardPreview(
-  { style, device: deviceProp },
+  { style, device: deviceProp, hideHeader = false },
   ref,
 ) {
   const [components, setComponents] = useState<PageComponent[]>([]);
@@ -132,7 +133,7 @@ const WizardPreview = forwardRef<HTMLDivElement, Props>(function WizardPreview(
     >
       <TranslationsProvider messages={enMessages}>
         <AppShell
-          header={<Header locale="en" shopName="" />}
+          header={hideHeader ? undefined : <Header locale="en" shopName="" />}
           sideNav={<SideNav />}
           footer={<Footer shopName="" />}
         >

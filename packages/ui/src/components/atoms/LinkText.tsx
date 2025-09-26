@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/style";
+import { Slot } from "@radix-ui/react-slot";
 
 export type LinkColor =
   | "default"
@@ -18,10 +19,11 @@ export interface LinkTextProps
   extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   color?: LinkColor;
   tone?: LinkTone;
+  asChild?: boolean;
 }
 
 export const LinkText = React.forwardRef<HTMLAnchorElement, LinkTextProps>(
-  ({ className, color = "primary", tone = "default", children, ...props }, ref) => {
+  ({ className, color = "primary", tone = "default", asChild = false, children, ...props }, ref) => {
     const textByColor: Record<LinkColor, string> = {
       default: "text-link",
       primary: "text-primary",
@@ -40,8 +42,9 @@ export const LinkText = React.forwardRef<HTMLAnchorElement, LinkTextProps>(
       warning: "hover:bg-warning-soft",
       danger: "hover:bg-danger-soft",
     };
+    const Comp: any = asChild ? Slot : "a";
     return (
-      <a
+      <Comp
         ref={ref}
         className={cn(
           "inline-flex max-w-full items-center",
@@ -52,9 +55,8 @@ export const LinkText = React.forwardRef<HTMLAnchorElement, LinkTextProps>(
         {...props}
       >
         {children}
-      </a>
+      </Comp>
     );
   }
 );
 LinkText.displayName = "LinkText";
-

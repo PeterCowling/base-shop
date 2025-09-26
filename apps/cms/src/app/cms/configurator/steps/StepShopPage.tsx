@@ -20,27 +20,29 @@ import { fillLocales } from "@i18n/fillLocales";
 import type { Page, PageComponent } from "@acme/types";
 import { apiRequest } from "../lib/api";
 import { ulid } from "ulid";
-import { useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { Toast } from "@ui/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
+import { ConfiguratorContext } from "../ConfiguratorContext";
+import { useThemeLoader } from "../hooks/useThemeLoader";
 
 interface Props {
-  pageTemplates: Array<{
+  pageTemplates?: Array<{
     name: string;
     components: PageComponent[];
     preview: string;
   }>;
-  shopLayout: string;
-  setShopLayout: (v: string) => void;
-  shopComponents: PageComponent[];
-  setShopComponents: (v: PageComponent[]) => void;
-  shopPageId: string | null;
-  setShopPageId: (v: string | null) => void;
-  shopId: string;
-  themeStyle: React.CSSProperties;
+  shopLayout?: string;
+  setShopLayout?: (v: string) => void;
+  shopComponents?: PageComponent[];
+  setShopComponents?: (v: PageComponent[]) => void;
+  shopPageId?: string | null;
+  setShopPageId?: (v: string | null) => void;
+  shopId?: string;
+  themeStyle?: React.CSSProperties;
   prevStepId?: string;
   nextStepId?: string;
 }
@@ -58,6 +60,21 @@ export default function StepShopPage({
   prevStepId,
   nextStepId,
 }: Props): React.JSX.Element {
+  const configurator = useContext(ConfiguratorContext);
+  const state = configurator?.state;
+  const update = configurator?.update;
+  const templates = useMemo(
+    () => (Array.isArray(pageTemplates) ? pageTemplates : []),
+    [pageTemplates],
+  );
+  const layout = shopLayout ?? state?.shopLayout ?? "";
+  const setLayout = setShopLayout ?? ((v: string) => update?.("shopLayout" as any, v));
+  const components = (shopComponents ?? state?.shopComponents ?? []) as PageComponent[];
+  const setComponents = setShopComponents ?? ((v: PageComponent[]) => update?.("shopComponents" as any, v));
+  const pageId = shopPageId ?? state?.shopPageId ?? null;
+  const setPageId = setShopPageId ?? ((v: string | null) => update?.("shopPageId" as any, v));
+  const currentShopId = shopId ?? state?.shopId ?? "";
+  const style = themeStyle ?? useThemeLoader();
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
     message: "",
@@ -79,7 +96,7 @@ export default function StepShopPage({
       <h2 className="text-xl font-semibold">Shop Page</h2>
       <Select
         data-cy="shop-layout"
-        value={shopLayout}
+        value={layout}
         open={selectOpen}
         onOpenChange={setSelectOpen}
         onValueChange={() => {}}
@@ -90,50 +107,36 @@ export default function StepShopPage({
         <SelectContent>
           <SelectItem
             value="blank"
-            asChild
             onSelect={(e) => {
               e.preventDefault();
               setSelectOpen(false);
               setPendingTemplate({ name: "blank", components: [], preview: "" });
             }}
           >
-            <button
-              type="button"
-              data-cy="template-blank"
-              className="w-full text-left"
-            >
-              Blank
-            </button>
+            Blank
           </SelectItem>
-          {pageTemplates.map((t) => (
+          {templates.map((t) => (
             <SelectItem
               key={t.name}
               value={t.name}
-              asChild
               onSelect={(e) => {
                 e.preventDefault();
                 setSelectOpen(false);
                 setPendingTemplate(t);
               }}
             >
-              <button
-                type="button"
-                data-cy={`template-${t.name.replace(/\s+/g, '-')}`}
-                className="w-full text-left"
-              >
-                <div className="flex items-center gap-2">
-                  {t.preview && (
-                    <Image
-                      src={t.preview}
-                      alt={`${t.name} preview`}
-                      width={32}
-                      height={32}
-                      className="h-8 w-8 rounded object-cover"
-                    />
-                  )}
-                  {t.name}
-                </div>
-              </button>
+              <span className="flex items-center gap-2" data-cy={`template-${t.name.replace(/\s+/g, '-')}`}>
+                {t.preview && (
+                  <Image
+                    src={t.preview}
+                    alt={`${t.name} preview`}
+                    width={32}
+                    height={32}
+                    className="h-8 w-8 rounded object-cover"
+                  />
+                )}
+                {t.name}
+              </span>
             </SelectItem>
           ))}
         </SelectContent>
@@ -184,8 +187,8 @@ export default function StepShopPage({
                   ...c,
                   id: ulid(),
                 }));
-                setShopLayout(layout);
-                setShopComponents(comps);
+                setLayout?.(layout);
+                setComponents?.(comps);
                 if (typeof window !== "undefined") {
                   try {
                     const json = localStorage.getItem(STORAGE_KEY);
@@ -213,10 +216,10 @@ export default function StepShopPage({
       <PageBuilder
         page={
           {
-            id: shopPageId ?? "",
+            id: pageId ?? "",
             slug: "",
             status: "draft",
-            components: shopComponents,
+            components,
             seo: {
               title: fillLocales(undefined, ""),
               description: fillLocales(undefined, ""),
@@ -234,12 +237,12 @@ export default function StepShopPage({
           setIsSaving(true);
           setSaveError(null);
           const { data, error } = await apiRequest<{ id: string }>(
-            `/cms/api/page-draft/${shopId}`,
+            `/cms/api/page-draft/${currentShopId}`,
             { method: "POST", body: fd },
           );
           setIsSaving(false);
           if (data) {
-            setShopPageId(data.id);
+            setPageId?.(data.id);
             setToast({ open: true, message: "Draft saved" });
           } else if (error) {
             setSaveError(error);
@@ -250,12 +253,12 @@ export default function StepShopPage({
           setPublishError(null);
           fd.set("status", "published");
           const { data, error } = await apiRequest<{ id: string }>(
-            `/cms/api/page/${shopId}`,
+            `/cms/api/page/${currentShopId}`,
             { method: "POST", body: fd },
           );
           setIsPublishing(false);
           if (data) {
-            setShopPageId(data.id);
+            setPageId?.(data.id);
             setToast({ open: true, message: "Page published" });
           } else if (error) {
             setPublishError(error);
@@ -265,8 +268,8 @@ export default function StepShopPage({
         publishing={isPublishing}
         saveError={saveError}
         publishError={publishError}
-        onChange={setShopComponents}
-        style={themeStyle}
+        onChange={setComponents}
+        style={style}
       />
       <div className="flex justify-between">
         {prevStepId && (

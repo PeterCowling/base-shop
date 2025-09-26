@@ -37,7 +37,8 @@ function setPatchValue<T extends object, K extends keyof T>(
   key: K,
   value: T[K],
 ): void {
-  patch[key] = value;
+  // Assign via a narrowed assertion to avoid "never" on index types
+  (patch as T)[key] = value;
 }
 
 function diffSettings(
@@ -200,4 +201,3 @@ export const jsonSettingsRepository = {
   saveShopSettings,
   diffHistory,
 };
-

@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, Button, Input } from "../../atoms/shadcn";
+import { Drawer, DrawerContent, DrawerTitle, DrawerPortal } from "../../atoms/primitives/drawer";
+import { Button, Input } from "../../atoms/shadcn";
+import { OverlayScrim } from "../../atoms";
 import type { PageComponent } from "@acme/types";
 
 function flatten(list: PageComponent[]): PageComponent[] {
@@ -40,11 +42,13 @@ export default function CMSPanel({ open, onOpenChange, components, selectedIds, 
   }, [datasets, q]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="fixed right-0 top-0 z-[60] h-screen w-[24rem] max-w-full translate-x-full overflow-hidden border-l bg-surface-3 p-0 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0">
-        <DialogHeader className="px-4 py-3">
-          <DialogTitle>CMS Connections</DialogTitle>
-        </DialogHeader>
+    <Drawer open={open} onOpenChange={onOpenChange}>
+      <DrawerPortal>
+        <OverlayScrim />
+        <DrawerContent side="right" width="w-[24rem]" className="z-[60] p-0">
+        <div className="px-4 py-3">
+          <DrawerTitle>CMS Connections</DrawerTitle>
+        </div>
         <div className="flex h-[calc(100%-3rem)] flex-col gap-3 p-3 text-sm">
           <Input placeholder="Search datasets…" value={q} onChange={(e) => setQ(e.target.value)} />
           <div className="text-xs text-muted-foreground">{filtered.length} dataset{filtered.length === 1 ? "" : "s"}</div>
@@ -77,8 +81,8 @@ export default function CMSPanel({ open, onOpenChange, components, selectedIds, 
             Tip: Select a Dataset block, then use the Inspector → CMS tab to configure connections and filters.
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+        </DrawerContent>
+      </DrawerPortal>
+    </Drawer>
   );
 }
-

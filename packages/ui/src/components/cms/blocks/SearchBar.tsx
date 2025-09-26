@@ -24,7 +24,8 @@ export default function SearchBar({
 
   useEffect(() => {
     if (!query) {
-      setResults([]);
+      // Avoid infinite loops when query is empty by only updating if needed
+      setResults((prev) => (prev.length ? [] : prev));
       return;
     }
     const controller = new AbortController();
@@ -39,7 +40,13 @@ export default function SearchBar({
         if (shop) url.searchParams.set("shop", shop);
         const res = await fetch(url.toString(), { signal: controller.signal });
         const data: Result[] = await res.json();
-        setResults(data.slice(0, limit));
+        const next = data.slice(0, limit);
+        setResults((prev) => {
+          if (prev.length === next.length && prev.every((p, i) => p.slug === next[i]?.slug && p.title === next[i]?.title)) {
+            return prev;
+          }
+          return next;
+        });
       } catch {
         // ignore
       }

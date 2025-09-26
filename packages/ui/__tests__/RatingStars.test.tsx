@@ -7,10 +7,9 @@ describe("RatingStars", () => {
     const { container } = render(<RatingStars rating={3.4} size={20} />);
     const stars = container.querySelectorAll("svg");
     expect(stars).toHaveLength(5);
-    const filled = container.querySelectorAll(".fill-yellow-500");
+    const filled = container.querySelectorAll(".fill-warning");
     expect(filled).toHaveLength(3);
     expect(stars[0].getAttribute("width")).toBe("20");
     expect(stars[0].getAttribute("height")).toBe("20");
   });
 });
-

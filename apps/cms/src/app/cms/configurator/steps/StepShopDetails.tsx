@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  Button,
-  Input,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@ui/components/atoms/shadcn";
+import { Button, Input } from "@ui/components/atoms/shadcn";
 import { useContext, useMemo } from "react";
 import { z } from "zod";
 import type { ConfiguratorStepProps } from "@/types/configurator";
@@ -17,19 +9,18 @@ import ShopPreview from "./components/ShopPreview";
 import ImagePicker from "@ui/components/cms/page-builder/ImagePicker";
 import { ConfiguratorContext } from "../ConfiguratorContext";
 import type { ConfiguratorState } from "../../wizard/schema";
+import Image from "next/image";
 
 export default function StepShopDetails(
   props: ConfiguratorStepProps,
 ): React.JSX.Element {
   const configurator = useContext(ConfiguratorContext);
 
-  const fallbackState: Pick<ConfiguratorState, "shopId" | "storeName" | "logo" | "contactInfo" | "type" | "template"> = {
+  const fallbackState: Pick<ConfiguratorState, "shopId" | "storeName" | "logo" | "contactInfo"> = {
     shopId: "",
     storeName: "",
     logo: {},
     contactInfo: "",
-    type: "sale",
-    template: "",
   };
 
   const state = configurator?.state ?? fallbackState;
@@ -48,11 +39,6 @@ export default function StepShopDetails(
     setLogo = (value: Record<string, string>) => updateField("logo", value),
     contactInfo = state.contactInfo ?? "",
     setContactInfo = (value: string) => updateField("contactInfo", value),
-    type = state.type ?? "sale",
-    setType = (value: "sale" | "rental") => updateField("type", value),
-    template = state.template ?? "",
-    setTemplate = (value: string) => updateField("template", value),
-    templates = [],
     errors = {},
   } = props as Partial<ConfiguratorStepProps>;
 
@@ -60,12 +46,6 @@ export default function StepShopDetails(
     typeof logoProp === "string" && logoProp
       ? { "desktop-landscape": logoProp }
       : { ...(logoProp ?? {}) };
-
-  const templateOptions = templates.length
-    ? templates
-    : template
-      ? [template]
-      : ["default"];
 
   const schema = useMemo(
     () =>
@@ -82,9 +62,7 @@ export default function StepShopDetails(
             .record(z.string(), z.string().url("Invalid URL"))
             .optional()
             .default({}),
-          contactInfo: z.string().min(1, "Required"),
-          type: z.enum(["sale", "rental"]),
-          template: z.string().min(1, "Required"),
+          contactInfo: z.string().email("Invalid email"),
         })
         .strict(),
     [],
@@ -99,8 +77,6 @@ export default function StepShopDetails(
         name: storeName,
         logo: logoRecord,
         contactInfo,
-        type,
-        template,
       },
     });
 
@@ -144,20 +120,21 @@ export default function StepShopDetails(
       ] as const).map((key) => (
         <label key={key} className="flex flex-col gap-1">
           <span className="capitalize">{key.replace("-", " ")} logo</span>
-          <div className="flex items-center gap-2">
-            <Input
-              data-cy={`logo-${key}`}
-              value={logoRecord[key] ?? ""}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setLogo({ ...logoRecord, [key]: e.target.value })
-              }
-              placeholder="https://example.com/logo.png"
-            />
-            <ImagePicker
-              onSelect={(url) => setLogo({ ...logoRecord, [key]: url })}
-            >
+          <div className="flex items-center gap-3">
+            <ImagePicker onSelect={(url) => setLogo({ ...logoRecord, [key]: url })}>
               <Button type="button">Select</Button>
             </ImagePicker>
+            {logoRecord[key] ? (
+              <Image
+                src={logoRecord[key]!}
+                alt={`${key} logo preview`}
+                width={80}
+                height={40}
+                className="h-10 w-auto rounded border border-border-3 object-contain bg-white"
+              />
+            ) : (
+              <span className="text-xs text-muted-foreground">No logo selected</span>
+            )}
           </div>
           {getError(`logo.${key}`) && (
             <p className="text-sm text-danger-foreground">{getError(`logo.${key}`)}</p>
@@ -169,46 +146,15 @@ export default function StepShopDetails(
         <Input
           data-cy="contact-info"
           value={contactInfo}
+          type="email"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContactInfo(e.target.value)}
-          placeholder="Email or phone"
+          placeholder="you@company.com"
         />
         {getError("contactInfo") && (
           <p className="text-sm text-danger-foreground">{getError("contactInfo")}</p>
         )}
       </label>
-      <label className="flex flex-col gap-1">
-        <span>Shop Type</span>
-        <Select data-cy="shop-type" value={type} onValueChange={setType}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="sale">Sale</SelectItem>
-            <SelectItem value="rental">Rental</SelectItem>
-          </SelectContent>
-        </Select>
-        {getError("type") && (
-          <p className="text-sm text-danger-foreground">{getError("type")}</p>
-        )}
-      </label>
-      <label className="flex flex-col gap-1">
-        <span>Template</span>
-        <Select data-cy="template" value={template} onValueChange={setTemplate}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select template" />
-          </SelectTrigger>
-          <SelectContent>
-            {templateOptions.map((t) => (
-              <SelectItem key={t} value={t}>
-                {t}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        {getError("template") && (
-          <p className="text-sm text-danger-foreground">{getError("template")}</p>
-        )}
-      </label>
+      {/* Shop type selection moved to dedicated step */}
       <div className="flex justify-end">
         <Button
           data-cy="save-return"

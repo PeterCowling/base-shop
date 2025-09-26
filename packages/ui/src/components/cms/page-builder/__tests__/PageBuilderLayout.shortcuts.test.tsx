@@ -44,7 +44,7 @@ jest.mock("../PageCanvas", () => ({
 
 jest.mock("../PageSidebar", () => {
   const React = require("react");
-  const Sidebar = (props: any) => {
+  const Sidebar = () => {
     const setNode = React.useCallback((node: HTMLDivElement | null) => {
       if (node) {
         Object.defineProperty(node, "scrollIntoView", {
@@ -54,8 +54,9 @@ jest.mock("../PageSidebar", () => {
         });
       }
     }, []);
+    // Do not spread props onto a DOM element to avoid React warnings
     return (
-      <div data-cy="page-sidebar" {...props}>
+      <div data-cy="page-sidebar">
         <div id="pb-layers-panel" data-cy="layers-panel" ref={setNode} />
       </div>
     );

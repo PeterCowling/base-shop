@@ -1,4 +1,4 @@
-import { CartProvider, useCart } from "@acme/platform-core/contexts/CartContext";
+import { useCart } from "@acme/platform-core/contexts/CartContext";
 import { type Meta, type StoryObj } from "@storybook/react";
 import type { CartLine, CartState } from "@acme/platform-core/cart";
 import type { SKU } from "@acme/types";
@@ -52,15 +52,16 @@ function CartInitializer({ items }: WrapperProps) {
 
 function MiniCartWrapper({ items }: WrapperProps) {
   return (
-    <CartProvider>
+    <>
       <CartInitializer items={items} />
       <MiniCart trigger={<Button>Open cart</Button>} />
-    </CartProvider>
+    </>
   );
 }
 
 const meta: Meta<typeof MiniCartWrapper> = {
   component: MiniCartWrapper,
+  parameters: { cart: true },
   args: {
     items: {},
   },

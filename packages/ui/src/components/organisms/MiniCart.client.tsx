@@ -9,12 +9,14 @@ import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import { Toast } from "../atoms/Toast";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from "../atoms/primitives/dialog";
+  Drawer,
+  DrawerContent,
+  DrawerTrigger,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerPortal,
+} from "../atoms/primitives/drawer";
+import { OverlayScrim } from "../atoms";
 
 /**
  * Fly-out mini cart that shows current cart contents.
@@ -62,19 +64,20 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
 
   return (
     <>
-      <Dialog>
-        <DialogTrigger asChild>{trigger}</DialogTrigger>
-        <DialogContent
+      <Drawer>
+        <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+        <DrawerPortal>
+          <OverlayScrim />
+          <DrawerContent
           style={style}
-          className={cn(
-            "bg-panel fixed top-0 right-0 h-full max-w-full rounded-none border-l border-border-2 p-6 shadow-elevation-4",
-            widthClass
-          )}
+          side="right"
+          width={widthClass}
+          className={cn("rounded-none p-6")}
         >
-          <DialogTitle className="mb-4">Your Cart</DialogTitle>
-          <DialogDescription className="sr-only">
+          <DrawerTitle className="mb-4 text-lg font-semibold">Your Cart</DrawerTitle>
+          <DrawerDescription className="sr-only">
             Review items in your cart
-          </DialogDescription>
+          </DrawerDescription>
           {lines.length === 0 ? (
             <p className="text-muted-foreground text-sm">Cart is empty.</p>
           ) : (
@@ -131,8 +134,9 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
             onClose={() => setToast((t) => ({ ...t, open: false }))}
             message={toast.message}
           />
-        </DialogContent>
-      </Dialog>
+          </DrawerContent>
+        </DrawerPortal>
+      </Drawer>
     </>
   );
 }

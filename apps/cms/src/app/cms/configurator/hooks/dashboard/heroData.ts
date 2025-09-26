@@ -11,10 +11,10 @@ export function buildHeroData(
   const heroDescription = (() => {
     const remainingRequired = requiredSteps.length - requiredCompleted;
     if (!nextStep) {
-      return "Every foundational step is complete. Review the summary or explore optional enhancements before you launch.";
+      return "Every foundational step is complete. You can launch now or explore optional enhancements.";
     }
     const suffix = remainingRequired === 1 ? "" : "s";
-    return `You are only ${remainingRequired} step${suffix} away from launch. Pick up with ${nextStep.label} to keep momentum.`;
+    return `You are only ${remainingRequired} step${suffix} away from launch.`;
   })();
 
   const essentialProgressLabel = `${requiredCompleted}/${requiredSteps.length || 0} essential steps complete`;
@@ -27,7 +27,7 @@ export function buildHeroData(
         onClick: () => onStepClick(nextStep),
       }
     : {
-        href: "/cms/configurator/summary",
+        href: "/cms/configurator",
         label: "Review configuration",
         isPrimary: false,
       };

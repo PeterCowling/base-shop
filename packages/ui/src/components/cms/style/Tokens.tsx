@@ -222,8 +222,8 @@ export default function Tokens({
   return (
     <div
       ref={containerRef}
-      // Ensure the tokens panel never causes horizontal overflow in dialogs
-      className="max-h-64 w-full space-y-4 overflow-y-auto overflow-x-hidden rounded border p-2"
+      // Allow full content to display without vertical scrolling
+      className="w-full space-y-4 overflow-x-hidden rounded border p-2"
     >
       {showSearch && (
         <Input

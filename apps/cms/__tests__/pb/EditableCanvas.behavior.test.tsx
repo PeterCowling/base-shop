@@ -25,6 +25,19 @@ jest.mock(require.resolve("@ui/components/cms/page-builder/MultiSelectOverlay"),
 jest.mock(require.resolve("@ui/components/cms/page-builder/SelectionQuickActions"), () => stub("quick-actions"));
 jest.mock(require.resolve("@ui/components/cms/page-builder/CommentsLayer"), () => stub("comments-layer"));
 jest.mock(require.resolve("@ui/components/cms/page-builder/CanvasItem"), () => ({ __esModule: true, default: () => <div data-cy="canvas-item" /> }));
+// InlineInsert: provide a lightweight interactive stub used by all tests
+jest.mock(require.resolve("@ui/components/cms/page-builder/InlineInsert"), () => ({
+  __esModule: true,
+  default: (props: any) => (
+    <button
+      type="button"
+      data-cy="inline-insert"
+      onClick={() => props.onInsert({ id: "new1", type: "Text" }, props.index)}
+    >
+      insert
+    </button>
+  ),
+}));
 
 // Hooks with controlled outputs
 jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/useSelectionPositions"), () => ({ __esModule: true, default: () => ({}) }));
@@ -32,7 +45,17 @@ jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/useRulerProps")
 jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/useSelectionGrouping"), () => ({ __esModule: true, default: () => ({ unlockedIds: ["a1"], hasLockedInSelection: true, lockedIds: ["x"] }) }));
 jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/useGroupingActions"), () => ({ __esModule: true, default: () => ({ groupAs: () => {}, ungroup: () => {} }) }));
 jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/useDimLockedSelection"), () => ({ __esModule: true, default: () => {} }));
-jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/useDropHighlight"), () => ({ __esModule: true, default: ({ setDragOver }: any) => ({ dropRect: { left: 1, top: 2, width: 3, height: 4 }, handleDragOver: () => setDragOver(true), clearHighlight: () => setDragOver(false) }) }));
+// Important: return a stable dropRect to avoid infinite re-render loops in
+// EditableCanvas where dropRect changes trigger state updates via useEffect.
+// Using `null` keeps the dependency stable across renders under React.
+jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/useDropHighlight"), () => ({
+  __esModule: true,
+  default: ({ setDragOver }: any) => ({
+    dropRect: null,
+    handleDragOver: () => setDragOver(true),
+    clearHighlight: () => setDragOver(false),
+  }),
+}));
 jest.mock(require.resolve("@ui/components/cms/page-builder/useMarqueeSelect"), () => ({ __esModule: true, default: () => ({ active: true, rect: { left: 10, top: 10, width: 20, height: 20 }, start: () => {} }) }));
 jest.mock(require.resolve("@ui/components/cms/page-builder/collab/usePresence"), () => ({ __esModule: true, default: () => ({ peers: [], softLocksById: {} }) }));
 jest.mock(require.resolve("@ui/components/cms/page-builder/state/layout/utils"), () => ({ __esModule: true, isHiddenForViewport: () => false }));
@@ -100,23 +123,11 @@ describe("EditableCanvas (behavior)", () => {
   });
 
   it("triggers add + selection on inline insert", () => {
-    // Replace InlineInsert with a button that calls onInsert
-    jest.resetModules();
-    jest.doMock(require.resolve("@ui/components/cms/page-builder/InlineInsert"), () => ({
-      __esModule: true,
-      default: (props: any) => (
-        <button data-cy="inline-insert" onClick={() => props.onInsert({ id: "new1", type: "Text" }, props.index)}>
-          insert
-        </button>
-      ),
-    }));
-    const Editable = require("@ui/components/cms/page-builder/EditableCanvas").default as typeof EditableCanvas;
     const dispatch = jest.fn();
     const onSelectIds = jest.fn();
-    render(<Editable {...base} dispatch={dispatch} onSelectIds={onSelectIds} />);
+    render(<EditableCanvas {...base} dispatch={dispatch} onSelectIds={onSelectIds} />);
     fireEvent.click(screen.getAllByTestId("inline-insert")[0]);
     expect(dispatch).toHaveBeenCalledWith(expect.objectContaining({ type: "add", component: expect.objectContaining({ id: "new1" }) }));
     expect(onSelectIds).toHaveBeenCalledWith(["new1"]);
   });
 });
-

@@ -26,7 +26,8 @@ describe("PageBuilder publishing", () => {
 
     expect(localStorage.getItem(storageKey)).not.toBeNull();
 
-    const publishButton = screen.getByText("Publish", { selector: "button" });
+    // Query by accessible name to avoid brittle DOM structure assumptions
+    const publishButton = screen.getByRole("button", { name: "Publish" });
     fireEvent.click(publishButton);
 
     await waitFor(() => expect(localStorage.getItem(storageKey)).toBeNull());

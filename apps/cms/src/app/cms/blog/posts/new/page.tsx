@@ -6,12 +6,11 @@ import { createPost } from "@cms/actions/blog.server";
 import { getSanityConfig } from "@platform-core/shops";
 import { getShopById } from "@platform-core/repositories/shop.server";
 
-export default async function NewPostPage({
-  searchParams,
-}: {
-  searchParams?: { shopId?: string };
+export default async function NewPostPage(props: {
+  searchParams?: Promise<{ shopId?: string }>;
 }) {
-  const shopId = searchParams?.shopId;
+  const sp = (await props.searchParams) ?? undefined;
+  const shopId = sp?.shopId;
   if (!shopId) return <p>No shop selected.</p>;
   const shop = await getShopById(shopId);
   const sanity = getSanityConfig(shop);

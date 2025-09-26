@@ -187,19 +187,23 @@ export function useTokenEditor(
         o.push(info);
       }
     });
-    // Emphasise three-font model and reduce clutter by hiding base plumbing tokens
-    const filteredFonts = f
-      .filter((t) => t.key !== "--font-sans" && t.key !== "--font-mono")
-      .sort((a, b) => {
-        const order = ["--font-body", "--font-heading-1", "--font-heading-2"];
-        const ia = order.indexOf(a.key);
-        const ib = order.indexOf(b.key);
-        if (ia !== -1 && ib !== -1) return ia - ib;
-        if (ia !== -1) return -1;
-        if (ib !== -1) return 1;
-        return a.key.localeCompare(b.key);
-      });
-    return { colors: c, fonts: filteredFonts, others: o };
+    // Keep all font tokens visible to ensure Font group renders consistently
+    const sortedFonts = f.sort((a, b) => {
+      const order = [
+        "--font-sans",
+        "--font-mono",
+        "--font-body",
+        "--font-heading-1",
+        "--font-heading-2",
+      ];
+      const ia = order.indexOf(a.key);
+      const ib = order.indexOf(b.key);
+      if (ia !== -1 && ib !== -1) return ia - ib;
+      if (ia !== -1) return -1;
+      if (ib !== -1) return 1;
+      return a.key.localeCompare(b.key);
+    });
+    return { colors: c, fonts: sortedFonts, others: o };
   }, [tokens, baseTokens]);
 
   return {

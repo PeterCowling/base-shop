@@ -24,13 +24,29 @@ export function useThemeLoader(): React.CSSProperties {
     }
   }, [themeDefaults, setState]);
 
-  /* Load tokens for selected theme */
+  /* Load tokens for selected theme (avoid redundant updates) */
   useEffect(() => {
+    let cancelled = false;
     loadThemeTokens(theme).then((tv) => {
-      setState((prev: ConfiguratorState) => ({ ...prev, themeDefaults: tv }));
+      if (cancelled) return;
+      setState((prev: ConfiguratorState) => {
+        // If nothing actually changed, skip the state update to avoid re-render churn
+        const prevTokens = prev.themeDefaults ?? {};
+        const prevKeys = Object.keys(prevTokens);
+        const nextKeys = Object.keys(tv);
+        if (prevKeys.length === nextKeys.length) {
+          let same = true;
+          for (let i = 0; i < nextKeys.length; i++) {
+            const k = nextKeys[i]!;
+            if (prevTokens[k] !== tv[k]) { same = false; break; }
+          }
+          if (same) return prev;
+        }
+        return { ...prev, themeDefaults: tv } as ConfiguratorState;
+      });
     });
+    return () => { cancelled = true; };
   }, [theme, setState]);
 
   return { ...themeDefaults, ...themeOverrides } as React.CSSProperties;
 }
-

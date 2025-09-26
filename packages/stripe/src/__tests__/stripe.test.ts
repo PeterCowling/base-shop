@@ -25,6 +25,10 @@ describe("stripe client", () => {
       NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_123",
       AUTH_TOKEN_TTL: "15m",
     } as NodeJS.ProcessEnv;
+    // Global test setup defaults STRIPE_USE_MOCK to "true" to keep most tests
+    // isolated from Stripe. This suite verifies behavior of the real client,
+    // so force the real implementation.
+    (process.env as Record<string, string>).STRIPE_USE_MOCK = "false";
     jest.doMock("@acme/config/env/core", () => ({
       coreEnv: { STRIPE_SECRET_KEY: "sk_test_123" },
     }));

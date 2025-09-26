@@ -84,6 +84,9 @@ export interface EmailCampaignComposerProps {
   loadCampaigns: (shop: string) => Promise<CampaignMetrics[]>;
   submitCampaign: (payload: ParsedForm) => Promise<ActionResult>;
   onNotify: (result: ActionResult) => void;
+  /** Preselect a shop and optionally lock the field */
+  defaultShop?: string;
+  lockShop?: boolean;
 }
 
 export type UseEmailCampaignComposerReturn = {
@@ -108,9 +111,10 @@ export function useEmailCampaignComposer({
   loadCampaigns,
   submitCampaign,
   onNotify,
+  defaultShop,
 }: EmailCampaignComposerProps): UseEmailCampaignComposerReturn {
   const [form, setForm] = useState<FormState>(() => ({
-    shop: "",
+    shop: defaultShop ?? "",
     recipients: "",
     segment: "",
     sendAt: "",

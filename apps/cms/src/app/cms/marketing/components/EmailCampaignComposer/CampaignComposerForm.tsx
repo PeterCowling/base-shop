@@ -15,6 +15,7 @@ export interface CampaignComposerFormProps {
   segments: SegmentOption[];
   loadingSegments: boolean;
   isSubmitting: boolean;
+  lockShop?: boolean;
   onFieldChange: (field: keyof FormState, value: string) => void;
   onSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }
@@ -28,6 +29,7 @@ export function CampaignComposerForm({
   isSubmitting,
   onFieldChange,
   onSubmit,
+  lockShop,
 }: CampaignComposerFormProps) {
   return (
     <Card>
@@ -46,6 +48,7 @@ export function CampaignComposerForm({
                 placeholder="bcd"
                 value={form.shop}
                 onChange={(event) => onFieldChange("shop", event.target.value)}
+                disabled={!!lockShop}
                 autoComplete="off"
               />
               <p className="text-xs text-muted-foreground">

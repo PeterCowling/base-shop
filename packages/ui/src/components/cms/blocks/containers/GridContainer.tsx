@@ -86,6 +86,8 @@ export default function GridContainer({
     <div
       className={cn("grid", className)}
       style={{
+        // Explicitly set display to ensure JSDOM exposes it via inline styles in tests
+        display: "grid",
         gridTemplateColumns: autoFit
           ? `repeat(auto-fit, minmax(${minColWidth || "240px"}, 1fr))`
           : `repeat(${effCols}, minmax(0, 1fr))`,

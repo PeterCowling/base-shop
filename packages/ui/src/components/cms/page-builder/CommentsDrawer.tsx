@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "../../atoms/shadcn";
+import { Drawer, DrawerContent, DrawerTitle, DrawerDescription, DrawerPortal } from "../../atoms/primitives/drawer";
+import { OverlayScrim } from "../../atoms";
 import CommentsThreadList from "./CommentsThreadList";
 import CommentsThreadDetails from "./CommentsThreadDetails";
 
@@ -95,12 +96,14 @@ export default function CommentsDrawer(props: CommentsDrawerProps) {
   }, [threads, filter, query, me]);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="fixed right-0 top-0 z-[60] h-screen w-[24rem] max-w-full translate-x-full overflow-hidden border-l bg-surface-3 p-0 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0">
-        <DialogTitle className="sr-only">Comments</DialogTitle>
-        <DialogDescription className="sr-only">
+    <Drawer open={open} onOpenChange={onOpenChange}>
+      <DrawerPortal>
+        <OverlayScrim />
+        <DrawerContent side="right" width="w-[24rem]" className="z-[60] p-0">
+        <DrawerTitle className="sr-only">Comments</DrawerTitle>
+        <DrawerDescription className="sr-only">
           Drawer for viewing, filtering, and managing comment threads.
-        </DialogDescription>
+        </DrawerDescription>
         <div className="flex h-full">
           <CommentsThreadList
             threads={threads}
@@ -132,7 +135,8 @@ export default function CommentsDrawer(props: CommentsDrawerProps) {
             shop={props.shop}
           />
         </div>
-      </DialogContent>
-    </Dialog>
+        </DrawerContent>
+      </DrawerPortal>
+    </Drawer>
   );
 }

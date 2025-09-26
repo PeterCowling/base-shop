@@ -123,7 +123,13 @@ export const incrementQty = (
   qty: number,
   size?: string,
   rental?: RentalLineItem
-) => getDefaultCartStore().incrementQty(id, sku, qty, size, rental);
+) => {
+  const store = getDefaultCartStore();
+  // Only pass `rental` when defined to avoid an extra undefined arg
+  return typeof rental === "undefined"
+    ? store.incrementQty(id, sku, qty, size)
+    : store.incrementQty(id, sku, qty, size, rental);
+};
 export const setQty = (id: string, skuId: string, qty: number) =>
   getDefaultCartStore().setQty(id, skuId, qty);
 export const removeItem = (id: string, skuId: string) =>

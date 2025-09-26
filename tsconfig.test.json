@@ -15,7 +15,13 @@
     "resolveJsonModule": true,
 
     /* test-specific flags ------------------------------------------- */
-    "noEmit": true, // type-check only
+    // Normalize TS program root so ts-jest can always compute emit paths
+    // even when tests are invoked from the repo root targeting package files.
+    "rootDir": ".",
+    // ts-jest requires a concrete outDir when emitting transformed files.
+    // Use a scratch dir so running tests from the repo root or a package
+    // always has a valid compiler output location.
+    "noEmit": false,
     "importsNotUsedAsValues": "remove",
     "verbatimModuleSyntax": false,
     "outDir": ".ts-jest"
@@ -24,7 +30,22 @@
   /* ────────────────────────────────────────────────────────────────────
    *  Which files constitute the *unit-test* compilation boundary
    * ────────────────────────────────────────────────────────────────── */
-  "include": ["jest.setup.ts", "test/**/*.ts", "test/**/*.tsx", "test/**/*.js"],
+  "include": [
+    "jest.setup.ts",
+    "test/**/*.ts",
+    "test/**/*.tsx",
+    "test/**/*.js",
+    // Allow running tests from IDEs or root by including
+    // workspace package/app test files directly.
+    "packages/**/__tests__/**/*.ts",
+    "packages/**/__tests__/**/*.tsx",
+    "packages/**/?(*.)+(spec|test).ts",
+    "packages/**/?(*.)+(spec|test).tsx",
+    "apps/**/__tests__/**/*.ts",
+    "apps/**/__tests__/**/*.tsx",
+    "apps/**/?(*.)+(spec|test).ts",
+    "apps/**/?(*.)+(spec|test).tsx"
+  ],
 
   /* Exclude e2e specs and any test-framework configs of their own ---- */
   "exclude": ["test/e2e/**"],

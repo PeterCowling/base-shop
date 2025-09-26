@@ -30,7 +30,7 @@ export default async function PagesIndexPage() {
             {shops.map((shop) => (
               <Link
                 key={shop}
-                href={`/cms/shop/${shop}/pages`}
+                href={`/cms/shop/${shop}/pages/edit/page`}
                 className="group rounded-2xl border border-border-1 bg-surface-2 px-4 py-5 text-sm font-medium text-foreground shadow-elevation-1 transition hover:border-border-3 hover:bg-surface-3"
               >
                 <span className="block text-xs uppercase tracking-wider text-foreground">

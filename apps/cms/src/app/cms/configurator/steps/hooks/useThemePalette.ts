@@ -85,7 +85,6 @@ export function useThemePalette() {
           const data = JSON.parse(json);
           data.themeOverrides = {};
           localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-          window.dispatchEvent(new CustomEvent("configurator:update"));
         }
       } catch {
         /* ignore */
@@ -107,4 +106,3 @@ export function useThemePalette() {
     handleReset,
   };
 }
-

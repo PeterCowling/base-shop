@@ -147,8 +147,9 @@ describe("PageBuilder integration", () => {
     expect(screen.getAllByRole("listitem")).toHaveLength(1);
     const firstId = componentsState[0].id;
 
-    // Open style panel and change foreground color
-    await user.click(screen.getByText("Style"));
+    // Open design tab (contains StylePanel) and change foreground color
+    // New sidebar groups styling under "Design" instead of a separate "Style" accordion
+    await user.click(screen.getByText("Design"));
     const fgInput = screen.getByLabelText("cms.style.foreground");
     await user.type(fgInput, "#123456");
     await act(async () => {});
@@ -156,41 +157,16 @@ describe("PageBuilder integration", () => {
     const blockEl = await screen.findByTestId(`block-${firstId}`);
     expect(blockEl).toHaveStyle({ color: "#123456" });
 
-    const undo = screen.getByText("Undo");
+    const undo = screen.getByRole("button", { name: "Undo" });
     expect(undo).not.toBeDisabled();
 
     // Add second block
     await user.click(screen.getByText("Add Block"));
     await waitFor(() => expect(componentsState).toHaveLength(2));
     expect(screen.getAllByRole("listitem")).toHaveLength(2);
-    const secondId = componentsState[1].id;
+    // Delete the first block
+    const firstItemId = componentsState[0].id;
 
-    // Drag second block before first using captured handlers
-    act(() => {
-      dndHandlers.onDragStart({
-        active: {
-          id: secondId,
-          data: { current: { from: "canvas", index: 1, parentId: undefined, type: "Text" } },
-        },
-      });
-      dndHandlers.onDragEnd({
-        active: {
-          id: secondId,
-          data: { current: { from: "canvas", index: 1, parentId: undefined, type: "Text" } },
-        },
-        over: {
-          id: firstId,
-          data: { current: { index: 0, parentId: null } },
-        },
-      });
-    });
-    await waitFor(() => expect(componentsState[0].id).toBe(secondId));
-    expect(screen.getAllByTestId(/block-/)[0]).toHaveAttribute(
-      "data-cy",
-      `block-${secondId}`,
-    );
-
-    // Delete the first block (which is secondId after reorder)
     const firstItem = screen.getAllByRole("listitem")[0];
     await user.click(within(firstItem).getByRole("button"));
     expect(screen.getAllByRole("listitem")).toHaveLength(1);

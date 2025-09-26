@@ -11,16 +11,12 @@ describe("CMS – Configurator launch (SSE stub)", () => {
       "shop-details": "complete",
       theme: "complete",
       tokens: "complete",
-      options: "complete",
-      navigation: "complete",
-      layout: "complete",
-      "home-page": "complete",
+      "payment-provider": "complete",
+      shipping: "complete",
       "checkout-page": "complete",
-      "shop-page": "complete",
-      "product-page": "complete",
-      "additional-pages": "complete",
+      inventory: "complete",
       "env-vars": "complete",
-      summary: "complete",
+      hosting: "complete",
     };
 
     cy.intercept('GET', '/api/configurator-progress', {
@@ -64,4 +60,3 @@ describe("CMS – Configurator launch (SSE stub)", () => {
     });
   });
 });
-

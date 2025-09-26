@@ -11,9 +11,6 @@ export interface ConfiguratorStepProps {
   setContactInfo: (v: string) => void;
   type: "sale" | "rental";
   setType: (v: "sale" | "rental") => void;
-  template: string;
-  setTemplate: (v: string) => void;
-  templates: string[];
   errors?: Record<string, string[]>;
   themes: string[];
   prevStepId?: string;

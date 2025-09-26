@@ -21,6 +21,8 @@ function ShellLayout({
   className,
 }: AppShellProps) {
   const { isMobileNavOpen } = useLayout();
+  const hasChildren = React.Children.count(children) > 0;
+  const showSideNav = Boolean(isMobileNavOpen && sideNav);
 
   return (
     <div
@@ -28,10 +30,12 @@ function ShellLayout({
       className={cn("flex min-h-screen flex-col", className)}
     >
       {header}
-      <div className="flex flex-1">
-        {isMobileNavOpen && sideNav}
-        <main className="flex-1">{children}</main>
-      </div>
+      {(showSideNav || hasChildren) ? (
+        <div className="flex flex-1">
+          {showSideNav && sideNav}
+          {hasChildren && <main className="flex-1">{children}</main>}
+        </div>
+      ) : null}
       {footer}
     </div>
   );

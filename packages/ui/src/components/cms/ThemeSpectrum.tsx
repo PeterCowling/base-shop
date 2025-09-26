@@ -38,7 +38,7 @@ export default function ThemeSpectrum(): React.JSX.Element {
   return (
     <div className="space-y-3">
       <div className="space-y-1">
-        <h3 className="text-lg font-semibold">Theme color spectrum</h3>
+        <h3 className="text-lg font-semibold">Create a New Theme</h3>
         <p className="text-sm text-muted-foreground">
           Full ramp per family with token usage highlights.
         </p>

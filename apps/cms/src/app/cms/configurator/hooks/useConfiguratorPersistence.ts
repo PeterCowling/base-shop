@@ -60,21 +60,20 @@ export function useConfiguratorPersistence(
 ] {
   const [saving, setSaving] = useState(false);
   const hydratedRef = useRef(false);
+  const loadedRef = useRef(false);
   const lastSavedDataHash = useRef<string | null>(null);
-  /* Load persisted state on mount (skip if already hydrated with non-empty state) */
+  /* Load persisted state once on mount */
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (hydratedRef.current) return;
-    const hasState = state && (Object.keys(state).length > 0);
-    if (hasState && (state.completed && Object.keys(state.completed ?? {}).length > 0)) {
-      hydratedRef.current = true;
-      return;
-    }
+    hydratedRef.current = true; // guard against re-entry (StrictMode, re-renders)
+
     const legacy = localStorage.getItem(LEGACY_STORAGE_KEY);
     if (legacy && !localStorage.getItem(STORAGE_KEY)) {
       localStorage.setItem(STORAGE_KEY, legacy);
       localStorage.removeItem(LEGACY_STORAGE_KEY);
     }
+
     fetch("/cms/api/configurator-progress")
       .then((res) => (res.ok ? res.json() : null))
       .then((json) => {
@@ -86,33 +85,39 @@ export function useConfiguratorPersistence(
             /* ignore */
           }
         }
-        if (!source) return;
+        if (!source) {
+          loadedRef.current = true;
+          return;
+        }
         const parsed = configuratorStateSchema.safeParse({
           ...(source.state ?? source),
           completed: source.completed ?? {},
         });
         if (parsed.success) {
           setState(parsed.data);
-          hydratedRef.current = true;
           try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed.data));
             window.dispatchEvent(new CustomEvent("configurator:update"));
           } catch {
             /* ignore */
           }
+          loadedRef.current = true;
         } else {
           resetConfiguratorProgress();
           onInvalid?.();
+          loadedRef.current = true;
         }
       })
       .catch(() => {
         /* ignore */
+        loadedRef.current = true;
       });
-  }, [setState, onInvalid, state]);
+  }, []);
 
   /* Persist whenever the state changes (skip if no meaningful change) */
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (!loadedRef.current) return; // wait until initial load completes
     // Hash only the data portion (exclude `completed`, saved separately via PATCH)
     const { completed: _completed, ...data } = state;
     void _completed;

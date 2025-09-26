@@ -10,6 +10,7 @@
  */
 
 const path = require("path");
+const fs = require("fs");
 
 const {
   resolveRoot,
@@ -91,7 +92,13 @@ const config = {
     "^.+\\.(ts|tsx)$": [
       "ts-jest",
       {
-        tsconfig: path.join(process.cwd(), "tsconfig.test.json"),
+        // Prefer package-local tsconfig when available; otherwise fall back
+        // to the monorepo root test config to guarantee a concrete outDir.
+        tsconfig: (() => {
+          const pkgTs = path.join(process.cwd(), "tsconfig.test.json");
+          if (fs.existsSync(pkgTs)) return pkgTs;
+          return path.join(__dirname, "tsconfig.test.json");
+        })(),
         useESM,
         diagnostics: false,
         babelConfig: false,

@@ -1,6 +1,7 @@
 "use client";
 
 import { Toast } from "@/components/atoms";
+import { ButtonElement } from "./components/DashboardPrimitives";
 import ConfiguratorStepList from "./components/ConfiguratorStepList";
 import { ConfiguratorHero } from "./components/ConfiguratorHero";
 import { LaunchPanel } from "./components/LaunchPanel";
@@ -40,6 +41,20 @@ export default function ConfiguratorDashboard() {
         />
         <div className="space-y-6">
           <TrackProgressList items={trackProgress} />
+          <div className="flex justify-center">
+            <ButtonElement
+              onClick={launchPanelData.onLaunch}
+              disabled={!launchPanelData.allRequiredDone}
+              className={
+                (launchPanelData.allRequiredDone
+                  ? "bg-primary text-primary-fg hover:bg-primary/90 "
+                  : "opacity-60 cursor-not-allowed ") +
+                "h-16 w-48 rounded-full text-2xl font-extrabold"
+              }
+            >
+              GO
+            </ButtonElement>
+          </div>
         </div>
       </section>
 

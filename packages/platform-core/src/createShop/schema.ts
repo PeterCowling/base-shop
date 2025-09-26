@@ -69,13 +69,19 @@ export const createShopOptionsSchema = z
 
 export type CreateShopOptions = z.infer<typeof createShopOptionsSchema>;
 
+export type PreparedAnalyticsOptions = {
+  enabled: boolean;
+  provider: string;
+  id?: string;
+};
+
 export type PreparedCreateShopOptions = Required<
   Omit<
     CreateShopOptions,
     "analytics" | "checkoutPage" | "sanityBlog" | "enableEditorial" | "enableSubscriptions"
   >
 > & {
-  analytics?: CreateShopOptions["analytics"];
+  analytics: PreparedAnalyticsOptions;
   sanityBlog?: CreateShopOptions["sanityBlog"];
   enableEditorial: boolean;
   enableSubscriptions: boolean;

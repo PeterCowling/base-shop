@@ -20,6 +20,7 @@ export default function ShopSelector() {
 
   const pathname = usePathname() ?? "";
   const router = useRouter();
+  // No theme tracking needed here; shadcn Select is fully styled.
 
   useEffect(() => {
     async function fetchShops() {
@@ -72,8 +73,16 @@ export default function ShopSelector() {
     );
 
   return (
-    <Select value={selected ?? undefined} onValueChange={changeShop}>
-      <SelectTrigger className="w-36">
+    <Select
+      value={selected ?? ""}
+      onValueChange={(v) => changeShop(v)}
+      data-cy="shop-select"
+    >
+      <SelectTrigger
+        data-cy="shop-select"
+        aria-label="Shop"
+        className="w-36"
+      >
         <SelectValue placeholder="Select shop" />
       </SelectTrigger>
       <SelectContent>

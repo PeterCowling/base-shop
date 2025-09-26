@@ -33,10 +33,8 @@ export async function verifyMfa(
     where: { customerId },
   });
   if (!record) return false;
-  // Configure a tolerance window for time drift without mutating the shared instance
-  const at = authenticator.clone();
-  at.options = { ...at.options, window: 1 };
-  const valid = at.verify({ token, secret: record.secret });
+  // Use the shared authenticator and pass a ±1 step window explicitly
+  const valid = authenticator.verify({ token, secret: record.secret, window: 1 });
   if (valid && !record.enabled) {
     await prisma.customerMfa.update({
       where: { customerId },

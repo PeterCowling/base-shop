@@ -2,6 +2,7 @@
 
 import { withThemeByClassName } from "@storybook/addon-themes";
 import type { Decorator, Preview } from "@storybook/react";
+import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 import "../apps/cms/src/app/globals.css";
 
 export const globalTypes = {
@@ -36,6 +37,16 @@ const preview: Preview = {
       },
       defaultTheme: "light",
     }),
+    // Opt-in cart provider: set `parameters: { cart: true }` in a story to wrap it
+    ((Story, ctx) => {
+      const { cart } = (ctx.parameters as any) ?? {};
+      if (!cart) return <Story />;
+      return (
+        <CartProvider>
+          <Story />
+        </CartProvider>
+      );
+    }) as Decorator,
   ],
 };
 

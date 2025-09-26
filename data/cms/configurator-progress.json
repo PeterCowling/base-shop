@@ -35,9 +35,13 @@
       "checkoutLayout": "",
       "analyticsProvider": "",
       "analyticsId": "",
+      "inventoryTracking": true,
+      "lowStockThreshold": 5,
+      "backorderPolicy": "deny",
+      "defaultStockLocation": "main",
       "navItems": [
         {
-          "id": "01K5YH7AW4ZG9S8PGCQCCWTF0P",
+          "id": "01K630Y1Z9XQ0J1GJVD3PBT23F",
           "label": "Shop",
           "url": "https://example.com/shop"
         }

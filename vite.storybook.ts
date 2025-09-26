@@ -18,6 +18,10 @@ export default defineConfig({
         __dirname,
         "./packages/tailwind-config/src"
       ),
+      "@acme/platform-core/contexts/CartContext": path.resolve(
+        __dirname,
+        "./.storybook/mocks/CartContext.tsx"
+      ),
     },
   },
   optimizeDeps: { entries: [] },

@@ -4,22 +4,15 @@ import type { ConfiguratorState, PageInfo } from "../../wizard/schema";
 type Validator = (state: ConfiguratorState) => boolean;
 
 export const validators: Record<string, Validator> = {
+  "shop-type": (s) => Boolean(s.type),
   "shop-details": (s) => Boolean(s.shopId && s.storeName),
   theme: (s) => Boolean(s.theme),
   tokens: (s) => Object.keys(s.themeDefaults ?? {}).length > 0,
-  options: (s) => s.analyticsProvider !== "ga" || Boolean(s.analyticsId),
-  navigation: (s) => s.navItems.length > 0,
-  layout: (s) => Boolean(s.headerPageId && s.footerPageId),
-  "home-page": (s) => Boolean(s.homePageId),
+  // Validate analytics setup under the Payment Provider step (GA requires Measurement ID)
+  "payment-provider": (s) => s.analyticsProvider !== "ga" || Boolean(s.analyticsId),
   "checkout-page": (s) => Boolean(s.checkoutPageId),
-  "shop-page": (s) => Boolean(s.shopPageId),
-  "product-page": (s) => Boolean(s.productPageId),
-  "additional-pages": (s) =>
-    s.pages.every((p: PageInfo) => Boolean(p.slug)),
+  inventory: (s) => typeof s.inventoryTracking !== "undefined",
   "env-vars": (s) => Object.values(s.env).some(Boolean),
-  summary: (s) =>
-    Object.values(s.pageTitle).some(Boolean) &&
-    Object.values(s.pageDescription).some(Boolean),
   "import-data": (s) => Boolean(s.categoriesText),
   "seed-data": (s) => Boolean(s.categoriesText),
   hosting: (s) => Boolean(s.domain),

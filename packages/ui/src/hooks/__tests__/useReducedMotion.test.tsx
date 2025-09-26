@@ -41,5 +41,36 @@ describe("useReducedMotion", () => {
     act(() => mq.dispatch(true));
     expect(result.current).toBe(true);
   });
-});
 
+  test("falls back to legacy addListener when addEventListener is missing", () => {
+    const listeners: Array<() => void> = [];
+    const mq: any = {
+      matches: false,
+      media: "(prefers-reduced-motion: reduce)",
+      // no addEventListener -> triggers catch block path
+      addListener: (cb: () => void) => listeners.push(cb),
+      removeListener: (cb: () => void) => {
+        const i = listeners.indexOf(cb);
+        if (i >= 0) listeners.splice(i, 1);
+      },
+      dispatch(next: boolean) {
+        this.matches = next;
+        listeners.forEach((l) => l());
+      },
+    };
+    window.matchMedia = () => mq;
+
+    const { result } = renderHook(() => useReducedMotion());
+    expect(result.current).toBe(false);
+
+    act(() => mq.dispatch(true));
+    expect(result.current).toBe(true);
+  });
+
+  test("returns default false when matchMedia is unavailable", () => {
+    // @ts-expect-error force undefined for branch coverage
+    window.matchMedia = undefined;
+    const { result } = renderHook(() => useReducedMotion());
+    expect(result.current).toBe(false);
+  });
+});

@@ -62,7 +62,7 @@ describe("Table", () => {
     );
     expect(ref.current).toBeInstanceOf(HTMLTableSectionElement);
     const header = container.querySelector("thead");
-    expect(header).toHaveClass("bg-muted/50", "border-b", "custom-header");
+    expect(header).toHaveClass("bg-panel", "border-b", "border-border-2", "custom-header");
   });
 
   it("merges classes and forwards ref for TableBody", () => {
@@ -98,9 +98,10 @@ describe("Table", () => {
     const row = container.querySelector("tr");
     expect(row).toHaveAttribute("data-state", "selected");
     expect(row).toHaveClass(
-      "hover:bg-muted/25",
-      "data-[state=selected]:bg-muted",
+      "hover:bg-surface-2",
+      "data-[state=selected]:bg-surface-3",
       "border-b",
+      "border-border-1",
       "transition-colors",
       "custom-row"
     );

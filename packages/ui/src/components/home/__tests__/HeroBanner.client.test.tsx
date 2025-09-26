@@ -1,7 +1,17 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import HeroBanner from "../HeroBanner.client";
 
-jest.mock("next/image", () => (props: any) => <img {...props} />);
+// Mock next/image to render a plain img without passing Next-only boolean props
+jest.mock("next/image", () => ({
+  __esModule: true,
+  default: ({ unoptimized, priority, fill, placeholder, ...rest }: any) => (
+    // Strip Next-specific boolean props to avoid React DOM warnings in tests
+    // like "Received `true` for a non-boolean attribute `fill`".
+    // We intentionally forward the remaining props to a plain img element.
+    // eslint-disable-next-line jsx-a11y/alt-text
+    <img {...rest} />
+  ),
+}));
 
 const tMock = jest.fn((key: string) => key);
 jest.mock("@acme/i18n", () => ({
@@ -25,7 +35,11 @@ describe("HeroBanner.client", () => {
   });
 
   afterEach(() => {
-    jest.runOnlyPendingTimers();
+    // Flushing pending timers can trigger state updates; wrap in act to
+    // avoid React's act() warnings in Jest.
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     jest.useRealTimers();
     jest.clearAllMocks();
   });
@@ -86,4 +100,3 @@ describe("HeroBanner.client", () => {
     ).toBeInTheDocument();
   });
 });
-

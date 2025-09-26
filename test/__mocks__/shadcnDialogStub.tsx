@@ -81,10 +81,33 @@ export function DialogTitle({ children, ...props }: React.HTMLAttributes<HTMLHea
 type ButtonStubProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   asChild?: boolean;
   variant?: string;
+  // Non-DOM props supported by our real Button; ensure they don't leak to DOM
+  iconOnly?: boolean;
+  leadingIcon?: React.ReactNode;
+  trailingIcon?: React.ReactNode;
+  iconSize?: "sm" | "md" | "lg";
+  size?: "icon" | "sm";
+  tone?: string;
+  color?: string;
 };
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonStubProps>(
-  ({ asChild = false, children, className, onClick, variant: _variant, ...rest }, ref) => {
+  ({
+    asChild = false,
+    children,
+    className,
+    onClick,
+    variant: _variant,
+    // strip non-DOM props to avoid React warnings in tests
+    iconOnly: _iconOnly,
+    leadingIcon: _leadingIcon,
+    trailingIcon: _trailingIcon,
+    iconSize: _iconSize,
+    size: _size,
+    tone: _tone,
+    color: _color,
+    ...rest
+  }, ref) => {
     if (asChild && React.isValidElement(children)) {
       const childProps = children.props as Record<string, unknown>;
       const combinedClassName = [childProps.className, className]
@@ -92,9 +115,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonStubProps>(
         .join(" ")
         .trim();
 
-      const mergedProps: Record<string, unknown> = {
-        ...rest,
-      };
+      const mergedProps: Record<string, unknown> = { ...rest };
 
       if (combinedClassName) {
         mergedProps.className = combinedClassName;

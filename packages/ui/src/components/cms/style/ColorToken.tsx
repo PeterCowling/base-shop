@@ -3,14 +3,14 @@
 import { ColorInput } from "../index";
 import type { TokenInfo, TokenMap } from "../../../hooks/useTokenEditor";
 import { useTokenColors } from "../../../hooks/useTokenColors";
+import { hexToHsl, isHex } from "../../../utils/colorUtils";
+import { ReactElement } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../../atoms/shadcn";
-import { hexToHsl, isHex } from "../../../utils/colorUtils";
-import { ReactElement } from "react";
 
 interface ColorTokenProps extends Omit<TokenInfo, "key"> {
   tokenKey: string;
@@ -80,7 +80,8 @@ export function ColorToken({
     onReplaceColor(tokenKey, normalized);
   };
 
-  const showAdvanced = showExtras && Boolean(onRenameToken || onReplaceColor);
+  // Advanced menu disabled on this screen to avoid ref thrash in nested menus
+  const showAdvanced = false;
 
   return (
     <label
@@ -103,6 +104,31 @@ export function ColorToken({
               Eyedropper
             </button>
           )}
+          {showExtras && (onRenameToken || onReplaceColor) && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button
+                  type="button"
+                  aria-label={`More actions for ${tokenKey}`}
+                  className="rounded border px-2 py-1 text-xs"
+                >
+                  •••
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                {onRenameToken && (
+                  <DropdownMenuItem onSelect={() => handleRename()}>
+                    Rename token…
+                  </DropdownMenuItem>
+                )}
+                {onReplaceColor && (
+                  <DropdownMenuItem onSelect={() => handleReplace()}>
+                    Replace across tokens…
+                  </DropdownMenuItem>
+                )}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
         {isOverridden && (
           <button
@@ -113,31 +139,7 @@ export function ColorToken({
             Reset
           </button>
         )}
-        {showAdvanced && (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                type="button"
-                className="rounded border px-2 py-1 text-xs"
-                aria-label={`More actions for ${tokenKey}`}
-              >
-                ⋯
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48 text-xs">
-              {onRenameToken && (
-                <DropdownMenuItem onSelect={handleRename}>
-                  Rename token…
-                </DropdownMenuItem>
-              )}
-              {onReplaceColor && (
-                <DropdownMenuItem onSelect={handleReplace}>
-                  Replace across tokens…
-                </DropdownMenuItem>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )}
+        {/* Advanced menu hidden for stability */}
       </span>
       {defaultValue && (
         <span className="text-xs text-muted-foreground">

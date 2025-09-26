@@ -39,21 +39,25 @@ export function SearchBar({
 
   useEffect(() => {
     if (isSelecting || !focused) {
-      setMatches([]);
-      setHighlightedIndex(-1);
+      setMatches((prev) => (prev.length ? [] : prev));
+      setHighlightedIndex((prev) => (prev !== -1 ? -1 : prev));
       return;
     }
     if (!query) {
-      setMatches([]);
-      setHighlightedIndex(-1);
+      setMatches((prev) => (prev.length ? [] : prev));
+      setHighlightedIndex((prev) => (prev !== -1 ? -1 : prev));
       return;
     }
     const q = query.toLowerCase();
     const nextMatches = suggestions
       .filter((s) => s.toLowerCase().includes(q))
       .slice(0, 5);
-    setMatches(nextMatches);
-    setHighlightedIndex(-1);
+    setMatches((prev) =>
+      prev.length === nextMatches.length && prev.every((v, i) => v === nextMatches[i])
+        ? prev
+        : nextMatches
+    );
+    setHighlightedIndex((prev) => (prev !== -1 ? -1 : prev));
   }, [query, suggestions, isSelecting, focused]);
 
   const handleSelect = (value: string) => {

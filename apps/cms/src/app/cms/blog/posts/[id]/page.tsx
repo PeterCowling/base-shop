@@ -13,14 +13,12 @@ import DeleteButton from "../DeleteButton.client";
 
 interface Params {
   params: { id: string };
-  searchParams?: { shopId?: string };
+  searchParams?: Promise<{ shopId?: string }>;
 }
 
-export default async function EditPostPage({
-  params,
-  searchParams,
-}: Params) {
-  const shopId = searchParams?.shopId;
+export default async function EditPostPage({ params, searchParams }: Params) {
+  const sp = (await searchParams) ?? undefined;
+  const shopId = sp?.shopId;
   if (!shopId) return notFound();
   const shop = await getShopById(shopId);
   const sanity = getSanityConfig(shop);

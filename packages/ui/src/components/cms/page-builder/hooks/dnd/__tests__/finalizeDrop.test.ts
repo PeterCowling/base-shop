@@ -89,4 +89,18 @@ describe("finalizeDrop", () => {
     const add = (dispatch as jest.Mock).mock.calls.find((c) => c[0]?.type === "add")?.[0];
     expect((add?.component as any).slotKey).toBe("1");
   });
+
+  test("library drop with invalid type emits message and no add", () => {
+    const rules = require("../../../rules");
+    // First clone invalid
+    rules.canDropChild.mockReturnValueOnce(false);
+    const ev: any = {
+      active: { id: "drag", data: { current: { from: "library", templates: [{ id: "t1", type: "Hero" }] } } },
+      over: { id: "container-p", data: { current: { parentId: "p", index: 0 } } },
+    };
+    const dispatch = jest.fn();
+    finalizeDrop({ ...baseArgs, ev, dispatch });
+    const add = (dispatch as jest.Mock).mock.calls.find((c) => c[0]?.type === "add");
+    expect(add).toBeUndefined();
+  });
 });

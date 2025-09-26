@@ -24,11 +24,14 @@ export default async function PageBuilderRoute({
   const current = pages.find((p) => p.slug === key || p.id === key);
   if (!current) return notFound();
   const pagesNav = {
-    items: pages.map((p) => ({
-      label: (p.slug || p.id),
-      value: (p.slug || p.id),
-      href: `/cms/shop/${shop}/pages/${p.slug || p.id}/builder`,
-    })),
+    items: [
+      { label: "New page", value: "__new__", href: `/cms/shop/${shop}/pages/new/page` },
+      ...pages.map((p) => ({
+        label: (p.slug || p.id),
+        value: (p.slug || p.id),
+        href: `/cms/shop/${shop}/pages/${p.slug || p.id}/builder`,
+      })),
+    ],
     current: (current.slug || current.id),
   } as const;
 

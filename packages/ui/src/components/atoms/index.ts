@@ -47,9 +47,12 @@ export {
   DrawerTrigger,
   DrawerPortal,
   DrawerOverlay,
+  DrawerTitle,
+  DrawerDescription,
   DrawerContent,
   type DrawerContentProps,
 } from "./primitives/drawer";
+export { OverlayScrim } from "./primitives/overlayScrim";
 export { ARViewer } from "./ARViewer";
 export { Avatar } from "./Avatar";
 export { Chip } from "./Chip";

@@ -55,4 +55,30 @@ describe("useProductEditorNotifications", () => {
 
     expect(result.current.toast.open).toBe(false);
   });
+
+  it("exposes closeToast to manually hide", () => {
+    const { result } = renderHook(() =>
+      useProductEditorNotifications({ saving: true, hasErrors: false, autoCloseMs: 10000 }),
+    );
+
+    expect(result.current.toast.open).toBe(true);
+
+    act(() => {
+      result.current.closeToast();
+    });
+
+    expect(result.current.toast.open).toBe(false);
+  });
+
+  it("cleans up timeout subscription on unmount", () => {
+    const clearSpy = jest.spyOn(window, "clearTimeout");
+    const { unmount } = renderHook(() =>
+      useProductEditorNotifications({ saving: true, hasErrors: false, autoCloseMs: 5000 }),
+    );
+
+    // Unmount while timer active triggers cleanup
+    unmount();
+    expect(clearSpy).toHaveBeenCalled();
+    clearSpy.mockRestore();
+  });
 });

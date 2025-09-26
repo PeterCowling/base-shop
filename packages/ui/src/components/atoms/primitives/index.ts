@@ -1,4 +1,10 @@
 // packages/ui/components/atoms/primitives/index.ts
+export * from "./Stack";
+export * from "./Inline";
+export * from "./Grid";
+export * from "./Sidebar";
+export * from "./Cluster";
+export * from "./Cover";
 export * from "./button";
 export * from "./accordion";
 export * from "./card";

@@ -7,9 +7,13 @@ import ProductFilter, { type FacetConfig } from "./ProductFilter";
 export interface CollectionClientProps extends React.HTMLAttributes<HTMLDivElement> {
   initial: SKU[];
   params: Record<string, string | undefined>;
+  paginationMode?: "loadMore" | "ssr";
+  pageSize?: number;
+  seoText?: string;
+  seoCollapsible?: boolean;
 }
 
-export default function CollectionSectionClient({ initial, params, className, ...rest }: CollectionClientProps) {
+export default function CollectionSectionClient({ initial, params, paginationMode = "loadMore", pageSize = 12, seoText, seoCollapsible = true, className, ...rest }: CollectionClientProps) {
   const [items, setItems] = React.useState<SKU[]>(initial);
   const [sort, setSort] = React.useState<string>(params.sort ?? "");
   const [size, setSize] = React.useState<string>(params.size ?? "");
@@ -45,6 +49,12 @@ export default function CollectionSectionClient({ initial, params, className, ..
         const col = (params.slug ?? "").toString();
         const url = new URL(`/api/collections/${encodeURIComponent(col)}`, window.location.origin);
         if (sort) url.searchParams.set("sort", sort);
+        if (paginationMode === "ssr") {
+          const page = sp?.get("page") ?? "1";
+          const ps = sp?.get("pageSize") ?? String(pageSize);
+          url.searchParams.set("page", page);
+          url.searchParams.set("pageSize", ps);
+        }
         const res = await fetch(url.toString(), { signal: controller.signal });
         if (!res.ok) return;
         const data = (await res.json()) as { items?: SKU[] } | SKU[];
@@ -62,9 +72,16 @@ export default function CollectionSectionClient({ initial, params, className, ..
     };
     void load();
     return () => controller.abort();
-  }, [sp, params.slug, sort, size, color, price.min, price.max]);
+  }, [sp, params.slug, sort, size, color, price.min, price.max, paginationMode, pageSize]);
 
   const facetConfig: FacetConfig = { size: true, color: true, price: true };
+
+  const [page, setPage] = React.useState<number>(() => Number(sp?.get("page") ?? 1));
+  React.useEffect(() => {
+    setPage(Number(sp?.get("page") ?? 1));
+  }, [sp]);
+
+  const total = items.length; // best-effort; API should include total for real impl
 
   return (
     <div className={className} {...rest}>
@@ -99,6 +116,30 @@ export default function CollectionSectionClient({ initial, params, className, ..
                 </div>
               ))}
             </div>
+            {paginationMode === "ssr" ? (
+              <div className="mt-6 flex items-center justify-between text-sm">
+                <button
+                  className="rounded border px-3 py-1 disabled:opacity-50"
+                  disabled={page <= 1}
+                  onClick={() => updateUrl({ page: String(Math.max(1, page - 1)), pageSize: String(pageSize) })}
+                >
+                  Previous
+                </button>
+                <span>Page {page}</span>
+                <button
+                  className="rounded border px-3 py-1"
+                  onClick={() => updateUrl({ page: String(page + 1), pageSize: String(pageSize) })}
+                >
+                  Next
+                </button>
+              </div>
+            ) : null}
+            {seoText ? (
+              <details className="mt-8" open={!seoCollapsible}>
+                <summary className="cursor-pointer select-none text-sm font-medium">About this collection</summary>
+                <div className="prose mt-2 max-w-none text-sm text-neutral-700" dangerouslySetInnerHTML={{ __html: seoText }} />
+              </details>
+            ) : null}
           </section>
         </div>
       </div>

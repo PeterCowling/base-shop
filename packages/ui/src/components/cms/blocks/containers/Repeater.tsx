@@ -1,7 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
-import { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef, useEffect } from "react";
 import { ItemProvider, useDataset, useDatasetState } from "../data/DataContext";
 
 export interface RepeaterProps {
@@ -32,6 +31,10 @@ export interface RepeaterProps {
   /** Client-side load more */
   initialCount?: number;
   increment?: number;
+  /** Infinite scroll mode; when enabled, auto-loads more as user nears end */
+  mode?: "default" | "infinite";
+  /** Root margin for intersection observer */
+  infiniteOffset?: string;
 }
 
 export default function Repeater({
@@ -55,6 +58,8 @@ export default function Repeater({
   ErrorState,
   initialCount,
   increment = 4,
+  mode = "default",
+  infiniteOffset = "200px",
 }: RepeaterProps) {
   const base = useDataset<unknown>();
   const state = useDatasetState();
@@ -129,6 +134,25 @@ export default function Repeater({
   });
   const list = useMemo(() => baseList.slice(0, visible), [baseList, visible]);
 
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (mode !== "infinite") return;
+    const el = sentinelRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setVisible((v) => Math.min(baseList.length, v + Math.max(1, increment)));
+          }
+        });
+      },
+      { root: null, rootMargin: infiniteOffset, threshold: 0 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [mode, baseList.length, increment, infiniteOffset]);
+
   const effColumns = (() => {
     if (pbViewport === "desktop" && typeof columnsDesktop === "number") return columnsDesktop;
     if (pbViewport === "tablet" && typeof columnsTablet === "number") return columnsTablet;
@@ -161,13 +185,17 @@ export default function Repeater({
         </ItemProvider>
       ))}
       {baseList.length > visible ? (
-        <button
-          type="button"
-          onClick={() => setVisible((v) => Math.min(baseList.length, v + Math.max(1, increment)))}
-          style={{ gridColumn: `span ${effColumns} / span ${effColumns}` }}
-        >
-          Load more
-        </button>
+        mode === "infinite" ? (
+          <div ref={sentinelRef} style={{ gridColumn: `span ${effColumns} / span ${effColumns}` }} aria-hidden />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setVisible((v) => Math.min(baseList.length, v + Math.max(1, increment)))}
+            style={{ gridColumn: `span ${effColumns} / span ${effColumns}` }}
+          >
+            Load more
+          </button>
+        )
       ) : null}
     </div>
   );

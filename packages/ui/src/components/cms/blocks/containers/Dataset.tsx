@@ -25,6 +25,12 @@ export interface DatasetProps {
   sortOrder?: "asc" | "desc";
   /** Optional dynamic route template for items, e.g. "/blog/{slug}" */
   itemRoutePattern?: string;
+  /** Optional cache key to memoize fetch results across mounts */
+  cacheKey?: string;
+  /** TTL in ms for the cache entry; defaults to no TTL */
+  ttlMs?: number;
+  /** Optional transform for light manipulation (map/filter) */
+  transform?: (items: unknown[]) => unknown[];
   className?: string;
 }
 
@@ -48,16 +54,30 @@ export default function Dataset({
 }: DatasetProps) {
   const [items, setItems] = useState<unknown[]>(Array.isArray(skus) ? skus : []);
   const [state, setState] = useState<"idle" | "loading" | "loaded" | "error">("idle");
+  const keyParts = [source, collectionId, shopId].filter(Boolean).join(":");
+  const computedKey = (cacheKey || keyParts) + (limit ? `:limit=${limit}` : "") + (sortBy ? `:sort=${sortBy}:${sortOrder}` : "");
+
+  // very light in-memory cache (per module)
+  const cache = getDatasetCache();
 
   useEffect(() => {
     let cancelled = false;
     const load = async () => {
+      // cache check
+      const cached = cache.get(computedKey);
+      if (cached && (!cached.expiresAt || cached.expiresAt > Date.now())) {
+        setItems(cached.items);
+        setState("loaded");
+        return;
+      }
       if (source === "products" && collectionId) {
         setState("loading");
         try {
           const fetched = await fetchCollection(collectionId);
           if (!cancelled) {
-            setItems(fetched as unknown[]);
+            const list = (fetched as unknown[]) ?? [];
+            setItems(list);
+            cache.set(computedKey, list, ttlMs);
             setState("loaded");
           }
         } catch (err) {
@@ -68,7 +88,9 @@ export default function Dataset({
           }
         }
       } else if (source === "manual") {
-        setItems(Array.isArray(skus) ? (skus as unknown[]) : []);
+        const list = Array.isArray(skus) ? (skus as unknown[]) : [];
+        setItems(list);
+        cache.set(computedKey, list, ttlMs);
         setState("loaded");
       } else if (source === "blog" || source === "sanity") {
         setState("loading");
@@ -78,7 +100,9 @@ export default function Dataset({
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const posts = (await res.json()) as unknown[];
           if (!cancelled) {
-            setItems(posts);
+            const list = posts ?? [];
+            setItems(list);
+            cache.set(computedKey, list, ttlMs);
             setState("loaded");
           }
         } catch (err) {
@@ -98,7 +122,7 @@ export default function Dataset({
     return () => {
       cancelled = true;
     };
-  }, [source, collectionId, shopId, skus]);
+  }, [source, collectionId, shopId, skus, computedKey, ttlMs]);
 
   const processed = useMemo(() => {
     let list = Array.isArray(items) ? [...items] : [];
@@ -121,8 +145,11 @@ export default function Dataset({
       });
     }
     if (typeof limit === "number") list = list.slice(0, Math.max(0, limit));
+    if (typeof transform === "function") {
+      try { list = transform(list) ?? list; } catch {}
+    }
     return list;
-  }, [items, sortBy, sortOrder, limit]);
+  }, [items, sortBy, sortOrder, limit, transform]);
 
   return (
     <div className={className} data-dataset-source={source}>
@@ -131,4 +158,20 @@ export default function Dataset({
       </DatasetProvider>
     </div>
   );
+}
+
+// simple module-local cache util
+type CacheEntry = { items: unknown[]; expiresAt?: number };
+const __cache: Map<string, CacheEntry> = new Map();
+function getDatasetCache() {
+  return {
+    get(key: string): CacheEntry | undefined {
+      return __cache.get(key);
+    },
+    set(key: string, items: unknown[], ttlMs?: number) {
+      const entry: CacheEntry = { items };
+      if (typeof ttlMs === "number" && ttlMs > 0) entry.expiresAt = Date.now() + ttlMs;
+      __cache.set(key, entry);
+    },
+  };
 }

@@ -66,7 +66,7 @@ export default [
   /* ▸ UI published components: disallow Tailwind palette colors; use tokens */
   {
     files: ["packages/ui/src/components/**/*.{ts,tsx,js,jsx}"],
-    excludedFiles: ["packages/ui/src/components/cms/**/*"],
+    ignores: ["packages/ui/src/components/cms/**/*"],
     rules: {
       "no-restricted-syntax": [
         "error",
@@ -161,6 +161,18 @@ export default [
       "ds/no-raw-zindex": "warn",
       "ds/no-arbitrary-tailwind": "warn",
       "ds/no-important": "warn",
+      // M3 baseline warnings
+      "ds/require-min-w-0-in-flex": "warn",
+      "ds/forbid-fixed-heights-on-text": "warn",
+      "ds/require-breakpoint-modifiers": "warn",
+      // M4 baseline warnings
+      "ds/no-hardcoded-copy": "warn",
+      "ds/no-physical-direction-classes-in-rtl": "warn",
+      // M2 baseline warnings
+      "ds/no-negative-margins": "warn",
+      "ds/no-margins-on-atoms": "warn",
+      "ds/enforce-layout-primitives": "warn",
+      "ds/container-widths-only-at": "warn",
     },
   },
 
@@ -180,6 +192,18 @@ export default [
       "ds/no-raw-zindex": "error",
       "ds/no-arbitrary-tailwind": "error",
       "ds/no-important": "error",
+      // M3 rules as errors in CMS/UI paths
+      "ds/require-min-w-0-in-flex": "error",
+      "ds/forbid-fixed-heights-on-text": "error",
+      "ds/require-breakpoint-modifiers": "error",
+      // M4 rules as errors in CMS/UI paths
+      "ds/no-hardcoded-copy": "error",
+      "ds/no-physical-direction-classes-in-rtl": "error",
+      // M2 rules as errors in CMS/UI paths
+      "ds/no-negative-margins": "error",
+      "ds/no-margins-on-atoms": "error",
+      "ds/enforce-layout-primitives": "error",
+      "ds/container-widths-only-at": "error",
     },
   },
 
@@ -242,6 +266,9 @@ export default [
     files: ["packages/eslint-plugin-ds/**/*.{ts,tsx}"],
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
+      // Allow authoring rule messages and test strings without tripping DS rules
+      "ds/no-hardcoded-copy": "off",
+      "ds/no-raw-font": "off",
     },
   },
 

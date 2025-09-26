@@ -1,6 +1,8 @@
 module.exports = {
   "^~test/(.*)$": " /test/$1",
   "^.+\\.d\\.ts$": " /test/emptyModule.ts",
+  // Support ESM-style relative specifiers (./foo.js) in TS sources during Jest runs
+  "^(\\.{1,2}/.*)\\.js$": "$1",
   "^\\./dataRoot\\.js$": " /packages/platform-core/src/dataRoot.ts",
   "^\\./auth\\.js$": " /packages/config/src/env/auth.ts",
   "^\\./cms\\.js$": " /packages/config/src/env/cms.ts",

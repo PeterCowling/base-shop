@@ -11,6 +11,15 @@ import noRawShadow from "./rules/no-raw-shadow.js";
 import noRawZindex from "./rules/no-raw-zindex.js";
 import noArbitraryTailwind from "./rules/no-arbitrary-tailwind.js";
 import noImportant from "./rules/no-important.js";
+import noNegativeMargins from "./rules/no-negative-margins.js";
+import noMarginsOnAtoms from "./rules/no-margins-on-atoms.js";
+import enforceLayoutPrimitives from "./rules/enforce-layout-primitives.js";
+import containerWidthsOnlyAt from "./rules/container-widths-only-at.js";
+import requireMinW0InFlex from "./rules/require-min-w-0-in-flex.js";
+import forbidFixedHeightsOnText from "./rules/forbid-fixed-heights-on-text.js";
+import requireBreakpointModifiers from "./rules/require-breakpoint-modifiers.js";
+import noHardcodedCopy from "./rules/no-hardcoded-copy.js";
+import noPhysicalDirectionClassesInRtl from "./rules/no-physical-direction-classes-in-rtl.js";
 
 export const rules = {
   "no-raw-color": noRawColor,
@@ -26,6 +35,15 @@ export const rules = {
   "no-raw-zindex": noRawZindex,
   "no-arbitrary-tailwind": noArbitraryTailwind,
   "no-important": noImportant,
+  "no-negative-margins": noNegativeMargins,
+  "no-margins-on-atoms": noMarginsOnAtoms,
+  "enforce-layout-primitives": enforceLayoutPrimitives,
+  "container-widths-only-at": containerWidthsOnlyAt,
+  "require-min-w-0-in-flex": requireMinW0InFlex,
+  "forbid-fixed-heights-on-text": forbidFixedHeightsOnText,
+  "require-breakpoint-modifiers": requireBreakpointModifiers,
+  "no-hardcoded-copy": noHardcodedCopy,
+  "no-physical-direction-classes-in-rtl": noPhysicalDirectionClassesInRtl,
 };
 
 const plugin = { rules };

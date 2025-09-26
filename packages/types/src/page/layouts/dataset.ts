@@ -13,6 +13,8 @@ export interface DatasetComponent extends PageComponentBase {
   sortBy?: string;
   sortOrder?: "asc" | "desc";
   itemRoutePattern?: string; // e.g. /blog/{slug}
+  cacheKey?: string;
+  ttlMs?: number;
 }
 
 export const datasetComponentSchema = baseComponentSchema.extend({
@@ -25,5 +27,6 @@ export const datasetComponentSchema = baseComponentSchema.extend({
   sortBy: z.string().optional(),
   sortOrder: z.enum(["asc", "desc"]).optional(),
   itemRoutePattern: z.string().optional(),
+  cacheKey: z.string().optional(),
+  ttlMs: z.number().optional(),
 });
-

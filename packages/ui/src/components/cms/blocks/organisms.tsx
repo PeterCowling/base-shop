@@ -46,11 +46,27 @@ import ProductFilter from "./ProductFilter";
 import HeaderSection from "./HeaderSection";
 import FooterSection from "./FooterSection";
 import CurrencySelector from "./CurrencySelector";
+import CampaignHeroSection from "./CampaignHeroSection";
+import PromoTilesSection from "./PromoTilesSection";
+import ShowcaseSection from "./ShowcaseSection";
+import CrossSellSection from "./CrossSellSection";
+import FinancingBadge from "./FinancingBadge";
+import CertificateCheck from "./CertificateCheck";
+import PoliciesAccordion from "./PoliciesAccordion";
+import StickyBuyBar from "./StickyBuyBar";
+import PDPDetailsSection from "./PDPDetailsSection";
+import GuidedSellingSection from "./GuidedSellingSection";
+import CartSection from "./CartSection";
+import CheckoutSection from "./CheckoutSection";
+import ThankYouSection from "./ThankYouSection";
+import StoreLocatorSection from "./StoreLocatorSection";
+import EmailReferralSection from "./EmailReferralSection";
 import RentalAvailabilitySection from "./RentalAvailabilitySection";
 import RentalTermsSection from "./RentalTermsSection";
 import StructuredDataSection from "./StructuredDataSection";
 import ConsentSection from "./ConsentSection";
 import AnalyticsPixelsSection from "./AnalyticsPixelsSection";
+import ReviewsSection from "./ReviewsSection";
 import type { BlockRegistryEntry } from "./types";
 
 const defaultPreview = "/window.svg";
@@ -109,11 +125,27 @@ const organismEntries = {
   HeaderSection: { component: HeaderSection },
   FooterSection: { component: FooterSection },
   CurrencySelector: { component: CurrencySelector },
+  CampaignHeroSection: { component: CampaignHeroSection },
+  PromoTilesSection: { component: PromoTilesSection },
+  ShowcaseSection: { component: ShowcaseSection },
+  CrossSellSection: { component: CrossSellSection },
+  FinancingBadge: { component: FinancingBadge },
+  CertificateCheck: { component: CertificateCheck },
+  PoliciesAccordion: { component: PoliciesAccordion },
+  StickyBuyBar: { component: StickyBuyBar },
+  PDPDetailsSection: { component: PDPDetailsSection },
+  GuidedSellingSection: { component: GuidedSellingSection },
+  CartSection: { component: CartSection },
+  CheckoutSection: { component: CheckoutSection },
+  ThankYouSection: { component: ThankYouSection },
+  StoreLocatorSection: { component: StoreLocatorSection },
+  EmailReferralSection: { component: EmailReferralSection },
   RentalAvailabilitySection: { component: RentalAvailabilitySection },
   RentalTermsSection: { component: RentalTermsSection },
   StructuredDataSection: { component: StructuredDataSection },
   ConsentSection: { component: ConsentSection },
   AnalyticsPixelsSection: { component: AnalyticsPixelsSection },
+  ReviewsSection: { component: ReviewsSection },
 } as const;
 
 type OrganismRegistry = {

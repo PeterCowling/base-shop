@@ -4,6 +4,8 @@ import React from "react";
 import AnnouncementBar from "./AnnouncementBarBlock";
 import SearchBar from "./SearchBar";
 import CurrencySelector from "./CurrencySelector";
+import LanguageSwitcher from "../../molecules/LanguageSwitcher";
+import ExperimentGate from "../../ab/ExperimentGate";
 import { getBreadcrumbs } from "@acme/platform-core/router/breadcrumbs";
 
 export interface HeaderSectionProps extends React.HTMLAttributes<HTMLElement> {
@@ -12,7 +14,10 @@ export interface HeaderSectionProps extends React.HTMLAttributes<HTMLElement> {
   searchMode?: "inline" | "iconOverlay" | "off";
   showBreadcrumbs?: boolean;
   showCurrencySelector?: boolean;
+  showLocaleSelector?: boolean;
   titleForBreadcrumbs?: string;
+  /** Optional experiment key; will gate sub-elements using derived flags */
+  experimentKey?: string;
 }
 
 export default function HeaderSection({
@@ -21,7 +26,9 @@ export default function HeaderSection({
   searchMode = "inline",
   showBreadcrumbs = false,
   showCurrencySelector = false,
+  showLocaleSelector = false,
   titleForBreadcrumbs,
+  experimentKey,
   className,
   ...rest
 }: HeaderSectionProps) {
@@ -41,10 +48,17 @@ export default function HeaderSection({
 
   const renderSearch = () => {
     if (searchMode === "off") return null;
-    if (searchMode === "inline") return <div className="max-w-md flex-1"><SearchBar /></div>;
+    if (searchMode === "inline") {
+      const node = <div className="max-w-md flex-1"><SearchBar /></div>;
+      return experimentKey ? (
+        <ExperimentGate flag={`${experimentKey}:search`} fallback={null}>{node}</ExperimentGate>
+      ) : node;
+    }
     return (
       <>
-        <button aria-label="Open search" className="p-2" onClick={() => setOpen(true)}>🔎</button>
+        <ExperimentGate flag={experimentKey ? `${experimentKey}:search` : undefined}>
+          <button aria-label="Open search" className="p-2" onClick={() => setOpen(true)}>🔎</button>
+        </ExperimentGate>
         {open ? (
           <div className="fixed inset-0 bg-black/50 flex items-start justify-center p-8" onClick={() => setOpen(false)}>
             <div className="bg-white rounded shadow p-4 w-full max-w-xl" onClick={(e) => e.stopPropagation()}>
@@ -62,13 +76,26 @@ export default function HeaderSection({
 
   return (
     <header className={[className, stickyClass, transparentClass, "w-full border-b"].filter(Boolean).join(" ") || undefined} {...rest}>
-      {announcement ? <AnnouncementBar /> : null}
+      {announcement ? (
+        experimentKey ? (
+          <ExperimentGate flag={`${experimentKey}:announcement`}><AnnouncementBar /></ExperimentGate>
+        ) : (
+          <AnnouncementBar />
+        )
+      ) : null}
       <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3">
         <a className="font-bold" href="/">Shop</a>
         {variant === "centerLogo" ? <div className="mx-auto" /> : null}
         <nav className="flex items-center gap-3 ml-auto">
           {renderSearch()}
-          {showCurrencySelector ? <CurrencySelector /> : null}
+          {showCurrencySelector ? (
+            experimentKey ? (
+              <ExperimentGate flag={`${experimentKey}:currency`}><CurrencySelector /></ExperimentGate>
+            ) : (
+              <CurrencySelector />
+            )
+          ) : null}
+          {showLocaleSelector ? <LanguageSwitcher current={"en" as any} /> : null}
         </nav>
       </div>
       {showBreadcrumbs && breadcrumbs.length > 1 ? (
